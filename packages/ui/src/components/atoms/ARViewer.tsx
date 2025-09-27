@@ -12,6 +12,7 @@ export function ARViewer({ src, className, ...props }: ARViewerProps) {
     const script = document.createElement("script");
     script.type = "module";
     script.src =
+      /* i18n-exempt — external script URL, not user-facing copy */
       "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js";
     document.head.appendChild(script);
     return () => {
@@ -24,7 +25,10 @@ export function ARViewer({ src, className, ...props }: ARViewerProps) {
       src={src}
       ar
       camera-controls
-      className={cn("h-full w-full", className)}
+      className={cn(
+        "h-full w-full", // i18n-exempt — CSS utility class names
+        className,
+      )}
       {...props}
     />
   );

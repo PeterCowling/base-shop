@@ -9,6 +9,7 @@ import {
 } from "../../../atoms/shadcn";
 import { Toast } from "../../../atoms";
 import { cn } from "../../../../utils/style";
+import { useTranslations } from "@acme/i18n";
 import {
   type EmailScheduleFormValues,
   type EmailSchedulePreviewData,
@@ -41,10 +42,11 @@ export function EmailScheduleForm({
   onSubmit,
   onPreviewChange,
   onStatusChange,
-  submitLabel = "Schedule send",
+  submitLabel,
   className,
   busy,
 }: EmailScheduleFormProps) {
+  const t = useTranslations();
   const {
     values,
     errors,
@@ -70,10 +72,15 @@ export function EmailScheduleForm({
       <Card>
         <CardContent className="space-y-4">
           <div className="space-y-1">
-            <label htmlFor="email-subject" className="text-sm font-medium">
-              Subject line
+            <label
+              /* i18n-exempt — non-user-facing id reference */
+              htmlFor="email-subject"
+              className="text-sm font-medium"
+            >
+              {t("Subject line")}
             </label>
             <Input
+              /* i18n-exempt — non-user-facing id */
               id="email-subject"
               value={values.subject}
               onChange={(event) => updateValue("subject", event.target.value)}
@@ -84,8 +91,10 @@ export function EmailScheduleForm({
             />
             {errors.subject && (
               <p
+                /* i18n-exempt — non-user-facing id */
                 id="email-subject-error"
                 className="text-danger text-xs"
+                /* i18n-exempt — token reference string */
                 data-token="--color-danger"
               >
                 {errors.subject}
@@ -94,10 +103,15 @@ export function EmailScheduleForm({
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="email-preheader" className="text-sm font-medium">
-              Preheader
+            <label
+              /* i18n-exempt — non-user-facing id reference */
+              htmlFor="email-preheader"
+              className="text-sm font-medium"
+            >
+              {t("Preheader")}
             </label>
             <Textarea
+              /* i18n-exempt — non-user-facing id */
               id="email-preheader"
               rows={2}
               value={values.preheader}
@@ -117,7 +131,7 @@ export function EmailScheduleForm({
 
       <div className="flex justify-end">
         <Button type="submit" disabled={busy || status === "submitting"}>
-          {status === "submitting" ? "Scheduling…" : submitLabel}
+          {status === "submitting" ? t("Scheduling…") : submitLabel ?? t("Schedule send")}
         </Button>
       </div>
 

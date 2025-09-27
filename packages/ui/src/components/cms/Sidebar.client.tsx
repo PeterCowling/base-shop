@@ -1,5 +1,6 @@
 // packages/ui/components/cms/Sidebar.tsx
 "use client";
+/* eslint-disable ds/no-hardcoded-copy -- UI-1420: className literals and icon-only elements; user-facing strings wrapped with t() */
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { memo, useMemo } from "react";
@@ -7,6 +8,7 @@ import { Button, Card, CardContent } from "../atoms/shadcn";
 import { Tag } from "../atoms";
 import { cn } from "@ui/utils/style";
 import { useCmsNavItems } from "./nav/useCmsNavItems";
+import { useTranslations } from "@acme/i18n";
 
 interface SidebarProps {
   role?: string;
@@ -20,6 +22,7 @@ function Sidebar({
   onConfiguratorStartNew,
 }: SidebarProps) {
   const routerPathname = usePathname();
+  const t = useTranslations();
 
   const pathname = useMemo(
     () => pathnameProp ?? routerPathname ?? "",
@@ -47,22 +50,22 @@ function Sidebar({
       <div className="space-y-6">
         <div className="space-y-2">
           <Tag className="uppercase tracking-wide" variant="default">
-            Control Center
+            {t("Control Center")}
           </Tag>
-          <h1 className="text-2xl font-semibold tracking-tight">Base Shop CMS</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">{t("Base Shop CMS")}</h1>
           <p className="text-xs text-muted-foreground">
-            Configure storefronts, orchestrate launches, and monitor activity from one hub.
+            {t("Configure storefronts, orchestrate launches, and monitor activity from one hub.")}
           </p>
         </div>
 
         <Card className="border-border-1 bg-surface-2 text-foreground shadow-elevation-2">
           <CardContent className="space-y-4 px-4 py-5">
             <div className="flex items-center justify-between text-xs uppercase tracking-wide text-muted-foreground">
-              <span>Main navigation</span>
-              <span>Explore</span>
+              <span>{t("Main navigation")}</span>
+              <span>{t("Explore")}</span>
             </div>
             <nav className="space-y-1">
-              {navItems.map(({ label, icon, title, fullHref, active, href, isConfigurator }) => (
+              {navItems.map(({ label, icon, title, fullHref, active, isConfigurator }) => (
                 <Link
                   key={fullHref}
                   href={fullHref}
@@ -103,26 +106,26 @@ function Sidebar({
           className="w-full justify-center border-border-2 hover:bg-surface-3"
           onClick={handleConfiguratorClick}
         >
-          <Link href="/cms/configurator">Launch Configurator</Link>
+          <Link href="/cms/configurator">{t("Launch Configurator")}</Link>
         </Button>
       </div>
 
       <div className="mt-auto space-y-3 text-xs text-muted-foreground">
         <Card className="border-border-1 bg-surface-2 shadow-elevation-1">
           <CardContent className="space-y-2 px-4 py-4">
-            <h2 className="text-sm font-semibold text-foreground">Need a hand?</h2>
-            <p>Visit the docs or ping the platform team for support.</p>
+            <h2 className="text-sm font-semibold text-foreground">{t("Need a hand?")}</h2>
+            <p>{t("Visit the docs or ping the platform team for support.")}</p>
             <div className="flex gap-2">
               <Button asChild variant="outline" className="h-9 flex-1">
-                <Link href="/docs">Docs</Link>
+                <Link href="/docs">{t("Docs")}</Link>
               </Button>
               <Button asChild variant="outline" className="h-9 flex-1">
-                <Link href="/cms/support">Support</Link>
+                <Link href="/cms/support">{t("Support")}</Link>
               </Button>
             </div>
           </CardContent>
         </Card>
-        <p>Build version 1.0.0 · Crafted with care for the Base Shop team.</p>
+        <p>{t("Build version 1.0.0 · Crafted with care for the Base Shop team.")}</p>
       </div>
     </aside>
   );

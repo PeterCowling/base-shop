@@ -16,11 +16,13 @@ try {
   });
 
   if (missing.length > 0) {
+    // i18n-exempt: CLI error message for developers; not user-facing UI
     throw new Error(
       `Missing required environment variables: ${missing.join(", ")}`,
     );
   }
 } catch (err) {
+  // i18n-exempt: CLI error message for developers; not user-facing UI
   console.error("Invalid environment variables:\n", err);
   process.exit(1);
 }
@@ -45,6 +47,7 @@ switch (cmd) {
     run("wrangler", ["pages", "deploy", ".vercel/output/static"]);
     break;
   default:
+    // i18n-exempt: CLI usage text for developers; not user-facing UI
     console.log("Usage: pnpm configurator <dev|build|deploy>");
     process.exit(1);
 }

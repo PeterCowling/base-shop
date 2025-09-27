@@ -13,7 +13,7 @@ export default function useInView<T extends HTMLElement = HTMLDivElement>(enable
   useEffect(() => {
     if (!enabled) return; // no-op when not enabled
     try {
-      const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const media = window.matchMedia(/* i18n-exempt */ "(prefers-reduced-motion: reduce)");
       if (media.matches) {
         setInView(true);
         return;
@@ -36,7 +36,7 @@ export default function useInView<T extends HTMLElement = HTMLDivElement>(enable
           }
         }
       },
-      { rootMargin: "0px 0px -10% 0px", threshold: 0.1 },
+      { rootMargin: /* i18n-exempt */ "0px 0px -10% 0px", threshold: 0.1 },
     );
     obs.observe(node);
     return () => obs.disconnect();

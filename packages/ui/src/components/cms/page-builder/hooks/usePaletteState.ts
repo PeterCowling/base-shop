@@ -17,8 +17,6 @@ export default function usePaletteState() {
   });
   const [paletteWidth, setPaletteWidth] = React.useState<number>(() => {
     try {
-      const v = localStorage.getItem("pb:palette-width");
-      const n = v ? parseInt(v, 10) : 350;
       // Fixed palette/sidebar width: 350px for consistency across selectors
       return 350;
     } catch {
@@ -39,7 +37,7 @@ export default function usePaletteState() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
       const tag = t?.tagName;
-      const isEditable = !!t && ((t as any).isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT");
+      const isEditable = !!t && (t.isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT");
       if (isEditable) return;
       if (!(e.ctrlKey || e.metaKey)) return;
       if (e.key.toLowerCase() === "b") {

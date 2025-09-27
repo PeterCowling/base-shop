@@ -1,4 +1,3 @@
-// @ts-nocheck
 import path from "path";
 
 describe("generateMeta", () => {
@@ -171,4 +170,3 @@ describe("generateMeta", () => {
     expect(writeMock).toHaveBeenCalledWith(file, Buffer.from("fake"));
   });
 });
-

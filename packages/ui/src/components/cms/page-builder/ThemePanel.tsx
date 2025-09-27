@@ -212,7 +212,9 @@ export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
   if (variant === "sidebar") {
     return (
       <div className="space-y-3 p-3">
+        {/* i18n-exempt: label kept local to builder context */}
         <div className="text-sm font-semibold">Theme</div>
+        {/* i18n-exempt: helper text scoped to CMS internal tooling */}
         <p className="text-sm text-muted-foreground">
           Adjust brand colors and typography. Changes preview instantly and save to this shop.
         </p>
@@ -235,9 +237,11 @@ export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
 
   // Default: dialog variant
   return (
-    <DialogContent className="max-w-4xl">
+    <DialogContent className="w-full">
+      {/* i18n-exempt: label kept local to builder context */}
       <DialogTitle>Theme</DialogTitle>
       <div className="space-y-3">
+        {/* i18n-exempt: helper text scoped to CMS internal tooling */}
         <p className="text-sm text-muted-foreground">
           Adjust brand colors and typography. Changes preview instantly and save to this shop.
         </p>

@@ -23,7 +23,7 @@ export function CommentsPinsLayer({
   onOpen: (id: string) => void;
 }) {
   return (
-    <>
+    <div className="pointer-events-none relative inset-0">{/* ds/absolute-parent-guard: provide positioned ancestor */}
       {visibleThreads.map((t, i) => {
         const comp = positionsRef.current[t.componentId];
         if (!comp) return null;
@@ -56,7 +56,7 @@ export function CommentsPinsLayer({
           return (
             <div
               key={`badge-${cid}`}
-              className="pointer-events-none absolute flex h-5 w-5 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full bg-red-500 text-xs text-white"
+              className="pointer-events-none absolute h-5 w-5 -translate-y-1/2 translate-x-1/2 rounded-full bg-red-500 text-center text-xs leading-5 text-white"
               style={{ left: comp.left + comp.width - 6, top: comp.top + 6 }}
               title={`${count} unresolved comments`}
             >
@@ -65,7 +65,7 @@ export function CommentsPinsLayer({
           );
         });
       })()}
-    </>
+    </div>
   );
 }
 

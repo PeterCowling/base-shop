@@ -2,6 +2,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import type { UpgradeComponent } from "@acme/types/upgrade";
+import { useTranslations } from "@acme/i18n";
 
 interface ComponentGroups {
   [group: string]: UpgradeComponent[];
@@ -10,6 +11,7 @@ interface ComponentGroups {
 export default function Upgrade() {
   const router = useRouter();
   const { id } = router.query;
+  const t = useTranslations();
   const [groups, setGroups] = useState<ComponentGroups>({});
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -20,11 +22,11 @@ export default function Upgrade() {
     async function load() {
       try {
         const res = await fetch(`/api/shop/${id}/component-diff`);
-        if (!res.ok) throw new Error("Failed to load component diff");
+        if (!res.ok) throw new Error("Failed to load component diff"); // i18n-exempt: developer-only error string, not shown to users
         const data = (await res.json()) as ComponentGroups;
         setGroups(data);
       } catch (err) {
-        console.error("Failed to load component diff", err);
+        console.error("Failed to load component diff", err); // i18n-exempt: developer debug log label
       }
     }
     void load();
@@ -54,10 +56,12 @@ export default function Upgrade() {
       });
       if (!res.ok) throw new Error(await res.text());
       setStatus("success");
-      setMessage("Upgrade published successfully.");
+      setMessage(String(t("upgrade.publish.success")));
     } catch (err) {
       setStatus("error");
-      setMessage(err instanceof Error ? err.message : "Publish failed");
+      setMessage(
+        err instanceof Error ? err.message : String(t("upgrade.publish.failed"))
+      );
     }
   }
 
@@ -84,7 +88,7 @@ export default function Upgrade() {
       ))}
       {selected.size > 0 && (
         <div className="space-y-2">
-          <h2 className="font-semibold">Selected components</h2>
+          <h2 className="font-semibold">{t("upgrade.selectedComponents")}</h2>
           <ul className="list-disc pl-4">
             {Array.from(selected).map((file) => (
               <li key={file}>{file}</li>
@@ -93,9 +97,11 @@ export default function Upgrade() {
           <button
             onClick={publish}
             disabled={status === "loading"}
-            className="rounded bg-blue-600 px-3 py-1 text-white"
+            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded bg-blue-600 px-4 py-2 text-white"
           >
-            {status === "loading" ? "Publishing..." : "Publish upgrade"}
+            {status === "loading"
+              ? t("upgrade.publishing")
+              : t("upgrade.publishCta")}
           </button>
           {status === "success" && (
             <p className="text-green-600">{message}</p>
@@ -108,4 +114,3 @@ export default function Upgrade() {
     </div>
   );
 }
-

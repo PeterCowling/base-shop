@@ -15,3 +15,4 @@ const meta: Meta<typeof OrderTrackingTimeline> = {
 export default meta;
 
 export const Default: StoryObj<typeof OrderTrackingTimeline> = {};
+// i18n-exempt -- Storybook demo copy

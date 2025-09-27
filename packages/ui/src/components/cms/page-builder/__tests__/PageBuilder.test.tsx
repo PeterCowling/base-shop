@@ -38,49 +38,47 @@ jest.mock("../hooks/useFileDrop", () => ({
   }),
 }));
 
-const usePageBuilderDnDMock = jest.fn(() => ({
+const pageBuilderDnDMock = jest.fn(() => ({
   dndContext: {},
   insertIndex: 0,
   activeType: null,
 }));
 jest.mock("../hooks/usePageBuilderDnD", () => ({
   __esModule: true,
-  default: (args: any) => usePageBuilderDnDMock(args),
+  default: (args: any) => pageBuilderDnDMock(args),
 }));
 
 jest.mock("../hooks/usePageBuilderControls", () => {
   const React = require("react");
-  return {
-    __esModule: true,
-    default: () => {
-      const [showGrid, setShowGrid] = React.useState(false);
-      return {
-        deviceId: "d",
-        setDeviceId: jest.fn(),
-        orientation: "portrait",
-        setOrientation: jest.fn(),
-        rotateDevice: jest.fn(),
-        device: { type: "desktop" },
-        viewport: "desktop",
-        viewportStyle: {},
-        frameClass: "",
-        locale: "en",
-        setLocale: jest.fn(),
-        showPreview: false,
-        togglePreview: jest.fn(),
-        previewDeviceId: "d",
-        setPreviewDeviceId: jest.fn(),
-        runTour: false,
-        startTour: jest.fn(),
-        tourSteps: [],
-        handleTourCallback: jest.fn(),
-        showGrid,
-        toggleGrid: () => setShowGrid((g: boolean) => !g),
-        gridCols: 4,
-        setGridCols: jest.fn(),
-      };
-    },
+  const useControls = () => {
+    const [showGrid, setShowGrid] = React.useState(false);
+    return {
+      deviceId: "d",
+      setDeviceId: jest.fn(),
+      orientation: "portrait",
+      setOrientation: jest.fn(),
+      rotateDevice: jest.fn(),
+      device: { type: "desktop" },
+      viewport: "desktop",
+      viewportStyle: {},
+      frameClass: "",
+      locale: "en",
+      setLocale: jest.fn(),
+      showPreview: false,
+      togglePreview: jest.fn(),
+      previewDeviceId: "d",
+      setPreviewDeviceId: jest.fn(),
+      runTour: false,
+      startTour: jest.fn(),
+      tourSteps: [],
+      handleTourCallback: jest.fn(),
+      showGrid,
+      toggleGrid: () => setShowGrid((g: boolean) => !g),
+      gridCols: 4,
+      setGridCols: jest.fn(),
+    };
   };
+  return { __esModule: true, default: useControls };
 });
 
 jest.mock("../hooks/usePageBuilderSave", () => ({
@@ -108,7 +106,7 @@ jest.mock("../hooks/usePageBuilderState", () => ({
 describe("PageBuilder", () => {
   beforeEach(() => {
     dispatch.mockClear();
-    usePageBuilderDnDMock.mockClear();
+    pageBuilderDnDMock.mockClear();
   });
 
   it("adds container component with defaults and children", () => {
@@ -133,7 +131,7 @@ describe("PageBuilder", () => {
     );
 
     // initial gridSize
-    expect(usePageBuilderDnDMock).toHaveBeenLastCalledWith(
+    expect(pageBuilderDnDMock).toHaveBeenLastCalledWith(
       expect.objectContaining({ gridSize: 1 })
     );
 
@@ -144,7 +142,7 @@ describe("PageBuilder", () => {
       layoutProps.gridProps.toggleGrid();
     });
 
-    expect(usePageBuilderDnDMock).toHaveBeenLastCalledWith(
+    expect(pageBuilderDnDMock).toHaveBeenLastCalledWith(
       expect.objectContaining({ gridSize: 50 })
     );
   });

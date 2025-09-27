@@ -4,9 +4,10 @@ import React from "react";
 jest.mock("../MultiSelectOverlay", () => {
   const React = require("react");
   function Mock(props) {
+    const { onApply } = props;
     React.useEffect(() => {
-      props.onApply({ u1: { left: "10px", top: "20px" }, l1: { left: "30px", top: "40px" } });
-    }, []);
+      onApply({ u1: { left: "10px", top: "20px" }, l1: { left: "30px", top: "40px" } });
+    }, [onApply]);
     return null;
   }
   return { __esModule: true, default: Mock };

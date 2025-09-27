@@ -1,7 +1,9 @@
 import { formatTimestamp } from "@acme/date-utils";
 import { listEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
+import { useTranslations as useServerTranslations } from "@i18n/useTranslations.server";
 import shop from "../../../../../shop.json";
 
+// i18n-exempt: Fallback labels for backend status codes
 const STATUS_LABELS: Record<string, string> = {
   received: "Received",
   cleaned: "Cleaned",
@@ -14,14 +16,16 @@ export default async function OrderTimeline({
 }: {
   params: { id: string };
 }) {
+  const tBase = await useServerTranslations("en");
+  const t = (key: string) => tBase(`account.orders.timeline.${key}`);
   const events = await listEvents(shop.id);
   const orderEvents = events
     .filter((e) => e.sessionId === params.id)
     .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
 
   return (
-    <div className="mx-auto max-w-md p-6">
-      <h1 className="mb-4 text-xl font-bold">Order Timeline</h1>
+    <div className="mx-auto p-6">
+      <h1 className="mb-4 text-xl font-bold">{t("title")}</h1>
       <ol className="border-l border-gray-200 pl-4">
         {orderEvents.map((evt) => (
           <li key={evt.id} className="mb-2">

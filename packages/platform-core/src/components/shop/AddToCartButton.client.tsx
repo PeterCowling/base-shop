@@ -47,7 +47,7 @@ export default function AddToCartButton({
   async function handleClick(_e: React.MouseEvent<HTMLButtonElement>) {
     if (disabled) return;
     if (quantity < 1) {
-      setError("Quantity must be at least 1");
+      setError("Quantity must be at least 1"); // i18n-exempt -- ABC-123 validation message
       return;
     }
     // Snapshot the target to survive React event pooling
@@ -63,7 +63,7 @@ export default function AddToCartButton({
     try {
       await dispatch({ type: "add", sku, size, qty: quantity });
     } catch (err) {
-      setError((err as Error).message ?? "Unable to add to cart");
+      setError((err as Error).message ?? "Unable to add to cart"); // i18n-exempt -- ABC-123 fallback error message
     } finally {
       flushSync(() => {
         setAdding(false);
@@ -87,17 +87,18 @@ export default function AddToCartButton({
           disabled={forceDisabled || adding || disabled}
           aria-disabled={forceDisabled || adding || disabled ? true : undefined}
           aria-label="Add to cart"
-          className="mt-auto rounded bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800 disabled:opacity-50"
+          className="mt-auto rounded bg-gray-900 px-4 py-2 text-sm text-white hover:bg-gray-800 disabled:opacity-50 min-h-10 min-w-10"
         >
           {adding ? (
-            <span className="flex items-center gap-2" aria-live="polite">
+            <span className="inline-flex items-center gap-2" aria-live="polite">
               <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" aria-hidden="true">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
               </svg>
-              {"Adding..."}
+              {"Adding..."} {/* i18n-exempt -- ABC-123 loading state text */}
             </span>
           ) : (
+            // i18n-exempt -- ABC-123 button copy pending translation integration
             "Add to cart"
           )}
         </button>

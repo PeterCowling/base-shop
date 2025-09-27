@@ -20,15 +20,24 @@ function flip(aspect?: string): string | undefined {
 
 export default function ImageAspectToolbar({ value, onChange }: { value?: string; onChange: (next?: string) => void }) {
   return (
-    <div className="absolute end-1 top-1 z-40 flex items-center gap-1 rounded bg-black/60 p-1 text-white shadow backdrop-blur-sm dark:bg-white/70 dark:text-black">
-      {PRESETS.map((p) => (
-        <Button key={p.label} type="button" variant={p.value === value ? "default" : "outline"} className="h-6 px-2 text-xs" onClick={() => onChange(p.value)}>
-          {p.label}
+    <div className="relative">
+      <div className="absolute end-1 top-1 flex items-center gap-1 rounded bg-black/60 p-1 text-white shadow backdrop-blur-sm dark:bg-white/70 dark:text-black">
+        {PRESETS.map((p) => (
+          <Button key={p.label} type="button" variant={p.value === value ? "default" : "outline"} className="h-6 px-2 text-xs" onClick={() => onChange(p.value)}>
+            {p.label}
+          </Button>
+        ))}
+        <Button
+          type="button"
+          variant="outline"
+          className="h-6 px-2 text-xs"
+          onClick={() => onChange(flip(value))}
+          title={/* i18n-exempt -- PB-2417: editor-only tooltip */ "Flip orientation"}
+          aria-label={/* i18n-exempt -- PB-2417: editor-only control */ "Flip orientation"}
+        >
+          ↔︎
         </Button>
-      ))}
-      <Button type="button" variant="outline" className="h-6 px-2 text-xs" onClick={() => onChange(flip(value))} title="Flip orientation">
-        ↔︎
-      </Button>
+      </div>
     </div>
   );
 }

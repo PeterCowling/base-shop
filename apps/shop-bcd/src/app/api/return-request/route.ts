@@ -34,6 +34,7 @@ export async function POST(req: Request) {
     settings.luxuryFeatures.strictReturnConditions &&
     ((cfg.requireTags && !hasTags) || (!cfg.allowWear && isWorn))
   ) {
+    // eslint-disable-next-line ds/no-hardcoded-copy -- API error identifier; not user-facing copy
     return NextResponse.json(
       { ok: false, error: "Return rejected" },
       { status: 400 },
@@ -42,6 +43,7 @@ export async function POST(req: Request) {
 
   const ra = await createReturnAuthorization({ orderId });
 
+  // eslint-disable-next-line ds/no-hardcoded-copy -- transactional email content; localization handled by email service
   await sendEmail(
     email,
     `Return Authorization ${ra.raId}`,

@@ -14,25 +14,28 @@ type Props = {
 
 export default function ImageEditingOverlays({ enabled, component, dispatch }: Props) {
   if (!enabled || component.type !== "Image") return null;
+  // Narrow known fields without using `any` to satisfy linting while keeping flexibility from augmented types
+  const c = component as unknown as {
+    id: string;
+    focalPoint?: { x: number; y: number };
+    cropAspect?: string;
+  };
   return (
     <>
       <ImageFocalOverlay
-        value={(component as any).focalPoint as any}
+        value={c.focalPoint}
         visible={true}
-        onChange={(fp) =>
-          dispatch({ type: "update", id: component.id, patch: { focalPoint: fp } as any })
-        }
+        onChange={(fp) => dispatch({ type: "update", id: c.id, patch: { focalPoint: fp } })}
       />
       <ImageAspectToolbar
-        value={(component as any).cropAspect as any}
-        onChange={(next) => dispatch({ type: "update", id: component.id, patch: { cropAspect: next } as any })}
+        value={c.cropAspect}
+        onChange={(next) => dispatch({ type: "update", id: c.id, patch: { cropAspect: next } })}
       />
       <ImageCropOverlay
-        value={(component as any).cropAspect as any}
+        value={c.cropAspect}
         visible={true}
-        onChange={(next) => dispatch({ type: "update", id: component.id, patch: { cropAspect: next } as any })}
+        onChange={(next) => dispatch({ type: "update", id: c.id, patch: { cropAspect: next } })}
       />
     </>
   );
 }
-

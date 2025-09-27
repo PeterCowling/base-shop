@@ -6,7 +6,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const sku = searchParams.get("sku");
     const collectionId = searchParams.get("collectionId");
-    const minItems = Number(searchParams.get("minItems") ?? 1);
+    const _minItems = Number(searchParams.get("minItems") ?? 1);
     const maxItems = Number(searchParams.get("maxItems") ?? 4);
 
     let items: SKU[] = PRODUCTS.filter((p) => p.stock > 0);
@@ -23,10 +23,10 @@ export async function GET(req: Request) {
     const count = Math.max(1, Math.min(isNaN(maxItems) ? 4 : maxItems, items.length));
     const out = items.slice(0, count);
     const res = NextResponse.json(out, { status: 200 });
+    // eslint-disable-next-line ds/no-hardcoded-copy -- API header value; not user-facing copy
     res.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=120");
     return res;
   } catch {
     return NextResponse.json([], { status: 200 });
   }
 }
-

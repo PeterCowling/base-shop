@@ -13,6 +13,7 @@ import type { MappingRowsController } from "../useShopEditorSubmit";
 import MappingListField, {
   type MappingListFieldErrors,
 } from "../components/MappingListField";
+import { useTranslations } from "@acme/i18n";
 
 export type ShopOverridesSectionErrors = Partial<
   Record<"filterMappings" | "priceOverrides", MappingListFieldErrors>
@@ -29,53 +30,58 @@ export default function ShopOverridesSection({
   priceOverrides,
   errors,
 }: ShopOverridesSectionProps) {
+  const t = useTranslations();
   const filterContent = (
     <MappingListField
       controller={filterMappings}
-      idPrefix="filter-mapping"
+      idPrefix="filter-mapping" // i18n-exempt: DOM id prefix, not user-visible copy
       keyField={{
         field: "key",
-        label: "Filter key",
+        label: t("Filter key"),
         name: "filterMappingsKey",
-        placeholder: "color",
+        placeholder: t("color"),
       }}
       valueField={{
         field: "value",
-        label: "Catalog attribute",
+        label: t("Catalog attribute"),
         name: "filterMappingsValue",
-        placeholder: "attributes.color",
+        placeholder: t("attributes.color"),
       }}
-      emptyMessage="No filter mappings configured. Add mappings to translate storefront facets into catalog attributes."
-      addButtonLabel="Add filter mapping"
-      removeButtonLabel="Remove"
+      emptyMessage={t(
+        "No filter mappings configured. Add mappings to translate storefront facets into catalog attributes."
+      )}
+      addButtonLabel={t("Add filter mapping")}
+      removeButtonLabel={t("Remove")}
       errors={errors?.filterMappings}
-      rowClassName="sm:grid-cols-[2fr,2fr,auto]"
+      rowClassName="sm:grid-cols-[2fr,2fr,auto]" // i18n-exempt: CSS utility classes, not user copy
     />
   );
 
   const priceContent = (
     <MappingListField
       controller={priceOverrides}
-      idPrefix="price-override"
+      idPrefix="price-override" // i18n-exempt: DOM id prefix, not user-visible copy
       keyField={{
         field: "key",
-        label: "Locale",
+        label: t("Locale"),
         name: "priceOverridesKey",
-        placeholder: "en-GB",
+        placeholder: t("en-GB"),
       }}
       valueField={{
         field: "value",
-        label: "Override (minor units)",
+        label: t("Override (minor units)"),
         name: "priceOverridesValue",
-        placeholder: "12000",
+        placeholder: t("12000"),
         type: "number",
         inputMode: "numeric",
       }}
-      emptyMessage="No price overrides defined. Configure overrides to adjust pricing for specific locales."
-      addButtonLabel="Add price override"
-      removeButtonLabel="Remove"
+      emptyMessage={t(
+        "No price overrides defined. Configure overrides to adjust pricing for specific locales."
+      )}
+      addButtonLabel={t("Add price override")}
+      removeButtonLabel={t("Remove")}
       errors={errors?.priceOverrides}
-      rowClassName="sm:grid-cols-[2fr,1fr,auto]"
+      rowClassName="sm:grid-cols-[2fr,1fr,auto]" // i18n-exempt: CSS utility classes, not user copy
     />
   );
 
@@ -83,9 +89,11 @@ export default function ShopOverridesSection({
     <Card>
       <CardContent className="space-y-6 p-6">
         <div className="space-y-1">
-          <h3 className="text-lg font-semibold">Overrides</h3>
+          <h3 className="text-lg font-semibold">{t("Overrides")}</h3>
           <p className="text-sm text-muted-foreground">
-            Fine-tune how storefront filters and pricing map to catalog data.
+            {t(
+              "Fine-tune how storefront filters and pricing map to catalog data."
+            )}
           </p>
         </div>
 
@@ -94,17 +102,23 @@ export default function ShopOverridesSection({
           defaultValue={["filter-mappings", "price-overrides"]}
           className="space-y-3"
         >
-          <AccordionItem value="filter-mappings" className="border-none">
+          <AccordionItem
+            value="filter-mappings" // i18n-exempt: internal accordion value key
+            className="border-none"
+          >
             <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-              Filter mappings
+              {t("Filter mappings")}
             </AccordionTrigger>
             <AccordionContent className="pt-3">
               {filterContent}
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="price-overrides" className="border-none">
+          <AccordionItem
+            value="price-overrides" // i18n-exempt: internal accordion value key
+            className="border-none"
+          >
             <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-              Price overrides
+              {t("Price overrides")}
             </AccordionTrigger>
             <AccordionContent className="pt-3">
               {priceContent}

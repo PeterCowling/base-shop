@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { ApiError } from "@acme/types";
 import ComponentPreview from "@ui/src/components/ComponentPreview";
 
@@ -12,6 +13,7 @@ interface UpgradeComponent {
 }
 
 export default function UpgradePreviewPage() {
+  const t = useTranslations();
   const [changes, setChanges] = useState<UpgradeComponent[]>([]);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +50,7 @@ export default function UpgradePreviewPage() {
           setLinks(pageLinks);
         }
       } catch (err) {
-        console.error("Failed to load upgrade changes", err);
+        console.error("Failed to load upgrade changes", err); // i18n-exempt — dev log only
       }
     }
     void load();
@@ -62,8 +64,8 @@ export default function UpgradePreviewPage() {
       const data = (await res.json().catch(() => ({}))) as ApiError;
       if ("error" in data) throw new Error(data.error);
     } catch (err) {
-      console.error("Publish failed", err);
-      setError(err instanceof Error ? err.message : "Publish failed");
+      console.error("Publish failed", err); // i18n-exempt — dev log only
+      setError(err instanceof Error ? err.message : (t("upgrade.publishFailed") as string));
     } finally {
       setPublishing(false);
     }
@@ -80,11 +82,11 @@ export default function UpgradePreviewPage() {
       </ul>
       {links.length > 0 && (
         <div className="space-y-2">
-          <h2 className="font-semibold">Preview pages</h2>
+          <h2 className="font-semibold">{t("upgrade.previewPages")}</h2>
           <ul className="list-disc pl-4">
             {links.map((l) => (
               <li key={l.id}>
-                <a href={l.url} className="text-blue-600 underline">{`/preview/${l.id}`}</a>
+                <a href={l.url} className="text-blue-600 underline inline-flex items-center min-h-10 min-w-10">{`/preview/${l.id}`}</a> {/* i18n-exempt — URL label */}
               </li>
             ))}
           </ul>
@@ -93,10 +95,10 @@ export default function UpgradePreviewPage() {
       <button
         type="button"
         onClick={handlePublish}
-        className="rounded border px-4 py-2"
+        className="rounded border px-4 py-2 min-h-10 min-w-10"
         disabled={publishing}
       >
-        {publishing ? "Publishing..." : "Approve & publish"}
+        {publishing ? t("upgrade.publishing") : t("upgrade.approveAndPublish")}
       </button>
       {error && <p role="alert" className="text-red-600">{error}</p>}
     </div>

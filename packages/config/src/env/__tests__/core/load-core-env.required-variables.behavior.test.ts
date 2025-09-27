@@ -39,9 +39,11 @@ describe("loadCoreEnv required variable validation", () => {
     if (value === undefined) delete env.CMS_SPACE_URL;
     else env.CMS_SPACE_URL = value;
     const run = () => loadCoreEnv(env);
-    ok
-      ? expect(run).not.toThrow()
-      : expect(run).toThrow("Invalid core environment variables");
+    if (ok) {
+      expect(run).not.toThrow();
+    } else {
+      expect(run).toThrow("Invalid core environment variables");
+    }
   });
 
   it.each([
@@ -60,8 +62,10 @@ describe("loadCoreEnv required variable validation", () => {
     if (value === undefined) delete env.CART_COOKIE_SECRET;
     else env.CART_COOKIE_SECRET = value;
     const run = () => loadCoreEnv(env);
-    ok
-      ? expect(run).not.toThrow()
-      : expect(run).toThrow("Invalid core environment variables");
+    if (ok) {
+      expect(run).not.toThrow();
+    } else {
+      expect(run).toThrow("Invalid core environment variables");
+    }
   });
 });

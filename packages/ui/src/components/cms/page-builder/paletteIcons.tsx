@@ -13,7 +13,6 @@ import {
   CodeIcon,
   HeadingIcon,
   BoxIcon,
-  PlayIcon,
   VideoIcon,
   MagnifyingGlassIcon,
   QuestionMarkCircledIcon,

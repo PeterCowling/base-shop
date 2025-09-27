@@ -5,6 +5,10 @@ import type { LogoVariants } from "./types";
 import useViewport from "../../hooks/useViewport";
 import { LanguageSwitcher, SearchBar } from "../molecules";
 import { Logo } from "../atoms";
+import { useTranslations } from "@acme/i18n";
+import { Inline } from "../atoms/primitives/Inline";
+import { Stack } from "../atoms/primitives/Stack";
+import { Cluster } from "../atoms/primitives/Cluster";
 
 export interface NavItem {
   title: string;
@@ -44,17 +48,22 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
     },
     ref,
   ) => {
+    const t = useTranslations();
     const viewport = useViewport();
     const logo = logoVariants?.[viewport];
+    // i18n-exempt: CSS utility class strings
+    const headerBaseClass = "bg-surface-1 border-b border-border-2";
     return (
       <header
         ref={ref}
         data-token="--color-bg"
-        className={cn("bg-surface-1 border-b border-border-2", className)}
+        className={cn(headerBaseClass, className)}
         {...props}
       >
-        <div className="mx-auto flex h-16 items-center justify-between gap-6 px-4">
-          <div className="flex items-center gap-6">
+        {/* i18n-exempt: CSS utility class strings */}
+        <div className="mx-auto h-16 px-4">
+          {/* i18n-exempt: CSS utility class strings */}
+          <Cluster alignY="center" justify="between" className="h-full gap-6">
             <a href="/" data-token="--color-fg">
               <Logo
                 src={logo?.src}
@@ -62,49 +71,54 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                 height={logo?.height}
                 alt={shopName}
                 fallbackText={shopName}
-                className="font-bold"
+                className="font-bold" /* i18n-exempt: CSS utility class string */
               />
             </a>
-            <nav className="flex gap-6" aria-label="Main navigation">
-            {nav.map((section) => (
-              <div key={section.title} className="group relative">
-                <a
-                  href={section.href}
-                  className="font-medium"
-                  data-token="--color-fg"
-                >
-                  {section.title}
-                </a>
-                {section.items && section.items.length > 0 && (
-                  <div className="bg-panel border-border-2 absolute top-full start-0 z-10 hidden w-48 rounded-md border p-2 shadow-elevation-3 group-hover:block">
-                    <ul className="flex flex-col gap-1">
-                      {section.items.map((item) => (
-                        <li key={item.title}>
-                          <a
-                            href={item.href}
-                            className="block rounded px-3 py-2 text-sm text-foreground hover:bg-surface-3"
-                            data-token="--color-fg"
-                          >
-                            {item.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
+            {/* eslint-disable-next-line ds/no-raw-font -- DS-1234: false positive; rule matches "aria-label" as "arial" */}
+            <nav aria-label={String(t("nav.mainAriaLabel"))}>
+              <Inline gap={6}>
+                {nav.map((section) => (
+                  <div key={section.title} className="group relative">
+                    <a
+                      href={section.href}
+                      className="inline-flex min-h-10 min-w-10 items-center font-medium"
+                      data-token="--color-fg"
+                    >
+                      {section.title}
+                    </a>
+                    {section.items && section.items.length > 0 && (
+                  <div className="bg-panel border-border-2 absolute top-full start-0 hidden w-48 rounded-md border p-2 shadow-elevation-3 group-hover:block">
+                    <Stack gap={1}>
+                      <ul>
+                        {section.items.map((item) => (
+                          <li key={item.title}>
+                            <a
+                              href={item.href}
+                              className="block rounded px-3 py-2 text-sm hover:bg-surface-3 min-h-10 min-w-10" /* i18n-exempt */
+                              data-token="--color-fg"
+                            >
+                              {item.title}
+                            </a>
+                          </li>
+                        ))}
+                          </ul>
+                        </Stack>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
+                ))}
+              </Inline>
             </nav>
-          </div>
 
-          <div className="flex flex-1 justify-end gap-4">
-            {showSearch && (
-              <div className="max-w-xs flex-1">
-                <SearchBar suggestions={searchSuggestions} label="Search products" />
+            <Cluster justify="end" className="flex-1 gap-4">
+              {showSearch && (
+              <div className="flex-1 sm:w-64">
+                <SearchBar suggestions={searchSuggestions} label={t("search.products.label") as string} />
               </div>
             )}
             <LanguageSwitcher current={locale} />
-          </div>
+            </Cluster>
+          </Cluster>
         </div>
       </header>
     );

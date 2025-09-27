@@ -109,4 +109,3 @@ describe("public tracking functions", () => {
     validateSpy.mockRestore();
   });
 });
-

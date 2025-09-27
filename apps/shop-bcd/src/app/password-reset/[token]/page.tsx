@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useParams } from "next/navigation";
+import { useTranslations } from "@i18n/Translations";
 
 export default function PasswordResetPage() {
+  const t = useTranslations();
   const params = useParams<{ token: string }>();
   const token = params?.token;
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState<ReactNode>("");
 
   if (!token) {
     return null;
@@ -21,7 +23,7 @@ export default function PasswordResetPage() {
       body: JSON.stringify({ password }),
     });
     const data = await res.json().catch(() => ({}));
-    setMsg(res.ok ? "Password updated" : data.error || "Error");
+    setMsg(res.ok ? t("Password updated") : data.error || t("Error"));
   }
 
   return (
@@ -29,11 +31,11 @@ export default function PasswordResetPage() {
       <input
         name="password"
         type="password"
-        placeholder="New password"
-        className="border p-1"
+        placeholder={String(t("New password"))}
+        className="border p-2"
       />
-      <button type="submit" className="border px-2 py-1">
-        Reset password
+      <button type="submit" className="border px-4 py-2 min-h-10 min-w-10 inline-flex items-center justify-center">
+        {t("Reset password")}
       </button>
       {msg && <p>{msg}</p>}
     </form>

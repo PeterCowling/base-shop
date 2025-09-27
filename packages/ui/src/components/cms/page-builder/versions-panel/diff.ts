@@ -21,8 +21,9 @@ export function computeDiffSummary(current: PageComponent[], selected: PageCompo
   const flat = (list: PageComponent[]): Record<string, PageComponent> => {
     const out: Record<string, PageComponent> = {};
     const walk = (n: PageComponent) => {
-      out[(n as any).id] = n;
-      const kids = (n as any).children as PageComponent[] | undefined;
+      const node = n as PageComponent & { id: string; children?: PageComponent[] };
+      out[node.id] = n;
+      const kids = node.children;
       if (Array.isArray(kids)) kids.forEach(walk);
     };
     list.forEach(walk);
@@ -39,8 +40,8 @@ export function computeDiffSummary(current: PageComponent[], selected: PageCompo
   aIds.forEach((id) => { if (!bIds.has(id)) removedIds.push(id); });
   aIds.forEach((id) => {
     if (!bIds.has(id)) return;
-    const aa = a[id] as any;
-    const bb = b[id] as any;
+    const aa = a[id] as Record<string, unknown>;
+    const bb = b[id] as Record<string, unknown>;
     const keys = Array.from(new Set([...Object.keys(aa ?? {}), ...Object.keys(bb ?? {})])).filter((k) => k !== "id");
     const changed = keys.filter((k) => JSON.stringify(aa?.[k]) !== JSON.stringify(bb?.[k]));
     if (changed.length > 0) modifiedList.push({ id, keys: changed });
@@ -60,18 +61,17 @@ export function computeDiffSummary(current: PageComponent[], selected: PageCompo
 export function replaceComponentById(list: PageComponent[], targetId: string, replacement: PageComponent | undefined): PageComponent[] {
   const walk = (nodes: PageComponent[]): PageComponent[] =>
     nodes.map((n) => {
-      if ((n as any).id === targetId && replacement) {
+      if ((n as PageComponent & { id: string }).id === targetId && replacement) {
         return replacement as PageComponent;
       }
-      const kids = (n as any).children as PageComponent[] | undefined;
+      const kids = (n as PageComponent & { children?: PageComponent[] }).children;
       if (Array.isArray(kids)) {
         const nextKids = walk(kids);
         if (nextKids !== kids) {
-          return { ...(n as any), children: nextKids } as PageComponent;
+          return { ...(n as PageComponent), children: nextKids } as PageComponent;
         }
       }
       return n;
     });
   return walk(list);
 }
-

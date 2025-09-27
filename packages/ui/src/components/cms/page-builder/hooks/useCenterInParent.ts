@@ -1,5 +1,5 @@
 import type { PageComponent, HistoryState } from "@acme/types";
-import type { Action } from "../state";
+import type { Action, ResizeAction } from "../state/layout/types";
 import { useCallback } from "react";
 
 interface Args {
@@ -19,9 +19,10 @@ const useCenterInParent = ({ components, selectedIds, editor, dispatch, viewport
       if (!el || !parent) return;
       const left = Math.round((parent.clientWidth - el.offsetWidth) / 2);
       const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile";
-      dispatch({ type: "resize", id, [leftKey]: `${left}px` } as any);
+      const action: ResizeAction = { type: "resize", id, [leftKey]: `${left}px` } as ResizeAction;
+      dispatch(action);
     });
-    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered horizontally in parent" })); } catch {}
+    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered horizontally in parent" })); } catch {} // i18n-exempt -- PB-000 devtools status toast
   }, [components, dispatch, editor, selectedIds, viewport]);
 
   const centerInParentY = useCallback(() => {
@@ -32,13 +33,13 @@ const useCenterInParent = ({ components, selectedIds, editor, dispatch, viewport
       if (!el || !parent) return;
       const top = Math.round((parent.clientHeight - el.offsetHeight) / 2);
       const topKey = viewport === "desktop" ? "topDesktop" : viewport === "tablet" ? "topTablet" : "topMobile";
-      dispatch({ type: "resize", id, [topKey]: `${top}px` } as any);
+      const action: ResizeAction = { type: "resize", id, [topKey]: `${top}px` } as ResizeAction;
+      dispatch(action);
     });
-    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered vertically in parent" })); } catch {}
+    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered vertically in parent" })); } catch {} // i18n-exempt -- PB-000 devtools status toast
   }, [components, dispatch, editor, selectedIds, viewport]);
 
   return { centerInParentX, centerInParentY };
 };
 
 export default useCenterInParent;
-

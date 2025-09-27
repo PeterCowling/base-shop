@@ -3,6 +3,8 @@
 import { useMemo } from "react";
 import { isHiddenForViewport } from "./state/layout/utils";
 import type { BlockItemProps } from "./BlockItem.types";
+import type { EditorMap, Viewport as Vp } from "./state/layout/utils/types";
+import type { PositioningProps } from "@acme/types/page/positioning";
 
 type Props = BlockItemProps;
 
@@ -16,19 +18,17 @@ export default function useBlockItemMetadata({
 }: Options) {
   const selected = selectedIds.includes(component.id);
 
-  const flags = useMemo(() => ((editor ?? {})[component.id] ?? {}), [editor, component.id]);
+  const flags = useMemo(() => ((editor as EditorMap)?.[component.id] ?? {}), [editor, component.id]);
 
-  const effLocked = (flags as any).locked ?? (component as any).locked ?? false;
-  const effZIndex = (flags as any).zIndex ?? (component as any).zIndex;
+  const effLocked = (flags as { locked?: boolean }).locked ?? false;
+  const effZIndex = (flags as { zIndex?: number }).zIndex ?? (component as unknown as PositioningProps).zIndex;
 
-  const hiddenList = ((editor ?? {})[component.id]?.hidden ?? []) as (
-    "desktop" | "tablet" | "mobile"
-  )[];
+  const hiddenList = ((editor as EditorMap)?.[component.id]?.hidden ?? []) as Vp[];
 
   const isHiddenHere = isHiddenForViewport(
     component.id,
-    editor,
-    (component as any).hidden as boolean | undefined,
+    editor as EditorMap,
+    (component as unknown as { hidden?: boolean }).hidden,
     viewport
   );
 

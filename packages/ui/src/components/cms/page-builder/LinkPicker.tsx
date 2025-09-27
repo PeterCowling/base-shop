@@ -77,9 +77,12 @@ export default function LinkPicker({
 
   return (
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
-      <DialogContent className="max-w-xl">
+      {/* i18n-exempt: Admin-only CMS tool UI copy. */}
+      <DialogContent className="w-full">
         <DialogHeader>
+          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
           <DialogTitle>Pick Internal Link</DialogTitle>
+          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
           <DialogDescription>Search pages or products</DialogDescription>
         </DialogHeader>
 
@@ -87,9 +90,11 @@ export default function LinkPicker({
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            // i18n-exempt: Admin-only CMS tool UI copy.
             placeholder="Search products…"
           />
           <div>
+            {/* i18n-exempt: Admin-only CMS tool UI copy. */}
             <div className="mb-1 text-xs font-semibold uppercase text-muted-foreground">Pages</div>
             <ul className="max-h-40 overflow-auto rounded border">
               {pages.map((p) => (
@@ -98,15 +103,18 @@ export default function LinkPicker({
                     <div className="text-sm">{p.seo?.title?.en ?? p.slug}</div>
                     <div className="text-xs text-muted-foreground">/{p.slug}</div>
                   </div>
+                  {/* i18n-exempt: Admin-only CMS tool UI copy. */}
                   <Button type="button" className="h-8 px-2 py-1 text-xs" onClick={() => onPick(`/${p.slug}`)}>Select</Button>
                 </li>
               ))}
               {pages.length === 0 && (
+                // i18n-exempt: Admin-only CMS tool UI copy.
                 <li className="px-2 py-1 text-sm text-muted-foreground">No pages</li>
               )}
             </ul>
           </div>
           <div>
+            {/* i18n-exempt: Admin-only CMS tool UI copy. */}
             <div className="mb-1 text-xs font-semibold uppercase text-muted-foreground">Products</div>
             <ul className="max-h-40 overflow-auto rounded border">
               {products.map((prod) => (
@@ -115,10 +123,12 @@ export default function LinkPicker({
                     <div className="text-sm">{prod.title}</div>
                     <div className="text-xs text-muted-foreground">/products/{prod.slug}</div>
                   </div>
+                  {/* i18n-exempt: Admin-only CMS tool UI copy. */}
                   <Button type="button" className="h-8 px-2 py-1 text-xs" onClick={() => onPick(`/products/${prod.slug}`)}>Select</Button>
                 </li>
               ))}
               {products.length === 0 && (
+                // i18n-exempt: Admin-only CMS tool UI copy.
                 <li className="px-2 py-1 text-sm text-muted-foreground">No products</li>
               )}
             </ul>
@@ -126,6 +136,7 @@ export default function LinkPicker({
         </div>
 
         <DialogFooter>
+          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
           <Button type="button" variant="outline" onClick={onClose}>Close</Button>
         </DialogFooter>
       </DialogContent>

@@ -72,7 +72,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
           ref={ref as unknown as React.RefObject<HTMLDivElement>}
           style={style}
           className={cn(
-            "bg-muted flex items-center justify-center rounded-full text-sm",
+            "bg-muted flex items-center justify-center rounded-full text-sm", // i18n-exempt — CSS utility class names
             classes,
             className
           )}
@@ -91,11 +91,15 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
         width={numericWidth}
         height={numericHeight}
         style={style}
-        className={cn("rounded-full object-cover", classes, className)}
+        className={cn(
+          "rounded-full object-cover", // i18n-exempt — CSS utility class names
+          classes,
+          className,
+        )}
         {...props}
       />
     );
   }
 );
 
-Avatar.displayName = "Avatar";
+Avatar.displayName = "Avatar"; // i18n-exempt — component displayName, not user-facing

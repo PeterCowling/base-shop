@@ -1,10 +1,10 @@
 import { ulid } from "ulid";
 import type { DragEndEvent } from "@dnd-kit/core";
-import type { PageComponent, HistoryState } from "@acme/types";
+import type { PageComponent } from "@acme/types";
 import type { Action } from "../../state";
 import type { ComponentType } from "../../defaults";
 import { canDropChild, type ParentKind } from "../../rules";
-import { findById, findParentId, getTypeOfId, resolveParentKind } from "./tree";
+import { findById, findParentId, getTypeOfId, resolveParentKind, hasChildren } from "./tree";
 import type { MutableRefObject } from "react";
 import { safeDispatchEvent } from "./dom";
 
@@ -52,14 +52,14 @@ export function finalizeDrop({
   } else if (parentId === undefined) {
     parentId = over.id.toString().replace(/^container-/, "");
     const parent = findById(components, parentId);
-    index = parent ? (Array.isArray((parent as any).children) ? (parent as any).children.length : 0) : 0;
-    if (!over.id.toString().startsWith("container-") && (!parent || !Array.isArray((parent as any).children))) {
+    index = parent ? (hasChildren(parent) ? parent.children.length : 0) : 0;
+    if (!over.id.toString().startsWith("container-") && (!parent || !hasChildren(parent))) {
       const overId = over.id.toString();
       const actualParentId = findParentId(components, overId, undefined);
       parentId = actualParentId;
       if (parentId) {
         const p = findById(components, parentId);
-        const children = p && Array.isArray((p as any).children) ? (p as any).children as PageComponent[] : [];
+        const children = p && hasChildren(p) ? (p.children as PageComponent[]) : [];
         index = Math.max(0, children.findIndex((c) => c.id === overId));
       } else {
         index = Math.max(0, components.findIndex((c) => c.id === overId));
@@ -84,7 +84,7 @@ export function finalizeDrop({
     if (parentId && lastTabHoverRef.current?.parentId === parentId) {
       const parent = findById(components, parentId);
       const isTabbed = parent && (parent.type === 'Tabs' || parent.type === 'TabsAccordionContainer');
-      if (isTabbed) (component as any).slotKey = String(lastTabHoverRef.current.tabIndex);
+      if (isTabbed) (component as PageComponent)["slotKey"] = String(lastTabHoverRef.current.tabIndex);
     }
     dispatch({ type: "add", component, parentId, index: index ?? 0 });
     selectId(component.id);
@@ -93,22 +93,22 @@ export function finalizeDrop({
 
   if (a?.from === "library" && (a.template || (a.templates && a.templates.length))) {
     const cloneWithIds = (node: PageComponent): PageComponent => {
-      const cloned: any = { ...(node as any), id: ulid() };
-      const children = (node as any).children as PageComponent[] | undefined;
+      const cloned: PageComponent = { ...(node as PageComponent), id: ulid() } as PageComponent;
+      const children = (node as { children?: PageComponent[] }).children;
       if (Array.isArray(children)) cloned.children = children.map(cloneWithIds);
-      return cloned as PageComponent;
+      return cloned;
     };
     const list = (a.templates && a.templates.length ? a.templates : (a.template ? [a.template] : [])) as PageComponent[];
     const clones = list.map(cloneWithIds);
-    const invalid = clones.find((c) => !canDropChild(parentKind, (c as any).type as ComponentType));
+    const invalid = clones.find((c) => !canDropChild(parentKind, c.type as ComponentType));
     if (invalid) {
-      safeDispatchEvent('pb-live-message', typeof t === 'function' ? t('cannotPlace', { type: String((invalid as any).type) }) : `Cannot place ${String((invalid as any).type)} here`);
+      safeDispatchEvent('pb-live-message', typeof t === 'function' ? t('cannotPlace', { type: String(invalid.type) }) : `Cannot place ${String(invalid.type)} here`);
       return;
     }
     if (parentId && lastTabHoverRef.current?.parentId === parentId) {
       const parent = findById(components, parentId);
       const isTabbed = parent && (parent.type === 'Tabs' || parent.type === 'TabsAccordionContainer');
-      if (isTabbed) clones.forEach((c) => { (c as any).slotKey = String(lastTabHoverRef.current!.tabIndex); });
+      if (isTabbed) clones.forEach((c) => { (c as PageComponent)["slotKey"] = String(lastTabHoverRef.current!.tabIndex); });
     }
     let insertedFirstId: string | null = null;
     clones.forEach((component, i) => {
@@ -135,10 +135,9 @@ export function finalizeDrop({
       const isTabbed = parent && (parent.type === 'Tabs' || parent.type === 'TabsAccordionContainer');
       if (isTabbed) {
         const movedId = String(ev.active.id);
-        dispatch({ type: 'update', id: movedId, patch: { slotKey: String(lastTabHoverRef.current.tabIndex) } as any });
+        dispatch({ type: 'update', id: movedId, patch: { slotKey: String(lastTabHoverRef.current.tabIndex) } });
         safeDispatchEvent('pb-live-message', typeof t === 'function' ? t('movedToTab', { n: String(lastTabHoverRef.current.tabIndex + 1) }) : `Moved to tab ${lastTabHoverRef.current.tabIndex + 1}`);
       }
     }
   }
 }
-

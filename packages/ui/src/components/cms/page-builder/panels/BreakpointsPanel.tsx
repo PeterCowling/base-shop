@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import { Button, DialogContent, DialogHeader, DialogTitle, Input } from "../../../atoms/shadcn";
 
 export type Breakpoint = { id: string; label: string; min?: number; max?: number };
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export default function BreakpointsPanel({ breakpoints, onChange }: Props) {
+  const t = useTranslations();
   const [list, setList] = useState<Breakpoint[]>(() => [...breakpoints]);
   const [draft, setDraft] = useState<{ label: string; min: string; max: string }>({ label: "", min: "", max: "" });
 
@@ -32,41 +34,41 @@ export default function BreakpointsPanel({ breakpoints, onChange }: Props) {
   const remove = (id: string) => setList((prev) => prev.filter((b) => b.id !== id));
   const save = () => onChange(list);
 
-  const summary = useMemo(() => (list.length ? `${list.length} breakpoint${list.length === 1 ? "" : "s"}` : "None"), [list]);
+  const summary = useMemo(() => (list.length ? `${list.length} breakpoint${list.length === 1 ? "" : "s"}` : String(t("None"))), [list, t]);
 
   return (
     <DialogContent className="space-y-3">
       <DialogHeader>
-        <DialogTitle>Custom Breakpoints</DialogTitle>
+        <DialogTitle>{t("Custom Breakpoints")}</DialogTitle>
       </DialogHeader>
-      <div className="text-sm text-muted-foreground">Define additional responsive ranges. These complement the default Desktop/Tablet/Mobile presets.</div>
+      <div className="text-sm text-muted-foreground">{t("Define additional responsive ranges. These complement the default Desktop/Tablet/Mobile presets.")}</div>
       <div className="rounded border p-2">
-        <div className="mb-2 text-xs font-semibold text-muted-foreground">Current ({summary})</div>
+        <div className="mb-2 text-xs font-semibold text-muted-foreground">{t("Current ({summary})", { summary })}</div>
         <ul className="max-h-64 space-y-1 overflow-auto">
           {list.length === 0 && (
-            <li className="text-sm text-muted-foreground">No custom breakpoints</li>
+            <li className="text-sm text-muted-foreground">{t("No custom breakpoints")}</li>
           )}
           {list.map((bp) => (
             <li key={bp.id} className="flex items-center justify-between rounded border p-2 text-sm">
               <div className="truncate">
                 <span className="font-medium">{bp.label}</span>
-                <span className="text-muted-foreground"> — {bp.min ? `${bp.min}px` : ""}{bp.min && bp.max ? " to " : ""}{bp.max ? `${bp.max}px` : (bp.min ? "+" : "")}</span>
+                <span className="text-muted-foreground"> — {bp.min ? `${bp.min}px` : ""}{bp.min && bp.max ? ` ${t("to")} ` : ""}{bp.max ? `${bp.max}px` : (bp.min ? "+" : "")}</span>
               </div>
-              <Button type="button" variant="outline" className="h-7 px-2 text-xs" onClick={() => remove(bp.id)}>Delete</Button>
+              <Button type="button" variant="outline" className="h-7 px-2 text-xs" onClick={() => remove(bp.id)}>{t("Delete")}</Button>
             </li>
           ))}
         </ul>
         <div className="mt-3 grid grid-cols-4 gap-2">
-          <Input placeholder="Label" value={draft.label} onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))} />
-          <Input placeholder="Min px" type="number" value={draft.min} onChange={(e) => setDraft((d) => ({ ...d, min: e.target.value }))} />
-          <Input placeholder="Max px" type="number" value={draft.max} onChange={(e) => setDraft((d) => ({ ...d, max: e.target.value }))} />
-          <Button type="button" variant="outline" onClick={add} disabled={list.length >= 3}>Add</Button>
+          <Input placeholder={t("Label") as string} value={draft.label} onChange={(e) => setDraft((d) => ({ ...d, label: e.target.value }))} />
+          <Input placeholder={t("Min px") as string} type="number" value={draft.min} onChange={(e) => setDraft((d) => ({ ...d, min: e.target.value }))} />
+          <Input placeholder={t("Max px") as string} type="number" value={draft.max} onChange={(e) => setDraft((d) => ({ ...d, max: e.target.value }))} />
+          <Button type="button" variant="outline" onClick={add} disabled={list.length >= 3}>{t("Add")}</Button>
         </div>
         {list.length >= 3 && (
-          <div className="mt-2 text-xs text-muted-foreground">Limit: up to 3 additional breakpoints per page.</div>
+          <div className="mt-2 text-xs text-muted-foreground">{t("Limit: up to 3 additional breakpoints per page.")}</div>
         )}
         <div className="mt-3 flex justify-end">
-          <Button type="button" variant="outline" onClick={save}>Save</Button>
+          <Button type="button" variant="outline" onClick={save}>{t("Save")}</Button>
         </div>
       </div>
     </DialogContent>

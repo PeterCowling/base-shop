@@ -7,7 +7,8 @@ export const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
   ({ className, ...props }, ref) => (
     <video
       ref={ref}
-      className={cn("w-full rounded-lg", className)}
+      className={cn("w-full rounded-lg", className)} // i18n-exempt: class names
+      data-aspect="16/9"
       controls
       {...props}
     />

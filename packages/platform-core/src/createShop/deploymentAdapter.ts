@@ -19,7 +19,7 @@ export class CloudflareDeploymentAdapter implements ShopDeploymentAdapter {
     });
 
     if (result.status !== 0) {
-      throw new Error("C3 process failed or not available. Skipping.");
+      throw new Error("C3 process failed or not available. Skipping."); // i18n-exempt -- internal tooling error message
     }
   }
 
@@ -49,4 +49,3 @@ export class CloudflareDeploymentAdapter implements ShopDeploymentAdapter {
 }
 
 export const defaultDeploymentAdapter = new CloudflareDeploymentAdapter();
-

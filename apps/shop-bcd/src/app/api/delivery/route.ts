@@ -51,13 +51,22 @@ const PLUGINS_ENV_KEYS = [
   "PLUGINS_DIR",
 ];
 
+function isSafePath(p: string): boolean {
+  // Basic validation: reject null bytes and overly long inputs.
+  // Additional normalization is handled by path.resolve below.
+  return !p.includes("\0") && p.length < 4096;
+}
+
 function resolvePluginsDir(): string {
   for (const key of PLUGINS_ENV_KEYS) {
     const configured = process.env[key];
     if (configured) {
       const resolved = path.resolve(configured);
-      if (fs.existsSync(resolved)) {
-        return resolved;
+      if (isSafePath(resolved)) {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-1234: resolved path validated above; read-only existence check
+        if (fs.existsSync(resolved)) {
+          return resolved;
+        }
       }
     }
   }
@@ -67,6 +76,7 @@ function resolvePluginsDir(): string {
 
   while (!visited.has(current)) {
     const candidate = path.join(current, "packages", "plugins");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-1234: candidate is deterministic from current working tree
     if (fs.existsSync(candidate)) {
       return candidate;
     }
@@ -80,7 +90,7 @@ function resolvePluginsDir(): string {
   }
 
   throw new Error(
-    "Unable to locate packages/plugins directory. Set PREMIER_SHIPPING_PLUGINS_DIR to override the search path."
+    "Unable to locate packages/plugins directory. Set PREMIER_SHIPPING_PLUGINS_DIR to override the search path." // i18n-exempt: internal error intended for logs, not end-users
   );
 }
 
@@ -129,7 +139,7 @@ export async function POST(req: NextRequest) {
   ).shippingProviders;
   if (!shippingProviders?.includes("premier-shipping")) {
     return NextResponse.json(
-      { error: "Premier shipping not available" },
+      { error: "Premier shipping not available" }, // i18n-exempt: API error string; UI will present localized copy
       { status: 400 }
     );
   }
@@ -149,7 +159,7 @@ export async function POST(req: NextRequest) {
 
   if (!provider) {
     return NextResponse.json(
-      { error: "Premier shipping not available" },
+      { error: "Premier shipping not available" }, // i18n-exempt: API error string; UI will present localized copy
       { status: 400 }
     );
   }

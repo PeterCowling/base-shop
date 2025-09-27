@@ -70,6 +70,7 @@ describe('importFresh', () => {
   it('resets module state between imports', async () => {
     const dir = await mkdtemp(path.join(__dirname, 'importFresh-'));
     const file = path.join(dir, 'counter.cjs');
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- writes to temp file path during test setup (ENG-1234)
     await writeFile(
       file,
       'let counter = 0; module.exports.getCount = () => { counter += 1; return counter; };',

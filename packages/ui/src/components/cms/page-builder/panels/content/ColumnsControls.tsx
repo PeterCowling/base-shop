@@ -2,8 +2,10 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 import { Input } from "../../../../atoms/shadcn";
 import { Tooltip } from "../../../../atoms";
+import { Button } from "../../../../atoms/shadcn";
 import type { ContentComponent, HandleInput } from "./types";
 import { isOverridden, nonNegative } from "./helpers";
 
@@ -13,123 +15,136 @@ interface Props {
 }
 
 export default function ColumnsControls({ component, handleInput }: Props) {
+  const t = useTranslations();
   if (!("columns" in component)) return null;
 
   const comp = component as ContentComponent;
+
+  // Bridge to allow setting fields defined on ContentComponent
+  // while keeping the incoming handler typed to PageComponent keys.
+  const setField = <K extends keyof ContentComponent>(
+    field: K,
+    value: ContentComponent[K],
+  ) => {
+    // Cast through unknown to avoid explicit any usage
+    handleInput(
+      field as unknown as keyof PageComponent,
+      value as unknown as PageComponent[keyof PageComponent],
+    );
+  };
 
   const columnsError =
     nonNegative(comp.columns) ||
     (comp.columns !== undefined &&
     ((comp.minItems !== undefined && comp.columns < comp.minItems) ||
       (comp.maxItems !== undefined && comp.columns > comp.maxItems))
-      ? "Columns must be between min and max items"
+      ? t("Columns must be between min and max items")
       : undefined);
 
   return (
     <>
       <div className="flex items-center gap-1">
         <Input
-          label="Columns"
+          label={t("Columns")}
           type="number"
           value={comp.columns ?? ""}
           onChange={(e) =>
-            handleInput(
-              "columns" as any,
-              (e.target.value === "" ? undefined : Number(e.target.value)) as any,
+            setField(
+              "columns",
+              e.target.value === "" ? undefined : Number(e.target.value),
             )
           }
           min={comp.minItems}
           max={comp.maxItems}
           error={columnsError}
         />
-        <Tooltip text="Number of columns">?</Tooltip>
+        <Tooltip text={t("Number of columns")}>?</Tooltip>
       </div>
 
       <div className="flex items-center gap-1">
         <Input
-          label="Columns (Desktop)"
+          label={t("Columns (Desktop)")}
           type="number"
           value={comp.columnsDesktop ?? ""}
           onChange={(e) =>
-            handleInput(
-              "columnsDesktop" as any,
-              (e.target.value === "" ? (undefined as any) : (Number(e.target.value) as any)) as any,
+            setField(
+              "columnsDesktop",
+              e.target.value === "" ? undefined : Number(e.target.value),
             )
           }
           min={comp.minItems}
           max={comp.maxItems}
         />
-        <Tooltip text="Columns on desktop">?</Tooltip>
+        <Tooltip text={t("Columns on desktop")}>?</Tooltip>
       </div>
       {isOverridden(comp.columns, comp.columnsDesktop) && (
-        <div className="-mt-1 flex items-center gap-2 text-[10px]">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
-          <button
+        <div className="flex items-center gap-2 text-xs">
+          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <Button
             type="button"
-            className="underline"
-            onClick={() => handleInput("columnsDesktop" as any, undefined as any)}
+            variant="ghost"
+            onClick={() => setField("columnsDesktop", undefined)}
           >
-            Reset
-          </button>
+            {t("Reset")}
+          </Button>
         </div>
       )}
 
       <div className="flex items-center gap-1">
         <Input
-          label="Columns (Tablet)"
+          label={t("Columns (Tablet)")}
           type="number"
           value={comp.columnsTablet ?? ""}
           onChange={(e) =>
-            handleInput(
-              "columnsTablet" as any,
-              (e.target.value === "" ? (undefined as any) : (Number(e.target.value) as any)) as any,
+            setField(
+              "columnsTablet",
+              e.target.value === "" ? undefined : Number(e.target.value),
             )
           }
           min={0}
         />
-        <Tooltip text="Columns on tablet">?</Tooltip>
+        <Tooltip text={t("Columns on tablet")}>?</Tooltip>
       </div>
       {isOverridden(comp.columns, comp.columnsTablet) && (
-        <div className="-mt-1 flex items-center gap-2 text-[10px]">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
-          <button
+        <div className="flex items-center gap-2 text-xs">
+          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <Button
             type="button"
-            className="underline"
-            onClick={() => handleInput("columnsTablet" as any, undefined as any)}
+            variant="ghost"
+            onClick={() => setField("columnsTablet", undefined)}
           >
-            Reset
-          </button>
+            {t("Reset")}
+          </Button>
         </div>
       )}
 
       <div className="flex items-center gap-1">
         <Input
-          label="Columns (Mobile)"
+          label={t("Columns (Mobile)")}
           type="number"
           value={comp.columnsMobile ?? ""}
           onChange={(e) =>
-            handleInput(
-              "columnsMobile" as any,
-              (e.target.value === "" ? (undefined as any) : (Number(e.target.value) as any)) as any,
+            setField(
+              "columnsMobile",
+              e.target.value === "" ? undefined : Number(e.target.value),
             )
           }
           min={0}
         />
-        <Tooltip text="Columns on mobile">?</Tooltip>
+        <Tooltip text={t("Columns on mobile")}>?</Tooltip>
       </div>
       {isOverridden(comp.columns, comp.columnsMobile) && (
-        <div className="-mt-1 flex items-center gap-2 text-[10px]">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
-          <button
+        <div className="flex items-center gap-2 text-xs">
+          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <Button
             type="button"
-            className="underline"
-            onClick={() => handleInput("columnsMobile" as any, undefined as any)}
+            variant="ghost"
+            onClick={() => setField("columnsMobile", undefined)}
           >
-            Reset
-          </button>
+            {t("Reset")}
+          </Button>
         </div>
       )}
     </>
   );
 }
-

@@ -35,11 +35,11 @@ function Wrapper({ onToggle }: { onToggle?: () => void }) {
 describe("DeviceSelector behavior", () => {
   beforeAll(() => {
     // JSDOM doesn't implement these pointer APIs used by Radix Select
-    // @ts-ignore
+    // @ts-expect-error JSDOM lacks pointer capture APIs in tests
     HTMLElement.prototype.hasPointerCapture = () => false;
-    // @ts-ignore
+    // @ts-expect-error JSDOM lacks pointer capture APIs in tests
     HTMLElement.prototype.setPointerCapture = () => {};
-    // @ts-ignore
+    // @ts-expect-error JSDOM lacks scrollIntoView in tests
     Element.prototype.scrollIntoView = () => {};
   });
 
@@ -70,4 +70,3 @@ describe("DeviceSelector behavior", () => {
     );
   });
 });
-

@@ -5,10 +5,14 @@ import { EyeOpenIcon, EyeClosedIcon, LockClosedIcon, LockOpen2Icon } from "@radi
 import { SortableContext, verticalListSortingStrategy, useSortable, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import type { PageComponent, HistoryState } from "@acme/types";
+import type { EditorFlags } from "./state/layout/types";
 import { isHiddenForViewport } from "./state/layout/utils";
 import { applyDesktopOrderAcrossBreakpoints } from "./utils/applyDesktopOrder";
 import type { Action } from "./state";
 import { useMemo, useState, useCallback } from "react";
+import { Inline } from "../../atoms/primitives/Inline";
+import { Cluster } from "../../atoms/primitives/Cluster";
+import { Stack } from "../../atoms/primitives/Stack";
 
 interface LayersPanelProps {
   components: PageComponent[];
@@ -20,7 +24,15 @@ interface LayersPanelProps {
   crossNotices?: boolean;
 }
 
-type Node = PageComponent & { children?: PageComponent[] } & { __isGlobal?: boolean; __hasOverride?: boolean };
+type Node = PageComponent & {
+  children?: PageComponent[];
+  // Optional builder-derived flags we attach for view rendering
+  name?: string;
+  hidden?: boolean;
+  locked?: boolean;
+  __isGlobal?: boolean;
+  __hasOverride?: boolean;
+};
 
 function useSelectionHandlers(selectedIds: string[], onSelectIds: (ids: string[]) => void) {
   return useCallback(
@@ -56,15 +68,16 @@ function SortableRow({ node, index, parentId, selected, onSelect, onToggleHidden
     data: { index, parentId },
   });
   const [editing, setEditing] = useState(false);
-  const [name, setName] = useState((node as any).name ?? "");
+  const [name, setName] = useState(node.name ?? "");
 
   return (
     <div
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
+      // i18n-exempt: Styling string, not user-facing copy.
       className={
-        "group flex items-center justify-between rounded px-2 py-1 text-sm" +
-        (selected ? " bg-primary/10" : "")
+        "group flex items-center justify-between rounded px-2 py-1 text-sm" + // i18n-exempt: className string
+        (selected ? " bg-primary/10" : "") // i18n-exempt: className string
       }
       onClick={(e) => onSelect(node.id, e)}
       {...attributes}
@@ -74,6 +87,7 @@ function SortableRow({ node, index, parentId, selected, onSelect, onToggleHidden
       aria-pressed={isDragging}
     >
       <div className="flex items-center gap-2 truncate">
+        {/* i18n-exempt: Decorative drag handle glyph for builder UI. */}
         <span className="cursor-grab">⋮⋮</span>
         {editing ? (
           <input
@@ -94,23 +108,27 @@ function SortableRow({ node, index, parentId, selected, onSelect, onToggleHidden
         ) : (
           <>
             <span className={`truncate ${node.hidden ? "opacity-50" : ""}`} onDoubleClick={() => setEditing(true)}>
-              {(node as any).name || node.type}
+              {node.name ?? node.type}
             </span>
             {/* Global/Override badges */}
             {node.__isGlobal && (
-              <span className="ms-2 rounded bg-green-500/15 px-1 text-[10px] text-green-700" title="Global section">Global</span>
+              // i18n-exempt: Admin-only CMS tool UI copy.
+              <span className="ms-2 rounded bg-green-500/15 px-1 text-xs text-green-700" title="Global section">Global</span>
             )}
             {node.__hasOverride && (
-              <span className="ms-1 rounded bg-amber-500/15 px-1 text-[10px] text-amber-700" title="Breakpoint override">Override</span>
+              // i18n-exempt: Admin-only CMS tool UI copy.
+              <span className="ms-1 rounded bg-amber-500/15 px-1 text-xs text-amber-700" title="Breakpoint override">Override</span>
             )}
           </>
         )}
       </div>
-      <div className="flex items-center gap-1">
+      <Inline gap={1} alignY="center">
         <button
           type="button"
-          className="rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          className="min-h-10 min-w-10 rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          // i18n-exempt: Admin-only CMS tool UI copy.
           aria-label={node.hidden ? "Show layer" : "Hide layer"}
+          // i18n-exempt: Admin-only CMS tool UI copy.
           title={node.hidden ? "Show" : "Hide"}
           onClick={(e) => { e.stopPropagation(); onToggleHidden(node.id, !node.hidden); }}
         >
@@ -118,14 +136,16 @@ function SortableRow({ node, index, parentId, selected, onSelect, onToggleHidden
         </button>
         <button
           type="button"
-          className="rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          className="min-h-10 min-w-10 rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          // i18n-exempt: Admin-only CMS tool UI copy.
           aria-label={node.locked ? "Unlock layer" : "Lock layer"}
+          // i18n-exempt: Admin-only CMS tool UI copy.
           title={node.locked ? "Unlock" : "Lock"}
           onClick={(e) => { e.stopPropagation(); onToggleLocked(node.id, !node.locked); }}
         >
           {node.locked ? <LockOpen2Icon /> : <LockClosedIcon />}
         </button>
-      </div>
+      </Inline>
     </div>
   );
 }
@@ -144,17 +164,17 @@ function LayerList({ nodes, parentId, selectedIds, onSelect, onToggleHidden, onT
   const items = nodes.map((n) => n.id);
   return (
     <SortableContext items={items} strategy={verticalListSortingStrategy}>
-      <div className="flex flex-col gap-1">
+      <Stack gap={1}>
         {nodes.map((n, i) => {
           const hasChildren = Array.isArray(n.children) && n.children.length > 0;
           const isCollapsed = collapsed.has(n.id);
           return (
             <div key={n.id} className="space-y-1">
-              <div className="flex items-center gap-1">
+              <Inline gap={1} alignY="center">
                 {hasChildren && (
                   <button
                     type="button"
-                    className="rounded border px-1 text-xs"
+                    className="min-h-10 min-w-10 rounded border px-1 text-xs"
                     onClick={(e) => {
                       e.stopPropagation();
                       setCollapsed((prev) => {
@@ -178,7 +198,7 @@ function LayerList({ nodes, parentId, selectedIds, onSelect, onToggleHidden, onT
                   onToggleLocked={onToggleLocked}
                   onRename={onRename}
                 />
-              </div>
+              </Inline>
               {hasChildren && !isCollapsed && (
                 <LayerChildren
                   parent={n}
@@ -194,7 +214,7 @@ function LayerList({ nodes, parentId, selectedIds, onSelect, onToggleHidden, onT
             </div>
           );
         })}
-      </div>
+      </Stack>
     </SortableContext>
   );
 }
@@ -242,17 +262,17 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
 
   const visible = useMemo(() => {
     const decorate = (n: Node): Node => {
-      const flags = (editor ?? {})[n.id] ?? {};
+      const flags: EditorFlags | undefined = (editor ?? {})[n.id];
       const children = Array.isArray(n.children) ? (n.children as Node[]).map(decorate) : undefined;
-      const hidden = isHiddenForViewport(n.id, editor, (n as any).hidden as boolean | undefined, viewport);
-      const name = (flags as any).name;
-      const isGlobal = !!((flags as any)?.global?.id);
+      const hiddenBase = (n as { hidden?: boolean }).hidden;
+      const hidden = isHiddenForViewport(n.id, editor, hiddenBase, viewport);
+      const name = flags?.name;
+      const isGlobal = !!flags?.global?.id;
       // Heuristic: mark as override if component has any viewport-specific props for current viewport
       const hasVpOverride = (() => {
         if (!crossNotices) return false;
-        const props = n as any;
         const suffix = viewport === 'mobile' ? 'Mobile' : viewport === 'tablet' ? 'Tablet' : 'Desktop';
-        const keys = Object.keys(props || {});
+        const keys = Object.keys((n as Record<string, unknown>) || {});
         return keys.some((k) => k.endsWith(suffix));
       })();
       return { ...n, ...(children ? { children } : {}), ...(name !== undefined ? { name } : {}), hidden, __isGlobal: isGlobal, __hasOverride: hasVpOverride } as Node;
@@ -263,7 +283,7 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
     const filterTree = (nodes: Node[]): Node[] =>
       nodes
         .map((n) => {
-          const name = ((n as any).name || n.type).toString().toLowerCase();
+          const name = String((n.name ?? n.type)).toLowerCase();
           const children = Array.isArray(n.children) ? filterTree(n.children as Node[]) : undefined;
           const match = name.includes(query) || (children && children.length > 0);
           if (!match) return null;
@@ -271,7 +291,7 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
         })
         .filter(Boolean) as Node[];
     return filterTree(baseNodes);
-  }, [components, editor, viewport, search]);
+  }, [components, editor, viewport, search, crossNotices]);
 
   const handleDragEnd = (ev: DragEndEvent) => {
     const { active, over } = ev;
@@ -292,25 +312,30 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between">
+      <Cluster gap={2} justify="between" alignY="center">
+        {/* i18n-exempt: Admin-only CMS tool UI copy. */}
         <h3 className="text-sm font-semibold">Layers</h3>
         <button
           type="button"
-          className="rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          className="min-h-10 min-w-10 rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          // i18n-exempt: Admin-only CMS tool UI copy.
           title="Apply current desktop order to Tablet and Mobile"
           onClick={() => {
             try { applyDesktopOrderAcrossBreakpoints(components, editor, dispatch); } catch {}
           }}
         >
+          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
           Use Section Order on all Breakpoints
         </button>
-      </div>
+      </Cluster>
       <input
         type="text"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
+        // i18n-exempt: Admin-only CMS tool UI copy.
         placeholder="Search layers..."
         className="w-full rounded border p-1 text-sm"
+        // i18n-exempt: Admin-only CMS tool UI copy.
         aria-label="Search layers"
       />
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
@@ -326,10 +351,10 @@ export default function LayersPanel({ components, selectedIds, onSelectIds, disp
               const set = new Set(cur);
               if (hidden) set.add(viewport);
               else set.delete(viewport);
-              dispatch({ type: "update-editor", id, patch: { hidden: Array.from(set) } as any });
+              dispatch({ type: "update-editor", id, patch: { hidden: Array.from(set) } as Partial<EditorFlags> });
             }}
-            onToggleLocked={(id, locked) => dispatch({ type: "update-editor", id, patch: { locked } as any })}
-            onRename={(id, name) => dispatch({ type: "update-editor", id, patch: { name } as any })}
+            onToggleLocked={(id, locked) => dispatch({ type: "update-editor", id, patch: { locked } as Partial<EditorFlags> })}
+            onRename={(id, name) => dispatch({ type: "update-editor", id, patch: { name } as Partial<EditorFlags> })}
             collapsed={collapsed}
             setCollapsed={setCollapsed}
           />

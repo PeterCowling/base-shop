@@ -3,6 +3,7 @@
 import { RangeInput } from "../index";
 import type { TokenInfo } from "../../../hooks/useTokenEditor";
 import { ReactElement } from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface RangeTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: TokenInfo["key"];
@@ -16,12 +17,13 @@ export function RangeToken({
   isOverridden,
   setToken,
 }: RangeTokenProps): ReactElement {
+  const t = useTranslations();
+  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
+  const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
   return (
     <label
       data-token-key={tokenKey}
-      className={`flex flex-wrap items-center gap-2 text-sm ${
-        isOverridden ? "border-s-2 border-s-info ps-2" : ""
-      }`}
+      className={`flex flex-wrap items-center gap-2 text-sm ${overrideClasses}`}
       data-token={isOverridden ? "--color-info" : undefined}
     >
       <span className="basis-40 shrink-0">{tokenKey}</span>
@@ -29,15 +31,15 @@ export function RangeToken({
       {isOverridden && (
         <button
           type="button"
-          className="rounded border px-2 py-1 text-xs"
+          className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
           onClick={() => setToken(tokenKey, defaultValue ?? "")}
         >
-          Reset
+          {t("common.reset") as string}
         </button>
       )}
       {defaultValue && (
         <span className="text-xs text-muted-foreground">
-          Default: {defaultValue}
+          {t("common.default") as string}: {defaultValue}
         </span>
       )}
     </label>

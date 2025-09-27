@@ -2,9 +2,11 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { UpgradeComponent } from "@acme/types/upgrade";
 import ComponentPreview from "@ui/components/ComponentPreview";
 import { Card, CardContent, Skeleton } from "@ui/components/atoms";
+import { Grid as DSGrid } from "@ui/components/atoms/primitives";
 import { z } from "zod";
 
 interface Summary {
@@ -27,6 +29,7 @@ const schema = z.object({
 });
 
 export default function UpgradePreviewClient({ shop }: { shop: string }) {
+  const t = useTranslations();
   const [changes, setChanges] = useState<UpgradeComponent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -49,9 +52,9 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
           setChanges(data.components as UpgradeComponent[]);
         }
       } catch (err) {
-        console.error("Failed to load upgrade changes", err);
+        console.error("Failed to load upgrade changes", err); // i18n-exempt: developer log; not user-facing copy
         if (!cancelled) {
-          setError("We couldn't load the latest upgrade preview.");
+          setError(t("We couldn't load the latest upgrade preview."));
           setChanges([]);
         }
       } finally {
@@ -66,7 +69,7 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
     return () => {
       cancelled = true;
     };
-  }, [shop]);
+  }, [shop, t]);
 
   const summary = useMemo<Summary>(() => {
     const updated = changes.filter((component) => component.oldChecksum).length;
@@ -85,9 +88,9 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
       Array.from({ length: 3 }).map((_, index) => (
         <Card
           key={`skeleton-${index}`}
-          data-testid="upgrade-skeleton"
-          data-cy="upgrade-skeleton"
-        >
+          data-testid="upgrade-skeleton" /* i18n-exempt: test id */
+          data-cy="upgrade-skeleton" /* i18n-exempt: test id */
+          >
           <CardContent className="space-y-4 p-6">
             <Skeleton className="h-5 w-1/2" />
             <Skeleton className="h-4 w-1/3" />
@@ -105,8 +108,8 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
           {loading ? (
             <div
               className="space-y-3"
-              data-testid="summary-skeleton"
-              data-cy="summary-skeleton"
+              data-testid="summary-skeleton" /* i18n-exempt: test id */
+              data-cy="summary-skeleton" /* i18n-exempt: test id */
             >
               <Skeleton className="h-6 w-40" />
               <Skeleton className="h-4 w-60" />
@@ -117,38 +120,38 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
               </div>
             </div>
           ) : (
-            <div className="space-y-4">
-              <div>
-                <h2 className="text-xl font-semibold">Upgrade summary</h2>
-                <p className="text-muted-foreground text-sm">
-                  {summary.total > 0
-                    ? `${summary.total} component${summary.total === 1 ? "" : "s"} ready for review.`
-                    : "You're all caught up—no component updates detected."}
-                </p>
+              <div className="space-y-4">
+                <div>
+                <h2 className="text-xl font-semibold">{t("Upgrade summary")}</h2>
+                  <p className="text-muted-foreground text-sm">
+                    {summary.total > 0
+                    ? `${summary.total} ${t("component")}${summary.total === 1 ? "" : "s"} ${t("ready for review.")}`
+                    : t("You're all caught up—no component updates detected.")}
+                  </p>
+                </div>
+                {summary.total > 0 && (
+                  <dl className="grid gap-4 sm:grid-cols-3">
+                    <div>
+                      <dt className="text-muted-foreground text-xs uppercase tracking-wide">
+                      {t("Updated components")}
+                      </dt>
+                      <dd className="text-lg font-semibold">{summary.updated}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-muted-foreground text-xs uppercase tracking-wide">
+                      {t("New components")}
+                      </dt>
+                      <dd className="text-lg font-semibold">{summary.newComponents}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-muted-foreground text-xs uppercase tracking-wide">
+                      {t("Total changes")}
+                      </dt>
+                      <dd className="text-lg font-semibold">{summary.total}</dd>
+                    </div>
+                  </dl>
+                )}
               </div>
-              {summary.total > 0 && (
-                <dl className="grid gap-4 sm:grid-cols-3">
-                  <div>
-                    <dt className="text-muted-foreground text-xs uppercase tracking-wide">
-                      Updated components
-                    </dt>
-                    <dd className="text-lg font-semibold">{summary.updated}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-muted-foreground text-xs uppercase tracking-wide">
-                      New components
-                    </dt>
-                    <dd className="text-lg font-semibold">{summary.newComponents}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-muted-foreground text-xs uppercase tracking-wide">
-                      Total changes
-                    </dt>
-                    <dd className="text-lg font-semibold">{summary.total}</dd>
-                  </div>
-                </dl>
-              )}
-            </div>
           )}
         </CardContent>
       </Card>
@@ -156,12 +159,12 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
       {error ? (
         <Card className="border border-destructive/40 bg-destructive/5">
           <CardContent className="p-6 text-sm text-destructive">
-            {error} Try again or refresh the page.
+            {error} {t("Try again or refresh the page.")}
           </CardContent>
         </Card>
       ) : null}
 
-      <div className="grid gap-4" aria-busy={loading}>
+      <DSGrid cols={1} gap={4} className="" aria-busy={loading}>
         {loading
           ? skeletons
           : changes.map((component) => (
@@ -171,7 +174,7 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
                     <h3 className="text-lg font-semibold">{component.componentName}</h3>
                     <p className="text-muted-foreground text-sm">{component.file}</p>
                     <div className="text-xs text-muted-foreground">
-                      <span className="font-medium text-foreground">Checksum:</span>{" "}
+                      <span className="font-medium text-foreground">{t("Checksum:")}</span>{" "}
                       {component.oldChecksum ? (
                         <>
                           {component.oldChecksum} → <span>{component.newChecksum ?? "—"}</span>
@@ -189,12 +192,11 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
         {emptyState ? (
           <Card>
             <CardContent className="p-6 text-muted-foreground">
-              No changes to preview.
+              {t("No changes to preview.")}
             </CardContent>
           </Card>
         ) : null}
-      </div>
+      </DSGrid>
     </div>
   );
 }
-

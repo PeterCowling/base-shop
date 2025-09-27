@@ -29,16 +29,16 @@ export default function CanvasOverlays({
   angle,
 }: CanvasOverlaysProps) {
   return (
-    <>
+    <div className="relative">
       {/* Alignment guides + distances */}
-      <div className="pointer-events-none absolute inset-0 z-20">
+      <div className="pointer-events-none absolute inset-0">
         <div
           className="bg-primary absolute top-0 bottom-0 w-px transition-opacity duration-150 motion-reduce:transition-none"
           style={{ left: guides.x ?? 0, opacity: guides.x !== null ? 1 : 0 }}
         />
         {distances.x !== null && (
           <div
-            className="absolute -top-4 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
+            className="absolute -top-4 rounded bg-black/75 px-1 font-mono text-xs text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
             style={{ left: (guides.x ?? 0) + 4, opacity: guides.x !== null ? 1 : 0 }}
           >
             {Math.round(distances.x)}
@@ -50,7 +50,7 @@ export default function CanvasOverlays({
         />
         {distances.y !== null && (
           <div
-            className="absolute -left-4 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
+            className="absolute -left-4 rounded bg-black/75 px-1 font-mono text-xs text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
             style={{ top: (guides.y ?? 0) + 4, opacity: guides.y !== null ? 1 : 0 }}
           >
             {Math.round(distances.y)}
@@ -61,7 +61,7 @@ export default function CanvasOverlays({
       {/* Spacing overlay */}
       {spacingOverlay && (
         <div
-          className="bg-primary/20 pointer-events-none absolute z-30"
+          className="bg-primary/20 pointer-events-none absolute"
           style={{
             top: spacingOverlay.top,
             left: spacingOverlay.left,
@@ -73,17 +73,17 @@ export default function CanvasOverlays({
 
       {/* Size/position readout */}
       {showSizePosition && (
-        <div className="pointer-events-none absolute -top-5 start-0 z-30 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-5 start-0 rounded bg-black/75 px-1 font-mono text-xs text-white shadow dark:bg-white/75 dark:text-black">
           {Math.round(overlayWidth)}×{Math.round(overlayHeight)} px | {Math.round(overlayLeft)}, {Math.round(overlayTop)} px
         </div>
       )}
 
       {/* Rotation readout */}
       {rotating && (
-        <div className="pointer-events-none absolute -top-8 start-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-8 start-1/2 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-xs text-white shadow dark:bg-white/75 dark:text-black">
           {Math.round(angle)}°
         </div>
       )}
-    </>
+    </div>
   );
 }

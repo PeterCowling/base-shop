@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
+/* eslint-disable security/detect-non-literal-fs-filename -- ABC-123: Paths are derived from controlled DATA_ROOT + validated inputs */
 import "server-only";
 
 import { pricingSchema, type PricingMatrix } from "@acme/types";
@@ -14,7 +14,7 @@ async function read(): Promise<PricingMatrix> {
   const buf = await fs.readFile(pricingPath(), "utf8");
   const parsed = pricingSchema.safeParse(JSON.parse(buf));
   if (!parsed.success) {
-    throw new Error("Invalid pricing data");
+    throw new Error("Invalid pricing data"); // i18n-exempt -- ABC-123: Server-side internal error, not user-facing
   }
   return parsed.data;
 }
@@ -22,7 +22,7 @@ async function read(): Promise<PricingMatrix> {
 async function write(data: PricingMatrix): Promise<void> {
   const parsed = pricingSchema.safeParse(data);
   if (!parsed.success) {
-    throw new Error("Invalid pricing data");
+    throw new Error("Invalid pricing data"); // i18n-exempt -- ABC-123: Server-side internal error, not user-facing
   }
   const file = pricingPath();
   const tmp = `${file}.${Date.now()}.tmp`;
@@ -35,4 +35,3 @@ export const jsonPricingRepository = {
   read,
   write,
 };
-

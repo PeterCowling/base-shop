@@ -9,6 +9,7 @@ import Link from "next/link";
 import { memo, ReactElement, ReactNode, useCallback, useMemo } from "react";
 import DataTable from "./DataTable";
 import { ProductFilters, ProductRowActions } from "./products";
+import { useTranslations } from "@acme/i18n";
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -47,6 +48,7 @@ function ProductsTableBase({
   onDuplicate,
   onDelete,
 }: Props): ReactElement {
+  const t = useTranslations();
   /* ---------------------------------------------------------------------- */
   /*  Filters                                                               */
   /* ---------------------------------------------------------------------- */
@@ -63,10 +65,9 @@ function ProductsTableBase({
 
   const handleDelete = useCallback(
     (id: string) => {
-       
-      if (confirm("Delete this product?")) onDelete(shop, id);
+      if (confirm(String(t("products.confirmDelete")))) onDelete(shop, id);
     },
-    [onDelete, shop]
+    [onDelete, shop, t]
   );
 
   /* ---------------------------------------------------------------------- */
@@ -75,7 +76,7 @@ function ProductsTableBase({
   const columns = useMemo<Column<ProductPublication>[]>(() => {
     return [
       {
-        header: "Title",
+        header: String(t("products.columns.title")),
         render: (p) =>
           isAdmin ? (
             <Link
@@ -89,20 +90,20 @@ function ProductsTableBase({
           ),
       },
       {
-        header: "SKU",
+        header: String(t("products.columns.sku")),
         width: "10rem",
         render: (p) => p.sku ?? "—",
       },
       {
-        header: "Price",
+        header: String(t("products.columns.price")),
         render: (p) => formatCurrency(p.price, p.currency),
       },
       {
-        header: "Status",
+        header: String(t("products.columns.status")),
         render: (p) => p.status,
       },
       {
-        header: "Actions",
+        header: String(t("products.columns.actions")),
         width: "12rem",
         render: (p) => (
           <ProductRowActions
@@ -114,7 +115,7 @@ function ProductsTableBase({
         ),
       },
     ];
-  }, [isAdmin, shop, handleDuplicate, handleDelete]);
+  }, [isAdmin, shop, handleDuplicate, handleDelete, t]);
 
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */

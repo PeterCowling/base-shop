@@ -57,6 +57,7 @@ describe('configurator CLI integration', () => {
       }
     );
     expect(result.status).toBe(0);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- reads temp log file for assertions (ENG-1234)
     const { command, args } = JSON.parse(readFileSync(logFile, 'utf8'));
     expect(command).toBe('vite');
     expect(args).toEqual(['dev']);
@@ -81,6 +82,7 @@ describe('configurator CLI integration', () => {
       }
     );
     expect(result.status).toBe(0);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- reads temp log file for assertions (ENG-1234)
     const { command, args } = JSON.parse(readFileSync(logFile, 'utf8'));
     expect(command).toBe('vite');
     expect(args).toEqual(['build']);
@@ -105,6 +107,7 @@ describe('configurator CLI integration', () => {
       }
     );
     expect(result.status).toBe(0);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- reads temp log file for assertions (ENG-1234)
     const { command, args } = JSON.parse(readFileSync(logFile, 'utf8'));
     expect(command).toBe('wrangler');
     expect(args).toEqual(['pages', 'deploy', '.vercel/output/static']);

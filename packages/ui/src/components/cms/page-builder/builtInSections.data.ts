@@ -1,6 +1,8 @@
 import { ulid } from "ulid";
 import type { PageComponent } from "@acme/types";
 
+/* i18n-exempt file -- PB-221: Built-in Section Library seed labels/descriptions are editor scaffolding, not end-user copy; CMS/i18n overrides at render time. */
+
 // Built-in section variants surfaced in the Section Library selector.
 // Each entry returns a concrete PageComponent for insertion.
 
@@ -22,7 +24,7 @@ const headerVariants: BuiltInSection[] = [
     description: "Compact header with inline search",
     preview: "/window.svg",
     previewType: "HeaderSection:minimal",
-    build: () => ({ id: ulid(), type: "HeaderSection", variant: "minimal", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } as any),
+    build: () => ({ id: ulid(), type: "HeaderSection", variant: "minimal", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } satisfies PageComponent),
   },
   {
     id: "builtin:HeaderSection:centerLogo",
@@ -30,7 +32,7 @@ const headerVariants: BuiltInSection[] = [
     description: "Centered logo with utilities",
     preview: "/window.svg",
     previewType: "HeaderSection:centerLogo",
-    build: () => ({ id: ulid(), type: "HeaderSection", variant: "centerLogo", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } as any),
+    build: () => ({ id: ulid(), type: "HeaderSection", variant: "centerLogo", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } satisfies PageComponent),
   },
   {
     id: "builtin:HeaderSection:splitUtilities",
@@ -38,7 +40,7 @@ const headerVariants: BuiltInSection[] = [
     description: "Nav and utilities split",
     preview: "/window.svg",
     previewType: "HeaderSection:splitUtilities",
-    build: () => ({ id: ulid(), type: "HeaderSection", variant: "splitUtilities", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } as any),
+    build: () => ({ id: ulid(), type: "HeaderSection", variant: "splitUtilities", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } satisfies PageComponent),
   },
   {
     id: "builtin:HeaderSection:transparent",
@@ -46,7 +48,7 @@ const headerVariants: BuiltInSection[] = [
     description: "Overlay header on hero",
     preview: "/window.svg",
     previewType: "HeaderSection:transparent",
-    build: () => ({ id: ulid(), type: "HeaderSection", variant: "transparent", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } as any),
+    build: () => ({ id: ulid(), type: "HeaderSection", variant: "transparent", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } satisfies PageComponent),
   },
   {
     id: "builtin:HeaderSection:sticky",
@@ -54,7 +56,7 @@ const headerVariants: BuiltInSection[] = [
     description: "Sticks to top on scroll",
     preview: "/window.svg",
     previewType: "HeaderSection:sticky",
-    build: () => ({ id: ulid(), type: "HeaderSection", variant: "sticky", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } as any),
+    build: () => ({ id: ulid(), type: "HeaderSection", variant: "sticky", searchMode: "inline", announcement: false, showBreadcrumbs: false, showCurrencySelector: false, showLocaleSelector: false } satisfies PageComponent),
   },
 ];
 
@@ -65,7 +67,7 @@ const footerVariants: BuiltInSection[] = [
     description: "Single-row footer",
     preview: "/window.svg",
     previewType: "FooterSection:simple",
-    build: () => ({ id: ulid(), type: "FooterSection", variant: "simple" } as any),
+    build: () => ({ id: ulid(), type: "FooterSection", variant: "simple" } satisfies PageComponent),
   },
   {
     id: "builtin:FooterSection:multiColumn",
@@ -73,7 +75,7 @@ const footerVariants: BuiltInSection[] = [
     description: "Four-column footer",
     preview: "/window.svg",
     previewType: "FooterSection:multiColumn",
-    build: () => ({ id: ulid(), type: "FooterSection", variant: "multiColumn" } as any),
+    build: () => ({ id: ulid(), type: "FooterSection", variant: "multiColumn" } satisfies PageComponent),
   },
   {
     id: "builtin:FooterSection:newsletter",
@@ -81,7 +83,7 @@ const footerVariants: BuiltInSection[] = [
     description: "Footer with subscribe form",
     preview: "/window.svg",
     previewType: "FooterSection:newsletter",
-    build: () => ({ id: ulid(), type: "FooterSection", variant: "newsletter" } as any),
+    build: () => ({ id: ulid(), type: "FooterSection", variant: "newsletter" } satisfies PageComponent),
   },
   {
     id: "builtin:FooterSection:social",
@@ -89,7 +91,7 @@ const footerVariants: BuiltInSection[] = [
     description: "Centered social links",
     preview: "/window.svg",
     previewType: "FooterSection:social",
-    build: () => ({ id: ulid(), type: "FooterSection", variant: "social" } as any),
+    build: () => ({ id: ulid(), type: "FooterSection", variant: "social" } satisfies PageComponent),
   },
   {
     id: "builtin:FooterSection:legalHeavy",
@@ -97,7 +99,7 @@ const footerVariants: BuiltInSection[] = [
     description: "Legal-focused footer",
     preview: "/window.svg",
     previewType: "FooterSection:legalHeavy",
-    build: () => ({ id: ulid(), type: "FooterSection", variant: "legalHeavy" } as any),
+    build: () => ({ id: ulid(), type: "FooterSection", variant: "legalHeavy" } satisfies PageComponent),
   },
 ];
 
@@ -108,7 +110,7 @@ const otherSections: BuiltInSection[] = [
     description: "Hero with optional hotspots and countdown",
     preview: "/window.svg",
     previewType: "CampaignHeroSection:image",
-    build: () => ({ id: ulid(), type: "CampaignHeroSection", mediaType: "image", imageSrc: "/placeholder-hero.jpg", usps: ["Free shipping", "30-day returns", "Carbon neutral" ] } as any),
+    build: () => ({ id: ulid(), type: "CampaignHeroSection", mediaType: "image", imageSrc: "/placeholder-hero.jpg", usps: ["Free shipping", "30-day returns", "Carbon neutral" ] } satisfies PageComponent),
   },
   {
     id: "builtin:CampaignHeroSection:video",
@@ -116,7 +118,7 @@ const otherSections: BuiltInSection[] = [
     description: "Autoplay looped video hero",
     preview: "/window.svg",
     previewType: "CampaignHeroSection:video",
-    build: () => ({ id: ulid(), type: "CampaignHeroSection", mediaType: "video", videoSrc: "/promo.mp4" } as any),
+    build: () => ({ id: ulid(), type: "CampaignHeroSection", mediaType: "video", videoSrc: "/promo.mp4" } satisfies PageComponent),
   },
   {
     id: "builtin:PromoTilesSection:editorial",
@@ -124,7 +126,7 @@ const otherSections: BuiltInSection[] = [
     description: "Large tiles with captions/CTAs",
     preview: "/window.svg",
     previewType: "PromoTilesSection:editorial",
-    build: () => ({ id: ulid(), type: "PromoTilesSection", density: "editorial", tiles: [ { imageSrc: "/a.jpg", caption: "New In", ctaLabel: "Shop", ctaHref: "/collections/new" }, { imageSrc: "/b.jpg", caption: "Best Sellers", ctaLabel: "Explore", ctaHref: "/collections/best" }, { imageSrc: "/c.jpg", caption: "Clearance", ctaLabel: "Save now", ctaHref: "/collections/sale" } ] } as any),
+    build: () => ({ id: ulid(), type: "PromoTilesSection", density: "editorial", tiles: [ { imageSrc: "/a.jpg", caption: "New In", ctaLabel: "Shop", ctaHref: "/collections/new" }, { imageSrc: "/b.jpg", caption: "Best Sellers", ctaLabel: "Explore", ctaHref: "/collections/best" }, { imageSrc: "/c.jpg", caption: "Clearance", ctaLabel: "Save now", ctaHref: "/collections/sale" } ] } satisfies PageComponent),
   },
   {
     id: "builtin:PromoTilesSection:utilitarian",
@@ -132,7 +134,7 @@ const otherSections: BuiltInSection[] = [
     description: "Compact tiles for quick links",
     preview: "/window.svg",
     previewType: "PromoTilesSection:utilitarian",
-    build: () => ({ id: ulid(), type: "PromoTilesSection", density: "utilitarian", tiles: [ { imageSrc: "/a.jpg", caption: "Men", ctaHref: "/collections/men" }, { imageSrc: "/b.jpg", caption: "Women", ctaHref: "/collections/women" } ] } as any),
+    build: () => ({ id: ulid(), type: "PromoTilesSection", density: "utilitarian", tiles: [ { imageSrc: "/a.jpg", caption: "Men", ctaHref: "/collections/men" }, { imageSrc: "/b.jpg", caption: "Women", ctaHref: "/collections/women" } ] } satisfies PageComponent),
   },
   {
     id: "builtin:ShowcaseSection:featured",
@@ -140,7 +142,7 @@ const otherSections: BuiltInSection[] = [
     description: "Curated featured products",
     preview: "/window.svg",
     previewType: "ShowcaseSection:featured",
-    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "featured", layout: "carousel", limit: 12 } as any),
+    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "featured", layout: "carousel", limit: 12 } satisfies PageComponent),
   },
   {
     id: "builtin:ShowcaseSection:new",
@@ -148,7 +150,7 @@ const otherSections: BuiltInSection[] = [
     description: "New arrivals grid",
     preview: "/window.svg",
     previewType: "ShowcaseSection:new",
-    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "new", layout: "grid", gridCols: 3, limit: 9 } as any),
+    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "new", layout: "grid", gridCols: 3, limit: 9 } satisfies PageComponent),
   },
   {
     id: "builtin:ShowcaseSection:bestsellers",
@@ -156,7 +158,7 @@ const otherSections: BuiltInSection[] = [
     description: "Top sellers carousel",
     preview: "/window.svg",
     previewType: "ShowcaseSection:bestsellers",
-    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "bestsellers", layout: "carousel", limit: 12 } as any),
+    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "bestsellers", layout: "carousel", limit: 12 } satisfies PageComponent),
   },
   {
     id: "builtin:ShowcaseSection:clearance",
@@ -164,7 +166,7 @@ const otherSections: BuiltInSection[] = [
     description: "Low price items",
     preview: "/window.svg",
     previewType: "ShowcaseSection:clearance",
-    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "clearance", layout: "grid", gridCols: 4, limit: 8 } as any),
+    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "clearance", layout: "grid", gridCols: 4, limit: 8 } satisfies PageComponent),
   },
   {
     id: "builtin:ShowcaseSection:limited",
@@ -172,7 +174,7 @@ const otherSections: BuiltInSection[] = [
     description: "Limited/exclusive picks",
     preview: "/window.svg",
     previewType: "ShowcaseSection:limited",
-    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "limited", layout: "carousel", limit: 8 } as any),
+    build: () => ({ id: ulid(), type: "ShowcaseSection", preset: "limited", layout: "carousel", limit: 8 } satisfies PageComponent),
   },
   {
     id: "builtin:ConsentSection",
@@ -180,7 +182,7 @@ const otherSections: BuiltInSection[] = [
     description: "Cookie consent prompt",
     preview: "/window.svg",
     previewType: "ConsentSection",
-    build: () => ({ id: ulid(), type: "ConsentSection" } as any),
+    build: () => ({ id: ulid(), type: "ConsentSection" } satisfies PageComponent),
   },
   {
     id: "builtin:AnalyticsPixelsSection",
@@ -188,7 +190,7 @@ const otherSections: BuiltInSection[] = [
     description: "Loads GA4 after consent",
     preview: "/window.svg",
     previewType: "AnalyticsPixelsSection",
-    build: () => ({ id: ulid(), type: "AnalyticsPixelsSection" } as any),
+    build: () => ({ id: ulid(), type: "AnalyticsPixelsSection" } satisfies PageComponent),
   },
   {
     id: "builtin:StructuredDataSection",
@@ -196,7 +198,7 @@ const otherSections: BuiltInSection[] = [
     description: "Injects BreadcrumbList JSON-LD",
     preview: "/window.svg",
     previewType: "StructuredDataSection",
-    build: () => ({ id: ulid(), type: "StructuredDataSection", breadcrumbs: true } as any),
+    build: () => ({ id: ulid(), type: "StructuredDataSection", breadcrumbs: true } satisfies PageComponent),
   },
   {
     id: "builtin:RentalAvailabilitySection",
@@ -204,7 +206,7 @@ const otherSections: BuiltInSection[] = [
     description: "Check rental dates availability",
     preview: "/window.svg",
     previewType: "RentalAvailabilitySection",
-    build: () => ({ id: ulid(), type: "RentalAvailabilitySection", sku: "sku_123" } as any),
+    build: () => ({ id: ulid(), type: "RentalAvailabilitySection", sku: "sku_123" } satisfies PageComponent),
   },
   {
     id: "builtin:RentalTermsSection",
@@ -212,7 +214,7 @@ const otherSections: BuiltInSection[] = [
     description: "Accept terms, insurance, deposit",
     preview: "/window.svg",
     previewType: "RentalTermsSection",
-    build: () => ({ id: ulid(), type: "RentalTermsSection", sku: "sku_123", termsVersion: "1.0" } as any),
+    build: () => ({ id: ulid(), type: "RentalTermsSection", sku: "sku_123", termsVersion: "1.0" } satisfies PageComponent),
   },
   {
     id: "builtin:SocialProof:logos",
@@ -220,7 +222,7 @@ const otherSections: BuiltInSection[] = [
     description: "Certification/press logo wall",
     preview: "/window.svg",
     previewType: "SocialProof:logos",
-    build: () => ({ id: ulid(), type: "SocialProof", logos: [ { src: "/logos/press1.svg" }, { src: "/logos/press2.svg" }, { src: "/logos/press3.svg" } ] } as any),
+    build: () => ({ id: ulid(), type: "SocialProof", logos: [ { src: "/logos/press1.svg" }, { src: "/logos/press2.svg" }, { src: "/logos/press3.svg" } ] } satisfies PageComponent),
   },
   {
     id: "builtin:CrossSellSection:default",
@@ -228,7 +230,7 @@ const otherSections: BuiltInSection[] = [
     description: "You may also like",
     preview: "/window.svg",
     previewType: "CrossSellSection:default",
-    build: () => ({ id: ulid(), type: "CrossSellSection", rules: { onlyInStock: true }, layout: "grid" } as any),
+    build: () => ({ id: ulid(), type: "CrossSellSection", rules: { onlyInStock: true }, layout: "grid" } satisfies PageComponent),
   },
   {
     id: "builtin:PDP:Policies",
@@ -236,7 +238,7 @@ const otherSections: BuiltInSection[] = [
     description: "Shipping/Returns/Warranty accordion",
     preview: "/window.svg",
     previewType: "PDP:Policies",
-    build: () => ({ id: ulid(), type: "PoliciesAccordion", shipping: "<p>Free shipping over $50</p>", returns: "<p>30-day returns</p>", warranty: "<p>2-year limited warranty</p>" } as any),
+    build: () => ({ id: ulid(), type: "PoliciesAccordion", shipping: "<p>Free shipping over $50</p>", returns: "<p>30-day returns</p>", warranty: "<p>2-year limited warranty</p>" } satisfies PageComponent),
   },
   {
     id: "builtin:PDP:StickyBuyBar",
@@ -244,7 +246,7 @@ const otherSections: BuiltInSection[] = [
     description: "Bottom sticky add-to-cart bar",
     preview: "/window.svg",
     previewType: "PDP:StickyBuyBar",
-    build: () => ({ id: ulid(), type: "StickyBuyBar" } as any),
+    build: () => ({ id: ulid(), type: "StickyBuyBar" } satisfies PageComponent),
   },
   {
     id: "builtin:PDP:Financing",
@@ -252,7 +254,7 @@ const otherSections: BuiltInSection[] = [
     description: "Monthly pricing badge",
     preview: "/window.svg",
     previewType: "PDP:Financing",
-    build: () => ({ id: ulid(), type: "FinancingBadge", provider: "klarna", apr: 0, termMonths: 12 } as any),
+    build: () => ({ id: ulid(), type: "FinancingBadge", provider: "klarna", apr: 0, termMonths: 12 } satisfies PageComponent),
   },
   {
     id: "builtin:PDP:DetailsLuxury",
@@ -260,7 +262,7 @@ const otherSections: BuiltInSection[] = [
     description: "Spacious editorial layout for details",
     preview: "/window.svg",
     previewType: "PDP:DetailsLuxury",
-    build: () => ({ id: ulid(), type: "PDPDetailsSection", preset: "luxury" } as any),
+    build: () => ({ id: ulid(), type: "PDPDetailsSection", preset: "luxury" } satisfies PageComponent),
   },
   {
     id: "builtin:GuidedSellingSection:default",
@@ -268,7 +270,7 @@ const otherSections: BuiltInSection[] = [
     description: "Multi-step finder (inline results)",
     preview: "/window.svg",
     previewType: "GuidedSellingSection:default",
-    build: () => ({ id: ulid(), type: "GuidedSellingSection", outputMode: "inline" } as any),
+    build: () => ({ id: ulid(), type: "GuidedSellingSection", outputMode: "inline" } satisfies PageComponent),
   },
   {
     id: "builtin:CartSection:default",
@@ -276,7 +278,7 @@ const otherSections: BuiltInSection[] = [
     description: "Cart with promo/gift/loyalty",
     preview: "/window.svg",
     previewType: "CartSection:default",
-    build: () => ({ id: ulid(), type: "CartSection", showPromo: true, showGiftCard: true, showLoyalty: false } as any),
+    build: () => ({ id: ulid(), type: "CartSection", showPromo: true, showGiftCard: true, showLoyalty: false } satisfies PageComponent),
   },
   {
     id: "builtin:CheckoutSection:default",
@@ -284,7 +286,7 @@ const otherSections: BuiltInSection[] = [
     description: "Checkout form wrapper",
     preview: "/window.svg",
     previewType: "CheckoutSection:default",
-    build: () => ({ id: ulid(), type: "CheckoutSection", showWallets: true, showBNPL: true } as any),
+    build: () => ({ id: ulid(), type: "CheckoutSection", showWallets: true, showBNPL: true } satisfies PageComponent),
   },
   {
     id: "builtin:ThankYouSection:recs",
@@ -292,7 +294,7 @@ const otherSections: BuiltInSection[] = [
     description: "Confirmation + recommendations",
     preview: "/window.svg",
     previewType: "ThankYouSection:recs",
-    build: () => ({ id: ulid(), type: "ThankYouSection", recommendationPreset: "featured" } as any),
+    build: () => ({ id: ulid(), type: "ThankYouSection", recommendationPreset: "featured" } satisfies PageComponent),
   },
   {
     id: "builtin:StoreLocatorSection:default",
@@ -300,7 +302,7 @@ const otherSections: BuiltInSection[] = [
     description: "List + map with geolocation",
     preview: "/window.svg",
     previewType: "StoreLocatorSection:default",
-    build: () => ({ id: ulid(), type: "StoreLocatorSection", enableGeolocation: true, emitLocalBusiness: false } as any),
+    build: () => ({ id: ulid(), type: "StoreLocatorSection", enableGeolocation: true, emitLocalBusiness: false } satisfies PageComponent),
   },
   {
     id: "builtin:EmailReferralSection:giveget",
@@ -308,7 +310,7 @@ const otherSections: BuiltInSection[] = [
     description: "Inline band with give/get copy",
     preview: "/window.svg",
     previewType: "EmailReferralSection:giveget",
-    build: () => ({ id: ulid(), type: "EmailReferralSection", headline: "Give $10, Get $10", subtitle: "Invite a friend and both get rewarded.", giveLabel: "$10 for them", getLabel: "$10 for you" } as any),
+    build: () => ({ id: ulid(), type: "EmailReferralSection", headline: "Give $10, Get $10", subtitle: "Invite a friend and both get rewarded.", giveLabel: "$10 for them", getLabel: "$10 for you" } satisfies PageComponent),
   },
   {
     id: "builtin:DSARSection:default",
@@ -316,7 +318,7 @@ const otherSections: BuiltInSection[] = [
     description: "Export/delete request UI",
     preview: "/window.svg",
     previewType: "DSARSection:default",
-    build: () => ({ id: ulid(), type: "DSARSection" } as any),
+    build: () => ({ id: ulid(), type: "DSARSection" } satisfies PageComponent),
   },
   {
     id: "builtin:AgeGateSection:18",
@@ -324,7 +326,7 @@ const otherSections: BuiltInSection[] = [
     description: "Overlay age confirmation",
     preview: "/window.svg",
     previewType: "AgeGateSection:18",
-    build: () => ({ id: ulid(), type: "AgeGateSection", minAge: 18, rememberDays: 30 } as any),
+    build: () => ({ id: ulid(), type: "AgeGateSection", minAge: 18, rememberDays: 30 } satisfies PageComponent),
   },
   {
     id: "builtin:AccountSection:default",
@@ -332,7 +334,7 @@ const otherSections: BuiltInSection[] = [
     description: "Cards for orders/rentals/addresses/payments",
     preview: "/window.svg",
     previewType: "AccountSection:default",
-    build: () => ({ id: ulid(), type: "AccountSection", showDashboard: true, showOrders: true, showRentals: true, showAddresses: true, showPayments: true } as any),
+    build: () => ({ id: ulid(), type: "AccountSection", showDashboard: true, showOrders: true, showRentals: true, showAddresses: true, showPayments: true } satisfies PageComponent),
   },
   {
     id: "builtin:RentalManageSection:default",
@@ -340,7 +342,7 @@ const otherSections: BuiltInSection[] = [
     description: "Extend/return manager",
     preview: "/window.svg",
     previewType: "RentalManageSection:default",
-    build: () => ({ id: ulid(), type: "RentalManageSection" } as any),
+    build: () => ({ id: ulid(), type: "RentalManageSection" } satisfies PageComponent),
   },
 ];
 

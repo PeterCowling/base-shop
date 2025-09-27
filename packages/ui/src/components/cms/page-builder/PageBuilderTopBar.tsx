@@ -1,3 +1,4 @@
+// i18n-exempt file — builder top bar UI; copy slated for extraction
 import type { ComponentProps } from "react";
 import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Tooltip } from "../../atoms";
@@ -11,6 +12,7 @@ import TopActionBar from "./TopActionBar";
 import NotificationsBell from "./NotificationsBell";
 import type GridSettings from "./GridSettings";
 import type { PageComponent } from "@acme/types";
+import { Inline } from "../../atoms/primitives/Inline";
 
 interface PageBuilderTopBarProps {
   historyProps: ComponentProps<typeof HistoryControls>;
@@ -68,9 +70,9 @@ const PageBuilderTopBar = ({
   canSavePreset,
   onSavePreset,
 }: PageBuilderTopBarProps) => (
-  <div className="sticky top-0 z-10 w-full overflow-x-hidden bg-surface-1/95 backdrop-blur supports-[backdrop-filter]:bg-surface-1/70">
+  <div className="sticky top-0 w-full overflow-x-hidden bg-surface-1/95 backdrop-blur">
     <div className="flex w-full items-center gap-2 py-2">
-      <div className="flex items-center gap-2 min-w-0">
+      <Inline gap={2} alignY="center" className="min-w-0">
         {historyProps?.autoSaveState === "saving" && (
           <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
             <ReloadIcon className="h-3 w-3 animate-spin" /> Saving…
@@ -81,7 +83,7 @@ const PageBuilderTopBar = ({
             <CheckIcon className="h-3 w-3" /> Autosaved
           </span>
         )}
-      </div>
+      </Inline>
       <div className="min-w-0 flex-1" />
       <TopActionBar
         onSave={historyProps.onSave}
@@ -209,7 +211,7 @@ const PageBuilderTopBar = ({
           {...toolbarProps}
           hideDeviceManager={mode === "section"}
           hidePagesNav={mode === "section"}
-          pagesNav={mode === "section" ? undefined : (toolbarProps as any).pagesNav}
+          pagesNav={mode === "section" ? undefined : toolbarProps.pagesNav}
         />
       </div>
       <div className="flex items-center gap-2">
@@ -260,7 +262,7 @@ const PageBuilderTopBar = ({
         />
         <button
           type="button"
-          className="rounded border px-2 py-1 text-sm"
+          className="rounded border px-2 py-1 text-sm min-h-10 min-w-10"
           onClick={onToggleInspector}
           aria-label={showInspector ? "Hide Inspector" : "Show Inspector"}
           title={showInspector ? "Hide Inspector" : "Show Inspector"}

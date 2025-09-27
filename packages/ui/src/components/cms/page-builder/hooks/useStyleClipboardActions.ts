@@ -21,6 +21,7 @@ const useStyleClipboardActions = ({ selectedComponent, selectedIds, components, 
       overrides = {};
     }
     setStyleClipboard(overrides);
+    // i18n-exempt -- PB-233: Internal builder toast message
     try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Styles copied" })); } catch {}
   }, [selectedComponent]);
 
@@ -41,7 +42,7 @@ const useStyleClipboardActions = ({ selectedComponent, selectedIds, components, 
         typographyTablet: { ...(base.typographyTablet ?? {}), ...(clip.typographyTablet ?? {}) },
         typographyMobile: { ...(base.typographyMobile ?? {}), ...(clip.typographyMobile ?? {}) },
       };
-      dispatch({ type: "update", id: comp.id, patch: { styles: JSON.stringify(merged) } as any });
+      dispatch({ type: "update", id: comp.id, patch: { styles: JSON.stringify(merged) } });
     };
     if (selectedIds.length > 1) {
       selectedIds.forEach((id) => {
@@ -51,6 +52,7 @@ const useStyleClipboardActions = ({ selectedComponent, selectedIds, components, 
     } else if (selectedComponent) {
       apply(selectedComponent);
     }
+    // i18n-exempt -- PB-233: Internal builder toast message
     try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Styles pasted" })); } catch {}
   }, [components, dispatch, selectedComponent, selectedIds]);
 
@@ -58,4 +60,3 @@ const useStyleClipboardActions = ({ selectedComponent, selectedIds, components, 
 };
 
 export default useStyleClipboardActions;
-

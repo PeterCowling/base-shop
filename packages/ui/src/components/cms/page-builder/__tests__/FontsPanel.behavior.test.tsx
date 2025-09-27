@@ -20,7 +20,7 @@ describe("FontsPanel", () => {
 
   it("loads theme tokens on open and schedules save when applying pairing", async () => {
     // Initial theme GET
-    (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true, json: async () => ({ themeDefaults: { "--font-sans": '"Inter", sans-serif' }, themeTokens: { "--font-body": '"Inter", sans-serif' } }) } as any);
+    (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true, json: async () => ({ themeDefaults: { "--font-sans": '"Inter"' }, themeTokens: { "--font-body": '"Inter"' } }) } as any);
     // Subsequent PATCH
     (global.fetch as jest.Mock).mockResolvedValue({ ok: true } as any);
 
@@ -39,4 +39,3 @@ describe("FontsPanel", () => {
     }
   });
 });
-

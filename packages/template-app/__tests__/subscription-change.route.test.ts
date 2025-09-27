@@ -51,7 +51,7 @@ describe("/api/subscription/change POST", () => {
     expect(await res.json()).toEqual({ id: "subNew", status: "active" });
     expect(stripe.subscriptions.update).toHaveBeenCalledWith("subOld", {
       items: [{ price: "p1" }],
-      // @ts-expect-error
+      // @ts-expect-error - older Stripe types omit 'prorate'; route accepts it
       prorate: true,
     });
     expect(setStripeSubscriptionId).toHaveBeenCalledWith("u1", "subNew", "bcd");

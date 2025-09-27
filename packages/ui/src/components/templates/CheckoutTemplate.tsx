@@ -1,7 +1,9 @@
 "use client";
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { useTranslations } from "@acme/i18n";
 import { Button } from "../atoms/shadcn";
+import { Inline, Stack, Cluster } from "../atoms/primitives";
 
 export interface CheckoutStep {
   label: string;
@@ -24,7 +26,14 @@ export function CheckoutTemplate({
   className,
   ...props
 }: CheckoutTemplateProps) {
+  const t = useTranslations();
   const [step, setStep] = React.useState(initialStep);
+  const stepActive = "bg-primary border-primary text-primary-fg"; // i18n-exempt: style tokens
+  const stepDone = "bg-primary/80 border-primary/80 text-primary-fg"; // i18n-exempt: style tokens
+  const stepTodo = "bg-muted text-muted-foreground"; // i18n-exempt: style tokens
+  const circleBase = "mb-1 h-8 w-8 justify-center rounded-full border"; // i18n-exempt: style tokens
+  const primaryToken = "--color-primary"; // i18n-exempt: DS token literal
+  const mutedToken = "--color-muted"; // i18n-exempt: DS token literal
 
   React.useEffect(() => {
     onStepChange?.(step);
@@ -34,40 +43,29 @@ export function CheckoutTemplate({
 
   return (
     <div className={cn("space-y-6", className)} {...props}>
-      <ol className="flex items-center gap-4">
+      <Inline gap={4} alignY="center" role="list">
         {steps.map((s, idx) => (
-          <li key={idx} className="flex flex-1 flex-col items-center">
-            <div
-              className={cn(
-                "mb-1 flex h-8 w-8 items-center justify-center rounded-full border",
-                idx === step
-                  ? "bg-primary border-primary text-primary-fg"
-                  : idx < step
-                    ? "bg-primary/80 border-primary/80 text-primary-fg"
-                    : "bg-muted text-muted-foreground"
-              )}
-              data-token={
-                idx === step || idx < step
-                  ? "--color-primary"
-                  : "--color-muted"
-              }
+          <Stack key={idx} align="center" className="flex-1" role="listitem">
+            <Inline
+              className={cn(circleBase, idx === step ? stepActive : idx < step ? stepDone : stepTodo)}
+              data-token={idx === step || idx < step ? primaryToken : mutedToken}
             >
               {idx + 1}
-            </div>
+            </Inline>
             <span className={cn("text-sm", idx === step && "font-medium")}>
               {s.label}
             </span>
-          </li>
+          </Stack>
         ))}
-      </ol>
+      </Inline>
       <div>{steps[step].content}</div>
-      <div className="flex justify-between">
+      <Cluster justify="between">
         <Button
           onClick={() => setStep(step - 1)}
           disabled={step === 0}
           variant="outline"
         >
-          Back
+          {t("actions.back")}
         </Button>
         <Button
           onClick={() => {
@@ -78,9 +76,9 @@ export function CheckoutTemplate({
             }
           }}
         >
-          {isLast ? "Finish" : "Next"}
+          {isLast ? t("actions.finish") : t("actions.next")}
         </Button>
-      </div>
+      </Cluster>
     </div>
   );
 }

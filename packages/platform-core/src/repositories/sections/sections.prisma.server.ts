@@ -54,7 +54,7 @@ function mergeDefined<T extends object>(base: T, patch: Partial<T>): T {
 export async function getSections(shop: string): Promise<SectionTemplate[]> {
   try {
     const delegate = (prisma as unknown as { sectionTemplate?: SectionTemplateDelegate }).sectionTemplate;
-    if (!delegate) throw new Error("SectionTemplate model not available");
+    if (!delegate) throw new Error("SectionTemplate model not available"); // i18n-exempt -- ABC-123: Server-side fallback decision, not user-facing
     const rows = await delegate.findMany({ where: { shopId: shop } });
     return rows.map((r) => sectionTemplateSchema.parse(r.data ?? r));
   } catch {
@@ -71,7 +71,7 @@ export async function saveSection(
 ): Promise<SectionTemplate> {
   try {
     const delegate = (prisma as unknown as { sectionTemplate?: SectionTemplateDelegate }).sectionTemplate;
-    if (!delegate) throw new Error("SectionTemplate model not available");
+    if (!delegate) throw new Error("SectionTemplate model not available"); // i18n-exempt -- ABC-123: Server-side fallback decision, not user-facing
     await delegate.upsert({
       where: { id: section.id },
       update: {
@@ -101,10 +101,10 @@ export async function saveSection(
 export async function deleteSection(shop: string, id: string): Promise<void> {
   try {
     const delegate = (prisma as unknown as { sectionTemplate?: SectionTemplateDelegate }).sectionTemplate;
-    if (!delegate) throw new Error("SectionTemplate model not available");
+    if (!delegate) throw new Error("SectionTemplate model not available"); // i18n-exempt -- ABC-123: Server-side fallback decision, not user-facing
     const res = await delegate.deleteMany({ where: { id, shopId: shop } });
     if (!res || typeof res.count !== "number" || res.count === 0) {
-      throw new Error(`Section ${id} not found in ${shop}`);
+      throw new Error(`Section ${id} not found in ${shop}`); // i18n-exempt -- ABC-123: Internal repo error, not user-facing
     }
   } catch (err) {
     if (err instanceof Error && err.message.includes("not found")) throw err;
@@ -119,14 +119,14 @@ export async function updateSection(
   previous: SectionTemplate,
 ): Promise<SectionTemplate> {
   if (previous.updatedAt !== patch.updatedAt) {
-    throw new Error("Conflict: section has been modified");
+    throw new Error("Conflict: section has been modified"); // i18n-exempt -- ABC-123: Internal concurrency error, not user-facing
   }
   const updated: SectionTemplate = mergeDefined(previous, patch);
   updated.updatedAt = nowIso();
 
   try {
     const delegate = (prisma as unknown as { sectionTemplate?: SectionTemplateDelegate }).sectionTemplate;
-    if (!delegate) throw new Error("SectionTemplate model not available");
+    if (!delegate) throw new Error("SectionTemplate model not available"); // i18n-exempt -- ABC-123: Server-side fallback decision, not user-facing
     await delegate.update({
       where: { id: updated.id },
       data: {

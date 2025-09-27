@@ -9,13 +9,17 @@ jest.mock("@acme/platform-core/contexts/CartContext", () => ({
   useCart: () => [currentCart, jest.fn()],
 }));
 
-jest.mock("../src/components/ThemeToggle", () => () => (
-  <div data-testid="theme-toggle" />
-));
+jest.mock("../src/components/ThemeToggle", () => {
+  const ThemeToggle = () => <div data-testid="theme-toggle" />;
+  (ThemeToggle as any).displayName = "ThemeToggleMock";
+  return ThemeToggle;
+});
 
-jest.mock("../src/components/molecules", () => ({
-  CurrencySwitcher: () => <div data-testid="currency-switcher" />,
-}));
+jest.mock("../src/components/molecules", () => {
+  const CurrencySwitcher = () => <div data-testid="currency-switcher" />;
+  (CurrencySwitcher as any).displayName = "CurrencySwitcherMock";
+  return { CurrencySwitcher };
+});
 
 describe("HeaderClient behavior", () => {
   beforeEach(() => {
@@ -43,4 +47,3 @@ describe("HeaderClient behavior", () => {
     expect(screen.queryByText("5")).toBeNull();
   });
 });
-

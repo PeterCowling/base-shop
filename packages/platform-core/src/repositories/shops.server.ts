@@ -1,13 +1,12 @@
 // packages/platform-core/repositories/shops.server.ts
 import "server-only";
 
-import { promises as fs } from "fs";
 import { shopSchema, type Shop } from "@acme/types";
 import { defaultFilterMappings } from "../defaultFilterMappings";
-import { DATA_ROOT } from "../dataRoot";
 import { baseTokens, loadThemeTokens } from "../themeTokens/index";
 import { prisma } from "../db";
 import { getShopById, updateShopInRepo } from "./shop.server";
+import { listShopsInDataRoot, readFromShop } from "../utils/safeFs";
 export {
   diffHistory,
   getShopSettings,
@@ -35,11 +34,7 @@ export async function listShops(
       return rows.map((r: { id: string }) => r.id);
   } catch {
     try {
-      const entries = await fs.readdir(DATA_ROOT, { withFileTypes: true });
-      const dirs = entries
-        .filter((e) => e.isDirectory())
-        .map((e) => e.name)
-        .sort();
+      const dirs = await listShopsInDataRoot();
       if (dirs.length === 0) return [];
       const maxPage = Math.max(1, Math.ceil(dirs.length / limitNum));
       const safePage = Math.min(pageNum, maxPage);
@@ -92,7 +87,7 @@ export async function readShop(shop: string): Promise<Shop> {
   }
 
   try {
-    const raw = await fs.readFile(`${DATA_ROOT}/${shop}/shop.json`, "utf8");
+    const raw = (await readFromShop(shop, "shop.json", "utf8")) as string;
     const parsed = shopSchema.safeParse(JSON.parse(raw));
     if (parsed.success) {
       return await applyThemeData(parsed.data as Shop);

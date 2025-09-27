@@ -8,7 +8,7 @@ interface Props {
 const SnapLine = ({ x = null, y = null }: Props) => {
   if (x === null && y === null) return null;
   return (
-    <>
+    <div className="relative">
       {x !== null && (
         <div
           className="pointer-events-none absolute top-0 bottom-0 w-px bg-primary"
@@ -21,7 +21,7 @@ const SnapLine = ({ x = null, y = null }: Props) => {
           style={{ top: y }}
         />
       )}
-    </>
+    </div>
   );
 };
 

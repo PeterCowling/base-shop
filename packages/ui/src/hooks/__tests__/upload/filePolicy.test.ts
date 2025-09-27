@@ -1,4 +1,6 @@
+/* i18n-exempt file -- test titles and messages are developer-facing */
 import { validateFilePolicy, firstFileFromChange } from "../../upload/filePolicy";
+import type React from "react";
 
 describe("validateFilePolicy", () => {
   it("returns undefined for valid image under size limit", () => {
@@ -23,13 +25,12 @@ describe("validateFilePolicy", () => {
 describe("firstFileFromChange", () => {
   it("returns first file from input change", () => {
     const f = new File(["x"], "x.png", { type: "image/png" });
-    const e = { target: { files: [f] } } as any;
+    const e = { target: { files: [f] } } as unknown as React.ChangeEvent<HTMLInputElement>;
     expect(firstFileFromChange(e)).toBe(f);
   });
 
   it("returns null when no files present", () => {
-    const e = { target: { files: [] } } as any;
+    const e = { target: { files: [] } } as unknown as React.ChangeEvent<HTMLInputElement>;
     expect(firstFileFromChange(e)).toBeNull();
   });
 });
-

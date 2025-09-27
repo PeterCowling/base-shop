@@ -193,4 +193,3 @@ describe("trackEvent providers", () => {
     expect(content.split("\n").filter(Boolean)).toHaveLength(2);
   });
 });
-

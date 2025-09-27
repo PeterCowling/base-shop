@@ -30,7 +30,7 @@ describe("initTheme", () => {
     });
 
     expect(() => {
-      // eslint-disable-next-line no-eval
+      // eslint-disable-next-line security/detect-eval-with-expression -- CORE-1013 test executes theme init script string
       eval(initTheme);
     }).not.toThrow();
     expect(document.documentElement.style.colorScheme).toBe("light");
@@ -51,7 +51,7 @@ describe("initTheme", () => {
       value: jest.fn(),
     });
 
-    // eslint-disable-next-line no-eval
+    // eslint-disable-next-line security/detect-eval-with-expression -- CORE-1013 test executes theme init script string
     eval(initTheme);
 
     expect(document.documentElement.style.colorScheme).toBe("dark");
@@ -75,7 +75,7 @@ describe("initTheme", () => {
       value: jest.fn(),
     });
 
-    // eslint-disable-next-line no-eval
+    // eslint-disable-next-line security/detect-eval-with-expression -- CORE-1013 test executes theme init script string
     eval(initTheme);
 
     expect(document.documentElement.style.colorScheme).toBe("light");
@@ -99,7 +99,7 @@ describe("initTheme", () => {
       value: jest.fn().mockReturnValue({ matches: true }),
     });
 
-    // eslint-disable-next-line no-eval
+    // eslint-disable-next-line security/detect-eval-with-expression -- CORE-1013 test executes theme init script string
     eval(initTheme);
 
     expect(document.documentElement.style.colorScheme).toBe("dark");
@@ -123,7 +123,7 @@ describe("initTheme", () => {
       value: jest.fn().mockReturnValue({ matches: false }),
     });
 
-    // eslint-disable-next-line no-eval
+    // eslint-disable-next-line security/detect-eval-with-expression -- CORE-1013 test executes theme init script string
     eval(initTheme);
 
     expect(document.documentElement.style.colorScheme).toBe("light");

@@ -2,6 +2,7 @@ import { renderHook, act } from "@testing-library/react";
 import React from "react";
 import useViewport from "../useViewport";
 
+// i18n-exempt: test suite name
 describe("useViewport", () => {
   const originalMatchMedia = window.matchMedia;
 
@@ -34,12 +35,14 @@ describe("useViewport", () => {
     jest.restoreAllMocks();
   });
 
+  // i18n-exempt: test description
   it("returns 'desktop' for desktop width", () => {
     mockMatchMedia(1200);
     const { result } = renderHook(() => useViewport());
     expect(result.current).toBe("desktop");
   });
 
+  // i18n-exempt: test table descriptions
   it.each([
     [800, "tablet"],
     [500, "mobile"],
@@ -49,6 +52,7 @@ describe("useViewport", () => {
     expect(result.current).toBe(expected);
   });
 
+  // i18n-exempt: test description
   it("defaults to 'desktop' when matchMedia returns undefined", () => {
     Object.defineProperty(window, "matchMedia", {
       writable: true,
@@ -58,22 +62,28 @@ describe("useViewport", () => {
     expect(result.current).toBe("desktop");
   });
 
+  // i18n-exempt: test description
   it("defaults to 'desktop' when window is undefined", () => {
-    const originalWindow = global.window;
-    const effectSpy = jest
-      .spyOn(React, "useEffect")
-      .mockImplementation(() => {});
+    const originalWindow = globalThis.window;
+    const effectSpy = jest.spyOn(React, "useEffect").mockImplementation(() => {});
     const { result } = renderHook(() => {
-      // @ts-expect-error
-      delete (global as any).window;
+      // Simulate window being undefined by redefining property
+      Object.defineProperty(globalThis, "window", {
+        value: undefined,
+        configurable: true,
+      });
       const vp = useViewport();
-      global.window = originalWindow;
+      Object.defineProperty(globalThis, "window", {
+        value: originalWindow,
+        configurable: true,
+      });
       return vp;
     });
     expect(result.current).toBe("desktop");
     effectSpy.mockRestore();
   });
 
+  // i18n-exempt: test description
   it("updates on resize events", () => {
     let width = 500;
     mockMatchMedia(width);
@@ -90,4 +100,3 @@ describe("useViewport", () => {
     expect(result.current).toBe("desktop");
   });
 });
-

@@ -54,19 +54,16 @@ const useFileDrop = ({ shop, dispatch, allowExternalUrl, debounceMs = 600 }: Opt
         ev.preventDefault();
         if (isUploading) return;
         // Try external URL/text/files first via the analyzer
-        const analyze = (processDataTransfer as any) as undefined | ((e: DragEvent<HTMLDivElement>) => Promise<"file"|"url"|"text"|"none">);
-        const startUpload = (handleUpload as any) as undefined | (() => Promise<void>);
-        const uploading = Boolean(isUploading);
-        const kind = analyze ? await analyze(ev) : "none";
+        const kind = await processDataTransfer(ev);
         if (kind === "file" || kind === "url") {
           // Auto-start upload for canvas drops
-          if (startUpload && !uploading) await startUpload();
+          if (!isUploading) await handleUpload();
           return;
         }
         if (kind === "none") {
           // Fallback to legacy handler (files only)
           onDrop(ev);
-          if (startUpload && !uploading) await startUpload();
+          if (!isUploading) await handleUpload();
         }
       } catch (err) {
         console.error(err);

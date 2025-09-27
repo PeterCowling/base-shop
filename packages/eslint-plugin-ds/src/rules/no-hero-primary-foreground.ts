@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- minimal AST inspection */
+ 
 import type { Rule } from "eslint";
 
 const MSG_ID = "noHeroPrimaryForeground" as const;

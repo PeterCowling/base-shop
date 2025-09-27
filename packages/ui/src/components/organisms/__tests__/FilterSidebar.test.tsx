@@ -1,3 +1,4 @@
+/* i18n-exempt file -- tests use literal copy for assertions */
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FilterSidebar } from "../FilterSidebar";

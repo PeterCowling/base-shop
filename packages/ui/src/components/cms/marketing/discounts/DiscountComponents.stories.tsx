@@ -21,25 +21,28 @@ type Story = StoryObj<typeof DiscountForm>;
 
 export const FormWithPreview: Story = {
   render: () => {
-    const [preview, setPreview] = useState<DiscountPreviewData>(
-      getDiscountPreview(defaultDiscountValues)
-    );
-    return (
-      <div className="grid gap-6 lg:grid-cols-[1.1fr,0.9fr]">
-        <DiscountForm
-          defaultValues={{
-            code: "VIP30",
-            value: 30,
-            appliesTo: "Collections: Denim, Jackets",
-            startDate: "2024-09-01",
-            endDate: "2024-09-15",
-          }}
-          onSubmit={async () => undefined}
-          onPreviewChange={setPreview}
-        />
-        <DiscountPreviewPanel data={preview} />
-      </div>
-    );
+    function Example() {
+      const [preview, setPreview] = useState<DiscountPreviewData>(
+        getDiscountPreview(defaultDiscountValues)
+      );
+      return (
+        <div className="grid gap-6 lg:grid-cols-2">
+          <DiscountForm
+            defaultValues={{
+              code: "VIP30",
+              value: 30,
+              appliesTo: "Collections: Denim, Jackets",
+              startDate: "2024-09-01",
+              endDate: "2024-09-15",
+            }}
+            onSubmit={async () => undefined}
+            onPreviewChange={setPreview}
+          />
+          <DiscountPreviewPanel data={preview} />
+        </div>
+      );
+    }
+    return <Example />;
   },
 };
 

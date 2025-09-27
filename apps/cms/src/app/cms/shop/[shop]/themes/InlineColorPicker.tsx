@@ -23,6 +23,7 @@ export default function InlineColorPicker({
   onClose,
 }: Props) {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const input = inputRef.current;
@@ -31,6 +32,19 @@ export default function InlineColorPicker({
       input.click();
     }
   }, []);
+
+  useEffect(() => {
+    const handleDocumentClick = (e: MouseEvent) => {
+      const target = e.target as Node | null;
+      const wrap = containerRef.current;
+      if (wrap && target && !wrap.contains(target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleDocumentClick);
+    return () => document.removeEventListener("mousedown", handleDocumentClick);
+  }, [onClose]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value;
@@ -46,11 +60,11 @@ export default function InlineColorPicker({
   const defaultHex = isHsl(defaultValue) ? hslToHex(defaultValue) : defaultValue;
 
   return (
-    <div className="fixed inset-0 z-50" onClick={handleClose}>
+    <div className="relative">
       <div
-        className="absolute"
+        ref={containerRef}
+        className="fixed"
         style={{ left: x, top: y }}
-        onClick={(e) => e.stopPropagation()}
       >
         <input
           ref={inputRef}

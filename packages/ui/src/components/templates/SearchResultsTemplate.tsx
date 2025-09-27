@@ -1,11 +1,12 @@
 import * as React from "react";
-const t = (s: string) => s;
+import { useTranslations } from "@acme/i18n";
 import { cn } from "../../utils/style";
 import { PaginationControl } from "../molecules/PaginationControl";
 import { SearchBar } from "../molecules/SearchBar";
 import type { SKU } from "@acme/types";
 import { ProductGrid } from "../organisms/ProductGrid";
 import { Skeleton } from "../atoms/Skeleton";
+import { Grid as GridPrimitive } from "../atoms/primitives";
 
 export interface SearchResultsTemplateProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "results"> {
@@ -42,6 +43,7 @@ export function SearchResultsTemplate({
   className,
   ...props
 }: SearchResultsTemplateProps) {
+  const t = useTranslations();
   const rawCount = maxItems ?? minItems ?? 1;
   const columnCount =
     Number.isFinite(rawCount) && rawCount > 0 ? Math.floor(rawCount) : 1;
@@ -52,22 +54,22 @@ export function SearchResultsTemplate({
         suggestions={suggestions}
         onSelect={onQueryChange}
         onSearch={onQueryChange}
-        placeholder={t("Search products…")}
-        label={t("Search products")}
+        placeholder={t("Search products…") as string}
+        label={t("Search products") as string}
       />
       {filters}
       {isLoading ? (
-        <div
+        <GridPrimitive
+          /* i18n-exempt — non-user-facing test hook */
           data-cy="search-results-loading"
-          className="grid gap-6"
-          style={{
-            gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))`,
-          }}
+          cols={1}
+          gap={6}
+          style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
         >
           {Array.from({ length: columnCount }).map((_, i) => (
             <Skeleton key={i} className="h-48 w-full" />
           ))}
-        </div>
+        </GridPrimitive>
       ) : results.length > 0 ? (
         <ProductGrid
           products={results}

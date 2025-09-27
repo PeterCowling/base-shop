@@ -8,18 +8,27 @@ import ProductPage, {
 } from "../src/app/[lang]/product/[slug]/page";
 import type { SKU } from "@acme/types";
 
-jest.mock("@platform-core/components/pdp/ImageGallery", () => () => (
-  <div data-testid="gallery" />
-));
+jest.mock("@platform-core/components/pdp/ImageGallery", () => {
+  function ImageGalleryMock() {
+    return <div data-testid="gallery" />;
+  }
+  return ImageGalleryMock;
+});
 
-jest.mock("@platform-core/components/pdp/SizeSelector", () => (props: any) => (
-  <button data-cy="size" onClick={() => props.onSelect("M")} />
-));
+jest.mock("@platform-core/components/pdp/SizeSelector", () => {
+  function SizeSelectorMock(props: any) {
+    return <button data-cy="size" onClick={() => props.onSelect("M")} />;
+  }
+  return SizeSelectorMock;
+});
 
 const addProps: any[] = [];
-jest.mock("@platform-core/components/shop/AddToCartButton.client", () => (props: any) => {
-  addProps.push(props);
-  return <button data-testid="add" />;
+jest.mock("@platform-core/components/shop/AddToCartButton.client", () => {
+  function AddToCartButtonMock(props: any) {
+    addProps.push(props);
+    return <button data-testid="add" />;
+  }
+  return AddToCartButtonMock;
 });
 
 jest.mock("@ui/components/atoms/Price", () => ({
@@ -34,9 +43,12 @@ jest.mock("@platform-core/products", () => ({
   getProductBySlug: (s: string) => getProduct(s),
 }));
 
-jest.mock("../src/components/CleaningInfo", () => () => (
-  <div data-testid="clean" />
-));
+jest.mock("../src/components/CleaningInfo", () => {
+  function CleaningInfoMock() {
+    return <div data-testid="clean" />;
+  }
+  return CleaningInfoMock;
+});
 jest.mock("../src/lib/seo", () => ({
   getStructuredData: () => ({}),
   serializeJsonLd: () => "{}",

@@ -23,31 +23,37 @@ export default function usePresetActions({
   const canSavePreset = useMemo(() => {
     if (!Array.isArray(selectedIds) || selectedIds.length !== 1) return false;
     const id = selectedIds[0];
-    const c = (components || []).find((x: any) => (x as any)?.id === id) as any;
+    const c = (components || []).find((x) => x.id === id);
     return !!c && c.type === "Section";
   }, [components, selectedIds]);
 
   const onSavePreset = useCallback(async () => {
     try {
       if (!Array.isArray(selectedIds) || selectedIds.length !== 1) {
-        setToast({ open: true, message: "Select a single Section to save as preset" });
+        setToast({ open: true, message: "Select a single Section to save as preset" }); // i18n-exempt: admin-only guidance text
         return;
       }
       const id = selectedIds[0];
-      const c = (components || []).find((x: any) => (x as any)?.id === id) as any;
+      const c = (components || []).find((x) => x.id === id);
       if (!c || c.type !== "Section") {
-        setToast({ open: true, message: "Selected item is not a Section" });
+        setToast({ open: true, message: "Selected item is not a Section" }); // i18n-exempt: admin-only guidance text
         return;
       }
 
       const label = (typeof window !== "undefined"
-        ? window.prompt("Preset label", c.label || "Section Preset")
+        ? window.prompt(
+            "Preset label", // i18n-exempt: temporary admin prompt
+            (c as { label?: string }).label || "Section Preset" // i18n-exempt: default label for admin prompt
+          )
         : null) || "";
       if (!label.trim()) return;
 
       const lockedRaw =
         (typeof window !== "undefined"
-          ? window.prompt("Locked keys (optional, comma-separated)", "") || ""
+          ? window.prompt(
+              "Locked keys (optional, comma-separated)", // i18n-exempt: temporary admin prompt
+              ""
+            ) || ""
           : "");
       const locked = lockedRaw
         .split(",")
@@ -73,15 +79,14 @@ export default function usePresetActions({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ preset }),
       });
-      if (!res.ok) throw new Error("Failed to save preset");
-      setToast({ open: true, message: "Preset saved" });
+      if (!res.ok) throw new Error("Failed to save preset"); // i18n-exempt: internal error detail
+      setToast({ open: true, message: "Preset saved" }); // i18n-exempt: confirmation toast
     } catch (err) {
        
-      console.error("save preset failed", err);
-      setToast({ open: true, message: "Failed to save preset" });
+      console.error("save preset failed", err); // i18n-exempt: dev console log
+      setToast({ open: true, message: "Failed to save preset" }); // i18n-exempt: error toast
     }
   }, [components, selectedIds, setToast, shop]);
 
   return { canSavePreset, onSavePreset } as const;
 }
-

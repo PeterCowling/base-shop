@@ -262,9 +262,9 @@ export function initScrollEffects(root?: HTMLElement) {
       const href = el.getAttribute("data-pb-href") || "";
       const id = href.startsWith("#") ? href.slice(1) : href;
       if (!id) return;
-      const dest = document.getElementById(id) || document.querySelector(href);
-      if (dest && (dest as any).scrollIntoView) {
-        try { (dest as any).scrollIntoView({ behavior: "smooth", block: "start" }); } catch { (dest as any).scrollIntoView(); }
+      const dest = (document.getElementById(id) as Element | null) ?? document.querySelector(href);
+      if (dest) {
+        try { dest.scrollIntoView({ behavior: "smooth", block: "start" }); } catch { dest.scrollIntoView(); }
       }
     } else if (action === "open-modal") {
       e.preventDefault();
@@ -279,13 +279,15 @@ export function initScrollEffects(root?: HTMLElement) {
       overlay.style.justifyContent = "center";
       const modal = document.createElement("div");
       modal.style.background = "white";
-      modal.style.maxWidth = "min(90vw, 640px)";
+      modal.style.maxWidth = "min(90vw, 640px)"; // i18n-exempt — CSS value literal, not user-facing copy
       modal.style.maxHeight = "80vh";
       modal.style.padding = "16px";
       modal.style.borderRadius = "8px";
       modal.style.overflow = "auto";
       const close = document.createElement("button");
+      // i18n-exempt — decorative close glyph
       close.textContent = "×";
+      // i18n-exempt — minimal builder-only overlay control
       close.setAttribute("aria-label", "Close");
       close.style.position = "absolute";
       close.style.top = "12px";

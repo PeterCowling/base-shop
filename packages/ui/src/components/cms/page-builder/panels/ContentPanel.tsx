@@ -1,8 +1,10 @@
 // packages/ui/src/components/cms/page-builder/panels/ContentPanel.tsx
+// i18n-exempt file -- PB-238: Builder-only panel with limited microcopy
 "use client";
 
 import type { PageComponent } from "@acme/types";
 import { Suspense } from "react";
+import { useTranslations } from "@acme/i18n";
 import editorRegistry from "../editorRegistry";
 import type { EditorProps } from "../EditorProps";
 import type { ComponentType, LazyExoticComponent } from "react";
@@ -12,6 +14,7 @@ import ColumnsControls from "./content/ColumnsControls";
 import GapControls from "./content/GapControls";
 import AlignmentControls from "./content/AlignmentControls";
 import { getContentSuggestions } from "./content/contentSuggestions";
+import { Grid } from "../../../atoms/primitives";
 
 interface Props {
   component: PageComponent;
@@ -27,7 +30,8 @@ export default function ContentPanel({
   onChange,
   handleInput,
 }: Props) {
-  const isMultiColumn = (component as any).type === "MultiColumn";
+  const t = useTranslations();
+  const isMultiColumn = component.type === "MultiColumn";
   const Specific: LazyExoticComponent<ComponentType<EditorProps>> | undefined = editorRegistry[component.type];
   const suggestionsEnabled = (process.env.NEXT_PUBLIC_CMS_CONTENT_SUGGESTIONS || "").toString().toLowerCase() === "true";
   const suggestions = suggestionsEnabled ? getContentSuggestions(component) : [];
@@ -55,18 +59,21 @@ export default function ContentPanel({
 
       {suggestionsEnabled && suggestions.length > 0 && (
         <div className="space-y-1" data-testid="content-suggestions">
-          <div className="text-xs font-semibold text-muted-foreground">Suggestions</div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="text-xs font-semibold text-muted-foreground">{t(
+            // i18n-exempt -- PB-238: Builder-only label
+            "Suggestions"
+          )}</div>
+          <Grid cols={2} gap={2}>
             {suggestions.map((s) => (
               <button
                 key={s.id}
                 type="button"
-                className="rounded border p-2 text-start hover:bg-accent/30"
+                className="rounded border p-2 text-start hover:bg-accent/30 min-h-10 min-w-10"
                 onClick={() => {
                   try {
                     const patch = s.apply(component);
                     if (patch && typeof patch === "object") onChange(patch);
-                  } catch (e) {
+                  } catch {
                     // no-op on apply errors
                   }
                 }}
@@ -75,17 +82,21 @@ export default function ContentPanel({
               >
                 <div className="text-xs font-medium">{s.label}</div>
                 {s.description && (
-                  <div className="text-[11px] text-muted-foreground">{s.description}</div>
+                  <div className="text-xs text-muted-foreground">{s.description}</div>
                 )}
               </button>
             ))}
-          </div>
+          </Grid>
         </div>
       )}
-      <Suspense fallback={<p className="text-muted text-sm">Loading...</p>}>
+      <Suspense fallback={
+        // i18n-exempt: Transient loading text in builder
+        <p className="text-muted text-sm">Loading...</p>
+      }>
         {Specific ? (
           <Specific component={component} onChange={onChange} />
         ) : (
+          // i18n-exempt: Builder-only message when editor not found
           <p className="text-muted text-sm">No editable props</p>
         )}
       </Suspense>

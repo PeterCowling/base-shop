@@ -16,7 +16,7 @@ describe("Accordion", () => {
 
     items.forEach(({ content, title }) => {
       const header = screen.getByRole("button", {
-        name: new RegExp(`^${title as string}`),
+        name: (name) => name.startsWith(String(title)),
       });
       expect(header).toHaveAttribute("aria-expanded", "false");
       expect(screen.queryByText(content as string)).not.toBeInTheDocument();

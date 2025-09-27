@@ -1,3 +1,4 @@
+/* i18n-exempt file -- tests use literal product titles and labels */
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { ProductGrid, type Product } from "../ProductGrid";
 import "../../../../../../test/resetNextMocks";
@@ -7,23 +8,33 @@ jest.mock("@acme/platform-core/contexts/CartContext", () => ({
 }));
 
 function mockResize(initialWidth: number) {
-  let cb: ResizeObserverCallback;
+  let cb!: ResizeObserverCallback;
   let element: Element | undefined;
-  (global as any).ResizeObserver = class {
+
+  const observerStub: ResizeObserver = {
+    observe: () => {},
+    unobserve: () => {},
+    disconnect: () => {},
+  } as unknown as ResizeObserver;
+
+  class MockResizeObserver implements ResizeObserver {
     constructor(callback: ResizeObserverCallback) {
       cb = callback;
     }
-    observe(el: Element) {
+    observe(el: Element): void {
       element = el;
       Object.defineProperty(el, "clientWidth", {
         value: initialWidth,
         configurable: true,
       });
-      cb([{ target: el } as ResizeObserverEntry], this);
+      cb([{ target: el } as ResizeObserverEntry], observerStub);
     }
-    disconnect() {}
-    unobserve() {}
-  } as any;
+    disconnect(): void {}
+    unobserve(): void {}
+  }
+
+  (globalThis as unknown as { ResizeObserver: typeof ResizeObserver }).ResizeObserver =
+    (MockResizeObserver as unknown as typeof ResizeObserver);
 
   return (width: number) => {
     if (!element) return;
@@ -31,7 +42,7 @@ function mockResize(initialWidth: number) {
       value: width,
       configurable: true,
     });
-    cb([{ target: element } as ResizeObserverEntry], {} as any);
+    cb([{ target: element } as ResizeObserverEntry], observerStub);
   };
 }
 
@@ -156,4 +167,3 @@ describe("ProductGrid quick view", () => {
     expect(handleAdd).toHaveBeenCalledWith(products[0]);
   });
 });
-

@@ -1,9 +1,14 @@
+/* i18n-exempt file -- test titles and UI copy are asserted literally */
 import { render, fireEvent } from "@testing-library/react";
 import React from "react";
 import UploaderSurface from "../UploaderSurface";
 
-function makeProps(overrides: Partial<React.ComponentProps<typeof UploaderSurface>> = {}) {
-  const inputRef = { current: document.createElement("input") } as any;
+function makeProps(
+  overrides: Partial<React.ComponentProps<typeof UploaderSurface>> = {},
+) {
+  const inputRef = {
+    current: document.createElement("input"),
+  } as React.MutableRefObject<HTMLInputElement | null>;
   return {
     inputRef,
     pendingFile: null,
@@ -11,12 +16,14 @@ function makeProps(overrides: Partial<React.ComponentProps<typeof UploaderSurfac
     error: undefined,
     isValid: true,
     isVideo: false,
-    requiredOrientation: "landscape" as any,
+    requiredOrientation: "landscape" as const,
     onDrop: jest.fn(),
     onFileChange: jest.fn(),
     openFileDialog: jest.fn(),
     ...overrides,
-  } as React.ComponentProps<typeof UploaderSurface> & { inputRef: any };
+  } as React.ComponentProps<typeof UploaderSurface> & {
+    inputRef: React.MutableRefObject<HTMLInputElement | null>;
+  };
 }
 
 describe("UploaderSurface", () => {
@@ -41,14 +48,17 @@ describe("UploaderSurface", () => {
     fireEvent.dragOver(dropzone);
     fireEvent.dragEnter(dropzone);
     expect(dropzone).toHaveClass("ring-2");
-    fireEvent.drop(dropzone, { dataTransfer: { files: [] } } as any);
+    fireEvent.drop(
+      dropzone,
+      { dataTransfer: { files: [] } } as unknown as DragEvent,
+    );
     expect(props.onDrop).toHaveBeenCalled();
     expect(dropzone).not.toHaveClass("ring-2");
   });
 
   it("shows pending file name, progress, and error", () => {
     const file = new File(["x"], "name.png", { type: "image/png" });
-    const { getByText, rerender } = render(
+    const { getByText } = render(
       <UploaderSurface {...makeProps({ pendingFile: file })} />
     );
     expect(getByText("name.png")).toBeInTheDocument();

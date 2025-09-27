@@ -1,3 +1,4 @@
+/* i18n-exempt file -- test strings for alt text and types */
 import { render } from "@testing-library/react";
 import { ProductGallery } from "../ProductGallery";
 import type { MediaItem } from "../molecules/MediaSelector";
@@ -54,4 +55,3 @@ it("returns null when media array is empty", () => {
   const { container } = render(<ProductGallery media={[]} />);
   expect(container.firstChild).toBeNull();
 });
-

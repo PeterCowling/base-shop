@@ -52,7 +52,7 @@ export async function createPost(
     : undefined;
   try {
     if (slug && (await slugExists(config, slug))) {
-      return { error: "Slug already exists" };
+      return { error: "Slug already exists" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
     }
     const id = await repoCreatePost(config, {
       _type: "post",
@@ -67,9 +67,9 @@ export async function createPost(
       ...(categories.length ? { categories } : {}),
       ...(publishedAt ? { publishedAt } : {}),
     });
-    return { message: "Post created", id };
+    return { message: "Post created", id }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   } catch (err) {
-    console.error("Failed to create post", err);
-    return { error: "Failed to create post" };
+    console.error("Failed to create post", err); // i18n-exempt -- developer log; not user-facing; CMS-1010
+    return { error: "Failed to create post" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   }
 }

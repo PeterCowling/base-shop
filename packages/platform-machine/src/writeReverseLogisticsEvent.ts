@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- Paths are derived from internal configuration */
+/* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
 import type { ReverseLogisticsEventName } from "@acme/types";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { mkdir, writeFile } from "fs/promises";
@@ -23,4 +23,3 @@ export async function writeReverseLogisticsEvent(
   const file = join(dir, `${randomUUID()}.json`);
   await writeFile(file, JSON.stringify({ sessionId, status }));
 }
-

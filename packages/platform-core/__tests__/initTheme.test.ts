@@ -18,7 +18,6 @@ describe("initTheme", () => {
       value: jest.fn().mockReturnValue({ matches: prefersDark ?? false }),
       configurable: true,
     });
-    // eslint-disable-next-line no-eval
     window.eval(initTheme);
     return dom.window.document;
   }
@@ -51,4 +50,3 @@ describe("initTheme", () => {
     expect(document.documentElement.classList.contains("theme-brandx")).toBe(false);
   });
 });
-

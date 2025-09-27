@@ -10,9 +10,9 @@ export async function deletePost(
   const config = await getConfig(shopId);
   try {
     await repoDeletePost(config, id);
-    return { message: "Post deleted" };
+    return { message: "Post deleted" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   } catch (err) {
-    console.error("Failed to delete post", err);
-    return { error: "Failed to delete post" };
+    console.error("Failed to delete post", err); // i18n-exempt -- developer log; not user-facing; CMS-1010
+    return { error: "Failed to delete post" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   }
 }

@@ -1,4 +1,5 @@
 // packages/platform-core/products.ts
+/* i18n-exempt file: mock/seed product catalogue used for demos and tests; not UI copy. */
 /* -------------------------------------------------------------------------- */
 /*  Locale helpers                                                            */
 /* -------------------------------------------------------------------------- */

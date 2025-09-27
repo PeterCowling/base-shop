@@ -57,9 +57,9 @@ export default function MfaSetup() {
           type="button"
           onClick={begin}
           className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
-          data-token="--color-primary"
+          data-token="--color-primary" // i18n-exempt — DS token attribute
         >
-          <span className="text-primary-fg" data-token="--color-primary-fg">
+          <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt — DS token attribute */}
             {t("Generate Secret")}
           </span>
         </button>
@@ -87,9 +87,9 @@ export default function MfaSetup() {
             <button
               type="submit"
               className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
-              data-token="--color-primary"
+              data-token="--color-primary" // i18n-exempt — DS token attribute
             >
-              <span className="text-primary-fg" data-token="--color-primary-fg">
+              <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt — DS token attribute */}
                 {t("Verify")}
               </span>
             </button>

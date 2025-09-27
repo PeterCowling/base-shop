@@ -5,6 +5,8 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { Price } from "../atoms/Price";
 import { QuantityInput } from "../molecules/QuantityInput";
+import { useTranslations } from "@acme/i18n";
+import { Inline } from "../atoms/primitives";
 
 export interface CartTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,6 +22,12 @@ export function CartTemplate({
   className,
   ...props
 }: CartTemplateProps) {
+  const t = useTranslations();
+  // i18n-exempt: DS token literals; not user-visible
+  const emptyClass = "p-8 text-center"; // i18n-exempt: class names
+  const CART_EMPTY_KEY = "cart.empty"; // i18n-exempt: translation key
+  const dangerToken = "--color-danger"; // i18n-exempt: DS token literal
+  const mutedToken = "--color-muted"; // i18n-exempt: DS token literal
   const lines = (Object.entries(cart) as [string, CartLine][]).map(
     ([id, line]) => ({ id, ...line })
   );
@@ -31,20 +39,23 @@ export function CartTemplate({
 
   if (!lines.length) {
     return (
-      <p className={cn("p-8 text-center", className)}>Your cart is empty.</p>
+      <p className={cn(emptyClass, className)}>
+        {/* i18n-exempt: translation key usage; no hardcoded user copy */}
+        {t(CART_EMPTY_KEY)}
+      </p>
     );
   }
 
   return (
     <div className={cn("space-y-6", className)} {...props}>
-      <h2 className="text-xl font-semibold">Your Bag</h2>
+      <h2 className="text-xl font-semibold">{t("cart.title")}</h2>
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b text-start">
-            <th className="py-2">Item</th>
-            <th>Qty</th>
-            <th className="text-end">Price</th>
-            {onRemove && <th className="sr-only">Remove</th>}
+            <th className="py-2">{t("order.item")}</th>
+            <th>{t("order.qty")}</th>
+            <th className="text-end">{t("order.price")}</th>
+            {onRemove && <th className="sr-only">{t("actions.remove")}</th>}
           </tr>
         </thead>
         <tbody>
@@ -53,7 +64,7 @@ export function CartTemplate({
             return (
               <tr key={line.id} className="border-b last:border-0">
                 <td className="py-2">
-                  <div className="flex items-center gap-4">
+                  <Inline gap={4} alignY="center">
                     {media && (
                       <div className="relative hidden h-12 w-12 sm:block">
                         {media.type === "image" ? (
@@ -68,6 +79,7 @@ export function CartTemplate({
                           <video
                             src={media.url}
                             className="h-full w-full rounded-md object-cover"
+                            data-aspect="1/1"
                             muted
                             playsInline
                           />
@@ -76,11 +88,14 @@ export function CartTemplate({
                     )}
                     {line.sku.title}
                     {line.size && (
-                      <span className="ms-1 text-xs text-muted" data-token="--color-muted">
-                        ({line.size})
+                      <span className="ms-1 text-xs text-muted" data-token={mutedToken}>
+                        {/* i18n-exempt: decorative parentheses for size suffix formatting */}
+                        {"("}
+                        {line.size}
+                        {")"}
                       </span>
                     )}
-                  </div>
+                  </Inline>
                 </td>
                 <td>
                   {onQtyChange ? (
@@ -90,9 +105,9 @@ export function CartTemplate({
                       className="justify-center"
                     />
                   ) : (
-                    <div className="flex justify-center">
-                      <span className="min-w-[2ch] text-center">{line.qty}</span>
-                    </div>
+                    <Inline className="justify-center">
+                      <span className="min-w-6 text-center">{line.qty}</span>
+                    </Inline>
                   )}
                 </td>
                 <td className="text-end">
@@ -100,13 +115,14 @@ export function CartTemplate({
                 </td>
                 {onRemove && (
                   <td className="text-end">
+                    {/* i18n-exempt: DS token/classnames below are not user-visible copy */}
                     <button
                       type="button"
                       onClick={() => onRemove(line.id)}
-                      className="text-danger hover:underline"
-                      data-token="--color-danger"
+                      className="text-danger hover:underline inline-flex items-center justify-center min-h-10 min-w-10"
+                      data-token={dangerToken}
                     >
-                      Remove
+                      {t("actions.remove")}
                     </button>
                   </td>
                 )}
@@ -117,7 +133,7 @@ export function CartTemplate({
         <tfoot>
           <tr>
             <td />
-            <td className="py-2">Deposit</td>
+            <td className="py-2">{t("order.deposit")}</td>
             <td className="text-end">
               <Price amount={deposit} />
             </td>
@@ -125,7 +141,7 @@ export function CartTemplate({
           </tr>
           <tr>
             <td />
-            <td className="py-2 font-semibold">Total</td>
+            <td className="py-2 font-semibold">{t("order.total")}</td>
             <td className="text-end font-semibold">
               <Price amount={subtotal + deposit} />
             </td>

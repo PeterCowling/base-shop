@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Action } from "./state";
+import type { UpdateAction } from "./state/layout";
 
 type StartState = {
   cx: number;
@@ -26,14 +27,15 @@ function parseRotate(styles?: string): number {
 }
 
 function setRotate(styles: string | undefined, angleDeg: number): string {
-  let obj: any = {};
+  let obj: Record<string, unknown> = {};
   try {
     obj = styles ? JSON.parse(String(styles)) : {};
   } catch {
     obj = {};
   }
-  obj.effects = obj.effects ? { ...obj.effects } : {};
-  obj.effects.transformRotate = `${Math.round(angleDeg)}deg`;
+  const effects = (obj.effects as Record<string, unknown> | undefined) ?? {};
+  effects.transformRotate = `${Math.round(angleDeg)}deg`;
+  (obj as Record<string, unknown>).effects = effects;
   return JSON.stringify(obj);
 }
 
@@ -53,6 +55,7 @@ export default function useCanvasRotate({
   const startRef = useRef<StartState>(null);
   const [rotating, setRotating] = useState(false);
   const [angle, setAngle] = useState(0);
+  const captureRef = useRef<{ el: Element | null; id: number | null }>({ el: null, id: null });
 
   useEffect(() => {
     if (!rotating) return;
@@ -73,29 +76,28 @@ export default function useCanvasRotate({
       dispatch({
         type: "update",
         id: componentId,
-        patch: { styles: setRotate(styles, snapped) } as any,
-      });
+        patch: { styles: setRotate(styles, snapped) },
+      } as UpdateAction);
     };
     const onUp = () => {
       setRotating(false);
       try {
-        if ((startRef.current as any)?.target) {
-          (startRef.current as any).target.releasePointerCapture?.(
-            (startRef.current as any).pointerId
-          );
+        if (captureRef.current?.el && captureRef.current?.id != null) {
+          (captureRef.current.el as unknown as { releasePointerCapture?: (id: number) => void }).releasePointerCapture?.(captureRef.current.id);
         }
       } catch {}
+      captureRef.current = { el: null, id: null };
       startRef.current = null;
     };
     const onKey = (ke: KeyboardEvent) => { if (ke.key === 'Escape') onUp(); };
-    try { window.addEventListener("pointermove", onMove as any, { passive: true }); } catch { window.addEventListener("pointermove", onMove as any); }
+    try { window.addEventListener("pointermove", onMove as unknown as EventListener, { passive: true }); } catch { window.addEventListener("pointermove", onMove as unknown as EventListener); }
     window.addEventListener("pointerup", onUp, { once: true });
     window.addEventListener("blur", onUp, { once: true });
     window.addEventListener("keydown", onKey);
     return () => {
-      try { window.removeEventListener("pointermove", onMove as any); } catch {}
-      try { window.removeEventListener("pointerup", onUp as any); } catch {}
-      try { window.removeEventListener("blur", onUp as any); } catch {}
+      try { window.removeEventListener("pointermove", onMove as unknown as EventListener); } catch {}
+      try { window.removeEventListener("pointerup", onUp as EventListener); } catch {}
+      try { window.removeEventListener("blur", onUp as EventListener); } catch {}
       window.removeEventListener("keydown", onKey);
     };
   }, [rotating, componentId, dispatch, styles, zoom]);
@@ -117,7 +119,10 @@ export default function useCanvasRotate({
       startPointerAngle,
       startValueAngle,
     } as StartState;
-    try { (e.target as any)?.setPointerCapture?.(e.pointerId); } catch {}
+    try {
+      (e.target as Element | null)?.setPointerCapture?.(e.pointerId);
+      captureRef.current = { el: e.target as Element, id: e.pointerId };
+    } catch {}
     setAngle(startValueAngle);
     setRotating(true);
   };

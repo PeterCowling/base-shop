@@ -17,7 +17,7 @@ describe("ProfileForm focus behavior", () => {
   });
 
   it("focuses email on 409 conflict error", async () => {
-    // @ts-expect-error
+    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 409,
@@ -30,4 +30,3 @@ describe("ProfileForm focus behavior", () => {
     expect(email).toHaveFocus();
   });
 });
-

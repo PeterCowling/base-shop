@@ -6,12 +6,24 @@ import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 jest.mock("@ui/hooks/useMediaUpload", () => ({ useMediaUpload: jest.fn() }));
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
-  return {
-    Input: React.forwardRef((props: any, ref: any) => <input ref={ref} {...props} />),
-    Button: React.forwardRef((props: any, ref: any) => (
-      <button ref={ref} {...props} />
-    )),
-  };
+  const Input = React.forwardRef(function InputMock(
+    props: any,
+    ref: any
+  ) {
+    return <input ref={ref} {...props} />;
+  });
+  // Ensure lint rule detects explicit displayName
+  (Input as any).displayName = "InputMock";
+
+  const Button = React.forwardRef(function ButtonMock(
+    props: any,
+    ref: any
+  ) {
+    return <button ref={ref} {...props} />;
+  });
+  (Button as any).displayName = "ButtonMock";
+
+  return { Input, Button };
 });
 
 const mockHook = useMediaUpload as jest.MockedFunction<typeof useMediaUpload>;
@@ -133,4 +145,3 @@ describe("UploadPanel", () => {
     await waitFor(() => expect(onUploadError).toHaveBeenCalledWith("Upload failed"));
   });
 });
-

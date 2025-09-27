@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
+/* eslint-disable security/detect-non-literal-fs-filename -- ENG-101: Paths are derived from validated inputs and repo markers in scaffolding utilities */
 /**
  * Filesystem helpers used during shop creation.
  *
@@ -19,7 +19,7 @@ import { loadTokens } from "./themeUtils";
 
 // `__dirname` only exists in CommonJS builds; declare it so TypeScript allows
 // referencing it as a fallback when running tests transpiled to CJS.
-// eslint-disable-next-line no-var
+// eslint-disable-next-line no-var -- ENG-101: Allow global __dirname declaration for CJS-compiled test environments
 declare var __dirname: string;
 
 export function repoRoot(): string {

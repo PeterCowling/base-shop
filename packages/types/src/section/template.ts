@@ -29,7 +29,7 @@ export interface SectionTemplate {
 // Ensure the template root looks like a Section via a lightweight refine
 const sectionLike = pageComponentSchema.refine(
   (c: PageComponent) => c?.type === "Section",
-  { message: "Template root must be a Section" }
+  { message: "Template root must be a Section" } // i18n-exempt: developer-facing schema validation, not user UI
 );
 
 export const sectionTemplateSchema = z

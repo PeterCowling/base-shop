@@ -10,39 +10,54 @@ export type MotionPreset = {
 export const motionPresets: MotionPreset[] = [
   {
     id: "gentle-fade",
+    // i18n-exempt: Builder preset label
     label: "Gentle Fade",
     apply: (set) => {
-      set("animation" as any, "fade" as any);
-      set("animationDuration" as any, 600 as any);
-      set("animationEasing" as any, "cubic-bezier(0.37, 0, 0.63, 1)" as any); // Sine InOut
+      (set as unknown as (f: string, v: unknown) => void)("animation", "fade");
+      (set as unknown as (f: string, v: unknown) => void)("animationDuration", 600);
+      (set as unknown as (f: string, v: unknown) => void)(
+        "animationEasing",
+        /* i18n-exempt: CSS easing value */ "cubic-bezier(0.37, 0, 0.63, 1)",
+      ); // Sine InOut
     },
   },
   {
     id: "slide-up",
+    // i18n-exempt: Builder preset label
     label: "Slide Up",
     apply: (set) => {
-      set("animation" as any, "slide-up" as any);
-      set("animationDuration" as any, 500 as any);
-      set("animationEasing" as any, "cubic-bezier(0.22, 1, 0.36, 1)" as any); // Quint Out
+      (set as unknown as (f: string, v: unknown) => void)("animation", "slide-up");
+      (set as unknown as (f: string, v: unknown) => void)("animationDuration", 500);
+      (set as unknown as (f: string, v: unknown) => void)(
+        "animationEasing",
+        /* i18n-exempt: CSS easing value */ "cubic-bezier(0.22, 1, 0.36, 1)",
+      ); // Quint Out
     },
   },
   {
     id: "pop-zoom",
+    // i18n-exempt: Builder preset label
     label: "Pop Zoom",
     apply: (set) => {
-      set("animation" as any, "zoom" as any);
-      set("animationDuration" as any, 400 as any);
-      set("animationEasing" as any, "cubic-bezier(0.34, 1.56, 0.64, 1)" as any); // Back Out
+      (set as unknown as (f: string, v: unknown) => void)("animation", "zoom");
+      (set as unknown as (f: string, v: unknown) => void)("animationDuration", 400);
+      (set as unknown as (f: string, v: unknown) => void)(
+        "animationEasing",
+        /* i18n-exempt: CSS easing value */ "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      ); // Back Out
     },
   },
   {
     id: "rotate-in",
+    // i18n-exempt: Builder preset label
     label: "Rotate In",
     apply: (set) => {
-      set("animation" as any, "rotate" as any);
-      set("animationDuration" as any, 700 as any);
-      set("animationEasing" as any, "cubic-bezier(0.33, 1, 0.68, 1)" as any); // Cubic Out
+      (set as unknown as (f: string, v: unknown) => void)("animation", "rotate");
+      (set as unknown as (f: string, v: unknown) => void)("animationDuration", 700);
+      (set as unknown as (f: string, v: unknown) => void)(
+        "animationEasing",
+        /* i18n-exempt: CSS easing value */ "cubic-bezier(0.33, 1, 0.68, 1)",
+      ); // Cubic Out
     },
   },
 ];
-

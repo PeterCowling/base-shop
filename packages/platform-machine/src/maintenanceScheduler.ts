@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- Paths are derived from internal configuration */
+/* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
 import { readdir } from "fs/promises";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readInventory } from "@platform-core/repositories/inventory.server";
@@ -23,6 +23,7 @@ export async function runMaintenanceScan(
         readProducts(shop),
       ]);
     } catch (err) {
+      // i18n-exempt: OPS-1234 technical log, not user-facing
       logger.error("maintenance scan failed", { shopId: shop, err });
       continue;
     }
@@ -35,8 +36,10 @@ export async function runMaintenanceScan(
       const limit = product.wearAndTearLimit ?? Infinity;
       const cycle = product.maintenanceCycle ?? Infinity;
       if (wear >= limit) {
+        // i18n-exempt: OPS-1234 technical log, not user-facing
         logger.info("item needs retirement", { shopId: shop, sku: item.sku });
       } else if (cycle !== Infinity && wear > 0 && wear % cycle === 0) {
+        // i18n-exempt: OPS-1234 technical log, not user-facing
         logger.info("item needs maintenance", { shopId: shop, sku: item.sku });
       }
     }
@@ -50,9 +53,14 @@ export function startMaintenanceScheduler(): NodeJS.Timeout {
   const day = 24 * 60 * 60 * 1000;
   const run = () =>
     (eval("require")(
+      // i18n-exempt: OPS-1234 module path string, not user-facing copy
       "@acme/platform-machine/maintenanceScheduler",
+    // eslint-disable-next-line ds/no-hardcoded-copy -- OPS-1234 module path string, not user-facing copy
     ) as typeof import("@acme/platform-machine/maintenanceScheduler")).runMaintenanceScan()
-      .catch((err) => logger.error("maintenance scan failed", { err }));
+      .catch((err) => {
+        // i18n-exempt: OPS-1234 technical log, not user-facing
+        logger.error("maintenance scan failed", { err });
+      });
   // run immediately then every night
   run();
   return setInterval(run, day);

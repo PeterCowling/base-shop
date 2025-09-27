@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { MediaItem } from "@acme/types";
 
 import { hasUrl } from "./utils";
@@ -13,14 +14,16 @@ export function useUploadHandlers(actions: Pick<
   "setFiles" | "setSelectedUrl" | "setToast"
 >) {
   const { setFiles, setSelectedUrl, setToast } = actions;
+  const t = useTranslations();
 
   const onUploaded = useCallback(
     (item: MediaItem) => {
       if (!hasUrl(item)) {
+        // i18n-exempt — developer diagnostic, not user-facing
         console.error("Uploaded media item is missing a URL", item);
         setToast({
           open: true,
-          message: "Uploaded media item is missing a URL.",
+          message: t("Uploaded media item is missing a URL."),
           variant: "error",
         });
         return;
@@ -29,9 +32,9 @@ export function useUploadHandlers(actions: Pick<
       const itemWithUrl = item as MediaItemWithUrl;
       setFiles((prev) => [itemWithUrl, ...prev]);
       setSelectedUrl(itemWithUrl.url);
-      setToast({ open: true, message: "Media uploaded.", variant: "success" });
+      setToast({ open: true, message: t("Media uploaded."), variant: "success" });
     },
-    [setFiles, setSelectedUrl, setToast]
+    [setFiles, setSelectedUrl, setToast, t]
   );
 
   const onUploadError = useCallback(
@@ -43,4 +46,3 @@ export function useUploadHandlers(actions: Pick<
 
   return { onUploaded, onUploadError } as const;
 }
-

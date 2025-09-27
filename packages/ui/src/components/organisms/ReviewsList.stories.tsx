@@ -1,3 +1,4 @@
+/* i18n-exempt file -- Storybook demo content uses literal strings */
 import { type Meta, type StoryObj } from "@storybook/react";
 import { ReviewsList } from "./ReviewsList";
 

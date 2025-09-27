@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/atoms/shadcn";
 import { formatTimestamp } from "@acme/date-utils";
+import { useTranslations } from "@acme/i18n";
 
 interface AuditRecord {
   timestamp: string;
@@ -23,6 +24,7 @@ interface AuditRecord {
 }
 
 export default function SeoAuditPanel({ shop }: { shop: string }) {
+  const t = useTranslations();
   const [history, setHistory] = useState<AuditRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState(false);
@@ -60,14 +62,14 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
 
   const runAudit = async () => {
     setRunning(true);
-    setToast({ open: true, message: "Audit started" });
+    setToast({ open: true, message: String(t("Audit started")) });
     try {
       const res = await fetch(`/api/seo/audit/${shop}`, { method: "POST" });
       const record: AuditRecord = await res.json();
       setHistory((prev) => [...prev, record]);
-      setToast({ open: true, message: "Audit completed" });
+      setToast({ open: true, message: String(t("Audit completed")) });
     } catch {
-      setToast({ open: true, message: "Audit failed" });
+      setToast({ open: true, message: String(t("Audit failed")) });
     } finally {
       setRunning(false);
     }
@@ -79,18 +81,20 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
         <CardContent className="space-y-6 p-6 text-sm">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
-              <h3 className="text-lg font-semibold">SEO Audit</h3>
+              <h3 className="text-lg font-semibold">{t("SEO Audit")}</h3>
               <p className="text-muted-foreground text-sm">
-                Review the latest crawl score, issues found, and actionable recommendations.
+                {t(
+                  "Review the latest crawl score, issues found, and actionable recommendations.",
+                )}
               </p>
             </div>
             <Button className="shrink-0" onClick={runAudit} disabled={running}>
-              {running ? "Running audit…" : "Run audit"}
+              {running ? t("Running audit…") : t("Run audit")}
             </Button>
           </div>
 
           {running && (
-            <p className="text-xs text-link">Audit in progress…</p>
+            <p className="text-xs text-link">{t("Audit in progress…")}</p>
           )}
 
           {loading ? (
@@ -102,30 +106,30 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
           ) : (
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="rounded-md border border-border/10 p-4">
-                <p className="text-xs text-muted-foreground">Last run</p>
+                <p className="text-xs text-muted-foreground">{t("Last run")}</p>
                 <p className="text-base font-semibold">
-                  {last ? formatTimestamp(last.timestamp) : "Never"}
+                  {last ? formatTimestamp(last.timestamp) : t("Never")}
                 </p>
               </div>
               <div className="rounded-md border border-border/10 p-4">
                 <p className="flex items-center gap-1 text-xs text-muted-foreground">
-                  Score
-                  <Tooltip text="Scores are normalized to 0–100">?</Tooltip>
+                  {t("Score")}
+                  <Tooltip text={String(t("Scores are normalized to 0–100"))}>?</Tooltip>
                 </p>
                 <p className="text-base font-semibold">
-                  {last ? Math.round(last.score * 100) : "–"}
+                  {last ? Math.round(last.score * 100) : t("–")}
                 </p>
               </div>
               <div className="rounded-md border border-border/10 p-4">
-                <p className="text-xs text-muted-foreground">Issues found</p>
-                <p className="text-base font-semibold">{last ? last.issues : "–"}</p>
+                <p className="text-xs text-muted-foreground">{t("Issues found")}</p>
+                <p className="text-base font-semibold">{last ? last.issues : t("–")}</p>
               </div>
             </div>
           )}
 
           {!loading && last?.recommendations?.length ? (
             <div>
-              <h4 className="text-sm font-semibold">Latest recommendations</h4>
+              <h4 className="text-sm font-semibold">{t("Latest recommendations")}</h4>
               <ul className="mt-2 list-disc pl-5">
                 {last.recommendations.map((rec) => (
                   <li key={rec}>{rec}</li>
@@ -136,13 +140,13 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
 
           {!loading && history.length > 0 ? (
             <div className="space-y-2">
-              <h4 className="text-sm font-semibold">Audit history</h4>
+              <h4 className="text-sm font-semibold">{t("Audit history")}</h4>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Timestamp</TableHead>
-                    <TableHead>Score</TableHead>
-                    <TableHead>Issues</TableHead>
+                    <TableHead>{t("Timestamp")}</TableHead>
+                    <TableHead>{t("Score")}</TableHead>
+                    <TableHead>{t("Issues")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>

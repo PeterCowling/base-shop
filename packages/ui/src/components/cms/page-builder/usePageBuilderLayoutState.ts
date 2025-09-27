@@ -65,7 +65,7 @@ export function usePageBuilderLayoutState({
   const { showDevTools } = useDevToolsToggle();
   const { showPalette, setShowPalette, paletteWidth, setPaletteWidth } = usePaletteState();
   const { open: cmdOpen, setOpen: setCmdOpen } = useCommandPalette();
-  const toolbarLocale = (toolbarProps as any)?.locale ?? "en";
+  const toolbarLocale = toolbarProps?.locale ?? "en";
   const a11y = useDndA11y(toolbarLocale);
   const { onPointerDown } = useSpacePanning(scrollRef);
   const [showInspector, setShowInspector] = React.useState(true);
@@ -162,14 +162,14 @@ export function usePageBuilderLayoutState({
     if (!SECTIONS_ONLY) return;
     setShowSections(true);
     setShowPalette(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PB-1023: initialize sections-only once
   }, []);
 
   React.useEffect(() => {
     if (mode !== "section") return;
     setShowSections(false);
     setShowPalette(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PB-1023: initialize section mode once
   }, []);
 
   const openPalette = React.useCallback(() => {
@@ -202,7 +202,7 @@ export function usePageBuilderLayoutState({
     setShowSections(false);
     setShowFontsLeft(true);
     setShowThemeLeft(false);
-  }, []);
+  }, [setShowLayersLeft, setShowPalette, setShowSections, setShowFontsLeft, setShowThemeLeft]);
 
   const openTheme = React.useCallback(() => {
     setShowLayersLeft(false);
@@ -210,7 +210,7 @@ export function usePageBuilderLayoutState({
     setShowSections(false);
     setShowFontsLeft(false);
     setShowThemeLeft(true);
-  }, []);
+  }, [setShowLayersLeft, setShowPalette, setShowSections, setShowFontsLeft, setShowThemeLeft]);
 
   const togglePaletteWithReset = React.useCallback(() => {
     setShowPalette((value) => {

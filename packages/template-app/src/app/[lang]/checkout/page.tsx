@@ -2,6 +2,8 @@
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/organisms/OrderSummary";
 import { Locale, resolveLocale } from "@i18n/locales";
+import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
+import { useTranslations } from "@i18n/Translations";
 import {
   CART_COOKIE,
   decodeCartCookie,
@@ -16,10 +18,20 @@ import { readShop } from "@platform-core/repositories/shops.server";
 import { priceForDays, convertCurrency } from "@platform-core/pricing";
 import { calculateRentalDays, isoDateInNDays } from "@acme/date-utils";
 import * as React from "react";
+import Section from "@ui/components/cms/blocks/Section";
 
-export const metadata = {
-  title: "Checkout · Base-Shop",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang?: string }>;
+}) {
+  const { lang: rawLang } = await params;
+  const locale: Locale = resolveLocale(rawLang);
+  const t = await getServerTranslations(locale);
+  return {
+    title: t("checkout.title"),
+  };
+}
 
 /**
  * Next 15 delivers `params` as a Promise, and `cookies()` is async in
@@ -46,7 +58,8 @@ export default async function CheckoutPage({
 
   /* ---------- empty cart guard ---------- */
   if (!Object.keys(cart).length) {
-    return <p className="p-8 text-center">Your cart is empty.</p>;
+    const t = await getServerTranslations(lang);
+    return <p className="p-8 text-center">{t("checkout.empty")}</p>;
   }
 
   /* ---------- fetch fresh product data & compute totals ---------- */
@@ -73,13 +86,15 @@ export default async function CheckoutPage({
     const total = subtotal + deposit;
 
     return (
-      <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
-        <OrderSummary
-          cart={validatedCart}
-          totals={{ subtotal, deposit, total }}
-        />
-        <CheckoutSection locale={lang} taxRegion={settings.taxRegion ?? ""} />
-      </div>
+      <Section contentWidth="normal">
+        <div className="flex flex-col gap-10 p-6">
+          <OrderSummary
+            cart={validatedCart}
+            totals={{ subtotal, deposit, total }}
+          />
+          <CheckoutSection locale={lang} taxRegion={settings.taxRegion ?? ""} />
+        </div>
+      </Section>
     );
   }
 
@@ -88,7 +103,8 @@ export default async function CheckoutPage({
   try {
     rentalDays = calculateRentalDays(queryReturn ?? defaultReturn);
   } catch {
-    return <p className="p-8 text-center">Invalid return date.</p>;
+    const t = await getServerTranslations(lang);
+    return <p className="p-8 text-center">{t("checkout.invalidReturnDate")}</p>;
   }
 
   const rentalCart: CartState = {};
@@ -110,13 +126,15 @@ export default async function CheckoutPage({
   const total = subtotal + deposit;
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
-      <OrderSummary
-        cart={rentalCart}
-        totals={{ subtotal, deposit, total }}
-      />
-      <CheckoutSection locale={lang} taxRegion={settings.taxRegion ?? ""} />
-    </div>
+    <Section contentWidth="normal">
+      <div className="flex flex-col gap-10 p-6">
+        <OrderSummary
+          cart={rentalCart}
+          totals={{ subtotal, deposit, total }}
+        />
+        <CheckoutSection locale={lang} taxRegion={settings.taxRegion ?? ""} />
+      </div>
+    </Section>
   );
 }
 
@@ -128,6 +146,7 @@ function CheckoutSection({
   taxRegion: string;
 }) {
   "use client";
+  const t = useTranslations();
   const [coverage, setCoverage] = React.useState(false);
   return (
     <div className="space-y-4">
@@ -137,7 +156,7 @@ function CheckoutSection({
           checked={coverage}
           onChange={(e) => setCoverage(e.target.checked)}
         />
-        Add coverage
+        {t("checkout.addCoverage")}
       </label>
       <CheckoutForm
         locale={locale}

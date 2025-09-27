@@ -15,10 +15,8 @@ function createMockPino(opts: { level: string }) {
     (...args: unknown[]) => {
       if (levelOrder[method] <= threshold) {
         try {
-          // eslint-disable-next-line no-console
           (console as any)[method](...args);
         } catch (err) {
-          // eslint-disable-next-line no-console
           console.warn('Logging error:', err);
         }
       }
@@ -70,10 +68,26 @@ describe('logger levels', () => {
     logger.info('i');
     logger.debug('d');
 
-    expected.error ? expect(errorSpy).toHaveBeenCalled() : expect(errorSpy).not.toHaveBeenCalled();
-    expected.warn ? expect(warnSpy).toHaveBeenCalled() : expect(warnSpy).not.toHaveBeenCalled();
-    expected.info ? expect(infoSpy).toHaveBeenCalled() : expect(infoSpy).not.toHaveBeenCalled();
-    expected.debug ? expect(debugSpy).toHaveBeenCalled() : expect(debugSpy).not.toHaveBeenCalled();
+    if (expected.error) {
+      expect(errorSpy).toHaveBeenCalled();
+    } else {
+      expect(errorSpy).not.toHaveBeenCalled();
+    }
+    if (expected.warn) {
+      expect(warnSpy).toHaveBeenCalled();
+    } else {
+      expect(warnSpy).not.toHaveBeenCalled();
+    }
+    if (expected.info) {
+      expect(infoSpy).toHaveBeenCalled();
+    } else {
+      expect(infoSpy).not.toHaveBeenCalled();
+    }
+    if (expected.debug) {
+      expect(debugSpy).toHaveBeenCalled();
+    } else {
+      expect(debugSpy).not.toHaveBeenCalled();
+    }
 
     errorSpy.mockRestore();
     warnSpy.mockRestore();
@@ -105,4 +119,3 @@ describe('logger levels', () => {
     warnSpy.mockRestore();
   });
 });
-

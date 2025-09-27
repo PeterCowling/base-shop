@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 
-const useCanvasDragMock = jest.fn((args: any) => ({
+const canvasDragMock = jest.fn((args: any) => ({
   startDrag: () => args.dispatch({ type: "drag", id: args.componentId }),
   guides: { x: null, y: null },
   distances: { x: null, y: null },
@@ -15,10 +15,10 @@ const useCanvasDragMock = jest.fn((args: any) => ({
 
 jest.mock("../useCanvasDrag", () => ({
   __esModule: true,
-  default: (args: any) => useCanvasDragMock(args),
+  default: (args: any) => canvasDragMock(args),
 }));
 
-const useCanvasResizeMock = jest.fn((args: any) => ({
+const canvasResizeMock = jest.fn((args: any) => ({
   startResize: () => args.dispatch({ type: "resize", id: args.componentId }),
   guides: { x: null, y: null },
   distances: { x: null, y: null },
@@ -32,7 +32,7 @@ const useCanvasResizeMock = jest.fn((args: any) => ({
 
 jest.mock("../useCanvasResize", () => ({
   __esModule: true,
-  default: (args: any) => useCanvasResizeMock(args),
+  default: (args: any) => canvasResizeMock(args),
 }));
 
 jest.mock("../useCanvasSpacing", () => ({

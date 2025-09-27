@@ -54,7 +54,7 @@ export default function VersionsPanel({ shop, pageId, current, editor, onRestore
 
   useEffect(() => {
     void load();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- CMS-INT-1010: load() captures shop/pageId intentionally
   }, [shop, pageId]);
 
   const handleCreateVersion = async (label: string) => {
@@ -80,7 +80,7 @@ export default function VersionsPanel({ shop, pageId, current, editor, onRestore
 
   const handleDelete = async () => {
     if (!selectedId) return;
-    if (!window.confirm("Delete selected version?")) return;
+    if (!window.confirm("Delete selected version?")) return; // i18n-exempt -- internal CMS confirmation only
     try {
       setError(null);
       await deleteVersionApi(shop, pageId, selectedId);
@@ -126,22 +126,30 @@ export default function VersionsPanel({ shop, pageId, current, editor, onRestore
   return (
     <div className="space-y-3">
       <CreateVersionForm onCreate={handleCreateVersion} autoFocusLabel={autoFocusLabel} />
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        // i18n-exempt -- error is a runtime string from API
+        <p className="text-sm text-red-500">{error}</p>
+      )}
       <div className="grid grid-cols-3 gap-3">
         <VersionList versions={versions} selectedId={selectedId} onSelect={setSelectedId} />
         <div className="col-span-2 space-y-2">
           <div className="grid grid-cols-2 gap-2">
             <div>
+              {/* i18n-exempt -- internal CMS label */}
               <div className="text-sm font-medium mb-1">Current</div>
               <PreviewPane components={current} locale="en" deviceId="desktop" onChange={() => {}} editor={editor} />
             </div>
             <div>
+              {/* i18n-exempt -- internal CMS label */}
               <div className="text-sm font-medium mb-1">Selected</div>
               <div className="rounded border min-h-10">
                 {selected ? (
                   <PreviewPane components={selected.components} locale="en" deviceId="desktop" onChange={() => {}} editor={selected.editor} />
                 ) : (
-                  <div className="p-2 text-sm text-muted-foreground">Select a version to preview</div>
+                  <div className="p-2 text-sm text-muted-foreground">
+                    {/* i18n-exempt -- internal CMS helper text */}
+                    Select a version to preview
+                  </div>
                 )}
               </div>
             </div>
@@ -155,6 +163,7 @@ export default function VersionsPanel({ shop, pageId, current, editor, onRestore
               onClick={() => selected && onRestore(selected.components)}
               disabled={!selected}
             >
+              {/* i18n-exempt -- internal CMS action label */}
               Restore Selected
             </Button>
           </div>

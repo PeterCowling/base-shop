@@ -24,6 +24,7 @@ export function CheckoutStepper({
   ...props
 }: CheckoutStepperProps) {
   return (
+    /* eslint-disable ds/no-hardcoded-copy -- DS-0008: CSS utility strings only in className; no user-facing copy here */
     <ol className={cn("flex items-center gap-4 text-sm", className)} {...props}>
       {steps.map((step, idx) => (
         <li key={step} className="flex flex-1 items-center gap-2">
@@ -37,14 +38,14 @@ export function CheckoutStepper({
           >
             {idx < currentStep ? <CheckIcon className="h-4 w-4" /> : idx + 1}
           </span>
-          <span className={cn(idx === currentStep && "font-medium")}>
-            {step}
-          </span>
+          {/* Consumer-provided step labels; not hardcoded in this package (safe) */}
+          <span className={cn(idx === currentStep && "font-medium")}>{step}</span>
           {idx < steps.length - 1 && (
             <span className="border-muted ms-2 flex-1 border-t" />
           )}
         </li>
       ))}
     </ol>
+    /* eslint-enable ds/no-hardcoded-copy */
   );
 }

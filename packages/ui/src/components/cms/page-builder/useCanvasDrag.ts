@@ -166,7 +166,8 @@ export default function useCanvasDrag({
       } else {
         patch[topKey] = `${Math.round(newT)}px`;
       }
-      dispatch({ type: "resize", id: componentId, ...(patch as any) });
+      type ResizeAction = import("./state/layout/types").ResizeAction;
+      dispatch({ type: "resize", id: componentId, ...patch } as ResizeAction);
       setCurrent({ left: newL, top: newT, width, height });
       setGuides({
         x: guideX !== null ? guideX - newL : null,
@@ -196,7 +197,7 @@ export default function useCanvasDrag({
       // Release pointer capture if held
       try {
         if (captureRef.current?.el && captureRef.current?.id != null) {
-          (captureRef.current.el as any).releasePointerCapture?.(captureRef.current.id);
+          (captureRef.current.el as unknown as { releasePointerCapture?: (id: number) => void }).releasePointerCapture?.(captureRef.current.id);
         }
       } catch {}
       captureRef.current = { el: null, id: null };
@@ -206,17 +207,17 @@ export default function useCanvasDrag({
       }
     };
     const onKeyDown = (ke: KeyboardEvent) => { if (ke.key === "Escape") stop(); };
-    try { window.addEventListener("pointermove", handleMove, { passive: true }); } catch { window.addEventListener("pointermove", handleMove as any); }
+    try { window.addEventListener("pointermove", handleMove, { passive: true }); } catch { window.addEventListener("pointermove", handleMove as unknown as EventListener); }
     window.addEventListener("pointerup", stop);
     window.addEventListener("blur", stop);
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      try { window.removeEventListener("pointermove", handleMove as any); } catch {}
+      try { window.removeEventListener("pointermove", handleMove as unknown as EventListener); } catch {}
       window.removeEventListener("pointerup", stop);
       window.removeEventListener("blur", stop);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [moving, componentId, dispatch, gridEnabled, gridCols, setGuides, siblingEdgesRef, containerRef, zoom]);
+  }, [moving, componentId, dispatch, gridEnabled, gridCols, setGuides, siblingEdgesRef, containerRef, zoom, dockX, dockY, leftKey, topKey]);
 
   const startDrag = (e: React.PointerEvent) => {
     if (disabled) return;

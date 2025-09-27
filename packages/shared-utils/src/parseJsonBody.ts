@@ -9,6 +9,7 @@ export function parseLimit(limit: string | number): number {
   if (typeof limit === "number") return limit;
   const match = /^(\d+)(b|kb|mb|gb)$/i.exec(limit.trim());
   if (!match) {
+    // i18n-exempt: developer-facing validation message
     throw new Error("Invalid limit");
   }
   const [, num, unit] = match;
@@ -45,6 +46,7 @@ export async function parseJsonBody<T>(
       return {
         success: false,
         response: NextResponse.json(
+          // i18n-exempt: API error code; not UI copy
           { error: "Invalid JSON" },
           { status: 400 },
         ),
@@ -65,6 +67,7 @@ export async function parseJsonBody<T>(
         return {
           success: false,
           response: NextResponse.json(
+            // i18n-exempt: API error code; not UI copy
             { error: "Payload Too Large" },
             { status: 413 },
           ),
@@ -79,18 +82,21 @@ export async function parseJsonBody<T>(
         return {
           success: false,
           response: NextResponse.json(
+            // i18n-exempt: API error code; not UI copy
             { error: "Payload Too Large" },
             { status: 413 },
           ),
         };
       }
     } else {
+      // i18n-exempt: developer/infra diagnostic message
       throw new Error("No body parser available");
     }
   } catch {
     return {
       success: false,
       response: NextResponse.json(
+        // i18n-exempt: API error code; not UI copy
         { error: "Invalid JSON" },
         { status: 400 },
       ),
@@ -108,4 +114,3 @@ export async function parseJsonBody<T>(
   }
   return { success: true, data: parsed.data };
 }
-

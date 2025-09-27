@@ -85,4 +85,3 @@ describe("resolvePluginEnvironment", () => {
     expect(result.pluginDirs).toEqual([]);
   });
 });
-

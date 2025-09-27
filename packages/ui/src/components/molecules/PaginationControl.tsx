@@ -2,6 +2,8 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
+import { Inline } from "../atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 export interface PaginationControlProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -17,6 +19,7 @@ export function PaginationControl({
   className,
   ...props
 }: PaginationControlProps) {
+  const t = useTranslations();
   const maxButtons = 5;
   const start = Math.max(1, Math.min(page - 2, pageCount - maxButtons + 1));
   const end = Math.min(pageCount, start + maxButtons - 1);
@@ -28,13 +31,13 @@ export function PaginationControl({
   };
 
   return (
-    <div className={cn("flex items-center gap-2", className)} {...props}>
+    <Inline alignY="center" gap={2} className={cn(className)} {...props}>
       <Button
         variant="outline"
         onClick={() => change(page - 1)}
         disabled={page === 1}
       >
-        Prev
+        {t("Prev")}
       </Button>
       {pages.map((p) => (
         <Button
@@ -50,9 +53,9 @@ export function PaginationControl({
         onClick={() => change(page + 1)}
         disabled={page === pageCount}
       >
-        Next
+        {t("Next")}
       </Button>
-    </div>
+    </Inline>
   );
 }
 

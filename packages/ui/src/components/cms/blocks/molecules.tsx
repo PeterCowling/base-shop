@@ -6,6 +6,8 @@ import { memo, useState } from "react";
 import type { BlockRegistryEntry } from "./types";
 import type { CategoryCollectionTemplateProps } from "../../templates/CategoryCollectionTemplate";
 import { CategoryCollectionTemplate } from "../../templates/CategoryCollectionTemplate";
+import { Inline } from "../../atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 const defaultPreview = "/window.svg";
 
@@ -27,8 +29,8 @@ export const NewsletterForm = memo(function NewsletterForm({
   submitLabel = "",
   locale = "en",
 }: NewsletterFormProps) {
-  const ph =
-    typeof placeholder === "string" ? placeholder : (placeholder[locale] ?? "");
+  const t = useTranslations();
+  const ph = typeof placeholder === "string" ? placeholder : (placeholder[locale] ?? "");
 
   const label =
     typeof submitLabel === "string" ? submitLabel : (submitLabel[locale] ?? "");
@@ -45,13 +47,13 @@ export const NewsletterForm = memo(function NewsletterForm({
         body: JSON.stringify({ email: value }),
       });
       if (res.ok) {
-        setMessage("Success");
+        setMessage(String(t("newsletter.submit.success")));
         setValue("");
       } else {
-        setMessage("Error");
+        setMessage(String(t("newsletter.submit.error")));
       }
     } catch {
-      setMessage("Error");
+      setMessage(String(t("newsletter.submit.error")));
     }
   }
 
@@ -59,25 +61,29 @@ export const NewsletterForm = memo(function NewsletterForm({
     <form
       action={action}
       method={method}
-      className="flex gap-2"
+      className=""
       onSubmit={handleSubmit}
     >
-      <input
-        type="email"
-        name="email"
-        placeholder={ph}
-        className="flex-1 rounded border p-2"
-        data-token="--color-bg"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
-      <button
-        type="submit"
-        className="rounded bg-primary px-4 py-2 text-primary-fg"
-        data-token="--color-primary"
-      >
-        <span data-token="--color-primary-fg">{label}</span>
-      </button>
+      <Inline gap={2}>
+        <input
+          type="email"
+          name="email"
+          placeholder={ph}
+          // i18n-exempt: CSS utility classes, not user copy
+          className="flex-1 rounded border p-2"
+          data-token="--color-bg"
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+        />
+        <button
+          type="submit"
+          // i18n-exempt: CSS utility classes, not user copy
+          className="rounded bg-primary px-4 py-2 text-primary-fg min-h-10 min-w-10"
+          data-token={"--color-primary" /* i18n-exempt: token name */}
+        >
+          <span data-token={"--color-primary-fg" /* i18n-exempt: token name */}>{label}</span>
+        </button>
+      </Inline>
       {message && <p role="status">{message}</p>}
     </form>
   );
@@ -105,13 +111,15 @@ export const PromoBanner = memo(function PromoBanner({
     typeof buttonLabel === "string" ? buttonLabel : (buttonLabel[locale] ?? "");
 
   return (
-    <div className="flex items-center justify-between bg-fg p-4 text-bg">
+    <div className="bg-fg p-4 text-bg">
+      <Inline alignY="center" className="justify-between">
       <span>{txt}</span>
       {href && (
-        <a href={href} className="rounded bg-bg px-3 py-1 text-fg">
+        <a href={href} className="rounded bg-bg px-3 py-1 text-fg min-h-10 min-w-10">
           {label}
         </a>
       )}
+      </Inline>
     </div>
   );
 });

@@ -2,6 +2,8 @@
 "use client";
 import { Input } from "@/components/atoms/shadcn";
 import type { MutableRefObject, ChangeEvent } from "react";
+import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
+import { Inline } from "@ui/components/atoms/primitives/Inline";
 
 interface Props {
   tokens: Record<string, string>;
@@ -28,7 +30,7 @@ export default function TypographySettings({
   return (
     <fieldset className="space-y-2">
       <legend className="font-semibold">Typography</legend>
-      <div className="grid gap-2 md:grid-cols-2">
+      <DSGrid cols={1} gap={2} className="md:grid-cols-2">
         {typographyTokens.map(([k, defaultValue]) => {
           const hasOverride = Object.prototype.hasOwnProperty.call(
             overrides,
@@ -36,7 +38,7 @@ export default function TypographySettings({
           );
           const overrideValue = hasOverride ? overrides[k] : "";
           return (
-            <div key={k} className="flex items-center gap-2">
+            <Inline key={k} alignY="center" gap={2}>
               <Input
                 name={k}
                 placeholder={defaultValue}
@@ -51,16 +53,16 @@ export default function TypographySettings({
               {hasOverride && (
                 <button
                   type="button"
-                  className="text-sm underline"
+                  className="text-sm underline min-h-10 min-w-10 px-2"
                   onClick={handleReset(k)}
                 >
                   Reset
                 </button>
               )}
-            </div>
+            </Inline>
           );
         })}
-      </div>
+      </DSGrid>
     </fieldset>
   );
 }

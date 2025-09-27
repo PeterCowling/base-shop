@@ -34,7 +34,7 @@ beforeEach(() => {
   mockReturnService.upsEnabled = true;
   mockReturnService.bagEnabled = false;
   mockReturnService.homePickupEnabled = false;
-  // @ts-ignore
+  // @ts-expect-error: mocking global.fetch in Node test environment
   global.fetch = mockFetch;
 });
 
@@ -135,4 +135,3 @@ describe("GET /api/return", () => {
     expect(await res.json()).toEqual({ ok: true, status: "DELIVERED" });
   });
 });
-

@@ -14,16 +14,19 @@ type Story = StoryObj<typeof InteractionsPanel>;
 
 export const Basic: Story = {
   render: () => {
-    const [comp, setComp] = useState<PageComponent>({ id: "box", type: "Box" } as any);
-    return (
-      <div style={{ width: 480 }}>
-        <InteractionsPanel
-          component={comp}
-          handleInput={(k, v) => setComp((c) => ({ ...c, [k]: v }))}
-        />
-        <pre style={{ marginTop: 8, fontSize: 12 }}>{JSON.stringify(comp, null, 2)}</pre>
-      </div>
-    );
+    function StoryContent() {
+      // Use a known atom type to avoid `any` casts
+      const [comp, setComp] = useState<PageComponent>({ id: "txt", type: "Text" });
+      return (
+        <div style={{ width: 480 }}>
+          <InteractionsPanel
+            component={comp}
+            handleInput={(k, v) => setComp((c) => ({ ...c, [k]: v }))}
+          />
+          <pre className="mt-2 text-xs font-mono">{JSON.stringify(comp, null, 2)}</pre>
+        </div>
+      );
+    }
+    return <StoryContent />;
   },
 };
-

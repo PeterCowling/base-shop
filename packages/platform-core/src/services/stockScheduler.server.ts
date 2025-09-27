@@ -49,7 +49,7 @@ export function scheduleStockChecks(
       status.history.push({ timestamp: ts, alerts: lowItems.length });
       if (status.history.length > 10) status.history.shift();
     } catch (err) {
-      console.error("Scheduled stock check failed", err);
+      console.error("Scheduled stock check failed", err); // i18n-exempt -- CORE-1011 log message
     }
   };
 

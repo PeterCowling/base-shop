@@ -15,7 +15,7 @@ describe("email template base path", () => {
       { EMAIL_TEMPLATE_BASE_PATH: __dirname } as NodeJS.ProcessEnv,
       async () => {
         expect(
-          fs.existsSync(process.env.EMAIL_TEMPLATE_BASE_PATH!),
+          fs.existsSync(process.env.EMAIL_TEMPLATE_BASE_PATH!), // eslint-disable-line security/detect-non-literal-fs-filename -- TEST-0001: path comes from controlled test env var
         ).toBe(true);
       },
     );
@@ -26,7 +26,7 @@ describe("email template base path", () => {
       { EMAIL_TEMPLATE_BASE_PATH: "./non-existent-path" } as NodeJS.ProcessEnv,
       async () => {
         expect(
-          fs.existsSync(process.env.EMAIL_TEMPLATE_BASE_PATH!),
+          fs.existsSync(process.env.EMAIL_TEMPLATE_BASE_PATH!), // eslint-disable-line security/detect-non-literal-fs-filename -- TEST-0001: path comes from controlled test env var
         ).toBe(false);
       },
     );

@@ -14,8 +14,18 @@ jest.mock("@platform-core/repositories/shops.server", () => ({
 }));
 const shops = jest.requireMock("@platform-core/repositories/shops.server");
 
-jest.mock("../src/components/CleaningInfo", () => () => <div data-cy="cleaning" />);
-jest.mock("../src/app/returns/mobile/Scanner", () => () => <div data-cy="scanner" />);
+jest.mock("../src/components/CleaningInfo", () => {
+  function CleaningInfoMock() {
+    return <div data-cy="cleaning" />;
+  }
+  return CleaningInfoMock;
+});
+jest.mock("../src/app/returns/mobile/Scanner", () => {
+  function ScannerMock() {
+    return <div data-cy="scanner" />;
+  }
+  return ScannerMock;
+});
 
 describe("MobileReturnPage", () => {
   it("shows disabled message when mobile app off", async () => {
@@ -37,4 +47,3 @@ describe("MobileReturnPage", () => {
     expect(screen.getByTestId("cleaning")).toBeInTheDocument();
   });
 });
-

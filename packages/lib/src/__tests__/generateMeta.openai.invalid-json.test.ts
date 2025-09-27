@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { describe, it, expect, afterEach, jest } from "@jest/globals";
 jest.mock("path", () => ({
   join: jest.fn((...parts) => parts.join("/")),
   dirname: jest.fn((p) => p.split("/").slice(0, -1).join("/")),
@@ -69,4 +69,3 @@ describe("generateMeta", () => {
     });
   });
 });
-

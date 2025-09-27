@@ -1,16 +1,16 @@
 import { z } from "zod";
 
-const stockAlertFormSchema = z
-  .object({
-    recipients: z.array(z.string().email()).nonempty(),
-    webhook: z.string().url().optional(),
-    threshold: z.coerce
-      .number()
-      .int()
-      .min(1, "Must be at least 1")
-      .optional(),
-  })
-  .strict();
+  const stockAlertFormSchema = z
+    .object({
+      recipients: z.array(z.string().email()).nonempty(),
+      webhook: z.string().url().optional(),
+      threshold: z.coerce
+        .number()
+        .int()
+        .min(1, "Must be at least 1") // i18n-exempt: schema error text used in tests; locale not available here
+        .optional(),
+    })
+    .strict();
 
 export function parseStockAlertForm(formData: FormData): {
   data?: z.infer<typeof stockAlertFormSchema>;

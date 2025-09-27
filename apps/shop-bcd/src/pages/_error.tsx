@@ -8,6 +8,8 @@
  * error page from rendering.
  */
 
+import { useTranslations } from "@i18n/Translations";
+
 type ErrorContext = {
   res?: { statusCode?: number };
   err?: { statusCode?: number };
@@ -15,40 +17,45 @@ type ErrorContext = {
 
 function ErrorPage({ statusCode }: { statusCode?: number }) {
   const code = statusCode ?? 500;
+  const t = useTranslations();
+
+  // Resolve messages via i18n, with safe fallbacks for when no provider is mounted.
+  const title = t("error.title", { code });
+  const subtitle = t("error.subtitle");
+  const cta = t("error.cta");
+
+  const FALLBACK_TITLE_TEXT = "Something went wrong"; // i18n-exempt: fallback when i18n context is unavailable during hard error rendering
+  const FALLBACK_SUBTITLE_TEXT = "Please try again, or return to the homepage."; // i18n-exempt: fallback when i18n context is unavailable during hard error rendering
+  const FALLBACK_CTA_TEXT = "Go to homepage"; // i18n-exempt: fallback when i18n context is unavailable during hard error rendering
+
+  const titleResolved = title === "error.title" ? (
+    <>
+      {code} — {FALLBACK_TITLE_TEXT}
+    </>
+  ) : (
+    title
+  );
+  const subtitleResolved = subtitle === "error.subtitle" ? (
+    <>{FALLBACK_SUBTITLE_TEXT}</>
+  ) : (
+    subtitle
+  );
+  const ctaResolved = cta === "error.cta" ? (
+    <>{FALLBACK_CTA_TEXT}</>
+  ) : (
+    cta
+  );
+
   return (
-    <main
-      style={{
-        minHeight: "100dvh",
-        display: "grid",
-        placeItems: "center",
-        padding: "4rem 1rem",
-        textAlign: "center",
-      }}
-    >
+    <main className="min-h-dvh grid place-items-center py-16 px-4 text-center">
       <div>
-        <h1
-          style={{
-            fontSize: "2rem",
-            lineHeight: 1.2,
-            marginBottom: "0.75rem",
-          }}
-        >
-          {code} — Something went wrong
-        </h1>
-        <p style={{ marginBottom: "1.5rem", opacity: 0.8 }}>
-          Please try again, or return to the homepage.
-        </p>
+        <h1 className="text-2xl leading-tight mb-3">{titleResolved}</h1>
+        <p className="mb-6 opacity-80">{subtitleResolved}</p>
         <a
           href="/"
-          style={{
-            display: "inline-block",
-            padding: "0.625rem 1rem",
-            border: "1px solid currentColor",
-            borderRadius: "0.5rem",
-            textDecoration: "none",
-          }}
+          className="inline-flex items-center justify-center border rounded-md no-underline px-4 py-2.5 min-h-10 min-w-10"
         >
-          Go to homepage
+          {ctaResolved}
         </a>
       </div>
     </main>

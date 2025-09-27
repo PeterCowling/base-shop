@@ -4,13 +4,14 @@ import { useCallback, useMemo, useState } from "react";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import buildBlockContextMenuItems from "./buildBlockContextMenuItems";
 import type { BlockItemProps } from "./BlockItem.types";
+import type { EditorFlags } from "./state/layout/types";
 
 type Props = BlockItemProps;
 
 type Options = {
   component: Props["component"];
   effLocked: boolean;
-  flags: Record<string, unknown>;
+  flags: EditorFlags | Record<string, unknown>;
   selectedIds: Props["selectedIds"];
   editor: Props["editor"];
   dispatch: Props["dispatch"];
@@ -33,9 +34,9 @@ export default function useBlockItemContextMenu({
     () =>
       buildBlockContextMenuItems({
         componentId: component.id,
-        componentStyles: component.styles as any,
+        componentStyles: component.styles,
         effLocked,
-        flagsZIndex: (flags as any).zIndex as number | undefined,
+        flagsZIndex: (flags as EditorFlags).zIndex as number | undefined,
         selectedIds,
         editor,
         dispatch,

@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
 import * as React from "react";
+import { useTranslations } from "@acme/i18n";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { ProductBadge } from "../atoms/ProductBadge";
 import type { SKU } from "@acme/types";
+import { Stack, Inline } from "../atoms/primitives";
 
 export interface ProductDetailTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -19,13 +21,19 @@ export interface ProductDetailTemplateProps
 export function ProductDetailTemplate({
   product,
   onAddToCart,
-  ctaLabel = "Add to cart",
+  ctaLabel: ctaLabelProp,
   className,
   ...props
 }: ProductDetailTemplateProps) {
+  const t = useTranslations();
+  const ctaLabel = ctaLabelProp ?? t("actions.addToCart");
   const firstMedia = product.media?.[0];
+  const gridLayout = "grid gap-6 md:grid-cols-2"; // i18n-exempt: layout class names
+  const mediaClass = "rounded-md object-cover"; // i18n-exempt: style tokens
+  const imgSizes = "(min-width: 768px) 50vw, 100vw"; // i18n-exempt: media attribute
+  const mediaBase = "h-full w-full"; // i18n-exempt: style tokens
   return (
-    <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
+    <div className={cn(gridLayout, className)} {...props}>
       {firstMedia?.url && (
         <div className="relative aspect-square w-full">
           {firstMedia.type === "image" ? (
@@ -33,23 +41,24 @@ export function ProductDetailTemplate({
               src={firstMedia.url}
               alt={product.title ?? ""}
               fill
-              sizes="(min-width: 768px) 50vw, 100vw"
-              className="rounded-md object-cover"
+              sizes={imgSizes}
+              className={mediaClass}
             />
           ) : (
             <video
               src={firstMedia.url}
-              className="h-full w-full rounded-md object-cover"
+              className={cn(mediaBase, mediaClass)}
+              data-aspect="1/1"
               muted
               playsInline
             />
           )}
         </div>
       )}
-      <div className="flex flex-col gap-4">
+      <Stack gap={4}>
         <h2 className="text-2xl font-semibold">{product.title}</h2>
         {product.badges && (
-          <div className="flex gap-2">
+          <Inline gap={2}>
             {product.badges.map(
               (
                 b: { label: string; variant?: "default" | "sale" | "new" },
@@ -58,7 +67,7 @@ export function ProductDetailTemplate({
                 <ProductBadge key={idx} label={b.label} variant={b.variant} />
               )
             )}
-          </div>
+          </Inline>
         )}
         {typeof product.price === "number" && (
           <Price amount={product.price} className="text-xl font-bold" />
@@ -67,7 +76,7 @@ export function ProductDetailTemplate({
         {onAddToCart && (
           <Button onClick={() => onAddToCart(product)}>{ctaLabel}</Button>
         )}
-      </div>
+      </Stack>
     </div>
   );
 }

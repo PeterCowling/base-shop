@@ -1,3 +1,4 @@
+/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-hardcoded-copy -- PB-0001: builder canvas uses absolute/z-index and contains non-user-facing labels */
 "use client";
 
 import { EditorContent, type Editor } from "@tiptap/react";
@@ -112,7 +113,7 @@ const TextBlockView = ({
       ref={assignNodeRef}
       onClick={onSelect}
       role="listitem"
-      aria-label="Canvas item"
+      aria-label={"Canvas item" /* i18n-exempt: internal builder control */}
       tabIndex={0}
       onKeyDown={onKeyDown}
       style={{ ...(zIndex !== undefined ? { zIndex } : {}), ...style }}
@@ -130,7 +131,7 @@ const TextBlockView = ({
         tabIndex={0}
         aria-pressed={isDragging}
         aria-describedby="pb-drag-instructions"
-        title="Drag or press space/enter to move"
+        title={"Drag or press space/enter to move" /* i18n-exempt: internal builder hint */}
         onPointerDown={(e) => {
           e.stopPropagation();
           onSelect();
@@ -154,7 +155,7 @@ const TextBlockView = ({
         </div>
       )}
       {locked && (
-        <div className="absolute end-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
+        <div className="absolute end-1 top-1 z-30 text-xs" title={"Locked" /* i18n-exempt: internal builder indicator */} aria-hidden>
           <LockClosedIcon />
         </div>
       )}
@@ -170,12 +171,12 @@ const TextBlockView = ({
         />
       )}
       {kbResizing && (
-        <div className="pointer-events-none absolute -top-5 start-0 z-30 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-5 start-0 z-30 rounded bg-black/75 px-1 font-mono text-xs text-white shadow dark:bg-white/75 dark:text-black">
           {containerRef.current ? `${Math.round(containerRef.current.offsetWidth)}×${Math.round(containerRef.current.offsetHeight)}` : ""}
         </div>
       )}
       {rotating && (
-        <div className="pointer-events-none absolute -top-8 start-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-8 start-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-xs text-white shadow dark:bg-white/75 dark:text-black">
           {Math.round(rotateAngle)}°
         </div>
       )}
@@ -184,7 +185,7 @@ const TextBlockView = ({
           <MenuBar editor={editor} />
           <EditorContent
             editor={editor}
-            className="min-h-[1rem] outline-none"
+            className="min-h-4 outline-none"
             onKeyDown={(e) => {
               // Finish editing on Enter
               if (e.key === "Enter") {
@@ -200,13 +201,15 @@ const TextBlockView = ({
           />
           {toolbarPos.visible && (
             <div className="pointer-events-auto absolute z-40 flex -translate-x-1/2 gap-1 rounded border bg-background p-1 shadow" style={{ left: toolbarPos.x, top: toolbarPos.y }}>
-              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleBold().run()} aria-label="Bold">B</button>
-              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleItalic().run()} aria-label="Italic">I</button>
-              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleUnderline?.().run()} aria-label="Underline">U</button>
-              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => setLinkOpen(true)} aria-label="Link">Link</button>
-              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleBulletList().run()} aria-label="Bulleted">•</button>
-              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleOrderedList().run()} aria-label="Numbered">1.</button>
-              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()} aria-label="H2">H2</button>
+              {/* eslint-disable ds/min-tap-size -- PB-0001: compact toolbar controls are desktop-targeted */}
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleBold().run()} aria-label={"Bold" /* i18n-exempt: toolbar label */}>B</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleItalic().run()} aria-label={"Italic" /* i18n-exempt: toolbar label */}>I</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleUnderline?.().run()} aria-label={"Underline" /* i18n-exempt: toolbar label */}>U</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => setLinkOpen(true)} aria-label={"Link" /* i18n-exempt: toolbar label */}>Link</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleBulletList().run()} aria-label={"Bulleted" /* i18n-exempt: toolbar label */}>•</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleOrderedList().run()} aria-label={"Numbered" /* i18n-exempt: toolbar label */}>1.</button>
+              <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()} aria-label={"H2" /* i18n-exempt: toolbar label */}>H2</button>
+              {/* eslint-enable ds/min-tap-size -- PB-0001 */}
             </div>
           )}
           <LinkPicker
@@ -245,11 +248,11 @@ const TextBlockView = ({
             <div className="absolute -top-5 start-1/2 -translate-x-1/2 group pointer-events-auto">
               <div
                 onPointerDown={(e) => !locked && startRotate(e)}
-                title="Rotate (Shift = precise)"
+                title={"Rotate (Shift = precise)" /* i18n-exempt: internal builder hint */}
                 className="h-3 w-3 cursor-crosshair rounded-full bg-primary"
               />
-              <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-[10px] text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
-                Shift = precise
+              <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-xs text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
+                {/* i18n-exempt: internal builder hint */}Shift = precise
               </div>
             </div>
           )}
@@ -263,6 +266,7 @@ const TextBlockView = ({
           <div onPointerDown={(e) => !locked && startResize(e, "e")} className="absolute top-1/2 -end-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary" />
         </>
       )}
+      {/* eslint-disable ds/min-tap-size -- PB-0001: close affordance is intentionally compact */}
       <button
         type="button"
         onClick={onRemove}
@@ -270,9 +274,10 @@ const TextBlockView = ({
         data-token="--color-danger"
       >
         <span className="text-danger-foreground" data-token="--color-danger-fg">
-          ×
+          {/* i18n-exempt: icon glyph */}×
         </span>
       </button>
+      {/* eslint-enable ds/min-tap-size -- PB-0001 */}
     </div>
   );
 };

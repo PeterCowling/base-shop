@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- CMS-only group labels; values are surfaced to authenticated admins and will be mapped to translations at display sites later */
 export const tokenGroups: Record<string, string[]> = {
   "Surfaces & Text": [
     "--color-bg-1",
@@ -52,3 +53,4 @@ export const tokenGroups: Record<string, string[]> = {
 };
 
 export type TokenGroups = typeof tokenGroups;
+/* eslint-enable ds/no-hardcoded-copy */

@@ -38,6 +38,8 @@ export default function LinkModal({
   onClose: () => void;
   onSave: (href: string) => void;
 }) {
+  // i18n-exempt — editor-only link modal copy
+  const t = (s: string) => s;
   const [value, setValue] = useState(initialUrl ?? "");
   const valid = useMemo(() => isValidHref(value), [value]);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -50,32 +52,32 @@ export default function LinkModal({
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Insert Link</DialogTitle>
-          <DialogDescription>Enter a valid URL or path</DialogDescription>
+          <DialogTitle>{t("Insert Link")}</DialogTitle>
+          <DialogDescription>{t("Enter a valid URL or path")}</DialogDescription>
         </DialogHeader>
         <div className="flex items-end gap-2">
           <div className="grow">
             <Input
               value={value}
-              placeholder="https://example.com or /page"
+              placeholder={t("https://example.com or /page")}
               onChange={(e) => setValue(e.target.value)}
               autoFocus
             />
           </div>
           <Button type="button" variant="outline" onClick={() => setPickerOpen(true)}>
-            Pick Internal
+            {t("Pick Internal")}
           </Button>
         </div>
         <DialogFooter>
           <Button type="button" variant="outline" onClick={onClose}>
-            Cancel
+            {t("Cancel")}
           </Button>
           <Button
             type="button"
             onClick={() => valid && onSave(value.trim())}
             disabled={!valid}
           >
-            Save
+            {t("Save")}
           </Button>
         </DialogFooter>
         <LinkPicker

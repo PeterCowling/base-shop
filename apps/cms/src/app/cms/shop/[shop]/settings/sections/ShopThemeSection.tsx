@@ -9,6 +9,7 @@ import {
   themeTokenRowClassName,
   type ThemeTokenRow,
 } from "../tableMappers";
+import { useTranslations } from "@acme/i18n";
 
 export type ShopThemeSectionErrors = Partial<
   Record<"themeDefaults" | "themeOverrides", string[]>
@@ -29,6 +30,7 @@ export default function ShopThemeSection({
   themeOverrides,
   errors,
 }: ShopThemeSectionProps) {
+  const t = useTranslations();
   const columns = createThemeTokenColumns({
     onReset: ({ token }) => (
       <form
@@ -48,7 +50,7 @@ export default function ShopThemeSection({
           variant="ghost"
           className="h-auto p-0 text-link hover:bg-transparent"
         >
-          Reset
+          {t("Reset")}
         </Button>
       </form>
     ),
@@ -57,15 +59,19 @@ export default function ShopThemeSection({
   const defaultsError = errors?.themeDefaults?.join("; ");
   const overridesError = errors?.themeOverrides?.join("; ");
 
+  // i18n-exempt: hidden form field names for backend processing; not user-facing copy
+  const THEME_DEFAULTS_NAME = "themeDefaults" as const;
+  const THEME_OVERRIDES_NAME = "themeOverrides" as const;
+
   return (
     <div className="col-span-2 flex flex-col gap-1">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <span className="min-w-0">Theme tokens</span>
+        <span className="min-w-0">{t("Theme tokens")}</span>
         <Link
           href={`/cms/shop/${shop}/themes`}
           className="h-auto shrink-0 p-0 text-link hover:bg-transparent"
         >
-          Edit Theme
+          {t("Edit Theme")}
         </Link>
       </div>
       <DataTable
@@ -75,12 +81,12 @@ export default function ShopThemeSection({
       />
       <input
         type="hidden"
-        name="themeDefaults"
+        name={THEME_DEFAULTS_NAME}
         value={JSON.stringify(themeDefaults ?? {})}
       />
       <input
         type="hidden"
-        name="themeOverrides"
+        name={THEME_OVERRIDES_NAME}
         value={JSON.stringify(themeOverrides ?? {})}
       />
       {defaultsError ? (

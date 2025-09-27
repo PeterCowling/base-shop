@@ -44,7 +44,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   if (!Object.keys(cart).length) {
-    return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
+    return NextResponse.json({ error: "Cart is empty" }, { status: 400 }); // i18n-exempt: machine-readable API error, not user-facing UI
   }
 
   const parsed = schema.safeParse(await req.json().catch(() => undefined));
@@ -90,9 +90,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(result);
   } catch (err) {
     if (err instanceof Error && /Invalid returnDate/.test(err.message)) {
-      return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 }); // i18n-exempt: machine-readable API error, not user-facing UI
     }
-    console.error("Failed to create Stripe checkout session", err);
-    return NextResponse.json({ error: "Checkout failed" }, { status: 502 });
+    console.error(
+      "Failed to create Stripe checkout session" /* i18n-exempt: developer log */,
+      err,
+    );
+    return NextResponse.json({ error: "Checkout failed" }, { status: 502 }); // i18n-exempt: machine-readable API error, not user-facing UI
   }
 }

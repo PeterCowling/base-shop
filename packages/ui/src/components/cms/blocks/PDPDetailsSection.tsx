@@ -11,16 +11,24 @@ export interface PDPDetailsSectionProps extends React.HTMLAttributes<HTMLDivElem
 
 export default function PDPDetailsSection({ product, preset = "default", className, ...rest }: PDPDetailsSectionProps) {
   const luxury = preset === "luxury";
+  // i18n-exempt: CSS utility class strings, not user-facing copy
+  const rootClass = [className, luxury ? "space-y-6" : "space-y-4"].filter(Boolean).join(" ");
+  // i18n-exempt: CSS utility class strings, not user-facing copy
+  const titleClass = ["font-semibold", luxury ? "text-3xl tracking-wide" : "text-2xl"].join(" ");
+  // i18n-exempt: CSS utility class strings, not user-facing copy
+  const descClass = luxury
+    ? "w-full sm:max-w-2xl leading-8 text-neutral-700" /* i18n-exempt: CSS utility classes */
+    : "w-full sm:max-w-xl text-neutral-700" /* i18n-exempt: CSS utility classes */;
   return (
-    <section className={[className, luxury ? "space-y-6" : "space-y-4"].filter(Boolean).join(" ") || undefined} {...rest}>
-      <h1 className={["font-semibold", luxury ? "text-3xl tracking-wide" : "text-2xl"].join(" ")}>{product.title}</h1>
+    <section className={rootClass || undefined} {...rest}>
+      <h1 className={titleClass}>{product.title}</h1>
       {typeof product.price === "number" ? (
+        // i18n-exempt: CSS utility class strings, not user-facing copy
         <Price amount={product.price} className={luxury ? "text-xl" : "text-lg"} />
       ) : null}
       {product.description ? (
-        <p className={luxury ? "max-w-2xl leading-8 text-neutral-700" : "max-w-xl text-neutral-700"}>{product.description}</p>
+        <p className={descClass}>{product.description}</p>
       ) : null}
     </section>
   );
 }
-

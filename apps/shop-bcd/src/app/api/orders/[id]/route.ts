@@ -18,13 +18,13 @@ export async function GET(
 ) {
   const session = await getCustomerSession();
   if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); // i18n-exempt: HTTP status label; UI translates by status
   }
   try {
     const orders = await getOrdersForCustomer(shop.id, session.customerId);
     const order = orders.find((o) => o.id === params.id);
     if (!order) {
-      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      return NextResponse.json({ error: "Order not found" }, { status: 404 }); // i18n-exempt: API error token; UI maps to translation
     }
     return NextResponse.json({ order });
   } catch (err) {
@@ -38,7 +38,7 @@ export async function PATCH(
 ) {
   const session = await getCustomerSession();
   if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 }); // i18n-exempt: HTTP status label; UI translates by status
   }
   let status: unknown;
   let amount: unknown;
@@ -48,14 +48,14 @@ export async function PATCH(
       amount?: number;
     });
   } catch {
-    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 }); // i18n-exempt: API error token; UI maps to translation
   }
   if (
     status === "refunded" &&
     amount !== undefined &&
     (typeof amount !== "number" || Number.isNaN(amount))
   ) {
-    return NextResponse.json({ error: "Invalid amount" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid amount" }, { status: 400 }); // i18n-exempt: API error token; UI maps to translation
   }
   const mutate =
     status === "cancelled"
@@ -71,16 +71,15 @@ export async function PATCH(
               )
           : null;
   if (!mutate) {
-    return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid status" }, { status: 400 }); // i18n-exempt: API error token; UI maps to translation
   }
   try {
     const order = await mutate();
     if (!order) {
-      return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      return NextResponse.json({ error: "Order not found" }, { status: 404 }); // i18n-exempt: API error token; UI maps to translation
     }
     return NextResponse.json({ order });
   } catch (err) {
     return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }
 }
-

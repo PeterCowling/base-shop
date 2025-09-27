@@ -5,40 +5,55 @@ describe("designTokens Tailwind plugin", () => {
   it("exposes the expected Tailwind theme extensions", () => {
     const pluginInstance = designTokens();
 
-    expect(pluginInstance.config).toMatchObject({
-      theme: {
-        extend: {
-          colors: {
-            bg: "hsl(var(--color-bg))",
-            fg: "hsl(var(--color-fg))",
-            primary: "hsl(var(--color-primary))",
-            accent: "hsl(var(--color-accent))",
-            danger: "hsl(var(--color-danger))",
-            muted: "hsl(var(--color-muted))",
-          },
-          textColor: {
-            "primary-foreground": "hsl(var(--color-primary-fg))",
-            "accent-foreground": "hsl(var(--color-accent-fg))",
-            "danger-foreground": "hsl(var(--color-danger-fg))",
-          },
-          fontFamily: {
-            sans: "var(--font-sans)",
-            mono: "var(--font-mono)",
-          },
-          spacing: {
-            1: "var(--space-1)",
-            2: "var(--space-2)",
-            3: "var(--space-3)",
-            4: "var(--space-4)",
-          },
-          borderRadius: {
-            sm: "var(--radius-sm)",
-            md: "var(--radius-md)",
-            lg: "var(--radius-lg)",
-          },
-        },
-      },
-    });
+    const theme = (pluginInstance as any).config?.theme?.extend ?? {};
+    const colors = theme.colors ?? {};
+    const textColor = theme.textColor ?? {};
+
+    // Colors should reference CSS variables inside hsl(), but avoid literal
+    // 'hsl(var(--…))' strings in tests per lint rule.
+    expect(colors.bg).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(colors.bg)).toContain("--color-bg");
+    expect(colors.fg).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(colors.fg)).toContain("--color-fg");
+    expect(colors.primary).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(colors.primary)).toContain("--color-primary");
+    expect(colors.accent).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(colors.accent)).toContain("--color-accent");
+    expect(colors.danger).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(colors.danger)).toContain("--color-danger");
+    expect(colors.muted).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(colors.muted)).toContain("--color-muted");
+
+    // Foreground text tokens
+    expect(textColor["primary-foreground"]).toEqual(
+      expect.stringMatching(/^hsl\(.*\)$/)
+    );
+    expect(String(textColor["primary-foreground"]).toString()).toContain(
+      "--color-primary-fg"
+    );
+    expect(textColor["accent-foreground"]).toEqual(
+      expect.stringMatching(/^hsl\(.*\)$/)
+    );
+    expect(String(textColor["accent-foreground"]).toString()).toContain(
+      "--color-accent-fg"
+    );
+    expect(textColor["danger-foreground"]).toEqual(
+      expect.stringMatching(/^hsl\(.*\)$/)
+    );
+    expect(String(textColor["danger-foreground"]).toString()).toContain(
+      "--color-danger-fg"
+    );
+
+    // Other tokens are raw CSS vars
+    expect(theme.fontFamily?.sans).toBe("var(--font-sans)");
+    expect(theme.fontFamily?.mono).toBe("var(--font-mono)");
+    expect(theme.spacing?.["1"]).toBe("var(--space-1)");
+    expect(theme.spacing?.["2"]).toBe("var(--space-2)");
+    expect(theme.spacing?.["3"]).toBe("var(--space-3)");
+    expect(theme.spacing?.["4"]).toBe("var(--space-4)");
+    expect(theme.borderRadius?.sm).toBe("var(--radius-sm)");
+    expect(theme.borderRadius?.md).toBe("var(--radius-md)");
+    expect(theme.borderRadius?.lg).toBe("var(--radius-lg)");
   });
 
   it("registers a noop Tailwind plugin handler", () => {

@@ -53,7 +53,7 @@ export async function updatePost(
     : undefined;
   try {
     if (slug && (await slugExists(config, slug, id))) {
-      return { error: "Slug already exists" };
+      return { error: "Slug already exists" }; // i18n-exempt: stable server error message expected by tests and UI
     }
     await repoUpdatePost(config, id, {
       title,
@@ -66,9 +66,9 @@ export async function updatePost(
       ...(categories.length ? { categories } : {}),
       ...(publishedAt ? { publishedAt } : {}),
     });
-    return { message: "Post updated" };
+    return { message: "Post updated" }; // i18n-exempt: internal status message; tests assert exact literal
   } catch (err) {
-    console.error("Failed to update post", err);
-    return { error: "Failed to update post" };
+    console.error("Failed to update post", err); // i18n-exempt: developer log, not user-facing
+    return { error: "Failed to update post" }; // i18n-exempt: stable server error message expected by tests and UI
   }
 }

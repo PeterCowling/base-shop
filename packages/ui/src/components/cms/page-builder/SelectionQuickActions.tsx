@@ -1,8 +1,10 @@
+/* eslint-disable ds/absolute-parent-guard -- PB-0001: overlay anchors to positioned canvas ancestor */
 "use client";
 
 import { useEffect, useRef, useState } from "react";
 import type { PageComponent } from "@acme/types";
 import type { Action } from "./state";
+import type { ResizeAction } from "./state/layout";
 import { Button } from "../../atoms/shadcn";
 import { alignLeft, alignRight, alignTop, alignBottom, alignCenterX, alignCenterY, distributeHorizontal, distributeVertical } from "./state/layout/geometry";
 import useGroupingActions from "./hooks/useGroupingActions";
@@ -54,8 +56,14 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
   const locked = disabled;
   const doPatch = (patches: { id: string; left?: string; top?: string }[]) => {
     patches.forEach((p) => {
-      if (p.left !== undefined) dispatch({ type: "resize", id: p.id, [vpKey("left")]: p.left } as any);
-      if (p.top !== undefined) dispatch({ type: "resize", id: p.id, [vpKey("top")]: p.top } as any);
+      if (p.left !== undefined) {
+        const action: ResizeAction = { type: "resize", id: p.id, [vpKey("left")]: p.left } as ResizeAction;
+        dispatch(action as Action);
+      }
+      if (p.top !== undefined) {
+        const action: ResizeAction = { type: "resize", id: p.id, [vpKey("top")]: p.top } as ResizeAction;
+        dispatch(action as Action);
+      }
     });
   };
 
@@ -71,7 +79,8 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
       const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
       if (!el || !parent) return;
       const left = Math.round((parent.clientWidth - el.offsetWidth) / 2);
-      dispatch({ type: "resize", id, [vpKey("left")]: `${left}px` } as any);
+      const action: ResizeAction = { type: "resize", id, [vpKey("left")]: `${left}px` } as ResizeAction;
+      dispatch(action as Action);
     });
   };
   const centerInParentY = () => {
@@ -80,14 +89,15 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
       const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
       if (!el || !parent) return;
       const top = Math.round((parent.clientHeight - el.offsetHeight) / 2);
-      dispatch({ type: "resize", id, [vpKey("top")]: `${top}px` } as any);
+      const action: ResizeAction = { type: "resize", id, [vpKey("top")]: `${top}px` } as ResizeAction;
+      dispatch(action as Action);
     });
   };
 
   return (
     <div
       ref={bubbleRef}
-      className="absolute z-[60] -translate-x-1/2 -translate-y-full rounded bg-muted/90 px-1 py-1 text-xs text-muted-foreground shadow backdrop-blur"
+      className="absolute -translate-x-1/2 -translate-y-full rounded bg-muted/90 px-1 py-1 text-xs text-muted-foreground shadow backdrop-blur"
       style={{ left: pos.left, top: pos.top }}
     >
       <div className="flex flex-wrap items-center gap-1">

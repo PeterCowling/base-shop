@@ -49,7 +49,7 @@ export const cmsEnvSchema = z.object({
       .min(1)
       .refine(
         (v) => /^(\d{4}-\d{2}-\d{2}|v\d+)$/.test(v),
-        { message: "Invalid SANITY_API_VERSION format" },
+        { message: "Invalid SANITY_API_VERSION format" }, // i18n-exempt: validation copy (non-UI)
       )
       .default(SANITY_API_VERSION_DEFAULT)
     ),

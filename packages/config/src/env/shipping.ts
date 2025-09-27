@@ -16,7 +16,7 @@ const NON_STRING_KEYS = [
   "FREE_SHIPPING_THRESHOLD",
 ] as const;
 
-const INVALID_ENV_ERROR = "Invalid shipping environment variables";
+const INVALID_ENV_ERROR = "Invalid shipping environment variables"; // i18n-exempt: developer error
 const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
 
 function assertStringEnv(raw: NodeJS.ProcessEnv): void {
@@ -52,10 +52,10 @@ function assertStringEnv(raw: NodeJS.ProcessEnv): void {
 
   const formatted: Record<string, unknown> = { _errors: [] };
   for (const key of invalidKeys) {
-    formatted[key] = { _errors: ["Expected string"] };
+    formatted[key] = { _errors: ["Expected string"] }; // i18n-exempt: validation copy (non-UI)
   }
-  console.error("❌ Invalid shipping environment variables:", formatted);
-  throw new Error(INVALID_ENV_ERROR);
+  console.error("❌ Invalid shipping environment variables:", formatted); // i18n-exempt: developer log
+  throw new Error(INVALID_ENV_ERROR); // i18n-exempt: developer error
 }
 
 export const shippingEnvSchema = z
@@ -78,7 +78,7 @@ export const shippingEnvSchema = z
       .refine(
         (v) =>
           v === undefined || /^(true|false|1|0|yes|no)$/i.test(v.trim()),
-        { message: "must be a boolean" },
+        { message: "must be a boolean" }, // i18n-exempt: validation copy (non-UI)
       )
       .transform((v) =>
         v === undefined ? undefined : /^(true|1|yes)$/i.test(v.trim()),
@@ -90,7 +90,7 @@ export const shippingEnvSchema = z
         return s === "" ? undefined : s.toUpperCase();
       }, z.string().optional())
       .refine((v) => v === undefined || /^[A-Z]{2}$/.test(v), {
-        message: "must be a 2-letter country code",
+        message: "must be a 2-letter country code", // i18n-exempt: validation copy (non-UI)
       }),
     DEFAULT_SHIPPING_ZONE: z
       .enum(["domestic", "eu", "international"])
@@ -107,14 +107,14 @@ export const shippingEnvSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["UPS_KEY"],
-        message: "UPS_KEY is required when SHIPPING_PROVIDER=ups",
+        message: "UPS_KEY is required when SHIPPING_PROVIDER=ups", // i18n-exempt: validation copy (non-UI)
       });
     }
     if (env.SHIPPING_PROVIDER === "dhl" && !env.DHL_KEY) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["DHL_KEY"],
-        message: "DHL_KEY is required when SHIPPING_PROVIDER=dhl",
+        message: "DHL_KEY is required when SHIPPING_PROVIDER=dhl", // i18n-exempt: validation copy (non-UI)
       });
     }
   });
@@ -126,10 +126,10 @@ export function loadShippingEnv(raw?: NodeJS.ProcessEnv): ShippingEnv {
   const parsed = shippingEnvSchema.safeParse(effective);
   if (!parsed.success) {
     console.error(
-      "❌ Invalid shipping environment variables:",
+      "❌ Invalid shipping environment variables:", // i18n-exempt: developer log
       parsed.error.format(),
-    );
-    throw new Error(INVALID_ENV_ERROR);
+    ); // i18n-exempt: developer log
+    throw new Error(INVALID_ENV_ERROR); // i18n-exempt: developer error
   }
   return parsed.data;
 }
@@ -139,10 +139,10 @@ assertStringEnv(process.env);
 const parsed = shippingEnvSchema.safeParse(process.env);
 if (!parsed.success) {
   console.error(
-    "❌ Invalid shipping environment variables:",
+    "❌ Invalid shipping environment variables:", // i18n-exempt: developer log
     parsed.error.format(),
-  );
-  throw new Error(INVALID_ENV_ERROR);
+  ); // i18n-exempt: developer log
+  throw new Error(INVALID_ENV_ERROR); // i18n-exempt: developer error
 }
 export const shippingEnv = parsed.data;
 

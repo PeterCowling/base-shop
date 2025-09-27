@@ -24,8 +24,8 @@ describe("ThemePanel rename conflict cancel", () => {
   it("does not schedule save when user cancels rename conflict", async () => {
     // Both defaults and tokens contain conflicting keys so confirm(false) path is exercised
     (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true, json: async () => ({
-      themeDefaults: { "--color.brand": "#000", "--color.primary": "#111" },
-      themeTokens: { "--color.brand": "#000" },
+      themeDefaults: { "--color.brand": "#000", "--color.primary": "#111" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test fixture literals
+      themeTokens: { "--color.brand": "#000" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test fixture literals
     }) } as any);
     (global.fetch as jest.Mock).mockResolvedValue({ ok: true } as any);
 
@@ -37,4 +37,3 @@ describe("ThemePanel rename conflict cancel", () => {
     expect(patchCalls.length).toBe(0);
   });
 });
-

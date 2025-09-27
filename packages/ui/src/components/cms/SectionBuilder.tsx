@@ -3,6 +3,7 @@
 import React, { memo, useMemo } from "react";
 import type { CSSProperties } from "react";
 import type { Page, PageComponent } from "@acme/types";
+import type { Locale } from "@acme/i18n/locales";
 import type { SectionTemplate } from "@acme/types/section/template";
 import PageBuilder from "./page-builder/PageBuilder";
 
@@ -38,7 +39,7 @@ const SectionBuilder = memo(function SectionBuilder({
     slug: `section-${template.id}`,
     status: template.status,
     components: [template.template as PageComponent],
-    seo: { title: {} as any },
+    seo: { title: {} as Partial<Record<Locale, string>> },
     createdAt: template.createdAt,
     updatedAt: template.updatedAt,
     createdBy: template.createdBy,

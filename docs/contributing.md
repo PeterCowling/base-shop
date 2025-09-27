@@ -22,6 +22,16 @@ Before submitting changes, run [`pnpm lint`](../package.json#L24). For tests, av
 - Single file/pattern (Jest): `pnpm --filter <workspace> test -- --testPathPattern <pattern>`
 - Cypress subsets: use `pnpm e2e:dashboard` or targeted scripts in `docs/cypress.md`
 
+### Exceptions and disable policy
+
+When disabling a rule, include a ticket ID after `--` and, optionally, a TTL:
+
+```ts
+// eslint-disable-next-line no-console -- ABC-123 explain; ttl=2025-12-31
+```
+
+See `docs/linting.md` for the exceptions registry and CI validation flow.
+
 ## Testing
 
 - Policy: Do not run package/app‑wide tests across the whole workspace unless explicitly requested (they’re time‑consuming).

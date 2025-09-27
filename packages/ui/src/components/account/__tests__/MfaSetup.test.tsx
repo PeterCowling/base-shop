@@ -24,7 +24,7 @@ describe("MfaSetup", () => {
   });
 
   it("enroll displays secret and QR code", async () => {
-    // @ts-expect-error
+    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ secret: "abc123", otpauth: "otpauth://test" }),
@@ -41,7 +41,7 @@ describe("MfaSetup", () => {
   });
 
   it("shows status messages for verification", async () => {
-    // @ts-expect-error
+    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest
       .fn()
       .mockResolvedValueOnce({
@@ -69,7 +69,7 @@ describe("MfaSetup", () => {
   });
 
   it("skips QR code when otpauth is null", async () => {
-    // @ts-expect-error
+    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       json: async () => ({ secret: "abc123", otpauth: null }),

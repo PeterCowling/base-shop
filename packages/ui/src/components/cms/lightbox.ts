@@ -48,6 +48,12 @@ export function initLightbox() {
   let anchors: HTMLAnchorElement[] = [];
   let index = 0;
 
+  // Optional localized labels provided by host app via <html> attributes
+  const docRoot = document.documentElement;
+  const LB_PREV = docRoot.getAttribute("data-lightbox-prev-label") || undefined;
+  const LB_NEXT = docRoot.getAttribute("data-lightbox-next-label") || undefined;
+  const LB_CLOSE = docRoot.getAttribute("data-lightbox-close-label") || undefined;
+
   function buildOverlay() {
     overlay = document.createElement("div");
     overlay.className = "pb-lightbox";
@@ -68,22 +74,25 @@ export function initLightbox() {
     figure.appendChild(imgEl);
     figure.appendChild(captionEl);
 
+    const GLYPH_PREV = String.fromCharCode(0x2039); // i18n-exempt with justification: decorative glyph constant
     prevBtn = document.createElement("button");
-    prevBtn.className = "pb-lightbox-btn pb-lightbox-prev";
-    prevBtn.setAttribute("aria-label", "Previous");
-    prevBtn.textContent = "‹";
+    prevBtn.className = "pb-lightbox-btn pb-lightbox-prev"; // i18n-exempt: CSS class names only
+    if (LB_PREV) prevBtn.setAttribute("aria-label", LB_PREV); // i18n-exempt: provided by host app
+    prevBtn.textContent = GLYPH_PREV;
     prevBtn.addEventListener("click", prev);
 
+    const GLYPH_NEXT = String.fromCharCode(0x203A); // i18n-exempt with justification: decorative glyph constant
     nextBtn = document.createElement("button");
-    nextBtn.className = "pb-lightbox-btn pb-lightbox-next";
-    nextBtn.setAttribute("aria-label", "Next");
-    nextBtn.textContent = "›";
+    nextBtn.className = "pb-lightbox-btn pb-lightbox-next"; // i18n-exempt: CSS class names only
+    if (LB_NEXT) nextBtn.setAttribute("aria-label", LB_NEXT); // i18n-exempt: provided by host app
+    nextBtn.textContent = GLYPH_NEXT;
     nextBtn.addEventListener("click", next);
 
+    const GLYPH_CLOSE = String.fromCharCode(0x00D7); // i18n-exempt with justification: decorative glyph constant
     closeBtn = document.createElement("button");
     closeBtn.className = "pb-lightbox-close";
-    closeBtn.setAttribute("aria-label", "Close");
-    closeBtn.textContent = "×";
+    if (LB_CLOSE) closeBtn.setAttribute("aria-label", LB_CLOSE); // i18n-exempt: provided by host app
+    closeBtn.textContent = GLYPH_CLOSE;
     closeBtn.addEventListener("click", close);
 
     overlay.appendChild(backdrop);

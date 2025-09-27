@@ -105,3 +105,8 @@ kbd {
   max-width: 100%;
   max-height: 100%;
 }
+
+/* -------- Viewport-safe height utilities ------------------------------- */
+/* Replace unsafe 100vh/100vw with dynamic viewport units for mobile UI */
+.min-h-dvh { min-height: 100dvh; }
+.h-dvh { height: 100dvh; }

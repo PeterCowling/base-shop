@@ -147,6 +147,7 @@ describe("ComponentEditor", () => {
     );
 
     fireEvent.click(getByText("Style"));
+    // eslint-disable-next-line ds/no-raw-color -- simulating user change to a hex value
     fireEvent.change(getByLabelText("Foreground"), { target: { value: "#fff" } });
     expect(handleInput).toHaveBeenCalledWith("styles", expect.any(String));
 

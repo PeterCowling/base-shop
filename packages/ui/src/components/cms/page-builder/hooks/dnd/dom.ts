@@ -4,7 +4,7 @@ export function isPointerEvent(
   return !!ev && "clientX" in ev && "clientY" in ev;
 }
 
-export function safeDispatchEvent(name: string, detail?: any) {
+export function safeDispatchEvent(name: string, detail?: unknown) {
   try {
      
     window.dispatchEvent(new CustomEvent(name, { detail }));
@@ -12,4 +12,3 @@ export function safeDispatchEvent(name: string, detail?: any) {
     // no-op
   }
 }
-

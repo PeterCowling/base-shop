@@ -21,16 +21,16 @@ function styleFromEffects(effects?: NonNullable<StyleOverrides["effects"]>): CSS
     borderRadius: fx.borderRadius,
     boxShadow: fx.boxShadow,
     outline: fx.outline,
-    outlineOffset: fx.outlineOffset as any,
+    outlineOffset: fx.outlineOffset,
     borderTop: fx.borderTop,
     borderRight: fx.borderRight,
     borderBottom: fx.borderBottom,
     borderLeft: fx.borderLeft,
-    backdropFilter: fx.backdropFilter as any,
-    filter: (fx as any).filter as any,
+    backdropFilter: fx.backdropFilter,
+    filter: fx.filter,
     opacity: fx.opacity ? Number(fx.opacity) : undefined,
     transform: composeTransform(fx),
-    transition: "transform 200ms ease, opacity 200ms ease",
+    transition: "transform 200ms ease, opacity 200ms ease", // i18n-exempt: CSS value
   } as CSSProperties;
 }
 
@@ -50,17 +50,17 @@ export default function StylePreviewCard({ effects, hoverScale, hoverOpacity }: 
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <div className="text-xs font-semibold text-muted-foreground">Preview</div>
+        <div className="text-xs font-semibold text-muted-foreground">{/* i18n-exempt: non-user-facing builder preview label */}Preview</div>
         <label className="flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
           <input type="checkbox" checked={hoverOn} onChange={(e) => setHoverOn(e.target.checked)} />
-          Hover
+          {/* i18n-exempt: non-user-facing builder preview toggle */}Hover
         </label>
       </div>
       <div className="rounded border bg-muted p-3">
-        <div className="mx-auto w-full max-w-[360px] rounded bg-background p-4" style={simulated}>
-          <div className="text-sm font-semibold">Sample Title</div>
-          <div className="text-xs text-muted-foreground">This block previews current Effects.</div>
-          <div className="mt-2 rounded bg-muted px-2 py-1 text-center text-xs">Button</div>
+        <div className="mx-auto w-full sm:w-80 rounded bg-background p-4" style={simulated}>
+          <div className="text-sm font-semibold">{/* i18n-exempt: illustrative sample text */}Sample Title</div>
+          <div className="text-xs text-muted-foreground">{/* i18n-exempt: illustrative sample text */}This block previews current Effects.</div>
+          <div className="mt-2 rounded bg-muted px-2 py-1 text-center text-xs">{/* i18n-exempt: illustrative sample text */}Button</div>
         </div>
       </div>
     </div>

@@ -1,4 +1,6 @@
+/* i18n-exempt file -- TEST-0001: unit test titles and literals are not user-facing */
 import { getCustomDevicePresets, saveCustomDevicePresets, getAllDevicePresets, findDevicePresetById, CUSTOM_DEVICES_KEY } from "../devicePresets";
+import type { DevicePreset } from "../devicePresets";
 
 describe("custom device presets", () => {
   beforeEach(() => {
@@ -26,10 +28,10 @@ describe("custom device presets", () => {
   });
 
   it("saveCustomDevicePresets persists normalized list and findDevicePresetById finds items", () => {
-    const custom = [
-      { id: "cA", label: "A", width: 800, height: 600, type: "desktop", orientation: "portrait" as const },
+    const custom: DevicePreset[] = [
+      { id: "cA", label: "A", width: 800, height: 600, type: "desktop", orientation: "portrait" },
     ];
-    saveCustomDevicePresets(custom as any);
+    saveCustomDevicePresets(custom);
     const stored = JSON.parse(localStorage.getItem(CUSTOM_DEVICES_KEY) || "[]");
     expect(Array.isArray(stored)).toBe(true);
     expect(stored[0]).toMatchObject({ id: "cA", orientation: "portrait" });
@@ -38,4 +40,3 @@ describe("custom device presets", () => {
     expect(findDevicePresetById("cA")?.label).toBe("A");
   });
 });
-

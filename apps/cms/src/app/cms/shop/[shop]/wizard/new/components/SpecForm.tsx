@@ -2,12 +2,14 @@
 
 import { useCallback, useState } from "react";
 import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   onNext: (spec: ScaffoldSpec) => void;
 }
 
 export default function SpecForm({ onNext }: Props) {
+  const t = useTranslations();
   const [layout, setLayout] = useState<"default" | "sidebar">("default");
   const [sections, setSections] = useState("");
   const [hero, setHero] = useState("");
@@ -58,29 +60,29 @@ export default function SpecForm({ onNext }: Props) {
   return (
     <form onSubmit={submit} className="flex flex-col gap-4">
       <label className="flex flex-col">
-        Layout
+        {t("Layout")}
         <select value={layout} onChange={handleLayout}>
-          <option value="default">Default</option>
-          <option value="sidebar">Sidebar</option>
+          <option value="default">{t("Default")}</option>
+          <option value="sidebar">{t("Sidebar")}</option>
         </select>
       </label>
       <label className="flex flex-col">
-        Sections
+        {t("Sections")}
         <input
           value={sections}
           onChange={handleSections}
-          placeholder="intro,features"
+          placeholder={String(t("intro,features"))}
         />
       </label>
       <label className="flex flex-col">
-        Hero
-        <input value={hero} onChange={handleHero} placeholder="Welcome" />
+        {t("Hero")}
+        <input value={hero} onChange={handleHero} placeholder={String(t("Welcome"))} />
       </label>
       <label className="flex flex-col">
-        Call to action
-        <input value={cta} onChange={handleCta} placeholder="Start" />
+        {t("Call to action")}
+        <input value={cta} onChange={handleCta} placeholder={String(t("Start"))} />
       </label>
-      <button type="submit">Next</button>
+      <button type="submit">{t("Next")}</button>
     </form>
   );
 }

@@ -1,18 +1,12 @@
 import "server-only";
 
-import { promises as fs } from "fs";
-import * as path from "path";
-import { validateShopName } from "../shops/index";
-import { DATA_ROOT } from "../dataRoot";
+import { ensureShopDir, readFromShop, writeToShop } from "../utils/safeFs";
 
-function presetsPath(shop: string) {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "theme-presets.json");
-}
+// preset path resolved via safeFs helpers
 
 async function readPresets(shop: string) {
   try {
-    const buf = await fs.readFile(presetsPath(shop), "utf8");
+    const buf = (await readFromShop(shop, "theme-presets.json", "utf8")) as string;
     return JSON.parse(buf) as Record<string, Record<string, string>>;
   } catch {
     return {} as Record<string, Record<string, string>>;
@@ -32,12 +26,8 @@ export async function saveThemePreset(
 ): Promise<void> {
   const presets = await readPresets(shop);
   presets[name] = tokens;
-  await fs.mkdir(path.dirname(presetsPath(shop)), { recursive: true });
-  await fs.writeFile(
-    presetsPath(shop),
-    JSON.stringify(presets, null, 2),
-    "utf8",
-  );
+  await ensureShopDir(shop);
+  await writeToShop(shop, "theme-presets.json", JSON.stringify(presets, null, 2), "utf8");
 }
 
 export async function deleteThemePreset(
@@ -46,12 +36,8 @@ export async function deleteThemePreset(
 ): Promise<void> {
   const presets = await readPresets(shop);
   delete presets[name];
-  await fs.mkdir(path.dirname(presetsPath(shop)), { recursive: true });
-  await fs.writeFile(
-    presetsPath(shop),
-    JSON.stringify(presets, null, 2),
-    "utf8",
-  );
+  await ensureShopDir(shop);
+  await writeToShop(shop, "theme-presets.json", JSON.stringify(presets, null, 2), "utf8");
 }
 
 export const jsonThemePresetRepository = {

@@ -1,3 +1,4 @@
+/* i18n-exempt file -- tests verify placeholder and status messages */
 import { render, screen, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ReviewsList, type Review } from "../ReviewsList";

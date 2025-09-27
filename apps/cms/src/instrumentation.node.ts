@@ -14,7 +14,10 @@ export async function register(): Promise<void> {
   // representation so that a stack trace can still be produced.
   process.on("uncaughtException", (err: unknown) => {
     const e: Error = err instanceof Error ? err : new Error(String(err));
-    console.error("[instrumentation] uncaughtException\n", e.stack ?? e);
+    console.error(
+      "[instrumentation] uncaughtException\n", // i18n-exempt: ENG-1234 Dev/runtime log label, not user-facing UI copy
+      e.stack ?? e
+    );
   });
 
   // Dev‑focused handler that logs unhandled promise rejections. Like above,
@@ -23,6 +26,9 @@ export async function register(): Promise<void> {
   process.on("unhandledRejection", (reason: unknown) => {
     const e: Error =
       reason instanceof Error ? reason : new Error(String(reason));
-    console.error("[instrumentation] unhandledRejection\n", e.stack ?? e);
+    console.error(
+      "[instrumentation] unhandledRejection\n", // i18n-exempt: ENG-1234 Dev/runtime log label, not user-facing UI copy
+      e.stack ?? e
+    );
   });
 }

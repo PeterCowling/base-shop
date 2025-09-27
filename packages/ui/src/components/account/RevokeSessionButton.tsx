@@ -3,7 +3,7 @@
 // packages/ui/src/components/account/RevokeSessionButton.tsx
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-const t = (s: string) => s;
+import { useTranslations } from "@acme/i18n";
 
 export interface RevokeSessionButtonProps {
   sessionId: string;
@@ -15,6 +15,7 @@ export default function RevokeSessionButton({
   revoke,
 }: RevokeSessionButtonProps) {
   const router = useRouter();
+  const t = useTranslations();
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
 
@@ -25,7 +26,7 @@ export default function RevokeSessionButton({
       if (result.success) {
         router.refresh();
       } else {
-        setError(result.error ?? t("Failed to revoke session."));
+        setError(result.error ?? (t("Failed to revoke session.") as string));
       }
     });
   };
@@ -37,14 +38,14 @@ export default function RevokeSessionButton({
         onClick={handleClick}
         disabled={isPending}
         className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
-        data-token="--color-primary"
+        data-token="--color-primary" // i18n-exempt — label below is translated
       >
-        <span className="text-primary-fg" data-token="--color-primary-fg">
+        <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt — child content uses t() */}
           {isPending ? t("Revoking...") : t("Revoke")}
         </span>
       </button>
       {error && (
-        <p className="mt-2 text-sm text-danger" data-token="--color-danger">
+        <p className="mt-2 text-sm text-danger" data-token="--color-danger"> {/* i18n-exempt — dynamic error message */}
           {error}
         </p>
       )}

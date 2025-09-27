@@ -64,9 +64,9 @@ export async function notifyStatusChange(
   email: EmailService = getEmailService(),
 ): Promise<void> {
   if (previous === current) return;
-  const message = `Tracking update for ${item.id}: ${current ?? "unknown"}`;
+  const message = `Tracking update for ${item.id}: ${current ?? "unknown"}`; // i18n-exempt -- CORE-1011 system notification content
   if (contact.email) {
-    await email.sendEmail(contact.email, "Tracking update", message);
+    await email.sendEmail(contact.email, "Tracking update", message); // i18n-exempt -- CORE-1011 system notification subject
   }
   if (contact.phone) {
     await sendSms(contact.phone, message);

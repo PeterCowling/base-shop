@@ -78,6 +78,10 @@ See [docs/architecture.md](docs/architecture.md) for a component layer overview.
 
 - Detailed guide: see docs/typography-and-color.md
 - Machine manifest (for tooling): docs/tokens.fonts-and-colors.json
+
+## Linting and Exceptions
+
+Read `docs/linting.md` for the complete linting setup, rule catalog, severities by scope, and the exceptions policy (ticketed disables + registry and CI checks). It also documents how CI validates exceptions and how to add or expire them.
 - Quick picks (contributors):
   - Use the CMS Typography panel to choose three fonts: Body, Heading 1 (H1–H3), Heading 2 (H4–H6). The runtime injector loads only the needed Google Fonts and sets CSS variables.
   - Tailwind utilities map to tokens: backgrounds/text use HSL variables, e.g. `bg-primary` + `text-primary-foreground`, `text-fg`, `bg-bg`. `font-sans` follows the selected `--font-body`.

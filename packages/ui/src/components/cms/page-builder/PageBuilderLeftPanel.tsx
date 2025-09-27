@@ -10,6 +10,7 @@ import type { ComponentType } from "./defaults";
 import FontsPanel from "./FontsPanel";
 import ThemePanel from "./ThemePanel";
 import type { PageComponent } from "@acme/types";
+import type { Breakpoint } from "./panels/BreakpointsPanel";
 
 type SidebarProps = ComponentProps<typeof PageSidebar>;
 
@@ -45,8 +46,8 @@ interface PageBuilderLeftPanelProps {
   onParentFirstChange?: (v: boolean) => void;
   crossBreakpointNotices?: boolean;
   onCrossBreakpointNoticesChange?: (v: boolean) => void;
-  breakpoints?: any;
-  setBreakpoints?: (value: any) => void;
+  breakpoints?: Breakpoint[];
+  setBreakpoints?: (value: Breakpoint[]) => void;
   shop?: string | null;
   sidebarProps: SidebarProps;
   mode: "page" | "section";
@@ -173,7 +174,7 @@ const PageBuilderLeftPanel = ({
       {showTheme && (
         <div style={{ width: paletteWidth }} className="shrink-0">
           {/* Inline Theme (color) selector */}
-          <aside className="h-screen overflow-auto bg-surface-3" role="region" aria-label="Theme Panel">
+          <aside style={{ minHeight: "100dvh" }} className="overflow-auto bg-surface-3" role="region" aria-label="Theme Panel">
             {/* ThemePanel renders token editor UI; used inline here */}
             <ThemePanel variant="sidebar" />
           </aside>
@@ -183,13 +184,13 @@ const PageBuilderLeftPanel = ({
         <LayersSidebar
           width={layersWidth}
           onWidthChange={onLayersWidthChange}
-          components={(sidebarProps as any)?.components}
-          selectedIds={(sidebarProps as any)?.selectedIds}
-          onSelectIds={(sidebarProps as any)?.onSelectIds}
-          dispatch={(sidebarProps as any)?.dispatch}
-          editor={(sidebarProps as any)?.editor}
-          viewport={(sidebarProps as any)?.viewport}
-          crossNotices={(sidebarProps as any)?.crossNotices}
+          components={sidebarProps.components}
+          selectedIds={sidebarProps.selectedIds}
+          onSelectIds={sidebarProps.onSelectIds}
+          dispatch={sidebarProps.dispatch}
+          editor={sidebarProps.editor}
+          viewport={sidebarProps.viewport}
+          crossNotices={sidebarProps.crossNotices}
         />
       )}
       {showQuickPalette && (

@@ -1,5 +1,6 @@
 // packages/ui/components/atoms/primitives/input.tsx
 "use client";
+// i18n-exempt: no user-facing copy; only prop-driven labels/errors
 
 import * as React from "react";
 import { cn } from "../../../utils/style";
@@ -46,11 +47,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
      * ------------------------------------------------------------------ */
     const baseClasses = cn(
       // base
-      "flex h-12 w-full rounded-md border border-input bg-input px-3 py-3 text-sm text-foreground",
+      "flex h-12 w-full rounded-md border border-input bg-input px-3 py-3 text-sm text-foreground", // i18n-exempt: class tokens only
       // placeholder + file input follow tokenized colors
-      "placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium",
+      "placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium", // i18n-exempt: class tokens only
       // ring uses tokenized color and widths
-      "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring",
+      "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring", // i18n-exempt: class tokens only
       "disabled:cursor-not-allowed disabled:opacity-50",
       // floating-label tweak
       floatingLabel && "peer pt-5",
@@ -102,8 +103,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               <label
                 htmlFor={inputId}
                 className={cn(
-                  "text-muted-foreground pointer-events-none absolute top-2 ms-3 transition-all",
-                  (focused || hasValue) && "-translate-y-3 text-xs"
+                  "text-muted-foreground pointer-events-none absolute top-2 ms-3 transition-all", // i18n-exempt: classes only
+                  (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt: classes only
                 )}
               >
                 {label}
@@ -133,7 +134,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </>
         )}
         {error && (
-          <p className="text-sm text-danger" data-token="--color-danger">
+          <p className="text-sm text-danger" data-token="--color-danger"> {/* i18n-exempt: classes only */}
             {error}
           </p>
         )}
@@ -142,4 +143,4 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = "Input";
+Input.displayName = "Input"; // i18n-exempt: component displayName, not user-facing

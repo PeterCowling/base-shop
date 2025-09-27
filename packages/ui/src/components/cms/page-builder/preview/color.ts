@@ -33,10 +33,10 @@ export function getColors(): Colors {
   }
   // Fallback palette
   return {
-    bg: "#F8FAFC",
-    stroke: "#94A3B8",
-    fill: "#E2E8F0",
-    overlay: "rgba(248,250,252,0.8)",
+    // Use DS tokens as fallbacks to avoid raw hex colors
+    bg: "hsl(var(--color-bg))",
+    stroke: "hsl(var(--color-fg) / 0.45)",
+    fill: "hsl(var(--color-fg) / 0.18)",
+    overlay: "hsl(var(--color-bg) / 0.8)",
   };
 }
-

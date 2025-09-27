@@ -1,4 +1,6 @@
 import { FormEvent, useState } from "react";
+import { useTranslations } from "@i18n/Translations";
+import en from "@i18n/en.json";
 import type { ChangeEvent } from "react";
 import type { Provider } from "@acme/configurator/providers";
 import type { Shop } from "@acme/types";
@@ -99,6 +101,12 @@ export function useShopEditorSubmit({
   providers,
   overrides,
 }: Args) {
+  const tFromContext = useTranslations();
+  // Ensure readable strings in tests even without a provider
+  const t = (key: string) => {
+    const out = tFromContext(key) as unknown as string;
+    return out === key ? (en as Record<string, string>)[key] ?? key : out;
+  };
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const [toast, setToast] = useState<ToastState>({
@@ -122,7 +130,7 @@ export function useShopEditorSubmit({
       )
     ) {
       validationErrors.filterMappings = [
-        "All filter mappings must have key and value",
+        String(t("cms.shop.settings.validation.filterMappings")),
       ];
     }
     if (
@@ -131,7 +139,7 @@ export function useShopEditorSubmit({
       )
     ) {
       validationErrors.priceOverrides = [
-        "All price overrides require locale and numeric value",
+        String(t("cms.shop.settings.validation.priceOverrides")),
       ];
     }
     if (
@@ -140,7 +148,7 @@ export function useShopEditorSubmit({
       )
     ) {
       validationErrors.localeOverrides = [
-        "All locale overrides require key and valid locale",
+        String(t("cms.shop.settings.validation.localeOverrides")),
       ];
     }
     if (Object.keys(validationErrors).length > 0) {
@@ -148,7 +156,7 @@ export function useShopEditorSubmit({
       setToast({
         open: true,
         status: "error",
-        message: "Please resolve the highlighted validation issues.",
+        message: String(t("cms.shop.settings.validation.resolveIssues")),
       });
       setSaving(false);
       return;
@@ -185,7 +193,7 @@ export function useShopEditorSubmit({
       setToast({
         open: true,
         status: "error",
-        message: "Please resolve the highlighted validation issues.",
+        message: String(t("cms.shop.settings.validation.resolveIssues")),
       });
       setSaving(false);
       return;
@@ -197,8 +205,9 @@ export function useShopEditorSubmit({
         setToast({
           open: true,
           status: "error",
-          message:
-            "We couldn't save your changes. Please review the errors and try again.",
+          message: String(
+            t("cms.shop.settings.save.error")
+          ),
         });
       } else if (result.shop) {
         identity.setInfo(result.shop);
@@ -233,7 +242,7 @@ export function useShopEditorSubmit({
         setToast({
           open: true,
           status: "success",
-          message: "Shop settings saved successfully.",
+          message: String(t("cms.shop.settings.save.success")),
         });
       }
     } catch (error) {
@@ -241,8 +250,7 @@ export function useShopEditorSubmit({
       setToast({
         open: true,
         status: "error",
-        message:
-          "Something went wrong while saving your changes. Please try again.",
+        message: String(t("cms.shop.settings.save.exception")),
       });
     } finally {
       setSaving(false);

@@ -2,7 +2,7 @@
 
 // packages/ui/hooks/useProductInputs.ts
 import { parseMultilingualInput } from "@acme/i18n/parseMultilingualInput";
-import type { Locale } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
 import type { ProductPublication } from "@acme/types";
 import {
   useCallback,

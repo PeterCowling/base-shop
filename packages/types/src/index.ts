@@ -43,3 +43,4 @@ export type { SectionTemplate, SectionPreset } from "./section/template";
 export type { RentalLineItem } from "./rental";
 export * from "./data";
 export * from "./recommendations";
+export * from "./i18n";

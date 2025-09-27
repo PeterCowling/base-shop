@@ -1,32 +1,17 @@
 "use client";
 
-import type { CSSProperties } from "react";
-import type { Page, PageComponent, HistoryState } from "@acme/types";
+// Identity builders keep file boundaries clean while preserving types
 
-export function buildToolbarProps(args: any) {
-  return { ...args } as any;
-}
+export function buildToolbarProps<T>(args: T): T { return { ...args }; }
 
-export function buildGridProps(args: any) {
-  return { ...args } as any;
-}
+export function buildGridProps<T>(args: T): T { return { ...args }; }
 
-export function buildCanvasProps(args: any) {
-  return { ...args } as any;
-}
+export function buildCanvasProps<T>(args: T): T { return { ...args }; }
 
-export function buildPreviewProps(args: any) {
-  return { ...args } as any;
-}
+export function buildPreviewProps<T>(args: T): T { return { ...args }; }
 
-export function buildHistoryProps(args: any) {
-  return { ...args } as any;
-}
+export function buildHistoryProps<T>(args: T): T { return { ...args }; }
 
-export function buildToastProps(args: any) {
-  return { ...args } as const;
-}
+export function buildToastProps<T>(args: T): T { return { ...args }; }
 
-export function buildTourProps(args: any) {
-  return { ...args } as const;
-}
+export function buildTourProps<T>(args: T): T { return { ...args }; }

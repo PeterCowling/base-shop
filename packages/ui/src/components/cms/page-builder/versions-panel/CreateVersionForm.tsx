@@ -26,16 +26,16 @@ const CreateVersionForm = ({ onCreate, autoFocusLabel = false }: Props) => {
   return (
     <div className="flex items-end gap-2">
       <div className="flex-1">
-        <label className="text-sm font-medium">Create version</label>
+        <label className="text-sm font-medium">Create version{/* i18n-exempt -- PB-1023: internal editor copy */}</label>
         <Input
-          placeholder="Label (e.g. hero color tweak)"
+          placeholder="Label (e.g. hero color tweak)" /* i18n-exempt -- PB-1023: internal editor copy */
           value={label}
           onChange={(e) => setLabel(e.target.value)}
           autoFocus={autoFocusLabel}
         />
       </div>
       <Button onClick={submit} disabled={saving || !label.trim()}>
-        {saving ? "Saving…" : "Save Version"}
+        {saving ? "Saving…" : "Save Version"}{/* i18n-exempt -- PB-1023: internal editor copy */}
       </Button>
     </div>
   );

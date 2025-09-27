@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/usageMap.ts
 // Human-readable usage hints per semantic token.
+// i18n-exempt file -- CMS-2145: Editor-only token usage hints. Will be externalized to i18n keys when UX copy stabilizes.
 
 export const tokenUsage: Record<string, string[]> = {
   "--color-bg-1": ["App background", "Body"],
@@ -47,4 +48,3 @@ export function getUsageText(token: string): string | null {
   if (!uses || uses.length === 0) return null;
   return `${token} → ${uses.join(", ")}`;
 }
-

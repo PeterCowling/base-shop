@@ -40,40 +40,43 @@ function toDateInput(date: Date): string {
   return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
-export const PRESETS: SavedPreset[] = [
-  {
-    id: "all",
-    label: "All events",
-    description: "Show every recorded signal",
-    apply: () => ({ name: "", start: "", end: "" }),
-  },
-  {
-    id: "last-hour",
-    label: "Last hour",
-    description: "Focus on the freshest spikes",
-    apply: () => {
-      const end = new Date();
-      const start = new Date(end.getTime() - 60 * 60 * 1000);
-      return { start: toDateInput(start), end: toDateInput(end) };
+// Build presets with translated labels/descriptions using provided translator.
+export function getPresets(t: (key: string) => unknown): SavedPreset[] {
+  return [
+    {
+      id: "all",
+      label: String(t("cms.telemetry.presets.all.label")),
+      description: String(t("cms.telemetry.presets.all.description")),
+      apply: () => ({ name: "", start: "", end: "" }),
     },
-  },
-  {
-    id: "day",
-    label: "24 hours",
-    description: "Track day-long health",
-    apply: () => {
-      const end = new Date();
-      const start = new Date(end.getTime() - 24 * 60 * 60 * 1000);
-      return { start: toDateInput(start), end: toDateInput(end) };
+    {
+      id: "last-hour",
+      label: String(t("cms.telemetry.presets.lastHour.label")),
+      description: String(t("cms.telemetry.presets.lastHour.description")),
+      apply: () => {
+        const end = new Date();
+        const start = new Date(end.getTime() - 60 * 60 * 1000);
+        return { start: toDateInput(start), end: toDateInput(end) };
+      },
     },
-  },
-  {
-    id: "checkout",
-    label: "Checkout",
-    description: "Only checkout related events",
-    apply: () => ({ name: "checkout" }),
-  },
-];
+    {
+      id: "day",
+      label: String(t("cms.telemetry.presets.day.label")),
+      description: String(t("cms.telemetry.presets.day.description")),
+      apply: () => {
+        const end = new Date();
+        const start = new Date(end.getTime() - 24 * 60 * 60 * 1000);
+        return { start: toDateInput(start), end: toDateInput(end) };
+      },
+    },
+    {
+      id: "checkout",
+      label: String(t("cms.telemetry.presets.checkout.label")),
+      description: String(t("cms.telemetry.presets.checkout.description")),
+      apply: () => ({ name: "checkout" }),
+    },
+  ];
+}
 
 export function filterTelemetryEvents(
   events: TelemetryEvent[],
@@ -108,7 +111,10 @@ export function buildSummary(events: TelemetryEvent[]): TelemetrySummaryRow[] {
   return Array.from(map.values()).sort((a, b) => b.count - a.count);
 }
 
-export function buildChartData(events: TelemetryEvent[]): TelemetryChartData {
+export function buildChartData(
+  events: TelemetryEvent[],
+  t: (key: string) => unknown,
+): TelemetryChartData {
   const buckets = new Map<string, number>();
 
   for (const event of events) {
@@ -127,7 +133,7 @@ export function buildChartData(events: TelemetryEvent[]): TelemetryChartData {
     labels,
     datasets: [
       {
-        label: "Events",
+        label: String(t("cms.telemetry.events")),
         data: labels.map((label) => buckets.get(label) ?? 0),
         borderColor: "hsl(var(--color-info))",
         backgroundColor: "hsl(var(--color-info) / 0.2)",

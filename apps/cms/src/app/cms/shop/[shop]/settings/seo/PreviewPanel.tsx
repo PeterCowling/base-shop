@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import type { FC } from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   /** Page title */
@@ -23,9 +24,10 @@ const PreviewPanel: FC<Props> = ({
   image,
   url = "example.com",
 }) => {
+  const t = useTranslations();
   const placeholder = {
-    title: title || "Title goes here",
-    description: description || "Description goes here",
+    title: title || (t("Title goes here") as string),
+    description: description || (t("Description goes here") as string),
     url,
   };
 
@@ -33,7 +35,7 @@ const PreviewPanel: FC<Props> = ({
     <div className="space-y-6">
       {/* SERP preview -------------------------------------------------- */}
       <div className="space-y-1">
-        <p className="text-muted-foreground text-sm">Google result</p>
+        <p className="text-muted-foreground text-sm">{t("Google result")}</p>
         <div className="rounded-md border border-border/10 p-4 text-sm">
           <p className="text-link">{placeholder.title}</p>
           <p className="text-success">{placeholder.url}</p>
@@ -43,12 +45,12 @@ const PreviewPanel: FC<Props> = ({
 
       {/* Open Graph preview -------------------------------------------- */}
       <div className="space-y-1">
-        <p className="text-muted-foreground text-sm">Open Graph</p>
+        <p className="text-muted-foreground text-sm">{t("Open Graph")}</p>
         <div className="flex gap-4 rounded-md border border-border/10 p-4">
           {image && (
             <Image
               src={image}
-              alt="preview image"
+              alt={String(t("preview image"))}
               width={120}
               height={120}
               className="size-20 rounded object-cover"
@@ -64,12 +66,12 @@ const PreviewPanel: FC<Props> = ({
 
       {/* Twitter card preview ----------------------------------------- */}
       <div className="space-y-1">
-        <p className="text-muted-foreground text-sm">Twitter card</p>
+        <p className="text-muted-foreground text-sm">{t("Twitter card")}</p>
         <div className="flex gap-4 rounded-md border border-border/10 p-4">
           {image && (
             <Image
               src={image}
-              alt="preview image"
+              alt={String(t("preview image"))}
               width={120}
               height={120}
               className="size-20 rounded object-cover"

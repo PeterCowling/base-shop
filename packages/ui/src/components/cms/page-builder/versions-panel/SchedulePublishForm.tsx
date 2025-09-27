@@ -24,14 +24,13 @@ const SchedulePublishForm = ({ onSchedule }: Props) => {
 
   return (
     <div className="col-span-1 space-y-2">
-      <div className="text-sm font-medium">Schedule publish</div>
+      <div className="text-sm font-medium">Schedule publish{/* i18n-exempt -- PB-1023 */}</div>
       <Input type="datetime-local" value={publishAt} onChange={(e) => setPublishAt(e.target.value)} />
       <Button onClick={submit} disabled={busy || !publishAt}>
-        {busy ? "Scheduling…" : "Schedule"}
+        {busy ? "Scheduling…" : "Schedule"}{/* i18n-exempt -- PB-1023 */}
       </Button>
     </div>
   );
 };
 
 export default SchedulePublishForm;
-

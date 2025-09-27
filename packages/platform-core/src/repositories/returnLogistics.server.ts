@@ -51,7 +51,7 @@ export async function createReturnLabel(
   req: ReturnLabelRequest,
 ): Promise<{ trackingNumber: string; labelUrl: string }> {
   if (req.carrier !== "UPS") {
-    throw new Error("unsupported carrier");
+    throw new Error("unsupported carrier"); // i18n-exempt -- ABC-123: Server-side validation message, not displayed to end users
   }
   const tracking = `1Z${Math.floor(Math.random() * 1e10)
     .toString()
@@ -61,4 +61,3 @@ export async function createReturnLabel(
 }
 
 export type { ReturnLogistics };
-

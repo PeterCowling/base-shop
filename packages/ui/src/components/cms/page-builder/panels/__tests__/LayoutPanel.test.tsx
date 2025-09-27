@@ -103,18 +103,30 @@ describe("LayoutPanel", () => {
     );
     const vps = ["Desktop", "Tablet", "Mobile"] as const;
     vps.forEach((vp) => {
-      fireEvent.change(screen.getByLabelText(new RegExp(`Width \\(${vp}\\)`)), {
-        target: { value: `${vp}-w` },
-      });
-      fireEvent.change(screen.getByLabelText(new RegExp(`Height \\(${vp}\\)`)), {
-        target: { value: `${vp}-h` },
-      });
-      fireEvent.change(screen.getByLabelText(new RegExp(`Margin \\(${vp}\\)`)), {
-        target: { value: `${vp}-m` },
-      });
-      fireEvent.change(screen.getByLabelText(new RegExp(`Padding \\(${vp}\\)`)), {
-        target: { value: `${vp}-p` },
-      });
+      fireEvent.change(
+        screen.getByLabelText((content) => typeof content === "string" && content.includes(`Width (${vp})`)),
+        {
+          target: { value: `${vp}-w` },
+        }
+      );
+      fireEvent.change(
+        screen.getByLabelText((content) => typeof content === "string" && content.includes(`Height (${vp})`)),
+        {
+          target: { value: `${vp}-h` },
+        }
+      );
+      fireEvent.change(
+        screen.getByLabelText((content) => typeof content === "string" && content.includes(`Margin (${vp})`)),
+        {
+          target: { value: `${vp}-m` },
+        }
+      );
+      fireEvent.change(
+        screen.getByLabelText((content) => typeof content === "string" && content.includes(`Padding (${vp})`)),
+        {
+          target: { value: `${vp}-p` },
+        }
+      );
     });
     const marginInputs = screen.getAllByLabelText(/Margin/);
     fireEvent.change(marginInputs[marginInputs.length - 1], {

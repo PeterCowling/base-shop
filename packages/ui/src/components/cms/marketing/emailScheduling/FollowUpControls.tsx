@@ -4,6 +4,7 @@ import { Card, CardContent, Input } from "../../../atoms/shadcn";
 import { Switch } from "../../../atoms";
 import type { EmailScheduleErrors } from "./hooks/useEmailScheduleFormState";
 import type { EmailScheduleFormValues } from "./types";
+import { useTranslations } from "@acme/i18n";
 
 type FollowUpField = "followUpEnabled" | "followUpDelayHours";
 
@@ -21,14 +22,15 @@ export interface FollowUpControlsProps {
 }
 
 export function FollowUpControls({ values, error, onUpdate }: FollowUpControlsProps) {
+  const t = useTranslations();
   return (
     <Card>
       <CardContent className="space-y-4">
         <div className="flex items-center justify-between gap-2">
           <div>
-            <h3 className="text-sm font-medium">Follow-up email</h3>
+            <h3 className="text-sm font-medium">{t("emailScheduling.followUp.title")}</h3>
             <p className="text-muted-foreground text-xs">
-              Send a reminder to non-openers after a delay.
+              {t("emailScheduling.followUp.helpText")}
             </p>
           </div>
           <Switch
@@ -39,11 +41,11 @@ export function FollowUpControls({ values, error, onUpdate }: FollowUpControlsPr
         </div>
         {values.followUpEnabled && (
           <div className="space-y-1">
-            <label htmlFor="follow-up-delay" className="text-sm font-medium">
-              Delay in hours
+            <label htmlFor="follow-up-delay" className="text-sm font-medium"> {/* i18n-exempt: DOM htmlFor attribute, not user-facing copy */}
+              {t("emailScheduling.followUp.delayLabel")}
             </label>
             <Input
-              id="follow-up-delay"
+              id="follow-up-delay" // i18n-exempt: DOM id attribute, not user-facing copy
               type="number"
               min={1}
               value={String(values.followUpDelayHours)}
@@ -51,13 +53,13 @@ export function FollowUpControls({ values, error, onUpdate }: FollowUpControlsPr
                 onUpdate("followUpDelayHours", Number(event.target.value || 0))
               }
               aria-invalid={error ? "true" : "false"}
-              aria-describedby={error ? "follow-up-delay-error" : undefined}
+              aria-describedby={error ? "follow-up-delay-error" : undefined} // i18n-exempt: DOM id reference, not user-facing copy
             />
             {error && (
               <p
-                id="follow-up-delay-error"
+                id="follow-up-delay-error" // i18n-exempt: DOM id attribute, not user-facing copy
                 className="text-danger text-xs"
-                data-token="--color-danger"
+                data-token="--color-danger" // i18n-exempt: design token identifier, not user-facing copy
               >
                 {error}
               </p>

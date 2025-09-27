@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-const t = (s: string) => s;
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   sessionId: string;
 }
 
 export default function StartReturnButton({ sessionId }: Props) {
+  const t = useTranslations();
   const [loading, setLoading] = useState(false);
   const [tracking, setTracking] = useState<string | null>(null);
   const [labelUrl, setLabelUrl] = useState<string | null>(null);
@@ -62,11 +63,11 @@ export default function StartReturnButton({ sessionId }: Props) {
         onClick={handleClick}
         disabled={loading}
         className="rounded bg-primary px-3 py-1 min-h-10 min-w-10"
-        data-token="--color-primary"
+        data-token="--color-primary" // i18n-exempt — label below is translated
       >
         <span
           className="text-primary-foreground"
-          data-token="--color-primary-fg"
+          data-token="--color-primary-fg" // i18n-exempt — child content uses t()
         >
           {loading ? t("Processing…") : t("Start return")}
         </span>

@@ -52,8 +52,8 @@ describe("calculateRentalDays", () => {
   });
 });
 
-describe("formatTimestamp", () => {
-  it("parses ISO and numeric timestamps", () => {
+describe("format date/time strings", () => {
+  it("parses ISO and numeric epoch strings", () => {
     const iso = "2025-01-01T05:06:07Z";
     const epoch = Date.UTC(2025, 0, 1, 5, 6, 7).toString();
     expect(formatTimestamp(iso, "en-US")).toBe(

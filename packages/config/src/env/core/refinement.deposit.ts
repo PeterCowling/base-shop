@@ -19,7 +19,7 @@ export function depositReleaseEnvRefinement(
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: [key],
-          message: "must be true or false",
+          message: "must be true or false", // i18n-exempt: validation copy (non-UI)
         });
       }
     } else if (key.includes("INTERVAL_MS")) {
@@ -28,10 +28,9 @@ export function depositReleaseEnvRefinement(
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: [key],
-          message: "must be a number",
+          message: "must be a number", // i18n-exempt: validation copy (non-UI)
         });
       }
     }
   }
 }
-

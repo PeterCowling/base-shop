@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
   };
   if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
     return NextResponse.json(
-      { ok: false, error: "unsupported carrier" },
+      { ok: false, error: "unsupported carrier" }, // i18n-exempt: machine-readable API error
       { status: 400 },
     );
   }
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   const tracking = req.nextUrl.searchParams.get("tracking");
   if (!tracking) {
-    return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 });
+    return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 }); // i18n-exempt: machine-readable API error
   }
   const cfg = await getReturnLogistics();
   const svc = (shop.returnService ?? {}) as {
@@ -80,7 +80,7 @@ export async function GET(req: NextRequest) {
   };
   if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
     return NextResponse.json(
-      { ok: false, error: "unsupported carrier" },
+      { ok: false, error: "unsupported carrier" }, // i18n-exempt: machine-readable API error
       { status: 400 },
     );
   }

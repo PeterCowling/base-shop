@@ -19,8 +19,8 @@ interface LinkedSectionItem {
 }
 
 const cloneWithNewIds = (node: PageComponent): PageComponent => {
-  const cloned: any = { ...(node as any), id: ulid() };
-  const children = (node as any).children as PageComponent[] | undefined;
+  const { children, ...rest } = node as PageComponent & { children?: PageComponent[] };
+  const cloned: PageComponent & { children?: PageComponent[] } = { ...(rest as PageComponent), id: ulid() } as PageComponent;
   if (Array.isArray(children)) {
     cloned.children = children.map(cloneWithNewIds);
   }
@@ -52,17 +52,17 @@ export const createLinkedSectionHandler = ({
         label,
         createdAt: Date.now(),
         template: component,
-      } as any);
+      });
     } catch {}
 
     const cloned = cloneWithNewIds(component);
     const index = findInsertIndex(components, selectedIds);
 
-    dispatch({ type: "add", component: cloned, index } as any);
+    dispatch({ type: "add", component: cloned, index });
     dispatch({
       type: "update-editor",
       id: cloned.id,
-      patch: { global: { id: globalId } } as any,
+      patch: { global: { id: globalId } },
     });
     setSelectedIds([cloned.id]);
   };

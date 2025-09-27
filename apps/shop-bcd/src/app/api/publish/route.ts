@@ -17,6 +17,7 @@ export async function POST() {
   try {
     await requirePermission("manage_orders");
   } catch {
+    // eslint-disable-next-line ds/no-hardcoded-copy -- API error identifier; not user-facing copy
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -26,9 +27,12 @@ export async function POST() {
     const root = join(process.cwd(), "..", "..");
     republishShop(id, root);
     await fs.rm(join(root, "data", "shops", id, "upgrade.json"), { force: true });
+    // eslint-disable-next-line ds/no-hardcoded-copy -- API status token; not user-facing copy
     return NextResponse.json({ status: "ok" });
   } catch (err) {
+    // eslint-disable-next-line ds/no-hardcoded-copy -- log label; not user-facing copy
     console.error("Publish failed", err);
+    // eslint-disable-next-line ds/no-hardcoded-copy -- API error identifier; not user-facing copy
     return NextResponse.json({ error: "Publish failed" }, { status: 500 });
   }
 }

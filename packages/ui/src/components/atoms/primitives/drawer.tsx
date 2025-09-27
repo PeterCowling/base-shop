@@ -26,16 +26,16 @@ export const DrawerContent = React.forwardRef<
   const inlineStyle =
     typeof width === "number" ? ({ width, maxWidth: "100%" } as React.CSSProperties) : ({} as React.CSSProperties);
   const common =
-    "fixed top-0 z-50 h-full max-w-full overflow-y-auto border-border-2 shadow-elevation-4 data-[state=open]:translate-x-0 transition-transform";
+    "fixed top-0 z-50 h-full w-full overflow-y-auto border-border-2 shadow-elevation-4 data-[state=open]:translate-x-0 transition-transform"; // i18n-exempt: class names
   const sideClass =
     side === "left"
-      ? "start-0 translate-x-[-100%] border-e"
-      : "end-0 translate-x-[100%] border-s";
+      ? "start-0 -translate-x-full border-e" // i18n-exempt: class names
+      : "end-0 translate-x-full border-s"; // i18n-exempt: class names
 
   return (
     <DialogPrimitive.Content
       ref={ref}
-      className={cn("bg-panel", common, sideClass, widthClass, className)}
+      className={cn("bg-panel", common, sideClass, widthClass, className)} // i18n-exempt: class names
       style={{ ...inlineStyle, ...style }}
       {...props}
     />

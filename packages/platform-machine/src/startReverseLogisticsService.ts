@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- Paths are derived from internal configuration */
+/* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
 import { readdir } from "fs/promises";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { logger } from "@platform-core/utils";
@@ -28,6 +28,7 @@ export async function startReverseLogisticsService(
           try {
             await processor(shop, dataRoot);
           } catch (err) {
+            // i18n-exempt: OPS-1234 technical log, not user-facing
             logger.error("reverse logistics processing failed", {
               shopId: shop,
               err,
@@ -42,6 +43,7 @@ export async function startReverseLogisticsService(
 
     return () => timers.forEach((t) => clearInterval(t));
   } catch (err) {
+    // i18n-exempt: OPS-1234 technical log, not user-facing
     logger.error("failed to start reverse logistics service", { err });
     throw err;
   }
@@ -49,7 +51,7 @@ export async function startReverseLogisticsService(
 
 if (process.env.NODE_ENV !== "test") {
   startReverseLogisticsService().catch((err) =>
+    // i18n-exempt: OPS-1234 technical log, not user-facing
     logger.error("failed to start reverse logistics service", { err }),
   );
 }
-

@@ -19,6 +19,7 @@ import {
   ReactElement,
   type ChangeEvent,
 } from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface TokensProps {
   tokens: TokenMap;
@@ -46,6 +47,7 @@ export default function Tokens({
   showSearch = true,
   showExtras = true,
 }: TokensProps): ReactElement {
+  const t = useTranslations();
   const {
     colors,
     fonts,
@@ -131,6 +133,7 @@ export default function Tokens({
       el.classList.add("ring-2", "ring-info");
       el.dataset.token = "--color-info";
       const input = el.querySelector<HTMLElement>(
+        // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0004: CSS selector string, not user copy
         "input, select, textarea, button"
       );
       input?.focus();
@@ -227,7 +230,7 @@ export default function Tokens({
     >
       {showSearch && (
         <Input
-          placeholder="Search tokens"
+          placeholder={t("cms.style.searchTokens") as string}
           value={search}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setSearch(e.target.value)
@@ -239,7 +242,7 @@ export default function Tokens({
         <div key={prefix} className="space-y-2">
           <button
             type="button"
-            className="flex w-full items-center justify-between font-medium"
+            className="flex w-full items-center justify-between font-medium min-h-10 min-w-10"
             onClick={() => toggleGroup(prefix)}
           >
             <span>{capitalize(prefix)}</span>
@@ -251,7 +254,7 @@ export default function Tokens({
               {prefix === "font" && (
                 <div className="flex items-center gap-2 pt-2">
                   <Input
-                    placeholder="Add font stack"
+                    placeholder={t("cms.style.addFontStack") as string}
                     value={newFont}
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setNewFont(e.target.value)
@@ -259,10 +262,10 @@ export default function Tokens({
                   />
                   <button
                     type="button"
-                    className="rounded border px-2 py-1"
+                    className="rounded border px-2 py-1 min-h-10 min-w-10"
                     onClick={addCustomFont}
                   >
-                    Add
+                    {t("common.add") as string}
                   </button>
                 </div>
               )}

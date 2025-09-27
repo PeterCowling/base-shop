@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
   const shop = await readShop(SHOP_ID);
   if (!shop.returnsEnabled) {
     return NextResponse.json(
-      { error: "Returns disabled" },
+      { error: "Returns disabled" }, // i18n-exempt: machine-readable API error
       { status: 403 },
     );
   }
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
   ]);
   if (!cfg.mobileApp) {
     return NextResponse.json(
-      { error: "Mobile returns disabled" },
+      { error: "Mobile returns disabled" }, // i18n-exempt: machine-readable API error
       { status: 403 }
     );
   }
@@ -50,22 +50,22 @@ export async function POST(req: NextRequest) {
     zip?: string;
   };
   if (!sessionId) {
-    return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
+    return NextResponse.json({ error: "Missing sessionId" }, { status: 400 }); // i18n-exempt: machine-readable API error
   }
   if (zip) {
     if (!settings.returnService?.homePickupEnabled) {
       return NextResponse.json(
-        { error: "Home pickup disabled" },
+        { error: "Home pickup disabled" }, // i18n-exempt: machine-readable API error
         { status: 403 },
       );
     }
     if (!info.homePickupZipCodes.includes(zip)) {
-      return NextResponse.json({ error: "ZIP not eligible" }, { status: 400 });
+      return NextResponse.json({ error: "ZIP not eligible" }, { status: 400 }); // i18n-exempt: machine-readable API error
     }
   }
   const order = await markReturned(SHOP_ID, sessionId);
   if (!order) {
-    return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    return NextResponse.json({ error: "Order not found" }, { status: 404 }); // i18n-exempt: machine-readable API error
   }
   let labelUrl: string | null = null;
   let tracking: string | null = null;

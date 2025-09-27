@@ -1,8 +1,10 @@
 "use client";
 import Image from "next/image";
 import * as React from "react";
+import { useTranslations } from "@acme/i18n";
 
 import { cn } from "../../utils/style";
+import { Inline, Cover } from "../atoms/primitives";
 
 export type MediaType = "image" | "video" | "360" | "model";
 
@@ -28,36 +30,34 @@ export function MediaSelector({
   className,
   ...props
 }: MediaSelectorProps) {
+  const t = useTranslations();
   return (
-    <div className={cn("flex gap-2", className)} {...props}>
+    <Inline gap={2} className={cn(className)} {...props}>
       {items.map((item, idx) => (
         <button
           key={idx}
           type="button"
           onClick={() => onChange?.(idx)}
           className={cn(
-            "h-16 w-16 overflow-hidden rounded border",
-            active === idx && "ring-2 ring-black"
+            "h-16 w-16 overflow-hidden rounded border", // i18n-exempt: class names
+            active === idx && "ring-2 ring-black" // i18n-exempt: class names
           )}
         >
           {item.type === "image" || item.type === "360" ? (
             <Image
               src={item.thumbnail || item.src}
-              alt="thumbnail"
+              // Use provided alt text or a generic, translated fallback
+              alt={item.alt || (t("Thumbnail") as string)}
               fill
               className="object-cover"
             />
           ) : item.type === "video" ? (
-            <span className="flex h-full w-full items-center justify-center text-xs">
-              Video
-            </span>
+            <Cover className="h-full w-full text-xs" center={t("Video") as string} />
           ) : (
-            <span className="flex h-full w-full items-center justify-center text-xs">
-              AR
-            </span>
+            <Cover className="h-full w-full text-xs" center={t("AR") as string} />
           )}
         </button>
       ))}
-    </div>
+    </Inline>
   );
 }

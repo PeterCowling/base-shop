@@ -34,9 +34,11 @@ export default async function LocaleLayout({
   return (
     <TranslationsProvider messages={messages}>
       <DefaultSeo {...seo} additionalLinkTags={seo.additionalLinkTags} />
-      <Header lang={lang} />
-      <main className="min-h-[calc(100vh-8rem)]">{children}</main>
-      <Footer />
+      <div className="min-h-screen flex flex-col">
+        <Header lang={lang} />
+        <main className="flex-1">{children}</main>
+        <Footer />
+      </div>
     </TranslationsProvider>
   );
 }

@@ -26,7 +26,6 @@ describe('package entry re-exports', () => {
         jest.doMock(componentsIdx, () => ({ __esModule: true, CompA: 'COMP_A' }), { virtual: true });
         jest.doMock(hooksIdx, () => ({ __esModule: true, useFoo: () => 'ok' }), { virtual: true });
         jest.doMock(utilsIdx, () => ({ __esModule: true, util: () => 'ok' }), { virtual: true });
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const mod = require('../src/index.ts');
         resolve(mod);
       });
@@ -48,7 +47,6 @@ describe('package entry re-exports', () => {
           () => ({ __esModule: true, ProfilePage: function ProfilePage() { return null; } }),
           { virtual: true }
         );
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         const mod = require('../src/account.ts');
         resolve(mod);
       });

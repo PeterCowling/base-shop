@@ -8,10 +8,13 @@ import type { MediaItem } from "@acme/types";
 
 jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
-  const passthrough = (tag = "div") =>
-    React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
+  const passthrough = (name: string, tag = "div") => {
+    const Comp = React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
       React.createElement(tag, { ref, ...props })
     );
+    Comp.displayName = name;
+    return Comp;
+  };
 
   const DialogContext = React.createContext<{
     open: boolean;
@@ -54,6 +57,7 @@ jest.mock("@ui/components/atoms/shadcn", () => {
       return React.createElement("div", { ref, ...props }, children);
     }
   );
+  DialogContent.displayName = "DialogContent";
 
   const SelectContext = React.createContext<{
     onValueChange?: (value: any) => void;
@@ -78,6 +82,7 @@ jest.mock("@ui/components/atoms/shadcn", () => {
       );
     }
   );
+  SelectTrigger.displayName = "SelectTrigger";
 
   const SelectContent = ({ children, ...props }: any) =>
     React.createElement("div", { ...props }, children);
@@ -102,16 +107,21 @@ jest.mock("@ui/components/atoms/shadcn", () => {
   const SelectValue = ({ placeholder }: any) =>
     React.createElement("span", null, placeholder);
 
+  const Checkbox = React.forwardRef(function Checkbox(
+    props: any,
+    ref: any,
+  ) {
+    return <input ref={ref} type="checkbox" {...props} />;
+  });
+
   return {
-    Input: passthrough("input"),
-    Textarea: passthrough("textarea"),
-    Button: passthrough("button"),
-    Card: passthrough("div"),
-    CardContent: passthrough("div"),
-    Checkbox: React.forwardRef((props: any, ref: any) => (
-      <input ref={ref} type="checkbox" {...props} />
-    )),
-    Progress: passthrough(),
+    Input: passthrough("Input", "input"),
+    Textarea: passthrough("Textarea", "textarea"),
+    Button: passthrough("Button", "button"),
+    Card: passthrough("Card", "div"),
+    CardContent: passthrough("CardContent", "div"),
+    Checkbox,
+    Progress: passthrough("Progress"),
     Tag: ({ children, ...rest }: any) => <span {...rest}>{children}</span>,
     DropdownMenu: ({ children }: any) => <div>{children}</div>,
     DropdownMenuTrigger: ({ children, asChild, ...rest }: any) => {

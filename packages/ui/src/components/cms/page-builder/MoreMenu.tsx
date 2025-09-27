@@ -2,6 +2,7 @@
 "use client";
 
 import { Button, Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
+import { Stack } from "../../atoms/primitives/Stack";
 
 interface Item {
   label: string;
@@ -22,18 +23,18 @@ export default function MoreMenu({ items = [], content }: Props) {
         </PopoverTrigger>
       </Tooltip>
       <PopoverContent className="w-56 p-2">
-        <div className="flex flex-col gap-2">
+        <Stack gap={2}>
           {items.length > 0 && (
-            <div className="flex flex-col gap-1">
+            <Stack gap={1}>
               {items.map((i) => (
                 <Button key={i.label} variant="ghost" className="justify-start" onClick={i.onClick}>
                   {i.label}
                 </Button>
               ))}
-            </div>
+            </Stack>
           )}
           {content && <div>{content}</div>}
-        </div>
+        </Stack>
       </PopoverContent>
     </Popover>
   );

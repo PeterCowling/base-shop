@@ -1,6 +1,8 @@
 // apps/shop-bcd/src/app/[lang]/checkout/page.tsx
 
 import { Locale, resolveLocale } from "@i18n/locales";
+import Section from "@ui/components/cms/blocks/Section";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import {
   CART_COOKIE,
   decodeCartCookie,
@@ -13,9 +15,18 @@ import OrderSummary from "@ui/components/organisms/OrderSummary";
 import { cookies } from "next/headers";
 import shop from "../../../../shop.json";
 
-export const metadata = {
-  title: "Checkout · Base-Shop",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang?: string }>;
+}) {
+  const { lang: rawLang } = await params;
+  const locale: Locale = resolveLocale(rawLang);
+  const t = await getServerTranslations(locale);
+  return {
+    title: t("checkout.title"),
+  };
+}
 
 /**
  * Next 15 delivers `params` as a Promise, and `cookies()` is async in the edge runtime.
@@ -37,7 +48,8 @@ export default async function CheckoutPage({
 
   /* ----- empty cart guard ----- */
   if (!Object.keys(cart).length) {
-    return <p className="p-8 text-center">Your cart is empty.</p>;
+    const t = await getServerTranslations(lang);
+    return <p className="p-8 text-center">{t("checkout.empty")}</p>;
   }
 
   const settings = await getShopSettings(shop.id);
@@ -47,17 +59,19 @@ export default async function CheckoutPage({
 
   /* ----- render ----- */
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
-      <OrderSummary />
-      {hasPremierShipping && premierDelivery && (
-        <PremierDeliveryPicker
-          windows={premierDelivery.windows}
-          regions={premierDelivery.regions}
-        />
-      )}
-      {/* taxRegion may be undefined; coerce to empty string for CheckoutForm */}
-      <CheckoutForm locale={lang} taxRegion={settings.taxRegion ?? ""} />
-    </div>
+    <Section contentWidth="normal">
+      <div className="flex flex-col gap-10 p-6">
+        <OrderSummary />
+        {hasPremierShipping && premierDelivery && (
+          <PremierDeliveryPicker
+            windows={premierDelivery.windows}
+            regions={premierDelivery.regions}
+          />
+        )}
+        {/* taxRegion may be undefined; coerce to empty string for CheckoutForm */}
+        <CheckoutForm locale={lang} taxRegion={settings.taxRegion ?? ""} />
+      </div>
+    </Section>
   );
 }
 

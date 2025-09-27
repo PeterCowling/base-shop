@@ -1,3 +1,4 @@
+// i18n-exempt -- Storybook demo copy; not user-visible in production
 import { type Meta, type StoryObj } from "@storybook/react";
 import * as React from "react";
 import { cn } from "../../utils/style";
@@ -11,6 +12,8 @@ import {
   Input,
 } from "../atoms/shadcn";
 import { LiveChatWidget } from "./LiveChatWidget";
+import { Stack } from "../atoms/primitives/Stack";
+import { Inline } from "../atoms/primitives/Inline";
 
 interface ChatMessage {
   sender: "user" | "bot";
@@ -54,38 +57,40 @@ function FakeLiveChatWidget(props: React.HTMLAttributes<HTMLButtonElement>) {
           Chat
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex w-80 flex-col gap-4">
+      <DialogContent className="w-80">
         <DialogHeader>
           <DialogTitle>How can we help?</DialogTitle>
         </DialogHeader>
-        <div className="flex flex-col gap-2 overflow-y-auto py-2">
-          {messages.map((m, i) => (
-            <div
-              key={i}
-              className={m.sender === "user" ? "self-end" : "self-start"}
-            >
+        <Stack gap={4}>
+          <Stack gap={2} className="overflow-y-auto py-2">
+            {messages.map((m, i) => (
               <div
-                className={cn(
-                  "rounded px-3 py-1 text-sm",
-                  m.sender === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted"
-                )}
+                key={i}
+                className={m.sender === "user" ? "self-end" : "self-start"}
               >
-                {m.text}
+                <div
+                  className={cn(
+                    "rounded px-3 py-1 text-sm",
+                    m.sender === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted"
+                  )}
+                >
+                  {m.text}
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Type a message…"
-            className="flex-1"
-          />
-          <Button onClick={send}>Send</Button>
-        </div>
+            ))}
+          </Stack>
+          <Inline gap={2}>
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Type a message…"
+              className="flex-1"
+            />
+            <Button onClick={send}>Send</Button>
+          </Inline>
+        </Stack>
       </DialogContent>
     </Dialog>
   );

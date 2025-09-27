@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- custom rule working with ESTree */
+ 
 import type { Rule } from "eslint";
 
 const MSG_ID = "require-icon-size" as const;

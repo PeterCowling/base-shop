@@ -70,7 +70,7 @@ export default function CheckoutForm({
             setFetchError(true);
           }
         } else {
-          console.error("An unknown error occurred");
+          console.error("An unknown error occurred"); // i18n-exempt: dev log only
           setFetchError(true);
         }
       }
@@ -152,7 +152,7 @@ function PaymentForm({
       });
 
       if (error) {
-        const message = error.message ?? "Payment failed";
+        const message = error.message ?? (t("checkout.paymentFailed") as string);
         setError(message);
         setProcessing(false);
         const query = new URLSearchParams({ error: message }).toString();

@@ -27,7 +27,7 @@ export function createPageDelegate(): PageDelegate {
     },
     async update({ where, data }) {
       const idx = pages.findIndex((p) => match(p, where));
-      if (idx < 0) throw new Error("Page not found");
+      if (idx < 0) throw new Error("Page not found"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
       pages[idx] = { ...pages[idx], ...data };
       return pages[idx];
     },

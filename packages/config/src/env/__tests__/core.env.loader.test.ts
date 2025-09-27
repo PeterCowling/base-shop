@@ -85,7 +85,7 @@ describe("core env loader", () => {
 
     it("delegates get", async () => {
       const { coreEnv, loadCoreEnv } = await setup();
-      coreEnv.CMS_SPACE_URL;
+      void coreEnv.CMS_SPACE_URL;
       expect(loadCoreEnv).toHaveBeenCalledTimes(1);
     });
 

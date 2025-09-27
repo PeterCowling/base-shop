@@ -16,9 +16,21 @@ jest.mock("next-auth/react", () => ({
 }));
 
 // Mock child components that may fetch
-jest.mock("../Breadcrumbs.client", () => () => <span>Crumbs</span>);
-jest.mock("../ShopSelector", () => () => <span>ShopSel</span>);
-jest.mock("../NavMenu.client", () => () => <span>Menu</span>);
+jest.mock("../Breadcrumbs.client", () => {
+  const Mock = () => <span>Crumbs</span>;
+  (Mock as any).displayName = "MockBreadcrumbs";
+  return Mock;
+});
+jest.mock("../ShopSelector", () => {
+  const Mock = () => <span>ShopSel</span>;
+  (Mock as any).displayName = "MockShopSelector";
+  return Mock;
+});
+jest.mock("../NavMenu.client", () => {
+  const Mock = () => <span>Menu</span>;
+  (Mock as any).displayName = "MockNavMenu";
+  return Mock;
+});
 
 describe("TopBar.client", () => {
   test("shows new item actions and toggles theme", () => {

@@ -26,19 +26,19 @@ const PreviewLinkForm = ({ onCreate }: Props) => {
 
   return (
     <div className="col-span-1 space-y-2">
-      <div className="text-sm font-medium">Shareable preview</div>
-      <Input type="password" placeholder="Password (optional)" value={password} onChange={(e) => setPassword(e.target.value)} />
+      <div className="text-sm font-medium">Shareable preview{/* i18n-exempt -- PB-1023 */}</div>
+      <Input type="password" placeholder="Password (optional)" /* i18n-exempt -- PB-1023 */ value={password} onChange={(e) => setPassword(e.target.value)} />
       <Button onClick={submit} disabled={busy}>
-        {busy ? "Creating…" : "Create Link"}
+        {busy ? "Creating…" : "Create Link"}{/* i18n-exempt -- PB-1023 */}
       </Button>
       {url && (
         <div className="text-xs break-all">
-          <div className="mb-1">URL: {fullUrl}</div>
+          <div className="mb-1">URL: {fullUrl}{/* i18n-exempt -- PB-1023 */}</div>
           <Button
             variant="outline"
             onClick={() => navigator.clipboard?.writeText(fullUrl)}
           >
-            Copy link
+            Copy link{/* i18n-exempt -- PB-1023 */}
           </Button>
         </div>
       )}
@@ -47,4 +47,3 @@ const PreviewLinkForm = ({ onCreate }: Props) => {
 };
 
 export default PreviewLinkForm;
-

@@ -24,7 +24,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     typeof cartId === "string" ? await getCart(cartId) : {};
 
   if (!Object.keys(cart).length) {
-    return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
+    return NextResponse.json({ error: "Cart is empty" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
   }
 
   const {
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
         price_data: {
           currency: currency.toLowerCase(),
           unit_amount: feeConv * 100,
-          product_data: { name: "Coverage" },
+          product_data: { name: "Coverage" }, // i18n-exempt -- ABC-123: product label for internal line-item
         },
         quantity: 1,
       });
@@ -115,9 +115,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json(result);
   } catch (err) {
     if (err instanceof Error && /Invalid returnDate/.test(err.message)) {
-      return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
     }
-    console.error("Failed to create Stripe checkout session", err);
-    return NextResponse.json({ error: "Checkout failed" }, { status: 502 });
+    console.error("Failed to create Stripe checkout session", err); // i18n-exempt -- ABC-123: developer log
+    return NextResponse.json({ error: "Checkout failed" }, { status: 502 }); // i18n-exempt -- ABC-123: machine-readable API error
   }
 }

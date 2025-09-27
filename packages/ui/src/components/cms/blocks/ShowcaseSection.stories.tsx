@@ -26,7 +26,7 @@ export const BestsellersMock: StoryObj<typeof ShowcaseSection> = {
   parameters: {
     msw: {
       handlers: [
-        http.get("/api/recommendations", ({ request }) => {
+        http.get("/api/recommendations", () => {
           // Return a deterministic subset regardless of preset
           const list = [...PRODUCTS].sort((a, b) => (b.price ?? 0) - (a.price ?? 0)).slice(0, 2);
           return HttpResponse.json(list, { status: 200 });
@@ -41,11 +41,19 @@ export const ErrorStateCarousel: StoryObj<typeof ShowcaseSection> = {
   name: "Error state (carousel)",
   args: { preset: "featured", layout: "carousel" },
   render: (args) => {
-    const netError = (typeof window !== 'undefined' && (window as any).__SB_GLOBALS__?.netError) === 'on';
+    const netError = (typeof window !== 'undefined' && window.__SB_GLOBALS__?.netError) === 'on';
     return (
       <div>
         {netError ? (
-          <div style={{ background: '#fee', color: '#900', padding: 8, border: '1px solid #fcc', marginBottom: 12 }}>
+          <div
+            style={{
+              background: 'hsl(var(--color-danger) / 0.12)',
+              color: 'hsl(var(--color-danger))',
+              padding: 'var(--space-2)',
+              border: '1px solid hsl(var(--color-danger) / 0.25)',
+              marginBottom: 'var(--space-3)',
+            }}
+          >
             Simulated network error — failed to load recommendations.
           </div>
         ) : null}
@@ -59,11 +67,19 @@ export const ErrorStateGrid: StoryObj<typeof ShowcaseSection> = {
   name: "Error state (grid)",
   args: { preset: "featured", layout: "grid", gridCols: 3 },
   render: (args) => {
-    const netError = (typeof window !== 'undefined' && (window as any).__SB_GLOBALS__?.netError) === 'on';
+    const netError = (typeof window !== 'undefined' && window.__SB_GLOBALS__?.netError) === 'on';
     return (
       <div>
         {netError ? (
-          <div style={{ background: '#fee', color: '#900', padding: 8, border: '1px solid #fcc', marginBottom: 12 }}>
+          <div
+            style={{
+              background: 'hsl(var(--color-danger) / 0.12)',
+              color: 'hsl(var(--color-danger))',
+              padding: 'var(--space-2)',
+              border: '1px solid hsl(var(--color-danger) / 0.25)',
+              marginBottom: 'var(--space-3)',
+            }}
+          >
             Simulated network error — failed to load recommendations.
           </div>
         ) : null}
@@ -72,3 +88,9 @@ export const ErrorStateGrid: StoryObj<typeof ShowcaseSection> = {
     );
   },
 };
+
+declare global {
+  interface Window {
+    __SB_GLOBALS__?: { netError?: string };
+  }
+}

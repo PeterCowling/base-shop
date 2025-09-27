@@ -7,6 +7,8 @@ import type { Metadata } from "next";
 import { getSeo } from "../../util/seo";
 import { resolveLocale } from "@i18n/locales";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
+import type { NextSeoProps } from "next-seo";
+import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog" | "name">;
 const shop: BlogShop = shopJson;
@@ -15,6 +17,7 @@ export default async function BlogPage({ params }: { params: { lang: string } })
   if (!shop.luxuryFeatures.blog) {
     return notFound();
   }
+  const t = await loadTranslations(resolveLocale(params.lang));
   const posts = await fetchPublishedPosts(shop.id);
   const items = posts.map((p) => ({
     title: p.title,
@@ -46,7 +49,7 @@ export default async function BlogPage({ params }: { params: { lang: string } })
     <>
       {shop.editorialBlog?.promoteSchedule && (
         <div className="rounded bg-muted p-2">
-          Daily Edit scheduled for {shop.editorialBlog.promoteSchedule}
+          {t("Daily Edit scheduled for")} {shop.editorialBlog.promoteSchedule}
         </div>
       )}
       {listing}
@@ -74,11 +77,11 @@ export async function generateMetadata({
     languagesAlt[l] = `${canonicalRootForLanguages}/${l}/blog`;
   }
   const seo = await getSeo(lang, {
-    title: `Blog · ${shop.name}`,
+    title: `${(await loadTranslations(lang))("Blog")} · ${shop.name}`,
     description: baseSeo.description,
     canonical,
-    openGraph: { url: canonical } as any,
-    twitter: {} as any,
+    openGraph: { url: canonical } as NextSeoProps["openGraph"],
+    twitter: {} as NextSeoProps["twitter"],
   });
   return {
     title: seo.title,

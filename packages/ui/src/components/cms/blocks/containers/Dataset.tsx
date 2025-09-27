@@ -84,6 +84,7 @@ export default function Dataset({
             setState("loaded");
           }
         } catch (err) {
+          // i18n-exempt -- developer log for diagnostics, not user-facing copy
           console.warn("Dataset(products) fetch failed:", err);
           if (!cancelled) {
             setItems(Array.isArray(skus) ? (skus as unknown[]) : []);
@@ -109,6 +110,7 @@ export default function Dataset({
             setState("loaded");
           }
         } catch (err) {
+          // i18n-exempt -- developer log for diagnostics, not user-facing copy
           console.warn("Dataset(blog) fetch failed:", err);
           if (!cancelled) {
             setItems([]);
@@ -125,7 +127,7 @@ export default function Dataset({
     return () => {
       cancelled = true;
     };
-  }, [source, collectionId, shopId, skus, computedKey, ttlMs]);
+  }, [source, collectionId, shopId, skus, computedKey, ttlMs, cache]);
 
   const processed = useMemo(() => {
     let list = Array.isArray(items) ? [...items] : [];

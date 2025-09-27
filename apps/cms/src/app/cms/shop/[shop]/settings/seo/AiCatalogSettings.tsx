@@ -13,6 +13,7 @@ import {
 import { updateAiCatalog } from "@cms/actions/shops.server";
 import { formatTimestamp } from "@acme/date-utils";
 import type { AiCatalogField } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 
 const ALL_FIELDS: AiCatalogField[] = [
   "id",
@@ -28,6 +29,7 @@ interface Props {
 }
 
 export default function AiCatalogSettings({ shop, initial }: Props) {
+  const t = useTranslations();
   const [state, setState] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
@@ -46,7 +48,7 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
     }));
   };
 
-  const queueStatus = state.enabled ? "Active" : "Paused";
+  const queueStatus = state.enabled ? t("Active") : t("Paused");
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,14 +73,14 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
     setQuickActionBusy(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 300));
-      setToast({ open: true, message: "AI catalog crawl queued" });
+      setToast({ open: true, message: String(t("AI catalog crawl queued")) });
     } finally {
       setQuickActionBusy(false);
     }
   };
 
   const handlePreview = () => {
-    setToast({ open: true, message: "Catalog feed preview coming soon" });
+    setToast({ open: true, message: String(t("Catalog feed preview coming soon")) });
   };
 
   return (
@@ -87,36 +89,43 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
         <CardContent className="space-y-6 p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
-              <h3 className="text-lg font-semibold">AI Catalog Feed</h3>
+              <h3 className="text-lg font-semibold">{t("AI Catalog Feed")}</h3>
               <p className="text-muted-foreground text-sm">
-                Configure the structured feed that powers AI discovery surfaces.
+                {t(
+                  "Configure the structured feed that powers AI discovery surfaces.",
+                )}
               </p>
             </div>
             <div className="shrink-0 text-end text-sm">
               <p>
-                Last run:
+                {t("Last run:")}
                 {" "}
-                {state.lastCrawl ? formatTimestamp(state.lastCrawl) : "No runs yet"}
+                {state.lastCrawl
+                  ? formatTimestamp(state.lastCrawl)
+                  : t("No runs yet")}
               </p>
               <p className="mt-1 flex items-center gap-1 justify-end">
-                Queue status: <span className="font-semibold">{queueStatus}</span>
-                <Tooltip text="Queue pauses when the feed is disabled.">?</Tooltip>
+                {t("Queue status:")}{" "}
+                <span className="font-semibold">{queueStatus}</span>
+                <Tooltip text={t("Queue pauses when the feed is disabled.") as string}>
+                  ?
+                </Tooltip>
               </p>
             </div>
           </div>
 
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <span className="min-w-0 text-sm font-medium">Quick actions</span>
+            <span className="min-w-0 text-sm font-medium">{t("Quick actions")}</span>
             <div className="flex gap-2">
               <Button
                 type="button"
                 onClick={handleQueueCrawl}
                 disabled={quickActionBusy || !state.enabled}
               >
-                {quickActionBusy ? "Queuing…" : "Queue crawl"}
+                {quickActionBusy ? t("Queuing…") : t("Queue crawl")}
               </Button>
               <Button type="button" variant="outline" onClick={handlePreview}>
-                View feed
+                {t("View feed")}
               </Button>
             </div>
           </div>
@@ -130,10 +139,10 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
                   setState((s) => ({ ...s, enabled: Boolean(v) }))
                 }
               />
-              <span className="text-sm font-medium">Enable AI catalog feed</span>
+              <span className="text-sm font-medium">{t("Enable AI catalog feed")}</span>
             </label>
             <div className="flex flex-col gap-2">
-              <span className="text-sm font-medium">Fields</span>
+              <span className="text-sm font-medium">{t("Fields")}</span>
               {ALL_FIELDS.map((f) => (
                 <label key={f} className="flex items-center gap-2 text-sm">
                   <Checkbox
@@ -150,7 +159,7 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
               )}
             </div>
             <label className="flex flex-col gap-2">
-              <span className="text-sm font-medium">Page size</span>
+              <span className="text-sm font-medium">{t("Page size")}</span>
               <Input
                 type="number"
                 name="pageSize"
@@ -166,7 +175,7 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
               )}
             </label>
             <Button type="submit" disabled={saving}>
-              {saving ? "Saving…" : "Save settings"}
+              {saving ? t("Saving…") : t("Save settings")}
             </Button>
           </form>
         </CardContent>

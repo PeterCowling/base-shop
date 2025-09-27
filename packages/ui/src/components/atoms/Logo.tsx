@@ -57,10 +57,7 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       return <span className={cn("font-bold", className)}>{fallbackText}</span>;
     }
 
-    const widthClass =
-      typeof imageWidth === "number" ? `w-[${imageWidth}px]` : undefined;
-    const heightClass =
-      typeof imageHeight === "number" ? `h-[${imageHeight}px]` : undefined;
+    // Avoid arbitrary Tailwind values; rely on width/height props instead
 
     const srcSetEntries: Array<[string, number | undefined]> = [];
 
@@ -109,7 +106,7 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       width: typeof imageWidth === "number" ? imageWidth : undefined,
       height: typeof imageHeight === "number" ? imageHeight : undefined,
       sizes,
-      className: cn(widthClass, heightClass, className),
+      className: cn(className),
       ...(computedSrcSet ? { srcSet: computedSrcSet } : {}),
     };
 

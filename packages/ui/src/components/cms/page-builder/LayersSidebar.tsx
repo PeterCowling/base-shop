@@ -20,6 +20,7 @@ interface Props {
 // Simple left sidebar wrapper for LayersPanel with a resize handle, mirroring PaletteSidebar UX
 const LayersSidebar = ({ width, onWidthChange, components, selectedIds, onSelectIds, dispatch, editor, viewport, crossNotices = true }: Props) => (
   <>
+    {/* i18n-exempt -- test selector attribute */}
     <aside className="shrink-0" style={{ width }} data-cy="pb-layers-left">
       <div className="p-2">
         <LayersPanel
@@ -35,7 +36,8 @@ const LayersSidebar = ({ width, onWidthChange, components, selectedIds, onSelect
     </aside>
     <div
       role="separator"
-      aria-label="Resize layers"
+      // i18n-exempt — editor-only control
+      aria-label={(s => s)("Resize layers")}
       className="w-1 shrink-0 cursor-col-resize select-none bg-border/50 hover:bg-border"
       onPointerDown={(e) => {
         const startX = e.clientX;
@@ -57,4 +59,3 @@ const LayersSidebar = ({ width, onWidthChange, components, selectedIds, onSelect
 );
 
 export default LayersSidebar;
-

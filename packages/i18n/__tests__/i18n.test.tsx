@@ -134,7 +134,7 @@ describe("Translations integration", () => {
 describe("TranslationsProvider memoisation", () => {
   it("preserves messages reference between renders", async () => {
     const renderSpy = jest.fn();
-    const Child = memo(() => {
+    const Child = memo(function Child() {
       const t = useTranslations();
       renderSpy();
       return <span>{t("hello")}</span>;

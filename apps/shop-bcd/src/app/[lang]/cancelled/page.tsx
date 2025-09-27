@@ -4,6 +4,8 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import Section from "@ui/components/cms/blocks/Section";
+import { useTranslations } from "@i18n/Translations";
 
 /**
  * Payment cancelled page.
@@ -13,25 +15,28 @@ import { Suspense } from "react";
  * message and optionally displays an error from the query string.
  */
 function CancelledContent() {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const error = searchParams?.get("error") ?? null;
 
   return (
-    <div className="mx-auto max-w-lg py-20 text-center">
-      <h1 className="mb-4 text-3xl font-semibold">Payment cancelled</h1>
-      <p>You have not been charged. Feel free to keep shopping.</p>
-      {error && (
-        <p className="text-danger mt-4 text-sm" data-token="--color-danger">
-          {error}
-        </p>
-      )}
-    </div>
+    <Section contentWidth="narrow">
+      <div className="py-20 px-4 text-center">
+        <h1 className="mb-4 text-3xl font-semibold">{t("cancelled.title")}</h1>
+        <p>{t("cancelled.desc")}</p>
+        {error && (
+          <p className="text-danger mt-4 text-sm" data-token="--color-danger">
+            {error}
+          </p>
+        )}
+      </div>
+    </Section>
   );
 }
 
 export default function Cancelled() {
   return (
-    <Suspense>
+    <Suspense fallback={null}>
       <CancelledContent />
     </Suspense>
   );

@@ -9,7 +9,7 @@ export function commit(state: HistoryState, next: PageComponent[]): HistoryState
     future: [],
     gridCols: state.gridCols,
     // carry editor metadata through history transitions
-    ...(state as any).editor !== undefined ? { editor: (state as any).editor } : {},
+    ...(state.editor !== undefined ? { editor: state.editor } : {}),
   };
 }
 
@@ -21,7 +21,7 @@ export function undo(state: HistoryState): HistoryState {
     present: previous,
     future: [state.present, ...state.future],
     gridCols: state.gridCols,
-    ...(state as any).editor !== undefined ? { editor: (state as any).editor } : {},
+    ...(state.editor !== undefined ? { editor: state.editor } : {}),
   };
 }
 
@@ -33,6 +33,6 @@ export function redo(state: HistoryState): HistoryState {
     present: next,
     future: state.future.slice(1),
     gridCols: state.gridCols,
-    ...(state as any).editor !== undefined ? { editor: (state as any).editor } : {},
+    ...(state.editor !== undefined ? { editor: state.editor } : {}),
   };
 }

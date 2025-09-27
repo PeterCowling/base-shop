@@ -69,7 +69,7 @@ export default function FilterBar({
               onChange={(e) => handleChange(def, e.target.value)}
               className="border rounded px-2 py-1 text-sm"
             >
-              <option value="">All</option>
+              <option value="">All</option> {/* i18n-exempt -- ABC-123 select placeholder */}
               {def.options.map((opt) => (
                 <option key={opt}>{opt}</option>
               ))}
@@ -94,11 +94,11 @@ export default function FilterBar({
       <button
         type="button"
         onClick={handleClear}
-        className="text-sm underline"
+        className="text-sm underline min-h-10 min-w-10"
       >
+        {/* i18n-exempt -- ABC-123 control label */}
         Clear Filters
       </button>
     </form>
   );
 }
-

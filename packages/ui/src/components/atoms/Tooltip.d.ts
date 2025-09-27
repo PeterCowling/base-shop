@@ -1,6 +1,6 @@
 import * as React from "react";
 export interface TooltipProps {
-    text: string;
+    text: React.ReactNode;
     children: React.ReactNode;
     className?: string;
 }

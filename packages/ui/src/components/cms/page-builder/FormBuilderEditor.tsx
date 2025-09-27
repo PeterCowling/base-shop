@@ -1,5 +1,6 @@
 "use client";
 import type { FormField, FormFieldOption } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 import {
   Button,
   Input,
@@ -20,6 +21,7 @@ import type { EditorProps } from "./EditorProps";
 type Props = EditorProps<FormBuilderComponent>;
 
 export default function FormBuilderEditor({ component, onChange }: Props) {
+  const t = useTranslations();
   const fields = component.fields ?? [];
 
   const updateField = <K extends keyof FormField>(
@@ -52,23 +54,23 @@ export default function FormBuilderEditor({ component, onChange }: Props) {
             onValueChange={(v) => updateField(idx, "type", v as FormField["type"])}
           >
             <SelectTrigger>
-              <SelectValue placeholder="type" />
+              <SelectValue placeholder={t("type")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="text">text</SelectItem>
-              <SelectItem value="email">email</SelectItem>
-              <SelectItem value="select">select</SelectItem>
+              <SelectItem value="text">{t("text")}</SelectItem>
+              <SelectItem value="email">{t("email")}</SelectItem>
+              <SelectItem value="select">{t("select")}</SelectItem>
             </SelectContent>
           </Select>
           <Input
             value={field.name ?? ""}
             onChange={(e) => updateField(idx, "name", e.target.value)}
-            placeholder="name"
+            placeholder={t("name") as string}
           />
           <Input
             value={field.label ?? ""}
             onChange={(e) => updateField(idx, "label", e.target.value)}
-            placeholder="label"
+            placeholder={t("label") as string}
           />
           {field.type === "select" && (
             <Input
@@ -86,18 +88,18 @@ export default function FormBuilderEditor({ component, onChange }: Props) {
                     .map((v: string) => ({ label: v, value: v }))
                 )
               }
-              placeholder="options (comma separated)"
+              placeholder={t("options (comma separated)") as string}
             />
           )}
           <Button
             variant="destructive"
             onClick={() => removeField(idx)}
           >
-            Remove
+            {t("Remove")}
           </Button>
         </div>
       ))}
-      <Button onClick={addField}>Add field</Button>
+      <Button onClick={addField}>{t("Add field")}</Button>
     </div>
   );
 }

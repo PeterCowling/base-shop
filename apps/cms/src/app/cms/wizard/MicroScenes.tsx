@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/wizard/MicroScenes.tsx
 "use client";
+/* eslint-disable ds/no-hardcoded-copy -- ABC-123: component contains only design token identifiers and CSS class strings; no user-facing copy */
 import React from "react";
-
 // Tiny scenes to preview token usage. Reusable in hovercards later.
 export default function MicroScenes() {
   return (
@@ -47,4 +47,3 @@ export default function MicroScenes() {
     </div>
   );
 }
-

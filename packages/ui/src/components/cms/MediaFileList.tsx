@@ -3,6 +3,7 @@
 import type { MediaItem } from "@acme/types";
 
 import MediaFileItem from "./MediaFileItem";
+import { Grid } from "../atoms/primitives/Grid";
 
 type WithUrl = MediaItem & { url: string };
 
@@ -37,7 +38,7 @@ export default function MediaFileList({
   isReplacing,
 }: Props) {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+    <Grid cols={2} gap={4} className="sm:grid-cols-4">
       {files.map((item) => (
         <MediaFileItem
           key={item.url}
@@ -55,6 +56,6 @@ export default function MediaFileList({
           replacing={isReplacing?.(item)}
         />
       ))}
-    </div>
+    </Grid>
   );
 }

@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- Paths are derived from internal configuration */
+/* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
 import { coreEnv } from "@acme/config/env/core";
 import {
   markRefunded,
@@ -49,6 +49,7 @@ export async function releaseDepositsOnce(
             });
           }
           await markRefunded(shop, order.sessionId);
+          // i18n-exempt: OPS-1234 technical log, not user-facing
           logger.info("refunded deposit", {
             shopId: shop,
             sessionId: order.sessionId,
@@ -56,12 +57,14 @@ export async function releaseDepositsOnce(
         } catch (err) {
           // Include identifiers in the log message so tests can assert on it
           // and operators have useful context when troubleshooting.
+          // i18n-exempt: OPS-1234 technical log, not user-facing
           logger.error(
             `failed to release deposit for ${shop} ${order.sessionId}`,
             { err },
           );
           // Also log via console.error so tests and simple environments can
           // detect failures without pino parsing.
+          // i18n-exempt: OPS-1234 technical log, not user-facing
           console.error(
             `failed to release deposit for ${shop} ${order.sessionId}`,
             err,
@@ -168,6 +171,7 @@ export async function startDepositReleaseService(
         try {
           await release(shop, dataRoot);
         } catch (err) {
+          // i18n-exempt: OPS-1234 technical log, not user-facing
           logFn("deposit release failed", { shopId: shop, err });
         }
       }
@@ -190,7 +194,9 @@ if (process.env.RUN_DEPOSIT_RELEASE_SERVICE === "true") {
     } catch (err) {
       // Log via both logger and console so that failures surface in
       // environments without structured logging.
+      // i18n-exempt: OPS-1234 technical log, not user-facing
       logger.error("failed to start deposit release service", { err });
+      // i18n-exempt: OPS-1234 technical log, not user-facing
       console.error("failed to start deposit release service", err);
     }
   })();

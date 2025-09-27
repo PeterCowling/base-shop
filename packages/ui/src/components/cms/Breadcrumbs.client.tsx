@@ -7,24 +7,26 @@ import type { Page } from "@acme/types";
 import { usePathname } from "next/navigation";
 import { memo, useEffect, useState } from "react";
 import Breadcrumbs, { BreadcrumbItem } from "../molecules/Breadcrumbs";
+import { useTranslations } from "@acme/i18n";
 
-const LABELS: Record<string, string | null> = {
+const LABEL_KEYS: Record<string, string | null> = {
   cms: null,
-  shop: "Shop",
-  products: "Products",
-  pages: "Pages",
-  media: "Media",
-  settings: "Settings",
-  live: "Live",
-  rbac: "RBAC",
-  wizard: "Create Shop",
-  "account-requests": "Account Requests",
-  builder: "Builder",
-  edit: "Edit",
-  seo: "SEO",
+  shop: "cms.breadcrumb.shop",
+  products: "cms.breadcrumb.products",
+  pages: "cms.breadcrumb.pages",
+  media: "cms.breadcrumb.media",
+  settings: "cms.breadcrumb.settings",
+  live: "cms.breadcrumb.live",
+  rbac: "cms.breadcrumb.rbac",
+  wizard: "cms.breadcrumb.wizard",
+  "account-requests": "cms.breadcrumb.accountRequests",
+  builder: "cms.breadcrumb.builder",
+  edit: "cms.breadcrumb.edit",
+  seo: "cms.breadcrumb.seo",
 };
 
 function BreadcrumbsInner() {
+  const t = useTranslations();
   const pathname = usePathname();
   const parts = pathname.split("/").filter(Boolean);
   const [extra, setExtra] = useState<Record<string, string>>({});
@@ -76,8 +78,10 @@ function BreadcrumbsInner() {
   const items: BreadcrumbItem[] = [];
   for (const part of parts) {
     href += `/${part}`;
-    const label = LABELS.hasOwnProperty(part)
-      ? LABELS[part]
+    const label = LABEL_KEYS.hasOwnProperty(part)
+      ? LABEL_KEYS[part]
+        ? (t(LABEL_KEYS[part] as string) as string)
+        : null
       : extra[part] || part;
     if (!label) continue;
     items.push({ label, href });

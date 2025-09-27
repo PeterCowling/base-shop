@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
+/* eslint-disable security/detect-non-literal-fs-filename -- ABC-123: JSON backend uses validated shop names + DATA_ROOT */
 import "server-only";
 
 import { sectionTemplateSchema, type SectionTemplate } from "@acme/types";
@@ -86,7 +86,7 @@ export async function updateSection(
   previous: SectionTemplate,
 ): Promise<SectionTemplate> {
   if (previous.updatedAt !== patch.updatedAt) {
-    throw new Error("Conflict: section has been modified");
+    throw new Error("Conflict: section has been modified"); // i18n-exempt -- ABC-123: Internal concurrency error, not user-facing
   }
   const updated: SectionTemplate = mergeDefined(previous, patch);
   updated.updatedAt = nowIso();

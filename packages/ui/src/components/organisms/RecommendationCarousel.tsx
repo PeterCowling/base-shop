@@ -121,7 +121,7 @@ export function RecommendationCarousel({
         setProducts(data);
         setStatus('loaded');
       } catch (err) {
-        console.error("Failed loading recommendations", err);
+        console.error(/* i18n-exempt: developer log */ "Failed loading recommendations", err);
         setStatus('error');
       }
     };
@@ -152,7 +152,7 @@ export function RecommendationCarousel({
     >
       <div
       ref={scrollerRef}
-        className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}
+        className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)} // i18n-exempt with justification: CSS utility classes only
       >
         {products.map((p) => (
           <div key={p.id} style={slideStyle} className="snap-start">

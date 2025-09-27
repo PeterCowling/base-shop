@@ -6,6 +6,8 @@ import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import "./styles/sb-globals.css";
 import { initialize, mswDecorator } from "msw-storybook-addon";
 import { handlers as mswHandlers } from "./msw/handlers";
+import { VIEWPORTS } from "./viewports";
+import { withRTL } from "./decorators/rtlDecorator";
 
 export const globalTypes = {
   tokens: {
@@ -33,7 +35,7 @@ export const globalTypes = {
     name: "Locale",
     description: "Active locale",
     defaultValue: "en",
-    toolbar: { icon: "globe", items: ["en", "de", "fr"] },
+    toolbar: { icon: "globe", items: ["en", "de", "fr", "ar"] },
   },
   currency: {
     name: "Currency",
@@ -80,6 +82,10 @@ const preview: Preview = {
   parameters: {
     msw: { handlers: mswHandlers },
     docs: { autodocs: true },
+    viewport: {
+      viewports: VIEWPORTS,
+      defaultViewport: "desktop",
+    },
   },
   decorators: [
     withThemeByClassName({
@@ -90,6 +96,7 @@ const preview: Preview = {
       defaultTheme: "light",
     }),
     mswDecorator,
+    withRTL,
     withGlobals,
     // Opt-in cart provider: set `parameters: { cart: true }` in a story to wrap it
     ((Story, ctx) => {

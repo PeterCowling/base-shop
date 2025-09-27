@@ -15,6 +15,7 @@ import {
 import { Button } from "../atoms/shadcn";
 import { useCmsNavItems } from "./nav/useCmsNavItems";
 import { PlusIcon, MixIcon } from "@radix-ui/react-icons";
+import { useTranslations } from "@acme/i18n";
 
 interface NavMenuProps {
   role?: string;
@@ -23,7 +24,8 @@ interface NavMenuProps {
   variant?: "cms" | "shop";
 }
 
-function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms" }: NavMenuProps) {
+function NavMenu({ role, onConfiguratorStartNew, label, variant = "cms" }: NavMenuProps) {
+  const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname() ?? "";
   const items = useCmsNavItems({ pathname, role });
@@ -37,7 +39,6 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
             i.fullHref.endsWith("/components/new") ||
             i.fullHref.endsWith("/pages/new/component") ||
             i.fullHref.endsWith("/pages/edit/component") ||
-            i.label === "Component Editor" ||
             i.isConfigurator
           ),
       );
@@ -54,9 +55,6 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
         const isShopScoped = i.fullHref.startsWith("/cms/shop/");
         if (isShopScoped) return false;
         if (i.isConfigurator) return false;
-        if (i.label === "New Shop (Configurator)") return false;
-        if (i.label === "Component Editor") return false;
-        if (i.label === "Edit Pages") return false;
         return true;
       });
     return items;
@@ -100,24 +98,25 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
           variant="outline"
           className="h-9 rounded-lg border-border-2 text-foreground hover:bg-surface-3"
         >
-          {label}
+          {label ?? t("nav.menu")}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" sideOffset={8}>
-        <DropdownMenuLabel>Navigate</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("nav.navigate")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        {/* eslint-disable ds/no-hardcoded-copy -- ABC-123: route paths, keys and style classes are not UI copy */}
         {variant === "cms" && (
           <DropdownMenuItem
             key="add-shop"
             className={onConfigurator ? "bg-surface-3 text-foreground" : ""}
             onSelect={() => {
-              router.push("/cms/configurator");
+              router.push("/cms/configurator"); // i18n-exempt -- route path
             }}
           >
             <span className="me-2" aria-hidden>
               <PlusIcon className="h-4 w-4" />
             </span>
-            <span className="flex-1">New Shop</span>
+            <span className="flex-1">{t("nav.newShop")}</span>
             {onConfigurator ? (
               <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
             ) : null}
@@ -128,24 +127,24 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
             <DropdownMenuItem
               key="cms-new-component"
               onSelect={() => {
-                router.push("/cms/pages/new/component");
+                router.push("/cms/pages/new/component"); // i18n-exempt -- route path
               }}
             >
               <span className="me-2" aria-hidden>
                 <PlusIcon className="h-4 w-4" />
               </span>
-              <span className="flex-1">New Component</span>
+              <span className="flex-1">{t("nav.newComponent")}</span>
             </DropdownMenuItem>
             <DropdownMenuItem
               key="cms-edit-component"
               onSelect={() => {
-                router.push("/cms/pages/edit/component");
+                router.push("/cms/pages/edit/component"); // i18n-exempt -- route path
               }}
             >
               <span className="me-2" aria-hidden>
                 <MixIcon className="h-4 w-4" />
               </span>
-              <span className="flex-1">Edit Component</span>
+              <span className="flex-1">{t("nav.editComponent")}</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
           </>
@@ -181,7 +180,7 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
                 <span className="me-2" aria-hidden>
                   <PlusIcon className="h-4 w-4" />
                 </span>
-                <span className="flex-1">New page</span>
+                <span className="flex-1">{t("nav.newPage")}</span>
                 {onNewPage ? (
                   <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
                 ) : null}
@@ -230,6 +229,7 @@ function NavMenu({ role, onConfiguratorStartNew, label = "Menu", variant = "cms"
             </DropdownMenuItem>
           ))
         )}
+        {/* eslint-enable ds/no-hardcoded-copy */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -11,11 +11,11 @@ export async function readReturnLogistics(): Promise<ReturnLogistics> {
     where: { id: SINGLETON_ID },
   });
   if (!row) {
-    throw new Error("Return logistics not found");
+    throw new Error("Return logistics not found"); // i18n-exempt -- ABC-123: Server-side internal error, not user-facing
   }
   const parsed = returnLogisticsSchema.safeParse(row.data);
   if (!parsed.success) {
-    throw new Error("Invalid return logistics data");
+    throw new Error("Invalid return logistics data"); // i18n-exempt -- ABC-123: Server-side internal error, not user-facing
   }
   return parsed.data;
 }
@@ -36,4 +36,3 @@ export const prismaReturnLogisticsRepository = {
 };
 
 export type { ReturnLogistics };
-

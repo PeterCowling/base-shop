@@ -7,7 +7,7 @@ import { env } from "@acme/config";
 const secret = env.NEXTAUTH_SECRET;
 
 if (!secret) {
-  throw new Error("NEXTAUTH_SECRET is not set");
+  throw new Error("NEXTAUTH_SECRET is not set"); // i18n-exempt: developer configuration error, not user-facing UI copy
 }
 
 // Explicitly cast to string so consumers receive a correctly typed secret

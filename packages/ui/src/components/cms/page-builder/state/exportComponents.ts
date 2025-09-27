@@ -1,4 +1,5 @@
 import type { PageComponent, HistoryState } from "@acme/types";
+import type { EditorFlags } from "./layout/types";
 
 export type ExportedComponent = PageComponent & {
   /** CSS-only visibility mapping at runtime */
@@ -23,10 +24,10 @@ export function exportComponents(
   editor?: HistoryState["editor"],
   globals?: Record<string, PageComponent> | null,
 ): ExportedComponent[] {
-  const map = editor ?? {};
+  const map: NonNullable<HistoryState["editor"]> = editor ?? {};
   return list.map((n) => {
-    const flags = map[n.id] ?? {};
-    const globalMeta = (flags as any).global as { id?: string; overrides?: Record<string, unknown> } | undefined;
+    const flags: EditorFlags | undefined = map[n.id];
+    const globalMeta = flags?.global as { id?: string; overrides?: Record<string, unknown> } | undefined;
     const gid = globalMeta?.id;
 
     // Start from either the linked global template or the node itself
@@ -42,22 +43,22 @@ export function exportComponents(
     }
 
     // Stamp runtime flags
-    if (Array.isArray((flags as any).hidden) && (flags as any).hidden.length > 0) {
-      copy.hiddenBreakpoints = [...(flags as any).hidden];
+    if (Array.isArray(flags?.hidden) && flags!.hidden.length > 0) {
+      copy.hiddenBreakpoints = [...flags!.hidden];
     }
-    if (Array.isArray((flags as any).hiddenDeviceIds) && (flags as any).hiddenDeviceIds.length > 0) {
-      copy.hiddenDeviceIds = [...(flags as any).hiddenDeviceIds];
+    if (Array.isArray(flags?.hiddenDeviceIds) && flags!.hiddenDeviceIds.length > 0) {
+      copy.hiddenDeviceIds = [...flags!.hiddenDeviceIds];
     }
-    if (typeof (flags as any).stackStrategy === "string") {
-      copy.stackStrategy = (flags as any).stackStrategy as "default" | "reverse";
+    if (typeof flags?.stackStrategy === "string") {
+      copy.stackStrategy = flags.stackStrategy as "default" | "reverse";
     }
-    if (typeof (flags as any).orderMobile === "number") {
-      copy.orderMobile = (flags as any).orderMobile as number;
+    if (typeof flags?.orderMobile === "number") {
+      copy.orderMobile = flags.orderMobile as number;
     }
 
-    const children = (copy as { children?: PageComponent[] }).children ?? (n as { children?: PageComponent[] }).children;
+    const children = ((copy as unknown as { children?: PageComponent[] }).children ?? (n as { children?: PageComponent[] }).children);
     if (Array.isArray(children)) {
-      (copy as any).children = exportComponents(children, editor, globals);
+      copy.children = exportComponents(children, editor, globals);
     }
     return copy;
   });

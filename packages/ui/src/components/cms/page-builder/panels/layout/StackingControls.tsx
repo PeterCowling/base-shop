@@ -4,60 +4,71 @@
 import type { PageComponent } from "@acme/types";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
 import { Tooltip } from "../../../../atoms";
-import type { EditorContextProps } from "./types";
+import { Grid } from "../../../../atoms/primitives/Grid";
+import type { EditorContextProps, EditorFlags } from "./types";
+import { useTranslations } from "@acme/i18n";
 
 interface Props extends EditorContextProps {
   component: PageComponent;
 }
 
 export default function StackingControls({ component, editorFlags, onUpdateEditor, editorMap, updateEditorForId }: Props) {
-  const isContainer = ("children" in (component as any)) || ("columns" in (component as any));
+  const t = useTranslations();
+  const cRec = component as unknown as Record<string, unknown>;
+  const isContainer = ("children" in cRec) || ("columns" in cRec);
   if (!isContainer) return null;
   return (
     <>
-      <div className="grid grid-cols-3 gap-2">
+      <Grid cols={3} gap={2}>
         {(["desktop", "tablet", "mobile"] as const).map((dev) => (
           <Select
             key={`stack-${dev}`}
             value={
-              (editorFlags as any)?.[`stack${dev.charAt(0).toUpperCase() + dev.slice(1)}`] ??
-              (dev === "mobile" ? ((editorFlags as any)?.stackStrategy ?? "default") : "default")
+              ((editorFlags ?? {})[
+                (`stack${dev.charAt(0).toUpperCase() + dev.slice(1)}` as keyof EditorFlags)
+              ] as "default" | "reverse" | "custom" | undefined) ??
+              (dev === "mobile" ? ((editorFlags?.stackStrategy as "default" | "reverse" | "custom" | undefined) ?? "default") : "default")
             }
-            onValueChange={(v) => onUpdateEditor?.({ [`stack${dev.charAt(0).toUpperCase() + dev.slice(1)}`]: (v as any) } as any)}
+            onValueChange={(v) =>
+              onUpdateEditor?.({
+                [`stack${dev.charAt(0).toUpperCase() + dev.slice(1)}`]: v as "default" | "reverse" | "custom",
+              } as Partial<EditorFlags>)}
           >
-            <Tooltip text={`Stacking on ${dev}`} className="block">
+            <Tooltip text={t(`Stacking on ${dev}`)} className="block">
               <SelectTrigger>
-                <SelectValue placeholder={`Stacking (${dev})`} />
+                <SelectValue placeholder={t(`Stacking (${dev})`) as string} />
               </SelectTrigger>
             </Tooltip>
             <SelectContent>
-              <SelectItem value="default">Default order</SelectItem>
-              <SelectItem value="reverse">Reverse</SelectItem>
-              <SelectItem value="custom">Custom</SelectItem>
+              <SelectItem value="default">{t("Default order")}</SelectItem>
+              <SelectItem value="reverse">{t("Reverse")}</SelectItem>
+              <SelectItem value="custom">{t("Custom")}</SelectItem>
             </SelectContent>
           </Select>
         ))}
-      </div>
+      </Grid>
       {(["desktop", "tablet", "mobile"] as const).map((dev) => {
-        const eff = (editorFlags as any)?.[`stack${dev.charAt(0).toUpperCase() + dev.slice(1)}`] ?? (dev === "mobile" ? ((editorFlags as any)?.stackStrategy ?? "default") : "default");
-        if (eff !== "custom" || !Array.isArray((component as any).children)) return null;
+        const eff = (editorFlags ?? {})[
+          (`stack${dev.charAt(0).toUpperCase() + dev.slice(1)}` as keyof EditorFlags)
+        ] ?? (dev === "mobile" ? (editorFlags?.stackStrategy ?? "default") : "default");
+        if (eff !== "custom" || !Array.isArray((cRec as { children?: unknown }).children)) return null;
         return (
           <div key={`orders-${dev}`} className="mt-2 space-y-2">
-            <div className="text-xs text-muted-foreground">Custom order on {dev} (lower appears first)</div>
-            {((component as any).children as PageComponent[]).map((child: PageComponent, idx: number) => {
-              const childFlags = (editorMap ?? {})[child.id] as any;
+            <div className="text-xs text-muted-foreground">{t(`Custom order on ${dev} (lower appears first)`)}</div>
+            {((cRec.children as PageComponent[]) ?? []).map((child: PageComponent, idx: number) => {
+              const childFlags = (editorMap as unknown as Record<string, EditorFlags | undefined> | undefined)?.[child.id];
               const key = `order${dev.charAt(0).toUpperCase() + dev.slice(1)}`;
-              const val = (childFlags?.[key] as number | undefined);
+              const val = (childFlags?.[key as keyof EditorFlags] as number | undefined);
               return (
                 <Input
                   key={`${child.id}-${dev}`}
                   type="number"
-                  label={`${(child as any).name || child.type}`}
+                  label={`${(child as unknown as Record<string, unknown>).name || child.type}`}
                   placeholder={String(idx)}
                   value={val === undefined ? "" : String(val)}
                   onChange={(e) => {
                     const v = e.target.value === "" ? undefined : Math.max(0, parseInt(e.target.value, 10) || 0);
-                    updateEditorForId?.(child.id, { [key]: v as number | undefined } as any);
+                    updateEditorForId?.(child.id, { [key]: v as number | undefined } as Partial<EditorFlags>);
                   }}
                 />
               );
@@ -68,4 +79,3 @@ export default function StackingControls({ component, editorFlags, onUpdateEdito
     </>
   );
 }
-

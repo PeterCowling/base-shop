@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
       paymentsEnv.STRIPE_WEBHOOK_SECRET,
     );
   } catch {
-    return new NextResponse("Invalid signature", { status: 400 });
+    return new NextResponse("Invalid signature", { status: 400 }); // i18n-exempt: server API error string; not end-user facing
   }
   await handleStripeWebhook("bcd", event);
   return NextResponse.json({ received: true });

@@ -28,7 +28,9 @@ const ALLOWED_ROLES: Role[] = ["customer", "viewer"];
 export const LoginSchema = z
   .object({
     customerId: z.string(),
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters"), // i18n-exempt: server-side schema error; client maps to localized copy
     remember: z.boolean().optional(),
   })
   .strict();
@@ -51,7 +53,7 @@ export async function POST(req: Request) {
     try {
       await limiter.consume(ip);
     } catch {
-      return NextResponse.json({ error: "Too Many Requests" }, { status: 429 });
+      return NextResponse.json({ error: "Too Many Requests" }, { status: 429 }); // i18n-exempt: HTTP status text; client-facing UI translates based on status
     }
   }
 
@@ -62,7 +64,7 @@ export async function POST(req: Request) {
 
   const csrfToken = req.headers.get("x-csrf-token");
   if (!csrfToken || !(await validateCsrfToken(csrfToken))) {
-    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 });
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 }); // i18n-exempt: API error token; UI maps to translation
   }
 
   const valid = await validateCredentials(
@@ -71,22 +73,22 @@ export async function POST(req: Request) {
   );
 
   if (!valid) {
-    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 }); // i18n-exempt: API error token; UI maps to translation
   }
 
   if (!ALLOWED_ROLES.includes(valid.role)) {
     // Reject elevated roles
-    return NextResponse.json({ error: "Unauthorized role" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized role" }, { status: 403 }); // i18n-exempt: API error token; UI maps to translation
   }
 
   if (await isMfaEnabled(valid.customerId)) {
     const mfaToken = req.headers.get("x-mfa-token");
     if (!mfaToken) {
-      return NextResponse.json({ error: "MFA token required" }, { status: 401 });
+      return NextResponse.json({ error: "MFA token required" }, { status: 401 }); // i18n-exempt: API error token; UI maps to translation
     }
     const ok = await verifyMfa(valid.customerId, mfaToken);
     if (!ok) {
-      return NextResponse.json({ error: "Invalid MFA token" }, { status: 401 });
+      return NextResponse.json({ error: "Invalid MFA token" }, { status: 401 }); // i18n-exempt: API error token; UI maps to translation
     }
   }
 

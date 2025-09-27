@@ -10,15 +10,21 @@ import {
   type SettingsDiffEntry,
 } from "./settings.json.server";
 
+function setPatchValue<T extends object, K extends keyof T>(
+  patch: Partial<T>,
+  key: K,
+  value: T[K],
+): void {
+  (patch as T)[key] = value;
+}
+
 function diffSettings(oldS: Settings, newS: Settings): Partial<Settings> {
   const patch: Partial<Settings> = {};
   for (const key of Object.keys(newS) as (keyof Settings)[]) {
     const a = JSON.stringify(oldS[key]);
     const b = JSON.stringify(newS[key]);
     if (a !== b) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore - dynamic key assignment
-      patch[key] = newS[key];
+      setPatchValue(patch, key, newS[key]);
     }
   }
   return patch;

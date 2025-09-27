@@ -10,9 +10,9 @@ export async function unpublishPost(
   const config = await getConfig(shopId);
   try {
     await repoUnpublishPost(config, id);
-    return { message: "Post unpublished" };
+    return { message: "Post unpublished" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   } catch (err) {
-    console.error("Failed to unpublish post", err);
-    return { error: "Failed to unpublish post" };
+    console.error("Failed to unpublish post", err); // i18n-exempt -- developer log; not user-facing; CMS-1010
+    return { error: "Failed to unpublish post" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   }
 }

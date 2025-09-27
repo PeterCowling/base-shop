@@ -16,7 +16,7 @@ jest.mock("next/navigation", () => ({
 }));
 
 function mockFetchSuccess(data: unknown) {
-  // @ts-expect-error
+  // @ts-expect-error TEST-123: assign mocked fetch on global
   global.fetch = jest.fn().mockResolvedValue({
     ok: true,
     json: async () => data,
@@ -24,7 +24,7 @@ function mockFetchSuccess(data: unknown) {
 }
 
 function mockFetchError(statusText: string) {
-  // @ts-expect-error
+  // @ts-expect-error TEST-123: assign mocked fetch on global
   global.fetch = jest.fn().mockResolvedValue({
     ok: false,
     statusText,
@@ -63,7 +63,7 @@ describe("useMediaLibrary", () => {
     useSearchParams.mockReturnValue(null);
 
     const fetchSpy = jest.fn();
-    // @ts-expect-error
+    // @ts-expect-error TEST-123: assign mocked fetch on global
     global.fetch = fetchSpy;
 
     const { result } = renderHook(() => useMediaLibrary());

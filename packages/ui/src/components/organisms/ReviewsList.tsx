@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../atoms/primitives/select";
+import { useTranslations } from "@acme/i18n";
 
 export interface Review {
   author: string;
@@ -44,6 +45,7 @@ export function ReviewsList({
   className,
   ...props
 }: ReviewsListProps) {
+  const t = useTranslations();
   const [localRating, setLocalRating] = React.useState(minRating);
   const [localQuery, setLocalQuery] = React.useState(query);
 
@@ -81,7 +83,7 @@ export function ReviewsList({
       {filterable && (
         <div className="flex flex-wrap items-center gap-2">
           <Input
-            placeholder="Search reviews…"
+            placeholder={t("reviews.searchPlaceholder") as string}
             value={search}
             onChange={(e) => handleQueryChange(e.target.value)}
             className="w-48"
@@ -91,21 +93,21 @@ export function ReviewsList({
             onValueChange={(v) => handleRatingChange(Number(v))}
           >
             <SelectTrigger className="w-32">
-              <SelectValue placeholder="Rating" />
+              <SelectValue placeholder={t("reviews.rating") as string} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0">All ratings</SelectItem>
-              <SelectItem value="5">5 stars</SelectItem>
-              <SelectItem value="4">4 stars & up</SelectItem>
-              <SelectItem value="3">3 stars & up</SelectItem>
-              <SelectItem value="2">2 stars & up</SelectItem>
-              <SelectItem value="1">1 star & up</SelectItem>
+              <SelectItem value="0">{t("reviews.filter.all") as string}</SelectItem>
+              <SelectItem value="5">{t("reviews.filter.5stars") as string}</SelectItem>
+              <SelectItem value="4">{t("reviews.filter.4up") as string}</SelectItem>
+              <SelectItem value="3">{t("reviews.filter.3up") as string}</SelectItem>
+              <SelectItem value="2">{t("reviews.filter.2up") as string}</SelectItem>
+              <SelectItem value="1">{t("reviews.filter.1up") as string}</SelectItem>
             </SelectContent>
           </Select>
         </div>
       )}
       {filtered.length === 0 ? (
-        <p className="text-muted-foreground text-sm">No reviews found.</p>
+        <p className="text-muted-foreground text-sm">{t("reviews.none") as string}</p>
       ) : (
         filtered.map((r, i) => (
           <div key={i} className="rounded-md border p-4">

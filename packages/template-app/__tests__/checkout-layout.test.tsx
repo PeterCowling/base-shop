@@ -3,17 +3,33 @@ import { render, screen } from "@testing-library/react";
 import type { ReactElement } from "react";
 
 // Stub UI + i18n wrappers to keep the test lightweight
-jest.mock("@ui/components/layout/Header", () => () => <div data-cy="header" />);
-jest.mock("@ui/components/layout/Footer", () => () => <div data-cy="footer" />);
-jest.mock("next-seo", () => ({
-  DefaultSeo: () => <div data-cy="seo" />,
-}));
-jest.mock("@i18n/Translations", () => ({
-  __esModule: true,
-  default: ({ children }: { children: React.ReactNode }) => (
-    <div data-cy="i18n">{children}</div>
-  ),
-}));
+jest.mock("@ui/components/layout/Header", () => {
+  function HeaderMock() {
+    return <div data-cy="header" />;
+  }
+  return HeaderMock;
+});
+jest.mock("@ui/components/layout/Footer", () => {
+  function FooterMock() {
+    return <div data-cy="footer" />;
+  }
+  return FooterMock;
+});
+jest.mock("next-seo", () => {
+  function DefaultSeo() {
+    return <div data-cy="seo" />;
+  }
+  return { DefaultSeo };
+});
+jest.mock("@i18n/Translations", () => {
+  function TranslationsMock({ children }: { children: React.ReactNode }) {
+    return <div data-cy="i18n">{children}</div>;
+  }
+  return {
+    __esModule: true,
+    default: TranslationsMock,
+  };
+});
 jest.mock("../src/lib/seo", () => ({
   getSeo: async () => ({ title: "Test", additionalLinkTags: [] }),
 }));

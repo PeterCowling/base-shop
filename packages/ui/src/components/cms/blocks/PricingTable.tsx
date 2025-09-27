@@ -1,4 +1,3 @@
-import { Button } from "../../atoms/shadcn";
 import { cn } from "../../../utils/style/cn";
 
 export interface Plan {
@@ -33,13 +32,13 @@ export default function PricingTable({
     }[list.length] || "md:grid-cols-3";
 
   return (
-    <section className={cn("grid grid-cols-1 gap-6", colClass)}>
+    <section className={cn("grid grid-cols-1 gap-6", colClass)}>{/* i18n-exempt: class names */}
       {list.map((plan, i) => (
         <div
           key={i}
           className={cn(
-            "flex flex-col rounded border p-6",
-            plan.featured && "border-primary"
+            "flex flex-col rounded border p-6", // i18n-exempt: class names
+            plan.featured && "border-primary" // i18n-exempt: class names
           )}
         >
           <h3 className="text-xl font-semibold">{plan.title}</h3>
@@ -53,9 +52,10 @@ export default function PricingTable({
           <a
             href={plan.ctaHref}
             className={cn(
-              "mt-6 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium",
-              "bg-primary text-primary-foreground hover:bg-primary/90",
-              "self-start"
+              "mt-6 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium", // i18n-exempt: class names
+              "bg-primary text-primary-foreground hover:bg-primary/90", // i18n-exempt: class names
+              // Ensure minimum tap target size
+              "self-start min-h-10 min-w-10" // i18n-exempt: class names
             )}
           >
             {plan.ctaLabel}

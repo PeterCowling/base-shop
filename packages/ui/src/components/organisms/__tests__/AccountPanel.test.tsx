@@ -1,8 +1,8 @@
+/* i18n-exempt file -- tests use literals for clarity */
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AccountPanel } from "../AccountPanel";
-
-jest.mock("next/image", () => (props: any) => <img {...props} />);
+import "../../../../../../test/resetNextMocks";
 
 describe("AccountPanel", () => {
   it("renders user info and logout button", async () => {

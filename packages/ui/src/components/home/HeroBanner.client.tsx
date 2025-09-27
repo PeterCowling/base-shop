@@ -10,7 +10,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 export type Slide = {
   src: string;
-  alt: string;
+  /** i18n key for alt text. Prefer keys; falls back to alt */
+  altKey?: string;
+  /** Fallback alt when key not provided */
+  alt?: string; // i18n-exempt: fallback only used in dev/mock
   headlineKey: string;
   ctaKey: string;
 };
@@ -18,19 +21,19 @@ export type Slide = {
 const DEFAULT_SLIDES: Slide[] = [
   {
     src: "/hero/slide-1.jpg",
-    alt: "Man wearing eco sneaker on concrete",
+    altKey: "hero.slide1.alt",
     headlineKey: "hero.slide1.headline",
     ctaKey: "hero.cta",
   },
   {
     src: "/hero/slide-2.jpg",
-    alt: "Close-up of recycled rubber sole",
+    altKey: "hero.slide2.alt",
     headlineKey: "hero.slide2.headline",
     ctaKey: "hero.cta",
   },
   {
     src: "/hero/slide-3.jpg",
-    alt: "Pair of sneakers on mossy rock",
+    altKey: "hero.slide3.alt",
     headlineKey: "hero.slide3.headline",
     ctaKey: "hero.cta",
   },
@@ -70,10 +73,10 @@ export default function HeroBanner({
   const slide = useMemo(() => slideData[index], [index, slideData]);
 
   return (
-    <section className="relative h-[60vh] w-full overflow-hidden">
+    <section className="relative w-full overflow-hidden" style={{ minHeight: "100svh" }}>
       <Image
         src={slide.src}
-        alt={slide.alt}
+        alt={slide.altKey ? (t(slide.altKey) as string) : slide.alt ?? ""}
         fill
         sizes="100vw"
         priority
@@ -85,13 +88,13 @@ export default function HeroBanner({
         className="text-bg absolute inset-0 flex flex-col items-center justify-center px-4 text-center"
         data-token="--color-bg"
       >
-        <h2 className="mb-6 max-w-3xl text-4xl font-bold drop-shadow-md md:text-5xl">
+        <h2 className="mb-6 text-4xl font-bold drop-shadow-md md:text-5xl">
           {t(slide.headlineKey)}
         </h2>
         {/* locale-aware route link */}
         <Link
           href={`/${langPrefix}/shop`}
-          className="bg-fg hover:bg-muted inline-block rounded-full px-[calc(var(--space-4)*2)] py-3 font-semibold shadow-elevation-2 transition-colors"
+          className="bg-fg hover:bg-muted inline-block rounded-full px-8 py-3 font-semibold shadow-elevation-2 transition-colors"
           data-token="--color-fg"
         >
           <span className="text-bg" data-token="--color-bg">
@@ -104,7 +107,7 @@ export default function HeroBanner({
       <button
         aria-label="Previous slide"
         onClick={prev}
-        className="absolute top-1/2 start-[var(--space-4)] -translate-y-1/2 rounded-full p-1 bg-[hsl(var(--overlay-scrim-1))] hover:bg-[hsl(var(--overlay-scrim-2))]"
+        className="absolute top-1/2 start-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl"
         data-token="--color-fg"
       >
         ‹
@@ -112,7 +115,7 @@ export default function HeroBanner({
       <button
         aria-label="Next slide"
         onClick={next}
-        className="absolute top-1/2 end-[var(--space-4)] -translate-y-1/2 rounded-full p-1 bg-[hsl(var(--overlay-scrim-1))] hover:bg-[hsl(var(--overlay-scrim-2))]"
+        className="absolute top-1/2 end-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl"
         data-token="--color-fg"
       >
         ›

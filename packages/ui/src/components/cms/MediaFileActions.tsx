@@ -3,6 +3,7 @@
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import type { MouseEvent } from "react";
+import { useTranslations } from "@acme/i18n";
 
 import {
   Button,
@@ -43,10 +44,6 @@ function renderLoadingContent(label: string, loading: boolean, status?: string) 
   );
 }
 
-// i18n-exempt — CMS library UI; strings to be wired to i18n later
-/* i18n-exempt */
-const t = (s: string) => s;
-
 export function MediaFileActions({
   actionsDisabled,
   actionsLoading,
@@ -62,43 +59,44 @@ export function MediaFileActions({
   onReplaceRequest,
   onDeleteRequest,
 }: MediaFileActionsProps) {
+  const t = useTranslations();
   const handleOverlayClick = (event: MouseEvent) => {
     event.stopPropagation();
   };
 
   return (
-    <>
+    <div className="relative">
       {selectionEnabled ? (
-        <div className="absolute start-3 top-3 z-20" onClick={handleOverlayClick}>
+        <div className="absolute start-3 top-3" onClick={handleOverlayClick}>
           <Checkbox
             checked={selected}
             onCheckedChange={onBulkToggle}
-            aria-label={selected ? t("Deselect media") : t("Select media")}
+            aria-label={selected ? (t("cms.media.deselect") as string) : (t("cms.media.select") as string)}
             disabled={actionsDisabled}
           />
         </div>
       ) : null}
 
-      <div className="absolute end-3 top-3 z-20 flex items-center gap-2">
+      <div className="absolute end-3 top-3">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               type="button"
               variant="ghost"
-              className="h-9 w-9 rounded-full p-0 flex items-center justify-center"
-              aria-label={t("Media actions")}
+              className="h-9 w-9 rounded-full p-0"
+              aria-label={t("cms.media.actions") as string}
               onClick={handleOverlayClick}
               disabled={actionsDisabled}
             >
               {actionsLoading ? (
-                renderLoadingContent(t("Actions"), true, statusMessage)
+                renderLoadingContent(t("cms.actions") as string, true, statusMessage)
               ) : (
                 <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
               )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
+            <DropdownMenuLabel>{t("cms.actions")}</DropdownMenuLabel>
             {onViewDetails ? (
               <DropdownMenuItem
                 onSelect={() => {
@@ -106,7 +104,7 @@ export function MediaFileActions({
                 }}
                 disabled={actionsDisabled}
               >
-                {t("View details")}
+                {t("cms.media.viewDetails")}
               </DropdownMenuItem>
             ) : null}
             <DropdownMenuItem
@@ -114,10 +112,10 @@ export function MediaFileActions({
                 if (!actionsDisabled) onReplaceRequest();
               }}
               disabled={actionsDisabled}
-              className="flex items-center gap-2"
-              aria-label={replaceInProgress ? t("Replacing media") : t("Replace media")}
+              className="gap-2"
+              aria-label={replaceInProgress ? (t("cms.media.replacing") as string) : (t("cms.media.replace") as string)}
             >
-              {renderLoadingContent(t("Replace"), replaceInProgress, t("Replacing media…"))}
+              {renderLoadingContent(t("cms.replace") as string, replaceInProgress, t("cms.media.replacing") as string)}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -126,47 +124,47 @@ export function MediaFileActions({
                 onDeleteRequest();
               }}
               disabled={actionsDisabled}
-              className="flex items-center gap-2"
-              aria-label={deleteInProgress ? t("Deleting media") : t("Delete media")}
+              className="gap-2"
+              aria-label={deleteInProgress ? (t("cms.media.deleting") as string) : (t("cms.media.delete") as string)}
             >
-              {renderLoadingContent(t("Delete"), deleteInProgress, t("Deleting media…"))}
+              {renderLoadingContent(t("cms.delete") as string, deleteInProgress, t("cms.media.deleting") as string)}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
 
-      <div className="absolute inset-x-3 bottom-3 z-20 flex items-center justify-between gap-2 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
+      <div className="absolute inset-x-3 bottom-3 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100">
         {onOpenDetails ? (
           <Button
             type="button"
             variant="outline"
-            className="h-9 flex-1 rounded-md text-sm flex items-center justify-center gap-2"
+            className="h-9 flex-1 rounded-md text-sm gap-2"
             onClick={(event) => {
               handleOverlayClick(event);
               if (!actionsDisabled) onOpenDetails();
             }}
             disabled={actionsDisabled}
-            aria-label={t("Open details")}
+            aria-label={t("cms.media.openDetails") as string}
           >
-            {renderLoadingContent(t("Open details"), actionsLoading, statusMessage)}
+            {renderLoadingContent(t("cms.media.openDetails") as string, actionsLoading, statusMessage)}
           </Button>
         ) : null}
         {onSelectItem ? (
           <Button
             type="button"
             variant="ghost"
-            className="h-9 rounded-md px-3 text-sm flex items-center justify-center gap-2"
+            className="h-9 rounded-md px-3 text-sm gap-2"
             onClick={(event) => {
               handleOverlayClick(event);
               if (!actionsDisabled) onSelectItem();
             }}
             disabled={actionsDisabled}
-            aria-label={t("Select media")}
+            aria-label={t("cms.media.select") as string}
           >
-            {renderLoadingContent(t("Select"), actionsLoading, statusMessage)}
+            {renderLoadingContent(t("cms.select") as string, actionsLoading, statusMessage)}
           </Button>
         ) : null}
       </div>
-    </>
+    </div>
   );
 }

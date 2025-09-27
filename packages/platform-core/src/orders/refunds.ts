@@ -59,7 +59,7 @@ export async function refundOrder(
         ? session.payment_intent
         : session.payment_intent?.id;
     if (!pi) {
-      throw new Error("payment_intent missing");
+      throw new Error("payment_intent missing"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
     }
     await stripe.refunds.create({
       payment_intent: pi,
@@ -81,4 +81,3 @@ export async function refundOrder(
     return null;
   }
 }
-

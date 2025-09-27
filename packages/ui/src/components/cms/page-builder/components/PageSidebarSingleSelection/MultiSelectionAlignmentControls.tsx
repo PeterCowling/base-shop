@@ -51,7 +51,7 @@ const MultiSelectionAlignmentControls = ({
         title="Align Left"
         onClick={() =>
           alignLeft(components, selectedIds, viewport).forEach((p) =>
-            dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any),
+            dispatch({ type: "resize", id: p.id, [leftKey]: p.left }),
           )
         }
       >
@@ -64,7 +64,7 @@ const MultiSelectionAlignmentControls = ({
         title="Align Right"
         onClick={() =>
           alignRight(components, selectedIds, viewport).forEach((p) =>
-            dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any),
+            dispatch({ type: "resize", id: p.id, [leftKey]: p.left }),
           )
         }
       >
@@ -77,7 +77,7 @@ const MultiSelectionAlignmentControls = ({
         title="Align Top"
         onClick={() =>
           alignTop(components, selectedIds, viewport).forEach((p) =>
-            dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any),
+            dispatch({ type: "resize", id: p.id, [topKey]: p.top }),
           )
         }
       >
@@ -90,7 +90,7 @@ const MultiSelectionAlignmentControls = ({
         title="Align Bottom"
         onClick={() =>
           alignBottom(components, selectedIds, viewport).forEach((p) =>
-            dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any),
+            dispatch({ type: "resize", id: p.id, [topKey]: p.top }),
           )
         }
       >
@@ -103,7 +103,7 @@ const MultiSelectionAlignmentControls = ({
         title="Center Horizontally"
         onClick={() =>
           alignCenterX(components, selectedIds, viewport).forEach((p) =>
-            dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any),
+            dispatch({ type: "resize", id: p.id, [leftKey]: p.left }),
           )
         }
       >
@@ -116,7 +116,7 @@ const MultiSelectionAlignmentControls = ({
         title="Center Vertically"
         onClick={() =>
           alignCenterY(components, selectedIds, viewport).forEach((p) =>
-            dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any),
+            dispatch({ type: "resize", id: p.id, [topKey]: p.top }),
           )
         }
       >
@@ -129,7 +129,7 @@ const MultiSelectionAlignmentControls = ({
         title="Distribute Horizontally"
         onClick={() =>
           distributeHorizontal(components, selectedIds, viewport).forEach((p) =>
-            dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any),
+            dispatch({ type: "resize", id: p.id, [leftKey]: p.left }),
           )
         }
       >
@@ -142,7 +142,7 @@ const MultiSelectionAlignmentControls = ({
         title="Distribute Vertically"
         onClick={() =>
           distributeVertical(components, selectedIds, viewport).forEach((p) =>
-            dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any),
+            dispatch({ type: "resize", id: p.id, [topKey]: p.top }),
           )
         }
       >

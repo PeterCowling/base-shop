@@ -38,7 +38,7 @@ export function createSectionTemplateDelegate(): SectionTemplateDelegate {
     },
     async update({ where, data }) {
       const idx = rows.findIndex((r) => match(r, where));
-      if (idx < 0) throw new Error("SectionTemplate not found");
+      if (idx < 0) throw new Error("SectionTemplate not found"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
       rows[idx] = { ...rows[idx], ...data };
       return rows[idx];
     },
@@ -46,4 +46,3 @@ export function createSectionTemplateDelegate(): SectionTemplateDelegate {
 }
 
 export const sectionTemplateDelegate = createSectionTemplateDelegate();
-

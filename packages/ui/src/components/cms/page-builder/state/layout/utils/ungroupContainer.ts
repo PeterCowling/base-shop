@@ -4,13 +4,14 @@ export function ungroupContainer(list: PageComponent[], id: string): PageCompone
   const expand = (nodes: PageComponent[]): PageComponent[] => {
     const result: PageComponent[] = [];
     for (const n of nodes) {
-      if (n.id === id && Array.isArray((n as any).children)) {
-        const kids = ((n as any).children as PageComponent[]) ?? [];
+      const children = (n as unknown as { children?: PageComponent[] }).children;
+      if (n.id === id && Array.isArray(children)) {
+        const kids = children ?? [];
         result.push(...kids);
-      } else if (Array.isArray((n as any).children)) {
+      } else if (Array.isArray(children)) {
         result.push({
           ...n,
-          children: expand((n as any).children as PageComponent[]),
+          children: expand(children),
         } as PageComponent);
       } else {
         result.push(n);
@@ -20,4 +21,3 @@ export function ungroupContainer(list: PageComponent[], id: string): PageCompone
   };
   return expand(list);
 }
-

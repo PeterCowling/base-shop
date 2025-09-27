@@ -3,6 +3,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { fetchPostBySlug, type PortableBlock } from "@acme/sanity";
+import Section from "@ui/components/cms/blocks/Section";
 
 export const revalidate = 60;
 
@@ -17,7 +18,8 @@ export default async function BlogPostPage({
   if (!post) return notFound();
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-8">
+    <Section contentWidth="narrow">
+      <article className="px-4 py-8">
       <header className="mb-6">
         <h1 className="text-3xl font-bold">{post.title}</h1>
         {post.excerpt && (
@@ -25,12 +27,12 @@ export default async function BlogPostPage({
         )}
       </header>
       {post.mainImage && (
-        <div className="relative mb-6 aspect-[16/9] w-full overflow-hidden rounded-lg">
+        <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-lg">
           <Image src={post.mainImage} alt={post.title} fill className="object-cover" />
         </div>
       )}
       {/* Basic portable text fallback: list paragraphs if provided */}
-      <div className="prose prose-slate max-w-none">
+      <div className="prose prose-slate">
         {(post.body as PortableBlock[] | undefined)?.map((block, i) => {
           const children = (block as { children?: unknown }).children;
           if (block?._type === "block" && Array.isArray(children)) {
@@ -42,6 +44,7 @@ export default async function BlogPostPage({
           return null;
         })}
       </div>
-    </article>
+      </article>
+    </Section>
   );
 }

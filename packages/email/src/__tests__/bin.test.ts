@@ -30,11 +30,11 @@ describe("bin", () => {
       });
       const customRequire = (id: string) =>
         require(path.resolve(path.dirname(filePath), id));
-      const module = { exports: {} };
+      const moduleContext = { exports: {} };
       vm.runInNewContext(outputText, {
         require: customRequire,
-        module,
-        exports: module.exports,
+        module: moduleContext,
+        exports: moduleContext.exports,
         __dirname: path.dirname(filePath),
         __filename: filePath,
         process,

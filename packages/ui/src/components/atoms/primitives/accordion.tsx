@@ -28,7 +28,8 @@ const AccordionContext = createContext<AccordionContextValue | null>(null);
 function useAccordionContext() {
   const context = useContext(AccordionContext);
   if (!context) {
-    // i18n-exempt — developer-facing usage error
+    // Developer-facing usage error; not user-visible copy
+    // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0010 developer error message
     throw new Error("Accordion components must be used within <Accordion>");
   }
   return context;
@@ -39,10 +40,9 @@ const AccordionItemContext = createContext<string | null>(null);
 function useAccordionItemValue() {
   const value = useContext(AccordionItemContext);
   if (!value) {
-    // i18n-exempt — developer-facing usage error
-    throw new Error(
-      "AccordionTrigger and AccordionContent must be rendered inside AccordionItem",
-    );
+    // Developer-facing usage error; not user-visible copy
+    // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0009 developer error message
+    throw new Error("AccordionTrigger and AccordionContent must be rendered inside AccordionItem");
   }
   return value;
 }
@@ -123,7 +123,11 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
           ref={ref}
           data-state={isOpen ? "open" : "closed"}
           data-value={value}
-          className={cn("rounded-md border border-border-3", className)}
+          className={cn(
+            // i18n-exempt — CSS utility class names
+            "rounded-md border border-border-3",
+            className,
+          )}
           {...props}
         >
           {children}
@@ -158,7 +162,9 @@ export const AccordionTrigger = forwardRef<
       data-state={isOpen ? "open" : "closed"}
       onClick={handleClick}
       className={cn(
+        // i18n-exempt — CSS utility class names
         "flex w-full items-center justify-between gap-2 rounded-md px-4 py-2 text-start text-sm font-semibold transition-colors",
+        // i18n-exempt — CSS utility class names
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
@@ -168,7 +174,9 @@ export const AccordionTrigger = forwardRef<
       <ChevronDownIcon
         aria-hidden
         className={cn(
+          // i18n-exempt — CSS utility class names
           "h-4 w-4 shrink-0 transition-transform duration-200",
+          // i18n-exempt — CSS utility class names
           isOpen ? "rotate-180" : "rotate-0",
         )}
       />
@@ -190,7 +198,13 @@ export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps
         ref={ref}
         data-state={isOpen ? "open" : "closed"}
         hidden={!isOpen}
-        className={cn("px-4 pb-4 text-sm", className, !isOpen && "hidden")}
+        className={cn(
+          // i18n-exempt — CSS utility class names
+          "px-4 pb-4 text-sm",
+          className,
+          // i18n-exempt — CSS utility class names
+          !isOpen && "hidden",
+        )}
         {...props}
       >
         {children}

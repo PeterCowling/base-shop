@@ -9,15 +9,27 @@ jest.mock("@dnd-kit/core", () => ({
   defaultDropAnimation: {},
   defaultDropAnimationSideEffects: () => ({}),
 }));
-jest.mock("../PageCanvas", () => () => <div data-cy="canvas">Canvas</div>);
-jest.mock("../devtools/DevToolsOverlay", () => () => <div data-cy="devtools" />);
+jest.mock("../PageCanvas", () => {
+  const MockPageCanvas = () => <div data-cy="canvas">Canvas</div>;
+  (MockPageCanvas as any).displayName = "MockPageCanvas";
+  return { __esModule: true, default: MockPageCanvas };
+});
+jest.mock("../devtools/DevToolsOverlay", () => {
+  const MockDevTools = () => <div data-cy="devtools" />;
+  (MockDevTools as any).displayName = "MockDevToolsOverlay";
+  return { __esModule: true, default: MockDevTools };
+});
 jest.mock("../DragOverlayPreview", () => ({
   __esModule: true,
   default: ({ allowed }: { allowed: boolean | null }) => (
     <div data-cy="drag-preview">{String(allowed)}</div>
   ),
 }));
-jest.mock("../PreviewPane", () => () => <div data-cy="preview" />);
+jest.mock("../PreviewPane", () => {
+  const MockPreview = () => <div data-cy="preview" />;
+  (MockPreview as any).displayName = "MockPreviewPane";
+  return { __esModule: true, default: MockPreview };
+});
 
 describe("PageBuilderCanvasArea", () => {
   function renderArea(overrides: Partial<React.ComponentProps<typeof PageBuilderCanvasArea>> = {}) {

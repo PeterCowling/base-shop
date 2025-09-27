@@ -10,12 +10,12 @@ export function getDefaultSender(): string {
     "";
   if (!sender) {
     throw new Error(
-      "Default sender email is required. Set CAMPAIGN_FROM or GMAIL_USER."
+      "Default sender email is required. Set CAMPAIGN_FROM or GMAIL_USER." // i18n-exempt: developer configuration error
     );
   }
   const parsed = emailSchema.safeParse(sender);
   if (!parsed.success) {
-    throw new Error(`Invalid sender email address: ${sender}`);
+    throw new Error(`Invalid sender email address: ${sender}`); // i18n-exempt: developer configuration error
   }
   return parsed.data;
 }

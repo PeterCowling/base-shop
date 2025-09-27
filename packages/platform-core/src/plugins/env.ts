@@ -11,6 +11,7 @@ export function findPluginsDir(start: string): string {
   let dir = start;
   while (true) {
     const candidate = path.join(dir, "packages", "plugins");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-0001 Candidate is derived path within repo tree
     if (existsSync(candidate)) return candidate;
     const parent = path.dirname(dir);
     if (parent === dir) return candidate;
@@ -39,6 +40,7 @@ export async function resolvePluginEnvironment({
 
   for (const cfgPath of configPaths) {
     try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-0001 Config path from env/arg; JSON-only read
       const cfg = JSON.parse(await readFile(cfgPath, "utf8"));
       if (Array.isArray(cfg.directories)) configDirs.push(...cfg.directories);
       if (Array.isArray(cfg.plugins)) configPlugins.push(...cfg.plugins);

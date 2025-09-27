@@ -5,7 +5,6 @@ import { useSegmentBuilderWizard, type UseSegmentBuilderWizardReturn } from "../
 function renderHookUI(props?: Parameters<typeof useSegmentBuilderWizard>[0]) {
   let api: UseSegmentBuilderWizardReturn | null = null;
   function Harness() {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     api = useSegmentBuilderWizard(props || {});
     return null;
   }

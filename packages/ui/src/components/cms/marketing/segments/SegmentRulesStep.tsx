@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 import type { ValidationErrors } from "../shared";
 import type {
   SegmentDefinition,
@@ -26,13 +27,15 @@ interface SegmentRulesStepProps {
   onNext: () => void;
 }
 
+// i18n-exempt — data constant; labels are translated at render via t()
 const attributes = [
-  { value: "lifetime_value", label: "Lifetime value" },
-  { value: "purchase_count", label: "Orders placed" },
-  { value: "country", label: "Country" },
-  { value: "last_order_date", label: "Last order date" },
+  { value: "lifetime_value", label: "Lifetime value" /* i18n-exempt — data constant; translated at render */ },
+  { value: "purchase_count", label: "Orders placed" /* i18n-exempt — data constant; translated at render */ },
+  { value: "country", label: "Country" /* i18n-exempt — data constant; translated at render */ },
+  { value: "last_order_date", label: "Last order date" /* i18n-exempt — data constant; translated at render */ },
 ];
 
+// i18n-exempt — data constant; labels are translated at render via t()
 const operatorOptions: { value: SegmentOperator; label: string }[] = [
   { value: "equals", label: "Equals" },
   { value: "contains", label: "Contains" },
@@ -49,6 +52,7 @@ export function SegmentRulesStep({
   onBack,
   onNext,
 }: SegmentRulesStepProps) {
+  const t = useTranslations();
   return (
     <div className="space-y-4">
       <Card>
@@ -62,13 +66,13 @@ export function SegmentRulesStep({
                 value={rule.attribute}
                 onValueChange={(value) => onRuleChange(rule.id, { attribute: value })}
               >
-                <SelectTrigger className="min-w-[180px]">
-                  <SelectValue placeholder="Attribute" />
+                <SelectTrigger className="min-w-44">
+                  <SelectValue placeholder={t("Attribute")} />
                 </SelectTrigger>
                 <SelectContent>
                   {attributes.map((attr) => (
                     <SelectItem key={attr.value} value={attr.value}>
-                      {attr.label}
+                      {t(attr.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -81,13 +85,13 @@ export function SegmentRulesStep({
                   })
                 }
               >
-                <SelectTrigger className="min-w-[140px]">
-                  <SelectValue placeholder="Operator" />
+                <SelectTrigger className="min-w-36">
+                  <SelectValue placeholder={t("Operator")} />
                 </SelectTrigger>
                 <SelectContent>
                   {operatorOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      {option.label}
+                      {t(option.label)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -95,7 +99,7 @@ export function SegmentRulesStep({
               <Input
                 value={rule.value}
                 onChange={(event) => onRuleChange(rule.id, { value: event.target.value })}
-                className="min-w-[160px]"
+                className="min-w-40"
               />
               <Button
                 type="button"
@@ -103,25 +107,29 @@ export function SegmentRulesStep({
                 onClick={() => onRuleRemove(rule.id)}
                 disabled={definition.rules.length === 1}
               >
-                Remove
+                {t("Remove")}
               </Button>
             </div>
           ))}
           {errors.rules && (
-            <p className="text-danger text-xs" data-token="--color-danger">
+            <p
+              className="text-danger text-xs"
+              /* i18n-exempt — token reference string */
+              data-token="--color-danger"
+            >
               {errors.rules}
             </p>
           )}
           <Button type="button" variant="outline" onClick={onRuleAdd}>
-            Add rule
+            {t("Add rule")}
           </Button>
         </CardContent>
       </Card>
       <div className="flex justify-between">
         <Button variant="ghost" onClick={onBack}>
-          Back
+          {t("Back")}
         </Button>
-        <Button onClick={onNext}>Review segment</Button>
+        <Button onClick={onNext}>{t("Review segment")}</Button>
       </div>
     </div>
   );

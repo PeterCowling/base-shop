@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
+
 interface Props {
   selected: boolean;
   startResize: (e: React.PointerEvent, handle?: "se" | "ne" | "sw" | "nw" | "e" | "w" | "n" | "s") => void;
@@ -17,22 +19,23 @@ export default function BlockResizer({
   startSpacing,
   startRotate,
 }: Props) {
+  const t = useTranslations();
   if (!selected) return null;
   return (
-    <>
+    <div className="relative">
       {/* Rotate handle (top-center, slightly offset above) */}
       {startRotate && (
         <div
           className="absolute -top-7 start-1/2 -translate-x-1/2 group pointer-events-auto"
           onPointerDown={(e) => startRotate(e)}
-          title="Rotate (Shift = precise)"
+          title={String(t("Rotate (Shift = precise)"))}
           role="button"
           tabIndex={0}
           aria-label="Rotate block"
         >
           <div className="h-6 w-6 cursor-crosshair rounded-full bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-          <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-[10px] text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
-            Shift = precise
+          <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-xs text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
+            {t("Shift = precise")}
           </div>
         </div>
       )}
@@ -101,6 +104,6 @@ export default function BlockResizer({
         aria-label="Adjust padding right"
         className="bg-primary absolute top-1/2 -end-1 h-10 w-2 -translate-y-1/2 cursor-e-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       />
-    </>
+    </div>
   );
 }

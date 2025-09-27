@@ -56,10 +56,11 @@ export function ProductQuickView({
         <Button
           variant="outline"
           className="absolute end-2 top-2 px-2 py-1 text-xs"
-          aria-label="Close"
+          aria-label="Close" // i18n-exempt: accessible label for close action
           data-cy="close-quick-view"
           onClick={() => onOpenChange(false)}
         >
+          {/* i18n-exempt: microcopy for close button */}
           Close
         </Button>
         <ProductCard

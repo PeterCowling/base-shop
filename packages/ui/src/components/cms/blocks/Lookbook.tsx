@@ -6,6 +6,7 @@ import {
   useEffect,
   PointerEvent as ReactPointerEvent,
 } from "react";
+import Image from "next/image";
 
 export type LookbookHotspot = {
   sku?: string;
@@ -90,12 +91,9 @@ export default function Lookbook({ items = [], onItemsChange }: Props) {
           className="relative h-full w-full"
         >
           {item.src && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={item.src}
-              alt={item.alt ?? ""}
-              className="h-full w-full object-cover"
-            />
+            <div className="absolute inset-0">
+              <Image src={item.src} alt={item.alt ?? ""} fill className="object-cover" sizes="100vw" />
+            </div>
           )}
           {item.hotspots?.map((p, i) => (
             <div

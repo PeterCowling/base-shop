@@ -12,6 +12,7 @@ let rateCache: { base: string; rates: Record<string, number> } | null = null;
 export async function getPricing(): Promise<PricingMatrix> {
   if (cached) return cached;
   const file = path.join(resolveDataRoot(), "..", "rental", "pricing.json");
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-0001 Reading from resolved data root
   const buf = await fs.readFile(file, "utf8");
   cached = pricingSchema.parse(JSON.parse(buf));
   return cached;
@@ -20,6 +21,7 @@ export async function getPricing(): Promise<PricingMatrix> {
 async function loadExchangeRates() {
   if (rateCache) return rateCache;
   const file = path.join(resolveDataRoot(), "..", "rental", "exchangeRates.json");
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-0001 Reading from resolved data root
   const buf = await fs.readFile(file, "utf8");
   rateCache = JSON.parse(buf) as { base: string; rates: Record<string, number> };
   return rateCache;

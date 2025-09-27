@@ -1,4 +1,5 @@
 import type { HistoryState, PageComponent } from "@acme/types";
+import type { EditorFlags } from "../../panels/layout/types";
 
 import LayoutPanel from "../../panels/LayoutPanel";
 import StylePanel from "../../StylePanel";
@@ -11,8 +12,8 @@ interface DesignTabContentProps {
   handleFullSizeField: (field: string) => void;
   editorFlags: NonNullable<HistoryState["editor"]>[string] | undefined;
   editorMap: HistoryState["editor"] | undefined;
-  onUpdateEditor: (patch: any) => void;
-  updateEditorForId: (id: string, patch: any) => void;
+  onUpdateEditor: (patch: Partial<EditorFlags>) => void;
+  updateEditorForId: (id: string, patch: Partial<EditorFlags>) => void;
 }
 
 const DesignTabContent = ({
@@ -31,7 +32,7 @@ const DesignTabContent = ({
       handleInput={handleFieldInput}
       handleResize={handleResizeField}
       handleFullSize={handleFullSizeField}
-      editorFlags={editorFlags as any}
+      editorFlags={editorFlags as unknown as EditorFlags}
       onUpdateEditor={onUpdateEditor}
       editorMap={editorMap}
       updateEditorForId={updateEditorForId}

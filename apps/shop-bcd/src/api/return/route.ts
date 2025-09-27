@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     alreadyReturned = true;
   }
   if (!initial) {
-    return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    return NextResponse.json({ error: "Order not found" }, { status: 404 }); // i18n-exempt: server API error message; not end-user facing
   }
 
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
       : session.payment_intent?.id;
 
   if (!deposit || !pi) {
-    return NextResponse.json({ ok: false, message: "No deposit found" });
+    return NextResponse.json({ ok: false, message: "No deposit found" }); // i18n-exempt: server API message; not end-user facing
   }
 
   const coverageCodes =
@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
       );
       if (refunded === null) {
         return NextResponse.json(
-          { error: "Payment processing failed" },
+          { error: "Payment processing failed" }, // i18n-exempt: server API error message; not end-user facing
           { status: 500 },
         );
       }
@@ -88,9 +88,9 @@ export async function POST(req: NextRequest) {
       await markReturned("bcd", sessionId, damageFee);
     }
   } catch (err) {
-    console.error("Failed to process refund", err);
+    console.error("Failed to process refund", err); // i18n-exempt: server log for debugging
     return NextResponse.json(
-      { error: "Payment processing failed" },
+      { error: "Payment processing failed" }, // i18n-exempt: server API error message; not end-user facing
       { status: 502 },
     );
   }

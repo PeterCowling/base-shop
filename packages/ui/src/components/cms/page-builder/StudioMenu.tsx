@@ -7,46 +7,47 @@ import { HamburgerMenuIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 export default function StudioMenu({ shop }: { shop?: string | null }) {
-  const siteHref = shop ? `/cms/shop/${shop}` : "/cms`";
+  // i18n-exempt — Editor navigation labels; not part of the storefront
+  /* i18n-exempt */ const t = (s: string) => s;
   // Render popover content in a portal to avoid being clipped/obscured
   const container = typeof window !== "undefined" ? document.body : undefined;
   return (
     <Popover>
-      <Tooltip text="Project menu">
+      <Tooltip text={t("Project menu")}>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="icon" aria-label="Project menu" className="h-8 w-8">
-            <HamburgerMenuIcon className="h-4 w-4" />
+          <Button variant="outline" size="icon" aria-label={t("Project menu")} className="h-10 w-10">
+            <HamburgerMenuIcon className="h-5 w-5" />
           </Button>
         </PopoverTrigger>
       </Tooltip>
       <PopoverContent align="start" className="w-64 text-sm" container={container}>
         <div className="flex flex-col gap-1">
-          <Link className="rounded px-2 py-1 hover:bg-muted" href="/cms">Dashboard</Link>
-          {shop && <Link className="rounded px-2 py-1 hover:bg-muted" href={`/cms/shop/${shop}`}>Site</Link>}
-          {shop && <Link className="rounded px-2 py-1 hover:bg-muted" href={`/cms/shop/${shop}/sections`}>Sections</Link>}
-          {shop && <Link className="rounded px-2 py-1 hover:bg-muted" href={`/cms/shop/${shop}/settings`}>Tools</Link>}
+          <Link className="rounded px-2 py-1 hover:bg-muted min-h-10" href="/cms">{t("Dashboard")}</Link>
+          {shop && <Link className="rounded px-2 py-1 hover:bg-muted min-h-10" href={`/cms/shop/${shop}`}>{t("Site")}</Link>}
+          {shop && <Link className="rounded px-2 py-1 hover:bg-muted min-h-10" href={`/cms/shop/${shop}/sections`}>{t("Sections")}</Link>}
+          {shop && <Link className="rounded px-2 py-1 hover:bg-muted min-h-10" href={`/cms/shop/${shop}/settings`}>{t("Tools")}</Link>}
           {shop && (
             <Link
-              className="rounded px-2 py-1 hover:bg-muted"
+              className="rounded px-2 py-1 hover:bg-muted min-h-10"
               href={`/cms/shop/${shop}/marketing/email`}
             >
-              Email Campaigns
+              {t("Email Campaigns")}
             </Link>
           )}
-          <button type="button" className="rounded px-2 py-1 text-start hover:bg-muted" onClick={() => { try { window.dispatchEvent(new Event("pb:open-view")); } catch {} }}>View…</button>
+          <button type="button" className="rounded px-2 py-1 text-start hover:bg-muted min-h-10 min-w-10" onClick={() => { try { window.dispatchEvent(new Event("pb:open-view")); } catch {} }}>{t("View…")}</button>
           <button
             type="button"
-            className="rounded px-2 py-1 text-start hover:bg-muted"
+            className="rounded px-2 py-1 text-start hover:bg-muted min-h-10 min-w-10"
             onClick={() => { try { window.dispatchEvent(new Event("pb:open-design")); } catch {} }}
           >
-            Design…
+            {t("Design…")}
           </button>
           <button
             type="button"
-            className="rounded px-2 py-1 text-start hover:bg-muted"
+            className="rounded px-2 py-1 text-start hover:bg-muted min-h-10 min-w-10"
             onClick={() => { try { window.dispatchEvent(new Event("pb:open-breakpoints")); } catch {} }}
           >
-            Device Manager…
+            {t("Device Manager…")}
           </button>
         </div>
       </PopoverContent>

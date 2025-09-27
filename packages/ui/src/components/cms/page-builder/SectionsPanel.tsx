@@ -1,18 +1,26 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import type { PageComponent } from "@acme/types";
 import type { SectionTemplate } from "@acme/types/section/template";
 import { Button, Input } from "../../atoms/shadcn";
 import { ulid } from "ulid";
 import { builtInSections } from "./builtInSections.data";
 import { getPalettePreview } from "./previewImages";
+import Image from "next/image";
+import { useTranslations } from "@acme/i18n";
+import { Grid as DSGrid } from "../../atoms/primitives/Grid";
+import { Stack as DSStack } from "../../atoms/primitives/Stack";
+import { Inline as DSInline } from "../../atoms/primitives/Inline";
 
 function cloneWithIds(node: PageComponent): PageComponent {
-  const cloned = { ...node, id: ulid() } as any;
-  const children = (node as any).children as PageComponent[] | undefined;
-  if (Array.isArray(children)) cloned.children = children.map((c) => cloneWithIds(c));
-  return cloned as PageComponent;
+  const base = node as unknown as Record<string, unknown>;
+  const cloned = { ...base, id: ulid() } as unknown as PageComponent;
+  const children = base["children"];
+  if (Array.isArray(children)) {
+    (cloned as unknown as { children: PageComponent[] }).children = (children as PageComponent[]).map((c) => cloneWithIds(c));
+  }
+  return cloned;
 }
 
 interface Props {
@@ -22,11 +30,12 @@ interface Props {
 }
 
 export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props) {
+  const t = useTranslations();
   const [items, setItems] = useState<SectionTemplate[]>([]);
   const [q, setQ] = useState("");
   // Tag chips replaced by built-in section groups; keep state for compatibility but unused
-  const [allTags, setAllTags] = useState<string[]>([]);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [_allTags, setAllTags] = useState<string[]>([]);
+  const [_selectedTags, setSelectedTags] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);
   // Increased page size to better handle larger section sets
@@ -73,7 +82,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
     setAllTags([]);
     setSelectedTags([]);
     load(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PB-123 keep stable deps; controlled by "shop"
   }, [shop]);
 
   // Debounced search
@@ -87,7 +96,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
     return () => {
       if (debounceRef.current) window.clearTimeout(debounceRef.current);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PB-123 debounce on query change only
   }, [q]);
 
   // Tags UI removed; no reload by tag filters
@@ -95,117 +104,119 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
   const hasMore = items.length < total;
 
   return (
+    // i18n-exempt — data-cy attribute only
     <aside className="w-full shrink-0" data-cy="pb-sections-panel">
       <div className="flex items-center justify-between gap-2 p-2">
-        <div className="text-sm font-semibold">Sections</div>
+        <div className="text-sm font-semibold">{t("Sections")}</div>
       </div>
       <div className="p-2">
-        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search…" aria-label="Search sections" />
+        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("Search…") as string} aria-label={t("Search sections") as string} />
       </div>
       {/* Demo presets area (simple flow) */}
       <div className="px-2 pb-2">
-        <div className="mb-1 text-xs font-semibold text-muted-foreground">Demo Presets</div>
-        <div className="flex flex-wrap gap-1">
+        <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("Demo Presets")}</div>
+        <DSInline gap={1} className="flex-wrap">
+          {/* i18n-exempt */}
           <button
             type="button"
-            className="rounded border px-2 py-1 text-[11px]"
-            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Text", text: "Preset: Title + Button" }, { id: ulid(), type: "Button", label: "CTA", href: "/shop" }] } as any))}
+            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Text", text: t("Preset: Title + Button") }, { id: ulid(), type: "Button", label: t("CTA"), href: "/shop" }] } as unknown as PageComponent))}
           >
-            Title + CTA
+            {t("Title + CTA")}
           </button>
           <button
             type="button"
-            className="rounded border px-2 py-1 text-[11px]"
-            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Image", src: "/hero/slide-1.jpg", alt: "" }] } as any))}
+            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Image", src: "/hero/slide-1.jpg", alt: "" }] } as unknown as PageComponent))}
           >
-            Image Hero
+            {t("Image Hero")}
           </button>
-        </div>
+        </DSInline>
       </div>
       {/* Built-in section groups (replaces tag chips) */}
       <div className="px-2 pb-2">
-        <div className="mb-1 text-xs font-semibold text-muted-foreground">Built-in Sections</div>
+        <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("Built-in Sections")}</div>
         {(() => {
           const groups: Record<string, typeof builtInSections> = {};
           for (const s of builtInSections) {
             const key = s.previewType.startsWith("HeaderSection")
-              ? "Headers"
+              ? String(t("Headers"))
               : s.previewType.startsWith("FooterSection")
-                ? "Footers"
-                : "Essentials";
+                ? String(t("Footers"))
+                : String(t("Essentials"));
             (groups[key] ||= []).push(s);
           }
-          const order = ["Headers", "Footers", "Essentials"] as const;
+          const order = [String(t("Headers")), String(t("Footers")), String(t("Essentials"))] as const;
           return order
             .filter((k) => Array.isArray(groups[k]) && groups[k]!.length > 0)
             .map((k) => (
               <div key={k} className="mb-2">
-                <div className="mb-1 text-[11px] font-medium text-muted-foreground">{k}</div>
-                <div className="grid grid-cols-1 gap-2">
+                <div className="mb-1 text-xs font-medium text-muted-foreground">{k}</div>
+                <DSGrid cols={1} gap={2}>
                   {groups[k]!.map((p) => {
                     const resolvedPreview = p.preview === "/window.svg" ? getPalettePreview(p.previewType) : p.preview;
                     return (
                       <button
                         key={p.id}
                         type="button"
-                        className="rounded border p-1 text-start hover:bg-muted"
+                        className="rounded border p-1 text-start hover:bg-muted min-h-10 min-w-10"
                         title={p.label}
-                        onClick={() => onInsert(cloneWithIds(p.build() as any))}
+                        onClick={() => onInsert(cloneWithIds(p.build()))}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={resolvedPreview} alt="" className="aspect-video w-full rounded border bg-muted" aria-hidden />
+                        <div className="relative w-full aspect-video">
+                          <Image src={resolvedPreview} alt="" fill className="rounded border bg-muted object-cover" aria-hidden />
+                        </div>
                         <div className="mt-1 truncate text-xs" title={p.label}>{p.label}</div>
-                        {p.description && <div className="truncate text-[11px] text-muted-foreground" title={p.description}>{p.description}</div>}
+                        {p.description && <div className="truncate text-xs text-muted-foreground" title={p.description}>{p.description}</div>}
                       </button>
                     );
                   })}
-                </div>
+                </DSGrid>
               </div>
             ));
         })()}
       </div>
-      <div className="flex max-h-[calc(100vh-6rem)] flex-col gap-2 overflow-auto p-2">
-        {items.length === 0 && !loading && <div className="p-2 text-sm text-muted-foreground">No sections</div>}
+      <DSStack gap={2} className="max-h-[calc(100svh-6rem)] overflow-auto p-2">
+        {items.length === 0 && !loading && <div className="p-2 text-sm text-muted-foreground">{t("No sections")}</div>}
         {items.map((s) => (
           <div key={s.id} className="space-y-1 rounded border p-2">
             <div className="truncate text-sm font-medium">{s.label}</div>
-            <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{s.status}</div>
+            <div className="text-xs uppercase tracking-wide text-muted-foreground">{s.status}</div>
             {/* Thumbnail preview */}
             {s.thumbnail ? (
               <div className="relative mt-1 aspect-video overflow-hidden rounded border bg-muted">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.thumbnail} alt="" className="h-full w-full object-cover" aria-hidden />
+                <Image src={s.thumbnail} alt="" fill className="object-cover" aria-hidden data-aspect="16/9" />
               </div>
             ) : (
               <div className="mt-1 aspect-video rounded border bg-muted/40" />
             )}
             {/* Tags */}
             {Array.isArray(s.tags) && s.tags.length > 0 && (
-              <div className="mt-1 flex flex-wrap gap-1">
+              <DSInline className="mt-1" gap={1}>
                 {s.tags.map((t) => (
-                  <span key={t} className="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                  <span key={t} className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
                     {t}
                   </span>
                 ))}
-              </div>
+              </DSInline>
             )}
             <div className="flex items-center gap-2 pt-1">
               <Button
                 type="button"
                 variant="outline"
-                className="h-7 px-2 text-xs"
-                onClick={() => onInsert(cloneWithIds(s.template as any))}
+                className="min-h-10 min-w-10 px-2 text-xs"
+                onClick={() => onInsert(cloneWithIds(s.template))}
               >
-                Insert copy
+                {t("Insert copy")}
               </Button>
               {onInsertLinked && (
                 <Button
                   type="button"
                   variant="outline"
-                  className="h-7 px-2 text-xs"
-                  onClick={() => onInsertLinked({ globalId: s.id, label: s.label, component: s.template as any })}
+                  className="min-h-10 min-w-10 px-2 text-xs"
+                  onClick={() => onInsertLinked({ globalId: s.id, label: s.label, component: s.template })}
                 >
-                  Insert linked
+                  {t("Insert linked")}
                 </Button>
               )}
             </div>
@@ -216,7 +227,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
             <Button
               type="button"
               variant="outline"
-              className="h-7 px-2 text-xs w-full"
+              className="min-h-10 px-2 text-xs w-full"
               disabled={loading}
               onClick={() => {
                 if (loading) return;
@@ -224,11 +235,11 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                 load(false);
               }}
             >
-              {loading ? "Loading…" : hasMore ? "Load more" : "Loaded"}
+              {loading ? t("Loading…") : hasMore ? t("Load more") : t("Loaded")}
             </Button>
           </div>
         )}
-      </div>
+      </DSStack>
     </aside>
   );
 }

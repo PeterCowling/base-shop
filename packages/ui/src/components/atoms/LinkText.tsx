@@ -47,9 +47,9 @@ export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
       <Comp
         ref={ref}
         className={cn(
-          "inline-flex max-w-full items-center",
+          "inline-flex items-center", // i18n-exempt: class names
           textByColor[color],
-          tone === "soft" ? cn("rounded px-0.5", softHoverByColor[color]) : "hover:underline",
+          tone === "soft" ? cn("rounded px-0.5", softHoverByColor[color]) : "hover:underline", // i18n-exempt: class names
           className,
         )}
         {...props}

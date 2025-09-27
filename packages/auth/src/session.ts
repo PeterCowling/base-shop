@@ -109,7 +109,9 @@ export async function createCustomerSession(
 ): Promise<void> {
   const secret = coreEnv.SESSION_SECRET;
   if (!secret) {
-    throw new Error("SESSION_SECRET is not set in core environment configuration");
+    throw new Error(
+      "SESSION_SECRET is not set in core environment configuration", // i18n-exempt: internal configuration error message; not user-facing
+    );
   }
   const store = await cookies();
   const session: InternalSession = {

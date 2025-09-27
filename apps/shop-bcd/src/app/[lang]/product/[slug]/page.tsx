@@ -15,6 +15,7 @@ import { getReturnLogistics } from "@platform-core/returnLogistics";
 import { getSeo } from "../../../util/seo";
 import { JsonLdScript, productJsonLd } from "../../../../lib/jsonld";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 async function getProduct(
   slug: string,
@@ -73,7 +74,8 @@ export async function generateMetadata({
   const baseSeo = await getSeo(lang);
 
   if (!product) {
-    return { title: "Product not found" };
+    const t = await getTranslations(lang);
+    return { title: t("product.notFound") };
   }
 
   const truncate = (text: string, len = 160) =>
@@ -95,13 +97,13 @@ export async function generateMetadata({
       title: product.title,
       description,
       images: image ? [{ url: image }] : undefined,
-    } as any,
+    },
     twitter: {
       title: product.title,
       description,
       image,
       card: image ? "summary_large_image" : "summary",
-    } as any,
+    },
   });
   // Build hreflang alternates for this product path
   const languages = settings.languages ?? ["en"];
@@ -130,6 +132,7 @@ export default async function ProductDetailPage({
   params: { slug: string; lang: string };
 }) {
   const { isEnabled } = await draftMode();
+  const t = await getTranslations(resolveLocale(params.lang));
   const product = await getProduct(
     params.slug,
     params.lang as Locale,
@@ -176,10 +179,10 @@ export default async function ProductDetailPage({
       <PdpClient product={product} />
       <div className="p-6 space-y-1 text-sm text-gray-600">
         {cfg.requireTags && (
-          <p>Items must have all tags attached for return.</p>
+          <p>{t("returns.requireTags")}</p>
         )}
         {!cfg.allowWear && (
-          <p>Items showing signs of wear may be rejected.</p>
+          <p>{t("returns.noWear")}</p>
         )}
       </div>
     </>

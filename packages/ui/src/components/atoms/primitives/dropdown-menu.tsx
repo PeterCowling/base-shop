@@ -1,4 +1,5 @@
 // packages/ui/components/atoms/primitives/dropdown-menu.tsx
+/* eslint-disable ds/no-hardcoded-copy -- CHORE-0000: primitives contain only class tokens and no user-facing copy */
 "use client";
 
 import {
@@ -124,12 +125,15 @@ export const DropdownMenuCheckboxItem = React.forwardRef<
     checked={checked}
     {...props}
   >
-    <span className="absolute ms-2 flex h-3.5 w-3.5 items-center justify-center">
-      <DropdownMenuPrimitive.ItemIndicator>
-        <CheckIcon className="h-4 w-4" />
-      </DropdownMenuPrimitive.ItemIndicator>
-    </span>
-    {children}
+    {/* Relative wrapper ensures the absolute indicator has a positioned ancestor */}
+    <div className="relative"> {/* i18n-exempt: class names */}
+      <span className="absolute ms-2 flex h-3.5 w-3.5 items-center justify-center">
+        <DropdownMenuPrimitive.ItemIndicator>
+          <CheckIcon className="h-4 w-4" />
+        </DropdownMenuPrimitive.ItemIndicator>
+      </span>
+      {children}
+    </div>
   </DropdownMenuPrimitive.CheckboxItem>
 ));
 DropdownMenuCheckboxItem.displayName =
@@ -147,12 +151,15 @@ export const DropdownMenuRadioItem = React.forwardRef<
     )}
     {...props}
   >
-    <span className="absolute ms-2 flex h-3.5 w-3.5 items-center justify-center">
-      <DropdownMenuPrimitive.ItemIndicator>
-        <DotFilledIcon className="h-4 w-4 fill-current" />
-      </DropdownMenuPrimitive.ItemIndicator>
-    </span>
-    {children}
+    {/* Relative wrapper ensures the absolute indicator has a positioned ancestor */}
+    <div className="relative"> {/* i18n-exempt: class names */}
+      <span className="absolute ms-2 flex h-3.5 w-3.5 items-center justify-center">
+        <DropdownMenuPrimitive.ItemIndicator>
+          <DotFilledIcon className="h-4 w-4 fill-current" />
+        </DropdownMenuPrimitive.ItemIndicator>
+      </span>
+      {children}
+    </div>
   </DropdownMenuPrimitive.RadioItem>
 ));
 DropdownMenuRadioItem.displayName =

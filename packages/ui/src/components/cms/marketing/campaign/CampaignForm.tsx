@@ -20,6 +20,7 @@ import {
   type AsyncSubmissionHandler,
   type SubmissionStatus,
 } from "../shared";
+import { useTranslations } from "@acme/i18n";
 
 export interface CampaignFormProps {
   defaultValues?: Partial<CampaignFormValues>;
@@ -46,13 +47,14 @@ export function CampaignForm({
   onSubmit,
   onStatusChange,
   onPreviewChange,
-  submitLabel = "Save campaign",
+  submitLabel,
   secondaryAction,
   busy,
   status: statusProp,
   messages,
   className,
 }: CampaignFormProps) {
+  const t = useTranslations();
   const {
     values,
     errors,
@@ -74,6 +76,7 @@ export function CampaignForm({
   });
 
   const visibleSections = new Set(sections);
+  const resolvedSubmitLabel = submitLabel ?? t("Save campaign");
 
   return (
     <form
@@ -119,13 +122,13 @@ export function CampaignForm({
         <div className="ms-auto flex items-center gap-2">
           <span className="text-muted-foreground text-xs">
             {status === "submitting"
-              ? "Saving campaign…"
+              ? t("Saving campaign…")
               : status === "success"
-              ? "Ready to launch"
+              ? t("Ready to launch")
               : undefined}
           </span>
           <Button type="submit" disabled={busy || status === "submitting"}>
-            {submitLabel}
+            {resolvedSubmitLabel}
           </Button>
         </div>
       </div>

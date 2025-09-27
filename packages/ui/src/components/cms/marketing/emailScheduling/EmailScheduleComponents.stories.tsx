@@ -21,24 +21,27 @@ type Story = StoryObj<typeof EmailScheduleForm>;
 
 export const FormWithPreview: Story = {
   render: () => {
-    const [preview, setPreview] = useState<EmailSchedulePreviewData>(
-      getEmailSchedulePreview(defaultEmailScheduleValues)
-    );
-    return (
-      <div className="grid gap-6 lg:grid-cols-[1.1fr,0.9fr]">
-        <EmailScheduleForm
-          defaultValues={{
-            subject: "Launch day reminder",
-            sendDate: "2024-05-01",
-            segment: "VIP customers",
-            timezone: "Europe/Berlin",
-          }}
-          onSubmit={async () => undefined}
-          onPreviewChange={setPreview}
-        />
-        <EmailSchedulePreviewPanel data={preview} />
-      </div>
-    );
+    function Example() {
+      const [preview, setPreview] = useState<EmailSchedulePreviewData>(
+        getEmailSchedulePreview(defaultEmailScheduleValues)
+      );
+      return (
+        <div className="grid gap-6 lg:grid-cols-2">
+          <EmailScheduleForm
+            defaultValues={{
+              subject: "Launch day reminder",
+              sendDate: "2024-05-01",
+              segment: "VIP customers",
+              timezone: "Europe/Berlin",
+            }}
+            onSubmit={async () => undefined}
+            onPreviewChange={setPreview}
+          />
+          <EmailSchedulePreviewPanel data={preview} />
+        </div>
+      );
+    }
+    return <Example />;
   },
 };
 

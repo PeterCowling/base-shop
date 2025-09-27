@@ -21,7 +21,8 @@ interface SanityMutateResponse {
   results?: { id?: string }[];
 }
 
-const POST_FIELDS = '_id,title,body,published,publishedAt,"slug":slug.current,excerpt,mainImage,author,categories,products';
+const POST_FIELDS =
+  '_id,title,body,published,publishedAt,"slug":slug.current,excerpt,mainImage,author,categories,products'; // i18n-exempt -- query field list, not UI copy
 
 export async function listPosts(config: SanityConfig): Promise<SanityPost[]> {
   const posts = await query<SanityPost[]>(config, `*[_type=="post"]{${POST_FIELDS}}`);

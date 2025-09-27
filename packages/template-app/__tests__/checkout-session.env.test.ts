@@ -44,7 +44,6 @@ const getCartMock = getCart as jest.Mock;
 test("uses fallback shop ID when env default is missing", async () => {
   const original = coreEnv.NEXT_PUBLIC_DEFAULT_SHOP;
   // Remove default shop so route should fall back to "shop"
-  // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
   delete (coreEnv as any).NEXT_PUBLIC_DEFAULT_SHOP;
   readShopMock.mockClear();
   stripeCreate.mockResolvedValue({ id: "sess_env", payment_intent: { client_secret: "cs_env" } });

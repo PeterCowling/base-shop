@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, ds/no-raw-font -- defining disallowed fonts and loose typing */
+ 
 import type { Rule } from "eslint";
 
 const DISALLOWED_FONTS = [

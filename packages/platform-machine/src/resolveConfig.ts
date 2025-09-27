@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- Paths are derived from internal configuration */
+/* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
 import { coreEnv } from "@acme/config/env/core";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { readFile } from "fs/promises";
@@ -68,4 +68,3 @@ export async function resolveConfig(
 
   return config;
 }
-

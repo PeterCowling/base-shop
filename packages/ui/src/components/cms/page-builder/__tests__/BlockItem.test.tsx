@@ -1,7 +1,7 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import React from "react";
 
-const useBlockDnDMock = jest.fn(() => ({
+const mockBlockDnD = jest.fn(() => ({
   attributes: {},
   listeners: {},
   setNodeRef: jest.fn(),
@@ -14,31 +14,31 @@ const useBlockDnDMock = jest.fn(() => ({
 
 jest.mock("../useBlockDnD", () => ({
   __esModule: true,
-  default: () => useBlockDnDMock(),
+  default: () => mockBlockDnD(),
 }));
 
-const useCanvasResizeMock = jest.fn();
+const mockCanvasResize = jest.fn();
 jest.mock("../useCanvasResize", () => ({
   __esModule: true,
-  default: (args: any) => useCanvasResizeMock(args),
+  default: (args: any) => mockCanvasResize(args),
 }));
 
-const useCanvasDragMock = jest.fn();
+const mockCanvasDrag = jest.fn();
 jest.mock("../useCanvasDrag", () => ({
   __esModule: true,
-  default: (args: any) => useCanvasDragMock(args),
+  default: (args: any) => mockCanvasDrag(args),
 }));
 
-const useCanvasSpacingMock = jest.fn();
+const mockCanvasSpacing = jest.fn();
 jest.mock("../useCanvasSpacing", () => ({
   __esModule: true,
-  default: (args: any) => useCanvasSpacingMock(args),
+  default: (args: any) => mockCanvasSpacing(args),
 }));
 
-const useBlockDimensionsMock = jest.fn();
+const mockBlockDimensions = jest.fn();
 jest.mock("../useBlockDimensions", () => ({
   __esModule: true,
-  default: (args: any) => useBlockDimensionsMock(args),
+  default: (args: any) => mockBlockDimensions(args),
 }));
 
 jest.mock("../Block", () => ({
@@ -61,7 +61,7 @@ import BlockItem from "../BlockItem";
 describe("BlockItem", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    useBlockDimensionsMock.mockReturnValue({
+    mockBlockDimensions.mockReturnValue({
       widthKey: "width",
       heightKey: "height",
       widthVal: "100px",
@@ -71,7 +71,7 @@ describe("BlockItem", () => {
       marginVal: "0",
       paddingVal: "0",
     });
-    useCanvasResizeMock.mockReturnValue({
+    mockCanvasResize.mockReturnValue({
       startResize: jest.fn(),
       guides: { x: null, y: null },
       distances: { x: null, y: null },
@@ -82,7 +82,7 @@ describe("BlockItem", () => {
       top: 0,
       resizing: false,
     });
-    useCanvasDragMock.mockReturnValue({
+    mockCanvasDrag.mockReturnValue({
       startDrag: jest.fn(),
       guides: { x: null, y: null },
       distances: { x: null, y: null },
@@ -93,7 +93,7 @@ describe("BlockItem", () => {
       top: 0,
       moving: false,
     });
-    useCanvasSpacingMock.mockReturnValue({ startSpacing: jest.fn(), overlay: null });
+    mockCanvasSpacing.mockReturnValue({ startSpacing: jest.fn(), overlay: null });
   });
 
   const baseComponent = {
@@ -133,7 +133,7 @@ describe("BlockItem", () => {
 
   it("calls startDrag only when component position is absolute", () => {
     const startDrag = jest.fn();
-    useCanvasDragMock.mockReturnValueOnce({
+    mockCanvasDrag.mockReturnValueOnce({
       startDrag,
       guides: { x: null, y: null },
       distances: { x: null, y: null },
@@ -153,7 +153,7 @@ describe("BlockItem", () => {
     unmount();
 
     const startDrag2 = jest.fn();
-    useCanvasDragMock.mockReturnValueOnce({
+    mockCanvasDrag.mockReturnValueOnce({
       startDrag: startDrag2,
       guides: { x: null, y: null },
       distances: { x: null, y: null },
@@ -170,7 +170,7 @@ describe("BlockItem", () => {
   });
 
   it("renders overlay when resizing is true", () => {
-    useCanvasResizeMock.mockReturnValueOnce({
+    mockCanvasResize.mockReturnValueOnce({
       startResize: jest.fn(),
       guides: { x: null, y: null },
       distances: { x: null, y: null },
@@ -186,7 +186,7 @@ describe("BlockItem", () => {
   });
 
   it("renders overlay when moving is true", () => {
-    useCanvasDragMock.mockReturnValueOnce({
+    mockCanvasDrag.mockReturnValueOnce({
       startDrag: jest.fn(),
       guides: { x: null, y: null },
       distances: { x: null, y: null },

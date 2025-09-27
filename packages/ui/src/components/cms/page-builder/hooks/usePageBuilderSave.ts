@@ -5,6 +5,7 @@ import type { Page, PageComponent, HistoryState } from "@acme/types";
 import useAutoSave from "./useAutoSave";
 import { exportComponents } from "../state/exportComponents";
 import type { GlobalItem } from "../libraryStore";
+import useLocalStrings from "./useLocalStrings";
 
 interface Params {
   page: Page;
@@ -30,6 +31,7 @@ export default function usePageBuilderSave({
   clearHistory,
   shop,
 }: Params) {
+  const t = useLocalStrings();
   // Track the latest updatedAt returned by the server to avoid optimistic
   // concurrency conflicts on subsequent auto-saves.
   const [updatedAt, setUpdatedAt] = useState(page.updatedAt);
@@ -84,7 +86,7 @@ export default function usePageBuilderSave({
   const saveWithMetaUpdate = useCallback(
     async (fd: FormData) => {
       const res: unknown = await onSave(fd).catch((err) => {
-        try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'error', title: 'Save failed', message: String(err?.message || err) } })); } catch {}
+        try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'error', title: t('notify_save_failed'), message: String((err as { message?: unknown })?.message || err) } })); } catch {}
         throw err;
       });
       try {
@@ -96,10 +98,10 @@ export default function usePageBuilderSave({
       } catch {
         /* ignore shape mismatches */
       }
-      try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'save', title: 'Changes saved' } })); } catch {}
+      try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'save', title: t('notify_changes_saved') } })); } catch {}
       return res;
     },
-    [onSave]
+    [onSave, t]
   );
 
   const handleSave = useCallback(() => saveWithMetaUpdate(formDataRef.current), [saveWithMetaUpdate]);
@@ -138,14 +140,14 @@ export default function usePageBuilderSave({
     out.append("components", JSON.stringify(nextComponents));
     return onPublish(out)
       .then(() => {
-        try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'publish', title: 'Page published' } })); } catch {}
+        try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'publish', title: t('notify_published') } })); } catch {}
         clearHistory();
       })
       .catch((err) => {
-        try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'error', title: 'Publish failed', message: String(err?.message || err) } })); } catch {}
+        try { window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'error', title: t('notify_publish_failed'), message: String((err as { message?: unknown })?.message || err) } })); } catch {}
         throw err;
       });
-  }, [onPublish, clearHistory, components, getGlobals]);
+  }, [onPublish, clearHistory, components, getGlobals, t]);
 
   const { autoSaveState } = useAutoSave({
     onSave: saveWithMetaUpdate,

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
+import { useTranslations } from "@acme/i18n";
 
 import {
   defaultDiscountValues,
@@ -34,17 +35,18 @@ interface DiscountToastState {
 }
 
 function validate(values: DiscountFormValues): DiscountErrors {
+  const t = (s: string) => s; // i18n-exempt: pure validation helper; hook adds i18n to surfaced messages
   const errors: DiscountErrors = {};
-  if (!values.code) errors.code = "Promo code is required.";
-  if (values.value <= 0) errors.value = "Discount must be greater than zero.";
+  if (!values.code) errors.code = t("Promo code is required.");
+  if (values.value <= 0) errors.value = t("Discount must be greater than zero.");
   if (values.minPurchase < 0)
-    errors.minPurchase = "Minimum purchase cannot be negative.";
-  if (!values.startDate) errors.startDate = "Start date required.";
+    errors.minPurchase = t("Minimum purchase cannot be negative.");
+  if (!values.startDate) errors.startDate = t("Start date required.");
   if (values.endDate && values.startDate && values.endDate < values.startDate) {
-    errors.endDate = "End date must be after start date.";
+    errors.endDate = t("End date must be after start date.");
   }
   if (!values.appliesTo)
-    errors.appliesTo = "Describe the scope of the discount.";
+    errors.appliesTo = t("Describe the scope of the discount.");
   return errors;
 }
 
@@ -65,6 +67,7 @@ export function useDiscountFormState({
   onPreviewChange,
   onStatusChange,
 }: UseDiscountFormStateOptions): DiscountFormState {
+  const t = useTranslations();
   const [values, setValues] = useState<DiscountFormValues>({
     ...defaultDiscountValues,
     ...defaultValues,
@@ -114,7 +117,7 @@ export function useDiscountFormState({
         onStatusChange?.("error");
         setToast({
           open: true,
-          message: "Resolve the highlighted issues before continuing.",
+          message: t("Resolve the highlighted issues before continuing.") as string,
         });
         return;
       }
@@ -122,7 +125,7 @@ export function useDiscountFormState({
       if (!onSubmit) {
         setStatus("success");
         onStatusChange?.("success");
-        setToast({ open: true, message: "Discount draft saved." });
+        setToast({ open: true, message: t("Discount draft saved.") as string });
         return;
       }
 
@@ -132,16 +135,16 @@ export function useDiscountFormState({
         await onSubmit(values);
         setStatus("success");
         onStatusChange?.("success");
-        setToast({ open: true, message: "Discount saved." });
+        setToast({ open: true, message: t("Discount saved.") as string });
       } catch (error) {
         setStatus("error");
         onStatusChange?.("error");
         const fallback =
-          error instanceof Error ? error.message : "Unable to save discount.";
+          error instanceof Error ? error.message : (t("Unable to save discount.") as string);
         setToast({ open: true, message: fallback });
       }
     },
-    [onStatusChange, onSubmit, values]
+    [onStatusChange, onSubmit, t, values]
   );
 
   return {

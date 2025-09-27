@@ -2,7 +2,8 @@
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import DOMPurify from "dompurify";
-import { memo, type ComponentType } from "react";
+import { memo, type ComponentType, type CSSProperties } from "react";
+import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import { blockRegistry } from "../blocks";
 import { cssVars } from "../../../utils/style/cssVars";
 import { ensureScrollStyles } from "./scrollEffects";
@@ -42,6 +43,57 @@ ensureScrollStyles();
 initTimelines();
 initLottie();
 
+type BuilderOnlyProps = {
+  clickAction?: "none" | "navigate" | "open-modal" | "scroll-to";
+  href?: string;
+  animation?:
+    | "none"
+    | "fade"
+    | "slide"
+    | "slide-up"
+    | "slide-down"
+    | "slide-left"
+    | "slide-right"
+    | "zoom"
+    | "rotate";
+  animationDuration?: number;
+  animationDelay?: number;
+  animationEasing?: string;
+  // Scroll effects
+  reveal?:
+    | "fade"
+    | "slide-up"
+    | "slide-down"
+    | "slide-left"
+    | "slide-right"
+    | "zoom"
+    | "rotate";
+  parallax?: number;
+  sticky?: "top" | "bottom";
+  stickyOffset?: string | number;
+  // Hover
+  hoverScale?: number;
+  hoverOpacity?: number;
+  // Children animation
+  staggerChildren?: number;
+  // Timeline (runtime only; shape is not fully typed here)
+  timeline?: unknown;
+  // Lottie props
+  lottieUrl?: string;
+  lottieAutoplay?: boolean;
+  lottieLoop?: boolean;
+  lottieSpeed?: number;
+  lottieTrigger?: string;
+  // Grid overrides
+  gridArea?: string;
+  gridColumn?: string;
+  gridRow?: string;
+  // JSON string of style overrides
+  styles?: string;
+  // Modal content for clickAction 'open-modal'
+  modalHtml?: string;
+};
+
 function Block({ component, locale }: { component: PageComponent; locale: Locale }) {
   if (component.type === "Text") {
     const { text } =
@@ -67,23 +119,7 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
     animationDelay,
     animationEasing,
     ...props
-  } = component as PageComponent & {
-    clickAction?: "none" | "navigate";
-    href?: string;
-    animation?:
-      | "none"
-      | "fade"
-      | "slide"
-      | "slide-up"
-      | "slide-down"
-      | "slide-left"
-      | "slide-right"
-      | "zoom"
-      | "rotate";
-    animationDuration?: number;
-    animationDelay?: number;
-    animationEasing?: string;
-  };
+  } = component as PageComponent & BuilderOnlyProps;
   void _id;
   void _type;
 
@@ -137,8 +173,9 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
   // Inline style vars from overrides for builder preview
   let styleVars: Record<string, string> = {};
   try {
-    const raw = (component as any).styles as string | undefined;
-    const overrides = raw ? (JSON.parse(String(raw)) as any) : undefined;
+    const raw = (component as PageComponent & BuilderOnlyProps).styles;
+    const parsed = raw ? (JSON.parse(String(raw)) as unknown) : undefined;
+    const overrides = parsed && typeof parsed === "object" ? (parsed as StyleOverrides) : undefined;
     styleVars = cssVars(overrides);
   } catch {
     // ignore invalid style JSON in builder
@@ -147,7 +184,7 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
   let rendered = <Comp {...compProps} locale={locale} />;
   if (clickAction === "navigate" && href && component.type !== "Button") {
     rendered = (
-      <a href={href} onClick={(e) => e.preventDefault()} className="cursor-pointer">
+      <a href={href} onClick={(e) => e.preventDefault()} className="cursor-pointer inline-block min-h-10 min-w-10">
         {rendered}
       </a>
     );
@@ -172,39 +209,32 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
       : undefined;
 
   // Scroll effects support (optional props on component)
-  const reveal = (component as any).reveal as
-    | "fade"
-    | "slide-up"
-    | "slide-down"
-    | "slide-left"
-    | "slide-right"
-    | "zoom"
-    | "rotate"
-    | undefined;
-  const parallax = (component as any).parallax as number | undefined;
-  const sticky = (component as any).sticky as "top" | "bottom" | undefined;
-  const stickyOffset = (component as any).stickyOffset as string | number | undefined;
-
-  const hoverScale = (component as any).hoverScale as number | undefined;
-  const hoverOpacity = (component as any).hoverOpacity as number | undefined;
-  const staggerChildren = (component as any).staggerChildren as number | undefined;
-  const timeline = (component as any).timeline as any | undefined;
-  const lottieUrl = (component as any).lottieUrl as string | undefined;
-  const lottieAutoplay = (component as any).lottieAutoplay as boolean | undefined;
-  const lottieLoop = (component as any).lottieLoop as boolean | undefined;
-  const lottieSpeed = (component as any).lottieSpeed as number | undefined;
-  const lottieTrigger = (component as any).lottieTrigger as string | undefined;
-  const gridArea = (component as any).gridArea as string | undefined;
-  const gridColumn = (component as any).gridColumn as string | undefined;
-  const gridRow = (component as any).gridRow as string | undefined;
+  const {
+    reveal,
+    parallax,
+    sticky,
+    stickyOffset,
+    hoverScale,
+    hoverOpacity,
+    staggerChildren,
+    timeline,
+    lottieUrl,
+    lottieAutoplay,
+    lottieLoop,
+    lottieSpeed,
+    lottieTrigger,
+    gridArea,
+    gridColumn,
+    gridRow,
+  } = component as PageComponent & BuilderOnlyProps;
   const needsHover = typeof hoverScale === "number" || typeof hoverOpacity === "number";
   const needsWrapper =
     !!animationClass || !!reveal || typeof parallax === "number" || !!sticky || needsHover || Object.keys(styleVars).length > 0 || typeof staggerChildren === 'number';
 
   if (!needsWrapper) return rendered;
 
-  const wrapStyleVars: Record<string, string> = { ...(styleVars as any) };
-  const staticTransform = (wrapStyleVars as any)["--pb-static-transform"] as string | undefined;
+  const wrapStyleVars: Record<string, string> = { ...styleVars };
+  const staticTransform = (wrapStyleVars as Record<string, string>)["--pb-static-transform"] as string | undefined;
   if (typeof animationDuration === "number") styleVars["--pb-anim-duration"] = `${animationDuration}ms`;
   if (typeof animationDelay === "number") styleVars["--pb-anim-delay"] = `${animationDelay}ms`;
   if (animationEasing) styleVars["--pb-anim-ease"] = `${animationEasing}`;
@@ -214,9 +244,9 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
   }
   if (typeof hoverScale === 'number') wrapStyleVars["--pb-hover-scale"] = String(hoverScale);
   if (typeof hoverOpacity === 'number') wrapStyleVars["--pb-hover-opacity"] = String(hoverOpacity);
-  if (gridArea) (wrapStyleVars as any).gridArea = gridArea;
-  if (gridColumn) (wrapStyleVars as any).gridColumn = gridColumn;
-  if (gridRow) (wrapStyleVars as any).gridRow = gridRow;
+  if (gridArea) (wrapStyleVars as unknown as Record<string, string>).gridArea = gridArea;
+  if (gridColumn) (wrapStyleVars as unknown as Record<string, string>).gridColumn = gridColumn;
+  if (gridRow) (wrapStyleVars as unknown as Record<string, string>).gridRow = gridRow;
 
   const className = [animationClass ? "pb-animate" : undefined, animationClass]
     .filter(Boolean)
@@ -233,24 +263,26 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
       data-pb-sticky={sticky || undefined}
       data-pb-sticky-offset={stickyOffset !== undefined ? String(stickyOffset) : undefined}
       data-pb-hover={needsHover ? '1' : undefined}
-      data-pb-click={component.clickAction === 'open-modal' ? 'open-modal' : (component.clickAction === 'scroll-to' ? 'scroll-to' : undefined)}
-      data-pb-href={(component as any).href || undefined}
-      data-pb-modal={(component as any).modalHtml || undefined}
+      data-pb-click={clickAction === 'open-modal' || clickAction === 'scroll-to' ? clickAction : undefined}
+      data-pb-href={href || undefined}
+      data-pb-modal={(component as PageComponent & BuilderOnlyProps).modalHtml || undefined}
       data-pb-stagger={typeof staggerChildren === 'number' ? String(staggerChildren) : undefined}
-      data-pb-timeline={timeline && timeline.steps && timeline.steps.length ? JSON.stringify(timeline) : undefined}
+      data-pb-timeline={(typeof timeline === 'object' && timeline !== null && 'steps' in (timeline as Record<string, unknown>) && Array.isArray((timeline as Record<string, unknown>).steps) && ((timeline as Record<string, unknown>).steps as unknown[]).length)
+        ? JSON.stringify(timeline)
+        : undefined}
       data-pb-lottie-url={lottieUrl || undefined}
       data-pb-lottie-autoplay={lottieAutoplay ? '1' : undefined}
       data-pb-lottie-loop={lottieLoop ? '1' : undefined}
       data-pb-lottie-speed={typeof lottieSpeed === 'number' ? String(lottieSpeed) : undefined}
       data-pb-lottie-trigger={lottieTrigger || undefined}
-      style={wrapStyleVars as any}
+      style={wrapStyleVars as unknown as CSSProperties}
     >
       {needsHover ? (
         <div className="pb-hover-target">
           {rendered}
         </div>
       ) : staticTransform ? (
-        <div style={{ transform: staticTransform } as any}>{rendered}</div>
+        <div style={{ transform: staticTransform } as CSSProperties}>{rendered}</div>
       ) : (
         rendered
       )}

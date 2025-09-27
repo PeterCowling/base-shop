@@ -3,6 +3,8 @@
 
 import React from "react";
 import useThemePalette from "@ui/lib/useThemePalette";
+import { useTranslations } from "@acme/i18n";
+import { Grid as DSGrid } from "../atoms/primitives/Grid";
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 
@@ -18,6 +20,7 @@ const FAMILY_LABEL: Record<string, string> = {
 
 export default function ThemeSpectrum(): React.JSX.Element {
   const { defaultPalette, matrix } = useThemePalette();
+  const t = useTranslations();
 
   // Build a lookup of tokens per family/step so we can annotate usage
   const usage: Record<string, Record<number, string[]>> = {};
@@ -38,9 +41,9 @@ export default function ThemeSpectrum(): React.JSX.Element {
   return (
     <div className="space-y-3">
       <div className="space-y-1">
-        <h3 className="text-lg font-semibold">Create a New Theme</h3>
+        <h3 className="text-lg font-semibold">{t("Create a New Theme")}</h3>
         <p className="text-sm text-muted-foreground">
-          Full ramp per family with token usage highlights.
+          {t("Full ramp per family with token usage highlights.")}
         </p>
       </div>
       <div className="space-y-4">
@@ -49,7 +52,7 @@ export default function ThemeSpectrum(): React.JSX.Element {
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">{FAMILY_LABEL[String(family)] ?? String(family)}</span>
             </div>
-            <div className="grid grid-cols-12 gap-1">
+            <DSGrid cols={12} gap={1}>
               {(Array.from({ length: 12 }) as unknown as Step[]).map((_, idx) => {
                 const step = (idx + 1) as Step;
                 const hsl = defaultPalette[family][step];
@@ -72,7 +75,7 @@ export default function ThemeSpectrum(): React.JSX.Element {
                   </div>
                 );
               })}
-            </div>
+            </DSGrid>
           </div>
         ))}
       </div>

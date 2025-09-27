@@ -14,6 +14,8 @@ import { diffHistory } from "@platform-core/repositories/settings.server";
 import { formatTimestamp } from "@acme/date-utils";
 import { CodeBlock } from "@ui/components/molecules";
 import { useEffect, useState } from "react";
+import { useTranslations } from "@i18n/Translations";
+import en from "@i18n/en.json";
 
 interface VersionTimelineProps {
   /** Shop identifier */
@@ -30,6 +32,12 @@ export default function VersionTimeline({
   shop,
   trigger,
 }: VersionTimelineProps) {
+  const tFromContext = useTranslations();
+  // Ensure readable strings in tests even without a provider
+  const t = (key: string) => {
+    const out = tFromContext(key) as unknown as string;
+    return out === key ? (en as Record<string, string>)[key] ?? key : out;
+  };
   const [open, setOpen] = useState(false);
   const [history, setHistory] = useState<SettingsDiffEntry[]>([]);
 
@@ -56,38 +64,47 @@ export default function VersionTimeline({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="bg-surface-3 fixed top-0 right-0 h-full w-96 max-w-full translate-x-full overflow-y-auto border-l p-6 shadow-elevation-3 transition-transform data-[state=open]:translate-x-0">
-        <DialogTitle className="mb-4">Revision History</DialogTitle>
+      {/* Positioned ancestor for fixed drawer (lint: ds/absolute-parent-guard) */}
+      <div className="relative">
+        <DialogContent
+          className={
+            `bg-surface-3 fixed top-0 end-0 h-full w-96 ` +
+            `${open ? "translate-x-0" : "translate-x-full"} ` +
+            `overflow-y-auto border-s p-6 shadow-elevation-3 transition-transform`
+          }
+        >
+          <DialogTitle className="mb-4">{String(t("cms.seo.versionHistory.title"))}</DialogTitle>
 
-        <div className="space-y-4 text-sm">
-          {ordered.length === 0 ? (
-            <p className="text-muted-foreground">No history available.</p>
-          ) : (
-            <ul className="space-y-4">
-              {ordered.map((entry) => (
-                <li key={entry.timestamp} className="space-y-2">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="min-w-0 font-mono text-xs text-muted-foreground">
-                      {formatTimestamp(entry.timestamp)}
-                    </span>
-                    <Button
-                      variant="outline"
-                      className="shrink-0"
-                      onClick={() => handleRevert(entry.timestamp)}
-                    >
-                      Revert
-                    </Button>
-                  </div>
-                  <CodeBlock
-                    code={JSON.stringify(entry.diff, null, 2)}
-                    preClassName="text-xs"
-                  />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      </DialogContent>
+          <div className="space-y-4 text-sm">
+            {ordered.length === 0 ? (
+              <p className="text-muted-foreground">{String(t("cms.seo.versionHistory.empty"))}</p>
+            ) : (
+              <ul className="space-y-4">
+                {ordered.map((entry) => (
+                  <li key={entry.timestamp} className="space-y-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="min-w-0 font-mono text-xs text-muted-foreground">
+                        {formatTimestamp(entry.timestamp)}
+                      </span>
+                      <Button
+                        variant="outline"
+                        className="shrink-0"
+                        onClick={() => handleRevert(entry.timestamp)}
+                      >
+                        {String(t("actions.revert"))}
+                      </Button>
+                    </div>
+                    <CodeBlock
+                      code={JSON.stringify(entry.diff, null, 2)}
+                      preClassName="text-xs"
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </DialogContent>
+      </div>
     </Dialog>
   );
 }

@@ -28,9 +28,8 @@ export function usePositions(canvasRef: React.RefObject<HTMLDivElement | null>, 
       window.removeEventListener("resize", handle);
       clearInterval(t);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PB-221: watcher intentionally depends on recalcPositions + external deps array
   }, [recalcPositions, ...deps]);
 
   return { positions, recalcPositions } as const;
 }
-

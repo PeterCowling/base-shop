@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { MediaItem } from "@acme/types";
 import type { MediaDetailsFormValues } from "../../details/MediaDetailsPanel";
 
@@ -22,6 +23,7 @@ interface DetailsDeps {
 export function useDetailsHandlers({ shop, onMetadataUpdate, state, actions }: DetailsDeps) {
   const { files, selectedUrl } = state;
   const { setMetadataPending, setFiles, setSelectedUrl, setToast } = actions;
+  const t = useTranslations();
 
   const selectedItem = useMemo(() => {
     if (!selectedUrl) return null;
@@ -37,6 +39,7 @@ export function useDetailsHandlers({ shop, onMetadataUpdate, state, actions }: D
       try {
         const updated: MediaItem = await onMetadataUpdate(shop, currentUrl, fields);
         if (!hasUrl(updated)) {
+          // i18n-exempt — developer diagnostic, not user-facing
           throw new Error("Updated media item is missing a URL");
         }
 
@@ -44,6 +47,7 @@ export function useDetailsHandlers({ shop, onMetadataUpdate, state, actions }: D
         const hasTarget = files.some((file) => file.url === currentUrl);
 
         if (!hasTarget) {
+          // i18n-exempt — developer diagnostic, not user-facing
           throw new Error("Media item could not be found in the current list");
         }
 
@@ -56,19 +60,20 @@ export function useDetailsHandlers({ shop, onMetadataUpdate, state, actions }: D
         );
 
         setSelectedUrl(updatedWithUrl.url);
-        setToast({ open: true, message: "Media details updated.", variant: "success" });
+        setToast({ open: true, message: t("Media details updated."), variant: "success" });
       } catch (error) {
+        // i18n-exempt — developer diagnostic, not user-facing
         console.error("Failed to update media metadata", error);
         setToast({
           open: true,
-          message: "Failed to update media metadata.",
+          message: t("Failed to update media metadata."),
           variant: "error",
         });
       } finally {
         setMetadataPending(false);
       }
     },
-    [files, onMetadataUpdate, selectedItem, setFiles, setMetadataPending, setSelectedUrl, setToast, shop]
+    [files, onMetadataUpdate, selectedItem, setFiles, setMetadataPending, setSelectedUrl, setToast, shop, t]
   );
 
   const onCloseDetails = useCallback(() => {
@@ -81,4 +86,3 @@ export function useDetailsHandlers({ shop, onMetadataUpdate, state, actions }: D
 
   return { selectedItem, onMetadataSubmit, onCloseDetails, onSelect } as const;
 }
-

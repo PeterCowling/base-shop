@@ -4,6 +4,8 @@ import { LayoutProvider, ThemeProvider, useLayout } from "@acme/platform-core";
 import * as React from "react";
 
 import { cn } from "../../utils/style";
+import { Stack } from "../atoms/primitives/Stack";
+import { Sidebar } from "../atoms/primitives/Sidebar";
 
 export interface AppShellProps {
   header?: React.ReactNode;
@@ -25,19 +27,20 @@ function ShellLayout({
   const showSideNav = Boolean(isMobileNavOpen && sideNav);
 
   return (
-    <div
-      data-token="--color-bg"
-      className={cn("flex min-h-screen flex-col", className)}
+    <Stack
+      data-token="--color-bg" // i18n-exempt: token identifier, not user copy
+      className={cn("min-h-screen", className)} // i18n-exempt: className utilities
+      gap={0}
     >
       {header}
-      {(showSideNav || hasChildren) ? (
-        <div className="flex flex-1">
-          {showSideNav && sideNav}
-          {hasChildren && <main className="flex-1">{children}</main>}
-        </div>
+      {showSideNav || hasChildren ? (
+        <Sidebar className="flex-1">
+          {showSideNav ? sideNav : null}
+          {hasChildren ? <main className="flex-1">{children}</main> : null}
+        </Sidebar>
       ) : null}
       {footer}
-    </div>
+    </Stack>
   );
 }
 

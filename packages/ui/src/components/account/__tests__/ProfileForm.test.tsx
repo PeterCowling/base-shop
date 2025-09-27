@@ -23,7 +23,7 @@ describe("ProfileForm", () => {
   });
 
   it("displays conflict error on 409 response", async () => {
-    // @ts-expect-error
+    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 409,
@@ -38,7 +38,7 @@ describe("ProfileForm", () => {
   });
 
   it("displays field errors on 400 response", async () => {
-    // @ts-expect-error
+    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 400,
@@ -54,7 +54,7 @@ describe("ProfileForm", () => {
   });
 
   it("displays generic error on 500 response", async () => {
-    // @ts-expect-error
+    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
       status: 500,
@@ -69,7 +69,7 @@ describe("ProfileForm", () => {
   });
 
   it("shows success message on 200 response", async () => {
-    // @ts-expect-error
+    // @ts-expect-error — mocking global.fetch in tests
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
       status: 200,
@@ -85,4 +85,3 @@ describe("ProfileForm", () => {
     ).toBeInTheDocument();
   });
 });
-

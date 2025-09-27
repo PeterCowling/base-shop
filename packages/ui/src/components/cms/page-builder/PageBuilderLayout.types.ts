@@ -5,6 +5,7 @@ import type { Step, CallBackProps } from "./PageBuilderTour";
 import type { ComponentType } from "./defaults";
 import type { DragMeta } from "./DragOverlayPreview";
 
+// eslint-disable-next-line ds/no-hardcoded-copy -- DS-1234: type-only import specifier; not user-facing copy
 type DndContextComponent = typeof import("@dnd-kit/core").DndContext;
 type PageToolbarComponent = typeof import("./PageToolbar").default;
 type GridSettingsComponent = typeof import("./GridSettings").default;
@@ -57,6 +58,7 @@ export interface PageBuilderLayoutProps {
   setEditingSizePx?: (px: number | null) => void;
   crossBreakpointNotices?: boolean;
   onCrossBreakpointNoticesChange?: (v: boolean) => void;
+  // i18n-exempt: type-only string literal union
   mode?: "page" | "section";
   // Presets authoring (save selected Section as preset)
   canSavePreset?: boolean;

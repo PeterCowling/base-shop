@@ -30,18 +30,15 @@ const SingleSelectionAlignmentControls = ({
   centerInParentX,
   centerInParentY,
 }: SingleSelectionAlignmentControlsProps) => {
-  if (selectedIds.length !== 1) return null;
   const selectedId = selectedIds[0];
 
   const withElement = useCallback(
     (handler: (element: HTMLElement, parent: HTMLElement) => void) => () => {
       if (!selectedId) return;
-
       try {
         const el = document.querySelector(`[data-component-id="${selectedId}"]`) as HTMLElement | null;
         const parent = (el?.offsetParent as HTMLElement | null) ?? el?.parentElement ?? null;
         if (!el || !parent) return;
-
         handler(el, parent);
       } catch {
         // no-op
@@ -50,7 +47,7 @@ const SingleSelectionAlignmentControls = ({
     [selectedId],
   );
 
-  if (!selectedId) return null;
+  if (selectedIds.length !== 1 || !selectedId) return null;
 
   return (
     <div className="flex flex-wrap items-center gap-1">
@@ -63,7 +60,7 @@ const SingleSelectionAlignmentControls = ({
           const rect = el.getBoundingClientRect();
           const pRect = parent.getBoundingClientRect();
           const left = Math.round(rect.left - pRect.left);
-          handleChange({ dockX: "left" } as any);
+          handleChange({ dockX: "left" } as unknown as UpdateComponent extends (p: infer P) => void ? P : never);
           handleResize({ [dims.leftKey]: `${left}px`, right: undefined });
         })}
       >
@@ -78,7 +75,7 @@ const SingleSelectionAlignmentControls = ({
           const rect = el.getBoundingClientRect();
           const pRect = parent.getBoundingClientRect();
           const right = Math.round(pRect.right - rect.right);
-          handleChange({ dockX: "right" } as any);
+          handleChange({ dockX: "right" } as unknown as UpdateComponent extends (p: infer P) => void ? P : never);
           handleResize({ right: `${right}px`, [dims.leftKey]: "" });
         })}
       >
@@ -93,7 +90,7 @@ const SingleSelectionAlignmentControls = ({
           const rect = el.getBoundingClientRect();
           const pRect = parent.getBoundingClientRect();
           const top = Math.round(rect.top - pRect.top);
-          handleChange({ dockY: "top" } as any);
+          handleChange({ dockY: "top" } as unknown as UpdateComponent extends (p: infer P) => void ? P : never);
           handleResize({ [dims.topKey]: `${top}px`, bottom: "" });
         })}
       >
@@ -108,7 +105,7 @@ const SingleSelectionAlignmentControls = ({
           const rect = el.getBoundingClientRect();
           const pRect = parent.getBoundingClientRect();
           const bottom = Math.round(pRect.bottom - rect.bottom);
-          handleChange({ dockY: "bottom" } as any);
+          handleChange({ dockY: "bottom" } as unknown as UpdateComponent extends (p: infer P) => void ? P : never);
           handleResize({ bottom: `${bottom}px`, [dims.topKey]: "" });
         })}
       >
@@ -142,7 +139,7 @@ const SingleSelectionAlignmentControls = ({
           const pRect = parent.getBoundingClientRect();
           const left = Math.round(rect.left - pRect.left);
           const right = Math.round(pRect.right - rect.right);
-          handleChange({ dockX: "left" } as any);
+          handleChange({ dockX: "left" } as unknown as UpdateComponent extends (p: infer P) => void ? P : never);
           handleResize({ [dims.leftKey]: `${left}px`, right: `${right}px`, width: "" });
         })}
       >
@@ -158,7 +155,7 @@ const SingleSelectionAlignmentControls = ({
           const pRect = parent.getBoundingClientRect();
           const top = Math.round(rect.top - pRect.top);
           const bottom = Math.round(pRect.bottom - rect.bottom);
-          handleChange({ dockY: "top" } as any);
+          handleChange({ dockY: "top" } as unknown as UpdateComponent extends (p: infer P) => void ? P : never);
           handleResize({ [dims.topKey]: `${top}px`, bottom: `${bottom}px`, height: "" });
         })}
       >

@@ -11,7 +11,6 @@ jest.mock("@sendgrid/mail", () => ({
 
 describe("Campaign providers segmentation", () => {
   beforeEach(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (global as any).fetch = jest.fn(() =>
       Promise.resolve({ json: () => Promise.resolve({}) })
     );
@@ -113,4 +112,3 @@ describe("hasProviderErrorFields", () => {
     }
   });
 });
-

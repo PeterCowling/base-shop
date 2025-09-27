@@ -5,12 +5,14 @@ import { z } from "zod";
 import crypto from "crypto";
 import { getUserByEmail, setResetToken } from "@platform-core/users";
 import { sendEmail } from "@acme/email";
+import { useTranslations } from "@acme/i18n/useTranslations.server";
 
 export const runtime = "nodejs";
 
 const schema = z.object({ email: z.string().email() }).strict();
 
 export async function POST(req: Request) {
+  const t = await useTranslations("en");
   const parsed = await parseJsonBody(req, schema, "1mb");
   if ("response" in parsed) {
     return parsed.response;
@@ -25,8 +27,8 @@ export async function POST(req: Request) {
     await setResetToken(user.id, token, expires);
     await sendEmail(
       user.email,
-      "Reset your Base Shop password",
-      `Use this code to reset your password: ${token}`
+      t("email.passwordReset.subject"),
+      `${t("email.passwordReset.codePrefix")}${token}`
     );
     return NextResponse.json({ ok: true });
   } catch {

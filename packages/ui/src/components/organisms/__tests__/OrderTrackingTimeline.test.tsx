@@ -1,3 +1,4 @@
+/* i18n-exempt file -- tests assert literal labels and copy */
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { OrderTrackingTimeline } from "../OrderTrackingTimeline";

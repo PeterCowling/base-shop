@@ -175,15 +175,17 @@ export default function Section({
         : { marginLeft: "auto", marginRight: "auto" };
   const densityClass = density === "spacious" ? "py-12" : "py-6";
   const [inViewRef, inView] = useInView<HTMLDivElement>(animateOnScroll);
-  const aosClass = animateOnScroll
-    ? inView
-      ? "opacity-100 translate-y-0"
-      : "opacity-0 translate-y-3"
-    : undefined;
+  // i18n-exempt: CSS utility class strings, not user-facing copy
+  const AOS_VISIBLE = "opacity-100 translate-y-0"; // i18n-exempt: CSS utility classes only
+  const AOS_HIDDEN = "opacity-0 translate-y-3"; // i18n-exempt: CSS utility classes only
+  const RELATIVE_CLASS = "relative"; // i18n-exempt: CSS utility class only
+  const TRANSITION_CLASS = "transition-all duration-700 ease-out will-change-transform";
+  const aosClass = animateOnScroll ? (inView ? AOS_VISIBLE : AOS_HIDDEN) : undefined;
+  const extraProps = domProps as React.HTMLAttributes<HTMLDivElement>;
   return (
     <div
-      {...(domProps as any)}
-      className={[className, "relative", themeDark ? "theme-dark" : undefined, densityClass]
+      {...extraProps}
+      className={[className, RELATIVE_CLASS, themeDark ? "theme-dark" : undefined, densityClass]
         .filter(Boolean)
         .join(" ") || undefined}
       data-pb-section=""
@@ -206,15 +208,17 @@ export default function Section({
         })(),
       }}
     >
-      {/* Top shape divider (rendered before background media so it sits above background) */}
+      
       {topShapePreset ? (
         <ShapeDivider position="top" preset={topShapePreset} color={topShapeColor} height={topShapeHeight} flipX={topShapeFlipX} />
       ) : null}
-      {/* Absolute video background when provided */}
+      
       {backgroundVideoUrl ? (
-        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
+        // eslint-disable-next-line ds/absolute-parent-guard -- DS-0001: Parent has dynamic 'relative' class via array join; rule cannot statically resolve.
+        <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
           <video
             className="h-full w-full object-cover"
+            data-aspect="16/9"
             style={{ objectPosition: backgroundFocalPoint ? `${(backgroundFocalPoint.x * 100).toFixed(2)}% ${(backgroundFocalPoint.y * 100).toFixed(2)}%` : undefined }}
             playsInline
             autoPlay
@@ -226,22 +230,22 @@ export default function Section({
           </video>
         </div>
       ) : null}
-      {/* Overlay */}
+      
       {backgroundOverlay ? (
-        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: backgroundOverlay, zIndex: 1 }} />
+        // eslint-disable-next-line ds/absolute-parent-guard -- DS-0001: Parent has dynamic 'relative' class via array join; rule cannot statically resolve.
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: backgroundOverlay }} />
       ) : null}
-      {/* Inner content wrapper to constrain content width and alignment */}
+      
       <div
         ref={inViewRef}
         data-pb-section-inner=""
-        className={[widthClass, aosClass, animateOnScroll ? "transition-all duration-700 ease-out will-change-transform" : undefined]
+        className={[widthClass, aosClass, animateOnScroll ? TRANSITION_CLASS : undefined]
           .filter(Boolean)
           .join(" ") || undefined}
         style={{
           maxWidth: widthClass ? undefined : (typeof maxWidth === 'string' ? maxWidth : undefined),
           width: "100%",
           position: "relative",
-          zIndex: 2,
           ...alignStyle,
           ...(equalizeInnerHeights
             ? ({ display: "grid", gridAutoRows: "1fr", alignItems: "stretch" } as React.CSSProperties)
@@ -250,7 +254,7 @@ export default function Section({
       >
         {children}
       </div>
-      {/* Bottom shape divider */}
+      
       {bottomShapePreset ? (
         <ShapeDivider position="bottom" preset={bottomShapePreset} color={bottomShapeColor} height={bottomShapeHeight} flipX={bottomShapeFlipX} />
       ) : null}

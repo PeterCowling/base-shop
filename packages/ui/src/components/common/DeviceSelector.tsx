@@ -12,12 +12,11 @@ import {
   devicePresets,
   getLegacyPreset,
   type DevicePreset,
-  getAllDevicePresets,
   getCustomDevicePresets,
-  saveCustomDevicePresets,
 } from "../../utils/devicePresets";
 // (no additional shadcn imports needed)
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   deviceId: string;
@@ -36,12 +35,13 @@ export default function DeviceSelector({
   extraDevices = [],
   compact = false,
 }: Props): React.JSX.Element {
+  const t = useTranslations();
   const [custom, setCustom] = useState<DevicePreset[]>([]);
   useEffect(() => {
     setCustom(getCustomDevicePresets());
   }, []);
   const allPresets = useMemo<DevicePreset[]>(() => {
-    const base = [...getCustomDevicePresets(), ...devicePresets];
+    const base = [...custom, ...devicePresets];
     const map = new Map<string, DevicePreset>();
     [...base, ...extraDevices].forEach((p) => { if (!map.has(p.id)) map.set(p.id, p); });
     return Array.from(map.values());
@@ -52,28 +52,30 @@ export default function DeviceSelector({
   return (
     <div className="flex items-center gap-2">
       {showLegacyButtons &&
-        (["desktop", "tablet", "mobile"] as const).map((t) => {
-          const preset = getLegacyPreset(t);
+        (["desktop", "tablet", "mobile"] as const).map((type) => {
+          const preset = getLegacyPreset(type);
           const Icon =
-            t === "desktop" ? DesktopIcon : t === "tablet" ? LaptopIcon : MobileIcon;
+            type === "desktop" ? DesktopIcon : type === "tablet" ? LaptopIcon : MobileIcon;
+          // Extract non-user-facing class names to satisfy i18n lint
+          const buttonClass = compact ? "hidden sm:inline-flex" : undefined; // i18n-exempt: CSS classes only
           return (
             <Button
-              key={t}
+              key={type}
               variant={deviceId === preset.id ? "default" : "outline"}
               size="icon"
-              className={compact ? "hidden sm:inline-flex" : undefined}
+              className={buttonClass}
               onClick={() => onChange(preset.id)}
-              aria-label={t}
+              aria-label={t(`devices.${type}`) as string}
             >
               <Icon className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">
-                {t.charAt(0).toUpperCase() + t.slice(1)}
+                {t(`devices.${type}`)}
               </span>
             </Button>
           );
         })}
       <Select value={deviceId} onValueChange={onChange}>
-        <SelectTrigger aria-label="Device" className="w-28 sm:w-36">
+        <SelectTrigger aria-label={t("Device") as string} className="w-28 sm:w-36">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useMemo } from "react";
+import { useTranslations } from "@acme/i18n";
 
 import type { MediaItemWithUrl, UseMediaManagerStateOptions } from "./types";
 import type { MediaManagerState } from "./useMediaState";
@@ -27,6 +28,7 @@ interface DeleteDeps {
 }
 
 export function useDeleteHandlers({ shop, onDelete, state, actions }: DeleteDeps) {
+  const t = useTranslations();
   const { dialogDeleteUrl, deletePending } = state;
   const { setDeletePending, setDialogDeleteUrl, setFiles, setSelectedUrl, setToast } = actions;
 
@@ -42,16 +44,16 @@ export function useDeleteHandlers({ shop, onDelete, state, actions }: DeleteDeps
         await onDelete(shop, targetUrl);
         setFiles((prev) => prev.filter((file) => file.url !== targetUrl));
         setSelectedUrl((prev) => (prev === targetUrl ? null : prev));
-        setToast({ open: true, message: "Media deleted.", variant: "success" });
+        setToast({ open: true, message: String(t("Media deleted.")), variant: "success" });
         setDialogDeleteUrl((previous) => (previous === targetUrl ? null : previous));
       } catch (error) {
-        console.error("Failed to delete media item", error);
-        setToast({ open: true, message: "Failed to delete media item.", variant: "error" });
+        console.error("Failed to delete media item", error); /* i18n-exempt: developer log */
+        setToast({ open: true, message: String(t("Failed to delete media item.")), variant: "error" });
       } finally {
         setDeletePending(false);
       }
     },
-    [onDelete, setDeletePending, setDialogDeleteUrl, setFiles, setSelectedUrl, setToast, shop]
+    [onDelete, setDeletePending, setDialogDeleteUrl, setFiles, setSelectedUrl, setToast, shop, t]
   );
 
   const onRequestDelete = useCallback(
@@ -61,7 +63,7 @@ export function useDeleteHandlers({ shop, onDelete, state, actions }: DeleteDeps
         typeof window !== "undefined" &&
         typeof window.confirm === "function"
       ) {
-        if (window.confirm("Delete media?")) {
+        if (window.confirm(String(t("Delete media?")))) {
           void performDelete(url);
         }
         return;
@@ -69,7 +71,7 @@ export function useDeleteHandlers({ shop, onDelete, state, actions }: DeleteDeps
 
       setDialogDeleteUrl(url);
     },
-    [performDelete, setDialogDeleteUrl]
+    [performDelete, setDialogDeleteUrl, t]
   );
 
   const onConfirmDelete = useCallback(async () => {
@@ -104,4 +106,3 @@ export function useDeleteHandlers({ shop, onDelete, state, actions }: DeleteDeps
     isDeleting,
   } as const;
 }
-

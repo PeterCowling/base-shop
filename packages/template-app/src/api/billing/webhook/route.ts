@@ -13,7 +13,7 @@ export const runtime = "edge";
 export async function POST(req: NextRequest) {
   const shop = await readShop(SHOP_ID);
   if (shop.billingProvider !== "stripe") {
-    return NextResponse.json({ error: "Billing not enabled" }, { status: 400 });
+    return NextResponse.json({ error: "Billing not enabled" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
   }
 
   const body = await req.text();
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
       paymentsEnv.STRIPE_WEBHOOK_SECRET,
     );
   } catch {
-    return new NextResponse("Invalid signature", { status: 400 });
+    return new NextResponse("Invalid signature", { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
   }
 
   switch (event.type) {

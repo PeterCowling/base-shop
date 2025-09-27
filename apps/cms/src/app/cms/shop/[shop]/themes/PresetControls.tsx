@@ -2,6 +2,8 @@
 "use client";
 import { Button, Input } from "@/components/atoms/shadcn";
 import type { ChangeEvent } from "react";
+import { Inline } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   presetName: string;
@@ -18,21 +20,22 @@ export default function PresetControls({
   handleDeletePreset,
   isPresetTheme,
 }: Props) {
+  const t = useTranslations();
   return (
-    <div className="flex items-center gap-2">
+    <Inline alignY="center" gap={2}>
       <Input
-        placeholder="Preset name"
+        placeholder={t("cms.themes.presetNamePlaceholder") as string}
         value={presetName}
         onChange={(e: ChangeEvent<HTMLInputElement>) => setPresetName(e.target.value)}
       />
       <Button type="button" onClick={handleSavePreset} disabled={!presetName.trim()}>
-        Save Preset
+        {t("cms.themes.savePreset")}
       </Button>
       {isPresetTheme && (
         <Button type="button" onClick={handleDeletePreset}>
-          Delete Preset
+          {t("cms.themes.deletePreset")}
         </Button>
       )}
-    </div>
+    </Inline>
   );
 }

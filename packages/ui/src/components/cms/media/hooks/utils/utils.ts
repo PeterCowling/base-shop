@@ -9,6 +9,7 @@ export function hasUrl(item: MediaItem): item is MediaItemWithUrl {
 export function ensureHasUrl(items: MediaItem[]): MediaItemWithUrl[] {
   return items.reduce<MediaItemWithUrl[]>((accumulator, item) => {
     if (!hasUrl(item)) {
+      // i18n-exempt — developer diagnostic, not user-facing
       console.warn("Media item is missing a URL", item);
       return accumulator;
     }
@@ -17,4 +18,3 @@ export function ensureHasUrl(items: MediaItem[]): MediaItemWithUrl[] {
     return accumulator;
   }, []);
 }
-

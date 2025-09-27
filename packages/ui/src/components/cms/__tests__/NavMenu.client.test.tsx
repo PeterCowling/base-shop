@@ -20,7 +20,6 @@ jest.mock("../nav/useCmsNavItems", () => ({
 }));
 
 // Import the component after mocks to ensure they take effect
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const NavMenu = require("../NavMenu.client").default;
 
 describe("NavMenu.client", () => {

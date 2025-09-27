@@ -43,7 +43,7 @@ export class ResendProvider implements CampaignProvider {
           if (!res.ok) {
             throw new Error(
               `Resend credentials rejected with status ${res.status}`
-            );
+            ); // i18n-exempt: developer configuration error
           }
         });
       } else {
@@ -56,7 +56,7 @@ export class ResendProvider implements CampaignProvider {
 
   async send(options: CampaignOptions): Promise<void> {
     if (!this.client) {
-      console.warn("Resend API key is not configured; skipping email send");
+      console.warn("Resend API key is not configured; skipping email send"); // i18n-exempt: operational log
       return;
     }
     try {
@@ -70,7 +70,7 @@ export class ResendProvider implements CampaignProvider {
     } catch (error: unknown) {
       if (error && typeof error === "object" && "message" in error) {
         const err = error as ResendError;
-        console.error("Campaign email send failed", {
+        console.error("Campaign email send failed", { // i18n-exempt: operational log
           provider: "resend",
           recipient: options.to,
           campaignId: options.campaignId,
@@ -87,12 +87,12 @@ export class ResendProvider implements CampaignProvider {
           typeof numericStatus !== "number" || numericStatus >= 500;
         throw new ProviderError(err.message, retryable);
       }
-      console.error("Campaign email send failed", {
+      console.error("Campaign email send failed", { // i18n-exempt: operational log
         provider: "resend",
         recipient: options.to,
         campaignId: options.campaignId,
       });
-      throw new ProviderError("Unknown error", true);
+      throw new ProviderError("Unknown error", true); // i18n-exempt: internal error tag
     }
   }
 

@@ -19,13 +19,17 @@ function collect(components: PageComponent[], viewport?: Viewport): Record<strin
   const cap = (vp?: Viewport): "Desktop" | "Tablet" | "Mobile" | null =>
     vp === "desktop" ? "Desktop" : vp === "tablet" ? "Tablet" : vp === "mobile" ? "Mobile" : null;
   const vpc = cap(viewport);
+  const getStringProp = (node: PageComponent, key: string): string | undefined => {
+    const v = (node as unknown as Record<string, unknown>)[key];
+    return typeof v === "string" ? v : undefined;
+  };
   const walk = (nodes: PageComponent[]) => {
     for (const n of nodes) {
       // Resolve per-viewport values when provided
-      const leftStr = (vpc ? ((n as any)[`left${vpc}`] as string | undefined) : undefined) ?? ((n as any).left as string | undefined);
-      const topStr = (vpc ? ((n as any)[`top${vpc}`] as string | undefined) : undefined) ?? ((n as any).top as string | undefined);
-      const widthStr = (vpc ? ((n as any)[`width${vpc}`] as string | undefined) : undefined) ?? ((n as any).width as string | undefined);
-      const heightStr = (vpc ? ((n as any)[`height${vpc}`] as string | undefined) : undefined) ?? ((n as any).height as string | undefined);
+      const leftStr = (vpc ? getStringProp(n, `left${vpc}`) : undefined) ?? getStringProp(n, "left");
+      const topStr = (vpc ? getStringProp(n, `top${vpc}`) : undefined) ?? getStringProp(n, "top");
+      const widthStr = (vpc ? getStringProp(n, `width${vpc}`) : undefined) ?? getStringProp(n, "width");
+      const heightStr = (vpc ? getStringProp(n, `height${vpc}`) : undefined) ?? getStringProp(n, "height");
       map[n.id] = {
         id: n.id,
         left: parsePx(leftStr),
@@ -33,7 +37,7 @@ function collect(components: PageComponent[], viewport?: Viewport): Record<strin
         width: parsePx(widthStr),
         height: parsePx(heightStr),
       };
-      const children = (n as any).children as PageComponent[] | undefined;
+      const children = (n as unknown as { children?: PageComponent[] }).children;
       if (Array.isArray(children)) walk(children);
     }
   };

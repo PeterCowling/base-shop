@@ -2,6 +2,8 @@
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@ui/components/atoms";
+import { Inline } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 import MicroScenes from "../../../wizard/MicroScenes";
 
 interface Props {
@@ -12,6 +14,7 @@ interface Props {
 }
 
 export default function PalettePeek({ themes, value, onChange, hasWarnings = false }: Props) {
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -36,51 +39,61 @@ export default function PalettePeek({ themes, value, onChange, hasWarnings = fal
   }, [currentIndex, themes, onChange]);
 
   return (
-    <div ref={containerRef} aria-label="Palette chooser" className="flex flex-wrap gap-2" role="listbox">
-      {themes.map((t, idx) => (
-        <Popover key={t} open={openIndex === idx} onOpenChange={(o) => setOpenIndex(o ? idx : null)}>
+    <Inline
+      ref={containerRef}
+      aria-label={t("cms.themes.paletteChooser") as string}
+      role="listbox"
+      gap={2}
+      wrap
+    >
+      {themes.map((themeId, idx) => (
+        <Popover key={themeId} open={openIndex === idx} onOpenChange={(o) => setOpenIndex(o ? idx : null)}>
           <PopoverTrigger asChild>
             <button
               type="button"
               role="option"
-              aria-selected={t === value}
-              data-theme={t}
-              className={`flex h-10 items-center gap-2 rounded border px-2 ${t === value ? "ring-2 ring-primary" : ""}`}
-              onClick={() => onChange(t)}
+              aria-selected={themeId === value}
+              data-theme={themeId}
+              className={`h-10 rounded border px-2 ${themeId === value ? "ring-2 ring-primary" : ""}`}
+              onClick={() => onChange(themeId)}
               onMouseEnter={() => setOpenIndex(idx)}
               onMouseLeave={() => setOpenIndex((cur) => (cur === idx ? null : cur))}
             >
-              <span className="grid grid-cols-2 gap-0.5">
-                <span className="h-3 w-3 rounded bg-bg" />
-                <span className="h-3 w-3 rounded bg-fg" />
-                <span className="h-3 w-3 rounded bg-primary" />
-                <span className="h-3 w-3 rounded bg-accent" />
-              </span>
-              <span className="text-sm">{t}</span>
-              {t === value && hasWarnings && (
-                <span className="ms-1 rounded bg-warning-soft px-1 text-[10px] text-foreground">Low contrast</span>
-              )}
+              <Inline alignY="center" gap={2}>
+                <span className="grid grid-cols-2 gap-0.5">
+                  <span className="h-3 w-3 rounded bg-bg" />
+                  <span className="h-3 w-3 rounded bg-fg" />
+                  <span className="h-3 w-3 rounded bg-primary" />
+                  <span className="h-3 w-3 rounded bg-accent" />
+                </span>
+                <span className="text-sm">{themeId}</span>
+                {themeId === value && hasWarnings && (
+                  <span className="ms-1 rounded bg-warning-soft px-1 text-xs text-foreground">
+                    {t("cms.themes.lowContrast")}
+                  </span>
+                )}
+              </Inline>
             </button>
           </PopoverTrigger>
           <PopoverContent side="top" align="center">
-            <div className="w-[360px]">
-              <div className="mb-2 text-xs text-muted-foreground">Palette preview</div>
+            <div className="w-96">
+              <div className="mb-2 text-xs text-muted-foreground">{t("cms.themes.palettePreview")}</div>
               <MicroScenes />
-              <div className="mt-2 flex items-center gap-3 text-xs">
-                <LegendDot className="bg-primary" label="Primary" />
-                <LegendDot className="bg-accent" label="Accent" />
-                <LegendDot className="bg-muted" label="Surface" />
-                <LegendDot className="bg-fg" label="Text" />
-                <LegendDot className="bg-success" label="Success" />
-                <LegendDot className="bg-info" label="Info" />
-                <LegendDot className="bg-warning" label="Warning" />
-                <LegendDot className="bg-danger" label="Danger" />
-              </div>
+              <Inline className="mt-2 text-xs" alignY="center" gap={3}>
+                <LegendDot className="bg-primary" label={t("cms.themes.legend.primary") as string} />
+                <LegendDot className="bg-accent" label={t("cms.themes.legend.accent") as string} />
+                <LegendDot className="bg-muted" label={t("cms.themes.legend.surface") as string} />
+                <LegendDot className="bg-fg" label={t("cms.themes.legend.text") as string} />
+                <LegendDot className="bg-success" label={t("cms.themes.legend.success") as string} />
+                <LegendDot className="bg-info" label={t("cms.themes.legend.info") as string} />
+                <LegendDot className="bg-warning" label={t("cms.themes.legend.warning") as string} />
+                <LegendDot className="bg-danger" label={t("cms.themes.legend.danger") as string} />
+              </Inline>
             </div>
           </PopoverContent>
         </Popover>
       ))}
-    </div>
+    </Inline>
   );
 }
 

@@ -68,7 +68,7 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
 export function useCurrency() {
   try {
     const ctx = useContext(CurrencyContext);
-    if (!ctx) throw new Error("useCurrency must be inside CurrencyProvider");
+    if (!ctx) throw new Error("useCurrency must be inside CurrencyProvider"); // i18n-exempt -- developer guidance for incorrect hook usage
     return ctx;
   } catch (err) {
     // React throws different errors when hooks run outside a component.
@@ -76,10 +76,10 @@ export function useCurrency() {
     // expected provider usage message.
     if (
       err instanceof Error &&
-      (err.message.includes("Invalid hook call") ||
-        err.message.includes("reading 'useContext'"))
+      (err.message.includes("Invalid hook call") || // i18n-exempt -- matching React core error message
+        err.message.includes("reading 'useContext'")) // i18n-exempt -- matching React core error message
     ) {
-      throw new Error("useCurrency must be inside CurrencyProvider");
+      throw new Error("useCurrency must be inside CurrencyProvider"); // i18n-exempt -- developer guidance for incorrect hook usage
     }
     throw err;
   }

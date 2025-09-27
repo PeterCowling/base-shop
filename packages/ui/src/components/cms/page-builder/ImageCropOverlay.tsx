@@ -87,11 +87,11 @@ export default function ImageCropOverlay({ value, onChange, visible = false }: {
     };
     const onUp = () => {
       setDragging(null);
-      try { window.removeEventListener("pointermove", onMove as any); } catch {}
-      try { window.removeEventListener("pointerup", onUp as any); } catch {}
+      try { window.removeEventListener("pointermove", onMove as unknown as EventListener); } catch {}
+      try { window.removeEventListener("pointerup", onUp as unknown as EventListener); } catch {}
     };
-    window.addEventListener("pointermove", onMove as any);
-    window.addEventListener("pointerup", onUp as any, { once: true });
+    window.addEventListener("pointermove", onMove as unknown as EventListener);
+    window.addEventListener("pointerup", onUp as unknown as EventListener, { once: true } as AddEventListenerOptions);
   }, [box, commit]);
 
   if (!visible) return null;
@@ -101,44 +101,49 @@ export default function ImageCropOverlay({ value, onChange, visible = false }: {
   const top = Math.max(0, Math.round((H - box.h) / 2));
 
   return (
-    <div ref={wrapRef} className="pointer-events-none absolute inset-0 z-40 select-none">
+    /* eslint-disable ds/absolute-parent-guard -- PB-2415: Overlay mounts next to the media element inside a positioned container provided by the editor canvas. The positioned ancestor lives outside this component. */
+    <div ref={wrapRef} className="pointer-events-none absolute inset-0 select-none">
+      {/* Dim entire canvas region rather than using a raw shadow ring (DS tokenized color) */}
+      <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
       {/* Crop rectangle (centered) */}
       <div
-        className="absolute border-2 border-sky-400/90 shadow-[0_0_0_9999px_rgba(0,0,0,0.35)]"
+        className="absolute border-2 border-sky-400/90"
         style={{ left, top, width: box.w, height: box.h }}
       >
         {/* Handles */}
         <div
           className="pointer-events-auto absolute -end-1 top-1/2 h-2 w-2 -translate-y-1/2 cursor-ew-resize rounded bg-sky-400"
           onPointerDown={(e) => start(e, "e")}
-          title="Drag horizontally to change ratio"
+          title={/* i18n-exempt -- PB-2418: editor-only tooltip */ "Drag horizontally to change ratio"}
         />
         <div
           className="pointer-events-auto absolute start-1/2 -bottom-1 h-2 w-2 -translate-x-1/2 cursor-ns-resize rounded bg-sky-400"
           onPointerDown={(e) => start(e, "s")}
-          title="Drag vertically to change ratio"
+          title={/* i18n-exempt -- PB-2418: editor-only tooltip */ "Drag vertically to change ratio"}
         />
         <div
           className="pointer-events-auto absolute -end-1 -bottom-1 h-3 w-3 cursor-nwse-resize rounded bg-sky-500"
           onPointerDown={(e) => start(e, "se")}
-          title="Drag to change ratio"
+          title={/* i18n-exempt -- PB-2418: editor-only tooltip */ "Drag to change ratio"}
         />
         {/* Badge */}
         <div className="pointer-events-none absolute -top-5 start-0 flex items-center gap-1">
-          <div className="pointer-events-none rounded bg-black/70 px-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black">
+          <div className="pointer-events-none rounded bg-black/70 px-1 text-xs text-white shadow dark:bg-white/70 dark:text-black">
             {toAspectString(Math.max(0.01, box.w / Math.max(1, box.h)))}{dragging ? " (drag)" : ""}
           </div>
           <button
             type="button"
-            className="pointer-events-auto rounded bg-black/60 px-1 text-[10px] text-white shadow hover:bg-black/70 dark:bg-white/70 dark:text-black dark:hover:bg-white"
+            className="pointer-events-auto inline-flex min-h-10 min-w-10 items-center justify-center rounded bg-black/60 px-1 text-xs text-white shadow hover:bg-black/70 dark:bg-white/70 dark:text-black dark:hover:bg-white"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onChange(undefined); }}
-            title="Reset to Auto"
+            title={/* i18n-exempt -- PB-2418: editor-only tooltip */ "Reset to Auto"}
           >
+            {/* i18n-exempt -- PB-2418: editor-only action label */}
             Reset
           </button>
-          <div className="pointer-events-none rounded bg-black/50 px-1 text-[10px] text-white dark:bg-white/60 dark:text-black">Shift: lock ratio</div>
+          <div className="pointer-events-none rounded bg-black/50 px-1 text-xs text-white dark:bg-white/60 dark:text-black">{/* i18n-exempt */}Shift: lock ratio</div>
         </div>
       </div>
     </div>
+    /* eslint-enable ds/absolute-parent-guard */
   );
 }

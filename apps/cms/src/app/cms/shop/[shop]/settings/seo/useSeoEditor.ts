@@ -1,6 +1,8 @@
 "use client";
 
 import { FormEvent, useCallback, useMemo, useState } from "react";
+import { useTranslations } from "@i18n/Translations";
+import en from "@i18n/en.json";
 
 import { setFreezeTranslations, updateSeo } from "@cms/actions/shops.server";
 import type { Locale } from "@acme/types";
@@ -84,6 +86,12 @@ export function useSeoEditor({
   initialSeo,
   initialFreeze = false,
 }: UseSeoEditorProps) {
+  const tFromContext = useTranslations();
+  // Ensure readable strings in tests even without a provider
+  const t = (key: string) => {
+    const out = tFromContext(key) as unknown as string;
+    return out === key ? (en as Record<string, string>)[key] ?? key : out;
+  };
   const initialDrafts = useMemo(
     () =>
       languages.reduce((acc, lang) => {
@@ -184,17 +192,17 @@ export function useSeoEditor({
         if (result.errors) {
           setErrors(result.errors);
           setWarnings([]);
-          return { status: "error", message: "Unable to save metadata" };
+          return { status: "error", message: String(t("cms.seo.save.error")) };
         }
 
         setErrors({});
         const warningList = result.warnings ?? [];
         setWarnings(warningList);
         return warningList.length > 0
-          ? { status: "warning", message: "Metadata saved with warnings" }
-          : { status: "success", message: "Metadata saved" };
+          ? { status: "warning", message: String(t("cms.seo.save.warning")) }
+          : { status: "success", message: String(t("cms.seo.save.success")) };
       } catch {
-        return { status: "error", message: "Unable to save metadata" };
+        return { status: "error", message: String(t("cms.seo.save.error")) };
       } finally {
         setSaving(false);
       }
@@ -217,7 +225,7 @@ export function useSeoEditor({
       });
 
       if (!res.ok) {
-        return { status: "error", message: "Unable to generate metadata" };
+        return { status: "error", message: String(t("cms.seo.generate.error")) };
       }
 
       const data = (await res.json()) as {
@@ -231,9 +239,9 @@ export function useSeoEditor({
       updateField("description", data.description);
       updateField("alt", data.alt);
       updateField("image", data.image);
-      return { status: "success", message: "AI metadata generated" };
+      return { status: "success", message: String(t("cms.seo.generate.success")) };
     } catch {
-      return { status: "error", message: "Unable to generate metadata" };
+      return { status: "error", message: String(t("cms.seo.generate.error")) };
     } finally {
       setGenerating(false);
     }

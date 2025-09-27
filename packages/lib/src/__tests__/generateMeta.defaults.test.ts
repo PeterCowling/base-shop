@@ -1,4 +1,4 @@
-// @ts-nocheck
+import { describe, it, expect, afterEach, jest } from "@jest/globals";
 describe("generateMeta defaults", () => {
   const product = { id: "1", title: "Title", description: "Desc" };
 
@@ -52,4 +52,3 @@ describe("generateMeta defaults", () => {
     });
   });
 });
-

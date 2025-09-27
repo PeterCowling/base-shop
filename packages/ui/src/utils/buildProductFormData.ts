@@ -1,5 +1,5 @@
 // packages/ui/utils/buildProductFormData.ts
-import type { Locale } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
 import type { MediaItem } from "@acme/types";
 import type { ProductWithVariants } from "../hooks/useProductInputs";
 

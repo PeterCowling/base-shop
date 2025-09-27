@@ -19,6 +19,7 @@ export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>
       tone ?? (color ? "soft" : variant ? "solid" : "soft");
 
     const solidBg: Record<string, string> = {
+      // i18n-exempt — CSS utility class names
       default: "bg-muted",
       primary: "bg-primary",
       accent: "bg-accent",
@@ -28,6 +29,7 @@ export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>
       danger: "bg-danger",
     };
     const softBg: Record<string, string> = {
+      // i18n-exempt — CSS utility class names
       default: "bg-muted",
       primary: "bg-primary-soft",
       accent: "bg-accent-soft",
@@ -47,6 +49,7 @@ export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>
       danger: resolvedTone === "solid" ? "text-danger-foreground" : "text-fg",
     };
     const bgToken: Record<string, string> = {
+      // i18n-exempt — CSS var token names
       default: "--color-muted",
       primary: resolvedTone === "solid" ? "--color-primary" : "--color-primary-soft",
       accent: resolvedTone === "solid" ? "--color-accent" : "--color-accent-soft",
@@ -56,6 +59,7 @@ export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>
       danger: resolvedTone === "solid" ? "--color-danger" : "--color-danger-soft",
     };
     const fgToken: Record<string, string> = {
+      // i18n-exempt — CSS var token names
       default: "--color-fg",
       primary: "--color-primary-fg",
       accent: "--color-accent-fg",
@@ -70,7 +74,7 @@ export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>
         ref={ref}
         data-token={bgToken[resolvedColor]}
         className={cn(
-          "rounded px-2 py-1 text-xs font-semibold",
+          "rounded px-2 py-1 text-xs font-semibold", // i18n-exempt — CSS utility class names
           (resolvedTone === "solid" ? solidBg : softBg)[resolvedColor],
           className
         )}

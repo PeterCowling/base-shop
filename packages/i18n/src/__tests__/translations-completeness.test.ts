@@ -17,11 +17,13 @@ describe('translations completeness', () => {
     const filepath = path.join(dir, file);
 
     test(`${file} exists`, () => {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test checks existence of a computed path for known files
       expect(fs.existsSync(filepath)).toBe(true);
     });
 
     test(`${file} matches ${baseFile}`, () => {
       const localeJson = JSON.parse(
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads a computed path within the repo under test
         fs.readFileSync(filepath, 'utf8'),
       ) as Record<string, unknown>;
       const localeKeys = Object.keys(localeJson).sort();

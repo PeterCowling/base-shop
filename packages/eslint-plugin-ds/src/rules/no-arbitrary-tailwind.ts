@@ -4,6 +4,10 @@ import { extractFromJsxAttribute } from "../utils/classParser.js";
 type Options = [
   {
     allowedFunctions?: string[];
+    // Allow content inside brackets by regex, e.g. /^-?\d+(?:\.\d+)?%$/
+    allowedContentPatterns?: string[];
+    // Allowlist utilities (prefix before -[) to pair with allowedContentPatterns, e.g. ["translate-x","translate-y"]
+    allowedUtilities?: string[];
   }?
 ];
 
@@ -26,6 +30,30 @@ function hasAllowedFunction(content: string, allowed: Set<string>): boolean {
   return allowed.has(fn);
 }
 
+function startsWithUtility(token: string, util: string): boolean {
+  // Accept utility or its negative variant (e.g., "translate-x" or "-translate-x")
+  return token.startsWith(`${util}-[`) || token.startsWith(`-${util}-[`);
+}
+
+function isAllowedByUtilityPattern(
+  token: string,
+  content: string,
+  utilities: Set<string>,
+  contentRegexes: RegExp[]
+): boolean {
+  if (utilities.size === 0 || contentRegexes.length === 0) return false;
+  // Only consider when token matches an allowed utility prefix
+  let matchesUtility = false;
+  for (const u of utilities) {
+    if (startsWithUtility(token, u)) {
+      matchesUtility = true;
+      break;
+    }
+  }
+  if (!matchesUtility) return false;
+  return contentRegexes.some((re) => re.test(content));
+}
+
 const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
@@ -42,6 +70,16 @@ const rule: Rule.RuleModule = {
             items: { type: "string" },
             default: [],
           },
+          allowedContentPatterns: {
+            type: "array",
+            items: { type: "string" },
+            default: [],
+          },
+          allowedUtilities: {
+            type: "array",
+            items: { type: "string" },
+            default: [],
+          },
         },
         additionalProperties: false,
       },
@@ -52,8 +90,22 @@ const rule: Rule.RuleModule = {
     },
   },
   create(context) {
-    const [{ allowedFunctions = [] } = {}] = context.options as Options;
+    const [opts = {}] = context.options as Options;
+    const { allowedFunctions = [], allowedContentPatterns = [], allowedUtilities = [] } = opts;
     const allowed = new Set(allowedFunctions.map((s) => s.toLowerCase())) as Set<string>;
+    const contentRegexes = allowedContentPatterns
+      .map((p) => {
+        try {
+          // Intentional: compile user-provided allowlist patterns.
+          // These patterns are controlled via lint config, not user input.
+          // eslint-disable-next-line security/detect-non-literal-regexp -- ESL-0001: config-driven allowlist
+          return new RegExp(p);
+        } catch {
+          return null;
+        }
+      })
+      .filter((x): x is RegExp => Boolean(x));
+    const utilities = new Set(allowedUtilities);
 
     return {
       JSXAttribute(node: any) {
@@ -66,6 +118,8 @@ const rule: Rule.RuleModule = {
           if (!content) continue;
           // Allowlist certain CSS functions if configured
           if (hasAllowedFunction(content, allowed)) continue;
+          // Allow patterns (e.g., percentages) for certain utilities (e.g., translate-x/y)
+          if (isAllowedByUtilityPattern(cls, content, utilities, contentRegexes)) continue;
           context.report({ node, messageId: "noArbitrary", data: { value: content, cls } });
         }
       },

@@ -1,3 +1,4 @@
+/* i18n-exempt file -- tests use literal copy for assertions */
 import { render, screen } from "@testing-library/react";
 import { Footer } from "../Footer";
 

@@ -1,5 +1,6 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { ColorSwatch } from "./ColorSwatch";
+import { Inline } from "./primitives/Inline";
 
 const meta: Meta<typeof ColorSwatch> = {
   title: "Atoms/ColorSwatch",
@@ -19,7 +20,7 @@ const palette = [
 
 export const Palette: StoryObj<typeof ColorSwatch> = {
   render: (args) => (
-    <div className="flex gap-2">
+    <Inline gap={2}>
       {palette.map((color, i) => (
         <ColorSwatch
           key={color}
@@ -27,6 +28,6 @@ export const Palette: StoryObj<typeof ColorSwatch> = {
           selected={i === 0 && args.selected}
         />
       ))}
-    </div>
+    </Inline>
   ),
 };

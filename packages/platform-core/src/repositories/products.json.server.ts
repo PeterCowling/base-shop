@@ -16,13 +16,13 @@ function filePath(shop: string): string {
 
 async function ensureDir(shop: string): Promise<void> {
   shop = validateShopName(shop);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Path built from DATA_ROOT + validated shop name
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
 async function read<T = ProductPublication>(shop: string): Promise<T[]> {
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Path built from DATA_ROOT + validated shop name
     const buf = await fs.readFile(filePath(shop), "utf8");
     return JSON.parse(buf) as T[];
   } catch {
@@ -36,9 +36,9 @@ async function write<T = ProductPublication>(
 ): Promise<void> {
   await ensureDir(shop);
   const tmp = `${filePath(shop)}.${Date.now()}.tmp`;
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Path built from DATA_ROOT + validated shop name
   await fs.writeFile(tmp, JSON.stringify(catalogue, null, 2), "utf8");
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Path built from DATA_ROOT + validated shop name
   await fs.rename(tmp, filePath(shop));
 }
 

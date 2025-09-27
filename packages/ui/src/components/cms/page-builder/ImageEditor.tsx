@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -130,12 +131,12 @@ export default function ImageEditor({ open, src, initial, onClose, onApply, init
 
   return (
     <Dialog open={open} onOpenChange={(v) => (!v ? onClose() : undefined)}>
-      <DialogContent className="max-w-3xl">
+      <DialogContent className="w-full">
         <DialogHeader>
+          {/* i18n-exempt -- PB-2416: editor-only dialog copy */}
           <DialogTitle>Image Editor</DialogTitle>
-          <DialogDescription>
-            Choose an aspect ratio and click on the image to set the focal point.
-          </DialogDescription>
+          {/* i18n-exempt -- PB-2416: editor-only dialog copy */}
+          <DialogDescription>Choose an aspect ratio and click on the image to set the focal point.</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <div className="flex flex-wrap gap-2">
@@ -146,16 +147,18 @@ export default function ImageEditor({ open, src, initial, onClose, onApply, init
                 variant={a.value === aspect ? "default" : "outline"}
                 onClick={() => setAspect(a.value)}
               >
+                {/* i18n-exempt -- PB-2416: editor-only control label */}
                 {a.label}
               </Button>
             ))}
             <div className="flex items-center gap-2">
               <Input
-                placeholder="W:H (e.g. 21:9)"
+                placeholder="W:H (e.g. 21:9)" // i18n-exempt -- PB-2416: editor-only placeholder
                 value={aspect ?? ""}
                 onChange={(e) => setAspect(e.target.value || undefined)}
                 className="w-40"
               />
+              {/* i18n-exempt -- PB-2416: editor-only label */}
               <span className="text-xs text-muted-foreground">Custom</span>
             </div>
           </div>
@@ -170,47 +173,48 @@ export default function ImageEditor({ open, src, initial, onClose, onApply, init
               }
               onClick={handlePickFocal}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={src}
                 alt="preview"
-                className="absolute inset-0 h-full w-full select-none object-cover"
+                fill
                 draggable={false}
-                style={{ objectPosition: `${(focal.x * 100).toFixed(2)}% ${(focal.y * 100).toFixed(2)}%`, ...(filterStyle as any) }}
+                data-aspect={aspect || "auto"}
+                className="absolute inset-0 h-full w-full select-none object-cover"
+                style={{ objectPosition: `${(focal.x * 100).toFixed(2)}% ${(focal.y * 100).toFixed(2)}%`, ...filterStyle }}
               />
               {/* Focal point marker */}
               <div
-                className="absolute z-10 h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white bg-primary shadow"
+                className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white bg-primary shadow"
                 style={{ left: `${focal.x * 100}%`, top: `${focal.y * 100}%` }}
                 aria-hidden
               />
             </div>
-            <p className="mt-2 text-xs text-muted-foreground">
-              Tip: The image preview simulates responsive cropping with object-fit: cover.
-            </p>
+            {/* i18n-exempt -- PB-2416: editor-only hint text */}
+            <p className="mt-2 text-xs text-muted-foreground">Tip: The image preview simulates responsive cropping with object-fit: cover.</p>
           </div>
           {/* Quick adjustments */}
           <div className="mt-2 space-y-3">
+            {/* i18n-exempt -- PB-2416: editor-only section label */}
             <div className="text-xs font-semibold text-muted-foreground">Quick adjustments</div>
             <div className="grid grid-cols-2 items-center gap-3">
+              {/* i18n-exempt -- PB-2416: editor-only label */}
               <label className="text-xs text-muted-foreground">Brightness ({Math.round(brightness * 100)}%)</label>
               <input type="range" min={0} max={200} value={Math.round(brightness * 100)} onChange={(e) => setBrightness(Number(e.target.value) / 100)} />
+              {/* i18n-exempt -- PB-2416: editor-only label */}
               <label className="text-xs text-muted-foreground">Contrast ({Math.round(contrast * 100)}%)</label>
               <input type="range" min={0} max={200} value={Math.round(contrast * 100)} onChange={(e) => setContrast(Number(e.target.value) / 100)} />
+              {/* i18n-exempt -- PB-2416: editor-only label */}
               <label className="text-xs text-muted-foreground">Saturation ({Math.round(saturate * 100)}%)</label>
               <input type="range" min={0} max={200} value={Math.round(saturate * 100)} onChange={(e) => setSaturate(Number(e.target.value) / 100)} />
+              {/* i18n-exempt -- PB-2416: editor-only label */}
               <label className="text-xs text-muted-foreground">Blur ({blur}px)</label>
               <input type="range" min={0} max={20} value={Math.round(blur)} onChange={(e) => setBlur(Number(e.target.value))} />
             </div>
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={handleReset}>
-            Reset
-          </Button>
-          <Button type="button" onClick={handleApply}>
-            Apply
-          </Button>
+          <Button type="button" variant="outline" onClick={handleReset}>{/* i18n-exempt -- PB-2416 */}Reset</Button>
+          <Button type="button" onClick={handleApply}>{/* i18n-exempt -- PB-2416 */}Apply</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

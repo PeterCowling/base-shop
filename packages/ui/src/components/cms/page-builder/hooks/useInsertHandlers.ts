@@ -5,6 +5,7 @@ import { ulid } from "ulid";
 import type { PageComponent } from "@acme/types";
 import { isTopLevelAllowed } from "../rules";
 import { CONTAINER_TYPES, defaults, type ComponentType } from "../defaults";
+import type { Action } from "../state";
 
 const clampIndex = (value: number, length: number) => Math.max(0, Math.min(value, length));
 
@@ -14,7 +15,7 @@ const isValidIndex = (value: number | null | undefined): value is number =>
 const findComponentById = (nodes: PageComponent[], id: string): PageComponent | undefined => {
   for (const node of nodes) {
     if (node.id === id) return node;
-    const children = (node as any)?.children as PageComponent[] | undefined;
+    const children = ("children" in node ? (node as { children?: PageComponent[] }).children : undefined);
     if (Array.isArray(children)) {
       const match = findComponentById(children, id);
       if (match) return match;
@@ -29,7 +30,7 @@ interface Params {
   setSelectedIds: (ids: string[]) => void;
   insertIndex: number | null | undefined;
   insertParentId?: string | undefined;
-  dispatch: (action: any) => void;
+  dispatch: (action: Action) => void;
   t: (key: string, vars?: Record<string, unknown>) => string;
 }
 
@@ -55,8 +56,8 @@ export default function useInsertHandlers({
       if (insertParentId) {
         const parent = findComponentById(components, insertParentId);
         if (parent) {
-          const children = Array.isArray((parent as any).children)
-            ? ((parent as any).children as PageComponent[])
+          const children = Array.isArray((parent as { children?: PageComponent[] }).children)
+            ? ((parent as { children?: PageComponent[] }).children as PageComponent[])
             : [];
           const length = children.length;
           const index = isValidIndex(insertIndex) ? clampIndex(insertIndex, length) : length;
@@ -69,8 +70,8 @@ export default function useInsertHandlers({
       }
 
       if (preferSection && selectedIsSection && selectedIds.length > 0) {
-        const sel = components.find((c) => c.id === selectedIds[0]) as any;
-        const kids = (sel?.children as PageComponent[] | undefined) ?? [];
+        const sel = components.find((c) => c.id === selectedIds[0]);
+        const kids = (sel && "children" in sel ? (sel as { children?: PageComponent[] }).children ?? [] : []);
         return { parentId: selectedIds[0], index: kids.length };
       }
 
@@ -92,7 +93,7 @@ export default function useInsertHandlers({
         try {
           window.dispatchEvent(
             new CustomEvent("pb-live-message", {
-              detail: `Cannot add ${type} at page root`,
+              detail: t("cannot_add_at_root", { type }),
             })
           );
         } catch {}
@@ -108,7 +109,7 @@ export default function useInsertHandlers({
       dispatch({ type: "add", component, ...(target.parentId ? { parentId: target.parentId } : {}), index: target.index });
       setSelectedIds([component.id]);
     },
-    [dispatch, resolveInsertTarget, setSelectedIds]
+    [dispatch, resolveInsertTarget, setSelectedIds, t]
   );
 
   const computeInsertTarget = useCallback((): { parentId?: string; index: number } => resolveInsertTarget(), [resolveInsertTarget]);
@@ -127,7 +128,7 @@ export default function useInsertHandlers({
     (url: string) => {
       if (!selectedIsSection || !selectedIds.length) return;
       const id = selectedIds[0];
-      dispatch({ type: "update", id, patch: { backgroundImageUrl: url } as any });
+      dispatch({ type: "update", id, patch: { backgroundImageUrl: url } as unknown as Partial<PageComponent> });
     },
     [dispatch, selectedIds, selectedIsSection]
   );
@@ -135,8 +136,8 @@ export default function useInsertHandlers({
   const handleInsertPreset = useCallback(
     (template: PageComponent) => {
       const withNewIds = (node: PageComponent): PageComponent => {
-        const cloned: any = { ...(node as any), id: ulid() };
-        const children = (node as any).children as PageComponent[] | undefined;
+        const cloned = { ...(node as PageComponent), id: ulid() } as PageComponent & { children?: PageComponent[] };
+        const children = ("children" in node ? (node as { children?: PageComponent[] }).children : undefined);
         if (Array.isArray(children)) cloned.children = children.map(withNewIds);
         return cloned as PageComponent;
       };
@@ -166,11 +167,11 @@ export default function useInsertHandlers({
         dispatch({ type: "add", component, ...(target.parentId ? { parentId: target.parentId } : {}), index: target.index });
         setSelectedIds([component.id]);
         try {
-          window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Image inserted" }));
+          window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("image_inserted") }));
         } catch {}
       } catch {}
     },
-    [computeInsertTarget, dispatch, setSelectedIds]
+    [computeInsertTarget, dispatch, setSelectedIds, t]
   );
 
   return {

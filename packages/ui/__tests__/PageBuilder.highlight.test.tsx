@@ -42,8 +42,16 @@ jest.mock("../src/components/cms/page-builder/PageCanvas.tsx", () => ({
   __esModule: true,
   default: ({ viewport }: any) => <div id="canvas" data-viewport={viewport} />,
 }));
-jest.mock("../src/components/cms/page-builder/Palette", () => () => <div />);
-jest.mock("../src/components/cms/page-builder/PageSidebar", () => () => <div />);
+jest.mock("../src/components/cms/page-builder/Palette", () => {
+  const Palette = () => <div />;
+  (Palette as any).displayName = "PaletteMock";
+  return Palette;
+});
+jest.mock("../src/components/cms/page-builder/PageSidebar", () => {
+  const PageSidebar = () => <div />;
+  (PageSidebar as any).displayName = "PageSidebarMock";
+  return PageSidebar;
+});
 
 describe("PageBuilder drag highlight", () => {
   const basePage = {

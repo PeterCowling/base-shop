@@ -1,5 +1,7 @@
 "use client";
 
+// i18n-exempt — CMS editor context menu without static labels
+
 import { useEffect, useMemo, useState, useRef } from "react";
 
 type MenuItem = {
@@ -23,6 +25,7 @@ type Props = {
  */
 export default function ContextMenu({ x, y, open, onClose, items }: Props) {
   const style = useMemo(() => ({ left: x, top: y }), [x, y]);
+  // i18n-exempt — labels are provided via props; component has no user-facing static copy
   // Active is a pointer into actionable indices only
   const actionable = useMemo(() => items
     .map((it, idx) => ({ it, idx }))
@@ -95,26 +98,30 @@ export default function ContextMenu({ x, y, open, onClose, items }: Props) {
   if (!open) return null;
 
   return (
-    <div
-      className="fixed z-[1000] min-w-[10rem] overflow-hidden rounded border bg-popover p-1 text-popover-foreground shadow-elevation-2"
-      style={style}
-      role="menu"
-      data-pb-contextmenu
-      tabIndex={-1}
-      ref={rootRef}
-      onKeyDown={onKeyDown}
-    >
+    <div className="relative">
+      <div
+        className="absolute min-w-40 overflow-hidden rounded border bg-popover p-1 text-popover-foreground shadow-elevation-2"
+        style={style}
+        role="menu"
+        data-pb-contextmenu
+        tabIndex={-1}
+        ref={rootRef}
+        onKeyDown={onKeyDown}
+      >
+      {/** i18n-exempt — labels are passed via props; no static copy */}
       {items.map((i, idx) => {
         if ((i as MenuSeparator).type === "separator") {
           return <div key={`sep-${idx}`} role="separator" className="my-1 h-px bg-border" />;
         }
         const item = i as MenuItem;
         const isActive = actionable[activePos]?.idx === idx;
+        // i18n-exempt — styling only for states
+        const btnClass = `w-full rounded px-2 py-1 text-left text-sm hover:bg-muted focus:outline-none ${item.disabled ? "cursor-not-allowed opacity-50" : isActive ? "ring-1 ring-primary" : ""}`;
         return (
           <button
             key={item.label}
             type="button"
-            className={`w-full rounded px-2 py-1 text-left text-sm hover:bg-muted focus:outline-none ${item.disabled ? "cursor-not-allowed opacity-50" : isActive ? "ring-1 ring-primary" : ""}`}
+            className={btnClass}
             onClick={() => {
               if (item.disabled) return;
               item.onClick?.();
@@ -128,6 +135,7 @@ export default function ContextMenu({ x, y, open, onClose, items }: Props) {
           </button>
         );
       })}
+      </div>
     </div>
   );
 }

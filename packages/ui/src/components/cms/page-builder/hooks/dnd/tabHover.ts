@@ -14,10 +14,9 @@ export function useLastTabHover() {
         }
       } catch {}
     };
-    window.addEventListener('pb-tab-hover', onHover as any);
-    return () => window.removeEventListener('pb-tab-hover', onHover as any);
+    window.addEventListener('pb-tab-hover', onHover as EventListener);
+    return () => window.removeEventListener('pb-tab-hover', onHover as EventListener);
   }, []);
 
   return lastTabHoverRef;
 }
-

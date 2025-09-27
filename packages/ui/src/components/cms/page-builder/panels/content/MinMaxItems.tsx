@@ -23,7 +23,7 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
     (comp.minItems !== undefined &&
     comp.maxItems !== undefined &&
     comp.minItems > comp.maxItems
-      ? "Min Items cannot exceed Max Items"
+      ? /* i18n-exempt */ "Min Items cannot exceed Max Items"
       : undefined);
 
   const maxItemsError =
@@ -31,20 +31,21 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
     (comp.minItems !== undefined &&
     comp.maxItems !== undefined &&
     comp.maxItems < comp.minItems
-      ? "Max Items cannot be less than Min Items"
+      ? /* i18n-exempt */ "Max Items cannot be less than Min Items"
       : undefined);
 
   return (
     <>
       <div className="flex items-center gap-1">
         <Input
+          // i18n-exempt: Builder control label
           label="Min Items"
           type="number"
           value={comp.minItems ?? ""}
           onChange={(e) => {
             const val = e.target.value === "" ? undefined : Number(e.target.value);
             if (val === undefined) {
-              handleInput("minItems" as any, undefined as any);
+              (handleInput as unknown as (f: string, v: unknown) => void)("minItems", undefined);
               return;
             }
             const max = comp.maxItems;
@@ -58,18 +59,22 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
           max={comp.maxItems ?? undefined}
           error={minItemsError}
         />
-        <Tooltip text="Minimum number of items">?</Tooltip>
+        {/* i18n-exempt: Builder tooltip */}
+        <Tooltip text="Minimum number of items">
+          <span className="inline-flex items-center justify-center size-10">?</span>
+        </Tooltip>
       </div>
 
       <div className="flex items-center gap-1">
         <Input
+          // i18n-exempt: Builder control label
           label="Max Items"
           type="number"
           value={comp.maxItems ?? ""}
           onChange={(e) => {
             const val = e.target.value === "" ? undefined : Number(e.target.value);
             if (val === undefined) {
-              handleInput("maxItems" as any, undefined as any);
+              (handleInput as unknown as (f: string, v: unknown) => void)("maxItems", undefined);
               return;
             }
             const min = comp.minItems;
@@ -82,9 +87,11 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
           min={comp.minItems ?? 0}
           error={maxItemsError}
         />
-        <Tooltip text="Maximum number of items">?</Tooltip>
+        {/* i18n-exempt: Builder tooltip */}
+        <Tooltip text="Maximum number of items">
+          <span className="inline-flex items-center justify-center size-10">?</span>
+        </Tooltip>
       </div>
     </>
   );
 }
-

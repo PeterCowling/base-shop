@@ -13,11 +13,13 @@ export const Right: StoryObj<typeof Drawer> = {
     <div className="p-8">
       <Drawer>
         <DrawerTrigger asChild>
-          <button className="rounded border px-3 py-1">Open right drawer</button>
+          {/* i18n-exempt: story demo control label */}
+          <button className="rounded border px-4 min-h-10 min-w-10">Open right drawer</button>
         </DrawerTrigger>
         <DrawerPortal>
           <OverlayScrim />
           <DrawerContent side="right" width="w-80" className="p-6">
+            {/* i18n-exempt: story demo content */}
             <div className="text-sm">Panel surface drawer (right)</div>
           </DrawerContent>
         </DrawerPortal>
@@ -31,11 +33,13 @@ export const Left: StoryObj<typeof Drawer> = {
     <div className="p-8">
       <Drawer>
         <DrawerTrigger asChild>
-          <button className="rounded border px-3 py-1">Open left drawer</button>
+          {/* i18n-exempt: story demo control label */}
+          <button className="rounded border px-4 min-h-10 min-w-10">Open left drawer</button>
         </DrawerTrigger>
         <DrawerPortal>
           <OverlayScrim />
           <DrawerContent side="left" width="w-64" className="p-6">
+            {/* i18n-exempt: story demo content */}
             <div className="text-sm">Panel surface drawer (left)</div>
           </DrawerContent>
         </DrawerPortal>

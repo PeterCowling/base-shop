@@ -35,6 +35,7 @@ describe('analytics provider resolution', () => {
       const { trackEvent } = await import('@acme/platform-core/analytics');
       await trackEvent(shop, { type: 'page_view', page: 'home' });
       await expect(
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- QA-1234: Path built from test tmpdir and shop fixture
         fs.readFile(path.join(tmp, shop, 'analytics.jsonl'), 'utf8')
       ).rejects.toBeDefined();
     },
@@ -50,6 +51,7 @@ describe('analytics provider resolution', () => {
     expect(readShop).toHaveBeenCalledTimes(1);
     expect(getShopSettings).toHaveBeenCalledTimes(1);
     await expect(
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- QA-1234: Path built from test tmpdir and shop fixture
       fs.readFile(path.join(tmp, shop, 'analytics.jsonl'), 'utf8')
     ).rejects.toBeDefined();
   });
@@ -77,6 +79,7 @@ describe('analytics provider resolution', () => {
     const { trackEvent } = await import('@acme/platform-core/analytics');
     await trackEvent(shop, { type: 'page_view', page: 'home' });
     expect((globalThis.fetch as jest.Mock)).not.toHaveBeenCalled();
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- QA-1234: Path built from test tmpdir and shop fixture
     const content = await fs.readFile(
       path.join(tmp, shop, 'analytics.jsonl'),
       'utf8'
@@ -183,6 +186,7 @@ describe('updateAggregates', () => {
     await trackEvent(shop, { type: 'discount_redeemed', code: 'SAVE' });
     await trackEvent(shop, { type: 'ai_crawl' });
     const aggPath = path.join(tmp, shop, 'analytics-aggregates.json');
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- QA-1234: Fixture path under test tmpdir
     const agg = JSON.parse(await fs.readFile(aggPath, 'utf8'));
     expect(agg.page_view['2024-01-01']).toBe(1);
     expect(agg.order['2024-01-01']).toEqual({ count: 1, amount: 5 });
@@ -194,6 +198,7 @@ describe('updateAggregates', () => {
     const { trackEvent } = await import('@acme/platform-core/analytics');
     await trackEvent(shop, { type: 'custom_event' } as any);
     const aggPath = path.join(tmp, shop, 'analytics-aggregates.json');
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- QA-1234: Fixture path under test tmpdir
     const agg = JSON.parse(await fs.readFile(aggPath, 'utf8'));
     expect(agg).toEqual({
       page_view: {},

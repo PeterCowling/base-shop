@@ -7,9 +7,10 @@ type Props = BlockItemProps;
 
 export default function useBlockItemInlineEditing(component: Props["component"]) {
   const isInlineEditableButton = component.type === "Button";
-  const inlineAll = useInlineText(component as any, "label") as ReturnType<
-    typeof useInlineText<any, any>
-  >;
+  const inlineAll = useInlineText<{ label?: string }, "label">(
+    component as unknown as { label?: string },
+    "label"
+  );
 
   return {
     isInlineEditableButton,

@@ -21,27 +21,7 @@ export default meta;
 type Story = StoryObj<typeof CampaignForm>;
 
 export const FormWithPreview: Story = {
-  render: () => {
-    const [preview, setPreview] = useState<CampaignPreviewData>(
-      getCampaignPreview(defaultCampaignValues)
-    );
-    return (
-      <div className="grid gap-6 lg:grid-cols-[1.3fr,1fr]">
-        <CampaignForm
-          defaultValues={{
-            name: "Holiday VIP launch",
-            audience: "VIP customers in North America",
-            startDate: "2024-11-01",
-            endDate: "2024-11-15",
-            budget: 12000,
-          }}
-          onSubmit={async () => undefined}
-          onPreviewChange={setPreview}
-        />
-        <CampaignPreviewPanel data={preview} />
-      </div>
-    );
-  },
+  render: FormWithPreviewStory,
 };
 
 export const Wizard: Story = {
@@ -63,3 +43,27 @@ export const Summary: Story = {
     <CampaignSummaryCard data={getCampaignPreview(defaultCampaignValues)} />
   ),
 };
+
+// React component (capitalized) so Hooks are valid here.
+function FormWithPreviewStory() {
+  const [preview, setPreview] = useState<CampaignPreviewData>(
+    getCampaignPreview(defaultCampaignValues)
+  );
+  return (
+    <Sidebar sideWidth="w-80" gap={6}>
+      <CampaignForm
+        defaultValues={{
+          name: "Holiday VIP launch",
+          audience: "VIP customers in North America",
+          startDate: "2024-11-01",
+          endDate: "2024-11-15",
+          budget: 12000,
+        }}
+        onSubmit={async () => undefined}
+        onPreviewChange={setPreview}
+      />
+      <CampaignPreviewPanel data={preview} />
+    </Sidebar>
+  );
+}
+import { Sidebar } from "../../../atoms/primitives";

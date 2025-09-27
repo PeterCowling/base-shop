@@ -14,7 +14,7 @@ export async function getCustomerProfile(
 ): Promise<CustomerProfile> {
   const profile = await prisma.customerProfile.findUnique({ where: { customerId } });
   if (!profile) {
-    throw new Error("Customer profile not found");
+    throw new Error("Customer profile not found"); // i18n-exempt -- backend error string; API layer maps to localized message
   }
   return profile;
 }
@@ -38,7 +38,7 @@ export async function updateCustomerProfile(
     },
   });
   if (existing && existing.customerId !== customerId) {
-    throw new Error("Conflict: email already in use");
+    throw new Error("Conflict: email already in use"); // i18n-exempt -- backend error string; API layer maps to localized message
   }
   return prisma.customerProfile.upsert({
     where: { customerId },

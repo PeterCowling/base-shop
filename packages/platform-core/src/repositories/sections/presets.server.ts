@@ -12,6 +12,7 @@ function filePath(shop: string): string {
 
 async function read(shop: string): Promise<SectionPreset[]> {
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Path built from DATA_ROOT + validated shop name
     const buf = await fs.readFile(filePath(shop), "utf8");
     const json = JSON.parse(buf);
     return Array.isArray(json) ? (json as SectionPreset[]) : [];
@@ -21,9 +22,12 @@ async function read(shop: string): Promise<SectionPreset[]> {
 }
 
 async function write(shop: string, list: SectionPreset[]): Promise<void> {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Path built from DATA_ROOT + validated shop name
   await fs.mkdir(path.dirname(filePath(shop)), { recursive: true });
   const tmp = `${filePath(shop)}.${Date.now()}.tmp`;
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Path built from DATA_ROOT + validated shop name
   await fs.writeFile(tmp, JSON.stringify(list, null, 2), "utf8");
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Path built from DATA_ROOT + validated shop name
   await fs.rename(tmp, filePath(shop));
 }
 
@@ -45,4 +49,3 @@ export async function deletePreset(shop: string, id: string): Promise<void> {
   const next = list.filter((p) => p.id !== id);
   await write(shop, next);
 }
-

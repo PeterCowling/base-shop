@@ -54,6 +54,7 @@ export function MediaFilePreview({
           <video
             src={item.url}
             className="h-full w-full object-cover"
+            data-aspect="16/9"
             muted
             loop
             playsInline
@@ -65,6 +66,7 @@ export function MediaFilePreview({
             alt={previewAlt || name}
             aria-label={previewLabel}
             fill
+            /* i18n-exempt — responsive image sizes string */
             sizes="(min-width: 768px) 25vw, 50vw"
             className="object-cover"
           />
@@ -76,7 +78,7 @@ export function MediaFilePreview({
         />
 
         {isRecent ? (
-          <div className="absolute start-3 top-3 z-20">
+          <div className="absolute start-3 top-3">
             <Tag variant="success">{t("Recent")}</Tag>
           </div>
         ) : null}
@@ -85,7 +87,7 @@ export function MediaFilePreview({
 
         {showReplacementOverlay ? (
           <div
-            className="bg-surface-1/90 text-center absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
+            className="bg-surface-1/90 text-center absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
             data-token="--color-bg"
           >
             <Progress
@@ -97,6 +99,8 @@ export function MediaFilePreview({
               {t("Replacing asset…")}
             </p>
             {uploadError ? (
+              // i18n-exempt — upstream error string shown verbatim
+              /* i18n-exempt */
               <p className="text-xs text-danger" data-token="--color-danger">
                 {uploadError}
               </p>
@@ -106,7 +110,7 @@ export function MediaFilePreview({
 
         {deleting && !showReplacementOverlay ? (
           <div
-            className="bg-surface-1/90 text-center absolute inset-0 z-30 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
+            className="bg-surface-1/90 text-center absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 backdrop-blur"
             data-token="--color-bg"
           >
             <p className="text-sm font-medium" data-token="--color-fg">

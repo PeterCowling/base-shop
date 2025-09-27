@@ -41,11 +41,11 @@ const getCoreEnv = (): CoreEnv => {
 };
 
 /** Load @upstash/redis only if needed */
-function loadRedis(): typeof import("@upstash/redis").Redis | undefined {
+function loadRedis(): typeof import("@upstash/redis").Redis | undefined { // i18n-exempt -- CORE-2423: module specifier string, not user-facing copy
   try {
     return (
-      eval("require")("@upstash/redis") as {
-        Redis: typeof import("@upstash/redis").Redis;
+      eval("require")("@upstash/redis") as { // i18n-exempt -- CORE-2423: module specifier string, not user-facing copy
+        Redis: typeof import("@upstash/redis").Redis; // i18n-exempt -- CORE-2423: module specifier string, not user-facing copy
       }
     ).Redis;
   } catch {

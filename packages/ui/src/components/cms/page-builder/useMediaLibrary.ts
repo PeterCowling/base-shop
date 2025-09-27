@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { MediaItem } from "@acme/types";
 import { usePathname, useSearchParams } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
@@ -9,6 +10,7 @@ import { getShopFromPath } from "@acme/shared-utils";
 export default function useMediaLibrary() {
   const pathname = usePathname() ?? "";
   const searchParams = useSearchParams();
+  const t = useTranslations();
   const shop = useMemo(() => {
     return (
       getShopFromPath(pathname) ??
@@ -42,11 +44,11 @@ export default function useMediaLibrary() {
       }
       setMedia(list);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to load media");
+      setError(err instanceof Error ? err.message : String(t("Failed to load media")));
     } finally {
       setLoading(false);
     }
-  }, [shop]);
+  }, [shop, t]);
 
   return { media, setMedia, loadMedia, shop, loading, error } as const;
 }

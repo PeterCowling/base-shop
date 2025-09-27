@@ -35,6 +35,8 @@ export default [
       "**/.next/**",
       "**/build/**",
       "**/coverage/**",
+      "**/*.d.ts.map",
+      "**/*.json",
       "**/index.js",
       "packages/ui/src/**/*.js",
       "packages/ui/src/**/*.d.ts",
@@ -44,14 +46,9 @@ export default [
       "apps/*/src/**/*.js.map",
       "scripts/**/*.js",
       "packages/config/test/**",
-      "**/__tests__/**",
       "**/__mocks__/**",
-      "**/*.test.*",
-      "**/*.spec.*",
       "**/*.d.ts",
       "**/jest.setup*.{ts,tsx}",
-      "**/*.test.{ts,tsx,js,jsx}",
-      "**/*.spec.{ts,tsx,js,jsx}",
       "**/jest.config.*",
       "**/postcss.config.*",
       "packages/config/jest.preset.cjs",
@@ -114,6 +111,30 @@ export default [
     rules: {
       ...securityPlugin.configs.recommended.rules,
       "security/detect-object-injection": "off",
+    },
+  },
+  /* ▸ Relax noisy security rules in email package tests */
+  {
+    files: [
+      "packages/email/**/__tests__/**/*.{ts,tsx,js,jsx}",
+      "packages/email/__tests__/**/*.{ts,tsx,js,jsx}",
+    ],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-non-literal-require": "off",
+    },
+  },
+
+  /* ▸ platform-core tests: allow dynamic tmp file paths */
+  {
+    files: [
+      "packages/platform-core/**/__tests__/**/*.{ts,tsx,js,jsx}",
+      "packages/platform-core/__tests__/**/*.{ts,tsx,js,jsx}",
+      "packages/platform-core/**/*.{spec,test}.{ts,tsx,js,jsx}",
+    ],
+    rules: {
+      // Tests create temporary fixture files/directories; paths are scoped and safe
+      "security/detect-non-literal-fs-filename": "off",
     },
   },
 
@@ -212,6 +233,12 @@ export default [
     rules: {
       // Governance: escalate in CMS/UI/app shells
       "ds/require-disable-justification": "error",
+      // Media and layout safety
+      "ds/require-aspect-ratio-on-media": "error",
+      "ds/no-naked-img": "error",
+      "ds/absolute-parent-guard": "error",
+      "ds/no-nonlayered-zindex": "error",
+      "ds/no-unsafe-viewport-units": "error",
       "ds/no-raw-spacing": "error",
       "ds/no-raw-typography": "error",
       "ds/no-raw-radius": "error",
@@ -255,7 +282,7 @@ export default [
     files: ["packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}"],
     plugins: { ds: dsPlugin },
     rules: {
-      "ds/icon-button-size": "warn",
+      "ds/icon-button-size": "error",
     },
   },
 
@@ -437,11 +464,25 @@ export default [
       "**/*.spec.{ts,tsx,js,jsx}",
       "**/*.cy.{ts,tsx,js,jsx}",
     ],
+    // Lint tests without requiring inclusion in a TS project
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
     plugins: { ds: dsPlugin },
     rules: {
       "ds/no-hsl-var-in-tests": "error",
       // Tests/specs/Cypress can carry literal copy for assertions/fixtures
       "ds/no-hardcoded-copy": "off",
+      // Tests don't author fonts; avoid false positives from words like "timestamp"/"times"
+      "ds/no-raw-font": "off",
+      // Allow require() style imports in tests for mocking ergonomics
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
 
@@ -531,6 +572,7 @@ export default [
       "packages/ui/src/components/templates/**/*.{ts,tsx}",
       "packages/ui/src/components/cms/**/*.{ts,tsx}",
     ],
+    ignores: ["**/*.stories.{ts,tsx}"],
     rules: {
       // Keep governance at error for CMS/templates
       "ds/require-disable-justification": "error",
@@ -544,6 +586,8 @@ export default [
       "ds/no-hardcoded-copy": "warn",
     },
   },
+
+  
 
   /* ▸ UI package: temporarily downgrade strict rules to warnings to unblock lint */
   {
@@ -567,7 +611,18 @@ export default [
       "ds/no-raw-radius": "warn",
       "ds/no-raw-shadow": "warn",
       "ds/no-raw-zindex": "warn",
-      "ds/no-arbitrary-tailwind": "warn",
+      // Allow specific safe arbitrary values to reduce noise
+      // - CSS variable functions for ring tokens
+      // - calc() for transforms/layout math
+      // - Percentages specifically for translate-x/translate-y utilities
+      "ds/no-arbitrary-tailwind": [
+        "warn",
+        {
+          allowedFunctions: ["var", "calc"],
+          allowedContentPatterns: ["^-?\\d+(?:\\.\\d+)?%$"],
+          allowedUtilities: ["translate-x", "translate-y"],
+        },
+      ],
       "ds/no-important": "warn",
       "ds/require-min-w-0-in-flex": "warn",
       "ds/forbid-fixed-heights-on-text": "warn",
@@ -590,4 +645,52 @@ export default [
       "no-restricted-syntax": "off",
     },
   },
+
+  /* ▸ Tests final override: keep copy/any relaxed even within UI package */
+  {
+    files: [
+      "**/__tests__/**/*.{ts,tsx,js,jsx}",
+      "**/*.test.{ts,tsx,js,jsx}",
+      "**/*.spec.{ts,tsx,js,jsx}",
+    ],
+    // Lint tests without requiring inclusion in a TS project
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+      // Also ensure font stack rule is disabled in tests to prevent matches on identifiers
+      "ds/no-raw-font": "off",
+      // Governance: do not require ticket IDs on eslint-disable in tests
+      // Tests often toggle rules for fixtures/mocks; enforcing ticket IDs adds noise
+      "ds/require-disable-justification": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-require-imports": "off",
+      // Tests frequently stub media with raw <img> and omit aspect helpers
+      "@next/next/no-img-element": "off",
+      "ds/no-naked-img": "off",
+      "ds/require-aspect-ratio-on-media": "off",
+      // Allow unused vars in tests (e.g., destructured helpers)
+      "@typescript-eslint/no-unused-vars": "off",
+      // Layout ergonomics: not relevant in unit tests
+      "ds/min-tap-size": "off",
+      "ds/no-margins-on-atoms": "off",
+      "ds/enforce-layout-primitives": "off",
+    },
+  },
+  /* ▸ Final stories override: ensure copy checks are disabled for stories */
+  {
+    files: ["**/*.stories.{ts,tsx}"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
+  
 ];

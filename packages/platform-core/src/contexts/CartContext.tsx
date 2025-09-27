@@ -74,7 +74,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         }
         // Non-OK initial response: prefer graceful fallback over throwing.
         console.error(
-          "[cart] initial fetch not ok",
+          "[cart] initial fetch not ok", // i18n-exempt -- developer log label, not user-facing
           { status: res.status, statusText: res.statusText }
         );
 
@@ -130,7 +130,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             });
 
             if (!putResponse.ok) {
-              throw new Error("Cart sync failed");
+              throw new Error("Cart sync failed"); // i18n-exempt -- internal error string, surfaced to logs only
             }
 
             const data = await putResponse.json();
@@ -144,7 +144,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             window.removeEventListener("online", handler);
             return;
           } catch (syncErr) {
-            console.error("[cart] sync on online failed", syncErr);
+            console.error("[cart] sync on online failed", syncErr); // i18n-exempt -- developer log label, not user-facing
             if (!putResponse) {
               // Network failed – stay subscribed for the next online event.
               return;
@@ -153,7 +153,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
           try {
             const res2 = await fetch(getCartApi());
-            if (!res2 || !("ok" in res2) || !res2.ok) throw new Error("Cart fetch failed");
+            if (!res2 || !("ok" in res2) || !res2.ok) throw new Error("Cart fetch failed"); // i18n-exempt -- internal error string, surfaced to logs only
             const data = await res2.json();
             setCartStateIfChanged(data.cart as CartState);
             try {
@@ -163,7 +163,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             }
             window.removeEventListener("online", handler);
           } catch (refreshErr) {
-            console.error("[cart] refresh after sync failed", refreshErr);
+            console.error("[cart] refresh after sync failed", refreshErr); // i18n-exempt -- developer log label, not user-facing
           }
         };
 
@@ -171,7 +171,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         window.addEventListener("online", handler);
       } catch (err) {
         // Network or runtime error: log at warn to avoid noisy console errors in dev
-        console.error("[cart] initial fetch failed", err);
+        console.error("[cart] initial fetch failed", err); // i18n-exempt -- developer log label, not user-facing
 
         let cachedCart: CartState | null = null;
         let hadCachedValue = false;
@@ -224,7 +224,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             });
 
             if (!putResponse.ok) {
-              throw new Error("Cart sync failed");
+              throw new Error("Cart sync failed"); // i18n-exempt -- internal error string, surfaced to logs only
             }
 
             const data = await putResponse.json();
@@ -238,7 +238,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             window.removeEventListener("online", handler);
             return;
           } catch (syncErr) {
-            console.error("[cart] sync on online failed", syncErr);
+            console.error("[cart] sync on online failed", syncErr); // i18n-exempt -- developer log label, not user-facing
             if (!putResponse) {
               // Network failed – stay subscribed for the next online event.
               return;
@@ -247,7 +247,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
           try {
             const res = await fetch(getCartApi());
-            if (!res || !("ok" in res) || !res.ok) throw new Error("Cart fetch failed");
+            if (!res || !("ok" in res) || !res.ok) throw new Error("Cart fetch failed"); // i18n-exempt -- internal error string, surfaced to logs only
             const data = await res.json();
             setCartStateIfChanged(data.cart as CartState);
             try {
@@ -257,7 +257,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             }
             window.removeEventListener("online", handler);
           } catch (refreshErr) {
-            console.error("[cart] refresh after sync failed", refreshErr);
+            console.error("[cart] refresh after sync failed", refreshErr); // i18n-exempt -- developer log label, not user-facing
           }
         };
 
@@ -279,7 +279,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     switch (action.type) {
       case "add":
         if (action.sku.sizes.length && !action.size) {
-          throw new Error("Size is required");
+          throw new Error("Size is required"); // i18n-exempt -- validation error handled by UI layer
         }
         method = "POST";
         body = {
@@ -314,7 +314,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      throw new Error((data as { error?: string }).error || "Cart update failed");
+      throw new Error((data as { error?: string }).error || "Cart update failed"); // i18n-exempt -- fallback message when API doesn't provide localized error
     }
 
     const data = await res.json();
@@ -335,6 +335,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart(): [CartState, Dispatch] {
   const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be inside CartProvider");
+  if (!ctx) throw new Error("useCart must be inside CartProvider"); // i18n-exempt -- developer guidance for incorrect hook usage
   return ctx;
 }

@@ -3,15 +3,17 @@ import { NextResponse } from "next/server";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import type { OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
 import shop from "../../../../../../shop.json";
+import { useTranslations } from "@acme/i18n/useTranslations.server";
 
-const providerEvents: Record<string, OrderStep[]> = {
+type ProviderEvent = { key: string; date?: string; complete: boolean };
+const providerEventKeys: Record<string, ProviderEvent[]> = {
   ups: [
-    { label: "Shipment picked up", date: "2024-01-01", complete: true },
-    { label: "Out for delivery", complete: false },
+    { key: "tracking.ups.pickedUp", date: "2024-01-01", complete: true },
+    { key: "tracking.ups.outForDelivery", complete: false },
   ],
   dhl: [
-    { label: "Processed at DHL facility", date: "2024-01-01", complete: true },
-    { label: "In transit", complete: false },
+    { key: "tracking.dhl.processedAtFacility", date: "2024-01-01", complete: true },
+    { key: "tracking.dhl.inTransit", complete: false },
   ],
 };
 
@@ -19,6 +21,7 @@ export async function GET(
   _req: Request,
   { params: _params }: { params: { id: string } }
 ) {
+  const t = await useTranslations("en");
   const settings = await getShopSettings(shop.id);
   // Rental or high-volume shops may disable tracking by leaving this empty.
   const providers = (settings.trackingProviders ?? []).map((p) =>
@@ -27,10 +30,14 @@ export async function GET(
   if (providers.length === 0) {
     return NextResponse.json({ steps: [] }, { status: 404 });
   }
-  const steps = providers.flatMap((p) => providerEvents[p] ?? []);
+  const steps: OrderStep[] = providers.flatMap((p) =>
+    (providerEventKeys[p] ?? []).map(({ key, ...rest }) => ({
+      label: t(key),
+      ...rest,
+    })),
+  );
   if (!steps.length) {
     return NextResponse.json({ steps: [] }, { status: 404 });
   }
   return NextResponse.json({ steps });
 }
-

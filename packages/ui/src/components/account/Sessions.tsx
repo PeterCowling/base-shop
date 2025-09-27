@@ -1,7 +1,8 @@
 // packages/ui/src/components/account/Sessions.tsx
 import { type SessionRecord } from "@auth";
 import { redirect } from "next/navigation";
-const t = (s: string) => s;
+import type { Locale } from "@acme/i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import RevokeSessionButton from "./RevokeSessionButton";
 import { revoke } from "../../actions/revokeSession";
 
@@ -14,13 +15,15 @@ export interface SessionsPageProps {
   callbackUrl?: string;
 }
 
-export const metadata = { title: t("Sessions") };
+// i18n-exempt — static metadata; app-level routes localize this
+export const metadata = { title: "Sessions" };
 
 export default async function SessionsPage({
   title,
   callbackUrl = "/account/sessions",
 }: SessionsPageProps = {}) {
   const { getCustomerSession, listSessions, hasPermission } = await import("@auth");
+  const t = await getServerTranslations("en" as Locale);
   const session = await getCustomerSession();
   if (!session) {
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
@@ -39,7 +42,7 @@ export default async function SessionsPage({
           <li key={s.sessionId} className="flex items-center justify-between rounded border p-4">
             <div>
               <div>{s.userAgent}</div>
-              <div className="text-sm text-muted" data-token="--color-muted">
+              <div className="text-sm text-muted" data-token="--color-muted"> {/* i18n-exempt — formatted timestamp */}
                 {s.createdAt.toISOString()}
               </div>
             </div>

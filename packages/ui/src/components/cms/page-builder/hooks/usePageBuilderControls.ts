@@ -8,6 +8,7 @@ import { devicePresets, getLegacyPreset, type DevicePreset, findDevicePresetById
 import { usePreviewDevice } from "../../../../hooks";
 import useViewport from "./useViewport";
 import { Step, CallBackProps, STATUS } from "../PageBuilderTour";
+import useLocalStrings from "./useLocalStrings";
 
 interface Params {
   state: HistoryState;
@@ -71,6 +72,15 @@ const toStoredEditingSize = (
   return stored;
 };
 
+type Breakpoint = { id: string; label: string; min?: number; max?: number };
+
+const coerceBreakpoints = (value: unknown): Breakpoint[] => {
+  if (!Array.isArray(value)) return [];
+  return value.filter((bp): bp is Breakpoint =>
+    bp && typeof bp === "object" && typeof (bp as Breakpoint).id === "string" && typeof (bp as Breakpoint).label === "string"
+  );
+};
+
 const usePageBuilderControls = ({ state, dispatch }: Params) => {
   const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
@@ -79,16 +89,16 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
 
   // Custom breakpoints (stored in HistoryState via layout.schema passthrough)
   const breakpoints = useMemo(
-    () => ((state as any).breakpoints ?? []) as { id: string; label: string; min?: number; max?: number }[],
+    () => coerceBreakpoints((state as Record<string, unknown>).breakpoints),
     [state]
   );
   const extraDevices = useMemo<DevicePreset[]>(() => {
-    const mapWidth = (bp: any): number => {
+    const mapWidth = (bp: Breakpoint): number => {
       const base = (typeof bp.max === 'number' && bp.max > 0) ? bp.max : (typeof bp.min === 'number' ? bp.min : 1024);
       return Math.max(320, Math.min(1920, base));
     };
     const toType = (w: number): DevicePreset["type"] => (w >= 1024 ? "desktop" : w >= 768 ? "tablet" : "mobile");
-    return (breakpoints as any[]).map((bp) => {
+    return breakpoints.map((bp) => {
       const width = mapWidth(bp);
       const type = toType(width);
       const id = `bp-${bp.id}`;
@@ -112,8 +122,8 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
   const [pageEditingSize, setPageEditingSize] = useState<EditingSizeState>(() => makeEmptyEditingSize());
   const pinnedGlobal = useMemo(() => {
     const editorMap = state.editor ?? {};
-    for (const [id, flags] of Object.entries(editorMap as Record<string, any>)) {
-      const globalMeta = (flags as Record<string, any>)?.global;
+    for (const [id, flags] of Object.entries(editorMap as Record<string, import("../state/layout/types").EditorFlags>)) {
+      const globalMeta = flags?.global;
       if (globalMeta?.pinned) {
         return { id, meta: globalMeta as Record<string, unknown> };
       }
@@ -134,13 +144,14 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
         }
         const nextRecord: EditingSizeState = { ...pinnedEditingSize, [viewport]: normalized };
         const stored = toStoredEditingSize(nextRecord);
-        const nextGlobal = { ...(pinnedGlobal.meta as Record<string, unknown>) };
+        const nextGlobal: NonNullable<import("../state/layout/types").EditorFlags["global"]> = { id: pinnedGlobal.id };
+        Object.assign(nextGlobal, (pinnedGlobal.meta ?? {}) as Record<string, unknown>);
         if (Object.keys(stored).length === 0) {
           delete nextGlobal.editingSize;
         } else {
           nextGlobal.editingSize = stored;
         }
-        dispatch({ type: "update-editor", id: pinnedGlobal.id, patch: { global: nextGlobal } as any });
+        dispatch({ type: "update-editor", id: pinnedGlobal.id, patch: { global: nextGlobal } });
         return;
       }
       setPageEditingSize((prev) => {
@@ -175,26 +186,27 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
   );
 
   const [runTour, setRunTour] = useState(false);
+  const t = useLocalStrings();
   const tourSteps = useMemo<Step[]>(
     () => [
       {
-        target: "[data-tour='palette']",
-        content: "Drag components from the palette onto the canvas.",
+        target: "[data-tour='palette']", // i18n-exempt: CSS selector, not user-facing copy
+        content: t("tour_palette"),
       },
       {
-        target: "[data-tour='toolbar']",
-        content: "Use the toolbar to change device, locale, and more.",
+        target: "[data-tour='toolbar']", // i18n-exempt: CSS selector, not user-facing copy
+        content: t("tour_toolbar"),
       },
       {
-        target: "[data-tour='canvas']",
-        content: "Arrange and edit components on the canvas.",
+        target: "[data-tour='canvas']", // i18n-exempt: CSS selector, not user-facing copy
+        content: t("tour_canvas"),
       },
       {
-        target: "[data-tour='sidebar']",
-        content: "Edit the selected component's settings in this sidebar.",
+        target: "[data-tour='sidebar']", // i18n-exempt: CSS selector, not user-facing copy
+        content: t("tour_sidebar"),
       },
     ],
-    []
+    [t]
   );
   const handleTourCallback = useCallback((data: CallBackProps) => {
     if (data.status === STATUS.FINISHED || data.status === STATUS.SKIPPED) {
@@ -244,7 +256,10 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
   const [baselineStep, setBaselineStep] = useState(8);
   const toggleBaseline = useCallback(() => setShowBaseline((s) => !s), []);
 
-  const setBreakpoints = useCallback((list: any[]) => dispatch({ type: "set-breakpoints", breakpoints: list } as any), [dispatch]);
+  const setBreakpoints = useCallback(
+    (list: Breakpoint[]) => dispatch({ type: "set-breakpoints", breakpoints: list }),
+    [dispatch]
+  );
 
   // Cross-breakpoint notifications (show indicators for overrides)
   const [crossBreakpointNotices, setCrossBreakpointNotices] = useState(true);

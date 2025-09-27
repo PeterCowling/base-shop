@@ -32,7 +32,7 @@ describe("useInView", () => {
       observe: (el: Element) => {
         observed = el;
         // simulate an intersecting entry immediately
-        // @ts-ignore
+        // @ts-expect-error: using a minimal mock callback signature for tests
         mockIOcb?.([{ isIntersecting: true }]);
       },
       disconnect: jest.fn(),

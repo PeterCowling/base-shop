@@ -22,6 +22,8 @@ import {
   type SubmissionStatus,
   type ValidationErrors,
 } from "../shared";
+import { useTranslations } from "@acme/i18n";
+import { Inline } from "../../../atoms/primitives";
 
 export interface CampaignWizardMessages extends CampaignFormMessages {
   complete?: string;
@@ -37,26 +39,28 @@ export interface CampaignWizardProps {
   className?: string;
 }
 
+// i18n-exempt — step copy is translated at render-time via useTranslations
+/* i18n-exempt */
 const wizardSteps: StepDefinition[] = [
   {
     id: "plan",
-    label: "Plan",
-    description: "Define goals, KPIs, and the campaign overview.",
+    label: "Plan", // i18n-exempt: translated at render time
+    description: "Define goals, KPIs, and the campaign overview.", // i18n-exempt: translated at render time
   },
   {
     id: "audience",
-    label: "Audience",
-    description: "Choose who should receive this campaign.",
+    label: "Audience", // i18n-exempt: translated at render time
+    description: "Choose who should receive this campaign.", // i18n-exempt: translated at render time
   },
   {
     id: "schedule",
-    label: "Schedule",
-    description: "Confirm flight dates before review.",
+    label: "Schedule", // i18n-exempt: translated at render time
+    description: "Confirm flight dates before review.", // i18n-exempt: translated at render time
   },
   {
     id: "review",
-    label: "Review",
-    description: "Double-check details and submit for approval.",
+    label: "Review", // i18n-exempt: translated at render time
+    description: "Double-check details and submit for approval.", // i18n-exempt: translated at render time
   },
 ];
 
@@ -71,10 +75,12 @@ export function CampaignWizard({
   onSubmit,
   validationErrors,
   onPreviewChange,
-  finishLabel = "Submit for approval",
+  finishLabel,
   messages,
   className,
 }: CampaignWizardProps) {
+  const t = useTranslations();
+  const resolvedFinishLabel = (finishLabel ?? t("Submit for approval")) as string;
   const [values, setValues] = useState<CampaignFormValues>({
     ...defaultCampaignValues,
     ...initialValues,
@@ -103,6 +109,18 @@ export function CampaignWizard({
   }, [preview, onPreviewChange]);
 
   const currentStep = wizardSteps[stepIndex];
+  const steps = useMemo<StepDefinition[]>(
+    () =>
+      wizardSteps.map((s) => ({
+        ...s,
+        label: t(s.label) as string,
+        description:
+          typeof s.description === "string"
+            ? (t(s.description) as string)
+            : s.description,
+      })),
+    [t]
+  );
   const sectionsForStep = useMemo(
     () => stepSections[currentStep?.id] ?? [],
     [currentStep]
@@ -131,7 +149,8 @@ export function CampaignWizard({
       setToast({
         open: true,
         message:
-          messages?.complete ?? "Campaign wizard completed. Ready for launch.",
+          messages?.complete ??
+          (t("Campaign wizard completed. Ready for launch.") as string),
       });
       return;
     }
@@ -143,14 +162,14 @@ export function CampaignWizard({
       setToast({
         open: true,
         message:
-          messages?.complete ?? "Campaign submitted for approval.",
+          messages?.complete ?? (t("Campaign submitted for approval.") as string),
       });
     } catch (error) {
       setStatus("error");
       const fallback =
         error instanceof Error
           ? error.message
-          : messages?.error ?? "Unable to finalize campaign.";
+          : messages?.error ?? (t("Unable to finalize campaign.") as string);
       setToast({
         open: true,
         message: messages?.error ?? fallback,
@@ -161,7 +180,7 @@ export function CampaignWizard({
   return (
     <div className={cn("space-y-6", className)}>
       <StepIndicator
-        steps={wizardSteps}
+        steps={steps}
         currentStep={stepIndex}
         onStepSelect={(index) => {
           if (index <= stepIndex) {
@@ -171,35 +190,35 @@ export function CampaignWizard({
       />
 
       {currentStep?.id === "review" ? (
-        <div className="grid gap-4 lg:grid-cols-[2fr,1fr]">
-          <CampaignPreviewPanel data={preview} />
+        <div className="grid gap-4 lg:grid-cols-3">
+          <CampaignPreviewPanel data={preview} className="lg:col-span-2" />
           <CampaignSummaryCard
             data={preview}
-            statusLabel={status === "success" ? "Approved" : "Pending"}
+            statusLabel={status === "success" ? (t("Approved") as string) : (t("Pending") as string)}
             statusTone={status === "success" ? "success" : "warning"}
             actions={
               <Button
                 variant="outline"
                 onClick={() => goToStep(stepIndex - 1)}
               >
-                Back
+                {t("Back")}
               </Button>
             }
             footer={
-              <div className="flex flex-wrap justify-end gap-2">
+              <Inline className="justify-end" gap={2}>
                 <Button
                   variant="outline"
                   onClick={() => goToStep(stepIndex - 1)}
                 >
-                  Edit details
+                  {t("Edit details")}
                 </Button>
                 <Button
                   onClick={handleFinish}
                   disabled={status === "submitting"}
                 >
-                  {status === "submitting" ? "Submitting…" : finishLabel}
+                  {status === "submitting" ? (t("Submitting…") as string) : resolvedFinishLabel}
                 </Button>
-              </div>
+              </Inline>
             }
           />
         </div>
@@ -214,21 +233,21 @@ export function CampaignWizard({
           onPreviewChange={handlePreview}
           submitLabel={
             stepIndex === wizardSteps.length - 2
-              ? "Review campaign"
-              : "Continue"
+              ? (t("Review campaign") as string)
+              : (t("Continue") as string)
           }
           secondaryAction={
             stepIndex > 0
               ? {
-                  label: "Back",
+                  label: t("Back") as string,
                   onClick: () => goToStep(stepIndex - 1),
                 }
               : undefined
           }
           messages={{
-            success: messages?.success ?? "Step saved",
+            success: messages?.success ?? (t("Step saved") as string),
             validation:
-              messages?.validation ?? "Please resolve validation errors.",
+              messages?.validation ?? (t("Please resolve validation errors.") as string),
             error: messages?.error,
           }}
         />

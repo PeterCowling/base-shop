@@ -13,11 +13,13 @@ function filePath(shop: string): string {
 
 async function ensureDir(shop: string): Promise<void> {
   shop = validateShopName(shop);
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 path uses validated shop and trusted base
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
 async function read(shop: string): Promise<Coupon[]> {
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
     const buf = await fs.readFile(filePath(shop), "utf8");
     try {
       return couponSchema.array().parse(JSON.parse(buf));
@@ -35,7 +37,9 @@ async function read(shop: string): Promise<Coupon[]> {
 async function write(shop: string, coupons: Coupon[]): Promise<void> {
   await ensureDir(shop);
   const tmp = `${filePath(shop)}.${Date.now()}.tmp`;
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
   await fs.writeFile(tmp, JSON.stringify(coupons, null, 2), "utf8");
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
   await fs.rename(tmp, filePath(shop));
 }
 
@@ -55,4 +59,3 @@ export const jsonCouponsRepository: CouponsRepository = {
   write,
   getByCode,
 };
-

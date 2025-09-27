@@ -36,11 +36,11 @@ const allowNonStringTtlImport =
 if (envHasNonStringTtl(process.env) && !allowNonStringTtlImport) {
   const formatted = {
     AUTH_TOKEN_TTL: {
-      _errors: ["AUTH_TOKEN_TTL must be a string like '60s' or '15m'"],
+      _errors: ["AUTH_TOKEN_TTL must be a string like '60s' or '15m'"], // i18n-exempt: developer-only config validation message
     },
   };
-  console.error("❌ Invalid auth environment variables:", formatted);
-  throw new Error("Invalid auth environment variables");
+  console.error("❌ Invalid auth environment variables:", formatted); // i18n-exempt: developer log
+  throw new Error("Invalid auth environment variables"); // i18n-exempt: developer error
 }
 
 const rawTTL = (process.env as Record<string, unknown>).AUTH_TOKEN_TTL;
@@ -67,13 +67,13 @@ const parseTTL = (val: string) => {
 const printableAscii = /^[\x20-\x7E]+$/;
 const strongSecret = z
   .string()
-  .min(32, { message: "must be at least 32 characters" })
+  .min(32, { message: "must be at least 32 characters" }) // i18n-exempt: validation copy (non-UI)
   .refine((val) => printableAscii.test(val), {
-    message: "must contain only printable ASCII characters",
+    message: "must contain only printable ASCII characters", // i18n-exempt: validation copy (non-UI)
   });
 
-const DEV_NEXTAUTH_SECRET = "dev-nextauth-secret-32-chars-long-string!";
-const DEV_SESSION_SECRET = "dev-session-secret-32-chars-long-string!";
+const DEV_NEXTAUTH_SECRET = "dev-nextauth-secret-32-chars-long-string!"; // i18n-exempt: dev-only default secret
+const DEV_SESSION_SECRET = "dev-session-secret-32-chars-long-string!"; // i18n-exempt: dev-only default secret
 const DEFAULT_TOKEN_AUDIENCE = "base-shop";
 const DEFAULT_TOKEN_ISSUER = "base-shop";
 
@@ -116,7 +116,7 @@ const baseSchema = z.object({
     .preprocess((v) => (typeof v === "number" ? undefined : v), z.string().optional())
     .default("15m")
     .refine((val) => ttlRegex.test(val), {
-      message: "AUTH_TOKEN_TTL must be a string like '60s' or '15m'",
+      message: "AUTH_TOKEN_TTL must be a string like '60s' or '15m'", // i18n-exempt: validation copy (non-UI)
     })
     .transform(parseTTL),
   TOKEN_ALGORITHM: z.enum(["HS256", "RS256"]).default("HS256"),
@@ -133,7 +133,7 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
         code: z.ZodIssueCode.custom,
         path: ["UPSTASH_REDIS_REST_URL"],
         message:
-          "UPSTASH_REDIS_REST_URL is required when SESSION_STORE=redis",
+          "UPSTASH_REDIS_REST_URL is required when SESSION_STORE=redis", // i18n-exempt: validation copy (non-UI)
       });
     }
     if (!env.UPSTASH_REDIS_REST_TOKEN) {
@@ -141,7 +141,7 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
         code: z.ZodIssueCode.custom,
         path: ["UPSTASH_REDIS_REST_TOKEN"],
         message:
-          "UPSTASH_REDIS_REST_TOKEN is required when SESSION_STORE=redis",
+          "UPSTASH_REDIS_REST_TOKEN is required when SESSION_STORE=redis", // i18n-exempt: validation copy (non-UI)
       });
     }
   }
@@ -154,7 +154,7 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
         code: z.ZodIssueCode.custom,
         path: ["LOGIN_RATE_LIMIT_REDIS_URL"],
         message:
-          "LOGIN_RATE_LIMIT_REDIS_URL is required when LOGIN_RATE_LIMIT_REDIS_TOKEN is set",
+          "LOGIN_RATE_LIMIT_REDIS_URL is required when LOGIN_RATE_LIMIT_REDIS_TOKEN is set", // i18n-exempt: validation copy (non-UI)
       });
     }
     if (!hasRateToken) {
@@ -162,7 +162,7 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
         code: z.ZodIssueCode.custom,
         path: ["LOGIN_RATE_LIMIT_REDIS_TOKEN"],
         message:
-          "LOGIN_RATE_LIMIT_REDIS_TOKEN is required when LOGIN_RATE_LIMIT_REDIS_URL is set",
+          "LOGIN_RATE_LIMIT_REDIS_TOKEN is required when LOGIN_RATE_LIMIT_REDIS_URL is set", // i18n-exempt: validation copy (non-UI)
       });
     }
   }
@@ -172,7 +172,7 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["JWT_SECRET"],
-        message: "JWT_SECRET is required when AUTH_PROVIDER=jwt",
+        message: "JWT_SECRET is required when AUTH_PROVIDER=jwt", // i18n-exempt: validation copy (non-UI)
       });
     }
   }
@@ -181,14 +181,14 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["OAUTH_CLIENT_ID"],
-        message: "OAUTH_CLIENT_ID is required when AUTH_PROVIDER=oauth",
+        message: "OAUTH_CLIENT_ID is required when AUTH_PROVIDER=oauth", // i18n-exempt: validation copy (non-UI)
       });
     }
     if (!env.OAUTH_CLIENT_SECRET) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["OAUTH_CLIENT_SECRET"],
-        message: "OAUTH_CLIENT_SECRET is required when AUTH_PROVIDER=oauth",
+        message: "OAUTH_CLIENT_SECRET is required when AUTH_PROVIDER=oauth", // i18n-exempt: validation copy (non-UI)
       });
     }
   }
@@ -224,11 +224,11 @@ export function loadAuthEnv(
     if (!opts?.allowNumericTtl) {
       const formatted = {
         AUTH_TOKEN_TTL: {
-          _errors: ["AUTH_TOKEN_TTL must be a string like '60s' or '15m'"],
+          _errors: ["AUTH_TOKEN_TTL must be a string like '60s' or '15m'"], // i18n-exempt: developer-only config validation message
         },
       };
-      console.error("❌ Invalid auth environment variables:", formatted);
-      throw new Error("Invalid auth environment variables");
+      console.error("❌ Invalid auth environment variables:", formatted); // i18n-exempt: developer log
+      throw new Error("Invalid auth environment variables"); // i18n-exempt: developer error
     }
     delete effectiveRaw.AUTH_TOKEN_TTL;
   }
@@ -236,10 +236,10 @@ export function loadAuthEnv(
   const parsed = authEnvSchema.safeParse(effectiveRaw);
   if (!parsed.success) {
     console.error(
-      "❌ Invalid auth environment variables:",
+      "❌ Invalid auth environment variables:", // i18n-exempt: developer log
       parsed.error.format(),
-    );
-    throw new Error("Invalid auth environment variables");
+    ); // i18n-exempt: developer log
+    throw new Error("Invalid auth environment variables"); // i18n-exempt: developer error
   }
   return {
     ...parsed.data,
@@ -267,6 +267,6 @@ export const authEnv: AuthEnv = new Proxy({} as AuthEnv, {
 }) as AuthEnv;
 
 if (isProd && !skipEagerValidation) {
-  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- ENG-1234 eager-parse in prod to fail fast
   authEnv.NEXTAUTH_SECRET;
 }

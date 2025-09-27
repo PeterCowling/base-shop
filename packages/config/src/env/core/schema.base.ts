@@ -26,37 +26,37 @@ export const baseEnvSchema = z
     DEPOSIT_RELEASE_ENABLED: z
       .string()
       .refine((v) => v === "true" || v === "false", {
-        message: "must be true or false",
+        message: "must be true or false", // i18n-exempt: validation copy (non-UI)
       })
       .transform((v) => v === "true")
       .optional(),
     DEPOSIT_RELEASE_INTERVAL_MS: z
       .string()
-      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
+      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" }) // i18n-exempt: validation copy (non-UI)
       .transform((v) => Number(v))
       .optional(),
     REVERSE_LOGISTICS_ENABLED: z
       .string()
       .refine((v) => v === "true" || v === "false", {
-        message: "must be true or false",
+        message: "must be true or false", // i18n-exempt: validation copy (non-UI)
       })
       .transform((v) => v === "true")
       .optional(),
     REVERSE_LOGISTICS_INTERVAL_MS: z
       .string()
-      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
+      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" }) // i18n-exempt: validation copy (non-UI)
       .transform((v) => Number(v))
       .optional(),
     LATE_FEE_ENABLED: z
       .string()
       .refine((v) => v === "true" || v === "false", {
-        message: "must be true or false",
+        message: "must be true or false", // i18n-exempt: validation copy (non-UI)
       })
       .transform((v) => v === "true")
       .optional(),
     LATE_FEE_INTERVAL_MS: z
       .string()
-      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
+      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" }) // i18n-exempt: validation copy (non-UI)
       .transform((v) => Number(v))
       .optional(),
     OPENAI_API_KEY: z.string().optional(),

@@ -17,6 +17,8 @@ async function loadComponents(): Promise<PageComponent[]> {
       "pages",
       "home.json"
     );
+    // The file path is constructed from trusted config (shop.id) and static segments.
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Path is derived from vetted configuration, not user input.
     const json = await fs.readFile(file, "utf8");
     const data = JSON.parse(json);
     return Array.isArray(data)

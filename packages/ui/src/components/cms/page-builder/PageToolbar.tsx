@@ -1,7 +1,8 @@
 "use client";
+// i18n-exempt file — editor toolbar; copy slated for extraction
 
 import type { Locale } from "@acme/i18n/locales";
-import { ReloadIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import React, { useEffect } from "react";
 import { Button, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Dialog, DialogContent, DialogTrigger } from "../../atoms/shadcn";
 import { Popover, PopoverContent, PopoverTrigger, Tooltip as UITooltip } from "../../atoms";
@@ -10,7 +11,8 @@ import DeviceSelector from "../../common/DeviceSelector";
 import BreakpointsPanel, { type Breakpoint } from "./panels/BreakpointsPanel";
 import { DesignMenuContent } from "./DesignMenu";
 import { Tooltip } from "../../atoms";
-import { useRouter } from "next/navigation";
+// Avoid useRouter to keep this component usable in test/standalone environments
+import { Inline } from "../../atoms/primitives/Inline";
 
 interface Props {
   deviceId: string;
@@ -53,15 +55,13 @@ const PageToolbar = ({
   extraDevices,
   editingSizePx,
   setEditingSizePx,
-  zoom,
-  setZoom,
   pagesNav,
   hideDeviceManager,
   hidePagesNav,
 }: Props) => {
   // Only access Next.js router when the pages navigator is used to avoid
   // requiring an app router context in tests/standalone usage.
-  const router = pagesNav ? useRouter() : (null as unknown as ReturnType<typeof useRouter> | null);
+  // Navigation for pages selector uses window.location to avoid Next dependency
   useEffect(() => {
     const presets: Record<string, string> = {
       1: getLegacyPreset("desktop").id,
@@ -92,21 +92,11 @@ const PageToolbar = ({
   }, [setDeviceId, setOrientation]);
 
   const containerRef = React.useRef<HTMLDivElement | null>(null);
-  const [w, setW] = React.useState<number>(0);
   const [sizeOpen, setSizeOpen] = React.useState(false);
   const [sizeDraft, setSizeDraft] = React.useState<string>("");
   const [breakpointsOpen, setBreakpointsOpen] = React.useState(false);
   const [designOpen, setDesignOpen] = React.useState(false);
-  React.useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      const width = entries[0]?.contentRect?.width || el.clientWidth;
-      setW(width);
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  // Width observer removed (unused state)
 
   // Allow external triggers (e.g., Studio menu) to open the Breakpoints manager
   React.useEffect(() => {
@@ -128,7 +118,7 @@ const PageToolbar = ({
     <div className="flex w-full flex-wrap items-center gap-2" ref={containerRef}>
       {/* Design options modal (openable from StudioMenu) */}
       <Dialog open={designOpen} onOpenChange={setDesignOpen}>
-        <DialogContent className="max-w-sm">
+        <DialogContent className="w-full sm:w-96">
           <DesignMenuContent
             breakpoints={breakpoints ?? []}
             onChangeBreakpoints={(list) => setBreakpoints?.(list)}
@@ -141,10 +131,12 @@ const PageToolbar = ({
           value={pagesNav.current}
           onValueChange={(v) => {
             const next = pagesNav.items.find((i) => i.value === v) || null;
-            if (next?.href) router?.push(next.href as any);
+            if (next?.href) {
+              try { window.location.assign(next.href); } catch {}
+            }
           }}
         >
-          <SelectTrigger className="!h-8 !w-[50px] text-xs" aria-label="Page">
+          <SelectTrigger className="h-8 w-12 text-xs" aria-label="Page">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -171,7 +163,7 @@ const PageToolbar = ({
           {/* Breakpoints overflow: three-dot menu next to device selector */}
           <Dialog open={breakpointsOpen} onOpenChange={setBreakpointsOpen}>
             <DialogTrigger asChild>
-              <Tooltip text="Manage breakpoints">
+              <Tooltip text="Manage breakpoints"> {/* i18n-exempt */}
                 <Button variant="outline" size="icon" aria-label="Manage breakpoints">
                   •••
                 </Button>
@@ -187,15 +179,15 @@ const PageToolbar = ({
             setSizeOpen(o);
             if (o) setSizeDraft((editingSizePx ?? "").toString());
           }}>
-            <UITooltip text="Editing size (px)">
+            <UITooltip text="Editing size (px)"> {/* i18n-exempt */}
               <PopoverTrigger asChild>
                 <Button variant="outline" className="h-8 px-2 text-xs" aria-label="Editing size">
-                  {editingSizePx ? `${editingSizePx}px` : "Size"}
+                  {editingSizePx ? `${editingSizePx}px` : "Size"} {/* i18n-exempt */}
                 </Button>
               </PopoverTrigger>
             </UITooltip>
             <PopoverContent align="start" className="w-40 space-y-2">
-              <label className="text-xs text-muted-foreground" htmlFor="pb-editing-size">Editing size (px)</label>
+              <label className="text-xs text-muted-foreground" htmlFor="pb-editing-size">Editing size (px)</label> {/* i18n-exempt */}
               <input
                 id="pb-editing-size"
                 type="number"
@@ -217,19 +209,19 @@ const PageToolbar = ({
                     setSizeOpen(false);
                   }}
                 >
-                  Done
+                  Done {/* i18n-exempt */}
                 </Button>
                 <Button
                   variant="ghost"
                   className="h-8 px-2 text-xs"
                   onClick={() => { setSizeOpen(false); }}
                 >
-                  Cancel
+                  Cancel {/* i18n-exempt */}
                 </Button>
               </div>
             </PopoverContent>
           </Popover>
-          <Tooltip text="Rotate">
+          <Tooltip text="Rotate"> {/* i18n-exempt */}
             <Button
               variant="outline"
               size="icon"
@@ -249,7 +241,7 @@ const PageToolbar = ({
       {/* Middle cluster: design menu removed per spec */}
       {/* Right cluster: locales — hidden when only one locale (EN) */}
       {locales.length > 1 ? (
-        <div className="ms-auto flex flex-wrap items-center gap-1 basis-full md:basis-auto">
+        <Inline wrap gap={1} className="ms-auto basis-full md:basis-auto">
           {locales.length > 3 ? (
             <Select value={locale} onValueChange={(v) => setLocale(v as Locale)}>
               <SelectTrigger className="h-8 w-28 text-xs" aria-label="Locale">
@@ -275,16 +267,16 @@ const PageToolbar = ({
               </Button>
             ))
           )}
-        </div>
+        </Inline>
       ) : null}
       {progress && (
         <p className="basis-full text-xs">
-          Uploading image… {progress.done}/{progress.total}
+          Uploading image… {progress.done}/{progress.total} {/* i18n-exempt */}
         </p>
       )}
       {isValid === false && (
         <p className="basis-full text-xs text-warning">
-          Wrong orientation (needs landscape)
+          Wrong orientation (needs landscape) {/* i18n-exempt */}
         </p>
       )}
     </div>

@@ -35,7 +35,10 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
     setShowPalette,
     globalsOpen,
     setGlobalsOpen,
+    // Unused in this layout; dialogs handle own state
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- PB-000: state managed by PageBuilderDialogs
     fontsOpen,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- PB-000: state managed by PageBuilderDialogs
     setFontsOpen,
     cmsOpen,
     setCmsOpen,
@@ -98,8 +101,8 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
     mode = "page",
   } = props;
 
-  const breakpoints = (toolbarProps as any)?.breakpoints;
-  const setBreakpoints = (toolbarProps as any)?.setBreakpoints;
+  const breakpoints = toolbarProps?.breakpoints;
+  const setBreakpoints = toolbarProps?.setBreakpoints;
 
   return (
     <>

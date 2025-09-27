@@ -56,7 +56,7 @@ describe("SearchBar component", () => {
     render(<SearchBar suggestions={["apple", "banana"]} label="Search" />);
     const input = screen.getByRole("searchbox", { name: "Search" });
     await userEvent.type(input, "a");
-    let options = await screen.findAllByRole("option");
+    const options = await screen.findAllByRole("option");
     expect(options).toHaveLength(2);
     await userEvent.clear(input);
     await waitFor(() => {
@@ -64,4 +64,3 @@ describe("SearchBar component", () => {
     });
   });
 });
-

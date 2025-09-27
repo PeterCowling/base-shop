@@ -1,6 +1,7 @@
 "use client";
 
 import { memo } from "react";
+import { useTranslations } from "@acme/i18n";
 import useBlockItemMetadata from "./useBlockItemMetadata";
 import useBlockItemInlineEditing from "./useBlockItemInlineEditing";
 import useBlockItemInteractions from "./useBlockItemInteractions";
@@ -45,6 +46,7 @@ const BlockItem = memo(function BlockItemComponent({
   insertIndex,
   preferParentOnClick = false,
 }: Props) {
+  const t = useTranslations();
   const { selected, flags, effLocked, effZIndex, hiddenList, isHiddenHere } = useBlockItemMetadata({
     component,
     selectedIds,
@@ -96,10 +98,27 @@ const BlockItem = memo(function BlockItemComponent({
   });
 
   const selectableId = preferParentOnClick && parentId ? parentId : component.id;
-  const childComponents = (component as any).children as any;
+  const childComponents = (component as { children?: import("@acme/types").PageComponent[] }).children;
+
+  // Compose wrapper class (utility classes only) outside JSX to avoid i18n rule noise.
+  const wrapperClass =
+    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+    "hover:border-primary relative rounded border hover:border-dashed" +
+    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+    (selected ? " ring-2 ring-blue-500" : "") +
+    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+    (overlay.snapping ? " border-primary" : "") +
+    (dnd.isOver || dnd.isDragging
+      ? dropAllowed === false
+        // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+        ? " border-danger border-dashed cursor-not-allowed"
+        // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2462: utility classNames; not user-visible copy
+        : " border-primary border-dashed"
+      : "");
 
   return (
-    <div
+    <>
+      <div
       ref={dnd.setNodeRef}
       onClick={(event) => onSelect(selectableId, event)}
       onContextMenu={(event) => {
@@ -107,37 +126,28 @@ const BlockItem = memo(function BlockItemComponent({
         openContextMenu(event);
       }}
       role="listitem"
-      aria-label="Canvas item"
+      aria-label={t("Canvas item") as string}
       tabIndex={0}
-      id={(component as any).anchorId || undefined}
+      id={(component as { anchorId?: string }).anchorId || undefined}
       data-component-id={component.id}
       data-pb-contextmenu-trigger
       onKeyDown={buildBlockKeyDownHandler({
         locked: !!effLocked,
         inlineEditing: !!inline?.editing,
-        containerRef: dnd.containerRef as any,
+        containerRef: dnd.containerRef,
         gridEnabled: !!gridEnabled,
         gridCols,
         nudgeSpacingByKeyboard: spacing.nudgeSpacingByKeyboard,
         nudgeResizeByKeyboard: resize.nudgeByKeyboard,
         parentSlots,
         parentType,
-        currSlotKey: (component as any).slotKey as any,
+        currSlotKey: (component as { slotKey?: string }).slotKey,
         componentId: component.id,
         dispatch,
         viewport,
       })}
       style={style}
-      className={
-        "hover:border-primary relative rounded border hover:border-dashed" +
-        (selected ? " ring-2 ring-blue-500" : "") +
-        (overlay.snapping ? " border-primary" : "") +
-        (dnd.isOver || dnd.isDragging
-          ? dropAllowed === false
-            ? " border-danger border-dashed cursor-not-allowed"
-            : " border-primary border-dashed"
-          : "")
-      }
+      className={wrapperClass}
     >
       <DragHandle
         attributes={dnd.attributes}
@@ -153,7 +163,8 @@ const BlockItem = memo(function BlockItemComponent({
         }}
       />
       {effLocked && (
-        <div className="absolute end-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
+        // eslint-disable-next-line ds/absolute-parent-guard -- PB-2460: Positioned under relative parent; rule mis-detects due to dynamic class concatenation.
+        <div className="absolute end-1 top-1 text-xs" title={t("Locked") as string} aria-hidden>
           <LockClosedIcon />
         </div>
       )}
@@ -173,11 +184,11 @@ const BlockItem = memo(function BlockItemComponent({
         component={{
           ...component,
           pbViewport: viewport,
-        } as any}
+        } as import("@acme/types").PageComponent & { pbViewport?: "desktop" | "tablet" | "mobile" }}
         locale={locale}
         isInlineEditableButton={isInlineEditableButton}
-        inline={inline as any}
-        dispatch={dispatch as any}
+        inline={inline}
+        dispatch={dispatch}
       />
       <ImageEditingOverlays enabled={selected && !effLocked} component={component} dispatch={dispatch} />
       <BlockResizer
@@ -201,7 +212,7 @@ const BlockItem = memo(function BlockItemComponent({
       <DeleteButton locked={!!effLocked} onRemove={onRemove} />
       <ZIndexMenu
         componentId={component.id}
-        currentZ={(flags as any).zIndex as number | undefined}
+        currentZ={effZIndex as number | undefined}
         dispatch={dispatch}
       />
       <BlockChildren
@@ -220,8 +231,8 @@ const BlockItem = memo(function BlockItemComponent({
         baselineSnap={baselineSnap}
         baselineStep={baselineStep}
         dropAllowed={dropAllowed}
-        insertParentId={insertParentId as any}
-        insertIndex={insertIndex as any}
+        insertParentId={insertParentId}
+        insertIndex={insertIndex}
         editor={editor}
         preferParentOnClick={preferParentOnClick}
       />
@@ -234,7 +245,8 @@ const BlockItem = memo(function BlockItemComponent({
         dispatch={dispatch}
       />
       <ContextMenu x={ctxPos.x} y={ctxPos.y} open={ctxOpen} onClose={closeContextMenu} items={ctxItems} />
-    </div>
+      </div>
+    </>
   );
 });
 

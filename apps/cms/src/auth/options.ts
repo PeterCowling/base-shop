@@ -38,12 +38,16 @@ export function createAuthOptions(
 
     providers: [
       Credentials({
+        // i18n-exempt — provider name unused with custom sign-in page
         name: "Credentials",
         credentials: {
+          // i18n-exempt — labels only used by NextAuth default page; app uses /login
           email: { label: "Email", type: "text" },
+          // i18n-exempt — see above
           password: { label: "Password", type: "password" },
         },
         async authorize(credentials) {
+          // i18n-exempt — log/debug string
           logger.debug("[auth] authorize called");
 
           if (!credentials) return null;
@@ -52,6 +56,7 @@ export function createAuthOptions(
           const user = Object.values(users).find(
             (u) => u.email === credentials.email
           );
+          // i18n-exempt — log/debug string
           logger.debug("[auth] user lookup", { found: Boolean(user) });
 
           /* -------------------------------------------------------------- */
@@ -63,7 +68,9 @@ export function createAuthOptions(
             process.env.NODE_ENV === "development" && user?.id === "1";
 
           if (user && !isDevFixture && !user.password.startsWith("$argon2")) {
+            // i18n-exempt — ops log
             console.log("[auth] user password is not hashed", { id: user.id });
+            // i18n-exempt — surfaced via client mapping; tests assert this literal
             throw new Error("Invalid email or password");
           }
 
@@ -75,17 +82,20 @@ export function createAuthOptions(
 
           if (ok && user) {
             /* Strip the password before returning */
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+             
             const { password: _pw, ...safeUser } = user;
             const r = roles[user.id];
             const role = Array.isArray(r) ? (r[0] as Role) : (r as Role);
 
+            // i18n-exempt — log/info string
             logger.info("[auth] login success", { userId: user.id, role });
 
             return { ...safeUser, role };
           }
 
+          // i18n-exempt — log/warn string
           logger.warn("[auth] login failed");
+          // i18n-exempt — surfaced via client mapping; tests assert this literal
           throw new Error("Invalid email or password");
         },
       }),
@@ -97,6 +107,7 @@ export function createAuthOptions(
       async jwt({ token, user }) {
         if (user) {
           const u = user as typeof user & { role: Role };
+          // i18n-exempt — log/debug string
           logger.debug("[auth] jwt assign role", { role: u.role });
           const t = token as JWT & { role: Role } & { id?: string };
           t.role = u.role;
@@ -111,6 +122,7 @@ export function createAuthOptions(
 
       async session({ session, token }) {
         const role = (token as JWT & { role?: Role }).role;
+        // i18n-exempt — log/debug string
         logger.debug("[auth] session role", { role });
 
         if (role) {

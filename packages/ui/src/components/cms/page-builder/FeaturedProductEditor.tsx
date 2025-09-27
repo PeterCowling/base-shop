@@ -1,4 +1,5 @@
 import { Input } from "../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 type FeaturedProductComponent = {
   type: "FeaturedProduct";
@@ -12,17 +13,18 @@ interface Props {
 }
 
 export default function FeaturedProductEditor({ component, onChange }: Props) {
+  const t = useTranslations();
   return (
     <div className="space-y-2">
       <Input
-        label="SKU"
-        placeholder="sku"
+        label={t("SKU")}
+        placeholder={t("sku") as string}
         value={component.sku ?? ""}
         onChange={(e) => onChange({ sku: e.target.value })}
       />
       <Input
-        label="Collection ID"
-        placeholder="collectionId"
+        label={t("Collection ID")}
+        placeholder={t("collectionId") as string}
         value={component.collectionId ?? ""}
         onChange={(e) => onChange({ collectionId: e.target.value })}
       />

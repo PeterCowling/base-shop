@@ -1,3 +1,4 @@
+// i18n-exempt -- Storybook docs and demo copy
 import { type Meta, type StoryObj } from "@storybook/react";
 import * as React from "react";
 import type { SKU } from "@acme/types";

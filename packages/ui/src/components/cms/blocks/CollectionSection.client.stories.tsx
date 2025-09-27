@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import CollectionSectionClient from "./CollectionSection.client";
+import type { SKU } from "@acme/types";
 import { PRODUCTS } from "@acme/platform-core/products/index";
 
 const meta: Meta<typeof CollectionSectionClient> = {
   component: CollectionSectionClient,
   args: {
-    initial: PRODUCTS as any,
+    initial: PRODUCTS as SKU[],
     params: { slug: "demo" },
     paginationMode: "loadMore",
   },
@@ -21,11 +22,25 @@ export const SSRPagination: StoryObj<typeof CollectionSectionClient> = {
 export const ErrorState: StoryObj<typeof CollectionSectionClient> = {
   name: "Error state",
   render: (args) => {
-    const netError = (typeof window !== 'undefined' && (window as any).__SB_GLOBALS__?.netError) === 'on';
+    type StorybookGlobals = { netError?: 'on' | 'off' };
+    const netError = (
+      typeof window !== 'undefined' &&
+      ((window as unknown as { __SB_GLOBALS__?: StorybookGlobals }).__SB_GLOBALS__?.netError) === 'on'
+    );
     return (
       <div>
         {netError ? (
-          <div style={{ background: '#fee', color: '#900', padding: 8, border: '1px solid #fcc', marginBottom: 12 }}>
+          <div
+            style={{
+              background: 'hsl(var(--color-danger) / 0.12)',
+              color: 'hsl(var(--color-danger))',
+              // Use design token spacing
+              padding: 'var(--space-2)',
+              border: '1px solid hsl(var(--color-danger) / 0.25)',
+              // Use design token spacing
+              marginBottom: 'var(--space-3)',
+            }}
+          >
             Simulated network error — failed to load collection.
           </div>
         ) : null}

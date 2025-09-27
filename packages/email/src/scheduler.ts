@@ -98,9 +98,9 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
         html = baseHtml.replace(
           /%%UNSUBSCRIBE%%/g,
           `<a href="${url}">Unsubscribe</a>`,
-        );
+        ); // i18n-exempt: default unsubscribe label in emails
       } else {
-        html = `${baseHtml}<p><a href="${url}">Unsubscribe</a></p>`;
+        html = `${baseHtml}<p><a href="${url}">Unsubscribe</a></p>`; // i18n-exempt: default unsubscribe label in emails
       }
       const { sendCampaignEmail } = await import("./send");
       try {
@@ -110,7 +110,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
           html,
         });
       } catch (error) {
-        console.error("Campaign email send failed", {
+        console.error("Campaign email send failed", { // i18n-exempt: operational log
           recipient: r,
           campaignId: c.id,
           error,
@@ -130,7 +130,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   if (failures.length > 1) {
     throw new AggregateError(
       failures.map((f) => f.error),
-      "Failed to send some campaign emails",
+      "Failed to send some campaign emails", // i18n-exempt: operational error summary
     );
   }
 }
@@ -156,7 +156,7 @@ export async function createCampaign(opts: {
     recipients = await resolveSegment(shop, segment);
   }
   if (!shop || !subject || !body || recipients.length === 0) {
-    throw new Error("Missing fields");
+    throw new Error("Missing fields"); // i18n-exempt: developer validation error
   }
   const id = clock.now().getTime().toString(36);
   const scheduled = sendAt ? new Date(sendAt) : clock.now();
@@ -173,7 +173,7 @@ export async function createCampaign(opts: {
     try {
       await deliverCampaign(shop, campaign);
     } catch (err) {
-      console.error(`Failed to deliver campaign ${campaign.id}`, err);
+      console.error(`Failed to deliver campaign ${campaign.id}`, err); // i18n-exempt: operational log
       throw err;
     }
   }
@@ -198,7 +198,7 @@ export async function sendDueCampaigns(): Promise<void> {
         await deliverCampaign(shop, c);
         changed = true;
       } catch (err) {
-        console.error(`Failed to deliver campaign ${c.id}`, err);
+        console.error(`Failed to deliver campaign ${c.id}`, err); // i18n-exempt: operational log
         failedCampaigns.push({ id: c.id, error: err });
       }
     }
@@ -206,13 +206,13 @@ export async function sendDueCampaigns(): Promise<void> {
   }
   if (failedCampaigns.length > 0) {
     const ids = failedCampaigns.map((f) => f.id).join(", ");
-    console.error(`Failed campaigns: ${ids}`);
+    console.error(`Failed campaigns: ${ids}`); // i18n-exempt: operational log
     if (failedCampaigns.length === 1) {
       throw failedCampaigns[0].error;
     }
     throw new AggregateError(
       failedCampaigns.map((f) => f.error),
-      `Failed campaigns: ${ids}`,
+      `Failed campaigns: ${ids}`, // i18n-exempt: operational error summary
     );
   }
 }

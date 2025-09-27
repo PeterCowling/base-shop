@@ -5,7 +5,7 @@ import useViewport from "../src/hooks/useViewport";
 
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: (props: any) => <img alt={props.alt ?? ""} {...props} />,
 }));
 
 jest.mock("../src/hooks/useViewport");

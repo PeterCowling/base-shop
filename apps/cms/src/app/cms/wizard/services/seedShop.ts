@@ -32,7 +32,9 @@ export async function seedShop(
       });
       if (!res.ok) {
         const json = await res.json().catch(() => ({}));
-        throw new Error(json.error ?? "Failed to save data");
+        throw new Error(
+          json.error ?? "Failed to save data" // i18n-exempt: service-level fallback string; UI translations not available here
+        );
       }
     }
 
@@ -48,7 +50,9 @@ export async function seedShop(
       });
       if (!res.ok) {
         const json = await res.json().catch(() => ({}));
-        throw new Error(json.error ?? "Failed to save data");
+        throw new Error(
+          json.error ?? "Failed to save data" // i18n-exempt: service-level fallback string; UI translations not available here
+        );
       }
     }
 
@@ -56,8 +60,10 @@ export async function seedShop(
   } catch (err) {
     return {
       ok: false,
-      error: err instanceof Error ? err.message : "Failed to save data",
+      error:
+        err instanceof Error
+          ? err.message
+          : "Failed to save data", // i18n-exempt: service-level fallback string; UI translations not available here
     };
   }
 }
-

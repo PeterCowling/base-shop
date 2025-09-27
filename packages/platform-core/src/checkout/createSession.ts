@@ -60,10 +60,10 @@ export async function createCheckoutSession(
   try {
     rentalDays = calculateRentalDays(returnDate);
   } catch {
-    throw new Error("Invalid returnDate");
+    throw new Error("Invalid returnDate"); // i18n-exempt -- Internal validation error surfaced to logs/UI
   }
   if (rentalDays <= 0) {
-    throw new Error("Invalid returnDate");
+    throw new Error("Invalid returnDate"); // i18n-exempt -- Internal validation error surfaced to logs/UI
   }
 
   const lineItemsNested = await Promise.all(
@@ -93,7 +93,7 @@ export async function createCheckoutSession(
       price_data: {
         currency: currency.toLowerCase(),
         unit_amount: taxAmountCents,
-        product_data: { name: "Tax" },
+        product_data: { name: "Tax" }, // i18n-exempt -- Stripe product label, not user copy
       },
       quantity: 1,
     });
@@ -163,4 +163,3 @@ export async function createCheckoutSession(
 }
 
 export type { CartState };
-

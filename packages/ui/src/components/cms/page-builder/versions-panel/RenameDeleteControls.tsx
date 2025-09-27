@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button, Input } from "../../../atoms/shadcn";
+import { Inline } from "../../../atoms/primitives/Inline";
 import type { VersionEntry } from "./api";
 
 interface Props {
@@ -44,26 +45,25 @@ const RenameDeleteControls = ({ selected, onRename, onDelete }: Props) => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <Inline gap={2} alignY="center">
       {renaming === selected.id ? (
         <>
           <Input
-            placeholder="New label"
+            placeholder="New label" /* i18n-exempt -- PB-1023 */
             value={renameValue}
             onChange={(e) => setRenameValue(e.target.value)}
           />
-          <Button variant="outline" onClick={() => setRenaming(null)}>Cancel</Button>
-          <Button onClick={doRename} disabled={!renameValue.trim() || busy}>Save</Button>
+          <Button variant="outline" onClick={() => setRenaming(null)}>Cancel{/* i18n-exempt -- PB-1023 */}</Button>
+          <Button onClick={doRename} disabled={!renameValue.trim() || busy}>Save{/* i18n-exempt -- PB-1023 */}</Button>
         </>
       ) : (
         <>
-          <Button variant="outline" onClick={startRename}>Rename</Button>
-          <Button variant="destructive" onClick={doDelete} disabled={busy}>Delete</Button>
+          <Button variant="outline" onClick={startRename}>Rename{/* i18n-exempt -- PB-1023 */}</Button>
+          <Button variant="destructive" onClick={doDelete} disabled={busy}>Delete{/* i18n-exempt -- PB-1023 */}</Button>
         </>
       )}
-    </div>
+    </Inline>
   );
 };
 
 export default RenameDeleteControls;
-

@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { Tag, type TagProps } from "../../../atoms/shadcn";
 import { SummaryCard, type SummaryMetric } from "../shared";
 import type { CampaignPreviewData } from "./types";
+import { Inline } from "../../../atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 export interface CampaignSummaryCardProps {
   data: CampaignPreviewData;
@@ -20,22 +22,23 @@ export function CampaignSummaryCard({
   footer,
   actions,
 }: CampaignSummaryCardProps) {
+  const t = useTranslations();
   const metrics: SummaryMetric[] = [
-    { label: "Schedule", value: data.timeframe },
-    { label: "Budget", value: data.budgetLabel },
+    { label: t("Schedule") as string, value: data.timeframe },
+    { label: t("Budget") as string, value: data.budgetLabel },
     {
-      label: "Channels",
+      label: t("Channels") as string,
       value: (
-        <div className="flex flex-wrap gap-2">
+        <Inline gap={2}>
           {data.channels.map((channel) => (
-            <Tag key={channel} variant="default" className="text-[0.65rem]">
+            <Tag key={channel} variant="default" className="text-xs">
               {channel}
             </Tag>
           ))}
-        </div>
+        </Inline>
       ),
     },
-    { label: "Primary KPI", value: data.kpi },
+    { label: t("Primary KPI") as string, value: data.kpi },
   ];
 
   return (
@@ -43,9 +46,11 @@ export function CampaignSummaryCard({
       title={data.title}
       description={
         description ??
-        "Finalize the campaign plan and share with stakeholders before activating."
+        (t(
+          "Finalize the campaign plan and share with stakeholders before activating."
+        ) as string)
       }
-      status={{ label: statusLabel, tone: statusTone }}
+      status={{ label: t(statusLabel) as string, tone: statusTone }}
       metrics={metrics}
       footer={footer}
       actions={actions}

@@ -9,6 +9,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 // This route uses @auth which relies on Node.js APIs like `crypto`.
 // The Edge runtime does not provide these modules, so we must opt into
@@ -23,31 +24,36 @@ const schema = z
   .strict();
 
 export async function GET() {
+  const t = await getServerTranslations("en");
   const session = await getCustomerSession();
   if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: t("api.account.unauthorized") }, { status: 401 });
   }
 
   let profile;
   try {
     profile = await getCustomerProfile(session.customerId);
   } catch (err) {
-    if (err instanceof Error && err.message === "Customer profile not found") {
-      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    if (
+      err instanceof Error &&
+      err.message === "Customer profile not found" // i18n-exempt: error discriminator string from backend
+    ) {
+      return NextResponse.json({ error: t("api.account.profileNotFound") }, { status: 404 });
     }
     throw err;
   }
   if (!profile) {
-    return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    return NextResponse.json({ error: t("api.account.profileNotFound") }, { status: 404 });
   }
 
   return NextResponse.json({ ok: true, profile });
 }
 
 export async function PUT(req: NextRequest) {
+  const t = await getServerTranslations("en");
   const session = await getCustomerSession();
   if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: t("api.account.unauthorized") }, { status: 401 });
   }
 
   const parsed = await parseJsonBody(req, schema, "1mb");
@@ -62,6 +68,7 @@ export async function PUT(req: NextRequest) {
     );
   } catch (err) {
     if (err instanceof Error && err.message.startsWith("Conflict")) {
+      // i18n-exempt: backend conflict message is passed through for debugging
       return NextResponse.json({ error: err.message }, { status: 409 });
     }
     throw err;
@@ -70,14 +77,16 @@ export async function PUT(req: NextRequest) {
   try {
     profile = await getCustomerProfile(session.customerId);
   } catch (err) {
-    if (err instanceof Error && err.message === "Customer profile not found") {
-      return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    if (
+      err instanceof Error &&
+      err.message === "Customer profile not found" // i18n-exempt: error discriminator string from backend
+    ) {
+      return NextResponse.json({ error: t("api.account.profileNotFound") }, { status: 404 });
     }
     throw err;
   }
   if (!profile) {
-    return NextResponse.json({ error: "Profile not found" }, { status: 404 });
+    return NextResponse.json({ error: t("api.account.profileNotFound") }, { status: 404 });
   }
   return NextResponse.json({ ok: true, profile });
 }
-

@@ -63,7 +63,7 @@ export function DataTable<T>({
                 <TableCell className="w-4">
                   <input
                     type="checkbox"
-                    className="accent-primary size-4"
+                    className="accent-primary size-10"
                     checked={selected.includes(i)}
                     onChange={() => toggle(i)}
                     onClick={(e) => e.stopPropagation()}

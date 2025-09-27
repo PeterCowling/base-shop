@@ -1,4 +1,6 @@
+// i18n-exempt file — editor-only suggestions UI; copy pending i18n wiring
 import type { PageComponent } from "@acme/types";
+import type { TextComponent, ImageComponent } from "@acme/types";
 
 export interface ContentSuggestion {
   id: string;
@@ -32,7 +34,7 @@ export function getContentSuggestions(component: PageComponent): ContentSuggesti
   const suggestions: ContentSuggestion[] = [];
 
   if (component.type === "Text") {
-    const text = (component as any).text as string | undefined;
+    const text = (component as TextComponent).text;
     suggestions.push(
       {
         id: "text-punchy-headline",
@@ -41,20 +43,21 @@ export function getContentSuggestions(component: PageComponent): ContentSuggesti
         apply: () => {
           const src = text || "Discover Exceptional Quality";
           const shortened = src.length > 60 ? `${src.slice(0, 57).trim()}...` : src;
-          return { text: shortened } as any;
+          return { text: shortened } as Partial<PageComponent>;
         },
       },
       {
         id: "text-insert-lorem",
         label: "Insert lorem",
         description: "Fill with placeholder copy",
-        apply: () => ({ text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." } as any),
+        apply: () =>
+          ({ text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." } as Partial<PageComponent>),
       },
       {
         id: "text-title-case",
         label: "Title case",
         description: "Capitalize each word",
-        apply: () => ({ text: toTitleCase(text) } as any),
+        apply: () => ({ text: toTitleCase(text) } as Partial<PageComponent>),
       },
     );
   }
@@ -65,53 +68,54 @@ export function getContentSuggestions(component: PageComponent): ContentSuggesti
         id: "btn-primary-buy",
         label: "Primary • Buy Now",
         description: "Set a primary call to action",
-        apply: () => ({ label: "Buy Now", variant: "default", size: "lg" } as any),
+        apply: () =>
+          ({ label: "Buy Now", variant: "default", size: "lg" } as Partial<PageComponent>),
       },
       {
         id: "btn-secondary-learn",
         label: "Secondary • Learn More",
         description: "Outline style informational CTA",
-        apply: () => ({ label: "Learn More", variant: "outline", size: "md" } as any),
+        apply: () =>
+          ({ label: "Learn More", variant: "outline", size: "md" } as Partial<PageComponent>),
       },
       {
         id: "btn-contact",
         label: "CTA • Contact Us",
         description: "Link to contact page",
-        apply: () => ({ label: "Contact Us", href: "/contact" } as any),
+        apply: () => ({ label: "Contact Us", href: "/contact" } as Partial<PageComponent>),
       },
     );
   }
 
   if (component.type === "Image") {
-    const src = (component as any).src as string | undefined;
+    const src = (component as ImageComponent).src;
     suggestions.push(
       {
         id: "img-square",
         label: "Aspect • 1:1",
         description: "Square crop",
-        apply: () => ({ cropAspect: "1:1" } as any),
+        apply: () => ({ cropAspect: "1:1" } as Partial<PageComponent>),
       },
       {
         id: "img-widescreen",
         label: "Aspect • 16:9",
         description: "Widescreen crop",
-        apply: () => ({ cropAspect: "16:9" } as any),
+        apply: () => ({ cropAspect: "16:9" } as Partial<PageComponent>),
       },
       {
         id: "img-center-focal",
         label: "Center focal point",
         description: "Set focal point to center",
-        apply: () => ({ focalPoint: { x: 0.5, y: 0.5 } } as any),
+        apply: () => ({ focalPoint: { x: 0.5, y: 0.5 } } as Partial<PageComponent>),
       },
       {
         id: "img-alt-from-name",
         label: "Alt from filename",
         description: "Generate alt text",
-        apply: () => ({ alt: filenameToAlt(src) } as any),
+        apply: () => ({ alt: filenameToAlt(src) } as Partial<PageComponent>),
       },
     );
   }
 
   return suggestions;
 }
-

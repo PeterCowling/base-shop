@@ -107,7 +107,7 @@ export function createRentalOrderDelegate(): RentalOrderDelegate {
           (o) => o.shop === shop && o.trackingNumber === trackingNumber,
         );
       }
-      if (!order) throw new Error("Order not found");
+      if (!order) throw new Error("Order not found"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
       Object.assign(order, data);
       return order;
     },

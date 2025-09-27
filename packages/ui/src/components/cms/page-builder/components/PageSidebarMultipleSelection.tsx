@@ -8,6 +8,7 @@ import { alignLeft, alignTop, alignRight, alignBottom, alignCenterX, alignCenter
 import useCenterInParent from "../hooks/useCenterInParent";
 import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
 import useGroupingActions from "../hooks/useGroupingActions";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   components: PageComponent[];
@@ -18,18 +19,19 @@ interface Props {
 }
 
 const PageSidebarMultipleSelection = ({ components, selectedIds, dispatch, editor, viewport }: Props) => {
+  const t = useTranslations();
   const { centerInParentX, centerInParentY } = useCenterInParent({ components, selectedIds, editor, dispatch, viewport });
   const { pasteStyles } = useStyleClipboardActions({ selectedComponent: null, selectedIds, components, dispatch });
   const { groupAs } = useGroupingActions({ components, selectedIds, dispatch });
 
   const handleDuplicate = () => {
     selectedIds.forEach((id) => dispatch({ type: "duplicate", id }));
-    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block duplicated" })); } catch {}
+    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.duplicate.toast")) })); } catch {}
   };
 
   const handleDelete = () => {
     selectedIds.forEach((id) => dispatch({ type: "remove", id }));
-    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block deleted" })); } catch {}
+    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.delete.toast")) })); } catch {}
   };
 
   const leftKey = viewport === "desktop" ? "leftDesktop" : viewport === "tablet" ? "leftTablet" : "leftMobile";
@@ -40,42 +42,41 @@ const PageSidebarMultipleSelection = ({ components, selectedIds, dispatch, edito
 
   return (
     <div className="space-y-2">
-      <div className="text-sm font-semibold">Multiple selection</div>
+      <div className="text-sm font-semibold">{t("pb.sidebar.multiple.title")}</div>
       <div className="flex flex-wrap gap-2">
-        <Tooltip text="Duplicate selected blocks">
-          <Button type="button" variant="outline" aria-label="Duplicate selected" onClick={handleDuplicate}>Duplicate</Button>
+        <Tooltip text={t("pb.sidebar.multiple.duplicate.tooltip") as string}>
+          <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.duplicate.aria"))} onClick={handleDuplicate}>{t("pb.sidebar.multiple.duplicate.label")}</Button>
         </Tooltip>
-        <Tooltip text="Delete selected blocks">
-          <Button type="button" variant="outline" aria-label="Delete selected" onClick={handleDelete}>Delete</Button>
+        <Tooltip text={t("pb.sidebar.multiple.delete.tooltip") as string}>
+          <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.delete.aria"))} onClick={handleDelete}>{t("pb.sidebar.multiple.delete.label")}</Button>
         </Tooltip>
-        <Tooltip text="Paste styles from clipboard">
-          <Button type="button" variant="outline" aria-label="Paste styles" onClick={pasteStyles}>Paste Styles</Button>
+        <Tooltip text={t("pb.sidebar.multiple.paste.tooltip") as string}>
+          <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.paste.aria"))} onClick={pasteStyles}>{t("pb.sidebar.multiple.paste.label")}</Button>
         </Tooltip>
-        <Tooltip text="Center horizontally in parent (absolute only)">
-          <Button type="button" variant="outline" aria-label="Center horizontally in parent" onClick={centerInParentX}>Center H in parent</Button>
+        <Tooltip text={t("pb.sidebar.multiple.centerH.tooltip") as string}>
+          <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.centerH.aria"))} onClick={centerInParentX}>{t("pb.sidebar.multiple.centerH.label")}</Button>
         </Tooltip>
-        <Tooltip text="Center vertically in parent (absolute only)">
-          <Button type="button" variant="outline" aria-label="Center vertically in parent" onClick={centerInParentY}>Center V in parent</Button>
+        <Tooltip text={t("pb.sidebar.multiple.centerV.tooltip") as string}>
+          <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.centerV.aria"))} onClick={centerInParentY}>{t("pb.sidebar.multiple.centerV.label")}</Button>
         </Tooltip>
-        <Tooltip text="Wrap selection in a Section container">
-          <Button type="button" variant="outline" aria-label="Group selection into Section" onClick={() => groupAs("Section")}>Group → Section</Button>
+        <Tooltip text={t("pb.sidebar.multiple.group.section.tooltip") as string}>
+          <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.group.section.aria"))} onClick={() => groupAs("Section")}>{t("pb.sidebar.multiple.group.section.label")}</Button>
         </Tooltip>
-        <Tooltip text="Wrap selection in a MultiColumn container">
-          <Button type="button" variant="outline" aria-label="Group selection into MultiColumn" onClick={() => groupAs("MultiColumn")}>Group → MultiColumn</Button>
+        <Tooltip text={t("pb.sidebar.multiple.group.multicol.tooltip") as string}>
+          <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.group.multicol.aria"))} onClick={() => groupAs("MultiColumn")}>{t("pb.sidebar.multiple.group.multicol.label")}</Button>
         </Tooltip>
         {/* Align/distribute */}
-        <Button type="button" variant="outline" aria-label="Align left edges" onClick={() => { alignLeft(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned left" })); } catch {} }}>Align Left</Button>
-        <Button type="button" variant="outline" aria-label="Align right edges" onClick={() => { alignRight(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned right" })); } catch {} }}>Align Right</Button>
-        <Button type="button" variant="outline" aria-label="Align top edges" onClick={() => { alignTop(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned top" })); } catch {} }}>Align Top</Button>
-        <Button type="button" variant="outline" aria-label="Align bottom edges" onClick={() => { alignBottom(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Aligned bottom" })); } catch {} }}>Align Bottom</Button>
-        <Button type="button" variant="outline" aria-label="Center horizontally across selection" onClick={() => { alignCenterX(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered horizontally" })); } catch {} }}>Center X</Button>
-        <Button type="button" variant="outline" aria-label="Center vertically across selection" onClick={() => { alignCenterY(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Centered vertically" })); } catch {} }}>Center Y</Button>
-        <Button type="button" variant="outline" aria-label="Distribute horizontally" onClick={() => { distributeHorizontal(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [leftKey]: p.left } as any)); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Distributed horizontally" })); } catch {} }}>Distribute H</Button>
-        <Button type="button" variant="outline" aria-label="Distribute vertically" onClick={() => { distributeVertical(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [topKey]: p.top } as any)); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Distributed vertically" })); } catch {} }}>Distribute V</Button>
+        <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.align.left.aria"))} onClick={() => { alignLeft(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [leftKey]: p.left })); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.align.left.toast")) })); } catch {} }}>{t("pb.sidebar.multiple.align.left.label")}</Button>
+        <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.align.right.aria"))} onClick={() => { alignRight(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [leftKey]: p.left })); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.align.right.toast")) })); } catch {} }}>{t("pb.sidebar.multiple.align.right.label")}</Button>
+        <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.align.top.aria"))} onClick={() => { alignTop(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [topKey]: p.top })); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.align.top.toast")) })); } catch {} }}>{t("pb.sidebar.multiple.align.top.label")}</Button>
+        <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.align.bottom.aria"))} onClick={() => { alignBottom(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [topKey]: p.top })); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.align.bottom.toast")) })); } catch {} }}>{t("pb.sidebar.multiple.align.bottom.label")}</Button>
+        <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.centerAcross.h.aria"))} onClick={() => { alignCenterX(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [leftKey]: p.left })); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.centerAcross.h.toast")) })); } catch {} }}>{t("pb.sidebar.multiple.centerAcross.h.label")}</Button>
+        <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.centerAcross.v.aria"))} onClick={() => { alignCenterY(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [topKey]: p.top })); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.centerAcross.v.toast")) })); } catch {} }}>{t("pb.sidebar.multiple.centerAcross.v.label")}</Button>
+        <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.distribute.h.aria"))} onClick={() => { distributeHorizontal(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [leftKey]: p.left })); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.distribute.h.toast")) })); } catch {} }}>{t("pb.sidebar.multiple.distribute.h.label")}</Button>
+        <Button type="button" variant="outline" aria-label={String(t("pb.sidebar.multiple.distribute.v.aria"))} onClick={() => { distributeVertical(components, unlockedIds, viewport).forEach((p) => dispatch({ type: "resize", id: p.id, [topKey]: p.top })); try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t("pb.sidebar.multiple.distribute.v.toast")) })); } catch {} }}>{t("pb.sidebar.multiple.distribute.v.label")}</Button>
       </div>
     </div>
   );
 };
 
 export default PageSidebarMultipleSelection;
-

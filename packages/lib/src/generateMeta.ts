@@ -34,10 +34,11 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   // In test or when the key is absent, avoid calling the OpenAI API.
   if (!env.OPENAI_API_KEY) {
     if (process.env.NODE_ENV === "test") {
+      // i18n-exempt -- DEV-000: deterministic fixture values for tests only
       return {
-        title: "AI title",
-        description: "AI description",
-        alt: "alt",
+        title: "AI title", // i18n-exempt -- DEV-000: test-only fixture string
+        description: "AI description", // i18n-exempt -- DEV-000: test-only fixture string
+        alt: "alt", // i18n-exempt -- DEV-000: test-only fixture string
         image: `/og/${product.id}.png`,
       };
     }
@@ -85,6 +86,7 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
     apiKey: env.OPENAI_API_KEY as string,
   });
 
+  // i18n-exempt -- DEV-000: developer-only LLM prompt text, not user-visible copy
   const prompt = `Generate SEO metadata for a product as JSON with keys title, description, alt.\n\nTitle: ${product.title}\nDescription: ${product.description}`;
 
   const text = (await client.responses.create({
@@ -118,6 +120,7 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   // Generate a product image.  Save the returned base64 image to /public/og/{id}.png.
   const img = (await client.images.generate({
     model: "gpt-image-1",
+    // i18n-exempt -- DEV-000: developer-only LLM prompt text, not user-visible copy
     prompt: `Generate a 1200x630 social media share image for ${product.title}`,
     size: "1024x1024",
   })) as { data?: Array<{ b64_json?: string }> };
@@ -125,9 +128,9 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   const buffer = Buffer.from(b64, "base64");
   const safeId = product.id.replace(/[^a-z0-9_-]/gi, "");
   const file = path.join(process.cwd(), "public", "og", `${safeId}.png`);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DEV-000: writing to controlled project path derived from sanitized id
   await fs.mkdir(path.dirname(file), { recursive: true });
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DEV-000: writing to controlled project path derived from sanitized id
   await fs.writeFile(file, buffer);
 
   return data;

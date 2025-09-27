@@ -1,4 +1,5 @@
 import { Button as UIButton } from "../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 export interface ButtonProps {
   /** Text displayed inside the button */
@@ -11,22 +12,27 @@ export interface ButtonProps {
   size?: "sm" | "md" | "lg";
 }
 
+// i18n-exempt: CSS utility tokens, not user-facing copy
 const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
-  sm: "px-2 py-1 text-sm",
-  md: "px-4 py-2",
-  lg: "px-6 py-3 text-lg",
+  sm: "px-2 py-1 text-sm", // i18n-exempt: utility classes
+  md: "px-4 py-2", // i18n-exempt: utility classes
+  lg: "px-6 py-3 text-lg", // i18n-exempt: utility classes
 };
 
-export default function Button({
-  label = "Button",
-  href = "#",
-  variant = "default",
-  size = "md",
-}: ButtonProps) {
+export default function Button(props: ButtonProps) {
+  const t = useTranslations();
+  const {
+    variant = "default",
+    size = "md",
+    ...rest
+  } = props;
+  const label = props.label ?? t("Button");
+  const href = props.href ?? "#"; // i18n-exempt: non-copy URL stub for previews
+  const key = size as keyof typeof sizeClasses;
+  const cls = sizeClasses[key];
   return (
-    <UIButton asChild variant={variant} className={sizeClasses[size]}>
-      <a href={href}>{label}</a>
+    <UIButton asChild variant={variant} className={cls}>
+      <a href={href} {...rest}>{label}</a>
     </UIButton>
   );
 }
-

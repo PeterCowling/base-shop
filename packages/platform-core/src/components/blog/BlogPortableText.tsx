@@ -42,11 +42,14 @@ const components: PortableTextComponents = {
         );
       }
       return (
-        <div className="flex gap-4 overflow-x-auto py-4">
+        <>
+          {/* eslint-disable-next-line ds/enforce-layout-primitives -- ABC-123 horizontal scroller with mapped items */}
+          <div className="inline-flex gap-4 overflow-x-auto py-4">
           {products.map((p) => (
             <ProductCard key={p.id} sku={p} />
           ))}
-        </div>
+          </div>
+        </>
       );
     },
     embed: ({ value }: PortableTextTypeComponentProps<{ url: string }>) => (
@@ -61,7 +64,7 @@ const components: PortableTextComponents = {
       return (
         <a
           href={href}
-          className="text-blue-600 underline"
+          className="text-blue-600 underline inline-flex min-h-10 min-w-10"
           target="_blank"
           rel="noopener noreferrer"
         >

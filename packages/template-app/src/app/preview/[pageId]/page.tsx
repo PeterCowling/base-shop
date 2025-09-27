@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { pageSchema, type Page, type PageComponent } from "@acme/types";
 import type { Locale } from "@i18n/locales";
+import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
 import { devicePresets, getLegacyPreset } from "@ui/utils/devicePresets";
 import PreviewClient from "./PreviewClient";
 
@@ -28,10 +29,13 @@ export default async function PreviewPage({
     notFound();
   }
   if (res.status === 401) {
+    // i18n-exempt — HTTP status text; not rendered UI
     return new Response("Unauthorized", { status: 401 });
   }
   if (!res.ok) {
-    throw new Error("Failed to load preview");
+    // Use server translations for thrown error message
+    const t = await getServerTranslations("en" as Locale);
+    throw new Error(t("preview.loadError"));
   }
   const page: Page = pageSchema.parse(await res.json());
   const components = page.components as PageComponent[];

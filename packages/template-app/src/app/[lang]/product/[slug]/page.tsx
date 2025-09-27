@@ -28,7 +28,9 @@ export async function generateMetadata({
   const { slug } = await params;
   const product = getProductBySlug(slug);
   return {
-    title: product ? `${product.title} · Base-Shop` : "Product not found",
+    title: product
+      ? `${product.title} · Base-Shop` // i18n-exempt: brand name in SEO title
+      : "Product not found", // i18n-exempt: generic SEO fallback
   };
 }
 

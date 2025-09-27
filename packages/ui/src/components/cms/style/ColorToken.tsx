@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 interface ColorTokenProps extends Omit<TokenInfo, "key"> {
   tokenKey: string;
@@ -35,6 +36,7 @@ export function ColorToken({
   onReplaceColor,
   showExtras = true,
 }: ColorTokenProps): ReactElement {
+  const t = useTranslations();
   const warning = useTokenColors(tokenKey, value, tokens, baseTokens);
   const supportsEyeDropper =
     typeof window !== "undefined" && "EyeDropper" in window;
@@ -59,7 +61,11 @@ export function ColorToken({
   const handleRename = () => {
     if (!onRenameToken) return;
     const next = typeof window !== "undefined"
-      ? window.prompt("Rename color token", tokenKey)
+      ? window.prompt(
+          // i18n-exempt: developer tool prompt not user-facing
+          "Rename color token",
+          tokenKey,
+        )
       : null;
     const trimmed = next?.trim();
     if (!trimmed || trimmed === tokenKey) return;
@@ -70,6 +76,7 @@ export function ColorToken({
     if (!onReplaceColor) return;
     const next = typeof window !== "undefined"
       ? window.prompt(
+          // i18n-exempt: developer tool prompt not user-facing
           "Replace this color across tokens with (hex, HSL, or CSS value)",
           value,
         )
@@ -81,14 +88,16 @@ export function ColorToken({
   };
 
   // Advanced menu disabled on this screen to avoid ref thrash in nested menus
-  const showAdvanced = false;
+
+  // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
+  const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
+  // i18n-exempt: DS token reference, not user-facing copy
+  const DANGER_TOKEN = "--color-danger";
 
   return (
     <label
       data-token-key={tokenKey}
-      className={`flex flex-col gap-1 text-sm ${
-        isOverridden ? "border-s-2 border-s-info ps-2" : ""
-      }`}
+      className={`flex flex-col gap-1 text-sm ${overrideClasses}`}
       data-token={isOverridden ? "--color-info" : undefined}
     >
       <span className="flex flex-wrap items-center gap-2 min-w-0">
@@ -98,10 +107,10 @@ export function ColorToken({
           {showExtras && supportsEyeDropper && (
             <button
               type="button"
-              className="rounded border px-2 py-1 text-xs"
+              className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
               onClick={() => void handleEyeDropper()}
             >
-              Eyedropper
+              {t("cms.style.eyedropper") as string}
             </button>
           )}
           {showExtras && (onRenameToken || onReplaceColor) && (
@@ -109,8 +118,8 @@ export function ColorToken({
               <DropdownMenuTrigger asChild>
                 <button
                   type="button"
-                  aria-label={`More actions for ${tokenKey}`}
-                  className="rounded border px-2 py-1 text-xs"
+                  aria-label={`${t("cms.style.moreActions") as string} ${tokenKey}`}
+                  className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
                 >
                   •••
                 </button>
@@ -118,12 +127,12 @@ export function ColorToken({
               <DropdownMenuContent align="start">
                 {onRenameToken && (
                   <DropdownMenuItem onSelect={() => handleRename()}>
-                    Rename token…
+                    {t("cms.style.renameToken") as string}
                   </DropdownMenuItem>
                 )}
                 {onReplaceColor && (
                   <DropdownMenuItem onSelect={() => handleReplace()}>
-                    Replace across tokens…
+                    {t("cms.style.replaceAcrossTokens") as string}
                   </DropdownMenuItem>
                 )}
               </DropdownMenuContent>
@@ -133,21 +142,20 @@ export function ColorToken({
         {isOverridden && (
           <button
             type="button"
-            className="rounded border px-2 py-1 text-xs"
+            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
             onClick={() => setToken(tokenKey, defaultValue ?? "")}
           >
-            Reset
+          Reset
           </button>
         )}
         {/* Advanced menu hidden for stability */}
       </span>
       {defaultValue && (
-        <span className="text-xs text-muted-foreground">
-          Default: {defaultValue}
-        </span>
+        <span className="text-xs text-muted-foreground">Default: {defaultValue}</span>
       )}
       {warning && (
-        <span className="text-xs text-danger" data-token="--color-danger">
+        // i18n-exempt: utility classes and DS token attribute are not user copy
+        <span className="text-xs text-danger" data-token={DANGER_TOKEN}>
           Low contrast ({warning.contrast.toFixed(2)}:1)
           {warning.suggestion ? ` – try ${warning.suggestion}` : ""}
         </span>

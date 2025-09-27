@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslations } from "@i18n/Translations";
 import {
   Button,
   Popover,
@@ -19,6 +20,7 @@ export default function TokenInspector({
   onTokenSelect,
   children,
 }: Props) {
+  const t = useTranslations();
   const previewRef = useRef<HTMLDivElement | null>(null);
   const tokenElsRef = useRef<HTMLElement[]>([]);
   const [hoverEl, setHoverEl] = useState<HTMLElement | null>(null);
@@ -46,7 +48,7 @@ export default function TokenInspector({
     const prevOutline = el.style.outline;
     const prevAnimation = el.style.animation;
     el.style.outline = "2px solid hsl(var(--color-primary))";
-    el.style.animation = "wizard-outline 1s ease-in-out infinite";
+    el.style.animation = "wizard-outline 1s ease-in-out infinite"; // i18n-exempt: CSS animation string; not user-facing copy
     return () => {
       el.style.outline = prevOutline;
       el.style.animation = prevAnimation;
@@ -56,7 +58,7 @@ export default function TokenInspector({
   useEffect(() => {
     const styleEl = document.createElement("style");
     styleEl.textContent =
-      "@keyframes wizard-outline{0%,100%{outline-color:hsl(var(--color-primary));}50%{outline-color:hsl(var(--color-primary-dark));}}";
+      "@keyframes wizard-outline{0%,100%{outline-color:hsl(var(--color-primary));}50%{outline-color:hsl(var(--color-primary-dark));}}"; // i18n-exempt: CSS keyframes string; not user-facing copy
     document.head.appendChild(styleEl);
     return () => {
       document.head.removeChild(styleEl);
@@ -137,7 +139,7 @@ export default function TokenInspector({
     return () => window.removeEventListener("keydown", keyHandler);
   }, [inspectMode, selectedIndex]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- ABC-123: cloneElement typing requires any to support arbitrary child props
   const child = children as React.ReactElement<any>;
   return (
     <>
@@ -188,7 +190,7 @@ export default function TokenInspector({
                 className="px-2 py-1 text-xs"
                 onClick={() => onTokenSelect?.(selected.token, popoverPos)}
               >
-                Jump to editor
+                {t("Jump to editor")}
               </Button>
             </div>
           </PopoverContent>

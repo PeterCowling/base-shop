@@ -16,7 +16,9 @@ describe("ColorInput", () => {
       'input[type="color"]'
     ) as HTMLInputElement;
 
+    // eslint-disable-next-line ds/no-raw-color -- simulating user-entered hex in color input
     fireEvent.change(input, { target: { value: "#ffffff" } });
+    // eslint-disable-next-line ds/no-raw-color -- asserting the value set by the browser for the color input
     expect(input.value).toBe("#ffffff");
   });
 
@@ -33,8 +35,8 @@ describe("ColorInput", () => {
       'input[type="color"]'
     ) as HTMLInputElement;
 
+    // eslint-disable-next-line ds/no-raw-color -- simulating user-entered hex in color input
     fireEvent.change(input, { target: { value: "#ffffff" } });
     expect(handleChange).toHaveBeenCalledWith("0 0% 100%");
   });
 });
-

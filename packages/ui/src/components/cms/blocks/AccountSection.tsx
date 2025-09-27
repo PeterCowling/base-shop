@@ -3,6 +3,9 @@
 import * as React from "react";
 import type { RentalOrder } from "@acme/types";
 import { Price } from "../../atoms/Price";
+import { Grid as GridPrimitive } from "../../atoms/primitives/Grid";
+import { LinkText } from "../../atoms";
+import { useTranslations } from "@acme/i18n";
 
 type OrderSummary = { id: string; total: number; date: string; status?: string };
 
@@ -17,6 +20,7 @@ export interface AccountSectionProps extends React.HTMLAttributes<HTMLDivElement
 }
 
 export default function AccountSection({ showDashboard = true, showOrders = true, showRentals = true, showAddresses = true, showPayments = true, ordersAdapter, rentalsAdapter, className, ...rest }: AccountSectionProps) {
+  const t = useTranslations();
   const [orders, setOrders] = React.useState<OrderSummary[]>([]);
   const [rentals, setRentals] = React.useState<RentalOrder[]>([]);
   const [loading, setLoading] = React.useState(false);
@@ -44,34 +48,36 @@ export default function AccountSection({ showDashboard = true, showOrders = true
 
   return (
     <section className={className} {...rest}>
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
+      <GridPrimitive className="mx-auto md:grid-cols-3" cols={1} gap={6}>
         {showDashboard ? (
           <div className="rounded border p-4">
-            <h3 className="mb-2 text-lg font-semibold">Dashboard</h3>
+            <h3 className="mb-2 text-lg font-semibold">{t("Dashboard")}</h3>
             <ul className="text-sm text-neutral-700">
-              <li>Orders: {orders.length}</li>
-              <li>Active rentals: {rentals.filter((r) => !r.returnedAt).length}</li>
+              <li>{t("Orders:") } {orders.length}</li>
+              <li>{t("Active rentals:") } {rentals.filter((r) => !r.returnedAt).length}</li>
             </ul>
           </div>
         ) : null}
         {showOrders ? (
           <div className="rounded border p-4 md:col-span-2">
-            <h3 className="mb-2 text-lg font-semibold">Orders</h3>
-            {loading && orders.length === 0 ? <div className="text-sm text-neutral-600">Loading…</div> : null}
+            <h3 className="mb-2 text-lg font-semibold">{t("Orders")}</h3>
+            {loading && orders.length === 0 ? <div className="text-sm text-neutral-600">{t("Loading…")}</div> : null}
             {orders.length ? (
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b text-start">
-                    <th className="py-2">Order</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th className="text-end">Total</th>
+                    <th className="py-2">{t("Order")}</th>
+                    <th>{t("Date")}</th>
+                    <th>{t("Status")}</th>
+                    <th className="text-end">{t("Total")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {orders.map((o) => (
                     <tr key={o.id} className="border-b last:border-0">
-                      <td className="py-2"><a href={`/account/orders/${o.id}`} className="underline">{o.id}</a></td>
+                      <td className="py-2">
+                        <LinkText href={`/account/orders/${o.id}`} className="min-h-10 min-w-10">{o.id}</LinkText>
+                      </td>
                       <td>{new Date(o.date).toLocaleDateString()}</td>
                       <td>{o.status ?? ""}</td>
                       <td className="text-end"><Price amount={o.total} /></td>
@@ -80,54 +86,55 @@ export default function AccountSection({ showDashboard = true, showOrders = true
                 </tbody>
               </table>
             ) : (
-              <div className="text-sm text-neutral-600">No orders yet.</div>
+              <div className="text-sm text-neutral-600">{t("No orders yet.")}</div>
             )}
           </div>
         ) : null}
         {showRentals ? (
           <div className="rounded border p-4 md:col-span-2">
-            <h3 className="mb-2 text-lg font-semibold">Rentals</h3>
-            {loading && rentals.length === 0 ? <div className="text-sm text-neutral-600">Loading…</div> : null}
+            <h3 className="mb-2 text-lg font-semibold">{t("Rentals")}</h3>
+            {loading && rentals.length === 0 ? <div className="text-sm text-neutral-600">{t("Loading…")}</div> : null}
             {rentals.length ? (
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b text-start">
-                    <th className="py-2">Rental</th>
-                    <th>Start</th>
-                    <th>Due</th>
-                    <th>Status</th>
+                    <th className="py-2">{t("Rental")}</th>
+                    <th>{t("Start")}</th>
+                    <th>{t("Due")}</th>
+                    <th>{t("Status")}</th>
                   </tr>
                 </thead>
                 <tbody>
                   {rentals.map((r) => (
                     <tr key={r.id} className="border-b last:border-0">
-                      <td className="py-2"><a href={`/account/rentals/${r.id}`} className="underline">{r.id}</a></td>
+                      <td className="py-2">
+                        <LinkText href={`/account/rentals/${r.id}`} className="min-h-10 min-w-10">{r.id}</LinkText>
+                      </td>
                       <td>{new Date(r.startedAt).toLocaleDateString()}</td>
                       <td>{r.returnDueDate ? new Date(r.returnDueDate).toLocaleDateString() : "—"}</td>
-                      <td>{r.returnedAt ? "Returned" : "Active"}</td>
+                      <td>{r.returnedAt ? t("Returned") : t("Active")}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             ) : (
-              <div className="text-sm text-neutral-600">No rentals yet.</div>
+              <div className="text-sm text-neutral-600">{t("No rentals yet.")}</div>
             )}
           </div>
         ) : null}
         {showAddresses ? (
           <div className="rounded border p-4">
-            <h3 className="mb-2 text-lg font-semibold">Addresses</h3>
-            <a href="/account/addresses" className="text-sm underline">Manage addresses</a>
+            <h3 className="mb-2 text-lg font-semibold">{t("Addresses")}</h3>
+            <LinkText href="/account/addresses" className="text-sm min-h-10 min-w-10">{t("Manage addresses")}</LinkText>
           </div>
         ) : null}
         {showPayments ? (
           <div className="rounded border p-4">
-            <h3 className="mb-2 text-lg font-semibold">Payment methods</h3>
-            <a href="/account/payments" className="text-sm underline">Manage payment methods</a>
+            <h3 className="mb-2 text-lg font-semibold">{t("Payment methods")}</h3>
+            <LinkText href="/account/payments" className="text-sm min-h-10 min-w-10">{t("Manage payment methods")}</LinkText>
           </div>
         ) : null}
-      </div>
+      </GridPrimitive>
     </section>
   );
 }
-

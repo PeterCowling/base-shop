@@ -1,10 +1,11 @@
 jest.mock("@ui/hooks/useMediaUpload", () => ({ useMediaUpload: jest.fn() }));
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
-  return {
-    Input: React.forwardRef((props, ref) => <input ref={ref} {...props} />),
-    Button: React.forwardRef((props, ref) => <button ref={ref} {...props} />),
-  };
+  const Input = React.forwardRef((props: any, ref: any) => <input ref={ref} {...props} />);
+  Input.displayName = "Input";
+  const Button = React.forwardRef((props: any, ref: any) => <button ref={ref} {...props} />);
+  Button.displayName = "Button";
+  return { Input, Button };
 });
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 import { render, fireEvent, screen, waitFor } from "@testing-library/react";

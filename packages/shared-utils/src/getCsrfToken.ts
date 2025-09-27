@@ -40,6 +40,7 @@ export function getCsrfToken(req?: Request | SimpleReq): string | undefined {
   if (typeof document === "undefined") return undefined;
   let csrfToken =
     document
+      // i18n-exempt: DOM selector; not user-facing copy
       .querySelector('meta[name="csrf-token"]')
       ?.getAttribute("content")
       ?.trim() ??
@@ -51,6 +52,7 @@ export function getCsrfToken(req?: Request | SimpleReq): string | undefined {
       ?.trim();
   if (!csrfToken) {
     csrfToken = crypto.randomUUID();
+    // i18n-exempt: cookie attribute string; not user-facing copy
     document.cookie = `csrf_token=${csrfToken}; path=/; SameSite=Strict${
       location.protocol === "https:" ? "; secure" : ""
     }`;

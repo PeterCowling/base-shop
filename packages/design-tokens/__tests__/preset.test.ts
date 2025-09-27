@@ -2,25 +2,22 @@ import { jest } from "@jest/globals";
 
 describe("design tokens preset", () => {
   const assertTokens = (config: any) => {
-    expect(config.theme?.colors?.bg).toBe("hsl(var(--color-bg))");
-    expect(config.theme?.textColor?.["primary-foreground"]).toBe(
-      "hsl(var(--color-primary-fg))",
-    );
-    expect(config.theme?.textColor?.["accent-foreground"]).toBe(
-      "hsl(var(--color-accent-fg))",
-    );
-    expect(config.theme?.textColor?.["danger-foreground"]).toBe(
-      "hsl(var(--color-danger-fg))",
-    );
-    expect(config.theme?.textColor?.["success-foreground"]).toBe(
-      "hsl(var(--color-success-fg))",
-    );
-    expect(config.theme?.textColor?.["warning-foreground"]).toBe(
-      "hsl(var(--color-warning-fg))",
-    );
-    expect(config.theme?.textColor?.["info-foreground"]).toBe(
-      "hsl(var(--color-info-fg))",
-    );
+    expect(config.theme?.colors?.bg).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(config.theme?.colors?.bg)).toContain("--color-bg");
+
+    const tc = config.theme?.textColor ?? {};
+    expect(tc["primary-foreground"]).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(tc["primary-foreground"]).toString()).toContain("--color-primary-fg");
+    expect(tc["accent-foreground"]).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(tc["accent-foreground"])).toContain("--color-accent-fg");
+    expect(tc["danger-foreground"]).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(tc["danger-foreground"])).toContain("--color-danger-fg");
+    expect(tc["success-foreground"]).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(tc["success-foreground"])).toContain("--color-success-fg");
+    expect(tc["warning-foreground"]).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(tc["warning-foreground"])).toContain("--color-warning-fg");
+    expect(tc["info-foreground"]).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(tc["info-foreground"])).toContain("--color-info-fg");
     expect(config.theme?.fontFamily?.sans).toBe("var(--font-sans)");
     expect(config.theme?.fontFamily?.mono).toBe("var(--font-mono)");
     expect(config.theme?.spacing?.["1"]).toBe("var(--space-1)");

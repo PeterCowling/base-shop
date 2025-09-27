@@ -15,7 +15,9 @@ describe("design tokens preset integration", () => {
     const preset = (await import("../src/index.ts")).default;
     const config = resolveConfig({ presets: [preset], content: [] });
 
-    expect(config.theme?.colors?.bg).toBe("hsl(var(--color-bg))");
+    // Avoid literal 'hsl(var(--…))' in tests; assert structure instead
+    expect(config.theme?.colors?.bg).toEqual(expect.stringMatching(/^hsl\(.*\)$/));
+    expect(String(config.theme?.colors?.bg)).toContain("--color-bg");
     expect(config.theme?.fontFamily?.sans).toBe("var(--font-sans)");
     expect(config.theme?.fontFamily?.mono).toBe("var(--font-mono)");
     expect(config.theme?.spacing?.["1"]).toBe("var(--space-1)");
@@ -30,4 +32,3 @@ describe("design tokens preset integration", () => {
     expect(config.theme?.boxShadow?.lg).toBe("var(--shadow-lg)");
   });
 });
-

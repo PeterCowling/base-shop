@@ -4,6 +4,8 @@ import * as React from "react";
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "../../organisms/ProductCard";
+import { Grid as DSGrid } from "../../atoms/primitives/Grid";
+import { Inline } from "../../atoms/primitives/Inline";
 
 export interface CrossSellRules {
   seedId?: string;
@@ -30,13 +32,14 @@ export default function CrossSellSection({ rules = {}, layout = "grid", classNam
   if (layout === "grid") {
     return (
       <section className={className} {...rest}>
-        <div className="mx-auto max-w-7xl px-4">
+        <div className="mx-auto px-4">
+          {/* i18n-exempt: section heading */}
           <h3 className="mb-4 text-lg font-semibold">You may also like</h3>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <DSGrid cols={1} gap={4} className="sm:grid-cols-2 lg:grid-cols-4">
             {items.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
-          </div>
+          </DSGrid>
         </div>
       </section>
     );
@@ -44,15 +47,16 @@ export default function CrossSellSection({ rules = {}, layout = "grid", classNam
   // Carousel fallback: simple horizontal scroll
   return (
     <section className={className} {...rest}>
-      <div className="mx-auto max-w-7xl px-4">
+      <div className="mx-auto px-4">
+        {/* i18n-exempt: section heading */}
         <h3 className="mb-4 text-lg font-semibold">You may also like</h3>
-        <div className="flex snap-x gap-4 overflow-x-auto pb-4">
+        <Inline gap={4} className="snap-x overflow-x-auto pb-4" style={{ scrollSnapType: "x mandatory" }}>
           {items.map((p) => (
             <div key={p.id} className="snap-start" style={{ flex: "0 0 280px" }}>
               <ProductCard product={p} />
             </div>
           ))}
-        </div>
+        </Inline>
       </div>
     </section>
   );

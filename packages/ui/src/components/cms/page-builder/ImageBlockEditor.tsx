@@ -15,7 +15,8 @@ function ImageBlockEditor({ component, onChange }: Props) {
 
   const initialFilter = (() => {
     try {
-      const raw = (component as any).styles as string | undefined;
+      const raw = (component as unknown as { styles?: unknown }).styles;
+      if (typeof raw !== "string") return undefined;
       if (!raw) return undefined;
       const parsed = JSON.parse(String(raw)) as { effects?: { filter?: string } };
       return parsed?.effects?.filter;
@@ -26,13 +27,13 @@ function ImageBlockEditor({ component, onChange }: Props) {
 
   const applyFilter = useCallback((filter: string | undefined) => {
     try {
-      const raw = (component as any).styles as string | undefined;
-      const base = raw ? (JSON.parse(String(raw)) as any) : {};
-      const next = { ...base, effects: { ...(base.effects ?? {}), filter } };
-      onChange({ styles: JSON.stringify(next) } as any);
+      const raw = (component as unknown as { styles?: unknown }).styles;
+      const base = typeof raw === "string" && raw ? (JSON.parse(String(raw)) as Record<string, unknown>) : {};
+      const next = { ...base, effects: { ...(base as { effects?: Record<string, unknown> }).effects ?? {}, filter } };
+      onChange({ styles: JSON.stringify(next) });
     } catch {
       const next = { effects: { filter } };
-      onChange({ styles: JSON.stringify(next) } as any);
+      onChange({ styles: JSON.stringify(next) });
     }
   }, [component, onChange]);
 
@@ -41,13 +42,14 @@ function ImageBlockEditor({ component, onChange }: Props) {
       <ImageSourcePanel
         src={component.src}
         alt={component.alt}
-        cropAspect={(component as any).cropAspect}
-        focalPoint={(component as any).focalPoint}
+        cropAspect={(component as unknown as { cropAspect?: string }).cropAspect}
+        focalPoint={(component as unknown as { focalPoint?: { x: number; y: number } }).focalPoint}
         onChange={handleChange}
         initialFilter={initialFilter}
         onApplyFilter={applyFilter}
       />
       <p className="text-xs text-muted-foreground">
+        {/* i18n-exempt -- PB-2414: editor-only hint */}
         Tip: When the image block is selected on the canvas, drag the focal point dot to adjust framing.
       </p>
     </div>

@@ -18,14 +18,19 @@ describe("scrollEffects", () => {
 
   it("sets up reveal + parallax + sticky + stagger and cleans up listeners", () => {
     // jsdom lacks IntersectionObserver; provide a minimal stub
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (global as any).IntersectionObserver = class {
-      callback: any; options: any;
-      constructor(cb: any, opts: any) { this.callback = cb; this.options = opts; }
-      observe() {}
-      unobserve() {}
-      disconnect() {}
-    } as any;
+    (global as any).IntersectionObserver = class implements IntersectionObserver {
+      readonly root: Element | Document | null = null;
+      readonly rootMargin: string = "0px";
+      readonly thresholds: ReadonlyArray<number> = [0];
+      private _callback: IntersectionObserverCallback;
+      constructor(cb: IntersectionObserverCallback, _opts?: IntersectionObserverInit) {
+        this._callback = cb;
+      }
+      observe(_: Element): void {}
+      unobserve(_: Element): void {}
+      disconnect(): void {}
+      takeRecords(): IntersectionObserverEntry[] { return []; }
+    } as unknown as IntersectionObserver;
     const root = document.getElementById("root")!;
     const reveal = document.createElement("div");
     reveal.setAttribute("data-pb-reveal", "slide-up");

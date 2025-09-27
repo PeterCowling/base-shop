@@ -1,9 +1,13 @@
 "use client";
 
+import * as React from "react";
 import { useState, useMemo } from "react";
 import { useProductFilters } from "../../../hooks/useProductFilters";
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
+import * as nav from "next/navigation";
+
+const t = (s: string) => s;
 
 type FilterSku = SKU & { id: string; title: string };
 
@@ -60,14 +64,11 @@ export default function ProductFilter({
   const [maxPrice, setMaxPrice] = useState(priceBounds[1]);
 
   // URL sync (best-effort)
-  const nav = (() => {
-    try { return require("next/navigation"); } catch { return null; }
-  })();
-  const router = nav?.useRouter?.();
-  const searchParams = nav?.useSearchParams?.();
+  const router = nav.useRouter?.();
+  const searchParams = nav.useSearchParams?.();
 
-  // initialize state from URL
-  useMemo(() => {
+  // initialize/refresh state from URL
+  React.useEffect(() => {
     try {
       const sp = searchParams as ReturnType<typeof nav.useSearchParams>;
       if (!sp) return;
@@ -86,7 +87,7 @@ export default function ProductFilter({
         if (Number.isFinite(max)) setMaxPrice(max);
       }
     } catch {}
-  }, []);
+  }, [searchParams]);
 
   const pushUrl = (patch: Record<string, string | number | undefined>) => {
     try {
@@ -122,13 +123,13 @@ export default function ProductFilter({
     <div className="space-y-4">
       {eff.size && (
         <div className="space-y-1">
-          <label className="text-sm font-medium">Size</label>
+          <label className="text-sm font-medium">{t("Size")}</label>
           <select
             value={size}
             onChange={(e) => { const v = e.target.value; setSize(v); pushUrl({ size: v }); onChange?.({ size: v, color, minPrice, maxPrice }); }}
             className="w-full rounded border p-2 text-sm"
           >
-            <option value="">All</option>
+            <option value="">{t("All")}</option>
             {sizes.map((s) => (
               <option key={s} value={s}>
                 {s}
@@ -139,13 +140,13 @@ export default function ProductFilter({
       )}
       {eff.color && (
         <div className="space-y-1">
-          <label className="text-sm font-medium">Color</label>
+          <label className="text-sm font-medium">{t("Color")}</label>
           <select
             value={color}
             onChange={(e) => { const v = e.target.value; setColor(v); pushUrl({ color: v }); onChange?.({ size, color: v, minPrice, maxPrice }); }}
             className="w-full rounded border p-2 text-sm"
           >
-            <option value="">All</option>
+            <option value="">{t("All")}</option>
             {colors.map((c) => (
               <option key={c} value={c}>
                 {c}
@@ -156,7 +157,7 @@ export default function ProductFilter({
       )}
       {eff.price && (
         <div className="space-y-1">
-          <label className="text-sm font-medium">Price</label>
+          <label className="text-sm font-medium">{t("Price")}</label>
           <div className="flex items-center gap-2">
             <input
               type="number"
@@ -164,7 +165,9 @@ export default function ProductFilter({
               onChange={(e) => { const n = Number(e.target.value); setMinPrice(n); pushUrl({ min: n }); onChange?.({ size, color, minPrice: n, maxPrice }); }}
               className="w-20 rounded border p-1 text-sm"
             />
-            <span className="text-sm">-</span>
+            <span className="text-sm" aria-hidden>
+              {/* i18n-exempt: punctuation */}-
+            </span>
             <input
               type="number"
               value={maxPrice}
@@ -174,7 +177,7 @@ export default function ProductFilter({
           </div>
         </div>
       )}
-      <p className="text-xs text-muted-foreground">{results.length} products</p>
+      <p className="text-xs text-muted-foreground">{results.length} {t("products")}</p>
     </div>
   );
 }

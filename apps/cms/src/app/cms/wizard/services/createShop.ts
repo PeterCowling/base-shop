@@ -119,5 +119,9 @@ export async function createShop(
     return { ok: true, deployment: json.deployment };
   }
 
-  return { ok: false, error: json.error ?? "Failed to create shop" };
+  return {
+    ok: false,
+    // i18n-exempt: generic fallback when API provides no message; surfaced in UI as-is
+    error: json.error ?? "Failed to create shop",
+  };
 }

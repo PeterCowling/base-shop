@@ -33,9 +33,15 @@ export async function GET(
 
     const res = NextResponse.json({ items }, { status: 200 });
     // Cache-Control for ISR-like behavior at the edge/CDN
-    res.headers.set("Cache-Control", "public, s-maxage=60, stale-while-revalidate=60");
+    res.headers.set(
+      "Cache-Control",
+      "public, s-maxage=60, stale-while-revalidate=60", // i18n-exempt: header value is technical, not user-facing copy
+    );
     return res;
-  } catch (err) {
-    return NextResponse.json({ error: "Failed to load collection" }, { status: 500 });
+  } catch {
+    return NextResponse.json(
+      { error: "Failed to load collection" }, // i18n-exempt: API error string; caller/UI will localize
+      { status: 500 },
+    );
   }
 }

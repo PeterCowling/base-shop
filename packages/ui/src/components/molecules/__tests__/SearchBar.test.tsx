@@ -9,7 +9,7 @@ describe("SearchBar", () => {
     const input = screen.getByRole("searchbox", { name: "Search" });
 
     await userEvent.type(input, "a");
-    let options = await screen.findAllByRole("option");
+    const options = await screen.findAllByRole("option");
     expect(options).toHaveLength(2);
     expect(options[0]).toHaveTextContent("apple");
     expect(options[1]).toHaveTextContent("banana");
@@ -66,4 +66,3 @@ describe("SearchBar", () => {
     expect(onSearch).toHaveBeenCalledWith("world");
   });
 });
-

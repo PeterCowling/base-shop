@@ -78,7 +78,7 @@ describe("ProductGrid", () => {
         mobileItems={1}
       />
     );
-    let grid = container.firstChild as HTMLElement;
+    const grid = container.firstChild as HTMLElement;
     await waitFor(() =>
       expect(grid.style.gridTemplateColumns).toBe(
         "repeat(4, minmax(0, 1fr))"
@@ -107,7 +107,7 @@ describe("ProductGrid", () => {
     const { container } = render(
       <ProductGrid skus={skus} minItems={1} maxItems={5} />
     );
-    let grid = container.firstChild as HTMLElement;
+    const grid = container.firstChild as HTMLElement;
     await waitFor(() =>
       expect(grid.style.gridTemplateColumns).toBe(
         "repeat(2, minmax(0, 1fr))"
@@ -255,4 +255,3 @@ describe("ProductGrid", () => {
     expect(screen.getByTestId("active-filter")).toHaveTextContent("color: red");
   });
 });
-

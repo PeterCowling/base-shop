@@ -1,4 +1,5 @@
 "use client";
+// i18n-exempt — editor-only notifications UI; copy slated for extraction
 
 import React from "react";
 import { Popover, PopoverTrigger, PopoverContent, Tooltip } from "../../atoms";
@@ -15,12 +16,19 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
         if (!shop || !pageId) return;
         const res = await fetch(`/api/comments/${encodeURIComponent(shop)}/${encodeURIComponent(pageId)}`);
         if (!res.ok) return;
-        const list = (await res.json()) as any[];
+        const list = (await res.json()) as unknown[];
         if (!active) return;
-        const unresolved = list.filter((t) => !t.resolved);
+        const unresolved = list.filter((t) => !(t as { resolved?: boolean }).resolved);
         setCommentCount(unresolved.length);
         setItems((prev) => {
-          const fromComments = unresolved.slice(0, 10).map((t) => ({ id: `c:${t.id}`, title: (t.messages?.[0]?.text || "Comment"), ts: t.updatedAt || t.createdAt, source: 'comments' }));
+          const fromComments = unresolved.slice(0, 10).map((t) => {
+            const r = t as Record<string, unknown>;
+            const id = String(r.id ?? "");
+            const messages = (r.messages as Array<{ text?: string }> | undefined) ?? [];
+            const title = messages?.[0]?.text || "Comment"; // i18n-exempt
+            const ts = (r.updatedAt as string | undefined) || (r.createdAt as string | undefined);
+            return { id: `c:${id}`, title, ts, source: "comments" as const };
+          });
           // Keep existing non-comment events
           const others = prev.filter((p) => p.source !== 'comments');
           const merged = [...fromComments, ...others].slice(0, 50);
@@ -40,11 +48,13 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
     const onLive = (e: Event) => {
       try {
         const ce = e as CustomEvent<{ detail?: string } | string> & { detail?: string };
-        const text = (typeof ce.detail === 'string' ? ce.detail : (ce as any)?.detail) || 'Update';
+        const text = (typeof ce.detail === 'string' ? ce.detail : (ce as CustomEvent<unknown>)?.detail as string | undefined) || 'Update'; // i18n-exempt
         setItems((prev) => {
-          const next = [{ id: `m:${Date.now()}`, title: String(text), ts: new Date().toISOString(), source: 'messages' }, ...prev].slice(0, 50);
+          const next = [{ id: `m:${Date.now()}`, title: String(text), ts: new Date().toISOString(), source: 'messages' as const }, ...prev].slice(0, 50);
           const extra = next.filter((i) => i.source !== 'comments').length;
-          setCount(Math.min(99, commentCount + extra));
+          // Derive comments count from current list to avoid stale dependency
+          const commentsNow = prev.filter((i) => i.source === 'comments').length;
+          setCount(Math.min(99, commentsNow + extra));
           return next;
         });
       } catch {}
@@ -53,11 +63,12 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
       try {
         const ce = e as CustomEvent<{ type?: string; title?: string; message?: string }>;
         const d = ce.detail || {};
-        const title = d.title || d.message || 'Event';
+        const title = d.title || d.message || 'Event'; // i18n-exempt
         setItems((prev) => {
-          const next = [{ id: `e:${Date.now()}`, title: String(title), ts: new Date().toISOString(), source: d.type || 'event' }, ...prev].slice(0, 50);
+          const next = [{ id: `e:${Date.now()}`, title: String(title), ts: new Date().toISOString(), source: (d.type || 'event') as string }, ...prev].slice(0, 50);
           const extra = next.filter((i) => i.source !== 'comments').length;
-          setCount(Math.min(99, commentCount + extra));
+          const commentsNow = prev.filter((i) => i.source === 'comments').length;
+          setCount(Math.min(99, commentsNow + extra));
           return next;
         });
       } catch {}
@@ -74,10 +85,11 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
     <Popover>
       <PopoverTrigger asChild>
         <Tooltip text={count > 0 ? `${count} notifications` : "Notifications"}>
-          <button type="button" aria-label="Notifications" className="relative rounded border px-2 py-1 text-sm">
+          {/* i18n-exempt — icon-only control with accessible label */}
+          <button type="button" aria-label="Notifications" className="relative rounded border px-2 py-1 text-sm min-h-10 min-w-10 inline-flex items-center justify-center">
             <BellIcon className="h-4 w-4" />
             {count > 0 && (
-              <span className="absolute -end-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-semibold text-white">
+              <span className="absolute -end-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-xs font-semibold text-white">
                 {count}
               </span>
             )}
@@ -86,12 +98,12 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80 text-sm">
         <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
-          <span className="rounded bg-muted px-1">All {count}</span>
-          <span className="rounded bg-muted px-1">Comments {commentCount}</span>
-          <span className="rounded bg-muted px-1">Events {Math.max(0, count - commentCount)}</span>
+          <span className="rounded bg-muted px-1">All {count}</span> {/* i18n-exempt */}
+          <span className="rounded bg-muted px-1">Comments {commentCount}</span> {/* i18n-exempt */}
+          <span className="rounded bg-muted px-1">Events {Math.max(0, count - commentCount)}</span> {/* i18n-exempt */}
         </div>
         {items.length === 0 ? (
-          <div className="text-muted-foreground">No notifications</div>
+          <div className="text-muted-foreground">No notifications</div> /* i18n-exempt */
         ) : (
           <ul className="max-h-80 space-y-1 overflow-auto">
             {items.map((it) => (
@@ -107,9 +119,9 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
               >
                 <div className="flex items-center justify-between gap-2">
                   <div className="truncate">{it.title}</div>
-                  <span className="text-[10px] uppercase text-muted-foreground">{(it.source || 'event')}</span>
+                  <span className="text-xs uppercase text-muted-foreground">{(it.source || 'event')}</span>
                 </div>
-                {it.ts && <div className="text-[10px] text-muted-foreground">{new Date(it.ts).toLocaleString()}</div>}
+                {it.ts && <div className="text-xs text-muted-foreground">{new Date(it.ts).toLocaleString()}</div>}
               </li>
             ))}
           </ul>

@@ -28,7 +28,7 @@ export function createCustomerMfaDelegate() {
       data: Partial<CustomerMfa>;
     }): Promise<CustomerMfa> => {
       const idx = customerMfas.findIndex((m) => m.customerId === where.customerId);
-      if (idx < 0) throw new Error("CustomerMfa not found");
+      if (idx < 0) throw new Error("CustomerMfa not found"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
       customerMfas[idx] = { ...customerMfas[idx], ...data };
       return customerMfas[idx];
     },

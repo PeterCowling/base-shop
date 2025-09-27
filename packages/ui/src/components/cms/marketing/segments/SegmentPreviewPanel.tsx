@@ -1,5 +1,6 @@
 import { Card, CardContent } from "../../../atoms/shadcn";
 import { Tag } from "../../../atoms";
+import { useTranslations } from "@acme/i18n";
 import { PreviewPanel } from "../shared";
 import type { SegmentPreviewData } from "./types";
 
@@ -12,25 +13,26 @@ export function SegmentPreviewPanel({
   data,
   className,
 }: SegmentPreviewPanelProps) {
+  const t = useTranslations();
   return (
     <PreviewPanel
-      title="Segment snapshot"
-      description="Preview the rules applied to this audience."
+      title={t("Segment snapshot") as string}
+      description={t("Preview the rules applied to this audience.") as string}
       data={data}
       className={className}
       renderPreview={(preview) => (
         <div className="space-y-3 text-sm">
           <div className="space-y-1">
             <span className="text-muted-foreground text-xs uppercase">
-              Estimated size
+              {t("Estimated size")}
             </span>
             <p className="text-base font-semibold">
-              {preview.estimatedSize.toLocaleString()} people
+              {preview.estimatedSize.toLocaleString()} {t("people")}
             </p>
           </div>
           <div className="space-y-2">
             <span className="text-muted-foreground text-xs uppercase">
-              Filters
+              {t("Filters")}
             </span>
             <div className="space-y-2">
               {preview.rules.map((rule) => (

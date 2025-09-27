@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { Progress, Tag } from "../../../atoms";
 import { cn } from "../../../../utils/style";
+import { useTranslations } from "@acme/i18n";
+import { Inline } from "../../../atoms/primitives/Inline";
 
 export interface StepDefinition {
   id: string;
@@ -21,20 +23,24 @@ export function StepIndicator({
   className,
   onStepSelect,
 }: StepIndicatorProps) {
+  const t = useTranslations();
   const progressValue =
     steps.length > 0 ? ((currentStep + 1) / steps.length) * 100 : 0;
   const active = steps[currentStep];
 
   return (
     <div className={cn("space-y-3", className)}>
-      <div className="flex items-center justify-between text-sm text-muted-foreground">
+      <Inline className="justify-between text-sm text-muted-foreground">
         <span>
-          Step {Math.min(currentStep + 1, steps.length)} of {steps.length}
+          {t("Step {current} of {total}", {
+            current: Math.min(currentStep + 1, steps.length),
+            total: steps.length,
+          })}
         </span>
-        <span>{Math.round(progressValue)}% complete</span>
-      </div>
-      <Progress value={progressValue} aria-label="Progress" />
-      <div className="flex flex-wrap gap-2">
+        <span>{t("{percent}% complete", { percent: Math.round(progressValue) })}</span>
+      </Inline>
+      <Progress value={progressValue} aria-label={String(t("Progress"))} />
+      <Inline className="gap-2">
         {steps.map((step, index) => {
           const isActive = index === currentStep;
           const isCompleted = index < currentStep;
@@ -43,14 +49,15 @@ export function StepIndicator({
               key={step.id}
               variant={isActive ? "warning" : isCompleted ? "success" : "default"}
               className={cn(
+                /* i18n-exempt: utility classes, not user copy */
                 "cursor-default text-xs uppercase tracking-wide",
                 onStepSelect && "cursor-pointer"
               )}
             >
-              <span className="flex items-center gap-1">
+              <Inline className="items-center gap-1">
                 <span className="font-medium">{index + 1}.</span>
                 {step.label}
-              </span>
+              </Inline>
             </Tag>
           );
           if (!onStepSelect) return tag;
@@ -59,13 +66,13 @@ export function StepIndicator({
               key={step.id}
               type="button"
               onClick={() => onStepSelect(index, step)}
-              className="appearance-none border-0 bg-transparent p-0"
+              className="appearance-none border-0 bg-transparent p-0 min-h-10 min-w-10"
             >
               {tag}
             </button>
           );
         })}
-      </div>
+      </Inline>
       {active?.description && (
         <p className="text-muted-foreground text-sm">{active.description}</p>
       )}

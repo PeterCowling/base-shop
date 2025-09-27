@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
+/* eslint-disable security/detect-non-literal-fs-filename -- DS-000 paths built from validated shop and trusted base directory */
 import "server-only";
 
 import { pageSchema, type Page } from "@acme/types";
@@ -112,7 +112,7 @@ export async function deletePage(shop: string, id: string): Promise<void> {
   try {
     const res = await prisma.page.deleteMany({ where: { id, shopId: shop } });
     if (res.count === 0) {
-      throw new Error(`Page ${id} not found in ${shop}`);
+      throw new Error(`Page ${id} not found in ${shop}`); // i18n-exempt -- developer error, not user-facing
     }
   } catch (err) {
     if (err instanceof Error && err.message.includes("not found")) {
@@ -130,7 +130,7 @@ export async function updatePage(
   previous: Page,
 ): Promise<Page> {
   if (previous.updatedAt !== patch.updatedAt) {
-    throw new Error("Conflict: page has been modified");
+    throw new Error("Conflict: page has been modified"); // i18n-exempt -- developer error, not user-facing
   }
   const updated: Page = mergeDefined(previous, patch);
   updated.updatedAt = nowIso();

@@ -61,9 +61,9 @@ function getLogger(): pino.Logger {
 getTransporter();
 
 const emailSchema = z.object({
-  to: z.string().email({ message: "Invalid recipient email address" }),
-  subject: z.string().min(1, { message: "Email subject is required" }),
-  body: z.string().min(1, { message: "Email body is required" }),
+  to: z.string().email({ message: "Invalid recipient email address" }), // i18n-exempt: developer validation error
+  subject: z.string().min(1, { message: "Email subject is required" }), // i18n-exempt: developer validation error
+  body: z.string().min(1, { message: "Email body is required" }), // i18n-exempt: developer validation error
   attachments: z.array(z.any()).optional(),
 });
 
@@ -87,11 +87,11 @@ export async function sendEmail(
       });
       return info?.messageId;
     } catch (error) {
-      console.error("Error sending email", error);
+      console.error("Error sending email", error); // i18n-exempt: operational log
       throw error;
     }
   } else {
-    getLogger().info({ to: validated.to }, "Email simulated");
+    getLogger().info({ to: validated.to }, "Email simulated"); // i18n-exempt: operational log
   }
   return undefined;
 }

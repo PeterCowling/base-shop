@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 import type { MappingRowsController } from "../useShopEditorSubmit";
 
 import MappingListField, {
@@ -25,6 +26,7 @@ export default function ShopLocalizationSection({
   errors,
   availableLocales = DEFAULT_LOCALES,
 }: ShopLocalizationSectionProps) {
+  const t = useTranslations();
   const options: readonly MappingListFieldSelectOption[] =
     availableLocales.map((locale) => ({ label: locale, value: locale }));
 
@@ -32,35 +34,38 @@ export default function ShopLocalizationSection({
     <Card>
       <CardContent className="space-y-6 p-6">
         <div className="space-y-1">
-          <h3 className="text-lg font-semibold">Localization overrides</h3>
+          <h3 className="text-lg font-semibold">{t("Localization overrides")}</h3>
           <p className="text-sm text-muted-foreground">
-            Redirect key storefront entry points to locale-specific experiences
-            when needed.
+            {t(
+              "Redirect key storefront entry points to locale-specific experiences when needed.",
+            )}
           </p>
         </div>
 
         <MappingListField
           controller={localeOverrides}
-          idPrefix="locale-override"
+          idPrefix={"locale-override" /* i18n-exempt: DOM id prefix, not user-visible copy */}
           keyField={{
             field: "key",
-            label: "Field key",
+            label: String(t("Field key")),
             name: "localeOverridesKey",
-            placeholder: "/collections/new",
+            placeholder: String(t("/collections/new")),
           }}
           valueField={{
             field: "value",
             kind: "select",
-            label: "Locale",
+            label: String(t("Locale")),
             name: "localeOverridesValue",
-            placeholder: "Select locale",
+            placeholder: String(t("Select locale")),
             options,
           }}
-          emptyMessage="No locale overrides configured."
-          addButtonLabel="Add locale override"
-          removeButtonLabel="Remove"
+          emptyMessage={String(t("No locale overrides configured."))}
+          addButtonLabel={String(t("Add locale override"))}
+          removeButtonLabel={String(t("Remove"))}
           errors={errors?.localeOverrides}
-          rowClassName="sm:grid-cols-[2fr,1fr,auto]"
+          rowClassName={
+            "sm:grid-cols-[2fr,1fr,auto]" /* i18n-exempt: CSS utility classes, not user copy */
+          }
         />
       </CardContent>
     </Card>

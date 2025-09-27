@@ -8,6 +8,7 @@ import useCanvasSpacing from "./useCanvasSpacing";
 import useBlockDimensions from "./useBlockDimensions";
 import useCanvasRotate from "./useCanvasRotate";
 import type { BlockItemProps } from "./BlockItem.types";
+import type { PositioningProps } from "@acme/types/page/positioning";
 
 type Props = BlockItemProps;
 
@@ -57,8 +58,8 @@ export default function useBlockItemInteractions({
     disabled: !!effLocked || inlineEditing,
     leftKey: dimensions.leftKey,
     topKey: dimensions.topKey,
-    dockX: (component as any).dockX as any,
-    dockY: (component as any).dockY as any,
+    dockX: (component as unknown as PositioningProps).dockX,
+    dockY: (component as unknown as PositioningProps).dockY,
     zoom,
   });
 
@@ -71,8 +72,8 @@ export default function useBlockItemInteractions({
     disabled: !!effLocked || inlineEditing,
     leftKey: dimensions.leftKey,
     topKey: dimensions.topKey,
-    dockX: (component as any).dockX as any,
-    dockY: (component as any).dockY as any,
+    dockX: (component as unknown as PositioningProps).dockX,
+    dockY: (component as unknown as PositioningProps).dockY,
     zoom,
   });
 
@@ -90,7 +91,7 @@ export default function useBlockItemInteractions({
 
   const rotate = useCanvasRotate({
     componentId: component.id,
-    styles: (component as any).styles as string | undefined,
+    styles: (component as unknown as { styles?: string }).styles,
     dispatch,
     containerRef: dnd.containerRef,
     zoom,

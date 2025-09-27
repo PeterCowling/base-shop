@@ -8,10 +8,9 @@ jest.mock("@acme/platform-core/products/index", () => ({
 
 import { getProductById, getProductBySlug } from "../products";
 
-describe("lib/products re-exports", () => {
-  test("exports functions from platform-core", () => {
+describe("lib/products re-exports", () => { // i18n-exempt: test titles are not user-facing
+  test("exports functions from platform-core", () => { // i18n-exempt: test title
     expect(typeof getProductById).toBe("function");
     expect(typeof getProductBySlug).toBe("function");
   });
 });
-

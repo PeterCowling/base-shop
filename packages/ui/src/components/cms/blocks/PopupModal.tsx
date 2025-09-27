@@ -1,8 +1,9 @@
 "use client";
 
 import DOMPurify from "dompurify";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createFocusTrap } from "focus-trap";
+import { Dialog, DialogContent } from "../../atoms";
 
 interface Props {
   width?: string;
@@ -41,18 +42,24 @@ export default function PopupModal({
   const sanitized = DOMPurify.sanitize(content);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const allowedByConsent = () => {
+  const allowedByConsent = useCallback(() => {
     if (!consentCookieName) return true;
     try {
-      const m = document.cookie.match(new RegExp("(?:^|; )" + consentCookieName.replace(/([.$?*|{}()\[\]\\/+^])/g, "\\$1") + "=([^;]*)"));
-      const v = m ? decodeURIComponent(m[1]) : null;
-      return v === consentRequiredValue;
+      // Safer cookie parsing without dynamic RegExp
+      const parts = document.cookie.split("; ");
+      for (const part of parts) {
+        const [k, v] = part.split("=");
+        if (decodeURIComponent(k) === consentCookieName) {
+          return decodeURIComponent(v ?? "") === consentRequiredValue;
+        }
+      }
+      return false;
     } catch {
       return false;
     }
-  };
+  }, [consentCookieName, consentRequiredValue]);
 
-  const allowedByFrequency = () => {
+  const allowedByFrequency = useCallback(() => {
     try {
       const raw = localStorage.getItem(`pb:popup:${frequencyKey}`);
       if (!raw) return true;
@@ -64,16 +71,16 @@ export default function PopupModal({
     } catch {
       return true;
     }
-  };
+  }, [frequencyKey, coolOffDays, maxShows]);
 
-  const recordShow = () => {
+  const recordShow = useCallback(() => {
     try {
       const raw = localStorage.getItem(`pb:popup:${frequencyKey}`);
       const prev = raw ? (JSON.parse(raw) as { last: number; count: number }) : { last: 0, count: 0 };
       const next = { last: Date.now(), count: (prev.count ?? 0) + 1 };
       localStorage.setItem(`pb:popup:${frequencyKey}`, JSON.stringify(next));
     } catch {}
-  };
+  }, [frequencyKey]);
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -103,7 +110,7 @@ export default function PopupModal({
     return () => {
       if (timer) clearTimeout(timer);
     };
-  }, [trigger, delay]);
+  }, [trigger, delay, allowedByConsent, allowedByFrequency, recordShow]);
 
   useEffect(() => {
     if (!open) return;
@@ -130,34 +137,16 @@ export default function PopupModal({
     };
   }, [open]);
 
-  if (!open) return null;
-
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-      onClick={() => setOpen(false)}
-    >
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-label="Popup modal"
-        className="relative bg-white p-4 shadow-elevation-4"
-        style={{ width, height }}
-        onClick={(e) => e.stopPropagation()}
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent
         ref={modalRef}
+        // Scope width/height to content; DialogContent already provides relative positioning and z-index
+        className="p-4"
+        style={{ width, height }}
       >
-        {content && (
-          <div dangerouslySetInnerHTML={{ __html: sanitized }} />
-        )}
-        <button
-          type="button"
-          aria-label="Close"
-          className="absolute end-2 top-2 text-xl"
-          onClick={() => setOpen(false)}
-        >
-          &times;
-        </button>
-      </div>
-    </div>
+        {content ? <div dangerouslySetInnerHTML={{ __html: sanitized }} /> : null}
+      </DialogContent>
+    </Dialog>
   );
 }

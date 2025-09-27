@@ -4,6 +4,7 @@ import { useState } from "react";
 import type { SKU } from "@acme/types";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
 import { Price } from "../../atoms/Price";
+import { Stack, Inline } from "../../atoms/primitives";
 
 interface Props {
   denominations?: number[];
@@ -19,7 +20,7 @@ export default function GiftCardBlock({
   const sku: SKU = {
     id: `gift-${amount}`,
     slug: `gift-card-${amount}`,
-    title: `Gift Card` ,
+    title: `Gift Card` , // i18n-exempt — internal SKU title, not direct UI copy
     price: amount,
     deposit: 0,
     stock: 9999,
@@ -31,15 +32,15 @@ export default function GiftCardBlock({
   } as SKU;
 
   return (
-    <div className="flex flex-col gap-4">
+    <Stack gap={4}>
       {description && <p>{description}</p>}
-      <div className="flex gap-2">
+      <Inline gap={2}>
         {denominations.map((value) => (
           <button
             key={value}
             type="button"
             onClick={() => setAmount(value)}
-            className={`rounded border px-3 py-2 ${
+            className={`rounded border px-3 py-2 min-h-10 min-w-10 ${
               amount === value ? "bg-fg" : "bg-bg"
             }`}
             data-token={amount === value ? "--color-fg" : "--color-bg"}
@@ -51,9 +52,8 @@ export default function GiftCardBlock({
             />
           </button>
         ))}
-      </div>
+      </Inline>
       <AddToCartButton sku={sku} />
-    </div>
+    </Stack>
   );
 }
-

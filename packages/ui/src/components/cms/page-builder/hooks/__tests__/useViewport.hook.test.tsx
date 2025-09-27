@@ -7,18 +7,18 @@ describe("page-builder useViewport", () => {
   const originalCancel = global.cancelAnimationFrame;
   beforeEach(() => {
     // Execute raf callbacks immediately
-    // @ts-ignore
+    // @ts-expect-error -- test shim for RAF
     global.requestAnimationFrame = (cb: FrameRequestCallback) => {
       cb(0);
       return 1 as any;
     };
-    // @ts-ignore
+    // @ts-expect-error -- test shim for cancelRAF
     global.cancelAnimationFrame = () => {};
   });
   afterEach(() => {
-    // @ts-ignore
+    // @ts-expect-error -- restore original
     global.requestAnimationFrame = originalRAF;
-    // @ts-ignore
+    // @ts-expect-error -- restore original
     global.cancelAnimationFrame = originalCancel;
   });
 
@@ -39,4 +39,3 @@ describe("page-builder useViewport", () => {
     expect(result.current.viewportStyle.height).toBe("400px");
   });
 });
-

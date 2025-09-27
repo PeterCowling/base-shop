@@ -7,7 +7,7 @@ export async function listShops(): Promise<string[]> {
   const shopsDir = resolveDataRoot();
 
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: shopsDir is validated by resolveDataRoot()
     const entries = await fs.readdir(shopsDir, { withFileTypes: true });
     return entries.filter((e) => e.isDirectory()).map((e) => e.name);
   } catch (err: unknown) {

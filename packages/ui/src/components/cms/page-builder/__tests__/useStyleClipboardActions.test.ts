@@ -16,6 +16,7 @@ describe("useStyleClipboardActions", () => {
 
   it("copyStyles stores parsed overrides and emits live message", () => {
     const dispatch = jest.fn();
+    // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal
     const selectedComponent = { id: "x", styles: JSON.stringify({ color: { fg: "#111" } }) } as any;
     const { result } = renderHook(() =>
       useStyleClipboardActions({ selectedComponent, selectedIds: ["x"], components: [selectedComponent], dispatch })
@@ -23,6 +24,7 @@ describe("useStyleClipboardActions", () => {
 
     const spy = jest.spyOn(window, "dispatchEvent").mockImplementation(() => true);
     act(() => { result.current.copyStyles(); });
+    // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal
     expect(setStyleClipboard).toHaveBeenCalledWith({ color: { fg: "#111" } });
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
@@ -30,7 +32,9 @@ describe("useStyleClipboardActions", () => {
 
   it("pasteStyles applies clipboard to selected component(s)", () => {
     const dispatch = jest.fn();
+    // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal
     (getStyleClipboard as jest.Mock).mockReturnValue({ color: { bg: "#fff" } });
+    // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal
     const a = { id: "a", styles: JSON.stringify({ color: { fg: "#000" } }) } as any;
     const b = { id: "b", styles: JSON.stringify({}) } as any;
 
@@ -45,4 +49,3 @@ describe("useStyleClipboardActions", () => {
     expect(patches.every((p: any) => p.type === "update" && typeof p.patch.styles === "string")).toBe(true);
   });
 });
-

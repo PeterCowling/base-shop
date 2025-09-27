@@ -21,7 +21,7 @@ export default function useDropHighlight({
     if (preview) return;
     e.preventDefault();
     setDragOver(true);
-    const target = (e.target as HTMLElement).closest('[role="listitem"], #canvas');
+    const target = (e.target as HTMLElement).closest('[role="listitem"], #canvas'); // i18n-exempt -- PB-000 CSS selector literal
     if (target instanceof HTMLElement && canvasRef?.current) {
       const canvasBounds = canvasRef.current.getBoundingClientRect();
       const rect = target.getBoundingClientRect();
@@ -39,4 +39,3 @@ export default function useDropHighlight({
 
   return { dropRect, handleDragOver, clearHighlight, setDropRect } as const;
 }
-

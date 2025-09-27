@@ -10,10 +10,13 @@ export function decorateComponentForViewport<T extends { id: string }>(
   const hidden = isHiddenForViewport(
     node.id,
     editor,
-    (node as any).hidden as boolean | undefined,
+    ((): boolean | undefined => {
+      const v = (node as unknown as Record<string, unknown>).hidden;
+      return typeof v === "boolean" ? v : undefined;
+    })(),
     viewport,
   );
-  const merged: any = { ...node };
+  const merged = { ...node } as T & Partial<{ name: string; locked: boolean; zIndex: number; hidden: boolean }>;
   if (flags.name !== undefined) merged.name = flags.name;
   if (flags.locked !== undefined) merged.locked = flags.locked;
   if (flags.zIndex !== undefined) merged.zIndex = flags.zIndex as number;

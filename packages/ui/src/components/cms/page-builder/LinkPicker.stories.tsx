@@ -11,48 +11,52 @@ export default meta;
 
 type Story = StoryObj<typeof LinkPicker>;
 
-export const Basic: Story = {
-  render: () => {
-    const [open, setOpen] = useState(true);
-    useEffect(() => {
-      const orig = window.fetch;
-      (window as any).fetch = async (url: RequestInfo) => {
-        const u = String(url);
-        if (u.includes("/cms/api/pages/")) {
-          return new Response(
-            JSON.stringify([
-              { id: "p1", slug: "home", seo: { title: { en: "Home" } } },
-              { id: "p2", slug: "about", seo: { title: { en: "About" } } },
-            ]),
-            { status: 200, headers: { "Content-Type": "application/json" } },
-          );
-        }
-        if (u.includes("/cms/api/products")) {
-          return new Response(
-            JSON.stringify([
-              { slug: "blue-shirt", title: "Blue Shirt" },
-              { slug: "sneakers", title: "Sneakers" },
-            ]),
-            { status: 200, headers: { "Content-Type": "application/json" } },
-          );
-        }
-        return orig(url as any);
-      };
-      return () => {
-        (window as any).fetch = orig;
-      };
-    }, []);
+function BasicStory() {
+  const [open, setOpen] = useState(true);
+  useEffect(() => {
+    type FetchType = typeof fetch;
+    const orig: FetchType = window.fetch.bind(window);
+    const override: FetchType = async (input: RequestInfo | URL, init?: RequestInit) => {
+      const u = String(input);
+      if (u.includes("/cms/api/pages/")) {
+        return new Response(
+          JSON.stringify([
+            { id: "p1", slug: "home", seo: { title: { en: "Home" } } },
+            { id: "p2", slug: "about", seo: { title: { en: "About" } } },
+          ]),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+      }
+      if (u.includes("/cms/api/products")) {
+        return new Response(
+          JSON.stringify([
+            { slug: "blue-shirt", title: "Blue Shirt" },
+            { slug: "sneakers", title: "Sneakers" },
+          ]),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+      }
+      return orig(input, init);
+    };
+    (window as unknown as { fetch: FetchType }).fetch = override;
+    return () => {
+      (window as unknown as { fetch: FetchType }).fetch = orig;
+    };
+  }, []);
 
-    return (
-      <LinkPicker
-        open={open}
-        onClose={() => setOpen(false)}
-        onPick={(href) => {
-          alert(`Picked: ${href}`);
-          setOpen(false);
-        }}
-        shop="bcd"
-      />
-    );
-  },
+  return (
+    <LinkPicker
+      open={open}
+      onClose={() => setOpen(false)}
+      onPick={(href) => {
+        alert(`Picked: ${href}`);
+        setOpen(false);
+      }}
+      shop="bcd"
+    />
+  );
+}
+
+export const Basic: Story = {
+  render: () => <BasicStory />,
 };

@@ -4,7 +4,10 @@ import { formDataToObject } from "../../../utils/formData";
 const depositSchema = z
   .object({
     enabled: z.preprocess((v) => v === "on", z.boolean()),
-    intervalMinutes: z.coerce.number().int().min(1, "Must be at least 1"),
+    intervalMinutes: z.coerce
+      .number()
+      .int()
+      .min(1, "Must be at least 1"), // i18n-exempt: schema error text used in tests; locale not available here
   })
   .strict();
 

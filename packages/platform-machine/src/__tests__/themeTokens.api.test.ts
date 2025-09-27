@@ -16,7 +16,7 @@ describe("theme tokens API", () => {
     fs.mkdirSync(partialDir, { recursive: true });
     fs.writeFileSync(
       join(partialDir, "tailwind-tokens.ts"),
-      "export const tokens = { '--color-bg': '#000', '--space-1': '10px' } as const;",
+      "export const tokens = { '--color-bg': '#000', '--space-1': '10px' } as const;", // eslint-disable-line ds/no-raw-color -- QA-1234: Raw color in fixture string to test token override behavior
     );
     fs.mkdirSync(invalidDir, { recursive: true });
     fs.writeFileSync(
@@ -32,6 +32,7 @@ describe("theme tokens API", () => {
 
   it("merges overrides with base tokens", () => {
     const tokens = { ...baseTokens, ...loadThemeTokensNode("partial") };
+    // eslint-disable-next-line ds/no-raw-color -- QA-1234: Asserting fixture raw color value passes through
     expect(tokens["--color-bg"]).toBe("#000");
     expect(tokens["--space-1"]).toBe("10px");
     expect(tokens["--space-2"]).toBe(baseTokens["--space-2"]);

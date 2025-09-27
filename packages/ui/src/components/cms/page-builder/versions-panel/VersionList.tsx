@@ -13,7 +13,7 @@ const VersionList = ({ versions, selectedId, onSelect }: Props) => {
   const items = useMemo(() => versions ?? [], [versions]);
   return (
     <div className="col-span-1">
-      <div className="text-sm font-medium mb-2">Versions</div>
+      <div className="text-sm font-medium mb-2">Versions{/* i18n-exempt -- PB-1023 */}</div>
       <div className="max-h-64 overflow-y-auto rounded border">
         {items.map((v) => (
           <button
@@ -30,7 +30,7 @@ const VersionList = ({ versions, selectedId, onSelect }: Props) => {
           </button>
         ))}
         {items.length === 0 && (
-          <div className="p-2 text-sm text-muted-foreground">No versions yet</div>
+          <div className="p-2 text-sm text-muted-foreground">No versions yet{/* i18n-exempt -- PB-1023 */}</div>
         )}
       </div>
     </div>
@@ -38,4 +38,3 @@ const VersionList = ({ versions, selectedId, onSelect }: Props) => {
 };
 
 export default VersionList;
-

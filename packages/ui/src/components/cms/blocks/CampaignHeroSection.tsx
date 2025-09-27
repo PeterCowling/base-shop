@@ -1,6 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { Grid as GridPrimitive } from "../../atoms/primitives/Grid";
+import { Stack } from "../../atoms/primitives/Stack";
+import { Image as DSImage } from "./atoms";
 import CountdownTimer from "./CountdownTimer";
 import type { LookbookHotspot } from "./Lookbook";
 import ExperimentGate from "../../ab/ExperimentGate";
@@ -58,23 +61,25 @@ export default function CampaignHeroSection({
 
   return (
     <section className={["relative", className].filter(Boolean).join(" ") || undefined} {...rest}>
-      <div className="relative mx-auto max-w-7xl">
+      <div className="relative mx-auto">
         {/* Media */}
-        <div className="relative aspect-[16/9] w-full overflow-hidden rounded">
+        <div className="relative w-full overflow-hidden rounded">
           {mediaType === "video" && videoSrc ? (
-            <video
-              className="h-full w-full object-cover"
-              playsInline
-              autoPlay
-              muted
-              loop
-              poster={videoPoster}
-            >
-              <source src={videoSrc} />
-            </video>
+            <div className="aspect-video">
+              <video
+                className="h-full w-full object-cover"
+                data-aspect="16/9"
+                playsInline
+                autoPlay
+                muted
+                loop
+                poster={videoPoster}
+              >
+                <source src={videoSrc} />
+              </video>
+            </div>
           ) : imageSrc ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={imageSrc} alt={imageAlt ?? ""} className="h-full w-full object-cover" />
+            <DSImage src={imageSrc} alt={imageAlt ?? ""} cropAspect="16:9" sizes="100vw" priority={false} />
           ) : (
             <div className="h-full w-full bg-neutral-200" />
           )}
@@ -85,31 +90,35 @@ export default function CampaignHeroSection({
               {hotspots.map((p, i) => (
                 <a
                   key={i}
-                  className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow"
+                  className="absolute -translate-x-1/2 -translate-y-1/2 min-h-10 min-w-10 flex items-center justify-center rounded-full/none"
                   style={{ left: `${p.x}%`, top: `${p.y}%` }}
                   href={p.sku ? `/p/${encodeURIComponent(p.sku)}` : undefined}
                   title={p.sku}
-                />
+                >
+                  <span className="pointer-events-none block h-3 w-3 rounded-full bg-primary shadow" />
+                </a>
               ))}
             </ExperimentGate>
           )}
         </div>
 
         {/* Countdown + USPs */}
-        <div className="mt-4 flex flex-col items-center gap-4">
+        <Stack className="mt-4" gap={4} align="center">
           {countdownTarget ? (
+            // i18n-exempt -- style utility string, not user-facing copy
             <CountdownTimer targetDate={countdownTarget} timezone={timezone} styles="text-lg font-medium" />
           ) : null}
           {usps.length > 0 ? (
-            <ul className="grid w-full grid-cols-1 gap-2 text-center text-sm text-neutral-700 sm:grid-cols-3">
-              {usps.map((u, i) => (
-                <li key={i} className="rounded border px-3 py-2">{u}</li>
-              ))}
-            </ul>
+            <GridPrimitive className="w-full text-center text-sm text-neutral-700 sm:grid-cols-3" cols={1} gap={2}>
+              <ul className="contents">
+                {usps.map((u, i) => (
+                  <li key={i} className="rounded border px-3 py-2">{u}</li>
+                ))}
+              </ul>
+            </GridPrimitive>
           ) : null}
-        </div>
+        </Stack>
       </div>
     </section>
   );
 }
-

@@ -15,7 +15,7 @@ jest.mock("../src/components/cms/page-builder/useGuides", () => {
   const React = require("react");
   return {
     __esModule: true,
-    default: () => {
+    default: function useGuidesMock() {
       const [guides, setGuidesState] = React.useState({ x: null as number | null, y: null as number | null });
       return {
         guides,

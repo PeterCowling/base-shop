@@ -83,7 +83,7 @@ export default function ImageFocalOverlay({ value, onChange, visible = false, di
       aria-valuemax={100}
       aria-valuenow={Math.round((fp.x + fp.y) * 50)}
       tabIndex={0}
-      className="pointer-events-auto absolute inset-0 z-40 select-none"
+      className="pointer-events-auto relative select-none"
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
@@ -95,7 +95,8 @@ export default function ImageFocalOverlay({ value, onChange, visible = false, di
         aria-hidden
       />
       {/* helper text */}
-      <div className="absolute start-2 top-2 rounded bg-black/60 px-2 py-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black">
+      <div className="absolute start-2 top-2 rounded bg-black/60 px-2 py-1 text-xs text-white shadow dark:bg-white/70 dark:text-black">
+        {/* i18n-exempt -- CMS-only helper text */}
         Drag to set focal point
       </div>
     </div>

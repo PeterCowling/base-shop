@@ -13,7 +13,7 @@ export default function useCommandPalette() {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
       const tag = t?.tagName;
-      const isEditable = !!t && ((t as any).isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT");
+      const isEditable = !!t && (t.isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT");
       if (isEditable) return;
       const k = e.key.toLowerCase();
       if (k === "/" && !e.ctrlKey && !e.metaKey && !e.altKey) {
@@ -30,4 +30,3 @@ export default function useCommandPalette() {
 
   return { open, setOpen } as const;
 }
-

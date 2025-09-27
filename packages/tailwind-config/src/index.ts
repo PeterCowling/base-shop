@@ -8,6 +8,7 @@ type Config = Record<string, unknown>;
  *  Runtime diagnostics — confirm the preset really loads
  * ------------------------------------------------------------ */
 if (process.env.NODE_ENV !== "production") {
+  // i18n-exempt: developer diagnostic log, not user-facing UI copy
   console.log(
     `[@acme/tailwind-config] ✅  preset imported (cwd: ${process.cwd()})`
   );
@@ -140,9 +141,11 @@ const preset: Config = {
 
 // Additional diagnostics
 if (process.env.NODE_ENV !== "production") {
+  // i18n-exempt: developer diagnostic log, not user-facing UI copy
   console.log("[@acme/tailwind-config] preset keys", Object.keys(preset));
+  // i18n-exempt: developer diagnostic log, not user-facing UI copy
   console.log(
-    "[@acme/tailwind-config] has nested",
+    "[@acme/tailwind-config] has nested", // i18n-exempt: developer diagnostic log, not user-facing UI copy
     {
       plugins: Array.isArray((preset as { plugins?: unknown[] }).plugins),
       presets: Array.isArray((preset as { presets?: unknown[] }).presets),

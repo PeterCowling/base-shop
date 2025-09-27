@@ -7,6 +7,7 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { getUsageText } from "./usageMap";
 import { hslToHex, hexToHsl, isHex, isHsl } from "@ui/utils/colorUtils";
 import { getContrast, suggestContrastColor } from "@ui/components/cms";
+import { useTranslations } from "@i18n/Translations";
 
 interface Props {
   name: string;
@@ -37,6 +38,7 @@ export default function ColorInput({
   bgTokens,
   onWarningChange,
 }: Props) {
+  const t = useTranslations();
   const hasOverride = value !== "";
   const isOverridden = hasOverride && value !== defaultValue;
   const defaultIsHsl = isHsl(defaultValue);
@@ -95,7 +97,7 @@ export default function ColorInput({
 
   useEffect(() => {
     checkContrast(current);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- CMS-1234: deps intentionally limited; checkContrast uses stable refs
   }, [current, tokens]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -112,8 +114,8 @@ export default function ColorInput({
     >
       <span className="flex items-center gap-2">
         {name}
-        <Tooltip text={getUsageText(name) ?? "No usage info"}>
-          <span aria-label="Where it's used" className="inline-flex h-4 w-4 items-center justify-center text-muted-foreground">
+        <Tooltip text={getUsageText(name) ?? String(t("cms.theme.colorInput.noUsageInfo"))}>
+          <span aria-label={String(t("cms.theme.colorInput.whereUsedAria"))} className="inline-flex h-4 w-4 items-center justify-center text-muted-foreground">
             <InfoCircledIcon />
           </span>
         </Tooltip>
@@ -132,7 +134,7 @@ export default function ColorInput({
               checkContrast(next);
             }}
           >
-            Fix to nearest AA
+            {t("cms.theme.colorInput.fixNearestAA")}
           </Button>
         )}
       </span>
@@ -150,12 +152,12 @@ export default function ColorInput({
             <div className="flex items-center gap-1">
               <span
                 className="h-6 w-6 rounded border"
-                title="Default"
+                title={String(t("cms.theme.colorInput.defaultSwatchTitle"))}
                 style={{ background: defaultHex }}
               />
               <span
                 className="h-6 w-6 rounded border"
-                title={hasOverride ? "Custom" : "Default"}
+                title={hasOverride ? String(t("cms.theme.colorInput.customSwatchTitle")) : String(t("cms.theme.colorInput.defaultSwatchTitle"))}
                 style={{ background: overrideHex }}
               />
             </div>
@@ -173,7 +175,7 @@ export default function ColorInput({
         )}
         {hasOverride && (
           <Button type="button" onClick={onReset}>
-            Reset
+            {t("actions.reset")}
           </Button>
         )}
       </div>

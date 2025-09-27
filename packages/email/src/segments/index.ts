@@ -31,7 +31,7 @@ export async function resolveSegment(
   try {
     events = await listEvents(shop);
   } catch (err) {
-    console.error("Failed to list analytics events", err);
+    console.error("Failed to list analytics events", err); // i18n-exempt: operational log
   }
   const emails = new Set<string>();
 

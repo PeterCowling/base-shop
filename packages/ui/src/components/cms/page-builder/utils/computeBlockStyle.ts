@@ -1,4 +1,5 @@
 import { CSS } from "@dnd-kit/utilities";
+import type { CSSProperties } from "react";
 
 type DockX = "left" | "right" | "center" | undefined;
 type DockY = "top" | "bottom" | "center" | undefined;
@@ -43,26 +44,36 @@ export function computeBlockStyle({
   dockX,
   dockY,
   responsiveBehavior,
-}: ComputeBlockStyleArgs): Record<string, any> {
-  const style: Record<string, any> = {
+}: ComputeBlockStyleArgs): CSSProperties & { containerType?: string; containerName?: string } {
+  const style: CSSProperties & { containerType?: string; containerName?: string } = {
     transform: CSS.Transform.toString(transform),
   };
 
   if (zIndex !== undefined) style.zIndex = zIndex as number;
 
   // Container queries
-  if (containerType) style.containerType = containerType as any;
-  if (containerName) style.containerName = containerName as any;
+  if (containerType === "size" || containerType === "inline-size") {
+    style.containerType = containerType;
+  }
+  if (containerName) (style as unknown as { containerName?: string }).containerName = containerName;
 
   if (widthVal) style.width = widthVal;
   if (heightVal) style.height = heightVal;
   if (marginVal) style.margin = marginVal;
   if (paddingVal) style.padding = paddingVal;
 
-  if (position) style.position = position;
+  if (
+    position === "absolute" ||
+    position === "relative" ||
+    position === "fixed" ||
+    position === "sticky" ||
+    position === "static"
+  ) {
+    style.position = position;
+  }
 
   // Docking/positioning
-  const pos: Record<string, any> = {};
+  const pos: CSSProperties = {};
   if (position === "absolute") {
     // Horizontal docking
     if (dockX === "right") {
@@ -96,23 +107,31 @@ export function computeBlockStyle({
   // Apply responsive behavior overrides (builder-only)
   if ((responsiveBehavior === "scale-proportional" || responsiveBehavior === undefined) && position !== "absolute") {
     if (responsiveBehavior === "scale-proportional") {
-      // Attempt to compute aspect-ratio if both dimensions are numeric px or numbers
+      // Attempt to compute aspect-ratio if both dimensions are numeric px or numbers (positive only)
       const toNum = (v?: string | number): number | undefined => {
         if (v === undefined) return undefined;
-        if (typeof v === "number") return isFinite(v) ? v : undefined;
+        if (typeof v === "number") return Number.isFinite(v) ? v : undefined;
         const s = String(v).trim();
-        if (/^\d+(\.\d+)?px$/.test(s)) return parseFloat(s);
-        if (/^\d+(\.\d+)?$/.test(s)) return parseFloat(s);
-        return undefined;
+        const raw = s.endsWith("px") ? s.slice(0, -2).trim() : s;
+        if (!raw) return undefined;
+        // Simple numeric-only parser: digits and at most one dot
+        let sawDot = false;
+        for (let i = 0; i < raw.length; i++) {
+          const ch = raw[i];
+          if (ch === ".") { if (sawDot) return undefined; sawDot = true; continue; }
+          if (ch < "0" || ch > "9") return undefined;
+        }
+        const n = Number(raw);
+        return Number.isFinite(n) ? n : undefined;
       };
       const w = toNum(widthVal);
       const h = toNum(heightVal);
       if (w && h) {
-        (style as any).aspectRatio = `${w} / ${h}`;
+        style.aspectRatio = `${w} / ${h}`;
         // Stretch to container width while keeping ratio
-        (style as any).width = "100%";
+        style.width = "100%";
         // Let height auto-derive from aspect-ratio
-        delete (style as any).height;
+        delete (style as CSSProperties).height;
       }
     }
   }

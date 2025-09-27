@@ -15,7 +15,9 @@ export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
         ref={ref}
         onClick={() => setZoom(!zoom)}
         className={cn(
+          // i18n-exempt — CSS utility class names
           "relative w-full cursor-zoom-in overflow-hidden",
+          // i18n-exempt — CSS utility class names
           zoom && "cursor-zoom-out"
         )}
       >
@@ -23,7 +25,9 @@ export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
           alt={alt ?? ""}
           {...props}
           className={cn(
+            // i18n-exempt — CSS utility class names
             "object-cover transition-transform duration-300",
+            // i18n-exempt — CSS utility class names
             zoom ? "scale-125" : "scale-100",
             className
           )}

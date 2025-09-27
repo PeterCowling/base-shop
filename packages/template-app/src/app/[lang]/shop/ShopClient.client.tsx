@@ -3,6 +3,7 @@
 "use client";
 
 import type { SKU } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 import FilterBar, {
   type FilterDefinition,
   type Filters,
@@ -12,6 +13,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -78,15 +80,15 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
   }, [filters, pathname, query, router]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="mb-4 text-3xl font-bold">Shop</h1>
+    <div className="container mx-auto px-4 py-10">
+      <h1 className="mb-4 text-3xl font-bold">{t("nav.shop")}</h1>
       <input
-        aria-label="Search products"
+        aria-label={t("shop.searchAriaLabel") as string}
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search products"
-        className="mb-4 w-full max-w-xs rounded border px-2 py-1"
+        placeholder={t("shop.searchPlaceholder") as string}
+        className="mb-4 w-full rounded border px-2 py-1"
       />
       <FilterBar definitions={defs} values={filters} onChange={setFilters} />
       <ProductGrid skus={visible} />

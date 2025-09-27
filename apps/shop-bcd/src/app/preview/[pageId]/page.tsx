@@ -22,9 +22,11 @@ export default async function PreviewPage({
     notFound();
   }
   if (res.status === 401) {
+    // i18n-exempt: server-only status text; not user-visible
     return new Response("Unauthorized", { status: 401 });
   }
   if (!res.ok) {
+    // i18n-exempt: developer exception message; surfaced to logs/error boundary
     throw new Error("Failed to load preview");
   }
   const page = pageSchema.parse(await res.json());

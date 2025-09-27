@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
 import type { InteractionsProps } from "./types";
 import { openSelectOnMouseDown } from "./helpers";
 import { motionPresets } from "../MotionPresets";
@@ -13,21 +14,20 @@ import {
 } from "../../../../atoms/shadcn";
 
 export default function MotionPresetControls({ component, handleInput }: InteractionsProps) {
-  const motionPreset = ((component as any).motionPreset as string | undefined) ?? "__none__";
+  const t = useTranslations();
+  const motionPreset = (component.motionPreset as string | undefined) ?? "__none__";
 
   return (
     <div className="grid grid-cols-3 items-end gap-2">
       <Select
         value={motionPreset}
-        onValueChange={(v) =>
-          handleInput("motionPreset" as any, v === "__none__" ? (undefined as any) : (v as any))
-        }
+        onValueChange={(v) => handleInput("motionPreset", v === "__none__" ? undefined : v)}
       >
-        <SelectTrigger aria-label="Motion Preset" onMouseDown={openSelectOnMouseDown}>
-          <SelectValue placeholder="Preset" />
+        <SelectTrigger aria-label={t("cms.interactions.motionPreset") as string} onMouseDown={openSelectOnMouseDown}>
+          <SelectValue placeholder={t("cms.interactions.preset") as string} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="__none__">No preset</SelectItem>
+          <SelectItem value="__none__">{t("cms.interactions.noPreset")}</SelectItem>
           {motionPresets.map((p) => (
             <SelectItem key={p.id} value={p.id}>
               {p.label}
@@ -40,14 +40,13 @@ export default function MotionPresetControls({ component, handleInput }: Interac
         variant="outline"
         className="col-span-2"
         onClick={() => {
-          const id = ((component as any).motionPreset as string | undefined) ?? "";
+          const id = (component.motionPreset as string | undefined) ?? "";
           const preset = motionPresets.find((p) => p.id === id);
-          if (preset) preset.apply(handleInput as any);
+          if (preset) preset.apply(handleInput);
         }}
       >
-        Apply Preset
+        {t("cms.interactions.applyPreset")}
       </Button>
     </div>
   );
 }
-

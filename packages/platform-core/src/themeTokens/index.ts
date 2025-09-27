@@ -19,7 +19,7 @@ export const baseTokens: TokenMap = Object.fromEntries(
 ) as TokenMap;
 
 function transpileTokens(filePath: string): TokenMap {
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-1010 path is constructed from controlled workspace locations
   const source = readFileSync(filePath, "utf8");
   const transpiled = ts.transpileModule(source, {
     compilerOptions: { module: ts.ModuleKind.CommonJS },
@@ -46,7 +46,7 @@ export function loadThemeTokensNode(theme: string): TokenMap {
       join(baseDir, "src", "tailwind-tokens.ts"),
     ];
     for (const file of candidates) {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-1010 existence check on controlled workspace path
       if (existsSync(file)) {
         return transpileTokens(file);
       }
@@ -63,7 +63,7 @@ export function loadThemeTokensNode(theme: string): TokenMap {
   // Fall back to resolving the workspace root from the process cwd. Jest can
   // virtualize `__dirname`, so this ensures resolution still works.
   let cwd = process.cwd();
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-1010 existence check on controlled workspace path
   while (!existsSync(join(cwd, "pnpm-workspace.yaml"))) {
     const parent = join(cwd, "..");
     if (parent === cwd) return {};

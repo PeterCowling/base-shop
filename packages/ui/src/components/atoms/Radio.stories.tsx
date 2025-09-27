@@ -1,6 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { useState } from "react";
 import { Radio, type RadioProps } from "./Radio";
+import { Stack } from "./primitives/Stack";
 
 type GroupProps = RadioProps & { selectedIndex: number };
 
@@ -17,7 +18,7 @@ export default meta;
 const GroupRender = (args: GroupProps) => {
   const [selected, setSelected] = useState(args.selectedIndex);
   return (
-    <div className="flex flex-col gap-2">
+    <Stack gap={2}>
       {["One", "Two", "Three"].map((label, i) => (
         <Radio
           key={label}
@@ -27,7 +28,7 @@ const GroupRender = (args: GroupProps) => {
           onChange={() => setSelected(i)}
         />
       ))}
-    </div>
+    </Stack>
   );
 };
 

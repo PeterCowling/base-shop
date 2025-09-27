@@ -2,9 +2,14 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import EditPreviewPage from "./page";
 
-jest.mock("@ui/components/ComponentPreview", () => ({ component }: any) => (
-  <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
-));
+jest.mock("@ui/components/ComponentPreview", () => {
+  const MockComponentPreview = ({ component }: any) => (
+    <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
+  );
+  // Satisfy react/display-name for the mocked component
+  (MockComponentPreview as any).displayName = "MockComponentPreview";
+  return MockComponentPreview;
+});
 
 const originalFetch = global.fetch;
 

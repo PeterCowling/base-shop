@@ -10,7 +10,7 @@ const useFileUploadMock = jest.fn(() => ({
 
 jest.mock("@ui/hooks/useFileUpload", () => ({
   __esModule: true,
-  default: (opts: any) => useFileUploadMock(opts),
+  default: function useFileUpload(opts: any) { return useFileUploadMock(opts); },
 }));
 
 describe("useFileDrop", () => {

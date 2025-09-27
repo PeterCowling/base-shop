@@ -3,6 +3,7 @@
 import { locales } from "@acme/i18n/locales";
 import { usePathname } from "next/navigation";
 import { useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { getShopFromPath } from "@acme/shared-utils";
 import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";
@@ -21,7 +22,7 @@ import { createToolbarProps } from "./createToolbarProps";
 import { createLinkedSectionHandler } from "./createLinkedSectionHandler";
 import useMediaLibraryListener from "./useMediaLibraryListener";
 import useSectionModeInitialSelection from "./useSectionModeInitialSelection";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/types";
 import type { PageBuilderLayoutProps, PageBuilderProps } from "./PageBuilder.types";
 import usePublishWithValidation from "./hooks/usePublishWithValidation";
 import usePresetActions from "./hooks/usePresetActions";
@@ -77,7 +78,7 @@ const usePageBuilderLayout = ({
 
   const canvasRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { toast, setToast, toastProps } = useToastState();
+  const { setToast, toastProps } = useToastState();
   const [snapPosition, setSnapPosition] = useState<number | null>(null);
   const [showComments, setShowComments] = useState(true);
 
@@ -105,7 +106,7 @@ const usePageBuilderLayout = ({
     gridSize,
     canvasRef,
     setSnapPosition,
-    editor: (state as any).editor,
+    editor: (state as { editor?: HistoryState["editor"] }).editor,
     viewport: controls.viewport,
     scrollRef,
     zoom: controls.zoom,
@@ -142,7 +143,7 @@ const usePageBuilderLayout = ({
     onAutoSaveError: (retry) => {
       setToast({
         open: true,
-        message: "Auto-save failed. Click to retry.",
+        message: t("Auto-save failed. Click to retry."),
         retry: () => {
           setToast((current) => ({ ...current, open: false }));
           retry();
@@ -206,7 +207,7 @@ const usePageBuilderLayout = ({
     insertIndex,
     dispatch,
     locale: controls.locale,
-    containerStyle: { width: "100%", ...(previewTokens as any) },
+    containerStyle: { width: "100%", ...(previewTokens as unknown as CSSProperties) },
     showGrid: controls.showGrid,
     gridCols: controls.gridCols,
     snapEnabled: controls.snapToGrid,
@@ -214,7 +215,7 @@ const usePageBuilderLayout = ({
     viewport: controls.viewport,
     device: controls.device,
     snapPosition,
-    editor: (state as any).editor,
+    editor: (state as { editor?: HistoryState["editor"] }).editor,
     shop,
     pageId: page.id,
     showComments,
@@ -228,7 +229,7 @@ const usePageBuilderLayout = ({
     locale: controls.locale,
     deviceId: controls.previewDeviceId,
     onChange: controls.setPreviewDeviceId,
-    editor: (state as any).editor,
+    editor: (state as { editor?: HistoryState["editor"] }).editor,
     extraDevices: controls.extraDevices,
   });
 
@@ -247,7 +248,7 @@ const usePageBuilderLayout = ({
     shop,
     pageId: page.id,
     currentComponents: components,
-    editor: (state as any).editor,
+    editor: (state as Record<string, unknown> & { editor?: Record<string, unknown> }).editor,
     onRestoreVersion: (restored: PageComponent[]) => {
       dispatch({ type: "set", components: restored });
       handleSave();
@@ -301,7 +302,7 @@ const usePageBuilderLayout = ({
     liveMessage,
     dndContext,
     dropAllowed,
-    dragMeta: dragMeta as any,
+    dragMeta: dragMeta ? { from: dragMeta.from, type: dragMeta.type, count: dragMeta.count, label: dragMeta.label, thumbnail: dragMeta.thumbnail ?? null } : null,
     frameClass: controls.frameClass,
     viewport: controls.viewport,
     viewportStyle: controls.viewportStyle,
@@ -321,11 +322,11 @@ const usePageBuilderLayout = ({
       selectedIds,
       onSelectIds: setSelectedIds,
       dispatch,
-      editor: (state as any).editor,
+      editor: (state as { editor?: HistoryState["editor"] }).editor,
       viewport: controls.viewport,
-      breakpoints: (state as any).breakpoints ?? [],
+      breakpoints: Array.isArray((state as Record<string, unknown>)["breakpoints"]) ? ((state as Record<string, unknown>)["breakpoints"] as { id: string; label: string; min?: number; max?: number }[]) : [],
       pageId: page.id,
-      crossNotices: (controls as any).crossBreakpointNotices,
+      crossNotices: controls.crossBreakpointNotices,
     },
     toast: toastProps,
     tourProps,
@@ -333,10 +334,10 @@ const usePageBuilderLayout = ({
     onParentFirstChange: setParentFirst,
     shop,
     pageId: page.id,
-    editingSizePx: (controls as any).editingSizePx ?? null,
-    setEditingSizePx: (controls as any).setEditingSizePx,
-    crossBreakpointNotices: (controls as any).crossBreakpointNotices,
-    onCrossBreakpointNoticesChange: (controls as any).setCrossBreakpointNotices,
+    editingSizePx: controls.editingSizePx ?? null,
+    setEditingSizePx: controls.setEditingSizePx,
+    crossBreakpointNotices: controls.crossBreakpointNotices,
+    onCrossBreakpointNoticesChange: controls.setCrossBreakpointNotices,
     mode,
     canSavePreset,
     onSavePreset,

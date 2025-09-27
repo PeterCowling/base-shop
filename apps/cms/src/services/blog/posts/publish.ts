@@ -16,9 +16,9 @@ export async function publishPost(
     : nowIso();
   try {
     await repoPublishPost(config, id, publishedAt);
-    return { message: "Post published" };
+    return { message: "Post published" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   } catch (err) {
-    console.error("Failed to publish post", err);
-    return { error: "Failed to publish post" };
+    console.error("Failed to publish post", err); // i18n-exempt -- developer log; not user-facing; CMS-1010
+    return { error: "Failed to publish post" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   }
 }

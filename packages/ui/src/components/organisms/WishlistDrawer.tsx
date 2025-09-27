@@ -13,6 +13,7 @@ import {
 } from "../atoms/primitives/drawer";
 import { OverlayScrim } from "../atoms";
 import type { SKU } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 
 export interface WishlistDrawerProps {
   /** Button or element that toggles the drawer */
@@ -35,6 +36,7 @@ export function WishlistDrawer({
   items,
   width = "20rem",
 }: WishlistDrawerProps) {
+  const t = useTranslations();
   const { widthClass, style } = drawerWidthProps(width);
 
   return (
@@ -48,13 +50,13 @@ export function WishlistDrawer({
         width={widthClass}
         className={cn("p-6")}
       >
-        <DrawerTitle className="mb-4 text-lg font-semibold">Wishlist</DrawerTitle>
+        <DrawerTitle className="mb-4 text-lg font-semibold">{t("wishlist.title") as string}</DrawerTitle>
         <DrawerDescription className="sr-only">
-          Items currently saved to your wishlist
+          {t("wishlist.description") as string}
         </DrawerDescription>
         {items.length === 0 ? (
           <p className="text-muted-foreground text-sm">
-            Your wishlist is empty.
+            {t("wishlist.empty") as string}
           </p>
         ) : (
           <ul className="space-y-1">
@@ -64,8 +66,8 @@ export function WishlistDrawer({
                 className="flex items-center justify-between gap-2 rounded px-2 py-1 hover:bg-surface-2"
               >
                 <span>{item.title}</span>
-                <Button variant="outline" className="h-8 px-2">
-                  View
+                <Button variant="outline" className="min-h-10 px-3">
+                  {t("actions.view") as string}
                 </Button>
               </li>
             ))}

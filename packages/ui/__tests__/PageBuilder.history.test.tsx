@@ -7,29 +7,28 @@ jest.mock("next/navigation", () => ({
 
 jest.mock("../src/components/cms/PageBuilder", () => {
   const React = require("react");
-  return {
-    __esModule: true,
-    default: ({ page, history, onSave }: any) => {
-      const state = React.useMemo(() => {
-        const stored = localStorage.getItem(
-          `page-builder-history-${page.id}`
-        );
-        return stored ? JSON.parse(stored) : history ?? { past: [], present: page.components, future: [] };
-      }, [page, history]);
-      return (
-        <button
-          onClick={() => {
-            const fd = new FormData();
-            fd.append("components", JSON.stringify(state.present));
-            fd.append("history", JSON.stringify(state));
-            onSave(fd);
-          }}
-        >
-          Save
-        </button>
-      );
-    },
-  };
+  function MockedPageBuilder({ page, history, onSave }: any) {
+    const state = React.useMemo(() => {
+      const stored = localStorage.getItem(`page-builder-history-${page.id}`);
+      return stored
+        ? JSON.parse(stored)
+        : history ?? { past: [], present: page.components, future: [] };
+    }, [page, history]);
+    return (
+      <button
+        onClick={() => {
+          const fd = new FormData();
+          fd.append("components", JSON.stringify(state.present));
+          fd.append("history", JSON.stringify(state));
+          onSave(fd);
+        }}
+      >
+        Save
+      </button>
+    );
+  }
+  (MockedPageBuilder as any).displayName = "MockedPageBuilder";
+  return { __esModule: true, default: MockedPageBuilder };
 });
 import PageBuilder from "../src/components/cms/PageBuilder";
 

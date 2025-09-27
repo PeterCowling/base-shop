@@ -12,7 +12,8 @@ export default function ContactFormWithMap({
       <iframe
         src={mapSrc}
         title="map"
-        className="min-h-[300px] w-full rounded"
+        className="min-h-80 w-full rounded aspect-video"
+        data-aspect="16/9"
         loading="lazy"
       />
     </div>

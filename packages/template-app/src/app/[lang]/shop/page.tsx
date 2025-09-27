@@ -6,7 +6,7 @@ import ShopClient from "./ShopClient.client";
 import { getStructuredData, serializeJsonLd } from "../../../lib/seo";
 
 export const metadata: Metadata = {
-  title: "Shop · Base-Shop",
+  title: "Shop · Base-Shop", // i18n-exempt: brand name in SEO title
 };
 
 export default async function ShopIndexPage({
@@ -17,7 +17,7 @@ export default async function ShopIndexPage({
   const { lang } = await params;
   const jsonLd = getStructuredData({
     type: "WebPage",
-    name: "Shop",
+    name: "Shop", // i18n-exempt: schema.org name for generic page
     url: `/${lang}/shop`,
   });
   // ⬇️ Purely server-side: just pass static data to the client component

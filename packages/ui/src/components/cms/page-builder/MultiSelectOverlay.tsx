@@ -171,14 +171,15 @@ export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false
     };
     const onUp = () => {
       dragRef.current = null;
-      try { window.removeEventListener("pointermove", onMove as any); } catch {}
+      try { window.removeEventListener("pointermove", onMoveEvent); } catch {}
       window.removeEventListener("pointerup", onUp);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("blur", onUp);
       if (rafRef.current != null) { try { cancelAnimationFrame(rafRef.current); } catch {} rafRef.current = null; }
     };
     const onKey = (ke: KeyboardEvent) => { if (ke.key === 'Escape') onUp(); };
-    try { window.addEventListener("pointermove", onMove as any, { passive: true }); } catch { window.addEventListener("pointermove", onMove as any); }
+    const onMoveEvent = (ev: Event) => onMove(ev as PointerEvent);
+    try { window.addEventListener("pointermove", onMoveEvent as EventListener, { passive: true } as AddEventListenerOptions); } catch { window.addEventListener("pointermove", onMoveEvent as EventListener); }
     window.addEventListener("pointerup", onUp);
     window.addEventListener("keydown", onKey);
     window.addEventListener("blur", onUp);
@@ -197,24 +198,27 @@ export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false
 
   if (!bounds) return null;
   return (
-    <div className="absolute z-40" style={overlayStyle}>
-      <div
-        className="absolute inset-0 rounded border-2 border-dashed border-primary/70"
-        onPointerDown={(e) => handlePointerDown(e, null)}
-        role="button"
-        aria-label="Move selection"
-        title="Drag to move selection"
-      />
-      {/* Corner handles */}
-      <div onPointerDown={(e) => handlePointerDown(e, "nw")} role="button" aria-label="Resize group from top-left" tabIndex={0} className="absolute -top-1 -start-1 h-2 w-2 cursor-nwse-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
-      <div onPointerDown={(e) => handlePointerDown(e, "ne")} role="button" aria-label="Resize group from top-right" tabIndex={0} className="absolute -top-1 -end-1 h-2 w-2 cursor-nesw-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
-      <div onPointerDown={(e) => handlePointerDown(e, "sw")} role="button" aria-label="Resize group from bottom-left" tabIndex={0} className="absolute -bottom-1 -start-1 h-2 w-2 cursor-nesw-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
-      <div onPointerDown={(e) => handlePointerDown(e, "se")} role="button" aria-label="Resize group from bottom-right" tabIndex={0} className="absolute -end-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
-      {/* Side handles */}
-      <div onPointerDown={(e) => handlePointerDown(e, "n")} role="button" aria-label="Resize group from top" tabIndex={0} className="absolute -top-1 start-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
-      <div onPointerDown={(e) => handlePointerDown(e, "s")} role="button" aria-label="Resize group from bottom" tabIndex={0} className="absolute -bottom-1 start-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
-      <div onPointerDown={(e) => handlePointerDown(e, "w")} role="button" aria-label="Resize group from left" tabIndex={0} className="absolute top-1/2 -start-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
-      <div onPointerDown={(e) => handlePointerDown(e, "e")} role="button" aria-label="Resize group from right" tabIndex={0} className="absolute top-1/2 -end-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
+    // DS absolute-parent-guard: provide positioned ancestor for absolute children
+    <div className="relative">
+      <div className="absolute" style={overlayStyle}>
+        <div
+          className="absolute inset-0 rounded border-2 border-dashed border-primary/70"
+          onPointerDown={(e) => handlePointerDown(e, null)}
+          role="button"
+          aria-label="Move selection"
+          title="Drag to move selection"
+        />
+        {/* Corner handles */}
+        <div onPointerDown={(e) => handlePointerDown(e, "nw")} role="button" aria-label="Resize group from top-left" tabIndex={0} className="absolute -top-1 -start-1 h-2 w-2 cursor-nwse-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
+        <div onPointerDown={(e) => handlePointerDown(e, "ne")} role="button" aria-label="Resize group from top-right" tabIndex={0} className="absolute -top-1 -end-1 h-2 w-2 cursor-nesw-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
+        <div onPointerDown={(e) => handlePointerDown(e, "sw")} role="button" aria-label="Resize group from bottom-left" tabIndex={0} className="absolute -bottom-1 -start-1 h-2 w-2 cursor-nesw-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
+        <div onPointerDown={(e) => handlePointerDown(e, "se")} role="button" aria-label="Resize group from bottom-right" tabIndex={0} className="absolute -end-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
+        {/* Side handles */}
+        <div onPointerDown={(e) => handlePointerDown(e, "n")} role="button" aria-label="Resize group from top" tabIndex={0} className="absolute -top-1 start-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
+        <div onPointerDown={(e) => handlePointerDown(e, "s")} role="button" aria-label="Resize group from bottom" tabIndex={0} className="absolute -bottom-1 start-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
+        <div onPointerDown={(e) => handlePointerDown(e, "w")} role="button" aria-label="Resize group from left" tabIndex={0} className="absolute top-1/2 -start-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
+        <div onPointerDown={(e) => handlePointerDown(e, "e")} role="button" aria-label="Resize group from right" tabIndex={0} className="absolute top-1/2 -end-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary" />
+      </div>
     </div>
   );
 }

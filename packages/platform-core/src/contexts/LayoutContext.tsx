@@ -46,6 +46,6 @@ export function LayoutProvider({ children }: { children: ReactNode }) {
 
 export function useLayout() {
   const ctx = useContext(LayoutContext);
-  if (!ctx) throw new Error("useLayout must be inside LayoutProvider");
+  if (!ctx) throw new Error("useLayout must be inside LayoutProvider"); // i18n-exempt -- developer guidance for incorrect hook usage
   return ctx;
 }

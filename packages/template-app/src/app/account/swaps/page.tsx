@@ -17,6 +17,7 @@ import { notFound } from "next/navigation";
 import { coreEnv, type CoreEnv } from "@acme/config/env/core";
 import type { SubscriptionPlan } from "@acme/types";
 import { nowIso } from "@date-utils";
+import { useTranslations as useServerTranslations } from "@i18n/useTranslations.server";
 import {
   getUserPlan,
   getRemainingSwaps,
@@ -24,6 +25,12 @@ import {
 } from "@platform-core/repositories/subscriptionUsage.server";
 
 export default async function SwapPage() {
+  const tBase = await useServerTranslations("en");
+  const t = (key: string, vars?: Record<string, unknown>) => {
+    const msg = tBase(`account.swaps.${key}`);
+    if (!vars) return msg;
+    return msg.replace(/\{(.*?)\}/g, (m, name) => (Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : m));
+  };
   const cookieStore = await cookies();
   const cartId = decodeCartCookie(cookieStore.get(CART_COOKIE)?.value);
   const cart: CartState =
@@ -86,9 +93,9 @@ export default async function SwapPage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl p-6">
-      <h1 className="mb-4 text-2xl font-bold">Swap Items</h1>
-      <p className="mb-4">Swaps remaining this month: {remainingSwaps}</p>
+    <div className="mx-auto p-6">
+      <h1 className="mb-4 text-2xl font-bold">{t("title")}</h1>
+      <p className="mb-4">{t("remaining", { count: remainingSwaps })}</p>
       {Object.entries(cart).map(([id, line]) => (
         <form key={id} action={swap} className="mb-3 flex gap-2">
           <span className="flex-1">{line.sku.title}</span>
@@ -96,15 +103,15 @@ export default async function SwapPage() {
           <input
             type="text"
             name="new"
-            placeholder="New SKU ID"
+            placeholder={t("placeholderNewSku")}
             className="w-40 border p-1"
           />
           <button
             type="submit"
             disabled={!canSwap}
-            className="rounded bg-black px-2 py-1 text-white disabled:opacity-50"
+            className="rounded bg-black px-4 text-white disabled:opacity-50 inline-flex items-center justify-center min-h-10 min-w-10"
           >
-            Swap
+            {t("action.swap")}
           </button>
         </form>
       ))}

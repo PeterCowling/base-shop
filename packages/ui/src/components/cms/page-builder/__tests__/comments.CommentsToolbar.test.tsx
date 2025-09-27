@@ -13,6 +13,7 @@ describe("CommentsToolbar", () => {
       <div>
         <div data-pb-portal-root />
         <CommentsToolbar
+          // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literal color for avatar
           peers={[{ id: "p1", label: "Alice", color: "#0f0" } as any]}
           showResolved={false}
           onShowResolvedChange={onShowResolvedChange}

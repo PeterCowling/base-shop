@@ -2,6 +2,7 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import * as configurator from "../src/configurator";
+ 
 
 const { readEnvFile, validateEnvFile, validateShopEnv } = configurator;
 
@@ -56,7 +57,6 @@ describe("validateEnvFile", () => {
 
     const original = (configurator as any).readEnvFile;
     // Remove exported reader to exercise fallback branch
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     delete (configurator as any).readEnvFile;
 
     try {
@@ -168,4 +168,3 @@ describe("validateShopEnv", () => {
     }
   });
 });
-

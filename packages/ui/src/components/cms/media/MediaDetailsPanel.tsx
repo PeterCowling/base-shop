@@ -5,6 +5,7 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import type { MediaItem } from "@acme/types";
 import type { FormEvent, ReactElement } from "react";
 import { useEffect, useId, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 
 import { Spinner } from "../../atoms";
 import {
@@ -72,6 +73,7 @@ export default function MediaDetailsPanel({
   onSubmit,
   onClose,
 }: MediaDetailsPanelProps): ReactElement {
+  const t = useTranslations();
   const baseId = useId();
   const titleId = `${baseId}-title`;
   const altId = `${baseId}-alt`;
@@ -107,90 +109,94 @@ export default function MediaDetailsPanel({
         if (!nextOpen) onClose();
       }}
     >
-      <DialogContent
-        style={style}
-        className={cn(
-          "bg-panel fixed top-0 end-0 z-50 flex h-full max-w-full translate-x-full flex-col overflow-y-auto border-s border-border-2 p-6 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0 [&>[data-radix-dialog-close]]:hidden start-auto translate-y-0", 
-          widthClass
-        )}
-      >
-        <Button
-          type="button"
-          variant="ghost"
-          aria-label="Close details"
-          onClick={onClose}
-          className="text-muted-foreground hover:text-foreground absolute end-4 top-4 h-9 w-9 p-0"
+      <div className="relative">
+        <DialogContent
+          style={style}
+          className={cn(
+            "bg-panel fixed top-0 end-0 z-50 flex h-full w-full translate-x-full flex-col overflow-y-auto border-s border-border-2 p-6 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0 [&>[data-radix-dialog-close]]:hidden start-auto translate-y-0", // i18n-exempt: class names
+            widthClass
+          )}
         >
-          <Cross2Icon className="h-4 w-4" />
-        </Button>
-        <form onSubmit={handleSubmit} className="flex h-full flex-col">
-          <DialogHeader className="space-y-2 text-start">
-            <DialogTitle>Edit media details</DialogTitle>
+          <Button
+            type="button"
+            variant="ghost"
+            aria-label={String(t("Close details"))}
+            onClick={onClose}
+            className="text-muted-foreground hover:text-foreground absolute end-4 top-4 h-9 w-9 p-0"
+          >
+            <Cross2Icon className="h-4 w-4" />
+          </Button>
+          <form onSubmit={handleSubmit} className="flex h-full flex-col">
+            <DialogHeader className="space-y-2 text-start">
+            <DialogTitle>{t("Edit media details")}</DialogTitle>
             <DialogDescription className="break-all text-start text-sm text-muted-foreground">
-              Update metadata for {fileName}.
+              {t("Update metadata for {fileName}.", { fileName })}
             </DialogDescription>
           </DialogHeader>
           <div className="flex-1 space-y-4 overflow-y-auto py-6">
             <div className="space-y-1">
               <label htmlFor={titleId} className="text-sm font-medium">
-                Title
+                {t("Title")}
               </label>
               <Input
                 id={titleId}
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
-                placeholder="Add a title"
+                placeholder={String(t("Add a title"))}
               />
             </div>
             <div className="space-y-1">
               <label htmlFor={altId} className="text-sm font-medium">
-                Alt text
+                {t("Alt text")}
               </label>
               <Textarea
                 id={altId}
                 value={altText}
                 onChange={(event) => setAltText(event.target.value)}
-                placeholder="Describe the media for assistive technologies"
+                placeholder={String(t("Describe the media for assistive technologies"))}
                 rows={3}
               />
               <p className="text-xs text-muted-foreground">
-                Alt text helps screen readers describe this media to people with
-                low vision.
+                {t(
+                  "Alt text helps screen readers describe this media to people with low vision."
+                )}
               </p>
             </div>
             <div className="space-y-1">
               <label htmlFor={tagsId} className="text-sm font-medium">
-                Tags
+                {t("Tags")}
               </label>
               <Input
                 id={tagsId}
                 value={tags}
                 onChange={(event) => setTags(event.target.value)}
-                placeholder="hero, campaign, summer"
+                placeholder={String(t("hero, campaign, summer"))}
                 aria-describedby={tagsHelpId}
               />
               <p id={tagsHelpId} className="text-xs text-muted-foreground">
-                Separate tags with commas, for example: hero, campaign,
-                behind-the-scenes.
+                {t(
+                  "Separate tags with commas, for example: hero, campaign, behind-the-scenes."
+                )}
               </p>
             </div>
           </div>
           <DialogFooter className="border-t pt-4">
-            <Button type="submit" disabled={pending} className="min-w-[120px]">
+            <Button type="submit" disabled={pending} className={cn()} style={{ minWidth: 120 }}>
               {pending ? (
                 <span className="flex items-center gap-2">
                   <Spinner className="h-4 w-4" />
                   <span aria-live="polite" aria-atomic="true">
-                    Saving…
+                    {t("Saving…")}
                   </span>
                 </span>
               ) : (
-                "Save"
+                t("Save")
               )}
             </Button>
           </DialogFooter>
         </form>
-      </DialogContent>
+        </DialogContent>
+      </div>
     </Dialog>
   );
 }

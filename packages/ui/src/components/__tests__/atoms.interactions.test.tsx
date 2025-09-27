@@ -5,7 +5,7 @@ import { FileSelector } from "../atoms/FileSelector";
 import ThemeToggle from "../ThemeToggle";
 import { Tag } from "../atoms/Tag";
 
-var setThemeMock: jest.Mock;
+let setThemeMock: jest.Mock;
 
 jest.mock(
   "@platform-core/contexts/ThemeContext",

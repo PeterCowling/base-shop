@@ -3,9 +3,11 @@ import React from "react";
 const notFound = jest.fn();
 jest.mock("next/navigation", () => ({ notFound: () => notFound() }));
 
-jest.mock("./PreviewClient", () => (props: any) => (
-  <div data-cy="preview-client" {...props} />
-));
+jest.mock("./PreviewClient", () => {
+  const MockPreviewClient = (props: any) => <div data-cy="preview-client" {...props} />;
+  MockPreviewClient.displayName = "MockPreviewClient";
+  return MockPreviewClient;
+});
 
 jest.mock("@ui/utils/devicePresets", () => ({
   devicePresets: [

@@ -27,16 +27,16 @@ describe("StylePanel", () => {
       <StylePanel component={component} handleInput={handleInput} />
     );
     fireEvent.change(screen.getByLabelText("Foreground"), {
-      target: { value: "#ffffff" },
+      target: { value: "#ffffff" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test exercises literal user input
     });
     rerender(<StylePanel component={component} handleInput={handleInput} />);
     fireEvent.change(screen.getByLabelText("Background"), {
-      target: { value: "#ffffff" },
+      target: { value: "#ffffff" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test exercises literal user input
     });
     const last = handleInput.mock.calls.pop();
     expect(last[0]).toBe("styles");
     expect(JSON.parse(last[1])).toEqual({
-      color: { fg: "#ffffff", bg: "#ffffff" },
+      color: { fg: "#ffffff", bg: "#ffffff" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test asserts literal values coming from inputs
       typography: {},
     });
     rerender(<StylePanel component={component} handleInput={handleInput} />);

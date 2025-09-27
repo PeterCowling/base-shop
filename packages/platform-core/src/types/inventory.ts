@@ -4,8 +4,8 @@ export const variantAttributesSchema = z.record(z.string());
 
 export const inventoryItemSchema = z
   .object({
-    sku: z.string().min(1, "sku is required"),
-    productId: z.string().min(1, "productId is required"),
+    sku: z.string().min(1, "sku is required"), // i18n-exempt -- CORE-1014 validation message
+    productId: z.string().min(1, "productId is required"), // i18n-exempt -- CORE-1014 validation message
     quantity: z.number().int().min(0),
     variantAttributes: variantAttributesSchema,
     lowStockThreshold: z.number().int().min(0).optional(),
@@ -31,8 +31,8 @@ export function variantKey(
 
 export const inventoryItemDtoSchema = z
   .object({
-    sku: z.string().min(1, "sku is required"),
-    productId: z.string().min(1, "productId is required"),
+    sku: z.string().min(1, "sku is required"), // i18n-exempt -- CORE-1014 validation message
+    productId: z.string().min(1, "productId is required"), // i18n-exempt -- CORE-1014 validation message
     quantity: z.number().int().min(0),
     variant: variantAttributesSchema.optional(),
     variantAttributes: variantAttributesSchema.optional(),
@@ -42,4 +42,3 @@ export const inventoryItemDtoSchema = z
     maintenanceCycle: z.number().int().min(0).optional(),
   })
   .strict();
-

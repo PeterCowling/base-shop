@@ -5,10 +5,17 @@ import {
 } from "@platform-core/returnLogistics";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { resolveLocale } from "@i18n/locales";
 
-export const metadata = { title: "Return policy" };
+export const metadata = { title: "Return policy" }; // i18n-exempt: static metadata title for now; can be moved to generateMetadata for localized title
 
-export default async function ReturnPolicyPage() {
+export default async function ReturnPolicyPage({
+  params,
+}: {
+  params: { lang: string };
+}) {
+  const t = await getTranslations(resolveLocale(params.lang));
   const [cfg, info, settings] = await Promise.all([
     getReturnLogistics(),
     getReturnBagAndLabel(),
@@ -16,24 +23,32 @@ export default async function ReturnPolicyPage() {
   ]);
   return (
     <div className="p-6 space-y-4">
-      <h1 className="text-xl font-semibold">Return policy</h1>
+      <h1 className="text-xl font-semibold">{t("returns.title")}</h1>
       {settings.returnService?.bagEnabled && (
-        <p>Please reuse the {info.bagType} bag for your return.</p>
+        <p>{t("returns.reuseBag", { bagType: info.bagType })}</p>
       )}
-      <p>Return labels provided by {info.labelService.toUpperCase()}.</p>
-      {cfg.dropOffProvider && <p>Drop-off: {cfg.dropOffProvider}</p>}
-      <p>Available carriers: {info.returnCarrier.join(", ")}</p>
+      <p>{t("returns.labelsBy", { service: info.labelService.toUpperCase() })}</p>
+      {cfg.dropOffProvider && (
+        <p>{t("returns.dropOff", { provider: cfg.dropOffProvider })}</p>
+      )}
+      <p>{t("returns.carriers", { carriers: info.returnCarrier.join(", ") })}</p>
       {settings.returnService?.homePickupEnabled && (
         <p>
-          Home pickup available in: {info.homePickupZipCodes.join(", ")}
+          {t("returns.pickupAvailableIn", {
+            areas: info.homePickupZipCodes.join(", "),
+          })}
         </p>
       )}
-      <p>In-store returns {cfg.inStore ? "available" : "unavailable"}.</p>
+      <p>
+        {cfg.inStore ? t("returns.inStoreAvailable") : t("returns.inStoreUnavailable")}
+      </p>
       {typeof cfg.tracking !== "undefined" && (
-        <p>Tracking {cfg.tracking ? "enabled" : "disabled"}.</p>
+        <p>
+          {cfg.tracking ? t("returns.trackingEnabled") : t("returns.trackingDisabled")}
+        </p>
       )}
-      {cfg.requireTags && <p>Items must have all tags attached for return.</p>}
-      {!cfg.allowWear && <p>Items showing signs of wear may be rejected.</p>}
+      {cfg.requireTags && <p>{t("returns.requireTags")}</p>}
+      {!cfg.allowWear && <p>{t("returns.noWear")}</p>}
     </div>
   );
 }

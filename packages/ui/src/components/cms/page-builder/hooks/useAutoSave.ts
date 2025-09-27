@@ -62,7 +62,7 @@ export default function useAutoSave({
         clearTimeout(saveDebounceRef.current);
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- PB-000: intentional, deps managed via refs to avoid stale saves
   }, [handleAutoSave, ...deps]);
 
   return { autoSaveState, handleAutoSave };

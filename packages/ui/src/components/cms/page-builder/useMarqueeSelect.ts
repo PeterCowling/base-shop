@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useRef, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { HistoryState } from "@acme/types";
 import { isHiddenForViewport } from "./state/layout/utils";
 import { rectScreenToCanvas, screenToCanvas, rectsIntersect } from "./utils/coords";
@@ -24,6 +25,7 @@ export default function useMarqueeSelect({ canvasRef, zoom = 1, editor, viewport
   const baseSelectionRef = useRef<Set<string>>(new Set());
   const itemsRef = useRef<{ id: string; rect: { left: number; top: number; width: number; height: number } }[]>([]);
   const modeRef = useRef<StartModifiers>({});
+  const t = useTranslations();
 
   const buildItemsSnapshot = useCallback(() => {
     const canvas = canvasRef.current;
@@ -36,7 +38,7 @@ export default function useMarqueeSelect({ canvasRef, zoom = 1, editor, viewport
       if (!id) continue;
       // Skip locked/hidden
       const locked = !!(editor?.[id]?.locked);
-      const hidden = isHiddenForViewport(id, editor, (el as any).hidden as boolean | undefined, viewport);
+      const hidden = isHiddenForViewport(id, editor, (el as unknown as { hidden?: boolean }).hidden, viewport);
       if (locked || hidden) continue;
       const r = el.getBoundingClientRect();
       const rr = rectScreenToCanvas({ left: r.left, top: r.top, width: r.width, height: r.height }, canvasRect, zoom);
@@ -46,11 +48,12 @@ export default function useMarqueeSelect({ canvasRef, zoom = 1, editor, viewport
   }, [canvasRef, editor, viewport, zoom]);
 
   const start = useCallback((e: PointerEvent | React.PointerEvent, currentSelected: string[] = [], mods: StartModifiers = {}) => {
-    if (!(e instanceof PointerEvent) && !(typeof window !== 'undefined' && (e as any).nativeEvent instanceof PointerEvent)) {
-      return;
+    let ev: PointerEvent;
+    if (e instanceof PointerEvent) {
+      ev = e;
+    } else {
+      ev = (e as React.PointerEvent).nativeEvent as PointerEvent;
     }
-    const native = (e as any).nativeEvent as PointerEvent | undefined;
-    const ev = (e as PointerEvent) || native!;
     if (ev.button !== 0) return; // left only
     const target = (ev.target as HTMLElement | null);
     if (!target) return;
@@ -59,9 +62,10 @@ export default function useMarqueeSelect({ canvasRef, zoom = 1, editor, viewport
       if (!node) return false;
       const tag = node.tagName;
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return true;
-      if ((node as any).isContentEditable) return true;
+      if (node.isContentEditable) return true;
       return false;
     };
+    // i18n-exempt -- CSS selector, not user-facing copy
     if (target.closest('[role="listitem"]') || isInteractive(target)) return;
 
     const canvas = canvasRef.current;
@@ -105,22 +109,25 @@ export default function useMarqueeSelect({ canvasRef, zoom = 1, editor, viewport
         next = Array.from(hits);
       }
       onSelectIds(next);
-      try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: `Selected ${next.length} ${next.length === 1 ? 'block' : 'blocks'}` })); } catch {}
+      try {
+        const msg = t(`Selected ${next.length} ${next.length === 1 ? 'block' : 'blocks'}`);
+        window.dispatchEvent(new CustomEvent('pb-live-message', { detail: String(msg) }));
+      } catch {}
     };
 
     const onUp = () => {
       setActive(false);
       startRef.current = null;
       setRect(null);
-      try { window.removeEventListener('pointermove', onMove as any); } catch {}
+      try { window.removeEventListener('pointermove', onMove as unknown as EventListener); } catch {}
       window.removeEventListener('pointerup', onUp);
       window.removeEventListener('keydown', onKey);
     };
     const onKey = (ke: KeyboardEvent) => { if (ke.key === 'Escape') onUp(); };
-    try { window.addEventListener('pointermove', onMove as any, { passive: true }); } catch { window.addEventListener('pointermove', onMove as any); }
+    try { window.addEventListener('pointermove', onMove as unknown as EventListener, { passive: true }); } catch { window.addEventListener('pointermove', onMove as unknown as EventListener); }
     window.addEventListener('pointerup', onUp, { once: true });
     window.addEventListener('keydown', onKey);
-  }, [canvasRef, zoom, buildItemsSnapshot, onSelectIds]);
+  }, [canvasRef, zoom, buildItemsSnapshot, onSelectIds, t]);
 
   return { active, rect, start } as const;
 }

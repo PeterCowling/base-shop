@@ -9,7 +9,7 @@ export const paymentsEnvSchema = z.object({
     .refine(
       (v) => v == null || /^(true|false|1|0)$/i.test(v),
       {
-        message: "PAYMENTS_SANDBOX must be a boolean",
+        message: "PAYMENTS_SANDBOX must be a boolean", // i18n-exempt: validation copy (non-UI)
       },
     )
     .transform((v) => (v == null ? true : /^(true|1)$/i.test(v))),
@@ -17,7 +17,7 @@ export const paymentsEnvSchema = z.object({
     .string()
     .default("USD")
     .refine((val) => /^[A-Z]{3}$/.test(val), {
-      message: "PAYMENTS_CURRENCY must be a 3-letter uppercase currency code",
+      message: "PAYMENTS_CURRENCY must be a 3-letter uppercase currency code", // i18n-exempt: validation copy (non-UI)
     }),
   STRIPE_SECRET_KEY: z.string().min(1).default("sk_test"),
   NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: z
@@ -41,39 +41,39 @@ export function loadPaymentsEnv(
     raw.PAYMENTS_PROVIDER !== "stripe"
   ) {
     console.error(
-      "❌ Unsupported PAYMENTS_PROVIDER:",
+      "❌ Unsupported PAYMENTS_PROVIDER:", // i18n-exempt: developer log
       raw.PAYMENTS_PROVIDER,
-    );
-    throw new Error("Invalid payments environment variables");
+    ); // i18n-exempt: developer log
+    throw new Error("Invalid payments environment variables"); // i18n-exempt: developer error
   }
 
   if (raw.PAYMENTS_PROVIDER === "stripe") {
     if (!raw.STRIPE_SECRET_KEY) {
       console.error(
-        "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe",
-      );
-      throw new Error("Invalid payments environment variables");
+        "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe", // i18n-exempt: developer log
+      ); // i18n-exempt: developer log
+      throw new Error("Invalid payments environment variables"); // i18n-exempt: developer error
     }
     if (!raw.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
       console.error(
-        "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe",
-      );
-      throw new Error("Invalid payments environment variables");
+        "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe", // i18n-exempt: developer log
+      ); // i18n-exempt: developer log
+      throw new Error("Invalid payments environment variables"); // i18n-exempt: developer error
     }
     if (!raw.STRIPE_WEBHOOK_SECRET) {
       console.error(
-        "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
-      );
-      throw new Error("Invalid payments environment variables");
+        "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe", // i18n-exempt: developer log
+      ); // i18n-exempt: developer log
+      throw new Error("Invalid payments environment variables"); // i18n-exempt: developer error
     }
   }
 
   const parsed = paymentsEnvSchema.safeParse(raw);
   if (!parsed.success) {
     console.warn(
-      "⚠️ Invalid payments environment variables:",
+      "⚠️ Invalid payments environment variables:", // i18n-exempt: developer log
       parsed.error.format(),
-    );
+    ); // i18n-exempt: developer log
     return paymentsEnvSchema.parse({});
   }
 

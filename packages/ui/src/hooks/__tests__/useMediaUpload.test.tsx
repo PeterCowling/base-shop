@@ -5,27 +5,28 @@ jest.mock("../useFileUpload", () => ({
     pendingFile: new File([1], "a.png", { type: "image/png" }),
   }),
 }));
-import useMediaUpload from "../useMediaUpload";
+import useMediaUpload, { type UseMediaUploadOptions } from "../useMediaUpload";
 
 describe("useMediaUpload (image thumbnail path)", () => {
   const originalCreate = URL.createObjectURL;
   const originalRevoke = URL.revokeObjectURL;
   beforeEach(() => {
     // stub object URL APIs
-    // @ts-ignore
+    // @ts-expect-error: test stubs object URL API
     URL.createObjectURL = jest.fn(() => "blob:thumb");
-    // @ts-ignore
+    // @ts-expect-error: test stubs object URL API
     URL.revokeObjectURL = jest.fn();
   });
   afterEach(() => {
-    // @ts-ignore
+    // @ts-expect-error: restore stubbed API
     URL.createObjectURL = originalCreate;
-    // @ts-ignore
+    // @ts-expect-error: restore stubbed API
     URL.revokeObjectURL = originalRevoke;
   });
 
   test("sets thumbnail when pendingFile is an image", () => {
-    const { result } = renderHook(() => useMediaUpload({ shop: "s", requiredOrientation: "landscape" } as any));
+    const opts = { shop: "s", requiredOrientation: "landscape" } as UseMediaUploadOptions;
+    const { result } = renderHook(() => useMediaUpload(opts));
     expect(result.current.thumbnail).toBe("blob:thumb");
   });
 });

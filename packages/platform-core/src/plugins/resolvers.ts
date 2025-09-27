@@ -8,8 +8,16 @@ function unique<T>(arr: T[]): T[] {
   return Array.from(new Set(arr));
 }
 
-async function fileExists(p: string): Promise<boolean> {
+function isPathInside(child: string, parent: string): boolean {
+  const parentPath = path.resolve(parent) + path.sep;
+  const childPath = path.resolve(child) + path.sep;
+  return childPath.startsWith(parentPath);
+}
+
+async function fileExists(p: string, baseDir?: string): Promise<boolean> {
   try {
+    if (baseDir && !isPathInside(p, baseDir)) return false;
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-0001 path validated via isPathInside()
     const s = await stat(p);
     return s.isFile();
   } catch {
@@ -54,6 +62,11 @@ export async function resolvePluginEntry(dir: string): Promise<{
 }> {
   try {
     const pkgPath = path.join(dir, "package.json");
+    // Validate target is the expected file within the provided directory
+    if (path.basename(pkgPath) !== "package.json" || !isPathInside(pkgPath, dir)) {
+      return { entryPath: null, isModule: false };
+    }
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-0001 path validated to be inside plugin dir
     const rawPkg = await readFile(pkgPath, "utf8");
     const pkg = JSON.parse(rawPkg) as {
       type?: string;
@@ -79,7 +92,7 @@ export async function resolvePluginEntry(dir: string): Promise<{
     );
 
     for (const candidate of candidates) {
-      if (await fileExists(candidate)) {
+      if (await fileExists(candidate, dir)) {
         return {
           entryPath: candidate,
           isModule: isModule || /\.mjs$/.test(candidate),
@@ -88,6 +101,7 @@ export async function resolvePluginEntry(dir: string): Promise<{
     }
     return { entryPath: null, isModule };
   } catch (err) {
+    // i18n-exempt: internal log message only, not user-facing UI copy
     logger.error("Failed to read plugin package.json", { plugin: dir, err });
     return { entryPath: null, isModule: false };
   }
@@ -97,10 +111,11 @@ export async function importByType(entryPath: string, isModule: boolean) {
   // Prefer require() for CommonJS entries to avoid Jest/Node ESM resolution issues.
   if (!isModule && /\.(cjs|js)$/.test(entryPath)) {
     // Support both ESM and CJS contexts without using import.meta in CJS.
-    // eslint-disable-next-line no-new-func
+     
     const getMetaUrl = () => {
       try {
         // Constructed at runtime so CJS parsers don't choke on import.meta
+        // i18n-exempt: string used for runtime evaluation, not user copy
         return (Function("return import.meta.url")() as string) || undefined;
       } catch {
         return undefined;
@@ -108,7 +123,7 @@ export async function importByType(entryPath: string, isModule: boolean) {
     };
     const base = getMetaUrl() ?? __filename;
     const req = createRequire(base);
-    // eslint-disable-next-line security/detect-non-literal-require
+     
     return req(entryPath);
   }
   // For ESM, use dynamic import with webpackIgnore to avoid bundler analysis.

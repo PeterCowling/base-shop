@@ -1,6 +1,8 @@
 "use client";
 
 import { Card, CardContent, Checkbox, Textarea } from "../../../atoms/shadcn";
+import { Grid } from "../../../atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 import {
   campaignChannelOptions,
   type CampaignChannel,
@@ -10,6 +12,10 @@ import type {
   CampaignErrors,
   CampaignFormUpdater,
 } from "./useCampaignForm";
+
+const CAMPAIGN_AUDIENCE_ID = "campaign-audience"; // i18n-exempt: element id, not user-visible copy
+const CAMPAIGN_AUDIENCE_ERROR_ID = "campaign-audience-error"; // i18n-exempt: element id, not user-visible copy
+const DANGER_TOKEN = "--color-danger"; // i18n-exempt: design token name, not user-visible copy
 
 interface CampaignAudienceSectionProps {
   values: CampaignFormValues;
@@ -24,29 +30,33 @@ export function CampaignAudienceSection({
   onUpdateValue,
   onToggleChannel,
 }: CampaignAudienceSectionProps) {
+  const t = useTranslations();
   return (
     <Card>
       <CardContent className="space-y-4">
         <div className="space-y-1">
-          <label htmlFor="campaign-audience" className="text-sm font-medium">
-            Audience filters
+          <label
+            htmlFor={CAMPAIGN_AUDIENCE_ID}
+            className="text-sm font-medium"
+          >
+            {t("campaign.audience.label")}
           </label>
           <Textarea
-            id="campaign-audience"
+            id={CAMPAIGN_AUDIENCE_ID}
             value={values.audience}
             onChange={(event) => onUpdateValue("audience", event.target.value)}
-            placeholder="Customers who purchased in the last 90 days"
+            placeholder={String(t("campaign.audience.placeholder"))}
             rows={3}
             aria-invalid={errors.audience ? "true" : "false"}
             aria-describedby={
-              errors.audience ? "campaign-audience-error" : undefined
+              errors.audience ? CAMPAIGN_AUDIENCE_ERROR_ID : undefined
             }
           />
           {errors.audience && (
             <p
-              id="campaign-audience-error"
+              id={CAMPAIGN_AUDIENCE_ERROR_ID}
               className="text-danger text-xs"
-              data-token="--color-danger"
+              data-token={DANGER_TOKEN}
             >
               {errors.audience}
             </p>
@@ -54,10 +64,11 @@ export function CampaignAudienceSection({
         </div>
 
         <fieldset className="space-y-2">
-          <legend className="text-sm font-medium">Channels</legend>
-          <div className="grid gap-3 sm:grid-cols-2">
+          <legend className="text-sm font-medium">{t("campaign.channels.legend")}</legend>
+          <Grid gap={3} cols={1} className="sm:grid-cols-2">
             {campaignChannelOptions.map((channel) => {
               const checked = values.channels.includes(channel);
+              const chanLabel = t(`campaign.channels.${channel}`) as string;
               return (
                 <label
                   key={channel}
@@ -67,13 +78,13 @@ export function CampaignAudienceSection({
                     checked={checked}
                     onCheckedChange={() => onToggleChannel(channel)}
                   />
-                  <span className="capitalize">{channel.replace("-", " ")}</span>
+                  <span className="capitalize">{chanLabel}</span>
                 </label>
               );
             })}
-          </div>
+          </Grid>
           {errors.channels && (
-            <p className="text-danger text-xs" data-token="--color-danger">
+            <p className="text-danger text-xs" data-token={DANGER_TOKEN}>
               {errors.channels}
             </p>
           )}

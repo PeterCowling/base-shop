@@ -16,9 +16,9 @@ export function FontSelect({
   className,
 }: FontSelectProps) {
   return (
-    <span className={`flex min-w-0 flex-col gap-1 ${className ?? ""}`}>
+    <span className={`flex min-w-0 flex-col gap-1 ${className ?? ""}`}> {/* i18n-exempt: class names */}
       <select
-        className="flex-1 min-w-0 rounded border p-1"
+        className="flex-1 min-w-0 rounded border p-1" // i18n-exempt: class names
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
@@ -28,7 +28,7 @@ export function FontSelect({
           </option>
         ))}
       </select>
-      <input className="block w-full max-w-full" type="file" accept=".woff,.woff2,.ttf,.otf" onChange={onUpload} />
+      <input className="block w-full" type="file" accept=".woff,.woff2,.ttf,.otf" onChange={onUpload} /> {/* i18n-exempt: file types & class names */}
     </span>
   );
 }

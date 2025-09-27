@@ -2,6 +2,7 @@
 "use client";
 
 import type { CSSProperties } from "react";
+import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 
 export interface PresetItem {
@@ -26,12 +27,12 @@ function previewStyle(value: Partial<StyleOverrides>): CSSProperties {
     borderRadius: fx.borderRadius,
     boxShadow: fx.boxShadow,
     outline: fx.outline,
-    outlineOffset: fx.outlineOffset as any,
+    outlineOffset: fx.outlineOffset as CSSProperties["outlineOffset"],
     borderTop: fx.borderTop,
     borderRight: fx.borderRight,
     borderBottom: fx.borderBottom,
     borderLeft: fx.borderLeft,
-    backdropFilter: fx.backdropFilter as any,
+    backdropFilter: fx.backdropFilter as CSSProperties["backdropFilter"],
     opacity: fx.opacity ? Number(fx.opacity) : undefined,
     transform: composeTransform(fx),
     background: "rgba(255,255,255,0.9)",
@@ -44,12 +45,12 @@ export default function PresetGallery({ title, presets, onApply }: { title: stri
   return (
     <div className="space-y-1">
       <div className="text-xs font-semibold text-muted-foreground">{title}</div>
-      <div className="grid grid-cols-3 gap-2">
+      <DSGrid cols={3} gap={2}>
         {presets.map((p) => (
           <button
             key={p.id}
             type="button"
-            className="rounded border p-2 text-start hover:bg-accent/30"
+            className="rounded border p-2 text-start hover:bg-accent/30 min-h-10 min-w-10"
             onClick={() => onApply(p.id)}
             title={p.label}
             aria-label={`Apply ${p.label}`}
@@ -57,11 +58,10 @@ export default function PresetGallery({ title, presets, onApply }: { title: stri
             <div className="rounded bg-muted p-1">
               <div className="h-8 w-full rounded" style={previewStyle(p.value)} />
             </div>
-            <div className="mt-1 truncate text-[11px] text-muted-foreground">{p.label}</div>
+            <div className="mt-1 truncate text-xs text-muted-foreground">{p.label}</div>
           </button>
         ))}
-      </div>
+      </DSGrid>
     </div>
   );
 }
-

@@ -4,29 +4,33 @@ import MediaFileList from "../MediaFileList";
 
 const mediaFileItemProps: any[] = [];
 
-jest.mock("../MediaFileItem", () => (props: any) => {
-  mediaFileItemProps.push(props);
-  return (
-    <div
-      data-cy="media-item"
-      data-selected={props.selected ? "true" : "false"}
-      data-deleting={props.deleting ? "true" : "false"}
-      data-replacing={props.replacing ? "true" : "false"}
-      onClick={() => props.onSelect?.(props.item)}
-    >
-      <button type="button" onClick={() => props.onDelete(props.item.url)}>
-        delete
-      </button>
-      <button
-        type="button"
-        data-cy="bulk"
-        onClick={() => props.onBulkToggle?.(props.item, !props.selected)}
+jest.mock("../MediaFileItem", () => {
+  const MockMediaFileItem = (props: any) => {
+    mediaFileItemProps.push(props);
+    return (
+      <div
+        data-cy="media-item"
+        data-selected={props.selected ? "true" : "false"}
+        data-deleting={props.deleting ? "true" : "false"}
+        data-replacing={props.replacing ? "true" : "false"}
+        onClick={() => props.onSelect?.(props.item)}
       >
-        toggle
-      </button>
-      {props.item.url}
-    </div>
-  );
+        <button type="button" onClick={() => props.onDelete(props.item.url)}>
+          delete
+        </button>
+        <button
+          type="button"
+          data-cy="bulk"
+          onClick={() => props.onBulkToggle?.(props.item, !props.selected)}
+        >
+          toggle
+        </button>
+        {props.item.url}
+      </div>
+    );
+  };
+  MockMediaFileItem.displayName = "MockMediaFileItem";
+  return MockMediaFileItem;
 });
 
 describe("MediaFileList", () => {

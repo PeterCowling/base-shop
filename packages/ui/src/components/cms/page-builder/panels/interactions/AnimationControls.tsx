@@ -1,5 +1,7 @@
 "use client";
 
+// i18n-exempt file — editor-only builder controls; copy pending i18n wiring
+
 import type { InteractionsProps } from "./types";
 import { openSelectOnMouseDown } from "./helpers";
 import { easingPresets } from "../EasingPresets";
@@ -14,9 +16,9 @@ import {
 
 export default function AnimationControls({ component, handleInput }: InteractionsProps) {
   const animation = component.animation ?? "none";
-  const duration = (component as any).animationDuration as number | undefined;
-  const delay = (component as any).animationDelay as number | undefined;
-  const easing = (component as any).animationEasing as string | undefined;
+  const duration = component.animationDuration;
+  const delay = component.animationDelay;
+  const easing = component.animationEasing;
 
   return (
     <div className="space-y-2">
@@ -53,10 +55,8 @@ export default function AnimationControls({ component, handleInput }: Interactio
           value={duration ?? ""}
           onChange={(e) =>
             handleInput(
-              "animationDuration" as keyof typeof component,
-              (e.target.value === ""
-                ? (undefined as any)
-                : (Math.max(0, Number(e.target.value)) as any)) as any,
+              "animationDuration",
+              e.target.value === "" ? undefined : Math.max(0, Number(e.target.value)),
             )
           }
         />
@@ -67,10 +67,8 @@ export default function AnimationControls({ component, handleInput }: Interactio
           value={delay ?? ""}
           onChange={(e) =>
             handleInput(
-              "animationDelay" as keyof typeof component,
-              (e.target.value === ""
-                ? (undefined as any)
-                : (Math.max(0, Number(e.target.value)) as any)) as any,
+              "animationDelay",
+              e.target.value === "" ? undefined : Math.max(0, Number(e.target.value)),
             )
           }
         />
@@ -78,8 +76,8 @@ export default function AnimationControls({ component, handleInput }: Interactio
           value={easing ?? "__none__"}
           onValueChange={(v) =>
             handleInput(
-              "animationEasing" as keyof typeof component,
-              (v === "__none__" ? undefined : (v as any)) as any,
+              "animationEasing",
+              v === "__none__" ? undefined : v,
             )
           }
         >
@@ -98,4 +96,3 @@ export default function AnimationControls({ component, handleInput }: Interactio
     </div>
   );
 }
-

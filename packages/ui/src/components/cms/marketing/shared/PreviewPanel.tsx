@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 import { Card, CardContent } from "../../../atoms/shadcn";
 import { CodeBlock } from "../../../molecules";
 import { cn } from "../../../../utils/style";
+import { useTranslations } from "@acme/i18n";
+import { Inline, Stack } from "../../../atoms/primitives";
 
 export interface PreviewPanelProps<TData> {
   title: string;
@@ -23,10 +25,13 @@ export function PreviewPanel<TData>({
   footer,
   actions,
   className,
-  emptyLabel = "Preview not available",
+  emptyLabel,
 }: PreviewPanelProps<TData>) {
+  const t = useTranslations();
   const content = renderPreview?.(data);
-  const fallbackPreview = data ? JSON.stringify(data, null, 2) : emptyLabel;
+  const fallbackPreview = data
+    ? JSON.stringify(data, null, 2)
+    : String(emptyLabel ?? t("Preview not available"));
 
   const previewBody = content ? (
     <div className="p-4">{content}</div>
@@ -34,6 +39,7 @@ export function PreviewPanel<TData>({
     <CodeBlock
       code={fallbackPreview}
       className="p-4"
+      /* i18n-exempt: presentation-only class string */
       preClassName="bg-transparent text-xs text-muted-foreground border-none p-0 pe-12"
     />
   );
@@ -41,15 +47,15 @@ export function PreviewPanel<TData>({
   return (
     <Card className={cn("space-y-4", className)}>
       <CardContent className="space-y-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="space-y-1">
+        <Inline className="justify-between items-start gap-3">
+          <Stack className="space-y-1">
             <h3 className="text-lg font-semibold">{title}</h3>
             {description && (
               <p className="text-muted-foreground text-sm">{description}</p>
             )}
-          </div>
-          {actions && <div className="flex items-center gap-2">{actions}</div>}
-        </div>
+          </Stack>
+          {actions && <Inline className="items-center gap-2">{actions}</Inline>}
+        </Inline>
         <div className="rounded-lg border bg-muted/40 text-sm">{previewBody}</div>
         {footer}
       </CardContent>

@@ -4,6 +4,7 @@
 import { Button, Input } from "../../../../atoms/shadcn";
 import { Tooltip } from "../../../../atoms";
 import type { EditorFlags } from "./types";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   locked: boolean;
@@ -12,13 +13,14 @@ interface Props {
 }
 
 export default function ZIndexControls({ locked, editorFlags, onUpdateEditor }: Props) {
+  const t = useTranslations();
   return (
     <div className="flex items-end gap-2">
       <Input
         label={
           <span className="flex items-center gap-1">
-            z-index
-            <Tooltip text="Stacking order (number)">?</Tooltip>
+            {t("z-index")}
+            <Tooltip text={t("Stacking order (number)")}>?</Tooltip>
           </span>
         }
         type="number"
@@ -30,12 +32,11 @@ export default function ZIndexControls({ locked, editorFlags, onUpdateEditor }: 
         disabled={locked}
       />
       <div className="flex gap-1">
-        <Button type="button" variant="outline" disabled={locked} onClick={() => onUpdateEditor?.({ zIndex: Math.max(0, (editorFlags?.zIndex as number | undefined) ?? 0) })}>Back</Button>
-        <Button type="button" variant="outline" disabled={locked} onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) - 1) })}>-1</Button>
-        <Button type="button" variant="outline" disabled={locked} onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) + 1) })}>+1</Button>
-        <Button type="button" variant="outline" disabled={locked} onClick={() => onUpdateEditor?.({ zIndex: 999 })}>Front</Button>
+        <Button type="button" variant="outline" disabled={locked} onClick={() => onUpdateEditor?.({ zIndex: Math.max(0, (editorFlags?.zIndex as number | undefined) ?? 0) })}>{t("Back")}</Button>
+        <Button type="button" variant="outline" disabled={locked} onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) - 1) })}>{t("-1")}</Button>
+        <Button type="button" variant="outline" disabled={locked} onClick={() => onUpdateEditor?.({ zIndex: (((editorFlags?.zIndex as number | undefined) ?? 0) + 1) })}>{t("+1")}</Button>
+        <Button type="button" variant="outline" disabled={locked} onClick={() => onUpdateEditor?.({ zIndex: 999 })}>{t("Front")}</Button>
       </div>
     </div>
   );
 }
-

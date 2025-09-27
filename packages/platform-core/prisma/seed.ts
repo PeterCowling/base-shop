@@ -32,7 +32,7 @@ async function main() {
       const shop = dir.name;
       const file = path.join(shopsDir, shop, "inventory.json");
       try {
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-123: reading controlled seed data files under data/shops
         const raw = await readFile(file, "utf8");
         const items = JSON.parse(raw) as Array<{
           sku: string;

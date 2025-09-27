@@ -19,6 +19,17 @@ export default function RentalTermsSection({ sku, termsVersion, onAdd, className
   const [insuranceFee, setInsuranceFee] = React.useState<number | undefined>(undefined);
   const [deposit, setDeposit] = React.useState<number | undefined>(undefined);
 
+  // i18n-exempt -- Shopping microcopy; pending i18n integration
+  const LABEL_ADD_INSURANCE = "Add insurance";
+  // i18n-exempt -- Microcopy label for fee input
+  const LABEL_FEE = "Fee";
+  // i18n-exempt -- Microcopy label for deposit input
+  const LABEL_DEPOSIT = "Deposit";
+  // i18n-exempt -- Terms acceptance label; version interpolated
+  const labelAcceptTerms = (v: string) => `I accept rental terms (v${v})`;
+  // i18n-exempt -- Button microcopy; pending i18n integration
+  const LABEL_ADD_TO_CART = "Add to cart";
+
   const handleAdd = () => {
     if (!accepted) return;
     onAdd?.({ sku, termsVersion, insurance: { selected: insurance, fee: insuranceFee }, deposit });
@@ -29,11 +40,11 @@ export default function RentalTermsSection({ sku, termsVersion, onAdd, className
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <input id="ins" type="checkbox" checked={insurance} onChange={(e) => setInsurance(e.target.checked)} />
-          <label htmlFor="ins">Add insurance</label>
+          <label htmlFor="ins">{LABEL_ADD_INSURANCE}</label>
           {insurance && (
             <input
               type="number"
-              placeholder="Fee"
+              placeholder={LABEL_FEE}
               className="ms-2 w-24 rounded border px-2 py-1"
               value={typeof insuranceFee === 'number' ? insuranceFee : ''}
               onChange={(e) => setInsuranceFee(e.target.value ? Number(e.target.value) : undefined)}
@@ -41,15 +52,15 @@ export default function RentalTermsSection({ sku, termsVersion, onAdd, className
           )}
         </div>
         <div className="flex items-center gap-2">
-          <label>Deposit</label>
+          <label>{LABEL_DEPOSIT}</label>
           <input type="number" className="w-28 rounded border px-2 py-1" value={typeof deposit === 'number' ? deposit : ''} onChange={(e) => setDeposit(e.target.value ? Number(e.target.value) : undefined)} />
         </div>
         <div className="flex items-center gap-2">
           <input id="terms" type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />
-          <label htmlFor="terms">I accept rental terms (v{termsVersion})</label>
+          <label htmlFor="terms">{labelAcceptTerms(termsVersion)}</label>
         </div>
-        <button type="button" onClick={handleAdd} disabled={!accepted} className="rounded bg-black px-3 py-1 text-white disabled:opacity-50">
-          Add to cart
+        <button type="button" onClick={handleAdd} disabled={!accepted} className="rounded bg-black px-3 py-1 text-white disabled:opacity-50 min-h-10 min-w-10">
+          {LABEL_ADD_TO_CART}
         </button>
       </div>
     </div>

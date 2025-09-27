@@ -9,11 +9,12 @@ import { useProductFilters, type ProductStatus } from "../useProductFilters";
 /* ------------------------------------------------------------------
  * Test fixtures
  * ------------------------------------------------------------------ */
+// i18n-exempt: test fixtures include user-facing example titles
 const products: ProductPublication[] = [
   {
     id: "1",
     sku: "red",
-    title: { en: "Red Shoe", de: "Roter Schuh", it: "Scarpa rossa" },
+    title: { en: "Red Shoe", de: "Roter Schuh", it: "Scarpa rossa" }, // i18n-exempt: fixture title
     description: { en: "", de: "", it: "" },
     price: 1,
     currency: "EUR",
@@ -27,7 +28,7 @@ const products: ProductPublication[] = [
   {
     id: "2",
     sku: "blue",
-    title: { en: "Blue Shoe", de: "Blauer Schuh", it: "Scarpa blu" },
+    title: { en: "Blue Shoe", de: "Blauer Schuh", it: "Scarpa blu" }, // i18n-exempt: fixture title
     description: { en: "", de: "", it: "" },
     price: 1,
     currency: "EUR",
@@ -41,7 +42,7 @@ const products: ProductPublication[] = [
   {
     id: "3",
     sku: "green",
-    title: { en: "Green Shoe", de: "Gruener Schuh", it: "Scarpa verde" },
+    title: { en: "Green Shoe", de: "Gruener Schuh", it: "Scarpa verde" }, // i18n-exempt: fixture title
     description: { en: "", de: "", it: "" },
     price: 1,
     currency: "EUR",
@@ -81,18 +82,23 @@ function Wrapper({
  * ------------------------------------------------------------------ */
 describe("useProductFilters", () => {
   it.each([
-    ["blauer", "2"], // de locale title
-    ["verde", "3"], // it locale title
-    ["scarpa", "1,2,3"], // common word across locales
-    ["blu", "2"], // partial SKU
-  ])("filters '%s'", async (term, ids) => {
+    ["blauer", "2"], // i18n-exempt: locale-specific search term
+    ["verde", "3"], // i18n-exempt: locale-specific search term
+    ["scarpa", "1,2,3"], // i18n-exempt: shared locale word
+    ["blu", "2"], // i18n-exempt: partial SKU
+  ])(
+    "filters '%s'", // i18n-exempt: test name
+    async (term, ids) => {
     render(<Wrapper search={term} status="all" />);
     await waitFor(() =>
       expect(screen.getByTestId("ids").textContent).toBe(ids)
     );
-  });
+  }
+  );
 
-  it("filters by status transitions", async () => {
+  it(
+    "filters by status transitions", // i18n-exempt: test name
+    async () => {
     const { rerender } = render(<Wrapper search="" status="all" />);
     expect(screen.getByTestId("ids").textContent).toBe("1,2,3");
 
@@ -115,5 +121,6 @@ describe("useProductFilters", () => {
     await waitFor(() =>
       expect(screen.getByTestId("ids").textContent).toBe("3")
     );
-  });
+  }
+  );
 });

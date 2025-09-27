@@ -6,6 +6,8 @@ import type { PublishLocation } from "@acme/types";
 import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
 import { toggleItem } from "@acme/shared-utils";
 import { memo, useCallback } from "react";
+import { Stack, Inline } from "../atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 export interface PublishLocationSelectorProps {
   selectedIds: string[];
@@ -26,6 +28,7 @@ function PublishLocationSelectorInner({
   onChange,
   showReload = false,
 }: PublishLocationSelectorProps) {
+  const t = useTranslations();
   const { locations, reload } = usePublishLocations();
 
   const toggle = useCallback(
@@ -37,46 +40,45 @@ function PublishLocationSelectorInner({
 
   return (
     <>
-      <div className="flex flex-col gap-2">
+      <Stack gap={2}>
         {locations.map(
           ({ id, name, description, requiredOrientation }: PublishLocation) => (
-            <label
-              key={id}
-              className="flex cursor-pointer items-start gap-2 select-none"
-            >
-              <Input
-                type="checkbox"
-                checked={selectedIds.includes(id)}
-                onChange={() => toggle(id)}
-                className="mt-1 h-4 w-4"
-              />
-              <span>
-                <span className="font-medium">{name}</span>
-                <span className="text-muted-foreground ms-1 text-xs">
-                  ({requiredOrientation})
+            <label key={id} className="cursor-pointer select-none">
+              <Inline alignY="start" gap={2}>
+                <Input
+                  type="checkbox"
+                  checked={selectedIds.includes(id)}
+                  onChange={() => toggle(id)}
+                  className="mt-1 h-4 w-4"
+                />
+                <span>
+                  <span className="font-medium">{name}</span>
+                  <span className="text-muted-foreground ms-1 text-xs">
+                    ({requiredOrientation})
+                  </span>
+                  {description && (
+                    <>
+                      <br />
+                      <span className="text-muted-foreground text-sm">
+                        {description}
+                      </span>
+                    </>
+                  )}
                 </span>
-                {description && (
-                  <>
-                    <br />
-                    <span className="text-muted-foreground text-sm">
-                      {description}
-                    </span>
-                  </>
-                )}
-              </span>
+              </Inline>
             </label>
           )
         )}
-      </div>
+      </Stack>
 
       {showReload && (
         <Button
           type="button"
           onClick={reload}
           variant="outline"
-          className="mt-4 inline-flex items-center rounded-2xl p-2 text-sm shadow"
+          className="mt-4 rounded-2xl p-2 text-sm shadow"
         >
-          Refresh list
+          {t("actions.refreshList")}
         </Button>
       )}
     </>

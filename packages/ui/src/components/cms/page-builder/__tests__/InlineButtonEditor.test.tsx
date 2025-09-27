@@ -2,7 +2,7 @@ import { render, fireEvent, screen } from "@testing-library/react";
 import React from "react";
 
 // Mocks mirroring BlockItem.test.tsx setup
-const useBlockDnDMock = jest.fn(() => ({
+const blockDnDMock = jest.fn(() => ({
   attributes: {},
   listeners: {},
   setNodeRef: jest.fn(),
@@ -15,13 +15,13 @@ const useBlockDnDMock = jest.fn(() => ({
 
 jest.mock("../useBlockDnD", () => ({
   __esModule: true,
-  default: () => useBlockDnDMock(),
+  default: () => blockDnDMock(),
 }));
 
-const useCanvasResizeMock = jest.fn();
+const canvasResizeMock = jest.fn();
 jest.mock("../useCanvasResize", () => ({
   __esModule: true,
-  default: (args: any) => useCanvasResizeMock(args) || {
+  default: (args: any) => canvasResizeMock(args) || {
     startResize: jest.fn(),
     guides: { x: null, y: null },
     distances: { x: null, y: null },
@@ -34,10 +34,10 @@ jest.mock("../useCanvasResize", () => ({
   },
 }));
 
-const useCanvasDragMock = jest.fn();
+const canvasDragMock = jest.fn();
 jest.mock("../useCanvasDrag", () => ({
   __esModule: true,
-  default: (args: any) => useCanvasDragMock(args) || {
+  default: (args: any) => canvasDragMock(args) || {
     startDrag: jest.fn(),
     guides: { x: null, y: null },
     distances: { x: null, y: null },
@@ -50,16 +50,16 @@ jest.mock("../useCanvasDrag", () => ({
   },
 }));
 
-const useCanvasSpacingMock = jest.fn();
+const canvasSpacingMock = jest.fn();
 jest.mock("../useCanvasSpacing", () => ({
   __esModule: true,
-  default: (args: any) => useCanvasSpacingMock(args) || { startSpacing: jest.fn(), overlay: null },
+  default: (args: any) => canvasSpacingMock(args) || { startSpacing: jest.fn(), overlay: null },
 }));
 
-const useBlockDimensionsMock = jest.fn();
+const blockDimensionsMock = jest.fn();
 jest.mock("../useBlockDimensions", () => ({
   __esModule: true,
-  default: (args: any) => useBlockDimensionsMock(args) || ({
+  default: (args: any) => blockDimensionsMock(args) || ({
     widthKey: "width",
     heightKey: "height",
     widthVal: "auto",
@@ -136,8 +136,8 @@ describe("Inline Button editor (BlockItem)", () => {
   it("disables drag/resize while editing", () => {
     renderButton();
     // First invocation is with disabled=false
-    const firstDragArgs = useCanvasDragMock.mock.calls[0]?.[0] ?? {};
-    const firstResizeArgs = useCanvasResizeMock.mock.calls[0]?.[0] ?? {};
+    const firstDragArgs = canvasDragMock.mock.calls[0]?.[0] ?? {};
+    const firstResizeArgs = canvasResizeMock.mock.calls[0]?.[0] ?? {};
     expect(firstDragArgs.disabled).toBeFalsy();
     expect(firstResizeArgs.disabled).toBeFalsy();
 
@@ -145,10 +145,9 @@ describe("Inline Button editor (BlockItem)", () => {
     const span = screen.getByRole("textbox", { name: "Edit button label" });
     fireEvent.click(span);
 
-    const lastDragArgs = useCanvasDragMock.mock.calls.at(-1)?.[0] ?? {};
-    const lastResizeArgs = useCanvasResizeMock.mock.calls.at(-1)?.[0] ?? {};
+    const lastDragArgs = canvasDragMock.mock.calls.at(-1)?.[0] ?? {};
+    const lastResizeArgs = canvasResizeMock.mock.calls.at(-1)?.[0] ?? {};
     expect(lastDragArgs.disabled).toBeTruthy();
     expect(lastResizeArgs.disabled).toBeTruthy();
   });
 });
-

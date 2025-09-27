@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { TelemetryEvent } from "@acme/telemetry";
 import { Toast } from "@ui/components/atoms";
 
@@ -9,7 +10,7 @@ import { TelemetryHeader } from "./TelemetryHeader";
 import { TelemetrySummaryCards } from "./TelemetrySummaryCards";
 import type { TelemetrySummaryMetric } from "./TelemetrySummaryCards";
 import {
-  PRESETS,
+  getPresets,
   buildChartData,
   buildSummary,
   filterTelemetryEvents,
@@ -29,6 +30,7 @@ export function TelemetryAnalyticsView({
   error,
   onReload,
 }: TelemetryAnalyticsViewProps) {
+  const t = useTranslations();
   const [filters, setFilters] = useState<TelemetryFilters>({
     name: "",
     start: "",
@@ -57,8 +59,8 @@ export function TelemetryAnalyticsView({
   );
 
   const chartData = useMemo(
-    () => buildChartData(filteredEvents),
-    [filteredEvents],
+    () => buildChartData(filteredEvents, t),
+    [filteredEvents, t],
   );
 
   const firstSeen = filteredEvents.reduce<number | null>((acc, event) => {
@@ -73,33 +75,40 @@ export function TelemetryAnalyticsView({
 
   const heroMetrics: TelemetrySummaryMetric[] = [
     {
-      label: "Events",
+      label: String(t("cms.telemetry.events")),
       value: filteredEvents.length,
-      description: "Matching current filters",
+      description: String(t("cms.telemetry.matchingFilters")),
     },
     {
-      label: "Unique signals",
+      label: String(t("cms.telemetry.uniqueSignals")),
       value: summaryRows.length,
-      description: "Distinct event names",
+      description: String(t("cms.telemetry.distinctEventNames")),
     },
     {
-      label: "First seen",
+      label: String(t("cms.telemetry.firstSeen")),
+      // i18n-exempt — decorative em dash for unavailable value
       value: firstSeen ? new Date(firstSeen).toLocaleString() : "—",
-      description: "Earliest event in range",
+      description: String(t("cms.telemetry.earliestInRange")),
     },
     {
-      label: "Last seen",
+      label: String(t("cms.telemetry.lastSeen")),
+      // i18n-exempt — decorative em dash for unavailable value
       value: lastSeen ? new Date(lastSeen).toLocaleString() : "—",
-      description: "Latest event in range",
+      description: String(t("cms.telemetry.latestInRange")),
     },
   ];
 
   function handlePresetSelect(presetId: string) {
-    const preset = PRESETS.find((p) => p.id === presetId);
+    const preset = getPresets(t).find((p) => p.id === presetId);
     if (!preset) return;
     setActivePreset(presetId);
     setFilters((prev) => ({ ...prev, ...preset.apply() }));
-    setToast({ open: true, message: `${preset.label} preset applied.` });
+    setToast({
+      open: true,
+      message: String(
+        t("cms.telemetry.presetApplied", { preset: preset.label }) as string,
+      ),
+    });
   }
 
   function handleFiltersChange(partial: Partial<TelemetryFilters>) {
@@ -119,7 +128,7 @@ export function TelemetryAnalyticsView({
       <TelemetryHeader onReload={onReload} />
       <TelemetrySummaryCards metrics={heroMetrics} />
       <TelemetryFiltersPanel
-        presets={PRESETS}
+        presets={getPresets(t)}
         activePreset={activePreset}
         onPresetSelect={handlePresetSelect}
         filters={filters}
@@ -135,32 +144,41 @@ export function TelemetryAnalyticsView({
 }
 
 export default function TelemetryPage() {
+  const t = useTranslations();
   const [events, setEvents] = useState<TelemetryEvent[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const loadEvents = async () => {
-    setLoading(true);
-    try {
-      const endpoint =
-        process.env.NEXT_PUBLIC_TELEMETRY_ENDPOINT ?? "/api/telemetry";
-      const res = await fetch(endpoint);
-      if (!res.ok) {
-        throw new Error(`Failed to load telemetry (${res.status})`);
+  const loadEvents = useMemo(() => {
+    return async () => {
+      setLoading(true);
+      try {
+        const endpoint =
+          process.env.NEXT_PUBLIC_TELEMETRY_ENDPOINT ?? "/api/telemetry";
+        const res = await fetch(endpoint);
+        if (!res.ok) {
+          throw new Error(
+            String(
+              t("cms.telemetry.loadFailedWithStatus", { status: res.status }),
+            ),
+          );
+        }
+        const data = (await res.json()) as TelemetryEvent[];
+        setEvents(Array.isArray(data) ? data : []);
+        setError(null);
+      } catch (err) {
+        setError(
+          (err as Error).message ?? String(t("cms.telemetry.unableToLoad")),
+        );
+      } finally {
+        setLoading(false);
       }
-      const data = (await res.json()) as TelemetryEvent[];
-      setEvents(Array.isArray(data) ? data : []);
-      setError(null);
-    } catch (err) {
-      setError((err as Error).message ?? "Unable to load telemetry");
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+  }, [t]);
 
   useEffect(() => {
     void loadEvents();
-  }, []);
+  }, [loadEvents]);
 
   return (
     <TelemetryAnalyticsView

@@ -26,7 +26,13 @@ export function StoreLocatorTemplate({
   ...props
 }: StoreLocatorTemplateProps) {
   return (
-    <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
+    <div
+      className={cn(
+        "grid gap-6 md:grid-cols-2", // i18n-exempt: className utilities
+        className,
+      )}
+      {...props}
+    >
       <div className="min-h-80 w-full">
         {map ?? <div className="bg-muted h-full w-full rounded-md" />}
       </div>

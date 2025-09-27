@@ -28,7 +28,7 @@ describe("createShop utils", () => {
     jest.spyOn(fs, "readFileSync").mockImplementation((p: fs.PathLike) => {
       const file = String(p);
       if (file.endsWith("tokens.ts")) {
-        return "export const tokens = { '--color-bg': { light: '#fff' } };";
+        return "export const tokens = { '--color-bg': { light: '0 0% 100%' } };";
       }
       return "";
     });

@@ -17,6 +17,7 @@ import {
   DrawerPortal,
 } from "../atoms/primitives/drawer";
 import { OverlayScrim } from "../atoms";
+import { useTranslations } from "@acme/i18n";
 
 /**
  * Fly-out mini cart that shows current cart contents.
@@ -32,6 +33,7 @@ export interface MiniCartProps {
 }
 
 export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
+  const t = useTranslations();
   const [cart, dispatch] = useCart();
   const [toast, setToast] = React.useState<{ open: boolean; message: string }>(
     { open: false, message: "" }
@@ -46,8 +48,7 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
     try {
       await dispatch({ type: "remove", id });
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to update cart";
+      const message = err instanceof Error ? err.message : String(t("cart.updateFailed"));
       setToast({ open: true, message });
     }
   };
@@ -56,8 +57,7 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
     try {
       await dispatch({ type: "setQty", id, qty });
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Failed to update cart";
+      const message = err instanceof Error ? err.message : String(t("cart.updateFailed"));
       setToast({ open: true, message });
     }
   };
@@ -72,16 +72,16 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
           style={style}
           side="right"
           width={widthClass}
-          className={cn("rounded-none p-6")}
+          className={cn("rounded-none p-6")} // i18n-exempt with justification: CSS utility classes only
         >
-          <DrawerTitle className="mb-4 text-lg font-semibold">Your Cart</DrawerTitle>
+          <DrawerTitle className="mb-4 text-lg font-semibold">{t("cart.yourCart")}</DrawerTitle>
           <DrawerDescription className="sr-only">
-            Review items in your cart
+            {t("cart.description")}
           </DrawerDescription>
           {lines.length === 0 ? (
-            <p className="text-muted-foreground text-sm">Cart is empty.</p>
+            <p className="text-muted-foreground text-sm">{t("cart.empty")}</p>
           ) : (
-            <div className="flex h-full flex-col gap-4">
+            <div className="h-full">
               <ul className="grow space-y-3 overflow-y-auto">
                 {lines.map((line) => (
                   <li
@@ -97,16 +97,16 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
                     <div className="flex items-center gap-1">
                       <Button
                         onClick={() => void handleQty(line.id, line.qty - 1)}
-                        className="px-2 py-1 text-xs"
-                        aria-label="Decrease quantity"
+                        className="px-2 py-1 text-xs min-h-10 min-w-10"
+                        aria-label={String(t("cart.decreaseQty"))}
                       >
                         -
                       </Button>
                       <span className="text-sm">{line.qty}</span>
                       <Button
                         onClick={() => void handleQty(line.id, line.qty + 1)}
-                        className="px-2 py-1 text-xs"
-                        aria-label="Increase quantity"
+                        className="px-2 py-1 text-xs min-h-10 min-w-10"
+                        aria-label={String(t("cart.increaseQty"))}
                       >
                         +
                       </Button>
@@ -116,14 +116,14 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
                       onClick={() => void handleRemove(line.id)}
                       className="px-2 py-1 text-xs"
                     >
-                      Remove
+                      {t("cart.remove")}
                     </Button>
                   </li>
                 ))}
               </ul>
               <div className="border-t pt-4 text-sm">
                 <div className="flex justify-between font-semibold">
-                  <span>Subtotal</span>
+                  <span>{t("cart.subtotal")}</span>
                   <Price amount={subtotal} />
                 </div>
               </div>

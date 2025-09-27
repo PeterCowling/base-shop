@@ -6,7 +6,6 @@ import { useCallback, useState } from "react";
 import Library from "../media/Library";
 import MediaManager from "../MediaManager";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 jest.mock("@ui/hooks/useMediaUpload", () => {
   const React = require("react");
   return {

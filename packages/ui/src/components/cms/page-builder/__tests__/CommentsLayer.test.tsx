@@ -5,7 +5,7 @@ import CommentsLayer from "../CommentsLayer";
 // Mock next-auth session
 jest.mock("next-auth/react", () => ({ useSession: () => ({ data: { user: { name: "Tester", email: "t@example.com" } } }) }));
 // Mock presence
-jest.mock("../collab/usePresence", () => ({ __esModule: true, default: () => ({ peers: [{ id: "p1", label: "Alice", color: "#0f0" }] }) }));
+jest.mock("../collab/usePresence", () => ({ __esModule: true, default: () => ({ peers: [{ id: "p1", label: "Alice", color: "var(--color-success)" }] }) }));
 // Mock comments API
 const api = {
   loadThreads: jest.fn(async () => [

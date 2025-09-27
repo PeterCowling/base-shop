@@ -1,4 +1,5 @@
 // packages/ui/src/lib/__tests__/useThemePalette.test.ts
+/* i18n-exempt file -- TEST-0001: unit test titles and messages are developer-facing */
 import useThemePalette, { mapTokensToCssVars, defaultPalette } from "../useThemePalette";
 
 describe("useThemePalette and mapTokensToCssVars", () => {
@@ -40,4 +41,3 @@ describe("useThemePalette and mapTokensToCssVars", () => {
     expect(dark["--color-highlight"]).toBe(defaultPalette.accent[7]);
   });
 });
-

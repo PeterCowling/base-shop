@@ -15,14 +15,14 @@ export const emailEnvSchema = z
     SMTP_URL: z.string().url().optional(),
     SMTP_PORT: z
       .string()
-      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" })
+      .refine((v) => !Number.isNaN(Number(v)), { message: "must be a number" }) // i18n-exempt: validation copy (non-UI)
       .transform((v) => Number(v))
       .optional(),
     SMTP_SECURE: z
       .string()
       .transform((v) => v.trim().toLowerCase())
       .refine((v) => ["true", "false", "1", "0", "yes", "no"].includes(v), {
-        message: "must be a boolean",
+        message: "must be a boolean", // i18n-exempt: validation copy (non-UI)
       })
       .transform((v) => ["true", "1", "yes"].includes(v))
       .optional(),
@@ -42,13 +42,13 @@ export const emailEnvSchema = z
   .superRefine((env, ctx) => {
     // Require EMAIL_FROM whenever a real provider is selected, in all envs.
     if (env.EMAIL_PROVIDER !== "noop" && !env.EMAIL_FROM) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["EMAIL_FROM"], message: "Required" });
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["EMAIL_FROM"], message: "Required" }); // i18n-exempt: validation copy (non-UI)
     }
     if (env.EMAIL_PROVIDER === "sendgrid" && !env.SENDGRID_API_KEY) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["SENDGRID_API_KEY"], message: "Required" });
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["SENDGRID_API_KEY"], message: "Required" }); // i18n-exempt: validation copy (non-UI)
     }
     if (env.EMAIL_PROVIDER === "resend" && !env.RESEND_API_KEY) {
-      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["RESEND_API_KEY"], message: "Required" });
+      ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["RESEND_API_KEY"], message: "Required" }); // i18n-exempt: validation copy (non-UI)
     }
   });
 

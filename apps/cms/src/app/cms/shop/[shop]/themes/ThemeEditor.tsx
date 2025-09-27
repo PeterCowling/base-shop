@@ -3,6 +3,8 @@
 "use client";
 import { Button } from "@/components/atoms/shadcn";
 import { Alert } from "@/components/atoms";
+import { Inline } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 import ThemePreview from "./ThemePreview";
 import PalettePicker from "./PalettePicker";
 import TypographySettings from "./TypographySettings";
@@ -26,6 +28,7 @@ interface Props {
 }
 
 export default function ThemeEditor(props: Props) {
+  const t = useTranslations();
   const {
     theme,
     availableThemes,
@@ -78,7 +81,7 @@ export default function ThemeEditor(props: Props) {
       />
       <BrandIntensitySelector value={brandIntensity} onChange={setBrandIntensity} />
       {Object.keys(contrastWarnings).length > 0 && (
-        <Alert variant="warning" tone="soft" title="Contrast warnings">
+        <Alert variant="warning" tone="soft" title={t("cms.themes.contrastWarnings")}>
           <ul className="list-disc pl-4">
             {Object.values(contrastWarnings).map((w, i) => (
               <li key={i}>{w}</li>
@@ -113,11 +116,11 @@ export default function ThemeEditor(props: Props) {
         handleReset={handleReset}
         overrideRefs={overrideRefs}
       />
-      <div className="flex gap-2">
+      <Inline gap={2}>
         <Button type="button" onClick={handleResetAll}>
-          Reset all overrides
+          {t("cms.themes.resetAllOverrides")}
         </Button>
-      </div>
+      </Inline>
     </div>
   );
 }

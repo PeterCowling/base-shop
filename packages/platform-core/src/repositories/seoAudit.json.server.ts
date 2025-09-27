@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
+/* eslint-disable security/detect-non-literal-fs-filename -- ABC-123: Paths derive from controlled DATA_ROOT + validated shop name */
 import "server-only";
 
 import { promises as fs } from "fs";

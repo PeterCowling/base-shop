@@ -19,7 +19,7 @@ export function Error500Template({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center space-y-4 py-20 text-center",
+        "flex flex-col items-center justify-center space-y-4 py-20 text-center", // i18n-exempt: className utilities
         className
       )}
       {...props}

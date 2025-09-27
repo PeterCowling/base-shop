@@ -2,10 +2,13 @@ import { buildToolbarProps } from "./buildProps";
 import { listGlobals, updateGlobal, type GlobalItem } from "./libraryStore";
 import type { PageBuilderProps } from "./PageBuilder.types";
 import type { HistoryState } from "@acme/types";
+import type { EditorFlags } from "./state/layout/types";
 import type { Dispatch } from "react";
 import type usePageBuilderControls from "./hooks/usePageBuilderControls";
 import type { Action } from "./state";
 import type { UploadProgress } from "../../../hooks/useFileUpload";
+import type { Breakpoint } from "./panels/BreakpointsPanel";
+/* i18n-exempt file -- PB-2418: helper; no user-facing strings */
 
 interface ToolbarOptions {
   controls: ReturnType<typeof usePageBuilderControls>;
@@ -19,7 +22,10 @@ interface ToolbarOptions {
   pagesNav?: PageBuilderProps["pagesNav"];
 }
 
-const mapWidth = (bp: any): number => {
+type EditorFlagsWithGlobals = EditorFlags & { globalBreakpoints?: Breakpoint[] };
+type LayoutState = HistoryState & { breakpoints?: Breakpoint[] };
+
+const mapWidth = (bp: { min?: number; max?: number }): number => {
   const base =
     typeof bp.max === "number" && bp.max > 0
       ? bp.max
@@ -38,7 +44,7 @@ const toDeviceType = (width: number): "desktop" | "tablet" | "mobile" => {
 const getSelectedFlags = (state: HistoryState, selectedIds: string[]) => {
   const sel = selectedIds[0];
   if (!sel) return null;
-  const editor = (state as any).editor ?? {};
+  const editor = state.editor ?? {};
   return editor[sel] ?? null;
 };
 
@@ -46,13 +52,13 @@ const resolveBreakpoints = (
   state: HistoryState,
   selectedIds: string[],
   shop?: string | null,
-): any[] => {
-  const flags = getSelectedFlags(state, selectedIds);
+): Breakpoint[] => {
+  const flags = getSelectedFlags(state, selectedIds) as EditorFlagsWithGlobals | null;
   const isGlobal = !!flags?.global?.id;
-  if (!isGlobal) return ((state as any).breakpoints ?? []) as any[];
+  if (!isGlobal) return ((state as LayoutState).breakpoints ?? []) as Breakpoint[];
 
-  if (Array.isArray(flags.globalBreakpoints)) {
-    return flags.globalBreakpoints as any[];
+  if (Array.isArray(flags?.globalBreakpoints)) {
+    return flags.globalBreakpoints as Breakpoint[];
   }
 
   const gid = String(flags.global?.id || "");
@@ -61,7 +67,7 @@ const resolveBreakpoints = (
   try {
     const globalItems = listGlobals(shop);
     const found = globalItems.find((g) => g.globalId === gid) as GlobalItem | undefined;
-    return (found?.breakpoints ?? []) as any[];
+    return (found?.breakpoints ?? []) as Breakpoint[];
   } catch {
     return [];
   }
@@ -72,35 +78,35 @@ const resolveExtraDevices = (
   state: HistoryState,
   selectedIds: string[],
   shop?: string | null,
-): any[] => {
+): ReturnType<typeof usePageBuilderControls>["extraDevices"] => {
   const pageExtra = controls.extraDevices || [];
-  const flags = getSelectedFlags(state, selectedIds);
+  const flags = getSelectedFlags(state, selectedIds) as EditorFlagsWithGlobals | null;
   const isGlobal = !!flags?.global?.id;
-  let globalBreakpoints = isGlobal ? ((flags as any)?.globalBreakpoints ?? []) : [];
+  let globalBreakpoints: Breakpoint[] = isGlobal ? (flags?.globalBreakpoints ?? []) : [];
 
   if (isGlobal && (!globalBreakpoints || globalBreakpoints.length === 0)) {
     try {
       const gid = String(flags?.global?.id || "");
       const found = listGlobals(shop).find((i) => i.globalId === gid) as GlobalItem | undefined;
-      globalBreakpoints = (found?.breakpoints ?? []) as any[];
+      globalBreakpoints = (found?.breakpoints ?? []) as Breakpoint[];
     } catch {
       globalBreakpoints = [];
     }
   }
 
   if (!Array.isArray(globalBreakpoints) || !globalBreakpoints.length) {
-    return pageExtra as any[];
+    return pageExtra as typeof controls.extraDevices;
   }
 
-  const devices = globalBreakpoints.map((bp: any) => {
+  const devices = globalBreakpoints.map((bp) => {
     const width = mapWidth(bp);
     const type = toDeviceType(width);
     const id = `global-bp-${bp.id}`;
-    return { id, label: bp.label, width, height: 800, type, orientation: "portrait" } as any;
+    return { id, label: bp.label, width, height: 800, type, orientation: "portrait" } as ReturnType<typeof usePageBuilderControls>["device"];
   });
 
-  const deduped = new Map<string, any>();
-  [...pageExtra, ...devices].forEach((device: any) => {
+  const deduped = new Map<string, typeof devices[number]>();
+  [...pageExtra, ...devices].forEach((device) => {
     if (!deduped.has(device.id)) {
       deduped.set(device.id, device);
     }
@@ -135,25 +141,25 @@ export function createToolbarProps({
     zoom: controls.zoom,
     setZoom: controls.setZoom,
     breakpoints,
-    setBreakpoints: (list: any[]) => {
+    setBreakpoints: (list: Breakpoint[]) => {
       const sel = selectedIds[0];
       if (sel) {
-        const flags = getSelectedFlags(state, selectedIds);
+        const flags = getSelectedFlags(state, selectedIds) as EditorFlagsWithGlobals | null;
         const isGlobal = !!flags?.global?.id;
         if (isGlobal) {
-          dispatch({ type: "update-editor", id: sel, patch: { globalBreakpoints: list } as any });
+          dispatch({ type: "update-editor", id: sel, patch: { globalBreakpoints: list } as Partial<EditorFlagsWithGlobals> });
           try {
             const gid = String(flags?.global?.id || "");
-            if (gid) void updateGlobal(shop, gid, { breakpoints: list as any });
+            if (gid) void updateGlobal(shop, gid, { breakpoints: list });
           } catch {}
           return;
         }
       }
-      dispatch({ type: "set-breakpoints", breakpoints: list } as any);
+      dispatch({ type: "set-breakpoints", breakpoints: list });
     },
     extraDevices: resolveExtraDevices(controls, state, selectedIds, shop),
-    editingSizePx: (controls as any).editingSizePx ?? null,
-    setEditingSizePx: (controls as any).setEditingSizePx,
+    editingSizePx: controls.editingSizePx ?? null,
+    setEditingSizePx: controls.setEditingSizePx,
     pagesNav,
   });
 }

@@ -46,7 +46,7 @@ export class SendgridProvider implements CampaignProvider {
         if (!res.ok) {
           throw new Error(
             `Sendgrid credentials rejected with status ${res.status}`
-          );
+          ); // i18n-exempt: developer configuration error
         }
       });
     } else {
@@ -58,7 +58,7 @@ export class SendgridProvider implements CampaignProvider {
     if (!apiKey) {
       console.warn(
         "Sendgrid API key is not configured; attempting to send email"
-      );
+      ); // i18n-exempt: operational log
     }
     try {
       await sgMail.send({
@@ -70,7 +70,7 @@ export class SendgridProvider implements CampaignProvider {
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.error("Campaign email send failed", {
+        console.error("Campaign email send failed", { // i18n-exempt: operational log
           provider: "sendgrid",
           recipient: options.to,
           campaignId: options.campaignId,
@@ -90,12 +90,12 @@ export class SendgridProvider implements CampaignProvider {
           typeof numericStatus !== "number" || numericStatus >= 500;
         throw new ProviderError(error.message, retryable);
       }
-      console.error("Campaign email send failed", {
+      console.error("Campaign email send failed", { // i18n-exempt: operational log
         provider: "sendgrid",
         recipient: options.to,
         campaignId: options.campaignId,
       });
-      throw new ProviderError("Unknown error", true);
+      throw new ProviderError("Unknown error", true); // i18n-exempt: internal error tag
     }
   }
 

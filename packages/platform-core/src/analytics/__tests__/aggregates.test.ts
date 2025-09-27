@@ -157,4 +157,3 @@ describe("updateAggregates persistence", () => {
     expect(agg.ai_crawl["2024-01-01"]).toBe(4);
   });
 });
-

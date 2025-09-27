@@ -1,24 +1,40 @@
 // packages/ui/src/components/cms/page-builder/lottie.ts
 "use client";
 
-type LottieInstance = any; // from lottie-web
+type LottieInstance = {
+  setSpeed?: (n: number) => void;
+  getDuration?: (inFrames?: boolean) => number;
+  goToAndStop?: (value: number, isFrame: boolean) => void;
+  goToAndPlay?: (value: number, isFrame: boolean) => void;
+  stop?: () => void;
+};
+
+type LottieModule = {
+  loadAnimation: (opts: {
+    container: Element;
+    renderer: "svg";
+    loop: boolean;
+    autoplay: boolean;
+    path: string;
+  }) => LottieInstance;
+};
 
 let initialized = false;
 const cleanupFns: Array<() => void> = [];
 const instances = new WeakMap<HTMLElement, LottieInstance>();
 
-async function loadLottie() {
+async function loadLottie(): Promise<LottieModule> {
   const mod = await import("lottie-web");
-  return mod.default || (mod as any);
+  return (mod.default || mod) as unknown as LottieModule;
 }
 
 function ensureContainer(el: HTMLElement) {
-  if (el.querySelector(":scope > .pb-lottie")) return el.querySelector(":scope > .pb-lottie") as HTMLElement;
+  if (el.querySelector(":scope > .pb-lottie")) return el.querySelector(":scope > .pb-lottie") as HTMLElement; // i18n-exempt -- PB-236: CSS selector/class
   const wrap = document.createElement("div");
-  wrap.className = "pb-lottie";
-  wrap.style.position = "absolute";
-  wrap.style.inset = "0";
-  wrap.style.pointerEvents = "none";
+  wrap.className = "pb-lottie"; // i18n-exempt -- PB-236: CSS class name
+  wrap.style.position = "absolute"; // i18n-exempt -- PB-236: CSS value
+  wrap.style.inset = "0"; // i18n-exempt -- PB-236: CSS value
+  wrap.style.pointerEvents = "none"; // i18n-exempt -- PB-236: CSS value
   // Ensure parent is a positioned container
   const style = getComputedStyle(el);
   if (style.position === "static") {
@@ -47,31 +63,31 @@ export function initLottie(root?: HTMLElement) {
       const speed = Number(el.getAttribute("data-pb-lottie-speed") || "1") || 1;
       const trigger = (el.getAttribute("data-pb-lottie-trigger") || "load").trim();
       const containerEl = ensureContainer(el);
-      const inst: LottieInstance = lottie.loadAnimation({
+      const inst = lottie.loadAnimation({
         container: containerEl,
         renderer: "svg",
         loop,
         autoplay: autoplay && trigger !== "scroll",
         path: url,
       });
-      try { inst.setSpeed(speed); } catch { /* noop */ }
+      try { inst.setSpeed?.(speed); } catch { /* noop */ }
       instances.set(el, inst);
 
       if (trigger === "hover") {
-        const enter = () => { try { inst.goToAndPlay(0, true); } catch {} };
-        const leave = () => { try { inst.stop(); } catch {} };
+        const enter = () => { try { inst.goToAndPlay?.(0, true); } catch {} };
+        const leave = () => { try { inst.stop?.(); } catch {} };
         el.addEventListener("mouseenter", enter);
         el.addEventListener("mouseleave", leave);
         cleanupFns.push(() => { el.removeEventListener("mouseenter", enter); el.removeEventListener("mouseleave", leave); });
       } else if (trigger === "click") {
-        const onClick = () => { try { inst.goToAndPlay(0, true); } catch {} };
+        const onClick = () => { try { inst.goToAndPlay?.(0, true); } catch {} };
         el.addEventListener("click", onClick);
         cleanupFns.push(() => el.removeEventListener("click", onClick));
       } else if (trigger === "in-view") {
         const io = new IntersectionObserver((entries) => {
           for (const entry of entries) {
             if (entry.isIntersecting) {
-              try { inst.goToAndPlay(0, true); } catch {}
+              try { inst.goToAndPlay?.(0, true); } catch {}
               io.unobserve(el);
             }
           }
@@ -84,8 +100,8 @@ export function initLottie(root?: HTMLElement) {
           const vh = window.innerHeight || 1;
           const progress = Math.max(0, Math.min(1, 1 - rect.top / vh));
           try {
-            const total = inst.getDuration(true) || 1; // frames
-            inst.goToAndStop(total * progress, true);
+            const total = inst.getDuration?.(true) || 1; // frames
+            inst.goToAndStop?.(total * progress, true);
           } catch {
             // noop
           }

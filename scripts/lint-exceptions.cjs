@@ -20,7 +20,7 @@
 */
 const fs = require("fs");
 const path = require("path");
-const { minimatch } = require("minimatch");
+const minimatch = require("minimatch");
 
 const ROOT = process.cwd();
 const REPORT_PATH = path.join(ROOT, ".eslint-report.json");
@@ -43,7 +43,7 @@ function listFilesFromReport(report) {
   return Array.from(s);
 }
 
-const DISABLE_RE = /\/\*\s*eslint-disable(?:-(?:next-)?line)?[^*]*\*\/|\/\/\s*eslint-disable(?:-(?:next-)?line)?[^\n]*/g;
+const DISABLE_RE = /^(?:[ \t]*\/\/\s*eslint-disable(?:-(?:next-)?-line)?[^\n]*|\/\*\s*eslint-disable(?:-(?:next-)?-line)?[^*]*\*\/)$/gm;
 const TICKET_RE = /--\s*([^\n*]*)/; // capture justification part after `--`
 const DEFAULT_TICKET = /[A-Z]{2,}-\d+/;
 
@@ -138,4 +138,3 @@ function main() {
 }
 
 main();
-

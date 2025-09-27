@@ -3,6 +3,7 @@
 import { Card, CardContent, Checkbox } from "@/components/atoms/shadcn";
 import { FormField } from "@ui/components/molecules";
 import type { Provider } from "@acme/configurator/providers";
+import { useTranslations } from "@acme/i18n";
 
 export type ShopProvidersSectionErrors = Partial<
   Record<"trackingProviders", string[]>
@@ -25,6 +26,7 @@ export default function ShopProvidersSection({
   errors,
   onTrackingChange,
 }: ShopProvidersSectionProps) {
+  const t = useTranslations();
   const handleToggle = (providerId: string, checked: boolean) => {
     const current = new Set(trackingProviders);
     if (checked) {
@@ -42,15 +44,16 @@ export default function ShopProvidersSection({
     <Card>
       <CardContent className="space-y-6 p-6">
         <div className="space-y-1">
-          <h3 className="text-lg font-semibold">Logistics providers</h3>
+          <h3 className="text-lg font-semibold">{t("Logistics providers")}</h3>
           <p className="text-sm text-muted-foreground">
-            Select the shipping plugins that should push tracking events into CRM
-            dashboards.
+            {t(
+              "Select the shipping plugins that should push tracking events into CRM dashboards."
+            )}
           </p>
         </div>
 
         <FormField
-          label="Tracking providers"
+          label={t("Tracking providers")}
           error={
             errorMessage ? (
               <span
@@ -65,7 +68,7 @@ export default function ShopProvidersSection({
         >
           {shippingProviders.length === 0 ? (
             <p className="text-sm text-muted-foreground">
-              No shipping providers available for this shop.
+              {t("No shipping providers available for this shop.")}
             </p>
           ) : (
             <div className="space-y-2">
@@ -80,7 +83,7 @@ export default function ShopProvidersSection({
                   >
                     <Checkbox
                       id={id}
-                      name="trackingProviders"
+                      name={"trackingProviders" /* i18n-exempt: technical form field name */}
                       value={provider.id}
                       checked={checked}
                       onCheckedChange={(state) =>

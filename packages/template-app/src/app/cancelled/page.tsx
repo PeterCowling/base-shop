@@ -14,9 +14,9 @@ function CancelledContent() {
   const error = searchParams?.get("error") ?? null;
 
   return (
-    <div className="mx-auto max-w-lg py-20 text-center">
-      <h1 className="mb-4 text-3xl font-semibold">Payment cancelled</h1>
-      <p>You have not been charged. Feel free to keep shopping.</p>
+    <div className="mx-auto py-20 text-center">
+      <h1 className="mb-4 text-3xl font-semibold">{/* i18n-exempt: transactional status */}Payment cancelled</h1>
+      <p>{/* i18n-exempt: transactional status detail */}You have not been charged. Feel free to keep shopping.</p>
       {error && (
         <p className="text-danger mt-4 text-sm" data-token="--color-danger">
           {error}

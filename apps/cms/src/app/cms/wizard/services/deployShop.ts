@@ -43,7 +43,11 @@ export async function deployShop(
   const json = (await res.json()) as DeployInfo;
 
   if (!res.ok) {
-    return { ok: false, error: json.error ?? "Deployment failed" };
+    return {
+      ok: false,
+      // i18n-exempt: generic fallback when API provides no message; surfaced in UI as-is
+      error: json.error ?? "Deployment failed",
+    };
   }
 
   let info: DeployInfo = json;
@@ -61,6 +65,7 @@ export async function deployShop(
         error?: string;
       };
       if (!cfRes.ok) {
+        // i18n-exempt: backend provisioning error fallback; shown in UI unchanged
         throw new Error(cfJson.error ?? "Failed to provision domain");
       }
       info = {

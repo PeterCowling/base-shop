@@ -1,3 +1,4 @@
+/* i18n-exempt file -- test literals for titles, prices, and buttons */
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProductCard } from "../ProductCard";

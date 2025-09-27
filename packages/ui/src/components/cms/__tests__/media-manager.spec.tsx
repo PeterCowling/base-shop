@@ -39,9 +39,13 @@ jest.mock("../media/Library", () => {
   };
 });
 
-jest.mock("../media/UploadPanel", () => () => (
-  <div data-cy="upload-panel">Upload panel</div>
-));
+jest.mock("../media/UploadPanel", () => {
+  function MockUploadPanel() {
+    return <div data-cy="upload-panel">Upload panel</div>;
+  }
+  // Named component to satisfy react/display-name
+  return MockUploadPanel;
+});
 
 jest.mock("../media/details/MediaDetailsPanel", () => {
   const React = require("react");

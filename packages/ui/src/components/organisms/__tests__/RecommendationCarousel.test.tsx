@@ -1,3 +1,4 @@
+/* i18n-exempt file -- tests use literal product titles and labels */
 import { render, waitFor } from "@testing-library/react";
 import { RecommendationCarousel } from "../RecommendationCarousel";
 import type { SKU } from "@acme/types";

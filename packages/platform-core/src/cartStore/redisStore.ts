@@ -27,11 +27,11 @@ export class RedisCartStore implements CartStore {
       this.failures = 0;
       return result;
     } catch (err) {
-      console.warn("Redis operation failed", err);
+      console.warn("Redis operation failed", err); // i18n-exempt -- Technical log, not user-facing
       this.failures += 1;
       if (this.failures >= MAX_REDIS_FAILURES) {
         console.error(
-          "Falling back to MemoryCartStore after repeated Redis failures"
+          "Falling back to MemoryCartStore after repeated Redis failures" // i18n-exempt -- Technical log, not user-facing
         );
         this.fallbackMode = true;
       }

@@ -3,9 +3,13 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import UpgradePreviewClient from "../UpgradePreviewClient";
 
-jest.mock("@ui/components/ComponentPreview", () => ({ component }: any) => (
-  <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
-));
+jest.mock("@ui/components/ComponentPreview", () => {
+  const MockComponentPreview = ({ component }: any) => (
+    <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
+  );
+  MockComponentPreview.displayName = "MockComponentPreview";
+  return MockComponentPreview;
+});
 
 describe("UpgradePreviewClient", () => {
   const shop = "test-shop";
@@ -112,4 +116,3 @@ describe("UpgradePreviewClient", () => {
     consoleErrorSpy.mockRestore();
   });
 });
-

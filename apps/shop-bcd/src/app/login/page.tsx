@@ -35,7 +35,12 @@ export default function LoginPage() {
         <input name="remember" type="checkbox" />
         <span>Remember me</span>
       </label>
-      <button type="submit" className="border px-2 py-1">Login</button>
+      <button
+        type="submit"
+        className="inline-flex min-h-10 min-w-10 items-center justify-center border px-4"
+      >
+        Login
+      </button>
       {msg && <p>{msg}</p>}
     </form>
   );

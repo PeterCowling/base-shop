@@ -190,4 +190,3 @@ describe("prisma inventory repository", () => {
     expect(spy).toHaveBeenCalledWith("shop");
   });
 });
-

@@ -2,6 +2,7 @@
 
 import type { FormEvent } from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import {
   defaultEmailScheduleValues,
   getEmailSchedulePreview,
@@ -43,15 +44,15 @@ export interface EmailScheduleFormState {
   dismissToast: () => void;
 }
 
-function validate(values: EmailScheduleFormValues): EmailScheduleErrors {
+function validate(values: EmailScheduleFormValues, t: (k: string) => string): EmailScheduleErrors {
   const errors: EmailScheduleErrors = {};
-  if (!values.subject) errors.subject = "Subject is required.";
-  if (!values.sendDate) errors.sendDate = "Choose a send date.";
-  if (!values.sendTime) errors.sendTime = "Choose a send time.";
-  if (!values.timezone) errors.timezone = "Select a timezone.";
-  if (!values.segment) errors.segment = "Select a segment.";
+  if (!values.subject) errors.subject = t("emailScheduling.validation.subjectRequired");
+  if (!values.sendDate) errors.sendDate = t("emailScheduling.validation.sendDateRequired");
+  if (!values.sendTime) errors.sendTime = t("emailScheduling.validation.sendTimeRequired");
+  if (!values.timezone) errors.timezone = t("emailScheduling.validation.timezoneRequired");
+  if (!values.segment) errors.segment = t("emailScheduling.validation.segmentRequired");
   if (values.followUpEnabled && values.followUpDelayHours <= 0) {
-    errors.followUpDelayHours = "Delay must be greater than zero.";
+    errors.followUpDelayHours = t("emailScheduling.validation.delayGreaterThanZero");
   }
   return errors;
 }
@@ -63,6 +64,8 @@ export function useEmailScheduleFormState({
   onPreviewChange,
   onStatusChange,
 }: UseEmailScheduleFormStateOptions): EmailScheduleFormState {
+  const tHook = useTranslations();
+  const t = useCallback((key: string) => String(tHook(key)), [tHook]);
   const [values, setValues] = useState<EmailScheduleFormValues>({
     ...defaultEmailScheduleValues,
     ...defaultValues,
@@ -113,14 +116,14 @@ export function useEmailScheduleFormState({
       setStatus("validating");
       onStatusChange?.("validating");
 
-      const nextErrors = validate(values);
+      const nextErrors = validate(values, t);
       setInternalErrors(nextErrors);
       if (Object.keys(nextErrors).length > 0) {
         setStatus("error");
         onStatusChange?.("error");
         setToast({
           open: true,
-          message: "Please resolve the highlighted fields.",
+          message: t("emailScheduling.toast.resolveHighlighted"),
         });
         return;
       }
@@ -128,7 +131,7 @@ export function useEmailScheduleFormState({
       if (!onSubmit) {
         setStatus("success");
         onStatusChange?.("success");
-        setToast({ open: true, message: "Draft schedule saved." });
+        setToast({ open: true, message: t("emailScheduling.toast.draftSaved") });
         return;
       }
 
@@ -138,16 +141,16 @@ export function useEmailScheduleFormState({
         await onSubmit(values);
         setStatus("success");
         onStatusChange?.("success");
-        setToast({ open: true, message: "Email scheduled." });
+        setToast({ open: true, message: t("emailScheduling.toast.emailScheduled") });
       } catch (error) {
         setStatus("error");
         onStatusChange?.("error");
         const fallback =
-          error instanceof Error ? error.message : "Scheduling failed.";
+          error instanceof Error ? error.message : t("emailScheduling.toast.schedulingFailed");
         setToast({ open: true, message: fallback });
       }
     },
-    [values, onSubmit, onStatusChange]
+    [values, onSubmit, onStatusChange, t]
   );
 
   return {

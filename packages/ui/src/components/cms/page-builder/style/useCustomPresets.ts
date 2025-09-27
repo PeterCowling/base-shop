@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import {
   addCustomPreset,
@@ -18,6 +19,7 @@ import {
 export default function useCustomPresets(effects: NonNullable<StyleOverrides["effects"]> | undefined) {
   const [customPresets, setCustomPresets] = useState<CustomPreset[]>([]);
   const [selectedCustom, setSelectedCustom] = useState<string>("");
+  const t = useTranslations();
 
   useEffect(() => {
     setCustomPresets(loadCustomPresets());
@@ -25,7 +27,7 @@ export default function useCustomPresets(effects: NonNullable<StyleOverrides["ef
 
   const saveCurrentAsPreset = useCallback((label?: string) => {
     if (!effects) return;
-    const name = label ?? (typeof window !== 'undefined' ? window.prompt("Preset name") ?? undefined : undefined);
+    const name = label ?? (typeof window !== 'undefined' ? window.prompt(String(t("Preset name"))) ?? undefined : undefined);
     if (!name) return;
     const id = makeId(name);
     const preset = { id, label: name, value: { effects: { ...effects } } } as CustomPreset;
@@ -33,24 +35,24 @@ export default function useCustomPresets(effects: NonNullable<StyleOverrides["ef
     setCustomPresets(next);
     setSelectedCustom(id);
     return id;
-  }, [effects]);
+  }, [effects, t]);
 
   const removeSelected = useCallback(() => {
     if (!selectedCustom) return;
-    const ok = typeof window !== 'undefined' ? window.confirm("Delete selected preset?") : true;
+    const ok = typeof window !== 'undefined' ? window.confirm(String(t("Delete selected preset?"))) : true;
     if (!ok) return;
     const next = deleteCustomPreset(selectedCustom);
     setCustomPresets(next);
     setSelectedCustom("");
-  }, [selectedCustom]);
+  }, [selectedCustom, t]);
 
   const renameSelected = useCallback(() => {
     if (!selectedCustom) return;
-    const label = typeof window !== 'undefined' ? window.prompt("New name") ?? undefined : undefined;
+    const label = typeof window !== 'undefined' ? window.prompt(String(t("New name"))) ?? undefined : undefined;
     if (!label) return;
     const next = updateCustomPreset(selectedCustom, { label });
     setCustomPresets(next);
-  }, [selectedCustom]);
+  }, [selectedCustom, t]);
 
   const duplicateSelected = useCallback(() => {
     if (!selectedCustom) return;

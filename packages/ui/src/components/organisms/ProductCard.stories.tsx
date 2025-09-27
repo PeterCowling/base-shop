@@ -1,7 +1,9 @@
+// i18n-exempt -- Storybook demo copy and labels
 import { type Meta, type StoryObj } from "@storybook/react";
 import { ProductBadge } from "../atoms/ProductBadge";
 import { ProductCard } from "./ProductCard";
 import type { SKU } from "@acme/types";
+import { Cover } from "../atoms/primitives/Cover";
 
 const product: SKU = {
   id: "1",
@@ -38,7 +40,7 @@ export const WithBadge: StoryObj<typeof ProductCard> = {
       <ProductBadge
         label="Sale"
         variant="sale"
-        className="absolute top-2 left-2"
+        className="absolute top-2 start-2"
       />
     </div>
   ),
@@ -48,8 +50,8 @@ export const OutOfStock: StoryObj<typeof ProductCard> = {
   render: (args) => (
     <div className="relative">
       <ProductCard {...args} />
-      <div className="absolute inset-0 flex items-center justify-center bg-fg/60 font-semibold text-bg">
-        Out of stock
+      <div className="absolute inset-0 bg-fg/60 font-semibold text-bg">
+        <Cover minH="[60vh]">Out of stock</Cover>
       </div>
     </div>
   ),

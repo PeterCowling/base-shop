@@ -2,6 +2,8 @@
 "use client";
 import { Input } from "../atoms/shadcn";
 import { ChangeEvent } from "react";
+import { Inline } from "../atoms/primitives/Inline";
+import { useTranslations } from "@acme/i18n";
 
 export const statuses = ["all", "active", "draft", "archived"] as const;
 
@@ -18,11 +20,12 @@ export default function ProductFilters({
   onSearchChange,
   onStatusChange,
 }: Props) {
+  const t = useTranslations();
   return (
-    <div className="flex flex-wrap gap-3">
+    <Inline className="gap-3" wrap>
       <Input
         type="search"
-        placeholder="Search titles or SKU…"
+        placeholder={t("filters.searchPlaceholder") as string}
         className="w-64"
         value={search}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -37,10 +40,10 @@ export default function ProductFilters({
       >
         {statuses.map((s) => (
           <option key={s} value={s}>
-            {s === "all" ? "All statuses" : s}
+            {s === "all" ? (t("filters.allStatuses") as string) : (t(`status.${s}`) as string)}
           </option>
         ))}
       </select>
-    </div>
+    </Inline>
   );
 }

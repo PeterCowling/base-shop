@@ -230,4 +230,3 @@ module.exports = {
     expect((globalThis as any).mergedConfig).toEqual({ a: 1, b: 2 });
   });
 });
-

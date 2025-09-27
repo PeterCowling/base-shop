@@ -29,7 +29,7 @@ describe("coreEnv error handling and logging", () => {
     jest.resetModules();
     expect(() => {
       const mod = require("../../core.ts");
-      mod.coreEnv.CART_COOKIE_SECRET;
+      void mod.coreEnv.CART_COOKIE_SECRET;
     }).toThrow("Invalid core environment variables");
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid core environment variables:",
@@ -96,7 +96,7 @@ describe("coreEnv error handling and logging", () => {
     jest.resetModules();
     const mod = require("../../core.ts");
     expect(() => {
-      "CMS_SPACE_URL" in mod.coreEnv;
+      void ("CMS_SPACE_URL" in mod.coreEnv);
     }).toThrow("Invalid core environment variables");
     expect(errorSpy).toHaveBeenCalledWith(
       "❌ Invalid core environment variables:",
@@ -149,4 +149,3 @@ describe("coreEnv error handling and logging", () => {
     errorSpy.mockRestore();
   });
 });
-

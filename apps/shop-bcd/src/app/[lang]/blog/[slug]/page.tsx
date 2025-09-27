@@ -8,6 +8,8 @@ import { getSeo } from "../../../util/seo";
 import { resolveLocale } from "@i18n/locales";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { JsonLdScript, articleJsonLd } from "../../../../lib/jsonld";
+import type { NextSeoProps } from "next-seo";
+import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog">;
 const shop: BlogShop = shopJson;
@@ -19,6 +21,7 @@ export default async function BlogPostPage({
   if (!shop.luxuryFeatures.blog) {
     return notFound();
   }
+  const t = await loadTranslations(resolveLocale(params.lang));
   const { fetchPostBySlug } = await import("@acme/sanity");
   const post = await fetchPostBySlug(shop.id, params.slug);
   try {
@@ -47,7 +50,7 @@ export default async function BlogPostPage({
       />
       {shop.editorialBlog?.promoteSchedule && (
         <p className="rounded bg-muted p-2">
-          Daily Edit scheduled for {shop.editorialBlog.promoteSchedule}
+          {t("Daily Edit scheduled for")} {shop.editorialBlog.promoteSchedule}
         </p>
       )}
       <h1 className="text-2xl font-bold">{post.title}</h1>
@@ -82,14 +85,14 @@ export async function generateMetadata({
   for (const l of languages) {
     languagesAlt[l] = `${canonicalRootForLanguages}/${l}/blog/${params.slug}`;
   }
-  const title = post?.title ?? "Blog post";
+  const title = post?.title ?? (await loadTranslations(lang))("Blog post");
   const description = post?.excerpt ?? baseSeo.description;
   const seo = await getSeo(lang, {
     title,
     description,
     canonical,
-    openGraph: { url: canonical, title, description } as any,
-    twitter: { title, description } as any,
+    openGraph: { url: canonical, title, description } as NextSeoProps["openGraph"],
+    twitter: { title, description } as NextSeoProps["twitter"],
   });
   return {
     title: seo.title,

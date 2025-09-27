@@ -52,6 +52,7 @@ describe("Tokens", () => {
     const input = container.querySelector(
       'label[data-token-key="--color-bg"] input'
     ) as HTMLInputElement;
+    // eslint-disable-next-line ds/no-raw-color -- test simulates raw hex input from user
     fireEvent.change(input, { target: { value: "#000000" } });
 
     expect(handleChange).toHaveBeenCalledWith({ "--color-bg": "0 0% 0%" });
@@ -88,6 +89,7 @@ describe("Tokens", () => {
     const input = container.querySelector(
       'label[data-token-key="--color-bg"] input'
     ) as HTMLInputElement;
+    // eslint-disable-next-line ds/no-raw-color -- test simulates raw hex input from user
     fireEvent.change(input, { target: { value: "#000000" } });
     rerender(
       <Tokens
@@ -300,6 +302,7 @@ describe("Tokens", () => {
     const onReplace = jest.fn();
     const promptSpy = jest
       .spyOn(window, "prompt")
+      // eslint-disable-next-line ds/no-raw-color -- test exercises hex normalization path
       .mockReturnValue("#112233");
 
     render(
@@ -315,6 +318,7 @@ describe("Tokens", () => {
     fireEvent.click(trigger);
     fireEvent.click(screen.getByText("Replace across tokens…"));
 
+    // eslint-disable-next-line ds/no-raw-color -- test validates conversion of specific hex
     expect(onReplace).toHaveBeenCalledWith("--color-bg", hexToHsl("#112233"));
     promptSpy.mockRestore();
   });

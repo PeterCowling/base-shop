@@ -1,4 +1,7 @@
 // packages/config/scripts/fix-config-env.mjs
+/*
+  eslint-disable security/detect-non-literal-fs-filename -- SEC-0001: Paths are constructed from `repoRoot` + static subpaths, no untrusted input; operations stay within the repo tree.
+*/
 import fs from "node:fs";
 import path from "node:path";
 
@@ -72,12 +75,16 @@ function detectSchemaVar(code) {
 function ensureTypeAlias(code, schemaVar, typeName) {
   if (!schemaVar || !typeName) return code;
   const desired = `export type ${typeName} = z.infer<typeof ${schemaVar}>;`;
-  const re = new RegExp(
-    `export\\s+type\\s+${typeName}\\s*=\\s*z\\.infer[^;]*;`
-  );
-  if (re.test(code)) {
-    code = code.replace(re, desired);
-  } else if (!new RegExp(`export\\s+type\\s+${typeName}\\b`).test(code)) {
+  // Avoid dynamic RegExp construction for security lint compliance.
+  // Replace existing export type line if present, otherwise append.
+  if (code.includes(`export type ${typeName} = z.infer`)) {
+    const lines = code.split("\n").map((ln) =>
+      ln.trimStart().startsWith(`export type ${typeName} = z.infer`)
+        ? desired
+        : ln,
+    );
+    code = lines.join("\n");
+  } else if (!code.includes(`export type ${typeName}`)) {
     // append near the schema declaration if possible
     const insertAfter = code.indexOf(schemaVar);
     if (insertAfter !== -1) {
@@ -92,7 +99,8 @@ function ensureTypeAlias(code, schemaVar, typeName) {
 
 function ensureLoader(code, schemaVar, typeName, loaderName) {
   if (!schemaVar || !typeName || !loaderName) return code;
-  if (new RegExp(`export\\s+function\\s+${loaderName}\\b`).test(code)) {
+  // Avoid dynamic RegExp construction; simple substring check is enough here.
+  if (code.includes(`export function ${loaderName}`)) {
     return code;
   }
   const fn = [

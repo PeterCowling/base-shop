@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Base-Shop",
-  description: "Sustainable footwear built with Next.js 15",
+  title: "Base-Shop", // i18n-exempt: brand/product name in metadata; not user-actionable UI copy
+  description: "Sustainable footwear built with Next.js 15", // i18n-exempt: SEO meta description only; not rendered UI text
 };
 
 export default function RootLayout({

@@ -10,6 +10,7 @@ export function assertLocales(
   value: unknown
 ): asserts value is readonly Locale[] {
   if (!Array.isArray(value) || value.length === 0) {
+    // i18n-exempt: Developer-facing error message for invalid configuration, not shown to end users
     throw new Error("LOCALES must be a non-empty array");
   }
 }

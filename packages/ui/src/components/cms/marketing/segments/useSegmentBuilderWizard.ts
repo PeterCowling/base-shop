@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { FormEvent } from "react";
 import type { StepDefinition } from "../shared/StepIndicator";
 import {
@@ -48,23 +49,7 @@ export interface UseSegmentBuilderWizardReturn {
   closeToast: () => void;
 }
 
-const wizardSteps: StepDefinition[] = [
-  {
-    id: "details",
-    label: "Details",
-    description: "Name the segment and provide context for teammates.",
-  },
-  {
-    id: "rules",
-    label: "Rules",
-    description: "Add filters to define the audience membership.",
-  },
-  {
-    id: "review",
-    label: "Review",
-    description: "Validate the output before syncing downstream.",
-  },
-];
+
 
 function buildDefinition(
   initialDefinition?: Partial<SegmentDefinition>
@@ -88,6 +73,33 @@ export function useSegmentBuilderWizard({
   validationErrors,
   onPreviewChange,
 }: UseSegmentBuilderWizardOptions): UseSegmentBuilderWizardReturn {
+  const t = useTranslations();
+  const wizardSteps: StepDefinition[] = useMemo(
+    () => [
+      {
+        id: "details",
+        label: t("Details") as string,
+        description: t(
+          "Name the segment and provide context for teammates."
+        ) as string,
+      },
+      {
+        id: "rules",
+        label: t("Rules") as string,
+        description: t(
+          "Add filters to define the audience membership."
+        ) as string,
+      },
+      {
+        id: "review",
+        label: t("Review") as string,
+        description: t(
+          "Validate the output before syncing downstream."
+        ) as string,
+      },
+    ],
+    [t]
+  );
   const [definition, setDefinition] = useState<SegmentDefinition>(() =>
     buildDefinition(initialDefinition)
   );
@@ -114,7 +126,7 @@ export function useSegmentBuilderWizard({
       const nextIndex = Math.min(Math.max(index, 0), wizardSteps.length - 1);
       return nextIndex === current ? current : nextIndex;
     });
-  }, []);
+  }, [wizardSteps.length]);
 
   const updateDefinition = useCallback(
     (patch: Partial<SegmentDefinition>) => {
@@ -141,6 +153,7 @@ export function useSegmentBuilderWizard({
           id: `rule-${prev.rules.length + 1}`,
           attribute: "country",
           operator: "equals",
+          // i18n-exempt — seed example value; not user-facing copy and immediately editable
           value: "United States",
         },
       ],
@@ -159,37 +172,37 @@ export function useSegmentBuilderWizard({
       event.preventDefault();
       const nextErrors: SegmentValidationErrors = {};
       if (!definition.name) {
-        nextErrors.name = "Segment name is required.";
+        nextErrors.name = t("Segment name is required.") as string;
       }
       setErrors(nextErrors);
       if (Object.keys(nextErrors).length > 0) {
         setToast({
           open: true,
-          message: nextErrors.name ?? "Validation error.",
+          message: nextErrors.name ?? ((t("Validation error.") as string) ?? ""),
         });
         return;
       }
       goToStep(stepIndex + 1);
     },
-    [definition.name, goToStep, stepIndex]
+    [definition.name, goToStep, stepIndex, t]
   );
 
   const handleRulesNext = useCallback(() => {
     const nextErrors: SegmentValidationErrors = {};
     if (definition.rules.length === 0) {
-      nextErrors.rules = "Add at least one rule.";
+      nextErrors.rules = t("Add at least one rule.") as string;
     } else if (
       definition.rules.some(
         (rule) => !rule.attribute || !rule.operator || !rule.value
       )
     ) {
-      nextErrors.rules = "Complete each rule before continuing.";
+      nextErrors.rules = t("Complete each rule before continuing.") as string;
     }
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
       setToast({
         open: true,
-        message: nextErrors.rules ?? "Validation error.",
+        message: nextErrors.rules ?? ((t("Validation error.") as string) ?? ""),
       });
       return;
     }
@@ -197,26 +210,26 @@ export function useSegmentBuilderWizard({
     // independent of current index.
     const reviewIndex = wizardSteps.findIndex((s) => s.id === "review");
     goToStep(reviewIndex === -1 ? stepIndex + 1 : reviewIndex);
-  }, [definition.rules, goToStep, stepIndex]);
+  }, [definition.rules, goToStep, stepIndex, t, wizardSteps]);
 
   const handleFinish = useCallback(async () => {
     if (status === "submitting") return;
     if (!onSubmit) {
-      setToast({ open: true, message: "Segment ready to activate." });
+      setToast({ open: true, message: t("Segment ready to activate.") as string });
       return;
     }
     try {
       setStatus("submitting");
       await onSubmit(definition);
       setStatus("success");
-      setToast({ open: true, message: "Segment created." });
+      setToast({ open: true, message: t("Segment created.") as string });
     } catch (error) {
       setStatus("error");
       const fallback =
-        error instanceof Error ? error.message : "Failed to create segment.";
+        error instanceof Error ? error.message : (t("Failed to create segment.") as string);
       setToast({ open: true, message: fallback });
     }
-  }, [definition, onSubmit, status]);
+  }, [definition, onSubmit, status, t]);
 
   const derivedErrors = useMemo(
     () => ({ ...errors, ...(validationErrors ?? {}) }),
@@ -231,7 +244,7 @@ export function useSegmentBuilderWizard({
 
   // Expose a stable API object so external holders of the reference
   // always observe the latest values after re-renders.
-  const apiRef = useRef<any>({});
+  const apiRef = useRef<UseSegmentBuilderWizardReturn>({} as UseSegmentBuilderWizardReturn);
   apiRef.current.steps = wizardSteps;
   apiRef.current.stepIndex = stepIndex;
   apiRef.current.currentStep = currentStep;

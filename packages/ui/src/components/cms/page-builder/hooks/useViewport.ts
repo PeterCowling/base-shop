@@ -23,17 +23,17 @@ const useViewport = (device: DevicePreset) => {
       width: `${canvasWidth}px`,
       height: `${canvasHeight}px`,
       transform: `scale(${scale})`,
-      transformOrigin: "top center",
-      transition: "transform 0.3s ease",
+      transformOrigin: "top center", // i18n-exempt -- PB-235: CSS value
+      transition: "transform 0.3s ease", // i18n-exempt -- PB-235: CSS value
     }),
     [canvasWidth, canvasHeight, scale]
   );
 
   const frameClass = useMemo(
     () => ({
-      desktop: "",
-      tablet: "rounded-xl border border-muted-foreground/40 p-2",
-      mobile: "rounded-[2rem] border border-muted-foreground/40 p-4",
+      desktop: "", // i18n-exempt -- PB-235: class name
+      tablet: "rounded-xl border border-muted-foreground/40 p-2", // i18n-exempt -- PB-235: class name
+      mobile: "rounded-[2rem] border border-muted-foreground/40 p-4", // i18n-exempt -- PB-235: class name
     }),
     []
   );

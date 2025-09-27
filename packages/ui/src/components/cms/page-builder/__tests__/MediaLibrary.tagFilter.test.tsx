@@ -9,7 +9,11 @@ jest.mock("../../../atoms/shadcn", () => {
   const Wrap = (p: any) => <div>{p.children}</div>;
   const Trigger = (p: any) => <button {...p}>{p.children}</button>;
   const Value = (p: any) => <span>{p.placeholder ?? p.children}</span>;
-  const Item = (p: any) => <button role="option" onClick={() => p.onSelect?.(p.value)}>{p.children}</button>;
+  const Item = (p: any) => (
+    <button role="option" aria-selected={false} onClick={() => p.onSelect?.(p.value)}>
+      {p.children}
+    </button>
+  );
   const Select = ({ value, onValueChange, children }: any) => (
     <div data-value={value} onClickCapture={(e) => {
       const el = e.target as HTMLElement;

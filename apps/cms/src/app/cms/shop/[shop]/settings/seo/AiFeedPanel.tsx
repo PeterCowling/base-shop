@@ -9,6 +9,7 @@ import {
 } from "@/components/atoms/shadcn";
 import { Card, CardContent, Button } from "@/components/atoms/shadcn";
 import { listEvents } from "@platform-core/repositories/analytics.server";
+import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
 
 interface EventRecord {
   shop?: string;
@@ -31,6 +32,7 @@ const describeQueueStatus = (status?: unknown) => {
 };
 
 export default async function AiFeedPanel({ shop }: { shop: string }) {
+  const t = await getTranslations("en");
   const events = (await listEvents()) as EventRecord[];
   const filtered = events
     .filter((e) => e.shop === shop)
@@ -39,7 +41,9 @@ export default async function AiFeedPanel({ shop }: { shop: string }) {
     .reverse();
 
   const latest = filtered[0];
-  const lastRun = latest?.timestamp ? formatTimestamp(latest.timestamp) : "No runs yet";
+  const lastRun = latest?.timestamp
+    ? formatTimestamp(latest.timestamp)
+    : (t("No runs yet") as string);
   const queueStatus = describeQueueStatus(latest?.status);
 
   return (
@@ -47,36 +51,40 @@ export default async function AiFeedPanel({ shop }: { shop: string }) {
       <CardContent className="space-y-6 p-6 text-sm">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <h3 className="text-lg font-semibold">AI Feed Activity</h3>
+            <h3 className="text-lg font-semibold">{t("AI Feed Activity")}</h3>
             <p className="text-muted-foreground text-sm">
-              Track the most recent AI crawl executions and delivery status.
+              {t(
+                "Track the most recent AI crawl executions and delivery status.",
+              )}
             </p>
           </div>
           <div className="shrink-0 text-end">
             <p>
-              Last run: <span className="font-medium">{lastRun}</span>
+              {t("Last run:")}{" "}
+              <span className="font-medium">{lastRun}</span>
             </p>
             <p className="mt-1">
-              Queue status: <span className="font-medium">{queueStatus}</span>
+              {t("Queue status:")}{" "}
+              <span className="font-medium">{t(queueStatus) as string}</span>
             </p>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-2">
-          <Button type="button">Refresh feed</Button>
+          <Button type="button">{t("Refresh feed")}</Button>
           <Button type="button" variant="outline">
-            Download JSON
+            {t("Download JSON")}
           </Button>
         </div>
 
         {filtered.length === 0 ? (
-          <p className="text-muted-foreground">No AI feed activity yet.</p>
+          <p className="text-muted-foreground">{t("No AI feed activity yet.")}</p>
         ) : (
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Time</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead>{t("Time")}</TableHead>
+                <TableHead>{t("Status")}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

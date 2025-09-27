@@ -2,20 +2,40 @@
 import { renderHook, act } from "@testing-library/react";
 import useViewport from "../useViewport";
 
+// i18n-exempt: test suite name
 describe("useViewport", () => {
   const original = window.matchMedia;
   afterEach(() => {
-    window.matchMedia = original as any;
+    Object.defineProperty(window, "matchMedia", {
+      value: original,
+      configurable: true,
+      writable: true,
+    });
   });
 
   function setMatches(desktop: boolean, tablet: boolean) {
-    window.matchMedia = (query: string) => {
-      if (query.includes("min-width: 1024px")) return { matches: desktop } as any;
-      if (query.includes("min-width: 768px")) return { matches: tablet } as any;
-      return { matches: false } as any;
-    };
+    Object.defineProperty(window, "matchMedia", {
+      configurable: true,
+      writable: true,
+      value: (query: string): MediaQueryList =>
+        ({
+          matches: query.includes("min-width: 1024px")
+            ? desktop
+            : query.includes("min-width: 768px")
+            ? tablet
+            : false,
+          media: query,
+          onchange: null,
+          addListener: () => {},
+          removeListener: () => {},
+          addEventListener: () => {},
+          removeEventListener: () => {},
+          dispatchEvent: () => true,
+        } as unknown as MediaQueryList),
+    });
   }
 
+  // i18n-exempt: test description
   test("returns desktop/tablet/mobile per media queries and updates on resize", () => {
     setMatches(true, false);
     const { result } = renderHook(() => useViewport());
@@ -34,4 +54,3 @@ describe("useViewport", () => {
     expect(result.current).toBe("mobile");
   });
 });
-

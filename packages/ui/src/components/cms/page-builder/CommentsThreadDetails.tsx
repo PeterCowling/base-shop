@@ -3,7 +3,14 @@
 import { useMemo, useRef, useState } from "react";
 import type React from "react";
 import { Button, Input, Textarea } from "../../atoms/shadcn";
+import { Inline } from "../../atoms/primitives";
 import type { CommentThread } from "./CommentsDrawer";
+import Image from "next/image";
+import { LinkText } from "../../atoms";
+
+// i18n-exempt — internal editor UI; strings are minimal and not end-user content
+/* i18n-exempt */
+const t = (s: string) => s;
 
 function formatTime(ts?: string) {
   try {
@@ -29,10 +36,10 @@ function renderMessage(text: string) {
   const linkRe = /(https?:\/\/[^\s]+)/g;
   const nodes = parts.flatMap((p, i) => {
     if (typeof p !== "string") {
+      // Constrain via fixed-height container and use Next/Image fill+contain
       return (
-        <div key={`img-${i}`} className="my-1">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={p.url} alt={p.alt || "image"} className="max-h-48 rounded border" />
+        <div key={`img-${i}`} className="my-1 relative w-full h-48 overflow-hidden rounded border">
+          <Image src={p.url} alt={p.alt || "image"} fill className="object-contain" />
         </div>
       );
     }
@@ -42,9 +49,9 @@ function renderMessage(text: string) {
       const [full, url] = m;
       if (m.index > li) chunks.push(p.slice(li, m.index));
       chunks.push(
-        <a key={`a-${i}-${m.index}`} href={url} target="_blank" rel="noreferrer" className="text-sky-600 underline">
+        <LinkText key={`a-${i}-${m.index}`} href={url} target="_blank" rel="noreferrer">
           {full}
-        </a>
+        </LinkText>
       );
       li = m.index + full.length;
     }
@@ -90,10 +97,10 @@ export default function CommentsThreadDetails({
 
   if (!thread) {
     return (
-      <div className="hidden h-full w-full md:w-[28rem] items-center justify-center p-6 text-center text-sm text-muted-foreground md:flex">
+      <div className="hidden h-full w-full items-center justify-center p-6 text-center text-sm text-muted-foreground md:flex">
         <div>
-          <div className="mb-2 text-base font-medium">Select a thread</div>
-          <div>Choose a comment from the list to view details.</div>
+          <div className="mb-2 text-base font-medium">{t("Select a thread")}</div>
+          <div>{t("Choose a comment from the list to view details.")}</div>
         </div>
       </div>
     );
@@ -149,13 +156,13 @@ export default function CommentsThreadDetails({
         body: data,
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json?.error || "Upload failed");
+      if (!res.ok) throw new Error(json?.error || t("Upload failed"));
       const url = json?.url as string | undefined;
       if (url) {
         setDraft((prev) => (prev ? `${prev}\n![screenshot](${url})` : `![screenshot](${url})`));
       }
     } catch (err) {
-      console.error("Screenshot upload failed", err);
+      console.error(t("Screenshot upload failed"), err);
       alert((err as Error).message);
     } finally {
       setUploading(false);
@@ -177,81 +184,85 @@ export default function CommentsThreadDetails({
     }
   }
 
-  const t = thread as CommentThread;
+  const thr = thread as CommentThread;
 
   async function handleSend() {
     if (!draft.trim()) return;
-    await onAddMessage(t.id, draft.trim());
+    await onAddMessage(thr.id, draft.trim());
     setDraft("");
   }
   return (
-    <div className="hidden h-full w-full md:w-[28rem] flex-col md:flex">
+    <div className="hidden h-full w-full flex-col md:flex">
       <div className="flex items-center gap-2 border-b p-3">
         <div className="flex-1 min-w-0 truncate text-sm">
-          <span className="text-muted-foreground">Component:</span> <code className="text-xs">{t.componentId}</code>
+          <span className="text-muted-foreground">{t("Component:")}</span> <code className="text-xs">{thr.componentId}</code>
         </div>
         {onJumpTo && (
-          <Button variant="outline" className="h-7 px-2 text-xs" onClick={() => onJumpTo(t.componentId)}>
-            Jump
+          <Button variant="outline" className="px-3 text-xs min-h-10 min-w-10" onClick={() => onJumpTo(thr.componentId)}>
+            {t("Jump")}
           </Button>
         )}
         {onDelete && (
           <Button
             variant="outline"
-            className="h-7 px-2 text-xs"
+            className="px-3 text-xs min-h-10 min-w-10"
             onClick={async () => {
-              if (confirm("Delete this thread?")) {
-                await onDelete(t.id);
+              if (confirm(t("Delete this thread?"))) {
+                await onDelete(thr.id);
               }
             }}
           >
-            Delete
+            {t("Delete")}
           </Button>
         )}
         <label className="ms-1 flex items-center gap-2 text-sm">
-          <input type="checkbox" checked={t.resolved} onChange={(e) => onToggleResolved(t.id, e.target.checked)} />
-          Resolved
+          <input type="checkbox" checked={thr.resolved} onChange={(e) => onToggleResolved(thr.id, e.target.checked)} />
+          {t("Resolved")}
         </label>
       </div>
-      <div className="flex items-center gap-2 border-b p-2">
+      <Inline gap={2} className="border-b p-2">
+        {/* i18n-exempt */}
+        {(() => { const LIST_ID = "comment-people" as const; return (<>
         <Input
-          placeholder="Assign to (name or email)"
+          /* i18n-exempt */
+          placeholder={t("Assign to (name or email)")}
           className="h-8 text-sm"
           value={assignTo}
           onChange={(e) => setAssignTo(e.target.value)}
-          onBlur={() => void onAssign(t.id, assignTo || null)}
-          list="comment-people"
+          onBlur={() => void onAssign(thr.id, assignTo || null)}
+          list={LIST_ID}
         />
-        <datalist id="comment-people">
+        <datalist id={LIST_ID}>
           {people.map((p) => (
             <option key={p} value={p} />
           ))}
         </datalist>
-      </div>
+        </>); })()}
+      </Inline>
       <div className="flex-1 space-y-2 overflow-y-auto p-3 text-sm">
-        {t.messages.map((m) => (
+        {thr.messages.map((m) => (
           <div key={m.id} className="rounded border p-2">
             <div className="mb-1 text-xs text-muted-foreground">{formatTime(m.ts)}</div>
             <div className="break-words">{renderMessage(m.text)}</div>
           </div>
         ))}
-        {t.messages.length === 0 && (
-          <div className="text-muted-foreground">No messages</div>
+        {thr.messages.length === 0 && (
+          <div className="text-muted-foreground">{t("No messages")}</div>
         )}
       </div>
       <div className="border-t p-2">
         <div className="relative">
           <Textarea
-            placeholder={uploading ? "Uploading image..." : "Reply (type @ to mention, paste image to attach)"}
+            placeholder={uploading ? t("Uploading image...") : t("Reply (type @ to mention, paste image to attach)")}
             value={draft}
             onChange={(e) => handleDraftChange(e.target.value)}
             onPaste={onPaste}
             onKeyDown={onKeyDown}
             disabled={uploading}
-            className="min-h-[5rem] pr-24"
+            className="min-h-20 pr-24"
           />
           {mentionOpen && mentionMatches.length > 0 && (
-            <div className="absolute bottom-2 start-2 z-10 max-h-40 w-48 overflow-y-auto rounded border border-border-2 bg-surface-2 text-sm shadow">
+            <div className="absolute bottom-2 start-2 max-h-40 w-48 overflow-y-auto rounded border border-border-2 bg-surface-2 text-sm shadow">
               {mentionMatches.map((p, idx) => (
                 <div
                   key={p}
@@ -269,12 +280,12 @@ export default function CommentsThreadDetails({
           <div className="pointer-events-none absolute end-2 top-2 flex gap-2">
             <div className="pointer-events-auto">
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files && e.target.files[0] && void uploadScreenshot(e.target.files[0])} />
-              <Button variant="outline" className="h-8 px-2 text-xs" onClick={() => fileRef.current?.click()}>
-                Attach
+              <Button variant="outline" className="px-3 text-xs min-h-10 min-w-10" onClick={() => fileRef.current?.click()}>
+                {t("Attach")}
               </Button>
             </div>
-            <Button variant="default" className="h-8 px-2 text-xs" onClick={() => void handleSend()} disabled={!draft.trim()}>
-              Send
+            <Button variant="default" className="px-3 text-xs min-h-10 min-w-10" onClick={() => void handleSend()} disabled={!draft.trim()}>
+              {t("Send")}
             </Button>
           </div>
         </div>

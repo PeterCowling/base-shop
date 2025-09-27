@@ -78,9 +78,12 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
     return (
       <span
         ref={ref}
+        // i18n-exempt — design token attribute, not user copy
         data-token={bgToken[resolvedColor]}
+        // i18n-exempt — design token attribute, not user copy
         data-token-fg={fgToken[resolvedColor]}
         className={cn(
+          // i18n-exempt — CSS utility class names
           "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
           (resolvedTone === "solid" ? solidBg : softBg)[resolvedColor],
           textFg[resolvedColor],

@@ -24,18 +24,21 @@ export default function CollectionListEditor({ component, onChange }: Props) {
         }
       )}
       <Input
+        // i18n-exempt: admin-only label in builder UI
         label="Desktop Items"
         type="number"
         value={component.desktopItems ?? ""}
         onChange={(e) => handleNum("desktopItems", e.target.value)}
       />
       <Input
+        // i18n-exempt: admin-only label in builder UI
         label="Tablet Items"
         type="number"
         value={component.tabletItems ?? ""}
         onChange={(e) => handleNum("tabletItems", e.target.value)}
       />
       <Input
+        // i18n-exempt: admin-only label in builder UI
         label="Mobile Items"
         type="number"
         value={component.mobileItems ?? ""}

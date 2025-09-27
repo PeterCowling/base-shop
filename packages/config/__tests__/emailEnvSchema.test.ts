@@ -1,7 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 
 process.env.EMAIL_FROM = "from@example.com";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { emailEnvSchema } = require("../src/env/email");
 
 const parse = (env: Record<string, string | undefined>) =>

@@ -29,6 +29,8 @@ describe("Button", () => {
     React.AnchorHTMLAttributes<HTMLAnchorElement>
   >((props, ref) => <a ref={ref} data-testid="custom-link" {...props} />);
 
+  CustomLink.displayName = "CustomLink";
+
   it("renders with default variant when no props are provided", () => {
     render(<Button />);
     const button = screen.getByRole("button");
@@ -91,4 +93,3 @@ describe("Button", () => {
     expect(ref.current).toBe(link);
   });
 });
-

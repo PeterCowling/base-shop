@@ -5,6 +5,9 @@ import { cn } from "../../utils/style";
 import { Button, Input } from "../atoms/shadcn";
 import { Drawer, DrawerContent, DrawerTrigger, DrawerTitle, DrawerDescription, DrawerPortal } from "../atoms/primitives/drawer";
 import { OverlayScrim } from "../atoms";
+import { useTranslations } from "@acme/i18n";
+import { Stack } from "../atoms/primitives/Stack";
+import { Inline } from "../atoms/primitives/Inline";
 
 interface ChatMessage {
   sender: "user" | "bot";
@@ -37,6 +40,7 @@ export function LiveChatWidget({
   bottomOffset = "bottom-4",
   ...props
 }: LiveChatWidgetProps) {
+  const t = useTranslations();
   const [open, setOpen] = React.useState(false);
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [input, setInput] = React.useState("");
@@ -47,13 +51,13 @@ export function LiveChatWidget({
     setMessages((m) => [
       ...m,
       { sender: "user", text },
-      { sender: "bot", text: "Thanks for your message!" },
+      { sender: "bot", text: String(t("chat.autoReply")) },
     ]);
     setInput("");
   };
 
-  const widthClass = typeof width === "number" ? `w-[${width}px]` : width;
-  const widthStyle = typeof width === "number" ? { width } : undefined;
+  // Pass width directly; DrawerContent handles numeric widths via inline style
+  const widthProp = width;
 
   const bottomClass =
     typeof bottomOffset === "string" && bottomOffset.startsWith("bottom-")
@@ -66,28 +70,28 @@ export function LiveChatWidget({
       <DrawerTrigger asChild>
         <Button
           className={cn(
-            "fixed end-4 z-50 rounded-full shadow-elevation-3",
+            "fixed end-4 z-50 rounded-full shadow-elevation-3", // i18n-exempt with justification: CSS utility classes only
             bottomClass,
             className
           )}
           style={bottomStyle}
           {...props}
         >
-          Chat
+          {t("chat.trigger")}
         </Button>
       </DrawerTrigger>
       <DrawerPortal>
         <OverlayScrim />
         <DrawerContent
-        style={{ ...widthStyle, ...bottomStyle }}
+        style={{ ...bottomStyle }}
         side="right"
-        width={widthClass}
-        className={cn("flex flex-col gap-4 border-border-2 p-6 shadow-elevation-3", bottomClass)}
+        width={widthProp}
+        className={cn("flex flex-col gap-4 border-border-2 p-6 shadow-elevation-3", bottomClass)} // i18n-exempt with justification: CSS utility classes only
         data-token="--color-bg"
       >
-        <DrawerTitle className="text-lg font-semibold">How can we help?</DrawerTitle>
-        <DrawerDescription className="sr-only">Chat with our support team</DrawerDescription>
-        <div className="flex flex-col gap-2 overflow-y-auto py-2">
+        <DrawerTitle className="text-lg font-semibold">{t("chat.title")}</DrawerTitle>
+        <DrawerDescription className="sr-only">{t("chat.description")}</DrawerDescription>
+        <Stack gap={2} className="overflow-y-auto py-2">{/* i18n-exempt: CSS utility classes only */}
           {messages.map((m, i) => (
             <div
               key={i}
@@ -95,10 +99,10 @@ export function LiveChatWidget({
             >
               <div
                 className={cn(
-                  "rounded px-3 py-1 text-sm",
+                  "rounded px-3 py-1 text-sm", // i18n-exempt with justification: CSS utility classes only
                   m.sender === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted"
+                    ? "bg-primary text-primary-foreground" // i18n-exempt with justification: CSS utility classes only
+                    : "bg-muted" // i18n-exempt with justification: CSS utility classes only
                 )}
                 data-token={
                   m.sender === "user" ? "--color-primary" : "--color-muted"
@@ -108,16 +112,16 @@ export function LiveChatWidget({
               </div>
             </div>
           ))}
-        </div>
-        <div className="flex gap-2">
+        </Stack>
+        <Inline gap={2}>
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Type a message…"
+            placeholder={t("chat.placeholder") as string}
             className="flex-1"
           />
-          <Button onClick={send}>Send</Button>
-        </div>
+          <Button onClick={send}>{t("chat.send")}</Button>
+        </Inline>
         </DrawerContent>
       </DrawerPortal>
     </Drawer>

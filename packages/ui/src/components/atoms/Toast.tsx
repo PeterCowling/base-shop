@@ -66,7 +66,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       <div
         ref={ref}
         className={cn(
-          "fixed bottom-4 start-1/2 z-50 -translate-x-1/2 rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 max-w-[90vw] sm:max-w-md break-words",
+          "fixed bottom-4 start-1/2 z-50 -translate-x-1/2 rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 w-full sm:w-96 break-words", // i18n-exempt: class names
           bgClass,
           fgClass,
           className

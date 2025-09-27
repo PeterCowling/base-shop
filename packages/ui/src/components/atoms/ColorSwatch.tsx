@@ -29,7 +29,7 @@ export const ColorSwatch = React.forwardRef<
         ...style,
       }}
       className={cn(
-        "rounded-full border",
+        "rounded-full border", // i18n-exempt — CSS utility class names
         selected ? "ring-2 ring-offset-2" : "",
         className
       )}
@@ -37,4 +37,4 @@ export const ColorSwatch = React.forwardRef<
     />
   );
 });
-ColorSwatch.displayName = "ColorSwatch";
+ColorSwatch.displayName = "ColorSwatch"; // i18n-exempt — component displayName, not user-facing

@@ -19,6 +19,11 @@ export default function ReviewsCarousel({
 }) {
   const t = useTranslations();
   const [i, setI] = useState(0);
+  // i18n-exempt: CSS class strings for layout only
+  const SECTION_CLASS = "bg-muted py-16"; // i18n-exempt: CSS classes
+  const NAME_CLASS = "font-semibold text-muted"; // i18n-exempt: CSS classes
+  const TOKEN_MUTED = "--color-muted"; // i18n-exempt: design token name
+  const TOKEN_FG = "--color-fg"; // i18n-exempt: design token name
 
   const list = reviews && reviews.length ? reviews : DEFAULT_REVIEWS;
 
@@ -40,31 +45,33 @@ export default function ReviewsCarousel({
   const { nameKey, quoteKey } = list[i % list.length];
 
   return (
-    <section className="bg-muted py-16" data-token="--color-muted">
-      <div className="mx-auto max-w-2xl px-4 text-center">
+    <section className={SECTION_CLASS} data-token={TOKEN_MUTED}>
+      <div className="mx-auto w-full px-4 text-center" style={{ maxWidth: "42rem" }}>
         <blockquote
           className="mb-6 text-2xl font-medium text-fg italic"
-          data-token="--color-fg"
+          data-token={TOKEN_FG}
         >
-          “{t(quoteKey)}”
+          {t(quoteKey)}
         </blockquote>
-        <div className="font-semibold text-muted" data-token="--color-muted">
-          — {t(nameKey)}
+        <div className={NAME_CLASS} data-token={TOKEN_MUTED}>
+          {t(nameKey)}
         </div>
         <div className="mt-8 flex justify-center gap-4">
           <button
-            aria-label="Previous review"
-            className="px-2"
+            aria-label={t("reviews.prev") as string}
+            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
             onClick={prev}
           >
-            ‹
+            <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}‹</span>
+            <span className="sr-only">{t("reviews.prev")}</span>
           </button>
           <button
-            aria-label="Next review"
-            className="px-2"
+            aria-label={t("reviews.next") as string}
+            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
             onClick={next}
           >
-            ›
+            <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}›</span>
+            <span className="sr-only">{t("reviews.next")}</span>
           </button>
         </div>
       </div>

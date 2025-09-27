@@ -1,6 +1,7 @@
 // packages/design-tokens/src/index.ts
 import type { Config } from "tailwindcss";
 
+// i18n-exempt: development-only diagnostic log for preset loading
 console.log("[@acme/design-tokens] preset loaded");
 
 /**

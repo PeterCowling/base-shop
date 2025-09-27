@@ -20,7 +20,7 @@ export const runtime = "edge";
 export async function POST(req: NextRequest) {
   const { sessionId } = (await req.json()) as { sessionId?: string };
   if (!sessionId) {
-    return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
+    return NextResponse.json({ error: "Missing sessionId" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
   }
   const shop = await readShop(SHOP_ID);
   const session = await stripe.checkout.sessions.retrieve(sessionId);
@@ -54,12 +54,12 @@ export async function PATCH(req: NextRequest) {
     damage?: string | number;
   };
   if (!sessionId) {
-    return NextResponse.json({ error: "Missing sessionId" }, { status: 400 });
+    return NextResponse.json({ error: "Missing sessionId" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
   }
   const shop = await readShop(SHOP_ID);
   const order = await markReturned(SHOP_ID, sessionId);
   if (!order) {
-    return NextResponse.json({ error: "Order not found" }, { status: 404 });
+    return NextResponse.json({ error: "Order not found" }, { status: 404 }); // i18n-exempt -- ABC-123: machine-readable API error
   }
 
   const session = await stripe.checkout.sessions.retrieve(sessionId, {

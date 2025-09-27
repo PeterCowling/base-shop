@@ -43,7 +43,7 @@ function seqPlay(el: HTMLElement, cfg: TimelineConfig) {
     const d = Math.max(0, Number(s.duration ?? 0));
     const ease = (s.easing || "") as string;
     if (d > 0) {
-      el.style.transitionProperty = "transform, opacity";
+      el.style.transitionProperty = /* i18n-exempt: CSS property list */ "transform, opacity";
       el.style.transitionDuration = `${d}ms`;
       if (ease) el.style.transitionTimingFunction = ease;
     } else {

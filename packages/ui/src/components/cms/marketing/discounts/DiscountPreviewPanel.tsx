@@ -1,6 +1,7 @@
 import { Tag } from "../../../atoms";
 import { PreviewPanel } from "../shared";
 import type { DiscountPreviewData } from "./types";
+import { useTranslations } from "@acme/i18n";
 
 export interface DiscountPreviewPanelProps {
   data: DiscountPreviewData;
@@ -11,10 +12,11 @@ export function DiscountPreviewPanel({
   data,
   className,
 }: DiscountPreviewPanelProps) {
+  const t = useTranslations();
   return (
     <PreviewPanel
-      title="Discount preview"
-      description="Visual confirmation of what customers will see."
+      title={t("Discount preview") as string}
+      description={t("Visual confirmation of what customers will see.") as string}
       data={data}
       className={className}
       renderPreview={(preview) => (
@@ -27,13 +29,13 @@ export function DiscountPreviewPanel({
           </div>
           <div className="space-y-1">
             <span className="text-muted-foreground text-xs uppercase">
-              Validity
+              {t("Validity")}
             </span>
             <p>{preview.validity}</p>
           </div>
           <div className="space-y-1">
             <span className="text-muted-foreground text-xs uppercase">
-              Applies to
+              {t("Applies to")}
             </span>
             <p>{preview.appliesTo}</p>
           </div>

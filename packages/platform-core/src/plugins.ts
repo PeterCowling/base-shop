@@ -26,7 +26,7 @@ async function loadPluginFromDir(dir: string): Promise<Plugin | undefined> {
 
   if (!entryPath) {
     logger.error(
-      "No compiled plugin entry found. Ensure plugin is built before runtime.",
+      "No compiled plugin entry found. Ensure plugin is built before runtime.", // i18n-exempt -- DS-0001 Internal log message only
       { plugin: dir }
     );
     return undefined;
@@ -38,7 +38,7 @@ async function loadPluginFromDir(dir: string): Promise<Plugin | undefined> {
       | Plugin
       | undefined;
     if (!plug) {
-      logger.error("Plugin module did not export a default Plugin", {
+      logger.error("Plugin module did not export a default Plugin", { // i18n-exempt -- DS-0001 Internal log message only
         plugin: dir,
         entry: entryPath,
         exportedKeys: Object.keys(mod ?? {}),
@@ -47,7 +47,7 @@ async function loadPluginFromDir(dir: string): Promise<Plugin | undefined> {
     }
     return plug;
   } catch (err) {
-    logger.error("Failed to import plugin entry", {
+    logger.error("Failed to import plugin entry", { // i18n-exempt -- DS-0001 Internal log message only
       plugin: dir,
       entry: entryPath,
       err,
@@ -81,7 +81,7 @@ export async function loadPlugins({
   for (const dir of searchDirs) {
     try {
       // The directories come from trusted configuration.
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-0001 Paths originate from validated configuration
       const entries = await readdir(dir, { withFileTypes: true });
       for (const entry of entries) {
         if (entry.isDirectory()) {
@@ -89,7 +89,7 @@ export async function loadPlugins({
         }
       }
     } catch (err) {
-      logger.warn("Failed to read plugins directory", { directory: dir, err });
+      logger.warn("Failed to read plugins directory", { directory: dir, err }); // i18n-exempt -- DS-0001 Internal log message only
     }
   }
 
@@ -144,7 +144,7 @@ export async function initPlugins<
     if (plugin.configSchema) {
       const result = plugin.configSchema.safeParse(raw);
       if (!result.success) {
-        logger.error("Invalid config for plugin", {
+        logger.error("Invalid config for plugin", { // i18n-exempt -- DS-0001 Internal log message only
           plugin: plugin.id,
           error: result.error,
         });
@@ -175,4 +175,3 @@ export type {
   WidgetProps,
   WidgetRegistry,
 };
-

@@ -7,6 +7,9 @@ import type { EditorProps } from "./EditorProps";
 type Props = EditorProps<PricingTableComponent>;
 
 export default function PricingTableEditor({ component, onChange }: Props) {
+  // i18n-exempt — internal editor labels; not displayed to end users
+  /* i18n-exempt */
+  const t = (s: string) => s;
   type Plan = NonNullable<PricingTableComponent["plans"]>[number];
   const plans: Plan[] = component.plans ?? [];
   const min = component.minItems ?? 0;
@@ -42,7 +45,7 @@ export default function PricingTableEditor({ component, onChange }: Props) {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               update(i, "title", e.target.value)
             }
-            placeholder="title"
+            placeholder={t("title")}
             className="w-full"
           />
           <Input
@@ -50,7 +53,7 @@ export default function PricingTableEditor({ component, onChange }: Props) {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               update(i, "price", e.target.value)
             }
-            placeholder="price"
+            placeholder={t("price")}
             className="w-full"
           />
           <Textarea
@@ -65,7 +68,7 @@ export default function PricingTableEditor({ component, onChange }: Props) {
                   .filter(Boolean)
               )
             }
-            placeholder="one feature per line"
+            placeholder={t("one feature per line")}
             className="w-full"
           />
           <Input
@@ -73,7 +76,7 @@ export default function PricingTableEditor({ component, onChange }: Props) {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               update(i, "ctaLabel", e.target.value)
             }
-            placeholder="CTA label"
+            placeholder={t("CTA label")}
             className="w-full"
           />
           <Input
@@ -81,11 +84,11 @@ export default function PricingTableEditor({ component, onChange }: Props) {
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               update(i, "ctaHref", e.target.value)
             }
-            placeholder="CTA href"
+            placeholder={t("CTA href")}
             className="w-full"
           />
           <div className="flex items-center gap-2">
-            <label className="text-sm">Featured</label>
+            <label className="text-sm">{t("Featured")}</label>
             <input
               type="checkbox"
               checked={plan.featured ?? false}
@@ -97,12 +100,12 @@ export default function PricingTableEditor({ component, onChange }: Props) {
             onClick={() => removePlan(i)}
             disabled={plans.length <= min}
           >
-            Remove Plan
+            {t("Remove Plan")}
           </Button>
         </div>
       ))}
       <Button onClick={addPlan} disabled={plans.length >= max}>
-        Add Plan
+        {t("Add Plan")}
       </Button>
     </div>
   );

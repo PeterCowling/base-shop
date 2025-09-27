@@ -37,17 +37,17 @@ export function OrderTrackingTimeline({
   if (merged.length === 0) return null;
   return (
     <ol
-      className={cn("relative border-s ps-4", itemSpacing, className)}
+      className={cn("relative border-s ps-4", itemSpacing, className)} // i18n-exempt with justification: CSS utility classes only
       {...props}
     >
       {merged.map((step, idx) => (
         <li key={idx} className="ms-6">
           <span
             className={cn(
-              "absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full border",
+              "absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full border", // i18n-exempt with justification: CSS utility classes only
               step.complete
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground"
+                ? "bg-primary text-primary-foreground" // i18n-exempt with justification: CSS utility classes only
+                : "bg-muted text-muted-foreground" // i18n-exempt with justification: CSS utility classes only
             )}
           >
             {step.complete && <CheckIcon className="h-4 w-4" />}

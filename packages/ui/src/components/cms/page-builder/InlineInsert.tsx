@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { ulid } from "ulid";
 import type { PageComponent } from "@acme/types";
 import { defaults, CONTAINER_TYPES, type ComponentType } from "./defaults";
@@ -17,6 +18,10 @@ import {
   containerRegistry,
   layoutRegistry,
 } from "../blocks";
+import { Stack } from "../../atoms/primitives/Stack";
+
+const ARIA_LABEL_INSERT_BUTTON = "Insert block here"; // i18n-exempt -- CMS-only control
+const ARIA_LABEL_LIST = "Insert block list"; // i18n-exempt -- CMS-only control
 
 type Props = {
   index: number;
@@ -117,18 +122,43 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
     }
   };
 
+  /* eslint-disable ds/no-hardcoded-copy -- CMS-000: palette entries (labels/categories) are builder-only */
+  const itemButtons = items.map((i, idx) => {
+    const label = i.label;
+    const category = i.category;
+    return (
+      <button
+        key={`${i.category}-${i.type}`}
+        type="button"
+        data-index={idx}
+        className={`inline-flex items-center gap-2 rounded border p-1 text-sm hover:bg-muted focus:outline-none min-h-10 min-w-10 ${active === idx ? "ring-1 ring-primary" : ""}`}
+        onClick={() => handleChoose(i.type as ComponentType)}
+        role="option"
+        aria-selected={active === idx}
+      >
+        <Image src={i.icon} alt="" width={20} height={20} className="rounded" />
+        <span className="flex-1 text-start">{label}</span>
+        <span className="text-muted-foreground text-xs capitalize">{category}</span>
+      </button>
+    );
+  });
+  /* eslint-enable ds/no-hardcoded-copy */
+
   return (
     <div className="relative my-1 flex w-full justify-center">
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <button
             type="button"
-            aria-label="Insert block here"
-            className="opacity-0 transition-opacity duration-150 hover:opacity-100 focus:opacity-100 group-hover:opacity-100 group/button"
+            aria-label={ARIA_LABEL_INSERT_BUTTON}
+            className="opacity-0 transition-opacity duration-150 hover:opacity-100 focus:opacity-100 group-hover:opacity-100 group/button inline-flex items-center justify-center min-h-10 min-w-10"
             onClick={() => setOpen((v) => !v)}
             onMouseEnter={() => setOpen((v) => v)}
           >
-            <span className="rounded-full border bg-muted px-2 text-xs group-hover/button:bg-primary group-hover/button:text-primary-foreground">+ Add</span>
+            <span className="rounded-full border bg-muted px-2 text-xs group-hover/button:bg-primary group-hover/button:text-primary-foreground">
+              {/* i18n-exempt -- CMS inline action label */}
+              + Add
+            </span>
           </button>
         </PopoverTrigger>
         <PopoverContent className="w-72 p-2" onKeyDown={onKeyDown}>
@@ -137,34 +167,22 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              // i18n-exempt -- palette search placeholder
               placeholder="Search blocks…"
               className="w-full rounded border p-1 text-sm"
             />
           </div>
-          <div ref={contentRef} className="flex max-h-64 flex-col gap-1 overflow-auto" role="listbox" aria-label="Insert block list">
-            {items.map((i, idx) => (
-              <button
-                key={`${i.category}-${i.type}`}
-                type="button"
-                data-index={idx}
-                className={`flex items-center gap-2 rounded border p-1 text-sm hover:bg-muted focus:outline-none ${active === idx ? "ring-1 ring-primary" : ""}`}
-                onClick={() => handleChoose(i.type as ComponentType)}
-                role="option"
-                aria-selected={active === idx}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={i.icon} alt="" className="h-5 w-5 rounded" />
-                <span className="flex-1 text-start">{i.label}</span>
-                <span className="text-muted-foreground text-[10px] capitalize">
-                  {i.category}
-                </span>
-              </button>
-            ))}
+          <div ref={contentRef} className="max-h-64 overflow-auto" role="listbox" aria-label={ARIA_LABEL_LIST}>
+            {/* Use DS Stack for vertical layout */}
+            <Stack gap={1}>
+            {itemButtons}
             {items.length === 0 && (
               <div className="text-muted-foreground p-2 text-center text-xs">
+                {/* i18n-exempt -- empty state */}
                 No results
               </div>
             )}
+            </Stack>
           </div>
         </PopoverContent>
       </Popover>

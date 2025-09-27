@@ -13,22 +13,22 @@ export default function ContactForm({
         type="text"
         name="name"
         placeholder="Name"
-        className="w-full rounded border p-2"
+        className="w-full rounded border p-2 min-h-10"
       />
       <input
         type="email"
         name="email"
         placeholder="Email"
-        className="w-full rounded border p-2"
+        className="w-full rounded border p-2 min-h-10"
       />
       <textarea
         name="message"
         placeholder="Message"
-        className="w-full rounded border p-2"
+        className="w-full rounded border p-2 min-h-10"
       />
       <button
         type="submit"
-        className="rounded bg-primary px-4 py-2 text-primary-fg"
+        className="rounded bg-primary px-4 py-2 text-primary-fg min-h-10 min-w-10"
       >
         Submit
       </button>

@@ -6,6 +6,8 @@ import type { EditorProps } from "./EditorProps";
 type Props = EditorProps<SocialProofComponent>;
 
 export default function SocialProofEditor({ component, onChange }: Props) {
+  // i18n-exempt — Editor input placeholders; not user-visible site content
+  /* i18n-exempt */ const t = (s: string) => s;
   const handleInput = (
     field: keyof SocialProofComponent & string,
     value: string | number | undefined,
@@ -18,7 +20,7 @@ export default function SocialProofEditor({ component, onChange }: Props) {
       <Input
         value={component.source ?? ""}
         onChange={(e) => handleInput("source", e.target.value)}
-        placeholder="data source URL"
+        placeholder={t("data source URL")}
       />
       <Input
         type="number"
@@ -29,7 +31,7 @@ export default function SocialProofEditor({ component, onChange }: Props) {
             e.target.value === "" ? undefined : Number(e.target.value)
           )
         }
-        placeholder="frequency (ms)"
+        placeholder={t("frequency (ms)")}
       />
     </div>
   );

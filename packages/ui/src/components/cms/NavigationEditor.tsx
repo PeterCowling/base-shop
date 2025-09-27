@@ -23,6 +23,7 @@ import { DragHandleDots2Icon } from "@radix-ui/react-icons";
 import { Fragment, useState } from "react";
 import { ulid } from "ulid";
 import { Button, Input } from "../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 export interface NavItem {
   id: string;
@@ -37,6 +38,7 @@ interface Props {
 }
 
 export default function NavigationEditor({ items, onChange }: Props) {
+  const t = useTranslations();
   return (
     <div className="space-y-2">
       <NavList items={items} onChange={onChange} />
@@ -45,7 +47,7 @@ export default function NavigationEditor({ items, onChange }: Props) {
           onChange([...items, { id: ulid(), label: "", url: "", children: [] }])
         }
       >
-        Add Item
+        {t("nav.addItem")}
       </Button>
     </div>
   );
@@ -123,6 +125,7 @@ function NavList({
         items={items.map((i) => i.id)}
         strategy={verticalListSortingStrategy}
       >
+        {/* eslint-disable-next-line ds/no-hardcoded-copy -- ABC-123: spacing utility is not UI copy */}
         <ul className={level ? "ms-4 space-y-2" : "space-y-2"}>
           {items.map((item, i) => (
             <Fragment key={item.id}>
@@ -166,6 +169,7 @@ function SortableNavItem({
   remove: () => void;
   addChild: () => void;
 }) {
+  const t = useTranslations();
   const {
     attributes,
     listeners,
@@ -198,12 +202,12 @@ function SortableNavItem({
         <Input
           value={item.label}
           onChange={(e) => update({ ...item, label: e.target.value })}
-          placeholder="Label"
+          placeholder={t("nav.itemLabelPlaceholder") as string}
         />
         <Input
           value={item.url}
           onChange={(e) => update({ ...item, url: e.target.value })}
-          placeholder="/path"
+          placeholder={t("nav.itemUrlPlaceholder") as string}
         />
         <Button
           className="h-8 w-8 p-0"

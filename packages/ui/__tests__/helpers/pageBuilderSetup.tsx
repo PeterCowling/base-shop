@@ -7,9 +7,21 @@ jest.mock("next/navigation", () => ({
 }));
 
 // stub complex subcomponents used by CanvasItem
-jest.mock("../../src/components/cms/page-builder/Block", () => () => <div />);
-jest.mock("../../src/components/cms/page-builder/MenuBar", () => () => <div />);
-jest.mock("../../src/components/cms/page-builder/useTextEditor", () => () => ({}));
+jest.mock("../../src/components/cms/page-builder/Block", () => {
+  function MockBlock() {
+    return <div />;
+  }
+  MockBlock.displayName = "MockBlock";
+  return MockBlock;
+});
+jest.mock("../../src/components/cms/page-builder/MenuBar", () => {
+  function MockMenuBar() {
+    return <div />;
+  }
+  MockMenuBar.displayName = "MockMenuBar";
+  return MockMenuBar;
+});
+jest.mock("../../src/components/cms/page-builder/useTextEditor", () => function useTextEditorMock() { return {}; });
 jest.mock("../../src/components/cms/page-builder/useSortableBlock", () =>
   jest.fn(() => ({
     attributes: {},

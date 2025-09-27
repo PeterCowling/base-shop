@@ -1,10 +1,12 @@
 "use client";
 
+// i18n-exempt file — editor-only builder controls; copy pending i18n wiring
+
 import type { InteractionsProps } from "./types";
 import { Input } from "../../../../atoms/shadcn";
 
 export default function ChildrenControls({ component, handleInput }: InteractionsProps) {
-  const staggerChildren = (component as any).staggerChildren as number | undefined;
+  const staggerChildren = component.staggerChildren;
 
   return (
     <Input
@@ -14,11 +16,10 @@ export default function ChildrenControls({ component, handleInput }: Interaction
       value={staggerChildren ?? ""}
       onChange={(e) =>
         handleInput(
-          "staggerChildren" as keyof typeof component,
-          (e.target.value === "" ? (undefined as any) : (Math.max(0, Number(e.target.value)) as any)) as any,
+          "staggerChildren",
+          e.target.value === "" ? undefined : Math.max(0, Number(e.target.value)),
         )
       }
     />
   );
 }
-

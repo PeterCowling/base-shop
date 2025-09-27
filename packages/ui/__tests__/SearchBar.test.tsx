@@ -9,7 +9,7 @@ describe("SearchBar block", () => {
       { slug: "a", title: "Alpha" },
       { slug: "b", title: "Beta" },
     ];
-    // @ts-expect-error
+    // @ts-expect-error - override global.fetch with a jest mock for this test
     global.fetch = jest.fn().mockResolvedValue({ json: () => Promise.resolve(results) });
 
     const { container } = render(<SearchBarBlock placeholder="Search products…" />);
@@ -56,4 +56,3 @@ describe("SearchBar component", () => {
     expect(input).toHaveValue("banana");
   });
 });
-

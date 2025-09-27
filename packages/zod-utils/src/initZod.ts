@@ -17,7 +17,7 @@ export function initZod(): void {
       try {
         return friendlyErrorMap(issue, ctx);
       } catch (e) {
-        console.error("[zod-utils] errorMap threw; falling back", e);
+        console.error("[zod-utils] errorMap threw; falling back", e); // i18n-exempt: developer-only log, not user-facing UI copy
         return { message: ctx.defaultError };
       }
     });

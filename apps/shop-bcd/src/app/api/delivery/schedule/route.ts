@@ -33,7 +33,10 @@ export async function POST(req: NextRequest) {
     !pd.regions.includes(parsed.data.region) ||
     !pd.windows.includes(parsed.data.window)
   ) {
-    return NextResponse.json({ error: "Premier delivery not available" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Premier delivery not available" }, // i18n-exempt: API error string; UI will present localized copy
+      { status: 400 },
+    );
   }
   const res = NextResponse.json({ ok: true });
   res.cookies.set(

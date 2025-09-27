@@ -7,7 +7,7 @@ function Harness(props: any) {
   const api = useInsertHandlers(props);
   useEffect(() => {
     props.onReady?.(api);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TEST-2417: api reference is stable for this harness
   }, [api]);
   return null;
 }

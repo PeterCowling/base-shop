@@ -2,6 +2,7 @@ import { Card, CardContent, Input } from "../atoms/shadcn";
 import { Chip, IconButton } from "../atoms";
 import { Cross2Icon, PlusIcon } from "@radix-ui/react-icons";
 import type { ChangeEvent } from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface VariantsTabProps {
   variants: Record<string, string[]>;
@@ -16,6 +17,7 @@ export default function VariantsTab({
   onAddVariantValue,
   onRemoveVariantValue,
 }: VariantsTabProps) {
+  const t = useTranslations();
   const variantEntries = Object.entries(variants) as [string, string[]][];
 
   if (variantEntries.length === 0) {
@@ -24,7 +26,7 @@ export default function VariantsTab({
         <Card>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              This product has no variant dimensions configured.
+              {t("This product has no variant dimensions configured.")}
             </p>
           </CardContent>
         </Card>

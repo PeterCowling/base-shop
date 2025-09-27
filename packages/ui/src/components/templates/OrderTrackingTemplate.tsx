@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { useTranslations } from "@acme/i18n";
 import type { OrderStep } from "../organisms/OrderTrackingTimeline";
 import { OrderTrackingTimeline } from "../organisms/OrderTrackingTimeline";
 
@@ -18,14 +19,17 @@ export function OrderTrackingTemplate({
   className,
   ...props
 }: OrderTrackingTemplateProps) {
+  const t = useTranslations();
   return (
     <div className={cn("space-y-6", className)} {...props}>
-      <h2 className="text-xl font-semibold">Order Tracking</h2>
+      <h2 className="text-xl font-semibold">{t("order.tracking.title")}</h2>
       <p>
-        Reference<span className="font-mono"> {orderId}</span>
+        {t("order.reference")}<span className="font-mono"> {orderId}</span>
       </p>
       {address && (
-        <p className="text-muted-foreground text-sm">Shipping to {address}</p>
+        <p className="text-muted-foreground text-sm">
+          {t("order.shippingTo")} {address}
+        </p>
       )}
       <OrderTrackingTimeline steps={steps} />
     </div>

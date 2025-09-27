@@ -1,26 +1,17 @@
 import "server-only";
 
-import { promises as fs } from "fs";
-import * as path from "path";
-
 import { shopSchema, type Shop } from "@acme/types";
+import { ensureShopDir, readFromShop, writeToShop, renameInShop } from "../utils/safeFs";
 
-import { DATA_ROOT } from "../dataRoot";
-import { validateShopName } from "../shops/index";
-
-function shopPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "shop.json");
-}
+// shop path is resolved via safeFs helpers
 
 async function ensureDir(shop: string): Promise<void> {
-  shop = validateShopName(shop);
-  await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
+  await ensureShopDir(shop);
 }
 
 export async function getShopById<T extends Shop>(shop: string): Promise<T> {
   try {
-    const buf = await fs.readFile(shopPath(shop), "utf8");
+    const buf = (await readFromShop(shop, "shop.json", "utf8")) as string;
     const data = JSON.parse(buf);
     const parsed = shopSchema.parse(data);
     return parsed as T;
@@ -39,9 +30,9 @@ export async function updateShopInRepo<T extends Shop>(
   }
   const updated = shopSchema.parse({ ...current, ...patch }) as T;
   await ensureDir(shop);
-  const tmp = `${shopPath(shop)}.${Date.now()}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(updated, null, 2), "utf8");
-  await fs.rename(tmp, shopPath(shop));
+  const tmp = `shop.json.${Date.now()}.tmp`;
+  await writeToShop(shop, tmp, JSON.stringify(updated, null, 2), "utf8");
+  await renameInShop(shop, tmp, "shop.json");
   return updated;
 }
 
@@ -51,4 +42,3 @@ export const jsonShopRepository = {
 };
 
 export { getShopById as getShopJson };
-

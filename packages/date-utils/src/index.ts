@@ -29,9 +29,9 @@ export function isoDateInNDays(days: number): string {
 export function calculateRentalDays(returnDate?: string): number {
   if (!returnDate) return 1;
   const parsed = parseISO(returnDate);
-  if (Number.isNaN(parsed.getTime())) throw new Error("Invalid returnDate");
+  if (Number.isNaN(parsed.getTime())) throw new Error("Invalid returnDate"); // i18n-exempt: developer-facing error string
   const diff = Math.ceil((parsed.getTime() - Date.now()) / DAY_MS);
-  if (diff < 0) throw new Error("returnDate must be in the future");
+  if (diff < 0) throw new Error("returnDate must be in the future"); // i18n-exempt: developer-facing error string
   return diff === 0 ? 1 : diff;
 }
 
@@ -54,7 +54,7 @@ export function startOfDay(date: Date | string, timezone?: string): Date {
   if (!timezone) {
     return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()));
   }
-  const startStr = formatInTimeZone(d, timezone, "yyyy-MM-dd'T'00:00:00");
+  const startStr = formatInTimeZone(d, timezone, "yyyy-MM-dd'T'00:00:00"); // i18n-exempt: format template, not user copy
   return fromZonedTime(startStr, timezone);
 }
 
@@ -93,7 +93,7 @@ export function formatDate(
 ): string {
   const d = typeof date === "string" ? parseISO(date) : date;
   if (/[YD]/.test(fmt)) {
-    throw new RangeError("Invalid format pattern");
+    throw new RangeError("Invalid format pattern"); // i18n-exempt: developer-facing error string
   }
   return timezone ? formatInTimeZone(d, timezone, fmt) : format(d, fmt);
 }

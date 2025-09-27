@@ -62,6 +62,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "cross-env JEST_FORCE_CJS=1 pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
     "test:pkg": "cross-env JEST_FORCE_CJS=1 pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
     "test:quick": "cross-env JEST_FORCE_CJS=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm exec jest --runInBand --detectOpenHandles --config ./jest.config.cjs",

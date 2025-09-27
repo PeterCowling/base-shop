@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from "react";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import { Grid } from "../../atoms/primitives/Grid";
 
 type Props = {
   value?: string;
@@ -94,14 +95,14 @@ export default function GridAreasEditor({ value, columns, rows, onChange }: Prop
         </div>
       </div>
       <div className="rounded border p-2">
-        <div className="grid gap-px" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+        <Grid gap={0} className="gap-px" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
           {Array.from({ length: rws }).map((_, y) => (
             <React.Fragment key={`row-${y}`}>
               {Array.from({ length: cols }).map((__, x) => (
                 <button
                   key={`cell-${y}-${x}`}
                   type="button"
-                  className="bg-muted/40 hover:bg-muted rounded p-2 text-center text-xs"
+                  className="bg-muted/40 hover:bg-muted rounded p-2 text-center text-xs min-h-10 min-w-10"
                   onClick={() => paint(y, x)}
                   title={`Row ${y + 1}, Col ${x + 1}`}
                 >
@@ -110,7 +111,7 @@ export default function GridAreasEditor({ value, columns, rows, onChange }: Prop
               ))}
             </React.Fragment>
           ))}
-        </div>
+        </Grid>
       </div>
       <div className="flex justify-end">
         <Button type="button" variant="outline" onClick={commit}>Apply areas</Button>
@@ -118,4 +119,3 @@ export default function GridAreasEditor({ value, columns, rows, onChange }: Prop
     </div>
   );
 }
-

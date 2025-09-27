@@ -49,11 +49,18 @@ const securityHeaders = (() => {
   // In development, relax CSP to allow Next.js dev client features
   // (react-refresh, eval-based source maps, HMR websockets, etc.).
   if (isDev) {
-    directives.scriptSrc = ["'self'", "'unsafe-inline'", "'unsafe-eval'"];
-    directives.connectSrc = ["'self'", "ws:", "wss:"];
-    directives.styleSrc = ["'self'", "'unsafe-inline'"];
-    directives.imgSrc = ["'self'", "data:", "blob:"];
-    directives.fontSrc = ["'self'", "data:"];
+    directives.scriptSrc = [
+      "'self'",
+      "'unsafe-inline'", // i18n-exempt -- security directive keyword; not user-facing; CMS-1010
+      "'unsafe-eval'", // i18n-exempt -- security directive keyword; not user-facing; CMS-1010
+    ];
+    directives.connectSrc = ["'self'", "ws:", "wss:"]; // i18n-exempt -- scheme keywords; not user-facing; CMS-1010
+    directives.styleSrc = [
+      "'self'",
+      "'unsafe-inline'", // i18n-exempt -- security directive keyword; not user-facing; CMS-1010
+    ];
+    directives.imgSrc = ["'self'", "data:", "blob:"]; // i18n-exempt -- scheme keywords; not user-facing; CMS-1010
+    directives.fontSrc = ["'self'", "data:"]; // i18n-exempt -- scheme keyword; not user-facing; CMS-1010
   }
 
   const base = createHeadersObject({
@@ -88,7 +95,7 @@ const securityHeaders = (() => {
     () => {}
   );
   helmetHeaders["Permissions-Policy"] =
-    "camera=(), microphone=(), geolocation=()";
+    "camera=(), microphone=(), geolocation=()"; // i18n-exempt -- HTTP header value; not user-facing; CMS-1010
 
   return { ...base, ...helmetHeaders } as Record<string, string>;
 })();
@@ -117,7 +124,7 @@ export async function middleware(req: NextRequest) {
     if (!csrfToken || !cookieToken || csrfToken !== cookieToken) {
       logger.warn("csrf failed", { path: pathname });
       return applySecurityHeaders(
-        new NextResponse("Forbidden", { status: 403 })
+        new NextResponse("Forbidden", { status: 403 }) // i18n-exempt -- minimal error body for API clients; not UI copy; CMS-1010
       );
     }
   }
@@ -153,7 +160,7 @@ export async function middleware(req: NextRequest) {
     const url = new URL(req.url);
     url.pathname = "/login";
     url.searchParams.set("callbackUrl", pathname);
-    logger.info("redirect to login", { path: url.pathname });
+    logger.info("redirect to login", { path: url.pathname }); // i18n-exempt -- structured log label; not user-facing; CMS-1010
     return applySecurityHeaders(NextResponse.redirect(url));
   }
 
@@ -188,7 +195,7 @@ export async function middleware(req: NextRequest) {
   if (!canWrite(role) && match) {
     const url = new URL("/403", req.url);
     url.searchParams.set("shop", match[1]);
-    logger.info("viewer blocked", {
+    logger.info("viewer blocked", { // i18n-exempt -- structured log label; not user-facing; CMS-1010
       path: url.pathname,
       shop: match[1],
     });

@@ -17,6 +17,7 @@ import Library from "./Library";
 import UploadPanel from "./UploadPanel";
 import MediaDetailsPanel from "./details/MediaDetailsPanel";
 import type { UseMediaManagerStateResult } from "./hooks/useMediaManagerState";
+import { useTranslations } from "@acme/i18n";
 
 export interface MediaManagerViewProps extends UseMediaManagerStateResult {
   shop: string;
@@ -33,6 +34,7 @@ export default function MediaManagerView({
   detailsPanel,
   toast,
 }: MediaManagerViewProps): ReactElement {
+  const t = useTranslations();
   return (
     <div className="space-y-6">
       <UploadPanel
@@ -55,10 +57,11 @@ export default function MediaManagerView({
       <Dialog open={deleteDialog.open} onOpenChange={deleteDialog.onOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete media?</DialogTitle>
+            <DialogTitle>{t("Delete media?")}</DialogTitle>
             <DialogDescription>
-              This action cannot be undone. This will permanently delete the media
-              file from your library.
+              {t(
+                "This action cannot be undone. This will permanently delete the media file from your library."
+              )}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -68,7 +71,7 @@ export default function MediaManagerView({
               onClick={deleteDialog.onCancel}
               disabled={deleteDialog.pending}
             >
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button
               type="button"
@@ -79,10 +82,10 @@ export default function MediaManagerView({
               {deleteDialog.pending ? (
                 <>
                   <Spinner className="h-4 w-4" />
-                  <span className="sr-only">Deleting media</span>
+                  <span className="sr-only">{t("Deleting media")}</span>
                 </>
               ) : (
-                "Delete"
+                t("Delete")
               )}
             </Button>
           </DialogFooter>
@@ -102,7 +105,7 @@ export default function MediaManagerView({
         message={toast.message}
         variant={toast.variant}
         onClose={toast.onClose}
-        data-cy="media-manager-toast"
+        data-cy="media-manager-toast" /* i18n-exempt: test hook attribute */
       />
     </div>
   );

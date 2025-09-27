@@ -1,4 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
+import type { FormEvent } from "react";
 import type { Locale } from "@acme/i18n";
 import type { ProductPublication } from "@acme/types";
 import * as buildProductFormData from "../../utils/buildProductFormData";
@@ -29,8 +30,8 @@ const product: ProductPublication & { variants: Record<string, string[]> } = {
 
 const locales: readonly Locale[] = ["en", "de"];
 
-describe("useProductEditorFormState save handling", () => {
-  it("stores errors and leaves product unchanged when save returns errors", async () => {
+describe("useProductEditorFormState save handling", () => { // i18n-exempt: test description
+  it("stores errors and leaves product unchanged when save returns errors", async () => { // i18n-exempt: test description
     const onSave = jest
       .fn<Promise<ProductSaveResult>, [FormData]>()
       .mockResolvedValue({ errors: { title: ["required"] } });
@@ -40,18 +41,18 @@ describe("useProductEditorFormState save handling", () => {
     );
 
     await act(async () => {
-      await result.current.handleSubmit({ preventDefault: jest.fn() } as any);
+      await result.current.handleSubmit({ preventDefault: jest.fn() } as unknown as FormEvent);
     });
 
-    expect(result.current.errors).toEqual({ title: ["required"] });
+    expect(result.current.errors).toEqual({ title: ["required"] }); // i18n-exempt: assertion on test data
     expect(result.current.saving).toBe(false);
-    expect(result.current.product.title.en).toBe("Old EN");
+    expect(result.current.product.title.en).toBe("Old EN"); // i18n-exempt: assertion on test data
   });
 
-  it("updates product and clears errors on successful save", async () => {
+  it("updates product and clears errors on successful save", async () => { // i18n-exempt: test description
     const updated = {
       ...product,
-      title: { ...product.title, en: "New EN" },
+      title: { ...product.title, en: "New EN" }, // i18n-exempt: test data
     };
     const onSave = jest
       .fn<Promise<ProductSaveResult>, [FormData]>()
@@ -62,17 +63,17 @@ describe("useProductEditorFormState save handling", () => {
     );
 
     await act(async () => {
-      await result.current.handleSubmit({ preventDefault: jest.fn() } as any);
+      await result.current.handleSubmit({ preventDefault: jest.fn() } as unknown as FormEvent);
     });
 
-    expect(result.current.product.title.en).toBe("New EN");
+    expect(result.current.product.title.en).toBe("New EN"); // i18n-exempt: assertion on test data
     expect(result.current.errors).toEqual({});
     expect(result.current.saving).toBe(false);
   });
 });
 
-describe("publishTargets", () => {
-  it("are passed to buildProductFormData", async () => {
+describe("publishTargets", () => { // i18n-exempt: test description
+  it("are passed to buildProductFormData", async () => { // i18n-exempt: test description
     const onSave = jest
       .fn<Promise<ProductSaveResult>, [FormData]>()
       .mockResolvedValue({
@@ -85,17 +86,17 @@ describe("publishTargets", () => {
     );
 
     act(() => {
-      result.current.setPublishTargets(["one", "two"]);
+      result.current.setPublishTargets(["one", "two"]); // i18n-exempt: test data
     });
 
     await act(async () => {
-      await result.current.handleSubmit({ preventDefault: jest.fn() } as any);
+      await result.current.handleSubmit({ preventDefault: jest.fn() } as unknown as FormEvent);
     });
 
-    expect(result.current.publishTargets).toEqual(["one", "two"]);
+    expect(result.current.publishTargets).toEqual(["one", "two"]); // i18n-exempt: assertion on test data
     expect(spy).toHaveBeenLastCalledWith(
       expect.anything(),
-      ["one", "two"],
+      ["one", "two"], // i18n-exempt: assertion on test data
       locales
     );
   });

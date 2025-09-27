@@ -30,7 +30,7 @@ export function getSavedTheme(): Theme | null {
 export function getSystemTheme(): Theme {
   try {
     return window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
+      window.matchMedia("(prefers-color-scheme: dark)").matches // i18n-exempt -- media query string, not user-facing copy
       ? "dark"
       : "base";
   } catch {
@@ -69,7 +69,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const update = (e: MediaQueryList | MediaQueryListEvent) =>
       setSystemTheme(e.matches ? "dark" : "base");
     try {
-      mq = window.matchMedia("(prefers-color-scheme: dark)");
+      mq = window.matchMedia("(prefers-color-scheme: dark)"); // i18n-exempt -- media query string, not user-facing copy
       update(mq);
       mq.addEventListener("change", update);
       return () => mq?.removeEventListener("change", update);
@@ -99,6 +99,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
 export function useTheme() {
   const ctx = useContext(ThemeContext);
-  if (!ctx) throw new Error("useTheme must be inside ThemeProvider");
+  if (!ctx) throw new Error("useTheme must be inside ThemeProvider"); // i18n-exempt -- developer guidance for incorrect hook usage
   return ctx;
 }

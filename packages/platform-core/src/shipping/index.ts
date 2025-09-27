@@ -42,36 +42,36 @@ export async function getShippingRate({
 }: ShippingRateRequest): Promise<ShippingRate> {
   if (provider === "premier-shipping") {
     if (!premierDelivery) {
-      throw new Error("Premier delivery not configured");
+      throw new Error("Premier delivery not configured"); // i18n-exempt -- CORE-1011 internal error message
     }
     if (!region || !premierDelivery.regions.includes(region)) {
-      throw new Error("Region not eligible for premier delivery");
+      throw new Error("Region not eligible for premier delivery"); // i18n-exempt -- CORE-1011 internal error message
     }
     if (!window || !premierDelivery.windows.includes(window)) {
-      throw new Error("Invalid delivery window");
+      throw new Error("Invalid delivery window"); // i18n-exempt -- CORE-1011 internal error message
     }
     if (carrier && premierDelivery.carriers && !premierDelivery.carriers.includes(carrier)) {
-      throw new Error("Carrier not supported");
+      throw new Error("Carrier not supported"); // i18n-exempt -- CORE-1011 internal error message
     }
     return {
       rate: 0,
       surcharge: premierDelivery.surcharge ?? 0,
-      serviceLabel: premierDelivery.serviceLabel ?? "Premier Delivery",
+      serviceLabel: premierDelivery.serviceLabel ?? "Premier Delivery", // i18n-exempt -- CORE-1011 default label
     };
   }
 
   if (region || window || carrier) {
     if (!premierDelivery) {
-      throw new Error("Premier delivery not configured");
+      throw new Error("Premier delivery not configured"); // i18n-exempt -- CORE-1011 internal error message
     }
     if (!region || !premierDelivery.regions.includes(region)) {
-      throw new Error("Region not eligible for premier delivery");
+      throw new Error("Region not eligible for premier delivery"); // i18n-exempt -- CORE-1011 internal error message
     }
     if (!window || !premierDelivery.windows.includes(window)) {
-      throw new Error("Invalid delivery window");
+      throw new Error("Invalid delivery window"); // i18n-exempt -- CORE-1011 internal error message
     }
     if (carrier && premierDelivery.carriers && !premierDelivery.carriers.includes(carrier)) {
-      throw new Error("Carrier not supported");
+      throw new Error("Carrier not supported"); // i18n-exempt -- CORE-1011 internal error message
     }
   }
   const apiKey = (shippingEnv as Record<string, string | undefined>)[
@@ -96,7 +96,7 @@ export async function getShippingRate({
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch rate from ${provider}`);
+    throw new Error(`Failed to fetch rate from ${provider}`); // i18n-exempt -- CORE-1011 internal error message
   }
 
   const data = await res.json();
@@ -151,7 +151,7 @@ export async function getTrackingStatus({
       steps: status ? [{ label: status, complete: true }] : [],
     };
   } catch {
-    return { status: null, steps: [] };
+    return { status: null, steps: [] }; // i18n-exempt -- CORE-1011 default fallback
   }
 }
 

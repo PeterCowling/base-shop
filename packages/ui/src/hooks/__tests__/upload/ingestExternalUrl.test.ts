@@ -1,22 +1,26 @@
+/* i18n-exempt file -- test titles and UI copy are asserted literally */
 import { ingestExternalUrl, ingestFromText } from "../../upload/ingestExternalUrl";
 
-const originalFetch = global.fetch;
-
-beforeEach(() => {
-  (global as any).fetch = jest.fn(async (url: string) => {
-    // default: ok image
-    return {
+const originalFetch: typeof fetch = globalThis.fetch;
+const mockFetch = jest.fn<Promise<Response>, Parameters<typeof fetch>>(
+  async (_url: string) =>
+    ({
       ok: true,
-      headers: new Map([["content-type", "image/png"]]),
+      headers: new Map([["content-type", "image/png"]]) as unknown as Headers,
       async blob() {
         return new Blob([new Uint8Array(5)], { type: "image/png" });
       },
-    } as any;
-  });
+    } as unknown as Response),
+);
+
+beforeEach(() => {
+  mockFetch.mockClear();
+  (globalThis as unknown as { fetch: typeof fetch }).fetch =
+    mockFetch as unknown as typeof fetch;
 });
 
 afterEach(() => {
-  (global as any).fetch = originalFetch;
+  (globalThis as unknown as { fetch: typeof fetch }).fetch = originalFetch;
   jest.clearAllMocks();
 });
 
@@ -45,11 +49,13 @@ describe("ingestExternalUrl", () => {
   });
 
   it("errors on unsupported content-type", async () => {
-    (global.fetch as any).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       ok: true,
-      headers: new Map([["content-type", "text/plain"]]),
-      async blob() { return new Blob([new Uint8Array(3)], { type: "text/plain" }); },
-    });
+      headers: new Map([["content-type", "text/plain"]]) as unknown as Headers,
+      async blob() {
+        return new Blob([new Uint8Array(3)], { type: "text/plain" });
+      },
+    } as unknown as Response);
     const res = await ingestExternalUrl("https://example.com/a.txt", {
       allowedMimePrefixes: ["image/"],
     });
@@ -57,11 +63,13 @@ describe("ingestExternalUrl", () => {
   });
 
   it("errors when size exceeds maxBytes", async () => {
-    (global.fetch as any).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       ok: true,
-      headers: new Map([["content-type", "image/png"]]),
-      async blob() { return new Blob([new Uint8Array(10)], { type: "image/png" }); },
-    });
+      headers: new Map([["content-type", "image/png"]]) as unknown as Headers,
+      async blob() {
+        return new Blob([new Uint8Array(10)], { type: "image/png" });
+      },
+    } as unknown as Response);
     const res = await ingestExternalUrl("https://example.com/a.png", {
       allowedMimePrefixes: ["image/"],
       maxBytes: 5,
@@ -83,4 +91,3 @@ describe("ingestFromText", () => {
     expect(res.file).toBeInstanceOf(File);
   });
 });
-

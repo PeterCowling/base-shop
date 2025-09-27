@@ -135,7 +135,9 @@ export async function submitShop(
           const envJson = (await envRes.json().catch(() => ({}))) as {
             error?: string;
           };
-          errors.push(envJson.error ?? "Failed to save environment variables");
+          errors.push(
+            envJson.error ?? "Failed to save environment variables" // i18n-exempt: service-level fallback string; UI translations not available here
+          );
         } else {
           const valRes = await fetch(
             `/cms/api/configurator/validate-env/${shopId}`
@@ -144,11 +146,15 @@ export async function submitShop(
             const valJson = (await valRes.json().catch(() => ({}))) as {
               error?: string;
             };
-            errors.push(valJson.error ?? "Environment validation failed");
+            errors.push(
+              valJson.error ?? "Environment validation failed" // i18n-exempt: service-level fallback string; UI translations not available here
+            );
           }
         }
       } catch {
-        errors.push("Failed to save environment variables");
+        errors.push(
+          "Failed to save environment variables" // i18n-exempt: service-level fallback string; UI translations not available here
+        );
       }
     }
 
@@ -163,11 +169,13 @@ export async function submitShop(
           error?: string;
         };
         errors.push(
-          providerJson.error ?? "Failed to save provider configuration"
+          providerJson.error ?? "Failed to save provider configuration" // i18n-exempt: service-level fallback string; UI translations not available here
         );
       }
     } catch {
-      errors.push("Failed to save provider configuration");
+      errors.push(
+        "Failed to save provider configuration" // i18n-exempt: service-level fallback string; UI translations not available here
+      );
     }
 
     return {
@@ -177,5 +185,8 @@ export async function submitShop(
     };
   }
 
-  return { ok: false, error: json.error ?? "Failed to create shop" };
+  return {
+    ok: false,
+    error: json.error ?? "Failed to create shop", // i18n-exempt: service-level fallback string; UI translations not available here
+  };
 }

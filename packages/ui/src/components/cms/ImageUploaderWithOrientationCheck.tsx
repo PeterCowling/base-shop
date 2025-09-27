@@ -5,6 +5,7 @@ import { Input } from "../atoms/shadcn";
 import type { ImageOrientation } from "@acme/types";
 import { useImageOrientationValidation } from "../../hooks/useImageOrientationValidation";
 import { memo, useCallback } from "react";
+import { useTranslations } from "@acme/i18n";
 
 export interface ImageUploaderWithOrientationCheckProps {
   file: File | null;
@@ -25,6 +26,7 @@ function ImageUploaderWithOrientationCheckInner({
   onChange,
   requiredOrientation,
 }: ImageUploaderWithOrientationCheckProps) {
+  const t = useTranslations();
   const { actual, isValid } = useImageOrientationValidation(
     file,
     requiredOrientation
@@ -50,13 +52,16 @@ function ImageUploaderWithOrientationCheckInner({
       {file && isValid !== null && (
         <p
           className={
-            isValid ? "text-sm text-success" : "text-sm text-danger"
+            isValid ? "text-sm text-success" : "text-sm text-danger" // i18n-exempt: class names only
           }
-          data-token={isValid ? "--color-success" : "--color-danger"}
+          data-token={isValid ? "--color-success" : "--color-danger" /* i18n-exempt: token string */}
         >
           {isValid
-            ? `Image orientation is ${actual}; requirement satisfied.`
-            : `Selected image is ${actual}; please upload a ${requiredOrientation} image.`}
+            ? (t("cms.image.orientation.ok", { actual }) as string)
+            : (t("cms.image.orientation.bad", {
+                actual,
+                required: requiredOrientation,
+              }) as string)}
         </p>
       )}
     </div>

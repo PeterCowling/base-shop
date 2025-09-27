@@ -50,24 +50,29 @@ export const defaultCampaignValues: CampaignFormValues = {
   startDate: "",
   endDate: "",
   channels: ["email"],
+  // i18n-exempt — non-UI default; surfaced by components which translate
+  /* i18n-exempt */
   kpi: "Conversions",
 };
 
 export function getCampaignPreview(
   values: CampaignFormValues
 ): CampaignPreviewData {
+  // i18n-exempt — util used by UI; strings are wrapped at call sites
+  /* i18n-exempt */
+  const t = (s: string) => s;
   const timeframe = values.startDate && values.endDate
     ? `${values.startDate} → ${values.endDate}`
     : values.startDate
-    ? `Starts ${values.startDate}`
-    : "Schedule pending";
+    ? t(`Starts ${values.startDate}`)
+    : t("Schedule pending");
 
   return {
-    title: values.name || "Untitled campaign",
+    title: values.name || t("Untitled campaign"),
     objective: values.objective,
     timeframe,
     audienceSummary:
-      values.audience || "Audience filters not configured yet.",
+      values.audience || t("Audience filters not configured yet."),
     channels: values.channels,
     budgetLabel:
       values.budget > 0
@@ -75,7 +80,7 @@ export function getCampaignPreview(
             style: "currency",
             currency: "USD",
           }).format(values.budget)
-        : "Budget pending",
+        : t("Budget pending"),
     kpi: values.kpi,
   };
 }

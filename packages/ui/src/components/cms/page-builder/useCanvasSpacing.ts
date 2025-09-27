@@ -156,17 +156,17 @@ export default function useCanvasSpacing({
       }
     };
     const onKeyDown = (ke: KeyboardEvent) => { if (ke.key === "Escape") stop(); };
-    try { window.addEventListener("pointermove", handleMove, { passive: true }); } catch { window.addEventListener("pointermove", handleMove as any); }
+    try { window.addEventListener("pointermove", handleMove, { passive: true }); } catch { window.addEventListener("pointermove", handleMove as unknown as EventListener); }
     window.addEventListener("pointerup", stop);
     window.addEventListener("blur", stop);
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      try { window.removeEventListener("pointermove", handleMove as any); } catch {}
+      try { window.removeEventListener("pointermove", handleMove as unknown as EventListener); } catch {}
       window.removeEventListener("pointerup", stop);
       window.removeEventListener("blur", stop);
       window.removeEventListener("keydown", onKeyDown);
     };
-  }, [active, componentId, dispatch, marginKey, paddingKey]);
+  }, [active, componentId, dispatch, marginKey, paddingKey, baselineSnap, baselineStep]);
 
   const startSpacing = (e: React.PointerEvent, type: SpacingType, side: SpacingSide) => {
     e.stopPropagation();

@@ -1,14 +1,12 @@
 import "server-only";
 
 import { loadCoreEnv } from "@acme/config/env/core";
-import { DATA_ROOT } from "../dataRoot";
 import { type EmailService, getEmailService } from "./emailService";
-import { promises as fs } from "fs";
-import * as path from "path";
 import type { InventoryItem } from "../types/inventory";
 import { z } from "zod";
 import { variantKey } from "../repositories/inventory.server";
 import { getShopSettings } from "../repositories/settings.server";
+import { readFromShop, writeToShop, ensureShopDir } from "../utils/safeFs";
 
 
 const coreEnv = loadCoreEnv();
@@ -18,9 +16,7 @@ const logSchema = z.record(z.string(), z.number());
 
 async function readLog(shop: string): Promise<Record<string, number>> {
   try {
-    const p = path.join(DATA_ROOT, shop, LOG_FILE);
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
-    const buf = await fs.readFile(p, "utf8");
+    const buf = (await readFromShop(shop, LOG_FILE, "utf8")) as string;
     const parsed = logSchema.safeParse(JSON.parse(buf));
     return parsed.success ? parsed.data : {};
   } catch {
@@ -29,11 +25,8 @@ async function readLog(shop: string): Promise<Record<string, number>> {
 }
 
 async function writeLog(shop: string, log: Record<string, number>): Promise<void> {
-  const p = path.join(DATA_ROOT, shop, LOG_FILE);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
-  await fs.mkdir(path.dirname(p), { recursive: true });
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
-  await fs.writeFile(p, JSON.stringify(log, null, 2), "utf8");
+  await ensureShopDir(shop);
+  await writeToShop(shop, LOG_FILE, JSON.stringify(log, null, 2), "utf8");
 }
 
 export async function checkAndAlert(
@@ -95,7 +88,7 @@ export async function checkAndAlert(
     try {
       await email.sendEmail(r, subject, body);
     } catch (err) {
-      console.error("Failed to send stock alert", err);
+      console.error("Failed to send stock alert", err); // i18n-exempt -- CORE-1011 non-UX log message
     }
   }
 
@@ -107,7 +100,7 @@ export async function checkAndAlert(
         body: JSON.stringify({ shop, items: lowItems, subject, body }),
       });
     } catch (err) {
-      console.error("Failed to send stock alert webhook", err);
+      console.error("Failed to send stock alert webhook", err); // i18n-exempt -- CORE-1011 non-UX log message
     }
   }
 

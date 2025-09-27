@@ -2,6 +2,7 @@
 "use client";
 
 import type { MediaItem } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 import { ChangeEvent, ReactElement, useMemo, useState } from "react";
 
 import {
@@ -48,11 +49,17 @@ export default function Library({
   selectedUrl,
   isDeleting,
   isReplacing,
-  emptyLibraryMessage = "Upload media to get started.",
-  emptyResultsMessage = "No media matches your filters.",
+  emptyLibraryMessage,
+  emptyResultsMessage,
 }: LibraryProps): ReactElement {
+  const t = useTranslations();
   const [query, setQuery] = useState("");
   const [tag, setTag] = useState("");
+
+  const derivedEmptyLibraryMessage =
+    emptyLibraryMessage ?? t("Upload media to get started.");
+  const derivedEmptyResultsMessage =
+    emptyResultsMessage ?? t("No media matches your filters.");
 
   const allTags = useMemo(
     () => Array.from(new Set(files.flatMap((f) => f.tags ?? []))),
@@ -81,18 +88,18 @@ export default function Library({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <Input
           type="search"
-          placeholder="Search media..."
+          placeholder={String(t("Search media..."))}
           value={query}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setQuery(e.target.value)}
           className="w-full flex-1"
         />
         {allTags.length > 0 && (
           <Select value={tag === "" ? "__all__" : tag} onValueChange={(v) => setTag(v === "__all__" ? "" : v)}>
-            <SelectTrigger className="sm:w-[180px]">
-              <SelectValue placeholder="All tags" />
+            <SelectTrigger className="sm:w-44">
+              <SelectValue placeholder={String(t("All tags"))} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="__all__">All tags</SelectItem>
+              <SelectItem value="__all__">{t("All tags")}</SelectItem>
               {allTags.map((t) => (
                 <SelectItem key={t} value={t}>
                   {t}
@@ -120,15 +127,15 @@ export default function Library({
         />
       ) : (
         <div
-          className="bg-muted text-muted-foreground flex min-h-[200px] flex-col items-center justify-center gap-2 rounded-lg p-8 text-center"
-          data-token="--color-muted"
-          data-token-fg="--color-muted-fg"
+          className="bg-muted text-muted-foreground flex min-h-52 flex-col items-center justify-center gap-2 rounded-lg p-8 text-center"
+          data-token={String(t("--color-muted"))}
+          data-token-fg={String(t("--color-muted-fg"))}
         >
-          <p className="text-sm font-medium text-fg" data-token="--color-fg">
-            {showEmptyLibrary ? "No media yet" : "No results"}
+          <p className="text-sm font-medium text-fg" data-token={String(t("--color-fg"))}>
+            {showEmptyLibrary ? t("No media yet") : t("No results")}
           </p>
-          <p className="text-xs text-muted-foreground" data-token="--color-muted-fg">
-            {showEmptyLibrary ? emptyLibraryMessage : emptyResultsMessage}
+          <p className="text-xs text-muted-foreground" data-token={String(t("--color-muted-fg"))}>
+            {showEmptyLibrary ? derivedEmptyLibraryMessage : derivedEmptyResultsMessage}
           </p>
         </div>
       )}

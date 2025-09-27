@@ -34,7 +34,9 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
   const { positions } = usePositions(canvasRef, [components]);
 
   const { data: session } = useSession();
+  // i18n-exempt: developer default identifiers
   const meId = (session?.user?.email as string | undefined) ?? (session?.user?.name as string | undefined) ?? "me";
+  // i18n-exempt: developer default labels
   const meLabel = (session?.user?.name as string | undefined) ?? (session?.user?.email as string | undefined) ?? "Me";
   const { peers } = usePresence({ shop, pageId, meId, label: meLabel, selectedIds, editingId: selectedIds[0] ?? null });
 
@@ -62,6 +64,7 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
           await load();
         }
       } catch (error) {
+        // i18n-exempt: developer log message
         console.error("Failed to patch comment thread", error);
       }
     },
@@ -146,10 +149,13 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
   const restoreLastDeleted = async () => {
     const t = lastDeleted;
     if (!t) return;
+    // i18n-exempt: fallback system text for undo
     const first = t.messages[0]?.text || "Restored";
     const created = await createThread(t.componentId, first, { assignedTo: t.assignedTo ?? undefined, pos: t.pos ?? undefined });
-    if (created.ok && created?.json?.id) {
-      const newId: string = created.json.id;
+    if (created.ok) {
+      const data = created.json as { id?: string };
+      const newId: string = String(data?.id ?? "");
+      if (!newId) return;
       for (let i = 1; i < (t.messages?.length ?? 0); i++) {
         const m = t.messages[i];
         await patchThreadSafely(newId, { action: "addMessage", text: m.text });
@@ -168,6 +174,7 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
     const id = selectedIds[0];
     if (!id) return;
     // Minimal UX: prompt for text
+    // i18n-exempt: prompt copy for internal tool
     const text = window.prompt("Comment for selected component:");
     if (!text || !text.trim()) return;
     await createThread(id, text.trim());
@@ -181,7 +188,8 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
   const visibleThreads = useMemo(() => threads.filter((t) => showResolved || !t.resolved), [threads, showResolved]);
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-40">
+    <div className="relative">
+      <div className="pointer-events-none absolute inset-0">
       <CommentsToolbar
         peers={peers}
         showResolved={showResolved}
@@ -194,7 +202,7 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
       />
 
       {/* Local portal root so dropdowns/menus inherit canvas preview tokens */}
-      <div data-pb-portal-root className="absolute inset-0 z-50 pointer-events-none" />
+      <div data-pb-portal-root className="absolute inset-0 pointer-events-none" />
 
       {/* Pins + per-component badges */}
       <CommentsPinsLayer
@@ -226,11 +234,11 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
         componentsOptions={(() => {
           const openCounts = new Map<string, number>();
           threads.forEach((t) => openCounts.set(t.componentId, (openCounts.get(t.componentId) ?? 0) + (t.resolved ? 0 : 1)));
-          // helper to find type by id
+          // helper to find type by id (avoid `any`)
           const findType = (list: PageComponent[], id: string): string | null => {
             for (const c of list) {
-              if ((c as any).id === id) return (c as any).type ?? null;
-              const children = (c as any).children as PageComponent[] | undefined;
+              if (c.id === id) return c.type ?? null;
+              const children = (c as unknown as { children?: PageComponent[] }).children;
               if (Array.isArray(children)) {
                 const t = findType(children, id);
                 if (t) return t;
@@ -242,7 +250,9 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
           return ids.map((id) => {
             const type = findType(components, id);
             const cnt = openCounts.get(id) ?? 0;
+            // i18n-exempt: internal builder label formatting
             const suffix = cnt ? ` (${cnt} open)` : "";
+            // i18n-exempt: internal builder label fallback
             const base = type ? `${type}` : "Component";
             return { id, label: `${base} • ${id.slice(-4)}${suffix}` };
           });
@@ -250,8 +260,9 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
         onCreate={async (componentId, text, assignedTo) => {
           const { ok, json } = await createThread(componentId, text, { assignedTo: assignedTo ?? undefined });
           await load();
-          if (ok && json?.id) {
-            setSelectedId(json.id as string);
+          const data = json as { id?: string };
+          if (ok && data?.id) {
+            setSelectedId(String(data.id));
             setDrawerOpen(true);
           }
         }}
@@ -261,6 +272,7 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
       />
 
       <UndoToast lastDeleted={lastDeleted} onRestore={() => void restoreLastDeleted()} onDismiss={() => setLastDeleted(null)} />
+      </div>
     </div>
   );
 }

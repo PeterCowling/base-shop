@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useId } from "react";
+import { Grid as DSGrid } from "../../atoms/primitives";
 
 export type GalleryImage = { src: string; alt?: string; caption?: string };
 
@@ -9,7 +10,7 @@ export default function Gallery({ images = [], openInLightbox, id }: { images?: 
   const group = id ?? fallbackId;
   if (!images.length) return null;
   return (
-    <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3" data-lightbox-root={openInLightbox ? group : undefined}>
+    <DSGrid cols={1} gap={2} className="sm:grid-cols-2 md:grid-cols-3" data-lightbox-root={openInLightbox ? group : undefined}>
       {images.map((img) => (
         <figure
           key={img.src}
@@ -29,6 +30,6 @@ export default function Gallery({ images = [], openInLightbox, id }: { images?: 
           ) : null}
         </figure>
       ))}
-    </div>
+    </DSGrid>
   );
 }

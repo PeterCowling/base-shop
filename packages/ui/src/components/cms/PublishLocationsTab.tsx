@@ -3,6 +3,8 @@ import { Chip } from "../atoms";
 import PublishLocationSelector from "./PublishLocationSelector";
 import type { PublishLocation } from "@acme/types";
 import { useMemo } from "react";
+import { Inline } from "../atoms/primitives/Inline";
+import { useTranslations } from "@acme/i18n";
 
 interface PublishLocationsTabProps {
   selectedIds: string[];
@@ -15,6 +17,7 @@ export default function PublishLocationsTab({
   locations,
   onChange,
 }: PublishLocationsTabProps) {
+  const t = useTranslations();
   const selectedLabels = useMemo(
     () =>
       selectedIds.map(
@@ -33,16 +36,16 @@ export default function PublishLocationsTab({
             showReload
           />
           {selectedIds.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
+            <Inline className="gap-2" wrap>
               {selectedLabels.map((label) => (
                 <Chip key={label} className="bg-muted px-3 py-1 text-xs">
                   {label}
                 </Chip>
               ))}
-            </div>
+            </Inline>
           ) : (
             <p className="text-sm text-muted-foreground">
-              Select one or more destinations to publish this product.
+              {t("products.selectPublishDestinations")}
             </p>
           )}
         </CardContent>

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 
 import {
   defaultCampaignValues,
@@ -41,7 +42,8 @@ const sectionFieldMap: Record<CampaignFormSectionId, CampaignField[]> = {
 
 function validateCampaign(
   values: CampaignFormValues,
-  sections: CampaignFormSectionId[]
+  sections: CampaignFormSectionId[],
+  t: (s: string) => string
 ): CampaignErrors {
   const requiredFields = sections.flatMap((section) => sectionFieldMap[section]);
   const errors: CampaignErrors = {};
@@ -50,14 +52,14 @@ function validateCampaign(
     const value = values[field];
     if (typeof value === "number") {
       if (Number.isNaN(value) || value < 0) {
-        errors[field] = "Please provide a valid amount.";
+        errors[field] = t("Please provide a valid amount.");
       }
     } else if (Array.isArray(value)) {
       if (value.length === 0) {
-        errors[field] = "Select at least one option.";
+        errors[field] = t("Select at least one option.");
       }
     } else if (!value) {
-      errors[field] = "This field is required.";
+      errors[field] = t("This field is required.");
     }
   }
 
@@ -67,7 +69,7 @@ function validateCampaign(
     values.startDate &&
     values.endDate < values.startDate
   ) {
-    errors.endDate = "End date must be after the start date.";
+    errors.endDate = t("End date must be after the start date.");
   }
 
   return errors;
@@ -105,6 +107,8 @@ export function useCampaignForm({
   status: statusProp,
   messages,
 }: UseCampaignFormOptions): UseCampaignFormResult {
+  const t = useTranslations();
+  const ts = useCallback((s: string) => (t(s) as string), [t]);
   const [values, setValues] = useState<CampaignFormValues>({
     ...defaultCampaignValues,
     ...defaultValues,
@@ -177,20 +181,18 @@ export function useCampaignForm({
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       markStatus("validating");
-      const nextErrors = validateCampaign(values, sections);
+      const nextErrors = validateCampaign(values, sections, ts);
       setInternalErrors(nextErrors);
 
       if (Object.keys(nextErrors).length > 0) {
         markStatus("error");
-        showToast(
-          messages?.validation ?? "Please review the highlighted fields."
-        );
+        showToast(messages?.validation ?? (ts("campaign.validation.reviewFields") as string));
         return;
       }
 
       if (!onSubmit) {
         markStatus("success");
-        showToast(messages?.success ?? "Campaign draft saved locally.");
+        showToast(messages?.success ?? (ts("campaign.draftSavedLocally") as string));
         return;
       }
 
@@ -198,17 +200,17 @@ export function useCampaignForm({
         markStatus("submitting");
         await onSubmit(values);
         markStatus("success");
-        showToast(messages?.success ?? "Campaign saved successfully.");
+        showToast(messages?.success ?? (ts("campaign.savedSuccessfully") as string));
       } catch (error) {
         markStatus("error");
         const fallback =
           error instanceof Error
             ? error.message
-            : messages?.error ?? "Failed to save campaign.";
+            : messages?.error ?? (ts("campaign.saveFailed") as string);
         showToast(messages?.error ?? fallback);
       }
     },
-    [markStatus, messages, onSubmit, sections, showToast, values]
+    [markStatus, messages, onSubmit, sections, showToast, ts, values]
   );
 
   const dismissServerError = useCallback((field: CampaignField) => {

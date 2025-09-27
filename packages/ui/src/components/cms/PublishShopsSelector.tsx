@@ -4,6 +4,8 @@
 import { Button, Input } from "../atoms/shadcn";
 import { toggleItem } from "@acme/shared-utils";
 import { memo, useCallback, useEffect, useState } from "react";
+import { Stack, Inline } from "../atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 export interface PublishShopsSelectorProps {
   selectedIds: string[];
@@ -24,6 +26,7 @@ function PublishShopsSelectorInner({
   onChange,
   showReload = false,
 }: PublishShopsSelectorProps) {
+  const t = useTranslations();
   const [shops, setShops] = useState<string[]>([]);
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     "loading"
@@ -44,13 +47,13 @@ function PublishShopsSelectorInner({
         setShops(data as string[]);
         setStatus("ready");
       } else {
-        throw new Error("Invalid response");
+        throw new Error("Invalid response"); // i18n-exempt -- developer error
       }
     } catch (err) {
-      console.error("Error loading shops", err);
+      console.error("Error loading shops", err); // i18n-exempt -- developer log
       setStatus("error");
       setShops([]);
-      setErrorMsg(err instanceof Error ? err.message : "Failed to load shops");
+      setErrorMsg(err instanceof Error ? err.message : "Failed to load shops"); // i18n-exempt -- fallback error
     }
   }, []);
 
@@ -66,46 +69,46 @@ function PublishShopsSelectorInner({
   );
 
   if (status === "loading")
-    return <span className="text-sm">Loading shops…</span>;
+    return <span className="text-sm">{t("shops.loading")}</span>;
   if (status === "error")
     return (
+      // eslint-disable-next-line ds/no-hardcoded-copy -- ABC-123: design token reference is not UI copy
       <span className="text-sm text-danger" data-token="--color-danger">
-        {errorMsg ?? "Failed to load shops"}
+        {errorMsg ?? (t("shops.loadFailed") as string)}
       </span>
     );
 
   return (
     <>
-      <div className="flex flex-col gap-2">
+      <Stack gap={2}>
         {shops.map((id) => (
-          <label
-            key={id}
-            className="flex cursor-pointer items-start gap-2 select-none"
-          >
-            <Input
-              type="checkbox"
-              checked={selectedIds.includes(id)}
-              onChange={() => toggle(id)}
-              className="mt-1 h-4 w-4"
-            />
-            <span>
-              <span className="font-medium">{id}</span>
-            </span>
+          <label key={id} className="cursor-pointer select-none">
+            <Inline alignY="start" gap={2}>
+              <Input
+                type="checkbox"
+                checked={selectedIds.includes(id)}
+                onChange={() => toggle(id)}
+                className="mt-1 h-4 w-4"
+              />
+              <span>
+                <span className="font-medium">{id}</span>
+              </span>
+            </Inline>
           </label>
         ))}
         {shops.length === 0 && (
-          <span className="text-muted-foreground text-sm">No shops found.</span>
+          <span className="text-muted-foreground text-sm">{t("shops.noneFound")}</span>
         )}
-      </div>
+      </Stack>
 
       {showReload && (
         <Button
           type="button"
           onClick={fetchShops}
           variant="outline"
-          className="mt-4 inline-flex items-center rounded-2xl p-2 text-sm shadow"
+          className="mt-4 rounded-2xl p-2 text-sm shadow"
         >
-          Refresh list
+          {t("actions.refreshList")}
         </Button>
       )}
     </>
@@ -113,4 +116,3 @@ function PublishShopsSelectorInner({
 }
 
 export default memo(PublishShopsSelectorInner, equal);
-

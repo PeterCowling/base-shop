@@ -17,7 +17,7 @@ export function deriveText(html: string): string {
 
 export function ensureText(options: CampaignOptions): CampaignOptions {
   if (!options.html) {
-    throw new Error("Missing html content for campaign email");
+    throw new Error("Missing html content for campaign email"); // i18n-exempt: developer error in email options
   }
   if (options.text) return options;
   return { ...options, text: deriveText(options.html) };
@@ -61,4 +61,3 @@ export async function prepareContent(
   }
   return ensureText(opts);
 }
-

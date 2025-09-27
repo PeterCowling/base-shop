@@ -47,7 +47,10 @@ describe("PopupModal", () => {
   it('closes when overlay is clicked', () => {
     render(<PopupModal autoOpen content="Overlay close" />);
 
-    const overlay = screen.getByText("Overlay close").parentElement?.parentElement!;
+    const contentEl = screen.getByText("Overlay close");
+    const overlay = contentEl.parentElement?.parentElement;
+    expect(overlay).toBeTruthy();
+    if (!overlay) throw new Error("Overlay element not found");
     fireEvent.click(overlay);
 
     expect(screen.queryByText("Overlay close")).not.toBeInTheDocument();
@@ -86,4 +89,3 @@ describe("PopupModal", () => {
     expect(container.querySelector("script")).toBeNull();
   });
 });
-

@@ -1,3 +1,4 @@
+/* i18n-exempt file -- test titles and UI copy are asserted literally */
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
@@ -5,7 +6,9 @@ import { WishlistTemplate, type WishlistItem } from "../WishlistTemplate";
 import "../../../../../../test/resetNextMocks";
 
 jest.mock("../../atoms/Price", () => ({
-  Price: ({ amount }: any) => <div data-cy="price">{amount}</div>,
+  Price: ({ amount }: { amount: number | string }) => (
+    <div data-cy="price">{amount}</div>
+  ),
 }));
 
 describe("WishlistTemplate", () => {

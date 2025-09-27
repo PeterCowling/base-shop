@@ -23,7 +23,7 @@ export function reducer(state: HistoryState, action: Action): HistoryState {
     case "set-grid-cols":
       return setGridCols(state, action);
     case "set-breakpoints":
-      return setBreakpoints(state, action as any);
+      return setBreakpoints(state, action);
     case "add":
       return add(state, action);
     case "move":

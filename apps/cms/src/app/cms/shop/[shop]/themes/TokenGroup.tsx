@@ -3,6 +3,9 @@
 import { hslToHex, isHex, isHsl } from "@ui/utils/colorUtils";
 import OverrideField from "./OverrideField";
 import type { MutableRefObject } from "react";
+import { Inline } from "@ui/components/atoms/primitives/Inline";
+import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
+import { useTranslations } from "@i18n/Translations";
 
 interface Props {
   name: string;
@@ -38,6 +41,7 @@ export default function TokenGroup({
   onTokenSelect,
   selectedToken,
 }: Props) {
+  const t = useTranslations();
   return (
     <fieldset className="space-y-2">
       <legend className="flex flex-wrap items-center justify-between gap-2 font-semibold">
@@ -47,10 +51,10 @@ export default function TokenGroup({
           className="shrink-0 text-sm underline"
           onClick={handleGroupReset(tokens.map(([k]) => k))}
         >
-          Reset
+          {t("Reset")}
         </button>
       </legend>
-      <div className="mb-2 flex flex-wrap gap-2">
+      <Inline className="mb-2" wrap gap={2}>
         {tokens
           .filter(([, v]) => isHex(v) || isHsl(v))
           .map(([k, defaultValue]) => {
@@ -73,7 +77,7 @@ export default function TokenGroup({
                 type="button"
                 aria-label={k}
                 title={k}
-                className={`h-6 w-6 overflow-hidden rounded border border-border/10 p-0 ${
+                className={`h-10 w-10 overflow-hidden rounded border border-border/10 p-0 ${
                   hasOverride ? "ring-2 ring-warning" : ""
                 } ${selectedToken === k ? "ring-2 ring-primary" : ""}`}
                 onClick={() => onTokenSelect(k)}
@@ -83,12 +87,12 @@ export default function TokenGroup({
                     <span
                       className="h-full w-1/2"
                       style={{ background: defaultHex }}
-                      title="Default"
+                      title={String(t("Default"))}
                     />
                     <span
                       className="h-full w-1/2"
                       style={{ background: currentHex }}
-                      title="Custom"
+                      title={String(t("Custom"))}
                     />
                   </span>
                 ) : (
@@ -100,8 +104,8 @@ export default function TokenGroup({
               </button>
             );
           })}
-      </div>
-      <div className="grid gap-2 md:grid-cols-2">
+      </Inline>
+      <DSGrid cols={1} gap={2} className="md:grid-cols-2">
         {tokens.map(([k, defaultValue]) => {
           const hasOverride = Object.prototype.hasOwnProperty.call(overrides, k);
           const overrideValue = hasOverride ? overrides[k] : "";
@@ -122,7 +126,7 @@ export default function TokenGroup({
             />
           );
         })}
-      </div>
+      </DSGrid>
     </fieldset>
   );
 }

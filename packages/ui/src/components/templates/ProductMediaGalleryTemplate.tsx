@@ -1,12 +1,14 @@
 "use client";
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { useTranslations } from "@acme/i18n";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { ProductBadge } from "../atoms/ProductBadge";
 import type { MediaItem as GalleryMediaItem } from "../molecules/MediaSelector";
 import type { SKU } from "@acme/types";
 import { ProductGallery } from "../organisms/ProductGallery";
+import { Grid, Inline, Stack } from "../atoms/primitives";
 
 export interface ProductMediaGalleryTemplateProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -20,10 +22,12 @@ export interface ProductMediaGalleryTemplateProps
 export function ProductMediaGalleryTemplate({
   product,
   onAddToCart,
-  ctaLabel = "Add to cart",
+  ctaLabel: ctaLabelProp,
   className,
   ...props
 }: ProductMediaGalleryTemplateProps) {
+  const t = useTranslations();
+  const ctaLabel = ctaLabelProp ?? t("actions.addToCart");
   const galleryMedia: GalleryMediaItem[] = (product.media ?? [])
     .filter(
       (m): m is NonNullable<SKU["media"]>[number] & { url: string } =>
@@ -35,12 +39,12 @@ export function ProductMediaGalleryTemplate({
       alt: m.altText,
     }));
   return (
-    <div className={cn("grid gap-6 md:grid-cols-2", className)} {...props}>
+    <Grid cols={1} gap={6} className={cn("md:grid-cols-2", className)} {...props}>
       <ProductGallery media={galleryMedia} />
-      <div className="flex flex-col gap-4">
+      <Stack gap={4}>
         <h2 className="text-2xl font-semibold">{product.title}</h2>
         {product.badges && (
-          <div className="flex gap-2">
+          <Inline gap={2}>
             {product.badges.map(
               (
                 b: { label: string; variant?: "default" | "sale" | "new" },
@@ -49,7 +53,7 @@ export function ProductMediaGalleryTemplate({
                 <ProductBadge key={idx} label={b.label} variant={b.variant} />
               )
             )}
-          </div>
+          </Inline>
         )}
         {typeof product.price === "number" && (
           <Price amount={product.price} className="text-xl font-bold" />
@@ -58,7 +62,7 @@ export function ProductMediaGalleryTemplate({
         {onAddToCart && (
           <Button onClick={() => onAddToCart(product)}>{ctaLabel}</Button>
         )}
-      </div>
-    </div>
+      </Stack>
+    </Grid>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "@acme/i18n";
 
 export interface FinancingBadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   provider?: "affirm" | "klarna" | "afterpay" | "custom";
@@ -16,6 +17,7 @@ function formatMoney(v: number, currency?: string) {
 }
 
 export default function FinancingBadge({ provider = "custom", apr = 0, termMonths = 12, price, currency, label, className, ...rest }: FinancingBadgeProps) {
+  const t = useTranslations();
   const monthly = React.useMemo(() => {
     if (typeof price !== "number" || price <= 0 || termMonths <= 0) return null;
     // simple non-compounded monthly estimate ignoring APR for display
@@ -23,16 +25,35 @@ export default function FinancingBadge({ provider = "custom", apr = 0, termMonth
     return Math.max(0, base);
   }, [price, termMonths]);
 
-  const text = label ?? (monthly != null ? `${formatMoney(monthly, currency)}/mo` : undefined);
+  const text = label ?? (monthly != null ? (t("pricing.perMonthShort", { amount: formatMoney(monthly, currency) }) as string) : undefined);
   const providerLabel = provider[0].toUpperCase() + provider.slice(1);
-  const aprText = apr ? `${apr.toFixed(2)}% APR` : "0% APR";
+  const aprText = apr ? (t("finance.apr", { apr: `${apr.toFixed(2)}%` }) as string) : (t("finance.aprZero") as string);
 
   return (
-    <div className={["inline-flex items-center gap-2 rounded border px-2 py-1 text-xs", className].filter(Boolean).join(" ") || undefined} {...rest}>
-      <span className="rounded bg-black px-1.5 py-0.5 text-white">{providerLabel}</span>
+    <div
+      className={[
+        // i18n-exempt — CSS utility class names
+        "inline-flex items-center gap-2 rounded border px-2 py-1 text-xs",
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ") || undefined}
+      {...rest}
+    >
+      <span
+        // i18n-exempt — CSS utility class names
+        className="rounded bg-black px-1.5 py-0.5 text-white"
+      >
+        {providerLabel}
+      </span>{" "}
+      {/* i18n-exempt — provider brand/proper noun */}
       {text ? <span>{text}</span> : null}
-      <span className="text-neutral-600">{aprText}</span>
+      <span
+        // i18n-exempt — CSS utility class names
+        className="text-neutral-600"
+      >
+        {aprText}
+      </span>
     </div>
   );
 }
-

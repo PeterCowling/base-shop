@@ -2,6 +2,7 @@
 "use client";
 
 import type { PageComponent, HistoryState } from "@acme/types";
+import type { EditorFlags } from "./panels/layout/types";
 import { memo } from "react";
 import {
   Accordion,
@@ -40,8 +41,8 @@ interface Props {
     paddingMobile?: string;
   }) => void;
   editor?: HistoryState["editor"];
-  onUpdateEditor?: (patch: any) => void;
-  onUpdateEditorForId?: (id: string, patch: any) => void;
+  onUpdateEditor?: (patch: Partial<EditorFlags>) => void;
+  onUpdateEditorForId?: (id: string, patch: Partial<EditorFlags>) => void;
 }
 
 function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor, onUpdateEditorForId }: Props) {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AUTOSCROLL_EDGE_PX } from "../hooks/usePageBuilderDnD";
 
 type Props = {
@@ -62,7 +62,7 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
       const baseRect = canvas?.getBoundingClientRect();
       try {
         const d: Box[] = [];
-        document.querySelectorAll<HTMLElement>('[id^="container-"]').forEach((el) => {
+        document.querySelectorAll<HTMLElement>(/* i18n-exempt -- PB-2419: CSS selector */ '[id^="container-"]').forEach((el) => {
           if (!baseRect) return; d.push(measure(el, baseRect));
         });
         setDroppables(d);
@@ -102,7 +102,8 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
   if (!enabled || !canvas || !baseRect) return null;
 
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 z-[100]">
+    <div className="relative pointer-events-none" aria-hidden>
+      <div className="absolute inset-0">
       {/* Droppable containers */}
       {droppables.map((b, i) => (
         <div key={`drop-${i}`} className="absolute border border-purple-500/60" style={{ left: b.left, top: b.top, width: b.width, height: b.height }} />
@@ -112,10 +113,14 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
         <div key={`item-${i}`} className="absolute border border-emerald-500/60" style={{ left: b.left, top: b.top, width: b.width, height: b.height }} />
       ))}
       {/* HUD */}
-      <div className="absolute start-2 top-2 rounded bg-black/70 px-2 py-1 text-[10px] text-white shadow">
+      <div className="absolute start-2 top-2 rounded bg-black/70 px-2 py-1 text-xs text-white shadow">
+        {/* i18n-exempt: developer-only diagnostics UI */}
         <div>DevTools ON</div>
+        {/* i18n-exempt: developer-only diagnostics UI */}
         <div>FPS ~ {Math.round(fps)}</div>
+        {/* i18n-exempt: developer-only diagnostics UI */}
         <div>Droppables: {droppables.length} Items: {items.length}</div>
+        {/* i18n-exempt: developer-only diagnostics UI */}
         <div>Toggle: Ctrl/Cmd + Alt + D</div>
       </div>
       {/* Autoscroll bands (relative to scroll container) */}
@@ -133,6 +138,7 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
           </div>
         );
       })()}
+      </div>
     </div>
   );
 }

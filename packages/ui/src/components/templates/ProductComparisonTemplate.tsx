@@ -18,7 +18,10 @@ export function ProductComparisonTemplate({
 }: ProductComparisonTemplateProps) {
   return (
     <div
-      className={cn("grid gap-6 sm:grid-cols-2 lg:grid-cols-3", className)}
+      className={cn(
+        "grid gap-6 sm:grid-cols-2 lg:grid-cols-3", // i18n-exempt: className utilities
+        className,
+      )}
       {...props}
     >
       {products.map((p) => (

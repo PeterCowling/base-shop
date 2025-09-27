@@ -26,16 +26,16 @@ export function PaymentMethodSelector({
 }: PaymentMethodSelectorProps) {
   const group = React.useId();
   return (
-    <div className={cn("flex flex-col gap-2", className)} {...props}>
+    <div className={cn("flex flex-col gap-2", /* i18n-exempt: class names */ className)} {...props}>
       {methods.map((m) => (
-        <label key={m.value} className="flex cursor-pointer items-center gap-2">
+        <label key={m.value} className="flex cursor-pointer items-center gap-2 min-h-10">
           <input
             type="radio"
             name={group}
             value={m.value}
             checked={value === m.value}
             onChange={() => onChange?.(m.value)}
-            className="accent-primary size-4"
+            className="accent-primary size-10"
           />
           {m.icon && <span className="size-6">{m.icon}</span>}
           <span>{m.label}</span>

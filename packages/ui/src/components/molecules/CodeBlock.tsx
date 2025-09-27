@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import { Button } from "../atoms";
 import { cn } from "../../utils/style";
+import { useTranslations } from "@acme/i18n";
+// i18n-exempt: CSS utility classes only
+const PRE_CLASSES = "bg-muted text-xs font-mono leading-relaxed overflow-x-auto rounded-md border border-border p-4 pe-16"; // i18n-exempt: CSS classes
 
 export interface CodeBlockProps {
   code: string;
@@ -16,9 +19,10 @@ export default function CodeBlock({
   code,
   className,
   preClassName,
-  copyLabel = "Copy",
-  copiedLabel = "Copied",
+  copyLabel,
+  copiedLabel,
 }: CodeBlockProps) {
+  const t = useTranslations();
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -41,23 +45,28 @@ export default function CodeBlock({
   }
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={className}>
+      <div className="relative">
       <Button
         type="button"
         variant="outline"
         onClick={handleCopy}
-        className="absolute end-3 top-3 z-10 h-auto px-2 py-1 text-xs"
+        className="absolute end-3 top-3 h-auto px-2 py-1 text-xs"
       >
-        {copied ? copiedLabel : copyLabel}
+        {copied ? (copiedLabel ?? (t("Copied") as string)) : (copyLabel ?? (t("Copy") as string))}
       </Button>
+      {
+        // i18n-exempt: CSS utility classes only
+      }
       <pre
         className={cn(
-          "bg-muted text-xs font-mono leading-relaxed overflow-x-auto rounded-md border border-border p-4 pe-16",
+          PRE_CLASSES,
           preClassName,
         )}
       >
         <code>{code}</code>
       </pre>
+      </div>
     </div>
   );
 }

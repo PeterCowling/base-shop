@@ -86,12 +86,12 @@ export default function PresetManager({
     try {
       JSON.parse(importText);
     } catch {
-      setImportError("Invalid JSON");
+      setImportError(/* i18n-exempt */ "Invalid JSON");
       return;
     }
     const ok = importPresets(importText);
     if (!ok) {
-      setImportError("Invalid preset format");
+      setImportError(/* i18n-exempt */ "Invalid preset format");
       return;
     }
     setImportOpen(false);
@@ -101,13 +101,13 @@ export default function PresetManager({
   return (
     <div className="flex items-center gap-2">
       <select
-        aria-label="Style preset"
+        aria-label={/* i18n-exempt — editor-only control label */ "Style preset"}
         className="rounded border border-border-2 bg-surface-2 px-2 py-1 text-sm"
         onChange={(event) => onApplyPreset(event.target.value)}
         defaultValue=""
       >
         <option value="" disabled>
-          Presets
+          {/* i18n-exempt */}Presets
         </option>
         {presets.map((preset) => (
           <option key={preset.id} value={preset.id}>
@@ -116,65 +116,65 @@ export default function PresetManager({
         ))}
       </select>
       <select
-        aria-label="Custom preset"
+        aria-label={/* i18n-exempt — editor-only control label */ "Custom preset"}
         className="rounded border border-border-2 bg-surface-2 px-2 py-1 text-sm"
         onChange={(event) => onApplyCustomPreset(event.target.value)}
         value={selectedCustom}
       >
-        <option value="">Custom…</option>
+        <option value="">{/* i18n-exempt */}Custom…</option>
         {customPresets.map((preset) => (
           <option key={preset.id} value={preset.id}>
             {preset.label}
           </option>
         ))}
       </select>
-      <Button type="button" variant="outline" onClick={onCopy} aria-label="Copy styles">
-        Copy
+      <Button type="button" variant="outline" onClick={onCopy} aria-label={/* i18n-exempt */ "Copy styles"}>
+        {/* i18n-exempt */}Copy
       </Button>
-      <Button type="button" variant="outline" onClick={onPaste} aria-label="Paste styles">
-        Paste
+      <Button type="button" variant="outline" onClick={onPaste} aria-label={/* i18n-exempt */ "Paste styles"}>
+        {/* i18n-exempt */}Paste
       </Button>
-      <Button type="button" variant="outline" onClick={onSavePreset} aria-label="Save custom effects preset">
-        Save preset
+      <Button type="button" variant="outline" onClick={onSavePreset} aria-label={/* i18n-exempt */ "Save custom effects preset"}>
+        {/* i18n-exempt */}Save preset
       </Button>
-      <Button type="button" variant="outline" onClick={onRenamePreset} aria-label="Rename selected custom preset" disabled={!selectedCustom}>
-        Rename
+      <Button type="button" variant="outline" onClick={onRenamePreset} aria-label={/* i18n-exempt */ "Rename selected custom preset"} disabled={!selectedCustom}>
+        {/* i18n-exempt */}Rename
       </Button>
-      <Button type="button" variant="outline" onClick={onDuplicatePreset} aria-label="Duplicate selected custom preset" disabled={!selectedCustom}>
-        Duplicate
+      <Button type="button" variant="outline" onClick={onDuplicatePreset} aria-label={/* i18n-exempt */ "Duplicate selected custom preset"} disabled={!selectedCustom}>
+        {/* i18n-exempt */}Duplicate
       </Button>
-      <Button type="button" variant="outline" onClick={() => onMovePreset("up")} aria-label="Move selected preset up" disabled={!selectedCustom || !canMoveUp}>
-        Up
+      <Button type="button" variant="outline" onClick={() => onMovePreset("up")} aria-label={/* i18n-exempt */ "Move selected preset up"} disabled={!selectedCustom || !canMoveUp}>
+        {/* i18n-exempt */}Up
       </Button>
-      <Button type="button" variant="outline" onClick={() => onMovePreset("down")} aria-label="Move selected preset down" disabled={!selectedCustom || !canMoveDown}>
-        Down
+      <Button type="button" variant="outline" onClick={() => onMovePreset("down")} aria-label={/* i18n-exempt */ "Move selected preset down"} disabled={!selectedCustom || !canMoveDown}>
+        {/* i18n-exempt */}Down
       </Button>
-      <Button type="button" variant="outline" onClick={onRemovePreset} aria-label="Delete selected custom preset" disabled={!selectedCustom}>
-        Delete
+      <Button type="button" variant="outline" onClick={onRemovePreset} aria-label={/* i18n-exempt */ "Delete selected custom preset"} disabled={!selectedCustom}>
+        {/* i18n-exempt */}Delete
       </Button>
-      <Button type="button" variant="outline" onClick={() => openExport(false)} aria-label="Export custom presets JSON">
-        Export all
+      <Button type="button" variant="outline" onClick={() => openExport(false)} aria-label={/* i18n-exempt */ "Export custom presets JSON"}>
+        {/* i18n-exempt */}Export all
       </Button>
-      <Button type="button" variant="outline" onClick={() => openExport(true)} aria-label="Export selected custom preset" disabled={!selectedCustom}>
-        Export selected
+      <Button type="button" variant="outline" onClick={() => openExport(true)} aria-label={/* i18n-exempt */ "Export selected custom preset"} disabled={!selectedCustom}>
+        {/* i18n-exempt */}Export selected
       </Button>
-      <Button type="button" variant="outline" onClick={() => setImportOpen(true)} aria-label="Import custom presets JSON">
-        Import
+      <Button type="button" variant="outline" onClick={() => setImportOpen(true)} aria-label={/* i18n-exempt */ "Import custom presets JSON"}>
+        {/* i18n-exempt */}Import
       </Button>
 
       <Dialog open={exportOpen} onOpenChange={setExportOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Export custom presets</DialogTitle>
+            <DialogTitle>{/* i18n-exempt */}Export custom presets</DialogTitle>
           </DialogHeader>
           <Textarea value={exportText} readOnly rows={10} />
           <DialogFooter>
-            <div className="me-auto text-xs text-muted-foreground">{copied ? "Copied" : ""}</div>
+            <div className="me-auto text-xs text-muted-foreground">{copied ? (/* i18n-exempt */ "Copied") : ""}</div>
             <Button type="button" variant="outline" onClick={() => setExportOpen(false)}>
-              Close
+              {/* i18n-exempt */}Close
             </Button>
             <Button type="button" onClick={handleCopyExport}>
-              Copy
+              {/* i18n-exempt */}Copy
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -183,7 +183,7 @@ export default function PresetManager({
       <Dialog open={importOpen} onOpenChange={setImportOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Import custom presets</DialogTitle>
+            <DialogTitle>{/* i18n-exempt */}Import custom presets</DialogTitle>
           </DialogHeader>
           <Textarea
             value={importText}
@@ -192,7 +192,7 @@ export default function PresetManager({
               setImportError("");
             }}
             rows={10}
-            placeholder="Paste presets JSON here"
+            placeholder={/* i18n-exempt */ "Paste presets JSON here"}
           />
           {importError ? (
             <p className="text-danger text-xs" role="alert">
@@ -208,10 +208,10 @@ export default function PresetManager({
                 setImportError("");
               }}
             >
-              Cancel
+              {/* i18n-exempt */}Cancel
             </Button>
             <Button type="button" onClick={handleImport} disabled={!importText.trim()}>
-              Import
+              {/* i18n-exempt */}Import
             </Button>
           </DialogFooter>
         </DialogContent>

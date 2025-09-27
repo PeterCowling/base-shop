@@ -3,7 +3,7 @@
 
 import React from "react";
 import CanvasControlsMenu from "./CanvasControlsMenu";
-import { ViewMenuContent, default as ViewMenu } from "./ViewMenu";
+import ViewMenu from "./ViewMenu";
 import type GridSettings from "./GridSettings";
 import type { PageComponent } from "@acme/types";
 
@@ -64,7 +64,7 @@ export default function ResponsiveRightActions({
   const showView = w >= 380;
 
   return (
-    <div ref={containerRef} className="flex flex-wrap items-center gap-2 justify-end max-w-full">
+    <div ref={containerRef} className="flex flex-wrap items-center gap-2 justify-end w-full">
       <CanvasControlsMenu gridProps={gridProps} />
       {showView ? (
         <ViewMenu

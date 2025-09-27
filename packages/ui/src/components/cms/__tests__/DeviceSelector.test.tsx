@@ -7,11 +7,11 @@ import { useState } from "react";
 describe("DeviceSelector", () => {
   beforeAll(() => {
     // JSDOM doesn't implement these pointer APIs used by Radix Select
-    // @ts-ignore
+    // @ts-expect-error JSDOM lacks pointer capture APIs in tests
     HTMLElement.prototype.hasPointerCapture = () => false;
-    // @ts-ignore
+    // @ts-expect-error JSDOM lacks pointer capture APIs in tests
     HTMLElement.prototype.setPointerCapture = () => {};
-    // @ts-ignore
+    // @ts-expect-error JSDOM lacks scrollIntoView in tests
     Element.prototype.scrollIntoView = () => {};
   });
   it("lists all device presets in the dropdown", async () => {
@@ -123,4 +123,3 @@ describe("DeviceSelector", () => {
     expect(icon).not.toHaveClass("rotate-90");
   });
 });
-

@@ -19,8 +19,20 @@ jest.mock("@platform-core/repositories/settings.server", () => ({
   getShopSettings: (...args: any[]) => getShopSettingsMock(...args),
 }));
 
-jest.mock("@ui/components/checkout/CheckoutForm", () => () => <div data-cy="checkout-form" />);
-jest.mock("@ui/components/organisms/OrderSummary", () => () => <div data-cy="order-summary" />);
+jest.mock("@ui/components/checkout/CheckoutForm", () => {
+  function MockCheckoutForm() {
+    return <div data-cy="checkout-form" />;
+  }
+  MockCheckoutForm.displayName = "MockCheckoutForm";
+  return MockCheckoutForm;
+});
+jest.mock("@ui/components/organisms/OrderSummary", () => {
+  function MockOrderSummary() {
+    return <div data-cy="order-summary" />;
+  }
+  MockOrderSummary.displayName = "MockOrderSummary";
+  return MockOrderSummary;
+});
 
 const DeliverySchedulerStub = ({ onChange }: any) => (
   <button
@@ -93,4 +105,3 @@ describe("CheckoutPage", () => {
     });
   });
 });
-

@@ -33,11 +33,10 @@ export async function GET(req: Request) {
       headers: {
         "content-type": "application/json",
         // short cache for demo; adjust in production
-        "cache-control": "public, max-age=30, s-maxage=60, stale-while-revalidate=120",
+        "cache-control": "public, max-age=30, s-maxage=60, stale-while-revalidate=120", // i18n-exempt -- ABC-123: HTTP cache header value
       },
     });
-  } catch (err) {
-    return NextResponse.json({ error: "bad_request" }, { status: 400 });
+  } catch {
+    return NextResponse.json({ error: "bad_request" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
   }
 }
-

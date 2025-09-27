@@ -9,6 +9,9 @@ import CanvasItem from "./CanvasItem";
 import InlineInsert from "./InlineInsert";
 import { useEffect, useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
+import { Cluster } from "../../atoms/primitives/Cluster";
+import { cn } from "../../../utils/style/cn";
+import { useTranslations } from "@acme/i18n";
 
 type Props = {
   component: PageComponent;
@@ -55,27 +58,32 @@ export default function TabbedChildren({
   dropAllowed,
   preferParentOnClick = false,
 }: Props) {
+  const t = useTranslations();
   // Track dragging to show sticky tab headers
   const [dragActive, setDragActive] = useState(false);
   const [hoverTab, setHoverTab] = useState<number | null>(null);
   useEffect(() => {
-    const onStart = () => setDragActive(true);
-    const onEnd = () => {
+    const onStart: EventListener = () => setDragActive(true);
+    const onEnd: EventListener = () => {
       setDragActive(false);
       setHoverTab(null);
     };
-    window.addEventListener("pb-drag-start", onStart as any);
-    window.addEventListener("pb-drag-end", onEnd as any);
+    window.addEventListener("pb-drag-start", onStart);
+    window.addEventListener("pb-drag-end", onEnd);
     return () => {
-      window.removeEventListener("pb-drag-start", onStart as any);
-      window.removeEventListener("pb-drag-end", onEnd as any);
+      window.removeEventListener("pb-drag-start", onStart);
+      window.removeEventListener("pb-drag-end", onEnd);
     };
   }, []);
 
   return (
     <>
       {dragActive && (
-        <div className="sticky top-0 z-30 -mx-2 -mt-2 mb-2 flex gap-2 bg-background/80 p-2 backdrop-blur">
+        <Cluster
+          gap={2}
+          wrap
+          className="sticky top-0 mb-2 bg-background/80 p-2 backdrop-blur"
+        >
           {slots.map((s, i) => (
             <div
               key={`tab-head-${s.key}`}
@@ -88,24 +96,28 @@ export default function TabbedChildren({
                 } catch {}
               }}
               onMouseLeave={() => setHoverTab((prev) => (prev === i ? null : prev))}
-              className={`rounded border px-2 py-1 text-xs ${hoverTab === i ? "border-primary bg-primary/10 ring-2 ring-primary" : "border-dashed"}`}
+              className={cn(
+                "rounded border px-2 py-1 text-xs", // i18n-exempt: class names
+                hoverTab === i ? "border-primary bg-primary/10 ring-2 ring-primary" : "border-dashed" // i18n-exempt: class names
+              )}
             >
               {s.title}
             </div>
           ))}
-        </div>
+        </Cluster>
       )}
 
       {slots.map((slot, sIdx) => {
+        type PageComponentWithSlot = PageComponent & { slotKey?: string };
         const slotChildren = visibleChildren.filter((c) => {
-          const sk = (c as any).slotKey as string | undefined;
+          const sk = (c as PageComponentWithSlot).slotKey;
           return sk === String(sIdx) || (sk == null && sIdx === 0);
         });
         const firstIdx =
           slotChildren.length > 0
             ? visibleChildren.findIndex((c) => c.id === slotChildren[0]!.id)
             : visibleChildren.findIndex((c) => {
-                const sk = (c as any).slotKey as string | undefined;
+                const sk = (c as PageComponentWithSlot).slotKey;
                 const val = sk != null ? Number(sk) : 0;
                 return val >= sIdx;
               });
@@ -124,18 +136,23 @@ export default function TabbedChildren({
               context="child"
               containerType={component.type}
               onInsert={(newComponent, index) => {
-                (newComponent as any).slotKey = String(sIdx);
+                (newComponent as (PageComponent & { slotKey?: string })).slotKey = String(sIdx);
                 const insertAt = toUnderlyingIndex(index);
                 dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
                 try {
-                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
+                  // i18n-exempt — internal builder live message
+                  const msg = "Block inserted";
+                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: msg }));
                 } catch {}
               }}
             />
             {insertParentId === component.id && insertIndex === startIndex && (
               <div
                 data-placeholder
-                className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"}
+                className={cn(
+                  "mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt: class names
+                  dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt: class names
+                )}
               />
             )}
             {slotChildren.map((child) => {
@@ -143,12 +160,24 @@ export default function TabbedChildren({
               return (
                 <div key={child.id} className="relative group">
                   {insertParentId === component.id && insertIndex === i && (
-                    <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+                    <div
+                      data-placeholder
+                      className={cn(
+                        "mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt: class names
+                        dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt: class names
+                      )}
+                    />
                   )}
-                  <div className="absolute -top-3 -start-2.5 z-20">
+                  <div className="absolute -top-3 -start-2.5">
                     <Select
-                      value={String((child as any).slotKey ?? 0)}
-                      onValueChange={(v) => dispatch({ type: "update", id: child.id, patch: { slotKey: v } as any })}
+                      value={String((child as PageComponentWithSlot).slotKey ?? 0)}
+                      onValueChange={(v) =>
+                        dispatch({
+                          type: "update",
+                          id: child.id,
+                          patch: { slotKey: v } as Partial<PageComponentWithSlot>,
+                        })
+                      }
                     >
                       <SelectTrigger className="h-6 w-24 px-2 py-0 text-xs">
                         <SelectValue />
@@ -166,7 +195,7 @@ export default function TabbedChildren({
                     component={child}
                     index={i}
                     parentId={component.id}
-                    parentType={(component as any).type as string}
+                    parentType={component.type as string}
                     parentSlots={slots.length}
                     selectedIds={selectedIds}
                     onSelect={onSelect}
@@ -188,16 +217,24 @@ export default function TabbedChildren({
                     context="child"
                     containerType={component.type}
                     onInsert={(newComponent, index) => {
-                      (newComponent as any).slotKey = String(sIdx);
+                      (newComponent as PageComponentWithSlot).slotKey = String(sIdx);
                       const insertAt = toUnderlyingIndex(index);
                       dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
                       try {
-                        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
+                        // i18n-exempt — internal builder live message
+                        const msg = "Block inserted";
+                        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: msg }));
                       } catch {}
                     }}
                   />
                   {insertParentId === component.id && insertIndex === i + 1 && (
-                    <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+                    <div
+                      data-placeholder
+                      className={cn(
+                        "mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt: class names
+                        dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt: class names
+                      )}
+                    />
                   )}
                 </div>
               );
@@ -207,16 +244,23 @@ export default function TabbedChildren({
               context="child"
               containerType={component.type}
               onInsert={(newComponent, index) => {
-                (newComponent as any).slotKey = String(sIdx);
+                (newComponent as PageComponentWithSlot).slotKey = String(sIdx);
                 const insertAt = toUnderlyingIndex(index);
                 dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
                 try {
-                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
+                  // i18n-exempt — internal builder live message
+                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("Block inserted") }));
                 } catch {}
               }}
             />
             {insertParentId === component.id && insertIndex === endIndex && (
-              <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
+              <div
+                data-placeholder
+                className={cn(
+                  "mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt: class names
+                  dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt: class names
+                )}
+              />
             )}
           </div>
         );

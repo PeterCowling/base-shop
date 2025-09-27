@@ -18,7 +18,7 @@ export default function useDimLockedSelection({
       lockedIds.forEach((id) => {
         const el = document.querySelector(`[data-component-id="${id}"]`) as HTMLElement | null;
         if (el) {
-          (el as any).dataset.pbPrevOpacity = el.style.opacity;
+          el.dataset.pbPrevOpacity = el.style.opacity;
           el.style.opacity = "0.4";
           dimmed.push(el);
         }
@@ -26,9 +26,9 @@ export default function useDimLockedSelection({
     }
     return () => {
       dimmed.forEach((el) => {
-        const prev = (el as any).dataset.pbPrevOpacity as string | undefined;
+        const prev = el.dataset.pbPrevOpacity as string | undefined;
         el.style.opacity = prev ?? "";
-        if ((el as any).dataset) delete (el as any).dataset.pbPrevOpacity;
+        if (el.dataset) delete el.dataset.pbPrevOpacity;
       });
     };
   }, [enabled, lockedIds]);

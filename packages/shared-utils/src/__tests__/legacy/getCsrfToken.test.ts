@@ -11,11 +11,11 @@ describe('getCsrfToken', () => {
     if (globalThis.document) {
       globalThis.document.head.innerHTML = '';
       globalThis.document.cookie = 'csrf_token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
-      // @ts-ignore
+      // @ts-expect-error: deleting jsdom-provided document between tests
       delete globalThis.document;
     }
     if (originalLocation === undefined) {
-      // @ts-ignore - location might not exist in node environment
+      // @ts-expect-error: location might not exist in node environment
       delete globalThis.location;
     } else {
       (globalThis as any).location = originalLocation;
@@ -150,4 +150,3 @@ describe('getCsrfToken', () => {
     expect(getCsrfToken()).toBeUndefined();
   });
 });
-

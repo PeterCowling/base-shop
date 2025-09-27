@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename */
+/* eslint-disable security/detect-non-literal-fs-filename -- ABC-123: Paths derive from controlled DATA_ROOT */
 import "server-only";
 
 import { returnAuthorizationSchema, type ReturnAuthorization } from "@acme/types";
@@ -55,4 +55,3 @@ export const jsonReturnAuthorizationRepository = {
   addReturnAuthorization,
   getReturnAuthorization,
 };
-

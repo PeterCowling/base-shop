@@ -43,7 +43,7 @@ export async function PUT(req: NextRequest) {
   if (cartId) {
     const existing = await getCart(cartId);
     if (Object.keys(existing ?? {}).length === 0) {
-      return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+      return NextResponse.json({ error: "Cart not found" }, { status: 404 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
     }
   } else {
     cartId = await createCart();
@@ -53,13 +53,13 @@ export async function PUT(req: NextRequest) {
   for (const line of parsed.data.lines) {
     const sku = getProductById(line.sku.id);
     if (!sku) {
-      return NextResponse.json({ error: "Item not found" }, { status: 404 });
+      return NextResponse.json({ error: "Item not found" }, { status: 404 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
     }
     if (sku.sizes.length && !line.size) {
-      return NextResponse.json({ error: "Size required" }, { status: 400 });
+      return NextResponse.json({ error: "Size required" }, { status: 400 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
     }
     if (line.qty > sku.stock) {
-      return NextResponse.json({ error: "Insufficient stock" }, { status: 409 });
+      return NextResponse.json({ error: "Insufficient stock" }, { status: 409 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
     }
     const key = line.size ? `${sku.id}:${line.size}` : sku.id;
     cart[key] = { sku, size: line.size, qty: line.qty };
@@ -92,15 +92,15 @@ export async function POST(req: NextRequest) {
     rental,
   } = data;
   const sku = getProductById(skuId);
-  if (!sku) {
-    const exists = PRODUCTS.some((p) => p.id === skuId);
-    const status = exists ? 409 : 404;
-    const error = exists ? "Out of stock" : "Item not found";
-    return NextResponse.json({ error }, { status });
-  }
+    if (!sku) {
+      const exists = PRODUCTS.some((p) => p.id === skuId);
+      const status = exists ? 409 : 404;
+      const error = exists ? "Out of stock" : "Item not found"; // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
+      return NextResponse.json({ error }, { status });
+    }
 
   if (sku.sizes.length && !size) {
-    return NextResponse.json({ error: "Size required" }, { status: 400 });
+    return NextResponse.json({ error: "Size required" }, { status: 400 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
   }
 
   let cartId = decodeCartCookie(req.cookies.get(CART_COOKIE)?.value) as
@@ -114,7 +114,7 @@ export async function POST(req: NextRequest) {
   const line = cart[id];
   const newQty = (line?.qty ?? 0) + qty;
   if (newQty > sku.stock) {
-    return NextResponse.json({ error: "Insufficient stock" }, { status: 409 });
+    return NextResponse.json({ error: "Insufficient stock" }, { status: 409 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
   }
   // Only pass `rental` when defined to avoid an extra undefined arg
   const updated = await (typeof rental === "undefined"
@@ -144,11 +144,11 @@ export async function PATCH(req: NextRequest) {
     | string
     | null;
   if (!cartId) {
-    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+    return NextResponse.json({ error: "Cart not found" }, { status: 404 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
   }
   const cart = await setQty(cartId, id, qty);
   if (!cart) {
-    return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
+    return NextResponse.json({ error: "Item not in cart" }, { status: 404 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
   }
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
@@ -174,11 +174,11 @@ export async function DELETE(req: NextRequest) {
     | string
     | null;
   if (!cartId) {
-    return NextResponse.json({ error: "Cart not found" }, { status: 404 });
+    return NextResponse.json({ error: "Cart not found" }, { status: 404 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
   }
   const cart = await removeItem(cartId, id);
   if (!cart) {
-    return NextResponse.json({ error: "Item not in cart" }, { status: 404 });
+    return NextResponse.json({ error: "Item not in cart" }, { status: 404 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
   }
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));

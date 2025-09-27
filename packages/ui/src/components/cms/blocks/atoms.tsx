@@ -122,11 +122,11 @@ const atomEntries = {
   Spacer: { component: Spacer },
   CustomHtml: { component: CustomHtml },
   Button: { component: ButtonBlock },
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- DS/CMS typing needs generic registry values (tracked in ABC-123)
 } satisfies Record<string, BlockRegistryEntry<any>>;
 
 type AtomRegistry = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Registry aggregates heterogeneous block prop types (ABC-123)
   -readonly [K in keyof typeof atomEntries]: BlockRegistryEntry<any>;
 };
 

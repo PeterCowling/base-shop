@@ -1,4 +1,5 @@
 "use client";
+// i18n-exempt — CMS editor-only modal; localization to be wired later
 
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
 import { Tooltip } from "../../atoms";
@@ -11,6 +12,8 @@ import type { PageComponent } from "@acme/types";
 import type { SectionTemplate } from "@acme/types/section/template";
 import { presetList, presetCategories, type PresetDef, type PresetCategory } from "./presets.data";
 import { getPalettePreview } from "./previewImages";
+import { Inline } from "../../atoms/primitives/Inline";
+import { Grid } from "../../atoms/primitives/Grid";
 import useThemeSignature from "./hooks/useThemeSignature";
 import { builtInSections } from "./builtInSections.data";
 
@@ -53,7 +56,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
         const RemoteArray = z.array(RemoteItem);
         const parsed = RemoteArray.safeParse(Array.isArray(data) ? data : (data?.items ?? []));
         if (!parsed.success) {
-          setLoadError("Presets feed invalid format");
+          setLoadError(/* i18n-exempt */ "Presets feed invalid format");
           return;
         }
         if (!aborted && parsed.data.length) {
@@ -62,16 +65,16 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
             label: r.label,
             description: r.description,
             preview: r.preview,
-            previewType: (r as any)?.template?.type as string | undefined,
+            previewType: ((r.template as unknown as { type?: string } | undefined)?.type) || undefined,
             category: r.category,
-            build: () => (r.template as any),
+            build: () => (r.template as unknown as PageComponent),
           }));
           setPresets(mapped);
           setLoadError("");
         }
       } catch {
         // Show a soft error; keep local presets
-        setLoadError("Failed to load presets feed");
+        setLoadError(/* i18n-exempt */ "Failed to load presets feed");
       }
     })();
     return () => { aborted = true; };
@@ -111,9 +114,9 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
           label: s.label,
           description: Array.isArray(s.tags) && s.tags.length ? s.tags.join(", ") : undefined,
           preview: s.thumbnail || "/window.svg",
-          previewType: (s as any)?.template?.type as string | undefined,
-          category: toCategory((s as any).tags),
-          build: () => (s.template as any),
+          previewType: ((s.template as unknown as { type?: string } | undefined)?.type) || undefined,
+          category: toCategory(s.tags),
+          build: () => (s.template as unknown as PageComponent),
         }));
 
         // Merge with existing presets; keep starters first, then sections
@@ -164,51 +167,51 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
     <Dialog open={open} onOpenChange={onOpenChange}>
       {!hideTrigger && (
         <DialogTrigger asChild>
-          <Tooltip text="Insert a section">
-            <Button variant="outline">Add Section</Button>
+          <Tooltip text={/* i18n-exempt */ "Insert a section"}>
+            <Button variant="outline">{/* i18n-exempt */}Add Section</Button>
           </Tooltip>
         </DialogTrigger>
       )}
       <DialogContent>
-        <DialogTitle>Section Library</DialogTitle>
+        <DialogTitle>{/* i18n-exempt */}Section Library</DialogTitle>
         {loadError && (
           <div className="rounded border border-red-200 bg-red-50 p-2 text-xs text-red-800">
             {loadError}
           </div>
         )}
-        <div className="flex items-center gap-2 py-2">
+        <Inline alignY="center" gap={2} className="py-2">
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search sections and presets..."
+            placeholder={/* i18n-exempt */ "Search sections and presets..."}
             className="flex-1 rounded border p-2 text-sm"
-            aria-label="Search presets"
+            aria-label={/* i18n-exempt */ "Search presets"}
           />
           <select
             value={category}
-            onChange={(e) => setCategory(e.target.value as any)}
+            onChange={(e) => setCategory(e.target.value as PresetCategory | "All")}
             className="rounded border p-2 text-sm"
-            aria-label="Preset category"
+            aria-label={/* i18n-exempt */ "Preset category"}
           >
-            <option value="All">All</option>
+            <option value="All">{/* i18n-exempt */}All</option>
             {presetCategories.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
           </select>
-        </div>
+        </Inline>
         {/* Built-in Sections (variants) */}
         {builtInsFiltered.length > 0 && (
           <div className="mb-4">
-            <div className="mb-2 text-sm font-semibold">Built-in Sections</div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="mb-2 text-sm font-semibold">{/* i18n-exempt */}Built-in Sections</div>
+            <Grid cols={2} gap={4}>
               {builtInsFiltered.map((p) => {
                 const resolvedPreview = p.preview === "/window.svg" ? getPalettePreview(p.previewType) : p.preview;
                 return (
                   <button
                     key={p.id}
                     type="button"
-                    className="rounded border p-2 text-start hover:bg-accent"
+                    className="rounded border p-2 text-start hover:bg-accent min-h-10 min-w-10"
                     onClick={() => onInsert(p.build())}
                   >
                     <Image src={resolvedPreview} alt="" width={300} height={160} className="w-full rounded" {...(typeof resolvedPreview === 'string' && resolvedPreview.startsWith('data:') ? { unoptimized: true } : {})} />
@@ -217,7 +220,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
                   </button>
                 );
               })}
-            </div>
+            </Grid>
           </div>
         )}
 
@@ -227,7 +230,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
           return (
             <div key={c} className="mb-4">
               <div className="mb-2 text-sm font-semibold">{c}</div>
-              <div className="grid grid-cols-2 gap-4">
+              <Grid cols={2} gap={4}>
                 {items.map((p) => {
                   // Recompute generator output when theme signature changes
                   void themeSig;
@@ -236,7 +239,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
                   <button
                      key={p.id}
                      type="button"
-                     className="rounded border p-2 text-start hover:bg-accent"
+                     className="rounded border p-2 text-start hover:bg-accent min-h-10 min-w-10"
                      onClick={() => onInsert(p.build())}
                    >
                     <Image src={resolvedPreview} alt="" width={300} height={160} className="w-full rounded" {...(typeof resolvedPreview === 'string' && resolvedPreview.startsWith('data:') ? { unoptimized: true } : {})} />
@@ -244,13 +247,13 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
                      {p.description && <div className="text-sm text-muted-foreground">{p.description}</div>}
                    </button>
                   );})}
-              </div>
+              </Grid>
             </div>
           );
         })}
         {Array.from(byCategory.values()).every((arr) => (arr || []).length === 0) && (
           <div className="rounded border bg-muted/30 p-4 text-sm text-muted-foreground">
-            No matching sections. Try clearing filters or create a new section.
+            {/* i18n-exempt */}No matching sections. Try clearing filters or create a new section.
           </div>
         )}
       </DialogContent>

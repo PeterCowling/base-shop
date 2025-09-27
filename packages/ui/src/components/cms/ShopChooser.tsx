@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable ds/no-hardcoded-copy -- UI-1420: className literals and prop-driven content; user-facing strings wrapped with t() */
 
 import Link from "next/link";
 import type { ReactNode } from "react";
@@ -6,6 +7,8 @@ import { track } from "@acme/telemetry";
 import { Card, CardContent } from "../atoms/shadcn";
 import { Tag } from "../atoms";
 import { cn } from "../../utils/style";
+import { Grid as DSGrid } from "../atoms/primitives/Grid";
+import { useTranslations } from "@acme/i18n";
 
 export type ValueOrFactory<T> = T | ((shop: string) => T);
 
@@ -71,6 +74,7 @@ export default function ShopChooser({
   emptyState,
   className,
 }: ShopChooserProps) {
+  const t = useTranslations();
   return (
     <Card
       className={cn(
@@ -96,14 +100,11 @@ export default function ShopChooser({
         )}
 
         {shops.length > 0 ? (
-          <ul
-            className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3"
-            role="list"
-          >
+          <DSGrid cols={1} gap={4} className="sm:grid-cols-2 xl:grid-cols-3" role="list">
             {shops.map((shop, index) => {
               const cardTitleId = `shop-chooser-${index}-title`;
               const descriptionId = `shop-chooser-${index}-description`;
-              const resolvedEyebrow = resolveValue(card.eyebrow, shop, "Shop");
+              const resolvedEyebrow = resolveValue(card.eyebrow, shop, t("Shop") as string);
               const resolvedTitle = resolveValue(card.title, shop, shop);
               const resolvedDescription = resolveValue(
                 card.description,
@@ -113,12 +114,12 @@ export default function ShopChooser({
               const resolvedCtaLabel = resolveValue(
                 card.ctaLabel,
                 shop,
-                "Open"
+                t("Open") as string
               );
               const href = card.href(shop);
 
               return (
-                <li key={shop}>
+                <div key={shop} role="listitem">
                   <article
                     className={cn(
                       "group flex h-full flex-col justify-between gap-4 rounded-2xl border border-white/20 bg-white/10 p-5 text-sm text-white shadow-elevation-1 transition hover:border-white/40 hover:bg-white/15 focus-within:border-white/50 focus-within:bg-white/15",
@@ -181,10 +182,10 @@ export default function ShopChooser({
                       <span aria-hidden="true">{resolvedCtaLabel}</span>
                     </Link>
                   </article>
-                </li>
+                </div>
               );
             })}
-          </ul>
+          </DSGrid>
         ) : (
           <div className="space-y-4 rounded-2xl border border-dashed border-white/20 bg-white/5 px-5 py-6 text-white/80">
             {emptyState.tagLabel && (

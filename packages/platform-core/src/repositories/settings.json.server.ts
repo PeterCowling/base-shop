@@ -6,31 +6,22 @@ import {
   type Locale,
   type ShopSettings,
 } from "@acme/types";
-import { promises as fs } from "fs";
-import * as path from "path";
 import { z } from "zod";
 import { validateShopName } from "../shops/index";
-import { DATA_ROOT } from "../dataRoot";
 import { nowIso } from "@acme/date-utils";
+import {
+  ensureShopDir,
+  readFromShop,
+  writeToShop,
+  appendToShop,
+  renameInShop,
+} from "../utils/safeFs";
 
 const DEFAULT_LANGUAGES: Locale[] = [...LOCALES];
 
 export type Settings = ShopSettings;
 
-function settingsPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "settings.json");
-}
-
-function historyPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "settings.history.jsonl");
-}
-
-async function ensureDir(shop: string): Promise<void> {
-  shop = validateShopName(shop);
-  await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
-}
+// paths resolved via safeFs helpers
 
 function setPatchValue<T extends object, K extends keyof T>(
   patch: Partial<T>,
@@ -59,7 +50,7 @@ function diffSettings(
 export async function getShopSettings(shop: string): Promise<Settings> {
   shop = validateShopName(shop);
   try {
-    const buf = await fs.readFile(settingsPath(shop), "utf8");
+    const buf = (await readFromShop(shop, "settings.json", "utf8")) as string;
     const parsed = shopSettingsSchema
       .deepPartial()
       .safeParse(JSON.parse(buf));
@@ -144,20 +135,16 @@ export async function saveShopSettings(
   shop: string,
   settings: Settings,
 ): Promise<void> {
-  await ensureDir(shop);
+  await ensureShopDir(shop);
   const current = await getShopSettings(shop);
-  const tmp = `${settingsPath(shop)}.${Date.now()}.tmp`;
-  await fs.writeFile(tmp, JSON.stringify(settings, null, 2), "utf8");
-  await fs.rename(tmp, settingsPath(shop));
+  const tmp = `settings.json.${Date.now()}.tmp`;
+  await writeToShop(shop, tmp, JSON.stringify(settings, null, 2), "utf8");
+  await renameInShop(shop, tmp, "settings.json");
 
   const patch = diffSettings(current, settings);
   if (Object.keys(patch).length > 0) {
     const entry = { timestamp: nowIso(), diff: patch };
-    await fs.appendFile(
-      historyPath(shop),
-      JSON.stringify(entry) + "\n",
-      "utf8",
-    );
+    await appendToShop(shop, "settings.history.jsonl", JSON.stringify(entry) + "\n", "utf8");
   }
 }
 
@@ -175,7 +162,7 @@ const entrySchema = z
 
 export async function diffHistory(shop: string): Promise<SettingsDiffEntry[]> {
   try {
-    const buf = await fs.readFile(historyPath(shop), "utf8");
+    const buf = (await readFromShop(shop, "settings.history.jsonl", "utf8")) as string;
     return buf
       .trim()
       .split(/\n+/)

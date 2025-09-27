@@ -1,9 +1,10 @@
 "use client";
 
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Input } from "../../atoms/shadcn";
 import { getShopFromPath } from "@acme/shared-utils";
+import { useTranslations } from "@acme/i18n";
 
 interface Result {
   slug: string;
@@ -15,12 +16,11 @@ export interface SearchBarProps {
   limit?: number;
 }
 
-export default function SearchBar({
-  placeholder = "Search products…",
-  limit = 5,
-}: SearchBarProps) {
+export default function SearchBar({ placeholder, limit = 5 }: SearchBarProps) {
+  const t = useTranslations();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
+  const effPlaceholder = useMemo(() => placeholder ?? (t("search.products.placeholder") as string), [placeholder, t]);
 
   useEffect(() => {
     if (!query) {
@@ -61,28 +61,30 @@ export default function SearchBar({
   };
 
   return (
-    <div className="relative w-full max-w-sm" data-token="--color-bg">
+    <div className="relative w-full sm:w-80" data-token="--color-bg">
       <Input
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder={placeholder}
+        placeholder={effPlaceholder}
         className="pe-8"
       />
       <MagnifyingGlassIcon
         className="text-muted-foreground pointer-events-none absolute top-2 end-2 h-4 w-4"
-        data-token="--color-muted-fg"
+        data-token={"--color-muted-fg" /* i18n-exempt: token name, not user copy */}
       />
       {results.length > 0 && (
         <ul
-          className="bg-surface-2 absolute z-10 mt-1 w-full rounded-md border border-border-2 shadow"
+          className="bg-surface-2 absolute mt-1 w-full rounded-md border border-border-2 shadow"
           data-token="--color-bg"
         >
           {results.map((r) => (
             <li
               key={r.slug}
               onMouseDown={() => handleSelect(r)}
-              className="text-fg hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1"
+              role="button"
+              tabIndex={0}
+              className="text-fg hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1 min-h-10 flex items-center"
               data-token="--color-fg"
             >
               <span>{r.title}</span>

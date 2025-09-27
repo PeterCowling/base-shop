@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- rule uses loose node typing */
+ 
 import type { Rule } from "eslint";
 
 // Matches hex colors like #RGB, #RGBA, #RRGGBB, or #RRGGBBAA

@@ -1,7 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import HeaderBlock from "../HeaderBlock";
 
-jest.mock("next/image", () => (props: any) => <img {...props} />);
+jest.mock("next/image", () => {
+  const Img = (props: any) => {
+    const { alt, ...rest } = props || {};
+    return <img alt={alt ?? ""} {...rest} />;
+  };
+  Img.displayName = "MockNextImage";
+  return Img;
+});
 
 let viewport: "desktop" | "mobile" = "desktop";
 jest.mock("../../../organisms/Header", () => {

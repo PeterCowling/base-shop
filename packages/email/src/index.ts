@@ -9,7 +9,7 @@ try {
       : createRequire(process.cwd() + "/");
   const { setEmailService } = req(
     "@acme/platform-core/services/emailService"
-  );
+  ); // i18n-exempt: module id string
   setEmailService({ sendEmail });
 } catch {
   // The core email service isn't available in the current environment.

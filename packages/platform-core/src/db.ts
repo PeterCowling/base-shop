@@ -1,7 +1,7 @@
 // Use a loose PrismaClient type to avoid requiring the heavy @prisma/client
 // dependency during tests. The actual client will be loaded dynamically when
 // available.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- DS-0001 Allow loose PrismaClient type in tests
 type PrismaClientType = any;
 import { createRequire } from 'module';
 import { loadCoreEnv } from '@acme/config/env/core';
@@ -112,11 +112,11 @@ function loadPrismaClient():
       PrismaCtor = undefined;
       return PrismaCtor;
     }
-    PrismaCtor = (
-      req("@prisma/client") as {
-        PrismaClient: new (...args: unknown[]) => PrismaClientType;
-      }
-    ).PrismaClient;
+    const modAny = req("@prisma/client"); // i18n-exempt -- DS-0001 Module identifier string, not user-facing copy
+    const reqMod = modAny as {
+      PrismaClient: new (...args: unknown[]) => PrismaClientType;
+    };
+    PrismaCtor = reqMod.PrismaClient;
   } catch {
     PrismaCtor = undefined;
   }

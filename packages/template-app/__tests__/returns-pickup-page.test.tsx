@@ -13,7 +13,12 @@ jest.mock("@platform-core/repositories/shops.server", () => ({
 }));
 const shops = jest.requireMock("@platform-core/repositories/shops.server");
 
-jest.mock("../src/components/CleaningInfo", () => () => <div data-cy="cleaning" />);
+jest.mock("../src/components/CleaningInfo", () => {
+  function CleaningInfoMock() {
+    return <div data-cy="cleaning" />;
+  }
+  return CleaningInfoMock;
+});
 
 describe("PickupPage", () => {
   it("confirms scheduling for allowed zip", async () => {
@@ -33,4 +38,3 @@ describe("PickupPage", () => {
     expect(screen.getByPlaceholderText("ZIP code")).toBeInTheDocument();
   });
 });
-

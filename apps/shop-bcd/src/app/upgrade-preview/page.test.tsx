@@ -2,9 +2,13 @@ import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import UpgradePreviewPage from "./page";
 
-jest.mock("@ui/components/ComponentPreview", () => ({ component }: any) => (
-  <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
-));
+jest.mock("@ui/components/ComponentPreview", () => {
+  const MockComponentPreview = ({ component }: any) => (
+    <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
+  );
+  MockComponentPreview.displayName = "MockComponentPreview";
+  return MockComponentPreview;
+});
 
 const originalFetch = global.fetch;
 
@@ -80,4 +84,3 @@ describe("UpgradePreviewPage", () => {
     expect(screen.getByRole("button", { name: "Approve & publish" })).not.toBeDisabled();
   });
 });
-

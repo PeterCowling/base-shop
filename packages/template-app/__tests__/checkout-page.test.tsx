@@ -6,22 +6,28 @@ jest.mock("next/headers", () => ({
   cookies: () => ({ get: () => ({ value: "cookie" }) }),
 }));
 
-jest.mock("@/components/checkout/CheckoutForm", () => (
-  () => <div data-testid="checkout-form" />
-));
+jest.mock("@/components/checkout/CheckoutForm", () => {
+  function CheckoutFormMock() {
+    return <div data-testid="checkout-form" />;
+  }
+  return CheckoutFormMock;
+});
 
-jest.mock("@/components/organisms/OrderSummary", () => (props: any) => {
-  const { cart = {}, totals = {} } = props ?? {};
-  return (
-    <div>
-      <div data-testid="subtotal">{totals.subtotal}</div>
-      <div data-testid="deposit">{totals.deposit}</div>
-      <div data-testid="total">{totals.total}</div>
-      {Object.values(cart).map((l: any) => (
-        <div key={l.sku.id}>{l.sku.title}</div>
-      ))}
-    </div>
-  );
+jest.mock("@/components/organisms/OrderSummary", () => {
+  function OrderSummaryMock(props: any) {
+    const { cart = {}, totals = {} } = props ?? {};
+    return (
+      <div>
+        <div data-testid="subtotal">{totals.subtotal}</div>
+        <div data-testid="deposit">{totals.deposit}</div>
+        <div data-testid="total">{totals.total}</div>
+        {Object.values(cart).map((l: any) => (
+          <div key={l.sku.id}>{l.sku.title}</div>
+        ))}
+      </div>
+    );
+  }
+  return OrderSummaryMock;
 });
 
 jest.mock("@platform-core/cartCookie", () => {

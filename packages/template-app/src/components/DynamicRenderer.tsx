@@ -223,11 +223,11 @@ function DynamicRenderer({
         }
 
         // Optional Section-specific container vars
-        const sectionVars: Record<string, string | number> = (() => {
+        const sectionVars: React.CSSProperties = (() => {
           if (block.type !== "Section") return {};
           const b = block as unknown as Record<string, unknown>;
           const minH = (b.minHeight as string | undefined) || presetToMinHeight(b.heightPreset as string | undefined);
-          const vars: Record<string, string | number> = {};
+          const vars: React.CSSProperties = {};
           if (minH) vars.minHeight = minH;
           const themeId = b.textTheme as string | undefined;
           if (themeId && textThemes.length) {
@@ -238,12 +238,12 @@ function DynamicRenderer({
                 const tv = cssVars(overrides);
                 Object.assign(vars, tv);
                 // Ensure inheritable properties apply
-                if (tv["--font-family"]) (vars as any).fontFamily = "var(--font-family)";
+                if (tv["--font-family"]) vars.fontFamily = "var(--font-family)";
                 if (tv["--font-size"] || tv["--font-size-desktop"] || tv["--font-size-tablet"] || tv["--font-size-mobile"]) {
-                  (vars as any).fontSize = "var(--font-size)";
+                  vars.fontSize = "var(--font-size)";
                 }
                 if (tv["--line-height"] || tv["--line-height-desktop"] || tv["--line-height-tablet"] || tv["--line-height-mobile"]) {
-                  (vars as any).lineHeight = "var(--line-height)";
+                  vars.lineHeight = "var(--line-height)";
                 }
               } catch {}
             }

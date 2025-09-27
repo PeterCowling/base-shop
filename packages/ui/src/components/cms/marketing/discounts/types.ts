@@ -27,6 +27,7 @@ export const defaultDiscountValues: DiscountFormValues = {
   startDate: "",
   endDate: "",
   usageLimit: 0,
+  // i18n-exempt: default placeholder; UI surfaces will translate or override
   appliesTo: "Entire catalog",
 };
 
@@ -42,14 +43,15 @@ export function getDiscountPreview(
     ? values.endDate
       ? `${values.startDate} → ${values.endDate}`
       : `Starts ${values.startDate}`
-    : "Schedule pending";
+    : "Schedule pending"; // i18n-exempt: computed label; caller provides t() at presentation
 
   const usageLabel =
     values.usageLimit > 0
       ? `${values.usageLimit} uses remaining`
-      : "Unlimited use";
+      : "Unlimited use"; // i18n-exempt: computed label; caller provides t() at presentation
 
   return {
+    // i18n-exempt: placeholder code for previews
     code: values.code || "NEWCODE",
     label: amountLabel,
     validity,

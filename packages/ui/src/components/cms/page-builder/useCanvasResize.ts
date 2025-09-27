@@ -174,7 +174,7 @@ export default function useCanvasResize({
       const patch: Record<string, string> = {
         [widthKey]: snapW ? "100%" : `${newW}px`,
         [heightKey]: snapH ? "100%" : `${newH}px`,
-      } as any;
+      };
       // Horizontal edge adjustments
       if (handle.includes("w")) {
         // West: moving the left edge
@@ -192,7 +192,7 @@ export default function useCanvasResize({
         const bottom = Math.round(parent2.offsetHeight - (top + newH));
         patch.bottom = `${bottom}px`;
       }
-      dispatch({ type: "resize", id: componentId, ...(patch as any) });
+      dispatch({ type: "resize", id: componentId, ...patch });
       setCurrent({ width: newW, height: newH, left, top });
       setSnapWidth(snapW || guideX !== null);
       setSnapHeight(snapH || guideY !== null);
@@ -226,7 +226,7 @@ export default function useCanvasResize({
       // Release pointer capture if held
       try {
         if (captureRef.current?.el && captureRef.current?.id != null) {
-          (captureRef.current.el as any).releasePointerCapture?.(captureRef.current.id);
+          (captureRef.current.el as unknown as { releasePointerCapture?: (id: number) => void }).releasePointerCapture?.(captureRef.current.id);
         }
       } catch {}
       captureRef.current = { el: null, id: null };
@@ -236,12 +236,12 @@ export default function useCanvasResize({
       }
     };
     const onKeyDown = (ke: KeyboardEvent) => { if (ke.key === "Escape") stop(); };
-    try { window.addEventListener("pointermove", handleMove, { passive: true }); } catch { window.addEventListener("pointermove", handleMove as any); }
+    try { window.addEventListener("pointermove", handleMove, { passive: true }); } catch { window.addEventListener("pointermove", handleMove as unknown as EventListener); }
     window.addEventListener("pointerup", stop);
     window.addEventListener("blur", stop);
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      try { window.removeEventListener("pointermove", handleMove as any); } catch {}
+      try { window.removeEventListener("pointermove", handleMove as unknown as EventListener); } catch {}
       window.removeEventListener("pointerup", stop);
       window.removeEventListener("blur", stop);
       window.removeEventListener("keydown", onKeyDown);
@@ -258,6 +258,10 @@ export default function useCanvasResize({
     siblingEdgesRef,
     containerRef,
     zoom,
+    dockX,
+    dockY,
+    leftKey,
+    topKey,
   ]);
 
   const startResize = (e: React.PointerEvent, handle: Handle = "se") => {
@@ -330,8 +334,8 @@ export default function useCanvasResize({
     setCurrent({ width: newW, height: newH, left: el.offsetLeft, top: el.offsetTop });
     setKbResizing(true);
     // Clear the overlay shortly after key interaction
-    window.clearTimeout((nudgeByKeyboard as any)._t);
-    (nudgeByKeyboard as any)._t = window.setTimeout(() => setKbResizing(false), 300);
+    window.clearTimeout((nudgeByKeyboard as unknown as { _t?: number })._t);
+    (nudgeByKeyboard as unknown as { _t?: number })._t = window.setTimeout(() => setKbResizing(false), 300);
   };
 
   return {

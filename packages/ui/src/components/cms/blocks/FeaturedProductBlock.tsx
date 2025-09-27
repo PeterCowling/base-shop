@@ -8,6 +8,7 @@ import { PRODUCTS } from "@acme/platform-core/products/index";
 import { fetchCollection } from "./products/fetchCollection";
 import { Price } from "../../atoms/Price";
 import { ProductVariantSelector } from "../../organisms/ProductVariantSelector";
+import { useTranslations } from "@acme/i18n";
 
 type FeaturedProduct = SKU & {
   badges?: { sale?: boolean; new?: boolean };
@@ -26,6 +27,10 @@ export default function FeaturedProductBlock({
   sku,
   collectionId,
 }: FeaturedProductBlockProps) {
+  const t = useTranslations();
+  // i18n-exempt: technical constants, not user-facing
+  const responsiveSizes = "(min-width: 768px) 50vw, 100vw"; // i18n-exempt: responsive image sizes
+  const secondaryMediaDataCy = "secondary-media"; // i18n-exempt: test identifier
   const [product, setProduct] = useState<FeaturedProduct | null>(sku ?? null);
   const [size, setSize] = useState<string | undefined>();
   const [quantity, setQuantity] = useState(1);
@@ -60,13 +65,14 @@ export default function FeaturedProductBlock({
               src={media.url}
               alt={media.altText ?? product.title ?? ""}
               fill
-              sizes="(min-width: 768px) 50vw, 100vw"
+              sizes={responsiveSizes}
               className="rounded-md object-cover"
             />
           ) : (
             <video
               src={media.url}
               className="h-full w-full rounded-md object-cover"
+              data-aspect="1/1"
               muted
               playsInline
             />
@@ -74,27 +80,28 @@ export default function FeaturedProductBlock({
         </div>
       )}
       {secondaryMedia?.url && (
-        <div className="relative aspect-square w-full" data-cy="secondary-media">
+        <div className="relative aspect-square w-full" data-cy={secondaryMediaDataCy}>
           {secondaryMedia.type === "image" ? (
             <Image
               src={secondaryMedia.url}
               alt={secondaryMedia.altText ?? product.title ?? ""}
               fill
-              sizes="(min-width: 768px) 50vw, 100vw"
+              sizes={responsiveSizes}
               className="rounded-md object-cover"
             />
           ) : (
             <video
               src={secondaryMedia.url}
               className="h-full w-full rounded-md object-cover"
+              data-aspect="1/1"
               muted
               playsInline
             />
           )}
         </div>
       )}
-      {product.badges?.sale && <span data-cy="badge-sale">Sale</span>}
-      {product.badges?.new && <span data-cy="badge-new">New</span>}
+      {product.badges?.sale && <span data-cy="badge-sale">{t("product.badge.sale")}</span>}
+      {product.badges?.new && <span data-cy="badge-new">{t("product.badge.new")}</span>}
       <h3 className="text-xl font-semibold">{product.title}</h3>
       <Price amount={product.price ?? 0} className="text-lg font-medium" />
       <ProductVariantSelector
@@ -113,4 +120,3 @@ export default function FeaturedProductBlock({
     </div>
   );
 }
-

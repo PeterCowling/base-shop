@@ -3,6 +3,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -28,18 +29,21 @@ export class ErrorBoundary extends React.Component<
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log the error to the console (replace with Sentry.captureException if needed)
+    // i18n-exempt: logging message is not user-facing copy
     console.error("ErrorBoundary caught an error", error, errorInfo);
   }
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback ?? (
-        <div className="max-w-prose">
+      const DefaultFallback = () => {
+        const t = useTranslations();
+        return (
           <div className="rounded-md border border-border-2 bg-danger-soft p-3">
-            <p className="text-danger-foreground">Something went wrong.</p>
+            <p className="text-danger-foreground">{t("Something went wrong.")}</p>
           </div>
-        </div>
-      );
+        );
+      };
+      return (this.props.fallback as React.ReactNode) ?? <DefaultFallback />;
     }
 
     return this.props.children;

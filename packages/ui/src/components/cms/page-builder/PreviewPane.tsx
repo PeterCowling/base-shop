@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type CSSProperties } from "react";
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent, HistoryState } from "@acme/types";
 import { decorateTreeForViewport } from "./state/layout/utils";
@@ -32,13 +32,15 @@ const PreviewPane = ({ components, locale, deviceId, onChange, editor, extraDevi
   // Apply custom device visibility when the selected device is a page breakpoint
   const bpId = deviceId.startsWith("bp-") ? deviceId.slice(3) : null;
   if (bpId) {
+    type ExtendedComponent = PageComponent & { hidden?: boolean; children?: PageComponent[] };
+    const map: NonNullable<HistoryState["editor"]> = editor ?? {};
     const hideByBp = (nodes: PageComponent[]): PageComponent[] =>
       nodes.map((n) => {
-        const flags = (editor ?? {})[n.id] as any;
-        const hiddenIds = (flags?.hiddenDeviceIds as string[] | undefined) ?? [];
-        const hideHere = hiddenIds.includes(bpId!);
-        const kids = (n as any).children as PageComponent[] | undefined;
-        const merged: any = { ...n, ...(hideHere ? { hidden: true } : {}) };
+        const flags = map[n.id];
+        const hiddenIds = (flags?.hiddenDeviceIds ?? []) as string[];
+        const hideHere = hiddenIds.includes(bpId);
+        const kids = (n as ExtendedComponent).children;
+        const merged: ExtendedComponent = { ...n, ...(hideHere ? { hidden: true } : {}) };
         if (Array.isArray(kids)) merged.children = hideByBp(kids);
         return merged as PageComponent;
       });
@@ -55,7 +57,7 @@ const PreviewPane = ({ components, locale, deviceId, onChange, editor, extraDevi
       />
       <div
         className={`${frameClass[previewViewport]} shrink-0`}
-        style={{ ...viewportStyle, ...(previewTokens as any) }}
+        style={{ ...viewportStyle, ...(previewTokens as unknown as CSSProperties) }}
       >
         <DynamicRenderer components={decorated} locale={locale} editor={editor} />
       </div>

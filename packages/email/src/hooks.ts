@@ -113,6 +113,6 @@ async function track(shop: string, data: AnalyticsEvent): Promise<void> {
 }
 
 // default analytics listeners
-onSend((shop, { campaign }) => track(shop, { type: "email_sent", campaign }));
-onOpen((shop, { campaign }) => track(shop, { type: "email_open", campaign }));
-onClick((shop, { campaign }) => track(shop, { type: "email_click", campaign }));
+onSend((shop, { campaign }) => track(shop, { type: "email_sent", campaign })); // i18n-exempt: analytics event type identifier
+onOpen((shop, { campaign }) => track(shop, { type: "email_open", campaign })); // i18n-exempt: analytics event type identifier
+onClick((shop, { campaign }) => track(shop, { type: "email_click", campaign })); // i18n-exempt: analytics event type identifier

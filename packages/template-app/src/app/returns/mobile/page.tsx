@@ -10,8 +10,11 @@ import CleaningInfo from "../../../components/CleaningInfo";
 import Scanner from "./Scanner";
 
 const SHOP_ID = "bcd";
-
+// i18n-exempt — static metadata; app-level routes localize this
 export const metadata = { title: "Mobile Returns" };
+
+import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
+import type { Locale } from "@i18n/locales";
 
 export default async function MobileReturnPage() {
   const [cfg, info, settings, shop] = await Promise.all([
@@ -20,8 +23,9 @@ export default async function MobileReturnPage() {
     getShopSettings(SHOP_ID),
     readShop(SHOP_ID),
   ]);
+  const t = await getServerTranslations("en" as Locale);
   if (!cfg.mobileApp) {
-    return <p className="p-6">Mobile returns are not enabled.</p>;
+    return <p className="p-6">{t("returns.mobile.disabled")}</p>;
   }
   const allowed = settings.returnService?.homePickupEnabled
     ? info.homePickupZipCodes

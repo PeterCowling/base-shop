@@ -8,7 +8,7 @@
  * -------------------------------------------------------------------------- */
 
 import type { ChangeEvent, DragEvent, ReactElement, RefObject } from "react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 
 import type { ImageOrientation, MediaItem } from "@acme/types";
@@ -17,6 +17,9 @@ import { validateFilePolicy, firstFileFromChange } from "./upload/filePolicy";
 import { ingestExternalUrl, ingestFromText } from "./upload/ingestExternalUrl";
 import { uploadToCms } from "./upload/uploadToCms";
 import UploaderSurface from "../components/upload/UploaderSurface";
+
+// Stable default list to avoid re-creation on each render
+const DEFAULT_PREFIXES = ["image/", "video/"] as const;
 
 /* ──────────────────────────────────────────────────────────────────────
  * Public API types
@@ -98,7 +101,10 @@ export function useFileUpload(
 
   // Policy and limits
   const allowExternalUrl = options.allowExternalUrl ?? (() => true);
-  const allowedMimePrefixes = options.allowedMimePrefixes ?? ["image/", "video/"];
+  const allowedMimePrefixes = useMemo(
+    () => (options.allowedMimePrefixes ?? (DEFAULT_PREFIXES as unknown as string[])),
+    [options.allowedMimePrefixes]
+  );
   const maxBytes = Number.isFinite(options.maxBytes as number) ? (options.maxBytes as number) : 25 * 1024 * 1024; // 25MB
 
   /* ---------- orientation check ----------------------------------- */

@@ -1,3 +1,4 @@
+/* i18n-exempt file -- test titles and UI copy are asserted literally */
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";

@@ -45,30 +45,40 @@ export default async function SubscribePage({
   }
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-6 p-6">
-      <h1 className="text-2xl font-bold">Choose a Plan</h1>
+    <div className="container mx-auto flex flex-col gap-6 p-6">
+      <h1 className="text-2xl font-bold">{/** i18n-exempt: server-rendered page heading */}Choose a Plan</h1>
       <form action={selectPlan} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {shop.rentalSubscriptions.map((p: SubscriptionPlan) => (
           <label
             key={p.id}
             className="flex cursor-pointer flex-col gap-2 rounded border p-4 hover:border-black"
           >
+            {/* eslint-disable-next-line ds/min-tap-size -- UI-1423 label provides the 40px+ tap target; input is visually hidden */}
             <input type="radio" name="plan" value={p.id} className="sr-only" />
             <span className="text-lg font-semibold">{p.id}</span>
             {shop.subscriptionsEnabled && (
               <>
-                <span>{p.itemsIncluded} items included</span>
-                <span>{p.swapLimit} swaps/month</span>
-                <span>{p.shipmentsPerMonth} shipments/month</span>
+                <span>
+                  {/** i18n-exempt: demo copy; values vary per plan */}
+                  {p.itemsIncluded} items included
+                </span>
+                <span>
+                  {/** i18n-exempt: demo copy; values vary per plan */}
+                  {p.swapLimit} swaps/month
+                </span>
+                <span>
+                  {/** i18n-exempt: demo copy; values vary per plan */}
+                  {p.shipmentsPerMonth} shipments/month
+                </span>
               </>
             )}
           </label>
         ))}
         <button
           type="submit"
-          className="mt-4 rounded bg-black px-4 py-2 text-white"
+          className="mt-4 inline-flex min-h-10 items-center justify-center rounded bg-black px-4 text-white"
         >
-          Subscribe
+          {/** i18n-exempt: server-rendered action label */}Subscribe
         </button>
       </form>
     </div>

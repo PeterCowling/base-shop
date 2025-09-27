@@ -62,7 +62,7 @@ function Wrapper({
 
   useEffect(() => {
     state.setPublishTargets(targets);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- TST-0001: in this wrapper we intentionally avoid adding `state` to deps
   }, [targets]);
 
   return (

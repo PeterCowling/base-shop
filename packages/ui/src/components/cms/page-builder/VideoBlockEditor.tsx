@@ -2,6 +2,8 @@
 
 import type { VideoBlockComponent } from "@acme/types";
 import { Button, Checkbox, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
+import { Grid } from "../../atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 import { useEffect, useState } from "react";
 import useMediaLibrary from "./useMediaLibrary";
 import type { EditorProps } from "./EditorProps";
@@ -9,6 +11,7 @@ import type { EditorProps } from "./EditorProps";
 type Props = EditorProps<VideoBlockComponent>;
 
 export default function VideoBlockEditor({ component, onChange }: Props) {
+  const t = useTranslations();
   const handleInput = (field: keyof VideoBlockComponent & string, value: string | boolean) => {
     onChange({ [field]: value } as Partial<VideoBlockComponent>);
   };
@@ -27,12 +30,12 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button type="button" variant="outline">
-            {src ? "Change video" : "Select video"}
+            {src ? t("video.change") : t("video.select")}
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-xl space-y-4">
-          <DialogTitle>Select video</DialogTitle>
-          <div className="grid max-h-64 grid-cols-3 gap-2 overflow-auto">
+        <DialogContent className="w-full space-y-4">
+          <DialogTitle>{t("video.select")}</DialogTitle>
+          <Grid cols={3} gap={2} className="max-h-64 overflow-auto">
             {videos.map((m) => (
               <button
                 key={m.url}
@@ -41,21 +44,21 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
                   handleInput("src", m.url);
                   setOpen(false);
                 }}
-                className="relative aspect-square"
+                className="relative aspect-square min-w-10 min-h-10"
               >
-                <video src={m.url} className="h-full w-full object-cover" />
+                <video src={m.url} className="h-full w-full object-cover" data-aspect="1/1" />
               </button>
             ))}
             {videos.length === 0 && (
               <p className="text-muted-foreground col-span-3 text-sm">
-                No videos found.
+                {t("video.noneFound")}
               </p>
             )}
-          </div>
+          </Grid>
         </DialogContent>
       </Dialog>
       {src && (
-        <video src={src} controls className="w-full max-h-64" />
+        <video src={src} controls className="w-full max-h-64" data-aspect="16/9" />
       )}
       <div className="flex items-center gap-2">
         <Checkbox
@@ -64,7 +67,7 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
           onCheckedChange={(checked) => handleInput("autoplay", Boolean(checked))}
         />
         <label htmlFor="autoplay" className="text-sm">
-          Autoplay
+          {t("video.autoplay")}
         </label>
       </div>
     </div>

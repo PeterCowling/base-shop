@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- rule uses loose node typing */
+ 
 import type { Rule } from "eslint";
 
 // Tailwind palette names we want to forbid (non-token based)

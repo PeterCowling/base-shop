@@ -5,6 +5,5 @@ export function setBreakpoints(
   state: HistoryState,
   action: SetBreakpointsAction,
 ): HistoryState {
-  return { ...(state as any), breakpoints: [...action.breakpoints] } as HistoryState;
+  return { ...state, breakpoints: [...action.breakpoints] } as HistoryState;
 }
-

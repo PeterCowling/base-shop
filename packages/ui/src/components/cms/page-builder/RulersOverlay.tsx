@@ -26,8 +26,7 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
     if (!el) return;
     const update = () => setSize({ w: el.offsetWidth, h: el.offsetHeight });
     update();
-    const RO = (window as any).ResizeObserver;
-    const ro = RO ? new RO(() => update()) : null;
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(() => update()) : null;
     if (ro) ro.observe(el);
     return () => { if (ro) ro.disconnect(); };
   }, [canvasRef]);
@@ -73,53 +72,57 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
   if (!show) return null;
   const major = "hsl(var(--color-border) / 0.35)", minor = "hsl(var(--color-border) / 0.2)";
   return (
-    <div className="pointer-events-none absolute inset-0 z-30" data-cy="pb-rulers-overlay">
-      <div
+    // i18n-exempt — data-cy attribute only
+    <div className="pointer-events-none relative inset-0" data-cy="pb-rulers-overlay">
+      <div className="absolute inset-0">
+        <div
         aria-hidden
         className="absolute start-0 end-0 h-5"
         style={{
           backgroundImage: `repeating-linear-gradient(to right, ${minor}, ${minor} 1px, transparent 1px, transparent 10px), repeating-linear-gradient(to right, ${major}, ${major} 1px, transparent 1px, transparent 50px)`,
         }}
-      />
-      <div
+        />
+        <div
         aria-hidden
         className="absolute top-0 bottom-0 w-5"
         style={{
           backgroundImage: `repeating-linear-gradient(to bottom, ${minor}, ${minor} 1px, transparent 1px, transparent 10px), repeating-linear-gradient(to bottom, ${major}, ${major} 1px, transparent 1px, transparent 50px)`,
         }}
-      />
+        />
       {/* Label every 100px */}
-      {labelsX.map((x) => (
-        <div key={`lx-${x}`} className="absolute top-0 text-[10px] text-muted-foreground" style={{ left: x + 2 }}>
-          {x}
-        </div>
-      ))}
-      {labelsY.map((y) => (
-        <div key={`ly-${y}`} className="absolute start-0 text-[10px] text-muted-foreground" style={{ top: y + 2 }}>
-          {y}
-        </div>
-      ))}
-      {safeWidth != null && safeLeft != null && safeWidth > 0 && (
-        <div aria-hidden className="absolute inset-y-0">
-          {/* Unsafe zones tint */}
-          <div className="bg-red-500/5 absolute inset-y-0 start-0" style={{ width: Math.max(0, safeLeft) }} />
-          <div className="bg-red-500/5 absolute inset-y-0 end-0" style={{ width: Math.max(0, size.w - (safeLeft + safeWidth)) }} />
-          {/* Safe zone */}
-          <div
-            className="bg-green-500/5 absolute inset-y-0 border-x border-green-500/40"
-            style={{ left: safeLeft, width: safeWidth }}
-          />
-          <div
-            className="absolute top-2 start-1/2 -translate-x-1/2 rounded bg-black/60 px-2 py-0.5 text-[10px] text-white shadow dark:bg-white/70 dark:text-black"
-            style={{ opacity: 1 }}
-          >
-            {viewport ? `${viewport} ` : ""}safe width: {Math.round(safeWidth)}px — align: {contentAlign ?? "center"} (
-            {contentAlignSource || "base"}
-            {contentAlignSource !== "base" && contentAlignBase ? `, base: ${contentAlignBase}` : ""}
-            )
+        {labelsX.map((x) => (
+          <div key={`lx-${x}`} className="absolute top-0 text-xs text-muted-foreground" style={{ left: x + 2 }}>
+            {x}
           </div>
-        </div>
-      )}
+        ))}
+        {labelsY.map((y) => (
+          <div key={`ly-${y}`} className="absolute start-0 text-xs text-muted-foreground" style={{ top: y + 2 }}>
+            {y}
+          </div>
+        ))}
+        {safeWidth != null && safeLeft != null && safeWidth > 0 && (
+          <div aria-hidden className="absolute inset-y-0">
+            {/* Unsafe zones tint */}
+            <div className="bg-red-500/5 absolute inset-y-0 start-0" style={{ width: Math.max(0, safeLeft) }} />
+            <div className="bg-red-500/5 absolute inset-y-0 end-0" style={{ width: Math.max(0, size.w - (safeLeft + safeWidth)) }} />
+            {/* Safe zone */}
+            <div
+              className="bg-green-500/5 absolute inset-y-0 border-x border-green-500/40"
+              style={{ left: safeLeft, width: safeWidth }}
+            />
+            <div
+              className="absolute top-2 start-1/2 -translate-x-1/2 rounded bg-black/60 px-2 py-0.5 text-xs text-white shadow dark:bg-white/70 dark:text-black"
+              style={{ opacity: 1 }}
+            >
+              {/* i18n-exempt */}
+              {viewport ? `${viewport} ` : ""}safe width: {Math.round(safeWidth)}px — align: {contentAlign ?? "center"} (
+              {contentAlignSource || "base"}
+              {contentAlignSource !== "base" && contentAlignBase ? `, base: ${contentAlignBase}` : ""}
+              )
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

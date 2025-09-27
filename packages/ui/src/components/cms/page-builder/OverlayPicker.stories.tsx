@@ -11,15 +11,18 @@ export default meta;
 
 type Story = StoryObj<typeof OverlayPicker>;
 
-export const Playground: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | undefined>('linear-gradient(135deg, rgba(0,0,0,.45), rgba(0,0,0,0))');
-    return (
-      <div className="space-y-4">
-        <div className="h-24 w-full rounded-md border" style={{ background: value }} />
-        <OverlayPicker value={value} onChange={setValue} />
-      </div>
-    );
-  },
-};
+function PlaygroundStory() {
+  const [value, setValue] = useState<string | undefined>(
+    "linear-gradient(135deg, rgba(0,0,0,.45), rgba(0,0,0,0))",
+  );
+  return (
+    <div className="space-y-4">
+      <div className="h-24 w-full rounded-md border" style={{ background: value }} />
+      <OverlayPicker value={value} onChange={setValue} />
+    </div>
+  );
+}
 
+export const Playground: Story = {
+  render: () => <PlaygroundStory />,
+};

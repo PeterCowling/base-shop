@@ -8,13 +8,14 @@ const meta: Meta<TooltipStoryProps> = {
   title: "Atoms/Tooltip",
   component: Tooltip,
   argTypes: { position: { control: "radio", options: ["top", "bottom"] } },
+  // i18n-exempt — storybook example text
   args: { text: "Info", position: "top" },
 };
 export default meta;
 
 export const Default: StoryObj<TooltipStoryProps> = {
   render: (args) => (
-    <div className="mt-10 flex justify-center">
+    <div className="flex justify-center">
       <Tooltip
         text={args.text}
         className={
@@ -23,7 +24,7 @@ export const Default: StoryObj<TooltipStoryProps> = {
             : undefined
         }
       >
-        <button className="border p-2">
+        <button className="border p-2 min-h-10 min-w-10">
           <Icon name="heart" width={16} height={16} />
         </button>
       </Tooltip>

@@ -2,10 +2,12 @@
 
 import { Tooltip } from "@/components/atoms";
 import { Input, Textarea } from "@/components/atoms/shadcn";
+import { Inline } from "@ui/components/atoms/primitives";
 import type { Locale } from "@acme/types";
 import { cn } from "@ui/utils/style";
 import type { ChangeEvent } from "react";
 import type { SeoRecord } from "./useSeoForm";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   languages: readonly Locale[];
@@ -28,12 +30,13 @@ export default function SeoLanguageTabs({
   descLimit,
   baseLocale,
 }: Props) {
+  const t = useTranslations();
   const base = baseLocale ?? languages[0];
   const current = seo[locale];
   return (
     <div className="space-y-4">
       {languages.length > 1 && (
-        <div className="flex flex-wrap gap-2">
+        <Inline wrap gap={2}>
           {languages.map((l) => {
             const isSelected = l === locale;
             const inherited = l !== base && !seo[l];
@@ -54,17 +57,17 @@ export default function SeoLanguageTabs({
               </button>
             );
           })}
-        </div>
+        </Inline>
       )}
 
       <div className="grid gap-6 md:grid-cols-3">
         {/* Meta ------------------------------------------------------- */}
         <section className="flex flex-col gap-3">
-          <h3 className="font-medium">Meta</h3>
+          <h3 className="font-medium">{t("cms.seo.meta")}</h3>
           <label className="flex flex-col gap-1">
             <span className="flex items-center gap-1">
-              Title
-              <Tooltip text="Recommended ≤ 70 characters">?</Tooltip>
+              {t("cms.seo.title")}
+              <Tooltip text={t("cms.seo.titleTip") as string}>?</Tooltip>
               <span className="text-muted-foreground ms-auto text-xs">
                 {current.title.length}/{titleLimit}
               </span>
@@ -78,8 +81,8 @@ export default function SeoLanguageTabs({
           </label>
           <label className="flex flex-col gap-1">
             <span className="flex items-center gap-1">
-              Description
-              <Tooltip text="Recommended ≤ 160 characters">?</Tooltip>
+              {t("cms.seo.description")}
+              <Tooltip text={t("cms.seo.descriptionTip") as string}>?</Tooltip>
               <span className="text-muted-foreground ms-auto text-xs">
                 {current.description.length}/{descLimit}
               </span>
@@ -96,9 +99,9 @@ export default function SeoLanguageTabs({
 
         {/* Open Graph ------------------------------------------------- */}
         <section className="flex flex-col gap-3">
-          <h3 className="font-medium">Open Graph</h3>
+          <h3 className="font-medium">{t("cms.seo.openGraph")}</h3>
           <label className="flex flex-col gap-1">
-            <span>Title</span>
+            <span>{t("cms.seo.title")}</span>
             <Input
               value={current.title}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -107,7 +110,7 @@ export default function SeoLanguageTabs({
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span>Description</span>
+            <span>{t("cms.seo.description")}</span>
             <Textarea
               rows={3}
               value={current.description}
@@ -117,7 +120,7 @@ export default function SeoLanguageTabs({
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span>Image URL</span>
+            <span>{t("cms.seo.imageUrl")}</span>
             <Input
               value={current.image}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -129,9 +132,9 @@ export default function SeoLanguageTabs({
 
         {/* Twitter ---------------------------------------------------- */}
         <section className="flex flex-col gap-3">
-          <h3 className="font-medium">Twitter</h3>
+          <h3 className="font-medium">{t("cms.seo.twitter")}</h3>
           <label className="flex flex-col gap-1">
-            <span>Title</span>
+            <span>{t("cms.seo.title")}</span>
             <Input
               value={current.title}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -140,7 +143,7 @@ export default function SeoLanguageTabs({
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span>Description</span>
+            <span>{t("cms.seo.description")}</span>
             <Textarea
               rows={3}
               value={current.description}
@@ -150,7 +153,7 @@ export default function SeoLanguageTabs({
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span>Image URL</span>
+            <span>{t("cms.seo.imageUrl")}</span>
             <Input
               value={current.image}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -162,9 +165,9 @@ export default function SeoLanguageTabs({
 
         {/* Structured Data -------------------------------------------- */}
         <section className="flex flex-col gap-3">
-          <h3 className="font-medium">Structured Data</h3>
+          <h3 className="font-medium">{t("cms.seo.structuredData")}</h3>
           <label className="flex flex-col gap-1">
-            <span>Brand</span>
+            <span>{t("cms.seo.brand")}</span>
             <Input
               value={current.brand}
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -173,7 +176,7 @@ export default function SeoLanguageTabs({
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span>Offers (JSON)</span>
+            <span>{t("cms.seo.offersJson")}</span>
             <Textarea
               rows={3}
               value={current.offers}
@@ -183,7 +186,7 @@ export default function SeoLanguageTabs({
             />
           </label>
           <label className="flex flex-col gap-1">
-            <span>Aggregate Rating (JSON)</span>
+            <span>{t("cms.seo.aggregateRatingJson")}</span>
             <Textarea
               rows={3}
               value={current.aggregateRating}

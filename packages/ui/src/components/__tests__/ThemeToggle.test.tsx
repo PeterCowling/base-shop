@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ThemeToggle from "../ThemeToggle";
 
-var setThemeMock: jest.Mock;
+let setThemeMock: jest.Mock;
 
 jest.mock("@platform-core/contexts/ThemeContext", () => {
   const React = require("react");

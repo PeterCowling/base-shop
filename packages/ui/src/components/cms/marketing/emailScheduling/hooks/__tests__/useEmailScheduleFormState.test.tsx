@@ -5,7 +5,6 @@ import { useEmailScheduleFormState, type EmailScheduleFormState } from "../useEm
 function renderHookUI(opts?: Parameters<typeof useEmailScheduleFormState>[0]) {
   let api: EmailScheduleFormState | null = null;
   function Harness() {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     api = useEmailScheduleFormState(opts || {});
     return null;
   }

@@ -2,6 +2,8 @@ import { Card, CardContent } from "../atoms/shadcn";
 import { Chip } from "../atoms";
 import PublishShopsSelector from "./PublishShopsSelector";
 import { useMemo } from "react";
+import { Inline } from "../atoms/primitives/Inline";
+import { useTranslations } from "@acme/i18n";
 
 interface PublishShopsTabProps {
   selectedIds: string[];
@@ -12,6 +14,7 @@ export default function PublishShopsTab({
   selectedIds,
   onChange,
 }: PublishShopsTabProps) {
+  const t = useTranslations();
   const selectedLabels = useMemo(() => selectedIds, [selectedIds]);
 
   return (
@@ -20,16 +23,16 @@ export default function PublishShopsTab({
         <CardContent className="space-y-4">
           <PublishShopsSelector selectedIds={selectedIds} onChange={onChange} showReload />
           {selectedIds.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
+            <Inline gap={2} wrap>
               {selectedLabels.map((label) => (
                 <Chip key={label} className="bg-muted px-3 py-1 text-xs">
                   {label}
                 </Chip>
               ))}
-            </div>
+            </Inline>
           ) : (
             <p className="text-sm text-muted-foreground">
-              Select one or more shops to publish this product.
+              {t("Select one or more shops to publish this product.")}
             </p>
           )}
         </CardContent>
@@ -37,4 +40,3 @@ export default function PublishShopsTab({
     </div>
   );
 }
-

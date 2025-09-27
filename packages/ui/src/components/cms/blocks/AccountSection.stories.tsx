@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import AccountSection from "./AccountSection";
+import type { RentalOrder } from "@acme/types";
 
 const meta: Meta<typeof AccountSection> = {
   component: AccountSection,
@@ -15,10 +16,9 @@ const meta: Meta<typeof AccountSection> = {
     ],
     rentalsAdapter: async () => [
       { id: "r-1", sessionId: "s", shop: "shop", deposit: 50, startedAt: new Date().toISOString() },
-    ] as any,
+    ] as RentalOrder[],
   },
 };
 export default meta;
 
 export const Default: StoryObj<typeof AccountSection> = {};
-

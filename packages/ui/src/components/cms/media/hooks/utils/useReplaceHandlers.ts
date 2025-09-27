@@ -2,6 +2,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { MediaItem } from "@acme/types";
 
 import { hasUrl } from "./utils";
@@ -19,6 +20,7 @@ interface ReplaceDeps {
 export function useReplaceHandlers({ state, actions }: ReplaceDeps) {
   const { files, replacingUrl, selectedUrl } = state;
   const { setReplacingUrl, setFiles, setSelectedUrl, setToast } = actions;
+  const t = useTranslations();
 
   const onReplace = useCallback(
     (oldUrl: string) => {
@@ -30,15 +32,17 @@ export function useReplaceHandlers({ state, actions }: ReplaceDeps) {
   const onReplaceSuccess = useCallback(
     (item: MediaItem) => {
       if (!replacingUrl) {
+        // i18n-exempt — developer diagnostic, not user-facing
         console.warn("Replacement completed without a tracked URL.");
         return;
       }
 
       if (!hasUrl(item)) {
+        // i18n-exempt — developer diagnostic, not user-facing
         console.error("Replacement media item is missing a URL", item);
         setToast({
           open: true,
-          message: "Replacement failed: missing media URL.",
+          message: t("Replacement failed: missing media URL."),
           variant: "error",
         });
         setReplacingUrl(null);
@@ -49,10 +53,11 @@ export function useReplaceHandlers({ state, actions }: ReplaceDeps) {
       const hasTarget = files.some((file) => file.url === replacingUrl);
 
       if (!hasTarget) {
+        // i18n-exempt — developer diagnostic, not user-facing
         console.error("Failed to locate media item to replace", replacingUrl);
         setToast({
           open: true,
-          message: "Failed to update media after replacement.",
+          message: t("Failed to update media after replacement."),
           variant: "error",
         });
         setReplacingUrl(null);
@@ -72,22 +77,23 @@ export function useReplaceHandlers({ state, actions }: ReplaceDeps) {
       }
 
       setReplacingUrl(null);
-      setToast({ open: true, message: "Media replaced.", variant: "success" });
+      setToast({ open: true, message: t("Media replaced."), variant: "success" });
     },
-    [files, replacingUrl, selectedUrl, setFiles, setReplacingUrl, setSelectedUrl, setToast]
+    [files, replacingUrl, selectedUrl, setFiles, setReplacingUrl, setSelectedUrl, setToast, t]
   );
 
   const onReplaceError = useCallback(
     (message: string) => {
+      // i18n-exempt — developer diagnostic, not user-facing
       console.error("Failed to replace media item", message);
       setReplacingUrl(null);
       setToast({
         open: true,
-        message: message || "Failed to replace media item.",
+        message: message || (t("Failed to replace media item.") as string),
         variant: "error",
       });
     },
-    [setReplacingUrl, setToast]
+    [setReplacingUrl, setToast, t]
   );
 
   const isReplacing = useCallback(
@@ -97,4 +103,3 @@ export function useReplaceHandlers({ state, actions }: ReplaceDeps) {
 
   return { onReplace, onReplaceSuccess, onReplaceError, isReplacing } as const;
 }
-

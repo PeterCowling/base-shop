@@ -5,6 +5,7 @@ import { ColorSwatch } from "../src/components/atoms/ColorSwatch";
 describe("ColorSwatch", () => {
   it("applies size, color and selected ring class", () => {
     const { rerender, getByRole } = render(
+      // eslint-disable-next-line ds/no-raw-color -- test intentionally passes raw color
       <ColorSwatch color="#ff0000" size={30} selected={false} aria-label="swatch" />
     );
     const btn = getByRole("button", { name: "swatch" }) as HTMLButtonElement;
@@ -15,6 +16,7 @@ describe("ColorSwatch", () => {
     expect(btn.className).not.toMatch(/ring-2/);
 
     rerender(
+      // eslint-disable-next-line ds/no-raw-color -- test intentionally passes raw color
       <ColorSwatch color="#00ff00" size={16} selected aria-label="swatch" />
     );
     const btn2 = getByRole("button", { name: "swatch" }) as HTMLButtonElement;
@@ -24,6 +26,7 @@ describe("ColorSwatch", () => {
   it("fires onClick when pressed", () => {
     const onClick = jest.fn();
     const { getByRole } = render(
+      // eslint-disable-next-line ds/no-raw-color -- test intentionally passes raw color
       <ColorSwatch color="#123456" aria-label="pick" onClick={onClick} />
     );
     fireEvent.click(getByRole("button", { name: "pick" }));

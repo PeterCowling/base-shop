@@ -3,7 +3,8 @@
 
 import { Input } from "../atoms/shadcn";
 import { Toast } from "../atoms";
-import type { Locale } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import { useTranslations } from "@acme/i18n";
 import Tabs from "./blocks/Tabs";
 import PricingTab from "./PricingTab";
 import VariantsTab from "./VariantsTab";
@@ -47,6 +48,7 @@ export default function ProductEditorForm({
   locales,
   formId = "product-editor-form",
 }: BaseProps) {
+  const t = useTranslations();
   const {
     product,
     errors,
@@ -81,7 +83,7 @@ export default function ProductEditorForm({
       if (currentShop) setPublishShops([currentShop]);
     }
     // run once on mount for defaulting/preset
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- ABC-123: Only want initial defaulting from URL/preset
   }, []);
 
   const errorEntries = useMemo(
@@ -106,6 +108,7 @@ export default function ProductEditorForm({
   return (
     <>
       <Toast open={toast.open} message={toast.message} onClose={closeToast} />
+      {/* eslint-disable ds/no-hardcoded-copy -- ABC-123: test IDs and tokens are not UI copy */}
       <form
         id={formId}
         data-cy="product-editor-form"
@@ -114,20 +117,25 @@ export default function ProductEditorForm({
         aria-busy={saving}
         className="flex flex-col gap-6"
       >
+        
         <Input type="hidden" name="id" value={product.id} />
+        {/* eslint-disable ds/no-hardcoded-copy -- ABC-123: delimiter and test id are not UI copy */}
         <Input
           type="hidden"
           name="publishShops"
           value={publishShops.join(",")}
           data-testid="publish-shops-input"
         />
+        {/* eslint-enable ds/no-hardcoded-copy */}
 
         {hasErrors && (
+          /* eslint-disable ds/no-hardcoded-copy -- ABC-123: design token reference is not UI copy */
           <div
             className="rounded-lg border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger"
             data-token="--color-danger"
           >
-            <p className="font-medium">We found some issues:</p>
+            {/* eslint-enable ds/no-hardcoded-copy */}
+            <p className="font-medium">{t("errors.foundIssues")}</p>
             <ul className="mt-2 space-y-1">
               {errorEntries.map(([field, messages]) => (
                 <li key={field}>
@@ -141,12 +149,12 @@ export default function ProductEditorForm({
 
         <Tabs
           labels={[
-            "Pricing",
-            "Variants",
-            "Publish locations",
-            "Publish to shops",
-            "Media gallery",
-            "Localized content",
+            t("product.tabs.pricing") as string,
+            t("product.tabs.variants") as string,
+            t("product.tabs.publishLocations") as string,
+            t("product.tabs.publishShops") as string,
+            t("product.tabs.mediaGallery") as string,
+            t("product.tabs.localizedContent") as string,
           ]}
           className="space-y-4"
         >
@@ -189,8 +197,10 @@ export default function ProductEditorForm({
           />
         </Tabs>
 
+        {/* Hidden submit to support Enter key in inputs */}
+        {/* eslint-disable-next-line ds/min-tap-size -- ABC-123: Hidden submit button for keyboard accessibility */}
         <button type="submit" className="sr-only">
-          Save
+          {t("actions.save")}
         </button>
       </form>
     </>

@@ -7,8 +7,16 @@ jest.mock("../src/components/cms/page-builder/PageCanvas.tsx", () => ({
     <div id="canvas" data-viewport={viewport}></div>
   ),
 }));
-jest.mock("../src/components/cms/page-builder/Palette", () => () => <div />);
-jest.mock("../src/components/cms/page-builder/PageSidebar", () => () => <div />);
+jest.mock("../src/components/cms/page-builder/Palette", () => {
+  const Palette = () => <div />;
+  (Palette as any).displayName = "PaletteMock";
+  return Palette;
+});
+jest.mock("../src/components/cms/page-builder/PageSidebar", () => {
+  const PageSidebar = () => <div />;
+  (PageSidebar as any).displayName = "PageSidebarMock";
+  return PageSidebar;
+});
 import PageBuilder from "../src/components/cms/PageBuilder";
 import { devicePresets, getLegacyPreset } from "../src/utils/devicePresets";
 

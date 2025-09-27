@@ -23,9 +23,13 @@ let rulesCache: Record<string, number> | null = null;
 
 async function loadRules() {
   if (rulesCache) return rulesCache;
-  const file = path.join(resolveDataRoot(), "..", "tax", "rules.json");
+  const base = path.resolve(resolveDataRoot(), "..", "tax");
+  const file = path.resolve(base, "rules.json");
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    if (!file.startsWith(base + path.sep)) {
+      throw new Error("Resolved path escapes base directory"); // i18n-exempt -- CORE-1010 internal error message
+    }
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-1010 path validated and normalized against base
     const buf = await fs.readFile(file, "utf8");
     rulesCache = JSON.parse(buf) as Record<string, number>;
   } catch (err: unknown) {

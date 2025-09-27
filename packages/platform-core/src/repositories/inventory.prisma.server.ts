@@ -6,7 +6,7 @@ import {
   type InventoryItem,
   variantKey,
 } from "../types/inventory";
-// eslint-disable-next-line no-restricted-imports
+// eslint-disable-next-line no-restricted-imports -- DS-000 allow fallback JSON repo import for prisma adapter
 import { jsonInventoryRepository } from "./inventory.json.server";
 import type {
   InventoryRepository,

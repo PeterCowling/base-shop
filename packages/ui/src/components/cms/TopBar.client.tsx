@@ -1,5 +1,6 @@
 // packages/ui/components/cms/TopBar.tsx
 "use client";
+/* eslint-disable ds/no-hardcoded-copy -- UI-1421: className literals and control labels handled via t(); remaining literals are non-user-facing */
 
 import { getShopFromPath } from "@acme/shared-utils";
 import { signOut } from "next-auth/react";
@@ -12,6 +13,7 @@ import { Switch } from "../atoms";
 import Breadcrumbs from "./Breadcrumbs.client";
 import ShopSelector from "./ShopSelector";
 import NavMenu from "./NavMenu.client";
+import { useTranslations } from "@acme/i18n";
 
 interface TopBarProps {
   role?: string;
@@ -21,6 +23,7 @@ interface TopBarProps {
 function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
   const router = useRouter();
   const pathname = usePathname();
+  const t = useTranslations();
 
   const segments = pathname.split("/").filter(Boolean);
   const shop = getShopFromPath(pathname);
@@ -46,18 +49,18 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
   // Theme toggling is handled inline on the Switch below
 
   return (
-    <header className="relative z-10 border-b border-border-1 bg-surface-2 px-6 py-3 text-foreground">
+    <header className="relative border-b border-border-1 bg-surface-2 px-6 py-3 text-foreground">
       <div className="relative flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-1 items-center gap-3">
           <Link
             href="/cms"
             className="rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm font-medium text-foreground transition hover:bg-surface-3"
           >
-            Home
+            {t("Home")}
           </Link>
-          <NavMenu role={role} onConfiguratorStartNew={onConfiguratorStartNew} label="CMS" variant="cms" />
+          <NavMenu role={role} onConfiguratorStartNew={onConfiguratorStartNew} label={String(t("CMS"))} variant="cms" />
           {shop && (
-            <NavMenu role={role} onConfiguratorStartNew={onConfiguratorStartNew} label="Shop" variant="shop" />
+            <NavMenu role={role} onConfiguratorStartNew={onConfiguratorStartNew} label={String(t("Shop"))} variant="shop" />
           )}
           <Breadcrumbs />
           <div className="hidden sm:flex">
@@ -67,17 +70,17 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
         <div className="flex flex-wrap items-center gap-2 text-sm">
           {showNewProduct && (
             <Button asChild className="h-9 rounded-lg bg-emerald-500 px-3 py-2 text-white hover:bg-emerald-400">
-              <Link href={`/cms/shop/${shop}/products/new`}>New product</Link>
+              <Link href={`/cms/shop/${shop}/products/new`}>{t("New product")}</Link>
             </Button>
           )}
           {showNewPage && (
             <Button asChild className="h-9 rounded-lg bg-sky-500 px-3 py-2 text-white hover:bg-sky-400">
-              <Link href={`/cms/shop/${shop}/pages/new/page`}>New page</Link>
+              <Link href={`/cms/shop/${shop}/pages/new/page`}>{t("New page")}</Link>
             </Button>
           )}
           {/* Theme toggle (left of Refresh) */}
           <div className="flex items-center gap-2 pe-2" role="group" aria-labelledby="cms-theme-label">
-            <span className="sr-only" id="cms-theme-label">Toggle theme</span>
+            <span className="sr-only" id="cms-theme-label">{t("Toggle theme")}</span>
             <SunIcon
               aria-hidden
               className={
@@ -113,7 +116,7 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
             className="h-9 rounded-lg border-border-2 text-foreground hover:bg-surface-3"
             onClick={() => router.refresh()}
           >
-            Refresh
+            {t("Refresh")}
           </Button>
           <Button
             variant="ghost"
@@ -122,7 +125,7 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
               signOut({ redirect: false }).then(() => router.push("/login"))
             }
           >
-            Sign out
+            {t("Sign out")}
           </Button>
         </div>
       </div>

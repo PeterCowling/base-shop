@@ -22,12 +22,12 @@ export default function useSelectionGrouping({
   );
 
   const canGroupTransform = useMemo(
-    () => selectedComponents.length > 1 && selectedComponents.every((c) => (c as any).position === "absolute"),
+    () => selectedComponents.length > 1 && selectedComponents.every((c) => c.position === "absolute"),
     [selectedComponents],
   );
 
   const hasLockedInSelection = useMemo(
-    () => selectedComponents.some((c) => ((editor as any)?.[c.id]?.locked ?? (c as any).locked ?? false)),
+    () => selectedComponents.some((c) => (editor?.[c.id]?.locked ?? c.locked ?? false)),
     [editor, selectedComponents],
   );
 
@@ -35,15 +35,15 @@ export default function useSelectionGrouping({
     () =>
       selectedComponents
         .filter((c) => {
-          const isLocked = (editor as any)?.[c.id]?.locked ?? (c as any).locked ?? false;
-          return (c as any).position === "absolute" && !isLocked;
+          const isLocked = editor?.[c.id]?.locked ?? c.locked ?? false;
+          return c.position === "absolute" && !isLocked;
         })
         .map((c) => c.id),
     [editor, selectedComponents],
   );
 
   const lockedIds = useMemo(
-    () => selectedComponents.filter((c) => ((editor as any)?.[c.id]?.locked ?? (c as any).locked ?? false)).map((c) => c.id),
+    () => selectedComponents.filter((c) => (editor?.[c.id]?.locked ?? c.locked ?? false)).map((c) => c.id),
     [editor, selectedComponents],
   );
 

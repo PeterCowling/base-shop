@@ -7,6 +7,7 @@ import { boxProps } from "../../utils/style";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
+import { useTranslations } from "@acme/i18n";
 
 export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   product: SKU;
@@ -31,7 +32,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       onAddToCart,
       showImage = true,
       showPrice = true,
-      ctaLabel = "Add to cart",
+      ctaLabel,
       padding = "p-4",
       width,
       height,
@@ -41,6 +42,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
     },
     ref
   ) => {
+    const t = useTranslations();
     const { classes, style } = boxProps({ width, height, padding, margin });
     const media = product.media?.[0];
     const [, dispatch] = useCart();
@@ -52,12 +54,14 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         void dispatch({ type: "add", sku: product });
       }
     };
+    // i18n-exempt: viewports expression and className strings below are CSS-only
+    const SIZES = "(min-width: 640px) 25vw, 50vw"; // i18n-exempt with justification: responsive image sizes string
     return (
       <div
         ref={ref}
         style={style}
         className={cn(
-          "flex flex-col gap-3 rounded-lg border",
+          "flex flex-col gap-3 rounded-lg border", // i18n-exempt with justification: CSS utility classes only
           classes,
           className
         )}
@@ -70,13 +74,14 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
                 src={media.url ?? ""}
                 alt={media.altText ?? product.title ?? ""}
                 fill
-                sizes="(min-width: 640px) 25vw, 50vw"
-                className="rounded-md object-cover"
+                sizes={SIZES}
+                className="rounded-md object-cover" /* i18n-exempt: CSS utility classes only */
               />
             ) : (
               <video
                 src={media.url ?? ""}
-                className="h-full w-full rounded-md object-cover"
+                className="h-full w-full rounded-md object-cover" /* i18n-exempt: CSS utility classes only */
+                data-aspect="1/1"
                 muted
                 playsInline
               />
@@ -87,7 +92,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         {showPrice && product.price != null && (
           <Price amount={product.price} className="font-semibold" />
         )}
-        <Button onClick={handleAdd}>{ctaLabel}</Button>
+        <Button onClick={handleAdd}>{ctaLabel ?? (t("product.addToCart") as string)}</Button>
       </div>
     );
   }

@@ -134,7 +134,7 @@ export function renderTemplate(
     );
   }
 
-  throw new Error(`Unknown template: ${id}`);
+  throw new Error(`Unknown template: ${id}`); // i18n-exempt: developer error for missing template
 }
 
 // Export the React reference for testing purposes.

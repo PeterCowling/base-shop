@@ -4,7 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../atoms/shadcn";
-import type { Locale } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
 import type { ReactNode } from "react";
 
 export interface LocalePanelConfig {

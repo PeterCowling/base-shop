@@ -1,3 +1,4 @@
+/* eslint react-hooks/rules-of-hooks: off -- TEST-123: jest mocks call functions named like hooks outside React components */
 import { render, fireEvent, screen } from "@testing-library/react";
 import React from "react";
 

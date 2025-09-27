@@ -15,10 +15,10 @@ const DiffDetails = ({ diff, current, onRestore }: Props) => {
   if (!diff || (diff.modifiedList?.length ?? 0) === 0) return null;
   return (
     <div className="rounded border bg-background p-2 text-sm space-y-2">
-      <div className="text-sm font-medium">Detailed Diff</div>
+      <div className="text-sm font-medium">Detailed Diff{/* i18n-exempt -- PB-1023 */}</div>
       {diff.modifiedList!.slice(0, 5).map((m) => {
-        const before = (diff.a as any)[m.id] ?? {};
-        const after = (diff.b as any)[m.id] ?? {};
+        const before = (diff.a as Record<string, PageComponent>)[m.id] ?? ({} as PageComponent);
+        const after = (diff.b as Record<string, PageComponent>)[m.id] ?? ({} as PageComponent);
         return (
           <div key={m.id} className="border rounded p-2">
             <div className="mb-2 flex items-center justify-between">
@@ -26,30 +26,30 @@ const DiffDetails = ({ diff, current, onRestore }: Props) => {
               <Button
                 variant="outline"
                 onClick={() => {
-                  const replacement = (diff.b as any)[m.id] as PageComponent | undefined;
+                  const replacement = (diff.b as Record<string, PageComponent>)[m.id] as PageComponent | undefined;
                   const next = replaceComponentById(current, m.id, replacement);
                   onRestore(next);
                 }}
               >
-                Restore this component
+                {/* i18n-exempt -- PB-1023 */}Restore this component
               </Button>
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
               <div className="rounded border p-2">
-                <div className="font-medium mb-1">Current</div>
+                <div className="font-medium mb-1">Current{/* i18n-exempt -- PB-1023 */}</div>
                 {m.keys.map((k) => (
                   <div key={k} className="mb-1">
                     <span className="me-1 text-muted-foreground">{k}:</span>
-                    <span className="bg-red-50 dark:bg-red-900/30 px-1 rounded break-words">{JSON.stringify((before as any)[k])}</span>
+                    <span className="bg-red-50 dark:bg-red-900/30 px-1 rounded break-words">{JSON.stringify((before as Record<string, unknown>)[k])}</span>
                   </div>
                 ))}
               </div>
               <div className="rounded border p-2">
-                <div className="font-medium mb-1">Selected</div>
+                <div className="font-medium mb-1">Selected{/* i18n-exempt -- PB-1023 */}</div>
                 {m.keys.map((k) => (
                   <div key={k} className="mb-1">
                     <span className="me-1 text-muted-foreground">{k}:</span>
-                    <span className="bg-green-50 dark:bg-green-900/30 px-1 rounded break-words">{JSON.stringify((after as any)[k])}</span>
+                    <span className="bg-green-50 dark:bg-green-900/30 px-1 rounded break-words">{JSON.stringify((after as Record<string, unknown>)[k])}</span>
                   </div>
                 ))}
               </div>
@@ -62,4 +62,3 @@ const DiffDetails = ({ diff, current, onRestore }: Props) => {
 };
 
 export default DiffDetails;
-

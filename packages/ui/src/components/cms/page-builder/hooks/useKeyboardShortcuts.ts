@@ -45,7 +45,7 @@ export default function useKeyboardShortcuts({ onPublish, rotateDevice, togglePr
           }
         }
         // Ctrl/Cmd + Alt + P ⇒ Preview toggle
-        if ((e.altKey || (e as any).altGraphKey) && k === "p") {
+        if ((e.altKey || (e as KeyboardEvent & { altGraphKey?: boolean }).altGraphKey) && k === "p") {
           e.preventDefault();
           togglePreview();
           return;
@@ -56,4 +56,3 @@ export default function useKeyboardShortcuts({ onPublish, rotateDevice, togglePr
     return () => window.removeEventListener("keydown", handler);
   }, [onPublish, rotateDevice, togglePreview]);
 }
-

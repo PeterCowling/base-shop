@@ -40,12 +40,14 @@ export async function initShop(
     });
     if (!res.ok) {
       const json = await res.json().catch(() => ({}));
+      // i18n-exempt: generic network/validation fallback; UI displays as-is
       throw new Error(json.error ?? "Failed to save data");
     }
     return { ok: true };
   } catch (err) {
     return {
       ok: false,
+      // i18n-exempt: fallback error when exception lacks message
       error: err instanceof Error ? err.message : "Failed to save data",
     };
   }

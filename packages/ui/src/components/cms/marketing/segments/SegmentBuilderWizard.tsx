@@ -14,6 +14,7 @@ import {
   type SegmentPreviewData,
 } from "./types";
 import { useSegmentBuilderWizard } from "./useSegmentBuilderWizard";
+import { useTranslations } from "@acme/i18n";
 
 interface SegmentBuilderWizardProps {
   initialDefinition?: Partial<SegmentDefinition>;
@@ -29,9 +30,11 @@ export function SegmentBuilderWizard({
   onSubmit,
   validationErrors,
   onPreviewChange,
-  finishLabel = "Create segment",
+  finishLabel,
   className,
 }: SegmentBuilderWizardProps) {
+  const t = useTranslations();
+  const resolvedFinishLabel = finishLabel ?? (t("segments.builder.finishLabel.create") as string);
   const {
     steps,
     stepIndex,
@@ -93,7 +96,7 @@ export function SegmentBuilderWizard({
         <SegmentReviewStep
           preview={preview}
           status={status}
-          finishLabel={finishLabel}
+          finishLabel={resolvedFinishLabel}
           onEditRules={() => goToStep(stepIndex - 1)}
           onEditDetails={() => goToStep(stepIndex - 2)}
           onFinish={handleFinish}

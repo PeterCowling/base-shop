@@ -18,7 +18,7 @@ let _secret: string | null = null;
 function getSecret(): string {
   if (_secret) return _secret;
   const { CART_COOKIE_SECRET: secret } = loadCoreEnv();
-  if (!secret) throw new Error("env.CART_COOKIE_SECRET is required");
+  if (!secret) throw new Error("env.CART_COOKIE_SECRET is required"); // i18n-exempt -- CORE-2422: developer-facing error message only
   _secret = secret as string;
   return _secret!; // non‑null assertion to satisfy the string return type
 }
@@ -77,7 +77,7 @@ export function decodeCartCookie(raw?: string | null): unknown {
   } catch {
     /* fall through */
   }
-  console.warn("Invalid cart cookie");
+  console.warn("Invalid cart cookie"); // i18n-exempt -- CORE-2422: diagnostic log, not user-facing
   return null;
 }
 

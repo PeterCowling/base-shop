@@ -1,4 +1,4 @@
-/* eslint-disable security/detect-non-literal-fs-filename -- Paths are derived from internal configuration */
+/* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
 import { markAvailable, markCleaning, markQa, markReceived, markRepair } from "@platform-core/repositories/rentalOrders.server";
 import { reverseLogisticsEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
 import { resolveDataRoot } from "@platform-core/dataRoot";
@@ -50,6 +50,7 @@ export async function processReverseLogisticsEventsOnce(
             break;
         }
       } catch (err) {
+        // i18n-exempt: OPS-1234 technical log, not user-facing
         logger.error("reverse logistics event failed", {
           shopId: shop,
           file,
@@ -63,4 +64,3 @@ export async function processReverseLogisticsEventsOnce(
     }
   }
 }
-

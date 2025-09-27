@@ -15,35 +15,42 @@ export default meta;
 
 type Story = StoryObj<typeof ThemePanel>;
 
-export const Basic: Story = {
-  render: () => {
-    // Provide a lightweight fetch stub to return example theme data
-    useEffect(() => {
-      const orig = window.fetch;
-      (window as any).fetch = async (url: RequestInfo) => {
-        const u = String(url);
-        if (u.includes("/cms/api/shops/") && u.endsWith("/theme")) {
-          const doc = document.documentElement;
-          const brand = getComputedStyle(doc).getPropertyValue("--color-brand").trim();
-          return new Response(
-            JSON.stringify({
-              themeDefaults: { "color.brand": brand || "", "font.body": "Inter" },
-              themeTokens: { "color.brand": brand || "", "font.body": "Inter" },
-            }),
-            { status: 200, headers: { "Content-Type": "application/json" } },
-          );
-        }
-        return orig(url as any);
-      };
-      return () => {
-        (window as any).fetch = orig;
-      };
-    }, []);
+function StoryWithFetchStub() {
+  // Provide a lightweight fetch stub to return example theme data
+  useEffect(() => {
+    const orig = globalThis.fetch;
+    globalThis.fetch = async (
+      input: RequestInfo | URL,
+      init?: RequestInit
+    ): Promise<Response> => {
+      const u = String(input);
+      if (u.includes("/cms/api/shops/") && u.endsWith("/theme")) {
+        const doc = document.documentElement;
+        const brand = getComputedStyle(doc)
+          .getPropertyValue("--color-brand")
+          .trim();
+        return new Response(
+          JSON.stringify({
+            themeDefaults: { "color.brand": brand || "", "font.body": "Inter" },
+            themeTokens: { "color.brand": brand || "", "font.body": "Inter" },
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+      }
+      return orig(input, init);
+    };
+    return () => {
+      globalThis.fetch = orig;
+    };
+  }, []);
 
-    return (
-      <Dialog open>
-        <ThemePanel />
-      </Dialog>
-    );
-  },
+  return (
+    <Dialog open>
+      <ThemePanel />
+    </Dialog>
+  );
+}
+
+export const Basic: Story = {
+  render: () => <StoryWithFetchStub />,
 };

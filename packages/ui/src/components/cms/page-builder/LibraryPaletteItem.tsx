@@ -104,18 +104,29 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
               {tags.map((t) => (
             <span key={t} className="inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-xs">
                   {t}
-                  <button type="button" aria-label={`Remove ${t}`} className="rounded border px-1" onClick={(e) => { e.stopPropagation(); setTags((prev) => prev.filter((x) => x !== t)); }}>×</button>
+                  {/* i18n-exempt: Admin-only CMS tool UI copy. */}
+                  <button
+                    type="button"
+                    aria-label={`Remove ${t}`}
+                    className="inline-flex min-h-10 min-w-10 items-center justify-center rounded border px-1"
+                    onClick={(e) => { e.stopPropagation(); setTags((prev) => prev.filter((x) => x !== t)); }}
+                  >
+                    ×
+                  </button>
                 </span>
               ))}
               <input
-                className="min-w-[6rem] flex-1 rounded border px-2 py-1 text-xs"
+                className="min-w-24 flex-1 rounded border px-2 py-1 text-xs"
+                // i18n-exempt: Admin-only CMS tool UI copy.
                 placeholder="add tag"
                 value={tagInput}
                 onChange={(e) => setTagInput(e.target.value)}
                 onKeyDown={handleKeyDown}
+                // i18n-exempt: Admin-only CMS tool UI copy.
                 aria-label="Add tag"
               />
-              <button type="button" className="rounded border px-2 text-xs" onClick={(e) => { e.stopPropagation(); addTag(); }}>Add</button>
+              {/* i18n-exempt: Admin-only CMS tool UI copy. */}
+              <button type="button" className="min-h-10 min-w-10 rounded border px-2 text-xs" onClick={(e) => { e.stopPropagation(); addTag(); }}>Add</button>
             </div>
           </div>
         </div>
@@ -123,18 +134,19 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
         <>
           <span className="flex-1 truncate" title={item.label}>{item.label}</span>
           {Array.isArray(item.tags) && item.tags.length > 0 && (
-            <span className="hidden md:block text-xs text-muted-foreground truncate max-w-[10rem]" title={item.tags.join(", ")}>
+            <span className="hidden md:block text-xs text-muted-foreground truncate w-40" title={item.tags.join(", ")}>
               {item.tags.join(", ")}
             </span>
           )}
         </>
       )}
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => void handleThumbFile(e.target.files?.[0])} />
+      {/* i18n-exempt: Admin-only CMS tool UI copy. */}
       <Tooltip text="Upload thumbnail">
         <button
           type="button"
           aria-label="Upload thumbnail"
-          className="rounded border px-2 text-xs"
+          className="min-h-10 min-w-10 rounded border px-2 text-xs"
           onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
           title="Upload thumbnail"
         >
@@ -142,11 +154,12 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
         </button>
       </Tooltip>
       {item.thumbnail && (
+        // i18n-exempt: Admin-only CMS tool UI copy.
         <Tooltip text="Clear thumbnail">
           <button
             type="button"
             aria-label="Clear thumbnail"
-            className="rounded border px-2 text-xs"
+            className="min-h-10 min-w-10 rounded border px-2 text-xs"
             onClick={(e) => { e.stopPropagation(); onUpdate({ thumbnail: null }); }}
           >
             Clear
@@ -155,11 +168,12 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
       )}
       {editing ? (
         <>
+          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
           <Tooltip text="Save changes">
             <button
               type="button"
               aria-label="Save"
-              className="rounded border px-2 text-xs"
+              className="min-h-10 min-w-10 rounded border px-2 text-xs"
               onClick={(e) => {
                 e.stopPropagation();
                 const nextTags = tags.map((t) => t.trim()).filter(Boolean);
@@ -170,11 +184,12 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
               Save
             </button>
           </Tooltip>
+          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
           <Tooltip text="Cancel editing">
             <button
               type="button"
               aria-label="Cancel"
-              className="rounded border px-2 text-xs"
+              className="min-h-10 min-w-10 rounded border px-2 text-xs"
               onClick={(e) => {
                 e.stopPropagation();
                 setLabel(item.label);
@@ -187,11 +202,12 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
           </Tooltip>
         </>
       ) : (
+        // i18n-exempt: Admin-only CMS tool UI copy.
         <Tooltip text="Edit item">
           <button
             type="button"
             aria-label="Edit"
-            className="rounded border px-2 text-xs"
+            className="min-h-10 min-w-10 rounded border px-2 text-xs"
             onClick={(e) => {
               e.stopPropagation();
               setEditing(true);
@@ -201,25 +217,28 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
           </button>
         </Tooltip>
       )}
+      {/* i18n-exempt: Admin-only CMS tool UI copy. */}
       <Tooltip text={item.shared ? "Unshare with team" : "Share with team"}>
         <button
           type="button"
           aria-label={item.shared ? "Unshare" : "Share"}
-          className={`rounded border px-2 text-xs ${item.shared ? "bg-green-50" : ""}`}
+          className={`min-h-10 min-w-10 rounded border px-2 text-xs ${item.shared ? "bg-green-50" : ""}`}
           onClick={(e) => {
             e.stopPropagation();
             onToggleShare();
           }}
+          // i18n-exempt: Admin-only CMS tool UI copy.
           title={item.shared ? "Shared with team" : "Private"}
         >
           {item.shared ? "Shared" : "Private"}
         </button>
       </Tooltip>
+      {/* i18n-exempt: Admin-only CMS tool UI copy. */}
       <Tooltip text="Delete from My Library">
         <button
           type="button"
           aria-label="Delete from My Library"
-          className="rounded border px-2 text-xs"
+          className="min-h-10 min-w-10 rounded border px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();
             onDelete();

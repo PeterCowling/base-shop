@@ -36,6 +36,7 @@ interface RawInventoryItem {
 async function acquireLock(lockFile: string): Promise<fs.FileHandle> {
   while (true) {
     try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 lock file path is derived from validated shop and constant base
       return await fs.open(lockFile, "wx");
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code !== "EEXIST") throw err;
@@ -51,6 +52,7 @@ function inventoryPath(shop: string): string {
 
 async function ensureDir(shop: string): Promise<void> {
   shop = validateShopName(shop);
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 path uses validated shop and trusted base
   await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
 }
 
@@ -81,7 +83,7 @@ async function triggerStockAlert(
           ? mod.default.checkAndAlert
           : undefined;
     if (!fn) {
-      throw new Error("stock alert module missing checkAndAlert export");
+      throw new Error("stock alert module missing checkAndAlert export"); // i18n-exempt -- developer error, not user-facing
     }
     await fn(shop, items);
   } catch (err) {
@@ -91,6 +93,7 @@ async function triggerStockAlert(
 
 async function read(shop: string): Promise<InventoryItem[]> {
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
     const buf = await fs.readFile(inventoryPath(shop), "utf8");
     const raw: RawInventoryItem[] = JSON.parse(buf);
     return raw.map(
@@ -127,10 +130,13 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
   const handle = await acquireLock(lockFile);
   try {
     const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
     await fs.writeFile(tmp, JSON.stringify(serialized, null, 2), "utf8");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
     await fs.rename(tmp, inventoryPath(shop));
   } finally {
     await handle.close();
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 lock file path is derived from validated shop and constant base
     await fs.unlink(lockFile).catch(() => {});
   }
   await triggerStockAlert(shop, normalized);
@@ -150,6 +156,7 @@ async function update(
   try {
     let items: InventoryItem[] = [];
     try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
       const buf = await fs.readFile(inventoryPath(shop), "utf8");
       const raw: RawInventoryItem[] = JSON.parse(buf);
       items = raw.map(
@@ -199,10 +206,13 @@ async function update(
 
     const tmp = `${inventoryPath(shop)}.${Date.now()}.tmp`;
     await ensureDir(shop);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
     await fs.writeFile(tmp, JSON.stringify(serialized, null, 2), "utf8");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
     await fs.rename(tmp, inventoryPath(shop));
   } finally {
     await handle.close();
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 lock file path is derived from validated shop and constant base
     await fs.unlink(lockFile).catch(() => {});
   }
 

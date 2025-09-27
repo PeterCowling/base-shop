@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Card, CardContent, Tag, type TagProps } from "../../../atoms/shadcn";
 import { cn } from "../../../../utils/style";
+import { Grid, Inline, Stack } from "../../../atoms/primitives";
 
 export interface SummaryMetricBadge {
   label: string;
@@ -40,29 +41,29 @@ export function SummaryCard({
   return (
     <Card className={cn("space-y-4", className)}>
       <CardContent className="space-y-4">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2">
+        <Inline className="items-start justify-between gap-3">
+          <Stack className="space-y-2">
+            <Inline className="items-center gap-2">
               <h3 className="text-lg font-semibold">{title}</h3>
               {status && (
                 <Tag variant={status.tone ?? "default"}>
-                  <span className="flex items-center gap-1">
+                  <Inline className="items-center gap-1">
                     {status.icon}
                     {status.label}
-                  </span>
+                  </Inline>
                 </Tag>
               )}
-            </div>
+            </Inline>
             {description && (
               <p className="text-muted-foreground text-sm leading-relaxed">
                 {description}
               </p>
             )}
-          </div>
-          {actions && <div className="flex items-center gap-2">{actions}</div>}
-        </div>
+          </Stack>
+          {actions && <Inline className="items-center gap-2">{actions}</Inline>}
+        </Inline>
         {metrics && metrics.length > 0 && (
-          <dl className="grid gap-4 sm:grid-cols-2">
+          <Grid cols={1} gap={4} className="sm:grid-cols-2">
             {metrics.map(({ label, value, badge, hint }) => (
               <div key={label} className="space-y-1">
                 <dt className="text-muted-foreground text-xs uppercase tracking-wide">
@@ -79,13 +80,13 @@ export function SummaryCard({
                   <p className="text-muted-foreground text-xs">{hint}</p>
                 )}
                 {badge && (
-                  <Tag variant={badge.tone ?? "default"} className="text-[0.65rem]">
+                  <Tag variant={badge.tone ?? "default"} className="text-xs">
                     {badge.label}
                   </Tag>
                 )}
               </div>
             ))}
-          </dl>
+          </Grid>
         )}
         {footer}
       </CardContent>

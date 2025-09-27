@@ -36,7 +36,12 @@ jest.mock("@platform-core/repositories/settings.server", () => ({
   getShopSettings: jest.fn(),
 }));
 
-jest.mock("../src/components/CleaningInfo", () => () => <div data-testid="clean" />);
+jest.mock("../src/components/CleaningInfo", () => {
+  function CleaningInfoMock() {
+    return <div data-testid="clean" />;
+  }
+  return CleaningInfoMock;
+});
 jest.mock("../shop.json", () => ({ showCleaningTransparency: true }), { virtual: true });
 
 describe("ReturnsPage", () => {

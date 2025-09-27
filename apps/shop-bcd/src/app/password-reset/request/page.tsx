@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
+import { useTranslations } from "@i18n/Translations";
 
 export default function PasswordResetRequestPage() {
-  const [msg, setMsg] = useState("");
+  const t = useTranslations();
+  const [msg, setMsg] = useState<ReactNode>("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -14,7 +16,7 @@ export default function PasswordResetRequestPage() {
       body: JSON.stringify({ email }),
     });
     const data = await res.json().catch(() => ({}));
-    setMsg(res.ok ? "Check your email for a reset link" : data.error || "Error");
+    setMsg(res.ok ? t("Check your email for a reset link") : data.error || t("Error"));
   }
 
   return (
@@ -22,11 +24,11 @@ export default function PasswordResetRequestPage() {
       <input
         name="email"
         type="email"
-        placeholder="Email"
-        className="border p-1"
+        placeholder={String(t("Email"))}
+        className="border p-2"
       />
-      <button type="submit" className="border px-2 py-1">
-        Send reset link
+      <button type="submit" className="border px-4 py-2 min-h-10 min-w-10 inline-flex items-center justify-center">
+        {t("Send reset link")}
       </button>
       {msg && <p>{msg}</p>}
     </form>

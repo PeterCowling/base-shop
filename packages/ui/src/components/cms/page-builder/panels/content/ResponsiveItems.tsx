@@ -4,6 +4,8 @@
 import type { PageComponent } from "@acme/types";
 import { Input } from "../../../../atoms/shadcn";
 import { Tooltip } from "../../../../atoms";
+import { Button } from "../../../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 import type { ContentComponent, HandleInput } from "./types";
 import { nonNegative } from "./helpers";
 
@@ -13,9 +15,22 @@ interface Props {
 }
 
 export default function ResponsiveItems({ component, handleInput }: Props) {
+  const t = useTranslations();
   if (!("desktopItems" in component || "tabletItems" in component || "mobileItems" in component)) {
     return null;
   }
+
+  // Bridge to allow setting fields defined on ContentComponent while keeping
+  // HandleInput's PageComponent signature intact without using `any`.
+  const setField = <K extends keyof ContentComponent>(
+    field: K,
+    value: ContentComponent[K],
+  ) => {
+    handleInput(
+      field as unknown as keyof PageComponent,
+      value as unknown as PageComponent[keyof PageComponent],
+    );
+  };
 
   const comp = component as ContentComponent;
   const desktopItemsError = nonNegative(comp.desktopItems);
@@ -26,91 +41,90 @@ export default function ResponsiveItems({ component, handleInput }: Props) {
     <>
       <div className="flex items-center gap-1">
         <Input
-          label="Desktop Items"
+          label={t("Desktop Items")}
           type="number"
           value={comp.desktopItems ?? ""}
           onChange={(e) =>
-            handleInput(
-              "desktopItems" as any,
-              (e.target.value === "" ? undefined : Number(e.target.value)) as any,
+            setField(
+              "desktopItems",
+              e.target.value === "" ? undefined : Number(e.target.value),
             )
           }
           min={0}
           error={desktopItemsError}
         />
-        <Tooltip text="Items shown on desktop">?</Tooltip>
+        <Tooltip text={t("Items shown on desktop")}>?</Tooltip>
       </div>
       {comp.desktopItems !== undefined && (
-        <div className="-mt-1 flex items-center gap-2 text-[10px]">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
-          <button
+        <div className="mt-1 flex items-center gap-2 text-xs">
+          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <Button
             type="button"
-            className="underline"
-            onClick={() => handleInput("desktopItems" as any, undefined as any)}
+            variant="ghost"
+            onClick={() => setField("desktopItems", undefined)}
           >
-            Reset
-          </button>
+            {t("Reset")}
+          </Button>
         </div>
       )}
 
       <div className="flex items-center gap-1">
         <Input
-          label="Tablet Items"
+          label={t("Tablet Items")}
           type="number"
           value={comp.tabletItems ?? ""}
           onChange={(e) =>
-            handleInput(
-              "tabletItems" as any,
-              (e.target.value === "" ? undefined : Number(e.target.value)) as any,
+            setField(
+              "tabletItems",
+              e.target.value === "" ? undefined : Number(e.target.value),
             )
           }
           min={0}
           error={tabletItemsError}
         />
-        <Tooltip text="Items shown on tablet">?</Tooltip>
+        <Tooltip text={t("Items shown on tablet")}>?</Tooltip>
       </div>
       {comp.tabletItems !== undefined && (
-        <div className="-mt-1 flex items-center gap-2 text-[10px]">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
-          <button
+        <div className="mt-1 flex items-center gap-2 text-xs">
+          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <Button
             type="button"
-            className="underline"
-            onClick={() => handleInput("tabletItems" as any, undefined as any)}
+            variant="ghost"
+            onClick={() => setField("tabletItems", undefined)}
           >
-            Reset
-          </button>
+            {t("Reset")}
+          </Button>
         </div>
       )}
 
       <div className="flex items-center gap-1">
         <Input
-          label="Mobile Items"
+          label={t("Mobile Items")}
           type="number"
           value={comp.mobileItems ?? ""}
           onChange={(e) =>
-            handleInput(
-              "mobileItems" as any,
-              (e.target.value === "" ? undefined : Number(e.target.value)) as any,
+            setField(
+              "mobileItems",
+              e.target.value === "" ? undefined : Number(e.target.value),
             )
           }
           min={0}
           error={mobileItemsError}
         />
-        <Tooltip text="Items shown on mobile">?</Tooltip>
+        <Tooltip text={t("Items shown on mobile")}>?</Tooltip>
       </div>
       {comp.mobileItems !== undefined && (
-        <div className="-mt-1 flex items-center gap-2 text-[10px]">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">Override active</span>
-          <button
+        <div className="mt-1 flex items-center gap-2 text-xs">
+          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <Button
             type="button"
-            className="underline"
-            onClick={() => handleInput("mobileItems" as any, undefined as any)}
+            variant="ghost"
+            onClick={() => setField("mobileItems", undefined)}
           >
-            Reset
-          </button>
+            {t("Reset")}
+          </Button>
         </div>
       )}
     </>
   );
 }
-

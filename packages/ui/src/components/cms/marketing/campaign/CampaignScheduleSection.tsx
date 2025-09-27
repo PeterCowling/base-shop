@@ -6,6 +6,7 @@ import type {
   CampaignErrors,
   CampaignFormUpdater,
 } from "./useCampaignForm";
+import { useTranslations } from "@acme/i18n";
 
 interface CampaignScheduleSectionProps {
   values: CampaignFormValues;
@@ -18,37 +19,49 @@ export function CampaignScheduleSection({
   errors,
   onUpdateValue,
 }: CampaignScheduleSectionProps) {
+  const t = useTranslations();
+  // i18n-exempt constants for non-UI identifiers and tokens
+  // i18n-exempt
+  const START_ID = "campaign-start";
+  // i18n-exempt
+  const END_ID = "campaign-end";
+  // i18n-exempt
+  const END_ERR_ID = "campaign-end-error";
+  // i18n-exempt
+  const DATE = "date";
+  // i18n-exempt
+  const DANGER_TOKEN = "--color-danger";
   return (
     <Card>
       <CardContent className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1">
-          <label htmlFor="campaign-start" className="text-sm font-medium">
-            Start date
+          <label htmlFor={START_ID} className="text-sm font-medium">
+            {t("Start date")}
           </label>
           <Input
-            id="campaign-start"
-            type="date"
+            id={START_ID}
+            type={DATE}
             value={values.startDate}
             onChange={(event) => onUpdateValue("startDate", event.target.value)}
           />
         </div>
         <div className="space-y-1">
-          <label htmlFor="campaign-end" className="text-sm font-medium">
-            End date
+          <label htmlFor={END_ID} className="text-sm font-medium">
+            {t("End date")}
           </label>
           <Input
-            id="campaign-end"
-            type="date"
+            id={END_ID}
+            type={DATE}
             value={values.endDate}
             onChange={(event) => onUpdateValue("endDate", event.target.value)}
             aria-invalid={errors.endDate ? "true" : "false"}
-            aria-describedby={errors.endDate ? "campaign-end-error" : undefined}
+            aria-describedby={errors.endDate ? END_ERR_ID : undefined}
           />
           {errors.endDate && (
             <p
-              id="campaign-end-error"
+              id={END_ERR_ID}
               className="text-danger text-xs"
-              data-token="--color-danger"
+              data-token={DANGER_TOKEN}
             >
               {errors.endDate}
             </p>

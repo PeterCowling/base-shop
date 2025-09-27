@@ -6,7 +6,7 @@ import type { User } from "@acme/types";
 export async function getUserById(id: string): Promise<User> {
   const user = await prisma.user.findUnique({ where: { id } });
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("User not found"); // i18n-exempt -- CORE-1011 internal error message
   }
   return user;
 }
@@ -14,7 +14,7 @@ export async function getUserById(id: string): Promise<User> {
 export async function getUserByEmail(email: string): Promise<User> {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("User not found"); // i18n-exempt -- CORE-1011 internal error message
   }
   return user;
 }
@@ -58,7 +58,7 @@ export async function getUserByResetToken(
     },
   });
   if (!user) {
-    throw new Error("User not found");
+    throw new Error("User not found"); // i18n-exempt -- CORE-1011 internal error message
   }
   return user;
 }

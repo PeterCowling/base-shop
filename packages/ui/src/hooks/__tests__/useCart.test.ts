@@ -1,24 +1,23 @@
 import { renderHook } from "@testing-library/react";
 import { useCart } from "../useCart";
+import { useCart as platformUseCart } from "@acme/platform-core/contexts/CartContext";
 
 jest.mock("@acme/platform-core/contexts/CartContext", () => ({
   useCart: jest.fn(),
 }));
 
-const { useCart: mockUseCart } = require("@acme/platform-core/contexts/CartContext");
-
-describe("useCart", () => {
+describe("useCart", () => { // i18n-exempt: test description
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it("returns cart context value", () => {
-    const value = { items: [{ id: "1" }], total: 10 };
-    (mockUseCart as jest.Mock).mockReturnValue(value);
+  it("returns cart context value", () => { // i18n-exempt: test description
+    const value = { items: [{ id: "1" }], total: 10 }; // i18n-exempt: test data
+    (platformUseCart as unknown as jest.Mock).mockReturnValue(value);
 
     const { result } = renderHook(() => useCart());
 
     expect(result.current).toEqual(value);
-    expect(mockUseCart).toHaveBeenCalled();
+    expect(platformUseCart).toHaveBeenCalled();
   });
 });

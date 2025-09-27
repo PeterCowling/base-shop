@@ -5,40 +5,11 @@
  */
 export default function NotFound() {
   return (
-    <div
-      style={{
-        minHeight: "100dvh",
-        display: "grid",
-        placeItems: "center",
-        padding: "4rem 1rem",
-        textAlign: "center",
-      }}
-    >
+    <div className="grid place-items-center text-center py-16 px-4" style={{ minHeight: "100dvh" }}>
       <div>
-        <h1
-          style={{
-            fontSize: "2rem",
-            lineHeight: 1.2,
-            marginBottom: "0.75rem",
-          }}
-        >
-          Page not found
-        </h1>
-        <p style={{ marginBottom: "1.5rem", opacity: 0.8 }}>
-          The page you’re looking for doesn’t exist or has moved.
-        </p>
-        <a
-          href="/"
-          style={{
-            display: "inline-block",
-            padding: "0.625rem 1rem",
-            border: "1px solid currentColor",
-            borderRadius: "0.5rem",
-            textDecoration: "none",
-          }}
-        >
-          Go to homepage
-        </a>
+        <h1 className="text-2xl leading-tight mb-3">{/* i18n-exempt: generic 404 heading */}Page not found</h1>
+        <p className="opacity-80 mb-6">{/* i18n-exempt: generic 404 description */}The page you’re looking for doesn’t exist or has moved.</p>
+        <a href="/" className="inline-block rounded-md border px-4 py-2 no-underline min-h-10 min-w-10">{/* i18n-exempt: generic 404 CTA */}Go to homepage</a>
       </div>
     </div>
   );

@@ -46,9 +46,9 @@ class FileProvider implements AnalyticsProvider {
   async track(event: AnalyticsEvent): Promise<void> {
     const fp = this.filePath();
     // `fp` is generated from a validated shop name and data root.
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-2410: safe path from validated shop and data root
     await fs.mkdir(path.dirname(fp), { recursive: true });
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-2410: safe path from validated shop and data root
     await fs.appendFile(fp, JSON.stringify(event) + "\n", "utf8");
   }
 }
@@ -183,7 +183,7 @@ async function updateAggregates(
   };
   try {
     // `fp` points to a file under the resolved data root for the shop.
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-2410: safe path from validated shop and data root
     const buf = await fs.readFile(fp, "utf8");
     agg = JSON.parse(buf) as Aggregates;
   } catch {
@@ -208,10 +208,10 @@ async function updateAggregates(
     agg.ai_crawl[day] = (agg.ai_crawl[day] || 0) + 1;
   }
   // Ensure the target directory exists before writing.
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-2410: safe path from validated shop and data root
   await fs.mkdir(path.dirname(fp), { recursive: true });
   const payload = JSON.stringify(agg ?? {}) ?? "{}";
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-2410: safe path from validated shop and data root
   await fs.writeFile(fp, payload, "utf8");
 }
 

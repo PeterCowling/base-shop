@@ -16,7 +16,7 @@ export function groupIntoContainer(
         if (parentId === undefined) parentId = p;
         if (parentId === p) indices.push(i);
       }
-      const children = (n as any).children as PageComponent[] | undefined;
+      const children = (n as unknown as { children?: PageComponent[] }).children;
       if (Array.isArray(children)) walk(children, n.id);
     });
   };
@@ -39,15 +39,15 @@ export function groupIntoContainer(
   const build = (nodes: PageComponent[], p?: string): PageComponent[] => {
     if (p === parentId) {
       const children = nodes.filter((_, i) => indices.includes(i));
-      const container: any = { id: generateId(), type, children: [...children] };
-      if (type === "MultiColumn") container.columns = children.length || 2;
+      const container: Record<string, unknown> = { id: generateId(), type, children: [...children] };
+      if (type === "MultiColumn") (container as Record<string, unknown>).columns = children.length || 2;
       const firstIndex = indices[0] ?? 0;
       const rest = removeAtIndices(nodes, indices);
       const next = insertAt(rest, firstIndex, container as PageComponent);
       return next;
     }
     return nodes.map((n) => {
-      const kids = (n as any).children as PageComponent[] | undefined;
+      const kids = (n as unknown as { children?: PageComponent[] }).children;
       if (Array.isArray(kids)) {
         return { ...n, children: build(kids, n.id) } as PageComponent;
       }
@@ -56,4 +56,3 @@ export function groupIntoContainer(
   };
   return build(list, undefined);
 }
-

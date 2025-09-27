@@ -14,23 +14,32 @@ jest.mock("../../../atoms/shadcn", () => {
 
   function DialogWrapper({ open, onOpenChange, children }: any) {
     openChangeRef.current = onOpenChange;
-    return React.createElement(base.Dialog, { open, onOpenChange, children });
+    return React.createElement(base.Dialog, { open, onOpenChange }, children);
   }
+  DialogWrapper.displayName = "DialogWrapperMock";
 
-  const withChildren = (Tag: any) =>
-    ({ children, ...props }: any) => (
-      <Tag {...props}>
-        {children}
-      </Tag>
-    );
+  function DialogHeaderMock({ children, ...props }: any) {
+    return <div {...props}>{children}</div>;
+  }
+  DialogHeaderMock.displayName = "DialogHeaderMock";
+
+  function DialogFooterMock({ children, ...props }: any) {
+    return <div {...props}>{children}</div>;
+  }
+  DialogFooterMock.displayName = "DialogFooterMock";
+
+  function DialogDescriptionMock({ children, ...props }: any) {
+    return <p {...props}>{children}</p>;
+  }
+  DialogDescriptionMock.displayName = "DialogDescriptionMock";
 
   return {
     __esModule: true,
     ...base,
     Dialog: DialogWrapper,
-    DialogHeader: withChildren("div"),
-    DialogFooter: withChildren("div"),
-    DialogDescription: withChildren("p"),
+    DialogHeader: DialogHeaderMock,
+    DialogFooter: DialogFooterMock,
+    DialogDescription: DialogDescriptionMock,
     __mock: {
       get lastOnOpenChange() {
         return openChangeRef.current;

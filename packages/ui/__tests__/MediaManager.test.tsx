@@ -4,19 +4,32 @@ jest.mock("@cms/actions/media.server", () => ({
 
 function createShadcnStub() {
   const React = require("react");
-  const passthrough = (tag = "div") =>
-    React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>
-      React.createElement(tag, { ref, ...props })
-    );
+  const passthrough = (tag = "div") => {
+    const Comp = React.forwardRef(function PassthroughComponent(
+      { asChild: _asChild, ...props }: any,
+      ref: any
+    ) {
+      return React.createElement(tag, { ref, ...props });
+    });
+    (Comp as any).displayName = `Passthrough(${tag})`;
+    return Comp;
+  };
   return {
     Input: passthrough("input"),
     Textarea: passthrough("textarea"),
     Button: passthrough("button"),
     Card: passthrough("div"),
     CardContent: passthrough("div"),
-    Checkbox: React.forwardRef((props: any, ref: any) => (
-      <input ref={ref} type="checkbox" {...props} />
-    )),
+    Checkbox: (() => {
+      const Checkbox = React.forwardRef(function CheckboxMock(
+        props: any,
+        ref: any
+      ) {
+        return <input ref={ref} type="checkbox" {...props} />;
+      });
+      (Checkbox as any).displayName = "CheckboxMock";
+      return Checkbox;
+    })(),
     Progress: passthrough(),
     Tag: ({ children, ...rest }: any) => <span {...rest}>{children}</span>,
     DropdownMenu: ({ children }: any) => <div>{children}</div>,

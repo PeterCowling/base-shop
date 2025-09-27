@@ -120,7 +120,7 @@ export function usePageBuilderDnD({
       } else if (a?.from === "library") {
         const arr = (a.templates && a.templates.length ? a.templates : (a.template ? [a.template] : [])) as PageComponent[];
         if (arr && arr.length) {
-          allowed = arr.every((n) => canDropChild(parentKind, (n as any).type as ComponentType));
+          allowed = arr.every((n) => canDropChild(parentKind, (n.type as unknown) as ComponentType));
         } else {
           allowed = null;
         }
@@ -143,8 +143,8 @@ export function usePageBuilderDnD({
         setInsertParentId(pid);
         if (pid) {
           const parent = findById(components, pid);
-          const children = parent && Array.isArray((parent as any).children)
-            ? getVisibleComponents((parent as any).children as PageComponent[], editor, viewport)
+          const children = parent && Array.isArray((parent as { children?: PageComponent[] }).children)
+            ? getVisibleComponents((parent as { children?: PageComponent[] }).children as PageComponent[], editor, viewport)
             : [];
           setInsertIndex(children.length);
         } else {

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- PB-0001: internal builder strings and utility classes */
 "use client";
 
 import type { PageComponent, HistoryState } from "@acme/types";
@@ -68,7 +69,7 @@ export default function DefaultChildrenList({
                 (dropAllowed === false
                   ? "border-danger bg-danger/10 ring-2 ring-danger"
                   : "border-primary bg-primary/10 ring-2 ring-primary") +
-                " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"
+                " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none" // i18n-exempt: utility class names
               }
             />
           )}
@@ -84,12 +85,13 @@ export default function DefaultChildrenList({
 
           <InlineInsert
             index={i}
-            context="child"
+            context="child" /* i18n-exempt: internal builder context label */
             containerType={component.type}
             onInsert={(newComponent, index) => {
               const insertAt = toUnderlyingIndex(index);
               dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
               try {
+                // i18n-exempt: developer-only live message for builder integrations
                 window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
               } catch {}
             }}
@@ -98,7 +100,7 @@ export default function DefaultChildrenList({
             component={child}
             index={i}
             parentId={component.id}
-            parentType={(component as any).type as string}
+            parentType={component.type as string}
             parentSlots={undefined}
             selectedIds={selectedIds}
             onSelect={onSelect}
@@ -126,18 +128,19 @@ export default function DefaultChildrenList({
             (dropAllowed === false
               ? "border-danger bg-danger/10 ring-2 ring-danger"
               : "border-primary bg-primary/10 ring-2 ring-primary") +
-            " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"
+            " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none" // i18n-exempt: utility class names
           }
         />
       )}
       <InlineInsert
         index={visibleChildren.length}
-        context="child"
+        context="child" /* i18n-exempt: internal builder context label */
         containerType={component.type}
         onInsert={(newComponent, index) => {
           const insertAt = toUnderlyingIndex(index);
           dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
           try {
+            // i18n-exempt: developer-only live message for builder integrations
             window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
           } catch {}
         }}

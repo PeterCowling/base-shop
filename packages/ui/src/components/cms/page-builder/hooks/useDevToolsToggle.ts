@@ -19,7 +19,7 @@ export default function useDevToolsToggle() {
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       const tag = target?.tagName;
-      const editable = !!target && ((target as any).isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT");
+      const editable = !!target && (target.isContentEditable || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT");
       if (editable) return;
       if ((e.ctrlKey || e.metaKey) && e.altKey && e.key.toLowerCase() === "d") {
         e.preventDefault();
@@ -35,4 +35,3 @@ export default function useDevToolsToggle() {
 
   return { showDevTools, setShowDevTools } as const;
 }
-

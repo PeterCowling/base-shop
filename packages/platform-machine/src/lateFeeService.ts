@@ -68,12 +68,14 @@ export async function chargeLateFeesOnce(
           confirm: true,
         });
         await markLateFeeCharged(shop, order.sessionId, policy.feeAmount);
+        // i18n-exempt: OPS-1234 technical log, not user-facing
         logger.info("late fee charged", {
           shopId: shop,
           sessionId: order.sessionId,
           amount: policy.feeAmount,
         });
       } catch (err) {
+        // i18n-exempt: OPS-1234 technical log, not user-facing
         logger.error("late fee charge failed", {
           shopId: shop,
           sessionId: order.sessionId,
@@ -193,6 +195,7 @@ export async function startLateFeeService(
         try {
           await chargeLateFeesOnce(shop, dataRoot);
         } catch (err) {
+          // i18n-exempt: OPS-1234 technical log, not user-facing
           logger.error("late fee processing failed", { shopId: shop, err });
         }
       }
@@ -208,6 +211,7 @@ export async function startLateFeeService(
 const nodeEnvKey = "NODE" + "_ENV";
 if (process.env[nodeEnvKey] !== "test") {
   startLateFeeService().catch((err) => {
+    // i18n-exempt: OPS-1234 technical log, not user-facing
     logger.error("failed to start late fee service", { err });
   });
 }

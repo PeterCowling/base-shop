@@ -13,6 +13,7 @@ jest.mock("../../style/Tokens", () => ({
   default: ({ onRenameToken, onReplaceColor }: any) => (
     <div>
       <button onClick={() => onRenameToken("--color.brand", "--color.primary")}>Rename token</button>
+      {/* eslint-disable-next-line ds/no-raw-color -- TEST-123: test-only mock literal color */}
       <button onClick={() => onReplaceColor("--color.brand", "#333333")}>Replace color</button>
     </div>
   ),
@@ -34,8 +35,8 @@ describe("ThemePanel rename/replace tokens", () => {
 
   it("debounces saves after rename and replace", async () => {
     (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true, json: async () => ({
-      themeDefaults: { "--color.brand": "#000000", "--color.primary": "#111111" },
-      themeTokens: { "--color.brand": "#000000" },
+      themeDefaults: { "--color.brand": "#000000", "--color.primary": "#111111" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test fixture literals
+      themeTokens: { "--color.brand": "#000000" }, // eslint-disable-line ds/no-raw-color -- TEST-123: test fixture literals
     }) } as any);
     (global.fetch as jest.Mock).mockResolvedValue({ ok: true } as any);
 

@@ -129,7 +129,9 @@ export async function searchProducts(
 ): Promise<SKU[]> {
   if (typeof b === "undefined") {
     if (a.trim() === "") {
-      throw new Error("searchProducts requires a query string");
+      throw new Error(
+        "searchProducts requires a query string", // i18n-exempt -- developer error, not user-facing
+      );
     }
     const q = a.toLowerCase();
     return base.PRODUCTS.filter((p) =>
@@ -138,7 +140,9 @@ export async function searchProducts(
   }
 
   if (a.trim() === "" || b.trim() === "") {
-    throw new Error("searchProducts requires both shop and query string");
+    throw new Error(
+      "searchProducts requires both shop and query string", // i18n-exempt -- developer error, not user-facing
+    );
   }
 
   try {

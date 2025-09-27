@@ -21,6 +21,11 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   margin?: string;
 }
 
+// i18n-exempt: CSS utility class tokens and design tokens below are not user-facing copy
+const WRAPPER_CLASSES = "flex flex-col gap-1"; // i18n-exempt: CSS classes
+const ERROR_TEXT_CLASSES = "text-sm text-danger"; // i18n-exempt: CSS classes
+const DANGER_TOKEN = "--color-danger"; // i18n-exempt: design token
+
 export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
   (
     {
@@ -43,7 +48,7 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       <div
         ref={ref}
         style={style}
-        className={cn("flex flex-col gap-1", classes, className)}
+        className={cn(WRAPPER_CLASSES, classes, className)}
         {...props}
       >
         <label htmlFor={htmlFor} className="text-sm font-medium">
@@ -52,15 +57,16 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
             <span
               aria-hidden="true"
               className="text-danger"
-              data-token="--color-danger"
+              data-token={DANGER_TOKEN}
             >
+              {/* i18n-exempt: required field asterisk */}
               *
             </span>
           )}
         </label>
         {children}
         {error && (
-          <p className="text-sm text-danger" data-token="--color-danger">
+          <p className={ERROR_TEXT_CLASSES} data-token={DANGER_TOKEN}>
             {error}
           </p>
         )}

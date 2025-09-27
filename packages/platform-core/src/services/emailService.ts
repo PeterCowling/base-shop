@@ -17,7 +17,7 @@ export function setEmailService(svc: EmailService): void {
 
 export function getEmailService(): EmailService {
   if (!service) {
-    throw new Error("EmailService not registered");
+    throw new Error("EmailService not registered"); // i18n-exempt -- CORE-1011 internal error message
   }
   return service;
 }
@@ -29,7 +29,7 @@ export async function sendSystemEmail(data: {
   html: string;
 }): Promise<unknown> {
   if (!process.env.EMAIL_PROVIDER) {
-    throw new Error("Email provider not configured");
+    throw new Error("Email provider not configured"); // i18n-exempt -- CORE-1011 internal error message
   }
   type EmailModule = {
     sendEmail(to: string, subject: string, html: string): Promise<unknown>;

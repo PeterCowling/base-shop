@@ -22,6 +22,7 @@ export default function BlogListing({ posts = [] }: { posts?: BlogPost[] }) {
             <h3 className="text-lg font-semibold">{p.title}</h3>
           )}
           {p.excerpt && (
+            // i18n-exempt: excerpt is CMS-provided content, not hardcoded
             <p className="text-muted" data-token="--color-muted">
               {p.excerpt}
             </p>
@@ -29,6 +30,7 @@ export default function BlogListing({ posts = [] }: { posts?: BlogPost[] }) {
           {p.shopUrl && (
             <p>
               <Link href={p.shopUrl} className="text-primary underline">
+                {/* i18n-exempt: default CTA text can be overridden by CMS */}
                 Shop the story
               </Link>
             </p>

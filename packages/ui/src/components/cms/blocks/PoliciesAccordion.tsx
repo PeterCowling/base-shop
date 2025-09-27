@@ -23,10 +23,9 @@ export default function PoliciesAccordion({ shipping, returns, warranty, classNa
       {items.map((it) => (
         <details key={it.id} className="border-b py-2">
           <summary className="cursor-pointer select-none font-medium">{it.title}</summary>
-          <div className="prose mt-2 max-w-none text-sm text-neutral-700" dangerouslySetInnerHTML={{ __html: it.content }} />
+          <div className="prose mt-2 w-full text-sm text-neutral-700" dangerouslySetInnerHTML={{ __html: it.content }} />
         </details>
       ))}
     </div>
   );
 }
-

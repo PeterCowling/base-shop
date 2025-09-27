@@ -19,6 +19,9 @@ export function Price({ amount, currency }: PriceProps) {
 }
 
 function ProductCardInner({ sku }: { sku: SKU & { badges?: { sale?: boolean; new?: boolean } } }) {
+  const SALE_LABEL = "Sale"; // i18n-exempt -- ABC-123 badge microcopy
+  const NEW_LABEL = "New"; // i18n-exempt -- ABC-123 badge microcopy
+  const CARD_SIZES = "(min-width: 640px) 25vw, 50vw"; // i18n-exempt -- ABC-123 responsive sizes attribute value
   return (
     <article className="flex flex-col gap-3 rounded-lg border p-4 transition-shadow hover:shadow-md">
       {" "}
@@ -32,21 +35,22 @@ function ProductCardInner({ sku }: { sku: SKU & { badges?: { sale?: boolean; new
               src={sku.media[0].url}
               alt={sku.title}
               fill
-              sizes="(min-width: 640px) 25vw, 50vw"
+              sizes={CARD_SIZES}
               className="rounded-md object-cover"
             />
           ) : (
             <video
               src={sku.media[0].url}
               className="h-full w-full rounded-md object-cover"
+              data-aspect="1/1"
               muted
               playsInline
             />
           )
         )}
       </Link>
-      {sku.badges?.sale && <span data-cy="badge-sale">Sale</span>}
-      {sku.badges?.new && <span data-cy="badge-new">New</span>}
+      {sku.badges?.sale && <span data-cy="badge-sale">{SALE_LABEL}</span>}
+      {sku.badges?.new && <span data-cy="badge-new">{NEW_LABEL}</span>}
       <h3 className="font-medium">{sku.title}</h3>
       {sku.price != null && (
         <div className="font-semibold text-gray-900">

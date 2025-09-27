@@ -76,9 +76,9 @@ describe("coreEnv proxy", () => {
     // The first access triggers loadCoreEnv; subsequent accesses use cached env
     // so the spy call count remains 1.
     // Access properties
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- ENG-1234 verify proxy access triggers loadCoreEnv
     core.coreEnv.CMS_SPACE_URL;
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions -- ENG-1234 verify proxy access triggers loadCoreEnv
     core.coreEnv.CMS_ACCESS_TOKEN;
     expect(spy).toHaveBeenCalledTimes(1);
     process.env = OLD;

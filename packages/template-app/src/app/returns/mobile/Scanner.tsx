@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface ScannerProps {
   allowedZips: string[];
 }
 
 export default function Scanner({ allowedZips }: ScannerProps) {
+  const t = useTranslations();
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [result, setResult] = React.useState<string | null>(null);
   const [error, setError] = React.useState<string | null>(null);
@@ -24,10 +26,10 @@ export default function Scanner({ allowedZips }: ScannerProps) {
         setDone(true);
       } catch (err) {
         console.error(err);
-        setError("Failed to record return.");
+        setError(t("returns.scanner.recordError") as string);
       }
     },
-    [zip]
+    [zip, t]
   );
 
   React.useEffect(() => {
@@ -35,7 +37,7 @@ export default function Scanner({ allowedZips }: ScannerProps) {
     let active = true;
     async function init() {
       if (!("BarcodeDetector" in window)) {
-        setError("Scanning not supported on this device.");
+        setError(t("returns.scanner.notSupported") as string);
         return;
       }
       try {
@@ -76,7 +78,7 @@ export default function Scanner({ allowedZips }: ScannerProps) {
         };
         requestAnimationFrame(scan);
       } catch {
-        setError("Unable to access camera.");
+        setError(t("returns.scanner.cameraAccessError") as string);
       }
     }
     init();
@@ -84,31 +86,33 @@ export default function Scanner({ allowedZips }: ScannerProps) {
       active = false;
       stream?.getTracks().forEach((t) => t.stop());
     };
-  }, [allowedZips, finalize]);
+  }, [allowedZips, finalize, t]);
 
   if (done) {
     return (
       <div className="space-y-4 p-6">
-        <p>Return recorded.</p>
+        <p>{t("returns.scanner.returnRecorded")}</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-4 p-6">
-      <h1 className="text-xl font-semibold">Scan to mark return</h1>
-      {!result && <video ref={videoRef} className="w-full max-w-md" />}
+      <h1 className="text-xl font-semibold">{t("returns.scanner.title")}</h1>
+      {!result && <video ref={videoRef} className="w-full" data-aspect="16/9" />}
       {result && allowedZips.length > 0 && (
         <div className="space-y-2">
-          <p>Scanned: {result}</p>
+          <p>
+            {t("returns.scanner.scannedLabel")} {result}
+          </p>
           <label className="flex flex-col gap-1">
-            Home pickup ZIP
+            {t("returns.scanner.homePickupZip")}
             <select
               className="border p-2"
               value={zip}
               onChange={(e) => setZip(e.target.value)}
             >
-              <option value="">Select ZIP</option>
+              <option value="">{t("returns.scanner.selectZip")}</option>
               {allowedZips.map((z) => (
                 <option key={z} value={z}>
                   {z}
@@ -117,17 +121,16 @@ export default function Scanner({ allowedZips }: ScannerProps) {
             </select>
           </label>
           <button
-            className="bg-blue-600 px-4 py-2 text-white disabled:opacity-50"
+            className="bg-blue-600 px-4 py-2 text-white disabled:opacity-50 min-h-10 min-w-10"
             disabled={!zip}
             onClick={() => result && finalize(result)}
           >
-            Finalize
+            {t("returns.scanner.finalize")}
           </button>
         </div>
       )}
-      {result && allowedZips.length === 0 && <p>Processing...</p>}
+      {result && allowedZips.length === 0 && <p>{t("returns.scanner.processing")}</p>}
       {error && <p className="text-red-600">{error}</p>}
     </div>
   );
 }
-

@@ -22,7 +22,6 @@ describe("/api/return success", () => {
 
     const log = jest.spyOn(console, "log").mockImplementation(() => {});
     const fetchMock = jest.fn().mockResolvedValue({} as Response);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (global as any).fetch = fetchMock;
 
     const { POST } = await import("../src/api/return/route");

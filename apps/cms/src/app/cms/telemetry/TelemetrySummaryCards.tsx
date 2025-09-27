@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/atoms/shadcn";
+import { Grid } from "@acme/ui/components/atoms/primitives";
 
 export interface TelemetrySummaryMetric {
   label: string;
@@ -14,7 +15,7 @@ export function TelemetrySummaryCards({
   metrics,
 }: TelemetrySummaryCardsProps) {
   return (
-    <section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    <Grid cols={1} gap={3} className="sm:grid-cols-2 xl:grid-cols-4">
       {metrics.map((metric) => (
         <Card
           key={metric.label}
@@ -29,6 +30,6 @@ export function TelemetrySummaryCards({
           </CardContent>
         </Card>
       ))}
-    </section>
+    </Grid>
   );
 }

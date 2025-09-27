@@ -3,7 +3,7 @@ import { Chip } from "../atoms";
 import LocaleContentAccordion, {
   type LocalePanelConfig,
 } from "./LocaleContentAccordion";
-import type { Locale } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
 import type { ChangeEvent } from "react";
 
 interface LocaleContentTabProps {

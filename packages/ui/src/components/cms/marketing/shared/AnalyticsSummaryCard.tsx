@@ -7,6 +7,7 @@ import {
   Tag,
   type TagProps,
 } from "../../../atoms";
+import { Inline, Grid as GridPrimitive } from "../../../atoms/primitives";
 import { cn } from "../../../../utils/style";
 
 export interface AnalyticsSummaryMetric {
@@ -54,10 +55,9 @@ export function AnalyticsSummaryCard({
               <h3 className="text-lg font-semibold">{title}</h3>
               {status && (
                 <Tag variant={status.tone ?? "default"}>
-                  <span className="flex items-center gap-1">
-                    {status.icon}
-                    {status.label}
-                  </span>
+                  {/* Tag already provides inline-flex alignment; no extra flex needed */}
+                  {status.icon}
+                  {status.label}
                 </Tag>
               )}
             </div>
@@ -67,10 +67,11 @@ export function AnalyticsSummaryCard({
               </p>
             )}
           </div>
-          {actions && <div className="flex items-center gap-2">{actions}</div>}
+          {actions && <Inline gap={2} alignY="center">{actions}</Inline>}
         </div>
 
-        <dl className="grid gap-4 sm:grid-cols-2">
+        <GridPrimitive gap={4} className="sm:grid-cols-2">
+          <dl className="contents">
           {metrics.map((metric) => (
             <div key={metric.label} className="space-y-2">
               <dt className="text-muted-foreground text-xs uppercase tracking-wide">
@@ -99,14 +100,15 @@ export function AnalyticsSummaryCard({
                   <p className="text-muted-foreground text-xs">{metric.helper}</p>
                 )}
                 {!loading && metric.badge && (
-                  <Tag variant={metric.badge.tone ?? "default"} className="text-[0.65rem]">
+                  <Tag variant={metric.badge.tone ?? "default"}>
                     {metric.badge.label}
                   </Tag>
                 )}
               </dd>
             </div>
           ))}
-        </dl>
+          </dl>
+        </GridPrimitive>
 
         {footer && <div>{footer}</div>}
       </CardContent>

@@ -45,7 +45,7 @@ export function resolveLoadCoreEnvFn(): LoadCoreEnvFn {
     try {
       // Use direct require with a static string so bundlers can statically analyze.
       // This avoids critical dependency warnings from aliasing/indirect require calls.
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      // eslint-disable-next-line @typescript-eslint/no-require-imports -- ENG-1234 require to aid static analysis in prod
       const mod = require("../core.js");
       const loader = extractLoadCoreEnvFn(mod);
       if (loader) {

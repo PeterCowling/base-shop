@@ -10,7 +10,6 @@ process.env.SANITY_PROJECT_ID = "project";
 process.env.SANITY_DATASET = "production";
 process.env.SANITY_API_TOKEN = "token";
 process.env.SANITY_PREVIEW_SECRET = "secret";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { loadCoreEnv, depositReleaseEnvRefinement } = require(
   "@acme/config/env/core"
 );

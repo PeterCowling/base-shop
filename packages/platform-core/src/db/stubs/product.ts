@@ -44,7 +44,7 @@ export function createProductDelegate(): ProductDelegate {
       const idx = products.findIndex(
         (p) => p.shopId === shopId_id.shopId && p.id === shopId_id.id,
       );
-      if (idx < 0) throw new Error("Product not found");
+      if (idx < 0) throw new Error("Product not found"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
       products[idx] = { ...products[idx], ...data };
       return products[idx];
     },
@@ -52,7 +52,7 @@ export function createProductDelegate(): ProductDelegate {
       const idx = products.findIndex(
         (p) => p.shopId === shopId_id.shopId && p.id === shopId_id.id,
       );
-      if (idx < 0) throw new Error("Product not found");
+      if (idx < 0) throw new Error("Product not found"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
       const [removed] = products.splice(idx, 1);
       return removed;
     },

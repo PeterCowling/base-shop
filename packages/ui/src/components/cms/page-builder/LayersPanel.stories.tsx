@@ -2,7 +2,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import React, { useState } from "react";
 import LayersPanel from "./LayersPanel";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, EditorFlags } from "@acme/types";
 import { moveComponent } from "./state/layout/utils";
 
 const meta: Meta<typeof LayersPanel> = {
@@ -16,88 +16,99 @@ type Story = StoryObj<typeof LayersPanel>;
 const sample: PageComponent[] = [
   {
     id: "hero",
-    type: "Section" as any,
+    type: "Section" as unknown as PageComponent["type"],
     name: "Hero",
     children: [
-      { id: "headline", type: "Text" as any, name: "Headline" },
-      { id: "cta", type: "Button" as any, name: "CTA" },
+      { id: "headline", type: "Text" as unknown as PageComponent["type"], name: "Headline" },
+      { id: "cta", type: "Button" as unknown as PageComponent["type"], name: "CTA" },
     ],
-  } as any,
-  { id: "gallery", type: "Gallery" as any, name: "Gallery" } as any,
+  } as unknown as PageComponent,
+  { id: "gallery", type: "Gallery" as unknown as PageComponent["type"], name: "Gallery" } as unknown as PageComponent,
 ];
+
+type Action =
+  | { type: "update-editor"; id: string; patch?: Partial<EditorFlags> }
+  | { type: "move"; from: number[]; to: number[] }
+  | { type: string; [k: string]: unknown };
 
 export const Basic: Story = {
   render: () => {
-    const [selected, setSelected] = useState<string[]>([]);
-    const [editor, setEditor] = useState<Record<string, any>>({});
-    return (
-      <div style={{ width: 360 }}>
-        <LayersPanel
-          components={sample}
-          selectedIds={selected}
-          onSelectIds={setSelected}
-          dispatch={(action: any) => {
-            if (action.type === "update-editor") {
-              setEditor((e) => ({ ...e, [action.id]: { ...(e[action.id] ?? {}), ...(action.patch ?? {}) } }));
-            }
-            console.log("dispatch", action);
-          }}
-          editor={editor as any}
-          viewport="desktop"
-        />
-      </div>
-    );
+    const Example = () => {
+      const [selected, setSelected] = useState<string[]>([]);
+      const [editor, setEditor] = useState<Record<string, EditorFlags>>({});
+      return (
+        <div className="w-96">
+          <LayersPanel
+            components={sample}
+            selectedIds={selected}
+            onSelectIds={setSelected}
+            dispatch={(action: Action) => {
+              if (action.type === "update-editor") {
+                setEditor((e) => ({ ...e, [action.id]: { ...(e[action.id] ?? {}), ...(action.patch ?? {}) } }));
+              }
+              console.log("dispatch", action);
+            }}
+            editor={editor}
+            viewport="desktop"
+          />
+        </div>
+      );
+    };
+    return <Example />;
   },
 };
 
 export const DragAndDrop: Story = {
   name: "Drag & Drop",
   render: () => {
-    const [components, setComponents] = useState<PageComponent[]>([
-      {
-        id: "hero",
-        type: "Section" as any,
-        name: "Hero",
-        children: [
-          { id: "headline", type: "Text" as any, name: "Headline" },
-          { id: "cta", type: "Button" as any, name: "CTA" },
-        ],
-      } as any,
-      { id: "gallery", type: "Gallery" as any, name: "Gallery" } as any,
-      { id: "footer", type: "Section" as any, name: "Footer", children: [] } as any,
-    ]);
-    const [selected, setSelected] = useState<string[]>([]);
-    const [editor, setEditor] = useState<Record<string, any>>({});
-    return (
-      <div style={{ display: "grid", gridTemplateColumns: "360px 1fr", gap: 16 }}>
-        <div>
-          <LayersPanel
-            components={components}
-            selectedIds={selected}
-            onSelectIds={setSelected}
-            dispatch={(action: any) => {
-              if (action.type === "move") {
-                setComponents((prev) => moveComponent(prev, action.from, action.to));
-                return;
-              }
-              if (action.type === "update-editor") {
-                setEditor((e) => ({
-                  ...e,
-                  [action.id]: { ...(e[action.id] ?? {}), ...(action.patch ?? {}) },
-                }));
-                return;
-              }
-              console.log("dispatch", action);
-            }}
-            editor={editor as any}
-            viewport="desktop"
-          />
+    const Example = () => {
+      const [components, setComponents] = useState<PageComponent[]>([
+        {
+          id: "hero",
+          type: "Section" as unknown as PageComponent["type"],
+          name: "Hero",
+          children: [
+            { id: "headline", type: "Text" as unknown as PageComponent["type"], name: "Headline" },
+            { id: "cta", type: "Button" as unknown as PageComponent["type"], name: "CTA" },
+          ],
+        } as unknown as PageComponent,
+        { id: "gallery", type: "Gallery" as unknown as PageComponent["type"], name: "Gallery" } as unknown as PageComponent,
+        { id: "footer", type: "Section" as unknown as PageComponent["type"], name: "Footer", children: [] } as unknown as PageComponent,
+      ]);
+      const [selected, setSelected] = useState<string[]>([]);
+      const [editor, setEditor] = useState<Record<string, EditorFlags>>({});
+      return (
+        <div className="flex gap-4">
+          <div className="w-96 shrink-0">
+            <LayersPanel
+              components={components}
+              selectedIds={selected}
+              onSelectIds={setSelected}
+              dispatch={(action: Action) => {
+                if (action.type === "move") {
+                  setComponents((prev) => moveComponent(prev, action.from, action.to));
+                  return;
+                }
+                if (action.type === "update-editor") {
+                  setEditor((e) => ({
+                    ...e,
+                    [action.id]: { ...(e[action.id] ?? {}), ...(action.patch ?? {}) },
+                  }));
+                  return;
+                }
+                console.log("dispatch", action);
+              }}
+              editor={editor}
+              viewport="desktop"
+            />
+          </div>
+          <div>
+            <p className="m-0 text-xs text-muted-foreground">Drag rows to reorder or nest under parents.</p>
+            <pre className="mt-2 text-xs">{JSON.stringify(components, null, 2)}</pre>
+          </div>
         </div>
-        <div>
-          <p style={{ margin: 0, fontSize: 12, color: 'var(--color-muted-foreground)' }}>Drag rows to reorder or nest under parents.</p>
-          <pre style={{ marginTop: 8, fontSize: 12 }}>{JSON.stringify(components, null, 2)}</pre>
-        </div>
-      </div>
-    );
+      );
+    };
+    return <Example />;
   },
 };

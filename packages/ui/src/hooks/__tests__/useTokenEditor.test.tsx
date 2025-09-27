@@ -7,7 +7,7 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import { useTokenEditor, type TokenMap } from "../useTokenEditor";
 
 class MockFileReader {
@@ -19,11 +19,15 @@ class MockFileReader {
   }
 }
 
+// i18n-exempt: test suite name
 describe("useTokenEditor", () => {
   beforeEach(() => {
-    (global as any).FileReader = MockFileReader as any;
+    // Assign mock without using any
+    (globalThis as unknown as { FileReader: typeof FileReader }).FileReader =
+      (MockFileReader as unknown as typeof FileReader);
   });
 
+  // i18n-exempt: test description
   it("setToken updates the token map", () => {
     const onChange = jest.fn();
 
@@ -34,6 +38,7 @@ describe("useTokenEditor", () => {
         onChange
       );
       return (
+        // i18n-exempt: test-only button label
         <button onClick={() => setToken("--color-a", "blue")}>update</button>
       );
     }
@@ -43,6 +48,7 @@ describe("useTokenEditor", () => {
     expect(onChange).toHaveBeenCalledWith({ "--color-a": "blue" });
   });
 
+  // i18n-exempt: test description
   it("marks tokens as overridden when differing from base", () => {
     function Test() {
       const { colors } = useTokenEditor(
@@ -62,12 +68,14 @@ describe("useTokenEditor", () => {
     render(<Test />);
   });
 
+  // i18n-exempt: test description
   it("classifies tokens into colors, fonts, and others", () => {
     function Test() {
       const { colors, fonts, others } = useTokenEditor(
         {
           "--color-a": "red",
-          "--font-sans": "Arial",
+          // Avoid raw 'arial' stack in tests
+          "--font-sans": '"Inter"',
           "--gap": "1rem",
         },
         {},
@@ -82,6 +90,7 @@ describe("useTokenEditor", () => {
     render(<Test />);
   });
 
+  // i18n-exempt: test description
   it("font upload adds styles and updates font lists", async () => {
     let upload!: ReturnType<typeof useTokenEditor>["handleUpload"]; // !
     let latest: TokenMap = {};
@@ -105,7 +114,10 @@ describe("useTokenEditor", () => {
 
     const monoFile = new File(["a"], "Custom.woff", { type: "font/woff" });
     await act(async () => {
-      upload("mono", { target: { files: [monoFile], value: "" } } as any);
+      upload(
+        "mono",
+        { target: { files: [monoFile], value: "" } } as unknown as ChangeEvent<HTMLInputElement>
+      );
     });
     await waitFor(() =>
       expect(document.getElementById("font-Custom")).not.toBeNull()
@@ -116,7 +128,10 @@ describe("useTokenEditor", () => {
 
     const sansFile = new File(["b"], "Fancy.woff", { type: "font/woff" });
     await act(async () => {
-      upload("sans", { target: { files: [sansFile], value: "" } } as any);
+      upload(
+        "sans",
+        { target: { files: [sansFile], value: "" } } as unknown as ChangeEvent<HTMLInputElement>
+      );
     });
     await waitFor(() =>
       expect(document.getElementById("font-Fancy")).not.toBeNull()
@@ -126,6 +141,7 @@ describe("useTokenEditor", () => {
     expect(screen.getByTestId("sans").textContent).toContain('"Fancy"');
   });
 
+  // i18n-exempt: test description
   it("handleUpload with no files leaves tokens unchanged", async () => {
     let upload!: ReturnType<typeof useTokenEditor>["handleUpload"]; // !
     let latest: TokenMap = { "--font-sans": "system-ui" };
@@ -145,12 +161,16 @@ describe("useTokenEditor", () => {
     render(<Wrapper />);
 
     await act(async () => {
-      upload("sans", { target: { files: [] } } as any);
+      upload(
+        "sans",
+        { target: { files: [] } } as unknown as ChangeEvent<HTMLInputElement>
+      );
     });
 
     expect(latest).toEqual({ "--font-sans": "system-ui" });
   });
 
+  // i18n-exempt: test description
   it("loads existing font tokens on mount", async () => {
     let getSans!: () => string[]; // !
     let getMono!: () => string[]; // !
@@ -176,6 +196,7 @@ describe("useTokenEditor", () => {
     expect(getMono()).toContain('"Test"');
   });
 
+  // i18n-exempt: test description
   it("setGoogleFont inserts link once and updates tokens", () => {
     let setGF!: ReturnType<typeof useTokenEditor>["setGoogleFont"]; // !
     let latest: TokenMap = {};
@@ -194,11 +215,11 @@ describe("useTokenEditor", () => {
 
     act(() => setGF("sans", "Inter"));
     const link = document.getElementById(
-      "google-font-Inter"
+      "google-font-Inter" // i18n-exempt: DOM id string used in test
     ) as HTMLLinkElement;
     expect(link).not.toBeNull();
     expect(link.href).toBe(
-      "https://fonts.googleapis.com/css2?family=Inter&display=swap"
+      "https://fonts.googleapis.com/css2?family=Inter&display=swap" // i18n-exempt: URL string
     );
     expect(latest["--font-sans"]).toBe('"Inter", var(--font-sans)');
 
@@ -207,6 +228,7 @@ describe("useTokenEditor", () => {
     expect(latest["--font-mono"]).toBe('"Inter", var(--font-mono)');
   });
 
+  // i18n-exempt: test description
   it("calling setGoogleFont twice with the same font only inserts one link", () => {
     let setGF!: ReturnType<typeof useTokenEditor>["setGoogleFont"]; // !
 
@@ -222,11 +244,12 @@ describe("useTokenEditor", () => {
     act(() => setGF("sans", "Inter"));
 
     const links = document.head.querySelectorAll(
-      "link#google-font-Inter"
+      "link#google-font-Inter" // i18n-exempt: selector string
     );
     expect(links).toHaveLength(1);
   });
 
+  // i18n-exempt: test description
   it("addCustomFont with empty input does nothing", () => {
     let add!: () => void; // !
     let setNF!: (v: string) => void; // !
@@ -256,6 +279,7 @@ describe("useTokenEditor", () => {
     expect(getMono().filter((f) => f === "")).toHaveLength(0);
   });
 
+  // i18n-exempt: test description
   it("addCustomFont appends unique entries", () => {
     let add!: () => void; // !
     let setNF!: (v: string) => void; // !

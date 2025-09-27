@@ -1,4 +1,5 @@
 // packages/ui/src/components/cms/page-builder/DesignMenu.tsx
+/* i18n-exempt file */
 "use client";
 
 import React from "react";

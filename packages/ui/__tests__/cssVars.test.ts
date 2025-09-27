@@ -46,10 +46,10 @@ describe("cssVars utility", () => {
         filter: "contrast(120%)",
         outline: "1px solid red",
         outlineOffset: "2px",
-        borderTop: "1px solid #000",
-        borderRight: "2px solid #111",
-        borderBottom: "3px solid #222",
-        borderLeft: "4px solid #333",
+        borderTop: "1px solid var(--color-border)",
+        borderRight: "2px solid var(--color-primary)",
+        borderBottom: "3px solid var(--color-muted)",
+        borderLeft: "4px solid var(--color-accent)",
         transformRotate: "15deg",
         transformScale: "1.1",
         transformSkewX: "5deg",
@@ -65,10 +65,10 @@ describe("cssVars utility", () => {
       filter: "contrast(120%)",
       outline: "1px solid red",
       outlineOffset: "2px",
-      borderTop: "1px solid #000",
-      borderRight: "2px solid #111",
-      borderBottom: "3px solid #222",
-      borderLeft: "4px solid #333",
+      borderTop: "1px solid var(--color-border)",
+      borderRight: "2px solid var(--color-primary)",
+      borderBottom: "3px solid var(--color-muted)",
+      borderLeft: "4px solid var(--color-accent)",
       "--pb-static-transform": expect.stringContaining("rotate(15deg)"),
     });
     expect(vars["--pb-static-transform"]).toContain("scale(1.1)");
@@ -76,4 +76,3 @@ describe("cssVars utility", () => {
     expect(vars["--pb-static-transform"]).toContain("skewY(-3deg)");
   });
 });
-

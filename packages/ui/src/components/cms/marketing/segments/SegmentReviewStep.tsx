@@ -1,4 +1,5 @@
 import { Button } from "../../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 import type { SubmissionStatus } from "../shared";
 import SegmentPreviewPanel from "./SegmentPreviewPanel";
 import SegmentSummaryCard from "./SegmentSummaryCard";
@@ -21,24 +22,27 @@ export function SegmentReviewStep({
   onEditDetails,
   onFinish,
 }: SegmentReviewStepProps) {
+  const t = useTranslations();
   return (
-    <div className="grid gap-4 lg:grid-cols-[2fr,1fr]">
-      <SegmentPreviewPanel data={preview} />
+    <div className="grid gap-4 lg:grid-cols-3">
+      <div className="lg:col-span-2">
+        <SegmentPreviewPanel data={preview} />
+      </div>
       <SegmentSummaryCard
         data={preview}
-        statusLabel={status === "success" ? "Ready" : "Draft"}
+        statusLabel={status === "success" ? (t("Ready") as string) : (t("Draft") as string)}
         actions={
           <Button variant="outline" onClick={onEditRules}>
-            Edit rules
+            {t("Edit rules")}
           </Button>
         }
         footer={
           <div className="flex flex-wrap justify-end gap-2">
             <Button variant="outline" onClick={onEditDetails}>
-              Update details
+              {t("Update details")}
             </Button>
             <Button onClick={onFinish} disabled={status === "submitting"}>
-              {status === "submitting" ? "Saving…" : finishLabel}
+              {status === "submitting" ? t("Saving…") : finishLabel}
             </Button>
           </div>
         }

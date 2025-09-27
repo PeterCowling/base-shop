@@ -57,12 +57,15 @@ export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
     // ignore; handled below
   }
   if (typeof launch !== "function") {
+    // i18n-exempt -- DEV-000: internal developer error message, not user-facing copy
     throw new Error("chrome-launcher launch function not available");
   }
   if (typeof lighthouseFn !== "function") {
+    // i18n-exempt -- DEV-000: internal developer error message, not user-facing copy
     throw new Error("lighthouse is not a function");
   }
   if (!desktopConfig) {
+    // i18n-exempt -- DEV-000: internal developer error message, not user-facing copy
     throw new Error("lighthouse desktop config not available");
   }
 
@@ -77,6 +80,7 @@ export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
       desktopConfig,
     );
     if (!result) {
+      // i18n-exempt -- DEV-000: internal developer error message, not user-facing copy
       throw new Error("Lighthouse did not return a result");
     }
     const lhr = result.lhr;

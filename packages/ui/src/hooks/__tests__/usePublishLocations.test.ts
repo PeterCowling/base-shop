@@ -1,4 +1,5 @@
-import { act, renderHook, waitFor } from "@testing-library/react";
+// i18n-exempt: Test descriptions and fixtures use literal strings
+import { act, renderHook } from "@testing-library/react";
 import {
   usePublishLocations,
   loadPublishLocations,
@@ -16,7 +17,9 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-(globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
+// Avoid explicit any by narrowing global assignment
+;(globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT =
+  true;
 
 const originalError = console.error;
 let consoleErrorSpy: jest.SpyInstance | undefined;

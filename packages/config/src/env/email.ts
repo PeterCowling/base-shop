@@ -40,10 +40,10 @@ function assertStringEnv(raw: NodeJS.ProcessEnv): void {
   if (invalidKeys.size === 0) return;
   const formatted: Record<string, unknown> = { _errors: [] };
   for (const key of invalidKeys) {
-    formatted[key] = { _errors: ["Expected string"] };
+    formatted[key] = { _errors: ["Expected string"] }; // i18n-exempt: validation copy (non-UI)
   }
-  console.error("❌ Invalid email environment variables:", formatted);
-  throw new Error("Invalid email environment variables");
+  console.error("❌ Invalid email environment variables:", formatted); // i18n-exempt: developer log
+  throw new Error("Invalid email environment variables"); // i18n-exempt: developer error
 }
 
 const hasEmailProvider =
@@ -66,7 +66,7 @@ export const emailEnvSchema = z
     SMTP_PORT: z
       .string()
       .refine((v) => !Number.isNaN(Number(v)), {
-        message: "must be a number",
+        message: "must be a number", // i18n-exempt: validation copy (non-UI)
       })
       .transform((v) => Number(v))
       .optional(),
@@ -74,7 +74,7 @@ export const emailEnvSchema = z
       .string()
       .transform((v) => v.trim().toLowerCase())
       .refine((v) => ["true", "false", "1", "0", "yes", "no"].includes(v), {
-        message: "must be a boolean",
+        message: "must be a boolean", // i18n-exempt: validation copy (non-UI)
       })
       .transform((v) => ["true", "1", "yes"].includes(v))
       .optional(),
@@ -99,21 +99,21 @@ export const emailEnvSchema = z
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["EMAIL_FROM"],
-        message: "Required",
+        message: "Required", // i18n-exempt: validation copy (non-UI)
       });
     }
     if (env.EMAIL_PROVIDER === "sendgrid" && !env.SENDGRID_API_KEY) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["SENDGRID_API_KEY"],
-        message: "Required",
+        message: "Required", // i18n-exempt: validation copy (non-UI)
       });
     }
     if (env.EMAIL_PROVIDER === "resend" && !env.RESEND_API_KEY) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["RESEND_API_KEY"],
-        message: "Required",
+        message: "Required", // i18n-exempt: validation copy (non-UI)
       });
     }
   });
@@ -128,8 +128,8 @@ const parsed = emailEnvSchema.safeParse(rawEnv);
 
 if (!parsed.success) {
   const formattedError = parsed.error.format();
-  console.error("❌ Invalid email environment variables:", formattedError);
-  throw new Error("Invalid email environment variables");
+  console.error("❌ Invalid email environment variables:", formattedError); // i18n-exempt: developer log
+  throw new Error("Invalid email environment variables"); // i18n-exempt: developer error
 }
 
 export const emailEnv = parsed.data;

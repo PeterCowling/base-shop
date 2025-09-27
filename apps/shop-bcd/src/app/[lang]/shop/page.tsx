@@ -9,7 +9,7 @@ import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";
 
 export const metadata: Metadata = {
-  title: "Shop · Base-Shop",
+  title: "Shop · Base-Shop", // i18n-exempt: demo static metadata; localized titles handled at runtime
 };
 
 export default async function ShopIndexPage({

@@ -7,6 +7,8 @@ import { KeyboardEvent, ReactElement, useMemo, useRef } from "react";
 
 import { Card, CardContent, Tag } from "../atoms/shadcn";
 import { cn } from "../../utils/style";
+import { useTranslations } from "@acme/i18n";
+import { Cluster, Inline } from "../atoms/primitives";
 
 import { MediaFileActions } from "./MediaFileActions";
 import { MediaFilePreview } from "./MediaFilePreview";
@@ -195,23 +197,21 @@ export default function MediaFileItem({
     onDelete(item.url);
   };
 
-  // i18n-exempt — CMS tooling; will wire to i18n later
-  /* i18n-exempt */
-  const t = (s: string) => s;
+  const t = useTranslations();
 
   const previewLabel =
     item.type === "video"
-      ? t(`Video preview for ${previewAlt || name}`)
-      : t(`Image preview for ${previewAlt || name}`);
+      ? (t("cms.media.preview.video", { name: previewAlt || name }) as string)
+      : (t("cms.media.preview.image", { name: previewAlt || name }) as string);
 
-  const statusMessage = deleteInProgress ? t("Deleting media…") : t("Replacing media…");
+  const statusMessage = deleteInProgress ? (t("cms.media.deleting") as string) : (t("cms.media.replacing") as string);
   const actionsLoading = deleteInProgress || replaceInProgress;
 
   return (
     <Card
       className={cn(
         "group relative flex h-full flex-col overflow-hidden border border-border-3 transition focus-within:outline-none focus-within:ring-[var(--ring-width)] focus-within:ring-offset-[var(--ring-offset-width)] focus-within:ring-primary",
-        selected && "ring-2 ring-primary"
+        selected && "ring-2 ring-primary" // i18n-exempt: class tokens only
       )}
       data-selected={selected}
       data-deleting={deleting || undefined}
@@ -248,31 +248,31 @@ export default function MediaFileItem({
         />
       </MediaFilePreview>
 
-      <CardContent className="flex flex-1 flex-col gap-2 border-t border-border-2 bg-muted/30 p-4" data-token="--color-muted">
-        <div className="flex items-start justify-between gap-3">
+      <CardContent className="flex flex-1 flex-col gap-2 border-t border-border-2 bg-muted/30 p-4" data-token="--color-muted"> {/* i18n-exempt: classes only */}
+        <Cluster alignY="start" justify="between" gap={3}>
           <div className="min-w-0">
             <p className="text-sm font-semibold text-fg line-clamp-2" data-token="--color-fg">
               {item.title ?? name}
             </p>
-            <p className="text-xs text-muted-foreground line-clamp-2" data-token="--color-muted-fg">
+            <p className="text-xs text-muted-foreground line-clamp-2" data-token="--color-muted-fg"> {/* i18n-exempt: classes only */}
               {previewAlt}
             </p>
           </div>
           {fileSize ? <Tag className="shrink-0 whitespace-nowrap">{fileSize}</Tag> : null}
-        </div>
+        </Cluster>
         {tags.length > 0 ? (
-          <div className="flex flex-wrap gap-1">
+          <Inline gap={1}>
             {tags.map((tag) => (
               <Tag key={tag}>{tag}</Tag>
             ))}
-          </div>
+          </Inline>
         ) : null}
       </CardContent>
 
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*,video/*"
+        accept="image/*,video/*" // i18n-exempt: MIME filter string
         className="hidden"
         onChange={handleFileChange}
         disabled={actionsDisabled}

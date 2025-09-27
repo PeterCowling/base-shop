@@ -8,8 +8,13 @@ let cached: ReturnLogistics | null = null;
 
 export async function getReturnLogistics(): Promise<ReturnLogistics> {
   if (cached) return cached;
-  const file = path.join(resolveDataRoot(), "..", "return-logistics.json");
-  const buf = await fs.readFile(file, "utf8"); // eslint-disable-line security/detect-non-literal-fs-filename
+  const base = path.resolve(resolveDataRoot(), "..");
+  const file = path.resolve(base, "return-logistics.json");
+  if (!file.startsWith(base + path.sep)) {
+    throw new Error("Resolved path escapes base directory"); // i18n-exempt -- CORE-1010 internal error message
+  }
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-1010 path validated and normalized against base
+  const buf = await fs.readFile(file, "utf8");
   cached = returnLogisticsSchema.parse(JSON.parse(buf));
   return cached;
 }

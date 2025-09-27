@@ -15,7 +15,7 @@ import type { AnalyticsAggregates, AnalyticsEvent } from "../analytics";
 export async function listEvents(_shop?: string): Promise<AnalyticsEvent[]> {
   const shops = _shop
     ? [validateShopName(_shop)]
-    : await fs
+    : await fs // eslint-disable-line security/detect-non-literal-fs-filename -- DS-000 DATA_ROOT is a trusted constant base directory
         .readdir(DATA_ROOT, { withFileTypes: true })
         .then((entries) =>
           entries.filter((e) => e.isDirectory()).map((e) => e.name),
@@ -27,6 +27,7 @@ export async function listEvents(_shop?: string): Promise<AnalyticsEvent[]> {
     const file = path.join(DATA_ROOT, shop, "analytics.jsonl");
     let data = "";
     try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
       data = await fs.readFile(file, "utf8");
     } catch {
       continue;
@@ -53,6 +54,7 @@ export async function readAggregates(
     "analytics-aggregates.json",
   );
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DS-000 file path built from validated shop and constant filename
     const buf = await fs.readFile(file, "utf8");
     return JSON.parse(buf) as AnalyticsAggregates;
   } catch {
@@ -69,4 +71,3 @@ export const jsonAnalyticsRepository = {
   listEvents,
   readAggregates,
 };
-

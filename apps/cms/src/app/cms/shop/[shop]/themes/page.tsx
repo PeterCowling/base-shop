@@ -43,12 +43,16 @@ export default async function ShopThemePage({
     ...presets,
   } as Record<string, Record<string, string>>;
 
+  // i18n-exempt: Admin UI labels; translate in CMS i18n pass later
+  const THEME_HEADING = "Theme";
+  const THEME_LIBRARY = "Theme Library";
+
   return (
     <div>
-      <h2 className="mb-4 text-xl font-semibold">Theme</h2>
+      <h2 className="mb-4 text-xl font-semibold">{THEME_HEADING}</h2>
       <p className="mb-4 text-sm">
         <Link href="/cms/themes/library" className="text-link underline">
-          Theme Library
+          {THEME_LIBRARY}
         </Link>
       </p>
       <ThemeEditor

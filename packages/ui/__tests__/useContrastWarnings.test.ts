@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-raw-color -- DS-TEST-012: raw hex inputs are necessary to exercise contrast calculations */
 import { renderHook } from "@testing-library/react";
 import useContrastWarnings from "../src/hooks/useContrastWarnings";
 

@@ -3,6 +3,7 @@
 
 import { Button, Popover, PopoverContent, PopoverTrigger, Tooltip } from "../../atoms";
 import GridSettings from "./GridSettings";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   gridProps: React.ComponentProps<typeof GridSettings>;
@@ -10,18 +11,19 @@ interface Props {
 
 // Compact menu wrapper that tucks the verbose GridSettings into a popover.
 export default function CanvasControlsMenu({ gridProps }: Props) {
+  const t = useTranslations();
   return (
     <Popover>
-      <Tooltip text="Canvas settings">
+      <Tooltip text={t("Canvas settings") as string}>
         <PopoverTrigger asChild>
-          <Button variant="outline" aria-label="Canvas settings">
-            Canvas
+          <Button variant="outline" aria-label={t("Canvas settings") as string}>
+            {t("Canvas")}
           </Button>
         </PopoverTrigger>
       </Tooltip>
-      <PopoverContent className="w-[520px]">
+      <PopoverContent>
         <div className="space-y-3">
-          <div className="text-sm font-medium">Canvas</div>
+          <div className="text-sm font-medium">{t("Canvas")}</div>
           <GridSettings {...gridProps} />
         </div>
       </PopoverContent>

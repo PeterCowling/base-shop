@@ -17,14 +17,14 @@ interface Props {
   pageId?: string | null;
   crossNotices?: boolean;
 }
-const PageSidebar = ({ components, selectedIds, onSelectIds, dispatch, editor, viewport = "desktop", breakpoints = [], pageId = null, crossNotices = true }: Props) => {
+const PageSidebar = ({ components, selectedIds, onSelectIds: _onSelectIds, dispatch, editor, viewport = "desktop", breakpoints = [], pageId = null, crossNotices: _crossNotices = true }: Props) => {
   const selectedComponent = useMemo(() => components.find((c) => c.id === selectedIds[0]) ?? null, [components, selectedIds]);
 
   return (
     <aside className="w-80 shrink-0 space-y-4 p-2" data-tour="sidebar">
 
       {selectedIds.length === 0 && (
-        <div className="p-2 text-sm text-muted-foreground">Select a component to edit its properties.</div>
+        <div className="p-2 text-sm text-muted-foreground">{/* i18n-exempt: builder hint */}Select a component to edit its properties.</div>
       )}
 
       {selectedIds.length > 1 && (

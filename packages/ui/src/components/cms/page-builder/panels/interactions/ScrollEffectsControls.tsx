@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "@acme/i18n";
 import type { InteractionsProps } from "./types";
 import { openSelectOnMouseDown } from "./helpers";
 import {
@@ -12,9 +13,10 @@ import {
 } from "../../../../atoms/shadcn";
 
 export default function ScrollEffectsControls({ component, handleInput }: InteractionsProps) {
-  const parallax = (component as any).parallax as number | undefined;
-  const sticky = (component as any).sticky as ("top" | "bottom") | undefined;
-  const stickyOffset = (component as any).stickyOffset as string | number | undefined;
+  const t = useTranslations();
+  const parallax = component.parallax as number | undefined;
+  const sticky = component.sticky as ("top" | "bottom") | undefined;
+  const stickyOffset = component.stickyOffset as string | number | undefined;
 
   return (
     <div className="grid grid-cols-3 gap-2">
@@ -23,46 +25,32 @@ export default function ScrollEffectsControls({ component, handleInput }: Intera
         step="0.05"
         min="-5"
         max="5"
-        label="Parallax"
+        label={t("cms.interactions.parallax")}
         placeholder="0.2"
         value={parallax ?? ""}
         onChange={(e) =>
-          handleInput(
-            "parallax" as keyof typeof component,
-            (e.target.value === "" ? (undefined as any) : (Number(e.target.value) as any)) as any,
-          )
+          handleInput("parallax", e.target.value === "" ? undefined : Number(e.target.value))
         }
       />
       <Select
         value={sticky ?? "__none__"}
-        onValueChange={(v) =>
-          handleInput(
-            "sticky" as keyof typeof component,
-            (v === "__none__" ? undefined : (v as any)) as any,
-          )
-        }
+        onValueChange={(v) => handleInput("sticky", v === "__none__" ? undefined : (v as typeof component.sticky))}
       >
-        <SelectTrigger aria-label="Sticky" onMouseDown={openSelectOnMouseDown}>
-          <SelectValue placeholder="Sticky" />
+        <SelectTrigger aria-label={t("cms.interactions.sticky") as string} onMouseDown={openSelectOnMouseDown}>
+          <SelectValue placeholder={t("cms.interactions.sticky") as string} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="__none__">None</SelectItem>
-          <SelectItem value="top">Top</SelectItem>
-          <SelectItem value="bottom">Bottom</SelectItem>
+          <SelectItem value="__none__">{t("cms.interactions.none")}</SelectItem>
+          <SelectItem value="top">{t("cms.interactions.top")}</SelectItem>
+          <SelectItem value="bottom">{t("cms.interactions.bottom")}</SelectItem>
         </SelectContent>
       </Select>
       <Input
-        label="Sticky offset"
+        label={t("cms.interactions.stickyOffset")}
         placeholder="64px"
         value={stickyOffset ?? ""}
-        onChange={(e) =>
-          handleInput(
-            "stickyOffset" as keyof typeof component,
-            (e.target.value === "" ? (undefined as any) : (e.target.value as any)) as any,
-          )
-        }
+        onChange={(e) => handleInput("stickyOffset", e.target.value === "" ? undefined : e.target.value)}
       />
     </div>
   );
 }
-

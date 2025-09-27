@@ -55,7 +55,7 @@ export function getVisibleComponents(
   viewport?: "desktop" | "tablet" | "mobile"
 ): PageComponent[] {
   return list.filter(
-    (c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport)
+    (c) => !isHiddenForViewport(c.id, editor, (c as { hidden?: boolean }).hidden, viewport)
   );
 }
 
@@ -67,4 +67,3 @@ export function resolveParentKind(
     ? ((findById(components, parentId)?.type as ComponentType) || ("" as ComponentType))
     : ("ROOT" as ParentKind);
 }
-

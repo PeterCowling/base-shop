@@ -9,5 +9,4 @@ export const emailSchema = z
 export const subjectSchema = z
   .string()
   .trim()
-  .min(1, "Email subject is required");
-
+  .min(1, "Email subject is required"); // i18n-exempt: developer validation error

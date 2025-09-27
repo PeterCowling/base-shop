@@ -11,6 +11,7 @@ import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Input, Textarea } from "@/components/atoms/shadcn";
 import { FormField } from "@ui/components/molecules";
 import { updateStockAlert } from "@cms/actions/shops.server";
+import { useTranslations } from "@i18n/Translations";
 
 import { ErrorChips } from "../components/ErrorChips";
 import {
@@ -34,6 +35,7 @@ interface Props {
 }
 
 export default function StockAlertsEditor({ shop, initial }: Props) {
+  const t = useTranslations();
   const [state, setState] = useState<StockAlertState>({
     recipients: initial.recipients.join(", "),
     webhook: initial.webhook ?? "",
@@ -51,8 +53,8 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
     announceError,
   } = useSettingsSaveForm<StockAlertResult>({
     action: (formData) => updateStockAlert(shop, formData),
-    successMessage: "Stock alert settings saved.",
-    errorMessage: "Unable to update stock alerts.",
+    successMessage: String(t("cms.stockAlerts.save.success")),
+    errorMessage: String(t("cms.stockAlerts.save.error")),
     onSuccess: (result) => {
       const next = result.settings?.stockAlert;
       if (!next) return;
@@ -114,17 +116,21 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
       let toastMessage: string | undefined;
 
       if (recipients.length === 0) {
-        validationErrors.recipients = ["Enter at least one recipient email."];
-        toastMessage = "Enter at least one recipient email.";
+        validationErrors.recipients = [
+          String(t("cms.stockAlerts.validation.atLeastOneRecipient")),
+        ];
+        toastMessage = String(t("cms.stockAlerts.validation.atLeastOneRecipient"));
       } else {
         const invalidRecipients = recipients.filter(
           (recipient) => !EMAIL_PATTERN.test(recipient),
         );
         if (invalidRecipients.length > 0) {
-          validationErrors.recipients = invalidRecipients.map(
-            (recipient) => `Invalid email: ${recipient}`,
+          validationErrors.recipients = invalidRecipients.map((recipient) =>
+            String(t("cms.stockAlerts.validation.invalidEmail", { recipient })),
           );
-          toastMessage = "Enter valid recipient email addresses.";
+          toastMessage = String(
+            t("cms.stockAlerts.validation.enterValidRecipientEmails"),
+          );
         }
       }
 
@@ -132,14 +138,20 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
       if (thresholdValue !== "") {
         const parsedThreshold = Number(thresholdValue);
         if (!Number.isFinite(parsedThreshold) || !Number.isInteger(parsedThreshold)) {
-          validationErrors.threshold = ["Enter a whole number threshold."];
+          validationErrors.threshold = [
+            String(t("cms.stockAlerts.validation.wholeNumberThreshold")),
+          ];
           if (!toastMessage) {
-            toastMessage = "Enter a whole number threshold.";
+            toastMessage = String(
+              t("cms.stockAlerts.validation.wholeNumberThreshold"),
+            );
           }
         } else if (parsedThreshold < 1) {
-          validationErrors.threshold = ["Enter a threshold of at least 1."];
+          validationErrors.threshold = [
+            String(t("cms.stockAlerts.validation.minThreshold")),
+          ];
           if (!toastMessage) {
-            toastMessage = "Enter a threshold of at least 1.";
+            toastMessage = String(t("cms.stockAlerts.validation.minThreshold"));
           }
         } else {
           thresholdNumber = parsedThreshold;
@@ -148,7 +160,9 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
 
       if (Object.keys(validationErrors).length > 0) {
         setErrors(validationErrors);
-        announceError(toastMessage ?? "Fix the validation errors and try again.");
+        announceError(
+          toastMessage ?? String(t("cms.stockAlerts.validation.fixAndRetry")),
+        );
         return;
       }
 
@@ -180,7 +194,7 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
         <CardContent className="space-y-6 p-6">
           <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             <FormField
-              label="Recipients"
+              label={String(t("cms.stockAlerts.recipients.label"))}
               htmlFor="stock-alert-recipients"
               error={<ErrorChips errors={errors.recipients} />}
               className="gap-3"
@@ -191,15 +205,17 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
                 rows={3}
                 value={state.recipients}
                 onChange={handleRecipientsChange}
-                placeholder="name@example.com, ops@example.com"
+                placeholder={String(
+                  t("cms.stockAlerts.recipients.placeholder"),
+                )}
               />
               <p className="text-xs text-muted-foreground">
-                Separate multiple email addresses with commas.
+                {t("cms.stockAlerts.recipients.help")}
               </p>
             </FormField>
 
             <FormField
-              label="Webhook URL"
+              label={String(t("cms.stockAlerts.webhook.label"))}
               htmlFor="stock-alert-webhook"
               error={<ErrorChips errors={errors.webhook} />}
               className="gap-3"
@@ -209,13 +225,13 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
                 name="webhook"
                 value={state.webhook}
                 onChange={handleWebhookChange}
-                placeholder="https://example.com/alerts"
+                placeholder={String(t("cms.stockAlerts.webhook.placeholder"))}
                 autoComplete="off"
               />
             </FormField>
 
             <FormField
-              label="Default threshold"
+              label={String(t("cms.stockAlerts.threshold.label"))}
               htmlFor="stock-alert-threshold"
               error={<ErrorChips errors={errors.threshold} />}
               className="gap-3"
@@ -229,7 +245,7 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
                 onChange={handleThresholdChange}
               />
               <p className="text-xs text-muted-foreground">
-                Alert when on-hand quantity falls at or below this amount.
+                {t("cms.stockAlerts.threshold.help")}
               </p>
             </FormField>
 
@@ -239,7 +255,7 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
                 className="h-10 px-6 text-sm font-semibold"
                 disabled={saving}
               >
-                {saving ? "Saving…" : "Save changes"}
+                {saving ? t("cms.common.saving") : t("cms.common.saveChanges")}
               </Button>
             </div>
           </form>

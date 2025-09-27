@@ -1,9 +1,9 @@
 "use client";
 
-/* eslint-disable @next/next/no-img-element */
-
 import * as React from "react";
+import Image from "next/image";
 import { cn } from "../../utils/style";
+import { Inline } from "../atoms/primitives/Inline";
 
 export interface ImageCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   images: { src: string; alt?: string }[];
@@ -14,17 +14,19 @@ export function ImageCarousel({ images, className, ...props }: ImageCarouselProp
 
   return (
     <div className={cn("overflow-hidden", className)} {...props}>
-      <div className="flex snap-x overflow-x-auto gap-4 pb-4">
+      <Inline wrap={false} className="snap-x overflow-x-auto pb-4">
         {images.map((img, i) => (
-          <img
+          <Image
             key={i}
             src={img.src}
-            alt={img.alt ?? ""}
-            className="h-full w-auto flex-shrink-0 snap-start"
+            alt={img.alt ?? ""
+            }
+            width={640}
+            height={480}
+            className="h-auto w-auto shrink-0 snap-start"
           />
         ))}
-      </div>
+      </Inline>
     </div>
   );
 }
-

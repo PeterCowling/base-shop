@@ -12,6 +12,9 @@ export interface AccordionProps {
 
 export function Accordion({ items }: AccordionProps) {
   const [open, setOpen] = useState<number[]>([]);
+  // i18n-exempt — symbolic affordances
+  const SYMBOL_MINUS = "-" as const; // i18n-exempt: glyph
+  const SYMBOL_PLUS = "+" as const; // i18n-exempt: glyph
 
   const toggle = (idx: number) => {
     setOpen((prev) =>
@@ -53,10 +56,12 @@ export function Accordion({ items }: AccordionProps) {
               aria-expanded={isOpen}
               onClick={handleClick}
               onKeyDown={handleKeyDown}
-              className="flex w-full items-center justify-between p-2 text-start"
+              className="flex w-full items-center justify-between p-2 text-start min-h-10 min-w-10"
             >
               <span>{item.title}</span>
-              <span>{isOpen ? "-" : "+"}</span>
+              <span aria-hidden>
+                {isOpen ? SYMBOL_MINUS : SYMBOL_PLUS}
+              </span>
             </button>
             {isOpen && <div className="border-t p-2">{item.content}</div>}
           </div>

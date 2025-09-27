@@ -61,7 +61,7 @@ export function createUserDelegate() {
       data: Partial<StoredUser>;
     }) {
       const idx = findIdx(where);
-      if (idx < 0) throw new Error("User not found");
+      if (idx < 0) throw new Error("User not found"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
       users[idx] = { ...users[idx], ...data };
       return users[idx];
     },

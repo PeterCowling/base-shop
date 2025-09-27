@@ -19,7 +19,7 @@ export type StoredCoupon = Coupon & { active?: boolean };
   export async function listCoupons(shop: string): Promise<StoredCoupon[]> {
     try {
       // `fileFor` returns a path derived from a validated shop name.
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ENG-102: Path is produced by validated shop name via validateShopName
       const buf = await fs.readFile(fileFor(shop), "utf8");
       const parsed = JSON.parse(buf) as StoredCoupon[];
       return Array.isArray(parsed) ? parsed : [];
@@ -34,9 +34,9 @@ export type StoredCoupon = Coupon & { active?: boolean };
     coupons: StoredCoupon[],
   ): Promise<void> {
     const fp = fileFor(shop);
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ENG-102: Target directory path derived from validated shop name
     await fs.mkdir(path.dirname(fp), { recursive: true });
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ENG-102: Write to path derived from validated shop name
     await fs.writeFile(fp, JSON.stringify(coupons, null, 2), "utf8");
   }
 

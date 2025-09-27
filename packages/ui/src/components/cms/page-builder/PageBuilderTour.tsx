@@ -1,4 +1,6 @@
+/* eslint-disable ds/no-nonlayered-zindex -- PB-000: Guided tour overlay needs custom layering without DS layered components */
 "use client";
+// i18n-exempt file — guided tour UI copy lives here; to be extracted
 
 import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 
@@ -161,14 +163,14 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
           color: "var(--color-fg)",
           border: "1px solid rgba(255,255,255,0.2)",
           borderRadius: 8,
-          padding: 12,
+          padding: "var(--space-3)",
           boxShadow: "0 10px 20px rgba(0,0,0,0.4)",
         }}
       >
-        <div style={{ fontWeight: 600, marginBottom: 6 }}>
+        <div style={{ fontWeight: 600, marginBottom: "var(--space-2)" }}>
           {`Step ${Math.min(active + 1, steps.length)} of ${steps.length}`}
         </div>
-        <div style={{ marginBottom: 10 }}>
+        <div style={{ marginBottom: "var(--space-3)" }}>
           {missingTarget ? (
             <span>
               Preparing this step… If it doesn’t appear, click Next.
@@ -185,7 +187,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
               background: "transparent",
               color: "var(--color-muted-foreground)",
               border: "none",
-              padding: "6px 10px",
+              padding: "var(--space-2) var(--space-3)",
               cursor: "pointer",
             }}
           >
@@ -200,7 +202,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
               background: "var(--color-surface-2)",
               color: "var(--color-fg)",
               border: "1px solid var(--color-border)",
-                padding: "6px 12px",
+                padding: "var(--space-2) var(--space-3)",
                 borderRadius: 6,
                 cursor: active === 0 ? "not-allowed" : "pointer",
                 opacity: active === 0 ? 0.6 : 1,
@@ -216,7 +218,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
                   background: "var(--color-primary)",
                   color: "var(--color-fg)",
                   border: "1px solid var(--color-primary)",
-                  padding: "6px 12px",
+                  padding: "var(--space-2) var(--space-3)",
                   borderRadius: 6,
                   cursor: "pointer",
                 }}
@@ -231,7 +233,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
                   background: "var(--color-primary)",
                   color: "var(--color-fg)",
                   border: "1px solid var(--color-primary)",
-                  padding: "6px 12px",
+                  padding: "var(--space-2) var(--space-3)",
                   borderRadius: 6,
                   cursor: "pointer",
                 }}

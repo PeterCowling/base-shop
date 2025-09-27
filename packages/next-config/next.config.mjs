@@ -30,10 +30,13 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       "@themes-local": path.resolve(__dirname, "../themes"),
 
       // === NEW ALIASES ===
-      // Allow imports like "@ui/components/…" to resolve to packages/ui/src
-      "@ui": path.resolve(__dirname, "../ui/src"),
-      // Support existing "@ui/src" imports
-      "@ui/src": path.resolve(__dirname, "../ui/src"),
+      // Prefer built outputs for UI in Next builds to avoid JSX parsing
+      // issues from importing raw TS/TSX outside the app root. The dist
+      // folder mirrors the src structure (components, utils, etc.), so
+      // we can safely remap both "@ui" and "@ui/src" to dist.
+      "@ui": path.resolve(__dirname, "../ui/dist"),
+      // Support existing "@ui/src" imports by pointing them to dist as well
+      "@ui/src": path.resolve(__dirname, "../ui/dist"),
       // Allow imports like "@platform-core/components/…" to resolve to packages/platform-core/src
       "@platform-core": path.resolve(__dirname, "../platform-core/src"),
       // Route @acme/config to built output to avoid .js stub pitfalls in src

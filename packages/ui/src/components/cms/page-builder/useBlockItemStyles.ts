@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, type CSSProperties } from "react";
 import { computeBlockStyle } from "./utils/computeBlockStyle";
 import type useBlockDimensions from "./useBlockDimensions";
 import type useBlockDnD from "./useBlockDnD";
 import type { BlockItemProps } from "./BlockItem.types";
+import type { PositioningProps } from "@acme/types/page/positioning";
 
 type Props = BlockItemProps;
 
@@ -18,7 +19,7 @@ type Transform = ReturnType<typeof useBlockDnD>["transform"];
 type Options = {
   component: Props["component"];
   parentId: Props["parentId"];
-  flags: Record<string, unknown>;
+  flags: { pinned?: boolean; responsiveBehavior?: "none" | "scale-proportional" } | Record<string, unknown>;
   effZIndex: number | undefined;
   transform: Transform;
   dimensions: DimensionValues;
@@ -31,13 +32,13 @@ export default function useBlockItemStyles({
   effZIndex,
   transform,
   dimensions,
-}: Options) {
+}: Options): CSSProperties & { containerType?: string; containerName?: string; cursor?: string } {
   return useMemo(() => {
     const baseStyle = computeBlockStyle({
       transform,
       zIndex: effZIndex,
-      containerType: (component as any).containerType as string | undefined,
-      containerName: (component as any).containerName as string | undefined,
+      containerType: (component as unknown as { containerType?: string }).containerType,
+      containerName: (component as unknown as { containerName?: string }).containerName,
       widthVal: dimensions.widthVal,
       heightVal: dimensions.heightVal,
       marginVal: dimensions.marginVal,
@@ -45,15 +46,15 @@ export default function useBlockItemStyles({
       position: component.position,
       leftVal: dimensions.leftVal,
       topVal: dimensions.topVal,
-      dockX: (component as any).dockX as any,
-      dockY: (component as any).dockY as any,
-      responsiveBehavior: (flags as any)?.responsiveBehavior as any,
+      dockX: (component as unknown as PositioningProps).dockX,
+      dockY: (component as unknown as PositioningProps).dockY,
+      responsiveBehavior: (flags as { responsiveBehavior?: "none" | "scale-proportional" }).responsiveBehavior,
     });
 
     return {
       ...baseStyle,
-      ...getPinnedStyle(parentId, flags),
-      ...getCursorStyle(component),
+      ...getPinnedStyle(parentId, flags as { pinned?: boolean }),
+      ...getCursorStyle(component as unknown as { cursor?: string; cursorUrl?: string }),
     } as const;
   }, [
     component,
@@ -67,19 +68,19 @@ export default function useBlockItemStyles({
     flags,
     parentId,
     transform,
-  ]);
+]);
 }
 
-function getPinnedStyle(parentId: Props["parentId"], flags: Record<string, unknown>) {
+function getPinnedStyle(parentId: Props["parentId"], flags: { pinned?: boolean }) {
   const isTopLevel = !parentId;
-  const pinned = !!(flags as any)?.pinned;
+  const pinned = !!flags?.pinned;
   if (!isTopLevel || !pinned) return {};
   return { position: "sticky", top: 0, zIndex: 30 } as const;
 }
 
-function getCursorStyle(component: Props["component"]) {
-  const cur = (component as any).cursor as string | undefined;
-  const url = (component as any).cursorUrl as string | undefined;
+function getCursorStyle(component: { cursor?: string; cursorUrl?: string }) {
+  const cur = component.cursor;
+  const url = component.cursorUrl;
   if (!cur || cur === "default") return {};
   if (cur === "custom" && url) return { cursor: `url(${url}), auto` } as const;
   return { cursor: cur } as const;

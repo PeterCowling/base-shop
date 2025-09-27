@@ -1,3 +1,4 @@
+/* i18n-exempt file -- tests use literal copy for assertions */
 import { render } from "@testing-library/react";
 import React from "react";
 import { Content } from "../Content";

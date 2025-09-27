@@ -1,4 +1,7 @@
 // packages/config/scripts/verify-config-env.mjs
+/*
+  eslint-disable security/detect-non-literal-fs-filename -- SEC-0001: Operates only on known dist dir under repo root; no untrusted input for fs paths.
+*/
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
@@ -26,11 +29,16 @@ function findExtensionlessSpecifiers() {
   for (const f of jsFiles) {
     const full = path.join(distEnvDir, f);
     const src = read(full);
-    // Quote-agnostic check
-    const re = /(?:import|export)\s+(?:[^;]*?\sfrom\s+)?['"](\.\/[^'"]+)['"]/g;
+    // Quote-agnostic, safer checks without potentially unsafe nested quantifiers
+    const importFromRE = /^\s*import\s+[^;]*?\sfrom\s+(['"])(\.\/[^'\"]+)\1/gm;
+    const exportFromRE = /^\s*export\s+\*\s+from\s+(['"])(\.\/[^'\"]+)\1/gm;
     let m;
-    while ((m = re.exec(src))) {
-      const spec = m[1];
+    while ((m = importFromRE.exec(src))) {
+      const spec = m[2];
+      if (!spec.endsWith(".js")) offenders.push({ file: f, spec });
+    }
+    while ((m = exportFromRE.exec(src))) {
+      const spec = m[2];
       if (!spec.endsWith(".js")) offenders.push({ file: f, spec });
     }
   }

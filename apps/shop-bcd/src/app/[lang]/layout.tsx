@@ -82,7 +82,7 @@ export default async function LocaleLayout({
         })}
       />
       <Header lang={lang} />
-      <main className="min-h-[calc(100vh-8rem)]">{children}</main>
+      <main className="min-h-dvh">{children}</main>
       <Footer />
     </TranslationsProvider>
   );

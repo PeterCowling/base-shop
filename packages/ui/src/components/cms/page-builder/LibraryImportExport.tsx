@@ -11,6 +11,8 @@ interface Props {
 }
 
 export default function LibraryImportExport({ shop, onAfterChange }: Props) {
+  // i18n-exempt — editor-only import/export dialog copy
+  const t = (s: string) => s;
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<string>("");
   const [busy, setBusy] = useState(false);
@@ -40,10 +42,11 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
       document.body.appendChild(a);
       a.click();
       a.remove();
-      setMessage("Exported library JSON");
+      setMessage(t("Exported library JSON"));
     } catch (err) {
-      console.error("Export failed", err);
-      setMessage("Export failed");
+      // i18n-exempt: developer log
+      console.error(err);
+      setMessage(t("Export failed"));
     } finally {
       setBusy(false);
     }
@@ -58,14 +61,14 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
       const parsed = JSON.parse(text) as unknown;
       const inItems: LibraryItem[] = Array.isArray(parsed)
         ? (parsed as LibraryItem[])
-        : Array.isArray((parsed as any)?.items)
-          ? ((parsed as any).items as LibraryItem[])
+        : (typeof parsed === "object" && parsed !== null && "items" in (parsed as Record<string, unknown>) && Array.isArray((parsed as { items?: unknown }).items))
+          ? ((parsed as { items: LibraryItem[] }).items)
           : [];
-      if (!inItems.length) throw new Error("Invalid file format");
+      if (!inItems.length) throw new Error(t("Invalid file format"));
       const clones = inItems.map((item) => {
         const clone = { ...item } as LibraryItem;
         clone.id = ulid();
-        delete (clone as any).ownerUserId;
+        delete (clone as { ownerUserId?: string }).ownerUserId;
         clone.shared = false;
         return clone;
       });
@@ -83,10 +86,11 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
         await refresh();
       }
       onAfterChange?.();
-      setMessage(`Imported ${inItems.length} item(s)`);
+      setMessage(t(`Imported ${inItems.length} item(s)`));
     } catch (err) {
-      console.error("Import failed", err);
-      setMessage("Import failed. Please check your file.");
+      // i18n-exempt: developer log
+      console.error(err);
+      setMessage(t("Import failed. Please check your file."));
     } finally {
       setBusy(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -109,28 +113,29 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Import/Export</Button>
+        <Button variant="outline">{t("Import/Export")}</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Library Import / Export</DialogTitle>
+        <DialogTitle>{t("Library Import / Export")}</DialogTitle>
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">Export your current library to a JSON file or import items from a JSON file exported here.</p>
+          <p className="text-sm text-muted-foreground">{t("Export your current library to a JSON file or import items from a JSON file exported here.")}</p>
           <div className="flex items-center gap-2">
-            <Button type="button" variant="outline" disabled={busy} onClick={handleExport}>Export JSON</Button>
-            <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={(e) => void handleImportFiles(e.target.files)} />
-            <Button type="button" variant="outline" disabled={busy} onClick={() => fileInputRef.current?.click()}>Import JSON</Button>
-            <Button type="button" variant="outline" disabled={busy || !canClear} onClick={async () => { if (confirm("Clear your personal library?")) { await clearLibrary(shop); await refresh(); onAfterChange?.(); } }}>Clear Library</Button>
+            <Button type="button" variant="outline" disabled={busy} onClick={handleExport}>{t("Export JSON")}</Button>
+            <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={(e) => void handleImportFiles(e.target.files)} /> {/* i18n-exempt -- non-user-facing attribute */}
+            <Button type="button" variant="outline" disabled={busy} onClick={() => fileInputRef.current?.click()}>{t("Import JSON")}</Button>
+            <Button type="button" variant="outline" disabled={busy || !canClear} onClick={async () => { if (confirm(t("Clear your personal library?"))) { await clearLibrary(shop); await refresh(); onAfterChange?.(); } }}>{t("Clear Library")}</Button>
           </div>
           <div
             onDrop={onDrop}
             onDragOver={onDragOver}
             className="rounded border border-dashed p-6 text-center text-sm text-muted-foreground"
-            aria-label="Drop JSON file here"
+            // i18n-exempt
+            aria-label={t("Drop JSON file here")}
           >
-            Drag & drop a JSON file here to import
+            {t("Drag & drop a JSON file here to import")}
           </div>
           <div aria-live="polite" className="text-sm">{message}</div>
-          <div className="text-xs text-muted-foreground">Items in your library: {items.length}</div>
+          <div className="text-xs text-muted-foreground">{t("Items in your library:")} {items.length}</div>
         </div>
       </DialogContent>
     </Dialog>

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Tag } from "../../../atoms";
 import { SummaryCard, type SummaryMetric } from "../shared";
 import type { EmailSchedulePreviewData } from "./types";
+import { useTranslations } from "@acme/i18n";
 
 export interface EmailScheduleSummaryCardProps {
   data: EmailSchedulePreviewData;
@@ -13,32 +14,32 @@ export interface EmailScheduleSummaryCardProps {
 
 export function EmailScheduleSummaryCard({
   data,
-  statusLabel = "Scheduled",
+  statusLabel,
   description,
   actions,
   footer,
 }: EmailScheduleSummaryCardProps) {
+  const t = useTranslations();
   const metrics: SummaryMetric[] = [
-    { label: "Send time", value: data.sendAtLabel },
-    { label: "Timezone", value: data.timezone },
+    { label: t("emailScheduling.summary.sendTimeLabel") as string, value: data.sendAtLabel },
+    { label: t("emailScheduling.summary.timezoneLabel") as string, value: data.timezone },
     {
-      label: "Segment",
+      label: t("emailScheduling.summary.segmentLabel") as string,
       value: (
-        <Tag variant="success" className="text-[0.65rem]">
+        <Tag variant="success" className="text-xs">
           {data.segment}
         </Tag>
       ),
     },
-    { label: "Follow-up", value: data.followUpSummary },
+    { label: t("emailScheduling.summary.followUpLabel") as string, value: data.followUpSummary },
   ];
 
   return (
     <SummaryCard
       title={data.subject}
-      status={{ label: statusLabel, tone: "success" }}
+      status={{ label: statusLabel ?? (t("emailScheduling.summary.status.scheduled") as string), tone: "success" }}
       description={
-        description ??
-        "Monitor deliverability and click-through once the campaign sends."
+        description ?? (t("emailScheduling.summary.defaultDescription") as string)
       }
       metrics={metrics}
       actions={actions}

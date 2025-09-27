@@ -56,7 +56,7 @@ export function createInventoryItemDelegate(): InventoryItemDelegate {
       const idx = inventoryItems.findIndex(
         (i) => i.shopId === shopId && i.sku === sku && i.variantKey === variantKey,
       );
-      if (idx < 0) throw new Error("InventoryItem not found");
+      if (idx < 0) throw new Error("InventoryItem not found"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
       const [removed] = inventoryItems.splice(idx, 1);
       return removed;
     },

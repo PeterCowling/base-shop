@@ -5,9 +5,16 @@ import { useImageOrientationValidation } from "../src/hooks/useImageOrientationV
 function createShadcnStub() {
   const React = require("react");
   return {
-    Button: React.forwardRef((props: any, ref: any) => (
-      <button ref={ref} {...props} />
-    )),
+    Button: (() => {
+      const Btn = React.forwardRef(function ButtonMock(
+        props: any,
+        ref: any
+      ) {
+        return <button ref={ref} {...props} />;
+      });
+      (Btn as any).displayName = "ButtonMock";
+      return Btn;
+    })(),
   };
 }
 
@@ -180,4 +187,3 @@ describe("useFileUpload", () => {
     expect(result.current.error).toBe("bad");
   });
 });
-

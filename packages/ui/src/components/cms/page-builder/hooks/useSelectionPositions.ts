@@ -40,9 +40,8 @@ export default function useSelectionPositions(
       clearInterval(int);
       window.removeEventListener("resize", update);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PB-232: need ref.current without re-subscribing
   }, [canvasRef?.current, deps]);
 
   return positions;
 }
-

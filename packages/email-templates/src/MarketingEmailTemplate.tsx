@@ -26,9 +26,11 @@ export function MarketingEmailTemplate({
   ...props
 }: MarketingEmailTemplateProps) {
   if (!headline || content == null) {
+    // i18n-exempt: Internal developer error message, not user-facing
     throw new Error("headline and content are required");
   }
   if ((ctaLabel && !ctaHref) || (!ctaLabel && ctaHref)) {
+    // i18n-exempt: Internal developer error message, not user-facing
     throw new Error("ctaLabel and ctaHref must both be provided");
   }
 
@@ -41,7 +43,10 @@ export function MarketingEmailTemplate({
       {...props}
     >
       {showHeader && (
-        <div className="bg-muted p-6 text-center" data-token="--color-muted">
+        <div
+          className="bg-muted p-6 text-center" // i18n-exempt: class names/design tokens, not user-visible copy
+          data-token="--color-muted" // i18n-exempt: design token attribute, not user-visible copy
+        >
           <Logo
             src={logoSrc}
             sources={logoSources}
@@ -60,12 +65,12 @@ export function MarketingEmailTemplate({
           <div className="text-center">
             <a
               href={ctaHref}
-              className="bg-primary inline-block rounded-md px-4 py-2 font-medium"
-              data-token="--color-primary"
+              className="bg-primary inline-block rounded-md px-4 py-2 font-medium min-h-10 min-w-10"
+              data-token="--color-primary" // i18n-exempt: design token attribute, not user-visible copy
             >
               <span
-                className="text-primary-foreground"
-                data-token="--color-primary-fg"
+                className="text-primary-foreground" // i18n-exempt: class names/design tokens, not user-visible copy
+                data-token="--color-primary-fg" // i18n-exempt: design token attribute, not user-visible copy
               >
                 {ctaLabel}
               </span>
@@ -75,8 +80,8 @@ export function MarketingEmailTemplate({
       </div>
       {footer && (
         <div
-          className="bg-muted border-t p-4 text-center text-xs text-muted"
-          data-token="--color-muted"
+          className="bg-muted border-t p-4 text-center text-xs text-muted" // i18n-exempt: class names/design tokens, not user-visible copy
+          data-token="--color-muted" // i18n-exempt: design token attribute, not user-visible copy
         >
           {footer}
         </div>
@@ -84,4 +89,3 @@ export function MarketingEmailTemplate({
     </div>
   );
 }
-

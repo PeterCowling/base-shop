@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Tag } from "../../../atoms";
 import { SummaryCard, type SummaryMetric } from "../shared";
 import type { DiscountPreviewData } from "./types";
+import { useTranslations } from "@acme/i18n";
 
 export interface DiscountSummaryCardProps {
   data: DiscountPreviewData;
@@ -13,19 +14,20 @@ export interface DiscountSummaryCardProps {
 
 export function DiscountSummaryCard({
   data,
-  statusLabel = "Active",
+  statusLabel,
   description,
   actions,
   footer,
 }: DiscountSummaryCardProps) {
+  const t = useTranslations();
   const metrics: SummaryMetric[] = [
-    { label: "Offer", value: data.label },
-    { label: "Validity", value: data.validity },
-    { label: "Usage", value: data.usageLabel },
+    { label: t("Offer") as string, value: data.label },
+    { label: t("Validity") as string, value: data.validity },
+    { label: t("Usage") as string, value: data.usageLabel },
     {
-      label: "Applies to",
+      label: t("Applies to") as string,
       value: (
-        <Tag variant="default" className="text-[0.65rem]">
+        <Tag variant="default" className="text-xs">
           {data.appliesTo}
         </Tag>
       ),
@@ -35,10 +37,10 @@ export function DiscountSummaryCard({
   return (
     <SummaryCard
       title={data.code}
-      status={{ label: statusLabel, tone: "success" }}
+      status={{ label: statusLabel ?? (t("Active") as string), tone: "success" }}
       description={
         description ??
-        "Keep an eye on redemptions to ensure margin targets are protected."
+        (t("Keep an eye on redemptions to ensure margin targets are protected.") as string)
       }
       metrics={metrics}
       actions={actions}

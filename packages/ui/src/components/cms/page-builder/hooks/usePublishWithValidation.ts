@@ -1,5 +1,6 @@
 import { useCallback } from "react";
 import { validateSectionRules } from "@acme/platform-core/validation/sectionRules";
+import type { ValidationResult } from "@acme/platform-core/validation/sectionRules";
 import type { SectionTemplate } from "@acme/types/section/template";
 import type { PageComponent } from "@acme/types";
 
@@ -23,10 +24,10 @@ export default function usePublishWithValidation({
   return useCallback(async () => {
     try {
       const sections: SectionTemplate[] = (components || [])
-        .filter((c: any) => (c as any)?.type === "Section")
-        .map((c: any, idx: number) => ({
+        .filter((c: PageComponent) => c.type === "Section")
+        .map((c: PageComponent, idx: number) => ({
           id: `local-${idx}`,
-          label: (c as any)?.label || `Section ${idx + 1}`,
+          label: (c as { label?: string }).label || `Section ${idx + 1}`, // i18n-exempt: fallback for developer label
           status: "draft",
           template: c,
           createdAt: new Date().toISOString(),
@@ -34,9 +35,9 @@ export default function usePublishWithValidation({
           createdBy: "editor",
         }));
 
-      const result = validateSectionRules(sections);
-      if ((result as any).ok === false) {
-        const msg = (result as any).errors?.join("\n") || "Validation failed";
+      const result: ValidationResult = validateSectionRules(sections);
+      if (result.ok === false) {
+        const msg = result.errors?.join("\n") || "Validation failed"; // i18n-exempt: aggregated validation message
         setToast({ open: true, message: msg });
         return;
       }
@@ -46,4 +47,3 @@ export default function usePublishWithValidation({
     await handlePublish();
   }, [components, handlePublish, setToast]);
 }
-

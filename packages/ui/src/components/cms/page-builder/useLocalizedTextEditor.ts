@@ -14,7 +14,8 @@ export default function useLocalizedTextEditor(
   locale: Locale,
 ) {
   const [editing, setEditing] = useState(false);
-  const editor = useTextEditor(component as any, locale, editing);
+  type EditorInputText = Parameters<typeof useTextEditor>[0];
+  const editor = useTextEditor(component as unknown as EditorInputText, locale, editing);
 
   const startEditing = useCallback(() => {
     setEditing(true);

@@ -1,5 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import crypto from "node:crypto";
+import { LOCALES } from "@acme/i18n";
+
+// Helper: check locale prefix without using dynamic RegExp
+const hasLocalePrefix = (path: string): boolean =>
+  LOCALES.some((l) => path === `/${l}` || path.startsWith(`/${l}/`));
 
 export function middleware(request: NextRequest) {
   const { pathname } = new URL(request.url);
@@ -10,7 +15,7 @@ export function middleware(request: NextRequest) {
   }
 
   // Allow known locale prefixes
-  if (/^\/(en|de|it)(\/|$)/.test(pathname)) {
+  if (hasLocalePrefix(pathname)) {
     const res = NextResponse.next();
     try {
       const consent = request.cookies.get("consent.analytics")?.value === "true";
@@ -19,11 +24,11 @@ export function middleware(request: NextRequest) {
         const inline = `window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${id}');`;
         const hash = crypto.createHash('sha256').update(inline).digest('base64');
         const csp = [
-          "default-src 'self'",
+          "default-src 'self'", // i18n-exempt: HTTP header policy value, not user-facing copy
           `script-src 'self' 'sha256-${hash}' https://www.googletagmanager.com https://www.google-analytics.com`,
           "img-src 'self' data: https://www.google-analytics.com",
           "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com",
-          "style-src 'self' 'unsafe-inline'",
+          "style-src 'self' 'unsafe-inline'", // i18n-exempt: HTTP header policy value, not user-facing copy
         ].join('; ');
         res.headers.set('Content-Security-Policy', csp);
       }
@@ -31,8 +36,8 @@ export function middleware(request: NextRequest) {
     return res;
   }
 
-  // Default: redirect “/” or unknown prefixes to English
-  return NextResponse.redirect(new URL("/en", request.url));
+  // Default: redirect “/” or unknown prefixes to default locale (first in LOCALES)
+  return NextResponse.redirect(new URL(`/${LOCALES[0]}`, request.url));
 }
 
 /** Run on every non-static path */

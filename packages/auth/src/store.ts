@@ -39,7 +39,7 @@ export async function createSessionStore(): Promise<SessionStore> {
       coreEnv.UPSTASH_REDIS_REST_TOKEN)
   ) {
     try {
-      const { Redis } = await import("@upstash/redis");
+      const { Redis } = await import("@upstash/redis"); // i18n-exempt: module specifier; not user-facing copy
       const { RedisSessionStore } = await import("./redisStore");
       const client = new Redis({
         url: coreEnv.UPSTASH_REDIS_REST_URL!,
@@ -47,7 +47,10 @@ export async function createSessionStore(): Promise<SessionStore> {
       });
       return new RedisSessionStore(client, SESSION_TTL_S);
     } catch (error) {
-      console.error("Failed to initialize Redis session store", error);
+      console.error(
+        "Failed to initialize Redis session store", // i18n-exempt: internal diagnostic log; not user-facing
+        error,
+      );
     }
   }
 

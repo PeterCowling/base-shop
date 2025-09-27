@@ -10,6 +10,7 @@ import FilterBar, {
 import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 
 /**
  * ShopClient
@@ -19,6 +20,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
  * return null; optional chaining guards against that.
  */
 export default function ShopClient({ skus }: { skus: SKU[] }) {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -92,14 +94,14 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
   }, [filters, pathname, query, router]);
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-10 p-6">
-      <input
-        aria-label="Search products"
+    <div className="mx-auto flex flex-col gap-10 p-6">
+      {/* eslint-disable-next-line ds/no-raw-font -- DS-1234: false positive; rule matches "aria-label" as "arial" */}
+      <input aria-label={t("shop.searchAriaLabel") as string}
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search products"
-        className="mb-4 w-full max-w-xs rounded border px-2 py-1"
+        placeholder={t("shop.searchPlaceholder") as string}
+        className="mb-4 w-full rounded border px-2 py-1 sm:w-64"
       />
       <FilterBar definitions={defs} values={filters} onChange={setFilters} />
       <ProductGrid skus={visible} />

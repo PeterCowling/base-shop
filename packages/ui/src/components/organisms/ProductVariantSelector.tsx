@@ -3,6 +3,7 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { ColorSwatch } from "../atoms/ColorSwatch";
 import { QuantityInput } from "../molecules/QuantityInput";
+import { Inline } from "../atoms/primitives";
 
 export interface VariantSelectorProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -34,7 +35,7 @@ export function ProductVariantSelector({
   return (
     <div className={cn("space-y-4", className)} {...props}>
       {colors && (
-        <div className="flex items-center gap-2">
+        <Inline alignY="center" gap={2}>
           {colors.map((c) => (
             <ColorSwatch
               key={c}
@@ -43,7 +44,7 @@ export function ProductVariantSelector({
               onClick={() => onColorChange?.(c)}
             />
           ))}
-        </div>
+        </Inline>
       )}
       {sizes && (
         <select

@@ -18,7 +18,12 @@ async function fetchInitial(slug: string, searchParams?: Record<string, string |
   const pageSize = typeof searchParams?.pageSize === "string" ? searchParams.pageSize : undefined;
   if (page) url.searchParams.set("page", page);
   if (pageSize) url.searchParams.set("pageSize", pageSize);
-  const res = await fetch(url.toString(), { next: { revalidate: 60, tags: ["collections", `collection:${slug}`] } as any });
+  const res = await fetch(
+    url.toString(),
+    {
+      next: { revalidate: 60, tags: ["collections", `collection:${slug}`] },
+    } as RequestInit & { next: { revalidate: number; tags: string[] } }
+  );
   if (!res.ok) return [];
   const data = (await res.json()) as { items?: SKU[] } | SKU[];
   return Array.isArray(data) ? data : (data.items ?? []);

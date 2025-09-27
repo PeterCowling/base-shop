@@ -1,6 +1,9 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "@acme/i18n";
+import { Cluster, Cover } from "../../atoms/primitives";
+import { resolveLocale } from "@acme/i18n/locales";
 import AnnouncementBar from "./AnnouncementBarBlock";
 import SearchBar from "./SearchBar";
 import CurrencySelector from "./CurrencySelector";
@@ -32,9 +35,23 @@ export default function HeaderSection({
   className,
   ...rest
 }: HeaderSectionProps) {
+  const t = useTranslations();
+  // i18n-exempt — CSS utility class names, not user copy
   const stickyClass = variant === "sticky" ? "sticky top-0 z-50" : undefined;
+  // i18n-exempt — CSS utility class names, not user copy
   const transparentClass = variant === "transparent" ? "bg-transparent" : "bg-white";
   const [open, setOpen] = React.useState(false);
+  // Resolve current locale for LanguageSwitcher
+  // falls back to "en" when window is undefined
+  // i18n-exempt -- Locale derivation from path; not user-facing copy
+  const currentLocale = React.useMemo(() => {
+    try {
+      const seg = typeof window !== "undefined" ? window.location.pathname.split("/")[1] : "en";
+      return resolveLocale(seg);
+    } catch {
+      return "en" as const;
+    }
+  }, []);
 
   const breadcrumbs = React.useMemo(() => {
     if (!showBreadcrumbs) return [] as ReturnType<typeof getBreadcrumbs>;
@@ -49,33 +66,40 @@ export default function HeaderSection({
   const renderSearch = () => {
     if (searchMode === "off") return null;
     if (searchMode === "inline") {
-      const node = <div className="max-w-md flex-1"><SearchBar /></div>;
+      const node = <div className="flex-1 sm:w-96"><SearchBar /></div>;
       return experimentKey ? (
         <ExperimentGate flag={`${experimentKey}:search`} fallback={null}>{node}</ExperimentGate>
       ) : node;
     }
     return (
-      <>
+      <div className="relative">
         <ExperimentGate flag={experimentKey ? `${experimentKey}:search` : undefined}>
-          <button aria-label="Open search" className="p-2" onClick={() => setOpen(true)}>🔎</button>
+          <button aria-label={String(t("header.openSearch"))} className="p-2 min-h-10 min-w-10" onClick={() => setOpen(true)}>
+            <span aria-hidden>🔎</span>
+          </button>
         </ExperimentGate>
         {open ? (
-          <div className="fixed inset-0 bg-black/50 flex items-start justify-center p-8" onClick={() => setOpen(false)}>
-            <div className="bg-white rounded shadow p-4 w-full max-w-xl" onClick={(e) => e.stopPropagation()}>
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="font-medium">Search</h2>
-                <button onClick={() => setOpen(false)}>✕</button>
+          <div className="fixed inset-0 bg-black/50 p-8" onClick={() => setOpen(false)}>
+            <Cover minH="screen" center={
+              <div className="bg-white rounded shadow p-4 w-full" onClick={(e) => e.stopPropagation()}>
+                <Cluster justify="between" alignY="center" className="mb-2">
+                  <h2 className="font-medium">{t("header.search")}</h2>
+                  <button aria-label={String(t("actions.close"))} className="min-h-10 min-w-10" onClick={() => setOpen(false)}>
+                    <span aria-hidden>✕</span>
+                  </button>
+                </Cluster>
+                <SearchBar />
               </div>
-              <SearchBar />
-            </div>
+            } />
           </div>
         ) : null}
-      </>
+      </div>
     );
   };
 
   return (
-    <header className={[className, stickyClass, transparentClass, "w-full border-b"].filter(Boolean).join(" ") || undefined} {...rest}>
+    // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0003: string literals here are CSS utility classes, not user copy
+    <header className={[className, stickyClass, transparentClass, "relative w-full border-b"].filter(Boolean).join(" ") || undefined} {...rest}>
       {announcement ? (
         experimentKey ? (
           <ExperimentGate flag={`${experimentKey}:announcement`}><AnnouncementBar /></ExperimentGate>
@@ -83,29 +107,34 @@ export default function HeaderSection({
           <AnnouncementBar />
         )
       ) : null}
-      <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-3">
-        <a className="font-bold" href="/">Shop</a>
-        {variant === "centerLogo" ? <div className="mx-auto" /> : null}
-        <nav className="flex items-center gap-3 ms-auto">
-          {renderSearch()}
-          {showCurrencySelector ? (
-            experimentKey ? (
-              <ExperimentGate flag={`${experimentKey}:currency`}><CurrencySelector /></ExperimentGate>
-            ) : (
-              <CurrencySelector />
-            )
-          ) : null}
-          {showLocaleSelector ? <LanguageSwitcher current={"en" as any} /> : null}
-        </nav>
+      <div className="relative mx-auto px-4 py-3">
+        <Cluster alignY="center" gap={4}>
+          <a className="font-bold inline-flex items-center min-h-10 min-w-10" href="/">{t("header.brand")}</a>
+          {variant === "centerLogo" ? <div className="mx-auto" /> : null}
+          <nav className="ms-auto">
+            <Cluster alignY="center" gap={3}>
+              {renderSearch()}
+              {showCurrencySelector ? (
+                experimentKey ? (
+                  <ExperimentGate flag={`${experimentKey}:currency`}><CurrencySelector /></ExperimentGate>
+                ) : (
+                  <CurrencySelector />
+                )
+              ) : null}
+              {showLocaleSelector ? <LanguageSwitcher current={currentLocale} /> : null}
+            </Cluster>
+          </nav>
+        </Cluster>
       </div>
       {showBreadcrumbs && breadcrumbs.length > 1 ? (
-        <div className="mx-auto max-w-7xl px-4 pb-3 text-sm text-neutral-600">
-          <nav aria-label="Breadcrumb">
-            <ol className="flex items-center gap-2">
+        <div className="mx-auto px-4 pb-3 text-sm text-neutral-600">
+          {/* eslint-disable-next-line ds/no-raw-font -- DS-0005: false positive, rule matches 'aria-label' as 'arial' */}
+          <nav aria-label={String(t("breadcrumb.ariaLabel"))}>
+            <ol>
               {breadcrumbs.map((c, i) => (
-                <li key={c.href} className="flex items-center gap-2">
-                  <a href={c.href} className="hover:underline">{c.label}</a>
-                  {i < breadcrumbs.length - 1 ? <span>/</span> : null}
+                <li key={c.href} className="inline-block align-middle me-2 last:me-0">
+                  <a href={c.href} className="inline-flex items-center min-h-10 min-w-10 hover:underline px-1">{c.label}</a> {/* // i18n-exempt — dynamic route labels */}
+                  {i < breadcrumbs.length - 1 ? <span className="mx-1" aria-hidden>/</span> : null}
                 </li>
               ))}
             </ol>

@@ -5,6 +5,9 @@ import { FormEvent, useState } from "react";
 import { Alert, Toast } from "@/components/atoms";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 import type { Locale } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
+import { Inline } from "@ui/components/atoms/primitives/Inline";
+import { Stack } from "@ui/components/atoms/primitives/Stack";
 
 import { SeoAdvancedSettings } from "./SeoAdvancedSettings";
 import { SeoEditorHeader } from "./SeoEditorHeader";
@@ -21,7 +24,7 @@ const Tabs = ({
   items: { value: Locale; label: string }[];
 }) => {
   return (
-    <div className="flex flex-wrap gap-2" role="tablist">
+    <Inline wrap gap={2} role="tablist">
       {items.map((item) => {
         const active = item.value === value;
         return (
@@ -41,11 +44,12 @@ const Tabs = ({
           </button>
         );
       })}
-    </div>
+    </Inline>
   );
 };
 
 export default function SeoEditor(props: UseSeoEditorProps) {
+  const t = useTranslations();
   const { languages } = props;
   const {
     locale,
@@ -109,7 +113,7 @@ export default function SeoEditor(props: UseSeoEditorProps) {
             />
 
             {warnings.length > 0 && (
-              <Alert variant="warning" tone="soft" title="Warnings">
+              <Alert variant="warning" tone="soft" title={String(t("Warnings"))}>
                 <ul className="list-disc pl-5">
                   {warnings.map((warning) => (
                     <li key={warning}>{warning}</li>
@@ -118,24 +122,27 @@ export default function SeoEditor(props: UseSeoEditorProps) {
               </Alert>
             )}
 
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div className="min-w-0 flex gap-2">
+            <Stack gap={3} className="sm:flex-row sm:items-center sm:justify-between">
+              <Inline className="min-w-0" gap={2}>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={handleGenerate}
                   disabled={generating}
                 >
-                  {generating ? "Generating…" : "Generate with AI"}
+                  {generating ? t("Generating…") : t("Generate with AI")}
                 </Button>
                 <Button type="submit" disabled={saving}>
-                  {saving ? "Saving…" : "Save"}
+                  {saving ? t("Saving…") : t("Save")}
                 </Button>
-              </div>
+              </Inline>
               <p className="text-xs text-muted-foreground">
-                All changes apply to locale {locale.toUpperCase()} unless translations are frozen.
+                {t(
+                  "All changes apply to locale {locale} unless translations are frozen.",
+                  { locale: locale.toUpperCase() },
+                )}
               </p>
-            </div>
+            </Stack>
           </form>
         </CardContent>
       </Card>

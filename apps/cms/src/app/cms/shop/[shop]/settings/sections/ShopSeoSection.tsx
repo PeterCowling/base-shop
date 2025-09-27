@@ -2,6 +2,7 @@
 
 import { Card, CardContent, Input } from "@/components/atoms/shadcn";
 import { FormField } from "@ui/components/molecules";
+import { useTranslations } from "@acme/i18n";
 
 export type ShopSeoSectionErrors = Partial<Record<"catalogFilters", string[]>>;
 
@@ -28,6 +29,7 @@ export default function ShopSeoSection({
   errors,
   onCatalogFiltersChange,
 }: ShopSeoSectionProps) {
+  const t = useTranslations();
   const errorMessage = formatError(errors?.catalogFilters);
   const errorId = errorMessage ? "catalog-filters-error" : undefined;
 
@@ -35,16 +37,17 @@ export default function ShopSeoSection({
     <Card>
       <CardContent className="space-y-6 p-6">
         <div className="space-y-1">
-          <h3 className="text-lg font-semibold">SEO</h3>
+          <h3 className="text-lg font-semibold">{t("SEO")}</h3>
           <p className="text-sm text-muted-foreground">
-            Provide a comma-separated list of catalog filters to embed within
-            storefront metadata.
+            {t(
+              "Provide a comma-separated list of catalog filters to embed within storefront metadata."
+            )}
           </p>
         </div>
 
         <FormField
-          label="Catalog filters"
-          htmlFor="catalog-filters"
+          label={t("Catalog filters")}
+          htmlFor={"catalog-filters" /* i18n-exempt: technical control id */}
           error={
             errorMessage ? (
               <span id={errorId} role="alert">
@@ -54,13 +57,13 @@ export default function ShopSeoSection({
           }
         >
           <Input
-            id="catalog-filters"
-            name="catalogFilters"
+            id={"catalog-filters" /* i18n-exempt: technical control id */}
+            name={"catalogFilters" /* i18n-exempt: technical form field name */}
             value={joinFilters(catalogFilters)}
             onChange={(event) =>
               onCatalogFiltersChange(splitFilters(event.target.value))
             }
-            placeholder="color,size,style"
+            placeholder={t("color,size,style")}
             aria-invalid={errorMessage ? true : undefined}
             aria-describedby={errorId}
           />

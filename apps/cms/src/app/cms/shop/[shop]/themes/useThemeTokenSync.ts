@@ -5,6 +5,7 @@ import { patchShopTheme } from "../../../wizard/services/patchTheme";
 import { savePreviewTokens } from "../../../wizard/previewTokens";
 import type { BrandIntensity } from "./brandIntensity";
 import { computeBrandOverlay } from "./brandIntensity";
+import { useTranslations } from "@acme/i18n";
 
 interface Args {
   shop: string;
@@ -23,6 +24,7 @@ export function useThemeTokenSync({
   setOverrides,
   brandIntensity = "Everyday",
 }: Args) {
+  const t = useTranslations();
   const [previewTokens, setPreviewTokens] = useState<Record<string, string>>({
     ...tokensByThemeState[theme],
     ...overrides,
@@ -90,7 +92,7 @@ export function useThemeTokenSync({
   // Broadcast initial tokens so previews reflect the current theme on mount
   useEffect(() => {
     savePreviewTokens(previewTokens);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- CMS-2145: run once on mount to broadcast initial preview tokens
   }, []);
 
   useEffect(() => {
@@ -146,7 +148,7 @@ export function useThemeTokenSync({
   };
 
   const handleResetAll = () => {
-    if (!window.confirm("Are you sure you want to reset all overrides?")) {
+    if (!window.confirm(t("Are you sure you want to reset all overrides?"))) {
       return;
     }
     const patch: Record<string, string> = {};

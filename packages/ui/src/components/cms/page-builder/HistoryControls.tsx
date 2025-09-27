@@ -2,6 +2,7 @@
 
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
 import { Tooltip } from "../../atoms";
+import { Inline, Stack } from "../../atoms/primitives";
 import { useEffect, useState } from "react";
 import { Spinner } from "../../atoms";
 import { CheckIcon, RotateCounterClockwiseIcon, UpdateIcon } from "@radix-ui/react-icons";
@@ -68,14 +69,16 @@ const HistoryControls = ({
     };
   }, []);
   return (
-    <div className="flex gap-2">
+    <Inline gap={2}>
       {showUndoRedo && (
         <>
+          {/* i18n-exempt -- PB-2414: editor-only tooltip */}
           <Tooltip text="Undo (Ctrl/⌘+Z)">
             <Button onClick={onUndo} disabled={!canUndo} aria-label="Undo" size="icon">
               <RotateCounterClockwiseIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
           </Tooltip>
+          {/* i18n-exempt -- PB-2414: editor-only tooltip */}
           <Tooltip text="Redo (Ctrl/⌘+Y)">
             <Button onClick={onRedo} disabled={!canRedo} aria-label="Redo" size="icon">
               <UpdateIcon className="h-4 w-4" aria-hidden="true" />
@@ -84,32 +87,37 @@ const HistoryControls = ({
         </>
       )}
       {showSavePublish && (
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
+        <Stack gap={1}>
+          <Inline gap={2} alignY="center">
+            {/* i18n-exempt -- PB-2414: editor-only tooltip */}
             <Tooltip text="Save (Ctrl/⌘+S)">
               <Button onClick={onSave} disabled={saving}>
-                {saving ? <Spinner className="h-4 w-4" /> : "Save"}
+                {saving ? <Spinner className="h-4 w-4" /> : (
+                  // i18n-exempt -- PB-2414: editor-only action label
+                  "Save"
+                )}
               </Button>
             </Tooltip>
             {autoSaveState === "saving" && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Spinner className="h-4 w-4" /> Saving…
-              </div>
+              <Inline gap={1} alignY="center" className="text-sm text-muted-foreground">
+                <Spinner className="h-4 w-4" />{/* i18n-exempt -- PB-2414: status message */} Saving…
+              </Inline>
             )}
             {autoSaveState === "saved" && (
-              <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                <CheckIcon className="h-4 w-4 text-green-500" /> All changes saved
-              </div>
+              <Inline gap={1} alignY="center" className="text-sm text-muted-foreground">
+                <CheckIcon className="h-4 w-4 text-green-500" />{/* i18n-exempt -- PB-2414: status message */} All changes saved
+              </Inline>
             )}
-          </div>
+          </Inline>
           {saveError && (
             <p className="text-sm text-red-500">{saveError}</p>
           )}
-        </div>
+        </Stack>
       )}
       {showSavePublish && (
-        <div className="flex flex-col gap-1">
-          <Tooltip text="Publish page">
+        <Stack gap={1}>
+            {/* i18n-exempt -- PB-2414: editor-only tooltip */}
+            <Tooltip text="Publish page">
             <Button
               variant="default"
               className="h-9 px-4"
@@ -117,22 +125,30 @@ const HistoryControls = ({
               disabled={publishing}
               data-tour="publish"
             >
-              {publishing ? <Spinner className="h-4 w-4" /> : "Publish"}
+              {publishing ? <Spinner className="h-4 w-4" /> : (
+                // i18n-exempt -- PB-2414: editor-only action label
+                "Publish"
+              )}
             </Button>
           </Tooltip>
           {publishError && (
             <p className="text-sm text-red-500">{publishError}</p>
           )}
-        </div>
+        </Stack>
       )}
       {showVersions && shop && pageId && currentComponents && onRestoreVersion && (
         <Dialog open={isOpenManage} onOpenChange={setIsOpenManage}>
           <DialogTrigger asChild>
+            {/* i18n-exempt -- PB-2414: editor-only tooltip */}
             <Tooltip text="Manage versions (Ctrl/⌘+Shift+V)">
-              <Button variant="outline" onClick={() => setIsOpenManage(true)}>Versions</Button>
+              <Button variant="outline" onClick={() => setIsOpenManage(true)}>
+                {/* i18n-exempt -- PB-2414: editor-only dialog trigger */}
+                Versions
+              </Button>
             </Tooltip>
           </DialogTrigger>
-          <DialogContent className="max-w-5xl">
+          <DialogContent className="w-full">
+            {/* i18n-exempt -- PB-2414: editor-only dialog title */}
             <DialogTitle>Versions</DialogTitle>
             <VersionsPanel
               shop={shop}
@@ -147,11 +163,16 @@ const HistoryControls = ({
       {showVersions && shop && pageId && currentComponents && onRestoreVersion && (
         <Dialog open={isOpenSave} onOpenChange={setIsOpenSave}>
           <DialogTrigger asChild>
+            {/* i18n-exempt -- PB-2414: editor-only tooltip */}
             <Tooltip text="Save version snapshot (Ctrl/⌘+Shift+S)">
-              <Button variant="outline" onClick={() => setIsOpenSave(true)}>Save Version</Button>
+              <Button variant="outline" onClick={() => setIsOpenSave(true)}>
+                {/* i18n-exempt -- PB-2414: editor-only dialog trigger */}
+                Save Version
+              </Button>
             </Tooltip>
           </DialogTrigger>
-          <DialogContent className="max-w-5xl">
+          <DialogContent className="w-full">
+            {/* i18n-exempt -- PB-2414: editor-only dialog title */}
             <DialogTitle>Save Version</DialogTitle>
             <VersionsPanel
               shop={shop}
@@ -164,7 +185,7 @@ const HistoryControls = ({
           </DialogContent>
         </Dialog>
       )}
-    </div>
+    </Inline>
   );
 };
 

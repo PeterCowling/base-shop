@@ -1,14 +1,15 @@
 // packages/ui/src/hooks/__tests__/useReducedMotion.test.tsx
+// i18n-exempt: Test descriptions and fixtures use literal strings
 import { act, renderHook } from "@testing-library/react";
 import useReducedMotion from "../useReducedMotion";
 
 describe("useReducedMotion", () => {
   const original = window.matchMedia;
   afterEach(() => {
-    window.matchMedia = original as any;
+    window.matchMedia = original;
   });
 
-  function makeMediaQuery(initial: boolean) {
+  function makeMediaQuery(initial: boolean): MediaQueryList {
     const listeners: Array<() => void> = [];
     return {
       matches: initial,
@@ -28,12 +29,13 @@ describe("useReducedMotion", () => {
         this.matches = next;
         listeners.forEach((l) => l());
       },
-    } as any;
+      onchange: null,
+    } as unknown as MediaQueryList;
   }
 
   test("reflects system preference and reacts to changes", () => {
     const mq = makeMediaQuery(false);
-    window.matchMedia = () => mq as any;
+    window.matchMedia = () => mq;
 
     const { result } = renderHook(() => useReducedMotion());
     expect(result.current).toBe(false);
@@ -44,7 +46,7 @@ describe("useReducedMotion", () => {
 
   test("falls back to legacy addListener when addEventListener is missing", () => {
     const listeners: Array<() => void> = [];
-    const mq: any = {
+    const mq = {
       matches: false,
       media: "(prefers-reduced-motion: reduce)",
       // no addEventListener -> triggers catch block path
@@ -57,7 +59,11 @@ describe("useReducedMotion", () => {
         this.matches = next;
         listeners.forEach((l) => l());
       },
-    };
+      onchange: null,
+      addEventListener: undefined as unknown as MediaQueryList["addEventListener"],
+      removeEventListener: undefined as unknown as MediaQueryList["removeEventListener"],
+      dispatchEvent: (() => false) as any,
+    } as unknown as MediaQueryList;
     window.matchMedia = () => mq;
 
     const { result } = renderHook(() => useReducedMotion());

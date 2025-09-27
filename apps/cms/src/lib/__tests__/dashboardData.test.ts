@@ -28,11 +28,22 @@ describe("collectStats", () => {
   });
 
   it("counts shops, products, and users", async () => {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ENG-1234: Safe temp fixture path derived from mkdtemp()
     await mkdir(path.join(tempDir, "alpha"), { recursive: true });
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ENG-1234: Safe temp fixture path derived from mkdtemp()
     await mkdir(path.join(tempDir, "beta"), { recursive: true });
 
-    await writeFile(path.join(tempDir, "alpha", "products.json"), JSON.stringify([{ id: 1 }, { id: 2 }]));
-    await writeFile(path.join(tempDir, "beta", "products.json"), JSON.stringify([{ id: 3 }]));
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ENG-1234: Safe temp fixture path derived from mkdtemp()
+    await writeFile(
+      path.join(tempDir, "alpha", "products.json"),
+      JSON.stringify([{ id: 1 }, { id: 2 }])
+    );
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ENG-1234: Safe temp fixture path derived from mkdtemp()
+    await writeFile(
+      path.join(tempDir, "beta", "products.json"),
+      JSON.stringify([{ id: 3 }])
+    );
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ENG-1234: Safe temp fixture path derived from mkdtemp()
     await writeFile(path.join(tempDir, "notes.txt"), "ignore me");
 
     (readRbac as jest.Mock).mockResolvedValue({

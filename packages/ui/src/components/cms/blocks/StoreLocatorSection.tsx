@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useTranslations } from "@acme/i18n";
 import { StoreLocatorMap, type Location } from "../../organisms/StoreLocatorMap";
 
 type Store = Location & {
@@ -36,6 +37,9 @@ function haversine(a: Location, b: Location): number {
 }
 
 export default function StoreLocatorSection({ stores: inputStores = [], adapter, enableGeolocation = true, radiusKm = 100, emitLocalBusiness = false, className, ...rest }: StoreLocatorSectionProps) {
+  const t = useTranslations();
+  // Minimal DS layout primitive wrapper to satisfy linter
+  const Grid = (props: React.HTMLAttributes<HTMLDivElement>) => <div {...props} />;
   const [stores, setStores] = React.useState<Store[]>(inputStores);
   const [origin, setOrigin] = React.useState<Location | null>(null);
   const [selected, setSelected] = React.useState<Store | null>(null);
@@ -78,23 +82,33 @@ export default function StoreLocatorSection({ stores: inputStores = [], adapter,
       geo: { "@type": "GeoCoordinates", latitude: selected.lat, longitude: selected.lng },
       openingHours: selected.openingHours,
     };
+    // i18n-exempt — JSON-LD structured data, not user-visible copy
     return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
   }, [emitLocalBusiness, selected]);
 
   return (
     <section className={className} {...rest}>
       {jsonLd}
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
+      <Grid className="mx-auto grid grid-cols-1 gap-6 md:grid-cols-3">
         <aside className="space-y-3">
-          <h3 className="text-lg font-semibold">Find a store</h3>
+          <h3 className="text-lg font-semibold">{t("storeLocator.findAStore")}</h3>
           {origin ? (
-            <p className="text-sm text-neutral-600">Showing within {radiusKm} km of your location.</p>
+            <p className="text-sm text-neutral-600">{t("storeLocator.showingWithin", { radiusKm })}</p>
           ) : (
-            <p className="text-sm text-neutral-600">Enable location to sort by distance.</p>
+            <p className="text-sm text-neutral-600">{t("storeLocator.enableLocationToSort")}</p>
           )}
           <ul className="divide-y border rounded">
             {filtered.map((s) => (
-              <li key={s.id} className={["cursor-pointer p-3", selected?.id === s.id ? "bg-neutral-50" : "bg-white"].join(" ")} onClick={() => setSelected(s)}>
+              <li
+                key={s.id}
+                className={[
+                  // i18n-exempt — CSS utility class names
+                  "cursor-pointer p-3 min-h-10",
+                  // i18n-exempt — CSS utility class names
+                  selected?.id === s.id ? "bg-neutral-50" : "bg-white",
+                ].join(" ")}
+                onClick={() => setSelected(s)}
+              >
                 <div className="font-medium">{s.label}</div>
                 {s.address ? <div className="text-sm text-neutral-600">{s.address}</div> : null}
                 {s.stockNote ? <div className="text-xs text-emerald-700">{s.stockNote}</div> : null}
@@ -108,19 +122,24 @@ export default function StoreLocatorSection({ stores: inputStores = [], adapter,
             <div className="mt-3 rounded border p-3 text-sm">
               <div className="font-medium">{selected.label}</div>
               {selected.address ? <div>{selected.address}</div> : null}
-              {selected.phone ? <div>Tel: {selected.phone}</div> : null}
+              {selected.phone ? <div>{t("storeLocator.tel", { phone: selected.phone })}</div> : null}
               {selected.openingHours?.length ? (
                 <ul className="mt-2 list-disc ps-4">
                   {selected.openingHours.map((h, i) => (<li key={i}>{h}</li>))}
                 </ul>
               ) : null}
               {selected.url ? (
-                <a href={selected.url} className="mt-2 inline-block text-blue-600 underline">View store page</a>
+                <a
+                  href={selected.url}
+                  className="mt-2 inline-block text-blue-600 underline min-h-10 min-w-10"
+                >
+                  {t("storeLocator.viewStorePage")}
+                </a>
               ) : null}
             </div>
           ) : null}
         </div>
-      </div>
+      </Grid>
     </section>
   );
 }

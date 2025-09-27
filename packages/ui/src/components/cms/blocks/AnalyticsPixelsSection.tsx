@@ -5,8 +5,17 @@ import Script from "next/script";
 
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null;
-  const m = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([.$?*|{}()\[\]\\/+^])/g, "\\$1") + "=([^;]*)"));
-  return m ? decodeURIComponent(m[1]) : null;
+  // Avoid dynamic RegExp to satisfy security/detect-non-literal-regexp
+  const pairs = document.cookie.split("; ");
+  for (const pair of pairs) {
+    const eqIndex = pair.indexOf("=");
+    if (eqIndex === -1) continue;
+    const key = decodeURIComponent(pair.slice(0, eqIndex));
+    if (key === name) {
+      return decodeURIComponent(pair.slice(eqIndex + 1));
+    }
+  }
+  return null;
 }
 
 export default function AnalyticsPixelsSection({ measurementId }: { measurementId?: string }) {
@@ -21,6 +30,7 @@ export default function AnalyticsPixelsSection({ measurementId }: { measurementI
   if (!consented) return null;
   if (!measurementId) return null;
 
+  // i18n-exempt: script content is code, not user-facing copy
   const inline = `window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${measurementId}');`;
 
   return (
@@ -30,11 +40,13 @@ export default function AnalyticsPixelsSection({ measurementId }: { measurementI
         src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`}
         async
         nonce={nonce}
+        // i18n-exempt: strategy is a config string, not user copy
         strategy="afterInteractive"
       />
       <Script
         id="ga4-init"
         nonce={nonce}
+        // i18n-exempt: strategy is a config string, not user copy
         strategy="afterInteractive"
       >
         {inline}

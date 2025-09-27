@@ -1,4 +1,5 @@
 import { Button } from "../../../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 interface LinkedGlobalNoticeProps {
   globalId?: string;
@@ -8,22 +9,30 @@ interface LinkedGlobalNoticeProps {
 }
 
 const LinkedGlobalNotice = ({ globalId, linkedLabel, onEditGlobally, onUnlink }: LinkedGlobalNoticeProps) => {
+  const t = useTranslations();
   if (!globalId || !linkedLabel) return null;
 
   return (
     <div
       className="flex items-center justify-between gap-2 rounded border bg-muted/60 px-2 py-1 text-xs"
-      title="This block is linked to a Global template"
+      title={t("This block is linked to a Global template") as string}
     >
       <div className="truncate">
-        Linked to Global: <span className="font-medium">{linkedLabel}</span>
+        {t("Linked to Global:")}{" "}
+        <span className="font-medium">{linkedLabel}</span>
       </div>
       <div className="flex items-center gap-2">
         <Button type="button" variant="outline" className="h-7 px-2 text-xs" onClick={onEditGlobally}>
-          Edit globally
+          {t("Edit globally")}
         </Button>
-        <Button type="button" variant="ghost" className="h-7 px-2 text-xs" onClick={onUnlink} title="Unlink from Global">
-          Unlink
+        <Button
+          type="button"
+          variant="ghost"
+          className="h-7 px-2 text-xs"
+          onClick={onUnlink}
+          title={t("Unlink from Global") as string}
+        >
+          {t("Unlink")}
         </Button>
       </div>
     </div>

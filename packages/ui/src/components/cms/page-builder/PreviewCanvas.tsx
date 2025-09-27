@@ -5,6 +5,8 @@ import type { PageComponent, HistoryState } from "@acme/types";
 import Block from "./Block";
 import type { Locale } from "@acme/i18n/locales";
 import { isHiddenForViewport } from "./state/layout/utils";
+import { Stack } from "../../atoms/primitives/Stack";
+import { cn } from "../../../utils/style/cn";
 
 export default function PreviewCanvas({
   components,
@@ -22,14 +24,18 @@ export default function PreviewCanvas({
   locale: Locale;
 }) {
   return (
-    <div
+    <Stack
       id="canvas"
-      ref={(node) => { if (canvasRef) (canvasRef as any).current = node; }}
+      ref={(node) => {
+        if (canvasRef) canvasRef.current = node;
+      }}
       style={containerStyle}
-      className="relative mx-auto flex flex-col gap-4"
+      // i18n-exempt: className contains only CSS utility tokens
+      className={cn("relative mx-auto")}
+      gap={4}
     >
       {components
-        .filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport))
+        .filter((c) => !isHiddenForViewport(c.id, editor, (c as Partial<{ hidden?: boolean }>).hidden, viewport))
         .map((c) => {
           const flags = (editor ?? {})[c.id];
           const hidden = (flags?.hidden ?? []) as ("desktop" | "tablet" | "mobile")[];
@@ -40,13 +46,13 @@ export default function PreviewCanvas({
           ]
             .filter(Boolean)
             .join(" ");
+          const withViewport = { ...(c as PageComponent), pbViewport: viewport } as PageComponent;
           return (
             <div key={c.id} className={["pb-scope", hideClasses].filter(Boolean).join(" ") || undefined}>
-              <Block component={{ ...(c as any), pbViewport: viewport } as any} locale={locale} />
+              <Block component={withViewport} locale={locale} />
             </div>
           );
         })}
-    </div>
+    </Stack>
   );
 }
-

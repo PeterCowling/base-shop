@@ -34,7 +34,7 @@ export const pluginEnvVars: Record<string, readonly string[]> = {
 export function readEnvFile(file: string): Record<string, string> {
   // `file` is provided by the caller and may be dynamic. It is only used
   // to read environment configuration files within the repository.
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 validated repo-local env path
   const envRaw = readFileSync(file, "utf8");
   const env: Record<string, string> = {};
   for (const line of envRaw.split(/\n+/)) {
@@ -56,7 +56,7 @@ export function readEnvFile(file: string): Record<string, string> {
  */
 export function validateEnvFile(file: string): void {
   // `file` is constructed from known paths and validated elsewhere.
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 validated repo-local env path
   if (!existsSync(file)) {
     throw new Error(`Missing ${file}`);
   }
@@ -95,7 +95,7 @@ export function validateShopEnv(shop: string): void {
   try {
     const shopCfgPath = join("data", "shops", shop, "shop.json");
     // `shopCfgPath` is derived from a validated shop name.
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 derived from validated shop name
     const cfgRaw = readFileSync(shopCfgPath, "utf8");
     cfg = JSON.parse(cfgRaw) as {
       paymentProviders?: string[];

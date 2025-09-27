@@ -1,7 +1,9 @@
 "use client";
 import { useRef, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import { Button } from "../../../atoms/shadcn";
 import { cn } from "../../../../utils/style";
+import { Inline } from "../../../atoms/primitives/Inline";
 
 export interface CarouselContainerProps {
   children?: React.ReactNode;
@@ -34,6 +36,7 @@ export default function CarouselContainer({
   className,
   pbViewport,
 }: CarouselContainerProps) {
+  const t = useTranslations();
   const eff = <T,>(base?: T, d?: T, t?: T, m?: T): T | undefined => {
     if (pbViewport === "desktop" && d !== undefined) return d;
     if (pbViewport === "tablet" && t !== undefined) return t;
@@ -57,17 +60,36 @@ export default function CarouselContainer({
 
   const items = Array.isArray(children) ? children : children ? [children] : [];
   return (
-    <div className={cn("relative", className)}>
-      {showArrows && (
-        <div className="pointer-events-none absolute inset-y-0 start-0 end-0 z-10 flex items-center justify-between">
-          <Button type="button" variant="outline" className="pointer-events-auto ms-2 h-8 w-8 p-0" onClick={() => scrollBy(-1)} aria-label="Previous slide">‹</Button>
-          <Button type="button" variant="outline" className="pointer-events-auto me-2 h-8 w-8 p-0" onClick={() => scrollBy(1)} aria-label="Next slide">›</Button>
+    <div className={className}>
+      <div className="relative">
+        {showArrows && (
+          <div className="pointer-events-none absolute inset-y-0 start-0 end-0 flex items-center justify-between">
+          <Button
+            type="button"
+            variant="outline"
+            className="pointer-events-auto ms-2 h-10 w-10 min-h-10 min-w-10 p-0"
+            onClick={() => scrollBy(-1)}
+            aria-label={t("carousel.prev") as string}
+          >
+            <span aria-hidden>‹</span>{/* i18n-exempt: decorative glyph */}
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="pointer-events-auto me-2 h-10 w-10 min-h-10 min-w-10 p-0"
+            onClick={() => scrollBy(1)}
+            aria-label={t("carousel.next") as string}
+          >
+            <span aria-hidden>›</span>{/* i18n-exempt: decorative glyph */}
+          </Button>
         </div>
       )}
-      <div
+      <Inline
         ref={listRef}
-        className="flex snap-x snap-mandatory overflow-x-auto"
-        style={{ gap: effGap, scrollPadding: effGap as string }}
+        alignY="center"
+        wrap={false}
+        className="snap-x snap-mandatory overflow-x-auto"
+        style={{ gap: effGap as string, scrollPadding: effGap as string }}
       >
         {items.map((child, i) => (
           <div
@@ -78,16 +100,17 @@ export default function CarouselContainer({
             {child}
           </div>
         ))}
-      </div>
+      </Inline>
       {showDots && items.length > 1 && (
-        <div className="mt-2 flex justify-center gap-2">
+        <Inline className="mt-2 justify-center" gap={2}>
           {items.map((_, i) => (
-            <button key={i} type="button" aria-label={`Go to slide ${i + 1}`} onClick={() => {
-              const el = listRef.current; if (!el) return; el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' }); setActive(i);
+            <button key={i} type="button" aria-label={String(t("carousel.goToSlide", { n: i + 1 }))} onClick={() => {
+              const el = listRef.current; if (!el) return; el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' /* i18n-exempt -- DOM API value -- ABC-123 */ }); setActive(i);
             }} className={cn("h-2 w-2 rounded-full", i === active ? "bg-foreground" : "bg-muted-foreground/40")} />
           ))}
-        </div>
+        </Inline>
       )}
+      </div>
     </div>
   );
 }

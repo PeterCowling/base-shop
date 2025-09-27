@@ -1,4 +1,7 @@
 // packages/config/scripts/generate-env-stubs.mjs
+/*
+  eslint-disable security/detect-non-literal-fs-filename -- SEC-0001: Paths use CWD + static subpaths only; no untrusted input and all operations are scoped to the repo.
+*/
 // Generates lightweight JS stubs next to each TS env module so runtime code
 // can import stable .js paths while TypeScript uses the .ts sources.
 //
@@ -24,7 +27,7 @@ function generateStub(tsPath) {
   const content = `export * from "./${base}.ts";\n`;
   if (!fs.existsSync(jsPath) || fs.readFileSync(jsPath, 'utf8') !== content) {
     fs.writeFileSync(jsPath, content, 'utf8');
-    // eslint-disable-next-line no-console
+     
     console.log(`stub: ${path.relative(process.cwd(), jsPath)}`);
   }
 }

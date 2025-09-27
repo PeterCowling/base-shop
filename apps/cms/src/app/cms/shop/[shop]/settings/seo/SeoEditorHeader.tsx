@@ -1,6 +1,9 @@
 "use client";
 
 import { Tooltip } from "@/components/atoms";
+import { useTranslations } from "@acme/i18n";
+import { Stack } from "@ui/components/atoms/primitives/Stack";
+import { Inline } from "@ui/components/atoms/primitives/Inline";
 
 interface SeoEditorHeaderProps {
   freeze: boolean;
@@ -8,15 +11,16 @@ interface SeoEditorHeaderProps {
 }
 
 export function SeoEditorHeader({ freeze, onFreezeChange }: SeoEditorHeaderProps) {
+  const t = useTranslations();
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+    <Stack gap={4} className="sm:flex-row sm:items-start sm:justify-between">
       <div className="min-w-0">
-        <h3 className="text-lg font-semibold">SEO metadata</h3>
+        <h3 className="text-lg font-semibold">{t("SEO metadata")}</h3>
         <p className="text-muted-foreground text-sm">
-          Manage localized titles, descriptions, and social previews.
+          {t("Manage localized titles, descriptions, and social previews.")}
         </p>
       </div>
-      <label className="flex shrink-0 items-center gap-2 text-sm font-medium">
+      <Inline className="shrink-0 text-sm font-medium" alignY="center" gap={2}>
         <input
           type="checkbox"
           checked={freeze}
@@ -24,9 +28,9 @@ export function SeoEditorHeader({ freeze, onFreezeChange }: SeoEditorHeaderProps
             void onFreezeChange(event.target.checked);
           }}
         />
-        <span>Freeze translations</span>
-        <Tooltip text="Apply the same metadata across all locales.">?</Tooltip>
-      </label>
-    </div>
+        <span>{t("Freeze translations")}</span>
+        <Tooltip text={String(t("Apply the same metadata across all locales."))}>?</Tooltip>
+      </Inline>
+    </Stack>
   );
 }

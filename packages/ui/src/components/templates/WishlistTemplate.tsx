@@ -2,9 +2,11 @@
 import Image from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { useTranslations } from "@acme/i18n";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import type { SKU } from "@acme/types";
+import { Inline } from "../atoms/primitives";
 
 export interface WishlistItem extends SKU {
   quantity?: number;
@@ -23,14 +25,17 @@ export function WishlistTemplate({
   items,
   onAddToCart,
   onRemove,
-  ctaAddToCartLabel = "Add to cart",
-  ctaRemoveLabel = "Remove",
+  ctaAddToCartLabel: addProp,
+  ctaRemoveLabel: removeProp,
   className,
   ...props
 }: WishlistTemplateProps) {
+  const t = useTranslations();
+  const ctaAddToCartLabel = addProp ?? t("actions.addToCart");
+  const ctaRemoveLabel = removeProp ?? t("actions.remove");
   return (
     <div className={cn("space-y-6", className)} {...props}>
-      <h2 className="text-xl font-semibold">Wishlist</h2>
+      <h2 className="text-xl font-semibold">{t("wishlist.title")}</h2>
       <div className="space-y-4">
         {items.map((item) => {
           const firstMedia = item.media?.[0];
@@ -53,6 +58,7 @@ export function WishlistTemplate({
                     <video
                       src={firstMedia.url}
                       className="h-full w-full rounded object-cover"
+                      data-aspect="1/1"
                       muted
                       playsInline
                     />
@@ -61,12 +67,15 @@ export function WishlistTemplate({
               )}
               <div className="flex-1">
                 <h3 className="font-medium">{item.title}</h3>
-                <div className="text-muted-foreground flex items-center gap-2 text-sm">
+                <Inline className="text-muted-foreground text-sm" alignY="center" gap={2}>
                   {typeof item.price === "number" && <Price amount={item.price} />}
-                  {item.quantity !== undefined && <span>x{item.quantity}</span>}
-                </div>
+                  {item.quantity !== undefined && (
+                    // i18n-exempt quantity multiplier symbol
+                    <span>x{item.quantity}</span>
+                  )}
+                </Inline>
               </div>
-              <div className="flex gap-2">
+              <Inline gap={2}>
                 {onAddToCart && (
                   <Button onClick={() => onAddToCart(item)}>
                     {ctaAddToCartLabel}
@@ -77,7 +86,7 @@ export function WishlistTemplate({
                     {ctaRemoveLabel}
                   </Button>
                 )}
-              </div>
+              </Inline>
             </div>
           );
         })}

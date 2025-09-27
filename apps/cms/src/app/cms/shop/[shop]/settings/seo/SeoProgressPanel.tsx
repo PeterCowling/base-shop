@@ -16,6 +16,7 @@ import {
 } from "@platform-core/repositories/seoAudit.server";
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import { SeoChart } from "./SeoChart.client";
+import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
 
 interface Props {
   /** Shop identifier */
@@ -29,6 +30,7 @@ interface AuditCompleteEvent extends AnalyticsEvent {
 }
 
 export default async function SeoProgressPanel({ shop }: Props) {
+  const t = await getTranslations("en");
   const [audits, events] = (await Promise.all([
     readSeoAudits(shop),
     listEvents(shop) as Promise<AnalyticsEvent[]>,
@@ -54,36 +56,34 @@ export default async function SeoProgressPanel({ shop }: Props) {
     <Card>
       <CardContent className="space-y-6 p-6 text-sm">
         <div>
-          <h3 className="text-lg font-semibold">SEO Progress</h3>
-          <p className="text-muted-foreground text-sm">
-            Visualize audit scores over time and track recent crawl outcomes.
-          </p>
+          <h3 className="text-lg font-semibold">{t("cms.seo.progress.title")}</h3>
+          <p className="text-muted-foreground text-sm">{t("cms.seo.progress.subtitle")}</p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-3">
           <div className="rounded-md border border-border/10 p-4">
-            <p className="text-xs text-muted-foreground">Latest score</p>
+            <p className="text-xs text-muted-foreground">{t("cms.seo.progress.latestScore")}</p>
             <p className="text-base font-semibold">{latestScore ?? "–"}</p>
           </div>
           <div className="rounded-md border border-border/10 p-4">
-            <p className="text-xs text-muted-foreground">Average score</p>
+            <p className="text-xs text-muted-foreground">{t("cms.seo.progress.averageScore")}</p>
             <p className="text-base font-semibold">{averageScore ?? "–"}</p>
           </div>
           <div className="rounded-md border border-border/10 p-4">
-            <p className="text-xs text-muted-foreground">Audit count</p>
+            <p className="text-xs text-muted-foreground">{t("cms.seo.progress.auditCount")}</p>
             <p className="text-base font-semibold">{audits.length}</p>
           </div>
         </div>
 
         {audits.length === 0 ? (
-          <p className="text-muted-foreground">No SEO data available.</p>
+          <p className="text-muted-foreground">{t("cms.seo.progress.noData")}</p>
         ) : (
           <SeoChart labels={labels} scores={scores} />
         )}
 
         {recs.length > 0 && (
           <div className="space-y-2">
-            <h4 className="text-sm font-semibold">Latest recommendations</h4>
+            <h4 className="text-sm font-semibold">{t("cms.seo.progress.latestRecommendations")}</h4>
             <ul className="list-disc pl-5 space-y-1">
               {recs.map((r: string) => (
                 <li key={r}>{r}</li>
@@ -94,13 +94,13 @@ export default async function SeoProgressPanel({ shop }: Props) {
 
         {auditEvents.length > 0 && (
           <div className="space-y-2">
-            <h4 className="text-sm font-semibold">Recent audits</h4>
+            <h4 className="text-sm font-semibold">{t("cms.seo.progress.recentAudits")}</h4>
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Time</TableHead>
-                  <TableHead>Score</TableHead>
-                  <TableHead>Outcome</TableHead>
+                  <TableHead>{t("cms.seo.progress.time")}</TableHead>
+                  <TableHead>{t("cms.seo.progress.score")}</TableHead>
+                  <TableHead>{t("cms.seo.progress.outcome")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -110,7 +110,11 @@ export default async function SeoProgressPanel({ shop }: Props) {
                     <TableCell>
                       {typeof e.score === "number" ? e.score : "–"}
                     </TableCell>
-                    <TableCell>{e.success === false ? "failed" : "ok"}</TableCell>
+                    <TableCell>
+                      {e.success === false
+                        ? t("cms.seo.progress.failed")
+                        : t("cms.seo.progress.ok")}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

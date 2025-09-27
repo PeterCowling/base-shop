@@ -6,6 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { ProductQuickView } from "../overlays/ProductQuickView";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "./ProductCard";
+import { useTranslations } from "@acme/i18n";
 
 export type Product = SKU;
 
@@ -55,6 +56,7 @@ export function ProductCarousel({
   onAddToCart,
   ...props
 }: ProductCarouselProps) {
+  const t = useTranslations();
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLDivElement>(null);
   const [itemsPerSlide, setItemsPerSlide] = React.useState(
@@ -123,10 +125,10 @@ export function ProductCarousel({
         className={cn("overflow-hidden", className)}
         {...props}
       >
-        <Button aria-label="Previous" onClick={prev} iconOnly leadingIcon={<ChevronLeftIcon />} />
+        <Button aria-label={t("actions.previous") as string} onClick={prev} iconOnly leadingIcon={<ChevronLeftIcon />} />
         <div
           ref={scrollerRef}
-          className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)}
+          className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)} // i18n-exempt with justification: CSS utility classes only
         >
           {products.map((p) => (
             <div
@@ -139,16 +141,16 @@ export function ProductCarousel({
                 <Button
                   variant="outline"
                   className="absolute end-2 top-2 px-2 py-1 text-xs"
-                  aria-label={`Quick view ${p.title}`}
+                  aria-label={`${t("product.quickView") as string} ${p.title ?? ""}`}
                   onClick={() => setQuickViewProduct(p)}
                 >
-                  Quick View
+                  {t("product.quickView") as string}
                 </Button>
               )}
             </div>
           ))}
         </div>
-        <Button aria-label="Next" onClick={next} iconOnly leadingIcon={<ChevronRightIcon />} />
+        <Button aria-label={t("actions.next") as string} onClick={next} iconOnly leadingIcon={<ChevronRightIcon />} />
       </div>
       {enableQuickView && quickViewProduct && (
         <ProductQuickView

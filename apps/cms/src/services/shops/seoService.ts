@@ -21,8 +21,8 @@ export async function updateSeo(
   const { locale, title, description, image, alt, canonicalBase, ogUrl, twitterCard, brand, offers, aggregateRating, structuredData } = data;
 
   const warnings: string[] = [];
-  if (title.length > 70) warnings.push("Title exceeds 70 characters");
-  if (description.length > 160) warnings.push("Description exceeds 160 characters");
+  if (title.length > 70) warnings.push("Title exceeds 70 characters"); // i18n-exempt: validation hint; no translation keys defined yet
+  if (description.length > 160) warnings.push("Description exceeds 160 characters"); // i18n-exempt: validation hint; no translation keys defined yet
 
   const current = await fetchSettings(shop);
   const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
@@ -72,7 +72,7 @@ export async function updateSeo(
     await persistSettings(shop, updated);
   } catch (err) {
     console.error(`[updateSeo] failed to persist settings for shop ${shop}`, err);
-    return { errors: { _global: ["Failed to persist settings"] } };
+    return { errors: { _global: ["Failed to persist settings"] } }; // i18n-exempt: server error surfaced to UI; tests rely on literal
   }
 
   try {
@@ -134,7 +134,7 @@ export async function revertSeo(shop: string, timestamp: string) {
     a.timestamp.localeCompare(b.timestamp),
   );
   const idx = sorted.findIndex((e) => e.timestamp === timestamp);
-  if (idx === -1) throw new Error("Version not found");
+  if (idx === -1) throw new Error("Version not found"); // i18n-exempt: developer exception message
   let state: ShopSettings = {
     languages: [] as Locale[],
     seo: {},

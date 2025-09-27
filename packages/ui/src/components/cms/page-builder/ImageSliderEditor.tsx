@@ -4,6 +4,9 @@ import { Button, Input, Checkbox } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
 import type { EditorProps } from "./EditorProps";
 
+// i18n-exempt — editor-only labels and placeholders
+const t = (s: string) => s;
+
 type Props = EditorProps<ImageSliderComponent>;
 
 export default function ImageSliderEditor({ component, onChange }: Props) {
@@ -37,10 +40,10 @@ export default function ImageSliderEditor({ component, onChange }: Props) {
     <div className="space-y-2">
       <label className="flex items-center gap-2 text-sm">
         <Checkbox
-          checked={!!(component as any).openInLightbox}
+          checked={!!component.openInLightbox}
           onCheckedChange={(v) => onChange({ openInLightbox: !!v } as Partial<ImageSliderComponent>)}
         />
-        Open images in lightbox
+        {t("Open images in lightbox")}
       </label>
       {slides.map((s: NonNullable<ImageSliderComponent["slides"]>[number], idx: number) => (
         <div key={idx} className="space-y-1 rounded border p-2">
@@ -48,33 +51,33 @@ export default function ImageSliderEditor({ component, onChange }: Props) {
             <Input
               value={s.src ?? ""}
               onChange={(e) => update(idx, "src", e.target.value)}
-              placeholder="src"
+              placeholder={t("src")}
               className="flex-1"
             />
             <ImagePicker onSelect={(url) => update(idx, "src", url)}>
-              <Button type="button" variant="outline">Pick</Button>
+              <Button type="button" variant="outline">{t("Pick")}</Button>
             </ImagePicker>
           </div>
           <Input
             value={s.alt ?? ""}
             onChange={(e) => update(idx, "alt", e.target.value)}
-            placeholder="alt"
+            placeholder={t("alt")}
           />
           <Input
             value={s.caption ?? ""}
             onChange={(e) => update(idx, "caption", e.target.value)}
-            placeholder="caption"
+            placeholder={t("caption")}
           />
           <div className="flex gap-2">
             <Button type="button" onClick={() => move(idx, idx - 1)} disabled={idx === 0}>
-              Up
+              {t("Up")}
             </Button>
             <Button
               type="button"
               onClick={() => move(idx, idx + 1)}
               disabled={idx === slides.length - 1}
             >
-              Down
+              {t("Down")}
             </Button>
             <Button
               type="button"
@@ -82,13 +85,13 @@ export default function ImageSliderEditor({ component, onChange }: Props) {
               onClick={() => remove(idx)}
               disabled={slides.length <= min}
             >
-              Remove
+              {t("Remove")}
             </Button>
           </div>
         </div>
       ))}
       <Button onClick={add} disabled={slides.length >= max}>
-        Add
+        {t("Add")}
       </Button>
     </div>
   );

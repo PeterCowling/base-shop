@@ -2,7 +2,11 @@ import { useEffect } from "react";
 
 export function useAltClickCreate(
   canvasRef: React.RefObject<HTMLDivElement | null>,
-  create: (componentId: string, text: string, extra?: { pos?: { x: number; y: number } }) => Promise<{ ok: boolean; json: any }> | { ok: boolean; json: any },
+  create: (
+    componentId: string,
+    text: string,
+    extra?: { pos?: { x: number; y: number } }
+  ) => Promise<{ ok: boolean; json: unknown }> | { ok: boolean; json: unknown },
   onAfterCreate: () => void | Promise<void>
 ) {
   useEffect(() => {
@@ -31,4 +35,3 @@ export function useAltClickCreate(
 }
 
 export default useAltClickCreate;
-

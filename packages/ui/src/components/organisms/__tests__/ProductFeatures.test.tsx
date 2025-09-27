@@ -1,3 +1,4 @@
+/* i18n-exempt file -- literals used for test feature labels */
 import { render, screen } from "@testing-library/react";
 import { ProductFeatures } from "../ProductFeatures";
 

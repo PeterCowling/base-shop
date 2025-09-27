@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "../../utils/style";
 import { Price } from "../atoms/Price";
 import { ProductBadge } from "../atoms/ProductBadge";
+import { useTranslations } from "@acme/i18n";
 
 export interface PriceClusterProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -15,6 +16,7 @@ export interface PriceClusterProps
  */
 export const PriceCluster = React.forwardRef<HTMLDivElement, PriceClusterProps>(
   ({ price, compare, currency = "EUR", className, ...props }, ref) => {
+    const t = useTranslations();
     const hasDiscount = typeof compare === "number" && compare > price;
     const discount = hasDiscount
       ? Math.round(100 - (price / compare) * 100)
@@ -23,7 +25,7 @@ export const PriceCluster = React.forwardRef<HTMLDivElement, PriceClusterProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex items-baseline gap-2", className)}
+        className={cn("flex items-baseline gap-2", /* i18n-exempt: class names */ className)}
         {...props}
       >
         <Price amount={price} currency={currency} className="font-semibold" />
@@ -34,7 +36,7 @@ export const PriceCluster = React.forwardRef<HTMLDivElement, PriceClusterProps>(
               currency={currency}
               className="text-muted-foreground text-sm line-through"
             />
-            <ProductBadge label={`-${discount}%`} variant="sale" />
+            <ProductBadge label={t("-{discount}%", { discount }) as string} variant="sale" />
           </>
         )}
       </div>

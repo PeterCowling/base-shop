@@ -45,7 +45,7 @@ describe("StylePanel telemetry", () => {
     expect(screen.getByRole("status")).toHaveTextContent("Low contrast");
 
     fireEvent.change(screen.getByLabelText("Foreground"), {
-      target: { value: "#111111" },
+      target: { value: "var(--color-fg)" },
     });
     await flushPromises();
     expect(track).toHaveBeenNthCalledWith(1, "stylepanel:update", {
@@ -53,12 +53,12 @@ describe("StylePanel telemetry", () => {
       key: "fg",
     });
     expect(component.styles).toBe(
-      JSON.stringify({ color: { fg: "#111111" }, typography: {} })
+      JSON.stringify({ color: { fg: "var(--color-fg)" }, typography: {} })
     );
 
     rerender(<StylePanel component={component} handleInput={handleInput} />);
     fireEvent.change(screen.getByLabelText("Font family"), {
-      target: { value: "Arial" },
+      target: { value: "var(--font-sans)" },
     });
     await flushPromises();
     expect(track).toHaveBeenNthCalledWith(2, "stylepanel:update", {
@@ -67,8 +67,8 @@ describe("StylePanel telemetry", () => {
     });
     expect(component.styles).toBe(
       JSON.stringify({
-        color: { fg: "#111111" },
-        typography: { fontFamily: "Arial" },
+        color: { fg: "var(--color-fg)" },
+        typography: { fontFamily: "var(--font-sans)" },
       })
     );
   });

@@ -108,7 +108,7 @@ export function usePresence({
             const peer = next[data.id] ?? { id: data.id, label: data.label || data.id, color: hashColor(data.id), selectedIds: [], editingId: null, ts: now() };
             if (data.label) peer.label = data.label;
             if (data.selectedIds) peer.selectedIds = Array.isArray(data.selectedIds) ? data.selectedIds : [];
-            if ("editingId" in data) peer.editingId = (data.editingId ?? null) as any;
+            if ("editingId" in data) peer.editingId = data.editingId ?? null;
             peer.ts = now();
             next[data.id] = peer;
             return next;
@@ -144,7 +144,7 @@ export function usePresence({
       try { bc?.close(); } catch {}
       bcRef.current = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PB-221: limit deps to channel + identity to avoid broadcast storms
   }, [chanName, me, myLabel]);
 
   // React to selection/editing changes quickly without waiting for heartbeat
@@ -154,7 +154,7 @@ export function usePresence({
       send({ type: "update", id: me, label: myLabel, selectedIds, editingId: editingId ?? (selectedIds[0] ?? null) });
       lastSent.current = t;
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- PB-221: join keys to send minimal presence diffs when selection/editing changes
   }, [selectedIds.join(","), editingId ?? "none"]);
 
   const peerList = useMemo(() => Object.values(peers).sort((a, b) => (a.label || a.id).localeCompare(b.label || b.id)), [peers]);
@@ -170,4 +170,3 @@ export function usePresence({
 }
 
 export default usePresence;
-

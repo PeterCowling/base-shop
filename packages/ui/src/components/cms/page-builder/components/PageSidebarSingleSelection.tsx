@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { PageComponent, HistoryState } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import type { Action } from "../state";
+import { useTranslations } from "@acme/i18n";
 import useGlobals from "../hooks/useGlobals";
 import useStyleClipboardActions from "../hooks/useStyleClipboardActions";
 import useCenterInParent from "../hooks/useCenterInParent";
@@ -52,6 +53,7 @@ const PageSidebarSingleSelection = ({
   selectedComponent,
   pageId,
 }: Props) => {
+  const t = useTranslations();
   const previewTokens = usePreviewTokens();
   const textThemes = useMemo(() => extractTextThemes(previewTokens), [previewTokens]);
   const {
@@ -74,11 +76,11 @@ const PageSidebarSingleSelection = ({
   const handleDuplicate = useCallback(() => {
     selectedIds.forEach((id) => dispatch({ type: "duplicate", id }));
     try {
-      window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block duplicated" }));
+      window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("Block duplicated") }));
     } catch {
       // no-op
     }
-  }, [dispatch, selectedIds]);
+  }, [dispatch, selectedIds, t]);
 
   const handleChange = useCallback<UpdateComponent>(
     (patch) => {
@@ -98,18 +100,18 @@ const PageSidebarSingleSelection = ({
 
   const handleFieldInput = useCallback<HandleFieldInput>(
     (field, value) => {
-      handleChange({ [field]: value } as any);
+      handleChange({ [field]: value } as Partial<PageComponent>);
     },
     [handleChange],
   );
 
   const hasChildren = useMemo(() => {
-    const c = selectedComponent as any;
-    return !!(c && c.children && Array.isArray(c.children) && c.children.length > 0);
+    const maybeChildren = (selectedComponent as unknown as { children?: unknown }).children;
+    return Array.isArray(maybeChildren) && maybeChildren.length > 0;
   }, [selectedComponent]);
 
-  const eid = (editor ?? {})[selectedComponent.id] as any;
-  const gid = eid?.global?.id as string | undefined;
+  const eid = editor?.[selectedComponent.id];
+  const gid = eid?.global?.id;
   const linkedGlobalLabel = useMemo(() => {
     if (!gid) return null;
     const g = globals.find((x) => x.globalId === gid) || null;
@@ -122,7 +124,9 @@ const PageSidebarSingleSelection = ({
       if (!detail?.id) return;
       if (selectedIds.length !== 1) {
         try {
-          window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Select a block to apply text style" }));
+          window.dispatchEvent(
+            new CustomEvent("pb-live-message", { detail: t("Select a block to apply text style") }),
+          );
         } catch {
           // no-op
         }
@@ -132,39 +136,43 @@ const PageSidebarSingleSelection = ({
       if (!theme) return;
       let overrides: StyleOverrides = {};
       try {
-        overrides = (selectedComponent as any).styles
-          ? (JSON.parse(String((selectedComponent as any).styles)) as StyleOverrides)
-          : {};
+        const rawStyles = (selectedComponent as unknown as { styles?: unknown }).styles;
+        overrides = typeof rawStyles === "string" ? (JSON.parse(rawStyles) as StyleOverrides) : {};
       } catch {
         overrides = {};
       }
       const next = applyTextThemeToOverrides(overrides, theme);
-      handleChange({ styles: JSON.stringify(next) } as any);
+      handleChange({ styles: JSON.stringify(next) } as Partial<PageComponent>);
       try {
-        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `${theme.label} text style applied` }));
+        window.dispatchEvent(
+          new CustomEvent("pb-live-message", { detail: t(`${theme.label} text style applied`) }),
+        );
       } catch {
         // no-op
       }
     };
     window.addEventListener("pb:apply-text-theme", handler as EventListener);
     return () => window.removeEventListener("pb:apply-text-theme", handler as EventListener);
-  }, [handleChange, selectedComponent, selectedIds, textThemes]);
+  }, [handleChange, selectedComponent, selectedIds, textThemes, t]);
 
   useEffect(() => {
     if (!eid?.global?.pinned) return;
 
-    const otherPinned = Object.entries(editor ?? {}).filter(
-      ([id, flags]) => id !== selectedComponent.id && Boolean((flags as any)?.global?.pinned),
-    );
+    const otherPinned = Object.entries(editor ?? {}).filter(([id, flags]) => {
+      if (id === selectedComponent.id) return false;
+      const pinned = (flags as { global?: { pinned?: boolean } } | undefined)?.global?.pinned;
+      return Boolean(pinned);
+    });
 
     if (otherPinned.length === 0) return;
 
     otherPinned.forEach(([id, flags]) => {
-      const otherGlobal = (flags as any)?.global;
-      if (!otherGlobal) return;
+      const otherGlobal = (flags as { global?: { id?: string; pinned?: boolean; overrides?: unknown; editingSize?: Partial<Record<"desktop"|"tablet"|"mobile", number | null>> } } | undefined)?.global;
+      if (!otherGlobal || !otherGlobal.id) return;
 
-      const nextGlobal = { ...otherGlobal, pinned: false };
-      dispatch({ type: "update-editor", id, patch: { global: nextGlobal } as any });
+      const nextGlobal = { ...otherGlobal, pinned: false } as NonNullable<HistoryState["editor"]>[string]["global"];
+      const patch: Partial<NonNullable<HistoryState["editor"]>[string]> = { global: nextGlobal };
+      dispatch({ type: "update-editor", id, patch });
     });
   }, [dispatch, editor, selectedComponent.id, eid?.global?.pinned]);
 
@@ -178,20 +186,21 @@ const PageSidebarSingleSelection = ({
   const handleUpdateEditor = useCallback(
     (patch: Partial<NonNullable<HistoryState["editor"]>[string]>) => {
       if (!selectedIds[0]) return;
-      dispatch({ type: "update-editor", id: selectedIds[0], patch } as any);
+      dispatch({ type: "update-editor", id: selectedIds[0], patch });
     },
     [dispatch, selectedIds],
   );
 
   const updateEditorForId = useCallback(
     (id: string, patch: Partial<NonNullable<HistoryState["editor"]>[string]>) => {
-      dispatch({ type: "update-editor", id, patch } as any);
+      dispatch({ type: "update-editor", id, patch });
     },
     [dispatch],
   );
 
   const unlinkFromGlobal = useCallback(() => {
-    dispatch({ type: "update-editor", id: selectedComponent.id, patch: { global: undefined } as any });
+    const patch: Partial<NonNullable<HistoryState["editor"]>[string]> = { global: undefined };
+    dispatch({ type: "update-editor", id: selectedComponent.id, patch });
   }, [dispatch, selectedComponent.id]);
 
   const showUngroup = selectedIds.length === 1 && hasChildren;

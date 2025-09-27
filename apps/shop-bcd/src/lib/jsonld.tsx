@@ -4,8 +4,9 @@ export function JsonLdScript({ data }: { data: unknown }) {
   const json = JSON.stringify(data);
   return (
     <script
+      /* i18n-exempt — MIME type constant, not user-facing copy */
       type="application/ld+json"
-      // eslint-disable-next-line react/no-danger
+      
       dangerouslySetInnerHTML={{ __html: json }}
     />
   );
@@ -110,4 +111,3 @@ export function articleJsonLd({
   if (url) data.url = url;
   return data;
 }
-

@@ -121,14 +121,12 @@ jest.mock("../hooks/useDndA11y", () => ({
 
 jest.mock("../hooks/usePaletteState", () => {
   const React = require("react");
-  return {
-    __esModule: true,
-    default: () => {
-      const [showPalette, setShowPalette] = React.useState(true);
-      const [paletteWidth, setPaletteWidth] = React.useState(240);
-      return { showPalette, setShowPalette, paletteWidth, setPaletteWidth };
-    },
+  const usePaletteState = () => {
+    const [showPalette, setShowPalette] = React.useState(true);
+    const [paletteWidth, setPaletteWidth] = React.useState(240);
+    return { showPalette, setShowPalette, paletteWidth, setPaletteWidth };
   };
+  return { __esModule: true, default: usePaletteState };
 });
 
 jest.mock("../hooks/useDevToolsToggle", () => ({

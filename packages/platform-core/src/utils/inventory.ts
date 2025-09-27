@@ -59,10 +59,10 @@ export function expandInventoryItem(
 ): InventoryItem {
   if (isInventoryItem(data)) {
     if (data.quantity < 0) {
-      throw new Error("quantity must be greater than or equal to 0");
+      throw new Error("quantity must be greater than or equal to 0"); // i18n-exempt -- CORE-1014 validation message
     }
     if (data.productId.trim() === "") {
-      throw new Error("productId is required");
+      throw new Error("productId is required"); // i18n-exempt -- CORE-1014 validation message
     }
     return inventoryItemSchema.parse(data);
   }
@@ -77,19 +77,19 @@ export function expandInventoryItem(
   } = data;
 
   if (typeof sku !== "string" || sku.trim() === "") {
-    throw new Error("sku is required");
+    throw new Error("sku is required"); // i18n-exempt -- CORE-1014 validation message
   }
   if (
     productId === undefined ||
     productId === null ||
     String(productId).trim() === ""
   ) {
-    throw new Error("productId is required");
+    throw new Error("productId is required"); // i18n-exempt -- CORE-1014 validation message
   }
 
   const normalizedQuantity = normalizeQuantity(quantity, unit);
   if (!Number.isFinite(normalizedQuantity) || normalizedQuantity < 0) {
-    throw new Error("quantity must be greater than or equal to 0");
+    throw new Error("quantity must be greater than or equal to 0"); // i18n-exempt -- CORE-1014 validation message
   }
 
   const normalizedLowStock =

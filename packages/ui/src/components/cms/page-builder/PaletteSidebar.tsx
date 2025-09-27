@@ -20,7 +20,7 @@ interface Props {
  * Renders the left palette sidebar, including a drag-resize handle.
  * Single purpose: palette column UI + width resize behavior.
  */
-const PaletteSidebar = ({ width, onWidthChange, onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, onInsertPreset, mode = "all" }: Props) => (
+const PaletteSidebar = ({ width: _width, onWidthChange, onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, onInsertPreset, mode = "all" }: Props) => (
   <>
     <aside className="shrink-0" style={{ width: 350 }} data-tour="palette" data-cy="pb-palette">
       <Palette

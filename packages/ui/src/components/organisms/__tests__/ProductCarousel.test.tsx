@@ -1,40 +1,39 @@
+/* i18n-exempt file -- tests use literal titles and UI labels */
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { ProductCarousel, type Product } from "../ProductCarousel";
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import "../../../../../../test/resetNextMocks";
 
-jest.mock(
-  "@platform-core/contexts/CurrencyContext",
-  () => require("../../../../../../test/__mocks__/currencyContextMock")
-);
+import * as currencyContextMock from "~test/__mocks__/currencyContextMock.tsx";
+jest.mock("@platform-core/contexts/CurrencyContext", () => currencyContextMock);
 
 jest.mock("@platform-core/contexts/CartContext", () => ({
   useCart: () => [{}, jest.fn()],
 }));
 
-jest.mock(
-  "../../atoms/shadcn",
-  () => require("../../../../../../test/__mocks__/shadcnDialogStub.tsx")
-);
+import * as shadcnDialogStub from "~test/__mocks__/shadcnDialogStub.tsx";
+jest.mock("../../atoms/shadcn", () => shadcnDialogStub);
 
 
 function mockResize(width: number) {
-  (global as any).ResizeObserver = class {
-    cb: ResizeObserverCallback;
+  class MockResizeObserver implements ResizeObserver {
+    private cb: ResizeObserverCallback;
     constructor(cb: ResizeObserverCallback) {
       this.cb = cb;
     }
-    observe(el: Element) {
+    observe(el: Element): void {
       Object.defineProperty(el, "clientWidth", {
         value: width,
         configurable: true,
       });
       this.cb([{ target: el } as ResizeObserverEntry], this);
     }
-    disconnect() {}
-    unobserve() {}
-  } as any;
+    disconnect(): void {}
+    unobserve(): void {}
+  }
+  (globalThis as unknown as { ResizeObserver: typeof ResizeObserver }).ResizeObserver =
+    (MockResizeObserver as unknown as typeof ResizeObserver);
 }
 
 const products: Product[] = [
@@ -140,4 +139,3 @@ describe("ProductCarousel quick view", () => {
     expect(screen.queryByTestId("quick-view")).toBeNull();
   });
 });
-

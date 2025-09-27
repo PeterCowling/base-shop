@@ -33,7 +33,9 @@ describe("rbacStore", () => {
       const { readRbac } = await import("../rbacStore");
       const defaultDb = await readRbac();
       const file = path.join(dir, "data", "cms", "users.json");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: test uses temp dir; path is controlled
       await fs.mkdir(path.dirname(file), { recursive: true });
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: test writes to controlled temp path
       await fs.writeFile(file, "{not valid json", "utf8");
       const db = await readRbac();
       expect(db).toEqual(defaultDb);
@@ -47,6 +49,7 @@ describe("rbacStore", () => {
         const { readRbac } = await import("../rbacStore");
         const defaultDb = await readRbac();
         const file = path.join(dir, "data", "cms", "users.json");
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: test uses temp dir; path is controlled
         await fs.mkdir(path.dirname(file), { recursive: true });
         const data: any = { users: defaultDb.users };
         if (missing === "roles") {
@@ -54,6 +57,7 @@ describe("rbacStore", () => {
         } else {
           data.roles = defaultDb.roles;
         }
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: test writes to controlled temp path
         await fs.writeFile(file, JSON.stringify(data), "utf8");
         const db = await readRbac();
         expect(db).toEqual(defaultDb);
@@ -68,7 +72,9 @@ describe("rbacStore", () => {
       const extraPerm = "extra_perm" as unknown as Permission;
       const duplicate = defaultDb.permissions.admin[0];
       const file = path.join(dir, "data", "cms", "users.json");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: test uses temp dir; path is controlled
       await fs.mkdir(path.dirname(file), { recursive: true });
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: test writes to controlled temp path
       await fs.writeFile(
         file,
         JSON.stringify({
@@ -92,8 +98,10 @@ describe("rbacStore", () => {
   it("resolves existing data/cms directory then falls back when missing", async () => {
     await withTempDir(async (root) => {
       const nested = path.join(root, "nested", "dir");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: test uses temp dir; path is controlled
       await fs.mkdir(nested, { recursive: true });
       const cmsDir = path.join(root, "data", "cms");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: test uses temp dir; path is controlled
       await fs.mkdir(cmsDir, { recursive: true });
       const cwdSpy = jest.spyOn(process, "cwd").mockReturnValue(nested);
       try {
@@ -192,4 +200,3 @@ describe("rbacStore", () => {
     });
   });
 });
-

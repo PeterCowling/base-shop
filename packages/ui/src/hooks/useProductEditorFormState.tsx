@@ -4,7 +4,7 @@
 import { useProductInputs, type ProductWithVariants } from "./useProductInputs";
 import { useProductMediaManager } from "./useProductMediaManager";
 import { buildProductFormData } from "../utils/buildProductFormData";
-import type { Locale } from "@acme/i18n";
+import type { Locale } from "@acme/i18n/locales";
 
 import {
   useCallback,

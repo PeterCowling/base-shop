@@ -1,5 +1,5 @@
 // packages/template-app/scripts/verify-template-next-config.mjs
-/* eslint-disable security/detect-non-literal-fs-filename */
+/* eslint-disable security/detect-non-literal-fs-filename -- ABC-123: Script walks the filesystem to locate next.config.* */
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";

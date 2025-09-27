@@ -48,11 +48,11 @@ export async function sendCampaignEmail(
 
   const parsedTo = emailSchema.safeParse(to);
   if (!parsedTo.success) {
-    throw new Error(`Invalid recipient email address: ${to}`);
+    throw new Error(`Invalid recipient email address: ${to}`); // i18n-exempt: developer validation error
   }
   const parsedSubject = subjectSchema.safeParse(subject);
   if (!parsedSubject.success) {
-    throw new Error("Email subject is required.");
+    throw new Error("Email subject is required."); // i18n-exempt: developer validation error
   }
 
   const opts = {
@@ -75,7 +75,7 @@ export async function sendCampaignEmail(
         await sendWithNodemailer(optsWithText);
         return;
       } catch (err) {
-        log("Campaign email send failed", {
+        log("Campaign email send failed", { // i18n-exempt: operational log
           provider: name,
           recipient: optsWithText.to,
           campaignId: optsWithText.campaignId,
@@ -91,7 +91,7 @@ export async function sendCampaignEmail(
       await sendWithRetry(current, optsWithText);
       return;
     } catch (err) {
-      log("Campaign email send failed", {
+      log("Campaign email send failed", { // i18n-exempt: operational log
         provider: name,
         recipient: optsWithText.to,
         campaignId: optsWithText.campaignId,
@@ -121,7 +121,7 @@ async function sendWithRetry(
       } else if (hasProviderErrorFields(err)) {
         retryable = err.retryable !== false;
       } else {
-        console.warn("Unrecognized provider error", { error: err });
+        console.warn("Unrecognized provider error", { error: err }); // i18n-exempt: operational log
         retryable = true;
       }
       if (!retryable || attempt >= maxRetries) {

@@ -11,6 +11,7 @@ jest.useFakeTimers();
 jest.mock("next/navigation", () => ({ __esModule: true, usePathname: () => "/cms/shop/acme" }));
 jest.mock("@acme/shared-utils", () => ({ __esModule: true, getShopFromPath: () => "acme" }));
 
+// eslint-disable-next-line ds/no-raw-color -- TEST-123: test-only mock uses literal hex to simulate theme color
 jest.mock("../ColorThemeSelector", () => ({ __esModule: true, default: ({ onChange }: any) => <button onClick={() => onChange({ "--color.brand": "#111111" })}>Change</button> }));
 
 // Mock shadcn bits used by dialog variant
@@ -30,6 +31,7 @@ describe("ThemePanel behavior", () => {
 
   it("loads tokens on mount and schedules PATCH on change", async () => {
     // Initial GET theme
+    // eslint-disable-next-line ds/no-raw-color -- TEST-123: test fixture literals
     (global.fetch as jest.Mock).mockResolvedValueOnce({ ok: true, json: async () => ({ themeDefaults: { "--color.brand": "#000000" }, themeTokens: { "--color.brand": "#000000" } }) } as any);
     // Subsequent PATCH calls succeed
     ;(global.fetch as jest.Mock).mockResolvedValue({ ok: true } as any);

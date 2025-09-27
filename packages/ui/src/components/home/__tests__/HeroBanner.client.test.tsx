@@ -8,7 +8,7 @@ jest.mock("next/image", () => ({
     // Strip Next-specific boolean props to avoid React DOM warnings in tests
     // like "Received `true` for a non-boolean attribute `fill`".
     // We intentionally forward the remaining props to a plain img element.
-    // eslint-disable-next-line jsx-a11y/alt-text
+    // eslint-disable-next-line jsx-a11y/alt-text -- TEST-0001: Mocking next/image returns a plain <img> without alt to avoid Next-specific prop warnings in tests
     <img {...rest} />
   ),
 }));

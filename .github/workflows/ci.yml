@@ -1,20 +1,36 @@
 on: [push]
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
       - run: pnpm install
-      - run: pnpm lint
-      - run: pnpm test
+      - name: Lint (fast)
+        run: pnpm lint
+      - name: Lint (exceptions governance)
+        run: pnpm run lint:exceptions
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Unit tests
+        run: pnpm test
       - uses: codecov/codecov-action@v3
         with:
           files: ./coverage/lcov.info
-      - run: pnpm build
-      - run: pnpm e2e:dashboard
-      - run: pnpm e2e:shop
+      - name: Build
+        run: pnpm build
+      - name: E2E (dashboard subset)
+        run: pnpm e2e:dashboard
+      - name: E2E (shop subset)
+        run: pnpm e2e:shop
+
+  release:
+    needs: verify
+    runs-on: ubuntu-latest
+    if: github.ref_name == 'main'
+    steps:
+      - uses: actions/checkout@v4
       - run: npx @cloudflare/next-on-pages deploy \
                --project-name=base-shop \
                --branch=${{ github.ref_name }}

@@ -3,6 +3,7 @@
 import { Button } from "../../../atoms/shadcn";
 import { Toast } from "../../../atoms";
 import { cn } from "../../../../utils/style";
+import { useTranslations } from "@acme/i18n";
 import {
   type DiscountFormValues,
   type DiscountPreviewData,
@@ -37,10 +38,11 @@ export function DiscountForm({
   onSubmit,
   onPreviewChange,
   onStatusChange,
-  submitLabel = "Save discount",
+  submitLabel,
   className,
   busy,
 }: DiscountFormProps) {
+  const t = useTranslations();
   const { values, errors, status, toast, update, handleSubmit, dismissToast } =
     useDiscountFormState({
       defaultValues,
@@ -60,7 +62,7 @@ export function DiscountForm({
       <DiscountScheduleCard values={values} errors={errors} onChange={update} />
       <div className="flex justify-end">
         <Button type="submit" disabled={busy || status === "submitting"}>
-          {status === "submitting" ? "Saving…" : submitLabel}
+          {status === "submitting" ? t("Saving…") : submitLabel ?? t("Save discount")}
         </Button>
       </div>
       <Toast open={toast.open} message={toast.message} onClose={dismissToast} />

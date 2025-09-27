@@ -50,7 +50,7 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         data-token={TOKEN_BG[variant]}
         role="status"
         className={cn(
-          "rounded-md border border-border-2 p-3",
+          "rounded-md border border-border-2 p-3", // i18n-exempt — CSS utility class names
           bgClass,
           fgClass,
           className,
@@ -64,6 +64,6 @@ export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   }
 );
 
-Alert.displayName = "Alert";
+Alert.displayName = "Alert"; // i18n-exempt — component displayName, not user-facing
 
 export default Alert;

@@ -67,8 +67,8 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
         }
       }}
       className={cn(
-        "rounded border-2 border-dashed p-4 text-center",
-        dragActive && "ring-2 ring-primary/60 bg-primary/5"
+        "rounded border-2 border-dashed p-4 text-center", // i18n-exempt: class names
+        dragActive && "ring-2 ring-primary/60 bg-primary/5" // i18n-exempt: class names
       )}
     >
       <input

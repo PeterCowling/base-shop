@@ -55,3 +55,4 @@ export const Default: StoryObj<typeof OrderSummary> = {
     </div>
   ),
 };
+// i18n-exempt -- Storybook demo copy

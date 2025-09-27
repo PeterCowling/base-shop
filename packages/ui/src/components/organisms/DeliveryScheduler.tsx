@@ -10,6 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../atoms/primitives/select";
+import { useTranslations } from "@acme/i18n";
+import { Stack } from "../atoms/primitives/Stack";
 
 export interface DeliverySchedulerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange"> {
@@ -33,6 +35,7 @@ export function DeliveryScheduler({
   windows,
   ...props
 }: DeliverySchedulerProps) {
+  const t = useTranslations();
   const [mode, setMode] = React.useState<"delivery" | "pickup">("delivery");
   const [date, setDate] = React.useState("");
   const [region, setRegion] = React.useState("");
@@ -72,31 +75,35 @@ export function DeliveryScheduler({
   return (
     <div className={cn("space-y-4", className)} {...props}>
       <div>
-        <label className="mb-1 block text-sm font-medium">Mode</label>
+        <label className="mb-1 block text-sm font-medium">
+          {t("deliveryScheduler.mode.label")}
+        </label>
         <Select value={mode} onValueChange={handleMode}>
           <SelectTrigger>
-            <SelectValue placeholder="Select mode" />
+            <SelectValue placeholder={t("deliveryScheduler.mode.placeholder") as string} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="delivery">Delivery</SelectItem>
-            <SelectItem value="pickup">Pickup</SelectItem>
+            <SelectItem value="delivery">{t("deliveryScheduler.mode.delivery")}</SelectItem>
+            <SelectItem value="pickup">{t("deliveryScheduler.mode.pickup")}</SelectItem>
           </SelectContent>
         </Select>
       </div>
-      <label className="flex flex-col gap-1 text-sm">
-        Date
-        <Input
-          type="date"
-          value={date}
-          onChange={(e) => handleDate(e.target.value)}
-        />
+      <label className="text-sm">
+        <Stack gap={1}>
+          {t("deliveryScheduler.date.label")}
+          <Input
+            type="date"
+            value={date}
+            onChange={(e) => handleDate(e.target.value)}
+          />
+        </Stack>
       </label>
       {regions && regions.length ? (
         <div>
-          <label className="mb-1 block text-sm font-medium">Region</label>
+          <label className="mb-1 block text-sm font-medium">{t("deliveryScheduler.region.label")}</label>
           <Select value={region} onValueChange={handleRegion}>
             <SelectTrigger>
-              <SelectValue placeholder="Select region" />
+              <SelectValue placeholder={t("deliveryScheduler.region.placeholder") as string} />
             </SelectTrigger>
             <SelectContent>
               {regions.map((r) => (
@@ -108,28 +115,32 @@ export function DeliveryScheduler({
           </Select>
         </div>
       ) : null}
-      <label className="flex flex-col gap-1 text-sm">
-        {windows && windows.length ? "Window" : "Time"}
-        {windows && windows.length ? (
-          <Select value={win} onValueChange={handleTime}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select window" />
-            </SelectTrigger>
-            <SelectContent>
-              {windows.map((w) => (
-                <SelectItem key={w} value={w}>
-                  {w}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        ) : (
-          <Input
-            type="time"
-            value={win}
-            onChange={(e) => handleTime(e.target.value)}
-          />
-        )}
+      <label className="text-sm">
+        <Stack gap={1}>
+          {windows && windows.length
+            ? t("deliveryScheduler.window.label")
+            : t("deliveryScheduler.time.label")}
+          {windows && windows.length ? (
+            <Select value={win} onValueChange={handleTime}>
+              <SelectTrigger>
+                <SelectValue placeholder={t("deliveryScheduler.window.placeholder") as string} />
+              </SelectTrigger>
+              <SelectContent>
+                {windows.map((w) => (
+                  <SelectItem key={w} value={w}>
+                    {w}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          ) : (
+            <Input
+              type="time"
+              value={win}
+              onChange={(e) => handleTime(e.target.value)}
+            />
+          )}
+        </Stack>
       </label>
     </div>
   );

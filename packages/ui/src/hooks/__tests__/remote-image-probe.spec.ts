@@ -1,25 +1,27 @@
+/* i18n-exempt file -- test titles and messages are developer-facing */
 import { renderHook, act } from "@testing-library/react";
 import useRemoteImageProbe from "../useRemoteImageProbe";
 
 describe("useRemoteImageProbe", () => {
-  const originalFetch = global.fetch;
-  const mockFetch = jest.fn();
+  const originalFetch: typeof fetch = globalThis.fetch;
+  const mockFetch = jest.fn<Promise<Response>, Parameters<typeof fetch>>();
 
   beforeEach(() => {
     mockFetch.mockReset();
-    (global as any).fetch = mockFetch;
+    (globalThis as unknown as { fetch: typeof fetch }).fetch =
+      mockFetch as unknown as typeof fetch;
   });
 
   afterEach(() => {
-    (global as any).fetch = originalFetch;
+    (globalThis as unknown as { fetch: typeof fetch }).fetch = originalFetch;
   });
 
   it("marks url valid and reports loading state", async () => {
-    let resolveFetch: (value: unknown) => void;
-    const fetchPromise = new Promise((res) => {
+    let resolveFetch!: (value: Response) => void;
+    const fetchPromise = new Promise<Response>((res) => {
       resolveFetch = res;
     });
-    mockFetch.mockReturnValueOnce(fetchPromise as any);
+    mockFetch.mockReturnValueOnce(fetchPromise);
 
     const { result } = renderHook(() => useRemoteImageProbe());
 
@@ -35,10 +37,10 @@ describe("useRemoteImageProbe", () => {
     );
 
     await act(async () => {
-      resolveFetch!({
+      resolveFetch({
         ok: true,
-        headers: { get: () => "image/png" },
-      } as any);
+        headers: { get: () => "image/png" } as unknown as Headers,
+      } as unknown as Response);
       await probePromise;
     });
 
@@ -50,8 +52,8 @@ describe("useRemoteImageProbe", () => {
   it("flags non-image content-types", async () => {
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      headers: { get: () => "text/html" },
-    } as any);
+      headers: { get: () => "text/html" } as unknown as Headers,
+    } as unknown as Response);
 
     const { result } = renderHook(() => useRemoteImageProbe());
 
@@ -66,8 +68,8 @@ describe("useRemoteImageProbe", () => {
   it("handles non-ok responses", async () => {
     mockFetch.mockResolvedValueOnce({
       ok: false,
-      headers: { get: () => "image/png" },
-    } as any);
+      headers: { get: () => "image/png" } as unknown as Headers,
+    } as unknown as Response);
 
     const { result } = renderHook(() => useRemoteImageProbe());
 
@@ -82,8 +84,8 @@ describe("useRemoteImageProbe", () => {
   it("resets valid when url is empty", async () => {
     mockFetch.mockResolvedValue({
       ok: true,
-      headers: { get: () => "image/png" },
-    } as any);
+      headers: { get: () => "image/png" } as unknown as Headers,
+    } as unknown as Response);
 
     const { result } = renderHook(() => useRemoteImageProbe());
 
@@ -100,11 +102,11 @@ describe("useRemoteImageProbe", () => {
   });
 
   it("propagates fetch errors", async () => {
-    let rejectFetch: (reason?: unknown) => void;
-    const fetchPromise = new Promise((_, rej) => {
+    let rejectFetch!: (reason?: unknown) => void;
+    const fetchPromise = new Promise<Response>((_, rej) => {
       rejectFetch = rej;
     });
-    mockFetch.mockReturnValueOnce(fetchPromise as any);
+    mockFetch.mockReturnValueOnce(fetchPromise);
 
     const { result } = renderHook(() => useRemoteImageProbe());
 

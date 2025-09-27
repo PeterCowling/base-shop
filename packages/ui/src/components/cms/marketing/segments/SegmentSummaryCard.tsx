@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { useTranslations } from "@acme/i18n";
 import { SummaryCard, type SummaryMetric } from "../shared";
 import type { SegmentPreviewData } from "./types";
 
@@ -17,13 +18,16 @@ export function SegmentSummaryCard({
   actions,
   footer,
 }: SegmentSummaryCardProps) {
+  const t = useTranslations();
   const metrics: SummaryMetric[] = [
     {
-      label: "Rules",
-      value: `${data.rules.length} condition${data.rules.length === 1 ? "" : "s"}`,
+      label: t("Rules") as string,
+      value: `${data.rules.length} ${t(
+        data.rules.length === 1 ? "condition" : "conditions"
+      )}`,
     },
     {
-      label: "Estimated size",
+      label: t("Estimated size") as string,
       value: data.estimatedSize.toLocaleString(),
     },
   ];
@@ -31,10 +35,12 @@ export function SegmentSummaryCard({
   return (
     <SummaryCard
       title={data.name}
-      status={{ label: statusLabel, tone: "warning" }}
+      status={{ label: (t(statusLabel) as string), tone: "warning" }}
       description={
         description ??
-        "Sync the segment with marketing tools once you're satisfied with the filters."
+        (t(
+          "Sync the segment with marketing tools once you're satisfied with the filters."
+        ) as string)
       }
       metrics={metrics}
       actions={actions}

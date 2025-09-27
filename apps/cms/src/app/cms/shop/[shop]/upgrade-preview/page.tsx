@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 import { requirePermission } from "@auth";
 import UpgradePreviewClient from "./UpgradePreviewClient";
 
+// i18n-exempt: Static SEO title with brand; not user-facing runtime copy
 export const metadata: Metadata = {
-  title: "Upgrade Preview · Base-Shop",
+  title: "Upgrade Preview · Base-Shop", // i18n-exempt: Static SEO title with brand; not user-facing runtime copy
 };
 
 export default async function UpgradePreview({

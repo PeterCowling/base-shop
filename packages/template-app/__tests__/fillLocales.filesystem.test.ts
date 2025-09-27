@@ -25,6 +25,7 @@ describe("fillLocales with filesystem", () => {
 
     for (const locale of LOCALES) {
       try {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- dynamic test input for locale files
         const json = await readFile(`/locales/${locale}.json`, "utf8");
         const data = JSON.parse(json) as Record<string, string>;
         for (const [key, value] of Object.entries(data)) {

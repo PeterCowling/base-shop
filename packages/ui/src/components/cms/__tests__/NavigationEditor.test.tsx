@@ -2,7 +2,7 @@ import { fireEvent, render } from "@testing-library/react";
 import { act } from "react";
 import NavigationEditor, { NavItem } from "../NavigationEditor";
 
-var dndHandlers: any;
+let dndHandlers: any;
 jest.mock("@dnd-kit/core", () => {
   const actual = jest.requireActual("@dnd-kit/core");
   return {
@@ -301,4 +301,3 @@ describe("NavigationEditor", () => {
     ]);
   });
 });
-

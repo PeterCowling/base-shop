@@ -3,12 +3,18 @@
 import { SortableContext, rectSortingStrategy } from "@dnd-kit/sortable";
 import { useCallback, useRef } from "react";
 import type { PageComponent } from "@acme/types";
+import type { SectionComponent } from "@acme/types/page/layouts/section";
+import type { GridContainerComponent } from "@acme/types/page/layouts/grid-container";
+import type { TabsAccordionContainerComponent } from "@acme/types/page/layouts/tabs-accordion-container";
+import type { TabsComponent } from "@acme/types/page/layouts/tabs";
 import { isHiddenForViewport } from "./state/layout/utils";
 import GridOverlay from "./GridOverlay";
 import DefaultChildrenList from "./DefaultChildrenList";
 import TabbedChildren from "./TabbedChildren";
 import GridAreaChildren from "./GridAreaChildren";
 import type { BlockChildrenProps as Props, SlotDef } from "./BlockChildren.types";
+import type { EditorFlags } from "./state/layout/types";
+import { useTranslations } from "@acme/i18n";
 
 export default function BlockChildren({
   component,
@@ -31,24 +37,28 @@ export default function BlockChildren({
   insertIndex,
   preferParentOnClick = false,
 }: Props) {
+  const t = useTranslations();
   const containerElRef = useRef<HTMLDivElement | null>(null);
   const underlyingChildren = (childComponents ?? []);
-  let visibleChildren = underlyingChildren.filter((c) => !isHiddenForViewport(c.id, editor, (c as any).hidden as boolean | undefined, viewport));
+  let visibleChildren = underlyingChildren.filter((c) =>
+    !isHiddenForViewport(c.id, editor, (c as Partial<{ hidden?: boolean }>).hidden, viewport)
+  );
   // Apply container stacking presets per viewport
   {
-    const flags = editor?.[component.id] as any;
+    const flags = (editor?.[component.id] ?? {}) as Partial<EditorFlags>;
     const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
     const devKey = `stack${cap(viewport)}`;
-    const strategy = (flags?.[devKey] as "default" | "reverse" | "custom" | undefined)
-      ?? (viewport === "mobile" ? ((flags?.stackStrategy as any) ?? "default") : "default");
+    const strategy = (flags as Record<string, unknown>)[devKey] as "default" | "reverse" | "custom" | undefined
+      ?? (viewport === "mobile" ? (flags.stackStrategy ?? "default") : "default");
     if (strategy === "reverse") {
       visibleChildren = [...visibleChildren].reverse();
     } else if (strategy === "custom") {
       visibleChildren = [...visibleChildren].sort((a, b) => {
-        const key = `order${cap(viewport)}` as const;
-        const e = editor as any;
-        const oa = (e?.[a.id]?.[key] as number | undefined);
-        const ob = (e?.[b.id]?.[key] as number | undefined);
+        type OrderKey = "orderDesktop" | "orderTablet" | "orderMobile";
+        const key = `order${cap(viewport)}` as OrderKey;
+        const e = editor as Record<string, Partial<EditorFlags>> | undefined;
+        const oa = e?.[a.id]?.[key];
+        const ob = e?.[b.id]?.[key];
         const da = oa === undefined ? Number.POSITIVE_INFINITY : oa;
         const db = ob === undefined ? Number.POSITIVE_INFINITY : ob;
         if (da === db) return 0;
@@ -56,10 +66,16 @@ export default function BlockChildren({
       });
     }
   }
+  const handleSetContainerRef = useCallback((node: HTMLDivElement | null) => {
+    containerElRef.current = node;
+    setDropRef(node);
+  }, [setDropRef]);
+
   if (visibleChildren.length === 0) return null;
-  const effGridCols = Number.isFinite((component as any).gridCols) && (component as any).gridCols > 0 ? (component as any).gridCols as number : gridCols;
-  const effGridEnabled = (component as any).gridSnap !== undefined ? ((component as any).gridSnap as boolean) : gridEnabled;
-  const effGutter = (component as any).gridGutter as string | undefined;
+  const section = component as Partial<SectionComponent>;
+  const effGridCols = Number.isFinite(section.gridCols) && (section.gridCols ?? 0) > 0 ? (section.gridCols as number) : gridCols;
+  const effGridEnabled = section.gridSnap !== undefined ? !!section.gridSnap : gridEnabled;
+  const effGutter = section.gridGutter as string | undefined;
   const childIds = visibleChildren.map((c) => c.id);
   const toUnderlyingIndex = (uiIndex: number): number => {
     if (uiIndex < visibleChildren.length) {
@@ -71,18 +87,20 @@ export default function BlockChildren({
     }
     return underlyingChildren.length;
   };
-  const compType = (component as any).type as string;
+  const compType = component.type as string;
   const isTabbed = compType === "Tabs" || compType === "TabsAccordionContainer";
-  const isGridArea = compType === "Grid" && typeof (component as any).areas === 'string' && ((component as any).areas as string).trim().length > 0;
+  const isGridArea = compType === "Grid" && typeof (component as Partial<GridContainerComponent>).areas === 'string' && ((component as Partial<GridContainerComponent>).areas as string).trim().length > 0;
 
   // If tabbed container, group children by slotKey
   let slots: SlotDef[] | null = null;
   if (isTabbed) {
-    const titles = ((component as any).tabs as string[] | undefined) ?? [];
-    slots = (titles.length > 0 ? titles : ["Content 1", "Content 2"]).map((t, i) => ({ key: String(i), title: t }));
+    const titles = compType === "Tabs"
+      ? (((component as Partial<TabsComponent>).labels ?? []) as string[])
+      : (((component as Partial<TabsAccordionContainerComponent>).tabs ?? []) as string[]);
+    slots = (titles.length > 0 ? titles : [t("Content 1") as string, t("Content 2") as string]).map((title: string, i: number) => ({ key: String(i), title }));
     // sort visibleChildren by slotKey (undefined => 0), preserving underlying order within slot
     const slotIndex = (c: PageComponent) => {
-      const s = (c as any).slotKey as string | undefined;
+      const s = (c as Partial<{ slotKey?: string }>).slotKey;
       const num = s != null ? Number(s) : 0;
       return Number.isFinite(num) ? num : 0;
     };
@@ -94,10 +112,12 @@ export default function BlockChildren({
     });
   }
 
-  const handleSetContainerRef = useCallback((node: HTMLDivElement | null) => {
-    containerElRef.current = node;
-    setDropRef(node);
-  }, [setDropRef]);
+  // Compute container class name once (utility classes only).
+  const containerClass =
+    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
+    "border-muted relative m-2 flex flex-col gap-4 border border-dashed p-2 " +
+    // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
+    (isOver && dropAllowed === false ? "ring-2 ring-danger border-danger cursor-not-allowed" : "");
 
   return (
     <SortableContext
@@ -109,21 +129,27 @@ export default function BlockChildren({
         ref={handleSetContainerRef}
         id={`container-${component.id}`}
         role="list"
-        aria-label="Container"
+        aria-label={t("Container") as string}
         data-cy="pb-container"
         data-cy-parent-id={component.id}
-        className={"border-muted relative m-2 flex flex-col gap-4 border border-dashed p-2 " + (isOver && dropAllowed === false ? "ring-2 ring-danger border-danger cursor-not-allowed" : "")}
+        className={containerClass}
         data-tab-titles={isTabbed && slots ? JSON.stringify(slots.map((s) => s.title)) : undefined}
       >
-        {effGridEnabled && <div className="absolute inset-0"><GridOverlay gridCols={effGridCols} gutter={effGutter} /></div>}
+        {effGridEnabled && (
+          // eslint-disable-next-line ds/absolute-parent-guard -- PB-2460: Grid overlay positioned under relative parent; rule mis-detects due to dynamic class concatenation.
+          <div className="absolute inset-0"><GridOverlay gridCols={effGridCols} gutter={effGutter} /></div>
+        )}
         {/* top-of-container placeholder when targeting index 0 */}
         {isOver && insertParentId === component.id && insertIndex === 0 && (
           <div
             data-placeholder
             className={
               (dropAllowed === false
+                // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
                 ? "border-danger bg-danger/10 ring-2 ring-danger"
+                // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
                 : "border-primary bg-primary/10 ring-2 ring-primary") +
+              // eslint-disable-next-line ds/no-hardcoded-copy -- PB-2461: utility classNames; not user-visible copy
               " h-4 w-full rounded border-2 border-dashed"
             }
           />

@@ -5,8 +5,7 @@ export function updateEditor(
   state: HistoryState,
   action: UpdateEditorAction,
 ): HistoryState {
-  const current = (state as any).editor ?? {};
-  const nextForId = { ...(current[action.id] ?? {}), ...action.patch } as any;
+  const current: NonNullable<HistoryState["editor"]> = state.editor ?? {};
+  const nextForId = { ...(current[action.id] ?? {}), ...action.patch };
   return { ...state, editor: { ...current, [action.id]: nextForId } } as HistoryState;
 }
-

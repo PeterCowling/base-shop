@@ -10,8 +10,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 export default function ShopSelector() {
+  const t = useTranslations();
   const [shops, setShops] = useState<string[]>([]);
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     "loading"
@@ -33,16 +35,16 @@ export default function ShopSelector() {
             setStatus("ready");
             return;
           }
-          setErrorMsg("Invalid response");
+          setErrorMsg("Invalid response"); // i18n-exempt — UI-1422: internal error surfaced via t()-wrapped fallback
         } else {
           const json = await res.json().catch(() => ({}));
-          setErrorMsg(json.error ?? `Error ${res.status}`);
+          setErrorMsg(json.error ?? `Error ${res.status}`); // i18n-exempt — UI-1422: diagnostic message; rendered through t()-wrapped fallback
         }
         setStatus("error");
       } catch (err) {
-        console.error("Error loading shops", err);
+        console.error("Error loading shops", err); // i18n-exempt — UI-1422: console diagnostics only
         setErrorMsg(
-          err instanceof Error ? err.message : "Failed to load shops"
+          err instanceof Error ? err.message : "Failed to load shops" // i18n-exempt — UI-1422: state fallback; UI render uses t()
         );
         setStatus("error");
         setShops([]);
@@ -60,16 +62,17 @@ export default function ShopSelector() {
   }
 
   if (status === "loading")
-    return <span className="text-sm">Loading shops…</span>;
+    return <span className="text-sm">{t("Loading shops…")}</span>;
   if (status === "error")
     return (
+      // i18n-exempt — UI-1422: design token attribute value is not user-facing copy
       <span className="text-sm text-danger" data-token="--color-danger">
-        {errorMsg ?? "Failed to load shops"}
+        {errorMsg ?? (t("Failed to load shops") as string)}
       </span>
     );
   if (shops.length === 0)
     return (
-      <span className="text-muted-foreground text-sm">No shops found.</span>
+      <span className="text-muted-foreground text-sm">{t("No shops found.")}</span>
     );
 
   return (
@@ -80,10 +83,10 @@ export default function ShopSelector() {
     >
       <SelectTrigger
         data-cy="shop-select"
-        aria-label="Shop"
+        aria-label={String(t("Shop"))}
         className="w-36"
       >
-        <SelectValue placeholder="Select shop" />
+        <SelectValue placeholder={String(t("Select shop"))} />
       </SelectTrigger>
       <SelectContent>
         {shops.map((s) => (

@@ -38,7 +38,7 @@ export async function getSeo(
       | string
       | undefined) || "default";
   const { getShopSettings } = await import(
-    "@platform-core/repositories/shops.server"
+    "@platform-core/repositories/shops.server" // i18n-exempt: module specifier, not user-facing copy
   );
   const settings: ShopSettings = await getShopSettings(shop);
   const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;
@@ -50,7 +50,7 @@ export async function getSeo(
   if (canonicalOverride) {
       try {
         canonicalPath = new URL(canonicalOverride).pathname.replace(
-          // eslint-disable-next-line security/detect-non-literal-regexp
+          // eslint-disable-next-line security/detect-non-literal-regexp -- SEO-101 justify: locale string in regex anchor; bounded, not user-provided
           new RegExp(`^/${locale}`),
           ""
         );

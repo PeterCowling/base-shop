@@ -187,13 +187,21 @@ export default function DynamicRenderer({
     const animClass = animation && animation !== "none"
       ? (
           {
+            // i18n-exempt — CSS class strings, not user-facing copy
             fade: "pb-animate pb-animate-fade",
+            // i18n-exempt — CSS class strings, not user-facing copy
             slide: "pb-animate pb-animate-slide",
+            // i18n-exempt — CSS class strings, not user-facing copy
             "slide-up": "pb-animate pb-animate-slide-up",
+            // i18n-exempt — CSS class strings, not user-facing copy
             "slide-down": "pb-animate pb-animate-slide-down",
+            // i18n-exempt — CSS class strings, not user-facing copy
             "slide-left": "pb-animate pb-animate-slide-left",
+            // i18n-exempt — CSS class strings, not user-facing copy
             "slide-right": "pb-animate pb-animate-slide-right",
+            // i18n-exempt — CSS class strings, not user-facing copy
             zoom: "pb-animate pb-animate-zoom",
+            // i18n-exempt — CSS class strings, not user-facing copy
             rotate: "pb-animate pb-animate-rotate",
           } as Record<string, string>
         )[animation] || ""

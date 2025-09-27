@@ -2,6 +2,8 @@ import React from "react";
 import { renderHook, render, act, fireEvent } from "@testing-library/react";
 import { useProductMediaManager } from "../useProductMediaManager";
 import type { ProductWithVariants } from "../useProductInputs";
+import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
+import { useFileUpload } from "../useFileUpload";
 
 jest.mock("@platform-core/hooks/usePublishLocations", () => ({
   usePublishLocations: jest.fn(),
@@ -10,9 +12,6 @@ jest.mock("@platform-core/hooks/usePublishLocations", () => ({
 jest.mock("../useFileUpload", () => ({
   useFileUpload: jest.fn(),
 }));
-
-const { usePublishLocations } = require("@platform-core/hooks/usePublishLocations");
-const { useFileUpload } = require("../useFileUpload");
 
 const mockUsePublishLocations = usePublishLocations as jest.MockedFunction<
   typeof usePublishLocations
@@ -24,20 +23,23 @@ describe("useProductMediaManager", () => {
     jest.clearAllMocks();
   });
 
-  it("adds uploaded media and defaults to landscape orientation", () => {
+  it("adds uploaded media and defaults to landscape orientation", () => { // i18n-exempt: test name
     const media = { url: "/img.png" };
     mockUsePublishLocations.mockReturnValue({
       locations: [],
       reload: jest.fn(),
     });
-    mockUseFileUpload.mockImplementation((opts: any) => ({
-      uploader: <button onClick={() => opts.onUploaded?.(media)}>upload</button>,
+    type UploadOpts = { onUploaded?: (m: unknown) => void };
+    mockUseFileUpload.mockImplementation((opts: UploadOpts) => ({
+      uploader: (
+        <button onClick={() => opts.onUploaded?.(media)}>upload</button> // i18n-exempt: button label in test
+      ),
     }));
 
     const { result } = renderHook(() => {
-      const [product, setProduct] = React.useState<ProductWithVariants>({
-        media: [],
-      } as any);
+      const [product, setProduct] = React.useState<ProductWithVariants>(
+        { media: [] } as unknown as ProductWithVariants
+      );
       const manager = useProductMediaManager("shop", [], setProduct);
       return { product, ...manager };
     });
@@ -63,9 +65,9 @@ describe("useProductMediaManager", () => {
     mockUseFileUpload.mockReturnValue({ uploader: <div /> });
 
     const { result } = renderHook(() => {
-      const [product, setProduct] = React.useState<ProductWithVariants>({
-        media: [item1, item2, item3],
-      } as any);
+      const [product, setProduct] = React.useState<ProductWithVariants>(
+        { media: [item1, item2, item3] } as unknown as ProductWithVariants
+      );
       const manager = useProductMediaManager("shop", [], setProduct);
       return { product, ...manager };
     });
@@ -81,7 +83,7 @@ describe("useProductMediaManager", () => {
     expect(result.current.product.media).toEqual([item3, item1]);
   });
 
-  it("moveMedia does nothing when indices are equal", () => {
+  it("moveMedia does nothing when indices are equal", () => { // i18n-exempt
     const item1 = { url: "1.png" };
     const item2 = { url: "2.png" };
 
@@ -89,9 +91,9 @@ describe("useProductMediaManager", () => {
     mockUseFileUpload.mockReturnValue({ uploader: <div /> });
 
     const { result } = renderHook(() => {
-      const [product, setProduct] = React.useState<ProductWithVariants>({
-        media: [item1, item2],
-      } as any);
+      const [product, setProduct] = React.useState<ProductWithVariants>(
+        { media: [item1, item2] } as unknown as ProductWithVariants
+      );
       const manager = useProductMediaManager("shop", [], setProduct);
       return { product, ...manager };
     });
@@ -103,7 +105,7 @@ describe("useProductMediaManager", () => {
     expect(result.current.product.media).toEqual([item1, item2]);
   });
 
-  it("removeMedia updates product media via setProduct", () => {
+  it("removeMedia updates product media via setProduct", () => { // i18n-exempt
     const item1 = { url: "1.png" };
     const item2 = { url: "2.png" };
     const item3 = { url: "3.png" };
@@ -111,10 +113,17 @@ describe("useProductMediaManager", () => {
     mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
     mockUseFileUpload.mockReturnValue({ uploader: <div /> });
 
-    let product: ProductWithVariants = { media: [item1, item2, item3] } as any;
-    const setProduct = jest.fn((updater: any) => {
-      product = typeof updater === "function" ? updater(product) : updater;
-    });
+    let product: ProductWithVariants = {
+      media: [item1, item2, item3],
+    } as unknown as ProductWithVariants;
+    const setProduct = jest.fn(
+      (updater: React.SetStateAction<ProductWithVariants>) => {
+        product =
+          typeof updater === "function"
+            ? (updater as (p: ProductWithVariants) => ProductWithVariants)(product)
+            : updater;
+      }
+    );
 
     const { result } = renderHook(() =>
       useProductMediaManager("shop", [], setProduct)
@@ -128,7 +137,7 @@ describe("useProductMediaManager", () => {
     expect(setProduct).toHaveBeenCalledTimes(1);
   });
 
-  it("moveMedia reorders product media via setProduct", () => {
+  it("moveMedia reorders product media via setProduct", () => { // i18n-exempt
     const item1 = { url: "1.png" };
     const item2 = { url: "2.png" };
     const item3 = { url: "3.png" };
@@ -136,10 +145,17 @@ describe("useProductMediaManager", () => {
     mockUsePublishLocations.mockReturnValue({ locations: [], reload: jest.fn() });
     mockUseFileUpload.mockReturnValue({ uploader: <div /> });
 
-    let product: ProductWithVariants = { media: [item1, item2, item3] } as any;
-    const setProduct = jest.fn((updater: any) => {
-      product = typeof updater === "function" ? updater(product) : updater;
-    });
+    let product: ProductWithVariants = {
+      media: [item1, item2, item3],
+    } as unknown as ProductWithVariants;
+    const setProduct = jest.fn(
+      (updater: React.SetStateAction<ProductWithVariants>) => {
+        product =
+          typeof updater === "function"
+            ? (updater as (p: ProductWithVariants) => ProductWithVariants)(product)
+            : updater;
+      }
+    );
 
     const { result } = renderHook(() =>
       useProductMediaManager("shop", [], setProduct)
@@ -153,4 +169,3 @@ describe("useProductMediaManager", () => {
     expect(setProduct).toHaveBeenCalledTimes(1);
   });
 });
-

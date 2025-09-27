@@ -1,9 +1,9 @@
 "use client";
 
 // packages/ui/src/components/account/ProfileForm.tsx
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { getCsrfToken } from "@acme/shared-utils";
-const t = (s: string) => s;
+import { useTranslations } from "@acme/i18n";
 
 export interface ProfileFormProps {
   /** Pre-filled name value; may be undefined if profile data is missing */
@@ -13,9 +13,10 @@ export interface ProfileFormProps {
 }
 
 export default function ProfileForm({ name = "", email = "" }: ProfileFormProps) {
+  const t = useTranslations();
   const [form, setForm] = useState({ name, email });
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<ReactNode | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const focusFirstError = (errs: Record<string, string>) => {
@@ -40,8 +41,8 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
     setMessage(null);
     setErrors({});
     const newErrors: Record<string, string> = {};
-    if (!form.name) newErrors.name = t("Name is required.");
-    if (!form.email) newErrors.email = t("Email is required.");
+    if (!form.name) newErrors.name = t("Name is required.") as string;
+    if (!form.email) newErrors.email = t("Email is required.") as string;
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
       setStatus("error");
@@ -63,7 +64,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
         const data = await res.json();
         setStatus("error");
         if (res.status === 409) {
-          const conflict = { email: data.error ?? t("Email already in use") };
+          const conflict = { email: (data.error ?? t("Email already in use")) as string };
           setErrors(conflict);
           setMessage(conflict.email);
           focusFirstError(conflict);
@@ -106,7 +107,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           <p
             id="name-error"
             className="text-danger text-sm"
-            data-token="--color-danger"
+            data-token="--color-danger" // i18n-exempt — dynamic validation message
             role="alert"
           >
             {errors.name}
@@ -130,7 +131,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           <p
             id="email-error"
             className="text-danger text-sm"
-            data-token="--color-danger"
+            data-token="--color-danger" // i18n-exempt — dynamic validation message
             role="alert"
           >
             {errors.email}
@@ -140,19 +141,19 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
       <button
         type="submit"
         className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
-        data-token="--color-primary"
+        data-token="--color-primary" // i18n-exempt — label below is translated
       >
-        <span className="text-primary-fg" data-token="--color-primary-fg">
+        <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt — child content uses t() */}
           {t("Save")}
         </span>
       </button>
       {status === "success" && (
-        <p className="text-success" data-token="--color-success" role="status">
+        <p className="text-success" data-token="--color-success" role="status"> {/* i18n-exempt — dynamic status message */}
           {message}
         </p>
       )}
       {status === "error" && (
-        <p className="text-danger" data-token="--color-danger" role="alert">
+        <p className="text-danger" data-token="--color-danger" role="alert"> {/* i18n-exempt — dynamic error message */}
           {message}
         </p>
       )}

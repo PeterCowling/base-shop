@@ -33,8 +33,9 @@ describe("Loader, Skeleton, StatCard", () => {
   });
 
   it("StatCard merges custom className", () => {
-    const { container } = render(<StatCard label="L" value={1} className="ring-1" />);
+    // Use a non-focus class to avoid focus ring lint warning
+    const { container } = render(<StatCard label="L" value={1} className="p-1" />);
     const card = container.firstChild as HTMLElement;
-    expect(card.className).toMatch(/ring-1/);
+    expect(card.className).toMatch(/p-1/);
   });
 });

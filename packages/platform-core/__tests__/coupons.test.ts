@@ -2,6 +2,7 @@
 import os from "node:os";
 import path from "node:path";
 import { promises as fs } from "node:fs";
+ 
 
 let tmpDir = "";
 
@@ -100,8 +101,7 @@ describe("findCoupon", () => {
 
   it("returns undefined when code is undefined or null", async () => {
     expect(await findCoupon(shop, undefined)).toBeUndefined();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    expect(await findCoupon(shop, null as any)).toBeUndefined();
+    expect(await findCoupon(shop, null)).toBeUndefined();
   });
 
   it("ignores inactive coupons", async () => {

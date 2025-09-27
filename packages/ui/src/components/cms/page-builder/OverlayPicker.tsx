@@ -60,7 +60,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
     <div className="space-y-2">
       {/* Quick presets */}
       <div className="flex flex-wrap gap-2">
-        <Button type="button" variant="outline" onClick={() => { setMode("none"); onChange(undefined); }}>None</Button>
+        <Button type="button" variant="outline" onClick={() => { setMode("none"); onChange(undefined); }}>None</Button> {/* i18n-exempt: admin tool */}
         <Button
           type="button"
           variant="outline"
@@ -69,7 +69,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
             setSolidColor("0 0% 0%");
             setSolidAlpha(0.35);
           }}
-        >Dark veil</Button>
+        >Dark veil</Button> {/* i18n-exempt: admin tool */}
         <Button
           type="button"
           variant="outline"
@@ -78,7 +78,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
             setSolidColor("0 0% 100%");
             setSolidAlpha(0.25);
           }}
-        >Light veil</Button>
+        >Light veil</Button> {/* i18n-exempt: admin tool */}
         <Button
           type="button"
           variant="outline"
@@ -90,7 +90,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
             setEndColor("0 0% 0%");
             setEndAlpha(0.0);
           }}
-        >Diagonal gradient</Button>
+        >Diagonal gradient</Button> {/* i18n-exempt: admin tool */}
         <Button
           type="button"
           variant="outline"
@@ -98,14 +98,14 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
             // Apply brand primary tint without altering local state so we keep it as a tokenized overlay
             onChange('hsl(var(--color-primary) / 0.35)');
           }}
-        >Primary tint</Button>
+        >Primary tint</Button> {/* i18n-exempt: admin tool */}
         <Button
           type="button"
           variant="outline"
           onClick={() => {
             onChange('hsl(var(--color-accent) / 0.30)');
           }}
-        >Accent tint</Button>
+        >Accent tint</Button> {/* i18n-exempt: admin tool */}
       </div>
       <Select
         value={mode}
@@ -116,12 +116,12 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
         }}
       >
         <SelectTrigger aria-label="Overlay type">
-          <SelectValue placeholder="Overlay type" />
+          <SelectValue placeholder="Overlay type" /> {/* i18n-exempt: admin tool */}
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="none">None</SelectItem>
-          <SelectItem value="solid">Solid</SelectItem>
-          <SelectItem value="gradient">Gradient</SelectItem>
+          <SelectItem value="none">None</SelectItem> {/* i18n-exempt: admin tool */}
+          <SelectItem value="solid">Solid</SelectItem> {/* i18n-exempt: admin tool */}
+          <SelectItem value="gradient">Gradient</SelectItem> {/* i18n-exempt: admin tool */}
         </SelectContent>
       </Select>
 
@@ -147,19 +147,19 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
         <div className="space-y-2">
           <Select value={String(angle)} onValueChange={(v) => setAngle(Number(v || 135))}>
             <SelectTrigger aria-label="Angle">
-              <SelectValue placeholder="Angle" />
+              <SelectValue placeholder="Angle" /> {/* i18n-exempt: admin tool */}
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0">0° (to right)</SelectItem>
-              <SelectItem value="45">45°</SelectItem>
-              <SelectItem value="90">90° (to bottom)</SelectItem>
-              <SelectItem value="135">135°</SelectItem>
-              <SelectItem value="180">180° (to left)</SelectItem>
+              <SelectItem value="0">0° (to right)</SelectItem> {/* i18n-exempt: admin tool */}
+              <SelectItem value="45">45°</SelectItem> {/* i18n-exempt: admin tool */}
+              <SelectItem value="90">90° (to bottom)</SelectItem> {/* i18n-exempt: admin tool */}
+              <SelectItem value="135">135°</SelectItem> {/* i18n-exempt: admin tool */}
+              <SelectItem value="180">180° (to left)</SelectItem> {/* i18n-exempt: admin tool */}
             </SelectContent>
           </Select>
           <Input
             type="number"
-            label="Angle (deg)"
+            label="Angle (deg)" /* i18n-exempt: admin tool */
             min="0"
             max="360"
             value={String(angle)}
@@ -167,7 +167,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
           />
           <div className="grid grid-cols-2 gap-2 items-end">
             <div>
-              <label className="text-xs font-medium">Start color</label>
+              <label className="text-xs font-medium">Start color</label> {/* i18n-exempt: admin tool */}
               <div className="mt-1"><ColorInput value={startColor} onChange={setStartColor} /></div>
             </div>
             <Input
@@ -175,14 +175,14 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
               step="0.05"
               min="0"
               max="1"
-              label="Start opacity"
+              label="Start opacity" /* i18n-exempt: admin tool */
               value={String(startAlpha)}
               onChange={(e) => setStartAlpha(e.target.value === "" ? 0 : Math.max(0, Math.min(1, Number(e.target.value))))}
             />
           </div>
           <div className="grid grid-cols-2 gap-2 items-end">
             <div>
-              <label className="text-xs font-medium">End color</label>
+              <label className="text-xs font-medium">End color</label> {/* i18n-exempt: admin tool */}
               <div className="mt-1"><ColorInput value={endColor} onChange={setEndColor} /></div>
             </div>
             <Input
@@ -190,7 +190,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
               step="0.05"
               min="0"
               max="1"
-              label="End opacity"
+              label="End opacity" /* i18n-exempt: admin tool */
               value={String(endAlpha)}
               onChange={(e) => setEndAlpha(e.target.value === "" ? 0 : Math.max(0, Math.min(1, Number(e.target.value))))}
             />

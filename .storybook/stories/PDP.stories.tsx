@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
+import { within, userEvent, expect, waitFor } from '@storybook/test';
 import PDPDetailsSection from '../../packages/ui/src/components/cms/blocks/PDPDetailsSection';
 import PoliciesAccordion from '../../packages/ui/src/components/cms/blocks/PoliciesAccordion';
 import FinancingBadge from '../../packages/ui/src/components/cms/blocks/FinancingBadge';
 import StickyBuyBar from '../../packages/ui/src/components/cms/blocks/StickyBuyBar';
 import { ProductGallery } from '../../packages/ui/src/components/organisms/ProductGallery';
+import { CartStatus } from '../components/CartStatus';
 
 const product = {
   id: 'lux-001',
@@ -26,6 +28,7 @@ const product = {
 function PDPComposition() {
   return (
     <div style={{ maxWidth: 1120, margin: '0 auto', padding: 16 }}>
+      <CartStatus />
       <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 24 }}>
         <ProductGallery media={product.media as any} />
         <PDPDetailsSection product={product as any} preset="luxury" />
@@ -50,6 +53,7 @@ function PDPComposition() {
 const meta: Meta<typeof PDPComposition> = {
   title: 'Compositions/PDP',
   component: PDPComposition,
+  parameters: { cart: true },
 };
 export default meta;
 
@@ -87,5 +91,17 @@ export const ARAnd360: StoryObj<typeof PDPComposition> = {
         </div>
       </div>
     );
+  },
+};
+
+export const AddToCartFlow: StoryObj<typeof PDPComposition> = {
+  name: 'Add to cart (flow)',
+  parameters: { cart: true },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const badge = await canvas.findByText(/Cart items:/i);
+    const addBtn = await canvas.findByRole('button', { name: /add to cart/i });
+    await userEvent.click(addBtn);
+    await waitFor(() => expect(badge.textContent).toMatch(/Cart items:\s*[1-9]/));
   },
 };

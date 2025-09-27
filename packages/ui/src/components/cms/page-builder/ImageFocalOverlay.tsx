@@ -95,7 +95,7 @@ export default function ImageFocalOverlay({ value, onChange, visible = false, di
         aria-hidden
       />
       {/* helper text */}
-      <div className="absolute left-2 top-2 rounded bg-black/60 px-2 py-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black">
+      <div className="absolute start-2 top-2 rounded bg-black/60 px-2 py-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black">
         Drag to set focal point
       </div>
     </div>

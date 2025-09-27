@@ -28,6 +28,7 @@ const AccordionContext = createContext<AccordionContextValue | null>(null);
 function useAccordionContext() {
   const context = useContext(AccordionContext);
   if (!context) {
+    // i18n-exempt — developer-facing usage error
     throw new Error("Accordion components must be used within <Accordion>");
   }
   return context;
@@ -38,6 +39,7 @@ const AccordionItemContext = createContext<string | null>(null);
 function useAccordionItemValue() {
   const value = useContext(AccordionItemContext);
   if (!value) {
+    // i18n-exempt — developer-facing usage error
     throw new Error(
       "AccordionTrigger and AccordionContent must be rendered inside AccordionItem",
     );
@@ -156,7 +158,7 @@ export const AccordionTrigger = forwardRef<
       data-state={isOpen ? "open" : "closed"}
       onClick={handleClick}
       className={cn(
-        "flex w-full items-center justify-between gap-2 rounded-md px-4 py-2 text-left text-sm font-semibold transition-colors",
+        "flex w-full items-center justify-between gap-2 rounded-md px-4 py-2 text-start text-sm font-semibold transition-colors",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}

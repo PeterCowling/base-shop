@@ -123,7 +123,7 @@ const TextBlockView = ({
       }
     >
       <div
-        className="absolute left-0 top-0 z-10 h-6 w-6 cursor-move bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute start-0 top-0 z-10 h-6 w-6 cursor-move bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         {...attributes}
         {...(listeners ?? {})}
         role="button"
@@ -147,14 +147,14 @@ const TextBlockView = ({
           )}
           {guides.y !== null && (
             <div
-              className="absolute left-0 right-0 h-px bg-primary"
+              className="absolute start-0 end-0 h-px bg-primary"
               style={{ top: guides.y }}
             />
           )}
         </div>
       )}
       {locked && (
-        <div className="absolute right-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
+        <div className="absolute end-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
           <LockClosedIcon />
         </div>
       )}
@@ -170,12 +170,12 @@ const TextBlockView = ({
         />
       )}
       {kbResizing && (
-        <div className="pointer-events-none absolute -top-5 left-0 z-30 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-5 start-0 z-30 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
           {containerRef.current ? `${Math.round(containerRef.current.offsetWidth)}×${Math.round(containerRef.current.offsetHeight)}` : ""}
         </div>
       )}
       {rotating && (
-        <div className="pointer-events-none absolute -top-8 left-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-8 start-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
           {Math.round(rotateAngle)}°
         </div>
       )}
@@ -242,31 +242,31 @@ const TextBlockView = ({
       {selected && (
         <>
           {startRotate && (
-            <div className="absolute -top-5 left-1/2 -translate-x-1/2 group pointer-events-auto">
+            <div className="absolute -top-5 start-1/2 -translate-x-1/2 group pointer-events-auto">
               <div
                 onPointerDown={(e) => !locked && startRotate(e)}
                 title="Rotate (Shift = precise)"
                 className="h-3 w-3 cursor-crosshair rounded-full bg-primary"
               />
-              <div className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-[10px] text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
+              <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-[10px] text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
                 Shift = precise
               </div>
             </div>
           )}
-          <div onPointerDown={(e) => !locked && startResize(e, "nw")} className="absolute -top-1 -left-1 h-2 w-2 cursor-nwse-resize bg-primary" />
-          <div onPointerDown={(e) => !locked && startResize(e, "ne")} className="absolute -top-1 -right-1 h-2 w-2 cursor-nesw-resize bg-primary" />
-          <div onPointerDown={(e) => !locked && startResize(e, "sw")} className="absolute -bottom-1 -left-1 h-2 w-2 cursor-nesw-resize bg-primary" />
-          <div onPointerDown={(e) => !locked && startResize(e, "se")} className="absolute -right-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-primary" />
-          <div onPointerDown={(e) => !locked && startResize(e, "n")} className="absolute -top-1 left-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary" />
-          <div onPointerDown={(e) => !locked && startResize(e, "s")} className="absolute -bottom-1 left-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary" />
-          <div onPointerDown={(e) => !locked && startResize(e, "w")} className="absolute top-1/2 -left-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary" />
-          <div onPointerDown={(e) => !locked && startResize(e, "e")} className="absolute top-1/2 -right-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "nw")} className="absolute -top-1 -start-1 h-2 w-2 cursor-nwse-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "ne")} className="absolute -top-1 -end-1 h-2 w-2 cursor-nesw-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "sw")} className="absolute -bottom-1 -start-1 h-2 w-2 cursor-nesw-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "se")} className="absolute -end-1 -bottom-1 h-2 w-2 cursor-nwse-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "n")} className="absolute -top-1 start-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "s")} className="absolute -bottom-1 start-1/2 h-2 w-3 -translate-x-1/2 cursor-ns-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "w")} className="absolute top-1/2 -start-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary" />
+          <div onPointerDown={(e) => !locked && startResize(e, "e")} className="absolute top-1/2 -end-1 h-3 w-2 -translate-y-1/2 cursor-ew-resize bg-primary" />
         </>
       )}
       <button
         type="button"
         onClick={onRemove}
-        className="absolute top-1 right-1 rounded bg-danger px-2 text-xs"
+        className="absolute top-1 end-1 rounded bg-danger px-2 text-xs"
         data-token="--color-danger"
       >
         <span className="text-danger-foreground" data-token="--color-danger-fg">

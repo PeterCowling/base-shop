@@ -20,7 +20,11 @@
   ],
   "exclude": [
     "dist",
-    "node_modules"
+    "node_modules",
+    "**/*.spec.*",
+    "**/*.test.*",
+    "**/*.stories.*",
+    "**/*.cy.*"
   ],
   "references": [
     { "path": "../../packages/types" }

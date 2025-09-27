@@ -76,7 +76,7 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
             </Button>
           )}
           {/* Theme toggle (left of Refresh) */}
-          <div className="flex items-center gap-2 pr-2" role="group" aria-labelledby="cms-theme-label">
+          <div className="flex items-center gap-2 pe-2" role="group" aria-labelledby="cms-theme-label">
             <span className="sr-only" id="cms-theme-label">Toggle theme</span>
             <SunIcon
               aria-hidden

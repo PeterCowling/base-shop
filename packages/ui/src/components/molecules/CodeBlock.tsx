@@ -46,13 +46,13 @@ export default function CodeBlock({
         type="button"
         variant="outline"
         onClick={handleCopy}
-        className="absolute right-3 top-3 z-10 h-auto px-2 py-1 text-xs"
+        className="absolute end-3 top-3 z-10 h-auto px-2 py-1 text-xs"
       >
         {copied ? copiedLabel : copyLabel}
       </Button>
       <pre
         className={cn(
-          "bg-muted text-xs font-mono leading-relaxed overflow-x-auto rounded-md border border-border p-4 pr-16",
+          "bg-muted text-xs font-mono leading-relaxed overflow-x-auto rounded-md border border-border p-4 pe-16",
           preClassName,
         )}
       >
@@ -61,4 +61,3 @@ export default function CodeBlock({
     </div>
   );
 }
-

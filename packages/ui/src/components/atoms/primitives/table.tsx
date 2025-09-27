@@ -15,7 +15,7 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
     <div className="w-full overflow-x-auto">
       <table
         ref={ref}
-        className={cn("text-foreground w-full text-left text-sm bg-surface-1", className)}
+        className={cn("text-foreground w-full text-start text-sm bg-surface-1", className)}
         {...props}
       />
     </div>

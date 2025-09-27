@@ -67,10 +67,10 @@ export default function SearchBar({
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder={placeholder}
-        className="pr-8"
+        className="pe-8"
       />
       <MagnifyingGlassIcon
-        className="text-muted-foreground pointer-events-none absolute top-2 right-2 h-4 w-4"
+        className="text-muted-foreground pointer-events-none absolute top-2 end-2 h-4 w-4"
         data-token="--color-muted-fg"
       />
       {results.length > 0 && (

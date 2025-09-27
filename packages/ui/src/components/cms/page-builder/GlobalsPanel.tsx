@@ -48,7 +48,7 @@ export default function GlobalsPanel({ open, onOpenChange, shop = null, pageId =
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="fixed left-0 top-0 z-[60] h-screen w-[24rem] max-w-full -translate-x-full overflow-hidden border-r bg-surface-3 p-0 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0">
+      <DialogContent className="fixed start-0 top-0 z-[60] h-screen w-[24rem] max-w-full -translate-x-full overflow-hidden border-e bg-surface-3 p-0 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0">
         <DialogHeader className="px-4 py-3">
           <DialogTitle>Global Sections</DialogTitle>
         </DialogHeader>
@@ -86,11 +86,11 @@ export default function GlobalsPanel({ open, onOpenChange, shop = null, pageId =
                           <div className="flex items-center gap-2">
                             <span className="truncate font-medium">{g.label}</span>
                             {used.has(g.globalId) && (
-                              <span className="rounded bg-emerald-500/15 px-1 text-[10px] text-emerald-700">On this page</span>
+                              <span className="rounded bg-emerald-500/15 px-1 text-xs text-emerald-700">On this page</span>
                             )}
                           </div>
                           {g.tags && g.tags.length > 0 && (
-                            <div className="mt-1 flex flex-wrap gap-1 text-[10px] text-muted-foreground">
+                            <div className="mt-1 flex flex-wrap gap-1 text-xs text-muted-foreground">
                               {g.tags.map((t) => (
                                 <span key={t} className="rounded border px-1">{t}</span>
                               ))}
@@ -141,4 +141,3 @@ export default function GlobalsPanel({ open, onOpenChange, shop = null, pageId =
     </Dialog>
   );
 }
-

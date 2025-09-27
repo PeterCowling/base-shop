@@ -15,7 +15,7 @@ type Props = {
 export default function HiddenBadge({ hiddenList, isHiddenHere, viewport, componentId, editor, dispatch }: Props) {
   if (hiddenList.length === 0) return null;
   return (
-    <div className="absolute left-1 top-1 z-30 rounded bg-amber-500/90 px-1 py-0.5 text-[10px] text-white shadow" title={isHiddenHere ? `Hidden on ${viewport}` : `Hidden on ${hiddenList.join(', ')}`}>
+    <div className="absolute start-1 top-1 z-30 rounded bg-amber-500/90 px-1 py-0.5 text-[10px] text-white shadow" title={isHiddenHere ? `Hidden on ${viewport}` : `Hidden on ${hiddenList.join(', ')}`}>
       {isHiddenHere ? `Hidden on ${viewport}` : `Hidden on ${hiddenList.join(', ')}`}
       {isHiddenHere && (
         <button
@@ -36,4 +36,3 @@ export default function HiddenBadge({ hiddenList, isHiddenHere, viewport, compon
     </div>
   );
 }
-

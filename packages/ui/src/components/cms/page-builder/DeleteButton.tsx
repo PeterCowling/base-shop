@@ -10,7 +10,7 @@ export default function DeleteButton({ locked, onRemove }: Props) {
     <button
       type="button"
       onClick={() => { if (!locked) onRemove(); }}
-      className="bg-danger absolute top-1 right-1 rounded px-2 text-xs disabled:opacity-50"
+      className="bg-danger absolute top-1 end-1 rounded px-2 text-xs disabled:opacity-50"
       data-token="--color-danger"
       disabled={!!locked}
       aria-disabled={!!locked}
@@ -23,4 +23,3 @@ export default function DeleteButton({ locked, onRemove }: Props) {
     </button>
   );
 }
-

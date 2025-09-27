@@ -87,7 +87,7 @@ export function ColorToken({
     <label
       data-token-key={tokenKey}
       className={`flex flex-col gap-1 text-sm ${
-        isOverridden ? "border-l-2 border-l-info pl-2" : ""
+        isOverridden ? "border-s-2 border-s-info ps-2" : ""
       }`}
       data-token={isOverridden ? "--color-info" : undefined}
     >

@@ -127,7 +127,7 @@ export default function SocialProof({
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={u.src} alt={u.alt ?? ""} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
                 {(u.author || u.handle) && (
-                  <span className="absolute bottom-1 left-1 rounded bg-black/60 px-1.5 py-0.5 text-[10px] text-white">{u.author || u.handle}</span>
+                  <span className="absolute bottom-1 start-1 rounded bg-black/60 px-1.5 py-0.5 text-xs text-white">{u.author || u.handle}</span>
                 )}
               </a>
             ))}

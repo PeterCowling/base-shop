@@ -20,6 +20,39 @@ export const globalTypes = {
       ],
     },
   },
+  scenario: {
+    name: "Scenario",
+    description: "Data scenario (affects MSW)",
+    defaultValue: "featured",
+    toolbar: {
+      icon: "contrast",
+      items: ["featured", "new", "bestsellers", "clearance", "limited"],
+    },
+  },
+  locale: {
+    name: "Locale",
+    description: "Active locale",
+    defaultValue: "en",
+    toolbar: { icon: "globe", items: ["en", "de", "fr"] },
+  },
+  currency: {
+    name: "Currency",
+    description: "Active currency",
+    defaultValue: "USD",
+    toolbar: { icon: "creditcard", items: ["USD", "EUR", "GBP"] },
+  },
+  net: {
+    name: "Network",
+    description: "Mock network speed",
+    defaultValue: "normal",
+    toolbar: { icon: "power", items: ["fast", "normal", "slow"] },
+  },
+  netError: {
+    name: "Net Error",
+    description: "Force API 500 errors",
+    defaultValue: "off",
+    toolbar: { icon: "alert", items: ["off", "on"] },
+  },
 };
 
 const withTokens: Decorator = (Story, context) => {
@@ -27,6 +60,16 @@ const withTokens: Decorator = (Story, context) => {
   const cls = document.documentElement.classList;
   cls.remove("theme-base", "theme-brandx");
   cls.add(`theme-${tokens}`);
+  return <Story />;
+};
+
+const withGlobals: Decorator = (Story, context) => {
+  const { scenario, locale, currency, net, netError } = context.globals as { scenario: string; locale: string; currency: string; net: string; netError: string };
+  try {
+    (window as any).__SB_GLOBALS__ = { scenario, locale, currency, net, netError };
+    document.documentElement.lang = locale;
+    window.dispatchEvent(new CustomEvent('sb:globals', { detail: { scenario, locale, currency, net, netError } }));
+  } catch {}
   return <Story />;
 };
 
@@ -47,6 +90,7 @@ const preview: Preview = {
       defaultTheme: "light",
     }),
     mswDecorator,
+    withGlobals,
     // Opt-in cart provider: set `parameters: { cart: true }` in a story to wrap it
     ((Story, ctx) => {
       const { cart } = (ctx.parameters as any) ?? {};

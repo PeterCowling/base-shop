@@ -1,0 +1,29 @@
+import { Meta, Canvas, Story, Title, Description, Subtitle } from '@storybook/blocks';
+
+<Meta title="Compositions/PLP/Docs" />
+
+<Title>PLP Composition</Title>
+<Subtitle>Collection grid with facets, sort, and pagination modes</Subtitle>
+
+<Description>
+This page demonstrates the Product Listing Page (PLP) composition using the client Collection section.
+
+Slots and structure:
+
+- HeaderSection — sticky variant with inline search (optional breadcrumbs/currency/locale as needed)
+- Main — CollectionSection (client) with facets sidebar, sort selector, product grid, and optional SEO text block
+- FooterSection — choose a preset (e.g. legal‑heavy)
+
+Pagination modes:
+
+- <b>loadMore</b> (client) — renders a button to append more results in place
+- <b>ssr</b> — server‑friendly paging via <code>?page</code>/<code>?pageSize</code>, with Previous/Next controls
+
+The composition story below uses MSW to mock <code>/api/collections/:slug</code> responses so it runs offline in Storybook.
+</Description>
+
+## PLP Composition
+<Canvas>
+  <Story id="compositions-plp--default" />
+</Canvas>
+

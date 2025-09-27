@@ -25,10 +25,13 @@
     "build:trace": "cross-env NODE_OPTIONS=\"--trace-uncaught --enable-source-maps\" pnpm --filter cms exec next build --debug",
     "start": "turbo run start --parallel",
     "lint": "turbo run lint",
+    "lint:json": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --cache --cache-location .eslintcache --format json --output-file .eslint-report.json --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\"",
+    "lint:exceptions": "pnpm run lint:json && node scripts/lint-exceptions.cjs",
     "lint:apps": "eslint \"apps/**/*.{ts,tsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\"",
     "lint:all": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\"",
     "typecheck": "pnpm -r build && tsc -b tsconfig.json --pretty",
     "typecheck:watch": "tsc -b -w tsconfig.json --noEmit --preserveWatchOutput --pretty",
+    "prepare": "simple-git-hooks",
     "test": "CI=true turbo run test",
     "test:coverage": "sh -c 'CI=true pnpm -r --no-bail --workspace-concurrency=1 --filter=!@acme/next-config run test -- --coverage; status=$?; pnpm --filter @acme/next-config run test:coverage || true; pnpm run coverage:merge; exit $status'",
     "coverage:merge": "mkdir -p coverage/merged && nyc merge coverage .nyc_output coverage/merged/coverage.json && nyc report -t coverage/merged -r html -r text-summary -r text",
@@ -97,6 +100,14 @@
     "ops:backup-data": "tsx scripts/src/ops/backup-data-root.ts",
     "stripe:send-test-event": "tsx scripts/stripe-send-test-event.ts",
     "prisma:generate": "pnpm --filter @acme/platform-core exec prisma generate"
+  },
+  "lint-staged": {
+    "**/*.{ts,tsx,js,jsx}": [
+      "eslint --fix --max-warnings=0 --cache --cache-location .eslintcache"
+    ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
   },
   "dependencies": {
     "@acme/config": "workspace:^",
@@ -293,7 +304,10 @@
     "vite-plugin-istanbul": "^7.2.0",
     "vite-tsconfig-paths": "^4.3.2",
     "wait-on": "^8.0.4",
-    "wrangler": "^4.20.4"
+    "wrangler": "^4.20.4",
+    "lint-staged": "^15.2.10",
+    "simple-git-hooks": "^2.11.0",
+    "minimatch": "^9.0.5"
   },
   "pnpm": {
     "overrides": {

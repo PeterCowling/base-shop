@@ -111,7 +111,7 @@ export function ConfiguratorProvider({
 
   useEffect(() => {
     const pages = state.pages || [];
-    const nextNav: NavItem[] = pages.map((p) => {
+    const nextNav: NavItem[] = pages.map((p: { id?: string; slug: string; title?: Record<string, string> }) => {
       const titleObj = (p as unknown as { title?: Record<string, string> }).title || {};
       const firstTitle = Object.values(titleObj)[0] || p.slug;
       const url = `/${p.slug}`;

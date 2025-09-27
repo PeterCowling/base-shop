@@ -1,0 +1,21 @@
+import { Meta, Canvas, Story, ArgsTable, Title, Description, Subtitle } from '@storybook/blocks';
+import ThankYouSection from '../../packages/ui/src/components/cms/blocks/ThankYouSection';
+
+<Meta title="Sections/ThankYou/Docs" of={ThankYouSection} />
+
+<Title>Thank You Section</Title>
+<Subtitle>Confirmation copy and post‑purchase recommendations</Subtitle>
+
+<Description>
+The ThankYouSection shows an order confirmation message and can embed a recommendations carousel via the ShowcaseSection.
+Recommendations are mocked in Storybook via MSW.
+</Description>
+
+## Default
+<Canvas>
+  <Story id="packages-ui-src-components-cms-blocks-thankyousection--default" />
+</Canvas>
+
+## Props
+<ArgsTable of={ThankYouSection} />
+

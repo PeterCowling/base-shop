@@ -81,7 +81,7 @@ export default function MediaGalleryTab({
                       <Cross2Icon />
                     </IconButton>
                   </div>
-                  <div className="absolute bottom-3 left-3 opacity-0 transition-opacity group-hover:opacity-100">
+                  <div className="absolute bottom-3 start-3 opacity-0 transition-opacity group-hover:opacity-100">
                     <span className="inline-flex items-center gap-1 rounded-full bg-surface-2 px-2 py-1 text-xs font-medium shadow">
                       <DragHandleDots2Icon aria-hidden />
                       Drag

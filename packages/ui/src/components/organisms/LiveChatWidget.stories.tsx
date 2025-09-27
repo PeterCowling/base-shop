@@ -46,7 +46,7 @@ function FakeLiveChatWidget(props: React.HTMLAttributes<HTMLButtonElement>) {
       <DialogTrigger asChild>
         <Button
           className={cn(
-            "fixed right-4 bottom-4 z-50 rounded-full shadow-elevation-3",
+            "fixed end-4 bottom-4 z-50 rounded-full shadow-elevation-3",
             props.className
           )}
           {...props}

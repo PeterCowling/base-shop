@@ -39,7 +39,7 @@ export const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "z-[70] min-w-[8rem] overflow-hidden rounded-md border border-border-2 bg-panel p-1 text-foreground shadow-elevation-2",
+        "z-50 min-w-32 overflow-hidden rounded-md border border-border-2 bg-panel p-1 text-foreground shadow-elevation-2",
         className
       )}
       {...props}
@@ -71,7 +71,7 @@ export const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pr-2 pl-8 text-sm text-fg outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+      "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pe-2 ps-8 text-sm text-fg outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
       "hover:bg-surface-3 focus:bg-accent focus:text-accent-foreground",
       className
     )}

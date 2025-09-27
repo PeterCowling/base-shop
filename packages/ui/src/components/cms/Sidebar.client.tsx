@@ -57,7 +57,7 @@ function Sidebar({
 
         <Card className="border-border-1 bg-surface-2 text-foreground shadow-elevation-2">
           <CardContent className="space-y-4 px-4 py-5">
-            <div className="flex items-center justify-between text-[11px] uppercase tracking-wide text-muted-foreground">
+            <div className="flex items-center justify-between text-xs uppercase tracking-wide text-muted-foreground">
               <span>Main navigation</span>
               <span>Explore</span>
             </div>

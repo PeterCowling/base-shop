@@ -145,7 +145,7 @@ export default function TabbedChildren({
                   {insertParentId === component.id && insertIndex === i && (
                     <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
                   )}
-                  <div className="absolute -top-3 -left-[10px] z-20">
+                  <div className="absolute -top-3 -start-2.5 z-20">
                     <Select
                       value={String((child as any).slotKey ?? 0)}
                       onValueChange={(v) => dispatch({ type: "update", id: child.id, patch: { slotKey: v } as any })}

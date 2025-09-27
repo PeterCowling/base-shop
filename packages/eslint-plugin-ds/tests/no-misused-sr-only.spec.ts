@@ -17,9 +17,12 @@ tester.run("no-misused-sr-only", rule, {
     { code: '<span className="sr-only" aria-live="polite">Screen only</span>' },
     { code: '<button className="sr-only" aria-label="Open" />' },
     { code: '<div className={clsx("sr-only", maybe && "w-4")} />' },
+    { code: '<span className="sr-only text-sm" />' },
   ],
   invalid: [
     { code: '<div className="sr-only flex" />', errors: [{ messageId: "misused" }] },
     { code: '<p className="sr-only w-4" />', errors: [{ messageId: "misused" }] },
+    { code: '<p className="sr-only px-2" />', errors: [{ messageId: "misused" }] },
+    { code: '<span className="sm:sr-only inline" />', errors: [{ messageId: "misused" }] },
   ],
 });

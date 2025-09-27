@@ -90,7 +90,7 @@ export default function CommentsThreadDetails({
 
   if (!thread) {
     return (
-      <div className="hidden h-full w-[28rem] max-w-[60vw] items-center justify-center p-6 text-center text-sm text-muted-foreground md:flex">
+      <div className="hidden h-full w-full md:w-[28rem] items-center justify-center p-6 text-center text-sm text-muted-foreground md:flex">
         <div>
           <div className="mb-2 text-base font-medium">Select a thread</div>
           <div>Choose a comment from the list to view details.</div>
@@ -185,7 +185,7 @@ export default function CommentsThreadDetails({
     setDraft("");
   }
   return (
-    <div className="hidden h-full w-[28rem] max-w-[60vw] flex-col md:flex">
+    <div className="hidden h-full w-full md:w-[28rem] flex-col md:flex">
       <div className="flex items-center gap-2 border-b p-3">
         <div className="flex-1 min-w-0 truncate text-sm">
           <span className="text-muted-foreground">Component:</span> <code className="text-xs">{t.componentId}</code>
@@ -231,7 +231,7 @@ export default function CommentsThreadDetails({
       <div className="flex-1 space-y-2 overflow-y-auto p-3 text-sm">
         {t.messages.map((m) => (
           <div key={m.id} className="rounded border p-2">
-            <div className="mb-1 text-[10px] text-muted-foreground">{formatTime(m.ts)}</div>
+            <div className="mb-1 text-xs text-muted-foreground">{formatTime(m.ts)}</div>
             <div className="break-words">{renderMessage(m.text)}</div>
           </div>
         ))}
@@ -251,7 +251,7 @@ export default function CommentsThreadDetails({
             className="min-h-[5rem] pr-24"
           />
           {mentionOpen && mentionMatches.length > 0 && (
-            <div className="absolute bottom-2 left-2 z-10 max-h-40 w-48 overflow-y-auto rounded border border-border-2 bg-surface-2 text-sm shadow">
+            <div className="absolute bottom-2 start-2 z-10 max-h-40 w-48 overflow-y-auto rounded border border-border-2 bg-surface-2 text-sm shadow">
               {mentionMatches.map((p, idx) => (
                 <div
                   key={p}
@@ -266,7 +266,7 @@ export default function CommentsThreadDetails({
               ))}
             </div>
           )}
-          <div className="pointer-events-none absolute right-2 top-2 flex gap-2">
+          <div className="pointer-events-none absolute end-2 top-2 flex gap-2">
             <div className="pointer-events-auto">
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files && e.target.files[0] && void uploadScreenshot(e.target.files[0])} />
               <Button variant="outline" className="h-8 px-2 text-xs" onClick={() => fileRef.current?.click()}>

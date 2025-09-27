@@ -38,7 +38,7 @@ export default function TestimonialSlider({
             type="button"
             onClick={prev}
             aria-label="Previous slide"
-            className="absolute left-2 top-1/2 -translate-y-1/2"
+            className="absolute start-2 top-1/2 -translate-y-1/2"
           >
             ‹
           </button>
@@ -46,7 +46,7 @@ export default function TestimonialSlider({
             type="button"
             onClick={next}
             aria-label="Next slide"
-            className="absolute right-2 top-1/2 -translate-y-1/2"
+            className="absolute end-2 top-1/2 -translate-y-1/2"
           >
             ›
           </button>

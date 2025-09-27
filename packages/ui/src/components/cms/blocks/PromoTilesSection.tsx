@@ -29,7 +29,7 @@ export default function PromoTilesSection({ tiles = [], density = "editorial", c
         {tiles.map((t, i) => (
           <a key={i} href={t.ctaHref ?? "#"} className="group relative block overflow-hidden rounded border">
             {/* Image */}
-            <div className="aspect-[4/3] w-full bg-neutral-100">
+            <div className="aspect-video w-full bg-neutral-100">
               {t.imageSrc ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={t.imageSrc} alt={t.imageAlt ?? ""} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]" />
@@ -46,7 +46,7 @@ export default function PromoTilesSection({ tiles = [], density = "editorial", c
             )}
             {/* Badge */}
             {t.badge ? (
-              <span className="absolute left-2 top-2 rounded bg-black/80 px-2 py-0.5 text-xs text-white">
+              <span className="absolute start-2 top-2 rounded bg-black/80 px-2 py-0.5 text-xs text-white">
                 {t.badge === "rental" ? "Rent" : "Buy"}
               </span>
             ) : null}

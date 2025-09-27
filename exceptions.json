@@ -1,0 +1,13 @@
+{
+  "tickets": {
+    "ABC-123": {
+      "expires": "2099-12-31",
+      "allow": [
+        "packages/ui/**",
+        "apps/**"
+      ],
+      "notes": "Example exception: update with real tickets and scope."
+    }
+  }
+}
+

@@ -47,7 +47,7 @@ export default function DataTable<T>({
       <Table className="min-w-full w-full">
         <TableHeader>
           <TableRow>
-            {selectable && <TableHead className="w-4" />}
+            {selectable && <TableHead className="w-10" />}
             {columns.map((col) => (
               <TableHead key={col.header} style={{ width: col.width }}>
                 {col.header}
@@ -68,10 +68,10 @@ export default function DataTable<T>({
               )}
             >
               {selectable && (
-                <TableCell className="w-4">
+                <TableCell className="w-10">
                   <input
                     type="checkbox"
-                    className="accent-primary size-4"
+                    className="accent-primary size-10"
                     checked={selected.includes(i)}
                     onChange={() => toggle(i)}
                     onClick={(e) => e.stopPropagation()}

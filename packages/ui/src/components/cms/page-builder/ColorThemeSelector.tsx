@@ -124,10 +124,10 @@ export default function ColorThemeSelector({ tokens, baseTokens, onChange, tagFi
               </button>
             </div>
             {isThemeSelected(t) && (
-              <div className="mb-2 inline-block rounded-full border border-primary bg-primary/10 px-2 py-0.5 text-[10px] text-primary">Selected</div>
+              <div className="mb-2 inline-block rounded-full border border-primary bg-primary/10 px-2 py-0.5 text-xs text-primary">Selected</div>
             )}
             {t.tags && t.tags.length > 0 && (
-              <div className="mb-2 flex flex-wrap gap-1 text-[10px] text-muted-foreground">
+              <div className="mb-2 flex flex-wrap gap-1 text-xs text-muted-foreground">
                 {t.tags.map((tg) => (
                   <span key={tg} className="rounded border px-1">{tg}</span>
                 ))}

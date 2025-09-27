@@ -88,7 +88,7 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
             ))}
           </SelectContent>
         </Select>
-        <Button type="button" aria-label="Refresh" title="Refresh" variant="outline" onClick={() => void loadMedia()}>
+        <Button type="button" aria-label="Refresh" title="Refresh" variant="outline" size="icon" onClick={() => void loadMedia()}>
           <ReloadIcon className="h-4 w-4" />
         </Button>
       </div>
@@ -101,7 +101,7 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
           <div className="grid grid-cols-3 gap-2">
             {pageItems.map((it) => (
               <div key={it.url} className="overflow-hidden rounded border">
-                <div className="relative aspect-[4/3] bg-muted">
+                <div className="relative aspect-video bg-muted">
                   {it.type === 'image' ? (
                     <Image src={it.url} alt={it.altText || it.title || ''} fill className="object-cover" />
                   ) : (

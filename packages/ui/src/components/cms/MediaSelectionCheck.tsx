@@ -24,7 +24,7 @@ export default function MediaSelectionCheck({
     <span
       data-testid="media-selection-check"
       className={cn(
-        "pointer-events-none absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full border border-bg bg-primary text-primary-fg transition-opacity",
+        "pointer-events-none absolute top-1 end-1 flex h-5 w-5 items-center justify-center rounded-full border border-bg bg-primary text-primary-fg transition-opacity",
         selected ? "opacity-100" : "opacity-0",
         className,
       )}

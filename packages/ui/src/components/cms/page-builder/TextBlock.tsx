@@ -157,7 +157,7 @@ const TextBlock = memo(function TextBlock({
 
   return (
     <div className="relative" data-component-id={component.id}>
-      <div className="absolute top-1 right-10 z-30">
+      <div className="absolute top-1 end-10 z-30">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button type="button" variant="outline" className="h-6 px-2 py-1 text-xs">⋯</Button>

@@ -153,7 +153,7 @@ const BlockItem = memo(function BlockItemComponent({
         }}
       />
       {effLocked && (
-        <div className="absolute right-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
+        <div className="absolute end-1 top-1 z-30 text-xs" title="Locked" aria-hidden>
           <LockClosedIcon />
         </div>
       )}

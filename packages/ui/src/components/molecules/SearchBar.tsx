@@ -111,9 +111,9 @@ export function SearchBar({
           onSearch?.(query);
         }}
         placeholder={placeholder}
-        className="pr-8"
+        className="pe-8"
       />
-      <MagnifyingGlassIcon className="text-muted-foreground pointer-events-none absolute top-2 right-2 h-4 w-4" />
+      <MagnifyingGlassIcon className="text-muted-foreground pointer-events-none absolute top-2 end-2 h-4 w-4" />
       {matches.length > 0 && (
         <ul
           role="listbox"

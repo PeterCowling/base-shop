@@ -56,7 +56,7 @@ export default function HeaderClient({
           Cart
           {qty > 0 && (
             <span
-              className="absolute -top-2 -right-3 rounded-full px-1.5 text-xs bg-danger text-danger-foreground"
+              className="absolute -top-2 -end-3 rounded-full px-1.5 text-xs bg-danger text-danger-foreground"
               data-token="--color-danger"
             >
               <span

@@ -21,6 +21,6 @@
   "include": ["types/**/*", "../packages/types/src/**/*"],
 
   /* never treat its own outputs as fresh inputs */
-  "exclude": ["dist"],
+  "exclude": ["dist", "../packages/types/src/**/__tests__/**", "../packages/types/src/**/*.test.*", "../packages/types/src/**/*.spec.*"],
   "references": [{ "path": "../packages/types" }]
 }

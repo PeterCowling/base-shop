@@ -1,0 +1,26 @@
+import { Meta, Canvas, Story, Title, Description, Subtitle } from '@storybook/blocks';
+
+<Meta title="Compositions/PDP/Docs" />
+
+<Title>PDP Compositions</Title>
+<Subtitle>End‑to‑end page composition demos</Subtitle>
+
+<Description>
+This page links to two PDP composition stories:
+
+- Luxury preset: ProductGallery + PDPDetailsSection (luxury) + FinancingBadge + Policies + StickyBuyBar
+- AR + 360 Media: Gallery with 360/AR model and the same details/policies
+
+Stories are wrapped with a mocked CartProvider (parameters: `cart: true`) so clicking the Sticky Buy Bar triggers a local cart update.
+</Description>
+
+## Luxury Preset
+<Canvas>
+  <Story id="compositions-pdp--luxury-preset" />
+</Canvas>
+
+## AR + 360 Media
+<Canvas>
+  <Story id="compositions-pdp--ar-and360" />
+</Canvas>
+

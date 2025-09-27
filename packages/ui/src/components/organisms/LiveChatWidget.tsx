@@ -66,7 +66,7 @@ export function LiveChatWidget({
       <DrawerTrigger asChild>
         <Button
           className={cn(
-            "fixed right-4 z-50 rounded-full shadow-elevation-3",
+            "fixed end-4 z-50 rounded-full shadow-elevation-3",
             bottomClass,
             className
           )}

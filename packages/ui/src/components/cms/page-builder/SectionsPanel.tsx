@@ -153,7 +153,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                         onClick={() => onInsert(cloneWithIds(p.build() as any))}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={resolvedPreview} alt="" className="aspect-[16/9] w-full rounded border bg-muted" aria-hidden />
+                        <img src={resolvedPreview} alt="" className="aspect-video w-full rounded border bg-muted" aria-hidden />
                         <div className="mt-1 truncate text-xs" title={p.label}>{p.label}</div>
                         {p.description && <div className="truncate text-[11px] text-muted-foreground" title={p.description}>{p.description}</div>}
                       </button>
@@ -172,12 +172,12 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
             <div className="text-[10px] uppercase tracking-wide text-muted-foreground">{s.status}</div>
             {/* Thumbnail preview */}
             {s.thumbnail ? (
-              <div className="relative mt-1 aspect-[16/9] overflow-hidden rounded border bg-muted">
+              <div className="relative mt-1 aspect-video overflow-hidden rounded border bg-muted">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s.thumbnail} alt="" className="h-full w-full object-cover" aria-hidden />
               </div>
             ) : (
-              <div className="mt-1 aspect-[16/9] rounded border bg-muted/40" />
+              <div className="mt-1 aspect-video rounded border bg-muted/40" />
             )}
             {/* Tags */}
             {Array.isArray(s.tags) && s.tags.length > 0 && (

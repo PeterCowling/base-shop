@@ -123,13 +123,12 @@ const rule: Rule.RuleModule = {
           if (name === "rel") return;
           // Non-copy attributes to ignore
           if (name === "class" || name === "className") return;
-          if (name?.startsWith("data-")) return;
         }
         // Heuristic: ignore CSS/utility-like strings in non-JSX contexts
         if (parent?.type !== "JSXAttribute") {
           const s = String(node.value);
-          // Ignore utility/CSS-like tokens and URLs/MIME types in code
-          if (/^[a-z0-9_:\-\[\]\(\)\/\.\s]+$/i.test(s)) return;
+          // Ignore token-y strings without whitespace (e.g., bg-bg, text-foreground)
+          if (/^[a-z0-9_:\-\[\]\(\)\/\.]+$/i.test(s)) return;
           if (s.startsWith("/") || /:\/\//.test(s)) return;
           if (/^[a-z0-9.+-]+\/[a-z0-9.+-]+$/i.test(s)) return; // MIME types
           if (/^var\(--[a-z0-9\-]+\)$/i.test(s)) return;

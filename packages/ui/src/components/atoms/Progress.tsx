@@ -23,7 +23,7 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         {label ? (
           <div
             className={cn(
-              "text-muted-foreground text-right text-sm",
+              "text-muted-foreground text-end text-sm",
               labelClassName
             )}
             data-token="--color-muted-fg"

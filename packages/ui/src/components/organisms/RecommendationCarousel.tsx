@@ -23,6 +23,9 @@ export interface RecommendationCarouselProps
   gapClassName?: string;
   /** Function to calculate individual slide width */
   getSlideWidth?: (itemsPerSlide: number) => string;
+  /** Optional loading and error states */
+  LoadingState?: React.ComponentType | null;
+  ErrorState?: React.ComponentType | null;
 }
 
 /**
@@ -41,9 +44,12 @@ export function RecommendationCarousel({
   gapClassName = "gap-4",
   getSlideWidth = (n) => `${100 / n}%`,
   className,
+  LoadingState,
+  ErrorState,
   ...props
 }: RecommendationCarouselProps) {
   const [products, setProducts] = React.useState<SKU[]>([]);
+  const [status, setStatus] = React.useState<'idle'|'loading'|'loaded'|'error'>('idle');
   const [itemsPerSlide, setItemsPerSlide] = React.useState(
     desktopItems ?? minItems
   );
@@ -104,16 +110,19 @@ export function RecommendationCarousel({
 
   React.useEffect(() => {
     const load = async () => {
+      setStatus('loading');
       try {
         const url = new URL(endpoint, window.location.origin);
         url.searchParams.set("minItems", String(minItems));
         url.searchParams.set("maxItems", String(maxItems));
         const res = await fetch(url);
-        if (!res.ok) return;
+        if (!res.ok) { setStatus('error'); return; }
         const data = (await res.json()) as SKU[];
         setProducts(data);
+        setStatus('loaded');
       } catch (err) {
         console.error("Failed loading recommendations", err);
+        setStatus('error');
       }
     };
     void load();
@@ -130,7 +139,8 @@ export function RecommendationCarousel({
     startAutoplay();
     return stopAutoplay;
   }, [startAutoplay, stopAutoplay]);
-
+  if (status === 'loading') return LoadingState ? <LoadingState /> : null;
+  if (status === 'error') return ErrorState ? <ErrorState /> : null;
   if (!products.length) return null;
 
   return (

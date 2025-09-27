@@ -102,7 +102,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
           <div className="flex min-w-0 flex-1 items-center gap-2">
             <div className="flex min-w-0 flex-1 flex-wrap items-center gap-1">
               {tags.map((t) => (
-                <span key={t} className="inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-[10px]">
+            <span key={t} className="inline-flex items-center gap-1 rounded bg-muted px-2 py-0.5 text-xs">
                   {t}
                   <button type="button" aria-label={`Remove ${t}`} className="rounded border px-1" onClick={(e) => { e.stopPropagation(); setTags((prev) => prev.filter((x) => x !== t)); }}>×</button>
                 </span>

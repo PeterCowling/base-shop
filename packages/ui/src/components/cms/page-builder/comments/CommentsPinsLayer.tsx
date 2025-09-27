@@ -56,7 +56,7 @@ export function CommentsPinsLayer({
           return (
             <div
               key={`badge-${cid}`}
-              className="pointer-events-none absolute flex h-5 w-5 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full bg-red-500 text-[10px] text-white"
+              className="pointer-events-none absolute flex h-5 w-5 -translate-y-1/2 translate-x-1/2 items-center justify-center rounded-full bg-red-500 text-xs text-white"
               style={{ left: comp.left + comp.width - 6, top: comp.top + 6 }}
               title={`${count} unresolved comments`}
             >
@@ -70,4 +70,3 @@ export function CommentsPinsLayer({
 }
 
 export default CommentsPinsLayer;
-

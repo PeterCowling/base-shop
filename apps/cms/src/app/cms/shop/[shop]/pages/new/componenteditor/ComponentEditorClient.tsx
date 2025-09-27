@@ -17,11 +17,11 @@ export default function ComponentEditorClient() {
   const [message, setMessage] = useState<string>("");
 
   const onChange = useCallback((patch: Partial<PageComponent>) => {
-    setComponent((prev) => ({ ...prev, ...patch } as PageComponent));
+    setComponent((prev: PageComponent) => ({ ...prev, ...patch } as PageComponent));
   }, []);
 
   const onResize = useCallback((patch: Partial<PageComponent>) => {
-    setComponent((prev) => ({ ...prev, ...patch } as PageComponent));
+    setComponent((prev: PageComponent) => ({ ...prev, ...patch } as PageComponent));
   }, []);
 
   return (

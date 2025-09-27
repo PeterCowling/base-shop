@@ -23,6 +23,13 @@ import noPhysicalDirectionClassesInRtl from "./rules/no-physical-direction-class
 import enforceFocusRingToken from "./rules/enforce-focus-ring-token.js";
 import minTapSize from "./rules/min-tap-size.js";
 import noMisusedSrOnly from "./rules/no-misused-sr-only.js";
+import requireAspectRatioOnMedia from "./rules/require-aspect-ratio-on-media.js";
+import noNakedImg from "./rules/no-naked-img.js";
+import noOverflowHazards from "./rules/no-overflow-hazards.js";
+import absoluteParentGuard from "./rules/absolute-parent-guard.js";
+import noNonlayeredZindex from "./rules/no-nonlayered-zindex.js";
+import noUnsafeViewportUnits from "./rules/no-unsafe-viewport-units.js";
+import requireDisableJustification from "./rules/require-disable-justification.js";
 
 export const rules = {
   "no-raw-color": noRawColor,
@@ -50,6 +57,13 @@ export const rules = {
   "enforce-focus-ring-token": enforceFocusRingToken,
   "min-tap-size": minTapSize,
   "no-misused-sr-only": noMisusedSrOnly,
+  "require-aspect-ratio-on-media": requireAspectRatioOnMedia,
+  "no-naked-img": noNakedImg,
+  "no-overflow-hazards": noOverflowHazards,
+  "absolute-parent-guard": absoluteParentGuard,
+  "no-nonlayered-zindex": noNonlayeredZindex,
+  "no-unsafe-viewport-units": noUnsafeViewportUnits,
+  "require-disable-justification": requireDisableJustification,
 };
 
 const plugin = { rules };

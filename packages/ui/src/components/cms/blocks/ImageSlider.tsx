@@ -73,7 +73,7 @@ export default function ImageSlider({
             type="button"
             onClick={prev}
             aria-label="Previous slide"
-            className="absolute left-2 top-1/2 -translate-y-1/2 rounded p-2 bg-[hsl(var(--overlay-scrim-1))]"
+            className="absolute start-2 top-1/2 -translate-y-1/2 rounded p-2 bg-[hsl(var(--overlay-scrim-1))]"
             data-token="--color-fg"
           >
             <span className="text-bg" data-token="--color-bg">‹</span>
@@ -82,7 +82,7 @@ export default function ImageSlider({
             type="button"
             onClick={next}
             aria-label="Next slide"
-            className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-2 bg-[hsl(var(--overlay-scrim-1))]"
+            className="absolute end-2 top-1/2 -translate-y-1/2 rounded p-2 bg-[hsl(var(--overlay-scrim-1))]"
             data-token="--color-fg"
           >
             <span className="text-bg" data-token="--color-bg">›</span>

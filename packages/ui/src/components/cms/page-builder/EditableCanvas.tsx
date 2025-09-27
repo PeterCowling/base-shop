@@ -231,7 +231,7 @@ export default function EditableCanvas({
           />
         )}
         {selectedIds.length > 1 && hasLockedInSelection && (
-          <div className="pointer-events-none absolute left-2 top-2 z-40 rounded bg-muted/70 px-2 py-1 text-xs text-muted-foreground">Locked items are ignored during group move/resize</div>
+          <div className="pointer-events-none absolute start-2 top-2 z-40 rounded bg-muted/70 px-2 py-1 text-xs text-muted-foreground">Locked items are ignored during group move/resize</div>
         )}
         {showGrid && <GridOverlay gridCols={gridCols} baselineStep={showBaseline ? baselineStep : undefined} />}
         <SnapLine x={snapPosition} />

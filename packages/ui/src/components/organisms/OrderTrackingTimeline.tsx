@@ -37,14 +37,14 @@ export function OrderTrackingTimeline({
   if (merged.length === 0) return null;
   return (
     <ol
-      className={cn("relative border-l pl-4", itemSpacing, className)}
+      className={cn("relative border-s ps-4", itemSpacing, className)}
       {...props}
     >
       {merged.map((step, idx) => (
         <li key={idx} className="ms-6">
           <span
             className={cn(
-              "absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full border",
+              "absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full border",
               step.complete
                 ? "bg-primary text-primary-foreground"
                 : "bg-muted text-muted-foreground"

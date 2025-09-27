@@ -152,7 +152,7 @@ export default function PopupModal({
         <button
           type="button"
           aria-label="Close"
-          className="absolute right-2 top-2 text-xl"
+          className="absolute end-2 top-2 text-xl"
           onClick={() => setOpen(false)}
         >
           &times;

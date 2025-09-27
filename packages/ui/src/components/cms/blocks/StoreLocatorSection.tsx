@@ -110,7 +110,7 @@ export default function StoreLocatorSection({ stores: inputStores = [], adapter,
               {selected.address ? <div>{selected.address}</div> : null}
               {selected.phone ? <div>Tel: {selected.phone}</div> : null}
               {selected.openingHours?.length ? (
-                <ul className="mt-2 list-disc pl-4">
+                <ul className="mt-2 list-disc ps-4">
                   {selected.openingHours.map((h, i) => (<li key={i}>{h}</li>))}
                 </ul>
               ) : null}
@@ -124,4 +124,3 @@ export default function StoreLocatorSection({ stores: inputStores = [], adapter,
     </section>
   );
 }
-

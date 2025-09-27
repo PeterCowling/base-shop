@@ -32,7 +32,7 @@ export default function SelectionBreadcrumb({ components, selectedIds, onSelectI
   if (!path.length) return null;
 
   return (
-    <div className="absolute left-2 bottom-2 z-40 flex flex-wrap items-center gap-1 rounded bg-muted/80 px-2 py-1 text-xs text-muted-foreground backdrop-blur">
+    <div className="absolute start-2 bottom-2 z-40 flex flex-wrap items-center gap-1 rounded bg-muted/80 px-2 py-1 text-xs text-muted-foreground backdrop-blur">
       {path.map((node, idx) => (
         <React.Fragment key={(node as any).id}>
           <button

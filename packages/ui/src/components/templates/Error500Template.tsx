@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { useTranslations } from "@acme/i18n";
 import { Button } from "../atoms/shadcn";
 
 export interface Error500TemplateProps
@@ -14,6 +15,7 @@ export function Error500Template({
   className,
   ...props
 }: Error500TemplateProps) {
+  const t = useTranslations();
   return (
     <div
       className={cn(
@@ -23,8 +25,8 @@ export function Error500Template({
       {...props}
     >
       <h1 className="text-6xl font-bold">500</h1>
-      <p className="text-lg">Something went wrong</p>
-      <Button onClick={() => (window.location.href = homeHref)}>Go home</Button>
+      <p className="text-lg">{t("error.500.message")}</p>
+      <Button onClick={() => (window.location.href = homeHref)}>{t("actions.goHome")}</Button>
     </div>
   );
 }

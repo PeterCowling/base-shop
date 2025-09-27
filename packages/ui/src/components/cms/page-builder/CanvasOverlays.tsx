@@ -45,7 +45,7 @@ export default function CanvasOverlays({
           </div>
         )}
         <div
-          className="bg-primary absolute right-0 left-0 h-px transition-opacity duration-150 motion-reduce:transition-none"
+          className="bg-primary absolute end-0 start-0 h-px transition-opacity duration-150 motion-reduce:transition-none"
           style={{ top: guides.y ?? 0, opacity: guides.y !== null ? 1 : 0 }}
         />
         {distances.y !== null && (
@@ -73,14 +73,14 @@ export default function CanvasOverlays({
 
       {/* Size/position readout */}
       {showSizePosition && (
-        <div className="pointer-events-none absolute -top-5 left-0 z-30 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-5 start-0 z-30 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
           {Math.round(overlayWidth)}×{Math.round(overlayHeight)} px | {Math.round(overlayLeft)}, {Math.round(overlayTop)} px
         </div>
       )}
 
       {/* Rotation readout */}
       {rotating && (
-        <div className="pointer-events-none absolute -top-8 left-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-8 start-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-[10px] text-white shadow dark:bg-white/75 dark:text-black">
           {Math.round(angle)}°
         </div>
       )}

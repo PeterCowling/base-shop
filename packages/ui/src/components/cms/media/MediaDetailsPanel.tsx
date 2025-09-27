@@ -110,7 +110,7 @@ export default function MediaDetailsPanel({
       <DialogContent
         style={style}
         className={cn(
-          "bg-panel fixed top-0 right-0 z-50 flex h-full max-w-full translate-x-full flex-col overflow-y-auto border-l border-border-2 p-6 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0 [&>[data-radix-dialog-close]]:hidden left-auto translate-y-0", 
+          "bg-panel fixed top-0 end-0 z-50 flex h-full max-w-full translate-x-full flex-col overflow-y-auto border-s border-border-2 p-6 shadow-elevation-4 transition-transform data-[state=open]:translate-x-0 [&>[data-radix-dialog-close]]:hidden start-auto translate-y-0", 
           widthClass
         )}
       >
@@ -119,7 +119,7 @@ export default function MediaDetailsPanel({
           variant="ghost"
           aria-label="Close details"
           onClick={onClose}
-          className="text-muted-foreground hover:text-foreground absolute right-4 top-4 h-9 w-9 p-0"
+          className="text-muted-foreground hover:text-foreground absolute end-4 top-4 h-9 w-9 p-0"
         >
           <Cross2Icon className="h-4 w-4" />
         </Button>

@@ -34,7 +34,7 @@ export function PreviewPanel<TData>({
     <CodeBlock
       code={fallbackPreview}
       className="p-4"
-      preClassName="bg-transparent text-xs text-muted-foreground border-none p-0 pr-12"
+      preClassName="bg-transparent text-xs text-muted-foreground border-none p-0 pe-12"
     />
   );
 

@@ -47,7 +47,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
 
   return (
     <>
-      <div className="absolute -top-3 left-0 z-20 flex gap-1">
+      <div className="absolute -top-3 start-0 z-20 flex gap-1">
         <button
           type="button"
           className="rounded bg-black/60 px-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black"
@@ -74,7 +74,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
           ＋
         </button>
       </div>
-      <div className="absolute -bottom-3 left-0 z-20 flex gap-1">
+      <div className="absolute -bottom-3 start-0 z-20 flex gap-1">
         <button
           type="button"
           className="rounded bg-black/60 px-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black"
@@ -104,7 +104,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
 
       <div
         ref={spanColHandleRef}
-        className="absolute top-0 bottom-0 right-0 z-20 w-1 cursor-col-resize bg-transparent"
+        className="absolute top-0 bottom-0 end-0 z-20 w-1 cursor-col-resize bg-transparent"
         onPointerDown={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -135,7 +135,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
 
       <div
         ref={spanRowHandleRef}
-        className="absolute bottom-0 left-0 right-0 z-20 h-1 cursor-row-resize bg-transparent"
+        className="absolute bottom-0 start-0 end-0 z-20 h-1 cursor-row-resize bg-transparent"
         onPointerDown={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -168,4 +168,3 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
     </>
   );
 }
-

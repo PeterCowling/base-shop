@@ -22,10 +22,19 @@ export default defineConfig({
         __dirname,
         "./.storybook/mocks/CartContext.tsx"
       ),
+      "@acme/platform-core/contexts/CurrencyContext": path.resolve(
+        __dirname,
+        "./.storybook/mocks/CurrencyContext.tsx"
+      ),
       // Mock Next.js router hooks used by some components in preview
       "next/navigation": path.resolve(
         __dirname,
         "./.storybook/mocks/nextNavigation.ts"
+      ),
+      // Mock Next.js Image to a simple <img> for preview performance
+      "next/image": path.resolve(
+        __dirname,
+        "./.storybook/mocks/NextImage.tsx"
       ),
     },
   },

@@ -116,8 +116,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ghost: ghostBg,
     };
 
-    // Use a lax type here to accommodate polymorphic rendering with Slot
-    const Comp: any = asChild ? Slot : "button";
+    // Render polymorphically: either a real button or our Slot wrapper
+    const Comp: React.ElementType = asChild ? Slot : "button";
 
     const dataTokenByColor: Record<ButtonColor, string> = {
       default: "--color-muted",
@@ -172,7 +172,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading && (
           <span
             className={cn(
-              "mr-2 inline-flex animate-spin rounded-full border-2 border-current border-t-transparent",
+              "me-2 inline-flex animate-spin rounded-full border-2 border-current border-t-transparent",
               iconSize === "sm" ? "h-3.5 w-3.5" : iconSize === "lg" ? "h-5 w-5" : "h-4 w-4",
             )}
             aria-hidden="true"
@@ -181,7 +181,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {!isLoading && leadingIcon ? (
           <span
             className={cn(
-              "mr-2 inline-flex items-center justify-center",
+              "me-2 inline-flex items-center justify-center",
               iconSize === "sm" ? "h-3.5 w-3.5" : iconSize === "lg" ? "h-5 w-5" : "h-4 w-4",
             )}
             aria-hidden
@@ -198,7 +198,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {!isLoading && trailingIcon ? (
           <span
             className={cn(
-              "ml-2 inline-flex items-center justify-center",
+              "ms-2 inline-flex items-center justify-center",
               iconSize === "sm" ? "h-3.5 w-3.5" : iconSize === "lg" ? "h-5 w-5" : "h-4 w-4",
             )}
             aria-hidden

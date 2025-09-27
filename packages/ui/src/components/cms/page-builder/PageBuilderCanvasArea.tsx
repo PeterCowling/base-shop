@@ -81,7 +81,7 @@ const PageBuilderCanvasArea = ({
                     <div
                       role="separator"
                       aria-label="Resize canvas narrower"
-                      className="absolute left-0 top-0 h-full w-1 cursor-col-resize bg-transparent"
+                      className="absolute start-0 top-0 h-full w-1 cursor-col-resize bg-transparent"
                       onPointerDown={(event) => {
                         const host = event.currentTarget.parentElement as HTMLElement | null;
                         if (!host) return;
@@ -103,7 +103,7 @@ const PageBuilderCanvasArea = ({
                     <div
                       role="separator"
                       aria-label="Resize canvas wider"
-                      className="absolute right-0 top-0 h-full w-1 cursor-col-resize bg-transparent"
+                      className="absolute end-0 top-0 h-full w-1 cursor-col-resize bg-transparent"
                       onPointerDown={(event) => {
                         const host = event.currentTarget.parentElement as HTMLElement | null;
                         if (!host) return;

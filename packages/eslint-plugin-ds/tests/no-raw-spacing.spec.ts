@@ -24,6 +24,8 @@ tester.run("no-raw-spacing", rule, {
     { code: "<div style={{ paddingInlineStart: 'var(--space-1)' }} />" },
     // Dynamic className we can't confidently parse
     { code: "<div className={clsx(foo && 'mt-2')} />" },
+    // Non-object style value → non-confident parse; should not report
+    { code: "const S = styles; <div style={S} />" },
   ],
   invalid: [
     {
@@ -32,6 +34,10 @@ tester.run("no-raw-spacing", rule, {
     },
     {
       code: "<div className=\"px-[2.5rem]\" />",
+      errors: [{ messageId: "noRawArbitrary" }],
+    },
+    {
+      code: "<div className=\"mt-[50%]\" />",
       errors: [{ messageId: "noRawArbitrary" }],
     },
     {
@@ -52,4 +58,3 @@ tester.run("no-raw-spacing", rule, {
     },
   ],
 });
-

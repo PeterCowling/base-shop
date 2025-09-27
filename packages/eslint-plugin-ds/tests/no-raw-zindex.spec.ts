@@ -16,10 +16,10 @@ tester.run("no-raw-zindex", rule, {
   valid: [
     { code: "<div className=\"z-10\" />" },
     { code: "<div className=\"z-0\" />" },
+    { code: "<div className=\"z-[var(--layer)]\" />" },
   ],
   invalid: [
     { code: "<div className=\"z-[9999]\" />", errors: [{ messageId: "noRawZ" }] },
     { code: "<div className=\"z-[-1]\" />", errors: [{ messageId: "noRawZ" }] },
   ],
 });
-

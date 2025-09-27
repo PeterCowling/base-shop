@@ -10,16 +10,15 @@ export default function PresenceAvatars({ shop, pageId }: { shop: string | null;
   return (
     <div className="flex items-center -space-x-2">
       {show.map((p) => (
-        <div key={p.id} className="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface-1 text-[10px]" style={{ backgroundColor: p.color }} title={p.label} aria-label={p.label}>
+        <div key={p.id} className="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface-1 text-xs" style={{ backgroundColor: p.color }} title={p.label} aria-label={p.label}>
           <span className="mix-blend-difference text-white">{p.label?.slice(0, 2).toUpperCase()}</span>
         </div>
       ))}
       {peers.length > show.length && (
-        <div className="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface-1 bg-muted text-[10px]" title={`+${peers.length - show.length} more`}>
+        <div className="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface-1 bg-muted text-xs" title={`+${peers.length - show.length} more`}>
           +{peers.length - show.length}
         </div>
       )}
     </div>
   );
 }
-

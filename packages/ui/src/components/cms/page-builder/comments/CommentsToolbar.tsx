@@ -25,7 +25,7 @@ export function CommentsToolbar(props: {
   const { peers, showResolved, onShowResolvedChange, onReload, onAddForSelected, canAddForSelected, onToggleDrawer, unresolvedCount } = props;
   const portalContainer = typeof document !== "undefined" ? (document.querySelector('[data-pb-portal-root]') as HTMLElement | null) : null;
   return (
-    <div className="pointer-events-auto absolute right-2 top-2 flex items-center gap-1 rounded bg-muted/60 px-1.5 py-1 text-xs shadow-sm opacity-80 hover:opacity-100">
+    <div className="pointer-events-auto absolute end-2 top-2 flex items-center gap-1 rounded bg-muted/60 px-1.5 py-1 text-xs shadow-sm opacity-80 hover:opacity-100">
       <Button variant="default" onClick={onToggleDrawer} className="h-6 px-2 py-0 text-xs">
         Comments ({unresolvedCount})
       </Button>

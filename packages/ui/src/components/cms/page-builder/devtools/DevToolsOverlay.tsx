@@ -112,7 +112,7 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
         <div key={`item-${i}`} className="absolute border border-emerald-500/60" style={{ left: b.left, top: b.top, width: b.width, height: b.height }} />
       ))}
       {/* HUD */}
-      <div className="absolute left-2 top-2 rounded bg-black/70 px-2 py-1 text-[10px] text-white shadow">
+      <div className="absolute start-2 top-2 rounded bg-black/70 px-2 py-1 text-[10px] text-white shadow">
         <div>DevTools ON</div>
         <div>FPS ~ {Math.round(fps)}</div>
         <div>Droppables: {droppables.length} Items: {items.length}</div>
@@ -136,4 +136,3 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
     </div>
   );
 }
-

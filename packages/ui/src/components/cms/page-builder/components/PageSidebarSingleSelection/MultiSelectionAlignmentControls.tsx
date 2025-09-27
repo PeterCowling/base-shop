@@ -47,7 +47,7 @@ const MultiSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Align Left"
         onClick={() =>
           alignLeft(components, selectedIds, viewport).forEach((p) =>
@@ -60,7 +60,7 @@ const MultiSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Align Right"
         onClick={() =>
           alignRight(components, selectedIds, viewport).forEach((p) =>
@@ -73,7 +73,7 @@ const MultiSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Align Top"
         onClick={() =>
           alignTop(components, selectedIds, viewport).forEach((p) =>
@@ -86,7 +86,7 @@ const MultiSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Align Bottom"
         onClick={() =>
           alignBottom(components, selectedIds, viewport).forEach((p) =>
@@ -99,7 +99,7 @@ const MultiSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Center Horizontally"
         onClick={() =>
           alignCenterX(components, selectedIds, viewport).forEach((p) =>
@@ -112,7 +112,7 @@ const MultiSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Center Vertically"
         onClick={() =>
           alignCenterY(components, selectedIds, viewport).forEach((p) =>
@@ -125,7 +125,7 @@ const MultiSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Distribute Horizontally"
         onClick={() =>
           distributeHorizontal(components, selectedIds, viewport).forEach((p) =>
@@ -138,7 +138,7 @@ const MultiSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Distribute Vertically"
         onClick={() =>
           distributeVertical(components, selectedIds, viewport).forEach((p) =>

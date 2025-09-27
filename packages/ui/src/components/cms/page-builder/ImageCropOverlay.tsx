@@ -109,22 +109,22 @@ export default function ImageCropOverlay({ value, onChange, visible = false }: {
       >
         {/* Handles */}
         <div
-          className="pointer-events-auto absolute -right-1 top-1/2 h-2 w-2 -translate-y-1/2 cursor-ew-resize rounded bg-sky-400"
+          className="pointer-events-auto absolute -end-1 top-1/2 h-2 w-2 -translate-y-1/2 cursor-ew-resize rounded bg-sky-400"
           onPointerDown={(e) => start(e, "e")}
           title="Drag horizontally to change ratio"
         />
         <div
-          className="pointer-events-auto absolute left-1/2 -bottom-1 h-2 w-2 -translate-x-1/2 cursor-ns-resize rounded bg-sky-400"
+          className="pointer-events-auto absolute start-1/2 -bottom-1 h-2 w-2 -translate-x-1/2 cursor-ns-resize rounded bg-sky-400"
           onPointerDown={(e) => start(e, "s")}
           title="Drag vertically to change ratio"
         />
         <div
-          className="pointer-events-auto absolute -right-1 -bottom-1 h-3 w-3 cursor-nwse-resize rounded bg-sky-500"
+          className="pointer-events-auto absolute -end-1 -bottom-1 h-3 w-3 cursor-nwse-resize rounded bg-sky-500"
           onPointerDown={(e) => start(e, "se")}
           title="Drag to change ratio"
         />
         {/* Badge */}
-        <div className="pointer-events-none absolute -top-5 left-0 flex items-center gap-1">
+        <div className="pointer-events-none absolute -top-5 start-0 flex items-center gap-1">
           <div className="pointer-events-none rounded bg-black/70 px-1 text-[10px] text-white shadow dark:bg-white/70 dark:text-black">
             {toAspectString(Math.max(0.01, box.w / Math.max(1, box.h)))}{dragging ? " (drag)" : ""}
           </div>

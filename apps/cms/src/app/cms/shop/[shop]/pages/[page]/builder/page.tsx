@@ -33,7 +33,7 @@ export default async function PageBuilderRoute({
       })),
     ],
     current: (current.slug || current.id),
-  } as const;
+  } as { items: { label: string; value: string; href: string }[]; current: string };
 
   async function save(formData: FormData) {
     "use server";

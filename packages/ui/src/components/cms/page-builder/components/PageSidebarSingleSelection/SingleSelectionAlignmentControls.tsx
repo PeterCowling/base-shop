@@ -57,7 +57,7 @@ const SingleSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Align to parent left"
         onClick={withElement((el, parent) => {
           const rect = el.getBoundingClientRect();
@@ -72,7 +72,7 @@ const SingleSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Align to parent right"
         onClick={withElement((el, parent) => {
           const rect = el.getBoundingClientRect();
@@ -87,7 +87,7 @@ const SingleSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Align to parent top"
         onClick={withElement((el, parent) => {
           const rect = el.getBoundingClientRect();
@@ -102,7 +102,7 @@ const SingleSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Align to parent bottom"
         onClick={withElement((el, parent) => {
           const rect = el.getBoundingClientRect();
@@ -117,7 +117,7 @@ const SingleSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Center Horizontally in parent"
         onClick={centerInParentX}
       >
@@ -126,7 +126,7 @@ const SingleSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Center Vertically in parent"
         onClick={centerInParentY}
       >
@@ -135,7 +135,7 @@ const SingleSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Stretch horizontally"
         onClick={withElement((el, parent) => {
           const rect = el.getBoundingClientRect();
@@ -151,7 +151,7 @@ const SingleSelectionAlignmentControls = ({
       <Button
         type="button"
         variant="outline"
-        className="h-7 px-2"
+        size="icon"
         title="Stretch vertically"
         onClick={withElement((el, parent) => {
           const rect = el.getBoundingClientRect();

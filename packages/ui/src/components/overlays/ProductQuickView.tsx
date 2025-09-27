@@ -55,7 +55,7 @@ export function ProductQuickView({
       >
         <Button
           variant="outline"
-          className="absolute right-2 top-2 px-2 py-1 text-xs"
+          className="absolute end-2 top-2 px-2 py-1 text-xs"
           aria-label="Close"
           data-cy="close-quick-view"
           onClick={() => onOpenChange(false)}

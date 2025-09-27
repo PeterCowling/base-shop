@@ -29,8 +29,8 @@ export const DrawerContent = React.forwardRef<
     "fixed top-0 z-50 h-full max-w-full overflow-y-auto border-border-2 shadow-elevation-4 data-[state=open]:translate-x-0 transition-transform";
   const sideClass =
     side === "left"
-      ? "left-0 translate-x-[-100%] border-r"
-      : "right-0 translate-x-[100%] border-l";
+      ? "start-0 translate-x-[-100%] border-e"
+      : "end-0 translate-x-[100%] border-s";
 
   return (
     <DialogPrimitive.Content

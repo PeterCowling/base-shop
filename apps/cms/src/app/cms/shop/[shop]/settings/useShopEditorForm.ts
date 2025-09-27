@@ -3,6 +3,7 @@
 
 import { useMemo, useState, ChangeEvent } from "react";
 import { providersByType } from "@acme/configurator/providers";
+import type { Provider } from "@acme/configurator/providers";
 import { LOCALES, type Shop } from "@acme/types";
 import useMappingRows from "@/hooks/useMappingRows";
 import useShopEditorSubmit, {
@@ -44,7 +45,7 @@ export function useShopEditorForm({
 
   const shippingProviderOptions = useMemo<ReadonlyArray<SelectOption>>(
     () =>
-      shippingProviders.map((provider) => ({
+      shippingProviders.map((provider: Provider) => ({
         label: provider.name,
         value: provider.id,
       })),

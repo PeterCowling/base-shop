@@ -28,25 +28,48 @@ export default function ShowcaseSection({
     return (
       <section className={className} {...rest}>
         <div className="mx-auto max-w-7xl px-4">
-          <RecommendationCarousel endpoint={url} minItems={1} maxItems={4} />
+          <RecommendationCarousel
+            endpoint={url}
+            minItems={1}
+            maxItems={4}
+            LoadingState={() => <div className="text-sm text-neutral-600">Loading recommendations…</div>}
+            ErrorState={() => <div className="text-sm text-red-600">Failed to load recommendations.</div>}
+          />
         </div>
       </section>
     );
   }
   // Grid layout: fetch client-side and render cards
   const [items, setItems] = React.useState<SKU[]>([]);
+  const [status, setStatus] = React.useState<'idle'|'loading'|'loaded'|'error'>('idle');
   React.useEffect(() => {
     const load = async () => {
       try {
+        setStatus('loading');
         const res = await fetch(`${endpoint}?preset=${encodeURIComponent(preset)}&limit=${encodeURIComponent(String(limit))}`);
-        if (!res.ok) return;
+        if (!res.ok) { setStatus('error'); return; }
         const data = (await res.json()) as SKU[];
         setItems(data);
+        setStatus('loaded');
       } catch {}
     };
     void load();
   }, [preset, limit, endpoint]);
 
+  if (status === 'loading') return (
+    <section className={className} {...rest}>
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="text-sm text-neutral-600">Loading…</div>
+      </div>
+    </section>
+  );
+  if (status === 'error') return (
+    <section className={className} {...rest}>
+      <div className="mx-auto max-w-7xl px-4">
+        <div className="text-sm text-red-600">Failed to load products.</div>
+      </div>
+    </section>
+  );
   if (items.length === 0) return null;
 
   const cols = gridCols;

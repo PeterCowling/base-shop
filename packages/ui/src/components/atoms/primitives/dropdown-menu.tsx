@@ -46,7 +46,7 @@ export const DropdownMenuSubContent = React.forwardRef<
   <DropdownMenuPrimitive.SubContent
     ref={ref}
     className={cn(
-      "bg-panel text-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
+      "bg-panel text-foreground z-50 min-w-32 overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
       className
     )}
     // Hard fallback ensures solid background even if tokens are missing
@@ -76,7 +76,7 @@ export const DropdownMenuContent = React.forwardRef<
       ref={ref}
       sideOffset={sideOffset}
     className={cn(
-      "bg-panel text-foreground z-50 min-w-[8rem] overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
+      "bg-panel text-foreground z-50 min-w-32 overflow-hidden rounded-md border p-1 shadow-elevation-3 border-border-2",
       className
     )}
       // Hard fallback ensures solid background even if tokens are missing

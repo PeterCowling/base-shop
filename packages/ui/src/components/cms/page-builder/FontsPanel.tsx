@@ -219,11 +219,11 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
               </label>
             </div>
             <div className="space-y-2">
-              <div className="text-xs text-foreground">Heading 1 (H1–H3) <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(currentH1) || ""}</span></div>
+              <div className="text-xs text-foreground">Heading 1 (H1–H3) <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentH1) || ""}</span></div>
               <div className="text-foreground" style={{ fontFamily: currentH1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
-              <div className="mt-3 text-xs text-foreground">Heading 2 (H4–H6) <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(currentH2) || ""}</span></div>
+              <div className="mt-3 text-xs text-foreground">Heading 2 (H4–H6) <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentH2) || ""}</span></div>
               <div className="text-foreground" style={{ fontFamily: currentH2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
-              <div className="mt-3 text-xs text-foreground">Body <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(currentBody) || ""}</span></div>
+              <div className="mt-3 text-xs text-foreground">Body <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentBody) || ""}</span></div>
               <div className="text-foreground" style={{ fontFamily: currentBody, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
             </div>
           </div>
@@ -268,16 +268,16 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
                       </button>
                     </div>
                     {p.tags && p.tags.length > 0 && (
-                      <div className="mb-2 flex flex-wrap gap-1 text-[10px] text-foreground/80">
+                      <div className="mb-2 flex flex-wrap gap-1 text-xs text-foreground/80">
                         {p.tags.map((t) => <span key={t} className="rounded border border-border-2 bg-surface-3 px-1">{t}</span>)}
                       </div>
                     )}
                     <div className="space-y-1">
-                      <div className="text-xs text-foreground">Heading 1 <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(h1) || ""}</span></div>
+                      <div className="text-xs text-foreground">Heading 1 <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(h1) || ""}</span></div>
                       <div className="text-foreground" style={{ fontFamily: h1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
-                      <div className="mt-2 text-xs text-foreground">Heading 2 <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(h2) || ""}</span></div>
+                      <div className="mt-2 text-xs text-foreground">Heading 2 <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(h2) || ""}</span></div>
                       <div className="text-foreground" style={{ fontFamily: h2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
-                      <div className="mt-2 text-xs text-foreground">Body <span className="ms-2 align-middle text-[11px] text-foreground/70">{firstFamilyFromStack(body) || ""}</span></div>
+                      <div className="mt-2 text-xs text-foreground">Body <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(body) || ""}</span></div>
                       <div className="text-foreground" style={{ fontFamily: body, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
                     </div>
                   </div>
@@ -301,7 +301,7 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="fixed left-1/2 top-1/2 z-[70] max-h-[90vh] w-[min(100vw-2rem,80rem)] -translate-x-1/2 -translate-y-1/2 overflow-auto border bg-surface-3 p-0 shadow-elevation-4"
+        className="fixed start-1/2 top-1/2 z-[70] max-h-[90vh] w-[min(100vw-2rem,80rem)] -translate-x-1/2 -translate-y-1/2 overflow-auto border bg-surface-3 p-0 shadow-elevation-4"
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <DialogTitle>Typography</DialogTitle>

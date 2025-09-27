@@ -3,6 +3,7 @@
 
 import { useEffect } from "react";
 import { baseTokens, loadThemeTokens } from "../../wizard/tokenUtils";
+import type { TokenMap } from "../../wizard/tokenUtils";
 import { useConfigurator } from "../ConfiguratorContext";
 import type { ConfiguratorState } from "../../wizard/schema";
 
@@ -31,13 +32,13 @@ export function useThemeLoader(): React.CSSProperties {
       if (cancelled) return;
       setState((prev: ConfiguratorState) => {
         // If nothing actually changed, skip the state update to avoid re-render churn
-        const prevTokens = prev.themeDefaults ?? {};
+        const prevTokens = (prev.themeDefaults ?? {}) as Partial<TokenMap>;
         const prevKeys = Object.keys(prevTokens);
-        const nextKeys = Object.keys(tv);
+        const nextKeys = Object.keys(tv) as Array<keyof TokenMap>;
         if (prevKeys.length === nextKeys.length) {
           let same = true;
           for (let i = 0; i < nextKeys.length; i++) {
-            const k = nextKeys[i]!;
+            const k = nextKeys[i]! as keyof TokenMap;
             if (prevTokens[k] !== tv[k]) { same = false; break; }
           }
           if (same) return prev;

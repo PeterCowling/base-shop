@@ -40,7 +40,7 @@ export default function AgeGateSection({ minAge = 18, message = "You must confir
   if (!shown || allowed) return null;
 
   return (
-    <div className={["fixed inset-0 z-[100] flex items-center justify-center bg-black/70", className].filter(Boolean).join(" ") || undefined} {...rest}>
+    <div className={["fixed inset-0 z-50 flex items-center justify-center bg-black/70", className].filter(Boolean).join(" ") || undefined} {...rest}>
       <div className="w-full max-w-md rounded bg-white p-6 text-center shadow-elevation-4">
         <h2 className="mb-2 text-lg font-semibold">Age confirmation</h2>
         <p className="mb-4 text-sm text-neutral-700">{message}</p>
@@ -51,4 +51,3 @@ export default function AgeGateSection({ minAge = 18, message = "You must confir
     </div>
   );
 }
-

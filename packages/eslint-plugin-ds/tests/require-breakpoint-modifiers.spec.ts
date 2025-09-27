@@ -24,12 +24,22 @@ tester.run("require-breakpoint-modifiers", rule, {
     {
       code: "/** @responsive */\nconst X=()=> <div className={clsx('md:grid', { 'gap-4': true })} />;",
     },
+    // Non-layout breakpoint alone is not sufficient (checked in invalid cases)
   ],
   invalid: [
     {
       code: "/** @responsive */\nexport default function X(){ return <div className=\"flex gap-4\"/> }",
       errors: [{ messageId: "addBreakpoint" }],
     },
+    // Only non-layout classes → still requires a layout class with breakpoint
+    {
+      code: "/** @responsive */\nconst X=()=> <div className=\"text-sm text-fg\" />;",
+      errors: [{ messageId: "addBreakpoint" }],
+    },
+    // Dynamic non-confident parsing: do not satisfy requirement
+    {
+      code: "/** @responsive */\nconst cls = ['flex']; const X=()=> <div className={clsx(...cls)} />;",
+      errors: [{ messageId: "addBreakpoint" }],
+    },
   ],
 });
-

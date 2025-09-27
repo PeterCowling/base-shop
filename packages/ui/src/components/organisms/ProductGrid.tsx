@@ -115,7 +115,7 @@ export function ProductGrid({
             {enableQuickView && (
               <Button
                 variant="outline"
-                className="absolute right-2 top-2 h-8 px-2"
+                className="absolute end-2 top-2 h-8 px-2"
                 aria-label={`Quick view ${p.title}`}
                 onClick={() => setQuickViewProduct(p)}
               >

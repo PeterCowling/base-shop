@@ -59,7 +59,7 @@ export default function CarouselContainer({
   return (
     <div className={cn("relative", className)}>
       {showArrows && (
-        <div className="pointer-events-none absolute inset-y-0 left-0 right-0 z-10 flex items-center justify-between">
+        <div className="pointer-events-none absolute inset-y-0 start-0 end-0 z-10 flex items-center justify-between">
           <Button type="button" variant="outline" className="pointer-events-auto ms-2 h-8 w-8 p-0" onClick={() => scrollBy(-1)} aria-label="Previous slide">‹</Button>
           <Button type="button" variant="outline" className="pointer-events-auto me-2 h-8 w-8 p-0" onClick={() => scrollBy(1)} aria-label="Next slide">›</Button>
         </div>

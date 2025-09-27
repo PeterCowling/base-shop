@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function CommentsHelpLauncher() {
   return (
-    <div className="absolute left-2 bottom-12 z-40 flex gap-2">
+    <div className="absolute start-2 bottom-12 z-40 flex gap-2">
       <Tooltip text="Comments">
         <button
           type="button"
@@ -26,4 +26,3 @@ export default function CommentsHelpLauncher() {
     </div>
   );
 }
-

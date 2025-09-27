@@ -72,12 +72,12 @@ const HistoryControls = ({
       {showUndoRedo && (
         <>
           <Tooltip text="Undo (Ctrl/⌘+Z)">
-            <Button onClick={onUndo} disabled={!canUndo} aria-label="Undo">
+            <Button onClick={onUndo} disabled={!canUndo} aria-label="Undo" size="icon">
               <RotateCounterClockwiseIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
           </Tooltip>
           <Tooltip text="Redo (Ctrl/⌘+Y)">
-            <Button onClick={onRedo} disabled={!canRedo} aria-label="Redo">
+            <Button onClick={onRedo} disabled={!canRedo} aria-label="Redo" size="icon">
               <UpdateIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
           </Tooltip>

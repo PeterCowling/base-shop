@@ -76,7 +76,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                   {section.title}
                 </a>
                 {section.items && section.items.length > 0 && (
-                  <div className="bg-panel border-border-2 absolute top-full left-0 z-10 hidden min-w-[12rem] rounded-md border p-2 shadow-elevation-3 group-hover:block">
+                  <div className="bg-panel border-border-2 absolute top-full start-0 z-10 hidden w-48 rounded-md border p-2 shadow-elevation-3 group-hover:block">
                     <ul className="flex flex-col gap-1">
                       {section.items.map((item) => (
                         <li key={item.title}>

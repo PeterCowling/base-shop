@@ -17,7 +17,7 @@ const SnapLine = ({ x = null, y = null }: Props) => {
       )}
       {y !== null && (
         <div
-          className="pointer-events-none absolute left-0 right-0 h-px bg-primary"
+          className="pointer-events-none absolute start-0 end-0 h-px bg-primary"
           style={{ top: y }}
         />
       )}

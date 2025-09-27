@@ -123,7 +123,7 @@ function NavList({
         items={items.map((i) => i.id)}
         strategy={verticalListSortingStrategy}
       >
-        <ul className={level ? "ml-4 space-y-2" : "space-y-2"}>
+        <ul className={level ? "ms-4 space-y-2" : "space-y-2"}>
           {items.map((item, i) => (
             <Fragment key={item.id}>
               {insertIndex === i && (

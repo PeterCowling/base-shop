@@ -85,7 +85,7 @@ export default function DragOverlayPreview({ dragMeta, allowed, locale = 'en', s
         )}
         <div className="flex flex-col">
           <span className={"text-sm " + (danger ? "text-danger" : "")}>{label}</span>
-          <span className="text-muted-foreground text-[10px]">{note}</span>
+          <span className="text-muted-foreground text-xs">{note}</span>
         </div>
         {danger && (
           <span className="ms-2 text-danger" aria-hidden>

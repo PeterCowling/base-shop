@@ -15,6 +15,7 @@ export interface CollectionClientProps extends React.HTMLAttributes<HTMLDivEleme
 
 export default function CollectionSectionClient({ initial, params, paginationMode = "loadMore", pageSize = 12, seoText, seoCollapsible = true, className, ...rest }: CollectionClientProps) {
   const [items, setItems] = React.useState<SKU[]>(initial);
+  const [status, setStatus] = React.useState<'idle'|'loading'|'loaded'|'error'>("idle");
   const [sort, setSort] = React.useState<string>(params.sort ?? "");
   const [size, setSize] = React.useState<string>(params.size ?? "");
   const [color, setColor] = React.useState<string>(params.color ?? "");
@@ -46,6 +47,7 @@ export default function CollectionSectionClient({ initial, params, paginationMod
     const controller = new AbortController();
     const load = async () => {
       try {
+        setStatus('loading');
         const col = (params.slug ?? "").toString();
         const url = new URL(`/api/collections/${encodeURIComponent(col)}`, window.location.origin);
         if (sort) url.searchParams.set("sort", sort);
@@ -56,7 +58,7 @@ export default function CollectionSectionClient({ initial, params, paginationMod
           url.searchParams.set("pageSize", ps);
         }
         const res = await fetch(url.toString(), { signal: controller.signal });
-        if (!res.ok) return;
+        if (!res.ok) { setStatus('error'); return; }
         const data = (await res.json()) as { items?: SKU[] } | SKU[];
         let list = Array.isArray(data) ? data : (data.items ?? []);
         // Apply facet filters client-side
@@ -68,6 +70,7 @@ export default function CollectionSectionClient({ initial, params, paginationMod
           return priceOk && sizeOk && colorOk;
         });
         setItems(list);
+        setStatus('loaded');
       } catch {}
     };
     void load();
@@ -86,6 +89,12 @@ export default function CollectionSectionClient({ initial, params, paginationMod
   return (
     <div className={className} {...rest}>
       <div className="mx-auto max-w-7xl px-4 py-6">
+        {status === 'loading' ? (
+          <div className="mb-3 text-sm text-neutral-600">Loading collection…</div>
+        ) : null}
+        {status === 'error' ? (
+          <div className="mb-3 text-sm text-red-600">Failed to load collection.</div>
+        ) : null}
         <div className="grid grid-cols-4 gap-6">
           <aside className="col-span-1">
             <ProductFilter
@@ -110,7 +119,7 @@ export default function CollectionSectionClient({ initial, params, paginationMod
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {items.map((p) => (
                 <div key={p.id} className="border rounded p-3">
-                  <div className="aspect-[4/3] bg-neutral-100 mb-2" />
+                  <div className="aspect-video bg-neutral-100 mb-2" />
                   <div className="font-medium">{p.title}</div>
                   <div className="text-sm text-neutral-600">{p.slug}</div>
                 </div>

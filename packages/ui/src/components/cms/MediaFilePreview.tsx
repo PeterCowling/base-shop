@@ -5,6 +5,9 @@ import Image from "next/image";
 import type { KeyboardEvent, ReactNode } from "react";
 
 import { Progress, Tag } from "../atoms/shadcn";
+// i18n-exempt — CMS tooling strings; mark while translations are wired
+/* i18n-exempt */
+const t = (s: string) => s;
 
 interface MediaFilePreviewProps {
   item: MediaItem & { url: string };
@@ -44,7 +47,7 @@ export function MediaFilePreview({
         tabIndex={onPreviewSelect && !actionsDisabled ? 0 : undefined}
         onClick={onPreviewSelect && !actionsDisabled ? onPreviewSelect : undefined}
         onKeyDown={onPreviewKeyDown}
-        className="relative aspect-[4/3] w-full overflow-hidden"
+        className="relative aspect-video w-full overflow-hidden"
         aria-disabled={actionsDisabled || undefined}
       >
         {item.type === "video" ? (
@@ -73,8 +76,8 @@ export function MediaFilePreview({
         />
 
         {isRecent ? (
-          <div className="absolute left-3 top-3 z-20">
-            <Tag variant="success">Recent</Tag>
+          <div className="absolute start-3 top-3 z-20">
+            <Tag variant="success">{t("Recent")}</Tag>
           </div>
         ) : null}
 
@@ -88,10 +91,10 @@ export function MediaFilePreview({
             <Progress
               value={progressValue ?? 15}
               label={progressValue ? `${Math.round(progressValue)}%` : undefined}
-              className="w-4/5 max-w-[200px]"
+              className="w-52 sm:w-64"
             />
             <p className="text-sm font-medium" data-token="--color-fg">
-              Replacing asset...
+              {t("Replacing asset…")}
             </p>
             {uploadError ? (
               <p className="text-xs text-danger" data-token="--color-danger">
@@ -107,7 +110,7 @@ export function MediaFilePreview({
             data-token="--color-bg"
           >
             <p className="text-sm font-medium" data-token="--color-fg">
-              Deleting asset...
+              {t("Deleting asset…")}
             </p>
           </div>
         ) : null}

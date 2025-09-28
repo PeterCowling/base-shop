@@ -79,7 +79,6 @@ import { getRequiredSteps, getSteps } from "../src/app/cms/configurator/steps";
 import { STORAGE_KEY } from "../src/app/cms/configurator/hooks/useConfiguratorPersistence";
 
 declare global {
-  // eslint-disable-next-line no-var,vars-on-top
   var fetch: jest.Mock;
 }
 

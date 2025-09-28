@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react/forbid-dom-props -- LINT-1007: fixed palette width uses inline style to avoid arbitrary Tailwind values */
 
 import React from "react";
 import Palette from "./Palette";

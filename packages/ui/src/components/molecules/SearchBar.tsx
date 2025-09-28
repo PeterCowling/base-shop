@@ -1,3 +1,4 @@
+/* i18n-exempt file -- UI-000: Non-user-facing literals (class names, aria roles, HTML attributes, key names). Visible copy comes from props or i18n keys. */
 "use client";
 
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
@@ -5,6 +6,9 @@ import { useEffect, useId, useState } from "react";
 import { Input } from "../atoms/shadcn";
 import { cn } from "../../utils/style";
 import { useTranslations } from "@acme/i18n";
+import type { TranslatableText } from "@acme/types/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@i18n/resolveText";
 
 export interface SearchBarProps {
   /** Suggestions to filter based on the search query */
@@ -13,11 +17,13 @@ export interface SearchBarProps {
   onSelect?(value: string): void;
   /** Callback when a search is manually submitted */
   onSearch?(value: string): void;
-  placeholder?: string;
+  placeholder?: TranslatableText;
   /** Accessible label for the search input */
   label: string;
   /** Optional search query to display */
   query?: string;
+  /** Locale to resolve inline placeholder */
+  locale?: Locale;
 }
 
 export function SearchBar({
@@ -27,8 +33,9 @@ export function SearchBar({
   placeholder,
   label,
   query: initialQuery = "",
+  locale = "en",
 }: SearchBarProps) {
-  const t = useTranslations();
+  const t = useTranslations() as unknown as (key: string, params?: Record<string, unknown>) => string;
   const [query, setQuery] = useState(initialQuery);
   const [matches, setMatches] = useState<string[]>([]);
   const [isSelecting, setIsSelecting] = useState(false);
@@ -71,7 +78,7 @@ export function SearchBar({
   };
 
   return (
-    <div className="relative w-full sm:w-80">
+    <div className="relative w-full sm:w-80"> {/* i18n-exempt -- UI-000: class names */}
       <label htmlFor={inputId} className="sr-only">
         {label}
       </label>
@@ -113,14 +120,18 @@ export function SearchBar({
           }
           onSearch?.(query);
         }}
-        placeholder={placeholder ?? (t("search.placeholder") as string)}
-        className="pe-8"
+        placeholder={(() => {
+          if (!placeholder) return t("search.placeholder") as string;
+          if (typeof placeholder === "string") return placeholder;
+          return resolveText(placeholder, locale, t);
+        })()}
+        className="pe-8" /* i18n-exempt -- UI-000: class names */
       />
-      <MagnifyingGlassIcon className="text-muted-foreground pointer-events-none absolute top-2 end-2 h-4 w-4" />
+      <MagnifyingGlassIcon className="text-muted-foreground pointer-events-none absolute top-2 end-2 h-4 w-4" /> {/* i18n-exempt -- UI-000: class names */}
       {matches.length > 0 && (
         <ul
           role="listbox"
-          className="bg-background absolute mt-1 w-full rounded-md border shadow"
+          className="bg-background absolute mt-1 w-full rounded-md border shadow" /* i18n-exempt -- UI-000: class names */
         >
           {matches.map((m, i) => (
             <li
@@ -130,8 +141,8 @@ export function SearchBar({
               aria-selected={i === highlightedIndex}
               onMouseDown={() => handleSelect(m)}
               className={cn(
-                "text-fg hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1", // i18n-exempt: class names
-                i === highlightedIndex && "bg-accent text-accent-foreground" // i18n-exempt: class names
+                "text-fg hover:bg-accent hover:text-accent-foreground cursor-pointer px-3 py-1", // i18n-exempt -- UI-000: class names
+                i === highlightedIndex && "bg-accent text-accent-foreground" // i18n-exempt -- UI-000: class names
               )}
             >
               {m}

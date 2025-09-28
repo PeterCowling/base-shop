@@ -187,22 +187,14 @@ export default function DynamicRenderer({
     const animClass = animation && animation !== "none"
       ? (
           {
-            // i18n-exempt — CSS class strings, not user-facing copy
-            fade: "pb-animate pb-animate-fade",
-            // i18n-exempt — CSS class strings, not user-facing copy
-            slide: "pb-animate pb-animate-slide",
-            // i18n-exempt — CSS class strings, not user-facing copy
-            "slide-up": "pb-animate pb-animate-slide-up",
-            // i18n-exempt — CSS class strings, not user-facing copy
-            "slide-down": "pb-animate pb-animate-slide-down",
-            // i18n-exempt — CSS class strings, not user-facing copy
-            "slide-left": "pb-animate pb-animate-slide-left",
-            // i18n-exempt — CSS class strings, not user-facing copy
-            "slide-right": "pb-animate pb-animate-slide-right",
-            // i18n-exempt — CSS class strings, not user-facing copy
-            zoom: "pb-animate pb-animate-zoom",
-            // i18n-exempt — CSS class strings, not user-facing copy
-            rotate: "pb-animate pb-animate-rotate",
+            fade: "pb-animate pb-animate-fade", // i18n-exempt -- PB-2419: CSS class string, not user-facing copy
+            slide: "pb-animate pb-animate-slide", // i18n-exempt -- PB-2419: CSS class string, not user-facing copy
+            "slide-up": "pb-animate pb-animate-slide-up", // i18n-exempt -- PB-2419: CSS class string, not user-facing copy
+            "slide-down": "pb-animate pb-animate-slide-down", // i18n-exempt -- PB-2419: CSS class string, not user-facing copy
+            "slide-left": "pb-animate pb-animate-slide-left", // i18n-exempt -- PB-2419: CSS class string, not user-facing copy
+            "slide-right": "pb-animate pb-animate-slide-right", // i18n-exempt -- PB-2419: CSS class string, not user-facing copy
+            zoom: "pb-animate pb-animate-zoom", // i18n-exempt -- PB-2419: CSS class string, not user-facing copy
+            rotate: "pb-animate pb-animate-rotate", // i18n-exempt -- PB-2419: CSS class string, not user-facing copy
           } as Record<string, string>
         )[animation] || ""
       : "";
@@ -244,6 +236,7 @@ export default function DynamicRenderer({
     const { staggerChildren: _staggerChildren_omit, ...cleanRest } = (rest as Record<string, unknown>);
     const { staggerChildren: _staggerChildren_extra, ...cleanExtraProps } = (extraProps as Record<string, unknown>);
 
+    /* eslint-disable react/forbid-dom-props -- PB-2419: dynamic per-block layout and CSS variable injection require inline styles on wrapper(s) */
     return (
       <div
         key={id}
@@ -323,6 +316,7 @@ export default function DynamicRenderer({
         )}
       </div>
     );
+    /* eslint-enable react/forbid-dom-props */
   };
 
   return <>{components.map((c) => renderBlock(c))}</>;

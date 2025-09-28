@@ -1,4 +1,3 @@
-/* eslint-disable import/first */
 (process.env as Record<string, string>).NODE_ENV = "development";
 
 import fs from "node:fs/promises";
@@ -37,6 +36,7 @@ describe("SEO structured data persistence", () => {
         "test",
         "settings.json",
       );
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- Reading a file within a controlled temp repo path in tests
       const settings = JSON.parse(await fs.readFile(settingsFile, "utf8"));
       const sd = settings?.seo?.en?.structuredData;
       expect(typeof sd).toBe("string");
@@ -47,4 +47,3 @@ describe("SEO structured data persistence", () => {
     });
   });
 });
-

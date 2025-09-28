@@ -4,7 +4,9 @@ import { Button, Input } from "@/components/atoms/shadcn";
 import { Toast, Tag } from "@/components/atoms";
 import { type PricingMatrix } from "@acme/types";
 import { cn } from "@ui/utils/style";
+import { Inline } from "@ui/components/atoms/primitives";
 import { useCallback, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 
 import PricingCoverageSection from "./PricingCoverageSection";
 import PricingDamageSection from "./PricingDamageSection";
@@ -17,12 +19,22 @@ interface Props {
   initial: PricingMatrix;
 }
 
-const tabs: { id: PricingFormTab; label: string }[] = [
-  { id: "guided", label: "Guided form" },
-  { id: "json", label: "Advanced JSON" },
+const tabs: { id: PricingFormTab }[] = [
+  { id: "guided" },
+  { id: "json" },
 ];
 
+// Non-UI string constants
+const BASE_RATE_ID = "base-daily-rate"; // i18n-exempt -- CMS-1010 control id, not user-facing copy [ttl=2026-03-31]
+const BASE_RATE_ERROR_ID = "base-daily-rate-error"; // i18n-exempt -- CMS-1010 aria-describedby id, not user-facing copy [ttl=2026-03-31]
+const JSON_MIME_ACCEPT = ".json,application/json"; // i18n-exempt -- CMS-1010 MIME types for file input [ttl=2026-03-31]
+const TAG_CLASS = "rounded-lg px-3 py-1 text-xs font-medium"; // i18n-exempt -- CMS-1010 utility class names [ttl=2026-03-31]
+const TAB_BASE_CLASS = "flex-1 rounded-xl px-4 py-2 text-sm font-semibold transition"; // i18n-exempt -- CMS-1010 utility class names [ttl=2026-03-31]
+const TAB_ACTIVE_CLASS = "bg-success/20 text-foreground shadow-inner"; // i18n-exempt -- CMS-1010 utility class names [ttl=2026-03-31]
+const TAB_INACTIVE_CLASS = "text-muted-foreground hover:bg-surface-3"; // i18n-exempt -- CMS-1010 utility class names [ttl=2026-03-31]
+
 export default function PricingForm({ shop, initial }: Props) {
+  const t = useTranslations();
   const [toast, setToast] = useState<{ open: boolean; message: string }>({ open: false, message: "" });
 
   const emitToast = useCallback((message: string) => {
@@ -56,25 +68,23 @@ export default function PricingForm({ shop, initial }: Props) {
     <div className="space-y-6" role="tabpanel" aria-labelledby="pricing-tab-guided">
       <section className="space-y-3">
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium text-foreground" htmlFor="base-daily-rate">
-            Base daily rate
+          <label className="text-sm font-medium text-foreground" htmlFor={BASE_RATE_ID}>
+            {t("cms.pricing.baseDailyRate")}
           </label>
           <Input
-            id="base-daily-rate"
+            id={BASE_RATE_ID}
             type="number"
             min={0}
             step="0.01"
             value={baseRate}
             onChange={onBaseRateChange}
             aria-invalid={baseRateError ? "true" : undefined}
-            aria-describedby={baseRateError ? "base-daily-rate-error" : undefined}
+            aria-describedby={baseRateError ? BASE_RATE_ERROR_ID : undefined}
             className="bg-surface-2 text-foreground"
           />
-          <p className="text-xs text-muted-foreground">
-            This rate is used whenever a SKU does not specify its own price.
-          </p>
+          <p className="text-xs text-muted-foreground">{t("cms.pricing.baseDailyRate.help")}</p>
           {baseRateError ? (
-            <p id="base-daily-rate-error" className="text-xs text-danger-foreground">
+            <p id={BASE_RATE_ERROR_ID} className="text-xs text-danger-foreground">
               {baseRateError}
             </p>
           ) : null}
@@ -100,11 +110,11 @@ export default function PricingForm({ shop, initial }: Props) {
       <PricingCoverageSection rows={coverage.rows} onUpdate={coverage.update} getErrors={coverage.getErrors} />
 
       <section className="rounded-xl border border-border-1 bg-surface-2 p-4">
-        <h3 className="text-sm font-semibold text-foreground">Need a quick checklist?</h3>
+        <h3 className="text-sm font-semibold text-foreground">{t("cms.pricing.checklist.title")}</h3>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-xs text-muted-foreground">
-          <li>Verify base rate aligns with current merchandising calendar.</li>
-          <li>Mirror long-stay discounts shared by finance to avoid manual overrides.</li>
-          <li>Confirm damage codes match warehouse dispositions and deposit policy.</li>
+          <li>{t("cms.pricing.checklist.item.verifyBaseRate")}</li>
+          <li>{t("cms.pricing.checklist.item.longStayDiscounts")}</li>
+          <li>{t("cms.pricing.checklist.item.damageCodes")}</li>
         </ul>
       </section>
     </div>
@@ -125,7 +135,7 @@ export default function PricingForm({ shop, initial }: Props) {
       <input
         ref={fileInputRef}
         type="file"
-        accept=".json,application/json"
+        accept={JSON_MIME_ACCEPT}
         className="hidden"
         onChange={handleFileChange}
       />
@@ -135,7 +145,7 @@ export default function PricingForm({ shop, initial }: Props) {
             <div className="flex items-center gap-2">
               <Tag
                 variant={statusVariant}
-                className={cn("rounded-lg px-3 py-1 text-xs font-medium")}
+                className={cn(TAG_CLASS)}
               >
                 {statusLabel}
               </Tag>
@@ -146,9 +156,7 @@ export default function PricingForm({ shop, initial }: Props) {
               ) : null}
             </div>
             {rootError ? <span className="text-xs text-danger-foreground">{rootError}</span> : null}
-            <p className="text-xs text-muted-foreground">
-              Save regularly to push updates to pricing services. Import JSON from finance or export to share with operations.
-            </p>
+            <p className="text-xs text-muted-foreground">{t("cms.pricing.toolbar.help")}</p>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2">
             <Button
@@ -157,7 +165,7 @@ export default function PricingForm({ shop, initial }: Props) {
               className="h-9 rounded-lg text-xs text-foreground hover:bg-surface-3"
               onClick={handleImportClick}
             >
-              Import JSON
+              {t("cms.pricing.toolbar.importJSON")}
             </Button>
             <Button
               type="button"
@@ -165,13 +173,13 @@ export default function PricingForm({ shop, initial }: Props) {
               className="h-9 rounded-lg text-xs text-foreground hover:bg-surface-3"
               onClick={handleExport}
             >
-              Export JSON
+              {t("cms.pricing.toolbar.exportJSON")}
             </Button>
           </div>
         </div>
 
         <div className="rounded-2xl border border-border-1 bg-surface-2">
-          <div className="flex gap-2 border-b border-border-1 bg-surface-2 p-2" role="tablist">
+          <Inline gap={2} className="border-b border-border-1 bg-surface-2 p-2" role="tablist">
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id;
               return (
@@ -184,17 +192,15 @@ export default function PricingForm({ shop, initial }: Props) {
                   aria-controls={`pricing-panel-${tab.id}`}
                   onClick={() => handleTabChange(tab.id)}
                   className={cn(
-                    "flex-1 rounded-xl px-4 py-2 text-sm font-semibold transition",
-                    isActive
-                      ? "bg-success/20 text-foreground shadow-inner"
-                      : "text-muted-foreground hover:bg-surface-3"
+                    TAB_BASE_CLASS,
+                    isActive ? TAB_ACTIVE_CLASS : TAB_INACTIVE_CLASS
                   )}
                 >
-                  {tab.label}
+                  {tab.id === "guided" ? t("cms.pricing.tabs.guided") : t("cms.pricing.tabs.json")}
                 </button>
               );
             })}
-          </div>
+          </Inline>
           <div
             id={`pricing-panel-${activeTab}`}
             className="space-y-4 p-5"
@@ -211,11 +217,9 @@ export default function PricingForm({ shop, initial }: Props) {
           type="submit"
           className="h-10 rounded-xl bg-success px-5 text-sm font-semibold text-success-foreground shadow-elevation-2 hover:bg-success/90"
         >
-          Save pricing
+          {t("cms.pricing.save")}
         </Button>
-        <span className="text-xs text-muted-foreground">
-          Updates apply immediately to rental quotes after saving.
-        </span>
+        <span className="text-xs text-muted-foreground">{t("cms.pricing.saveNotice")}</span>
       </div>
 
       <Toast open={toast.open} message={toast.message} onClose={closeToast} />

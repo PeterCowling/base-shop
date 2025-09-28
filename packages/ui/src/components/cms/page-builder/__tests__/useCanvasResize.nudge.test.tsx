@@ -31,7 +31,8 @@ describe("useCanvasResize keyboard nudge", () => {
         gridCols: 12,
         containerRef: ref,
       });
-      return <div ref={ref} style={{ width: 100, height: 100 }} />;
+      // Dimensions aren't needed for this test; avoid inline style on DOM.
+      return <div ref={ref} />;
     }
     render(<Wrapper />);
 
@@ -49,4 +50,3 @@ describe("useCanvasResize keyboard nudge", () => {
     expect(hook!.kbResizing).toBe(false);
   });
 });
-

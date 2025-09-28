@@ -50,7 +50,7 @@ export async function PATCH(req: NextRequest) {
     alreadyReturned = true;
   }
   if (!order) {
-    return NextResponse.json({ error: "Order not found" }, { status: 404 }); // i18n-exempt: machine-readable API error, not user-facing UI
+    return NextResponse.json({ error: "Order not found" }, { status: 404 }); // i18n-exempt -- DS-1234 machine-readable API error, not user-facing UI
   }
 
   const shop = await readShop("bcd");
@@ -101,10 +101,10 @@ export async function PATCH(req: NextRequest) {
       { status: 200 },
     );
   } catch (err) {
-    console.error("Failed to process payment" /* i18n-exempt: developer log */, err);
+    console.error("Failed to process payment" /* i18n-exempt -- DS-1234 developer log */ , err);
     return NextResponse.json(
-      { error: "Payment processing failed" },
+      { error: "Payment processing failed" /* i18n-exempt -- DS-1234 machine-readable API error; not user-facing UI */ },
       { status: 502 },
-    ); // i18n-exempt: machine-readable API error, not user-facing UI
+    );
   }
 }

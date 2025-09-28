@@ -5,6 +5,7 @@ import Button from "../../blocks/Button";
 const blockRegistryMock = {
   Foo: {
     component: ({ style }: { style?: React.CSSProperties }) => (
+      // eslint-disable-next-line react/forbid-dom-props -- TEST-STYLE-PASS: verify style passthrough to DOM in unit test
       <div data-cy="foo" style={style}>
         Foo
       </div>
@@ -145,4 +146,3 @@ describe("Block", () => {
     expect(container.querySelector('[class*="pb-animate-"]')).toBeNull();
   });
 });
-

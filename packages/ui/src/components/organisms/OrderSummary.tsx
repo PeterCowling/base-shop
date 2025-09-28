@@ -1,10 +1,11 @@
 // packages/ui/components/organisms/OrderSummary.tsx
-"use client";
+"use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 
 import { useCart } from "../../hooks/useCart";
 import type { CartLine } from "@acme/types/Cart";
 import { Price } from "../atoms/Price";
 import React, { useMemo } from "react";
+import { useTranslations } from "@acme/i18n";
 
 type Totals = {
   subtotal: number;
@@ -30,6 +31,7 @@ type Props = {
  * back to the client-side cart context.
  */
 function OrderSummary({ cart: cartProp, totals }: Props) {
+  const t = useTranslations();
   /* ------------------------------------------------------------------
    * Cart context (used as a fallback when server data isn't provided)
    * ------------------------------------------------------------------ */
@@ -71,9 +73,9 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
     <table className="w-full text-sm">
       <thead>
         <tr className="border-b text-start">
-          <th className="py-2">Item</th>
-          <th>Qty</th>
-          <th className="text-end">Price</th>
+          <th className="py-2">{t("Item")}</th>
+          <th>{t("Qty")}</th>
+          <th className="text-end">{t("Price")}</th>
         </tr>
       </thead>
       <tbody>
@@ -97,14 +99,14 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
       <tfoot>
         <tr>
           <td />
-          <td className="py-2">Subtotal</td>
+          <td className="py-2">{t("Subtotal")}</td>
           <td className="text-end">
             <Price amount={subtotal} />
           </td>
         </tr>
         <tr>
           <td />
-          <td className="py-2">Deposit</td>
+          <td className="py-2">{t("Deposit")}</td>
           <td className="text-end">
             <Price amount={deposit} />
           </td>
@@ -112,7 +114,7 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
         {totals?.tax !== undefined && (
           <tr>
             <td />
-            <td className="py-2">Tax</td>
+            <td className="py-2">{t("Tax")}</td>
             <td className="text-end">
               <Price amount={tax} />
             </td>
@@ -121,7 +123,7 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
         {totals?.discount !== undefined && (
           <tr>
             <td />
-            <td className="py-2">Discount</td>
+            <td className="py-2">{t("Discount")}</td>
             <td className="text-end">
               <Price amount={-discount} />
             </td>
@@ -129,7 +131,7 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
         )}
         <tr>
           <td />
-          <td className="py-2 font-semibold">Total</td>
+          <td className="py-2 font-semibold">{t("Total")}</td>
           <td className="text-end font-semibold">
             <Price amount={total} />
           </td>

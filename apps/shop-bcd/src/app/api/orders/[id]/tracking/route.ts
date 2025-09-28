@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import type { OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
 import shop from "../../../../../../shop.json";
-import { useTranslations } from "@acme/i18n/useTranslations.server";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 type ProviderEvent = { key: string; date?: string; complete: boolean };
 const providerEventKeys: Record<string, ProviderEvent[]> = {
@@ -21,7 +21,7 @@ export async function GET(
   _req: Request,
   { params: _params }: { params: { id: string } }
 ) {
-  const t = await useTranslations("en");
+  const t = await getServerTranslations("en");
   const settings = await getShopSettings(shop.id);
   // Rental or high-volume shops may disable tracking by leaving this empty.
   const providers = (settings.trackingProviders ?? []).map((p) =>

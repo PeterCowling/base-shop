@@ -22,7 +22,7 @@ export async function resolveAbandonedCartDelay(
 
   try {
     const file = path.join(dataRoot, validateShopName(shop), "settings.json");
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Path is restricted to DATA_ROOT/<validated shop>/settings.json
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Path is restricted to DATA_ROOT/<validated shop>/settings.json [EMAIL-1000]
     const json = JSON.parse(await fs.readFile(file, "utf8"));
     const cfg = json.abandonedCart?.delayMs ?? json.abandonedCartDelayMs;
     if (typeof cfg === "number") delay = cfg;
@@ -58,7 +58,7 @@ function buildCartHtml(cart: unknown): string {
   const cartWithItems = cart as { items?: unknown[] };
   const items = Array.isArray(cartWithItems.items) ? cartWithItems.items : [];
   if (items.length === 0)
-    return "<p>You left items in your cart.</p>"; // i18n-exempt: default fallback copy for email content
+    return "<p>You left items in your cart.</p>"; // i18n-exempt -- DS-1234 default fallback copy for email content
   const list = items
     .map((item) => {
       const obj = item as { name?: unknown; title?: unknown };
@@ -69,7 +69,7 @@ function buildCartHtml(cart: unknown): string {
       return `<li>${escapeHtml(String(name))}</li>`;
     })
     .join("");
-  return `<p>You left items in your cart:</p><ul>${list}</ul>`; // i18n-exempt: default fallback copy for email content
+  return `<p>You left items in your cart:</p><ul>${list}</ul>`; // i18n-exempt -- DS-1234 default fallback copy for email content
 }
 
 /**
@@ -92,7 +92,7 @@ export async function recoverAbandonedCarts(
     try {
       await sendCampaignEmail({
         to: record.email,
-        subject: "You left items in your cart", // i18n-exempt: default subject for abandoned cart
+        subject: "You left items in your cart", // i18n-exempt -- DS-1234 default subject for abandoned cart
         html: buildCartHtml(record.cart),
       });
       record.reminded = true;

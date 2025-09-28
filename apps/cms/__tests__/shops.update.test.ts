@@ -41,6 +41,7 @@ describe("updateShop flow", () => {
       const result = await updateShop("test", fd);
 
       const shopFile = path.join(dir, "data", "shops", "test", "shop.json");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads a temp fixture path assembled from sandbox dir
       const saved = JSON.parse(await fs.readFile(shopFile, "utf8"));
       expect(saved.themeDefaults).toEqual(defaultTokens);
       expect(saved.themeOverrides).toEqual(overrides);

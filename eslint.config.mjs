@@ -9,6 +9,7 @@ import securityPlugin from "eslint-plugin-security";
 import { fixupPluginRules } from "@eslint/compat";
 import jsxA11y from "eslint-plugin-jsx-a11y";
 import testingLibrary from "eslint-plugin-testing-library";
+import storybook from "eslint-plugin-storybook";
 // Optional: Tailwind plugin is currently incompatible with Tailwind v4's exports in some versions
 let tailwindcss;
 try {
@@ -23,6 +24,14 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const compat = new FlatCompat({ baseDirectory: __dirname });
+
+// Utility: turn off all ds/* rules (useful for the plugin's own test files)
+const offAllDsRules = Object.fromEntries(
+  Object.keys((dsPlugin && dsPlugin.rules) || {}).map((name) => [
+    `ds/${name}`,
+    "off",
+  ])
+);
 
 export default [
   /* ▸ Global setup */
@@ -44,10 +53,8 @@ export default [
       "apps/*/src/**/*.js",
       "apps/*/src/**/*.d.ts",
       "apps/*/src/**/*.js.map",
-      "scripts/**/*.js",
       "packages/config/test/**",
       "**/__mocks__/**",
-      "**/*.d.ts",
       "**/jest.setup*.{ts,tsx}",
       "**/jest.config.*",
       "**/postcss.config.*",
@@ -342,6 +349,36 @@ export default [
     },
   },
 
+  /* ▸ eslint-plugin-ds rule sources: allow dynamic/specific regexes */
+  {
+    files: ["packages/eslint-plugin-ds/src/**/*.ts"],
+    rules: {
+      // Rule implementations legitimately construct regex from known arrays/config
+      // and use bounded patterns. Silence security plugin noise here.
+      "security/detect-non-literal-regexp": "off",
+      "security/detect-unsafe-regex": "off",
+    },
+  },
+
+  /* ▸ eslint-plugin-ds tests: treat as fixtures; disable ds rules and regex noise */
+  {
+    files: ["packages/eslint-plugin-ds/tests/**/*.{ts,tsx,js,jsx}"],
+    // Lint tests without TS project to match other test overrides
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+    rules: {
+      ...offAllDsRules,
+      "security/detect-non-literal-regexp": "off",
+      "security/detect-unsafe-regex": "off",
+    },
+  },
+
   /* ▸ Cypress specs: relax strict TS comments and 'any' for test ergonomics */
   {
     files: ["**/*.cy.{ts,tsx,js,jsx}"],
@@ -367,9 +404,9 @@ export default [
     },
   },
 
-  /* ▸ Allow generated declaration files without a TS project */
+  /* ▸ Allow declaration files without a TS project */
   {
-    files: ["**/dist/**/*.d.ts"],
+    files: ["**/*.d.ts"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -377,6 +414,13 @@ export default [
         projectService: false,
         allowDefaultProject: true,
       },
+    },
+    plugins: { "@typescript-eslint": tsPlugin },
+    rules: {
+      // d.ts files are type declarations; relax rules that don't apply
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/ban-types": "off",
     },
   },
 
@@ -392,6 +436,75 @@ export default [
     },
     plugins: { "@typescript-eslint": tsPlugin },
     rules: {},
+  },
+
+  /* ▸ Scripts plain JS: lint without a TS project */
+  {
+    files: ["scripts/**/*.js"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+    plugins: { "@typescript-eslint": tsPlugin },
+    rules: {
+      // Node scripts may use require() ergonomically
+      "@typescript-eslint/no-require-imports": "off",
+      // Scripts often pass dynamic file paths; relax noisy security rule
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+
+  /* ▸ Tools (storybook coverage) override */
+  {
+    files: ["tools/**/*.{ts,tsx,js,jsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: [path.join(__dirname, "tools/tsconfig.eslint.json")],
+        tsconfigRootDir: __dirname,
+        // Ensure we use the explicit project rather than the TS project service
+        projectService: false,
+        // Allow parsing even if a file falls outside the project (IDE edge cases)
+        allowDefaultProject: true,
+      },
+    },
+    plugins: { "@typescript-eslint": tsPlugin },
+    rules: {},
+  },
+
+  /* ▸ Root Storybook config: parse without a TS project */
+  {
+    files: [
+      ".storybook/**/*.{ts,tsx,js,jsx}",
+      ".storybook-ci/**/*.{ts,tsx,js,jsx}",
+      ".storybook-composed/**/*.{ts,tsx,js,jsx}",
+    ],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
+  },
+
+  /* ▸ Root plopfile: parse without a TS project */
+  {
+    files: ["plopfile.ts"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
   },
 
   /* ▸ Boundaries rules (unchanged) */
@@ -486,6 +599,14 @@ export default [
     },
   },
 
+  /* ▸ eslint-plugin-ds tests: exempt from no-hsl-var-in-tests (they validate the rule) */
+  {
+    files: ["packages/eslint-plugin-ds/tests/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "ds/no-hsl-var-in-tests": "off",
+    },
+  },
+
   /* ▸ Enforce UI component layering */
   {
     files: ["packages/ui/**/*.{ts,tsx}"],
@@ -548,6 +669,7 @@ export default [
     rules: {
       // Storybook stories often contain inline hooks in render functions
       "react-hooks/rules-of-hooks": "off",
+      "react-hooks/exhaustive-deps": "off",
       // Stories are dev-only; allow copy and relax DS layout constraints
       "ds/no-hardcoded-copy": "off",
       "ds/enforce-layout-primitives": "off",
@@ -555,6 +677,25 @@ export default [
       "ds/min-tap-size": "off",
       "ds/container-widths-only-at": "off",
       "ds/no-physical-direction-classes-in-rtl": "off",
+      // Relax additional UI-hardening rules for dev-only stories
+      "react/forbid-dom-props": "off",
+      "react/no-array-index-key": "off",
+      "react/jsx-no-constructed-context-values": "off",
+      "react/no-unstable-nested-components": "off",
+      "react/jsx-no-useless-fragment": "off",
+      "react/self-closing-comp": "off",
+      "react/jsx-no-target-blank": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "jsx-a11y/alt-text": "off",
+      "jsx-a11y/label-has-associated-control": "off",
+      "jsx-a11y/click-events-have-key-events": "off",
+      "jsx-a11y/interactive-supports-focus": "off",
+      "jsx-a11y/no-noninteractive-element-interactions": "off",
+      "jsx-a11y/no-static-element-interactions": "off",
+      "jsx-a11y/no-autofocus": "off",
+      "jsx-a11y/media-has-caption": "off",
+      "jsx-a11y/role-has-required-aria-props": "off",
+      "jsx-a11y/no-aria-hidden-on-focusable": "off",
     },
   },
 
@@ -592,6 +733,8 @@ export default [
   /* ▸ UI package: temporarily downgrade strict rules to warnings to unblock lint */
   {
     files: ["packages/ui/src/**/*.{ts,tsx}"],
+    // Do not apply this downgrade to published UI components; they are handled below
+    ignores: ["packages/ui/src/components/**/*.{ts,tsx}"],
     rules: {
       // Governance: warn in UI package during migration
       "ds/require-disable-justification": "warn",
@@ -646,6 +789,126 @@ export default [
     },
   },
 
+  /* ▸ Published UI components: enforce copy as errors */
+  {
+    files: [
+      "packages/ui/src/components/atoms/**/*.{ts,tsx}",
+      "packages/ui/src/components/molecules/**/*.{ts,tsx}",
+      "packages/ui/src/components/organisms/**/*.{ts,tsx}",
+    ],
+    rules: {
+      "ds/no-hardcoded-copy": "error",
+    },
+  },
+
+  /* ▸ UI hardening: Published components — enforce robust a11y, interaction and layout */
+  {
+    files: [
+      "packages/ui/src/components/atoms/**/*.{ts,tsx}",
+      "packages/ui/src/components/molecules/**/*.{ts,tsx}",
+      "packages/ui/src/components/organisms/**/*.{ts,tsx}",
+    ],
+    rules: {
+      // Accessibility fundamentals
+      "jsx-a11y/anchor-is-valid": "error",
+      "jsx-a11y/alt-text": "error",
+      "jsx-a11y/label-has-associated-control": [
+        "error",
+        { controlComponents: ["Select", "RadioGroup", "Checkbox"] },
+      ],
+      "jsx-a11y/click-events-have-key-events": "error",
+      "jsx-a11y/interactive-supports-focus": "error",
+      "jsx-a11y/no-noninteractive-element-interactions": "error",
+      "jsx-a11y/no-static-element-interactions": "error",
+      "jsx-a11y/no-autofocus": "error",
+      "jsx-a11y/media-has-caption": "error",
+      "jsx-a11y/role-has-required-aria-props": "error",
+      "jsx-a11y/no-aria-hidden-on-focusable": "error",
+
+      // Interaction and state stability
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "error",
+      "react/jsx-no-target-blank": "error",
+      "react/jsx-no-constructed-context-values": "warn",
+      "react/no-unstable-nested-components": "warn",
+      "react/no-array-index-key": "error",
+      "react/jsx-no-useless-fragment": "warn",
+      "react/self-closing-comp": "warn",
+
+      // Governance/perf
+      "no-console": ["warn", { allow: ["error", "warn"] }],
+      // Discourage inline styles in published UI; prefer tokens/utilities
+      "react/forbid-dom-props": ["error", { forbid: ["style"] }],
+
+      // Tailwind hygiene (only if plugin is present at runtime)
+      ...(tailwindcss
+        ? {
+            "tailwindcss/classnames-order": "warn",
+            "tailwindcss/no-unnecessary-arbitrary-value": "error",
+          }
+        : {}),
+    },
+  },
+
+  /* ▸ UI hardening: General UI package (warn-level to enable incremental cleanup) */
+  {
+    files: ["packages/ui/src/**/*.{ts,tsx}"],
+    // Do not apply this general block to published components — they use stricter rules above
+    ignores: [
+      "packages/ui/src/components/atoms/**/*.{ts,tsx}",
+      "packages/ui/src/components/molecules/**/*.{ts,tsx}",
+      "packages/ui/src/components/organisms/**/*.{ts,tsx}",
+    ],
+    rules: {
+      // Accessibility fundamentals
+      "jsx-a11y/anchor-is-valid": "warn",
+      "jsx-a11y/alt-text": "warn",
+      "jsx-a11y/label-has-associated-control": [
+        "warn",
+        { controlComponents: ["Select", "RadioGroup", "Checkbox"] },
+      ],
+      "jsx-a11y/click-events-have-key-events": "warn",
+      "jsx-a11y/interactive-supports-focus": "warn",
+      "jsx-a11y/no-noninteractive-element-interactions": "warn",
+      "jsx-a11y/no-static-element-interactions": "warn",
+      "jsx-a11y/no-autofocus": "warn",
+      "jsx-a11y/media-has-caption": "warn",
+      "jsx-a11y/role-has-required-aria-props": "warn",
+      "jsx-a11y/no-aria-hidden-on-focusable": "warn",
+
+      // Interaction and state stability
+      "react-hooks/rules-of-hooks": "warn",
+      "react-hooks/exhaustive-deps": "warn",
+      "react/jsx-no-target-blank": "warn",
+      "react/jsx-no-constructed-context-values": "warn",
+      "react/no-unstable-nested-components": "warn",
+      "react/no-array-index-key": "warn",
+      "react/jsx-no-useless-fragment": "warn",
+      "react/self-closing-comp": "warn",
+
+      // Governance/perf
+      "no-console": ["warn", { allow: ["error", "warn"] }],
+      // Prefer tokens/utilities; allow escapes with justification during migration
+      "react/forbid-dom-props": ["warn", { forbid: ["style"] }],
+
+      // Tailwind hygiene (only if plugin is present at runtime)
+      ...(tailwindcss
+        ? {
+            "tailwindcss/classnames-order": "warn",
+            "tailwindcss/no-unnecessary-arbitrary-value": "warn",
+          }
+        : {}),
+    },
+  },
+
+  /* ▸ CMS-only override: raise min tap target to 44px (HIG) */
+  {
+    files: ["apps/cms/**"],
+    rules: {
+      "ds/min-tap-size": ["error", { min: 44 }],
+    },
+  },
+
   /* ▸ Tests final override: keep copy/any relaxed even within UI package */
   {
     files: [
@@ -682,6 +945,14 @@ export default [
       "ds/min-tap-size": "off",
       "ds/no-margins-on-atoms": "off",
       "ds/enforce-layout-primitives": "off",
+    },
+  },
+  /* ▸ Storybook recommended rules for stories */
+  {
+    files: ["**/*.stories.{ts,tsx,js,jsx,mdx}"],
+    plugins: { storybook },
+    rules: {
+      ...(storybook.configs?.recommended?.rules || {}),
     },
   },
   /* ▸ Final stories override: ensure copy checks are disabled for stories */

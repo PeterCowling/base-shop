@@ -13,25 +13,37 @@ jest.mock("../../hooks/useStepCompletion", () => ({
   default: () => [false, markComplete],
 }));
 
-jest.mock("next/image", () => ({
-  __esModule: true,
-  default: (props: any) => <img {...props} />,
-}));
+jest.mock("next/image", () => {
+  const React = require("react");
+  // Stub that avoids <img> to satisfy ds/no-naked-img and a11y rules in tests
+  const MockNextImage = (props: any) => <div data-testid="next-image" {...props} />;
+  MockNextImage.displayName = "MockNextImage";
+  return {
+    __esModule: true,
+    default: MockNextImage,
+  };
+});
 
 jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
   const Button = ({ children, ...props }: any) => <button {...props}>{children}</button>;
+  Button.displayName = "MockButton";
   const Select = ({ children, open, onOpenChange, onValueChange, value, ...props }: any) => (
     <div {...props}>{children}</div>
   );
+  Select.displayName = "MockSelect";
   const SelectContent = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+  SelectContent.displayName = "MockSelectContent";
   const SelectItem = ({ children, onSelect, asChild, ...props }: any) => (
     <div onClick={onSelect} {...props}>
       {children}
     </div>
   );
+  SelectItem.displayName = "MockSelectItem";
   const SelectTrigger = ({ children, ...props }: any) => <div {...props}>{children}</div>;
+  SelectTrigger.displayName = "MockSelectTrigger";
   const SelectValue = ({ placeholder }: any) => <div>{placeholder}</div>;
+  SelectValue.displayName = "MockSelectValue";
   return {
     Button,
     Select,
@@ -45,11 +57,17 @@ jest.mock("@ui/components/atoms/shadcn", () => {
 jest.mock("@ui/components/atoms", () => {
   const React = require("react");
   const Dialog = ({ open, children }: any) => (open ? <div>{children}</div> : null);
+  Dialog.displayName = "MockDialog";
   const DialogContent = ({ children }: any) => <div>{children}</div>;
+  DialogContent.displayName = "MockDialogContent";
   const DialogFooter = ({ children }: any) => <div>{children}</div>;
+  DialogFooter.displayName = "MockDialogFooter";
   const DialogHeader = ({ children }: any) => <div>{children}</div>;
+  DialogHeader.displayName = "MockDialogHeader";
   const DialogTitle = ({ children }: any) => <div>{children}</div>;
+  DialogTitle.displayName = "MockDialogTitle";
   const Toast = ({ open, message }: any) => (open ? <div>{message}</div> : null);
+  Toast.displayName = "MockToast";
   return {
     Dialog,
     DialogContent,
@@ -62,14 +80,16 @@ jest.mock("@ui/components/atoms", () => {
 
 jest.mock("@/components/cms/PageBuilder", () => {
   const React = require("react");
+  const MockPageBuilder = ({ onSave, onPublish }: any) => (
+    <div>
+      <button onClick={() => onSave(new FormData())}>save</button>
+      <button onClick={() => onPublish(new FormData())}>publish</button>
+    </div>
+  );
+  MockPageBuilder.displayName = "MockPageBuilder";
   return {
     __esModule: true,
-    default: ({ onSave, onPublish }: any) => (
-      <div>
-        <button onClick={() => onSave(new FormData())}>save</button>
-        <button onClick={() => onPublish(new FormData())}>publish</button>
-      </div>
-    ),
+    default: MockPageBuilder,
   };
 });
 
@@ -173,4 +193,3 @@ describe("StepShopPage", () => {
     expect(push).toHaveBeenCalledWith("/cms/configurator/next");
   });
 });
-

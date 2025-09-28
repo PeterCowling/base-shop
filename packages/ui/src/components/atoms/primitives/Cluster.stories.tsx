@@ -13,10 +13,9 @@ export const Basic: Story = {
   args: { gap: 2, className: "p-4 border rounded" },
   render: (args) => (
     <Cluster {...args}>
-      {Array.from({ length: 8 }).map((_, i) => (
-        <span key={i} className="bg-muted px-2 py-1 rounded">Tag {i + 1}</span>
+      {Array.from({ length: 8 }, (_, i) => `tag-${i + 1}`).map((tag) => (
+        <span key={tag} className="bg-muted px-2 py-1 rounded">{tag.replace("-", " ")}</span>
       ))}
     </Cluster>
   ),
 };
-

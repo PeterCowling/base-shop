@@ -6,6 +6,7 @@ import type {
   RefObject,
 } from "react";
 import PlaceholderAnimations from "./PlaceholderAnimations";
+import { useTranslations } from "@acme/i18n";
 import ErrorBoundary from "./ErrorBoundary";
 import PageCanvas from "./PageCanvas";
 import EmptyCanvasOverlay from "./EmptyCanvasOverlay";
@@ -18,9 +19,8 @@ import type { PageBuilderLayoutProps } from "./PageBuilderLayout.types";
 type CanvasProps = ComponentProps<typeof PageCanvas>;
 type PreviewProps = PageBuilderLayoutProps["previewProps"];
 
-// i18n-exempt — builder-only surface; keep copy local
-/* i18n-exempt */
-const t = (s: string) => s;
+// Translator for UI strings
+const useT = () => useTranslations() as unknown as (key: string, vars?: Record<string, unknown>) => string;
 
 interface PageBuilderCanvasAreaProps {
   scrollRef?: RefObject<HTMLDivElement | null>;
@@ -62,7 +62,9 @@ const PageBuilderCanvasArea = ({
   showPreview,
   openPalette,
   setEditingSizePx,
-}: PageBuilderCanvasAreaProps) => (
+}: PageBuilderCanvasAreaProps) => {
+  const t = useT();
+  return (
   <>
     <PlaceholderAnimations />
     <div className="flex flex-1 gap-4 min-h-0">
@@ -72,9 +74,11 @@ const PageBuilderCanvasArea = ({
           className="relative max-h-full overflow-auto overscroll-contain min-h-0"
           onPointerDown={onPointerDown}
         >
+          {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419: canvas zoom uses dynamic inline transform for accuracy */}
           <div style={{ transform: `scale(${zoom})`, transformOrigin: "top center" }}>
             <div
               className={`${frameClass[viewport]} shrink-0`}
+              /* eslint-disable-next-line react/forbid-dom-props -- PB-2419: dynamic frame sizing from toolbar requires inline style */
               style={viewportStyle}
               data-tour="canvas"
               data-viewport={viewport}
@@ -84,8 +88,7 @@ const PageBuilderCanvasArea = ({
                   <>
                     <div
                       role="separator"
-                      /* i18n-exempt */
-                      aria-label={t("Resize canvas narrower")}
+                      aria-label={t("pb.canvas.resizeNarrowerAria")}
                       className="absolute start-0 top-0 h-full w-1 cursor-col-resize bg-transparent"
                       onPointerDown={(event) => {
                         const host = event.currentTarget.parentElement as HTMLElement | null;
@@ -107,8 +110,7 @@ const PageBuilderCanvasArea = ({
                     />
                     <div
                       role="separator"
-                      /* i18n-exempt */
-                      aria-label={t("Resize canvas wider")}
+                      aria-label={t("pb.canvas.resizeWiderAria")}
                       className="absolute end-0 top-0 h-full w-1 cursor-col-resize bg-transparent"
                       onPointerDown={(event) => {
                         const host = event.currentTarget.parentElement as HTMLElement | null;
@@ -150,7 +152,8 @@ const PageBuilderCanvasArea = ({
               : {
                   ...defaultDropAnimation,
                   duration: 220,
-                  easing: "cubic-bezier(0.2, 0.8, 0.2, 1)", // i18n-exempt: animation curve string, not user copy
+                  // i18n-exempt -- PB-2419 animation curve string, not user copy
+                  easing: "cubic-bezier(0.2, 0.8, 0.2, 1)",
                   sideEffects: defaultDropAnimationSideEffects({
                     styles: { active: { opacity: "0.25" } },
                   }),
@@ -167,6 +170,7 @@ const PageBuilderCanvasArea = ({
       </ErrorBoundary>
     </div>
   </>
-);
+  );
+};
 
 export default PageBuilderCanvasArea;

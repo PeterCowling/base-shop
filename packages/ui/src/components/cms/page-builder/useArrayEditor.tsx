@@ -1,12 +1,16 @@
-"use client";
+"use client"; // i18n-exempt: Next.js directive
 import type { ChangeEvent } from "react";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import { Button, Input } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
+import { useTranslations } from "@acme/i18n";
 
 export function useArrayEditor<T>(
   onChange: (patch: Partial<T>) => void,
 ) {
+  const t = useTranslations();
+  const keyMapRef = useRef<WeakMap<object, string>>(new WeakMap());
+  const seqRef = useRef(0);
   return useCallback(
     (
       prop: keyof T & string,
@@ -17,10 +21,18 @@ export function useArrayEditor<T>(
       const list = (items ?? []) as Record<string, unknown>[];
       const min = limits?.minItems ?? 0;
       const max = limits?.maxItems ?? Infinity;
+      const keyMap = keyMapRef.current;
+      const getKey = (obj: object) => {
+        const existing = keyMap.get(obj);
+        if (existing) return existing;
+        const k = `ae-${seqRef.current++}`;
+        keyMap.set(obj, k);
+        return k;
+      };
       return (
         <div className="space-y-2">
           {list.map((item, idx) => (
-            <div key={idx} className="space-y-1 rounded border p-2">
+            <div key={getKey(item)} className="space-y-1 rounded border p-2">
               {fields.map((f) => (
                 <div key={f} className="flex items-start gap-2">
                   <Input
@@ -42,7 +54,7 @@ export function useArrayEditor<T>(
                       }}
                     >
                       <Button type="button" variant="outline">
-                        Pick
+                        {t("cms.select")}
                       </Button>
                     </ImagePicker>
                   )}
@@ -56,7 +68,7 @@ export function useArrayEditor<T>(
                 }}
                 disabled={list.length <= min}
               >
-                Remove
+                {t("actions.remove")}
               </Button>
             </div>
           ))}
@@ -67,11 +79,11 @@ export function useArrayEditor<T>(
             }}
             disabled={list.length >= max}
           >
-            Add
+            {t("actions.add")}
           </Button>
         </div>
       );
     },
-    [onChange],
+    [onChange, t],
   );
 }

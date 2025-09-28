@@ -79,6 +79,7 @@ export default function MultiColumn({
   return (
     <div
       className={cn("grid", className)}
+      /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Dynamic grid columns/gaps computed at runtime */
       style={{
         gridTemplateColumns: `repeat(${effColumns}, minmax(0, 1fr))`,
         gap: effGap,

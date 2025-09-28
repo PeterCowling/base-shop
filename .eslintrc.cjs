@@ -7,7 +7,6 @@ module.exports = {
     "packages/auth/dist/",
     "**/.next/**", // Next.js build output
     "**/index.js",
-    "**/*.d.ts",
     "**/*.d.ts.map",
     "**/jest.config.*",
   ],

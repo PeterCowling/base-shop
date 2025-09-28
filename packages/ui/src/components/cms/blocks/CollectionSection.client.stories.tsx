@@ -5,6 +5,13 @@ import { PRODUCTS } from "@acme/platform-core/products/index";
 
 const meta: Meta<typeof CollectionSectionClient> = {
   component: CollectionSectionClient,
+  parameters: {
+    docs: {
+      description: {
+        component: "Client collection listing that supports load-more or server-side pagination and simple sorting.",
+      },
+    },
+  },
   args: {
     initial: PRODUCTS as SKU[],
     params: { slug: "demo" },
@@ -30,17 +37,7 @@ export const ErrorState: StoryObj<typeof CollectionSectionClient> = {
     return (
       <div>
         {netError ? (
-          <div
-            style={{
-              background: 'hsl(var(--color-danger) / 0.12)',
-              color: 'hsl(var(--color-danger))',
-              // Use design token spacing
-              padding: 'var(--space-2)',
-              border: '1px solid hsl(var(--color-danger) / 0.25)',
-              // Use design token spacing
-              marginBottom: 'var(--space-3)',
-            }}
-          >
+          <div className="bg-danger/20 text-danger border border-danger/25 px-2 py-2 mb-3">
             Simulated network error — failed to load collection.
           </div>
         ) : null}

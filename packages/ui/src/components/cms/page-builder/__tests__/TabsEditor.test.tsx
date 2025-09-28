@@ -25,13 +25,13 @@ jest.mock("../../../atoms/shadcn", () => {
         {children}
       </select>
     ),
-    SelectTrigger: ({ children }: any) => <>{children}</>,
+    SelectTrigger: ({ children }: any) => children,
     SelectValue: ({ placeholder }: any) => (
       <option value="" disabled>
         {placeholder}
       </option>
     ),
-    SelectContent: ({ children }: any) => <>{children}</>,
+    SelectContent: ({ children }: any) => children,
     SelectItem: ({ value, children }: any) => (
       <option value={value}>{children}</option>
     ),

@@ -6,6 +6,9 @@ import { getContrast } from "@ui/components/cms";
 import type { TokenMap } from "@ui/hooks/useTokenEditor";
 import ThemeSpectrum from "@ui/components/cms/ThemeSpectrum";
 import ColorThemeSelector from "./ColorThemeSelector";
+import { useTranslations } from "@acme/i18n";
+import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
+import { Inline } from "@ui/components/atoms/primitives/Inline";
 
 const MIN_CONTRAST = 4.5;
 
@@ -28,9 +31,9 @@ interface ThemeEditorFormProps {
 }
 
 export default function ThemeEditorForm({
-  themes,
-  theme,
-  onThemeChange,
+  themes: _themes,
+  theme: _theme,
+  onThemeChange: _onThemeChange,
   colorPalettes,
   palette,
   setPalette,
@@ -39,20 +42,24 @@ export default function ThemeEditorForm({
   onTokensChange,
   onReset,
 }: ThemeEditorFormProps): React.JSX.Element {
+  const t = useTranslations();
   return (
     <div className="space-y-4">
       {/* Theme select removed per request; Color Themes picker remains below */}
 
       {/* Prebuilt color theme picker — moved here for prominence under theme select */}
       <ColorThemeSelector
-        tokens={{ ...(themeDefaults as Record<string, string>), ...(themeOverrides as Record<string, string>) }}
-        baseTokens={themeDefaults as any}
-        onChange={onTokensChange as any}
+        tokens={{
+          ...(themeDefaults as Record<string, string>),
+          ...(themeOverrides as Record<string, string>),
+        } as TokenMap}
+        baseTokens={themeDefaults as unknown as TokenMap}
+        onChange={onTokensChange}
       />
 
       <div className="space-y-2">
-        <h3 className="font-medium">Color Palette</h3>
-        <div className="flex flex-wrap gap-2">
+        <h3 className="font-medium">{t("cms.theme.colorPalette")}</h3>
+        <Inline gap={2}>
           {colorPalettes.map((p) => {
             const c1 = checkContrast(p.colors["--color-fg"], p.colors["--color-bg"]);
             const c2 = checkContrast(
@@ -70,8 +77,10 @@ export default function ThemeEditorForm({
                   color={p.name === palette ? "primary" : "default"}
                   tone={p.name === palette ? "soft" : "outline"}
                 >
-                  <div
-                    className="grid h-full w-full grid-cols-3 grid-rows-2 overflow-hidden rounded"
+                  <DSGrid
+                    cols={3}
+                    gap={0}
+                    className="h-full w-full grid-rows-2 overflow-hidden rounded"
                     // Provide hard fallbacks for contrast in dark mode
                     style={{
                       backgroundColor: "hsl(var(--surface-2, var(--color-bg)))",
@@ -87,17 +96,17 @@ export default function ThemeEditorForm({
                           style={{ backgroundColor: `hsl(${c})` }}
                         />
                       ))}
-                  </div>
+                  </DSGrid>
                 </Button>
                 {warn && (
                   <span className="absolute -top-1 -right-1 rounded bg-warning-soft px-1 text-xs text-foreground">
-                    Low contrast
+                    {t("cms.style.lowContrast")}
                   </span>
                 )}
               </div>
             );
           })}
-        </div>
+        </Inline>
       </div>
 
       <ThemeSpectrum />
@@ -110,11 +119,11 @@ export default function ThemeEditorForm({
         showSearch={false}
         showExtras={false}
       />
-      <div className="flex justify-start">
+      <Inline className="justify-start">
         <Button data-cy="reset-theme" variant="outline" onClick={onReset}>
-          Reset to defaults
+          {t("cms.theme.resetToDefaults")}
         </Button>
-      </div>
+      </Inline>
     </div>
   );
 }

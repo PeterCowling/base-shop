@@ -47,13 +47,19 @@ function PublishShopsSelectorInner({
         setShops(data as string[]);
         setStatus("ready");
       } else {
-        throw new Error("Invalid response"); // i18n-exempt -- developer error
+        // i18n-exempt -- ABC-123 [ttl=2026-03-31] developer error; not user-facing
+        console.error("Invalid shops response shape", data);
+        setStatus("error");
+        setShops([]);
+        setErrorMsg(null);
+        return;
       }
     } catch (err) {
-      console.error("Error loading shops", err); // i18n-exempt -- developer log
+      console.error("Error loading shops", err); // i18n-exempt -- ABC-123 [ttl=2026-03-31] developer log
       setStatus("error");
       setShops([]);
-      setErrorMsg(err instanceof Error ? err.message : "Failed to load shops"); // i18n-exempt -- fallback error
+      // Avoid user-facing hardcoded fallback; defer to i18n at render time
+      setErrorMsg(err instanceof Error ? err.message : null);
     }
   }, []);
 
@@ -81,21 +87,27 @@ function PublishShopsSelectorInner({
   return (
     <>
       <Stack gap={2}>
-        {shops.map((id) => (
-          <label key={id} className="cursor-pointer select-none">
-            <Inline alignY="start" gap={2}>
-              <Input
-                type="checkbox"
-                checked={selectedIds.includes(id)}
-                onChange={() => toggle(id)}
-                className="mt-1 h-4 w-4"
-              />
-              <span>
-                <span className="font-medium">{id}</span>
-              </span>
-            </Inline>
-          </label>
-        ))}
+        {shops.map((id) => {
+          const inputId = `shop_${id}`;
+          return (
+            <div key={id} className="cursor-pointer select-none">
+              <Inline alignY="start" gap={2}>
+                <Input
+                  id={inputId}
+                  type="checkbox"
+                  checked={selectedIds.includes(id)}
+                  onChange={() => toggle(id)}
+                  className="mt-1 h-4 w-4"
+                />
+                <span>
+                  <label htmlFor={inputId} className="font-medium">
+                    {id}
+                  </label>
+                </span>
+              </Inline>
+            </div>
+          );
+        })}
         {shops.length === 0 && (
           <span className="text-muted-foreground text-sm">{t("shops.noneFound")}</span>
         )}

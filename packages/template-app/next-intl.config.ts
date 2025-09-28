@@ -1,6 +1,6 @@
 import { LOCALES } from "@acme/i18n";
 
-export default {
+const nextIntlConfig = {
   // Supported locales for next-intl
   locales: LOCALES as unknown as string[],
   defaultLocale: "en",
@@ -8,3 +8,4 @@ export default {
   localePrefix: "as-needed" as const,
 };
 
+export default nextIntlConfig;

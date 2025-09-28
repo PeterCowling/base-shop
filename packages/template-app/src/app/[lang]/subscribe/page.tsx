@@ -1,5 +1,6 @@
 // packages/template-app/src/app/[lang]/subscribe/page.tsx
-import { resolveLocale } from "@i18n/locales";
+import { resolveLocale, type Locale } from "@i18n/locales";
+import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
 import { stripe } from "@acme/stripe";
 import type Stripe from "stripe";
 import { coreEnv } from "@acme/config/env/core";
@@ -18,7 +19,8 @@ export default async function SubscribePage({
   params: Promise<{ lang?: string }>;
 }) {
   const { lang } = await params;
-  resolveLocale(lang);
+  const locale: Locale = resolveLocale(lang);
+  const t = await getServerTranslations(locale);
   const shopId =
     ((coreEnv as { NEXT_PUBLIC_SHOP_ID?: string }).NEXT_PUBLIC_SHOP_ID as
       | string
@@ -46,7 +48,7 @@ export default async function SubscribePage({
 
   return (
     <div className="container mx-auto flex flex-col gap-6 p-6">
-      <h1 className="text-2xl font-bold">{/** i18n-exempt: server-rendered page heading */}Choose a Plan</h1>
+      <h1 className="text-2xl font-bold">{t("subscribe.title")}</h1>
       <form action={selectPlan} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {shop.rentalSubscriptions.map((p: SubscriptionPlan) => (
           <label
@@ -58,27 +60,18 @@ export default async function SubscribePage({
             <span className="text-lg font-semibold">{p.id}</span>
             {shop.subscriptionsEnabled && (
               <>
-                <span>
-                  {/** i18n-exempt: demo copy; values vary per plan */}
-                  {p.itemsIncluded} items included
-                </span>
-                <span>
-                  {/** i18n-exempt: demo copy; values vary per plan */}
-                  {p.swapLimit} swaps/month
-                </span>
-                <span>
-                  {/** i18n-exempt: demo copy; values vary per plan */}
-                  {p.shipmentsPerMonth} shipments/month
-                </span>
+                <span>{t("subscribe.itemsIncluded", { count: p.itemsIncluded })}</span>
+                <span>{t("subscribe.swapsPerMonth", { count: p.swapLimit })}</span>
+                <span>{t("subscribe.shipmentsPerMonth", { count: p.shipmentsPerMonth })}</span>
               </>
             )}
           </label>
         ))}
         <button
           type="submit"
-          className="mt-4 inline-flex min-h-10 items-center justify-center rounded bg-black px-4 text-white"
+          className="mt-4 inline-flex min-h-10 min-w-10 items-center justify-center rounded bg-black px-4 text-white"
         >
-          {/** i18n-exempt: server-rendered action label */}Subscribe
+          {t("subscribe.cta")}
         </button>
       </form>
     </div>

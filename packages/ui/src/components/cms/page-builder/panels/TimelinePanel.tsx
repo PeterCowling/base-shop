@@ -1,4 +1,5 @@
 // packages/ui/src/components/cms/page-builder/panels/TimelinePanel.tsx
+// i18n-exempt file -- PB-238: Builder-only panel with limited microcopy
 "use client";
 
 import type { PageComponent } from "@acme/types";
@@ -58,6 +59,18 @@ export default function TimelinePanel({ component, handleInput }: Props) {
     update({ steps: next });
   };
 
+  const keyForStep = (s: TimelineStep) => {
+    return [
+      s.at ?? s.duration ?? "na",
+      s.easing ?? "none",
+      typeof s.opacity === "number" ? s.opacity : "na",
+      typeof s.x === "number" ? s.x : "na",
+      typeof s.y === "number" ? s.y : "na",
+      typeof s.scale === "number" ? s.scale : "na",
+      typeof s.rotate === "number" ? s.rotate : "na",
+    ].join(":");
+  };
+
   return (
     <div className="space-y-3">
       <div className="grid grid-cols-3 gap-2 items-end">
@@ -94,7 +107,7 @@ export default function TimelinePanel({ component, handleInput }: Props) {
 
       <div className="space-y-2">
         {steps.map((s, idx) => (
-          <div key={idx} className="rounded-md border border-border-3 bg-muted/10 p-2">
+          <div key={keyForStep(s)} className="rounded-md border border-border-3 bg-muted/10 p-2">
             <div className="flex items-center justify-between pb-2">
               {/* i18n-exempt: Builder section header */}
               <div className="text-xs font-semibold">Step {idx + 1}</div>

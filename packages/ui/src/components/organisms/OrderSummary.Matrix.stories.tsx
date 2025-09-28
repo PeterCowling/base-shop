@@ -8,7 +8,14 @@ const meta: Meta<typeof OrderSummary> = {
   title: 'Organisms/Order Summary/Matrix',
   component: OrderSummary,
   tags: ['autodocs'],
-  parameters: { layout: 'centered' },
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component: `Displays subtotal, shipping, tax and discounts from CartContext. Use to summarize checkout totals; supports loading/error/RTL for regression coverage.\n\nUsage:\n\n\`\`\`tsx\nimport { CartProvider } from '@acme/platform-core/contexts/CartContext';\nimport OrderSummary from './OrderSummary';\n\n<CartProvider>\n  <OrderSummary />\n</CartProvider>\n\n// Key args: none (reads from context)\n\`\`\``,
+      },
+    },
+  },
 };
 export default meta;
 
@@ -19,17 +26,20 @@ export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
+  docsDescription: 'Baseline order summary using mocked cart context.',
 });
 
 export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', {
   viewports: ['mobile1'],
   tags: ['visual'],
+  docsDescription: 'Displays a transient loading hint while totals compute.',
 });
 
 export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', {
   a11y: true,
   viewports: ['mobile1'],
   tags: ['visual'],
+  docsDescription: 'Empty cart state with illustrative rows removed.',
 });
 
 export const Error: Story = makeStateStory(baseArgs, {}, 'error', {
@@ -37,11 +47,12 @@ export const Error: Story = makeStateStory(baseArgs, {}, 'error', {
   critical: true,
   viewports: ['desktop'],
   tags: ['visual', 'ci'],
+  docsDescription: 'Error visualization for failed totals lookup.',
 });
 
 export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual'],
+  docsDescription: 'Right-to-left sample (layout mirrored via decorator).',
 });
-

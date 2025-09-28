@@ -8,6 +8,7 @@ import type { DevicePreset } from "../../../utils/devicePresets";
 import CanvasItem from "./CanvasItem";
 import InlineInsert from "./InlineInsert";
 import GridChildControls from "./GridChildControls";
+import { useTranslations } from "@acme/i18n";
 
 type Props = {
   component: PageComponent;
@@ -56,6 +57,7 @@ export default function DefaultChildrenList({
   dropAllowed,
   preferParentOnClick = false,
 }: Props) {
+  const t = useTranslations();
   const isGrid = compType === "Grid";
 
   return (
@@ -91,8 +93,9 @@ export default function DefaultChildrenList({
               const insertAt = toUnderlyingIndex(index);
               dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
               try {
-                // i18n-exempt: developer-only live message for builder integrations
-                window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
+                window.dispatchEvent(
+                  new CustomEvent("pb-live-message", { detail: t("pb.blockInserted") as string }),
+                );
               } catch {}
             }}
           />
@@ -140,8 +143,9 @@ export default function DefaultChildrenList({
           const insertAt = toUnderlyingIndex(index);
           dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
           try {
-            // i18n-exempt: developer-only live message for builder integrations
-            window.dispatchEvent(new CustomEvent("pb-live-message", { detail: "Block inserted" }));
+            window.dispatchEvent(
+              new CustomEvent("pb-live-message", { detail: t("pb.blockInserted") as string }),
+            );
           } catch {}
         }}
       />

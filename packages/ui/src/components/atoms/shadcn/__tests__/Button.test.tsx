@@ -13,7 +13,7 @@ describe("Button (shadcn)", () => {
   it("renders destructive variant without BaseButton and supports asChild", () => {
     render(
       <Button variant="destructive" asChild>
-        <a href="#">Delete</a>
+        <a href="/">Delete</a>
       </Button>
     );
 

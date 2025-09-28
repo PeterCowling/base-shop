@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react/forbid-dom-props -- LINT-1001: dnd-kit requires inline transform for drag sorting */
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";

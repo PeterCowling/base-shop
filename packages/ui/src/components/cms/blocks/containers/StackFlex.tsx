@@ -68,6 +68,7 @@ export default function StackFlex({
   return (
     <div
       className={cn("flex", className)}
+      /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Dynamic flexbox properties computed at runtime */
       style={{
         flexDirection: effDirection,
         flexWrap: wrap ? "wrap" : "nowrap",

@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { Card, CardContent } from "@/components/atoms/shadcn";
 import { Alert } from "@ui/components/atoms";
 import type { Shop } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 
 const ShopEditor = dynamic(() => import("../ShopEditor"));
 void ShopEditor;
@@ -25,28 +26,34 @@ export default function AdminTools({
   currency,
   taxRegion,
 }: AdminToolsProps) {
+  const t = useTranslations();
+  const ADMIN_TOOLS_HEADING_ID = "admin-tools-heading";
   if (!isAdmin) {
     return (
-      <Alert variant="warning" tone="soft" title="You are signed in as a viewer. Editing is disabled." />
+      <Alert
+        variant="warning"
+        tone="soft"
+        heading={t("cms.shop.adminTools.viewerDisabled")}
+      />
     );
   }
 
   return (
-    <section id="admin-tools" aria-labelledby="admin-tools-heading" className="space-y-4">
+    <section id="admin-tools" aria-labelledby={ADMIN_TOOLS_HEADING_ID} className="space-y-4">
       <div className="space-y-2">
-        <h2 id="admin-tools-heading" className="text-xl font-semibold">
-          Admin tools
+        <h2 id={ADMIN_TOOLS_HEADING_ID} className="text-xl font-semibold">
+          {t("cms.shop.adminTools.heading")}
         </h2>
         <p className="text-sm text-muted-foreground">
-          Update storefront metadata, providers, and financial settings for this shop.
+          {t("cms.shop.adminTools.description")}
         </p>
       </div>
       <Card>
         <CardContent className="space-y-6 p-6">
           <div className="space-y-1">
-            <h3 className="text-lg font-semibold">Shop profile</h3>
+            <h3 className="text-lg font-semibold">{t("cms.shop.adminTools.profile.heading")}</h3>
             <p className="text-sm text-muted-foreground">
-              Manage general details, theme options, and provider integrations.
+              {t("cms.shop.adminTools.profile.description")}
             </p>
           </div>
           <ShopEditor
@@ -59,9 +66,9 @@ export default function AdminTools({
       <Card>
         <CardContent className="space-y-6 p-6">
           <div className="space-y-1">
-            <h3 className="text-lg font-semibold">Currency &amp; tax</h3>
+            <h3 className="text-lg font-semibold">{t("cms.shop.adminTools.currencyTax.heading")}</h3>
             <p className="text-sm text-muted-foreground">
-              Set the defaults used for checkout and invoicing.
+              {t("cms.shop.adminTools.currencyTax.description")}
             </p>
           </div>
           <CurrencyTaxEditor

@@ -17,7 +17,7 @@ function segmentsPath(shop: string): string {
 async function readSegments(shop: string): Promise<Segment[]> {
   try {
     // Constrained to validated shop data directory
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-2651: path is restricted to DATA_ROOT + validated shop
     const buf = await fs.readFile(segmentsPath(shop), "utf8");
     const json = JSON.parse(buf);
     return Array.isArray(json) ? json : [];

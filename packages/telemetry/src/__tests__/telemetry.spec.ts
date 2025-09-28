@@ -103,7 +103,7 @@ describe("telemetry", () => {
     jest.useFakeTimers();
     const mod = await import("../index");
     const fetchMock = jest.fn().mockResolvedValue({});
-    // @ts-ignore
+    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     try {
       mod.track("e1");
@@ -124,7 +124,7 @@ describe("telemetry", () => {
     process.env.NODE_ENV = "production";
     const mod = await import("../index");
     const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
-    // @ts-ignore
+    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     mod.track("event");
     await mod.__flush();
@@ -140,7 +140,7 @@ describe("telemetry", () => {
       .fn()
       .mockRejectedValueOnce(new Error("fail"))
       .mockResolvedValueOnce({});
-    // @ts-ignore
+    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     mod.track("event", { foo: "bar" });
     await mod.__flush();

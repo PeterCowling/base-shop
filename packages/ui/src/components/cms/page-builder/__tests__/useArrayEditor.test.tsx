@@ -5,7 +5,18 @@ import { useArrayEditor } from "../useArrayEditor";
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
   default: ({ onSelect, children }: any) => (
-    <div onClick={() => onSelect("picked")}>{children}</div>
+    <button
+      type="button"
+      onClick={() => onSelect("picked")}
+      onKeyDown={(e: any) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onSelect("picked");
+        }
+      }}
+    >
+      {children}
+    </button>
   ),
 }));
 

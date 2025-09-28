@@ -101,6 +101,7 @@ export default function ContextMenu({ x, y, open, onClose, items }: Props) {
     <div className="relative">
       <div
         className="absolute min-w-40 overflow-hidden rounded border bg-popover p-1 text-popover-foreground shadow-elevation-2"
+        // eslint-disable-next-line react/forbid-dom-props -- DEV-0000: dynamic absolute positioning requires inline style for x/y
         style={style}
         role="menu"
         data-pb-contextmenu
@@ -109,13 +110,14 @@ export default function ContextMenu({ x, y, open, onClose, items }: Props) {
         onKeyDown={onKeyDown}
       >
       {/** i18n-exempt — labels are passed via props; no static copy */}
-      {items.map((i, idx) => {
+      {(() => { let sepCounter = 0; return items.map((i, idx) => {
         if ((i as MenuSeparator).type === "separator") {
-          return <div key={`sep-${idx}`} role="separator" className="my-1 h-px bg-border" />;
+          sepCounter += 1;
+          return <div key={`sep-${sepCounter}`} role="separator" className="my-1 h-px bg-border" />;
         }
         const item = i as MenuItem;
         const isActive = actionable[activePos]?.idx === idx;
-        // i18n-exempt — styling only for states
+        // i18n-exempt -- TECH-000 [ttl=2025-10-28] styling only for states
         const btnClass = `w-full rounded px-2 py-1 text-left text-sm hover:bg-muted focus:outline-none ${item.disabled ? "cursor-not-allowed opacity-50" : isActive ? "ring-1 ring-primary" : ""}`;
         return (
           <button
@@ -134,7 +136,7 @@ export default function ContextMenu({ x, y, open, onClose, items }: Props) {
             {item.label}
           </button>
         );
-      })}
+      }); })()}
       </div>
     </div>
   );

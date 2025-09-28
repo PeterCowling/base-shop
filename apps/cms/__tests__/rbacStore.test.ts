@@ -41,6 +41,7 @@ describe("rbacStore", () => {
       db.roles["6"] = "viewer";
       await writeRbac(db);
       const stored = JSON.parse(
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- test uses a temp path
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
       );
       expect(stored).toEqual(db);
@@ -54,6 +55,7 @@ describe("rbacStore", () => {
       db.permissions.admin = [PERMISSIONS[0]];
       await writeRbac(db);
       const stored = JSON.parse(
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- test uses a temp path
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
       );
       expect(stored.permissions.admin).toEqual([PERMISSIONS[0]]);

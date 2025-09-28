@@ -44,9 +44,15 @@ export function SearchResultsTemplate({
   ...props
 }: SearchResultsTemplateProps) {
   const t = useTranslations();
+  /* eslint-disable-next-line ds/no-raw-font -- DS-1234: false positive; rule matches "aria-label"/"AriaLabel" as "arial" */
+  const searchAriaLabel = t("shop.searchAriaLabel") as string;
   const rawCount = maxItems ?? minItems ?? 1;
   const columnCount =
     Number.isFinite(rawCount) && rawCount > 0 ? Math.floor(rawCount) : 1;
+  const skeletonKeys = React.useMemo(
+    () => Array.from({ length: columnCount }, () => Math.random().toString(36).slice(2)),
+    [columnCount]
+  );
   return (
     <div className={cn("space-y-6", className)} {...props}>
       <SearchBar
@@ -54,20 +60,20 @@ export function SearchResultsTemplate({
         suggestions={suggestions}
         onSelect={onQueryChange}
         onSearch={onQueryChange}
-        placeholder={t("Search products…") as string}
-        label={t("Search products") as string}
+        placeholder={t("shop.searchPlaceholder") as string}
+        label={searchAriaLabel}
       />
       {filters}
       {isLoading ? (
         <GridPrimitive
-          /* i18n-exempt — non-user-facing test hook */
-          data-cy="search-results-loading"
+          /* i18n-exempt -- DS-0002 [ttl=2026-01-31] */
+          data-testid="search-results-loading"
           cols={1}
           gap={6}
           style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}
         >
           {Array.from({ length: columnCount }).map((_, i) => (
-            <Skeleton key={i} className="h-48 w-full" />
+            <Skeleton key={skeletonKeys[i]} className="h-48 w-full" />
           ))}
         </GridPrimitive>
       ) : results.length > 0 ? (
@@ -77,7 +83,7 @@ export function SearchResultsTemplate({
           maxItems={maxItems}
         />
       ) : (
-        <p>{t("No results found.")}</p>
+        <p>{t("search.noResults") as string}</p>
       )}
       {pageCount > 1 && (
         <PaginationControl

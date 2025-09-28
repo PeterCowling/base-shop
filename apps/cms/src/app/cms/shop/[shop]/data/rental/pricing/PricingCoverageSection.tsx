@@ -1,5 +1,7 @@
 import { Card, CardContent, Checkbox, Input } from "@/components/atoms/shadcn";
 import { type ChangeEvent } from "react";
+import { Grid } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 import { type CoverageDraft } from "./usePricingFormState";
 
@@ -10,13 +12,12 @@ interface Props {
 }
 
 export default function PricingCoverageSection({ rows, onUpdate, getErrors }: Props) {
+  const t = useTranslations();
   return (
     <section className="space-y-3">
-      <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Coverage fees</h3>
-      <p className="text-xs text-muted-foreground">
-        Enable optional coverage to offset repair costs. Leave unchecked to skip offering the coverage.
-      </p>
-      <div className="grid gap-4 md:grid-cols-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{t("Coverage fees")}</h3>
+      <p className="text-xs text-muted-foreground">{t("Enable optional coverage to offset repair costs. Leave unchecked to skip offering the coverage.")}</p>
+      <Grid cols={1} gap={4} className="md:grid-cols-3">
         {rows.map((row) => {
           const errors = getErrors(row.code);
           const handleFeeChange = (event: ChangeEvent<HTMLInputElement>) =>
@@ -33,12 +34,12 @@ export default function PricingCoverageSection({ rows, onUpdate, getErrors }: Pr
                   <span className="text-sm font-semibold capitalize">{row.code}</span>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Checkbox id={`coverage-${row.code}`} checked={row.enabled} onCheckedChange={handleToggle} />
-                    <label htmlFor={`coverage-${row.code}`}>Offer coverage</label>
+                    <label htmlFor={`coverage-${row.code}`}>{t("Offer coverage")}</label>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
                   <label className="text-xs uppercase tracking-wide text-muted-foreground" htmlFor={`coverage-fee-${row.code}`}>
-                    Coverage fee
+                    {t("Coverage fee")}
                   </label>
                   <Input
                     id={`coverage-fee-${row.code}`}
@@ -63,7 +64,7 @@ export default function PricingCoverageSection({ rows, onUpdate, getErrors }: Pr
                     className="text-xs uppercase tracking-wide text-muted-foreground"
                     htmlFor={`coverage-waiver-${row.code}`}
                   >
-                    Waiver limit
+                    {t("Waiver limit")}
                   </label>
                   <Input
                     id={`coverage-waiver-${row.code}`}
@@ -87,7 +88,7 @@ export default function PricingCoverageSection({ rows, onUpdate, getErrors }: Pr
             </Card>
           );
         })}
-      </div>
+      </Grid>
     </section>
   );
 }

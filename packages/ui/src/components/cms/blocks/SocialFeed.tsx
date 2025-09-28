@@ -1,7 +1,7 @@
-// packages/ui/src/components/cms/blocks/SocialFeed.tsx
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   /** Social platform to embed */
@@ -16,6 +16,7 @@ interface Props {
 export default function SocialFeed({ platform, account, hashtag }: Props) {
   const [failed, setFailed] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const t = useTranslations();
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -36,13 +37,12 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
         ? `https://www.instagram.com/${account}/embed`
         : `https://www.instagram.com/explore/tags/${hashtag}/embed`;
 
-  // i18n-exempt -- Fallback load error message
-  if (failed) return <p>Unable to load social feed.</p>;
+  if (failed) return <p>{t("social.feed.error")}</p>;
 
   return (
     <iframe
       ref={iframeRef}
-      title="social-feed"
+      title={String(t("social.feed.title"))}
       src={src}
       className="w-full"
       data-aspect="16/9"

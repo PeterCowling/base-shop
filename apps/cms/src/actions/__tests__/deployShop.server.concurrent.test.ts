@@ -23,6 +23,7 @@ describe("updateDeployStatus concurrency", () => {
     ]);
 
     const file = path.join(tmpDir, "shop", "deploy.json");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DEV-000: test uses controlled temp path; no user input
     const content = await fs.readFile(file, "utf8");
     expect(JSON.parse(content)).toEqual({
       domainStatus: "ready",
@@ -30,4 +31,3 @@ describe("updateDeployStatus concurrency", () => {
     });
   });
 });
-

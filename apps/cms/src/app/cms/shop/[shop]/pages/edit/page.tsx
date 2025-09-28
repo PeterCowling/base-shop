@@ -12,6 +12,8 @@ import PagesClient from "../PagesClient";
 import { Card, CardContent } from "@/components/atoms/shadcn";
 import { Tag } from "@ui/components/atoms";
 import { cn } from "@ui/utils/style";
+import { Grid as DSGrid } from "@ui/components/atoms/primitives";
+import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations";
 
 export const revalidate = 0;
 
@@ -24,6 +26,7 @@ export default async function PagesPage({
 }: {
   params: Promise<Params>;
 }) {
+  const t = await serverUseTranslations("en");
   const { shop } = await params;
   if (!(await checkShopExists(shop))) return notFound();
   const [session, initial] = await Promise.all([
@@ -42,45 +45,42 @@ export default async function PagesPage({
 
   const quickStats = [
     {
-      label: "Published",
+      label: t("cms.pages.status.published"),
       value: String(publishedPages),
-      caption: "Live on storefront",
-      accent: "bg-surface-3 text-foreground",
+      caption: t("cms.pages.status.published.caption"),
+      accent: "bg-surface-3 text-foreground", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
     },
     {
-      label: "Draft",
+      label: t("cms.pages.status.draft"),
       value: String(draftPages),
-      caption: "Still in progress",
-      accent: "bg-surface-3 text-foreground",
+      caption: t("cms.pages.status.draft.caption"),
+      accent: "bg-surface-3 text-foreground", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
     },
     {
-      label: "Archived",
+      label: t("cms.pages.status.archived"),
       value: String(archivedPages),
-      caption: "Hidden from navigation",
-      accent: "bg-surface-3 text-foreground",
+      caption: t("cms.pages.status.archived.caption"),
+      accent: "bg-surface-3 text-foreground", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
     },
   ];
 
   return (
     <div className="space-y-8 text-foreground">
       <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--color-accent)/0.2),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-7">
-          <Tag variant="default">
-            Pages · {shop}
-          </Tag>
+          <Tag variant="default">{t("cms.breadcrumb.pages")} · {shop}</Tag>
           <h1 className="text-3xl font-semibold md:text-4xl">
-            Curate every page that shapes your storefront narrative
+            {t("cms.pages.edit.heading")}
           </h1>
           <p className="text-sm text-hero-foreground/80">
-            Manage hero stories, campaign landing pages, and evergreen content from one creative workspace.
+            {t("cms.pages.edit.subheading")}
           </p>
-          <div className="grid gap-3 sm:grid-cols-3">
+          <DSGrid cols={1} gap={3} className="sm:grid-cols-3">
             {quickStats.map((stat) => (
               <div
                 key={stat.label}
                 className={cn(
-                  "rounded-2xl border border-border/10 px-4 py-3 backdrop-blur",
+                  "rounded-2xl border border-border/10 px-4 py-3 backdrop-blur", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
                   stat.accent
                 )}
               >
@@ -91,7 +91,7 @@ export default async function PagesPage({
                 <p className="text-xs text-muted-foreground">{stat.caption}</p>
               </div>
             ))}
-          </div>
+          </DSGrid>
         </div>
       </section>
 
@@ -100,16 +100,16 @@ export default async function PagesPage({
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3 text-foreground">
               <div className="min-w-0">
-                <h2 className="text-lg font-semibold">Page library</h2>
+                <h2 className="text-lg font-semibold">{t("cms.pages.library.title")}</h2>
                 <p className="text-sm text-muted-foreground">
-                  Launch campaign landing pages, update evergreen content, or archive what no longer fits.
+                  {t("cms.pages.library.description")}
                 </p>
               </div>
               <Tag className="shrink-0" variant="default">
-                {totalPages} total pages
+                {t("cms.pages.library.total", { count: totalPages })}
               </Tag>
             </div>
-            <Suspense fallback={<p className="text-sm text-muted-foreground">Loading pages…</p>}>
+            <Suspense fallback={<p className="text-sm text-muted-foreground">{t("cms.pages.library.loading")}</p>}>
               <PagesClient shop={shop} initial={initial} canWrite={writable} />
             </Suspense>
           </CardContent>
@@ -118,4 +118,3 @@ export default async function PagesPage({
     </div>
   );
 }
-

@@ -18,10 +18,10 @@ describe("Loader", () => {
   });
 
   it("merges class names", () => {
-    const { container } = render(<Loader className="text-blue" />);
+    const { container } = render(<Loader className="text-foreground" />);
     const div = container.firstChild as HTMLElement;
     expect(div).toHaveClass("animate-spin");
-    expect(div).toHaveClass("text-blue");
+    expect(div).toHaveClass("text-foreground");
   });
 
   it("forwards refs", () => {

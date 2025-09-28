@@ -3,6 +3,7 @@
 import type { CSSProperties } from "react";
 import type { TextTheme } from "../textThemes";
 import { Inline, Stack } from "../../../atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   textThemes: TextTheme[];
@@ -11,14 +12,13 @@ interface Props {
 }
 
 export default function TextThemesList({ textThemes, buildPreviewStyle, onApply }: Props) {
+  const t = useTranslations();
   if (textThemes.length === 0) return null;
   return (
     <div className="space-y-2">
       <Inline className="justify-between" gap={2}>
-        {/* i18n-exempt: Editor label for theme list */}
-        <h4 className="font-semibold capitalize">Text Themes</h4>
-        {/* i18n-exempt: Short instructional hint in builder */}
-        <span className="text-xs text-muted-foreground">Apply to selected block</span>
+        <h4 className="font-semibold capitalize">{t("cms.builder.textThemes.title")}</h4>
+        <span className="text-xs text-muted-foreground">{t("cms.builder.textThemes.applyHint")}</span>
       </Inline>
       <Stack gap={2}>
         {textThemes.map((theme) => (
@@ -30,9 +30,10 @@ export default function TextThemesList({ textThemes, buildPreviewStyle, onApply 
           >
             <Stack gap={1}>
               <span className="font-medium">{theme.label}</span>
+              {/* Preview requires inline style from theme builder */}
+              {/* eslint-disable-next-line react/forbid-dom-props -- TECH-000 theme preview styles are dynamic */}
               <span aria-hidden="true" className="truncate" style={buildPreviewStyle(theme)}>
-                {/* i18n-exempt: Sample text for visual preview only */}
-                The quick brown fox jumps over the lazy dog
+                {t("cms.builder.textThemes.sample")}
               </span>
             </Stack>
           </button>

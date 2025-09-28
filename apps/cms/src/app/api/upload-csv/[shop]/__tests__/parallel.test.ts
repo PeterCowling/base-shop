@@ -100,6 +100,7 @@ describe('upload-csv parallel', () => {
     expect(r2.status).toBe(200);
 
     const filePath = path.join(dataRoot, 'shop1', 'products.csv');
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-2651: test reads from deterministic temp path within sandbox
     const final = fs.readFileSync(filePath);
     expect(final.length).toBe(size);
     expect(final.equals(f1) || final.equals(f2)).toBe(true);
@@ -117,8 +118,11 @@ describe('upload-csv parallel', () => {
     expect(res.status).toBe(413);
     await new Promise((r) => setTimeout(r, 100));
     const failedPath = path.join(dataRoot, 'shop2', 'products.csv');
-    const cleaned =
-      !fs.existsSync(failedPath) || fs.statSync(failedPath).size === 0;
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-2651 test-only: sandboxed temp path under os.tmpdir(); ttl=2026-01-01
+    const notExists = !fs.existsSync(failedPath);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-2651 test-only: sandboxed temp path under os.tmpdir(); ttl=2026-01-01
+    const sizeZero = notExists ? true : fs.statSync(failedPath).size === 0;
+    const cleaned = notExists || sizeZero;
     expect(cleaned).toBe(true);
   });
 });

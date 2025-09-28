@@ -4,6 +4,7 @@
 
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { useTranslations } from "@i18n/Translations";
 
 /**
  * Non-locale-specific payment-cancelled page.
@@ -12,13 +13,14 @@ import { Suspense } from "react";
 function CancelledContent() {
   const searchParams = useSearchParams();
   const error = searchParams?.get("error") ?? null;
+  const t = useTranslations();
 
   return (
     <div className="mx-auto py-20 text-center">
-      <h1 className="mb-4 text-3xl font-semibold">{/* i18n-exempt: transactional status */}Payment cancelled</h1>
-      <p>{/* i18n-exempt: transactional status detail */}You have not been charged. Feel free to keep shopping.</p>
+      <h1 className="mb-4 text-3xl font-semibold">{t("cancelled.title")}</h1>
+      <p>{t("cancelled.desc")}</p>
       {error && (
-        <p className="text-danger mt-4 text-sm" data-token="--color-danger">
+        <p className="text-danger mt-4 text-sm" data-token="--color-danger" /* i18n-exempt -- DEV-000 non-UI token [ttl=2026-01-01] */>
           {error}
         </p>
       )}

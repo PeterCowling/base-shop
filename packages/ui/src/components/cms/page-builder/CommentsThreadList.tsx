@@ -1,8 +1,9 @@
 "use client";
 
-// i18n-exempt — CMS editor-only list; copy is minimal and not end-user facing
+// i18n: This panel is editor-only, but strings are still localized for consistency with ds/no-hardcoded-copy
 
 import * as React from "react";
+import { useTranslations } from "@acme/i18n";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
 import { Stack } from "../../atoms/primitives/Stack";
 import { Inline } from "../../atoms/primitives/Inline";
@@ -50,9 +51,7 @@ export default function CommentsThreadList({
   const [newAssign, setNewAssign] = React.useState("");
   const rowsRef = React.useRef<Record<string, HTMLLIElement | null>>({});
 
-  // i18n-exempt — CMS editor-only panel; copy is minimal and non-user facing
-  /* i18n-exempt */
-  const t = (s: string) => s;
+  const t = useTranslations();
 
   React.useEffect(() => {
     const id = flashId || selectedId;
@@ -78,12 +77,12 @@ export default function CommentsThreadList({
               className="h-7 px-2 text-xs"
               onClick={() => onFilterChange(f)}
             >
-              {f === "all" ? t("All") : f === "open" ? t("Open") : f === "resolved" ? t("Resolved") : t("Assigned")}
+              {f === "all" ? t("cms.builder.comments.filter.all") : f === "open" ? t("cms.builder.comments.filter.open") : f === "resolved" ? t("cms.builder.comments.filter.resolved") : t("cms.builder.comments.filter.assigned")}
             </Button>
           ))}
         </Inline>
         <Input
-          placeholder={t("Search...") as string}
+          placeholder={t("cms.builder.comments.search.placeholder") as string}
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
           className="ms-auto h-7 w-32 text-xs"
@@ -98,7 +97,7 @@ export default function CommentsThreadList({
                 <div className="min-w-0 flex-1">
                   <Select value={newCompId} onValueChange={(v) => setNewCompId(v)}>
                     <SelectTrigger className="h-8 w-full">
-                      <SelectValue placeholder={t("Select component") as string} />
+                      <SelectValue placeholder={t("cms.builder.comments.selectComponent") as string} />
                     </SelectTrigger>
                     <SelectContent>
                       {(componentsOptions ?? []).map((o) => (
@@ -110,32 +109,32 @@ export default function CommentsThreadList({
                   </Select>
                 </div>
                 <Button variant="ghost" className="h-8 px-2" onClick={() => setNewOpen(false)}>
-                  {t("Cancel")}
+                  {t("common.cancel")}
                 </Button>
               </Inline>
               <Input
-                placeholder={t("Assign (optional)") as string}
+                placeholder={t("cms.builder.comments.assignOptional") as string}
                 className="h-8 text-sm"
                 value={newAssign}
                 onChange={(e) => setNewAssign(e.target.value)}
               />
               <Input
-                placeholder={t("Initial comment") as string}
+                placeholder={t("cms.builder.comments.initialComment") as string}
                 className="h-8 text-sm"
                 value={newText}
                 onChange={(e) => setNewText(e.target.value)}
               />
               <Cluster justify="end">
                 <Button onClick={() => onCreate(newCompId!, newText.trim(), newAssign || undefined)} disabled={!newCompId || !newText.trim()}>
-                  {t("Create")}
+                  {t("common.create")}
                 </Button>
               </Cluster>
             </div>
           ) : (
             <Cluster alignY="center" justify="between">
-              <div className="text-xs text-muted-foreground">{t("Alt+Click on canvas to pin")}</div>
+              <div className="text-xs text-muted-foreground">{t("cms.builder.comments.hint.pinOnCanvas")}</div>
               <Button className="h-7 px-2 text-xs" onClick={() => setNewOpen(true)}>
-                {t("New thread")}
+                {t("cms.builder.comments.newThread")}
               </Button>
             </Cluster>
           )}
@@ -144,12 +143,12 @@ export default function CommentsThreadList({
 
       <div className="flex-1 overflow-y-auto">
         {filtered.length === 0 ? (
-          <div className="p-3 text-sm text-muted-foreground">{t("No threads")}</div>
+          <div className="p-3 text-sm text-muted-foreground">{t("cms.builder.comments.noThreads")}</div>
         ) : (
           <ul>
             {filtered.map((thr) => {
-              // i18n-exempt — styling only; no user-facing copy in this line
-              const rowClass = `cursor-pointer border-b p-2 text-sm hover:bg-surface-3 ${selectedId === thr.id ? "bg-surface-2" : ""} ${flashId === thr.id ? "animate-pulse ring-2 ring-primary" : ""}`; // i18n-exempt
+              // i18n-exempt -- TECH-000 [ttl=2025-10-28] styling only; no user-facing copy in this line
+              const rowClass = `cursor-pointer border-b p-2 text-sm hover:bg-surface-3 ${selectedId === thr.id ? "bg-surface-2" : ""} ${flashId === thr.id ? "animate-pulse ring-2 ring-primary" : ""}`;
               return (
               <li
                 key={thr.id}
@@ -157,20 +156,25 @@ export default function CommentsThreadList({
                   rowsRef.current[thr.id] = el;
                 }}
                 className={rowClass}
-                onClick={() => onSelect(thr.id)}
               >
-                {/** i18n-exempt */}
-                <Cluster alignY="center" justify="between">
-                  <div className="truncate font-medium">{thr.componentId}</div>
-                  <div className={`ms-2 shrink-0 rounded px-1 text-xs ${thr.resolved ? "bg-success-soft" : "bg-warning-soft"}`}>
-                    {thr.resolved ? (t("Resolved") as string) : (t("Open") as string)}
-                  </div>
-                </Cluster>
-                <div className="mt-1 truncate text-xs text-muted-foreground">{thr.messages[0]?.text ?? (t("(no message)") as string)}</div>
-                <Cluster className="mt-1 text-xs text-muted-foreground" justify="between">
-                  <span>{thr.assignedTo ? `@${thr.assignedTo}` : (t("Unassigned") as string)}</span>
-                  <span>{formatTime(thr.updatedAt ?? thr.createdAt)}</span>
-                </Cluster>
+                <button
+                  type="button"
+                  className="block w-full min-h-10 min-w-10 text-start"
+                  onClick={() => onSelect(thr.id)}
+                >
+                  {/** i18n-exempt */}
+                  <Cluster alignY="center" justify="between">
+                    <div className="truncate font-medium">{thr.componentId}</div>
+                    <div className={`ms-2 shrink-0 rounded px-1 text-xs ${thr.resolved ? "bg-success-soft" : "bg-warning-soft"}`}>
+                      {thr.resolved ? (t("cms.builder.comments.resolved") as string) : (t("cms.builder.comments.open") as string)}
+                    </div>
+                  </Cluster>
+                  <div className="mt-1 truncate text-xs text-muted-foreground">{thr.messages[0]?.text ?? (t("cms.builder.comments.emptyMessage") as string)}</div>
+                  <Cluster className="mt-1 text-xs text-muted-foreground" justify="between">
+                    <span>{thr.assignedTo ? `@${thr.assignedTo}` : (t("cms.builder.comments.unassigned") as string)}</span>
+                    <span>{formatTime(thr.updatedAt ?? thr.createdAt)}</span>
+                  </Cluster>
+                </button>
               </li>
             );})}
           </ul>

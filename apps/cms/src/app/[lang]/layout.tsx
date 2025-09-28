@@ -28,7 +28,7 @@ export default async function LocaleLayout({
   return (
     <TranslationsProvider messages={messages}>
       <Header lang={locale} />
-      <main className="min-h-[calc(100vh-8rem)]">{children}</main>
+      <main className="min-h-dvh">{children}</main>
       <Footer />
     </TranslationsProvider>
   );

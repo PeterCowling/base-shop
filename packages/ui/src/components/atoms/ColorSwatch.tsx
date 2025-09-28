@@ -17,24 +17,23 @@ export interface ColorSwatchProps
 export const ColorSwatch = React.forwardRef<
   HTMLButtonElement,
   ColorSwatchProps
->(({ color, selected = false, size = 24, className, style, ...props }, ref) => {
+>(({ color, selected = false, size = 24, className, ...props }, ref) => {
+  const dimension = `h-[${size}px] w-[${size}px]`;
+  const normalized = typeof color === "string" ? color.replace(/\s+/g, "") : String(color);
+  const bgClass = `bg-[${normalized}]`;
   return (
     <button
       ref={ref}
       type="button"
-      style={{
-        backgroundColor: color,
-        width: size,
-        height: size,
-        ...style,
-      }}
       className={cn(
-        "rounded-full border", // i18n-exempt — CSS utility class names
-        selected ? "ring-2 ring-offset-2" : "",
+        "rounded-full border", // i18n-exempt -- DEV-000 CSS utility class names
+        dimension,
+        bgClass,
+        selected ? "ring-2 ring-offset-2" : "", // i18n-exempt -- DEV-000 CSS utility class names
         className
       )}
       {...props}
     />
   );
 });
-ColorSwatch.displayName = "ColorSwatch"; // i18n-exempt — component displayName, not user-facing
+ColorSwatch.displayName = "ColorSwatch"; // i18n-exempt -- DEV-000 component displayName, not user-facing

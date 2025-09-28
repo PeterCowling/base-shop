@@ -1,4 +1,4 @@
-"use client";
+"use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
@@ -128,18 +128,19 @@ export function ProductCarousel({
         <Button aria-label={t("actions.previous") as string} onClick={prev} iconOnly leadingIcon={<ChevronLeftIcon />} />
         <div
           ref={scrollerRef}
-          className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)} // i18n-exempt with justification: CSS utility classes only
+          className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)} // i18n-exempt -- DEV-000: CSS utility classes only
         >
           {products.map((p) => (
             <div
               key={p.id}
+              /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Flex basis depends on computed itemsPerSlide; utility classes cannot express this dynamic value */
               style={slideStyle}
               className="relative snap-start"
             >
               <ProductCard product={p} className="h-full" />
               {enableQuickView && (
                 <Button
-                  variant="outline"
+                  variant="outline" /* i18n-exempt -- DEV-000: enum-like prop, not user-facing copy */
                   className="absolute end-2 top-2 px-2 py-1 text-xs"
                   aria-label={`${t("product.quickView") as string} ${p.title ?? ""}`}
                   onClick={() => setQuickViewProduct(p)}

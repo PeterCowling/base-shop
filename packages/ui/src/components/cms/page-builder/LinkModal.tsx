@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -43,10 +43,18 @@ export default function LinkModal({
   const [value, setValue] = useState(initialUrl ?? "");
   const valid = useMemo(() => isValidHref(value), [value]);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (open) setValue(initialUrl ?? "");
   }, [open, initialUrl]);
+
+  useEffect(() => {
+    if (!open) return;
+    // Defer focus until dialog content mounts for better a11y than autoFocus
+    const id = window.setTimeout(() => inputRef.current?.focus(), 0);
+    return () => window.clearTimeout(id);
+  }, [open]);
 
   return (
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
@@ -58,10 +66,10 @@ export default function LinkModal({
         <div className="flex items-end gap-2">
           <div className="grow">
             <Input
+              ref={inputRef}
               value={value}
               placeholder={t("https://example.com or /page")}
               onChange={(e) => setValue(e.target.value)}
-              autoFocus
             />
           </div>
           <Button type="button" variant="outline" onClick={() => setPickerOpen(true)}>

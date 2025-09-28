@@ -85,6 +85,7 @@ export default function GridContainer({
   return (
     <div
       className={cn("grid", className)}
+      /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Dynamic grid requires inline template/areas/gaps computed at runtime */
       style={{
         // Explicitly set display to ensure JSDOM exposes it via inline styles in tests
         display: "grid",

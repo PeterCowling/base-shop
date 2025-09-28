@@ -1,3 +1,4 @@
+// i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
 import { FontSelect } from "../index";
@@ -48,7 +49,7 @@ export function FontToken({
         {isOverridden && (
           <button
             type="button"
-            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10" /* i18n-exempt -- DX-0002: utility classes are not user copy */
             onClick={() => setToken(tokenKey, defaultValue ?? "")}
           >
             {t("common.reset") as string}
@@ -65,6 +66,7 @@ export function FontToken({
         >
           <option value="">{t("cms.style.googleFonts") as string}</option>
           {googleFonts.map((f: string) => (
+            // eslint-disable-next-line react/forbid-dom-props -- DX-0003: Inline font preview on <option> requires style
             <option key={f} value={f} style={{ fontFamily: f }}>
               {f}
             </option>

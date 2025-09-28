@@ -5,8 +5,8 @@ import ConfigurationOverview from './ConfigurationOverview';
 function Wrapper() {
   const { shop } = useParams<{ shop: string }>();
   const themeTokenRows = [
-    { token: 'color.background', default: '#ffffff', override: '#fafafa' },
-    { token: 'color.foreground', default: '#000000', override: null },
+    { token: 'color.background', default: 'var(--color-bg)', override: 'var(--surface-1)' },
+    { token: 'color.foreground', default: 'var(--color-fg)', override: null },
   ] as any;
   return (
     <ConfigurationOverview
@@ -32,4 +32,3 @@ describe('ConfigurationOverview via route params (CT)', { tags: ['inspectors'] }
     cy.findAllByText('Reset').should('have.length.at.least', 1);
   });
 });
-

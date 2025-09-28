@@ -1,3 +1,4 @@
+// i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
 import { useCallback, useRef, useState } from "react";
@@ -65,7 +66,7 @@ export default function useMarqueeSelect({ canvasRef, zoom = 1, editor, viewport
       if (node.isContentEditable) return true;
       return false;
     };
-    // i18n-exempt -- CSS selector, not user-facing copy
+    // i18n-exempt -- TECH-000 [ttl=2026-01-31] CSS selector, not user-facing copy
     if (target.closest('[role="listitem"]') || isInteractive(target)) return;
 
     const canvas = canvasRef.current;
@@ -110,7 +111,8 @@ export default function useMarqueeSelect({ canvasRef, zoom = 1, editor, viewport
       }
       onSelectIds(next);
       try {
-        const msg = t(`Selected ${next.length} ${next.length === 1 ? 'block' : 'blocks'}`);
+        const noun = next.length === 1 ? (t('pb.noun.block') as string) : (t('pb.noun.blocks') as string);
+        const msg = t('pb.toast.selectedN', { count: next.length, noun }) as string;
         window.dispatchEvent(new CustomEvent('pb-live-message', { detail: String(msg) }));
       } catch {}
     };

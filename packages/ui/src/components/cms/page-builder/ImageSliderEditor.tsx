@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import type { ImageSliderComponent } from "@acme/types";
 import { Button, Input, Checkbox } from "../../atoms/shadcn";
 import ImagePicker from "./ImagePicker";
@@ -13,6 +14,19 @@ export default function ImageSliderEditor({ component, onChange }: Props) {
   const slides: NonNullable<ImageSliderComponent["slides"]> = component.slides ?? [];
   const min = component.minItems ?? 0;
   const max = component.maxItems ?? Infinity;
+  // Maintain stable React keys per slide position without using array index
+  const keysRef = React.useRef<string[]>([]);
+  const newKey = () => (globalThis.crypto?.randomUUID?.() ?? Math.random().toString(36).slice(2));
+
+  // Ensure keys array matches slides length for external changes
+  React.useEffect(() => {
+    const keys = keysRef.current;
+    if (keys.length < slides.length) {
+      while (keys.length < slides.length) keys.push(newKey());
+    } else if (keys.length > slides.length) {
+      keys.splice(slides.length);
+    }
+  }, [slides.length]);
 
   const update = (idx: number, field: string, value: string) => {
     const next = [...slides];
@@ -25,15 +39,20 @@ export default function ImageSliderEditor({ component, onChange }: Props) {
     const [item] = next.splice(from, 1);
     next.splice(to, 0, item);
     onChange({ slides: next } as Partial<ImageSliderComponent>);
+    // mirror key movement
+    const k = keysRef.current.splice(from, 1)[0];
+    keysRef.current.splice(to, 0, k);
   };
 
   const remove = (idx: number) => {
     const next = slides.filter((_: unknown, i: number) => i !== idx);
     onChange({ slides: next } as Partial<ImageSliderComponent>);
+    keysRef.current.splice(idx, 1);
   };
 
   const add = () => {
     onChange({ slides: [...slides, { src: "", alt: "", caption: "" }] } as Partial<ImageSliderComponent>);
+    keysRef.current.push(newKey());
   };
 
   return (
@@ -46,7 +65,7 @@ export default function ImageSliderEditor({ component, onChange }: Props) {
         {t("Open images in lightbox")}
       </label>
       {slides.map((s: NonNullable<ImageSliderComponent["slides"]>[number], idx: number) => (
-        <div key={idx} className="space-y-1 rounded border p-2">
+        <div key={keysRef.current[idx] ?? (keysRef.current[idx] = newKey())} className="space-y-1 rounded border p-2">
           <div className="flex items-start gap-2">
             <Input
               value={s.src ?? ""}

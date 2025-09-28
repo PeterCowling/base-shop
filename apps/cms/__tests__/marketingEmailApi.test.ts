@@ -47,12 +47,14 @@ describe("marketing email API segments", () => {
 
   beforeEach(async () => {
     await fs.rm(shopDir, { recursive: true, force: true });
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test setup creates a directory under controlled DATA_ROOT using a literal shop id
     await fs.mkdir(shopDir, { recursive: true });
   });
 
   test(
     "resolves recipients from segment when list empty",
     async () => {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test writes a fixture file under controlled DATA_ROOT/shop path
     await fs.writeFile(
       path.join(shopDir, "segments.json"),
       JSON.stringify([
@@ -60,6 +62,7 @@ describe("marketing email API segments", () => {
       ]),
       "utf8"
     );
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test writes analytics events to a file within controlled DATA_ROOT/shop path
     await fs.writeFile(
       path.join(shopDir, "analytics.jsonl"),
       JSON.stringify({ type: "purchase", email: "a@example.com" }) + "\n" +
@@ -82,6 +85,7 @@ describe("marketing email API segments", () => {
 
     expect(res.status).toBe(200);
     const campaigns = JSON.parse(
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads generated campaigns file within controlled DATA_ROOT/shop path
       await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8")
     );
     expect(campaigns[0].recipients.sort()).toEqual(
@@ -92,6 +96,7 @@ describe("marketing email API segments", () => {
   );
 
   test("falls back to manual recipients when provided", async () => {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test writes an empty analytics file under controlled DATA_ROOT/shop path
     await fs.writeFile(path.join(shopDir, "analytics.jsonl"), "", "utf8");
 
     const { POST } = await import("../src/app/api/marketing/email/route");
@@ -109,6 +114,7 @@ describe("marketing email API segments", () => {
 
     expect(res.status).toBe(200);
     const campaigns = JSON.parse(
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads generated campaigns file within controlled DATA_ROOT/shop path
       await fs.readFile(path.join(shopDir, "campaigns.json"), "utf8")
     );
     expect(campaigns[0].recipients).toEqual(["manual@example.com"]);

@@ -3,6 +3,8 @@
 
 import { useMemo, useState } from "react";
 import { Button, Card, CardContent, Toast } from "@ui/components/atoms";
+import { Inline } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 type ToastState = {
   open: boolean;
@@ -20,6 +22,7 @@ function parseErrorMessage(data: unknown, fallback: string) {
 }
 
 export default function UpgradeButton({ shop }: { shop: string }) {
+  const t = useTranslations();
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
 
@@ -27,13 +30,12 @@ export default function UpgradeButton({ shop }: { shop: string }) {
 
   const ctaCopy = useMemo(
     () => ({
-      title: "Prepare an upgrade preview",
-      description:
-        "Generate a side-by-side preview of the latest components before promoting them live.",
-      success: "Upgrade ready! Redirecting to preview…",
-      failure: "Upgrade failed",
+      title: String(t("cms.upgrade.prepare.title")),
+      description: String(t("cms.upgrade.prepare.desc")),
+      success: String(t("cms.upgrade.prepare.success")),
+      failure: String(t("cms.upgrade.prepare.failed")),
     }),
-    []
+    [t]
   );
 
   async function handleClick() {
@@ -58,6 +60,7 @@ export default function UpgradeButton({ shop }: { shop: string }) {
         err instanceof Error && err.message.trim().length > 0
           ? err.message
           : ctaCopy.failure;
+      // i18n-exempt -- LOG-1001 [ttl=2026-12-31] console log only, not user-facing copy
       console.error("Upgrade failed", err);
       setToast({ open: true, message });
     } finally {
@@ -73,14 +76,14 @@ export default function UpgradeButton({ shop }: { shop: string }) {
             <h3 className="text-lg font-semibold">{ctaCopy.title}</h3>
             <p className="text-muted-foreground text-sm">{ctaCopy.description}</p>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <Inline wrap gap={3}>
             <Button
               type="button"
               onClick={handleClick}
               disabled={loading}
-              className="min-w-[200px]"
+              className="min-w-52"
             >
-              {loading ? "Preparing preview…" : "Upgrade & preview"}
+              {loading ? t("cms.upgrade.preparing") : t("cms.upgrade.previewCta")}
             </Button>
             <Button
               type="button"
@@ -89,13 +92,13 @@ export default function UpgradeButton({ shop }: { shop: string }) {
               onClick={() =>
                 setToast({
                   open: true,
-                  message: "Upgrade steps will run in the background once started.",
+                  message: String(t("cms.upgrade.stepsBackground")),
                 })
               }
             >
-              View upgrade steps
+              {t("cms.upgrade.viewSteps")}
             </Button>
-          </div>
+          </Inline>
         </CardContent>
       </Card>
       <Toast
@@ -108,4 +111,3 @@ export default function UpgradeButton({ shop }: { shop: string }) {
     </>
   );
 }
-

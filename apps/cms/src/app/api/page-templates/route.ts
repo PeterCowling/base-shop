@@ -13,7 +13,7 @@ function resolveTemplatesRoot(): string {
       "templates"
     );
     // Only probes known workspace paths; no user input involved
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: safe workspace path probe
     if (fsSync.existsSync(candidate)) return candidate;
     const parent = path.dirname(dir);
     if (parent === dir) break;
@@ -32,13 +32,13 @@ export async function GET() {
   try {
     const dir = resolveTemplatesRoot();
     // Read from a constrained workspace directory
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: controlled workspace directory read
     const entries = await fs.readdir(dir, { withFileTypes: true });
     const templates = [] as Array<{ name: string; components: unknown[] }>;
     for (const e of entries) {
       if (e.isFile() && e.name.endsWith(".json")) {
         const file = path.join(dir, e.name);
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: reading known JSON templates
         const json = JSON.parse(await fs.readFile(file, "utf8"));
         templates.push({
           name: json.name ?? path.parse(e.name).name,

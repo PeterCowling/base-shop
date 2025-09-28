@@ -53,6 +53,5 @@ export default function ExperimentGate({ flag, enabled, fallback = null, childre
     setAllow(true);
   }, [flag, enabled]);
 
-  return allow ? <>{children}</> : <>{fallback}</>;
+  return allow ? (children as React.ReactNode) : (fallback as React.ReactNode);
 }
-

@@ -5,8 +5,8 @@ import { useLayout } from "@acme/platform-core";
 
 // Mock Layout and Theme providers and useLayout hook
 jest.mock("@acme/platform-core", () => ({
-  LayoutProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  LayoutProvider: ({ children }: { children: React.ReactNode }) => children as JSX.Element,
+  ThemeProvider: ({ children }: { children: React.ReactNode }) => children as JSX.Element,
   useLayout: jest.fn(),
 }));
 

@@ -25,7 +25,8 @@ function CancelledContent() {
         <h1 className="mb-4 text-3xl font-semibold">{t("cancelled.title")}</h1>
         <p>{t("cancelled.desc")}</p>
         {error && (
-          <p className="text-danger mt-4 text-sm" data-token="--color-danger">
+          <p className="text-danger mt-4 text-sm" data-token="--color-danger"> {/* i18n-exempt -- DS-1234 class names/design tokens; not user-visible copy */}
+            {/* i18n-exempt -- DS-1234 error text originates from upstream or query param */}
             {error}
           </p>
         )}

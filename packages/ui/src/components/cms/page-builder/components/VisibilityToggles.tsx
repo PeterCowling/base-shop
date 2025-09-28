@@ -5,6 +5,7 @@ import type { Action } from "../state";
 import { Button } from "../../../atoms/shadcn";
 import { Inline } from "../../../atoms/primitives/Inline";
 import type { EditorFlags } from "../state/layout/types";
+import { useTranslations } from "@acme/i18n";
 
 interface Breakpoint { id: string; label: string; min?: number; max?: number }
 
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const VisibilityToggles = ({ selectedIds, editor, dispatch, breakpoints = [] }: Props) => {
+  const t = useTranslations() as unknown as (key: string, vars?: Record<string, unknown>) => string;
   return (
     <>
       <div className="mt-1 space-y-1">
@@ -37,11 +39,14 @@ const VisibilityToggles = ({ selectedIds, editor, dispatch, breakpoints = [] }: 
                   if (isHidden) set.delete(vp); else set.add(vp);
                   const patch: Partial<EditorFlags> = { hidden: Array.from(set) };
                   dispatch({ type: "update-editor", id, patch });
-                  try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `${isHidden ? 'Shown' : 'Hidden'} on ${vp}` })); } catch {}
+                  try {
+                    const detail = isHidden ? t("pb.toast.shownOn", { target: vp }) : t("pb.toast.hiddenOn", { target: vp });
+                    window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(detail) }));
+                  } catch {}
                 }}
                 aria-pressed={isHidden}
-                aria-label={`${isHidden ? 'Show' : 'Hide'} on ${vp}`}
-                title={`${isHidden ? 'Show' : 'Hide'} on ${vp}`}
+                aria-label={String(isHidden ? t("pb.aria.showOn", { target: vp }) : t("pb.aria.hideOn", { target: vp }))}
+                title={String(isHidden ? t("pb.aria.showOn", { target: vp }) : t("pb.aria.hideOn", { target: vp }))}
               >
                 {label}
               </Button>
@@ -70,11 +75,14 @@ const VisibilityToggles = ({ selectedIds, editor, dispatch, breakpoints = [] }: 
                     if (isHidden) set.delete(bp.id); else set.add(bp.id);
                     const patch: Partial<EditorFlags> = { hiddenDeviceIds: Array.from(set) };
                     dispatch({ type: "update-editor", id: eid, patch });
-                    try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: `${isHidden ? 'Shown' : 'Hidden'} on ${bp.label}` })); } catch {}
+                    try {
+                      const detail = isHidden ? t("pb.toast.shownOn", { target: bp.label }) : t("pb.toast.hiddenOn", { target: bp.label });
+                      window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(detail) }));
+                    } catch {}
                   }}
                   aria-pressed={isHidden}
-                  aria-label={`${isHidden ? 'Show' : 'Hide'} on ${bp.label}`}
-                  title={`${isHidden ? 'Show' : 'Hide'} on ${bp.label}`}
+                  aria-label={String(isHidden ? t("pb.aria.showOn", { target: bp.label }) : t("pb.aria.hideOn", { target: bp.label }))}
+                  title={String(isHidden ? t("pb.aria.showOn", { target: bp.label }) : t("pb.aria.hideOn", { target: bp.label }))}
                 >
                   {bp.label}
                 </Button>

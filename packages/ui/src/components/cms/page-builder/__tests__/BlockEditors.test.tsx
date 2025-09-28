@@ -21,7 +21,7 @@ jest.mock("@acme/i18n", () => ({
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
-  default: ({ children }: any) => <>{children}</>,
+  default: ({ children }: any) => children,
 }));
 
 describe("block editors", () => {

@@ -1,33 +1,34 @@
 import Link from "next/link";
 import { Card, CardContent, Tag } from "@ui/components/atoms";
+import { Grid, Inline, Cluster } from "@ui/components/atoms/primitives";
 import type { MarketingRecentPerformanceItem } from "./useMarketingOverview";
+import { useTranslations } from "@acme/i18n";
 
 export interface MarketingRecentPerformanceProps {
   items: MarketingRecentPerformanceItem[];
 }
 
 export function MarketingRecentPerformance({ items }: MarketingRecentPerformanceProps) {
+  const t = useTranslations();
   return (
     <section className="space-y-4">
       <div>
-        <h2 className="text-lg font-semibold text-foreground">Recent campaign performance</h2>
-        <p className="text-sm text-muted-foreground">
-          Jump into a shop dashboard to review opens, clicks, and downstream orders for each campaign.
-        </p>
+        <h2 className="text-lg font-semibold text-foreground">{t("cms.marketing.recentPerformance.heading")}</h2>
+        <p className="text-sm text-muted-foreground">{t("cms.marketing.recentPerformance.subheading")}</p>
       </div>
-      <div className="grid gap-4 md:grid-cols-2">
+      <Grid gap={4} className="md:grid-cols-2">
         {items.map((item) => (
           <Card key={item.shop}>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <div className="flex flex-wrap items-start justify-between gap-3">
+                <Cluster gap={3} alignY="start" justify="between">
                   <div className="min-w-0">
                     <h3 className="text-base font-semibold text-foreground">{item.shop}</h3>
                     <span className="text-xs uppercase tracking-wide text-muted-foreground">
                       {item.activeLabel}
                     </span>
                   </div>
-                  <div className="flex shrink-0 flex-wrap items-center gap-2">
+                  <Inline gap={2} className="shrink-0">
                     <Tag variant={item.openRateTag.variant} className="text-xs">
                       {item.openRateTag.label}
                     </Tag>
@@ -39,8 +40,8 @@ export function MarketingRecentPerformance({ items }: MarketingRecentPerformance
                         {item.unsubscribedTag.label}
                       </Tag>
                     )}
-                  </div>
-                </div>
+                  </Inline>
+                </Cluster>
                 <p className="text-xs text-muted-foreground">{item.engagedContactsMessage}</p>
               </div>
 
@@ -60,21 +61,21 @@ export function MarketingRecentPerformance({ items }: MarketingRecentPerformance
               {item.segments.length > 0 && (
                 <div className="space-y-2">
                   <h4 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Active segments
+                    {t("cms.marketing.recentPerformance.activeSegments")}
                   </h4>
-                  <div className="flex flex-wrap gap-2">
+                  <Inline gap={2}>
                     {item.segments.map((segment) => (
-                      <Tag key={segment.id} variant="default" className="text-[0.65rem]">
+                      <Tag key={segment.id} variant="default" className="text-xs">
                         {segment.label}
                       </Tag>
                     ))}
-                  </div>
+                  </Inline>
                 </div>
               )}
             </CardContent>
           </Card>
         ))}
-      </div>
+      </Grid>
     </section>
   );
 }

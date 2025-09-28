@@ -16,7 +16,9 @@ jest.spyOn(i18n, "useTranslations").mockReturnValue((key: string) => key);
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
   default: ({ onSelect, children }: any) => (
-    <div onClick={() => onSelect("picked")}>{children}</div>
+    <button type="button" onClick={() => onSelect("picked")}>
+      {children}
+    </button>
   ),
 }));
 

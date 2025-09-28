@@ -41,18 +41,22 @@ export default class ChunkReloadBoundary extends React.Component<
   render() {
     if (this.state.error) {
       return (
-        <div className="mx-auto max-w-lg p-6 text-center">
+        <div className="mx-auto p-6 text-center">
+          {/* i18n-exempt -- CMS-1010: dev-only fallback during HMR */}
           <h2 className="mb-2 text-lg font-semibold">Something went wrong</h2>
+          {/* i18n-exempt -- CMS-1010: dev-only guidance during HMR */}
           <p className="mb-4 text-sm text-muted-foreground">
             We couldn’t load a development chunk. Try a manual refresh.
           </p>
+          {/* eslint-disable ds/min-tap-size -- CMS-1010 [ttl=2026-01-01] dev-only fallback control */}
           <button
             type="button"
-            className="rounded bg-primary px-4 py-2 text-primary-foreground"
+            className="rounded bg-primary px-4 py-2 text-primary-foreground inline-flex items-center justify-center min-h-10 min-w-10"
             onClick={() => window.location.reload()}
           >
             Refresh
           </button>
+          {/* eslint-enable ds/min-tap-size -- CMS-1010 */}
         </div>
       );
     }

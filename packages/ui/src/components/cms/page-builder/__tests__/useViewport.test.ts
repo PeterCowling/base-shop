@@ -68,8 +68,7 @@ describe("useViewport", () => {
     expect(result.current.frameClass).toEqual({
       desktop: "",
       tablet: "rounded-xl border border-muted-foreground/40 p-2",
-      mobile: "rounded-[2rem] border border-muted-foreground/40 p-4",
+      mobile: "rounded-4xl border border-muted-foreground/40 p-4",
     });
   });
 });
-

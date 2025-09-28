@@ -16,11 +16,8 @@ function MockCurrencyProvider({
   currency: Currency;
   children: React.ReactNode;
 }) {
-  return (
-    <MockCurrencyContext.Provider value={[currency, jest.fn()]}>
-      {children}
-    </MockCurrencyContext.Provider>
-  );
+  const value = React.useMemo<[Currency, () => void]>(() => [currency, jest.fn()], [currency]);
+  return <MockCurrencyContext.Provider value={value}>{children}</MockCurrencyContext.Provider>;
 }
 
 jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
@@ -46,4 +43,3 @@ describe("Price", () => {
     expect(screen.getByText("$1,234.56")).toBeInTheDocument();
   });
 });
-

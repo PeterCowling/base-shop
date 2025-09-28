@@ -1,4 +1,4 @@
-import "server-only";
+import "server-only"; // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
 import sgMail from "@sendgrid/mail";
 import type { CampaignOptions } from "../send";
 import { ProviderError } from "./types";
@@ -46,7 +46,7 @@ export class SendgridProvider implements CampaignProvider {
         if (!res.ok) {
           throw new Error(
             `Sendgrid credentials rejected with status ${res.status}`
-          ); // i18n-exempt: developer configuration error
+          ); // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
         }
       });
     } else {
@@ -57,8 +57,8 @@ export class SendgridProvider implements CampaignProvider {
   async send(options: CampaignOptions): Promise<void> {
     if (!apiKey) {
       console.warn(
-        "Sendgrid API key is not configured; attempting to send email"
-      ); // i18n-exempt: operational log
+        "Sendgrid API key is not configured; attempting to send email" // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+      );
     }
     try {
       await sgMail.send({
@@ -70,7 +70,7 @@ export class SendgridProvider implements CampaignProvider {
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.error("Campaign email send failed", { // i18n-exempt: operational log
+        console.error("Campaign email send failed", { // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
           provider: "sendgrid",
           recipient: options.to,
           campaignId: options.campaignId,
@@ -90,12 +90,12 @@ export class SendgridProvider implements CampaignProvider {
           typeof numericStatus !== "number" || numericStatus >= 500;
         throw new ProviderError(error.message, retryable);
       }
-      console.error("Campaign email send failed", { // i18n-exempt: operational log
+      console.error("Campaign email send failed", { // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
         provider: "sendgrid",
         recipient: options.to,
         campaignId: options.campaignId,
       });
-      throw new ProviderError("Unknown error", true); // i18n-exempt: internal error tag
+      throw new ProviderError("Unknown error", true); // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
     }
   }
 

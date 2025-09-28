@@ -47,6 +47,7 @@ async function flush() {
       break;
     } catch (err) {
       attempts++;
+      // i18n-exempt -- DX-1023 [ttl=2026-12-31] developer log only; not user-facing UI
       console.error("Failed to send telemetry", err);
       if (attempts >= MAX_RETRIES) {
         BUFFER.unshift(...events); // restore

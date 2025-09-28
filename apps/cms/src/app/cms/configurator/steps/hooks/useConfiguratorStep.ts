@@ -47,7 +47,7 @@ export default function useConfiguratorStep<T>({
         return sameKeys ? prev : fieldErrors;
       });
     }
-  }, [schema, valuesKey]);
+  }, [schema, valuesKey, values]);
 
   const getError = (field: string) => errors[field]?.[0];
   const isValid = Object.keys(errors).length === 0;

@@ -43,6 +43,11 @@ export default function Lookbook({ items = [], onItemsChange }: Props) {
 
   if (items.length === 0) return null;
 
+  const getItemKey = (item: LookbookItem) => {
+    const hs = item.hotspots?.map((h) => `${h.sku ?? "_"}-${h.x}-${h.y}`).join("|") ?? "no-hotspots";
+    return `${item.src ?? "no-src"}-${item.alt ?? "_"}-${hs}`;
+  };
+
   const handlePointerDown = (itemIdx: number, hotspotIdx: number) => (
     e: ReactPointerEvent<HTMLDivElement>,
   ) => {
@@ -84,7 +89,7 @@ export default function Lookbook({ items = [], onItemsChange }: Props) {
     <div className="space-y-2">
       {list.map((item, idx) => (
         <div
-          key={idx}
+          key={getItemKey(item)}
           ref={(el) => {
             containerRefs.current[idx] = el;
           }}
@@ -96,13 +101,8 @@ export default function Lookbook({ items = [], onItemsChange }: Props) {
             </div>
           )}
           {item.hotspots?.map((p, i) => (
-            <div
-              key={i}
-              onPointerDown={handlePointerDown(idx, i)}
-              className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-move rounded-full bg-primary"
-              style={{ left: `${p.x}%`, top: `${p.y}%` }}
-              title={p.sku}
-            />
+            // eslint-disable-next-line react/forbid-dom-props -- DS-0006: Dynamic positioning requires runtime style for left/top; consider CSS vars + utility in follow-up
+            <div key={p.sku ? `sku-${p.sku}` : `${p.x}-${p.y}`} onPointerDown={handlePointerDown(idx, i)} className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 cursor-move rounded-full bg-primary" style={{ left: `${p.x}%`, top: `${p.y}%` }} title={p.sku} />
           ))}
         </div>
       ))}

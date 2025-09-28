@@ -117,7 +117,7 @@ const BlockItem = memo(function BlockItemComponent({
       : "");
 
   return (
-    <>
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- PB-2461: Canvas item must handle click/contextmenu/keyboard to support selection & DnD
       <div
       ref={dnd.setNodeRef}
       onClick={(event) => onSelect(selectableId, event)}
@@ -145,7 +145,9 @@ const BlockItem = memo(function BlockItemComponent({
         componentId: component.id,
         dispatch,
         viewport,
+        t: t as unknown as (key: string, vars?: Record<string, unknown>) => string,
       })}
+      /* eslint-disable-next-line react/forbid-dom-props -- PB-2419: editor canvas item uses dynamic inline positioning/transforms during interactions */
       style={style}
       className={wrapperClass}
     >
@@ -246,7 +248,6 @@ const BlockItem = memo(function BlockItemComponent({
       />
       <ContextMenu x={ctxPos.x} y={ctxPos.y} open={ctxOpen} onClose={closeContextMenu} items={ctxItems} />
       </div>
-    </>
   );
 });
 

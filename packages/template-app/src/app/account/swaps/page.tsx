@@ -17,7 +17,7 @@ import { notFound } from "next/navigation";
 import { coreEnv, type CoreEnv } from "@acme/config/env/core";
 import type { SubscriptionPlan } from "@acme/types";
 import { nowIso } from "@date-utils";
-import { useTranslations as useServerTranslations } from "@i18n/useTranslations.server";
+import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
 import {
   getUserPlan,
   getRemainingSwaps,
@@ -25,7 +25,7 @@ import {
 } from "@platform-core/repositories/subscriptionUsage.server";
 
 export default async function SwapPage() {
-  const tBase = await useServerTranslations("en");
+  const tBase = await getServerTranslations("en");
   const t = (key: string, vars?: Record<string, unknown>) => {
     const msg = tBase(`account.swaps.${key}`);
     if (!vars) return msg;

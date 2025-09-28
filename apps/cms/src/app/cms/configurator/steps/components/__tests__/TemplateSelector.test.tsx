@@ -33,7 +33,14 @@ jest.mock("@ui/components/atoms/shadcn", () => {
   };
 });
 
-jest.mock("next/image", () => (props: any) => <img {...props} alt={props.alt} />);
+jest.mock("next/image", () => {
+  const React = require("react");
+  const NextImageMock = ({ alt, ...props }: any) => (
+    <div role="img" aria-label={alt} data-mock="next-image" {...props} />
+  );
+  NextImageMock.displayName = "NextImageMock";
+  return { __esModule: true, default: NextImageMock };
+});
 
 describe("TemplateSelector", () => {
   it("applies layout and components on confirmation", () => {
@@ -53,4 +60,3 @@ describe("TemplateSelector", () => {
     );
   });
 });
-

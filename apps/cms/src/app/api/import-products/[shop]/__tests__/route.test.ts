@@ -92,6 +92,7 @@ describe('import-products route', () => {
       });
     expect(res.status).toBe(415);
     expect(res.body).toEqual({ error: 'Invalid file type' });
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-201 temp path under os.tmpdir()
     expect(fs.existsSync(filePath())).toBe(false);
   });
 

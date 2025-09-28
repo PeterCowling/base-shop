@@ -111,6 +111,20 @@ export default function ImageEditor({ open, src, initial, onClose, onApply, init
     setFocal({ x: Math.min(1, Math.max(0, x)), y: Math.min(1, Math.max(0, y)) });
   }, []);
 
+  const handleKeyAdjust = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    const step = e.shiftKey ? 0.1 : 0.02;
+    let handled = false;
+    if (e.key === "ArrowLeft") { setFocal((f) => ({ x: Math.max(0, f.x - step), y: f.y })); handled = true; }
+    else if (e.key === "ArrowRight") { setFocal((f) => ({ x: Math.min(1, f.x + step), y: f.y })); handled = true; }
+    else if (e.key === "ArrowUp") { setFocal((f) => ({ x: f.x, y: Math.max(0, f.y - step) })); handled = true; }
+    else if (e.key === "ArrowDown") { setFocal((f) => ({ x: f.x, y: Math.min(1, f.y + step) })); handled = true; }
+    else if (e.key === "Enter" || e.key === " ") { setFocal({ x: 0.5, y: 0.5 }); handled = true; }
+    if (handled) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, []);
+
   const handleApply = useCallback(() => {
     onApply({ cropAspect: aspect, focalPoint: focal });
     const filter = composeFilter({ brightness, contrast, saturate, blur });
@@ -166,12 +180,17 @@ export default function ImageEditor({ open, src, initial, onClose, onApply, init
             <div
               ref={containerRef}
               className="relative w-full overflow-hidden bg-muted"
+              /* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic aspectRatio/minHeight required for preview container sizing */
               style={
                 aspectRatio
                   ? ({ aspectRatio: String(aspectRatio) } as React.CSSProperties)
                   : ({ minHeight: 240 } as React.CSSProperties)
               }
               onClick={handlePickFocal}
+              role="button"
+              tabIndex={0}
+              aria-label="Image area: click or use arrow keys to set focal point"
+              onKeyDown={handleKeyAdjust}
             >
               <Image
                 src={src}
@@ -185,6 +204,7 @@ export default function ImageEditor({ open, src, initial, onClose, onApply, init
               {/* Focal point marker */}
               <div
                 className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white bg-primary shadow"
+                /* eslint-disable-next-line react/forbid-dom-props -- PB-2416: focal marker needs dynamic left/top positioning */
                 style={{ left: `${focal.x * 100}%`, top: `${focal.y * 100}%` }}
                 aria-hidden
               />

@@ -1,7 +1,12 @@
 {
   "id": "products",
   "slug": "products",
-  "title": "Products",
+  "title": {
+    "type": "inline",
+    "value": {
+      "en": "Products"
+    }
+  },
   "components": [
     {
       "id": "grid",

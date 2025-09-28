@@ -83,7 +83,7 @@ export default function GridAreaChildren({
         return (
           <div key={area} className="rounded border p-2">
             <div className="text-muted-foreground mb-2 text-xs font-medium">
-              {t("Area:")} <code>{area}</code>
+              {t("pb.grid.areaLabel")} <code>{area}</code>
             </div>
             <InlineInsert
               index={firstIdx}
@@ -94,12 +94,12 @@ export default function GridAreaChildren({
                 const insertAt = toUnderlyingIndex(index);
                 dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
                 try {
-                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("Block inserted") as string }));
+                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("pb.blockInserted") as string }));
                 } catch {}
               }}
             />
             {insertParentId === component.id && insertIndex === firstIdx && (
-              // i18n-exempt — styling-only string, not user-facing copy
+              // i18n-exempt -- ABC-123 [ttl=2025-03-31]
               <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
             )}
             {areaChildren.map((child) => {
@@ -107,7 +107,7 @@ export default function GridAreaChildren({
               return (
                 <div key={child.id} className="relative group">
                   {insertParentId === component.id && insertIndex === i && (
-                    // i18n-exempt — styling-only string, not user-facing copy
+                    // i18n-exempt -- ABC-123 [ttl=2025-03-31]
                     <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
                   )}
                   <div className="absolute -top-3 -start-2.5">
@@ -161,12 +161,12 @@ export default function GridAreaChildren({
                       const insertAt = toUnderlyingIndex(index);
                       dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
                       try {
-                        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("Block inserted") as string }));
+                        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("pb.blockInserted") as string }));
                       } catch {}
                     }}
                   />
                   {insertParentId === component.id && insertIndex === i + 1 && (
-                    // i18n-exempt — styling-only string, not user-facing copy
+                    // i18n-exempt -- ABC-123 [ttl=2025-03-31]
                     <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
                   )}
                 </div>
@@ -181,12 +181,12 @@ export default function GridAreaChildren({
                 const insertAt = toUnderlyingIndex(index);
                 dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
                 try {
-                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("Block inserted") as string }));
+                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("pb.blockInserted") as string }));
                 } catch {}
               }}
             />
             {insertParentId === component.id && insertIndex === endIndex && (
-              // i18n-exempt — styling-only string, not user-facing copy
+              // i18n-exempt -- ABC-123 [ttl=2025-03-31]
               <div data-placeholder className={(dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary") + " mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none"} />
             )}
           </div>

@@ -12,11 +12,13 @@ import {
   PlusIcon,
 } from "@radix-ui/react-icons";
 import { Tag } from "@ui/components/atoms";
+import { Grid } from "@ui/components/atoms/primitives";
 import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep, ConfiguratorStepTrack } from "../types";
-import { stepTrackMeta } from "../steps";
+import { getStepTrackMeta } from "../steps";
 import { cn } from "@ui/utils/style";
 import { ButtonElement, CardRoot, CardSection } from "./DashboardPrimitives";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   state: ConfiguratorState;
@@ -28,14 +30,18 @@ interface Props {
 
 type TagVariant = "default" | "success" | "warning" | "destructive";
 
-const statusCopy: Record<string, { label: string; variant: TagVariant }> = {
-  complete: { label: "Complete", variant: "success" },
-  skipped: { label: "Skipped", variant: "warning" },
-  pending: { label: "Pending", variant: "default" },
-};
+function useStatusCopy() {
+  const t = useTranslations();
+  const map: Record<string, { label: string; variant: TagVariant }> = {
+    complete: { label: String(t("cms.configurator.status.complete")), variant: "success" },
+    skipped: { label: String(t("cms.configurator.status.skipped")), variant: "warning" },
+    pending: { label: String(t("cms.configurator.status.pending")), variant: "default" },
+  };
+  return map;
+}
 
 function TrackIcon({ track }: { track?: ConfiguratorStepTrack }) {
-  const className = "h-[30px] w-[30px]";
+  const className = "h-8 w-8";
   switch (track) {
     case "foundation":
       return <TokensIcon className={className} aria-hidden />;
@@ -53,7 +59,7 @@ function TrackIcon({ track }: { track?: ConfiguratorStepTrack }) {
 function StepCard({
   step,
   status,
-  pendingRecommendations,
+  _pendingRecommendations,
   onOpen,
   onReset,
   onSkip,
@@ -61,36 +67,39 @@ function StepCard({
 }: {
   step: ConfiguratorStep;
   status: "complete" | "pending" | "skipped";
-  pendingRecommendations: string[];
+  _pendingRecommendations: string[];
   onOpen: () => void;
   onReset: () => void;
   onSkip: () => void;
   useRadixIcons?: boolean;
 }): React.JSX.Element {
-  const trackMeta = step.track ? stepTrackMeta?.[step.track] : undefined;
-  const statusStyles = statusCopy[status];
+  const t = useTranslations();
+  const trackMeta = step.track ? getStepTrackMeta(t)?.[step.track] : undefined;
+  const statusStyles = useStatusCopy()[status];
   const accentClass = trackMeta?.accentClass ?? "bg-primary";
-  const hasRecommendations = pendingRecommendations.length > 0;
+  // removed unused var per lint: pendingRecommendations length computed at callsite when needed
 
   return (
     <CardRoot
       className={cn(
         // Clean hover/focus styling without duplicating base Card borders
+        // i18n-exempt -- TECHDEBT-000 [ttl=2026-12-31]
         "relative overflow-hidden transition-colors hover:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20",
         status === "complete" && "border-success/50"
       )}
     >
-      <CardSection className="flex min-h-48 flex-col gap-5 pb-16">
+      <CardSection className="relative flex min-h-48 flex-col gap-5 pb-16">
         {/* Header */}
-        <div className="grid grid-cols-[1fr,auto] items-start gap-4">
+        <div className="flex items-start justify-between gap-4">
           {/* Left cluster: icon + text on one row */}
           <div className="min-w-0 flex items-start gap-3">
-            <div className="grid h-[30px] w-[30px] place-content-center rounded bg-info" aria-hidden>
+            <div className="inline-flex h-8 w-8 items-center justify-center rounded bg-info" aria-hidden>
               {useRadixIcons ? (
                 <TrackIcon track={step.track} />
               ) : (
-                <span className="inline-block h-[30px] w-[30px] leading-[30px] text-xl text-center">
+                <span className="text-xl">
                   {step.icon ?? "🧩"}
+                  {/* i18n-exempt -- TECHDEBT-000 [ttl=2026-12-31] */}
                 </span>
               )}
             </div>
@@ -112,6 +121,7 @@ function StepCard({
             {trackMeta ? (
               <span
                 className={cn(
+                  // i18n-exempt -- TECHDEBT-000 [ttl=2026-12-31]
                   "inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium",
                   trackMeta.pillClass
                 )}
@@ -131,8 +141,8 @@ function StepCard({
 
         {/* Recommendation banner removed per request */}
 
-        {/* Footer — absolutely pinned 8px from card bottom */}
-        <div className="pointer-events-auto absolute left-6 right-6 bottom-2 flex flex-wrap items-center gap-2 justify-end">
+        {/* Footer — absolutely pinned from card bottom, logical-safe inset */}
+        <div className="pointer-events-auto absolute inset-x-6 bottom-2 flex flex-wrap items-center gap-2 justify-end">
           <ButtonElement
             asChild
             className="h-10 px-4 text-sm whitespace-nowrap"
@@ -143,10 +153,16 @@ function StepCard({
               onClick={onOpen}
               className="inline-flex items-center gap-2"
               aria-label={
-                (status === "complete" ? "Review " : "Continue ") + step.label
+                String(
+                  status === "complete"
+                    ? t("cms.configurator.step.aria.review", { label: step.label })
+                    : t("cms.configurator.step.aria.continue", { label: step.label })
+                )
               }
             >
-              {status === "complete" ? "Review step" : "Continue step"}
+              {status === "complete"
+                ? t("cms.configurator.step.review")
+                : t("cms.configurator.step.continue")}
               <ArrowRightIcon className="h-4 w-4" aria-hidden />
             </Link>
           </ButtonElement>
@@ -157,7 +173,7 @@ function StepCard({
               className="h-10 px-3 text-sm"
               onClick={onReset}
             >
-              <ResetIcon className="me-2 h-4 w-4" aria-hidden /> Reset
+              <ResetIcon className="me-2 h-4 w-4" aria-hidden /> {t("actions.reset")}
             </ButtonElement>
           ) : step.optional ? (
             <ButtonElement
@@ -166,12 +182,16 @@ function StepCard({
               className="h-10 px-3 text-sm"
               onClick={onSkip}
             >
-              Skip for now
+              {t("cms.configurator.step.skipForNow")}
             </ButtonElement>
           ) : null}
         </div>
       </CardSection>
-      <span className={cn("pointer-events-none absolute inset-x-0 bottom-0 h-1 rounded-full", accentClass)} />
+      <span className={cn(
+        // i18n-exempt -- TECHDEBT-000 [ttl=2026-12-31]
+        "pointer-events-none absolute inset-x-0 bottom-0 h-1 rounded-full",
+        accentClass
+      )} />
     </CardRoot>
   );
 }
@@ -183,6 +203,7 @@ export function ConfiguratorStepList({
   resetStep,
   onStepClick,
 }: Props): React.JSX.Element {
+  const t = useTranslations();
   const requiredSteps = steps.filter((step) => !step.optional);
   const optionalSteps = steps.filter((step) => step.optional);
 
@@ -193,11 +214,17 @@ export function ConfiguratorStepList({
     (step) => state.completed?.[step.id] === "complete"
   ).length;
   const requiredSummary = requiredSteps.length
-    ? String(requiredCompleted) + "/" + String(requiredSteps.length) + " complete"
-    : "0 complete";
+    ? t("cms.configurator.sections.summary", {
+        done: String(requiredCompleted),
+        total: String(requiredSteps.length),
+      })
+    : t("cms.configurator.sections.summary.zero");
   const optionalSummary = optionalSteps.length
-    ? String(optionalCompleted) + "/" + String(optionalSteps.length) + " complete"
-    : "0 complete";
+    ? t("cms.configurator.sections.summary", {
+        done: String(optionalCompleted),
+        total: String(optionalSteps.length),
+      })
+    : t("cms.configurator.sections.summary.zero");
 
   const renderSection = (
     sectionSteps: ConfiguratorStep[],
@@ -215,7 +242,8 @@ export function ConfiguratorStepList({
           {options.summary}
         </Tag>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      {/* Use DS Grid to satisfy layout rules on leaf nodes */}
+      <Grid className="gap-4 md:grid-cols-2 xl:grid-cols-3">
         {sectionSteps.map((step) => {
           const statusRaw = state.completed?.[step.id];
           const status = (statusRaw ?? "pending") as "complete" | "pending" | "skipped";
@@ -235,7 +263,7 @@ export function ConfiguratorStepList({
               key={step.id}
               step={step}
               status={status}
-              pendingRecommendations={pendingRecommendations}
+              _pendingRecommendations={pendingRecommendations}
               onOpen={() => onStepClick(step)}
               onReset={() => resetStep(step.id)}
               onSkip={() => skipStep(step.id)}
@@ -243,22 +271,22 @@ export function ConfiguratorStepList({
             />
           );
         })}
-      </div>
+      </Grid>
     </div>
   );
 
   return (
     <div className="space-y-10">
       {renderSection(requiredSteps, {
-        title: "Essential milestones",
-        description: "Complete these steps to achieve launch readiness.",
+        title: String(t("cms.configurator.sections.required.title")),
+        description: String(t("cms.configurator.sections.required.desc")),
         summary: requiredSummary,
         useRadixIcons: true,
       })}
       {optionalSteps.length > 0 &&
         renderSection(optionalSteps, {
-          title: "Momentum boosters",
-          description: "Optional enhancements that add polish and speed to your rollout.",
+          title: String(t("cms.configurator.sections.optional.title")),
+          description: String(t("cms.configurator.sections.optional.desc")),
           summary: optionalSummary,
           useRadixIcons: true,
         })}

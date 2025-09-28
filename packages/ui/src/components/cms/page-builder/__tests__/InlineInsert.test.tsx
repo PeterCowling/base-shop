@@ -8,7 +8,7 @@ jest.mock("../../../atoms", () => {
   return {
     __esModule: true,
     Popover: ({ children }: any) => <div>{children}</div>,
-    PopoverTrigger: ({ children }: any) => <>{children}</>,
+    PopoverTrigger: ({ children }: any) => children,
     PopoverContent: ({ children, ...rest }: any) => (
       <div role="dialog" {...rest}>
         {children}

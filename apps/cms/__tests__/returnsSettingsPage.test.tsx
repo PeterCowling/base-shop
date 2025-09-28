@@ -4,7 +4,12 @@ import { render, screen } from "@testing-library/react";
 
 const getSettings = jest.fn();
 jest.mock("@cms/actions/shops.server", () => ({ getSettings }));
-jest.mock("next/dynamic", () => () => () => <div data-cy="editor" />);
+jest.mock("next/dynamic", () => {
+  const React = require("react");
+  const MockEditor: React.FC = () => <div data-cy="editor" />;
+  MockEditor.displayName = "MockEditor";
+  return () => MockEditor;
+});
 
 import ReturnsSettingsPage from "../src/app/cms/shop/[shop]/settings/returns/page";
 

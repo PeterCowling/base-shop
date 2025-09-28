@@ -60,6 +60,13 @@ const AnalyticsForRows: React.FC<AnalyticsDashboardProps<Row>> = (props) => (
 const meta: Meta<typeof AnalyticsForRows> = {
   title: "Templates/Analytics Dashboard",
   component: AnalyticsForRows,
+  parameters: {
+    docs: {
+      description: {
+        component: "Analytics dashboard template combining KPI stats, a configurable chart and a generic data table.",
+      },
+    },
+  },
   args: {
     stats,
     chartData,

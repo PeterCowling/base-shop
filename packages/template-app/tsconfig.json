@@ -85,6 +85,9 @@
   "include": [
     "next-env.d.ts",
     "middleware.ts",
+    "i18n.ts",
+    "next-intl.config.ts",
+    "next-intl.config.mjs",
     "src/**/*",
     "src/**/*.json",
     ".next/types/**/*.ts"

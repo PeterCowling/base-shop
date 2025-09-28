@@ -6,6 +6,7 @@ import type { SKU } from "@acme/types";
 import { ProductCard } from "../../organisms/ProductCard";
 import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 import { Inline } from "../../atoms/primitives/Inline";
+import { useTranslations } from "@acme/i18n";
 
 export interface CrossSellRules {
   seedId?: string;
@@ -20,6 +21,7 @@ export interface CrossSellSectionProps extends React.HTMLAttributes<HTMLDivEleme
 }
 
 export default function CrossSellSection({ rules = {}, layout = "grid", className, ...rest }: CrossSellSectionProps) {
+  const t = useTranslations();
   const { seedId, includeForRental = true, onlyInStock = true, maxItems = 8 } = rules;
   let pool = [...PRODUCTS] as SKU[];
   if (seedId) pool = pool.filter((p) => p.id !== seedId);
@@ -33,8 +35,7 @@ export default function CrossSellSection({ rules = {}, layout = "grid", classNam
     return (
       <section className={className} {...rest}>
         <div className="mx-auto px-4">
-          {/* i18n-exempt: section heading */}
-          <h3 className="mb-4 text-lg font-semibold">You may also like</h3>
+          <h3 className="mb-4 text-lg font-semibold">{t("cms.blocks.crossSell.heading")}</h3>
           <DSGrid cols={1} gap={4} className="sm:grid-cols-2 lg:grid-cols-4">
             {items.map((p) => (
               <ProductCard key={p.id} product={p} />
@@ -48,11 +49,10 @@ export default function CrossSellSection({ rules = {}, layout = "grid", classNam
   return (
     <section className={className} {...rest}>
       <div className="mx-auto px-4">
-        {/* i18n-exempt: section heading */}
-        <h3 className="mb-4 text-lg font-semibold">You may also like</h3>
-        <Inline gap={4} className="snap-x overflow-x-auto pb-4" style={{ scrollSnapType: "x mandatory" }}>
+        <h3 className="mb-4 text-lg font-semibold">{t("cms.blocks.crossSell.heading")}</h3>
+        <Inline gap={4} className="snap-x snap-mandatory overflow-x-auto pb-4">
           {items.map((p) => (
-            <div key={p.id} className="snap-start" style={{ flex: "0 0 280px" }}>
+            <div key={p.id} className="snap-start grow-0 shrink-0 basis-72">
               <ProductCard product={p} />
             </div>
           ))}

@@ -3,18 +3,27 @@ import fs from "fs/promises";
 import path from "path";
 import { listShops } from "../../../lib/listShops";
 import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
+import { Grid } from "@ui/components/atoms/primitives";
 import { LivePreviewList } from "./LivePreviewList";
 import Link from "next/link";
+import type { Metadata } from "next";
+import { TranslationsProvider } from "@i18n/Translations";
+import en from "@i18n/en.json";
+import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
 
-export const metadata = {
-  title: "Live shops · Base-Shop",
-};
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const HERO_LABEL_CLASS = "text-hero-foreground/80";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("en");
+  return { title: t("cms.live.title", { brand: t("brand.name") }) as string };
+}
 
 function resolveAppsRoot(): string {
   let dir = process.cwd();
   while (true) {
     const appsPath = path.join(dir, "apps");
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 runtime-resolved monorepo path
     if (fsSync.existsSync(appsPath)) return appsPath;
 
     const parent = path.dirname(dir);
@@ -26,7 +35,9 @@ function resolveAppsRoot(): string {
 
 export type PortInfo = {
   port: number | null;
-  error?: string;
+  // Non-UI error code; mapped to user copy later
+  errorCode?: "app_not_found" | "package_json_missing" | "read_error";
+  errorDetail?: string;
 };
 
 async function findPort(shop: string): Promise<PortInfo> {
@@ -34,17 +45,17 @@ async function findPort(shop: string): Promise<PortInfo> {
   const appDir = path.join(root, `shop-${shop}`);
   const pkgPath = path.join(appDir, "package.json");
 
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 workspace app may not exist
   if (!fsSync.existsSync(appDir)) {
-    return { port: null, error: "app not found" };
+    return { port: null, errorCode: "app_not_found" };
   }
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 reading package manifest dynamically
   if (!fsSync.existsSync(pkgPath)) {
-    return { port: null, error: "package.json not found" };
+    return { port: null, errorCode: "package_json_missing" };
   }
 
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 read workspace package manifest
     const pkgRaw = await fs.readFile(pkgPath, "utf8");
     const pkg = JSON.parse(pkgRaw) as { scripts?: Record<string, string> };
     const cmd = pkg.scripts?.dev ?? pkg.scripts?.start ?? "";
@@ -52,11 +63,12 @@ async function findPort(shop: string): Promise<PortInfo> {
     return { port: match ? parseInt(match[1], 10) : null };
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    return { port: null, error: message };
+    return { port: null, errorCode: "read_error", errorDetail: message };
   }
 }
 
 export default async function LivePage() {
+  const t = await getTranslations("en");
   const shops = await listShops();
 
   const portInfo: Record<string, PortInfo> = Object.fromEntries(
@@ -75,78 +87,91 @@ export default async function LivePage() {
     ? Math.round((previewsReady / shops.length) * 100)
     : 0;
   const progressLabel = shops.length
-    ? `${previewsReady}/${shops.length} previews configured`
-    : "No shops configured";
+    ? (t("cms.live.progress.label", {
+        ready: previewsReady,
+        total: shops.length,
+      }) as string)
+    : (t("cms.live.progress.empty") as string);
 
   const quickStats = [
     {
-      label: "Total shops",
+      label: t("cms.live.stats.totalShops.label"),
       value: shops.length,
       caption:
         shops.length === 0
-          ? "Connect a shop to enable previews"
-          : `${shops.length === 1 ? "workspace" : "workspaces"} available`,
+          ? (t("cms.live.stats.totalShops.empty") as string)
+          : (t(
+              shops.length === 1
+                ? "cms.live.stats.totalShops.available.singular"
+                : "cms.live.stats.totalShops.available.plural"
+            ) as string),
     },
     {
-      label: "Previews ready",
+      label: t("cms.live.stats.previewsReady.label"),
       value: previewsReady,
       caption:
         previewsReady === 0
-          ? "Run the dev server in each shop app"
-          : "Open previews launch instantly",
+          ? (t("cms.live.stats.previewsReady.empty") as string)
+          : (t("cms.live.stats.previewsReady.caption") as string),
     },
     {
-      label: "Needs attention",
+      label: t("cms.live.stats.needsAttention.label"),
       value: previewsUnavailable,
       caption:
         previewsUnavailable === 0
-          ? "Everything is wired up"
-          : "Start the missing dev servers to enable previews",
+          ? (t("cms.live.stats.needsAttention.allGood") as string)
+          : (t("cms.live.stats.needsAttention.help") as string),
     },
   ];
 
   const items = shops.map((shop) => {
     const info = portInfo[shop];
     const url = info?.port ? `http://localhost:${info.port}` : null;
-    return { shop, url, error: info?.error };
+    const error =
+      !url && info?.errorCode
+        ? (t(`cms.live.error.${info.errorCode}`) as string)
+        : undefined;
+    return { shop, url, error };
   });
 
   return (
-    <div className="space-y-10">
+    <TranslationsProvider messages={en}>
+      <div className="space-y-10">
       <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero-contrast text-hero-foreground shadow-elevation-4">
-        <div className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr] lg:gap-10">
-          <div className="space-y-6">
+        <div className="relative grid gap-8 p-8 lg:grid-cols-3 lg:gap-10">
+          <div className="space-y-6 lg:col-span-2">
             <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-[0.35em] text-hero-foreground/80">
-                Live previews
+              <span className="text-xs font-semibold uppercase tracking-widest text-hero-foreground/80">
+                {t("cms.live.hero.tag")}
               </span>
               <h1 className="text-3xl font-semibold md:text-4xl">
-                Validate storefronts in real time
+                {t("cms.live.hero.heading")}
               </h1>
               <p className="text-hero-foreground/80">
-                Launch each storefront’s development server directly from the CMS. Monitor availability before sharing links with stakeholders.
+                {t("cms.live.hero.desc")}
               </p>
             </div>
             <div className="space-y-4">
-              <Progress value={progressValue} label={progressLabel} labelClassName="text-hero-foreground/80" />
+              <Progress value={progressValue} label={progressLabel} labelClassName={HERO_LABEL_CLASS} />
               <div className="flex flex-wrap gap-3">
                 <Button asChild className="h-11 px-5 text-sm font-semibold">
-                  <Link href="/cms/dashboard">View dashboards</Link>
+                  <Link href="/cms/dashboard">{t("cms.live.hero.cta.viewDashboards")}</Link>
                 </Button>
                 <Button
                   asChild
                   variant="outline"
                   className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
                 >
-                  <Link href="/cms/maintenance">Run maintenance scan</Link>
+                  <Link href="/cms/maintenance">{t("cms.live.hero.cta.runMaintenance")}</Link>
                 </Button>
               </div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-3">
+            {/* Use DS Grid primitive to avoid leaf flex layout */}
+            <Grid cols={1} gap={3} className="sm:grid-cols-2">
               {quickStats.map((stat) => (
                 <Card
                   key={stat.label}
-                  className="border border-primary/15 bg-surface-2 text-foreground"
+                  className="border border-primary/15 bg-surface-2 text-foreground sm:flex-1"
                 >
                   <CardContent className="space-y-1 p-4">
                     <p className="text-xs font-semibold uppercase tracking-wide text-foreground">
@@ -157,27 +182,32 @@ export default async function LivePage() {
                   </CardContent>
                 </Card>
               ))}
-            </div>
+            </Grid>
           </div>
-          <Card className="border border-primary/20 bg-surface-2 text-foreground shadow-elevation-5">
+          <Card className="border border-primary/20 bg-surface-2 text-foreground shadow-elevation-5 lg:col-span-1">
             <CardContent className="space-y-5">
               <div className="space-y-1">
-                <h2 className="text-lg font-semibold">Preview readiness</h2>
+                <h2 className="text-lg font-semibold">{t("cms.live.readiness.title")}</h2>
                 <p className="text-sm text-foreground">
-                  Keep development servers running so designers and QA can review changes instantly.
+                  {t("cms.live.readiness.desc")}
                 </p>
               </div>
               <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-border/15 bg-surface-2 px-4 py-3">
                 <div className="min-w-0">
-                  <p className="text-sm font-medium">Available previews</p>
+                  <p className="text-sm font-medium">{t("cms.live.readiness.available.label")}</p>
                   <p className="text-xs text-foreground">
                     {previewsReady === shops.length
-                      ? "All previews online"
-                      : `${previewsReady} of ${shops.length} available`}
+                      ? (t("cms.live.readiness.available.all") as string)
+                      : (t("cms.live.readiness.available.count", {
+                          ready: previewsReady,
+                          total: shops.length,
+                        }) as string)}
                   </p>
                 </div>
                 <Tag className="shrink-0" variant={previewsUnavailable === 0 ? "success" : "warning"}>
-                  {previewsUnavailable === 0 ? "All good" : "Needs attention"}
+                  {previewsUnavailable === 0
+                    ? (t("cms.live.tag.allGood") as string)
+                    : (t("cms.live.tag.needsAttention") as string)}
                 </Tag>
               </div>
             </CardContent>
@@ -188,24 +218,25 @@ export default async function LivePage() {
       <Card className="border border-border/60">
         <CardContent className="space-y-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h2 className="text-lg font-semibold text-foreground">Shop previews</h2>
+            <h2 className="text-lg font-semibold text-foreground">{t("cms.live.list.title")}</h2>
             <Tag className="shrink-0" variant={previewsUnavailable === 0 ? "success" : "warning"}>
               {shops.length === 0
-                ? "No shops"
+                ? (t("cms.live.list.noShops") as string)
                 : previewsUnavailable === 0
-                ? "All ready"
-                : `${previewsUnavailable} need setup`}
+                ? (t("cms.live.list.allReady") as string)
+                : (t("cms.live.list.needsSetup", { count: previewsUnavailable }) as string)}
             </Tag>
           </div>
           {shops.length === 0 ? (
             <p className="text-sm text-foreground">
-              No shops found. Create a shop in the configurator to unlock live previews.
+              {t("cms.live.list.emptyDesc")}
             </p>
           ) : (
             <LivePreviewList items={items} />
           )}
         </CardContent>
       </Card>
-    </div>
+      </div>
+    </TranslationsProvider>
   );
 }

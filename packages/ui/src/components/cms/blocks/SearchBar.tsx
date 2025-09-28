@@ -5,6 +5,9 @@ import { useEffect, useMemo, useState } from "react";
 import { Input } from "../../atoms/shadcn";
 import { getShopFromPath } from "@acme/shared-utils";
 import { useTranslations } from "@acme/i18n";
+import type { TranslatableText } from "@acme/types/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@i18n/resolveText";
 
 interface Result {
   slug: string;
@@ -12,15 +15,26 @@ interface Result {
 }
 
 export interface SearchBarProps {
-  placeholder?: string;
+  placeholder?: TranslatableText;
   limit?: number;
+  locale?: Locale;
 }
 
-export default function SearchBar({ placeholder, limit = 5 }: SearchBarProps) {
-  const t = useTranslations();
+export default function SearchBar({ placeholder, limit = 5, locale = "en" }: SearchBarProps) {
+  const t = useTranslations() as unknown as (key: string, params?: Record<string, unknown>) => string;
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<Result[]>([]);
-  const effPlaceholder = useMemo(() => placeholder ?? (t("search.products.placeholder") as string), [placeholder, t]);
+  const effPlaceholder = useMemo(() => {
+    if (!placeholder) return t("search.products.placeholder") as string;
+    if (typeof placeholder === "string") return placeholder;
+    if ("type" in placeholder && placeholder.type === "key") {
+      return t(placeholder.key, placeholder.params) as string;
+    }
+    if ("type" in placeholder && placeholder.type === "inline") {
+      return resolveText(placeholder, locale, t);
+    }
+    return t("search.products.placeholder") as string;
+  }, [placeholder, t, locale]);
 
   useEffect(() => {
     if (!query) {

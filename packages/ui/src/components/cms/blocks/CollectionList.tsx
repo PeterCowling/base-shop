@@ -64,15 +64,14 @@ export default function CollectionList({
     return () => observer.disconnect();
   }, [minItems, maxItems, desktopItems, tabletItems, mobileItems]);
 
-  const style = { gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` } as React.CSSProperties;
+  const colsClass = React.useMemo(() => {
+    // Map dynamic count to Tailwind grid-cols-* classes for a limited safe range
+    const n = Math.max(1, Math.min(12, Number.isFinite(cols) ? cols : 1));
+    return `grid-cols-${n}`;
+  }, [cols]);
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("grid", gapClassName, className)}
-      style={style}
-      {...props}
-    >
+    <div ref={containerRef} className={cn("grid", colsClass, gapClassName, className)} {...props}>
       {collections.map((c) => (
         <CategoryCard key={c.id} category={c} className="h-full" />
       ))}

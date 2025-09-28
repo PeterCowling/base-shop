@@ -44,6 +44,7 @@ describe("POST", () => {
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual(result);
     const file = path.join(dir, "shop1", "seo.json");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-2651: test uses controlled temp directory path
     const data = JSON.parse(fs.readFileSync(file, "utf8"));
     expect(data).toEqual({ p1: result });
     expect(generateMeta).toHaveBeenCalledWith({
@@ -76,4 +77,3 @@ describe("POST", () => {
     ).rejects.toThrow("missing templates");
   });
 });
-

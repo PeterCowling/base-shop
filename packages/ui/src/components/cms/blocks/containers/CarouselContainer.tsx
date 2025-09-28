@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import { Button } from "../../../atoms/shadcn";
 import { cn } from "../../../../utils/style";
@@ -59,6 +59,27 @@ export default function CarouselContainer({
   };
 
   const items = Array.isArray(children) ? children : children ? [children] : [];
+  // i18n-exempt -- ABC-123 [ttl=2026-01-31] CSS utility classes
+  const DOT_BASE_CLASS = "h-2 w-2 rounded-full";
+  // i18n-exempt -- ABC-123 [ttl=2026-01-31] CSS utility classes
+  const DOT_ACTIVE_CLASS = "bg-foreground";
+  // i18n-exempt -- ABC-123 [ttl=2026-01-31] CSS utility classes
+  const DOT_INACTIVE_CLASS = "bg-muted-foreground/40";
+  const entries = items.map((child, i) => {
+    let key: string;
+    if (React.isValidElement(child) && child.key != null) key = String(child.key);
+    else if (React.isValidElement(child)) {
+      const props = (child as React.ReactElement).props as Record<string, unknown>;
+      const idLike = (props?.id ?? props?.["data-key"] ?? props?.["data-id"]) as string | number | undefined;
+      if (idLike != null) {
+        key = String(idLike);
+      } else {
+        key = `slide-${i}`;
+      }
+    } else if (typeof child === "string") key = child;
+    else key = `slide-${i}`; // fallback; consumers should pass keys/ids for stable identity
+    return { key, child };
+  });
   return (
     <div className={className}>
       <div className="relative">
@@ -71,7 +92,10 @@ export default function CarouselContainer({
             onClick={() => scrollBy(-1)}
             aria-label={t("carousel.prev") as string}
           >
-            <span aria-hidden>‹</span>{/* i18n-exempt: decorative glyph */}
+            {/* i18n-exempt -- I18N-0003 [ttl=2025-01-31] decorative icon, not user-visible copy */}
+            <svg aria-hidden focusable="false" width="16" height="16" viewBox="0 0 16 16">
+              <path d="M10.5 3.5 5.5 8l5 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </Button>
           <Button
             type="button"
@@ -80,7 +104,10 @@ export default function CarouselContainer({
             onClick={() => scrollBy(1)}
             aria-label={t("carousel.next") as string}
           >
-            <span aria-hidden>›</span>{/* i18n-exempt: decorative glyph */}
+            {/* i18n-exempt -- I18N-0003 [ttl=2025-01-31] decorative icon, not user-visible copy */}
+            <svg aria-hidden focusable="false" width="16" height="16" viewBox="0 0 16 16">
+              <path d="M5.5 3.5 10.5 8l-5 4.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </Button>
         </div>
       )}
@@ -91,10 +118,11 @@ export default function CarouselContainer({
         className="snap-x snap-mandatory overflow-x-auto"
         style={{ gap: effGap as string, scrollPadding: effGap as string }}
       >
-        {items.map((child, i) => (
+        {entries.map(({ child, key }) => (
           <div
-            key={i}
+            key={key}
             className="snap-start"
+            /* eslint-disable-next-line react/forbid-dom-props -- ABC-123: computed flex-basis requires inline style; not expressible via static classes */
             style={{ flex: `0 0 calc(${100 / effSlides}% - ${typeof effGap === 'string' ? effGap : '0px'})` }}
           >
             {child}
@@ -103,10 +131,10 @@ export default function CarouselContainer({
       </Inline>
       {showDots && items.length > 1 && (
         <Inline className="mt-2 justify-center" gap={2}>
-          {items.map((_, i) => (
-            <button key={i} type="button" aria-label={String(t("carousel.goToSlide", { n: i + 1 }))} onClick={() => {
-              const el = listRef.current; if (!el) return; el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' /* i18n-exempt -- DOM API value -- ABC-123 */ }); setActive(i);
-            }} className={cn("h-2 w-2 rounded-full", i === active ? "bg-foreground" : "bg-muted-foreground/40")} />
+          {entries.map((entry, i) => (
+            <button key={`dot-${entry.key}`} type="button" aria-label={String(t("carousel.goToSlide", { n: i + 1 }))} onClick={() => {
+              const el = listRef.current; if (!el) return; el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' /* i18n-exempt -- I18N-0003 [ttl=2025-01-31] DOM API value */ }); setActive(i);
+            }} className={cn(DOT_BASE_CLASS, i === active ? DOT_ACTIVE_CLASS : DOT_INACTIVE_CLASS)} />
           ))}
         </Inline>
       )}

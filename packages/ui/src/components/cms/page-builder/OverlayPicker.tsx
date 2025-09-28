@@ -1,7 +1,8 @@
 // packages/ui/src/components/cms/page-builder/OverlayPicker.tsx
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useId } from "react";
+import { useTranslations } from "@acme/i18n";
 import { Button, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../atoms/shadcn";
 import { ColorInput, hslToRgb } from "../ColorInput";
 
@@ -19,6 +20,8 @@ function toRgba(hsl: string, alpha: number): string {
 }
 
 export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
+  const uid = useId();
+  const t = useTranslations();
   const [mode, setMode] = useState<Mode>(() => (!value ? "none" : value.startsWith("linear-gradient(") ? "gradient" : "solid"));
   const [solidColor, setSolidColor] = useState<string>("0 0% 0%");
   const [solidAlpha, setSolidAlpha] = useState<number>(0.4);
@@ -60,7 +63,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
     <div className="space-y-2">
       {/* Quick presets */}
       <div className="flex flex-wrap gap-2">
-        <Button type="button" variant="outline" onClick={() => { setMode("none"); onChange(undefined); }}>None</Button> {/* i18n-exempt: admin tool */}
+        <Button type="button" variant="outline" onClick={() => { setMode("none"); onChange(undefined); }}>{t("common.none")}</Button>
         <Button
           type="button"
           variant="outline"
@@ -69,7 +72,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
             setSolidColor("0 0% 0%");
             setSolidAlpha(0.35);
           }}
-        >Dark veil</Button> {/* i18n-exempt: admin tool */}
+        >{t("cms.builder.overlay.darkVeil")}</Button>
         <Button
           type="button"
           variant="outline"
@@ -78,7 +81,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
             setSolidColor("0 0% 100%");
             setSolidAlpha(0.25);
           }}
-        >Light veil</Button> {/* i18n-exempt: admin tool */}
+        >{t("cms.builder.overlay.lightVeil")}</Button>
         <Button
           type="button"
           variant="outline"
@@ -90,7 +93,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
             setEndColor("0 0% 0%");
             setEndAlpha(0.0);
           }}
-        >Diagonal gradient</Button> {/* i18n-exempt: admin tool */}
+        >{t("cms.builder.overlay.diagonalGradient")}</Button>
         <Button
           type="button"
           variant="outline"
@@ -98,14 +101,14 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
             // Apply brand primary tint without altering local state so we keep it as a tokenized overlay
             onChange('hsl(var(--color-primary) / 0.35)');
           }}
-        >Primary tint</Button> {/* i18n-exempt: admin tool */}
+        >{t("cms.builder.overlay.primaryTint")}</Button>
         <Button
           type="button"
           variant="outline"
           onClick={() => {
             onChange('hsl(var(--color-accent) / 0.30)');
           }}
-        >Accent tint</Button> {/* i18n-exempt: admin tool */}
+        >{t("cms.builder.overlay.accentTint")}</Button>
       </div>
       <Select
         value={mode}
@@ -115,28 +118,28 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
           if (next === "none") onChange(undefined);
         }}
       >
-        <SelectTrigger aria-label="Overlay type">
-          <SelectValue placeholder="Overlay type" /> {/* i18n-exempt: admin tool */}
+        <SelectTrigger aria-label={t("cms.builder.overlay.type") as string}>
+          <SelectValue placeholder={t("cms.builder.overlay.type")} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="none">None</SelectItem> {/* i18n-exempt: admin tool */}
-          <SelectItem value="solid">Solid</SelectItem> {/* i18n-exempt: admin tool */}
-          <SelectItem value="gradient">Gradient</SelectItem> {/* i18n-exempt: admin tool */}
+          <SelectItem value="none">{t("common.none")}</SelectItem>
+          <SelectItem value="solid">{t("cms.builder.overlay.solid")}</SelectItem>
+          <SelectItem value="gradient">{t("cms.builder.overlay.gradient")}</SelectItem>
         </SelectContent>
       </Select>
 
       {mode === "solid" && (
         <div className="grid grid-cols-2 gap-2 items-end">
           <div>
-            <label className="text-xs font-medium">Color</label>
-            <div className="mt-1"><ColorInput value={solidColor} onChange={setSolidColor} /></div>
+            <label className="text-xs font-medium" htmlFor={`${uid}-solid-color`}>{t("cms.builder.overlay.color")}</label>
+            <div className="mt-1"><ColorInput id={`${uid}-solid-color`} value={solidColor} onChange={setSolidColor} /></div>
           </div>
           <Input
             type="number"
             step="0.05"
             min="0"
             max="1"
-            label="Opacity"
+            label={t("cms.builder.overlay.opacity")}
             value={String(solidAlpha)}
             onChange={(e) => setSolidAlpha(e.target.value === "" ? 0 : Math.max(0, Math.min(1, Number(e.target.value))))}
           />
@@ -146,20 +149,20 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
       {mode === "gradient" && (
         <div className="space-y-2">
           <Select value={String(angle)} onValueChange={(v) => setAngle(Number(v || 135))}>
-            <SelectTrigger aria-label="Angle">
-              <SelectValue placeholder="Angle" /> {/* i18n-exempt: admin tool */}
+            <SelectTrigger aria-label={t("cms.builder.overlay.angle") as string}>
+              <SelectValue placeholder={t("cms.builder.overlay.angle")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="0">0° (to right)</SelectItem> {/* i18n-exempt: admin tool */}
-              <SelectItem value="45">45°</SelectItem> {/* i18n-exempt: admin tool */}
-              <SelectItem value="90">90° (to bottom)</SelectItem> {/* i18n-exempt: admin tool */}
-              <SelectItem value="135">135°</SelectItem> {/* i18n-exempt: admin tool */}
-              <SelectItem value="180">180° (to left)</SelectItem> {/* i18n-exempt: admin tool */}
+              <SelectItem value="0">{t("cms.builder.overlay.angle.0")}</SelectItem>
+              <SelectItem value="45">{t("cms.builder.overlay.angle.45")}</SelectItem>
+              <SelectItem value="90">{t("cms.builder.overlay.angle.90")}</SelectItem>
+              <SelectItem value="135">{t("cms.builder.overlay.angle.135")}</SelectItem>
+              <SelectItem value="180">{t("cms.builder.overlay.angle.180")}</SelectItem>
             </SelectContent>
           </Select>
           <Input
             type="number"
-            label="Angle (deg)" /* i18n-exempt: admin tool */
+            label={t("cms.builder.overlay.angleDeg")}
             min="0"
             max="360"
             value={String(angle)}
@@ -167,30 +170,30 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
           />
           <div className="grid grid-cols-2 gap-2 items-end">
             <div>
-              <label className="text-xs font-medium">Start color</label> {/* i18n-exempt: admin tool */}
-              <div className="mt-1"><ColorInput value={startColor} onChange={setStartColor} /></div>
+              <label className="text-xs font-medium" htmlFor={`${uid}-start-color`}>{t("cms.builder.overlay.startColor")}</label>
+              <div className="mt-1"><ColorInput id={`${uid}-start-color`} value={startColor} onChange={setStartColor} /></div>
             </div>
             <Input
               type="number"
               step="0.05"
               min="0"
               max="1"
-              label="Start opacity" /* i18n-exempt: admin tool */
+              label={t("cms.builder.overlay.startOpacity")}
               value={String(startAlpha)}
               onChange={(e) => setStartAlpha(e.target.value === "" ? 0 : Math.max(0, Math.min(1, Number(e.target.value))))}
             />
           </div>
           <div className="grid grid-cols-2 gap-2 items-end">
             <div>
-              <label className="text-xs font-medium">End color</label> {/* i18n-exempt: admin tool */}
-              <div className="mt-1"><ColorInput value={endColor} onChange={setEndColor} /></div>
+              <label className="text-xs font-medium" htmlFor={`${uid}-end-color`}>{t("cms.builder.overlay.endColor")}</label>
+              <div className="mt-1"><ColorInput id={`${uid}-end-color`} value={endColor} onChange={setEndColor} /></div>
             </div>
             <Input
               type="number"
               step="0.05"
               min="0"
               max="1"
-              label="End opacity" /* i18n-exempt: admin tool */
+              label={t("cms.builder.overlay.endOpacity")}
               value={String(endAlpha)}
               onChange={(e) => setEndAlpha(e.target.value === "" ? 0 : Math.max(0, Math.min(1, Number(e.target.value))))}
             />

@@ -46,7 +46,15 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
                 }}
                 className="relative aspect-square min-w-10 min-h-10"
               >
-                <video src={m.url} className="h-full w-full object-cover" data-aspect="1/1" />
+                <video
+                  src={m.url}
+                  className="h-full w-full object-cover"
+                  data-aspect="1/1"
+                  muted
+                  playsInline
+                  aria-hidden
+                  tabIndex={-1}
+                />
               </button>
             ))}
             {videos.length === 0 && (
@@ -58,6 +66,7 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
         </DialogContent>
       </Dialog>
       {src && (
+        // eslint-disable-next-line jsx-a11y/media-has-caption -- PB-VIDEO-0002: Captions track not modeled yet; follow-up to extend schema and provide <track kind="captions" />
         <video src={src} controls className="w-full max-h-64" data-aspect="16/9" />
       )}
       <div className="flex items-center gap-2">

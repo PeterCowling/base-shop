@@ -19,7 +19,9 @@ jest.mock("next/link", () => {
 const withRepo = (cb: (dir: string) => Promise<void>) =>
   withTempRepo(async (dir) => {
     const shopsDir = path.join(dir, 'data', 'shops');
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test helper creates a directory inside a controlled temp repo path
     await fs.mkdir(path.join(shopsDir, 'foo'), { recursive: true });
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test helper creates a directory inside a controlled temp repo path
     await fs.mkdir(path.join(shopsDir, 'bar'), { recursive: true });
     await cb(dir);
   }, { prefix: 'sections-', createShopDir: false });

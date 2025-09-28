@@ -6,12 +6,13 @@ const mockDelete = jest.fn();
 jest.mock("@cms/actions/blog.server", () => ({
   deletePost: (...args: any) => mockDelete(...args),
 }));
-
-let mockUseFormState: any;
+const mockUseFormState: any = jest.fn((action: any, init: any) => [
+  init,
+  action,
+]);
 jest.mock("react-dom", () => ({
   useFormState: (...args: any[]) => mockUseFormState(...args),
 }));
-mockUseFormState = jest.fn((action: any, init: any) => [init, action]);
 
 jest.mock("@ui", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
@@ -30,4 +31,3 @@ describe("DeleteButton", () => {
     expect(mockDelete).toHaveBeenCalledWith("shop", "1", expect.any(FormData));
   });
 });
-

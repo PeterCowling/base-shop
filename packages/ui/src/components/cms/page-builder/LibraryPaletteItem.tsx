@@ -5,9 +5,11 @@ import { CSS } from "@dnd-kit/utilities";
 import { useState, useCallback, useRef } from "react";
 import Image from "next/image";
 import { Tooltip } from "../../atoms";
+import { useTranslations } from "@acme/i18n";
 import type { LibraryItem } from "./libraryStore";
 
 export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUpdate, shop }: { item: LibraryItem; onDelete: () => void; onToggleShare: () => void; onUpdate: (patch: Partial<Pick<LibraryItem, "label" | "tags" | "thumbnail">>) => void; shop?: string | null }) {
+  const t = useTranslations();
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useSortable({ id: `lib-${item.id}`, data: { from: "library", template: item.template, templates: item.templates, label: item.label, thumbnail: item.thumbnail } });
   const [editing, setEditing] = useState(false);
@@ -71,7 +73,8 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
       tabIndex={0}
       aria-pressed={isDragging}
       aria-describedby="pb-drag-instructions"
-      title="Drag to insert"
+      title={t('pb.library.dragToInsert')}
+      // eslint-disable-next-line react/forbid-dom-props -- PB-2419: dnd-kit requires dynamic transform style during drag
       style={{ transform: CSS.Transform.toString(transform) }}
       className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
     >
@@ -141,38 +144,38 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
         </>
       )}
       <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={(e) => void handleThumbFile(e.target.files?.[0])} />
-      {/* i18n-exempt: Admin-only CMS tool UI copy. */}
-      <Tooltip text="Upload thumbnail">
+      {/* i18n: Admin UI — Page Builder Library */}
+      <Tooltip text={t('pb.library.uploadThumbnail')}>
         <button
           type="button"
-          aria-label="Upload thumbnail"
+          aria-label={t('pb.library.uploadThumbnail')}
           className="min-h-10 min-w-10 rounded border px-2 text-xs"
           onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
-          title="Upload thumbnail"
+          title={t('pb.library.uploadThumbnail')}
         >
-          Thumb
+          {t('pb.library.thumb')}
         </button>
       </Tooltip>
       {item.thumbnail && (
-        // i18n-exempt: Admin-only CMS tool UI copy.
-        <Tooltip text="Clear thumbnail">
+        // i18n: Admin UI — Page Builder Library
+        <Tooltip text={t('pb.library.clearThumbnail')}>
           <button
             type="button"
-            aria-label="Clear thumbnail"
+            aria-label={t('pb.library.clearThumbnail')}
             className="min-h-10 min-w-10 rounded border px-2 text-xs"
             onClick={(e) => { e.stopPropagation(); onUpdate({ thumbnail: null }); }}
           >
-            Clear
+            {t('pb.library.clear')}
           </button>
         </Tooltip>
       )}
       {editing ? (
         <>
-          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
-          <Tooltip text="Save changes">
+          {/* i18n: Admin UI — Page Builder Library */}
+          <Tooltip text={t('pb.library.saveChanges')}>
             <button
               type="button"
-              aria-label="Save"
+              aria-label={t('pb.library.save')}
               className="min-h-10 min-w-10 rounded border px-2 text-xs"
               onClick={(e) => {
                 e.stopPropagation();
@@ -181,14 +184,14 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
                 setEditing(false);
               }}
             >
-              Save
+              {t('pb.library.save')}
             </button>
           </Tooltip>
-          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
-          <Tooltip text="Cancel editing">
+          {/* i18n: Admin UI — Page Builder Library */}
+          <Tooltip text={t('pb.library.cancelEditing')}>
             <button
               type="button"
-              aria-label="Cancel"
+              aria-label={t('pb.library.cancel')}
               className="min-h-10 min-w-10 rounded border px-2 text-xs"
               onClick={(e) => {
                 e.stopPropagation();
@@ -197,54 +200,54 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
                 setEditing(false);
               }}
             >
-              Cancel
+              {t('pb.library.cancel')}
             </button>
           </Tooltip>
         </>
       ) : (
-        // i18n-exempt: Admin-only CMS tool UI copy.
-        <Tooltip text="Edit item">
+        // i18n: Admin UI — Page Builder Library
+        <Tooltip text={t('pb.library.editItem')}>
           <button
             type="button"
-            aria-label="Edit"
+            aria-label={t('pb.library.edit')}
             className="min-h-10 min-w-10 rounded border px-2 text-xs"
             onClick={(e) => {
               e.stopPropagation();
               setEditing(true);
             }}
           >
-            Edit
+            {t('pb.library.edit')}
           </button>
         </Tooltip>
       )}
-      {/* i18n-exempt: Admin-only CMS tool UI copy. */}
-      <Tooltip text={item.shared ? "Unshare with team" : "Share with team"}>
+      {/* i18n: Admin UI — Page Builder Library */}
+      <Tooltip text={item.shared ? t('pb.library.unshareWithTeam') : t('pb.library.shareWithTeam')}>
         <button
           type="button"
-          aria-label={item.shared ? "Unshare" : "Share"}
+          aria-label={item.shared ? t('pb.library.unshare') : t('pb.library.share')}
           className={`min-h-10 min-w-10 rounded border px-2 text-xs ${item.shared ? "bg-green-50" : ""}`}
           onClick={(e) => {
             e.stopPropagation();
             onToggleShare();
           }}
-          // i18n-exempt: Admin-only CMS tool UI copy.
-          title={item.shared ? "Shared with team" : "Private"}
+          // i18n: Admin UI — Page Builder Library
+          title={item.shared ? t('pb.library.sharedWithTeam') : t('pb.library.private')}
         >
-          {item.shared ? "Shared" : "Private"}
+          {item.shared ? t('pb.library.shared') : t('pb.library.private')}
         </button>
       </Tooltip>
-      {/* i18n-exempt: Admin-only CMS tool UI copy. */}
-      <Tooltip text="Delete from My Library">
+      {/* i18n: Admin UI — Page Builder Library */}
+      <Tooltip text={t('pb.library.deleteFromMyLibrary')}>
         <button
           type="button"
-          aria-label="Delete from My Library"
+          aria-label={t('pb.library.deleteFromMyLibrary')}
           className="min-h-10 min-w-10 rounded border px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();
             onDelete();
           }}
         >
-          Delete
+          {t('pb.library.delete')}
         </button>
       </Tooltip>
     </div>

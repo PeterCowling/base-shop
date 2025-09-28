@@ -10,7 +10,7 @@ describe("telemetry index", () => {
     delete process.env.NODE_ENV;
     delete process.env.FORCE_TELEMETRY;
     // restore fetch if mocked
-    // @ts-ignore
+    // @ts-expect-error: assignment to global.fetch in tests
     if (originalFetch) global.fetch = originalFetch;
   });
 
@@ -52,7 +52,7 @@ describe("telemetry index", () => {
       .mockRejectedValueOnce(new Error("fail"))
       .mockResolvedValueOnce({ ok: true } as any);
     originalFetch = global.fetch;
-    // @ts-ignore
+    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     mod.track("evt", { foo: "bar" });
     await mod.__flush();
@@ -66,7 +66,7 @@ describe("telemetry index", () => {
     const mod = await import("../index");
     const fetchMock = jest.fn();
     originalFetch = global.fetch;
-    // @ts-ignore
+    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     await mod.__flush();
     expect(fetchMock).not.toHaveBeenCalled();
@@ -78,7 +78,7 @@ describe("telemetry index", () => {
     const mod = await import("../index");
     const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
     originalFetch = global.fetch;
-    // @ts-ignore
+    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     mod.__buffer.push({ name: "evt", payload: { foo: 1 }, ts: Date.now() });
     await mod.__flush();
@@ -93,7 +93,7 @@ describe("telemetry index", () => {
     const mod = await import("../index");
     const fetchMock = jest.fn().mockResolvedValue({ ok: true } as any);
     originalFetch = global.fetch;
-    // @ts-ignore
+    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     mod.track("evt");
     await mod.__flush();
@@ -122,7 +122,7 @@ describe("telemetry index", () => {
     process.env.NODE_ENV = "production";
     const fetchMock = jest.fn();
     originalFetch = global.fetch;
-    // @ts-ignore
+    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     const mod = await import("../index");
     mod.track("evt");
@@ -153,7 +153,7 @@ describe("telemetry index", () => {
     jest.useFakeTimers();
     const fetchMock = jest.fn().mockRejectedValue(new Error("fail"));
     originalFetch = global.fetch;
-    // @ts-ignore
+    // @ts-expect-error: override global.fetch for test
     global.fetch = fetchMock;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     try {
@@ -199,4 +199,3 @@ describe("telemetry index", () => {
     }
   });
 });
-

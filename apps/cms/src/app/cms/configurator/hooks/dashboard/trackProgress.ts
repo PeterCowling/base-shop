@@ -1,12 +1,13 @@
 import type { TrackProgressItem } from "./types";
 import type { ConfiguratorStep } from "../../types";
-import { stepTrackMeta } from "../../steps";
+import { getStepTrackMeta } from "../../steps";
 
 export function buildTrackProgress(
   steps: ConfiguratorStep[],
   completed: Record<string, string> | undefined,
+  t?: (key: string, vars?: Record<string, unknown>) => string,
 ): TrackProgressItem[] {
-  const meta = stepTrackMeta;
+  const meta = getStepTrackMeta(t);
   if (!meta) return [];
 
   return Object.entries(meta)

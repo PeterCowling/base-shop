@@ -1,4 +1,4 @@
-"use client";
+"use client"; // i18n-exempt -- PB-123 Next.js directive, not user-facing copy [ttl=2025-12-31]
 
 import { useCart } from "@acme/platform-core/contexts/CartContext";
 import Link from "next/link";
@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import { cn } from "../../utils/style";
 import ThemeToggle from "../ThemeToggle";
 import { CurrencySwitcher } from "../molecules";
-// i18n-exempt — default header labels; product apps may translate
-const t = (s: string) => s;
+import { useTranslations } from "@acme/i18n";
 
 export default function HeaderClient({
   lang,
@@ -24,6 +23,7 @@ export default function HeaderClient({
 }) {
   const [cart] = useCart();
   const [qty, setQty] = useState(initialQty);
+  const t = useTranslations();
 
   // keep qty in sync after hydration
   useEffect(() => {
@@ -35,22 +35,22 @@ export default function HeaderClient({
     );
   }, [cart]);
 
-  const HEADER_CLASS = "flex items-center justify-between"; // i18n-exempt: CSS classes only
-  const NAV_CLASS = "flex items-center gap-6"; // i18n-exempt: CSS classes only
-  const CART_LINK_CLASS = "relative hover:underline"; // i18n-exempt: CSS classes only
-  const BADGE_CLASS = "absolute -top-2 -end-3 rounded-full px-1.5 text-xs bg-danger text-danger-foreground"; // i18n-exempt: CSS classes only
-  const BADGE_TOKEN = "--color-danger"; // i18n-exempt: design token name
-  const BADGE_FG_CLASS = "text-danger-foreground"; // i18n-exempt: CSS classes only
-  const BADGE_FG_TOKEN = "--color-danger-fg"; // i18n-exempt: design token name
+  const HEADER_CLASS = "flex items-center justify-between"; // i18n-exempt -- PB-123 CSS classes only [ttl=2025-12-31]
+  const NAV_CLASS = "flex items-center gap-6"; // i18n-exempt -- PB-123 CSS classes only [ttl=2025-12-31]
+  const CART_LINK_CLASS = "relative hover:underline"; // i18n-exempt -- PB-123 CSS classes only [ttl=2025-12-31]
+  const BADGE_CLASS = "absolute -top-2 -end-3 rounded-full px-1.5 text-xs bg-danger text-danger-foreground"; // i18n-exempt -- PB-123 CSS classes only [ttl=2025-12-31]
+  const BADGE_TOKEN = "--color-danger"; // i18n-exempt -- PB-123 design token name [ttl=2025-12-31]
+  const BADGE_FG_CLASS = "text-danger-foreground"; // i18n-exempt -- PB-123 CSS classes only [ttl=2025-12-31]
+  const BADGE_FG_TOKEN = "--color-danger-fg"; // i18n-exempt -- PB-123 design token name [ttl=2025-12-31]
   return (
     <header
       className={cn(HEADER_CLASS, height, padding)}
     >
       <Link href={`/${lang}`} className="text-xl font-bold">
-        {t("Base-Shop")} {/* i18n-exempt: default brand label; app overrides */}
+        {t("app.name")}
       </Link>
 
-      <nav className={NAV_CLASS} aria-label="Main navigation">
+      <nav className={NAV_CLASS} aria-label={t("header.nav.aria") as string}>
         {nav.map((item) => (
           <Link
             key={item.url}
@@ -62,7 +62,7 @@ export default function HeaderClient({
         <CurrencySwitcher />
         <ThemeToggle />
         <Link href={`/${lang}/checkout`} className={CART_LINK_CLASS}>
-          {t("Cart")} {/* i18n-exempt: default nav label; app overrides */}
+          {t("header.cart")}
           {qty > 0 && (
             <span
               className={BADGE_CLASS}

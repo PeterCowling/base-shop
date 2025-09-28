@@ -144,7 +144,7 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t("Timestamp")}</TableHead>
+                    <TableHead>{t("Date/time")}</TableHead>
                     <TableHead>{t("Score")}</TableHead>
                     <TableHead>{t("Issues")}</TableHead>
                   </TableRow>

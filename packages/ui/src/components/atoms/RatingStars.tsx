@@ -25,8 +25,8 @@ export const RatingStars = React.forwardRef<HTMLDivElement, RatingStarsProps>(
     const rounded = Math.round(rating);
     return (
       <div ref={ref} className={cn("flex gap-0.5", className)} {...props}>
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star key={i} filled={i < rounded} size={size} />
+        {[1, 2, 3, 4, 5].map((n) => (
+          <Star key={n} filled={n <= rounded} size={size} />
         ))}
       </div>
     );

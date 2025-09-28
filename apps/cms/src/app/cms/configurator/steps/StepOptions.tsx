@@ -15,8 +15,11 @@ import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { providersByType, type Provider } from "@acme/configurator/providers";
 import type { ConfiguratorStepProps } from "@/types/configurator";
+import { Inline, Cluster } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element {
+  const t = useTranslations();
   const { state, update } = useConfigurator();
   const { shopId, payment, shipping, analyticsProvider, analyticsId } = state;
   const setPayment = useCallback((v: string[]) => update("payment", v), [update]);
@@ -51,6 +54,8 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
   const router = useRouter();
   const searchParams = useSearchParams();
   const [, markComplete] = useStepCompletion("options");
+  // i18n-exempt -- ABC-123 [ttl=2099-12-31] data-cy tokens for testing only
+  const CY_ANALYTICS_PROVIDER = "analytics-provider";
 
   const paymentProviders: Provider[] = providersByType("payment");
   const paymentIds = paymentProviders.map((p: Provider) => p.id);
@@ -88,66 +93,67 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Options</h2>
+      <h2 className="text-xl font-semibold">{t("cms.configurator.options.title")}</h2>
       <p className="text-sm text-muted-foreground">
-        Provider integrations require their plugins to be installed under
-        <code>packages/plugins</code>. After connecting you can configure each
-        plugin from <strong>CMS → Plugins</strong>.
+        {t("cms.configurator.options.info.beforePath")} <code>{t("cms.configurator.options.info.path")}</code>. {t("cms.configurator.options.info.afterPathBeforeMenu")} <strong>{t("cms.configurator.options.info.menu")}</strong>.
       </p>
       <div>
-        <p className="font-medium">Payment Providers</p>
+        <p className="font-medium">{t("cms.configurator.payment.providers.label")}</p>
         {paymentProviders.map((p: Provider) => (
-          <div key={p.id} className="flex items-center gap-2 text-sm">
+          <Inline key={p.id} gap={2} alignY="center" className="text-sm">
+            {/* i18n-exempt -- ABC-123 [ttl=2099-12-31] */}
             {p.name}
             {payment.includes(p.id) ? (
               <Button disabled data-cy={`payment-connected-${p.id}`}>
-                Connected
+                {t("cms.configurator.payment.connected")}
               </Button>
             ) : (
               <Button
                 data-cy={`payment-connect-${p.id}`}
                 onClick={() => connect(p.id)}
               >
-                Connect
+                {t("cms.configurator.payment.connect")}
               </Button>
             )}
-          </div>
+          </Inline>
         ))}
       </div>
       <div>
-        <p className="font-medium">Shipping Providers</p>
+        <p className="font-medium">{t("cms.configurator.options.shippingProviders")}</p>
         {shippingProviders.map((p: Provider) => (
-          <div key={p.id} className="flex items-center gap-2 text-sm">
+          <Inline key={p.id} gap={2} alignY="center" className="text-sm">
+            {/* i18n-exempt -- ABC-123 [ttl=2099-12-31] */}
             {p.name}
             {shipping.includes(p.id) ? (
               <Button disabled data-cy={`shipping-connected-${p.id}`}>
-                Connected
+                {t("cms.configurator.options.connected")}
               </Button>
             ) : (
               <Button
                 data-cy={`shipping-connect-${p.id}`}
                 onClick={() => connect(p.id)}
               >
-                Connect
+                {t("cms.configurator.options.connect")}
               </Button>
             )}
-          </div>
+          </Inline>
         ))}
       </div>
       <div>
-        <p className="font-medium">Analytics</p>
+        <p className="font-medium">{t("cms.configurator.analytics.label")}</p>
         <Select
-          data-cy="analytics-provider"
+          data-cy={CY_ANALYTICS_PROVIDER}
           value={selectedAnalyticsProvider}
           onValueChange={handleAnalyticsProviderChange}
         >
           <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select provider" />
+            <SelectValue placeholder={t("cms.configurator.analytics.selectProvider")} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="none">None</SelectItem>
+            <SelectItem value="none">{t("cms.configurator.analytics.none")}</SelectItem>
             {analyticsProviders.map((p: Provider) => (
               <SelectItem key={p.id} value={p.id}>
+                {/* i18n-exempt -- ABC-123 [ttl=2099-12-31] */}
                 {p.name}
               </SelectItem>
             ))}
@@ -159,11 +165,11 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
             className="mt-2"
             value={analyticsIdValue}
             onChange={handleAnalyticsIdChange}
-            placeholder="Measurement ID"
+            placeholder={t("cms.configurator.analytics.measurementId") as string}
           />
         )}
       </div>
-      <div className="flex justify-end">
+      <Cluster justify="end">
         <Button
           data-cy="save-return"
           onClick={() => {
@@ -171,9 +177,9 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
             router.push("/cms/configurator");
           }}
         >
-          Save & return
+          {t("cms.configurator.actions.saveReturn")}
         </Button>
-      </div>
+      </Cluster>
     </div>
   );
 }

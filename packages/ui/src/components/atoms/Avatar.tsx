@@ -58,22 +58,23 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
           ? parseInt(height as string, 10)
           : dimension;
 
-    const { classes, style } = boxProps({
+    const { classes } = boxProps({
       width: width ?? dimension, // visual size (can be any CSS unit)
       height: height ?? dimension, // visual size (can be any CSS unit)
       padding,
       margin,
     });
+    const sizeClasses = `w-[${numericWidth}px] h-[${numericHeight}px]`;
 
     // ─── No src: render fallback ────────────────────────────────────────────
     if (!src) {
       return (
         <div
           ref={ref as unknown as React.RefObject<HTMLDivElement>}
-          style={style}
           className={cn(
-            "bg-muted flex items-center justify-center rounded-full text-sm", // i18n-exempt — CSS utility class names
+            "bg-muted flex items-center justify-center rounded-full text-sm", // i18n-exempt -- DEV-000 CSS utility class names
             classes,
+            sizeClasses,
             className
           )}
         >
@@ -90,10 +91,10 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
         alt={alt}
         width={numericWidth}
         height={numericHeight}
-        style={style}
         className={cn(
-          "rounded-full object-cover", // i18n-exempt — CSS utility class names
+          "rounded-full object-cover", // i18n-exempt -- DEV-000 CSS utility class names
           classes,
+          sizeClasses,
           className,
         )}
         {...props}
@@ -102,4 +103,4 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
   }
 );
 
-Avatar.displayName = "Avatar"; // i18n-exempt — component displayName, not user-facing
+Avatar.displayName = "Avatar"; // i18n-exempt -- DEV-000 component displayName, not user-facing

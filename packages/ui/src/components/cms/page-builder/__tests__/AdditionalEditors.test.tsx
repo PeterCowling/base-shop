@@ -23,7 +23,8 @@ import CollectionListEditor from "../CollectionListEditor";
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
-  default: ({ children }: any) => <>{children}</>,
+  // Return children directly; no Fragment needed
+  default: ({ children }: any) => children,
 }));
 
 jest.mock("../useMediaLibrary", () => ({
@@ -266,4 +267,3 @@ describe("additional editors", () => {
     expect(onChange).toHaveBeenCalledWith(expected);
   });
 });
-

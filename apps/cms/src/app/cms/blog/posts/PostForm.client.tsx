@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { Button, Input, Switch, Textarea, Toast } from "@ui/components/atoms";
 import { slugify } from "@acme/shared-utils";
 import { PortableText } from "@portabletext/react";
+import { useTranslations } from "@acme/i18n";
 import {
   previewComponents,
   type PortableTextBlock,
@@ -42,6 +43,7 @@ interface Props {
 }
 
 function PostFormContent({ action, submitLabel, post }: Props) {
+  const t = useTranslations();
   const [state, formAction] = useFormState(action, { message: "", error: "" });
   const [title, setTitle] = useState(post?.title ?? "");
   const [slug, setSlug] = useState(post?.slug ?? "");
@@ -68,21 +70,21 @@ function PostFormContent({ action, submitLabel, post }: Props) {
         if (res.ok) {
           const data = await res.json();
           if (data.exists) {
-            setSlugError("Slug already exists");
+            setSlugError(t("cms.blog.postForm.slugExists") as string);
           } else {
             setSlugError(null);
           }
         } else {
-          setSlugError("Failed to check slug");
+          setSlugError(t("cms.blog.postForm.slugCheckFailed") as string);
         }
       } catch {
-        setSlugError("Failed to check slug");
+        setSlugError(t("cms.blog.postForm.slugCheckFailed") as string);
       } finally {
         setCheckingSlug(false);
       }
     }, 300);
     return () => clearTimeout(handle);
-  }, [slug, shopId, slugId]);
+  }, [slug, shopId, slugId, t]);
   const [publishedAt, setPublishedAt] = useState(
     post?.publishedAt ? post.publishedAt.slice(0, 16) : "",
   );
@@ -99,10 +101,10 @@ function PostFormContent({ action, submitLabel, post }: Props) {
 
   return (
     <div className="space-y-4">
-      <form action={formAction} className="space-y-4 max-w-xl">
+      <form action={formAction} className="space-y-4">
         <Input
           name="title"
-          label="Title"
+          label={t("cms.blog.postForm.titleLabel") as string}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
@@ -110,7 +112,7 @@ function PostFormContent({ action, submitLabel, post }: Props) {
         <div className="space-y-2">
           <Input
             name="slug"
-            label="Slug"
+            label={t("cms.blog.postForm.slugLabel") as string}
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             disabled={!editSlug}
@@ -123,34 +125,40 @@ function PostFormContent({ action, submitLabel, post }: Props) {
               checked={editSlug}
               onChange={(e) => setEditSlug(e.target.checked)}
             />
-            <label htmlFor="edit-slug">Edit slug</label>
+            <label htmlFor="edit-slug">{t("cms.blog.postForm.editSlug")}</label>
           </div>
         </div>
-        <Textarea name="excerpt" label="Excerpt" defaultValue={post?.excerpt ?? ""} />
+        <Textarea
+          name="excerpt"
+          label={t("cms.blog.postForm.excerptLabel") as string}
+          defaultValue={post?.excerpt ?? ""}
+        />
         <MainImageField value={mainImage} onChange={setMainImage} />
         <input type="hidden" name="mainImage" value={mainImage} />
         <Input
           name="author"
-          label="Author"
+          label={t("cms.blog.postForm.authorLabel") as string}
           defaultValue={post?.author ?? ""}
         />
         <Input
           name="categories"
-          label="Categories (comma separated)"
+          label={t("cms.blog.postForm.categoriesLabel") as string}
           defaultValue={(post?.categories ?? []).join(", ")}
         />
         <Input
           name="products"
-          label="Related products (comma separated IDs)"
+          label={t("cms.blog.postForm.productsLabel") as string}
           defaultValue={(post?.products ?? []).join(", ")}
         />
+        {/* eslint-disable ds/no-hardcoded-copy -- CMS-2616 [ttl=2026-01-01] non-UI input type value */}
         <Input
           type="datetime-local"
           name="publishedAt"
-          label="Publish at"
+          label={t("cms.blog.postForm.publishAtLabel") as string}
           value={publishedAt}
           onChange={(e) => setPublishedAt(e.target.value)}
         />
+        {/* eslint-enable ds/no-hardcoded-copy -- CMS-2616 */}
         <div className="space-y-2">
           <RichTextEditor value={content} onChange={setContent} />
         </div>
@@ -162,7 +170,9 @@ function PostFormContent({ action, submitLabel, post }: Props) {
         {post?._id && <input type="hidden" name="id" value={post._id} />}
         {hasInvalidProducts && (
           <div className="text-danger-foreground">
-            Product not found: {Object.values(invalidProducts).join(", ")}
+            {t("cms.blog.postForm.productNotFound", {
+              ids: Object.values(invalidProducts).join(", "),
+            })}
           </div>
         )}
         <Button
@@ -183,8 +193,8 @@ function PostFormContent({ action, submitLabel, post }: Props) {
         message={state.message || state.error || ""}
       />
       <div className="space-y-2">
-        <h2 className="font-semibold">Preview</h2>
-        <div className="prose max-w-none rounded border border-border/10 p-4">
+        <h2 className="font-semibold">{t("cms.blog.postForm.preview")}</h2>
+        <div className="prose rounded border border-border/10 p-4">
           <PortableText value={content} components={previewComponents} />
         </div>
       </div>

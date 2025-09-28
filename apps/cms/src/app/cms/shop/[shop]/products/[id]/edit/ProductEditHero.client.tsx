@@ -4,6 +4,8 @@ import { useCallback } from "react";
 import Link from "next/link";
 import { Button } from "@ui/components/atoms/shadcn";
 import { Chip } from "@ui/components/atoms";
+import { Inline } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 interface HeroProps {
   shop: string;
@@ -22,14 +24,15 @@ export default function ProductEditHero({
   publishTarget,
   formId,
 }: HeroProps) {
+  const t = useTranslations();
   const handleDiscard = useCallback(() => {
     window.history.back();
   }, []);
 
   const summary = [
-    { label: "Status", value: status },
-    { label: "SKU", value: sku },
-    { label: "Publish target", value: publishTarget },
+    { label: String(t("Status")), value: status },
+    { label: String(t("SKU")), value: sku },
+    { label: String(t("Publish target")), value: publishTarget },
   ];
 
   return (
@@ -37,34 +40,32 @@ export default function ProductEditHero({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 space-y-3">
           <h1 className="text-2xl font-semibold">
-            Edit product &ndash; {shop}/{productId}
+            {t("Edit product")} &ndash; {shop}/{productId}
           </h1>
-          <div className="flex flex-wrap gap-2">
+          <Inline gap={2} className="">
             {summary.map(({ label, value }) => (
               <Chip
                 key={label}
                 className="bg-muted px-3 py-1 text-xs uppercase tracking-wide"
               >
-                <span className="text-[0.65rem] font-medium text-muted-foreground">
-                  {label}
-                </span>
+                <span className="text-xs font-medium text-muted-foreground">{t(label)}</span>
                 <span className="ms-1 font-semibold text-foreground">{value}</span>
               </Chip>
             ))}
-          </div>
+          </Inline>
         </div>
-        <div className="flex shrink-0 flex-wrap items-center gap-2">
+        <Inline className="shrink-0" gap={2}>
           <Button
             type="button"
             variant="outline"
             onClick={handleDiscard}
           >
-            Discard changes
+            {t("Discard changes")}
           </Button>
           <Button type="submit" form={formId}>
-            Save changes
+            {t("Save changes")}
           </Button>
-        </div>
+        </Inline>
       </div>
       <div>
         <Button
@@ -72,7 +73,7 @@ export default function ProductEditHero({
           variant="ghost"
           className="px-0 text-sm text-muted-foreground hover:text-foreground"
         >
-          <Link href={`/shop/${shop}/products/${productId}`}>View product</Link>
+          <Link href={`/shop/${shop}/products/${productId}`}>{t("View product")}</Link>
         </Button>
       </div>
     </section>

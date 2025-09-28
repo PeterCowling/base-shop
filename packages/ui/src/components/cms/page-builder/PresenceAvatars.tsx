@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react/forbid-dom-props -- LINT-1004: dynamic peer color circles require inline background-color */
 
 import React, { useMemo } from "react";
 import usePresence from "./collab/usePresence";

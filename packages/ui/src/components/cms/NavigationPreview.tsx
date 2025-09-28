@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import type { NavItem } from "./NavigationEditor";
 import { Inline } from "../atoms/primitives/Inline";
 import { Stack } from "../atoms/primitives/Stack";
@@ -9,15 +9,22 @@ interface Props {
   style?: React.CSSProperties;
 }
 
+const StyledNav = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
+  ({ children, ...rest }, ref) => (
+    <nav ref={ref} {...rest}>{children}</nav>
+  )
+);
+StyledNav.displayName = "StyledNav";
+
 export default function NavigationPreview({ items, style }: Props) {
   return (
-    <nav style={style} className="bg-surface-2 text-foreground p-4 rounded border border-border-1" data-token="--color-bg">
+    <StyledNav style={style} className="bg-surface-2 text-foreground p-4 rounded border border-border-1" data-token="--color-bg">
       <Inline gap={4} role="list">
         {items.map((item) => (
           <NavItemView key={item.id} item={item} />
         ))}
       </Inline>
-    </nav>
+    </StyledNav>
   );
 }
 

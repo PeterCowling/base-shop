@@ -3,7 +3,7 @@ import {
   getReturnBagAndLabel,
 } from "@platform-core/returnLogistics";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
-import { useTranslations as useServerTranslations } from "@i18n/useTranslations.server";
+import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
@@ -11,13 +11,13 @@ import shop from "../../../../shop.json";
 import ReturnForm from "./ReturnForm";
 
 export async function generateMetadata() {
-  const tBase = await useServerTranslations("en");
+  const tBase = await getServerTranslations("en");
   const t = (key: string) => tBase(`account.returns.${key}`);
   return { title: t("metaTitle") };
 }
 
 export default async function ReturnsPage() {
-  const tBase = await useServerTranslations("en");
+  const tBase = await getServerTranslations("en");
   const t = (key: string) => tBase(`account.returns.${key}`);
   const [cfg, info, settings] = await Promise.all([
     getReturnLogistics(),

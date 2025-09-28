@@ -1,6 +1,6 @@
 // apps/cms/src/app/cms/wizard/MicroScenes.tsx
+/* i18n-exempt file -- PB-2420 design token preview component; no user-visible copy [ttl=2026-03-31] */
 "use client";
-/* eslint-disable ds/no-hardcoded-copy -- ABC-123: component contains only design token identifiers and CSS class strings; no user-facing copy */
 import React from "react";
 // Tiny scenes to preview token usage. Reusable in hovercards later.
 export default function MicroScenes() {

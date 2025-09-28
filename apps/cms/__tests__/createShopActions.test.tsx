@@ -199,6 +199,7 @@ describe("rbac actions persistence", () => {
       expect(db.roles[user!.id]).toBe("viewer");
 
       const stored = JSON.parse(
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads within a controlled temp repo path from withTempRepo
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
       ) as StoredUsersFile;
 
@@ -220,6 +221,7 @@ describe("rbac actions persistence", () => {
       expect(db.roles["2"]).toEqual(["admin", "viewer"]);
 
       const file = JSON.parse(
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads within a controlled temp repo path from withTempRepo
         await fs.readFile(path.join(dir, "data", "cms", "users.json"), "utf8")
       ) as StoredUsersFile;
 

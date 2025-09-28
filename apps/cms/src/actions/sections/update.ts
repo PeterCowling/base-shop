@@ -1,5 +1,5 @@
 import { nowIso } from "@acme/date-utils";
-import type { SectionTemplate } from "@acme/types";
+import type { SectionTemplate, PageComponent } from "@acme/types";
 import { sectionTemplateSchema } from "@acme/types";
 import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";
@@ -28,7 +28,7 @@ export async function updateSectionAction(
     ...previous,
     label,
     status,
-    template: template as any,
+    template: template as PageComponent,
     updatedAt: nowIso(),
     createdBy: previous.createdBy || (session.user.email ?? "unknown"),
   };

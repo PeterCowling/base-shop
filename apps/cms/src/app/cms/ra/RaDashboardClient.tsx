@@ -1,8 +1,12 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { ReturnAuthorization } from "@acme/types";
 import { Alert, Tag } from "@ui/components/atoms";
+import { Grid } from "@ui/components/atoms/primitives/Grid";
+import { Stack } from "@ui/components/atoms/primitives/Stack";
+import { Sidebar } from "@ui/components/atoms/primitives/Sidebar";
 import {
   Button,
   Card,
@@ -21,34 +25,24 @@ type QuickFilterKey = "all" | "pending" | "resolved" | "highRisk";
 
 interface QuickFilter {
   key: QuickFilterKey;
-  label: string;
-  description: string;
   test: (ra: ReturnAuthorization) => boolean;
 }
 
 const quickFilters: QuickFilter[] = [
   {
     key: "all",
-    label: "All",
-    description: "Every authorization",
     test: () => true,
   },
   {
     key: "pending",
-    label: "Awaiting review",
-    description: "Needs manual inspection",
     test: (ra) => /pending|open|awaiting/i.test(ra.status),
   },
   {
     key: "resolved",
-    label: "Resolved",
-    description: "Completed or refunded",
     test: (ra) => /approved|completed|closed|refunded/i.test(ra.status),
   },
   {
     key: "highRisk",
-    label: "High risk",
-    description: "Escalate immediately",
     test: (ra) => classifyRisk(ra) === "high",
   },
 ];
@@ -82,6 +76,7 @@ function riskVariant(level: RiskLevel): "default" | "warning" | "destructive" | 
 }
 
 export function RaDashboard({ ras, error }: RaDashboardProps) {
+  const t = useTranslations();
   const [activeFilter, setActiveFilter] = useState<QuickFilterKey>("all");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -92,12 +87,12 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
       .length;
     const highRisk = ras.filter((ra) => classifyRisk(ra) === "high").length;
     return [
-      { label: "Active queue", value: pending, caption: "Awaiting attention" },
-      { label: "Resolved", value: resolved, caption: "Closed authorizations" },
-      { label: "High risk", value: highRisk, caption: "Escalations to triage" },
-      { label: "Total", value: ras.length, caption: "Records in system" },
+      { label: t("cms.ra.metrics.activeQueue.label"), value: pending, caption: t("cms.ra.metrics.activeQueue.caption") },
+      { label: t("cms.ra.metrics.resolved.label"), value: resolved, caption: t("cms.ra.metrics.resolved.caption") },
+      { label: t("cms.ra.metrics.highRisk.label"), value: highRisk, caption: t("cms.ra.metrics.highRisk.caption") },
+      { label: t("cms.ra.metrics.total.label"), value: ras.length, caption: t("cms.ra.metrics.total.caption") },
     ];
-  }, [ras]);
+  }, [ras, t]);
 
   const filtered = useMemo(() => {
     const quick = quickFilters.find((filter) => filter.key === activeFilter) ?? quickFilters[0];
@@ -116,9 +111,9 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
 
   if (error) {
     return (
-      <Alert variant="danger" tone="soft" title="Unable to load return authorizations">
+      <Alert variant="danger" tone="soft" heading={String(t("cms.ra.error.loadFailed.heading"))}>
         <p className="text-sm">{error}</p>
-        <p className="text-xs">Retry shortly or verify the data source connection for the RA service.</p>
+        <p className="text-xs">{t("cms.ra.error.loadFailed.retryAdvice")}</p>
       </Alert>
     );
   }
@@ -127,45 +122,44 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
     <div className="space-y-6 text-foreground">
       <header className="space-y-3">
         <Tag variant="default" className="bg-primary-soft text-foreground">
-          Return authorizations
+          {t("cms.ra.tag.title")}
         </Tag>
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="min-w-0 space-y-1">
-            <h2 className="text-2xl font-semibold">RA workflow overview</h2>
-            <p className="text-sm text-muted-foreground">
-              Quickly identify escalations, filter by status, and move authorizations forward.
-            </p>
+            <h2 className="text-2xl font-semibold">{t("cms.ra.heading")}</h2>
+            <p className="text-sm text-muted-foreground">{t("cms.ra.subheading")}</p>
           </div>
         </div>
       </header>
 
-      <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        {metrics.map((metric) => (
-          <Card
-            key={metric.label}
-            className="border border-border-1 bg-surface-2"
-          >
-            <CardContent className="space-y-1 px-4 py-3">
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">
-                {metric.label}
-              </p>
-              <p className="text-2xl font-semibold">{metric.value}</p>
-              <p className="text-xs text-muted-foreground">{metric.caption}</p>
-            </CardContent>
-          </Card>
-        ))}
+      <section>
+        <Grid cols={1} gap={4} className="sm:grid-cols-2 xl:grid-cols-4">
+          {metrics.map((metric) => (
+            <Card
+              key={String(metric.label)}
+              className="border border-border-1 bg-surface-2"
+            >
+              <CardContent className="space-y-1 px-4 py-3">
+                <p className="text-xs uppercase tracking-wide text-muted-foreground">
+                  {metric.label}
+                </p>
+                <p className="text-2xl font-semibold">{metric.value}</p>
+                <p className="text-xs text-muted-foreground">{metric.caption}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </Grid>
       </section>
 
-      <section className="grid gap-5 lg:grid-cols-[300px,1fr]">
-        <Card className="border border-border-1 bg-surface-2">
-          <CardContent className="space-y-4 p-6">
+      <section>
+        <Sidebar sideWidth="w-72" gap={5} className="lg:items-start">
+          <Card className="border border-border-1 bg-surface-2">
+            <CardContent className="space-y-4 p-6">
             <div className="space-y-1">
-              <h3 className="text-base font-semibold">Quick filters</h3>
-              <p className="text-xs text-muted-foreground">
-                Snap to a subset and broadcast the count in the live region below.
-              </p>
+              <h3 className="text-base font-semibold">{t("cms.ra.quick.title")}</h3>
+              <p className="text-xs text-muted-foreground">{t("cms.ra.quick.description")}</p>
             </div>
-            <div className="grid gap-2">
+            <Stack gap={2}>
               {quickFilters.map((filter) => (
                 <button
                   key={filter.key}
@@ -173,42 +167,52 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                   onClick={() => setActiveFilter(filter.key)}
                   aria-pressed={activeFilter === filter.key}
                   className={cn(
-                    "rounded-xl border px-3 py-2 text-left text-sm transition",
+                    "rounded-xl",
+                    "border",
+                    "px-3",
+                    "py-2",
+                    "text-left",
+                    "text-sm",
+                    "transition",
                     activeFilter === filter.key
-                      ? "border-primary/60 bg-primary-soft text-foreground"
-                      : "border-border-2 bg-surface-2 text-muted-foreground hover:border-primary/50 hover:bg-primary-soft"
+                      ? ["border-primary/60", "bg-primary-soft", "text-foreground"]
+                      : [
+                          "border-border-2",
+                          "bg-surface-2",
+                          "text-muted-foreground",
+                          "hover:border-primary/50",
+                          "hover:bg-primary-soft",
+                        ]
                   )}
                 >
-                  <span className="block font-semibold">{filter.label}</span>
-                  <span className="block text-xs text-muted-foreground">{filter.description}</span>
+                  <span className="block font-semibold">{t(`cms.ra.quick.${filter.key}.label`)}</span>
+                  <span className="block text-xs text-muted-foreground">{t(`cms.ra.quick.${filter.key}.desc`)}</span>
                 </button>
               ))}
-            </div>
+            </Stack>
             <div className="space-y-1">
               <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Search
+                {t("cms.ra.search.label")}
               </label>
               <Input
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)}
-                placeholder="Filter by RA, order, or note"
+                placeholder={t("cms.ra.search.placeholder") as string}
                 className="border-border-2 bg-surface-2 text-foreground placeholder:text-muted-foreground"
               />
             </div>
           </CardContent>
-        </Card>
+          </Card>
 
-        <Card className="border border-border-1 bg-surface-2">
-          <CardContent className="space-y-4 p-6">
+          <Card className="border border-border-1 bg-surface-2">
+            <CardContent className="space-y-4 p-6">
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div className="min-w-0 space-y-1">
-                <h3 className="text-lg font-semibold">Authorization queue</h3>
-                <p className="text-xs text-muted-foreground">
-                  Actions provide suggested follow-ups so teams can unblock customers quickly.
-                </p>
+                <h3 className="text-lg font-semibold">{t("cms.ra.queue.title")}</h3>
+                <p className="text-xs text-muted-foreground">{t("cms.ra.queue.description")}</p>
               </div>
               <Tag className="shrink-0" variant="default">
-                {filtered.length} showing
+                {t("cms.ra.queue.showing", { count: filtered.length })}
               </Tag>
             </div>
             <div
@@ -219,9 +223,9 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
               data-cy="ra-announce"
               className="sr-only"
             >
-              Showing {filtered.length} of {ras.length} return authorizations
+              {t("cms.ra.queue.live", { shown: filtered.length, total: ras.length })}
             </div>
-            <div className="grid gap-3">
+            <Stack gap={3}>
               {filtered.map((ra) => {
                 const risk = classifyRisk(ra);
                 return (
@@ -230,7 +234,10 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                     data-testid="ra-card"
                     data-cy="ra-card"
                   className={cn(
-                    "border border-border-1 bg-surface-2 text-foreground",
+                    "border",
+                    "border-border-1",
+                    "bg-surface-2",
+                    "text-foreground",
                     risk === "high" && "border-danger/40",
                     risk === "medium" && "border-warning/40"
                   )}
@@ -238,12 +245,14 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                     <CardContent className="space-y-3 p-6">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0 space-y-1">
-                        <p className="text-sm font-semibold">RA {ra.raId}</p>
-                        <p className="text-xs text-muted-foreground">Order {ra.orderId}</p>
+                        <p className="text-sm font-semibold">{t("cms.ra.card.raId", { id: ra.raId })}</p>
+                        <p className="text-xs text-muted-foreground">{t("cms.ra.card.orderId", { id: ra.orderId })}</p>
                       </div>
                       <div className="flex shrink-0 flex-wrap gap-2">
                         <Tag variant={statusVariant(ra.status)}>{ra.status}</Tag>
-                        <Tag variant={riskVariant(risk)}>Risk: {risk}</Tag>
+                        <Tag variant={riskVariant(risk)}>
+                          {t("cms.ra.card.risk", { level: t(`cms.ra.risk.${risk}`) })}
+                        </Tag>
                       </div>
                     </div>
                     {ra.inspectionNotes && (
@@ -254,14 +263,14 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
                         asChild
                         className="h-9 rounded-lg bg-primary px-4 text-sm font-semibold text-primary-foreground hover:bg-primary/90"
                       >
-                        <Link href={`/cms/orders/${ra.orderId}`}>View order</Link>
+                        <Link href={`/cms/orders/${ra.orderId}`}>{t("cms.ra.actions.viewOrder")}</Link>
                       </Button>
                       <Button
                         type="button"
                         variant="outline"
                         className="h-9 rounded-lg border-border-2 bg-surface-2 text-sm text-foreground hover:bg-surface-3"
                       >
-                        Mark for follow-up
+                        {t("cms.ra.actions.markFollowUp")}
                       </Button>
                     </div>
                   </CardContent>
@@ -271,18 +280,15 @@ export function RaDashboard({ ras, error }: RaDashboardProps) {
             {filtered.length === 0 && (
               <Card className="border border-border-1 bg-surface-2 text-foreground">
                 <CardContent className="space-y-3 px-6 py-6 text-center text-sm text-muted-foreground">
-                  <Tag variant="warning">
-                    No matches
-                  </Tag>
-                  <p>
-                    Try clearing filters or widening your search to surface more return authorizations.
-                  </p>
+                  <Tag variant="warning">{t("cms.ra.empty.tagLabel")}</Tag>
+                  <p>{t("cms.ra.empty.suggestion")}</p>
                 </CardContent>
               </Card>
             )}
-            </div>
-          </CardContent>
-        </Card>
+            </Stack>
+            </CardContent>
+          </Card>
+        </Sidebar>
       </section>
     </div>
   );

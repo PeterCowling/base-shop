@@ -13,7 +13,15 @@ jest.mock("../MediaFileItem", () => {
         data-selected={props.selected ? "true" : "false"}
         data-deleting={props.deleting ? "true" : "false"}
         data-replacing={props.replacing ? "true" : "false"}
+        role="button"
+        tabIndex={0}
         onClick={() => props.onSelect?.(props.item)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            props.onSelect?.(props.item);
+          }
+        }}
       >
         <button type="button" onClick={() => props.onDelete(props.item.url)}>
           delete

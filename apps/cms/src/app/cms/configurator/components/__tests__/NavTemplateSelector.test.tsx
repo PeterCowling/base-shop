@@ -36,11 +36,11 @@ import NavTemplateSelector from "../NavTemplateSelector";
 
 // Provide missing pointer APIs for Radix Select
 beforeAll(() => {
-  // @ts-ignore
+  // @ts-expect-error jsdom lacks Pointer Events APIs
   HTMLElement.prototype.hasPointerCapture = () => false;
-  // @ts-ignore
+  // @ts-expect-error jsdom lacks Pointer Events APIs
   HTMLElement.prototype.setPointerCapture = () => {};
-  // @ts-ignore
+  // @ts-expect-error jsdom: scrollIntoView not implemented
   Element.prototype.scrollIntoView = () => {};
 });
 

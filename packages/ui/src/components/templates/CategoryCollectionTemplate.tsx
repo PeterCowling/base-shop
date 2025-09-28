@@ -14,12 +14,19 @@ export function CategoryCollectionTemplate({
   className,
   ...props
 }: CategoryCollectionTemplateProps) {
-  const style = {
-    gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
-  } as React.CSSProperties;
+  const rootGridClass = "grid gap-6"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: layout class names
+  const colsClass =
+    {
+      1: "grid-cols-1",
+      2: "grid-cols-2",
+      3: "grid-cols-3",
+      4: "grid-cols-4",
+      5: "grid-cols-5",
+      6: "grid-cols-6",
+    }[columns as 1 | 2 | 3 | 4 | 5 | 6] ?? undefined;
 
   return (
-    <div className={cn("grid gap-6", className)} style={style} {...props}>
+    <div className={cn(rootGridClass, colsClass, className)} {...props}>
       {categories.map((c) => (
         <CategoryCard key={c.id} category={c} />
       ))}

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-raw-color -- TEST-0004: tests simulate raw hex inputs and token defaults */
 import "@testing-library/jest-dom";
 import {
   fireEvent,
@@ -78,4 +79,3 @@ describe("ThemeEditor reload", () => {
     expect(overrideInput).toHaveValue("#000000");
   });
 });
-

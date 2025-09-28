@@ -28,6 +28,8 @@ import Image from "next/image";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 import { ConfiguratorContext } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
+import { Inline, Cluster } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   pageTemplates?: Array<{
@@ -60,6 +62,11 @@ export default function StepShopPage({
   prevStepId,
   nextStepId,
 }: Props): React.JSX.Element {
+  const t = useTranslations();
+  // i18n-exempt -- CMS-1234 [ttl=2026-01-31]
+  const CY_CANCEL_TEMPLATE = "cancel-template";
+  // i18n-exempt -- CMS-1234 [ttl=2026-01-31]
+  const CY_CONFIRM_TEMPLATE = "confirm-template";
   const configurator = useContext(ConfiguratorContext);
   const state = configurator?.state;
   const update = configurator?.update;
@@ -68,13 +75,24 @@ export default function StepShopPage({
     [pageTemplates],
   );
   const layout = shopLayout ?? state?.shopLayout ?? "";
-  const setLayout = setShopLayout ?? ((v: string) => update?.("shopLayout" as any, v));
+  const setLayout =
+    setShopLayout ?? ((v: string) => {
+      if (update) update("shopLayout", v);
+    });
   const components = (shopComponents ?? state?.shopComponents ?? []) as PageComponent[];
-  const setComponents = setShopComponents ?? ((v: PageComponent[]) => update?.("shopComponents" as any, v));
+  const setComponents =
+    setShopComponents ?? ((v: PageComponent[]) => {
+      if (update) update("shopComponents", v);
+    });
   const pageId = shopPageId ?? state?.shopPageId ?? null;
-  const setPageId = setShopPageId ?? ((v: string | null) => update?.("shopPageId" as any, v));
+  const setPageId =
+    setShopPageId ?? ((v: string | null) => {
+      if (update) update("shopPageId", v);
+    });
   const currentShopId = shopId ?? state?.shopId ?? "";
-  const style = themeStyle ?? useThemeLoader();
+  // Always call hooks unconditionally; then choose value
+  const loadedStyle = useThemeLoader();
+  const style = themeStyle ?? loadedStyle;
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
@@ -93,7 +111,7 @@ export default function StepShopPage({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Shop Page</h2>
+      <h2 className="text-xl font-semibold">{t("cms.configurator.shopPage.title")}</h2>
       <Select
         data-cy="shop-layout"
         value={layout}
@@ -102,7 +120,7 @@ export default function StepShopPage({
         onValueChange={() => {}}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select template" />
+          <SelectValue placeholder={String(t("cms.configurator.shopPage.selectTemplate"))} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem
@@ -113,30 +131,32 @@ export default function StepShopPage({
               setPendingTemplate({ name: "blank", components: [], preview: "" });
             }}
           >
-            Blank
+            {t("cms.configurator.shopPage.blank")}
           </SelectItem>
-          {templates.map((t) => (
+          {templates.map((tpl) => (
             <SelectItem
-              key={t.name}
-              value={t.name}
+              key={tpl.name}
+              value={tpl.name}
               onSelect={(e) => {
                 e.preventDefault();
                 setSelectOpen(false);
-                setPendingTemplate(t);
+                setPendingTemplate(tpl);
               }}
             >
-              <span className="flex items-center gap-2" data-cy={`template-${t.name.replace(/\s+/g, '-')}`}>
-                {t.preview && (
+              <Inline gap={2} alignY="center" data-cy={`template-${tpl.name.replace(/\s+/g, '-')}`}>
+                {tpl.preview && (
                   <Image
-                    src={t.preview}
-                    alt={`${t.name} preview`}
+                    src={tpl.preview}
+                    alt={String(
+                      t("cms.configurator.shopPage.previewAlt", { name: tpl.name }),
+                    )}
                     width={32}
                     height={32}
                     className="h-8 w-8 rounded object-cover"
                   />
                 )}
-                {t.name}
-              </span>
+                {tpl.name}
+              </Inline>
             </SelectItem>
           ))}
         </SelectContent>
@@ -147,20 +167,23 @@ export default function StepShopPage({
           if (!o) setPendingTemplate(null);
         }}
       >
-        <DialogContent className="max-w-3xl">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              Use
-              {pendingTemplate?.name === "blank"
-                ? " Blank"
-                : ` ${pendingTemplate?.name}`}
-              {" "}template?
+              {t("cms.configurator.shopPage.useTemplateConfirm", {
+                name:
+                  pendingTemplate?.name === "blank"
+                    ? t("cms.configurator.shopPage.blank")
+                    : pendingTemplate?.name ?? "",
+              })}
             </DialogTitle>
           </DialogHeader>
           {pendingTemplate?.preview && (
             <Image
               src={pendingTemplate.preview}
-              alt={`${pendingTemplate.name} preview`}
+              alt={String(
+                t("cms.configurator.shopPage.previewAlt", { name: pendingTemplate.name }),
+              )}
               width={800}
               height={600}
               sizes="100vw"
@@ -169,14 +192,14 @@ export default function StepShopPage({
           )}
           <DialogFooter>
             <Button
-              data-cy="cancel-template"
+              data-cy={CY_CANCEL_TEMPLATE}
               variant="outline"
               onClick={() => setPendingTemplate(null)}
             >
-              Cancel
+              {t("actions.cancel")}
             </Button>
             <Button
-              data-cy="confirm-template"
+              data-cy={CY_CONFIRM_TEMPLATE}
               onClick={() => {
                 if (!pendingTemplate) return;
                 const layout =
@@ -208,7 +231,7 @@ export default function StepShopPage({
                 setPendingTemplate(null);
               }}
             >
-              Confirm
+              {t("actions.confirm")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -243,7 +266,7 @@ export default function StepShopPage({
           setIsSaving(false);
           if (data) {
             setPageId?.(data.id);
-            setToast({ open: true, message: "Draft saved" });
+            setToast({ open: true, message: String(t("cms.configurator.shopPage.draftSaved")) });
           } else if (error) {
             setSaveError(error);
           }
@@ -259,7 +282,7 @@ export default function StepShopPage({
           setIsPublishing(false);
           if (data) {
             setPageId?.(data.id);
-            setToast({ open: true, message: "Page published" });
+            setToast({ open: true, message: String(t("cms.configurator.shopPage.pagePublished")) });
           } else if (error) {
             setPublishError(error);
           }
@@ -271,14 +294,14 @@ export default function StepShopPage({
         onChange={setComponents}
         style={style}
       />
-      <div className="flex justify-between">
+      <Cluster justify="between">
         {prevStepId && (
           <Button
             data-cy="back"
             variant="outline"
             onClick={() => router.push(`/cms/configurator/${prevStepId}`)}
           >
-            Back
+            {t("cms.back")}
           </Button>
         )}
         {nextStepId && (
@@ -289,10 +312,10 @@ export default function StepShopPage({
               router.push(`/cms/configurator/${nextStepId}`);
             }}
           >
-            Next
+            {t("actions.next")}
           </Button>
         )}
-      </div>
+      </Cluster>
       <Toast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}

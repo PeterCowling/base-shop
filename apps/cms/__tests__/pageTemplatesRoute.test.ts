@@ -10,8 +10,10 @@ async function withTemplates(
 ): Promise<void> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "pt-"));
   const templatesDir = path.join(dir, "packages", "ui", "components", "templates");
+  // eslint-disable-next-line security/detect-non-literal-fs-filename
   await fs.mkdir(templatesDir, { recursive: true });
   for (const [name, data] of Object.entries(files)) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     await fs.writeFile(
       path.join(templatesDir, `${name}.json`),
       JSON.stringify(data),

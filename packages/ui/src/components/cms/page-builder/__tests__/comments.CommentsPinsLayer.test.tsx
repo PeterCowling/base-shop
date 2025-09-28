@@ -19,7 +19,7 @@ describe("CommentsPinsLayer", () => {
     const onOpen = jest.fn();
 
     render(
-      <div style={{ position: "relative" }}>
+      <div>
         <CommentsPinsLayer
           threads={threads}
           visibleThreads={visible}
@@ -46,4 +46,3 @@ describe("CommentsPinsLayer", () => {
     expect(badges.length).toBeGreaterThanOrEqual(2);
   });
 });
-

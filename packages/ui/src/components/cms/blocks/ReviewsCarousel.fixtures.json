@@ -1,0 +1,9 @@
+{
+  "reviews": [
+    { "quote": "Outstanding quality", "name": "Alex" },
+    { "quote": "Would buy again", "name": "Sam" }
+  ],
+  "minItems": 1,
+  "maxItems": 5
+}
+

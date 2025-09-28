@@ -61,6 +61,14 @@ Following these steps keeps linting consistent across the monorepo.
   - Default regex: `[A-Z]{2,}-\d+` (configurable per scope).
   - Severity: error in CMS/UI and app shells; warn elsewhere.
 
+### i18n exemptions
+
+- Avoid `i18n-exempt`; prefer adding a translation key.
+- If you must exempt truly non-user-facing strings, include a ticket; TTL optional.
+  - Inline: `// i18n-exempt -- ABC-123 reason [ttl=YYYY-MM-DD]`
+  - File-wide: `/* i18n-exempt file -- ABC-123 reason [ttl=YYYY-MM-DD] */` at the top of the file.
+- The `ds/no-hardcoded-copy` rule ignores exemptions without a ticket (they will fail lint).
+
 ### Exceptions Registry and CI
 
 - Registry file: `exceptions.json` at repo root.
@@ -212,6 +220,23 @@ The layout contract keeps layout concerns in container/layout primitives and out
 - `ds/require-min-w-0-in-flex`: adds `min-w-0` when conditions are met (literal class attr).
 - `ds/no-physical-direction-classes-in-rtl`: maps `ml-2`→`ps-2`, `mr-2`→`pe-2`, etc., where safe.
 - Some token rules offer suggestions/fixes when a direct token mapping is clear.
+
+## Stylelint (authored CSS)
+
+To enforce token usage in CSS files (globals and feature CSS), the repo includes a Stylelint config:
+
+- Config: `stylelint.config.cjs`
+- Scope: `apps/**/src/**/*.css`, `packages/ui/src/**/*.css`
+- Rule: `scale-unlimited/declaration-strict-value` for `margin|padding|gap|border-radius`
+  - Allowed value forms: `var(--...)`, `clamp(...)`, `min(...)`, `max(...)`, or CSS keywords (`inherit`, `initial`, `unset`).
+  - Blocks raw `px`/`rem` for spacing/radius to match ESLint’s `ds/no-raw-spacing` and `ds/no-raw-radius` in JSX.
+
+## CMS Tap Target Override
+
+CMS raises the minimum tap target size to align with Apple HIG:
+
+- Override: `eslint.config.mjs` → `{ files: ['apps/cms/**'], 'ds/min-tap-size': ['error', { min: 44 }] }`
+- Repo baseline remains 40px for other packages; the WCAG 2.2 minimum (24px) is encoded as a token and optional utility.
 
 ## UI Migration Notes
 

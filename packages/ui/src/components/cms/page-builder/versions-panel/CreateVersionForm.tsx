@@ -1,6 +1,7 @@
+// i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Input } from "../../../atoms/shadcn";
 
 interface Props {
@@ -23,6 +24,15 @@ const CreateVersionForm = ({ onCreate, autoFocusLabel = false }: Props) => {
     }
   };
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!autoFocusLabel) return;
+    // Programmatic focus avoids the a11y anti-pattern of autoFocus on mount
+    const id = requestAnimationFrame(() => inputRef.current?.focus());
+    return () => cancelAnimationFrame(id);
+  }, [autoFocusLabel]);
+
   return (
     <div className="flex items-end gap-2">
       <div className="flex-1">
@@ -31,7 +41,7 @@ const CreateVersionForm = ({ onCreate, autoFocusLabel = false }: Props) => {
           placeholder="Label (e.g. hero color tweak)" /* i18n-exempt -- PB-1023: internal editor copy */
           value={label}
           onChange={(e) => setLabel(e.target.value)}
-          autoFocus={autoFocusLabel}
+          ref={inputRef}
         />
       </div>
       <Button onClick={submit} disabled={saving || !label.trim()}>

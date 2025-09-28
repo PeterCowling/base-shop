@@ -78,7 +78,6 @@ jest.mock("../src/app/cms/configurator/steps", () => {
 });
 
 declare global {
-  // eslint-disable-next-line no-var, vars-on-top
   var fetch: jest.Mock;
 }
 

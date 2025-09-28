@@ -16,6 +16,7 @@ import { Stack } from "../atoms/primitives/Stack";
 import { Inline } from "../atoms/primitives/Inline";
 
 interface ChatMessage {
+  id: number;
   sender: "user" | "bot";
   text: string;
 }
@@ -24,14 +25,15 @@ function FakeLiveChatWidget(props: React.HTMLAttributes<HTMLButtonElement>) {
   const [open, setOpen] = React.useState(false);
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [input, setInput] = React.useState("");
+  const nextId = React.useRef(0);
 
   const send = () => {
     const text = input.trim();
     if (!text) return;
     setMessages((m) => [
       ...m,
-      { sender: "user", text },
-      { sender: "bot", text: "Thanks for your message!" },
+      { id: nextId.current++, sender: "user", text },
+      { id: nextId.current++, sender: "bot", text: "Thanks for your message!" },
     ]);
     setInput("");
   };
@@ -39,7 +41,10 @@ function FakeLiveChatWidget(props: React.HTMLAttributes<HTMLButtonElement>) {
   React.useEffect(() => {
     if (!open) return;
     const id = setTimeout(() => {
-      setMessages((m) => [...m, { sender: "bot", text: "Hello from support" }]);
+      setMessages((m) => [
+        ...m,
+        { id: nextId.current++, sender: "bot", text: "Hello from support" },
+      ]);
     }, 1000);
     return () => clearTimeout(id);
   }, [open]);
@@ -63,9 +68,9 @@ function FakeLiveChatWidget(props: React.HTMLAttributes<HTMLButtonElement>) {
         </DialogHeader>
         <Stack gap={4}>
           <Stack gap={2} className="overflow-y-auto py-2">
-            {messages.map((m, i) => (
+            {messages.map((m) => (
               <div
-                key={i}
+                key={m.id}
                 className={m.sender === "user" ? "self-end" : "self-start"}
               >
                 <div

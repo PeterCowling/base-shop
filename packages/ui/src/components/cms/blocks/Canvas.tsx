@@ -16,9 +16,9 @@ export default function Canvas({ color }: Props) {
   return (
     <div
       className="w-full h-full"
+      // eslint-disable-next-line react/forbid-dom-props -- DX-1234 dynamic authorable background color
       style={{ backgroundColor: color ?? "transparent" }}
       aria-label="Canvas"
     />
   );
 }
-

@@ -13,7 +13,7 @@ export default function PdpClient({ product }: { product: SKU }) {
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="mx-auto max-w-6xl p-6 lg:grid lg:grid-cols-2 lg:gap-10">
+    <div className="p-6 lg:grid lg:grid-cols-2 lg:gap-10">
       <ImageGallery items={product.media} />
 
       <section className="flex flex-col gap-6">

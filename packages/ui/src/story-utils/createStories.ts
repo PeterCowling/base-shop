@@ -35,7 +35,7 @@ export function makeStateStory<TArgs>(
     docsDescription,
   } = opts;
 
-  const parameters: Record<string, any> = {
+  const parameters: Record<string, unknown> = {
     a11y: { disable: !a11y },
     dataState: state,
   };
@@ -54,8 +54,10 @@ export function makeStateStory<TArgs>(
   // Chromatic snapshots opt-in: only when 'visual' tag is present
   parameters.chromatic = { disable: !computedTags.includes('visual') };
 
+  const args: Partial<TArgs> = { ...base, ...patch } as Partial<TArgs>;
+
   return {
-    args: { ...(base as any), ...(patch as any) },
+    args,
     parameters,
     tags: computedTags,
   } as StoryObj<TArgs>;

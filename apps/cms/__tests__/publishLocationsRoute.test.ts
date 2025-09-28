@@ -24,6 +24,7 @@ describe("publish locations API route", () => {
         },
       ];
       const file = path.join(dir, "data", "publish-locations.json");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- test uses a temp path
       await fs.writeFile(file, JSON.stringify(locations), "utf8");
 
       const route = await import("../src/app/api/publish-locations/route");

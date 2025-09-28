@@ -15,8 +15,11 @@ export default function Testimonials({
   if (!list.length || list.length < (minItems ?? 0)) return null;
   return (
     <section className="space-y-4">
-      {list.map((t, i) => (
-        <blockquote key={i} className="text-center">
+      {list.map((t) => (
+        <blockquote
+          key={`${t.name ?? "anon"}:${t.quote}`}
+          className="text-center"
+        >
           <p className="mb-2 italic">“{t.quote}”</p>
           {t.name && (
             <footer className="text-sm text-muted">— {t.name}</footer>

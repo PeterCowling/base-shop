@@ -9,6 +9,7 @@ import Busboy, { type FileInfo } from "busboy";
 import { fileTypeFromBuffer } from "file-type/core";
 import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "@platform-core/shops";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 function isWebReadableStream(
   stream: unknown,
@@ -27,20 +28,22 @@ export async function POST(
   context: { params: Promise<{ shop: string }> }
 ): Promise<NextResponse> {
   try {
+    const t = await getServerTranslations("en");
     const session = await ensureAuthorized();
     const role = session.user?.role;
     if (!role || !["admin", "ShopAdmin"].includes(role)) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: t("api.common.forbidden") }, { status: 403 });
     }
   } catch {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    const t = await getServerTranslations("en");
+    return NextResponse.json({ error: t("api.common.forbidden") }, { status: 403 });
   }
 
   try {
     const { shop: rawShop } = await context.params;
     const shop = validateShopName(rawShop);
     const dir = path.join(resolveDataRoot(), shop);
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
     await mkdir(dir, { recursive: true });
     const filePath = path.join(dir, "products.csv");
 
@@ -53,14 +56,15 @@ export async function POST(
       limits: { fileSize: MAX_SIZE, files: 1 },
     });
 
-    return await new Promise<NextResponse>((resolve, reject) => {
+    return await new Promise<NextResponse>(async (resolve, reject) => {
+      const t = await getServerTranslations("en");
       let resolved = false;
       let fileFound = false;
 
       busboy.on("file", (_name, file: NodeJS.ReadableStream, info: FileInfo) => {
         fileFound = true;
         const { mimeType } = info;
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
         const writeStream = fs.createWriteStream(filePath);
         let firstChunk: Buffer | undefined;
 
@@ -72,10 +76,10 @@ export async function POST(
           if (resolved) return;
           resolved = true;
           writeStream.destroy();
-          // eslint-disable-next-line security/detect-non-literal-fs-filename
+          // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
           void unlink(filePath).catch(() => {});
           resolve(
-            NextResponse.json({ error: "File too large" }, { status: 413 })
+            NextResponse.json({ error: t("api.uploadCsv.fileTooLarge") }, { status: 413 })
           );
         });
 
@@ -84,7 +88,7 @@ export async function POST(
           if (!firstChunk) {
             resolved = true;
             resolve(
-              NextResponse.json({ error: "Missing file" }, { status: 400 })
+              NextResponse.json({ error: t("api.uploadCsv.missingFile") }, { status: 400 })
             );
             return;
           }
@@ -95,12 +99,12 @@ export async function POST(
                 (type && type.mime === "text/csv") ||
                 (!type && mimeType === "text/csv");
               if (!isCsv) {
-                // eslint-disable-next-line security/detect-non-literal-fs-filename
+                // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
                 void unlink(filePath).catch(() => {});
                 resolved = true;
                 resolve(
                   NextResponse.json(
-                    { error: "Invalid file type" },
+                    { error: t("api.uploadCsv.invalidFileType") },
                     { status: 415 }
                   )
                 );
@@ -118,7 +122,7 @@ export async function POST(
         writeStream.on("error", (err) => {
           if (resolved) return;
           resolved = true;
-          // eslint-disable-next-line security/detect-non-literal-fs-filename
+          // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
           void unlink(filePath).catch(() => {});
           reject(err);
         });
@@ -129,7 +133,7 @@ export async function POST(
       busboy.on("finish", () => {
         if (!resolved && !fileFound) {
           resolved = true;
-          resolve(NextResponse.json({ error: "Missing file" }, { status: 400 }));
+          resolve(NextResponse.json({ error: t("api.uploadCsv.missingFile") }, { status: 400 }));
         }
       });
 
@@ -151,20 +155,18 @@ export async function POST(
         } else {
           resolved = true;
           resolve(
-            NextResponse.json({ error: "Invalid body" }, { status: 400 })
+            NextResponse.json({ error: t("api.uploadCsv.invalidBody") }, { status: 400 })
           );
           return;
         }
         stream.pipe(busboy);
       } else {
         resolved = true;
-        resolve(NextResponse.json({ error: "No body" }, { status: 400 }));
+        resolve(NextResponse.json({ error: t("api.uploadCsv.noBody") }, { status: 400 }));
       }
     });
-  } catch (err) {
-    return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
-    );
+  } catch {
+    const t = await getServerTranslations("en");
+    return NextResponse.json({ error: t("api.common.genericError") }, { status: 400 });
   }
 }

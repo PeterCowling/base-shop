@@ -30,7 +30,7 @@ function filePath(shop: string): string {
 
 async function readDiscounts(shop: string): Promise<Discount[]> {
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-002: Path is derived from validateShopName() and resolveDataRoot(), preventing traversal and user-controlled injection.
     const buf = await fs.readFile(filePath(shop), "utf8");
     const parsed = JSON.parse(buf) as Discount[];
     return Array.isArray(parsed) ? parsed : [];

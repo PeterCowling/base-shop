@@ -64,7 +64,6 @@ export async function runWizard(
   // Ensure the first step is rendered
   await screen.findByRole("heading", { name: /shop details/i });
 
-  /* eslint-disable no-await-in-loop */
   for (let safety = 0; safety < 25; safety += 1) {
     const container = getActiveStepContainer();
     const headingEl = within(container).getByRole("heading", { level: 2 });
@@ -85,7 +84,6 @@ export async function runWizard(
       }
     });
   }
-  /* eslint-enable no-await-in-loop */
 }
 
 /* -------------------------------------------------------------------------- */

@@ -47,6 +47,7 @@ describe("inventory import route - json", () => {
       expect(res.status).toBe(200);
       const json = JSON.parse(text);
       expect(json.items).toEqual(expected);
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-201: test asserts JSON written to computed sandbox path
       const buf = await fs.readFile(
         path.join(dir, "data", "shops", "test", "inventory.json"),
         "utf8",

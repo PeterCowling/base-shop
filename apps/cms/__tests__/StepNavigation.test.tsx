@@ -5,11 +5,11 @@ import StepNavigation from "../src/app/cms/configurator/steps/StepNavigation";
 
 // Provide missing pointer APIs for Radix Select used in DeviceSelector
 beforeAll(() => {
-  // @ts-ignore
+  // @ts-expect-error - JSDOM lacks pointer capture API
   HTMLElement.prototype.hasPointerCapture = () => false;
-  // @ts-ignore
+  // @ts-expect-error - JSDOM lacks pointer capture API
   HTMLElement.prototype.setPointerCapture = () => {};
-  // @ts-ignore
+  // @ts-expect-error - JSDOM doesn't implement scrollIntoView in test env
   Element.prototype.scrollIntoView = () => {};
 });
 
@@ -69,4 +69,3 @@ describe("StepNavigation", () => {
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");
   });
 });
-

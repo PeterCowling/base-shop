@@ -5,7 +5,9 @@ import { getTrackingStatus as getShippingTrackingStatus } from "@acme/platform-c
 import { getTrackingStatus as getReturnTrackingStatus } from "@acme/platform-core/returnAuthorization";
 import type { RentalOrder } from "@acme/types";
 import { redirect } from "next/navigation";
-const t = (s: string) => s;
+import type { Locale } from "@acme/i18n/locales";
+import type { TranslatableText } from "@acme/types/i18n";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import StartReturnButton from "./StartReturnButton";
 import type { OrderStep } from "../organisms/OrderTrackingTimeline";
 import { OrderTrackingTimeline } from "../organisms/OrderTrackingTimeline";
@@ -14,9 +16,11 @@ export interface OrdersPageProps {
   /** ID of the current shop for fetching orders */
   shopId: string;
   /** Optional heading override */
-  title?: string;
+  title?: TranslatableText;
   /** Destination to return to after login */
   callbackUrl?: string;
+  /** Locale for resolving inline values */
+  locale?: Locale;
   /** Whether returns are enabled */
   returnsEnabled?: boolean;
   /** Optional return policy link */
@@ -27,7 +31,7 @@ export interface OrdersPageProps {
   trackingProviders?: string[];
 }
 
-export const metadata = { title: t("Orders") };
+export const metadata = { title: "Orders" };
 
 export default async function OrdersPage({
   shopId,
@@ -37,7 +41,13 @@ export default async function OrdersPage({
   returnPolicyUrl,
   trackingEnabled = true,
   trackingProviders = [],
+  locale = "en",
 }: OrdersPageProps) {
+  const t = await getServerTranslations(locale);
+  const tf = (key: string, fallback: string) => {
+    const v = t(key);
+    return v === key ? fallback : v;
+  };
   const session = await getCustomerSession();
   if (!session) {
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
@@ -98,7 +108,7 @@ export default async function OrdersPage({
 
   return (
     <>
-      <h1 className="p-6 text-xl">{title ?? t("Orders")}</h1>
+      <h1 className="p-6 text-xl">{title ? (typeof title === "string" ? title : title.type === "key" ? t(title.key) : ((title.value as Partial<Record<Locale, string>>)?.[locale] ?? tf("account.orders.title", "Orders"))) : tf("account.orders.title", "Orders")}</h1>
       {returnsEnabled && returnPolicyUrl && (
         <p className="p-6 pt-0">
           <a

@@ -39,8 +39,8 @@ function isA11yAttr(attrName: string | undefined): boolean {
   if (!attrName) return false;
   return (
     attrName.startsWith("aria-") ||
-    attrName === "title" ||
     attrName === "alt" ||
+    attrName === "title" ||
     attrName === "ariaLabel" ||
     attrName === "ariaDescription"
   );
@@ -68,9 +68,10 @@ function hasExemptComment(context: Rule.RuleContext, node: any): boolean {
   const sc = (context as any).sourceCode || context.getSourceCode();
   const all = sc.getAllComments?.() ?? [];
   const startLine = node.loc?.start?.line ?? 0;
+  const EXEMPT_COMMENT_RE = /i18n-exempt(?:\s+file)?\s*--\s*([A-Z]{2,}-\d+)(?:[^\S\r\n]+ttl=\d{4}-\d{2}-\d{2})?/;
   return all.some((c: any) => {
     const text = String(c.value || "");
-    if (!/i18n-exempt/.test(text)) return false;
+    if (!EXEMPT_COMMENT_RE.test(text)) return false;
     const endLine = c.loc?.end?.line ?? 0;
     return endLine === startLine || endLine === startLine - 1;
   });
@@ -79,32 +80,44 @@ function hasExemptComment(context: Rule.RuleContext, node: any): boolean {
 function isTrivial(text: string): boolean {
   const t = text.trim();
   if (!t) return true;
+  // Allow short microcopy-like fragments conservatively
   if (t.length <= 12) return true;
   const lower = t.toLowerCase();
   if (MICROCOPY.has(lower)) return true;
   // Very short with punctuation-only endings
-  if (/^[\p{L}\p{N} ,.!?'"-]{1,12}$/u.test(t)) return true;
+  if (/^[\p{L}\p{N} ,.!?'"-]{1,4}$/u.test(t)) return true;
   return false;
 }
 
 const rule: Rule.RuleModule = {
   meta: {
     type: "problem",
-    docs: { description: "Disallow hardcoded copy; require i18n wrappers.", recommended: false },
+    docs: {
+      description: "Disallow hardcoded copy; require i18n wrappers.",
+      recommended: false,
+      // Repo doc with concrete steps for adding keys and wiring t()
+      url: "docs/i18n/add-translation-keys.md",
+    },
     schema: [],
     messages: {
-      hardcodedCopy: "Hardcoded copy detected. Wrap in t()/useTranslations() or add // i18n-exempt with justification.",
+      hardcodedCopy:
+        "Hardcoded copy detected. Move text into packages/i18n/src/<locale>.json and reference via t('key'). See docs/i18n/add-translation-keys.md. Exemptions are tech debt and only for non‑UI strings — they must include a ticket (// i18n-exempt -- ABC-123 [ttl=YYYY-MM-DD]) or they will be ignored.",
     },
   },
   create(context) {
     const sc = (context as any).sourceCode || context.getSourceCode();
-    const fileExempt = (sc.getAllComments?.() ?? []).some((c: any) => /i18n-exempt\s+file/.test(String(c.value || "")));
+    const EXEMPT_FILE_RE = /i18n-exempt\s+file\s*--\s*([A-Z]{2,}-\d+)(?:[^\S\r\n]+ttl=\d{4}-\d{2}-\d{2})?/;
+    const fileExempt = (sc.getAllComments?.() ?? []).some((c: any) => EXEMPT_FILE_RE.test(String(c.value || "")));
     return {
       Literal(node: any) {
         if (fileExempt) return;
         if (typeof node.value !== "string") return;
         // Ignore module specifiers in import/export declarations
         const p = node.parent;
+        // Ignore directive prologues like "use client", "use server", "use strict"
+        if (p?.type === "ExpressionStatement" && (p as any).directive) {
+          return;
+        }
         if (
           p?.type === "ImportDeclaration" ||
           p?.type === "ExportAllDeclaration" ||
@@ -118,6 +131,8 @@ const rule: Rule.RuleModule = {
         if (parent?.type === "JSXAttribute") {
           const name = parent.name?.name as string | undefined;
           if (isA11yAttr(name)) return;
+          // Non-user-facing attribute literals
+          if (name === "role") return;
           if (name === "href") return;
           if (name === "viewBox" || name === "width" || name === "height" || name === "d" || name === "fill") return;
           if (name === "rel") return;

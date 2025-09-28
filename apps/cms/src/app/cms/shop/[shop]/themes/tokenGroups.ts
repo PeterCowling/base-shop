@@ -1,6 +1,5 @@
-/* eslint-disable ds/no-hardcoded-copy -- CMS-only group labels; values are surfaced to authenticated admins and will be mapped to translations at display sites later */
 export const tokenGroups: Record<string, string[]> = {
-  "Surfaces & Text": [
+  surfacesText: [
     "--color-bg-1",
     "--color-bg-2",
     "--color-bg-3",
@@ -16,7 +15,7 @@ export const tokenGroups: Record<string, string[]> = {
     // Keep legacy keys at end for continuity
     "--color-bg",
   ],
-  "Primary & Accent": [
+  primaryAccent: [
     "--color-primary-soft",
     "--color-primary",
     "--color-primary-hover",
@@ -26,7 +25,7 @@ export const tokenGroups: Record<string, string[]> = {
     "--color-accent",
     "--color-accent-fg",
   ],
-  "Status colors": [
+  statusColors: [
     "--color-success-soft",
     "--color-success",
     "--color-success-fg",
@@ -40,17 +39,16 @@ export const tokenGroups: Record<string, string[]> = {
     "--color-danger",
     "--color-danger-fg",
   ],
-  "Interaction": [
+  interaction: [
     "--color-focus-ring",
     "--color-selection",
     "--color-highlight",
     "--color-link",
   ],
-  "Overlays": [
+  overlays: [
     "--overlay-scrim-1",
     "--overlay-scrim-2",
   ],
 };
 
 export type TokenGroups = typeof tokenGroups;
-/* eslint-enable ds/no-hardcoded-copy */

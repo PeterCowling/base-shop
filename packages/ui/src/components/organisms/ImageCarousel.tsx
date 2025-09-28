@@ -1,4 +1,4 @@
-"use client";
+"use client"; // i18n-exempt -- PB-000 [ttl=2025-12-31]: Next.js directive string
 
 import * as React from "react";
 import Image from "next/image";
@@ -15,9 +15,9 @@ export function ImageCarousel({ images, className, ...props }: ImageCarouselProp
   return (
     <div className={cn("overflow-hidden", className)} {...props}>
       <Inline wrap={false} className="snap-x overflow-x-auto pb-4">
-        {images.map((img, i) => (
+        {images.map((img) => (
           <Image
-            key={i}
+            key={img.src}
             src={img.src}
             alt={img.alt ?? ""
             }

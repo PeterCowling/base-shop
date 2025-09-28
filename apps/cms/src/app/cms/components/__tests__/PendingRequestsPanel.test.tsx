@@ -9,38 +9,40 @@ jest.mock("@cms/actions/accounts.server", () => ({
 
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
-  return {
-    Card: ({ children, ...props }: any) => (
-      <div data-testid="card" {...props}>
-        {children}
-      </div>
-    ),
-    CardContent: ({ children, ...props }: any) => (
-      <div data-testid="card-content" {...props}>
-        {children}
-      </div>
-    ),
-    Button: React.forwardRef((
-      { children, ...props }: any,
-      ref: any,
-    ) => (
+
+  const Button = React.forwardRef(
+    ({ children, ...props }: any, ref: any) => (
       <button ref={ref} {...props}>
         {children}
       </button>
-    )),
-    Checkbox: ({ onCheckedChange, ...props }: any) => (
-      <input
-        type="checkbox"
-        onChange={(event: any) => onCheckedChange?.(event.target.checked)}
-        {...props}
-      />
     ),
-    Tag: ({ children, variant = "default", ...props }: any) => (
-      <span data-variant={variant} {...props}>
-        {children}
-      </span>
-    ),
-  };
+  );
+  Button.displayName = "MockButton";
+
+  const Card = ({ children, ...props }: any) => (
+    <div data-testid="card" {...props}>
+      {children}
+    </div>
+  );
+  const CardContent = ({ children, ...props }: any) => (
+    <div data-testid="card-content" {...props}>
+      {children}
+    </div>
+  );
+  const Checkbox = ({ onCheckedChange, ...props }: any) => (
+    <input
+      type="checkbox"
+      onChange={(event: any) => onCheckedChange?.(event.target.checked)}
+      {...props}
+    />
+  );
+  const Tag = ({ children, variant = "default", ...props }: any) => (
+    <span data-variant={variant} {...props}>
+      {children}
+    </span>
+  );
+
+  return { Card, CardContent, Button, Checkbox, Tag };
 });
 
 jest.mock("@/components/atoms", () => ({

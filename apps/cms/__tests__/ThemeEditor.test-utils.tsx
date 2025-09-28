@@ -92,14 +92,14 @@ export const mockUpdateShop = updateShop as jest.Mock;
 export const mockSavePreset = savePreset as jest.Mock;
 export const mockDeletePreset = deletePreset as jest.Mock;
 
-export interface RenderOptions
-  extends Partial<ComponentProps<typeof ThemeEditor>> {}
+// Use a type alias rather than an empty interface extending a supertype
+export type RenderOptions = Partial<ComponentProps<typeof ThemeEditor>>;
 
 export function renderThemeEditor(options: RenderOptions = {}) {
   const defaultProps: ComponentProps<typeof ThemeEditor> = {
     shop: "test",
     themes: ["base"],
-    tokensByTheme: { base: { "--color-bg": "#ffffff" } },
+    tokensByTheme: { base: { "--color-bg": "#ffffff" } }, // eslint-disable-line ds/no-raw-color -- TEST: fixture uses literal color value
     initialTheme: "base",
     initialOverrides: {},
     presets: [],

@@ -275,6 +275,7 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
       data-pb-lottie-loop={lottieLoop ? '1' : undefined}
       data-pb-lottie-speed={typeof lottieSpeed === 'number' ? String(lottieSpeed) : undefined}
       data-pb-lottie-trigger={lottieTrigger || undefined}
+      /* eslint-disable-next-line react/forbid-dom-props -- PB-2419: wrapper exposes dynamic CSS vars and grid overrides during builder preview */
       style={wrapStyleVars as unknown as CSSProperties}
     >
       {needsHover ? (
@@ -282,7 +283,10 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
           {rendered}
         </div>
       ) : staticTransform ? (
-        <div style={{ transform: staticTransform } as CSSProperties}>{rendered}</div>
+        <>
+          {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419: apply computed transform from style overrides */}
+          <div style={{ transform: staticTransform } as CSSProperties}>{rendered}</div>
+        </>
       ) : (
         rendered
       )}

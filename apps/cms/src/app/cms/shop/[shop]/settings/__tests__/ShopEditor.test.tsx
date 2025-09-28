@@ -37,7 +37,7 @@ jest.mock(
     ),
     SelectContent: ({ children, ...props }: any) => <div {...props}>{children}</div>,
     SelectItem: ({ children, value, ...props }: any) => (
-      <div role="option" data-value={value} {...props}>
+      <div role="option" aria-selected={false} data-value={value} {...props}>
         {children}
       </div>
     ),
@@ -124,8 +124,8 @@ describe("ShopEditor", () => {
       name: "Test Shop",
       themeId: "classic",
       catalogFilters: ["color"],
-      themeDefaults: { "color-primary": "#fff" },
-      themeOverrides: { "color-primary": "#000" },
+      themeDefaults: { "color-primary": "var(--color-primary)" },
+      themeOverrides: { "color-primary": "var(--color-primary-fg)" },
       luxuryFeatures: {
         blog: false,
         contentMerchandising: false,
@@ -166,8 +166,8 @@ describe("ShopEditor", () => {
       tokenRows: [
         {
           token: "color-primary",
-          defaultValue: "#fff",
-          overrideValue: "#000",
+          defaultValue: "var(--color-primary)",
+          overrideValue: "var(--color-primary-fg)",
           hasOverride: true,
           changed: true,
         },

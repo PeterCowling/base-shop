@@ -1,0 +1,7 @@
+{
+  "posts": [
+    { "title": "Spring Trends", "excerpt": "Fresh looks for the season.", "url": "/blog/spring", "shopUrl": "/collections/new" },
+    { "title": "Sustainable Picks", "excerpt": "Eco-friendly favorites.", "url": "/blog/eco" }
+  ]
+}
+

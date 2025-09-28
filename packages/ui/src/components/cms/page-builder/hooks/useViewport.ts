@@ -33,7 +33,7 @@ const useViewport = (device: DevicePreset) => {
     () => ({
       desktop: "", // i18n-exempt -- PB-235: class name
       tablet: "rounded-xl border border-muted-foreground/40 p-2", // i18n-exempt -- PB-235: class name
-      mobile: "rounded-[2rem] border border-muted-foreground/40 p-4", // i18n-exempt -- PB-235: class name
+      mobile: "rounded-4xl border border-muted-foreground/40 p-4", // i18n-exempt -- PB-235: class name
     }),
     []
   );

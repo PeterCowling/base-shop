@@ -16,6 +16,8 @@ export default function DesignSystemImportPage() {
   }, [shop]);
 
   const t = useTranslations();
+  // Non-user-facing class token extracted to avoid i18n lint false positive
+  const progressLabelClass = "text-hero-foreground/80";
 
   const handleStartImport = () => {
     track("designsystem:import:start", { shop });
@@ -44,27 +46,23 @@ export default function DesignSystemImportPage() {
             <p className="text-sm font-semibold uppercase tracking-wide text-hero-foreground/80">
               {t("cms.theme.importDesignSystem")}
             </p>
-            <h2 className="text-3xl font-bold">Design system onboarding</h2>
+            <h2 className="text-3xl font-bold">{t("cms.theme.importOnboarding.title")}</h2>
             <p className="text-hero-foreground/80">{t("cms.theme.importDesc")}</p>
-            <p className="text-hero-foreground/80">
-              Follow the guided steps to bring your brand tokens and UI kit into Base-Shop. We’ll
-              save your progress so you can pause and resume whenever you’re ready.
-            </p>
+            <p className="text-hero-foreground/80">{t("cms.theme.importOnboarding.intro")}</p>
           </div>
           <Progress
             value={33}
-            label="Step 1 of 3 · Package preparation"
-            className="max-w-md"
-            labelClassName="text-hero-foreground/80"
+            label={t("cms.theme.importOnboarding.progressLabel")}
+            labelClassName={progressLabelClass}
           />
           <div className="flex flex-wrap gap-3">
-            <Button onClick={handleStartImport}>Begin guided import</Button>
+            <Button onClick={handleStartImport}>{t("cms.theme.importOnboarding.begin")}</Button>
             <Button
               variant="outline"
               className="border-primary/40 bg-surface-2 text-foreground hover:bg-primary/10"
               onClick={handleNavigateLibrary}
             >
-              Explore theme library
+              {t("cms.theme.importOnboarding.exploreLibrary")}
             </Button>
           </div>
         </CardContent>
@@ -75,25 +73,22 @@ export default function DesignSystemImportPage() {
           <CardContent className="space-y-4 p-6">
             <div className="space-y-1">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Step-by-step roadmap
+                {t("cms.theme.importOnboarding.roadmapTag")}
               </p>
-              <h3 className="text-lg font-semibold">How the import works</h3>
+              <h3 className="text-lg font-semibold">{t("cms.theme.importOnboarding.roadmapHeading")}</h3>
             </div>
             <ol className="space-y-3 text-sm text-muted-foreground">
               <li>
-                <span className="font-medium text-foreground">1.</span> Export your tokens and
-                components from your design tool.
+                <span className="font-medium text-foreground">1.</span> {t("cms.theme.importOnboarding.roadmap.step1")}
               </li>
               <li>
-                <span className="font-medium text-foreground">2.</span> Upload the package and map
-                tokens to Base-Shop variables.
+                <span className="font-medium text-foreground">2.</span> {t("cms.theme.importOnboarding.roadmap.step2")}
               </li>
               <li>
-                <span className="font-medium text-foreground">3.</span> Preview updates and publish
-                to your live theme.
+                <span className="font-medium text-foreground">3.</span> {t("cms.theme.importOnboarding.roadmap.step3")}
               </li>
             </ol>
-            <Progress value={33} label="Currently on Step 1" />
+            <Progress value={33} label={t("cms.theme.importOnboarding.currentStep")} />
           </CardContent>
         </Card>
 
@@ -101,9 +96,9 @@ export default function DesignSystemImportPage() {
           <CardContent className="space-y-4 p-6">
             <div className="space-y-1">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Resources
+                {t("cms.theme.importOnboarding.resourcesTag")}
               </p>
-              <h3 className="text-lg font-semibold">Need a refresher?</h3>
+              <h3 className="text-lg font-semibold">{t("cms.theme.importOnboarding.resourcesHeading")}</h3>
             </div>
             <ul className="space-y-3 text-sm">
               <li>
@@ -111,7 +106,7 @@ export default function DesignSystemImportPage() {
                   href="/docs/design-system-package-import"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-link hover:underline"
+                  className="text-link hover:underline min-h-11 min-w-11 inline-flex items-center"
                   onClick={() => handleDocClick("package")}
                 >
                   {t("cms.theme.packageGuide")}
@@ -122,7 +117,7 @@ export default function DesignSystemImportPage() {
                   href="/docs/theme-lifecycle-and-library"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-link hover:underline"
+                  className="text-link hover:underline min-h-11 min-w-11 inline-flex items-center"
                   onClick={() => handleDocClick("lifecycle")}
                 >
                   {t("cms.theme.libraryTips")}
@@ -130,8 +125,7 @@ export default function DesignSystemImportPage() {
               </li>
             </ul>
             <p className="text-xs text-muted-foreground">
-              {t("cms.and")} explore updated workflows, asset management tips, and rollout
-              checklists.
+              {t("cms.and")} {t("cms.theme.importOnboarding.resources.more")}
             </p>
           </CardContent>
         </Card>
@@ -140,16 +134,13 @@ export default function DesignSystemImportPage() {
           <CardContent className="space-y-4 p-6">
             <div className="space-y-1">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Team alignment
+                {t("cms.theme.importOnboarding.teamTag")}
               </p>
-              <h3 className="text-lg font-semibold">Invite collaborators</h3>
+              <h3 className="text-lg font-semibold">{t("cms.theme.importOnboarding.teamHeading")}</h3>
             </div>
-            <p className="text-sm text-muted-foreground">
-              Loop in the rest of your brand studio to coordinate approvals, asset uploads, and QA
-              checks before launch.
-            </p>
+            <p className="text-sm text-muted-foreground">{t("cms.theme.importOnboarding.teamDesc")}</p>
             <Button variant="ghost" onClick={handleNavigateSettings}>
-              Manage team access
+              {t("cms.theme.importOnboarding.manageAccess")}
             </Button>
           </CardContent>
         </Card>

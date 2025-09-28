@@ -6,6 +6,7 @@ import type { MutableRefObject } from "react";
 import { Inline } from "@ui/components/atoms/primitives/Inline";
 import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
 import { useTranslations } from "@i18n/Translations";
+import clsx from "clsx";
 
 interface Props {
   name: string;
@@ -48,10 +49,10 @@ export default function TokenGroup({
         {name}
         <button
           type="button"
-          className="shrink-0 text-sm underline"
+          className="shrink-0 inline-flex items-center justify-center min-h-11 min-w-11 text-sm underline"
           onClick={handleGroupReset(tokens.map(([k]) => k))}
         >
-          {t("Reset")}
+          {t("actions.reset")}
         </button>
       </legend>
       <Inline className="mb-2" wrap gap={2}>
@@ -77,9 +78,16 @@ export default function TokenGroup({
                 type="button"
                 aria-label={k}
                 title={k}
-                className={`h-10 w-10 overflow-hidden rounded border border-border/10 p-0 ${
-                  hasOverride ? "ring-2 ring-warning" : ""
-                } ${selectedToken === k ? "ring-2 ring-primary" : ""}`}
+                className={clsx(
+                  "size-10",
+                  "overflow-hidden",
+                  "rounded",
+                  "border",
+                  "border-border/10",
+                  "p-0",
+                  hasOverride && ["ring-2", "ring-warning"],
+                  selectedToken === k && ["ring-2", "ring-primary"],
+                )}
                 onClick={() => onTokenSelect(k)}
               >
                 {hasOverride ? (
@@ -87,12 +95,12 @@ export default function TokenGroup({
                     <span
                       className="h-full w-1/2"
                       style={{ background: defaultHex }}
-                      title={String(t("Default"))}
+                      title={String(t("cms.theme.colorInput.defaultSwatchTitle"))}
                     />
                     <span
                       className="h-full w-1/2"
                       style={{ background: currentHex }}
-                      title={String(t("Custom"))}
+                      title={String(t("cms.theme.colorInput.customSwatchTitle"))}
                     />
                   </span>
                 ) : (

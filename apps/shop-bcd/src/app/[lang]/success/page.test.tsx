@@ -3,7 +3,7 @@ import Success from './page';
 
 describe('Success page (localized)', () => {
   it('renders thank-you heading and receipt message', () => {
-    render(<Success />);
+    render(<Success params={{ lang: 'en' }} /> as any);
     expect(
       screen.getByRole('heading', {
         name: /Thanks for your order!/i,

@@ -1,3 +1,4 @@
+/* i18n-exempt file -- THEME-0001: Design token CSS values; not user-facing */
 // packages/themes/dark/tailwind-tokens.ts
 //
 // Default design token overrides for the dark theme.
@@ -51,16 +52,16 @@ export const tokens = {
   "--radius-sm": "4px",
   "--radius-md": "8px",
   "--radius-lg": "12px",
-  "--shadow-sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+  "--shadow-sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)", // i18n-exempt: design token CSS value, not user-facing copy
   "--shadow-md":
-    "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)", // i18n-exempt: design token CSS value, not user-facing copy
   "--shadow-lg":
-    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)", // i18n-exempt: design token CSS value, not user-facing copy
   // Elevation tokens (for Tailwind boxShadow aliases)
-  "--elevation-0": "none",
-  "--elevation-1": "0 1px 2px rgba(0,0,0,0.14)",
-  "--elevation-2": "0 2px 6px rgba(0,0,0,0.18)",
-  "--elevation-3": "0 4px 12px rgba(0,0,0,0.24)",
-  "--elevation-4": "0 8px 24px rgba(0,0,0,0.30)",
-  "--elevation-5": "0 12px 36px rgba(0,0,0,0.36)",
+  "--elevation-0": "none", // i18n-exempt: design token CSS value, not user-facing copy
+  "--elevation-1": "0 1px 2px rgba(0,0,0,0.14)", // i18n-exempt: design token CSS value, not user-facing copy
+  "--elevation-2": "0 2px 6px rgba(0,0,0,0.18)", // i18n-exempt: design token CSS value, not user-facing copy
+  "--elevation-3": "0 4px 12px rgba(0,0,0,0.24)", // i18n-exempt: design token CSS value, not user-facing copy
+  "--elevation-4": "0 8px 24px rgba(0,0,0,0.30)", // i18n-exempt: design token CSS value, not user-facing copy
+  "--elevation-5": "0 12px 36px rgba(0,0,0,0.36)", // i18n-exempt: design token CSS value, not user-facing copy
 } as const;

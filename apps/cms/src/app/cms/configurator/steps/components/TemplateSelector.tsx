@@ -18,6 +18,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@ui/components/atoms";
+import { Inline } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
 
 interface Template {
@@ -37,20 +39,26 @@ export default function TemplateSelector({
   layout,
   onSelect,
 }: Props): React.JSX.Element {
+  // i18n-exempt: testing identifiers only; not user-facing copy
+  const CY_PRODUCT_LAYOUT = "product-layout" as const;
+  const CY_TEMPLATE_BLANK = "template-blank" as const;
+  const CY_CANCEL_TEMPLATE = "cancel-template" as const;
+  const CY_CONFIRM_TEMPLATE = "confirm-template" as const;
   const [selectOpen, setSelectOpen] = useState(false);
   const [pendingTemplate, setPendingTemplate] = useState<Template | null>(null);
+  const t = useTranslations();
 
   return (
     <>
       <Select
-        data-cy="product-layout"
+        data-cy={CY_PRODUCT_LAYOUT}
         value={layout}
         open={selectOpen}
         onOpenChange={setSelectOpen}
         onValueChange={() => {}}
       >
         <SelectTrigger className="w-full">
-          <SelectValue placeholder="Select template" />
+          <SelectValue placeholder={String(t("cms.templates.selectTemplate"))} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem
@@ -62,8 +70,12 @@ export default function TemplateSelector({
               setPendingTemplate({ name: "blank", components: [], preview: "" });
             }}
           >
-            <button type="button" data-cy="template-blank" className="w-full text-start">
-              Blank
+            <button
+              type="button"
+              data-cy={CY_TEMPLATE_BLANK}
+              className="w-full text-start min-h-11 min-w-11"
+            >
+              {t("cms.templates.blank")}
             </button>
           </SelectItem>
           {pageTemplates.map((t) => (
@@ -80,9 +92,9 @@ export default function TemplateSelector({
               <button
                 type="button"
                 data-cy={`template-${t.name.replace(/\s+/g, '-')}`}
-                className="w-full text-start"
+                className="w-full text-start min-h-11 min-w-11"
               >
-                <div className="flex items-center gap-2">
+                <Inline gap={2} alignY="center">
                   {t.preview && (
                     <Image
                       src={t.preview}
@@ -93,7 +105,7 @@ export default function TemplateSelector({
                     />
                   )}
                   {t.name}
-                </div>
+                </Inline>
               </button>
             </SelectItem>
           ))}
@@ -105,14 +117,15 @@ export default function TemplateSelector({
           if (!o) setPendingTemplate(null);
         }}
       >
-        <DialogContent className="max-w-3xl">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              Use
-              {pendingTemplate?.name === "blank"
-                ? " Blank"
-                : ` ${pendingTemplate?.name}`}
-              {" "}template?
+              {t("cms.templates.useTemplateQuestion", {
+                template:
+                  pendingTemplate?.name === "blank"
+                    ? t("cms.templates.blank")
+                    : pendingTemplate?.name,
+              })}
             </DialogTitle>
           </DialogHeader>
           {pendingTemplate?.preview && (
@@ -127,14 +140,14 @@ export default function TemplateSelector({
           )}
           <DialogFooter>
             <Button
-              data-cy="cancel-template"
+              data-cy={CY_CANCEL_TEMPLATE}
               variant="outline"
               onClick={() => setPendingTemplate(null)}
             >
-              Cancel
+              {t("common.cancel")}
             </Button>
             <Button
-              data-cy="confirm-template"
+              data-cy={CY_CONFIRM_TEMPLATE}
               onClick={() => {
                 if (!pendingTemplate) return;
                 const layout =
@@ -147,7 +160,7 @@ export default function TemplateSelector({
                 setPendingTemplate(null);
               }}
             >
-              Confirm
+              {t("common.confirm")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -155,4 +168,3 @@ export default function TemplateSelector({
     </>
   );
 }
-

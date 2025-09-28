@@ -27,6 +27,8 @@
       "@ui": ["./src/index", "./dist/index.d.ts"],
       "@ui/*": ["./src/*", "./dist/*"],
       "@auth": ["types-compat/auth"],
+      "@i18n": ["../i18n/src/index", "../i18n/dist/index.d.ts"],
+      "@i18n/*": ["../i18n/src/*", "../i18n/dist/*"],
       "@acme/i18n": ["../i18n/src/index", "../i18n/dist/index.d.ts"],
       "@acme/i18n/*": ["../i18n/src/*", "../i18n/dist/*"],
       "@acme/telemetry": [

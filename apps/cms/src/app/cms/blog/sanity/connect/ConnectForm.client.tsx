@@ -10,6 +10,7 @@ import CredentialsStep from "./CredentialsStep";
 import DatasetStep from "./DatasetStep";
 import ConfirmationStep from "./ConfirmationStep";
 import { useSanityConnection } from "./useSanityConnection";
+import { useTranslations } from "@acme/i18n";
 
 interface FormState {
   message?: string;
@@ -24,14 +25,15 @@ interface Props {
 
 const initialState: FormState = { message: "", error: "", errorCode: "" };
 
-const errorMessages: Record<string, string> = {
-  INVALID_CREDENTIALS: "Invalid Sanity credentials",
-  DATASET_CREATE_ERROR: "Failed to create dataset",
-  DATASET_LIST_ERROR: "Failed to list datasets",
-  SCHEMA_UPLOAD_ERROR: "Failed to upload schema",
-  UNKNOWN_ERROR: "An unknown error occurred",
+const ERROR_MESSAGE_KEYS: Record<string, string> = {
+  INVALID_CREDENTIALS: "cms.sanity.connect.errors.INVALID_CREDENTIALS",
+  DATASET_CREATE_ERROR: "cms.sanity.connect.errors.DATASET_CREATE_ERROR",
+  DATASET_LIST_ERROR: "cms.sanity.connect.errors.DATASET_LIST_ERROR",
+  SCHEMA_UPLOAD_ERROR: "cms.sanity.connect.errors.SCHEMA_UPLOAD_ERROR",
+  UNKNOWN_ERROR: "cms.sanity.connect.errors.UNKNOWN_ERROR",
 };
 export default function ConnectForm({ shopId, initial }: Props) {
+  const t = useTranslations();
   const {
     state,
     formAction,
@@ -69,10 +71,14 @@ export default function ConnectForm({ shopId, initial }: Props) {
   const message = state.message || disconnectState.message;
   const errorCode = state.errorCode || disconnectState.errorCode;
   const rawError = state.error || disconnectState.error;
-  const error = errorCode ? errorMessages[errorCode] ?? rawError : rawError;
+  const error = errorCode
+    ? (ERROR_MESSAGE_KEYS[errorCode]
+        ? (t(ERROR_MESSAGE_KEYS[errorCode]) as string)
+        : rawError)
+    : rawError;
 
   return (
-    <div className="space-y-4 max-w-md">
+    <div className="space-y-4">
       {step === 1 && (
         <CredentialsStep
           projectId={projectId}
@@ -109,7 +115,7 @@ export default function ConnectForm({ shopId, initial }: Props) {
       {initial && (
         <form action={disconnectFormAction}>
           <Button type="submit" variant="destructive">
-            Disconnect
+            {t("cms.sanity.connect.actions.disconnect")}
           </Button>
         </form>
       )}

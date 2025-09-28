@@ -1,0 +1,10 @@
+{
+  "initial": [
+    { "id": "green-sneaker", "slug": "green-sneaker", "title": "Green Sneaker", "price": 99 },
+    { "id": "blue-shirt", "slug": "blue-shirt", "title": "Blue Shirt", "price": 39 }
+  ],
+  "params": { "slug": "demo" },
+  "paginationMode": "loadMore",
+  "pageSize": 12
+}
+

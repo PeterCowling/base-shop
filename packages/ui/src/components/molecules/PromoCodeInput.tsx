@@ -1,3 +1,4 @@
+/* i18n-exempt file -- UI-000: Non-user-facing literals (class names). All visible text uses i18n keys. */
 "use client";
 import * as React from "react";
 import { cn } from "../../utils/style";
@@ -26,17 +27,20 @@ export const PromoCodeInput = React.forwardRef<
     <form
       ref={ref}
       onSubmit={handleSubmit}
-      className={cn("flex items-center gap-2", /* i18n-exempt: class names */ className)}
+      className={cn(
+        "flex items-center gap-2", /* i18n-exempt -- UI-000: class names */
+        className
+      )}
       {...props}
-    >
+      >
       <Input
         value={code}
         onChange={(e) => setCode(e.target.value)}
-        placeholder={t("Promo code") as string}
-        className="flex-1"
+        placeholder={t("promo.code.placeholder") as string}
+        className="flex-1" /* i18n-exempt -- UI-000: class names */
       />
       <Button type="submit" disabled={!code || loading}>
-        {loading ? (t("Applying...") as string) : (t("Apply") as string)}
+        {loading ? (t("actions.applying") as string) : (t("actions.apply") as string)}
       </Button>
     </form>
   );

@@ -1,3 +1,6 @@
+/*
+  eslint-disable security/detect-non-literal-fs-filename -- SEC-TEST-002: Test builds file paths inside a temp directory with known names; no user input or traversal risk.
+*/
 import { NextRequest } from "next/server";
 import fs from "fs";
 import os from "os";

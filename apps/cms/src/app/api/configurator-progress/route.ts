@@ -3,6 +3,8 @@ import "@acme/zod-utils/initZod";
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+// Use the server translation loader; alias to avoid React Hooks lint
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations";
 import { promises as fs } from "fs";
 import * as fsSync from "fs";
 import { writeJsonFile } from "@/lib/server/jsonIO";
@@ -47,13 +49,13 @@ function resolveFile(): string {
   while (true) {
     const candidateDir = path.join(dir, "data", "cms");
     // Probes a known workspace directory; no user input involved
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Probing known workspace dir; no user input
     if (fsSync.existsSync(candidateDir)) {
       const newFile = path.join(candidateDir, "configurator-progress.json");
       const oldFile = path.join(candidateDir, "wizard-progress.json");
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Migrating known file names within controlled data dir
       if (!fsSync.existsSync(newFile) && fsSync.existsSync(oldFile)) {
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Rename between two fixed filenames in same dir
         fsSync.renameSync(oldFile, newFile);
       }
       return newFile;
@@ -75,7 +77,7 @@ const FILE = resolveFile();
 
 async function readDb(): Promise<DB> {
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Reading a path derived from cwd and constants
     const buf = await fs.readFile(FILE, "utf8");
     const parsed = JSON.parse(buf) as DB;
     if (parsed && typeof parsed === "object") return parsed;
@@ -88,20 +90,21 @@ async function readDb(): Promise<DB> {
 async function writeDb(db: unknown): Promise<void> {
   const parsed = dbSchema.safeParse(db ?? {});
   if (!parsed.success) {
-    throw new TypeError("Invalid DB value");
+    // User-facing error should be translated by caller
+    throw new TypeError("api.common.invalidRequest");
   }
   const payload = parsed.data;
   const json = JSON.stringify(payload, null, 2);
   const tmp = `${FILE}.${Date.now()}.tmp`;
   try {
-    console.log("[configurator-progress] write", {
+    console.log("[configurator-progress] write", { // i18n-exempt -- CMS-2134 [ttl=2026-03-31]
       file: FILE,
       tmp,
       bytes: Buffer.byteLength(json, "utf8"),
     });
   } catch {}
   await writeJsonFile(tmp, payload);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Atomic rename of temp file to fixed target
   await fs.rename(tmp, FILE);
 }
 
@@ -123,13 +126,15 @@ export async function PUT(req: Request): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as { id?: string })?.id;
   if (!session || !userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const t = await getTranslations("en");
+    return NextResponse.json({ error: t("api.common.unauthorized") }, { status: 401 });
   }
   try {
     const body = await req.json().catch(() => ({}));
     const parsed = putBodySchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+      const t = await getTranslations("en");
+      return NextResponse.json({ error: t("api.common.invalidRequest") }, { status: 400 });
     }
     const { stepId, data, completed } = parsed.data;
     const db = await readDb();
@@ -155,13 +160,9 @@ export async function PUT(req: Request): Promise<NextResponse> {
     await writeDb(db);
     return NextResponse.json({ success: true });
   } catch (err) {
-    if (err instanceof TypeError) {
-      return NextResponse.json({ error: err.message }, { status: 500 });
-    }
-    return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
-    );
+    const t = await getTranslations("en");
+    const key = err instanceof TypeError ? err.message : "api.common.invalidRequest";
+    return NextResponse.json({ error: t(key) }, { status: 400 });
   }
 }
 
@@ -169,13 +170,15 @@ export async function PATCH(req: Request): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as { id?: string })?.id;
   if (!session || !userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const t = await getTranslations("en");
+    return NextResponse.json({ error: t("api.common.unauthorized") }, { status: 401 });
   }
   try {
     const body = await req.json().catch(() => ({}));
     const parsed = patchBodySchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+      const t = await getTranslations("en");
+      return NextResponse.json({ error: t("api.common.invalidRequest") }, { status: 400 });
     }
     const { stepId, completed } = parsed.data;
     const db = await readDb();
@@ -191,12 +194,8 @@ export async function PATCH(req: Request): Promise<NextResponse> {
     await writeDb(db);
     return NextResponse.json({ success: true });
   } catch (err) {
-    if (err instanceof TypeError) {
-      return NextResponse.json({ error: err.message }, { status: 500 });
-    }
-    return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
-    );
+    const t = await getTranslations("en");
+    const key = err instanceof TypeError ? err.message : "api.common.invalidRequest";
+    return NextResponse.json({ error: t(key) }, { status: 400 });
   }
 }

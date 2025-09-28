@@ -2,7 +2,12 @@
   {
     "id": "home",
     "slug": "",
-    "title": "Home",
+    "title": {
+      "type": "inline",
+      "value": {
+        "en": "Home"
+      }
+    },
     "components": [],
     "status": "draft",
     "updatedAt": "1970-01-01T00:00:00.000Z"

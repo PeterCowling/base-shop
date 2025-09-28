@@ -1,8 +1,5 @@
 import type { RefObject } from "react";
 import type { Action } from "./state";
-// i18n-exempt — editor-only live message
-/* i18n-exempt */
-const t = (s: string) => s;
 
 type Args = {
   locked: boolean;
@@ -18,6 +15,7 @@ type Args = {
   componentId: string;
   dispatch: React.Dispatch<Action>;
   viewport: "desktop" | "tablet" | "mobile";
+  t?: (key: string, vars?: Record<string, unknown>) => string;
 };
 
 export default function buildBlockKeyDownHandler({
@@ -34,6 +32,7 @@ export default function buildBlockKeyDownHandler({
   componentId,
   dispatch,
   viewport: _viewport,
+  t,
 }: Args) {
   return (e: React.KeyboardEvent) => {
     if (locked || inlineEditing) return;
@@ -77,7 +76,7 @@ export default function buildBlockKeyDownHandler({
         const next = Math.max(0, Math.min(count - 1, curr + delta));
         if (next !== curr) {
           dispatch({ type: 'update', id: componentId, patch: { slotKey: String(next) } });
-          try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: t(`Moved to tab ${next + 1}`) })); } catch {}
+          try { window.dispatchEvent(new CustomEvent('pb-live-message', { detail: String(t ? t('pb.toast.movedToTab', { tab: next + 1 }) : `Moved to tab ${next + 1}`) })); } catch {}
         }
       }
     }

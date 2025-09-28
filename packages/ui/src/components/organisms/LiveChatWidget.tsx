@@ -1,4 +1,4 @@
-"use client";
+"use client"; // i18n-exempt -- PB-000 [ttl=2025-12-31]: Next.js directive string
 
 import * as React from "react";
 import { cn } from "../../utils/style";
@@ -10,6 +10,7 @@ import { Stack } from "../atoms/primitives/Stack";
 import { Inline } from "../atoms/primitives/Inline";
 
 interface ChatMessage {
+  id: number;
   sender: "user" | "bot";
   text: string;
 }
@@ -44,14 +45,15 @@ export function LiveChatWidget({
   const [open, setOpen] = React.useState(false);
   const [messages, setMessages] = React.useState<ChatMessage[]>([]);
   const [input, setInput] = React.useState("");
+  const nextId = React.useRef(0);
 
   const send = () => {
     const text = input.trim();
     if (!text) return;
     setMessages((m) => [
       ...m,
-      { sender: "user", text },
-      { sender: "bot", text: String(t("chat.autoReply")) },
+      { id: nextId.current++, sender: "user", text },
+      { id: nextId.current++, sender: "bot", text: String(t("chat.autoReply")) },
     ]);
     setInput("");
   };
@@ -70,7 +72,7 @@ export function LiveChatWidget({
       <DrawerTrigger asChild>
         <Button
           className={cn(
-            "fixed end-4 z-50 rounded-full shadow-elevation-3", // i18n-exempt with justification: CSS utility classes only
+            "fixed end-4 z-50 rounded-full shadow-elevation-3", // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
             bottomClass,
             className
           )}
@@ -84,25 +86,25 @@ export function LiveChatWidget({
         <OverlayScrim />
         <DrawerContent
         style={{ ...bottomStyle }}
-        side="right"
+        side="right" /* i18n-exempt -- PB-000 [ttl=2025-12-31]: UI enum value */
         width={widthProp}
-        className={cn("flex flex-col gap-4 border-border-2 p-6 shadow-elevation-3", bottomClass)} // i18n-exempt with justification: CSS utility classes only
-        data-token="--color-bg"
+        className={cn("flex flex-col gap-4 border-border-2 p-6 shadow-elevation-3", bottomClass)} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
+        data-token="--color-bg" /* i18n-exempt -- PB-000 [ttl=2025-12-31]: design token attribute */
       >
         <DrawerTitle className="text-lg font-semibold">{t("chat.title")}</DrawerTitle>
         <DrawerDescription className="sr-only">{t("chat.description")}</DrawerDescription>
         <Stack gap={2} className="overflow-y-auto py-2">{/* i18n-exempt: CSS utility classes only */}
-          {messages.map((m, i) => (
+          {messages.map((m) => (
             <div
-              key={i}
+              key={m.id}
               className={m.sender === "user" ? "self-end" : "self-start"}
             >
               <div
                 className={cn(
-                  "rounded px-3 py-1 text-sm", // i18n-exempt with justification: CSS utility classes only
+                  "rounded px-3 py-1 text-sm", // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
                   m.sender === "user"
-                    ? "bg-primary text-primary-foreground" // i18n-exempt with justification: CSS utility classes only
-                    : "bg-muted" // i18n-exempt with justification: CSS utility classes only
+                    ? "bg-primary text-primary-foreground" // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
+                    : "bg-muted" // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
                 )}
                 data-token={
                   m.sender === "user" ? "--color-primary" : "--color-muted"

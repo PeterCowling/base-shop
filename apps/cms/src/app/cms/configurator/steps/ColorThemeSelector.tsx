@@ -1,8 +1,11 @@
 "use client";
+/* i18n-exempt file -- DS-4287 CSS class tokens only [ttl=2026-01-01] */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { Grid, Inline } from "@ui/components/atoms/primitives";
 import type { TokenMap } from "../../wizard/tokenUtils";
 import data from "./color-themes.json";
+import { useTranslations } from "@acme/i18n";
 
 type ColorTheme = {
   id: string;
@@ -20,9 +23,10 @@ interface Props {
 }
 
 export default function ColorThemeSelector({ tokens, baseTokens, onChange, tagFilters }: Props) {
+  const t = useTranslations();
   const themes = useMemo(() => data as unknown as ColorTheme[], []);
 
-  const allTags = useMemo(() => {
+  const _allTags = useMemo(() => {
     const t = new Set<string>();
     themes.forEach((p) => (p.tags || []).forEach((tag) => t.add(tag)));
     return Array.from(t).sort();
@@ -58,30 +62,41 @@ export default function ColorThemeSelector({ tokens, baseTokens, onChange, tagFi
     const bg = palette["--color-bg"]; const fg = palette["--color-fg"];
     const primary = palette["--color-primary"]; const primaryFg = palette["--color-primary-fg"];
     const accent = palette["--color-accent"]; const muted = palette["--color-muted"];
-    const accentText = parseHslLightness(accent) > 60 ? "#000" : "#fff";
-    const mutedText = parseHslLightness(muted) > 50 ? "#000" : "#fff";
+    const accentTextToken = parseHslLightness(accent) > 60 ? "var(--color-fg)" : "var(--color-bg)";
+    const mutedTextToken = parseHslLightness(muted) > 50 ? "var(--color-fg)" : "var(--color-bg)";
     return (
       <div className="rounded border p-2">
-        <div className="mb-1 text-xs text-muted-foreground">{mode}</div>
+        <div className="mb-1 text-xs text-muted-foreground">
+          {mode === "Light" ? t("cms.builder.colorThemes.mode.light") : t("cms.builder.colorThemes.mode.dark")}
+        </div>
         <div className="space-y-2" style={{ backgroundColor: `hsl(${bg})`, color: `hsl(${fg})` }}>
           <div className="rounded border p-2" style={{ borderColor: `hsl(${muted})` }}>
-            <div className="text-sm font-medium">Card title</div>
-            <div className="text-xs opacity-80">Body text on surface</div>
-            <div className="mt-2 flex items-center gap-2">
-              <span className="rounded px-2 py-1 text-xs" style={{ backgroundColor: `hsl(${primary})`, color: `hsl(${primaryFg})` }}>Primary button</span>
-              <span className="rounded px-2 py-1 text-xs" style={{ backgroundColor: `hsl(${accent})`, color: accentText }}>Accent badge</span>
-              <span className="rounded px-2 py-1 text-xs" style={{ backgroundColor: `hsl(${muted})`, color: mutedText }}>Muted chip</span>
-            </div>
+            <div className="text-sm font-medium">{t("cms.builder.colorThemes.preview.cardTitle")}</div>
+            <div className="text-xs opacity-80">{t("cms.builder.colorThemes.preview.bodyText")}</div>
+            <Inline className="mt-2" gap={2} alignY="center">
+              <span className="rounded px-2 py-1 text-xs" style={{ backgroundColor: `hsl(${primary})`, color: `hsl(${primaryFg})` }}>{t("cms.builder.colorThemes.preview.primaryButton")}</span>
+              <span className="rounded px-2 py-1 text-xs" style={{ backgroundColor: `hsl(${accent})`, color: `hsl(${accentTextToken})` }}>{t("cms.builder.colorThemes.preview.accentBadge")}</span>
+              <span className="rounded px-2 py-1 text-xs" style={{ backgroundColor: `hsl(${muted})`, color: `hsl(${mutedTextToken})` }}>{t("cms.builder.colorThemes.preview.mutedChip")}</span>
+            </Inline>
           </div>
         </div>
-        <div className="mt-2 grid grid-cols-6 gap-1">
+        <Grid className="mt-2" cols={6} gap={1}>
           {[bg, fg, primary, primaryFg, accent, muted].map((c, i) => (
-            <div key={i} className="h-4 w-full rounded" style={{ backgroundColor: i === 1 ? `hsl(${c})` : `hsl(${c})`, border: i === 1 ? "1px solid #00000020" : undefined }} />
+            <div
+              key={i}
+              className="h-4 w-full rounded"
+              style={{
+                backgroundColor: `hsl(${c})`,
+                border: i === 1 ? "1px solid hsl(var(--color-fg) / 0.125)" : undefined,
+              }}
+            />
           ))}
-        </div>
-        <div className="mt-1 grid grid-cols-6 gap-1 text-[9px] text-muted-foreground">
-          {['bg','fg','primary','primary-fg','accent','muted'].map((l) => (<div key={l} className="text-center">{l}</div>))}
-        </div>
+        </Grid>
+        <Grid className="mt-1 text-xs text-muted-foreground" cols={6} gap={1}>
+          {["bg", "fg", "primary", "primary-fg", "accent", "muted"].map((l) => (
+            <div key={l} className="text-center">{t(`cms.builder.colorThemes.preview.legend.${l}` as const)}</div>
+          ))}
+        </Grid>
       </div>
     );
   };
@@ -104,43 +119,39 @@ export default function ColorThemeSelector({ tokens, baseTokens, onChange, tagFi
     [onChange, tokens, baseTokens]
   );
 
-  const swatch = (colors: Record<string, string>) => (
-    <div className="flex h-full w-full flex-wrap overflow-hidden rounded">
-      {Object.values(colors).slice(0, 4).map((c, i) => (
-        <span key={i} className="h-1/2 w-1/2" style={{ backgroundColor: `hsl(${c})` }} />
-      ))}
-    </div>
-  );
-
   return (
     <section className="space-y-3">
-      <h2 className="text-lg font-semibold">Select an Existing Theme</h2>
-      <div className="grid grid-cols-1 gap-3">
-        {filtered.map((t) => (
-          <div key={t.id} className={`rounded border p-3 ${isThemeSelected(t) ? "border-primary ring-1 ring-primary/40" : ""}`}>
-            <div className="mb-2 flex items-center justify-between gap-2">
-              <div className="truncate text-sm font-medium">{t.name}</div>
-              <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => applyTheme(t)}>
-                Use theme
+      <h2 className="text-lg font-semibold">{t("cms.builder.colorThemes.selectExistingTheme")}</h2>
+      <Grid cols={1} gap={3}>
+        {filtered.map((theme) => (
+          <div key={theme.id} className={`rounded border p-3 ${isThemeSelected(theme) ? "border-primary ring-1 ring-primary/40" : ""}`}>
+            <Inline className="mb-2" alignY="center" gap={2}>
+              <div className="truncate text-sm font-medium">{theme.name}</div>
+              <button
+                type="button"
+                className="min-h-12 min-w-12 rounded border px-3 text-xs"
+                onClick={() => applyTheme(theme)}
+              >
+                {t("cms.builder.colorThemes.useTheme")}
               </button>
-            </div>
-            {isThemeSelected(t) && (
-              <div className="mb-2 inline-block rounded-full border border-primary bg-primary/10 px-2 py-0.5 text-[10px] text-primary">Selected</div>
+            </Inline>
+            {isThemeSelected(theme) && (
+              <div className="mb-2 inline-block rounded-full border border-primary bg-primary/10 px-2 py-0.5 text-xs text-primary">{t("cms.builder.colorThemes.selected")}</div>
             )}
-            {t.tags && t.tags.length > 0 && (
-              <div className="mb-2 flex flex-wrap gap-1 text-[10px] text-muted-foreground">
-                {t.tags.map((tg) => (
+            {theme.tags && theme.tags.length > 0 && (
+              <Inline className="mb-2 text-xs text-muted-foreground" gap={1} wrap>
+                {theme.tags.map((tg) => (
                   <span key={tg} className="rounded border px-1">{tg}</span>
                 ))}
-              </div>
+              </Inline>
             )}
-            <div className="grid grid-cols-2 gap-2">
-              <UsagePreview mode="Light" palette={t.light} />
-              <UsagePreview mode="Dark" palette={t.dark} />
-            </div>
+            <Grid cols={2} gap={2}>
+              <UsagePreview mode="Light" palette={theme.light} />
+              <UsagePreview mode="Dark" palette={theme.dark} />
+            </Grid>
           </div>
         ))}
-      </div>
+      </Grid>
     </section>
   );
 }

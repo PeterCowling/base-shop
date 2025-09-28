@@ -14,7 +14,7 @@ export async function GET(
     const pages = await getPages(shop);
     const filtered = q
       ? pages.filter((p) => {
-          const title = (p.seo?.title as any)?.en || Object.values(p.seo?.title || {})[0] || "";
+          const title = p.seo?.title?.en ?? Object.values(p.seo?.title ?? {})[0] ?? "";
           return String(p.slug).toLowerCase().includes(q) || String(title).toLowerCase().includes(q);
         })
       : pages;

@@ -20,7 +20,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { DragHandleDots2Icon } from "@radix-ui/react-icons";
-import { Fragment, useState } from "react";
+import { Fragment, useState, forwardRef } from "react";
 import { ulid } from "ulid";
 import { Button, Input } from "../atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
@@ -52,6 +52,14 @@ export default function NavigationEditor({ items, onChange }: Props) {
     </div>
   );
 }
+
+// Wrap DOM node to satisfy react/forbid-dom-props for "style"
+const DraggableLi = forwardRef<HTMLLIElement, React.HTMLAttributes<HTMLLIElement>>(
+  ({ className, ...rest }, ref) => (
+    <li ref={ref} className={className} {...rest} />
+  )
+);
+DraggableLi.displayName = "DraggableLi";
 
 function NavList({
   items,
@@ -185,7 +193,7 @@ function SortableNavItem({
   };
 
   return (
-    <li
+    <DraggableLi
       ref={setNodeRef}
       style={style}
       className={"space-y-2" + (isDragging ? " opacity-50" : "")}
@@ -231,6 +239,6 @@ function SortableNavItem({
           level={level + 1}
         />
       )}
-    </li>
+    </DraggableLi>
   );
 }

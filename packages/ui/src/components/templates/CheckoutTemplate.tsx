@@ -1,4 +1,4 @@
-"use client";
+"use client"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: Next.js directive string
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { useTranslations } from "@acme/i18n";
@@ -28,12 +28,20 @@ export function CheckoutTemplate({
 }: CheckoutTemplateProps) {
   const t = useTranslations();
   const [step, setStep] = React.useState(initialStep);
-  const stepActive = "bg-primary border-primary text-primary-fg"; // i18n-exempt: style tokens
-  const stepDone = "bg-primary/80 border-primary/80 text-primary-fg"; // i18n-exempt: style tokens
-  const stepTodo = "bg-muted text-muted-foreground"; // i18n-exempt: style tokens
-  const circleBase = "mb-1 h-8 w-8 justify-center rounded-full border"; // i18n-exempt: style tokens
-  const primaryToken = "--color-primary"; // i18n-exempt: DS token literal
-  const mutedToken = "--color-muted"; // i18n-exempt: DS token literal
+  /* eslint-disable-next-line ds/no-hardcoded-copy -- PB-1234 [ttl=2026-01-31]: design tokens / class names */
+  const stepActive = "bg-primary border-primary text-primary-fg"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: style token literal
+  /* eslint-disable-next-line ds/no-hardcoded-copy -- PB-1234 [ttl=2026-01-31]: design tokens / class names */
+  const stepDone = "bg-primary/80 border-primary/80 text-primary-fg"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: style token literal
+  /* eslint-disable-next-line ds/no-hardcoded-copy -- PB-1234 [ttl=2026-01-31]: design tokens / class names */
+  const stepTodo = "bg-muted text-muted-foreground"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: style token literal
+  /* eslint-disable-next-line ds/no-hardcoded-copy -- PB-1234 [ttl=2026-01-31]: design tokens / class names */
+  const circleBase = "mb-1 h-8 w-8 justify-center rounded-full border"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: style token literal
+  const primaryToken = "--color-primary"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: DS token literal
+  const mutedToken = "--color-muted"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: DS token literal
+  const spacingClass = "space-y-6"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: layout class names
+  const textSmClass = "text-sm"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: typography utility
+  const fontMediumClass = "font-medium"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: typography utility
+  const outlineVariant = "outline"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: design-system variant name
 
   React.useEffect(() => {
     onStepChange?.(step);
@@ -42,17 +50,17 @@ export function CheckoutTemplate({
   const isLast = step === steps.length - 1;
 
   return (
-    <div className={cn("space-y-6", className)} {...props}>
-      <Inline gap={4} alignY="center" role="list">
+    <div className={cn(spacingClass, className)} {...props}>
+      <Inline gap={4} alignY="center" role="list">{/* i18n-exempt -- I18N-0001 [ttl=2026-01-31]: ARIA role literal */}
         {steps.map((s, idx) => (
-          <Stack key={idx} align="center" className="flex-1" role="listitem">
+          <Stack key={s.label} align="center" className="flex-1" role="listitem">{/* i18n-exempt -- I18N-0001 [ttl=2026-01-31]: ARIA role literal */}
             <Inline
               className={cn(circleBase, idx === step ? stepActive : idx < step ? stepDone : stepTodo)}
               data-token={idx === step || idx < step ? primaryToken : mutedToken}
             >
               {idx + 1}
             </Inline>
-            <span className={cn("text-sm", idx === step && "font-medium")}>
+            <span className={cn(textSmClass, idx === step && fontMediumClass)}>
               {s.label}
             </span>
           </Stack>
@@ -63,7 +71,7 @@ export function CheckoutTemplate({
         <Button
           onClick={() => setStep(step - 1)}
           disabled={step === 0}
-          variant="outline"
+          variant={outlineVariant}
         >
           {t("actions.back")}
         </Button>

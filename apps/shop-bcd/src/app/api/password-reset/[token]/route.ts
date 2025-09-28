@@ -4,7 +4,7 @@ import { parseJsonBody } from "@shared-utils";
 import { z } from "zod";
 import argon2 from "argon2";
 import { getUserByResetToken, updatePassword, setResetToken } from "@platform-core/users";
-import { useTranslations } from "@acme/i18n/useTranslations.server";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 export const runtime = "nodejs";
 
@@ -14,7 +14,7 @@ export async function POST(
   req: Request,
   { params }: { params: { token: string } },
 ) {
-  const t = await useTranslations("en");
+  const t = await getServerTranslations("en");
   const parsed = await parseJsonBody(req, schema, "1mb");
   if ("response" in parsed) {
     return parsed.response;

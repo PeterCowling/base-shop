@@ -59,12 +59,15 @@ export default function ThemeSpectrum(): React.JSX.Element {
                 const tokens = usage[String(family)]?.[step] ?? [];
                 return (
                   <div key={step} className="relative">
+                    {/* PB-2419: dynamic swatch background color for palette preview */}
+                    {/* eslint-disable react/forbid-dom-props -- PB-2419: dynamic swatch background color */}
                     <div
                       className="h-8 w-full rounded border"
                       style={{ backgroundColor: `hsl(${hsl})` }}
                       aria-label={`${String(family)} ${step}`}
                       title={`${String(family)} ${step}${tokens.length ? ` — used by: ${tokens.join(", ")}` : ""}`}
                     />
+                    {/* eslint-enable react/forbid-dom-props */}
                     {tokens.length > 0 && (
                       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                         <span className="rounded bg-black/40 px-1 text-xs font-medium text-white mix-blend-darken">

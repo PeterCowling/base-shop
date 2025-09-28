@@ -1,5 +1,5 @@
 import { useConfigurator } from "../ConfiguratorContext";
-import type { ConfiguratorState, PageInfo } from "../../wizard/schema";
+import type { ConfiguratorState } from "../../wizard/schema";
 
 type Validator = (state: ConfiguratorState) => boolean;
 

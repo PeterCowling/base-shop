@@ -2,23 +2,34 @@
 
 import * as React from "react";
 import { useTranslations } from "@acme/i18n";
+import type { TranslatableText } from "@acme/types/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import { resolveText } from "@i18n/resolveText";
 
 export interface EmailReferralSectionProps extends React.HTMLAttributes<HTMLDivElement> {
-  headline?: string;
-  subtitle?: string;
-  giveLabel?: string; // e.g., "$10 for your friend"
-  getLabel?: string; // e.g., "$10 for you"
+  headline?: TranslatableText;
+  subtitle?: TranslatableText;
+  giveLabel?: TranslatableText; // e.g., "$10 for your friend"
+  getLabel?: TranslatableText; // e.g., "$10 for you"
   termsHref?: string;
+  locale?: Locale;
   /** Adapter to submit referral. Receive { email, friendEmail }. */
   adapter?: (payload: { email: string; friendEmail: string }) => Promise<{ ok: boolean; message?: string }>;
 }
 
-export default function EmailReferralSection({ headline, subtitle, giveLabel, getLabel, termsHref, adapter, className, ...rest }: EmailReferralSectionProps) {
-  const t = useTranslations();
+export default function EmailReferralSection({ headline, subtitle, giveLabel, getLabel, termsHref, adapter, locale = "en", className, ...rest }: EmailReferralSectionProps) {
+  const t = useTranslations() as unknown as (key: string, params?: Record<string, unknown>) => string;
   const [email, setEmail] = React.useState("");
   const [friend, setFriend] = React.useState("");
   const [status, setStatus] = React.useState<"idle" | "loading" | "ok" | "error">("idle");
   const [message, setMessage] = React.useState<string | undefined>(undefined);
+  const resolveMaybe = (v?: TranslatableText, fallbackKey?: string): string => {
+    if (!v) return fallbackKey ? (t(fallbackKey) as string) : "";
+    if (typeof v === "string") return v;
+    if (v.type === "key") return t(v.key, v.params) as string;
+    if (v.type === "inline") return resolveText(v, locale, t);
+    return fallbackKey ? (t(fallbackKey) as string) : "";
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,11 +49,11 @@ export default function EmailReferralSection({ headline, subtitle, giveLabel, ge
   return (
     <section className={["bg-neutral-50", className].filter(Boolean).join(" ") || undefined} {...rest}>
       <div className="mx-auto flex flex-col items-center gap-4 px-4 py-8 text-center">
-        <h2 className="text-2xl font-semibold">{headline ?? t("referral.headline")}</h2>
-        <p className="text-neutral-700">{subtitle ?? t("referral.subtitle")}</p>
+        <h2 className="text-2xl font-semibold">{resolveMaybe(headline, "referral.headline")}</h2>
+        <p className="text-neutral-700">{resolveMaybe(subtitle, "referral.subtitle")}</p>
         <div className="flex items-center gap-3 text-sm">
-          <span className="rounded bg-emerald-100 px-2 py-1 text-emerald-800">{giveLabel ?? t("referral.give")}</span>
-          <span className="rounded bg-blue-100 px-2 py-1 text-blue-800">{getLabel ?? t("referral.get")}</span>
+          <span className="rounded bg-emerald-100 px-2 py-1 text-emerald-800">{resolveMaybe(giveLabel, "referral.give")}</span>
+          <span className="rounded bg-blue-100 px-2 py-1 text-blue-800">{resolveMaybe(getLabel, "referral.get")}</span>
         </div>
         <form onSubmit={submit} className="mt-2 flex w-full flex-col items-stretch gap-2 sm:flex-row">
           <input

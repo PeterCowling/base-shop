@@ -6,6 +6,13 @@ import LinkPicker from "./LinkPicker";
 const meta: Meta<typeof LinkPicker> = {
   title: "CMS/Page Builder/LinkPicker",
   component: LinkPicker,
+  parameters: {
+    docs: {
+      description: {
+        component: "Picker dialog to link to CMS pages or products; story stubs API responses for demo.",
+      },
+    },
+  },
 };
 export default meta;
 

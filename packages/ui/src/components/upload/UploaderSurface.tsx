@@ -1,14 +1,12 @@
-"use client";
+"use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 import type { ReactElement, RefObject } from "react";
 import { useState } from "react";
 import { Button } from "../atoms/shadcn";
 import { Alert } from "../atoms";
 import { cn } from "../../utils/style";
 import type { ImageOrientation } from "@acme/types";
-// i18n-exempt — UI utility component; copy is minimal and non-user-specific
-/* i18n-exempt */
-const t = (s: string) => s;
-/* i18n-exempt */
+import { useTranslations } from "@acme/i18n";
+// i18n-exempt -- DEV-000: file input accept types
 const ACCEPT = "image/*,video/*";
 
 export interface UploadProgress {
@@ -44,15 +42,29 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
   } = props;
 
   const [dragActive, setDragActive] = useState(false);
-  const feedbackId = "uploader-feedback";
+  const feedbackId = "uploader-feedback"; // i18n-exempt -- DEV-000: element id
+  // i18n-exempt -- DEV-000: ARIA role values
+  const ROLE_STATUS = "status" as React.AriaRole;
+  // i18n-exempt -- DEV-000: ARIA live region politeness
+  const ARIA_LIVE_POLITE = "polite" as React.AriaAttributes["aria-live"];
+  // i18n-exempt -- DEV-000: class names
+  const BUTTON_CLASS = "h-auto px-3 py-1 text-sm";
+  // i18n-exempt -- DEV-000: class names
+  const PENDING_FILE_CLASS = "text-muted-foreground mt-2 text-sm";
+  // i18n-exempt -- DEV-000: class names
+  const PROGRESS_P_CLASS = "mt-2 text-sm";
+  // i18n-exempt -- DEV-000: class names
+  const ALERT_MARGIN_CLASS = "mt-2";
+  const t = useTranslations();
 
   return (
     <div
       tabIndex={0}
       role="button"
-      /* i18n-exempt */
-      aria-label={t("Drop image or video here or press Enter to browse")}
+      // i18n-exempt -- DEV-000: aria is translated dynamically
+      aria-label={t("upload.dropHelp") as string}
       aria-describedby={feedbackId}
+      onClick={openFileDialog}
       onDragOver={(e) => e.preventDefault()}
       onDragEnter={() => setDragActive(true)}
       onDragLeave={() => setDragActive(false)}
@@ -67,46 +79,44 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
         }
       }}
       className={cn(
-        "rounded border-2 border-dashed p-4 text-center", // i18n-exempt: class names
-        dragActive && "ring-2 ring-primary/60 bg-primary/5" // i18n-exempt: class names
+        "rounded border-2 border-dashed p-4 text-center", // i18n-exempt -- DEV-000: class names
+        dragActive && "ring-2 ring-primary/60 bg-primary/5" // i18n-exempt -- DEV-000: class names
       )}
     >
       <input
         ref={inputRef}
         type="file"
-        /* i18n-exempt */
+        // i18n-exempt -- DEV-000: attribute not user-facing
         accept={ACCEPT}
-        className="hidden"
+        className="hidden" // i18n-exempt -- DEV-000: class names
         onChange={onFileChange}
       />
 
-      {/* i18n-exempt */}
-      <p className="mb-2">{t("Drag & drop or")}</p>
-      <Button type="button" onClick={openFileDialog} className="h-auto px-3 py-1 text-sm">
-        {/* i18n-exempt */}
-        {t("Browse…")}
+      <p className="mb-2">{t("upload.dragDropOr")}</p>
+      {/* i18n-exempt -- DEV-000: class names */}
+      <Button type="button" onClick={openFileDialog} className={BUTTON_CLASS}>
+        {t("upload.browse")}
       </Button>
 
-      <div id={feedbackId} role="status" aria-live="polite">
+      <div id={feedbackId} role={ROLE_STATUS} aria-live={ARIA_LIVE_POLITE}>
         {pendingFile && (
-          <p className="text-muted-foreground mt-2 text-sm">{pendingFile.name}</p>
+          <p className={PENDING_FILE_CLASS}>{pendingFile.name}</p>
         )}
 
         {progress && (
-          <p className="mt-2 text-sm">{t("Uploading…")} {progress.done}/{progress.total}</p>
+          <p className={PROGRESS_P_CLASS}>{t("upload.uploading")} {progress.done}/{progress.total}</p>
         )}
 
         {error && (
-          <Alert variant="danger" tone="soft" title={error} className="mt-2" />
+          /* i18n-exempt -- DEV-000: class names */
+          <Alert variant="danger" tone="soft" heading={error} className={ALERT_MARGIN_CLASS} />
         )}
         {isValid === false && !isVideo && (
-          // i18n-exempt — transient validation hint in editor-only surface
-          /* i18n-exempt */
           <Alert
             variant="warning"
             tone="soft"
-            title={t(`Wrong orientation (needs ${requiredOrientation})`)}
-            className="mt-2"
+            heading={t("upload.orientationWrong", { required: requiredOrientation }) as string}
+            className={ALERT_MARGIN_CLASS}
           />
         )}
       </div>

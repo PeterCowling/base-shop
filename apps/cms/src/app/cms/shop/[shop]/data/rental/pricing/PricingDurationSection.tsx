@@ -1,5 +1,6 @@
 import { Button, Input } from "@/components/atoms/shadcn";
 import { type ChangeEvent } from "react";
+import { useTranslations } from "@acme/i18n";
 
 import { type DurationDraft } from "./usePricingFormState";
 
@@ -12,26 +13,25 @@ interface Props {
 }
 
 export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate, getErrors }: Props) {
+  const t = useTranslations();
   return (
     <section className="space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h3 className="min-w-0 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Duration discounts</h3>
+        <h3 className="min-w-0 text-sm font-semibold uppercase tracking-wide text-muted-foreground">{t("Duration discounts")}</h3>
         <Button
           type="button"
           variant="outline"
           className="h-9 shrink-0 rounded-lg border-border-2 text-xs text-foreground hover:bg-surface-3"
           onClick={onAdd}
         >
-          Add discount tier
+          {t("Add discount tier")}
         </Button>
       </div>
-      <p className="text-xs text-muted-foreground">
-        Offer incentives for longer rentals. Leave a row blank to remove it.
-      </p>
+      <p className="text-xs text-muted-foreground">{t("Offer incentives for longer rentals. Leave a row blank to remove it.")}</p>
       <div className="space-y-4">
         {rows.length === 0 ? (
           <p className="rounded-lg border border-dashed border-border-2 px-4 py-3 text-sm text-muted-foreground">
-            No duration tiers configured. Add one to reward longer bookings.
+            {t("No duration tiers configured. Add one to reward longer bookings.")}
           </p>
         ) : null}
         {rows.map((row) => {
@@ -43,10 +43,10 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
           return (
             <div
               key={row.id}
-              className="grid gap-3 rounded-xl border border-border-1 bg-surface-2 p-4 sm:grid-cols-[1fr_1fr_auto]"
+              className="grid gap-3 rounded-xl border border-border-1 bg-surface-2 p-4 sm:grid-cols-3"
             >
               <label className="flex flex-col gap-1">
-                <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Min days</span>
+                <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("Min days")}</span>
                 <Input
                   type="number"
                   min={1}
@@ -63,7 +63,7 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
                 ) : null}
               </label>
               <label className="flex flex-col gap-1">
-                <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Rate multiplier</span>
+                <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{t("Rate multiplier")}</span>
                 <Input
                   type="number"
                   min={0}
@@ -88,7 +88,7 @@ export default function PricingDurationSection({ rows, onAdd, onRemove, onUpdate
                   onClick={() => onRemove(row.id)}
                   aria-label={`remove-duration-${row.id}`}
                 >
-                  Remove
+                  {t("Remove")}
                 </Button>
               </div>
             </div>

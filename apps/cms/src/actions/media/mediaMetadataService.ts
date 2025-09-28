@@ -10,6 +10,7 @@ import { readMetadata, uploadsDir, writeMetadata } from "../media.helpers";
 import type { MediaMetadataEntry } from "../media.helpers";
 import { normalizeTagsForStorage } from "./tagUtils";
 import { buildMediaItem, listMediaFiles, inferMediaType } from "./mediaFileService";
+// Use server-side translations loader inside async functions
 
 function buildOverview(files: MediaItem[]) {
   const totalBytes = files.reduce((sum, file) => sum + (file.size ?? 0), 0);
@@ -55,11 +56,15 @@ export async function updateMediaMetadataEntry({
   fileUrl,
   fields,
 }: UpdateMediaMetadataParams): Promise<MediaItem> {
+  const { useTranslations: getServerTranslations } = await import(
+    "@acme/i18n/useTranslations.server" // i18n-exempt -- INTL-000 module specifier [ttl=2026-03-31]
+  );
+  const t = await getServerTranslations("en");
   const safeShop = validateShopName(shop);
   const prefix = path.posix.join("/uploads", safeShop) + "/";
   const normalized = path.posix.normalize(fileUrl);
 
-  if (!normalized.startsWith(prefix)) throw new Error("Invalid file path");
+  if (!normalized.startsWith(prefix)) throw new Error(t("cms.media.errors.invalidPath"));
 
   const filename = normalized.slice(prefix.length);
   const dir = uploadsDir(safeShop);
@@ -67,17 +72,17 @@ export async function updateMediaMetadataEntry({
 
   const relative = path.relative(dir, fullPath);
   if (relative.startsWith("..") || path.isAbsolute(relative)) {
-    throw new Error("Invalid file path");
+    throw new Error(t("cms.media.errors.invalidPath"));
   }
 
   let stats: Stats | undefined;
   try {
     // Constrained to validated uploads directory
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
     stats = await fs.stat(fullPath);
   } catch (err) {
     if ((err as NodeJS.ErrnoException)?.code === "ENOENT") {
-      throw new Error("Media file not found");
+      throw new Error(t("cms.media.errors.notFound"));
     }
     throw err;
   }

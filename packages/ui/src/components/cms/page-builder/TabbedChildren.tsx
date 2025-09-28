@@ -85,7 +85,8 @@ export default function TabbedChildren({
           className="sticky top-0 mb-2 bg-background/80 p-2 backdrop-blur"
         >
           {slots.map((s, i) => (
-            <div
+            <button
+              type="button"
               key={`tab-head-${s.key}`}
               onMouseEnter={() => {
                 setHoverTab(i);
@@ -96,13 +97,16 @@ export default function TabbedChildren({
                 } catch {}
               }}
               onMouseLeave={() => setHoverTab((prev) => (prev === i ? null : prev))}
+              onFocus={() => setHoverTab(i)}
+              onBlur={() => setHoverTab((prev) => (prev === i ? null : prev))}
+              aria-pressed={hoverTab === i}
               className={cn(
-                "rounded border px-2 py-1 text-xs", // i18n-exempt: class names
-                hoverTab === i ? "border-primary bg-primary/10 ring-2 ring-primary" : "border-dashed" // i18n-exempt: class names
+                "rounded border px-2 py-1 text-xs", // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
+                hoverTab === i ? "border-primary bg-primary/10 ring-2 ring-primary" : "border-dashed" // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
               )}
             >
               {s.title}
-            </div>
+            </button>
           ))}
         </Cluster>
       )}
@@ -140,9 +144,7 @@ export default function TabbedChildren({
                 const insertAt = toUnderlyingIndex(index);
                 dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
                 try {
-                  // i18n-exempt — internal builder live message
-                  const msg = "Block inserted";
-                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: msg }));
+                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("pb.blockInserted") as string }));
                 } catch {}
               }}
             />
@@ -150,8 +152,8 @@ export default function TabbedChildren({
               <div
                 data-placeholder
                 className={cn(
-                  "mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt: class names
-                  dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt: class names
+                  "mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
+                  dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
                 )}
               />
             )}
@@ -163,8 +165,8 @@ export default function TabbedChildren({
                     <div
                       data-placeholder
                       className={cn(
-                        "mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt: class names
-                        dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt: class names
+                        "mb-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
+                        dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
                       )}
                     />
                   )}
@@ -221,9 +223,7 @@ export default function TabbedChildren({
                       const insertAt = toUnderlyingIndex(index);
                       dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
                       try {
-                        // i18n-exempt — internal builder live message
-                        const msg = "Block inserted";
-                        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: msg }));
+                        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("pb.blockInserted") as string }));
                       } catch {}
                     }}
                   />
@@ -231,8 +231,8 @@ export default function TabbedChildren({
                     <div
                       data-placeholder
                       className={cn(
-                        "mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt: class names
-                        dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt: class names
+                        "mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
+                        dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
                       )}
                     />
                   )}
@@ -248,8 +248,7 @@ export default function TabbedChildren({
                 const insertAt = toUnderlyingIndex(index);
                 dispatch({ type: "add", component: newComponent, parentId: component.id, index: insertAt });
                 try {
-                  // i18n-exempt — internal builder live message
-                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("Block inserted") }));
+                  window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("pb.blockInserted") as string }));
                 } catch {}
               }}
             />
@@ -257,8 +256,8 @@ export default function TabbedChildren({
               <div
                 data-placeholder
                 className={cn(
-                  "mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt: class names
-                  dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt: class names
+                  "mt-1 h-4 w-full rounded border-2 border-dashed transition-all duration-150 motion-reduce:transition-none", // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
+                  dropAllowed === false ? "border-danger bg-danger/10 ring-2 ring-danger" : "border-primary bg-primary/10 ring-2 ring-primary" // i18n-exempt -- CMS-1010 class names [ttl=2025-12-31]
                 )}
               />
             )}

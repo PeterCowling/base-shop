@@ -52,10 +52,12 @@ let capturedUpdateItem: (
 ) => void;
 jest.mock("../InventoryRow", () => {
   const Actual = jest.requireActual("../InventoryRow").default;
-  return (props: any) => {
+  const InventoryRowMock = (props: any) => {
     capturedUpdateItem = props.updateItem;
     return <Actual {...props} />;
   };
+  InventoryRowMock.displayName = "InventoryRowMock";
+  return InventoryRowMock;
 });
 
 describe("InventoryForm", () => {
@@ -230,4 +232,3 @@ describe("InventoryForm", () => {
     (URL.revokeObjectURL as jest.Mock).mockRestore();
   });
 });
-

@@ -1,7 +1,6 @@
 /* ---------------------------------------------------------------------- */
 /* apps/cms/__tests__/seo-revert.test.ts                                   */
 /* ---------------------------------------------------------------------- */
-/* eslint-disable import/first */
 
 (process.env as Record<string, string>).NODE_ENV = "development";
 
@@ -79,6 +78,7 @@ describe("SEO revert via timeline", () => {
         "settings.json"
       );
       const settings = JSON.parse(
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-123: controlled temp-repo path constructed from literals
         await fs.readFile(settingsFile, "utf8")
       ) as ShopSettings;
 
@@ -88,6 +88,7 @@ describe("SEO revert via timeline", () => {
       await actions.revertSeo("test", ts);
 
       const reverted = JSON.parse(
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-123: controlled temp-repo path constructed from literals
         await fs.readFile(settingsFile, "utf8")
       ) as ShopSettings;
       expect(reverted.seo).toEqual({});
@@ -100,6 +101,7 @@ describe("SEO revert via timeline", () => {
         "test",
         "settings.history.jsonl"
       );
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-123: controlled temp-repo path constructed from literals
       const lines = (await fs.readFile(historyFile, "utf8"))
         .trim()
         .split(/\n+/);

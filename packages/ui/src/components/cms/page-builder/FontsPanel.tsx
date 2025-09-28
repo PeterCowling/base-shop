@@ -1,4 +1,5 @@
 "use client";
+/* i18n-exempt file -- ABC-123 internal CMS editor panel; copy not end-user facing [ttl=2026-12-31] */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "../../atoms/shadcn";
@@ -19,8 +20,7 @@ interface Props {
 }
 
 export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: Props) {
-  // i18n-exempt — Editor-only panel; strings are hints/labels for internal tooling
-  /* i18n-exempt */
+  // i18n-exempt -- ABC-123 editor-only hints/labels for internal tooling [ttl=2026-12-31]
   const t = (s: string) => s;
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname) ?? "", [pathname]);
@@ -118,14 +118,14 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
   // (Fine-tune editor removed)
 
   // Google Fonts-like selector helpers and state
-  // i18n-exempt — font family names are proper nouns and not UI copy
+  // i18n-exempt -- ABC-123 font family names are proper nouns (not UI copy) [ttl=2026-12-31]
   const googleFamilies = useMemo(() => new Set([
     "Inter",
-    "Space Grotesk", /* i18n-exempt */
-    "Playfair Display", /* i18n-exempt */
-    "Lato", /* i18n-exempt */
+    "Space Grotesk", // i18n-exempt -- ABC-123 proper noun [ttl=2026-12-31]
+    "Playfair Display", // i18n-exempt -- ABC-123 proper noun [ttl=2026-12-31]
+    "Lato", // i18n-exempt -- ABC-123 proper noun [ttl=2026-12-31]
     "Source Sans 3",
-    "Montserrat", /* i18n-exempt */
+    "Montserrat", // i18n-exempt -- ABC-123 proper noun [ttl=2026-12-31]
     "Rubik",
     "Work Sans",
     "Nunito",
@@ -168,10 +168,8 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
     });
   }, [currentBody, currentH1, currentH2, firstFamilyFromStack, ensureGoogle, googleFamilies]);
 
-  // i18n-exempt — sample pangrams for preview only
-  const [headingSample, setHeadingSample] = useState("Grumpy wizards make toxic brew");
-  // i18n-exempt — sample pangrams for preview only
-  const [bodySample, setBodySample] = useState("The quick brown fox jumps over the lazy dog");
+  const [headingSample, setHeadingSample] = useState("Grumpy wizards make toxic brew"); // i18n-exempt -- ABC-123 sample pangram for preview only [ttl=2026-12-31]
+  const [bodySample, setBodySample] = useState("The quick brown fox jumps over the lazy dog"); // i18n-exempt -- ABC-123 sample pangram for preview only [ttl=2026-12-31]
   const [sizeH1, setSizeH1] = useState(36);
   const [sizeH2, setSizeH2] = useState(24);
   const [sizeBody, setSizeBody] = useState(16);
@@ -229,10 +227,13 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
             </Inline>
             <div className="space-y-2">
               <div className="text-xs text-foreground">{t("Heading 1 (H1–H3)")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentH1) || ""}</span></div>
+              {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
               <div className="text-foreground" style={{ fontFamily: currentH1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
               <div className="mt-3 text-xs text-foreground">{t("Heading 2 (H4–H6)")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentH2) || ""}</span></div>
+              {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
               <div className="text-foreground" style={{ fontFamily: currentH2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
               <div className="mt-3 text-xs text-foreground">{t("Body")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(currentBody) || ""}</span></div>
+              {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
               <div className="text-foreground" style={{ fontFamily: currentBody, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
             </div>
           </div>
@@ -283,10 +284,13 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
                     )}
                     <div className="space-y-1">
                       <div className="text-xs text-foreground">{t("Heading 1")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(h1) || ""}</span></div>
+                      {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
                       <div className="text-foreground" style={{ fontFamily: h1, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
                       <div className="mt-2 text-xs text-foreground">{t("Heading 2")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(h2) || ""}</span></div>
+                      {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
                       <div className="text-foreground" style={{ fontFamily: h2, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
                       <div className="mt-2 text-xs text-foreground">{t("Body")} <span className="ms-2 align-middle text-xs text-foreground/70">{firstFamilyFromStack(body) || ""}</span></div>
+                      {/* eslint-disable-next-line react/forbid-dom-props -- PB-2416: dynamic font preview needs inline font family/size */}
                       <div className="text-foreground" style={{ fontFamily: body, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
                     </div>
                   </div>
@@ -311,8 +315,7 @@ export default function FontsPanel({ open, onOpenChange, variant = "dialog" }: P
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="overflow-auto border bg-surface-3 p-0 shadow-elevation-4"
-        // i18n-exempt — inline sizing values are not user-facing copy
-        style={{ maxHeight: "90dvh", width: "min(100dvw - 2rem, 80rem)" }}
+        style={{ maxHeight: "90dvh", width: "min(100dvw - 2rem, 80rem)" }} // i18n-exempt -- ABC-123 inline sizing values are not user-facing copy [ttl=2026-12-31]
         onOpenAutoFocus={(e) => e.preventDefault()}
       >
         <DialogTitle>{t("Typography")}</DialogTitle>

@@ -2,9 +2,12 @@ import type { Locale } from "./locales";
 
 /**
  * Load translation messages for a given locale on the server and return a
- * lookup function.
+ * lookup function that supports simple template variable interpolation
+ * using `{var}` placeholders.
  */
-export async function useTranslations(locale: Locale): Promise<(key: string) => string> {
+export async function useTranslations(
+  locale: Locale,
+): Promise<(key: string, vars?: Record<string, unknown>) => string> {
   const enMessages = (
     await import(
       /* webpackInclude: /en\.json$/ */
@@ -28,5 +31,13 @@ export async function useTranslations(locale: Locale): Promise<(key: string) => 
   }
 
   const messages = { ...enMessages, ...localeMessages } as Record<string, string>;
-  return (key: string): string => messages[key] ?? key;
+  return (key: string, vars?: Record<string, unknown>): string => {
+    const msg = messages[key] ?? key;
+    if (!vars) return msg;
+    return msg.replace(/\{(.*?)\}/g, (match, name) => {
+      return Object.prototype.hasOwnProperty.call(vars, name)
+        ? String(vars[name])
+        : match;
+    });
+  };
 }

@@ -32,12 +32,14 @@ const QuickPaletteControls = ({ onAdd, onInsertImage, onSetSectionBackground, se
             aria-label={t("Quick components")}
             className="rounded border border-border-2 bg-surface-2 px-1 text-xs min-h-10 min-w-10 text-center"
           >
+            {/* i18n-exempt — decorative icon glyph */}
             🧩
           </button>
         </Tooltip>
       </PopoverTrigger>
       <PopoverContent className="w-80 p-2">
-        <div className="max-h-[calc(100svh-6rem)] overflow-auto">
+        {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- PB-2419 Needs calc() for viewport-limited popover height */}
+        <div className="overflow-auto max-h-[calc(100svh-6rem)]">
           <Palette
             onAdd={onAdd}
             onInsertImage={onInsertImage}
@@ -56,6 +58,7 @@ const QuickPaletteControls = ({ onAdd, onInsertImage, onSetSectionBackground, se
         onClick={onShowPalette}
         title={t("Show palette")}
       >
+        {/* i18n-exempt — decorative icon glyph */}
         ▶
       </button>
     </Tooltip>

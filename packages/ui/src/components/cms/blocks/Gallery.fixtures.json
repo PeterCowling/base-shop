@@ -1,0 +1,10 @@
+{
+  "images": [
+    { "src": "/images/p1.jpg", "alt": "P1", "caption": "One" },
+    { "src": "/images/p2.jpg", "alt": "P2", "caption": "Two" },
+    { "src": "/images/p3.jpg", "alt": "P3", "caption": "Three" }
+  ],
+  "openInLightbox": false,
+  "locale": "en"
+}
+

@@ -55,6 +55,7 @@ const meta: Meta<typeof AutoCarousel> = {
           "Horizontal product rail with responsive item counts. Control density with `minItems`/`maxItems` or explicit device props and enable quick previews with `enableQuickView`.",
       },
     },
+    perf: true,
   },
   args: {
     products,

@@ -1,8 +1,15 @@
+// i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 import { useState, useRef, useEffect } from "react";
 import type { ResizeAction } from "./state/layout";
 import useGuides from "./useGuides";
-import { snapToGrid } from "./gridSnap";
+import type { Handle } from "./canvasResize/types";
+import { applyAspectRatio } from "./canvasResize/aspect";
+import { clampToParent } from "./canvasResize/bounds";
+import { applySnapping } from "./canvasResize/snap";
+import { computePatch } from "./canvasResize/patch";
+import { setPointerCaptureSafe, releasePointerCaptureSafe } from "./canvasResize/pointerCapture";
+import { createKeyboardNudge } from "./canvasResize/keyboardNudge";
 
 interface Options {
   componentId: string;
@@ -21,8 +28,6 @@ interface Options {
   dockY?: "top" | "bottom" | "center";
   zoom?: number;
 }
-
-type Handle = "se" | "ne" | "sw" | "nw" | "e" | "w" | "n" | "s";
 
 export default function useCanvasResize({
   componentId,
@@ -102,96 +107,63 @@ export default function useCanvasResize({
         newH = h - dy;
         top = startT + dy;
       }
-
       // Maintain aspect ratio when Shift is held
-      if (e.shiftKey && ratio && ratio > 0) {
-        if (handle.length === 2) {
-          if (Math.abs(dx) >= Math.abs(dy)) {
-            newH = newW / ratio;
-            if (handle.includes("n")) top = startT + (h - newH);
-            if (handle.includes("w")) left = startL + (w - newW);
-          } else {
-            newW = newH * ratio;
-            if (handle.includes("w")) left = startL + (w - newW);
-            if (handle.includes("n")) top = startT + (h - newH);
-          }
-        } else if (handle === "e" || handle === "w") {
-          newH = newW / ratio;
-          if (handle === "w") left = startL + (w - newW);
-        } else if (handle === "n" || handle === "s") {
-          newW = newH * ratio;
-          if (handle === "n") top = startT + (h - newH);
-        }
-      }
-      let guideX: number | null = null;
-      let guideY: number | null = null;
-      let distX: number | null = null;
-      let distY: number | null = null;
-      siblingEdgesRef.current.vertical.forEach((edge) => {
-        const rightDist = Math.abs(left + newW - edge);
-        if (rightDist <= threshold && (distX === null || rightDist < distX)) {
-          newW = edge - left;
-          guideX = edge;
-          distX = rightDist;
-        }
+      const ar = applyAspectRatio(
+        e.shiftKey,
+        handle,
+        ratio,
+        newW,
+        newH,
+        dx,
+        dy,
+        startL,
+        startT,
+        left,
+        top
+      );
+      newW = ar.newW;
+      newH = ar.newH;
+      left = ar.left;
+      top = ar.top;
+
+      const snap = applySnapping(left, top, newW, newH, siblingEdgesRef as any, {
+        gridEnabled,
+        gridCols,
+        parent,
+        threshold,
       });
-      siblingEdgesRef.current.horizontal.forEach((edge) => {
-        const bottomDist = Math.abs(top + newH - edge);
-        if (bottomDist <= threshold && (distY === null || bottomDist < distY)) {
-          newH = edge - top;
-          guideY = edge;
-          distY = bottomDist;
-        }
-      });
-      if (gridEnabled && parent) {
-        const unit = parent.offsetWidth / gridCols;
-        const snappedW = snapToGrid(newW, unit);
-        const snappedH = snapToGrid(newH, unit);
-        const gridDistX = Math.abs(snappedW - newW);
-        const gridDistY = Math.abs(snappedH - newH);
-        newW = snappedW;
-        newH = snappedH;
-        if (gridDistX <= threshold && (distX === null || gridDistX < distX)) {
-          guideX = left + snappedW;
-          distX = gridDistX;
-        }
-        if (gridDistY <= threshold && (distY === null || gridDistY < distY)) {
-          guideY = top + snappedH;
-          distY = gridDistY;
-        }
-      }
+      newW = snap.width;
+      newH = snap.height;
+      const guideX: number | null = snap.guideX;
+      const guideY: number | null = snap.guideY;
+      const distX: number | null = snap.distX;
+      const distY: number | null = snap.distY;
       const snapW = e.altKey || Math.abs(parentW - newW) <= threshold;
       const snapH = e.altKey || Math.abs(parentH - newH) <= threshold;
       const parent2 = containerRef.current.parentElement;
       // Restrict to parent bounds if present
-      if (parent2) {
-        // Clamp size and position so the element stays within 0..parentSize
-        newW = Math.max(1, Math.min(newW, parent2.offsetWidth));
-        newH = Math.max(1, Math.min(newH, parent2.offsetHeight));
-        left = Math.max(0, Math.min(left, Math.max(0, parent2.offsetWidth - newW)));
-        top = Math.max(0, Math.min(top, Math.max(0, parent2.offsetHeight - newH)));
-      }
-      const patch: Record<string, string> = {
-        [widthKey]: snapW ? "100%" : `${newW}px`,
-        [heightKey]: snapH ? "100%" : `${newH}px`,
-      };
-      // Horizontal edge adjustments
-      if (handle.includes("w")) {
-        // West: moving the left edge
-        if (dockX !== "right") patch[leftKey] = `${Math.round(left)}px`;
-        // If docked to right, we leave right as-is (left not used)
-      } else if (handle.includes("e") && dockX === "right" && parent2) {
-        const right = Math.round(parent2.offsetWidth - (left + newW));
-        patch.right = `${right}px`;
-      }
-      // Vertical edge adjustments
-      if (handle.includes("n")) {
-        // North: moving the top edge
-        if (dockY !== "bottom") patch[topKey] = `${Math.round(top)}px`;
-      } else if (handle.includes("s") && dockY === "bottom" && parent2) {
-        const bottom = Math.round(parent2.offsetHeight - (top + newH));
-        patch.bottom = `${bottom}px`;
-      }
+      const clamped = clampToParent(parent2, left, top, newW, newH);
+      left = clamped.left;
+      top = clamped.top;
+      newW = clamped.width;
+      newH = clamped.height;
+
+      const patch = computePatch({
+        widthKey,
+        heightKey,
+        leftKey,
+        topKey,
+        handle,
+        left,
+        top,
+        width: newW,
+        height: newH,
+        parent: parent2,
+        dockX,
+        dockY,
+        snapW,
+        snapH,
+      });
       dispatch({ type: "resize", id: componentId, ...patch });
       setCurrent({ width: newW, height: newH, left, top });
       setSnapWidth(snapW || guideX !== null);
@@ -224,12 +196,7 @@ export default function useCanvasResize({
       setGuides({ x: null, y: null });
       setDistances({ x: null, y: null });
       // Release pointer capture if held
-      try {
-        if (captureRef.current?.el && captureRef.current?.id != null) {
-          (captureRef.current.el as unknown as { releasePointerCapture?: (id: number) => void }).releasePointerCapture?.(captureRef.current.id);
-        }
-      } catch {}
-      captureRef.current = { el: null, id: null };
+      releasePointerCaptureSafe(captureRef as any);
       if (rafRef.current != null) {
         try { cancelAnimationFrame(rafRef.current); } catch {}
         rafRef.current = null;
@@ -270,13 +237,7 @@ export default function useCanvasResize({
     const el = containerRef.current;
     if (!el) return;
     // Capture pointer to keep events consistent during resize (skip in tests for JSDOM compatibility)
-    try {
-      const isTest = typeof process !== "undefined" && process.env.NODE_ENV === "test";
-      if (!isTest) {
-        (e.target as Element)?.setPointerCapture?.(e.pointerId);
-        captureRef.current = { el: e.target as Element, id: e.pointerId };
-      }
-    } catch {}
+    setPointerCaptureSafe(e, captureRef as any);
     const startWidth =
       widthVal && widthVal.endsWith("px") ? parseFloat(widthVal) : el.offsetWidth;
     const startHeight =
@@ -307,36 +268,18 @@ export default function useCanvasResize({
     snapWidth || snapHeight || guides.x !== null || guides.y !== null;
 
   // Keyboard-driven resizing: adjusts width/height and flashes the overlay
-  const nudgeByKeyboard = (
-    direction: "left" | "right" | "up" | "down",
-    step: number
-  ) => {
-    if (disabled) return;
-    const el = containerRef.current;
-    if (!el) return;
-    const startWidth =
-      widthVal && widthVal.endsWith("px") ? parseFloat(widthVal) : el.offsetWidth;
-    const startHeight =
-      heightVal && heightVal.endsWith("px") ? parseFloat(heightVal) : el.offsetHeight;
-    let newW = startWidth;
-    let newH = startHeight;
-    if (direction === "left") newW = Math.max(1, startWidth - step);
-    if (direction === "right") newW = Math.max(1, startWidth + step);
-    if (direction === "up") newH = Math.max(1, startHeight - step);
-    if (direction === "down") newH = Math.max(1, startHeight + step);
-
-    dispatch({
-      type: "resize",
-      id: componentId,
-      [widthKey]: `${Math.round(newW)}px`,
-      [heightKey]: `${Math.round(newH)}px`,
-    });
-    setCurrent({ width: newW, height: newH, left: el.offsetLeft, top: el.offsetTop });
-    setKbResizing(true);
-    // Clear the overlay shortly after key interaction
-    window.clearTimeout((nudgeByKeyboard as unknown as { _t?: number })._t);
-    (nudgeByKeyboard as unknown as { _t?: number })._t = window.setTimeout(() => setKbResizing(false), 300);
-  };
+  const nudgeByKeyboard = createKeyboardNudge({
+    containerRef,
+    widthVal,
+    heightVal,
+    widthKey,
+    heightKey,
+    componentId,
+    dispatch,
+    setKbResizing,
+    setCurrent,
+    disabled,
+  });
 
   return {
     startResize,

@@ -81,7 +81,7 @@ export default function ThemeEditor(props: Props) {
       />
       <BrandIntensitySelector value={brandIntensity} onChange={setBrandIntensity} />
       {Object.keys(contrastWarnings).length > 0 && (
-        <Alert variant="warning" tone="soft" title={t("cms.themes.contrastWarnings")}>
+        <Alert variant="warning" tone="soft" heading={String(t("cms.themes.contrastWarnings"))}>
           <ul className="list-disc pl-4">
             {Object.values(contrastWarnings).map((w, i) => (
               <li key={i}>{w}</li>

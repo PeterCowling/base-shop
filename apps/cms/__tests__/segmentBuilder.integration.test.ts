@@ -35,6 +35,7 @@ describe("segments API", () => {
 
   beforeEach(async () => {
     await fs.rm(shopDir, { recursive: true, force: true });
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test setup creates a directory inside known DATA_ROOT test path
     await fs.mkdir(shopDir, { recursive: true });
   });
 

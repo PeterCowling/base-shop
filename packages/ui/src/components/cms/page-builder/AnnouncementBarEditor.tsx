@@ -1,6 +1,7 @@
 import type { AnnouncementBarComponent } from "@acme/types";
 import type { EditorProps } from "./EditorProps";
 import { Input } from "../../atoms/shadcn";
+import LocalizedTextInput from "../LocalizedTextInput";
 
 type Props = EditorProps<AnnouncementBarComponent>;
 
@@ -11,10 +12,10 @@ export default function AnnouncementBarEditor({ component, onChange }: Props) {
 
   return (
     <div className="space-y-2">
-      <Input
+      <LocalizedTextInput
+        label="Text"
         value={component.text ?? ""}
-        onChange={(e) => handleInput("text", e.target.value)}
-        placeholder="text"
+        onChange={(v) => handleInput("text", v)}
       />
       <Input
         value={component.link ?? ""}

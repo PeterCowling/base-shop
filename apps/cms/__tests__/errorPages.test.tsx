@@ -13,7 +13,6 @@ jest.mock("@acme/zod-utils/initZod", () => ({}));
 import { middleware } from "../src/middleware";
 import NotFound from "../src/app/not-found";
 // Require instead of ESM import to avoid hoisting issues with jest.mock
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const AccessDenied = require("../src/app/403/page").default;
 
 import type { ReadonlyURLSearchParams } from "next/navigation";

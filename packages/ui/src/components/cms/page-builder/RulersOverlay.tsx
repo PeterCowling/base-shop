@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   show?: boolean;
@@ -18,7 +19,10 @@ interface Props {
   contentAlignSource?: "base" | "desktop" | "tablet" | "mobile";
 }
 
+const DATA_CY_RULERS_OVERLAY = "pb-rulers-overlay";
+
 export default function RulersOverlay({ show = false, canvasRef, step = 50, viewport, contentWidth, contentAlign = "center", contentAlignBase = "center", contentAlignSource = "base" }: Props) {
+  const t = useTranslations();
   const [size, setSize] = useState<{ w: number; h: number }>({ w: 0, h: 0 });
 
   useEffect(() => {
@@ -72,9 +76,9 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
   if (!show) return null;
   const major = "hsl(var(--color-border) / 0.35)", minor = "hsl(var(--color-border) / 0.2)";
   return (
-    // i18n-exempt — data-cy attribute only
-    <div className="pointer-events-none relative inset-0" data-cy="pb-rulers-overlay">
+    <div className="pointer-events-none relative inset-0" data-cy={DATA_CY_RULERS_OVERLAY}>
       <div className="absolute inset-0">
+        {/* eslint-disable react/forbid-dom-props -- PB-2419 PB-UI: dynamic repeating-linear-gradient requires inline style */}
         <div
         aria-hidden
         className="absolute start-0 end-0 h-5"
@@ -82,6 +86,8 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
           backgroundImage: `repeating-linear-gradient(to right, ${minor}, ${minor} 1px, transparent 1px, transparent 10px), repeating-linear-gradient(to right, ${major}, ${major} 1px, transparent 1px, transparent 50px)`,
         }}
         />
+        {/* eslint-enable react/forbid-dom-props */}
+        {/* eslint-disable react/forbid-dom-props -- PB-2419 PB-UI: dynamic repeating-linear-gradient requires inline style */}
         <div
         aria-hidden
         className="absolute top-0 bottom-0 w-5"
@@ -89,13 +95,16 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
           backgroundImage: `repeating-linear-gradient(to bottom, ${minor}, ${minor} 1px, transparent 1px, transparent 10px), repeating-linear-gradient(to bottom, ${major}, ${major} 1px, transparent 1px, transparent 50px)`,
         }}
         />
+        {/* eslint-enable react/forbid-dom-props */}
       {/* Label every 100px */}
         {labelsX.map((x) => (
+          // eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic left offset for ruler labels
           <div key={`lx-${x}`} className="absolute top-0 text-xs text-muted-foreground" style={{ left: x + 2 }}>
             {x}
           </div>
         ))}
         {labelsY.map((y) => (
+          // eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic top offset for ruler labels
           <div key={`ly-${y}`} className="absolute start-0 text-xs text-muted-foreground" style={{ top: y + 2 }}>
             {y}
           </div>
@@ -103,22 +112,50 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
         {safeWidth != null && safeLeft != null && safeWidth > 0 && (
           <div aria-hidden className="absolute inset-y-0">
             {/* Unsafe zones tint */}
+            {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic width based on computed safe zone */}
             <div className="bg-red-500/5 absolute inset-y-0 start-0" style={{ width: Math.max(0, safeLeft) }} />
+            {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic width based on computed safe zone */}
             <div className="bg-red-500/5 absolute inset-y-0 end-0" style={{ width: Math.max(0, size.w - (safeLeft + safeWidth)) }} />
             {/* Safe zone */}
             <div
               className="bg-green-500/5 absolute inset-y-0 border-x border-green-500/40"
+              // eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic left/width for safe zone overlay
               style={{ left: safeLeft, width: safeWidth }}
             />
             <div
-              className="absolute top-2 start-1/2 -translate-x-1/2 rounded bg-black/60 px-2 py-0.5 text-xs text-white shadow dark:bg-white/70 dark:text-black"
-              style={{ opacity: 1 }}
+              className="absolute top-2 start-1/2 -translate-x-1/2 rounded bg-black/60 px-2 py-0.5 text-xs text-white shadow dark:bg-white/70 dark:text-black opacity-100"
             >
-              {/* i18n-exempt */}
-              {viewport ? `${viewport} ` : ""}safe width: {Math.round(safeWidth)}px — align: {contentAlign ?? "center"} (
-              {contentAlignSource || "base"}
-              {contentAlignSource !== "base" && contentAlignBase ? `, base: ${contentAlignBase}` : ""}
-              )
+              {(() => {
+                const viewportPrefix = viewport === "desktop"
+                  ? String(t("cms.builder.rulers.viewport.desktop"))
+                  : viewport === "tablet"
+                    ? String(t("cms.builder.rulers.viewport.tablet"))
+                    : viewport === "mobile"
+                      ? String(t("cms.builder.rulers.viewport.mobile"))
+                      : "";
+                const alignLabel = contentAlign === "left"
+                  ? String(t("cms.builder.align.left"))
+                  : contentAlign === "right"
+                    ? String(t("cms.builder.align.right"))
+                    : String(t("cms.builder.align.center"));
+                const sourceLabel = contentAlignSource === "desktop"
+                  ? String(t("cms.builder.source.desktop"))
+                  : contentAlignSource === "tablet"
+                    ? String(t("cms.builder.source.tablet"))
+                    : contentAlignSource === "mobile"
+                      ? String(t("cms.builder.source.mobile"))
+                      : String(t("cms.builder.source.base"));
+                const baseSuffix = contentAlignSource !== "base" && contentAlignBase
+                  ? `, ${t("cms.builder.rulers.basePrefix")} ${t(`cms.builder.align.${contentAlignBase}`)}`
+                  : "";
+                return t("cms.builder.rulers.safeInfo", {
+                  viewport: viewportPrefix,
+                  width: Math.round(safeWidth),
+                  align: alignLabel,
+                  source: sourceLabel,
+                  baseSuffix,
+                });
+              })()}
             </div>
           </div>
         )}

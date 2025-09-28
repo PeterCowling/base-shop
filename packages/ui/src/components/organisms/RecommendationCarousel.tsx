@@ -1,4 +1,4 @@
-"use client";
+"use client"; // i18n-exempt: Next.js directive string, not user-facing copy
 
 import * as React from "react";
 import { cn } from "../../utils/style";
@@ -121,7 +121,7 @@ export function RecommendationCarousel({
         setProducts(data);
         setStatus('loaded');
       } catch (err) {
-        console.error(/* i18n-exempt: developer log */ "Failed loading recommendations", err);
+        console.error(/* i18n-exempt -- UI-000 developer log [ttl=2025-12-31] */ "Failed loading recommendations", err);
         setStatus('error');
       }
     };
@@ -146,16 +146,22 @@ export function RecommendationCarousel({
   return (
     <div
       className={cn("overflow-hidden", className)}
+      role="presentation" // i18n-exempt: ARIA role value, not user-facing copy
       onMouseEnter={stopAutoplay}
       onMouseLeave={startAutoplay}
       {...props}
     >
       <div
       ref={scrollerRef}
-        className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)} // i18n-exempt with justification: CSS utility classes only
+        className={cn("flex snap-x overflow-x-auto pb-4", gapClassName)} // i18n-exempt -- UI-000 CSS utility classes only [ttl=2025-12-31]
       >
         {products.map((p) => (
-          <div key={p.id} style={slideStyle} className="snap-start">
+          <div
+            key={p.id}
+            /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Flex basis depends on computed itemsPerSlide; utility classes cannot express this dynamic value */
+            style={slideStyle}
+            className="snap-start"
+          >
             <ProductCard product={p} className="h-full" />
           </div>
         ))}

@@ -87,17 +87,22 @@ export default function CampaignHeroSection({
           {/* Hotspots */}
           {Array.isArray(hotspots) && hotspots.length > 0 && (
             <ExperimentGate flag={experimentKey ? `${experimentKey}:hotspots` : undefined}>
-              {hotspots.map((p, i) => (
-                <a
-                  key={i}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 min-h-10 min-w-10 flex items-center justify-center rounded-full/none"
-                  style={{ left: `${p.x}%`, top: `${p.y}%` }}
-                  href={p.sku ? `/p/${encodeURIComponent(p.sku)}` : undefined}
-                  title={p.sku}
-                >
-                  <span className="pointer-events-none block h-3 w-3 rounded-full bg-primary shadow" />
-                </a>
-              ))}
+              <svg className="absolute inset-0" aria-hidden="true">
+                {hotspots.map((p) => (
+                  <a
+                    key={`${p.sku ?? "hotspot"}-${p.x}-${p.y}`}
+                    href={p.sku ? `/p/${encodeURIComponent(p.sku)}` : undefined}
+                    title={p.sku}
+                  >
+                    <circle
+                      cx={`${p.x}%`}
+                      cy={`${p.y}%`}
+                      r={6}
+                      className="fill-primary drop-shadow-sm"
+                    />
+                  </a>
+                ))}
+              </svg>
             </ExperimentGate>
           )}
         </div>
@@ -105,14 +110,14 @@ export default function CampaignHeroSection({
         {/* Countdown + USPs */}
         <Stack className="mt-4" gap={4} align="center">
           {countdownTarget ? (
-            // i18n-exempt -- style utility string, not user-facing copy
+            // i18n-exempt -- ABC-123 [ttl=2026-03-31] style utility string, not user-facing copy
             <CountdownTimer targetDate={countdownTarget} timezone={timezone} styles="text-lg font-medium" />
           ) : null}
           {usps.length > 0 ? (
             <GridPrimitive className="w-full text-center text-sm text-neutral-700 sm:grid-cols-3" cols={1} gap={2}>
               <ul className="contents">
-                {usps.map((u, i) => (
-                  <li key={i} className="rounded border px-3 py-2">{u}</li>
+                {usps.map((u) => (
+                  <li key={u} className="rounded border px-3 py-2">{u}</li>
                 ))}
               </ul>
             </GridPrimitive>

@@ -29,7 +29,6 @@ const pathMock = {
     to.startsWith(from + '/') ? to.slice(from.length + 1) : '../' + to,
   isAbsolute: (p: string) => p.startsWith('/'),
 };
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 jest.mock('path', () => pathMock as any);
 
 const sharpMock = jest.fn();

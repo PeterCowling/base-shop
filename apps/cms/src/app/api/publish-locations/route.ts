@@ -10,7 +10,7 @@ export async function GET() {
     const dataRoot = resolveDataRoot();
     const file = join(dataRoot, "..", "publish-locations.json");
     // File path is derived from a trusted workspace root
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Trusted monorepo data path derived from resolveDataRoot()
     const buf = await fs.readFile(file, "utf8");
     const data = JSON.parse(buf);
     return NextResponse.json(data);

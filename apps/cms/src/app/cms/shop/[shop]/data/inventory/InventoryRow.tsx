@@ -31,7 +31,7 @@ export default function InventoryRow({
 }: Props) {
   return (
     <TableRow key={index} className="border-border-1 bg-surface-2 text-foreground/90">
-      <TableCell className="min-w-[10rem]">
+      <TableCell className="min-w-40">
         <Input
           className="border-border-1 bg-surface-2 text-foreground shadow-inner"
           value={item.sku}
@@ -41,7 +41,7 @@ export default function InventoryRow({
         />
       </TableCell>
       {attributes.map((attr) => (
-        <TableCell key={attr} className="min-w-[8rem]">
+        <TableCell key={attr} className="min-w-32">
           <Input
             className="border-border-1 bg-surface-2 text-foreground shadow-inner"
             value={item.variantAttributes[attr] ?? ""}

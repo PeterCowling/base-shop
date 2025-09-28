@@ -1,6 +1,7 @@
 # Storybook Guide
 
 This project uses **Storybook** for developing and testing UI components.
+The developer instance runs on the Vite builder for fast HMR and startup.
 
 ## Running Storybook
 
@@ -36,7 +37,15 @@ pnpm test-storybook         # starts SB (CI config) and runs the Playwright smok
 pnpm storybook:smoke        # same, explicit
 ```
 
-Where the tests live:
+Critical stories covered in CI (Matrix):
+
+- Order Summary (organisms)
+- Product Variant Selector (organisms)
+- Product Gallery (organisms)
+- Showcase Section (CMS block)
+- Collection Section.client (CMS block)
+
+Where the smoke tests live:
 
 - `.storybook/test-runner/__tests__/smoke-health.test.ts` — basic iframe boot
 - `.storybook/test-runner/__tests__/tokens.test.ts` — Tokens/All base→brandx via globals

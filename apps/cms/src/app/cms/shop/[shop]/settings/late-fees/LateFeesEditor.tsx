@@ -3,6 +3,7 @@
 import { Button, Checkbox, Input } from "@ui/components/atoms/shadcn";
 import { updateLateFee } from "@cms/actions/shops.server";
 import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   shop: string;
@@ -10,9 +11,11 @@ interface Props {
 }
 
 export default function LateFeesEditor({ shop, initial }: Props) {
+  const t = useTranslations();
   const [state, setState] = useState(initial);
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const FIELD_INTERVAL_MINUTES = "intervalMinutes"; // i18n-exempt -- CMS-TECH-001 form field name [ttl=2026-01-01]
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -39,7 +42,7 @@ export default function LateFeesEditor({ shop, initial }: Props) {
   };
 
   return (
-    <form onSubmit={onSubmit} className="grid max-w-md gap-4">
+    <form onSubmit={onSubmit} className="grid gap-4">
       <label className="flex items-center gap-2">
         <Checkbox
           name="enabled"
@@ -48,13 +51,13 @@ export default function LateFeesEditor({ shop, initial }: Props) {
             setState((s) => ({ ...s, enabled: Boolean(v) }))
           }
         />
-        <span>Enable late fee service</span>
+        <span>{t("cms.lateFees.enableService")}</span>
       </label>
       <label className="flex flex-col gap-1">
-        <span>Interval (minutes)</span>
+        <span>{t("cms.lateFees.intervalMinutes")}</span>
         <Input
           type="number"
-          name="intervalMinutes"
+          name={FIELD_INTERVAL_MINUTES}
           value={state.intervalMinutes}
           onChange={handleChange}
         />
@@ -65,7 +68,7 @@ export default function LateFeesEditor({ shop, initial }: Props) {
         )}
       </label>
       <Button className="bg-primary text-primary-foreground" disabled={saving} type="submit">
-        {saving ? "Saving…" : "Save"}
+        {saving ? t("actions.saving") : t("actions.save")}
       </Button>
     </form>
   );

@@ -5,15 +5,11 @@ import type { EditorProps } from "./EditorProps";
 // Helper to coerce lazy modules to the shared EditorProps
 // We intentionally use `any` here to allow heterogeneous editor prop types.
 const lazyEditor = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TECH-123: registry supports many editor prop shapes
   loader: () => Promise<any>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TECH-123: return type covers heterogeneous editors
 ): LazyExoticComponent<ComponentType<any>> =>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TECH-123: runtime cast for dynamic import shape
   lazy(loader) as unknown as LazyExoticComponent<ComponentType<any>>;
 
 // Heterogeneous editors with distinct, specific props; keep as `any` to avoid brittle unions.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- TECH-123: union of many editor prop types
 const editorRegistry: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   ContactForm: lazyEditor(() => import("./ContactFormEditor")),
   Gallery: lazyEditor(() => import("./GalleryEditor")),

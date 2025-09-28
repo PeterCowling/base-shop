@@ -1,0 +1,8 @@
+{
+  "density": "editorial",
+  "tiles": [
+    { "imageSrc": "/images/tile1.jpg", "caption": "New Arrivals", "ctaLabel": "Shop now", "ctaHref": "/collections/new", "badge": "buy" },
+    { "imageSrc": "/images/tile2.jpg", "caption": "Rentals", "ctaLabel": "Explore", "ctaHref": "/collections/rental", "badge": "rental" }
+  ]
+}
+

@@ -35,28 +35,26 @@ function MultilingualFieldsInner({ locales, product, onChange }: Props) {
         <Stack key={l} gap={4}>
           <h3 className="text-sm font-medium">{label[l]}</h3>
 
-          <label>
-            <Stack gap={1}>
-              <span>{t("fields.title")}</span>
-              <Input
-                name={`title_${l}`}
-                value={product.title[l]}
-                onChange={onChange}
-              />
-            </Stack>
-          </label>
+          <Stack gap={1}>
+            <label htmlFor={`title_${l}`}>{t("fields.title")}</label>
+            <Input
+              id={`title_${l}`}
+              name={`title_${l}`}
+              value={product.title[l]}
+              onChange={onChange}
+            />
+          </Stack>
 
-          <label>
-            <Stack gap={1}>
-              <span>{t("fields.description")}</span>
-              <Textarea
-                rows={4}
-                name={`desc_${l}`}
-                value={product.description[l]}
-                onChange={onChange}
-              />
-            </Stack>
-          </label>
+          <Stack gap={1}>
+            <label htmlFor={`desc_${l}`}>{t("fields.description")}</label>
+            <Textarea
+              id={`desc_${l}`}
+              rows={4}
+              name={`desc_${l}`}
+              value={product.description[l]}
+              onChange={onChange}
+            />
+          </Stack>
         </Stack>
       ))}
     </Grid>

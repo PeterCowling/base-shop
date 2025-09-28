@@ -13,6 +13,8 @@ import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useConfigurator } from "../ConfiguratorContext";
 import { useThemeLoader } from "../hooks/useThemeLoader";
+import { Inline, Cluster } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   /** Optional inner content for the step */
@@ -23,6 +25,7 @@ const emptyTranslated = () => fillLocales(undefined, "");
 
 export default function StepLayout({ children }: Props): React.JSX.Element {
   const { state, update } = useConfigurator();
+  const t = useTranslations();
   const {
     headerComponents,
     headerPageId,
@@ -81,21 +84,21 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
   const handleReturn = useCallback(() => {
     if (
       hasUnsavedChanges &&
-      !window.confirm("You have unsaved changes. Continue?")
+      !window.confirm(String(t("cms.unsavedChanges.confirm")))
     ) {
       return;
     }
     markComplete(true);
     router.push("/cms/configurator");
-  }, [hasUnsavedChanges, markComplete, router]);
+  }, [hasUnsavedChanges, markComplete, router, t]);
 
   return (
     <fieldset className="space-y-4">
-      <h2 className="text-xl font-semibold">Layout</h2>
+      <h2 className="text-xl font-semibold">{t("wizard.spec.layout")}</h2>
 
       {/* Header builder -------------------------------------------------- */}
       <div className="space-y-2">
-        <h3 className="font-medium">Header</h3>
+        <h3 className="font-medium">{t("cms.layout.header")}</h3>
         <PageBuilder
           page={
             {
@@ -128,7 +131,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
               if (data) {
                 setHeaderPageId(data.id);
                 setHeaderSaved(true);
-                setToast({ open: true, message: "Header saved" });
+                setToast({ open: true, message: String(t("cms.layout.headerSaved")) });
               } else if (error) {
                 setHeaderError(error);
               }
@@ -141,22 +144,22 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           onChange={setHeaderComponents}
           style={themeStyle}
         />
-        <div className="flex items-center gap-2 h-5">
+        <Inline gap={2} alignY="center" className="h-5">
           {headerSaving && <Spinner className="h-4 w-4" />}
           {!headerSaving && headerSaved && (
             <p className="flex items-center gap-1 text-sm text-success">
-              <CheckIcon className="h-4 w-4" /> Saved
+              <CheckIcon className="h-4 w-4" /> {t("common.saved")}
             </p>
           )}
           {!headerSaving && headerError && (
-            <Alert variant="danger" tone="soft" title={headerError} />
+            <Alert variant="danger" tone="soft" heading={headerError} />
           )}
-        </div>
+        </Inline>
       </div>
 
       {/* Footer builder -------------------------------------------------- */}
       <div className="space-y-2">
-        <h3 className="font-medium">Footer</h3>
+        <h3 className="font-medium">{t("cms.layout.footer")}</h3>
         <PageBuilder
           page={
             {
@@ -189,7 +192,7 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
               if (data) {
                 setFooterPageId(data.id);
                 setFooterSaved(true);
-                setToast({ open: true, message: "Footer saved" });
+                setToast({ open: true, message: String(t("cms.layout.footerSaved")) });
               } else if (error) {
                 setFooterError(error);
               }
@@ -202,24 +205,24 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           onChange={setFooterComponents}
           style={themeStyle}
         />
-        <div className="flex items-center gap-2 h-5">
+        <Inline gap={2} alignY="center" className="h-5">
           {footerSaving && <Spinner className="h-4 w-4" />}
           {!footerSaving && footerSaved && (
             <p className="flex items-center gap-1 text-sm text-success">
-              <CheckIcon className="h-4 w-4" /> Saved
+              <CheckIcon className="h-4 w-4" /> {t("common.saved")}
             </p>
           )}
           {!footerSaving && footerError && (
-            <Alert variant="danger" tone="soft" title={footerError} />
+            <Alert variant="danger" tone="soft" heading={footerError} />
           )}
-        </div>
+        </Inline>
       </div>
 
       {/* Additional step-specific UI ------------------------------------ */}
       {children}
 
       {/* Navigation ------------------------------------------------------ */}
-      <div className="flex justify-end">
+      <Cluster justify="end">
         <Button
           data-cy="save-return"
           onClick={handleReturn}
@@ -228,9 +231,9 @@ export default function StepLayout({ children }: Props): React.JSX.Element {
           {(headerSaving || footerSaving) && (
             <Spinner className="me-2 h-4 w-4" />
           )}
-          Save & return
+          {t("cms.configurator.actions.saveReturn")}
         </Button>
-      </div>
+      </Cluster>
       <Toast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}

@@ -48,6 +48,7 @@ export default function FormBuilderEditor({ component, onChange }: Props) {
   return (
     <div className="space-y-2">
       {fields.map((field: FormField, idx: number) => (
+        // eslint-disable-next-line react/no-array-index-key -- PB-2416: Form fields lack stable ids in schema
         <div key={idx} className="space-y-1 rounded border p-2">
           <Select
             value={field.type}

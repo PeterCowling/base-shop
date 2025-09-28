@@ -5,6 +5,7 @@ import path from "path";
 import { randomUUID } from "crypto";
 import { nowIso } from "@date-utils";
 import { validateShopName } from "@acme/lib";
+import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
 
 interface Campaign {
   id: string;
@@ -20,7 +21,7 @@ export function resolveDataRoot(): string {
   let dir = process.cwd();
   while (true) {
     const candidate = path.join(dir, "data", "shops");
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Deterministic search up from CWD for monorepo data root
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Deterministic search up from CWD for monorepo data root [EMAIL-1000]
     if (fsSync.existsSync(candidate)) return candidate;
     const parent = path.dirname(dir);
     if (parent === dir) break;
@@ -37,7 +38,7 @@ function campaignsPath(shop: string): string {
 
 export async function readCampaigns(shop: string): Promise<Campaign[]> {
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Path is DATA_ROOT/<validated shop>/campaigns.json
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Path is DATA_ROOT/<validated shop>/campaigns.json [EMAIL-1000]
     const buf = await fs.readFile(campaignsPath(shop), "utf8");
     const json = JSON.parse(buf);
     if (Array.isArray(json)) return json as Campaign[];
@@ -49,26 +50,27 @@ export async function writeCampaigns(
   shop: string,
   items: Campaign[],
 ): Promise<void> {
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- Path is DATA_ROOT/<validated shop>
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- Path is DATA_ROOT/<validated shop> [EMAIL-1000]
   await fs.mkdir(path.dirname(campaignsPath(shop)), { recursive: true });
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- Path is DATA_ROOT/<validated shop>/campaigns.json
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- Path is DATA_ROOT/<validated shop>/campaigns.json [EMAIL-1000]
   await fs.writeFile(campaignsPath(shop), JSON.stringify(items, null, 2), "utf8");
 }
 
 export async function run(argv = process.argv): Promise<void> {
+  const t = await loadTranslations("en");
   const program = new Command();
-  program.name("email").description("Email marketing CLI"); // i18n-exempt: developer CLI description
+  program.name("email").description(t("email.cli.description"));
 
-  const campaign = program.command("campaign").description("Manage campaigns"); // i18n-exempt: developer CLI description
+  const campaign = program.command("campaign").description(t("email.cli.campaign.description"));
 
   campaign
     .command("create")
     .argument("<shop>")
-    .requiredOption("--subject <subject>", "Email subject") // i18n-exempt: developer CLI flag help
-    .requiredOption("--body <html>", "HTML body") // i18n-exempt: developer CLI flag help
-    .option("--recipients <emails>", "Comma separated recipient emails") // i18n-exempt: developer CLI flag help
-    .option("--segment <segment>", "Recipient segment name") // i18n-exempt: developer CLI flag help
-    .option("--send-at <date>", "ISO send time") // i18n-exempt: developer CLI flag help
+    .requiredOption("--subject <subject>", t("email.cli.campaign.create.flags.subject")) // i18n-exempt -- EMAIL-1001 developer CLI flag signature [ttl=2026-12-31]
+    .requiredOption("--body <html>", t("email.cli.campaign.create.flags.body")) // i18n-exempt -- EMAIL-1001 developer CLI flag signature [ttl=2026-12-31]
+    .option("--recipients <emails>", t("email.cli.campaign.create.flags.recipients")) // i18n-exempt -- EMAIL-1001 developer CLI flag signature [ttl=2026-12-31]
+    .option("--segment <segment>", t("email.cli.campaign.create.flags.segment")) // i18n-exempt -- EMAIL-1001 developer CLI flag signature [ttl=2026-12-31]
+    .option("--send-at <date>", t("email.cli.campaign.create.flags.sendAt")) // i18n-exempt -- EMAIL-1001 developer CLI flag signature [ttl=2026-12-31]
     .action(async (shop, options) => {
       const campaigns = await readCampaigns(shop);
       const recipients = options.recipients
@@ -87,7 +89,7 @@ export async function run(argv = process.argv): Promise<void> {
       };
       campaigns.push(item);
       await writeCampaigns(shop, campaigns);
-      console.log(`Created campaign ${item.id}`); // i18n-exempt: developer CLI output
+      console.log(t("email.cli.campaign.create.result", { id: item.id }));
     });
 
   campaign
@@ -95,16 +97,16 @@ export async function run(argv = process.argv): Promise<void> {
     .argument("<shop>")
     .action(async (shop) => {
       const campaigns = await readCampaigns(shop);
-      console.log(JSON.stringify(campaigns, null, 2)); // i18n-exempt: developer CLI output
+      console.log(JSON.stringify(campaigns, null, 2));
     });
 
   campaign
     .command("send")
-    .description("Send due campaigns") // i18n-exempt: developer CLI description
+    .description(t("email.cli.campaign.send.description"))
     .action(async () => {
       const { sendDueCampaigns } = await import("./scheduler");
       await sendDueCampaigns();
-      console.log("Sent due campaigns"); // i18n-exempt: developer CLI output
+      console.log(t("email.cli.campaign.send.result"));
     });
 
   await program.parseAsync(argv);

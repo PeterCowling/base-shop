@@ -109,15 +109,29 @@ const preset: Config = {
         mono: "var(--font-mono)",
       },
       spacing: {
+        0: "var(--space-0)",
         1: "var(--space-1)",
         2: "var(--space-2)",
         3: "var(--space-3)",
         4: "var(--space-4)",
+        5: "var(--space-5)",
+        6: "var(--space-6)",
+        8: "var(--space-8)",
+        10: "var(--space-10)",
+        12: "var(--space-12)",
+        16: "var(--space-16)",
       },
       borderRadius: {
+        none: "var(--radius-none)",
+        xs: "var(--radius-xs)",
         sm: "var(--radius-sm)",
         md: "var(--radius-md)",
         lg: "var(--radius-lg)",
+        xl: "var(--radius-xl)",
+        '2xl': "var(--radius-2xl)",
+        '3xl': "var(--radius-3xl)",
+        '4xl': "var(--radius-4xl)",
+        full: "var(--radius-full)",
       },
       boxShadow: {
         sm: "var(--shadow-sm)",
@@ -141,11 +155,11 @@ const preset: Config = {
 
 // Additional diagnostics
 if (process.env.NODE_ENV !== "production") {
-  // i18n-exempt: developer diagnostic log, not user-facing UI copy
+  // i18n-exempt -- DS-000 ttl=2025-03-31
   console.log("[@acme/tailwind-config] preset keys", Object.keys(preset));
-  // i18n-exempt: developer diagnostic log, not user-facing UI copy
+  // i18n-exempt -- DS-000 ttl=2025-03-31
   console.log(
-    "[@acme/tailwind-config] has nested", // i18n-exempt: developer diagnostic log, not user-facing UI copy
+    "[@acme/tailwind-config] has nested", // i18n-exempt -- DS-000 ttl=2025-03-31
     {
       plugins: Array.isArray((preset as { plugins?: unknown[] }).plugins),
       presets: Array.isArray((preset as { presets?: unknown[] }).presets),

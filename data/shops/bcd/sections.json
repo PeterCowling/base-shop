@@ -1,9 +1,17 @@
 [
   {
     "id": "01JB3T6V8YQK6Z2R3A1B71STSR",
-    "label": "Starter: Text + Image Hero",
+    "label": {
+      "type": "inline",
+      "value": {
+        "en": "Starter: Text + Image Hero"
+      }
+    },
     "status": "draft",
-    "tags": ["starter", "hero"],
+    "tags": [
+      "starter",
+      "hero"
+    ],
     "thumbnail": "/hero/slide-1.jpg",
     "template": {
       "id": "01JB3T6V8Z0K6Z2R3A1B71STSS",
@@ -22,18 +30,56 @@
               "type": "StackFlex",
               "gap": "1rem",
               "children": [
-                { "id": "01JB3T6V95JK6Z2R3A1B71STSV", "type": "Text", "text": "Your big headline" },
-                { "id": "01JB3T6V96JK6Z2R3A1B71STSW", "type": "Text", "text": "A short supporting subheading to explain the value." },
-                { "id": "01JB3T6V97JK6Z2R3A1B71STSX", "type": "Button", "label": "Shop now", "href": "/shop", "variant": "default", "size": "md" }
+                {
+                  "id": "01JB3T6V95JK6Z2R3A1B71STSV",
+                  "type": "Text",
+                  "text": {
+                    "type": "inline",
+                    "value": {
+                      "en": "Your big headline"
+                    }
+                  }
+                },
+                {
+                  "id": "01JB3T6V96JK6Z2R3A1B71STSW",
+                  "type": "Text",
+                  "text": {
+                    "type": "inline",
+                    "value": {
+                      "en": "A short supporting subheading to explain the value."
+                    }
+                  }
+                },
+                {
+                  "id": "01JB3T6V97JK6Z2R3A1B71STSX",
+                  "type": "Button",
+                  "label": {
+                    "type": "inline",
+                    "value": {
+                      "en": "Shop now"
+                    }
+                  },
+                  "href": "/shop",
+                  "variant": "default",
+                  "size": "md"
+                }
               ]
             },
             {
               "id": "01JB3T6V98JK6Z2R3A1B71STSY",
               "type": "Image",
               "src": "/hero/slide-1.jpg",
-              "alt": "Hero image",
+              "alt": {
+                "type": "inline",
+                "value": {
+                  "en": "Hero image"
+                }
+              },
               "cropAspect": "16:9",
-              "focalPoint": { "x": 0.5, "y": 0.5 }
+              "focalPoint": {
+                "x": 0.5,
+                "y": 0.5
+              }
             }
           ]
         }
@@ -45,9 +91,17 @@
   },
   {
     "id": "01JB3T8K2ZQK6Z2R3A1B71STT0",
-    "label": "Starter: Image Left + Text",
+    "label": {
+      "type": "inline",
+      "value": {
+        "en": "Starter: Image Left + Text"
+      }
+    },
     "status": "draft",
-    "tags": ["starter", "hero"],
+    "tags": [
+      "starter",
+      "hero"
+    ],
     "thumbnail": "/hero/slide-2.jpg",
     "template": {
       "id": "01JB3T8K2Z1K6Z2R3A1B71STT1",
@@ -65,18 +119,56 @@
               "id": "01JB3T8K2Z3K6Z2R3A1B71STT3",
               "type": "Image",
               "src": "/hero/slide-2.jpg",
-              "alt": "Hero image",
+              "alt": {
+                "type": "inline",
+                "value": {
+                  "en": "Hero image"
+                }
+              },
               "cropAspect": "16:9",
-              "focalPoint": { "x": 0.5, "y": 0.5 }
+              "focalPoint": {
+                "x": 0.5,
+                "y": 0.5
+              }
             },
             {
               "id": "01JB3T8K2Z4K6Z2R3A1B71STT4",
               "type": "StackFlex",
               "gap": "1rem",
               "children": [
-                { "id": "01JB3T8K2Z5K6Z2R3A1B71STT5", "type": "Text", "text": "Tell your story with a bold headline" },
-                { "id": "01JB3T8K2Z6K6Z2R3A1B71STT6", "type": "Text", "text": "Swap image/text order or adjust spacing in the builder." },
-                { "id": "01JB3T8K2Z7K6Z2R3A1B71STT7", "type": "Button", "label": "Get started", "href": "/shop", "variant": "outline", "size": "md" }
+                {
+                  "id": "01JB3T8K2Z5K6Z2R3A1B71STT5",
+                  "type": "Text",
+                  "text": {
+                    "type": "inline",
+                    "value": {
+                      "en": "Tell your story with a bold headline"
+                    }
+                  }
+                },
+                {
+                  "id": "01JB3T8K2Z6K6Z2R3A1B71STT6",
+                  "type": "Text",
+                  "text": {
+                    "type": "inline",
+                    "value": {
+                      "en": "Swap image/text order or adjust spacing in the builder."
+                    }
+                  }
+                },
+                {
+                  "id": "01JB3T8K2Z7K6Z2R3A1B71STT7",
+                  "type": "Button",
+                  "label": {
+                    "type": "inline",
+                    "value": {
+                      "en": "Get started"
+                    }
+                  },
+                  "href": "/shop",
+                  "variant": "outline",
+                  "size": "md"
+                }
               ]
             }
           ]
@@ -89,9 +181,18 @@
   },
   {
     "id": "01JB3TAE4DQK6Z2R3A1B71STUA",
-    "label": "Starter: Centered Text + CTA",
+    "label": {
+      "type": "inline",
+      "value": {
+        "en": "Starter: Centered Text + CTA"
+      }
+    },
     "status": "draft",
-    "tags": ["starter", "hero", "centered"],
+    "tags": [
+      "starter",
+      "hero",
+      "centered"
+    ],
     "thumbnail": "/hero/slide-3.jpg",
     "template": {
       "id": "01JB3TAE4D1K6Z2R3A1B71STUB",
@@ -108,9 +209,39 @@
           "justify": "center",
           "align": "center",
           "children": [
-            { "id": "01JB3TAE4D3K6Z2R3A1B71STUD", "type": "Text", "text": "Welcome to your new storefront" },
-            { "id": "01JB3TAE4D4K6Z2R3A1B71STUE", "type": "Text", "text": "Use this starter to create a simple centered hero with a clear call to action." },
-            { "id": "01JB3TAE4D5K6Z2R3A1B71STUF", "type": "Button", "label": "Browse products", "href": "/shop", "variant": "default", "size": "md" }
+            {
+              "id": "01JB3TAE4D3K6Z2R3A1B71STUD",
+              "type": "Text",
+              "text": {
+                "type": "inline",
+                "value": {
+                  "en": "Welcome to your new storefront"
+                }
+              }
+            },
+            {
+              "id": "01JB3TAE4D4K6Z2R3A1B71STUE",
+              "type": "Text",
+              "text": {
+                "type": "inline",
+                "value": {
+                  "en": "Use this starter to create a simple centered hero with a clear call to action."
+                }
+              }
+            },
+            {
+              "id": "01JB3TAE4D5K6Z2R3A1B71STUF",
+              "type": "Button",
+              "label": {
+                "type": "inline",
+                "value": {
+                  "en": "Browse products"
+                }
+              },
+              "href": "/shop",
+              "variant": "default",
+              "size": "md"
+            }
           ]
         }
       ]

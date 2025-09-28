@@ -21,44 +21,46 @@ function formatTime(ts?: string) {
 }
 
 function renderMessage(text: string) {
-  const parts: (string | { type: "img"; alt: string; url: string })[] = [];
+  type TextPart = { kind: "text"; start: number; text: string };
+  type ImgPart = { kind: "img"; start: number; alt: string; url: string };
+  const parts: Array<TextPart | ImgPart> = [];
   const imgRe = /!\[([^\]]*)\]\((https?:\/\/[^)\s]+)\)/g;
   let lastIndex = 0;
   let match: RegExpExecArray | null;
   while ((match = imgRe.exec(text))) {
     const [full, alt, url] = match;
-    if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
-    parts.push({ type: "img", alt, url });
+    if (match.index > lastIndex) parts.push({ kind: "text", start: lastIndex, text: text.slice(lastIndex, match.index) });
+    parts.push({ kind: "img", start: match.index, alt, url });
     lastIndex = match.index + full.length;
   }
-  if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+  if (lastIndex < text.length) parts.push({ kind: "text", start: lastIndex, text: text.slice(lastIndex) });
 
   const linkRe = /(https?:\/\/[^\s]+)/g;
-  const nodes = parts.flatMap((p, i) => {
-    if (typeof p !== "string") {
+  const nodes = parts.flatMap((p) => {
+    if (p.kind === "img") {
       // Constrain via fixed-height container and use Next/Image fill+contain
       return (
-        <div key={`img-${i}`} className="my-1 relative w-full h-48 overflow-hidden rounded border">
+        <div key={`img-${p.start}-${p.url}`} className="my-1 relative w-full h-48 overflow-hidden rounded border">
           <Image src={p.url} alt={p.alt || "image"} fill className="object-contain" />
         </div>
       );
     }
     const chunks: (string | React.ReactElement)[] = [];
     let li = 0, m: RegExpExecArray | null;
-    while ((m = linkRe.exec(p))) {
+    while ((m = linkRe.exec(p.text))) {
       const [full, url] = m;
-      if (m.index > li) chunks.push(p.slice(li, m.index));
+      if (m.index > li) chunks.push(p.text.slice(li, m.index));
       chunks.push(
-        <LinkText key={`a-${i}-${m.index}`} href={url} target="_blank" rel="noreferrer">
+        <LinkText key={`a-${p.start + m.index}`} href={url} target="_blank" rel="noreferrer">
           {full}
         </LinkText>
       );
       li = m.index + full.length;
     }
-    if (li < p.length) chunks.push(p.slice(li));
-    return <span key={`t-${i}`}>{chunks}</span>;
+    if (li < p.text.length) chunks.push(p.text.slice(li));
+    return <span key={`t-${p.start}`}>{chunks}</span>;
   });
-  return <>{nodes}</>;
+  return nodes;
 }
 
 export interface CommentsThreadDetailsProps {
@@ -264,16 +266,20 @@ export default function CommentsThreadDetails({
           {mentionOpen && mentionMatches.length > 0 && (
             <div className="absolute bottom-2 start-2 max-h-40 w-48 overflow-y-auto rounded border border-border-2 bg-surface-2 text-sm shadow">
               {mentionMatches.map((p, idx) => (
-                <div
+                <button
                   key={p}
-                  className={`cursor-pointer px-2 py-1 hover:bg-surface-3 ${idx === mentionIndex ? "bg-surface-3" : ""}`}
+                  type="button"
+                  className={`w-full cursor-pointer px-2 py-1 text-left hover:bg-surface-3 ${idx === mentionIndex ? "bg-surface-3" : ""}`}
                   onMouseDown={(e) => {
+                    // Prevent textarea blur before click fires
                     e.preventDefault();
+                  }}
+                  onClick={() => {
                     insertMention(p);
                   }}
                 >
                   @{p}
-                </div>
+                </button>
               ))}
             </div>
           )}

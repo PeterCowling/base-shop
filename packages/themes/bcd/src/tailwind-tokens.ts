@@ -1,3 +1,4 @@
+/* i18n-exempt file -- CHORE-0000 design token map; not user-facing copy [ttl=2026-12-31] */
 // packages/themes/bcd/tailwind-tokens.ts
 //
 // Default design token overrides for the BCD theme.
@@ -30,9 +31,9 @@ export const tokens = {
   "--radius-sm": "4px",
   "--radius-md": "8px",
   "--radius-lg": "12px",
-  "--shadow-sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)",
+  "--shadow-sm": "0 1px 2px 0 rgb(0 0 0 / 0.05)", // i18n-exempt: design token, not user-facing copy
   "--shadow-md":
-    "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)", // i18n-exempt: design token, not user-facing copy
   "--shadow-lg":
-    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)", // i18n-exempt: design token, not user-facing copy
 } as const;

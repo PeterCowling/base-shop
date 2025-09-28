@@ -1,4 +1,20 @@
 [
-  { "label": "Home", "href": "/" },
-  { "label": "Shop", "href": "/shop" }
+  {
+    "label": {
+      "type": "inline",
+      "value": {
+        "en": "Home"
+      }
+    },
+    "href": "/"
+  },
+  {
+    "label": {
+      "type": "inline",
+      "value": {
+        "en": "Shop"
+      }
+    },
+    "href": "/shop"
+  }
 ]

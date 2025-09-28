@@ -1,0 +1,18 @@
+/* apps/cms/src/app/utilities.a11y.css
+   Utility classes for pointer target sizing and resilient layout */
+
+/* Pointer target sizing — rely on DS tokens */
+.min-target-aa { min-width: var(--target-min-aa); min-height: var(--target-min-aa); }
+.min-target-hig { min-width: var(--target-hig); min-height: var(--target-hig); }
+.min-target-material { min-width: var(--target-material); min-height: var(--target-material); }
+
+/* Resilient grid pattern: repeat(auto-fit, minmax()) */
+.ds-grid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+}
+
+/* Container‑query friendly container for CMS editable regions */
+.ds-container { container-type: inline-size; }
+

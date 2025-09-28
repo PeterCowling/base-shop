@@ -108,11 +108,11 @@ export async function emitClick(shop: string, payload: HookPayload): Promise<voi
 }
 
 async function track(shop: string, data: AnalyticsEvent): Promise<void> {
-  const { trackEvent } = await import("@platform-core/analytics");
+  const { trackEvent } = await import("@platform-core/analytics"); // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
   await trackEvent(shop, data);
 }
 
 // default analytics listeners
-onSend((shop, { campaign }) => track(shop, { type: "email_sent", campaign })); // i18n-exempt: analytics event type identifier
-onOpen((shop, { campaign }) => track(shop, { type: "email_open", campaign })); // i18n-exempt: analytics event type identifier
-onClick((shop, { campaign }) => track(shop, { type: "email_click", campaign })); // i18n-exempt: analytics event type identifier
+onSend((shop, { campaign }) => track(shop, { type: "email_sent", campaign })); // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+onOpen((shop, { campaign }) => track(shop, { type: "email_open", campaign })); // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+onClick((shop, { campaign }) => track(shop, { type: "email_click", campaign })); // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]

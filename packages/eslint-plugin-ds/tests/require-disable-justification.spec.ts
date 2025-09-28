@@ -1,7 +1,6 @@
 import { RuleTester } from "eslint";
 
 // ESLint@9 RuleTester uses structuredClone in some Node versions; provide minimal polyfill
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 (globalThis as any).structuredClone = (globalThis as any).structuredClone || ((v: any) => JSON.parse(JSON.stringify(v)));
 
 const rule = require("../src/rules/require-disable-justification.ts").default as typeof import("../src/rules/require-disable-justification").default;

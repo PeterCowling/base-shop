@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import type { ConfiguratorHeroData } from "../hooks/useConfiguratorDashboardState";
+import { Grid } from "@ui/components/atoms/primitives";
 import { ButtonElement, ProgressBar } from "./DashboardPrimitives";
+import { useTranslations } from "@acme/i18n";
 
 type ConfiguratorHeroProps = ConfiguratorHeroData;
 
@@ -13,14 +15,15 @@ export function ConfiguratorHero({
   resumeCta,
   quickStats,
 }: ConfiguratorHeroProps) {
+  const t = useTranslations();
   return (
     <div className="space-y-6">
       <div className="space-y-2">
-        <span className="text-xs font-semibold uppercase tracking-[0.35em] text-hero-foreground/80">
-          Shop Configurator
+        <span className="text-xs font-semibold uppercase tracking-widest text-hero-foreground/80">
+          {t("cms.configurator.hero.kicker")}
         </span>
         <h1 className="text-3xl font-semibold md:text-4xl">
-          Build or Edit the Storefront Configuration
+          {t("cms.configurator.hero.title")}
         </h1>
         <p className="text-hero-foreground/80">{description}</p>
       </div>
@@ -42,12 +45,12 @@ export function ConfiguratorHero({
             className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
           >
             <Link href="#configurator-steps">
-              Browse all steps
+              {t("cms.configurator.hero.browseAllSteps")}
             </Link>
           </ButtonElement>
         </div>
       </div>
-      <div className="grid gap-3 sm:grid-cols-3">
+      <Grid cols={1} gap={3} className="sm:grid-cols-3">
         {quickStats.map((stat) => (
           <div
             key={stat.label}
@@ -60,7 +63,7 @@ export function ConfiguratorHero({
             <p className="text-xs text-muted-foreground">{stat.caption}</p>
           </div>
         ))}
-      </div>
+      </Grid>
     </div>
   );
 }

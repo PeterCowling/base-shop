@@ -1,30 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { z } from "zod";
 import { Button, Card, CardContent, Input, Textarea } from "@ui/components/atoms";
+import { Grid, Inline, Cluster } from "@ui/components/atoms/primitives";
 import { FormField } from "@ui/components/molecules";
+import { useTranslations } from "@acme/i18n";
 import type { ActionResult } from "../../components/actionResult";
 
-const filterSchema = z.object({
-  field: z.string().min(1, "Choose a filter field."),
-  value: z.string().min(1, "Provide a filter value."),
-});
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_SEGMENT_SHOP = "segment-shop";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_SEGMENT_ID = "segment-id";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_SEGMENT_NAME = "segment-name";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_SEGMENT_NOTES = "segment-notes";
 
-const formSchema = z
-  .object({
-    shop: z.string().min(1, "Enter the shop slug."),
-    id: z.string().min(1, "Provide a unique segment ID."),
-    name: z.string().min(1, "Give the segment a human readable name."),
-    filters: z.array(filterSchema).min(1, "Add at least one filter."),
-  })
-  .transform((data) => ({
-    ...data,
-    filters: data.filters.map((filter) => ({
-      field: filter.field.trim(),
-      value: filter.value.trim(),
-    })),
-  }));
+function createSchemas(t: ReturnType<typeof useTranslations>) {
+  const filterSchema = z.object({
+    field: z.string().min(1, t("cms.marketing.segmentDesigner.errors.filter.field.required") as string),
+    value: z.string().min(1, t("cms.marketing.segmentDesigner.errors.filter.value.required") as string),
+  });
+
+  const formSchema = z
+    .object({
+      shop: z.string().min(1, t("cms.marketing.segmentDesigner.errors.shop.required") as string),
+      id: z.string().min(1, t("cms.marketing.segmentDesigner.errors.id.required") as string),
+      name: z.string().min(1, t("cms.marketing.segmentDesigner.errors.name.required") as string),
+      filters: z
+        .array(filterSchema)
+        .min(1, t("cms.marketing.segmentDesigner.errors.filters.required") as string),
+    })
+    .transform((data) => ({
+      ...data,
+      filters: data.filters.map((filter) => ({
+        field: filter.field.trim(),
+        value: filter.value.trim(),
+      })),
+    }));
+
+  return { filterSchema, formSchema };
+}
 
 type FormErrors = Partial<Record<"shop" | "id" | "name" | `filters.${number}.field` | `filters.${number}.value`, string>>;
 
@@ -33,18 +50,47 @@ interface FilterRow {
   value: string;
 }
 
-const filterOptions = [
-  { label: "Event type", value: "type", helper: "Matches analytics event types such as email_open or purchase." },
-  { label: "Tag", value: "tag", helper: "Matches contact tags synced from ESPs." },
-  { label: "Source", value: "source", helper: "Matches acquisition source from UTM parameters." },
-];
+interface FilterOptionDef {
+  label: string;
+  value: string;
+  helper: string;
+}
+
+type SegmentPayload = {
+  shop: string;
+  id: string;
+  name: string;
+  filters: { field: string; value: string }[];
+};
 
 export interface SegmentDesignerProps {
-  saveSegment: (payload: z.infer<typeof formSchema>) => Promise<ActionResult>;
+  saveSegment: (payload: SegmentPayload) => Promise<ActionResult>;
   onNotify: (result: ActionResult) => void;
 }
 
 export function SegmentDesigner({ saveSegment, onNotify }: SegmentDesignerProps) {
+  const t = useTranslations();
+  const { formSchema } = useMemo(() => createSchemas(t), [t]);
+  const filterOptions: FilterOptionDef[] = useMemo(
+    () => [
+      {
+        label: String(t("cms.marketing.segmentDesigner.option.type.label")),
+        value: "type",
+        helper: String(t("cms.marketing.segmentDesigner.option.type.helper")),
+      },
+      {
+        label: String(t("cms.marketing.segmentDesigner.option.tag.label")),
+        value: "tag",
+        helper: String(t("cms.marketing.segmentDesigner.option.tag.helper")),
+      },
+      {
+        label: String(t("cms.marketing.segmentDesigner.option.source.label")),
+        value: "source",
+        helper: String(t("cms.marketing.segmentDesigner.option.source.helper")),
+      },
+    ],
+    [t]
+  );
   const [form, setForm] = useState({ shop: "", id: "", name: "" });
   const [filters, setFilters] = useState<FilterRow[]>([{ field: "type", value: "" }]);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -102,56 +148,75 @@ export function SegmentDesigner({ saveSegment, onNotify }: SegmentDesignerProps)
     <Card>
       <CardContent className="space-y-6">
         <header className="space-y-1">
-          <h2 className="text-lg font-semibold text-foreground">Segment builder</h2>
-          <p className="text-sm text-muted-foreground">
-            Define rules using analytics events, tags, or custom metadata. Segments refresh nightly.
-          </p>
+          <h2 className="text-lg font-semibold text-foreground">{t("cms.marketing.segmentDesigner.title")}</h2>
+          <p className="text-sm text-muted-foreground">{t("cms.marketing.segmentDesigner.subtitle")}</p>
         </header>
         <form className="space-y-4" onSubmit={handleSubmit} noValidate>
-          <div className="grid gap-4 md:grid-cols-3">
-            <FormField label="Shop" htmlFor="segment-shop" error={errors.shop} required>
+          <Grid gap={4} className="md:grid-cols-3">
+            <FormField
+              label={String(t("cms.marketing.segmentDesigner.fields.shop.label"))}
+              htmlFor={ID_SEGMENT_SHOP}
+              error={errors.shop}
+              required
+            >
               <Input
-                id="segment-shop"
-                placeholder="bcd"
+                id={ID_SEGMENT_SHOP}
+                placeholder={String(t("cms.marketing.segmentDesigner.fields.shop.placeholder"))}
                 value={form.shop}
                 onChange={(event) => updateField("shop", event.target.value)}
               />
-              <p className="text-xs text-muted-foreground">Use a shop slug to scope analytics data.</p>
+              <p className="text-xs text-muted-foreground">
+                {t("cms.marketing.segmentDesigner.fields.shop.help")}
+              </p>
             </FormField>
-            <FormField label="Segment ID" htmlFor="segment-id" error={errors.id} required>
+            <FormField
+              label={String(t("cms.marketing.segmentDesigner.fields.segmentId.label"))}
+              htmlFor={ID_SEGMENT_ID}
+              error={errors.id}
+              required
+            >
               <Input
-                id="segment-id"
-                placeholder="vip-subscribers"
+                id={ID_SEGMENT_ID}
+                placeholder={String(t("cms.marketing.segmentDesigner.fields.segmentId.placeholder"))}
                 value={form.id}
                 onChange={(event) => updateField("id", event.target.value)}
               />
               <p className="text-xs text-muted-foreground">
-                This identifier syncs to the email service provider and must be unique per shop.
+                {t("cms.marketing.segmentDesigner.fields.segmentId.help")}
               </p>
             </FormField>
-            <FormField label="Name" htmlFor="segment-name" error={errors.name} required>
+            <FormField
+              label={String(t("cms.marketing.segmentDesigner.fields.name.label"))}
+              htmlFor={ID_SEGMENT_NAME}
+              error={errors.name}
+              required
+            >
               <Input
-                id="segment-name"
-                placeholder="VIP subscribers"
+                id={ID_SEGMENT_NAME}
+                placeholder={String(t("cms.marketing.segmentDesigner.fields.name.placeholder"))}
                 value={form.name}
                 onChange={(event) => updateField("name", event.target.value)}
               />
-              <p className="text-xs text-muted-foreground">Shown in composer dropdowns and dashboards.</p>
+              <p className="text-xs text-muted-foreground">
+                {t("cms.marketing.segmentDesigner.fields.name.help")}
+              </p>
             </FormField>
-          </div>
+          </Grid>
 
           <div className="space-y-3">
-            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Filters</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              {t("cms.marketing.segmentDesigner.filters.title")}
+            </h3>
             <p className="text-xs text-muted-foreground">
-              Combine filters with AND logic. Multiple segments can be created to support different lifecycle stages.
+              {t("cms.marketing.segmentDesigner.filters.subtitle")}
             </p>
             <div className="space-y-4">
               {filters.map((filter, index) => {
                 const helper = filterOptions.find((option) => option.value === filter.field)?.helper;
                 return (
-                  <div key={index} className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)_auto]">
+                  <Grid key={index} gap={4} className="md:grid-cols-3">
                     <FormField
-                      label="Field"
+                      label={String(t("cms.marketing.segmentDesigner.filters.field.label"))}
                       htmlFor={`segment-filter-field-${index}`}
                       error={errors[`filters.${index}.field`]}
                       required
@@ -170,20 +235,21 @@ export function SegmentDesigner({ saveSegment, onNotify }: SegmentDesignerProps)
                       </select>
                     </FormField>
                     <FormField
-                      label="Value"
+                      label={String(t("cms.marketing.segmentDesigner.filters.value.label"))}
                       htmlFor={`segment-filter-value-${index}`}
                       error={errors[`filters.${index}.value`]}
                       required
+                      className="md:col-span-2"
                     >
                       <Input
                         id={`segment-filter-value-${index}`}
-                        placeholder="purchase"
+                        placeholder={String(t("cms.marketing.segmentDesigner.filters.value.placeholder"))}
                         value={filter.value}
                         onChange={(event) => updateFilter(index, "value", event.target.value)}
                       />
                       {helper && <p className="text-xs text-muted-foreground">{helper}</p>}
                     </FormField>
-                    <div className="flex items-end justify-end">
+                    <Inline alignY="end" className="justify-end">
                       {filters.length > 1 && (
                         <Button
                           type="button"
@@ -191,35 +257,40 @@ export function SegmentDesigner({ saveSegment, onNotify }: SegmentDesignerProps)
                           className="text-xs text-destructive"
                           onClick={() => removeFilter(index)}
                         >
-                          Remove
+                          {t("cms.marketing.segmentDesigner.filters.remove")}
                         </Button>
                       )}
-                    </div>
-                  </div>
+                    </Inline>
+                  </Grid>
                 );
               })}
             </div>
             <Button type="button" variant="outline" className="h-9 px-3 text-sm" onClick={addFilter}>
-              Add filter
+              {t("cms.marketing.segmentDesigner.filters.add")}
             </Button>
           </div>
 
-          <FormField label="Notes" htmlFor="segment-notes">
+          <FormField
+            label={String(t("cms.marketing.segmentDesigner.notes.label"))}
+            htmlFor={ID_SEGMENT_NOTES}
+          >
             <Textarea
-              id="segment-notes"
+              id={ID_SEGMENT_NOTES}
               rows={3}
-              placeholder="Optional context for your marketing team"
-              value="Segments save automatically and can be reused across email and discount workflows."
+              placeholder={String(t("cms.marketing.segmentDesigner.notes.placeholder"))}
+              value={String(t("cms.marketing.segmentDesigner.notes.value"))}
               readOnly
               className="resize-none text-sm text-muted-foreground"
             />
           </FormField>
 
-          <div className="flex justify-end">
+          <Cluster justify="end">
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Saving…" : "Save segment"}
+              {isSubmitting
+                ? t("cms.marketing.segmentDesigner.submit.saving")
+                : t("cms.marketing.segmentDesigner.submit.save")}
             </Button>
-          </div>
+          </Cluster>
         </form>
       </CardContent>
     </Card>

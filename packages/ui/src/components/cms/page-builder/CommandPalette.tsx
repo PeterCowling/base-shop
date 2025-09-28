@@ -10,9 +10,10 @@ import { canDropChild, getAllowedChildren, isTopLevelAllowed, type ParentKind } 
 import type { Action } from "./state/layout/types";
 import { atomRegistry, moleculeRegistry, organismRegistry, containerRegistry, layoutRegistry } from "../blocks";
 
-// i18n-exempt — internal builder tool; copy is minimal and non-user-facing
+// i18n-exempt — internal builder tool; generic labels remain local
 /* i18n-exempt */
 const t = (s: string) => s;
+import { useTranslations } from "@acme/i18n";
 
 type Props = {
   open: boolean;
@@ -68,6 +69,7 @@ function findParentInfo(
 }
 
 export default function CommandPalette({ open, onOpenChange, components, selectedIds, dispatch, onSelectIds }: Props) {
+  const T = useTranslations() as unknown as (key: string, vars?: Record<string, unknown>) => string;
   const [q, setQ] = useState("");
   const inputRef = useRef<HTMLInputElement | null>(null);
   const all = usePalette();
@@ -133,7 +135,7 @@ export default function CommandPalette({ open, onOpenChange, components, selecte
     const ok = parentId ? canDropChild(parentType, type) : isTopLevelAllowed(type);
     if (!ok) {
       try {
-        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t(`Cannot place ${type} here`) }));
+        window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(T("pb.toast.cannotPlaceHere", { type })) }));
       } catch {}
       return;
     }

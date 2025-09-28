@@ -11,6 +11,13 @@ import { Price } from "../atoms/Price";
 const meta: Meta<typeof OrderSummary> = {
   title: "Organisms/Order Summary",
   component: OrderSummary,
+  parameters: {
+    docs: {
+      description: {
+        component: "Summarizes cart totals (subtotal, shipping, tax, discounts) from CartContext. Useful within checkout and cart pages.",
+      },
+    },
+  },
 };
 
 export default meta;

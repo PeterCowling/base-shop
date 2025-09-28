@@ -4,23 +4,25 @@ import dynamic from "next/dynamic";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 import type SectionBuilderComponent from "@ui/components/cms/SectionBuilder";
-import type { SectionTemplate } from "@acme/types";
+import type { SectionTemplate, PageComponent } from "@acme/types";
 import { createSection } from "@cms/actions/sections/create";
+import { useTranslations as getTranslations } from "@acme/i18n";
 
 type SectionBuilderProps = React.ComponentProps<typeof SectionBuilderComponent>;
-const SectionBuilder = dynamic<SectionBuilderProps>(() => import("@ui/components/cms/SectionBuilder"));
+const SectionBuilder = dynamic<SectionBuilderProps>(() => import("@ui/components/cms/SectionBuilder")); // i18n-exempt -- CMS-0001 module path string; non-UI [ttl=2026-12-31]
 void SectionBuilder;
 
 export const revalidate = 0;
 
 export default async function NewSectionBuilderRoute({ params }: { params: Promise<{ shop: string }> }) {
   const { shop } = await params;
+  const t = await getTranslations("en");
   const now = nowIso();
   const blank: SectionTemplate = {
     id: ulid(),
-    label: "Untitled Section",
+    label: String(t("cms.sections.new.untitledLabel")),
     status: "draft",
-    template: { id: ulid(), type: "Section", children: [] } as any,
+    template: { id: ulid(), type: "Section", children: [] } as PageComponent,
     createdAt: now,
     updatedAt: now,
     createdBy: "",
@@ -39,7 +41,7 @@ export default async function NewSectionBuilderRoute({ params }: { params: Promi
 
   return (
     <>
-      <h1 className="mb-6 text-2xl font-semibold">New section - {shop}</h1>
+      <h1 className="mb-6 text-2xl font-semibold">{t("cms.sections.new.title", { shop })}</h1>
       <SectionBuilder template={blank} onSave={save} onPublish={publish} />
     </>
   );

@@ -7,8 +7,9 @@ import { useConfiguratorPersistence } from "./useConfiguratorPersistence";
 import { useLaunchShop } from "./useLaunchShop";
 import { calculateConfiguratorProgress } from "../lib/progress";
 import { useLayout } from "@platform-core/contexts/LayoutContext";
-import { getSteps, steps as configuratorSteps } from "../steps";
-import type { ConfiguratorHeroData, LaunchErrorLink, LaunchPanelData, QuickStat, TrackProgressItem } from "./dashboard/types";
+import { getSteps, getStepsMap } from "../steps";
+import { useTranslations } from "@acme/i18n";
+import type { ConfiguratorHeroData, LaunchErrorLink, LaunchPanelData, TrackProgressItem } from "./dashboard/types";
 import { computeStepGroups } from "./dashboard/stepGroups";
 import { buildHeroData } from "./dashboard/heroData";
 import { buildTrackProgress } from "./dashboard/trackProgress";
@@ -73,7 +74,9 @@ export function useConfiguratorDashboardState(): {
   }, [fetchState]);
 
   const [markStepComplete] = useConfiguratorPersistence(state, setState);
-  const steps = useMemo(() => getSteps(), []);
+  const t = useTranslations();
+  const steps = useMemo(() => getSteps(t), [t]);
+  const stepMap = useMemo(() => getStepsMap(t), [t]);
 
   // Avoid progress update loops by only updating when values actually change
   const lastProgressRef = useRef<ReturnType<typeof calculateConfiguratorProgress> | undefined>(undefined);
@@ -123,12 +126,12 @@ export function useConfiguratorDashboardState(): {
         setToast({
           open: true,
           message: `Recommended to complete: ${missing
-            .map((id) => configuratorSteps[id]?.label ?? id)
+            .map((id) => stepMap[id]?.label ?? id)
             .join(", ")}`,
         });
       }
     },
-    [setToast, state?.completed]
+    [setToast, state?.completed, stepMap]
   );
 
   const {
@@ -153,14 +156,14 @@ export function useConfiguratorDashboardState(): {
     [steps, state.completed]
   );
 
-  const { heroData, quickStats } = useMemo(
+  const { heroData } = useMemo(
     () => buildHeroData(groups, allRequiredDone, onStepClick),
     [groups, allRequiredDone, onStepClick]
   );
 
   const trackProgress: TrackProgressItem[] = useMemo(
-    () => buildTrackProgress(steps, state.completed),
-    [steps, state.completed]
+    () => buildTrackProgress(steps, state.completed, t),
+    [steps, state.completed, t]
   );
 
   const failedStepLink = useMemo<LaunchErrorLink | null>(

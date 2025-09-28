@@ -1,4 +1,4 @@
-import "server-only";
+import "server-only"; // i18n-exempt: module side-effect import [EMAIL-1000]
 import { createRequire } from "module";
 import type { ReactElement, ReactNode } from "react";
 import createDOMPurify from "dompurify";
@@ -128,13 +128,13 @@ export function renderTemplate(
         footer: React.createElement(
           "p",
           null,
-          params.footer ?? "%%UNSUBSCRIBE%%"
+          params.footer ?? "%%UNSUBSCRIBE%%" // i18n-exempt -- EMAIL-201 provider token placeholder; replaced at send time [ttl=2026-03-31]
         ),
       })
     );
   }
 
-  throw new Error(`Unknown template: ${id}`); // i18n-exempt: developer error for missing template
+  throw new Error(`Unknown template: ${id}`); // i18n-exempt -- EMAIL-201 developer error for missing template [ttl=2026-03-31]
 }
 
 // Export the React reference for testing purposes.

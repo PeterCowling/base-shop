@@ -27,12 +27,12 @@ function ScrollWrapper(args: React.ComponentProps<typeof StickyAddToCartBar>) {
   };
   return (
     <div onScroll={onScroll} className="relative h-64 overflow-y-auto border">
-      <div style={{ height: "200px" }} />
+      <div className="h-52" />
       <StickyAddToCartBar
         {...args}
-        style={{ position: sticky ? "sticky" : "static", bottom: 0 }}
+        className={sticky ? "sticky bottom-0" : undefined}
       />
-      <div style={{ height: "300px" }} />
+      <div className="h-72" />
     </div>
   );
 }

@@ -26,7 +26,6 @@ export default function ButtonEditor({ component, onChange }: Props) {
     <>
       <input
         type="hidden"
-        aria-hidden="true"
         value={component.variant ?? ""}
         onInput={handleHiddenVariantInput}
         onChange={handleHiddenVariantInput}

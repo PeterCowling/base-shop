@@ -32,7 +32,7 @@ export default function TabsBlock({
         {labels.map((label, i) => (
           <button
             type="button"
-            key={i}
+            key={label}
             onClick={() => setCurrent(i)}
             onKeyDown={(e) => {
               // i18n-exempt -- Keyboard event key identifiers, not UI copy

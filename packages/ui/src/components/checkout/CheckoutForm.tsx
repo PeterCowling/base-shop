@@ -70,7 +70,7 @@ export default function CheckoutForm({
             setFetchError(true);
           }
         } else {
-          console.error("An unknown error occurred"); // i18n-exempt: dev log only
+          console.error("An unknown error occurred"); // i18n-exempt -- ABC-123 dev log only [ttl=2026-01-31]
           setFetchError(true);
         }
       }
@@ -86,7 +86,7 @@ export default function CheckoutForm({
     if (fetchError)
       return (
         <div className="space-y-3">
-          <Alert variant="danger" tone="soft" title={t("checkout.loadError") as string} />
+          <Alert variant="danger" tone="soft" heading={t("checkout.loadError") as string} />
           <Button
             type="button"
             color="primary"
@@ -184,10 +184,10 @@ function PaymentForm({
         <Alert
           variant="danger"
           tone="soft"
-          title={errors.returnDate.message as string}
+          heading={errors.returnDate.message as string}
         />
       )}
-      {error && <Alert variant="danger" tone="soft" title={error} />}
+      {error && <Alert variant="danger" tone="soft" heading={error} />}
       <Button type="submit" disabled={!stripe || processing} className="w-full" color="primary" tone="solid">
         {processing ? t("checkout.processing") : t("checkout.pay")}
       </Button>

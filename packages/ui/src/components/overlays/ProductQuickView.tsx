@@ -1,8 +1,9 @@
-"use client";
+"use client"; // i18n-exempt: Next.js directive string, not user-facing copy
 import * as React from "react";
 import { Dialog, DialogContent, Button } from "../atoms/shadcn";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "../organisms/ProductCard";
+import { useTranslations } from "@acme/i18n";
 
 export interface ProductQuickViewProps {
   /** Product to display */
@@ -25,6 +26,11 @@ export function ProductQuickView({
   container,
   onAddToCart,
 }: ProductQuickViewProps) {
+  const t = useTranslations();
+  // i18n-exempt: data-cy attributes are test-only and not user-facing
+  const DCY_QUICK_VIEW = "quick-view" as const;
+  // i18n-exempt: data-cy attributes are test-only and not user-facing
+  const DCY_CLOSE_QUICK_VIEW = "close-quick-view" as const;
   const [dims, setDims] = React.useState<{ width: number; height: number }>({
     width: 0,
     height: 0,
@@ -51,17 +57,16 @@ export function ProductQuickView({
       <DialogContent
         className="relative p-0"
         style={style}
-        data-cy="quick-view"
+        data-cy={DCY_QUICK_VIEW}
       >
         <Button
-          variant="outline"
+          variant="outline" // i18n-exempt: UI variant token, not user-facing copy
           className="absolute end-2 top-2 px-2 py-1 text-xs"
-          aria-label="Close" // i18n-exempt: accessible label for close action
-          data-cy="close-quick-view"
+          aria-label={t("Close") as string}
+          data-cy={DCY_CLOSE_QUICK_VIEW}
           onClick={() => onOpenChange(false)}
         >
-          {/* i18n-exempt: microcopy for close button */}
-          Close
+          {t("Close")}
         </Button>
         <ProductCard
           product={product}

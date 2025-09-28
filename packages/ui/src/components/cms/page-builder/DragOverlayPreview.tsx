@@ -1,4 +1,3 @@
-/* i18n-exempt file */
 "use client";
 
 import Image from "next/image";
@@ -8,6 +7,7 @@ import { defaultIcon, getPaletteCategories } from "./paletteData";
 import { listInstalledApps, subscribeInstalledApps } from "./appInstallStore";
 import type { ComponentType } from "./defaults";
 import type { PaletteMeta } from "./palette.types";
+import { useTranslations } from "@acme/i18n";
 
 export type DragMeta = {
   from: "palette" | "library" | "canvas";
@@ -27,7 +27,8 @@ const buildPaletteIndex = (installedApps: string[]): Map<string, PaletteMeta> =>
   return index;
 };
 
-export default function DragOverlayPreview({ dragMeta, allowed, locale = 'en', shop = null }: { dragMeta: DragMeta | null; allowed: boolean | null; locale?: string; shop?: string | null }) {
+export default function DragOverlayPreview({ dragMeta, allowed, locale: _locale = 'en', shop = null }: { dragMeta: DragMeta | null; allowed: boolean | null; locale?: string; shop?: string | null }) {
+  const t = useTranslations();
   const reducedMotion = useReducedMotion();
   const [ready, setReady] = useState<boolean>(reducedMotion);
   const [paletteIndex, setPaletteIndex] = useState<Map<string, PaletteMeta>>(() =>
@@ -61,21 +62,33 @@ export default function DragOverlayPreview({ dragMeta, allowed, locale = 'en', s
   if (!dragMeta) return null;
 
   const icon = dragMeta.from === "library" && dragMeta.thumbnail ? dragMeta.thumbnail : findIcon(dragMeta.type);
-  const label = dragMeta.label ?? dragMeta.type ?? (dragMeta.from === "library" ? (dragMeta.count ? `${dragMeta.count} block${dragMeta.count > 1 ? "s" : ""}` : "Library item") : "Block"); // i18n-exempt
-  const notes: Record<string, Record<string, string>> = {
-    en: { palette: 'Palette', library: 'Library', canvas: 'Canvas' }, // i18n-exempt: editor overlay
-  };
-  const dict = notes[locale] || notes.en;
-  const note = dragMeta.from === "palette" ? dict.palette : dragMeta.from === "library" ? dict.library : dict.canvas;
+  const label = (() => {
+    if (dragMeta.label) return dragMeta.label;
+    if (dragMeta.type) return dragMeta.type;
+    if (dragMeta.from === "library") {
+      if (typeof dragMeta.count === "number") {
+        return dragMeta.count === 1
+          ? t("cms.builder.drag.blockCount.one", { count: dragMeta.count })
+          : t("cms.builder.drag.blockCount.many", { count: dragMeta.count });
+      }
+      return t("cms.builder.drag.libraryItem");
+    }
+    return t("cms.builder.drag.block");
+  })();
+  const note = dragMeta.from === "palette" ? t("cms.builder.drag.palette") : dragMeta.from === "library" ? t("cms.builder.drag.library") : t("cms.builder.drag.canvas");
   const danger = allowed === false;
 
   return (
     <div
+      // i18n-exempt -- PB-2419 class tokens for layout/state; not user copy [ttl=2026-03-31]
       className={
-        "pointer-events-none select-none rounded-md border bg-surface-2 px-3 py-2 shadow-elevation-3 transform-gpu " +
-        (danger ? " border-danger ring-2 ring-danger/50 cursor-not-allowed" : " border-border-2")
+        "pointer-events-none select-none rounded-md border bg-surface-2 px-3 py-2 shadow-elevation-3 transform-gpu " + // i18n-exempt -- PB-2419 class tokens [ttl=2026-03-31]
+        (reducedMotion
+          ? ""
+          : " transition-[transform,opacity] duration-[180ms] ease-[cubic-bezier(0.16,1,0.3,1)]") + // i18n-exempt -- PB-2419 class tokens [ttl=2026-03-31]
+        (ready && !reducedMotion ? " scale-100 opacity-100" : !reducedMotion ? " scale-[0.96] opacity-[0.85]" : "") + // i18n-exempt -- PB-2419 class tokens [ttl=2026-03-31]
+        (danger ? " border-danger ring-2 ring-danger/50 cursor-not-allowed" : " border-border-2") // i18n-exempt -- PB-2419 class tokens [ttl=2026-03-31]
       }
-      style={reducedMotion ? undefined : { transition: "transform 180ms cubic-bezier(0.16,1,0.3,1), opacity 180ms cubic-bezier(0.16,1,0.3,1)", transform: ready ? "scale(1)" : "scale(0.96)", opacity: ready ? 1 : 0.85 }}
       aria-disabled={danger}
     >
       <div className="flex items-center gap-2">

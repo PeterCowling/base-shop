@@ -7,10 +7,6 @@ export type CtxItem =
   | { label: string; onClick: () => void; disabled?: boolean }
   | { type: "separator" };
 
-// i18n-exempt — Editor-only labels and toast messages; wrap for lint satisfaction
-/* i18n-exempt */
-const t = (s: string) => s;
-
 type Params = {
   componentId: string;
   componentStyles?: string | undefined;
@@ -20,6 +16,8 @@ type Params = {
   editor?: Record<string, EditorFlags>;
   dispatch: React.Dispatch<Action>;
   onRemove: () => void;
+  /** Translator for UI strings and toasts. */
+  t?: (key: string, vars?: Record<string, unknown>) => string;
 };
 
 /**
@@ -35,6 +33,7 @@ export default function buildBlockContextMenuItems({
   editor,
   dispatch,
   onRemove,
+  t,
 }: Params): CtxItem[] {
   const locked = !!effLocked;
   const z = flagsZIndex;
@@ -50,46 +49,48 @@ export default function buildBlockContextMenuItems({
   const multiCount = selection.length;
 
   const items: CtxItem[] = [
-    { label: t("Duplicate"), onClick: () => dispatch({ type: "duplicate", id: componentId }), disabled: locked },
-    { label: locked ? t("Unlock") : t("Lock"), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { locked: !locked } }), disabled: false },
+    { label: String(t ? t("pb.menu.duplicate") : "pb.menu.duplicate"), onClick: () => dispatch({ type: "duplicate", id: componentId }), disabled: locked },
+    { label: String(t ? t(locked ? "pb.menu.unlock" : "pb.menu.lock") : (locked ? "pb.menu.unlock" : "pb.menu.lock")), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { locked: !locked } }), disabled: false },
   ];
 
   // Group / Ungroup actions
   if (multiCount > 1) {
     items.push({ type: "separator" });
     items.push(
-      { label: t("Group into Section"), onClick: () => { try { window.dispatchEvent(new CustomEvent('pb:group', { detail: { kind: 'Section' } })); } catch {} } },
-      { label: t("Group into Columns"), onClick: () => { try { window.dispatchEvent(new CustomEvent('pb:group', { detail: { kind: 'MultiColumn' } })); } catch {} } },
+      { label: String(t ? t("pb.menu.groupIntoSection") : "pb.menu.groupIntoSection"), onClick: () => { try { window.dispatchEvent(new CustomEvent('pb:group', { detail: { kind: 'Section' } })); } catch {} } },
+      { label: String(t ? t("pb.menu.groupIntoColumns") : "pb.menu.groupIntoColumns"), onClick: () => { try { window.dispatchEvent(new CustomEvent('pb:group', { detail: { kind: 'MultiColumn' } })); } catch {} } },
     );
   } else if (multiCount === 1) {
     items.push({ type: "separator" });
-    items.push({ label: t("Ungroup"), onClick: () => { try { window.dispatchEvent(new Event('pb:ungroup')); } catch {} } });
+    items.push({ label: String(t ? t("pb.menu.ungroup") : "pb.menu.ungroup"), onClick: () => { try { window.dispatchEvent(new Event('pb:ungroup')); } catch {} } });
   }
 
   if (multiCount > 1) {
     items.push({
-      label: lockedSel.length > 0 ? t(`Unlock selection (${lockedSel.length})`) : t(`Lock selection (${unlocked.length})`),
+      label: lockedSel.length > 0
+        ? String(t ? t("pb.menu.unlockSelectionN", { count: lockedSel.length }) : "pb.menu.unlockSelectionN")
+        : String(t ? t("pb.menu.lockSelectionN", { count: unlocked.length }) : "pb.menu.lockSelectionN"),
       onClick: () => {
         if (lockedSel.length > 0) {
           lockedSel.forEach((id) => dispatch({ type: "update-editor", id, patch: { locked: false } }));
-          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t(`Unlocked ${lockedSel.length} blocks`) })); } catch {}
+          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t ? t("pb.toast.unlockedN", { count: lockedSel.length }) : "pb.toast.unlockedN") })); } catch {}
         } else if (unlocked.length > 0) {
           unlocked.forEach((id) => dispatch({ type: "update-editor", id, patch: { locked: true } }));
-          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t(`Locked ${unlocked.length} blocks`) })); } catch {}
+          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t ? t("pb.toast.lockedN", { count: unlocked.length }) : "pb.toast.lockedN") })); } catch {}
         }
       },
       disabled: multiCount === 0,
     } as const);
   }
 
-  items.push({ label: t("Delete"), onClick: () => onRemove(), disabled: locked });
+  items.push({ label: String(t ? t("cms.delete") : "cms.delete"), onClick: () => onRemove(), disabled: locked });
 
   if (multiCount > 1) {
     items.push({
-      label: t(`Duplicate selection (${unlocked.length})`),
+      label: String(t ? t("pb.menu.duplicateSelectionN", { count: unlocked.length }) : "pb.menu.duplicateSelectionN"),
       onClick: () => {
         unlocked.forEach((id) => dispatch({ type: "duplicate", id }));
-        try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t(`Duplicated ${unlocked.length} blocks`) })); } catch {}
+        try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t ? t("pb.toast.duplicatedN", { count: unlocked.length }) : "pb.toast.duplicatedN") })); } catch {}
       },
       disabled: unlocked.length === 0,
     } as const);
@@ -97,37 +98,37 @@ export default function buildBlockContextMenuItems({
 
   if (multiCount > 1) {
     items.push({
-      label: t(`Delete selection (${unlocked.length})`),
+      label: String(t ? t("pb.menu.deleteSelectionN", { count: unlocked.length }) : "pb.menu.deleteSelectionN"),
       onClick: () => {
         unlocked.forEach((id) => dispatch({ type: "remove", id }));
-        try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t(`Deleted ${unlocked.length} blocks`) })); } catch {}
+        try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t ? t("pb.toast.deletedN", { count: unlocked.length }) : "pb.toast.deletedN") })); } catch {}
       },
       disabled: unlocked.length === 0,
     } as const);
   }
 
   items.push(
-    { label: t("Bring to front"), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { zIndex: 999 } }), disabled: locked },
-    { label: t("Send to back"), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { zIndex: 0 } }), disabled: locked },
-    { label: t("Forward"), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { zIndex: ((z ?? 0) + 1) } }), disabled: locked },
-    { label: t("Backward"), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { zIndex: Math.max(0, (z ?? 0) - 1) } }), disabled: locked },
+    { label: String(t ? t("pb.menu.bringToFront") : "pb.menu.bringToFront"), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { zIndex: 999 } }), disabled: locked },
+    { label: String(t ? t("pb.menu.sendToBack") : "pb.menu.sendToBack"), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { zIndex: 0 } }), disabled: locked },
+    { label: String(t ? t("pb.menu.forward") : "pb.menu.forward"), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { zIndex: ((z ?? 0) + 1) } }), disabled: locked },
+    { label: String(t ? t("pb.menu.backward") : "pb.menu.backward"), onClick: () => dispatch({ type: "update-editor", id: componentId, patch: { zIndex: Math.max(0, (z ?? 0) - 1) } }), disabled: locked },
   );
 
   if (multiCount > 1) {
     items.push(
       {
-        label: t(`Bring selection to front (${unlocked.length})`),
+        label: String(t ? t("pb.menu.bringSelectionToFrontN", { count: unlocked.length }) : "pb.menu.bringSelectionToFrontN"),
         onClick: () => {
           unlocked.forEach((id) => dispatch({ type: "update-editor", id, patch: { zIndex: 999 } }));
-          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t(`Brought ${unlocked.length} to front`) })); } catch {}
+          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t ? t("pb.toast.broughtToFrontN", { count: unlocked.length }) : "pb.toast.broughtToFrontN") })); } catch {}
         },
         disabled: unlocked.length === 0,
       },
       {
-        label: t(`Send selection to back (${unlocked.length})`),
+        label: String(t ? t("pb.menu.sendSelectionToBackN", { count: unlocked.length }) : "pb.menu.sendSelectionToBackN"),
         onClick: () => {
           unlocked.forEach((id) => dispatch({ type: "update-editor", id, patch: { zIndex: 0 } }));
-          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t(`Sent ${unlocked.length} to back`) })); } catch {}
+          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t ? t("pb.toast.sentToBackN", { count: unlocked.length }) : "pb.toast.sentToBackN") })); } catch {}
         },
         disabled: unlocked.length === 0,
       },
@@ -135,7 +136,7 @@ export default function buildBlockContextMenuItems({
   }
 
   items.push(
-    { label: t("Copy style"), onClick: () => {
+    { label: String(t ? t("pb.menu.copyStyle") : "pb.menu.copyStyle"), onClick: () => {
         let overrides: StyleOverrides | Record<string, never> = {};
         try {
           overrides = componentStyles ? (JSON.parse(String(componentStyles)) as StyleOverrides) : {};
@@ -143,16 +144,24 @@ export default function buildBlockContextMenuItems({
           overrides = {};
         }
         setStyleClipboard(overrides);
-        try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: t("Styles copied") })); } catch {}
+        try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: String(t ? t("pb.toast.stylesCopied") : "pb.toast.stylesCopied") })); } catch {}
       }, disabled: false },
-    { label: pasteTargets.length > 1 ? t(`Paste style (${pasteTargets.length})`) : t("Paste style"), onClick: () => {
+    { label: pasteTargets.length > 1
+        ? String(t ? t("pb.menu.pasteStyleN", { count: pasteTargets.length }) : "pb.menu.pasteStyleN")
+        : String(t ? t("pb.menu.pasteStyle") : "pb.menu.pasteStyle"),
+      onClick: () => {
         const clip2 = getStyleClipboard();
         if (!clip2) return;
         try {
           pasteTargets.forEach((id) => {
             dispatch({ type: "update", id, patch: { styles: JSON.stringify(clip2) } });
           });
-          try { window.dispatchEvent(new CustomEvent("pb-live-message", { detail: pasteTargets.length > 1 ? t(`Styles pasted to ${pasteTargets.length} blocks`) : t("Styles pasted") })); } catch {}
+          try {
+            const detail = pasteTargets.length > 1
+              ? String(t ? t("pb.toast.stylesPastedToN", { count: pasteTargets.length }) : "pb.toast.stylesPastedToN")
+              : String(t ? t("pb.toast.stylesPasted") : "pb.toast.stylesPasted");
+            window.dispatchEvent(new CustomEvent("pb-live-message", { detail }));
+          } catch {}
         } catch {}
       }, disabled: !canPasteStyle },
   );

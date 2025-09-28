@@ -1,3 +1,4 @@
+/* i18n-exempt file -- UI-000: Only non-user-facing literals (HTML attributes, class names, glyphs). Visible copy comes from props. */
 "use client";
 import { useState, type ReactNode } from "react";
 
@@ -11,10 +12,25 @@ export interface AccordionProps {
 }
 
 export function Accordion({ items }: AccordionProps) {
+  // Generate stable keys for items without relying on array index
+  const keyMap = new WeakMap<AccordionItem, string>();
+  let auto = 0;
+  const getKey = (item: AccordionItem) => {
+    const fromTitle =
+      typeof item.title === "string" || typeof item.title === "number"
+        ? String(item.title)
+        : undefined;
+    if (fromTitle) return fromTitle;
+    const existing = keyMap.get(item);
+    if (existing) return existing;
+    const k = `item-${auto++}`;
+    keyMap.set(item, k);
+    return k;
+  };
   const [open, setOpen] = useState<number[]>([]);
-  // i18n-exempt — symbolic affordances
-  const SYMBOL_MINUS = "-" as const; // i18n-exempt: glyph
-  const SYMBOL_PLUS = "+" as const; // i18n-exempt: glyph
+  // i18n-exempt -- UI-000: symbolic affordances (glyphs)
+  const SYMBOL_MINUS = "-" as const; // i18n-exempt -- UI-000: glyph
+  const SYMBOL_PLUS = "+" as const; // i18n-exempt -- UI-000: glyph
 
   const toggle = (idx: number) => {
     setOpen((prev) =>
@@ -50,7 +66,7 @@ export function Accordion({ items }: AccordionProps) {
         };
 
         return (
-          <div key={idx} className="rounded border">
+          <div key={getKey(item)} className="rounded border">
             <button
               type="button"
               aria-expanded={isOpen}

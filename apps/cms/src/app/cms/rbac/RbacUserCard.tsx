@@ -1,8 +1,11 @@
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 import { Tooltip } from "@/components/atoms";
+import { Inline, Stack } from "@ui/components/atoms/primitives";
 
 import type { UserWithRoles } from "@cms/actions/rbac.server";
 import type { Role } from "@cms/auth/roles";
+import { useTranslations } from "@acme/i18n";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 import type { RoleDetail } from "../components/roleDetails";
 
@@ -33,29 +36,27 @@ export default function RbacUserCard({
   onReset,
   disabled,
 }: RbacUserCardProps) {
+  const t = useTranslations();
+  const RBAC_USER_CARD_TESTID = "rbac-user-card"; /* i18n-exempt */
   return (
-    <Card data-testid="rbac-user-card">
+    <Card data-testid={RBAC_USER_CARD_TESTID}>
       <CardContent className="space-y-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <Stack gap={3} className="sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0 space-y-1">
             <p className="text-base font-semibold text-foreground">{user.name}</p>
             <p className="text-sm text-muted-foreground">{user.email}</p>
           </div>
           <Tag className="shrink-0" variant={statusTag.variant}>{statusTag.label}</Tag>
-        </div>
+        </Stack>
 
         <section className="space-y-3" aria-labelledby={`role-picker-${user.id}`}>
           <p
             id={`role-picker-${user.id}`}
             className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
           >
-            Manage permissions
+            {t("cms.rbac.managePermissions")}
           </p>
-          <div
-            className="flex flex-wrap gap-2"
-            role="group"
-            aria-label={`Select roles for ${user.name}`}
-          >
+          <Inline gap={2} wrap role="group" aria-label={t("cms.rbac.selectRolesFor", { name: user.name }) as string}>
             {roles.map((role) => {
               const detail = roleDetails[role];
               const isSelected = selectedRoles.includes(role);
@@ -67,30 +68,25 @@ export default function RbacUserCard({
                   aria-pressed={isSelected}
                   onClick={() => onToggleRole(role)}
                   className="h-auto px-3 py-2 text-sm"
-                >
-                  <span className="flex items-center gap-2">
-                    <span className="font-medium">{detail?.title ?? role}</span>
-                    {detail && (
+                  trailingIcon={
+                    detail ? (
                       <Tooltip text={detail.description}>
-                        <span
-                          aria-hidden="true"
-                          className="text-xs text-muted-foreground underline decoration-dotted"
-                        >
-                          ?
-                        </span>
+                        <InfoCircledIcon aria-hidden="true" className="h-3.5 w-3.5 text-muted-foreground" />
                       </Tooltip>
-                    )}
-                  </span>
+                    ) : undefined
+                  }
+                >
+                  <span className="font-medium">{detail?.title ?? role}</span>
                 </Button>
               );
             })}
-          </div>
+          </Inline>
           <p className="text-xs text-muted-foreground">{helperText}</p>
         </section>
 
-        <div className="flex flex-col gap-2 sm:flex-row">
+        <Stack gap={2} className="sm:flex-row">
           <Button type="button" onClick={onSave} disabled={disabled} className="flex-1">
-            {disabled ? "Saving…" : "Save changes"}
+            {disabled ? t("actions.saving") : t("actions.saveChanges")}
           </Button>
           <Button
             type="button"
@@ -99,9 +95,9 @@ export default function RbacUserCard({
             className="flex-1"
             disabled={disabled}
           >
-            Reset selection
+            {t("cms.rbac.resetSelection")}
           </Button>
-        </div>
+        </Stack>
       </CardContent>
     </Card>
   );

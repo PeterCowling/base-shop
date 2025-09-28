@@ -9,6 +9,11 @@ const meta: Meta<typeof ThemePanel> = {
   component: ThemePanel,
   parameters: {
     layout: "centered",
+    docs: {
+      description: {
+        component: "Panel to preview and edit theme tokens pulled from the CMS; story stubs backend responses.",
+      },
+    },
   },
 };
 export default meta;

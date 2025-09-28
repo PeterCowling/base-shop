@@ -7,13 +7,11 @@ type Props = HTMLAttributes<HTMLDivElement> & {
   center?: ReactNode;
 };
 
-export function Cover({ minH = "screen", center, className, children, ...rest }: Props) {
-  const minHClass = minH === "screen" ? "min-h-screen" : "";
-  const inlineStyle =
-    minH === "[80vh]" ? { minHeight: "80vh" } : minH === "[60vh]" ? { minHeight: "60vh" } : undefined;
-  const mergedStyle = { ...(inlineStyle ?? {}), ...(rest.style as React.CSSProperties | undefined) } as React.CSSProperties | undefined;
+export function Cover({ minH = "screen", center, className, children, style: _style, ...rest }: Props) {
+  const minHClass =
+    minH === "screen" ? "min-h-screen" : minH === "[80vh]" ? "min-h-[80vh]" : minH === "[60vh]" ? "min-h-[60vh]" : "";
   return (
-    <div className={cn("grid", minHClass, "grid-rows-[1fr_auto_1fr]", className)} {...rest} style={mergedStyle}>
+    <div className={cn("grid", minHClass, "grid-rows-[1fr_auto_1fr]", className)} {...rest}>
       <div />
       <div className="place-self-center w-full">{center ?? children}</div>
       <div />

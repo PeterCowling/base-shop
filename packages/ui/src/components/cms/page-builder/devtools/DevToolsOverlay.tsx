@@ -1,6 +1,8 @@
 "use client";
 
+/* eslint-disable react/forbid-dom-props -- PB-2419: PB-DEVTOOLS dynamic overlay positioning requires inline styles (left/top/width/height). Dev-only, safe. */
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import { AUTOSCROLL_EDGE_PX } from "../hooks/usePageBuilderDnD";
 
 type Props = {
@@ -21,6 +23,7 @@ function measure(el: HTMLElement, relativeTo?: DOMRect): Box {
 }
 
 export default function DevToolsOverlay({ scrollRef }: Props) {
+  const t = useTranslations();
   const [enabled, setEnabled] = useState<boolean>(() => {
     try { return localStorage.getItem("pb:devtools") === "1"; } catch { return false; }
   });
@@ -105,12 +108,20 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
     <div className="relative pointer-events-none" aria-hidden>
       <div className="absolute inset-0">
       {/* Droppable containers */}
-      {droppables.map((b, i) => (
-        <div key={`drop-${i}`} className="absolute border border-purple-500/60" style={{ left: b.left, top: b.top, width: b.width, height: b.height }} />
+      {droppables.map((b) => (
+        <div
+          key={`drop-${b.left}-${b.top}-${b.width}-${b.height}`}
+          className="absolute border border-purple-500/60"
+          style={{ left: b.left, top: b.top, width: b.width, height: b.height }}
+        />
       ))}
       {/* Items */}
-      {items.map((b, i) => (
-        <div key={`item-${i}`} className="absolute border border-emerald-500/60" style={{ left: b.left, top: b.top, width: b.width, height: b.height }} />
+      {items.map((b) => (
+        <div
+          key={`item-${b.left}-${b.top}-${b.width}-${b.height}`}
+          className="absolute border border-emerald-500/60"
+          style={{ left: b.left, top: b.top, width: b.width, height: b.height }}
+        />
       ))}
       {/* HUD */}
       <div className="absolute start-2 top-2 rounded bg-black/70 px-2 py-1 text-xs text-white shadow">
@@ -121,7 +132,7 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
         {/* i18n-exempt: developer-only diagnostics UI */}
         <div>Droppables: {droppables.length} Items: {items.length}</div>
         {/* i18n-exempt: developer-only diagnostics UI */}
-        <div>Toggle: Ctrl/Cmd + Alt + D</div>
+        <div>{t("pb.devtools.toggleHint")}</div>
       </div>
       {/* Autoscroll bands (relative to scroll container) */}
       {(() => {
@@ -130,11 +141,34 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
         const r = sc.getBoundingClientRect();
         const s = scrollBands;
         return (
-          <div className="pointer-events-none absolute" style={{ left: r.left - baseRect.left, top: r.top - baseRect.top, width: r.width, height: r.height }}>
-            {s.top && <div className="absolute bg-cyan-500/10" style={{ left: s.top.left, top: s.top.top, width: s.top.width, height: s.top.height }} />}
-            {s.bottom && <div className="absolute bg-cyan-500/10" style={{ left: s.bottom.left, top: s.bottom.top, width: s.bottom.width, height: s.bottom.height }} />}
-            {s.left && <div className="absolute bg-cyan-500/10" style={{ left: s.left.left, top: s.left.top, width: s.left.width, height: s.left.height }} />}
-            {s.right && <div className="absolute bg-cyan-500/10" style={{ left: s.right.left, top: s.right.top, width: s.right.width, height: s.right.height }} />}
+          <div
+            className="pointer-events-none absolute"
+            style={{ left: r.left - baseRect.left, top: r.top - baseRect.top, width: r.width, height: r.height }}
+          >
+            {s.top && (
+              <div
+                className="absolute bg-cyan-500/10"
+                style={{ left: s.top.left, top: s.top.top, width: s.top.width, height: s.top.height }}
+              />
+            )}
+            {s.bottom && (
+              <div
+                className="absolute bg-cyan-500/10"
+                style={{ left: s.bottom.left, top: s.bottom.top, width: s.bottom.width, height: s.bottom.height }}
+              />
+            )}
+            {s.left && (
+              <div
+                className="absolute bg-cyan-500/10"
+                style={{ left: s.left.left, top: s.left.top, width: s.left.width, height: s.left.height }}
+              />
+            )}
+            {s.right && (
+              <div
+                className="absolute bg-cyan-500/10"
+                style={{ left: s.right.left, top: s.right.top, width: s.right.width, height: s.right.height }}
+              />
+            )}
           </div>
         );
       })()}

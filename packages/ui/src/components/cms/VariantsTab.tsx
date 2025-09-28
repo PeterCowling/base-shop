@@ -53,7 +53,7 @@ export default function VariantsTab({
             </div>
             <div className="space-y-3">
               {values.map((value: string, index: number) => (
-                <div key={index} className="flex items-center gap-2">
+                <div key={`${attr}:${value}`} className="flex items-center gap-2">
                   <Input
                     name={`variant_${attr}_${index}`}
                     value={value}

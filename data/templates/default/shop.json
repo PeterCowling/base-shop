@@ -11,13 +11,35 @@
   "priceOverrides": {},
   "localeOverrides": {},
   "navigation": [
-    { "label": "Home", "href": "/" },
-    { "label": "Shop", "href": "/shop" }
+    {
+      "label": {
+        "type": "inline",
+        "value": {
+          "en": "Home"
+        }
+      },
+      "href": "/"
+    },
+    {
+      "label": {
+        "type": "inline",
+        "value": {
+          "en": "Shop"
+        }
+      },
+      "href": "/shop"
+    }
   ],
   "analyticsEnabled": false,
-  "shippingProviders": ["ups"],
-  "taxProviders": ["taxjar"],
-  "paymentProviders": ["stripe"],
+  "shippingProviders": [
+    "ups"
+  ],
+  "taxProviders": [
+    "taxjar"
+  ],
+  "paymentProviders": [
+    "stripe"
+  ],
   "sanityBlog": null,
   "enableEditorial": false,
   "subscriptionsEnabled": false,

@@ -12,6 +12,8 @@ import {
   Checkbox,
   Tag,
 } from "@/components/atoms/shadcn";
+import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
+import { useTranslations } from "@acme/i18n";
 
 interface PendingRequestsPanelProps {
   pending: PendingUser[];
@@ -31,6 +33,7 @@ export function PendingRequestsPanel({
   roles,
   headingId,
 }: PendingRequestsPanelProps) {
+  const t = useTranslations();
   const [requests, setRequests] = useState(pending);
   const [selections, setSelections] = useState<SelectionState>(() => new Map());
   const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
@@ -90,11 +93,13 @@ export function PendingRequestsPanel({
         });
         setToast({
           open: true,
-          message: `${summary.name} is now approved.`,
+          message: String(t("cms.accounts.requests.toast.approved", { name: summary.name })),
         });
       } catch (error) {
         const message =
-          error instanceof Error ? error.message : "Failed to approve account.";
+          error instanceof Error
+            ? error.message
+            : String(t("cms.accounts.requests.toast.approveFailed"));
         setToast({ open: true, message });
       }
     });
@@ -109,18 +114,18 @@ export function PendingRequestsPanel({
             tabIndex={-1}
             className="text-lg font-semibold text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           >
-            Account requests
+            {t("cms.accounts.requests.heading")}
           </h2>
           <Tag className="shrink-0" variant={requests.length === 0 ? "success" : "warning"}>
             {requests.length === 0
-              ? "No pending approvals"
-              : `${requests.length} pending`}
+              ? t("cms.accounts.requests.noneTag")
+              : t("cms.accounts.requests.countTag", { count: requests.length })}
           </Tag>
         </div>
 
         {requests.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            You are all caught up. New requests will appear here instantly.
+            {t("cms.accounts.requests.empty")}
           </p>
         ) : (
           <div className="space-y-4">
@@ -136,13 +141,13 @@ export function PendingRequestsPanel({
                     </p>
                     <p className="text-xs text-muted-foreground">{request.email}</p>
                   </div>
-                  <Tag className="shrink-0" variant="warning">Pending</Tag>
+                  <Tag className="shrink-0" variant="warning">{t("cms.accounts.requests.status.pending")}</Tag>
                 </div>
                 <fieldset className="space-y-3">
                   <legend className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    Assign roles
+                    {t("cms.accounts.requests.roles.legend")}
                   </legend>
-                  <div className="grid gap-2 sm:grid-cols-2">
+                  <DSGrid gap={2} className="sm:grid-cols-2">
                     {roles.map((role) => {
                       const checked = request.roles.includes(role);
                       const checkboxId = `${request.id}-${role}`;
@@ -156,7 +161,7 @@ export function PendingRequestsPanel({
                             id={checkboxId}
                             checked={checked}
                             onCheckedChange={() => handleToggleRole(request.id, role)}
-                            aria-label={`Grant ${role} role`}
+                            aria-label={String(t("cms.accounts.requests.roles.aria.grantRole", { role }))}
                           />
                           <span className="text-xs font-medium uppercase tracking-wide">
                             {role}
@@ -164,7 +169,7 @@ export function PendingRequestsPanel({
                         </label>
                       );
                     })}
-                  </div>
+                  </DSGrid>
                 </fieldset>
                 <Button
                   type="button"
@@ -174,7 +179,9 @@ export function PendingRequestsPanel({
                   }
                   disabled={isPending}
                 >
-                  {isPending ? "Approving…" : "Approve access"}
+                  {isPending
+                    ? t("cms.accounts.requests.actions.approving")
+                    : t("cms.accounts.requests.actions.approve")}
                 </Button>
               </div>
             ))}

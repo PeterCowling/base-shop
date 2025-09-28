@@ -42,14 +42,16 @@ jest.mock("next/navigation", () => ({
 
 jest.mock("next/link", () => {
   const React = require("react");
+  const Link = React.forwardRef(
+    (
+      { children, href, ...props }: any,
+      ref: React.Ref<HTMLAnchorElement>,
+    ) => React.createElement("a", { ref, href, ...props }, children),
+  );
+  Link.displayName = "Link";
   return {
     __esModule: true,
-    default: React.forwardRef(
-      (
-        { children, href, ...props }: any,
-        ref: React.Ref<HTMLAnchorElement>,
-      ) => React.createElement("a", { ref, href, ...props }, children),
-    ),
+    default: Link,
   };
 });
 

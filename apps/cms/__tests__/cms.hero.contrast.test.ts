@@ -7,6 +7,7 @@ import ColorContrastChecker from "color-contrast-checker";
 type Hsl = { h: number; s: number; l: number };
 
 function parseTokens(filePath: string): Record<string, Hsl> {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads tokens from a repo-relative path constructed from literals
   const src = readFileSync(filePath, "utf8");
   const map: Record<string, Hsl> = {};
   const re = /--([a-z0-9-]+):\s*([\d.]+)\s+([\d.]+)%\s+([\d.]+)%/gi;
@@ -30,6 +31,7 @@ function parseTokens(filePath: string): Record<string, Hsl> {
 }
 
 function parseHeroOverlayAlpha(filePath: string): { light?: number; dark?: number } {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads tokens from a repo-relative path constructed from literals
   const src = readFileSync(filePath, "utf8");
   const light = src.match(/--hero-contrast-overlay:\s*[\d.]+\s+[\d.]+%\s+[\d.]+%\s*\/\s*([\d.]+)/);
   const darkBlock = src.match(/html\.theme-dark\s*\{([\s\S]*?)\}/i)?.[1] ?? "";

@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
 import { listLibrary, saveLibrary, clearLibrary, syncFromServer, type LibraryItem } from "./libraryStore";
 import { ulid } from "ulid";
@@ -11,8 +12,7 @@ interface Props {
 }
 
 export default function LibraryImportExport({ shop, onAfterChange }: Props) {
-  // i18n-exempt — editor-only import/export dialog copy
-  const t = (s: string) => s;
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<string>("");
   const [busy, setBusy] = useState(false);
@@ -42,15 +42,15 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
       document.body.appendChild(a);
       a.click();
       a.remove();
-      setMessage(t("Exported library JSON"));
+      setMessage(String(t("cms.library.exported")));
     } catch (err) {
       // i18n-exempt: developer log
       console.error(err);
-      setMessage(t("Export failed"));
+      setMessage(String(t("cms.library.exportFailed")));
     } finally {
       setBusy(false);
     }
-  }, [items, refresh, shop]);
+  }, [items, refresh, shop, t]);
 
   const handleImportFiles = useCallback(async (files: FileList | null) => {
     if (!files || !files.length) return;
@@ -64,7 +64,7 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
         : (typeof parsed === "object" && parsed !== null && "items" in (parsed as Record<string, unknown>) && Array.isArray((parsed as { items?: unknown }).items))
           ? ((parsed as { items: LibraryItem[] }).items)
           : [];
-      if (!inItems.length) throw new Error(t("Invalid file format"));
+      if (!inItems.length) throw new Error(String(t("cms.library.importInvalid")));
       const clones = inItems.map((item) => {
         const clone = { ...item } as LibraryItem;
         clone.id = ulid();
@@ -86,16 +86,16 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
         await refresh();
       }
       onAfterChange?.();
-      setMessage(t(`Imported ${inItems.length} item(s)`));
+      setMessage(String(t("cms.library.importedN", { count: inItems.length })));
     } catch (err) {
       // i18n-exempt: developer log
       console.error(err);
-      setMessage(t("Import failed. Please check your file."));
+      setMessage(String(t("cms.library.importFailed")));
     } finally {
       setBusy(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
-  }, [shop, onAfterChange, refresh]);
+  }, [shop, onAfterChange, refresh, t]);
 
   const onDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -113,29 +113,37 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">{t("Import/Export")}</Button>
+        <Button variant="outline">{t("cms.library.importExport.button")}</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>{t("Library Import / Export")}</DialogTitle>
+        <DialogTitle>{t("cms.library.importExport.title")}</DialogTitle>
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">{t("Export your current library to a JSON file or import items from a JSON file exported here.")}</p>
+          <p className="text-sm text-muted-foreground">{t("cms.library.importExport.description")}</p>
           <div className="flex items-center gap-2">
-            <Button type="button" variant="outline" disabled={busy} onClick={handleExport}>{t("Export JSON")}</Button>
-            <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={(e) => void handleImportFiles(e.target.files)} /> {/* i18n-exempt -- non-user-facing attribute */}
-            <Button type="button" variant="outline" disabled={busy} onClick={() => fileInputRef.current?.click()}>{t("Import JSON")}</Button>
-            <Button type="button" variant="outline" disabled={busy || !canClear} onClick={async () => { if (confirm(t("Clear your personal library?"))) { await clearLibrary(shop); await refresh(); onAfterChange?.(); } }}>{t("Clear Library")}</Button>
+            <Button type="button" variant="outline" disabled={busy} onClick={handleExport}>{t("cms.library.exportJSON")}</Button>
+            <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={(e) => void handleImportFiles(e.target.files)} /> {/* i18n-exempt -- ENG-1234 non-user-facing attribute [ttl=2026-12-31] */}
+            <Button type="button" variant="outline" disabled={busy} onClick={() => fileInputRef.current?.click()}>{t("cms.library.importJSON")}</Button>
+            <Button type="button" variant="outline" disabled={busy || !canClear} onClick={async () => { if (confirm(String(t("cms.library.clearConfirm")))) { await clearLibrary(shop); await refresh(); onAfterChange?.(); } }}>{t("cms.library.clear")}</Button>
           </div>
           <div
             onDrop={onDrop}
             onDragOver={onDragOver}
             className="rounded border border-dashed p-6 text-center text-sm text-muted-foreground"
-            // i18n-exempt
-            aria-label={t("Drop JSON file here")}
+            // Treat as interactive dropzone for a11y
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
+            aria-label={String(t("cms.library.dropAria"))}
           >
-            {t("Drag & drop a JSON file here to import")}
+            {t("cms.library.dropHelp")}
           </div>
           <div aria-live="polite" className="text-sm">{message}</div>
-          <div className="text-xs text-muted-foreground">{t("Items in your library:")} {items.length}</div>
+          <div className="text-xs text-muted-foreground">{t("cms.library.itemsCount")} {items.length}</div>
         </div>
       </DialogContent>
     </Dialog>

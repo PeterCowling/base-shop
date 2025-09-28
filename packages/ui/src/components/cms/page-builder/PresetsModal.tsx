@@ -1,5 +1,4 @@
 "use client";
-// i18n-exempt — CMS editor-only modal; localization to be wired later
 
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
 import { Tooltip } from "../../atoms";
@@ -15,7 +14,8 @@ import { getPalettePreview } from "./previewImages";
 import { Inline } from "../../atoms/primitives/Inline";
 import { Grid } from "../../atoms/primitives/Grid";
 import useThemeSignature from "./hooks/useThemeSignature";
-import { builtInSections } from "./builtInSections.data";
+import { getBuiltInSections } from "./builtInSections.data";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   onInsert: (component: PageComponent) => void;
@@ -27,6 +27,7 @@ interface Props {
 }
 
 export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, hideTrigger = false }: Props) {
+  const t = useTranslations();
   const [presets, setPresets] = useState<PresetDef[]>(presetList);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<PresetCategory | "All">("All");
@@ -56,7 +57,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
         const RemoteArray = z.array(RemoteItem);
         const parsed = RemoteArray.safeParse(Array.isArray(data) ? data : (data?.items ?? []));
         if (!parsed.success) {
-          setLoadError(/* i18n-exempt */ "Presets feed invalid format");
+          setLoadError(t("cms.builder.presets.load.invalidFeed"));
           return;
         }
         if (!aborted && parsed.data.length) {
@@ -74,11 +75,11 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
         }
       } catch {
         // Show a soft error; keep local presets
-        setLoadError(/* i18n-exempt */ "Failed to load presets feed");
+        setLoadError(t("cms.builder.presets.load.failed"));
       }
     })();
     return () => { aborted = true; };
-  }, [sourceUrl, shop]);
+  }, [sourceUrl, shop, t]);
 
   // Also merge in Section Templates from the shop so the modal includes all sections
   useEffect(() => {
@@ -145,6 +146,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
   }, [presets, search, category]);
 
   // Built-in sections are shown separately from Preset categories and respect the search query.
+  const builtInSections = useMemo(() => getBuiltInSections(t), [t]);
   const builtInsFiltered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return builtInSections.filter((s) => {
@@ -152,7 +154,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
       const hay = `${s.label}\n${s.description ?? ""}`.toLowerCase();
       return hay.includes(q);
     });
-  }, [search]);
+  }, [search, builtInSections]);
 
   const byCategory = useMemo(() => {
     const map = new Map<string, PresetDef[]>();
@@ -167,13 +169,13 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
     <Dialog open={open} onOpenChange={onOpenChange}>
       {!hideTrigger && (
         <DialogTrigger asChild>
-          <Tooltip text={/* i18n-exempt */ "Insert a section"}>
-            <Button variant="outline">{/* i18n-exempt */}Add Section</Button>
+          <Tooltip text={t("cms.builder.presets.insertSection.tooltip")}>
+            <Button variant="outline">{t("cms.builder.presets.addSection")}</Button>
           </Tooltip>
         </DialogTrigger>
       )}
       <DialogContent>
-        <DialogTitle>{/* i18n-exempt */}Section Library</DialogTitle>
+        <DialogTitle>{t("cms.builder.presets.sectionLibrary.title")}</DialogTitle>
         {loadError && (
           <div className="rounded border border-red-200 bg-red-50 p-2 text-xs text-red-800">
             {loadError}
@@ -184,17 +186,17 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder={/* i18n-exempt */ "Search sections and presets..."}
+            placeholder={t("cms.builder.presets.search.placeholder")}
             className="flex-1 rounded border p-2 text-sm"
-            aria-label={/* i18n-exempt */ "Search presets"}
+            aria-label={t("cms.builder.presets.search.aria")}
           />
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value as PresetCategory | "All")}
             className="rounded border p-2 text-sm"
-            aria-label={/* i18n-exempt */ "Preset category"}
+            aria-label={t("cms.builder.presets.category.aria")}
           >
-            <option value="All">{/* i18n-exempt */}All</option>
+            <option value="All">{t("cms.builder.presets.category.all")}</option>
             {presetCategories.map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
@@ -203,7 +205,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
         {/* Built-in Sections (variants) */}
         {builtInsFiltered.length > 0 && (
           <div className="mb-4">
-            <div className="mb-2 text-sm font-semibold">{/* i18n-exempt */}Built-in Sections</div>
+            <div className="mb-2 text-sm font-semibold">{t("cms.builder.presets.builtIn.title")}</div>
             <Grid cols={2} gap={4}>
               {builtInsFiltered.map((p) => {
                 const resolvedPreview = p.preview === "/window.svg" ? getPalettePreview(p.previewType) : p.preview;
@@ -253,7 +255,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
         })}
         {Array.from(byCategory.values()).every((arr) => (arr || []).length === 0) && (
           <div className="rounded border bg-muted/30 p-4 text-sm text-muted-foreground">
-            {/* i18n-exempt */}No matching sections. Try clearing filters or create a new section.
+            {t("cms.builder.presets.empty")}
           </div>
         )}
       </DialogContent>

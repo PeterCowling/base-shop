@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable react/forbid-dom-props -- LINT-1006: PreviewPane requires inline styles for device frame and token variables */
 
 import { useMemo, type CSSProperties } from "react";
 import type { Locale } from "@acme/i18n/locales";

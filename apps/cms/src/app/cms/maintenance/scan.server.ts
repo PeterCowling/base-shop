@@ -9,6 +9,11 @@ export interface FlaggedItem {
   sku: string;
 }
 
+// i18n-exempt -- OPS-1203 [ttl=2025-03-31]
+export const MSG_ITEM_NEEDS_RETIREMENT = "item needs retirement";
+// i18n-exempt -- OPS-1203 [ttl=2025-03-31]
+export const MSG_ITEM_NEEDS_MAINTENANCE = "item needs maintenance";
+
 export async function scanForMaintenance(): Promise<FlaggedItem[]> {
   const items: FlaggedItem[] = [];
   const original = logger.info.bind(logger) as typeof logger.info;
@@ -16,7 +21,7 @@ export async function scanForMaintenance(): Promise<FlaggedItem[]> {
     msg: string,
     meta: { shopId: string; sku: string },
   ) => void) = (msg, meta) => {
-    if (msg === "item needs retirement" || msg === "item needs maintenance") {
+    if (msg === MSG_ITEM_NEEDS_RETIREMENT || msg === MSG_ITEM_NEEDS_MAINTENANCE) {
       items.push({ message: msg, ...meta });
     }
     original(msg, meta);

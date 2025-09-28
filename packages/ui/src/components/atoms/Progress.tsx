@@ -15,30 +15,25 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
       <div ref={ref} className={cn("space-y-1", className)} {...props}>
         <div
           className={
-            // i18n-exempt — CSS utility class names
-            "bg-muted h-2 w-full overflow-hidden rounded"
+            "bg-muted h-2 w-full overflow-hidden rounded" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
           }
-          // i18n-exempt — design token attribute, not user copy
-          data-token="--color-muted"
+          data-token="--color-muted" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
         >
           <div
-            className={
-              // i18n-exempt — CSS utility class names
-              "bg-primary h-full transition-all"
-            }
-            style={{ width: `${value}%` }}
-            // i18n-exempt — design token attribute, not user copy
-            data-token="--color-primary"
+            className={cn(
+              "bg-primary h-full transition-all", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+              `[--pct:${value}%] w-[var(--pct)]` // i18n-exempt -- UI-000: CSS utility class names (CSS var usage) [ttl=2026-01-31]
+            )}
+            data-token="--color-primary" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
           />
         </div>
         {label ? (
           <div
             className={cn(
-              "text-muted-foreground text-end text-sm", // i18n-exempt — CSS utility class names
+              "text-muted-foreground text-end text-sm", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
               labelClassName
             )}
-            // i18n-exempt — design token attribute, not user copy
-            data-token="--color-muted-fg"
+            data-token="--color-muted-fg" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
           >
             {label}
           </div>
@@ -47,4 +42,4 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     );
   }
 );
-Progress.displayName = "Progress"; // i18n-exempt — component displayName, not user-facing
+Progress.displayName = "Progress"; // i18n-exempt -- UI-000: component displayName, not user-facing [ttl=2026-01-31]

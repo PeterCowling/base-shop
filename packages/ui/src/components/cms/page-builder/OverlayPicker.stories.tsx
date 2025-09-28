@@ -6,6 +6,13 @@ import OverlayPicker from "./OverlayPicker";
 const meta: Meta<typeof OverlayPicker> = {
   title: "CMS/Page Builder/OverlayPicker",
   component: OverlayPicker,
+  parameters: {
+    docs: {
+      description: {
+        component: "Interactive picker for gradient/overlay backgrounds with live preview.",
+      },
+    },
+  },
 };
 export default meta;
 
@@ -17,6 +24,7 @@ function PlaygroundStory() {
   );
   return (
     <div className="space-y-4">
+      {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419: story preview needs dynamic inline background */}
       <div className="h-24 w-full rounded-md border" style={{ background: value }} />
       <OverlayPicker value={value} onChange={setValue} />
     </div>

@@ -20,6 +20,8 @@ import { ulid } from "ulid";
 import { useState } from "react";
 import Image from "next/image";
 import type React from "react";
+import { Cluster } from "@/components/atoms/primitives/Cluster";
+import { useTranslations } from "@acme/i18n";
 
 interface Template {
   name: string;
@@ -51,6 +53,7 @@ export default function TemplateSelector({
   onConfirm,
   triggerProps,
 }: Props): React.JSX.Element {
+  const t = useTranslations();
   const [selectOpen, setSelectOpen] = useState(false);
   const [pendingTemplate, setPendingTemplate] = useState<Template | null>(null);
   const templates = Array.isArray(pageTemplates) ? pageTemplates : [];
@@ -64,7 +67,7 @@ export default function TemplateSelector({
         onValueChange={() => {}}
       >
         <SelectTrigger className="w-full" {...triggerProps}>
-          <SelectValue placeholder="Select template" />
+          <SelectValue placeholder={t("cms.configurator.shopPage.selectTemplate")} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem
@@ -76,40 +79,40 @@ export default function TemplateSelector({
               setPendingTemplate({ name: "blank", components: [], preview: "" });
             }}
           >
-            <button type="button" className="w-full text-start">
-              Blank
+            <button type="button" className="w-full min-h-11 min-w-11 text-start">
+              {t("cms.configurator.shopPage.blank")}
             </button>
           </SelectItem>
-          {templates.map((t) => (
+          {templates.map((tpl) => (
             <SelectItem
-              key={t.name}
-              value={t.name}
+              key={tpl.name}
+              value={tpl.name}
               asChild
-              disabled={t.disabled}
+              disabled={tpl.disabled}
               onSelect={(e: React.SyntheticEvent<unknown>) => {
-                if (t.disabled) return;
+                if (tpl.disabled) return;
                 e.preventDefault();
                 setSelectOpen(false);
-                setPendingTemplate(t);
+                setPendingTemplate(tpl);
               }}
             >
               <button
                 type="button"
-                className="w-full text-start"
-                disabled={t.disabled}
+                className="w-full min-h-11 min-w-11 text-start"
+                disabled={tpl.disabled}
               >
-                <div className="flex items-center gap-2">
-                  {t.preview && (
+                <Cluster gap={2} alignY="center">
+                  {tpl.preview && (
                     <Image
-                      src={t.preview}
-                      alt={`${t.name} preview`}
+                      src={tpl.preview}
+                      alt={t("cms.configurator.shopPage.previewAlt", { name: tpl.name })}
                       width={32}
                       height={32}
                       className="h-8 w-8 rounded object-cover"
                     />
                   )}
-                  {t.name}
-                </div>
+                  {tpl.name}
+                </Cluster>
               </button>
             </SelectItem>
           ))}
@@ -119,18 +122,21 @@ export default function TemplateSelector({
         open={!!pendingTemplate}
         onOpenChange={(open: boolean) => !open && setPendingTemplate(null)}
       >
-        <DialogContent className="max-w-3xl">
+        <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              Use
-              {pendingTemplate?.name === "blank" ? " Blank" : ` ${pendingTemplate?.name}`}
-              {" "}template?
+              {t("cms.configurator.shopPage.useTemplateConfirm", {
+                name:
+                  pendingTemplate?.name === "blank"
+                    ? (t("cms.configurator.shopPage.blank") as string)
+                    : String(pendingTemplate?.name ?? ""),
+              })}
             </DialogTitle>
           </DialogHeader>
           {pendingTemplate?.preview && (
             <Image
               src={pendingTemplate.preview}
-              alt={`${pendingTemplate.name} preview`}
+              alt={t("cms.configurator.shopPage.previewAlt", { name: pendingTemplate.name })}
               width={800}
               height={600}
               sizes="100vw"
@@ -139,7 +145,7 @@ export default function TemplateSelector({
           )}
           <DialogFooter>
             <Button variant="outline" onClick={() => setPendingTemplate(null)}>
-              Cancel
+              {t("actions.cancel")}
             </Button>
             <Button
               onClick={() => {
@@ -154,7 +160,7 @@ export default function TemplateSelector({
                 setPendingTemplate(null);
               }}
             >
-              Confirm
+              {t("actions.confirm")}
             </Button>
           </DialogFooter>
         </DialogContent>

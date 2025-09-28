@@ -37,7 +37,7 @@ export const Default: StoryObj<typeof AppShell> = {
 export const WithCustomBackground: StoryObj<typeof AppShell> = {
   render: () => (
     <AppShell
-      className="bg-slate-50"
+      className="bg-bg"
       header={<Header locale="en" shopName="Demo">Header</Header>}
       sideNav={<SideNav>Nav</SideNav>}
       footer={<Footer shopName="Demo">Footer</Footer>}

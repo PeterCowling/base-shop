@@ -63,7 +63,7 @@ export default function ShopSeoSection({
             onChange={(event) =>
               onCatalogFiltersChange(splitFilters(event.target.value))
             }
-            placeholder={t("color,size,style")}
+            placeholder={String(t("color,size,style"))}
             aria-invalid={errorMessage ? true : undefined}
             aria-describedby={errorId}
           />

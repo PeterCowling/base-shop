@@ -6,6 +6,7 @@ import type { Locale } from "@acme/types";
 import SeoLanguageTabs from "./SeoLanguageTabs";
 import type { SeoRecord } from "./useSeoForm";
 import useSeoForm from "./useSeoForm";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   shop: string;
@@ -29,6 +30,7 @@ export default function SeoForm(props: Props) {
     errors,
     warnings,
   } = useSeoForm(props);
+  const t = useTranslations();
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -44,7 +46,13 @@ export default function SeoForm(props: Props) {
       />
 
       {Object.keys(errors).length > 0 && (
-        <Alert variant="danger" tone="soft" title="Please fix the following">
+        <Alert
+          variant="danger"
+          tone="soft"
+          heading={String(
+            t("cms.shop.settings.validation.resolveIssues"),
+          )}
+        >
           <ul className="list-disc pl-5">
             {Object.entries(errors).map(([k, v]) => (
               <li key={k}>{v.join("; ")}</li>
@@ -53,7 +61,11 @@ export default function SeoForm(props: Props) {
         </Alert>
       )}
       {warnings.length > 0 && (
-        <Alert variant="warning" tone="soft" title="Warnings">
+        <Alert
+          variant="warning"
+          tone="soft"
+          heading={String(t("common.warnings"))}
+        >
           <ul className="list-disc pl-5">
             {warnings.map((w) => (
               <li key={w}>{w}</li>
@@ -63,7 +75,7 @@ export default function SeoForm(props: Props) {
       )}
 
       <Button type="submit" disabled={saving} className="w-fit">
-        {saving ? "Saving…" : "Save"}
+        {saving ? String(t("actions.saving")) : String(t("actions.save"))}
       </Button>
     </form>
   );

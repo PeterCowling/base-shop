@@ -17,7 +17,7 @@ describe("ThemeStyle", () => {
       },
     });
 
-    render(<>{el}</>);
+    render(el as any);
 
     // Two Google font stylesheet link elements for declared families
     const links = Array.from(
@@ -56,7 +56,7 @@ describe("ThemeStyle", () => {
     // Re-import the module under test so it picks up the mock
     const { default: Themed } = await import("../ThemeStyle");
     const el = await Themed({ shopId: "shop-1" });
-    render(<>{el}</>);
+    render(el as any);
     expect(readShopMock).toHaveBeenCalledWith("shop-1");
     const style = document.querySelector("style[data-shop-theme]");
     expect(style!.innerHTML).toContain("--color-bg-1: 0 0% 96%;");

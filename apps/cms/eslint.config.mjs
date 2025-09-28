@@ -14,6 +14,13 @@ const config = [
       "ds/no-unsafe-viewport-units": "error",
     },
   },
+  // CMS does not require translations; allow hardcoded text in this app
+  {
+    files: ["src/**/*.{ts,tsx,js,jsx,mdx}"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
   {
     files: [
       "src/**/__tests__/**",

@@ -99,10 +99,7 @@ export async function generateMetadata({
       images: image ? [{ url: image }] : undefined,
     },
     twitter: {
-      title: product.title,
-      description,
-      image,
-      card: image ? "summary_large_image" : "summary",
+      cardType: image ? "summary_large_image" : "summary",
     },
   });
   // Build hreflang alternates for this product path

@@ -3,54 +3,59 @@
 import Link from "next/link";
 import SettingsShopChooser from "./SettingsShopChooser.client";
 import { Button, Card, CardContent, Tag } from "@ui/components/atoms";
+import { Grid as DSGrid, Inline } from "@ui/components/atoms/primitives";
 import { listShops } from "../../../lib/listShops";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 export default async function SettingsIndexPage() {
   const shops = await listShops();
+  const t = await getTranslations("en");
+  const SHOP_SELECTION_ID = "shop-selection"; /* i18n-exempt */
   const featureHighlights = [
     {
-      title: "Policy coverage",
-      description: "Taxes, payments, and compliance tuned per storefront.",
+      title: t("cms.settings.index.features.policy.title"),
+      description: t("cms.settings.index.features.policy.desc"),
     },
     {
-      title: "Team alignment",
-      description: "Manage who can adjust risk, finance, and merchandising levers.",
+      title: t("cms.settings.index.features.team.title"),
+      description: t("cms.settings.index.features.team.desc"),
     },
     {
-      title: "Integrations",
-      description: "Configure services that keep operations and data in sync.",
+      title: t("cms.settings.index.features.integrations.title"),
+      description: t("cms.settings.index.features.integrations.desc"),
     },
   ];
   return (
     <div className="space-y-8 text-foreground">
       <Card className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
-        <CardContent className="relative grid gap-8 p-8 lg:grid-cols-[2fr,1fr]">
-          <div className="space-y-6">
+        <CardContent className="relative p-8">
+          <DSGrid cols={1} gap={8} className="lg:grid-cols-3">
+          <div className="space-y-6 lg:col-span-2">
             <div className="space-y-3">
               <Tag variant="default">
-                Settings · Control hubs
+                {t("cms.settings.index.tag")}
               </Tag>
               <h1 className="text-3xl font-semibold md:text-4xl">
-                Govern storefront policies with confidence
+                {t("cms.settings.index.title")}
               </h1>
               <p className="text-sm text-hero-foreground/80">
-                Choose a shop to orchestrate taxes, payments, compliance, and access so every channel stays aligned.
+                {t("cms.settings.index.subtitle")}
               </p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <Inline wrap gap={3}>
               <Button asChild className="h-11 px-5 text-sm font-semibold">
-                <Link href="/cms/configurator">Create a new shop</Link>
+                <Link href="/cms/configurator">{t("cms.settings.index.create")}</Link>
               </Button>
               <Button
                 asChild
                 variant="outline"
                 className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
               >
-                <Link href="#shop-selection">Browse existing shops</Link>
+                <Link href="#shop-selection">{t("cms.settings.index.browse")}</Link>
               </Button>
-            </div>
+            </Inline>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+          <DSGrid cols={1} gap={4} className="sm:grid-cols-2 lg:grid-cols-1">
             {featureHighlights.map(({ title, description }) => (
               <div
                 key={title}
@@ -62,11 +67,12 @@ export default async function SettingsIndexPage() {
                 <p className="mt-2 text-sm leading-relaxed text-foreground">{description}</p>
               </div>
             ))}
-          </div>
+          </DSGrid>
+          </DSGrid>
         </CardContent>
       </Card>
 
-      <div id="shop-selection" className="scroll-mt-32">
+      <div id={SHOP_SELECTION_ID} className="scroll-mt-32">
         <SettingsShopChooser shops={shops} />
       </div>
     </div>

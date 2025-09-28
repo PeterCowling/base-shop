@@ -34,3 +34,8 @@ function MyComponent({ label }: { label: TranslatableText }) {
 }
 ```
 
+Promote/detach helpers (server)
+- Use `@acme/i18n/editTranslations` from the CMS backend to seed keys or read values:
+  - `addOrUpdateKey(key, enValue)` adds key to `en.json` and mirrors to `de/it` (with EN value).
+  - `readLocalizedValues(key)` returns `{ en?, de?, it? }` for detaching a key into inline values.
+  - These helpers operate on `packages/i18n/src/*.json`; call from scripts or API routes, not the browser.

@@ -1,6 +1,6 @@
 // packages/ui/src/components/home/HeroBanner.client.tsx
 
-"use client";
+"use client"; // i18n-exempt -- PB-123 Next.js directive, not user-facing copy [ttl=2025-12-31]
 
 import { useTranslations } from "@acme/i18n";
 import Image from "next/image";
@@ -73,19 +73,25 @@ export default function HeroBanner({
   const slide = useMemo(() => slideData[index], [index, slideData]);
 
   return (
-    <section className="relative w-full overflow-hidden" style={{ minHeight: "100svh" }}>
+    <section className="relative w-full overflow-hidden min-h-dvh">
       <Image
         src={slide.src}
         alt={slide.altKey ? (t(slide.altKey) as string) : slide.alt ?? ""}
         fill
+        /* i18n-exempt -- PB-123 non-user-facing media sizes [ttl=2025-12-31] */
         sizes="100vw"
         priority
-        className="object-cover transition-opacity duration-700"
+        className="object-cover transition-opacity duration-700" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
       />
-      <div className="bg-fg/40 absolute inset-0" data-token="--color-fg" />
+      <div
+        className="bg-fg/40 absolute inset-0" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
+        /* i18n-exempt -- PB-123 design token attribute [ttl=2025-12-31] */
+        data-token="--color-fg"
+      />
 
       <div
-        className="text-bg absolute inset-0 flex flex-col items-center justify-center px-4 text-center"
+        className="text-bg absolute inset-0 flex flex-col items-center justify-center px-4 text-center" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
+        /* i18n-exempt -- PB-123 design token attribute [ttl=2025-12-31] */
         data-token="--color-bg"
       >
         <h2 className="mb-6 text-4xl font-bold drop-shadow-md md:text-5xl">
@@ -94,10 +100,11 @@ export default function HeroBanner({
         {/* locale-aware route link */}
         <Link
           href={`/${langPrefix}/shop`}
-          className="bg-fg hover:bg-muted inline-block rounded-full px-8 py-3 font-semibold shadow-elevation-2 transition-colors"
+          className="bg-fg hover:bg-muted inline-block rounded-full px-8 py-3 font-semibold shadow-elevation-2 transition-colors" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
+          /* i18n-exempt -- PB-123 design token attribute [ttl=2025-12-31] */
           data-token="--color-fg"
         >
-          <span className="text-bg" data-token="--color-bg">
+          <span className="text-bg" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */ data-token="--color-bg">
             {t(slide.ctaKey)}
           </span>
         </Link>
@@ -105,20 +112,22 @@ export default function HeroBanner({
 
       {/* navigation arrows */}
       <button
-        aria-label="Previous slide"
+        aria-label={t("hero.nav.prev") as string}
         onClick={prev}
-        className="absolute top-1/2 start-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl"
+        className="absolute top-1/2 start-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
+        /* i18n-exempt -- PB-123 design token attribute [ttl=2025-12-31] */
         data-token="--color-fg"
       >
-        ‹
+        <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}‹</span>
       </button>
       <button
-        aria-label="Next slide"
+        aria-label={t("hero.nav.next") as string}
         onClick={next}
-        className="absolute top-1/2 end-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl"
+        className="absolute top-1/2 end-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
+        /* i18n-exempt -- PB-123 design token attribute [ttl=2025-12-31] */
         data-token="--color-fg"
       >
-        ›
+        <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}›</span>
       </button>
     </section>
   );

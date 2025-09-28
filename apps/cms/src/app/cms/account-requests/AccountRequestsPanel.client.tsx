@@ -3,10 +3,13 @@
 import { useCallback, useMemo, useState, useTransition } from "react";
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 import { Toast, Tooltip } from "@/components/atoms";
+import { Cluster } from "@ui/components/atoms/primitives/Cluster";
+import { Inline } from "@ui/components/atoms/primitives/Inline";
 import type { PendingUser } from "@cms/actions/accounts.server";
 import type { Role } from "@cms/auth/roles";
 import type { ActionResult, ActionStatus } from "../components/actionResult";
 import type { RoleDetail } from "../components/roleDetails";
+import { useTranslations } from "@acme/i18n";
 
 interface ApprovePayload {
   id: string;
@@ -46,6 +49,7 @@ export default function AccountRequestsPanel({
   roleDetails,
   onApprove,
 }: AccountRequestsPanelProps) {
+  const t = useTranslations();
   const [items, setItems] = useState<PendingUser[]>(() => [...requests]);
   const [selections, setSelections] = useState<SelectionState>(() =>
     normalizeSelections(requests)
@@ -82,7 +86,11 @@ export default function AccountRequestsPanel({
       if (selected.length === 0) {
         showToast(
           "error",
-          `Select at least one role before approving ${request.name}.`
+          String(
+            t("cms.accounts.requests.toast.selectRoleBeforeApprove", {
+              name: request.name,
+            })
+          )
         );
         return;
       }
@@ -100,7 +108,7 @@ export default function AccountRequestsPanel({
             const message =
               error instanceof Error
                 ? error.message
-                : "Failed to approve account request.";
+                : String(t("cms.accounts.requests.toast.approveFailedRequest"));
             showToast("error", message);
           })
           .finally(() => {
@@ -108,27 +116,34 @@ export default function AccountRequestsPanel({
           });
       });
     },
-    [onApprove, selections, showToast]
+    [onApprove, selections, showToast, t]
   );
 
   const helperFor = useCallback(
     (requestId: string) => {
       const selected = selections[requestId] ?? [];
       if (selected.length === 0) {
-        return "Select at least one role to include with the approval.";
+        return t(
+          "cms.accounts.requests.helper.selectAtLeastOne"
+        ) as string;
       }
       const readable = selected
         .map((role) => roleDetails[role]?.title ?? role)
         .join(", ");
-      return `Grant ${readable} privileges when approving.`;
+      return t("cms.accounts.requests.helper.grantPrivileges", {
+        roles: readable,
+      }) as string;
     },
-    [roleDetails, selections]
+    [roleDetails, selections, t]
   );
 
   const toastClassName = useMemo(() => {
-    return toast.status === "error"
+    /* eslint-disable ds/no-hardcoded-copy -- CMS-2615 [ttl=2026-01-01]: class token string, not user-facing copy */
+    const v = toast.status === "error"
       ? "bg-destructive text-destructive-foreground"
       : "bg-success text-success-fg";
+    /* eslint-enable ds/no-hardcoded-copy -- CMS-2615 */
+    return v;
   }, [toast.status]);
 
   if (items.length === 0) {
@@ -137,10 +152,10 @@ export default function AccountRequestsPanel({
         <Card>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="min-w-0 font-medium text-foreground">All requests reviewed</span>
-              <Tag className="shrink-0" variant="success">Up to date</Tag>
+              <span className="min-w-0 font-medium text-foreground">{t("cms.accounts.requests.empty.title")}</span>
+              <Tag className="shrink-0" variant="success">{t("cms.accounts.requests.empty.tag")}</Tag>
             </div>
-            <p>New account requests will appear here automatically.</p>
+            <p>{t("cms.accounts.requests.empty.desc")}</p>
           </CardContent>
         </Card>
         <Toast
@@ -158,8 +173,10 @@ export default function AccountRequestsPanel({
     <div className="space-y-4">
       {items.map((request) => {
         const selected = selections[request.id] ?? [];
+        // i18n-exempt -- CMS-2617 [ttl=2026-01-01] non-UI data-testid
+        const testId = "account-request-card";
         return (
-          <Card key={request.id} data-testid="account-request-card">
+          <Card key={request.id} data-testid={testId}>
             <CardContent className="space-y-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0 space-y-1">
@@ -168,7 +185,7 @@ export default function AccountRequestsPanel({
                   </p>
                   <p className="text-sm text-muted-foreground">{request.email}</p>
                 </div>
-                <Tag className="shrink-0" variant="warning">Pending approval</Tag>
+                <Tag className="shrink-0" variant="warning">{t("cms.accounts.requests.status.pendingApproval")}</Tag>
               </div>
 
               <section
@@ -179,12 +196,12 @@ export default function AccountRequestsPanel({
                   id={`roles-${request.id}`}
                   className="text-xs font-semibold uppercase tracking-wide text-muted-foreground"
                 >
-                  Assign roles
+                  {t("cms.accounts.requests.roles.legend")}
                 </p>
-                <div
-                  className="flex flex-wrap gap-2"
+                <Cluster
+                  gap={2}
                   role="group"
-                  aria-label={`Assign roles for ${request.name}`}
+                  aria-label={t("cms.rbac.selectRolesFor", { name: request.name }) as string}
                 >
                   {roles.map((role) => {
                     const detail = roleDetails[role];
@@ -198,12 +215,13 @@ export default function AccountRequestsPanel({
                         onClick={() => toggleRole(request.id, role)}
                         className="h-auto px-3 py-2 text-sm"
                       >
-                        <span className="flex items-center gap-2">
+                        <Inline gap={2} alignY="center">
                           <span className="font-medium">
                             {detail?.title ?? role}
                           </span>
                           {detail && (
                             <Tooltip text={detail.description}>
+                              {/* i18n-exempt -- CMS-1011 [ttl=2026-01-01] decorative icon */}
                               <span
                                 aria-hidden="true"
                                 className="text-xs text-muted-foreground underline decoration-dotted"
@@ -212,11 +230,11 @@ export default function AccountRequestsPanel({
                               </span>
                             </Tooltip>
                           )}
-                        </span>
+                        </Inline>
                       </Button>
                     );
                   })}
-                </div>
+                </Cluster>
                 <p className="text-xs text-muted-foreground">{helperFor(request.id)}</p>
               </section>
 
@@ -228,17 +246,21 @@ export default function AccountRequestsPanel({
                   className="flex-1"
                 >
                   {isPending && pendingId === request.id
-                    ? "Approving…"
-                    : "Approve request"}
+                    ? (t("cms.accounts.requests.actions.approving") as string)
+                    : (t("cms.accounts.requests.actions.approveRequest") as string)}
                 </Button>
                 <Button variant="outline" asChild className="flex-1">
+                  {/* eslint-disable ds/min-tap-size -- CMS-2619 [ttl=2026-01-01]: tokenized min size applied; anchor fills Button */}
                   <a
                     href={`mailto:${request.email}`}
-                    className="block w-full text-center"
-                    aria-label={`Email ${request.name}`}
+                    className="block w-full min-h-10 min-w-10 text-center inline-flex items-center justify-center"
+                    aria-label={t("cms.accounts.requests.aria.emailUser", {
+                      name: request.name,
+                    }) as string}
                   >
-                    Email requester
+                    {t("cms.accounts.requests.actions.emailRequester")}
                   </a>
+                  {/* eslint-enable ds/min-tap-size -- CMS-2619 */}
                 </Button>
               </div>
             </CardContent>

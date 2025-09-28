@@ -6,9 +6,12 @@ import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Cluster } from "@ui/components/atoms/primitives/Cluster";
+import { useTranslations } from "@acme/i18n";
 
 export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?: string; nextStepId?: string }) {
   const { state, update } = useConfigurator();
+  const t = useTranslations();
   const [toast, setToast] = useState<{ open: boolean; message: string }>({ open: false, message: "" });
   const [, markComplete] = useStepCompletion("inventory");
   const router = useRouter();
@@ -20,81 +23,80 @@ export default function StepInventory({ prevStepId, nextStepId }: { prevStepId?:
 
   return (
     <div className="space-y-6">
-      <h2 className="text-xl font-semibold">Inventory</h2>
+      <h2 className="text-xl font-semibold">{t("cms.inventory.title")}</h2>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <div className="text-sm font-medium">Track Inventory</div>
+          <div className="text-sm font-medium">{t("cms.inventory.track")}</div>
           <div className="flex items-center gap-3">
             <Switch
               checked={tracking}
-              onChange={(e) => update("inventoryTracking" as any, (e.target as HTMLInputElement).checked)}
-              aria-label="Toggle inventory tracking"
+              onChange={(e) => update("inventoryTracking", (e.target as HTMLInputElement).checked)}
+              aria-label={t("cms.inventory.toggleAria") as string}
             />
-            <span className="text-sm text-muted-foreground">Enable stock tracking for SKUs</span>
+            <span className="text-sm text-muted-foreground">{t("cms.inventory.enableTrackingHelp")}</span>
           </div>
         </div>
 
         <label className="space-y-2">
-          <div className="text-sm font-medium">Default Stock Location</div>
+          <div className="text-sm font-medium">{t("cms.inventory.defaultLocation")}</div>
           <Input
             value={location}
-            placeholder="main"
-            onChange={(e) => update("defaultStockLocation" as any, e.target.value)}
+            placeholder={t("cms.inventory.defaultLocation.placeholder") as string}
+            onChange={(e) => update("defaultStockLocation", e.target.value)}
           />
         </label>
 
         <label className="space-y-2">
-          <div className="text-sm font-medium">Low Stock Threshold</div>
+          <div className="text-sm font-medium">{t("cms.inventory.lowStockThreshold")}</div>
           <Input
             type="number"
             min={0}
             value={threshold}
-            onChange={(e) => update("lowStockThreshold" as any, Math.max(0, Number(e.target.value || 0)))}
+            onChange={(e) => update("lowStockThreshold", Math.max(0, Number(e.target.value || 0)))}
           />
         </label>
 
         <div className="space-y-2">
-          <div className="text-sm font-medium">Backorder Policy</div>
-          <Select value={backorders} onValueChange={(v) => update("backorderPolicy" as any, v)}>
+          <div className="text-sm font-medium">{t("cms.inventory.backorderPolicy")}</div>
+          <Select value={backorders} onValueChange={(v: "deny" | "notify" | "allow") => update("backorderPolicy", v)}>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder="Select policy" />
+              <SelectValue placeholder={t("cms.inventory.selectPolicy") as string} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="deny">Deny backorders</SelectItem>
-              <SelectItem value="notify">Allow with warning</SelectItem>
-              <SelectItem value="allow">Allow backorders</SelectItem>
+              <SelectItem value="deny">{t("cms.inventory.policy.deny")}</SelectItem>
+              <SelectItem value="notify">{t("cms.inventory.policy.notify")}</SelectItem>
+              <SelectItem value="allow">{t("cms.inventory.policy.allow")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
 
-      <div className="flex justify-between">
+      <Cluster justify="between">
         {prevStepId && (
           <Button data-cy="back" variant="outline" onClick={() => router.push(`/cms/configurator/${prevStepId}`)}>
-            Back
+            {t("cms.back")}
           </Button>
         )}
         <Button
           data-cy="save-return"
           onClick={() => {
             markComplete(true);
-            setToast({ open: true, message: "Inventory settings saved" });
+            setToast({ open: true, message: String(t("cms.inventory.saved")) });
             router.push("/cms/configurator");
           }}
         >
-          Save & return
+          {t("cms.configurator.actions.saveReturn")}
         </Button>
         {nextStepId && (
           <Button data-cy="next" onClick={() => {
             markComplete(true);
             router.push(`/cms/configurator/${nextStepId}`);
-          }}>Next</Button>
+          }}>{t("wizard.next")}</Button>
         )}
-      </div>
+      </Cluster>
 
       <Toast open={toast.open} onClose={() => setToast((t) => ({ ...t, open: false }))} message={toast.message} />
     </div>
   );
 }
-

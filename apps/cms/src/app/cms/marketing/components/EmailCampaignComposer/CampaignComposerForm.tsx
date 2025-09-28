@@ -7,6 +7,24 @@ import type {
   FormState,
   SegmentOption,
 } from "./useEmailCampaignComposer";
+import { useTranslations } from "@acme/i18n";
+
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_MARKETING_SHOP = "marketing-shop";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_MARKETING_SEND_AT = "marketing-send-at";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_MARKETING_RECIPIENTS = "marketing-recipients";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_MARKETING_SEGMENT = "marketing-segment";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_MARKETING_SUBJECT = "marketing-subject";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_MARKETING_TEMPLATE = "marketing-template";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const ID_MARKETING_BODY = "marketing-body";
+// i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
+const TYPE_DATETIME_LOCAL = "datetime-local";
 
 export interface CampaignComposerFormProps {
   form: FormState;
@@ -31,91 +49,107 @@ export function CampaignComposerForm({
   onSubmit,
   lockShop,
 }: CampaignComposerFormProps) {
+  const t = useTranslations();
   return (
     <Card>
       <CardContent className="space-y-6">
         <header className="space-y-1">
-          <h2 className="text-lg font-semibold text-foreground">Compose campaign</h2>
-          <p className="text-sm text-muted-foreground">
-            Target a shop audience, add recipients or a saved segment, then preview exactly what customers will see.
-          </p>
+          <h2 className="text-lg font-semibold text-foreground">{t("cms.marketing.campaignComposer.title")}</h2>
+          <p className="text-sm text-muted-foreground">{t("cms.marketing.campaignComposer.subtitle")}</p>
         </header>
         <form className="space-y-4" onSubmit={onSubmit} noValidate>
           <div className="grid gap-4 md:grid-cols-2">
-            <FormField label="Shop" htmlFor="marketing-shop" error={errors.shop} required>
+            <FormField
+              label={t("cms.marketing.campaignComposer.shop.label")}
+              htmlFor={ID_MARKETING_SHOP}
+              error={errors.shop}
+              required
+            >
               <Input
-                id="marketing-shop"
-                placeholder="bcd"
+                id={ID_MARKETING_SHOP}
+                placeholder={t("cms.marketing.campaignComposer.shop.placeholder")}
                 value={form.shop}
                 onChange={(event) => onFieldChange("shop", event.target.value)}
                 disabled={!!lockShop}
                 autoComplete="off"
               />
-              <p className="text-xs text-muted-foreground">
-                Use a shop slug to pull matching analytics events and available segments.
-              </p>
+              <p className="text-xs text-muted-foreground">{t("cms.marketing.campaignComposer.shop.help")}</p>
             </FormField>
-            <FormField label="Send at" htmlFor="marketing-send-at" error={errors.sendAt}>
+            <FormField
+              label={t("cms.marketing.campaignComposer.sendAt.label")}
+              htmlFor={ID_MARKETING_SEND_AT}
+              error={errors.sendAt}
+            >
               <Input
-                id="marketing-send-at"
-                type="datetime-local"
+                id={ID_MARKETING_SEND_AT}
+                type={TYPE_DATETIME_LOCAL}
                 value={form.sendAt}
                 onChange={(event) => onFieldChange("sendAt", event.target.value)}
               />
-              <p className="text-xs text-muted-foreground">
-                Leave blank to send immediately. Scheduled sends use the shop timezone.
-              </p>
+              <p className="text-xs text-muted-foreground">{t("cms.marketing.campaignComposer.sendAt.help")}</p>
             </FormField>
           </div>
           <div className="grid gap-4 md:grid-cols-2">
-            <FormField label="Recipients" htmlFor="marketing-recipients" error={errors.recipientsRaw}>
+            <FormField
+              label={t("cms.marketing.campaignComposer.recipients.label")}
+              htmlFor={ID_MARKETING_RECIPIENTS}
+              error={errors.recipientsRaw}
+            >
               <Textarea
-                id="marketing-recipients"
-                placeholder="Comma or space separated emails"
+                id={ID_MARKETING_RECIPIENTS}
+                placeholder={t("cms.marketing.campaignComposer.recipients.placeholder")}
                 value={form.recipients}
                 onChange={(event) => onFieldChange("recipients", event.target.value)}
                 rows={3}
               />
-              <p className="text-xs text-muted-foreground">
-                Paste ad-hoc contacts here. Segments can also be combined with these recipients.
-              </p>
+              <p className="text-xs text-muted-foreground">{t("cms.marketing.campaignComposer.recipients.help")}</p>
             </FormField>
-            <FormField label="Segment" htmlFor="marketing-segment" error={errors.segment}>
+            <FormField
+              label={t("cms.marketing.campaignComposer.segment.label")}
+              htmlFor={ID_MARKETING_SEGMENT}
+              error={errors.segment}
+            >
               <select
-                id="marketing-segment"
+                id={ID_MARKETING_SEGMENT}
                 className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 value={form.segment}
                 onChange={(event) => onFieldChange("segment", event.target.value)}
                 disabled={loadingSegments || !form.shop}
               >
-                <option value="">No segment</option>
+                <option value="">{t("cms.marketing.campaignComposer.segment.none")}</option>
                 {segments.map((segment) => (
                   <option key={segment.id} value={segment.id}>
                     {segment.name ?? segment.id}
                   </option>
                 ))}
               </select>
-              <p className="text-xs text-muted-foreground">
-                Segments refresh nightly from analytics. Selecting one overrides manual recipient validation.
-              </p>
+              <p className="text-xs text-muted-foreground">{t("cms.marketing.campaignComposer.segment.help")}</p>
             </FormField>
           </div>
-          <FormField label="Subject" htmlFor="marketing-subject" error={errors.subject} required>
+          <FormField
+            label={t("cms.marketing.campaignComposer.subject.label")}
+            htmlFor={ID_MARKETING_SUBJECT}
+            error={errors.subject}
+            required
+          >
             <Input
-              id="marketing-subject"
-              placeholder="April launch announcement"
+              id={ID_MARKETING_SUBJECT}
+              placeholder={t("cms.marketing.campaignComposer.subject.placeholder")}
               value={form.subject}
               onChange={(event) => onFieldChange("subject", event.target.value)}
               autoComplete="off"
             />
-            <p className="text-xs text-muted-foreground">
-              Keep it under 60 characters so it fits across most inbox clients.
-            </p>
+            <p className="text-xs text-muted-foreground">{t("cms.marketing.campaignComposer.subject.help")}</p>
           </FormField>
-          <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-            <FormField label="Template" htmlFor="marketing-template" error={errors.templateId} required>
+          <div className="grid gap-4 md:grid-cols-2">
+            <FormField
+              label={t("cms.marketing.campaignComposer.template.label")}
+              htmlFor={ID_MARKETING_TEMPLATE}
+              error={errors.templateId}
+              required
+            >
               <select
-                id="marketing-template"
+                id={ID_MARKETING_TEMPLATE}
                 className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 value={form.templateId}
                 onChange={(event) => onFieldChange("templateId", event.target.value)}
@@ -127,26 +161,29 @@ export function CampaignComposerForm({
                   </option>
                 ))}
               </select>
-              <p className="text-xs text-muted-foreground">
-                Templates automatically include legal footer copy and unsubscribe links.
-              </p>
+              <p className="text-xs text-muted-foreground">{t("cms.marketing.campaignComposer.template.help")}</p>
             </FormField>
-            <FormField label="HTML body" htmlFor="marketing-body" error={errors.body} required>
+            <FormField
+              label={t("cms.marketing.campaignComposer.body.label")}
+              htmlFor={ID_MARKETING_BODY}
+              error={errors.body}
+              required
+            >
               <Textarea
-                id="marketing-body"
+                id={ID_MARKETING_BODY}
                 value={form.body}
                 onChange={(event) => onFieldChange("body", event.target.value)}
                 rows={8}
-                placeholder="Paste or author the HTML body"
+                placeholder={t("cms.marketing.campaignComposer.body.placeholder")}
               />
-              <p className="text-xs text-muted-foreground">
-                Inline styles are supported. We sanitise content to prevent script execution.
-              </p>
+              <p className="text-xs text-muted-foreground">{t("cms.marketing.campaignComposer.body.help")}</p>
             </FormField>
           </div>
           <div className="flex justify-end gap-3">
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Sending…" : "Queue campaign"}
+              {isSubmitting
+                ? t("cms.marketing.campaignComposer.submit.sending")
+                : t("cms.marketing.campaignComposer.submit.queue")}
             </Button>
           </div>
         </form>

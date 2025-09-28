@@ -4,37 +4,37 @@ import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, T
 import type { EditorProps } from "./EditorProps";
 import { useTranslations } from "@acme/i18n";
 
+// i18n-exempt — admin-only builder UI; labels and placeholders are not end-user copy
+
 type Props = EditorProps<DatasetComponent>;
 
 export default function DatasetEditor({ component, onChange }: Props) {
   const t = useTranslations();
+  const DATASET_SOURCE_ID = "dataset-source"; // i18n-exempt -- PB-2419 control id, not user-facing copy [ttl=2026-03-31]
+  const DATASET_ORDER_ID = "dataset-order"; // i18n-exempt -- PB-2419 control id, not user-facing copy [ttl=2026-03-31]
   return (
     <div className="space-y-2">
       <div className="grid grid-cols-2 gap-2">
         <div>
-          {/* i18n-exempt: admin-only label in builder UI */}
-          <label className="mb-1 block text-xs font-semibold text-muted-foreground">Source</label>
+          <label htmlFor={DATASET_SOURCE_ID} className="mb-1 block text-xs font-semibold text-muted-foreground">{t("cms.builder.dataset.source.label")}</label>
           <Select
             value={component.source ?? "products"}
             onValueChange={(v) => onChange({ source: v as DatasetComponent["source"] })}
           >
-            <SelectTrigger>
-              {/* i18n-exempt: admin-only placeholder */}
-              <SelectValue placeholder="Source" />
+            <SelectTrigger id={DATASET_SOURCE_ID}>
+              <SelectValue placeholder={t("cms.builder.dataset.source.placeholder") as string} />
             </SelectTrigger>
             <SelectContent>
-              {/* i18n-exempt: admin-only options; labels wrapped for linting */}
-              <SelectItem value="products">{t("Products")}</SelectItem>
-              <SelectItem value="manual">{t("Manual")}</SelectItem>
-              <SelectItem value="blog">{t("Blog (Sanity)")}</SelectItem>
-              <SelectItem value="sanity">{t("Sanity (custom)")}</SelectItem>
+              <SelectItem value="products">{t("cms.builder.dataset.source.products")}</SelectItem>
+              <SelectItem value="manual">{t("cms.builder.dataset.source.manual")}</SelectItem>
+              <SelectItem value="blog">{t("cms.builder.dataset.source.blogSanity")}</SelectItem>
+              <SelectItem value="sanity">{t("cms.builder.dataset.source.sanityCustom")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div>
           <Input
-            // i18n-exempt: admin-only label in builder UI
-            label="Limit"
+            label={t("cms.builder.dataset.limit")}
             type="number"
             value={component.limit ?? ""}
             onChange={(e) => onChange({ limit: e.target.value === "" ? undefined : Number(e.target.value) })}
@@ -43,20 +43,16 @@ export default function DatasetEditor({ component, onChange }: Props) {
       </div>
       {component.source === "products" && (
         <Input
-          // i18n-exempt: admin-only label in builder UI
-          label="Collection ID"
-          // i18n-exempt: admin-only placeholder
-          placeholder="collection key/handle"
+          label={t("cms.builder.dataset.collectionId")}
+          placeholder={t("cms.builder.dataset.collectionId.placeholder") as string}
           value={component.collectionId ?? ""}
           onChange={(e) => onChange({ collectionId: e.target.value })}
         />
       )}
       {component.source === "manual" && (
         <Textarea
-          // i18n-exempt: admin-only label in builder UI
-          label="SKUs (comma separated)"
-          // i18n-exempt: admin-only placeholder
-          placeholder="sku-1, sku-2, sku-3"
+          label={t("cms.builder.dataset.skus")}
+          placeholder={t("cms.builder.dataset.skus.placeholder") as string}
           value={(() => {
             const raw = (component.skus as unknown);
             const list = Array.isArray(raw) ? raw : [];
@@ -82,31 +78,25 @@ export default function DatasetEditor({ component, onChange }: Props) {
       )}
       <div className="grid grid-cols-2 gap-2">
         <Input
-          // i18n-exempt: admin-only label in builder UI
-          label="Sort by"
-          // i18n-exempt: admin-only placeholder
-          placeholder="title | price | createdAt"
+          label={t("cms.builder.dataset.sortBy")}
+          placeholder={t("cms.builder.dataset.sortBy.placeholder") as string}
           value={component.sortBy ?? ""}
           onChange={(e) => onChange({ sortBy: e.target.value || undefined })}
         />
         <div>
-          {/* i18n-exempt: admin-only label in builder UI */}
-          <label className="mb-1 block text-xs font-semibold text-muted-foreground">Order</label>
+          <label htmlFor={DATASET_ORDER_ID} className="mb-1 block text-xs font-semibold text-muted-foreground">{t("cms.builder.dataset.order")}</label>
           <Select value={component.sortOrder ?? "asc"} onValueChange={(v) => onChange({ sortOrder: v as DatasetComponent["sortOrder"] })}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
+            <SelectTrigger id={DATASET_ORDER_ID}><SelectValue /></SelectTrigger>
             <SelectContent>
-              {/* i18n-exempt: admin-only options */}
-              <SelectItem value="asc">asc</SelectItem>
-              <SelectItem value="desc">desc</SelectItem>
+              <SelectItem value="asc">{t("cms.builder.dataset.order.asc")}</SelectItem>
+              <SelectItem value="desc">{t("cms.builder.dataset.order.desc")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
       <Input
-        // i18n-exempt: admin-only label in builder UI
-        label="Item route pattern"
-        // i18n-exempt: admin-only placeholder
-        placeholder="/blog/{slug}"
+        label={t("cms.builder.dataset.itemRoutePattern")}
+        placeholder={t("cms.builder.dataset.itemRoutePattern.placeholder") as string}
         value={component.itemRoutePattern ?? ""}
         onChange={(e) => onChange({ itemRoutePattern: e.target.value || undefined })}
       />

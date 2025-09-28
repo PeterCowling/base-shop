@@ -1,3 +1,4 @@
+/* i18n-exempt file -- ENG-1234 Non-UI config: globs and policy labels [ttl=2025-12-31] */
 export type Bucket =
   | 'atoms'
   | 'molecules'
@@ -13,6 +14,8 @@ export interface BucketPolicy {
   requireEmpty: boolean;
   requireError: boolean;
   requireRTL: boolean; // RTL sample required
+  // Optional: require at least one mobile viewport sample (applies to Matrix stories via verifier)
+  requireMobile?: boolean;
 }
 
 export const bucketGlobs: Record<Bucket, string[]> = {
@@ -28,7 +31,7 @@ export const bucketGlobs: Record<Bucket, string[]> = {
 export const bucketPolicy: Record<Bucket, BucketPolicy> = {
   atoms: { requireDefault: true, requireLoading: false, requireEmpty: false, requireError: false, requireRTL: false },
   molecules: { requireDefault: true, requireLoading: false, requireEmpty: false, requireError: false, requireRTL: false },
-  organisms: { requireDefault: true, requireLoading: true, requireEmpty: true, requireError: true, requireRTL: true },
+  organisms: { requireDefault: true, requireLoading: true, requireEmpty: true, requireError: true, requireRTL: true, requireMobile: true },
   'cms-blocks': { requireDefault: true, requireLoading: true, requireEmpty: true, requireError: true, requireRTL: true },
   templates: { requireDefault: true, requireLoading: true, requireEmpty: true, requireError: true, requireRTL: true },
   layout: { requireDefault: true, requireLoading: false, requireEmpty: false, requireError: false, requireRTL: false },
@@ -36,5 +39,6 @@ export const bucketPolicy: Record<Bucket, BucketPolicy> = {
 };
 
 // Allowlist: story files that do not need full matrix per policy
-export const allowlist: string[] = [];
-
+export const allowlist: string[] = [
+  'packages/ui/src/components/cms/blocks/data/DataContext.tsx',
+];

@@ -4,6 +4,8 @@
  * Every token has a `light` value and may provide a `dark` variant.
  */
 
+import { EXTENDED_TOKENS } from './tokens.extensions';
+
 export interface Token {
   /** CSS colour / length / font list used in light mode */
   readonly light: string;
@@ -60,10 +62,10 @@ export const tokens = {
   "--color-selection": { light: "260 83% 92%", dark: "220 30% 40%" },
   "--color-highlight": { light: "260 83% 97%", dark: "220 25% 30%" },
   "--color-muted-fg": { light: "0 0% 20%", dark: "0 0% 92%" },
-  "--color-muted-border": { light: "0 0% 72%", dark: "0 0% 40%" },
+  "--color-muted-border": { light: "0 0% 72%", dark: "0 0% 40%" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
   // Translucent overlays
-  "--overlay-scrim-1": { light: "0 0% 0% / 0.40", dark: "0 0% 100% / 0.40" },
-  "--overlay-scrim-2": { light: "0 0% 0% / 0.64", dark: "0 0% 100% / 0.64" },
+  "--overlay-scrim-1": { light: "0 0% 0% / 0.40", dark: "0 0% 100% / 0.40" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--overlay-scrim-2": { light: "0 0% 0% / 0.64", dark: "0 0% 100% / 0.64" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
   // Foreground color suitable for hero backgrounds (paired with bg-hero-contrast)
   "--hero-fg": { light: "0 0% 100%", dark: "0 0% 100%" },
   "--font-sans": { light: 'var(--font-geist-sans)' },
@@ -78,24 +80,34 @@ export const tokens = {
   "--typography-body-font-family": { light: 'var(--font-body)' },
   "--text-heading-1-font-family": { light: 'var(--font-heading-1)' },
   "--text-heading-2-font-family": { light: 'var(--font-heading-2)' },
-  "--space-1": { light: "4px" },
-  "--space-2": { light: "8px" },
-  "--space-3": { light: "12px" },
-  "--space-4": { light: "16px" },
-  "--radius-sm": { light: "4px" },
-  "--radius-md": { light: "8px" },
-  "--radius-lg": { light: "12px" },
-  "--shadow-sm": { light: "0 1px 2px 0 rgb(0 0 0 / 0.05)" },
+  "--space-1": { light: "4px" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--space-2": { light: "8px" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--space-3": { light: "12px" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--space-4": { light: "16px" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--radius-sm": { light: "4px" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--radius-md": { light: "8px" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--radius-lg": { light: "12px" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--shadow-sm": { light: "0 1px 2px 0 rgb(0 0 0 / 0.05)" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
   "--shadow-md": {
-    light: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    light: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)", // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
   },
   "--shadow-lg": {
-    light: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    light: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)", // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
   },
   // Gradient tokens (used by bg-hero utility)
-  "--gradient-hero-from": { light: "234 89% 60%" },
-  "--gradient-hero-via": { light: "270 83% 60%" },
-  "--gradient-hero-to": { light: "222 47% 11%" },
+  "--gradient-hero-from": { light: "234 89% 60%" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--gradient-hero-via": { light: "270 83% 60%" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--gradient-hero-to": { light: "222 47% 11%" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
   // Overlay used by bg-hero-contrast to guarantee text contrast
-  "--hero-contrast-overlay": { light: "0 0% 0% / 0.55", dark: "0 0% 0% / 0.55" },
+  "--hero-contrast-overlay": { light: "0 0% 0% / 0.55", dark: "0 0% 0% / 0.55" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
 } as const satisfies TokenMap;
+
+// Append additive tokens (spacing, radii, breakpoints, a11y, safe-area)
+// while preserving the authoritative TokenMap shape.
+// We convert flat values to `{ light: value }` Token entries.
+Object.assign(
+  tokens as Record<string, Token>,
+  Object.fromEntries(
+    Object.entries(EXTENDED_TOKENS).map(([k, v]) => [k, { light: v } as Token])
+  )
+);

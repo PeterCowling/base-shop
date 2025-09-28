@@ -98,13 +98,13 @@ export default function SelectionQuickActions({ components, selectedIds, dispatc
     <div
       ref={bubbleRef}
       className="absolute -translate-x-1/2 -translate-y-full rounded bg-muted/90 px-1 py-1 text-xs text-muted-foreground shadow backdrop-blur"
+      // Position is dynamic; inline style is necessary here
+      // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic left/top are required for canvas overlay
       style={{ left: pos.left, top: pos.top }}
     >
       <div className="flex flex-wrap items-center gap-1">
         {selectedIds.length === 1 && (
-          <>
-            <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={ungroup} title="Ungroup container">Ungroup</Button>
-          </>
+          <Button type="button" className="h-6 px-2 py-0 text-xs" variant="outline" disabled={locked} onClick={ungroup} title="Ungroup container">Ungroup</Button>
         )}
         {selectedIds.length > 1 && (
           <>

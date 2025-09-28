@@ -5,13 +5,17 @@ jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
   return {
     __esModule: true,
-    Button: React.forwardRef<HTMLButtonElement, ComponentProps<"button">>(
-      ({ children, ...props }, ref) => (
-        <button ref={ref} {...props}>
-          {children}
-        </button>
-      )
-    ),
+    Button: (() => {
+      const Cmp = React.forwardRef<HTMLButtonElement, ComponentProps<"button">>(
+        ({ children, ...props }, ref) => (
+          <button ref={ref} {...props}>
+            {children}
+          </button>
+        )
+      );
+      Cmp.displayName = "Button";
+      return Cmp;
+    })(),
     Card: ({ children, ...props }: ComponentProps<"div">) => (
       <div {...props}>{children}</div>
     ),
@@ -26,16 +30,24 @@ jest.mock("@/components/atoms/shadcn", () => {
         {...props}
       />
     ),
-    Input: React.forwardRef<HTMLInputElement, ComponentProps<"input">>((props, ref) => (
-      <input ref={ref} {...props} />
-    )),
-    Textarea: React.forwardRef<HTMLTextAreaElement, ComponentProps<"textarea">>(
-      ({ children, ...props }, ref) => (
-        <textarea ref={ref} {...props}>
-          {children}
-        </textarea>
-      )
-    ),
+    Input: (() => {
+      const Cmp = React.forwardRef<HTMLInputElement, ComponentProps<"input">>((props, ref) => (
+        <input ref={ref} {...props} />
+      ));
+      Cmp.displayName = "Input";
+      return Cmp;
+    })(),
+    Textarea: (() => {
+      const Cmp = React.forwardRef<HTMLTextAreaElement, ComponentProps<"textarea">>(
+        ({ children, ...props }, ref) => (
+          <textarea ref={ref} {...props}>
+            {children}
+          </textarea>
+        )
+      );
+      Cmp.displayName = "Textarea";
+      return Cmp;
+    })(),
   };
 });
 

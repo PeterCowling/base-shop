@@ -1,6 +1,7 @@
 // apps/cms/src/app/api/page-templates/[name]/route.ts
 
 import { NextResponse, type NextRequest } from "next/server";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import fsSync, { promises as fs } from "fs";
 import path from "path";
 
@@ -12,8 +13,7 @@ export function resolveTemplatesRoot(): string {
       path.join(dir, "packages", "ui", "src", "components", "templates"),
     ];
     for (const candidate of candidates) {
-      // ESLint: workspace-only paths, no user input
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-003: Checking existence of workspace-internal candidate paths; values are static and not user-influenced.
       if (fsSync.existsSync(candidate)) return candidate;
     }
     const parent = path.dirname(dir);
@@ -34,6 +34,7 @@ export async function GET(
   context: { params: Promise<{ name: string }> }
 ) {
   try {
+    const t = await getServerTranslations("en");
     const { resolveTemplatesRoot } = await import("./route");
     const dir = resolveTemplatesRoot();
     const { name } = await context.params;
@@ -42,13 +43,14 @@ export async function GET(
     const file = path.join(dir, `${safeName}.json`);
     const resolved = path.resolve(file);
     if (!resolved.startsWith(path.resolve(dir) + path.sep)) {
-      return NextResponse.json({ error: "Invalid template name" }, { status: 400 });
+      return NextResponse.json({ error: t("api.cms.templates.invalidName") }, { status: 400 });
     }
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-004: File path constrained by sanitized name and bounded to templates dir via startsWith check.
     const buf = await fs.readFile(file, "utf8");
     const data = JSON.parse(buf);
     return NextResponse.json(data);
   } catch {
-    return NextResponse.json({ error: "Not found" }, { status: 404 });
+    const t = await getServerTranslations("en");
+    return NextResponse.json({ error: t("api.common.notFound") }, { status: 404 });
   }
 }

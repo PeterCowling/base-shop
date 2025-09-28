@@ -16,6 +16,8 @@ import {
   UploadIcon,
   VideoIcon,
 } from "@radix-ui/react-icons";
+import { Inline } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 interface MediaOverviewHeroProps {
   shop: string;
@@ -42,14 +44,14 @@ function formatBytes(bytes: number): string {
   return `${size.toFixed(precision)} ${units[exponent]}`;
 }
 
-function formatTimestamp(value?: string): string {
+function formatTimestamp(value: string | undefined, fallback: string): string {
   if (!value) {
-    return "Time unavailable";
+    return fallback;
   }
 
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "Time unavailable";
+    return fallback;
   }
 
   return new Intl.DateTimeFormat(undefined, {
@@ -83,6 +85,7 @@ export default function MediaOverviewHero({
   uploaderTargetId,
   storageLimitBytes,
 }: MediaOverviewHeroProps) {
+  const t = useTranslations();
   const usagePercent =
     typeof storageLimitBytes === "number" && storageLimitBytes > 0
       ? Math.min(100, Math.round((totalBytes / storageLimitBytes) * 100))
@@ -112,14 +115,13 @@ export default function MediaOverviewHero({
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="space-y-2">
               <p className="text-sm text-muted-foreground">
-                Asset library · {shop}
+                {t("cms.media.overview.tag", { shop })}
               </p>
               <h1 id={headingId} className="text-2xl font-semibold">
-                Manage your media library
+                {t("cms.media.overview.heading")}
               </h1>
-              <p className="max-w-xl text-sm text-muted-foreground">
-                Track storage usage, monitor recent uploads, and keep your asset
-                library ready for new campaigns.
+              <p className="text-sm text-muted-foreground">
+                {t("cms.media.overview.subheading")}
               </p>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -129,25 +131,33 @@ export default function MediaOverviewHero({
                 className="inline-flex items-center gap-2"
               >
                 <UploadIcon className="h-4 w-4" aria-hidden />
-                Upload media
+                {t("cms.media.overview.cta.upload")}
               </Button>
             </div>
           </div>
 
-          <dl className="grid gap-4 sm:grid-cols-3" aria-label="Media usage statistics">
+          <dl
+            className="grid gap-4 sm:grid-cols-3"
+            aria-label={String(t("cms.media.overview.stats.aria"))}
+          >
             <div className="rounded-lg border border-border-3 bg-surface-3 p-4">
               <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <StackIcon className="h-4 w-4" aria-hidden />
-                Storage used
+                {t("cms.media.overview.storage.used")}
               </dt>
               <dd className="mt-2 text-lg font-semibold text-foreground">
                 {storageSummary}
               </dd>
               {usagePercent !== null && (
                 <div className="mt-4 space-y-1">
-                  <Progress value={usagePercent} aria-label="Storage usage" />
+                  <Progress
+                    value={usagePercent}
+                    aria-label={String(t("cms.media.overview.storage.aria"))}
+                  />
                   <p className="text-xs text-muted-foreground">
-                    {usagePercent}% of plan capacity
+                    {t("cms.media.overview.storage.planCapacity", {
+                      percent: usagePercent,
+                    })}
                   </p>
                 </div>
               )}
@@ -156,25 +166,28 @@ export default function MediaOverviewHero({
             <div className="rounded-lg border border-border-3 bg-surface-3 p-4">
               <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <ImageIcon className="h-4 w-4" aria-hidden />
-                Assets in library
+                {t("cms.media.overview.assets.label")}
               </dt>
               <dd className="mt-2 text-lg font-semibold text-foreground">
                 {assetCount.toLocaleString()}
               </dd>
               <p className="text-xs text-muted-foreground">
-                Includes images and videos stored in your workspace.
+                {t("cms.media.overview.assets.caption")}
               </p>
             </div>
 
             <div className="rounded-lg border border-border-3 bg-surface-3 p-4">
               <dt className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <ClockIcon className="h-4 w-4" aria-hidden />
-                Last upload
+                {t("cms.media.overview.lastUpload.label")}
               </dt>
               <dd className="mt-2 text-lg font-semibold text-foreground">
                 {mostRecentUpload
-                  ? formatTimestamp(mostRecentUpload.uploadedAt)
-                  : "No uploads yet"}
+                  ? formatTimestamp(
+                      mostRecentUpload.uploadedAt,
+                      String(t("cms.media.timeUnavailable"))
+                    )
+                  : String(t("cms.media.overview.lastUpload.none"))}
               </dd>
               {mostRecentUpload && (
                 <p className="text-xs text-muted-foreground">
@@ -185,20 +198,30 @@ export default function MediaOverviewHero({
           </dl>
 
           <div className="space-y-3">
-            <h2 className="text-lg font-semibold">Recent uploads</h2>
+            <h2 className="text-lg font-semibold">
+              {t("cms.media.overview.recent.heading")}
+            </h2>
             {recentUploads.length > 0 ? (
-              <ul
-                className="flex gap-4 overflow-x-auto pb-2"
-                aria-label="Recent media uploads"
+              <Inline
+                role="list"
+                className="overflow-x-auto pb-2"
+                aria-label={String(t("cms.media.overview.recent.aria"))}
+                alignY="start"
+                gap={4}
+                wrap={false}
               >
                 {recentUploads.map((item) => {
                   const name = getDisplayName(item);
-                  const timestamp = formatTimestamp(item.uploadedAt);
+                  const timestamp = formatTimestamp(
+                    item.uploadedAt,
+                    String(t("cms.media.timeUnavailable"))
+                  );
 
                   return (
-                    <li
+                    <div
+                      role="listitem"
                       key={item.url}
-                      className="min-w-[11rem] flex-shrink-0"
+                      className="min-w-44 shrink-0"
                     >
                       <div className="space-y-2">
                         <div className="relative h-28 w-full overflow-hidden rounded-md border border-border-3 bg-muted">
@@ -216,9 +239,9 @@ export default function MediaOverviewHero({
                             </div>
                           )}
                           {item.type === "video" && (
-                            <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-foreground/60 px-2 py-1 text-xs text-primary-foreground">
+                            <span className="absolute start-2 top-2 inline-flex items-center gap-1 rounded-full bg-foreground/60 px-2 py-1 text-xs text-primary-foreground">
                               <VideoIcon className="h-3 w-3" aria-hidden />
-                              Video
+                              {t("media.video")}
                             </span>
                           )}
                         </div>
@@ -229,13 +252,13 @@ export default function MediaOverviewHero({
                           <p className="text-xs text-muted-foreground">{timestamp}</p>
                         </div>
                       </div>
-                    </li>
+                    </div>
                   );
                 })}
-              </ul>
+              </Inline>
             ) : (
               <p className="text-sm text-muted-foreground">
-                Upload images or videos to populate your media activity feed.
+                {t("cms.media.overview.empty")}
               </p>
             )}
           </div>

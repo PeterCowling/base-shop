@@ -19,9 +19,9 @@ export const SustainabilityBadgeCluster = React.forwardRef<
   HTMLDivElement,
   SustainabilityBadgeClusterProps
 >(({ badges, className, ...props }, ref) => (
-  <div ref={ref} className={cn("flex flex-wrap gap-2", /* i18n-exempt: class names */ className)} {...props}>
-    {badges.map((b, idx) => (
-      <ProductBadge key={idx} label={b.label} variant={b.variant ?? "new"} />
+  <div ref={ref} className={cn("flex flex-wrap gap-2", /* i18n-exempt -- TECH-000 [ttl=2026-01-31] class names */ className)} {...props}>
+    {badges.map((b) => (
+      <ProductBadge key={b.label} label={b.label} variant={b.variant ?? "new"} />
     ))}
   </div>
 ));

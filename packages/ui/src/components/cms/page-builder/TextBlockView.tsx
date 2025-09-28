@@ -1,4 +1,4 @@
-/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-hardcoded-copy -- PB-0001: builder canvas uses absolute/z-index and contains non-user-facing labels */
+/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-hardcoded-copy, react/forbid-dom-props -- PB-0001: builder canvas uses absolute/z-index and requires dynamic inline styles for runtime positioning */
 "use client";
 
 import { EditorContent, type Editor } from "@tiptap/react";
@@ -112,7 +112,8 @@ const TextBlockView = ({
     <div
       ref={assignNodeRef}
       onClick={onSelect}
-      role="listitem"
+      role="button"
+      aria-pressed={selected}
       aria-label={"Canvas item" /* i18n-exempt: internal builder control */}
       tabIndex={0}
       onKeyDown={onKeyDown}
@@ -181,7 +182,7 @@ const TextBlockView = ({
         </div>
       )}
       {editing ? (
-        <div onBlur={onFinishEditing} onClick={(e) => e.stopPropagation()}>
+        <div role="presentation" onBlur={onFinishEditing} onPointerDown={(e) => e.stopPropagation()}>
           <MenuBar editor={editor} />
           <EditorContent
             editor={editor}
@@ -200,7 +201,10 @@ const TextBlockView = ({
             }}
           />
           {toolbarPos.visible && (
-            <div className="pointer-events-auto absolute z-40 flex -translate-x-1/2 gap-1 rounded border bg-background p-1 shadow" style={{ left: toolbarPos.x, top: toolbarPos.y }}>
+            <div
+              className="pointer-events-auto absolute z-40 flex -translate-x-1/2 gap-1 rounded border bg-background p-1 shadow"
+              style={{ left: toolbarPos.x, top: toolbarPos.y }}
+            >
               {/* eslint-disable ds/min-tap-size -- PB-0001: compact toolbar controls are desktop-targeted */}
               <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleBold().run()} aria-label={"Bold" /* i18n-exempt: toolbar label */}>B</button>
               <button type="button" className="rounded px-1 text-xs hover:bg-muted" onClick={() => editor?.chain().focus().toggleItalic().run()} aria-label={"Italic" /* i18n-exempt: toolbar label */}>I</button>
@@ -225,18 +229,36 @@ const TextBlockView = ({
         (staticTransform ? (
           <div style={{ transform: staticTransform }}>
             <div
+              role="button"
+              tabIndex={0}
               onClick={(e) => {
                 e.stopPropagation();
                 onStartEditing();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onStartEditing();
+                }
               }}
               dangerouslySetInnerHTML={{ __html: sanitized }}
             />
           </div>
         ) : (
           <div
+            role="button"
+            tabIndex={0}
             onClick={(e) => {
               e.stopPropagation();
               onStartEditing();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                e.stopPropagation();
+                onStartEditing();
+              }
             }}
             dangerouslySetInnerHTML={{ __html: sanitized }}
           />

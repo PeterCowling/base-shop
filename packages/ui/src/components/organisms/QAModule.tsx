@@ -16,8 +16,8 @@ export interface QAModuleProps extends React.HTMLAttributes<HTMLDivElement> {
 export function QAModule({ items, className, ...props }: QAModuleProps) {
   return (
     <div className={cn("space-y-4", className)} {...props}>
-      {items.map((qa, i) => (
-        <details key={i} className="group rounded-md border p-4">
+      {items.map((qa) => (
+        <details key={qa.question} className="group rounded-md border p-4">
           <summary className="cursor-pointer font-medium group-open:mb-2">
             {qa.question}
           </summary>

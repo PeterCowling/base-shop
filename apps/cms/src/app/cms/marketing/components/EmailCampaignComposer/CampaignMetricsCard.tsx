@@ -1,5 +1,7 @@
 import { Card, CardContent, Skeleton } from "@ui/components/atoms";
+import { Grid } from "@ui/components/atoms/primitives";
 import { AnalyticsSummaryCard } from "@ui/components/cms/marketing";
+import { useTranslations } from "@acme/i18n";
 import type { CampaignMetrics } from "./useEmailCampaignComposer";
 
 function clampPercent(value: number): number {
@@ -22,12 +24,13 @@ export interface CampaignMetricsCardProps {
 }
 
 export function CampaignMetricsCard({ campaigns, loading }: CampaignMetricsCardProps) {
+  const t = useTranslations();
   if (loading) {
     return (
       <Card>
         <CardContent className="space-y-4">
           <Skeleton className="h-5 w-40" />
-          <div className="grid gap-3 sm:grid-cols-2">
+          <Grid cols={1} gap={3} className="sm:grid-cols-2">
             {Array.from({ length: 4 }).map((_, index) => (
               <div key={index} className="space-y-2">
                 <Skeleton className="h-3 w-20" />
@@ -35,7 +38,7 @@ export function CampaignMetricsCard({ campaigns, loading }: CampaignMetricsCardP
                 <Skeleton className="h-2 w-full" />
               </div>
             ))}
-          </div>
+          </Grid>
         </CardContent>
       </Card>
     );
@@ -72,62 +75,82 @@ export function CampaignMetricsCard({ campaigns, loading }: CampaignMetricsCardP
 
   const hasCampaigns = campaigns.length > 0;
   const schedulingParts = [
-    delivered > 0 ? `${delivered} delivered` : null,
-    scheduled > 0 ? `${scheduled} scheduled` : null,
-    pending > 0 ? `${pending} pending` : null,
+    delivered > 0
+      ? String(t("cms.marketing.email.metrics.scheduling.delivered", { count: delivered.toLocaleString() }))
+      : null,
+    scheduled > 0
+      ? String(t("cms.marketing.email.metrics.scheduling.scheduled", { count: scheduled.toLocaleString() }))
+      : null,
+    pending > 0
+      ? String(t("cms.marketing.email.metrics.scheduling.pending", { count: pending.toLocaleString() }))
+      : null,
   ].filter(Boolean) as string[];
 
   const sentHelper = hasCampaigns
     ? schedulingParts.length > 0
       ? schedulingParts.join(" • ")
-      : "Awaiting delivery to calculate engagement."
-    : "Queue a campaign to start collecting metrics.";
-  const statusLabel = hasCampaigns ? (sent > 0 ? "Live metrics" : "Scheduled") : "No campaigns";
+      : String(t("cms.marketing.email.metrics.sent.helper.awaiting"))
+    : String(t("cms.marketing.email.metrics.sent.helper.queue"));
+  const statusLabel = hasCampaigns
+    ? sent > 0
+      ? String(t("cms.marketing.email.metrics.status.live"))
+      : String(t("cms.marketing.email.metrics.status.scheduled"))
+    : String(t("cms.marketing.email.metrics.status.none"));
   const statusTone = hasCampaigns ? (sent > 0 ? "success" : "warning") : "default";
   const openRateLabel = formatPercent(openRate);
   const clickRateLabel = formatPercent(clickRate);
 
   return (
     <AnalyticsSummaryCard
-      title="Campaign metrics"
+      title={t("cms.marketing.email.metrics.title")}
       status={{ label: statusLabel, tone: statusTone }}
-      description="Monitor delivery and engagement as campaigns are queued for this shop."
+      description={t("cms.marketing.email.metrics.description")}
       metrics={[
         {
-          label: "Emails sent",
+          label: t("cms.marketing.email.metrics.sent.label"),
           value: sent.toLocaleString(),
           helper: sentHelper,
         },
         {
-          label: "Open rate",
+          label: t("cms.marketing.email.metrics.openRate.label"),
           value: `${openRateLabel}%`,
           progress: {
             value: openRate,
-            label: `${opened.toLocaleString()} opens`,
+            label: String(
+              t("cms.marketing.email.metrics.openRate.progress", {
+                count: opened.toLocaleString(),
+              })
+            ),
           },
-          helper: sent > 0 ? undefined : "Open rate will populate after delivery completes.",
+          helper:
+            sent > 0 ? undefined : t("cms.marketing.email.metrics.openRate.helperEmpty"),
         },
         {
-          label: "Click rate",
+          label: t("cms.marketing.email.metrics.clickRate.label"),
           value: `${clickRateLabel}%`,
           progress: {
             value: clickRate,
-            label: `${clicked.toLocaleString()} clicks`,
+            label: String(
+              t("cms.marketing.email.metrics.clickRate.progress", {
+                count: clicked.toLocaleString(),
+              })
+            ),
           },
-          helper: sent > 0 ? undefined : "Click rate will populate once recipients engage.",
+          helper:
+            sent > 0 ? undefined : t("cms.marketing.email.metrics.clickRate.helperEmpty"),
         },
         {
-          label: "Active campaigns",
+          label: t("cms.marketing.email.metrics.activeCampaigns.label"),
           value: campaigns.length.toLocaleString(),
           helper: hasCampaigns
-            ? "Includes drafts, scheduled, and sent campaigns."
-            : "Campaigns appear once a shop is selected and saved.",
+            ? t("cms.marketing.email.metrics.activeCampaigns.helper.hasCampaigns")
+            : t("cms.marketing.email.metrics.activeCampaigns.helper.noCampaigns"),
         },
       ]}
       footer={
         hasCampaigns ? (
           <p className="text-xs text-muted-foreground">
-            Metrics refresh automatically after scheduling or sending a campaign.
+            {t("cms.marketing.email.metrics.footer")}
           </p>
         ) : undefined
       }

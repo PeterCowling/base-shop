@@ -6,9 +6,13 @@ export const runtime = 'nodejs';
 
 export async function GET() {
   if (process.env.COVERAGE !== '1') {
-    return NextResponse.json({ error: 'coverage disabled' }, { status: 404 });
+    const { useTranslations: getServerTranslations } = await import(
+      '@acme/i18n/useTranslations.server' // i18n-exempt -- INTL-000 module specifier [ttl=2026-03-31]
+    );
+    const t = await getServerTranslations('en');
+    return NextResponse.json({ error: t('api.coverage.disabled') }, { status: 404 });
   }
-  const cov = (globalThis as any).__coverage__ || {};
+  type CoverageGlobal = { __coverage__?: unknown };
+  const cov = (globalThis as unknown as CoverageGlobal).__coverage__ ?? {};
   return NextResponse.json(cov);
 }
-

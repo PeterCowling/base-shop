@@ -19,7 +19,9 @@
       "@platform-core": ["../platform-core/src/index.ts", "../platform-core/dist/index.d.ts"],
       "@platform-core/*": ["../platform-core/src/*", "../platform-core/dist/*"],
       "@acme/lib": ["../lib/src/index.ts", "../lib/dist/index.d.ts"],
-      "@acme/lib/*": ["../lib/src/*", "../lib/dist/*"]
+      "@acme/lib/*": ["../lib/src/*", "../lib/dist/*"],
+      "@acme/i18n": ["../i18n/src/index.ts", "../i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["../i18n/src/*", "../i18n/dist/*"]
     }
   },
   "include": ["src", "types-compat/**/*.d.ts"],

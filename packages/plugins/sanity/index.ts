@@ -78,8 +78,8 @@ export async function slugExists(
 
 const sanityPlugin: Plugin<SanityConfig> = {
   id: "sanity",
-  name: "Sanity",
-  description: "Sanity CMS integration",
+  name: "Sanity", // i18n-exempt -- DX-1023 [ttl=2026-12-31] Plugin metadata; not user-facing yet
+  description: "Sanity CMS integration", // i18n-exempt -- DX-1023 [ttl=2026-12-31] Plugin metadata; not user-facing yet
   defaultConfig,
   configSchema,
 };

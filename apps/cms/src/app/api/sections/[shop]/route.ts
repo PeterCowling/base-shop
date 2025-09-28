@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import { getSections, saveSection, updateSection, deleteSection } from "@platform-core/repositories/sections/index.server";
-import { sectionTemplateSchema, pageComponentSchema, type SectionTemplate } from "@acme/types";
+import { pageComponentSchema, type SectionTemplate } from "@acme/types";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
@@ -40,8 +41,11 @@ export async function GET(
       addIf(/commerce|product|shop|grid|carousel/.test(label), "commerce");
       // Inspect template children for hints
       try {
-        const root: any = s.template as any;
-        const types: string[] = Array.isArray(root?.children) ? root.children.map((c: any) => String(c?.type || "").toLowerCase()) : [];
+        const root = s.template;
+        const types: string[] =
+          root && root.type === "Section" && Array.isArray(root.children)
+            ? root.children.map((c: { type?: unknown }) => String(c?.type ?? "").toLowerCase())
+            : [];
         addIf(types.includes("herobanner"), "hero");
         addIf(types.includes("productcarousel") || types.includes("productgrid"), "commerce");
         addIf(types.includes("multicolumn"), "features");
@@ -75,8 +79,9 @@ export async function GET(
     ).sort();
 
     return NextResponse.json({ items, total, page: page || 1, pageSize: page ? pageSize : filtered.length, allTags });
-  } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+  } catch {
+    const t = await getServerTranslations("en");
+    return NextResponse.json({ error: t("api.common.genericError") }, { status: 400 });
   }
 }
 
@@ -89,7 +94,7 @@ export async function POST(
     const session = await ensureAuthorized();
     const ct = req.headers.get("content-type") || "";
 
-    let label = "Untitled Section";
+    let label = t("api.cms.sections.untitled");
     let template: unknown = null;
     if (ct.includes("application/json")) {
       const body = await req.json().catch(() => ({}));
@@ -116,8 +121,9 @@ export async function POST(
     };
     const saved = await saveSection(shop, section, undefined);
     return NextResponse.json(saved, { status: 201 });
-  } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+  } catch {
+    const t = await getServerTranslations("en");
+    return NextResponse.json({ error: t("api.common.genericError") }, { status: 400 });
   }
 }
 
@@ -129,24 +135,25 @@ export async function PATCH(
     const { shop } = await context.params;
     const body = await req.json().catch(() => ({}));
     const id = typeof body.id === "string" ? body.id : "";
-    if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+    if (!id) return NextResponse.json({ error: t("api.cms.sections.missingId") }, { status: 400 });
     const list = await getSections(shop);
     const previous = list.find((s) => s.id === id);
-    if (!previous) return NextResponse.json({ error: "Unknown id" }, { status: 404 });
-    const patch: any = { id, updatedAt: previous.updatedAt };
+    if (!previous) return NextResponse.json({ error: t("api.cms.sections.unknownId") }, { status: 404 });
+    const patch: Partial<SectionTemplate> & { id: string; updatedAt: string } = { id, updatedAt: previous.updatedAt };
     if (typeof body.label === "string") patch.label = body.label;
     if (body.status === "draft" || body.status === "published") patch.status = body.status;
     if (body.template !== undefined) {
       try {
         patch.template = pageComponentSchema.parse(body.template);
-      } catch (e) {
-        return NextResponse.json({ error: "Invalid template" }, { status: 400 });
+      } catch {
+        return NextResponse.json({ error: t("api.cms.sections.invalidTemplate") }, { status: 400 });
       }
     }
     const updated = await updateSection(shop, patch, previous);
     return NextResponse.json(updated);
-  } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+  } catch {
+    const t = await getServerTranslations("en");
+    return NextResponse.json({ error: t("api.common.genericError") }, { status: 400 });
   }
 }
 
@@ -158,10 +165,11 @@ export async function DELETE(
     const { shop } = await context.params;
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id") || "";
-    if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+    if (!id) return NextResponse.json({ error: t("api.cms.sections.missingId") }, { status: 400 });
     await deleteSection(shop, id);
     return NextResponse.json({ ok: true });
-  } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+  } catch {
+    const t = await getServerTranslations("en");
+    return NextResponse.json({ error: t("api.common.genericError") }, { status: 400 });
   }
 }

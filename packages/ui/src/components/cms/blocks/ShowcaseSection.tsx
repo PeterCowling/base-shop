@@ -5,6 +5,7 @@ import type { SKU } from "@acme/types";
 import type { RecommendationPreset } from "@acme/types/recommendations";
 import { RecommendationCarousel } from "../../organisms/RecommendationCarousel";
 import { ProductCard } from "../../organisms/ProductCard";
+import { useTranslations } from "@acme/i18n";
 
 export interface ShowcaseSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   preset?: RecommendationPreset;
@@ -14,13 +15,20 @@ export interface ShowcaseSectionProps extends React.HTMLAttributes<HTMLDivElemen
   gridCols?: 2 | 3 | 4;
 }
 
+function LoadingRecommendations() {
+  const t = useTranslations();
+  return <div className="text-sm text-neutral-600">{t("cms.showcase.loadingRecs")}</div>;
+}
+
+function ErrorRecommendations() {
+  const t = useTranslations();
+  return <div className="text-sm text-red-600">{t("cms.showcase.loadFailedRecs")}</div>;
+}
+
 function ShowcaseGrid({ preset, limit, endpoint, gridCols, className, ...rest }: Required<Pick<ShowcaseSectionProps, "preset" | "limit" | "endpoint" | "gridCols">> & React.HTMLAttributes<HTMLDivElement>) {
+  const t = useTranslations();
   const [items, setItems] = React.useState<SKU[]>([]);
   const [status, setStatus] = React.useState<'idle'|'loading'|'loaded'|'error'>('idle');
-  // i18n-exempt -- Loading/error microcopy; pending i18n integration
-  const LOADING_TEXT = "Loading…";
-  // i18n-exempt -- Loading/error microcopy; pending i18n integration
-  const LOAD_ERR_PRODUCTS = "Failed to load products.";
   React.useEffect(() => {
     const load = async () => {
       try {
@@ -40,14 +48,14 @@ function ShowcaseGrid({ preset, limit, endpoint, gridCols, className, ...rest }:
   if (status === 'loading') return (
     <section className={className} {...rest}>
       <div className="mx-auto px-4">
-        <div className="text-sm text-neutral-600">{LOADING_TEXT}</div>
+        <div className="text-sm text-neutral-600">{t("cms.builder.loading")}</div>
       </div>
     </section>
   );
   if (status === 'error') return (
     <section className={className} {...rest}>
       <div className="mx-auto px-4">
-        <div className="text-sm text-red-600">{LOAD_ERR_PRODUCTS}</div>
+        <div className="text-sm text-red-600">{t("cms.showcase.loadFailedProducts")}</div>
       </div>
     </section>
   );
@@ -77,10 +85,6 @@ export default function ShowcaseSection({
   className,
   ...rest
 }: ShowcaseSectionProps) {
-  // i18n-exempt -- Loading/error microcopy; pending i18n integration
-  const LOADING_RECS_TEXT = "Loading recommendations…";
-  // i18n-exempt -- Loading/error microcopy; pending i18n integration
-  const LOAD_ERR_RECS_TEXT = "Failed to load recommendations.";
   if (layout === "carousel") {
     const url = `${endpoint}?preset=${encodeURIComponent(preset)}&limit=${encodeURIComponent(String(limit))}`;
     return (
@@ -90,8 +94,8 @@ export default function ShowcaseSection({
             endpoint={url}
             minItems={1}
             maxItems={4}
-            LoadingState={() => <div className="text-sm text-neutral-600">{LOADING_RECS_TEXT}</div>}
-            ErrorState={() => <div className="text-sm text-red-600">{LOAD_ERR_RECS_TEXT}</div>}
+            LoadingState={LoadingRecommendations}
+            ErrorState={ErrorRecommendations}
           />
         </div>
       </section>

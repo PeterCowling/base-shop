@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "@acme/i18n";
 import { Tooltip } from "../../atoms";
 import {
   PlusIcon,
@@ -58,14 +59,13 @@ interface Props {
 }
 
 // Minimal left icon rail. Uses simple glyphs; replace with line icons later.
-export default function LeftRail({ onOpenAdd, onOpenSections, onOpenLayers, onOpenPages, onOpenSiteStyles, onOpenGlobalSections, onOpenCMS, onToggleInspector, isAddActive = false, isSectionsActive = false, isLayersActive = false, isInspectorActive = false, isFontsActive = false, isSiteStylesActive = false, gridProps, startTour, toggleComments, showComments, togglePreview, showPreview, showPalette, togglePalette, parentFirst, onParentFirstChange, crossBreakpointNotices, onCrossBreakpointNoticesChange, breakpoints, setBreakpoints, hideAddElements, hidePages, hideGlobalSections, hideSiteStyles, hideCMS, onOpenFonts }: Props) {
-  // i18n-exempt — builder-only rail labels
-  const t = (s: string) => s;
-  const Item = ({ label, onClick, icon, active = false }: { label: string; onClick: () => void; icon: React.ReactNode; active?: boolean }) => (
+// Extracted Item component to avoid nested component definition during render
+function Item({ label, onClick, icon, active = false }: { label: string; onClick: () => void; icon: React.ReactNode; active?: boolean }) {
+  return (
     <Tooltip text={label}>
       <button
         type="button"
-        className={`h-10 w-10 rounded-md border ${active ? 'bg-primary/10 border-primary ring-1 ring-primary/30' : 'bg-surface-2'} hover:bg-surface-3`} // i18n-exempt: class names
+        className={`h-10 w-10 rounded-md border ${active ? 'bg-primary/10 border-primary ring-1 ring-primary/30' : 'bg-surface-2'} hover:bg-surface-3`} // i18n-exempt -- ENG-1234 CSS utility class string [ttl=2026-12-31]
         aria-label={label}
         onClick={onClick}
         title={label}
@@ -77,22 +77,26 @@ export default function LeftRail({ onOpenAdd, onOpenSections, onOpenLayers, onOp
       </button>
     </Tooltip>
   );
+}
+
+export default function LeftRail({ onOpenAdd, onOpenSections, onOpenLayers, onOpenPages, onOpenSiteStyles, onOpenGlobalSections, onOpenCMS, onToggleInspector, isAddActive = false, isSectionsActive = false, isLayersActive = false, isInspectorActive = false, isFontsActive = false, isSiteStylesActive = false, gridProps, startTour, toggleComments, showComments, togglePreview, showPreview, showPalette, togglePalette, parentFirst, onParentFirstChange, crossBreakpointNotices, onCrossBreakpointNoticesChange, breakpoints, setBreakpoints, hideAddElements, hidePages, hideGlobalSections, hideSiteStyles, hideCMS, onOpenFonts }: Props) {
+  const t = useTranslations();
 
   return (
     <aside className="ms-6 flex w-16 shrink-0 flex-col items-center gap-4 border-r bg-surface-1/80 py-4">
-      <Item label={t("Add Section")} onClick={onOpenSections} icon={<SectionIcon className="h-5 w-5" />} active={isSectionsActive} />
+      <Item label={String(t("cms.builder.presets.addSection"))} onClick={onOpenSections} icon={<SectionIcon className="h-5 w-5" />} active={isSectionsActive} />
       {!hideAddElements && (
-        <Item label={t("Add Elements")} onClick={onOpenAdd} icon={<PlusIcon className="h-5 w-5" />} active={isAddActive} />
+        <Item label={String(t("cms.builder.leftRail.addElements"))} onClick={onOpenAdd} icon={<PlusIcon className="h-5 w-5" />} active={isAddActive} />
       )}
-      <Item label={t("Layers")} onClick={onOpenLayers} icon={<LayersIcon className="h-5 w-5" />} active={isLayersActive} />
-      {!hidePages && <Item label={t("Pages")} onClick={onOpenPages} icon={<ReaderIcon className="h-5 w-5" />} />}
-      {!hideGlobalSections && <Item label={t("Global Sections")} onClick={onOpenGlobalSections} icon={<SectionIcon className="h-5 w-5" />} />}
-      {!hideSiteStyles && <Item label={t("Site Styles")} onClick={onOpenSiteStyles} icon={<TokensIcon className="h-5 w-5" />} active={isSiteStylesActive} />}
+      <Item label={String(t("cms.builder.layers.title"))} onClick={onOpenLayers} icon={<LayersIcon className="h-5 w-5" />} active={isLayersActive} />
+      {!hidePages && <Item label={String(t("cms.breadcrumb.pages"))} onClick={onOpenPages} icon={<ReaderIcon className="h-5 w-5" />} />}
+      {!hideGlobalSections && <Item label={String(t("cms.builder.leftRail.globalSections"))} onClick={onOpenGlobalSections} icon={<SectionIcon className="h-5 w-5" />} />}
+      {!hideSiteStyles && <Item label={String(t("cms.builder.leftRail.siteStyles"))} onClick={onOpenSiteStyles} icon={<TokensIcon className="h-5 w-5" />} active={isSiteStylesActive} />}
       {/* Dedicated Fonts editor */}
-      {onOpenFonts && <Item label={t("Typography")} onClick={onOpenFonts} icon={<FontFamilyIcon className="h-5 w-5" />} active={isFontsActive} />}
-      {!hideCMS && <Item label={t("CMS")} onClick={onOpenCMS} icon={<TableIcon className="h-5 w-5" />} />}
+      {onOpenFonts && <Item label={String(t("cms.builder.leftRail.typography"))} onClick={onOpenFonts} icon={<FontFamilyIcon className="h-5 w-5" />} active={isFontsActive} />}
+      {!hideCMS && <Item label={String(t("cms.builder.leftRail.cms"))} onClick={onOpenCMS} icon={<TableIcon className="h-5 w-5" />} />}
       <div className="mt-auto" />
-      <Item label={t("Toggle Inspector")} onClick={onToggleInspector} icon={<ChevronRightIcon className="h-5 w-5" />} active={isInspectorActive} />
+      <Item label={String(t("cms.builder.leftRail.toggleInspector"))} onClick={onToggleInspector} icon={<ChevronRightIcon className="h-5 w-5" />} active={isInspectorActive} />
       {/* More actions moved to bottom of left rail with 30px gap from prior button */}
       <div className="mt-8">
         <MoreMenu

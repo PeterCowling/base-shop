@@ -1,5 +1,6 @@
 // packages/ui/src/components/cms/page-builder/PresetGallery.tsx
 "use client";
+/* eslint-disable react/forbid-dom-props -- LINT-1005: preview tiles require inline style to reflect preset values */
 
 import type { CSSProperties } from "react";
 import { Grid as DSGrid } from "../../atoms/primitives/Grid";

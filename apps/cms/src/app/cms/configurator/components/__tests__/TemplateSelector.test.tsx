@@ -39,7 +39,15 @@ jest.mock("@/components/atoms/shadcn", () => {
   };
 });
 
-jest.mock("next/image", () => (props: any) => <img {...props} alt={props.alt} />);
+jest.mock("next/image", () => {
+  const React = require("react");
+  const MockNextImage = (props: any) => <span data-testid="next-image" {...props} />;
+  MockNextImage.displayName = "MockNextImage";
+  return {
+    __esModule: true,
+    default: MockNextImage,
+  };
+});
 
 describe("TemplateSelector", () => {
   it("page navigation changes visible templates", () => {
@@ -94,4 +102,3 @@ describe("TemplateSelector", () => {
     expect(onConfirm).not.toHaveBeenCalled();
   });
 });
-

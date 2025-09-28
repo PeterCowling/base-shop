@@ -1,4 +1,4 @@
-"use client";
+"use client"; // i18n-exempt -- PB-000 [ttl=2025-12-31]: Next.js directive string
 
 import { useCart } from "@acme/platform-core/contexts/CartContext";
 import type { CartLine } from "@acme/types/Cart";
@@ -63,16 +63,15 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
   };
 
   return (
-    <>
       <Drawer>
         <DrawerTrigger asChild>{trigger}</DrawerTrigger>
         <DrawerPortal>
           <OverlayScrim />
           <DrawerContent
           style={style}
-          side="right"
+          side="right" /* i18n-exempt -- PB-000 [ttl=2025-12-31]: UI enum value */
           width={widthClass}
-          className={cn("rounded-none p-6")} // i18n-exempt with justification: CSS utility classes only
+          className={cn("rounded-none p-6")} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
         >
           <DrawerTitle className="mb-4 text-lg font-semibold">{t("cart.yourCart")}</DrawerTitle>
           <DrawerDescription className="sr-only">
@@ -112,7 +111,7 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
                       </Button>
                     </div>
                     <Button
-                      variant="destructive"
+                      variant="destructive" /* i18n-exempt -- PB-000 [ttl=2025-12-31]: UI enum value */
                       onClick={() => void handleRemove(line.id)}
                       className="px-2 py-1 text-xs"
                     >
@@ -137,6 +136,5 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
           </DrawerContent>
         </DrawerPortal>
       </Drawer>
-    </>
   );
 }

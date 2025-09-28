@@ -39,7 +39,9 @@ This document explains how font and colour selection works across the Base‑Sho
   - `font-mono`: `var(--font-mono)`
   - Runtime alias: `--font-sans` is set to `var(--font-body)` when a body font override exists, so Tailwind’s `font-sans` follows the selected body font (see ThemeStyle).
 - Spacing, radii, shadows
-  - `spacing[1..4] → var(--space-1..4)`; `rounded-sm|md|lg → var(--radius-*)`; `shadow-sm|md|lg → var(--shadow-*)`
+  - Spacing scale expanded to 8‑pt rhythm: `spacing[0,1,2,3,4,5,6,8,10,12,16] → var(--space-*)`
+  - Radius scale expanded to size‑based set: `rounded-none|xs|sm|md|lg|xl|2xl|3xl|4xl|full → var(--radius-*)`
+  - Shadows: `shadow-sm|md|lg → var(--shadow-*)`
 
 ## Dark Mode Model
 
@@ -90,6 +92,9 @@ This document explains how font and colour selection works across the Base‑Sho
 ## Accessibility
 
 - Contrast tests target WCAG 2.1 AA (≥ 4.5:1) for text on core surfaces. See unit tests such as `packages/ui/src/components/cms/page-builder/__tests__/FontsPanel.contrast.test.ts`.
+- Pointer target guidance is encoded as tokens and utilities:
+  - Tokens: `--target-min-aa: 24px` (WCAG 2.2 minimum), `--target-hig: 44px` (Apple HIG), `--target-material: 48px` (Material/Android)
+  - Utilities (CMS): `.min-target-aa`, `.min-target-hig`, `.min-target-material` in `apps/cms/src/app/utilities.a11y.css`
 - Guidance:
   - For long‑form text on brand backgrounds, prefer a contrast overlay (`bg-hero-contrast` + `text-hero-foreground`).
   - Avoid using `*-soft` backgrounds without verifying text contrast in the CMS preview and automated checks.
@@ -102,7 +107,7 @@ This document explains how font and colour selection works across the Base‑Sho
 
 ## Adding or Overriding Tokens
 
-- To add a new token to the base catalogue, update `packages/themes/base/src/tokens.ts` and regenerate artifacts (`pnpm -r build`).
+- To add a new token to the base catalogue, update `packages/themes/base/src/tokens.ts` (or append via `packages/themes/base/src/tokens.extensions.ts`) and regenerate artifacts (`pnpm -r build`).
 - To ship theme defaults, add/edit `packages/themes/<name>/src/tailwind-tokens.ts` and run the token build script to emit CSS.
 - To expose a token to Tailwind, ensure it is included in the design‑tokens preset or plugin.
 
@@ -125,4 +130,3 @@ This document explains how font and colour selection works across the Base‑Sho
 - Theme overrides: `packages/themes/*/src/tokens.css`
 - Runtime injector (tokens + fonts): `packages/ui/src/components/ThemeStyle.tsx`
 - Theme init (dark/class): `packages/platform-core/src/utils/initTheme.ts`
-

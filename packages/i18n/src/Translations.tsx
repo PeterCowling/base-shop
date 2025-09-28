@@ -24,6 +24,7 @@ import {
   useMemo,
   type ReactNode,
 } from "react";
+import enMessages from "./en.json";
 
 /**
  * Key–value map of translation messages.
@@ -42,7 +43,9 @@ export type Messages = Record<string, ReactNode>;
  * access this via the `useTranslations` hook rather than directly. See
  * {@link TranslationsProvider} for details on how this context is populated.
  */
-const TContext = createContext<Messages>({});
+// Default to English messages so client components without a provider
+// still render readable copy (useful in tests and storybook).
+const TContext = createContext<Messages>(enMessages as unknown as Messages);
 
 /**
  * Props for {@link TranslationsProvider}.

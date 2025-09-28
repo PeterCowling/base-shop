@@ -67,10 +67,11 @@ export function MediaFileActions({
   return (
     <div className="relative">
       {selectionEnabled ? (
-        <div className="absolute start-3 top-3" onClick={handleOverlayClick}>
+        <div className="absolute start-3 top-3">
           <Checkbox
             checked={selected}
             onCheckedChange={onBulkToggle}
+            onClick={handleOverlayClick}
             aria-label={selected ? (t("cms.media.deselect") as string) : (t("cms.media.select") as string)}
             disabled={actionsDisabled}
           />

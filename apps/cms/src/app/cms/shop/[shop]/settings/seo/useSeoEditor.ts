@@ -88,10 +88,10 @@ export function useSeoEditor({
 }: UseSeoEditorProps) {
   const tFromContext = useTranslations();
   // Ensure readable strings in tests even without a provider
-  const t = (key: string) => {
+  const t = useCallback((key: string) => {
     const out = tFromContext(key) as unknown as string;
     return out === key ? (en as Record<string, string>)[key] ?? key : out;
-  };
+  }, [tFromContext]);
   const initialDrafts = useMemo(
     () =>
       languages.reduce((acc, lang) => {
@@ -207,7 +207,7 @@ export function useSeoEditor({
         setSaving(false);
       }
     },
-    [currentDraft, locale, shop],
+    [currentDraft, locale, shop, t],
   );
 
   const generate = useCallback(async (): Promise<GenerateResult> => {
@@ -245,7 +245,7 @@ export function useSeoEditor({
     } finally {
       setGenerating(false);
     }
-  }, [currentDraft.description, currentDraft.title, locale, shop, updateField]);
+  }, [currentDraft.description, currentDraft.title, locale, shop, t, updateField]);
 
   const errorFor = useCallback(
     (field: keyof SeoData) => errors[field]?.join("; ") ?? "",

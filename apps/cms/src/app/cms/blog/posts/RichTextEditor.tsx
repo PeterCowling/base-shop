@@ -15,11 +15,13 @@ import type { PortableTextBlock } from "./schema";
 import { schema, renderBlock } from "./schema";
 import type { SKU } from "@acme/types";
 import { formatCurrency } from "@acme/shared-utils";
+import { useTranslations } from "@acme/i18n";
 
 function Toolbar() {
+  const t = useTranslations();
   const editor = usePortableTextEditor();
   const addLink = () => {
-    const href = prompt("URL");
+    const href = prompt(t("cms.blog.editor.urlPrompt"));
     if (!href) return;
     if (PortableTextEditor.isAnnotationActive(editor, "link")) {
       PortableTextEditor.removeAnnotation(editor, { name: "link" });
@@ -27,7 +29,7 @@ function Toolbar() {
     PortableTextEditor.addAnnotation(editor, { name: "link" }, { href });
   };
   const addEmbed = () => {
-    const url = prompt("Embed URL");
+    const url = prompt(t("cms.blog.editor.embedUrlPrompt"));
     if (url) PortableTextEditor.insertBlock(editor, { name: "embed" }, { url });
   };
   const addImage = useCallback(
@@ -43,38 +45,38 @@ function Toolbar() {
         variant="outline"
         onClick={() => PortableTextEditor.toggleMark(editor, "strong")}
       >
-        Bold
+        {t("cms.blog.editor.bold")}
       </Button>
       <Button
         type="button"
         variant="outline"
         onClick={() => PortableTextEditor.toggleMark(editor, "em")}
       >
-        Italic
+        {t("cms.blog.editor.italic")}
       </Button>
       <Button
         type="button"
         variant="outline"
         onClick={() => PortableTextEditor.toggleBlockStyle(editor, "h1")}
       >
-        H1
+        {t("cms.blog.editor.h1")}
       </Button>
       <Button
         type="button"
         variant="outline"
         onClick={() => PortableTextEditor.toggleBlockStyle(editor, "h2")}
       >
-        H2
+        {t("cms.blog.editor.h2")}
       </Button>
       <Button type="button" variant="outline" onClick={addLink}>
-        Link
+        {t("cms.blog.editor.link")}
       </Button>
       <Button type="button" variant="outline" onClick={addEmbed}>
-        Embed
+        {t("cms.blog.editor.embed")}
       </Button>
       <ImagePicker onSelect={addImage}>
         <Button type="button" variant="outline">
-          Image
+          {t("cms.blog.editor.image")}
         </Button>
       </ImagePicker>
     </div>
@@ -88,6 +90,7 @@ function ProductSearch({
   query: string;
   setQuery: (v: string) => void;
 }) {
+  const t = useTranslations();
   const editor = usePortableTextEditor();
   const [matches, setMatches] = useState<SKU[]>([]);
   const [loading, setLoading] = useState(false);
@@ -103,27 +106,27 @@ function ProductSearch({
       setLoading(true);
       try {
         const res = await fetch(`/api/products?q=${encodeURIComponent(query)}`);
-        if (!res.ok) throw new Error("Failed to load products");
+        if (!res.ok) throw new Error(t("cms.blog.editor.loadFailedProducts"));
         const data: SKU[] = await res.json();
         setMatches(data);
         setError(null);
       } catch {
-        setError("Failed to load products");
+        setError(t("cms.blog.editor.loadFailedProducts"));
       } finally {
         setLoading(false);
       }
     }, 300);
     return () => clearTimeout(handle);
-  }, [query]);
+  }, [query, t]);
 
   return (
     <div className="space-y-1">
       <Input
-        label="Search products"
+        label={t("cms.blog.editor.searchProducts")}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
       />
-      {loading && <div>Loading…</div>}
+      {loading && <div>{t("cms.blog.editor.loading")}</div>}
       {error && <div className="text-danger-foreground">{error}</div>}
       {query && !loading && !error && (
         <ul className="space-y-1">
@@ -187,7 +190,7 @@ export default function RichTextEditor({
       />
       <Toolbar />
       <PortableTextEditable
-        className="min-h-[200px] rounded-md border border-input bg-background p-2"
+        className="min-h-52 rounded-md border border-input bg-background p-2"
         renderBlock={renderBlock}
       />
       <ProductSearch query={query} setQuery={setQuery} />

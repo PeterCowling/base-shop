@@ -5,14 +5,14 @@ import { z } from "zod";
 import crypto from "crypto";
 import { getUserByEmail, setResetToken } from "@platform-core/users";
 import { sendEmail } from "@acme/email";
-import { useTranslations } from "@acme/i18n/useTranslations.server";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 export const runtime = "nodejs";
 
 const schema = z.object({ email: z.string().email() }).strict();
 
 export async function POST(req: Request) {
-  const t = await useTranslations("en");
+  const t = await getServerTranslations("en");
   const parsed = await parseJsonBody(req, schema, "1mb");
   if ("response" in parsed) {
     return parsed.response;

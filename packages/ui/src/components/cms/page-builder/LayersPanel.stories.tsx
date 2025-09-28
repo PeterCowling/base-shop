@@ -8,6 +8,13 @@ import { moveComponent } from "./state/layout/utils";
 const meta: Meta<typeof LayersPanel> = {
   title: "CMS/Page Builder/LayersPanel",
   component: LayersPanel,
+  parameters: {
+    docs: {
+      description: {
+        component: "Tree view for page components with drag-and-drop reordering and editor flag controls.",
+      },
+    },
+  },
 };
 export default meta;
 
@@ -46,7 +53,7 @@ export const Basic: Story = {
               if (action.type === "update-editor") {
                 setEditor((e) => ({ ...e, [action.id]: { ...(e[action.id] ?? {}), ...(action.patch ?? {}) } }));
               }
-              console.log("dispatch", action);
+              console.warn("dispatch", action);
             }}
             editor={editor}
             viewport="desktop"
@@ -96,7 +103,7 @@ export const DragAndDrop: Story = {
                   }));
                   return;
                 }
-                console.log("dispatch", action);
+                console.warn("dispatch", action);
               }}
               editor={editor}
               viewport="desktop"

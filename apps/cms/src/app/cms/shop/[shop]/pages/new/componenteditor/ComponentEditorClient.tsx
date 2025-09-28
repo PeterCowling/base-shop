@@ -5,11 +5,14 @@ import type { PageComponent } from "@acme/types";
 import { ulid } from "ulid";
 import { ComponentEditor } from "@ui/components/cms/page-builder";
 import { saveLibrary } from "@ui/components/cms/page-builder/libraryStore";
+import type { LibraryItem } from "@ui/components/cms/page-builder/libraryStore";
+import { useTranslations } from "@acme/i18n";
 
 export default function ComponentEditorClient() {
+  const t = useTranslations();
   const initial = useMemo<PageComponent>(
-    () => ({ id: ulid(), type: "Text", text: "Edit me" } as any),
-    []
+    () => ({ id: ulid(), type: "Text", text: String(t("Edit me")) }),
+    [t]
   );
   const [component, setComponent] = useState<PageComponent>(initial);
   const [label, setLabel] = useState<string>("");
@@ -28,43 +31,43 @@ export default function ComponentEditorClient() {
     <div className="space-y-4">
       <ComponentEditor component={component} onChange={onChange} onResize={onResize} />
       <div className="rounded border p-3 space-y-2">
-        <div className="font-semibold">Save to Global Library</div>
+        <div className="font-semibold">{t("Save to Global Library")}</div>
         <div className="flex items-center gap-2">
           <input
             type="text"
             className="min-w-0 flex-1 rounded border px-2 py-1 text-sm"
-            placeholder="Component name (e.g. Hero, Promo Card)"
+            placeholder={String(t("Component name (e.g. Hero, Promo Card)"))}
             value={label}
             onChange={(e) => setLabel(e.target.value)}
-            aria-label="Component name"
+            aria-label={String(t("Component name"))}
           />
           <button
             type="button"
-            className="rounded border px-3 py-1 text-sm"
+            className="min-h-11 min-w-11 rounded border px-3 text-sm"
             disabled={saving || !label.trim()}
             onClick={async () => {
               setSaving(true);
               setMessage("");
               try {
-                const item = { id: ulid(), label: label.trim(), template: component, createdAt: Date.now() } as any;
+                const item: LibraryItem = { id: ulid(), label: label.trim(), template: component, createdAt: Date.now() };
                 await saveLibrary("_global", item);
-                setMessage("Saved to Global Library");
+                setMessage(String(t("Saved to Global Library")));
               } catch (err) {
                 console.error(err);
-                setMessage("Save failed");
+                setMessage(String(t("Save failed")));
               } finally {
                 setSaving(false);
               }
             }}
           >
-            {saving ? "Saving..." : "Save to Global"}
+            {saving ? t("Saving...") : t("Save to Global")}
           </button>
         </div>
         {message && <div className="text-xs text-muted-foreground" aria-live="polite">{message}</div>}
       </div>
       <div className="rounded border p-3 text-xs">
-        <div className="mb-1 font-semibold">Component JSON</div>
-        <pre className="whitespace-pre-wrap break-all text-[10px] leading-snug">
+        <div className="mb-1 font-semibold">{t("Component JSON")}</div>
+        <pre className="whitespace-pre-wrap break-all text-xs leading-snug">
           {JSON.stringify(component, null, 2)}
         </pre>
       </div>

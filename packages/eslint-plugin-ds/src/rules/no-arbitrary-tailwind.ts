@@ -96,9 +96,7 @@ const rule: Rule.RuleModule = {
     const contentRegexes = allowedContentPatterns
       .map((p) => {
         try {
-          // Intentional: compile user-provided allowlist patterns.
-          // These patterns are controlled via lint config, not user input.
-          // eslint-disable-next-line security/detect-non-literal-regexp -- ESL-0001: config-driven allowlist
+          // Intentional: compile user-provided allowlist patterns (from lint config)
           return new RegExp(p);
         } catch {
           return null;

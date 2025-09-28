@@ -71,18 +71,47 @@ export const exportedTokenMap = {
   "--text-heading-1-font-family": "var(--text-heading-1-font-family)",
   "--text-heading-2-font-family": "var(--text-heading-2-font-family)",
   // Spacing
+  "--space-0": "var(--space-0)",
   "--space-1": "var(--space-1)",
   "--space-2": "var(--space-2)",
   "--space-3": "var(--space-3)",
   "--space-4": "var(--space-4)",
+  "--space-5": "var(--space-5)",
+  "--space-6": "var(--space-6)",
+  "--space-8": "var(--space-8)",
+  "--space-10": "var(--space-10)",
+  "--space-12": "var(--space-12)",
+  "--space-16": "var(--space-16)",
   // Radii
+  "--radius-none": "var(--radius-none)",
+  "--radius-xs": "var(--radius-xs)",
   "--radius-sm": "var(--radius-sm)",
   "--radius-md": "var(--radius-md)",
   "--radius-lg": "var(--radius-lg)",
+  "--radius-xl": "var(--radius-xl)",
+  "--radius-2xl": "var(--radius-2xl)",
+  "--radius-3xl": "var(--radius-3xl)",
+  "--radius-4xl": "var(--radius-4xl)",
+  "--radius-full": "var(--radius-full)",
   // Shadows
   "--shadow-sm": "var(--shadow-sm)",
   "--shadow-md": "var(--shadow-md)",
   "--shadow-lg": "var(--shadow-lg)",
+  // Breakpoints (Polaris)
+  "--bp-xs": "var(--bp-xs)",
+  "--bp-sm": "var(--bp-sm)",
+  "--bp-md": "var(--bp-md)",
+  "--bp-lg": "var(--bp-lg)",
+  "--bp-xl": "var(--bp-xl)",
+  // A11y targets
+  "--target-min-aa": "var(--target-min-aa)",
+  "--target-hig": "var(--target-hig)",
+  "--target-material": "var(--target-material)",
+  // Safe area
+  "--safe-top": "var(--safe-top)",
+  "--safe-right": "var(--safe-right)",
+  "--safe-bottom": "var(--safe-bottom)",
+  "--safe-left": "var(--safe-left)",
 } as const;
 
 export type ExportedTokenMap = typeof exportedTokenMap;

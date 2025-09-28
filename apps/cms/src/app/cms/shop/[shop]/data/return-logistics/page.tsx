@@ -4,7 +4,11 @@ import { notFound } from "next/navigation";
 import ReturnLogisticsForm from "./ReturnLogisticsForm";
 import { Card, CardContent } from "@/components/atoms/shadcn";
 import { Tag } from "@ui/components/atoms";
+import { Grid } from "@ui/components/atoms/primitives";
 import { cn } from "@ui/utils/style";
+import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import { TranslationsProvider } from "@i18n/Translations";
+import en from "@i18n/en.json";
 
 export const revalidate = 0;
 
@@ -16,6 +20,9 @@ export default async function ReturnLogisticsPage({
   const { shop } = await params;
   if (!(await checkShopExists(shop))) return notFound();
   const initial = await readReturnLogistics();
+  const t = await getTranslations("en");
+  const i = (msg: string, vars: Record<string, string | number>) =>
+    msg.replace(/\{(.*?)\}/g, (m, name) => (vars[name] ?? m) as string);
   const carrierCount = initial.returnCarrier.length;
   const pickupZipCount = initial.homePickupZipCodes.length;
   const trackingEnabled = Boolean(initial.tracking);
@@ -23,51 +30,55 @@ export default async function ReturnLogisticsPage({
 
   const quickStats = [
     {
-      label: "Return carriers",
+      label: t("cms.returnLogistics.stats.carriers.label") as string,
       value: String(carrierCount || 0),
-      caption: "Configured shipping partners",
-      accent: "bg-surface-3 text-foreground",
+      caption: t("cms.returnLogistics.stats.carriers.caption") as string,
+      accent: "bg-surface-3 text-foreground", // i18n-exempt -- CMS-2417 CSS utility classes only [ttl=2025-12-31]
     },
     {
-      label: "Home pickup ZIPs",
+      label: t("cms.returnLogistics.stats.pickupZips.label") as string,
       value: String(pickupZipCount || 0),
-      caption: "Coverage for scheduled pickups",
-      accent: "bg-surface-3 text-foreground",
+      caption: t("cms.returnLogistics.stats.pickupZips.caption") as string,
+      accent: "bg-surface-3 text-foreground", // i18n-exempt -- CMS-2417 CSS utility classes only [ttl=2025-12-31]
     },
     {
-      label: "Tracking",
-      value: trackingEnabled ? "Enabled" : "Disabled",
-      caption: trackingEnabled ? "Customers receive tracking" : "No tracking numbers",
-      accent: trackingEnabled ? "bg-primary-soft text-foreground" : "bg-muted/20 text-foreground",
+      label: t("cms.returnLogistics.stats.tracking.label") as string,
+      value: trackingEnabled ? (t("common.enabled") as string) : (t("common.disabled") as string),
+      caption: trackingEnabled
+        ? (t("cms.returnLogistics.stats.tracking.captionEnabled") as string)
+        : (t("cms.returnLogistics.stats.tracking.captionDisabled") as string),
+      accent: trackingEnabled ? "bg-primary-soft text-foreground" : "bg-muted/20 text-foreground", // i18n-exempt -- CMS-2417 CSS utility classes only [ttl=2025-12-31]
     },
     {
-      label: "In-store returns",
-      value: inStoreEnabled ? "Allowed" : "Disabled",
-      caption: inStoreEnabled ? "Customers can drop off in person" : "Drop-off only",
-      accent: inStoreEnabled ? "bg-warning-soft text-foreground" : "bg-muted/20 text-foreground",
+      label: t("cms.returnLogistics.stats.inStore.label") as string,
+      value: inStoreEnabled ? (t("common.allowed") as string) : (t("common.disabled") as string),
+      caption: inStoreEnabled
+        ? (t("cms.returnLogistics.stats.inStore.captionAllowed") as string)
+        : (t("cms.returnLogistics.stats.inStore.captionDisabled") as string),
+      accent: inStoreEnabled ? "bg-warning-soft text-foreground" : "bg-muted/20 text-foreground", // i18n-exempt -- CMS-2417 CSS utility classes only [ttl=2025-12-31]
     },
   ];
 
   return (
-    <div className="space-y-8 text-foreground">
+    <TranslationsProvider messages={en}>
+      <div className="space-y-8 text-foreground">
       <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--color-accent)/0.18),_transparent_55%)]" />
         <div className="relative space-y-4 px-6 py-7">
           <Tag variant="default">
-            Return logistics · {shop}
+            {i(t("cms.returnLogistics.tag") as string, { shop })}
           </Tag>
           <h1 className="text-3xl font-semibold md:text-4xl">
-            Streamline every return and pickup experience
+            {t("cms.returnLogistics.heading")}
           </h1>
           <p className="text-sm text-hero-foreground/80">
-            Tune carrier preferences, label service, and pickup coverage to keep customers smiling and ops efficient.
+            {t("cms.returnLogistics.subheading")}
           </p>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Grid gap={3} cols={1} className="sm:grid-cols-2 lg:grid-cols-4">
             {quickStats.map((stat) => (
               <div
                 key={stat.label}
                 className={cn(
-                  "rounded-2xl border border-border/10 px-4 py-3 backdrop-blur",
+                  "rounded-2xl border border-border/10 px-4 py-3 backdrop-blur", // i18n-exempt -- CMS-2417 CSS utility classes only [ttl=2025-12-31]
                   stat.accent
                 )}
               >
@@ -78,7 +89,7 @@ export default async function ReturnLogisticsPage({
                 <p className="text-xs text-muted-foreground">{stat.caption}</p>
               </div>
             ))}
-          </div>
+          </Grid>
         </div>
       </section>
 
@@ -87,9 +98,9 @@ export default async function ReturnLogisticsPage({
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div>
-                <h2 className="text-lg font-semibold">Return policy configuration</h2>
+                <h2 className="text-lg font-semibold">{t("cms.returnLogistics.controls.title")}</h2>
                 <p className="text-sm text-muted-foreground">
-                  Set preferred carriers, coverage areas, and bag options in one place.
+                  {t("cms.returnLogistics.controls.description")}
                 </p>
               </div>
             </div>
@@ -97,6 +108,7 @@ export default async function ReturnLogisticsPage({
           </CardContent>
         </Card>
       </section>
-    </div>
+      </div>
+    </TranslationsProvider>
   );
 }

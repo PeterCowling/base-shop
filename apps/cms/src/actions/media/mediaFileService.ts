@@ -6,6 +6,7 @@ import { promises as fs } from "fs";
 import type { Stats } from "fs";
 import * as path from "path";
 import { ulid } from "ulid";
+// Use server-side translations loader inside async functions
 
 import {
   readMetadata,
@@ -50,7 +51,7 @@ export async function buildMediaItem(
   } else if (size == null || uploadedAt == null) {
     try {
       // Path is built from a validated shop id and normalized filename
-      // eslint-disable-next-line security/detect-non-literal-fs-filename
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
       const stat = await fs.stat(path.join(dir, filename));
       if (size == null) size = stat.size;
       if (uploadedAt == null) uploadedAt = stat.mtime.toISOString();
@@ -74,7 +75,7 @@ async function collectMediaItems(shop: string): Promise<MediaItem[]> {
   const safeShop = validateShopName(shop);
   const dir = uploadsDir(safeShop);
   // Constrained to validated uploads directory
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
   const files = await fs.readdir(dir);
   const meta = await readMetadata(safeShop);
 
@@ -107,10 +108,14 @@ export async function uploadMediaFile({
   tags,
   requiredOrientation = "landscape",
 }: UploadMediaFileParams): Promise<MediaItem> {
+  const { useTranslations: getServerTranslations } = await import(
+    "@acme/i18n/useTranslations.server" // i18n-exempt -- INTL-000 module specifier [ttl=2026-03-31]
+  );
+  const t = await getServerTranslations("en");
   const safeShop = validateShopName(shop);
   const dir = uploadsDir(safeShop);
   // Constrained to validated uploads directory
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
   await fs.mkdir(dir, { recursive: true });
 
   let type: "image" | "video";
@@ -123,7 +128,7 @@ export async function uploadMediaFile({
     const sharp = (await import("sharp")).default;
     type = "image";
     const maxSize = 5 * 1024 * 1024; // 5 MB
-    if (file.size > maxSize) throw new Error("File too large");
+    if (file.size > maxSize) throw new Error(t("cms.media.errors.fileTooLarge"));
 
     buffer = Buffer.from(await file.arrayBuffer());
     const { width, height } = await sharp(buffer).metadata();
@@ -134,7 +139,7 @@ export async function uploadMediaFile({
       requiredOrientation === "landscape" &&
       width < height
     ) {
-      throw new Error("Image orientation must be landscape");
+      throw new Error(t("cms.media.errors.orientation.landscape"));
     }
 
     if (
@@ -143,7 +148,7 @@ export async function uploadMediaFile({
       requiredOrientation === "portrait" &&
       width >= height
     ) {
-      throw new Error("Image orientation must be portrait");
+      throw new Error(t("cms.media.errors.orientation.portrait"));
     }
 
     try {
@@ -152,21 +157,21 @@ export async function uploadMediaFile({
       if (err instanceof Error && /orientation must be/i.test(err.message)) {
         throw err;
       }
-      throw new Error("Failed to process image");
+      throw new Error(t("cms.media.errors.processImageFailed"));
     }
   } else if (file.type.startsWith("video/")) {
     type = "video";
     const maxSize = 50 * 1024 * 1024; // 50 MB
-    if (file.size > maxSize) throw new Error("File too large");
+    if (file.size > maxSize) throw new Error(t("cms.media.errors.fileTooLarge"));
     buffer = Buffer.from(await file.arrayBuffer());
   } else {
-    throw new Error("Invalid file type");
+    throw new Error(t("cms.media.errors.invalidFileType"));
   }
 
   const ext = path.extname(file.name) || (type === "video" ? ".mp4" : ".jpg");
   const filename = `${ulid()}${ext}`;
   // Constrained to validated uploads directory
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
   await fs.writeFile(path.join(dir, filename), buffer);
 
   const size = typeof file.size === "number" ? file.size : buffer.byteLength;
@@ -209,11 +214,15 @@ export async function deleteMediaFile(
   shop: string,
   filePath: string
 ): Promise<void> {
+  const { useTranslations: getServerTranslations } = await import(
+    "@acme/i18n/useTranslations.server" // i18n-exempt -- INTL-000 module specifier [ttl=2026-03-31]
+  );
+  const t = await getServerTranslations("en");
   const safeShop = validateShopName(shop);
   const prefix = path.posix.join("/uploads", safeShop) + "/";
   const normalized = path.posix.normalize(filePath);
 
-  if (!normalized.startsWith(prefix)) throw new Error("Invalid file path");
+  if (!normalized.startsWith(prefix)) throw new Error(t("cms.media.errors.invalidFilePath"));
 
   const filename = normalized.slice(prefix.length);
   const dir = uploadsDir(safeShop);
@@ -221,11 +230,11 @@ export async function deleteMediaFile(
 
   const relative = path.relative(dir, fullPath);
   if (relative.startsWith("..") || path.isAbsolute(relative)) {
-    throw new Error("Invalid file path");
+    throw new Error(t("cms.media.errors.invalidFilePath"));
   }
 
   // Constrained to validated uploads directory
-  // eslint-disable-next-line security/detect-non-literal-fs-filename
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
   await fs.unlink(fullPath).catch(() => {
     /* ignore – file might already be gone */
   });

@@ -8,6 +8,8 @@ import PdpClient from "./PdpClient.client";
 import { getStructuredData, serializeJsonLd } from "../../../../lib/seo";
 import { CleaningInfo } from "../../../../components/CleaningInfo";
 import shop from "../../../../../shop.json";
+import { resolveLocale } from "@i18n/locales";
+import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
 
 export async function generateStaticParams() {
   return LOCALES.flatMap((lang: Locale) =>
@@ -23,14 +25,15 @@ export const revalidate = 60;
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ lang?: string; slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, lang } = await params;
   const product = getProductBySlug(slug);
+  const t = await getServerTranslations(resolveLocale(lang));
   return {
     title: product
-      ? `${product.title} · Base-Shop` // i18n-exempt: brand name in SEO title
-      : "Product not found", // i18n-exempt: generic SEO fallback
+      ? `${product.title} · ${t("brand.name")}`
+      : t("product.notFound"),
   };
 }
 
@@ -43,19 +46,20 @@ export default async function ProductDetailPage({
   const product = getProductBySlug(slug);
   if (!product) return notFound();
   const jsonLd = getStructuredData({
-    type: "Product",
+    type: "Product", /* i18n-exempt -- DX-1023 [ttl=2026-12-31] schema.org type constant */
     name: product.title,
     description: product.description,
     url: `/${lang}/product/${slug}`,
     image: product.media[0]?.url,
-    offers: { price: product.price, priceCurrency: "USD" },
+    offers: { price: product.price, priceCurrency: "USD" /* i18n-exempt -- DX-1023 [ttl=2026-12-31] ISO currency code in structured data */ },
   });
 
   /* ⬇️  Only data, no event handlers */
   return (
     <>
+      {/* i18n-exempt -- DX-1023 [ttl=2026-12-31] non-visual JSON-LD script */}
       <script
-        type="application/ld+json"
+        type="application/ld+json" /* i18n-exempt -- DX-1023 [ttl=2026-12-31] MIME type constant, not user-facing copy */
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <PdpClient product={product} />

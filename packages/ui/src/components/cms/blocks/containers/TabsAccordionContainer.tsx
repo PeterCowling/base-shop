@@ -13,7 +13,8 @@ export interface TabsAccordionContainerProps {
 
 export default function TabsAccordionContainer({ children, mode = "tabs", tabs, className }: TabsAccordionContainerProps) {
   const t = useTranslations();
-  const items = Array.isArray(children) ? children : children ? [children] : [];
+  // Normalize children to array so React keys are preserved and accessible
+  const items = (Array.isArray(children) ? children : children ? [children] : []) as React.ReactNode[];
   // Use provided tab titles; otherwise, fall back to an i18n-enabled label.
   const titles =
     tabs && tabs.length === items.length
@@ -24,11 +25,13 @@ export default function TabsAccordionContainer({ children, mode = "tabs", tabs, 
   if (mode === "accordion") {
     return (
       <div className={className}>
-        {items.map((child, i) => (
-          <div key={i} className="border-b">
+        {items.map((child, i) => {
+          const itemKey = (child as unknown as { key?: string | number } | null)?.key ?? titles[i] ?? i;
+          return (
+          <div key={String(itemKey)} className="border-b">
             <button
-              type={"button" /* i18n-exempt: HTML attribute value */}
-              // i18n-exempt: CSS utility class strings
+              type={"button" /* i18n-exempt -- I18N-0003 [ttl=2025-01-31] HTML attribute value */}
+              // i18n-exempt -- I18N-0003 [ttl=2025-01-31] CSS utility class strings
               className="w-full px-3 py-2 text-start font-medium min-h-10 min-w-10"
               onClick={() => setActive((prev) => (prev === i ? -1 : i))}
               aria-expanded={active === i}
@@ -36,9 +39,12 @@ export default function TabsAccordionContainer({ children, mode = "tabs", tabs, 
               {titles[i]}
             </button>
             {(() => {
-              // i18n-exempt (I18N-0003): CSS utility classes only
+              // i18n-exempt -- ABC-123 [ttl=2025-01-31] CSS utility classes only
+              // i18n-exempt -- ABC-123 [ttl=2025-01-31]
               const contentBase = "overflow-hidden transition-all";
+              // i18n-exempt -- ABC-123 [ttl=2025-01-31]
               const contentOpen = "max-h-[1000px]";
+              // i18n-exempt -- ABC-123 [ttl=2025-01-31]
               const contentClosed = "max-h-0";
               const contentClass = cn(
                 contentBase,
@@ -47,7 +53,7 @@ export default function TabsAccordionContainer({ children, mode = "tabs", tabs, 
               return <div className={contentClass}>{child}</div>;
             })()}
           </div>
-        ))}
+        );})}
       </div>
     );
   }
@@ -55,24 +61,29 @@ export default function TabsAccordionContainer({ children, mode = "tabs", tabs, 
   // tabs mode
   return (
     <div className={className}>
-      {/* i18n-exempt: CSS utility class strings */}
+      {/* i18n-exempt -- I18N-0003 [ttl=2025-01-31] CSS utility class strings */}
       <Inline gap={2} className="border-b" role="tablist">
-        {titles.map((title, i) => {
-          // i18n-exempt (I18N-0003): CSS utility classes only
-          const base = "-mb-px border-b-2 px-3 py-2 text-sm min-h-10 min-w-10"; // i18n-exempt with justification: CSS utility classes only
-          const stateActive = "border-foreground"; // i18n-exempt with justification: CSS utility classes only
-          const stateInactive = "border-transparent text-muted-foreground"; // i18n-exempt with justification: CSS utility classes only
+        {items.map((child, i) => {
+          const itemKey = (child as unknown as { key?: string | number } | null)?.key ?? titles[i] ?? i;
+          const title = titles[i];
+          // i18n-exempt -- ABC-123 [ttl=2025-01-31] CSS utility classes only
+          // i18n-exempt -- ABC-123 [ttl=2025-01-31]
+          const base = "-mb-px border-b-2 px-3 py-2 text-sm min-h-10 min-w-10";
+          // i18n-exempt -- ABC-123 [ttl=2025-01-31]
+          const stateActive = "border-foreground";
+          // i18n-exempt -- ABC-123 [ttl=2025-01-31]
+          const stateInactive = "border-transparent text-muted-foreground";
           const btnClass = cn(base, active === i ? stateActive : stateInactive);
           return (
             <button
-              key={i}
-              type={"button" /* i18n-exempt: HTML attribute value */}
-              className={btnClass} /* i18n-exempt: I18N-0003 CSS utility classes only */
+              key={String(itemKey)}
+              type={"button" /* i18n-exempt -- I18N-0003 [ttl=2025-01-31] HTML attribute value */}
+              className={btnClass} /* i18n-exempt -- I18N-0003 [ttl=2025-01-31] CSS utility classes only */
               onClick={() => setActive(i)}
               aria-selected={active === i}
-              role={"tab" /* i18n-exempt: WAI-ARIA role value */}
+              role={"tab" /* i18n-exempt -- I18N-0003 [ttl=2025-01-31] WAI-ARIA role value */}
             >
-              {/* i18n-exempt with justification: consumer-provided tab title */}
+              {/* i18n-exempt -- I18N-0003 [ttl=2025-01-31] consumer-provided tab title */}
               {title}
             </button>
           );

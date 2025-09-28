@@ -1,4 +1,4 @@
-import "server-only";
+import "server-only"; // i18n-exempt: module side-effect import [EMAIL-1000]
 import { listEvents } from "@platform-core/repositories/analytics.server";
 import type { AnalyticsEvent } from "@platform-core/analytics";
 import { validateShopName } from "@acme/lib";
@@ -82,7 +82,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
     c.recipients = recipients;
   }
   recipients = await filterUnsubscribed(shop, recipients);
-  const hasPlaceholder = baseHtml.includes("%%UNSUBSCRIBE%%");
+  const hasPlaceholder = baseHtml.includes("%%UNSUBSCRIBE%%"); // i18n-exempt -- EMAIL-201 provider token placeholder detection [ttl=2026-03-31]
   const batchSize = Number(process.env.EMAIL_BATCH_SIZE) || 100;
   const batchDelay =
     process.env.EMAIL_BATCH_DELAY_MS === undefined
@@ -94,13 +94,18 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
     for (const r of batch) {
       const url = unsubscribeUrl(shop, c.id, r);
       let html = baseHtml;
+      // Load server-side translator (default to English).
+      const { useTranslations: getServerTranslations } = await import(
+        "@acme/i18n/useTranslations.server" // i18n-exempt -- EMAIL-201 module specifier [ttl=2026-03-31]
+      );
+      const t = await getServerTranslations("en");
       if (hasPlaceholder) {
         html = baseHtml.replace(
           /%%UNSUBSCRIBE%%/g,
-          `<a href="${url}">Unsubscribe</a>`,
-        ); // i18n-exempt: default unsubscribe label in emails
+          `<a href="${url}">${t("email.unsubscribe")}</a>`,
+        );
       } else {
-        html = `${baseHtml}<p><a href="${url}">Unsubscribe</a></p>`; // i18n-exempt: default unsubscribe label in emails
+        html = `${baseHtml}<p><a href="${url}">${t("email.unsubscribe")}</a></p>`;
       }
       const { sendCampaignEmail } = await import("./send");
       try {
@@ -110,7 +115,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
           html,
         });
       } catch (error) {
-        console.error("Campaign email send failed", { // i18n-exempt: operational log
+        console.error("Campaign email send failed", { // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
           recipient: r,
           campaignId: c.id,
           error,
@@ -130,7 +135,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
   if (failures.length > 1) {
     throw new AggregateError(
       failures.map((f) => f.error),
-      "Failed to send some campaign emails", // i18n-exempt: operational error summary
+      "Failed to send some campaign emails", // i18n-exempt -- EMAIL-201 operational error summary [ttl=2026-03-31]
     );
   }
 }
@@ -156,7 +161,7 @@ export async function createCampaign(opts: {
     recipients = await resolveSegment(shop, segment);
   }
   if (!shop || !subject || !body || recipients.length === 0) {
-    throw new Error("Missing fields"); // i18n-exempt: developer validation error
+    throw new Error("Missing fields"); // i18n-exempt -- EMAIL-201 developer validation error [ttl=2026-03-31]
   }
   const id = clock.now().getTime().toString(36);
   const scheduled = sendAt ? new Date(sendAt) : clock.now();
@@ -173,7 +178,7 @@ export async function createCampaign(opts: {
     try {
       await deliverCampaign(shop, campaign);
     } catch (err) {
-      console.error(`Failed to deliver campaign ${campaign.id}`, err); // i18n-exempt: operational log
+      console.error(`Failed to deliver campaign ${campaign.id}`, err); // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
       throw err;
     }
   }
@@ -198,7 +203,7 @@ export async function sendDueCampaigns(): Promise<void> {
         await deliverCampaign(shop, c);
         changed = true;
       } catch (err) {
-        console.error(`Failed to deliver campaign ${c.id}`, err); // i18n-exempt: operational log
+        console.error(`Failed to deliver campaign ${c.id}`, err); // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
         failedCampaigns.push({ id: c.id, error: err });
       }
     }
@@ -206,13 +211,13 @@ export async function sendDueCampaigns(): Promise<void> {
   }
   if (failedCampaigns.length > 0) {
     const ids = failedCampaigns.map((f) => f.id).join(", ");
-    console.error(`Failed campaigns: ${ids}`); // i18n-exempt: operational log
+    console.error(`Failed campaigns: ${ids}`); // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
     if (failedCampaigns.length === 1) {
       throw failedCampaigns[0].error;
     }
     throw new AggregateError(
       failedCampaigns.map((f) => f.error),
-      `Failed campaigns: ${ids}`, // i18n-exempt: operational error summary
+      `Failed campaigns: ${ids}`, // i18n-exempt -- EMAIL-201 operational error summary [ttl=2026-03-31]
     );
   }
 }

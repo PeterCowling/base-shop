@@ -1,6 +1,7 @@
 "use client";
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { useTranslations } from "@acme/i18n";
 
 type ToastVariant = "default" | "success" | "info" | "warning" | "danger" | "error";
 type ToastTone = "soft" | "solid";
@@ -55,6 +56,7 @@ const TOKEN_FG: Record<Exclude<ToastVariant, "error">, string> = {
 
 export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
   ({ open, onClose, message, className, variant = "default", tone = "soft", ...props }, ref) => {
+    const t = useTranslations();
     if (!open) return null;
     // Back-compat: "error" maps to "danger"
     const v = variant === "error" ? "danger" : variant;
@@ -66,7 +68,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
       <div
         ref={ref}
         className={cn(
-          "fixed bottom-4 start-1/2 z-50 -translate-x-1/2 rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 w-full sm:w-96 break-words", // i18n-exempt: class names
+          "fixed bottom-4 start-1/2 z-50 -translate-x-1/2 rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 w-full sm:w-96 break-words", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
           bgClass,
           fgClass,
           className
@@ -82,9 +84,9 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
           <button
             type="button"
             onClick={onClose}
-            className="ms-2 font-bold inline-flex items-center justify-center min-h-10 min-w-10"
+            className="ms-2 font-bold inline-flex items-center justify-center min-h-10 min-w-10" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
             data-token={tokenFg}
-            aria-label="Close"
+            aria-label={t("actions.close") as string}
           >
             ×
           </button>

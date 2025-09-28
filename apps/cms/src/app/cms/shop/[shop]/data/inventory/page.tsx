@@ -3,8 +3,11 @@ import { readInventory } from "@platform-core/repositories/inventory.server";
 import { notFound } from "next/navigation";
 import InventoryForm from "./InventoryForm";
 import { Card, CardContent } from "@/components/atoms/shadcn";
+import { Grid as DSGrid } from "@ui/components/atoms/primitives";
 import { Tag } from "@ui/components/atoms";
 import { cn } from "@ui/utils/style";
+import { INVENTORY_STAT_ACCENT, INVENTORY_STAT_CONTAINER } from "./styles";
+import { useTranslations as serverT } from "@acme/i18n/useTranslations.server";
 
 export const revalidate = 0;
 
@@ -13,6 +16,7 @@ export default async function InventoryPage({
 }: {
   params: Promise<{ shop: string }>;
 }) {
+  const t = await serverT("en");
   const { shop } = await params;
   if (!(await checkShopExists(shop))) return notFound();
   const initial = await readInventory(shop);
@@ -36,56 +40,54 @@ export default async function InventoryPage({
     Object.keys(item.variantAttributes ?? {}).forEach((key) => variantAttributes.add(key));
   });
 
+  const accentClass = INVENTORY_STAT_ACCENT;
+  const statContainerClass = INVENTORY_STAT_CONTAINER;
   const quickStats = [
     {
-      label: "Tracked SKUs",
+      label: t("cms.inventory.stats.trackedSkus.label"),
       value: String(totalItems),
-      caption: "Items monitored in this shop",
-      accent: "bg-surface-3 text-foreground",
+      caption: t("cms.inventory.stats.trackedSkus.caption"),
+      accent: accentClass,
     },
     {
-      label: "Low stock",
+      label: t("cms.inventory.stats.lowStock.label"),
       value: String(lowStockItems.length),
-      caption: "At or below threshold",
-      accent: "bg-surface-3 text-foreground",
+      caption: t("cms.inventory.stats.lowStock.caption"),
+      accent: accentClass,
     },
     {
-      label: "Maintenance due",
+      label: t("cms.inventory.stats.maintenance.label"),
       value: String(maintenanceNeeded.length),
-      caption: "Exceeded wear limit",
-      accent: "bg-surface-3 text-foreground",
+      caption: t("cms.inventory.stats.maintenance.caption"),
+      accent: accentClass,
     },
     {
-      label: "Variants tracked",
+      label: t("cms.inventory.stats.variantAttrs.label"),
       value: String(variantAttributes.size),
-      caption: "Unique attribute dimensions",
-      accent: "bg-surface-3 text-foreground",
+      caption: t("cms.inventory.stats.variantAttrs.caption"),
+      accent: accentClass,
     },
   ];
 
   return (
     <div className="space-y-8 text-foreground">
       <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_hsl(var(--color-success)/0.18),_transparent_50%)]" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-success/20 to-transparent" />
         <div className="relative space-y-4 px-6 py-7">
-          <Tag variant="default">
-            Inventory · {shop}
-          </Tag>
+          <Tag variant="default">{t("cms.inventory.tag").replace("{shop}", shop)}</Tag>
           <h1 className="text-3xl font-semibold md:text-4xl">
-            Keep stock levels, wear cycles, and attributes aligned
+            {t("cms.inventory.heading")}
           </h1>
           <p className="text-sm text-hero-foreground/80">
-            Adjust thresholds, import updates, and monitor wear & tear before it impacts fulfillment.
+            {t("cms.inventory.subheading")}
           </p>
-          <div className="grid gap-3 sm:grid-cols-4">
+          {/* i18n-exempt — utility classes only inside stat cards */}
+          <DSGrid cols={1} gap={3} className="sm:grid-cols-4">
             {quickStats.map((stat) => (
               <div
                 key={stat.label}
-                className={cn(
-                  "rounded-2xl border border-border/10 px-4 py-3",
-                  stat.accent
-                )}
-              >
+                className={cn(statContainerClass, stat.accent)}
+                >
                 <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                   {stat.label}
                 </p>
@@ -93,7 +95,7 @@ export default async function InventoryPage({
                 <p className="text-xs text-muted-foreground">{stat.caption}</p>
               </div>
             ))}
-          </div>
+          </DSGrid>
         </div>
       </section>
 
@@ -102,13 +104,13 @@ export default async function InventoryPage({
           <CardContent className="space-y-4 px-6 py-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="min-w-0">
-                <h2 className="text-lg font-semibold">Inventory matrix</h2>
+                <h2 className="text-lg font-semibold">{t("cms.inventory.matrix.title")}</h2>
                 <p className="text-sm text-muted-foreground">
-                  Edit quantities, variant attributes, and maintenance data in one place.
+                  {t("cms.inventory.matrix.desc")}
                 </p>
               </div>
               <Tag className="shrink-0" variant="default">
-                {totalItems} items tracked
+                {t("cms.inventory.itemsTracked").replace("{count}", String(totalItems))}
               </Tag>
             </div>
             <InventoryForm shop={shop} initial={initial} />

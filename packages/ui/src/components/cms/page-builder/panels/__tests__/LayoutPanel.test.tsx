@@ -32,7 +32,15 @@ jest.mock("../../../../atoms/shadcn", () => {
       </div>
     ),
     SelectItem: ({ children, value, onValueChange }: any) => (
-      <div data-value={value} onClick={() => onValueChange(value)}>
+      <div
+        role="button"
+        tabIndex={0}
+        data-value={value}
+        onClick={() => onValueChange(value)}
+        onKeyDown={(e: any) => {
+          if (e.key === "Enter" || e.key === " ") onValueChange(value);
+        }}
+      >
         {children}
       </div>
     ),

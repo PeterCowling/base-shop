@@ -1,9 +1,13 @@
 // packages/template-app/src/pages/404.tsx
 
+import { TranslationsProvider, useTranslations } from "@acme/i18n";
+import en from "@i18n/en.json";
+
 /**
- * Minimal Pages Router 404 page for template-app.
+ * Minimal Pages Router 404 page for template-app, i18n-ready.
  */
-export default function NotFoundPage() {
+function NotFoundInner() {
+  const t = useTranslations();
   return (
     <main
       style={{
@@ -15,7 +19,6 @@ export default function NotFoundPage() {
       }}
     >
       <div>
-        {/* i18n-exempt -- TMP-001: minimal template 404 message */}
         <h1
           style={{
             fontSize: "2rem",
@@ -23,24 +26,33 @@ export default function NotFoundPage() {
             marginBottom: "var(--space-2)",
           }}
         >
-          404 — Page not found
+          {t("pages.404.title")}
         </h1>
         <p style={{ marginBottom: "var(--space-3)", opacity: 0.8 }}>
-          We couldn’t find that page.
+          {t("pages.404.description")}
         </p>
         <a
           href="/"
           style={{
             display: "inline-block",
             padding: "var(--space-2) var(--space-3)",
-            border: "1px solid currentColor",
+            border: "1px solid currentColor", // i18n-exempt -- DEV-000 non-UI CSS value [ttl=2026-01-01]
             borderRadius: "0.5rem",
             textDecoration: "none",
           }}
         >
-          Go to homepage
+          {t("pages.404.cta")}
         </a>
       </div>
     </main>
+  );
+}
+
+export default function NotFoundPage() {
+  // Wrap with a local provider so the page works in the Pages Router too.
+  return (
+    <TranslationsProvider messages={en}>
+      <NotFoundInner />
+    </TranslationsProvider>
   );
 }

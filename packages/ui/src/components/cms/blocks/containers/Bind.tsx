@@ -2,6 +2,10 @@
 
 import React from "react";
 import { useCurrentItem, useDatasetMeta } from "../data/DataContext";
+import type { TranslatableText } from "@acme/types/i18n";
+import type { Locale } from "@acme/i18n/locales";
+import { useTranslations } from "@acme/i18n";
+import { resolveText } from "@i18n/resolveText";
 
 export interface BindProps {
   /** Name of the prop to inject onto the only child */
@@ -10,6 +14,10 @@ export interface BindProps {
   path?: string;
   /** Fallback value when path resolves to undefined */
   fallback?: unknown;
+  /** If true, bypass i18n resolution and pass raw value */
+  raw?: boolean;
+  /** Current locale for resolving TranslatableText values */
+  locale?: Locale;
   children?: React.ReactNode;
 }
 
@@ -38,9 +46,10 @@ function template(str: string, item: unknown): string {
 /**
  * Bind wrapper: clones its only child, injecting a prop from the current item context.
  */
-export default function Bind({ prop = "text", path, fallback, children }: BindProps) {
+export default function Bind({ prop = "text", path, fallback, raw = false, locale = "en", children }: BindProps) {
   const { item } = useCurrentItem<unknown>();
   const meta = useDatasetMeta();
+  const t = useTranslations() as unknown as (key: string, params?: Record<string, unknown>) => string;
   // Resolve value either as dot-path or as template with {field}
   let value: unknown = undefined;
   if (typeof path === "string" && path.includes("{")) {
@@ -55,7 +64,18 @@ export default function Bind({ prop = "text", path, fallback, children }: BindPr
   if (path && (value === undefined || value === null)) {
     console.warn(`[Bind] Missing value for path "${path}" on item`, item);
   }
-  const inject = value === undefined || value === "" ? fallback : value;
+  let inject = value === undefined || value === "" ? fallback : value;
+  // Lazy-resolve translatable values unless raw requested
+  if (!raw && inject != null && typeof inject === "object") {
+    const v = inject as Partial<Record<string, unknown>> & { type?: unknown };
+    if (typeof v.type === "string" && (v.type === "key" || v.type === "inline")) {
+      try {
+        inject = resolveText(inject as TranslatableText, locale, t);
+      } catch {
+        // leave as-is on resolver errors
+      }
+    }
+  }
   const arr = React.Children.toArray(children) as React.ReactElement[];
   const first = arr[0] as React.ReactElement | undefined;
   if (!first) return null;

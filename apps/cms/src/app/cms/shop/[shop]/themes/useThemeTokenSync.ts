@@ -148,7 +148,7 @@ export function useThemeTokenSync({
   };
 
   const handleResetAll = () => {
-    if (!window.confirm(t("Are you sure you want to reset all overrides?"))) {
+    if (!window.confirm(String(t("Are you sure you want to reset all overrides?")))) {
       return;
     }
     const patch: Record<string, string> = {};

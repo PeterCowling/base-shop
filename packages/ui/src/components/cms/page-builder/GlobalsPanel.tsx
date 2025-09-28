@@ -54,11 +54,11 @@ export default function GlobalsPanel({ open, onOpenChange, shop = null, pageId =
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerContent side="left" width={384} className="overflow-hidden border-e p-0">
+      <DrawerContent side="left" width={384} className="flex h-full flex-col overflow-hidden border-e p-0">
         <DialogHeader className="px-4 py-3">
           <DialogTitle>{t("Global Sections")}</DialogTitle>
         </DialogHeader>
-        <div className="flex h-[calc(100%-3rem)] flex-col gap-3 p-3 text-sm">
+        <div className="flex flex-1 flex-col gap-3 p-3 text-sm">
           <div className="space-y-1">
             <Input placeholder={t("Search globals…")} value={query} onChange={(e) => setQuery(e.target.value)} />
             <div className="text-xs text-muted-foreground">{filtered.length} {filtered.length === 1 ? t("item") : t("items")}</div>
@@ -74,7 +74,7 @@ export default function GlobalsPanel({ open, onOpenChange, shop = null, pageId =
                     <div className="min-w-0 flex-1">
                       {renameId === g.globalId ? (
                         <div className="flex items-center gap-2">
-                          <Input autoFocus value={renameVal} onChange={(e) => setRenameVal(e.target.value)} className="h-7" />
+                          <Input value={renameVal} onChange={(e) => setRenameVal(e.target.value)} className="h-7" />
                           <Button
                             variant="outline"
                             className="h-7"

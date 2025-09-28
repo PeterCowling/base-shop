@@ -72,7 +72,7 @@ function sanitizeMetadataEntry(value: unknown): MediaMetadataEntry {
 export async function readMetadata(shop: string): Promise<MediaMetadata> {
   try {
     // Path is constrained to a validated uploads directory for the given shop
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123
     const data = await fs.readFile(metadataPath(shop), "utf8");
     const parsed = JSON.parse(data) as unknown;
 

@@ -16,7 +16,9 @@ jest.mock("../../../atoms/shadcn", () => {
   const actual = jest.requireActual("../../../atoms/shadcn");
   return {
     ...actual,
+    // eslint-disable-next-line react/jsx-no-useless-fragment -- DX-0004: test doubles pass through children unchanged
     DropdownMenu: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    // eslint-disable-next-line react/jsx-no-useless-fragment -- DX-0004: test doubles pass through children unchanged
     DropdownMenuTrigger: ({ children }: { children: React.ReactNode }) => <>{children}</>,
     DropdownMenuContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
     DropdownMenuItem: ({

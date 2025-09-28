@@ -19,8 +19,8 @@ type PayPalConfig = z.infer<typeof configSchema>;
 
 const paypalPlugin: Plugin<PayPalConfig> = {
   id: "paypal",
-  name: "PayPal",
-  description: "Example PayPal payment provider",
+  name: "PayPal", // i18n-exempt -- PAY-101 plugin metadata; not user-facing yet [ttl=2026-03-31]
+  description: "Example PayPal payment provider", // i18n-exempt -- PAY-101 plugin metadata; not user-facing yet [ttl=2026-03-31]
   defaultConfig: { clientId: "", secret: "" },
   configSchema,
   registerPayments(registry: PaymentRegistry, _cfg: PayPalConfig) {

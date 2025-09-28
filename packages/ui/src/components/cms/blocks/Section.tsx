@@ -175,13 +175,14 @@ export default function Section({
         : { marginLeft: "auto", marginRight: "auto" };
   const densityClass = density === "spacious" ? "py-12" : "py-6";
   const [inViewRef, inView] = useInView<HTMLDivElement>(animateOnScroll);
-  // i18n-exempt: CSS utility class strings, not user-facing copy
-  const AOS_VISIBLE = "opacity-100 translate-y-0"; // i18n-exempt: CSS utility classes only
-  const AOS_HIDDEN = "opacity-0 translate-y-3"; // i18n-exempt: CSS utility classes only
-  const RELATIVE_CLASS = "relative"; // i18n-exempt: CSS utility class only
+  // i18n-exempt -- DS-1010 [ttl=2026-12-31]
+  const AOS_VISIBLE = "opacity-100 translate-y-0"; // i18n-exempt -- DS-1010 [ttl=2026-12-31]
+  const AOS_HIDDEN = "opacity-0 translate-y-3"; // i18n-exempt -- DS-1010 [ttl=2026-12-31]
+  const RELATIVE_CLASS = "relative"; // i18n-exempt -- DS-1010 [ttl=2026-12-31]
   const TRANSITION_CLASS = "transition-all duration-700 ease-out will-change-transform";
   const aosClass = animateOnScroll ? (inView ? AOS_VISIBLE : AOS_HIDDEN) : undefined;
   const extraProps = domProps as React.HTMLAttributes<HTMLDivElement>;
+  /* eslint-disable react/forbid-dom-props -- DS-0003: Section consumes CMS-driven visual styles (padding, bg, overlay) that require dynamic inline style to render correctly across themes. */
   return (
     <div
       {...extraProps}
@@ -216,6 +217,7 @@ export default function Section({
       {backgroundVideoUrl ? (
         // eslint-disable-next-line ds/absolute-parent-guard -- DS-0001: Parent has dynamic 'relative' class via array join; rule cannot statically resolve.
         <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption -- DS-0004: Decorative background video; not user-facing content, captions not applicable. */}
           <video
             className="h-full w-full object-cover"
             data-aspect="16/9"
@@ -260,4 +262,5 @@ export default function Section({
       ) : null}
     </div>
   );
+  /* eslint-enable react/forbid-dom-props */
 }

@@ -1,4 +1,4 @@
-import "server-only";
+import "server-only"; // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
 import { sendEmail } from "./sendEmail";
 import { createRequire } from "module";
 
@@ -8,8 +8,8 @@ try {
       ? require
       : createRequire(process.cwd() + "/");
   const { setEmailService } = req(
-    "@acme/platform-core/services/emailService"
-  ); // i18n-exempt: module id string
+    "@acme/platform-core/services/emailService" // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+  );
   setEmailService({ sendEmail });
 } catch {
   // The core email service isn't available in the current environment.

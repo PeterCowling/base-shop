@@ -45,7 +45,10 @@ jest.mock("@ui/components/atoms", () => {
   };
 });
 
-jest.mock("next/image", () => ({ __esModule: true, default: (props: any) => <img {...props} /> }));
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: (props: any) => <img alt={props.alt ?? ""} {...props} />,
+}));
 
 // Mock PageBuilder
 jest.mock("../../../test/__mocks__/componentStub.js", () => {
@@ -150,4 +153,3 @@ describe("StepShopPage", () => {
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator/prev");
   });
 });
-

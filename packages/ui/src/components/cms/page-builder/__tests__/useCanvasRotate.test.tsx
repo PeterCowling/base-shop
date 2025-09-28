@@ -19,7 +19,6 @@ function Harness({ styles }: { styles?: string }) {
       <div
         ref={ref}
         data-cy="target"
-        style={{ width: 100, height: 100 }}
         onPointerDown={(e) => startRotate(e as any)}
       />
       <div data-cy="rot" aria-label="rot">{String(rotating)}</div>

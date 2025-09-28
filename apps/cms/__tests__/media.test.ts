@@ -134,6 +134,7 @@ describe("media actions", () => {
           "metadata.json"
         );
         const meta = JSON.parse(
+          // eslint-disable-next-line security/detect-non-literal-fs-filename
           await fs.readFile(metaPath, "utf8")
         ) as MediaMetaFile;
         expect(meta[path.basename(item.url)].altText).toBe("hello");
@@ -171,6 +172,7 @@ describe("media actions", () => {
           "metadata.json"
         );
         const meta = JSON.parse(
+          // eslint-disable-next-line security/detect-non-literal-fs-filename
           await fs.readFile(metaPath, "utf8")
         ) as MediaMetaFile;
         expect(meta[path.basename(item.url)].type).toBe("video");

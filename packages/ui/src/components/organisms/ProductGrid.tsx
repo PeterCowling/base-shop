@@ -1,10 +1,13 @@
-"use client";
+"use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { ProductQuickView } from "../overlays/ProductQuickView";
 import type { SKU } from "@acme/types";
+import type { TranslatableText } from "@acme/types/i18n";
+import type { Locale } from "@acme/i18n/locales";
 import { ProductCard } from "./ProductCard";
+import { useTranslations } from "@acme/i18n";
 
 export type Product = SKU;
 
@@ -28,10 +31,12 @@ export interface ProductGridProps extends React.HTMLAttributes<HTMLDivElement> {
   mobileItems?: number;
   showImage?: boolean;
   showPrice?: boolean;
-  ctaLabel?: string;
+  ctaLabel?: TranslatableText;
   onAddToCart?: (product: SKU) => void;
   /** Show quick view trigger for each product */
   enableQuickView?: boolean;
+  /** Optional current locale used for inline values */
+  locale?: Locale;
 }
 
 export function ProductGrid({
@@ -44,12 +49,14 @@ export function ProductGrid({
   mobileItems,
   showImage = true,
   showPrice = true,
-  ctaLabel = "Add to cart",
+  ctaLabel,
   onAddToCart,
   enableQuickView = false,
   className,
+  locale,
   ...props
 }: ProductGridProps) {
+  const t = useTranslations();
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [cols, setCols] = React.useState(
     columns ?? desktopItems ?? minItems
@@ -99,7 +106,8 @@ export function ProductGrid({
     <>
       <div
         ref={containerRef}
-        className={cn("grid gap-6", className)}
+        className={cn("grid gap-6", className)} // i18n-exempt -- DEV-000: CSS utility classes only
+        /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Grid template columns depend on runtime container width; requires inline style */
         style={style}
         {...props}
       >
@@ -111,15 +119,16 @@ export function ProductGrid({
               showImage={showImage}
               showPrice={showPrice}
               ctaLabel={ctaLabel}
+              locale={locale}
             />
             {enableQuickView && (
               <Button
-                variant="outline"
+                variant="outline" /* i18n-exempt -- DEV-000: enum-like prop, not user-facing copy */
                 className="absolute end-2 top-2 h-8 px-2"
-                aria-label={`Quick view ${p.title}`}
+                aria-label={`${t("product.quickView") as string} ${p.title ?? ""}`}
                 onClick={() => setQuickViewProduct(p)}
               >
-                Quick View
+                {t("product.quickView") as string}
               </Button>
             )}
           </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 
 function parseAspect(aspect?: string): number | undefined {
   if (!aspect) return undefined;
@@ -33,6 +34,7 @@ export default function ImageCropOverlay({ value, onChange, visible = false }: {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const [box, setBox] = useState<{ w: number; h: number }>({ w: 100, h: 100 });
   const [dragging, setDragging] = useState<null | "e" | "s" | "se">(null);
+  const t = useTranslations();
 
   const targetRatio = useMemo(() => parseAspect(value), [value]);
 
@@ -108,39 +110,39 @@ export default function ImageCropOverlay({ value, onChange, visible = false }: {
       {/* Crop rectangle (centered) */}
       <div
         className="absolute border-2 border-sky-400/90"
+        // eslint-disable-next-line react/forbid-dom-props -- PB-2419: crop rectangle requires dynamic absolute positioning (left/top/width/height)
         style={{ left, top, width: box.w, height: box.h }}
       >
         {/* Handles */}
         <div
           className="pointer-events-auto absolute -end-1 top-1/2 h-2 w-2 -translate-y-1/2 cursor-ew-resize rounded bg-sky-400"
           onPointerDown={(e) => start(e, "e")}
-          title={/* i18n-exempt -- PB-2418: editor-only tooltip */ "Drag horizontally to change ratio"}
+          title={String(t("cms.builder.crop.dragHoriz"))}
         />
         <div
           className="pointer-events-auto absolute start-1/2 -bottom-1 h-2 w-2 -translate-x-1/2 cursor-ns-resize rounded bg-sky-400"
           onPointerDown={(e) => start(e, "s")}
-          title={/* i18n-exempt -- PB-2418: editor-only tooltip */ "Drag vertically to change ratio"}
+          title={String(t("cms.builder.crop.dragVert"))}
         />
         <div
           className="pointer-events-auto absolute -end-1 -bottom-1 h-3 w-3 cursor-nwse-resize rounded bg-sky-500"
           onPointerDown={(e) => start(e, "se")}
-          title={/* i18n-exempt -- PB-2418: editor-only tooltip */ "Drag to change ratio"}
+          title={String(t("cms.builder.crop.dragAny"))}
         />
         {/* Badge */}
         <div className="pointer-events-none absolute -top-5 start-0 flex items-center gap-1">
           <div className="pointer-events-none rounded bg-black/70 px-1 text-xs text-white shadow dark:bg-white/70 dark:text-black">
-            {toAspectString(Math.max(0.01, box.w / Math.max(1, box.h)))}{dragging ? " (drag)" : ""}
+            {toAspectString(Math.max(0.01, box.w / Math.max(1, box.h)))}{dragging ? t("cms.builder.crop.draggingSuffix") : ""}
           </div>
           <button
             type="button"
             className="pointer-events-auto inline-flex min-h-10 min-w-10 items-center justify-center rounded bg-black/60 px-1 text-xs text-white shadow hover:bg-black/70 dark:bg-white/70 dark:text-black dark:hover:bg-white"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); onChange(undefined); }}
-            title={/* i18n-exempt -- PB-2418: editor-only tooltip */ "Reset to Auto"}
+            title={String(t("cms.builder.crop.resetTitle"))}
           >
-            {/* i18n-exempt -- PB-2418: editor-only action label */}
-            Reset
+            {t("actions.reset")}
           </button>
-          <div className="pointer-events-none rounded bg-black/50 px-1 text-xs text-white dark:bg-white/60 dark:text-black">{/* i18n-exempt */}Shift: lock ratio</div>
+          <div className="pointer-events-none rounded bg-black/50 px-1 text-xs text-white dark:bg-white/60 dark:text-black">{t("cms.builder.crop.shiftLock")}</div>
         </div>
       </div>
     </div>

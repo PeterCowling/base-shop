@@ -19,7 +19,7 @@ export function resolveText(
   // Legacy: if value is a plain string, treat as inline with English default
   if (typeof value === "string") {
     if (process.env.NODE_ENV === "development") {
-      // eslint-disable-next-line no-console
+      // i18n-exempt -- INTL-203: developer-only log message
       console.warn("resolveText: legacy string used; treating as inline.en");
     }
     return value;
@@ -36,7 +36,7 @@ export function resolveText(
       if (typeof v === "string" && v.length > 0) return v;
     }
     if (process.env.NODE_ENV === "development") {
-      // eslint-disable-next-line no-console
+      // i18n-exempt -- INTL-203: developer-only log message
       console.warn("resolveText: missing inline value across fallbacks", {
         locale,
         chain,
@@ -46,9 +46,8 @@ export function resolveText(
   }
 
   if (process.env.NODE_ENV === "development") {
-    // eslint-disable-next-line no-console
+    // i18n-exempt -- INTL-203: developer-only log message
     console.warn("resolveText: unknown value shape; returning empty string", value);
   }
   return "";
 }
-

@@ -96,7 +96,7 @@ jest.mock("../DragOverlayPreview", () => ({
 
 jest.mock("../ErrorBoundary", () => ({
   __esModule: true,
-  default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  default: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 jest.mock("../../../../hooks/useReducedMotion", () => ({

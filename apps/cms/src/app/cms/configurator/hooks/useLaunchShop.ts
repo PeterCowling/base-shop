@@ -4,6 +4,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { getCsrfToken } from "@acme/shared-utils";
 import { getRequiredSteps } from "../steps";
+import { useTranslations } from "@acme/i18n";
 import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
 
@@ -24,6 +25,7 @@ export function useLaunchShop(
   allRequiredDone: boolean;
   tooltipText: string;
 } {
+  const t = useTranslations();
   const { onIncomplete } = options;
   const [launchStatus, setLaunchStatus] = useState<
     Record<string, LaunchStepStatus> | null
@@ -32,17 +34,16 @@ export function useLaunchShop(
   const [failedStep, setFailedStep] = useState<string | null>(null);
 
   const missingRequired = useMemo(
-    () =>
-      getRequiredSteps().filter((s) => state?.completed?.[s.id] !== "complete"),
-    [state?.completed]
+    () => getRequiredSteps(t).filter((s) => state?.completed?.[s.id] !== "complete"),
+    [state?.completed, t]
   );
   const allRequiredDone = missingRequired.length === 0;
 
   const tooltipText = allRequiredDone
-    ? "All steps complete"
-    : `Complete required steps: ${missingRequired
-        .map((s) => s.label)
-        .join(", ")}`;
+    ? (t("cms.configurator.launch.tooltip.allComplete") as string)
+    : (t("cms.configurator.launch.tooltip.completeRequired", {
+        list: missingRequired.map((s) => s.label).join(", "),
+      }) as string);
 
   const launchShop = useCallback(async () => {
     if (!state?.shopId) return;
@@ -69,7 +70,7 @@ export function useLaunchShop(
         body: JSON.stringify({ shopId: state.shopId, state, seed }),
       });
       if (!res.body) {
-        setLaunchError("Launch failed");
+        setLaunchError(t("cms.configurator.launch.failed") as string);
         return;
       }
       const reader = res.body.getReader();
@@ -91,16 +92,16 @@ export function useLaunchShop(
               [data.step]: data.status,
             }));
             if (data.status === "failure") {
-              setLaunchError(data.error || "Launch failed");
+              setLaunchError(data.error || (t("cms.configurator.launch.failed") as string));
               setFailedStep(data.step);
             }
           }
         }
       }
     } catch {
-      setLaunchError("Launch failed");
+      setLaunchError(t("cms.configurator.launch.failed") as string);
     }
-  }, [state, allRequiredDone, missingRequired, onIncomplete]);
+  }, [state, allRequiredDone, missingRequired, onIncomplete, t]);
 
   return {
     launchShop,

@@ -4,10 +4,14 @@ import { Button } from "@ui/components/atoms/shadcn";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import type { ConfiguratorStepProps } from "@/types/configurator";
+import { Cluster } from "@ui/components/atoms/primitives";
+import { CheckIcon } from "@radix-ui/react-icons";
+import { useTranslations } from "@acme/i18n";
 
 export default function StepShopType({ prevStepId, nextStepId }: ConfiguratorStepProps): React.JSX.Element {
   const { state, update } = useConfigurator();
   const [, markComplete] = useStepCompletion("shop-type");
+  const t = useTranslations();
 
   const current = state.type ?? "sale";
 
@@ -19,7 +23,9 @@ export default function StepShopType({ prevStepId, nextStepId }: ConfiguratorSte
         onClick={() => update("type", value)}
         aria-pressed={selected}
         className={
+          // i18n-exempt -- CMS-1234 [ttl=2026-01-31]
           "w-full rounded-xl border p-4 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
+          // i18n-exempt -- CMS-1234 [ttl=2026-01-31]
           (selected ? "border-primary bg-primary/5" : "border-border hover:bg-muted/40")
         }
       >
@@ -30,12 +36,14 @@ export default function StepShopType({ prevStepId, nextStepId }: ConfiguratorSte
           </div>
           <span
             className={
+              // i18n-exempt -- CMS-1234 [ttl=2026-01-31]
               "grid size-6 place-content-center rounded-full border text-xs " +
+              // i18n-exempt -- CMS-1234 [ttl=2026-01-31]
               (selected ? "border-primary bg-primary text-primary-fg" : "border-border bg-background")
             }
             aria-hidden
           >
-            {selected ? "✓" : ""}
+            {selected ? <CheckIcon className="h-4 w-4" aria-hidden /> : null}
           </span>
         </div>
       </button>
@@ -44,31 +52,29 @@ export default function StepShopType({ prevStepId, nextStepId }: ConfiguratorSte
 
   return (
     <div className="space-y-6">
-      <p className="text-sm text-muted-foreground">
-        Choose how your shop operates. You can switch later if needed.
-      </p>
+      <p className="text-sm text-muted-foreground">{t("cms.configurator.shopType.help")}</p>
 
       <div className="grid gap-4 md:grid-cols-2">
         <Option
           value="sale"
-          label="Sale"
-          description="Sell products outright with standard checkout and fulfillment."
+          label={String(t("cms.configurator.shopType.sale.label"))}
+          description={String(t("cms.configurator.shopType.sale.description"))}
         />
         <Option
           value="rental"
-          label="Rental"
-          description="Rent items for set durations, with returns and maintenance."
+          label={String(t("cms.configurator.shopType.rental.label"))}
+          description={String(t("cms.configurator.shopType.rental.description"))}
         />
       </div>
 
-      <div className="flex justify-between">
+      <Cluster justify="between">
         {prevStepId && (
           <Button
             data-cy="back"
             variant="outline"
             onClick={() => (window.location.href = `/cms/configurator/${prevStepId}`)}
           >
-            Back
+            {t("wizard.back")}
           </Button>
         )}
         {nextStepId && (
@@ -79,11 +85,10 @@ export default function StepShopType({ prevStepId, nextStepId }: ConfiguratorSte
               window.location.href = `/cms/configurator/${nextStepId}`;
             }}
           >
-            Next
+            {t("wizard.next")}
           </Button>
         )}
-      </div>
+      </Cluster>
     </div>
   );
 }
-

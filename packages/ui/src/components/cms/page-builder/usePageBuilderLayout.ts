@@ -1,32 +1,29 @@
+// i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
 import { locales } from "@acme/i18n/locales";
-import { usePathname } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import type { CSSProperties } from "react";
-import { getShopFromPath } from "@acme/shared-utils";
 import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";
-import usePageBuilderDnD from "./hooks/usePageBuilderDnD";
 import usePageBuilderControls from "./hooks/usePageBuilderControls";
-import usePageBuilderSave from "./hooks/usePageBuilderSave";
 import usePreviewTokens from "./hooks/usePreviewTokens";
 import useLayerSelectionPreference from "./hooks/useLayerSelectionPreference";
 import useLocalStrings from "./hooks/useLocalStrings";
-import useInsertHandlers from "./hooks/useInsertHandlers";
-import useKeyboardShortcuts from "./hooks/useKeyboardShortcuts";
 import useGridSize from "./hooks/useGridSize";
-import { defaults, CONTAINER_TYPES } from "./defaults";
 import { buildCanvasProps, buildGridProps, buildHistoryProps, buildPreviewProps, buildTourProps } from "./buildProps";
 import { createToolbarProps } from "./createToolbarProps";
 import { createLinkedSectionHandler } from "./createLinkedSectionHandler";
-import useMediaLibraryListener from "./useMediaLibraryListener";
 import useSectionModeInitialSelection from "./useSectionModeInitialSelection";
 import type { PageComponent, HistoryState } from "@acme/types";
 import type { PageBuilderLayoutProps, PageBuilderProps } from "./PageBuilder.types";
-import usePublishWithValidation from "./hooks/usePublishWithValidation";
 import usePresetActions from "./hooks/usePresetActions";
-import { useToastState } from "./hooks/useToastState";
+
+// single-purpose helpers
+import useShop from "./usePageBuilderLayout/useShop";
+import useDnDSetup from "./usePageBuilderLayout/useDnDSetup";
+import useInsertSetup from "./usePageBuilderLayout/useInsertSetup";
+import useSavePublish from "./usePageBuilderLayout/useSavePublish";
 
 const usePageBuilderLayout = ({
   page,
@@ -43,8 +40,7 @@ const usePageBuilderLayout = ({
   pagesNav,
   mode = "page",
 }: PageBuilderProps): PageBuilderLayoutProps => {
-  const pathname = usePathname() ?? "";
-  const shop = useMemo(() => getShopFromPath(pathname), [pathname]);
+  const shop = useShop();
 
   const saveRef = useRef<() => void>(() => {});
   const togglePreviewRef = useRef<() => void>(() => {});
@@ -78,7 +74,6 @@ const usePageBuilderLayout = ({
 
   const canvasRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { setToast, toastProps } = useToastState();
   const [snapPosition, setSnapPosition] = useState<number | null>(null);
   const [showComments, setShowComments] = useState(true);
 
@@ -90,18 +85,9 @@ const usePageBuilderLayout = ({
     deviceKey: `${controls.deviceId}:${controls.orientation}`,
   });
 
-  const {
-    dndContext,
-    insertIndex,
-    insertParentId,
-    activeType,
-    dropAllowed,
-    dragMeta,
-  } = usePageBuilderDnD({
+  const { dndContext, insertIndex, insertParentId, activeType, dropAllowed, dragMeta } = useDnDSetup({
     components,
     dispatch,
-    defaults: defaults as Record<string, Partial<PageComponent>>,
-    containerTypes: CONTAINER_TYPES,
     selectId: (id: string) => setSelectedIds([id]),
     gridSize,
     canvasRef,
@@ -119,65 +105,24 @@ const usePageBuilderLayout = ({
     handleInsertImageAsset,
     handleSetSectionBackground,
     handleInsertPreset,
-    mediaLibraryListener,
-  } = useInsertHandlers({
-    components,
-    selectedIds,
-    setSelectedIds,
-    insertIndex,
-    insertParentId,
-    dispatch,
-    t,
-  });
+  } = useInsertSetup({ components, selectedIds, setSelectedIds, insertIndex, insertParentId, dispatch, t });
 
-  useMediaLibraryListener(mediaLibraryListener);
-
-  const { handlePublish, handleSave, autoSaveState } = usePageBuilderSave({
+  const { handleSave, publishWithValidation, autoSaveState, toastProps, setToast } = useSavePublish({
     page,
     components,
     state,
     onSave,
     onPublish,
-    formDataDeps: [components, state],
     shop,
-    onAutoSaveError: (retry) => {
-      setToast({
-        open: true,
-        message: t("Auto-save failed. Click to retry."),
-        retry: () => {
-          setToast((current) => ({ ...current, open: false }));
-          retry();
-        },
-      });
-    },
     clearHistory,
-  });
-
-  saveRef.current = handleSave;
-
-  const publishWithValidation = usePublishWithValidation({
-    components,
-    handlePublish,
-    setToast,
-  });
-
-  useKeyboardShortcuts({
-    onPublish: () => publishWithValidation(),
+    t,
     rotateDevice: (direction) => rotateDeviceRef.current(direction),
     togglePreview: () => togglePreviewRef.current(),
   });
 
-  const toolbarProps = createToolbarProps({
-    controls,
-    selectedIds,
-    state,
-    dispatch,
-    shop,
-    progress,
-    isValid,
-    locales,
-    pagesNav,
-  });
+  saveRef.current = handleSave;
+
+  const toolbarProps = createToolbarProps({ controls, selectedIds, state, dispatch, shop, progress, isValid, locales, pagesNav });
 
   const gridProps = buildGridProps({
     showGrid: controls.showGrid,
@@ -254,8 +199,6 @@ const usePageBuilderLayout = ({
       handleSave();
     },
   });
-
-  // toastProps come from useToastState
 
   const tourProps = buildTourProps({
     steps: controls.tourSteps,

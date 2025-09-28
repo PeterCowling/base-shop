@@ -42,6 +42,7 @@ describe('base theme tokens', () => {
     const cssFiles = ['tokens.css', 'tokens.dynamic.css']
       .map((f) => path.join(cssDir, f))
       .filter(fs.existsSync);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads from enumerated CSS files validated by existsSync
     const css = cssFiles.map((f) => fs.readFileSync(f, 'utf8')).join('\n');
 
     for (const key of expectedKeys) {

@@ -1,6 +1,8 @@
+// i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { MouseEvent as ReactMouseEvent } from "react";
 import buildBlockContextMenuItems from "./buildBlockContextMenuItems";
 import type { BlockItemProps } from "./BlockItem.types";
@@ -29,6 +31,7 @@ export default function useBlockItemContextMenu({
 }: Options) {
   const [ctxOpen, setCtxOpen] = useState(false);
   const [ctxPos, setCtxPos] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const t = useTranslations() as unknown as (key: string, vars?: Record<string, unknown>) => string;
 
   const ctxItems = useMemo(
     () =>
@@ -41,8 +44,9 @@ export default function useBlockItemContextMenu({
         editor,
         dispatch,
         onRemove,
+        t,
       }),
-    [component.id, component.styles, dispatch, editor, effLocked, flags, onRemove, selectedIds]
+    [component.id, component.styles, dispatch, editor, effLocked, flags, onRemove, selectedIds, t]
   );
 
   const openContextMenu = useCallback((event: ReactMouseEvent) => {

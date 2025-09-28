@@ -1,0 +1,10 @@
+{
+  "collections": [
+    { "id": "new", "title": "New" },
+    { "id": "best", "title": "Best" },
+    { "id": "sale", "title": "Sale" }
+  ],
+  "minItems": 1,
+  "maxItems": 4
+}
+

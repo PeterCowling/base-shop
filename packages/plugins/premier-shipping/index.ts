@@ -56,26 +56,26 @@ class PremierShipping implements PremierShippingProvider {
   calculateShipping(request: PremierShippingRequest) {
     const { region, window, carrier } = request;
     if (!this.cfg.regions.includes(region)) {
-      throw new Error("Region not supported");
+      throw new Error("Region not supported"); // i18n-exempt -- PLUG-1729 internal validation error [ttl=2026-03-31]
     }
     if (!this.cfg.windows.includes(window)) {
-      throw new Error("Invalid delivery window");
+      throw new Error("Invalid delivery window"); // i18n-exempt -- PLUG-1729 internal validation error [ttl=2026-03-31]
     }
     if (carrier && !this.cfg.carriers.includes(carrier)) {
-      throw new Error("Carrier not supported");
+      throw new Error("Carrier not supported"); // i18n-exempt -- PLUG-1729 internal validation error [ttl=2026-03-31]
     }
     const base = this.cfg.rate ?? 0;
     const surcharge = this.cfg.surcharge ?? 0;
     return {
       rate: base + surcharge,
       surcharge,
-      serviceLabel: this.cfg.serviceLabel ?? "Premier Delivery",
+      serviceLabel: this.cfg.serviceLabel ?? "Premier Delivery", // i18n-exempt -- PLUG-1729 configurable default label; UI will localize
     };
   }
 
   getAvailableSlots(region: string) {
     if (!this.cfg.regions.includes(region)) {
-      throw new Error("Region not supported");
+      throw new Error("Region not supported"); // i18n-exempt -- PLUG-1729 internal validation error [ttl=2026-03-31]
     }
     return { windows: this.cfg.windows, carriers: this.cfg.carriers };
   }
@@ -87,13 +87,13 @@ class PremierShipping implements PremierShippingProvider {
     carrier?: string,
   ) {
     if (!this.cfg.regions.includes(region)) {
-      throw new Error("Region not supported");
+      throw new Error("Region not supported"); // i18n-exempt -- PLUG-1729 internal validation error [ttl=2026-03-31]
     }
     if (!this.cfg.windows.includes(hourWindow)) {
-      throw new Error("Invalid delivery window");
+      throw new Error("Invalid delivery window"); // i18n-exempt -- PLUG-1729 internal validation error [ttl=2026-03-31]
     }
     if (carrier && !this.cfg.carriers.includes(carrier)) {
-      throw new Error("Carrier not supported");
+      throw new Error("Carrier not supported"); // i18n-exempt -- PLUG-1729 internal validation error [ttl=2026-03-31]
     }
     this.state = { region, date, window: hourWindow };
   }
@@ -107,15 +107,15 @@ const premierShippingPlugin: Plugin<
   PaymentProvider<PaymentPayload>,
   PremierShippingProvider
 > = {
-  id: "premier-shipping",
-  name: "Premier Shipping",
+  id: "premier-shipping", // i18n-exempt -- PLUG-1729 identifier string, not user-visible copy
+  name: "Premier Shipping", // i18n-exempt -- PLUG-1729 plugin metadata default; CMS provides localized label
   defaultConfig: { regions: [], windows: [], carriers: [], rate: 0, surcharge: 0 },
   registerShipping(
     registry: ShippingRegistry<PremierShippingRequest, PremierShippingProvider>,
     cfg: PremierShippingConfig,
   ) {
     const provider = new PremierShipping(cfg);
-    registry.add("premier-shipping", provider);
+    registry.add("premier-shipping", provider); // i18n-exempt -- PLUG-1729 identifier string, not user-visible copy
   },
 };
 

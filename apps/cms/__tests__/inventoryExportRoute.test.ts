@@ -29,6 +29,7 @@ describe("inventory export route", () => {
           lowStockThreshold: 1,
         },
       ];
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-201: test writes fixture JSON to a computed temp path
       await fs.writeFile(
         path.join(dir, "data", "shops", "test", "inventory.json"),
         JSON.stringify(items),
@@ -50,6 +51,7 @@ describe("inventory export route", () => {
 
   it("exports empty inventory as csv", async () => {
     await withTempRepo(async (dir) => {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-201: test writes empty fixture JSON under sandboxed temp dir
       await fs.writeFile(
         path.join(dir, "data", "shops", "test", "inventory.json"),
         "[]",
@@ -86,6 +88,7 @@ describe("inventory export route", () => {
           lowStockThreshold: 1,
         },
       ];
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-201: test writes fixture JSON to a computed temp path
       await fs.writeFile(
         path.join(dir, "data", "shops", "test", "inventory.json"),
         JSON.stringify(items),
@@ -132,6 +135,7 @@ describe("inventory export route", () => {
       expect(res.headers.get("content-type")).toContain("application/json");
       expect(res.status).toBe(200);
       const json = await res.json();
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-201: test reads fixture from repo-relative DATA_ROOT
       const buf = await fs.readFile(
         path.join(process.env.DATA_ROOT!, shop, "inventory.json"),
         "utf8",

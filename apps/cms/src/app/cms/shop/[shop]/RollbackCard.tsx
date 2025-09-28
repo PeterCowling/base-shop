@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Button, Card, CardContent, Toast } from "@ui/components/atoms";
+import { useTranslations } from "@acme/i18n";
 
 interface RollbackCardProps {
   shop: string;
@@ -24,6 +25,7 @@ function extractErrorMessage(data: unknown, fallback: string) {
 }
 
 export default function RollbackCard({ shop }: RollbackCardProps) {
+  const t = useTranslations();
   const [submitting, setSubmitting] = useState(false);
   const [toast, setToast] = useState<ToastState>({ open: false, message: "" });
 
@@ -37,19 +39,19 @@ export default function RollbackCard({ shop }: RollbackCardProps) {
 
       if (!res.ok) {
         const data: unknown = await res.json().catch(() => ({}));
-        throw new Error(extractErrorMessage(data, "Rollback failed"));
+        throw new Error(extractErrorMessage(data, t("cms.rollback.error") as string));
       }
 
       setToast({
         open: true,
-        message: "Rollback requested. The previous version will be restored shortly.",
+        message: t("cms.rollback.success") as string,
       });
     } catch (err) {
       const message =
         err instanceof Error && err.message.trim().length > 0
           ? err.message
-          : "Rollback failed";
-      console.error("Rollback failed", err);
+          : (t("cms.rollback.error") as string);
+      console.error(t("cms.rollback.error"), err);
       setToast({ open: true, message });
     } finally {
       setSubmitting(false);
@@ -61,20 +63,19 @@ export default function RollbackCard({ shop }: RollbackCardProps) {
       <Card className="h-full">
         <CardContent className="space-y-4 p-6">
           <div className="space-y-2">
-            <h3 className="text-lg font-semibold">Need to undo an update?</h3>
+            <h3 className="text-lg font-semibold">{t("cms.rollback.heading")}</h3>
             <p className="text-muted-foreground text-sm">
-              Roll back to the last published configuration. We’ll notify your team once the
-              previous build is live again.
+              {t("cms.rollback.description")}
             </p>
           </div>
           <Button
             type="button"
             variant="outline"
-            className="min-w-[200px]"
+            className="min-w-52"
             disabled={submitting}
             onClick={handleRollback}
           >
-            {submitting ? "Rolling back…" : "Rollback to previous version"}
+            {submitting ? t("cms.rollback.cta.loading") : t("cms.rollback.cta.default")}
           </Button>
         </CardContent>
       </Card>
@@ -88,4 +89,3 @@ export default function RollbackCard({ shop }: RollbackCardProps) {
     </>
   );
 }
-

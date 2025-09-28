@@ -39,7 +39,7 @@ export default function CurrencyTaxEditor({ shop, initial }: Props) {
   };
 
   return (
-    <form onSubmit={onSubmit} className="grid max-w-md gap-4">
+    <form onSubmit={onSubmit} className="grid gap-4">
       <label className="flex flex-col gap-1">
         <span>Currency</span>
         <Input

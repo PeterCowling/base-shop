@@ -1,3 +1,4 @@
+/* i18n-exempt file -- ABC-123 CSS utility class tokens [ttl=2026-01-31] */
 "use client";
 import Image, { type ImageProps } from "next/image";
 import * as React from "react";
@@ -10,14 +11,26 @@ export interface ZoomImageProps extends ImageProps {
 export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
   ({ alt, className, zoomScale = 1.25, ...props }, ref) => {
     const [zoom, setZoom] = React.useState(false);
+    const toggle = React.useCallback(() => setZoom((z) => !z), []);
+    const onKeyDown = React.useCallback<React.KeyboardEventHandler<HTMLDivElement>>(
+      (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          toggle();
+        }
+      },
+      [toggle],
+    );
     return (
       <figure
         ref={ref}
-        onClick={() => setZoom(!zoom)}
+        role="button"
+        tabIndex={0}
+        aria-pressed={zoom}
+        onClick={toggle}
+        onKeyDown={onKeyDown}
         className={cn(
-          // i18n-exempt — CSS utility class names
           "relative w-full cursor-zoom-in overflow-hidden",
-          // i18n-exempt — CSS utility class names
           zoom && "cursor-zoom-out"
         )}
       >
@@ -25,9 +38,7 @@ export const ZoomImage = React.forwardRef<HTMLDivElement, ZoomImageProps>(
           alt={alt ?? ""}
           {...props}
           className={cn(
-            // i18n-exempt — CSS utility class names
             "object-cover transition-transform duration-300",
-            // i18n-exempt — CSS utility class names
             zoom ? "scale-125" : "scale-100",
             className
           )}

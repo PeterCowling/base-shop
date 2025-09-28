@@ -13,7 +13,11 @@ export default function ReturnForm({
   tracking: trackingEnabled,
 }: ReturnFormProps) {
   const tRaw = useTranslations();
-  const t = (key: string, vars?: Record<string, unknown>) => tRaw(`account.returns.form.${key}`, vars as any);
+  const t = React.useCallback(
+    (key: string, vars?: Record<string, React.ReactNode>) =>
+      tRaw(`account.returns.form.${key}`, vars),
+    [tRaw]
+  );
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [sessionId, setSessionId] = React.useState("");
   const [labelUrl, setLabelUrl] = React.useState<string | null>(null);

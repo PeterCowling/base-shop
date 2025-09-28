@@ -2,6 +2,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { FC, HTMLAttributes } from "react";
 import Image from "next/image";
 import { useTranslations } from "@acme/i18n";
 import { RatingSummary } from "../../molecules/RatingSummary";
@@ -42,6 +43,9 @@ interface Props {
   orgSameAs?: string[];
 }
 
+// Allow "Grid" as a DS layout primitive wrapper for linter compliance
+const Grid: FC<HTMLAttributes<HTMLDivElement>> = (props) => <div {...props} />;
+
 /**
  * Display social proof via a rating summary and testimonials, or fall back to
  * rotating order events fetched from a remote source.
@@ -58,9 +62,6 @@ export default function SocialProof({
   orgName,
   orgSameAs,
 }: Props) {
-  // Allow "Grid" as a DS layout primitive wrapper for linter compliance
-  const Grid: React.FC<React.HTMLAttributes<HTMLDivElement>> = (props) => <div {...props} />;
-
   const t = useTranslations();
   const hasRating = Boolean(rating);
   const hasTestimonials = Boolean(testimonials && testimonials.length > 0);
@@ -129,8 +130,10 @@ export default function SocialProof({
         )}
         {hasUGC && (
           <Grid className="mx-auto grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4 w-full">
-            {ugc.map((u, i) => (
-              <a key={i} href={u.href ?? "#"} className="group relative block overflow-hidden rounded aspect-square min-h-10 min-w-10">
+            {ugc.map((u) => (
+              <a key={u.href || u.src || `${u.author || u.handle || u.alt || "ugc"}`}
+                 href={u.href ?? "#"}
+                 className="group relative block overflow-hidden rounded aspect-square min-h-10 min-w-10">
                 <Image
                   src={u.src}
                   alt={u.alt ?? ""}
@@ -148,8 +151,10 @@ export default function SocialProof({
         )}
         {hasInfluencers && (
           <Grid className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 w-full">
-            {influencers.map((inf, i) => (
-              <a key={i} href={inf.href ?? "#"} className="flex items-center gap-3 rounded border p-3 min-h-10 min-w-10">
+            {influencers.map((inf) => (
+              <a key={inf.href || inf.handle || inf.name}
+                 href={inf.href ?? "#"}
+                 className="flex items-center gap-3 rounded border p-3 min-h-10 min-w-10">
                 {inf.avatarSrc ? (
                   <Image src={inf.avatarSrc} alt={inf.name} width={40} height={40} className="rounded-full object-cover" />
                 ) : (
@@ -166,8 +171,10 @@ export default function SocialProof({
         )}
         {hasLogos && (
           <Grid className="mx-auto grid grid-cols-3 items-center justify-items-center gap-6 sm:grid-cols-4 md:grid-cols-6 w-full">
-            {logos.map((l, i) => (
-              <a key={i} href={l.href ?? "#"} className="opacity-75 grayscale transition hover:opacity-100 hover:grayscale-0 min-h-10 min-w-10">
+            {logos.map((l) => (
+              <a key={l.href || l.src || l.alt}
+                 href={l.href ?? "#"}
+                 className="opacity-75 grayscale transition hover:opacity-100 hover:grayscale-0 min-h-10 min-w-10">
                 <div className="relative h-8 w-24">
                   <Image src={l.src} alt={l.alt ?? ""} fill sizes="96px" className="object-contain" />
                 </div>

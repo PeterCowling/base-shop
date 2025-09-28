@@ -8,6 +8,7 @@ describe("listShops", () => {
   it("returns empty list when no shops", async () => {
     const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shops-"));
     const shopDir = path.join(dir, "data", "shops", "foo");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test creates a directory inside a controlled temp path from fs.mkdtemp
     await fs.mkdir(shopDir, { recursive: true });
 
     const spy = jest.spyOn(process, "cwd").mockReturnValue(dir);
@@ -34,6 +35,7 @@ describe("listShops", () => {
   it("logs and rethrows when fs.readdir fails for other reasons", async () => {
     const dir = await fs.mkdtemp(path.join(os.tmpdir(), "shops-"));
     const shopsDir = path.join(dir, "data", "shops");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test creates a directory inside a controlled temp path from fs.mkdtemp
     await fs.mkdir(shopsDir, { recursive: true });
 
     const cwdSpy = jest.spyOn(process, "cwd").mockReturnValue(dir);

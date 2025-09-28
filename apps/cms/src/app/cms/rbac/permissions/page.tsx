@@ -1,5 +1,6 @@
 // apps/cms/src/app/cms/rbac/permissions/page.tsx
 import { Button } from "@/components/atoms/shadcn";
+import { Inline } from "@ui/components/atoms/primitives";
 import { updateRolePermissions } from "@cms/actions/rbac.server";
 import { authOptions } from "@cms/auth/options";
 import type { Role } from "@cms/auth/roles";
@@ -8,6 +9,7 @@ import { PERMISSIONS } from "@auth/types/permissions";
 import { readRbac } from "@cms/lib/server/rbacStore";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 export const revalidate = 0;
 
@@ -18,6 +20,7 @@ export default async function PermissionsPage() {
   }
 
   const db = await readRbac();
+  const t = await getTranslations("en");
 
   async function save(formData: FormData) {
     "use server";
@@ -37,12 +40,12 @@ export default async function PermissionsPage() {
 
   return (
     <div>
-      <h2 className="mb-4 text-xl font-semibold">Role Permissions</h2>
+      <h2 className="mb-4 text-xl font-semibold">{t("cms.rbac.permissions.title")}</h2>
       {roles.map((role) => (
         <form key={role} action={save} className="mb-4 rounded border border-border/10 p-3">
           <input type="hidden" name="role" value={role} />
           <p className="font-semibold">{role}</p>
-          <div className="my-2 flex flex-wrap gap-2">
+          <Inline className="my-2" gap={2} wrap>
             {permissions.map((perm) => (
               <label key={perm} className="flex items-center gap-1 text-sm">
                 <input
@@ -54,8 +57,8 @@ export default async function PermissionsPage() {
                 {perm}
               </label>
             ))}
-          </div>
-          <Button type="submit">Save</Button>
+          </Inline>
+          <Button type="submit">{t("actions.save")}</Button>
         </form>
       ))}
     </div>

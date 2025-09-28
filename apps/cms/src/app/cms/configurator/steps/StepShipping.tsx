@@ -7,8 +7,11 @@ import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { providersByType, type Provider } from "@acme/configurator/providers";
 import type { ConfiguratorStepProps } from "@/types/configurator";
+import { Inline, Cluster } from "@ui/components/atoms/primitives";
+import { useTranslations } from "@acme/i18n";
 
 export default function StepShipping(_: ConfiguratorStepProps): React.JSX.Element {
+  const t = useTranslations();
   const { state, update } = useConfigurator();
   const { shopId, shipping } = state;
   const setShipping = useCallback((v: string[]) => update("shipping", v), [update]);
@@ -38,29 +41,29 @@ export default function StepShipping(_: ConfiguratorStepProps): React.JSX.Elemen
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Shipping</h2>
+      <h2 className="text-xl font-semibold">{t("cms.configurator.shipping.title")}</h2>
       <p className="text-sm text-muted-foreground">
-        Connect your shipping providers. Provider integrations require their plugins to be installed under
-        <code> packages/plugins</code>.
+        {t("cms.configurator.shipping.description")} <code>{t("cms.configurator.options.info.path")}</code>.
       </p>
       <div>
-        <p className="font-medium">Shipping Providers</p>
+        <p className="font-medium">{t("cms.configurator.options.shippingProviders")}</p>
         {shippingProviders.map((p: Provider) => (
-          <div key={p.id} className="flex items-center gap-2 text-sm">
+          <Inline key={p.id} gap={2} alignY="center" className="text-sm">
+            {/* i18n-exempt -- ABC-123 [ttl=2099-12-31] */}
             {p.name}
             {shipping.includes(p.id) ? (
               <Button disabled data-cy={`shipping-connected-${p.id}`}>
-                Connected
+                {t("cms.configurator.options.connected")}
               </Button>
             ) : (
               <Button data-cy={`shipping-connect-${p.id}`} onClick={() => connect(p.id)}>
-                Connect
+                {t("cms.configurator.options.connect")}
               </Button>
             )}
-          </div>
+          </Inline>
         ))}
       </div>
-      <div className="flex justify-end">
+      <Cluster justify="end">
         <Button
           data-cy="save-return"
           onClick={() => {
@@ -68,10 +71,9 @@ export default function StepShipping(_: ConfiguratorStepProps): React.JSX.Elemen
             router.push("/cms/configurator");
           }}
         >
-          Save & return
+          {t("cms.configurator.actions.saveReturn")}
         </Button>
-      </div>
+      </Cluster>
     </div>
   );
 }
-

@@ -1,7 +1,12 @@
 {
   "id": "home",
   "slug": "",
-  "title": "Home",
+  "title": {
+    "type": "inline",
+    "value": {
+      "en": "Home"
+    }
+  },
   "components": [
     {
       "id": "hero",

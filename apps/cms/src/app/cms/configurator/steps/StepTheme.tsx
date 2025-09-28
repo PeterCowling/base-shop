@@ -9,6 +9,7 @@ import { useThemePalette } from "./hooks/useThemePalette";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 import type { ConfiguratorStepProps } from "@/types/configurator";
 import { useCallback, useEffect, useState } from "react";
+import { Cluster } from "@ui/components/atoms/primitives";
 
 export default function StepTheme({
   themes,
@@ -93,7 +94,7 @@ export default function StepTheme({
         onReset={handleReset}
       />
 
-      <div className="flex justify-between">
+      <Cluster justify="between">
         {prevStepId && (
           <Button
             data-cy="back"
@@ -114,7 +115,7 @@ export default function StepTheme({
             Next
           </Button>
         )}
-      </div>
+      </Cluster>
     </div>
   );
 }

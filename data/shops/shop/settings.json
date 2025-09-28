@@ -20,8 +20,18 @@
       "pageSize": 50
     },
     "en": {
-      "title": "t",
-      "description": "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+      "title": {
+        "type": "inline",
+        "value": {
+          "en": "t"
+        }
+      },
+      "description": {
+        "type": "inline",
+        "value": {
+          "en": "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+        }
+      }
     }
   },
   "depositService": {

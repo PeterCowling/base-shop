@@ -1,0 +1,8 @@
+{
+  "locations": [
+    { "lat": 37.7749, "lng": -122.4194, "label": "San Francisco" },
+    { "lat": 40.7128, "lng": -74.0060, "label": "New York" }
+  ],
+  "zoom": 10
+}
+

@@ -194,7 +194,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           <span className="sr-only">{children}</span>
         ) : (
           // Render text directly so tests targeting getByText() receive the button element
-          <>{children}</>
+          children
         )}
         {!isLoading && trailingIcon ? (
           <span

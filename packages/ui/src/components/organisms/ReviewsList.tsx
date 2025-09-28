@@ -1,4 +1,4 @@
-"use client";
+"use client"; // i18n-exempt: Next.js directive string, not user-facing copy
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { RatingStars } from "../atoms/RatingStars";
@@ -109,8 +109,11 @@ export function ReviewsList({
       {filtered.length === 0 ? (
         <p className="text-muted-foreground text-sm">{t("reviews.none") as string}</p>
       ) : (
-        filtered.map((r, i) => (
-          <div key={i} className="rounded-md border p-4">
+        filtered.map((r) => (
+          <div
+            key={`${r.author}-${r.rating}-${r.content.slice(0, 50)}`}
+            className="rounded-md border p-4"
+          >
             <div className="flex items-center justify-between gap-2">
               <span className="font-semibold">{r.author}</span>
               <RatingStars rating={r.rating} />

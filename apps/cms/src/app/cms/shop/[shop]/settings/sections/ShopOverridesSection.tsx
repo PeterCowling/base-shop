@@ -31,57 +31,60 @@ export default function ShopOverridesSection({
   errors,
 }: ShopOverridesSectionProps) {
   const t = useTranslations();
+  const FILTER_MAPPING_ID_PREFIX = "filter-mapping"; // i18n-exempt -- CMS-TECH-001 dom id prefix [ttl=2026-01-01]
+  /* eslint-disable-next-line ds/no-hardcoded-copy -- CMS-TECH-001 CSS utility classes [ttl=2026-01-01] */
+  const FILTER_ROW_CLASS = "sm:grid-cols-[2fr,2fr,auto]"; // i18n-exempt -- CMS-TECH-001 CSS utility classes [ttl=2026-01-01]
+  const PRICE_OVERRIDE_ID_PREFIX = "price-override"; // i18n-exempt -- CMS-TECH-001 dom id prefix [ttl=2026-01-01]
+  /* eslint-disable-next-line ds/no-hardcoded-copy -- CMS-TECH-001 CSS utility classes [ttl=2026-01-01] */
+  const PRICE_ROW_CLASS = "sm:grid-cols-[2fr,1fr,auto]"; // i18n-exempt -- CMS-TECH-001 CSS utility classes [ttl=2026-01-01]
+  const ACCORDION_KEYS = ["filter-mappings", "price-overrides"] as const; // i18n-exempt -- CMS-TECH-001 internal accordion keys [ttl=2026-01-01]
   const filterContent = (
     <MappingListField
       controller={filterMappings}
-      idPrefix="filter-mapping" // i18n-exempt: DOM id prefix, not user-visible copy
+      idPrefix={FILTER_MAPPING_ID_PREFIX}
       keyField={{
         field: "key",
-        label: t("Filter key"),
+        label: String(t("cms.shopOverrides.filterKey")),
         name: "filterMappingsKey",
-        placeholder: t("color"),
+        placeholder: String(t("cms.shopOverrides.filterKey.placeholder")),
       }}
       valueField={{
         field: "value",
-        label: t("Catalog attribute"),
+        label: String(t("cms.shopOverrides.catalogAttribute")),
         name: "filterMappingsValue",
-        placeholder: t("attributes.color"),
+        placeholder: String(t("cms.shopOverrides.catalogAttribute.placeholder")),
       }}
-      emptyMessage={t(
-        "No filter mappings configured. Add mappings to translate storefront facets into catalog attributes."
-      )}
-      addButtonLabel={t("Add filter mapping")}
-      removeButtonLabel={t("Remove")}
+      emptyMessage={t("cms.shopOverrides.emptyFilters")}
+      addButtonLabel={String(t("cms.shopOverrides.addFilterMapping"))}
+      removeButtonLabel={String(t("actions.remove"))}
       errors={errors?.filterMappings}
-      rowClassName="sm:grid-cols-[2fr,2fr,auto]" // i18n-exempt: CSS utility classes, not user copy
+      rowClassName={FILTER_ROW_CLASS}
     />
   );
 
   const priceContent = (
     <MappingListField
       controller={priceOverrides}
-      idPrefix="price-override" // i18n-exempt: DOM id prefix, not user-visible copy
+      idPrefix={PRICE_OVERRIDE_ID_PREFIX}
       keyField={{
         field: "key",
-        label: t("Locale"),
+        label: String(t("cms.shopOverrides.locale")),
         name: "priceOverridesKey",
-        placeholder: t("en-GB"),
+        placeholder: String(t("cms.shopOverrides.locale.placeholder")),
       }}
       valueField={{
         field: "value",
-        label: t("Override (minor units)"),
+        label: String(t("cms.shopOverrides.overrideMinorUnits")),
         name: "priceOverridesValue",
-        placeholder: t("12000"),
+        placeholder: String(t("cms.shopOverrides.overrideMinorUnits.placeholder")),
         type: "number",
         inputMode: "numeric",
       }}
-      emptyMessage={t(
-        "No price overrides defined. Configure overrides to adjust pricing for specific locales."
-      )}
-      addButtonLabel={t("Add price override")}
-      removeButtonLabel={t("Remove")}
+      emptyMessage={t("cms.shopOverrides.emptyPriceOverrides")}
+      addButtonLabel={String(t("cms.shopOverrides.addPriceOverride"))}
+      removeButtonLabel={String(t("actions.remove"))}
       errors={errors?.priceOverrides}
-      rowClassName="sm:grid-cols-[2fr,1fr,auto]" // i18n-exempt: CSS utility classes, not user copy
+      rowClassName={PRICE_ROW_CLASS}
     />
   );
 
@@ -89,36 +92,34 @@ export default function ShopOverridesSection({
     <Card>
       <CardContent className="space-y-6 p-6">
         <div className="space-y-1">
-          <h3 className="text-lg font-semibold">{t("Overrides")}</h3>
+          <h3 className="text-lg font-semibold">{t("cms.shopOverrides.title")}</h3>
           <p className="text-sm text-muted-foreground">
-            {t(
-              "Fine-tune how storefront filters and pricing map to catalog data."
-            )}
+            {t("cms.shopOverrides.subtitle")}
           </p>
         </div>
 
         <Accordion
           type="multiple"
-          defaultValue={["filter-mappings", "price-overrides"]}
+          defaultValue={[...ACCORDION_KEYS]}
           className="space-y-3"
         >
           <AccordionItem
-            value="filter-mappings" // i18n-exempt: internal accordion value key
+            value={ACCORDION_KEYS[0]}
             className="border-none"
           >
             <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-              {t("Filter mappings")}
+              {t("cms.shopOverrides.filterMappings")}
             </AccordionTrigger>
             <AccordionContent className="pt-3">
               {filterContent}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem
-            value="price-overrides" // i18n-exempt: internal accordion value key
+            value={ACCORDION_KEYS[1]}
             className="border-none"
           >
             <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-              {t("Price overrides")}
+              {t("cms.shopOverrides.priceOverrides")}
             </AccordionTrigger>
             <AccordionContent className="pt-3">
               {priceContent}

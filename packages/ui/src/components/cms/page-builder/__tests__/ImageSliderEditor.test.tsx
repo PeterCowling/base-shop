@@ -3,7 +3,7 @@ import ImageSliderEditor from "../ImageSliderEditor";
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
-  default: ({ children }: any) => <>{children}</>,
+  default: ({ children }: any) => children,
 }));
 
 describe("ImageSliderEditor", () => {

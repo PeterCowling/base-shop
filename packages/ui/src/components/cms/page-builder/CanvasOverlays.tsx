@@ -34,11 +34,13 @@ export default function CanvasOverlays({
       <div className="pointer-events-none absolute inset-0">
         <div
           className="bg-primary absolute top-0 bottom-0 w-px transition-opacity duration-150 motion-reduce:transition-none"
+          // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic left/opacity required for alignment guide
           style={{ left: guides.x ?? 0, opacity: guides.x !== null ? 1 : 0 }}
         />
         {distances.x !== null && (
           <div
             className="absolute -top-4 rounded bg-black/75 px-1 font-mono text-xs text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
+            // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic positioning for distance label
             style={{ left: (guides.x ?? 0) + 4, opacity: guides.x !== null ? 1 : 0 }}
           >
             {Math.round(distances.x)}
@@ -46,11 +48,13 @@ export default function CanvasOverlays({
         )}
         <div
           className="bg-primary absolute end-0 start-0 h-px transition-opacity duration-150 motion-reduce:transition-none"
+          // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic top/opacity required for alignment guide
           style={{ top: guides.y ?? 0, opacity: guides.y !== null ? 1 : 0 }}
         />
         {distances.y !== null && (
           <div
             className="absolute -left-4 rounded bg-black/75 px-1 font-mono text-xs text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
+            // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic positioning for distance label
             style={{ top: (guides.y ?? 0) + 4, opacity: guides.y !== null ? 1 : 0 }}
           >
             {Math.round(distances.y)}
@@ -62,6 +66,7 @@ export default function CanvasOverlays({
       {spacingOverlay && (
         <div
           className="bg-primary/20 pointer-events-none absolute"
+          // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic rect geometry (top/left/width/height) for spacing overlay
           style={{
             top: spacingOverlay.top,
             left: spacingOverlay.left,

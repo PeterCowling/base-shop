@@ -121,7 +121,7 @@ export function ConfiguratorProvider({
       setState((prev) => ({ ...prev, navItems: nextNav } as ConfiguratorState));
       setDirty(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- CMS-000: effect intentionally derives navItems only from pages
   }, [state.pages]);
 
   useEffect(() => {
@@ -183,6 +183,9 @@ export function ConfiguratorProvider({
 export function useConfigurator(): ConfiguratorContextValue {
   const ctx = useContext(ConfiguratorContext);
   if (!ctx)
-    throw new Error("useConfigurator must be used within ConfiguratorProvider");
+    throw new Error(
+      /* i18n-exempt -- CMS-1043 developer-only error message [ttl=2025-12-31] */
+      "useConfigurator must be used within ConfiguratorProvider"
+    );
   return ctx;
 }

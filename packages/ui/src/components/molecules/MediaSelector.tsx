@@ -1,3 +1,4 @@
+/* i18n-exempt file -- UI-000: Non-user-facing literals (HTML attributes, class names). All visible copy uses i18n keys. */
 "use client";
 import Image from "next/image";
 import * as React from "react";
@@ -35,26 +36,26 @@ export function MediaSelector({
     <Inline gap={2} className={cn(className)} {...props}>
       {items.map((item, idx) => (
         <button
-          key={idx}
+          key={item.src}
           type="button"
           onClick={() => onChange?.(idx)}
           className={cn(
-            "h-16 w-16 overflow-hidden rounded border", // i18n-exempt: class names
-            active === idx && "ring-2 ring-black" // i18n-exempt: class names
+            "h-16 w-16 overflow-hidden rounded border", // i18n-exempt -- UI-000: class names
+            active === idx && "ring-2 ring-black" // i18n-exempt -- UI-000: class names
           )}
         >
           {item.type === "image" || item.type === "360" ? (
             <Image
               src={item.thumbnail || item.src}
               // Use provided alt text or a generic, translated fallback
-              alt={item.alt || (t("Thumbnail") as string)}
+              alt={item.alt || (t("media.thumbnail") as string)}
               fill
               className="object-cover"
             />
           ) : item.type === "video" ? (
-            <Cover className="h-full w-full text-xs" center={t("Video") as string} />
+            <Cover className="h-full w-full text-xs" center={t("media.video") as string} />
           ) : (
-            <Cover className="h-full w-full text-xs" center={t("AR") as string} />
+            <Cover className="h-full w-full text-xs" center={t("media.ar") as string} />
           )}
         </button>
       ))}

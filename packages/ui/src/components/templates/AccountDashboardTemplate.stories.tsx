@@ -55,6 +55,13 @@ const DashboardForOrders: React.FC<AccountDashboardTemplateProps<OrderRow>> = (
 const meta: Meta<typeof DashboardForOrders> = {
   title: "Templates/Account Dashboard",
   component: DashboardForOrders,
+  parameters: {
+    docs: {
+      description: {
+        component: "Authenticated shopper dashboard template with user header, KPI cards and orders table.",
+      },
+    },
+  },
   args: {
     user,
     stats,

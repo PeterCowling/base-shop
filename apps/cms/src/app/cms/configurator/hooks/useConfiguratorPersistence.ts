@@ -112,7 +112,7 @@ export function useConfiguratorPersistence(
         /* ignore */
         loadedRef.current = true;
       });
-  }, []);
+  }, [setState, onInvalid]);
 
   /* Persist whenever the state changes (skip if no meaningful change) */
   useEffect(() => {

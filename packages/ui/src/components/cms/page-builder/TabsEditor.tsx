@@ -11,7 +11,7 @@ export default function TabsEditor({ component, onChange }: Props) {
   return (
     <>
       {labels.map((label: string, i: number) => (
-        <div key={i} className="flex items-end gap-2">
+        <div key={`${component.id}-${label}`} className="flex items-end gap-2">
           <Input
             label={`Tab ${i + 1} Label`}
             value={label}
@@ -52,8 +52,8 @@ export default function TabsEditor({ component, onChange }: Props) {
           <SelectValue placeholder="Active Tab" />
         </SelectTrigger>
         <SelectContent>
-          {labels.map((_: string, i: number) => (
-            <SelectItem key={i} value={String(i)}>
+          {labels.map((label: string, i: number) => (
+            <SelectItem key={`${component.id}-${label}`} value={String(i)}>
               {`Tab ${i + 1}`}
             </SelectItem>
           ))}

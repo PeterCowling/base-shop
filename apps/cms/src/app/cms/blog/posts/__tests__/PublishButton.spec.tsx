@@ -7,11 +7,10 @@ jest.mock("@cms/actions/blog.server", () => ({
   publishPost: (...args: any) => mockPublish(...args),
 }));
 
-let mockUseFormState: any;
+const mockUseFormState = jest.fn((action: any, init: any) => [init, action]);
 jest.mock("react-dom", () => ({
   useFormState: (...args: any[]) => mockUseFormState(...args),
 }));
-mockUseFormState = jest.fn((action: any, init: any) => [init, action]);
 
 jest.mock("@ui", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
@@ -30,4 +29,3 @@ describe("PublishButton", () => {
     expect(mockPublish).toHaveBeenCalledWith("shop", "1", expect.any(FormData));
   });
 });
-

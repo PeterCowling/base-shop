@@ -117,5 +117,6 @@ export default function StructuredDataSection({ breadcrumbs = true, faq, faqItem
   }
 
   if (blocks.length === 0) return null;
-  return <>{blocks}</>;
+  // Return array directly; Fragment around a single expression is unnecessary
+  return blocks;
 }

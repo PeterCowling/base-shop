@@ -5,6 +5,7 @@ import { tokenGroups } from "./tokenGroups";
 import { useThemePresetManager } from "./useThemePresetManager";
 import { useThemeTokenSync } from "./useThemeTokenSync";
 import { useBrandIntensity } from "./useBrandIntensity";
+import { useTranslations } from "@acme/i18n";
 
 interface Options {
   shop: string;
@@ -81,11 +82,13 @@ export function useThemeEditor({
     [theme, tokensByThemeState],
   );
 
+  const t = useTranslations();
+
   const groupedTokens = useMemo(() => {
     const tokens = tokensByThemeState[theme];
     const groups: Record<string, [string, string][]> = {};
     const used = new Set<string>();
-    Object.entries(tokenGroups).forEach(([group, keys]) => {
+    Object.entries(tokenGroups).forEach(([groupId, keys]) => {
       const arr: [string, string][] = [];
       keys.forEach((k) => {
         if (k in tokens) {
@@ -93,15 +96,21 @@ export function useThemeEditor({
           used.add(k);
         }
       });
-      if (arr.length) groups[group] = arr;
+      if (arr.length) {
+        const label = String(t(`cms.themes.tokenGroups.${groupId}`));
+        groups[label] = arr;
+      }
     });
     const others: [string, string][] = [];
     Object.entries(tokens).forEach(([k, v]) => {
       if (!used.has(k)) others.push([k, v]);
     });
-    if (others.length) groups.Other = others;
+    if (others.length) {
+      const otherLabel = String(t("cms.themes.tokenGroups.other"));
+      groups[otherLabel] = others;
+    }
     return groups;
-  }, [theme, tokensByThemeState]);
+  }, [theme, tokensByThemeState, t]);
 
   const handleWarningChange = (token: string, warning: string | null) => {
     setContrastWarnings((prev) => {

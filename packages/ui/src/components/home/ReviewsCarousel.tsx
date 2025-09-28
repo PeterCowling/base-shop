@@ -1,5 +1,5 @@
 // src/components/home/ReviewsCarousel.tsx
-"use client";
+"use client"; // i18n-exempt -- PB-123 Next.js directive, not user-facing copy [ttl=2025-12-31]
 
 import { useTranslations } from "@acme/i18n";
 import { useCallback, useEffect, useState } from "react";
@@ -20,10 +20,10 @@ export default function ReviewsCarousel({
   const t = useTranslations();
   const [i, setI] = useState(0);
   // i18n-exempt: CSS class strings for layout only
-  const SECTION_CLASS = "bg-muted py-16"; // i18n-exempt: CSS classes
-  const NAME_CLASS = "font-semibold text-muted"; // i18n-exempt: CSS classes
-  const TOKEN_MUTED = "--color-muted"; // i18n-exempt: design token name
-  const TOKEN_FG = "--color-fg"; // i18n-exempt: design token name
+  const SECTION_CLASS = "bg-muted py-16"; // i18n-exempt -- PB-123 CSS classes [ttl=2025-12-31]
+  const NAME_CLASS = "font-semibold text-muted"; // i18n-exempt -- PB-123 CSS classes [ttl=2025-12-31]
+  const TOKEN_MUTED = "--color-muted"; // i18n-exempt -- PB-123 design token name [ttl=2025-12-31]
+  const TOKEN_FG = "--color-fg"; // i18n-exempt -- PB-123 design token name [ttl=2025-12-31]
 
   const list = reviews && reviews.length ? reviews : DEFAULT_REVIEWS;
 
@@ -46,7 +46,7 @@ export default function ReviewsCarousel({
 
   return (
     <section className={SECTION_CLASS} data-token={TOKEN_MUTED}>
-      <div className="mx-auto w-full px-4 text-center" style={{ maxWidth: "42rem" }}>
+      <div className="mx-auto w-full px-4 text-center">
         <blockquote
           className="mb-6 text-2xl font-medium text-fg italic"
           data-token={TOKEN_FG}

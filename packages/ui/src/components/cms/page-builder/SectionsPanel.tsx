@@ -5,7 +5,7 @@ import type { PageComponent } from "@acme/types";
 import type { SectionTemplate } from "@acme/types/section/template";
 import { Button, Input } from "../../atoms/shadcn";
 import { ulid } from "ulid";
-import { builtInSections } from "./builtInSections.data";
+import { getBuiltInSections } from "./builtInSections.data";
 import { getPalettePreview } from "./previewImages";
 import Image from "next/image";
 import { useTranslations } from "@acme/i18n";
@@ -29,8 +29,11 @@ interface Props {
   onInsertLinked?: (item: { globalId: string; label: string; component: PageComponent }) => void;
 }
 
+const DATA_CY_SECTIONS_PANEL = "pb-sections-panel";
+
 export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props) {
   const t = useTranslations();
+  const builtInSections = React.useMemo(() => getBuiltInSections(t), [t]);
   const [items, setItems] = useState<SectionTemplate[]>([]);
   const [q, setQ] = useState("");
   // Tag chips replaced by built-in section groups; keep state for compatibility but unused
@@ -104,49 +107,48 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
   const hasMore = items.length < total;
 
   return (
-    // i18n-exempt — data-cy attribute only
-    <aside className="w-full shrink-0" data-cy="pb-sections-panel">
+    <aside className="w-full shrink-0" data-cy={DATA_CY_SECTIONS_PANEL}>
       <div className="flex items-center justify-between gap-2 p-2">
-        <div className="text-sm font-semibold">{t("Sections")}</div>
+        <div className="text-sm font-semibold">{t("cms.builder.sections.title")}</div>
       </div>
       <div className="p-2">
-        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("Search…") as string} aria-label={t("Search sections") as string} />
+        <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("cms.builder.sections.search.placeholder") as string} aria-label={t("cms.builder.sections.search.aria") as string} />
       </div>
       {/* Demo presets area (simple flow) */}
       <div className="px-2 pb-2">
-        <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("Demo Presets")}</div>
+        <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("cms.builder.sections.demoPresets")}</div>
         <DSInline gap={1} className="flex-wrap">
           {/* i18n-exempt */}
           <button
             type="button"
             className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
-            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Text", text: t("Preset: Title + Button") }, { id: ulid(), type: "Button", label: t("CTA"), href: "/shop" }] } as unknown as PageComponent))}
+            onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Text", text: t("cms.builder.sections.presets.titlePlusButton.text") }, { id: ulid(), type: "Button", label: t("cms.builder.cta"), href: "/shop" }] } as unknown as PageComponent))}
           >
-            {t("Title + CTA")}
+            {t("cms.builder.sections.presets.titleCta")}
           </button>
           <button
             type="button"
             className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
             onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Image", src: "/hero/slide-1.jpg", alt: "" }] } as unknown as PageComponent))}
           >
-            {t("Image Hero")}
+            {t("cms.builder.sections.presets.imageHero")}
           </button>
         </DSInline>
       </div>
       {/* Built-in section groups (replaces tag chips) */}
       <div className="px-2 pb-2">
-        <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("Built-in Sections")}</div>
+        <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("cms.builder.sections.builtin")}</div>
         {(() => {
           const groups: Record<string, typeof builtInSections> = {};
           for (const s of builtInSections) {
             const key = s.previewType.startsWith("HeaderSection")
-              ? String(t("Headers"))
+              ? String(t("cms.builder.sections.groups.headers"))
               : s.previewType.startsWith("FooterSection")
-                ? String(t("Footers"))
-                : String(t("Essentials"));
+                ? String(t("cms.builder.sections.groups.footers"))
+                : String(t("cms.builder.sections.groups.essentials"));
             (groups[key] ||= []).push(s);
           }
-          const order = [String(t("Headers")), String(t("Footers")), String(t("Essentials"))] as const;
+          const order = [String(t("cms.builder.sections.groups.headers")), String(t("cms.builder.sections.groups.footers")), String(t("cms.builder.sections.groups.essentials"))] as const;
           return order
             .filter((k) => Array.isArray(groups[k]) && groups[k]!.length > 0)
             .map((k) => (
@@ -155,19 +157,24 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                 <DSGrid cols={1} gap={2}>
                   {groups[k]!.map((p) => {
                     const resolvedPreview = p.preview === "/window.svg" ? getPalettePreview(p.previewType) : p.preview;
+                    const labelNode = p.labelKey ? t(p.labelKey) : (p.label ?? "");
+                    const descNode = p.descriptionKey ? t(p.descriptionKey) : (p.description ?? "");
+                    const titleText = String(p.labelKey ? t(p.labelKey) : (p.label ?? ""));
                     return (
                       <button
                         key={p.id}
                         type="button"
                         className="rounded border p-1 text-start hover:bg-muted min-h-10 min-w-10"
-                        title={p.label}
+                        title={titleText}
                         onClick={() => onInsert(cloneWithIds(p.build()))}
                       >
                         <div className="relative w-full aspect-video">
                           <Image src={resolvedPreview} alt="" fill className="rounded border bg-muted object-cover" aria-hidden />
                         </div>
-                        <div className="mt-1 truncate text-xs" title={p.label}>{p.label}</div>
-                        {p.description && <div className="truncate text-xs text-muted-foreground" title={p.description}>{p.description}</div>}
+                        <div className="mt-1 truncate text-xs" title={titleText}>{labelNode}</div>
+                        {Boolean(p.descriptionKey || p.description) && (
+                          <div className="truncate text-xs text-muted-foreground" title={String(descNode)}>{descNode}</div>
+                        )}
                       </button>
                     );
                   })}
@@ -176,8 +183,9 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
             ));
         })()}
       </div>
-      <DSStack gap={2} className="max-h-[calc(100svh-6rem)] overflow-auto p-2">
-        {items.length === 0 && !loading && <div className="p-2 text-sm text-muted-foreground">{t("No sections")}</div>}
+      {/* eslint-disable-next-line ds/no-hardcoded-copy -- PB-123 style value string; not user-facing copy */}
+      <DSStack gap={2} className="overflow-auto p-2" style={{ maxHeight: "calc(100svh - 6rem)" }}>
+        {items.length === 0 && !loading && <div className="p-2 text-sm text-muted-foreground">{t("cms.builder.sections.none")}</div>}
         {items.map((s) => (
           <div key={s.id} className="space-y-1 rounded border p-2">
             <div className="truncate text-sm font-medium">{s.label}</div>
@@ -207,7 +215,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                 className="min-h-10 min-w-10 px-2 text-xs"
                 onClick={() => onInsert(cloneWithIds(s.template))}
               >
-                {t("Insert copy")}
+                {t("cms.builder.sections.insertCopy")}
               </Button>
               {onInsertLinked && (
                 <Button
@@ -216,7 +224,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                   className="min-h-10 min-w-10 px-2 text-xs"
                   onClick={() => onInsertLinked({ globalId: s.id, label: s.label, component: s.template })}
                 >
-                  {t("Insert linked")}
+                  {t("cms.builder.sections.insertLinked")}
                 </Button>
               )}
             </div>
@@ -235,7 +243,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                 load(false);
               }}
             >
-              {loading ? t("Loading…") : hasMore ? t("Load more") : t("Loaded")}
+              {loading ? t("cms.builder.loading") : hasMore ? t("cms.builder.loadMore") : t("cms.builder.loaded")}
             </Button>
           </div>
         )}

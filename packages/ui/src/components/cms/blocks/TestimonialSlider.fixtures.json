@@ -1,0 +1,9 @@
+{
+  "testimonials": [
+    { "quote": "Fantastic experience", "name": "Taylor" },
+    { "quote": "Highly recommend", "name": "Jordan" }
+  ],
+  "minItems": 1,
+  "maxItems": 5
+}
+

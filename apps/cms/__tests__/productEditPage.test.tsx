@@ -9,7 +9,12 @@ jest.mock("@platform-core/repositories/json.server", () => ({
   readSettings: (...args: any[]) => mockReadSettings(...args),
 }));
 
-jest.mock("next/dynamic", () => () => () => <div data-cy="editor" />);
+jest.mock("next/dynamic", () => {
+  const React = require("react");
+  const MockEditor: React.FC = () => <div data-cy="editor" />;
+  MockEditor.displayName = "MockEditor";
+  return () => MockEditor;
+});
 const notFound = jest.fn();
 jest.mock("next/navigation", () => ({ notFound }));
 

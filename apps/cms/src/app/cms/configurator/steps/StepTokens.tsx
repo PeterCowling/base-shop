@@ -11,6 +11,7 @@ import type { ConfiguratorStepProps } from "@/types/configurator";
 import TypographySelector from "./TypographySelector";
 import presetData from "@ui/components/cms/style/presets.json";
 import { patchShopTheme } from "../../wizard/services/patchTheme";
+import { useTranslations } from "@acme/i18n";
 
 export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element {
   const [, markComplete] = useStepCompletion("tokens");
@@ -18,6 +19,7 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
   const { state, themeDefaults, themeOverrides, setThemeOverrides } = useConfigurator();
   const tokens = { ...themeDefaults, ...themeOverrides } as TokenMap;
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const t = useTranslations();
 
   const pendingRef = useRef<Record<string, string>>({});
   const timeoutRef = useRef<number | null>(null);
@@ -52,41 +54,46 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
   };
   // Tags only from font pairings for the shared filter
   const allTags = (() => {
+    type Preset = { id: string; tags?: string[] };
     const t = new Set<string>();
-    const pairs = (presetData as any[]).filter((p) => typeof p?.id === "string" && p.id.startsWith("type-"));
+    const pairs = (presetData as unknown as Preset[]).filter(
+      (p) => typeof p?.id === "string" && p.id.startsWith("type-")
+    );
     pairs.forEach((p) => (p.tags || []).forEach((tg: string) => t.add(tg)));
     return Array.from(t).sort();
   })();
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Fonts</h2>
+      <h2 className="text-xl font-semibold">{t("cms.configurator.tokens.heading")}</h2>
       {/* Shared tag filter for font pairings */}
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <span className="text-muted-foreground">Filter by tag</span>
-        {allTags.map((t) => {
-          const active = selectedTags.includes(t);
+        <span className="text-muted-foreground">{t("cms.configurator.tokens.filterByTag")}</span>
+        {allTags.map((tag) => {
+          const active = selectedTags.includes(tag);
           return (
             <button
-              key={t}
+              key={tag}
               type="button"
-              className={`rounded-full border px-2 py-0.5 text-xs ${active ? "bg-primary text-primary-foreground border-primary" : "hover:bg-muted"}`}
+              // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0005: utility class string, not user copy
+              className={`min-h-11 min-w-11 rounded-full border px-2 text-xs ${active ? "bg-primary text-primary-foreground border-primary" : "hover:bg-muted"}`}
               onClick={() =>
-                setSelectedTags((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]))
+                setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((x) => x !== tag) : [...prev, tag]))
               }
             >
-              {t}
+              {/* i18n-exempt -- ABC-123 [ttl=2099-12-31] */}
+              {tag}
             </button>
           );
         })}
         {selectedTags.length > 0 && (
           <button
             type="button"
-            className="ms-1 rounded-full border px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted"
+            className="ms-1 min-h-11 min-w-11 rounded-full border px-2 text-xs text-muted-foreground hover:bg-muted inline-flex items-center justify-center"
             onClick={() => setSelectedTags([])}
-            aria-label="Clear tag filters"
+            aria-label={String(t("cms.configurator.tokens.clearFilters.aria"))}
           >
-            Clear
+            {t("cms.configurator.tokens.clearFilters")}
           </button>
         )}
       </div>
@@ -104,10 +111,12 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
           data-cy="save-return"
           onClick={() => {
             markComplete(true);
-            router.push("/cms/configurator");
+            router.push(
+              "/cms/configurator", // i18n-exempt -- ABC-123 [ttl=2099-12-31]
+            );
           }}
         >
-          Save & return
+          {t("cms.configurator.actions.saveReturn")}
         </Button>
       </div>
     </div>

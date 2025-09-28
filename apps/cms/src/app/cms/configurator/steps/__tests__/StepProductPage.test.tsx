@@ -26,36 +26,50 @@ jest.mock("../hooks/useProductPageData", () => ({
   }),
 }));
 
-jest.mock("../components/TemplateSelector", () => ({ onSelect }: any) => (
-  <button data-cy="template-selector" onClick={() => onSelect("Temp", [])}>
-    template
-  </button>
-));
+jest.mock("../components/TemplateSelector", () => {
+  const React = require("react");
+  const MockTemplateSelector = ({ onSelect }: any) => (
+    <button data-cy="template-selector" onClick={() => onSelect("Temp", [])}>
+      template
+    </button>
+  );
+  MockTemplateSelector.displayName = "MockTemplateSelector";
+  return {
+    __esModule: true,
+    default: MockTemplateSelector,
+  };
+});
 
 
 jest.mock("@/components/cms/ProductPageBuilder", () => {
   const React = require("react");
+  const MockProductPageBuilder = () => <div>builder</div>;
+  MockProductPageBuilder.displayName = "MockProductPageBuilder";
   return {
     __esModule: true,
-    default: () => <div>builder</div>,
+    default: MockProductPageBuilder,
   };
 });
 
 jest.mock("@ui/components/atoms", () => {
   const React = require("react");
+  const MockToast = ({ open, message }: any) => (open ? <div>{message}</div> : null);
+  MockToast.displayName = "MockToast";
   return {
     __esModule: true,
-    Toast: ({ open, message }: any) => (open ? <div>{message}</div> : null),
+    Toast: MockToast,
   };
 });
 
 jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
+  const MockButton = ({ children, onClick, ...props }: any) => (
+    <button onClick={onClick} {...props}>{children}</button>
+  );
+  MockButton.displayName = "MockButton";
   return {
     __esModule: true,
-    Button: ({ children, onClick, ...props }: any) => (
-      <button onClick={onClick} {...props}>{children}</button>
-    ),
+    Button: MockButton,
   };
 });
 
@@ -89,4 +103,3 @@ describe("StepProductPage", () => {
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");
   });
 });
-

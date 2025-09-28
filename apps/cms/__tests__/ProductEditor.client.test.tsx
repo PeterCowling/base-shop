@@ -5,9 +5,13 @@ import { render } from "@testing-library/react";
 const updateProduct = jest.fn();
 jest.mock("@cms/actions/products.server", () => ({ updateProduct }));
 let receivedProps: any;
-jest.mock("@ui/components/cms/ProductEditorForm", () => (props: any) => {
-  receivedProps = props;
-  return <div data-testid="form" />;
+jest.mock("@ui/components/cms/ProductEditorForm", () => {
+  const ProductEditorFormMock = (props: any) => {
+    receivedProps = props;
+    return <div data-testid="form" />;
+  };
+  (ProductEditorFormMock as any).displayName = "ProductEditorFormMock";
+  return ProductEditorFormMock;
 });
 
 import ProductEditor from "../src/app/cms/shop/[shop]/products/[id]/edit/ProductEditor.client";

@@ -8,9 +8,13 @@ import FilterBar, {
 import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
 import type { SKU } from "@acme/types";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslations } from "@i18n/Translations";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {
+  const t = useTranslations();
+  // Extract to avoid eslint false positive from key substring 'ariaLabel' matching 'arial'
+  const searchAriaLabel = String(t("shop.searchAriaLabel")); // eslint-disable-line ds/no-raw-font -- INTL-000 false positive: 'ariaLabel' substring [ttl=2026-03-31]
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
@@ -72,15 +76,15 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
   }, [filters, pathname, query, router]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
-      <h1 className="mb-4 text-3xl font-bold">Shop</h1>
+    <div className="px-4 py-10">
+      <h1 className="mb-4 text-3xl font-bold">{t("nav.shop")}</h1>
       <input
-        aria-label="Search products"
+        aria-label={searchAriaLabel}
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        placeholder="Search products"
-        className="mb-4 w-full max-w-xs border rounded px-2 py-1"
+        placeholder={t("shop.searchPlaceholder") as string}
+        className="mb-4 w-full border rounded px-2 py-1 sm:w-64"
       />
       <FilterBar
         definitions={defs}

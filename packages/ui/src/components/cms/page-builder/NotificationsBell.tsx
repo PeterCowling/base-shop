@@ -4,8 +4,10 @@
 import React from "react";
 import { Popover, PopoverTrigger, PopoverContent, Tooltip } from "../../atoms";
 import { BellIcon } from "@radix-ui/react-icons";
+import { useTranslations } from "@acme/i18n";
 
 export default function NotificationsBell({ shop, pageId }: { shop?: string | null; pageId?: string | null }) {
+  const t = useTranslations();
   const [count, setCount] = React.useState<number>(0);
   const [items, setItems] = React.useState<{ id: string; title: string; ts?: string; source?: string }[]>([]);
   const [commentCount, setCommentCount] = React.useState<number>(0);
@@ -103,25 +105,27 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
           <span className="rounded bg-muted px-1">Events {Math.max(0, count - commentCount)}</span> {/* i18n-exempt */}
         </div>
         {items.length === 0 ? (
-          <div className="text-muted-foreground">No notifications</div> /* i18n-exempt */
+          <div className="text-muted-foreground">{t('pb.notifications.none')}</div>
         ) : (
           <ul className="max-h-80 space-y-1 overflow-auto">
             {items.map((it) => (
-              <li
-                key={it.id}
-                className="cursor-pointer rounded border px-2 py-1 hover:bg-muted"
-                onClick={() => {
-                  if (it.source === 'comments') {
-                    const tid = it.id.startsWith('c:') ? it.id.slice(2) : it.id;
-                    try { window.dispatchEvent(new CustomEvent('pb:open-comment', { detail: { id: tid } })); } catch {}
-                  }
-                }}
-              >
-                <div className="flex items-center justify-between gap-2">
-                  <div className="truncate">{it.title}</div>
-                  <span className="text-xs uppercase text-muted-foreground">{(it.source || 'event')}</span>
-                </div>
-                {it.ts && <div className="text-xs text-muted-foreground">{new Date(it.ts).toLocaleString()}</div>}
+              <li key={it.id}>
+                <button
+                  type="button"
+                  className="w-full text-start rounded border px-2 py-1 hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary min-h-10 min-w-10"
+                  onClick={() => {
+                    if (it.source === 'comments') {
+                      const tid = it.id.startsWith('c:') ? it.id.slice(2) : it.id;
+                      try { window.dispatchEvent(new CustomEvent('pb:open-comment', { detail: { id: tid } })); } catch {}
+                    }
+                  }}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="truncate">{it.title}</div>
+                    <span className="text-xs uppercase text-muted-foreground">{(it.source || 'event')}</span>
+                  </div>
+                  {it.ts && <div className="text-xs text-muted-foreground">{new Date(it.ts).toLocaleString()}</div>}
+                </button>
               </li>
             ))}
           </ul>

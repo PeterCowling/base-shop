@@ -1,3 +1,4 @@
+/* i18n-exempt file -- DS-1028 class names and iconless UI; all user copy is provided via props (CMS) [ttl=2026-12-31] */
 import { cn } from "../../../utils/style/cn";
 
 export interface Plan {
@@ -32,30 +33,30 @@ export default function PricingTable({
     }[list.length] || "md:grid-cols-3";
 
   return (
-    <section className={cn("grid grid-cols-1 gap-6", colClass)}>{/* i18n-exempt: class names */}
-      {list.map((plan, i) => (
+    <section className={cn("grid grid-cols-1 gap-6", colClass)}>{/* i18n-exempt -- DS-1023: class names [ttl=2026-12-31] */}
+      {list.map((plan) => (
         <div
-          key={i}
+          key={`${plan.title}-${plan.ctaHref}`}
           className={cn(
-            "flex flex-col rounded border p-6", // i18n-exempt: class names
-            plan.featured && "border-primary" // i18n-exempt: class names
+            "flex flex-col rounded border p-6", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
+            plan.featured && "border-primary" // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
           )}
         >
           <h3 className="text-xl font-semibold">{plan.title}</h3>
           <p className="mt-2 text-2xl font-bold">{plan.price}</p>
           <ul className="mt-4 flex-1 space-y-2 text-sm">
-            {plan.features.map((f, idx) => (
-              <li key={idx}>{f}</li>
+            {plan.features.map((f) => (
+              <li key={f}>{f}</li>
             ))}
           </ul>
           {/* Render a plain anchor to ensure link role in tests */}
           <a
             href={plan.ctaHref}
             className={cn(
-              "mt-6 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium", // i18n-exempt: class names
-              "bg-primary text-primary-foreground hover:bg-primary/90", // i18n-exempt: class names
+              "mt-6 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
+              "bg-primary text-primary-foreground hover:bg-primary/90", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
               // Ensure minimum tap target size
-              "self-start min-h-10 min-w-10" // i18n-exempt: class names
+              "self-start min-h-10 min-w-10" // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
             )}
           >
             {plan.ctaLabel}

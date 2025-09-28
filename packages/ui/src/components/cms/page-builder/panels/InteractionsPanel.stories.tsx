@@ -7,6 +7,13 @@ import type { PageComponent } from "@acme/types";
 const meta: Meta<typeof InteractionsPanel> = {
   title: "CMS/Page Builder/Animations & Interactions",
   component: InteractionsPanel,
+  parameters: {
+    docs: {
+      description: {
+        component: "Configurator for animations and interaction triggers on a selected page component.",
+      },
+    },
+  },
 };
 export default meta;
 
@@ -18,7 +25,7 @@ export const Basic: Story = {
       // Use a known atom type to avoid `any` casts
       const [comp, setComp] = useState<PageComponent>({ id: "txt", type: "Text" });
       return (
-        <div style={{ width: 480 }}>
+        <div className="max-w-md">
           <InteractionsPanel
             component={comp}
             handleInput={(k, v) => setComp((c) => ({ ...c, [k]: v }))}

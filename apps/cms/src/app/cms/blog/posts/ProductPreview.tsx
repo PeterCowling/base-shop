@@ -5,6 +5,7 @@ import type { SKU } from "@acme/types";
 import { formatCurrency } from "@acme/shared-utils";
 import Image from "next/image";
 import { Alert } from "@/components/atoms";
+import { useTranslations } from "@acme/i18n";
 
 export interface Props {
   slug: string;
@@ -12,6 +13,7 @@ export interface Props {
 }
 
 export default function ProductPreview({ slug, onValidChange }: Props) {
+  const t = useTranslations();
   const [product, setProduct] = useState<SKU | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,13 +35,13 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
         const res = await fetch(url.toString(), {
           signal: controller?.signal,
         });
-        if (!res.ok) throw new Error("Failed to load product");
+        if (!res.ok) throw new Error(t("cms.blog.productPreview.loadFailed"));
         const data = (await res.json()) as SKU;
         setProduct(data);
         setError(null);
         onValidChange?.(true);
       } catch {
-        setError("Failed to load product");
+        setError(t("cms.blog.productPreview.loadFailed"));
         onValidChange?.(false);
       } finally {
         setLoading(false);
@@ -50,12 +52,21 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
       controller?.abort();
       onValidChange?.(false);
     };
-  }, [slug, onValidChange]);
+  }, [slug, onValidChange, t]);
 
-  if (loading) return <div className="border border-border/10 p-2">Loading…</div>;
+  if (loading)
+    return (
+      <div className="border border-border/10 p-2">
+        {t("cms.blog.productPreview.loading")}
+      </div>
+    );
   if (error || !product)
     return (
-      <Alert variant="danger" tone="soft" title={error ?? "Not found"} />
+      <Alert
+        variant="danger"
+        tone="soft"
+        heading={error ?? t("cms.blog.productPreview.notFound")}
+      />
     );
   const available = (product.stock ?? 0) > 0;
   const imageUrl = product.media?.[0]?.url ?? "/file.svg";
@@ -71,7 +82,11 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
       <div className="space-y-1">
         <div className="font-semibold">{product.title}</div>
         <div>{formatCurrency(product.price)}</div>
-        <div className="text-sm">{available ? "In stock" : "Out of stock"}</div>
+        <div className="text-sm">
+          {available
+            ? t("cms.blog.productPreview.inStock")
+            : t("cms.blog.productPreview.outOfStock")}
+        </div>
       </div>
     </div>
   );

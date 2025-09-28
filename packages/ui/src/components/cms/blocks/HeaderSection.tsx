@@ -36,14 +36,14 @@ export default function HeaderSection({
   ...rest
 }: HeaderSectionProps) {
   const t = useTranslations();
-  // i18n-exempt — CSS utility class names, not user copy
+  // i18n-exempt -- DS-1023: CSS utility class names, not user copy [ttl=2026-12-31]
   const stickyClass = variant === "sticky" ? "sticky top-0 z-50" : undefined;
-  // i18n-exempt — CSS utility class names, not user copy
+  // i18n-exempt -- DS-1023: CSS utility class names, not user copy [ttl=2026-12-31]
   const transparentClass = variant === "transparent" ? "bg-transparent" : "bg-white";
   const [open, setOpen] = React.useState(false);
   // Resolve current locale for LanguageSwitcher
   // falls back to "en" when window is undefined
-  // i18n-exempt -- Locale derivation from path; not user-facing copy
+  // i18n-exempt -- DS-1026: Locale derivation from path; not user-facing copy [ttl=2026-12-31]
   const currentLocale = React.useMemo(() => {
     try {
       const seg = typeof window !== "undefined" ? window.location.pathname.split("/")[1] : "en";
@@ -75,17 +75,33 @@ export default function HeaderSection({
       <div className="relative">
         <ExperimentGate flag={experimentKey ? `${experimentKey}:search` : undefined}>
           <button aria-label={String(t("header.openSearch"))} className="p-2 min-h-10 min-w-10" onClick={() => setOpen(true)}>
-            <span aria-hidden>🔎</span>
+            <span aria-hidden>🔎</span> {/* i18n-exempt -- DS-1027: icon glyph only [ttl=2026-12-31] */}
           </button>
         </ExperimentGate>
         {open ? (
-          <div className="fixed inset-0 bg-black/50 p-8" onClick={() => setOpen(false)}>
+          <div
+            className="fixed inset-0 bg-black/50 p-8"
+            role="button"
+            aria-label={String(t("actions.close"))}
+            tabIndex={0}
+            onClick={(e) => {
+              if (e.currentTarget === e.target) setOpen(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" || e.key === "Enter" || e.key === " ") setOpen(false);
+            }}
+          >
             <Cover minH="screen" center={
-              <div className="bg-white rounded shadow p-4 w-full" onClick={(e) => e.stopPropagation()}>
+              <div
+                className="bg-white rounded shadow p-4 w-full"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="search-title"
+              >
                 <Cluster justify="between" alignY="center" className="mb-2">
-                  <h2 className="font-medium">{t("header.search")}</h2>
+                  <h2 id="search-title" className="font-medium">{t("header.search")}</h2>
                   <button aria-label={String(t("actions.close"))} className="min-h-10 min-w-10" onClick={() => setOpen(false)}>
-                    <span aria-hidden>✕</span>
+                    <span aria-hidden>✕</span> {/* i18n-exempt -- DS-1027: icon glyph only [ttl=2026-12-31] */}
                   </button>
                 </Cluster>
                 <SearchBar />
@@ -98,7 +114,7 @@ export default function HeaderSection({
   };
 
   return (
-    // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0003: string literals here are CSS utility classes, not user copy
+    // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0003: CSS utility classes only [ttl=2026-12-31]
     <header className={[className, stickyClass, transparentClass, "relative w-full border-b"].filter(Boolean).join(" ") || undefined} {...rest}>
       {announcement ? (
         experimentKey ? (
@@ -133,8 +149,8 @@ export default function HeaderSection({
             <ol>
               {breadcrumbs.map((c, i) => (
                 <li key={c.href} className="inline-block align-middle me-2 last:me-0">
-                  <a href={c.href} className="inline-flex items-center min-h-10 min-w-10 hover:underline px-1">{c.label}</a> {/* // i18n-exempt — dynamic route labels */}
-                  {i < breadcrumbs.length - 1 ? <span className="mx-1" aria-hidden>/</span> : null}
+                  <a href={c.href} className="inline-flex items-center min-h-10 min-w-10 hover:underline px-1">{c.label}</a> {/* i18n-exempt -- DS-1024: dynamic route labels provided by router [ttl=2026-12-31] */}
+                  {i < breadcrumbs.length - 1 ? <span className="mx-1" aria-hidden>/</span> : null} {/* i18n-exempt -- DS-1027: separator glyph only [ttl=2026-12-31] */}
                 </li>
               ))}
             </ol>

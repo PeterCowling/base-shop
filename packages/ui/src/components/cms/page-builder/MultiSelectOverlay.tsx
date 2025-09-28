@@ -200,6 +200,7 @@ export default function MultiSelectOverlay({ canvasRef, ids, gridEnabled = false
   return (
     // DS absolute-parent-guard: provide positioned ancestor for absolute children
     <div className="relative">
+      {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419: absolute overlay needs dynamic inline positioning */}
       <div className="absolute" style={overlayStyle}>
         <div
           className="absolute inset-0 rounded border-2 border-dashed border-primary/70"

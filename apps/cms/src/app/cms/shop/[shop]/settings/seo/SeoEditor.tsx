@@ -8,6 +8,7 @@ import type { Locale } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
 import { Inline } from "@ui/components/atoms/primitives/Inline";
 import { Stack } from "@ui/components/atoms/primitives/Stack";
+import clsx from "clsx";
 
 import { SeoAdvancedSettings } from "./SeoAdvancedSettings";
 import { SeoEditorHeader } from "./SeoEditorHeader";
@@ -33,11 +34,27 @@ const Tabs = ({
             type="button"
             role="tab"
             aria-selected={active}
-            className={`rounded-full border px-3 py-1 text-sm font-medium transition-colors ${
+            className={clsx(
+              "rounded-full",
+              "border",
+              "px-3",
+              "py-1",
+              "text-sm",
+              "font-medium",
+              "transition-colors",
               active
-                ? "border-primary bg-primary text-primary-foreground"
-                : "border-transparent bg-muted text-muted-foreground hover:bg-muted/70"
-            }`}
+                ? [
+                    "border-primary",
+                    "bg-primary",
+                    "text-primary-foreground",
+                  ]
+                : [
+                    "border-transparent",
+                    "bg-muted",
+                    "text-muted-foreground",
+                    "hover:bg-muted/70",
+                  ],
+            )}
             onClick={() => onValueChange(item.value)}
           >
             {item.label}
@@ -113,7 +130,7 @@ export default function SeoEditor(props: UseSeoEditorProps) {
             />
 
             {warnings.length > 0 && (
-              <Alert variant="warning" tone="soft" title={String(t("Warnings"))}>
+              <Alert variant="warning" tone="soft" heading={String(t("cms.seo.warnings"))}>
                 <ul className="list-disc pl-5">
                   {warnings.map((warning) => (
                     <li key={warning}>{warning}</li>
@@ -130,17 +147,14 @@ export default function SeoEditor(props: UseSeoEditorProps) {
                   onClick={handleGenerate}
                   disabled={generating}
                 >
-                  {generating ? t("Generating…") : t("Generate with AI")}
+                  {generating ? t("cms.seo.generating") : t("cms.seo.generateWithAi")}
                 </Button>
                 <Button type="submit" disabled={saving}>
-                  {saving ? t("Saving…") : t("Save")}
+                  {saving ? t("actions.saving") : t("actions.save")}
                 </Button>
               </Inline>
               <p className="text-xs text-muted-foreground">
-                {t(
-                  "All changes apply to locale {locale} unless translations are frozen.",
-                  { locale: locale.toUpperCase() },
-                )}
+                {t("cms.seo.localeScopeHelp", { locale: locale.toUpperCase() })}
               </p>
             </Stack>
           </form>

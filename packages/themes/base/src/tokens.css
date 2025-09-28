@@ -63,15 +63,47 @@
   --text-heading-2-font-family: var(--font-heading-2);
 
   /* spacing scale (multiples of 4 px) */
+  --space-0: 0px;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
 
   /* radii */
+  --radius-none: 0px;
+  --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 28px;
+  --radius-4xl: 32px;
+  --radius-full: 9999px;
+
+  /* Breakpoints (Polaris-aligned) */
+  --bp-xs: 0px;
+  --bp-sm: 490px;
+  --bp-md: 768px;
+  --bp-lg: 1040px;
+  --bp-xl: 1440px;
+
+  /* Accessibility target sizes */
+  --target-min-aa: 24px; /* WCAG 2.2 AA */
+  --target-hig: 44px;    /* Apple HIG */
+  --target-material: 48px; /* Material/Android */
+
+  /* Safe area insets */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
 
   /* Elevation scale (light mode defaults) */
   --elevation-0: none;

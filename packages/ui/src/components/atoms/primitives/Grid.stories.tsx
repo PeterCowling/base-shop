@@ -13,10 +13,9 @@ export const Basic: Story = {
   args: { cols: 3, gap: 4, className: "p-4 border rounded" },
   render: (args) => (
     <Grid {...args}>
-      {Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="bg-muted p-2">{`Item ${i + 1}`}</div>
+      {Array.from({ length: 6 }, (_, i) => `item-${i + 1}`).map((id) => (
+        <div key={id} className="bg-muted p-2">{id.replace("-", " ")}</div>
       ))}
     </Grid>
   ),
 };
-

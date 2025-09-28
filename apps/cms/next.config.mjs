@@ -97,7 +97,7 @@ const resolveFromPnpmStore = (pkg, subpath) => {
       subpath,
     );
 
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- DEV-000: path derived from internal pnpm store listing; no user input
     if (existsSync(candidate)) return candidate;
   }
 
@@ -232,7 +232,7 @@ const nextConfig = {
         const nextAuthEntry = require.resolve("next-auth");
         const nextAuthRequire = createRequire(nextAuthEntry);
         // Resolves from Node's module resolver; no user input
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- DEV-000: resolving next-auth internals for alias; controlled module id
         const resolvedOidcTokenHash = realpathSync(
           nextAuthRequire.resolve("oidc-token-hash"),
         );
@@ -295,7 +295,7 @@ const nextConfig = {
         if (config.resolve.alias[dep] !== undefined) continue;
 
         const candidate = path.join(pinoDepsRoot, dep);
-        // eslint-disable-next-line security/detect-non-literal-fs-filename
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- DEV-000: candidate path built from resolved package dir; no user input
         if (existsSync(candidate)) {
           config.resolve.alias[dep] = candidate;
         }

@@ -1,11 +1,15 @@
 // packages/template-app/src/pages/_error.tsx
 
+import { TranslationsProvider, useTranslations } from "@acme/i18n";
+import en from "@i18n/en.json";
+
 type ErrorCtx = {
   res?: { statusCode?: number };
   err?: { statusCode?: number };
 };
 
-function ErrorPage({ statusCode }: { statusCode?: number }) {
+function ErrorInner({ statusCode }: { statusCode?: number }) {
+  const t = useTranslations();
   const code = statusCode ?? 500;
   return (
     <main
@@ -18,7 +22,6 @@ function ErrorPage({ statusCode }: { statusCode?: number }) {
       }}
     >
       <div>
-        {/* i18n-exempt -- TMP-001: minimal template error message */}
         <h1
           style={{
             fontSize: "2rem",
@@ -26,25 +29,33 @@ function ErrorPage({ statusCode }: { statusCode?: number }) {
             marginBottom: "var(--space-2)",
           }}
         >
-          {code} — Something went wrong
+          {t("pages.error.title", { code })}
         </h1>
         <p style={{ marginBottom: "var(--space-3)", opacity: 0.8 }}>
-          Please try again, or return to the homepage.
+          {t("pages.error.description")}
         </p>
         <a
           href="/"
           style={{
             display: "inline-block",
             padding: "var(--space-2) var(--space-3)",
-            border: "1px solid currentColor",
+            border: "1px solid currentColor", // i18n-exempt -- DS-000 CSS shorthand value, not user-facing copy [ttl=2026-01-01]
             borderRadius: "0.5rem",
             textDecoration: "none",
           }}
         >
-          Go to homepage
+          {t("pages.error.cta")}
         </a>
       </div>
     </main>
+  );
+}
+
+function ErrorPage({ statusCode }: { statusCode?: number }) {
+  return (
+    <TranslationsProvider messages={en}>
+      <ErrorInner statusCode={statusCode} />
+    </TranslationsProvider>
   );
 }
 

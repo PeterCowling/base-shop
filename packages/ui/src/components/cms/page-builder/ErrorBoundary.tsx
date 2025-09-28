@@ -20,14 +20,13 @@ class ErrorBoundaryImpl extends React.Component<ImplProps, State> {
   componentDidCatch(error: unknown, info: React.ErrorInfo) {
     // Log for diagnostics; do not leak to network here
     try {
-      // i18n-exempt: debug log only; not user-facing copy (I18N-0001)
-      console.error("PageBuilder error boundary caught:", error, info?.componentStack);
+      console.error("PageBuilder error boundary caught:", error, info?.componentStack); // i18n-exempt -- ABC-123 debug log only; not user-facing [ttl=2026-12-31]
     } catch {}
     // Announce to live region if present
     try {
       window.dispatchEvent(
         new CustomEvent("pb-live-message", {
-          detail: String(this.props.t("An error occurred. Interaction canceled.")),
+          detail: String(this.props.t("pb.error.interactionCanceled")),
         })
       );
     } catch {}
@@ -42,15 +41,15 @@ class ErrorBoundaryImpl extends React.Component<ImplProps, State> {
     if (this.state.hasError) {
       return (
         <div className="m-2 rounded border border-danger/40 bg-danger/5 p-3 text-sm">
-          <div className="mb-2 font-medium">{this.props.t("Something went wrong.")}</div>
-          <div className="mb-3 text-muted-foreground">{this.props.t("The editor paused due to an error. You can try to continue.")}</div>
+          <div className="mb-2 font-medium">{this.props.t("pb.error.somethingWrong")}</div>
+          <div className="mb-3 text-muted-foreground">{this.props.t("pb.error.editorPaused")}</div>
           <button
             type="button"
             className="rounded border px-2 py-1 min-h-10 min-w-10"
             onClick={this.reset}
-            aria-label={String(this.props.t("Try again"))}
+            aria-label={String(this.props.t("pb.error.tryAgain"))}
           >
-            {this.props.t("Try again")}
+            {this.props.t("pb.error.tryAgain")}
           </button>
         </div>
       );

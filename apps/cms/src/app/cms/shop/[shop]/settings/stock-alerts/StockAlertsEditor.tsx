@@ -185,6 +185,7 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
       state.threshold,
       state.webhook,
       submit,
+      t,
     ],
   );
 
@@ -195,12 +196,12 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
           <form className="space-y-6" onSubmit={handleSubmit} noValidate>
             <FormField
               label={String(t("cms.stockAlerts.recipients.label"))}
-              htmlFor="stock-alert-recipients"
+              htmlFor="stock-alert-recipients" // i18n-exempt -- CMS-0000 [ttl=2025-12-31] non-UI element id
               error={<ErrorChips errors={errors.recipients} />}
               className="gap-3"
             >
               <Textarea
-                id="stock-alert-recipients"
+                id="stock-alert-recipients" // i18n-exempt -- CMS-0000 [ttl=2025-12-31] non-UI element id
                 name="recipients"
                 rows={3}
                 value={state.recipients}
@@ -216,12 +217,12 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
 
             <FormField
               label={String(t("cms.stockAlerts.webhook.label"))}
-              htmlFor="stock-alert-webhook"
+              htmlFor="stock-alert-webhook" // i18n-exempt -- CMS-0000 [ttl=2025-12-31] non-UI element id
               error={<ErrorChips errors={errors.webhook} />}
               className="gap-3"
             >
               <Input
-                id="stock-alert-webhook"
+                id="stock-alert-webhook" // i18n-exempt -- CMS-0000 [ttl=2025-12-31] non-UI element id
                 name="webhook"
                 value={state.webhook}
                 onChange={handleWebhookChange}
@@ -232,12 +233,12 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
 
             <FormField
               label={String(t("cms.stockAlerts.threshold.label"))}
-              htmlFor="stock-alert-threshold"
+              htmlFor="stock-alert-threshold" // i18n-exempt -- CMS-0000 [ttl=2025-12-31] non-UI element id
               error={<ErrorChips errors={errors.threshold} />}
               className="gap-3"
             >
               <Input
-                id="stock-alert-threshold"
+                id="stock-alert-threshold" // i18n-exempt -- CMS-0000 [ttl=2025-12-31] non-UI element id
                 name="threshold"
                 type="number"
                 min="0"

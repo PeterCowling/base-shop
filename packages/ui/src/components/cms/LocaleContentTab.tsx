@@ -39,17 +39,19 @@ export default function LocaleContentTab({
     ),
     content: (
       <div className="space-y-4">
-        <label className="flex flex-col gap-1">
+        <label className="flex flex-col gap-1" htmlFor={`title_${locale}`}>
           <span className="text-sm font-medium">Title</span>
           <Input
+            id={`title_${locale}`}
             name={`title_${locale}`}
             value={title?.[locale] ?? ""}
             onChange={(event) => onFieldChange(event)}
           />
         </label>
-        <label className="flex flex-col gap-1">
+        <label className="flex flex-col gap-1" htmlFor={`desc_${locale}`}>
           <span className="text-sm font-medium">Description</span>
           <Textarea
+            id={`desc_${locale}`}
             rows={5}
             name={`desc_${locale}`}
             value={description?.[locale] ?? ""}

@@ -1,7 +1,12 @@
 {
   "id": "contact",
   "slug": "contact",
-  "title": "Contact",
+  "title": {
+    "type": "inline",
+    "value": {
+      "en": "Contact"
+    }
+  },
   "components": [
     {
       "id": "contact-form",

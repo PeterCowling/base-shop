@@ -1,17 +1,20 @@
 import { withThemeByClassName } from "@storybook/addon-themes";
 import type { Decorator, Preview } from "@storybook/react";
 import "../packages/themes/base/src/tokens.css";
+import en from "../packages/i18n/src/en.json";
+
+const t = (key: string) => (en as Record<string, string>)[key] ?? key;
 
 export const globalTypes = {
   tokens: {
-    name: "Tokens",
-    description: "Design token theme",
+    name: t("storybook.tokens.name"),
+    description: t("storybook.tokens.description"),
     defaultValue: "base",
     toolbar: {
       icon: "paintbrush",
       items: [
-        { value: "base", title: "Base" },
-        { value: "brandx", title: "BrandX" },
+        { value: "base", title: t("storybook.tokens.theme.base") },
+        { value: "brandx", title: t("storybook.tokens.theme.brandx") },
       ],
     },
   },
@@ -27,8 +30,7 @@ const withTokens: Decorator = (Story, context) => {
 
 const preview: Preview = {
   parameters: {
-    // Disable a11y checks in CI subset to keep runs fast and stable
-    a11y: { disable: true },
+    // CI runs on a curated, fast subset. A11y is enabled per critical story via story parameters.
   },
   decorators: [
     withThemeByClassName({
@@ -40,4 +42,3 @@ const preview: Preview = {
 };
 
 export default preview;
-

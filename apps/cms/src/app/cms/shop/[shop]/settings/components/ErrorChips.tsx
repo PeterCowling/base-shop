@@ -1,6 +1,7 @@
 "use client";
 
 import { Chip } from "@ui/components/atoms";
+import { Inline } from "@ui/components/atoms/primitives/Inline";
 
 interface ErrorChipsProps {
   errors?: string[];
@@ -12,17 +13,17 @@ export function ErrorChips({ errors }: ErrorChipsProps) {
   }
 
   return (
-    <span className="flex flex-wrap gap-2 pt-1">
+    <Inline gap={2} wrap className="pt-1">
       {errors.map((error, index) => (
         <Chip
           key={`${error}-${index}`}
           className="bg-destructive/10 px-2 py-1 text-xs font-medium text-destructive"
-          data-token="--color-danger"
+          data-token="--color-danger" // i18n-exempt -- DS-000 design token reference; non-UI string [ttl=2026-01-01]
         >
           {error}
         </Chip>
       ))}
-    </span>
+    </Inline>
   );
 }
 

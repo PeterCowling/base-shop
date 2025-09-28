@@ -6,6 +6,13 @@ import { PRODUCTS } from "@acme/platform-core/products/index";
 const meta: Meta<typeof ShowcaseSection> = {
   component: ShowcaseSection,
   tags: ["autodocs"],
+  parameters: {
+    docs: {
+      description: {
+        component: "Displays curated product recommendations as a carousel or grid. Accepts a preset and grid column count.",
+      },
+    },
+  },
   args: {
     preset: "featured",
     layout: "carousel",
@@ -42,6 +49,7 @@ export const ErrorStateCarousel: StoryObj<typeof ShowcaseSection> = {
   args: { preset: "featured", layout: "carousel" },
   render: (args) => {
     const netError = (typeof window !== 'undefined' && window.__SB_GLOBALS__?.netError) === 'on';
+    /* eslint-disable react/forbid-dom-props -- DS-0006: Story banner uses inline style for quick theming demonstration. */
     return (
       <div>
         {netError ? (
@@ -60,6 +68,7 @@ export const ErrorStateCarousel: StoryObj<typeof ShowcaseSection> = {
         <ShowcaseSection {...args} />
       </div>
     );
+    /* eslint-enable react/forbid-dom-props */
   },
 };
 
@@ -68,6 +77,7 @@ export const ErrorStateGrid: StoryObj<typeof ShowcaseSection> = {
   args: { preset: "featured", layout: "grid", gridCols: 3 },
   render: (args) => {
     const netError = (typeof window !== 'undefined' && window.__SB_GLOBALS__?.netError) === 'on';
+    /* eslint-disable react/forbid-dom-props -- DS-0006: Story banner uses inline style for quick theming demonstration. */
     return (
       <div>
         {netError ? (
@@ -86,6 +96,7 @@ export const ErrorStateGrid: StoryObj<typeof ShowcaseSection> = {
         <ShowcaseSection {...args} />
       </div>
     );
+    /* eslint-enable react/forbid-dom-props */
   },
 };
 

@@ -1,0 +1,9 @@
+{
+  "trigger": "delay",
+  "delay": 100,
+  "content": "<p>Special offer!</p>",
+  "frequencyKey": "test",
+  "maxShows": 1,
+  "coolOffDays": 1
+}
+

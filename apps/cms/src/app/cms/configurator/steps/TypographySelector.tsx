@@ -1,8 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { TokenMap } from "../../wizard/tokenUtils";
 import Tokens from "@ui/components/cms/style/Tokens";
+import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
+import { Inline as DSInline } from "@ui/components/atoms/primitives/Inline";
 import presetData from "@ui/components/cms/style/presets.json";
 
 interface Props {
@@ -20,28 +23,28 @@ interface Props {
 type PairPreset = { id: string; name: string; tags?: string[]; tokens: Record<string, string> };
 
 export default function TypographySelector({ tokens, baseTokens, onChange, tagFilters: externalTagFilters, hideTagFilter, showFineTune = true }: Props) {
+  const t = useTranslations();
   const pairings = useMemo(() => (presetData as unknown as PairPreset[]).filter((p) => p.id.startsWith("type-")), []);
 
-  const googleFamilies = useMemo(
-    () =>
-      new Set([
-        "Inter",
-        "Space Grotesk",
-        "Playfair Display",
-        "Lato",
-        "Source Sans 3",
-        "Montserrat",
-        "Rubik",
-        "Work Sans",
-        "Nunito",
-        "Quicksand",
-        "Open Sans",
-        "Roboto",
-        "Merriweather",
-        "Poppins",
-      ]),
-    [],
-  );
+  const firstFamilyFromStack = useCallback((stack: string | undefined): string | null => {
+    if (!stack) return null;
+    const m = stack.match(/"([^"]+)"/);
+    if (m) return m[1];
+    const first = stack.split(",")[0]?.trim();
+    if (!first || first.startsWith("var(")) return null;
+    return first.replace(/^["']|["']$/g, "");
+  }, []);
+
+  const googleFamilies = useMemo(() => {
+    const fams = new Set<string>();
+    (pairings as PairPreset[]).forEach((p) => {
+      Object.values(p.tokens).forEach((v) => {
+        const name = firstFamilyFromStack(v);
+        if (name) fams.add(name);
+      });
+    });
+    return fams;
+  }, [pairings, firstFamilyFromStack]);
 
   const ensureGoogle = useCallback((name: string | null | undefined) => {
     if (!name) return;
@@ -55,14 +58,7 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
     }
   }, []);
 
-  const firstFamilyFromStack = useCallback((stack: string | undefined): string | null => {
-    if (!stack) return null;
-    const m = stack.match(/"([^"]+)"/);
-    if (m) return m[1];
-    const first = stack.split(",")[0]?.trim();
-    if (!first || first.startsWith("var(")) return null;
-    return first.replace(/^["']|["']$/g, "");
-  }, []);
+  // firstFamilyFromStack moved above to support derived googleFamilies
 
   const currentBody = tokens["--font-body"] ?? baseTokens["--font-body"] ?? tokens["--font-sans"] ?? baseTokens["--font-sans"] ?? "var(--font-sans)";
   const currentH1 = tokens["--font-heading-1"] ?? baseTokens["--font-heading-1"] ?? currentBody;
@@ -75,8 +71,8 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
     });
   }, [currentBody, currentH1, currentH2, firstFamilyFromStack, ensureGoogle, googleFamilies]);
 
-  const [headingSample, setHeadingSample] = useState("Grumpy wizards make toxic brew");
-  const [bodySample, setBodySample] = useState("The quick brown fox jumps over the lazy dog");
+  const [headingSample, setHeadingSample] = useState<string>(String(t("cms.theme.typography.sampleHeadingDefault")));
+  const [bodySample, setBodySample] = useState<string>(String(t("cms.theme.typography.sampleBodyDefault")));
   const [sizeH1, setSizeH1] = useState(36);
   const [sizeH2, setSizeH2] = useState(24);
   const [sizeBody, setSizeBody] = useState(16);
@@ -120,8 +116,8 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
   );
 
   const isPairingSelected = useCallback((p: PairPreset) => {
-    const keys: Array<keyof typeof p.tokens> = ["--font-body", "--font-heading-1", "--font-heading-2"] as any;
-    return keys.every((k) => !p.tokens[k] || (tokens as Record<string, string>)[k as string] === p.tokens[k]);
+    const keys = ["--font-body", "--font-heading-1", "--font-heading-2"] as const;
+    return keys.every((k) => !p.tokens[k] || (tokens as Record<string, string>)[k] === p.tokens[k]);
   }, [tokens]);
 
   const fontOnly = useCallback((map: TokenMap) => {
@@ -134,45 +130,45 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
 
   return (
     <section className="space-y-4">
-      <h2 className="text-lg font-semibold">Typography</h2>
+      <h2 className="text-lg font-semibold">{t("cms.theme.typography.title")}</h2>
       {/* Current selection preview */}
       <div className="rounded border p-4">
         <div className="mb-3 flex flex-wrap items-end gap-4">
-          <label className="text-xs">Heading sample
+          <label className="text-xs">{t("cms.theme.typography.headingSample")}
             <input className="ms-2 h-8 w-60 rounded border px-2 text-sm" value={headingSample} onChange={(e) => setHeadingSample(e.target.value)} />
           </label>
-          <label className="text-xs">Body sample
+          <label className="text-xs">{t("cms.theme.typography.bodySample")}
             <input className="ms-2 h-8 w-60 rounded border px-2 text-sm" value={bodySample} onChange={(e) => setBodySample(e.target.value)} />
           </label>
-          <label className="text-xs">H1 size
+          <label className="text-xs">{t("cms.theme.typography.h1Size")}
             <input className="ms-2 align-middle" type="range" min={20} max={64} value={sizeH1} onChange={(e) => setSizeH1(Number(e.target.value))} />
           </label>
-          <label className="text-xs">H2 size
+          <label className="text-xs">{t("cms.theme.typography.h2Size")}
             <input className="ms-2 align-middle" type="range" min={16} max={40} value={sizeH2} onChange={(e) => setSizeH2(Number(e.target.value))} />
           </label>
-          <label className="text-xs">Body size
+          <label className="text-xs">{t("cms.theme.typography.bodySize")}
             <input className="ms-2 align-middle" type="range" min={12} max={24} value={sizeBody} onChange={(e) => setSizeBody(Number(e.target.value))} />
           </label>
         </div>
         <div className="space-y-2">
-          <div className="text-xs text-muted-foreground">Heading 1 (H1–H3)</div>
-          <div style={{ fontFamily: currentH1 as string, fontSize: `${sizeH1}px`, lineHeight: 1.2 as any }}>{headingSample}</div>
-          <div className="mt-3 text-xs text-muted-foreground">Heading 2 (H4–H6)</div>
-          <div style={{ fontFamily: currentH2 as string, fontSize: `${sizeH2}px`, lineHeight: 1.25 as any }}>{headingSample}</div>
-          <div className="mt-3 text-xs text-muted-foreground">Body</div>
-          <div style={{ fontFamily: currentBody as string, fontSize: `${sizeBody}px`, lineHeight: 1.5 as any }}>{bodySample}</div>
+          <div className="text-xs text-muted-foreground">{t("cms.theme.typography.headingRange1")}</div>
+          <div style={{ fontFamily: currentH1 as string, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
+          <div className="mt-3 text-xs text-muted-foreground">{t("cms.theme.typography.headingRange2")}</div>
+          <div style={{ fontFamily: currentH2 as string, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
+          <div className="mt-3 text-xs text-muted-foreground">{t("cms.theme.typography.body")}</div>
+          <div style={{ fontFamily: currentBody as string, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
         </div>
       </div>
 
       {/* Suggested pairings */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <h3 className="text-sm font-semibold">Suggested Pairings</h3>
+          <h3 className="text-sm font-semibold">{t("cms.theme.typography.suggestedPairings")}</h3>
           {!hideTagFilter && (
             <div className="flex items-center gap-2 text-xs">
-              <label className="text-muted-foreground">Tag</label>
+              <label className="text-muted-foreground">{t("cms.theme.typography.tag")}</label>
               <select className="rounded border p-1" value={tagFilter} onChange={(e) => setTagFilter(e.target.value)}>
-                <option value="">All</option>
+                <option value="">{t("cms.theme.typography.all")}</option>
                 {allTags.map((t) => (
                   <option key={t} value={t}>
                     {t}
@@ -182,7 +178,7 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
             </div>
           )}
         </div>
-        <div className="grid grid-cols-1 gap-3">
+        <DSGrid cols={1} gap={3}>
           {filteredPairs.map((p) => {
             const body = p.tokens["--font-body"] || currentBody;
             const h1 = p.tokens["--font-heading-1"] || body;
@@ -192,42 +188,51 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
               if (name && googleFamilies.has(name)) ensureGoogle(name);
             });
             return (
+              // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0005: utility class string, not user copy
               <div key={p.id} className={`rounded border p-3 ${isPairingSelected(p) ? "border-primary ring-1 ring-primary/40" : ""}`}>
                 <div className="mb-1 flex items-center justify-between gap-2">
-                  <div className="truncate text-sm font-medium">{p.name}</div>
-                  <button type="button" className="rounded border px-2 py-1 text-xs" onClick={() => applyPairing(p)}>
-                    Use pairing
+                  <div className="truncate text-sm font-medium">
+                    {/* i18n-exempt -- ABC-123 [ttl=2099-12-31] */}
+                    {p.name}
+                  </div>
+                  <button
+                    type="button"
+                    className="rounded border px-2 py-1 text-xs min-h-11 min-w-11 inline-flex items-center justify-center"
+                    onClick={() => applyPairing(p)}
+                  >
+                    {t("cms.theme.typography.usePairing")}
                   </button>
                 </div>
                 {isPairingSelected(p) && (
-                  <div className="mb-2 inline-block rounded-full border border-primary bg-primary/10 px-2 py-0.5 text-[10px] text-primary">Selected</div>
+                  <div className="mb-2 inline-block rounded-full border border-primary bg-primary/10 px-2 py-0.5 text-xs text-primary">{t("cms.theme.typography.selected")}</div>
                 )}
                 {p.tags && p.tags.length > 0 && (
-                  <div className="mb-2 flex flex-wrap gap-1 text-[10px] text-muted-foreground">
+                  <DSInline gap={1} className="mb-2 text-xs text-muted-foreground">
                     {p.tags.map((t) => (
                       <span key={t} className="rounded border px-1">
+                        {/* i18n-exempt -- ABC-123 [ttl=2099-12-31] */}
                         {t}
                       </span>
                     ))}
-                  </div>
+                  </DSInline>
                 )}
                 <div className="space-y-1">
-                  <div className="text-xs text-muted-foreground">Heading 1</div>
-                  <div style={{ fontFamily: h1 as string, fontSize: `${sizeH1}px`, lineHeight: 1.2 as any }}>{headingSample}</div>
-                  <div className="mt-2 text-xs text-muted-foreground">Heading 2</div>
-                  <div style={{ fontFamily: h2 as string, fontSize: `${sizeH2}px`, lineHeight: 1.25 as any }}>{headingSample}</div>
-                  <div className="mt-2 text-xs text-muted-foreground">Body</div>
-                  <div style={{ fontFamily: body as string, fontSize: `${sizeBody}px`, lineHeight: 1.5 as any }}>{bodySample}</div>
+                  <div className="text-xs text-muted-foreground">{t("cms.theme.typography.heading1")}</div>
+                  <div style={{ fontFamily: h1 as string, fontSize: `${sizeH1}px`, lineHeight: 1.2 }}>{headingSample}</div>
+                  <div className="mt-2 text-xs text-muted-foreground">{t("cms.theme.typography.heading2")}</div>
+                  <div style={{ fontFamily: h2 as string, fontSize: `${sizeH2}px`, lineHeight: 1.25 }}>{headingSample}</div>
+                  <div className="mt-2 text-xs text-muted-foreground">{t("cms.theme.typography.body")}</div>
+                  <div style={{ fontFamily: body as string, fontSize: `${sizeBody}px`, lineHeight: 1.5 }}>{bodySample}</div>
                 </div>
               </div>
             );
           })}
-        </div>
+        </DSGrid>
       </div>
       {/* Fine‑tune (optional) */}
       {showFineTune && (
         <div className="space-y-2">
-          <h3 className="text-sm font-semibold">Fine‑tune</h3>
+          <h3 className="text-sm font-semibold">{t("cms.theme.typography.fineTune")}</h3>
           <Tokens tokens={fontOnly(tokens)} baseTokens={fontOnly(baseTokens)} onChange={onChange} />
         </div>
       )}

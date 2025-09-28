@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useState } from "react";
+import { ReactNode, useRef, useState } from "react";
 import { toggleItem } from "@acme/shared-utils";
 import { cn } from "../../utils/style";
 import {
@@ -25,6 +25,11 @@ export interface DataTableProps<T> {
   selectable?: boolean;
   onSelectionChange?: (rows: T[]) => void;
   rowClassName?: (row: T, index: number) => string | undefined;
+  /**
+   * Optional function to provide a stable key for each row.
+   * If not provided, a stable key is generated per row object instance.
+   */
+  rowKey?: (row: T, index: number) => string | number;
 }
 
 export default function DataTable<T>({
@@ -33,8 +38,26 @@ export default function DataTable<T>({
   selectable = false,
   onSelectionChange,
   rowClassName,
+  rowKey,
 }: DataTableProps<T>) {
   const [selected, setSelected] = useState<number[]>([]);
+  // Generate stable keys per row instance to avoid using array indices
+  const keyMapRef = useRef(new WeakMap<object, string>());
+  const keyCounterRef = useRef(0);
+
+  const getRowKey = (row: T, index: number): string | number => {
+    if (rowKey) return rowKey(row, index);
+    if (row && typeof row === "object") {
+      const keyMap = keyMapRef.current;
+      const existing = keyMap.get(row as object);
+      if (existing) return existing;
+      const next = `r-${++keyCounterRef.current}`;
+      keyMap.set(row as object, next);
+      return next;
+    }
+    // Fallback: primitives as-is
+    return String(row);
+  };
 
   const toggle = (idx: number) => {
     const next = toggleItem(selected, idx);
@@ -59,7 +82,7 @@ export default function DataTable<T>({
         <TableBody>
           {rows.map((row, i) => (
             <TableRow
-              key={i}
+              key={getRowKey(row, i)}
               data-state={selected.includes(i) ? "selected" : undefined}
               onClick={selectable ? () => toggle(i) : undefined}
               className={cn(

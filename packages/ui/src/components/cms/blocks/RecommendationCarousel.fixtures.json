@@ -1,0 +1,6 @@
+{
+  "minItems": 1,
+  "maxItems": 4,
+  "endpoint": "/api"
+}
+

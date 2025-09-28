@@ -14,6 +14,8 @@ import { useEffect, useState } from "react";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
+import { Cluster } from "@ui/components/atoms/primitives/Cluster";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   pageTemplates: Array<{
@@ -63,6 +65,7 @@ export default function StepHomePage({
   prevStepId,
   nextStepId,
 }: Props): React.JSX.Element {
+  const t = useTranslations();
   const [toast, setToast] = useState<{ open: boolean; message: string }>({
     open: false,
     message: "",
@@ -109,7 +112,7 @@ export default function StepHomePage({
   }, [shopId, homePageId, setComponents, setHomePageId]);
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Home Page</h2>
+      <h2 className="text-xl font-semibold">{t("cms.configurator.homePage.title")}</h2>
       <TemplateSelector
         value={homeLayout}
         pageTemplates={pageTemplates}
@@ -163,7 +166,7 @@ export default function StepHomePage({
           setIsSaving(false);
           if (data) {
             setHomePageId(data.id);
-            setToast({ open: true, message: "Draft saved" });
+            setToast({ open: true, message: String(t("cms.configurator.homePage.draftSaved")) });
           } else if (error) {
             setSaveError(error);
           }
@@ -179,7 +182,7 @@ export default function StepHomePage({
           setIsPublishing(false);
           if (data) {
             setHomePageId(data.id);
-            setToast({ open: true, message: "Page published" });
+            setToast({ open: true, message: String(t("cms.configurator.homePage.pagePublished")) });
           } else if (error) {
             setPublishError(error);
           }
@@ -191,14 +194,14 @@ export default function StepHomePage({
         onChange={setComponents}
         style={themeStyle}
       />
-      <div className="flex justify-between">
+      <Cluster justify="between">
         {prevStepId && (
           <Button
             data-cy="back"
             variant="outline"
             onClick={() => router.push(`/cms/configurator/${prevStepId}`)}
           >
-            Back
+            {t("cms.back")}
           </Button>
         )}
         {nextStepId && (
@@ -209,10 +212,10 @@ export default function StepHomePage({
               router.push(`/cms/configurator/${nextStepId}`);
             }}
           >
-            Next
+            {t("actions.next")}
           </Button>
         )}
-      </div>
+      </Cluster>
       <SimpleToast
         open={toast.open}
         onClose={() => setToast((t) => ({ ...t, open: false }))}

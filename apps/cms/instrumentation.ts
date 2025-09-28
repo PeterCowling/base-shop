@@ -16,6 +16,7 @@ export async function register(): Promise<void> {
   // Smoke signal so we know this module has been loaded. We deliberately
   // retain the use of `console.log` here; in a production environment you
   // would likely replace this with a dedicated logger.
+  // i18n-exempt -- INTL-000 diagnostic log (non-UI) [ttl=2026-03-31]
   console.log("[instrumentation] register() loaded");
 
   // Handle uncaught exceptions.  Ensure unknown values are coerced into an
@@ -23,6 +24,7 @@ export async function register(): Promise<void> {
   // complain about implicit `any` usage.
   process.on("uncaughtException", (err: unknown) => {
     const e: Error = err instanceof Error ? err : new Error(String(err));
+    // i18n-exempt -- INTL-000 diagnostic log (non-UI) [ttl=2026-03-31]
     console.error("[instrumentation] uncaughtException\n", e.stack ?? e);
   });
 
@@ -30,6 +32,7 @@ export async function register(): Promise<void> {
   process.on("unhandledRejection", (reason: unknown) => {
     const e: Error =
       reason instanceof Error ? reason : new Error(String(reason));
+    // i18n-exempt -- INTL-000 diagnostic log (non-UI) [ttl=2026-03-31]
     console.error("[instrumentation] unhandledRejection\n", e.stack ?? e);
   });
 }

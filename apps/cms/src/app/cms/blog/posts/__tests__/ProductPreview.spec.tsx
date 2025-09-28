@@ -5,12 +5,18 @@ afterEach(() => {
   (global.fetch as jest.Mock | undefined)?.mockReset?.();
 });
 
+// Stub atoms that depend on i18n/theme context
+jest.mock("@/components/atoms", () => ({
+  Alert: ({ title }: any) => <div>{title}</div>,
+}));
+
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: any) => {
-    // eslint-disable-next-line @next/next/no-img-element
-    return <img {...props} />;
-  },
+  // Use a div with img-like semantics to avoid raw <img> usage in tests
+  // while still allowing queries by role/name and src assertions.
+  default: (props: any) => (
+    <div role="img" aria-label={props.alt} data-src={props.src} data-aspect="1/1" />
+  ),
 }));
 
 describe("ProductPreview", () => {
@@ -26,8 +32,8 @@ describe("ProductPreview", () => {
     });
     render(<ProductPreview slug="t" />);
     expect(await screen.findByText("Test")).toBeInTheDocument();
-    const img = screen.getByAltText("Test") as HTMLImageElement;
-    expect(img.src).toContain("/image.png");
+    const img = screen.getByRole("img", { name: "Test" });
+    expect(img.getAttribute("data-src")).toContain("/image.png");
   });
 
   it("displays fallback text when product document is missing", async () => {
@@ -45,8 +51,8 @@ describe("ProductPreview", () => {
       json: async () => ({ title: "Test", price: 100, stock: 1 }),
     });
     render(<ProductPreview slug="t" />);
-    const img = await screen.findByAltText("Test");
-    expect((img as HTMLImageElement).src).toContain("/file.svg");
+    const img = await screen.findByRole("img", { name: "Test" });
+    expect(img.getAttribute("data-src")).toContain("/file.svg");
   });
 
   it("renders error state when fetchProduct throws", async () => {

@@ -44,7 +44,11 @@ jest.mock("@ui/components/cms", () => ({
   getContrast: (...args: any) => getContrastMock(...args),
 }));
 
-jest.mock("next/image", () => ({ __esModule: true, default: (props: any) => <img {...props} /> }));
+// Mock next/image without using a raw <img> to satisfy DS lint rules
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: (props: any) => <div data-testid="next-image" {...props} />,
+}));
 
 jest.mock("../../../wizard/WizardPreview", () => ({ __esModule: true, default: () => <div>preview</div> }));
 
@@ -120,4 +124,3 @@ describe("ThemeEditorForm", () => {
     expect(toggleOrientation).toHaveBeenCalled();
   });
 });
-

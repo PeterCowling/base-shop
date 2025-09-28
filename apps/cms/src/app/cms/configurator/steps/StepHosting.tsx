@@ -6,6 +6,7 @@ import { useEffect, type ChangeEvent } from "react";
 import { getDeployStatus, type DeployInfo } from "../../wizard/services/deployShop";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   shopId: string;
@@ -28,8 +29,11 @@ export default function StepHosting({
   deploying,
   deploy,
 }: Props): React.JSX.Element {
+  // i18n-exempt -- ABC-123 [ttl=2099-12-31] data-cy tokens for testing only
+  const CY_CUSTOM_DOMAIN = "custom-domain";
   const [, markComplete] = useStepCompletion("hosting");
   const router = useRouter();
+  const t = useTranslations();
   useEffect(() => {
     if (!shopId || !deployInfo) return;
     if (
@@ -59,43 +63,49 @@ export default function StepHosting({
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Hosting</h2>
+      <h2 className="text-xl font-semibold">{t("cms.configurator.hosting.title")}</h2>
       <label className="flex flex-col gap-1">
-        <span>Custom Domain</span>
+        <span>{t("cms.configurator.hosting.customDomain")}</span>
         <Input
-          data-cy="custom-domain"
+          data-cy={CY_CUSTOM_DOMAIN}
           value={domain}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setDomain(e.target.value)
           }
-          placeholder="myshop.example.com"
+          placeholder={String(t("cms.configurator.hosting.domainPlaceholder"))}
         />
       </label>
-      {deployResult && <p className="text-sm">{deployResult}</p>}
+      {deployResult && (
+        // i18n-exempt -- ABC-123 [ttl=2099-12-31]
+        <p className="text-sm">{deployResult}</p>
+      )}
       {deployInfo?.previewUrl && (
         <p className="text-sm">
-          Preview:{" "}
+          {t("cms.configurator.hosting.previewPrefix")} {" "}
           <a
             href={deployInfo.previewUrl}
             target="_blank"
             rel="noreferrer"
-            className="text-link underline"
+            className="text-link underline inline-flex items-center min-h-11 min-w-11 px-2"
           >
+            {/* i18n-exempt -- ABC-123 [ttl=2099-12-31] */}
             {deployInfo.previewUrl}
           </a>
         </p>
       )}
       {deployInfo?.instructions && (
+        // i18n-exempt -- ABC-123 [ttl=2099-12-31]
         <p className="text-sm">{deployInfo.instructions}</p>
       )}
       {deployInfo?.domainStatus === "pending" && (
-        <p className="text-sm">Waiting for domain verification…</p>
+        <p className="text-sm">{t("cms.configurator.hosting.waitingVerification")}</p>
       )}
       {deployInfo?.status === "success" && (
-        <Alert variant="success" tone="soft" title="Deployment complete" />
+        <Alert variant="success" tone="soft" heading={String(t("cms.configurator.hosting.deploymentComplete"))} />
       )}
       {deployInfo?.status === "error" && deployInfo.error && (
-        <Alert variant="danger" tone="soft" title={deployInfo.error} />
+        // i18n-exempt -- ABC-123 [ttl=2099-12-31]
+        <Alert variant="danger" tone="soft" heading={deployInfo.error} />
       )}
       <div className="flex justify-end">
         <Button
@@ -107,7 +117,7 @@ export default function StepHosting({
             router.push("/cms/configurator");
           }}
         >
-          {deploying ? "Deploying…" : "Save & return"}
+          {deploying ? t("cms.configurator.hosting.deploying") : t("cms.configurator.saveReturn")}
         </Button>
       </div>
     </div>

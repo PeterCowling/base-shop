@@ -9,6 +9,7 @@ import type PageSidebar from "./PageSidebar";
 import type { ComponentType } from "./defaults";
 import FontsPanel from "./FontsPanel";
 import ThemePanel from "./ThemePanel";
+import SidebarPane from "./SidebarPane";
 import type { PageComponent } from "@acme/types";
 import type { Breakpoint } from "./panels/BreakpointsPanel";
 
@@ -158,27 +159,27 @@ const PageBuilderLeftPanel = ({
         />
       )}
       {showSections && (
-        <div style={{ width: paletteWidth }} className="shrink-0">
+        <SidebarPane width={paletteWidth}>
           <SectionsPanel
             shop={shop}
             onInsert={(c) => onInsertPreset?.(c)}
             onInsertLinked={(g) => onInsertLinkedSection?.(g)}
           />
-        </div>
+        </SidebarPane>
       )}
       {showFonts && (
-        <div style={{ width: paletteWidth }} className="shrink-0">
+        <SidebarPane width={paletteWidth}>
           <FontsPanel open variant="sidebar" onOpenChange={() => { /* inline variant ignores dialog open */ }} />
-        </div>
+        </SidebarPane>
       )}
       {showTheme && (
-        <div style={{ width: paletteWidth }} className="shrink-0">
+        <SidebarPane width={paletteWidth}>
           {/* Inline Theme (color) selector */}
-          <aside style={{ minHeight: "100dvh" }} className="overflow-auto bg-surface-3" role="region" aria-label="Theme Panel">
+          <aside className="overflow-auto bg-surface-3 min-h-dvh" role="region" aria-label="Theme Panel">
             {/* ThemePanel renders token editor UI; used inline here */}
             <ThemePanel variant="sidebar" />
           </aside>
-        </div>
+        </SidebarPane>
       )}
       {showLayers && (
         <LayersSidebar

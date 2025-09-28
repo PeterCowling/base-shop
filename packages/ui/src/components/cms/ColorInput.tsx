@@ -5,6 +5,9 @@ import { hslToHex, hexToHsl } from "../../utils/colorUtils";
 interface ColorInputProps {
   value: string; // HSL value "h s% l%"
   onChange: (value: string) => void;
+  id?: string;
+  'aria-label'?: string;
+  'aria-labelledby'?: string;
 }
 
 export function hexToRgb(hex: string): [number, number, number] {
@@ -178,10 +181,13 @@ export function resolveCssVars(input: string): string {
   }
 }
 
-export function ColorInput({ value, onChange }: ColorInputProps) {
+export function ColorInput({ value, onChange, id, 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledBy }: ColorInputProps) {
   return (
     <input
       type="color"
+      id={id}
+      aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
       value={hslToHex(value)}
       onChange={(e) => onChange(hexToHsl(e.target.value))}
     />

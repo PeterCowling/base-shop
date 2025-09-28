@@ -21,10 +21,10 @@ export interface FormFieldProps extends React.HTMLAttributes<HTMLDivElement> {
   margin?: string;
 }
 
-// i18n-exempt: CSS utility class tokens and design tokens below are not user-facing copy
-const WRAPPER_CLASSES = "flex flex-col gap-1"; // i18n-exempt: CSS classes
-const ERROR_TEXT_CLASSES = "text-sm text-danger"; // i18n-exempt: CSS classes
-const DANGER_TOKEN = "--color-danger"; // i18n-exempt: design token
+// i18n-exempt -- TECH-000 [ttl=2026-01-31] CSS utility class tokens and design tokens below are not user-facing copy
+const WRAPPER_CLASSES = "flex flex-col gap-1"; // i18n-exempt -- TECH-000 [ttl=2026-01-31] CSS classes
+const ERROR_TEXT_CLASSES = "text-sm text-danger"; // i18n-exempt -- TECH-000 [ttl=2026-01-31] CSS classes
+const DANGER_TOKEN = "--color-danger"; // i18n-exempt -- TECH-000 [ttl=2026-01-31] design token
 
 export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
   (
@@ -44,11 +44,20 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
     ref
   ) => {
     const { classes, style } = boxProps({ width, height, padding, margin });
+    // Convert width/height style to Tailwind arbitrary value classes to avoid inline style on DOM nodes
+    const sizeClasses: string[] = [];
+    if (style.width !== undefined) {
+      const w = typeof style.width === "number" ? `${style.width}px` : style.width;
+      sizeClasses.push(`w-[${w}]`);
+    }
+    if (style.height !== undefined) {
+      const h = typeof style.height === "number" ? `${style.height}px` : style.height;
+      sizeClasses.push(`h-[${h}]`);
+    }
     return (
       <div
         ref={ref}
-        style={style}
-        className={cn(WRAPPER_CLASSES, classes, className)}
+        className={cn(WRAPPER_CLASSES, classes, sizeClasses.join(" "), className)}
         {...props}
       >
         <label htmlFor={htmlFor} className="text-sm font-medium">
@@ -59,7 +68,7 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
               className="text-danger"
               data-token={DANGER_TOKEN}
             >
-              {/* i18n-exempt: required field asterisk */}
+              {/* i18n-exempt -- TECH-000 [ttl=2026-01-31] required field asterisk */}
               *
             </span>
           )}

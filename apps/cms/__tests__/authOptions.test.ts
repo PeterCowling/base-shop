@@ -5,10 +5,8 @@
 /* 1.  Stub the RBAC store **before** importing authOptions                   */
 /* -------------------------------------------------------------------------- */
 
-/* eslint-disable @typescript-eslint/no-var-requires */
 const rbacStorePath = require.resolve("../src/lib/server/rbacStore");
 const { ROLE_PERMISSIONS } = require("@auth/permissions");
-/* eslint-enable @typescript-eslint/no-var-requires */
 
 jest.doMock(rbacStorePath, () => ({
   readRbac: async () => ({
@@ -58,9 +56,12 @@ beforeAll(async () => {
   if (!provider) {
     throw new Error("Credentials provider not found in authOptions");
   }
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  type AuthorizeFn = (
+    credentials: unknown,
+    req: Record<string, never>
+  ) => unknown;
   authorize = (
-    provider as unknown as { options: { authorize: Function } }
+    provider as unknown as { options: { authorize: AuthorizeFn } }
   ).options.authorize.bind(provider);
 });
 

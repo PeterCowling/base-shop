@@ -52,9 +52,9 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
           setChanges(data.components as UpgradeComponent[]);
         }
       } catch (err) {
-        console.error("Failed to load upgrade changes", err); // i18n-exempt: developer log; not user-facing copy
+        console.error("Failed to load upgrade changes", err); // i18n-exempt -- CMS-201 developer log; not user-facing copy [ttl=2026-03-31]
         if (!cancelled) {
-          setError(t("We couldn't load the latest upgrade preview."));
+          setError(String(t("cms.upgrade.loadError")));
           setChanges([]);
         }
       } finally {
@@ -88,8 +88,8 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
       Array.from({ length: 3 }).map((_, index) => (
         <Card
           key={`skeleton-${index}`}
-          data-testid="upgrade-skeleton" /* i18n-exempt: test id */
-          data-cy="upgrade-skeleton" /* i18n-exempt: test id */
+          data-testid="upgrade-skeleton" /* i18n-exempt -- CMS-201 test id [ttl=2026-03-31] */
+          data-cy="upgrade-skeleton" /* i18n-exempt -- CMS-201 test id [ttl=2026-03-31] */
           >
           <CardContent className="space-y-4 p-6">
             <Skeleton className="h-5 w-1/2" />
@@ -108,8 +108,8 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
           {loading ? (
             <div
               className="space-y-3"
-              data-testid="summary-skeleton" /* i18n-exempt: test id */
-              data-cy="summary-skeleton" /* i18n-exempt: test id */
+              data-testid="summary-skeleton" /* i18n-exempt -- CMS-201 test id [ttl=2026-03-31] */
+              data-cy="summary-skeleton" /* i18n-exempt -- CMS-201 test id [ttl=2026-03-31] */
             >
               <Skeleton className="h-6 w-40" />
               <Skeleton className="h-4 w-60" />
@@ -122,30 +122,32 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
           ) : (
               <div className="space-y-4">
                 <div>
-                <h2 className="text-xl font-semibold">{t("Upgrade summary")}</h2>
+                <h2 className="text-xl font-semibold">{t("cms.upgrade.summary.heading")}</h2>
                   <p className="text-muted-foreground text-sm">
                     {summary.total > 0
-                    ? `${summary.total} ${t("component")}${summary.total === 1 ? "" : "s"} ${t("ready for review.")}`
-                    : t("You're all caught up—no component updates detected.")}
+                    ? (summary.total === 1
+                        ? t("cms.upgrade.summary.components.one", { count: summary.total })
+                        : t("cms.upgrade.summary.components.other", { count: summary.total }))
+                    : t("cms.upgrade.noUpdates")}
                   </p>
                 </div>
                 {summary.total > 0 && (
                   <dl className="grid gap-4 sm:grid-cols-3">
                     <div>
                       <dt className="text-muted-foreground text-xs uppercase tracking-wide">
-                      {t("Updated components")}
+                      {t("cms.upgrade.metrics.updated")}
                       </dt>
                       <dd className="text-lg font-semibold">{summary.updated}</dd>
                     </div>
                     <div>
                       <dt className="text-muted-foreground text-xs uppercase tracking-wide">
-                      {t("New components")}
+                      {t("cms.upgrade.metrics.new")}
                       </dt>
                       <dd className="text-lg font-semibold">{summary.newComponents}</dd>
                     </div>
                     <div>
                       <dt className="text-muted-foreground text-xs uppercase tracking-wide">
-                      {t("Total changes")}
+                      {t("cms.upgrade.metrics.total")}
                       </dt>
                       <dd className="text-lg font-semibold">{summary.total}</dd>
                     </div>
@@ -159,7 +161,7 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
       {error ? (
         <Card className="border border-destructive/40 bg-destructive/5">
           <CardContent className="p-6 text-sm text-destructive">
-            {error} {t("Try again or refresh the page.")}
+            {error} {t("cms.upgrade.tryAgain")}
           </CardContent>
         </Card>
       ) : null}
@@ -174,7 +176,7 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
                     <h3 className="text-lg font-semibold">{component.componentName}</h3>
                     <p className="text-muted-foreground text-sm">{component.file}</p>
                     <div className="text-xs text-muted-foreground">
-                      <span className="font-medium text-foreground">{t("Checksum:")}</span>{" "}
+                      <span className="font-medium text-foreground">{t("cms.upgrade.checksum")}</span>{" "}
                       {component.oldChecksum ? (
                         <>
                           {component.oldChecksum} → <span>{component.newChecksum ?? "—"}</span>
@@ -192,7 +194,7 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
         {emptyState ? (
           <Card>
             <CardContent className="p-6 text-muted-foreground">
-              {t("No changes to preview.")}
+              {t("cms.upgrade.noChanges")}
             </CardContent>
           </Card>
         ) : null}

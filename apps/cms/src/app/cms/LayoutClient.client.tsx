@@ -19,8 +19,8 @@ export default function LayoutClient({
   const isBuilder = typeof pathname === "string" && pathname.includes("/builder");
 
   return (
-    <div className="relative flex min-h-screen bg-surface-1">
-      <div className="relative z-10 flex flex-1 flex-col">
+    <div className="relative flex min-h-dvh bg-surface-1">
+      <div className="relative flex flex-1 flex-col">
         <TopBar role={role} onConfiguratorStartNew={resetConfiguratorProgress} />
         {configuratorProgress && (
           <div className="border-b border-border/10 bg-surface-2 px-6 py-3">
@@ -45,8 +45,8 @@ export default function LayoutClient({
               // align relative to the viewport instead of the centered container.
               // Other CMS pages remain centered with max width + padding.
               isBuilder
-                ? "cms-content relative w-full px-0 py-10"
-                : "cms-content relative mx-auto w-full max-w-6xl px-6 py-10"
+                ? /* i18n-exempt -- CMS-1010: utility classes, not user copy */ "cms-content relative w-full px-0 py-10"
+                : /* i18n-exempt -- CMS-1010: utility classes, not user copy */ "cms-content relative mx-auto w-full max-w-6xl px-6 py-10"
             }
           >
             <ChunkReloadBoundary>{children}</ChunkReloadBoundary>

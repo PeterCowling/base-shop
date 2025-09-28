@@ -52,12 +52,12 @@ export default function CMSPanel({ open, onOpenChange, components, selectedIds: 
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerPortal>
         <OverlayScrim />
-        <DrawerContent side="right" width="w-96" className="p-0">
+        <DrawerContent side="right" width="w-96" className="flex h-full flex-col p-0">
         <div className="px-4 py-3">
           {/* i18n-exempt */}
           <DrawerTitle>{t("CMS Connections")}</DrawerTitle>
         </div>
-        <div className="flex h-[calc(100%-3rem)] flex-col gap-3 p-3 text-sm">
+        <div className="flex flex-1 flex-col gap-3 p-3 text-sm">
           {/* i18n-exempt */}
           <Input placeholder={t("Search datasets…")} value={q} onChange={(e) => setQ(e.target.value)} />
           <div className="text-xs text-muted-foreground">{t(`${filtered.length} dataset${filtered.length === 1 ? "" : "s"}`)}</div>

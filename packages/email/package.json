@@ -27,6 +27,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@acme/i18n": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/platform-core": "workspace:^",
     "@acme/email-templates": "workspace:*",

@@ -1,6 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import HeaderClient from "./HeaderClient.client";
-import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 
 const meta: Meta<typeof HeaderClient> = {
   component: HeaderClient,
@@ -21,13 +20,11 @@ const meta: Meta<typeof HeaderClient> = {
     padding: { control: "text" },
     initialQty: { control: "number" },
   },
-  decorators: [
-    (Story) => (
-      <CartProvider>
-        <Story />
-      </CartProvider>
-    ),
-  ],
+  parameters: {
+    providers: {
+      cart: true,
+    },
+  },
 };
 export default meta;
 

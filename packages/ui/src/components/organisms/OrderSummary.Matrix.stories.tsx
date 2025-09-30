@@ -7,13 +7,16 @@ import { makeStateStory } from '../../story-utils/createStories';
 const meta: Meta<typeof OrderSummary> = {
   title: 'Organisms/Order Summary/Matrix',
   component: OrderSummary,
-  parameters: { docs: { autodocs: false } },
   parameters: {
     layout: 'centered',
     docs: {
+      autodocs: false,
       description: {
         component: `Displays subtotal, shipping, tax and discounts from CartContext. Use to summarize checkout totals; supports loading/error/RTL for regression coverage.\n\nUsage:\n\n\`\`\`tsx\nimport { CartProvider } from '@acme/platform-core/contexts/CartContext';\nimport OrderSummary from './OrderSummary';\n\n<CartProvider>\n  <OrderSummary />\n</CartProvider>\n\n// Key args: none (reads from context)\n\`\`\``,
       },
+    },
+    providers: {
+      cart: true,
     },
   },
 };

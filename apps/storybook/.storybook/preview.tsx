@@ -5,9 +5,17 @@ import { ThemeProvider as SBThemeProvider, themes } from "@storybook/theming";
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
 import { DocsContainer, Primary, Stories } from "@storybook/blocks";
 import type { Decorator, Preview } from "@storybook/react";
-import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import { useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import type { ThemeVars } from "@storybook/theming";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
+import {
+  CurrencyProvider,
+  type Currency,
+} from "@acme/platform-core/contexts/CurrencyContext";
+import {
+  ThemeProvider as PlatformThemeProvider,
+  type Theme as PlatformTheme,
+} from "@acme/platform-core/contexts/ThemeContext";
 import "./styles/sb-globals.css";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import { handlers as mswHandlers } from "./msw/handlers";
@@ -170,6 +178,139 @@ const docsComponents: {
 
 const backgroundOptions = createBackgroundOptions(t);
 
+type ProviderToggle<TConfig extends Record<string, unknown> = Record<string, unknown>> =
+  | boolean
+  | ({ enabled?: boolean } & TConfig);
+
+type ProviderParameters = {
+  cart?: ProviderToggle;
+  currency?: ProviderToggle<{ initial?: Currency }>;
+  theme?: ProviderToggle<{ initial?: PlatformTheme }>;
+};
+
+const shouldEnable = <TConfig extends Record<string, unknown>>(
+  toggle: ProviderToggle<TConfig> | undefined,
+): toggle is { enabled?: boolean } & TConfig =>
+  toggle === true || (typeof toggle === "object" && toggle.enabled !== false);
+
+const CurrencyProviderDecorator: React.FC<{
+  initial?: Currency;
+  children: ReactNode;
+}> = ({ initial, children }) => {
+  const originalValueRef = useRef<string | null | undefined>(undefined);
+  const lastInitialRef = useRef<Currency | undefined>(undefined);
+
+  if (typeof window !== "undefined") {
+    try {
+      if (lastInitialRef.current !== initial) {
+        if (lastInitialRef.current === undefined) {
+          originalValueRef.current = window.localStorage.getItem("PREFERRED_CURRENCY");
+        }
+        if (initial) {
+          window.localStorage.setItem("PREFERRED_CURRENCY", initial);
+        } else {
+          window.localStorage.removeItem("PREFERRED_CURRENCY");
+        }
+        lastInitialRef.current = initial;
+      }
+    } catch {}
+  }
+
+  useEffect(
+    () => () => {
+      if (typeof window === "undefined") return;
+      try {
+        if (originalValueRef.current == null) {
+          window.localStorage.removeItem("PREFERRED_CURRENCY");
+        } else {
+          window.localStorage.setItem(
+            "PREFERRED_CURRENCY",
+            originalValueRef.current,
+          );
+        }
+      } catch {}
+    },
+    [],
+  );
+
+  return (
+    <CurrencyProvider key={initial ?? "currency-default"}>{children}</CurrencyProvider>
+  );
+};
+
+const ThemeProviderDecorator: React.FC<{
+  initial?: PlatformTheme;
+  children: ReactNode;
+}> = ({ initial = "base", children }) => {
+  const originalValueRef = useRef<string | null | undefined>(undefined);
+  const lastInitialRef = useRef<PlatformTheme | undefined>(undefined);
+
+  if (typeof window !== "undefined") {
+    try {
+      if (lastInitialRef.current !== initial) {
+        if (lastInitialRef.current === undefined) {
+          originalValueRef.current = window.localStorage.getItem("theme");
+        }
+        window.localStorage.setItem("theme", initial);
+        lastInitialRef.current = initial;
+      }
+    } catch {}
+  }
+
+  useEffect(
+    () => () => {
+      if (typeof window === "undefined") return;
+      try {
+        if (originalValueRef.current == null) {
+          window.localStorage.removeItem("theme");
+        } else {
+          window.localStorage.setItem("theme", originalValueRef.current);
+        }
+      } catch {}
+    },
+    [],
+  );
+
+  return (
+    <PlatformThemeProvider key={initial}>{children}</PlatformThemeProvider>
+  );
+};
+
+const withProviders: Decorator = (Story, context) => {
+  const providers = (context.parameters?.providers ?? {}) as ProviderParameters;
+  const globals = context.globals as ToolbarGlobals;
+
+  let content = <Story />;
+
+  if (shouldEnable(providers.theme)) {
+    const themeInitial =
+      typeof providers.theme === "object" && providers.theme.initial
+        ? providers.theme.initial
+        : "base";
+    content = (
+      <ThemeProviderDecorator initial={themeInitial}>{content}</ThemeProviderDecorator>
+    );
+  }
+
+  if (shouldEnable(providers.currency)) {
+    const currencyInitial =
+      (typeof providers.currency === "object" && providers.currency.initial)
+        ? providers.currency.initial
+        : (globals.currency as Currency | undefined);
+    content = (
+      <CurrencyProviderDecorator initial={currencyInitial}>
+        {content}
+      </CurrencyProviderDecorator>
+    );
+  }
+
+  if (shouldEnable(providers.cart)) {
+    content = <CartProvider>{content}</CartProvider>;
+  }
+
+  return content;
+};
+
 const preview: Preview = {
   loaders: [mswLoader],
   parameters: {
@@ -232,16 +373,7 @@ const preview: Preview = {
     withRTL,
     withGlobals,
     withPerf,
-    // Opt-in cart provider: set `parameters: { cart: true }` in a story to wrap it
-    ((Story, ctx) => {
-      const { cart } = (ctx.parameters as Record<string, unknown>) ?? {};
-      if (!cart) return <Story />;
-      return (
-        <CartProvider>
-          <Story />
-        </CartProvider>
-      );
-    }) as Decorator,
+    withProviders,
   ],
 };
 

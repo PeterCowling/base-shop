@@ -54,11 +54,15 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       const h = typeof style.height === "number" ? `${style.height}px` : style.height;
       sizeClasses.push(`h-[${h}]`);
     }
-    const errorChildren = React.Children.toArray(error ?? null);
-    const hasError = errorChildren.length > 0;
-    const isTextOnly = errorChildren.every(
-      (child) => typeof child === "string" || typeof child === "number",
+    const errorChildren = React.Children.toArray(error ?? null).filter(
+      (child) => child !== "",
     );
+    const hasError = errorChildren.length > 0;
+    const isTextOnly =
+      hasError &&
+      errorChildren.every(
+        (child) => typeof child === "string" || typeof child === "number",
+      );
     const ErrorContainer = isTextOnly ? "p" : "div";
 
     return (

@@ -88,11 +88,12 @@ describe("UpgradePreviewClient", () => {
     expect(screen.getByTestId("summary-skeleton")).toBeInTheDocument();
 
     await act(async () => {
-      jest.runAllTimers();
+      jest.advanceTimersByTime(1000);
+      await Promise.resolve();
     });
 
     await waitFor(() => {
-      expect(screen.queryByTestId("summary-skeleton")).toBeNull();
+      expect(screen.queryByTestId("summary-skeleton")).not.toBeInTheDocument();
     });
     jest.useRealTimers();
   });

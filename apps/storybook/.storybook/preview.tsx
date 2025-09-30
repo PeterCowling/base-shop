@@ -23,6 +23,7 @@ import { mapDataStateToMsw } from "./msw/state-mapping";
 import { VIEWPORTS } from "./viewports";
 import { withRTL } from "./decorators/rtlDecorator";
 import { withPerf } from "./decorators/perfDecorator";
+import { a11yGlobals, a11yParameters } from "./a11y";
 import { createBackgroundOptions, DEFAULT_BACKGROUND } from "./backgrounds";
 import type { ToolbarGlobals, StoryDataState } from "./types";
 import enMessages from "@acme/i18n/en.json";
@@ -314,6 +315,7 @@ const withProviders: Decorator = (Story, context) => {
 const preview: Preview = {
   loaders: [mswLoader],
   parameters: {
+    ...a11yParameters,
     msw: { handlers: mswHandlers },
     docs: {
       theme: sbTheme,
@@ -353,6 +355,9 @@ const preview: Preview = {
       default: DEFAULT_BACKGROUND,
       options: backgroundOptions,
     },
+  },
+  globals: {
+    ...a11yGlobals,
   },
   decorators: [
     (Story) => (

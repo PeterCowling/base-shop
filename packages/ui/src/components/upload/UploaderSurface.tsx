@@ -73,16 +73,13 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
         onDrop(e);
       }}
       onKeyDown={(e) => {
-        // For accessibility:
-        // - Space should activate the control explicitly here.
-        // - Enter generally triggers a click on interactive elements; don't
-        //   call openFileDialog here to avoid double-invocation with onClick.
-        if (e.key === " ") {
+        // For accessibility we need to invoke the dialog when the surface is
+        // activated via keyboard. Divs with role="button" do not receive this
+        // behavior automatically, so handle Space *and* Enter here while
+        // preventing the default scrolling/submit semantics for those keys.
+        if (e.key === " " || e.key === "Enter") {
           e.preventDefault();
           openFileDialog();
-        }
-        if (e.key === "Enter") {
-          e.preventDefault();
         }
       }}
       className={cn(

@@ -35,6 +35,8 @@ const config: StorybookConfig = {
     // Essentials are largely built-in on SB9; keep only specific addons we use
     "@storybook/addon-a11y", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     "@storybook/addon-docs", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    "@storybook/addon-measure", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    "@storybook/addon-outline", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     "@chromatic-com/storybook", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     // interactions addon is pinned to SB8 and incompatible with SB9
     "@storybook/addon-themes", // i18n-exempt -- ABC-123 [ttl=2025-12-31]

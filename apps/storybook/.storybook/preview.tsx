@@ -324,6 +324,12 @@ const preview: Preview = {
       // Work around theming context conflicts by rendering plain code/pre elements
       components: docsComponents,
     },
+    measure: {
+      disable: false,
+    },
+    outline: {
+      disable: false,
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

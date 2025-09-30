@@ -39,6 +39,12 @@ const preview: Preview = {
       default: DEFAULT_BACKGROUND,
       options: backgroundOptions,
     },
+    measure: {
+      disable: false,
+    },
+    outline: {
+      disable: false,
+    },
     // CI runs on a curated, fast subset. A11y is enabled per critical story via story parameters.
   },
   decorators: [

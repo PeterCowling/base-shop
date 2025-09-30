@@ -1,16 +1,13 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import DOMPurify from "dompurify";
 import PopupModal from "../PopupModal";
 
 describe("PopupModal", () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-
   afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
     jest.clearAllMocks();
+    jest.useRealTimers();
+    localStorage.clear();
   });
 
   it("opens automatically when autoOpen is true", () => {
@@ -20,6 +17,7 @@ describe("PopupModal", () => {
   });
 
   it('opens after timeout when trigger="delay"', () => {
+    jest.useFakeTimers();
     const delay = 500;
     render(
       <PopupModal trigger="delay" delay={delay} content="Delayed content" />,
@@ -32,28 +30,42 @@ describe("PopupModal", () => {
     });
 
     expect(screen.getByText("Delayed content")).toBeInTheDocument();
+    jest.runOnlyPendingTimers();
   });
 
-  it('opens on exit intent when trigger="exit"', () => {
+  it('opens on exit intent when trigger="exit"', async () => {
+    const addEventListenerSpy = jest.spyOn(document, "addEventListener");
+
     render(<PopupModal trigger="exit" content="Exit content" />);
 
     expect(screen.queryByText("Exit content")).not.toBeInTheDocument();
 
-    fireEvent.mouseLeave(document, { clientY: 0 });
+    const exitListener = addEventListenerSpy.mock.calls.find((call) => call[0] === "mouseleave")?.[1] as
+      | ((event: MouseEvent) => void)
+      | undefined;
+    expect(typeof exitListener).toBe("function");
 
-    expect(screen.getByText("Exit content")).toBeInTheDocument();
+    act(() => {
+      exitListener?.(new MouseEvent("mouseleave", { clientY: 0 }));
+    });
+
+    addEventListenerSpy.mockRestore();
+
+    expect(await screen.findByText("Exit content")).toBeInTheDocument();
   });
 
-  it('closes when overlay is clicked', () => {
+  it('closes when overlay is clicked', async () => {
+    const user = userEvent.setup();
     render(<PopupModal autoOpen content="Overlay close" />);
 
-    const contentEl = screen.getByText("Overlay close");
-    const overlay = contentEl.parentElement?.parentElement;
+    const dialog = await screen.findByRole("dialog");
+    const overlay = dialog.previousElementSibling as HTMLElement | null;
     expect(overlay).toBeTruthy();
-    if (!overlay) throw new Error("Overlay element not found");
-    fireEvent.click(overlay);
+    await user.click(overlay!);
 
-    expect(screen.queryByText("Overlay close")).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.queryByText("Overlay close")).not.toBeInTheDocument();
+    });
   });
 
   it('closes when close button is clicked', () => {
@@ -73,19 +85,22 @@ describe("PopupModal", () => {
     expect(screen.queryByText("Escape close")).not.toBeInTheDocument();
   });
 
-  it('sanitizes content via DOMPurify.sanitize', () => {
+  it('sanitizes content via DOMPurify.sanitize', async () => {
     const spy = jest.spyOn(DOMPurify, "sanitize");
     const malicious = '<img src="x" onerror="alert(1)"><script>alert("xss")</script>';
 
-    const { container } = render(
+    render(
       <PopupModal autoOpen content={malicious} />,
     );
 
     expect(spy).toHaveBeenCalledWith(malicious);
 
-    const img = container.querySelector("img");
+    const dialog = await screen.findByRole("dialog");
+    const content = dialog.querySelector<HTMLElement>('[data-radix-dialog-content], [data-radix-dialog-content=""]') ?? dialog;
+
+    const img = content?.querySelector("img");
     expect(img).toBeInTheDocument();
     expect(img?.getAttribute("onerror")).toBeNull();
-    expect(container.querySelector("script")).toBeNull();
+    expect(content?.querySelector("script")).toBeNull();
   });
 });

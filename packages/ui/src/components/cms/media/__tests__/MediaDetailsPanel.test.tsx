@@ -171,7 +171,7 @@ describe("MediaDetailsPanel", () => {
     expect(savingButton).toBeDisabled();
     expect(screen.getByText("Saving…")).toBeInTheDocument();
 
-    await user.click(screen.getByRole("button", { name: /close details/i }));
+    await user.click(screen.getByRole("button", { name: /close/i }));
     expect(onClose).toHaveBeenCalledTimes(1);
 
     onClose.mockClear();

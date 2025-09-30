@@ -13,7 +13,7 @@ describe("Tooltip", () => {
 
     // The tooltip element is present but hidden by default
     const wrapper = container.querySelector("span");
-    const tooltip = wrapper?.querySelector("span");
+    const tooltip = wrapper?.querySelector('[aria-hidden="true"]');
     expect(tooltip).toHaveTextContent("Sample text");
     expect(tooltip).toHaveClass("hidden");
 

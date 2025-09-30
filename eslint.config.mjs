@@ -188,6 +188,14 @@ export default [
     },
   },
 
+  /* ▸ Allow raw colors in platform-core validation tests */
+  {
+    files: ["packages/platform-core/src/validation/__tests__/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "ds/no-raw-color": "off",
+    },
+  },
+
   /* ▸ CMS-only: disallow raw Tailwind palette and arbitrary colors */
   {
     files: ["apps/cms/**/*.{ts,tsx,js,jsx,mdx}"],

@@ -27,6 +27,8 @@ try {
           ...(opts || {}),
           useESM: false,
           tsconfig: path.join(__dirname, "tsconfig.test.json"),
+          isolatedModules: false,
+          diagnostics: false,
         },
       ],
     };

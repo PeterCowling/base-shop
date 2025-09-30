@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ContactForm from "./ContactForm";
 
-const meta: Meta<typeof ContactForm> = {
+const meta = {
   component: ContactForm,
   args: {},
-};
+} satisfies Meta<typeof ContactForm>;
 export default meta;
 
-export const Default: StoryObj<typeof ContactForm> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

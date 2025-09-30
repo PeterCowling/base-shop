@@ -4,13 +4,15 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ThankYouSection from './ThankYouSection';
 import { makeStateStory } from '../../../story-utils/createStories';
 
-const meta: Meta<typeof ThankYouSection> = {
+const meta = {
   title: 'CMS Blocks/ThankYouSection/Matrix',
   component: ThankYouSection,
   parameters: { docs: { autodocs: false } },
-};
+} satisfies Meta<typeof ThankYouSection>;
 export default meta;
 
-type Story = StoryObj<typeof ThankYouSection>;
-export const Default: Story = makeStateStory({}, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-export const RTL: Story = makeStateStory({}, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = makeStateStory({}, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
+export const RTL = makeStateStory({}, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] }) satisfies Story;

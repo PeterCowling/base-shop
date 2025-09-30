@@ -6,20 +6,22 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './HeroBanner.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof CmsHeroBanner> = {
+const meta = {
   title: 'CMS Blocks/HeroBanner/Matrix',
   component: CmsHeroBanner,
   parameters: { docs: { autodocs: false } },
   args: { slides: fixture.slides },
-};
+} satisfies Meta<typeof CmsHeroBanner>;
 export default meta;
 
-type Story = StoryObj<typeof CmsHeroBanner>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 const Slide = z.object({ src: z.string(), altKey: z.string().optional(), headlineKey: z.string(), ctaKey: z.string() });
 try { z.object({ slides: z.array(Slide) }).parse(fixture); } catch (e) { console.error('Invalid HeroBanner fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
+export const RTL = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] }) satisfies Story;
 

@@ -30,14 +30,17 @@ const sku2: SKU = {
   description: "",
 };
 
-const meta: Meta<typeof ProductComparisonBlock> = {
+const meta = {
   component: ProductComparisonBlock,
   args: {
     skus: [sku1, sku2],
     attributes: ["price", "stock", "deposit"],
   },
-};
+} satisfies Meta<typeof ProductComparisonBlock>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductComparisonBlock> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 

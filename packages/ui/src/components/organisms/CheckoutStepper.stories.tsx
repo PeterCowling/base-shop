@@ -1,13 +1,16 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { CheckoutStepper } from "./CheckoutStepper";
 
-const meta: Meta<typeof CheckoutStepper> = {
+const meta = {
   component: CheckoutStepper,
   args: {
     steps: ["Shipping", "Payment", "Review"],
     currentStep: 0,
   },
-};
+} satisfies Meta<typeof CheckoutStepper>;
 export default meta;
 
-export const Default: StoryObj<typeof CheckoutStepper> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

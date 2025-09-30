@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import StoreLocatorBlock from "./StoreLocatorBlock";
 
-const meta: Meta<typeof StoreLocatorBlock> = {
+const meta = {
   component: StoreLocatorBlock,
   args: {
     locations: [
@@ -10,7 +10,10 @@ const meta: Meta<typeof StoreLocatorBlock> = {
     ],
     zoom: 4,
   },
-};
+} satisfies Meta<typeof StoreLocatorBlock>;
 export default meta;
 
-export const Default: StoryObj<typeof StoreLocatorBlock> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

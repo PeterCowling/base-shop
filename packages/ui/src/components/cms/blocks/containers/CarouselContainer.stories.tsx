@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import CarouselContainer from './CarouselContainer';
 
-const meta: Meta<typeof CarouselContainer> = {
+const meta = {
   title: 'CMS Blocks/Containers/CarouselContainer',
   component: CarouselContainer,
   parameters: {
@@ -17,7 +17,10 @@ const meta: Meta<typeof CarouselContainer> = {
       <div key={n} className="h-24 w-40 rounded bg-neutral-100 p-3">Slide {n}</div>
     )),
   },
-};
+} satisfies Meta<typeof CarouselContainer>;
 export default meta;
 
-export const Default: StoryObj<typeof CarouselContainer> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

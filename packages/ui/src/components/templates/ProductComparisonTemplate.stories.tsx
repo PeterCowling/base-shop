@@ -44,10 +44,13 @@ const products: SKU[] = [
   },
 ];
 
-const meta: Meta<typeof ProductComparisonTemplate> = {
+const meta = {
   component: ProductComparisonTemplate,
   args: { products },
-};
+} satisfies Meta<typeof ProductComparisonTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductComparisonTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

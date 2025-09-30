@@ -12,7 +12,7 @@ const baseItem: MediaItem = {
   size: 15234,
 };
 
-const meta: Meta<typeof MediaFileItem> = {
+const meta = {
   component: MediaFileItem,
   args: {
     shop: "demo-shop",
@@ -30,19 +30,21 @@ const meta: Meta<typeof MediaFileItem> = {
   parameters: {
     layout: "centered",
   },
-};
+} satisfies Meta<typeof MediaFileItem>;
 
 export default meta;
 
-type Story = StoryObj<typeof MediaFileItem>;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+
+
+export const Default = {
   args: {
     selectionEnabled: false,
   },
-};
+} satisfies Story;
 
-export const RecentUpload: Story = {
+export const RecentUpload = {
   args: {
     item: {
       ...baseItem,
@@ -52,9 +54,9 @@ export const RecentUpload: Story = {
     selectionEnabled: true,
     selected: true,
   },
-};
+} satisfies Story;
 
-export const ReplacingInProgress: Story = {
+export const ReplacingInProgress = {
   args: {
     item: {
       ...baseItem,
@@ -65,11 +67,11 @@ export const ReplacingInProgress: Story = {
     selectionEnabled: true,
     replacing: true,
   },
-};
+} satisfies Story;
 
-export const Deleting: Story = {
+export const Deleting = {
   args: {
     deleting: true,
     selectionEnabled: true,
   },
-};
+} satisfies Story;

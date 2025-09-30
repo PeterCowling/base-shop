@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import InteractionsPanel from "./InteractionsPanel";
 import type { PageComponent } from "@acme/types";
 
-const meta: Meta<typeof InteractionsPanel> = {
+const meta = {
   title: "CMS/Page Builder/Animations & Interactions",
   component: InteractionsPanel,
   parameters: {
@@ -14,12 +14,14 @@ const meta: Meta<typeof InteractionsPanel> = {
       },
     },
   },
-};
+} satisfies Meta<typeof InteractionsPanel>;
 export default meta;
 
-type Story = StoryObj<typeof InteractionsPanel>;
+type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+
+
+export const Basic = {
   render: () => {
     function StoryContent() {
       // Use a known atom type to avoid `any` casts
@@ -36,4 +38,4 @@ export const Basic: Story = {
     }
     return <StoryContent />;
   },
-};
+} satisfies Story;

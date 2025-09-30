@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ReviewsSection from "./ReviewsSection";
 
-const meta: Meta<typeof ReviewsSection> = {
+const meta = {
   component: ReviewsSection,
   args: {
     provider: "custom",
@@ -12,8 +12,11 @@ const meta: Meta<typeof ReviewsSection> = {
     showAggregate: true,
     emitJsonLd: false,
   },
-};
+} satisfies Meta<typeof ReviewsSection>;
 export default meta;
 
-export const Default: StoryObj<typeof ReviewsSection> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 

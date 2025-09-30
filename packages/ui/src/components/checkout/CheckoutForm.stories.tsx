@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import CheckoutForm from "./CheckoutForm";
 
-const meta: Meta<typeof CheckoutForm> = {
+const meta = {
   component: CheckoutForm,
   args: {
     locale: "en",
@@ -14,7 +14,10 @@ const meta: Meta<typeof CheckoutForm> = {
     },
     taxRegion: { control: "text" },
   },
-};
+} satisfies Meta<typeof CheckoutForm>;
 export default meta;
 
-export const Default: StoryObj<typeof CheckoutForm> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

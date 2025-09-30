@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import VisibilityToggles from './VisibilityToggles';
 
-const meta: Meta<typeof VisibilityToggles> = {
+const meta = {
   component: VisibilityToggles,
   tags: ['autodocs'],
   args: {
@@ -17,8 +17,11 @@ const meta: Meta<typeof VisibilityToggles> = {
       },
     },
   },
-};
+} satisfies Meta<typeof VisibilityToggles>;
 export default meta;
 
-export const Default: StoryObj<typeof VisibilityToggles> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 

@@ -10,17 +10,19 @@ import {
 } from "./types";
 import { useTranslations } from "@acme/i18n";
 
-const meta: Meta<typeof DiscountForm> = {
+const meta = {
   title: "CMS/Marketing/Discounts",
   component: DiscountForm,
   parameters: { layout: "padded" },
-};
+} satisfies Meta<typeof DiscountForm>;
 
 export default meta;
 
-type Story = StoryObj<typeof DiscountForm>;
+type Story = StoryObj<typeof meta>;
 
-export const FormWithPreview: Story = {
+
+
+export const FormWithPreview = {
   render: () => {
     function Example() {
       const t = useTranslations();
@@ -46,9 +48,9 @@ export const FormWithPreview: Story = {
     }
     return <Example />;
   },
-};
+} satisfies Story;
 
-export const Summary: Story = {
+export const Summary = {
   render: () => {
     function Example() {
       const t = useTranslations();
@@ -58,4 +60,4 @@ export const Summary: Story = {
     }
     return <Example />;
   },
-};
+} satisfies Story;

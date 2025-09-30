@@ -8,16 +8,19 @@ import {
   DialogTrigger,
 } from "./Dialog";
 
-const meta: Meta<typeof Dialog> = {
+const meta = {
   title: "Atoms/Shadcn/Dialog",
   component: Dialog,
   tags: ["autodocs"],
   argTypes: { open: { control: "boolean" } },
   args: { open: true },
-};
+} satisfies Meta<typeof Dialog>;
 export default meta;
 
-export const Default: StoryObj<typeof Dialog> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   render: (args) => (
     <Dialog {...args}>
       <DialogTrigger asChild>
@@ -31,4 +34,4 @@ export const Default: StoryObj<typeof Dialog> = {
       </DialogContent>
     </Dialog>
   ),
-};
+} satisfies Story;

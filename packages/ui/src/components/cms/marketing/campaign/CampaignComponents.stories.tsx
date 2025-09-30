@@ -10,21 +10,23 @@ import {
   type CampaignPreviewData,
 } from "./types";
 
-const meta: Meta<typeof CampaignForm> = {
+const meta = {
   title: "CMS/Marketing/Campaign",
   component: CampaignForm,
   parameters: { layout: "padded" },
-};
+} satisfies Meta<typeof CampaignForm>;
 
 export default meta;
 
-type Story = StoryObj<typeof CampaignForm>;
+type Story = StoryObj<typeof meta>;
 
-export const FormWithPreview: Story = {
+
+
+export const FormWithPreview = {
   render: FormWithPreviewStory,
-};
+} satisfies Story;
 
-export const Wizard: Story = {
+export const Wizard = {
   render: () => (
     <CampaignWizard
       initialValues={{
@@ -36,13 +38,13 @@ export const Wizard: Story = {
       onSubmit={async () => undefined}
     />
   ),
-};
+} satisfies Story;
 
-export const Summary: Story = {
+export const Summary = {
   render: () => (
     <CampaignSummaryCard data={getCampaignPreview(defaultCampaignValues)} />
   ),
-};
+} satisfies Story;
 
 // React component (capitalized) so Hooks are valid here.
 function FormWithPreviewStory() {

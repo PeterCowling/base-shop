@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { StoreLocatorMap } from "./StoreLocatorMap";
 
-const meta: Meta<typeof StoreLocatorMap> = {
+const meta = {
   component: StoreLocatorMap,
   args: {
     locations: [
@@ -10,7 +10,10 @@ const meta: Meta<typeof StoreLocatorMap> = {
     ],
     zoom: 4,
   },
-};
+} satisfies Meta<typeof StoreLocatorMap>;
 export default meta;
 
-export const Default: StoryObj<typeof StoreLocatorMap> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ImageUploaderWithOrientationCheck from "./ImageUploaderWithOrientationCheck";
 
-const meta: Meta<typeof ImageUploaderWithOrientationCheck> = {
+const meta = {
   title: "CMS/ImageUploaderWithOrientationCheck",
   component: ImageUploaderWithOrientationCheck,
   tags: ["autodocs"],
@@ -9,7 +9,10 @@ const meta: Meta<typeof ImageUploaderWithOrientationCheck> = {
     file: null,
     requiredOrientation: "landscape",
   },
-};
+} satisfies Meta<typeof ImageUploaderWithOrientationCheck>;
 export default meta;
 
-export const Default: StoryObj<typeof ImageUploaderWithOrientationCheck> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

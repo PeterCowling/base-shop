@@ -6,18 +6,20 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './AccountSection.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof AccountSection> = {
+const meta = {
   title: 'CMS Blocks/AccountSection/Matrix',
   component: AccountSection,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof AccountSection>;
 export default meta;
 
-type Story = StoryObj<typeof AccountSection>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ showDashboard: z.boolean().optional(), showOrders: z.boolean().optional(), showRentals: z.boolean().optional(), showAddresses: z.boolean().optional(), showPayments: z.boolean().optional() }).parse(fixture); } catch (e) { console.error('Invalid AccountSection fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

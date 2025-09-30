@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Loader } from "./Loader";
 
-const meta: Meta<typeof Loader> = {
+const meta = {
   title: "Atoms/Loader",
   component: Loader,
   parameters: {
@@ -13,7 +13,10 @@ const meta: Meta<typeof Loader> = {
     },
   },
   args: { size: 32, className: "text-primary" },
-};
+} satisfies Meta<typeof Loader>;
 export default meta;
 
-export const Primary: StoryObj<typeof Loader> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Primary = {} satisfies Story;

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Testimonials from "./Testimonials";
 
-const meta: Meta<typeof Testimonials> = {
+const meta = {
   component: Testimonials,
   args: {
     testimonials: [
@@ -9,7 +9,10 @@ const meta: Meta<typeof Testimonials> = {
       { quote: "Love the products!", name: "Bob" },
     ],
   },
-};
+} satisfies Meta<typeof Testimonials>;
 export default meta;
 
-export const Default: StoryObj<typeof Testimonials> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

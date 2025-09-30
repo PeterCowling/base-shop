@@ -28,15 +28,18 @@ function OrdersDemo() {
   );
 }
 
-const meta: Meta<typeof OrdersDemo> = {
+const meta = {
   title: 'Account/Orders (Demo)',
   component: OrdersDemo,
   tags: ['autodocs'],
   parameters: {
     docs: { description: { component: 'Demo composition illustrating the Orders page UI with the OrderTrackingTimeline component. The real page is server-rendered and requires auth.' } },
   },
-};
+} satisfies Meta<typeof OrdersDemo>;
 export default meta;
 
-export const Default: StoryObj<typeof OrdersDemo> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 

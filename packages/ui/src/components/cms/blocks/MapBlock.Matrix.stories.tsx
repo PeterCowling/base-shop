@@ -6,18 +6,20 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './MapBlock.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof MapBlock> = {
+const meta = {
   title: 'CMS Blocks/MapBlock/Matrix',
   component: MapBlock,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof MapBlock>;
 export default meta;
 
-type Story = StoryObj<typeof MapBlock>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ lat: z.number(), lng: z.number(), zoom: z.number().optional() }).parse(fixture); } catch (e) { console.error('Invalid MapBlock fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

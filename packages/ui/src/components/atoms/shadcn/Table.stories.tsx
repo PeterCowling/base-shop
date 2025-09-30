@@ -8,15 +8,18 @@ import {
   TableRow,
 } from "./Table";
 
-const meta: Meta<typeof Table> = {
+const meta = {
   title: "Atoms/Shadcn/Table",
   component: Table,
   tags: ["autodocs"],
   args: {},
-};
+} satisfies Meta<typeof Table>;
 export default meta;
 
-export const Default: StoryObj<typeof Table> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   render: (args) => (
     <Table {...args}>
       <TableHeader>
@@ -33,4 +36,4 @@ export const Default: StoryObj<typeof Table> = {
       </TableBody>
     </Table>
   ),
-};
+} satisfies Story;

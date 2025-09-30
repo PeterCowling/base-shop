@@ -1,13 +1,16 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { StockStatus } from "./StockStatus";
 
-const meta: Meta<typeof StockStatus> = {
+const meta = {
   title: "Atoms/StockStatus",
   component: StockStatus,
-};
+} satisfies Meta<typeof StockStatus>;
 export default meta;
 
-export const Variants: StoryObj<typeof StockStatus> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Variants = {
   decorators: [
     (Story) => (
       <div className="flex items-center gap-4">
@@ -21,4 +24,4 @@ export const Variants: StoryObj<typeof StockStatus> = {
       <StockStatus inStock={false} />
     </>
   ),
-};
+} satisfies Story;

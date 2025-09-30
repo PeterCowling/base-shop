@@ -18,7 +18,7 @@ type StorybookMock = ReturnType<typeof fn>;
 const asMock = (handler?: unknown): StorybookMock =>
   (handler as StorybookMock) ?? fn();
 
-const meta: Meta<typeof UploadPanel> = {
+const meta = {
   title: "CMS/Media/UploadPanel",
   component: UploadPanel,
   parameters: {
@@ -29,13 +29,15 @@ const meta: Meta<typeof UploadPanel> = {
     onUploaded: fn<[MediaItem], void>(),
     onUploadError: fn<[string], void>(),
   },
-};
+} satisfies Meta<typeof UploadPanel>;
 
 export default meta;
 
-type Story = StoryObj<typeof UploadPanel>;
+type Story = StoryObj<typeof meta>;
 
-export const UploadingState: Story = {
+
+
+export const UploadingState = {
   name: "Uploading state",
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
@@ -70,9 +72,9 @@ export const UploadingState: Story = {
       globalThis.fetch = originalFetch;
     }
   },
-};
+} satisfies Story;
 
-export const UploadError: Story = {
+export const UploadError = {
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const fileInput = canvasElement.querySelector<HTMLInputElement>(
@@ -106,4 +108,4 @@ export const UploadError: Story = {
       globalThis.fetch = originalFetch;
     }
   },
-};
+} satisfies Story;

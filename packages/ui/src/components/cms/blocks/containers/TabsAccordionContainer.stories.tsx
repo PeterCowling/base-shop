@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TabsAccordionContainer from './TabsAccordionContainer';
 
-const meta: Meta<typeof TabsAccordionContainer> = {
+const meta = {
   title: 'CMS Blocks/Containers/TabsAccordionContainer',
   component: TabsAccordionContainer,
   parameters: {
@@ -20,7 +20,10 @@ const meta: Meta<typeof TabsAccordionContainer> = {
       <div key={3} className="p-3">Tab Three Content</div>,
     ],
   },
-};
+} satisfies Meta<typeof TabsAccordionContainer>;
 export default meta;
 
-export const Default: StoryObj<typeof TabsAccordionContainer> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

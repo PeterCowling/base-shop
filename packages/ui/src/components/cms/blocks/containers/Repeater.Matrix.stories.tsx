@@ -12,7 +12,7 @@ const items = [
   { id: 3, title: 'Gamma', status: 'published', score: 5 },
 ];
 
-const meta: Meta<typeof Repeater> = {
+const meta = {
   title: 'CMS Blocks/Containers/Repeater/Matrix',
   component: Repeater,
   parameters: { docs: { autodocs: false } },
@@ -34,53 +34,55 @@ const meta: Meta<typeof Repeater> = {
     children: <div className="rounded bg-neutral-100 p-2">Item</div>,
   },
   parameters: { layout: 'padded' },
-};
+} satisfies Meta<typeof Repeater>;
 export default meta;
 
-type Story = StoryObj<typeof Repeater>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
-export const Default: Story = {
+export const Default = {
   ...makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'], docsDescription: 'Renders items from DatasetProvider; filters and sorts client-side.' }),
   render: (args: ComponentProps<typeof Repeater>) => (
     <DatasetProvider items={items} state="loaded">
       <Repeater {...args} />
     </DatasetProvider>
   ),
-};
+} satisfies Story;
 
-export const Loading: Story = {
+export const Loading = {
   ...makeStateStory(baseArgs, {}, 'loading', { viewports: ['mobile1'], tags: ['visual'], docsDescription: 'Shows provided LoadingState while dataset is loading.' }),
   render: (args: ComponentProps<typeof Repeater>) => (
     <DatasetProvider items={[]} state="loading">
       <Repeater LoadingState={() => <div className="text-sm text-neutral-600">Loading…</div>} {...args} />
     </DatasetProvider>
   ),
-};
+} satisfies Story;
 
-export const Empty: Story = {
+export const Empty = {
   ...makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'], docsDescription: 'Empty list; renders provided EmptyState component.' }),
   render: (args: ComponentProps<typeof Repeater>) => (
     <DatasetProvider items={[]} state="loaded">
       <Repeater EmptyState={() => <div className="text-sm text-neutral-600">Nothing here</div>} {...args} />
     </DatasetProvider>
   ),
-};
+} satisfies Story;
 
-export const Error: Story = {
+export const Error = {
   ...makeStateStory(baseArgs, {}, 'error', { a11y: true, critical: true, viewports: ['desktop'], tags: ['visual', 'ci'], docsDescription: 'Dataset in error; renders provided ErrorState component.' }),
   render: (args: ComponentProps<typeof Repeater>) => (
     <DatasetProvider items={[]} state="error">
       <Repeater ErrorState={() => <div className="text-sm text-red-600">Error!</div>} {...args} />
     </DatasetProvider>
   ),
-};
+} satisfies Story;
 
-export const RTL: Story = {
+export const RTL = {
   ...makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'], docsDescription: 'RTL sample for grid layout and controls.' }),
   render: (args: React.ComponentProps<typeof Repeater>) => (
     <DatasetProvider items={items} state="loaded">
       <Repeater {...args} />
     </DatasetProvider>
   ),
-};
+} satisfies Story;

@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { CategoryCollectionTemplate } from "./CategoryCollectionTemplate";
 
-const meta: Meta<typeof CategoryCollectionTemplate> = {
+const meta = {
   component: CategoryCollectionTemplate,
   args: {
     categories: [
@@ -15,7 +15,10 @@ const meta: Meta<typeof CategoryCollectionTemplate> = {
     categories: { control: "object" },
     columns: { control: { type: "number" } },
   },
-};
+} satisfies Meta<typeof CategoryCollectionTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof CategoryCollectionTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

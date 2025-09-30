@@ -17,7 +17,7 @@ function Harness() {
   );
 }
 
-const meta: Meta<typeof ExperimentGate> = {
+const meta = {
   component: ExperimentGate,
   tags: ['autodocs'],
   parameters: {
@@ -27,8 +27,11 @@ const meta: Meta<typeof ExperimentGate> = {
       },
     },
   },
-};
+} satisfies Meta<typeof ExperimentGate>;
 export default meta;
 
-export const Default: StoryObj<typeof ExperimentGate> = { render: () => <Harness /> };
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = { render: () => <Harness /> } satisfies Story;
 

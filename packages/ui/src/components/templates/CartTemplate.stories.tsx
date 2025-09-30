@@ -21,12 +21,15 @@ const cart: CartState = {
   },
 };
 
-const meta: Meta<typeof CartTemplate> = {
+const meta = {
   component: CartTemplate,
   args: {
     cart,
   },
-};
+} satisfies Meta<typeof CartTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof CartTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

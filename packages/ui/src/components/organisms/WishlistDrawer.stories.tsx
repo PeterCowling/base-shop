@@ -9,7 +9,7 @@ const items: SKU[] = [
   { id: "2", title: "Thermal Jacket", price: 15900, slug: "thermal-jacket", deposit: 0, stock: 0, forSale: true, forRental: false, media: [], sizes: [], description: "" },
 ];
 
-const meta: Meta<typeof WishlistDrawer> = {
+const meta = {
   title: "Organisms/WishlistDrawer",
   component: WishlistDrawer,
   decorators: [
@@ -19,14 +19,17 @@ const meta: Meta<typeof WishlistDrawer> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof WishlistDrawer>;
 export default meta;
 
-export const Default: StoryObj<typeof WishlistDrawer> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   render: () => (
     <WishlistDrawer
       trigger={<button className="rounded border px-3 min-h-10 min-w-10">Open wishlist</button>}
       items={items}
     />
   ),
-};
+} satisfies Story;

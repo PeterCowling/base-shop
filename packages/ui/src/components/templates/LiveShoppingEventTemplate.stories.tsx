@@ -37,14 +37,17 @@ const chatMessages: ChatMessage[] = [
   { id: "2", user: "Bob", message: "Great deal!" },
 ];
 
-const meta: Meta<typeof LiveShoppingEventTemplate> = {
+const meta = {
   component: LiveShoppingEventTemplate,
   args: {
     streamUrl: "video.mp4",
     products,
     chatMessages,
   },
-};
+} satisfies Meta<typeof LiveShoppingEventTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof LiveShoppingEventTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

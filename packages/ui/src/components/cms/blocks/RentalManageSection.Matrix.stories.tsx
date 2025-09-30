@@ -6,15 +6,17 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './RentalManageSection.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof RentalManageSection> = {
+const meta = {
   title: 'CMS Blocks/RentalManageSection/Matrix',
   component: RentalManageSection,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof RentalManageSection>;
 export default meta;
 
-type Story = StoryObj<typeof RentalManageSection>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ rentalId: z.string().optional() }).parse(fixture); } catch (e) { console.error('Invalid RentalManageSection fixture:', e); }
@@ -22,6 +24,6 @@ try { z.object({ rentalId: z.string().optional() }).parse(fixture); } catch (e) 
 const okAdapter = async () => ({ ok: true, message: 'Updated' });
 const failAdapter = async () => ({ ok: false, message: 'Failed' });
 
-export const Default: Story = makeStateStory(baseArgs, { adapter: okAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-export const ErrorState: Story = makeStateStory(baseArgs, { adapter: failAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, { adapter: okAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
+export const ErrorState = makeStateStory(baseArgs, { adapter: failAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

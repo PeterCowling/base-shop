@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import BlogListing from "./BlogListing";
 
-const meta: Meta<typeof BlogListing> = {
+const meta = {
   component: BlogListing,
   args: {
     posts: [
@@ -10,7 +10,10 @@ const meta: Meta<typeof BlogListing> = {
       { title: "Post Three", excerpt: "Summary of third post" },
     ],
   },
-};
+} satisfies Meta<typeof BlogListing>;
 export default meta;
 
-export const Default: StoryObj<typeof BlogListing> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

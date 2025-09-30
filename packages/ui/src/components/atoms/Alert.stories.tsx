@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Alert } from "./Alert";
 
-const meta: Meta<typeof Alert> = {
+const meta = {
   title: "Atoms/Alert",
   component: Alert,
   decorators: [
@@ -11,10 +11,13 @@ const meta: Meta<typeof Alert> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Alert>;
 export default meta;
 
-export const Variants: StoryObj<typeof Alert> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Variants = {
   render: () => (
     <>
       <Alert title="Info">Default soft info message.</Alert>
@@ -23,9 +26,9 @@ export const Variants: StoryObj<typeof Alert> = {
       <Alert variant="danger" title="Danger">Something went wrong.</Alert>
     </>
   ),
-};
+} satisfies Story;
 
-export const Solid: StoryObj<typeof Alert> = {
+export const Solid = {
   render: () => (
     <>
       <Alert tone="solid" title="Info (solid)">Default solid info.</Alert>
@@ -34,4 +37,4 @@ export const Solid: StoryObj<typeof Alert> = {
       <Alert tone="solid" variant="danger" title="Danger (solid)">Error occurred.</Alert>
     </>
   ),
-};
+} satisfies Story;

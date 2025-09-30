@@ -1,11 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ShopSelector from "./ShopSelector";
 
-const meta: Meta<typeof ShopSelector> = {
+const meta = {
   title: "CMS/ShopSelector",
   component: ShopSelector,
   tags: ["autodocs"],
-};
+} satisfies Meta<typeof ShopSelector>;
 export default meta;
 
-export const Default: StoryObj<typeof ShopSelector> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

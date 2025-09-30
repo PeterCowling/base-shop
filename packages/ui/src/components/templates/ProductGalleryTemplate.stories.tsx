@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { ProductGalleryTemplate } from "./ProductGalleryTemplate";
 import type { SKU } from "@acme/types";
 
-const meta: Meta<typeof ProductGalleryTemplate> = {
+const meta = {
   component: ProductGalleryTemplate,
   args: {
     products: [
@@ -56,7 +56,10 @@ const meta: Meta<typeof ProductGalleryTemplate> = {
     minItems: { control: { type: "number" } },
     maxItems: { control: { type: "number" } },
   },
-};
+} satisfies Meta<typeof ProductGalleryTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductGalleryTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

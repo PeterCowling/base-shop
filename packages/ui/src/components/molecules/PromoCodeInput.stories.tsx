@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, within } from "@storybook/test";
 import { PromoCodeInput } from "./PromoCodeInput";
 
-const meta: Meta<typeof PromoCodeInput> = {
+const meta = {
   component: PromoCodeInput,
   args: {
     loading: false,
@@ -10,10 +10,13 @@ const meta: Meta<typeof PromoCodeInput> = {
   argTypes: {
     onApply: { action: "apply" },
   },
-};
+} satisfies Meta<typeof PromoCodeInput>;
 export default meta;
 
-export const Default: StoryObj<typeof PromoCodeInput> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   play: async ({ canvasElement, args }) => {
     const applySpy = fn();
     args.onApply = applySpy;
@@ -32,4 +35,4 @@ export const Default: StoryObj<typeof PromoCodeInput> = {
     await expect(applySpy).toHaveBeenCalledTimes(1);
     await expect(applySpy).toHaveBeenCalledWith("SAVE10");
   },
-};
+} satisfies Story;

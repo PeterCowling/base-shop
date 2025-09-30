@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import ThemeToggle from './ThemeToggle';
 import { ThemeProvider } from '@platform-core/contexts/ThemeContext';
 
-const meta: Meta<typeof ThemeToggle> = {
+const meta = {
   component: ThemeToggle,
   tags: ['autodocs'],
   parameters: {
@@ -19,8 +19,11 @@ const meta: Meta<typeof ThemeToggle> = {
       </ThemeProvider>
     ),
   ],
-};
+} satisfies Meta<typeof ThemeToggle>;
 export default meta;
 
-export const Default: StoryObj<typeof ThemeToggle> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 

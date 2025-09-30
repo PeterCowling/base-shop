@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ProductFilters from "./ProductFilters";
 
-const meta: Meta<typeof ProductFilters> = {
+const meta = {
   title: "CMS/ProductFilters",
   component: ProductFilters,
   tags: ["autodocs"],
@@ -9,7 +9,10 @@ const meta: Meta<typeof ProductFilters> = {
     search: "",
     status: "all",
   },
-};
+} satisfies Meta<typeof ProductFilters>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductFilters> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

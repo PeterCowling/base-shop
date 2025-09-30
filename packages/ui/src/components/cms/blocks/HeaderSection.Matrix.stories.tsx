@@ -6,17 +6,19 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './HeaderSection.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof HeaderSection> = {
+const meta = {
   title: 'CMS Blocks/HeaderSection/Matrix',
   component: HeaderSection,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof HeaderSection>;
 export default meta;
 
-type Story = StoryObj<typeof HeaderSection>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ locale: z.string(), shopName: z.string().optional() }).parse(fixture); } catch (e) { console.error('Invalid HeaderSection fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;

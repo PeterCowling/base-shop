@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import React, { useEffect, useState } from "react";
 import LinkPicker from "./LinkPicker";
 
-const meta: Meta<typeof LinkPicker> = {
+const meta = {
   title: "CMS/Page Builder/LinkPicker",
   component: LinkPicker,
   parameters: {
@@ -13,10 +13,12 @@ const meta: Meta<typeof LinkPicker> = {
       },
     },
   },
-};
+} satisfies Meta<typeof LinkPicker>;
 export default meta;
 
-type Story = StoryObj<typeof LinkPicker>;
+type Story = StoryObj<typeof meta>;
+
+
 
 function BasicStory() {
   const [open, setOpen] = useState(true);
@@ -64,6 +66,6 @@ function BasicStory() {
   );
 }
 
-export const Basic: Story = {
+export const Basic = {
   render: () => <BasicStory />,
-};
+} satisfies Story;

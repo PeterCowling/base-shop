@@ -21,14 +21,17 @@ const pages: Page[] = [
   },
 ];
 
-const meta: Meta<typeof PagesTable> = {
+const meta = {
   title: "CMS/PagesTable",
   component: PagesTable,
   tags: ["autodocs"],
   args: {
     pages,
   },
-};
+} satisfies Meta<typeof PagesTable>;
 export default meta;
 
-export const Default: StoryObj<typeof PagesTable> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

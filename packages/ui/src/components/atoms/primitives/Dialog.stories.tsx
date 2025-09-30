@@ -7,7 +7,7 @@ import {
   DialogTrigger,
 } from "./dialog";
 
-const meta: Meta<typeof Dialog> = {
+const meta = {
   component: Dialog,
   args: {
     defaultOpen: true,
@@ -15,10 +15,13 @@ const meta: Meta<typeof Dialog> = {
   argTypes: {
     defaultOpen: { control: "boolean" },
   },
-};
+} satisfies Meta<typeof Dialog>;
 export default meta;
 
-export const Default: StoryObj<typeof Dialog> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   render: (args) => (
     <Dialog {...args}>
       <DialogTrigger asChild>
@@ -30,4 +33,4 @@ export const Default: StoryObj<typeof Dialog> = {
       </DialogContent>
     </Dialog>
   ),
-};
+} satisfies Story;

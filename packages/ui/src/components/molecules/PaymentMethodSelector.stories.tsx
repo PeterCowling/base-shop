@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { PaymentMethodSelector } from "./PaymentMethodSelector";
 
-const meta: Meta<typeof PaymentMethodSelector> = {
+const meta = {
   component: PaymentMethodSelector,
   args: {
     methods: [
@@ -13,7 +13,10 @@ const meta: Meta<typeof PaymentMethodSelector> = {
   argTypes: {
     onChange: { action: "change" },
   },
-};
+} satisfies Meta<typeof PaymentMethodSelector>;
 export default meta;
 
-export const Default: StoryObj<typeof PaymentMethodSelector> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

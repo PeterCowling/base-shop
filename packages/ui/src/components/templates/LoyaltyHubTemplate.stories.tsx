@@ -44,7 +44,7 @@ const LoyaltyHubForHistory: React.FC<LoyaltyHubTemplateProps<HistoryRow>> = (
 /* ------------------------------------------------------------------ *
  *  Storybook meta
  * ------------------------------------------------------------------ */
-const meta: Meta<typeof LoyaltyHubForHistory> = {
+const meta = {
   title: "Templates/Loyalty Hub",
   component: LoyaltyHubForHistory,
   args: {
@@ -59,11 +59,14 @@ const meta: Meta<typeof LoyaltyHubForHistory> = {
     historyRows: { control: "object" },
     historyColumns: { control: "object" },
   },
-};
+} satisfies Meta<typeof LoyaltyHubForHistory>;
 
 export default meta;
+
+type Story = StoryObj<typeof meta>;
+
 
 /* ------------------------------------------------------------------ *
  *  Stories
  * ------------------------------------------------------------------ */
-export const Default: StoryObj<typeof LoyaltyHubForHistory> = {};
+export const Default = {} satisfies Story;

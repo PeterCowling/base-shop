@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Sidebar from "./Sidebar.client";
 
-const meta: Meta<typeof Sidebar> = {
+const meta = {
   component: Sidebar,
   args: {
     role: "admin",
@@ -11,7 +11,10 @@ const meta: Meta<typeof Sidebar> = {
     role: { control: "text" },
     pathname: { control: "text" },
   },
-};
+} satisfies Meta<typeof Sidebar>;
 export default meta;
 
-export const Default: StoryObj<typeof Sidebar> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

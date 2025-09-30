@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { OrderTrackingTimeline } from "./OrderTrackingTimeline";
 
-const meta: Meta<typeof OrderTrackingTimeline> = {
+const meta = {
   component: OrderTrackingTimeline,
   args: {
     itemSpacing: "space-y-6",
@@ -11,8 +11,11 @@ const meta: Meta<typeof OrderTrackingTimeline> = {
       { label: "Out for delivery", date: "2023-01-03", complete: false },
     ],
   },
-};
+} satisfies Meta<typeof OrderTrackingTimeline>;
 export default meta;
 
-export const Default: StoryObj<typeof OrderTrackingTimeline> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 // i18n-exempt -- Storybook demo copy

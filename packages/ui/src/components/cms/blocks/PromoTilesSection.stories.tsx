@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import PromoTilesSection from "./PromoTilesSection";
 
-const meta: Meta<typeof PromoTilesSection> = {
+const meta = {
   component: PromoTilesSection,
   args: {
     density: "editorial",
@@ -11,12 +11,15 @@ const meta: Meta<typeof PromoTilesSection> = {
       { imageSrc: "/c.jpg", caption: "Clearance", ctaLabel: "Save now" },
     ],
   },
-};
+} satisfies Meta<typeof PromoTilesSection>;
 export default meta;
 
-export const Editorial: StoryObj<typeof PromoTilesSection> = {};
+type Story = StoryObj<typeof meta>;
 
-export const Utilitarian: StoryObj<typeof PromoTilesSection> = {
+
+export const Editorial = {} satisfies Story;
+
+export const Utilitarian = {
   args: { density: "utilitarian" },
-};
+} satisfies Story;
 

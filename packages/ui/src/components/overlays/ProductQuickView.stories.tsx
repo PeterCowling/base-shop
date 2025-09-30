@@ -21,7 +21,7 @@ function QuickViewHarness() {
   );
 }
 
-const meta: Meta<typeof ProductQuickView> = {
+const meta = {
   component: ProductQuickView,
   tags: ['autodocs'],
   parameters: {
@@ -31,10 +31,13 @@ const meta: Meta<typeof ProductQuickView> = {
       },
     },
   },
-};
+} satisfies Meta<typeof ProductQuickView>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductQuickView> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   // Render via harness to drive container/open
   render: () => <QuickViewHarness />,
-};
+} satisfies Story;

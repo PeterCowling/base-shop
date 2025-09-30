@@ -7,16 +7,18 @@ import fixture from './NewsletterSignup.fixtures.json';
 import { z } from 'zod';
 import type { Locale } from '@acme/i18n/locales';
 
-const meta: Meta<typeof NewsletterSignup> = {
+const meta = {
   title: 'CMS Blocks/NewsletterSignup/Matrix',
   component: NewsletterSignup,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Newsletter signup form with translatable placeholder/label text.' } } },
-};
+} satisfies Meta<typeof NewsletterSignup>;
 export default meta;
 
-type Story = StoryObj<typeof NewsletterSignup>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 const TT = z.union([
@@ -26,5 +28,5 @@ const TT = z.union([
 ]);
 try { z.object({ action: z.string().optional(), placeholder: TT.optional(), submitLabel: TT.optional(), text: TT.optional(), locale: z.string().optional() }).parse(fixture); } catch (e) { console.error('Invalid NewsletterSignup fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-export const RTL: Story = makeStateStory(baseArgs, { locale: 'ar' as unknown as Locale }, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
+export const RTL = makeStateStory(baseArgs, { locale: 'ar' as unknown as Locale }, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] }) satisfies Story;

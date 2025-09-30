@@ -1,12 +1,15 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Textarea } from "./Textarea";
 
-const meta: Meta<typeof Textarea> = {
+const meta = {
   title: "Atoms/Shadcn/Textarea",
   component: Textarea,
   tags: ["autodocs"],
   args: { placeholder: "Enter text" },
-};
+} satisfies Meta<typeof Textarea>;
 export default meta;
 
-export const Default: StoryObj<typeof Textarea> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -57,7 +57,7 @@ const AnalyticsForRows: React.FC<AnalyticsDashboardProps<Row>> = (props) => (
 /* ------------------------------------------------------------------ *
  *  Storybook meta
  * ------------------------------------------------------------------ */
-const meta: Meta<typeof AnalyticsForRows> = {
+const meta = {
   title: "Templates/Analytics Dashboard",
   component: AnalyticsForRows,
   parameters: {
@@ -73,11 +73,14 @@ const meta: Meta<typeof AnalyticsForRows> = {
     tableRows: rows,
     tableColumns: columns,
   },
-};
+} satisfies Meta<typeof AnalyticsForRows>;
 
 export default meta;
+
+type Story = StoryObj<typeof meta>;
+
 
 /* ------------------------------------------------------------------ *
  *  Stories
  * ------------------------------------------------------------------ */
-export const Default: StoryObj<typeof AnalyticsForRows> = {};
+export const Default = {} satisfies Story;

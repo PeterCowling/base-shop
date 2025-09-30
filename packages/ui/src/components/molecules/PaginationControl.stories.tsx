@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { PaginationControl } from "./PaginationControl";
 
-const meta: Meta<typeof PaginationControl> = {
+const meta = {
   title: "Molecules/PaginationControl",
   component: PaginationControl,
   tags: ["autodocs"],
@@ -9,7 +9,10 @@ const meta: Meta<typeof PaginationControl> = {
     page: 2,
     pageCount: 5,
   },
-};
+} satisfies Meta<typeof PaginationControl>;
 export default meta;
 
-export const Default: StoryObj<typeof PaginationControl> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

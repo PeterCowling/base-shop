@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { ProductGallery } from "./ProductGallery";
 
-const meta: Meta<typeof ProductGallery> = {
+const meta = {
   component: ProductGallery,
   args: {
     media: [
@@ -17,7 +17,10 @@ const meta: Meta<typeof ProductGallery> = {
       },
     ],
   },
-};
+} satisfies Meta<typeof ProductGallery>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductGallery> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -7,10 +7,13 @@ const steps = [
   { label: "Review", content: <div>Review order</div> },
 ];
 
-const meta: Meta<typeof CheckoutTemplate> = {
+const meta = {
   component: CheckoutTemplate,
   args: { steps },
-};
+} satisfies Meta<typeof CheckoutTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof CheckoutTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

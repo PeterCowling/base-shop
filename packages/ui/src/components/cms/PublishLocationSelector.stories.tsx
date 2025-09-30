@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import PublishLocationSelector from "./PublishLocationSelector";
 
-const meta: Meta<typeof PublishLocationSelector> = {
+const meta = {
   component: PublishLocationSelector,
   args: {
     selectedIds: [],
@@ -12,7 +12,10 @@ const meta: Meta<typeof PublishLocationSelector> = {
     showReload: { control: "boolean" },
     onChange: { action: "change" },
   },
-};
+} satisfies Meta<typeof PublishLocationSelector>;
 export default meta;
 
-export const Default: StoryObj<typeof PublishLocationSelector> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

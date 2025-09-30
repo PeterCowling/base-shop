@@ -6,15 +6,17 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './CertificateCheck.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof CertificateCheck> = {
+const meta = {
   title: 'CMS Blocks/CertificateCheck/Matrix',
   component: CertificateCheck,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof CertificateCheck>;
 export default meta;
 
-type Story = StoryObj<typeof CertificateCheck>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ placeholder: z.string().optional() }).parse(fixture); } catch (e) { console.error('Invalid CertificateCheck fixture:', e); }
@@ -22,6 +24,6 @@ try { z.object({ placeholder: z.string().optional() }).parse(fixture); } catch (
 const okAdapter = async () => ({ ok: true, message: 'Validated' });
 const failAdapter = async () => ({ ok: false, message: 'Invalid' });
 
-export const Default: Story = makeStateStory(baseArgs, { adapter: okAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-export const ErrorState: Story = makeStateStory(baseArgs, { adapter: failAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, { adapter: okAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
+export const ErrorState = makeStateStory(baseArgs, { adapter: failAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

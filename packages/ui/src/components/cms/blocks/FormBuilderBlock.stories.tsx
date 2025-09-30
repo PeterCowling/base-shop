@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import FormBuilderBlock from "./FormBuilderBlock";
 
-const meta: Meta<typeof FormBuilderBlock> = {
+const meta = {
   component: FormBuilderBlock,
   args: {
     fields: [
@@ -18,7 +18,10 @@ const meta: Meta<typeof FormBuilderBlock> = {
       },
     ],
   },
-};
+} satisfies Meta<typeof FormBuilderBlock>;
 export default meta;
 
-export const Default: StoryObj<typeof FormBuilderBlock> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

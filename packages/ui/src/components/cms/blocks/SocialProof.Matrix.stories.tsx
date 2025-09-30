@@ -6,16 +6,18 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './SocialProof.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof SocialProof> = {
+const meta = {
   title: 'CMS Blocks/SocialProof/Matrix',
   component: SocialProof,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Rating/testimonials/UGC/influencer/logo social proof with optional Organization JSON-LD.' } } },
-};
+} satisfies Meta<typeof SocialProof>;
 export default meta;
 
-type Story = StoryObj<typeof SocialProof>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 const Rating = z.object({ rating: z.number(), count: z.number().optional() });
@@ -36,5 +38,5 @@ try {
   }).parse(fixture);
 } catch (e) { console.error('Invalid SocialProof fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
+export const RTL = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] }) satisfies Story;

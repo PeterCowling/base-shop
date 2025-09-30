@@ -6,18 +6,20 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './RentalAvailabilitySection.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof RentalAvailabilitySection> = {
+const meta = {
   title: 'CMS Blocks/RentalAvailabilitySection/Matrix',
   component: RentalAvailabilitySection,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof RentalAvailabilitySection>;
 export default meta;
 
-type Story = StoryObj<typeof RentalAvailabilitySection>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ sku: z.string(), locationId: z.string().optional() }).parse(fixture); } catch (e) { console.error('Invalid RentalAvailabilitySection fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

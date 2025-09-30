@@ -6,15 +6,17 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './FormBuilderBlock.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof FormBuilderBlock> = {
+const meta = {
   title: 'CMS Blocks/FormBuilderBlock/Matrix',
   component: FormBuilderBlock,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof FormBuilderBlock>;
 export default meta;
 
-type Story = StoryObj<typeof FormBuilderBlock>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 const Field = z.union([
@@ -23,5 +25,5 @@ const Field = z.union([
 ]);
 try { z.object({ action: z.string().optional(), method: z.string().optional(), fields: z.array(Field), submitLabel: z.string().optional() }).parse(fixture); } catch (e) { console.error('Invalid FormBuilderBlock fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

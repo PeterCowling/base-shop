@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import DynamicRenderer from './DynamicRenderer';
 import type { PageComponent } from '@acme/types';
 
-const meta: Meta<typeof DynamicRenderer> = {
+const meta = {
   component: DynamicRenderer,
   tags: ['autodocs'],
   args: {
@@ -20,8 +20,11 @@ const meta: Meta<typeof DynamicRenderer> = {
       },
     },
   },
-};
+} satisfies Meta<typeof DynamicRenderer>;
 export default meta;
 
-export const Default: StoryObj<typeof DynamicRenderer> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 

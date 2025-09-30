@@ -8,7 +8,7 @@ import { makeStateStory } from '../../story-utils/createStories';
 
 const sample = PRODUCTS[0];
 
-const meta: Meta<typeof ProductCard> = {
+const meta = {
   title: 'Organisms/ProductCard/Matrix',
   component: ProductCard,
   parameters: { docs: { autodocs: false } },
@@ -26,47 +26,49 @@ const meta: Meta<typeof ProductCard> = {
       },
     },
   },
-};
+} satisfies Meta<typeof ProductCard>;
 export default meta;
 
-type Story = StoryObj<typeof ProductCard>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args as ProductCardProps;
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
-});
+}) satisfies Story;
 
-export const Loading: Story = makeStateStory(
+export const Loading = makeStateStory(
   baseArgs,
   { showImage: false, showPrice: false },
   'loading',
   { viewports: ['mobile1'], tags: ['visual'] }
-);
+) satisfies Story;
 
-export const Empty: Story = makeStateStory(
+export const Empty = makeStateStory(
   baseArgs,
   { product: { ...sample, title: '' } },
   'empty',
   { a11y: true, viewports: ['mobile1'], tags: ['visual'] }
-);
+) satisfies Story;
 
-export const Error: Story = makeStateStory(
+export const Error = makeStateStory(
   baseArgs,
   { product: sample, showPrice: false },
   'error',
   { a11y: true, critical: true, viewports: ['desktop'], tags: ['visual', 'ci'] }
-);
+) satisfies Story;
 
-export const RTL: Story = makeStateStory(
+export const RTL = makeStateStory(
   baseArgs,
   { ctaLabel: 'أضف إلى السلة' },
   'default',
   { rtl: true, viewports: ['mobile1'], tags: ['visual'] }
-);
+) satisfies Story;
 
-export const AddToCartFlow: Story = {
+export const AddToCartFlow = {
   ...makeStateStory(baseArgs, {}, 'default', {
     a11y: true,
     critical: true,
@@ -79,4 +81,4 @@ export const AddToCartFlow: Story = {
     // Expectation: nothing to assert visually here without toast; interaction should not error.
     await expect(canvasElement).toBeDefined();
   },
-};
+} satisfies Story;

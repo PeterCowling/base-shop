@@ -7,15 +7,17 @@ import fixture from './ImageSlider.fixtures.json';
 import { z } from 'zod';
 import type { Locale } from '@acme/i18n/locales';
 
-const meta: Meta<typeof ImageSlider> = {
+const meta = {
   title: 'CMS Blocks/ImageSlider/Matrix',
   component: ImageSlider,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof ImageSlider>;
 export default meta;
 
-type Story = StoryObj<typeof ImageSlider>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 const TT = z.union([
@@ -26,5 +28,5 @@ const TT = z.union([
 const Slide = z.object({ src: z.string(), alt: TT.optional(), caption: TT.optional() });
 try { z.object({ slides: z.array(Slide), openInLightbox: z.boolean().optional(), locale: z.string().optional() }).parse(fixture); } catch (e) { console.error('Invalid ImageSlider fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-export const RTL: Story = makeStateStory(baseArgs, { locale: 'ar' as unknown as Locale }, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
+export const RTL = makeStateStory(baseArgs, { locale: 'ar' as unknown as Locale }, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] }) satisfies Story;

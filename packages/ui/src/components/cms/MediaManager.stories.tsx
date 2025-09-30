@@ -6,7 +6,7 @@ const files: MediaItem[] = [
   { url: "/sample.jpg", altText: "Sample", tags: ["demo"], type: "image" },
 ];
 
-const meta: Meta<typeof MediaManager> = {
+const meta = {
   component: MediaManager,
   args: {
     shop: "demo",
@@ -22,7 +22,10 @@ const meta: Meta<typeof MediaManager> = {
     shop: { control: "text" },
     initialFiles: { control: "object" },
   },
-};
+} satisfies Meta<typeof MediaManager>;
 export default meta;
 
-export const Default: StoryObj<typeof MediaManager> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

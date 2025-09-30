@@ -52,7 +52,7 @@ const DashboardForOrders: React.FC<AccountDashboardTemplateProps<OrderRow>> = (
 /* ------------------------------------------------------------------ *
  *  Storybook meta
  * ------------------------------------------------------------------ */
-const meta: Meta<typeof DashboardForOrders> = {
+const meta = {
   title: "Templates/Account Dashboard",
   component: DashboardForOrders,
   parameters: {
@@ -68,11 +68,14 @@ const meta: Meta<typeof DashboardForOrders> = {
     orders,
     orderColumns,
   },
-};
+} satisfies Meta<typeof DashboardForOrders>;
 
 export default meta;
+
+type Story = StoryObj<typeof meta>;
+
 
 /* ------------------------------------------------------------------ *
  *  Stories
  * ------------------------------------------------------------------ */
-export const Default: StoryObj<typeof DashboardForOrders> = {};
+export const Default = {} satisfies Story;

@@ -5,7 +5,7 @@ import type { SKU } from '@acme/types';
 import { PRODUCTS } from '@acme/platform-core/products/index';
 import CollectionSectionClient from './CollectionSection.client';
 
-const meta: Meta<typeof CollectionSectionClient> = {
+const meta = {
   component: CollectionSectionClient,
   args: {
     initial: PRODUCTS as SKU[],
@@ -13,11 +13,14 @@ const meta: Meta<typeof CollectionSectionClient> = {
     paginationMode: 'loadMore',
     pageSize: 12,
   },
-};
+} satisfies Meta<typeof CollectionSectionClient>;
 export default meta;
 
-export const Default: StoryObj<typeof CollectionSectionClient> = {};
+type Story = StoryObj<typeof meta>;
 
-export const SsrPagination: StoryObj<typeof CollectionSectionClient> = {
+
+export const Default = {} satisfies Story;
+
+export const SsrPagination = {
   args: { paginationMode: 'ssr' },
-};
+} satisfies Story;

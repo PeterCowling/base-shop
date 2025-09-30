@@ -24,7 +24,7 @@ const sample: ProductPublication & { variants: Record<string, string[]> } = {
   variants: {},
 };
 
-const meta: Meta<typeof ProductEditorForm> = {
+const meta = {
   component: ProductEditorForm,
   args: {
     product: sample,
@@ -36,7 +36,10 @@ const meta: Meta<typeof ProductEditorForm> = {
     locales: { control: "object" },
     onSave: { action: "save" },
   },
-};
+} satisfies Meta<typeof ProductEditorForm>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductEditorForm> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

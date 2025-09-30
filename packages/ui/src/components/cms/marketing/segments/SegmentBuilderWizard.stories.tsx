@@ -2,17 +2,19 @@ import type { Meta, StoryObj } from "@storybook/react";
 import SegmentBuilderWizard from "./SegmentBuilderWizard";
 import { defaultSegmentDefinition } from "./types";
 
-const meta: Meta<typeof SegmentBuilderWizard> = {
+const meta = {
   title: "CMS/Marketing/Segments/Wizard",
   component: SegmentBuilderWizard,
   parameters: { layout: "padded" },
-};
+} satisfies Meta<typeof SegmentBuilderWizard>;
 
 export default meta;
 
-type Story = StoryObj<typeof SegmentBuilderWizard>;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+
+
+export const Default = {
   args: {
     initialDefinition: {
       ...defaultSegmentDefinition,
@@ -22,4 +24,4 @@ export const Default: Story = {
     },
     onSubmit: async () => undefined,
   },
-};
+} satisfies Story;

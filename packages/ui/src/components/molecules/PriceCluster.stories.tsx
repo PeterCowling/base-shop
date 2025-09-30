@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { PriceCluster } from "./PriceCluster";
 
-const meta: Meta<typeof PriceCluster> = {
+const meta = {
   component: PriceCluster,
   args: {
     price: 80,
@@ -13,7 +13,10 @@ const meta: Meta<typeof PriceCluster> = {
     compare: { control: "number" },
     currency: { control: "text" },
   },
-};
+} satisfies Meta<typeof PriceCluster>;
 export default meta;
 
-export const Default: StoryObj<typeof PriceCluster> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

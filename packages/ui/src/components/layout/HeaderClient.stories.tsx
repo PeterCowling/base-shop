@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import HeaderClient from "./HeaderClient.client";
 
-const meta: Meta<typeof HeaderClient> = {
+const meta = {
   title: "Layout/HeaderClient",
   component: HeaderClient,
   tags: ["autodocs"],
@@ -10,7 +10,10 @@ const meta: Meta<typeof HeaderClient> = {
     height: { control: "text" },
     padding: { control: "text" },
   },
-};
+} satisfies Meta<typeof HeaderClient>;
 export default meta;
 
-export const Default: StoryObj<typeof HeaderClient> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

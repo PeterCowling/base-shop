@@ -16,10 +16,13 @@ const product: SKU = {
   description: "A wonderful item",
 };
 
-const meta: Meta<typeof ProductDetailTemplate> = {
+const meta = {
   component: ProductDetailTemplate,
   args: { product },
-};
+} satisfies Meta<typeof ProductDetailTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductDetailTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

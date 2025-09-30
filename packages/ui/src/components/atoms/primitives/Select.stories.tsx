@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "./select";
 
-const meta: Meta<typeof Select> = {
+const meta = {
   title: "Primitives/Select",
   component: Select,
   decorators: [
@@ -20,10 +20,13 @@ const meta: Meta<typeof Select> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Select>;
 export default meta;
 
-export const PanelSurface: StoryObj<typeof Select> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const PanelSurface = {
   render: () => (
     <Select>
       <SelectTrigger className="w-56">
@@ -41,4 +44,4 @@ export const PanelSurface: StoryObj<typeof Select> = {
       </SelectContent>
     </Select>
   ),
-};
+} satisfies Story;

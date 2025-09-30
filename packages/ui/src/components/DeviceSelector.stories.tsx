@@ -14,7 +14,7 @@ function Harness() {
   );
 }
 
-const meta: Meta<typeof DeviceSelector> = {
+const meta = {
   component: DeviceSelector,
   tags: ['autodocs'],
   parameters: {
@@ -24,8 +24,11 @@ const meta: Meta<typeof DeviceSelector> = {
       },
     },
   },
-};
+} satisfies Meta<typeof DeviceSelector>;
 export default meta;
 
-export const Default: StoryObj<typeof DeviceSelector> = { render: () => <Harness /> };
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = { render: () => <Harness /> } satisfies Story;
 

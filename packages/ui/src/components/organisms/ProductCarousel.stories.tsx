@@ -46,7 +46,7 @@ function AutoCarousel(props: ProductCarouselProps & { autoplay?: boolean }) {
   );
 }
 
-const meta: Meta<typeof AutoCarousel> = {
+const meta = {
   component: AutoCarousel,
   parameters: {
     docs: {
@@ -67,11 +67,14 @@ const meta: Meta<typeof AutoCarousel> = {
     minItems: { control: { type: "number", min: 1, max: 6 } },
     maxItems: { control: { type: "number", min: 1, max: 6 } },
   },
-};
+} satisfies Meta<typeof AutoCarousel>;
 export default meta;
 
-export const Default: StoryObj<typeof AutoCarousel> = {};
-export const Autoplay: StoryObj<typeof AutoCarousel> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
+export const Autoplay = {
   args: { autoplay: true },
   parameters: {
     docs: {
@@ -81,9 +84,9 @@ export const Autoplay: StoryObj<typeof AutoCarousel> = {
       },
     },
   },
-};
+} satisfies Story;
 
-export const Bounded: StoryObj<typeof AutoCarousel> = {
+export const Bounded = {
   args: { minItems: 2, maxItems: 3 },
   parameters: {
     docs: {
@@ -93,12 +96,12 @@ export const Bounded: StoryObj<typeof AutoCarousel> = {
       },
     },
   },
-};
+} satisfies Story;
 
-export const Wide: StoryObj<typeof AutoCarousel> = {
+export const Wide = {
   args: { minItems: 1, maxItems: 4 },
-};
+} satisfies Story;
 
-export const Mobile: StoryObj<typeof AutoCarousel> = {
+export const Mobile = {
   parameters: { viewport: { defaultViewport: "mobile1" } },
-};
+} satisfies Story;

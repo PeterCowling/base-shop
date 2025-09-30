@@ -5,7 +5,7 @@ import LayersPanel from "./LayersPanel";
 import type { PageComponent, EditorFlags } from "@acme/types";
 import { moveComponent } from "./state/layout/utils";
 
-const meta: Meta<typeof LayersPanel> = {
+const meta = {
   title: "CMS/Page Builder/LayersPanel",
   component: LayersPanel,
   parameters: {
@@ -15,10 +15,12 @@ const meta: Meta<typeof LayersPanel> = {
       },
     },
   },
-};
+} satisfies Meta<typeof LayersPanel>;
 export default meta;
 
-type Story = StoryObj<typeof LayersPanel>;
+type Story = StoryObj<typeof meta>;
+
+
 
 const sample: PageComponent[] = [
   {
@@ -38,7 +40,7 @@ type Action =
   | { type: "move"; from: number[]; to: number[] }
   | { type: string; [k: string]: unknown };
 
-export const Basic: Story = {
+export const Basic = {
   render: () => {
     const Example = () => {
       const [selected, setSelected] = useState<string[]>([]);
@@ -63,9 +65,9 @@ export const Basic: Story = {
     };
     return <Example />;
   },
-};
+} satisfies Story;
 
-export const DragAndDrop: Story = {
+export const DragAndDrop = {
   name: "Drag & Drop",
   render: () => {
     const Example = () => {
@@ -118,4 +120,4 @@ export const DragAndDrop: Story = {
     };
     return <Example />;
   },
-};
+} satisfies Story;

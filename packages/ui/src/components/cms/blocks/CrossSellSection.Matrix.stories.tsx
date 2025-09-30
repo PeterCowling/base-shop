@@ -6,19 +6,21 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './CrossSellSection.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof CrossSellSection> = {
+const meta = {
   title: 'CMS Blocks/CrossSellSection/Matrix',
   component: CrossSellSection,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof CrossSellSection>;
 export default meta;
 
-type Story = StoryObj<typeof CrossSellSection>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ rules: z.object({ seedId: z.string().optional(), includeForRental: z.boolean().optional(), onlyInStock: z.boolean().optional(), maxItems: z.number().optional() }).optional(), layout: z.enum(['grid','carousel']).optional() }).parse(fixture); } catch (e) { console.error('Invalid CrossSellSection fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-export const Carousel: Story = makeStateStory(baseArgs, { layout: 'carousel' }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
+export const Carousel = makeStateStory(baseArgs, { layout: 'carousel' }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

@@ -101,10 +101,13 @@ function FakeLiveChatWidget(props: React.HTMLAttributes<HTMLButtonElement>) {
   );
 }
 
-const meta: Meta<typeof LiveChatWidget> = {
+const meta = {
   component: LiveChatWidget,
   render: (args) => <FakeLiveChatWidget {...args} />,
-};
+} satisfies Meta<typeof LiveChatWidget>;
 export default meta;
 
-export const Default: StoryObj<typeof LiveChatWidget> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

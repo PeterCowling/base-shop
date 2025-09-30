@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Card, CardContent } from "./card";
 
-const meta: Meta<typeof Card> = {
+const meta = {
   title: "Primitives/Card",
   component: Card,
   decorators: [
@@ -11,10 +11,13 @@ const meta: Meta<typeof Card> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Card>;
 export default meta;
 
-export const Surfaces: StoryObj<typeof Card> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Surfaces = {
   render: () => (
     <>
       <Card>
@@ -29,4 +32,4 @@ export const Surfaces: StoryObj<typeof Card> = {
       </Card>
     </>
   ),
-};
+} satisfies Story;

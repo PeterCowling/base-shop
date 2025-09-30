@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { CategoryCard } from "./CategoryCard";
 
-const meta: Meta<typeof CategoryCard> = {
+const meta = {
   component: CategoryCard,
   args: {
     category: {
@@ -11,7 +11,10 @@ const meta: Meta<typeof CategoryCard> = {
       description: "Shop our latest shoes",
     },
   },
-};
+} satisfies Meta<typeof CategoryCard>;
 export default meta;
 
-export const Default: StoryObj<typeof CategoryCard> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

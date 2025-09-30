@@ -16,7 +16,7 @@ const sampleColumns: Column<Row>[] = [
   { header: "Age", render: (r) => r.age },
 ];
 
-const meta: Meta<typeof DataTable<Row>> = {
+const meta = {
   component: DataTable,
   args: {
     rows: sampleRows,
@@ -29,7 +29,9 @@ const meta: Meta<typeof DataTable<Row>> = {
     selectable: { control: "boolean" },
     onSelectionChange: { action: "selectionChange" },
   },
-};
+} satisfies Meta<typeof DataTable<Row>>;
 export default meta;
 
-export const Default: StoryObj<typeof DataTable<Row>> = {};
+type Story = StoryObj<typeof meta>;
+
+export const Default = {} satisfies Story;

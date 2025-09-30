@@ -3,7 +3,7 @@ import { Icon, type IconProps } from "./Icon";
 
 type IconStoryProps = IconProps & { size: number };
 
-const meta: Meta<IconStoryProps> = {
+const meta = {
   title: "Atoms/Icon",
   component: Icon,
   argTypes: {
@@ -11,12 +11,15 @@ const meta: Meta<IconStoryProps> = {
     size: { control: { type: "number", min: 12, max: 64 } },
   },
   args: { name: "heart", size: 24 },
-};
+} satisfies Meta<IconStoryProps>;
 export default meta;
 
-export const Primary: StoryObj<IconStoryProps> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Primary = {
   render: (args) => {
     const { size, ...rest } = args;
     return <Icon {...rest} width={size} height={size} />;
   },
-};
+} satisfies Story;

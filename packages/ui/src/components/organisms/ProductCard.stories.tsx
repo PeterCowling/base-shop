@@ -25,15 +25,18 @@ const product: SKU = {
   description: "",
 };
 
-const meta: Meta<typeof ProductCard> = {
+const meta = {
   component: ProductCard,
   args: { product },
-};
+} satisfies Meta<typeof ProductCard>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductCard> = {};
+type Story = StoryObj<typeof meta>;
 
-export const WithBadge: StoryObj<typeof ProductCard> = {
+
+export const Default = {} satisfies Story;
+
+export const WithBadge = {
   decorators: [
     (Story) => (
       <div className="relative">
@@ -51,9 +54,9 @@ export const WithBadge: StoryObj<typeof ProductCard> = {
       />
     </>
   ),
-};
+} satisfies Story;
 
-export const OutOfStock: StoryObj<typeof ProductCard> = {
+export const OutOfStock = {
   decorators: [
     (Story) => (
       <div className="relative">
@@ -69,4 +72,4 @@ export const OutOfStock: StoryObj<typeof ProductCard> = {
       </div>
     </>
   ),
-};
+} satisfies Story;

@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { ProductBadge } from "./ProductBadge";
 
-const meta: Meta<typeof ProductBadge> = {
+const meta = {
   title: "Atoms/ProductBadge",
   component: ProductBadge,
   decorators: [
@@ -11,10 +11,13 @@ const meta: Meta<typeof ProductBadge> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof ProductBadge>;
 export default meta;
 
-export const BackCompatVariants: StoryObj<typeof ProductBadge> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const BackCompatVariants = {
   render: () => (
     <>
       <ProductBadge label="default" />
@@ -22,9 +25,9 @@ export const BackCompatVariants: StoryObj<typeof ProductBadge> = {
       <ProductBadge variant="new" label="new" />
     </>
   ),
-};
+} satisfies Story;
 
-export const TonesAndColors: StoryObj<typeof ProductBadge> = {
+export const TonesAndColors = {
   render: () => (
     <>
       <ProductBadge color="success" tone="soft" label="success soft" />
@@ -37,4 +40,4 @@ export const TonesAndColors: StoryObj<typeof ProductBadge> = {
       <ProductBadge color="accent" tone="solid" label="accent solid" />
     </>
   ),
-};
+} satisfies Story;

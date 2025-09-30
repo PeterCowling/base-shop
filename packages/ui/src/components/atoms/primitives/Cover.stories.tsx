@@ -1,15 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Cover } from "./Cover";
 
-const meta: Meta<typeof Cover> = {
+const meta = {
   title: "Primitives/Cover",
   component: Cover,
-};
+} satisfies Meta<typeof Cover>;
 export default meta;
 
-type Story = StoryObj<typeof Cover>;
+type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+
+
+export const Basic = {
   args: { minH: "[60vh]", className: "border rounded" },
   render: (args) => (
     <Cover {...args}>
@@ -19,5 +21,5 @@ export const Basic: Story = {
       </div>
     </Cover>
   ),
-};
+} satisfies Story;
 

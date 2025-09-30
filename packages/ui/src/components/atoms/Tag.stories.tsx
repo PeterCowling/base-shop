@@ -1,13 +1,16 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Tag } from "./Tag";
 
-const meta: Meta<typeof Tag> = {
+const meta = {
   title: "Atoms/Tag",
   component: Tag,
-};
+} satisfies Meta<typeof Tag>;
 export default meta;
 
-export const Variants: StoryObj<typeof Tag> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Variants = {
   decorators: [
     (Story) => (
       <div className="flex gap-2">
@@ -23,9 +26,9 @@ export const Variants: StoryObj<typeof Tag> = {
       <Tag variant="destructive">Destructive</Tag>
     </>
   ),
-};
+} satisfies Story;
 
-export const TonesAndColors: StoryObj<typeof Tag> = {
+export const TonesAndColors = {
   decorators: [
     (Story) => (
       <div className="flex flex-wrap items-center gap-2">
@@ -49,4 +52,4 @@ export const TonesAndColors: StoryObj<typeof Tag> = {
       <Tag color="danger" tone="solid">danger solid</Tag>
     </>
   ),
-};
+} satisfies Story;

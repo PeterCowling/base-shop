@@ -59,22 +59,25 @@ function MiniCartWrapper({ items }: WrapperProps) {
   );
 }
 
-const meta: Meta<typeof MiniCartWrapper> = {
+const meta = {
   component: MiniCartWrapper,
   parameters: { cart: true },
   args: {
     items: {},
   },
-};
+} satisfies Meta<typeof MiniCartWrapper>;
 export default meta;
 
-export const Empty: StoryObj<typeof MiniCartWrapper> = {};
+type Story = StoryObj<typeof meta>;
 
-export const Filled: StoryObj<typeof MiniCartWrapper> = {
+
+export const Empty = {} satisfies Story;
+
+export const Filled = {
   args: {
     items: {
       [sku1.id as string]: { sku: sku1, qty: 2 },
       [sku2.id as string]: { sku: sku2, qty: 1 },
     } as CartState,
   },
-};
+} satisfies Story;

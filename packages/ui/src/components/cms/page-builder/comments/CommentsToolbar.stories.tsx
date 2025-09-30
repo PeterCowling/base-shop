@@ -29,13 +29,16 @@ function Harness() {
   );
 }
 
-const meta: Meta<typeof CommentsToolbar> = {
+const meta = {
   component: CommentsToolbar,
   tags: ['autodocs'],
   parameters: {
     docs: { description: { component: 'Toolbar for Page Builder comments. Demo shows unresolved count and simple peers list.' } },
   },
-};
+} satisfies Meta<typeof CommentsToolbar>;
 export default meta;
 
-export const Default: StoryObj<typeof CommentsToolbar> = { render: () => <Harness /> };
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = { render: () => <Harness /> } satisfies Story;

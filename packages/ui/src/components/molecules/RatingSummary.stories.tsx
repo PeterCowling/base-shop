@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { RatingSummary } from "./RatingSummary";
 
-const meta: Meta<typeof RatingSummary> = {
+const meta = {
   title: "Molecules/RatingSummary",
   component: RatingSummary,
   tags: ["autodocs"],
@@ -9,7 +9,10 @@ const meta: Meta<typeof RatingSummary> = {
     rating: 4.3,
     count: 32,
   },
-};
+} satisfies Meta<typeof RatingSummary>;
 export default meta;
 
-export const Default: StoryObj<typeof RatingSummary> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

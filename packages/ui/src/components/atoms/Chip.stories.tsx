@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Chip } from "./Chip";
 
-const meta: Meta<typeof Chip> = {
+const meta = {
   title: "Atoms/Chip",
   component: Chip,
   decorators: [
@@ -11,10 +11,13 @@ const meta: Meta<typeof Chip> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Chip>;
 export default meta;
 
-export const BackCompatVariants: StoryObj<typeof Chip> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const BackCompatVariants = {
   render: () => (
     <>
       <Chip>default</Chip>
@@ -23,9 +26,9 @@ export const BackCompatVariants: StoryObj<typeof Chip> = {
       <Chip variant="destructive">destructive</Chip>
     </>
   ),
-};
+} satisfies Story;
 
-export const TonesAndColors: StoryObj<typeof Chip> = {
+export const TonesAndColors = {
   render: () => (
     <>
       <Chip color="primary" tone="soft">primary soft</Chip>
@@ -38,4 +41,4 @@ export const TonesAndColors: StoryObj<typeof Chip> = {
       <Chip color="danger" tone="solid">danger solid</Chip>
     </>
   ),
-};
+} satisfies Story;

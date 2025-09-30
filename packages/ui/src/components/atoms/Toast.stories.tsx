@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { Toast } from "./Toast";
 import * as React from "react";
 
-const meta: Meta<typeof Toast> = {
+const meta = {
   title: "Atoms/Toast",
   component: Toast,
   decorators: [
@@ -12,10 +12,13 @@ const meta: Meta<typeof Toast> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Toast>;
 export default meta;
 
-export const SoftVariants: StoryObj<typeof Toast> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const SoftVariants = {
   render: () => (
     <>
       <Toast open message="Default soft toast" />
@@ -25,9 +28,9 @@ export const SoftVariants: StoryObj<typeof Toast> = {
       <Toast open variant="danger" message="Danger soft toast" />
     </>
   ),
-};
+} satisfies Story;
 
-export const SolidVariants: StoryObj<typeof Toast> = {
+export const SolidVariants = {
   render: () => (
     <>
       <Toast open tone="solid" message="Default solid toast" />
@@ -37,4 +40,4 @@ export const SolidVariants: StoryObj<typeof Toast> = {
       <Toast open tone="solid" variant="danger" message="Danger solid toast" />
     </>
   ),
-};
+} satisfies Story;

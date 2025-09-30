@@ -6,18 +6,20 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './VideoBlock.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof VideoBlock> = {
+const meta = {
   title: 'CMS Blocks/VideoBlock/Matrix',
   component: VideoBlock,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof VideoBlock>;
 export default meta;
 
-type Story = StoryObj<typeof VideoBlock>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ src: z.string().url(), autoplay: z.boolean().optional() }).parse(fixture); } catch (e) { console.error('Invalid VideoBlock fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

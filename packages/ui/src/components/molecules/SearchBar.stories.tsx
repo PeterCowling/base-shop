@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, waitFor, within } from "@storybook/test";
 import { SearchBar } from "./SearchBar";
 
-const meta: Meta<typeof SearchBar> = {
+const meta = {
   component: SearchBar,
   parameters: {
     docs: {
@@ -21,10 +21,13 @@ const meta: Meta<typeof SearchBar> = {
     onSelect: { action: "select" },
     onSearch: { action: "search" },
   },
-};
+} satisfies Meta<typeof SearchBar>;
 export default meta;
 
-export const Default: StoryObj<typeof SearchBar> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   play: async ({ canvasElement, args }) => {
     const selectSpy = fn();
     const searchSpy = fn();
@@ -46,9 +49,9 @@ export const Default: StoryObj<typeof SearchBar> = {
 
     await waitFor(() => expect(searchSpy).toHaveBeenCalledWith("Pear"));
   },
-};
+} satisfies Story;
 
-export const PrefilledQuery: StoryObj<typeof SearchBar> = {
+export const PrefilledQuery = {
   args: {
     query: "sneakers",
     suggestions: ["Sneakers", "Sneakers green", "Sneakers leather"],
@@ -61,4 +64,4 @@ export const PrefilledQuery: StoryObj<typeof SearchBar> = {
       },
     },
   },
-};
+} satisfies Story;

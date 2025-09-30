@@ -7,7 +7,7 @@ import { Header } from "../organisms/Header";
 import { SideNav } from "../organisms/SideNav";
 import { AppShell } from "./AppShell";
 
-const meta: Meta<typeof AppShell> = {
+const meta = {
   title: "Layout/AppShell",
   component: AppShell,
   tags: ["autodocs"],
@@ -19,10 +19,13 @@ const meta: Meta<typeof AppShell> = {
       },
     },
   },
-};
+} satisfies Meta<typeof AppShell>;
 export default meta;
 
-export const Default: StoryObj<typeof AppShell> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   render: () => (
     <AppShell
       header={<Header locale="en" shopName="Demo">Header</Header>}
@@ -32,9 +35,9 @@ export const Default: StoryObj<typeof AppShell> = {
       <Content>Content</Content>
     </AppShell>
   ),
-};
+} satisfies Story;
 
-export const WithCustomBackground: StoryObj<typeof AppShell> = {
+export const WithCustomBackground = {
   render: () => (
     <AppShell
       className="bg-bg"
@@ -53,4 +56,4 @@ export const WithCustomBackground: StoryObj<typeof AppShell> = {
       },
     },
   },
-};
+} satisfies Story;

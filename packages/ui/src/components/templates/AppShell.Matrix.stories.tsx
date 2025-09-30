@@ -9,7 +9,7 @@ import { Footer } from '../organisms/Footer';
 import { Content } from '../organisms/Content';
 import { makeStateStory } from '../../story-utils/createStories';
 
-const meta: Meta<typeof AppShell> = {
+const meta = {
   title: 'Templates/AppShell/Matrix',
   component: AppShell,
   parameters: { docs: { autodocs: false } },
@@ -26,43 +26,45 @@ const meta: Meta<typeof AppShell> = {
     footer: <Footer shopName="Demo">Footer</Footer>,
     children: <Content>Content</Content>,
   },
-};
+} satisfies Meta<typeof AppShell>;
 export default meta;
 
-type Story = StoryObj<typeof AppShell>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
   docsDescription: 'Shell with header, side navigation and footer around page content.',
-});
+}) satisfies Story;
 
-export const Loading: Story = makeStateStory(baseArgs, { sideNav: null }, 'loading', {
+export const Loading = makeStateStory(baseArgs, { sideNav: null }, 'loading', {
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'Simulated loading: side navigation hidden to mimic minimal shell.',
-});
+}) satisfies Story;
 
-export const Empty: Story = makeStateStory(baseArgs, { children: null }, 'empty', {
+export const Empty = makeStateStory(baseArgs, { children: null }, 'empty', {
   a11y: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'No children content; demonstrates shell-only state.',
-});
+}) satisfies Story;
 
-export const Error: Story = makeStateStory(baseArgs, {}, 'error', {
+export const Error = makeStateStory(baseArgs, {}, 'error', {
   a11y: true,
   critical: true,
   viewports: ['desktop'],
   tags: ['visual', 'ci'],
   docsDescription: 'Matrix completeness state; no network behavior.',
-});
+}) satisfies Story;
 
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
+export const RTL = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'RTL sample for shell chrome and content region.',
-});
+}) satisfies Story;

@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { StatsGrid } from "./StatsGrid";
 
-const meta: Meta<typeof StatsGrid> = {
+const meta = {
   component: StatsGrid,
   args: {
     items: [
@@ -10,7 +10,10 @@ const meta: Meta<typeof StatsGrid> = {
       { label: "Reviews", value: 80 },
     ],
   },
-};
+} satisfies Meta<typeof StatsGrid>;
 export default meta;
 
-export const Default: StoryObj<typeof StatsGrid> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -32,7 +32,7 @@ const results: SKU[] = [
   },
 ];
 
-const meta: Meta<typeof SearchResultsTemplate> = {
+const meta = {
   component: SearchResultsTemplate,
   args: {
     suggestions: ["Product 1", "Product 2"],
@@ -48,12 +48,15 @@ const meta: Meta<typeof SearchResultsTemplate> = {
     minItems: { control: { type: "number" } },
     maxItems: { control: { type: "number" } },
   },
-};
+} satisfies Meta<typeof SearchResultsTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof SearchResultsTemplate> = {};
+type Story = StoryObj<typeof meta>;
 
-export const WithFilters: StoryObj<typeof SearchResultsTemplate> = {
+
+export const Default = {} satisfies Story;
+
+export const WithFilters = {
   args: {
     ...meta.args,
     filters: (
@@ -70,12 +73,12 @@ export const WithFilters: StoryObj<typeof SearchResultsTemplate> = {
       />
     ),
   },
-};
+} satisfies Story;
 
-export const Loading: StoryObj<typeof SearchResultsTemplate> = {
+export const Loading = {
   args: {
     ...meta.args,
     results: [],
     isLoading: true,
   },
-};
+} satisfies Story;

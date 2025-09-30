@@ -19,7 +19,7 @@ const samplePage: Page = {
   createdBy: "",
 };
 
-const meta: Meta<typeof PageBuilder> = {
+const meta = {
   component: PageBuilder,
   args: {
     page: samplePage,
@@ -30,7 +30,10 @@ const meta: Meta<typeof PageBuilder> = {
     onSave: { action: "save" },
     onPublish: { action: "publish" },
   },
-};
+} satisfies Meta<typeof PageBuilder>;
 export default meta;
 
-export const GroupedPalette: StoryObj<typeof PageBuilder> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const GroupedPalette = {} satisfies Story;

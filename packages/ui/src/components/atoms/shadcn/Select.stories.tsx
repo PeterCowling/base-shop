@@ -7,15 +7,18 @@ import {
   SelectValue,
 } from "./Select";
 
-const meta: Meta<typeof Select> = {
+const meta = {
   title: "Atoms/Shadcn/Select",
   component: Select,
   tags: ["autodocs"],
   args: {},
-};
+} satisfies Meta<typeof Select>;
 export default meta;
 
-export const Default: StoryObj<typeof Select> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   render: (args) => (
     <Select {...args}>
       <SelectTrigger>
@@ -27,4 +30,4 @@ export const Default: StoryObj<typeof Select> = {
       </SelectContent>
     </Select>
   ),
-};
+} satisfies Story;

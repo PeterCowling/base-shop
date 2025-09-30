@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { SustainabilityBadgeCluster } from "./SustainabilityBadgeCluster";
 
-const meta: Meta<typeof SustainabilityBadgeCluster> = {
+const meta = {
   component: SustainabilityBadgeCluster,
   args: {
     badges: [
@@ -9,7 +9,10 @@ const meta: Meta<typeof SustainabilityBadgeCluster> = {
       { label: "Fair Trade", variant: "default" },
     ],
   },
-};
+} satisfies Meta<typeof SustainabilityBadgeCluster>;
 export default meta;
 
-export const Default: StoryObj<typeof SustainabilityBadgeCluster> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

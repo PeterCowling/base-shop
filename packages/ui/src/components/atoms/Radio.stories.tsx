@@ -5,15 +5,18 @@ import { Stack } from "./primitives/Stack";
 
 type GroupProps = RadioProps & { selectedIndex: number };
 
-const meta: Meta<GroupProps> = {
+const meta = {
   title: "Atoms/Radio",
   component: Radio,
   argTypes: {
     selectedIndex: { control: { type: "inline-radio", options: [0, 1, 2] } },
   },
   args: { selectedIndex: 0 },
-};
+} satisfies Meta<GroupProps>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
+
 
 const GroupRender = (args: GroupProps) => {
   const [selected, setSelected] = useState(args.selectedIndex);
@@ -32,6 +35,6 @@ const GroupRender = (args: GroupProps) => {
   );
 };
 
-export const Group: StoryObj<GroupProps> = {
+export const Group = {
   render: (args) => <GroupRender {...args} />,
-};
+} satisfies Story;

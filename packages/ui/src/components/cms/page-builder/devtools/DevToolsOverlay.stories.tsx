@@ -22,13 +22,16 @@ function Harness() {
   );
 }
 
-const meta: Meta<typeof DevToolsOverlay> = {
+const meta = {
   component: DevToolsOverlay,
   tags: ['autodocs'],
   parameters: {
     docs: { description: { component: 'Developer overlay for Page Builder. Story pre-enables the overlay and renders a synthetic canvas with droppable containers and items.' } },
   },
-};
+} satisfies Meta<typeof DevToolsOverlay>;
 export default meta;
 
-export const Default: StoryObj<typeof DevToolsOverlay> = { render: () => <Harness /> };
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = { render: () => <Harness /> } satisfies Story;

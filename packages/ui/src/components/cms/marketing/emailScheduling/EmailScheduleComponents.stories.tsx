@@ -9,17 +9,19 @@ import {
   type EmailSchedulePreviewData,
 } from "./types";
 
-const meta: Meta<typeof EmailScheduleForm> = {
+const meta = {
   title: "CMS/Marketing/EmailScheduling",
   component: EmailScheduleForm,
   parameters: { layout: "padded" },
-};
+} satisfies Meta<typeof EmailScheduleForm>;
 
 export default meta;
 
-type Story = StoryObj<typeof EmailScheduleForm>;
+type Story = StoryObj<typeof meta>;
 
-export const FormWithPreview: Story = {
+
+
+export const FormWithPreview = {
   render: () => {
     function Example() {
       const [preview, setPreview] = useState<EmailSchedulePreviewData>(
@@ -43,12 +45,12 @@ export const FormWithPreview: Story = {
     }
     return <Example />;
   },
-};
+} satisfies Story;
 
-export const Summary: Story = {
+export const Summary = {
   render: () => (
     <EmailScheduleSummaryCard
       data={getEmailSchedulePreview(defaultEmailScheduleValues)}
     />
   ),
-};
+} satisfies Story;

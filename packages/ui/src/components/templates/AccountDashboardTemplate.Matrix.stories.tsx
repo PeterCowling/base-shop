@@ -18,7 +18,7 @@ const DashboardForOrders: React.FC<AccountDashboardTemplateProps<OrderRow>> = (p
   <AccountDashboardTemplate<OrderRow> {...props} />
 );
 
-const meta: Meta<typeof DashboardForOrders> = {
+const meta = {
   title: 'Templates/Account Dashboard/Matrix',
   component: DashboardForOrders,
   parameters: { docs: { autodocs: false } },
@@ -30,43 +30,45 @@ const meta: Meta<typeof DashboardForOrders> = {
     },
   },
   args: { user, stats, orders, orderColumns },
-};
+} satisfies Meta<typeof DashboardForOrders>;
 export default meta;
 
-type Story = StoryObj<typeof DashboardForOrders>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
   docsDescription: 'Dashboard with user header, KPI cards and orders table.',
-});
+}) satisfies Story;
 
-export const Loading: Story = makeStateStory(baseArgs, { stats: [] }, 'loading', {
+export const Loading = makeStateStory(baseArgs, { stats: [] }, 'loading', {
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'Simulated loading: KPI cards hidden.',
-});
+}) satisfies Story;
 
-export const Empty: Story = makeStateStory(baseArgs, { stats: [], orders: [], orderColumns: [] }, 'empty', {
+export const Empty = makeStateStory(baseArgs, { stats: [], orders: [], orderColumns: [] }, 'empty', {
   a11y: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'No stats or orders; shows just the user header.',
-});
+}) satisfies Story;
 
-export const Error: Story = makeStateStory(baseArgs, {}, 'error', {
+export const Error = makeStateStory(baseArgs, {}, 'error', {
   a11y: true,
   critical: true,
   viewports: ['desktop'],
   tags: ['visual', 'ci'],
   docsDescription: 'Matrix completeness state; no network behavior.',
-});
+}) satisfies Story;
 
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
+export const RTL = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'RTL sample for header, KPIs and table.',
-});
+}) satisfies Story;

@@ -1,10 +1,13 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import ValueProps from "./ValueProps";
 
-const meta: Meta<typeof ValueProps> = {
+const meta = {
   component: ValueProps,
   args: {},
-};
+} satisfies Meta<typeof ValueProps>;
 export default meta;
 
-export const Default: StoryObj<typeof ValueProps> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -9,7 +9,7 @@ import {
 } from "./dropdown-menu";
 import { Button } from "./button";
 
-const meta: Meta<typeof DropdownMenu> = {
+const meta = {
   title: "Primitives/DropdownMenu",
   component: DropdownMenu,
   decorators: [
@@ -19,10 +19,13 @@ const meta: Meta<typeof DropdownMenu> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof DropdownMenu>;
 export default meta;
 
-export const PanelSurface: StoryObj<typeof DropdownMenu> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const PanelSurface = {
   render: () => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,9 +40,9 @@ export const PanelSurface: StoryObj<typeof DropdownMenu> = {
       </DropdownMenuContent>
     </DropdownMenu>
   ),
-};
+} satisfies Story;
 
-export const Submenu: StoryObj<typeof DropdownMenu> = {
+export const Submenu = {
   render: () => (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -61,4 +64,4 @@ export const Submenu: StoryObj<typeof DropdownMenu> = {
       </DropdownMenuContent>
     </DropdownMenu>
   ),
-};
+} satisfies Story;

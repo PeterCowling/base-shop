@@ -6,20 +6,22 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './ContactFormWithMap.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof ContactFormWithMap> = {
+const meta = {
   title: 'CMS Blocks/ContactFormWithMap/Matrix',
   component: ContactFormWithMap,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Contact form with an embedded map iframe.' } } },
-};
+} satisfies Meta<typeof ContactFormWithMap>;
 export default meta;
 
-type Story = StoryObj<typeof ContactFormWithMap>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ mapSrc: z.string().url().optional() }).parse(fixture); } catch (e) { console.error('Invalid ContactFormWithMap fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
+export const RTL = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] }) satisfies Story;
 

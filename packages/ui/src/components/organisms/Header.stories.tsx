@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Header } from "./Header";
 
-const meta: Meta<typeof Header> = {
+const meta = {
   component: Header,
   parameters: {
     docs: {
@@ -19,7 +19,10 @@ const meta: Meta<typeof Header> = {
     searchSuggestions: ["Shoes", "Shirts"],
     shopName: "My Shop",
   },
-};
+} satisfies Meta<typeof Header>;
 export default meta;
 
-export const Default: StoryObj<typeof Header> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

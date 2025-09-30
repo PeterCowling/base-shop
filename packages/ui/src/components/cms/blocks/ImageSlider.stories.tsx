@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import ImageSlider from "./ImageSlider";
 
-const meta: Meta<typeof ImageSlider> = {
+const meta = {
   component: ImageSlider,
   args: {
     slides: [
@@ -9,7 +9,10 @@ const meta: Meta<typeof ImageSlider> = {
       { src: "/hero/slide-2.jpg", alt: "Slide 2", caption: "Caption 2" },
     ],
   },
-};
+} satisfies Meta<typeof ImageSlider>;
 export default meta;
 
-export const Default: StoryObj<typeof ImageSlider> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -2,7 +2,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { ReviewsList } from "./ReviewsList";
 
-const meta: Meta<typeof ReviewsList> = {
+const meta = {
   component: ReviewsList,
   args: {
     reviews: [
@@ -17,7 +17,10 @@ const meta: Meta<typeof ReviewsList> = {
     onMinRatingChange: { action: "onMinRatingChange" },
     onQueryChange: { action: "onQueryChange" },
   },
-};
+} satisfies Meta<typeof ReviewsList>;
 export default meta;
 
-export const Default: StoryObj<typeof ReviewsList> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

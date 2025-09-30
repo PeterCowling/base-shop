@@ -2,7 +2,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { FilterSidebar } from "./FilterSidebar.client";
 
-const meta: Meta<typeof FilterSidebar> = {
+const meta = {
   title: "Organisms/FilterSidebar",
   component: FilterSidebar,
   decorators: [
@@ -12,9 +12,12 @@ const meta: Meta<typeof FilterSidebar> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof FilterSidebar>;
 export default meta;
 
-export const Default: StoryObj<typeof FilterSidebar> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   render: () => <FilterSidebar onChange={() => {}} />,
-};
+} satisfies Story;

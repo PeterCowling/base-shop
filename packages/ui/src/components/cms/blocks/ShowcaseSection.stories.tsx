@@ -3,20 +3,23 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ShowcaseSection from './ShowcaseSection';
 
-const meta: Meta<typeof ShowcaseSection> = {
+const meta = {
   component: ShowcaseSection,
   args: {
     preset: 'featured',
     limit: 12,
   },
-};
+} satisfies Meta<typeof ShowcaseSection>;
 export default meta;
 
-export const Carousel: StoryObj<typeof ShowcaseSection> = {
-  args: { layout: 'carousel' },
-};
+type Story = StoryObj<typeof meta>;
 
-export const Grid: StoryObj<typeof ShowcaseSection> = {
+
+export const Carousel = {
+  args: { layout: 'carousel' },
+} satisfies Story;
+
+export const Grid = {
   args: { layout: 'grid', gridCols: 3 },
-};
+} satisfies Story;
 

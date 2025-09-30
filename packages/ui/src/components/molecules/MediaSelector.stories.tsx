@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { MediaSelector } from "./MediaSelector";
 
-const meta: Meta<typeof MediaSelector> = {
+const meta = {
   component: MediaSelector,
   args: {
     items: [
@@ -14,7 +14,10 @@ const meta: Meta<typeof MediaSelector> = {
   argTypes: {
     onChange: { action: "change" },
   },
-};
+} satisfies Meta<typeof MediaSelector>;
 export default meta;
 
-export const Default: StoryObj<typeof MediaSelector> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

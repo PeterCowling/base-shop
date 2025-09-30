@@ -1,15 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Grid } from "./Grid";
 
-const meta: Meta<typeof Grid> = {
+const meta = {
   title: "Primitives/Grid",
   component: Grid,
-};
+} satisfies Meta<typeof Grid>;
 export default meta;
 
-type Story = StoryObj<typeof Grid>;
+type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+
+
+export const Basic = {
   args: { cols: 3, gap: 4, className: "p-4 border rounded" },
   render: (args) => (
     <Grid {...args}>
@@ -18,4 +20,4 @@ export const Basic: Story = {
       ))}
     </Grid>
   ),
-};
+} satisfies Story;

@@ -1,13 +1,16 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import GuidedSellingSection from "./GuidedSellingSection";
 
-const meta: Meta<typeof GuidedSellingSection> = {
+const meta = {
   component: GuidedSellingSection,
   args: {
     outputMode: "inline",
   },
-};
+} satisfies Meta<typeof GuidedSellingSection>;
 export default meta;
 
-export const Default: StoryObj<typeof GuidedSellingSection> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 

@@ -1,16 +1,19 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Button } from "./Button";
 
-const meta: Meta<typeof Button> = {
+const meta = {
   title: "Atoms/Shadcn/Button",
   component: Button,
   tags: ["autodocs"],
   args: { children: "Button" },
-};
+} satisfies Meta<typeof Button>;
 export default meta;
 
-export const Default: StoryObj<typeof Button> = {};
-export const Outline: StoryObj<typeof Button> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
+export const Outline = {
   args: { variant: "outline" },
-};
-export const Ghost: StoryObj<typeof Button> = { args: { variant: "ghost" } };
+} satisfies Story;
+export const Ghost = { args: { variant: "ghost" } } satisfies Story;

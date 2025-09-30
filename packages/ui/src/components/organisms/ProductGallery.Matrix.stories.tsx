@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ProductGallery } from './ProductGallery';
 import { makeStateStory } from '../../story-utils/createStories';
 
-const meta: Meta<typeof ProductGallery> = {
+const meta = {
   title: 'Organisms/Product Gallery/Matrix',
   component: ProductGallery,
   parameters: { docs: { autodocs: false } },
@@ -24,38 +24,40 @@ const meta: Meta<typeof ProductGallery> = {
       { type: 'video', url: 'https://www.w3schools.com/html/mov_bbb.mp4' },
     ],
   },
-};
+} satisfies Meta<typeof ProductGallery>;
 export default meta;
 
-type Story = StoryObj<typeof ProductGallery>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = {} as Record<string, never>;
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
-});
+}) satisfies Story;
 
-export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', {
+export const Loading = makeStateStory(baseArgs, {}, 'loading', {
   viewports: ['mobile1'],
   tags: ['visual', 'ci'],
-});
+}) satisfies Story;
 
-export const Empty: Story = makeStateStory(baseArgs, { media: [] }, 'empty', {
+export const Empty = makeStateStory(baseArgs, { media: [] }, 'empty', {
   a11y: true,
   viewports: ['mobile1'],
   tags: ['visual'],
-});
+}) satisfies Story;
 
-export const Error: Story = makeStateStory(baseArgs, {}, 'error', {
+export const Error = makeStateStory(baseArgs, {}, 'error', {
   a11y: true,
   critical: true,
   viewports: ['desktop'],
   tags: ['visual', 'ci'],
-});
+}) satisfies Story;
 
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
+export const RTL = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual'],
-});
+}) satisfies Story;

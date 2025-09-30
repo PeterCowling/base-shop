@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import GridContainer from './GridContainer';
 
-const meta: Meta<typeof GridContainer> = {
+const meta = {
   title: 'CMS Blocks/Containers/GridContainer',
   component: GridContainer,
   parameters: {
@@ -18,7 +18,10 @@ const meta: Meta<typeof GridContainer> = {
       <div key={n} className="h-16 rounded bg-neutral-100 p-2">Cell {n}</div>
     )),
   },
-};
+} satisfies Meta<typeof GridContainer>;
 export default meta;
 
-export const Default: StoryObj<typeof GridContainer> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

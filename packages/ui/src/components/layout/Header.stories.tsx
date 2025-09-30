@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import HeaderClient from "./HeaderClient.client";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 
-const meta: Meta<typeof HeaderClient> = {
+const meta = {
   component: HeaderClient,
   args: {
     lang: "en",
@@ -28,7 +28,10 @@ const meta: Meta<typeof HeaderClient> = {
       </CartProvider>
     ),
   ],
-};
+} satisfies Meta<typeof HeaderClient>;
 export default meta;
 
-export const Default: StoryObj<typeof HeaderClient> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

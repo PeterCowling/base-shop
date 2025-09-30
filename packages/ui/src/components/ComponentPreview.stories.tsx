@@ -22,7 +22,7 @@ if (typeof globalThis !== 'undefined') {
   };
 }
 
-const meta: Meta<typeof ComponentPreview> = {
+const meta = {
   component: ComponentPreview,
   tags: ['autodocs'],
   args: {
@@ -36,7 +36,10 @@ const meta: Meta<typeof ComponentPreview> = {
       },
     },
   },
-};
+} satisfies Meta<typeof ComponentPreview>;
 export default meta;
 
-export const Default: StoryObj<typeof ComponentPreview> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

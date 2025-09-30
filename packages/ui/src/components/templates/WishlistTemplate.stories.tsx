@@ -32,10 +32,13 @@ const items: WishlistItem[] = [
   },
 ];
 
-const meta: Meta<typeof WishlistTemplate> = {
+const meta = {
   component: WishlistTemplate,
   args: { items },
-};
+} satisfies Meta<typeof WishlistTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof WishlistTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

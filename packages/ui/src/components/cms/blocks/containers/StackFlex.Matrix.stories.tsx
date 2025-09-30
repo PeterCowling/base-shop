@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import StackFlex from './StackFlex';
 import { makeStateStory } from '../../../../story-utils/createStories';
 
-const meta: Meta<typeof StackFlex> = {
+const meta = {
   title: 'CMS Blocks/Containers/StackFlex/Matrix',
   component: StackFlex,
   parameters: { docs: { autodocs: false } },
@@ -23,20 +23,22 @@ const meta: Meta<typeof StackFlex> = {
       <div key={n} className="h-12 w-24 rounded bg-neutral-100 p-2">Item {n}</div>
     )),
   },
-};
+} satisfies Meta<typeof StackFlex>;
 export default meta;
 
-type Story = StoryObj<typeof StackFlex>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
   docsDescription: 'Flexible row stack with wrapping; adjustable via props.',
-});
+}) satisfies Story;
 
-export const Loading: Story = makeStateStory(
+export const Loading = makeStateStory(
   baseArgs,
   {
     direction: 'column',
@@ -50,9 +52,9 @@ export const Loading: Story = makeStateStory(
     tags: ['visual'],
     docsDescription: 'Simulated loading: fewer items and column layout to reduce motion.',
   }
-);
+) satisfies Story;
 
-export const Empty: Story = makeStateStory(
+export const Empty = makeStateStory(
   baseArgs,
   { children: [] },
   'empty',
@@ -62,20 +64,20 @@ export const Empty: Story = makeStateStory(
     tags: ['visual'],
     docsDescription: 'No children; container renders as an empty flex wrapper.',
   }
-);
+) satisfies Story;
 
-export const Error: Story = makeStateStory(baseArgs, {}, 'error', {
+export const Error = makeStateStory(baseArgs, {}, 'error', {
   a11y: true,
   critical: true,
   viewports: ['desktop'],
   tags: ['visual', 'ci'],
   docsDescription: 'Matrix completeness state; layout has no error paths.',
-});
+}) satisfies Story;
 
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
+export const RTL = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'RTL sample demonstrating reversed inline axis.',
-});
+}) satisfies Story;
 

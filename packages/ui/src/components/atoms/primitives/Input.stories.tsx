@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Input } from "./input";
 
-const meta: Meta<typeof Input> = {
+const meta = {
   title: "Primitives/Input",
   component: Input,
   decorators: [
@@ -11,10 +11,13 @@ const meta: Meta<typeof Input> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Input>;
 export default meta;
 
-export const States: StoryObj<typeof Input> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const States = {
   render: () => (
     <>
       <Input placeholder="Placeholder" />
@@ -23,4 +26,4 @@ export const States: StoryObj<typeof Input> = {
       <Input placeholder="Floating label" label="Email" floatingLabel />
     </>
   ),
-};
+} satisfies Story;

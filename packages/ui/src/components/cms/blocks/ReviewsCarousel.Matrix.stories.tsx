@@ -6,18 +6,20 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './ReviewsCarousel.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof CmsReviewsCarousel> = {
+const meta = {
   title: 'CMS Blocks/ReviewsCarousel/Matrix',
   component: CmsReviewsCarousel,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof CmsReviewsCarousel>;
 export default meta;
 
-type Story = StoryObj<typeof CmsReviewsCarousel>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ reviews: z.array(z.object({ quote: z.string(), name: z.string().optional() })), minItems: z.number().optional(), maxItems: z.number().optional() }).parse(fixture); } catch (e) { console.error('Invalid ReviewsCarousel fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { Popover, PopoverContent, PopoverTrigger } from "./Popover";
 import { Button } from "./primitives/button";
 
-const meta: Meta<typeof Popover> = {
+const meta = {
   title: "Atoms/Popover",
   component: Popover,
   decorators: [
@@ -12,10 +12,13 @@ const meta: Meta<typeof Popover> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Popover>;
 export default meta;
 
-export const PanelSurface: StoryObj<typeof Popover> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const PanelSurface = {
   render: () => (
     <Popover>
       <PopoverTrigger asChild>
@@ -26,4 +29,4 @@ export const PanelSurface: StoryObj<typeof Popover> = {
       </PopoverContent>
     </Popover>
   ),
-};
+} satisfies Story;

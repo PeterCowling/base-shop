@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import OrderSummary from './OrderSummary';
 import { makeStateStory } from '../../story-utils/createStories';
 
-const meta: Meta<typeof OrderSummary> = {
+const meta = {
   title: 'Organisms/Order Summary/Matrix',
   component: OrderSummary,
   parameters: { docs: { autodocs: false } },
@@ -16,43 +16,45 @@ const meta: Meta<typeof OrderSummary> = {
       },
     },
   },
-};
+} satisfies Meta<typeof OrderSummary>;
 export default meta;
 
-type Story = StoryObj<typeof OrderSummary>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = {} as Record<string, never>;
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
   docsDescription: 'Baseline order summary using mocked cart context.',
-});
+}) satisfies Story;
 
-export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', {
+export const Loading = makeStateStory(baseArgs, {}, 'loading', {
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'Displays a transient loading hint while totals compute.',
-});
+}) satisfies Story;
 
-export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', {
+export const Empty = makeStateStory(baseArgs, {}, 'empty', {
   a11y: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'Empty cart state with illustrative rows removed.',
-});
+}) satisfies Story;
 
-export const Error: Story = makeStateStory(baseArgs, {}, 'error', {
+export const Error = makeStateStory(baseArgs, {}, 'error', {
   a11y: true,
   critical: true,
   viewports: ['desktop'],
   tags: ['visual', 'ci'],
   docsDescription: 'Error visualization for failed totals lookup.',
-});
+}) satisfies Story;
 
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
+export const RTL = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'Right-to-left sample (layout mirrored via decorator).',
-});
+}) satisfies Story;

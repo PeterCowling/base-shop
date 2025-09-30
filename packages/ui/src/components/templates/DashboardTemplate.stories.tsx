@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { DashboardTemplate } from "./DashboardTemplate";
 
-const meta: Meta<typeof DashboardTemplate> = {
+const meta = {
   component: DashboardTemplate,
   args: {
     stats: [
@@ -12,7 +12,10 @@ const meta: Meta<typeof DashboardTemplate> = {
   argTypes: {
     stats: { control: "object" },
   },
-};
+} satisfies Meta<typeof DashboardTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof DashboardTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

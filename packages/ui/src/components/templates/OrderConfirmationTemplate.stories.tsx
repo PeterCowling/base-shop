@@ -21,13 +21,16 @@ const cart: CartState = {
   },
 };
 
-const meta: Meta<typeof OrderConfirmationTemplate> = {
+const meta = {
   component: OrderConfirmationTemplate,
   args: {
     orderId: "ABC123",
     cart,
   },
-};
+} satisfies Meta<typeof OrderConfirmationTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof OrderConfirmationTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import PricingTable from "./PricingTable";
 
-const meta: Meta<typeof PricingTable> = {
+const meta = {
   component: PricingTable,
   args: {
     plans: [
@@ -29,7 +29,10 @@ const meta: Meta<typeof PricingTable> = {
       },
     ],
   },
-};
+} satisfies Meta<typeof PricingTable>;
 export default meta;
 
-export const Default: StoryObj<typeof PricingTable> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import HeroBanner from "./HeroBanner";
 
-const meta: Meta<typeof HeroBanner> = {
+const meta = {
   title: "CMS/Blocks/HeroBanner",
   component: HeroBanner,
   tags: ["autodocs"],
@@ -29,12 +29,15 @@ const meta: Meta<typeof HeroBanner> = {
       },
     ],
   },
-};
+} satisfies Meta<typeof HeroBanner>;
 export default meta;
 
-export const Default: StoryObj<typeof HeroBanner> = {};
+type Story = StoryObj<typeof meta>;
 
-export const SingleSlide: StoryObj<typeof HeroBanner> = {
+
+export const Default = {} satisfies Story;
+
+export const SingleSlide = {
   args: {
     slides: [
       {
@@ -55,4 +58,4 @@ export const SingleSlide: StoryObj<typeof HeroBanner> = {
       },
     },
   },
-};
+} satisfies Story;

@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { OrderTrackingTemplate } from "./OrderTrackingTemplate";
 
-const meta: Meta<typeof OrderTrackingTemplate> = {
+const meta = {
   component: OrderTrackingTemplate,
   args: {
     orderId: "ABC123",
@@ -17,7 +17,10 @@ const meta: Meta<typeof OrderTrackingTemplate> = {
     address: { control: "text" },
     steps: { control: "object" },
   },
-};
+} satisfies Meta<typeof OrderTrackingTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof OrderTrackingTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -45,7 +45,7 @@ function UploaderHarness() {
   );
 }
 
-const meta: Meta<typeof UploaderSurface> = {
+const meta = {
   component: UploaderSurface,
   tags: ['autodocs'],
   parameters: {
@@ -55,8 +55,11 @@ const meta: Meta<typeof UploaderSurface> = {
       },
     },
   },
-};
+} satisfies Meta<typeof UploaderSurface>;
 export default meta;
 
-export const Default: StoryObj<typeof UploaderSurface> = { render: () => <UploaderHarness /> };
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = { render: () => <UploaderHarness /> } satisfies Story;
 

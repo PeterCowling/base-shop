@@ -2,7 +2,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { QAModule } from "./QAModule";
 
-const meta: Meta<typeof QAModule> = {
+const meta = {
   component: QAModule,
   args: {
     items: [
@@ -10,7 +10,10 @@ const meta: Meta<typeof QAModule> = {
       { question: "Do you ship internationally?", answer: "Yes" }, // i18n-exempt: fixture content
     ],
   },
-};
+} satisfies Meta<typeof QAModule>;
 export default meta;
 
-export const Default: StoryObj<typeof QAModule> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

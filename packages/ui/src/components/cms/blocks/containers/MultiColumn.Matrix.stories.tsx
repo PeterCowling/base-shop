@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import MultiColumn from './MultiColumn';
 import { makeStateStory } from '../../../../story-utils/createStories';
 
-const meta: Meta<typeof MultiColumn> = {
+const meta = {
   title: 'CMS Blocks/Containers/MultiColumn/Matrix',
   component: MultiColumn,
   parameters: { docs: { autodocs: false } },
@@ -22,43 +22,45 @@ const meta: Meta<typeof MultiColumn> = {
       <div key={n} className="h-16 rounded bg-neutral-100 p-2">Cell {n}</div>
     )),
   },
-};
+} satisfies Meta<typeof MultiColumn>;
 export default meta;
 
-type Story = StoryObj<typeof MultiColumn>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
   docsDescription: 'Simple responsive grid with fixed column count.',
-});
+}) satisfies Story;
 
-export const Loading: Story = makeStateStory(baseArgs, { columns: 1 }, 'loading', {
+export const Loading = makeStateStory(baseArgs, { columns: 1 }, 'loading', {
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'Simulated loading: single column to minimize layout shifts.',
-});
+}) satisfies Story;
 
-export const Empty: Story = makeStateStory(baseArgs, { children: [] as React.ReactNode[] }, 'empty', {
+export const Empty = makeStateStory(baseArgs, { children: [] as React.ReactNode[] }, 'empty', {
   a11y: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'No children; grid renders with no cells.',
-});
+}) satisfies Story;
 
-export const Error: Story = makeStateStory(baseArgs, {}, 'error', {
+export const Error = makeStateStory(baseArgs, {}, 'error', {
   a11y: true,
   critical: true,
   viewports: ['desktop'],
   tags: ['visual', 'ci'],
   docsDescription: 'Matrix completeness state; non-networked layout.',
-});
+}) satisfies Story;
 
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
+export const RTL = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'RTL sample; alignment options reflect text direction.',
-});
+}) satisfies Story;

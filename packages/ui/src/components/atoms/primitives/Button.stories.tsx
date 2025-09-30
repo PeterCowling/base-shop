@@ -1,13 +1,16 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Button } from "./button";
 
-const meta: Meta<typeof Button> = {
+const meta = {
   title: "Primitives/Button",
   component: Button,
-};
+} satisfies Meta<typeof Button>;
 export default meta;
 
-export const LegacyVariants: StoryObj<typeof Button> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const LegacyVariants = {
   decorators: [
     (Story) => (
       <div className="flex flex-wrap items-center gap-2">
@@ -23,9 +26,9 @@ export const LegacyVariants: StoryObj<typeof Button> = {
       <Button variant="destructive">destructive</Button>
     </>
   ),
-};
+} satisfies Story;
 
-export const TonesAndColors: StoryObj<typeof Button> = {
+export const TonesAndColors = {
   decorators: [
     (Story) => (
       <div className="flex flex-col gap-3">
@@ -59,9 +62,9 @@ export const TonesAndColors: StoryObj<typeof Button> = {
       </div>
     </>
   ),
-};
+} satisfies Story;
 
-export const WithIconsAndLoading: StoryObj<typeof Button> = {
+export const WithIconsAndLoading = {
   decorators: [
     (Story) => (
       <div className="flex flex-wrap items-center gap-2">
@@ -87,4 +90,4 @@ export const WithIconsAndLoading: StoryObj<typeof Button> = {
       <Button aria-disabled color="accent">Aria-disabled</Button>
     </>
   ),
-};
+} satisfies Story;

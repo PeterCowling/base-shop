@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import ThemePanel from "./ThemePanel";
 import { Dialog } from "../../atoms/shadcn";
 
-const meta: Meta<typeof ThemePanel> = {
+const meta = {
   title: "CMS/Page Builder/ThemePanel",
   component: ThemePanel,
   parameters: {
@@ -15,10 +15,12 @@ const meta: Meta<typeof ThemePanel> = {
       },
     },
   },
-};
+} satisfies Meta<typeof ThemePanel>;
 export default meta;
 
-type Story = StoryObj<typeof ThemePanel>;
+type Story = StoryObj<typeof meta>;
+
+
 
 function StoryWithFetchStub() {
   // Provide a lightweight fetch stub to return example theme data
@@ -56,6 +58,6 @@ function StoryWithFetchStub() {
   );
 }
 
-export const Basic: Story = {
+export const Basic = {
   render: () => <StoryWithFetchStub />,
-};
+} satisfies Story;

@@ -1,10 +1,13 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import HeroBanner from "./HeroBanner.client";
 
-const meta: Meta<typeof HeroBanner> = {
+const meta = {
   component: HeroBanner,
   args: {},
-};
+} satisfies Meta<typeof HeroBanner>;
 export default meta;
 
-export const Default: StoryObj<typeof HeroBanner> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

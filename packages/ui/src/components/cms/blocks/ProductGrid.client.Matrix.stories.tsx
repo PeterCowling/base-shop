@@ -9,7 +9,7 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './ProductGrid.client.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof ProductGrid> = {
+const meta = {
   title: 'CMS Blocks/ProductGrid/Matrix',
   component: ProductGrid,
   parameters: { docs: { autodocs: false } },
@@ -27,10 +27,12 @@ const meta: Meta<typeof ProductGrid> = {
       },
     },
   },
-};
+} satisfies Meta<typeof ProductGrid>;
 export default meta;
 
-type Story = StoryObj<typeof ProductGrid>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 // Validate fixture shape
@@ -47,13 +49,13 @@ try {
   console.error('Invalid ProductGrid fixture:', e);
 }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
-});
+}) satisfies Story;
 
-export const Loading: Story = {
+export const Loading = {
   ...makeStateStory(baseArgs, {}, 'loading', { viewports: ['mobile1'], tags: ['visual'] }),
   parameters: {
     msw: {
@@ -65,9 +67,9 @@ export const Loading: Story = {
       ],
     },
   },
-};
+} satisfies Story;
 
-export const Empty: Story = {
+export const Empty = {
   ...makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] }),
   parameters: {
     msw: {
@@ -79,9 +81,9 @@ export const Empty: Story = {
       ],
     },
   },
-};
+} satisfies Story;
 
-export const Error: Story = {
+export const Error = {
   ...makeStateStory(baseArgs, {}, 'error', { a11y: true, critical: true, viewports: ['desktop'], tags: ['visual', 'ci'] }),
   parameters: {
     msw: {
@@ -93,10 +95,10 @@ export const Error: Story = {
       ],
     },
   },
-};
+} satisfies Story;
 
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
+export const RTL = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual'],
-});
+}) satisfies Story;

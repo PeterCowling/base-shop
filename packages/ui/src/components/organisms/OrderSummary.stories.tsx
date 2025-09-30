@@ -8,7 +8,7 @@ import { Price } from "../atoms/Price";
 /* ------------------------------------------------------------------ *
  *  Storybook meta
  * ------------------------------------------------------------------ */
-const meta: Meta<typeof OrderSummary> = {
+const meta = {
   title: "Organisms/Order Summary",
   component: OrderSummary,
   parameters: {
@@ -18,14 +18,17 @@ const meta: Meta<typeof OrderSummary> = {
       },
     },
   },
-};
+} satisfies Meta<typeof OrderSummary>;
 
 export default meta;
+
+type Story = StoryObj<typeof meta>;
+
 
 /* ------------------------------------------------------------------ *
  *  Stories
  * ------------------------------------------------------------------ */
-export const Default: StoryObj<typeof OrderSummary> = {
+export const Default = {
   decorators: [
     (Story) => (
       <div className="space-y-2">
@@ -68,5 +71,5 @@ export const Default: StoryObj<typeof OrderSummary> = {
       </table>
     </>
   ),
-};
+} satisfies Story;
 // i18n-exempt -- Storybook demo copy

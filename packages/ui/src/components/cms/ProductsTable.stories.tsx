@@ -23,7 +23,7 @@ const rows: ProductPublication[] = [
   },
 ];
 
-const meta: Meta<typeof ProductsTable> = {
+const meta = {
   title: "CMS/ProductsTable",
   component: ProductsTable,
   tags: ["autodocs"],
@@ -32,7 +32,10 @@ const meta: Meta<typeof ProductsTable> = {
     rows,
     isAdmin: true,
   },
-};
+} satisfies Meta<typeof ProductsTable>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductsTable> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

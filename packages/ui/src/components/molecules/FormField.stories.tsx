@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { FormField } from "./FormField";
 
-const meta: Meta<typeof FormField> = {
+const meta = {
   component: FormField,
   args: {
     label: "Name",
@@ -9,13 +9,16 @@ const meta: Meta<typeof FormField> = {
     required: false,
     error: "",
   },
-};
+} satisfies Meta<typeof FormField>;
 export default meta;
 
-export const Default: StoryObj<typeof FormField> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   render: (args) => (
     <FormField {...args}>
       <input id={args.htmlFor} />
     </FormField>
   ),
-};
+} satisfies Story;

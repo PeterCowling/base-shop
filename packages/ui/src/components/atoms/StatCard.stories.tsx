@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { StatCard } from "./StatCard";
 
-const meta: Meta<typeof StatCard> = {
+const meta = {
   title: "Atoms/StatCard",
   component: StatCard,
   parameters: {
@@ -18,20 +18,23 @@ const meta: Meta<typeof StatCard> = {
       description: "Tailwind classes applied to the root card",
     },
   },
-};
+} satisfies Meta<typeof StatCard>;
 export default meta;
 
-export const Revenue: StoryObj<typeof StatCard> = {
-  args: { label: "Revenue", value: "$12k" },
-};
-export const Sessions: StoryObj<typeof StatCard> = {
-  args: { label: "Sessions", value: "3,200" },
-};
-export const ConversionRate: StoryObj<typeof StatCard> = {
-  args: { label: "Conversion Rate", value: "4.5%" },
-};
+type Story = StoryObj<typeof meta>;
 
-export const WithCustomStyles: StoryObj<typeof StatCard> = {
+
+export const Revenue = {
+  args: { label: "Revenue", value: "$12k" },
+} satisfies Story;
+export const Sessions = {
+  args: { label: "Sessions", value: "3,200" },
+} satisfies Story;
+export const ConversionRate = {
+  args: { label: "Conversion Rate", value: "4.5%" },
+} satisfies Story;
+
+export const WithCustomStyles = {
   args: {
     label: "Net promoter score",
     value: "+64",
@@ -46,4 +49,4 @@ export const WithCustomStyles: StoryObj<typeof StatCard> = {
       },
     },
   },
-};
+} satisfies Story;

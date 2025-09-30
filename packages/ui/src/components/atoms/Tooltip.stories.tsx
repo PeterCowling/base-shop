@@ -4,16 +4,19 @@ import { Tooltip, type TooltipProps } from "./Tooltip";
 
 type TooltipStoryProps = TooltipProps & { position: "top" | "bottom" };
 
-const meta: Meta<TooltipStoryProps> = {
+const meta = {
   title: "Atoms/Tooltip",
   component: Tooltip,
   argTypes: { position: { control: "radio", options: ["top", "bottom"] } },
   // i18n-exempt — storybook example text
   args: { text: "Info", position: "top" },
-};
+} satisfies Meta<TooltipStoryProps>;
 export default meta;
 
-export const Default: StoryObj<TooltipStoryProps> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   decorators: [
     (Story) => (
       <div className="flex justify-center">
@@ -35,4 +38,4 @@ export const Default: StoryObj<TooltipStoryProps> = {
       </button>
     </Tooltip>
   ),
-};
+} satisfies Story;

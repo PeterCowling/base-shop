@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 import { Stack } from "./Stack";
 
-const meta: Meta<typeof Table> = {
+const meta = {
   title: "Primitives/Table",
   component: Table,
   decorators: [
@@ -12,10 +12,13 @@ const meta: Meta<typeof Table> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Table>;
 export default meta;
 
-export const HoverVsSelected: StoryObj<typeof Table> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const HoverVsSelected = {
   render: () => (
     <Stack gap={3}>
       <Table>
@@ -43,4 +46,4 @@ export const HoverVsSelected: StoryObj<typeof Table> = {
       <p className="text-sm text-muted-foreground">Hover rows to see surface-2; selected row uses surface-3.</p>
     </Stack>
   ),
-};
+} satisfies Story;

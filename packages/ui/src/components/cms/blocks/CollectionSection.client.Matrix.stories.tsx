@@ -9,7 +9,7 @@ import fixture from './CollectionSection.client.fixtures.json';
 import { z } from 'zod';
 import { makeStateStory } from '../../../story-utils/createStories';
 
-const meta: Meta<typeof CollectionSectionClient> = {
+const meta = {
   title: 'CMS Blocks/CollectionSection/Matrix',
   component: CollectionSectionClient,
   parameters: { docs: { autodocs: false } },
@@ -26,10 +26,12 @@ const meta: Meta<typeof CollectionSectionClient> = {
     params: { slug: 'demo' },
     paginationMode: 'loadMore',
   },
-};
+} satisfies Meta<typeof CollectionSectionClient>;
 export default meta;
 
-type Story = StoryObj<typeof CollectionSectionClient>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 // Validate fixture shape at story init (errors render in Canvas console)
@@ -45,14 +47,14 @@ try {
   console.error('Invalid CollectionSection fixture:', e);
 }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
   docsDescription: 'Client-side collection with initial items and load-more UX.',
-});
+}) satisfies Story;
 
-export const Loading: Story = {
+export const Loading = {
   ...makeStateStory(baseArgs, {}, 'loading', {
     viewports: ['mobile1'],
     tags: ['visual'],
@@ -68,9 +70,9 @@ export const Loading: Story = {
       ],
     },
   },
-};
+} satisfies Story;
 
-export const Empty: Story = {
+export const Empty = {
   ...makeStateStory(baseArgs, {}, 'empty', {
     a11y: true,
     viewports: ['mobile1'],
@@ -87,9 +89,9 @@ export const Empty: Story = {
       ],
     },
   },
-};
+} satisfies Story;
 
-export const Error: Story = {
+export const Error = {
   ...makeStateStory(baseArgs, {}, 'error', {
     a11y: true,
     critical: true,
@@ -107,11 +109,11 @@ export const Error: Story = {
       ],
     },
   },
-};
+} satisfies Story;
 
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
+export const RTL = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual'],
   docsDescription: 'RTL rendering of grid and controls.',
-});
+}) satisfies Story;

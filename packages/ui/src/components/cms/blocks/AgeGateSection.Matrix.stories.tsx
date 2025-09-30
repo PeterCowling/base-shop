@@ -6,18 +6,20 @@ import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './AgeGateSection.fixtures.json';
 import { z } from 'zod';
 
-const meta: Meta<typeof AgeGateSection> = {
+const meta = {
   title: 'CMS Blocks/AgeGateSection/Matrix',
   component: AgeGateSection,
   parameters: { docs: { autodocs: false } },
   args: { ...fixture },
-};
+} satisfies Meta<typeof AgeGateSection>;
 export default meta;
 
-type Story = StoryObj<typeof AgeGateSection>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = meta.args!;
 
 try { z.object({ minAge: z.number().optional(), message: z.string().optional(), confirmLabel: z.string().optional(), storageKey: z.string().optional(), rememberDays: z.number().optional() }).parse(fixture); } catch (e) { console.error('Invalid AgeGateSection fixture:', e); }
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
+export const Default = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] }) satisfies Story;
 

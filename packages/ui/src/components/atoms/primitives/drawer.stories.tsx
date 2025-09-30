@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerPortal } from "./drawer";
 import { OverlayScrim } from "../index";
 
-const meta: Meta<typeof Drawer> = {
+const meta = {
   title: "Primitives/Drawer",
   component: Drawer,
   decorators: [
@@ -12,10 +12,13 @@ const meta: Meta<typeof Drawer> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Drawer>;
 export default meta;
 
-export const Right: StoryObj<typeof Drawer> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Right = {
   render: () => (
     <Drawer>
       <DrawerTrigger asChild>
@@ -31,9 +34,9 @@ export const Right: StoryObj<typeof Drawer> = {
       </DrawerPortal>
     </Drawer>
   ),
-};
+} satisfies Story;
 
-export const Left: StoryObj<typeof Drawer> = {
+export const Left = {
   render: () => (
     <Drawer>
       <DrawerTrigger asChild>
@@ -49,4 +52,4 @@ export const Left: StoryObj<typeof Drawer> = {
       </DrawerPortal>
     </Drawer>
   ),
-};
+} satisfies Story;

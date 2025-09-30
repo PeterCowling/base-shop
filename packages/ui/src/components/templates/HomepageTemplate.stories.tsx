@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { HomepageTemplate } from "./HomepageTemplate";
 
-const meta: Meta<typeof HomepageTemplate> = {
+const meta = {
   component: HomepageTemplate,
   args: {
     hero: "Hero section",
@@ -13,7 +13,10 @@ const meta: Meta<typeof HomepageTemplate> = {
     recommendations: { control: "text" },
     children: { control: "text" },
   },
-};
+} satisfies Meta<typeof HomepageTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof HomepageTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

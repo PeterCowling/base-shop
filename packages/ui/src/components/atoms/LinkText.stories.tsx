@@ -1,13 +1,16 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { LinkText } from "./LinkText";
 
-const meta: Meta<typeof LinkText> = {
+const meta = {
   title: "Atoms/LinkText",
   component: LinkText,
-};
+} satisfies Meta<typeof LinkText>;
 export default meta;
 
-export const Default: StoryObj<typeof LinkText> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   decorators: [
     (Story) => (
       <div className="space-x-3">
@@ -23,9 +26,9 @@ export const Default: StoryObj<typeof LinkText> = {
       <LinkText color="danger" href="/">danger</LinkText>
     </>
   ),
-};
+} satisfies Story;
 
-export const SoftTone: StoryObj<typeof LinkText> = {
+export const SoftTone = {
   decorators: [
     (Story) => (
       <div className="space-x-3">
@@ -41,9 +44,9 @@ export const SoftTone: StoryObj<typeof LinkText> = {
       <LinkText tone="soft" color="danger" href="/">danger soft</LinkText>
     </>
   ),
-};
+} satisfies Story;
 
-export const InsidePanel: StoryObj<typeof LinkText> = {
+export const InsidePanel = {
   decorators: [
     (Story) => (
       <div className="bg-panel border border-border-2 p-4">
@@ -58,9 +61,9 @@ export const InsidePanel: StoryObj<typeof LinkText> = {
       <LinkText tone="soft" color="accent">accent soft link</LinkText> render with appropriate contrast.
     </p>
   ),
-};
+} satisfies Story;
 
-export const AsChild: StoryObj<typeof LinkText> = {
+export const AsChild = {
   decorators: [
     (Story) => (
       <div className="space-x-3">
@@ -78,4 +81,4 @@ export const AsChild: StoryObj<typeof LinkText> = {
       </LinkText>
     </>
   ),
-};
+} satisfies Story;

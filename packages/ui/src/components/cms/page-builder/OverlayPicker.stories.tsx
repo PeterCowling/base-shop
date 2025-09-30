@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { useState } from "react";
 import OverlayPicker from "./OverlayPicker";
 
-const meta: Meta<typeof OverlayPicker> = {
+const meta = {
   title: "CMS/Page Builder/OverlayPicker",
   component: OverlayPicker,
   parameters: {
@@ -13,10 +13,12 @@ const meta: Meta<typeof OverlayPicker> = {
       },
     },
   },
-};
+} satisfies Meta<typeof OverlayPicker>;
 export default meta;
 
-type Story = StoryObj<typeof OverlayPicker>;
+type Story = StoryObj<typeof meta>;
+
+
 
 function PlaygroundStory() {
   const [value, setValue] = useState<string | undefined>(
@@ -31,6 +33,6 @@ function PlaygroundStory() {
   );
 }
 
-export const Playground: Story = {
+export const Playground = {
   render: () => <PlaygroundStory />,
-};
+} satisfies Story;

@@ -2,7 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { ProductMediaGalleryTemplate } from "./ProductMediaGalleryTemplate";
 import type { SKU } from "@acme/types";
 
-const meta: Meta<typeof ProductMediaGalleryTemplate> = {
+const meta = {
   component: ProductMediaGalleryTemplate,
   args: {
     product: {
@@ -28,7 +28,10 @@ const meta: Meta<typeof ProductMediaGalleryTemplate> = {
     ctaLabel: { control: "text" },
     onAddToCart: { action: "add-to-cart" },
   },
-};
+} satisfies Meta<typeof ProductMediaGalleryTemplate>;
 export default meta;
 
-export const Default: StoryObj<typeof ProductMediaGalleryTemplate> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

@@ -14,15 +14,18 @@ function ProfileDemo() {
   );
 }
 
-const meta: Meta<typeof ProfileDemo> = {
+const meta = {
   title: 'Account/Profile (Demo)',
   component: ProfileDemo,
   tags: ['autodocs'],
   parameters: {
     docs: { description: { component: 'Demo composition of the Profile page UI using ProfileForm. The real page performs auth and loads data on the server.' } },
   },
-};
+} satisfies Meta<typeof ProfileDemo>;
 export default meta;
 
-export const Default: StoryObj<typeof ProfileDemo> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 

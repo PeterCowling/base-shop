@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import StoreLocatorSection from "./StoreLocatorSection";
 
-const meta: Meta<typeof StoreLocatorSection> = {
+const meta = {
   component: StoreLocatorSection,
   args: {
     enableGeolocation: false,
@@ -10,8 +10,11 @@ const meta: Meta<typeof StoreLocatorSection> = {
       { id: "b", label: "ACME Mission", lat: 37.7599, lng: -122.4148, address: "456 Valencia St" },
     ],
   },
-};
+} satisfies Meta<typeof StoreLocatorSection>;
 export default meta;
 
-export const Default: StoryObj<typeof StoreLocatorSection> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;
 

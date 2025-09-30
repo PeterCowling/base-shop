@@ -37,11 +37,14 @@ function ScrollWrapper(args: React.ComponentProps<typeof StickyAddToCartBar>) {
   );
 }
 
-const meta: Meta<typeof StickyAddToCartBar> = {
+const meta = {
   component: StickyAddToCartBar,
   args: { product },
   render: (args) => <ScrollWrapper {...args} />,
-};
+} satisfies Meta<typeof StickyAddToCartBar>;
 export default meta;
 
-export const Default: StoryObj<typeof StickyAddToCartBar> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

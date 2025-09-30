@@ -19,19 +19,22 @@ const baseOptions: ChartOptions<"line"> = {
   plugins: { legend: { display: false }, tooltip: { enabled: true } },
 };
 
-const meta: Meta<typeof LineChart> = {
+const meta = {
   title: "Atoms/LineChart",
   component: LineChart,
   args: { data, options: baseOptions },
-};
+} satisfies Meta<typeof LineChart>;
 export default meta;
 
-export const Primary: StoryObj<typeof LineChart> = {};
-export const WithoutTooltip: StoryObj<typeof LineChart> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Primary = {} satisfies Story;
+export const WithoutTooltip = {
   args: {
     options: {
       ...baseOptions,
       plugins: { ...baseOptions.plugins, tooltip: { enabled: false } },
     },
   },
-};
+} satisfies Story;

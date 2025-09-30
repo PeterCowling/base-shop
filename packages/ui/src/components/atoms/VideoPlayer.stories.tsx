@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { VideoPlayer } from "./VideoPlayer";
 
-const meta: Meta<typeof VideoPlayer> = {
+const meta = {
   title: "Atoms/VideoPlayer",
   component: VideoPlayer,
   argTypes: { autoPlay: { control: "boolean" } },
@@ -10,10 +10,13 @@ const meta: Meta<typeof VideoPlayer> = {
     autoPlay: false,
     className: "w-64",
   },
-};
+} satisfies Meta<typeof VideoPlayer>;
 export default meta;
 
-export const Primary: StoryObj<typeof VideoPlayer> = {};
-export const Autoplay: StoryObj<typeof VideoPlayer> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Primary = {} satisfies Story;
+export const Autoplay = {
   args: { autoPlay: true },
-};
+} satisfies Story;

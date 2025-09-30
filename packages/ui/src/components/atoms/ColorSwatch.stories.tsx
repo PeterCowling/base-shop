@@ -2,13 +2,16 @@ import { type Meta, type StoryObj } from "@storybook/react";
 import { ColorSwatch } from "./ColorSwatch";
 import { Inline } from "./primitives/Inline";
 
-const meta: Meta<typeof ColorSwatch> = {
+const meta = {
   title: "Atoms/ColorSwatch",
   component: ColorSwatch,
   argTypes: { selected: { control: "boolean" } },
   args: { selected: false },
-};
+} satisfies Meta<typeof ColorSwatch>;
 export default meta;
+
+type Story = StoryObj<typeof meta>;
+
 
 const palette = [
   "hsl(var(--color-primary))",
@@ -18,7 +21,7 @@ const palette = [
   "hsl(var(--color-info))",
 ];
 
-export const Palette: StoryObj<typeof ColorSwatch> = {
+export const Palette = {
   render: (args) => (
     <Inline gap={2}>
       {palette.map((color, i) => (
@@ -30,4 +33,4 @@ export const Palette: StoryObj<typeof ColorSwatch> = {
       ))}
     </Inline>
   ),
-};
+} satisfies Story;

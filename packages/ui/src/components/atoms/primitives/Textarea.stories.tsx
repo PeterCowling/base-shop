@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Textarea } from "./textarea";
 
-const meta: Meta<typeof Textarea> = {
+const meta = {
   title: "Primitives/Textarea",
   component: Textarea,
   decorators: [
@@ -11,10 +11,13 @@ const meta: Meta<typeof Textarea> = {
       </div>
     ),
   ],
-};
+} satisfies Meta<typeof Textarea>;
 export default meta;
 
-export const States: StoryObj<typeof Textarea> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const States = {
   render: () => (
     <>
       <Textarea placeholder="Enter details" />
@@ -23,4 +26,4 @@ export const States: StoryObj<typeof Textarea> = {
       <Textarea placeholder="Floating label" label="Notes" floatingLabel />
     </>
   ),
-};
+} satisfies Story;

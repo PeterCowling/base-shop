@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, within } from "@storybook/test";
 import { QuantityInput } from "./QuantityInput";
 
-const meta: Meta<typeof QuantityInput> = {
+const meta = {
   component: QuantityInput,
   args: {
     value: 1,
@@ -12,10 +12,13 @@ const meta: Meta<typeof QuantityInput> = {
   argTypes: {
     onChange: { action: "change" },
   },
-};
+} satisfies Meta<typeof QuantityInput>;
 export default meta;
 
-export const Default: StoryObj<typeof QuantityInput> = {
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {
   play: async ({ canvasElement, args }) => {
     const changeSpy = fn();
     args.onChange = changeSpy;
@@ -32,4 +35,4 @@ export const Default: StoryObj<typeof QuantityInput> = {
     await expect(changeSpy).toHaveBeenCalledTimes(1);
     await expect(changeSpy).toHaveBeenCalledWith(2);
   },
-};
+} satisfies Story;

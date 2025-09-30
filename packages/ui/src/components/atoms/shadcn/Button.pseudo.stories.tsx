@@ -3,7 +3,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 
-const meta: Meta<typeof Button> = {
+const meta = {
   title: 'Atoms/Button/Pseudo States',
   component: Button,
   tags: ['autodocs'],
@@ -21,11 +21,13 @@ const meta: Meta<typeof Button> = {
       },
     },
   },
-};
+} satisfies Meta<typeof Button>;
 export default meta;
 
-type Story = StoryObj<typeof Button>;
+type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
-export const Disabled: Story = { args: { disabled: true } };
-export const Icon: Story = { args: { size: 'icon', children: '★' } };
+
+
+export const Default = {} satisfies Story;
+export const Disabled = { args: { disabled: true } } satisfies Story;
+export const Icon = { args: { size: 'icon', children: '★' } } satisfies Story;

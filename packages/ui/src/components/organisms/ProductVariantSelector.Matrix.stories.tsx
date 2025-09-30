@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ProductVariantSelector } from './ProductVariantSelector';
 import { makeStateStory } from '../../story-utils/createStories';
 
-const meta: Meta<typeof ProductVariantSelector> = {
+const meta = {
   title: 'Organisms/Product Variant Selector/Matrix',
   component: ProductVariantSelector,
   parameters: { docs: { autodocs: false } },
@@ -22,38 +22,40 @@ const meta: Meta<typeof ProductVariantSelector> = {
     sizes: ['S', 'M', 'L'],
     quantity: 1,
   },
-};
+} satisfies Meta<typeof ProductVariantSelector>;
 export default meta;
 
-type Story = StoryObj<typeof ProductVariantSelector>;
+type Story = StoryObj<typeof meta>;
+
+
 const baseArgs = {} as Record<string, never>;
 
-export const Default: Story = makeStateStory(baseArgs, {}, 'default', {
+export const Default = makeStateStory(baseArgs, {}, 'default', {
   a11y: true,
   viewports: ['desktop'],
   tags: ['visual'],
-});
+}) satisfies Story;
 
-export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', {
+export const Loading = makeStateStory(baseArgs, {}, 'loading', {
   viewports: ['mobile1'],
   tags: ['visual'],
-});
+}) satisfies Story;
 
-export const Empty: Story = makeStateStory(baseArgs, { colors: [], sizes: [] }, 'empty', {
+export const Empty = makeStateStory(baseArgs, { colors: [], sizes: [] }, 'empty', {
   a11y: true,
   viewports: ['mobile1'],
   tags: ['visual'],
-});
+}) satisfies Story;
 
-export const Error: Story = makeStateStory(baseArgs, {}, 'error', {
+export const Error = makeStateStory(baseArgs, {}, 'error', {
   a11y: true,
   critical: true,
   viewports: ['desktop'],
   tags: ['visual', 'ci'],
-});
+}) satisfies Story;
 
-export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
+export const RTL = makeStateStory(baseArgs, {}, 'default', {
   rtl: true,
   viewports: ['mobile1'],
   tags: ['visual', 'ci'],
-});
+}) satisfies Story;

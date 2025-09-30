@@ -1,15 +1,17 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Cluster } from "./Cluster";
 
-const meta: Meta<typeof Cluster> = {
+const meta = {
   title: "Primitives/Cluster",
   component: Cluster,
-};
+} satisfies Meta<typeof Cluster>;
 export default meta;
 
-type Story = StoryObj<typeof Cluster>;
+type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = {
+
+
+export const Basic = {
   args: { gap: 2, className: "p-4 border rounded" },
   render: (args) => (
     <Cluster {...args}>
@@ -18,4 +20,4 @@ export const Basic: Story = {
       ))}
     </Cluster>
   ),
-};
+} satisfies Story;

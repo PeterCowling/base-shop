@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import TopBar from "./TopBar.client";
 
-const meta: Meta<typeof TopBar> = {
+const meta = {
   component: TopBar,
   args: {},
-};
+} satisfies Meta<typeof TopBar>;
 export default meta;
 
-export const Default: StoryObj<typeof TopBar> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

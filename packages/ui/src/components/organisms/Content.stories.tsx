@@ -1,12 +1,15 @@
 import { type Meta, type StoryObj } from "@storybook/react";
 import { Content } from "./Content";
 
-const meta: Meta<typeof Content> = {
+const meta = {
   component: Content,
   args: {
     children: "Main content",
   },
-};
+} satisfies Meta<typeof Content>;
 export default meta;
 
-export const Default: StoryObj<typeof Content> = {};
+type Story = StoryObj<typeof meta>;
+
+
+export const Default = {} satisfies Story;

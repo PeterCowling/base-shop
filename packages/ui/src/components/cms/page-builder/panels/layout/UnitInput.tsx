@@ -1,7 +1,7 @@
 // packages/ui/src/components/cms/page-builder/panels/layout/UnitInput.tsx
 "use client";
 
-import type React from "react";
+import * as React from "react";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
 import { cssError } from "./helpers";
 
@@ -69,17 +69,29 @@ export default function UnitInput({ componentId, label, labelSuffix, value, onCh
   // Determine error message string (or undefined) for DOM attribute + UI
   const cssErr = cssError(cssProp, value);
   const errorMsg = cssErr ?? (extraError ? `Invalid ${cssProp} value` : undefined);
+  const inputId = React.useId();
   return (
     <div className="flex items-end gap-2">
-      <Input
-        label={label}
-        labelSuffix={labelSuffix}
-        placeholder={placeholder}
-        value={value ?? ""}
-        onChange={(e) => onChange(e.target.value)}
-        disabled={disabled}
-        error={errorMsg}
-      />
+      <div className="flex flex-1 flex-col gap-1">
+        {(label || labelSuffix) && (
+          <div className="flex items-center gap-1">
+            {label ? (
+              <label htmlFor={inputId} className="block text-sm font-medium">
+                {label}
+              </label>
+            ) : null}
+            {labelSuffix ? <span className="pointer-events-auto">{labelSuffix}</span> : null}
+          </div>
+        )}
+        <Input
+          id={inputId}
+          placeholder={placeholder}
+          value={value ?? ""}
+          onChange={(e) => onChange(e.target.value)}
+          disabled={disabled}
+          error={errorMsg}
+        />
+      </div>
       <Select
         value={unit}
         onValueChange={(next) => {

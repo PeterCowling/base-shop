@@ -5,6 +5,7 @@ import { ThemeProvider as SBThemeProvider, themes } from "@storybook/theming";
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
 import { DocsContainer, Primary, Stories } from "@storybook/blocks";
 import type { Decorator, Preview } from "@storybook/react";
+import type { GlobalTypes } from "@storybook/types";
 import { useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from "react";
 import type { ThemeVars } from "@storybook/theming";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
@@ -37,7 +38,7 @@ sb.mock(import("next/headers"));
 // Lightweight translation function for Storybook config (non-React context)
 const t = (key: string): string => (enMessages as Record<string, string>)[key] ?? key;
 
-export const globalTypes = {
+const toolbarGlobalTypes = {
   tokens: {
     name: t("storybook.tokens.name"),
     description: t("storybook.tokens.description"),
@@ -57,11 +58,11 @@ export const globalTypes = {
     toolbar: {
       icon: "contrast",
       items: [
-        t("storybook.scenario.items.featured"),
-        t("storybook.scenario.items.new"),
-        t("storybook.scenario.items.bestsellers"),
-        t("storybook.scenario.items.clearance"),
-        t("storybook.scenario.items.limited"),
+        { value: "featured", title: t("storybook.scenario.items.featured") },
+        { value: "new", title: t("storybook.scenario.items.new") },
+        { value: "bestsellers", title: t("storybook.scenario.items.bestsellers") },
+        { value: "clearance", title: t("storybook.scenario.items.clearance") },
+        { value: "limited", title: t("storybook.scenario.items.limited") },
       ],
     },
   },
@@ -85,9 +86,9 @@ export const globalTypes = {
     toolbar: {
       icon: "power",
       items: [
-        t("storybook.net.items.fast"),
-        t("storybook.net.items.normal"),
-        t("storybook.net.items.slow"),
+        { value: "fast", title: t("storybook.net.items.fast") },
+        { value: "normal", title: t("storybook.net.items.normal") },
+        { value: "slow", title: t("storybook.net.items.slow") },
       ],
     },
   },
@@ -95,9 +96,15 @@ export const globalTypes = {
     name: t("storybook.netError.name"),
     description: t("storybook.netError.description"),
     defaultValue: "off",
-    toolbar: { icon: "alert", items: [t("storybook.netError.items.off"), t("storybook.netError.items.on")] },
+    toolbar: {
+      icon: "alert",
+      items: [
+        { value: "off", title: t("storybook.netError.items.off") },
+        { value: "on", title: t("storybook.netError.items.on") },
+      ],
+    },
   },
-};
+} satisfies GlobalTypes;
 
 const withTokens: Decorator = (Story, context) => {
   const { tokens } = context.globals as Pick<ToolbarGlobals, "tokens">;
@@ -313,6 +320,15 @@ const withProviders: Decorator = (Story, context) => {
 };
 
 const preview: Preview = {
+  globalTypes: toolbarGlobalTypes,
+  initialGlobals: {
+    tokens: "base",
+    scenario: "featured",
+    locale: "en",
+    currency: "USD",
+    net: "normal",
+    netError: "off",
+  },
   loaders: [mswLoader],
   parameters: {
     ...a11yParameters,

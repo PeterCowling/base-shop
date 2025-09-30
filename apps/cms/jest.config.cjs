@@ -58,13 +58,22 @@ module.exports = {
     "^react-chartjs-2$": "<rootDir>/test/__mocks__/react-chartjs-2.ts",
   },
   transform: {
-    "^.+\\.[tj]sx?$": [
+    "^.+\\.(ts|tsx)$": [
       "ts-jest",
       {
         tsconfig: path.resolve(__dirname, "tsconfig.test.json"),
         useESM: false,
         babelConfig: false,
         diagnostics: false,
+      },
+    ],
+    // Ensure ESM JavaScript from dependencies is transpiled to CJS for Jest
+    "^.+\\.(mjs|cjs|js)$": [
+      "babel-jest",
+      {
+        presets: [
+          ["@babel/preset-env", { targets: { node: "current" }, modules: "commonjs" }],
+        ],
       },
     ],
   },

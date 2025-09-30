@@ -14,7 +14,6 @@ jest.mock("next/navigation", () => ({
 jest.mock("@acme/i18n", () => ({
   // Return a translator backed by the real English messages
   useTranslations: () => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const en = require("@acme/i18n/en.json");
     return (key: string, vars?: Record<string, string | number>) => {
       const template = (en as Record<string, string>)[key] ?? key;
@@ -40,7 +39,6 @@ beforeAll(() => {
         ? (first as any).message
         : "";
     if (msg.includes("not wrapped in act")) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (__origConsoleError as any)(...args);
   });
 });

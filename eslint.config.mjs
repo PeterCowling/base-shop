@@ -153,6 +153,7 @@ export default [
       parserOptions: {
         project: [
           "./tsconfig.json",
+          "./tsconfig.test.json",
           "./apps/*/tsconfig.json",
           "./packages/*/tsconfig.json",
           "./packages/*/tsconfig.eslint.json",

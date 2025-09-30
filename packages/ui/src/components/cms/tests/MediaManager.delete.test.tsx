@@ -133,7 +133,7 @@ describe("MediaManager – delete", () => {
         onMetadataUpdate={mockMetadataUpdate}
       />
     );
-    fireEvent.click(screen.getAllByRole("menuitem", { name: /Delete/i })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: /Delete media/i })[0]);
     await waitFor(() =>
       expect(mockDelete).toHaveBeenCalledWith("s", "/img.jpg")
     );

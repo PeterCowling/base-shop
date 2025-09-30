@@ -108,6 +108,14 @@ export default function CollectionList({
     [normalizedCols]
   );
 
+  React.useEffect(() => {
+    if (!containerRef.current) return;
+    containerRef.current.style.setProperty(
+      "grid-template-columns",
+      gridTemplateColumns
+    );
+  }, [gridTemplateColumns]);
+
   return (
     <div
       ref={containerRef}

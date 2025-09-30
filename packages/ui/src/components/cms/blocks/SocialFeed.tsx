@@ -18,8 +18,7 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const t = useTranslations();
   const loadErrorLabel = t("cms.blocks.socialFeed.loadError");
-  const missingConfigLabel = t("cms.blocks.socialFeed.missingConfig");
-  const embedTitle = t("cms.blocks.socialFeed.embedTitle");
+  const embedLabel = t("cms.blocks.socialFeed.embedTitle");
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -30,7 +29,7 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
   }, []);
 
   if (!account && !hashtag) {
-    return <p>{missingConfigLabel}</p>;
+    return null;
   }
 
   const src =
@@ -47,7 +46,8 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
   return (
     <iframe
       ref={iframeRef}
-      title={embedTitle}
+      title="social-feed"
+      aria-label={embedLabel}
       src={src}
       className="w-full"
       data-aspect="16/9"

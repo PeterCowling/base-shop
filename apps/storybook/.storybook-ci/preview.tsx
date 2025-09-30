@@ -2,6 +2,7 @@ import { withThemeByClassName } from "@storybook/addon-themes";
 import type { Decorator, Preview } from "@storybook/react";
 import "../../../packages/themes/base/src/tokens.css";
 import en from "../../../packages/i18n/src/en.json";
+import { createBackgroundOptions, DEFAULT_BACKGROUND } from "../.storybook/backgrounds";
 
 const t = (key: string) => (en as Record<string, string>)[key] ?? key;
 
@@ -28,8 +29,14 @@ const withTokens: Decorator = (Story, context) => {
   return <Story />;
 };
 
+const backgroundOptions = createBackgroundOptions(t);
+
 const preview: Preview = {
   parameters: {
+    backgrounds: {
+      default: DEFAULT_BACKGROUND,
+      options: backgroundOptions,
+    },
     // CI runs on a curated, fast subset. A11y is enabled per critical story via story parameters.
   },
   decorators: [

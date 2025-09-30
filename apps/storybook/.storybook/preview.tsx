@@ -5,6 +5,8 @@ import { ThemeProvider as SBThemeProvider, themes } from "@storybook/theming";
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
 import { DocsContainer, Primary, Stories } from "@storybook/blocks";
 import type { Decorator, Preview } from "@storybook/react";
+import type { ComponentPropsWithoutRef, ReactNode } from "react";
+import type { ThemeVars } from "@storybook/theming";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import "./styles/sb-globals.css";
 import { initialize, mswLoader } from "msw-storybook-addon";
@@ -13,6 +15,7 @@ import { mapDataStateToMsw } from "./msw/state-mapping";
 import { VIEWPORTS } from "./viewports";
 import { withRTL } from "./decorators/rtlDecorator";
 import { withPerf } from "./decorators/perfDecorator";
+import { createBackgroundOptions, DEFAULT_BACKGROUND } from "./backgrounds";
 import type { ToolbarGlobals, StoryDataState } from "./types";
 import enMessages from "@acme/i18n/en.json";
 
@@ -106,22 +109,26 @@ const withGlobals: Decorator = (Story, context) => {
 initialize({ onUnhandledRequest: "bypass" });
 
 // Concrete SB theme object with required typography.fonts to satisfy Docs resets
-const sbTheme = {
-  ...(themes as any).light,
+const lightTheme = themes.light as ThemeVars;
+
+const sbTheme: ThemeVars = {
+  ...lightTheme,
   typography: {
-    ...((themes as any).light?.typography || {}),
+    ...(lightTheme.typography ?? {}),
     fonts: {
-      base:
-        'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
-      mono:
-        'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
+      base: "var(--typography-body-font-family, var(--font-body, var(--font-sans)))",
+      mono: "var(--typography-code-font-family, var(--font-mono, ui-monospace))",
     },
   },
-} as const;
+};
+
+type EmotionThemeLike = ThemeVars & Record<string, unknown>;
+
+const emotionTheme = sbTheme as EmotionThemeLike;
 
 // Ensure Docs pages are always wrapped with a theme that includes typography.fonts
-const ThemedDocsContainer: React.FC<{ context: unknown; children: React.ReactNode }> = ({ context, children }) => (
-  <EmotionThemeProvider theme={sbTheme as any}>
+const ThemedDocsContainer: React.FC<{ context: unknown; children: ReactNode }> = ({ context, children }) => (
+  <EmotionThemeProvider theme={emotionTheme}>
     <SBThemeProvider theme={sbTheme}>
       {/* @ts-expect-error - docs container accepts theme in runtime */}
       <DocsContainer context={context} theme={sbTheme}>
@@ -139,21 +146,34 @@ const SafeDocsPage = () => (
   </div>
 );
 
+type StoryDocsComponent<Tag extends keyof JSX.IntrinsicElements> = (
+  props: ComponentPropsWithoutRef<Tag>
+) => JSX.Element;
+
+const docsComponents: {
+  h1: StoryDocsComponent<"h1">;
+  h2: StoryDocsComponent<"h2">;
+  code: StoryDocsComponent<"code">;
+  pre: StoryDocsComponent<"pre">;
+} = {
+  h1: (props) => <h1 {...props} />,
+  h2: (props) => <h2 {...props} />,
+  code: (props) => <code {...props} />,
+  pre: (props) => <pre {...props} />,
+};
+
+const backgroundOptions = createBackgroundOptions(t);
+
 const preview: Preview = {
   loaders: [mswLoader],
   parameters: {
     msw: { handlers: mswHandlers },
     docs: {
-      theme: sbTheme as any,
-      container: ThemedDocsContainer as any,
-      page: SafeDocsPage as any,
+      theme: sbTheme,
+      container: ThemedDocsContainer,
+      page: SafeDocsPage,
       // Work around theming context conflicts by rendering plain code/pre elements
-      components: {
-        h1: (props: any) => <h1 {...props} />,
-        h2: (props: any) => <h2 {...props} />,
-        code: (props: any) => <code {...props} />,
-        pre: (props: any) => <pre {...props} />,
-      },
+      components: docsComponents,
     },
     controls: {
       matchers: {
@@ -183,17 +203,13 @@ const preview: Preview = {
       defaultViewport: "desktop",
     },
     backgrounds: {
-      default: t("storybook.backgrounds.app"),
-      values: [
-        { name: t("storybook.backgrounds.app"), value: "hsl(var(--color-bg))" },
-        { name: t("storybook.backgrounds.canvas"), value: "hsl(var(--surface-1, var(--color-bg)))" },
-        { name: t("storybook.backgrounds.dark"), value: "hsl(var(--color-bg-dark, var(--color-bg)))" },
-      ],
+      default: DEFAULT_BACKGROUND,
+      options: backgroundOptions,
     },
   },
   decorators: [
     (Story) => (
-      <EmotionThemeProvider theme={sbTheme as any}>
+      <EmotionThemeProvider theme={emotionTheme}>
         <SBThemeProvider theme={sbTheme}>
           <Story />
         </SBThemeProvider>

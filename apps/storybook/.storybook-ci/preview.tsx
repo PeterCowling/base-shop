@@ -1,5 +1,6 @@
 import { withThemeByClassName } from "@storybook/addon-themes";
 import type { Decorator, Preview } from "@storybook/react";
+import type { GlobalTypes } from "@storybook/types";
 import "../../../packages/themes/base/src/tokens.css";
 import en from "../../../packages/i18n/src/en.json";
 import { createBackgroundOptions, DEFAULT_BACKGROUND } from "../.storybook/backgrounds";
@@ -8,7 +9,7 @@ import { withHighlight } from "../.storybook/decorators/highlightDecorator";
 
 const t = (key: string) => (en as Record<string, string>)[key] ?? key;
 
-export const globalTypes = {
+const toolbarGlobalTypes = {
   tokens: {
     name: t("storybook.tokens.name"),
     description: t("storybook.tokens.description"),
@@ -21,7 +22,7 @@ export const globalTypes = {
       ],
     },
   },
-};
+} satisfies GlobalTypes;
 
 const withTokens: Decorator = (Story, context) => {
   const { tokens } = context.globals as { tokens: string };
@@ -34,6 +35,10 @@ const withTokens: Decorator = (Story, context) => {
 const backgroundOptions = createBackgroundOptions(t);
 
 const preview: Preview = {
+  globalTypes: toolbarGlobalTypes,
+  initialGlobals: {
+    tokens: "base",
+  },
   parameters: {
     ...a11yParameters,
     backgrounds: {

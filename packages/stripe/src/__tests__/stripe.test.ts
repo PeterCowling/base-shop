@@ -1,7 +1,7 @@
 /** @jest-environment node */
 // packages/stripe/src/__tests__/stripe.test.ts
 import type Stripe from "stripe";
-import { rest } from "msw";
+import { rest } from "~test/msw/shared";
 import { server } from "~test/msw/server";
 
 /**

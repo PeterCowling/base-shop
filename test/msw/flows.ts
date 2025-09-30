@@ -3,8 +3,8 @@
 //--------------------------------------------------
 // Reusable MSW handler sets for common flows
 //--------------------------------------------------
-import type { RestHandler } from 'msw';
-import { rest } from 'msw';
+import type { HttpHandler } from 'msw';
+import { rest } from './shared';
 import jwt from 'jsonwebtoken';
 
 const DEFAULT_SECRET = process.env.NEXTAUTH_SECRET || 'test-nextauth-secret-32-chars-long-string!';
@@ -13,7 +13,7 @@ const DEFAULT_SECRET = process.env.NEXTAUTH_SECRET || 'test-nextauth-secret-32-c
  * Simulate a successful credentials login by stubbing next-auth endpoints
  * and setting a valid JWT session cookie for the requested role.
  */
-export function handlersLoginAs(role: 'admin' | 'viewer' | string = 'admin', opts?: { secret?: string }): RestHandler[] {
+export function handlersLoginAs(role: 'admin' | 'viewer' | string = 'admin', opts?: { secret?: string }): HttpHandler[] {
   const secret = opts?.secret || DEFAULT_SECRET;
   return [
     // Minimal CSRF token so apps that request it can proceed
@@ -39,7 +39,7 @@ export function handlersLoginAs(role: 'admin' | 'viewer' | string = 'admin', opt
  * Deterministic happy path for checkout session creation so tests
  * don't need to wire cy.intercept in every spec.
  */
-export function handlersCheckoutHappyPath(): RestHandler[] {
+export function handlersCheckoutHappyPath(): HttpHandler[] {
   return [
     rest.post('/api/checkout-session', async (_req, res, ctx) => {
       return res(

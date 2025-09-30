@@ -1,10 +1,19 @@
-module.exports = {
+const interceptorsClientRequestPath = (() => {
+  try {
+    return require.resolve("@mswjs/interceptors/ClientRequest", {
+      paths: [__dirname],
+    });
+  } catch {
+    return null;
+  }
+})();
+
+const moduleMapper = {
   "^~test/(.*)$": " /test/$1",
   // Ensure Jest can resolve MSW's node entry in all packages
   "^msw/node$": " /node_modules/msw/lib/node/index.mjs",
-  // Note: do not hard-map "@mswjs/interceptors" subpaths. Under pnpm these
-  // may be nested within msw's own node_modules, and forcing a root path
-  // breaks resolution. Let Jest/Node resolve them naturally instead.
+  // Avoid hard-coding "@mswjs/interceptors" subpaths: pnpm may nest them
+  // beneath MSW's own node_modules, so we resolve at runtime below instead.
   "^.+\\.d\\.ts$": " /test/emptyModule.ts",
   // Support ESM-style relative specifiers (./foo.js) in TS sources during Jest runs
   "^(\\.{1,2}/.*)\\.js$": "$1",
@@ -113,3 +122,13 @@ module.exports = {
   "^server-only$": " /test/server-only-stub.ts",
   "^react-dom/client$": " /test/reactDomClientShim.ts",
 };
+
+if (interceptorsClientRequestPath) {
+  moduleMapper["^@mswjs/interceptors/ClientRequest$"] =
+    interceptorsClientRequestPath;
+} else {
+  moduleMapper["^@mswjs/interceptors/ClientRequest$"] =
+    " /test/emptyModule.ts";
+}
+
+module.exports = moduleMapper;

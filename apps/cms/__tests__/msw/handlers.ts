@@ -1,4 +1,4 @@
-import { rest } from "msw";
+import { rest } from "~test/msw/shared";
 import { baseTokens } from "../../src/app/cms/wizard/tokenUtils";
 
 export const handlers = [

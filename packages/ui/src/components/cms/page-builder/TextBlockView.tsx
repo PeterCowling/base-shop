@@ -1,4 +1,4 @@
-/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-hardcoded-copy, react/forbid-dom-props -- PB-0001: builder canvas uses absolute/z-index and requires dynamic inline styles for runtime positioning */
+/* eslint-disable ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-hardcoded-copy, jsx-a11y/no-noninteractive-element-interactions, react/forbid-dom-props -- PB-0001: builder canvas uses absolute/z-index, custom interactions, and dynamic inline styles for runtime positioning */
 "use client";
 
 import { EditorContent, type Editor } from "@tiptap/react";

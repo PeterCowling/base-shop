@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { PageItem } from "./types";
 import { createPage, fetchPages, patchPage, updateOrder } from "./api";
 import { notify, uid } from "./utils";
@@ -7,6 +7,10 @@ import { useTranslations } from "@acme/i18n";
 
 export function usePagesState(open: boolean, shop: string) {
   const t = useTranslations();
+  const translate = useCallback(
+    (key: string, vars?: Record<string, string | number>) => String(t(key, vars)),
+    [t]
+  );
   const [q, setQ] = useState("");
   const [pages, setPages] = useState<PageItem[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -60,12 +64,12 @@ export function usePagesState(open: boolean, shop: string) {
       const ok = await updateOrder(shop, ids);
       if (ok) {
         setOrderDirty(false);
-        notify({ type: "success", title: t("Order saved") as string });
+        notify({ type: "success", title: translate("cms.pageBuilder.pages.orderSaved") });
       } else {
-        notify({ type: "error", title: t("Reorder failed") as string });
+        notify({ type: "error", title: translate("cms.pageBuilder.pages.reorderFailed") });
       }
     } catch {
-      notify({ type: "error", title: t("Reorder failed") as string });
+      notify({ type: "error", title: translate("cms.pageBuilder.pages.reorderFailed") });
     }
   };
 
@@ -79,19 +83,19 @@ export function usePagesState(open: boolean, shop: string) {
         seo: { title: p.seo?.title || { en: p.title || p.slug } },
       });
     } catch {
-      notify({ type: "error", title: t("Update failed") as string });
+      notify({ type: "error", title: translate("cms.pageBuilder.pages.updateFailed") });
     }
   };
 
   const addPage = async () => {
     const n = pages.length + 1;
-    const title = String(t("Untitled {n}", { n }));
+    const title = translate("cms.pageBuilder.pages.untitledN", { count: n });
     try {
       const created = await createPage(shop, title);
       if (created) {
         setPages((prev) => [...prev, created]);
         setSelectedId(created.id);
-        notify({ type: "info", title: t("Draft page created") as string });
+        notify({ type: "info", title: translate("cms.pageBuilder.pages.draftCreated") });
         return;
       }
     } catch {}
@@ -118,12 +122,20 @@ export function usePagesState(open: boolean, shop: string) {
       if (res.ok && res.item) {
         setPages((prev) => prev.map((it) => (it.id === res.item!.id ? { ...it, ...res.item! } : it)));
         setSelectedId(res.item!.id);
-        notify({ type: "success", title: t("Saved") as string });
+        notify({ type: "success", title: translate("cms.pageBuilder.pages.saved") });
       } else if (res.status === 409) {
-        notify({ type: "error", title: t("Conflict") as string, message: t("Page was modified elsewhere. Please refresh.") as string });
+        notify({
+          type: "error",
+          title: translate("cms.pageBuilder.pages.conflictTitle"),
+          message: translate("cms.pageBuilder.pages.conflictMessage"),
+        });
       }
     } catch (err) {
-      notify({ type: "error", title: t("Save failed") as string, message: String((err as Error)?.message || err) });
+      notify({
+        type: "error",
+        title: translate("cms.pageBuilder.pages.saveFailed"),
+        message: String((err as Error)?.message || err),
+      });
     }
   };
 

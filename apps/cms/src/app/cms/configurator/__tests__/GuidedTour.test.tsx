@@ -1,5 +1,21 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => {
+    const dictionary: Record<string, (options?: Record<string, unknown>) => string> = {
+      "pb.tour.next": () => "Next",
+      "pb.tour.back": () => "Back",
+      "pb.tour.skip": () => "Skip",
+      "pb.tour.done": () => "Done",
+      "pb.tour.stepXofY": (options) =>
+        `Step ${options?.current ?? "?"} of ${options?.total ?? "?"}`,
+    };
+
+    return (key: string, options?: Record<string, unknown>) =>
+      dictionary[key]?.(options) ?? key;
+  },
+}));
+
 import GuidedTour, { useGuidedTour } from "../GuidedTour";
 
 function ReplayButton(): JSX.Element {

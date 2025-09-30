@@ -1,17 +1,44 @@
 /* eslint-disable ds/no-nonlayered-zindex -- CMS-2651: onboarding overlay uses viewport-fixed layers and highlight ring; safe editor-only surface */
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useTranslations } from "@acme/i18n";
 
-interface Step {
+interface StepDefinition {
   selector: string;
-  content: React.ReactNode;
+  translationKey: string;
 }
 
 const TOUR_KEY = "configurator-guided-tour";
 
-// Steps are created inside the component to allow i18n via t()
+const STEP_DEFINITIONS: StepDefinition[] = [
+  {
+    selector: '[data-tour="select-template"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    translationKey: "cms.configurator.tour.selectTemplate",
+  },
+  {
+    selector: '[data-tour=\"drag-component\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    translationKey: "cms.configurator.tour.dragComponent",
+  },
+  {
+    selector: '[data-tour=\"edit-properties\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    translationKey: "cms.configurator.tour.editProperties",
+  },
+  {
+    selector: '[data-tour=\"preview\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    translationKey: "cms.configurator.tour.preview",
+  },
+  {
+    selector: '[data-tour=\"publish\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    translationKey: "cms.configurator.tour.publish",
+  },
+];
 
 interface GuidedTourContextValue {
   replay: () => void;
@@ -31,29 +58,6 @@ export default function GuidedTour({
   children: React.ReactNode;
 }): React.JSX.Element {
   const t = useTranslations();
-
-  const steps: Step[] = [
-    {
-      selector: '[data-tour="select-template"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-      content: t("cms.configurator.tour.selectTemplate"),
-    },
-    {
-      selector: '[data-tour=\"drag-component\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-      content: t("cms.configurator.tour.dragComponent"),
-    },
-    {
-      selector: '[data-tour=\"edit-properties\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-      content: t("cms.configurator.tour.editProperties"),
-    },
-    {
-      selector: '[data-tour=\"preview\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-      content: t("cms.configurator.tour.preview"),
-    },
-    {
-      selector: '[data-tour=\"publish\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-      content: t("cms.configurator.tour.publish"),
-    },
-  ];
   const [stepIndex, setStepIndex] = useState<number | null>(null);
   const [coords, setCoords] = useState<{
     top: number;
@@ -94,18 +98,20 @@ export default function GuidedTour({
     }
   }, [start]);
 
+  const totalSteps = STEP_DEFINITIONS.length;
+
   const next = useCallback(() => {
     setStepIndex((i) => {
       if (i === null) return i;
       const nextIdx = i + 1;
-      if (nextIdx >= steps.length) {
+      if (nextIdx >= totalSteps) {
         persist(null);
         return null;
       }
       persist(nextIdx);
       return nextIdx;
     });
-  }, [persist, steps.length]);
+  }, [persist, totalSteps]);
 
   const back = useCallback(() => {
     setStepIndex((i) => {
@@ -126,11 +132,17 @@ export default function GuidedTour({
     setStepIndex(null);
   }, [persist]);
 
-  const current = stepIndex !== null ? steps[stepIndex] : null;
+  const currentDefinition =
+    stepIndex !== null ? STEP_DEFINITIONS[stepIndex] ?? null : null;
+  const currentContent = currentDefinition
+    ? t(currentDefinition.translationKey)
+    : null;
 
   useEffect(() => {
-    if (!current) return;
-    const el = document.querySelector(current.selector) as HTMLElement | null;
+    if (stepIndex === null) return;
+    const definition = STEP_DEFINITIONS[stepIndex];
+    if (!definition) return;
+    const el = document.querySelector(definition.selector) as HTMLElement | null;
     if (!el) {
       next();
       return;
@@ -153,13 +165,13 @@ export default function GuidedTour({
       window.removeEventListener("resize", update);
       window.removeEventListener("scroll", update, true);
     };
-  }, [current, next]);
+  }, [next, stepIndex]);
 
   return (
     <GuidedTourContext.Provider value={{ replay }}>
       <div className="relative">
         {children}
-        {current && coords && (
+        {currentDefinition && currentContent && coords && (
           <>
             <div className="pointer-events-none fixed inset-0 z-40">
               <div
@@ -203,9 +215,12 @@ export default function GuidedTour({
               style={{ top: coords.top + coords.height + 8, left: coords.left }}
             >
               <div className="flex items-center justify-between gap-4">
-                <div>{current.content}</div>
+                <div>{currentContent}</div>
                 <div className="text-sm">
-                  {t("pb.tour.stepXofY", { current: stepIndex! + 1, total: steps.length })}
+                  {t("pb.tour.stepXofY", {
+                    current: stepIndex! + 1,
+                    total: totalSteps,
+                  })}
                 </div>
               </div>
               <div className="mt-2 flex gap-2 text-sm">
@@ -222,7 +237,7 @@ export default function GuidedTour({
                 >
                   {t("pb.tour.skip")}
                 </button>
-                {stepIndex === steps.length - 1 ? (
+                {stepIndex === totalSteps - 1 ? (
                   <button
                     className="underline inline-flex items-center justify-center min-h-11 min-w-11 px-3"
                     onClick={finish}

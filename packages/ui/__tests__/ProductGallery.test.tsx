@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import { ProductGallery } from "../src/components/organisms/ProductGallery";
 import type { MediaItem } from "../src/components/molecules/MediaSelector";
 
@@ -42,7 +42,10 @@ describe("ProductGallery", () => {
     const { container } = render(<ProductGallery media={media} />);
     const main = container.querySelector(".relative.aspect-square")!;
     expect(main.querySelector("img")).toBeInTheDocument();
-    fireEvent.click(screen.getAllByRole("button")[1]);
+    const selector = container.querySelector(".flex.gap-2");
+    expect(selector).not.toBeNull();
+    const buttons = within(selector as HTMLElement).getAllByRole("button");
+    fireEvent.click(buttons[1]);
     expect(main.querySelector("video")).toBeInTheDocument();
   });
 });

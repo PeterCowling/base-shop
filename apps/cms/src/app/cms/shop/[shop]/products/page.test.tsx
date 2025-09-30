@@ -61,6 +61,8 @@ jest.mock("@ui/components/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,
+    Alert: ({ heading, children, ...props }: any) =>
+      React.createElement("div", { role: "alert", ...props }, heading ?? children ?? null),
     Progress: ({ label }: any) =>
       React.createElement("div", { role: label ? "progressbar" : undefined }, label ?? null),
     Tag: ({ children, ...props }: any) =>

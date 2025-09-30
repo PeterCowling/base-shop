@@ -14,7 +14,15 @@ function useColumns() {
   const t = useTranslations();
   const cols: Column<ComponentChange>[] = [
     { header: String(t("cms.upgrade.table.package")), render: (row) => row.name },
-    { header: String(t("cms.upgrade.table.current")), render: (row) => row.from ?? String(t("common.none")) },
+    {
+      header: String(t("cms.upgrade.table.current")),
+      render: (row) =>
+        row.from ?? (
+          <span aria-label={String(t("common.none"))} title={String(t("common.none"))}>
+            —
+          </span>
+        ),
+    },
     { header: String(t("cms.upgrade.table.new")), render: (row) => row.to },
     {
       header: String(t("cms.upgrade.table.changelog")),
@@ -30,7 +38,13 @@ function useColumns() {
             {t("cms.upgrade.table.view")}
           </a>
         ) : (
-          <span className="text-muted-foreground">{t("common.none")}</span>
+          <span
+            className="text-muted-foreground"
+            aria-label={String(t("common.none"))}
+            title={String(t("common.none"))}
+          >
+            —
+          </span>
         ),
     },
   ];

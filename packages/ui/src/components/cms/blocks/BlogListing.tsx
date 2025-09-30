@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useTranslations } from "@acme/i18n";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslations } from "@acme/i18n";
+
+import { Inline } from "../../atoms/primitives/Inline";
 
 export type BlogPost = {
   title: string;
@@ -15,14 +17,11 @@ export type BlogPost = {
 
 export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]; locale?: string }) {
   const t = useTranslations();
-  const shopStoryCta = (() => {
-    const v = t("blog.cta.shopStory");
-    return v === "blog.cta.shopStory" ? "Shop the story" : (v as string);
-  })();
-  if (!posts.length) return null;
+  const shopStoryCta = t("blog.cta.shopStory");
+  const allCategoriesLabel = t("blog.filter.all");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [category, setCategory] = useState<string | null>(searchParams?.get("category") ?? null);
+  const [category, setCategory] = useState<string | null>(() => searchParams?.get("category") ?? null);
   useEffect(() => {
     const next = searchParams?.get("category") ?? null;
     setCategory(next);
@@ -52,16 +51,17 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
     router.push(`?${params.toString()}`);
     setCategory(value);
   };
+  if (!posts.length) return null;
   return (
     <section className="space-y-4">
       {categories.length > 1 ? (
-        <div className="flex flex-wrap items-center gap-2">
+        <Inline gap={2}>
           <button
             type="button"
             onClick={() => updateCategory(null)}
             className={`rounded border px-2 py-1 text-sm ${category ? "opacity-70" : "bg-foreground text-background"}`}
           >
-            All
+            {allCategoriesLabel}
           </button>
           {categories.map((c) => (
             <button
@@ -73,7 +73,7 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
               {c}
             </button>
           ))}
-        </div>
+        </Inline>
       ) : null}
       {filtered.map((p) => (
         <article key={p.title} className="space-y-1">
@@ -85,7 +85,7 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
             <h3 className="text-lg font-semibold">{p.title}</h3>
           )}
           {(Array.isArray(p.categories) && p.categories.length) || p.date ? (
-            <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
+            <Inline gap={2} className="text-xs text-muted">
               {Array.isArray(p.categories)
                 ? p.categories.map((c) => (
                     <span key={c} className="rounded bg-muted px-2 py-0.5">
@@ -94,11 +94,11 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
                   ))
                 : null}
               {p.date && !Number.isNaN(Date.parse(p.date)) ? (
-                <time dateTime={p.date} className="ml-auto opacity-80">
+                <time dateTime={p.date} className="ms-auto opacity-80">
                   {fmt.format(new Date(p.date))}
                 </time>
               ) : null}
-            </div>
+            </Inline>
           ) : null}
           {p.excerpt && (
             // i18n-exempt -- DS-1234 [ttl=2025-11-30] — excerpt is CMS-provided content, not hardcoded

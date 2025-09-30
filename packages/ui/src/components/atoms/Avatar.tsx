@@ -87,6 +87,10 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
     const widthClass = toDimensionClass(width ?? dimension, "w");
     const heightClass = toDimensionClass(height ?? dimension, "h");
     const boxClasses = cn(padding, margin, widthClass, heightClass);
+    const fallbackStyle = React.useMemo<React.CSSProperties>(
+      () => ({ width: `${numericWidth}px`, height: `${numericHeight}px` }),
+      [numericHeight, numericWidth]
+    );
 
     // ─── No src: render fallback ────────────────────────────────────────────
     if (!src) {
@@ -98,6 +102,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
             boxClasses,
             className
           )}
+          style={fallbackStyle}
         >
           {fallback ?? (typeof alt === "string" ? alt.charAt(0) : null)}
         </div>

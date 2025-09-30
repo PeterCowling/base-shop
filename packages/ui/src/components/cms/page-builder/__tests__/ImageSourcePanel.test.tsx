@@ -1,7 +1,12 @@
 import "../../../../../../../test/resetNextMocks";
 import { fireEvent, render, screen } from "@testing-library/react";
 import ImageSourcePanel from "../ImageSourcePanel";
-import * as i18n from "@acme/i18n";
+const useTranslationsMock = jest.fn(() => (key: string) => key);
+
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => useTranslationsMock(),
+}));
 
 const probe = jest.fn();
 let probeState = { loading: false, error: "", valid: true };
@@ -10,8 +15,6 @@ jest.mock("../../../../hooks/useRemoteImageProbe", () => ({
   __esModule: true,
   default: () => ({ probe, ...probeState }),
 }));
-
-jest.spyOn(i18n, "useTranslations").mockReturnValue((key: string) => key);
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,

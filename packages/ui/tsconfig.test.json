@@ -3,13 +3,18 @@
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     // Let ts-jest emit into a scratch dir for this package
+    "composite": true,
+    "declaration": true,
+    "declarationMap": false,
+    "declarationDir": ".ts-jest",
     "noEmit": false,
     "noEmitOnError": false,
     "rootDir": ".",
     "outDir": ".ts-jest",
-    // Align module semantics with repo-wide Jest ESM setup
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    // Use CommonJS semantics for ts-jest to ensure transformed files
+    // emit into the scratch directory without bundler-specific resolution.
+    "module": "CommonJS",
+    "moduleResolution": "Node",
     "jsx": "react-jsx",
     "esModuleInterop": true
   },

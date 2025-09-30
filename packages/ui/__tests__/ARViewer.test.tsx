@@ -26,5 +26,22 @@ describe("ARViewer", () => {
     unmount();
     (customElements as any).get = getOrig;
   });
+
+  it("uses configured script source when provided", () => {
+    const getOrig = customElements.get;
+    const originalEnv = process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC;
+    (customElements as any).get = jest.fn(() => undefined);
+    process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC = "https://cdn.example.com/model-viewer.js";
+
+    const { unmount } = render(<ARViewer src="/custom.glb" />);
+    const script = document.head.querySelector(
+      "script[src='https://cdn.example.com/model-viewer.js']",
+    );
+    expect(script).not.toBeNull();
+
+    unmount();
+    process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC = originalEnv;
+    (customElements as any).get = getOrig;
+  });
 });
 

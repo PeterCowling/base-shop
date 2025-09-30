@@ -48,4 +48,32 @@ describe("Logo", () => {
     img = container.querySelector("img")!;
     expect(img.getAttribute("src")).toBe("/mobile.png");
   });
+
+  it("deduplicates identical sources when computing srcSet", () => {
+    mockViewport.mockReturnValue("desktop");
+    const { container } = render(
+      <Logo
+        fallbackText="ACME"
+        src="/shared.png"
+        sources={{ mobile: { src: "/shared.png", width: 80 } }}
+      />,
+    );
+    const img = container.querySelector("img")!;
+    const parts = img.getAttribute("srcset")!.split(",");
+    expect(parts).toHaveLength(1);
+    expect(parts[0].trim()).toBe("/shared.png 32w");
+  });
+
+  it("respects provided srcSet overrides", () => {
+    mockViewport.mockReturnValue("desktop");
+    const { container } = render(
+      <Logo
+        fallbackText="ACME"
+        src="/logo.png"
+        srcSet="/logo.png 1x, /logo@2x.png 2x"
+      />,
+    );
+    const img = container.querySelector("img")!;
+    expect(img.getAttribute("srcset")).toBe("/logo.png 1x, /logo@2x.png 2x");
+  });
 });

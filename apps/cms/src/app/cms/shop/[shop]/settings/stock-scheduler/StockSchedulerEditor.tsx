@@ -87,7 +87,11 @@ export default function StockSchedulerEditor({ shop, status }: Props) {
             <FormField
               label={t("cms.stockScheduler.interval.label")}
               htmlFor="stock-scheduler-interval"
-              error={<ErrorChips errors={errors.intervalMs} />}
+              error={
+                errors.intervalMs?.length ? (
+                  <ErrorChips errors={errors.intervalMs} />
+                ) : undefined
+              }
               className="gap-3"
             >
               <Input

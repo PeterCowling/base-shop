@@ -197,7 +197,11 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
             <FormField
               label={String(t("cms.stockAlerts.recipients.label"))}
               htmlFor="stock-alert-recipients" // i18n-exempt -- CMS-0000 [ttl=2025-12-31] non-UI element id
-              error={<ErrorChips errors={errors.recipients} />}
+              error={
+                errors.recipients?.length ? (
+                  <ErrorChips errors={errors.recipients} />
+                ) : undefined
+              }
               className="gap-3"
             >
               <Textarea
@@ -218,7 +222,11 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
             <FormField
               label={String(t("cms.stockAlerts.webhook.label"))}
               htmlFor="stock-alert-webhook" // i18n-exempt -- CMS-0000 [ttl=2025-12-31] non-UI element id
-              error={<ErrorChips errors={errors.webhook} />}
+              error={
+                errors.webhook?.length ? (
+                  <ErrorChips errors={errors.webhook} />
+                ) : undefined
+              }
               className="gap-3"
             >
               <Input
@@ -234,7 +242,11 @@ export default function StockAlertsEditor({ shop, initial }: Props) {
             <FormField
               label={String(t("cms.stockAlerts.threshold.label"))}
               htmlFor="stock-alert-threshold" // i18n-exempt -- CMS-0000 [ttl=2025-12-31] non-UI element id
-              error={<ErrorChips errors={errors.threshold} />}
+              error={
+                errors.threshold?.length ? (
+                  <ErrorChips errors={errors.threshold} />
+                ) : undefined
+              }
               className="gap-3"
             >
               <Input

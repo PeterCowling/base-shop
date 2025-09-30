@@ -42,6 +42,14 @@ export default function HeaderClient({
   const BADGE_TOKEN = "--color-danger"; // i18n-exempt -- PB-123 design token name [ttl=2025-12-31]
   const BADGE_FG_CLASS = "text-danger-foreground"; // i18n-exempt -- PB-123 CSS classes only [ttl=2025-12-31]
   const BADGE_FG_TOKEN = "--color-danger-fg"; // i18n-exempt -- PB-123 design token name [ttl=2025-12-31]
+  const navLabelRaw = t("header.nav.aria");
+  const navLabel =
+    typeof navLabelRaw === "string" &&
+    navLabelRaw.trim().length > 0 &&
+    navLabelRaw !== "header.nav.aria"
+      ? navLabelRaw
+      : "Main navigation";
+
   return (
     <header
       className={cn(HEADER_CLASS, height, padding)}
@@ -50,7 +58,7 @@ export default function HeaderClient({
         {t("app.name")}
       </Link>
 
-      <nav className={NAV_CLASS} aria-label={t("header.nav.aria") as string}>
+      <nav className={NAV_CLASS} aria-label={navLabel}>
         {nav.map((item) => (
           <Link
             key={item.url}

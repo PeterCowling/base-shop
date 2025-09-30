@@ -17,9 +17,15 @@ export interface ColorSwatchProps
 export const ColorSwatch = React.forwardRef<
   HTMLButtonElement,
   ColorSwatchProps
->(({ color, selected = false, size = 24, className, style: _style, ...props }, ref) => {
+>(({ color, selected = false, size = 24, className, style: styleOverride, ...props }, ref) => {
   const normalized =
     typeof color === "string" ? color.replace(/\s+/g, "") : String(color);
+  const dimension = `${size}px`;
+  const style: React.CSSProperties = {
+    width: dimension,
+    height: dimension,
+    ...styleOverride,
+  };
   return (
     <button
       ref={ref}
@@ -32,6 +38,7 @@ export const ColorSwatch = React.forwardRef<
         selected ? "ring-2 ring-offset-2" : "", // i18n-exempt -- DEV-000 CSS utility class names
         className
       )}
+      style={style}
       {...props}
     />
   );

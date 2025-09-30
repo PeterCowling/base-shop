@@ -107,7 +107,7 @@ describe("revoke", () => {
     expect(revokeSession).not.toHaveBeenCalled();
     expect(result).toEqual({
       success: false,
-      error: "Session does not belong to the user.",
+      error: "account.sessions.errors.notOwned",
     });
   });
 

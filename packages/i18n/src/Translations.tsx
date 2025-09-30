@@ -129,7 +129,7 @@ export function useTranslations(): (
   return useCallback(
     (key: string, vars?: Record<string, string | number>): string => {
       // Resolve from active messages, then fall back to bundled English.
-      let msg = (messages[key] ?? defaultMessages[key]) as string | undefined;
+      const msg = (messages[key] ?? defaultMessages[key]) as string | undefined;
       if (msg === undefined) {
         if (process.env.NODE_ENV === "development") {
           console.warn(`Missing translation for key: ${key}`);

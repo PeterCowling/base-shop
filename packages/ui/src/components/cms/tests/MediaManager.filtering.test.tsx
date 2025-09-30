@@ -135,10 +135,14 @@ describe("MediaManager – filtering", () => {
         onMetadataUpdate={mockMetadataUpdate}
       />
     );
-    expect(screen.getAllByRole("menuitem", { name: /Delete/i })).toHaveLength(2);
+    expect(
+      screen.getAllByRole("button", { name: /Delete media/i })
+    ).toHaveLength(2);
     fireEvent.change(screen.getByPlaceholderText("Search media..."), {
       target: { value: "dog" },
     });
-    expect(screen.getAllByRole("menuitem", { name: /Delete/i })).toHaveLength(1);
+    expect(
+      screen.getAllByRole("button", { name: /Delete media/i })
+    ).toHaveLength(1);
   });
 });

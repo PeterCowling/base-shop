@@ -1,13 +1,36 @@
-import { render, screen, act } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render, screen, fireEvent } from "@testing-library/react";
 import RichTextEditor from "@cms/app/cms/blog/posts/RichTextEditor";
 import type { PortableTextBlock } from "@cms/app/cms/blog/posts/schema";
 import { PortableTextEditor } from "@portabletext/editor";
 
-jest.mock("@ui", () => ({
-  Button: (props: any) => <button {...props} />,
-  Input: (props: any) => <input {...props} />,
+const translations: Record<string, string> = {
+  "cms.blog.editor.loadFailedProducts": "Failed to load products",
+};
+const translate = (key: string) => translations[key] ?? key;
+
+jest.mock("@ui/components/atoms", () => ({
+  Button: ({ children, ...props }: any) => (
+    <button {...props}>{children}</button>
+  ),
+  Input: ({ label, ...props }: any) => (
+    <label>
+      <span>{label}</span>
+      <input {...props} />
+    </label>
+  ),
+}));
+jest.mock("@ui/components/cms/page-builder", () => ({
   ImagePicker: ({ children }: any) => <div>{children}</div>,
+}));
+jest.mock("next/image", () => ({
+  __esModule: true,
+  default: (props: any) => <img {...props} />,
+}));
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => translate,
+}));
+jest.mock("@acme/shared-utils", () => ({
+  formatCurrency: (value: number) => `$${value}`,
 }));
 jest.mock("@portabletext/editor", () => ({
   defineSchema: (x: any) => x,
@@ -34,13 +57,7 @@ jest.mock("@portabletext/editor/plugins", () => ({
 }));
 
 describe("RichTextEditor", () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-
   afterEach(() => {
-    jest.runOnlyPendingTimers();
-    jest.useRealTimers();
     jest.restoreAllMocks();
   });
 
@@ -67,21 +84,14 @@ describe("RichTextEditor", () => {
         ],
       } as any);
 
-    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     const { unmount } = render(<RichTextEditor value={[]} onChange={jest.fn()} />);
 
     const input = screen.getByRole("textbox");
-    await user.type(input, "prod");
+    fireEvent.change(input, { target: { value: "prod" } });
 
-    await act(async () => {
-      jest.advanceTimersByTime(300);
-    });
+    expect(await screen.findByText("Product 1")).toBeInTheDocument();
 
-    await act(async () => {});
-
-    expect(screen.getByText("Product 1")).toBeInTheDocument();
-
-    await user.click(screen.getByRole("button", { name: /Product 1/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Product 1/ }));
     expect(PortableTextEditor.insertBlock).toHaveBeenCalledWith(
       expect.anything(),
       { name: "productReference" },
@@ -89,33 +99,20 @@ describe("RichTextEditor", () => {
     );
 
     unmount();
-    act(() => {
-      jest.runOnlyPendingTimers();
-    });
   });
 
   it("shows error when product search fails", async () => {
     jest.spyOn(global, "fetch").mockRejectedValue(new Error("fail"));
 
-    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     const { unmount } = render(<RichTextEditor value={[]} onChange={jest.fn()} />);
 
     const input = screen.getByRole("textbox");
-    await user.type(input, "prod");
-
-    await act(async () => {
-      jest.advanceTimersByTime(300);
-    });
-
-    await act(async () => {});
+    fireEvent.change(input, { target: { value: "prod" } });
 
     expect(
-      screen.getByText("Failed to load products")
+      await screen.findByText("Failed to load products")
     ).toBeInTheDocument();
 
     unmount();
-    act(() => {
-      jest.runOnlyPendingTimers();
-    });
   });
 });

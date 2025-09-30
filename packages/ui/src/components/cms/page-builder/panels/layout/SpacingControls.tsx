@@ -23,49 +23,55 @@ export default function SpacingControls({ component, handleInput, handleResize, 
   const PLACEHOLDER_REM = t("cms.builder.spacing.placeholder.rem");
 
   const cmp = component as Record<string, unknown>;
+  const VIEWPORTS = [
+    { suffix: "Desktop", label: t("cms.builder.spacing.viewport.desktop") },
+    { suffix: "Tablet", label: t("cms.builder.spacing.viewport.tablet") },
+    { suffix: "Mobile", label: t("cms.builder.spacing.viewport.mobile") },
+  ] as const;
+
   return (
     <>
-      {(["Desktop", "Tablet", "Mobile"] as const).map((vp) => (
-        <div key={`spacing-${vp}`} className="space-y-2">
+      {VIEWPORTS.map(({ suffix, label }) => (
+        <div key={`spacing-${suffix}`} className="space-y-2">
           <Input
-            label={`${LABEL_MARGIN} (${vp})`}
+            label={`${LABEL_MARGIN} (${label})`}
             placeholder={PLACEHOLDER_REM}
-            value={(component[`margin${vp}` as keyof PageComponent] as string) ?? ""}
+            value={(component[`margin${suffix}` as keyof PageComponent] as string) ?? ""}
             error={
-              cssError("margin", component[`margin${vp}` as keyof PageComponent] as string) ??
-              (errorKeys?.has(`margin${vp}`) ? ERROR_MARGIN_INVALID : undefined)
+              cssError("margin", component[`margin${suffix}` as keyof PageComponent] as string) ??
+              (errorKeys?.has(`margin${suffix}`) ? ERROR_MARGIN_INVALID : undefined)
             }
-            onChange={(e) => handleResize(`margin${vp}`, e.target.value)}
+            onChange={(e) => handleResize(`margin${suffix}`, e.target.value)}
           />
-          {isOverridden(cmp["margin"], cmp[`margin${vp}`]) && (
+          {isOverridden(cmp["margin"], cmp[`margin${suffix}`]) && (
             <div className="flex items-center gap-2 text-xs">
               <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("cms.builder.override.activeTag")}</span>
               <button
                 type="button"
                 className="underline inline-flex items-center justify-center min-h-10 min-w-10 px-2"
-                onClick={() => handleResize(`margin${vp}`, "")}
+                onClick={() => handleResize(`margin${suffix}`, "")}
               >
                 {t("actions.reset")}
               </button>
             </div>
           )}
           <Input
-            label={`${LABEL_PADDING} (${vp})`}
+            label={`${LABEL_PADDING} (${label})`}
             placeholder={PLACEHOLDER_REM}
-            value={(component[`padding${vp}` as keyof PageComponent] as string) ?? ""}
+            value={(component[`padding${suffix}` as keyof PageComponent] as string) ?? ""}
             error={
-              cssError("padding", component[`padding${vp}` as keyof PageComponent] as string) ??
-              (errorKeys?.has(`padding${vp}`) ? ERROR_PADDING_INVALID : undefined)
+              cssError("padding", component[`padding${suffix}` as keyof PageComponent] as string) ??
+              (errorKeys?.has(`padding${suffix}`) ? ERROR_PADDING_INVALID : undefined)
             }
-            onChange={(e) => handleResize(`padding${vp}`, e.target.value)}
+            onChange={(e) => handleResize(`padding${suffix}`, e.target.value)}
           />
-          {isOverridden(cmp["padding"], cmp[`padding${vp}`]) && (
+          {isOverridden(cmp["padding"], cmp[`padding${suffix}`]) && (
             <div className="flex items-center gap-2 text-xs">
               <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("cms.builder.override.activeTag")}</span>
               <button
                 type="button"
                 className="underline inline-flex items-center justify-center min-h-10 min-w-10 px-2"
-                onClick={() => handleResize(`padding${vp}`, "")}
+                onClick={() => handleResize(`padding${suffix}`, "")}
               >
                 {t("actions.reset")}
               </button>

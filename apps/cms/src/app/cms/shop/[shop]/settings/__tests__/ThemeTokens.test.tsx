@@ -51,10 +51,10 @@ describe("ShopThemeSection", () => {
 
     // highlight when changed (token-based class)
     expect(getByText("color-primary").closest("tr")).toHaveClass(
-      "bg-warning/10",
+      "bg-warning-soft",
     );
     expect(getByText("spacing").closest("tr")).not.toHaveClass(
-      "bg-warning/10",
+      "bg-warning-soft",
     );
 
     // reset override for changed token

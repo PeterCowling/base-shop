@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { within, userEvent, expect, waitFor } from '@storybook/test';
 import PDPDetailsSection from '../../../packages/ui/src/components/cms/blocks/PDPDetailsSection';
@@ -7,7 +8,7 @@ import StickyBuyBar from '../../../packages/ui/src/components/cms/blocks/StickyB
 import { ProductGallery } from '../../../packages/ui/src/components/organisms/ProductGallery';
 import { CartStatus } from '../components/CartStatus';
 
-const product = {
+const DEFAULT_PRODUCT = {
   id: 'lux-001',
   slug: 'lux-001',
   title: 'Luxe Leather Tote',
@@ -25,76 +26,97 @@ const product = {
     'A spacious editorial layout showcases product details with luxury spacing. Full‑grain leather and hand‑finished edges.',
 } as const;
 
-function PDPComposition() {
+type PDPCompositionProps = {
+  showCartStatus?: boolean;
+  product: typeof DEFAULT_PRODUCT;
+  galleryProps?: Partial<Omit<ComponentProps<typeof ProductGallery>, 'media'>>;
+  detailsProps?: Partial<Omit<ComponentProps<typeof PDPDetailsSection>, 'product'>>;
+  financingProps?: Partial<ComponentProps<typeof FinancingBadge>> & { price?: number };
+  policies?: ComponentProps<typeof PoliciesAccordion>;
+  stickyBarProps?: Partial<ComponentProps<typeof StickyBuyBar>>;
+};
+
+function PDPComposition({
+  showCartStatus = false,
+  product,
+  galleryProps,
+  detailsProps,
+  financingProps,
+  policies,
+  stickyBarProps,
+}: PDPCompositionProps) {
+  const resolvedFinancing = financingProps
+    ? {
+        price: financingProps.price ?? product.price,
+        currency: 'USD',
+        ...financingProps,
+      }
+    : null;
+
   return (
     <div style={{ maxWidth: 1120, margin: '0 auto', padding: 16 }}>
-      <CartStatus />
+      {showCartStatus ? <CartStatus /> : null}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 24 }}>
-        <ProductGallery media={product.media as any} />
-        <PDPDetailsSection product={product as any} preset="luxury" />
+        <ProductGallery media={product.media as any} {...(galleryProps as any)} />
+        <PDPDetailsSection product={product as any} {...(detailsProps as any)} />
       </div>
-      <div style={{ marginTop: 12 }}>
-        <FinancingBadge provider="klarna" apr={0} termMonths={12} price={product.price} currency="USD" />
-      </div>
-      <div style={{ marginTop: 16 }}>
-        <PoliciesAccordion
-          shipping="<p>Free insured shipping worldwide</p>"
-          returns="<p>30‑day returns. Prepaid label.</p>"
-          warranty="<p>2‑year limited warranty</p>"
-        />
-      </div>
+      {resolvedFinancing ? (
+        <div style={{ marginTop: 12 }}>
+          <FinancingBadge {...(resolvedFinancing as ComponentProps<typeof FinancingBadge>)} />
+        </div>
+      ) : null}
+      {policies ? (
+        <div style={{ marginTop: 16 }}>
+          <PoliciesAccordion {...(policies as ComponentProps<typeof PoliciesAccordion>)} />
+        </div>
+      ) : null}
       <div style={{ marginTop: 24 }}>
-        <StickyBuyBar product={product as any} />
+        <StickyBuyBar product={product as any} {...(stickyBarProps as any)} />
       </div>
     </div>
   );
 }
 
-const meta: Meta<typeof PDPComposition> = {
+const meta: Meta<PDPCompositionProps> = {
   title: 'Compositions/PDP',
   component: PDPComposition,
   parameters: { cart: true },
+  args: {
+    showCartStatus: true,
+    product: DEFAULT_PRODUCT,
+    galleryProps: {},
+    detailsProps: { preset: 'luxury' },
+    financingProps: { provider: 'klarna', apr: 0, termMonths: 12 },
+    policies: {
+      shipping: '<p>Free insured shipping worldwide</p>',
+      returns: '<p>30‑day returns. Prepaid label.</p>',
+      warranty: '<p>2‑year limited warranty</p>',
+    },
+    stickyBarProps: {},
+  },
 };
 export default meta;
 
-export const LuxuryPreset: StoryObj<typeof PDPComposition> = {};
+type Story = StoryObj<typeof meta>;
 
-export const ARAnd360: StoryObj<typeof PDPComposition> = {
+export const LuxuryPreset: Story = {};
+
+export const ARAnd360: Story = {
   name: 'AR + 360 Media',
-  render: () => {
-    const arProduct = {
-      ...product,
+  args: {
+    product: {
+      ...DEFAULT_PRODUCT,
       media: [
         { type: '360', frames: ['/shop/black.jpg', '/shop/sand.jpg', '/shop/black.jpg', '/shop/sand.jpg'] },
         { type: 'model', src: '/models/bag.glb', alt: '3D model' } as any,
         { type: 'image', url: '/shop/black.jpg', altText: 'Fallback image' },
       ],
-    } as const;
-    return (
-      <div style={{ maxWidth: 1120, margin: '0 auto', padding: 16 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 24 }}>
-          <ProductGallery media={arProduct.media as any} />
-          <PDPDetailsSection product={arProduct as any} preset="luxury" />
-        </div>
-        <div style={{ marginTop: 12 }}>
-          <FinancingBadge provider="affirm" apr={9.99} termMonths={12} price={arProduct.price} currency="USD" />
-        </div>
-        <div style={{ marginTop: 16 }}>
-          <PoliciesAccordion
-            shipping="<p>Free insured shipping worldwide</p>"
-            returns="<p>30‑day returns. Prepaid label.</p>"
-            warranty="<p>2‑year limited warranty</p>"
-          />
-        </div>
-        <div style={{ marginTop: 24 }}>
-          <StickyBuyBar product={arProduct as any} />
-        </div>
-      </div>
-    );
+    },
+    financingProps: { provider: 'affirm', apr: 9.99, termMonths: 12 },
   },
 };
 
-export const AddToCartFlow: StoryObj<typeof PDPComposition> = {
+export const AddToCartFlow: Story = {
   name: 'Add to cart (flow)',
   parameters: { cart: true },
   play: async ({ canvasElement }) => {

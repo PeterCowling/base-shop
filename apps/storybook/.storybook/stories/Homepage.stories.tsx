@@ -1,3 +1,4 @@
+import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { within, userEvent, expect, waitFor } from '@storybook/test';
 import HeaderSection from '../../../packages/ui/src/components/cms/blocks/HeaderSection';
@@ -6,32 +7,69 @@ import ShowcaseSection from '../../../packages/ui/src/components/cms/blocks/Show
 import FooterSection from '../../../packages/ui/src/components/cms/blocks/FooterSection';
 import { CartStatus } from '../components/CartStatus';
 
-function HomeComposition() {
+type HomeCompositionProps = {
+  showCartStatus?: boolean;
+  headerProps: ComponentProps<typeof HeaderSection>;
+  heroProps: ComponentProps<typeof CampaignHeroSection>;
+  showcaseProps: ComponentProps<typeof ShowcaseSection>;
+  footerProps: ComponentProps<typeof FooterSection>;
+};
+
+function HomeComposition({
+  showCartStatus = false,
+  headerProps,
+  heroProps,
+  showcaseProps,
+  footerProps,
+}: HomeCompositionProps) {
   return (
     <div>
-      <CartStatus />
-      <HeaderSection variant="sticky" announcement searchMode="inline" showCurrencySelector />
+      {showCartStatus ? <CartStatus /> : null}
+      <HeaderSection {...headerProps} />
       <main>
-        <CampaignHeroSection mediaType="image" imageSrc="/hero/slide-1.jpg" usps={["Free shipping", "30‑day returns", "Carbon neutral"]} />
+        <CampaignHeroSection {...heroProps} />
         <div style={{ marginTop: 32 }}>
-          <ShowcaseSection preset="featured" layout="carousel" />
+          <ShowcaseSection {...showcaseProps} />
         </div>
       </main>
-      <FooterSection variant="multiColumn" />
+      <FooterSection {...footerProps} />
     </div>
   );
 }
 
-const meta: Meta<typeof HomeComposition> = {
+const meta: Meta<HomeCompositionProps> = {
   title: 'Compositions/Homepage',
   component: HomeComposition,
   parameters: { cart: true },
+  args: {
+    showCartStatus: true,
+    headerProps: {
+      variant: 'sticky',
+      announcement: true,
+      searchMode: 'inline',
+      showCurrencySelector: true,
+    },
+    heroProps: {
+      mediaType: 'image',
+      imageSrc: '/hero/slide-1.jpg',
+      usps: ['Free shipping', '30‑day returns', 'Carbon neutral'],
+    },
+    showcaseProps: {
+      preset: 'featured',
+      layout: 'carousel',
+    },
+    footerProps: {
+      variant: 'multiColumn',
+    },
+  },
 };
 export default meta;
 
-export const Default: StoryObj<typeof HomeComposition> = {};
+type Story = StoryObj<typeof meta>;
 
-export const AddToCartFlow: StoryObj<typeof HomeComposition> = {
+export const Default: Story = {};
+
+export const AddToCartFlow: Story = {
   name: 'Add to cart (flow)',
   parameters: { cart: true },
   play: async ({ canvasElement }) => {

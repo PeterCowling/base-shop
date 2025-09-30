@@ -1,25 +1,48 @@
+import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import HeaderSection from '../../../packages/ui/src/components/cms/blocks/HeaderSection';
 import CollectionSectionClient from '../../../packages/ui/src/components/cms/blocks/CollectionSection.client';
 import FooterSection from '../../../packages/ui/src/components/cms/blocks/FooterSection';
 import { PRODUCTS } from '../../../packages/platform-core/src/products/index';
 
-function PLPComposition() {
+type PLPCompositionProps = {
+  headerProps: ComponentProps<typeof HeaderSection>;
+  collectionProps: ComponentProps<typeof CollectionSectionClient>;
+  footerProps: ComponentProps<typeof FooterSection>;
+};
+
+function PLPComposition({ headerProps, collectionProps, footerProps }: PLPCompositionProps) {
   return (
     <div>
-      <HeaderSection variant="sticky" searchMode="inline" />
+      <HeaderSection {...headerProps} />
       <main>
-        <CollectionSectionClient initial={PRODUCTS as any} params={{ slug: 'demo' }} paginationMode="loadMore" />
+        <CollectionSectionClient {...collectionProps} />
       </main>
-      <FooterSection variant="legalHeavy" />
+      <FooterSection {...footerProps} />
     </div>
   );
 }
 
-const meta: Meta<typeof PLPComposition> = {
+const meta: Meta<PLPCompositionProps> = {
   title: 'Compositions/PLP',
   component: PLPComposition,
+  args: {
+    headerProps: {
+      variant: 'sticky',
+      searchMode: 'inline',
+    },
+    collectionProps: {
+      initial: PRODUCTS as any,
+      params: { slug: 'demo' },
+      paginationMode: 'loadMore',
+    },
+    footerProps: {
+      variant: 'legalHeavy',
+    },
+  },
 };
 export default meta;
 
-export const Default: StoryObj<typeof PLPComposition> = {};
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {};

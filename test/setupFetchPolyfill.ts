@@ -13,12 +13,31 @@ const fetch: typeof globalThis.fetch =
   (crossFetch as unknown as typeof globalThis.fetch);
 const { Headers, Request, Response } = crossFetch;
 const { webcrypto } = require("node:crypto") as typeof import("node:crypto");
+const { TransformStream, ReadableStream } = require("node:stream/web") as typeof import("node:stream/web");
 
 const mutableEnv = process.env as Record<string, string>;
 mutableEnv.EMAIL_FROM ||= "test@example.com";
 
 if (!globalThis.fetch) {
   Object.assign(globalThis, { fetch, Headers, Request, Response });
+}
+
+if (!("TransformStream" in globalThis)) {
+  Object.defineProperty(globalThis, "TransformStream", {
+    configurable: true,
+    enumerable: false,
+    value: TransformStream,
+    writable: true,
+  });
+}
+
+if (!("ReadableStream" in globalThis)) {
+  Object.defineProperty(globalThis, "ReadableStream", {
+    configurable: true,
+    enumerable: false,
+    value: ReadableStream,
+    writable: true,
+  });
 }
 
 // Ensure a cryptographically secure PRNG for libraries like `ulid`

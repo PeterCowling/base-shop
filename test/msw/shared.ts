@@ -3,9 +3,11 @@
 //--------------------------------------------------
 // Shared MSW utilities: default handlers + server factory
 //--------------------------------------------------
-import { rest } from "msw";
-import type { RestHandler } from "msw";
+import { http } from "msw";
+import type { HttpHandler } from "msw";
 import { setupServer } from "msw/node";
+
+export const rest = http;
 
 /**
  * Default, workspace‑wide request handlers used by most tests.
@@ -13,7 +15,7 @@ import { setupServer } from "msw/node";
  * server via `createServer(...extraHandlers)` or using
  * `server.use(...extraHandlers)` at runtime.
  */
-export const defaultHandlers: RestHandler[] = [
+export const defaultHandlers: HttpHandler[] = [
   // RBAC users list used by Comments mention feature
   // Accepts GET to `/cms/api/rbac/users` and returns a small stable set
   // of emails. The hook also supports a bare array, but an object with
@@ -115,7 +117,7 @@ export const defaultHandlers: RestHandler[] = [
  * handler wins, allowing fine‑grained per‑suite overrides.
  */
 export function createServer(
-  ...extraHandlers: RestHandler[]
+  ...extraHandlers: HttpHandler[]
 ) {
   return setupServer(...defaultHandlers, ...extraHandlers);
 }

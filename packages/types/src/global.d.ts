@@ -1,4 +1,4 @@
-/// <reference path="./nodemailer.d.ts" />
+import "./nodemailer";
 
 export {};
 import type * as React from "react";

@@ -1,10 +1,12 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "@acme/i18n";
 
 import { Inline } from "../../atoms/primitives/Inline";
+
+const CATEGORY_QUERY_PARAM = "category"; // i18n-exempt -- TECH-4821 [ttl=2026-01-01] — URL search parameter key
 
 export type BlogPost = {
   title: string;
@@ -21,21 +23,18 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
   const allCategoriesLabel = t("blog.filter.all");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [category, setCategory] = useState<string | null>(() => searchParams?.get("category") ?? null);
-  useEffect(() => {
-    const next = searchParams?.get("category") ?? null;
-    setCategory(next);
-  }, [searchParams]);
+  const activeCategory = searchParams.get(CATEGORY_QUERY_PARAM);
   const categories = useMemo(() => {
     const set = new Set<string>();
     for (const p of posts) {
-      if (Array.isArray(p.categories)) for (const c of p.categories) set.add(c);
+      if (!Array.isArray(p.categories)) continue;
+      for (const c of p.categories) set.add(c);
     }
-    return Array.from(set).sort((a, b) => a.localeCompare(b));
-  }, [posts]);
+    return Array.from(set).sort((a, b) => a.localeCompare(b, locale ?? undefined));
+  }, [locale, posts]);
   const filtered = useMemo(
-    () => (category ? posts.filter((p) => p.categories?.includes(category)) : posts),
-    [category, posts],
+    () => (activeCategory ? posts.filter((p) => p.categories?.includes(activeCategory)) : posts),
+    [activeCategory, posts],
   );
   const fmt = useMemo(() => {
     try {
@@ -44,13 +43,19 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
       return new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "2-digit" });
     }
   }, [locale]);
-  const updateCategory = (value: string | null) => {
-    const params = new URLSearchParams(searchParams?.toString() ?? "");
-    if (value) params.set("category", value);
-    else params.delete("category");
-    router.push(`?${params.toString()}`);
-    setCategory(value);
-  };
+  const searchParamsSnapshot = useMemo(() => searchParams.toString(), [searchParams]);
+  const updateCategory = useCallback(
+    (value: string | null) => {
+      if (value === activeCategory || (!value && !activeCategory)) return;
+      const params = new URLSearchParams(searchParamsSnapshot);
+      if (value) params.set(CATEGORY_QUERY_PARAM, value);
+      else params.delete(CATEGORY_QUERY_PARAM);
+      const query = params.toString();
+      const basePath = typeof window !== "undefined" ? window.location.pathname : "";
+      router.push(query ? `?${query}` : basePath || "?");
+    },
+    [activeCategory, router, searchParamsSnapshot],
+  );
   if (!posts.length) return null;
   return (
     <section className="space-y-4">
@@ -59,7 +64,7 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
           <button
             type="button"
             onClick={() => updateCategory(null)}
-            className={`rounded border px-2 py-1 text-sm ${category ? "opacity-70" : "bg-foreground text-background"}`}
+            className={`rounded border px-2 py-1 text-sm ${activeCategory ? "opacity-70" : "bg-foreground text-background"}`}
           >
             {allCategoriesLabel}
           </button>
@@ -67,8 +72,8 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
             <button
               key={c}
               type="button"
-              onClick={() => updateCategory(category === c ? null : c)}
-              className={`rounded border px-2 py-1 text-sm ${category === c ? "bg-foreground text-background" : "opacity-80"}`}
+              onClick={() => updateCategory(activeCategory === c ? null : c)}
+              className={`rounded border px-2 py-1 text-sm ${activeCategory === c ? "bg-foreground text-background" : "opacity-80"}`}
             >
               {c}
             </button>

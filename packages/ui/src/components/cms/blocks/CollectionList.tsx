@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "../../../utils/style";
 import { Category, CategoryCard } from "../../organisms/CategoryCard";
 
-export interface CollectionListProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CollectionListProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "style"> {
   collections: Category[];
   /** Minimum number of tiles to show at once */
   minItems?: number;
@@ -98,13 +98,11 @@ export default function CollectionList({
     }
   }, [cols]);
 
-  const { style: _style, ...restProps } = props;
-
   return (
     <div
       ref={containerRef}
       className={cn("grid", colsClass, gapClassName, className)}
-      {...restProps}
+      {...props}
     >
       {collections.map((c) => (
         <CategoryCard key={c.id} category={c} className="h-full" />

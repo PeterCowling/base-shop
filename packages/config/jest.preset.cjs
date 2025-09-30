@@ -38,6 +38,12 @@ const tsJestOptions = {
 
 const transform = {
   "^.+\\.(ts|tsx)$": ["ts-jest", tsJestOptions],
+  "^.+\\.[tj]sx?$": [
+    "babel-jest",
+    {
+      presets: [["@babel/preset-env", { targets: { node: "current" }, modules: "commonjs" }]],
+    },
+  ],
 };
 
 /** @type {import('jest').Config} */

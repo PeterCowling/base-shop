@@ -3,6 +3,7 @@
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
     "noEmit": true,
+    "allowJs": true,
     "rootDir": ".",
     "module": "commonjs",
     "moduleResolution": "node",

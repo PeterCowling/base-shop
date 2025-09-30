@@ -3,6 +3,7 @@ import type { Decorator, Preview } from "@storybook/react";
 import "../../../packages/themes/base/src/tokens.css";
 import en from "../../../packages/i18n/src/en.json";
 import { createBackgroundOptions, DEFAULT_BACKGROUND } from "../.storybook/backgrounds";
+import { a11yGlobals, a11yParameters } from "../.storybook/a11y";
 
 const t = (key: string) => (en as Record<string, string>)[key] ?? key;
 
@@ -33,6 +34,7 @@ const backgroundOptions = createBackgroundOptions(t);
 
 const preview: Preview = {
   parameters: {
+    ...a11yParameters,
     backgrounds: {
       default: DEFAULT_BACKGROUND,
       options: backgroundOptions,
@@ -46,6 +48,9 @@ const preview: Preview = {
     }),
     withTokens,
   ],
+  globals: {
+    ...a11yGlobals,
+  },
 };
 
 export default preview;

@@ -75,7 +75,8 @@ export async function POST(req: Request) {
       await writeJsonFile(path.join(dir, "categories.json"), categories);
     }
     return NextResponse.json({ success: true });
-  } catch {
-    return NextResponse.json({ error: t("api.common.invalidRequest") }, { status: 400 });
+  } catch (error) {
+    const key = error instanceof Error && error.message ? error.message : "api.common.invalidRequest";
+    return NextResponse.json({ error: t(key) }, { status: 400 });
   }
 }

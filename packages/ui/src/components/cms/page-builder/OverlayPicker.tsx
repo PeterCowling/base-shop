@@ -98,15 +98,24 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
           type="button"
           variant="outline"
           onClick={() => {
-            // Apply brand primary tint without altering local state so we keep it as a tokenized overlay
-            onChange('hsl(var(--color-primary) / 0.35)');
+            const root = document.documentElement;
+            const value = getComputedStyle(root)
+              .getPropertyValue("--color-primary")
+              .trim();
+            if (!value) return;
+            onChange(`hsl(${value} / 0.35)`);
           }}
         >{t("cms.builder.overlay.primaryTint")}</Button>
         <Button
           type="button"
           variant="outline"
           onClick={() => {
-            onChange('hsl(var(--color-accent) / 0.30)');
+            const root = document.documentElement;
+            const value = getComputedStyle(root)
+              .getPropertyValue("--color-accent")
+              .trim();
+            if (!value) return;
+            onChange(`hsl(${value} / 0.30)`);
           }}
         >{t("cms.builder.overlay.accentTint")}</Button>
       </div>

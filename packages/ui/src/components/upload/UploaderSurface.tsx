@@ -77,7 +77,8 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
         // activated via keyboard. Divs with role="button" do not receive this
         // behavior automatically, so handle Space *and* Enter here while
         // preventing the default scrolling/submit semantics for those keys.
-        if (e.key === " " || e.key === "Enter") {
+        const key = e.key;
+        if (key === "Enter" || key === " " || key === "Spacebar" || key === "Space") {
           e.preventDefault();
           openFileDialog();
         }

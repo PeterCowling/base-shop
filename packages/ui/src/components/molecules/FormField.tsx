@@ -39,21 +39,16 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
       margin,
       className,
       children,
+      style: inlineStyle,
       ...props
     },
     ref
   ) => {
     const { classes, style } = boxProps({ width, height, padding, margin });
-    // Convert width/height style to Tailwind arbitrary value classes to avoid inline style on DOM nodes
-    const sizeClasses: string[] = [];
-    if (style.width !== undefined) {
-      const w = typeof style.width === "number" ? `${style.width}px` : style.width;
-      sizeClasses.push(`w-[${w}]`);
-    }
-    if (style.height !== undefined) {
-      const h = typeof style.height === "number" ? `${style.height}px` : style.height;
-      sizeClasses.push(`h-[${h}]`);
-    }
+    const mergedStyle = {
+      ...style,
+      ...(inlineStyle ?? {}),
+    };
     const errorChildren = React.Children.toArray(error ?? null).filter(
       (child) => child !== "",
     );
@@ -68,7 +63,8 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
     return (
       <div
         ref={ref}
-        className={cn(WRAPPER_CLASSES, classes, sizeClasses.join(" "), className)}
+        className={cn(WRAPPER_CLASSES, classes, className)}
+        style={mergedStyle}
         {...props}
       >
         <label htmlFor={htmlFor} className="text-sm font-medium">

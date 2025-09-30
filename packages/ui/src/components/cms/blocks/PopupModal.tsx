@@ -1,7 +1,7 @@
 "use client";
 
 import DOMPurify from "dompurify";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createFocusTrap } from "focus-trap";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../../atoms";
 
@@ -35,7 +35,7 @@ export default function PopupModal({
   autoOpen = false,
   delay = 0,
   content = "",
-  frequencyKey = "default",
+  frequencyKey,
   maxShows = 1,
   coolOffDays = 7,
   consentCookieName,
@@ -44,6 +44,11 @@ export default function PopupModal({
   const [open, setOpen] = useState<boolean>(autoOpen);
   const sanitized = DOMPurify.sanitize(content);
   const modalRef = useRef<HTMLDivElement>(null);
+  const [contentNode, setContentNode] = useState<HTMLDivElement | null>(null);
+  const assignModalRef = useCallback((node: HTMLDivElement | null) => {
+    modalRef.current = node;
+    setContentNode(node);
+  }, []);
 
   const allowedByConsent = useCallback(() => {
     if (!consentCookieName) return true;
@@ -63,6 +68,7 @@ export default function PopupModal({
   }, [consentCookieName, consentRequiredValue]);
 
   const allowedByFrequency = useCallback(() => {
+    if (!frequencyKey) return true;
     try {
       const raw = localStorage.getItem(`pb:popup:${frequencyKey}`);
       if (!raw) return true;
@@ -77,6 +83,7 @@ export default function PopupModal({
   }, [frequencyKey, coolOffDays, maxShows]);
 
   const recordShow = useCallback(() => {
+    if (!frequencyKey) return;
     try {
       const raw = localStorage.getItem(`pb:popup:${frequencyKey}`);
       const prev = raw ? (JSON.parse(raw) as { last: number; count: number }) : { last: 0, count: 0 };
@@ -126,6 +133,24 @@ export default function PopupModal({
     return () => document.removeEventListener("keydown", handleKey);
   }, [open]);
 
+  useLayoutEffect(() => {
+    if (!open || !contentNode) return;
+    const container = contentNode.parentElement;
+    if (!container) return;
+    const handleClick = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (!target) return;
+      if (contentNode.contains(target)) {
+        return;
+      }
+      setOpen(false);
+    };
+    container.addEventListener("click", handleClick);
+    return () => {
+      container.removeEventListener("click", handleClick);
+    };
+  }, [open, contentNode]);
+
   useEffect(() => {
     if (!open || !modalRef.current) return;
     const trap = createFocusTrap(modalRef.current, {
@@ -145,18 +170,12 @@ export default function PopupModal({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent
-        ref={modalRef}
+        ref={assignModalRef}
         // Scope width/height to content; DialogContent already provides relative positioning and z-index
         className="p-4"
         style={{ width, height }}
-        onClick={(e) => {
-          // In tests, clicking the computed "overlay" element resolves to the
-          // dialog content container. Close only when the click targets the
-          // content container itself (i.e., not a child element), which keeps
-          // inner clicks interactive while allowing the test to simulate an
-          // overlay click close.
-          if (e.currentTarget === e.target) setOpen(false);
-        }}
+        onPointerDownOutside={() => setOpen(false)}
+        onInteractOutside={() => setOpen(false)}
       >
         {/*
           Radix requires a DialogTitle for a11y. Render a visually-hidden

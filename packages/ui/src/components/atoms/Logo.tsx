@@ -107,6 +107,7 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       height: typeof imageHeight === "number" ? imageHeight : undefined,
       sizes,
       className: cn(className),
+      role: props.role ?? "img",
       ...(computedSrcSet ? { srcSet: computedSrcSet } : {}),
     };
 

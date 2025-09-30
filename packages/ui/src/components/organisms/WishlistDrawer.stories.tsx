@@ -12,13 +12,21 @@ const items: SKU[] = [
 const meta: Meta<typeof WishlistDrawer> = {
   title: "Organisms/WishlistDrawer",
   component: WishlistDrawer,
+  decorators: [
+    (Story) => (
+      <div className="p-8">
+        <Story />
+      </div>
+    ),
+  ],
 };
 export default meta;
 
 export const Default: StoryObj<typeof WishlistDrawer> = {
   render: () => (
-    <div className="p-8">
-      <WishlistDrawer trigger={<button className="rounded border px-3 min-h-10 min-w-10">Open wishlist</button>} items={items} />
-    </div>
+    <WishlistDrawer
+      trigger={<button className="rounded border px-3 min-h-10 min-w-10">Open wishlist</button>}
+      items={items}
+    />
   ),
 };

@@ -14,20 +14,25 @@ const meta: Meta<TooltipStoryProps> = {
 export default meta;
 
 export const Default: StoryObj<TooltipStoryProps> = {
+  decorators: [
+    (Story) => (
+      <div className="flex justify-center">
+        <Story />
+      </div>
+    ),
+  ],
   render: (args) => (
-    <div className="flex justify-center">
-      <Tooltip
-        text={args.text}
-        className={
-          args.position === "bottom"
-            ? "flex flex-col-reverse items-center"
-            : undefined
-        }
-      >
-        <button className="border p-2 min-h-10 min-w-10">
-          <Icon name="heart" width={16} height={16} />
-        </button>
-      </Tooltip>
-    </div>
+    <Tooltip
+      text={args.text}
+      className={
+        args.position === "bottom"
+          ? "flex flex-col-reverse items-center"
+          : undefined
+      }
+    >
+      <button className="border p-2 min-h-10 min-w-10">
+        <Icon name="heart" width={16} height={16} />
+      </button>
+    </Tooltip>
   ),
 };

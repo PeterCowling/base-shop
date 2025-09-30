@@ -1,4 +1,5 @@
 // .storybook/main.ts
+/* eslint-disable ds/no-hardcoded-copy -- ABC-123 Storybook config uses framework/package identifiers [ttl=2025-12-31] */
 
 import type { StorybookConfig } from "@storybook/nextjs";
 import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
@@ -7,7 +8,8 @@ import path from "node:path";
 const config: StorybookConfig = {
   // Use the Webpack 5 builder explicitly per SB9 docs
   framework: {
-    name: "@storybook/nextjs", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    name: "@storybook/nextjs",
   },
   core: {
     builder: {
@@ -35,6 +37,7 @@ const config: StorybookConfig = {
     // Essentials are largely built-in on SB9; keep only specific addons we use
     "@storybook/addon-a11y", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     "@storybook/addon-docs", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    "@storybook/addon-vitest", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     // interactions addon is pinned to SB8 and incompatible with SB9
     "@storybook/addon-themes", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     // Viewport addon removed in SB9; use built-in viewport tool via parameters
@@ -86,8 +89,8 @@ const config: StorybookConfig = {
       // Third-party SDK not needed in Storybook bundles
       openai: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       // Deduplicate Emotion to avoid multiple ThemeContexts between blocks/MDX
-      "@emotion/react": require.resolve("@emotion/react"),
-      "@emotion/styled": require.resolve("@emotion/styled"),
+      "@emotion/react": require.resolve("@emotion/react"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+      "@emotion/styled": require.resolve("@emotion/styled"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     };
     config.resolve.alias = newAlias as ResolveOptions["alias"];
 

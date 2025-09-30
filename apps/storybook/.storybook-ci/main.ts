@@ -28,6 +28,7 @@ const config: StorybookConfig = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-a11y",
+    "@storybook/addon-vitest", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     "@storybook/addon-themes",
     "@storybook/addon-viewport",
   ],

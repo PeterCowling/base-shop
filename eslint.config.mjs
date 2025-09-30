@@ -61,6 +61,7 @@ export default [
       "packages/config/jest.preset.cjs",
       "apps/api/jest.config.cjs",
       "apps/api/postcss.config.cjs",
+      "vitest.config.mts",
     ],
   },
   /* ▸ Baseline DX plugins (no new rules except Tailwind contradicting classes) */

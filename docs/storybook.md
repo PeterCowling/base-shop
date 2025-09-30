@@ -61,6 +61,34 @@ Notes:
   bypassed because it times out on this environment. See "Why not the official
   runner (for now)?" below.
 
+## Coverage
+
+We enable Storybook's Vitest addon so you can collect statement coverage for
+any stories you exercise. Toggle **Coverage** in the testing panel to run the
+stories under Vitest's browser runner; the widget reports the percentage of
+statements covered by those stories and links to the interactive report served
+at `/coverage/index.html` while Storybook is running.
+
+To generate the same report from the CLI, use the dedicated script:
+
+```bash
+pnpm storybook:test -- --coverage
+```
+
+This command launches Storybook in CI mode, runs the Vitest addon headlessly,
+and writes the HTML/Text reports to `coverage/storybook/`. Because the addon is
+built on Vitest, you can also append any standard Vitest flags when debugging
+or expanding coverage.
+
+**Limitations:**
+
+- Coverage only reflects the stories you exercised; other Vitest or Jest tests
+  are not included in this report.
+- Results are calculated for the entire story set, not a single story or
+  folder.
+- Coverage collection is incompatible with Storybook watch mode. Enabling the
+  checkbox automatically runs in one-shot mode.
+
 ## Theme Switcher
 
 The toolbar lets you toggle between design token themes (`base` or `brandx`) and

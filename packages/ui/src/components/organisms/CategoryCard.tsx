@@ -1,10 +1,10 @@
 import Image from "next/image";
 import * as React from "react";
 import { cn } from "../../utils/style";
-// i18n-exempt: CSS utility classes only
-const IMAGE_CLASSES = "rounded-md object-cover"; // i18n-exempt: CSS classes
-const DESCRIPTION_CLASSES = "text-muted-foreground text-sm"; // i18n-exempt: CSS classes
-const IMAGE_SIZES = "(min-width: 640px) 25vw, 50vw"; // i18n-exempt: HTML sizes descriptor
+// i18n-exempt -- DS-1234 [ttl=2025-11-30]
+const IMAGE_CLASSES = "rounded-md object-cover"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+const DESCRIPTION_CLASSES = "text-muted-foreground text-sm"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+const IMAGE_SIZES = "(min-width: 640px) 25vw, 50vw"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 
 export interface Category {
   id: string;
@@ -25,16 +25,16 @@ export const CategoryCard = React.forwardRef<HTMLDivElement, CategoryCardProps>(
     <div
       ref={ref}
       className={cn(
-        // i18n-exempt: CSS utility classes only
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         "flex flex-col gap-3 rounded-lg border",
         padding,
         className
       )}
       {...props}
     >
-      {/* i18n-exempt: CSS utility classes only */}
+      {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
       {/* Constants defined above for CSS classes and sizes */}
-      {/* i18n-exempt: CSS utility classes only */}
+      {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
       <div className="relative aspect-square">
         <Image
           src={category.image}

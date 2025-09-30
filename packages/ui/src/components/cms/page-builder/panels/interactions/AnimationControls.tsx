@@ -1,7 +1,6 @@
 "use client";
 
-// i18n-exempt file — editor-only builder controls; copy pending i18n wiring
-
+import { useTranslations } from "@acme/i18n";
 import type { InteractionsProps } from "./types";
 import { openSelectOnMouseDown } from "./helpers";
 import { easingPresets } from "../EasingPresets";
@@ -15,6 +14,7 @@ import {
 } from "../../../../atoms/shadcn";
 
 export default function AnimationControls({ component, handleInput }: InteractionsProps) {
+  const t = useTranslations();
   const animation = component.animation ?? "none";
   const duration = component.animationDuration;
   const delay = component.animationDelay;
@@ -31,26 +31,26 @@ export default function AnimationControls({ component, handleInput }: Interactio
           )
         }
       >
-        <SelectTrigger aria-label="Animation" onMouseDown={openSelectOnMouseDown}>
-          <SelectValue placeholder="Animation" />
+        <SelectTrigger aria-label={t("cms.interactions.animation") as string} onMouseDown={openSelectOnMouseDown}>
+          <SelectValue placeholder={t("cms.interactions.animation") as string} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="none">None</SelectItem>
-          <SelectItem value="fade">Fade</SelectItem>
-          <SelectItem value="slide">Slide (default)</SelectItem>
-          <SelectItem value="slide-up">Slide Up</SelectItem>
-          <SelectItem value="slide-down">Slide Down</SelectItem>
-          <SelectItem value="slide-left">Slide Left</SelectItem>
-          <SelectItem value="slide-right">Slide Right</SelectItem>
-          <SelectItem value="zoom">Zoom</SelectItem>
-          <SelectItem value="rotate">Rotate</SelectItem>
+          <SelectItem value="none">{t("cms.interactions.none")}</SelectItem>
+          <SelectItem value="fade">{t("cms.interactions.fade")}</SelectItem>
+          <SelectItem value="slide">{t("cms.interactions.slideDefault")}</SelectItem>
+          <SelectItem value="slide-up">{t("cms.interactions.slideUp")}</SelectItem>
+          <SelectItem value="slide-down">{t("cms.interactions.slideDown")}</SelectItem>
+          <SelectItem value="slide-left">{t("cms.interactions.slideLeft")}</SelectItem>
+          <SelectItem value="slide-right">{t("cms.interactions.slideRight")}</SelectItem>
+          <SelectItem value="zoom">{t("cms.interactions.zoom")}</SelectItem>
+          <SelectItem value="rotate">{t("cms.interactions.rotate")}</SelectItem>
         </SelectContent>
       </Select>
 
       <div className="grid grid-cols-3 gap-2">
         <Input
           type="number"
-          label="Duration (ms)"
+          label={t("cms.interactions.durationMs")}
           placeholder="500"
           value={duration ?? ""}
           onChange={(e) =>
@@ -62,7 +62,7 @@ export default function AnimationControls({ component, handleInput }: Interactio
         />
         <Input
           type="number"
-          label="Delay (ms)"
+          label={t("cms.interactions.delayMs")}
           placeholder="0"
           value={delay ?? ""}
           onChange={(e) =>
@@ -81,8 +81,8 @@ export default function AnimationControls({ component, handleInput }: Interactio
             )
           }
         >
-          <SelectTrigger aria-label="Easing" onMouseDown={openSelectOnMouseDown}>
-            <SelectValue placeholder="Easing" />
+          <SelectTrigger aria-label={t("cms.interactions.easing") as string} onMouseDown={openSelectOnMouseDown}>
+            <SelectValue placeholder={t("cms.interactions.easing") as string} />
           </SelectTrigger>
           <SelectContent>
             {easingPresets.map((e) => (

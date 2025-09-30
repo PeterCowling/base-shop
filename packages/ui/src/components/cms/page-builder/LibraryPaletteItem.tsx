@@ -73,7 +73,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
       tabIndex={0}
       aria-pressed={isDragging}
       aria-describedby="pb-drag-instructions"
-      title={t('pb.library.dragToInsert')}
+      title={t('pb.library.dragToInsert') as string}
       // eslint-disable-next-line react/forbid-dom-props -- PB-2419: dnd-kit requires dynamic transform style during drag
       style={{ transform: CSS.Transform.toString(transform) }}
       className="flex cursor-grab items-center gap-2 rounded border p-2 text-sm"
@@ -148,10 +148,10 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
       <Tooltip text={t('pb.library.uploadThumbnail')}>
         <button
           type="button"
-          aria-label={t('pb.library.uploadThumbnail')}
+          aria-label={t('pb.library.uploadThumbnail') as string}
           className="min-h-10 min-w-10 rounded border px-2 text-xs"
           onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}
-          title={t('pb.library.uploadThumbnail')}
+          title={t('pb.library.uploadThumbnail') as string}
         >
           {t('pb.library.thumb')}
         </button>
@@ -161,7 +161,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
         <Tooltip text={t('pb.library.clearThumbnail')}>
           <button
             type="button"
-            aria-label={t('pb.library.clearThumbnail')}
+            aria-label={t('pb.library.clearThumbnail') as string}
             className="min-h-10 min-w-10 rounded border px-2 text-xs"
             onClick={(e) => { e.stopPropagation(); onUpdate({ thumbnail: null }); }}
           >
@@ -175,7 +175,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
           <Tooltip text={t('pb.library.saveChanges')}>
             <button
               type="button"
-              aria-label={t('pb.library.save')}
+              aria-label={t('pb.library.save') as string}
               className="min-h-10 min-w-10 rounded border px-2 text-xs"
               onClick={(e) => {
                 e.stopPropagation();
@@ -191,7 +191,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
           <Tooltip text={t('pb.library.cancelEditing')}>
             <button
               type="button"
-              aria-label={t('pb.library.cancel')}
+              aria-label={t('pb.library.cancel') as string}
               className="min-h-10 min-w-10 rounded border px-2 text-xs"
               onClick={(e) => {
                 e.stopPropagation();
@@ -209,7 +209,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
         <Tooltip text={t('pb.library.editItem')}>
           <button
             type="button"
-            aria-label={t('pb.library.edit')}
+            aria-label={t('pb.library.edit') as string}
             className="min-h-10 min-w-10 rounded border px-2 text-xs"
             onClick={(e) => {
               e.stopPropagation();
@@ -224,14 +224,14 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
       <Tooltip text={item.shared ? t('pb.library.unshareWithTeam') : t('pb.library.shareWithTeam')}>
         <button
           type="button"
-          aria-label={item.shared ? t('pb.library.unshare') : t('pb.library.share')}
+          aria-label={(item.shared ? t('pb.library.unshare') : t('pb.library.share')) as string}
           className={`min-h-10 min-w-10 rounded border px-2 text-xs ${item.shared ? "bg-green-50" : ""}`}
           onClick={(e) => {
             e.stopPropagation();
             onToggleShare();
           }}
           // i18n: Admin UI — Page Builder Library
-          title={item.shared ? t('pb.library.sharedWithTeam') : t('pb.library.private')}
+          title={(item.shared ? t('pb.library.sharedWithTeam') : t('pb.library.private')) as string}
         >
           {item.shared ? t('pb.library.shared') : t('pb.library.private')}
         </button>
@@ -240,7 +240,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
       <Tooltip text={t('pb.library.deleteFromMyLibrary')}>
         <button
           type="button"
-          aria-label={t('pb.library.deleteFromMyLibrary')}
+          aria-label={t('pb.library.deleteFromMyLibrary') as string}
           className="min-h-10 min-w-10 rounded border px-2 text-xs"
           onClick={(e) => {
             e.stopPropagation();

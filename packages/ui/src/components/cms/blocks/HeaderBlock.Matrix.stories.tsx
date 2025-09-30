@@ -10,7 +10,7 @@ import type { Locale } from '@acme/i18n/locales';
 const meta: Meta<typeof HeaderBlock> = {
   title: 'CMS Blocks/HeaderBlock/Matrix',
   component: HeaderBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Header wrapper block mapping to the Header organism.' } } },
 };

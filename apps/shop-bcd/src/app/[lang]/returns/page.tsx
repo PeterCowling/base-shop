@@ -8,7 +8,12 @@ import shop from "../../../../shop.json";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 import { resolveLocale } from "@i18n/locales";
 
-export const metadata = { title: "Return policy" }; // i18n-exempt: static metadata title for now; can be moved to generateMetadata for localized title
+import type { Metadata } from "next";
+
+export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
+  const t = await getTranslations(resolveLocale(params.lang));
+  return { title: t("returns.title") };
+}
 
 export default async function ReturnPolicyPage({
   params,

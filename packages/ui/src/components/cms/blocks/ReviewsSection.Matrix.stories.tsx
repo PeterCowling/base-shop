@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof ReviewsSection> = {
   title: 'CMS Blocks/ReviewsSection/Matrix',
   component: ReviewsSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { provider: 'custom', items: fixture.items, showAggregate: true, emitJsonLd: true },
   parameters: { docs: { description: { component: 'Product reviews list with optional aggregate rating and JSON-LD.' } } },
 };

@@ -6,6 +6,17 @@ export const postSchema = z
     qty: z.coerce.number().int().min(1).default(1),
     // Optional size for SKUs that require it. Ensure non-empty when provided.
     size: z.string().min(1).optional(),
+    // Optional metadata (e.g., try-on tagging)
+    meta: z
+      .object({
+        source: z.string().optional(),
+        tryOn: z
+          .object({ idempotencyKey: z.string().uuid().optional(), transform: z.record(z.any()).optional() })
+          .partial()
+          .optional(),
+      })
+      .partial()
+      .optional(),
     // Optional rental payload carried through the cart
     rental: z
       .object({

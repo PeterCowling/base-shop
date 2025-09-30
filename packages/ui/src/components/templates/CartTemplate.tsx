@@ -23,9 +23,10 @@ export function CartTemplate({
   ...props
 }: CartTemplateProps) {
   const t = useTranslations();
-  // i18n-exempt: DS token literals; not user-visible
-  const emptyClass = "p-8 text-center"; // i18n-exempt: class names
-  const CART_EMPTY_KEY = "cart.empty"; // i18n-exempt: translation key
+  // i18n-exempt -- DS-1234 [ttl=2025-11-30]: DS token/classnames literals; not user-visible
+  const emptyClass = "p-8 text-center"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+  // Use existing i18n message key present in en.json
+  const CART_EMPTY_KEY = "checkout.empty"; // i18n-exempt: translation key
   const dangerToken = "--color-danger"; // i18n-exempt: DS token literal
   const mutedToken = "--color-muted"; // i18n-exempt: DS token literal
   const lines = (Object.entries(cart) as [string, CartLine][]).map(

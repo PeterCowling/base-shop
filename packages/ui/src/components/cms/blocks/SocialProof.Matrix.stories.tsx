@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof SocialProof> = {
   title: 'CMS Blocks/SocialProof/Matrix',
   component: SocialProof,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Rating/testimonials/UGC/influencer/logo social proof with optional Organization JSON-LD.' } } },
 };

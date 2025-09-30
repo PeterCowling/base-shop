@@ -88,7 +88,7 @@ async function run() {
     actions: [
       {
         type: "add",
-        path: `packages/ui/components/${layer}/${name}.tsx`,
+        path: `packages/ui/src/components/${layer}/${name}.tsx`,
         template: `import * as React from 'react';
 import { useTranslations } from '@acme/i18n';
 
@@ -102,7 +102,7 @@ export const ${name}: React.FC<${name}Props> = () => {
       },
       {
         type: "add",
-        path: `packages/ui/components/${layer}/${name}.test.tsx`,
+        path: `packages/ui/src/components/${layer}/${name}.test.tsx`,
         template: `import { render, screen } from '@testing-library/react';
 import { ${name} } from './${name}';
 import en from '@i18n/en.json';
@@ -122,7 +122,7 @@ describe('${name}', () => {
       },
       {
         type: "add",
-        path: `packages/ui/components/${layer}/${name}.stories.tsx`,
+        path: `packages/ui/src/components/${layer}/${name}.stories.tsx`,
         template: `import type { Meta, StoryObj } from '@storybook/react';
 import { ${name} } from './${name}';
 import en from '@i18n/en.json';
@@ -150,7 +150,9 @@ export const Default: StoryObj<typeof ${name}> = {};
     ],
   });
 
-  await plop.getGenerator("component").runActions({});
+  // Non-interactive default for i18n keys so generated tests/stories render
+  const defaultKeys = `cms.components.${name}.label`;
+  await plop.getGenerator("component").runActions({ i18nKeys: defaultKeys });
 }
 
 run();

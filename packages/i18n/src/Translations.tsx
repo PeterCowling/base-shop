@@ -17,13 +17,12 @@
  * downstream.
  */
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  type ReactNode,
-} from "react";
+import { createContext, useCallback, useContext, useMemo } from "react";
+// Provide sensible defaults for tests and environments without an explicit
+// provider by falling back to English messages bundled with the package.
+// This ensures components render human‑readable strings instead of raw keys
+// when no TranslationsProvider is mounted.
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import enMessages from "./en.json";
 
 /**
@@ -34,7 +33,7 @@ import enMessages from "./en.json";
  * application and should be unique. See {@link TranslationsProvider} for
  * details on how this map is consumed.
  */
-export type Messages = Record<string, ReactNode>;
+export type Messages = Record<string, string>;
 
 /**
  * React context used to share translation messages across the component tree.
@@ -43,9 +42,10 @@ export type Messages = Record<string, ReactNode>;
  * access this via the `useTranslations` hook rather than directly. See
  * {@link TranslationsProvider} for details on how this context is populated.
  */
-// Default to English messages so client components without a provider
-// still render readable copy (useful in tests and storybook).
-const TContext = createContext<Messages>(enMessages as unknown as Messages);
+// Default to English messages if no provider is mounted. Call sites can still
+// override via <TranslationsProvider messages={...}>.
+const defaultMessages: Messages = enMessages as unknown as Messages;
+const TContext = createContext<Messages>(defaultMessages);
 
 /**
  * Props for {@link TranslationsProvider}.
@@ -55,7 +55,7 @@ interface TranslationsProviderProps {
    * Child components that will have access to the provided translation
    * messages via the `useTranslations` hook.
    */
-  readonly children: ReactNode;
+  readonly children: React.ReactNode;
   /**
    * A map of translation keys to translated strings. When this object
    * reference changes a new context value will be provided to descendants.
@@ -82,7 +82,13 @@ function TranslationsProvider({
   // changes when the messages themselves change. This avoids unnecessary
   // re-renders in consumers of the context when the provider re-renders with
   // stable message contents.
-  const value = useMemo<Messages>(() => messages, [messages]);
+  // Prefer provided messages when non-empty; otherwise fall back to English.
+  // This ensures human‑readable text in environments that forget to mount
+  // a provider or accidentally pass an empty map (e.g., some tests).
+  const value = useMemo<Messages>(() => {
+    if (messages && Object.keys(messages).length > 0) return messages;
+    return defaultMessages;
+  }, [messages]);
 
   return <TContext.Provider value={value}>{children}</TContext.Provider>;
 }
@@ -113,32 +119,30 @@ export default TranslationsProvider;
  */
 export function useTranslations(): (
   key: string,
-  vars?: Record<string, ReactNode>
-) => ReactNode {
+  vars?: Record<string, string | number>
+) => string {
   const messages = useContext(TContext);
   // Memoise the translation function to keep its identity stable across
   // renders unless the messages map changes. Without this memoisation,
   // consumers that store the translator function in state or pass it as a
   // prop could be triggered to re-render unnecessarily.
   return useCallback(
-    (key: string, vars?: Record<string, ReactNode>): ReactNode => {
-      if (messages[key] === undefined) {
+    (key: string, vars?: Record<string, string | number>): string => {
+      // Resolve from active messages, then fall back to bundled English.
+      let msg = (messages[key] ?? defaultMessages[key]) as string | undefined;
+      if (msg === undefined) {
         if (process.env.NODE_ENV === "development") {
           console.warn(`Missing translation for key: ${key}`);
         }
         return key;
       }
 
-      const msg = messages[key];
-      if (typeof msg === "string") {
-        if (vars) {
-          return msg.replace(/\{(.*?)\}/g, (match, name) => {
-            return Object.prototype.hasOwnProperty.call(vars, name)
-              ? String(vars[name])
-              : match;
-          });
-        }
-        return msg;
+      if (vars) {
+        return msg.replace(/\{(.*?)\}/g, (match, name) => {
+          return Object.prototype.hasOwnProperty.call(vars, name)
+            ? String(vars[name] as string | number)
+            : match;
+        });
       }
       return msg;
     },

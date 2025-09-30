@@ -9,10 +9,10 @@ import DataTable, { type Column } from "./DataTable";
 import { Card, CardContent, Input } from "../atoms/shadcn";
 import { Tag } from "../atoms";
 import { cn } from "@ui/utils/style";
+import { useTranslations } from "@acme/i18n";
 
-// i18n-exempt — CMS admin UI; copy slated for extraction
-/* i18n-exempt */
-const t = (s: string) => s;
+// Use shared translations hook; defaults to English in tests/storybook
+// and resolves known keys like cms.pages.* to human-readable labels.
 
 interface Props {
   shop: string;
@@ -21,6 +21,12 @@ interface Props {
 }
 
 export default function PagesTable({ shop, pages, canWrite = false }: Props) {
+  const t = useTranslations();
+  // Provide readable fallbacks when translations aren't loaded in tests/storybook
+  const tt = (key: string, fallback: string): string => {
+    const value = t(key);
+    return value === key ? fallback : value;
+  };
   const [search, setSearch] = useState<string>("");
   const normalisedQuery = useMemo(() => search.trim().toLowerCase(), [search]);
 
@@ -57,7 +63,7 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
           <div className="space-y-1">
             <div className="flex items-baseline gap-1">
               <span aria-hidden className="text-muted-foreground">/</span>
-              <span className="font-medium text-foreground">{p.slug || t("(no slug)")}</span>
+              <span className="font-medium text-foreground">{p.slug || tt("cms.pages.slug.missing", "(no slug)")}</span>
             </div>
             <p className="text-xs text-muted-foreground">{pageTitle}</p>
           </div>
@@ -65,21 +71,21 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
       },
     },
     {
-      header: t("Status"),
+      header: tt("cms.pages.column.status", "Status"),
       width: "8rem",
       render: (p: Page) => {
         const rawStatus = (p as unknown as { status?: unknown }).status;
         const normalized = typeof rawStatus === "string" ? rawStatus : "";
-        const label = normalized || t("unknown");
-        // i18n-exempt — style class names, not user-facing copy
+        const label = normalized || t("common.unknown");
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         const variantClasses = normalized === "published"
-          ? "bg-success-soft text-foreground" /* i18n-exempt */
+          ? "bg-success-soft text-foreground" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
           : normalized === "draft"
-            ? "bg-warning-soft text-foreground" /* i18n-exempt */
+            ? "bg-warning-soft text-foreground" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
             : normalized === "archived"
-              ? "bg-muted text-foreground" /* i18n-exempt */
-              : "bg-surface-2 text-foreground"; /* i18n-exempt */
-        // i18n-exempt — base tag class list
+              ? "bg-muted text-foreground" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
+              : "bg-surface-2 text-foreground"; /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         const tagBaseClasses = "rounded-lg px-2 py-1 text-xs";
         return (
           <Tag className={cn(tagBaseClasses, variantClasses)}>
@@ -92,14 +98,14 @@ export default function PagesTable({ shop, pages, canWrite = false }: Props) {
 
   if (canWrite) {
     columns.push({
-      header: t("Actions"),
+      header: tt("cms.pages.column.actions", "Actions"),
       width: "6rem",
       render: (p: Page) => (
         <Link
           href={`/cms/shop/${shop}/pages/${p.slug || p.id}/builder`}
-          className="inline-flex h-8 items-center justify-center rounded-lg border border-border/30 px-3 text-xs text-foreground hover:bg-surface-2"
+          className="inline-flex h-8 items-center justify-center rounded-lg border border-border/30 px-3 text-xs text-foreground hover:bg-surface-2" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         >
-          {t("Edit")}
+          {tt("cms.pages.actions.edit", "Edit")}
         </Link>
       ),
     });

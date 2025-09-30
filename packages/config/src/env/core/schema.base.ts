@@ -65,5 +65,15 @@ export const baseEnvSchema = z
     STOCK_ALERT_WEBHOOK: z.string().url().optional(),
     STOCK_ALERT_DEFAULT_THRESHOLD: z.coerce.number().optional(),
     STOCK_ALERT_RECIPIENT: z.string().email().optional(),
+    // Try-on feature flags and bindings
+    TRYON_PROVIDER: z
+      .enum(["workers-ai", "external-api"])
+      .default("workers-ai"),
+    TRYON_HEAVY_API_URL: z.string().url().optional(),
+    CLOUDFLARE_AI_GATEWAY_ID: z.string().optional(),
+    R2_BUCKET_TRYON: z.string().optional(),
+    R2_PUBLIC_BASE_URL: z.string().url().optional(),
+    R2_ACCESS_KEY_ID: z.string().optional(),
+    R2_SECRET_ACCESS_KEY: z.string().optional(),
   })
   .passthrough();

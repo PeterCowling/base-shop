@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof Divider> = {
   title: 'CMS Blocks/Divider/Matrix',
   component: Divider,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

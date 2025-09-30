@@ -81,8 +81,8 @@ export function useDiscountFormState({
   }, [defaultValues]);
 
   useEffect(() => {
-    onPreviewChange?.(getDiscountPreview(values));
-  }, [values, onPreviewChange]);
+    onPreviewChange?.(getDiscountPreview(values, t));
+  }, [values, onPreviewChange, t]);
 
   const errors = useMemo(
     () => ({ ...internalErrors, ...(validationErrors ?? {}) }),

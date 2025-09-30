@@ -9,11 +9,8 @@ import { z } from 'zod';
 const meta: Meta<typeof FooterSection> = {
   title: 'CMS Blocks/FooterSection/Matrix',
   component: FooterSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false }, description: { component: 'Footer section with configurable variants (simple, multiColumn, newsletter, social, legalHeavy).' } },
   args: { variant: 'simple' },
-  parameters: {
-    docs: { description: { component: 'Footer section with configurable variants (simple, multiColumn, newsletter, social, legalHeavy).' } },
-  },
 };
 export default meta;
 
@@ -25,4 +22,3 @@ try { FixtureSchema.parse(fixture); } catch (e) { console.error('Invalid FooterS
 
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 export const RTL: Story = makeStateStory(baseArgs, { variant: 'multiColumn' }, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
-

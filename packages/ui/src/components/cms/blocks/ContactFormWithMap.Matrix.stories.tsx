@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof ContactFormWithMap> = {
   title: 'CMS Blocks/ContactFormWithMap/Matrix',
   component: ContactFormWithMap,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Contact form with an embedded map iframe.' } } },
 };

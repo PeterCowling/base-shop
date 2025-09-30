@@ -55,7 +55,6 @@ export function startMaintenanceScheduler(): NodeJS.Timeout {
     (eval("require")(
       // i18n-exempt: OPS-1234 module path string, not user-facing copy
       "@acme/platform-machine/maintenanceScheduler",
-    // eslint-disable-next-line ds/no-hardcoded-copy -- OPS-1234 module path string, not user-facing copy
     ) as typeof import("@acme/platform-machine/maintenanceScheduler")).runMaintenanceScan()
       .catch((err) => {
         // i18n-exempt: OPS-1234 technical log, not user-facing

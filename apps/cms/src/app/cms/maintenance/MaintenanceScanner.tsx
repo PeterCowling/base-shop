@@ -3,7 +3,8 @@
 import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { Toast } from "@/components/atoms";
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
-import { runMaintenanceCheck, type FlaggedItem } from "./scan.server";
+import { runMaintenanceCheck } from "./scan.server";
+import type { FlaggedItem } from "./types";
 
 interface MaintenanceScannerProps {
   initial: FlaggedItem[];

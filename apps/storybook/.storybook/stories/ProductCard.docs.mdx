@@ -1,0 +1,26 @@
+import * as Stories from '../../../packages/ui/src/components/organisms/ProductCard.Matrix.stories';
+import { Meta, Story } from '@storybook/blocks';
+
+<Meta title="Organisms/ProductCard/Docs" of={Stories} />
+
+# Product Card — Docs
+
+Product summary card with image, title, price and an add-to-cart CTA.
+
+## Usage
+
+```tsx
+import { ProductCard } from './ProductCard';
+import { PRODUCTS } from '@acme/platform-core/products';
+
+<ProductCard product={PRODUCTS[0]} showImage showPrice ctaLabel="Add to cart" />
+```
+
+## States
+
+<Story of={Stories.Default} />
+<Story of={Stories.Loading} />
+<Story of={Stories.Empty} />
+<Story of={Stories.Error} />
+<Story of={Stories.RTL} />
+<Story of={Stories.AddToCartFlow} />

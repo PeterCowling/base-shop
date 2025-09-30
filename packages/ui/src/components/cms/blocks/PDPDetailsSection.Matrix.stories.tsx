@@ -11,7 +11,7 @@ import type { SKU } from '@acme/types';
 const meta: Meta<typeof PDPDetailsSection> = {
   title: 'CMS Blocks/PDPDetailsSection/Matrix',
   component: PDPDetailsSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { product: (PRODUCTS as SKU[])[0], preset: fixture.preset },
 };
 export default meta;

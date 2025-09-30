@@ -11,7 +11,7 @@ import type { SKU } from '@acme/types';
 const meta: Meta<typeof ProductComparisonBlock> = {
   title: 'CMS Blocks/ProductComparisonBlock/Matrix',
   component: ProductComparisonBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { skus: (PRODUCTS as SKU[]).slice(0, 3), attributes: fixture.attributes },
   parameters: { docs: { description: { component: 'Simple product comparison table for selected SKUs and chosen attributes.' } } },
 };

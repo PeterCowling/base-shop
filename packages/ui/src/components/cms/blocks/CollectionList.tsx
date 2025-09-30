@@ -70,8 +70,23 @@ export default function CollectionList({
     return `grid-cols-${n}`;
   }, [cols]);
 
+  // Ensure inline style always receives a valid, clamped integer
+  const effCols = React.useMemo(() => {
+    const n = Number(cols);
+    if (!Number.isFinite(n) || n < 1) return 1;
+    return Math.max(1, Math.min(12, Math.floor(n)));
+  }, [cols]);
+
   return (
-    <div ref={containerRef} className={cn("grid", colsClass, gapClassName, className)} {...props}>
+    <div
+      ref={containerRef}
+      className={cn("grid", colsClass, gapClassName, className)}
+      style={{
+        gridTemplateColumns: `repeat(${effCols}, minmax(0, 1fr))`,
+        ...(props.style ?? {}),
+      }}
+      {...props}
+    >
       {collections.map((c) => (
         <CategoryCard key={c.id} category={c} className="h-full" />
       ))}

@@ -32,17 +32,17 @@ export function useReplaceHandlers({ state, actions }: ReplaceDeps) {
   const onReplaceSuccess = useCallback(
     (item: MediaItem) => {
       if (!replacingUrl) {
-        // i18n-exempt — developer diagnostic, not user-facing
+        // i18n-exempt -- INTL-204 developer diagnostic, not user-facing [ttl=2026-12-31]
         console.warn("Replacement completed without a tracked URL.");
         return;
       }
 
       if (!hasUrl(item)) {
-        // i18n-exempt — developer diagnostic, not user-facing
+        // i18n-exempt -- INTL-204 developer diagnostic, not user-facing [ttl=2026-12-31]
         console.error("Replacement media item is missing a URL", item);
         setToast({
           open: true,
-          message: t("Replacement failed: missing media URL."),
+          message: t("cms.media.errors.replaceMissingUrl"),
           variant: "error",
         });
         setReplacingUrl(null);
@@ -53,11 +53,11 @@ export function useReplaceHandlers({ state, actions }: ReplaceDeps) {
       const hasTarget = files.some((file) => file.url === replacingUrl);
 
       if (!hasTarget) {
-        // i18n-exempt — developer diagnostic, not user-facing
+        // i18n-exempt -- INTL-204 developer diagnostic, not user-facing [ttl=2026-12-31]
         console.error("Failed to locate media item to replace", replacingUrl);
         setToast({
           open: true,
-          message: t("Failed to update media after replacement."),
+          message: t("cms.media.errors.replaceUpdateFailed"),
           variant: "error",
         });
         setReplacingUrl(null);
@@ -77,19 +77,19 @@ export function useReplaceHandlers({ state, actions }: ReplaceDeps) {
       }
 
       setReplacingUrl(null);
-      setToast({ open: true, message: t("Media replaced."), variant: "success" });
+      setToast({ open: true, message: t("cms.media.toast.replaced"), variant: "success" });
     },
     [files, replacingUrl, selectedUrl, setFiles, setReplacingUrl, setSelectedUrl, setToast, t]
   );
 
   const onReplaceError = useCallback(
     (message: string) => {
-      // i18n-exempt — developer diagnostic, not user-facing
+      // i18n-exempt -- INTL-204 developer diagnostic, not user-facing [ttl=2026-12-31]
       console.error("Failed to replace media item", message);
       setReplacingUrl(null);
       setToast({
         open: true,
-        message: message || (t("Failed to replace media item.") as string),
+        message: message || (t("cms.media.errors.replaceFailed") as string),
         variant: "error",
       });
     },

@@ -104,12 +104,21 @@ const config = {
         babelConfig: false,
       },
     ],
+    // Transform ESM JavaScript from selected node_modules to CJS for Jest
+    "^.+\\.(mjs|cjs|js)$": [
+      "babel-jest",
+      {
+        presets: [[
+          "@babel/preset-env",
+          { targets: { node: "current" }, modules: "commonjs" }
+        ]],
+      },
+    ],
   },
   transformIgnorePatterns: [
-    // Transpile ESM‑only dependencies that would break under CommonJS.
-    // Also ensure internal "@acme" workspace packages are transformed so
-    // their ESM builds can run in Jest.
-    "/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto|@acme)/)",
+    // Transpile selected ESM dependencies (including pnpm nested paths)
+    // and internal "@acme" workspace packages.
+    "/node_modules/(?!(?:\\.pnpm/[^/]+/node_modules/)?(jose|next-auth|ulid|@upstash/redis|uncrypto|msw|@mswjs/interceptors|strict-event-emitter|headers-polyfill|outvariant|until-async|@bundled-es-modules|@acme)/)",
   ],
   setupFiles: ["dotenv/config"],
   setupFilesAfterEnv: [
@@ -118,8 +127,10 @@ const config = {
   ],
   testPathIgnorePatterns: [
     " /test/e2e/",
-    " /.storybook/",
-    "/.storybook/test-runner/",
+    " /apps/storybook/.storybook/",
+    "/apps/storybook/.storybook/test-runner/",
+    " /apps/storybook/.storybook-ci/",
+    "/apps/storybook/.storybook-composed/",
   ],
   moduleNameMapper,
   testMatch: ["**/?(*.)+(spec|test).ts?(x)"],

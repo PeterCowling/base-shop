@@ -58,8 +58,18 @@ function writeLocal(shop: string | null | undefined, items: LibraryItem[]) {
 // Network-backed helpers. We keep the local snapshot in sync opportunistically.
 async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
   const res = await fetch(url, init);
-  if (!res.ok) throw new Error(`Request failed: ${res.status}`);
-  return (await res.json()) as T;
+  const isJson = (res.headers.get("content-type") || "").includes("application/json");
+  if (!res.ok) {
+    let detail: any = undefined;
+    try {
+      detail = isJson ? await res.json() : undefined;
+    } catch {}
+    const message = (detail && detail.error) || `Request failed: ${res.status}`;
+    const err: any = new Error(message);
+    if (detail) err.data = detail;
+    throw err;
+  }
+  return (isJson ? await res.json() : (undefined as unknown)) as T;
 }
 
 export async function syncFromServer(shop: string | null | undefined): Promise<LibraryItem[] | null> {
@@ -96,6 +106,29 @@ export async function saveLibrary(shop: string | null | undefined, item: Library
     }
   } catch {
     // keep local only if server fails
+  }
+}
+
+// Strict save: if server rejects (e.g., validation), roll back and throw
+export async function saveLibraryStrict(shop: string | null | undefined, item: LibraryItem) {
+  const current = listLibrary(shop);
+  const next = [item, ...current.filter((i) => i.id !== item.id)];
+  writeLocal(shop, next);
+  emitChange();
+  try {
+    if (shop) {
+      await fetchJson(`/api/library?shop=${encodeURIComponent(shop)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ item }),
+      });
+      await syncFromServer(shop);
+    }
+  } catch (err) {
+    // rollback
+    writeLocal(shop || null, current);
+    emitChange();
+    throw err;
   }
 }
 

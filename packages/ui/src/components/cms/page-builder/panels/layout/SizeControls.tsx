@@ -6,6 +6,7 @@ import { Button } from "../../../../atoms/shadcn";
 import { Tooltip } from "../../../../atoms";
 import IconButton from "../../../../atoms/IconButton";
 import UnitInput from "./UnitInput";
+import useLocalStrings from "../../hooks/useLocalStrings";
 import { isOverridden } from "./helpers";
 
 interface Props {
@@ -13,18 +14,19 @@ interface Props {
   locked: boolean;
   handleResize: (field: string, value: string) => void;
   handleFullSize: (field: string) => void;
+  errorKeys?: Set<string>;
 }
 
-export default function SizeControls({ component, locked, handleResize, handleFullSize }: Props) {
-  // i18n-exempt: Builder-only helper text and labels
-  const TOOLTIP_WIDTH = "CSS width with unit (px/%/rem)"; // i18n-exempt: editor helper copy
-  const TOOLTIP_HEIGHT = "CSS height with unit (px/%/rem)"; // i18n-exempt: editor helper copy
-  const PLACEHOLDER_WIDTH = "e.g. 100px or 50%"; // i18n-exempt: example input, non-user copy
-  const PLACEHOLDER_HEIGHT = "e.g. 1px or 1rem"; // i18n-exempt: example input, non-user copy
-  const LABEL_OVERRIDE_ACTIVE = "Override active"; // i18n-exempt: builder status label
-  const LABEL_RESET = "Reset"; // i18n-exempt: builder action label
-  const LABEL_FULL_WIDTH = "Full width"; // i18n-exempt: builder action label
-  const LABEL_FULL_HEIGHT = "Full height"; // i18n-exempt: builder action label
+export default function SizeControls({ component, locked, handleResize, handleFullSize, errorKeys }: Props) {
+  const t = useLocalStrings();
+  const TOOLTIP_WIDTH = t("tooltip_width_hint");
+  const TOOLTIP_HEIGHT = t("tooltip_height_hint");
+  const PLACEHOLDER_WIDTH = t("placeholder_width");
+  const PLACEHOLDER_HEIGHT = t("placeholder_height");
+  const LABEL_OVERRIDE_ACTIVE = t("label_override_active");
+  const LABEL_RESET = t("label_reset");
+  const LABEL_FULL_WIDTH = t("label_full_width");
+  const LABEL_FULL_HEIGHT = t("label_full_height");
 
   const cmp = component as Record<string, unknown>;
   return (
@@ -33,13 +35,11 @@ export default function SizeControls({ component, locked, handleResize, handleFu
         <div key={vp} className="space-y-2">
           <UnitInput
             componentId={component.id}
-            label={
-              <span className="flex items-center gap-1">
-                {`Width (${vp})`}
-                <Tooltip text={TOOLTIP_WIDTH}>
-                  <IconButton aria-label="Explain width units" size="md">{/* i18n-exempt: accessibility label for builder */}?{/* i18n-exempt */}</IconButton>
-                </Tooltip>
-              </span>
+            label={t("width_label_template", { vp: vp === "Desktop" ? t("device_desktop") : vp === "Tablet" ? t("device_tablet") : t("device_mobile") })}
+            labelSuffix={
+              <Tooltip text={TOOLTIP_WIDTH}>
+                <IconButton aria-label={t("aria_explain_width_units")} size="md">?{/* i18n-exempt */}</IconButton>
+              </Tooltip>
             }
             placeholder={PLACEHOLDER_WIDTH}
             value={(component[`width${vp}` as keyof PageComponent] as string) ?? ""}
@@ -47,6 +47,7 @@ export default function SizeControls({ component, locked, handleResize, handleFu
             axis="w"
             disabled={locked}
             cssProp="width"
+            extraError={errorKeys?.has(`width${vp}`)}
           />
           {isOverridden(cmp["width"], cmp[`width${vp}`]) && (
             <div className="flex items-center gap-2 text-xs">
@@ -63,13 +64,11 @@ export default function SizeControls({ component, locked, handleResize, handleFu
           </div>
           <UnitInput
             componentId={component.id}
-            label={
-              <span className="flex items-center gap-1">
-                {`Height (${vp})`}
-                <Tooltip text={TOOLTIP_HEIGHT}>
-                  <IconButton aria-label="Explain height units" size="md">{/* i18n-exempt: accessibility label for builder */}?{/* i18n-exempt */}</IconButton>
-                </Tooltip>
-              </span>
+            label={t("height_label_template", { vp: vp === "Desktop" ? t("device_desktop") : vp === "Tablet" ? t("device_tablet") : t("device_mobile") })}
+            labelSuffix={
+              <Tooltip text={TOOLTIP_HEIGHT}>
+                <IconButton aria-label={t("aria_explain_height_units")} size="md">?{/* i18n-exempt */}</IconButton>
+              </Tooltip>
             }
             placeholder={PLACEHOLDER_HEIGHT}
             value={(component[`height${vp}` as keyof PageComponent] as string) ?? ""}
@@ -77,6 +76,7 @@ export default function SizeControls({ component, locked, handleResize, handleFu
             axis="h"
             disabled={locked}
             cssProp="height"
+            extraError={errorKeys?.has(`height${vp}`)}
           />
           {isOverridden(cmp["height"], cmp[`height${vp}`]) && (
             <div className="flex items-center gap-2 text-xs">

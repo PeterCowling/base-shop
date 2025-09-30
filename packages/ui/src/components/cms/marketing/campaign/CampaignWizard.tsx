@@ -44,23 +44,23 @@ export interface CampaignWizardProps {
 const wizardSteps: StepDefinition[] = [
   {
     id: "plan",
-    label: "Plan", // i18n-exempt: translated at render time
-    description: "Define goals, KPIs, and the campaign overview.", // i18n-exempt: translated at render time
+    label: "campaign.wizard.steps.plan.label",
+    description: "campaign.wizard.steps.plan.desc",
   },
   {
     id: "audience",
-    label: "Audience", // i18n-exempt: translated at render time
-    description: "Choose who should receive this campaign.", // i18n-exempt: translated at render time
+    label: "campaign.wizard.steps.audience.label",
+    description: "campaign.wizard.steps.audience.desc",
   },
   {
     id: "schedule",
-    label: "Schedule", // i18n-exempt: translated at render time
-    description: "Confirm flight dates before review.", // i18n-exempt: translated at render time
+    label: "campaign.wizard.steps.schedule.label",
+    description: "campaign.wizard.steps.schedule.desc",
   },
   {
     id: "review",
-    label: "Review", // i18n-exempt: translated at render time
-    description: "Double-check details and submit for approval.", // i18n-exempt: translated at render time
+    label: "campaign.wizard.steps.review.label",
+    description: "campaign.wizard.steps.review.desc",
   },
 ];
 
@@ -80,7 +80,7 @@ export function CampaignWizard({
   className,
 }: CampaignWizardProps) {
   const t = useTranslations();
-  const resolvedFinishLabel = (finishLabel ?? t("Submit for approval")) as string;
+  const resolvedFinishLabel = (finishLabel ?? t("campaign.wizard.finishLabel")) as string;
   const [values, setValues] = useState<CampaignFormValues>({
     ...defaultCampaignValues,
     ...initialValues,
@@ -150,7 +150,7 @@ export function CampaignWizard({
         open: true,
         message:
           messages?.complete ??
-          (t("Campaign wizard completed. Ready for launch.") as string),
+          (t("campaign.wizard.completed") as string),
       });
       return;
     }
@@ -162,14 +162,14 @@ export function CampaignWizard({
       setToast({
         open: true,
         message:
-          messages?.complete ?? (t("Campaign submitted for approval.") as string),
+          messages?.complete ?? (t("campaign.wizard.submitted") as string),
       });
     } catch (error) {
       setStatus("error");
       const fallback =
         error instanceof Error
           ? error.message
-          : messages?.error ?? (t("Unable to finalize campaign.") as string);
+          : messages?.error ?? (t("campaign.wizard.unable") as string);
       setToast({
         open: true,
         message: messages?.error ?? fallback,
@@ -194,14 +194,14 @@ export function CampaignWizard({
           <CampaignPreviewPanel data={preview} className="lg:col-span-2" />
           <CampaignSummaryCard
             data={preview}
-            statusLabel={status === "success" ? (t("Approved") as string) : (t("Pending") as string)}
+            statusLabel={status === "success" ? (t("campaign.wizard.status.approved") as string) : (t("campaign.wizard.status.pending") as string)}
             statusTone={status === "success" ? "success" : "warning"}
             actions={
               <Button
                 variant="outline"
                 onClick={() => goToStep(stepIndex - 1)}
               >
-                {t("Back")}
+                {t("actions.back")}
               </Button>
             }
             footer={
@@ -210,13 +210,13 @@ export function CampaignWizard({
                   variant="outline"
                   onClick={() => goToStep(stepIndex - 1)}
                 >
-                  {t("Edit details")}
+                  {t("campaign.wizard.editDetails")}
                 </Button>
                 <Button
                   onClick={handleFinish}
                   disabled={status === "submitting"}
                 >
-                  {status === "submitting" ? (t("Submitting…") as string) : resolvedFinishLabel}
+                  {status === "submitting" ? (t("campaign.wizard.submitting") as string) : resolvedFinishLabel}
                 </Button>
               </Inline>
             }
@@ -233,21 +233,21 @@ export function CampaignWizard({
           onPreviewChange={handlePreview}
           submitLabel={
             stepIndex === wizardSteps.length - 2
-              ? (t("Review campaign") as string)
-              : (t("Continue") as string)
+              ? (t("campaign.wizard.review") as string)
+              : (t("actions.continue") as string)
           }
           secondaryAction={
             stepIndex > 0
               ? {
-                  label: t("Back") as string,
+                  label: t("actions.back") as string,
                   onClick: () => goToStep(stepIndex - 1),
                 }
               : undefined
           }
           messages={{
-            success: messages?.success ?? (t("Step saved") as string),
+            success: messages?.success ?? (t("campaign.wizard.stepSaved") as string),
             validation:
-              messages?.validation ?? (t("Please resolve validation errors.") as string),
+              messages?.validation ?? (t("campaign.wizard.resolveValidation") as string),
             error: messages?.error,
           }}
         />

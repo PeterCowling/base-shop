@@ -23,7 +23,7 @@ export const defaultEmailScheduleValues: EmailScheduleFormValues = {
   sendDate: "",
   sendTime: "09:00",
   timezone: "America/New_York", // i18n-exempt: IANA timezone identifier used as value
-  segment: "All subscribers", // i18n-exempt -- default seed value; UI renders labels with translations
+  segment: "all", // use segment key; UI renders human label via translations
   followUpEnabled: false,
   followUpDelayHours: 24,
 };
@@ -31,16 +31,12 @@ export const defaultEmailScheduleValues: EmailScheduleFormValues = {
 export function getEmailSchedulePreview(
   values: EmailScheduleFormValues
 ): EmailSchedulePreviewData {
-  const sendAtLabel = values.sendDate
-    ? `${values.sendDate} at ${values.sendTime}` // i18n-exempt -- simple preview label; full i18n handled in UI
-    : "Schedule pending"; // i18n-exempt -- fallback preview state; UI components localise user-facing copy
-
-  const followUpSummary = values.followUpEnabled
-    ? `Follow-up email will send ${values.followUpDelayHours}h later.` // i18n-exempt -- preview summary; UI components localise labels
-    : "Follow-up disabled."; // i18n-exempt -- preview summary fallback
+  // Avoid user-facing copy in preview data; UI components localise these.
+  const sendAtLabel = values.sendDate ? `${values.sendDate} ${values.sendTime}` : "";
+  const followUpSummary = "";
 
   return {
-    subject: values.subject || "Untitled broadcast", // i18n-exempt -- placeholder title; actual UI provides translated headings
+    subject: values.subject || "",
     sendAtLabel,
     timezone: values.timezone,
     segment: values.segment,

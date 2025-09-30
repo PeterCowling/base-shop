@@ -1,0 +1,51 @@
+import { Meta, Canvas, Title, Subtitle, Description } from '@storybook/blocks';
+import PDPDetailsSection from '../../../packages/ui/src/components/cms/blocks/PDPDetailsSection';
+import PoliciesAccordion from '../../../packages/ui/src/components/cms/blocks/PoliciesAccordion';
+import FinancingBadge from '../../../packages/ui/src/components/cms/blocks/FinancingBadge';
+import StickyBuyBar from '../../../packages/ui/src/components/cms/blocks/StickyBuyBar';
+
+export const mockProduct = {
+  id: 'lux-001',
+  slug: 'lux-001',
+  title: 'Luxe Leather Tote',
+  price: 1299,
+  deposit: 0,
+  stock: 3,
+  forSale: true,
+  forRental: false,
+  media: [],
+  sizes: [],
+  description: 'A spacious editorial layout showcases product details with luxury spacing.',
+};
+
+<Meta title="Sections/PDP/Docs" />
+
+<Title>PDP Sections</Title>
+<Subtitle>Luxury preset, Financing Badge and Policies</Subtitle>
+
+<Description>
+Compose these blocks for a product detail page: a spacious details section (luxury preset), an optional
+financing badge, store policies, and (optionally) a sticky buy bar for quick actions.
+</Description>
+
+## Luxury Details + Financing + Policies
+
+<Canvas>
+  <div style={{ maxWidth: 960, margin: '0 auto', padding: 16 }}>
+    <PDPDetailsSection product={mockProduct} preset="luxury" />
+    <div style={{ marginTop: 12 }}>
+      <FinancingBadge provider="klarna" apr={0} termMonths={12} price={mockProduct.price} currency="USD" />
+    </div>
+    <div style={{ marginTop: 16 }}>
+      <PoliciesAccordion
+        shipping="<p>Free insured shipping worldwide</p>"
+        returns="<p>30‑day returns. Prepaid label.</p>"
+        warranty="<p>2‑year limited warranty</p>"
+      />
+    </div>
+    <div style={{ marginTop: 24 }}>
+      <StickyBuyBar product={mockProduct} />
+    </div>
+  </div>
+  
+</Canvas>

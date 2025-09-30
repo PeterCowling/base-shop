@@ -18,20 +18,27 @@ export const ColorSwatch = React.forwardRef<
   HTMLButtonElement,
   ColorSwatchProps
 >(({ color, selected = false, size = 24, className, ...props }, ref) => {
-  const dimension = `h-[${size}px] w-[${size}px]`;
+  // Ensure styles are readable by jsdom in tests: set inline styles
+  const style = {
+    backgroundColor: color,
+    width: size,
+    height: size,
+    ...(props.style ?? {}),
+  } as React.CSSProperties;
   const normalized = typeof color === "string" ? color.replace(/\s+/g, "") : String(color);
-  const bgClass = `bg-[${normalized}]`;
   return (
     <button
       ref={ref}
       type="button"
       className={cn(
         "rounded-full border", // i18n-exempt -- DEV-000 CSS utility class names
-        dimension,
-        bgClass,
+        // Keep Tailwind utility classes for runtime styling
+        `h-[${size}px] w-[${size}px]`,
+        `bg-[${normalized}]`,
         selected ? "ring-2 ring-offset-2" : "", // i18n-exempt -- DEV-000 CSS utility class names
         className
       )}
+      style={style}
       {...props}
     />
   );

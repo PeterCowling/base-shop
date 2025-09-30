@@ -1,3 +1,4 @@
+// i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/shop-bcd/src/app/api/account/profile/route.ts
 import "@acme/zod-utils/initZod";
 import { getCustomerSession } from "@auth";
@@ -36,7 +37,7 @@ export async function GET() {
   } catch (err) {
     if (
       err instanceof Error &&
-      err.message === "Customer profile not found" // i18n-exempt: error discriminator string from backend
+      err.message === "Customer profile not found" // i18n-exempt -- ABC-123 error discriminator string from backend [ttl=2025-06-30]
     ) {
       return NextResponse.json({ error: t("api.account.profileNotFound") }, { status: 404 });
     }
@@ -68,7 +69,7 @@ export async function PUT(req: NextRequest) {
     );
   } catch (err) {
     if (err instanceof Error && err.message.startsWith("Conflict")) {
-      // i18n-exempt: backend conflict message is passed through for debugging
+      // i18n-exempt -- ABC-123 backend conflict message is passed through for debugging [ttl=2025-06-30]
       return NextResponse.json({ error: err.message }, { status: 409 });
     }
     throw err;
@@ -79,7 +80,7 @@ export async function PUT(req: NextRequest) {
   } catch (err) {
     if (
       err instanceof Error &&
-      err.message === "Customer profile not found" // i18n-exempt: error discriminator string from backend
+      err.message === "Customer profile not found" // i18n-exempt -- ABC-123 error discriminator string from backend [ttl=2025-06-30]
     ) {
       return NextResponse.json({ error: t("api.account.profileNotFound") }, { status: 404 });
     }

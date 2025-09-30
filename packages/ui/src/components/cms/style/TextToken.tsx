@@ -18,6 +18,14 @@ export function TextToken({
   setToken,
 }: TextTokenProps): ReactElement {
   const t = useTranslations();
+  const resetLabel = (() => {
+    const v = t("common.reset");
+    return v === "common.reset" ? "Reset" : (v as string);
+  })();
+  const defaultLabel = (() => {
+    const v = t("common.default");
+    return v === "common.default" ? "Default" : (v as string);
+  })();
   // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
   const overrideClasses = isOverridden ? "border-s-2 border-s-info ps-2" : "";
   // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0002: utility classes are not user copy
@@ -43,12 +51,12 @@ export function TextToken({
           className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
           onClick={() => setToken(tokenKey, defaultValue ?? "")}
         >
-          {t("common.reset") as string}
+          {resetLabel}
         </button>
       )}
       {defaultValue && (
         <span className="text-xs text-muted-foreground">
-          {t("common.default") as string}: {defaultValue}
+          {defaultLabel}: {defaultValue}
         </span>
       )}
     </label>

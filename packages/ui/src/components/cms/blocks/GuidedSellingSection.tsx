@@ -53,9 +53,9 @@ export default function GuidedSellingSection({ title, questions = defaultQuestio
                     key={opt.value}
                     type="button"
                     className={[
-                      // i18n-exempt — CSS utility class names
+                      // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                       "rounded border px-3 inline-flex items-center min-h-10 min-w-10",
-                      // i18n-exempt — CSS utility class names
+                      // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                       answers[q.id] === opt.value ? "bg-black text-white" : "bg-white",
                     ].join(" ")}
                     onClick={() => update(q.id, opt.value)}
@@ -66,7 +66,7 @@ export default function GuidedSellingSection({ title, questions = defaultQuestio
               </Inline>
             </div>
             <div
-              // i18n-exempt — CSS utility class names
+              // i18n-exempt -- DS-1234 [ttl=2025-11-30]
               className="flex items-center justify-between"
             >
               <button

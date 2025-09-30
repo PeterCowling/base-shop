@@ -9,6 +9,7 @@
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
+    "./package.json": "./package.json",
     "./Translations": "./src/Translations.tsx",
     "./*": {
       "types": "./dist/*.d.ts",

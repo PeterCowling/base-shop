@@ -52,7 +52,8 @@ describe("MiniCart client", () => {
     });
     expect(await screen.findByText("fail")).toBeInTheDocument();
 
-    await userEvent.click(screen.getByRole("button", { name: "×" }));
+    // Close the toast via its accessible label
+    await userEvent.click(screen.getByRole("button", { name: /close/i }));
 
     await userEvent.click(screen.getByRole("button", { name: /remove/i }));
     expect(dispatch).toHaveBeenCalledWith({ type: "remove", id: "sku1:m" });

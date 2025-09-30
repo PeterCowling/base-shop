@@ -47,6 +47,7 @@ const nextConfig = {
     "@acme/ui",
     "@acme/config",
     "@acme/zod-utils", // needed by @acme/config/env/auth.ts
+    "@acme/i18n",
   ],
 };
 

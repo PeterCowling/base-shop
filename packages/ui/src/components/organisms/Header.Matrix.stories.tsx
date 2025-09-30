@@ -8,7 +8,7 @@ import { makeStateStory } from '../../story-utils/createStories';
 const meta: Meta<typeof Header> = {
   title: 'Organisms/Header/Matrix',
   component: Header,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {

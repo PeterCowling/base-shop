@@ -26,7 +26,11 @@ export function CategoryCollectionTemplate({
     }[columns as 1 | 2 | 3 | 4 | 5 | 6] ?? undefined;
 
   return (
-    <div className={cn(rootGridClass, colsClass, className)} {...props}>
+    <div
+      className={cn(rootGridClass, colsClass, className)}
+      style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`, ...(props.style ?? {}) }}
+      {...props}
+    >
       {categories.map((c) => (
         <CategoryCard key={c.id} category={c} />
       ))}

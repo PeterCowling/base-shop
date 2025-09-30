@@ -21,6 +21,7 @@
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs"
   },
   "exports": {
+    "./package.json": "./package.json",
     "./page": {
       "types": "./dist/page/index.d.ts",
       "import": "./src/page/index.ts",

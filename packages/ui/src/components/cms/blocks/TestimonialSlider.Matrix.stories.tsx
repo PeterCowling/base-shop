@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof TestimonialSlider> = {
   title: 'CMS Blocks/TestimonialSlider/Matrix',
   component: TestimonialSlider,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

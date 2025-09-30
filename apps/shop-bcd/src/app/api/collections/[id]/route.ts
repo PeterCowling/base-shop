@@ -1,3 +1,4 @@
+// i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 import { NextResponse } from "next/server";
 import { PRODUCTS, type SKU } from "@acme/platform-core/products";
 
@@ -35,12 +36,12 @@ export async function GET(
     // Cache-Control for ISR-like behavior at the edge/CDN
     res.headers.set(
       "Cache-Control",
-      "public, s-maxage=60, stale-while-revalidate=60", // i18n-exempt: header value is technical, not user-facing copy
+      "public, s-maxage=60, stale-while-revalidate=60", // i18n-exempt -- I18N-123 header value is technical, not user-facing copy [ttl=2025-06-30]
     );
     return res;
   } catch {
     return NextResponse.json(
-      { error: "Failed to load collection" }, // i18n-exempt: API error string; caller/UI will localize
+      { error: "Failed to load collection" }, // i18n-exempt -- I18N-123 API error string; caller/UI will localize [ttl=2025-06-30]
       { status: 500 },
     );
   }

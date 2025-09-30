@@ -27,20 +27,20 @@ interface SegmentRulesStepProps {
   onNext: () => void;
 }
 
-// i18n-exempt — data constant; labels are translated at render via t()
+// Attributes available to segment rules. Labels resolved via i18n keys at render time.
 const attributes = [
-  { value: "lifetime_value", label: "Lifetime value" /* i18n-exempt — data constant; translated at render */ },
-  { value: "purchase_count", label: "Orders placed" /* i18n-exempt — data constant; translated at render */ },
-  { value: "country", label: "Country" /* i18n-exempt — data constant; translated at render */ },
-  { value: "last_order_date", label: "Last order date" /* i18n-exempt — data constant; translated at render */ },
+  { value: "lifetime_value" },
+  { value: "purchase_count" },
+  { value: "country" },
+  { value: "last_order_date" },
 ];
 
-// i18n-exempt — data constant; labels are translated at render via t()
-const operatorOptions: { value: SegmentOperator; label: string }[] = [
-  { value: "equals", label: "Equals" },
-  { value: "contains", label: "Contains" },
-  { value: "greaterThan", label: "Greater than" },
-  { value: "lessThan", label: "Less than" },
+// Operator options. Labels resolved via i18n keys at render time.
+const operatorOptions: { value: SegmentOperator }[] = [
+  { value: "equals" },
+  { value: "contains" },
+  { value: "greaterThan" },
+  { value: "lessThan" },
 ];
 
 export function SegmentRulesStep({
@@ -67,12 +67,12 @@ export function SegmentRulesStep({
                 onValueChange={(value) => onRuleChange(rule.id, { attribute: value })}
               >
                 <SelectTrigger className="min-w-44">
-                  <SelectValue placeholder={t("Attribute")} />
+                  <SelectValue placeholder={t("cms.marketing.segments.rules.attribute.label")} />
                 </SelectTrigger>
                 <SelectContent>
                   {attributes.map((attr) => (
                     <SelectItem key={attr.value} value={attr.value}>
-                      {t(attr.label)}
+                      {t(`cms.marketing.segments.attributes.${attr.value}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -86,12 +86,12 @@ export function SegmentRulesStep({
                 }
               >
                 <SelectTrigger className="min-w-36">
-                  <SelectValue placeholder={t("Operator")} />
+                  <SelectValue placeholder={t("cms.marketing.segments.rules.operator.label")} />
                 </SelectTrigger>
                 <SelectContent>
                   {operatorOptions.map((option) => (
                     <SelectItem key={option.value} value={option.value}>
-                      {t(option.label)}
+                      {t(`cms.marketing.segments.operators.${option.value}`)}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -107,29 +107,29 @@ export function SegmentRulesStep({
                 onClick={() => onRuleRemove(rule.id)}
                 disabled={definition.rules.length === 1}
               >
-                {t("Remove")}
+                {t("actions.remove")}
               </Button>
             </div>
           ))}
           {errors.rules && (
             <p
               className="text-danger text-xs"
-              /* i18n-exempt — token reference string */
+              /* i18n-exempt -- ABC-123 token reference string [ttl=2026-12-31] */
               data-token="--color-danger"
             >
               {errors.rules}
             </p>
           )}
           <Button type="button" variant="outline" onClick={onRuleAdd}>
-            {t("Add rule")}
+            {t("cms.marketing.segments.rules.add")}
           </Button>
         </CardContent>
       </Card>
       <div className="flex justify-between">
         <Button variant="ghost" onClick={onBack}>
-          {t("Back")}
+          {t("actions.back")}
         </Button>
-        <Button onClick={onNext}>{t("Review segment")}</Button>
+        <Button onClick={onNext}>{t("cms.marketing.segments.review.cta")}</Button>
       </div>
     </div>
   );

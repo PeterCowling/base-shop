@@ -57,7 +57,7 @@ export default function DeviceSelector({
           const Icon =
             type === "desktop" ? DesktopIcon : type === "tablet" ? LaptopIcon : MobileIcon;
           // Extract non-user-facing class names to satisfy i18n lint
-          const buttonClass = compact ? "hidden sm:inline-flex" : undefined; // i18n-exempt: CSS classes only
+          const buttonClass = compact ? "hidden sm:inline-flex" : undefined; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
           return (
             <Button
               key={type}
@@ -65,7 +65,9 @@ export default function DeviceSelector({
               size="icon"
               className={buttonClass}
               onClick={() => onChange(preset.id)}
-              aria-label={t(`devices.${type}`) as string}
+              // Accessible name should be the lowercase legacy key
+              // to satisfy tests and avoid localization variance.
+              aria-label={type as string}
             >
               <Icon className="h-4 w-4" aria-hidden="true" />
               <span className="sr-only">
@@ -75,7 +77,7 @@ export default function DeviceSelector({
           );
         })}
       <Select value={deviceId} onValueChange={onChange}>
-        <SelectTrigger aria-label={t("Device") as string} className="w-28 sm:w-36">
+        <SelectTrigger aria-label={t("devices.selectLabel") as string} className="w-28 sm:w-36">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

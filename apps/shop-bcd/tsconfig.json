@@ -12,6 +12,15 @@
         "../../packages/i18n/dist/*",
         "./dist/*"
       ],
+      "@acme/editorial": [
+        "../../packages/editorial/src/index.ts",
+        "../../packages/editorial/src",
+        "../../packages/editorial/dist/index",
+        "../../packages/editorial/dist"
+      ],
+      "@acme/editorial/*": [
+        "../../packages/editorial/src/*", "../../packages/editorial/dist/*"
+      ],
       "@ui/*": [
         "../../packages/ui/src/*", "../../packages/ui/dist/src/*"
       ],
@@ -198,7 +207,6 @@
   "exclude": [
     "dist",
     "node_modules",
-    "../../apps-script",
     ".next",
     "../../packages/**/__tests__/**",
     "../../test",
@@ -252,6 +260,9 @@
     },
     {
       "path": "../../packages/email-templates"
+    },
+    {
+      "path": "../../packages/editorial"
     }
   ]
 }

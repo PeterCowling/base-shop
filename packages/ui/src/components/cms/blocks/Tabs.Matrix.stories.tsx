@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof TabsBlock> = {
   title: 'CMS Blocks/Tabs/Matrix',
   component: TabsBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { labels: fixture.labels, active: 0, children: [<div key={1}>One</div>, <div key={2}>Two</div>, <div key={3}>Three</div>] },
   parameters: { docs: { description: { component: 'Tabbed content block with keyboard navigation.' } } },
 };

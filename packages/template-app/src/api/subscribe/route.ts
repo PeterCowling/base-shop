@@ -17,23 +17,23 @@ export async function POST(req: NextRequest) {
     priceId?: string;
   };
   if (!userId || !priceId) {
-    return NextResponse.json({ error: "Missing parameters" }, { status: 400 }); // i18n-exempt: machine-readable API error
+    return NextResponse.json({ error: "Missing parameters" }, { status: 400 }); // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
   }
 
   const shop = await readShop(SHOP_ID);
   if (!shop.subscriptionsEnabled) {
     return NextResponse.json(
-      { error: "Subscriptions disabled" }, // i18n-exempt: machine-readable API error
+      { error: "Subscriptions disabled" }, // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
       { status: 403 }
     );
   }
   if (shop.billingProvider !== "stripe") {
-    return NextResponse.json({ error: "Billing not enabled" }, { status: 400 }); // i18n-exempt: machine-readable API error
+    return NextResponse.json({ error: "Billing not enabled" }, { status: 400 }); // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
   }
 
   const user = await getUserById(userId);
   if (!user) {
-    return NextResponse.json({ error: "User not found" }, { status: 404 }); // i18n-exempt: machine-readable API error
+    return NextResponse.json({ error: "User not found" }, { status: 404 }); // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
   }
 
   try {
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
     if (err instanceof Error) {
       return NextResponse.json({ error: err.message }, { status: 500 });
     }
-    console.error("An unknown error occurred"); // i18n-exempt: developer log, not user-facing
-    return NextResponse.json({ error: "Unknown error" }, { status: 500 }); // i18n-exempt: machine-readable API error
+    console.error("An unknown error occurred"); // i18n-exempt -- ABC-123 [ttl=2025-12-31] developer log, not user-facing
+    return NextResponse.json({ error: "Unknown error" }, { status: 500 }); // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
   }
 }

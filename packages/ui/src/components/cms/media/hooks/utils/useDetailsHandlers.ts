@@ -39,7 +39,7 @@ export function useDetailsHandlers({ shop, onMetadataUpdate, state, actions }: D
       try {
         const updated: MediaItem = await onMetadataUpdate(shop, currentUrl, fields);
         if (!hasUrl(updated)) {
-          // i18n-exempt — developer diagnostic, not user-facing
+          // i18n-exempt -- INTL-204 developer diagnostic, not user-facing [ttl=2026-12-31]
           throw new Error("Updated media item is missing a URL");
         }
 
@@ -47,7 +47,7 @@ export function useDetailsHandlers({ shop, onMetadataUpdate, state, actions }: D
         const hasTarget = files.some((file) => file.url === currentUrl);
 
         if (!hasTarget) {
-          // i18n-exempt — developer diagnostic, not user-facing
+          // i18n-exempt -- INTL-204 developer diagnostic, not user-facing [ttl=2026-12-31]
           throw new Error("Media item could not be found in the current list");
         }
 
@@ -60,13 +60,13 @@ export function useDetailsHandlers({ shop, onMetadataUpdate, state, actions }: D
         );
 
         setSelectedUrl(updatedWithUrl.url);
-        setToast({ open: true, message: t("Media details updated."), variant: "success" });
+        setToast({ open: true, message: t("cms.media.toast.detailsUpdated"), variant: "success" });
       } catch (error) {
-        // i18n-exempt — developer diagnostic, not user-facing
+        // i18n-exempt -- INTL-204 developer diagnostic, not user-facing [ttl=2026-12-31]
         console.error("Failed to update media metadata", error);
         setToast({
           open: true,
-          message: t("Failed to update media metadata."),
+          message: t("cms.media.errors.updateMetadataFailed"),
           variant: "error",
         });
       } finally {

@@ -31,7 +31,7 @@ export const FormWithPreview: Story = {
             defaultValues={{
               subject: "Launch day reminder",
               sendDate: "2024-05-01",
-              segment: "VIP customers",
+              segment: "vip",
               timezone: "Europe/Berlin",
             }}
             onSubmit={async () => undefined}

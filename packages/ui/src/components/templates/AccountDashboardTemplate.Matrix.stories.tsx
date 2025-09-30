@@ -21,7 +21,7 @@ const DashboardForOrders: React.FC<AccountDashboardTemplateProps<OrderRow>> = (p
 const meta: Meta<typeof DashboardForOrders> = {
   title: 'Templates/Account Dashboard/Matrix',
   component: DashboardForOrders,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {

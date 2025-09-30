@@ -92,8 +92,9 @@ function ImageSourcePanel({ src, alt, cropAspect, focalPoint, onChange, initialF
           className="flex-1"
         />
         <ImagePicker onSelect={handleSelect}>
-          <Button type="button" variant="outline">
-            {t("cms.image.upload")}
+          {/* Use asChild to prevent nested <button> inside DialogTrigger */}
+          <Button type="button" variant="outline" asChild>
+            <span>{t("cms.image.upload")}</span>
           </Button>
         </ImagePicker>
         <Button type="button" variant="outline" disabled={!url} onClick={() => setEditorOpen(true)}>

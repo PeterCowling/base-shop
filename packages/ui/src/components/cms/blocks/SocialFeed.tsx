@@ -37,12 +37,12 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
         ? `https://www.instagram.com/${account}/embed`
         : `https://www.instagram.com/explore/tags/${hashtag}/embed`;
 
-  if (failed) return <p>{t("social.feed.error")}</p>;
+  if (failed) return <p>Unable to load social feed</p>;
 
   return (
     <iframe
       ref={iframeRef}
-      title={String(t("social.feed.title"))}
+      title="social-feed"
       src={src}
       className="w-full"
       data-aspect="16/9"

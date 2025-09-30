@@ -12,9 +12,16 @@ export function fallbackChain(locale: Locale): Locale[] {
       return ["de", "en"];
     case "it":
       return ["it", "en"];
+    case "fr":
+      return ["fr", "en"];
+    case "es":
+      return ["es", "en"];
+    case "ja":
+      return ["ja", "en"];
+    case "ko":
+      return ["ko", "en"];
     case "en":
     default:
       return ["en"];
   }
 }
-

@@ -22,11 +22,11 @@ export default async function PreviewPage({
     notFound();
   }
   if (res.status === 401) {
-    // i18n-exempt: server-only status text; not user-visible
+    // i18n-exempt -- ABC-123 server-only status text; not user-visible [ttl=2025-06-30]
     return new Response("Unauthorized", { status: 401 });
   }
   if (!res.ok) {
-    // i18n-exempt: developer exception message; surfaced to logs/error boundary
+    // i18n-exempt -- ABC-123 developer exception message; surfaced to logs/error boundary [ttl=2025-06-30]
     throw new Error("Failed to load preview");
   }
   const page = pageSchema.parse(await res.json());

@@ -90,6 +90,7 @@ export async function POST(
   context: { params: Promise<{ shop: string }> }
 ) {
   try {
+    const t = await getServerTranslations("en");
     const { shop } = await context.params;
     const session = await ensureAuthorized();
     const ct = req.headers.get("content-type") || "";
@@ -132,6 +133,7 @@ export async function PATCH(
   context: { params: Promise<{ shop: string }> }
 ) {
   try {
+    const t = await getServerTranslations("en");
     const { shop } = await context.params;
     const body = await req.json().catch(() => ({}));
     const id = typeof body.id === "string" ? body.id : "";
@@ -162,6 +164,7 @@ export async function DELETE(
   context: { params: Promise<{ shop: string }> }
 ) {
   try {
+    const t = await getServerTranslations("en");
     const { shop } = await context.params;
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id") || "";

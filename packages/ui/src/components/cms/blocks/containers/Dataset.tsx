@@ -84,7 +84,7 @@ export default function Dataset({
             setState("loaded");
           }
         } catch (err) {
-          // i18n-exempt -- developer log for diagnostics, not user-facing copy
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — developer log for diagnostics, not user-facing copy
           console.warn("Dataset(products) fetch failed:", err);
           if (!cancelled) {
             setItems(Array.isArray(skus) ? (skus as unknown[]) : []);
@@ -110,7 +110,7 @@ export default function Dataset({
             setState("loaded");
           }
         } catch (err) {
-          // i18n-exempt -- developer log for diagnostics, not user-facing copy
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — developer log for diagnostics, not user-facing copy
           console.warn("Dataset(blog) fetch failed:", err);
           if (!cancelled) {
             setItems([]);

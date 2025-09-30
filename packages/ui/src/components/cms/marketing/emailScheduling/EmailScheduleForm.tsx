@@ -73,14 +73,14 @@ export function EmailScheduleForm({
         <CardContent className="space-y-4">
           <div className="space-y-1">
             <label
-              /* i18n-exempt — non-user-facing id reference */
+              /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
               htmlFor="email-subject"
               className="text-sm font-medium"
             >
-              {t("Subject line")}
+              {t("emailScheduling.subjectLabel")}
             </label>
             <Input
-              /* i18n-exempt — non-user-facing id */
+              /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
               id="email-subject"
               value={values.subject}
               onChange={(event) => updateValue("subject", event.target.value)}
@@ -91,10 +91,10 @@ export function EmailScheduleForm({
             />
             {errors.subject && (
               <p
-                /* i18n-exempt — non-user-facing id */
+                /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
                 id="email-subject-error"
                 className="text-danger text-xs"
-                /* i18n-exempt — token reference string */
+                /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
                 data-token="--color-danger"
               >
                 {errors.subject}
@@ -104,14 +104,14 @@ export function EmailScheduleForm({
 
           <div className="space-y-1">
             <label
-              /* i18n-exempt — non-user-facing id reference */
+              /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
               htmlFor="email-preheader"
               className="text-sm font-medium"
             >
-              {t("Preheader")}
+              {t("emailScheduling.preheaderLabel")}
             </label>
             <Textarea
-              /* i18n-exempt — non-user-facing id */
+              /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
               id="email-preheader"
               rows={2}
               value={values.preheader}
@@ -131,7 +131,7 @@ export function EmailScheduleForm({
 
       <div className="flex justify-end">
         <Button type="submit" disabled={busy || status === "submitting"}>
-          {status === "submitting" ? t("Scheduling…") : submitLabel ?? t("Schedule send")}
+          {status === "submitting" ? t("emailScheduling.scheduling") : submitLabel ?? t("emailScheduling.scheduleSend")}
         </Button>
       </div>
 

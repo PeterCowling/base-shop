@@ -10,7 +10,7 @@ import { z } from 'zod';
 const meta: Meta<typeof FooterBlock> = {
   title: 'CMS Blocks/FooterBlock/Matrix',
   component: FooterBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture, locale: 'en' },
 };
 export default meta;

@@ -16,8 +16,18 @@ export function Sidebar({ sideWidth = "w-64", gap = 6, reverse = false, classNam
   const main = <div className="min-w-0 flex-1">{b}</div>;
   return (
     <div className={cn("flex", reverse ? "flex-row-reverse" : "flex-row", `gap-${gap}`, className)} {...rest}>
-      {reverse ? [side, main] : [side, main]}
+      {/* Render without array to avoid React key warnings */}
+      {reverse ? (
+        <>
+          {main}
+          {side}
+        </>
+      ) : (
+        <>
+          {side}
+          {main}
+        </>
+      )}
     </div>
   );
 }
-

@@ -40,6 +40,24 @@ jest.mock("../src/components/atoms/shadcn", () => {
   };
 });
 
+// Ensure human-friendly labels are used instead of i18n keys in tests
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) =>
+    ({
+      "cms.interactions.clickAction": "Click Action",
+      "cms.interactions.none": "None",
+      "cms.interactions.navigate": "Navigate",
+      "cms.interactions.scrollTo": "Scroll to",
+      "cms.interactions.target": "Target",
+      "cms.interactions.targetAnchor": "Target anchor",
+      "cms.interactions.openModal": "Open modal",
+      "cms.interactions.modalContent": "Modal content",
+      "cms.common.pick": "Pick",
+      "cms.common.plainText": "Plain text",
+    }[key] ?? key),
+}));
+
 import { render, fireEvent, screen } from "@testing-library/react";
 import { useState } from "react";
 import InteractionsPanel from "../src/components/cms/page-builder/panels/InteractionsPanel";

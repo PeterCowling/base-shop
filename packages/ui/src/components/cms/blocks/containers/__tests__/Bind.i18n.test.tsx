@@ -13,7 +13,11 @@ jest.mock('../../data/DataContext', () => ({
 }));
 
 function Child({ text }: { text?: string | Record<string, unknown> }) {
-  return <div data-testid="text">{typeof text === 'string' ? text : 'object'}</div>;
+  return (
+    <div data-testid="text" data-cy="text">
+      {typeof text === 'string' ? text : 'object'}
+    </div>
+  );
 }
 
 describe('Bind (i18n resolution)', () => {
@@ -39,4 +43,3 @@ describe('Bind (i18n resolution)', () => {
     expect(screen.getByTestId('text').textContent).toBe('object');
   });
 });
-

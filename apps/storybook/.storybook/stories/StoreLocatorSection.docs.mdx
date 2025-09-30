@@ -1,0 +1,20 @@
+import { Meta, Canvas, Story, Title, Description, Subtitle } from '@storybook/blocks';
+import * as StoreLocatorSectionStories from '../../../packages/ui/src/components/cms/blocks/StoreLocatorSection.stories';
+
+<Meta title="Sections/Store Locator/Docs" of={StoreLocatorSectionStories} />
+
+<Title>Store Locator Section</Title>
+<Subtitle>List + map with optional geolocation and LocalBusiness schema</Subtitle>
+
+<Description>
+The StoreLocatorSection renders a store list and a Leaflet map. When <code>emitLocalBusiness</code> is true and a store
+is selected, it injects a <code>LocalBusiness</code> JSON‑LD script with basic contact and geo information.
+Use an <code>adapter</code> prop to load stores dynamically from your backend.
+</Description>
+
+## Default
+<Canvas>
+  <Story id="packages-ui-src-components-cms-blocks-storelocatorsection--default" />
+</Canvas>
+
+## Props

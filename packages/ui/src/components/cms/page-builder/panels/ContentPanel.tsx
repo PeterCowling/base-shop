@@ -34,7 +34,7 @@ export default function ContentPanel({
   const isMultiColumn = component.type === "MultiColumn";
   const Specific: LazyExoticComponent<ComponentType<EditorProps>> | undefined = editorRegistry[component.type];
   const suggestionsEnabled = (process.env.NEXT_PUBLIC_CMS_CONTENT_SUGGESTIONS || "").toString().toLowerCase() === "true";
-  const suggestions = suggestionsEnabled ? getContentSuggestions(component) : [];
+  const suggestions = suggestionsEnabled ? getContentSuggestions(component, t) : [];
   return (
     <div className="space-y-2">
       {("minItems" in component || "maxItems" in component) && (

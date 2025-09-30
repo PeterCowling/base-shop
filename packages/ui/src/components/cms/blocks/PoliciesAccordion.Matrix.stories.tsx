@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof PoliciesAccordion> = {
   title: 'CMS Blocks/PoliciesAccordion/Matrix',
   component: PoliciesAccordion,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

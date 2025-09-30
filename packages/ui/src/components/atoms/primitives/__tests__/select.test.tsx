@@ -109,7 +109,7 @@ describe("Select", () => {
     const user = userEvent.setup();
     await user.click(screen.getByTestId("trigger"));
     const item = await screen.findByRole("option", { name: "One" });
-    expect(item).toHaveClass("pl-8");
+    expect(item).toHaveClass("ps-8");
     expect(item).toHaveClass("custom");
   });
 
@@ -183,7 +183,7 @@ describe("Select", () => {
 
     expect(itemRef.current).toBe(item);
     expect(item).toHaveAttribute("data-foo", "item");
-    expect(item).toHaveClass("pl-8");
+    expect(item).toHaveClass("ps-8");
 
     expect(separatorRef.current).toBe(separator);
     expect(separator).toHaveAttribute("data-foo", "separator");

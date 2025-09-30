@@ -12,6 +12,7 @@ import SectionSettings from "./layout/SectionSettings";
 import GridPlacementControls from "./layout/GridPlacementControls";
 import ContainerQueryControls from "./layout/ContainerQueryControls";
 import { Input } from "../../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   component: PageComponent;
@@ -25,6 +26,7 @@ interface Props {
   onUpdateEditor?: (patch: Partial<EditorFlags>) => void;
   editorMap?: HistoryState["editor"];
   updateEditorForId?: (id: string, patch: Partial<EditorFlags>) => void;
+  errorKeys?: Set<string>;
 }
 
 export default function LayoutPanel({
@@ -36,19 +38,21 @@ export default function LayoutPanel({
   onUpdateEditor,
   editorMap,
   updateEditorForId,
+  errorKeys,
 }: Props) {
+  const t = useTranslations();
   const effLocked = (editorFlags?.locked ?? component.locked ?? false) as boolean;
   return (
     <div className="space-y-2">
       <ZIndexControls locked={effLocked} editorFlags={editorFlags} onUpdateEditor={onUpdateEditor} />
 
-      <SizeControls component={component} locked={effLocked} handleResize={handleResize} handleFullSize={handleFullSize} />
+      <SizeControls component={component} locked={effLocked} handleResize={handleResize} handleFullSize={handleFullSize} errorKeys={errorKeys} />
 
-      <PositionControls component={component} locked={effLocked} handleInput={handleInput} handleResize={handleResize} />
+      <PositionControls component={component} locked={effLocked} handleInput={handleInput} handleResize={handleResize} errorKeys={errorKeys} />
 
       <StackingControls component={component} editorFlags={editorFlags} onUpdateEditor={onUpdateEditor} editorMap={editorMap} updateEditorForId={updateEditorForId} />
 
-      <SpacingControls component={component} handleInput={handleInput} handleResize={handleResize} />
+      <SpacingControls component={component} handleInput={handleInput} handleResize={handleResize} errorKeys={errorKeys} />
 
       <TabSlotControl component={component} handleInput={handleInput} />
 
@@ -60,13 +64,10 @@ export default function LayoutPanel({
 
       {/* Anchor control: assign an element id for scroll-to targets */}
       <div className="mt-2 border-t pt-2">
-        {/* i18n-exempt: Builder control label */}
-        <div className="text-xs font-semibold text-muted-foreground">Anchor</div>
+        <div className="text-xs font-semibold text-muted-foreground">{t("cms.builder.anchor.label")}</div>
         <Input
-          // i18n-exempt: Field label in builder
-          label="Anchor ID"
-          // i18n-exempt: Example hint for editors
-          placeholder="e.g. section-about"
+          label={t("cms.builder.anchor.idLabel") as string}
+          placeholder={t("cms.builder.anchor.placeholder") as string}
           value={(
             ("anchorId" in component
               ? (component as unknown as { anchorId?: string }).anchorId
@@ -84,8 +85,7 @@ export default function LayoutPanel({
             );
           }}
         />
-        {/* i18n-exempt: Short instructional hint for editors */}
-        <div className="mt-1 text-xs text-muted-foreground">Use with Click Action → Scroll to by linking to #your-id.</div>
+        <div className="mt-1 text-xs text-muted-foreground">{t("cms.builder.anchor.hint")}</div>
       </div>
     </div>
   );

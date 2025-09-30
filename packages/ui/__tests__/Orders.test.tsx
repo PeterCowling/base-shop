@@ -1,21 +1,22 @@
 // packages/ui/__tests__/Orders.test.tsx
+import { render, screen } from "@testing-library/react";
 jest.mock("@auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
   hasPermission: jest.fn(),
 }));
 
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   __esModule: true,
   getOrdersForCustomer: jest.fn(),
 }));
 
-jest.mock("@platform-core/shipping", () => ({
+jest.mock("@acme/platform-core/shipping", () => ({
   __esModule: true,
   getTrackingStatus: jest.fn(),
 }));
 
-jest.mock("@platform-core/returnAuthorization", () => ({
+jest.mock("@acme/platform-core/returnAuthorization", () => ({
   __esModule: true,
   getTrackingStatus: jest.fn(),
 }));
@@ -26,9 +27,9 @@ jest.mock("next/navigation", () => ({
 }));
 
 import { getCustomerSession, hasPermission } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
-import { getTrackingStatus as getShippingTrackingStatus } from "@platform-core/shipping";
-import { getTrackingStatus as getReturnTrackingStatus } from "@platform-core/returnAuthorization";
+import { getOrdersForCustomer } from "@acme/platform-core/orders";
+import { getTrackingStatus as getShippingTrackingStatus } from "@acme/platform-core/shipping";
+import { getTrackingStatus as getReturnTrackingStatus } from "@acme/platform-core/returnAuthorization";
 import OrdersPage from "../src/components/account/Orders";
 import StartReturnButton from "../src/components/account/StartReturnButton";
 import { redirect } from "next/navigation";
@@ -53,10 +54,10 @@ describe("OrdersPage permissions", () => {
     });
     (hasPermission as jest.Mock).mockReturnValue(false);
     const element = await OrdersPage({ shopId });
+    render(element);
     expect(hasPermission).toHaveBeenCalledWith("viewer", "view_orders");
     expect(getOrdersForCustomer).not.toHaveBeenCalled();
-    expect(element.type).toBe("p");
-    expect(element.props.children).toBe("Not authorized.");
+    expect(screen.getByText("Not authorized.")).toBeInTheDocument();
   });
 
   it("shows orders when permitted", async () => {
@@ -69,10 +70,9 @@ describe("OrdersPage permissions", () => {
       { id: "o1" },
     ]);
     const element = await OrdersPage({ shopId });
+    render(element);
     expect(hasPermission).toHaveBeenCalledWith("customer", "view_orders");
-    const children = element.props.children;
-    const list = children[children.length - 1];
-    expect(list.type).toBe("ul");
+    expect(screen.getByRole("list")).toBeInTheDocument();
   });
 
   it("prevents roles without view_orders from seeing orders", async () => {
@@ -82,13 +82,13 @@ describe("OrdersPage permissions", () => {
     });
     (hasPermission as jest.Mock).mockReturnValue(false);
     const element = await OrdersPage({ shopId });
+    render(element);
     expect(hasPermission).toHaveBeenCalledWith(
       "CatalogManager",
       "view_orders",
     );
     expect(getOrdersForCustomer).not.toHaveBeenCalled();
-    expect(element.type).toBe("p");
-    expect(element.props.children).toBe("Not authorized.");
+    expect(screen.getByText("Not authorized.")).toBeInTheDocument();
   });
 });
 
@@ -107,8 +107,8 @@ describe("OrdersPage rendering", () => {
     (hasPermission as jest.Mock).mockReturnValue(true);
     (getOrdersForCustomer as jest.Mock).mockResolvedValue([]);
     const element = await OrdersPage({ shopId });
-    expect(element.type).toBe("p");
-    expect(element.props.children).toBe("No orders yet.");
+    render(element);
+    expect(screen.getByText("No orders yet.")).toBeInTheDocument();
   });
 
   it("shows return policy and StartReturnButton when returns enabled", async () => {
@@ -126,23 +126,10 @@ describe("OrdersPage rendering", () => {
       returnsEnabled: true,
       returnPolicyUrl,
     });
-    const children = element.props.children;
-    const policy = children[1];
-    expect(policy.type).toBe("p");
-    const link = policy.props.children;
-    expect(link.type).toBe("a");
-    expect(link.props.href).toBe(returnPolicyUrl);
-    const list = children[children.length - 1];
-    const listItem = Array.isArray(list.props.children)
-      ? list.props.children[0]
-      : list.props.children;
-    const liChildren = (
-      Array.isArray(listItem.props.children)
-        ? listItem.props.children
-        : [listItem.props.children]
-    ).filter(Boolean);
-    const button = liChildren.find((c) => c.type === StartReturnButton);
-    expect(button).toBeDefined();
+    render(element);
+    const link = screen.getByRole("link", { name: "Return policy" });
+    expect(link).toHaveAttribute("href", returnPolicyUrl);
+    expect(screen.getByRole("button", { name: "Start return" })).toBeInTheDocument();
   });
 
   it("renders shipping and return status lines", async () => {
@@ -156,12 +143,12 @@ describe("OrdersPage rendering", () => {
         id: "o1",
         sessionId: "s1",
         trackingNumber: "TN123",
-        returnStatus: "Processing",
+        returnStatus: "processing",
       },
     ]);
     (getShippingTrackingStatus as jest.Mock).mockResolvedValue({
       steps: [],
-      status: "Delivered",
+      status: "delivered",
     });
     (getReturnTrackingStatus as jest.Mock).mockResolvedValue({ steps: [] });
     const element = await OrdersPage({ shopId, trackingProviders: ["ups"] });
@@ -173,22 +160,9 @@ describe("OrdersPage rendering", () => {
       provider: "ups",
       trackingNumber: "TN123",
     });
-    const list = element.props.children[element.props.children.length - 1];
-    const listItem = Array.isArray(list.props.children)
-      ? list.props.children[0]
-      : list.props.children;
-    const liChildren = (
-      Array.isArray(listItem.props.children)
-        ? listItem.props.children
-        : [listItem.props.children]
-    ).filter(Boolean);
-    const statusPara = liChildren.find(
-      (c) => c.type === "p" && c.props.children[0] === "Status: "
-    );
-    expect(statusPara.props.children[1]).toBe("Delivered");
-    const returnPara = liChildren.find(
-      (c) => c.type === "p" && c.props.children[0] === "Return: "
-    );
-    expect(returnPara.props.children[1]).toBe("Processing");
+    render(element);
+    expect(screen.getByText("Order: o1")).toBeInTheDocument();
+    expect(screen.getByText("Status: delivered")).toBeInTheDocument();
+    expect(screen.getByText("Return: processing")).toBeInTheDocument();
   });
 });

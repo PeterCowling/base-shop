@@ -17,7 +17,7 @@ export default function Home({ params }: { params: { lang: string } }) {
   return (
     <>
       <script
-        type="application/ld+json" /* i18n-exempt — MIME type constant, not user-facing copy */
+        type="application/ld+json" /* i18n-exempt -- ABC-123 [ttl=2025-12-31] MIME type constant, not user-facing copy */
         dangerouslySetInnerHTML={{ __html: serializeJsonLd(jsonLd) }}
       />
       <HeroBanner />

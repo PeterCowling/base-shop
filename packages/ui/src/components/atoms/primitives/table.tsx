@@ -1,5 +1,5 @@
 // packages/ui/components/atoms/primitives/table.tsx
-// i18n-exempt: primitives expose no user-facing copy
+// i18n-exempt file -- DS-1234 [ttl=2025-11-30] — primitives expose no user-facing copy
 
 import * as React from "react";
 import { cn } from "../../../utils/style";
@@ -16,8 +16,8 @@ export const Table = React.forwardRef<HTMLTableElement, TableProps>(
     <div className="w-full overflow-x-auto">
       <table
         ref={ref}
-        // i18n-exempt: classes only
-        className={cn("text-foreground w-full text-start text-sm bg-surface-1", className)}
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+        className={cn("text-foreground w-full text-left text-sm", className)}
         {...props}
       />
     </div>
@@ -31,7 +31,7 @@ export const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   TableHeaderProps
 >(({ className, ...props }, ref) => (
-  // i18n-exempt: classes only
+  // i18n-exempt -- DS-1234 [ttl=2025-11-30]
   <thead ref={ref} className={cn("bg-panel border-b border-border-2", className)} {...props} />
 ));
 TableHeader.displayName = "TableHeader"; // i18n-exempt: component displayName
@@ -52,7 +52,7 @@ export const TableRow = React.forwardRef<HTMLTableRowElement, TableRowProps>(
     <tr
       ref={ref}
       className={cn(
-        // i18n-exempt: classes only
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         "border-b border-border-1 transition-colors hover:bg-surface-2 data-[state=selected]:bg-surface-3",
         className
       )}
@@ -68,7 +68,7 @@ export const TableHead = React.forwardRef<HTMLTableCellElement, TableHeadProps>(
   ({ className, ...props }, ref) => (
     <th
       ref={ref}
-      // i18n-exempt: classes only
+      // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       className={cn("text-foreground px-4 py-2 font-semibold", className)}
       {...props}
     />

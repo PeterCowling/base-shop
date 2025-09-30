@@ -57,11 +57,9 @@ export default function MediaManagerView({
       <Dialog open={deleteDialog.open} onOpenChange={deleteDialog.onOpenChange}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{t("Delete media?")}</DialogTitle>
+            <DialogTitle>{t("cms.media.confirmDelete.title")}</DialogTitle>
             <DialogDescription>
-              {t(
-                "This action cannot be undone. This will permanently delete the media file from your library."
-              )}
+              {t("cms.media.confirmDelete.description")}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
@@ -71,7 +69,7 @@ export default function MediaManagerView({
               onClick={deleteDialog.onCancel}
               disabled={deleteDialog.pending}
             >
-              {t("Cancel")}
+              {t("actions.cancel")}
             </Button>
             <Button
               type="button"
@@ -82,10 +80,10 @@ export default function MediaManagerView({
               {deleteDialog.pending ? (
                 <>
                   <Spinner className="h-4 w-4" />
-                  <span className="sr-only">{t("Deleting media")}</span>
+                  <span className="sr-only">{t("cms.media.deleting")}</span>
                 </>
               ) : (
-                t("Delete")
+                t("actions.delete")
               )}
             </Button>
           </DialogFooter>
@@ -105,7 +103,7 @@ export default function MediaManagerView({
         message={toast.message}
         variant={toast.variant}
         onClose={toast.onClose}
-        data-cy="media-manager-toast" /* i18n-exempt: test hook attribute */
+        data-cy="media-manager-toast" /* i18n-exempt -- DS-000 test hook attribute [ttl=2026-01-01] */
       />
     </div>
   );

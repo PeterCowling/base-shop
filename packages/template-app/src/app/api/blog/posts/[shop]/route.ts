@@ -10,14 +10,14 @@ export async function GET(req: Request) {
   const match = pathname.match(/\/api\/blog\/posts\/([^/]+)(?:\/)?$/);
   const shop = (match?.[1] ?? "").trim() || undefined;
   if (!shop) {
-    // i18n-exempt: API error message
+    // i18n-exempt -- ABC-123 [ttl=2025-12-31] API error message
     return NextResponse.json({ error: "Missing shop param" }, { status: 400 });
   }
   try {
     const posts = await fetchPublishedPosts(shop);
     return NextResponse.json(posts);
   } catch (err) {
-    // i18n-exempt: API error message
+    // i18n-exempt -- ABC-123 [ttl=2025-12-31] API error message
     return NextResponse.json({ error: (err as Error).message }, { status: 500 });
   }
 }

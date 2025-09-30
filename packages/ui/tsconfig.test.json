@@ -2,12 +2,14 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "types": ["@testing-library/jest-dom", "jest", "node"],
+    // Let ts-jest emit into a scratch dir for this package
     "noEmit": false,
     "noEmitOnError": false,
     "rootDir": ".",
     "outDir": ".ts-jest",
-    "module": "CommonJS",
-    "moduleResolution": "Node",
+    // Align module semantics with repo-wide Jest ESM setup
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
     "jsx": "react-jsx",
     "esModuleInterop": true
   },

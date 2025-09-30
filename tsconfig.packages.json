@@ -34,6 +34,7 @@
     { "path": "packages/plugins/paypal" },
     { "path": "packages/plugins/premier-shipping" },
     { "path": "packages/plugins/sanity" },
+    { "path": "packages/editorial" },
     { "path": "src" }
   ]
 }

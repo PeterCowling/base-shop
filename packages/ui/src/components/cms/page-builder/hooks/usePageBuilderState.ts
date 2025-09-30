@@ -10,6 +10,7 @@ import {
 import type { Page, PageComponent, HistoryState } from "@acme/types";
 import type { EditorFlags } from "../state/layout/types";
 import { historyStateSchema, reducer, type Action } from "../state";
+import { useTranslations } from "@acme/i18n";
 
 interface Params {
   page: Page;
@@ -28,6 +29,7 @@ export function usePageBuilderState({
   onTogglePreview,
   onRotateDevice,
 }: Params) {
+  const t = useTranslations();
   const storageKey = `page-builder-history-${page.id}`;
 
   const migrate = useCallback(
@@ -76,7 +78,7 @@ export function usePageBuilderState({
     }
     try {
       const stored = localStorage.getItem(storageKey);
-      if (!stored) throw new Error("no stored state"); // i18n-exempt: internal debug message not user-facing
+      if (!stored) throw new Error("no stored state"); // i18n-exempt -- INTL-204 internal debug message not user-facing [ttl=2026-12-31]
       const parsed = historyStateSchema.parse(JSON.parse(stored)) as HistoryState;
       return { ...parsed, present: migrate(parsed.present) } as HistoryState;
     } catch {
@@ -96,18 +98,18 @@ export function usePageBuilderState({
     (action: Action) => {
       rawDispatch(action);
       if (action.type === "add") {
-        setLiveMessage("Block added"); // i18n-exempt: live region accessibility feedback
+        setLiveMessage(t("cms.builder.live.blockAdded"));
       } else if (action.type === "move") {
-        setLiveMessage("Block moved"); // i18n-exempt: live region accessibility feedback
+        setLiveMessage(t("cms.builder.live.blockMoved"));
       } else if (action.type === "resize") {
-        setLiveMessage("Block resized"); // i18n-exempt: live region accessibility feedback
+        setLiveMessage(t("cms.builder.live.blockResized"));
       } else if (action.type === "duplicate") {
-        setLiveMessage("Block duplicated"); // i18n-exempt: live region accessibility feedback
+        setLiveMessage(t("cms.builder.live.blockDuplicated"));
       } else if (action.type === "remove") {
-        setLiveMessage("Block deleted"); // i18n-exempt: live region accessibility feedback
+        setLiveMessage(t("cms.builder.live.blockDeleted"));
       }
     },
-    [rawDispatch]
+    [rawDispatch, t]
   );
 
   useEffect(() => {
@@ -190,7 +192,7 @@ export function usePageBuilderState({
         if (to !== info.index) {
           e.preventDefault();
           dispatch({ type: 'move', from: { parentId: info.parentId, index: info.index }, to: { parentId: info.parentId, index: to } });
-          setLiveMessage('Block reordered'); // i18n-exempt: live region accessibility feedback
+          setLiveMessage(t('cms.builder.live.blockReordered'));
         }
         return;
       }
@@ -284,7 +286,7 @@ export function usePageBuilderState({
           selectedIds.forEach((id) => {
             dispatch({ type: "update-editor", id, patch: { zIndex: 999 } });
           });
-          setLiveMessage("Brought to front"); // i18n-exempt: live region accessibility feedback
+          setLiveMessage(t("cms.builder.live.broughtToFront"));
         } else {
           onRotateDevice?.("right");
         }
@@ -295,7 +297,7 @@ export function usePageBuilderState({
           selectedIds.forEach((id) => {
             dispatch({ type: "update-editor", id, patch: { zIndex: 0 } });
           });
-          setLiveMessage("Sent to back"); // i18n-exempt: live region accessibility feedback
+          setLiveMessage(t("cms.builder.live.sentToBack"));
         } else {
           onRotateDevice?.("left");
         }
@@ -307,7 +309,7 @@ export function usePageBuilderState({
             const z = typedState.editor?.[id]?.zIndex ?? 0;
             dispatch({ type: "update-editor", id, patch: { zIndex: z + 1 } });
           });
-          setLiveMessage("Brought forward"); // i18n-exempt: live region accessibility feedback
+          setLiveMessage(t("cms.builder.live.broughtForward"));
         }
       } else if (k === "[" && !e.shiftKey) {
         // Cmd/Ctrl + [ : send backward (zIndex - 1)
@@ -318,13 +320,13 @@ export function usePageBuilderState({
             const newZ = Math.max(0, z - 1);
             dispatch({ type: "update-editor", id, patch: { zIndex: newZ } });
           });
-          setLiveMessage("Sent backward"); // i18n-exempt: live region accessibility feedback
+          setLiveMessage(t("cms.builder.live.sentBackward"));
         }
       }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [dispatch, onSaveShortcut, onTogglePreview, onRotateDevice, components, selectedIds, typedState]);
+  }, [dispatch, onSaveShortcut, onTogglePreview, onRotateDevice, components, selectedIds, typedState, t]);
 
   const clearHistory = useCallback(() => {
     if (typeof window !== "undefined") {

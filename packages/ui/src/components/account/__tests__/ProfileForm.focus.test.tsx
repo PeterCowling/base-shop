@@ -7,6 +7,18 @@ jest.mock("@acme/shared-utils", () => ({
   getCsrfToken: jest.fn(() => "csrf-token"),
 }));
 
+// Minimal i18n mock so labels resolve to human-readable strings
+const translations: Record<string, string> = {
+  "fields.name": "Name",
+  "fields.email": "Email",
+  "forms.validation.name.required": "Name is required",
+  "forms.validation.email.required": "Email is required",
+  "forms.error.fixBelow": "Please fix errors below",
+};
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string) => translations[key] ?? key,
+}));
+
 describe("ProfileForm focus behavior", () => {
   it("focuses first invalid field on client-side validation", async () => {
     render(<ProfileForm />);

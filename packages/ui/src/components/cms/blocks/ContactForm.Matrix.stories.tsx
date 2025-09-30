@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof ContactForm> = {
   title: 'CMS Blocks/ContactForm/Matrix',
   component: ContactForm,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Basic contact form with name/email/message fields.' } } },
 };

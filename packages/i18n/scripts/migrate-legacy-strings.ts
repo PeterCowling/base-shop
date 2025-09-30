@@ -53,7 +53,6 @@ function parseArgs(): Options {
     }
   }
   if (!rootPath) {
-    // eslint-disable-next-line ds/no-hardcoded-copy -- INTL-201 [ttl=2026-03-31]
     console.error('Error: --path is required (file or directory)');
     process.exit(1);
   }
@@ -149,7 +148,6 @@ function main() {
     for (const r of results) console.log(`- ${r.file}`); // i18n-exempt -- I18N-201 CLI detail output [ttl=2026-03-31]
   }
   if (!write)
-    // eslint-disable-next-line ds/no-hardcoded-copy -- INTL-201 [ttl=2026-03-31]
     console.log('Dry-run only. Re-run with --write to apply.');
 }
 

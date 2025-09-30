@@ -67,7 +67,7 @@ export function SearchResultsTemplate({
       {isLoading ? (
         <GridPrimitive
           /* i18n-exempt -- DS-0002 [ttl=2026-01-31] */
-          data-testid="search-results-loading"
+          data-cy="search-results-loading"
           cols={1}
           gap={6}
           style={{ gridTemplateColumns: `repeat(${columnCount}, minmax(0, 1fr))` }}

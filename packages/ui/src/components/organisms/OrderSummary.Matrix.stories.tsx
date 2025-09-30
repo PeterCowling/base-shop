@@ -7,7 +7,7 @@ import { makeStateStory } from '../../story-utils/createStories';
 const meta: Meta<typeof OrderSummary> = {
   title: 'Organisms/Order Summary/Matrix',
   component: OrderSummary,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     layout: 'centered',
     docs: {

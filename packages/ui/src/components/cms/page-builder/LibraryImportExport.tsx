@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
 import { listLibrary, saveLibrary, clearLibrary, syncFromServer, type LibraryItem } from "./libraryStore";
+import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+import { rootPlacementOptions } from "@acme/platform-core/validation/options";
 import { ulid } from "ulid";
 
 interface Props {
@@ -13,6 +15,10 @@ interface Props {
 
 export default function LibraryImportExport({ shop, onAfterChange }: Props) {
   const t = useTranslations();
+  const tf = (key: string, fallback: string) => {
+    const val = t(key) as string;
+    return val === key ? fallback : val;
+  };
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState<string>("");
   const [busy, setBusy] = useState(false);
@@ -42,11 +48,11 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
       document.body.appendChild(a);
       a.click();
       a.remove();
-      setMessage(String(t("cms.library.exported")));
+      setMessage(String(tf("cms.library.exported", "Exported library JSON")));
     } catch (err) {
       // i18n-exempt: developer log
       console.error(err);
-      setMessage(String(t("cms.library.exportFailed")));
+      setMessage(String(tf("cms.library.exportFailed", "Export failed")));
     } finally {
       setBusy(false);
     }
@@ -64,7 +70,7 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
         : (typeof parsed === "object" && parsed !== null && "items" in (parsed as Record<string, unknown>) && Array.isArray((parsed as { items?: unknown }).items))
           ? ((parsed as { items: LibraryItem[] }).items)
           : [];
-      if (!inItems.length) throw new Error(String(t("cms.library.importInvalid")));
+      if (!inItems.length) throw new Error(String(tf("cms.library.importInvalid", "Invalid file format")));
       const clones = inItems.map((item) => {
         const clone = { ...item } as LibraryItem;
         clone.id = ulid();
@@ -72,6 +78,16 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
         clone.shared = false;
         return clone;
       });
+      // Preflight validate all incoming templates as ROOT placement
+      for (const it of clones) {
+        const templates = (it.templates && Array.isArray(it.templates)) ? it.templates : (it.template ? [it.template] : []);
+        if (templates.length) {
+          const pre = validateTemplateCreation(templates as any, rootPlacementOptions());
+          if (pre.ok === false) {
+            throw new Error([tf("cms.library.importValidationFailed", "Import failed: invalid item"), ...(pre.errors || [])].filter(Boolean).join("\n"));
+          }
+        }
+      }
       if (shop) {
         await fetch(`/api/library?shop=${encodeURIComponent(shop)}`, {
           method: "POST",
@@ -86,11 +102,11 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
         await refresh();
       }
       onAfterChange?.();
-      setMessage(String(t("cms.library.importedN", { count: inItems.length })));
+      setMessage(String(tf("cms.library.importedN", `Imported ${inItems.length} item(s)`)));
     } catch (err) {
       // i18n-exempt: developer log
       console.error(err);
-      setMessage(String(t("cms.library.importFailed")));
+      setMessage(String(tf("cms.library.importFailed", "Import failed. Please check your file.")));
     } finally {
       setBusy(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -113,17 +129,17 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">{t("cms.library.importExport.button")}</Button>
+        <Button variant="outline">{tf("cms.library.importExport.button", "Import/Export")}</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>{t("cms.library.importExport.title")}</DialogTitle>
+        <DialogTitle>{tf("cms.library.importExport.title", "Library Import / Export")}</DialogTitle>
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">{t("cms.library.importExport.description")}</p>
+          <p className="text-sm text-muted-foreground">{tf("cms.library.importExport.description", "Export your current library to a JSON file or import items from a JSON file exported here.")}</p>
           <div className="flex items-center gap-2">
-            <Button type="button" variant="outline" disabled={busy} onClick={handleExport}>{t("cms.library.exportJSON")}</Button>
+            <Button type="button" variant="outline" disabled={busy} onClick={handleExport}>{tf("cms.library.exportJSON", "Export JSON")}</Button>
             <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={(e) => void handleImportFiles(e.target.files)} /> {/* i18n-exempt -- ENG-1234 non-user-facing attribute [ttl=2026-12-31] */}
-            <Button type="button" variant="outline" disabled={busy} onClick={() => fileInputRef.current?.click()}>{t("cms.library.importJSON")}</Button>
-            <Button type="button" variant="outline" disabled={busy || !canClear} onClick={async () => { if (confirm(String(t("cms.library.clearConfirm")))) { await clearLibrary(shop); await refresh(); onAfterChange?.(); } }}>{t("cms.library.clear")}</Button>
+            <Button type="button" variant="outline" disabled={busy} onClick={() => fileInputRef.current?.click()}>{tf("cms.library.importJSON", "Import JSON")}</Button>
+            <Button type="button" variant="outline" disabled={busy || !canClear} onClick={async () => { if (confirm(String(tf("cms.library.clearConfirm", "Clear your personal library?")))) { await clearLibrary(shop); await refresh(); onAfterChange?.(); } }}>{tf("cms.library.clear", "Clear Library")}</Button>
           </div>
           <div
             onDrop={onDrop}
@@ -138,12 +154,12 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
                 fileInputRef.current?.click();
               }
             }}
-            aria-label={String(t("cms.library.dropAria"))}
+            aria-label={String(tf("cms.library.dropAria", "Drop JSON file here"))}
           >
-            {t("cms.library.dropHelp")}
+            {tf("cms.library.dropHelp", "Drag & drop a JSON file here to import")}
           </div>
           <div aria-live="polite" className="text-sm">{message}</div>
-          <div className="text-xs text-muted-foreground">{t("cms.library.itemsCount")} {items.length}</div>
+          <div className="text-xs text-muted-foreground">{tf("cms.library.itemsCount", "Items in your library:")} {items.length}</div>
         </div>
       </DialogContent>
     </Dialog>

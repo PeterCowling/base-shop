@@ -46,20 +46,20 @@ function ImageUploaderWithOrientationCheckInner({
         type="file"
         accept="image/*"
         onChange={handleFileChange}
-        className="block w-full cursor-pointer rounded-2xl border p-2"
+        className="block w-full cursor-pointer rounded-2xl border p-2" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       />
 
       {file && isValid !== null && (
         <p
           className={
-            isValid ? "text-sm text-success" : "text-sm text-danger" // i18n-exempt: class names only
+            isValid ? "text-sm text-success" : "text-sm text-danger" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
           }
-          data-token={isValid ? "--color-success" : "--color-danger" /* i18n-exempt: token string */}
+          data-token={isValid ? "--color-success" : "--color-danger" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
         >
           {isValid
-            ? (t("cms.image.orientation.ok", { actual }) as string)
+            ? (t("cms.image.orientation.ok", { actual: actual ?? "" }) as string)
             : (t("cms.image.orientation.bad", {
-                actual,
+                actual: actual ?? "",
                 required: requiredOrientation,
               }) as string)}
         </p>

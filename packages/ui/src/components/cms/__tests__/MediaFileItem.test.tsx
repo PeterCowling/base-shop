@@ -134,7 +134,7 @@ describe("MediaFileItem", () => {
       jest.advanceTimersByTime(400);
     });
 
-    await waitFor(() => expect(screen.queryByText(/replacing asset/i)).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.queryByText(/replacing media/i)).not.toBeInTheDocument());
 
     jest.useRealTimers();
   });
@@ -154,7 +154,7 @@ describe("MediaFileItem", () => {
 
     await waitFor(() => expect(onReplaceError).toHaveBeenCalledWith("Failed to upload replacement"));
 
-    expect(screen.getByText(/replacing asset/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/replacing media/i).length).toBeGreaterThan(0);
     expect(screen.getByText("Failed to upload replacement")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /media actions/i })).toBeDisabled();
 
@@ -249,7 +249,7 @@ describe("MediaFileItem", () => {
       />
     );
 
-    expect(screen.getByText(/replacing asset/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/replacing media/i).length).toBeGreaterThan(0);
     expect(screen.getByText("45%")).toBeInTheDocument();
   });
   it("displays loading indicators when replacing is in progress", () => {
@@ -283,7 +283,7 @@ describe("MediaFileItem", () => {
       />
     );
 
-    expect(screen.getByText(/deleting asset/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/deleting media/i).length).toBeGreaterThan(0);
     const mediaActions = screen.getByRole("button", { name: /media actions/i });
     expect(mediaActions).toBeDisabled();
     const selectButton = screen.getByRole("button", { name: "Select media" });
@@ -315,7 +315,7 @@ describe("MediaFileItem", () => {
       />
     );
 
-    expect(screen.getByText(/replacing asset/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/replacing media/i).length).toBeGreaterThan(0);
     expect(screen.getByText("45%")).toBeInTheDocument();
     const mediaActions = screen.getByRole("button", { name: /media actions/i });
     expect(mediaActions).toBeDisabled();

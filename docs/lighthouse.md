@@ -1,31 +1,41 @@
-# Lighthouse Audits
+# Lighthouse and LHCI Setup
 
-This project uses the `lighthouse` CLI to verify performance on the checkout flow.
+This repo runs Lighthouse in two ways:
 
-## Installation
+- LHCI in CI for mobile and desktop, for CMS and Storefront.
+- Cypress smoke checks with explicit device settings for quick local validation.
 
-Install Lighthouse as a dev dependency:
+## Local quickstart
 
-```bash
-pnpm add -D lighthouse
+- Mobile CMS: `pnpm lhci:cms:mobile`
+- Desktop CMS: `pnpm lhci:cms:desktop`
+- Mobile Storefront: `pnpm lhci:shop:mobile`
+- Desktop Storefront: `pnpm lhci:shop:desktop`
+
+Notes:
+- These commands start the respective app (`next start`) and audit a few URLs.
+- If CMS routes require auth, LHCI uses `scripts/lhci/login.cjs` with `LHCI_USERNAME`/`LHCI_PASSWORD`.
+- Lighthouse uses simulated throttling for determinism.
+- Third‑party analytics are blocked via `collect.settings.blockedUrlPatterns`.
+
+## CI workflow
+
+See `.github/workflows/ci-lighthouse.yml`.
+- Node 20 LTS is used.
+- Upload target: `temporary-public-storage` (public and short‑lived). Migrate to an LHCI server to persist history.
+
+## Budgets and assertions
+
+- LightWallet budgets in `collect.settings.budgets` use KB.
+- LHCI `resource-summary:*` assertions use bytes.
+- Categories and key audits (LCP/TBT/CLS) have warn‑level thresholds; ratchet over time.
+
+## Cypress smoke
+
+`apps/cms/cypress/e2e/lighthouse-smoke.cy.ts` runs mobile and desktop against `/dashboard` with device emulation set via the third argument to `cy.lighthouse`:
+
+```ts
+cy.lighthouse(thresholds, {}, { settings: { preset: 'mobile', throttlingMethod: 'simulate' } })
 ```
 
-## Running the audit
-
-1. Build and start the app in production mode:
-
-   ```bash
-   pnpm build && pnpm start
-   ```
-
-   The app will be served on <http://localhost:3000>.
-
-2. In another terminal run:
-
-   ```bash
-   pnpm run lh:checkout
-   ```
-
-   This command runs Lighthouse against `/en/checkout` using headless Chrome and opens the report in your browser.
-
-The resulting performance score should be **90 or higher** to satisfy milestone **M6**.
+Viewport or `--browser` do not control Lighthouse’s device profile.

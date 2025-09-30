@@ -112,8 +112,7 @@ const TextBlockView = ({
     <div
       ref={assignNodeRef}
       onClick={onSelect}
-      role="button"
-      aria-pressed={selected}
+      role="listitem"
       aria-label={"Canvas item" /* i18n-exempt: internal builder control */}
       tabIndex={0}
       onKeyDown={onKeyDown}

@@ -35,16 +35,16 @@ export default function ShopSelector() {
             setStatus("ready");
             return;
           }
-          setErrorMsg("Invalid response"); // i18n-exempt — UI-1422: internal error surfaced via t()-wrapped fallback
+          setErrorMsg("Invalid response"); // i18n-exempt -- DS-1234 [ttl=2025-11-30] — internal error surfaced via t()-wrapped fallback
         } else {
           const json = await res.json().catch(() => ({}));
-          setErrorMsg(json.error ?? `Error ${res.status}`); // i18n-exempt — UI-1422: diagnostic message; rendered through t()-wrapped fallback
+          setErrorMsg(json.error ?? `Error ${res.status}`); // i18n-exempt -- DS-1234 [ttl=2025-11-30] — diagnostic message; rendered through t()-wrapped fallback
         }
         setStatus("error");
       } catch (err) {
-        console.error("Error loading shops", err); // i18n-exempt — UI-1422: console diagnostics only
+        console.error("Error loading shops", err); // i18n-exempt -- DS-1234 [ttl=2025-11-30] — console diagnostics only
         setErrorMsg(
-          err instanceof Error ? err.message : "Failed to load shops" // i18n-exempt — UI-1422: state fallback; UI render uses t()
+          err instanceof Error ? err.message : "Failed to load shops" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — state fallback; UI render uses t()
         );
         setStatus("error");
         setShops([]);
@@ -62,19 +62,20 @@ export default function ShopSelector() {
   }
 
   if (status === "loading")
-    return <span className="text-sm">{t("Loading shops…")}</span>;
+    return <span className="text-sm">{t("cms.shops.loading")}</span>;
   if (status === "error")
     return (
-      // i18n-exempt — UI-1422: design token attribute value is not user-facing copy
+      // i18n-exempt -- DS-1234 [ttl=2025-11-30] — design token attribute value is not user-facing copy
       <span className="text-sm text-danger" data-token="--color-danger">
-        {errorMsg ?? (t("Failed to load shops") as string)}
+        {errorMsg ?? (t("cms.shops.loadFailed") as string)}
       </span>
     );
   if (shops.length === 0)
     return (
-      <span className="text-muted-foreground text-sm">{t("No shops found.")}</span>
+      <span className="text-muted-foreground text-sm">{t("cms.shops.empty")}</span>
     );
 
+  /* eslint-disable ds/no-raw-font -- DS-1234 [ttl=2025-11-30]: rule false-positives on aria-label */
   return (
     <Select
       value={selected ?? ""}
@@ -83,10 +84,10 @@ export default function ShopSelector() {
     >
       <SelectTrigger
         data-cy="shop-select"
-        aria-label={String(t("Shop"))}
+        aria-label={String(t("cms.shops.ariaLabel"))}
         className="w-36"
       >
-        <SelectValue placeholder={String(t("Select shop"))} />
+        <SelectValue placeholder={String(t("cms.shops.selectPlaceholder"))} />
       </SelectTrigger>
       <SelectContent>
         {shops.map((s) => (
@@ -97,4 +98,5 @@ export default function ShopSelector() {
       </SelectContent>
     </Select>
   );
+  /* eslint-enable ds/no-raw-font */
 }

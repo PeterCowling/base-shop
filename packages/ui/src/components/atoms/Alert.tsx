@@ -13,7 +13,9 @@ export type AlertTone = "soft" | "solid";
 export interface AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   variant?: AlertVariant;
   tone?: AlertTone;
+  // Prefer `heading`, but also accept legacy `title` for backwards compatibility
   heading?: TranslatableText;
+  title?: TranslatableText | string;
   locale?: Locale;
 }
 
@@ -46,9 +48,11 @@ const TOKEN_BG: Record<AlertVariant, string> = {
 };
 
 export const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant = "info", tone = "soft", heading, locale = "en", children, ...props }, ref) => {
+  ({ className, variant = "info", tone = "soft", heading, title, locale = "en", children, ...props }, ref) => {
     const t = useTranslations() as unknown as (key: string, params?: Record<string, unknown>) => string;
-    const resolvedTitle = heading ? resolveText(heading, locale, t) : undefined;
+    // Support both `heading` and legacy `title`. `heading` takes precedence.
+    const titleSource: TranslatableText | string | undefined = heading ?? title;
+    const resolvedTitle = titleSource ? resolveText(titleSource as TranslatableText, locale, t) : undefined;
     const bgClass = tone === "solid" ? SOLID_BG[variant] : SOFT_BG[variant];
     const fgClass = tone === "solid" ? FG[variant] : "text-fg";
     return (

@@ -30,7 +30,7 @@ export default function PreviewCanvas({
         if (canvasRef) canvasRef.current = node;
       }}
       style={containerStyle}
-      // i18n-exempt: className contains only CSS utility tokens
+      // i18n-exempt -- DS-1023 className contains only CSS utility tokens [ttl=2026-12-31]
       className={cn("relative mx-auto")}
       gap={4}
     >

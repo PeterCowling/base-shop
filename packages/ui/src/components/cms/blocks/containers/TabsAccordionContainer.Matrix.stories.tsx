@@ -7,7 +7,7 @@ import { makeStateStory } from '../../../../story-utils/createStories';
 const meta: Meta<typeof TabsAccordionContainer> = {
   title: 'CMS Blocks/Containers/TabsAccordionContainer/Matrix',
   component: TabsAccordionContainer,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {

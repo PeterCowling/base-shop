@@ -4,4 +4,4 @@ export interface DeployStatusBase {
     instructions?: string;
     error?: string;
 }
-export interface DeployShopResult extends DeployStatusBase {}
+export type DeployShopResult = DeployStatusBase;

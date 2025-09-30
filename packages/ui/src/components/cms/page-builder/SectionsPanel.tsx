@@ -33,7 +33,7 @@ const DATA_CY_SECTIONS_PANEL = "pb-sections-panel";
 
 export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props) {
   const t = useTranslations();
-  const builtInSections = React.useMemo(() => getBuiltInSections(t), [t]);
+  const builtInSections = React.useMemo(() => getBuiltInSections(((k: string) => t(k) as string)), [t]);
   const [items, setItems] = useState<SectionTemplate[]>([]);
   const [q, setQ] = useState("");
   // Tag chips replaced by built-in section groups; keep state for compatibility but unused

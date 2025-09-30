@@ -4,7 +4,7 @@ export function JsonLdScript({ data }: { data: unknown }) {
   const json = JSON.stringify(data);
   return (
     <script
-      /* i18n-exempt — MIME type constant, not user-facing copy */
+      /* i18n-exempt -- ABC-123 MIME type constant, not user-facing copy [ttl=2025-06-30] */
       type="application/ld+json"
       
       dangerouslySetInnerHTML={{ __html: json }}
@@ -110,4 +110,35 @@ export function articleJsonLd({
   if (image) data.image = image;
   if (url) data.url = url;
   return data;
+}
+
+function toIsoDate(input?: string) {
+  if (!input) return undefined;
+  const d = new Date(input);
+  return Number.isNaN(d.getTime()) ? undefined : d.toISOString();
+}
+
+export function blogItemListJsonLd({
+  url,
+  items,
+}: {
+  url?: string;
+  items: Array<{ title: string; url: string; date?: string }>;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    url,
+    itemListElement: items.map((it, idx) => ({
+      "@type": "ListItem",
+      position: idx + 1,
+      url: it.url,
+      item: {
+        "@type": "BlogPosting",
+        headline: it.title,
+        url: it.url,
+        ...(toIsoDate(it.date) ? { datePublished: toIsoDate(it.date) } : {}),
+      },
+    })),
+  } as const;
 }

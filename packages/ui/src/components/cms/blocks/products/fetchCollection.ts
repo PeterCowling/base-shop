@@ -13,7 +13,7 @@ export async function fetchCollection(collectionId: string): Promise<SKU[]> {
       next: { revalidate: 60, tags: ["collections", `collection:${collectionId}`] },
     } as NextFetchInit);
     if (!res.ok) {
-      // i18n-exempt: developer log; not user-facing
+      // i18n-exempt -- DS-1234 [ttl=2025-11-30] — developer log; not user-facing
       console.error(`Failed to fetch collection ${collectionId}:`, res.statusText);
       return [];
     }
@@ -23,7 +23,7 @@ export async function fetchCollection(collectionId: string): Promise<SKU[]> {
       : (data.items ?? data.products ?? []);
     return (products ?? []) as SKU[];
   } catch (err) {
-    // i18n-exempt: developer log; not user-facing
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30] — developer log; not user-facing
     console.error("fetchCollection error", err);
     return [];
   }

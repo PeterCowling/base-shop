@@ -216,3 +216,20 @@ async function updateAggregates(
 }
 
 export type AnalyticsAggregates = Aggregates;
+
+// Try-on helper events
+export async function trackTryOnStarted(shop: string, payload: { productId: string; mode: 'accessory' | 'garment'; idempotencyKey: string }): Promise<void> {
+  await trackEvent(shop, { type: 'TryOnStarted', ...payload });
+}
+export async function trackTryOnPreviewShown(shop: string, payload: { productId: string; mode: 'accessory' | 'garment'; idempotencyKey: string; preprocessMs?: number }): Promise<void> {
+  await trackEvent(shop, { type: 'TryOnPreviewShown', ...payload });
+}
+export async function trackTryOnEnhanced(shop: string, payload: { productId: string; idempotencyKey: string; generateMs?: number }): Promise<void> {
+  await trackEvent(shop, { type: 'TryOnEnhanced', ...payload });
+}
+export async function trackTryOnAddToCart(shop: string, payload: { productId: string; idempotencyKey: string; transform?: Record<string, unknown> }): Promise<void> {
+  await trackEvent(shop, { type: 'TryOnAddToCart', ...payload });
+}
+export async function trackTryOnError(shop: string, payload: { productId?: string; idempotencyKey?: string; code?: string; message?: string }): Promise<void> {
+  await trackEvent(shop, { type: 'TryOnError', ...payload });
+}

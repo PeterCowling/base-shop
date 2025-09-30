@@ -1,5 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+// Minimal i18n shim so visible text matches test expectations
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string) => {
+    const map: Record<string, string> = {
+      "comments.label": "Comments",
+      "comments.optionsAria": "Options",
+    };
+    return map[key] ?? key;
+  },
+}));
+
 import CommentsToolbar from "../comments/CommentsToolbar";
 
 describe("CommentsToolbar", () => {

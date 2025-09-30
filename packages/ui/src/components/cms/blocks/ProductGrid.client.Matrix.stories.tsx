@@ -12,7 +12,7 @@ import { z } from 'zod';
 const meta: Meta<typeof ProductGrid> = {
   title: 'CMS Blocks/ProductGrid/Matrix',
   component: ProductGrid,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: {
     collectionId: 'demo',
     columns: 3,

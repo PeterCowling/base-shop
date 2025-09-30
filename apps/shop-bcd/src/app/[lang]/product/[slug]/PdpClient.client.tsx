@@ -9,11 +9,13 @@ import type { SKU } from "@acme/types";
 import { useState } from "react";
 import Section from "@ui/components/cms/blocks/Section";
 import { useTranslations } from "@i18n/Translations";
+import TryOnPanel from "./TryOnPanel.client";
 
 export default function PdpClient({ product }: { product: SKU }) {
   const t = useTranslations();
   const [size, setSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
+
 
   return (
     <Section contentWidth="wide">
@@ -53,6 +55,8 @@ export default function PdpClient({ product }: { product: SKU }) {
             disabled={!size}
             quantity={quantity}
           />
+
+          <TryOnPanel product={product} />
         </section>
       </div>
     </Section>

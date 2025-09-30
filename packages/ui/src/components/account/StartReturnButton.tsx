@@ -9,6 +9,10 @@ interface Props {
 
 export default function StartReturnButton({ sessionId }: Props) {
   const t = useTranslations();
+  const tf = (key: string, fallback: string) => {
+    const val = t(key) as string;
+    return val === key ? fallback : val;
+  };
   const [loading, setLoading] = useState(false);
   const [tracking, setTracking] = useState<string | null>(null);
   const [labelUrl, setLabelUrl] = useState<string | null>(null);
@@ -63,13 +67,13 @@ export default function StartReturnButton({ sessionId }: Props) {
         onClick={handleClick}
         disabled={loading}
         className="rounded bg-primary px-3 py-1 min-h-10 min-w-10"
-        data-token="--color-primary" // i18n-exempt — label below is translated
+        data-token="--color-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — label below is translated
       >
         <span
           className="text-primary-foreground"
-          data-token="--color-primary-fg" // i18n-exempt — child content uses t()
+          data-token="--color-primary-fg" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — child content uses t()
         >
-          {loading ? t("Processing…") : t("Start return")}
+          {loading ? tf("actions.processing", "Processing…") : tf("returns.start", "Start return")}
         </span>
       </button>
       {labelUrl && (
@@ -80,17 +84,21 @@ export default function StartReturnButton({ sessionId }: Props) {
             rel="noopener noreferrer"
             className="underline inline-block min-h-10 min-w-10"
           >
-            {t("Download label")}
+            {tf("returns.downloadLabel", "Download label")}
           </a>
         </p>
       )}
       {dropOffProvider && (
-        <p className="mt-1 text-sm">{t("Drop-off:")} {dropOffProvider}</p>
+        <p className="mt-1 text-sm">
+          {tf("returns.dropOff", `Drop-off: ${dropOffProvider}`)}
+        </p>
       )}
       {tracking && (
-        <p className="mt-1 text-sm">{t("Tracking:")} {tracking}</p>
+        <p className="mt-1 text-sm">{tf("returns.tracking", `Tracking: ${tracking}`)}</p>
       )}
-      {status && <p className="mt-1 text-sm">{t("Status:")} {status}</p>}
+      {status && (
+        <p className="mt-1 text-sm">{tf("returns.status", `Status: ${status}`)}</p>
+      )}
     </div>
   );
 }

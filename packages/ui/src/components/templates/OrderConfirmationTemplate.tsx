@@ -29,10 +29,7 @@ export function OrderConfirmationTemplate({
   return (
     <div className={cn("space-y-6", className)} {...props}>
       <h2 className="text-xl font-semibold">{t("order.confirmation.title")}</h2>
-      <p>
-        {t("order.confirmation.thankYou")} {t("order.confirmation.reference")}
-        <span className="font-mono"> {orderId}</span>.
-      </p>
+      <p>{t("order.confirmation.thankYouWithRef", { orderId })}</p>
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b text-start">
@@ -48,10 +45,10 @@ export function OrderConfirmationTemplate({
                 {l.sku.title}
                 {l.size && (
                   <span
-                    className="ms-1 text-xs text-muted" // i18n-exempt: style tokens
+                    className="ms-1 text-xs text-muted" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                     data-token="--color-muted"
                   >
-                    {/* i18n-exempt: decorative parentheses for size suffix formatting */}
+                    {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
                     ({l.size})
                   </span>
                 )}

@@ -7,7 +7,7 @@ import { makeStateStory } from '../../../../story-utils/createStories';
 const meta: Meta<typeof MultiColumn> = {
   title: 'CMS Blocks/Containers/MultiColumn/Matrix',
   component: MultiColumn,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {

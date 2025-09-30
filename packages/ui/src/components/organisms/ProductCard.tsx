@@ -25,6 +25,8 @@ export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   width?: string | number;
   /** Optional height */
   height?: string | number;
+  /** Optional min height to normalize tile heights across grids/carousels */
+  minHeight?: string | number;
   /** Optional margin classes */
   margin?: string;
   /** Optional current locale used for inline values */
@@ -42,6 +44,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       padding = "p-4",
       width,
       height,
+      minHeight,
       margin,
       locale,
       className,
@@ -67,7 +70,7 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       <div
         ref={ref}
         /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: Controlled numeric width/height fallback from boxProps; prefer Tailwind classes when possible */
-        style={style}
+        style={minHeight != null ? { ...style, minHeight } : style}
         className={cn(
           "flex flex-col gap-3 rounded-lg border", // i18n-exempt -- DEV-000: CSS utility classes only
           classes,

@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import { WishlistTemplate, type WishlistItem } from "../WishlistTemplate";
+import { TranslationsProvider } from "@acme/i18n";
 import "../../../../../../test/resetNextMocks";
 
 jest.mock("../../atoms/Price", () => ({
@@ -31,11 +32,19 @@ describe("WishlistTemplate", () => {
     const onAdd = jest.fn();
     const onRemove = jest.fn();
     render(
-      <WishlistTemplate
-        items={[item]}
-        onAddToCart={onAdd}
-        onRemove={onRemove}
-      />
+      <TranslationsProvider
+        messages={{
+          "wishlist.title": "Wishlist",
+          "actions.addToCart": "Add to cart",
+          "actions.remove": "Remove",
+        }}
+      >
+        <WishlistTemplate
+          items={[item]}
+          onAddToCart={onAdd}
+          onRemove={onRemove}
+        />
+      </TranslationsProvider>
     );
 
     expect(screen.getByText("Wishlist")).toBeInTheDocument();
@@ -51,7 +60,17 @@ describe("WishlistTemplate", () => {
   });
 
   it("renders without action buttons when callbacks are missing", () => {
-    render(<WishlistTemplate items={[item]} />);
+    render(
+      <TranslationsProvider
+        messages={{
+          "wishlist.title": "Wishlist",
+          "actions.addToCart": "Add to cart",
+          "actions.remove": "Remove",
+        }}
+      >
+        <WishlistTemplate items={[item]} />
+      </TranslationsProvider>
+    );
 
     expect(
       screen.queryByRole("button", { name: /add to cart/i }),
@@ -68,7 +87,17 @@ describe("WishlistTemplate", () => {
       media: [{ url: "/vid.mp4", type: "video" }],
     };
 
-    const { container } = render(<WishlistTemplate items={[videoItem]} />);
+    const { container } = render(
+      <TranslationsProvider
+        messages={{
+          "wishlist.title": "Wishlist",
+          "actions.addToCart": "Add to cart",
+          "actions.remove": "Remove",
+        }}
+      >
+        <WishlistTemplate items={[videoItem]} />
+      </TranslationsProvider>
+    );
     expect(container.querySelector("video")).toBeInTheDocument();
   });
 });

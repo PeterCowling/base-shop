@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof Section> = {
   title: 'CMS Blocks/Section/Matrix',
   component: Section,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture, children: <div className="p-6 text-center">Section Content</div> },
 };
 export default meta;

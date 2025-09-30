@@ -7,6 +7,15 @@ jest.mock("next/navigation", () => ({
   __esModule: true,
   useRouter: () => ({ refresh }),
 }));
+// Minimal i18n mock so tests assert human-readable labels
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string) =>
+    ({
+      "actions.revoke": "Revoke",
+      "actions.revoking": "Revoking...",
+      "account.sessions.errors.revokeFailed": "Failed to revoke session.",
+    } as Record<string, string>)[key] ?? key,
+}));
 
 describe("RevokeSessionButton", () => {
   beforeEach(() => {

@@ -2,17 +2,8 @@
 
 import { runMaintenanceScan } from "@acme/platform-machine/maintenanceScheduler";
 import { logger } from "@platform-core/utils";
-
-export interface FlaggedItem {
-  message: string;
-  shopId: string;
-  sku: string;
-}
-
-// i18n-exempt -- OPS-1203 [ttl=2025-03-31]
-export const MSG_ITEM_NEEDS_RETIREMENT = "item needs retirement";
-// i18n-exempt -- OPS-1203 [ttl=2025-03-31]
-export const MSG_ITEM_NEEDS_MAINTENANCE = "item needs maintenance";
+import type { FlaggedItem } from "./types";
+import { MSG_ITEM_NEEDS_MAINTENANCE, MSG_ITEM_NEEDS_RETIREMENT } from "./constants";
 
 export async function scanForMaintenance(): Promise<FlaggedItem[]> {
   const items: FlaggedItem[] = [];

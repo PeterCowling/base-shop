@@ -78,23 +78,23 @@ export function useSegmentBuilderWizard({
     () => [
       {
         id: "details",
-        label: t("Details") as string,
+        label: t("cms.marketing.segmentWizard.steps.details.label") as string,
         description: t(
-          "Name the segment and provide context for teammates."
+          "cms.marketing.segmentWizard.steps.details.desc"
         ) as string,
       },
       {
         id: "rules",
-        label: t("Rules") as string,
+        label: t("cms.marketing.segmentWizard.steps.rules.label") as string,
         description: t(
-          "Add filters to define the audience membership."
+          "cms.marketing.segmentWizard.steps.rules.desc"
         ) as string,
       },
       {
         id: "review",
-        label: t("Review") as string,
+        label: t("cms.marketing.segmentWizard.steps.review.label") as string,
         description: t(
-          "Validate the output before syncing downstream."
+          "cms.marketing.segmentWizard.steps.review.desc"
         ) as string,
       },
     ],
@@ -153,7 +153,7 @@ export function useSegmentBuilderWizard({
           id: `rule-${prev.rules.length + 1}`,
           attribute: "country",
           operator: "equals",
-          // i18n-exempt — seed example value; not user-facing copy and immediately editable
+          // i18n-exempt -- DS-000 seed example value; not user-facing copy and immediately editable [ttl=2026-01-01]
           value: "United States",
         },
       ],
@@ -172,13 +172,14 @@ export function useSegmentBuilderWizard({
       event.preventDefault();
       const nextErrors: SegmentValidationErrors = {};
       if (!definition.name) {
-        nextErrors.name = t("Segment name is required.") as string;
+        nextErrors.name = t("cms.marketing.segmentWizard.errors.nameRequired") as string;
       }
       setErrors(nextErrors);
       if (Object.keys(nextErrors).length > 0) {
         setToast({
           open: true,
-          message: nextErrors.name ?? ((t("Validation error.") as string) ?? ""),
+          message:
+            nextErrors.name ?? (t("cms.marketing.segmentWizard.errors.validation") as string) ?? "",
         });
         return;
       }
@@ -190,19 +191,20 @@ export function useSegmentBuilderWizard({
   const handleRulesNext = useCallback(() => {
     const nextErrors: SegmentValidationErrors = {};
     if (definition.rules.length === 0) {
-      nextErrors.rules = t("Add at least one rule.") as string;
+      nextErrors.rules = t("cms.marketing.segmentWizard.errors.rulesRequired") as string;
     } else if (
       definition.rules.some(
         (rule) => !rule.attribute || !rule.operator || !rule.value
       )
     ) {
-      nextErrors.rules = t("Complete each rule before continuing.") as string;
+      nextErrors.rules = t("cms.marketing.segmentWizard.errors.completeRules") as string;
     }
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
       setToast({
         open: true,
-        message: nextErrors.rules ?? ((t("Validation error.") as string) ?? ""),
+        message:
+          nextErrors.rules ?? (t("cms.marketing.segmentWizard.errors.validation") as string) ?? "",
       });
       return;
     }
@@ -215,18 +217,23 @@ export function useSegmentBuilderWizard({
   const handleFinish = useCallback(async () => {
     if (status === "submitting") return;
     if (!onSubmit) {
-      setToast({ open: true, message: t("Segment ready to activate.") as string });
+      setToast({
+        open: true,
+        message: t("cms.marketing.segmentWizard.success.readyToActivate") as string,
+      });
       return;
     }
     try {
       setStatus("submitting");
       await onSubmit(definition);
       setStatus("success");
-      setToast({ open: true, message: t("Segment created.") as string });
+      setToast({ open: true, message: t("cms.marketing.segmentWizard.success.created") as string });
     } catch (error) {
       setStatus("error");
       const fallback =
-        error instanceof Error ? error.message : (t("Failed to create segment.") as string);
+        error instanceof Error
+          ? error.message
+          : (t("cms.marketing.segmentWizard.errors.createFailed") as string);
       setToast({ open: true, message: fallback });
     }
   }, [definition, onSubmit, status, t]);

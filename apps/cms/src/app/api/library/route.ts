@@ -47,7 +47,19 @@ export async function POST(req: Request) {
     }
     return NextResponse.json({ ok: true });
   } catch (err) {
-    return NextResponse.json({ error: (err as Error).message }, { status: 400 });
+    type ValidationIssue = import("@acme/platform-core/validation/componentRules").ValidationIssue;
+    type ValidationErrorShape = Error & {
+      code?: string;
+      issues?: ValidationIssue[];
+    };
+    const e = err as ValidationErrorShape;
+    const body: { error: string; issues?: ValidationIssue[] } = {
+      error: e?.message || "Request failed",
+    };
+    if (e && (e.code === "VALIDATION" || e.name === "ValidationError") && Array.isArray(e.issues)) {
+      body.issues = e.issues;
+    }
+    return NextResponse.json(body, { status: 400 });
   }
 }
 

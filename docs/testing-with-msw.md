@@ -63,5 +63,4 @@ Importing `~test/msw/server` ensures stable, short paths from any workspace pack
 
 ## Cypress (note)
 
-Cypress currently imports the same shared server in `cypress/support/index.ts`. If you prefer true browser interception, switch to `msw/browser` with a service worker and initialize it in Cypress; the shared handlers can be reused.
-
+Cypress currently imports the same shared server in `apps/cms/cypress/support/index.ts`. If you prefer true browser interception, switch to `msw/browser` with a service worker and initialize it in Cypress; the shared handlers can be reused.

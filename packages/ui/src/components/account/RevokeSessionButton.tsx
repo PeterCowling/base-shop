@@ -26,7 +26,9 @@ export default function RevokeSessionButton({
       if (result.success) {
         router.refresh();
       } else {
-        setError(result.error ?? (t("Failed to revoke session.") as string));
+        setError(
+          (result.error ? (t(result.error) as string) : t("account.sessions.errors.revokeFailed"))
+        );
       }
     });
   };
@@ -38,14 +40,14 @@ export default function RevokeSessionButton({
         onClick={handleClick}
         disabled={isPending}
         className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
-        data-token="--color-primary" // i18n-exempt — label below is translated
+        data-token="--color-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — label below is translated
       >
-        <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt — child content uses t() */}
-          {isPending ? t("Revoking...") : t("Revoke")}
+        <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — child content uses t() */}
+          {isPending ? t("actions.revoking") : t("actions.revoke")}
         </span>
       </button>
       {error && (
-        <p className="mt-2 text-sm text-danger" data-token="--color-danger"> {/* i18n-exempt — dynamic error message */}
+        <p className="mt-2 text-sm text-danger" data-token="--color-danger"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — dynamic error message */}
           {error}
         </p>
       )}

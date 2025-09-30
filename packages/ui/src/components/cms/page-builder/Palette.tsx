@@ -65,7 +65,7 @@ const Palette = memo(function Palette({ onAdd, onInsertImage: _onInsertImage, on
 
   return (
     // i18n-exempt — non-user-facing data attribute for product tour
-    <div className="flex flex-col gap-4" data-tour="drag-component">
+    <div className="flex flex-col gap-4" data-tour="drag-component"> {/* i18n-exempt -- DS-1023 data attribute, not user-facing [ttl=2026-12-31] */}
       {onInsertPreset && (
         <div>
           <PresetsModal onInsert={onInsertPreset} open={presetOpen} onOpenChange={setPresetOpen} hideTrigger />

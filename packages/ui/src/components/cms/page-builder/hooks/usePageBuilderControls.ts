@@ -8,7 +8,7 @@ import { devicePresets, getLegacyPreset, type DevicePreset, findDevicePresetById
 import { usePreviewDevice } from "../../../../hooks";
 import useViewport from "./useViewport";
 import { Step, CallBackProps, STATUS } from "../PageBuilderTour";
-import useLocalStrings from "./useLocalStrings";
+import { useTranslations } from "@acme/i18n";
 
 interface Params {
   state: HistoryState;
@@ -186,24 +186,24 @@ const usePageBuilderControls = ({ state, dispatch }: Params) => {
   );
 
   const [runTour, setRunTour] = useState(false);
-  const t = useLocalStrings();
+  const t = useTranslations();
   const tourSteps = useMemo<Step[]>(
     () => [
       {
-        target: "[data-tour='palette']", // i18n-exempt: CSS selector, not user-facing copy
-        content: t("tour_palette"),
+        target: "[data-tour='palette']", // i18n-exempt -- PB-0002 CSS selector, not user-facing [ttl=2026-01-01]
+        content: t("pb.tour.palette"),
       },
       {
-        target: "[data-tour='toolbar']", // i18n-exempt: CSS selector, not user-facing copy
-        content: t("tour_toolbar"),
+        target: "[data-tour='toolbar']", // i18n-exempt -- PB-0002 CSS selector, not user-facing [ttl=2026-01-01]
+        content: t("pb.tour.toolbar"),
       },
       {
-        target: "[data-tour='canvas']", // i18n-exempt: CSS selector, not user-facing copy
-        content: t("tour_canvas"),
+        target: "[data-tour='canvas']", // i18n-exempt -- PB-0002 CSS selector, not user-facing [ttl=2026-01-01]
+        content: t("pb.tour.canvas"),
       },
       {
-        target: "[data-tour='sidebar']", // i18n-exempt: CSS selector, not user-facing copy
-        content: t("tour_sidebar"),
+        target: "[data-tour='sidebar']", // i18n-exempt -- PB-0002 CSS selector, not user-facing [ttl=2026-01-01]
+        content: t("pb.tour.sidebar"),
       },
     ],
     [t]

@@ -150,7 +150,6 @@ function PostFormContent({ action, submitLabel, post }: Props) {
           label={t("cms.blog.postForm.productsLabel") as string}
           defaultValue={(post?.products ?? []).join(", ")}
         />
-        {/* eslint-disable ds/no-hardcoded-copy -- CMS-2616 [ttl=2026-01-01] non-UI input type value */}
         <Input
           type="datetime-local"
           name="publishedAt"
@@ -158,7 +157,6 @@ function PostFormContent({ action, submitLabel, post }: Props) {
           value={publishedAt}
           onChange={(e) => setPublishedAt(e.target.value)}
         />
-        {/* eslint-enable ds/no-hardcoded-copy -- CMS-2616 */}
         <div className="space-y-2">
           <RichTextEditor value={content} onChange={setContent} />
         </div>

@@ -32,14 +32,14 @@ export function StepIndicator({
     <div className={cn("space-y-3", className)}>
       <Inline className="justify-between text-sm text-muted-foreground">
         <span>
-          {t("Step {current} of {total}", {
+          {t("pb.tour.stepXofY", {
             current: Math.min(currentStep + 1, steps.length),
             total: steps.length,
           })}
         </span>
-        <span>{t("{percent}% complete", { percent: Math.round(progressValue) })}</span>
+        <span>{t("common.percentComplete", { percent: Math.round(progressValue) })}</span>
       </Inline>
-      <Progress value={progressValue} aria-label={String(t("Progress"))} />
+      <Progress value={progressValue} aria-label={String(t("common.progress"))} />
       <Inline className="gap-2">
         {steps.map((step, index) => {
           const isActive = index === currentStep;
@@ -49,7 +49,7 @@ export function StepIndicator({
               key={step.id}
               variant={isActive ? "warning" : isCompleted ? "success" : "default"}
               className={cn(
-                /* i18n-exempt: utility classes, not user copy */
+                /* i18n-exempt -- DS-000 utility classes, not user copy [ttl=2026-01-01] */
                 "cursor-default text-xs uppercase tracking-wide",
                 onStepSelect && "cursor-pointer"
               )}

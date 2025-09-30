@@ -1,5 +1,10 @@
 module.exports = {
   "^~test/(.*)$": " /test/$1",
+  // Ensure Jest can resolve MSW's node entry in all packages
+  "^msw/node$": " /node_modules/msw/lib/node/index.mjs",
+  // Note: do not hard-map "@mswjs/interceptors" subpaths. Under pnpm these
+  // may be nested within msw's own node_modules, and forcing a root path
+  // breaks resolution. Let Jest/Node resolve them naturally instead.
   "^.+\\.d\\.ts$": " /test/emptyModule.ts",
   // Support ESM-style relative specifiers (./foo.js) in TS sources during Jest runs
   "^(\\.{1,2}/.*)\\.js$": "$1",
@@ -66,6 +71,9 @@ module.exports = {
   "^@acme/platform-core/(.*)$": " /packages/platform-core/src/$1",
   "^@acme/platform-core/contexts/CurrencyContext$":
     " /test/__mocks__/currencyContextMock.tsx",
+  // Map i18n workspace package to source for tests so latest messages are used
+  "^@acme/i18n$": " /packages/i18n/src/index.ts",
+  "^@acme/i18n/(.*)$": " /packages/i18n/src/$1",
   "^@radix-ui/react-dropdown-menu$":
     " /test/__mocks__/@radix-ui/react-dropdown-menu.tsx",
   "^@acme/sanity$": " /packages/sanity/src/index.ts",

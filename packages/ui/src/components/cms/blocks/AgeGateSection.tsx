@@ -13,7 +13,7 @@ export interface AgeGateSectionProps extends React.HTMLAttributes<HTMLDivElement
   rememberDays?: number;
 }
 
-export default function AgeGateSection({ minAge = 18, message, confirmLabel, storageKey = "age-gate", rememberDays = 30, className, ...rest }: AgeGateSectionProps) {
+export default function AgeGateSection({ minAge = 18, message, confirmLabel: _confirmLabel, storageKey = "age-gate", rememberDays = 30, className, ...rest }: AgeGateSectionProps) {
   const t = useTranslations();
   const [allowed, setAllowed] = React.useState<boolean>(false);
   const [shown, setShown] = React.useState<boolean>(false);
@@ -44,14 +44,14 @@ export default function AgeGateSection({ minAge = 18, message, confirmLabel, sto
   if (!shown || allowed) return null;
 
   return (
-    // i18n-exempt — overlay container class composition
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30] — overlay container class composition
     <div className={["fixed inset-0 z-50 bg-black/70", className].filter(Boolean).join(" ") || undefined} {...rest}>
       <Cover center={
         <div className="mx-auto w-full rounded bg-white p-6 text-center shadow-elevation-4">
-          <h2 className="mb-2 text-lg font-semibold">{t("Age confirmation")}</h2>
-          <p className="mb-4 text-sm text-neutral-700">{message ?? t("You must confirm you are of legal age to enter this site.")}</p>
+          <h2 className="mb-2 text-lg font-semibold">{t("ageGate.title")}</h2>
+          <p className="mb-4 text-sm text-neutral-700">{message ?? t("ageGate.message")}</p>
           <Button type="button" onClick={confirm}>
-            {String(confirmLabel ?? t("I am over 18")).replace("18", String(minAge))}
+            {t("ageGate.confirm", { age: minAge })}
           </Button>
         </div>
       } />

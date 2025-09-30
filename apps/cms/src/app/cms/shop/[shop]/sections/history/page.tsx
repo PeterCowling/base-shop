@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/sections/history/page.tsx
 import "server-only";
 import { requirePermission } from "@auth";
-import { useTranslations as getTranslations } from "@acme/i18n";
+import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
 import { listSectionHistory } from "@acme/platform-core/repositories/sections/sections.json.server";
 import type { SectionTemplate } from "@acme/types";
 import Section from "@ui/components/cms/blocks/Section";

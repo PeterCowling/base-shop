@@ -1,0 +1,52 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 3,
+      "startServerCommand": "sh -c 'cd apps/cms && next start -p 3006'",
+      "startServerReadyPattern": "http://localhost:3006",
+      "startServerReadyTimeout": 120000,
+      "url": [
+        "http://localhost:3006/dashboard",
+        "http://localhost:3006/products"
+      ],
+      "puppeteerScript": "scripts/lhci/login.cjs",
+      "settings": {
+        "preset": "mobile",
+        "throttlingMethod": "simulate",
+        "disableStorageReset": true,
+        "blockedUrlPatterns": [
+          "*googletagmanager.com*",
+          "*google-analytics.com*",
+          "*segment.io*",
+          "*fullstory.com*"
+        ],
+        "budgets": [
+          {
+            "path": "/*",
+            "resourceCounts": [
+              { "resourceType": "third-party", "budget": 5 }
+            ],
+            "resourceSizes": [
+              { "resourceType": "script", "budget": 250 },
+              { "resourceType": "image", "budget": 600 }
+            ]
+          }
+        ]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["warn", { "minScore": 0.6 }],
+        "largest-contentful-paint": ["warn", { "maxNumericValue": 4000, "aggregationMethod": "median" }],
+        "total-blocking-time": ["warn", { "maxNumericValue": 300, "aggregationMethod": "median" }],
+        "cumulative-layout-shift": ["warn", { "maxNumericValue": 0.1, "aggregationMethod": "median" }],
+        "resource-summary:script:size": ["warn", { "maxNumericValue": 250000 }],
+        "resource-summary:third-party:count": ["warn", { "maxNumericValue": 5 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage",
+      "githubStatusContextSuffix": "-mobile"
+    }
+  }
+}

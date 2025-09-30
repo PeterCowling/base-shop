@@ -41,11 +41,11 @@ export function FollowUpControls({ values, error, onUpdate }: FollowUpControlsPr
         </div>
         {values.followUpEnabled && (
           <div className="space-y-1">
-            <label htmlFor="follow-up-delay" className="text-sm font-medium"> {/* i18n-exempt: DOM htmlFor attribute, not user-facing copy */}
+            <label htmlFor="follow-up-delay" className="text-sm font-medium"> {/* i18n-exempt -- INTL-204 DOM htmlFor attribute, not user-facing copy [ttl=2026-12-31] */}
               {t("emailScheduling.followUp.delayLabel")}
             </label>
             <Input
-              id="follow-up-delay" // i18n-exempt: DOM id attribute, not user-facing copy
+              id="follow-up-delay" // i18n-exempt -- INTL-204 DOM id attribute, not user-facing copy [ttl=2026-12-31]
               type="number"
               min={1}
               value={String(values.followUpDelayHours)}
@@ -53,13 +53,13 @@ export function FollowUpControls({ values, error, onUpdate }: FollowUpControlsPr
                 onUpdate("followUpDelayHours", Number(event.target.value || 0))
               }
               aria-invalid={error ? "true" : "false"}
-              aria-describedby={error ? "follow-up-delay-error" : undefined} // i18n-exempt: DOM id reference, not user-facing copy
+              aria-describedby={error ? "follow-up-delay-error" : undefined} // i18n-exempt -- INTL-204 DOM id reference, not user-facing copy [ttl=2026-12-31]
             />
             {error && (
               <p
-                id="follow-up-delay-error" // i18n-exempt: DOM id attribute, not user-facing copy
+                id="follow-up-delay-error" // i18n-exempt -- INTL-204 DOM id attribute, not user-facing copy [ttl=2026-12-31]
                 className="text-danger text-xs"
-                data-token="--color-danger" // i18n-exempt: design token identifier, not user-facing copy
+                data-token="--color-danger" // i18n-exempt -- INTL-204 design token identifier, not user-facing copy [ttl=2026-12-31]
               >
                 {error}
               </p>

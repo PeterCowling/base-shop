@@ -63,7 +63,10 @@ export function CampaignAudienceSection({
           )}
         </div>
 
-        <fieldset className="space-y-2">
+        <fieldset
+          className="space-y-2"
+          aria-label={String(t("campaign.channels.legend"))}
+        >
           <legend className="text-sm font-medium">{t("campaign.channels.legend")}</legend>
           <Grid gap={3} cols={1} className="sm:grid-cols-2">
             {campaignChannelOptions.map((channel) => {

@@ -2,6 +2,8 @@ import { useCallback, useMemo } from "react";
 import type { PageComponent } from "@acme/types";
 import { ulid } from "ulid";
 import { saveLibrary } from "../libraryStore";
+import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+import { rootPlacementOptions } from "@acme/platform-core/validation/options";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
 import useLocalStrings from "./useLocalStrings";
@@ -66,6 +68,13 @@ const useLibraryActions = ({ components, selectedIds }: Args) => {
     const tagsRaw = window.prompt(t("prompt_add_tags"), "") || "";
     const tags = tagsRaw.split(/[\,\n]/).map((t) => t.trim()).filter(Boolean);
     const thumbnail = createPlaceholderThumbnail(label);
+
+    // Preflight validation: structural + placement as top-level templates (ROOT)
+    const pre = validateTemplateCreation(out, rootPlacementOptions());
+    if (pre.ok === false) {
+      window.alert([t("validation_failed"), ...(pre.errors || [])].filter(Boolean).join("\n"));
+      return;
+    }
 
     const item = out.length === 1
       ? { id: ulid(), label, template: out[0], createdAt: Date.now(), tags, thumbnail }

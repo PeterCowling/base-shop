@@ -14,14 +14,15 @@ interface Props {
 
 export default function StepPage({ stepId }: Props) {
   const t = useTranslations();
-  const stepMap = getStepsMap(t);
+  const tFunc = t as unknown as (key: string, vars?: Record<string, unknown>) => string;
+  const stepMap = getStepsMap(tFunc);
   const step = stepMap[stepId];
   const { state } = useConfigurator();
   if (!step) {
     return null;
   }
 
-  const list = getSteps(t);
+  const list = getSteps(tFunc);
   const idx = stepIndex[stepId] ?? 0;
   const prev = list[idx - 1];
   const next = list[idx + 1];
@@ -36,7 +37,7 @@ export default function StepPage({ stepId }: Props) {
     );
 
   const status = state.completed?.[step.id] ?? "pending";
-  const trackMeta = step.track ? getStepTrackMeta(t)[step.track] : undefined;
+  const trackMeta = step.track ? getStepTrackMeta(tFunc)[step.track] : undefined;
 
   return (
     <div className="space-y-8">
@@ -96,7 +97,7 @@ export default function StepPage({ stepId }: Props) {
             <Alert
               variant="warning"
               tone="soft"
-              heading={t("cms.configurator.step.recommendedFirst")}
+              heading={String(t("cms.configurator.step.recommendedFirst"))}
             >
               <ul className="mt-1 list-disc pl-5">
                 {pendingRecommendations.map((recommendedStep) => (

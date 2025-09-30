@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof SocialLinks> = {
   title: 'CMS Blocks/SocialLinks/Matrix',
   component: SocialLinks,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

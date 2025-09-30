@@ -8,6 +8,7 @@ import {
   getDiscountPreview,
   type DiscountPreviewData,
 } from "./types";
+import { useTranslations } from "@acme/i18n";
 
 const meta: Meta<typeof DiscountForm> = {
   title: "CMS/Marketing/Discounts",
@@ -22,8 +23,9 @@ type Story = StoryObj<typeof DiscountForm>;
 export const FormWithPreview: Story = {
   render: () => {
     function Example() {
+      const t = useTranslations();
       const [preview, setPreview] = useState<DiscountPreviewData>(
-        getDiscountPreview(defaultDiscountValues)
+        getDiscountPreview(defaultDiscountValues, t)
       );
       return (
         <div className="grid gap-6 lg:grid-cols-2">
@@ -47,7 +49,13 @@ export const FormWithPreview: Story = {
 };
 
 export const Summary: Story = {
-  render: () => (
-    <DiscountSummaryCard data={getDiscountPreview(defaultDiscountValues)} />
-  ),
+  render: () => {
+    function Example() {
+      const t = useTranslations();
+      return (
+        <DiscountSummaryCard data={getDiscountPreview(defaultDiscountValues, t)} />
+      );
+    }
+    return <Example />;
+  },
 };

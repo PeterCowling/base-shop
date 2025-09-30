@@ -26,7 +26,7 @@ export function PaymentMethodSelector({
 }: PaymentMethodSelectorProps) {
   const group = React.useId();
   return (
-    <div className={cn("flex flex-col gap-2", /* i18n-exempt: class names */ className)} {...props}>
+    <div className={cn("flex flex-col gap-2", /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */ className)} {...props}>
       {methods.map((m) => (
         <label key={m.value} className="flex cursor-pointer items-center gap-2 min-h-10">
           <input

@@ -21,14 +21,23 @@ export const RatingSummary = React.forwardRef<
   return (
     <div
       ref={ref}
-      className={cn("flex items-center gap-2", /* i18n-exempt: class names */ className)}
+      className={cn("flex items-center gap-2", /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */ className)}
       {...props}
     >
       <RatingStars rating={rating} />
       <span className="text-sm">
         {rounded}
         {typeof count === "number" && (
-          <span className="text-muted">{t("({count})", { count })}</span>
+          <span className="text-muted">
+            {(() => {
+              const formatted = (t as unknown as (key: string, params?: Record<string, unknown>) => string)(
+                "ratings.count",
+                { count }
+              );
+              // Fallback to simple count in parentheses when i18n is not configured
+              return formatted && formatted !== "ratings.count" ? formatted : `(${count})`;
+            })()}
+          </span>
         )}
       </span>
     </div>

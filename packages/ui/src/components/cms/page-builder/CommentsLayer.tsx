@@ -14,6 +14,7 @@ import CommentsToolbar from "./comments/CommentsToolbar";
 import CommentsPinsLayer from "./comments/CommentsPinsLayer";
 import UndoToast from "./comments/UndoToast";
 import useAltClickCreate from "./comments/useAltClickCreate";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   canvasRef: React.RefObject<HTMLDivElement | null>;
@@ -25,6 +26,7 @@ interface Props {
 }
 
 export default function CommentsLayer({ canvasRef, components, shop, pageId, selectedIds, onSelectIds }: Props) {
+  const t = useTranslations();
   const [threads, setThreads] = useState<Thread[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -64,8 +66,7 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
           await load();
         }
       } catch (error) {
-        // i18n-exempt: developer log message
-        console.error("Failed to patch comment thread", error);
+        console.error(/* i18n-exempt -- DEV-LOG-003 [ttl=2026-01-01] */ "cms.builder.comments.patchThreadFailed", error);
       }
     },
     [patchThread, load]
@@ -174,8 +175,7 @@ export default function CommentsLayer({ canvasRef, components, shop, pageId, sel
     const id = selectedIds[0];
     if (!id) return;
     // Minimal UX: prompt for text
-    // i18n-exempt: prompt copy for internal tool
-    const text = window.prompt("Comment for selected component:");
+    const text = window.prompt(t("cms.builder.comments.prompt.selectedComponent"));
     if (!text || !text.trim()) return;
     await createThread(id, text.trim());
     await load();

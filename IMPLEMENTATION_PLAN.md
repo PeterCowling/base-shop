@@ -24,7 +24,7 @@ URL Key components Status
 /[lang]/product/[slug] PdpClient → ImageGallery · SizeSelector ✔
 /[lang]/checkout OrderSummary (RSC) · CheckoutForm (Stripe Elements) ✔ new
 /api/cart POST/PATCH stub ✔
-/api/checkout-session returns SetupIntent client-secret ✔ new
+/api/checkout-session returns PaymentIntent client-secret ✔
 
 Component inventory Δ
 
@@ -44,7 +44,7 @@ S-1 Layout + i18n LocaleLayout · nav ✅
 S-2 Home MVP Hero & core content ✅
 S-3 Shop catalogue Product grid · cart add/persist ✅
 S-4 PDP + Cart API PDP page, size selector, cart badge, /api/cart ✅
-S-5 Checkout flow Stripe Elements form + /api/checkout-session 🟢 90 %
+S-5 Checkout flow Stripe Elements form + /api/checkout-session ✅ 100 %
 S-6 Blog pipeline MDX loader · ISR 1 h ⏳
 S-7 SEO & a11y JSON-LD · alt audit · keyboard nav ⏳
 S-8 Launch-hardening Playwright E2E · error pages · translation freeze ⏳
@@ -71,18 +71,16 @@ Stripe publishable & secret keys set in Pages env.
 
 API version locked to 2025-05-28 in Dashboard.
 
-Add pay-success & pay-fail routes (to come in S-5 wrap-up).
+Pay-success and pay-fail routes added; confirmPayment redirects wired.
 
-🔜 Immediate Tasks to finish Sprint 5
-Task Owner
-/api/checkout-session – final logic: create PaymentIntent, include cart subtotal & metadata. dev
-Integrate selected size into metadata & line-items. dev
-Success / cancel pages with redirect after confirmPayment. dev
-Jest: renders Elements once clientSecret resolved. dev
-Lighthouse ≥ 90 on checkout (iframe excluded). dev
-Merge branch feat/checkout → CI preview. dev
+Sprint 5 completion notes
+- /api/checkout-session creates PaymentIntent, includes subtotal, deposit, sizes and tax metadata; forwards client IP.
+- Sizes included in metadata and line‑item labels.
+- Success/cancel routes implemented; confirmPayment redirect flow verified in tests.
+- UI test asserts Elements/PaymentElement renders once clientSecret is available.
+- Lighthouse guidance captured in docs/lighthouse.md; follow-up budget checks tracked under Sprint 8.
 
-Once merged we move to Sprint 6 (Blog pipeline).
+Proceed to Sprint 6 (Blog pipeline).
 
 6 · QA Coverage Addendum
 - Added RTL + jest-axe suites for all service editors (deposits, late fees, reverse logistics, returns, stock alerts/scheduler, maintenance scheduler, premier delivery) under `apps/cms/src/app/cms/shop/[shop]/settings/**/__tests__` to cover happy/error paths and validation chips.

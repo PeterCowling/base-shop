@@ -77,6 +77,22 @@ describe("library route", () => {
       expect(saveLibraryItem).toHaveBeenCalledWith("s1", items[0]);
       expect(saveLibraryItem).toHaveBeenCalledWith("s1", items[1]);
     });
+
+    it("400 includes validation issues payload", async () => {
+      (saveLibraryItem as unknown as jest.Mock).mockImplementationOnce(() => {
+        const err: any = new Error("Component validation failed: oops");
+        err.code = "VALIDATION";
+        err.issues = [{ path: [0, "widthMobile"], message: "Avoid 100vw" }];
+        throw err;
+      });
+      const item = { id: "1", label: "X", createdAt: Date.now() };
+      const res = await POST(new Request("http://test/api/library?shop=s1", { method: "POST", body: JSON.stringify({ item }) }));
+      expect(res.status).toBe(400);
+      const json = await res.json();
+      expect(json.error).toContain("Component validation failed");
+      expect(Array.isArray(json.issues)).toBe(true);
+      expect(json.issues[0].path).toBeDefined();
+    });
   });
 
   describe("PATCH", () => {

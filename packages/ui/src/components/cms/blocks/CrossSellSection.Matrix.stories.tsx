@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof CrossSellSection> = {
   title: 'CMS Blocks/CrossSellSection/Matrix',
   component: CrossSellSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

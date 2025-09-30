@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "@acme/i18n";
 
 function getCookie(name: string): string | null {
   if (typeof document === "undefined") return null;
@@ -16,6 +17,7 @@ function setCookie(name: string, value: string, days = 180) {
 }
 
 export default function ConsentSection() {
+  const t = useTranslations();
   const [shown, setShown] = React.useState(false);
   React.useEffect(() => {
     const consent = getCookie("consent.analytics");
@@ -26,24 +28,21 @@ export default function ConsentSection() {
     <div className="relative">
       <div className="sticky inset-x-0 bottom-0 bg-neutral-900 p-4 text-white w-full">
         <div className="mx-auto flex items-center justify-between gap-4">
-          {/* i18n-exempt: short compliance notice */}
-          <p className="text-sm">We use cookies to analyze traffic (GA4). You can change your choice anytime.</p>
+          <p className="text-sm">{t("consent.message")}</p>
           <div className="flex gap-2">
             <button
               type="button"
               className="rounded bg-white px-3 py-1 text-sm text-black inline-flex items-center justify-center min-h-10 min-w-10"
               onClick={() => { setCookie("consent.analytics", "false"); setShown(false); }}
             >
-              {/* i18n-exempt: button label */}
-              Reject
+              {t("consent.reject")}
             </button>
             <button
               type="button"
               className="rounded bg-green-400 px-3 py-1 text-sm text-black inline-flex items-center justify-center min-h-10 min-w-10"
               onClick={() => { setCookie("consent.analytics", "true"); setShown(false); }}
             >
-              {/* i18n-exempt: button label */}
-              Accept
+              {t("consent.accept")}
             </button>
           </div>
         </div>

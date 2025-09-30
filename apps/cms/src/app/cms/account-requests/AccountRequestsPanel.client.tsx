@@ -138,11 +138,9 @@ export default function AccountRequestsPanel({
   );
 
   const toastClassName = useMemo(() => {
-    /* eslint-disable ds/no-hardcoded-copy -- CMS-2615 [ttl=2026-01-01]: class token string, not user-facing copy */
     const v = toast.status === "error"
-      ? "bg-destructive text-destructive-foreground"
-      : "bg-success text-success-fg";
-    /* eslint-enable ds/no-hardcoded-copy -- CMS-2615 */
+      ? "bg-destructive text-destructive-foreground" // i18n-exempt -- CMS-2615: class token string; not user copy [ttl=2026-01-01]
+      : "bg-success text-success-fg"; // i18n-exempt -- CMS-2615: class token string; not user copy [ttl=2026-01-01]
     return v;
   }, [toast.status]);
 
@@ -250,17 +248,15 @@ export default function AccountRequestsPanel({
                     : (t("cms.accounts.requests.actions.approveRequest") as string)}
                 </Button>
                 <Button variant="outline" asChild className="flex-1">
-                  {/* eslint-disable ds/min-tap-size -- CMS-2619 [ttl=2026-01-01]: tokenized min size applied; anchor fills Button */}
                   <a
                     href={`mailto:${request.email}`}
-                    className="block w-full min-h-10 min-w-10 text-center inline-flex items-center justify-center"
+                    className="block w-full min-h-11 min-w-11 text-center inline-flex items-center justify-center"
                     aria-label={t("cms.accounts.requests.aria.emailUser", {
                       name: request.name,
                     }) as string}
                   >
                     {t("cms.accounts.requests.actions.emailRequester")}
                   </a>
-                  {/* eslint-enable ds/min-tap-size -- CMS-2619 */}
                 </Button>
               </div>
             </CardContent>

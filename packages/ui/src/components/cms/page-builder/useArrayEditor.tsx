@@ -53,8 +53,9 @@ export function useArrayEditor<T>(
                         onChange({ [prop]: next } as Partial<T>);
                       }}
                     >
-                      <Button type="button" variant="outline">
-                        {t("cms.select")}
+                      {/* Use asChild to avoid nested <button> inside DialogTrigger */}
+                      <Button type="button" variant="outline" asChild>
+                        <span>Pick</span>
                       </Button>
                     </ImagePicker>
                   )}

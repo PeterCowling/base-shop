@@ -75,8 +75,9 @@ export function useConfiguratorDashboardState(): {
 
   const [markStepComplete] = useConfiguratorPersistence(state, setState);
   const t = useTranslations();
-  const steps = useMemo(() => getSteps(t), [t]);
-  const stepMap = useMemo(() => getStepsMap(t), [t]);
+  const tFunc = t as unknown as (key: string, vars?: Record<string, unknown>) => string;
+  const steps = useMemo(() => getSteps(tFunc), [tFunc]);
+  const stepMap = useMemo(() => getStepsMap(tFunc), [tFunc]);
 
   // Avoid progress update loops by only updating when values actually change
   const lastProgressRef = useRef<ReturnType<typeof calculateConfiguratorProgress> | undefined>(undefined);
@@ -162,8 +163,8 @@ export function useConfiguratorDashboardState(): {
   );
 
   const trackProgress: TrackProgressItem[] = useMemo(
-    () => buildTrackProgress(steps, state.completed, t),
-    [steps, state.completed, t]
+    () => buildTrackProgress(steps, state.completed, tFunc),
+    [steps, state.completed, tFunc]
   );
 
   const failedStepLink = useMemo<LaunchErrorLink | null>(

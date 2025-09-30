@@ -7,7 +7,8 @@ jest.mock("../../../atoms/shadcn", () => {
   return {
     __esModule: true,
     Button: (props: any) => <button {...props} />,
-    Input: ({ label, ...props }: any) => {
+    // Omit non-DOM props like labelSuffix to avoid React unknown-prop warnings
+    Input: ({ label, labelSuffix: _labelSuffix, ...props }: any) => {
       const inputId = `in-${id++}`;
       return (
         <div>

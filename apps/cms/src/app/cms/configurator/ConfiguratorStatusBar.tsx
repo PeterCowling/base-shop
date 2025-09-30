@@ -25,15 +25,13 @@ export default function ConfiguratorStatusBar(): React.JSX.Element {
   return (
     <div className="sticky bottom-0 inset-x-0 flex flex-wrap items-center justify-between gap-2 bg-muted py-2 px-4 text-sm">
       <Inline alignY="center">{status}</Inline>
-      {/* eslint-disable ds/min-tap-size -- CMS-2620 [ttl=2026-01-01] tokenized size present; rule misfire */}
       <button
         type="button"
         onClick={replay}
-        className="shrink-0 underline inline-flex items-center justify-center min-h-10 min-w-10 size-10"
+        className="shrink-0 underline inline-flex items-center justify-center min-h-11 min-w-11 size-11"
       >
         {t("cms.configurator.replayTour")}
       </button>
-      {/* eslint-enable ds/min-tap-size -- CMS-2620 */}
     </div>
   );
 }

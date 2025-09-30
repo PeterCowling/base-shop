@@ -19,12 +19,12 @@ export const StockStatus = React.forwardRef<HTMLSpanElement, StockStatusProps>(
     const token = inStock ? "--color-success" : "--color-danger";
     const inCopy = (labelInStock ?? (t("stock.inStock") as string));
     const outCopy = (labelOutOfStock ?? (t("stock.outOfStock") as string));
-    const baseClass = "text-sm font-medium"; // i18n-exempt: CSS utility classes, not user copy
+    const baseClass = "text-sm font-medium"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility classes, not user copy
     return (
       <span
         ref={ref}
         className={cn(baseClass, color, className)}
-        // i18n-exempt — design token attribute, not user copy
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — design token attribute, not user copy
         data-token={token}
         {...props}
       >

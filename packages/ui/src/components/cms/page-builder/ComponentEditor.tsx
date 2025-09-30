@@ -18,6 +18,13 @@ import LottieControls from "./panels/LottieControls";
 import StylePanel from "./StylePanel";
 import useComponentInputs from "./useComponentInputs";
 import useComponentResize from "./useComponentResize";
+import { resolveIssueLabel } from "./utils/issuePath";
+import { useTranslations } from "@acme/i18n";
+
+interface Issue {
+  path: Array<string | number>;
+  message: string;
+}
 
 interface Props {
   component: PageComponent | null;
@@ -43,16 +50,49 @@ interface Props {
   editor?: HistoryState["editor"];
   onUpdateEditor?: (patch: Partial<EditorFlags>) => void;
   onUpdateEditorForId?: (id: string, patch: Partial<EditorFlags>) => void;
+  issues?: Issue[];
 }
 
-function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor, onUpdateEditorForId }: Props) {
+function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor, onUpdateEditorForId, issues }: Props) {
   const { handleInput } = useComponentInputs(onChange);
   const { handleResize, handleFullSize } = useComponentResize(onResize);
+  const t = useTranslations();
 
   if (!component) return null;
 
+  // Build a set of top-level error keys to highlight inputs in panels
+  const errorKeys = (() => {
+    const s = new Set<string>();
+    if (!issues) return s;
+    for (const i of issues) {
+      const path = Array.isArray(i.path) ? i.path : [];
+      // Top-level keys we can highlight directly (ignore nested children for now)
+      const hasChildren = path.includes("children");
+      if (!hasChildren && typeof path[path.length - 1] === "string") s.add(String(path[path.length - 1]));
+    }
+    return s;
+  })();
+
   return (
-    <Accordion
+    <>
+      {Array.isArray(issues) && issues.length > 0 && (
+        <div className="mb-3 rounded border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+          <div className="mb-1 font-semibold">{t("cms.builder.validation.issues")}</div>
+          <ul className="list-disc pl-5 space-y-0.5">
+            {issues.map((i) => {
+              const resolved = resolveIssueLabel(i, t);
+              const key = `${Array.isArray(i.path) ? i.path.join(".") : ""}:${i.message}`;
+              return (
+                <li key={key}>
+                  <span className="font-medium">{resolved.panel}:</span> {i.message}
+                  <span className="ms-1 text-xs text-red-700/80">{t("cms.builder.validation.fieldLabel", { field: resolved.field })}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+      <Accordion
       type="multiple"
       // Keep most panels open by default for quicker access, but start
       // Content closed so tests and users can intentionally open it.
@@ -61,7 +101,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
     >
       <AccordionItem value="layout" className="border-none">
         <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-          Layout
+          {t("cms.builder.panel.layout")}
         </AccordionTrigger>
         <AccordionContent className="pt-3">
           <LayoutPanel
@@ -73,12 +113,13 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
             onUpdateEditor={onUpdateEditor}
             editorMap={editor}
             updateEditorForId={onUpdateEditorForId}
+            errorKeys={errorKeys}
           />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="content" className="border-none">
         <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-          Content
+          {t("cms.builder.panel.content")}
         </AccordionTrigger>
         <AccordionContent className="pt-3">
           <ContentPanel
@@ -90,7 +131,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
       </AccordionItem>
       <AccordionItem value="style" className="border-none">
         <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-          Style
+          {t("cms.builder.panel.style")}
         </AccordionTrigger>
         <AccordionContent className="pt-3">
           <StylePanel component={component} handleInput={handleInput} />
@@ -98,7 +139,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
       </AccordionItem>
       <AccordionItem value="interactions" className="border-none">
         <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-          Interactions
+          {t("cms.builder.interactions")}
         </AccordionTrigger>
         <AccordionContent className="pt-3">
           <InteractionsPanel
@@ -109,7 +150,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
       </AccordionItem>
       <AccordionItem value="timeline" className="border-none">
         <AccordionTrigger className="rounded-md border border-border-3 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-          Timeline
+          {t("cms.builder.timeline")}
         </AccordionTrigger>
         <AccordionContent className="pt-3">
           <TimelinePanel component={component} handleInput={handleInput} />
@@ -117,13 +158,14 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
       </AccordionItem>
       <AccordionItem value="lottie" className="border-none">
         <AccordionTrigger className="rounded-md border border-border/60 bg-muted/30 px-4 py-2 text-start text-sm font-semibold">
-          Lottie
+          {t("cms.builder.panel.lottie")}
         </AccordionTrigger>
         <AccordionContent className="pt-3">
           <LottieControls component={component} handleInput={handleInput} />
         </AccordionContent>
       </AccordionItem>
-    </Accordion>
+      </Accordion>
+    </>
   );
 }
 

@@ -34,7 +34,8 @@ export function useLaunchShop(
   const [failedStep, setFailedStep] = useState<string | null>(null);
 
   const missingRequired = useMemo(
-    () => getRequiredSteps(t).filter((s) => state?.completed?.[s.id] !== "complete"),
+    () => getRequiredSteps(t as unknown as (key: string, vars?: Record<string, unknown>) => string)
+      .filter((s) => state?.completed?.[s.id] !== "complete"),
     [state?.completed, t]
   );
   const allRequiredDone = missingRequired.length === 0;

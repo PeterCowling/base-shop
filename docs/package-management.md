@@ -1,7 +1,7 @@
 # Package Management
 
 ## Workspace layout
-The monorepo uses **pnpm workspaces** to organize applications and shared packages. Patterns in `pnpm-workspace.yaml` include `apps/**` for app sources, `apps-script`, `packages/**`, and special entries such as `packages/platform-machine` and `packages/plugins/sanity`.
+The monorepo uses **pnpm workspaces** to organize applications and shared packages. Patterns in `pnpm-workspace.yaml` include `apps/**` for app sources, `packages/**`, and special entries such as `packages/platform-machine` and `packages/plugins/sanity`.
 
 ## Turbo tasks
 [Turborepo](https://turbo.build) coordinates common tasks across the workspace. The `turbo.json` config defines pipelines for `dev`, `build`, `lint`, and `test`, enabling caching and dependency-aware execution.

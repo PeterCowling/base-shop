@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof PromoTilesSection> = {
   title: 'CMS Blocks/PromoTilesSection/Matrix',
   component: PromoTilesSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Promotional tiles grid with images, captions and optional badges.' } } },
 };

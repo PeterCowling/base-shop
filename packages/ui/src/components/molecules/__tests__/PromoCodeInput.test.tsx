@@ -35,6 +35,7 @@ describe("PromoCodeInput", () => {
 
     rerender(<PromoCodeInput loading />);
     expect(button).toBeDisabled();
-    expect(button).toHaveTextContent("Applying...");
+    // Accept both three dots and single ellipsis
+    expect(button.textContent || "").toMatch(/Applying(\.{3}|…)/);
   });
 });

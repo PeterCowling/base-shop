@@ -12,11 +12,11 @@ export interface ButtonProps {
   size?: "sm" | "md" | "lg";
 }
 
-// i18n-exempt: CSS utility tokens, not user-facing copy
+// i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility tokens, not user-facing copy
 const sizeClasses: Record<NonNullable<ButtonProps["size"]>, string> = {
-  sm: "px-2 py-1 text-sm", // i18n-exempt: utility classes
-  md: "px-4 py-2", // i18n-exempt: utility classes
-  lg: "px-6 py-3 text-lg", // i18n-exempt: utility classes
+  sm: "px-2 py-1 text-sm", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+  md: "px-4 py-2", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+  lg: "px-6 py-3 text-lg", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 };
 
 export default function Button(props: ButtonProps) {
@@ -26,7 +26,7 @@ export default function Button(props: ButtonProps) {
     size = "md",
     ...rest
   } = props;
-  const label = props.label ?? t("Button");
+  const label = props.label ?? t("actions.button");
   const href = props.href ?? "#"; // i18n-exempt: non-copy URL stub for previews
   const key = size as keyof typeof sizeClasses;
   const cls = sizeClasses[key];

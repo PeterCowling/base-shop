@@ -31,7 +31,7 @@ export function PreviewPanel<TData>({
   const content = renderPreview?.(data);
   const fallbackPreview = data
     ? JSON.stringify(data, null, 2)
-    : String(emptyLabel ?? t("Preview not available"));
+    : String(emptyLabel ?? t("cms.preview.notAvailable"));
 
   const previewBody = content ? (
     <div className="p-4">{content}</div>
@@ -39,7 +39,7 @@ export function PreviewPanel<TData>({
     <CodeBlock
       code={fallbackPreview}
       className="p-4"
-      /* i18n-exempt: presentation-only class string */
+      /* i18n-exempt -- DS-000 presentation-only class string [ttl=2026-01-01] */
       preClassName="bg-transparent text-xs text-muted-foreground border-none p-0 pe-12"
     />
   );

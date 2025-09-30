@@ -11,7 +11,7 @@ import type { SKU } from '@acme/types';
 const meta: Meta<typeof ProductBundle> = {
   title: 'CMS Blocks/ProductBundle/Matrix',
   component: ProductBundle,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { discount: fixture.discount, quantity: fixture.quantity, skus: (PRODUCTS as SKU[]).slice(0, 2) },
   parameters: { docs: { description: { component: 'Bundle display showing combined price with optional percentage discount.' } } },
 };

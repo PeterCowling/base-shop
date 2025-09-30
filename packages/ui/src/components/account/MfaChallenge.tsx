@@ -3,8 +3,7 @@
 // packages/ui/src/components/account/MfaChallenge.tsx
 import { useState } from "react";
 import { getCsrfToken } from "@acme/shared-utils";
-// Minimal local translator (no runtime change)
-const t = (s: string) => s;
+import { useTranslations } from "@acme/i18n";
 
 export interface MfaChallengeProps {
   onSuccess?: () => void;
@@ -12,6 +11,12 @@ export interface MfaChallengeProps {
 }
 
 export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProps) {
+  const t = useTranslations();
+  // Provide readable fallbacks when translations are not loaded (e.g. plain Jest renders)
+  const tf = (key: string, fallback: string) => {
+    const val = t(key) as string;
+    return val === key ? fallback : val;
+  };
   const [token, setToken] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -32,7 +37,7 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
       setError(null);
       onSuccess?.();
     } else {
-      setError(t("Invalid code"));
+      setError(tf("account.mfa.error.invalid", "Invalid code"));
     }
   };
 
@@ -42,19 +47,19 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
         value={token}
         onChange={(e) => setToken(e.target.value)}
         className="rounded border p-2"
-        placeholder={t("Enter MFA code")}
+        placeholder={tf("account.mfa.input.placeholder", "Enter MFA code")}
       />
       <button
         type="submit"
         className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
-        data-token="--color-primary" // i18n-exempt — DS token attribute
+        data-token="--color-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute
       >
-        <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt — DS token attribute */}
-          {t("Verify")}
+        <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute */}
+          {tf("actions.verify", "Verify")}
         </span>
       </button>
       {error && (
-        <p className="text-danger" data-token="--color-danger"> {/* i18n-exempt — DS token attribute */}
+        <p className="text-danger" data-token="--color-danger"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute */}
           {error}
         </p>
       )}

@@ -73,9 +73,16 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
         onDrop(e);
       }}
       onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
+        // For accessibility:
+        // - Space should activate the control explicitly here.
+        // - Enter generally triggers a click on interactive elements; don't
+        //   call openFileDialog here to avoid double-invocation with onClick.
+        if (e.key === " ") {
           e.preventDefault();
           openFileDialog();
+        }
+        if (e.key === "Enter") {
+          e.preventDefault();
         }
       }}
       className={cn(
@@ -88,6 +95,8 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
         type="file"
         // i18n-exempt -- DEV-000: attribute not user-facing
         accept={ACCEPT}
+        // i18n-exempt -- DEV-000: hint camera capture on mobile devices
+        capture="environment"
         className="hidden" // i18n-exempt -- DEV-000: class names
         onChange={onFileChange}
       />

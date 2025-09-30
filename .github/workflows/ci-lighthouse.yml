@@ -1,0 +1,48 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: lhci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config: [lighthouserc.json, lighthouserc.desktop.json, lighthouserc.shop.json, lighthouserc.shop.desktop.json]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - name: Use Node LTS (20.x)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Ensure puppeteer is available
+        run: pnpm add -Dw puppeteer
+
+      - name: Run LHCI (mobile/desktop via matrix)
+        env:
+          LHCI_USERNAME: ${{ secrets.LHCI_USERNAME }}
+          LHCI_PASSWORD: ${{ secrets.LHCI_PASSWORD }}
+        run: pnpm dlx @lhci/cli@latest autorun --config=${{ matrix.config }} --upload.target=temporary-public-storage
+
+      - name: Upload LHCI artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: lhci-${{ matrix.config }}
+          path: .lighthouseci/**

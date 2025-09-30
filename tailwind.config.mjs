@@ -188,7 +188,7 @@ const config = {
     "!**/*.test.{ts,tsx}",
     "!**/*.spec.{ts,tsx}",
     "!./packages/eslint-plugin-ds/**",
-    ".storybook/**/*.{ts,tsx,mdx}",
+    "apps/storybook/.storybook/**/*.{ts,tsx,mdx}",
     "!**/node_modules",
     "!**/dist",
     "!**/.next",

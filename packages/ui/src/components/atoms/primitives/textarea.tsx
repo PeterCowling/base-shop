@@ -41,8 +41,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     const hasError = Boolean(error); // avoids 0 | 0n union in type-inference
 
     const baseClasses = cn(
-      "min-h-24 w-full rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground", // i18n-exempt: class names
-      "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50", // i18n-exempt: class names
+      "min-h-[6rem] w-full rounded-md border border-input bg-input px-3 py-2 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      "focus-visible:outline-none focus-visible:ring-[var(--ring-width)] focus-visible:ring-offset-[var(--ring-offset-width)] focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       floatingLabel && "peer pt-5",
       hasError && "border-danger",
       className
@@ -85,8 +85,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
               <label
                 htmlFor={textareaId}
                 className={cn(
-                  "text-muted-foreground pointer-events-none absolute top-2 ms-3 transition-all", // i18n-exempt: class names
-                  (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt: class names
+                  "text-muted-foreground pointer-events-none absolute top-2 left-3 transition-all", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                  (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                 )}
               >
                 {label}
@@ -98,7 +98,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             {label && (
               <label
                 htmlFor={textareaId}
-                className="block text-sm font-medium" // i18n-exempt: class names
+                className="mb-1 block text-sm font-medium" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
               >
                 {label}
               </label>
@@ -115,7 +115,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           </>
         )}
         {error && (
-          <p className="text-sm text-danger" data-token="--color-danger"> {/* i18n-exempt: class names */}
+          <p className="text-sm text-danger" data-token="--color-danger"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
             {error}
           </p>
         )}

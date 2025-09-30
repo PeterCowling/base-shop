@@ -22,15 +22,15 @@ export default function Upgrade() {
     async function load() {
       try {
         const res = await fetch(`/api/shop/${id}/component-diff`);
-        if (!res.ok) throw new Error("Failed to load component diff"); // i18n-exempt: developer-only error string, not shown to users
+        if (!res.ok) throw new Error(String(t("cms.upgrade.loadError")));
         const data = (await res.json()) as ComponentGroups;
         setGroups(data);
       } catch (err) {
-        console.error("Failed to load component diff", err); // i18n-exempt: developer debug log label
+        console.error(t("cms.upgrade.loadError"), err);
       }
     }
     void load();
-  }, [id]);
+  }, [id, t]);
 
   function toggle(file: string) {
     setSelected((prev) => {
@@ -56,11 +56,11 @@ export default function Upgrade() {
       });
       if (!res.ok) throw new Error(await res.text());
       setStatus("success");
-      setMessage(String(t("upgrade.publish.success")));
+      setMessage(String(t("upgrade.publishSuccess")));
     } catch (err) {
       setStatus("error");
       setMessage(
-        err instanceof Error ? err.message : String(t("upgrade.publish.failed"))
+        err instanceof Error ? err.message : String(t("upgrade.publishFailed"))
       );
     }
   }

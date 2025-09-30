@@ -7,7 +7,7 @@ import { makeStateStory } from '../../../../story-utils/createStories';
 const meta: Meta<typeof StackFlex> = {
   title: 'CMS Blocks/Containers/StackFlex/Matrix',
   component: StackFlex,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {

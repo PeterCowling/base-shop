@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof CertificateCheck> = {
   title: 'CMS Blocks/CertificateCheck/Matrix',
   component: CertificateCheck,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

@@ -10,7 +10,7 @@ import { z } from 'zod';
 const meta: Meta<typeof EmailReferralSection> = {
   title: 'CMS Blocks/EmailReferralSection/Matrix',
   component: EmailReferralSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Refer-a-friend section with translatable labels and optional adapter to submit.' } } },
 };

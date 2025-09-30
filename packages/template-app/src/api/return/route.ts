@@ -16,7 +16,10 @@ export const runtime = "edge";
 
 async function savePickup(appt: { zip: string; date: string; time: string }) {
   // Placeholder for database persistence
-  console.log("pickup scheduled", appt); // i18n-exempt: developer log, not user-facing
+  console.log(
+    "pickup scheduled", // i18n-exempt -- ABC-123 [ttl=2025-12-31] developer log, not user-facing
+    appt,
+  );
 }
 
 async function notifyCarrier(appt: { zip: string; date: string; time: string }) {
@@ -43,7 +46,7 @@ export async function POST(req: NextRequest) {
   const shop = await readShop(SHOP_ID);
   if (shop.returnsEnabled === false) {
     return NextResponse.json(
-      { error: "Returns disabled" }, // i18n-exempt: machine-readable API error
+      { error: "Returns disabled" }, // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
       { status: 403 },
     );
   }
@@ -51,7 +54,7 @@ export async function POST(req: NextRequest) {
   if (sessionId) {
     const order = await markReturned(SHOP_ID, sessionId);
     if (!order) {
-      return NextResponse.json({ error: "Order not found" }, { status: 404 }); // i18n-exempt: machine-readable API error
+      return NextResponse.json({ error: "Order not found" }, { status: 404 }); // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
     }
 
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
@@ -64,7 +67,7 @@ export async function POST(req: NextRequest) {
         : session.payment_intent?.id;
 
     if (!deposit || !pi) {
-      return NextResponse.json({ ok: false, message: "No deposit found" }); // i18n-exempt: machine-readable API message
+      return NextResponse.json({ ok: false, message: "No deposit found" }); // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API message
     }
 
     const coverageCodes =
@@ -95,13 +98,13 @@ export async function POST(req: NextRequest) {
     ]);
     if (!settings.returnService?.homePickupEnabled) {
       return NextResponse.json(
-        { error: "Home pickup disabled" }, // i18n-exempt: machine-readable API error
+        { error: "Home pickup disabled" }, // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
         { status: 403 }
       );
     }
     if (!info.homePickupZipCodes.includes(zip)) {
       return NextResponse.json(
-        { error: "ZIP not eligible" }, // i18n-exempt: machine-readable API error
+        { error: "ZIP not eligible" }, // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
         { status: 400 }
       );
     }
@@ -111,5 +114,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true });
   }
 
-  return NextResponse.json({ error: "Invalid request" }, { status: 400 }); // i18n-exempt: machine-readable API error
+  return NextResponse.json({ error: "Invalid request" }, { status: 400 }); // i18n-exempt -- ABC-123 [ttl=2025-12-31] machine-readable API error
 }

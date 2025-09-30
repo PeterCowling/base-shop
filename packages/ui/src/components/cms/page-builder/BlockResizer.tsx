@@ -22,7 +22,7 @@ export default function BlockResizer({
   const t = useTranslations();
   if (!selected) return null;
   return (
-    <div className="relative">
+    <>
       {/* Rotate handle (top-center, slightly offset above) */}
       {startRotate && (
         <div
@@ -104,6 +104,6 @@ export default function BlockResizer({
         aria-label="Adjust padding right"
         className="bg-primary absolute top-1/2 -end-1 h-10 w-2 -translate-y-1/2 cursor-e-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       />
-    </div>
+    </>
   );
 }

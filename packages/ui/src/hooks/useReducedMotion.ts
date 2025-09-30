@@ -7,7 +7,7 @@ export default function useReducedMotion(): boolean {
 
   useEffect(() => {
     if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
-    const mq = window.matchMedia(/* i18n-exempt */ "(prefers-reduced-motion: reduce)");
+    const mq = window.matchMedia(/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */ "(prefers-reduced-motion: reduce)");
     const update = () => setPrefersReducedMotion(!!mq.matches);
     update();
     try {

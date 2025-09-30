@@ -30,7 +30,7 @@ export default function AnalyticsPixelsSection({ measurementId }: { measurementI
   if (!consented) return null;
   if (!measurementId) return null;
 
-  // i18n-exempt: script content is code, not user-facing copy
+  // i18n-exempt -- DS-1234 [ttl=2025-11-30] — script content is code, not user-facing copy
   const inline = `window.dataLayer = window.dataLayer || [];\nfunction gtag(){dataLayer.push(arguments);}\ngtag('js', new Date());\ngtag('config', '${measurementId}');`;
 
   return (
@@ -40,13 +40,13 @@ export default function AnalyticsPixelsSection({ measurementId }: { measurementI
         src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(measurementId)}`}
         async
         nonce={nonce}
-        // i18n-exempt: strategy is a config string, not user copy
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — strategy is a config string, not user copy
         strategy="afterInteractive"
       />
       <Script
         id="ga4-init"
         nonce={nonce}
-        // i18n-exempt: strategy is a config string, not user copy
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — strategy is a config string, not user copy
         strategy="afterInteractive"
       >
         {inline}

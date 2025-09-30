@@ -30,7 +30,7 @@ export default function LocalizedTextInput({ label, value = "", onChange, locale
     let mounted = true;
     (async () => {
       /* i18n-exempt -- ABC-123 dev-only dynamic i18n message import [ttl=2026-01-31] */
-      const en = (await import("@i18n/en.json")).default as Record<string, string>;
+      const en = (await import("@acme/i18n/en.json")).default as Record<string, string>;
       if (!mounted) return;
       setEnMessages(en);
     })();
@@ -47,7 +47,7 @@ export default function LocalizedTextInput({ label, value = "", onChange, locale
         return;
       }
       try {
-        const m = (await import(`@i18n/${locale}.json`)).default as Record<string, string>;
+        const m = (await import(`@acme/i18n/${locale}.json`)).default as Record<string, string>;
         if (!mounted) return;
         setLocaleMessages(m);
       } catch {

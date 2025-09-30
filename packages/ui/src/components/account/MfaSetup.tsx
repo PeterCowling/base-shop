@@ -5,15 +5,21 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import QRCode from "qrcode";
 import { getCsrfToken } from "@acme/shared-utils";
-// Minimal local translator (no runtime change)
-const t = (s: string) => s;
+import { useTranslations } from "@acme/i18n";
 
 export default function MfaSetup() {
+  const t = useTranslations();
   const [secret, setSecret] = useState<string | null>(null);
   const [otpauth, setOtpauth] = useState<string | null>(null);
   const [token, setToken] = useState("");
   const [status, setStatus] = useState<string | null>(null);
   const [qrCode, setQrCode] = useState<string | null>(null);
+
+  // Fallback translator: if key is returned verbatim, use a readable default
+  const tf = (key: string, fallback: string) => {
+    const val = t(key);
+    return val === key ? fallback : val;
+  };
 
   const begin = async () => {
     const csrfToken = getCsrfToken();
@@ -42,7 +48,11 @@ export default function MfaSetup() {
       body: JSON.stringify({ token }),
     });
     const data = await res.json();
-    setStatus(data.verified ? t("MFA enabled") : t("Invalid code"));
+    setStatus(
+      data.verified
+        ? tf("account.mfa.enabled", "MFA enabled")
+        : tf("account.mfa.error.invalid", "Invalid code")
+    );
   };
 
   useEffect(() => {
@@ -57,10 +67,10 @@ export default function MfaSetup() {
           type="button"
           onClick={begin}
           className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
-          data-token="--color-primary" // i18n-exempt — DS token attribute
+          data-token="--color-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute
         >
-          <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt — DS token attribute */}
-            {t("Generate Secret")}
+          <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute */}
+            {tf("account.mfa.generateSecret", "Generate Secret")}
           </span>
         </button>
       )}
@@ -69,28 +79,28 @@ export default function MfaSetup() {
           {qrCode && (
             <Image
               src={qrCode}
-              alt={t("MFA QR Code")}
+              alt={tf("account.mfa.qr.alt", "MFA QR Code")}
               className="mb-2"
               width={256}
               height={256}
               unoptimized
             />
           )}
-          <p className="mb-2">{t("Secret:")} {secret}</p>
+          <p className="mb-2">{tf("account.mfa.secret.label", "Secret:")} {secret}</p>
           <form onSubmit={verify} className="space-y-2">
             <input
               value={token}
               onChange={(e) => setToken(e.target.value)}
               className="rounded border p-2"
-              placeholder={t("Enter code")}
+              placeholder={tf("account.mfa.input.placeholderShort", "Enter code")}
             />
             <button
               type="submit"
               className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
-              data-token="--color-primary" // i18n-exempt — DS token attribute
+              data-token="--color-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute
             >
-              <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt — DS token attribute */}
-                {t("Verify")}
+              <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute */}
+                {tf("actions.verify", "Verify")}
               </span>
             </button>
           </form>

@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import { Button, Textarea, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../../../atoms/shadcn";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import type { CustomPreset } from "../style/customPresets";
@@ -44,6 +45,7 @@ export default function PresetManager({
   exportAllPresets,
   importPresets,
 }: PresetManagerProps) {
+  const t = useTranslations();
   const [exportOpen, setExportOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [exportText, setExportText] = useState("");
@@ -86,28 +88,28 @@ export default function PresetManager({
     try {
       JSON.parse(importText);
     } catch {
-      setImportError(/* i18n-exempt */ "Invalid JSON");
+      setImportError(t("cms.style.customPresets.import.invalidJson"));
       return;
     }
     const ok = importPresets(importText);
     if (!ok) {
-      setImportError(/* i18n-exempt */ "Invalid preset format");
+      setImportError(t("cms.style.customPresets.import.invalidPreset"));
       return;
     }
     setImportOpen(false);
     setImportText("");
-  }, [importPresets, importText]);
+  }, [importPresets, importText, t]);
 
   return (
     <div className="flex items-center gap-2">
       <select
-        aria-label={/* i18n-exempt — editor-only control label */ "Style preset"}
+        aria-label={t("cms.style.effectPresets.selectAria")}
         className="rounded border border-border-2 bg-surface-2 px-2 py-1 text-sm"
         onChange={(event) => onApplyPreset(event.target.value)}
         defaultValue=""
       >
         <option value="" disabled>
-          {/* i18n-exempt */}Presets
+          {t("cms.style.effectPresets.placeholder")}
         </option>
         {presets.map((preset) => (
           <option key={preset.id} value={preset.id}>
@@ -116,65 +118,65 @@ export default function PresetManager({
         ))}
       </select>
       <select
-        aria-label={/* i18n-exempt — editor-only control label */ "Custom preset"}
+        aria-label={t("cms.style.customPresets.selectAria")}
         className="rounded border border-border-2 bg-surface-2 px-2 py-1 text-sm"
         onChange={(event) => onApplyCustomPreset(event.target.value)}
         value={selectedCustom}
       >
-        <option value="">{/* i18n-exempt */}Custom…</option>
+        <option value="">{t("cms.style.customPresets.placeholder")}</option>
         {customPresets.map((preset) => (
           <option key={preset.id} value={preset.id}>
             {preset.label}
           </option>
         ))}
       </select>
-      <Button type="button" variant="outline" onClick={onCopy} aria-label={/* i18n-exempt */ "Copy styles"}>
-        {/* i18n-exempt */}Copy
+      <Button type="button" variant="outline" onClick={onCopy} aria-label={t("cms.style.copyStyles.aria")}>
+        {t("actions.copy")}
       </Button>
-      <Button type="button" variant="outline" onClick={onPaste} aria-label={/* i18n-exempt */ "Paste styles"}>
-        {/* i18n-exempt */}Paste
+      <Button type="button" variant="outline" onClick={onPaste} aria-label={t("cms.style.pasteStyles.aria")}>
+        {t("actions.paste")}
       </Button>
-      <Button type="button" variant="outline" onClick={onSavePreset} aria-label={/* i18n-exempt */ "Save custom effects preset"}>
-        {/* i18n-exempt */}Save preset
+      <Button type="button" variant="outline" onClick={onSavePreset} aria-label={t("cms.style.customPresets.saveAria")}>
+        {t("cms.style.customPresets.save")}
       </Button>
-      <Button type="button" variant="outline" onClick={onRenamePreset} aria-label={/* i18n-exempt */ "Rename selected custom preset"} disabled={!selectedCustom}>
-        {/* i18n-exempt */}Rename
+      <Button type="button" variant="outline" onClick={onRenamePreset} aria-label={t("cms.style.customPresets.renameAria")} disabled={!selectedCustom}>
+        {t("actions.rename")}
       </Button>
-      <Button type="button" variant="outline" onClick={onDuplicatePreset} aria-label={/* i18n-exempt */ "Duplicate selected custom preset"} disabled={!selectedCustom}>
-        {/* i18n-exempt */}Duplicate
+      <Button type="button" variant="outline" onClick={onDuplicatePreset} aria-label={t("cms.style.customPresets.duplicateAria")} disabled={!selectedCustom}>
+        {t("actions.duplicate")}
       </Button>
-      <Button type="button" variant="outline" onClick={() => onMovePreset("up")} aria-label={/* i18n-exempt */ "Move selected preset up"} disabled={!selectedCustom || !canMoveUp}>
-        {/* i18n-exempt */}Up
+      <Button type="button" variant="outline" onClick={() => onMovePreset("up")} aria-label={t("cms.style.customPresets.moveUpAria")} disabled={!selectedCustom || !canMoveUp}>
+        {t("actions.up")}
       </Button>
-      <Button type="button" variant="outline" onClick={() => onMovePreset("down")} aria-label={/* i18n-exempt */ "Move selected preset down"} disabled={!selectedCustom || !canMoveDown}>
-        {/* i18n-exempt */}Down
+      <Button type="button" variant="outline" onClick={() => onMovePreset("down")} aria-label={t("cms.style.customPresets.moveDownAria")} disabled={!selectedCustom || !canMoveDown}>
+        {t("actions.down")}
       </Button>
-      <Button type="button" variant="outline" onClick={onRemovePreset} aria-label={/* i18n-exempt */ "Delete selected custom preset"} disabled={!selectedCustom}>
-        {/* i18n-exempt */}Delete
+      <Button type="button" variant="outline" onClick={onRemovePreset} aria-label={t("cms.style.customPresets.deleteAria")} disabled={!selectedCustom}>
+        {t("actions.delete")}
       </Button>
-      <Button type="button" variant="outline" onClick={() => openExport(false)} aria-label={/* i18n-exempt */ "Export custom presets JSON"}>
-        {/* i18n-exempt */}Export all
+      <Button type="button" variant="outline" onClick={() => openExport(false)} aria-label={t("cms.style.customPresets.exportAllAria")}>
+        {t("cms.style.customPresets.exportAll")}
       </Button>
-      <Button type="button" variant="outline" onClick={() => openExport(true)} aria-label={/* i18n-exempt */ "Export selected custom preset"} disabled={!selectedCustom}>
-        {/* i18n-exempt */}Export selected
+      <Button type="button" variant="outline" onClick={() => openExport(true)} aria-label={t("cms.style.customPresets.exportSelectedAria")} disabled={!selectedCustom}>
+        {t("cms.style.customPresets.exportSelected")}
       </Button>
-      <Button type="button" variant="outline" onClick={() => setImportOpen(true)} aria-label={/* i18n-exempt */ "Import custom presets JSON"}>
-        {/* i18n-exempt */}Import
+      <Button type="button" variant="outline" onClick={() => setImportOpen(true)} aria-label={t("cms.style.customPresets.importAria")}>
+        {t("actions.import")}
       </Button>
 
       <Dialog open={exportOpen} onOpenChange={setExportOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{/* i18n-exempt */}Export custom presets</DialogTitle>
+            <DialogTitle>{t("cms.style.customPresets.exportTitle")}</DialogTitle>
           </DialogHeader>
           <Textarea value={exportText} readOnly rows={10} />
           <DialogFooter>
-            <div className="me-auto text-xs text-muted-foreground">{copied ? (/* i18n-exempt */ "Copied") : ""}</div>
+            <div className="me-auto text-xs text-muted-foreground">{copied ? t("actions.copied") : ""}</div>
             <Button type="button" variant="outline" onClick={() => setExportOpen(false)}>
-              {/* i18n-exempt */}Close
+              {t("actions.close")}
             </Button>
             <Button type="button" onClick={handleCopyExport}>
-              {/* i18n-exempt */}Copy
+              {t("actions.copy")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -183,7 +185,7 @@ export default function PresetManager({
       <Dialog open={importOpen} onOpenChange={setImportOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{/* i18n-exempt */}Import custom presets</DialogTitle>
+            <DialogTitle>{t("cms.style.customPresets.importTitle")}</DialogTitle>
           </DialogHeader>
           <Textarea
             value={importText}
@@ -192,7 +194,7 @@ export default function PresetManager({
               setImportError("");
             }}
             rows={10}
-            placeholder={/* i18n-exempt */ "Paste presets JSON here"}
+            placeholder={t("cms.style.customPresets.importPlaceholder")}
           />
           {importError ? (
             <p className="text-danger text-xs" role="alert">
@@ -208,10 +210,10 @@ export default function PresetManager({
                 setImportError("");
               }}
             >
-              {/* i18n-exempt */}Cancel
+              {t("actions.cancel")}
             </Button>
             <Button type="button" onClick={handleImport} disabled={!importText.trim()}>
-              {/* i18n-exempt */}Import
+              {t("actions.import")}
             </Button>
           </DialogFooter>
         </DialogContent>

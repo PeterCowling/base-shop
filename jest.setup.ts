@@ -100,6 +100,67 @@ try {
 
 // React/Next + DOM polyfills are provided via test/polyfills/*
 
+// Provide a lightweight mock for Next.js app router hooks so client components
+// using `useRouter`/`useSearchParams` can render in Jest without a mounted app
+// router. Tests that need custom behavior can override this per‑suite.
+try {
+  jest.mock("next/navigation", () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const actual = jest.requireActual("next/navigation");
+    const params = new URLSearchParams("");
+    return {
+      ...actual,
+      useRouter: () => ({
+        push: jest.fn(),
+        replace: jest.fn(),
+        prefetch: jest.fn(),
+        back: jest.fn(),
+        forward: jest.fn(),
+      }),
+      useSearchParams: () => params,
+    };
+  });
+} catch {}
+
+// Provide default English translations for components that call useTranslations()
+// Tests can still override this by mocking @acme/i18n locally or by using
+// TranslationsProvider with custom messages. This keeps legacy tests that do
+// not mount a provider working by falling back to en.json.
+try {
+  jest.mock("@acme/i18n", () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const actual = jest.requireActual("@acme/i18n");
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const en = require("@acme/i18n/en.json");
+
+    // Mutable holder for the current messages map; defaults to English.
+    let currentMessages: Record<string, string> = en;
+
+    const TranslationsProvider = ({ messages, children }: { messages: Record<string, string>; children: React.ReactNode }) => {
+      currentMessages = messages || en;
+      return children as unknown as React.JSX.Element;
+    };
+
+    const useTranslations = () => {
+      return (key: string, vars?: Record<string, string | number>) => {
+        const template = currentMessages[key];
+        const value = typeof template === "string" ? template : key;
+        if (!vars) return value;
+        return value.replace(/\{(.*?)\}/g, (match, name) =>
+          Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name] as string | number) : match
+        );
+      };
+    };
+
+    return {
+      ...actual,
+      TranslationsProvider,
+      default: TranslationsProvider,
+      useTranslations,
+    };
+  });
+} catch {}
+
 /**
  * React 19+ uses `MessageChannel` internally for suspense & streaming.
  * Node’s impl can leave ports open, preventing Jest from exiting, so
@@ -112,11 +173,21 @@ try {
 /* 3.  MSW (Mock Service Worker) – network stubbing for API calls             */
 /* -------------------------------------------------------------------------- */
 
-import { server } from "./test/msw/server";
+// Allow lightweight packages to disable MSW when unnecessary
+let __mswServer: { listen: Function; resetHandlers: Function; close: Function } | undefined;
+try {
+  if (process.env.MSW_DISABLE !== "1") {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { server } = require("./test/msw/server");
+    __mswServer = server;
+  }
+} catch {}
 
-beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
-afterEach(() => server.resetHandlers());
-afterAll(() => server.close());
+if (__mswServer) {
+  beforeAll(() => __mswServer?.listen?.({ onUnhandledRequest: "error" }));
+  afterEach(() => __mswServer?.resetHandlers?.());
+  afterAll(() => __mswServer?.close?.());
+}
 
 // Reset shared auth/config mocks between tests to avoid leakage across suites
 try {

@@ -6,26 +6,29 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Button } from "../../../../atoms/shadcn";
 import { Tooltip } from "../../../../atoms";
 import UnitInput from "./UnitInput";
+import useLocalStrings from "../../hooks/useLocalStrings";
 
 interface Props {
   component: PageComponent;
   locked: boolean;
   handleInput: <K extends keyof PageComponent>(field: K, value: PageComponent[K]) => void;
   handleResize: (field: string, value: string) => void;
+  errorKeys?: Set<string>;
 }
 
-export default function PositionControls({ component, locked, handleInput, handleResize }: Props) {
+export default function PositionControls({ component, locked, handleInput, handleResize, errorKeys }: Props) {
+  const t = useLocalStrings();
+  // CSS utility class list for error ring
+  const ERROR_RING_CLASS = "ring-1 ring-red-500"; // i18n-exempt -- INTL-204 CSS utility classes only [ttl=2026-12-31]
   return (
     <>
       <Select
         value={component.position ?? ""}
         onValueChange={(v) => handleInput("position", (v || undefined) as PageComponent["position"])}
       >
-        {/* i18n-exempt: short builder hint */}
-        <Tooltip text="CSS position property" className="block">
-          <SelectTrigger>
-            {/* i18n-exempt: CSS property name */}
-            <SelectValue placeholder="Position" />
+        <Tooltip text={t("position_property_hint")} className="block">
+          <SelectTrigger className={errorKeys?.has("position") ? ERROR_RING_CLASS : undefined} aria-invalid={errorKeys?.has("position") || undefined}>
+            <SelectValue placeholder={t("position_label")} />
           </SelectTrigger>
         </Tooltip>
         <SelectContent>
@@ -41,78 +44,76 @@ export default function PositionControls({ component, locked, handleInput, handl
               value={component.dockX ?? "left"}
               onValueChange={(v) => handleInput("dockX", v as typeof component.dockX)}
             >
-              {/* i18n-exempt: builder hint */}
-              <Tooltip text="Dock horizontally to container">
+              <Tooltip text={t("dock_x_hint")}>
                 <SelectTrigger>
-                  {/* i18n-exempt: control label */}
-                  <SelectValue placeholder="Dock X" />
+                  <SelectValue placeholder={t("dock_x_label")} />
                 </SelectTrigger>
               </Tooltip>
               <SelectContent>
-                {/* i18n-exempt: editor-only button labels */}
-                <SelectItem value="left">Dock Left</SelectItem>
-                <SelectItem value="center">Dock Center</SelectItem>
-                <SelectItem value="right">Dock Right</SelectItem>
+                <SelectItem value="left">{t("dock_left")}</SelectItem>
+                <SelectItem value="center">{t("dock_center")}</SelectItem>
+                <SelectItem value="right">{t("dock_right")}</SelectItem>
               </SelectContent>
             </Select>
             <Select
               value={component.dockY ?? "top"}
               onValueChange={(v) => handleInput("dockY", v as typeof component.dockY)}
             >
-              {/* i18n-exempt: builder hint */}
-              <Tooltip text="Dock vertically to container">
+              <Tooltip text={t("dock_y_hint")}>
                 <SelectTrigger>
-                  {/* i18n-exempt: control label */}
-                  <SelectValue placeholder="Dock Y" />
+                  <SelectValue placeholder={t("dock_y_label")} />
                 </SelectTrigger>
               </Tooltip>
               <SelectContent>
-                {/* i18n-exempt: editor-only button labels */}
-                <SelectItem value="top">Dock Top</SelectItem>
-                <SelectItem value="center">Dock Center</SelectItem>
-                <SelectItem value="bottom">Dock Bottom</SelectItem>
+                <SelectItem value="top">{t("dock_top")}</SelectItem>
+                <SelectItem value="center">{t("dock_center")}</SelectItem>
+                <SelectItem value="bottom">{t("dock_bottom")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <UnitInput
             componentId={component.id}
-            label={<span className="flex items-center gap-1">{/* i18n-exempt: field label */}Top<Tooltip text="CSS top offset (px/%/rem)">?</Tooltip></span>}
-            placeholder="e.g. 10px" /* i18n-exempt: example hint */
+            label={t("offset_top_label")}
+            placeholder={t("offset_placeholder")}
             value={component.top ?? ""}
             onChange={(v) => handleResize("top", v)}
             axis="h"
             disabled={locked}
             cssProp="top"
+            extraError={errorKeys?.has("top")}
           />
           <UnitInput
             componentId={component.id}
-            label={<span className="flex items-center gap-1">{/* i18n-exempt: field label */}Left<Tooltip text="CSS left offset (px/%/rem)">?</Tooltip></span>}
-            placeholder="e.g. 10px" /* i18n-exempt: example hint */
+            label={t("offset_left_label")}
+            placeholder={t("offset_placeholder")}
             value={component.left ?? ""}
             onChange={(v) => handleResize("left", v)}
             axis="w"
             disabled={locked}
             cssProp="left"
+            extraError={errorKeys?.has("left")}
           />
           <UnitInput
             componentId={component.id}
-            label={<span className="flex items-center gap-1">{/* i18n-exempt: field label */}Right<Tooltip text="CSS right offset (px/%/rem)">?</Tooltip></span>}
-            placeholder="e.g. 10px" /* i18n-exempt: example hint */
+            label={t("offset_right_label")}
+            placeholder={t("offset_placeholder")}
             value={component.right ?? ""}
             onChange={(v) => handleResize("right", v)}
             axis="w"
             disabled={locked}
             cssProp="right"
+            extraError={errorKeys?.has("right")}
           />
           <UnitInput
             componentId={component.id}
-            label={<span className="flex items-center gap-1">{/* i18n-exempt: field label */}Bottom<Tooltip text="CSS bottom offset (px/%/rem)">?</Tooltip></span>}
-            placeholder="e.g. 10px" /* i18n-exempt: example hint */
+            label={t("offset_bottom_label")}
+            placeholder={t("offset_placeholder")}
             value={component.bottom ?? ""}
             onChange={(v) => handleResize("bottom", v)}
             axis="h"
             disabled={locked}
             cssProp="bottom"
+            extraError={errorKeys?.has("bottom")}
           />
           {(() => {
             const isPinnedLeft = !!component.left;
@@ -204,16 +205,14 @@ export default function PositionControls({ component, locked, handleInput, handl
             return (
               <div className="mt-1 grid grid-cols-2 gap-2">
                 <div className="flex flex-wrap gap-2">
-                  {/* i18n-exempt: editor-only control text */}
-                  <Button type="button" variant={isPinnedLeft ? "default" : "outline"} disabled={locked} onClick={pinLeft} aria-label="Pin Left">Pin Left</Button>
-                  <Button type="button" variant={isPinnedRight ? "default" : "outline"} disabled={locked} onClick={pinRight} aria-label="Pin Right">Pin Right</Button>
-                  <Button type="button" variant={isPinnedTop ? "default" : "outline"} disabled={locked} onClick={pinTop} aria-label="Pin Top">Pin Top</Button>
-                  <Button type="button" variant={isPinnedBottom ? "default" : "outline"} disabled={locked} onClick={pinBottom} aria-label="Pin Bottom">Pin Bottom</Button>
+                  <Button type="button" variant={isPinnedLeft ? "default" : "outline"} disabled={locked} onClick={pinLeft} aria-label={t("pin_left")}>{t("pin_left")}</Button>
+                  <Button type="button" variant={isPinnedRight ? "default" : "outline"} disabled={locked} onClick={pinRight} aria-label={t("pin_right")}>{t("pin_right")}</Button>
+                  <Button type="button" variant={isPinnedTop ? "default" : "outline"} disabled={locked} onClick={pinTop} aria-label={t("pin_top")}>{t("pin_top")}</Button>
+                  <Button type="button" variant={isPinnedBottom ? "default" : "outline"} disabled={locked} onClick={pinBottom} aria-label={t("pin_bottom")}>{t("pin_bottom")}</Button>
                 </div>
                 <div className="flex flex-wrap justify-end gap-2">
-                  {/* i18n-exempt: editor-only control text */}
-                  <Button type="button" variant="outline" disabled={locked} onClick={stretchX} aria-label="Stretch horizontally">Stretch X</Button>
-                  <Button type="button" variant="outline" disabled={locked} onClick={stretchY} aria-label="Stretch vertically">Stretch Y</Button>
+                  <Button type="button" variant="outline" disabled={locked} onClick={stretchX} aria-label={t("aria_stretch_horizontally")}>{t("stretch_x")}</Button>
+                  <Button type="button" variant="outline" disabled={locked} onClick={stretchY} aria-label={t("aria_stretch_vertically")}>{t("stretch_y")}</Button>
                 </div>
               </div>
             );

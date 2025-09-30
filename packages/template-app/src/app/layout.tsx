@@ -8,8 +8,8 @@ import AnalyticsScripts from "./AnalyticsScripts";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Base-Shop", // i18n-exempt: default app metadata; localized variants come from page-level SEO
-  description: "Sustainable footwear built with Next.js 15", // i18n-exempt: default app metadata; localized variants come from page-level SEO
+  title: "Base-Shop", // i18n-exempt -- ABC-123 [ttl=2025-12-31] default app metadata; localized variants come from page-level SEO
+  description: "Sustainable footwear built with Next.js 15", // i18n-exempt -- ABC-123 [ttl=2025-12-31] default app metadata; localized variants come from page-level SEO
 };
 
 export default async function RootLayout({

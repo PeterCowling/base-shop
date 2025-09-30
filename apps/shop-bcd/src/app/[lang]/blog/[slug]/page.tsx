@@ -10,9 +10,12 @@ import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { JsonLdScript, articleJsonLd } from "../../../../lib/jsonld";
 import type { NextSeoProps } from "next-seo";
 import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
+import { getBlogProvider } from "../provider";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog">;
 const shop: BlogShop = shopJson;
+export const revalidate = 60;
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -22,8 +25,8 @@ export default async function BlogPostPage({
     return notFound();
   }
   const t = await loadTranslations(resolveLocale(params.lang));
-  const { fetchPostBySlug } = await import("@acme/sanity");
-  const post = await fetchPostBySlug(shop.id, params.slug);
+  const provider = getBlogProvider(shop);
+  const post = await provider.fetchPostBySlug(shop.id, params.slug);
   try {
     const mockGlobal = globalThis as unknown as {
       jest?: { requireMock: (m: string) => { fetchPostBySlug?: { mock?: { calls: unknown[][] } } } };
@@ -55,10 +58,14 @@ export default async function BlogPostPage({
       )}
       <h1 className="text-2xl font-bold">{post.title}</h1>
       {post.excerpt && <p className="text-muted">{post.excerpt}</p>}
-      {Array.isArray(post.body) ? (
+      {provider.kind === "sanity" && Array.isArray((post as { body?: unknown }).body) ? (
         <div className="space-y-4">
-          <BlogPortableText value={post.body as PortableBlock[]} />
+          <BlogPortableText value={(post as { body?: PortableBlock[] }).body ?? []} />
         </div>
+      ) : null}
+      {provider.kind === "editorial" && typeof (post as { body?: unknown }).body === "string" ? (
+        // Render Markdown/MDX body as HTML for now
+        <EditorialHtml body={(post as { body?: string }).body || ""} />
       ) : null}
     </article>
   );
@@ -69,8 +76,8 @@ export async function generateMetadata({
 }: {
   params: { lang: string; slug: string };
 }): Promise<Metadata> {
-  const { fetchPostBySlug } = await import("@acme/sanity");
-  const post = await fetchPostBySlug(shop.id, params.slug);
+  const provider = getBlogProvider(shop);
+  const post = await provider.fetchPostBySlug(shop.id, params.slug);
   const lang = resolveLocale(params.lang);
   const baseSeo = await getSeo(lang);
   const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
@@ -101,4 +108,10 @@ export async function generateMetadata({
     openGraph: seo.openGraph as Metadata["openGraph"],
     twitter: seo.twitter as Metadata["twitter"],
   };
+}
+
+async function EditorialHtml({ body }: { body: string }) {
+  const { renderMarkdownToHtml } = await import("@acme/editorial");
+  const html = await renderMarkdownToHtml(body);
+  return <div className="prose prose-slate" dangerouslySetInnerHTML={{ __html: html }} />;
 }

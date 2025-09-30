@@ -19,12 +19,12 @@ export function Error404Template({
   return (
     <div
       className={cn(
-        "flex flex-col items-center justify-center space-y-4 py-20 text-center", // i18n-exempt: className utilities
+        "flex flex-col items-center justify-center space-y-4 py-20 text-center", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         className
       )}
       {...props}
     >
-      <h1 className="text-6xl font-bold">404</h1>
+      <h1 className="text-6xl font-bold">{t("error.404.code")}</h1>
       <p className="text-lg">{t("error.404.message")}</p>
       <Button onClick={() => (window.location.href = homeHref)}>{t("actions.goHome")}</Button>
     </div>

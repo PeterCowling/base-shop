@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof CmsReviewsCarousel> = {
   title: 'CMS Blocks/ReviewsCarousel/Matrix',
   component: CmsReviewsCarousel,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

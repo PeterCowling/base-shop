@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof StructuredDataSection> = {
   title: 'CMS Blocks/StructuredDataSection/Matrix',
   component: StructuredDataSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Emits JSON-LD for breadcrumbs/FAQ/organization/local business based on flags.' } } },
 };

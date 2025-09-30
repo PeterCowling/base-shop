@@ -17,9 +17,9 @@ export const PopoverContent = React.forwardRef<
   const { style: styleFromProps, ...restProps } = props;
   const safeStyle: React.CSSProperties = {
     backgroundColor:
-      /* i18n-exempt — CSS variable fallback chain, not user-facing text */
+      /* i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS variable fallback chain, not user-facing text */
       "hsl(var(--panel, var(--color-panel, var(--surface-2, var(--color-bg)))))",
-    color: /* i18n-exempt */ "hsl(var(--color-fg, 0 0% 10%))",
+    color: /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */ "hsl(var(--color-fg, 0 0% 10%))",
     ...(styleFromProps as React.CSSProperties | undefined),
   };
   // If a container is provided, render within a Portal targeting it.
@@ -31,7 +31,7 @@ export const PopoverContent = React.forwardRef<
           sideOffset={sideOffset}
           align={align}
           className={cn(
-            // i18n-exempt — CSS utility class names
+            // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
             "bg-panel text-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
             className
           )}
@@ -49,7 +49,7 @@ export const PopoverContent = React.forwardRef<
       sideOffset={sideOffset}
       align={align}
       className={cn(
-        // i18n-exempt — CSS utility class names
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
         "bg-panel text-foreground z-50 rounded-md border p-4 shadow-elevation-2 outline-none pointer-events-auto border-border-2",
         className
       )}

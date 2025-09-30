@@ -12,3 +12,12 @@ id      = "TODO-replace-with-namespace-id"
 
 [triggers]
   crons = ["0 0 * * *"]
+
+[[r2_buckets]]
+binding = "TRYON_R2"
+bucket_name = "base-shop-tryon"
+
+# (Optional) Enable KV for idempotency/quotas later
+# [[kv_namespaces]]
+# binding = "TRYON_KV"
+# id = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"

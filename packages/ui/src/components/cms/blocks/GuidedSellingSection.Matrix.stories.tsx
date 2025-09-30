@@ -7,7 +7,7 @@ import { makeStateStory } from '../../../story-utils/createStories';
 const meta: Meta<typeof GuidedSellingSection> = {
   title: 'CMS Blocks/GuidedSellingSection/Matrix',
   component: GuidedSellingSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
 };
 export default meta;
 

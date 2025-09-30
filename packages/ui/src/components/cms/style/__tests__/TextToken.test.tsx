@@ -6,14 +6,14 @@ describe("TextToken", () => {
 
   const renderToken = (props: Partial<React.ComponentProps<typeof TextToken>> = {}) =>
     render(
-      TextToken({
-        tokenKey,
-        value: "hello",
-        defaultValue: "hello",
-        isOverridden: false,
-        setToken: jest.fn(),
-        ...props,
-      })
+      <TextToken
+        tokenKey={tokenKey}
+        value="hello"
+        defaultValue="hello"
+        isOverridden={false}
+        setToken={jest.fn()}
+        {...props}
+      />
     );
 
   it("renders with default value", () => {

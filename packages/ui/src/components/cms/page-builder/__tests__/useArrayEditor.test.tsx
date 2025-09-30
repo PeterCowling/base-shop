@@ -1,6 +1,12 @@
 import { fireEvent, render } from "@testing-library/react";
 import { renderHook } from "@testing-library/react";
 import { useArrayEditor } from "../useArrayEditor";
+import { TranslationsProvider } from "@acme/i18n";
+// Minimal i18n messages to avoid JSON import in Jest ESM mode
+const messages = {
+  "actions.add": "Add",
+  "actions.remove": "Remove",
+} as const;
 
 jest.mock("../ImagePicker", () => ({
   __esModule: true,
@@ -26,13 +32,19 @@ describe("useArrayEditor", () => {
     const { result } = renderHook(() => useArrayEditor<any>(onChange));
     const renderArrayEditor = result.current;
     const { getByText, rerender, queryAllByPlaceholderText } = render(
-      renderArrayEditor("images", [], ["src"])
+      <TranslationsProvider messages={messages as any}>
+        {renderArrayEditor("images", [], ["src"]) as any}
+      </TranslationsProvider>
     );
 
     fireEvent.click(getByText("Add"));
     expect(onChange).toHaveBeenCalledWith({ images: [{ src: "" }] });
 
-    rerender(renderArrayEditor("images", [{ src: "" }], ["src"]));
+    rerender(
+      <TranslationsProvider messages={messages as any}>
+        {renderArrayEditor("images", [{ src: "" }], ["src"]) as any}
+      </TranslationsProvider>
+    );
     expect(queryAllByPlaceholderText("src")).toHaveLength(1);
   });
 
@@ -42,13 +54,19 @@ describe("useArrayEditor", () => {
     const renderArrayEditor = result.current;
     const items = [{ src: "a" }, { src: "b" }];
     const { getAllByText, rerender } = render(
-      renderArrayEditor("images", items, ["src"], { minItems: 1 })
+      <TranslationsProvider messages={messages as any}>
+        {renderArrayEditor("images", items, ["src"], { minItems: 1 }) as any}
+      </TranslationsProvider>
     );
 
     fireEvent.click(getAllByText("Remove")[0]);
     expect(onChange).toHaveBeenCalledWith({ images: [{ src: "b" }] });
 
-    rerender(renderArrayEditor("images", [{ src: "b" }], ["src"], { minItems: 1 }));
+    rerender(
+      <TranslationsProvider messages={messages as any}>
+        {renderArrayEditor("images", [{ src: "b" }], ["src"], { minItems: 1 }) as any}
+      </TranslationsProvider>
+    );
     expect(getAllByText("Remove")[0]).toBeDisabled();
   });
 
@@ -58,7 +76,9 @@ describe("useArrayEditor", () => {
     const renderArrayEditor = result.current;
     const items = [{ src: "a" }, { src: "b" }];
     const { getByText } = render(
-      renderArrayEditor("images", items, ["src"], { maxItems: 2 })
+      <TranslationsProvider messages={messages as any}>
+        {renderArrayEditor("images", items, ["src"], { maxItems: 2 }) as any}
+      </TranslationsProvider>
     );
 
     expect(getByText("Add")).toBeDisabled();
@@ -69,7 +89,9 @@ describe("useArrayEditor", () => {
     const { result } = renderHook(() => useArrayEditor<any>(onChange));
     const renderArrayEditor = result.current;
     const { getByText } = render(
-      renderArrayEditor("images", [{ src: "" }], ["src"])
+      <TranslationsProvider messages={messages as any}>
+        {renderArrayEditor("images", [{ src: "" }], ["src"]) as any}
+      </TranslationsProvider>
     );
 
     fireEvent.click(getByText("Pick"));

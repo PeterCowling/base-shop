@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DialogContent, DialogTitle } from "../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 import Tokens from "../style/Tokens";
 import ColorThemeSelector from "./ColorThemeSelector";
 import { type TokenMap } from "../../../hooks/useTokenEditor";
@@ -23,6 +24,7 @@ export interface ThemePanelProps {
 }
 
 export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
+  const t = useTranslations();
   const pathname = usePathname() ?? "";
   const shop = useMemo(() => getShopFromPath(pathname) ?? "", [pathname]);
   const preview = usePreviewTokens();
@@ -212,12 +214,8 @@ export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
   if (variant === "sidebar") {
     return (
       <div className="space-y-3 p-3">
-        {/* i18n-exempt: label kept local to builder context */}
-        <div className="text-sm font-semibold">Theme</div>
-        {/* i18n-exempt: helper text scoped to CMS internal tooling */}
-        <p className="text-sm text-muted-foreground">
-          Adjust brand colors and typography. Changes preview instantly and save to this shop.
-        </p>
+        <div className="text-sm font-semibold">{t("cms.theme.label")}</div>
+        <p className="text-sm text-muted-foreground">{t("cms.builder.themePanel.helper")}</p>
         {/* Prebuilt color theme selector (light/dark paired) */}
         <ColorThemeSelector
           tokens={tokens}
@@ -238,13 +236,9 @@ export default function ThemePanel({ variant = "dialog" }: ThemePanelProps) {
   // Default: dialog variant
   return (
     <DialogContent className="w-full">
-      {/* i18n-exempt: label kept local to builder context */}
-      <DialogTitle>Theme</DialogTitle>
+      <DialogTitle>{t("cms.theme.label")}</DialogTitle>
       <div className="space-y-3">
-        {/* i18n-exempt: helper text scoped to CMS internal tooling */}
-        <p className="text-sm text-muted-foreground">
-          Adjust brand colors and typography. Changes preview instantly and save to this shop.
-        </p>
+        <p className="text-sm text-muted-foreground">{t("cms.builder.themePanel.helper")}</p>
         {/* Optional: include color theme selector in dialog as well */}
         <ColorThemeSelector
           tokens={tokens}

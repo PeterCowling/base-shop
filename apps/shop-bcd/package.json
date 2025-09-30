@@ -16,6 +16,7 @@
     "@acme/next-config": "workspace:*",
     "@acme/sanity": "workspace:*",
     "@acme/shared-utils": "workspace:*",
+    "@acme/lib": "workspace:*",
     "@acme/stripe": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",
@@ -23,7 +24,8 @@
     "@themes/base": "workspace:*",
     "qrcode": "^1.5.4",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "aws4fetch": "^1.0.20"
   },
   "devDependencies": {
     "next": "^15.3.5"

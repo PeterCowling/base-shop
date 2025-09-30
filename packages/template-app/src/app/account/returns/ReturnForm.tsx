@@ -14,7 +14,7 @@ export default function ReturnForm({
 }: ReturnFormProps) {
   const tRaw = useTranslations();
   const t = React.useCallback(
-    (key: string, vars?: Record<string, React.ReactNode>) =>
+    (key: string, vars?: Record<string, string | number>) =>
       tRaw(`account.returns.form.${key}`, vars),
     [tRaw]
   );
@@ -94,7 +94,7 @@ export default function ReturnForm({
   return (
     <div className="space-y-4 p-6">
       <h1 className="text-xl font-semibold">{t("title")}</h1>
-      {bagType && <p>{t("reuseBag", { bagType })}</p>}
+      {bagType ? <p>{t("reuseBag", { bagType })}</p> : null}
       <video ref={videoRef} className="w-full" data-aspect="16/9" />
       <form onSubmit={handleSubmit} className="space-y-2">
         <input
@@ -120,9 +120,9 @@ export default function ReturnForm({
           >
             {t("printLabel")}
           </a>
-          {trackingNumber && (
+          {trackingNumber ? (
             <span className="block">{t("tracking", { trackingNumber })}</span>
-          )}
+          ) : null}
         </p>
       )}
       {error && <p className="text-red-600">{error}</p>}

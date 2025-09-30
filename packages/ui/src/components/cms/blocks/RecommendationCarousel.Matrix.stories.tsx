@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof CmsRecommendationCarousel> = {
   title: 'CMS Blocks/RecommendationCarousel/Matrix',
   component: CmsRecommendationCarousel,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { minItems: 1, maxItems: 4 },
   parameters: {
     layout: 'padded',

@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof Lookbook> = {
   title: 'CMS Blocks/Lookbook/Matrix',
   component: Lookbook,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

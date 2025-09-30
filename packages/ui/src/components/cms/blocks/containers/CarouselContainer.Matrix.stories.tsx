@@ -7,7 +7,7 @@ import { makeStateStory } from '../../../story-utils/createStories';
 const meta: Meta<typeof CarouselContainer> = {
   title: 'CMS Blocks/Containers/CarouselContainer/Matrix',
   component: CarouselContainer,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {

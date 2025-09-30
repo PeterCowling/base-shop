@@ -13,7 +13,7 @@ export const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
       <div
         ref={ref}
         className={cn(
-          "animate-spin rounded-full border-2 border-current border-t-transparent", // i18n-exempt — CSS utility class names
+          "animate-spin rounded-full border-2 border-current border-t-transparent", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
           dimension,
           className
         )}
@@ -22,4 +22,4 @@ export const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
     );
   }
 );
-Loader.displayName = "Loader"; // i18n-exempt — component displayName, not user-facing
+Loader.displayName = "Loader"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — component displayName, not user-facing

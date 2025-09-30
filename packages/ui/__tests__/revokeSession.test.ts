@@ -67,7 +67,7 @@ describe("revoke session action", () => {
     const result = await revoke("s1");
 
     expect(fetchMock).toHaveBeenCalled();
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
@@ -81,7 +81,7 @@ describe("revoke session action", () => {
     const result = await revoke("s1");
 
     expect(fetchMock).toHaveBeenCalled();
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
@@ -90,7 +90,7 @@ describe("revoke session action", () => {
 
     const result = await revoke("s1");
 
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(listSessions).not.toHaveBeenCalled();
     expect(revalidatePath).not.toHaveBeenCalled();
   });
@@ -100,7 +100,7 @@ describe("revoke session action", () => {
 
     const result = await revoke("s1");
 
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(listSessions).not.toHaveBeenCalled();
     expect(revalidatePath).not.toHaveBeenCalled();
   });
@@ -110,7 +110,7 @@ describe("revoke session action", () => {
 
     const result = await revoke("s1");
 
-    expect(result).toEqual({ success: false, error: "Session does not belong to the user." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.notOwned" });
     expect(authRevokeSession).not.toHaveBeenCalled();
     expect(revalidatePath).not.toHaveBeenCalled();
   });

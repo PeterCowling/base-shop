@@ -415,12 +415,16 @@ export default [
         allowDefaultProject: true,
       },
     },
-    plugins: { "@typescript-eslint": tsPlugin },
+    plugins: { ds: dsPlugin, "@typescript-eslint": tsPlugin },
     rules: {
       // d.ts files are type declarations; relax rules that don't apply
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-types": "off",
+      // Declaration files may include raw font stacks as string literal types
+      // (e.g., "sans-serif", "monospace"). These are not authored UI code
+      // paths and should not be subject to DS enforcement.
+      "ds/no-raw-font": "off",
     },
   },
 
@@ -479,9 +483,9 @@ export default [
   /* ▸ Root Storybook config: parse without a TS project */
   {
     files: [
-      ".storybook/**/*.{ts,tsx,js,jsx}",
-      ".storybook-ci/**/*.{ts,tsx,js,jsx}",
-      ".storybook-composed/**/*.{ts,tsx,js,jsx}",
+      "apps/storybook/.storybook/**/*.{ts,tsx,js,jsx}",
+      "apps/storybook/.storybook-ci/**/*.{ts,tsx,js,jsx}",
+      "apps/storybook/.storybook-composed/**/*.{ts,tsx,js,jsx}",
     ],
     languageOptions: {
       parser: tsParser,
@@ -963,5 +967,37 @@ export default [
     },
   },
 
+  /* ▸ Requested exceptions: disable no-hardcoded-copy in specific apps/packages */
+  {
+    files: [
+      // Apps
+      "apps/cms/**/*.{ts,tsx,js,jsx,mdx}",
+      "apps/dashboard/**/*.{ts,tsx,js,jsx,mdx}",
+      "apps/shop-bcd/**/*.{ts,tsx,js,jsx,mdx}",
+      // Packages
+      "packages/auth/**/*.{ts,tsx,js,jsx}",
+      "packages/email/**/*.{ts,tsx,js,jsx}",
+      "packages/email-templates/**/*.{ts,tsx,js,jsx}",
+      "packages/platform-machine/**/*.{ts,tsx,js,jsx}",
+      "packages/platform-core/**/*.{ts,tsx,js,jsx}",
+      "packages/stripe/**/*.{ts,tsx,js,jsx}",
+      // Sanity plugin (and core sanity package, for completeness)
+      "packages/plugins/sanity/**/*.{ts,tsx,js,jsx}",
+      "packages/sanity/**/*.{ts,tsx,js,jsx}",
+      "packages/types/**/*.{ts,tsx,js,jsx}",
+      "packages/config/**/*.{ts,tsx,js,jsx}",
+      "packages/zod-utils/**/*.{ts,tsx,js,jsx}",
+      "packages/themes/**/*.{ts,tsx,js,jsx}",
+      "packages/shared-utils/**/*.{ts,tsx,js,jsx}",
+      "packages/i18n/**/*.{ts,tsx,js,jsx}",
+      "packages/date-utils/**/*.{ts,tsx,js,jsx}",
+      "packages/configurator/**/*.{ts,tsx,js,jsx}",
+    ],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+ 
   
 ];

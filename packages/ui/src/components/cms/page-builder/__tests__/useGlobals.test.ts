@@ -12,6 +12,10 @@ jest.mock("../libraryStore", () => ({
 const { listGlobals, saveGlobal, updateGlobal } = jest.requireMock("../libraryStore");
 
 jest.mock("ulid", () => ({ ulid: () => "ULID" }));
+jest.mock("@acme/platform-core/validation/templateValidation", () => ({
+  __esModule: true,
+  validateTemplateCreation: () => ({ ok: true }),
+}));
 
 describe("useGlobals", () => {
   const comp = { id: "a", type: "Text", name: "Title", children: [] } as any;
@@ -67,4 +71,3 @@ describe("useGlobals", () => {
     expect(dispatch.mock.calls[1][0]).toEqual(expect.objectContaining({ type: "update-editor" }));
   });
 });
-

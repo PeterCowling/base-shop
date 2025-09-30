@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "@acme/i18n";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { SKU } from "@acme/types";
 import ProductFilter, { type FacetConfig } from "./ProductFilter";
@@ -17,6 +18,7 @@ export interface CollectionClientProps extends React.HTMLAttributes<HTMLDivEleme
 }
 
 export default function CollectionSectionClient({ initial, params, paginationMode = "loadMore", pageSize = 12, seoText, seoCollapsible = true, className, ...rest }: CollectionClientProps) {
+  const t = useTranslations();
   const [items, setItems] = React.useState<SKU[]>(initial);
   const [status, setStatus] = React.useState<'idle'|'loading'|'loaded'|'error'>("idle");
   const [sort, setSort] = React.useState<string>(params.sort ?? "");
@@ -93,12 +95,10 @@ export default function CollectionSectionClient({ initial, params, paginationMod
     <div className={className} {...rest}>
       <div className="mx-auto px-4 py-6">
         {status === 'loading' ? (
-          // i18n-exempt: developer-only loading hint
-          <div className="mb-3 text-sm text-neutral-600">Loading collection…</div>
+          <div className="mb-3 text-sm text-neutral-600">{t("collections.loading")}</div>
         ) : null}
         {status === 'error' ? (
-          // i18n-exempt: developer-only error hint
-          <div className="mb-3 text-sm text-red-600">Failed to load collection.</div>
+          <div className="mb-3 text-sm text-red-600">{t("collections.loadFailed")}</div>
         ) : null}
         <Sidebar className="gap-6">
           <aside>
@@ -114,17 +114,15 @@ export default function CollectionSectionClient({ initial, params, paginationMod
           </aside>
           <section>
             <div className="mb-4 flex items-center justify-between">
-              {/* i18n-exempt: section label */}
-              <h2 className="text-lg font-medium">Products</h2>
+              <h2 className="text-lg font-medium">{t("collections.sectionTitle")}</h2>
               <select
                 value={sort}
                 onChange={(e) => { setSort(e.target.value); updateUrl({ sort: e.target.value }); }}
                 className="rounded border px-2 py-1 text-sm"
               >
-                {/* i18n-exempt: UI options */}
-                <option value="">Default</option>
-                <option value="price">Price</option>
-                <option value="title">Title</option>
+                <option value="">{t("collections.sort.default")}</option>
+                <option value="price">{t("collections.sort.price")}</option>
+                <option value="title">{t("collections.sort.title")}</option>
               </select>
             </div>
             <DSGrid cols={1} gap={4} className="sm:grid-cols-2 lg:grid-cols-3">
@@ -143,24 +141,20 @@ export default function CollectionSectionClient({ initial, params, paginationMod
                   disabled={page <= 1}
                   onClick={() => updateUrl({ page: String(Math.max(1, page - 1)), pageSize: String(pageSize) })}
                 >
-                  {/* i18n-exempt: pagination label */}
-                  Previous
+                  {t("collections.pagination.previous")}
                 </button>
-                {/* i18n-exempt: pagination label */}
-                <span>Page {page}</span>
+                <span>{t("collections.pagination.page", { page })}</span>
                 <button
                   className="rounded border px-3 py-1 inline-flex items-center justify-center min-h-10 min-w-10"
                   onClick={() => updateUrl({ page: String(page + 1), pageSize: String(pageSize) })}
                 >
-                  {/* i18n-exempt: pagination label */}
-                  Next
+                  {t("collections.pagination.next")}
                 </button>
               </div>
             ) : null}
             {seoText ? (
               <details className="mt-8" open={!seoCollapsible}>
-                {/* i18n-exempt: SEO summary label */}
-                <summary className="cursor-pointer select-none text-sm font-medium">About this collection</summary>
+                <summary className="cursor-pointer select-none text-sm font-medium">{t("collections.seoSummary")}</summary>
                 <div className="prose mt-2 w-full text-sm text-neutral-700" dangerouslySetInnerHTML={{ __html: seoText }} />
               </details>
             ) : null}

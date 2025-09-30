@@ -28,9 +28,10 @@ export default function FeaturedProductBlock({
   collectionId,
 }: FeaturedProductBlockProps) {
   const t = useTranslations();
-  // i18n-exempt: technical constants, not user-facing
-  const responsiveSizes = "(min-width: 768px) 50vw, 100vw"; // i18n-exempt: responsive image sizes
-  const secondaryMediaDataCy = "secondary-media"; // i18n-exempt: test identifier
+  // i18n-exempt -- DS-1234 [ttl=2025-11-30]: technical constants, not user-facing
+  const responsiveSizes = "(min-width: 768px) 50vw, 100vw"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+  const secondaryMediaDataCy = "secondary-media"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+  const ASPECT_SQUARE = "1/1"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
   const [product, setProduct] = useState<FeaturedProduct | null>(sku ?? null);
   const [size, setSize] = useState<string | undefined>();
   const [quantity, setQuantity] = useState(1);
@@ -72,7 +73,7 @@ export default function FeaturedProductBlock({
             <video
               src={media.url}
               className="h-full w-full rounded-md object-cover"
-              data-aspect="1/1"
+              data-aspect={ASPECT_SQUARE}
               muted
               playsInline
             />
@@ -93,7 +94,7 @@ export default function FeaturedProductBlock({
             <video
               src={secondaryMedia.url}
               className="h-full w-full rounded-md object-cover"
-              data-aspect="1/1"
+              data-aspect={ASPECT_SQUARE}
               muted
               playsInline
             />

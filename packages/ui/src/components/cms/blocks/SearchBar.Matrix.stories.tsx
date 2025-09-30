@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof SearchBar> = {
   title: 'CMS Blocks/SearchBar/Matrix',
   component: SearchBar,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

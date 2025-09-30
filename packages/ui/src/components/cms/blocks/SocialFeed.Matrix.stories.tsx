@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof SocialFeed> = {
   title: 'CMS Blocks/SocialFeed/Matrix',
   component: SocialFeed,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Embeds a Twitter or Instagram feed based on account or hashtag.' } } },
 };

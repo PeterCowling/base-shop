@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useTranslations } from "@acme/i18n";
 import { validateSectionRules } from "@acme/platform-core/validation/sectionRules";
 import type { ValidationResult } from "@acme/platform-core/validation/sectionRules";
 import type { SectionTemplate } from "@acme/types/section/template";
@@ -21,6 +22,7 @@ export default function usePublishWithValidation({
   handlePublish,
   setToast,
 }: UsePublishWithValidationOptions) {
+  const t = useTranslations();
   return useCallback(async () => {
     try {
       const sections: SectionTemplate[] = (components || [])
@@ -37,7 +39,7 @@ export default function usePublishWithValidation({
 
       const result: ValidationResult = validateSectionRules(sections);
       if (result.ok === false) {
-        const msg = result.errors?.join("\n") || "Validation failed"; // i18n-exempt: aggregated validation message
+        const msg = result.errors?.join("\n") || (t("cms.builder.validation.failed") as string);
         setToast({ open: true, message: msg });
         return;
       }
@@ -45,5 +47,5 @@ export default function usePublishWithValidation({
       // non-blocking: proceed to publish if validation throws unexpectedly
     }
     await handlePublish();
-  }, [components, handlePublish, setToast]);
+  }, [components, handlePublish, setToast, t]);
 }

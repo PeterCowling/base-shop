@@ -5,19 +5,20 @@ The developer instance runs on the Vite builder for fast HMR and startup.
 
 ## Running Storybook
 
-Start the interactive UI explorer with:
+Start the interactive UI explorer (app wrapper) with:
 
 ```bash
-pnpm storybook
+pnpm storybook   # runs @apps/storybook (config: apps/storybook/.storybook)
 ```
 
-For CI and a quicker subset, use the filtered config on port 6007:
+For CI and a quicker subset, use the filtered config on port 6007 (app wrapper):
 
 ```bash
-pnpm storybook:ci
+pnpm storybook:ci   # runs @apps/storybook run dev:ci (config: apps/storybook/.storybook-ci)
+pnpm storybook:composed   # runs @apps/storybook run dev:composed (config: apps/storybook/.storybook-composed)
 ```
 
-Stories live under `packages/ui` and `.storybook/stories`. A small
+Stories live under `packages/ui` and `apps/storybook/.storybook/stories`. A small
 "known-good" subset is tagged with `ci` and used by the CI config.
 
 ### Responsive Carousels
@@ -47,9 +48,9 @@ Critical stories covered in CI (Matrix):
 
 Where the smoke tests live:
 
-- `.storybook/test-runner/__tests__/smoke-health.test.ts` — basic iframe boot
-- `.storybook/test-runner/__tests__/tokens.test.ts` — Tokens/All base→brandx via globals
-- `.storybook/test-runner/__tests__/usefsm.test.ts` — verifies `useFSM` toggles label
+- `apps/storybook/.storybook/test-runner/__tests__/smoke-health.test.ts` — basic iframe boot
+- `apps/storybook/.storybook/test-runner/__tests__/tokens.test.ts` — Tokens/All base→brandx via globals
+- `apps/storybook/.storybook/test-runner/__tests__/usefsm.test.ts` — verifies `useFSM` toggles label
 
 Notes:
 
@@ -65,7 +66,7 @@ Notes:
 The toolbar lets you toggle between design token themes (`base` or `brandx`) and
 light, dark, or system mode. Dark tokens are defined once and applied to
 `:root` with `@media (prefers-color-scheme: dark)`, while the `.theme-dark`
-class forces dark mode when needed. Theme logic lives in `.storybook/preview.tsx`.
+class forces dark mode when needed. Theme logic lives in `apps/storybook/.storybook/preview.tsx`.
 
 ## Publishing Previews
 

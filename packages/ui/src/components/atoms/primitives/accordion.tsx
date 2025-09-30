@@ -124,7 +124,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
           data-state={isOpen ? "open" : "closed"}
           data-value={value}
           className={cn(
-            // i18n-exempt — CSS utility class names
+            // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
             "rounded-md border border-border-3",
             className,
           )}
@@ -162,9 +162,9 @@ export const AccordionTrigger = forwardRef<
       data-state={isOpen ? "open" : "closed"}
       onClick={handleClick}
       className={cn(
-        // i18n-exempt — CSS utility class names
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
         "flex w-full items-center justify-between gap-2 rounded-md px-4 py-2 text-start text-sm font-semibold transition-colors",
-        // i18n-exempt — CSS utility class names
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         className,
       )}
@@ -174,9 +174,9 @@ export const AccordionTrigger = forwardRef<
       <ChevronDownIcon
         aria-hidden
         className={cn(
-          // i18n-exempt — CSS utility class names
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
           "h-4 w-4 shrink-0 transition-transform duration-200",
-          // i18n-exempt — CSS utility class names
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
           isOpen ? "rotate-180" : "rotate-0",
         )}
       />
@@ -199,10 +199,10 @@ export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps
         data-state={isOpen ? "open" : "closed"}
         hidden={!isOpen}
         className={cn(
-          // i18n-exempt — CSS utility class names
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
           "px-4 pb-4 text-sm",
           className,
-          // i18n-exempt — CSS utility class names
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
           !isOpen && "hidden",
         )}
         {...props}

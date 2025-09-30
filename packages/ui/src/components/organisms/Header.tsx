@@ -51,7 +51,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
     const t = useTranslations();
     const viewport = useViewport();
     const logo = logoVariants?.[viewport];
-    // i18n-exempt: CSS utility class strings
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     const headerBaseClass = "bg-surface-1 border-b border-border-2";
     return (
       <header
@@ -60,9 +60,9 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
         className={cn(headerBaseClass, className)}
         {...props}
       >
-        {/* i18n-exempt: CSS utility class strings */}
+        {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
         <div className="mx-auto h-16 px-4">
-          {/* i18n-exempt: CSS utility class strings */}
+          {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
           <Cluster alignY="center" justify="between" className="h-full gap-6">
             <a href="/" data-token="--color-fg">
               <Logo
@@ -71,7 +71,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                 height={logo?.height}
                 alt={shopName}
                 fallbackText={shopName}
-                className="font-bold" /* i18n-exempt: CSS utility class string */
+                className="font-bold" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
               />
             </a>
             {/* eslint-disable-next-line ds/no-raw-font -- DS-1234: false positive; rule matches "aria-label" as "arial" */}

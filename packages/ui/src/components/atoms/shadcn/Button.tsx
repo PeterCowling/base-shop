@@ -1,6 +1,6 @@
 // packages/ui/components/atoms/shadcn/Button.tsx
 "use client";
-// i18n-exempt: component has no embedded user-facing strings
+// i18n-exempt file -- DS-1234 [ttl=2025-11-30] — component has no embedded user-facing strings
 
 import * as React from "react";
 import { cn } from "../../../utils/style";
@@ -21,15 +21,15 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // Only override when rendering icon-only buttons for consistent square touch targets.
     const sizeClass =
       size === "icon"
-        ? "h-10 w-12 min-w-12 p-0 shrink-0" // i18n-exempt: classes only
+        ? "h-10 w-12 min-w-12 p-0 shrink-0" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         : size === "sm"
-        ? "h-8 px-3 py-1.5 text-xs" // i18n-exempt: classes only
+        ? "h-8 px-3 py-1.5 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         : "";
     if (variant === "destructive") {
       const base =
-        "inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"; // i18n-exempt: classes only
+        "inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       const styles =
-        "bg-destructive text-destructive-foreground hover:bg-destructive/90"; // i18n-exempt: classes only
+        "bg-destructive text-destructive-foreground hover:bg-destructive/90"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       // Avoid forwarding non-DOM props when rendering native elements
       const {
         iconOnly: _iconOnly,
@@ -60,4 +60,4 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
   }
 );
-Button.displayName = "Button"; // i18n-exempt: component displayName
+Button.displayName = "Button"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]

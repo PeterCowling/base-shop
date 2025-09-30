@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof RentalAvailabilitySection> = {
   title: 'CMS Blocks/RentalAvailabilitySection/Matrix',
   component: RentalAvailabilitySection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

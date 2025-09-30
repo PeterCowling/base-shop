@@ -30,7 +30,7 @@ describe("revoke", () => {
 
     const result = await revoke("id");
 
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
@@ -42,7 +42,7 @@ describe("revoke", () => {
     const result = await revoke("id");
 
     expect(hasPermission).toHaveBeenCalledWith(session.role, "manage_sessions");
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(listSessions).not.toHaveBeenCalled();
     expect(revalidatePath).not.toHaveBeenCalled();
   });
@@ -58,7 +58,7 @@ describe("revoke", () => {
     expect(listSessions).toHaveBeenCalledWith(session.customerId);
     expect(result).toEqual({
       success: false,
-      error: "Session does not belong to the user.",
+      error: "account.sessions.errors.notOwned",
     });
     expect(revalidatePath).not.toHaveBeenCalled();
   });
@@ -72,7 +72,7 @@ describe("revoke", () => {
     const result = await revoke("target");
 
     expect(listSessions).toHaveBeenCalledWith(session.customerId);
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
@@ -86,7 +86,7 @@ describe("revoke", () => {
     const result = await revoke("target");
 
     expect(authRevokeSession).toHaveBeenCalledWith("target");
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
@@ -104,4 +104,3 @@ describe("revoke", () => {
     expect(revalidatePath).toHaveBeenCalledWith("/account/sessions");
   });
 });
-

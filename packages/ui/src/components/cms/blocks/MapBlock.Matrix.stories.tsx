@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof MapBlock> = {
   title: 'CMS Blocks/MapBlock/Matrix',
   component: MapBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

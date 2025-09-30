@@ -19,11 +19,10 @@ export function useUploadHandlers(actions: Pick<
   const onUploaded = useCallback(
     (item: MediaItem) => {
       if (!hasUrl(item)) {
-        // i18n-exempt — developer diagnostic, not user-facing
-        console.error("Uploaded media item is missing a URL", item);
+        console.error(/* i18n-exempt -- DEV-LOG-001 [ttl=2026-01-01] */ "cms.media.upload.missingUrl", item);
         setToast({
           open: true,
-          message: t("Uploaded media item is missing a URL."),
+          message: t("cms.media.upload.missingUrl"),
           variant: "error",
         });
         return;
@@ -32,7 +31,7 @@ export function useUploadHandlers(actions: Pick<
       const itemWithUrl = item as MediaItemWithUrl;
       setFiles((prev) => [itemWithUrl, ...prev]);
       setSelectedUrl(itemWithUrl.url);
-      setToast({ open: true, message: t("Media uploaded."), variant: "success" });
+      setToast({ open: true, message: t("cms.media.upload.success"), variant: "success" });
     },
     [setFiles, setSelectedUrl, setToast, t]
   );

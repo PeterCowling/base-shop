@@ -94,9 +94,15 @@ export default function BlockChildren({
   // If tabbed container, group children by slotKey
   let slots: SlotDef[] | null = null;
   if (isTabbed) {
-    const titles = compType === "Tabs"
-      ? (((component as Partial<TabsComponent>).labels ?? []) as string[])
-      : (((component as Partial<TabsAccordionContainerComponent>).tabs ?? []) as string[]);
+    let titles: string[];
+    if (compType === "Tabs") {
+      // Support legacy shape where Tabs used `tabs` instead of `labels`.
+      const labels = ((component as Partial<TabsComponent>).labels ?? []) as string[];
+      const legacyTabs = ((component as Partial<TabsAccordionContainerComponent>).tabs ?? []) as string[];
+      titles = labels.length > 0 ? labels : legacyTabs;
+    } else {
+      titles = (((component as Partial<TabsAccordionContainerComponent>).tabs ?? []) as string[]);
+    }
     slots = (titles.length > 0 ? titles : [t("Content 1") as string, t("Content 2") as string]).map((title: string, i: number) => ({ key: String(i), title }));
     // sort visibleChildren by slotKey (undefined => 0), preserving underlying order within slot
     const slotIndex = (c: PageComponent) => {

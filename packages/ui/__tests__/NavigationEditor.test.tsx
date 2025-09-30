@@ -107,7 +107,8 @@ describe("NavigationEditor", () => {
     );
 
     const nested = container.querySelector("ul ul");
-    expect(nested).toHaveClass("ml-4");
+    // Uses logical properties: margin-inline-start
+    expect(nested).toHaveClass("ms-4");
 
     const childInput = screen.getAllByPlaceholderText("Label")[1];
     fireEvent.change(childInput, { target: { value: "Updated" } });
@@ -124,4 +125,3 @@ describe("NavigationEditor", () => {
     ]);
   });
 });
-

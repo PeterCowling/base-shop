@@ -14,11 +14,11 @@ export default function LanguageSwitcher({ current }: { current: Locale }) {
           key={locale}
           className={
             locale === current
-              ? "font-semibold underline" // i18n-exempt: class names
-              : "text-muted hover:underline" // i18n-exempt: class names
+              ? "font-semibold underline" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+              : "text-muted hover:underline" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
           }
         >
-          {/* i18n-exempt: language code label */}
+          {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
           {locale.toUpperCase()}
         </Link>
       ))}

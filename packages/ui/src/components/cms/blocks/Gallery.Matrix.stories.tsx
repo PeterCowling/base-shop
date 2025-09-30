@@ -10,7 +10,7 @@ import type { Locale } from '@acme/i18n/locales';
 const meta: Meta<typeof Gallery> = {
   title: 'CMS Blocks/Gallery/Matrix',
   component: Gallery,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

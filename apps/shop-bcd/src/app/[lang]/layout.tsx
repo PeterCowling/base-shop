@@ -65,7 +65,7 @@ export default async function LocaleLayout({
   /* Dynamic import of the locale JSON. Webpack bundles only en/de/it.     */
   const messages = (
     await import(
-      /* webpackInclude: /(en|de|it)\.json$/ */
+      /* webpackInclude: /(en|de|it|fr|es|ja|ko)\.json$/ */
       `@i18n/${lang}.json`
     )
   ).default;

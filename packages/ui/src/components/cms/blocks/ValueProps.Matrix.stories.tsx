@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof CmsValueProps> = {
   title: 'CMS Blocks/ValueProps/Matrix',
   component: CmsValueProps,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { items: fixture.items },
   parameters: { docs: { description: { component: 'Set of value proposition tiles (icon/title/desc).' } } },
 };

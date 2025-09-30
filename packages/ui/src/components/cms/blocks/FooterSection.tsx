@@ -15,7 +15,7 @@ export default function FooterSection({ variant = "simple", className, ...rest }
     <footer
       className={[
         className,
-        // i18n-exempt — CSS utility class names
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         "w-full border-t bg-neutral-50",
       ]
         .filter(Boolean)

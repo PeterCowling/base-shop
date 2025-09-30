@@ -1,4 +1,5 @@
 import { act, render, screen, within, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import React from "react";
 import LinkPicker from "../LinkPicker";
 
@@ -58,8 +59,12 @@ describe("LinkPicker", () => {
 
     render(<LinkPicker open onClose={() => {}} onPick={onPick} shop="bcd" />);
 
-    const input = screen.getByPlaceholderText("Search products…");
-    fireEvent.change(input, { target: { value: "shoe" } });
+    // Avoid reliance on i18n placeholder text; select the textbox by role
+    const dialog = screen.getByRole("dialog");
+    const input = within(dialog).getByRole("textbox");
+    // When using fake timers, userEvent needs to hook into timer advancement
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    await user.type(input, "shoe");
 
     await act(async () => {
       jest.advanceTimersByTime(210);
@@ -69,6 +74,7 @@ describe("LinkPicker", () => {
     const row = prod.closest("li")!;
     fireEvent.click(within(row).getByRole("button", { name: "Select" }));
     expect(onPick).toHaveBeenCalledWith("/products/sneaker");
+    jest.useRealTimers();
   });
 
   it("shows empty states when responses are invalid", async () => {

@@ -168,7 +168,14 @@ export function createShopEditorSections({
   localization,
   seo,
   errors,
-}: CreateShopEditorSectionsArgs): EditorSectionConfig<any>[] {
+}: CreateShopEditorSectionsArgs): Array<
+  | EditorSectionConfig<IdentitySectionWrapperProps>
+  | EditorSectionConfig<SeoSectionWrapperProps>
+  | EditorSectionConfig<ProvidersSectionWrapperProps>
+  | EditorSectionConfig<ThemeSectionWrapperProps>
+  | EditorSectionConfig<OverridesSectionWrapperProps>
+  | EditorSectionConfig<LocalizationSectionWrapperProps>
+> {
   return [
     {
       key: "identity",

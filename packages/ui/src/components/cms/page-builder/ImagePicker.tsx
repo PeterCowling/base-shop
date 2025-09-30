@@ -17,6 +17,7 @@ import {
 import { Loader } from "../../atoms/Loader";
 import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 import useMediaLibrary from "./useMediaLibrary";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   onSelect: (url: string) => void;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 function ImagePicker({ onSelect, children }: Props) {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -79,7 +81,7 @@ function ImagePicker({ onSelect, children }: Props) {
         <DialogTitle>Select image</DialogTitle>
         <DialogDescription className="sr-only">
           {/* i18n-exempt -- CMS dialog description for screen readers */}
-          Choose an image from the media library
+          {t("cms.media.picker.description")}
         </DialogDescription>
         <div className="flex items-center gap-2">
           <Input
@@ -140,7 +142,7 @@ function ImagePicker({ onSelect, children }: Props) {
           value={search}
           onChange={handleSearch}
           // i18n-exempt -- search placeholder in CMS
-          placeholder="Search media..."
+          placeholder={t("cms.media.picker.search.placeholder")}
         />
         {/* Media grid */}
         <div className="max-h-64 overflow-auto">
@@ -173,7 +175,7 @@ function ImagePicker({ onSelect, children }: Props) {
             {!loading && !mediaError && media.filter((m) => m.type === "image").length === 0 && (
               <p className="text-muted-foreground col-span-3 text-sm">
                 {/* i18n-exempt -- CMS empty state */}
-                No media found.
+                {t("cms.media.picker.empty")}
               </p>
             )}
           </DSGrid>

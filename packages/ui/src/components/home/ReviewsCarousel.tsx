@@ -54,25 +54,37 @@ export default function ReviewsCarousel({
           {t(quoteKey)}
         </blockquote>
         <div className={NAME_CLASS} data-token={TOKEN_MUTED}>
+          {"— "}
           {t(nameKey)}
         </div>
         <div className="mt-8 flex justify-center gap-4">
-          <button
-            aria-label={t("reviews.prev") as string}
-            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
-            onClick={prev}
-          >
-            <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}‹</span>
-            <span className="sr-only">{t("reviews.prev")}</span>
-          </button>
-          <button
-            aria-label={t("reviews.next") as string}
-            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
-            onClick={next}
-          >
-            <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}›</span>
-            <span className="sr-only">{t("reviews.next")}</span>
-          </button>
+          {(() => {
+            // Prefer translated labels when available; otherwise use accessible English fallbacks
+            const prevLabel = t("reviews.prev") as string;
+            const nextLabel = t("reviews.next") as string;
+            const ariaPrev = prevLabel === "reviews.prev" ? "Previous review" : prevLabel;
+            const ariaNext = nextLabel === "reviews.next" ? "Next review" : nextLabel;
+            return (
+              <>
+                <button
+                  aria-label={ariaPrev}
+                  className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
+                  onClick={prev}
+                >
+                  <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}‹</span>
+                  <span className="sr-only">{ariaPrev}</span>
+                </button>
+                <button
+                  aria-label={ariaNext}
+                  className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
+                  onClick={next}
+                >
+                  <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}›</span>
+                  <span className="sr-only">{ariaNext}</span>
+                </button>
+              </>
+            );
+          })()}
         </div>
       </div>
     </section>

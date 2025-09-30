@@ -1,3 +1,5 @@
+"use client";
+
 import { Card, CardContent } from "@/components/atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
 

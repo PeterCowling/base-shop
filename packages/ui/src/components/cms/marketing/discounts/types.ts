@@ -27,35 +27,36 @@ export const defaultDiscountValues: DiscountFormValues = {
   startDate: "",
   endDate: "",
   usageLimit: 0,
-  // i18n-exempt: default placeholder; UI surfaces will translate or override
-  appliesTo: "Entire catalog",
+  appliesTo: "",
 };
 
 export function getDiscountPreview(
-  values: DiscountFormValues
+  values: DiscountFormValues,
+  // Match the signature returned by @acme/i18n `useTranslations`
+  t?: (key: string, params?: Record<string, string | number>) => string
 ): DiscountPreviewData {
   const amountLabel =
     values.type === "percentage"
-      ? `${values.value}% off`
-      : `$${values.value.toFixed(2)} off`;
+      ? (t ? (t("cms.marketing.discounts.offer.percentage", { value: values.value }) as string) : `${values.value}% off`) // i18n-exempt -- INTL-000 fallback label [ttl=2026-03-31]
+      : (t ? (t("cms.marketing.discounts.offer.fixed", { amount: values.value.toFixed(2) }) as string) : `$${values.value.toFixed(2)} off`); // i18n-exempt -- INTL-000 fallback label [ttl=2026-03-31]
 
   const validity = values.startDate
     ? values.endDate
-      ? `${values.startDate} → ${values.endDate}`
-      : `Starts ${values.startDate}`
-    : "Schedule pending"; // i18n-exempt: computed label; caller provides t() at presentation
+      ? (t ? (t("cms.marketing.discounts.validity.range", { start: values.startDate, end: values.endDate }) as string) : `${values.startDate} → ${values.endDate}`) // i18n-exempt -- INTL-000 fallback label [ttl=2026-03-31]
+      : (t ? (t("cms.marketing.discounts.validity.starts", { date: values.startDate }) as string) : `Starts ${values.startDate}`) // i18n-exempt -- INTL-000 fallback label [ttl=2026-03-31]
+    : (t ? (t("cms.marketing.discounts.validity.pending") as string) : "Schedule pending"); // i18n-exempt -- INTL-000 fallback label [ttl=2026-03-31]
 
   const usageLabel =
     values.usageLimit > 0
-      ? `${values.usageLimit} uses remaining`
-      : "Unlimited use"; // i18n-exempt: computed label; caller provides t() at presentation
+      ? (t ? (t("cms.marketing.discounts.usage.remaining", { count: values.usageLimit }) as string) : `${values.usageLimit} uses remaining`) // i18n-exempt -- INTL-000 fallback label [ttl=2026-03-31]
+      : (t ? (t("cms.marketing.discounts.usage.unlimited") as string) : "Unlimited use"); // i18n-exempt -- INTL-000 fallback label [ttl=2026-03-31]
 
   return {
     // i18n-exempt: placeholder code for previews
     code: values.code || "NEWCODE",
     label: amountLabel,
     validity,
-    appliesTo: values.appliesTo,
+    appliesTo: values.appliesTo || (t ? (t("cms.marketing.discounts.appliesTo.entireCatalog") as string) : "Entire catalog"), // i18n-exempt -- INTL-000 fallback label [ttl=2026-03-31]
     usageLabel,
   };
 }

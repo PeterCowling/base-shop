@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof AnalyticsPixelsSection> = {
   title: 'CMS Blocks/AnalyticsPixelsSection/Matrix',
   component: AnalyticsPixelsSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

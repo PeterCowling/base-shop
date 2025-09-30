@@ -48,6 +48,13 @@ describe("StylePanel", () => {
       "cms.style.fontFamily": "Font family",
       "cms.style.fontSize": "Font size",
       "cms.style.lineHeight": "Line height",
+      // Per-breakpoint label templates and device names used by TypographyEditor
+      "cms.style.typography.fontSizeBp": "Font size ({bp})",
+      "cms.style.typography.lineHeightBp": "Line height ({bp})",
+      "cms.style.typography.headingBp": "Typography ({bp})",
+      "devices.desktop": "Desktop",
+      "devices.tablet": "Tablet",
+      "devices.mobile": "Mobile",
     });
 
     const component: any = { type: "Text", styles: "" };

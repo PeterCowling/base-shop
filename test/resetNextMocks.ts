@@ -16,3 +16,25 @@ jest.mock("next/link", () => ({
   default: ({ href, prefetch, children, ...rest }: any) =>
     React.createElement("a", { href, ...rest }, children),
 }));
+
+// Provide a light-weight mock of next/navigation hooks for component tests.
+// Reuse the shared shim to keep behavior consistent across tests.
+jest.mock("next/navigation", () => ({
+  __esModule: true,
+  useRouter: () => ({
+    push: jest.fn(),
+    replace: jest.fn(),
+    back: jest.fn(),
+    refresh: jest.fn(),
+    prefetch: jest.fn(),
+  }),
+  useSearchParams: () => new URLSearchParams(""),
+  usePathname: () => "/",
+  useParams: () => ({}),
+  notFound: () => {
+    throw new Error("next/navigation notFound() called (stub)");
+  },
+  redirect: (_url: string) => {
+    throw new Error("next/navigation redirect() called (stub)");
+  },
+}));

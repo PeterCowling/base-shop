@@ -1,3 +1,4 @@
+// i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/shop-bcd/src/app/api/delivery/schedule/route.ts
 import "@acme/zod-utils/initZod";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
     !pd.windows.includes(parsed.data.window)
   ) {
     return NextResponse.json(
-      { error: "Premier delivery not available" }, // i18n-exempt: API error string; UI will present localized copy
+      { error: "Premier delivery not available" }, // i18n-exempt -- I18N-123 API error string; UI will present localized copy [ttl=2025-06-30]
       { status: 400 },
     );
   }

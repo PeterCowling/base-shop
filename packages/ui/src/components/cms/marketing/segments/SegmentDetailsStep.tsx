@@ -24,14 +24,14 @@ export function SegmentDetailsStep({
         <CardContent className="space-y-4">
           <div className="space-y-1">
             <label
-              /* i18n-exempt — non-user-facing id reference */
+              /* i18n-exempt -- ABC-123 non-user-facing id reference [ttl=2026-12-31] */
               htmlFor="segment-name"
               className="text-sm font-medium"
             >
-              {t("Segment name")}
+              {t("cms.marketing.segments.details.name.label")}
             </label>
             <Input
-              /* i18n-exempt — non-user-facing id */
+              /* i18n-exempt -- ABC-123 non-user-facing id [ttl=2026-12-31] */
               id="segment-name"
               value={definition.name}
               onChange={(event) =>
@@ -39,16 +39,16 @@ export function SegmentDetailsStep({
               }
               aria-invalid={errors.name ? "true" : "false"}
               aria-describedby={
-                // i18n-exempt — non-user-facing id reference
+                // i18n-exempt -- ABC-123 non-user-facing id reference [ttl=2026-12-31]
                 errors.name ? "segment-name-error" : undefined
               }
             />
             {errors.name && (
               <p
-                /* i18n-exempt — non-user-facing id */
+                /* i18n-exempt -- ABC-123 non-user-facing id [ttl=2026-12-31] */
                 id="segment-name-error"
                 className="text-danger text-xs"
-                /* i18n-exempt — token reference string */
+                /* i18n-exempt -- ABC-123 token reference string [ttl=2026-12-31] */
                 data-token="--color-danger"
               >
                 {errors.name}
@@ -58,14 +58,14 @@ export function SegmentDetailsStep({
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1 sm:col-span-2">
               <label
-                /* i18n-exempt — non-user-facing id reference */
+                /* i18n-exempt -- ABC-123 non-user-facing id reference [ttl=2026-12-31] */
                 htmlFor="segment-description"
                 className="text-sm font-medium"
               >
-                {t("Description")}
+                {t("cms.marketing.segments.details.description.label")}
               </label>
               <Textarea
-                /* i18n-exempt — non-user-facing id */
+                /* i18n-exempt -- ABC-123 non-user-facing id [ttl=2026-12-31] */
                 id="segment-description"
                 rows={3}
                 value={definition.description}
@@ -76,14 +76,14 @@ export function SegmentDetailsStep({
             </div>
             <div className="space-y-1">
               <label
-                /* i18n-exempt — non-user-facing id reference */
+                /* i18n-exempt -- ABC-123 non-user-facing id reference [ttl=2026-12-31] */
                 htmlFor="segment-size"
                 className="text-sm font-medium"
               >
-                {t("Estimated size")}
+                {t("cms.marketing.segments.estimatedSize.label")}
               </label>
               <Input
-                /* i18n-exempt — non-user-facing id */
+                /* i18n-exempt -- ABC-123 non-user-facing id [ttl=2026-12-31] */
                 id="segment-size"
                 type="number"
                 min={0}
@@ -99,7 +99,7 @@ export function SegmentDetailsStep({
         </CardContent>
       </Card>
       <div className="flex justify-end gap-2">
-        <Button type="submit">{t("Continue")}</Button>
+        <Button type="submit">{t("actions.continue")}</Button>
       </div>
     </form>
   );

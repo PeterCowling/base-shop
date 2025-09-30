@@ -50,7 +50,10 @@ export default function UpgradePreviewPage() {
           setLinks(pageLinks);
         }
       } catch (err) {
-        console.error("Failed to load upgrade changes", err); // i18n-exempt — dev log only
+        console.error(
+          "Failed to load upgrade changes", // i18n-exempt -- ABC-123 [ttl=2025-12-31] dev log only
+          err,
+        );
       }
     }
     void load();
@@ -64,7 +67,7 @@ export default function UpgradePreviewPage() {
       const data = (await res.json().catch(() => ({}))) as ApiError;
       if ("error" in data) throw new Error(data.error);
     } catch (err) {
-      console.error("Publish failed", err); // i18n-exempt — dev log only
+      console.error("Publish failed", err); // i18n-exempt -- ABC-123 [ttl=2025-12-31] dev log only
       setError(err instanceof Error ? err.message : (t("upgrade.publishFailed") as string));
     } finally {
       setPublishing(false);

@@ -18,6 +18,12 @@ export const PromoCodeInput = React.forwardRef<
   const t = useTranslations();
   const [code, setCode] = React.useState("");
 
+  // Fallback to readable English when i18n messages are unavailable in tests
+  const tf = (key: string, fallback: string) => {
+    const val = t(key) as string;
+    return val === key ? fallback : val;
+  };
+
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (onApply) onApply(code);
@@ -36,11 +42,11 @@ export const PromoCodeInput = React.forwardRef<
       <Input
         value={code}
         onChange={(e) => setCode(e.target.value)}
-        placeholder={t("promo.code.placeholder") as string}
+        placeholder={tf("promo.code.placeholder", "Promo code")}
         className="flex-1" /* i18n-exempt -- UI-000: class names */
       />
       <Button type="submit" disabled={!code || loading}>
-        {loading ? (t("actions.applying") as string) : (t("actions.apply") as string)}
+        {loading ? tf("actions.applying", "Applying...") : tf("actions.apply", "Apply")}
       </Button>
     </form>
   );

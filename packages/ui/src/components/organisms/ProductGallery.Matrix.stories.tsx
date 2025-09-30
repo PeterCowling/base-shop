@@ -7,9 +7,10 @@ import { makeStateStory } from '../../story-utils/createStories';
 const meta: Meta<typeof ProductGallery> = {
   title: 'Organisms/Product Gallery/Matrix',
   component: ProductGallery,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
+      autodocs: false,
       description: {
         component:
           'Displays a set of product media (images/video/360/model). Matrix covers loading/empty/error + RTL.',

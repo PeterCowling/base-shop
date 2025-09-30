@@ -5,7 +5,8 @@ import { FileSelector } from "../atoms/FileSelector";
 import ThemeToggle from "../ThemeToggle";
 import { Tag } from "../atoms/Tag";
 
-let setThemeMock: jest.Mock;
+// Use "var" to avoid TDZ when Jest hoists the mock factory
+var setThemeMock: jest.Mock;
 
 jest.mock(
   "@platform-core/contexts/ThemeContext",

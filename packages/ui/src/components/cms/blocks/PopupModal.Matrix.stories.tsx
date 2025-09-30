@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof PopupModal> = {
   title: 'CMS Blocks/PopupModal/Matrix',
   component: PopupModal,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

@@ -260,11 +260,14 @@ describe("StepTheme", () => {
 });
 
 describe("StepTokens", () => {
-  it("selects token and saves", () => {
-    configurator.state.themeDefaults = { color: "red" };
+  it("selects a pairing and saves", () => {
+    configurator.state.themeDefaults = { "--font-sans": "system-ui" } as any;
     render(<StepTokens />);
-    fireEvent.click(screen.getByText("select token"));
-    expect(screen.getByTestId("style-editor")).toBeInTheDocument();
+    // Click the first available pairing button in the list
+    const useButtons = screen.getAllByText("Use pairing");
+    expect(useButtons.length).toBeGreaterThan(0);
+    fireEvent.click(useButtons[0]);
+    // Save & return
     fireEvent.click(screen.getByText("Save & return"));
     expect(markComplete).toHaveBeenCalledWith(true);
     expect(push).toHaveBeenCalledWith("/cms/configurator");
@@ -331,4 +334,3 @@ describe("StepHomePage", () => {
     expect(push).toHaveBeenCalledWith("/cms/configurator/next");
   });
 });
-

@@ -22,14 +22,14 @@ export default function MediaSelectionCheck({
 }: MediaSelectionCheckProps): ReactElement {
   return (
     <span
-      data-testid="media-selection-check" // i18n-exempt: test id only
+      data-testid="media-selection-check" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       className={cn(
-        "pointer-events-none absolute top-1 end-1 flex h-5 w-5 items-center justify-center rounded-full border border-bg bg-primary text-primary-fg transition-opacity" /* i18n-exempt: classes only */,
-        selected ? "opacity-100" : "opacity-0" /* i18n-exempt: classes only */,
+        "pointer-events-none absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full border border-bg bg-primary text-primary-fg transition-opacity" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */,
+        selected ? "opacity-100" : "opacity-0" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */,
         className,
       )}
     >
-      <CheckIcon aria-hidden className="h-4 w-4" /> {/* i18n-exempt: classes only */}
+      <CheckIcon aria-hidden className="h-4 w-4" /> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
     </span>
   );
 }

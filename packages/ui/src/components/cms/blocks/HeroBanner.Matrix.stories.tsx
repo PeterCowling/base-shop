@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof CmsHeroBanner> = {
   title: 'CMS Blocks/HeroBanner/Matrix',
   component: CmsHeroBanner,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { slides: fixture.slides },
 };
 export default meta;

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useTranslations } from "@acme/i18n";
 
 export interface RentalTermsSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   sku: string;
@@ -14,21 +15,17 @@ export interface RentalTermsSectionProps extends React.HTMLAttributes<HTMLDivEle
 }
 
 export default function RentalTermsSection({ sku, termsVersion, onAdd, className, ...rest }: RentalTermsSectionProps) {
+  const t = useTranslations();
   const [accepted, setAccepted] = React.useState(false);
   const [insurance, setInsurance] = React.useState(false);
   const [insuranceFee, setInsuranceFee] = React.useState<number | undefined>(undefined);
   const [deposit, setDeposit] = React.useState<number | undefined>(undefined);
 
-  // i18n-exempt -- Shopping microcopy; pending i18n integration
-  const LABEL_ADD_INSURANCE = "Add insurance";
-  // i18n-exempt -- Microcopy label for fee input
-  const LABEL_FEE = "Fee";
-  // i18n-exempt -- Microcopy label for deposit input
-  const LABEL_DEPOSIT = "Deposit";
-  // i18n-exempt -- Terms acceptance label; version interpolated
-  const labelAcceptTerms = (v: string) => `I accept rental terms (v${v})`;
-  // i18n-exempt -- Button microcopy; pending i18n integration
-  const LABEL_ADD_TO_CART = "Add to cart";
+  const LABEL_ADD_INSURANCE = t("rental.addInsurance") as string;
+  const LABEL_FEE = t("rental.fee") as string;
+  const LABEL_DEPOSIT = t("rental.deposit") as string;
+  const labelAcceptTerms = (v: string) => t("rental.acceptTerms", { version: v }) as string;
+  const LABEL_ADD_TO_CART = t("actions.addToCart") as string;
 
   const handleAdd = () => {
     if (!accepted) return;

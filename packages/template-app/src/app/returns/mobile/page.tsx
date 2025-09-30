@@ -10,7 +10,7 @@ import CleaningInfo from "../../../components/CleaningInfo";
 import Scanner from "./Scanner";
 
 const SHOP_ID = "bcd";
-// i18n-exempt — static metadata; app-level routes localize this
+// i18n-exempt -- ABC-123 [ttl=2025-12-31] static metadata; app-level routes localize this
 export const metadata = { title: "Mobile Returns" };
 
 import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";

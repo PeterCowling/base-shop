@@ -12,3 +12,6 @@ export * from "./useRemoteImageProbe";
 export * from "./useProductInputs";
 export * from "./useProductMediaManager";
 export { default as useViewport } from "./useViewport";
+export * from "./tryon/useDirectR2Upload";
+export * from "./tryon/analytics";
+export * from "./tryon/useTryOnAnalytics";

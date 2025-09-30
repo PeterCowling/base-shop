@@ -44,11 +44,11 @@ export function useDeleteHandlers({ shop, onDelete, state, actions }: DeleteDeps
         await onDelete(shop, targetUrl);
         setFiles((prev) => prev.filter((file) => file.url !== targetUrl));
         setSelectedUrl((prev) => (prev === targetUrl ? null : prev));
-        setToast({ open: true, message: String(t("Media deleted.")), variant: "success" });
+        setToast({ open: true, message: String(t("cms.media.toast.deleted")), variant: "success" });
         setDialogDeleteUrl((previous) => (previous === targetUrl ? null : previous));
       } catch (error) {
-        console.error("Failed to delete media item", error); /* i18n-exempt: developer log */
-        setToast({ open: true, message: String(t("Failed to delete media item.")), variant: "error" });
+        console.error("Failed to delete media item", error); /* i18n-exempt -- INTL-204 developer log [ttl=2026-12-31] */
+        setToast({ open: true, message: String(t("cms.media.errors.deleteFailed")), variant: "error" });
       } finally {
         setDeletePending(false);
       }
@@ -63,7 +63,7 @@ export function useDeleteHandlers({ shop, onDelete, state, actions }: DeleteDeps
         typeof window !== "undefined" &&
         typeof window.confirm === "function"
       ) {
-        if (window.confirm(String(t("Delete media?")))) {
+        if (window.confirm(String(t("cms.media.confirm.delete")))) {
           void performDelete(url);
         }
         return;

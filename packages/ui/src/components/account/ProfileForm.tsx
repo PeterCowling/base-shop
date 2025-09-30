@@ -41,12 +41,12 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
     setMessage(null);
     setErrors({});
     const newErrors: Record<string, string> = {};
-    if (!form.name) newErrors.name = t("Name is required.") as string;
-    if (!form.email) newErrors.email = t("Email is required.") as string;
+    if (!form.name) newErrors.name = t("forms.validation.name.required") as string;
+    if (!form.email) newErrors.email = t("forms.validation.email.required") as string;
     if (Object.keys(newErrors).length) {
       setErrors(newErrors);
       setStatus("error");
-      setMessage(t("Please fix the errors below."));
+      setMessage(t("forms.error.fixBelow"));
       focusFirstError(newErrors);
       return;
     }
@@ -64,7 +64,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
         const data = await res.json();
         setStatus("error");
         if (res.status === 409) {
-          const conflict = { email: (data.error ?? t("Email already in use")) as string };
+          const conflict = { email: (data.error ?? t("forms.email.inUse")) as string };
           setErrors(conflict);
           setMessage(conflict.email);
           focusFirstError(conflict);
@@ -74,25 +74,25 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
             Object.entries(fieldErrors).map(([key, value]) => [key, value[0]])
           );
           setErrors(formatted);
-          setMessage(t("Please fix the errors below."));
+          setMessage(t("forms.error.fixBelow"));
           focusFirstError(formatted);
         } else {
-          setMessage(data.error ?? t("Update failed"));
+          setMessage(data.error ?? t("forms.error.updateFailed"));
         }
         return;
       }
       setStatus("success");
-      setMessage(t("Profile updated successfully."));
+      setMessage(t("forms.profile.success"));
     } catch {
       setStatus("error");
-      setMessage(t("An unexpected error occurred."));
+      setMessage(t("forms.error.unexpected"));
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
       <div className="flex flex-col">
-        <label htmlFor="name" className="mb-1">{t("Name")}</label>
+        <label htmlFor="name" className="mb-1">{t("fields.name")}</label>
         <input
           id="name"
           name="name"
@@ -107,7 +107,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           <p
             id="name-error"
             className="text-danger text-sm"
-            data-token="--color-danger" // i18n-exempt — dynamic validation message
+            data-token="--color-danger" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — dynamic validation message
             role="alert"
           >
             {errors.name}
@@ -115,7 +115,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
         )}
       </div>
       <div className="flex flex-col">
-        <label htmlFor="email" className="mb-1">{t("Email")}</label>
+        <label htmlFor="email" className="mb-1">{t("fields.email")}</label>
         <input
           id="email"
           name="email"
@@ -131,7 +131,7 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
           <p
             id="email-error"
             className="text-danger text-sm"
-            data-token="--color-danger" // i18n-exempt — dynamic validation message
+            data-token="--color-danger" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — dynamic validation message
             role="alert"
           >
             {errors.email}
@@ -141,19 +141,19 @@ export default function ProfileForm({ name = "", email = "" }: ProfileFormProps)
       <button
         type="submit"
         className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
-        data-token="--color-primary" // i18n-exempt — label below is translated
+        data-token="--color-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — label below is translated
       >
-        <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt — child content uses t() */}
+        <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — child content uses t() */}
           {t("Save")}
         </span>
       </button>
       {status === "success" && (
-        <p className="text-success" data-token="--color-success" role="status"> {/* i18n-exempt — dynamic status message */}
+        <p className="text-success" data-token="--color-success" role="status"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — dynamic status message */}
           {message}
         </p>
       )}
       {status === "error" && (
-        <p className="text-danger" data-token="--color-danger" role="alert"> {/* i18n-exempt — dynamic error message */}
+        <p className="text-danger" data-token="--color-danger" role="alert"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — dynamic error message */}
           {message}
         </p>
       )}

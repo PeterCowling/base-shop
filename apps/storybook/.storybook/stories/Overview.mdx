@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Overview" />
+
+
+# Base Shop — Storybook Overview
+
+Docs-only homepage for quick orientation
+
+This Storybook showcases our UI package and composition stories used across the Shop/CMS apps. It includes MSW-backed data scenarios, theme tokens, viewport presets, and a curated CI subset for fast validation.
+
+## Getting Started
+
+- Start: `pnpm storybook` (port 6006)
+- CI subset: `pnpm storybook:ci` (port 6007)
+- Compose multiple Storybooks: `pnpm storybook:composed` (expects refs on 6006/6008/6010)
+
+## Global Toolbar
+
+- Tokens: switch design token themes (`base`, `brandx`).
+- Scenario: controls MSW fixtures (featured/new/bestsellers/etc.).
+- Locale & Currency: updates `lang` and price rendering.
+- Network/Net Error: simulate latency and 500s for handlers.
+
+These map to `window.__SB_GLOBALS__` and drive MSW handlers via `mapDataStateToMsw()`.
+
+## Layout & Viewports
+
+- Custom viewports (`desktop`, `tablet`, `mobile1`, `mobile2`) under the viewport addon.
+- Backgrounds: quick switch between App/Canvas/Dark.
+
+## Where Things Live
+
+- UI component stories: `packages/ui/src/components/**/**/*.stories.tsx`
+- Composition docs/stories (PDP/PLP/Homepage): `.storybook/stories/*.mdx|*.stories.tsx`
+- MSW handlers for stories: `.storybook/msw/handlers.ts`
+- Global decorators and toolbar: `.storybook/preview.tsx`
+
+## Writing Stories
+
+- Prefer CSF stories colocated with components; add a Matrix suite for complex states (`*.Matrix.stories.tsx`).
+- Include common states where applicable: `Default`, `Empty`, `Loading`, `Error`, plus RTL/mobile coverage in Matrix.
+- Use `parameters: { cart: true }` to opt into the mocked `CartProvider`.
+
+## Tips
+
+- Docs pages like this one are MDX-only and have no component. Use them for intro pages or process notes.
+- Links: You can deep-link to stories via the URL query `?path=/story/<group>--<story>` or docs via `?path=/docs/<group>--docs`.
+
+---
+
+Happy building!

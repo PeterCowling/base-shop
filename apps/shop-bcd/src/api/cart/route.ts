@@ -1,3 +1,4 @@
+// i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 import "@acme/zod-utils/initZod";
 
 import {
@@ -33,16 +34,17 @@ export async function POST(req: NextRequest) {
     sku: { id: skuId },
     qty,
     size,
-  } = parsed.data;
+    meta,
+  } = parsed.data as typeof parsed.data & { meta?: { source?: string; tryOn?: { idempotencyKey?: string; transform?: Record<string, unknown> } } };
   const sku = getProductById(skuId);
   if (!sku) {
     const exists = PRODUCTS.some((p) => p.id === skuId);
     const status = exists ? 409 : 404;
-    const error = exists ? "Out of stock" /* i18n-exempt: machine-readable API error, not user-facing UI */ : "Item not found" /* i18n-exempt: machine-readable API error, not user-facing UI */;
+    const error = exists ? "Out of stock" /* i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30] */ : "Item not found" /* i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30] */;
     return NextResponse.json({ error }, { status });
   }
   if (sku.sizes.length && !size) {
-    return NextResponse.json({ error: "Size required" }, { status: 400 }); // i18n-exempt: machine-readable API error, not user-facing UI
+    return NextResponse.json({ error: "Size required" }, { status: 400 }); // i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30]
   }
   const cookie = req.cookies.get(CART_COOKIE)?.value;
   const cart: CartState = (decodeCartCookie(cookie) ?? {}) as CartState;
@@ -50,10 +52,10 @@ export async function POST(req: NextRequest) {
   const line = cart[id];
   const newQty = (line?.qty ?? 0) + qty;
   if (newQty > sku.stock) {
-    return NextResponse.json({ error: "Insufficient stock" }, { status: 409 }); // i18n-exempt: machine-readable API error, not user-facing UI
+    return NextResponse.json({ error: "Insufficient stock" }, { status: 409 }); // i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30]
   }
 
-  cart[id] = { sku, qty: newQty, size };
+  cart[id] = { sku, qty: newQty, size, meta };
 
   const res = NextResponse.json({ ok: true, cart });
   res.headers.set(
@@ -78,7 +80,7 @@ export async function PATCH(req: NextRequest) {
   const line = cart[id];
 
   if (!line) {
-    return NextResponse.json({ error: "Item not in cart" }, { status: 404 }); // i18n-exempt: machine-readable API error, not user-facing UI
+    return NextResponse.json({ error: "Item not in cart" }, { status: 404 }); // i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30]
   }
 
   if (qty === 0) {
@@ -110,7 +112,7 @@ export async function DELETE(req: NextRequest) {
   const cart: CartState = (decodeCartCookie(cookie) ?? {}) as CartState;
 
   if (!cart[id]) {
-    return NextResponse.json({ error: "Item not in cart" }, { status: 404 }); // i18n-exempt: machine-readable API error, not user-facing UI
+    return NextResponse.json({ error: "Item not in cart" }, { status: 404 }); // i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30]
   }
 
   delete cart[id];

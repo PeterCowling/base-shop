@@ -10,7 +10,7 @@ import type { Locale } from '@acme/i18n/locales';
 const meta: Meta<typeof NewsletterSignup> = {
   title: 'CMS Blocks/NewsletterSignup/Matrix',
   component: NewsletterSignup,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Newsletter signup form with translatable placeholder/label text.' } } },
 };

@@ -71,12 +71,12 @@ export default function StepTokens(_: ConfiguratorStepProps): React.JSX.Element 
         <span className="text-muted-foreground">{t("cms.configurator.tokens.filterByTag")}</span>
         {allTags.map((tag) => {
           const active = selectedTags.includes(tag);
+          const cls = `min-h-11 min-w-11 rounded-full border px-2 text-xs ${active ? "bg-primary text-primary-foreground border-primary" : "hover:bg-muted"}`; // i18n-exempt -- DX-0005: utility class string; not user copy [ttl=2026-01-01]
           return (
             <button
               key={tag}
               type="button"
-              // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0005: utility class string, not user copy
-              className={`min-h-11 min-w-11 rounded-full border px-2 text-xs ${active ? "bg-primary text-primary-foreground border-primary" : "hover:bg-muted"}`}
+              className={cls}
               onClick={() =>
                 setSelectedTags((prev) => (prev.includes(tag) ? prev.filter((x) => x !== tag) : [...prev, tag]))
               }

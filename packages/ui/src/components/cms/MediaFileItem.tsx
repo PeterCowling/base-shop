@@ -211,7 +211,7 @@ export default function MediaFileItem({
     <Card
       className={cn(
         "group relative flex h-full flex-col overflow-hidden border border-border-3 transition focus-within:outline-none focus-within:ring-[var(--ring-width)] focus-within:ring-offset-[var(--ring-offset-width)] focus-within:ring-primary",
-        selected && "ring-2 ring-primary" // i18n-exempt: class tokens only
+        selected && "ring-2 ring-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       )}
       data-selected={selected}
       data-deleting={deleting || undefined}
@@ -248,13 +248,13 @@ export default function MediaFileItem({
         />
       </MediaFilePreview>
 
-      <CardContent className="flex flex-1 flex-col gap-2 border-t border-border-2 bg-muted/30 p-4" data-token="--color-muted"> {/* i18n-exempt: classes only */}
+      <CardContent className="flex flex-1 flex-col gap-2 border-t border-border-2 bg-muted/30 p-4" data-token="--color-muted"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
         <Cluster alignY="start" justify="between" gap={3}>
           <div className="min-w-0">
             <p className="text-sm font-semibold text-fg line-clamp-2" data-token="--color-fg">
               {item.title ?? name}
             </p>
-            <p className="text-xs text-muted-foreground line-clamp-2" data-token="--color-muted-fg"> {/* i18n-exempt: classes only */}
+            <p className="text-xs text-muted-foreground line-clamp-2" data-token="--color-muted-fg"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
               {previewAlt}
             </p>
           </div>
@@ -272,7 +272,7 @@ export default function MediaFileItem({
       <input
         ref={fileInputRef}
         type="file"
-        accept="image/*,video/*" // i18n-exempt: MIME filter string
+        accept="image/*,video/*" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         className="hidden"
         onChange={handleFileChange}
         disabled={actionsDisabled}

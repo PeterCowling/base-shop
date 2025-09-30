@@ -23,7 +23,7 @@ export function usePagesState(open: boolean, shop: string) {
         setPages([]);
       }
     })();
-  }, [open, shop, selectedId]);
+  }, [open, shop]);
 
   const filtered = useMemo(() => {
     const query = q.trim().toLowerCase();
@@ -58,12 +58,12 @@ export function usePagesState(open: boolean, shop: string) {
       const ok = await updateOrder(shop, ids);
       if (ok) {
         setOrderDirty(false);
-        notify({ type: "success", title: t("Order saved") });
+        notify({ type: "success", title: t("Order saved") as string });
       } else {
-        notify({ type: "error", title: t("Reorder failed") });
+        notify({ type: "error", title: t("Reorder failed") as string });
       }
     } catch {
-      notify({ type: "error", title: t("Reorder failed") });
+      notify({ type: "error", title: t("Reorder failed") as string });
     }
   };
 
@@ -77,7 +77,7 @@ export function usePagesState(open: boolean, shop: string) {
         seo: { title: p.seo?.title || { en: p.title || p.slug } },
       });
     } catch {
-      notify({ type: "error", title: t("Update failed") });
+      notify({ type: "error", title: t("Update failed") as string });
     }
   };
 
@@ -89,7 +89,7 @@ export function usePagesState(open: boolean, shop: string) {
       if (created) {
         setPages((prev) => [...prev, created]);
         setSelectedId(created.id);
-        notify({ type: "info", title: t("Draft page created") });
+        notify({ type: "info", title: t("Draft page created") as string });
         return;
       }
     } catch {}
@@ -116,12 +116,12 @@ export function usePagesState(open: boolean, shop: string) {
       if (res.ok && res.item) {
         setPages((prev) => prev.map((it) => (it.id === res.item!.id ? { ...it, ...res.item! } : it)));
         setSelectedId(res.item!.id);
-        notify({ type: "success", title: t("Saved") });
+        notify({ type: "success", title: t("Saved") as string });
       } else if (res.status === 409) {
-        notify({ type: "error", title: t("Conflict"), message: t("Page was modified elsewhere. Please refresh.") });
+        notify({ type: "error", title: t("Conflict") as string, message: t("Page was modified elsewhere. Please refresh.") as string });
       }
     } catch (err) {
-      notify({ type: "error", title: t("Save failed"), message: String((err as Error)?.message || err) });
+      notify({ type: "error", title: t("Save failed") as string, message: String((err as Error)?.message || err) });
     }
   };
 

@@ -1,0 +1,21 @@
+import { Meta, Canvas, Story, Title, Description, Subtitle } from '@storybook/blocks';
+import * as ProductGalleryStories from '../../../packages/ui/src/components/organisms/ProductGallery.Matrix.stories';
+
+<Meta title="Organisms/Product Gallery/Docs" of={ProductGalleryStories} />
+
+<Title>Product Gallery</Title>
+<Subtitle>Image/video gallery with thumbnail selector</Subtitle>
+
+<Description>
+Renders mixed media (images, video) with a thumbnail selector. Use the Matrix stories
+for regression coverage across states (Default/Loading/Empty/Error) including RTL and mobile.
+</Description>
+
+## Default
+
+<Canvas>
+  <Story id="organisms-product-gallery-matrix--default" />
+  
+</Canvas>
+
+## Props

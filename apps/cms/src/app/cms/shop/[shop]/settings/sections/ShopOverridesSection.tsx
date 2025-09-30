@@ -32,10 +32,8 @@ export default function ShopOverridesSection({
 }: ShopOverridesSectionProps) {
   const t = useTranslations();
   const FILTER_MAPPING_ID_PREFIX = "filter-mapping"; // i18n-exempt -- CMS-TECH-001 dom id prefix [ttl=2026-01-01]
-  /* eslint-disable-next-line ds/no-hardcoded-copy -- CMS-TECH-001 CSS utility classes [ttl=2026-01-01] */
   const FILTER_ROW_CLASS = "sm:grid-cols-[2fr,2fr,auto]"; // i18n-exempt -- CMS-TECH-001 CSS utility classes [ttl=2026-01-01]
   const PRICE_OVERRIDE_ID_PREFIX = "price-override"; // i18n-exempt -- CMS-TECH-001 dom id prefix [ttl=2026-01-01]
-  /* eslint-disable-next-line ds/no-hardcoded-copy -- CMS-TECH-001 CSS utility classes [ttl=2026-01-01] */
   const PRICE_ROW_CLASS = "sm:grid-cols-[2fr,1fr,auto]"; // i18n-exempt -- CMS-TECH-001 CSS utility classes [ttl=2026-01-01]
   const ACCORDION_KEYS = ["filter-mappings", "price-overrides"] as const; // i18n-exempt -- CMS-TECH-001 internal accordion keys [ttl=2026-01-01]
   const filterContent = (

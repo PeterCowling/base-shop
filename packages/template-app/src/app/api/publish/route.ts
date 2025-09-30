@@ -12,14 +12,20 @@ export async function POST() {
   try {
     await requirePermission("manage_orders");
   } catch {
-    return NextResponse.json({ error: "Unauthorized" /* i18n-exempt: API error, not user-facing UI */ }, { status: 401 });
+    return NextResponse.json(
+      { error: "Unauthorized" /* i18n-exempt -- ABC-123 [ttl=2025-12-31] API error, not user-facing UI */ },
+      { status: 401 },
+    );
   }
 
   try {
     const raw = await fs.readFile(join(process.cwd(), "shop.json"), "utf8");
     const { id } = JSON.parse(raw) as { id: string };
     if (!SHOP_ID_REGEX.test(id)) {
-      return NextResponse.json({ error: "Invalid shop ID" /* i18n-exempt: API error, not user-facing UI */ }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid shop ID" /* i18n-exempt -- ABC-123 [ttl=2025-12-31] API error, not user-facing UI */ },
+        { status: 400 },
+      );
     }
     const root = join(process.cwd(), "..", "..");
     const res = spawnSync(
@@ -28,11 +34,17 @@ export async function POST() {
       { cwd: root, stdio: "inherit" },
     );
     if (res.status !== 0) {
-      throw new Error("republish failed" /* i18n-exempt: developer error */);
+      throw new Error("republish failed" /* i18n-exempt -- ABC-123 [ttl=2025-12-31] developer error */);
     }
-    return NextResponse.json({ status: "ok" /* i18n-exempt: API status */ });
+    return NextResponse.json({ status: "ok" /* i18n-exempt -- ABC-123 [ttl=2025-12-31] API status */ });
   } catch (err) {
-    console.error("Publish failed" /* i18n-exempt: developer log */, err);
-    return NextResponse.json({ error: "Publish failed" /* i18n-exempt: API error, not user-facing UI */ }, { status: 500 });
+    console.error(
+      "Publish failed" /* i18n-exempt -- ABC-123 [ttl=2025-12-31] developer log */,
+      err,
+    );
+    return NextResponse.json(
+      { error: "Publish failed" /* i18n-exempt -- ABC-123 [ttl=2025-12-31] API error, not user-facing UI */ },
+      { status: 500 },
+    );
   }
 }

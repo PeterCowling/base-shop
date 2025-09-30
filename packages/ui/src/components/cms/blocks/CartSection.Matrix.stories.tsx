@@ -7,7 +7,7 @@ import { makeStateStory } from '../../../story-utils/createStories';
 const meta: Meta<typeof CartSection> = {
   title: 'CMS Blocks/CartSection/Matrix',
   component: CartSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
 };
 export default meta;
 

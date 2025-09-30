@@ -7,9 +7,10 @@ import { makeStateStory } from '../../story-utils/createStories';
 const meta: Meta<typeof ProductVariantSelector> = {
   title: 'Organisms/Product Variant Selector/Matrix',
   component: ProductVariantSelector,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
+      autodocs: false,
       description: {
         component:
           'Variant picker for colors/sizes/quantity. Stories exercise default, loading, empty, error, and RTL with mobile viewport.',

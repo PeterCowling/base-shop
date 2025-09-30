@@ -34,7 +34,7 @@ export function SegmentSummaryCard({
 
   return (
     <SummaryCard
-      title={data.name}
+      title={data.name || (t("cms.marketing.segments.preview.untitled") as string)}
       status={{ label: (t(statusLabel) as string), tone: "warning" }}
       description={
         description ??

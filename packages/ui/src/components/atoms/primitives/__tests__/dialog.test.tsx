@@ -94,7 +94,7 @@ describe("Dialog", () => {
     expect(headerRef.current).toBe(header);
     expect(header).toHaveClass("custom-header");
     expect(header).toHaveClass(
-      "flex flex-col space-y-1.5 text-center sm:text-left"
+      "flex flex-col space-y-1.5 text-center sm:text-start"
     );
 
     const footer = screen.getByTestId("footer");

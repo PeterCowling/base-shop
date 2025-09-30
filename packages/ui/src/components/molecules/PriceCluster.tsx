@@ -25,7 +25,7 @@ export const PriceCluster = React.forwardRef<HTMLDivElement, PriceClusterProps>(
     return (
       <div
         ref={ref}
-        className={cn("flex items-baseline gap-2", /* i18n-exempt: class names */ className)}
+        className={cn("flex items-baseline gap-2", /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */ className)}
         {...props}
       >
         <Price amount={price} currency={currency} className="font-semibold" />
@@ -36,7 +36,7 @@ export const PriceCluster = React.forwardRef<HTMLDivElement, PriceClusterProps>(
               currency={currency}
               className="text-muted-foreground text-sm line-through"
             />
-            <ProductBadge label={t("-{discount}%", { discount }) as string} variant="sale" />
+            <ProductBadge label={t("pricing.discount.badge", { discount }) as string} variant="sale" />
           </>
         )}
       </div>

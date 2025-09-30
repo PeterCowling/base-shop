@@ -20,7 +20,7 @@ export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
   ({ className, links = [], logoVariants, shopName, ...props }, ref) => {
     const viewport = useViewport();
     const logo = logoVariants?.[viewport];
-    // i18n-exempt: CSS utility class strings
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     const footerBaseClass = "flex h-14 items-center justify-between border-t px-4";
     return (
       <footer
@@ -37,7 +37,7 @@ export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
           fallbackText={shopName}
           className="font-bold"
         />
-        {/* i18n-exempt: CSS utility class strings */}
+        {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
         <nav className="ms-auto text-sm">
           {/* Implicit navigation landmark is sufficient here */}
           <div>
@@ -46,7 +46,7 @@ export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
               <a
                 key={l.href}
                 href={l.href}
-                // i18n-exempt: CSS utility class strings
+                // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                 className="inline-flex min-h-10 min-w-10 items-center hover:underline"
                 data-token="--color-fg"
               >

@@ -88,7 +88,7 @@ export function useMediaReplacement({
 
         const data = (await response.json()) as MediaItem | ApiError;
         if (!response.ok || "error" in data) {
-          // i18n-exempt — surfaced verbatim to caller, upstream may provide localized message
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — surfaced verbatim to caller, upstream may provide localized message
           throw new Error("Failed to upload replacement");
         }
 
@@ -99,7 +99,7 @@ export function useMediaReplacement({
       } catch (error) {
         clearTimer();
         setUploadProgress(0);
-        // i18n-exempt — developer-friendly fallback; UI may map to localized copy
+        // i18n-exempt -- DS-1234 [ttl=2025-11-30] — developer-friendly fallback; UI may map to localized copy
         errorMessage = (error as Error).message ?? "Replacement failed";
         setUploadError(errorMessage);
         if (errorMessage) onReplaceError?.(errorMessage);

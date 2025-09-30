@@ -187,9 +187,9 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
               const name = firstFamilyFromStack(stack);
               if (name && googleFamilies.has(name)) ensureGoogle(name);
             });
+            const containerCls = `rounded border p-3 ${isPairingSelected(p) ? "border-primary ring-1 ring-primary/40" : ""}`; // i18n-exempt -- DX-0005: utility class string; not user copy [ttl=2026-01-01]
             return (
-              // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0005: utility class string, not user copy
-              <div key={p.id} className={`rounded border p-3 ${isPairingSelected(p) ? "border-primary ring-1 ring-primary/40" : ""}`}>
+              <div key={p.id} className={containerCls}>
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <div className="truncate text-sm font-medium">
                     {/* i18n-exempt -- ABC-123 [ttl=2099-12-31] */}

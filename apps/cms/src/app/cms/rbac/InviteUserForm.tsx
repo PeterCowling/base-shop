@@ -76,7 +76,7 @@ export default function InviteUserForm({
           >
             {t("cms.rbac.invite.assignStarterRoles")}
           </p>
-          <Cluster gap={2} role="group" aria-label={t("cms.rbac.invite.assignRolesAria")}>
+          <Cluster gap={2} role="group" aria-label={String(t("cms.rbac.invite.assignRolesAria"))}>
             {roles.map((role) => {
               const detail = roleDetails[role];
               const isSelected = form.roles.includes(role);

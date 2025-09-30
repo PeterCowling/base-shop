@@ -4,6 +4,7 @@ import React from "react";
 import { Button } from "../../atoms/shadcn";
 import { Tooltip } from "../../atoms";
 import { Spinner } from "../../atoms";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   onSave: () => void;
@@ -18,19 +19,17 @@ interface Props {
 }
 
 // Compact top-row actions aligned to the right: Save, Publish, Versions, Save Version
-export default function TopActionBar({ onSave, onPublish, saving = false, publishing = false, showPreview, togglePreview, showVersions = true, showPreviewButton = true, publishLabel = "Publish" }: Props) {
+export default function TopActionBar({ onSave, onPublish, saving = false, publishing = false, showPreview, togglePreview, showVersions = true, showPreviewButton = true, publishLabel }: Props) {
+  const t = useTranslations();
+  const publishText = publishLabel ?? t("cms.builder.topBar.publish");
   return (
     <div className="flex w-full items-center justify-end gap-2">
-      {/* i18n-exempt -- CMS builder control hint */}
-      <Tooltip text="Save (Ctrl/⌘+S)">
+      <Tooltip text={t("cms.builder.topBar.save.tooltip")}>
         <Button onClick={onSave} disabled={saving}>
-          {saving ? <Spinner className="h-4 w-4" /> : (
-            // i18n-exempt -- CMS builder action label
-            "Save"
-          )}
+          {saving ? <Spinner className="h-4 w-4" /> : t("cms.builder.topBar.save")}
         </Button>
       </Tooltip>
-      <Tooltip text={publishLabel}>
+      <Tooltip text={publishText}>
         <Button
           variant="default"
           className="h-9 px-4"
@@ -38,57 +37,48 @@ export default function TopActionBar({ onSave, onPublish, saving = false, publis
           disabled={publishing}
           data-tour="publish"
         >
-          {publishing ? <Spinner className="h-4 w-4" /> : publishLabel}
+          {publishing ? <Spinner className="h-4 w-4" /> : publishText}
         </Button>
       </Tooltip>
       {showPreviewButton && typeof showPreview === 'boolean' && togglePreview && (
-        // i18n-exempt -- CMS builder control hint
-        <Tooltip text="Toggle preview (Ctrl/⌘+Alt+P)">
+        <Tooltip text={t("cms.builder.topBar.preview.toggle.tooltip")}>
           <Button
             variant="outline"
             className="h-9 px-3 text-sm"
             onClick={() => {
               const next = !showPreview;
               try {
-                // i18n-exempt -- internal toast titles for builder-only notifications
-                window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'preview', title: next ? 'Preview enabled' : 'Preview disabled' } }));
+                window.dispatchEvent(new CustomEvent('pb:notify', { detail: { type: 'preview', title: next ? t('cms.builder.preview.enabled') : t('cms.builder.preview.disabled') } }));
               } catch {}
               togglePreview();
             }}
-            // i18n-exempt -- accessibility labels within internal CMS tool
-            aria-label={showPreview ? "Hide preview" : "Show preview"}
-            // i18n-exempt -- tooltip title within internal CMS tool
-            title={showPreview ? "Hide preview" : "Show preview"}
+            aria-label={showPreview ? t("cms.builder.topBar.preview.hide") : t("cms.builder.topBar.preview.show")}
+            title={showPreview ? t("cms.builder.topBar.preview.hide") : t("cms.builder.topBar.preview.show")}
           >
-            {/* i18n-exempt -- CMS builder toggle label */}
-            {showPreview ? "Editing" : "Preview"}
+            {showPreview ? t("cms.builder.topBar.mode.editing") : t("cms.builder.preview.title")}
           </Button>
         </Tooltip>
       )}
       {showVersions && (
         <>
-          {/* i18n-exempt -- CMS builder control hint */}
-          <Tooltip text="Manage versions (Ctrl/⌘+Shift+V)">
+          <Tooltip text={t("cms.builder.topBar.versions.tooltip")}>
             <Button
               variant="outline"
               onClick={() => {
                 try { window.dispatchEvent(new Event("pb:open-versions")); } catch {}
               }}
             >
-              {/* i18n-exempt -- CMS builder action label */}
-              Versions
+              {t("cms.builder.topBar.versions")}
             </Button>
           </Tooltip>
-          {/* i18n-exempt -- CMS builder control hint */}
-          <Tooltip text="Save version snapshot (Ctrl/⌘+Shift+S)">
+          <Tooltip text={t("cms.builder.topBar.saveVersion.tooltip")}>
             <Button
               variant="outline"
               onClick={() => {
                 try { window.dispatchEvent(new Event("pb:save-version")); } catch {}
               }}
             >
-              {/* i18n-exempt -- CMS builder action label */}
-              Save Version
+              {t("cms.builder.topBar.saveVersion")}
             </Button>
           </Tooltip>
         </>

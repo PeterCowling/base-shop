@@ -1,4 +1,5 @@
 import { useMemo, useCallback } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
 
 type ToastState = { open: boolean; message: string; retry?: () => void };
@@ -20,6 +21,7 @@ export default function usePresetActions({
   selectedIds,
   setToast,
 }: UsePresetActionsOptions) {
+  const t = useTranslations();
   const canSavePreset = useMemo(() => {
     if (!Array.isArray(selectedIds) || selectedIds.length !== 1) return false;
     const id = selectedIds[0];
@@ -30,20 +32,20 @@ export default function usePresetActions({
   const onSavePreset = useCallback(async () => {
     try {
       if (!Array.isArray(selectedIds) || selectedIds.length !== 1) {
-        setToast({ open: true, message: "Select a single Section to save as preset" }); // i18n-exempt: admin-only guidance text
+        setToast({ open: true, message: t("cms.builder.presets.save.selectSingleSection") });
         return;
       }
       const id = selectedIds[0];
       const c = (components || []).find((x) => x.id === id);
       if (!c || c.type !== "Section") {
-        setToast({ open: true, message: "Selected item is not a Section" }); // i18n-exempt: admin-only guidance text
+        setToast({ open: true, message: t("cms.builder.presets.save.notASection") });
         return;
       }
 
       const label = (typeof window !== "undefined"
         ? window.prompt(
-            "Preset label", // i18n-exempt: temporary admin prompt
-            (c as { label?: string }).label || "Section Preset" // i18n-exempt: default label for admin prompt
+            t("cms.builder.presets.save.labelPrompt"),
+            (c as { label?: string }).label || t("cms.builder.presets.save.labelDefault")
           )
         : null) || "";
       if (!label.trim()) return;
@@ -51,7 +53,7 @@ export default function usePresetActions({
       const lockedRaw =
         (typeof window !== "undefined"
           ? window.prompt(
-              "Locked keys (optional, comma-separated)", // i18n-exempt: temporary admin prompt
+              t("cms.builder.presets.save.lockedKeysPrompt"),
               ""
             ) || ""
           : "");
@@ -79,14 +81,14 @@ export default function usePresetActions({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ preset }),
       });
-      if (!res.ok) throw new Error("Failed to save preset"); // i18n-exempt: internal error detail
-      setToast({ open: true, message: "Preset saved" }); // i18n-exempt: confirmation toast
+      if (!res.ok) throw new Error(t("cms.builder.presets.save.error"));
+      setToast({ open: true, message: t("cms.builder.presets.save.success") });
     } catch (err) {
-       
-      console.error("save preset failed", err); // i18n-exempt: dev console log
-      setToast({ open: true, message: "Failed to save preset" }); // i18n-exempt: error toast
+      
+      console.error("save preset failed", err); // i18n-exempt -- INTL-204 dev console log [ttl=2026-12-31]
+      setToast({ open: true, message: t("cms.builder.presets.save.error") });
     }
-  }, [components, selectedIds, setToast, shop]);
+  }, [components, selectedIds, setToast, shop, t]);
 
   return { canSavePreset, onSavePreset } as const;
 }

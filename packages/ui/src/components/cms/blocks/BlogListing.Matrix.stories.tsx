@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof BlogListing> = {
   title: 'CMS Blocks/BlogListing/Matrix',
   component: BlogListing,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { posts: fixture.posts },
 };
 export default meta;

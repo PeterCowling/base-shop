@@ -13,7 +13,7 @@ describe("ContactFormWithMap", () => {
     expect(children).toHaveLength(2);
     expect(children[0].tagName).toBe("FORM");
     expect(children[1].tagName).toBe("IFRAME");
-    expect(getByTitle("map")).toHaveAttribute("src", DEFAULT_SRC);
+    expect(getByTitle(/map/i)).toHaveAttribute("src", DEFAULT_SRC);
   });
 
   it("allows overriding the mapSrc", () => {
@@ -21,7 +21,6 @@ describe("ContactFormWithMap", () => {
     const { getByTitle } = render(
       <ContactFormWithMap mapSrc={customSrc} />,
     );
-    expect(getByTitle("map")).toHaveAttribute("src", customSrc);
+    expect(getByTitle(/map/i)).toHaveAttribute("src", customSrc);
   });
 });
-

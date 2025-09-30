@@ -1,3 +1,4 @@
+// i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/shop-bcd/src/app/login/route.ts
 import "@acme/zod-utils/initZod";
 import { NextResponse } from "next/server";
@@ -30,7 +31,7 @@ export const LoginSchema = z
     customerId: z.string(),
     password: z
       .string()
-      .min(8, "Password must be at least 8 characters"), // i18n-exempt: server-side schema error; client maps to localized copy
+      .min(8, "Password must be at least 8 characters"), // i18n-exempt -- I18N-123 server-side schema error; client maps to localized copy [ttl=2025-06-30]
     remember: z.boolean().optional(),
   })
   .strict();
@@ -53,7 +54,7 @@ export async function POST(req: Request) {
     try {
       await limiter.consume(ip);
     } catch {
-      return NextResponse.json({ error: "Too Many Requests" }, { status: 429 }); // i18n-exempt: HTTP status text; client-facing UI translates based on status
+      return NextResponse.json({ error: "Too Many Requests" }, { status: 429 }); // i18n-exempt -- I18N-123 HTTP status text; client-facing UI translates based on status [ttl=2025-06-30]
     }
   }
 
@@ -64,7 +65,7 @@ export async function POST(req: Request) {
 
   const csrfToken = req.headers.get("x-csrf-token");
   if (!csrfToken || !(await validateCsrfToken(csrfToken))) {
-    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 }); // i18n-exempt: API error token; UI maps to translation
+    return NextResponse.json({ error: "Invalid CSRF token" }, { status: 403 }); // i18n-exempt -- I18N-123 API error token; UI maps to translation [ttl=2025-06-30]
   }
 
   const valid = await validateCredentials(
@@ -73,22 +74,22 @@ export async function POST(req: Request) {
   );
 
   if (!valid) {
-    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 }); // i18n-exempt: API error token; UI maps to translation
+    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 }); // i18n-exempt -- I18N-123 API error token; UI maps to translation [ttl=2025-06-30]
   }
 
   if (!ALLOWED_ROLES.includes(valid.role)) {
     // Reject elevated roles
-    return NextResponse.json({ error: "Unauthorized role" }, { status: 403 }); // i18n-exempt: API error token; UI maps to translation
+    return NextResponse.json({ error: "Unauthorized role" }, { status: 403 }); // i18n-exempt -- I18N-123 API error token; UI maps to translation [ttl=2025-06-30]
   }
 
   if (await isMfaEnabled(valid.customerId)) {
     const mfaToken = req.headers.get("x-mfa-token");
     if (!mfaToken) {
-      return NextResponse.json({ error: "MFA token required" }, { status: 401 }); // i18n-exempt: API error token; UI maps to translation
+      return NextResponse.json({ error: "MFA token required" }, { status: 401 }); // i18n-exempt -- I18N-123 API error token; UI maps to translation [ttl=2025-06-30]
     }
     const ok = await verifyMfa(valid.customerId, mfaToken);
     if (!ok) {
-      return NextResponse.json({ error: "Invalid MFA token" }, { status: 401 }); // i18n-exempt: API error token; UI maps to translation
+      return NextResponse.json({ error: "Invalid MFA token" }, { status: 401 }); // i18n-exempt -- I18N-123 API error token; UI maps to translation [ttl=2025-06-30]
     }
   }
 

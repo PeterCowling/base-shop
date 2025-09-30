@@ -19,6 +19,7 @@ interface Props {
 export default function MediaLibrary({ onInsertImage, onSetSectionBackground, selectedIsSection }: Props) {
   const { media, loadMedia, loading, error } = useMediaLibrary();
   const t = useTranslations();
+  const TOUR_ID = "media-library"; // i18n-exempt -- I18N-0002 telemetry/id attr, not user copy [ttl=2026-01-31]
   const [q, setQ] = useState("");
   const [tag, setTag] = useState("");
   const [type, setType] = useState<"all" | "image" | "video">("all");
@@ -53,17 +54,17 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
   const pageItems = useMemo(() => filtered.slice((page - 1) * pageSize, page * pageSize), [filtered, page, pageSize]);
 
   return (
-    <div className="flex flex-col gap-3" data-tour="media-library"> {/* i18n-exempt: telemetry/id attr, not user copy (I18N-0002) */}
+    <div className="flex flex-col gap-3" data-tour={TOUR_ID}>
       <div className="flex items-center gap-2">
         <Input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search filename, title or tag" // i18n-exempt: admin tool, translations pending
+          placeholder={t("cms.mediaLibrary.search.placeholder")}
         />
       </div>
       <Grid cols={3} gap={2}>
         <Select value={type} onValueChange={(v: "all" | "image" | "video") => setType(v)}>
-          <SelectTrigger aria-label={String(t("Filter media type"))} title={String(t("Filter media type"))}>
+          <SelectTrigger aria-label={String(t("cms.mediaLibrary.filter.type"))} title={String(t("cms.mediaLibrary.filter.type"))}>
             {type === "image" ? (
               <ImageIcon className="h-4 w-4" />
             ) : type === "video" ? (
@@ -73,17 +74,17 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
             )}
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">all</SelectItem> {/* i18n-exempt: admin tool, translations pending */}
-            <SelectItem value="image">image</SelectItem> {/* i18n-exempt: admin tool, translations pending */}
-            <SelectItem value="video">video</SelectItem> {/* i18n-exempt: admin tool, translations pending */}
+            <SelectItem value="all">{t("cms.mediaLibrary.type.all")}</SelectItem>
+            <SelectItem value="image">{t("cms.mediaLibrary.type.image")}</SelectItem>
+            <SelectItem value="video">{t("cms.mediaLibrary.type.video")}</SelectItem>
           </SelectContent>
         </Select>
         <Select value={tag} onValueChange={(v) => setTag(v)}>
-          <SelectTrigger aria-label={String(t("Filter by tag"))} title={String(t("Filter by tag"))}>
+          <SelectTrigger aria-label={String(t("cms.mediaLibrary.filter.tag"))} title={String(t("cms.mediaLibrary.filter.tag"))}>
             <TokensIcon className="h-4 w-4" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">All tags</SelectItem> {/* i18n-exempt: admin tool, translations pending */}
+            <SelectItem value="">{t("cms.mediaLibrary.tags.all")}</SelectItem>
             {tags.map((t) => (
               <SelectItem key={t.label} value={t.label}>
                 {t.label} ({t.count})
@@ -91,7 +92,7 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
             ))}
           </SelectContent>
         </Select>
-        <Button type="button" aria-label={String(t("Refresh"))} title={String(t("Refresh"))} variant="outline" size="icon" onClick={() => void loadMedia()}>
+        <Button type="button" aria-label={String(t("actions.refreshList"))} title={String(t("actions.refreshList"))} variant="outline" size="icon" onClick={() => void loadMedia()}>
           <ReloadIcon className="h-4 w-4" />
         </Button>
       </Grid>
@@ -108,27 +109,27 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
                   {it.type === 'image' ? (
                     <Image src={it.url} alt={it.altText || it.title || ''} fill className="object-cover" />
                   ) : (
-                    <Grid cols={1} gap={0} className="absolute inset-0 place-items-center text-xs text-muted-foreground">video</Grid>
+                    <Grid cols={1} gap={0} className="absolute inset-0 place-items-center text-xs text-muted-foreground">{t("cms.mediaLibrary.videoLabel")}</Grid>
                   )}
                 </div>
                 <div className="flex items-center gap-2 p-2">
-                  <Tooltip text="Insert image into the canvas"> {/* i18n-exempt: admin tool */}
-                    <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onInsertImage(it.url)}>Insert</Button> {/* i18n-exempt: admin tool */}
+                  <Tooltip text={t("cms.mediaLibrary.tooltip.insert")}> 
+                    <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onInsertImage(it.url)}>{t("cms.mediaLibrary.actions.insert")}</Button>
                   </Tooltip>
                   {it.type === 'image' && (
-                    <Tooltip text="Edit alt text and aspect before inserting"> {/* i18n-exempt: admin tool */}
+                    <Tooltip text={t("cms.mediaLibrary.tooltip.editBeforeInsert")}>
                       <Button
                         type="button"
                         variant="outline"
                         className="h-auto px-2 py-1 text-xs"
                         onClick={() => { setEditUrl(it.url); setEditAlt(it.altText || ""); setEditAspect(""); setEditOpen(true); }}
                       >
-                        Edit… {/* i18n-exempt: admin tool */}
+                        {t("cms.mediaLibrary.actions.edit")}
                       </Button>
                     </Tooltip>
                   )}
-                  <Tooltip text={selectedIsSection ? "Set selected section background" : "Select a section to set background"}> {/* i18n-exempt: admin tool */}
-                    <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onSetSectionBackground(it.url)} disabled={!selectedIsSection}>Set BG</Button> {/* i18n-exempt: admin tool */}
+                  <Tooltip text={selectedIsSection ? t("cms.mediaLibrary.tooltip.setSectionBg") : t("cms.mediaLibrary.tooltip.selectSectionFirst")}>
+                    <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => onSetSectionBackground(it.url)} disabled={!selectedIsSection}>{t("cms.mediaLibrary.actions.setBg")}</Button>
                   </Tooltip>
                 </div>
               </div>
@@ -136,15 +137,15 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
           </Grid>
           <Dialog open={editOpen} onOpenChange={setEditOpen}>
             <DialogContent>
-              <DialogTitle>Insert Image</DialogTitle> {/* i18n-exempt: admin tool */}
+              <DialogTitle>{t("cms.mediaLibrary.dialog.insertImage.title")}</DialogTitle>
               <div className="space-y-2">
-                <Input label="Alt text" value={editAlt} onChange={(e) => setEditAlt(e.target.value)} placeholder="Describe the image for accessibility" /> {/* i18n-exempt: admin tool */}
+                <Input label={t("cms.mediaLibrary.form.alt.label")} value={editAlt} onChange={(e) => setEditAlt(e.target.value)} placeholder={t("cms.mediaLibrary.form.alt.placeholder")} />
                 <Select value={editAspect} onValueChange={(v) => setEditAspect(v)}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Aspect (optional)" /> {/* i18n-exempt: admin tool */}
+                    <SelectValue placeholder={t("cms.mediaLibrary.form.aspect.placeholder")} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Original</SelectItem> {/* i18n-exempt: admin tool */}
+                    <SelectItem value="">{t("cms.mediaLibrary.aspect.original")}</SelectItem>
                     <SelectItem value="16:9">16:9</SelectItem> {/* i18n-exempt: admin tool */}
                     <SelectItem value="4:3">4:3</SelectItem> {/* i18n-exempt: admin tool */}
                     <SelectItem value="1:1">1:1</SelectItem> {/* i18n-exempt: admin tool */}
@@ -153,8 +154,8 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
                 </Select>
               </div>
               <DialogFooter>
-                <div className="me-auto text-xs text-muted-foreground">Alt text improves accessibility</div> {/* i18n-exempt: admin tool */}
-                <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button> {/* i18n-exempt: admin tool */}
+                <div className="me-auto text-xs text-muted-foreground">{t("cms.mediaLibrary.form.alt.help")}</div>
+                <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>{t("actions.cancel")}</Button>
                 <Button
                   type="button"
                   onClick={() => {
@@ -164,7 +165,7 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
                     setEditOpen(false);
                   }}
                 >
-                  Insert {/* i18n-exempt: admin tool */}
+                  {t("cms.mediaLibrary.actions.insert")}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -174,13 +175,13 @@ export default function MediaLibrary({ onInsertImage, onSetSectionBackground, se
               {total > 0 ? (
                 <span>{`${(page - 1) * pageSize + 1}-${Math.min(page * pageSize, total)} of ${total}`}</span>
               ) : (
-                <span>No results</span>
+                <span>{t("No results")}</span>
               )}
             </div>
             <div className="flex items-center gap-2">
-              <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => setPage(Math.max(1, page - 1))} disabled={page <= 1}>Prev</Button> {/* i18n-exempt: admin tool */}
-              <span>Page {page}</span> {/* i18n-exempt: admin tool */}
-              <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => setPage(page + 1)} disabled={page * pageSize >= total}>Next</Button> {/* i18n-exempt: admin tool */}
+              <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => setPage(Math.max(1, page - 1))} disabled={page <= 1}>{t("actions.prev")}</Button>
+              <span>{t("common.page")} {page}</span>
+              <Button type="button" variant="outline" className="h-auto px-2 py-1 text-xs" onClick={() => setPage(page + 1)} disabled={page * pageSize >= total}>{t("actions.next")}</Button>
             </div>
           </div>
         </>

@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof HeaderSection> = {
   title: 'CMS Blocks/HeaderSection/Matrix',
   component: HeaderSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;
@@ -20,4 +20,3 @@ const baseArgs = meta.args!;
 try { z.object({ locale: z.string(), shopName: z.string().optional() }).parse(fixture); } catch (e) { console.error('Invalid HeaderSection fixture:', e); }
 
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
-

@@ -13,13 +13,16 @@ interface UpgradeComponent {
 const exampleProps: Record<string, unknown> = {
   Breadcrumbs: {
     items: [
-      { label: "Home", href: "/" },
-      { label: "Shop", href: "/shop" },
+      { label: "Home", href: "/" }, // i18n-exempt -- ABC-123 example prop for preview only [ttl=2025-06-30]
+      { label: "Shop", href: "/shop" }, // i18n-exempt -- ABC-123 example prop for preview only [ttl=2025-06-30]
     ],
   },
 };
 
+import { useTranslations } from "@acme/i18n";
+
 export default function EditPreviewPage() {
+  const t = useTranslations();
   const [changes, setChanges] = useState<UpgradeComponent[]>([]);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +57,7 @@ export default function EditPreviewPage() {
           setLinks(pageLinks);
         }
       } catch (err) {
-        console.error("Failed to load edit changes", err); // i18n-exempt: developer diagnostic log
+        console.error("Failed to load edit changes", err); // i18n-exempt -- ABC-123 developer diagnostic log [ttl=2025-06-30]
       }
     }
     void load();
@@ -69,11 +72,13 @@ export default function EditPreviewPage() {
         const data = (await res.json().catch(() => ({}))) as {
           error?: string;
         };
-        throw new Error(data.error || "Publish failed"); // i18n-exempt: fallback message for admin-only page
+        throw new Error(data.error || (t("upgrade.publishFailed") as string));
       }
     } catch (err) {
-      console.error("Publish failed", err); // i18n-exempt: developer diagnostic log
-      setError(err instanceof Error ? err.message : "Publish failed"); // i18n-exempt: fallback message for admin-only page
+      console.error("Publish failed", err); // i18n-exempt -- ABC-123 developer diagnostic log [ttl=2025-06-30]
+      setError(
+        err instanceof Error ? err.message : ((t("upgrade.publishFailed") as string) || "publish_failed")
+      );
     } finally {
       setPublishing(false);
     }
@@ -95,7 +100,7 @@ export default function EditPreviewPage() {
       </ul>
       {links.length > 0 && (
         <div className="space-y-2">
-          <h2 className="font-semibold">{"Preview pages" /* i18n-exempt: admin-only utility UI */}</h2>
+          <h2 className="font-semibold">{t("upgrade.previewPages")}</h2>
           <ul className="list-disc pl-4">
             {links.map((l) => (
               <li key={l.id}>
@@ -116,9 +121,7 @@ export default function EditPreviewPage() {
         className="inline-flex min-h-10 min-w-10 items-center justify-center rounded border px-4"
         disabled={publishing}
       >
-        {publishing
-          ? ("Publishing..." /* i18n-exempt: admin-only action label */)
-          : ("Approve & publish" /* i18n-exempt: admin-only action label */)}
+        {publishing ? t("upgrade.publishing") : t("upgrade.approveAndPublish")}
       </button>
       {error && <p role="alert" className="text-red-600">{error}</p>}
     </div>

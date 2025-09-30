@@ -20,13 +20,13 @@ function ErrorPage({ statusCode }: { statusCode?: number }) {
   const t = useTranslations();
 
   // Resolve messages via i18n, with safe fallbacks for when no provider is mounted.
-  const title = t("error.title", { code });
-  const subtitle = t("error.subtitle");
-  const cta = t("error.cta");
+  const title = t("pages.error.title", { code });
+  const subtitle = t("pages.error.description");
+  const cta = t("pages.error.cta");
 
-  const FALLBACK_TITLE_TEXT = "Something went wrong"; // i18n-exempt: fallback when i18n context is unavailable during hard error rendering
-  const FALLBACK_SUBTITLE_TEXT = "Please try again, or return to the homepage."; // i18n-exempt: fallback when i18n context is unavailable during hard error rendering
-  const FALLBACK_CTA_TEXT = "Go to homepage"; // i18n-exempt: fallback when i18n context is unavailable during hard error rendering
+  const FALLBACK_TITLE_TEXT = "Something went wrong"; // i18n-exempt -- ABC-123 fallback when i18n context is unavailable during hard error rendering [ttl=2025-06-30]
+  const FALLBACK_SUBTITLE_TEXT = "Please try again, or return to the homepage."; // i18n-exempt -- ABC-123 fallback when i18n context is unavailable during hard error rendering [ttl=2025-06-30]
+  const FALLBACK_CTA_TEXT = "Go to homepage"; // i18n-exempt -- ABC-123 fallback when i18n context is unavailable during hard error rendering [ttl=2025-06-30]
 
   const titleResolved = title === "error.title" ? (
     <>
@@ -35,7 +35,7 @@ function ErrorPage({ statusCode }: { statusCode?: number }) {
   ) : (
     title
   );
-  const subtitleResolved = subtitle === "error.subtitle" ? (
+  const subtitleResolved = subtitle === "error.description" ? (
     <>{FALLBACK_SUBTITLE_TEXT}</>
   ) : (
     subtitle

@@ -14,6 +14,8 @@ type Props = {
   disabled?: boolean;
   /** Number of items to add */
   quantity?: number;
+  /** Optional metadata to tag the line item (e.g., try-on) */
+  meta?: { source?: string; tryOn?: { idempotencyKey?: string; transform?: Record<string, unknown> } };
 };
 
 export default function AddToCartButton({
@@ -21,6 +23,7 @@ export default function AddToCartButton({
   size,
   disabled = false,
   quantity = 1,
+  meta,
 }: Props) {
   const [, dispatch] = useCart();
   const btnRef = useRef<HTMLButtonElement | null>(null);
@@ -61,7 +64,7 @@ export default function AddToCartButton({
     });
 
     try {
-      await dispatch({ type: "add", sku, size, qty: quantity });
+      await dispatch({ type: "add", sku, size, qty: quantity, meta });
     } catch (err) {
       setError((err as Error).message ?? "Unable to add to cart"); // i18n-exempt -- ABC-123 fallback error message
     } finally {

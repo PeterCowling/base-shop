@@ -2,15 +2,18 @@
 import { PRODUCTS } from "@platform-core/products";
 import type { SKU } from "@acme/types";
 import type { Metadata } from "next";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { resolveLocale } from "@i18n/locales";
 import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
 import { fetchPublishedPosts } from "@acme/sanity";
 import { coreEnv as env } from "@acme/config/env/core";
 import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";
 
-export const metadata: Metadata = {
-  title: "Shop · Base-Shop", // i18n-exempt: demo static metadata; localized titles handled at runtime
-};
+export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
+  const t = await getTranslations(resolveLocale(params.lang));
+  return { title: t("shop.title") };
+}
 
 export default async function ShopIndexPage({
   params,

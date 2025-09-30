@@ -15,7 +15,7 @@ const items = [
 const meta: Meta<typeof Repeater> = {
   title: 'CMS Blocks/Containers/Repeater/Matrix',
   component: Repeater,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {

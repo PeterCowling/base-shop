@@ -1,9 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
 import { Grid as DSGrid } from "@ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 import { JumpLinkButton } from "@cms/app/cms/components/JumpLinkButton";
-import { buildQuickStats } from "@cms/lib/dashboardData";
+import { buildQuickStats } from "@cms/lib/dashboardClient";
 import type { Stats } from "@cms/lib/dashboardData";
 
 type DashboardHeroProps = {

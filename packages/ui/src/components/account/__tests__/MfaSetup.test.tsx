@@ -13,9 +13,25 @@ jest.mock("qrcode", () => ({
 }));
 
 import QRCode from "qrcode";
+
+// Minimal i18n shim so visible text matches test expectations
+const translations: Record<string, string> = {
+  "account.mfa.generateSecret": "Generate Secret",
+  "account.mfa.qr.alt": "MFA QR Code",
+  "account.mfa.secret.label": "Secret:",
+  "account.mfa.input.placeholderShort": "Enter code",
+  "actions.verify": "Verify",
+  "account.mfa.enabled": "MFA enabled",
+  "account.mfa.error.invalid": "Invalid code",
+};
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string) => translations[key] ?? key,
+}));
+
 import MfaSetup from "../MfaSetup";
 
 const toDataURL = (QRCode as any).toDataURL as jest.Mock;
+
 
 describe("MfaSetup", () => {
   beforeEach(() => {

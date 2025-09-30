@@ -22,4 +22,20 @@ process.env.EMAIL_PROVIDER ??= "noop";
 // sees the populated values.
 const { default: sharedConfig } = await import("@acme/next-config/next.config.mjs");
 
-export default sharedConfig;
+const config = {
+  ...sharedConfig,
+  async headers() {
+    const base = typeof sharedConfig.headers === 'function' ? await sharedConfig.headers() : [];
+    return [
+      ...base,
+      {
+        source: "/:lang/product/:slug",
+        headers: [
+          { key: "Permissions-Policy", value: "camera=(self), microphone=(), geolocation=(), gyroscope=()" },
+        ],
+      },
+    ];
+  },
+};
+
+export default config;

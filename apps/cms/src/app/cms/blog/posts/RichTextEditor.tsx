@@ -21,7 +21,7 @@ function Toolbar() {
   const t = useTranslations();
   const editor = usePortableTextEditor();
   const addLink = () => {
-    const href = prompt(t("cms.blog.editor.urlPrompt"));
+    const href = prompt(String(t("cms.blog.editor.urlPrompt")));
     if (!href) return;
     if (PortableTextEditor.isAnnotationActive(editor, "link")) {
       PortableTextEditor.removeAnnotation(editor, { name: "link" });
@@ -29,7 +29,7 @@ function Toolbar() {
     PortableTextEditor.addAnnotation(editor, { name: "link" }, { href });
   };
   const addEmbed = () => {
-    const url = prompt(t("cms.blog.editor.embedUrlPrompt"));
+    const url = prompt(String(t("cms.blog.editor.embedUrlPrompt")));
     if (url) PortableTextEditor.insertBlock(editor, { name: "embed" }, { url });
   };
   const addImage = useCallback(
@@ -106,12 +106,12 @@ function ProductSearch({
       setLoading(true);
       try {
         const res = await fetch(`/api/products?q=${encodeURIComponent(query)}`);
-        if (!res.ok) throw new Error(t("cms.blog.editor.loadFailedProducts"));
+        if (!res.ok) throw new Error(String(t("cms.blog.editor.loadFailedProducts")));
         const data: SKU[] = await res.json();
         setMatches(data);
         setError(null);
       } catch {
-        setError(t("cms.blog.editor.loadFailedProducts"));
+        setError(String(t("cms.blog.editor.loadFailedProducts")));
       } finally {
         setLoading(false);
       }

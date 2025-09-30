@@ -2,6 +2,7 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 import { Input } from "../../../../atoms/shadcn";
 import { Tooltip } from "../../../../atoms";
 import type { ContentComponent, HandleInput, OnChange } from "./types";
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export default function MinMaxItems({ component, onChange, handleInput }: Props) {
+  const t = useTranslations();
   if (!("minItems" in component || "maxItems" in component)) return null;
 
   const comp = component as ContentComponent;
@@ -23,7 +25,7 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
     (comp.minItems !== undefined &&
     comp.maxItems !== undefined &&
     comp.minItems > comp.maxItems
-      ? /* i18n-exempt */ "Min Items cannot exceed Max Items"
+      ? t("cms.builder.items.min.exceedsMax")
       : undefined);
 
   const maxItemsError =
@@ -31,15 +33,14 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
     (comp.minItems !== undefined &&
     comp.maxItems !== undefined &&
     comp.maxItems < comp.minItems
-      ? /* i18n-exempt */ "Max Items cannot be less than Min Items"
+      ? t("cms.builder.items.max.lessThanMin")
       : undefined);
 
   return (
     <>
       <div className="flex items-center gap-1">
         <Input
-          // i18n-exempt: Builder control label
-          label="Min Items"
+          label={t("cms.builder.items.min.label")}
           type="number"
           value={comp.minItems ?? ""}
           onChange={(e) => {
@@ -59,16 +60,14 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
           max={comp.maxItems ?? undefined}
           error={minItemsError}
         />
-        {/* i18n-exempt: Builder tooltip */}
-        <Tooltip text="Minimum number of items">
+        <Tooltip text={t("cms.builder.items.min.tooltip")}>
           <span className="inline-flex items-center justify-center size-10">?</span>
         </Tooltip>
       </div>
 
       <div className="flex items-center gap-1">
         <Input
-          // i18n-exempt: Builder control label
-          label="Max Items"
+          label={t("cms.builder.items.max.label")}
           type="number"
           value={comp.maxItems ?? ""}
           onChange={(e) => {
@@ -87,8 +86,7 @@ export default function MinMaxItems({ component, onChange, handleInput }: Props)
           min={comp.minItems ?? 0}
           error={maxItemsError}
         />
-        {/* i18n-exempt: Builder tooltip */}
-        <Tooltip text="Maximum number of items">
+        <Tooltip text={t("cms.builder.items.max.tooltip")}>
           <span className="inline-flex items-center justify-center size-10">?</span>
         </Tooltip>
       </div>

@@ -54,25 +54,31 @@ const convert = (componentId: string, num: number, from: "%" | "px" | "rem", to:
 interface UnitInputProps {
   componentId: string;
   label: React.ReactNode;
+  labelSuffix?: React.ReactNode;
   value?: string;
   onChange: (v: string) => void;
   axis: Axis;
   placeholder?: string;
   disabled?: boolean;
   cssProp: string;
+  extraError?: boolean;
 }
 
-export default function UnitInput({ componentId, label, value, onChange, axis, placeholder, disabled, cssProp }: UnitInputProps) {
+export default function UnitInput({ componentId, label, labelSuffix, value, onChange, axis, placeholder, disabled, cssProp, extraError }: UnitInputProps) {
   const { num, unit } = parseVal(value);
+  // Determine error message string (or undefined) for DOM attribute + UI
+  const cssErr = cssError(cssProp, value);
+  const errorMsg = cssErr ?? (extraError ? `Invalid ${cssProp} value` : undefined);
   return (
     <div className="flex items-end gap-2">
       <Input
         label={label}
+        labelSuffix={labelSuffix}
         placeholder={placeholder}
         value={value ?? ""}
         onChange={(e) => onChange(e.target.value)}
         disabled={disabled}
-        error={cssError(cssProp, value)}
+        error={errorMsg}
       />
       <Select
         value={unit}
@@ -94,4 +100,3 @@ export default function UnitInput({ componentId, label, value, onChange, axis, p
     </div>
   );
 }
-

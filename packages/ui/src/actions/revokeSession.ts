@@ -8,19 +8,19 @@ export async function revoke(id: string) {
   try {
     const session = await getCustomerSession();
     if (!session || !hasPermission(session.role, "manage_sessions")) {
-      // i18n-exempt — server action error; surfaced via caller
-      return { success: false, error: "Failed to revoke session." } as const;
+      // Return i18n key so UI can translate
+      return { success: false, error: "account.sessions.errors.revokeFailed" } as const;
     }
     const sessions: SessionRecord[] = await listSessions(session.customerId);
     if (!sessions.some((s) => s.sessionId === id)) {
-      // i18n-exempt — server action error; surfaced via caller
-      return { success: false, error: "Session does not belong to the user." } as const;
+      // Not owned: i18n key consumed by client component
+      return { success: false, error: "account.sessions.errors.notOwned" } as const;
     }
     await revokeSession(id);
     revalidatePath("/account/sessions");
     return { success: true } as const;
   } catch {
-    // i18n-exempt — server action error; surfaced via caller
-    return { success: false, error: "Failed to revoke session." } as const;
+    // Generic failure: i18n key consumed by client component
+    return { success: false, error: "account.sessions.errors.revokeFailed" } as const;
   }
 }

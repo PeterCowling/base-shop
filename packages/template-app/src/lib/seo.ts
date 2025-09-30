@@ -38,7 +38,7 @@ export async function getSeo(
       | string
       | undefined) || "default";
   const { getShopSettings } = await import(
-    "@platform-core/repositories/shops.server" // i18n-exempt: module specifier, not user-facing copy
+    "@platform-core/repositories/shops.server" // i18n-exempt -- ABC-123 [ttl=2025-12-31] module specifier, not user-facing copy
   );
   const settings: ShopSettings = await getShopSettings(shop);
   const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;

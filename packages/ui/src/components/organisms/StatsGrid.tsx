@@ -15,7 +15,7 @@ export function StatsGrid({ items, className, ...props }: StatsGridProps) {
   return (
     <div
       className={cn(
-        "grid gap-4 sm:grid-cols-2 lg:grid-cols-3", // i18n-exempt: CSS utility classes only
+        "grid gap-4 sm:grid-cols-2 lg:grid-cols-3", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
         className,
       )}
       {...props}

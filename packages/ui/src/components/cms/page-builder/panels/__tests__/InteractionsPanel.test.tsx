@@ -3,7 +3,29 @@ import React, { useState } from "react";
 import InteractionsPanel from "../InteractionsPanel";
 import type { PageComponent } from "@acme/types";
 
-jest.mock("@acme/types", () => ({}));
+// Provide minimal runtime exports needed by downstream modules (e.g. @acme/i18n)
+jest.mock("@acme/types", () => ({
+  __esModule: true,
+  LOCALES: ["en"],
+}));
+
+// Stub i18n hook to return human-friendly labels used in assertions
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) =>
+    ({
+      "cms.interactions.clickAction": "Click Action",
+      "cms.interactions.none": "None",
+      "cms.interactions.navigate": "Navigate",
+      "cms.interactions.scrollTo": "Scroll to",
+      "cms.interactions.target": "Target",
+      "cms.interactions.targetAnchor": "Target anchor",
+      "cms.interactions.openModal": "Open modal",
+      "cms.interactions.modalContent": "Modal content",
+      "cms.common.pick": "Pick",
+      "cms.common.plainText": "Plain text",
+    }[key] ?? key),
+}));
 
 jest.mock("../../../../atoms/shadcn", () => {
   let id = 0;
@@ -18,7 +40,8 @@ jest.mock("../../../../atoms/shadcn", () => {
     DialogTitle: ({ children, ...p }: any) => <div {...p}>{children}</div>,
     DialogDescription: ({ children, ...p }: any) => <div {...p}>{children}</div>,
     DialogFooter: ({ children, ...p }: any) => <div {...p}>{children}</div>,
-    Input: ({ label, ...p }: any) => {
+    // Omit non-DOM props like labelSuffix to avoid leaking to <input>
+    Input: ({ label, labelSuffix: _labelSuffix, ...p }: any) => {
       const inputId = `in-${id++}`;
       return (
         <div>

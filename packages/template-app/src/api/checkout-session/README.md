@@ -1,21 +1,39 @@
 # Checkout Session API
 
-Clients must provide the following fields when POSTing to `/api/checkout-session`:
+Creates a Stripe Checkout Session and returns the Payment Intent client secret.
 
+Request: POST `/api/checkout-session`
+
+Body fields:
+
+- `returnDate` (string, optional): ISO date when the rental is returned. Used to compute rental days and pricing. Invalid or non‑positive durations return 400.
+- `coupon` (string, optional): Discount code.
+- `currency` (string, optional): ISO currency code (default `EUR`).
+- `taxRegion` (string, optional): Region key used to look up tax rate.
 - `customer` (string, optional): Stripe customer ID to attach the payment to.
-- `billing_details` (object):
+- `billing_details` (object, optional):
   - `name` (string)
   - `email` (string)
   - `address` (object): `line1`, `city`, `postal_code`, `country` plus optional `line2` and `state`
   - `phone` (string, optional)
-- `shipping` (object):
+- `shipping` (object, optional):
   - `name` (string)
   - `address` (object): `line1`, `city`, `postal_code`, `country` plus optional `line2` and `state`
   - `phone` (string, optional)
+- `coverage` (string[], optional): Coverage add‑ons; adds a line‑item and may reduce deposit when applicable.
 
-The client's IP address should be set via the `x-forwarded-for` header so it can be forwarded to Stripe for fraud checks.
+Headers:
 
-Shops can configure additional fraud protection under `luxuryFeatures`:
+- `x-forwarded-for`: Client IP for Stripe risk checks; forwarded as `Stripe-Client-IP`.
 
-- `fraudReviewThreshold` (number): charges above this amount are placed into manual review.
-- `requireStrongCustomerAuth` (boolean): when enabled, 3‑D Secure verification is requested for qualifying charges.
+Response 200 JSON:
+
+```json
+{ "sessionId": "sess_...", "clientSecret": "pi_client_secret_..." }
+```
+
+Error responses:
+
+- 400 `{ "error": "Cart is empty" }`
+- 400 `{ "error": "Invalid returnDate" }`
+- 502 `{ "error": "Checkout failed" }`

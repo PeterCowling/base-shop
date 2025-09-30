@@ -1,7 +1,7 @@
 // i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
-import { FontSelect } from "../index";
+import { FontSelect } from "../FontSelect";
 import type { TokenInfo } from "../../../hooks/useTokenEditor";
 import type { ChangeEvent, ReactElement } from "react";
 import { useTranslations } from "@acme/i18n";

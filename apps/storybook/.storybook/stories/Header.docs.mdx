@@ -1,0 +1,26 @@
+import * as HeaderStories from '../../../packages/ui/src/components/organisms/Header.Matrix.stories';
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Organisms/Header/Docs" of={HeaderStories} />
+
+# Header — Docs
+
+Primary responsive header with logo, navigation, language selector and optional search.
+
+## Usage
+
+```tsx
+import { Header } from './Header';
+
+<Header
+  locale="en"
+  shopName="Demo"
+  nav={[{ title: 'Home', href: '#' }, { title: 'Shop', href: '#' }]}
+  searchSuggestions={["Shoes", "Shirts"]}
+  showSearch
+/>
+```
+
+## States
+
+- See the Matrix stories for default, loading/minimal, empty, error and RTL.

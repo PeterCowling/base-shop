@@ -2,6 +2,23 @@ import { render, fireEvent } from "@testing-library/react";
 import ProductEditorForm from "../ProductEditorForm";
 import { useProductEditorFormState } from "../../../hooks/useProductEditorFormState";
 
+// Lightweight mocks to keep JSDOM happy and avoid act() warnings
+jest.mock("next/image", () => ({
+  __esModule: true,
+  // i18n-exempt: test-only mock component
+  default: ({ alt = "", ...rest }: Record<string, unknown>) => (
+    // Use <input type="image"> to avoid Next/DS lint noise in tests
+    // and bypass Next.js URL parsing/loader requirements.
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    <input type="image" alt={String(alt ?? "")} {...(rest as any)} />
+  ),
+}));
+
+jest.mock("@acme/platform-core/hooks/usePublishLocations", () => ({
+  __esModule: true,
+  usePublishLocations: () => ({ locations: [], reload: jest.fn() }),
+}));
+
 jest.mock("../PublishLocationSelector", () => ({
   __esModule: true,
   default: ({ onChange }: { onChange: (ids: string[]) => void }) => (

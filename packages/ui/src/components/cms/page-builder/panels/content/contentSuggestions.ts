@@ -30,7 +30,15 @@ function filenameToAlt(src?: string): string | undefined {
   }
 }
 
-export function getContentSuggestions(component: PageComponent): ContentSuggestion[] {
+import enMessages from "@acme/i18n/en.json";
+
+type Translator = (key: string) => string;
+
+export function getContentSuggestions(
+  component: PageComponent,
+  tArg?: Translator,
+): ContentSuggestion[] {
+  const t: Translator = tArg ?? ((key) => (enMessages as Record<string, string>)[key] ?? key);
   const suggestions: ContentSuggestion[] = [];
 
   if (component.type === "Text") {
@@ -38,25 +46,25 @@ export function getContentSuggestions(component: PageComponent): ContentSuggesti
     suggestions.push(
       {
         id: "text-punchy-headline",
-        label: "Punchy headline",
-        description: "Shorten and add impact to the text",
+        label: t("cms.builder.suggestions.text.punchyHeadline.label"),
+        description: t("cms.builder.suggestions.text.punchyHeadline.description"),
         apply: () => {
-          const src = text || "Discover Exceptional Quality";
+          const src = text || t("cms.builder.suggestions.text.punchyHeadline.defaultSource");
           const shortened = src.length > 60 ? `${src.slice(0, 57).trim()}...` : src;
           return { text: shortened } as Partial<PageComponent>;
         },
       },
       {
         id: "text-insert-lorem",
-        label: "Insert lorem",
-        description: "Fill with placeholder copy",
+        label: t("cms.builder.suggestions.text.insertLorem.label"),
+        description: t("cms.builder.suggestions.text.insertLorem.description"),
         apply: () =>
-          ({ text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." } as Partial<PageComponent>),
+          ({ text: t("cms.builder.suggestions.text.insertLorem.placeholder") } as Partial<PageComponent>),
       },
       {
         id: "text-title-case",
-        label: "Title case",
-        description: "Capitalize each word",
+        label: t("cms.builder.suggestions.text.titleCase.label"),
+        description: t("cms.builder.suggestions.text.titleCase.description"),
         apply: () => ({ text: toTitleCase(text) } as Partial<PageComponent>),
       },
     );
@@ -66,22 +74,22 @@ export function getContentSuggestions(component: PageComponent): ContentSuggesti
     suggestions.push(
       {
         id: "btn-primary-buy",
-        label: "Primary • Buy Now",
-        description: "Set a primary call to action",
+        label: t("cms.builder.suggestions.button.primaryBuy.label"),
+        description: t("cms.builder.suggestions.button.primaryBuy.description"),
         apply: () =>
           ({ label: "Buy Now", variant: "default", size: "lg" } as Partial<PageComponent>),
       },
       {
         id: "btn-secondary-learn",
-        label: "Secondary • Learn More",
-        description: "Outline style informational CTA",
+        label: t("cms.builder.suggestions.button.secondaryLearn.label"),
+        description: t("cms.builder.suggestions.button.secondaryLearn.description"),
         apply: () =>
           ({ label: "Learn More", variant: "outline", size: "md" } as Partial<PageComponent>),
       },
       {
         id: "btn-contact",
-        label: "CTA • Contact Us",
-        description: "Link to contact page",
+        label: t("cms.builder.suggestions.button.contact.label"),
+        description: t("cms.builder.suggestions.button.contact.description"),
         apply: () => ({ label: "Contact Us", href: "/contact" } as Partial<PageComponent>),
       },
     );
@@ -92,26 +100,26 @@ export function getContentSuggestions(component: PageComponent): ContentSuggesti
     suggestions.push(
       {
         id: "img-square",
-        label: "Aspect • 1:1",
-        description: "Square crop",
+        label: t("cms.builder.suggestions.image.squareAspect.label"),
+        description: t("cms.builder.suggestions.image.squareAspect.description"),
         apply: () => ({ cropAspect: "1:1" } as Partial<PageComponent>),
       },
       {
         id: "img-widescreen",
-        label: "Aspect • 16:9",
-        description: "Widescreen crop",
+        label: t("cms.builder.suggestions.image.widescreenAspect.label"),
+        description: t("cms.builder.suggestions.image.widescreenAspect.description"),
         apply: () => ({ cropAspect: "16:9" } as Partial<PageComponent>),
       },
       {
         id: "img-center-focal",
-        label: "Center focal point",
-        description: "Set focal point to center",
+        label: t("cms.builder.suggestions.image.centerFocal.label"),
+        description: t("cms.builder.suggestions.image.centerFocal.description"),
         apply: () => ({ focalPoint: { x: 0.5, y: 0.5 } } as Partial<PageComponent>),
       },
       {
         id: "img-alt-from-name",
-        label: "Alt from filename",
-        description: "Generate alt text",
+        label: t("cms.builder.suggestions.image.altFromFilename.label"),
+        description: t("cms.builder.suggestions.image.altFromFilename.description"),
         apply: () => ({ alt: filenameToAlt(src) } as Partial<PageComponent>),
       },
     );

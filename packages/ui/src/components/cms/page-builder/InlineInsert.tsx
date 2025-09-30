@@ -19,9 +19,10 @@ import {
   layoutRegistry,
 } from "../blocks";
 import { Stack } from "../../atoms/primitives/Stack";
+import { useTranslations } from "@acme/i18n";
 
-const ARIA_LABEL_INSERT_BUTTON = "Insert block here"; // i18n-exempt -- CMS-only control
-const ARIA_LABEL_LIST = "Insert block list"; // i18n-exempt -- CMS-only control
+const ARIA_LABEL_INSERT_BUTTON = "Insert block here"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+const ARIA_LABEL_LIST = "Insert block list"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 
 type Props = {
   index: number;
@@ -58,6 +59,7 @@ const INLINE_PALETTE = {
 } as const;
 
 const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "top", containerType }: Props) {
+  const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [active, setActive] = useState(0);
@@ -156,8 +158,7 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
             onMouseEnter={() => setOpen((v) => v)}
           >
             <span className="rounded-full border bg-muted px-2 text-xs group-hover/button:bg-primary group-hover/button:text-primary-foreground">
-              {/* i18n-exempt -- CMS inline action label */}
-              + Add
+              {t("actions.add")}
             </span>
           </button>
         </PopoverTrigger>
@@ -167,8 +168,7 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              // i18n-exempt -- palette search placeholder
-              placeholder="Search blocks…"
+              placeholder={t("pb.inline.searchBlocks") as string}
               className="w-full rounded border p-1 text-sm"
             />
           </div>
@@ -178,8 +178,7 @@ const InlineInsert = memo(function InlineInsert({ index, onInsert, context = "to
             {itemButtons}
             {items.length === 0 && (
               <div className="text-muted-foreground p-2 text-center text-xs">
-                {/* i18n-exempt -- empty state */}
-                No results
+                {t("search.noResults")}
               </div>
             )}
             </Stack>

@@ -1,3 +1,4 @@
+// i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/shop-bcd/src/app/api/delivery/route.ts
 import "@acme/zod-utils/initZod";
 import {
@@ -90,7 +91,7 @@ function resolvePluginsDir(): string {
   }
 
   throw new Error(
-    "Unable to locate packages/plugins directory. Set PREMIER_SHIPPING_PLUGINS_DIR to override the search path." // i18n-exempt: internal error intended for logs, not end-users
+    "Unable to locate packages/plugins directory. Set PREMIER_SHIPPING_PLUGINS_DIR to override the search path." // i18n-exempt -- I18N-123 internal error intended for logs, not end-users [ttl=2025-06-30]
   );
 }
 
@@ -139,7 +140,7 @@ export async function POST(req: NextRequest) {
   ).shippingProviders;
   if (!shippingProviders?.includes("premier-shipping")) {
     return NextResponse.json(
-      { error: "Premier shipping not available" }, // i18n-exempt: API error string; UI will present localized copy
+      { error: "Premier shipping not available" }, // i18n-exempt -- I18N-123 API error string; UI will present localized copy [ttl=2025-06-30]
       { status: 400 }
     );
   }
@@ -159,7 +160,7 @@ export async function POST(req: NextRequest) {
 
   if (!provider) {
     return NextResponse.json(
-      { error: "Premier shipping not available" }, // i18n-exempt: API error string; UI will present localized copy
+      { error: "Premier shipping not available" }, // i18n-exempt -- I18N-123 API error string; UI will present localized copy [ttl=2025-06-30]
       { status: 400 }
     );
   }

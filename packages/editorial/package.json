@@ -1,0 +1,25 @@
+{
+  "name": "@acme/editorial",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist",
+    "lint": "eslint \"src/**/*.{ts,tsx}\""
+  },
+  "dependencies": {
+    "@acme/types": "workspace:^",
+    "remark": "^14.0.3",
+    "remark-parse": "^11.0.0",
+    "remark-gfm": "^4.0.0",
+    "remark-rehype": "^11.1.0",
+    "rehype-stringify": "^10.0.0",
+    "unified": "^11.0.5"
+  }
+}

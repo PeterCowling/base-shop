@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof Spacer> = {
   title: 'CMS Blocks/Spacer/Matrix',
   component: Spacer,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

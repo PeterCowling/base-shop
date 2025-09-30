@@ -2,35 +2,34 @@ import type { CountdownTimerComponent } from "@acme/types";
 import { Input } from "../../atoms/shadcn";
 import useComponentInputs from "./useComponentInputs";
 import type { EditorProps } from "./EditorProps";
+import { useTranslations } from "@acme/i18n";
 
 type Props = EditorProps<CountdownTimerComponent>;
 
 export default function CountdownTimerEditor({ component, onChange }: Props) {
   const { handleInput } = useComponentInputs<CountdownTimerComponent>(onChange);
+  const t = useTranslations();
   return (
     <>
       <Input
-        // i18n-exempt: admin-only label in builder UI
-        label="Target Date"
-        type="datetime-local" /* i18n-exempt: HTML attribute value */
+        label={t("cms.builder.countdown.targetDate.label")}
+        // i18n-exempt -- TECH-123 [ttl=2099-12-31] HTML attribute value
+        type="datetime-local"
         value={component.targetDate ?? ""}
         onChange={(e) => handleInput("targetDate", e.target.value)}
       />
       <Input
-        // i18n-exempt: admin-only label in builder UI
-        label="Timezone"
+        label={t("cms.builder.countdown.timezone.label")}
         value={component.timezone ?? ""}
         onChange={(e) => handleInput("timezone", e.target.value)}
       />
       <Input
-        // i18n-exempt: admin-only label in builder UI
-        label="Completion Text"
+        label={t("cms.builder.countdown.completionText.label")}
         value={component.completionText ?? ""}
         onChange={(e) => handleInput("completionText", e.target.value)}
       />
       <Input
-        // i18n-exempt: admin-only label in builder UI
-        label="Styles"
+        label={t("cms.builder.countdown.styles.label")}
         value={component.styles ?? ""}
         onChange={(e) => handleInput("styles", e.target.value)}
       />

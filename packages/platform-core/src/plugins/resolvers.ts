@@ -107,25 +107,10 @@ export async function resolvePluginEntry(dir: string): Promise<{
   }
 }
 
-export async function importByType(entryPath: string, isModule: boolean) {
-  // Prefer require() for CommonJS entries to avoid Jest/Node ESM resolution issues.
-  if (!isModule && /\.(cjs|js)$/.test(entryPath)) {
-    // Support both ESM and CJS contexts without using import.meta in CJS.
-     
-    const getMetaUrl = () => {
-      try {
-        // Constructed at runtime so CJS parsers don't choke on import.meta
-        // i18n-exempt: string used for runtime evaluation, not user copy
-        return (Function("return import.meta.url")() as string) || undefined;
-      } catch {
-        return undefined;
-      }
-    };
-    const base = getMetaUrl() ?? __filename;
-    const req = createRequire(base);
-     
-    return req(entryPath);
-  }
-  // For ESM, use dynamic import with webpackIgnore to avoid bundler analysis.
+export async function importByType(entryPath: string, _isModule: boolean) {
+  // Always use dynamic import via file URL. In modern Node, importing CJS
+  // yields a namespace object where `default` maps to `module.exports`, which
+  // is compatible with our plugin loader expectations. This also avoids
+  // webpack/Next warnings about createRequire argument parsing during builds.
   return import(/* webpackIgnore: true */ pathToFileURL(entryPath).href);
 }

@@ -66,7 +66,7 @@ export default function UploadPanel({
         tabIndex={0}
         role="button"
         aria-label={String(
-          t("Drop image or video here or press Enter to browse")
+          t("upload.dropHelp")
         )}
         aria-describedby={feedbackId}
         onDrop={(e) => {
@@ -84,9 +84,9 @@ export default function UploadPanel({
           }
         }}
         className={cn(
-          /* i18n-exempt: utility classes only */
+          /* i18n-exempt -- DS-000 utility classes only [ttl=2026-01-01] */
           "h-32 cursor-pointer rounded-md border-2 border-dashed border-muted text-sm text-muted",
-          /* i18n-exempt: utility classes only */
+          /* i18n-exempt -- DS-000 utility classes only [ttl=2026-01-01] */
           dragActive && "ring-2 ring-primary/60 bg-primary/5"
         )}
       >
@@ -94,23 +94,23 @@ export default function UploadPanel({
         <Input
           ref={inputRef}
           type="file"
-          accept="image/*,video/*" /* i18n-exempt: MIME filter */
+          accept="image/*,video/*" /* i18n-exempt -- DS-000 MIME filter [ttl=2026-01-01] */
           multiple
-          className="hidden" /* i18n-exempt: utility class */
+          className="hidden" /* i18n-exempt -- DS-000 utility class [ttl=2026-01-01] */
           onChange={onFileChange}
         />
-        {t("Drop image or video here or click to upload")}
+        {t("upload.dropCta")}
       </Cover>
 
       <div id={feedbackId} role="status" aria-live="polite" className="space-y-2">
         {error && (
-          <p className="text-sm text-danger" data-token="--color-danger">{/* i18n-exempt: token name */}
+          <p className="text-sm text-danger" data-token="--color-danger">{/* i18n-exempt -- DS-000 token name [ttl=2026-01-01] */}
             {error}
           </p>
         )}
         {progress && (
-          <p className="text-sm text-muted" data-token="--color-muted">{/* i18n-exempt: token name */}
-            {t("Uploaded")} {progress.done}/{progress.total}
+          <p className="text-sm text-muted" data-token="--color-muted">{/* i18n-exempt -- DS-000 token name [ttl=2026-01-01] */}
+            {t("upload.uploadedCount", { done: progress.done, total: progress.total })}
           </p>
         )}
         {pendingFile && (isVideo || isValid !== null) && (
@@ -118,7 +118,7 @@ export default function UploadPanel({
             {thumbnail && (
               <Image
                 src={thumbnail}
-                alt={String(t("preview"))}
+                alt={String(t("wizard.preview.title"))}
                 width={80}
                 height={80}
                 className="h-20 w-20 rounded object-cover"
@@ -126,20 +126,12 @@ export default function UploadPanel({
             )}
             {!isVideo && (
               <p
-                className={isValid ? "text-sm text-success" : "text-sm text-danger"} /* i18n-exempt: utility classes */
-                data-token={isValid ? "--color-success" : "--color-danger"} /* i18n-exempt: token name */
+                className={isValid ? "text-sm text-success" : "text-sm text-danger"} /* i18n-exempt -- DS-000 utility classes [ttl=2026-01-01] */
+                data-token={isValid ? "--color-success" : "--color-danger"} /* i18n-exempt -- DS-000 token name [ttl=2026-01-01] */
               >
                 {isValid
-                  ? (
-                      <>
-                        {t("Image orientation is")} {actual}; {t("requirement satisfied.")}
-                      </>
-                    )
-                  : (
-                      <>
-                        {t("Selected image is")} {actual}; {t("please upload a")} {REQUIRED_ORIENTATION} {t("image.")}
-                      </>
-                    )}
+                  ? t("cms.image.orientation.ok", { actual })
+                  : t("cms.image.orientation.bad", { actual, required: REQUIRED_ORIENTATION })}
               </p>
             )}
             {(isVideo || isValid) && (
@@ -150,7 +142,7 @@ export default function UploadPanel({
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setAltText(e.target.value)
                   }
-                  placeholder={String(isVideo ? t("Title") : t("Alt text"))}
+                  placeholder={String(isVideo ? t("fields.title") : t("cms.image.alt"))}
                   className="flex-1"
                 />
                 <Input
@@ -159,7 +151,7 @@ export default function UploadPanel({
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setUploadTags(e.target.value)
                   }
-                  placeholder={String(t("Tags (comma separated)"))}
+                  placeholder={String(t("fields.tags.placeholderCommaSeparated"))}
                   className="flex-1"
                 />
                 <Button
@@ -172,11 +164,11 @@ export default function UploadPanel({
                     <Inline className="items-center gap-2">
                       <Spinner className="h-4 w-4" />
                       <span className="sr-only" aria-live="polite" aria-atomic="true">
-                        {t("Uploading…")}
+                        {t("upload.uploading")}
                       </span>
                     </Inline>
                   ) : (
-                    t("Upload")
+                    t("cms.image.upload")
                   )}
                 </Button>
               </Inline>

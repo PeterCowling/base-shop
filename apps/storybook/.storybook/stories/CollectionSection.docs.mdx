@@ -1,0 +1,23 @@
+import { Meta, Canvas, Story, Title, Description } from '@storybook/blocks';
+import * as CollectionSectionStories from '../../../packages/ui/src/components/cms/blocks/CollectionSection.client.stories';
+
+<Meta title="Sections/Collection/Docs" of={CollectionSectionStories} />
+
+<Title>Collection Section</Title>
+<Description>
+The Collection section renders a product grid with facets, sort, and either client load‑more or SSR pagination.
+In Storybook we use the client component with MSW handlers for `/api/collections/:slug` to return mock data.
+</Description>
+
+## Grid (Load more)
+<Canvas>
+  <Story id="packages-ui-src-components-cms-blocks-collectionsection-client--default" />
+  
+</Canvas>
+
+## SSR Pagination
+<Canvas>
+  <Story id="packages-ui-src-components-cms-blocks-collectionsection-client--ssr-pagination" />
+</Canvas>
+
+## Props

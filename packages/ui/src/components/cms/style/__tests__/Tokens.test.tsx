@@ -1,16 +1,13 @@
-import {
-  render,
-  fireEvent,
-  screen,
-  waitFor,
-  act,
-} from "@testing-library/react";
+import { render as rtlRender, fireEvent, screen, waitFor, act } from "@testing-library/react";
 import React from "react";
 import Tokens from "../Tokens";
 import Presets from "../Presets";
 import * as tokenEditor from "../../../../hooks/useTokenEditor";
 import type { TokenMap } from "../../../../hooks/useTokenEditor";
 import { hexToHsl } from "../../../../utils/colorUtils";
+import { TranslationsProvider } from "@acme/i18n";
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import en from "@acme/i18n/en.json";
 
 jest.mock("../../../atoms/shadcn", () => {
   const actual = jest.requireActual("../../../atoms/shadcn");
@@ -39,6 +36,11 @@ afterEach(() => {
   jest.useRealTimers();
   window.localStorage.clear();
 });
+
+// Test helper to ensure predictable i18n output
+function render(ui: React.ReactElement) {
+  return rtlRender(<TranslationsProvider messages={en as unknown as Record<string, string>}>{ui}</TranslationsProvider>);
+}
 
 describe("Tokens", () => {
   it("propagates token edits via onChange", () => {

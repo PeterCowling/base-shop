@@ -10,7 +10,7 @@ import { z } from 'zod';
 const meta: Meta<typeof CheckoutSection> = {
   title: 'CMS Blocks/CheckoutSection/Matrix',
   component: CheckoutSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

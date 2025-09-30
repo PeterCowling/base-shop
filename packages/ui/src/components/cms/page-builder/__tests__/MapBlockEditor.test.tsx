@@ -3,7 +3,8 @@ import MapBlockEditor from "../MapBlockEditor";
 
 jest.mock("../../../atoms/shadcn", () => ({
   __esModule: true,
-  Input: ({ label, ...props }: any) => {
+  // Omit non-DOM props like labelSuffix to avoid warnings
+  Input: ({ label, labelSuffix: _labelSuffix, ...props }: any) => {
     const id = label ? label.replace(/\s+/g, "-") : undefined;
     return (
       <div>

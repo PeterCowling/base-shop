@@ -13,6 +13,47 @@ const customPresets = [
   { id: "c2", label: "My Two", value: {} },
 ];
 
+// Minimal i18n mock so aria-labels and button text resolve to human-readable strings
+const translations: Record<string, string> = {
+  "cms.style.effectPresets.selectAria": "Style preset",
+  "cms.style.customPresets.selectAria": "Custom preset",
+  "cms.style.copyStyles.aria": "Copy styles",
+  "cms.style.pasteStyles.aria": "Paste styles",
+  "cms.style.customPresets.saveAria": "Save custom effects preset",
+  "cms.style.customPresets.renameAria": "Rename selected custom preset",
+  "cms.style.customPresets.duplicateAria": "Duplicate selected custom preset",
+  "cms.style.customPresets.moveUpAria": "Move selected preset up",
+  "cms.style.customPresets.moveDownAria": "Move selected preset down",
+  "cms.style.customPresets.deleteAria": "Delete selected custom preset",
+  "cms.style.customPresets.exportAllAria": "Export custom presets JSON",
+  "cms.style.customPresets.exportSelectedAria": "Export selected preset JSON",
+  "cms.style.customPresets.exportTitle": "Export presets",
+  "cms.style.customPresets.importTitle": "Import presets",
+  "cms.style.customPresets.importPlaceholder": "Paste JSON here",
+  "cms.style.customPresets.import.invalidJson": "Invalid JSON",
+  "cms.style.customPresets.import.invalidPreset": "Invalid preset",
+  "actions.copy": "Copy",
+  "actions.paste": "Paste",
+  "actions.rename": "Rename",
+  "actions.duplicate": "Duplicate",
+  "actions.up": "Up",
+  "actions.down": "Down",
+  "actions.delete": "Delete",
+  "actions.import": "Import",
+  "actions.close": "Close",
+  "actions.cancel": "Cancel",
+  "actions.copied": "Copied",
+};
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string, vars?: Record<string, string | number>) => {
+    const msg = translations[key] || key;
+    if (!vars) return msg;
+    return msg.replace(/\{(.*?)\}/g, (m, name) =>
+      Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : m
+    );
+  },
+}));
+
 describe("PresetManager", () => {
   beforeAll(() => {
     // Clipboard mock to prevent exceptions

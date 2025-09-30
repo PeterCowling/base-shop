@@ -5,15 +5,17 @@ import { ProductCarousel, type Product } from "../ProductCarousel";
 import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
 import "../../../../../../test/resetNextMocks";
 
-import * as currencyContextMock from "~test/__mocks__/currencyContextMock.tsx";
-jest.mock("@platform-core/contexts/CurrencyContext", () => currencyContextMock);
+// Avoid TDZ issues with jest.mock hoisting by requiring inside the factory
+jest.mock(
+  "@platform-core/contexts/CurrencyContext",
+  () => require("~test/__mocks__/currencyContextMock.tsx")
+);
 
 jest.mock("@platform-core/contexts/CartContext", () => ({
   useCart: () => [{}, jest.fn()],
 }));
 
-import * as shadcnDialogStub from "~test/__mocks__/shadcnDialogStub.tsx";
-jest.mock("../../atoms/shadcn", () => shadcnDialogStub);
+jest.mock("../../atoms/shadcn", () => require("~test/__mocks__/shadcnDialogStub.tsx"));
 
 
 function mockResize(width: number) {

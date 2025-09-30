@@ -1,4 +1,5 @@
 // apps/shop-bcd/src/app/api/return/route.ts
+// i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 import "@acme/zod-utils/initZod";
 
 import { NextRequest, NextResponse } from "next/server";
@@ -52,7 +53,7 @@ export async function POST(req: NextRequest) {
   };
   if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
     return NextResponse.json(
-      { ok: false, error: "unsupported carrier" }, // i18n-exempt: machine-readable API error
+      { ok: false, error: "unsupported carrier" }, // i18n-exempt -- I18N-123 machine-readable API error [ttl=2025-06-30]
       { status: 400 },
     );
   }
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest) {
   const tracking = req.nextUrl.searchParams.get("tracking");
   if (!tracking) {
-    return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 }); // i18n-exempt: machine-readable API error
+    return NextResponse.json({ ok: false, error: "missing tracking" }, { status: 400 }); // i18n-exempt -- I18N-123 machine-readable API error [ttl=2025-06-30]
   }
   const cfg = await getReturnLogistics();
   const svc = (shop.returnService ?? {}) as {
@@ -80,7 +81,7 @@ export async function GET(req: NextRequest) {
   };
   if (!(cfg.labelService === "ups" && svc.upsEnabled && cfg.returnCarrier.includes("ups"))) {
     return NextResponse.json(
-      { ok: false, error: "unsupported carrier" }, // i18n-exempt: machine-readable API error
+      { ok: false, error: "unsupported carrier" }, // i18n-exempt -- I18N-123 machine-readable API error [ttl=2025-06-30]
       { status: 400 },
     );
   }

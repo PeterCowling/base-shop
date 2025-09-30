@@ -12,7 +12,7 @@ import { makeStateStory } from '../../../story-utils/createStories';
 const meta: Meta<typeof CollectionSectionClient> = {
   title: 'CMS Blocks/CollectionSection/Matrix',
   component: CollectionSectionClient,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   parameters: {
     layout: 'padded',
     docs: {

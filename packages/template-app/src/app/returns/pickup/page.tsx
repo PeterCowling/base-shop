@@ -6,7 +6,7 @@ import {
 
 const SHOP_ID = "bcd";
 import CleaningInfo from "../../../components/CleaningInfo";
-// i18n-exempt — static metadata; app-level routes localize this
+// i18n-exempt -- ABC-123 [ttl=2025-12-31] static metadata; app-level routes localize this
 export const metadata = { title: "Schedule pickup" };
 import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
 import type { Locale } from "@i18n/locales";

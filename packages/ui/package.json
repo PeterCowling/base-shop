@@ -63,9 +63,9 @@
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "cross-env JEST_FORCE_CJS=1 pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
-    "test:pkg": "cross-env JEST_FORCE_CJS=1 pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
-    "test:quick": "cross-env JEST_FORCE_CJS=1 JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm exec jest --runInBand --detectOpenHandles --config ./jest.config.cjs",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
+    "test:pkg": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs --coverage",
+    "test:quick": "JEST_DISABLE_COVERAGE_THRESHOLD=1 pnpm exec jest --runInBand --detectOpenHandles --config ./jest.config.cjs",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -110,7 +110,7 @@
     "react-dom": ">=19 <20"
   },
   "devDependencies": {
-    "@storybook/react": "8.6.14",
+    "@storybook/react": "^9.0.0",
     "@types/qrcode": "^1.5.5",
     "jest-axe": "^10.0.0",
     "next": "15.3.5",

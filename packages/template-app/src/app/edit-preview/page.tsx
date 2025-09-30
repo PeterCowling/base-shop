@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { ApiError } from "@acme/types";
 import ComponentPreview from "@ui/src/components/ComponentPreview";
 
@@ -12,6 +13,7 @@ interface UpgradeComponent {
 }
 
 export default function EditPreviewPage() {
+  const t = useTranslations();
   const [changes, setChanges] = useState<UpgradeComponent[]>([]);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -48,7 +50,10 @@ export default function EditPreviewPage() {
           setLinks(pageLinks);
         }
       } catch (err) {
-        console.error("Failed to load edit changes" /* i18n-exempt: developer log */, err);
+        console.error(
+          "Failed to load edit changes" /* i18n-exempt -- ABC-123 [ttl=2025-12-31] developer log */,
+          err,
+        );
       }
     }
     void load();
@@ -62,8 +67,13 @@ export default function EditPreviewPage() {
       const data = (await res.json().catch(() => ({}))) as ApiError;
       if ("error" in data) throw new Error(data.error);
     } catch (err) {
-      console.error("Publish failed" /* i18n-exempt: developer log */, err);
-      setError(err instanceof Error ? err.message : "Publish failed" /* i18n-exempt: fallback error label */);
+      console.error(
+        "Publish failed" /* i18n-exempt -- ABC-123 [ttl=2025-12-31] developer log */,
+        err,
+      );
+      setError(
+        err instanceof Error ? err.message : (t("edit.publishFailed") as string),
+      );
     } finally {
       setPublishing(false);
     }
@@ -80,11 +90,17 @@ export default function EditPreviewPage() {
       </ul>
       {links.length > 0 && (
         <div className="space-y-2">
-          <h2 className="font-semibold">{/* i18n-exempt: developer preview tools */}Preview pages</h2>
+          <h2 className="font-semibold">{t("edit.previewPages")}</h2>
           <ul className="list-disc pl-4">
             {links.map((l) => (
               <li key={l.id}>
-                <a href={l.url} className="text-blue-600 underline inline-flex min-h-10 min-w-10 items-center">{/* i18n-exempt: path label for preview */}{`/preview/${l.id}`}</a>
+                <a
+                  href={l.url}
+                  className="text-blue-600 underline inline-flex min-h-10 min-w-10 items-center"
+                >
+                  {/* i18n-exempt -- ABC-123 [ttl=2025-12-31] path label for preview */}
+                  {`/preview/${l.id}`}
+                </a>
               </li>
             ))}
           </ul>
@@ -96,13 +112,7 @@ export default function EditPreviewPage() {
         className="rounded border px-4 py-2 min-h-10 min-w-10 inline-flex items-center justify-center"
         disabled={publishing}
       >
-        {publishing ? (
-          // i18n-exempt: developer tool status
-          "Publishing..."
-        ) : (
-          // i18n-exempt: developer tool action
-          "Approve & publish"
-        )}
+        {publishing ? t("edit.publishing") : t("edit.approveAndPublish")}
       </button>
       {error && <p role="alert" className="text-red-600">{error}</p>}
     </div>

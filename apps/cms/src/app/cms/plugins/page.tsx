@@ -3,6 +3,9 @@ import { loadPlugins } from "@platform-core/plugins";
 import Link from "next/link";
 import PluginList from "./PluginList.client";
 
+// This page performs runtime filesystem discovery; avoid prerender during build.
+export const dynamic = "force-dynamic";
+
 export default async function PluginsPage() {
   // Let the platform-core plugin loader discover the workspace plugins directory
   const plugins = await loadPlugins();

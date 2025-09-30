@@ -2,10 +2,9 @@
 
 packages:
   # Each top-level app or package
-  - "apps-script"
   - "apps/**"
   - "packages/platform-machine"
-  - "packages/*/"
+  - "packages/*"
   - "packages/plugins/*"
   - "packages/themes/*" # Include theme packages so @themes/base, etc. resolve
   - "functions"

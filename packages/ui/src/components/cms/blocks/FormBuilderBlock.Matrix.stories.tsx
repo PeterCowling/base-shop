@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof FormBuilderBlock> = {
   title: 'CMS Blocks/FormBuilderBlock/Matrix',
   component: FormBuilderBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

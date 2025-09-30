@@ -3,6 +3,7 @@ import { existsSync, readdirSync, realpathSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import preset from "@acme/next-config/next.config.mjs";
 
 const require = createRequire(import.meta.url);
 
@@ -117,6 +118,8 @@ const REACT_DOM_SERVER = require.resolve("react-dom/server");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Start from shared preset to keep apps consistent
+  ...preset,
   reactStrictMode: true,
   experimental: {
     externalDir: true,
@@ -152,25 +155,28 @@ const nextConfig = {
   ],
 
   // Transpile workspace packages that ship TS/modern syntax
-  transpilePackages: [
-    "@themes/base",
-    "@themes/bcd",
-    "@themes/brandx",
-    "@themes/dark",
-    "@acme/platform-core",
-    "@acme/ui",
-    "@acme/date-utils",
-    "@acme/lib",
-    "@acme/shared-utils",
-    "@acme/types",
-    "@acme/tailwind-config",
-    "@acme/design-tokens",
-    "@acme/configurator",
-    "@acme/telemetry",
-    "@acme/config",
-    // NEW: transpile the theme package itself so Next can parse its TS
-    "@acme/theme",
-  ],
+  transpilePackages: Array.from(
+    new Set([
+      ...(preset.transpilePackages ?? []),
+      "@themes/base",
+      "@themes/bcd",
+      "@themes/brandx",
+      "@themes/dark",
+      "@acme/platform-core",
+      "@acme/ui",
+      "@acme/date-utils",
+      "@acme/lib",
+      "@acme/shared-utils",
+      "@acme/types",
+      "@acme/tailwind-config",
+      "@acme/design-tokens",
+      "@acme/configurator",
+      "@acme/telemetry",
+      "@acme/config",
+      // NEW: transpile the theme package itself so Next can parse its TS
+      "@acme/theme",
+    ])
+  ),
 
   images: {
     remotePatterns: [{ protocol: "https", hostname: "**" }],
@@ -178,6 +184,11 @@ const nextConfig = {
 
   webpack: (config, { dev, isServer, webpack }) => {
     ensureSafeWebpackHash(webpack);
+    // Run preset webpack mutations first, then apply CMS-specific ones
+    if (typeof preset.webpack === "function") {
+      config = preset.webpack(config, { dev, isServer, webpack });
+    }
+
     config.output ||= {};
     // Webpack feeds `undefined` segments into the chunk hasher in dev; fall back
     // to its tolerant default so compilation doesn't explode with crypto errors.

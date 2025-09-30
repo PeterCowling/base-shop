@@ -62,7 +62,7 @@ export function ColorToken({
     if (!onRenameToken) return;
     const next = typeof window !== "undefined"
       ? window.prompt(
-          // i18n-exempt: developer tool prompt not user-facing
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — developer tool prompt not user-facing
           "Rename color token",
           tokenKey,
         )
@@ -76,7 +76,7 @@ export function ColorToken({
     if (!onReplaceColor) return;
     const next = typeof window !== "undefined"
       ? window.prompt(
-          // i18n-exempt: developer tool prompt not user-facing
+          // i18n-exempt -- DS-1234 [ttl=2025-11-30] — developer tool prompt not user-facing
           "Replace this color across tokens with (hex, HSL, or CSS value)",
           value,
         )
@@ -145,19 +145,19 @@ export function ColorToken({
             className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
             onClick={() => setToken(tokenKey, defaultValue ?? "")}
           >
-          Reset
+          {t("actions.reset") as string}
           </button>
         )}
         {/* Advanced menu hidden for stability */}
       </span>
       {defaultValue && (
-        <span className="text-xs text-muted-foreground">Default: {defaultValue}</span>
+        <span className="text-xs text-muted-foreground">{t("cms.style.default", { value: defaultValue })}</span>
       )}
       {warning && (
         // i18n-exempt: utility classes and DS token attribute are not user copy
         <span className="text-xs text-danger" data-token={DANGER_TOKEN}>
-          Low contrast ({warning.contrast.toFixed(2)}:1)
-          {warning.suggestion ? ` – try ${warning.suggestion}` : ""}
+          {t("cms.style.lowContrast", { ratio: warning.contrast.toFixed(2) })}
+          {warning.suggestion ? ` – ${t("cms.style.try", { suggestion: warning.suggestion })}` : ""}
         </span>
       )}
     </label>

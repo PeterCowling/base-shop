@@ -1,0 +1,19 @@
+import { Meta, Canvas, Story, Title, Description, Subtitle } from '@storybook/blocks';
+import * as CheckoutSectionStories from '../../../packages/ui/src/components/cms/blocks/CheckoutSection.stories';
+
+<Meta title="Sections/Checkout/Docs" of={CheckoutSectionStories} />
+
+<Title>Checkout Section</Title>
+<Subtitle>Wrapper around the CheckoutForm with optional wallets/BNPL banners</Subtitle>
+
+<Description>
+The CheckoutSection renders the form and may show informational banners for wallets and BNPL availability.
+Pair it with the CartSection and ThankYouSection in composition stories.
+</Description>
+
+## Default
+<Canvas>
+  <Story id="packages-ui-src-components-cms-blocks-checkoutsection--default" />
+</Canvas>
+
+## Props

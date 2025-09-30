@@ -45,14 +45,14 @@ describe("account revoke (server export)", () => {
     (hasPermission as jest.Mock).mockReturnValue(false);
 
     const result = await revoke("target");
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(revalidatePath).not.toHaveBeenCalled();
   });
 
   it("returns error when there is no current session", async () => {
     (getCustomerSession as jest.Mock).mockResolvedValue(null);
     const result = await revoke("target");
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(revalidatePath).not.toHaveBeenCalled();
     expect(authRevokeSession).not.toHaveBeenCalled();
   });
@@ -67,7 +67,7 @@ describe("account revoke (server export)", () => {
 
     expect(result).toEqual({
       success: false,
-      error: "Session does not belong to the user.",
+      error: "account.sessions.errors.notOwned",
     });
     expect(revalidatePath).not.toHaveBeenCalled();
     expect(authRevokeSession).not.toHaveBeenCalled();
@@ -77,7 +77,7 @@ describe("account revoke (server export)", () => {
     (getCustomerSession as jest.Mock).mockRejectedValue(new Error("boom"));
 
     const result = await revoke("any");
-    expect(result).toEqual({ success: false, error: "Failed to revoke session." });
+    expect(result).toEqual({ success: false, error: "account.sessions.errors.revokeFailed" });
     expect(revalidatePath).not.toHaveBeenCalled();
     expect(authRevokeSession).not.toHaveBeenCalled();
   });

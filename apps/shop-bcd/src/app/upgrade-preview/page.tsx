@@ -48,7 +48,7 @@ export default function UpgradePreviewPage() {
           setLinks(pageLinks);
         }
       } catch (err) {
-        // i18n-exempt: developer log message
+        // i18n-exempt -- ABC-123 developer log message [ttl=2025-06-30]
         console.error("Failed to load upgrade changes", err);
       }
     }
@@ -68,7 +68,7 @@ export default function UpgradePreviewPage() {
         throw new Error((data.error as string) || (t("upgrade.publishFailed") as string));
       }
     } catch (err) {
-      // i18n-exempt: developer log message
+      // i18n-exempt -- ABC-123 developer log message [ttl=2025-06-30]
       console.error("Publish failed", err);
       setError(
         err instanceof Error ? err.message : ((t("upgrade.publishFailed") as string) || "publish_failed")
@@ -102,7 +102,7 @@ export default function UpgradePreviewPage() {
                   href={l.url}
                   className="text-blue-600 underline inline-flex items-center min-h-10 min-w-10"
                 >
-                  {/* i18n-exempt: URL path displayed as label */}
+                  {/* i18n-exempt -- I18N-123 URL path displayed as label [ttl=2025-06-30] */}
                   {`/preview/${l.id}`}
                 </a>
               </li>

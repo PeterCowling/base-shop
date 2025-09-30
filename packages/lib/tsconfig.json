@@ -22,7 +22,9 @@
     "dist", // freshly emitted output
     ".turbo", // turbo cache
     "node_modules", // package deps (if any local)
-    "src/__tests__" // test files
+    "src/__tests__", // test files (legacy)
+    "**/__tests__/**",
+    "**/*.test.ts?(x)"
   ],
 
   "references": [

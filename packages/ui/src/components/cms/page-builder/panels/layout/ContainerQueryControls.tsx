@@ -2,6 +2,7 @@
 "use client";
 
 import type { PageComponent } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
 import { Tooltip } from "../../../../atoms";
 
@@ -11,10 +12,10 @@ interface Props {
 }
 
 export default function ContainerQueryControls({ component, handleInput }: Props) {
+  const t = useTranslations();
   return (
     <div className="mt-2 border-t pt-2">
-      {/* i18n-exempt: Builder section title */}
-      <div className="mb-1 text-xs font-semibold text-muted-foreground">Container Queries</div>
+      <div className="mb-1 text-xs font-semibold text-muted-foreground">{t("cms.builder.layout.containerQueries.title")}</div>
       <Select
         value={(component as Record<string, unknown>)["containerType"] as string | undefined ?? ""}
         onValueChange={(v) =>
@@ -25,23 +26,25 @@ export default function ContainerQueryControls({ component, handleInput }: Props
           )
         }
       >
-        {/* i18n-exempt: short builder hint */}
-        <Tooltip text="Sets CSS container-type for this block so children can use @container" className="block">
+        <Tooltip text={t("cms.builder.layout.containerType.tooltip") as string} className="block">
           <SelectTrigger>
-            {/* i18n-exempt: CSS property name */}
-            <SelectValue placeholder="container-type" />
+            <SelectValue placeholder={t("cms.builder.layout.containerType.placeholder") as string} />
           </SelectTrigger>
         </Tooltip>
         <SelectContent>
-          {/* i18n-exempt: CSS keywords */}
-          <SelectItem value="__default__">default</SelectItem>
-          <SelectItem value="size">size</SelectItem>
-          <SelectItem value="inline-size">inline-size</SelectItem>
+          <SelectItem value="__default__">{t("cms.builder.layout.containerType.option.default")}</SelectItem>
+          <SelectItem value="size">{t("cms.builder.layout.containerType.option.size")}</SelectItem>
+          <SelectItem value="inline-size">{t("cms.builder.layout.containerType.option.inlineSize")}</SelectItem>
         </SelectContent>
       </Select>
       <Input
-        label={<span className="flex items-center gap-1">{/* i18n-exempt: field label in builder */}Container Name<Tooltip text="Name used in @container queries for this block">?</Tooltip></span>}
-        placeholder="e.g. card" /* i18n-exempt: example hint */
+        label={
+          <span className="flex items-center gap-1">
+            {t("cms.builder.layout.containerName.label")}
+            <Tooltip text={t("cms.builder.layout.containerName.tooltip") as string}>?</Tooltip>
+          </span>
+        }
+        placeholder={t("cms.builder.layout.containerName.placeholder") as string}
         value={(component as Record<string, unknown>)["containerName"] as string | undefined ?? ""}
         onChange={(e) =>
           // Local loosening to support extra builder-only fields

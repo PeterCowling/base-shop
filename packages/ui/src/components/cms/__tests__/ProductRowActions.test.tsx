@@ -1,6 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ProductRowActions from "../products/ProductRowActions";
+import { TranslationsProvider } from "@acme/i18n";
+// Minimal i18n messages to avoid JSON import in Jest ESM mode
+const messages = {
+  "cms.products.actions.edit": "Edit",
+  "cms.products.actions.view": "View",
+  "cms.products.actions.duplicate": "Duplicate",
+  "cms.products.actions.delete": "Delete",
+} as const;
 
 describe("ProductRowActions", () => {
   const shop = "demo-shop";
@@ -11,12 +19,14 @@ describe("ProductRowActions", () => {
     const onDelete = jest.fn();
 
     render(
-      <ProductRowActions
-        shop={shop}
-        product={product}
-        onDuplicate={onDuplicate}
-        onDelete={onDelete}
-      />,
+      <TranslationsProvider messages={messages as any}>
+        <ProductRowActions
+          shop={shop}
+          product={product}
+          onDuplicate={onDuplicate}
+          onDelete={onDelete}
+        />
+      </TranslationsProvider>,
     );
 
     expect(screen.getByRole("link", { name: "Edit" })).toHaveAttribute(
@@ -35,4 +45,3 @@ describe("ProductRowActions", () => {
     expect(onDelete).toHaveBeenCalledWith(product.id);
   });
 });
-

@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof GiftCardBlock> = {
   title: 'CMS Blocks/GiftCardBlock/Matrix',
   component: GiftCardBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

@@ -57,7 +57,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
         const RemoteArray = z.array(RemoteItem);
         const parsed = RemoteArray.safeParse(Array.isArray(data) ? data : (data?.items ?? []));
         if (!parsed.success) {
-          setLoadError(t("cms.builder.presets.load.invalidFeed"));
+          setLoadError(t("cms.builder.presets.load.invalidFeed") as string);
           return;
         }
         if (!aborted && parsed.data.length) {
@@ -75,7 +75,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
         }
       } catch {
         // Show a soft error; keep local presets
-        setLoadError(t("cms.builder.presets.load.failed"));
+        setLoadError(t("cms.builder.presets.load.failed") as string);
       }
     })();
     return () => { aborted = true; };
@@ -146,7 +146,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
   }, [presets, search, category]);
 
   // Built-in sections are shown separately from Preset categories and respect the search query.
-  const builtInSections = useMemo(() => getBuiltInSections(t), [t]);
+  const builtInSections = useMemo(() => getBuiltInSections(((k: string) => t(k) as string)), [t]);
   const builtInsFiltered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return builtInSections.filter((s) => {
@@ -186,15 +186,15 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder={t("cms.builder.presets.search.placeholder")}
+            placeholder={t("cms.builder.presets.search.placeholder") as string}
             className="flex-1 rounded border p-2 text-sm"
-            aria-label={t("cms.builder.presets.search.aria")}
+            aria-label={t("cms.builder.presets.search.aria") as string}
           />
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value as PresetCategory | "All")}
             className="rounded border p-2 text-sm"
-            aria-label={t("cms.builder.presets.category.aria")}
+            aria-label={t("cms.builder.presets.category.aria") as string}
           >
             <option value="All">{t("cms.builder.presets.category.all")}</option>
             {presetCategories.map((c) => (

@@ -6,6 +6,15 @@ const refreshMock = jest.fn();
 jest.mock("next/navigation", () => ({
   useRouter: () => ({ refresh: refreshMock }),
 }));
+// Mock i18n to ensure accessible button name resolves to English
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string) =>
+    ({
+      "actions.revoke": "Revoke",
+      "actions.revoking": "Revoking...",
+      "account.sessions.errors.revokeFailed": "Failed to revoke session.",
+    } as Record<string, string>)[key] ?? key,
+}));
 
 describe("RevokeSessionButton", () => {
   beforeEach(() => {
@@ -33,4 +42,3 @@ describe("RevokeSessionButton", () => {
     expect(refreshMock).not.toHaveBeenCalled();
   });
 });
-

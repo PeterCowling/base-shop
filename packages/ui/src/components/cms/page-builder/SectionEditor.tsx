@@ -198,8 +198,7 @@ export default function SectionEditor({ component, onChange }: Props) {
         label={t("Background video URL")}
         value={component.backgroundVideoUrl ?? ""}
         onChange={(e) => handle("backgroundVideoUrl", (e.target.value || undefined))}
-        /* i18n-exempt */
-        placeholder="https://.../video.mp4"
+        placeholder={t("cms.builder.section.videoUrl.placeholder")}
       />
       <div className="grid grid-cols-3 gap-2">
         <Input

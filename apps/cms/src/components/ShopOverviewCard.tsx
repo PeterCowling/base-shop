@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button, Card, CardContent, Tag } from "@/components/atoms/shadcn";
 import { useTranslations } from "@acme/i18n";

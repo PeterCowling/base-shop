@@ -2,11 +2,8 @@ import { Card, CardContent, Progress, Button, Tag } from "@/components/atoms/sha
 import { Grid } from "@/components/atoms/primitives";
 import Link from "next/link";
 import { MaintenanceScanner } from "./MaintenanceScanner";
-import {
-  scanForMaintenance,
-  MSG_ITEM_NEEDS_MAINTENANCE,
-  MSG_ITEM_NEEDS_RETIREMENT,
-} from "./scan.server";
+import { scanForMaintenance } from "./scan.server";
+import { MSG_ITEM_NEEDS_MAINTENANCE, MSG_ITEM_NEEDS_RETIREMENT } from "./constants";
 import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
 import { TranslationsProvider } from "@i18n/Translations";
 import en from "@i18n/en.json";

@@ -45,7 +45,7 @@
 
 ### Testing & coverage hot spots
 - **Extensive Jest suites** for repositories, services, and worker routes (`apps/api/src/routes/**/__tests__`, `packages/platform-core/src/**/__tests__`, `packages/auth/src/__tests__`).
-- **Cypress E2E coverage** for CMS, dashboard, and shop flows (`cypress/e2e/*.cy.ts`).
+- **Cypress E2E coverage** for CMS, dashboard, and shop flows (`apps/cms/cypress/e2e/*.cy.ts`).
 - **Unit tests for Next APIs** across shop and CMS apps (`apps/shop-bcd/src/app/api/**/route.test.ts`, `apps/cms/src/app/api/**/__tests__`).
 - **Docs** describing test modes and Prisma stubs vs. live DB (`__tests__/docs/testing.md`).
 
@@ -237,4 +237,3 @@ Ensure upgrade/preview routes securely operate on repo data.
   - `apps/api/src/routes/shop/[id]/run.ts`
   - `apps/api/src/routes/components/__tests__/authorization.test.ts`
   - `wrangler.toml`
-

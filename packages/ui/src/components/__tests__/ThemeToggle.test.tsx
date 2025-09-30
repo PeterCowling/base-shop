@@ -3,11 +3,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ThemeToggle from "../ThemeToggle";
 
-let setThemeMock: jest.Mock;
-
 jest.mock("@platform-core/contexts/ThemeContext", () => {
   const React = require("react");
-  setThemeMock = jest.fn();
+  const setThemeMock = jest.fn();
   return {
     useTheme: () => {
       const [theme, setThemeState] = React.useState("base");
@@ -20,6 +18,10 @@ jest.mock("@platform-core/contexts/ThemeContext", () => {
     setThemeMock,
   };
 });
+
+const { setThemeMock } = require("@platform-core/contexts/ThemeContext") as {
+  setThemeMock: jest.Mock;
+};
 
 describe("ThemeToggle", () => {
   beforeEach(() => {

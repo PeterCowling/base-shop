@@ -44,3 +44,4 @@ export type { RentalLineItem } from "./rental";
 export * from "./data";
 export * from "./recommendations";
 export * from "./i18n";
+export * from "./tryon";

@@ -11,7 +11,7 @@ const sample = PRODUCTS[0];
 const meta: Meta<typeof ProductCard> = {
   title: 'Organisms/ProductCard/Matrix',
   component: ProductCard,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: {
     product: sample,
     showImage: true,

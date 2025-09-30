@@ -9,7 +9,7 @@ import type { SKU } from '@acme/types';
 const meta: Meta<typeof StickyBuyBar> = {
   title: 'CMS Blocks/StickyBuyBar/Matrix',
   component: StickyBuyBar,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { product: (PRODUCTS as SKU[])[0] },
 };
 export default meta;

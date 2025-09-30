@@ -10,6 +10,8 @@ import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslat
 import { getServerSession } from "next-auth";
 import { PendingRequestsPanel } from "./components/PendingRequestsPanel";
 import { Grid } from "@ui/components/atoms/primitives";
+import { TranslationsProvider } from "@i18n/Translations";
+import en from "@i18n/en.json";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getServerTranslations("en");
@@ -37,32 +39,34 @@ export default async function CmsDashboardPage() {
   ];
 
   return (
-    <div className="space-y-10">
-      <DashboardHero
-        stats={stats}
-        pendingCount={pendingCount}
-        canManageRequests={canManageRequests}
-        pendingHeadingId={PENDING_HEADING_ID}
-      />
+    <TranslationsProvider messages={en}>
+      <div className="space-y-10">
+        <DashboardHero
+          stats={stats}
+          pendingCount={pendingCount}
+          canManageRequests={canManageRequests}
+          pendingHeadingId={PENDING_HEADING_ID}
+        />
 
-      <section>
-        <Grid cols={1} gap={6} className="lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <ShopOverviewCard stats={stats} pendingCount={pendingCount} />
-          </div>
-          <div className="lg:col-span-1">
-            {canManageRequests ? (
-              <PendingRequestsPanel
-                pending={pending}
-                roles={roles}
-                headingId={PENDING_HEADING_ID}
-              />
-            ) : (
-              <PendingSummaryPanel headingId={PENDING_HEADING_ID} />
-            )}
-          </div>
-        </Grid>
-      </section>
-    </div>
+        <section>
+          <Grid cols={1} gap={6} className="lg:grid-cols-3">
+            <div className="lg:col-span-2">
+              <ShopOverviewCard stats={stats} pendingCount={pendingCount} />
+            </div>
+            <div className="lg:col-span-1">
+              {canManageRequests ? (
+                <PendingRequestsPanel
+                  pending={pending}
+                  roles={roles}
+                  headingId={PENDING_HEADING_ID}
+                />
+              ) : (
+                <PendingSummaryPanel headingId={PENDING_HEADING_ID} />
+              )}
+            </div>
+          </Grid>
+        </section>
+      </div>
+    </TranslationsProvider>
   );
 }

@@ -1,5 +1,4 @@
 import BlogListing from "@ui/components/cms/blocks/BlogListing";
-import { fetchPublishedPosts } from "@acme/sanity";
 import { notFound } from "next/navigation";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../shop.json";
@@ -9,20 +8,34 @@ import { resolveLocale } from "@i18n/locales";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import type { NextSeoProps } from "next-seo";
 import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
+import { getBlogProvider } from "./provider";
+import { JsonLdScript, blogItemListJsonLd } from "../../../lib/jsonld";
 
 type BlogShop = Pick<Shop, "id" | "luxuryFeatures" | "editorialBlog" | "name">;
 const shop: BlogShop = shopJson;
 
-export default async function BlogPage({ params }: { params: { lang: string } }) {
+export const revalidate = 60;
+
+export default async function BlogPage({
+  params,
+  searchParams,
+}: {
+  params: { lang: string };
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
   if (!shop.luxuryFeatures.blog) {
     return notFound();
   }
-  const t = await loadTranslations(resolveLocale(params.lang));
-  const posts = await fetchPublishedPosts(shop.id);
+  const lang = resolveLocale(params.lang);
+  const t = await loadTranslations(lang);
+  const provider = getBlogProvider(shop);
+  const posts = await provider.fetchPublishedPosts(shop.id);
   const items = posts.map((p) => ({
     title: p.title,
     excerpt: p.excerpt,
     url: `/${params.lang}/blog/${p.slug}`,
+    categories: Array.isArray(p.categories) ? p.categories : undefined,
+    date: (p as { date?: string }).date,
     shopUrl: p.products?.[0]
       ? `/${params.lang}/product/${p.products[0]}`
       : undefined,
@@ -44,9 +57,21 @@ export default async function BlogPage({ params }: { params: { lang: string } })
     ) => unknown)(blogListingProps as unknown, {} as unknown);
   }
 
-  const listing = <BlogListing {...blogListingProps} />;
+  const listing = <BlogListing {...blogListingProps} locale={lang} />;
+  const category = (() => {
+    const v = searchParams?.category;
+    if (typeof v === "string") return v.trim() || undefined;
+    if (Array.isArray(v)) return (v[0] ?? "").trim() || undefined;
+    return undefined;
+  })();
+  const listUrl = `/${params.lang}/blog${category ? `?category=${encodeURIComponent(category)}` : ""}`;
+  const listJsonLd = blogItemListJsonLd({
+    url: listUrl,
+    items: items.map((it) => ({ title: it.title, url: it.url!, date: it.date })),
+  });
   return (
     <>
+      <JsonLdScript data={listJsonLd} />
       {shop.editorialBlog?.promoteSchedule && (
         <div className="rounded bg-muted p-2">
           {t("Daily Edit scheduled for")} {shop.editorialBlog.promoteSchedule}
@@ -59,13 +84,22 @@ export default async function BlogPage({ params }: { params: { lang: string } })
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: { lang: string };
+  searchParams?: Record<string, string | string[] | undefined>;
 }): Promise<Metadata> {
   const lang = resolveLocale(params.lang);
   const baseSeo = await getSeo(lang);
   const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
-  const canonical = canonicalRoot ? `${canonicalRoot}/blog` : undefined;
+  const category = (() => {
+    const v = searchParams?.category;
+    if (typeof v === "string") return v.trim() || undefined;
+    if (Array.isArray(v)) return (v[0] ?? "").trim() || undefined;
+    return undefined;
+  })();
+  let canonical = canonicalRoot ? `${canonicalRoot}/blog` : undefined;
+  if (canonical && category) canonical += `?category=${encodeURIComponent(category)}`;
   const settings = await getShopSettings(shop.id);
   const languages = settings.languages ?? ["en"];
   let canonicalRootForLanguages = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
@@ -74,7 +108,8 @@ export async function generateMetadata({
   }
   const languagesAlt: Record<string, string> = {};
   for (const l of languages) {
-    languagesAlt[l] = `${canonicalRootForLanguages}/${l}/blog`;
+    const base = `${canonicalRootForLanguages}/${l}/blog`;
+    languagesAlt[l] = category ? `${base}?category=${encodeURIComponent(category)}` : base;
   }
   const seo = await getSeo(lang, {
     title: `${(await loadTranslations(lang))("Blog")} · ${shop.name}`,

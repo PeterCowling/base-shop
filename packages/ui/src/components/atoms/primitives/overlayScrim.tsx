@@ -13,7 +13,7 @@ export const OverlayScrim = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-40 bg-surface-2/60", className)} // i18n-exempt: class names
+    className={cn("fixed inset-0 z-40 bg-surface-2/60", className)} // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     {...props}
   />
 ));

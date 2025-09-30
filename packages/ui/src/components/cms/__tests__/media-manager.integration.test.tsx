@@ -243,7 +243,7 @@ describe("Media manager integration", () => {
       expect.objectContaining({ url: "https://cdn.example.com/bravo.jpg" }),
     ]);
 
-    const overlays = await screen.findAllByText(/Deleting asset/i);
+    const overlays = await screen.findAllByText(/Deleting media/i, { selector: 'p' });
     expect(overlays).toHaveLength(2);
 
     deferred.resolve();
@@ -253,7 +253,7 @@ describe("Media manager integration", () => {
     expect(screen.queryByText("Bravo image")).not.toBeInTheDocument();
     expect(screen.getByText("Charlie image")).toBeInTheDocument();
     await waitFor(() =>
-      expect(screen.queryByText(/Deleting asset/i)).not.toBeInTheDocument()
+      expect(screen.queryByText(/Deleting media/i)).not.toBeInTheDocument()
     );
     await waitFor(() =>
       expect(screen.getByRole("button", { name: /delete selected/i })).toBeDisabled()

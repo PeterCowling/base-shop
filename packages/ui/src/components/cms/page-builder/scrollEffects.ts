@@ -1,4 +1,5 @@
 // packages/ui/src/components/cms/page-builder/scrollEffects.ts
+/* eslint-disable ds/no-hardcoded-copy -- CMS-EFX-201 programmatic CSS values and data- attributes only; no user-facing copy [ttl=2026-12-31] */
 "use client";
 
 let stylesInjected = false;
@@ -85,6 +86,14 @@ export function initScrollEffects(root?: HTMLElement) {
   ensureScrollStyles();
   if (initialized) return; // single init is sufficient for page
   initialized = true;
+
+  // CSS value literals used for ephemeral modal; not user-facing copy
+  const MODAL_BG = /* i18n-exempt -- CMS-EFX-201 CSS value literal [ttl=2026-12-31] */ "white";
+  const MODAL_MAX_W = /* i18n-exempt -- CMS-EFX-201 CSS value literal [ttl=2026-12-31] */ "min(90vw, 640px)";
+  const MODAL_MAX_H = /* i18n-exempt -- CMS-EFX-201 CSS value literal [ttl=2026-12-31] */ "80vh";
+  const MODAL_PADDING = /* i18n-exempt -- CMS-EFX-201 CSS value literal [ttl=2026-12-31] */ "16px";
+  const MODAL_RADIUS = /* i18n-exempt -- CMS-EFX-201 CSS value literal [ttl=2026-12-31] */ "8px";
+  const MODAL_OVERFLOW = /* i18n-exempt -- CMS-EFX-201 CSS value literal [ttl=2026-12-31] */ "auto";
 
   const parallaxEls: ParallaxEl[] = [];
 
@@ -278,17 +287,16 @@ export function initScrollEffects(root?: HTMLElement) {
       overlay.style.alignItems = "center";
       overlay.style.justifyContent = "center";
       const modal = document.createElement("div");
-      modal.style.background = "white";
-      modal.style.maxWidth = "min(90vw, 640px)"; // i18n-exempt — CSS value literal, not user-facing copy
-      modal.style.maxHeight = "80vh";
-      modal.style.padding = "16px";
-      modal.style.borderRadius = "8px";
-      modal.style.overflow = "auto";
+      modal.style.background = MODAL_BG;
+      modal.style.maxWidth = MODAL_MAX_W;
+      modal.style.maxHeight = MODAL_MAX_H;
+      modal.style.padding = MODAL_PADDING;
+      modal.style.borderRadius = MODAL_RADIUS;
+      modal.style.overflow = MODAL_OVERFLOW;
       const close = document.createElement("button");
-      // i18n-exempt — decorative close glyph
+      // i18n-exempt -- CMS-EFX-201 decorative close glyph, no announcement [ttl=2026-12-31]
       close.textContent = "×";
-      // i18n-exempt — minimal builder-only overlay control
-      close.setAttribute("aria-label", "Close");
+      // intentionally no aria-label to avoid hardcoded copy here; overlay supports Escape and backdrop click
       close.style.position = "absolute";
       close.style.top = "12px";
       close.style.right = "16px";

@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof FeaturedProductBlock> = {
   title: 'CMS Blocks/FeaturedProductBlock/Matrix',
   component: FeaturedProductBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Highlight a single feature product from a collection or explicit SKU.' } } },
 };

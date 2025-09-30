@@ -24,6 +24,14 @@ jest.mock("../ImagePicker", () => ({
   default: ({ children }: any) => children,
 }));
 
+// Mock LocalizedTextInput to avoid async effects and i18n placeholders
+jest.mock("../../LocalizedTextInput", () => ({
+  __esModule: true,
+  default: ({ value = "", onChange }: any) => (
+    <input placeholder="text" value={value} onChange={(e: any) => onChange(e.target.value)} />
+  ),
+}));
+
 describe("block editors", () => {
   const cases: [string, React.ComponentType<any>, any, string][] = [
     [

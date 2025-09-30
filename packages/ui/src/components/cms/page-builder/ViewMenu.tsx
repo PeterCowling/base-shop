@@ -4,6 +4,7 @@
 import { Button, Popover, PopoverContent, PopoverTrigger, Switch, Tooltip } from "../../atoms";
 import type { ComponentProps } from "react";
 import type GridSettings from "./GridSettings";
+import { useTranslations } from "@acme/i18n";
 
 interface Props {
   showPreview: boolean;
@@ -26,35 +27,30 @@ interface Props {
 }
 
 export function ViewMenuContent({ showPreview, togglePreview, showComments, toggleComments, startTour: _startTour, showPalette, togglePalette, parentFirst, onParentFirstChange, gridProps, crossBreakpointNotices, onCrossBreakpointNoticesChange }: Props) {
+  const t = useTranslations();
   return (
     <div className="space-y-2">
-      {/* i18n-exempt -- internal CMS menu label */}
-      <div className="text-sm font-medium">View</div>
+      <div className="text-sm font-medium">{t("cms.builder.view.title")}</div>
       <label className="flex items-center justify-between gap-4 text-sm">
-        {/* i18n-exempt -- internal CMS toggle label */}
-        <span>Preview</span>
+        <span>{t("cms.builder.preview.title")}</span>
         <Switch checked={showPreview} onChange={togglePreview} />
       </label>
       <label className="flex items-center justify-between gap-4 text-sm">
-        {/* i18n-exempt -- internal CMS toggle label */}
-        <span>Comments</span>
+        <span>{t("cms.builder.view.comments")}</span>
         <Switch checked={showComments} onChange={toggleComments} />
       </label>
       {typeof showPalette === "boolean" && togglePalette && (
         <label className="flex items-center justify-between gap-4 text-sm">
-          {/* i18n-exempt -- internal CMS toggle label */}
-          <span>Palette</span>
+          <span>{t("cms.builder.drag.palette")}</span>
           <Switch checked={showPalette} onChange={togglePalette} />
         </label>
       )}
       <label className="flex items-center justify-between gap-4 text-sm">
-        {/* i18n-exempt -- internal CMS toggle label */}
-        <span>Layer selection (Parent-first)</span>
+        <span>{t("cms.builder.view.layerSelectionParentFirst")}</span>
         <Switch checked={!!parentFirst} onChange={() => onParentFirstChange?.(!parentFirst)} />
       </label>
       <label className="flex items-center justify-between gap-4 text-sm">
-        {/* i18n-exempt -- internal CMS toggle label */}
-        <span>Cross-breakpoint notifications</span>
+        <span>{t("cms.builder.view.crossBreakpointNotifications")}</span>
         <Switch checked={!!crossBreakpointNotices} onChange={() => onCrossBreakpointNoticesChange?.(!crossBreakpointNotices)} />
       </label>
 
@@ -63,31 +59,25 @@ export function ViewMenuContent({ showPreview, togglePreview, showComments, togg
       {/* Canvas indications moved into View for parity with spec */}
       {gridProps && (
         <div className="mt-2 space-y-2">
-          {/* i18n-exempt -- internal CMS section label */}
-          <div className="text-sm font-medium">Canvas Indications</div>
+          <div className="text-sm font-medium">{t("cms.builder.view.canvasIndications")}</div>
           <label className="flex items-center justify-between gap-4 text-sm">
-            {/* i18n-exempt -- internal CMS toggle label */}
-            <span>Grid</span>
+            <span>{t("cms.builder.view.grid")}</span>
             <Switch checked={!!gridProps.showGrid} onChange={gridProps.toggleGrid} />
           </label>
           <label className="flex items-center justify-between gap-4 text-sm">
-            {/* i18n-exempt -- internal CMS toggle label */}
-            <span>Snap to grid</span>
+            <span>{t("cms.builder.view.snapToGrid")}</span>
             <Switch checked={!!gridProps.snapToGrid} onChange={gridProps.toggleSnap} />
           </label>
           <label className="flex items-center justify-between gap-4 text-sm">
-            {/* i18n-exempt -- internal CMS toggle label */}
-            <span>Rulers</span>
+            <span>{t("cms.builder.view.rulers")}</span>
             <Switch checked={!!gridProps.showRulers} onChange={gridProps.toggleRulers} />
           </label>
           <label className="flex items-center justify-between gap-4 text-sm">
-            {/* i18n-exempt -- internal CMS toggle label */}
-            <span>Baseline grid</span>
+            <span>{t("cms.builder.view.baselineGrid")}</span>
             <Switch checked={!!gridProps.showBaseline} onChange={gridProps.toggleBaseline} />
           </label>
           <div className="flex items-center justify-between gap-2">
-            {/* i18n-exempt -- internal CMS label */}
-            <span className="text-sm">Baseline step</span>
+            <span className="text-sm">{t("cms.builder.view.baselineStep")}</span>
             <div className="flex items-center gap-2">
               <input
                 type="range"
@@ -110,14 +100,14 @@ export function ViewMenuContent({ showPreview, togglePreview, showComments, togg
 export default function ViewMenu(props: Props) {
   const { open, onOpenChange, ...rest } = props;
   const contentProps: Omit<Props, "open" | "onOpenChange"> = rest;
+  const t = useTranslations();
   return (
     <Popover open={open} onOpenChange={onOpenChange}>
-      {/* i18n-exempt -- internal CMS tooltip */}
-      <Tooltip text="View options">
+      <Tooltip text={t("cms.builder.view.options")}>
         <PopoverTrigger asChild>
-          <Button variant="outline" aria-label="View options">
-            {/* i18n-exempt -- internal CMS button label */}
-            View
+          <Button variant="outline" aria-label={t("cms.builder.view.options")}
+          >
+            {t("cms.builder.view.title")}
           </Button>
         </PopoverTrigger>
       </Tooltip>

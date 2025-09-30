@@ -2,6 +2,7 @@
 // i18n-exempt file — editor toolbar; copy slated for extraction
 
 import type { Locale } from "@acme/i18n/locales";
+import { useTranslations } from "@acme/i18n";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import React, { useEffect } from "react";
 import { Button, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Dialog, DialogContent, DialogTrigger } from "../../atoms/shadcn";
@@ -59,6 +60,7 @@ const PageToolbar = ({
   hideDeviceManager,
   hidePagesNav,
 }: Props) => {
+  const t = useTranslations();
   // Only access Next.js router when the pages navigator is used to avoid
   // requiring an app router context in tests/standalone usage.
   // Navigation for pages selector uses window.location to avoid Next dependency
@@ -127,7 +129,7 @@ const PageToolbar = ({
       </Dialog>
       {/* Page selector (left of device selector) */}
       {!hidePagesNav && pagesNav && pagesNav.items?.length ? (
-        <Select
+          <Select
           value={pagesNav.current}
           onValueChange={(v) => {
             const next = pagesNav.items.find((i) => i.value === v) || null;
@@ -136,7 +138,7 @@ const PageToolbar = ({
             }
           }}
         >
-          <SelectTrigger className="h-8 w-12 text-xs" aria-label="Page">
+          <SelectTrigger className="h-8 w-12 text-xs" aria-label={t("cms.preview.meta.page")}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -163,8 +165,8 @@ const PageToolbar = ({
           {/* Breakpoints overflow: three-dot menu next to device selector */}
           <Dialog open={breakpointsOpen} onOpenChange={setBreakpointsOpen}>
             <DialogTrigger asChild>
-              <Tooltip text="Manage breakpoints"> {/* i18n-exempt */}
-                <Button variant="outline" size="icon" aria-label="Manage breakpoints">
+              <Tooltip text={t("cms.builder.toolbar.manageBreakpoints")}>
+                <Button variant="outline" size="icon" aria-label={t("cms.builder.toolbar.manageBreakpoints")}>
                   •••
                 </Button>
               </Tooltip>
@@ -179,20 +181,20 @@ const PageToolbar = ({
             setSizeOpen(o);
             if (o) setSizeDraft((editingSizePx ?? "").toString());
           }}>
-            <UITooltip text="Editing size (px)"> {/* i18n-exempt */}
+            <UITooltip text={t("cms.builder.toolbar.editingSizePx")}>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-8 px-2 text-xs" aria-label="Editing size">
-                  {editingSizePx ? `${editingSizePx}px` : "Size"} {/* i18n-exempt */}
+                <Button variant="outline" className="h-8 px-2 text-xs" aria-label={t("cms.builder.toolbar.editingSizePx")}>
+                  {editingSizePx ? `${editingSizePx}px` : t("cms.builder.toolbar.size")}
                 </Button>
               </PopoverTrigger>
             </UITooltip>
             <PopoverContent align="start" className="w-40 space-y-2">
-              <label className="text-xs text-muted-foreground" htmlFor="pb-editing-size">Editing size (px)</label> {/* i18n-exempt */}
+              <label className="text-xs text-muted-foreground" htmlFor="pb-editing-size">{t("cms.builder.toolbar.editingSizePx")}</label> {/* i18n-exempt -- INTL-204 DOM htmlFor attribute, not user-facing copy [ttl=2026-12-31] */}
               <input
-                id="pb-editing-size"
+                id="pb-editing-size" // i18n-exempt -- INTL-204 DOM id attribute, not user-facing copy [ttl=2026-12-31]
                 type="number"
                 className="h-8 w-full rounded border px-2 text-xs"
-                placeholder="px"
+                placeholder={t("cms.builder.toolbar.pxPlaceholder")}
                 value={sizeDraft}
                 onChange={(e) => setSizeDraft(e.target.value)}
               />
@@ -209,26 +211,26 @@ const PageToolbar = ({
                     setSizeOpen(false);
                   }}
                 >
-                  Done {/* i18n-exempt */}
+                  {t("actions.done")}
                 </Button>
                 <Button
                   variant="ghost"
                   className="h-8 px-2 text-xs"
                   onClick={() => { setSizeOpen(false); }}
                 >
-                  Cancel {/* i18n-exempt */}
+                  {t("actions.cancel")}
                 </Button>
               </div>
             </PopoverContent>
           </Popover>
-          <Tooltip text="Rotate"> {/* i18n-exempt */}
+          <Tooltip text={t("cms.interactions.rotate")}>
             <Button
               variant="outline"
               size="icon"
               onClick={() =>
                 setOrientation(orientation === "portrait" ? "landscape" : "portrait")
               }
-              aria-label="Rotate"
+              aria-label={t("cms.interactions.rotate")}
             >
               <ReloadIcon
                 className={(orientation === "landscape" ? "rotate-90 " : "") + "h-4 w-4"}
@@ -244,7 +246,7 @@ const PageToolbar = ({
         <Inline wrap gap={1} className="ms-auto basis-full md:basis-auto">
           {locales.length > 3 ? (
             <Select value={locale} onValueChange={(v) => setLocale(v as Locale)}>
-              <SelectTrigger className="h-8 w-28 text-xs" aria-label="Locale">
+              <SelectTrigger className="h-8 w-28 text-xs" aria-label={t("cms.shopOverrides.locale")}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -271,12 +273,12 @@ const PageToolbar = ({
       ) : null}
       {progress && (
         <p className="basis-full text-xs">
-          Uploading image… {progress.done}/{progress.total} {/* i18n-exempt */}
+          {t("cms.builder.toolbar.uploadingImage", { done: String(progress.done), total: String(progress.total) })}
         </p>
       )}
       {isValid === false && (
         <p className="basis-full text-xs text-warning">
-          Wrong orientation (needs landscape) {/* i18n-exempt */}
+          {t("upload.orientationWrong", { required: t("common.orientation.landscape") })}
         </p>
       )}
     </div>

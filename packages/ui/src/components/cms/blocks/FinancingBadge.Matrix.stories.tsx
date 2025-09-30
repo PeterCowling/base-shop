@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof FinancingBadge> = {
   title: 'CMS Blocks/FinancingBadge/Matrix',
   component: FinancingBadge,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

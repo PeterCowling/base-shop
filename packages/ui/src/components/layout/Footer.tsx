@@ -1,8 +1,8 @@
+"use client";
 // src/components/layout/Footer.tsx
 import Link from "next/link";
 import { memo } from "react";
-// i18n-exempt — placeholder footer copy; upstream apps provide translations
-const t = (s: string) => s;
+import { useTranslations } from "@acme/i18n";
 import { cn } from "../../utils/style";
 
 const Footer = memo(function Footer({
@@ -12,8 +12,9 @@ const Footer = memo(function Footer({
   height?: string;
   padding?: string;
 }) {
-  const FOOTER_CLASS = "flex items-center justify-center bg-muted text-sm text-muted"; // i18n-exempt: CSS classes only
-  const COLOR_TOKEN = "--color-muted"; // i18n-exempt: design token name
+  const t = useTranslations();
+  const FOOTER_CLASS = "flex items-center justify-center bg-muted text-sm text-muted"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+  const COLOR_TOKEN = "--color-muted"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
   return (
     <footer
       className={cn(
@@ -26,12 +27,12 @@ const Footer = memo(function Footer({
       {" "}
       <p className="space-x-4">
         <Link href="/legal/privacy" className="hover:underline">
-          {t("Privacy")} {/* i18n-exempt: placeholder; host app provides translations */}
+          {t("legal.privacy")} {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
         </Link>
         <span>&middot;</span>
         {/* i18n-exempt: decorative separator */}
         <Link href="/legal/terms" className="hover:underline">
-          {t("Terms")} {/* i18n-exempt: placeholder; host app provides translations */}
+          {t("legal.terms")} {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
         </Link>
       </p>
     </footer>

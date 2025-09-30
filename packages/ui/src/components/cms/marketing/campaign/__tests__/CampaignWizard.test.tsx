@@ -3,6 +3,28 @@ import userEvent from "@testing-library/user-event";
 import { CampaignWizard } from "../CampaignWizard";
 import type { CampaignFormValues } from "../types";
 
+// Provide a lightweight i18n mock with the specific labels asserted in tests.
+// Other keys fall back to the key itself so generic copy still renders.
+const translations: Record<string, string> = {
+  "campaign.name.label": "Campaign name",
+  "actions.continue": "Continue",
+  "actions.back": "Back",
+  "campaign.wizard.review": "Review campaign",
+  "campaign.wizard.finishLabel": "Submit for approval",
+  "campaign.wizard.submitted": "Campaign submitted for approval.",
+  "campaign.channels.legend": "Audience filters",
+  "campaign.audience.label": "Audience",
+};
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string, vars?: Record<string, string | number>) => {
+    const msg = translations[key] || key;
+    if (!vars) return msg;
+    return msg.replace(/\{(.*?)\}/g, (m, name) =>
+      Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : m
+    );
+  },
+}));
+
 const validValues: CampaignFormValues = {
   name: "Launch Plan",
   objective: "sales",

@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof FAQBlock> = {
   title: 'CMS Blocks/FAQBlock/Matrix',
   component: FAQBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { items: fixture.items },
   parameters: { docs: { description: { component: 'Frequently asked questions list.' } } },
 };

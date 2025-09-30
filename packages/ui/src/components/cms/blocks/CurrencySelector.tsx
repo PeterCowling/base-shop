@@ -11,11 +11,12 @@ export default function CurrencySelector({ className, ...rest }: CurrencySelecto
   const [currency, setCurrency] = useCurrency();
   // i18n-exempt: ISO currency codes are not translatable copy
   const options: Currency[] = ["EUR", "USD", "GBP"];
+  const CURRENCY_SELECT_ID = "currency-select"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — technical id, not user copy
   return (
     <div className={className} {...rest}>
-      <label className="sr-only" htmlFor="currency-select">{t("Currency")}</label> {/* i18n-exempt: accessible label handled by t() */}
+      <label className="sr-only" htmlFor={CURRENCY_SELECT_ID}>{t("currency.label")}</label>
       <select
-        id="currency-select" // i18n-exempt: technical id, not user copy
+        id={CURRENCY_SELECT_ID}
         value={currency}
         onChange={(e) => setCurrency(e.target.value as Currency)}
         className="rounded border px-2 py-1 text-sm"

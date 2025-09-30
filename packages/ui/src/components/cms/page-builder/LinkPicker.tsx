@@ -11,6 +11,7 @@ import {
   Button,
   Input,
 } from "../../atoms/shadcn";
+import { useTranslations } from "@acme/i18n";
 
 type PageItem = { id: string; slug: string; seo?: { title?: Record<string, string> } };
 type ProductItem = { slug: string; title: string };
@@ -37,6 +38,7 @@ export default function LinkPicker({
   onPick: (href: string) => void;
   shop?: string;
 }) {
+  const t = useTranslations();
   const [query, setQuery] = useState("");
   const [pages, setPages] = useState<PageItem[]>([]);
   const [products, setProducts] = useState<ProductItem[]>([]);
@@ -77,13 +79,10 @@ export default function LinkPicker({
 
   return (
     <Dialog open={open} onOpenChange={(o) => (!o ? onClose() : undefined)}>
-      {/* i18n-exempt: Admin-only CMS tool UI copy. */}
       <DialogContent className="w-full">
         <DialogHeader>
-          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
-          <DialogTitle>Pick Internal Link</DialogTitle>
-          {/* i18n-exempt: Admin-only CMS tool UI copy. */}
-          <DialogDescription>Search pages or products</DialogDescription>
+          <DialogTitle>{t("cms.links.picker.title")}</DialogTitle>
+          <DialogDescription>{t("cms.links.picker.description")}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-2">
@@ -91,7 +90,7 @@ export default function LinkPicker({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             // i18n-exempt: Admin-only CMS tool UI copy.
-            placeholder="Search products…"
+            placeholder={t("cms.links.picker.search.placeholder")}
           />
           <div>
             {/* i18n-exempt: Admin-only CMS tool UI copy. */}

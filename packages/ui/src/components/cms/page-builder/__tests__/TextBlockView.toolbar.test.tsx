@@ -59,8 +59,12 @@ describe("TextBlockView toolbar", () => {
       />
     );
     // Provide host rect used by effect
-    const host = container.querySelector('[role="listitem"]') as HTMLElement;
-    host.getBoundingClientRect = () => ({ left: 0, top: 0, width: 300, height: 200 } as any);
+    // TextBlockView assigns containerRef.current to its root element.
+    const host = containerRef.current as unknown as HTMLElement;
+    Object.defineProperty(host, "getBoundingClientRect", {
+      configurable: true,
+      value: () => ({ left: 0, top: 0, width: 300, height: 200 } as any),
+    });
 
     // Buttons should now be present
     fireEvent.click(screen.getByRole("button", { name: "Bold" }));
@@ -76,4 +80,3 @@ describe("TextBlockView toolbar", () => {
     expect(screen.getByText("LinkPickerOpen")).toBeInTheDocument();
   });
 });
-

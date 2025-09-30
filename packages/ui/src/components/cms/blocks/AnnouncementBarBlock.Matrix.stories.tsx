@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof AnnouncementBarBlock> = {
   title: 'CMS Blocks/AnnouncementBarBlock/Matrix',
   component: AnnouncementBarBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Site-wide announcement bar with optional link and close control.' } } },
 };

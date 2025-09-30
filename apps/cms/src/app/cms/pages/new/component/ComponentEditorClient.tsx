@@ -5,7 +5,8 @@ import type { PageComponent } from "@acme/types";
 import { ulid } from "ulid";
 import { ComponentEditor } from "@ui/components/cms/page-builder";
 import { useTranslations } from "@acme/i18n";
-import { saveLibrary } from "@ui/components/cms/page-builder/libraryStore";
+import { saveLibraryStrict } from "@ui/components/cms/page-builder/libraryStore";
+import { validateComponentRules } from "@acme/platform-core/validation/componentRules";
 
 export default function ComponentEditorClient() {
   const t = useTranslations();
@@ -17,6 +18,8 @@ export default function ComponentEditorClient() {
   const [label, setLabel] = useState<string>("");
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string>("");
+  const [isError, setIsError] = useState(false);
+  const [issues, setIssues] = useState<Array<{ path: Array<string | number>; message: string }>>([]);
   // Extract to avoid eslint false positive from key substring 'ariaLabel' matching 'arial'
   const nameAriaLabel = String(t("cms.componentEditor.name.ariaLabel")); // eslint-disable-line ds/no-raw-font -- false positive: 'ariaLabel' substring triggers rule (ABC-123 [ttl=2025-12-31])
 
@@ -30,7 +33,7 @@ export default function ComponentEditorClient() {
 
   return (
     <div className="space-y-4">
-      <ComponentEditor component={component} onChange={onChange} onResize={onResize} />
+      <ComponentEditor component={component} onChange={onChange} onResize={onResize} issues={issues} />
       <div className="rounded border p-3 space-y-2">
         <div className="font-semibold">{t("cms.componentEditor.saveToGlobalLibrary.title")}</div>
         <div className="flex items-center gap-2">
@@ -49,13 +52,31 @@ export default function ComponentEditorClient() {
             onClick={async () => {
               setSaving(true);
               setMessage("");
+              setIsError(false);
+              setIssues([]);
               try {
+                // Client-side preflight validation for faster feedback
+                const pre = validateComponentRules([component]);
+                if (pre.ok === false) {
+                  setIsError(true);
+                  setIssues(pre.issues ?? []);
+                  setMessage(pre.errors.join("\n"));
+                  return;
+                }
                 const item = { id: ulid(), label: label.trim(), template: component, createdAt: Date.now() };
-                await saveLibrary("_global", item);
+                await saveLibraryStrict("_global", item);
                 setMessage(String(t("cms.componentEditor.savedToGlobal")));
+                setIsError(false);
+                setIssues([]);
               } catch (err) {
                 console.error(err);
-                setMessage(String(t("cms.componentEditor.saveFailed")));
+                const msg = (err as Error)?.message || String(t("cms.componentEditor.saveFailed"));
+                setMessage(msg);
+                setIsError(true);
+                type ValidationIssue = { path: Array<string | number>; message: string };
+                type ApiError = Error & { data?: { error?: string; issues?: ValidationIssue[] } };
+                const data = (err as ApiError)?.data;
+                if (data && Array.isArray(data.issues)) setIssues(data.issues);
               } finally {
                 setSaving(false);
               }
@@ -64,7 +85,19 @@ export default function ComponentEditorClient() {
             {saving ? t("actions.saving") : t("cms.componentEditor.button.saveToGlobal")}
           </button>
         </div>
-        {message && <div className="text-xs text-muted-foreground" aria-live="polite">{message}</div>}
+        {message && (
+          <div
+            className={
+              isError
+                ? "text-xs rounded border border-red-300 bg-red-50 text-red-700 px-2 py-1"
+                : "text-xs text-muted-foreground"
+            }
+            role={isError ? "alert" : undefined}
+            aria-live={isError ? "assertive" : "polite"}
+          >
+            {message}
+          </div>
+        )}
       </div>
       <div className="rounded border p-3 text-xs">
         <div className="mb-1 font-semibold">{t("cms.componentEditor.componentJson")}</div>

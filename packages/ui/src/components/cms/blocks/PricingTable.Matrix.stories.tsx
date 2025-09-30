@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof PricingTable> = {
   title: 'CMS Blocks/PricingTable/Matrix',
   component: PricingTable,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { plans: fixture.plans, minItems: 2, maxItems: 3 },
   parameters: { docs: { description: { component: 'Simple pricing table with plan names, prices and feature lists.' } } },
 };

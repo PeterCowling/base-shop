@@ -7,7 +7,7 @@ import { makeStateStory } from '../../../story-utils/createStories';
 const meta: Meta<typeof CurrencySelector> = {
   title: 'CMS Blocks/CurrencySelector/Matrix',
   component: CurrencySelector,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
 };
 export default meta;
 

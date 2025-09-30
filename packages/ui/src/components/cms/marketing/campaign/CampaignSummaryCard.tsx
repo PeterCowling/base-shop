@@ -16,18 +16,19 @@ export interface CampaignSummaryCardProps {
 
 export function CampaignSummaryCard({
   data,
-  statusLabel = "Draft",
+  statusLabel,
   statusTone = "warning",
   description,
   footer,
   actions,
 }: CampaignSummaryCardProps) {
   const t = useTranslations();
+  const statusLabelText = (statusLabel ?? (t("campaign.summary.status.draft") as string)) as string;
   const metrics: SummaryMetric[] = [
-    { label: t("Schedule") as string, value: data.timeframe },
-    { label: t("Budget") as string, value: data.budgetLabel },
+    { label: t("campaign.labels.schedule") as string, value: data.timeframe },
+    { label: t("campaign.labels.budget") as string, value: data.budgetLabel },
     {
-      label: t("Channels") as string,
+      label: t("campaign.labels.channels") as string,
       value: (
         <Inline gap={2}>
           {data.channels.map((channel) => (
@@ -38,19 +39,16 @@ export function CampaignSummaryCard({
         </Inline>
       ),
     },
-    { label: t("Primary KPI") as string, value: data.kpi },
+    { label: t("campaign.labels.primaryKpi") as string, value: data.kpi },
   ];
 
   return (
     <SummaryCard
       title={data.title}
       description={
-        description ??
-        (t(
-          "Finalize the campaign plan and share with stakeholders before activating."
-        ) as string)
+        description ?? (t("campaign.summary.description") as string)
       }
-      status={{ label: t(statusLabel) as string, tone: statusTone }}
+      status={{ label: statusLabelText as string, tone: statusTone }}
       metrics={metrics}
       footer={footer}
       actions={actions}

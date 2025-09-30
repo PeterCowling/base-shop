@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof StoreLocatorSection> = {
   title: 'CMS Blocks/StoreLocatorSection/Matrix',
   component: StoreLocatorSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { stores: fixture.stores, enableGeolocation: false, radiusKm: 100, emitLocalBusiness: false },
   parameters: { docs: { description: { component: 'Store locator with optional geolocation filtering and JSON-LD emission for selected store.' } } },
 };

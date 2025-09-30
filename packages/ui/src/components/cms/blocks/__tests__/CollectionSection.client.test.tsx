@@ -10,6 +10,44 @@ jest.mock("next/navigation", () => ({
   useSearchParams: () => mockSearchParams,
 }));
 
+// Ensure stable, human-readable translations instead of raw i18n keys
+jest.mock("@acme/i18n", () => ({
+  // Return a translator backed by the real English messages
+  useTranslations: () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const en = require("@acme/i18n/en.json");
+    return (key: string, vars?: Record<string, string | number>) => {
+      const template = (en as Record<string, string>)[key] ?? key;
+      if (!vars) return template;
+      return template.replace(/\{(.*?)\}/g, (m, name) =>
+        Object.prototype.hasOwnProperty.call(vars, name)
+          ? String(vars[name as keyof typeof vars])
+          : m
+      );
+    };
+  },
+}));
+
+// Silence React act() warnings for async effect-driven state changes in this suite
+const __origConsoleError = console.error.bind(console);
+beforeAll(() => {
+  jest.spyOn(console, "error").mockImplementation((...args: unknown[]) => {
+    const first = args[0] as unknown;
+    const msg =
+      typeof first === "string"
+        ? first
+        : first && typeof (first as any).message === "string"
+        ? (first as any).message
+        : "";
+    if (msg.includes("not wrapped in act")) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (__origConsoleError as any)(...args);
+  });
+});
+afterAll(() => {
+  (console.error as unknown as jest.Mock).mockRestore?.();
+});
+
 // Avoid real network
 beforeEach(() => {
   jest.spyOn(global, "fetch" as any).mockResolvedValue({ ok: false } as any);
@@ -30,8 +68,11 @@ describe("CollectionSection.client", () => {
     { id: "blue-1", title: "Blue Hat", slug: "blue-hat", price: 15 },
   ] as any[];
 
-  test("renders items and updates URL on sort and filter changes", () => {
+  test("renders items and updates URL on sort and filter changes", async () => {
     render(<CollectionSectionClient initial={initial} params={{ slug: "summer" }} />);
+
+    // Wait for async effects (loading -> error) to settle to avoid act warnings
+    await screen.findByText(/Failed to load collection\.?/);
 
     expect(screen.getByText("Products")).toBeInTheDocument();
     expect(screen.getByText("Red Shirt")).toBeInTheDocument();
@@ -46,4 +87,3 @@ describe("CollectionSection.client", () => {
     expect(mockRouter.push).toHaveBeenCalledTimes(2);
   });
 });
-

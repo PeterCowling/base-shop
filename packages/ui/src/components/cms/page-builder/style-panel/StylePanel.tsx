@@ -17,6 +17,8 @@ export default function StylePanel({ component, handleInput }: StylePanelProps) 
   const state = useStylePanelState({ component, handleInput });
   const warning = useContrastWarnings(state.color.fg ?? "", state.color.bg ?? "");
   const t = useTranslations();
+  // Basic interpolation helper so tests using a minimal i18n mock still see substituted labels
+  const fmt = (template: string, bp: string) => template.replace("{bp}", bp);
 
   const cursor = ((component as Record<string, unknown>).cursor as string | undefined) ?? undefined;
   const cursorUrl = ((component as Record<string, unknown>).cursorUrl as string | undefined) ?? undefined;
@@ -51,8 +53,8 @@ export default function StylePanel({ component, handleInput }: StylePanelProps) 
         importPresets={state.importJSON}
       />
 
-      <PresetGallery title={/* i18n-exempt */ "Quick presets"} presets={state.presets} onApply={state.applyPreset} />
-      <PresetGallery title={/* i18n-exempt */ "Custom presets"} presets={state.customPresets} onApply={state.applyCustomPreset} />
+      <PresetGallery title={t("cms.style.presets.quick")} presets={state.presets} onApply={state.applyPreset} />
+      <PresetGallery title={t("cms.style.presets.custom")} presets={state.customPresets} onApply={state.applyCustomPreset} />
 
       <StylePreviewCard
         effects={state.effects}
@@ -75,7 +77,7 @@ export default function StylePanel({ component, handleInput }: StylePanelProps) 
         textThemes={state.textThemes}
         appliedTheme={state.appliedTextTheme}
         label={t("cms.style.textStyle") as string}
-        customLabel={/* i18n-exempt */ "Custom"}
+        customLabel={t("cms.theme.colorInput.customSwatchTitle") as string}
         onSelect={(themeId) => state.handleTextThemeSelect(themeId)}
       />
 
@@ -91,16 +93,28 @@ export default function StylePanel({ component, handleInput }: StylePanelProps) 
             fontWeight: t("cms.style.fontWeight") as string,
             lineHeight: t("cms.style.lineHeight") as string,
           },
-          desktop: { heading: /* i18n-exempt */ "Typography (Desktop)", fontSize: /* i18n-exempt */ "Font size (Desktop)", lineHeight: /* i18n-exempt */ "Line height (Desktop)" },
-          tablet: { heading: /* i18n-exempt */ "Typography (Tablet)", fontSize: /* i18n-exempt */ "Font size (Tablet)", lineHeight: /* i18n-exempt */ "Line height (Tablet)" },
-          mobile: { heading: /* i18n-exempt */ "Typography (Mobile)", fontSize: /* i18n-exempt */ "Font size (Mobile)", lineHeight: /* i18n-exempt */ "Line height (Mobile)" },
+          desktop: {
+            heading: fmt(t("cms.style.typography.headingBp") as string, t("devices.desktop") as string),
+            fontSize: fmt(t("cms.style.typography.fontSizeBp") as string, t("devices.desktop") as string),
+            lineHeight: fmt(t("cms.style.typography.lineHeightBp") as string, t("devices.desktop") as string),
+          },
+          tablet: {
+            heading: fmt(t("cms.style.typography.headingBp") as string, t("devices.tablet") as string),
+            fontSize: fmt(t("cms.style.typography.fontSizeBp") as string, t("devices.tablet") as string),
+            lineHeight: fmt(t("cms.style.typography.lineHeightBp") as string, t("devices.tablet") as string),
+          },
+          mobile: {
+            heading: fmt(t("cms.style.typography.headingBp") as string, t("devices.mobile") as string),
+            fontSize: fmt(t("cms.style.typography.fontSizeBp") as string, t("devices.mobile") as string),
+            lineHeight: fmt(t("cms.style.typography.lineHeightBp") as string, t("devices.mobile") as string),
+          },
         }}
         onBase={(key, value) => state.updateTypography(key, value)}
         onBp={(bp, key, value) => state.updateBreakpointTypography(bp, key, value)}
       />
 
       <div className="mt-3 border-t pt-2">
-        <div className="text-xs font-semibold text-muted-foreground">{/* i18n-exempt */}Effects</div>
+        <div className="text-xs font-semibold text-muted-foreground">{t("cms.style.effects")}</div>
         <EffectsEditor effects={state.effects} onChange={state.updateEffects} />
       </div>
 

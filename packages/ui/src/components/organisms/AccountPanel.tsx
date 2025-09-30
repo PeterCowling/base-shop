@@ -25,7 +25,7 @@ export const AccountPanel = React.forwardRef<HTMLDivElement, AccountPanelProps>(
       <div
         ref={ref}
         className={cn(
-          "flex items-center gap-4 rounded-md border border-border-2 bg-surface-2 p-4", // i18n-exempt: class names
+          "flex items-center gap-4 rounded-md border border-border-2 bg-surface-2 p-4", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
           className
         )}
         {...props}
@@ -50,7 +50,7 @@ export const AccountPanel = React.forwardRef<HTMLDivElement, AccountPanelProps>(
         </div>
         {onLogout && (
           <Button variant="outline" onClick={onLogout} className="shrink-0">
-            {t("Log out")}
+            {t("actions.logout")}
           </Button>
         )}
       </div>

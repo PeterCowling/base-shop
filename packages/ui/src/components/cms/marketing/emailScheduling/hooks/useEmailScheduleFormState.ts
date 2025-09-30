@@ -5,7 +5,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import {
   defaultEmailScheduleValues,
-  getEmailSchedulePreview,
   type EmailScheduleFormValues,
   type EmailSchedulePreviewData,
 } from "../types";
@@ -65,7 +64,10 @@ export function useEmailScheduleFormState({
   onStatusChange,
 }: UseEmailScheduleFormStateOptions): EmailScheduleFormState {
   const tHook = useTranslations();
-  const t = useCallback((key: string) => String(tHook(key)), [tHook]);
+  const t = useCallback(
+    (key: string, vars?: Record<string, string | number>) => String(tHook(key, vars)),
+    [tHook]
+  );
   const [values, setValues] = useState<EmailScheduleFormValues>({
     ...defaultEmailScheduleValues,
     ...defaultValues,
@@ -82,8 +84,20 @@ export function useEmailScheduleFormState({
   }, [defaultValues]);
 
   useEffect(() => {
-    onPreviewChange?.(getEmailSchedulePreview(values));
-  }, [values, onPreviewChange]);
+    if (!onPreviewChange) return;
+    const preview: EmailSchedulePreviewData = {
+      subject: values.subject || t("emailScheduling.preview.untitled"),
+      sendAtLabel: values.sendDate
+        ? t("emailScheduling.preview.sendAt", { date: values.sendDate, time: values.sendTime })
+        : t("emailScheduling.preview.pending"),
+      timezone: values.timezone,
+      segment: t(`emailScheduling.segment.${values.segment}`),
+      followUpSummary: values.followUpEnabled
+        ? t("emailScheduling.preview.followUpEnabled", { hours: values.followUpDelayHours })
+        : t("emailScheduling.preview.followUpDisabled"),
+    };
+    onPreviewChange(preview);
+  }, [values, onPreviewChange, t]);
 
   const errors = useMemo(
     () => ({ ...internalErrors, ...(validationErrors ?? {}) }),

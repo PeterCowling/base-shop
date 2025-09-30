@@ -76,7 +76,7 @@ export default function VideoBlockEditor({ component, onChange }: Props) {
           onCheckedChange={(checked) => handleInput("autoplay", Boolean(checked))}
         />
         <label htmlFor="autoplay" className="text-sm">
-          {t("video.autoplay")}
+          {t("cms.lottie.autoplay")}
         </label>
       </div>
     </div>

@@ -8,7 +8,8 @@ jest.mock("../../../../atoms/shadcn", () => {
   return {
     __esModule: true,
     Button: (p: any) => <button {...p} />,
-    Input: ({ label, ...p }: any) => {
+    // Drop non-DOM props (e.g., labelSuffix) so they don't leak to <input>
+    Input: ({ label, labelSuffix: _labelSuffix, ...p }: any) => {
       const inputId = `in-${id++}`;
       return (
         <div>

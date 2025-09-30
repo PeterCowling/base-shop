@@ -45,6 +45,18 @@ To skip inventory seeding:
 pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory
 ```
 
+## Monorepo Structure
+
+- Apps live under `apps/*`; shared libraries live under `packages/*`.
+- Next.js config is app-owned and composes from `@acme/next-config`.
+  - The root `next.config.mjs` has been removed to avoid drift across apps.
+  - See `apps/<app>/next.config.mjs` for per-app overrides.
+- Middleware is colocated with the app that uses it (e.g., `apps/cms/middleware.ts`).
+- Cypress lives under the CMS app: config at `apps/cms/cypress.config.ts`, tests at `apps/cms/cypress/e2e`, support at `apps/cms/cypress/support`.
+  - The root `cypress.config.ts` re-exports the app config for compatibility with existing commands.
+- Storybook can be run via an app wrapper: `apps/storybook`.
+  - Use `pnpm storybook:app` to run with the app-level config directory (`apps/storybook/.storybook`) which re-exports the root config.
+
 ## Key Features
 
 - Stripe handles deposits via escrow sessions.
@@ -58,7 +70,7 @@ pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory
 
 ## Security Headers
 
-The root middleware applies [next-secure-headers](https://www.npmjs.com/package/next-secure-headers) to every request with:
+The CMS middleware (`apps/cms/middleware.ts`) applies [next-secure-headers](https://www.npmjs.com/package/next-secure-headers) to every request with:
 
 - **Content-Security-Policy** – limits all resources to this origin (`default-src 'self'`, `base-uri 'self'`, `object-src 'none'`, `form-action 'self'`, `frame-ancestors 'none'`).
 - **Strict-Transport-Security** – `max-age=31536000; includeSubDomains; preload` to enforce HTTPS.
@@ -263,7 +275,7 @@ The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET`
 
 ## Google Apps Script
 
-Apps Script code lives under `apps-script/` and compiles with its own `tsconfig.json`. Next.js projects exclude this folder to avoid type conflicts with DOM typings.
+The Apps Script workspace has been removed from this repo. If you need Apps Script automation, keep it in a separate repository or a dedicated workspace to avoid mixing browser/DOM typings with Next.js app typings.
 
 ## TypeScript Project References Policy
 

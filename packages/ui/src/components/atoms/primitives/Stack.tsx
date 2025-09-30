@@ -1,6 +1,6 @@
 // packages/ui/src/components/atoms/primitives/Stack.tsx
 import { cn } from "../../../utils/style/cn";
-// i18n-exempt file — contains only CSS utility class names and design tokens
+// i18n-exempt file -- DS-1234 [ttl=2025-11-30] — contains only CSS utility class names and design tokens
 import type { HTMLAttributes } from "react";
 import { forwardRef } from "react";
 

@@ -57,6 +57,10 @@ export function ProductGrid({
   ...props
 }: ProductGridProps) {
   const t = useTranslations();
+  const tf = (key: string, fallback: string) => {
+    const val = t(key) as string;
+    return val === key ? fallback : val;
+  };
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [cols, setCols] = React.useState(
     columns ?? desktopItems ?? minItems
@@ -125,10 +129,10 @@ export function ProductGrid({
               <Button
                 variant="outline" /* i18n-exempt -- DEV-000: enum-like prop, not user-facing copy */
                 className="absolute end-2 top-2 h-8 px-2"
-                aria-label={`${t("product.quickView") as string} ${p.title ?? ""}`}
+                aria-label={`${tf("product.quickView", "Quick view") as string} ${p.title ?? ""}`}
                 onClick={() => setQuickViewProduct(p)}
               >
-                {t("product.quickView") as string}
+                {tf("product.quickView", "Quick view") as string}
               </Button>
             )}
           </div>

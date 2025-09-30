@@ -29,7 +29,7 @@ export function FontSelect({
         onChange={(e) => onChange(e.target.value)}
       >
         {options.map((o) => (
-          <option key={o} value={o} className={toClass(o)}>
+          <option key={o} value={o} className={toClass(o)} style={{ fontFamily: o }}>
             {o}
           </option>
         ))}

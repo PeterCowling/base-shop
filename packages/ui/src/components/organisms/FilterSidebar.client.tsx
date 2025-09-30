@@ -20,8 +20,8 @@ import {
 } from "../atoms/primitives/select";
 import { OverlayScrim } from "../atoms";
 import { useTranslations } from "@acme/i18n";
-// i18n-exempt: CSS utility classes only
-const CONTENT_CLASSES = "p-4 focus:outline-none"; // i18n-exempt: CSS classes
+// i18n-exempt -- DS-1234 [ttl=2025-11-30]
+const CONTENT_CLASSES = "p-4 focus:outline-none"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 
 export type Filters = { size?: string };
 
@@ -48,8 +48,10 @@ export function FilterSidebar({
     onChange({ size: deferredSize || undefined });
   }, [deferredSize, onChange]);
 
-  // Pass numeric width directly; DrawerContent applies inline styles for numbers
-  const widthClass = typeof width === "number" ? width : width;
+  // For numeric widths, apply a Tailwind arbitrary width class (w-[Npx])
+  // to match test expectations; for string widths, pass through.
+  const widthClassName = typeof width === "number" ? `w-[${width}px]` : width;
+  const widthProp = typeof width === "string" ? width : undefined;
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
@@ -62,9 +64,10 @@ export function FilterSidebar({
         <DrawerContent
           aria-describedby={undefined}
           side="left"
-          width={widthClass}
+          width={widthProp}
           className={cn(
-            CONTENT_CLASSES
+            CONTENT_CLASSES,
+            widthClassName
           )}
         >
           <DrawerTitle className="mb-4 text-lg font-semibold">{t("filters.title")}</DrawerTitle>

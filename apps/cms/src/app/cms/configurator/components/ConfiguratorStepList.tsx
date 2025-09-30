@@ -74,7 +74,9 @@ function StepCard({
   useRadixIcons?: boolean;
 }): React.JSX.Element {
   const t = useTranslations();
-  const trackMeta = step.track ? getStepTrackMeta(t)?.[step.track] : undefined;
+  const trackMeta = step.track
+    ? (getStepTrackMeta(t as unknown as (key: string, vars?: Record<string, unknown>) => string)?.[step.track])
+    : undefined;
   const statusStyles = useStatusCopy()[status];
   const accentClass = trackMeta?.accentClass ?? "bg-primary";
   // removed unused var per lint: pendingRecommendations length computed at callsite when needed

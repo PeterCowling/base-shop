@@ -50,9 +50,9 @@ export function initLightbox() {
 
   // Optional localized labels provided by host app via <html> attributes
   const docRoot = document.documentElement;
-  const LB_PREV = docRoot.getAttribute("data-lightbox-prev-label") || undefined;
-  const LB_NEXT = docRoot.getAttribute("data-lightbox-next-label") || undefined;
-  const LB_CLOSE = docRoot.getAttribute("data-lightbox-close-label") || undefined;
+  const LB_PREV = docRoot.getAttribute("data-lightbox-prev-label") || undefined; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — provided by host app
+  const LB_NEXT = docRoot.getAttribute("data-lightbox-next-label") || undefined; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+  const LB_CLOSE = docRoot.getAttribute("data-lightbox-close-label") || undefined; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 
   function buildOverlay() {
     overlay = document.createElement("div");
@@ -74,21 +74,21 @@ export function initLightbox() {
     figure.appendChild(imgEl);
     figure.appendChild(captionEl);
 
-    const GLYPH_PREV = String.fromCharCode(0x2039); // i18n-exempt with justification: decorative glyph constant
+    const GLYPH_PREV = String.fromCharCode(0x2039); // i18n-exempt -- DS-1234 [ttl=2025-11-30] — decorative glyph constant
     prevBtn = document.createElement("button");
-    prevBtn.className = "pb-lightbox-btn pb-lightbox-prev"; // i18n-exempt: CSS class names only
-    if (LB_PREV) prevBtn.setAttribute("aria-label", LB_PREV); // i18n-exempt: provided by host app
+    prevBtn.className = "pb-lightbox-btn pb-lightbox-prev"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    if (LB_PREV) prevBtn.setAttribute("aria-label", LB_PREV); // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     prevBtn.textContent = GLYPH_PREV;
     prevBtn.addEventListener("click", prev);
 
-    const GLYPH_NEXT = String.fromCharCode(0x203A); // i18n-exempt with justification: decorative glyph constant
+    const GLYPH_NEXT = String.fromCharCode(0x203A); // i18n-exempt -- DS-1234 [ttl=2025-11-30] — decorative glyph constant
     nextBtn = document.createElement("button");
-    nextBtn.className = "pb-lightbox-btn pb-lightbox-next"; // i18n-exempt: CSS class names only
-    if (LB_NEXT) nextBtn.setAttribute("aria-label", LB_NEXT); // i18n-exempt: provided by host app
+    nextBtn.className = "pb-lightbox-btn pb-lightbox-next"; // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+    if (LB_NEXT) nextBtn.setAttribute("aria-label", LB_NEXT); // i18n-exempt -- DS-1234 [ttl=2025-11-30]
     nextBtn.textContent = GLYPH_NEXT;
     nextBtn.addEventListener("click", next);
 
-    const GLYPH_CLOSE = String.fromCharCode(0x00D7); // i18n-exempt with justification: decorative glyph constant
+    const GLYPH_CLOSE = String.fromCharCode(0x00D7); // i18n-exempt -- DS-1234 [ttl=2025-11-30] — decorative glyph constant
     closeBtn = document.createElement("button");
     closeBtn.className = "pb-lightbox-close";
     if (LB_CLOSE) closeBtn.setAttribute("aria-label", LB_CLOSE); // i18n-exempt: provided by host app

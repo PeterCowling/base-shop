@@ -1,5 +1,6 @@
 import { render, fireEvent, screen } from "@testing-library/react";
 import { FontToken } from "../FontToken";
+import { TranslationsProvider } from "@acme/i18n";
 
 describe("FontToken", () => {
   const tokenKey = "--font-sans";
@@ -8,20 +9,28 @@ describe("FontToken", () => {
 
   const renderToken = (props: Partial<React.ComponentProps<typeof FontToken>> = {}) =>
     render(
-      FontToken({
-        tokenKey,
-        key: tokenKey,
-        value: "Arial",
-        defaultValue: "Arial",
-        isOverridden: false,
-        options,
-        type: "sans",
-        googleFonts,
-        setToken: jest.fn(),
-        handleUpload: jest.fn(),
-        setGoogleFont: jest.fn(),
-        ...props,
-      })
+      <TranslationsProvider
+        messages={{
+          "common.reset": "Reset",
+          "common.default": "Default",
+          "cms.style.googleFonts": "Google Fonts",
+        }}
+      >
+        <FontToken
+          tokenKey={tokenKey}
+          key={tokenKey}
+          value="Arial"
+          defaultValue="Arial"
+          isOverridden={false}
+          options={options}
+          type="sans"
+          googleFonts={googleFonts}
+          setToken={jest.fn()}
+          handleUpload={jest.fn()}
+          setGoogleFont={jest.fn()}
+          {...props}
+        />
+      </TranslationsProvider>
     );
 
   it("renders with default value", () => {

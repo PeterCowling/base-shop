@@ -3,12 +3,29 @@ import React, { useState } from "react";
 import InteractionsPanel from "../InteractionsPanel";
 import type { PageComponent } from "@acme/types";
 
+// Provide minimal i18n so labels render as human-readable text in tests
+const translations: Record<string, string> = {
+  "cms.interactions.parallax": "Parallax",
+  "cms.interactions.stickyOffset": "Sticky offset",
+  "cms.interactions.sticky": "Sticky",
+  "cms.interactions.none": "None",
+  "cms.interactions.top": "Top",
+  "cms.interactions.bottom": "Bottom",
+  "cms.interactions.durationMs": "Duration (ms)",
+  "cms.interactions.delayMs": "Delay (ms)",
+};
+
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string) => translations[key] || key,
+}));
+
 jest.mock("../../../../atoms/shadcn", () => {
   let id = 0;
   return {
     __esModule: true,
     Button: ({ children, ...p }: any) => <button {...p}>{children}</button>,
-    Input: ({ label, ...p }: any) => {
+    // Omit non-DOM props like labelSuffix to avoid leaking to <input>
+    Input: ({ label, labelSuffix: _labelSuffix, ...p }: any) => {
       const inputId = `in-${id++}`;
       return (
         <div>

@@ -37,7 +37,7 @@ export function hslToHex(hsl: string): string {
 
 export function hexToRgb(hex: string): [number, number, number] {
   if (!isHex(hex)) {
-    // i18n-exempt: internal developer error; not user-facing
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30] — internal developer error; not user-facing
     throw new Error("Invalid hex color");
   }
 

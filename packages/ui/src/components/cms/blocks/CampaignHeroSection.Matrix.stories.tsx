@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof CampaignHeroSection> = {
   title: 'CMS Blocks/CampaignHeroSection/Matrix',
   component: CampaignHeroSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

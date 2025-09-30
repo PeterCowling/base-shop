@@ -1,18 +1,33 @@
 /* i18n-exempt file -- tests use literal copy for assertions */
-import { render, screen, waitFor } from "@testing-library/react";
+// Ensure human-friendly labels are used instead of i18n keys in tests
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) =>
+    ({
+      "deliveryScheduler.mode.label": "Delivery Mode",
+      "deliveryScheduler.mode.placeholder": "Select mode",
+      "deliveryScheduler.mode.delivery": "Delivery",
+      "deliveryScheduler.mode.pickup": "Pickup",
+      "deliveryScheduler.date.label": "Date",
+      "deliveryScheduler.region.label": "Region",
+      "deliveryScheduler.region.placeholder": "Select region",
+      "deliveryScheduler.window.label": "Window",
+      "deliveryScheduler.window.placeholder": "Select window",
+      "deliveryScheduler.time.label": "Time",
+    }[key] ?? key),
+}));
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DeliveryScheduler } from "../DeliveryScheduler";
 
 describe("DeliveryScheduler handlers", () => {
   it("emits onChange when date and time inputs change (no windows)", async () => {
-    const user = userEvent.setup();
     const onChange = jest.fn();
     render(<DeliveryScheduler onChange={onChange} />);
 
     // Date input
     const date = screen.getByLabelText("Date");
-    await user.clear(date);
-    await user.type(date, "2024-12-25");
+    fireEvent.change(date, { target: { value: "2024-12-25" } });
     await waitFor(() =>
       expect(onChange).toHaveBeenLastCalledWith({
         mode: "delivery",
@@ -24,8 +39,7 @@ describe("DeliveryScheduler handlers", () => {
 
     // Time input
     const time = screen.getByLabelText("Time");
-    await user.clear(time);
-    await user.type(time, "10:30");
+    fireEvent.change(time, { target: { value: "10:30" } });
     await waitFor(() =>
       expect(onChange).toHaveBeenLastCalledWith({
         mode: "delivery",

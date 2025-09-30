@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof Button> = {
   title: 'CMS Blocks/Button/Matrix',
   component: Button,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

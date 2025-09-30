@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo } from "react";
+import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
 import { Inline } from "../../atoms/primitives";
 
@@ -28,6 +29,7 @@ function findPath(
 }
 
 export default function SelectionBreadcrumb({ components, selectedIds, onSelectIds }: Props) {
+  const t = useTranslations();
   const path = useMemo(() => {
     const id = selectedIds[0];
     if (!id) return [] as PageComponent[];
@@ -36,16 +38,13 @@ export default function SelectionBreadcrumb({ components, selectedIds, onSelectI
 
   if (!path.length) return null;
 
-  // i18n-exempt — Decorative breadcrumb separator glyph
-  /* i18n-exempt */ const t = (s: string) => s;
-
   return (
     <div className="relative">
       <div className="absolute start-2 bottom-2 rounded bg-muted/80 px-2 py-1 text-xs text-muted-foreground backdrop-blur">
         <Inline gap={1} wrap>
           {path.map((node, idx) => {
             const label = (node as { name?: string }).name || node.type;
-            // i18n-exempt — className tokens are not translatable copy
+            // i18n-exempt -- TECH-000 class tokens [ttl=2099-12-31]
             const btnClass = `rounded border px-1 ${idx === path.length - 1 ? "bg-primary text-primary-foreground border-primary" : "bg-surface-1"}`;
             return (
               <React.Fragment key={node.id}>
@@ -63,7 +62,7 @@ export default function SelectionBreadcrumb({ components, selectedIds, onSelectI
                 >
                   {label}
                 </button>
-                {idx < path.length - 1 && <span aria-hidden>{t("›")}</span>}
+                {idx < path.length - 1 && <span aria-hidden>{t("breadcrumb.separator")}</span>}
               </React.Fragment>
             );
           })}

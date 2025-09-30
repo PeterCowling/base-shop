@@ -47,9 +47,9 @@ export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
       <Comp
         ref={ref}
         className={cn(
-          "inline-flex items-center", // i18n-exempt: class names
+          "inline-flex items-center", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — class names
           textByColor[color],
-          tone === "soft" ? cn("rounded px-0.5", softHoverByColor[color]) : "hover:underline", // i18n-exempt: class names
+          tone === "soft" ? cn("rounded px-0.5", softHoverByColor[color]) : "hover:underline", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — class names
           className,
         )}
         {...props}
@@ -59,4 +59,4 @@ export const LinkText = React.forwardRef<HTMLAnchorElement, LinkTextProps>(
     );
   }
 );
-LinkText.displayName = "LinkText";
+LinkText.displayName = "LinkText"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — component displayName

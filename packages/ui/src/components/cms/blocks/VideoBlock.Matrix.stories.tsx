@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof VideoBlock> = {
   title: 'CMS Blocks/VideoBlock/Matrix',
   component: VideoBlock,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

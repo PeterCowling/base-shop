@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
 import { ulid } from "ulid";
 import { saveGlobalForPage, updateGlobalForPage, listGlobalsForPage, listGlobals, saveGlobal, updateGlobal, type GlobalItem } from "../libraryStore";
+import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
+import { rootPlacementOptions } from "@acme/platform-core/validation/options";
 import useLocalStrings from "./useLocalStrings";
 
 interface Args {
@@ -40,6 +42,13 @@ const useGlobals = ({ components, editor, dispatch, selectedComponent, pageId }:
       .prompt(t("prompt_make_global"), String(labelDefault))
       ?.trim();
     if (!label) return;
+    // Preflight validation for the single-node global template
+    const pre = validateTemplateCreation([selectedComponent], rootPlacementOptions());
+    if (pre.ok === false) {
+      window.alert([t("validation_failed"), ...(pre.errors || [])].filter(Boolean).join("\n"));
+      return;
+    }
+
     const gid = `gid_${ulid()}`;
     const item: GlobalItem = {
       globalId: gid,
@@ -95,6 +104,15 @@ const useGlobals = ({ components, editor, dispatch, selectedComponent, pageId }:
     }
     const confirm = window.confirm(t("confirm_apply_global"));
     if (!confirm) return;
+    // Preflight for updated template
+    {
+      const pre = validateTemplateCreation([selectedComponent], rootPlacementOptions());
+      if (pre.ok === false) {
+        window.alert([t("validation_failed"), ...(pre.errors || [])].filter(Boolean).join("\n"));
+        return;
+      }
+    }
+
     if (pageId) {
       await updateGlobalForPage(shop, pageId ?? null, gid, { template: selectedComponent });
     } else {

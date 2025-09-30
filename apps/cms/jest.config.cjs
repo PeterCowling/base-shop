@@ -70,7 +70,8 @@ module.exports = {
   },
   // Keep in sync with monorepo base so internal workspace packages are transformed
   transformIgnorePatterns: [
-    "/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto|@acme)/)",
+    // Allow ESM packages used in tests to be transformed by ts-jest
+    "/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto|@acme|msw|until-async)/)",
   ],
   // Collect coverage only from the CMS source code; exclude declarations and tests.
   collectCoverage: true,

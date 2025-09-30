@@ -54,3 +54,30 @@ if (!(globalThis as any).ResizeObserver) {
   }
   (globalThis as any).ResizeObserver = RO as any;
 }
+
+// Minimal BroadcastChannel polyfill for jsdom environment.
+// MSW v2 references BroadcastChannel for worker coordination, which jsdom lacks.
+// A no-op stub is sufficient for unit tests that don't depend on cross-context comms.
+if (!(globalThis as any).BroadcastChannel) {
+  class BroadcastChannelMock {
+    name: string;
+    onmessage: ((this: BroadcastChannel, ev: MessageEvent) => any) | null = null;
+    constructor(name: string) {
+      this.name = name;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    postMessage(_message: unknown) {
+      // no-op
+    }
+    close() {}
+    // Basic event methods for compatibility
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    addEventListener(_type: string, _listener: any) {}
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    removeEventListener(_type: string, _listener: any) {}
+    dispatchEvent(_event: Event) {
+      return false;
+    }
+  }
+  (globalThis as any).BroadcastChannel = BroadcastChannelMock as any;
+}

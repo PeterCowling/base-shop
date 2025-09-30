@@ -9,7 +9,7 @@ import { z } from 'zod';
 const meta: Meta<typeof AccountSection> = {
   title: 'CMS Blocks/AccountSection/Matrix',
   component: AccountSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

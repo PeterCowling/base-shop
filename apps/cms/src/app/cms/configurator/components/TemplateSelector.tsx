@@ -67,7 +67,7 @@ export default function TemplateSelector({
         onValueChange={() => {}}
       >
         <SelectTrigger className="w-full" {...triggerProps}>
-          <SelectValue placeholder={t("cms.configurator.shopPage.selectTemplate")} />
+          <SelectValue placeholder={String(t("cms.configurator.shopPage.selectTemplate"))} />
         </SelectTrigger>
         <SelectContent>
           <SelectItem
@@ -105,7 +105,7 @@ export default function TemplateSelector({
                   {tpl.preview && (
                     <Image
                       src={tpl.preview}
-                      alt={t("cms.configurator.shopPage.previewAlt", { name: tpl.name })}
+                      alt={String(t("cms.configurator.shopPage.previewAlt", { name: tpl.name }))}
                       width={32}
                       height={32}
                       className="h-8 w-8 rounded object-cover"
@@ -136,7 +136,7 @@ export default function TemplateSelector({
           {pendingTemplate?.preview && (
             <Image
               src={pendingTemplate.preview}
-              alt={t("cms.configurator.shopPage.previewAlt", { name: pendingTemplate.name })}
+              alt={String(t("cms.configurator.shopPage.previewAlt", { name: pendingTemplate.name }))}
               width={800}
               height={600}
               sizes="100vw"

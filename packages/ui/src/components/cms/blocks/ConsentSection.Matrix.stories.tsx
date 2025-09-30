@@ -7,7 +7,7 @@ import { makeStateStory } from '../../../story-utils/createStories';
 const meta: Meta<typeof ConsentSection> = {
   title: 'CMS Blocks/ConsentSection/Matrix',
   component: ConsentSection,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
 };
 export default meta;
 

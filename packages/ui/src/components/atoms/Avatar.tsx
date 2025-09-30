@@ -58,7 +58,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
           ? parseInt(height as string, 10)
           : dimension;
 
-    const { classes } = boxProps({
+    const { classes, style } = boxProps({
       width: width ?? dimension, // visual size (can be any CSS unit)
       height: height ?? dimension, // visual size (can be any CSS unit)
       padding,
@@ -77,6 +77,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
             sizeClasses,
             className
           )}
+          style={style}
         >
           {fallback ?? (typeof alt === "string" ? alt.charAt(0) : null)}
         </div>
@@ -97,6 +98,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
           sizeClasses,
           className,
         )}
+        style={style}
         {...props}
       />
     );

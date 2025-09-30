@@ -1,0 +1,8 @@
+/* Storybook-only global styles: light but consistent look */
+@import "../../../packages/themes/base/src/tokens.css";
+@import "../../../packages/ui/src/styles/builder.css";
+@import "../../../packages/ui/src/styles/forms.css";
+
+/* Minimal reset and base so stories look tidy without app-wide CSS */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; font-family: var(--font-sans, system-ui, sans-serif); }

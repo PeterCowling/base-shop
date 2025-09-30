@@ -156,11 +156,11 @@ export default function CommentsThreadList({
                   rowsRef.current[thr.id] = el;
                 }}
                 className={rowClass}
+                onClick={() => onSelect(thr.id)}
               >
                 <button
                   type="button"
                   className="block w-full min-h-10 min-w-10 text-start"
-                  onClick={() => onSelect(thr.id)}
                 >
                   {/** i18n-exempt */}
                   <Cluster alignY="center" justify="between">

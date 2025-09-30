@@ -25,6 +25,8 @@ export default withShopCode(coreEnv.SHOP_CODE, {
       ...config.resolve.alias,
       "@": path.resolve(__dirname, "../template-app/src"),
       "@i18n": path.resolve(__dirname, "../i18n/src"),
+      // Ensure workspace i18n package resolves reliably in Next builds
+      "@acme/i18n": path.resolve(__dirname, "../i18n/dist"),
       "drizzle-orm": false,
       // Allow platform-core theme loader to resolve local theme fixtures
       "@themes-local": path.resolve(__dirname, "../themes"),

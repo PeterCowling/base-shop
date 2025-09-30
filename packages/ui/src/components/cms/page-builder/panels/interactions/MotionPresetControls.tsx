@@ -30,7 +30,7 @@ export default function MotionPresetControls({ component, handleInput }: Interac
           <SelectItem value="__none__">{t("cms.interactions.noPreset")}</SelectItem>
           {motionPresets.map((p) => (
             <SelectItem key={p.id} value={p.id}>
-              {p.label}
+              {t(p.labelKey)}
             </SelectItem>
           ))}
         </SelectContent>

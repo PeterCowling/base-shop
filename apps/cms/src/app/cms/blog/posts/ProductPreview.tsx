@@ -35,13 +35,13 @@ export default function ProductPreview({ slug, onValidChange }: Props) {
         const res = await fetch(url.toString(), {
           signal: controller?.signal,
         });
-        if (!res.ok) throw new Error(t("cms.blog.productPreview.loadFailed"));
+        if (!res.ok) throw new Error(String(t("cms.blog.productPreview.loadFailed")));
         const data = (await res.json()) as SKU;
         setProduct(data);
         setError(null);
         onValidChange?.(true);
       } catch {
-        setError(t("cms.blog.productPreview.loadFailed"));
+        setError(String(t("cms.blog.productPreview.loadFailed")));
         onValidChange?.(false);
       } finally {
         setLoading(false);

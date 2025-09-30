@@ -10,7 +10,7 @@ import type { Locale } from '@acme/i18n/locales';
 const meta: Meta<typeof ImageSlider> = {
   title: 'CMS Blocks/ImageSlider/Matrix',
   component: ImageSlider,
-  tags: ['autodocs'],
+  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;

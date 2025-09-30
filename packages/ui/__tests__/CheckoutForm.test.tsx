@@ -70,6 +70,8 @@ describe("CheckoutForm", () => {
 
     await userEvent.click(retry);
 
+    // Elements should render once a clientSecret is available
+    await screen.findByText("payment-element");
     await screen.findByRole("button", { name: "checkout.pay" });
     expect(fetchJson).toHaveBeenCalledTimes(2);
   });
@@ -112,6 +114,8 @@ describe("CheckoutForm", () => {
     confirmPayment.mockResolvedValue({});
 
     render(<CheckoutForm locale="en" taxRegion="eu" />);
+    // Ensure the Elements tree is mounted with the PaymentElement
+    await screen.findByText("payment-element");
     const pay = await screen.findByRole("button", { name: "checkout.pay" });
 
     await userEvent.click(pay);
@@ -125,6 +129,7 @@ describe("CheckoutForm", () => {
     confirmPayment.mockResolvedValue({ error: { message: "nope" } });
 
     render(<CheckoutForm locale="en" taxRegion="eu" />);
+    await screen.findByText("payment-element");
     const pay = await screen.findByRole("button", { name: "checkout.pay" });
 
     await userEvent.click(pay);
@@ -168,4 +173,3 @@ describe("CheckoutForm", () => {
     expect(setFocus).toHaveBeenCalledWith("returnDate");
   });
 });
-

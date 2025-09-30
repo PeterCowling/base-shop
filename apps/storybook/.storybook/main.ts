@@ -4,6 +4,8 @@ import type { StorybookConfig } from "@storybook/nextjs";
 import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
 import path from "node:path";
 
+import { coverageAddon } from "./coverage";
+
 const config: StorybookConfig = {
   // Use the Webpack 5 builder explicitly per SB9 docs
   framework: {
@@ -40,6 +42,7 @@ const config: StorybookConfig = {
     "@chromatic-com/storybook", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     // interactions addon is pinned to SB8 and incompatible with SB9
     "@storybook/addon-themes", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    coverageAddon,
     // Viewport addon removed in SB9; use built-in viewport tool via parameters
     // "storybook-addon-pseudo-states", // disabled: incompatible with SB8
     // "storybook-addon-designs", // disabled: incompatible with SB8
@@ -102,6 +105,7 @@ const config: StorybookConfig = {
       path: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       crypto: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     } as ResolveOptions["fallback"];
+
     return config;
   },
 

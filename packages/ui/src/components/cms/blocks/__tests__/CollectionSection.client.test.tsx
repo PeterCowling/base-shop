@@ -1,6 +1,7 @@
 // packages/ui/src/components/cms/blocks/__tests__/CollectionSection.client.test.tsx
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
+import enMessages from "@acme/i18n/en.json";
 import CollectionSectionClient from "../CollectionSection.client";
 
 const mockRouter = { push: jest.fn() };
@@ -14,9 +15,9 @@ jest.mock("next/navigation", () => ({
 jest.mock("@acme/i18n", () => ({
   // Return a translator backed by the real English messages
   useTranslations: () => {
-    const en = require("@acme/i18n/en.json");
+    const messages = enMessages as Record<string, string>;
     return (key: string, vars?: Record<string, string | number>) => {
-      const template = (en as Record<string, string>)[key] ?? key;
+      const template = messages[key] ?? key;
       if (!vars) return template;
       return template.replace(/\{(.*?)\}/g, (m, name) =>
         Object.prototype.hasOwnProperty.call(vars, name)

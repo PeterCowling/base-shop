@@ -17,6 +17,9 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
   const [failed, setFailed] = useState(false);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const t = useTranslations();
+  const loadErrorLabel = t("cms.blocks.socialFeed.loadError");
+  const missingConfigLabel = t("cms.blocks.socialFeed.missingConfig");
+  const embedTitle = t("cms.blocks.socialFeed.embedTitle");
 
   useEffect(() => {
     const iframe = iframeRef.current;
@@ -26,7 +29,9 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
     return () => iframe.removeEventListener("error", handleError);
   }, []);
 
-  if (!account && !hashtag) return null;
+  if (!account && !hashtag) {
+    return <p>{missingConfigLabel}</p>;
+  }
 
   const src =
     platform === "twitter"
@@ -37,12 +42,12 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
         ? `https://www.instagram.com/${account}/embed`
         : `https://www.instagram.com/explore/tags/${hashtag}/embed`;
 
-  if (failed) return <p>{t("cms.blocks.socialFeed.loadError")}</p>;
+  if (failed) return <p>{loadErrorLabel}</p>;
 
   return (
     <iframe
       ref={iframeRef}
-      title="social-feed"
+      title={embedTitle}
       src={src}
       className="w-full"
       data-aspect="16/9"

@@ -30,6 +30,9 @@
   "tryon.readout.scale": "Escala",
   "tryon.readout.rot": "Giro",
   "tryon.readout.pos": "Pos.",
-  "tryon.reset": "Restablecer"
-  ,"tryon.autoPlace": "Colocar automático"
+  "tryon.reset": "Restablecer",
+  "tryon.autoPlace": "Colocar automático",
+  "cms.blocks.socialFeed.embedTitle": "Feed social",
+  "cms.blocks.socialFeed.loadError": "No se pudo cargar el feed social",
+  "cms.blocks.socialFeed.missingConfig": "No hay un feed social configurado."
 }

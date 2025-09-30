@@ -30,6 +30,9 @@
   "tryon.readout.scale": "크기",
   "tryon.readout.rot": "회전",
   "tryon.readout.pos": "위치",
-  "tryon.reset": "초기화"
-  ,"tryon.autoPlace": "자동 배치"
+  "tryon.reset": "초기화",
+  "tryon.autoPlace": "자동 배치",
+  "cms.blocks.socialFeed.embedTitle": "소셜 피드",
+  "cms.blocks.socialFeed.loadError": "소셜 피드를 불러오지 못했습니다",
+  "cms.blocks.socialFeed.missingConfig": "소셜 피드가 구성되지 않았습니다."
 }

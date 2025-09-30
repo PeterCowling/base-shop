@@ -30,7 +30,9 @@
   "tryon.readout.scale": "Échelle",
   "tryon.readout.rot": "Rot.",
   "tryon.readout.pos": "Pos.",
-  "tryon.reset": "Réinitialiser"
-  ,"tryon.autoPlace": "Placement auto"
-}
+  "tryon.reset": "Réinitialiser",
+  "tryon.autoPlace": "Placement auto",
+  "cms.blocks.socialFeed.embedTitle": "Fil social",
+  "cms.blocks.socialFeed.loadError": "Impossible de charger le fil social",
+  "cms.blocks.socialFeed.missingConfig": "Aucun fil social configuré."
 }

@@ -30,6 +30,9 @@
   "tryon.readout.scale": "スケール",
   "tryon.readout.rot": "回転",
   "tryon.readout.pos": "位置",
-  "tryon.reset": "リセット"
-  ,"tryon.autoPlace": "自動配置"
+  "tryon.reset": "リセット",
+  "tryon.autoPlace": "自動配置",
+  "cms.blocks.socialFeed.embedTitle": "ソーシャルフィード",
+  "cms.blocks.socialFeed.loadError": "ソーシャルフィードを読み込めませんでした",
+  "cms.blocks.socialFeed.missingConfig": "ソーシャルフィードが設定されていません。"
 }

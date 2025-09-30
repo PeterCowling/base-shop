@@ -63,9 +63,13 @@ export const UploadingState: Story = {
       });
 
       await userEvent.click(uploadButton);
-      expect(uploadButton).toBeDisabled();
-      await waitFor(() => expect(uploadButton).not.toBeDisabled());
-      await waitFor(() => expect(onUploaded).toHaveBeenCalled());
+      await expect(uploadButton).toBeDisabled();
+      await waitFor(async () => {
+        await expect(uploadButton).not.toBeDisabled();
+      });
+      await waitFor(async () => {
+        await expect(onUploaded).toHaveBeenCalled();
+      });
     } finally {
       globalThis.fetch = originalFetch;
     }
@@ -101,7 +105,9 @@ export const UploadError: Story = {
 
       await userEvent.click(uploadButton);
       await canvas.findByText("Upload failed");
-      await waitFor(() => expect(onUploadError).toHaveBeenCalledWith("Upload failed"));
+      await waitFor(async () => {
+        await expect(onUploadError).toHaveBeenCalledWith("Upload failed");
+      });
     } finally {
       globalThis.fetch = originalFetch;
     }

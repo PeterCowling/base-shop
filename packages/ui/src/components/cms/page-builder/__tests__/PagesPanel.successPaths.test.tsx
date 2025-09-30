@@ -10,6 +10,7 @@ jest.mock("../../../atoms/primitives/drawer", () => ({
   DrawerPortal: ({ children }: any) => <div>{children}</div>,
   DrawerContent: ({ children }: any) => <div role="dialog">{children}</div>,
   DrawerTitle: ({ children }: any) => <div>{children}</div>,
+  DrawerDescription: ({ children }: any) => <div>{children}</div>,
 }));
 jest.mock("../../../atoms", () => ({ __esModule: true, OverlayScrim: () => null }));
 

@@ -37,6 +37,7 @@ jest.mock("../../../atoms/primitives/drawer", () => ({
   DrawerPortal: ({ children }: any) => <div>{children}</div>,
   DrawerContent: ({ children }: any) => <div role="dialog">{children}</div>,
   DrawerTitle: ({ children }: any) => <div>{children}</div>,
+  DrawerDescription: ({ children }: any) => <div>{children}</div>,
 }));
 
 // Mock OverlayScrim from atoms to avoid Radix Dialog overlay usage

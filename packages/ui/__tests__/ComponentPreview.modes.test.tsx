@@ -55,6 +55,10 @@ describe("ComponentPreview advanced modes and error handling", () => {
   });
 
   it("renders error boundary fallback when component throws", async () => {
+    const consoleErrorMock = jest.mocked(console.error);
+    const originalConsoleError = consoleErrorMock.getMockImplementation();
+    consoleErrorMock.mockImplementation(() => {});
+
     const Thrower = () => {
       throw new Error("boom");
     };
@@ -67,11 +71,19 @@ describe("ComponentPreview advanced modes and error handling", () => {
       file: "Boom.tsx",
     } as UpgradeComponent;
 
-    render(<ComponentPreview component={component} />);
+    try {
+      render(<ComponentPreview component={component} />);
 
-    expect(
-      await screen.findByText("Failed to render preview")
-    ).toBeInTheDocument();
+      expect(
+        await screen.findByText("Failed to render preview")
+      ).toBeInTheDocument();
+    } finally {
+      if (originalConsoleError) {
+        consoleErrorMock.mockImplementation(originalConsoleError);
+      } else {
+        consoleErrorMock.mockRestore();
+      }
+    }
   });
 });
 

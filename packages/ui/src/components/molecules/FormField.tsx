@@ -75,9 +75,13 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
         </label>
         {children}
         {error && (
-          <p className={ERROR_TEXT_CLASSES} data-token={DANGER_TOKEN}>
+          <div
+            className={ERROR_TEXT_CLASSES}
+            data-token={DANGER_TOKEN}
+            role="alert"
+          >
             {error}
-          </p>
+          </div>
         )}
       </div>
     );

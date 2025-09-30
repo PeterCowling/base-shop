@@ -6,7 +6,6 @@ import * as tokenEditor from "../../../../hooks/useTokenEditor";
 import type { TokenMap } from "../../../../hooks/useTokenEditor";
 import { hexToHsl } from "../../../../utils/colorUtils";
 import { TranslationsProvider } from "@acme/i18n";
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import en from "@acme/i18n/en.json";
 
 jest.mock("../../../atoms/shadcn", () => {

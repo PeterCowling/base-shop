@@ -9,7 +9,6 @@ jest.mock("next/image", () => ({
   default: ({ alt = "", ...rest }: Record<string, unknown>) => (
     // Use <input type="image"> to avoid Next/DS lint noise in tests
     // and bypass Next.js URL parsing/loader requirements.
-    // eslint-disable-next-line react/jsx-props-no-spreading
     <input type="image" alt={String(alt ?? "")} {...(rest as any)} />
   ),
 }));

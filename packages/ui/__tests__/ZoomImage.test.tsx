@@ -19,5 +19,23 @@ describe("ZoomImage", () => {
     expect(img.className).toMatch(/scale-125/);
     expect((img as any).style.transform).toBe("scale(1.5)");
   });
+
+  it("supports keyboard toggles and falls back to an empty alt", () => {
+    render(<ZoomImage src="/b.jpg" width={50} height={50} />);
+
+    const figure = screen.getByRole("button");
+    const img = figure.querySelector("img") as HTMLImageElement;
+
+    expect(img).not.toBeNull();
+    expect(img).toHaveAttribute("alt", "");
+    expect(figure).toHaveAttribute("aria-pressed", "false");
+
+    fireEvent.keyDown(figure, { key: "Enter" });
+    expect(figure).toHaveAttribute("aria-pressed", "true");
+    expect(figure.className).toMatch(/cursor-zoom-out/);
+
+    fireEvent.keyDown(figure, { key: " " });
+    expect(figure).toHaveAttribute("aria-pressed", "false");
+  });
 });
 

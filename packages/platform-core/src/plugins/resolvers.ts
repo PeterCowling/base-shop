@@ -1,7 +1,6 @@
 import { readFile, stat } from "fs/promises";
 import path from "path";
 import { pathToFileURL } from "url";
-import { createRequire } from "module";
 import { logger } from "../utils";
 
 function unique<T>(arr: T[]): T[] {

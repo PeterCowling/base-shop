@@ -7,26 +7,43 @@ import {
   DialogTrigger,
 } from "./dialog";
 
-const meta: Meta<typeof Dialog> = {
+const meta = {
+  title: "Primitives/Dialog",
   component: Dialog,
+  subcomponents: {
+    DialogTrigger,
+    DialogContent,
+    DialogTitle,
+    DialogDescription,
+  },
   args: {
     defaultOpen: true,
+    triggerLabel: "Open dialog",
+    title: "Schedule maintenance",
+    description: "Choose a window that works best for you.",
   },
   argTypes: {
     defaultOpen: { control: "boolean" },
+    triggerLabel: { control: "text" },
+    title: { control: "text" },
+    description: { control: "text" },
   },
-};
+} satisfies Meta<typeof Dialog>;
 export default meta;
 
-export const Default: StoryObj<typeof Dialog> = {
-  render: (args) => (
+type Story = StoryObj<typeof meta>;
+
+export const Playground: Story = {
+  render: ({ triggerLabel, title, description, ...args }) => (
     <Dialog {...args}>
       <DialogTrigger asChild>
-        <button>Open</button>
+        <button type="button" className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-primary-foreground">
+          {triggerLabel}
+        </button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Title</DialogTitle>
-        <DialogDescription>Description</DialogDescription>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogDescription>{description}</DialogDescription>
       </DialogContent>
     </Dialog>
   ),

@@ -79,6 +79,15 @@ pnpm chromatic
 to upload your Storybook to [Chromatic](https://www.chromatic.com/) for visual
 review and regression testing.
 
+### Visual Tests addon (Chromatic)
+
+Storybook now ships with the official Chromatic Visual Tests addon enabled.
+When you run Storybook locally you'll see a **Visual tests** panel where you can
+sign in to Chromatic, link a project, and trigger snapshot builds directly from
+the UI. Use the "Catch a UI change" button to create or update baselines during
+development; any accepted changes will also be honored when Chromatic runs in
+CI.
+
 ## Date & Time Formatting
 
 For consistent locale-aware timestamps across UI components, use the

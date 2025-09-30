@@ -11,7 +11,7 @@ const config: StorybookConfig = {
   },
   core: {
     builder: {
-      name: "@storybook/builder-webpack5",
+      name: "@storybook/builder-webpack5", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       options: {
         // Disable aggressive caching/lazy compilation to stabilize HMR
         fsCache: false,
@@ -35,6 +35,7 @@ const config: StorybookConfig = {
     // Essentials are largely built-in on SB9; keep only specific addons we use
     "@storybook/addon-a11y", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     "@storybook/addon-docs", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    "@chromatic-com/storybook", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     // interactions addon is pinned to SB8 and incompatible with SB9
     "@storybook/addon-themes", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     // Viewport addon removed in SB9; use built-in viewport tool via parameters
@@ -86,8 +87,8 @@ const config: StorybookConfig = {
       // Third-party SDK not needed in Storybook bundles
       openai: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       // Deduplicate Emotion to avoid multiple ThemeContexts between blocks/MDX
-      "@emotion/react": require.resolve("@emotion/react"),
-      "@emotion/styled": require.resolve("@emotion/styled"),
+      "@emotion/react": require.resolve("@emotion/react"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+      "@emotion/styled": require.resolve("@emotion/styled"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     };
     config.resolve.alias = newAlias as ResolveOptions["alias"];
 

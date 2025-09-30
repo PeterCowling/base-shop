@@ -64,44 +64,22 @@ export default function CollectionList({
     return () => observer.disconnect();
   }, [minItems, maxItems, desktopItems, tabletItems, mobileItems]);
 
-  const colsClass = React.useMemo(() => {
-    const n = Number(cols);
-    if (!Number.isFinite(n) || n < 1) return "grid-cols-1";
-
-    const rounded = Math.max(1, Math.min(12, Math.floor(n)));
-
-    switch (rounded) {
-      case 1:
-        return "grid-cols-1";
-      case 2:
-        return "grid-cols-2";
-      case 3:
-        return "grid-cols-3";
-      case 4:
-        return "grid-cols-4";
-      case 5:
-        return "grid-cols-5";
-      case 6:
-        return "grid-cols-6";
-      case 7:
-        return "grid-cols-7";
-      case 8:
-        return "grid-cols-8";
-      case 9:
-        return "grid-cols-9";
-      case 10:
-        return "grid-cols-10";
-      case 11:
-        return "grid-cols-11";
-      default:
-        return "grid-cols-12";
+  const gridTemplateColumns = React.useMemo(() => {
+    const numericCols = Number(cols);
+    if (!Number.isFinite(numericCols) || numericCols <= 0) {
+      return `repeat(${Math.max(1, minItems)}, minmax(0, 1fr))`;
     }
-  }, [cols]);
+
+    const columnCount = Math.max(1, Math.floor(numericCols));
+    return `repeat(${columnCount}, minmax(0, 1fr))`;
+  }, [cols, minItems]);
 
   return (
     <div
       ref={containerRef}
-      className={cn("grid", colsClass, gapClassName, className)}
+      className={cn("grid", gapClassName, className)}
+      // eslint-disable-next-line react/forbid-dom-props -- DS-12345 dynamic grid templates require inline styles for correct sizing
+      style={{ gridTemplateColumns }}
       {...props}
     >
       {collections.map((c) => (

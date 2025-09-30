@@ -36,7 +36,6 @@ const preview: Preview = {
   parameters: {
     ...a11yParameters,
     backgrounds: {
-      default: DEFAULT_BACKGROUND,
       options: backgroundOptions,
     },
     // CI runs on a curated, fast subset. A11y is enabled per critical story via story parameters.
@@ -48,6 +47,9 @@ const preview: Preview = {
     }),
     withTokens,
   ],
+  initialGlobals: {
+    backgrounds: { value: DEFAULT_BACKGROUND },
+  },
   globals: {
     ...a11yGlobals,
   },

@@ -70,8 +70,10 @@ module.exports = {
   },
   // Keep in sync with monorepo base so internal workspace packages are transformed
   transformIgnorePatterns: [
-    // Allow ESM packages used in tests to be transformed by ts-jest
-    "/node_modules/(?!(jose|next-auth|ulid|@upstash/redis|uncrypto|@acme|msw|until-async)/)",
+    // Allow ESM packages used in tests to be transformed by ts-jest. pnpm nests
+    // dependencies under `.pnpm/<pkg>/node_modules/`, so ensure those paths are
+    // also matched when whitelisting specific modules.
+    "/node_modules/(?!(?:\\.pnpm/[^/]+/node_modules/)?(jose|next-auth|ulid|@upstash/redis|uncrypto|@acme|msw|until-async)/)",
   ],
   // Collect coverage only from the CMS source code; exclude declarations and tests.
   collectCoverage: true,

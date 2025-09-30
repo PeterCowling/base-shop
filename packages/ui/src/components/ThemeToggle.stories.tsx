@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ThemeToggle from './ThemeToggle';
-import { ThemeProvider } from '@platform-core/contexts/ThemeContext';
 
 const meta: Meta<typeof ThemeToggle> = {
   component: ThemeToggle,
@@ -8,17 +7,13 @@ const meta: Meta<typeof ThemeToggle> = {
   parameters: {
     docs: {
       description: {
-        component: 'Theme toggle with a minimal Storybook-only ThemeContext stub. Click to cycle between light, dark, and system.',
+        component: 'Theme toggle backed by the platform ThemeContext; Storybook config seeds the provider so toggling works out of the box.',
       },
     },
+    providers: {
+      theme: { initial: 'base' },
+    },
   },
-  decorators: [
-    (Story) => (
-      <ThemeProvider initial="base">
-        <Story />
-      </ThemeProvider>
-    ),
-  ],
 };
 export default meta;
 

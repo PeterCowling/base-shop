@@ -11,7 +11,7 @@ This page links to two PDP composition stories:
 - Luxury preset: ProductGallery + PDPDetailsSection (luxury) + FinancingBadge + Policies + StickyBuyBar
 - AR + 360 Media: Gallery with 360/AR model and the same details/policies
 
-Stories are wrapped with a mocked CartProvider (parameters: `cart: true`) so clicking the Sticky Buy Bar triggers a local cart update.
+Stories are wrapped with a mocked CartProvider when `parameters: { providers: { cart: true } }` is set, so clicking the Sticky Buy Bar triggers a local cart update.
 </Description>
 
 ## Luxury Preset

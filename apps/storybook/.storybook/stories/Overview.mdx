@@ -40,7 +40,7 @@ These map to `window.__SB_GLOBALS__` and drive MSW handlers via `mapDataStateToM
 
 - Prefer CSF stories colocated with components; add a Matrix suite for complex states (`*.Matrix.stories.tsx`).
 - Include common states where applicable: `Default`, `Empty`, `Loading`, `Error`, plus RTL/mobile coverage in Matrix.
-- Use `parameters: { cart: true }` to opt into the mocked `CartProvider`.
+- Use `parameters: { providers: { cart: true } }` to opt into the mocked `CartProvider`.
 
 ## Tips
 

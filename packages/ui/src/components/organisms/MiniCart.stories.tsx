@@ -61,7 +61,11 @@ function MiniCartWrapper({ items }: WrapperProps) {
 
 const meta: Meta<typeof MiniCartWrapper> = {
   component: MiniCartWrapper,
-  parameters: { cart: true },
+  parameters: {
+    providers: {
+      cart: true,
+    },
+  },
   args: {
     items: {},
   },

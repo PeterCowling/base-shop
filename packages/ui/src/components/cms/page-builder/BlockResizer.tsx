@@ -22,88 +22,92 @@ export default function BlockResizer({
   const t = useTranslations();
   if (!selected) return null;
   return (
-    <div className="pointer-events-none relative h-full w-full">
-      {/* Rotate handle (top-center, slightly offset above) */}
-      {startRotate && (
+    <div className="pointer-events-none h-full w-full">
+      <div className="relative h-full w-full">
+        {/* Rotate handle (top-center, slightly offset above) */}
+        {startRotate && (
+          <div
+            className="absolute -top-7 start-1/2 -translate-x-1/2 pointer-events-auto"
+            onPointerDown={(e) => startRotate(e)}
+            title={String(t("Rotate (Shift = precise)"))}
+            role="button"
+            tabIndex={0}
+            aria-label="Rotate block"
+          >
+            <div className="group relative">
+              <div className="h-6 w-6 cursor-crosshair rounded-full bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
+              <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-xs text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
+                {t("Shift = precise")}
+              </div>
+            </div>
+          </div>
+        )}
+        <div onPointerDown={(e) => startResize(e, "nw")} role="button" tabIndex={0} aria-label="Resize from top-left" className="pointer-events-auto absolute -top-2 -start-2 h-6 w-6 cursor-nwse-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
+        <div onPointerDown={(e) => startResize(e, "ne")} role="button" tabIndex={0} aria-label="Resize from top-right" className="pointer-events-auto absolute -top-2 -end-2 h-6 w-6 cursor-nesw-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
+        <div onPointerDown={(e) => startResize(e, "sw")} role="button" tabIndex={0} aria-label="Resize from bottom-left" className="pointer-events-auto absolute -bottom-2 -start-2 h-6 w-6 cursor-nesw-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
+        <div onPointerDown={(e) => startResize(e, "se")} role="button" tabIndex={0} aria-label="Resize from bottom-right" className="pointer-events-auto absolute -end-2 -bottom-2 h-6 w-6 cursor-nwse-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
+        {/* Side handles */}
+        <div onPointerDown={(e) => startResize(e, "n")} role="button" tabIndex={0} aria-label="Resize from top" className="pointer-events-auto absolute -top-2 start-1/2 h-6 w-8 -translate-x-1/2 cursor-ns-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
+        <div onPointerDown={(e) => startResize(e, "s")} role="button" tabIndex={0} aria-label="Resize from bottom" className="pointer-events-auto absolute -bottom-2 start-1/2 h-6 w-8 -translate-x-1/2 cursor-ns-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
+        <div onPointerDown={(e) => startResize(e, "w")} role="button" tabIndex={0} aria-label="Resize from left" className="pointer-events-auto absolute top-1/2 -start-2 h-8 w-6 -translate-y-1/2 cursor-ew-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
+        <div onPointerDown={(e) => startResize(e, "e")} role="button" tabIndex={0} aria-label="Resize from right" className="pointer-events-auto absolute top-1/2 -end-2 h-8 w-6 -translate-y-1/2 cursor-ew-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
         <div
-          className="absolute -top-7 start-1/2 -translate-x-1/2 group pointer-events-auto"
-          onPointerDown={(e) => startRotate(e)}
-          title={String(t("Rotate (Shift = precise)"))}
+          onPointerDown={(e) => startSpacing(e, "margin", "top")}
           role="button"
           tabIndex={0}
-          aria-label="Rotate block"
-        >
-          <div className="h-6 w-6 cursor-crosshair rounded-full bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-          <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-xs text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
-            {t("Shift = precise")}
-          </div>
-        </div>
-      )}
-      <div onPointerDown={(e) => startResize(e, "nw")} role="button" tabIndex={0} aria-label="Resize from top-left" className="pointer-events-auto bg-primary absolute -top-2 -start-2 h-6 w-6 cursor-nwse-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-      <div onPointerDown={(e) => startResize(e, "ne")} role="button" tabIndex={0} aria-label="Resize from top-right" className="pointer-events-auto bg-primary absolute -top-2 -end-2 h-6 w-6 cursor-nesw-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-      <div onPointerDown={(e) => startResize(e, "sw")} role="button" tabIndex={0} aria-label="Resize from bottom-left" className="pointer-events-auto bg-primary absolute -bottom-2 -start-2 h-6 w-6 cursor-nesw-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-      <div onPointerDown={(e) => startResize(e, "se")} role="button" tabIndex={0} aria-label="Resize from bottom-right" className="pointer-events-auto bg-primary absolute -end-2 -bottom-2 h-6 w-6 cursor-nwse-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-      {/* Side handles */}
-      <div onPointerDown={(e) => startResize(e, "n")} role="button" tabIndex={0} aria-label="Resize from top" className="pointer-events-auto bg-primary absolute -top-2 start-1/2 h-6 w-8 -translate-x-1/2 cursor-ns-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-      <div onPointerDown={(e) => startResize(e, "s")} role="button" tabIndex={0} aria-label="Resize from bottom" className="pointer-events-auto bg-primary absolute -bottom-2 start-1/2 h-6 w-8 -translate-x-1/2 cursor-ns-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-      <div onPointerDown={(e) => startResize(e, "w")} role="button" tabIndex={0} aria-label="Resize from left" className="pointer-events-auto bg-primary absolute top-1/2 -start-2 h-8 w-6 -translate-y-1/2 cursor-ew-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-      <div onPointerDown={(e) => startResize(e, "e")} role="button" tabIndex={0} aria-label="Resize from right" className="pointer-events-auto bg-primary absolute top-1/2 -end-2 h-8 w-6 -translate-y-1/2 cursor-ew-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-      <div
-        onPointerDown={(e) => startSpacing(e, "margin", "top")}
-        role="button"
-        tabIndex={0}
-        aria-label="Adjust margin top"
-        className="pointer-events-auto bg-primary absolute -top-3 start-1/2 h-2 w-10 -translate-x-1/2 cursor-n-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      />
-      <div
-        onPointerDown={(e) => startSpacing(e, "margin", "bottom")}
-        role="button"
-        tabIndex={0}
-        aria-label="Adjust margin bottom"
-        className="pointer-events-auto bg-primary absolute -bottom-3 start-1/2 h-2 w-10 -translate-x-1/2 cursor-s-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      />
-      <div
-        onPointerDown={(e) => startSpacing(e, "margin", "left")}
-        role="button"
-        tabIndex={0}
-        aria-label="Adjust margin left"
-        className="pointer-events-auto bg-primary absolute top-1/2 -left-3 h-10 w-2 -translate-y-1/2 cursor-w-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      />
-      <div
-        onPointerDown={(e) => startSpacing(e, "margin", "right")}
-        role="button"
-        tabIndex={0}
-        aria-label="Adjust margin right"
-        className="pointer-events-auto bg-primary absolute top-1/2 -right-3 h-10 w-2 -translate-y-1/2 cursor-e-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      />
-      <div
-        onPointerDown={(e) => startSpacing(e, "padding", "top")}
-        role="button"
-        tabIndex={0}
-        aria-label="Adjust padding top"
-        className="pointer-events-auto bg-primary absolute -top-1 start-1/2 h-2 w-10 -translate-x-1/2 cursor-n-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      />
-      <div
-        onPointerDown={(e) => startSpacing(e, "padding", "bottom")}
-        role="button"
-        tabIndex={0}
-        aria-label="Adjust padding bottom"
-        className="pointer-events-auto bg-primary absolute -bottom-1 start-1/2 h-2 w-10 -translate-x-1/2 cursor-s-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      />
-      <div
-        onPointerDown={(e) => startSpacing(e, "padding", "left")}
-        role="button"
-        tabIndex={0}
-        aria-label="Adjust padding left"
-        className="pointer-events-auto bg-primary absolute top-1/2 -left-1 h-10 w-2 -translate-y-1/2 cursor-w-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      />
-      <div
-        onPointerDown={(e) => startSpacing(e, "padding", "right")}
-        role="button"
-        tabIndex={0}
-        aria-label="Adjust padding right"
-        className="pointer-events-auto bg-primary absolute top-1/2 -end-1 h-10 w-2 -translate-y-1/2 cursor-e-resize focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-      />
+          aria-label="Adjust margin top"
+          className="pointer-events-auto absolute -top-3 start-1/2 h-2 w-10 -translate-x-1/2 cursor-n-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        />
+        <div
+          onPointerDown={(e) => startSpacing(e, "margin", "bottom")}
+          role="button"
+          tabIndex={0}
+          aria-label="Adjust margin bottom"
+          className="pointer-events-auto absolute -bottom-3 start-1/2 h-2 w-10 -translate-x-1/2 cursor-s-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        />
+        <div
+          onPointerDown={(e) => startSpacing(e, "margin", "left")}
+          role="button"
+          tabIndex={0}
+          aria-label="Adjust margin left"
+          className="pointer-events-auto absolute top-1/2 -left-3 h-10 w-2 -translate-y-1/2 cursor-w-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        />
+        <div
+          onPointerDown={(e) => startSpacing(e, "margin", "right")}
+          role="button"
+          tabIndex={0}
+          aria-label="Adjust margin right"
+          className="pointer-events-auto absolute top-1/2 -right-3 h-10 w-2 -translate-y-1/2 cursor-e-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        />
+        <div
+          onPointerDown={(e) => startSpacing(e, "padding", "top")}
+          role="button"
+          tabIndex={0}
+          aria-label="Adjust padding top"
+          className="pointer-events-auto absolute -top-1 start-1/2 h-2 w-10 -translate-x-1/2 cursor-n-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        />
+        <div
+          onPointerDown={(e) => startSpacing(e, "padding", "bottom")}
+          role="button"
+          tabIndex={0}
+          aria-label="Adjust padding bottom"
+          className="pointer-events-auto absolute -bottom-1 start-1/2 h-2 w-10 -translate-x-1/2 cursor-s-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        />
+        <div
+          onPointerDown={(e) => startSpacing(e, "padding", "left")}
+          role="button"
+          tabIndex={0}
+          aria-label="Adjust padding left"
+          className="pointer-events-auto absolute top-1/2 -left-1 h-10 w-2 -translate-y-1/2 cursor-w-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        />
+        <div
+          onPointerDown={(e) => startSpacing(e, "padding", "right")}
+          role="button"
+          tabIndex={0}
+          aria-label="Adjust padding right"
+          className="pointer-events-auto absolute top-1/2 -end-1 h-10 w-2 -translate-y-1/2 cursor-e-resize bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        />
+      </div>
     </div>
   );
 }

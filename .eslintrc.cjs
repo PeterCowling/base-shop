@@ -6,6 +6,7 @@ module.exports = {
     "**/dist/**", // compiled packages
     "packages/auth/dist/",
     "**/.next/**", // Next.js build output
+    "**/storybook-static/**", // generated Storybook bundles
     "**/index.js",
     "**/*.d.ts.map",
     "**/jest.config.*",

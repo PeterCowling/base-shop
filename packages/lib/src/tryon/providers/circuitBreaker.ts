@@ -1,3 +1,5 @@
+import { t } from "../i18n";
+
 export type BreakerState = 'closed' | 'open' | 'half-open';
 
 interface Entry {
@@ -28,8 +30,8 @@ export function createBreaker(opts: { timeoutMs: number; failureThreshold: numbe
   async function withTimeout<T>(p: Promise<T>): Promise<T> {
     if (!timeoutMs || timeoutMs <= 0) return p;
     return new Promise<T>((resolve, reject) => {
-      const t = setTimeout(() => reject(new Error('timeout')), timeoutMs);
-      p.then((v) => { clearTimeout(t); resolve(v); }, (e) => { clearTimeout(t); reject(e); });
+      const timer = setTimeout(() => reject(new Error(t('tryon.circuitBreaker.timeout'))), timeoutMs);
+      p.then((v) => { clearTimeout(timer); resolve(v); }, (e) => { clearTimeout(timer); reject(e); });
     });
   }
 
@@ -44,7 +46,7 @@ export function createBreaker(opts: { timeoutMs: number; failureThreshold: numbe
 
       if (e.state === 'open') {
         if (nowMs < e.nextTryAt) {
-          throw new Error('circuit open');
+          throw new Error(t('tryon.circuitBreaker.open'));
         } else {
           e.state = 'half-open';
           e.inHalfOpen = false; // allow a single trial
@@ -53,7 +55,7 @@ export function createBreaker(opts: { timeoutMs: number; failureThreshold: numbe
 
       if (e.state === 'half-open') {
         if (e.inHalfOpen) {
-          throw new Error('circuit half-open');
+          throw new Error(t('tryon.circuitBreaker.halfOpen'));
         }
         e.inHalfOpen = true;
       }

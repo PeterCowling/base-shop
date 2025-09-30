@@ -6,12 +6,18 @@ type KvNamespace = {
   put(key: string, value: string, opts?: { expirationTtl?: number }): Promise<void>;
 };
 
+type GlobalWithKv = typeof globalThis & {
+  TRYON_KV?: KvNamespace;
+  env?: { TRYON_KV?: KvNamespace };
+  __env__?: { TRYON_KV?: KvNamespace };
+};
+
 function resolveKv(): KvNamespace | null {
   try {
-    const g = globalThis as unknown as Record<string, any>;
-    if (g.TRYON_KV && typeof g.TRYON_KV.get === 'function') return g.TRYON_KV as KvNamespace;
-    if (g.env && g.env.TRYON_KV && typeof g.env.TRYON_KV.get === 'function') return g.env.TRYON_KV as KvNamespace;
-    if (g.__env__ && g.__env__.TRYON_KV && typeof g.__env__.TRYON_KV.get === 'function') return g.__env__.TRYON_KV as KvNamespace;
+    const g = globalThis as GlobalWithKv;
+    if (g.TRYON_KV && typeof g.TRYON_KV.get === 'function') return g.TRYON_KV;
+    if (g.env && g.env.TRYON_KV && typeof g.env.TRYON_KV.get === 'function') return g.env.TRYON_KV;
+    if (g.__env__ && g.__env__.TRYON_KV && typeof g.__env__.TRYON_KV.get === 'function') return g.__env__.TRYON_KV;
     return null;
   } catch {
     return null;

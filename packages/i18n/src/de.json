@@ -1945,6 +1945,18 @@
   "tryon.readout.scale": "Skalierung",
   "tryon.readout.rot": "Rot.",
   "tryon.readout.pos": "Pos.",
-  "tryon.reset": "Zurücksetzen"
-  ,"tryon.autoPlace": "Automatisch platzieren"
+  "tryon.reset": "Zurücksetzen",
+  "tryon.autoPlace": "Automatisch platzieren",
+  "tryon.circuitBreaker.timeout": "Timeout.",
+  "tryon.circuitBreaker.open": "Circuit open.",
+  "tryon.circuitBreaker.halfOpen": "Circuit half-open.",
+  "tryon.providers.cloudflare.originNotAllowed": "Origin not allowed.",
+  "tryon.providers.cloudflare.fetchFailed": "Failed to fetch image ({status}).",
+  "tryon.providers.cloudflare.accountIdMissing": "CLOUDFLARE_ACCOUNT_ID missing.",
+  "tryon.providers.cloudflare.apiTokenMissing": "CLOUDFLARE_API_TOKEN missing.",
+  "tryon.providers.cloudflare.upstreamError": "Upstream {status}.",
+  "tryon.providers.cloudflare.noImageInJson": "No image in JSON.",
+  "tryon.providers.garment.heavyApiUrlMissing": "TRYON_HEAVY_API_URL not set.",
+  "tryon.providers.garment.upstreamError": "Upstream {status}.",
+  "tryon.providers.garment.unexpectedResponse": "Unexpected upstream response."
 }

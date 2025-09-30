@@ -8,19 +8,33 @@ const meta: Meta<typeof Button> = {
 export default meta;
 
 export const LegacyVariants: StoryObj<typeof Button> = {
+  decorators: [
+    (Story) => (
+      <div className="flex flex-wrap items-center gap-2">
+        <Story />
+      </div>
+    ),
+  ],
   render: () => (
-    <div className="flex flex-wrap items-center gap-2">
+    <>
       <Button variant="default">default</Button>
       <Button variant="outline">outline</Button>
       <Button variant="ghost">ghost</Button>
       <Button variant="destructive">destructive</Button>
-    </div>
+    </>
   ),
 };
 
 export const TonesAndColors: StoryObj<typeof Button> = {
+  decorators: [
+    (Story) => (
+      <div className="flex flex-col gap-3">
+        <Story />
+      </div>
+    ),
+  ],
   render: () => (
-    <div className="flex flex-col gap-3">
+    <>
       <div className="flex flex-wrap items-center gap-2">
         <Button color="primary" tone="solid">primary solid</Button>
         <Button color="primary" tone="soft">primary soft</Button>
@@ -43,13 +57,20 @@ export const TonesAndColors: StoryObj<typeof Button> = {
         <Button color="danger" tone="solid">danger solid</Button>
         <Button color="danger" tone="soft">danger soft</Button>
       </div>
-    </div>
+    </>
   ),
 };
 
 export const WithIconsAndLoading: StoryObj<typeof Button> = {
+  decorators: [
+    (Story) => (
+      <div className="flex flex-wrap items-center gap-2">
+        <Story />
+      </div>
+    ),
+  ],
   render: () => (
-    <div className="flex flex-wrap items-center gap-2">
+    <>
       <Button leadingIcon={<span aria-hidden>★</span>}>
         Leading icon
       </Button>
@@ -64,6 +85,6 @@ export const WithIconsAndLoading: StoryObj<typeof Button> = {
       </Button>
       <Button disabled>Disabled</Button>
       <Button aria-disabled color="accent">Aria-disabled</Button>
-    </div>
+    </>
   ),
 };

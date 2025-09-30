@@ -8,11 +8,17 @@ const meta: Meta<typeof StockStatus> = {
 export default meta;
 
 export const Variants: StoryObj<typeof StockStatus> = {
+  decorators: [
+    (Story) => (
+      <div className="flex items-center gap-4">
+        <Story />
+      </div>
+    ),
+  ],
   render: () => (
-    <div className="flex items-center gap-4">
+    <>
       <StockStatus inStock />
       <StockStatus inStock={false} />
-    </div>
+    </>
   ),
 };
-

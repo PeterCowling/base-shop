@@ -26,8 +26,15 @@ export default meta;
  *  Stories
  * ------------------------------------------------------------------ */
 export const Default: StoryObj<typeof OrderSummary> = {
+  decorators: [
+    (Story) => (
+      <div className="space-y-2">
+        <Story />
+      </div>
+    ),
+  ],
   render: () => (
-    <div className="space-y-2">
+    <>
       {/* OrderSummary reads cart data via the CartContext hook.
           In Storybook the context is mocked elsewhere (see preview.ts)
           so the component requires no props here. */}
@@ -59,7 +66,7 @@ export const Default: StoryObj<typeof OrderSummary> = {
           </tr>
         </tbody>
       </table>
-    </div>
+    </>
   ),
 };
 // i18n-exempt -- Storybook demo copy

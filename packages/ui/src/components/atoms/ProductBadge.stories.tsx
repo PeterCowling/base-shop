@@ -4,22 +4,29 @@ import { ProductBadge } from "./ProductBadge";
 const meta: Meta<typeof ProductBadge> = {
   title: "Atoms/ProductBadge",
   component: ProductBadge,
+  decorators: [
+    (Story) => (
+      <div className="flex flex-wrap items-center gap-2">
+        <Story />
+      </div>
+    ),
+  ],
 };
 export default meta;
 
 export const BackCompatVariants: StoryObj<typeof ProductBadge> = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-2">
+    <>
       <ProductBadge label="default" />
       <ProductBadge variant="sale" label="sale" />
       <ProductBadge variant="new" label="new" />
-    </div>
+    </>
   ),
 };
 
 export const TonesAndColors: StoryObj<typeof ProductBadge> = {
   render: () => (
-    <div className="flex flex-wrap items-center gap-2">
+    <>
       <ProductBadge color="success" tone="soft" label="success soft" />
       <ProductBadge color="success" tone="solid" label="success solid" />
       <ProductBadge color="danger" tone="soft" label="danger soft" />
@@ -28,7 +35,6 @@ export const TonesAndColors: StoryObj<typeof ProductBadge> = {
       <ProductBadge color="primary" tone="solid" label="primary solid" />
       <ProductBadge color="accent" tone="soft" label="accent soft" />
       <ProductBadge color="accent" tone="solid" label="accent solid" />
-    </div>
+    </>
   ),
 };
-

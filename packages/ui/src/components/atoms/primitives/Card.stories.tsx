@@ -4,12 +4,19 @@ import { Card, CardContent } from "./card";
 const meta: Meta<typeof Card> = {
   title: "Primitives/Card",
   component: Card,
+  decorators: [
+    (Story) => (
+      <div className="grid gap-4 p-8 @md:grid-cols-2">
+        <Story />
+      </div>
+    ),
+  ],
 };
 export default meta;
 
 export const Surfaces: StoryObj<typeof Card> = {
   render: () => (
-    <div className="grid gap-4 p-8 @md:grid-cols-2">
+    <>
       <Card>
         <CardContent>
           <div className="text-sm">Default panel surface</div>
@@ -20,7 +27,6 @@ export const Surfaces: StoryObj<typeof Card> = {
           <div className="text-sm">Elevated surface (surface-3)</div>
         </CardContent>
       </Card>
-    </div>
+    </>
   ),
 };
-

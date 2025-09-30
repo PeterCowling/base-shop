@@ -70,6 +70,10 @@ jest.mock(
   { virtual: true },
 );
 
+jest.mock("../../hooks/useThemeLoader", () => ({
+  useThemeLoader: () => ({}),
+}));
+
 import StepCheckoutPage from "../StepCheckoutPage";
 
 describe("StepCheckoutPage", () => {

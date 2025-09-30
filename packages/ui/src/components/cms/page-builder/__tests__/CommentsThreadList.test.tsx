@@ -68,7 +68,8 @@ describe("CommentsThreadList", () => {
 
     // List item selection
     const firstRow = screen.getAllByRole("listitem")[0];
-    await user.click(firstRow);
+    const rowButton = within(firstRow).getByRole("button");
+    await user.click(rowButton);
     const id = within(firstRow).getByText(/comp-1/);
     expect(onSelect).toHaveBeenCalledWith("1");
     expect(id).toBeInTheDocument();

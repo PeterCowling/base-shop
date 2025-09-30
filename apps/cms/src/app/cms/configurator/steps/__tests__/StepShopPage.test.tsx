@@ -13,6 +13,11 @@ jest.mock("../../hooks/useStepCompletion", () => ({
   default: () => [false, markComplete],
 }));
 
+jest.mock("../../hooks/useThemeLoader", () => ({
+  __esModule: true,
+  useThemeLoader: () => ({}),
+}));
+
 jest.mock("next/image", () => {
   const React = require("react");
   // Stub that avoids <img> to satisfy ds/no-naked-img and a11y rules in tests

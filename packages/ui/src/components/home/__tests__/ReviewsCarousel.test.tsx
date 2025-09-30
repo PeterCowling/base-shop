@@ -108,4 +108,32 @@ describe("ReviewsCarousel", () => {
     expect(screen.getByText(/Anna quote/)).toBeInTheDocument();
     expect(screen.getByText(/—\s*Anna/)).toBeInTheDocument();
   });
+
+  it("prefers translated aria labels when available", () => {
+    Object.assign(translations, {
+      "review.anna.quote": "Anna quote",
+      "review.anna.name": "Anna",
+      "reviews.prev": "Zurück",
+      "reviews.next": "Weiter",
+    });
+
+    render(<ReviewsCarousel />);
+
+    expect(screen.getByRole("button", { name: "Zurück" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Weiter" })).toBeInTheDocument();
+  });
+
+  it("returns null when the resolved review list is empty", () => {
+    let calls = 0;
+    const tricky = {
+      0: { quoteKey: "quote", nameKey: "name" },
+      get length() {
+        calls += 1;
+        return calls === 1 ? 1 : 0;
+      },
+    } as unknown as Review[];
+
+    const { container } = render(<ReviewsCarousel reviews={tricky} />);
+    expect(container.firstChild).toBeNull();
+  });
 });

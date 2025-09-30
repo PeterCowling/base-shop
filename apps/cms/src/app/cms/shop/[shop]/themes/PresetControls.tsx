@@ -21,19 +21,29 @@ export default function PresetControls({
   isPresetTheme,
 }: Props) {
   const t = useTranslations();
+  const translate = (key: string, fallback: string) => {
+    const value = t(key);
+    if (typeof value === "string" && value !== key) {
+      return value;
+    }
+    return fallback;
+  };
+  const presetPlaceholder = translate("cms.themes.presetNamePlaceholder", "Preset name");
+  const saveLabel = translate("cms.themes.savePreset", "Save Preset");
+  const deleteLabel = translate("cms.themes.deletePreset", "Delete Preset");
   return (
     <Inline alignY="center" gap={2}>
       <Input
-        placeholder={t("cms.themes.presetNamePlaceholder") as string}
+        placeholder={presetPlaceholder}
         value={presetName}
         onChange={(e: ChangeEvent<HTMLInputElement>) => setPresetName(e.target.value)}
       />
       <Button type="button" onClick={handleSavePreset} disabled={!presetName.trim()}>
-        {t("cms.themes.savePreset")}
+        {saveLabel}
       </Button>
       {isPresetTheme && (
         <Button type="button" onClick={handleDeletePreset}>
-          {t("cms.themes.deletePreset")}
+          {deleteLabel}
         </Button>
       )}
     </Inline>

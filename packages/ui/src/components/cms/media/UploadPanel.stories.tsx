@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, waitFor, within } from "@storybook/test";
+import { http, HttpResponse, delay } from "msw";
 import type { MediaItem } from "@acme/types";
 import UploadPanel from "./UploadPanel";
 
@@ -17,6 +18,8 @@ type StorybookMock = ReturnType<typeof fn>;
 
 const asMock = (handler?: unknown): StorybookMock =>
   (handler as StorybookMock) ?? fn();
+
+const uploadEndpoint = /\/cms\/api\/media.*orientation=landscape/;
 
 const meta: Meta<typeof UploadPanel> = {
   title: "CMS/Media/UploadPanel",
@@ -37,6 +40,16 @@ type Story = StoryObj<typeof UploadPanel>;
 
 export const UploadingState: Story = {
   name: "Uploading state",
+  parameters: {
+    msw: {
+      handlers: [
+        http.post(uploadEndpoint, async () => {
+          await delay(150);
+          return HttpResponse.json(uploadedItem, { status: 200 });
+        }),
+      ],
+    },
+  },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const fileInput = canvasElement.querySelector<HTMLInputElement>(
@@ -47,36 +60,36 @@ export const UploadingState: Story = {
     const onUploaded = asMock(args.onUploaded);
     onUploaded.mockClear();
 
-    const originalFetch = globalThis.fetch;
-    globalThis.fetch = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 150));
-      return new Response(JSON.stringify(uploadedItem), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
-    };
+    await userEvent.upload(fileInput, createVideoFile());
+    const uploadButton = await canvas.findByRole("button", {
+      name: /^Upload$/i,
+    });
 
-    try {
-      await userEvent.upload(fileInput, createVideoFile());
-      const uploadButton = await canvas.findByRole("button", {
-        name: /^Upload$/i,
-      });
-
-      await userEvent.click(uploadButton);
-      await expect(uploadButton).toBeDisabled();
-      await waitFor(async () => {
-        await expect(uploadButton).not.toBeDisabled();
-      });
-      await waitFor(async () => {
-        await expect(onUploaded).toHaveBeenCalled();
-      });
-    } finally {
-      globalThis.fetch = originalFetch;
-    }
+    await userEvent.click(uploadButton);
+    await expect(uploadButton).toBeDisabled();
+    await waitFor(async () => {
+      await expect(uploadButton).not.toBeDisabled();
+    });
+    await waitFor(async () => {
+      await expect(onUploaded).toHaveBeenCalled();
+    });
   },
 };
 
 export const UploadError: Story = {
+  parameters: {
+    msw: {
+      handlers: [
+        http.post(uploadEndpoint, async () => {
+          await delay(50);
+          return HttpResponse.json({ error: "Upload failed" }, {
+            status: 500,
+            statusText: "Upload failed",
+          });
+        }),
+      ],
+    },
+  },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const fileInput = canvasElement.querySelector<HTMLInputElement>(
@@ -87,29 +100,15 @@ export const UploadError: Story = {
     const onUploadError = asMock(args.onUploadError);
     onUploadError.mockClear();
 
-    const originalFetch = globalThis.fetch;
-    globalThis.fetch = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      return new Response(JSON.stringify({ error: "Upload failed" }), {
-        status: 500,
-        statusText: "Upload failed",
-        headers: { "Content-Type": "application/json" },
-      });
-    };
+    await userEvent.upload(fileInput, createVideoFile());
+    const uploadButton = await canvas.findByRole("button", {
+      name: /^Upload$/i,
+    });
 
-    try {
-      await userEvent.upload(fileInput, createVideoFile());
-      const uploadButton = await canvas.findByRole("button", {
-        name: /^Upload$/i,
-      });
-
-      await userEvent.click(uploadButton);
-      await canvas.findByText("Upload failed");
-      await waitFor(async () => {
-        await expect(onUploadError).toHaveBeenCalledWith("Upload failed");
-      });
-    } finally {
-      globalThis.fetch = originalFetch;
-    }
+    await userEvent.click(uploadButton);
+    await canvas.findByText("Upload failed");
+    await waitFor(async () => {
+      await expect(onUploadError).toHaveBeenCalledWith("Upload failed");
+    });
   },
 };

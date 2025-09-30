@@ -1,13 +1,13 @@
 // packages/ui/components/templates/AppShell.stories.tsx
 
 import type { Meta, StoryObj } from "@storybook/react";
-import { Content } from "../organisms/Content";
-import { Footer } from "../organisms/Footer";
-import { Header } from "../organisms/Header";
-import { SideNav } from "../organisms/SideNav";
-import { AppShell } from "./AppShell";
 
-const meta: Meta<typeof AppShell> = {
+import { AppShell } from "./AppShell";
+import { buildAppShellArgs } from "./AppShell.story-helpers";
+
+const baseArgs = buildAppShellArgs();
+
+const meta = {
   title: "Layout/AppShell",
   component: AppShell,
   tags: ["autodocs"],
@@ -19,32 +19,20 @@ const meta: Meta<typeof AppShell> = {
       },
     },
   },
-};
+  args: baseArgs,
+} satisfies Meta<typeof AppShell>;
+
 export default meta;
 
-export const Default: StoryObj<typeof AppShell> = {
-  render: () => (
-    <AppShell
-      header={<Header locale="en" shopName="Demo">Header</Header>}
-      sideNav={<SideNav>Nav</SideNav>}
-      footer={<Footer shopName="Demo">Footer</Footer>}
-    >
-      <Content>Content</Content>
-    </AppShell>
-  ),
-};
+type Story = StoryObj<typeof meta>;
 
-export const WithCustomBackground: StoryObj<typeof AppShell> = {
-  render: () => (
-    <AppShell
-      className="bg-bg"
-      header={<Header locale="en" shopName="Demo">Header</Header>}
-      sideNav={<SideNav>Nav</SideNav>}
-      footer={<Footer shopName="Demo">Footer</Footer>}
-    >
-      <Content>Content</Content>
-    </AppShell>
-  ),
+export const Default: Story = {};
+
+export const WithCustomBackground: Story = {
+  args: {
+    ...baseArgs,
+    className: "bg-bg",
+  },
   parameters: {
     docs: {
       description: {

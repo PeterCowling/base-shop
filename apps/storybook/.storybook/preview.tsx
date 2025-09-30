@@ -329,6 +329,8 @@ const preview: Preview = {
     currency: "USD",
     net: "normal",
     netError: "off",
+    backgrounds: { value: DEFAULT_BACKGROUND },
+    viewport: { value: "desktop", isRotated: false },
   },
   loaders: [mswLoader],
   parameters: {
@@ -371,8 +373,7 @@ const preview: Preview = {
       },
     },
     viewport: {
-      viewports: VIEWPORTS,
-      defaultViewport: "desktop",
+      options: VIEWPORTS,
     },
     backgrounds: {
       options: backgroundOptions,
@@ -380,9 +381,6 @@ const preview: Preview = {
   },
   globals: {
     ...a11yGlobals,
-  },
-  initialGlobals: {
-    backgrounds: { value: DEFAULT_BACKGROUND },
   },
   decorators: [
     (Story) => (

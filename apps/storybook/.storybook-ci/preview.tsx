@@ -4,6 +4,7 @@ import type { GlobalTypes } from "@storybook/types";
 import "../../../packages/themes/base/src/tokens.css";
 import en from "../../../packages/i18n/src/en.json";
 import { createBackgroundOptions, DEFAULT_BACKGROUND } from "../.storybook/backgrounds";
+import { VIEWPORTS } from "../.storybook/viewports";
 import { a11yGlobals, a11yParameters } from "../.storybook/a11y";
 import { withHighlight } from "../.storybook/decorators/highlightDecorator";
 
@@ -38,6 +39,8 @@ const preview: Preview = {
   globalTypes: toolbarGlobalTypes,
   initialGlobals: {
     tokens: "base",
+    backgrounds: { value: DEFAULT_BACKGROUND },
+    viewport: { value: "desktop", isRotated: false },
   },
   parameters: {
     ...a11yParameters,
@@ -50,6 +53,9 @@ const preview: Preview = {
     outline: {
       disable: false,
     },
+    viewport: {
+      options: VIEWPORTS,
+    },
     // CI runs on a curated, fast subset. A11y is enabled per critical story via story parameters.
   },
   decorators: [
@@ -60,9 +66,6 @@ const preview: Preview = {
     withTokens,
     withHighlight,
   ],
-  initialGlobals: {
-    backgrounds: { value: DEFAULT_BACKGROUND },
-  },
   globals: {
     ...a11yGlobals,
   },

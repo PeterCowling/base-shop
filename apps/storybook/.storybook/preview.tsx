@@ -23,6 +23,7 @@ import { mapDataStateToMsw } from "./msw/state-mapping";
 import { VIEWPORTS } from "./viewports";
 import { withRTL } from "./decorators/rtlDecorator";
 import { withPerf } from "./decorators/perfDecorator";
+import { withHighlight } from "./decorators/highlightDecorator";
 import { a11yGlobals, a11yParameters } from "./a11y";
 import { createBackgroundOptions, DEFAULT_BACKGROUND } from "./backgrounds";
 import type { ToolbarGlobals, StoryDataState } from "./types";
@@ -377,6 +378,7 @@ const preview: Preview = {
     }),
     withRTL,
     withGlobals,
+    withHighlight,
     withPerf,
     withProviders,
   ],

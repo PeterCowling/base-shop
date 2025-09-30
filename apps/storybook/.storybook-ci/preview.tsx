@@ -4,6 +4,7 @@ import "../../../packages/themes/base/src/tokens.css";
 import en from "../../../packages/i18n/src/en.json";
 import { createBackgroundOptions, DEFAULT_BACKGROUND } from "../.storybook/backgrounds";
 import { a11yGlobals, a11yParameters } from "../.storybook/a11y";
+import { withHighlight } from "../.storybook/decorators/highlightDecorator";
 
 const t = (key: string) => (en as Record<string, string>)[key] ?? key;
 
@@ -47,6 +48,7 @@ const preview: Preview = {
       defaultTheme: "light",
     }),
     withTokens,
+    withHighlight,
   ],
   globals: {
     ...a11yGlobals,

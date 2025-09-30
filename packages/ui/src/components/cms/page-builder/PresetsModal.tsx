@@ -1,6 +1,6 @@
 "use client";
 
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
 import { Tooltip } from "../../atoms";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
@@ -176,6 +176,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
       )}
       <DialogContent>
         <DialogTitle>{t("cms.builder.presets.sectionLibrary.title")}</DialogTitle>
+        <DialogDescription>{t("cms.builder.presets.sectionLibrary.description")}</DialogDescription>
         {loadError && (
           <div className="rounded border border-red-200 bg-red-50 p-2 text-xs text-red-800">
             {loadError}

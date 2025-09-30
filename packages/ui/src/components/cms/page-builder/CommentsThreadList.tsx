@@ -148,20 +148,20 @@ export default function CommentsThreadList({
           <ul>
             {filtered.map((thr) => {
               // i18n-exempt -- TECH-000 [ttl=2025-10-28] styling only; no user-facing copy in this line
-              const rowClass = `cursor-pointer border-b p-2 text-sm hover:bg-surface-3 ${selectedId === thr.id ? "bg-surface-2" : ""} ${flashId === thr.id ? "animate-pulse ring-2 ring-primary" : ""}`;
+              const rowClass = `border-b p-2 text-sm hover:bg-surface-3 ${selectedId === thr.id ? "bg-surface-2" : ""} ${flashId === thr.id ? "animate-pulse ring-2 ring-primary" : ""}`;
               return (
-              <li
-                key={thr.id}
-                ref={(el) => {
-                  rowsRef.current[thr.id] = el;
-                }}
-                className={rowClass}
-                onClick={() => onSelect(thr.id)}
-              >
-                <button
-                  type="button"
-                  className="block w-full min-h-10 min-w-10 text-start"
+                <li
+                  key={thr.id}
+                  ref={(el) => {
+                    rowsRef.current[thr.id] = el;
+                  }}
+                  className={rowClass}
                 >
+                  <button
+                    type="button"
+                    className="block w-full min-h-10 min-w-10 cursor-pointer text-start"
+                    onClick={() => onSelect(thr.id)}
+                  >
                   {/** i18n-exempt */}
                   <Cluster alignY="center" justify="between">
                     <div className="truncate font-medium">{thr.componentId}</div>
@@ -174,9 +174,10 @@ export default function CommentsThreadList({
                     <span>{thr.assignedTo ? `@${thr.assignedTo}` : (t("cms.builder.comments.unassigned") as string)}</span>
                     <span>{formatTime(thr.updatedAt ?? thr.createdAt)}</span>
                   </Cluster>
-                </button>
-              </li>
-            );})}
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

@@ -52,7 +52,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
      * ------------------------------------------------------------------ */
     const baseClasses = cn(
       // base
-      "h-12 w-full rounded-md border border-input bg-input px-3 py-3 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      "flex h-12 w-full rounded-md border border-input bg-input px-3 py-3 text-sm text-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       // placeholder + file input follow tokenized colors
       "placeholder:text-muted-foreground file:border-0 file:bg-transparent file:text-sm file:font-medium", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       // ring uses tokenized color and widths

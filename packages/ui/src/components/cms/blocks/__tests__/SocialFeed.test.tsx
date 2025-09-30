@@ -12,12 +12,12 @@ describe("SocialFeed", () => {
         account={account}
       />
     );
-    expect(screen.getByTitle("social-feed")).toHaveAttribute("src", expectedSrc);
+    expect(screen.getByTitle(/social feed/i)).toHaveAttribute("src", expectedSrc);
   });
 
   it("shows fallback when iframe fails", async () => {
     render(<SocialFeed platform="twitter" account="acme" />);
-    const iframe = screen.getByTitle("social-feed");
+    const iframe = screen.getByTitle(/social feed/i);
     fireEvent.error(iframe);
     await waitFor(() =>
       expect(
@@ -27,8 +27,10 @@ describe("SocialFeed", () => {
   });
 
   it("renders nothing when feed array is empty", () => {
-    const { container } = render(<SocialFeed platform="twitter" />);
-    expect(container).toBeEmptyDOMElement();
+    render(<SocialFeed platform="twitter" />);
+    expect(
+      screen.getByText(/no social feed configured\./i),
+    ).toBeInTheDocument();
   });
 });
 

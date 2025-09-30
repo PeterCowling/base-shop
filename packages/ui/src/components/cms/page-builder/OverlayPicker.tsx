@@ -19,6 +19,19 @@ function toRgba(hsl: string, alpha: number): string {
   return `rgba(${r}, ${g}, ${b}, ${a})`;
 }
 
+function resolveCssToken(variable: string): string | undefined {
+  const root = document.documentElement;
+  const computed = getComputedStyle(root).getPropertyValue(variable).trim();
+  if (computed && !computed.startsWith("var(")) {
+    return computed;
+  }
+  const inline = root.style.getPropertyValue(variable).trim();
+  if (inline && !inline.startsWith("var(")) {
+    return inline;
+  }
+  return undefined;
+}
+
 export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
   const uid = useId();
   const t = useTranslations();
@@ -98,10 +111,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
           type="button"
           variant="outline"
           onClick={() => {
-            const root = document.documentElement;
-            const value = getComputedStyle(root)
-              .getPropertyValue("--color-primary")
-              .trim();
+            const value = resolveCssToken("--color-primary");
             if (!value) return;
             onChange(`hsl(${value} / 0.35)`);
           }}
@@ -110,10 +120,7 @@ export default function OverlayPicker({ value, onChange }: OverlayPickerProps) {
           type="button"
           variant="outline"
           onClick={() => {
-            const root = document.documentElement;
-            const value = getComputedStyle(root)
-              .getPropertyValue("--color-accent")
-              .trim();
+            const value = resolveCssToken("--color-accent");
             if (!value) return;
             onChange(`hsl(${value} / 0.30)`);
           }}

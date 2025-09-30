@@ -1,5 +1,6 @@
 /* i18n-exempt file -- Storybook demo content uses literal strings */
 import { type Meta, type StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { ReviewsList } from "./ReviewsList";
 
 const meta: Meta<typeof ReviewsList> = {
@@ -12,10 +13,8 @@ const meta: Meta<typeof ReviewsList> = {
     filterable: true,
     minRating: 0,
     query: "",
-  },
-  argTypes: {
-    onMinRatingChange: { action: "onMinRatingChange" },
-    onQueryChange: { action: "onQueryChange" },
+    onMinRatingChange: fn(),
+    onQueryChange: fn(),
   },
 };
 export default meta;

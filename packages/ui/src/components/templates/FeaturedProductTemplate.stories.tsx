@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { FeaturedProductTemplate } from "./FeaturedProductTemplate";
 import type { SKU } from "@acme/types";
 
@@ -21,11 +22,11 @@ const meta: Meta<typeof FeaturedProductTemplate> = {
       features: ["Feature A", "Feature B"],
     } as SKU & { rating: number; features: string[] },
     ctaLabel: "Add to cart",
+    onAddToCart: fn(),
   },
   argTypes: {
     product: { control: "object" },
     ctaLabel: { control: "text" },
-    onAddToCart: { action: "add-to-cart" },
   },
 };
 export default meta;

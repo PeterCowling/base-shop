@@ -8,17 +8,14 @@ const meta: Meta<typeof QuantityInput> = {
     value: 1,
     min: 1,
     max: 5,
-  },
-  argTypes: {
-    onChange: { action: "change" },
+    onChange: fn(),
   },
 };
 export default meta;
 
 export const Default: StoryObj<typeof QuantityInput> = {
   play: async ({ canvasElement, args }) => {
-    const changeSpy = fn();
-    args.onChange = changeSpy;
+    const changeSpy = args.onChange as ReturnType<typeof fn>;
 
     const canvas = within(canvasElement);
     const decrement = await canvas.findByRole("button", { name: "-" });

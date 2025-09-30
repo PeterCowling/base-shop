@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { ProductMediaGalleryTemplate } from "./ProductMediaGalleryTemplate";
 import type { SKU } from "@acme/types";
 
@@ -22,11 +23,11 @@ const meta: Meta<typeof ProductMediaGalleryTemplate> = {
       description: "",
     } as SKU,
     ctaLabel: "Add to cart",
+    onAddToCart: fn(),
   },
   argTypes: {
     product: { control: "object" },
     ctaLabel: { control: "text" },
-    onAddToCart: { action: "add-to-cart" },
   },
 };
 export default meta;

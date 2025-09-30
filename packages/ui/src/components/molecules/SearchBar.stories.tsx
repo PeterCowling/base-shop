@@ -16,20 +16,16 @@ const meta: Meta<typeof SearchBar> = {
     suggestions: ["Apple", "Banana", "Cherry", "Date"],
     placeholder: "Search…",
     label: "Search",
-  },
-  argTypes: {
-    onSelect: { action: "select" },
-    onSearch: { action: "search" },
+    onSelect: fn(),
+    onSearch: fn(),
   },
 };
 export default meta;
 
 export const Default: StoryObj<typeof SearchBar> = {
   play: async ({ canvasElement, args }) => {
-    const selectSpy = fn();
-    const searchSpy = fn();
-    args.onSelect = selectSpy;
-    args.onSearch = searchSpy;
+    const selectSpy = args.onSelect as ReturnType<typeof fn>;
+    const searchSpy = args.onSearch as ReturnType<typeof fn>;
 
     const canvas = within(canvasElement);
     const input = await canvas.findByRole("searchbox", { name: /search/i });

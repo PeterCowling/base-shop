@@ -6,17 +6,14 @@ const meta: Meta<typeof PromoCodeInput> = {
   component: PromoCodeInput,
   args: {
     loading: false,
-  },
-  argTypes: {
-    onApply: { action: "apply" },
+    onApply: fn(),
   },
 };
 export default meta;
 
 export const Default: StoryObj<typeof PromoCodeInput> = {
   play: async ({ canvasElement, args }) => {
-    const applySpy = fn();
-    args.onApply = applySpy;
+    const applySpy = args.onApply as ReturnType<typeof fn>;
 
     const canvas = within(canvasElement);
     const input = await canvas.findByPlaceholderText(/promo code/i);

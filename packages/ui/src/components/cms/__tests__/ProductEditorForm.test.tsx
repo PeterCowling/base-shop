@@ -6,7 +6,13 @@ import { useProductEditorFormState } from "../../../hooks/useProductEditorFormSt
 jest.mock("next/image", () => ({
   __esModule: true,
   // i18n-exempt: test-only mock component
-  default: ({ alt = "", ...rest }: Record<string, unknown>) => (
+  default: ({
+    alt = "",
+    fill: _fill,
+    priority: _priority,
+    unoptimized: _unoptimized,
+    ...rest
+  }: Record<string, unknown>) => (
     // Use <input type="image"> to avoid Next/DS lint noise in tests
     // and bypass Next.js URL parsing/loader requirements.
     <input type="image" alt={String(alt ?? "")} {...(rest as any)} />

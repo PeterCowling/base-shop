@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { PaymentMethodSelector } from "./PaymentMethodSelector";
 
 const meta: Meta<typeof PaymentMethodSelector> = {
@@ -9,9 +10,7 @@ const meta: Meta<typeof PaymentMethodSelector> = {
       { value: "paypal", label: "PayPal" },
     ],
     value: "card",
-  },
-  argTypes: {
-    onChange: { action: "change" },
+    onChange: fn(),
   },
 };
 export default meta;

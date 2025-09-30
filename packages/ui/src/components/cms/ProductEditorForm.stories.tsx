@@ -1,6 +1,7 @@
 import type { ProductPublication } from "@acme/types";
 import type { Locale } from "@acme/i18n";
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import ProductEditorForm from "./ProductEditorForm";
 
 const sample: ProductPublication & { variants: Record<string, string[]> } = {
@@ -29,12 +30,11 @@ const meta: Meta<typeof ProductEditorForm> = {
   args: {
     product: sample,
     locales: ["en", "de", "it"] as Locale[],
-    onSave: async () => ({ product: sample }),
+    onSave: fn(async () => ({ product: sample })),
   },
   argTypes: {
     product: { control: "object" },
     locales: { control: "object" },
-    onSave: { action: "save" },
   },
 };
 export default meta;

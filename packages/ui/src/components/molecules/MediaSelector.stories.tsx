@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { MediaSelector } from "./MediaSelector";
 
 const meta: Meta<typeof MediaSelector> = {
@@ -10,9 +11,7 @@ const meta: Meta<typeof MediaSelector> = {
       { type: "image", src: "/hero/slide-3.jpg" },
     ],
     active: 0,
-  },
-  argTypes: {
-    onChange: { action: "change" },
+    onChange: fn(),
   },
 };
 export default meta;

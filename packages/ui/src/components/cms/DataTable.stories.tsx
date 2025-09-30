@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import DataTable, { type Column } from "./DataTable";
 
 interface Row {
@@ -22,12 +23,12 @@ const meta: Meta<typeof DataTable<Row>> = {
     rows: sampleRows,
     columns: sampleColumns,
     selectable: false,
+    onSelectionChange: fn(),
   },
   argTypes: {
     rows: { control: "object" },
     columns: { control: "object" },
     selectable: { control: "boolean" },
-    onSelectionChange: { action: "selectionChange" },
   },
 };
 export default meta;

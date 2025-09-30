@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import ComponentPreview from "../src/components/ComponentPreview";
 import type { UpgradeComponent } from "@acme/types";
 
@@ -55,23 +55,50 @@ describe("ComponentPreview advanced modes and error handling", () => {
   });
 
   it("renders error boundary fallback when component throws", async () => {
-    const Thrower = () => {
-      throw new Error("boom");
-    };
-    (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/Boom": Thrower,
-    };
+    const consoleErrorMock = console.error as jest.MockedFunction<typeof console.error>;
+    const originalConsoleImpl = consoleErrorMock.getMockImplementation();
+    const initialCallCount = consoleErrorMock.mock.calls.length;
+    consoleErrorMock.mockImplementation(() => {});
 
-    const component: UpgradeComponent = {
-      componentName: "Boom",
-      file: "Boom.tsx",
-    } as UpgradeComponent;
+    try {
+      const Thrower = () => {
+        throw new Error("boom");
+      };
+      (globalThis as any).__UPGRADE_MOCKS__ = {
+        "@ui/components/Boom": Thrower,
+      };
 
-    render(<ComponentPreview component={component} />);
+      const component: UpgradeComponent = {
+        componentName: "Boom",
+        file: "Boom.tsx",
+      } as UpgradeComponent;
 
-    expect(
-      await screen.findByText("Failed to render preview")
-    ).toBeInTheDocument();
+      render(<ComponentPreview component={component} />);
+
+      expect(
+        await screen.findByText("Failed to render preview")
+      ).toBeInTheDocument();
+
+      await waitFor(
+        () => {
+          expect(consoleErrorMock.mock.calls.length).toBeGreaterThan(initialCallCount + 1);
+        },
+        { timeout: 3000 },
+      );
+
+      const newCalls = consoleErrorMock.mock.calls.slice(initialCallCount);
+
+      expect(
+        newCalls.some(([first]) =>
+          typeof first === "string" && first.includes("Component preview failed"),
+        ),
+      ).toBe(true);
+      expect(
+        newCalls.some(([, error]) => error instanceof Error && error.message === "boom"),
+      ).toBe(true);
+    } finally {
+      consoleErrorMock.mockImplementation(originalConsoleImpl ?? (() => {}));
+    }
   });
 });
 

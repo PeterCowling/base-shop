@@ -36,7 +36,16 @@ most reliable path in this stack (Next 15, React 19) and keeps CI green:
 ```bash
 pnpm test-storybook         # starts SB (CI config) and runs the Playwright smoke tests
 pnpm storybook:smoke        # same, explicit
+pnpm test-storybook:coverage # start + run the official test-runner with coverage enabled
 ```
+
+### Coverage
+
+Code coverage for stories uses the official `@storybook/addon-coverage`. Enable the
+**Coverage** toggle in the Testing panel or run `pnpm test-storybook:coverage` to
+capture metrics. When coverage runs, the addon exposes a `/coverage/index.html`
+report from the local Storybook server alongside the summary visible in the
+testing widget.
 
 Critical stories covered in CI (Matrix):
 

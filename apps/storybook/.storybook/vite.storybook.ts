@@ -2,7 +2,6 @@
 import { defineConfig, type PluginOption } from 'vite';
 import path from 'node:path';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import istanbul from 'vite-plugin-istanbul';
 // SVGR is optional; if present we include it
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- ABC-123
 // @ts-ignore
@@ -12,12 +11,6 @@ import tailwindcss from '@tailwindcss/postcss';
 export default defineConfig({
   plugins: [
     tsconfigPaths(),
-    // Instrumentation is a no-op unless env vars are enabled; safe to include
-    istanbul({
-      cypress: true,
-      include: ['packages/ui/src/**'], // i18n-exempt -- ABC-123 [ttl=2026-01-01]
-      extension: ['.ts', '.tsx'],
-    }),
     // SVGR (if installed)
     typeof svgr === 'function' ? svgr() : (undefined as unknown as never),
   ].filter(Boolean) as PluginOption[],

@@ -1,6 +1,8 @@
 import type { StorybookConfig } from "@storybook/nextjs";
 import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
 import path from "node:path";
+
+import { coverageAddon } from "../.storybook/coverage";
 /* i18n-exempt file -- DS-2410 non-UI Storybook config strings [ttl=2026-01-01] */
 
 const config: StorybookConfig = {
@@ -31,6 +33,7 @@ const config: StorybookConfig = {
     "@chromatic-com/storybook",
     "@storybook/addon-themes",
     "@storybook/addon-viewport",
+    coverageAddon,
   ],
 
   webpackFinal: async (config: WebpackConfiguration) => {

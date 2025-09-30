@@ -99,7 +99,9 @@ export default function StepNavigation(): React.JSX.Element {
             className="mx-auto"
             style={{ width: device.width, height: device.height }}
           >
-            <NavigationPreview items={navItems} style={themeStyle} />
+            <div style={themeStyle}>
+              <NavigationPreview items={navItems} />
+            </div>
           </div>
         </div>
       </div>

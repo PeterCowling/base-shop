@@ -6,7 +6,6 @@ import { Inline, Stack } from "../atoms/primitives";
 
 interface Props {
   items: NavItem[];
-  style?: React.CSSProperties;
 }
 
 const StyledNav = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
@@ -18,15 +17,14 @@ const StyledNav = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(
 );
 StyledNav.displayName = "StyledNav";
 
-export default function NavigationPreview({ items, style }: Props) {
+export default function NavigationPreview({ items }: Props) {
   return (
     <StyledNav
-      style={style}
       className="bg-surface-2 text-foreground p-4 rounded border border-border-1"
       data-token="--color-bg"
     >
-      <Inline asChild gap={4} wrap={false} className="m-0 list-none p-0">
-        <ul>
+      <Inline gap={4} wrap={false} className="m-0 list-none p-0">
+        <ul className="m-0 list-none p-0">
           {items.map((item) => (
             <NavItemView key={item.id} item={item} />
           ))}
@@ -49,12 +47,11 @@ function NavItemView({ item }: { item: NavItem }) {
       </a>
       {item.children && item.children.length > 0 && (
         <Stack
-          asChild
           gap={1}
           className="absolute top-full start-0 min-w-32 rounded-md border border-border-1 bg-surface-2 p-2 shadow-elevation-2 opacity-0 transition-opacity duration-150 ease-out pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100"
           data-token="--color-bg"
         >
-          <ul className="m-0 list-none p-0">
+          <ul className="m-0 list-none p-0" data-token="--color-bg">
             {item.children.map((child) => (
               <li key={child.id}>
                 <a

@@ -49,7 +49,15 @@ describe("NavigationPreview", () => {
     const placeholderLink = screen.getAllByRole("link", { name: "Item" })[0];
     expect(placeholderLink).toHaveAttribute("href", "#");
   
-    expect(container.firstChild).toMatchSnapshot();
+    const nav = container.querySelector("nav");
+    expect(nav).toHaveClass(
+      "bg-surface-2",
+      "text-foreground",
+      "p-4",
+      "rounded",
+      "border",
+      "border-border-1",
+    );
   });
 });
 

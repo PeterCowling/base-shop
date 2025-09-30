@@ -1,7 +1,6 @@
 // src/components/Avatar.tsx
 import Image, { type ImageProps } from "next/image";
 import * as React from "react";
-import { boxProps } from "../../utils/style";
 import { cn } from "../../utils/style";
 
 // ────────────────────────────────────────────────────────────────────────────────
@@ -58,13 +57,36 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
           ? parseInt(height as string, 10)
           : dimension;
 
-    const { classes, style } = boxProps({
-      width: width ?? dimension, // visual size (can be any CSS unit)
-      height: height ?? dimension, // visual size (can be any CSS unit)
-      padding,
-      margin,
-    });
-    const sizeClasses = `w-[${numericWidth}px] h-[${numericHeight}px]`;
+    const toDimensionClass = (
+      value: number | string | undefined,
+      axis: "w" | "h",
+    ) => {
+      if (value === undefined) {
+        return undefined;
+      }
+
+      if (typeof value === "string") {
+        if (value.startsWith(`${axis}-`) || value.includes(`:${axis}-`)) {
+          return value;
+        }
+
+        const trimmed = value.trim();
+
+        if (trimmed.length === 0) {
+          return undefined;
+        }
+
+        const sanitized = trimmed.replace(/\s+/g, "_");
+
+        return `${axis}-[${sanitized}]`;
+      }
+
+      return `${axis}-[${value}px]`;
+    };
+
+    const widthClass = toDimensionClass(width ?? dimension, "w");
+    const heightClass = toDimensionClass(height ?? dimension, "h");
+    const boxClasses = cn(padding, margin, widthClass, heightClass);
 
     // ─── No src: render fallback ────────────────────────────────────────────
     if (!src) {
@@ -73,12 +95,9 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
           ref={ref as unknown as React.RefObject<HTMLDivElement>}
           className={cn(
             "bg-muted flex items-center justify-center rounded-full text-sm", // i18n-exempt -- DEV-000 CSS utility class names
-            classes,
-            sizeClasses,
+            boxClasses,
             className
           )}
-          /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: fallback avatar uses inline dimensions when consumers supply non-utility width/height */
-          style={style}
         >
           {fallback ?? (typeof alt === "string" ? alt.charAt(0) : null)}
         </div>
@@ -95,12 +114,9 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
         height={numericHeight}
         className={cn(
           "rounded-full object-cover", // i18n-exempt -- DEV-000 CSS utility class names
-          classes,
-          sizeClasses,
+          boxClasses,
           className,
         )}
-        /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: inline style ensures parity with boxProps width/height overrides */
-        style={style}
         {...props}
       />
     );

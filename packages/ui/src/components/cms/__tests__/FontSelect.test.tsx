@@ -20,8 +20,8 @@ describe("FontSelect", () => {
     expect(screen.getByRole("option", { name: "Helvetica" })).toBeInTheDocument();
   });
 
-  it("applies font family styles to options", () => {
-    render(
+  it("applies font family classes to options", () => {
+    const { container } = render(
       <FontSelect
         value={"Arial"}
         options={options}
@@ -30,8 +30,13 @@ describe("FontSelect", () => {
       />
     );
 
+    const styleTag = container.querySelector("style");
+    expect(styleTag?.textContent).toContain(".fontopt-arial");
+    expect(styleTag?.textContent).toContain(".fontopt-helvetica");
+
     options.forEach((o) => {
-      expect(screen.getByRole("option", { name: o })).toHaveStyle({ fontFamily: o });
+      const option = screen.getByRole("option", { name: o });
+      expect(option.className).toContain("fontopt-");
     });
   });
 

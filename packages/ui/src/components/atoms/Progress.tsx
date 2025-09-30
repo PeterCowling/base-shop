@@ -25,9 +25,6 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
               `[--pct:${value}%] w-[var(--pct)]` // i18n-exempt -- UI-000: CSS utility class names (CSS var usage) [ttl=2026-01-31]
             )}
             data-token="--color-primary" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
-            // Set inline width for test environments and non-Tailwind consumers
-            /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: inline width keeps progress accurate when CSS variables are unavailable */
-            style={{ width: `${value}%` }}
           />
         </div>
         {label ? (

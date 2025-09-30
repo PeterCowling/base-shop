@@ -6,7 +6,7 @@ describe("ColorSwatch", () => {
   it("applies background color", () => {
     render(<ColorSwatch color="red" data-cy="swatch" />);
     const button = screen.getByTestId("swatch");
-    expect(button).toHaveStyle({ backgroundColor: "red" });
+    expect(button.className).toContain("bg-[red]");
   });
 
   it("applies ring styles when selected", () => {

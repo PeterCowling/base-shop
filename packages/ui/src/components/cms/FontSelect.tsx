@@ -33,8 +33,6 @@ export function FontSelect({
             key={o}
             value={o}
             className={toClass(o)}
-            /* eslint-disable-next-line react/forbid-dom-props -- DX-0003: inline font preview required on <option> */
-            style={{ fontFamily: o }}
           >
             {o}
           </option>

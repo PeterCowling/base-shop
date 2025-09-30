@@ -17,15 +17,9 @@ export interface ColorSwatchProps
 export const ColorSwatch = React.forwardRef<
   HTMLButtonElement,
   ColorSwatchProps
->(({ color, selected = false, size = 24, className, ...props }, ref) => {
-  // Ensure styles are readable by jsdom in tests: set inline styles
-  const style = {
-    backgroundColor: color,
-    width: size,
-    height: size,
-    ...(props.style ?? {}),
-  } as React.CSSProperties;
-  const normalized = typeof color === "string" ? color.replace(/\s+/g, "") : String(color);
+>(({ color, selected = false, size = 24, className, style: _style, ...props }, ref) => {
+  const normalized =
+    typeof color === "string" ? color.replace(/\s+/g, "") : String(color);
   return (
     <button
       ref={ref}
@@ -38,8 +32,6 @@ export const ColorSwatch = React.forwardRef<
         selected ? "ring-2 ring-offset-2" : "", // i18n-exempt -- DEV-000 CSS utility class names
         className
       )}
-      /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: inline background/size ensures accurate preview for arbitrary colors */
-      style={style}
       {...props}
     />
   );

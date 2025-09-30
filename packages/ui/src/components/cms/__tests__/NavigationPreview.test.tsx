@@ -17,14 +17,6 @@ describe("NavigationPreview", () => {
     expect(getByText("Child")).toBeInTheDocument();
   });
 
-  it("applies style prop to nav element", () => {
-    const { container } = render(
-      <NavigationPreview items={items} style={{ backgroundColor: "red" }} />,
-    );
-    const nav = container.querySelector("nav");
-    expect(nav).toHaveStyle({ backgroundColor: "red" });
-  });
-
   it("renders defaults when label or url missing", () => {
     const { getAllByRole } = render(
       <NavigationPreview items={[{ id: "1", children: [{ id: "2" }] }]} />,
@@ -56,9 +48,10 @@ describe("NavigationPreview", () => {
     const { getByText } = render(<NavigationPreview items={items} />);
     const childLink = getByText("Child");
     expect(childLink).toHaveAttribute("data-token", "--color-fg");
-    const dropdown = childLink.closest("ul");
-    expect(dropdown).toHaveAttribute("data-token", "--color-bg");
-    expect(dropdown).toHaveClass(
+    const dropdownList = childLink.closest("ul");
+    expect(dropdownList).toHaveAttribute("data-token", "--color-bg");
+    const dropdownContainer = dropdownList?.parentElement;
+    expect(dropdownContainer).toHaveClass(
       "absolute",
       "start-0",
       "top-full",

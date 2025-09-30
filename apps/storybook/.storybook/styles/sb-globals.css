@@ -1,8 +1,85 @@
-/* Storybook-only global styles: light but consistent look */
-@import "../../../packages/themes/base/src/tokens.css";
-@import "../../../packages/ui/src/styles/builder.css";
-@import "../../../packages/ui/src/styles/forms.css";
+/*
+  Storybook preview globals
+  -------------------------
+  Mirrors the runtime apps so component stories inherit the same token-driven
+  design language (tokens, typography, Tailwind utilities, and form resets).
+*/
 
-/* Minimal reset and base so stories look tidy without app-wide CSS */
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; font-family: var(--font-sans, system-ui, sans-serif); }
+@config "../../../../tailwind.config.mjs";
+
+/* Bring in base design tokens + shared UI layer styles */
+@import "../../../../packages/themes/base/src/tokens.css";
+@import "../../../../packages/ui/src/styles/typography.css";
+@import "../../../../packages/ui/src/styles/builder.css";
+@import "../../../../packages/ui/src/styles/forms.css";
+
+/* Tailwind v4 utilities for DS components */
+@import "tailwindcss";
+
+/* ---------- Base reset aligned with app shells ------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: hsl(var(--color-bg));
+  color: hsl(var(--color-fg));
+  font-family: var(--font-body, var(--font-sans, system-ui, sans-serif));
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ensure the preview iframe inherits runtime background + typography */
+#storybook-root,
+.sb-show-main {
+  min-height: 100%;
+  background: inherit;
+  color: inherit;
+}
+
+.sbdocs,
+.sbdocs-wrapper,
+.sbdocs-content,
+.docs-story,
+.sb-story {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* Token-aware canvas styling so Docs + Canvas match the storefront */
+.sbdocs.sbdocs-preview,
+.docs-story {
+  background: hsl(var(--surface-1, var(--color-bg)));
+  border-radius: var(--radius-lg, 0.75rem);
+  border: 1px solid hsl(var(--color-muted-border, var(--color-muted) / 0.35));
+}
+
+/* Wrap long content like SKUs/URLs to avoid overflow in stories */
+.sb-story :where(h1, h2, h3, h4, h5, h6, p, span, small, li, dt, dd, blockquote, label, a, strong, em, code, div),
+.docs-story :where(h1, h2, h3, h4, h5, h6, p, span, small, li, dt, dd, blockquote, label, a, strong, em, code, div) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+.sb-story :where(.min-w-0),
+.docs-story :where(.min-w-0) {
+  min-width: 0 !important;
+}
+
+/* Align monospace + form controls with design-system expectations */
+.sb-story :where(code, pre),
+.docs-story :where(code, pre) {
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", "Courier New", monospace);
+}
+
+.sb-story :where(button, input, select, textarea),
+.docs-story :where(button, input, select, textarea) {
+  font: inherit;
+}

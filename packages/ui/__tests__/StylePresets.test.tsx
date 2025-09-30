@@ -2,6 +2,10 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Presets from "../src/components/cms/style/Presets";
 import presetData from "../src/components/cms/style/presets.json";
 
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
 test("applies selected preset and can revert to defaults", async () => {
   const handleChange = jest.fn();
   const initial = { "--font-sans": "system" } as Record<string, string>;

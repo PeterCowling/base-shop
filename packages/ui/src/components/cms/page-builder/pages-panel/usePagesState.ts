@@ -18,7 +18,9 @@ export function usePagesState(open: boolean, shop: string) {
       try {
         const items = await fetchPages(shop);
         setPages(items);
-        if (!selectedId && items.length) setSelectedId(items[0].id);
+        if (items.length) {
+          setSelectedId((prev) => prev ?? items[0].id);
+        }
       } catch {
         setPages([]);
       }

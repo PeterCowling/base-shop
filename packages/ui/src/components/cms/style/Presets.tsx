@@ -3,6 +3,7 @@
 
 import type { TokenMap } from "../../../hooks/useTokenEditor";
 import { ReactElement } from "react";
+import { useTranslations } from "@acme/i18n";
 import presetData from "./presets.json";
 
 interface PresetsProps {
@@ -23,20 +24,7 @@ export default function Presets({
   tokens,
   onChange,
 }: PresetsProps): ReactElement {
-  // Lightweight i18n shim: avoid React hooks to keep this component
-  // renderable in isolated tests without a provider.
-  const t = (key: string): string => {
-    switch (key) {
-      case "cms.style.presets.label":
-        return "Preset";
-      case "cms.style.presets.choose":
-        return "Choose preset";
-      case "cms.style.presets.none":
-        return "No presets available";
-      default:
-        return key;
-    }
-  };
+  const t = useTranslations();
   // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0005: utility class string, not user copy
   const PRESET_SELECT_CLASS = "rounded border p-1";
   // eslint-disable-next-line ds/no-hardcoded-copy -- DX-0005: utility class string, not user copy

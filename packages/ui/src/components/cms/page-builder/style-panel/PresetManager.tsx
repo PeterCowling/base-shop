@@ -1,6 +1,15 @@
 import { useCallback, useState } from "react";
 import { useTranslations } from "@acme/i18n";
-import { Button, Textarea, Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "../../../atoms/shadcn";
+import {
+  Button,
+  Textarea,
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "../../../atoms/shadcn";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 import type { CustomPreset } from "../style/customPresets";
 
@@ -168,6 +177,9 @@ export default function PresetManager({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("cms.style.customPresets.exportTitle")}</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">
+              {t("cms.style.customPresets.exportAllAria")}
+            </DialogDescription>
           </DialogHeader>
           <Textarea value={exportText} readOnly rows={10} />
           <DialogFooter>
@@ -186,6 +198,9 @@ export default function PresetManager({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("cms.style.customPresets.importTitle")}</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">
+              {t("cms.style.customPresets.importPlaceholder")}
+            </DialogDescription>
           </DialogHeader>
           <Textarea
             value={importText}

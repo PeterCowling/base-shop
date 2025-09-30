@@ -26,7 +26,7 @@ const passthrough = <T extends ElementType>(tag: T) => {
 
 type DropdownMenuItemProps = {
   children: ReactNode;
-  onSelect?: (event: React.SyntheticEvent<HTMLButtonElement>) => void;
+  onSelect?: (event: React.SyntheticEvent<HTMLElement>) => void;
   asChild?: boolean;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
@@ -106,27 +106,36 @@ export function createShadcnStub() {
     },
     DropdownMenuContent: ({ children, ...rest }: DropdownMenuContentProps): ReactElement =>
       React.createElement("div", rest, children),
-    DropdownMenuItem: React.forwardRef<HTMLButtonElement, DropdownMenuItemProps>(
-      function DropdownMenuItem({ children, onSelect, asChild, onClick, ...rest }, ref) {
+    DropdownMenuItem: React.forwardRef<HTMLDivElement, DropdownMenuItemProps>(
+      function DropdownMenuItem({ children, onSelect, asChild, onClick, disabled, onKeyDown, ...rest }, ref) {
         if (asChild && React.isValidElement(children)) {
           return React.cloneElement(children, { ref, ...rest });
         }
 
-        const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-          onClick?.(event);
+        const handleActivate = (event: React.SyntheticEvent<HTMLElement>) => {
+          if (disabled) {
+            event.preventDefault();
+            return;
+          }
+          onClick?.(event as unknown as React.MouseEvent<HTMLButtonElement>);
           onSelect?.(event);
         };
 
         return React.createElement(
-          "button",
+          "div",
           {
             ...rest,
             ref,
-            type: "button",
-            onClick: handleClick,
-            onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => {
+            role: "menuitem",
+            tabIndex: disabled ? -1 : 0,
+            "aria-disabled": disabled || undefined,
+            onClick: handleActivate,
+            onKeyDown: (event: React.KeyboardEvent<HTMLDivElement>) => {
+              onKeyDown?.(event as unknown as React.KeyboardEvent<HTMLButtonElement>);
+              if (event.defaultPrevented) return;
               if (event.key === "Enter" || event.key === " ") {
-                onSelect?.(event);
+                event.preventDefault();
+                handleActivate(event);
               }
             },
           },

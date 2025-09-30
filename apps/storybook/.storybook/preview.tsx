@@ -352,12 +352,14 @@ const preview: Preview = {
       defaultViewport: "desktop",
     },
     backgrounds: {
-      default: DEFAULT_BACKGROUND,
       options: backgroundOptions,
     },
   },
   globals: {
     ...a11yGlobals,
+  },
+  initialGlobals: {
+    backgrounds: { value: DEFAULT_BACKGROUND },
   },
   decorators: [
     (Story) => (

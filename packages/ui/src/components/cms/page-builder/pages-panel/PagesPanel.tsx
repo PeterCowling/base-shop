@@ -2,7 +2,7 @@
 // i18n-exempt — editor-only Pages panel; copy pending i18n wiring
 
 import React, { useMemo } from "react";
-import { Drawer, DrawerContent, DrawerTitle, DrawerPortal } from "../../../atoms/primitives/drawer";
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerPortal } from "../../../atoms/primitives/drawer";
 import { OverlayScrim } from "../../../atoms";
 import { Sidebar } from "../../../atoms/primitives/Sidebar";
 import { Stack } from "../../../atoms/primitives/Stack";
@@ -10,6 +10,9 @@ import { deriveShopFromPath } from "./utils";
 import { usePagesState } from "./usePagesState";
 import { PagesList } from "./PagesList";
 import { PageSettings } from "./PageSettings";
+
+/* i18n-exempt */
+const t = (s: string) => s;
 
 export default function PagesPanel({ open, onOpenChange, shop: shopProp = null }: { open: boolean; onOpenChange: (v: boolean) => void; shop?: string | null }) {
   const shop = useMemo(() => shopProp ?? deriveShopFromPath() ?? "", [shopProp]);
@@ -21,7 +24,10 @@ export default function PagesPanel({ open, onOpenChange, shop: shopProp = null }
         <OverlayScrim />
         <DrawerContent side="left" width="w-[42rem]" className="flex h-full flex-col p-0">
           <div className="flex-none px-4 py-3">
-            <DrawerTitle>Pages</DrawerTitle>
+            <DrawerTitle>{t("Pages")}</DrawerTitle>
+            <DrawerDescription className="sr-only">
+              {t("Manage the site pages list and configure the selected page.")}
+            </DrawerDescription>
           </div>
           <Sidebar sideWidth="w-72" gap={0} className="flex-1 min-h-0">
             <PagesList

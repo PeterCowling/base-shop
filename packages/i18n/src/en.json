@@ -85,6 +85,7 @@
   "api.uploadCsv.missingFile": "Missing file",
   "api.uploadCsv.noBody": "No body",
   "blog.cta.shopStory": "Shop the story",
+  "blog.filter.all": "All",
   "common.reset": "Reset",
   "common.default": "Default",
   "BNPL providers available where supported": "BNPL providers available where supported",

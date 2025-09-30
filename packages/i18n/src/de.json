@@ -67,6 +67,7 @@
   "api.orders.unauthorized": "Unauthorized",
   "api.passwordReset.invalidToken": "Invalid or expired token",
   "blog.cta.shopStory": "Shop the story",
+  "blog.filter.all": "All",
   "BNPL providers available where supported": "BNPL providers available where supported",
   "brand.name": "Base-Shop",
   "breadcrumb.ariaLabel": "Breadcrumb",

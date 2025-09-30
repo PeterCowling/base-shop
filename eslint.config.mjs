@@ -997,6 +997,9 @@ export default [
     plugins: { ds: dsPlugin },
     rules: {
       "ds/no-hardcoded-copy": "off",
+      // Translation catalogs regularly include raw strings and disable directives.
+      // Allow eslint-disable comments without ticket references so files can be generated safely.
+      "ds/require-disable-justification": "off",
     },
   },
  

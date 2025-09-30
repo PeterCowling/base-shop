@@ -79,4 +79,35 @@ describe("DataTable", () => {
     await user.click(rowAlpha);
     expect(rowAlpha).not.toHaveAttribute("data-state");
   });
+
+  it("generates keys for rows without id or key fields", () => {
+    const setSpy = jest.spyOn(WeakMap.prototype, "set");
+    try {
+      render(
+        <DataTable
+          rows={[{ name: "Anon" }, { name: "Beta" }]}
+          columns={[{ header: "Name", render: (row: { name: string }) => row.name }]}
+        />
+      );
+      expect(setSpy).toHaveBeenCalled();
+    } finally {
+      setSpy.mockRestore();
+    }
+  });
+
+  it("stringifies primitive rows to derive keys", () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    try {
+      render(
+        <DataTable
+          rows={["One", "Two"]}
+          columns={[{ header: "Value", render: (value: string) => value }]}
+        />
+      );
+      expect(screen.getByText("One")).toBeInTheDocument();
+      expect(errorSpy).not.toHaveBeenCalled();
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
 });

@@ -1,6 +1,5 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import TemplateSelector from "../TemplateSelector";
 
 jest.mock("@/components/atoms", () => {
   const React = require("react");
@@ -12,7 +11,7 @@ jest.mock("@/components/atoms", () => {
     DialogHeader: ({ children }: any) => <div>{children}</div>,
     DialogTitle: ({ children }: any) => <div>{children}</div>,
   };
-});
+}, { virtual: true });
 
 jest.mock("@/components/atoms/shadcn", () => {
   const React = require("react");
@@ -39,6 +38,14 @@ jest.mock("@/components/atoms/shadcn", () => {
   };
 });
 
+jest.mock("@/components/atoms/primitives/Cluster", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    Cluster: ({ children }: any) => <div>{children}</div>,
+  };
+});
+
 jest.mock("next/image", () => {
   const React = require("react");
   const MockNextImage = (props: any) => <span data-testid="next-image" {...props} />;
@@ -48,6 +55,21 @@ jest.mock("next/image", () => {
     default: MockNextImage,
   };
 });
+
+const TemplateSelector = require("../TemplateSelector").default as typeof import("../TemplateSelector").default;
+const atoms = require("@/components/atoms");
+// Jest's moduleNameMapper routes "@/components/atoms" to a simple stub that may
+// not provide the dialog primitives. Populate lightweight fallbacks when the
+// mapped module omits them so the component renders without crashing.
+if (!atoms.Dialog) {
+  const React = require("react");
+  const passthrough = ({ children }: any) => <div>{children}</div>;
+  atoms.Dialog = ({ open, children }: any) => (open ? <div>{children}</div> : null);
+  atoms.DialogContent = passthrough;
+  atoms.DialogFooter = passthrough;
+  atoms.DialogHeader = passthrough;
+  atoms.DialogTitle = passthrough;
+}
 
 describe("TemplateSelector", () => {
   it("page navigation changes visible templates", () => {

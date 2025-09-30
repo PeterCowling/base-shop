@@ -20,7 +20,7 @@ import "./styles/sb-globals.css";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import { handlers as mswHandlers } from "./msw/handlers";
 import { mapDataStateToMsw } from "./msw/state-mapping";
-import { VIEWPORTS } from "./viewports";
+import { DEFAULT_VIEWPORT, VIEWPORTS } from "./viewports";
 import { withRTL } from "./decorators/rtlDecorator";
 import { withPerf } from "./decorators/perfDecorator";
 import { a11yGlobals, a11yParameters } from "./a11y";
@@ -348,8 +348,7 @@ const preview: Preview = {
       },
     },
     viewport: {
-      viewports: VIEWPORTS,
-      defaultViewport: "desktop",
+      options: VIEWPORTS,
     },
     backgrounds: {
       default: DEFAULT_BACKGROUND,
@@ -358,6 +357,9 @@ const preview: Preview = {
   },
   globals: {
     ...a11yGlobals,
+  },
+  initialGlobals: {
+    viewport: { value: DEFAULT_VIEWPORT, isRotated: false },
   },
   decorators: [
     (Story) => (

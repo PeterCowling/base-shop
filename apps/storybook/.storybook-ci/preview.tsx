@@ -4,6 +4,7 @@ import "../../../packages/themes/base/src/tokens.css";
 import en from "../../../packages/i18n/src/en.json";
 import { createBackgroundOptions, DEFAULT_BACKGROUND } from "../.storybook/backgrounds";
 import { a11yGlobals, a11yParameters } from "../.storybook/a11y";
+import { DEFAULT_VIEWPORT, VIEWPORTS } from "../.storybook/viewports";
 
 const t = (key: string) => (en as Record<string, string>)[key] ?? key;
 
@@ -35,6 +36,9 @@ const backgroundOptions = createBackgroundOptions(t);
 const preview: Preview = {
   parameters: {
     ...a11yParameters,
+    viewport: {
+      options: VIEWPORTS,
+    },
     backgrounds: {
       default: DEFAULT_BACKGROUND,
       options: backgroundOptions,
@@ -50,6 +54,9 @@ const preview: Preview = {
   ],
   globals: {
     ...a11yGlobals,
+  },
+  initialGlobals: {
+    viewport: { value: DEFAULT_VIEWPORT, isRotated: false },
   },
 };
 

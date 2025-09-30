@@ -73,16 +73,14 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
         onDrop(e);
       }}
       onKeyDown={(e) => {
-        // For accessibility:
-        // - Space should activate the control explicitly here.
-        // - Enter generally triggers a click on interactive elements; don't
-        //   call openFileDialog here to avoid double-invocation with onClick.
-        if (e.key === " ") {
+        // For accessibility, treat Space/Enter as activation keys for the pseudo-button.
+        if (e.key === " " || e.key === "Spacebar") {
           e.preventDefault();
           openFileDialog();
         }
         if (e.key === "Enter") {
           e.preventDefault();
+          openFileDialog();
         }
       }}
       className={cn(

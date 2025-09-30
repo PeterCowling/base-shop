@@ -1,7 +1,7 @@
 "use client";
 
 import DOMPurify from "dompurify";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createFocusTrap } from "focus-trap";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "../../atoms";
 
@@ -35,7 +35,7 @@ export default function PopupModal({
   autoOpen = false,
   delay = 0,
   content = "",
-  frequencyKey = "default",
+  frequencyKey,
   maxShows = 1,
   coolOffDays = 7,
   consentCookieName,
@@ -63,6 +63,7 @@ export default function PopupModal({
   }, [consentCookieName, consentRequiredValue]);
 
   const allowedByFrequency = useCallback(() => {
+    if (!frequencyKey) return true;
     try {
       const raw = localStorage.getItem(`pb:popup:${frequencyKey}`);
       if (!raw) return true;
@@ -77,6 +78,7 @@ export default function PopupModal({
   }, [frequencyKey, coolOffDays, maxShows]);
 
   const recordShow = useCallback(() => {
+    if (!frequencyKey) return;
     try {
       const raw = localStorage.getItem(`pb:popup:${frequencyKey}`);
       const prev = raw ? (JSON.parse(raw) as { last: number; count: number }) : { last: 0, count: 0 };
@@ -124,6 +126,22 @@ export default function PopupModal({
     };
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
+  }, [open]);
+
+  useLayoutEffect(() => {
+    if (!open) return;
+    const handleDocumentClick = (event: MouseEvent) => {
+      const target = event.target as Node | null;
+      if (!modalRef.current) return;
+      if (target && modalRef.current.contains(target)) {
+        return;
+      }
+      setOpen(false);
+    };
+    document.addEventListener("click", handleDocumentClick);
+    return () => {
+      document.removeEventListener("click", handleDocumentClick);
+    };
   }, [open]);
 
   useEffect(() => {

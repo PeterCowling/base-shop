@@ -44,16 +44,8 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
     ref
   ) => {
     const { classes, style } = boxProps({ width, height, padding, margin });
-    // Convert width/height style to Tailwind arbitrary value classes to avoid inline style on DOM nodes
-    const sizeClasses: string[] = [];
-    if (style.width !== undefined) {
-      const w = typeof style.width === "number" ? `${style.width}px` : style.width;
-      sizeClasses.push(`w-[${w}]`);
-    }
-    if (style.height !== undefined) {
-      const h = typeof style.height === "number" ? `${style.height}px` : style.height;
-      sizeClasses.push(`h-[${h}]`);
-    }
+    const { style: styleProp, ...restProps } = props;
+    const mergedStyle = { ...style, ...styleProp } as React.CSSProperties;
     const errorChildren = React.Children.toArray(error ?? null);
     const hasError = errorChildren.length > 0;
     const isTextOnly = errorChildren.every(
@@ -64,8 +56,9 @@ export const FormField = React.forwardRef<HTMLDivElement, FormFieldProps>(
     return (
       <div
         ref={ref}
-        className={cn(WRAPPER_CLASSES, classes, sizeClasses.join(" "), className)}
-        {...props}
+        className={cn(WRAPPER_CLASSES, classes, className)}
+        style={mergedStyle}
+        {...restProps}
       >
         <label htmlFor={htmlFor} className="text-sm font-medium">
           {label}

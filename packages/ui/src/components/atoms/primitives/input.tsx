@@ -4,6 +4,8 @@
 
 import * as React from "react";
 import { cn } from "../../../utils/style";
+import { Inline } from "./Inline";
+import { Stack } from "./Stack";
 
 /* ──────────────────────────────────────────────────────────────────────────────
  * Props
@@ -89,9 +91,9 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
      *  Render
      * ------------------------------------------------------------------ */
     return (
-      <div className={cn("relative", wrapperClassName)}>
+      <Stack gap={1} className={wrapperClassName}>
         {floatingLabel ? (
-          <>
+          <div className="relative">
             <input
               id={inputId}
               ref={ref}
@@ -103,7 +105,11 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
               {...props}
             />
             {(label || labelSuffix) && (
-              <div className="absolute top-2 ms-3 flex items-center gap-1">
+              <Inline
+                wrap={false}
+                gap={1}
+                className="absolute top-2 ms-3 pointer-events-none"
+              >
                 {label && (
                   <label
                     htmlFor={inputId}
@@ -115,15 +121,16 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     {label}
                   </label>
                 )}
-                {/* Render suffix outside the actual label to avoid labeling extra controls */}
-                {labelSuffix}
-              </div>
+                {labelSuffix ? (
+                  <span className="pointer-events-auto">{labelSuffix}</span>
+                ) : null}
+              </Inline>
             )}
-          </>
+          </div>
         ) : (
           <>
             {(label || labelSuffix) && (
-              <div className="flex items-center gap-1">
+              <Inline wrap={false} gap={1}>
                 {label && (
                   <label
                     htmlFor={inputId}
@@ -132,9 +139,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     {label}
                   </label>
                 )}
-                {/* Render suffix outside the actual label to avoid labeling extra controls */}
                 {labelSuffix}
-              </div>
+              </Inline>
             )}
             <input
               id={inputId}
@@ -153,7 +159,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {error}
           </p>
         )}
-      </div>
+      </Stack>
     );
   }
 );

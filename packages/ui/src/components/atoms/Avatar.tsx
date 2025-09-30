@@ -77,6 +77,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
             sizeClasses,
             className
           )}
+          /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: fallback avatar uses inline dimensions when consumers supply non-utility width/height */
           style={style}
         >
           {fallback ?? (typeof alt === "string" ? alt.charAt(0) : null)}
@@ -98,6 +99,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
           sizeClasses,
           className,
         )}
+        /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: inline style ensures parity with boxProps width/height overrides */
         style={style}
         {...props}
       />

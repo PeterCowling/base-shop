@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import { cn } from "../../../utils/style";
+import { Stack } from "./Stack";
 
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -69,9 +70,9 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
      * Render
      * ------------------------------------------------------------------ */
     return (
-      <div className={cn("relative", wrapperClassName)}>
+      <Stack gap={1} className={wrapperClassName}>
         {floatingLabel ? (
-          <>
+          <div className="relative">
             <textarea
               id={textareaId}
               ref={ref}
@@ -92,14 +93,11 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
                 {label}
               </label>
             )}
-          </>
+          </div>
         ) : (
           <>
             {label && (
-              <label
-                htmlFor={textareaId}
-                className="mb-1 block text-sm font-medium" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-              >
+              <label htmlFor={textareaId} className="block text-sm font-medium"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
                 {label}
               </label>
             )}
@@ -119,7 +117,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             {error}
           </p>
         )}
-      </div>
+      </Stack>
     );
   }
 );

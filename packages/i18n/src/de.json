@@ -163,6 +163,7 @@
   "cms.and": "and",
   "cms.back": "Back",
   "cms.blocks.crossSell.heading": "You may also like",
+  "cms.blocks.socialFeed.loadError": "Unable to load social feed",
   "cms.blog.editor.bold": "Bold",
   "cms.blog.editor.embed": "Embed",
   "cms.blog.editor.embedUrlPrompt": "Embed URL",

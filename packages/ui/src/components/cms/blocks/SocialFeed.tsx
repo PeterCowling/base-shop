@@ -37,7 +37,7 @@ export default function SocialFeed({ platform, account, hashtag }: Props) {
         ? `https://www.instagram.com/${account}/embed`
         : `https://www.instagram.com/explore/tags/${hashtag}/embed`;
 
-  if (failed) return <p>Unable to load social feed</p>;
+  if (failed) return <p>{t("cms.blocks.socialFeed.loadError")}</p>;
 
   return (
     <iframe

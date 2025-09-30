@@ -65,27 +65,46 @@ export default function CollectionList({
   }, [minItems, maxItems, desktopItems, tabletItems, mobileItems]);
 
   const colsClass = React.useMemo(() => {
-    // Map dynamic count to Tailwind grid-cols-* classes for a limited safe range
-    const n = Math.max(1, Math.min(12, Number.isFinite(cols) ? cols : 1));
-    return `grid-cols-${n}`;
+    const n = Number(cols);
+    if (!Number.isFinite(n) || n < 1) return "grid-cols-1";
+
+    const rounded = Math.max(1, Math.min(12, Math.floor(n)));
+
+    switch (rounded) {
+      case 1:
+        return "grid-cols-1";
+      case 2:
+        return "grid-cols-2";
+      case 3:
+        return "grid-cols-3";
+      case 4:
+        return "grid-cols-4";
+      case 5:
+        return "grid-cols-5";
+      case 6:
+        return "grid-cols-6";
+      case 7:
+        return "grid-cols-7";
+      case 8:
+        return "grid-cols-8";
+      case 9:
+        return "grid-cols-9";
+      case 10:
+        return "grid-cols-10";
+      case 11:
+        return "grid-cols-11";
+      default:
+        return "grid-cols-12";
+    }
   }, [cols]);
 
-  // Ensure inline style always receives a valid, clamped integer
-  const effCols = React.useMemo(() => {
-    const n = Number(cols);
-    if (!Number.isFinite(n) || n < 1) return 1;
-    return Math.max(1, Math.min(12, Math.floor(n)));
-  }, [cols]);
+  const { style: _style, ...restProps } = props;
 
   return (
     <div
       ref={containerRef}
       className={cn("grid", colsClass, gapClassName, className)}
-      style={{
-        gridTemplateColumns: `repeat(${effCols}, minmax(0, 1fr))`,
-        ...(props.style ?? {}),
-      }}
-      {...props}
+      {...restProps}
     >
       {collections.map((c) => (
         <CategoryCard key={c.id} category={c} className="h-full" />

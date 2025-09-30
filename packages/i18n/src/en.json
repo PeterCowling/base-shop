@@ -452,6 +452,7 @@
   "cms.builder.presets.save.success": "Preset saved",
   "cms.builder.presets.search.aria": "Search presets",
   "cms.builder.presets.search.placeholder": "Search sections and presets...",
+  "cms.builder.presets.sectionLibrary.description": "Browse and search section presets to quickly add content to your page.",
   "cms.builder.presets.sectionLibrary.title": "Section Library",
   "cms.builder.preview.button": "Button",
   "cms.builder.preview.disabled": "Preview disabled",

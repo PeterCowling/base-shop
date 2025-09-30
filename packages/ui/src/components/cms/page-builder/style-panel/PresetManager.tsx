@@ -5,7 +5,6 @@ import {
   Textarea,
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -174,12 +173,12 @@ export default function PresetManager({
       </Button>
 
       <Dialog open={exportOpen} onOpenChange={setExportOpen}>
-        <DialogContent>
+        <DialogContent aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{t("cms.style.customPresets.exportTitle")}</DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               {t("cms.style.customPresets.exportAllAria")}
-            </DialogDescription>
+            </p>
           </DialogHeader>
           <Textarea value={exportText} readOnly rows={10} />
           <DialogFooter>
@@ -195,12 +194,12 @@ export default function PresetManager({
       </Dialog>
 
       <Dialog open={importOpen} onOpenChange={setImportOpen}>
-        <DialogContent>
+        <DialogContent aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{t("cms.style.customPresets.importTitle")}</DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground">
               {t("cms.style.customPresets.importPlaceholder")}
-            </DialogDescription>
+            </p>
           </DialogHeader>
           <Textarea
             value={importText}

@@ -22,3 +22,17 @@ declare global {
   }
 }
 
+export type StoryHighlightParameter =
+  | false
+  | string[]
+  | ({
+      disable?: boolean;
+      resetOnStoryChange?: boolean;
+    } & import("storybook/highlight").HighlightOptions);
+
+declare module "@storybook/types" {
+  interface Parameters {
+    highlight?: StoryHighlightParameter;
+  }
+}
+

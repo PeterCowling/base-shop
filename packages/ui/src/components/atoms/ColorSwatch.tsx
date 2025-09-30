@@ -20,6 +20,13 @@ export const ColorSwatch = React.forwardRef<
 >(({ color, selected = false, size = 24, className, style: _style, ...props }, ref) => {
   const normalized =
     typeof color === "string" ? color.replace(/\s+/g, "") : String(color);
+  const dimension = Number.isFinite(size) && size > 0 ? size : 24;
+  const style: React.CSSProperties = {
+    width: `${dimension}px`,
+    height: `${dimension}px`,
+    backgroundColor: color,
+    ..._style,
+  };
   return (
     <button
       ref={ref}
@@ -27,11 +34,12 @@ export const ColorSwatch = React.forwardRef<
       className={cn(
         "rounded-full border", // i18n-exempt -- DEV-000 CSS utility class names
         // Keep Tailwind utility classes for runtime styling
-        `h-[${size}px] w-[${size}px]`,
+        `h-[${dimension}px] w-[${dimension}px]`,
         `bg-[${normalized}]`,
         selected ? "ring-2 ring-offset-2" : "", // i18n-exempt -- DEV-000 CSS utility class names
         className
       )}
+      style={style}
       {...props}
     />
   );

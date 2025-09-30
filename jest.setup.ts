@@ -186,7 +186,12 @@ try {
 if (__mswServer) {
   beforeAll(() => __mswServer?.listen?.({ onUnhandledRequest: "error" }));
   afterEach(() => __mswServer?.resetHandlers?.());
-  afterAll(() => __mswServer?.close?.());
+  afterAll(() => {
+    if (typeof globalThis.fetch !== "function") {
+      return;
+    }
+    __mswServer?.close?.();
+  });
 }
 
 // Reset shared auth/config mocks between tests to avoid leakage across suites

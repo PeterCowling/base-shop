@@ -13,7 +13,11 @@ describe("GridOverlay", () => {
 
   test.each(cases)("renders %s columns", ({ gridCols, expected }) => {
     const { container } = render(<GridOverlay gridCols={gridCols} />);
-    const grid = container.firstChild as HTMLElement;
+    const grid = container.querySelector(
+      '[data-cy="pb-grid-overlay"]'
+    ) as HTMLElement;
+
+    expect(grid).toBeTruthy();
 
     expect(grid.children).toHaveLength(expected);
     expect(grid).toHaveStyle(`grid-template-columns: repeat(${expected}, 1fr)`);

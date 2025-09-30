@@ -1,5 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
+const translations: Record<string, string> = {
+  "order.tracking.title": "Track your order",
+  "order.reference": "Order ref",
+  "order.shippingTo": "Shipping to",
+};
+
+jest.mock("@acme/i18n", () => ({
+  useTranslations: () => (key: string) => translations[key] ?? key,
+}));
+
 import { OrderTrackingTemplate } from "../OrderTrackingTemplate";
 
 describe("OrderTrackingTemplate", () => {

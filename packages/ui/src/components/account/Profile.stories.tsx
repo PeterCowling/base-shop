@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ProfileForm from './ProfileForm';
+import { profileFormHandlers } from './ProfileForm.stories';
 
 // Demo of the Profile page UI using ProfileForm only.
 // The actual Profile page is a server component (auth + data fetching) and is not rendered in Storybook.
@@ -19,6 +20,9 @@ const meta: Meta<typeof ProfileDemo> = {
   component: ProfileDemo,
   tags: ['autodocs'],
   parameters: {
+    msw: {
+      handlers: [profileFormHandlers.success],
+    },
     docs: { description: { component: 'Demo composition of the Profile page UI using ProfileForm. The real page performs auth and loads data on the server.' } },
   },
 };

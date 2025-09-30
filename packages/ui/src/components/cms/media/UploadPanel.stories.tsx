@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { expect, fn, userEvent, waitFor, within } from "@storybook/test";
+import { http, HttpResponse, delay } from "msw";
 import type { MediaItem } from "@acme/types";
 import UploadPanel from "./UploadPanel";
 
@@ -18,11 +19,24 @@ type StorybookMock = ReturnType<typeof fn>;
 const asMock = (handler?: unknown): StorybookMock =>
   (handler as StorybookMock) ?? fn();
 
+const uploadSuccessHandler = http.post("/cms/api/media", async () => {
+  await delay(150);
+  return HttpResponse.json(uploadedItem);
+});
+
+const uploadErrorHandler = http.post("/cms/api/media", async () => {
+  await delay(50);
+  return HttpResponse.json({ error: "Upload failed" }, { status: 500, statusText: "Upload failed" });
+});
+
 const meta: Meta<typeof UploadPanel> = {
   title: "CMS/Media/UploadPanel",
   component: UploadPanel,
   parameters: {
     layout: "padded",
+    msw: {
+      handlers: [uploadSuccessHandler],
+    },
   },
   args: {
     shop: "demo-shop",
@@ -46,33 +60,24 @@ export const UploadingState: Story = {
 
     const onUploaded = asMock(args.onUploaded);
     onUploaded.mockClear();
+    await userEvent.upload(fileInput, createVideoFile());
+    const uploadButton = await canvas.findByRole("button", {
+      name: /^Upload$/i,
+    });
 
-    const originalFetch = globalThis.fetch;
-    globalThis.fetch = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 150));
-      return new Response(JSON.stringify(uploadedItem), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      });
-    };
-
-    try {
-      await userEvent.upload(fileInput, createVideoFile());
-      const uploadButton = await canvas.findByRole("button", {
-        name: /^Upload$/i,
-      });
-
-      await userEvent.click(uploadButton);
-      expect(uploadButton).toBeDisabled();
-      await waitFor(() => expect(uploadButton).not.toBeDisabled());
-      await waitFor(() => expect(onUploaded).toHaveBeenCalled());
-    } finally {
-      globalThis.fetch = originalFetch;
-    }
+    await userEvent.click(uploadButton);
+    expect(uploadButton).toBeDisabled();
+    await waitFor(() => expect(uploadButton).not.toBeDisabled());
+    await waitFor(() => expect(onUploaded).toHaveBeenCalled());
   },
 };
 
 export const UploadError: Story = {
+  parameters: {
+    msw: {
+      handlers: [uploadErrorHandler],
+    },
+  },
   play: async ({ canvasElement, args }) => {
     const canvas = within(canvasElement);
     const fileInput = canvasElement.querySelector<HTMLInputElement>(
@@ -82,28 +87,13 @@ export const UploadError: Story = {
 
     const onUploadError = asMock(args.onUploadError);
     onUploadError.mockClear();
+    await userEvent.upload(fileInput, createVideoFile());
+    const uploadButton = await canvas.findByRole("button", {
+      name: /^Upload$/i,
+    });
 
-    const originalFetch = globalThis.fetch;
-    globalThis.fetch = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 50));
-      return new Response(JSON.stringify({ error: "Upload failed" }), {
-        status: 500,
-        statusText: "Upload failed",
-        headers: { "Content-Type": "application/json" },
-      });
-    };
-
-    try {
-      await userEvent.upload(fileInput, createVideoFile());
-      const uploadButton = await canvas.findByRole("button", {
-        name: /^Upload$/i,
-      });
-
-      await userEvent.click(uploadButton);
-      await canvas.findByText("Upload failed");
-      await waitFor(() => expect(onUploadError).toHaveBeenCalledWith("Upload failed"));
-    } finally {
-      globalThis.fetch = originalFetch;
-    }
+    await userEvent.click(uploadButton);
+    await canvas.findByText("Upload failed");
+    await waitFor(() => expect(onUploadError).toHaveBeenCalledWith("Upload failed"));
   },
 };

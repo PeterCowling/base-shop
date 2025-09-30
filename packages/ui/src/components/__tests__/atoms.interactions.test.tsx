@@ -5,19 +5,25 @@ import { FileSelector } from "../atoms/FileSelector";
 import ThemeToggle from "../ThemeToggle";
 import { Tag } from "../atoms/Tag";
 
-// Use "var" to avoid TDZ when Jest hoists the mock factory
-var setThemeMock: jest.Mock;
+let setThemeMock: jest.Mock | undefined;
+
+const ensureSetThemeMock = () => {
+  if (!setThemeMock) {
+    setThemeMock = jest.fn();
+  }
+
+  return setThemeMock;
+};
 
 jest.mock(
   "@platform-core/contexts/ThemeContext",
   () => {
     const React = require("react");
-    setThemeMock = jest.fn();
     return {
       useTheme: () => {
         const [theme, setThemeState] = React.useState("base");
         const setTheme = (t: string) => {
-          setThemeMock(t);
+          ensureSetThemeMock()(t);
           setThemeState(t);
         };
         return { theme, setTheme };
@@ -26,6 +32,14 @@ jest.mock(
   },
   { virtual: true }
 );
+
+const getSetThemeMock = () => ensureSetThemeMock();
+
+beforeEach(() => {
+  if (setThemeMock) {
+    setThemeMock.mockReset();
+  }
+});
 
 describe("atoms interactions", () => {
   it("handles file selection and clearing", () => {
@@ -52,7 +66,7 @@ describe("atoms interactions", () => {
 
     await user.click(button);
 
-    expect(setThemeMock).toHaveBeenCalledWith("dark");
+    expect(getSetThemeMock()).toHaveBeenCalledWith("dark");
     expect(screen.getByText(/dark theme selected/i)).toBeInTheDocument();
   });
 

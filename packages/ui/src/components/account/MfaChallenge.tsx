@@ -4,6 +4,9 @@
 import { useState } from "react";
 import { getCsrfToken } from "@acme/shared-utils";
 import { useTranslations } from "@acme/i18n";
+import enMessages from "@acme/i18n/en.json";
+
+const FALLBACK_MESSAGES = enMessages as Record<string, string>;
 
 export interface MfaChallengeProps {
   onSuccess?: () => void;
@@ -12,10 +15,9 @@ export interface MfaChallengeProps {
 
 export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProps) {
   const t = useTranslations();
-  // Provide readable fallbacks when translations are not loaded (e.g. plain Jest renders)
-  const tf = (key: string, fallback: string) => {
+  const translate = (key: string) => {
     const val = t(key) as string;
-    return val === key ? fallback : val;
+    return val === key ? FALLBACK_MESSAGES[key] ?? key : val;
   };
   const [token, setToken] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +39,7 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
       setError(null);
       onSuccess?.();
     } else {
-      setError(tf("account.mfa.error.invalid", "Invalid code"));
+      setError(translate("account.mfa.error.invalid"));
     }
   };
 
@@ -47,7 +49,7 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
         value={token}
         onChange={(e) => setToken(e.target.value)}
         className="rounded border p-2"
-        placeholder={tf("account.mfa.input.placeholder", "Enter MFA code")}
+        placeholder={translate("account.mfa.input.placeholder")}
       />
       <button
         type="submit"
@@ -55,7 +57,7 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
         data-token="--color-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute
       >
         <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute */}
-          {tf("actions.verify", "Verify")}
+          {translate("actions.verify")}
         </span>
       </button>
       {error && (

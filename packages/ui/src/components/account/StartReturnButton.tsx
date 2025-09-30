@@ -2,16 +2,42 @@
 
 import { useEffect, useState } from "react";
 import { useTranslations } from "@acme/i18n";
+import enMessages from "@acme/i18n/en.json";
 
 interface Props {
   sessionId: string;
 }
 
+const FALLBACK_MESSAGES = enMessages as Record<string, string>;
+
+const formatWithParams = (
+  template: string,
+  params?: Record<string, string | number>
+) => {
+  if (!params) {
+    return template;
+  }
+
+  return template.replace(/\{(\w+)\}/g, (_, token) => {
+    const value = params[token];
+    return value === undefined ? `{${token}}` : String(value);
+  });
+};
+
 export default function StartReturnButton({ sessionId }: Props) {
   const t = useTranslations();
-  const tf = (key: string, fallback: string) => {
-    const val = t(key) as string;
-    return val === key ? fallback : val;
+  const translate = (key: string, params?: Record<string, string | number>) => {
+    const resolved = t(key, params) as string;
+    if (resolved !== key) {
+      return resolved;
+    }
+
+    const fallback = FALLBACK_MESSAGES[key];
+    if (!fallback) {
+      return key;
+    }
+
+    return formatWithParams(fallback, params);
   };
   const [loading, setLoading] = useState(false);
   const [tracking, setTracking] = useState<string | null>(null);
@@ -73,7 +99,9 @@ export default function StartReturnButton({ sessionId }: Props) {
           className="text-primary-foreground"
           data-token="--color-primary-fg" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — child content uses t()
         >
-          {loading ? tf("actions.processing", "Processing…") : tf("returns.start", "Start return")}
+          {loading
+            ? translate("actions.processing")
+            : translate("returns.start")}
         </span>
       </button>
       {labelUrl && (
@@ -84,20 +112,20 @@ export default function StartReturnButton({ sessionId }: Props) {
             rel="noopener noreferrer"
             className="underline inline-block min-h-10 min-w-10"
           >
-            {tf("returns.downloadLabel", "Download label")}
+            {translate("returns.downloadLabel")}
           </a>
         </p>
       )}
       {dropOffProvider && (
         <p className="mt-1 text-sm">
-          {tf("returns.dropOff", `Drop-off: ${dropOffProvider}`)}
+          {translate("returns.dropOff", { provider: dropOffProvider })}
         </p>
       )}
       {tracking && (
-        <p className="mt-1 text-sm">{tf("returns.tracking", `Tracking: ${tracking}`)}</p>
+        <p className="mt-1 text-sm">{translate("returns.tracking", { number: tracking })}</p>
       )}
       {status && (
-        <p className="mt-1 text-sm">{tf("returns.status", `Status: ${status}`)}</p>
+        <p className="mt-1 text-sm">{translate("returns.status", { status })}</p>
       )}
     </div>
   );

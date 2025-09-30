@@ -38,6 +38,7 @@ export const ColorSwatch = React.forwardRef<
         selected ? "ring-2 ring-offset-2" : "", // i18n-exempt -- DEV-000 CSS utility class names
         className
       )}
+      /* eslint-disable-next-line react/forbid-dom-props -- UI-2610: inline background/size ensures accurate preview for arbitrary colors */
       style={style}
       {...props}
     />

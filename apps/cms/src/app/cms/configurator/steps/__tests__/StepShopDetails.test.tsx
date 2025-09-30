@@ -1,11 +1,13 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import StepShopDetails from "../StepShopDetails";
 
 // mocks for UI components
 jest.mock("@ui/components/atoms/shadcn", () => ({
   Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-  Input: (props: any) => <input {...props} />,
+  Input: ({ "data-cy": dataCy, ...props }: any) => (
+    <input data-testid={dataCy} data-cy={dataCy} {...props} />
+  ),
   Select: ({ value, onValueChange, children, ...props }: any) => (
     <select
       value={value}
@@ -47,9 +49,10 @@ jest.mock("../hooks/useConfiguratorStep", () => ({
         errors[`logo.${k}`] = "Invalid URL";
       }
     }
-    if (!values.contactInfo) errors.contactInfo = "Required";
-    if (!["sale", "rental"].includes(values.type)) errors.type = "Required";
-    if (!values.template) errors.template = "Required";
+    if (!values.contactInfo)
+      errors.contactInfo = "Required";
+    else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(values.contactInfo))
+      errors.contactInfo = "Invalid email";
     const isValid = Object.keys(errors).length === 0;
     return {
       router: { push },
@@ -60,15 +63,18 @@ jest.mock("../hooks/useConfiguratorStep", () => ({
   },
 }));
 
+let setLogoState: React.Dispatch<React.SetStateAction<Record<string, string>>> = () => {
+  throw new Error("setLogoState called before initialization");
+};
+
 function Wrapper() {
   const [shopId, setShopId] = React.useState("");
   const [storeName, setStoreName] = React.useState("");
   const [logo, setLogo] = React.useState<Record<string, string>>({
     "desktop-landscape": "invalid",
   });
+  setLogoState = setLogo;
   const [contactInfo, setContactInfo] = React.useState("");
-  const [type, setType] = React.useState("");
-  const [template, setTemplate] = React.useState("");
   return (
     <StepShopDetails
       shopId={shopId}
@@ -79,10 +85,6 @@ function Wrapper() {
       setLogo={setLogo}
       contactInfo={contactInfo}
       setContactInfo={setContactInfo}
-      type={type}
-      setType={setType}
-      template={template}
-      setTemplate={setTemplate}
       templates={["default"]}
     />
   );
@@ -95,9 +97,11 @@ describe("StepShopDetails", () => {
 
   it("shows errors for invalid input and disables submit", () => {
     render(<Wrapper />);
-    expect(screen.getAllByText("Required")).toHaveLength(5);
+    expect(screen.getAllByText("Required")).toHaveLength(3);
     expect(screen.getByText("Invalid URL")).toBeInTheDocument();
-    expect(screen.getByTestId("save-return")).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Save & return" }),
+    ).toBeDisabled();
   });
 
   it("removes errors and enables submit when inputs valid", () => {
@@ -108,22 +112,19 @@ describe("StepShopDetails", () => {
     fireEvent.change(screen.getByTestId("store-name"), {
       target: { value: "My Store" },
     });
-    fireEvent.change(screen.getByTestId("logo-desktop-landscape"), {
-      target: { value: "https://example.com/logo.png" },
+    act(() => {
+      setLogoState((prev) => ({
+        ...prev,
+        "desktop-landscape": "https://example.com/logo.png",
+      }));
     });
     fireEvent.change(screen.getByTestId("contact-info"), {
       target: { value: "contact@example.com" },
     });
-    fireEvent.change(screen.getByTestId("shop-type"), {
-      target: { value: "sale" },
-    });
-    fireEvent.change(screen.getByTestId("template"), {
-      target: { value: "default" },
-    });
 
     expect(screen.queryByText("Invalid URL")).not.toBeInTheDocument();
     expect(screen.queryByText("Required")).not.toBeInTheDocument();
-    const button = screen.getByTestId("save-return");
+    const button = screen.getByRole("button", { name: "Save & return" });
     expect(button).toBeEnabled();
     fireEvent.click(button);
     expect(markComplete).toHaveBeenCalledWith(true);

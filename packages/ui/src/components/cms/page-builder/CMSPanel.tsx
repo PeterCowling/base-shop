@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import { Drawer, DrawerContent, DrawerTitle, DrawerPortal } from "../../atoms/primitives/drawer";
+import { Drawer, DrawerContent, DrawerDescription, DrawerTitle, DrawerPortal } from "../../atoms/primitives/drawer";
 import { Button, Input } from "../../atoms/shadcn";
 import { OverlayScrim } from "../../atoms";
 import type { PageComponent } from "@acme/types";
@@ -53,61 +53,64 @@ export default function CMSPanel({ open, onOpenChange, components, selectedIds: 
       <DrawerPortal>
         <OverlayScrim />
         <DrawerContent side="right" width="w-96" className="flex h-full flex-col p-0">
-        <div className="px-4 py-3">
-          {/* i18n-exempt */}
-          <DrawerTitle>{t("CMS Connections")}</DrawerTitle>
-        </div>
-        <div className="flex flex-1 flex-col gap-3 p-3 text-sm">
-          {/* i18n-exempt */}
-          <Input placeholder={t("Search datasets…")} value={q} onChange={(e) => setQ(e.target.value)} />
-          <div className="text-xs text-muted-foreground">{t(`${filtered.length} dataset${filtered.length === 1 ? "" : "s"}`)}</div>
-          <div className="flex-1 overflow-auto">
-            {filtered.length === 0 && (
-              // i18n-exempt — editor-only hint
-              /* i18n-exempt */
-              <div className="p-2 text-muted-foreground">{t("No datasets on this page. Insert a Dataset block to connect elements.")}</div>
-            )}
-            <ul className="space-y-2">
-              {filtered.map((d) => {
-                const raw = (d as Record<string, unknown>).dataset as Record<string, unknown> | undefined;
-                const cfg = {
-                  source: raw && typeof raw.source === "string" ? raw.source : undefined,
-                  mode: raw && typeof raw.mode === "string" ? raw.mode : undefined,
-                  maxItems: raw && typeof raw.maxItems === "number" ? raw.maxItems : undefined,
-                } as { source?: string; mode?: string; maxItems?: number };
-                return (
-                  <li key={d.id} className="rounded border p-2">
-                    <div className="flex items-center justify-between gap-2">
-                      <div className="min-w-0">
-                        <div className="truncate font-medium">{typeof (d as Record<string, unknown>).name === "string" ? (d as Record<string, unknown>).name as string : d.type}</div>
-                        <div className="truncate text-xs text-muted-foreground">
+          <div className="px-4 py-3">
+            {/* i18n-exempt */}
+            <DrawerTitle>{t("CMS Connections")}</DrawerTitle>
+            <DrawerDescription className="sr-only">
+              {t("Browse datasets on the current page and connect them to components.")}
+            </DrawerDescription>
+          </div>
+          <div className="flex flex-1 flex-col gap-3 p-3 text-sm">
+            {/* i18n-exempt */}
+            <Input placeholder={t("Search datasets…")} value={q} onChange={(e) => setQ(e.target.value)} />
+            <div className="text-xs text-muted-foreground">{t(`${filtered.length} dataset${filtered.length === 1 ? "" : "s"}`)}</div>
+            <div className="flex-1 overflow-auto">
+              {filtered.length === 0 && (
+                // i18n-exempt — editor-only hint
+                /* i18n-exempt */
+                <div className="p-2 text-muted-foreground">{t("No datasets on this page. Insert a Dataset block to connect elements.")}</div>
+              )}
+              <ul className="space-y-2">
+                {filtered.map((d) => {
+                  const raw = (d as Record<string, unknown>).dataset as Record<string, unknown> | undefined;
+                  const cfg = {
+                    source: raw && typeof raw.source === "string" ? raw.source : undefined,
+                    mode: raw && typeof raw.mode === "string" ? raw.mode : undefined,
+                    maxItems: raw && typeof raw.maxItems === "number" ? raw.maxItems : undefined,
+                  } as { source?: string; mode?: string; maxItems?: number };
+                  return (
+                    <li key={d.id} className="rounded border p-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="min-w-0">
+                          <div className="truncate font-medium">{typeof (d as Record<string, unknown>).name === "string" ? (d as Record<string, unknown>).name as string : d.type}</div>
+                          <div className="truncate text-xs text-muted-foreground">
+                            {/* i18n-exempt */}
+                            {t("Source:")} {cfg.source || "—"}
+                            {/* i18n-exempt */}
+                            {" · "}
+                            {/* i18n-exempt */}
+                            {t("Mode:")} {cfg.mode || "read"}
+                            {/* i18n-exempt */}
+                            {" · "}
+                            {/* i18n-exempt */}
+                            {t("Max items:")} {cfg.maxItems ?? "—"}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1">
                           {/* i18n-exempt */}
-                          {t("Source:")} {cfg.source || "—"} 
-                          {/* i18n-exempt */}
-                          {" · "}
-                          {/* i18n-exempt */}
-                          {t("Mode:")} {cfg.mode || "read"} 
-                          {/* i18n-exempt */}
-                          {" · "}
-                          {/* i18n-exempt */}
-                          {t("Max items:")} {cfg.maxItems ?? "—"}
+                          <Button variant="outline" className="h-7 px-2" onClick={() => onSelectIds([d.id])}>{t("Select")}</Button>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        {/* i18n-exempt */}
-                        <Button variant="outline" className="h-7 px-2" onClick={() => onSelectIds([d.id])}>{t("Select")}</Button>
-                      </div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+            <div className="text-xs text-muted-foreground">
+              {/* i18n-exempt */}
+              {t("Tip: Select a Dataset block, then use the Inspector → CMS tab to configure connections and filters.")}
+            </div>
           </div>
-          <div className="text-xs text-muted-foreground">
-            {/* i18n-exempt */}
-            {t("Tip: Select a Dataset block, then use the Inspector → CMS tab to configure connections and filters.")}
-          </div>
-        </div>
         </DrawerContent>
       </DrawerPortal>
     </Drawer>

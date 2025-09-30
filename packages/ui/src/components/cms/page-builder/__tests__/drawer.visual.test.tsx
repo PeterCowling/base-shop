@@ -5,6 +5,30 @@ import CommentsDrawer from "../CommentsDrawer";
 import PagesPanel from "../PagesPanel";
 import CMSPanel from "../CMSPanel";
 
+let fetchMock: jest.SpyInstance<ReturnType<typeof fetch>, Parameters<typeof fetch>>;
+
+beforeAll(() => {
+  fetchMock = jest.spyOn(globalThis, "fetch").mockImplementation(async (...args) => {
+    const [, init] = args;
+    const method = init?.method?.toUpperCase() ?? "GET";
+    if (method === "GET") {
+      return new Response(JSON.stringify([]), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+    return new Response(null, { status: 204 });
+  });
+});
+
+afterEach(() => {
+  fetchMock.mockClear();
+});
+
+afterAll(() => {
+  fetchMock.mockRestore();
+});
+
 describe("CMS drawers surfaces", () => {
   it("CommentsDrawer uses panel surface and right border", async () => {
     render(

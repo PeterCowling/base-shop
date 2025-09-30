@@ -1,5 +1,5 @@
 /** @jest-environment jsdom */
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import React from "react";
 
 describe("ComponentPreview", () => {
@@ -44,19 +44,46 @@ describe("ComponentPreview", () => {
   });
 
   it("shows error boundary fallback when new component throws", async () => {
-    const Boom = () => {
-      throw new Error("boom");
-    };
-    registerMock("@ui/components/Boomy", Boom);
+    const consoleErrorMock = console.error as jest.MockedFunction<typeof console.error>;
+    const originalConsoleImpl = consoleErrorMock.getMockImplementation();
+    const initialCallCount = consoleErrorMock.mock.calls.length;
+    consoleErrorMock.mockImplementation(() => {});
 
-    const { default: ComponentPreview } = await import("../ComponentPreview");
-    render(
-      <ComponentPreview
-        component={{ id: "2", type: "Y", file: "Boomy.tsx", componentName: "Boomy" } as any}
-      />
-    );
+    try {
+      const Boom = () => {
+        throw new Error("boom");
+      };
+      registerMock("@ui/components/Boomy", Boom);
 
-    expect(await screen.findByText(/Failed to render preview/)).toBeInTheDocument();
+      const { default: ComponentPreview } = await import("../ComponentPreview");
+      render(
+        <ComponentPreview
+          component={{ id: "2", type: "Y", file: "Boomy.tsx", componentName: "Boomy" } as any}
+        />
+      );
+
+      expect(await screen.findByText(/Failed to render preview/)).toBeInTheDocument();
+
+      await waitFor(
+        () => {
+          expect(consoleErrorMock.mock.calls.length).toBeGreaterThan(initialCallCount + 1);
+        },
+        { timeout: 3000 },
+      );
+
+      const newCalls = consoleErrorMock.mock.calls.slice(initialCallCount);
+
+      expect(
+        newCalls.some(([first]) =>
+          typeof first === "string" && first.includes("Component preview failed"),
+        ),
+      ).toBe(true);
+      expect(
+        newCalls.some(([, error]) => error instanceof Error && error.message === "boom"),
+      ).toBe(true);
+    } finally {
+      consoleErrorMock.mockImplementation(originalConsoleImpl ?? (() => {}));
+    }
   });
 });
 

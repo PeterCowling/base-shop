@@ -6,13 +6,13 @@ exports[`NavigationPreview renders nested menu links 1`] = `
   data-token="--color-bg"
 >
   <ul
-    class="flex gap-4"
+    class="flex flex-nowrap gap-4 items-center m-0 list-none p-0"
   >
     <li
       class="relative group"
     >
       <a
-        class="font-medium"
+        class="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md px-3 font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         data-token="--color-fg"
         href="/home"
       >
@@ -23,19 +23,19 @@ exports[`NavigationPreview renders nested menu links 1`] = `
       class="relative group"
     >
       <a
-        class="font-medium"
+        class="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md px-3 font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         data-token="--color-fg"
         href="/products"
       >
         Products
       </a>
       <ul
-        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border border-border-1 bg-surface-2 p-2 shadow-elevation-2 group-hover:flex"
+        class="flex flex-col gap-1 items-stretch absolute top-full start-0 min-w-32 rounded-md border border-border-1 bg-surface-2 p-2 shadow-elevation-2 opacity-0 transition-opacity duration-150 ease-out pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 m-0 list-none p-0"
         data-token="--color-bg"
       >
         <li>
           <a
-            class="block px-2 py-1 hover:underline"
+            class="inline-flex min-h-10 min-w-10 items-center rounded px-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             data-token="--color-fg"
             href="/products/hats"
           >
@@ -44,7 +44,7 @@ exports[`NavigationPreview renders nested menu links 1`] = `
         </li>
         <li>
           <a
-            class="block px-2 py-1 hover:underline"
+            class="inline-flex min-h-10 min-w-10 items-center rounded px-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             data-token="--color-fg"
             href="/products/shirts"
           >
@@ -57,19 +57,19 @@ exports[`NavigationPreview renders nested menu links 1`] = `
       class="relative group"
     >
       <a
-        class="font-medium"
+        class="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md px-3 font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         data-token="--color-fg"
         href="/about"
       >
         About
       </a>
       <ul
-        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border border-border-1 bg-surface-2 p-2 shadow-elevation-2 group-hover:flex"
+        class="flex flex-col gap-1 items-stretch absolute top-full start-0 min-w-32 rounded-md border border-border-1 bg-surface-2 p-2 shadow-elevation-2 opacity-0 transition-opacity duration-150 ease-out pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 m-0 list-none p-0"
         data-token="--color-bg"
       >
         <li>
           <a
-            class="block px-2 py-1 hover:underline"
+            class="inline-flex min-h-10 min-w-10 items-center rounded px-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             data-token="--color-fg"
             href="/about/team"
           >
@@ -82,19 +82,19 @@ exports[`NavigationPreview renders nested menu links 1`] = `
       class="relative group"
     >
       <a
-        class="font-medium"
+        class="inline-flex min-h-10 min-w-10 items-center justify-center rounded-md px-3 font-medium hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         data-token="--color-fg"
         href="#"
       >
         Item
       </a>
       <ul
-        class="absolute left-0 top-full hidden min-w-[8rem] flex-col rounded-md border border-border-1 bg-surface-2 p-2 shadow-elevation-2 group-hover:flex"
+        class="flex flex-col gap-1 items-stretch absolute top-full start-0 min-w-32 rounded-md border border-border-1 bg-surface-2 p-2 shadow-elevation-2 opacity-0 transition-opacity duration-150 ease-out pointer-events-none group-hover:pointer-events-auto group-hover:opacity-100 m-0 list-none p-0"
         data-token="--color-bg"
       >
         <li>
           <a
-            class="block px-2 py-1 hover:underline"
+            class="inline-flex min-h-10 min-w-10 items-center rounded px-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             data-token="--color-fg"
             href="#"
           >

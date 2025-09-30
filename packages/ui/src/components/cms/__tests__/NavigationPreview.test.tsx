@@ -60,18 +60,26 @@ describe("NavigationPreview", () => {
     expect(dropdown).toHaveAttribute("data-token", "--color-bg");
     expect(dropdown).toHaveClass(
       "absolute",
-      "left-0",
+      "start-0",
       "top-full",
-      "hidden",
-      "min-w-[8rem]",
+      "min-w-32",
+      "flex",
       "flex-col",
+      "items-stretch",
+      "gap-1",
       "rounded-md",
       "border",
       "border-border-1",
       "bg-surface-2",
+      "pointer-events-none",
       "p-2",
       "shadow-elevation-2",
-      "group-hover:flex",
+      "opacity-0",
+      "transition-opacity",
+      "duration-150",
+      "ease-out",
+      "group-hover:pointer-events-auto",
+      "group-hover:opacity-100",
     );
   });
 });

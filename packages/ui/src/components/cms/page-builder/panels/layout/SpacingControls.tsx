@@ -4,8 +4,6 @@
 import type { PageComponent } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
 import { Input } from "../../../../atoms/shadcn";
-import { Tooltip } from "../../../../atoms";
-import IconButton from "../../../../atoms/IconButton";
 import { cssError, isOverridden } from "./helpers";
 
 interface Props {
@@ -20,11 +18,8 @@ export default function SpacingControls({ component, handleInput, handleResize, 
   const LABEL_MARGIN = t("cms.builder.spacing.margin");
   const LABEL_PADDING = t("cms.builder.spacing.padding");
   const LABEL_GAP = t("cms.builder.spacing.gap");
-  const TIP_MARGIN = t("cms.builder.spacing.tips.margin");
-  const TIP_PADDING = t("cms.builder.spacing.tips.padding");
-  const TIP_MARGIN_GLOBAL = t("cms.builder.spacing.tips.marginGlobal");
-  const TIP_PADDING_GLOBAL = t("cms.builder.spacing.tips.paddingGlobal");
-  const TIP_GAP = t("cms.builder.spacing.tips.gap");
+  const ERROR_MARGIN_INVALID = t("cms.builder.spacing.error.invalidMargin");
+  const ERROR_PADDING_INVALID = t("cms.builder.spacing.error.invalidPadding");
   const PLACEHOLDER_REM = t("cms.builder.spacing.placeholder.rem");
 
   const cmp = component as Record<string, unknown>;
@@ -36,7 +31,10 @@ export default function SpacingControls({ component, handleInput, handleResize, 
             label={`${LABEL_MARGIN} (${vp})`}
             placeholder={PLACEHOLDER_REM}
             value={(component[`margin${vp}` as keyof PageComponent] as string) ?? ""}
-            error={cssError("margin", component[`margin${vp}` as keyof PageComponent] as string) ?? (errorKeys?.has(`margin${vp}`) ? "Invalid margin value" : undefined)}
+            error={
+              cssError("margin", component[`margin${vp}` as keyof PageComponent] as string) ??
+              (errorKeys?.has(`margin${vp}`) ? ERROR_MARGIN_INVALID : undefined)
+            }
             onChange={(e) => handleResize(`margin${vp}`, e.target.value)}
           />
           {isOverridden(cmp["margin"], cmp[`margin${vp}`]) && (
@@ -55,7 +53,10 @@ export default function SpacingControls({ component, handleInput, handleResize, 
             label={`${LABEL_PADDING} (${vp})`}
             placeholder={PLACEHOLDER_REM}
             value={(component[`padding${vp}` as keyof PageComponent] as string) ?? ""}
-            error={cssError("padding", component[`padding${vp}` as keyof PageComponent] as string) ?? (errorKeys?.has(`padding${vp}`) ? "Invalid padding value" : undefined)}
+            error={
+              cssError("padding", component[`padding${vp}` as keyof PageComponent] as string) ??
+              (errorKeys?.has(`padding${vp}`) ? ERROR_PADDING_INVALID : undefined)
+            }
             onChange={(e) => handleResize(`padding${vp}`, e.target.value)}
           />
           {isOverridden(cmp["padding"], cmp[`padding${vp}`]) && (
@@ -76,14 +77,14 @@ export default function SpacingControls({ component, handleInput, handleResize, 
         label={LABEL_MARGIN}
         placeholder={PLACEHOLDER_REM}
         value={component.margin ?? ""}
-        error={cssError("margin", component.margin) ?? (errorKeys?.has("margin") ? "Invalid margin value" : undefined)}
+        error={cssError("margin", component.margin) ?? (errorKeys?.has("margin") ? ERROR_MARGIN_INVALID : undefined)}
         onChange={(e) => handleInput("margin", e.target.value)}
       />
       <Input
         label={LABEL_PADDING}
         placeholder={PLACEHOLDER_REM}
         value={component.padding ?? ""}
-        error={cssError("padding", component.padding) ?? (errorKeys?.has("padding") ? "Invalid padding value" : undefined)}
+        error={cssError("padding", component.padding) ?? (errorKeys?.has("padding") ? ERROR_PADDING_INVALID : undefined)}
         onChange={(e) => handleInput("padding", e.target.value)}
       />
       {"gap" in component && (

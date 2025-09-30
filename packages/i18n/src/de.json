@@ -445,6 +445,8 @@
   "cms.builder.spacing.gap": "Gap",
   "cms.builder.spacing.margin": "Margin",
   "cms.builder.spacing.padding": "Padding",
+  "cms.builder.spacing.error.invalidMargin": "Invalid margin value",
+  "cms.builder.spacing.error.invalidPadding": "Invalid padding value",
   "cms.builder.spacing.placeholder.rem": "e.g. 1rem",
   "cms.builder.spacing.tips.gap": "Gap between items",
   "cms.builder.spacing.tips.margin": "CSS margin value with units",

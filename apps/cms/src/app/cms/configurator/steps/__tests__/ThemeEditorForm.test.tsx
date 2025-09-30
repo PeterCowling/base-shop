@@ -29,13 +29,12 @@ jest.mock("@ui/components/cms/StyleEditor", () => ({
   ),
 }));
 
-jest.mock("@ui/components/cms/DeviceSelector", () => ({
+jest.mock("../ColorThemeSelector", () => ({
   __esModule: true,
-  default: ({ setDeviceId, toggleOrientation }: any) => (
-    <>
-      <button aria-label="device" onClick={() => setDeviceId("tablet")}>device</button>
-      <button aria-label="orientation" onClick={toggleOrientation}>orientation</button>
-    </>
+  default: ({ onChange }: any) => (
+    <button data-cy="mock-color-theme" onClick={() => onChange({ theme: "mock" })}>
+      MockColorThemeSelector
+    </button>
   ),
 }));
 
@@ -58,8 +57,6 @@ describe("ThemeEditorForm", () => {
     const setPalette = jest.fn();
     const onTokensChange = jest.fn();
     const onReset = jest.fn();
-    const setDeviceId = jest.fn();
-    const toggleOrientation = jest.fn();
 
     const palettes = [
       {
@@ -94,33 +91,21 @@ describe("ThemeEditorForm", () => {
         themeDefaults={{}}
         onTokensChange={onTokensChange}
         onReset={onReset}
-        deviceId="phone"
-        orientation="portrait"
-        setDeviceId={setDeviceId}
-        toggleOrientation={toggleOrientation}
-        device={{ id: "phone", label: "Phone", width: 0, height: 0, type: "mobile", orientation: "portrait" }}
-        themeStyle={{}}
       />
     );
 
-    await userEvent.selectOptions(screen.getByTestId("theme-select"), "dark");
-    expect(onThemeChange).toHaveBeenCalledWith("dark");
+    await userEvent.click(screen.getByTestId("mock-color-theme"));
+    expect(onTokensChange).toHaveBeenCalledWith({ theme: "mock" });
 
     await userEvent.click(screen.getByTestId("palette-low"));
     expect(setPalette).toHaveBeenCalledWith("low");
 
-    expect(screen.getByText("Low contrast")).toBeInTheDocument();
+    expect(screen.getByText(/Low contrast/i)).toBeInTheDocument();
 
     await userEvent.click(screen.getByText("MockStyleEditor"));
     expect(onTokensChange).toHaveBeenCalledWith({ token: "value" });
 
     await userEvent.click(screen.getByTestId("reset-theme"));
     expect(onReset).toHaveBeenCalled();
-
-    await userEvent.click(screen.getByLabelText("device"));
-    expect(setDeviceId).toHaveBeenCalledWith("tablet");
-
-    await userEvent.click(screen.getByLabelText("orientation"));
-    expect(toggleOrientation).toHaveBeenCalled();
   });
 });

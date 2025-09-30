@@ -14,7 +14,7 @@ jest.mock(
 );
 
 jest.mock(
-  "@ui/components",
+  "@ui/components/atoms",
   () => {
     const React = require("react");
     const SelectContent = Object.assign(
@@ -67,13 +67,6 @@ jest.mock(
     const SelectValue = ({ placeholder, children }: any) => children ?? placeholder;
     return {
       Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-      FormField: ({ children, label, htmlFor, error }: any) => (
-        <div>
-          <label htmlFor={htmlFor}>{label}</label>
-          {children}
-          {error}
-        </div>
-      ),
       Input: (props: any) => <input {...props} />,
       Select,
       SelectTrigger,
@@ -85,6 +78,20 @@ jest.mock(
       Chip: ({ children, ...props }: any) => <span {...props}>{children}</span>,
     };
   },
+  { virtual: true },
+);
+
+jest.mock(
+  "@ui/components/molecules",
+  () => ({
+    FormField: ({ children, label, htmlFor, error }: any) => (
+      <div>
+        <label htmlFor={htmlFor}>{label}</label>
+        {children}
+        {error}
+      </div>
+    ),
+  }),
   { virtual: true },
 );
 

@@ -64,13 +64,18 @@ export default function CollectionList({
     return () => observer.disconnect();
   }, [minItems, maxItems, desktopItems, tabletItems, mobileItems]);
 
-  const colsClass = React.useMemo(() => {
+  const normalizedCols = React.useMemo(() => {
     const n = Number(cols);
-    if (!Number.isFinite(n) || n < 1) return "grid-cols-1";
 
-    const rounded = Math.max(1, Math.min(12, Math.floor(n)));
+    if (!Number.isFinite(n) || n < 1) {
+      return 1;
+    }
 
-    switch (rounded) {
+    return Math.max(1, Math.min(12, Math.floor(n)));
+  }, [cols]);
+
+  const colsClass = React.useMemo(() => {
+    switch (normalizedCols) {
       case 1:
         return "grid-cols-1";
       case 2:
@@ -96,12 +101,18 @@ export default function CollectionList({
       default:
         return "grid-cols-12";
     }
-  }, [cols]);
+  }, [normalizedCols]);
+
+  const gridTemplateColumns = React.useMemo(
+    () => `repeat(${normalizedCols}, minmax(0, 1fr))`,
+    [normalizedCols]
+  );
 
   return (
     <div
       ref={containerRef}
       className={cn("grid", colsClass, gapClassName, className)}
+      style={{ gridTemplateColumns }}
       {...props}
     >
       {collections.map((c) => (

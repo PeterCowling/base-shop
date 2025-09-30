@@ -186,7 +186,17 @@ try {
 if (__mswServer) {
   beforeAll(() => __mswServer?.listen?.({ onUnhandledRequest: "error" }));
   afterEach(() => __mswServer?.resetHandlers?.());
-  afterAll(() => __mswServer?.close?.());
+  afterAll(() => {
+    try {
+      __mswServer?.close?.();
+    } catch (error) {
+      // MSW 2.x can throw when tearing down fetch interceptors in jsdom.
+      // Tests are finished at this point, so swallow the teardown failure.
+      if (process.env.CI) {
+        throw error;
+      }
+    }
+  });
 }
 
 // Reset shared auth/config mocks between tests to avoid leakage across suites

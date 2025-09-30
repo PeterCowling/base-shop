@@ -22,6 +22,7 @@ export const ColorSwatch = React.forwardRef<
     typeof color === "string" ? color.replace(/\s+/g, "") : String(color);
   const dimension = `${size}px`;
   const style: React.CSSProperties = {
+    backgroundColor: normalized,
     width: dimension,
     height: dimension,
     ...styleOverride,

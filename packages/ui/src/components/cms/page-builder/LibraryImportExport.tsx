@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "@acme/i18n";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger, Button } from "../../atoms/shadcn";
 import { listLibrary, saveLibrary, clearLibrary, syncFromServer, type LibraryItem } from "./libraryStore";
 import { validateTemplateCreation } from "@acme/platform-core/validation/templateValidation";
 import { rootPlacementOptions } from "@acme/platform-core/validation/options";
@@ -138,8 +138,10 @@ export default function LibraryImportExport({ shop, onAfterChange }: Props) {
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>{t("cms.library.importExport.title")}</DialogTitle>
+        <DialogDescription className="text-sm text-muted-foreground">
+          {t("cms.library.importExport.description")}
+        </DialogDescription>
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">{t("cms.library.importExport.description")}</p>
           <div className="flex items-center gap-2">
             <Button type="button" variant="outline" disabled={busy} onClick={handleExport}>{t("cms.library.exportJSON")}</Button>
             <input ref={fileInputRef} type="file" accept="application/json" className="hidden" onChange={(e) => void handleImportFiles(e.target.files)} /> {/* i18n-exempt -- ENG-1234 non-user-facing attribute [ttl=2026-12-31] */}

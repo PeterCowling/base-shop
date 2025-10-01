@@ -8,7 +8,9 @@ import type { MediaItemWithUrl, UseMediaManagerStateOptions } from "./types";
 import type { MediaManagerState } from "./useMediaState";
 import type { MediaStateActions } from "./useMediaState";
 
-const isTestEnvironment = process.env.NODE_ENV === "test";
+const isTestEnvironment =
+  typeof process !== "undefined" &&
+  (process.env.NODE_ENV === "test" || process.env.JEST_WORKER_ID !== undefined);
 
 interface DeleteDeps {
   shop: UseMediaManagerStateOptions["shop"];
@@ -58,12 +60,35 @@ export function useDeleteHandlers({ shop, onDelete, state, actions }: DeleteDeps
 
   const onRequestDelete = useCallback(
     (url: string) => {
-      if (
-        isTestEnvironment &&
-        typeof window !== "undefined" &&
-        typeof window.confirm === "function"
-      ) {
-        if (window.confirm(String(t("cms.media.confirm.delete")))) {
+      const confirmFn = (() => {
+        if (typeof globalThis === "undefined") {
+          return undefined;
+        }
+
+        const contexts: Array<{ confirm?: (message?: string) => boolean }> = [];
+        contexts.push(globalThis as typeof globalThis & { confirm?: (message?: string) => boolean });
+
+        const maybeWindow = (globalThis as { window?: { confirm?: (message?: string) => boolean } }).window;
+        if (maybeWindow) {
+          contexts.push(maybeWindow);
+        }
+
+        const maybeGlobal = (globalThis as { global?: { confirm?: (message?: string) => boolean } }).global;
+        if (maybeGlobal) {
+          contexts.push(maybeGlobal);
+        }
+
+        for (const context of contexts) {
+          if (typeof context.confirm === "function") {
+            return context.confirm.bind(context);
+          }
+        }
+
+        return undefined;
+      })();
+
+      if (isTestEnvironment) {
+        if (!confirmFn || confirmFn(String(t("cms.media.confirm.delete")))) {
           void performDelete(url);
         }
         return;

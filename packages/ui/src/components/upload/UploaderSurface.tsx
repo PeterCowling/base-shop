@@ -1,6 +1,6 @@
 "use client"; // i18n-exempt -- DEV-000: Next.js directive, not user-facing
 import type { ReactElement, RefObject } from "react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../atoms/shadcn";
 import { Alert } from "../atoms";
 import { cn } from "../../utils/style";
@@ -42,6 +42,7 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
   } = props;
 
   const [dragActive, setDragActive] = useState(false);
+  const suppressClickFromKeyboardRef = useRef(false);
   const feedbackId = "uploader-feedback"; // i18n-exempt -- DEV-000: element id
   // i18n-exempt -- DEV-000: ARIA role values
   const ROLE_STATUS = "status" as React.AriaRole;
@@ -64,7 +65,13 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
       // i18n-exempt -- DEV-000: aria is translated dynamically
       aria-label={t("upload.dropHelp") as string}
       aria-describedby={feedbackId}
-      onClick={openFileDialog}
+      onClick={() => {
+        if (suppressClickFromKeyboardRef.current) {
+          suppressClickFromKeyboardRef.current = false;
+          return;
+        }
+        openFileDialog();
+      }}
       onDragOver={(e) => e.preventDefault()}
       onDragEnter={() => setDragActive(true)}
       onDragLeave={() => setDragActive(false)}
@@ -79,8 +86,12 @@ export function UploaderSurface(props: UploaderSurfaceProps): ReactElement {
         // preventing the default scrolling/submit semantics for those keys.
         const key = e.key;
         if (key === "Enter" || key === " " || key === "Spacebar" || key === "Space") {
+          suppressClickFromKeyboardRef.current = true;
           e.preventDefault();
           openFileDialog();
+          setTimeout(() => {
+            suppressClickFromKeyboardRef.current = false;
+          }, 0);
         }
       }}
       className={cn(

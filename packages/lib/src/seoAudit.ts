@@ -9,6 +9,42 @@ export interface SeoAuditResult {
  * Run a Lighthouse SEO audit for the given URL and return the score and
  * recommendations for failing audits.
  */
+export function resolveLighthouse(mod: unknown): typeof import("lighthouse").default | undefined {
+  const record = mod as Record<string, unknown>;
+  const defaultRecord = record.default as Record<string, unknown> | undefined;
+  if (typeof record.default === "function") {
+    return record.default as typeof import("lighthouse").default;
+  }
+  if (typeof defaultRecord?.default === "function") {
+    return defaultRecord.default as typeof import("lighthouse").default;
+  }
+  if (typeof mod === "function") {
+    return mod as typeof import("lighthouse").default;
+  }
+  return undefined;
+}
+
+export function resolveChromeLaunch(mod: unknown): typeof import("chrome-launcher").launch | undefined {
+  const record = mod as Record<string, unknown>;
+  const defaultRecord = record.default as Record<string, unknown> | undefined;
+  const nestedDefault = defaultRecord?.default as Record<string, unknown> | undefined;
+  if (typeof record.launch === "function") {
+    return record.launch as typeof import("chrome-launcher").launch;
+  }
+  if (typeof defaultRecord?.launch === "function") {
+    return defaultRecord.launch as typeof import("chrome-launcher").launch;
+  }
+  if (typeof nestedDefault?.launch === "function") {
+    return nestedDefault.launch as typeof import("chrome-launcher").launch;
+  }
+  return undefined;
+}
+
+export function resolveDesktopConfig(mod: unknown): unknown {
+  const record = mod as Record<string, unknown>;
+  return record.default ?? mod;
+}
+
 export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
   // Resolve the `launch` function from chrome-launcher lazily to support both
   // CommonJS and ESM versions of the library. This mirrors how generateMeta
@@ -16,43 +52,21 @@ export async function runSeoAudit(url: string): Promise<SeoAuditResult> {
   let lighthouseFn: typeof import("lighthouse").default | undefined;
   try {
     const mod = await import("lighthouse");
-    const record = mod as Record<string, unknown>;
-    const defaultRecord = record.default as Record<string, unknown> | undefined;
-    const maybeFn =
-      typeof record.default === "function"
-        ? record.default
-        : typeof defaultRecord?.default === "function"
-          ? defaultRecord.default
-          : typeof mod === "function"
-            ? (mod as unknown)
-            : undefined;
-    lighthouseFn = maybeFn as typeof import("lighthouse").default | undefined;
+    lighthouseFn = resolveLighthouse(mod);
   } catch {
     // ignore; handled below
   }
   let launch: typeof import("chrome-launcher").launch | undefined;
   try {
     const mod = await import("chrome-launcher");
-    const record = mod as Record<string, unknown>;
-    const defaultRecord = record.default as Record<string, unknown> | undefined;
-    const nestedDefault = defaultRecord?.default as Record<string, unknown> | undefined;
-    const maybeLaunch =
-      typeof record.launch === "function"
-        ? record.launch
-        : typeof defaultRecord?.launch === "function"
-          ? defaultRecord.launch
-          : typeof nestedDefault?.launch === "function"
-            ? nestedDefault.launch
-            : undefined;
-    launch = maybeLaunch as typeof import("chrome-launcher").launch | undefined;
+    launch = resolveChromeLaunch(mod);
   } catch {
     // ignore; handled below
   }
   let desktopConfig: unknown;
   try {
     const mod = await import("lighthouse/core/config/desktop-config.js");
-    const record = mod as Record<string, unknown>;
-    desktopConfig = record.default ?? mod;
+    desktopConfig = resolveDesktopConfig(mod);
   } catch {
     // ignore; handled below
   }

@@ -38,4 +38,8 @@ describe("t", () => {
   it("stringifies provided values", () => {
     expect(t("tryon.providers.cloudflare.upstreamError", { status: true })).toBe("Upstream true.");
   });
+
+  it("preserves placeholders when a variable is explicitly undefined", () => {
+    expect(t("tryon.providers.cloudflare.upstreamError", { status: undefined })).toBe("Upstream {status}.");
+  });
 });

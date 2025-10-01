@@ -47,7 +47,10 @@ async function fetchImageAsBlob(url: string): Promise<Blob> {
   return await res.blob();
 }
 
-async function runWorkersAi(model: string, image: Blob): Promise<{ contentType: string; body: ArrayBuffer } | { error: string }> {
+export async function runWorkersAi(
+  model: string,
+  image: Blob,
+): Promise<{ contentType: string; body: ArrayBuffer } | { error: string }> {
   const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
   const apiToken = process.env.CLOUDFLARE_API_TOKEN;
   const gatewayId = process.env.CLOUDFLARE_AI_GATEWAY_ID;
@@ -91,6 +94,15 @@ async function runWorkersAi(model: string, image: Blob): Promise<{ contentType: 
   }
 }
 
+export function formatWorkersAiOutput(
+  out: { contentType?: string; body: ArrayBuffer },
+  startedAt: number,
+  now: number = Date.now(),
+): ProviderResponse {
+  const url = toDataUrl(out.contentType || "image/png", out.body);
+  return { result: { url, width: 0, height: 0 }, metrics: { preprocessMs: now - startedAt } };
+}
+
 export function createCloudflareProvider(): TryOnProvider {
   const breakerSeg = createBreaker({ timeoutMs: BUDGET.preprocessMs, failureThreshold: 3, coolOffMs: 5000 });
   const breakerDepth = createBreaker({ timeoutMs: BUDGET.preprocessMs, failureThreshold: 3, coolOffMs: 5000 });
@@ -104,8 +116,7 @@ export function createCloudflareProvider(): TryOnProvider {
           const blob = await fetchImageAsBlob(imgUrl);
           const out = await runWorkersAi(SEGMENT_MODEL, blob);
           if ("error" in out) return { error: { code: "PROVIDER_UNAVAILABLE", details: out.error } };
-          const url = toDataUrl(out.contentType || "image/png", out.body);
-          return { result: { url, width: 0, height: 0 }, metrics: { preprocessMs: Date.now() - t0 } };
+          return formatWorkersAiOutput(out, t0);
         });
       },
     },
@@ -117,8 +128,7 @@ export function createCloudflareProvider(): TryOnProvider {
           const blob = await fetchImageAsBlob(imgUrl);
           const out = await runWorkersAi(DEPTH_MODEL, blob);
           if ("error" in out) return { error: { code: "PROVIDER_UNAVAILABLE", details: out.error } };
-          const url = toDataUrl(out.contentType || "image/png", out.body);
-          return { result: { url, width: 0, height: 0 }, metrics: { preprocessMs: Date.now() - t0 } };
+          return formatWorkersAiOutput(out, t0);
         });
       },
     },

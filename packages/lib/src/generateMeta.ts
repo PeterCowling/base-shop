@@ -23,6 +23,43 @@ export interface GeneratedMeta {
  * @param product the product being described
  * @returns SEO metadata including title, description, alt text and image path
  */
+export function resolveOpenAIConstructor(
+  mod: unknown,
+):
+  | (new (init: { apiKey: string }) => {
+      responses: { create: (...args: unknown[]) => Promise<unknown> };
+      images: { generate: (...args: unknown[]) => Promise<unknown> };
+    })
+  | undefined {
+  const record = mod as Record<string, unknown>;
+  if (typeof record.default === "function") {
+    return record.default as new (init: { apiKey: string }) => {
+      responses: { create: (...args: unknown[]) => Promise<unknown> };
+      images: { generate: (...args: unknown[]) => Promise<unknown> };
+    };
+  }
+  if (typeof record.OpenAI === "function") {
+    return record.OpenAI as new (init: { apiKey: string }) => {
+      responses: { create: (...args: unknown[]) => Promise<unknown> };
+      images: { generate: (...args: unknown[]) => Promise<unknown> };
+    };
+  }
+  const nestedDefault = (record.default as Record<string, unknown> | undefined)?.default;
+  if (typeof nestedDefault === "function") {
+    return nestedDefault as new (init: { apiKey: string }) => {
+      responses: { create: (...args: unknown[]) => Promise<unknown> };
+      images: { generate: (...args: unknown[]) => Promise<unknown> };
+    };
+  }
+  if (typeof mod === "function") {
+    return mod as new (init: { apiKey: string }) => {
+      responses: { create: (...args: unknown[]) => Promise<unknown> };
+      images: { generate: (...args: unknown[]) => Promise<unknown> };
+    };
+  }
+  return undefined;
+}
+
 export async function generateMeta(product: ProductData): Promise<GeneratedMeta> {
   const fallback: GeneratedMeta = {
     title: product.title,
@@ -57,24 +94,7 @@ export async function generateMeta(product: ProductData): Promise<GeneratedMeta>
   }
   try {
     const mod = await import("openai");
-    const record = mod as Record<string, unknown>;
-    const maybeConstructor =
-      typeof record.default === "function"
-        ? record.default
-        : typeof record.OpenAI === "function"
-          ? record.OpenAI
-          : typeof (record.default as Record<string, unknown> | undefined)?.default ===
-              "function"
-            ? (record.default as Record<string, unknown>).default
-            : typeof mod === "function"
-              ? (mod as unknown)
-              : undefined;
-    OpenAIConstructor = maybeConstructor as
-      | (new (init: { apiKey: string }) => {
-          responses: { create: (...args: unknown[]) => Promise<unknown> };
-          images: { generate: (...args: unknown[]) => Promise<unknown> };
-        })
-      | undefined;
+    OpenAIConstructor = resolveOpenAIConstructor(mod);
   } catch {
     return fallback;
   }

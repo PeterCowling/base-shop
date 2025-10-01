@@ -8,6 +8,13 @@ import { createSendgridTestHarness } from "../../__tests__/sendgrid/setup";
 
 describe("SendgridProvider send – error handling", () => {
   const getSgMail = createSendgridTestHarness();
+  let warnSpy: jest.SpyInstance;
+  let errorSpy: jest.SpyInstance;
+
+  beforeAll(() => {
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  });
 
   const options = {
     to: "to@example.com",
@@ -15,6 +22,16 @@ describe("SendgridProvider send – error handling", () => {
     html: "<p>HTML</p>",
     text: "Text",
   };
+
+  beforeEach(() => {
+    warnSpy.mockClear();
+    errorSpy.mockClear();
+  });
+
+  afterAll(() => {
+    warnSpy.mockRestore();
+    errorSpy.mockRestore();
+  });
 
   it("wraps 400 errors as non-retryable ProviderError", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";

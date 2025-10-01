@@ -15,14 +15,29 @@ import {
 } from "./sendCampaignTestUtils";
 
 describe("send core – sendCampaignEmail (retries & fallbacks)", () => {
+  let warnSpy: jest.SpyInstance;
+  let errorSpy: jest.SpyInstance;
+
+  beforeAll(() => {
+    warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
   beforeEach(() => {
     resetMocks();
     (mockHasProviderErrorFields as jest.Mock).mockReturnValue(true);
     setupEnv();
+    warnSpy.mockClear();
+    errorSpy.mockClear();
   });
 
   afterEach(() => {
     cleanupEnv();
+  });
+
+  afterAll(() => {
+    warnSpy.mockRestore();
+    errorSpy.mockRestore();
   });
 
   it("retries failed provider and eventually sends", async () => {
@@ -74,8 +89,6 @@ describe("send core – sendCampaignEmail (retries & fallbacks)", () => {
     const { ProviderError } = await import("../providers/types");
     (mockSendgridSend as jest.Mock).mockRejectedValue(new ProviderError("sg fail", false));
     (mockSendMail as jest.Mock).mockRejectedValue(new Error("smtp fail"));
-    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     await jest.isolateModulesAsync(async () => {
       process.env.EMAIL_PROVIDER = "sendgrid";
       delete process.env.RESEND_API_KEY; // ensure only sendgrid -> smtp paths are attempted
@@ -106,7 +119,5 @@ describe("send core – sendCampaignEmail (retries & fallbacks)", () => {
         ],
       ])
     );
-    warnSpy.mockRestore();
-    errorSpy.mockRestore();
   });
 });

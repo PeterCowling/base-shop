@@ -1,9 +1,19 @@
 {
-  "extends": "./tsconfig.test.json",
+  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": "../../..",
-    "noEmit": true
+    "types": ["jest", "node"],
+    "composite": true,
+    "declaration": true,
+    "declarationMap": false,
+    "declarationDir": ".ts-jest",
+    "noEmit": false,
+    "noEmitOnError": false,
+    "rootDir": ".",
+    "outDir": ".ts-jest",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "esModuleInterop": true
   },
-  "include": ["../**/*.ts", "../**/*.tsx"],
-  "exclude": ["../**/__tests__/**"]
+  "include": ["src/**/*", "__tests__/**/*"],
+  "exclude": []
 }

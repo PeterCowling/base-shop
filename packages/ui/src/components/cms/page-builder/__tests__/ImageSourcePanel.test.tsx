@@ -1,12 +1,14 @@
 import "../../../../../../../test/resetNextMocks";
 import { fireEvent, render, screen } from "@testing-library/react";
 import ImageSourcePanel from "../ImageSourcePanel";
-const useTranslationsMock = jest.fn(() => (key: string) => key);
 
 jest.mock("@acme/i18n", () => ({
   __esModule: true,
-  useTranslations: () => useTranslationsMock(),
+  useTranslations: jest.fn(() => (key: string) => key),
 }));
+
+const { useTranslations } = jest.requireMock<typeof import("@acme/i18n")>("@acme/i18n");
+const useTranslationsMock = useTranslations as jest.MockedFunction<typeof useTranslations>;
 
 const probe = jest.fn();
 let probeState = { loading: false, error: "", valid: true };
@@ -27,6 +29,8 @@ jest.mock("../ImagePicker", () => ({
 
 describe("ImageSourcePanel", () => {
   beforeEach(() => {
+    useTranslationsMock.mockReset();
+    useTranslationsMock.mockImplementation(() => (key: string) => key);
     probe.mockClear();
     probeState = { loading: false, error: "", valid: true };
   });

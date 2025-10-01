@@ -22,6 +22,7 @@
     { "path": "packages/lib" },
     { "path": "packages/themes/base" },
     { "path": "packages/themes/bcd" },
+    { "path": "packages/themes/delegation" },
     { "path": "packages/config" },
     { "path": "packages/email" },
     { "path": "packages/date-utils" },

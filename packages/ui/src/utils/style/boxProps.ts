@@ -1,4 +1,5 @@
-import * as React from "react";
+import type { CSSProperties } from "react";
+
 export interface BoxOptions {
   width?: string | number;
   height?: string | number;
@@ -6,25 +7,47 @@ export interface BoxOptions {
   margin?: string;
 }
 
+const widthUtilityPrefixes = ["w-", "min-w-", "max-w-", "size-"];
+const heightUtilityPrefixes = ["h-", "min-h-", "max-h-"];
+
+function isUtilityToken(value: unknown, prefixes: string[]): value is string {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  return prefixes.some((prefix) => value.startsWith(prefix) || value.includes(`:${prefix}`));
+}
+
+function assignDimension(
+  value: string | number | undefined,
+  key: "width" | "height",
+  prefixes: string[],
+  classes: string[],
+  style: CSSProperties,
+) {
+  if (value === undefined) {
+    return;
+  }
+
+  if (typeof value === "number") {
+    style[key] = value;
+    return;
+  }
+
+  if (isUtilityToken(value, prefixes)) {
+    classes.push(value);
+    return;
+  }
+
+  style[key] = value;
+}
+
 export function boxProps({ width, height, padding, margin }: BoxOptions) {
   const classes: string[] = [];
-  const style: React.CSSProperties = {};
+  const style: CSSProperties = {};
 
-  if (width !== undefined) {
-    if (typeof width === "string" && (width.startsWith("w-") || width.includes(":w-"))) {
-      classes.push(width);
-    } else {
-      style.width = width;
-    }
-  }
-
-  if (height !== undefined) {
-    if (typeof height === "string" && (height.startsWith("h-") || height.includes(":h-"))) {
-      classes.push(height);
-    } else {
-      style.height = height;
-    }
-  }
+  assignDimension(width, "width", widthUtilityPrefixes, classes, style);
+  assignDimension(height, "height", heightUtilityPrefixes, classes, style);
 
   if (padding) {
     classes.push(padding);

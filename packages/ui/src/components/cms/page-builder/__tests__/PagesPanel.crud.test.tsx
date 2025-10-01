@@ -55,6 +55,7 @@ describe("PagesPanel – load, reorder, save, toggle, add, saveDraft", () => {
 
   it("loads pages, moves and saves order, toggles visibility, saves draft, and adds page", async () => {
     // Route-aware fetch mock
+    let nextId = 2;
     (global.fetch as jest.Mock).mockImplementation(async (url: string, init?: RequestInit) => {
       if (url.endsWith("/cms/api/pages/s1") && (!init || init.method === undefined)) {
         return { ok: true, json: async () => ([{ id: "1", slug: "home", title: "Home", visibility: "public" }]) } as any;
@@ -66,7 +67,11 @@ describe("PagesPanel – load, reorder, save, toggle, add, saveDraft", () => {
         return { ok: true, json: async () => ({ id: "1", slug: "home", title: "Homepage", visibility: "public" }) } as any;
       }
       if (url.endsWith("/cms/api/pages/s1") && init?.method === "POST") {
-        return { ok: true, json: async () => ({ id: "2", slug: "untitled-2", title: "Untitled 2", visibility: "hidden" }) } as any;
+        const id = String(nextId++);
+        return {
+          ok: true,
+          json: async () => ({ id, slug: `untitled-${id}`, title: `Untitled ${id}`, visibility: "hidden" }),
+        } as any;
       }
       return { ok: true, json: async () => ({}) } as any;
     });

@@ -110,6 +110,29 @@ describe("createManagedTryOnProvider", () => {
     });
   });
 
+  it("defaults width and height when the upstream omits them", async () => {
+    process.env.TRYON_HEAVY_API_URL = "https://heavy.example.com";
+    global.fetch = jest.fn(() =>
+      Promise.resolve(
+        new Response(
+          JSON.stringify({ url: "https://cdn.example.com/out.png" }),
+          { status: 200, headers: { "content-type": "application/json" } }
+        )
+      )
+    );
+
+    const provider = createManagedTryOnProvider();
+    const response = await provider.generator!.run({
+      mode: "garment",
+      sourceUrl: "https://example.com/source.png",
+      garmentAssets: { flatUrl: "https://example.com/flat.png" },
+    });
+
+    expect(response).toEqual({
+      result: { url: "https://cdn.example.com/out.png", width: 0, height: 0, expiresAt: undefined },
+    });
+  });
+
   it("handles unexpected payloads", async () => {
     process.env.TRYON_HEAVY_API_URL = "https://heavy.example.com";
     global.fetch = jest.fn(() =>
@@ -124,6 +147,64 @@ describe("createManagedTryOnProvider", () => {
     });
 
     expect(response).toEqual({
+      error: { code: "UNKNOWN", details: "Unexpected upstream response." },
+    });
+  });
+
+  it("treats JSON parse failures as unexpected responses", async () => {
+    process.env.TRYON_HEAVY_API_URL = "https://heavy.example.com";
+    const response = new Response("{}", { status: 200, headers: { "content-type": "application/json" } });
+    jest.spyOn(response, "json").mockRejectedValue(new Error("boom"));
+    global.fetch = jest.fn(() => Promise.resolve(response));
+
+    const provider = createManagedTryOnProvider();
+    const result = await provider.generator!.run({
+      mode: "garment",
+      sourceUrl: "https://example.com/source.png",
+      garmentAssets: { exemplarUrl: "https://example.com/exemplar.png" },
+    });
+
+    expect(result).toEqual({
+      error: { code: "UNKNOWN", details: "Unexpected upstream response." },
+    });
+  });
+
+  it("treats non-JSON payloads as unexpected responses", async () => {
+    process.env.TRYON_HEAVY_API_URL = "https://heavy.example.com";
+    global.fetch = jest.fn(() =>
+      Promise.resolve(new Response("binary", { status: 200, headers: { "content-type": "image/png" } }))
+    );
+
+    const provider = createManagedTryOnProvider();
+    const response = await provider.generator!.run({
+      mode: "garment",
+      sourceUrl: "https://example.com/source.png",
+      garmentAssets: { flatUrl: "https://example.com/flat.png" },
+    });
+
+    expect(response).toEqual({
+      error: { code: "UNKNOWN", details: "Unexpected upstream response." },
+    });
+  });
+
+  it("treats responses without a content type as unexpected", async () => {
+    process.env.TRYON_HEAVY_API_URL = "https://heavy.example.com";
+    const response = {
+      ok: true,
+      headers: { get: () => null } as unknown as Headers,
+      json: async () => ({ url: "https://cdn.example.com/out.png" }),
+      arrayBuffer: async () => new ArrayBuffer(0),
+    } as unknown as Response;
+    global.fetch = jest.fn(() => Promise.resolve(response));
+
+    const provider = createManagedTryOnProvider();
+    const result = await provider.generator!.run({
+      mode: "garment",
+      sourceUrl: "https://example.com/source.png",
+      garmentAssets: { flatUrl: "https://example.com/flat.png" },
+    });
+
+    expect(result).toEqual({
       error: { code: "UNKNOWN", details: "Unexpected upstream response." },
     });
   });

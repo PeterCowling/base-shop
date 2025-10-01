@@ -45,4 +45,23 @@ describe("renderShadow", () => {
     expect((ctx as any).globalCompositeOperation).toBe("multiply");
     expect((ctx as any).fillStyle).toBe(gradient);
   });
+
+  it("uses default options when none are provided", () => {
+    const gradient = { addColorStop: jest.fn() };
+    const ctx = {
+      save: jest.fn(),
+      restore: jest.fn(),
+      beginPath: jest.fn(),
+      ellipse: jest.fn(),
+      fill: jest.fn(),
+      createRadialGradient: jest.fn(() => gradient),
+      globalCompositeOperation: "source-over",
+      fillStyle: "",
+    } as unknown as CanvasRenderingContext2D;
+
+    renderShadow(ctx, { x: 0, y: 0, width: 20, height: 10 });
+
+    expect(gradient.addColorStop).toHaveBeenCalledWith(0, "rgba(0,0,0,0.35)");
+    expect(ctx.ellipse).toHaveBeenCalledTimes(1);
+  });
 });

@@ -223,38 +223,46 @@ try {
 } catch {}
 
 /* -------------------------------------------------------------------------- */
-/* 4.  Silence JSDOM navigation "not implemented" noise                       */
+/* 4.  Silence known noisy console.error output                                */
 /* -------------------------------------------------------------------------- */
 
 /**
- * JSDOM intentionally does not implement full page navigation. When tests
- * click real anchor tags without preventing default, JSDOM emits a
- * VirtualConsole error: "Not implemented: navigation (except hash changes)".
- *
- * Tests that expect navigation should assert router/history calls or prevent
- * default. Until all suites are updated, filter this specific, known-noisy
- * message to keep logs readable while preserving all other console errors.
+ * Some third-party dependencies emit console noise (for example, JSDOM's
+ * navigation warnings or env validation helpers that fail intentionally in
+ * tests). Filter specific, known-noisy messages to keep logs readable while
+ * preserving all other console errors.
  */
 const originalConsoleError = console.error.bind(console);
 const JSDOM_NAV_ERROR = "Not implemented: navigation (except hash changes)";
+const IGNORED_ERROR_PATTERNS = [
+  JSDOM_NAV_ERROR,
+  "❌ Invalid CMS environment variables",
+];
 
-beforeAll(() => {
-  jest.spyOn(console, "error").mockImplementation((...args: unknown[]) => {
-    const first = args[0] as unknown;
-    const msg =
-      typeof first === "string"
-        ? first
-        : first && typeof (first as any).message === "string"
-        ? (first as any).message
-        : "";
-    if (msg.includes(JSDOM_NAV_ERROR)) return; // ignore only this jsdom warning
+const consoleErrorSpy = jest
+  .spyOn(console, "error")
+  .mockImplementation((...args: unknown[]) => {
+    const aggregated = args
+      .map((arg) => {
+        if (typeof arg === "string") return arg;
+        if (arg && typeof (arg as any).message === "string") {
+          return (arg as any).message;
+        }
+        return "";
+      })
+      .join(" ");
+    const shouldIgnore = IGNORED_ERROR_PATTERNS.some((pattern) =>
+      typeof pattern === "string"
+        ? aggregated.includes(pattern)
+        : pattern.test(aggregated)
+    );
+    if (shouldIgnore) return; // ignore known noisy warnings
     // pass through everything else
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (originalConsoleError as any)(...args);
   });
-});
 
 afterAll(() => {
   // Restore the original console.error implementation
-  (console.error as unknown as jest.Mock).mockRestore?.();
+  consoleErrorSpy.mockRestore?.();
 });

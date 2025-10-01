@@ -125,7 +125,10 @@ export async function loadThemeTokensBrowser(theme: string): Promise<TokenMap> {
 }
 
 export async function loadThemeTokens(theme: string): Promise<TokenMap> {
-  if (typeof window === "undefined") {
+  const hasWindow =
+    typeof globalThis !== "undefined" &&
+    typeof (globalThis as { window?: unknown }).window !== "undefined";
+  if (!hasWindow) {
     return loadThemeTokensNode(theme);
   }
   return loadThemeTokensBrowser(theme);

@@ -2,7 +2,7 @@
 
 import type { CheckedState } from "@radix-ui/react-checkbox";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import type { MouseEvent } from "react";
+import type { MouseEvent as ReactMouseEvent } from "react";
 import { useTranslations } from "@acme/i18n";
 
 import {
@@ -60,8 +60,19 @@ export function MediaFileActions({
   onDeleteRequest,
 }: MediaFileActionsProps) {
   const t = useTranslations();
-  const handleOverlayClick = (event: MouseEvent) => {
+  const handleOverlayClick = (event: ReactMouseEvent) => {
     event.stopPropagation();
+  };
+
+  const handleMenuItemEvent = (
+    event: Event | ReactMouseEvent<HTMLDivElement>,
+    action?: () => void,
+  ) => {
+    event.preventDefault();
+    const maybeSynthetic = event as { stopPropagation?: () => void };
+    maybeSynthetic.stopPropagation?.();
+    if (actionsDisabled) return;
+    action?.();
   };
 
   return (
@@ -100,83 +111,37 @@ export function MediaFileActions({
             <DropdownMenuLabel>{t("cms.actions")}</DropdownMenuLabel>
             {onViewDetails ? (
               <DropdownMenuItem
-                asChild
-                onSelect={(event) => {
-                  event.preventDefault();
-                  if (!actionsDisabled) onViewDetails();
-                }}
+                onSelect={(event) => handleMenuItemEvent(event, onViewDetails)}
+                onClick={(event) => handleMenuItemEvent(event, onViewDetails)}
                 disabled={actionsDisabled}
               >
-                <button
-                  type="button"
-                  className="flex w-full items-center gap-2 text-left"
-                  onClick={(event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    if (!actionsDisabled) onViewDetails();
-                  }}
-                  disabled={actionsDisabled}
-                >
-                  {t("cms.media.viewDetails")}
-                </button>
+                {t("cms.media.viewDetails")}
               </DropdownMenuItem>
             ) : null}
             <DropdownMenuItem
-              asChild
-              onSelect={(event) => {
-                event.preventDefault();
-                if (!actionsDisabled) onReplaceRequest();
-              }}
+              onSelect={(event) => handleMenuItemEvent(event, onReplaceRequest)}
+              onClick={(event) => handleMenuItemEvent(event, onReplaceRequest)}
               disabled={actionsDisabled}
-              className="gap-2"
               aria-label={replaceInProgress ? (t("cms.media.replacing") as string) : (t("cms.media.replace") as string)}
             >
-              <button
-                type="button"
-                className="flex w-full items-center gap-2 text-left"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  if (!actionsDisabled) onReplaceRequest();
-                }}
-                disabled={actionsDisabled}
-              >
-                {renderLoadingContent(
-                  t("cms.replace") as string,
-                  replaceInProgress,
-                  t("cms.media.replacing") as string
-                )}
-              </button>
+              {renderLoadingContent(
+                t("cms.replace") as string,
+                replaceInProgress,
+                t("cms.media.replacing") as string
+              )}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              asChild
-              onSelect={(event) => {
-                event.preventDefault();
-                if (actionsDisabled || deleteInProgress) return;
-                onDeleteRequest();
-              }}
+              onSelect={(event) => handleMenuItemEvent(event, actionsDisabled || deleteInProgress ? undefined : onDeleteRequest)}
+              onClick={(event) => handleMenuItemEvent(event, actionsDisabled || deleteInProgress ? undefined : onDeleteRequest)}
               disabled={actionsDisabled}
-              className="gap-2"
               aria-label={deleteInProgress ? (t("cms.media.deleting") as string) : (t("cms.media.delete") as string)}
             >
-              <button
-                type="button"
-                className="flex w-full items-center gap-2 text-left"
-                onClick={(event) => {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  if (actionsDisabled || deleteInProgress) return;
-                  onDeleteRequest();
-                }}
-                disabled={actionsDisabled}
-              >
-                {renderLoadingContent(
-                  t("cms.delete") as string,
-                  deleteInProgress,
-                  t("cms.media.deleting") as string
-                )}
-              </button>
+              {renderLoadingContent(
+                t("cms.delete") as string,
+                deleteInProgress,
+                t("cms.media.deleting") as string
+              )}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

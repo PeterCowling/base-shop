@@ -1,4 +1,4 @@
-import { promises as fs } from "node:fs";
+import { promises as fs } from "fs";
 import * as path from "node:path";
 import { DATA_ROOT } from "../dataRoot";
 import { validateShopName } from "../shops/index";

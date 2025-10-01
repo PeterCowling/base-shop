@@ -100,27 +100,59 @@ export function MediaFileActions({
             <DropdownMenuLabel>{t("cms.actions")}</DropdownMenuLabel>
             {onViewDetails ? (
               <DropdownMenuItem
-                onSelect={() => {
+                asChild
+                onSelect={(event) => {
+                  event.preventDefault();
                   if (!actionsDisabled) onViewDetails();
                 }}
                 disabled={actionsDisabled}
               >
-                {t("cms.media.viewDetails")}
+                <button
+                  type="button"
+                  className="flex w-full items-center gap-2 text-left"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (!actionsDisabled) onViewDetails();
+                  }}
+                  disabled={actionsDisabled}
+                >
+                  {t("cms.media.viewDetails")}
+                </button>
               </DropdownMenuItem>
             ) : null}
             <DropdownMenuItem
-              onSelect={() => {
+              asChild
+              onSelect={(event) => {
+                event.preventDefault();
                 if (!actionsDisabled) onReplaceRequest();
               }}
               disabled={actionsDisabled}
               className="gap-2"
               aria-label={replaceInProgress ? (t("cms.media.replacing") as string) : (t("cms.media.replace") as string)}
             >
-              {renderLoadingContent(t("cms.replace") as string, replaceInProgress, t("cms.media.replacing") as string)}
+              <button
+                type="button"
+                className="flex w-full items-center gap-2 text-left"
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  if (!actionsDisabled) onReplaceRequest();
+                }}
+                disabled={actionsDisabled}
+              >
+                {renderLoadingContent(
+                  t("cms.replace") as string,
+                  replaceInProgress,
+                  t("cms.media.replacing") as string
+                )}
+              </button>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
-              onSelect={() => {
+              asChild
+              onSelect={(event) => {
+                event.preventDefault();
                 if (actionsDisabled || deleteInProgress) return;
                 onDeleteRequest();
               }}
@@ -128,7 +160,23 @@ export function MediaFileActions({
               className="gap-2"
               aria-label={deleteInProgress ? (t("cms.media.deleting") as string) : (t("cms.media.delete") as string)}
             >
-              {renderLoadingContent(t("cms.delete") as string, deleteInProgress, t("cms.media.deleting") as string)}
+              <button
+                type="button"
+                className="flex w-full items-center gap-2 text-left"
+                onClick={(event) => {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  if (actionsDisabled || deleteInProgress) return;
+                  onDeleteRequest();
+                }}
+                disabled={actionsDisabled}
+              >
+                {renderLoadingContent(
+                  t("cms.delete") as string,
+                  deleteInProgress,
+                  t("cms.media.deleting") as string
+                )}
+              </button>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

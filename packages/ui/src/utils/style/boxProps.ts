@@ -13,6 +13,8 @@ export function boxProps({ width, height, padding, margin }: BoxOptions) {
   if (width !== undefined) {
     if (typeof width === "string" && (width.startsWith("w-") || width.includes(":w-"))) {
       classes.push(width);
+    } else if (typeof width === "number") {
+      style.width = `${width}px`;
     } else {
       style.width = width;
     }
@@ -21,6 +23,8 @@ export function boxProps({ width, height, padding, margin }: BoxOptions) {
   if (height !== undefined) {
     if (typeof height === "string" && (height.startsWith("h-") || height.includes(":h-"))) {
       classes.push(height);
+    } else if (typeof height === "number") {
+      style.height = `${height}px`;
     } else {
       style.height = height;
     }

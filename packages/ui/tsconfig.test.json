@@ -6,11 +6,11 @@
     "composite": true,
     "declaration": true,
     "declarationMap": false,
-    "declarationDir": ".ts-jest",
+    "declarationDir": "./.ts-jest",
     "noEmit": false,
     "noEmitOnError": false,
     "rootDir": ".",
-    "outDir": ".ts-jest",
+    "outDir": "./.ts-jest",
     // Use CommonJS semantics for ts-jest to ensure transformed files
     // emit into the scratch directory without bundler-specific resolution.
     "module": "CommonJS",

@@ -15,29 +15,25 @@ config.preset = "ts-jest";
 config.extensionsToTreatAsEsm = [];
 
 // Ensure ts-jest uses this package's local tsconfig, not the repo root one
-try {
-  const tsTransform = base.transform && base.transform["^.+\\.(ts|tsx)$"];
-  if (Array.isArray(tsTransform)) {
-    const [, opts] = tsTransform;
-    config.transform = {
-      ...base.transform,
-      "^.+\\.(ts|tsx)$": [
-        "ts-jest",
-        {
-          ...(opts || {}),
-          useESM: false,
-          tsconfig: path.join(__dirname, "tsconfig.test.json"),
-          isolatedModules: false,
-          diagnostics: false,
-        },
-      ],
-    };
-  }
-} catch {
-  // fall through if base structure changes
-}
+const baseTsTransform = base.transform && base.transform["^.+\\.(ts|tsx)$"];
+const baseTsJestOptions = Array.isArray(baseTsTransform) ? baseTsTransform[1] : {};
 
-if (process.env.JEST_DISABLE_COVERAGE_THRESHOLD === "1") {
+config.transform = {
+  ...base.transform,
+  "^.+\\.(ts|tsx)$": [
+    "ts-jest",
+    {
+      ...(baseTsJestOptions || {}),
+      useESM: false,
+      tsconfig: path.join(__dirname, "tsconfig.test.json"),
+      isolatedModules: false,
+      diagnostics: false,
+    },
+  ],
+};
+
+const disableCoverageThreshold = process.env.JEST_DISABLE_COVERAGE_THRESHOLD === "1";
+if (disableCoverageThreshold) {
   config.coverageThreshold = {
     global: { lines: 0, branches: 0, functions: 0 },
   };
@@ -78,12 +74,14 @@ config.coveragePathIgnorePatterns = Array.from(
 );
 
 // Hold @acme/ui to a strict bar independent of app/CMS code
-config.coverageThreshold = {
-  global: {
-    lines: 90,
-    functions: 90,
-    branches: 85,
-  },
-};
+if (!disableCoverageThreshold) {
+  config.coverageThreshold = {
+    global: {
+      lines: 90,
+      functions: 90,
+      branches: 85,
+    },
+  };
+}
 
 module.exports = config;

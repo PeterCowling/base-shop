@@ -771,6 +771,30 @@ importers:
         specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
 
+  apps/skylar:
+    dependencies:
+      '@acme/config':
+        specifier: workspace:*
+        version: link:../../packages/config
+      '@acme/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
+      '@acme/next-config':
+        specifier: workspace:*
+        version: link:../../packages/next-config
+      '@acme/tailwind-config':
+        specifier: workspace:*
+        version: link:../../packages/tailwind-config
+      next:
+        specifier: ^15.3.5
+        version: 15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      react:
+        specifier: 19.2.0-canary-3fbfb9ba-20250409
+        version: 19.2.0-canary-3fbfb9ba-20250409
+      react-dom:
+        specifier: 19.2.0-canary-3fbfb9ba-20250409
+        version: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
+
   apps/storefront: {}
 
   apps/storybook: {}
@@ -1188,6 +1212,8 @@ importers:
   packages/themes/brandx: {}
 
   packages/themes/dark: {}
+
+  packages/themes/delegation: {}
 
   packages/types:
     dependencies:

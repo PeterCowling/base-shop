@@ -417,6 +417,9 @@ importers:
       '@types/amphtml-validator':
         specifier: ^1.0.4
         version: 1.0.4
+      '@types/estree':
+        specifier: ^1.0.8
+        version: 1.0.8
       '@types/jest':
         specifier: ^29.5.12
         version: 29.5.12

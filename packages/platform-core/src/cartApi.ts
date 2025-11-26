@@ -116,10 +116,14 @@ export async function POST(req: NextRequest) {
   if (newQty > sku.stock) {
     return NextResponse.json({ error: "Insufficient stock" }, { status: 409 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
   }
+  const normalizedRental =
+    typeof rental === "undefined"
+      ? undefined
+      : { ...rental, sku: rental.sku ?? sku.id };
   // Only pass `rental` when defined to avoid an extra undefined arg
-  const updated = await (typeof rental === "undefined"
+  const updated = await (typeof normalizedRental === "undefined"
     ? incrementQty(cartId, sku, qty, size)
-    : incrementQty(cartId, sku, qty, size, rental));
+    : incrementQty(cartId, sku, qty, size, normalizedRental));
   const res = NextResponse.json({ ok: true, cart: updated });
   res.headers.set("Set-Cookie", asSetCookieHeader(encodeCartCookie(cartId)));
   return res;

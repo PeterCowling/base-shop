@@ -30,13 +30,19 @@ const renderTable = ({ columns, rows, caption }: TableStoryArgs) => (
         </TableRow>
       </TableHeader>
       <TableBody>
-        {rows.map(({ cells, state }, index) => (
-          <TableRow key={cells.join("-") || index} data-state={state}>
-            {cells.map((cell, cellIndex) => (
-              <TableCell key={`${index}-${cellIndex}`}>{cell}</TableCell>
-            ))}
-          </TableRow>
-        ))}
+        {rows.map(({ cells, state }) => {
+          const rowKey = cells.join("-") || state || "row";
+          return (
+            <TableRow key={rowKey} data-state={state}>
+              {cells.map((cell, cellIndex) => {
+                const columnLabel = columns[cellIndex] ?? `column-${cellIndex}`;
+                return (
+                  <TableCell key={`${rowKey}-${columnLabel}`}>{cell}</TableCell>
+                );
+              })}
+            </TableRow>
+          );
+        })}
       </TableBody>
     </Table>
     <p className="text-sm text-muted-foreground">

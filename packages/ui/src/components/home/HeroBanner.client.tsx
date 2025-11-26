@@ -24,21 +24,21 @@ const DEFAULT_SLIDES: Slide[] = [
     altKey: "hero.slide1.alt",
     // Provide human-readable fallback so tests and non-localized
     // environments expose accessible text instead of the i18n key.
-    alt: "Man wearing eco sneaker on concrete",
+    alt: "Man wearing eco sneaker on concrete", // i18n-exempt -- PB-000: fallback alt used only in non-localized/test environments
     headlineKey: "hero.slide1.headline",
     ctaKey: "hero.cta",
   },
   {
     src: "/hero/slide-2.jpg",
     altKey: "hero.slide2.alt",
-    alt: "Close-up of recycled rubber sole",
+    alt: "Close-up of recycled rubber sole", // i18n-exempt -- PB-000: fallback alt used only in non-localized/test environments
     headlineKey: "hero.slide2.headline",
     ctaKey: "hero.cta",
   },
   {
     src: "/hero/slide-3.jpg",
     altKey: "hero.slide3.alt",
-    alt: "Pair of sneakers on mossy rock",
+    alt: "Pair of sneakers on mossy rock", // i18n-exempt -- PB-000: fallback alt used only in non-localized/test environments
     headlineKey: "hero.slide3.headline",
     ctaKey: "hero.cta",
   },
@@ -53,6 +53,8 @@ export default function HeroBanner({
   const rawPathname = usePathname(); // may be null
   const safePath = rawPathname ?? "/";
   const langPrefix = safePath.split("/")[1] || "en";
+  const prevLabel = t("hero.nav.prev");
+  const nextLabel = t("hero.nav.next");
 
   const sanitizedSlides = (slides.length ? slides : DEFAULT_SLIDES).filter(
     (s) => s.src
@@ -71,11 +73,11 @@ export default function HeroBanner({
   );
 
   useEffect(() => {
-    const id = setInterval(next, 6000);
+    const timer = setInterval(next, 6000);
     return () => {
-      // Some test environments may not define clearInterval on the global.
-      // Use globalThis with optional call to avoid ReferenceError in cleanup.
-      (globalThis as any)?.clearInterval?.(id as any);
+      if (typeof globalThis.clearInterval === "function") {
+        globalThis.clearInterval(timer);
+      }
     };
   }, [next]);
 
@@ -131,7 +133,7 @@ export default function HeroBanner({
 
       {/* navigation arrows */}
       <button
-        aria-label={"Previous slide"}
+        aria-label={prevLabel}
         onClick={prev}
         className="absolute top-1/2 start-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
         /* i18n-exempt -- PB-123 design token attribute [ttl=2025-12-31] */
@@ -140,7 +142,7 @@ export default function HeroBanner({
         <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}‹</span>
       </button>
       <button
-        aria-label={"Next slide"}
+        aria-label={nextLabel}
         onClick={next}
         className="absolute top-1/2 end-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
         /* i18n-exempt -- PB-123 design token attribute [ttl=2025-12-31] */

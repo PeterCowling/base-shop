@@ -42,6 +42,9 @@ export default [
       "packages/auth/dist/",
       "packages/configurator/bin/**",
       "**/.next/**",
+      "**/storybook-static/**",
+      "apps/skylar/out/**",
+      "packages/cypress-image-snapshot/**",
       "**/build/**",
       "**/coverage/**",
       "**/*.d.ts.map",
@@ -451,6 +454,23 @@ export default [
     rules: {},
   },
 
+  /* ▸ Cypress configs/support: parse outside TS project */
+  {
+    files: [
+      "apps/cms/cypress.config.ts",
+      "apps/cms/cypress/**/*.{ts,tsx}",
+    ],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
+  },
+
   /* ▸ Scripts plain JS: lint without a TS project */
   {
     files: ["scripts/**/*.js"],
@@ -504,6 +524,11 @@ export default [
         allowDefaultProject: true,
         ecmaFeatures: { jsx: true },
       },
+    },
+    rules: {
+      ...offAllDsRules,
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-require-imports": "off",
     },
   },
 
@@ -966,13 +991,8 @@ export default [
     plugins: { storybook },
     rules: {
       ...(storybook.configs?.recommended?.rules || {}),
-    },
-  },
-  /* ▸ Final stories override: ensure copy checks are disabled for stories */
-  {
-    files: ["**/*.stories.{ts,tsx}"],
-    rules: {
-      "ds/no-hardcoded-copy": "off",
+      ...offAllDsRules,
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 

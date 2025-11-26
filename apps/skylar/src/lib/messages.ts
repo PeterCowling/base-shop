@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE, type Locale, LOCALES } from "./locales";
+import { DEFAULT_LOCALE, type Locale, resolveLocale } from "./locales";
 
 import en from "../../i18n/en.json";
 import it from "../../i18n/it.json";
@@ -27,6 +27,6 @@ export function createTranslator(messages: Record<string, string>) {
 }
 
 export function getTranslatorForLocale(locale?: string | string[]) {
-  const lang = LOCALES.includes(locale as Locale) ? (locale as Locale) : DEFAULT_LOCALE;
+  const lang = resolveLocale(locale);
   return createTranslator(getMessages(lang));
 }

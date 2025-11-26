@@ -1,13 +1,13 @@
 // .storybook/preview.ts
 
 import { withThemeByClassName } from "@storybook/addon-themes";
-import { ThemeProvider as SBThemeProvider, themes } from "@storybook/theming";
+import { ThemeProvider as SBThemeProvider, themes } from "storybook/internal/theming";
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
 import { DocsContainer, Primary, Stories } from "@storybook/blocks";
 import type { Decorator, Preview } from "@storybook/react";
 import type { GlobalTypes } from "@storybook/types";
 import { useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from "react";
-import type { ThemeVars } from "@storybook/theming";
+import type { ThemeVars } from "storybook/internal/theming";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import {
   CurrencyProvider,

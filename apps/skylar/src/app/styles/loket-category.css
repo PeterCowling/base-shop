@@ -1,0 +1,67 @@
+.loket-category-row--stacked {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.loket-category-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0 3rem;
+}
+
+.loket-category-card {
+  border-radius: 28px;
+  border: 1px solid rgba(228, 61, 18, 0.15);
+  padding: 1.75rem;
+  background: #fffdf9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 20px 40px rgba(13, 0, 0, 0.05);
+}
+
+.loket-category-card h3 {
+  margin: 0;
+  letter-spacing: clamp(0.25em, 0.6vw, 0.4em);
+  text-transform: uppercase;
+  font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+  color: var(--skylar-en-accent);
+}
+
+.loket-category-card p {
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--skylar-en-body);
+}
+
+.loket-category-card__icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 14px;
+  border: 1px solid rgba(228, 61, 18, 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--skylar-en-accent);
+}
+
+.loket-category-card__icon--electronics::before {
+  content: "⚡";
+}
+
+.loket-category-card__icon--home::before {
+  content: "⌂";
+  font-size: 1.1rem;
+}
+
+.loket-category-card__icon--bags::before {
+  content: "▢";
+  transform: scaleX(1.5);
+}
+
+.loket-category-card__icon--pets::before {
+  content: "✣";
+}

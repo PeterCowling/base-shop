@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useMemo, useReducer } from "react";
+import { useCallback, useMemo, useReducer, useRef } from "react";
 import { tryOnReducer, useTryOnDerived } from "./state";
 import { setTryOnCtx, logTryOnEvent } from "./analytics";
 import { useDirectR2Upload } from "../tryon/useDirectR2Upload";
@@ -18,7 +18,7 @@ export function useTryOnController() {
   const [state, dispatch] = useReducer(tryOnReducer, { phase: "idle" });
   const derived = useTryOnDerived(state);
   const { upload, progress: uploadProgress, error } = useDirectR2Upload();
-  const t0Ref = { current: 0 } as { current: number };
+  const t0Ref = useRef(0);
 
   const startUpload = useCallback(async (file: File, meta?: { productId?: string; mode?: 'accessory' | 'garment' }) => {
     const jobId = globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`;
@@ -32,7 +32,7 @@ export function useTryOnController() {
     const { objectUrl } = await upload(file, { idempotencyKey: jobId });
     dispatch({ type: "UPLOAD_DONE", sourceImageUrl: objectUrl });
     return { jobId, objectUrl };
-  }, [upload]);
+  }, [dispatch, upload]);
 
   const preprocess = useCallback(async (args: { imageUrl: string; jobId: string }) => {
     const body = JSON.stringify({ imageUrl: args.imageUrl, idempotencyKey: args.jobId });
@@ -45,7 +45,7 @@ export function useTryOnController() {
     dispatch({ type: "PREVIEW_READY" });
     // Analytics: TryOnPreviewShown
     try { const ms = Date.now() - t0Ref.current; await logTryOnEvent('TryOnPreviewShown', { preprocessMs: ms }); } catch {}
-  }, [state]);
+  }, [dispatch]);
 
   const enhance = useCallback(async (payload: EnhancePayload) => {
     dispatch({ type: "ENHANCE_START" });
@@ -53,7 +53,7 @@ export function useTryOnController() {
       const ctrl = new AbortController();
       const res = await fetch("/api/tryon/garment", {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Idempotency-Key": (state as any).jobId || "" },
+        headers: { "Content-Type": "application/json", "Idempotency-Key": state.jobId ?? "" },
         body: JSON.stringify(payload),
         signal: ctrl.signal,
       });
@@ -79,7 +79,7 @@ export function useTryOnController() {
             dispatch({ type: "ENHANCE_DONE", resultUrl: data.url });
             try { await logTryOnEvent('TryOnEnhanced'); } catch {}
           } else if (ev === "error") {
-            dispatch({ type: "FAIL", message: data.message || "Unknown error" });
+            dispatch({ type: "FAIL", message: data.message || "Unknown error" }); // i18n-exempt -- UI-1422 diagnostics [ttl=2025-12-31]
             try { await logTryOnEvent('TryOnError', { code: data.code, message: data.message }); } catch {}
           }
         }
@@ -92,7 +92,7 @@ export function useTryOnController() {
       await new Promise((r) => setTimeout(r, 500));
       await runOnce();
     }
-  }, []);
+  }, [dispatch, state]);
 
   return useMemo(() => ({ state, ...derived, uploadProgress, error, startUpload, preprocess, enhance }), [state, derived, uploadProgress, error, startUpload, preprocess, enhance]);
 }

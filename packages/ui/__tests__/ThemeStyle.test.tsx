@@ -26,7 +26,7 @@ describe("ThemeStyle", () => {
         "--font-body": '"Inter", sans-serif',
         "--font-heading-1": '"Roboto"',
         "--font-heading-2": "var(--font-custom), Arial",
-        "--color-accent": "#123456",
+        "--color-accent": "var(--color-accent)",
       },
     } as any);
 

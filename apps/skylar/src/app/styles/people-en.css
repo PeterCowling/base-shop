@@ -1,0 +1,192 @@
+.people-en-hero {
+  margin: clamp(1.5rem, 4vw, 3rem) 0;
+  border-radius: 40px;
+  border: 1px solid rgba(228, 61, 18, 0.25);
+  background: linear-gradient(140deg, #fffaf4, #ffffff);
+  padding: clamp(2rem, 5vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 2.25rem);
+  box-shadow: 0 45px 65px -55px rgba(25, 9, 0, 0.25);
+}
+
+.people-en-hero__eyebrow {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(228, 61, 18, 0.8);
+}
+
+.people-en-hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  letter-spacing: clamp(0.3em, 0.8vw, 0.55em);
+  text-transform: uppercase;
+  color: var(--skylar-en-accent);
+}
+
+.people-en-hero__body {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.5vw, 1.35rem);
+  line-height: 1.85;
+  color: rgba(37, 25, 19, 0.85);
+}
+
+.people-en-hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.people-en-hero__tag {
+  border-radius: 999px;
+  border: 1px solid rgba(228, 61, 18, 0.4);
+  padding: 0.65rem 1.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(228, 61, 18, 0.85);
+  background: rgba(228, 61, 18, 0.05);
+}
+
+.people-en-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+}
+
+.people-en-card {
+  background: #fffdfa;
+  border-color: rgba(228, 61, 18, 0.2);
+  box-shadow: 0 32px 50px -42px rgba(39, 13, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.25rem, 3vw, 2.75rem);
+  padding: clamp(2.25rem, 3.5vw, 3.5rem);
+  min-height: 100%;
+  position: relative;
+}
+
+.people-en-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(0.35rem, 1.5vw, 0.75rem);
+  padding-right: clamp(2.75rem, 5vw, 4.5rem);
+}
+
+.people-en-card__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  letter-spacing: clamp(0.28em, 0.68vw, 0.45em);
+  text-transform: uppercase;
+  color: var(--skylar-en-accent);
+  line-height: 1.1;
+}
+
+.people-en-card__secondary {
+  margin: 0;
+  font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(34, 24, 17, 0.45);
+}
+
+.people-en-card__roles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.people-en-card__title {
+  margin: 0;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  letter-spacing: clamp(0.28em, 0.6vw, 0.35em);
+  text-transform: uppercase;
+  color: rgba(47, 33, 25, 0.85);
+}
+
+.people-en-card__subtitle {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  letter-spacing: 0.06em;
+  color: rgba(47, 33, 25, 0.8);
+}
+
+.people-en-card__line {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.people-en-card__summary {
+  border-top: 1px dashed rgba(34, 24, 17, 0.25);
+  border-bottom: 1px dashed rgba(34, 24, 17, 0.25);
+  padding: clamp(1.1rem, 2vw, 1.5rem) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.people-en-card__summary p {
+  margin: 0;
+  font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+  letter-spacing: 0.09em;
+  color: rgba(34, 24, 17, 0.82);
+}
+
+.people-en-card__contacts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem 1.5rem;
+  font-size: clamp(0.7rem, 1.3vw, 0.85rem);
+}
+
+.people-en-card__label {
+  margin: 0;
+  font-size: clamp(0.6rem, 1.2vw, 0.75rem);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(34, 24, 17, 0.45);
+}
+
+.people-en-card__value {
+  margin: 0.3rem 0 0;
+  font-size: clamp(0.85rem, 1.4vw, 1rem);
+  letter-spacing: 0.1em;
+  color: rgba(34, 24, 17, 0.95);
+}
+
+.people-en-card__portrait {
+  width: clamp(2.75rem, 6vw, 3.5rem);
+  height: clamp(2.75rem, 6vw, 3.5rem);
+  border-radius: 999px;
+  border: 2px solid rgba(228, 61, 18, 0.5);
+  position: absolute;
+  top: clamp(1.25rem, 3vw, 1.75rem);
+  right: clamp(1.25rem, 3vw, 1.75rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2.8vw, 1.35rem);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--skylar-en-accent);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(255, 205, 184, 0.4));
+  box-shadow: 0 12px 28px -20px rgba(39, 13, 0, 0.45);
+}
+
+.skylar-shell-root[data-locale="en"] .loket-massive__single-text,
+.skylar-shell-root[data-locale="en"] .realestate-showcase-heading,
+.skylar-shell-root[data-locale="en"] .people-en-card__name,
+.skylar-shell-root[data-locale="en"] .people-en-hero__title,
+.skylar-shell-root[data-locale="en"] .people-en-hero__eyebrow {
+  font-family: var(--font-poppins), var(--font-display);
+  font-weight: 700;
+}

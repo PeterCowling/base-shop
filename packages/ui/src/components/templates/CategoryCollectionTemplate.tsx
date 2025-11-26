@@ -15,6 +15,7 @@ export function CategoryCollectionTemplate({
   ...props
 }: CategoryCollectionTemplateProps) {
   const rootGridClass = "grid gap-6"; // i18n-exempt -- I18N-0001 [ttl=2026-01-31]: layout class names
+  const normalizedColumns = Math.min(Math.max(Math.round(columns), 1), 6) as 1 | 2 | 3 | 4 | 5 | 6;
   const colsClass =
     {
       1: "grid-cols-1",
@@ -23,14 +24,10 @@ export function CategoryCollectionTemplate({
       4: "grid-cols-4",
       5: "grid-cols-5",
       6: "grid-cols-6",
-    }[columns as 1 | 2 | 3 | 4 | 5 | 6] ?? undefined;
+    }[normalizedColumns];
 
   return (
-    <div
-      className={cn(rootGridClass, colsClass, className)}
-      style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`, ...(props.style ?? {}) }}
-      {...props}
-    >
+    <div className={cn(rootGridClass, colsClass, className)} {...props}>
       {categories.map((c) => (
         <CategoryCard key={c.id} category={c} />
       ))}

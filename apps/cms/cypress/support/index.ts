@@ -2,7 +2,7 @@
 
 import "cypress-axe";
 import '@cypress/code-coverage/support';
-import 'cypress-image-snapshot/command';
+import '@acme/cypress-image-snapshot/command';
 import 'cypress-audit/commands';
 import '@cypress/grep';
 // Enable Mock Service Worker for API mocking in Cypress tests
@@ -56,8 +56,20 @@ declare global {
   }
 }
 
+type PointerCapableWindow = Window & {
+  PointerEvent?: typeof PointerEvent;
+  MouseEvent: typeof MouseEvent;
+};
+
+function createPointerEvent(win: PointerCapableWindow, type: string, init: PointerEventInit) {
+  if (win.PointerEvent) {
+    return new win.PointerEvent(type, init);
+  }
+  return new win.MouseEvent(type, init as MouseEventInit);
+}
+
 function pointerSequence(win: Window, target: Element, type: string, coords: { x: number; y: number }) {
-  const ev = new (win as any).PointerEvent(type, {
+  const ev = createPointerEvent(win as PointerCapableWindow, type, {
     pointerId: 1,
     pointerType: "mouse",
     isPrimary: true,
@@ -234,13 +246,48 @@ Cypress.Commands.add("pbDragHandle", (handle: JQuery<HTMLElement>, dx: number, d
     const rect = from.getBoundingClientRect();
     const start = { x: rect.left + 2, y: rect.top + 2 };
     const end = { x: start.x + dx, y: start.y + dy };
-    const down = new (win as any).PointerEvent('pointerdown', { pointerId: 1, pointerType: 'mouse', clientX: start.x, clientY: start.y, bubbles: true, buttons: 1 });
+    const pointerWin = win as PointerCapableWindow;
+    const down = createPointerEvent(pointerWin, 'pointerdown', {
+      pointerId: 1,
+      pointerType: 'mouse',
+      clientX: start.x,
+      clientY: start.y,
+      bubbles: true,
+      buttons: 1,
+    });
     from!.dispatchEvent(down);
-    const move1 = new (win as any).PointerEvent('pointermove', { pointerId: 1, pointerType: 'mouse', clientX: (start.x + end.x) / 2, clientY: (start.y + end.y) / 2, bubbles: true, buttons: 1, shiftKey: !!opts?.shift });
-    win.document.body.dispatchEvent(move1);
-    const move2 = new (win as any).PointerEvent('pointermove', { pointerId: 1, pointerType: 'mouse', clientX: end.x, clientY: end.y, bubbles: true, buttons: 1, shiftKey: !!opts?.shift });
-    win.document.body.dispatchEvent(move2);
-    const up = new (win as any).PointerEvent('pointerup', { pointerId: 1, pointerType: 'mouse', clientX: end.x, clientY: end.y, bubbles: true, buttons: 0 });
+    const midPoint = {
+      x: (start.x + end.x) / 2,
+      y: (start.y + end.y) / 2,
+    };
+    const move1 = createPointerEvent(pointerWin, 'pointermove', {
+      pointerId: 1,
+      pointerType: 'mouse',
+      clientX: midPoint.x,
+      clientY: midPoint.y,
+      bubbles: true,
+      buttons: 1,
+      shiftKey: Boolean(opts?.shift),
+    });
+    pointerWin.document.body.dispatchEvent(move1);
+    const move2 = createPointerEvent(pointerWin, 'pointermove', {
+      pointerId: 1,
+      pointerType: 'mouse',
+      clientX: end.x,
+      clientY: end.y,
+      bubbles: true,
+      buttons: 1,
+      shiftKey: Boolean(opts?.shift),
+    });
+    pointerWin.document.body.dispatchEvent(move2);
+    const up = createPointerEvent(pointerWin, 'pointerup', {
+      pointerId: 1,
+      pointerType: 'mouse',
+      clientX: end.x,
+      clientY: end.y,
+      bubbles: true,
+      buttons: 0,
+    });
     from!.dispatchEvent(up);
   });
 });

@@ -44,13 +44,7 @@ export default function AnnouncementBar({ text, href, closable = false, classNam
       {closable && (
         <button
           type="button" /* i18n-exempt -- PB-000 [ttl=2025-12-31]: input/button type enum */
-          aria-label={(() => {
-            const label = (t("announcementBar.close") as unknown as string) ?? "";
-            // Provide a sensible default in non-i18n test environments
-            return label && label !== "announcementBar.close"
-              ? label
-              : "Close announcement";
-          })()}
+          aria-label={t("announcementBar.close") as string}
           onClick={() => setOpen(false)}
           className="ms-2 inline-flex min-h-10 min-w-10 items-center justify-center text-primary-foreground/70 hover:text-primary-foreground" // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes
           /* i18n-exempt -- PB-000 [ttl=2025-12-31]: design token attribute */

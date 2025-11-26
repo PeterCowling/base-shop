@@ -33,8 +33,9 @@ export default function normalizeMultilingualInput(
   const result = {} as Partial<Record<Locale, string>>;
   if (typeof input === "string") {
     const trimmed = input.trim();
-    if (trimmed) {
-      result[locales[0]] = trimmed;
+    const defaultLocale = locales[0];
+    if (trimmed && defaultLocale) {
+      result[defaultLocale] = trimmed;
     }
     return result;
   }

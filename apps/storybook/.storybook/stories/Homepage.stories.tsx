@@ -1,10 +1,11 @@
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { within, userEvent, expect, waitFor } from '@storybook/test';
-import HeaderSection from '../../../packages/ui/src/components/cms/blocks/HeaderSection';
-import CampaignHeroSection from '../../../packages/ui/src/components/cms/blocks/CampaignHeroSection';
-import ShowcaseSection from '../../../packages/ui/src/components/cms/blocks/ShowcaseSection';
-import FooterSection from '../../../packages/ui/src/components/cms/blocks/FooterSection';
+import { within, waitFor } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
+import HeaderSection from '../../../../packages/ui/src/components/cms/blocks/HeaderSection';
+import CampaignHeroSection from '../../../../packages/ui/src/components/cms/blocks/CampaignHeroSection';
+import ShowcaseSection from '../../../../packages/ui/src/components/cms/blocks/ShowcaseSection';
+import FooterSection from '../../../../packages/ui/src/components/cms/blocks/FooterSection';
 import { CartStatus } from '../components/CartStatus';
 
 type HomeCompositionProps = {
@@ -78,6 +79,10 @@ export const AddToCartFlow: Story = {
     // Click the first 'Add to cart' button in the composition
     const addButtons = await canvas.findAllByRole('button', { name: /add to cart/i });
     await userEvent.click(addButtons[0]);
-    await waitFor(() => expect(badge.textContent).toMatch(/Cart items:\s*[1-9]/));
+    await waitFor(() => {
+      if (!badge.textContent?.match(/Cart items:\s*[1-9]/)) {
+        throw new Error('Cart count did not increment');
+      }
+    });
   },
 };

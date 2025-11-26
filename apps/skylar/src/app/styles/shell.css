@@ -1,0 +1,324 @@
+:root {
+  color-scheme: light;
+  --font-display: "Times New Roman", serif;
+  --font-sans: var(
+    --font-roboto,
+    "Roboto",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    system-ui,
+    sans-serif
+  );
+  --skylar-accent: 11.7 85% 48%;
+  --skylar-gold: #d5b169;
+  --skylar-cream: #f8f4ed;
+  --skylar-charcoal: #080808;
+  --skylar-charcoal-soft: #111;
+  --skylar-en-cream: #EBE9E1;
+  --skylar-en-panel: #fff8f0;
+  --skylar-en-accent: #E43D12;
+  --skylar-en-secondary: #D6536D;
+  --skylar-en-soft: #FFA2B6;
+  --skylar-en-gold: #EFB11D;
+  --skylar-en-ink: #9B2C0C;
+  --skylar-en-body: rgba(46, 36, 30, 0.92);
+  --skylar-en-dark: #181818;
+  --it-ink: #941F1E;
+  --it-secondary: #2F221E;
+  --it-ground: #F6F0E6;
+  --it-ground-soft: #FCF8F1;
+  --it-gold: #D8B072;
+  --it-sage: #5F6F52;
+  --it-parchment: #FFFDF7;
+  --it-shadow-soft: 0 40px 70px -50px rgba(52, 41, 33, 0.35);
+  --skylar-shadow-soft: rgba(0, 0, 0, 0.06);
+  --skylar-shadow-strong: rgba(0, 0, 0, 0.18);
+}
+
+body {
+  background-color: var(--skylar-cream);
+  color: hsl(var(--color-fg));
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a:hover {
+  color: hsl(var(--skylar-accent));
+}
+
+.skylar-shell-root {
+  min-height: 100vh;
+  transition: background-color 0.3s ease;
+  --skylar-language-link-color: hsla(0, 0%, 25%, 0.8);
+  --skylar-language-link-active-color: hsl(var(--skylar-accent));
+  --skylar-pill-border-color: hsla(0, 0%, 12%, 0.4);
+  --skylar-pill-text-color: hsla(0, 0%, 9%, 0.92);
+  --skylar-pill-primary-bg: hsla(0, 0%, 9%, 0.92);
+  --skylar-pill-primary-text: #fff;
+  --skylar-card-bg: #fff;
+  --skylar-card-border: hsla(0, 0%, 12%, 0.12);
+  --skylar-card-shadow: none;
+  --skylar-card-text: inherit;
+}
+
+.skylar-shell-root[data-locale="en"] {
+  background: var(--skylar-en-cream);
+  color: var(--skylar-en-body);
+  --font-display: var(
+    --font-poppins,
+    "Poppins",
+    "Times New Roman",
+    serif
+  );
+  --skylar-language-link-color: rgba(24, 24, 24, 0.7);
+  --skylar-card-border: rgba(0, 0, 0, 0.12);
+  --skylar-card-shadow: 0 25px 40px -38px rgba(0, 0, 0, 0.18);
+}
+
+.skylar-shell-root[data-locale="it"] {
+  background: radial-gradient(circle at top, #fffdf6 0%, var(--it-ground) 45%, #f2e8dc 100%);
+  color: var(--it-secondary);
+  --font-display: var(--font-fraunces, "Fraunces", "Times New Roman", serif);
+  --font-sans: var(
+    --font-space-grotesk,
+    var(--font-roboto),
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    system-ui,
+    sans-serif
+  );
+  --skylar-language-link-color: rgba(47, 34, 30, 0.55);
+  --skylar-language-link-active-color: var(--it-ink);
+  --skylar-pill-border-color: rgba(47, 34, 30, 0.25);
+  --skylar-pill-text-color: var(--it-secondary);
+  --skylar-pill-primary-bg: var(--it-ink);
+  --skylar-pill-primary-text: #fff6ef;
+  --skylar-card-bg: var(--it-parchment);
+  --skylar-card-border: rgba(47, 34, 30, 0.12);
+  --skylar-card-shadow: 0 45px 80px -60px rgba(26, 17, 12, 0.35);
+  --skylar-card-text: var(--it-secondary);
+}
+
+.skylar-shell-root[data-locale="it"] .skylar-shell {
+  color: var(--it-secondary);
+  max-width: 1180px;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1.5rem, 4vw, 3.5rem) clamp(3rem, 5vw, 5rem);
+}
+
+.skylar-shell-root[data-locale="zh"] {
+  background: radial-gradient(120% 120% at 0% 0%, #141313 0%, #050505 80%);
+  color: #f7dfb0;
+  --font-display: var(
+    --font-noto,
+    "Noto Sans SC",
+    "PingFang SC",
+    "Microsoft YaHei",
+    "Roboto",
+    sans-serif
+  );
+  --font-sans: var(
+    --font-noto,
+    var(
+      --font-roboto,
+      "Roboto",
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      system-ui,
+      sans-serif
+    )
+  );
+  --skylar-language-link-color: hsla(0, 0%, 100%, 0.6);
+  --skylar-pill-border-color: rgba(213, 177, 105, 0.3);
+  --skylar-pill-text-color: #f6dfb4;
+  --skylar-pill-primary-bg: var(--skylar-gold);
+  --skylar-pill-primary-text: #0b0a07;
+  --skylar-card-bg: #0b0b0b;
+  --skylar-card-border: rgba(213, 177, 105, 0.25);
+  --skylar-card-text: #f7e5c3;
+}
+
+.skylar-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.75rem 4.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.skylar-shell-root[data-locale="en"] .skylar-shell {
+  max-width: 100%;
+  width: 100%;
+  padding: clamp(2rem, 4vw, 4rem) clamp(1rem, 4vw, 4rem) clamp(2.5rem, 5vw, 5rem);
+}
+
+.skylar-shell > main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.skylar-hero {
+  border-radius: 42px;
+  border: 1px solid hsla(0, 0%, 12%, 0.15);
+  padding: 2.5rem;
+  background: linear-gradient(135deg, #fffefc, #fbeedc);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 45px 70px -50px rgba(0, 0, 0, 0.35);
+}
+
+.skylar-shell-root[data-locale="zh"] .skylar-hero {
+  background: #0f0f0f;
+  border-color: rgba(213, 177, 105, 0.35);
+  color: #f6dfb4;
+}
+
+.skylar-hero-logo {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.skylar-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.skylar-pill {
+  border-radius: 999px;
+  border: 1px solid var(--skylar-pill-border-color);
+  padding: 0.85rem 1.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  min-width: 40px;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  color: var(--skylar-pill-text-color);
+}
+
+.skylar-pill.primary {
+  background-color: var(--skylar-pill-primary-bg);
+  color: var(--skylar-pill-primary-text);
+  border-color: var(--skylar-pill-primary-bg);
+}
+
+.skylar-pill.secondary {
+  background: transparent;
+  color: var(--skylar-pill-text-color);
+}
+
+.skylar-card {
+  border-radius: 32px;
+  border: 1px solid var(--skylar-card-border);
+  padding: 2rem;
+  background: var(--skylar-card-bg);
+  box-shadow: var(--skylar-card-shadow);
+  color: var(--skylar-card-text, inherit);
+}
+
+.skylar-section-title {
+  font-family: var(--font-display);
+  letter-spacing: 0.4em;
+  font-size: 1.35rem;
+  text-transform: uppercase;
+}
+
+.skylar-shell-root[data-locale="en"] .skylar-section-title {
+  letter-spacing: clamp(0.25em, 0.7vw, 0.4em);
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  color: var(--skylar-en-accent);
+}
+
+.skylar-heading-tracking {
+  letter-spacing: 0.45em;
+}
+
+.skylar-nav-text {
+  letter-spacing: 0.6em;
+}
+
+.skylar-support-tracking {
+  letter-spacing: 0.35em;
+}
+
+.skylar-button-tracking {
+  letter-spacing: 0.4em;
+}
+
+.skylar-caption {
+  letter-spacing: 0.5em;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+}
+
+.skylar-secondary-tracking {
+  letter-spacing: 0.35em;
+}
+
+.skylar-subheading-tracking {
+  letter-spacing: 0.35em;
+}
+
+.skylar-typo {
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+.skylar-typo--en {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  gap: clamp(2rem, 4vw, 5rem);
+  padding-inline: clamp(0.75rem, 2.5vw, 3rem);
+  --en-body-size: clamp(1rem, 1vw + 0.35rem, 1.2rem);
+  --en-body-line: clamp(1.5, 2vw, 1.95);
+  font-size: var(--en-body-size);
+  line-height: var(--en-body-line);
+}
+
+.skylar-typo--en p,
+.skylar-typo--en li,
+.skylar-typo--en dd,
+.skylar-typo--en dt {
+  font-size: var(--en-body-size);
+  line-height: var(--en-body-line);
+  color: var(--skylar-en-body);
+}
+
+.skylar-properties {
+  color: #141414;
+}
+
+.skylar-properties li {
+  letter-spacing: 0.35em;
+  opacity: 0.8;
+  margin-bottom: 0.25rem;
+}
+
+.skylar-real-grid {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .skylar-real-grid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  }
+}
+
+.skylar-container {
+  width: 100%;
+  max-width: 72rem;
+}

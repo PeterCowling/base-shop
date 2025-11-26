@@ -2,8 +2,10 @@
 
 import * as React from "react";
 import { cn } from "../../utils/style";
+import { useTranslations } from "@acme/i18n";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "./ProductCard";
+import { Inline } from "../atoms/primitives/Inline";
 
 export interface RecommendationCarouselProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -65,6 +67,7 @@ export function RecommendationCarousel({
 }: RecommendationCarouselProps) {
   const [products, setProducts] = React.useState<SKU[]>(productsProp ?? []);
   const [status, setStatus] = React.useState<'idle'|'loading'|'loaded'|'error'>(productsProp ? 'loaded' : 'idle');
+  const t = useTranslations();
   const [itemsPerSlide, setItemsPerSlide] = React.useState(
     desktopItems ?? minItems
   );
@@ -102,7 +105,7 @@ export function RecommendationCarousel({
         behavior: "smooth",
       });
     }, 3000);
-  }, [products.length, itemsPerSlide, stopAutoplay]);
+  }, [products.length, itemsPerSlide, loop, stopAutoplay]);
 
   React.useEffect(() => {
     const calculateItems = () => {
@@ -187,6 +190,24 @@ export function RecommendationCarousel({
   }, []);
 
   const pageCount = Math.max(1, Math.ceil(products.length / Math.max(1, itemsPerSlide)));
+  const regionLabel = t("recommendations.regionLabel");
+  const prevLabel = t("recommendations.controls.previous");
+  const nextLabel = t("recommendations.controls.next");
+  const gotoPageLabel = (pageNumber: number) =>
+    t("recommendations.page", { page: pageNumber });
+  const pageDots = React.useMemo(
+    () =>
+      Array.from({ length: pageCount }, (_, pageIndex) => {
+        const start = pageIndex * itemsPerSlide;
+        const end = start + itemsPerSlide;
+        const ids = products.slice(start, end).map((product) => product.id).join("-");
+        return {
+          page: pageIndex,
+          key: ids || `page-${pageIndex}`,
+        };
+      }),
+    [pageCount, itemsPerSlide, products],
+  );
   const gotoPage = (idx: number) => {
     const scroller = scrollerRef.current;
     if (!scroller) return;
@@ -238,16 +259,26 @@ export function RecommendationCarousel({
   if (!products.length) return null;
 
   return (
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- CAR-1432: region needs keyboard/mouse events for slide control
     <div
-      className={cn("relative overflow-hidden", className)}
+      className={cn(
+        "relative overflow-hidden" /* i18n-exempt -- CMS-9999: layout class tokens only */,
+        className,
+      )}
       role="region"
-      aria-label="Recommended products"
+      aria-label={regionLabel}
       tabIndex={0}
       onMouseEnter={stopAutoplay}
       onMouseLeave={startAutoplay}
       onKeyDown={(e) => {
-        if (e.key === 'ArrowLeft') { e.preventDefault(); gotoPage(pageIndex - 1); }
-        if (e.key === 'ArrowRight') { e.preventDefault(); gotoPage(pageIndex + 1); }
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          gotoPage(pageIndex - 1);
+        }
+        if (e.key === "ArrowRight") {
+          e.preventDefault();
+          gotoPage(pageIndex + 1);
+        }
       }}
       {...props}
     >
@@ -256,12 +287,28 @@ export function RecommendationCarousel({
           {(() => {
             const canPrev = loop || pageIndex > 0;
             const canNext = loop || pageIndex < pageCount - 1;
-            const btnBase = "rounded-full p-2 shadow-elevation-2 border border-border-2 bg-primary text-primary-fg hover:bg-primary/90";
-            const disabledCls = "opacity-50 pointer-events-none";
+            const btnBase =
+              "rounded-full p-2 shadow-elevation-2 border border-border-2 bg-primary text-primary-fg hover:bg-primary/90"; // i18n-exempt -- CMS-9999: CSS utility class string only
+            const disabledCls =
+              "opacity-50 pointer-events-none"; // i18n-exempt -- CMS-9999: CSS utility class string only
             return (
               <>
-                <button aria-label="Previous" onClick={() => gotoPage(pageIndex - 1)} className={`absolute left-2 top-1/2 z-10 -translate-y-1/2 ${btnBase} ${canPrev ? '' : disabledCls}`} disabled={!canPrev}>‹</button>
-                <button aria-label="Next" onClick={() => gotoPage(pageIndex + 1)} className={`absolute right-2 top-1/2 z-10 -translate-y-1/2 ${btnBase} ${canNext ? '' : disabledCls}`} disabled={!canNext}>›</button>
+                <button
+                  aria-label={prevLabel}
+                  onClick={() => gotoPage(pageIndex - 1)}
+                  className={`absolute left-2 top-1/2 z-10 -translate-y-1/2 ${btnBase} ${canPrev ? '' : disabledCls}`}
+                  disabled={!canPrev}
+                >
+                  ‹
+                </button>
+                <button
+                  aria-label={nextLabel}
+                  onClick={() => gotoPage(pageIndex + 1)}
+                  className={`absolute right-2 top-1/2 z-10 -translate-y-1/2 ${btnBase} ${canNext ? '' : disabledCls}`}
+                  disabled={!canNext}
+                >
+                  ›
+                </button>
               </>
             );
           })()}
@@ -269,8 +316,12 @@ export function RecommendationCarousel({
       )}
       <div
         ref={scrollerRef}
-        className={cn("flex snap-x overflow-x-auto pb-4 scroll-smooth", gapClassName)}
-        style={{ touchAction: 'pan-y' }}
+        className={cn(
+          "flex snap-x overflow-x-auto pb-4 scroll-smooth" /* i18n-exempt -- CMS-9999: layout class tokens only */,
+          gapClassName,
+        )}
+        // eslint-disable-next-line react/forbid-dom-props -- UI-2610: native touch-action required for horizontal snapping
+        style={{ touchAction: "pan-y" }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
@@ -288,11 +339,25 @@ export function RecommendationCarousel({
         ))}
       </div>
       {showDots && pageCount > 1 && (
-        <div className="mb-1 mt-2 flex justify-center gap-2" aria-live="polite" aria-atomic="true">
-          {Array.from({ length: pageCount }).map((_, i) => (
-            <button key={i} aria-label={`Go to page ${i + 1}`} className={cn("h-2 w-2 rounded-full", i === pageIndex ? "bg-primary" : "bg-muted") } onClick={() => gotoPage(i)} />
-          ))}
-        </div>
+        <Inline
+          alignY="center"
+          gap={2}
+          className="mb-1 mt-2 justify-center"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+        {pageDots.map(({ page, key }) => (
+          <button
+            key={key}
+            aria-label={gotoPageLabel(page + 1)}
+            className={cn(
+              "h-2 w-2 rounded-full" /* i18n-exempt -- CMS-9999: decorative bullet tokens */,
+              page === pageIndex ? "bg-primary" : "bg-muted",
+            )}
+            onClick={() => gotoPage(page)}
+          />
+        ))}
+        </Inline>
       )}
     </div>
   );

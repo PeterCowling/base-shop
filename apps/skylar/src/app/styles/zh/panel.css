@@ -1,0 +1,133 @@
+.zh-panel {
+  border-radius: 40px;
+  padding: 2.5rem;
+  background: radial-gradient(circle at top left, #1d1b18, #050505);
+  border: 1px solid rgba(213, 177, 105, 0.35);
+  color: #f5dfb4;
+  box-shadow: 0 45px 65px -55px rgba(0, 0, 0, 0.85);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+
+.zh-panel--hero {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  align-items: stretch;
+}
+
+.zh-panel__identity {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.zh-panel__identity-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.zh-panel__logo {
+  width: 56px;
+  height: 56px;
+}
+
+.zh-panel__headline {
+  font-family: var(--font-display);
+  letter-spacing: 0.55em;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  color: #f8d572;
+}
+
+.zh-panel__company,
+.zh-panel__tagline {
+  letter-spacing: 0.22em;
+  color: rgba(247, 222, 170, 0.85);
+  margin-top: 0.2rem;
+}
+
+.zh-panel__since {
+  letter-spacing: 0.3em;
+  color: rgba(247, 213, 142, 0.8);
+  font-size: 0.75rem;
+}
+
+.zh-panel__support {
+  letter-spacing: 0.18em;
+  color: rgba(247, 213, 142, 0.8);
+  margin-top: -0.2rem;
+}
+
+.zh-panel__actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+}
+
+.zh-panel__link {
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(248, 213, 114, 0.4);
+  padding-bottom: 0.3rem;
+}
+
+.zh-panel__right {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.zh-panel__name-cn {
+  font-size: 1.5rem;
+  color: #ffd060;
+}
+
+.zh-panel__name-en {
+  font-family: var(--font-display);
+  letter-spacing: 0.35em;
+  font-size: 1rem;
+}
+
+.zh-panel__role {
+  letter-spacing: 0.15em;
+  color: rgba(247, 222, 170, 0.85);
+}
+
+.zh-panel__services-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.zh-panel__services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1.25rem;
+}
+
+.zh-panel__services p {
+  margin: 0;
+  letter-spacing: 0.18em;
+}
+
+.zh-panel__subtitle-en {
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: rgba(246, 213, 142, 0.85);
+}
+
+.zh-panel__description {
+  margin: 0;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: rgba(244, 241, 231, 0.9);
+}
+
+.zh-panel__contacts p {
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.12em;
+}
+

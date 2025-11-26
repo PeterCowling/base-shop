@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import type { Page } from "@acme/types";
 import PageBuilder from "./page-builder/PageBuilder";
 

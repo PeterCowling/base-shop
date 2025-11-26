@@ -1,102 +1,165 @@
-import { Grid } from "@/components/primitives/Grid";
+'use client';
+
+import Image from "next/image";
+import { useTranslations } from "@i18n";
 import type { PersonDefinition } from "@/data/people";
+import type { Locale } from "@/lib/locales";
+import { CRISTIANA_WECHAT_QR_IMAGE } from "@/lib/assets";
+import { MILAN_CLASSES } from "@/styles/milan";
 
 type PeopleCardProps = {
   definition: PersonDefinition;
-  translator: (key: string) => string;
-  isZh: boolean;
+  lang: Locale;
 };
 
-const joinClasses = (...classes: Array<string | false | undefined>) =>
-  classes.filter(Boolean).join(" ");
+export default function PeopleCard({ definition, lang }: PeopleCardProps) {
+  const translator = useTranslations();
+  const isZh = lang === "zh";
+  const isIt = lang === "it";
+  const borderColor = isZh ? "border-accent/60" : "border-border";
+  const background = isZh ? "bg-zinc-900/80" : "bg-panel";
+  const textColor = isZh ? "text-zinc-100" : "text-fg";
+  const accent = isZh ? "text-accent" : "text-fg";
+  const contactEntries = [
+    {
+      labelKey: definition.contact.phoneLabelKey,
+      valueKey: definition.contact.phoneValueKey,
+    },
+    {
+      labelKey: definition.contact.emailLabelKey,
+      valueKey: definition.contact.emailValueKey,
+    },
+    {
+      labelKey: definition.contact.websiteLabelKey,
+      valueKey: definition.contact.websiteValueKey,
+    },
+  ];
 
-export default function PeopleCard({ definition, translator, isZh }: PeopleCardProps) {
-  const borderColor = isZh ? "border-accent/60" : "border-slate-200";
-  const background = isZh ? "bg-zinc-900/80" : "bg-white/90";
-  const textColor = isZh ? "text-zinc-100" : "text-slate-900";
-  const accent = isZh ? "text-accent" : "text-slate-900";
-  const wechatZh = ["border-accent/70", "bg-zinc-900/60", "text-zinc-100"];
-  const wechatEn = ["border-slate-200", "bg-white/80", "text-slate-900"];
+  if (isIt) {
+    const primaryName = translator(definition.nameKey);
+    const portraitLetter = primaryName.charAt(0).toUpperCase();
+    return (
+      <article className={MILAN_CLASSES.personCard}>
+        <div className="milan-person-card__portrait" aria-hidden="true">
+          <span>{portraitLetter}</span>
+        </div>
+        <div className={MILAN_CLASSES.personHeader}>
+          <div className="milan-person-card__identity">
+            <p className={MILAN_CLASSES.personName}>{primaryName}</p>
+            <p className={MILAN_CLASSES.personSubtitle}>
+              {translator(definition.titleKey)}
+            </p>
+          </div>
+        </div>
+        <div className={MILAN_CLASSES.personSummary}>
+          {definition.summaryKeys.map((key) => (
+            <p key={key}>{translator(key)}</p>
+          ))}
+        </div>
+        <div className={MILAN_CLASSES.personContact}>
+          <div className="milan-person-card__contact-grid">
+            {contactEntries.map((item, index) => (
+              <div key={`${definition.key}-it-contact-${index}`} className="milan-person-card__contact-row">
+                <p className={MILAN_CLASSES.personLabel}>
+                  {translator(item.labelKey)}
+                </p>
+                <p className={MILAN_CLASSES.personValue}>
+                  {translator(item.valueKey)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </article>
+    );
+  }
+
+  if (isZh) {
+    const titleEn = definition.titleEnKey
+      ? translator(definition.titleEnKey)
+      : translator(definition.titleKey);
+    const nameCn = definition.secondaryNameKey
+      ? translator(definition.secondaryNameKey)
+      : translator(definition.nameKey);
+
+    return (
+      <article className="zh-card zh-people-card">
+        <div className="zh-people-card__names">
+          <p className="zh-people-card__name-cn">{nameCn}</p>
+          <p className="zh-people-card__name-en">{translator(definition.nameKey)}</p>
+        </div>
+        <div className="zh-people-card__roles">
+          <p className="zh-people-card__role-zh">{translator(definition.titleKey)}</p>
+          <p className="zh-people-card__role-en">{titleEn}</p>
+        </div>
+        <div className="zh-people-card__services">
+          {definition.summaryKeys.map((key) => (
+            <p key={key}>{translator(key)}</p>
+          ))}
+        </div>
+        <div className="zh-contact__rows">
+          {contactEntries.map((item, index) => (
+            <div key={`${definition.key}-zh-contact-${index}`} className="zh-contact__row">
+              <span>{translator(item.labelKey)}：</span>
+              {translator(item.valueKey)}
+            </div>
+          ))}
+        </div>
+        {definition.contact.wechatCaptionKey && definition.contact.wechatValueKey && (
+          <div className="zh-contact__qr">
+            <div className="zh-contact__qr-box" aria-hidden="true">
+              <span className="sr-only">{translator(definition.contact.wechatCaptionKey)}</span>
+              <Image
+                src={CRISTIANA_WECHAT_QR_IMAGE}
+                alt={translator("people.cristiana.contact.wechatImageAlt")}
+                width={120}
+                height={120}
+              />
+            </div>
+            <div className="zh-contact__qr-meta">
+              <p>{translator(definition.contact.wechatCaptionKey)}</p>
+              <p>{translator(definition.contact.wechatValueKey)}</p>
+            </div>
+          </div>
+        )}
+      </article>
+    );
+  }
+
+  const primaryName = translator(definition.nameKey);
+  const portraitLetter = primaryName.charAt(0).toUpperCase();
 
   return (
-    <article
-      className={`rounded-3xl border p-6 md:p-8 shadow-lg ${borderColor} ${background} ${textColor}`}
-    >
-      <div className="space-y-1">
-        <p className="font-display text-3xl uppercase skylar-heading-tracking">
-          {translator(definition.nameKey)}
-        </p>
-        {definition.secondaryNameKey && translator(definition.secondaryNameKey) && (
-          <p className="text-sm text-zinc-200 skylar-secondary-tracking">
-            {translator(definition.secondaryNameKey)}
-          </p>
-        )}
-        <p
-          className={`uppercase skylar-caption ${
-            isZh ? "text-zinc-200/70" : "text-slate-500"
-          }`}
-        >
-          {translator(definition.titleKey)}
-        </p>
-        {definition.subtitleKey && (
-          <p className="font-body text-sm leading-6 text-zinc-400">
-            {translator(definition.subtitleKey)}
-          </p>
-        )}
+    <article className={`people-en-card rounded-3xl border p-6 md:p-8 ${borderColor} ${background} ${textColor}`}>
+      <div className="people-en-card__portrait" aria-hidden="true">
+        <span>{portraitLetter}</span>
+      </div>
+      <div className="people-en-card__header">
+        <p className="people-en-card__name">{primaryName}</p>
+      </div>
+      <div className="people-en-card__roles">
+        <p className="people-en-card__title">{translator(definition.titleKey)}</p>
         {definition.cardLineKey && translator(definition.cardLineKey) && (
-          <p className={`skylar-caption ${accent}`}>
+          <p className={`people-en-card__line ${accent}`}>
             {translator(definition.cardLineKey)}
           </p>
         )}
       </div>
-      <div className="mt-6 space-y-3">
+      <div className="people-en-card__summary">
         {definition.summaryKeys.map((key) => (
-          <p key={key} className="font-body text-sm uppercase skylar-subheading-tracking">
-            {translator(key)}
-          </p>
+          <p key={key}>{translator(key)}</p>
         ))}
       </div>
-      <Grid cols={1} gap={3} className="mt-8 skylar-caption md:grid-cols-3">
-        {[
-          {
-            labelKey: definition.contact.phoneLabelKey,
-            valueKey: definition.contact.phoneValueKey,
-          },
-          {
-            labelKey: definition.contact.emailLabelKey,
-            valueKey: definition.contact.emailValueKey,
-          },
-          {
-            labelKey: definition.contact.websiteLabelKey,
-            valueKey: definition.contact.websiteValueKey,
-          },
-        ].map((item, index) => (
+      <div className="people-en-card__contacts">
+        {contactEntries.map((item, index) => (
           <div key={`${definition.key}-${index}`}>
-            <p className="text-xs text-zinc-400">{translator(item.labelKey)}</p>
-            <p className={`font-body ${isZh ? "text-zinc-100" : "text-slate-700"}`}>
+            <p className="people-en-card__label">{translator(item.labelKey)}</p>
+            <p className="people-en-card__value">
               {translator(item.valueKey)}
             </p>
           </div>
         ))}
-      </Grid>
-      {definition.contact.wechatCaptionKey && definition.contact.wechatValueKey && (
-        <div
-          className={joinClasses(
-            "mt-8",
-            "rounded-2xl",
-            "border",
-            "px-4",
-            "py-3",
-            "text-sm",
-            ...(isZh ? wechatZh : wechatEn)
-          )}
-        >
-          <p className="skylar-caption text-zinc-400">
-            {translator(definition.contact.wechatCaptionKey)}
-          </p>
-          <p className="font-body text-base leading-5">{translator(definition.contact.wechatValueKey)}</p>
-        </div>
-      )}
+      </div>
     </article>
   );
 }

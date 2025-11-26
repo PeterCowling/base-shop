@@ -10,10 +10,7 @@ export const SECTION_PATHS: Record<Section, string> = {
 };
 
 export function localizedPath(locale: Locale, section: Section) {
-  const prefix = locale === "en" ? "" : `/${locale}`;
   const segment = SECTION_PATHS[section];
-  if (!segment) {
-    return prefix || "/";
-  }
-  return `${prefix}/${segment}`;
+  const base = locale === "en" ? `/en/${segment}` : `/${locale}/${segment}`;
+  return base.replace(/\/+$/, "").replace(/\/+/, "/");
 }

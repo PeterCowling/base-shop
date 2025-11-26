@@ -1,59 +1,77 @@
-import { Inline } from "@/components/primitives/Inline";
-import { createTranslator } from "@/lib/messages";
+'use client';
+
+
+import { useTranslations } from "@i18n";
 import type { Locale } from "@/lib/locales";
 import type { ReactNode } from "react";
 import type { Section } from "@/lib/routes";
+import { getContactRowsForPerson } from "@/data/people";
 import Nav from "./Nav";
+import { joinClasses } from "@/lib/joinClasses";
 
 type PageShellProps = {
   children: ReactNode;
   lang: Locale;
-  messages: Record<string, string>;
   active: Section;
 };
 
-const joinClasses = (...classes: Array<string | false | undefined>) =>
-  classes.filter(Boolean).join(" ");
-
-export default function PageShell({ children, lang, messages, active }: PageShellProps) {
-  const translator = createTranslator(messages);
+export default function PageShell({ children, lang, active }: PageShellProps) {
+  const translator = useTranslations();
   const isZh = lang === "zh";
-  const backgroundClasses = isZh ? ["bg-zinc-950", "text-zinc-100"] : ["bg-white", "text-slate-900"];
-  const borderColor = isZh ? "border-accent/40" : "border-slate-200";
-  const footerText = isZh ? "text-zinc-200" : "text-slate-500";
-  const footerLinkClasses = isZh ? ["text-accent"] : ["text-slate-500", "hover:text-slate-900"];
-  const contactEmail = translator("people.cristiana.contact.email");
+  const isEn = lang === "en";
+  const isIt = lang === "it";
+  const usesLoketFooter = isEn || isIt;
+  const borderColor = isZh ? "border-accent/40" : "border-border";
+  // i18n-exempt -- DS-000 protocol mapping for zh footer contact links [ttl=2026-12-31]
+  const footerContactRows = getContactRowsForPerson("cristiana");
+
+  const buildContactHref = (value: string, prefix: string) => {
+    if (prefix === "https://") {
+      return `${prefix}${value.replace(/^(https?:\/\/)/i, "")}`;
+    }
+    if (prefix === "tel:") {
+      return `${prefix}${value.replace(/\s+/g, "")}`;
+    }
+    return `${prefix}${value}`;
+  };
 
   return (
-    <div className={joinClasses(...backgroundClasses, "min-h-screen")}>
-      <div
-        className={joinClasses(
-          "mx-auto",
-          "flex",
-          "flex-col",
-          "gap-12",
-          "px-6",
-          "py-10",
-          "skylar-container"
+    <div className="skylar-shell">
+      <Nav lang={lang} active={active} isZh={isZh} />
+      <main className="space-y-12">{children}</main>
+      <footer className={usesLoketFooter ? "loket-footer" : joinClasses("zh-footer", "border-t", borderColor)}>
+        {usesLoketFooter ? (
+          <div className="loket-footer__inner">
+            <span>{translator("footer.copy")}</span>
+            <span>{translator("footer.copyright")}</span>
+          </div>
+        ) : (
+          <>
+            <div className="zh-footer__contacts">
+              {footerContactRows.map((row) => {
+                const value = translator(row.valueKey);
+                const href = buildContactHref(value, row.hrefPrefix);
+                return (
+                  <div key={row.labelKey} className="zh-footer__row">
+                    <span>{translator(row.labelKey)}：</span>
+                    <a
+                      href={href}
+                      target={row.hrefPrefix === "https://" ? "_blank" : undefined}
+                      rel={row.hrefPrefix === "https://" ? "noreferrer" : undefined}
+                    >
+                      {value}
+                    </a>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="zh-footer__legal">
+              <span>{translator("footer.copy")}</span>
+              <span>{translator("footer.copyright")}</span>
+            </div>
+          </>
         )}
-      >
-        <Nav lang={lang} active={active} translator={translator} isZh={isZh} />
-        <main className="space-y-12">{children}</main>
-        <footer className={joinClasses("border-t", borderColor, "pt-8")}>
-          <Inline
-            gap={3}
-            className={joinClasses("skylar-caption", footerText, "justify-between", "flex-wrap")}
-          >
-            <span className="font-body text-xs uppercase">{translator("footer.copy")}</span>
-            <a
-              href={`mailto:${contactEmail}`}
-              className={joinClasses("font-body", "skylar-caption", ...footerLinkClasses)}
-            >
-              {contactEmail}
-            </a>
-          </Inline>
-        </footer>
-      </div>
+      </footer>
     </div>
   );
 }

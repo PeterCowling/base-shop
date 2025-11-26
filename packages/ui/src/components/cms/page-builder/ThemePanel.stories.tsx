@@ -6,8 +6,8 @@ import ThemePanel from "./ThemePanel";
 import { Dialog } from "../../atoms/shadcn";
 
 const themeResponse = {
-  themeDefaults: { "color.brand": "#111827", "font.body": "Inter" },
-  themeTokens: { "color.brand": "#111827", "font.body": "Inter" },
+  themeDefaults: { "color.brand": "var(--color-bg-dark)", "font.body": "Inter" },
+  themeTokens: { "color.brand": "var(--color-bg-dark)", "font.body": "Inter" },
 };
 
 const meta: Meta<typeof ThemePanel> = {

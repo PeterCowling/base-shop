@@ -1,9 +1,9 @@
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import HeaderSection from '../../../packages/ui/src/components/cms/blocks/HeaderSection';
-import CollectionSectionClient from '../../../packages/ui/src/components/cms/blocks/CollectionSection.client';
-import FooterSection from '../../../packages/ui/src/components/cms/blocks/FooterSection';
-import { PRODUCTS } from '../../../packages/platform-core/src/products/index';
+import HeaderSection from '../../../../packages/ui/src/components/cms/blocks/HeaderSection';
+import CollectionSectionClient from '../../../../packages/ui/src/components/cms/blocks/CollectionSection.client';
+import FooterSection from '../../../../packages/ui/src/components/cms/blocks/FooterSection';
+import { PRODUCTS } from '../../../../packages/platform-core/src/products/index';
 
 type PLPCompositionProps = {
   headerProps: ComponentProps<typeof HeaderSection>;

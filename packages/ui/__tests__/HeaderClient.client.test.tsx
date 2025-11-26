@@ -31,19 +31,21 @@ describe("HeaderClient behavior", () => {
       <HeaderClient lang="en" initialQty={0} nav={[]} />,
     );
 
+    const queryBadge = () => screen.queryByTestId("cart-qty-badge");
+
     // Initially no badge
-    expect(screen.queryByText(/^\s*\d+\s*$/)).toBeNull();
+    expect(queryBadge()).toBeNull();
 
     // Add items to cart and rerender to trigger effect
     currentCart = { a: { qty: 2 }, b: { qty: 3 } };
     rerender(<HeaderClient lang="en" initialQty={0} nav={[]} />);
 
     // Badge shows sum of qty
-    expect(screen.getByText("5")).toBeInTheDocument();
+    expect(screen.getByTestId("cart-qty-badge")).toHaveTextContent("5");
 
     // Remove items and verify badge disappears
     currentCart = {};
     rerender(<HeaderClient lang="en" initialQty={0} nav={[]} />);
-    expect(screen.queryByText("5")).toBeNull();
+    expect(queryBadge()).toBeNull();
   });
 });

@@ -57,6 +57,12 @@ function createShadcnStub() {
         role="menuitem"
         tabIndex={0}
         onClick={(event) => onSelect?.(event)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            onSelect?.(event);
+          }
+        }}
         {...rest}
       >
         {children}

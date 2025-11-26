@@ -68,6 +68,10 @@ const config: StorybookConfig = {
       "@acme/types/package.json": path.resolve(__dirname, "../../../packages/types/package.json"),
       "@acme/zod-utils": path.resolve(__dirname, "../../../packages/zod-utils/src"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "@acme/zod-utils/package.json": path.resolve(__dirname, "../../../packages/zod-utils/package.json"),
+      // Use Jest-style mocks for Next client modules when running in Storybook
+      "next/image": path.resolve(__dirname, "../../../__mocks__/next/image.js"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+      "next/navigation": path.resolve(__dirname, "../../../__mocks__/next/navigation.js"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+      "next/headers": path.resolve(__dirname, "../../../__mocks__/next/headers.js"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "@platform-core/contexts/ThemeContext": // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       path.resolve(
         __dirname,
@@ -91,6 +95,8 @@ const config: StorybookConfig = {
       module: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       // Third-party SDK not needed in Storybook bundles
       openai: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+      // Storybook blocks live in addon-docs; alias to avoid extra dep
+      "@storybook/blocks": require.resolve("@storybook/addon-docs/blocks"),
       // Deduplicate Emotion to avoid multiple ThemeContexts between blocks/MDX
       "@emotion/react": require.resolve("@emotion/react"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "@emotion/styled": require.resolve("@emotion/styled"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
@@ -105,6 +111,24 @@ const config: StorybookConfig = {
       path: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       crypto: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
     } as ResolveOptions["fallback"];
+
+    // Filter noisy Next.js export warnings that are unavoidable when mocking the modules
+    const warningPatterns = [
+      /export '.*' \(imported as '.*'\) was not found in 'next\/image'/,
+      /export '.*' \(imported as '.*'\) was not found in 'next\/navigation'/,
+    ];
+    const ignoreWarnings = Array.isArray(config.ignoreWarnings)
+      ? config.ignoreWarnings
+      : config.ignoreWarnings
+        ? [config.ignoreWarnings]
+        : [];
+    config.ignoreWarnings = [...ignoreWarnings, ...warningPatterns];
+
+    // Disable Webpack asset/entrypoint size hints — Storybook bundles are expected to be large
+    config.performance = {
+      ...(config.performance ?? {}),
+      hints: false,
+    };
 
     return config;
   },

@@ -1,0 +1,29 @@
+.loket-marquee {
+  border-radius: 999px;
+  background: var(--skylar-en-accent);
+  overflow: hidden;
+  padding: 0.85rem 0;
+}
+
+.loket-marquee__track {
+  display: flex;
+  gap: 2.5rem;
+  animation: loket-marquee-scroll 18s linear infinite;
+  width: max-content;
+}
+
+.loket-marquee__item {
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--skylar-en-cream);
+}
+
+@keyframes loket-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}

@@ -30,11 +30,10 @@ export async function resizeImageToMaxPx(file: File, maxPx = 1600): Promise<Resi
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext("2d", { alpha: true });
-  if (!ctx) throw new Error("Canvas 2D not supported");
+  if (!ctx) throw new Error("Canvas 2D not supported"); // i18n-exempt -- UI-1420 diagnostics [ttl=2025-12-31]
   ctx.drawImage(bitmap, 0, 0, width, height);
   const blob = await new Promise<Blob>((resolve, reject) => {
-    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("Failed to encode image"))), type, 0.92);
+    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("Failed to encode image"))), type, 0.92); // i18n-exempt -- UI-1420 diagnostics [ttl=2025-12-31]
   });
   return { blob, width, height };
 }
-

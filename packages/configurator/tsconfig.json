@@ -16,7 +16,7 @@
       "@acme/config/*": ["../config/src/*", "../config/dist/*"]
     }
   },
-  "include": ["src/**/*", "vite.config.ts"],
+  "include": ["src/**/*"],
   "exclude": [
     "dist",
     "__tests__",

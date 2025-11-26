@@ -1,12 +1,15 @@
 // .storybook/vite.storybook.ts
 import { defineConfig, type PluginOption } from 'vite';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import tsconfigPaths from 'vite-tsconfig-paths';
 // SVGR is optional; if present we include it
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- ABC-123
 // @ts-ignore
 import svgr from 'vite-plugin-svgr';
 import tailwindcss from '@tailwindcss/postcss';
+
+const require = createRequire(import.meta.url);
 
 export default defineConfig({
   plugins: [
@@ -30,6 +33,7 @@ export default defineConfig({
         __dirname,
         '../../../packages/platform-core/src/products/index.ts' // i18n-exempt -- ABC-123 [ttl=2026-01-01]
       ),
+      '@storybook/blocks': require.resolve('@storybook/addon-docs/blocks'),
       // Server-only/module stubs for browser 
       'server-only': false as unknown as string,
       'node:fs': false as unknown as string,

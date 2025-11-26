@@ -1,0 +1,15 @@
+// apps/skylar/tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["@testing-library/jest-dom", "jest", "node"],
+    "allowJs": true,
+    "jsx": "react-jsx"
+  },
+  "include": [
+    "src/**/*",
+    "__tests__/**/*",
+    "i18n/**/*.json"
+  ]
+}
+

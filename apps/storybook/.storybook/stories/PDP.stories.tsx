@@ -1,11 +1,12 @@
 import type { ComponentProps } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import { within, userEvent, expect, waitFor } from '@storybook/test';
-import PDPDetailsSection from '../../../packages/ui/src/components/cms/blocks/PDPDetailsSection';
-import PoliciesAccordion from '../../../packages/ui/src/components/cms/blocks/PoliciesAccordion';
-import FinancingBadge from '../../../packages/ui/src/components/cms/blocks/FinancingBadge';
-import StickyBuyBar from '../../../packages/ui/src/components/cms/blocks/StickyBuyBar';
-import { ProductGallery } from '../../../packages/ui/src/components/organisms/ProductGallery';
+import { within, waitFor } from '@testing-library/dom';
+import userEvent from '@testing-library/user-event';
+import PDPDetailsSection from '../../../../packages/ui/src/components/cms/blocks/PDPDetailsSection';
+import PoliciesAccordion from '../../../../packages/ui/src/components/cms/blocks/PoliciesAccordion';
+import FinancingBadge from '../../../../packages/ui/src/components/cms/blocks/FinancingBadge';
+import StickyBuyBar from '../../../../packages/ui/src/components/cms/blocks/StickyBuyBar';
+import { ProductGallery } from '../../../../packages/ui/src/components/organisms/ProductGallery';
 import { CartStatus } from '../components/CartStatus';
 
 const DEFAULT_PRODUCT = {
@@ -124,6 +125,10 @@ export const AddToCartFlow: Story = {
     const badge = await canvas.findByText(/Cart items:/i);
     const addBtn = await canvas.findByRole('button', { name: /add to cart/i });
     await userEvent.click(addBtn);
-    await waitFor(() => expect(badge.textContent).toMatch(/Cart items:\s*[1-9]/));
+    await waitFor(() => {
+      if (!badge.textContent?.match(/Cart items:\s*[1-9]/)) {
+        throw new Error('Cart count did not increment');
+      }
+    });
   },
 };

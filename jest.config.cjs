@@ -67,6 +67,14 @@ if (!isConfigPackage) {
   moduleNameMapper = { ...overrides, ...pruned };
 }
 
+const isSkylarApp = /apps\/skylar$/.test(process.cwd());
+if (isSkylarApp) {
+  moduleNameMapper["^@/(.*)$"] = [
+    " /apps/skylar/src/$1",
+    " /apps/skylar/dist/$1",
+  ];
+}
+
 const collectCoverageFrom = [...coverageDefaults.collectCoverageFrom];
 const coveragePathIgnorePatterns = [
   ...coverageDefaults.coveragePathIgnorePatterns,
@@ -187,6 +195,13 @@ if (relativePath) {
   }
   coverageIgnores.push(scope === "packages" ? "/apps/" : "/packages/");
   config.coveragePathIgnorePatterns.push(...coverageIgnores);
+}
+
+if (isSkylarApp) {
+  config.collectCoverageFrom = [
+    "src/lib/**/*.{ts,tsx}",
+    "src/app/[lang]/generateStaticParams.ts",
+  ];
 }
 
 module.exports = resolveRoot(config);

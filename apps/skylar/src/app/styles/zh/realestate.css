@@ -1,0 +1,132 @@
+.zh-realestate-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.zh-realestate-stack > * {
+  width: min(100%, 1180px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.zh-realestate-chips {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.zh-realestate-chips li {
+  border: 1px solid rgba(247, 213, 114, 0.4);
+  border-radius: 999px;
+  padding: 0.4rem 1.2rem;
+}
+
+.zh-realestate-heading {
+  margin: 0;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  color: rgba(247, 213, 142, 0.9);
+}
+
+.zh-realestate-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 0.85rem;
+  letter-spacing: 0.08em;
+  line-height: 1.85;
+  color: rgba(244, 241, 231, 0.9);
+}
+
+.zh-realestate-body p {
+  margin: 0;
+}
+
+.zh-realestate-list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  letter-spacing: 0.1em;
+}
+
+.zh-realestate-cases {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.zh-realestate-cases__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+
+.zh-realestate-case {
+  border-radius: 28px;
+  border: 1px solid rgba(247, 213, 114, 0.35);
+  background: rgba(8, 7, 6, 0.85);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.zh-realestate-case__title {
+  margin: 0;
+  font-family: var(--font-display);
+  letter-spacing: 0.25em;
+  font-size: 1rem;
+  color: #ffd060;
+}
+
+.zh-realestate-case__tag {
+  margin: 0;
+  letter-spacing: 0.2em;
+  font-size: 0.85rem;
+  color: rgba(247, 213, 142, 0.9);
+}
+
+.zh-realestate-details {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.zh-realestate-details__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+
+.zh-realestate-detail {
+  border-radius: 28px;
+  border: 1px solid rgba(247, 213, 114, 0.3);
+  background: rgba(5, 4, 3, 0.8);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.zh-realestate-detail__title {
+  margin: 0;
+  letter-spacing: 0.25em;
+  font-size: 0.9rem;
+  color: rgba(247, 213, 142, 0.9);
+}
+
+.zh-realestate-cta {
+  gap: 1.25rem;
+}
+

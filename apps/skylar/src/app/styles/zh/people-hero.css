@@ -1,0 +1,18 @@
+.zh-people-hero {
+  gap: 0.5rem;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+}
+
+.zh-people-hero__eyebrow {
+  margin: 0;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(247, 213, 142, 0.85);
+}
+
+.zh-people-hero__body {
+  margin: 0;
+  letter-spacing: 0.18em;
+  color: rgba(244, 241, 231, 0.85);
+}
+

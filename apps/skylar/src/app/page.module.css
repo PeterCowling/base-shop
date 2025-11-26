@@ -1,0 +1,10 @@
+.redirectTagline {
+  letter-spacing: 0.35em;
+}
+
+.redirectLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--space-10);
+  padding-inline: var(--space-2);
+}

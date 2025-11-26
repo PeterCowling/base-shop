@@ -1429,6 +1429,12 @@
   "forms.profile.success": "Profile updated successfully.",
   "forms.validation.email.required": "Email is required.",
   "forms.validation.name.required": "Name is required.",
+  "header.menu.close": "Chiudi menu",
+  "header.menu.navigationClose": "Chiudi navigazione",
+  "header.menu.navigationOpen": "Apri navigazione",
+  "header.menu.open": "Apri menu",
+  "header.menu.preferences": "Preferenze",
+  "header.nav.aria": "Navigazione principale",
   "header.brand": "Base-Shop",
   "header.openSearch": "Open search",
   "header.search": "Search",
@@ -1975,5 +1981,13 @@
   "tryon.providers.cloudflare.noImageInJson": "No image in JSON.",
   "tryon.providers.garment.heavyApiUrlMissing": "TRYON_HEAVY_API_URL not set.",
   "tryon.providers.garment.upstreamError": "Upstream {status}.",
-  "tryon.providers.garment.unexpectedResponse": "Unexpected upstream response."
+  "tryon.providers.garment.unexpectedResponse": "Unexpected upstream response.",
+  "hero.nav.prev": "Diapositiva precedente",
+  "hero.nav.next": "Diapositiva successiva",
+  "reviews.prev": "Recensione precedente",
+  "reviews.next": "Prossima recensione",
+  "recommendations.regionLabel": "Prodotti consigliati",
+  "recommendations.controls.previous": "Consiglio precedente",
+  "recommendations.controls.next": "Consiglio successivo",
+  "recommendations.page": "Vai alla pagina {page}"
 }

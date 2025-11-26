@@ -1,7 +1,7 @@
 import type { ProductPublication } from "@acme/types";
 import type { Locale } from "@acme/i18n";
 import type { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import ProductEditorForm from "./ProductEditorForm";
 
 const sample: ProductPublication & { variants: Record<string, string[]> } = {

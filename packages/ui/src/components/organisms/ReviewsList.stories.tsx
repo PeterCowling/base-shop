@@ -1,6 +1,6 @@
 /* i18n-exempt file -- Storybook demo content uses literal strings */
 import { type Meta, type StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import { ReviewsList } from "./ReviewsList";
 
 const meta: Meta<typeof ReviewsList> = {

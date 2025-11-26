@@ -1,5 +1,13 @@
 # AGENTS — Repo Runbook
 
+Use this file as the global checklist for working in the Skylar SRL monorepo. Locale-specific visual systems and tone of voice live in:
+
+- `apps/skylar/AGENTS.en.md` — warm red on cream "poster" system for EN.
+- `apps/skylar/AGENTS.it.md` — Milan editorial guidelines.
+- `apps/skylar/AGENTS.zh.md` — gold-on-black business card system for ZH.
+
+Always cross-check the relevant locale doc before touching copy, layout, or imagery inside `apps/skylar`.
+
 ## Core Workflow
 - Install dependencies: `pnpm install`.
 - Build all packages before starting any app: `pnpm -r build`.

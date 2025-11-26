@@ -2,25 +2,27 @@ import Link from "next/link";
 import HeroSection from "@/components/HeroSection";
 import PageShell from "@/components/PageShell";
 import ServicesSection from "@/components/ServicesSection";
+import { SkylarTypoHome } from "@/components/SkylarTypoHome";
+import { SkylarZhHero } from "@/components/SkylarZhHero";
+import { ZhProductsCard, ZhRealEstateCard, ZhContactCard } from "@/components/ZhCards";
+import { ItalianHome } from "@/components/ItalianHome";
 import { getMessages, createTranslator } from "@/lib/messages";
-import { resolveLocale, type Locale } from "@/lib/locales";
+import { getLocaleFromParams, type LangRouteParams, type Locale } from "@/lib/locales";
 import { localizedPath } from "@/lib/routes";
+import { joinClasses } from "@/lib/joinClasses";
 
-type PageParams = Promise<{
-  lang?: string[] | string;
-}>;
+export { generateStaticParams } from "./generateStaticParams";
 
-export default async function HomePage({ params }: { params?: PageParams }) {
-  const code = await params;
-  const lang: Locale = resolveLocale(code?.lang);
+export default async function HomePage({ params }: { params?: Promise<LangRouteParams> }) {
+  const resolvedParams = params ? await params : undefined;
+  const lang: Locale = getLocaleFromParams(resolvedParams);
   const messages = getMessages(lang);
   const translator = createTranslator(messages);
   const isZh = lang === "zh";
-  const join = (...classes: Array<string | false | undefined>) =>
-    classes.filter(Boolean).join(" ");
+  const isEn = lang === "en";
   const baseCard = ["rounded-3xl", "border", "p-6", "md:p-8"];
   const zhCard = ["border-accent/60", "bg-zinc-900/60", "text-zinc-100"];
-  const enCard = ["border-slate-200", "bg-white/80", "text-slate-900"];
+  const enCard = ["border-border", "bg-panel", "text-fg"];
   const linkBase = [
     "inline-flex",
     "items-center",
@@ -35,30 +37,54 @@ export default async function HomePage({ params }: { params?: PageParams }) {
     "skylar-button-tracking",
   ];
   const zhLink = ["border-accent/70", "text-accent"];
-  const enLink = ["border-slate-900", "text-slate-900"];
+  const enLink = ["border-border", "text-fg"];
 
   return (
-    <PageShell lang={lang} messages={messages} active="home">
-      <HeroSection lang={lang} isZh={isZh} translator={translator} />
-      <ServicesSection translator={translator} isZh={isZh} />
-      <div
-        className={join(...baseCard, ...(isZh ? zhCard : enCard))}
-      >
-        <p className="font-display text-3xl uppercase skylar-heading-tracking">
-          {translator("realEstate.heading")}
-        </p>
-        <p className={`mt-4 font-body text-base leading-6 ${isZh ? "text-zinc-200" : "text-slate-700"}`}>
-          {translator("realEstate.intro")}
-        </p>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href={localizedPath(lang, "realEstate")}
-            className={join(...linkBase, ...(isZh ? zhLink : enLink))}
-          >
-            {translator("realEstate.cta")}
-          </Link>
+    <PageShell lang={lang} active="home">
+      {lang === "en" ? (
+        <SkylarTypoHome lang={lang} />
+      ) : lang === "zh" ? (
+        <div className="zh-home-stack">
+          <SkylarZhHero lang={lang} />
+          <ZhProductsCard lang={lang} />
+          <ZhRealEstateCard lang={lang} />
+          <ZhContactCard lang={lang} />
         </div>
-      </div>
+      ) : lang === "it" ? (
+        <ItalianHome lang={lang} />
+      ) : (
+        <>
+          <HeroSection lang={lang} isZh={isZh} />
+          <ServicesSection lang={lang} />
+          <div className={joinClasses(...baseCard, "skylar-card", ...(isZh ? zhCard : enCard))}>
+            <p className="font-display text-3xl uppercase skylar-heading-tracking">
+              {translator("realEstate.heading")}
+            </p>
+            <p className={`mt-4 font-body text-base leading-6 ${isZh ? "text-zinc-200" : "text-muted-foreground"}`}>
+              {translator("realEstate.intro")}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href={localizedPath(lang, "realEstate")}
+                className={joinClasses(...linkBase, ...(isZh ? zhLink : enLink))}
+              >
+                {translator("realEstate.cta")}
+              </Link>
+            </div>
+            {isEn && (
+              <ul className="mt-4 space-y-2 text-sm uppercase skylar-properties">
+                {translator("realEstate.properties")
+                  .split("|")
+                  .map((item) => (
+                    <li key={item} className="text-foreground">
+                      {item}
+                    </li>
+                  ))}
+              </ul>
+            )}
+          </div>
+        </>
+      )}
     </PageShell>
   );
 }

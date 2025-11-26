@@ -15,8 +15,10 @@ module.exports = {
           ],
           { ignoreValues: ["inherit", "initial", "unset", "var", "clamp", "min", "max"] },
         ],
+        "declaration-property-value-disallowed-list": {
+          overflow: ["visible"],
+        },
       },
     },
   ],
 };
-

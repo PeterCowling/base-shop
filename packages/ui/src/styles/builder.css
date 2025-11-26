@@ -65,5 +65,201 @@
   .pb-order-mobile-21 { order: 21; }
   .pb-order-mobile-22 { order: 22; }
   .pb-order-mobile-23 { order: 23; }
-  .pb-order-mobile-24 { order: 24; }
+.pb-order-mobile-24 { order: 24; }
+}
+
+/*
+  Loket-inspired header helpers matching the reference site nav.
+*/
+.loket-header {
+  position: relative;
+  z-index: 20;
+}
+
+.loket-nav,
+.loket-nav-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(0.75rem, 1vw, 1.25rem) clamp(1.5rem, 4vw, 3rem);
+  text-transform: uppercase;
+  gap: 1.25rem;
+  letter-spacing: 0.4em;
+}
+
+.loket-nav {
+  color: var(--color-accent);
+  z-index: 40;
+}
+
+.loket-nav-mask {
+  z-index: 41;
+  background: var(--color-accent);
+  color: var(--color-primary);
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  transition: clip-path 0.35s cubic-bezier(0.83, 0, 0.17, 1);
+  pointer-events: none;
+}
+
+.loket-nav-mask--open {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.loket-nav-spacer {
+  height: clamp(4.25rem, 8vw, 5.5rem);
+}
+
+.loket-nav-left,
+.loket-nav-center,
+.loket-nav-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.loket-nav-center {
+  justify-content: center;
+}
+
+.loket-nav-right {
+  justify-content: flex-end;
+}
+
+.loket-logo {
+  display: inline-flex;
+  align-items: center;
+  min-width: 90px;
+  font-size: clamp(0.8rem, 0.5rem + 0.5vw, 1rem);
+  letter-spacing: 0.6em;
+  text-decoration: none;
+  color: inherit;
+}
+
+.loket-nav-list {
+  display: flex;
+  gap: clamp(1rem, 1vw, 1.5rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.loket-nav-item {
+  position: relative;
+}
+
+.loket-nav-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: clamp(0.55rem, 0.4rem + 0.25vw, 0.78rem);
+  letter-spacing: 0.4em;
+  color: inherit;
+  text-decoration: none;
+  padding-top: 0.15rem;
+  transition: opacity 0.3s ease;
+  opacity: 0.65;
+}
+
+.loket-nav-link.is-active,
+.loket-nav-link:hover {
+  opacity: 1;
+}
+
+.loket-active-marker {
+  position: absolute;
+  left: -20%;
+  top: -5%;
+  width: 140%;
+  height: 120%;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-accent);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.loket-active-marker.is-active {
+  opacity: 1;
+}
+
+.loket-nav-mask .loket-active-marker {
+  border-color: var(--color-primary);
+}
+
+.loket-burger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.loket-burger:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.loket-burger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 1.35rem;
+}
+
+.loket-burger-icon span {
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  background: currentColor;
+  border-radius: 999px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.loket-burger.is-open .loket-burger-icon span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.loket-burger.is-open .loket-burger-icon span:nth-child(2) {
+  opacity: 0;
+}
+
+.loket-burger.is-open .loket-burger-icon span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .loket-nav-center {
+    display: none;
+  }
+
+  .loket-nav-left,
+  .loket-nav-right {
+    flex: initial;
+  }
+}
+
+.loket-text-button {
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+}
+
+.loket-menu-caption {
+  letter-spacing: 0.3em;
+}
+
+.loket-menu-link {
+  letter-spacing: 0.2em;
+}
+
+.loket-menu-panel {
+  background-color: var(--color-dark);
+  color: var(--color-bg);
 }

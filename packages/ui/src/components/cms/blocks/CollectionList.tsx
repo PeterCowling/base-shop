@@ -120,7 +120,6 @@ export default function CollectionList({
     <div
       ref={containerRef}
       className={cn("grid", colsClass, gapClassName, className)}
-      style={{ gridTemplateColumns }}
       {...props}
     >
       {collections.map((c) => (

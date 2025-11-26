@@ -165,6 +165,14 @@ const [rawPreset, tokens] = await Promise.all([
   loadDesignTokens(),
 ]);
 
+const GRID_COLUMN_SIZES = [1, 2, 3, 4, 5, 6, 12];
+const GAP_SIZES = [0, 1, 2, 3, 4, 5, 6, 8, 10, 12];
+
+const dynamicUtilitySafelist = [
+  ...GRID_COLUMN_SIZES.map((value) => `grid-cols-${value}`),
+  ...GAP_SIZES.map((value) => `gap-${value}`),
+];
+
 // Some presets may include an empty `preset`/`presets: []` key which Tailwind rejects.
 // Sanitize by dropping empty preset arrays.
 const preset = (() => {
@@ -193,6 +201,8 @@ const config = {
     "!**/dist",
     "!**/.next",
   ],
+  // Dynamic utility components emit these class names at runtime.
+  safelist: dynamicUtilitySafelist,
   plugins: [
     tokens,
     require("@tailwindcss/forms"),

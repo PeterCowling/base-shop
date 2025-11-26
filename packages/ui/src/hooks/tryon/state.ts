@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useReducer } from "react";
+import { useMemo } from "react";
 
 export type TryOnPhase =
   | "idle"

@@ -7,6 +7,7 @@
     { "path": "./apps/cms" },
     { "path": "./apps/dashboard" },
     { "path": "./apps/shop-bcd" },
+    { "path": "./apps/skylar" },
     { "path": "./apps/api" },
     { "path": "packages/platform-core" },
     { "path": "./scripts" }

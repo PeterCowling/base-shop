@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import React, { useEffect, useMemo, useState } from 'react';
-import MultiColumn from '../../../packages/ui/src/components/cms/blocks/containers/MultiColumn';
-import StackFlex from '../../../packages/ui/src/components/cms/blocks/containers/StackFlex';
-import TabsAccordionContainer from '../../../packages/ui/src/components/cms/blocks/containers/TabsAccordionContainer';
-import ShowcaseSection from '../../../packages/ui/src/components/cms/blocks/ShowcaseSection';
-import CollectionSectionClient from '../../../packages/ui/src/components/cms/blocks/CollectionSection.client';
+import MultiColumn from '../../../../packages/ui/src/components/cms/blocks/containers/MultiColumn';
+import StackFlex from '../../../../packages/ui/src/components/cms/blocks/containers/StackFlex';
+import TabsAccordionContainer from '../../../../packages/ui/src/components/cms/blocks/containers/TabsAccordionContainer';
+import ShowcaseSection from '../../../../packages/ui/src/components/cms/blocks/ShowcaseSection';
+import CollectionSectionClient from '../../../../packages/ui/src/components/cms/blocks/CollectionSection.client';
 
 type Node = {
   type: string;

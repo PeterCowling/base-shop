@@ -109,7 +109,6 @@ const TextBlockView = ({
   }, [setNodeRef, containerRef]);
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions -- PB-0001: canvas item wrapper must handle selection via mouse & keyboard
     <div
       ref={assignNodeRef}
       onClick={onSelect}

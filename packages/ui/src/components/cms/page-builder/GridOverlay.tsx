@@ -26,15 +26,17 @@ const GridOverlay = ({ gridCols, gutter, baselineStep }: Props) => {
   }
 
   return (
-    <div
-      className="pointer-events-none absolute inset-0"
-      data-cy={/* i18n-exempt -- PB-2416 */ "pb-grid-overlay"}
-      style={style}
-    >
-      {Array.from({ length: cols }).map((_, i) => (
-        // eslint-disable-next-line react/no-array-index-key -- PB-2416: column order fixed, purely decorative
-        <div key={i} className="border-muted-foreground/40 border-l border-dashed" />
-      ))}
+    <div className="relative h-full w-full">
+      <div
+        className="pointer-events-none absolute inset-0"
+        data-cy={/* i18n-exempt -- PB-2416 */ "pb-grid-overlay"}
+        style={style}
+      >
+        {Array.from({ length: cols }).map((_, i) => (
+          // eslint-disable-next-line react/no-array-index-key -- PB-2416: column order fixed, purely decorative
+          <div key={i} className="border-muted-foreground/40 border-l border-dashed" />
+        ))}
+      </div>
     </div>
   );
 };

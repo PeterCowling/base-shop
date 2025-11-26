@@ -1,5 +1,5 @@
 import { http, HttpResponse, delay } from "msw";
-import { PRODUCTS } from "../../../packages/platform-core/src/products/index";
+import { PRODUCTS } from "../../../../packages/platform-core/src/products/index";
 
 type SBGlobals = { msw?: { delayMs: number; netError: boolean }; scenario?: string; netError?: string };
 

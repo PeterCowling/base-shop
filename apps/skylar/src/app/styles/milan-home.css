@@ -1,0 +1,570 @@
+.milan-home {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 3.5rem);
+}
+
+.milan-intro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.milan-intro__column {
+  position: relative;
+  padding: 2rem;
+  border: 1px solid rgba(47, 34, 30, 0.15);
+  border-radius: 1rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), var(--it-ground-soft));
+  box-shadow: var(--it-shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.milan-intro__tag {
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  color: rgba(47, 34, 30, 0.55);
+}
+
+.milan-intro__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--it-ink);
+  white-space: nowrap;
+}
+
+.milan-intro__body {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: rgba(47, 34, 30, 0.82);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-intro__index {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-family: var(--font-display);
+  letter-spacing: 0.45em;
+  font-size: 0.7rem;
+  color: rgba(47, 34, 30, 0.35);
+}
+
+.milan-hero {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 3rem);
+  padding: clamp(2rem, 4vw, 3.5rem);
+  border: 1px solid rgba(216, 176, 114, 0.45);
+  border-radius: 1.25rem;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.9), var(--it-ground));
+  position: relative;
+  overflow: hidden;
+  align-items: flex-start;
+}
+
+.milan-hero::after {
+  content: "";
+  position: absolute;
+  inset: 1.1rem;
+  border: 1px dashed rgba(216, 176, 114, 0.35);
+  pointer-events: none;
+}
+
+.milan-hero__text {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / span 6;
+  margin-left: clamp(-1.5rem, -2.5vw, -1rem);
+  padding-left: clamp(1rem, 2vw, 1.25rem);
+  padding-right: clamp(1.25rem, 2vw, 1.75rem);
+  border-right: 1px solid rgba(216, 176, 114, 0.35);
+}
+
+.milan-hero__word {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 5.5vw, 4.25rem);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--it-ink);
+  line-height: 0.95;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  white-space: nowrap;
+}
+
+.milan-hero__copy {
+  margin: 0;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: rgba(47, 34, 30, 0.78);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.milan-hero__aside {
+  grid-column: 7 / -1;
+  display: grid;
+  grid-template-rows: minmax(280px, 1fr) auto;
+  gap: clamp(1rem, 2vw, 1.75rem);
+  align-items: stretch;
+  padding-left: clamp(1rem, 2vw, 2rem);
+}
+
+.milan-hero__visual {
+  border: 1px solid rgba(47, 34, 30, 0.15);
+  border-radius: 1rem;
+  padding: 0.85rem;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.92), rgba(248, 236, 220, 0.9));
+  box-shadow: 0 20px 35px -30px rgba(0, 0, 0, 0.35);
+  min-height: clamp(260px, 35vw, 420px);
+  display: flex;
+}
+
+.milan-hero__visual img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.75rem;
+  object-fit: cover;
+}
+
+.milan-hero__pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+}
+
+.milan-hero__pillar {
+  border: 1px solid rgba(47, 34, 30, 0.15);
+  border-radius: 1rem;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.85), rgba(247, 235, 219, 0.9));
+}
+
+.milan-hero__pillar-dot {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 999px;
+  background: var(--it-sage);
+  box-shadow: 0 0 0 4px rgba(95, 111, 82, 0.2);
+}
+
+.milan-hero__pillar-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(47, 34, 30, 0.8);
+}
+
+.milan-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1rem, 3vw, 1.75rem);
+}
+
+.milan-category-card {
+  border: 1px solid rgba(47, 34, 30, 0.18);
+  border-radius: 1rem;
+  padding: 1.75rem;
+  background: var(--it-parchment);
+  box-shadow: var(--it-shadow-soft);
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.milan-category-card.is-alt {
+  background: linear-gradient(160deg, rgba(216, 176, 114, 0.12), var(--it-parchment));
+}
+
+.milan-category-card__label {
+  margin: 0;
+  font-family: var(--font-display);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--it-ink);
+}
+
+.milan-category-card__body {
+  margin: 0.75rem 0 0;
+  line-height: 1.7;
+  color: rgba(47, 34, 30, 0.85);
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-split-grid {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.milan-split {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: center;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid rgba(47, 34, 30, 0.15);
+  border-radius: 1.25rem;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.9), var(--it-ground));
+}
+
+.milan-split--reverse {
+  direction: rtl;
+  text-align: right;
+}
+
+.milan-split--reverse .milan-split__copy,
+.milan-split--reverse .milan-split__media {
+  direction: ltr;
+  text-align: left;
+}
+
+.milan-split__media {
+  border-radius: 1rem;
+  border: 1px solid rgba(216, 176, 114, 0.35);
+  padding: 1rem;
+  background: #fff;
+}
+
+.milan-split__image {
+  width: 100%;
+  height: auto;
+  border-radius: 0.85rem;
+  object-fit: cover;
+}
+
+.milan-split__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.milan-split__label {
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(47, 34, 30, 0.55);
+}
+
+.milan-split__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--it-ink);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.milan-split__body {
+  margin: 0;
+  line-height: 1.8;
+  font-size: 1rem;
+  color: rgba(47, 34, 30, 0.8);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-home .milan-realestate-hero {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1.2rem, 3vw, 2rem);
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  border: 1px solid rgba(47, 34, 30, 0.15);
+  border-radius: 1.25rem;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.95), var(--it-ground));
+}
+
+.milan-home .milan-realestate-hero__word {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--it-ink);
+  text-wrap: balance;
+  overflow-wrap: normal;
+  white-space: nowrap;
+}
+
+.milan-home .milan-realestate-hero__copy {
+  margin: 0.75rem 0 0;
+  line-height: 1.7;
+  color: rgba(47, 34, 30, 0.78);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-home .milan-realestate-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-top: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+.milan-home .milan-realestate-stat {
+  padding: 1rem;
+  border: 1px solid rgba(216, 176, 114, 0.35);
+  border-radius: 0.75rem;
+  text-transform: uppercase;
+}
+
+.milan-home .milan-realestate-stat__label {
+  margin: 0;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  color: rgba(47, 34, 30, 0.55);
+}
+
+.milan-home .milan-realestate-stat__value {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-display);
+  letter-spacing: 0.15em;
+  color: var(--it-ink);
+}
+
+.milan-realestate-stories {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.milan-realestate-story {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.95), var(--it-ground));
+}
+
+.milan-realestate-story .milan-split__copy {
+  gap: 1.1rem;
+}
+
+.milan-realestate-story .milan-split__media {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.92), rgba(248, 236, 220, 0.9));
+}
+
+.milan-realestate-gallery {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.milan-realestate-gallery.is-paired {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.milan-realestate-gallery.is-stacked {
+  grid-auto-flow: row;
+}
+
+.milan-realestate-gallery__frame {
+  border: 1px solid rgba(216, 176, 114, 0.35);
+  border-radius: 1rem;
+  padding: 0.5rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(252, 244, 229, 0.85));
+  box-shadow: 0 20px 40px -32px rgba(0, 0, 0, 0.35);
+}
+
+.milan-realestate-story .milan-dossier-card__fields {
+  padding-top: 1rem;
+}
+
+.milan-realestate-story .milan-dossier-card__cta {
+  margin-top: 0.5rem;
+}
+
+.milan-dossier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.milan-dossier-card {
+  border: 1px solid rgba(47, 34, 30, 0.15);
+  border-radius: 1.25rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  background: var(--it-parchment);
+  box-shadow: var(--it-shadow-soft);
+  overflow: hidden;
+  position: relative;
+  z-index: 0;
+}
+
+.milan-dossier-card.is-primary {
+  background: linear-gradient(150deg, rgba(216, 176, 114, 0.15), var(--it-parchment));
+}
+
+.milan-dossier-card::before,
+.milan-dossier-card::after {
+  content: "";
+  position: absolute;
+  width: 55px;
+  height: 1px;
+  background: rgba(216, 176, 114, 0.5);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.milan-dossier-card::before {
+  top: 1rem;
+  left: 1.5rem;
+  box-shadow: 0 18px 0 0 rgba(216, 176, 114, 0.25);
+}
+
+.milan-dossier-card::after {
+  bottom: 1rem;
+  right: 1.5rem;
+  box-shadow: 0 -18px 0 0 rgba(216, 176, 114, 0.25);
+}
+
+.milan-dossier-card__label {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(47, 34, 30, 0.55);
+}
+
+.milan-dossier-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--it-ink);
+}
+
+.milan-dossier-card__body {
+  margin: 0;
+  line-height: 1.8;
+  color: rgba(47, 34, 30, 0.8);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-dossier-card__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(47, 34, 30, 0.1);
+}
+
+.milan-dossier-card__field {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  align-items: center;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: rgba(47, 34, 30, 0.65);
+  padding-bottom: 0.65rem;
+  border-bottom: 0.5px solid rgba(216, 176, 114, 0.35);
+}
+
+.milan-dossier-card__field:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.milan-dossier-card__field span {
+  font-size: 0.6rem;
+}
+
+.milan-dossier-card__field p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--it-secondary);
+  text-transform: none;
+  letter-spacing: 0.05em;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+  text-align: right;
+}
+
+.milan-dossier-card__cta {
+  margin-top: 1rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(47, 34, 30, 0.1);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: var(--it-secondary);
+  display: inline-flex;
+  justify-content: space-between;
+  min-height: 40px;
+  min-width: 40px;
+}
+
+.milan-dossier-card__cta.primary {
+  color: var(--it-ink);
+}
+
+@media (max-width: 900px) {
+  .milan-hero {
+    grid-template-columns: 1fr;
+    padding: 2rem;
+  }
+
+  .milan-hero::after {
+    inset: 1rem;
+  }
+
+  .milan-hero__text {
+    margin-left: 0;
+    padding-left: 0;
+    padding-right: 0;
+    border-right: none;
+  }
+
+  .milan-hero__word {
+    white-space: normal;
+  }
+
+  .milan-hero__aside {
+    grid-column: 1 / -1;
+    padding-left: 0;
+    grid-template-rows: auto auto;
+  }
+
+  .milan-hero__pillars {
+    grid-template-columns: 1fr;
+  }
+
+  .milan-split {
+    grid-template-columns: 1fr;
+  }
+
+  .milan-home .milan-realestate-hero__word {
+    white-space: normal;
+    font-size: clamp(1.8rem, 6vw, 2.6rem);
+    letter-spacing: 0.18em;
+  }
+}

@@ -1,0 +1,142 @@
+.milan-products-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid rgba(216, 176, 114, 0.35);
+  border-radius: 1rem;
+  background: linear-gradient(130deg, rgba(255, 255, 255, 0.9), var(--it-ground));
+  overflow: hidden;
+}
+
+.milan-products-hero__word {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 6vw, 4.5rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--it-ink);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.milan-products-hero__copy {
+  margin: 0.75rem 0 0;
+  line-height: 1.8;
+  color: rgba(47, 34, 30, 0.8);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-products-stack {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.milan-products-card {
+  border: 1px solid rgba(47, 34, 30, 0.15);
+  border-radius: 1.25rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  background: var(--it-parchment);
+  box-shadow: var(--it-shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow: hidden;
+}
+
+.milan-products-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--it-ink);
+}
+
+.milan-products-card__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+.milan-products-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  color: rgba(47, 34, 30, 0.6);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-products-field p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--it-secondary);
+  text-transform: none;
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  margin-top: clamp(3rem, 6vw, 5rem);
+  gap: clamp(1rem, 3vw, 2rem);
+}
+
+.milan-catalog-card {
+  border: 1px solid rgba(47, 34, 30, 0.15);
+  border-radius: 1.25rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  background: var(--it-ground);
+  min-height: 200px;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.milan-catalog-card.is-primary {
+  background: linear-gradient(180deg, rgba(216, 176, 114, 0.15), var(--it-ground));
+}
+
+.milan-catalog-card:hover {
+  transform: translateY(-6px);
+}
+
+.milan-catalog-card__label {
+  margin: 0;
+  font-family: var(--font-display);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--it-ink);
+}
+
+.milan-catalog-card__body {
+  margin: 0;
+  line-height: 1.7;
+  color: rgba(47, 34, 30, 0.8);
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.milan-catalog-card__media {
+  border: 1px solid rgba(216, 176, 114, 0.35);
+  border-radius: 1rem;
+  padding: 0.65rem;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.9), rgba(252, 245, 233, 0.85));
+  box-shadow: 0 20px 40px -32px rgba(0, 0, 0, 0.35);
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: stretch;
+}

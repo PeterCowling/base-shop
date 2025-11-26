@@ -1,4 +1,9 @@
+'use client';
+
 import { Grid } from "@/components/primitives/Grid";
+import { useTranslations } from "@i18n";
+import type { Locale } from "@/lib/locales";
+import { joinClasses } from "@/lib/joinClasses";
 
 const SERVICE_KEYS = [
   "services.list.design",
@@ -7,18 +12,36 @@ const SERVICE_KEYS = [
 ];
 
 type ServicesSectionProps = {
-  translator: (key: string) => string;
-  isZh: boolean;
+  lang: Locale;
 };
 
-const joinClasses = (...classes: Array<string | false | undefined>) =>
-  classes.filter(Boolean).join(" ");
-
-export default function ServicesSection({ translator, isZh }: ServicesSectionProps) {
+export default function ServicesSection({ lang }: ServicesSectionProps) {
+  const translator = useTranslations();
+  const isZh = lang === "zh";
+  const isIt = lang === "it";
   const cardBase = ["rounded-2xl", "p-5", "transition", "hover:shadow-lg"];
   const cardPanelZh = ["border-accent/50", "bg-zinc-900/50", "text-zinc-100"];
-  const cardPanelEn = ["border-slate-200", "bg-white/80", "text-slate-900"];
-  const introColor = isZh ? "text-zinc-200" : "text-slate-700";
+  const cardPanelEn = ["border-border", "bg-panel", "text-fg"];
+  const introColor = isZh ? "text-zinc-200" : "text-muted-foreground";
+
+  if (isIt) {
+    return (
+      <section className="milan-services">
+        <div className="milan-services__header">
+          <p className="milan-eyebrow">{translator("services.heading")}</p>
+          <p className="milan-services__intro">{translator("services.intro")}</p>
+        </div>
+        <div className="milan-services__list">
+          {SERVICE_KEYS.map((key, index) => (
+            <div key={key} className="milan-services__item">
+              <span className="milan-services__index">{String(index + 1).padStart(2, "0")}</span>
+              <p className="milan-services__copy">{translator(key)}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="space-y-6">
@@ -34,7 +57,11 @@ export default function ServicesSection({ translator, isZh }: ServicesSectionPro
         {SERVICE_KEYS.map((key) => (
           <div
             key={key}
-            className={joinClasses(...cardBase, ...(isZh ? cardPanelZh : cardPanelEn))}
+            className={joinClasses(
+              ...cardBase,
+              "skylar-card",
+              ...(isZh ? cardPanelZh : cardPanelEn)
+            )}
           >
             <p className="font-body text-sm uppercase skylar-subheading-tracking">
               {translator(key)}

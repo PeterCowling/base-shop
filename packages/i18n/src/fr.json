@@ -34,5 +34,19 @@
   "tryon.autoPlace": "Placement auto",
   "cms.blocks.socialFeed.embedTitle": "Fil social",
   "cms.blocks.socialFeed.loadError": "Impossible de charger le fil social",
-  "cms.blocks.socialFeed.missingConfig": "Aucun fil social configuré."
+  "cms.blocks.socialFeed.missingConfig": "Aucun fil social configuré.",
+  "header.menu.close": "Fermer le menu",
+  "header.menu.navigationClose": "Fermer la navigation",
+  "header.menu.navigationOpen": "Ouvrir la navigation",
+  "header.menu.open": "Ouvrir le menu",
+  "header.menu.preferences": "Préférences",
+  "header.nav.aria": "Navigation principale",
+  "hero.nav.prev": "Diapositive précédente",
+  "hero.nav.next": "Diapositive suivante",
+  "reviews.prev": "Avis précédent",
+  "reviews.next": "Avis suivant",
+  "recommendations.regionLabel": "Produits recommandés",
+  "recommendations.controls.previous": "Recommandation précédente",
+  "recommendations.controls.next": "Recommandation suivante",
+  "recommendations.page": "Aller à la page {page}"
 }

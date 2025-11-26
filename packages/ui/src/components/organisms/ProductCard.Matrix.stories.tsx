@@ -1,7 +1,7 @@
 // packages/ui/src/components/organisms/ProductCard.Matrix.stories.tsx
 
 import type { Meta, StoryObj } from '@storybook/react';
-import { within, userEvent, expect } from '@storybook/test';
+import { within, userEvent, expect } from 'storybook/test';
 import { ProductCard, type ProductCardProps } from './ProductCard';
 import { PRODUCTS } from '@acme/platform-core/products/index';
 import { makeStateStory } from '../../story-utils/createStories';

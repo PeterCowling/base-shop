@@ -1,0 +1,448 @@
+.products-en-hero {
+  display: grid;
+  gap: 3rem;
+  border-radius: 36px;
+  border: 1px solid rgba(228, 61, 18, 0.18);
+  background: linear-gradient(135deg, #fffaf4 0%, #fff5ea 45%, #ffffff 100%);
+  padding: 3rem;
+  box-shadow: inset 0 1px 0 rgba(228, 61, 18, 0.08);
+}
+
+.products-en-hero__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  max-width: 44rem;
+}
+
+.products-en-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  color: var(--skylar-en-accent);
+}
+
+.products-en-hero__subhead {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.3em;
+  line-height: 1.75;
+  text-transform: uppercase;
+  color: rgba(228, 61, 18, 0.7);
+}
+
+.products-en-hero__visual {
+  border-radius: 28px;
+  border: 1px dashed rgba(228, 61, 18, 0.4);
+  background: rgba(255, 255, 255, 0.65);
+  padding: 2rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(19, 19, 19, 0.6);
+  display: flex;
+  align-items: center;
+}
+
+.products-en-hero__pills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.products-en-hero__pills li {
+  border-radius: 999px;
+  border: 1px solid rgba(12, 12, 12, 0.2);
+  padding: 0.65rem 1.2rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  line-height: 1.8;
+  text-transform: uppercase;
+  color: rgba(19, 18, 18, 0.7);
+}
+
+.products-hero {
+  padding-bottom: clamp(3rem, 6vw, 6rem);
+  margin-bottom: clamp(2.5rem, 6vw, 5rem);
+}
+
+.products-hero__title-line {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.products-hero__image-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: flex-end;
+}
+
+.products-hero__secondary-image {
+  border-radius: 24px;
+  border: 1px solid rgba(228, 61, 18, 0.2);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 0.75rem;
+  width: min(50vw, 520px);
+  height: auto;
+  box-shadow: 0 30px 45px -40px rgba(20, 6, 0, 0.45);
+}
+
+.products-en-posters {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  width: min(100%, 1180px);
+  margin: clamp(3rem, 6vw, 5.5rem) auto clamp(2.5rem, 6vw, 5rem);
+  padding-top: clamp(2rem, 4vw, 3.5rem);
+  border-top: 1px solid rgba(228, 61, 18, 0.15);
+  align-items: stretch;
+  text-align: center;
+}
+
+.products-en-posters .realestate-showcase-heading {
+  font-size: clamp(3.2rem, 8vw, 9rem);
+  letter-spacing: clamp(0.25em, 0.7vw, 0.55em);
+  margin-bottom: clamp(1rem, 3vw, 2.5rem);
+}
+
+.products-en-poster,
+.realestate-poster {
+  border-radius: 40px;
+  border: 1px solid rgba(228, 61, 18, 0.2);
+  background: linear-gradient(145deg, rgba(255, 252, 250, 0.95), #ffffff);
+  padding: clamp(1.6rem, 3vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 2rem);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 35px 45px -40px rgba(12, 5, 0, 0.35);
+}
+
+.products-en-poster {
+  width: 100%;
+  text-align: left;
+}
+
+.products-en-poster::after,
+.realestate-poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, rgba(228, 61, 18, 0.08), transparent 60%);
+  pointer-events: none;
+}
+
+.products-en-poster__word,
+.realestate-poster__word {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 5.5rem);
+  letter-spacing: clamp(0.3em, 0.9vw, 0.75em);
+  text-transform: uppercase;
+  color: var(--skylar-en-accent);
+}
+
+.products-en-poster__copy h2,
+.realestate-poster__copy h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.8rem);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(228, 61, 18, 0.9);
+}
+
+.products-en-poster__content {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2vw, 2.2rem);
+}
+
+@media (min-width: 900px) {
+  .products-en-poster__content {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: start;
+  }
+}
+
+.products-en-poster__copy p,
+.realestate-poster__copy p {
+  margin: 0.75rem 0 0;
+  font-size: clamp(1rem, 1.3vw, 1.2rem);
+  line-height: 1.85;
+  color: var(--skylar-en-body);
+}
+
+.products-en-poster__bullets {
+  margin: 0;
+}
+
+.products-en-poster__bullets,
+.realestate-poster__bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: clamp(0.9rem, 1vw, 1.05rem);
+  color: var(--skylar-en-secondary);
+  z-index: 1;
+}
+
+.products-en-poster__bullets li,
+.realestate-poster__bullets li {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.products-en-poster__bullets span,
+.realestate-poster__bullets span {
+  color: var(--skylar-en-gold);
+  font-size: 0.85em;
+}
+
+.products-en-grid {
+  display: grid;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.products-en-section {
+  border-radius: 30px;
+  border: 1px solid rgba(228, 61, 18, 0.15);
+  background: var(--skylar-en-panel);
+  padding: 2.5rem;
+  box-shadow: 0 20px 45px rgba(15, 9, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.products-en-section.is-contrast {
+  background: var(--skylar-en-panel);
+  border-color: rgba(228, 61, 18, 0.15);
+}
+
+.products-en-section__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.products-en-section__index {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(228, 61, 18, 0.85);
+}
+
+.products-en-section__heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--skylar-en-accent);
+}
+
+.products-en-section__body {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  line-height: 1.85;
+  color: rgba(34, 24, 17, 0.8);
+}
+
+.products-en-section__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.products-en-section__list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  font-size: 0.92rem;
+  letter-spacing: 0.18em;
+  line-height: 1.8;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.8);
+}
+
+.products-en-section__categories {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.products-en-section__categories li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.products-en-section__list-label {
+  font-size: 0.95rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.85);
+}
+
+.products-en-section__list-copy {
+  margin: 0.35rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  color: rgba(17, 17, 17, 0.75);
+}
+
+.products-en-section__bullet {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 999px;
+  background: var(--skylar-en-accent);
+  margin-top: 0.4rem;
+}
+
+.products-en-icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 16px;
+  border: 1px solid rgba(228, 61, 18, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--skylar-en-accent);
+  font-size: 1.1rem;
+  background: rgba(228, 61, 18, 0.05);
+  margin-bottom: 0.25rem;
+}
+
+.products-en-icon::before {
+  content: "";
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.products-en-icon--electronics::before {
+  border-radius: 4px;
+  box-shadow: inset 0 -5px currentColor;
+}
+
+.products-en-icon--home::before {
+  border-radius: 2px;
+  transform: rotate(45deg);
+}
+
+.products-en-icon--apparel::before {
+  border-radius: 999px 999px 20% 20%;
+}
+
+.products-en-icon--pet::before {
+  border-radius: 999px;
+  box-shadow:
+    8px -8px 0 -6px currentColor,
+    -8px -8px 0 -6px currentColor,
+    8px 8px 0 -6px currentColor,
+    -8px 8px 0 -6px currentColor;
+}
+
+.products-en-section__note {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(17, 17, 17, 0.75);
+}
+
+.products-en-section__image-note {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.5);
+}
+
+.products-en-catalog {
+  width: min(100%, 1180px);
+  margin: clamp(3rem, 6vw, 5.5rem) auto clamp(2.5rem, 5vw, 4.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 4vw, 3.5rem);
+  align-items: center;
+}
+
+.products-en-catalog .realestate-showcase-heading {
+  text-align: center;
+  font-size: clamp(3.5rem, 9vw, 9.5rem);
+  margin-bottom: clamp(1rem, 3vw, 2rem);
+  letter-spacing: clamp(0.25em, 0.9vw, 0.7em);
+}
+
+.products-en-categories.is-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1.25rem, 3vw, 3rem);
+  align-items: stretch;
+  grid-auto-rows: 1fr;
+  width: 100%;
+}
+
+.products-en-category-card {
+  border-radius: 26px;
+  border: 1px solid rgba(228, 61, 18, 0.2);
+  background: var(--skylar-en-panel);
+  padding: clamp(1.5rem, 3vw, 2.35rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 100%;
+  box-shadow: 0 30px 45px -40px rgba(15, 9, 0, 0.15);
+  text-align: left;
+  align-items: flex-start;
+}
+
+.products-en-category-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+  width: 100%;
+}
+
+.products-en-category-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--skylar-en-accent);
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+}
+
+.products-en-category-card__copy {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  line-height: 1.7;
+  color: var(--skylar-en-body);
+  max-width: 32ch;
+}

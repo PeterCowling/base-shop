@@ -34,39 +34,25 @@ export default meta;
 export const Default: StoryObj<typeof ProductCard> = {};
 
 export const WithBadge: StoryObj<typeof ProductCard> = {
-  decorators: [
-    (Story) => (
-      <div className="relative">
-        <Story />
-      </div>
-    ),
-  ],
   render: (args) => (
-    <>
+    <div className="relative">
       <ProductCard {...args} />
       <ProductBadge
         label="Sale"
         variant="sale"
         className="absolute top-2 start-2"
       />
-    </>
+    </div>
   ),
 };
 
 export const OutOfStock: StoryObj<typeof ProductCard> = {
-  decorators: [
-    (Story) => (
-      <div className="relative">
-        <Story />
-      </div>
-    ),
-  ],
   render: (args) => (
-    <>
+    <div className="relative">
       <ProductCard {...args} />
       <div className="absolute inset-0 bg-fg/60 font-semibold text-bg">
         <Cover minH="[60vh]">Out of stock</Cover>
       </div>
-    </>
+    </div>
   ),
 };

@@ -1,0 +1,25 @@
+.zh-home-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.zh-card {
+  border-radius: 36px;
+  padding: clamp(1.75rem, 3vw, 3rem);
+  background: radial-gradient(circle at top left, #110f0c, #050505);
+  border: 1px solid rgba(246, 213, 142, 0.35);
+  color: #f6dfb4;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.9rem, 2vw, 1.5rem);
+  box-shadow: 0 35px 45px -40px rgba(0, 0, 0, 0.8);
+}
+
+.zh-people-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  margin-top: clamp(1rem, 3vw, 2.5rem);
+}
+

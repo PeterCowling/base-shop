@@ -10,7 +10,7 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
-  ({ value, label, className, labelClassName, ...props }, ref) => {
+  ({ value, label, className, labelClassName, style: _style, ...props }, ref) => {
     const clampedValue = Number.isFinite(value)
       ? Math.min(100, Math.max(0, value))
       : 0;
@@ -26,10 +26,10 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         >
           <div
             className={cn(
-              "bg-primary h-full transition-all" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+              "bg-primary h-full transition-all", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+              `w-[${width}]`
             )}
             data-token="--color-primary" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
-            style={{ width }}
           />
         </div>
         {label ? (

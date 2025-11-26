@@ -1,0 +1,132 @@
+.loket-nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(1rem, 2vw, 2.5rem);
+  padding: clamp(1rem, 2vw, 2.5rem) 0;
+  border-bottom: 1px solid rgba(228, 61, 18, 0.25);
+  text-transform: uppercase;
+}
+
+.skylar-shell-root[data-locale="zh"] .loket-nav {
+  border-color: rgba(247, 213, 142, 0.4);
+}
+
+.skylar-shell-root[data-locale="it"] .loket-nav {
+  border-color: rgba(148, 31, 30, 0.25);
+}
+
+.loket-logo {
+  font-family: var(--font-display);
+  letter-spacing: clamp(0.1em, 0.35vw, 0.25em);
+  font-size: clamp(1rem, 2vw, 2rem);
+  color: var(--skylar-en-accent);
+}
+
+.loket-logo__image {
+  display: block;
+  height: auto;
+}
+
+.loket-nav__center {
+  display: flex;
+  justify-content: center;
+  gap: clamp(1rem, 2vw, 3rem);
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.loket-nav__link {
+  letter-spacing: clamp(0.08em, 0.35vw, 0.22em);
+  font-size: clamp(0.95rem, 1.8vw, 1.6rem);
+  font-weight: 600;
+  color: var(--skylar-en-secondary);
+  opacity: 0.85;
+  transition: opacity 0.2s ease, color 0.2s ease;
+  position: relative;
+  padding-inline: clamp(0.2rem, 0.4vw, 0.6rem);
+}
+
+.skylar-shell-root[data-locale="zh"] .loket-nav__link {
+  color: rgba(247, 213, 142, 0.7);
+}
+
+.skylar-shell-root[data-locale="it"] .loket-nav__link {
+  color: rgba(47, 34, 30, 0.65);
+}
+
+.skylar-shell-root[data-locale="it"] .loket-nav__link {
+  font-size: clamp(0.85rem, 1.4vw, 1.3rem);
+  letter-spacing: clamp(0.06em, 0.3vw, 0.18em);
+}
+
+.loket-nav__link::after {
+  content: "";
+  position: absolute;
+  right: calc(-1 * clamp(0.5rem, 1vw, 1rem));
+  top: 20%;
+  bottom: 20%;
+  width: 2px;
+  background: rgba(228, 61, 18, 0.6);
+}
+
+.skylar-shell-root[data-locale="zh"] .loket-nav__link::after {
+  background: rgba(247, 213, 142, 0.45);
+}
+
+.skylar-shell-root[data-locale="it"] .loket-nav__link::after {
+  background: rgba(148, 31, 30, 0.35);
+}
+
+.loket-nav__link:last-of-type::after {
+  display: none;
+}
+
+.loket-nav__link.is-active,
+.loket-nav__link:hover {
+  opacity: 1;
+  color: var(--skylar-en-accent);
+}
+
+.skylar-shell-root[data-locale="zh"] .loket-nav__link.is-active,
+.skylar-shell-root[data-locale="zh"] .loket-nav__link:hover {
+  color: #f8d572;
+}
+
+.skylar-shell-root[data-locale="it"] .loket-nav__link.is-active,
+.skylar-shell-root[data-locale="it"] .loket-nav__link:hover {
+  color: var(--it-ink);
+}
+
+.loket-nav__languages {
+  display: flex;
+  gap: clamp(0.4rem, 1vw, 1.25rem);
+  justify-content: flex-end;
+}
+
+.loket-nav__language {
+  letter-spacing: clamp(0.08em, 0.35vw, 0.22em);
+  font-size: clamp(0.75rem, 1.1vw, 1.05rem);
+  color: var(--skylar-en-secondary);
+  font-weight: 500;
+}
+
+.skylar-shell-root[data-locale="zh"] .loket-nav__language {
+  color: rgba(247, 213, 142, 0.7);
+}
+
+.skylar-shell-root[data-locale="it"] .loket-nav__language {
+  color: rgba(47, 34, 30, 0.55);
+}
+
+.loket-nav__language.is-active {
+  color: var(--skylar-en-accent);
+}
+
+.skylar-shell-root[data-locale="zh"] .loket-nav__language.is-active {
+  color: #f8d572;
+}
+
+.skylar-shell-root[data-locale="it"] .loket-nav__language.is-active {
+  color: var(--it-ink);
+}

@@ -51,14 +51,14 @@ export default defineConfig({
       } catch {}
       // Image snapshot plugin
       try {
-        const { addMatchImageSnapshotPlugin } = await import('cypress-image-snapshot/plugin');
-        // @ts-ignore - types missing
+        const { addMatchImageSnapshotPlugin } = await import('@acme/cypress-image-snapshot/plugin');
+        // @ts-expect-error -- image snapshot plugin ships without TypeScript declarations
         addMatchImageSnapshotPlugin(on, config);
       } catch {}
       // Lighthouse audits (optional)
       try {
         const { lighthouse, pa11y } = await import('cypress-audit/src/plugin');
-        // @ts-ignore - types missing
+        // @ts-expect-error -- tasks helper currently has no upstream types
         on('task', { lighthouse: lighthouse(), pa11y: pa11y() });
       } catch {}
       let tempDir: string | null = null;
@@ -82,7 +82,6 @@ export default defineConfig({
       on("task", {
         /** Simple logger to surface values from browser context */
         log(message: unknown) {
-          // eslint-disable-next-line no-console
           console.log(message);
           return null;
         },
@@ -94,6 +93,7 @@ export default defineConfig({
           const root = mkdtempSync(join(os.tmpdir(), "cypress-data-"));
           const src = join("__tests__", "data", "shops", shop);
           const dest = join(root, shop);
+          // eslint-disable-next-line security/detect-non-literal-fs-filename -- destination lives inside a mkdtemp-generated directory under the OS temp path
           mkdirSync(dest, { recursive: true });
           ["pages.json", "settings.json"].forEach((file) => {
             cpSync(join(src, file), join(dest, file));

@@ -1,0 +1,21 @@
+/* eslint-disable ds/no-hardcoded-copy -- STYLING-0001: Milan theme tokens are CSS classnames, not user copy */
+export const MILAN_CLASSES = {
+  panel: "milan-panel",
+  panelAccent: "milan-panel milan-panel--accent",
+  panelTitle: "milan-panel__title",
+  panelBody: "milan-panel__body",
+  sectionLabel: "milan-eyebrow",
+  ctaPrimary: "milan-cta primary",
+  ctaSecondary: "milan-cta secondary",
+  imageFrame: "milan-image-frame",
+  personCard: "milan-person-card",
+  personHeader: "milan-person-card__header",
+  personName: "milan-person-card__name",
+  personSubtitle: "milan-person-card__subtitle",
+  personSummary: "milan-person-card__summary",
+  personContact: "milan-person-card__contact",
+  personLabel: "milan-person-card__label",
+  personValue: "milan-person-card__value",
+  footer: "milan-footer",
+};
+/* eslint-enable ds/no-hardcoded-copy */

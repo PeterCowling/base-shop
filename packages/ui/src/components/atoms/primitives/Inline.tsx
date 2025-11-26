@@ -3,14 +3,14 @@ import { cn } from "../../../utils/style/cn";
 import * as React from "react";
 import { Slot } from "./slot";
 
-type Props = React.HTMLAttributes<HTMLElement> & {
+type Props = React.ComponentPropsWithoutRef<"div"> & {
   gap?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 8 | 10 | 12;
   alignY?: "start" | "center" | "end" | "baseline";
   wrap?: boolean;
   asChild?: boolean;
 };
 
-export const Inline = React.forwardRef<HTMLElement, Props>(
+export const Inline = React.forwardRef<React.ElementRef<"div">, Props>(
   (
     {
       gap = 2,
@@ -33,7 +33,7 @@ export const Inline = React.forwardRef<HTMLElement, Props>(
     const Comp = asChild ? Slot : "div";
     return (
       <Comp
-        ref={ref as React.Ref<HTMLElement>}
+        ref={ref}
         className={cn(
           "flex",
           wrap ? "flex-wrap" : "flex-nowrap",

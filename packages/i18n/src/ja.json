@@ -34,5 +34,19 @@
   "tryon.autoPlace": "自動配置",
   "cms.blocks.socialFeed.embedTitle": "ソーシャルフィード",
   "cms.blocks.socialFeed.loadError": "ソーシャルフィードを読み込めませんでした",
-  "cms.blocks.socialFeed.missingConfig": "ソーシャルフィードが設定されていません。"
+  "cms.blocks.socialFeed.missingConfig": "ソーシャルフィードが設定されていません。",
+  "header.menu.close": "メニューを閉じる",
+  "header.menu.navigationClose": "ナビゲーションを閉じる",
+  "header.menu.navigationOpen": "ナビゲーションを開く",
+  "header.menu.open": "メニューを開く",
+  "header.menu.preferences": "設定",
+  "header.nav.aria": "メインナビゲーション",
+  "hero.nav.prev": "前のスライド",
+  "hero.nav.next": "次のスライド",
+  "reviews.prev": "前のレビュー",
+  "reviews.next": "次のレビュー",
+  "recommendations.regionLabel": "おすすめ商品",
+  "recommendations.controls.previous": "前のおすすめ",
+  "recommendations.controls.next": "次のおすすめ",
+  "recommendations.page": "{page} ページへ移動"
 }

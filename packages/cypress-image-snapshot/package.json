@@ -1,0 +1,31 @@
+{
+  "name": "@acme/cypress-image-snapshot",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "type": "commonjs",
+  "description": "Workspace copy of cypress-image-snapshot with updated dependencies.",
+  "main": "command.js",
+  "exports": {
+    ".": "./command.js",
+    "./command": "./command.js",
+    "./plugin": "./plugin.js",
+    "./reporter": "./reporter.js"
+  },
+  "files": [
+    "*.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "fs-extra": "^11.2.0",
+    "glob": "^10.4.5",
+    "jest-image-snapshot": "^6.5.1",
+    "pkg-dir": "^7.0.0",
+    "term-img": "^5.0.0"
+  },
+  "peerDependencies": {
+    "cypress": ">=10 <16"
+  }
+}

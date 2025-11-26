@@ -2,6 +2,7 @@
 "use client"; // i18n-exempt -- PB-123 Next.js directive, not user-facing copy [ttl=2025-12-31]
 
 import { useTranslations } from "@acme/i18n";
+import { Inline } from "../atoms/primitives/Inline";
 import { useCallback, useEffect, useState } from "react";
 
 export type Review = { nameKey: string; quoteKey: string };
@@ -44,6 +45,9 @@ export default function ReviewsCarousel({
   if (!list.length) return null;
   const { nameKey, quoteKey } = list[i % list.length];
 
+  const prevButtonLabel = t("reviews.prev");
+  const nextButtonLabel = t("reviews.next");
+
   return (
     <section className={SECTION_CLASS} data-token={TOKEN_MUTED}>
       <div className="mx-auto w-full px-4 text-center">
@@ -57,35 +61,24 @@ export default function ReviewsCarousel({
           {"— "}
           {t(nameKey)}
         </div>
-        <div className="mt-8 flex justify-center gap-4">
-          {(() => {
-            // Prefer translated labels when available; otherwise use accessible English fallbacks
-            const prevLabel = t("reviews.prev") as string;
-            const nextLabel = t("reviews.next") as string;
-            const ariaPrev = prevLabel === "reviews.prev" ? "Previous review" : prevLabel;
-            const ariaNext = nextLabel === "reviews.next" ? "Next review" : nextLabel;
-            return (
-              <>
-                <button
-                  aria-label={ariaPrev}
-                  className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
-                  onClick={prev}
-                >
-                  <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}‹</span>
-                  <span className="sr-only">{ariaPrev}</span>
-                </button>
-                <button
-                  aria-label={ariaNext}
-                  className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
-                  onClick={next}
-                >
-                  <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}›</span>
-                  <span className="sr-only">{ariaNext}</span>
-                </button>
-              </>
-            );
-          })()}
-        </div>
+        <Inline alignY="center" gap={4} className="mt-8 justify-center">
+          <button
+            aria-label={prevButtonLabel}
+            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
+            onClick={prev}
+          >
+            <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}‹</span>
+            <span className="sr-only">{prevButtonLabel}</span>
+          </button>
+          <button
+            aria-label={nextButtonLabel}
+            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
+            onClick={next}
+          >
+            <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}›</span>
+            <span className="sr-only">{nextButtonLabel}</span>
+          </button>
+        </Inline>
       </div>
     </section>
   );

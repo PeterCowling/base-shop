@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
+import { fn } from "storybook/test";
 import { ProductMediaGalleryTemplate } from "./ProductMediaGalleryTemplate";
 import type { SKU } from "@acme/types";
 

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- UI-1421 [ttl=2025-12-31]: error strings represent upload diagnostics */
 "use client";
 import { useCallback, useState } from "react";
 import { resizeImageToMaxPx } from "./resize";
@@ -10,6 +11,12 @@ export interface DirectUploadResult {
 }
 
 export interface R2UploadProgress { done: number; total: number }
+
+interface DirectUploadResponse {
+  objectUrl: string;
+  post?: { url: string; fields?: Record<string, string> };
+  legacyPut?: { uploadUrl: string; headers?: Record<string, string> };
+}
 
 export function useDirectR2Upload() {
   const [progress, setProgress] = useState<R2UploadProgress | null>(null);
@@ -32,12 +39,13 @@ export function useDirectR2Upload() {
       const err = await resp.json().catch(() => ({}));
       throw new Error(err?.error?.message || `Failed to sign upload (${resp.status})`);
     }
-    const info = await resp.json() as any;
-    const { objectUrl } = info as { objectUrl: string };
+    const info = await resp.json() as DirectUploadResponse;
+    const { objectUrl } = info;
+    const { post, legacyPut } = info;
 
-    if (info.post) {
+    if (post) {
       // Prefer pre-signed POST with conditions when available
-      const { url, fields } = info.post ?? {};
+      const { url, fields = {} } = post;
       const form = new FormData();
       Object.entries(fields || {}).forEach(([k, v]) => form.append(k, String(v)));
       form.append('file', blob);
@@ -49,12 +57,12 @@ export function useDirectR2Upload() {
         xhr.onerror = () => { setProgress(null); reject(new Error('Network error during upload')); };
         xhr.send(form);
       });
-    } else if (info.legacyPut?.uploadUrl) {
+    } else if (legacyPut?.uploadUrl) {
       // PUT via XHR to get upload progress
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open("PUT", info.legacyPut.uploadUrl, true);
-        const headers = info.legacyPut.headers || {} as Record<string,string>;
+        xhr.open("PUT", legacyPut.uploadUrl, true);
+        const headers = legacyPut.headers ?? {};
         for (const [k, v] of Object.entries(headers)) xhr.setRequestHeader(k, v);
         xhr.upload.onprogress = (e) => {
           if (e.lengthComputable) setProgress({ done: e.loaded, total: e.total });

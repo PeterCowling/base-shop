@@ -1,0 +1,84 @@
+.zh-products-catalog {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  width: min(100%, 1180px);
+  margin: clamp(2rem, 5vw, 4.5rem) auto clamp(2rem, 5vw, 4rem);
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  border-top: 1px solid rgba(247, 213, 114, 0.18);
+}
+
+.zh-products-catalog__heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.8rem, 8vw, 8.5rem);
+  letter-spacing: clamp(0.18em, 0.7vw, 0.55em);
+  text-transform: uppercase;
+  color: rgba(247, 213, 114, 0.95);
+  text-align: center;
+}
+
+.zh-products-catalog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  column-gap: clamp(1.25rem, 3vw, 3rem);
+  row-gap: clamp(1.75rem, 4vw, 3.5rem);
+}
+
+.zh-products-services {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  column-gap: clamp(1.25rem, 3vw, 2.75rem);
+  row-gap: clamp(1.75rem, 4vw, 3.5rem);
+  width: min(100%, 1180px);
+  margin: clamp(2rem, 5vw, 4rem) auto;
+  padding-top: clamp(1rem, 3vw, 2.5rem);
+  border-top: 1px solid rgba(247, 213, 114, 0.18);
+}
+
+.zh-products-catalog-card {
+  border-radius: 32px;
+  border: 1px solid rgba(247, 213, 114, 0.35);
+  background: #0b0a09;
+  padding: clamp(1.75rem, 3.2vw, 2.85rem);
+  color: #f6debb;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  min-height: 100%;
+  text-align: left;
+  align-items: flex-start;
+  box-shadow: 0 35px 45px -45px rgba(0, 0, 0, 0.75);
+}
+
+.zh-products-catalog-card .products-en-icon {
+  border-color: rgba(247, 213, 114, 0.4);
+  color: rgba(247, 213, 114, 0.85);
+  background: rgba(247, 213, 114, 0.08);
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.zh-products-catalog-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.zh-products-catalog-card__title {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(247, 213, 114, 0.9);
+}
+
+.zh-products-catalog-card__copy {
+  margin: 0;
+  line-height: 1.8;
+  letter-spacing: 0.08em;
+  color: rgba(247, 231, 193, 0.9);
+  max-width: 32ch;
+}
+

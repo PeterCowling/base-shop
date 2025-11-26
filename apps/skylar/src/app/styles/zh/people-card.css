@@ -1,0 +1,59 @@
+.zh-people-card {
+  gap: clamp(1rem, 2vw, 2rem);
+}
+
+.zh-people-card__names {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.zh-people-card__name-cn {
+  font-size: 1.4rem;
+  letter-spacing: 0.25em;
+  color: #ffd060;
+}
+
+.zh-people-card__name-en {
+  font-family: var(--font-display);
+  letter-spacing: 0.35em;
+  font-size: 0.9rem;
+}
+
+.zh-people-card__roles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.zh-people-card__role-zh {
+  margin: 0;
+  letter-spacing: 0.2em;
+  font-size: 0.95rem;
+  color: rgba(247, 213, 114, 0.9);
+}
+
+.zh-people-card__role-en {
+  margin: 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  color: rgba(247, 213, 114, 0.7);
+  text-transform: uppercase;
+}
+
+.zh-people-card__line {
+  margin: 0.2rem 0 0;
+  letter-spacing: 0.15em;
+  font-size: 0.8rem;
+  color: rgba(246, 223, 180, 0.8);
+}
+
+.zh-people-card__services {
+  border-top: 1px dashed rgba(247, 213, 114, 0.4);
+  border-bottom: 1px dashed rgba(247, 213, 114, 0.4);
+  padding: 0.9rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  letter-spacing: 0.15em;
+}

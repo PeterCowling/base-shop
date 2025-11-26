@@ -5,7 +5,9 @@
     "dev": "next dev -p 3008",
     "build": "next build",
     "start": "next start -p 3008",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
     "@acme/config": "workspace:*",
@@ -14,6 +16,7 @@
     "@acme/tailwind-config": "workspace:*",
     "next": "^15.3.5",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "zod": "^3.25.73"
   }
 }

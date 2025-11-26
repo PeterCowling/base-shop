@@ -1,22 +1,24 @@
+'use client';
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "@i18n";
 import type { Locale } from "@/lib/locales";
 import { localizedPath } from "@/lib/routes";
+import { joinClasses } from "@/lib/joinClasses";
 
 type HeroSectionProps = {
   lang: Locale;
   isZh: boolean;
-  translator: (key: string) => string;
 };
 
-const joinClasses = (...classes: Array<string | false | undefined>) =>
-  classes.filter(Boolean).join(" ");
-
-export default function HeroSection({ lang, isZh, translator }: HeroSectionProps) {
+export default function HeroSection({ lang, isZh }: HeroSectionProps) {
+  const translator = useTranslations();
+  const hostelLink = translator("links.hostel");
   const baseHero = ["rounded-[42px]", "border", "p-8", "md:p-10"];
   const zhHero = ["bg-zinc-900/70", "border-accent/60", "text-zinc-100"];
-  const enHero = ["bg-white/90", "border-slate-200", "text-slate-900"];
-  const badgeText = isZh ? "text-accent" : "text-slate-500";
+  const enHero = ["bg-panel", "border-border", "text-fg"];
+  const badgeText = isZh ? "text-accent" : "text-muted-foreground";
   const primaryButtonBase = [
     "inline-flex",
     "items-center",
@@ -32,12 +34,12 @@ export default function HeroSection({ lang, isZh, translator }: HeroSectionProps
   const primaryVariantZh = ["bg-accent", "text-zinc-900"];
   const primaryVariantEn = ["bg-slate-900", "text-white"];
   const secondaryVariantZh = ["border-accent/70", "text-accent"];
-  const secondaryVariantEn = ["border-slate-900", "text-slate-900"];
+  const secondaryVariantEn = ["border-border", "text-fg"];
   return (
-    <section className="space-y-8">
+    <section className="skylar-hero space-y-6">
       <div className={joinClasses(...baseHero, ...(isZh ? zhHero : enHero))}>
         <div className="flex flex-col gap-6">
-          <div className="flex items-center gap-4">
+          <div className="skylar-hero-logo">
             <Image
               src="/skylar-logo.svg" /* i18n-exempt -- DS-000 asset path [ttl=2026-12-31] */
               alt={translator("logo.alt")}
@@ -49,7 +51,7 @@ export default function HeroSection({ lang, isZh, translator }: HeroSectionProps
             <div>
               <p
                 className={`text-xs uppercase skylar-nav-text ${
-                  isZh ? "text-zinc-200/70" : "text-slate-400"
+                  isZh ? "text-zinc-200/70" : "text-muted-foreground"
                 }`}
               >
                 {translator("people.companyLine")}
@@ -74,7 +76,7 @@ export default function HeroSection({ lang, isZh, translator }: HeroSectionProps
               "text-sm",
               "uppercase",
               "skylar-support-tracking",
-              isZh ? "text-zinc-200/70" : "text-slate-500"
+              isZh ? "text-zinc-200/70" : "text-muted-foreground"
             )}
           >
             {translator("hero.support")}
@@ -84,28 +86,31 @@ export default function HeroSection({ lang, isZh, translator }: HeroSectionProps
               "font-body",
               "text-base",
               "leading-7",
-              isZh ? "text-zinc-200" : "text-slate-700"
+              isZh ? "text-zinc-200" : "text-muted-foreground"
             )}
           >
-            {translator("hero.copy")}
-          </p>
-          <div className="flex flex-wrap gap-3">
+              {translator("hero.copy")}
+            </p>
+          <div className="skylar-hero-actions">
             <Link
               href={localizedPath(lang, "products")}
               className={joinClasses(
                 ...primaryButtonBase,
+                "skylar-pill",
+                "primary",
                 ...(isZh ? primaryVariantZh : primaryVariantEn)
               )}
             >
               {translator("hero.cta.primary")}
             </Link>
             <a
-              href="https://hostel-positano.com"
+              href={hostelLink}
               target="_blank"
               rel="noreferrer"
               className={joinClasses(
                 ...primaryButtonBase,
-                "border",
+                "skylar-pill",
+                "secondary",
                 ...(isZh ? secondaryVariantZh : secondaryVariantEn)
               )}
             >

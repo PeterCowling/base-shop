@@ -3,6 +3,8 @@
 
 import * as React from "react";
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../../atoms/shadcn";
+import { Inline } from "../../../../atoms/primitives/Inline";
+import { Stack } from "../../../../atoms/primitives/Stack";
 import { cssError } from "./helpers";
 
 type Axis = "w" | "h";
@@ -71,17 +73,17 @@ export default function UnitInput({ componentId, label, labelSuffix, value, onCh
   const errorMsg = cssErr ?? (extraError ? `Invalid ${cssProp} value` : undefined);
   const inputId = React.useId();
   return (
-    <div className="flex items-end gap-2">
-      <div className="flex flex-1 flex-col gap-1">
+    <Inline alignY="end" gap={2} className="w-full">
+      <Stack gap={1} className="flex-1">
         {(label || labelSuffix) && (
-          <div className="flex items-center gap-1">
+          <Inline gap={1} alignY="center">
             {label ? (
               <label htmlFor={inputId} className="block text-sm font-medium">
                 {label}
               </label>
             ) : null}
             {labelSuffix ? <span className="pointer-events-auto">{labelSuffix}</span> : null}
-          </div>
+          </Inline>
         )}
         <Input
           id={inputId}
@@ -91,7 +93,7 @@ export default function UnitInput({ componentId, label, labelSuffix, value, onCh
           disabled={disabled}
           error={errorMsg}
         />
-      </div>
+      </Stack>
       <Select
         value={unit}
         onValueChange={(next) => {
@@ -109,6 +111,6 @@ export default function UnitInput({ componentId, label, labelSuffix, value, onCh
           <SelectItem value="rem">rem</SelectItem>
         </SelectContent>
       </Select>
-    </div>
+    </Inline>
   );
 }

@@ -1,17 +1,19 @@
+'use client';
+
+import Image from "next/image";
 import Link from "next/link";
-import { Inline } from "@/components/primitives/Inline";
 import { type Locale } from "@/lib/locales";
 import { localizedPath, type Section } from "@/lib/routes";
+import { useTranslations } from "@i18n";
+import styles from "./Nav.module.css";
 
 type NavProps = {
   lang: Locale;
   active: Section;
-  translator: (key: string) => string;
   isZh: boolean;
 };
 
 const NAV_ITEMS: Array<{ key: Section; labelKey: string }> = [
-  { key: "home", labelKey: "nav.home" },
   { key: "products", labelKey: "nav.products" },
   { key: "realEstate", labelKey: "nav.realEstate" },
   { key: "people", labelKey: "nav.people" },
@@ -32,109 +34,116 @@ function classNames(...classes: ClassValue[]) {
     .join(" ");
 }
 
-export default function Nav({ lang, active, translator, isZh }: NavProps) {
-  const accent = isZh ? "text-accent" : "text-slate-900";
-  const borderColor = isZh ? "border-accent/40" : "border-slate-200";
-  const baseNavItem = [
-    "transition",
-    "duration-300",
-    "font-display",
-    "text-xs",
-    "uppercase",
-    "skylar-nav-text",
-    "font-semibold",
-  ];
-  const activeLink = accent;
-  const inactiveLink = isZh
-    ? ["text-zinc-200/80", "hover:text-accent"]
-    : ["text-slate-500", "hover:text-slate-900"];
-
-  return (
-    <nav
-      className={classNames(
-        "flex",
-        "flex-col",
-        "gap-6",
-        "border-b",
-        "pb-6",
-        borderColor
-      )}
-    >
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div>
-          <p
-            className={classNames(
-              "font-display",
-              "text-3xl",
-              "uppercase",
-              "skylar-heading-tracking",
-              accent
-            )}
-          >
-            {translator("hero.headline")}
-          </p>
-          <p className={classNames("text-xs", "uppercase", "skylar-nav-text", "text-slate-500")}>
-            {translator("people.companyLine")}
-          </p>
+export default function Nav({ lang, active, isZh }: NavProps) {
+  const translator = useTranslations();
+  const isIt = lang === "it";
+  if (isIt) {
+    return (
+      <nav className={styles["nav"]} aria-label={translator("hero.headline")}>
+        <div className={styles["navShell"]}>
+          <div className={styles["identityBlock"]}>
+            <Link
+              href={localizedPath(lang, "home")}
+              className={styles["identityLogoLink"]}
+              aria-label={translator("hero.headline")}
+            >
+              <Image
+                src="/en-logo.png"
+                alt={translator("hero.headline")}
+                width={168}
+                height={64}
+                className={styles["identityLogo"]}
+                priority
+              />
+            </Link>
+          </div>
+          <div className={styles["navContent"]}>
+            <div className={styles["linksRow"]}>
+              {NAV_ITEMS.map((item) => {
+                const isActive = item.key === active;
+                return (
+                  <Link
+                    key={`${item.key}-it`}
+                    href={localizedPath(lang, item.key)}
+                    className={classNames(styles["link"], isActive && styles["linkActive"])}
+                  >
+                    {translator(item.labelKey)}
+                  </Link>
+                );
+              })}
+            </div>
+            <div className={styles["languageRow"]}>
+              <span className={styles["languageLabel"]}>{translator("language.sectionLabel")}</span>
+              <div className={styles["languageLinks"]}>
+                {LANGUAGES.map((option) => {
+                  const isActive = option.code === lang;
+                  return (
+                    <Link
+                      key={`${option.code}-it`}
+                      href={localizedPath(option.code, active)}
+                      className={classNames(
+                        styles["languageLink"],
+                        isActive ? styles["languageLinkActive"] : styles["languageLinkInactive"]
+                      )}
+                    >
+                      {translator(option.labelKey)}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
-        <LanguageSwitch
-          lang={lang}
-          translator={translator}
-          currentSection={active}
-          isZh={isZh}
+      </nav>
+    );
+  }
+  const navClass = classNames("loket-nav", isZh && "loket-nav--zh", isIt && "loket-nav--it");
+  const logoSrc = isZh ? "/zh-logo.png" : "/en-logo.png";
+  const logoClass = classNames("loket-logo__image", isZh && styles["zhLogo"]);
+  return (
+    <nav className={navClass}>
+      <Link
+        href={localizedPath(lang, "home")}
+        className="loket-logo"
+        aria-label={translator("hero.headline")}
+      >
+        <Image
+          src={logoSrc}
+          alt={translator("hero.headline")}
+          width={200}
+          height={148}
+          className={logoClass}
+          priority
         />
-      </div>
-      <Inline gap={6} className={classNames("text-xs", "uppercase", "skylar-nav-text")}>
+      </Link>
+      <div className="loket-nav__center">
         {NAV_ITEMS.map((item) => {
           const isActive = item.key === active;
           return (
             <Link
               key={item.key}
               href={localizedPath(lang, item.key)}
-              className={classNames(baseNavItem, isActive ? activeLink : inactiveLink)}
+              className={classNames("loket-nav__link", isActive && "is-active")}
             >
               {translator(item.labelKey)}
             </Link>
           );
         })}
-      </Inline>
+      </div>
+      <div className="loket-nav__languages">
+        {LANGUAGES.map((option) => {
+          const isActive = option.code === lang;
+          return (
+            <Link
+              key={option.code}
+              href={localizedPath(option.code, active)}
+              className={classNames("loket-nav__language", isActive && "is-active")}
+            >
+              {translator(option.labelKey)}
+            </Link>
+          );
+        })}
+      </div>
     </nav>
-  );
-}
-
-function LanguageSwitch({
-  lang,
-  translator,
-  currentSection,
-  isZh,
-}: {
-  lang: Locale;
-  translator: (key: string) => string;
-  currentSection: Section;
-  isZh: boolean;
-}) {
-  const activeLang = isZh ? ["text-accent"] : ["text-slate-900"];
-  const inactiveLang = isZh
-    ? ["text-zinc-200/80", "hover:text-accent"]
-    : ["text-slate-500", "hover:text-slate-900"];
-  return (
-    <Inline gap={3} wrap={false}>
-      {LANGUAGES.map((option) => {
-        const isActive = option.code === lang;
-        return (
-          <Link
-            key={option.code}
-            href={localizedPath(option.code, currentSection)}
-            className={classNames(
-              "transition-colors",
-              "skylar-caption",
-              isActive ? activeLang : inactiveLang
-            )}
-          >
-            {translator(option.labelKey)}
-          </Link>
-        );
-      })}
-    </Inline>
   );
 }

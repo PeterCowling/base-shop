@@ -1,5 +1,6 @@
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy -- UI-1420 [ttl=2025-12-31]: aria labels and helper text for resize handles are editor-only controls */
 import { useTranslations } from "@acme/i18n";
 import type { PointerEvent } from "react";
 
@@ -156,7 +157,7 @@ export default function BlockResizer({
   if (!selected) return null;
 
   return (
-    <>
+    <div className="relative">
       {startRotate && (
         <div
           className="absolute -top-7 start-1/2 -translate-x-1/2 pointer-events-auto"
@@ -200,6 +201,6 @@ export default function BlockResizer({
           {...interactiveHandleProps}
         />
       ))}
-    </>
+    </div>
   );
 }

@@ -69,8 +69,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
      * Render
      * ------------------------------------------------------------------ */
     const wrapperClasses = cn(
-      "flex flex-col gap-1",
-      floatingLabel && "relative",
+      "flex flex-col gap-1", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+      floatingLabel && "relative", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
       wrapperClassName
     );
 
@@ -104,8 +104,8 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             {label && (
               <label
                 htmlFor={textareaId}
-                className="mb-1 block text-sm font-medium"
-              > {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
+                className="block text-sm font-medium" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+              >
                 {label}
               </label>
             )}

@@ -8,6 +8,8 @@ import { Inline } from "../../atoms/primitives/Inline";
 
 const CATEGORY_QUERY_PARAM = "category"; // i18n-exempt -- TECH-4821 [ttl=2026-01-01] — URL search parameter key
 
+/* eslint-disable ds/no-hardcoded-copy -- DS-2504: Classname templates contain only design tokens */
+
 export type BlogPost = {
   title: string;
   excerpt?: string;
@@ -23,7 +25,7 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
   const allCategoriesLabel = t("blog.filter.all");
   const searchParams = useSearchParams();
   const router = useRouter();
-  const activeCategory = searchParams.get(CATEGORY_QUERY_PARAM);
+  const activeCategory = searchParams?.get(CATEGORY_QUERY_PARAM) ?? null;
   const categories = useMemo(() => {
     const set = new Set<string>();
     for (const p of posts) {
@@ -43,7 +45,7 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
       return new Intl.DateTimeFormat(undefined, { year: "numeric", month: "short", day: "2-digit" });
     }
   }, [locale]);
-  const searchParamsSnapshot = useMemo(() => searchParams.toString(), [searchParams]);
+  const searchParamsSnapshot = useMemo(() => searchParams?.toString() ?? "", [searchParams]);
   const updateCategory = useCallback(
     (value: string | null) => {
       if (value === activeCategory || (!value && !activeCategory)) return;

@@ -1,0 +1,51 @@
+.skylar-typo--en h1,
+.skylar-typo--en h2,
+.skylar-typo--en h3,
+.skylar-typo--en h4,
+.skylar-typo--en h5,
+.skylar-typo--en h6,
+.skylar-typo--en .loket-intro-grid__heading,
+.skylar-typo--en .heading-accent {
+  color: var(--skylar-en-accent);
+}
+
+.skylar-typo--en .loket-intro-grid {
+  gap: clamp(1rem, 3vw, 2.5rem);
+}
+
+.skylar-typo--en .loket-intro-grid__col {
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  line-height: clamp(1.6, 3vw, 2.05);
+  letter-spacing: clamp(0.03em, 0.12vw, 0.07em);
+}
+
+.skylar-typo--en .loket-massive__single-text {
+  width: min(90%, 90vw);
+  margin-left: auto;
+  margin-right: auto;
+  font-family: var(--font-poppins), var(--font-display);
+  font-weight: 700;
+  font-size: clamp(4rem, 8vw, 11rem);
+  letter-spacing: clamp(0.15em, 0.8vw, 0.45em);
+}
+
+.skylar-typo--en .loket-split {
+  gap: clamp(1.25rem, 3vw, 3rem);
+  margin-bottom: clamp(2rem, 4vw, 4rem);
+}
+
+.skylar-typo--en .loket-split__text {
+  gap: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+.skylar-typo--en .loket-split__eyebrow {
+  font-size: clamp(0.7rem, 1.3vw, 0.95rem);
+  letter-spacing: clamp(0.25em, 0.8vw, 0.45em);
+  color: var(--skylar-en-accent);
+}
+
+.skylar-typo--en .loket-split__text p {
+  font-size: clamp(1rem, 1.45vw, 1.25rem);
+  line-height: clamp(1.5, 2.8vw, 2.05);
+}
+

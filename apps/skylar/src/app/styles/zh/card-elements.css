@@ -1,0 +1,47 @@
+.zh-card__eyebrow {
+  margin: 0;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  color: rgba(247, 213, 114, 0.85);
+}
+
+.zh-card__title {
+  margin: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.3em;
+  color: #ffd060;
+}
+
+.zh-card__subtitle {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.18em;
+  color: rgba(247, 231, 193, 0.75);
+}
+
+.zh-card__body {
+  margin: 0;
+  line-height: 1.85;
+  letter-spacing: 0.1em;
+}
+
+.zh-card__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  letter-spacing: 0.12em;
+}
+
+.zh-card__cta {
+  align-self: flex-start;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(247, 213, 114, 0.5);
+  padding-bottom: 0.2rem;
+  color: #f6dfb4;
+}
+

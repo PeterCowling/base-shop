@@ -1,0 +1,40 @@
+.zh-products-cta {
+  border-radius: 36px;
+  border: 1px solid rgba(247, 213, 114, 0.35);
+  background: linear-gradient(145deg, rgba(11, 9, 8, 0.95), #050403);
+  padding: clamp(2rem, 3.5vw, 3.25rem);
+  display: grid;
+  gap: 1.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: center;
+  color: rgba(248, 231, 193, 0.95);
+  width: min(100%, 1180px);
+  margin: clamp(2rem, 5vw, 4rem) auto clamp(2.5rem, 5vw, 4.5rem);
+}
+
+.zh-products-cta__heading {
+  margin: 0;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+  color: rgba(247, 213, 114, 0.9);
+}
+
+.zh-products-cta__body {
+  margin: 0.5rem 0 0;
+  letter-spacing: 0.08em;
+  line-height: 1.8;
+}
+
+.zh-products-cta__note {
+  margin: 0.75rem 0 0;
+  letter-spacing: 0.15em;
+  color: rgba(247, 213, 114, 0.7);
+}
+
+.zh-products-cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.95rem;
+}
+

@@ -1,18 +1,12 @@
 /* Test helper: minimal shadcn-ui stub used by MediaManager tests */
-import React, {
-  type ComponentPropsWithoutRef,
-  type ElementRef,
-  type ElementType,
-  type ReactElement,
-  type ReactNode,
-} from "react";
+import React, { type ReactElement, type ReactNode } from "react";
 
 type AsChildProp = { asChild?: boolean };
 
-const passthrough = <T extends ElementType>(tag: T) => {
-  type Props = AsChildProp & Omit<ComponentPropsWithoutRef<T>, keyof AsChildProp>;
+const passthrough = (tag: keyof HTMLElementTagNameMap) => {
+  type Props = AsChildProp & Record<string, unknown>;
 
-  const Component = React.forwardRef<ElementRef<T>, Props>(function PassthroughComponent(
+  const Component = React.forwardRef<HTMLElement, Props>(function PassthroughComponent(
     { asChild: _asChild, ...props },
     ref
   ) {
@@ -73,14 +67,15 @@ type CheckboxProps = React.InputHTMLAttributes<HTMLInputElement>;
 type TagProps = { children: ReactNode } & React.HTMLAttributes<HTMLSpanElement>;
 
 type ProgressProps = React.HTMLAttributes<HTMLDivElement>;
+type CloneableChild = ReactElement<Record<string, unknown>>;
 
 export function createShadcnStub() {
   return {
-    Input: passthrough<"input">("input"),
-    Textarea: passthrough<"textarea">("textarea"),
-    Button: passthrough<"button">("button"),
-    Card: passthrough<"div">("div"),
-    CardContent: passthrough<"div">("div"),
+    Input: passthrough("input"),
+    Textarea: passthrough("textarea"),
+    Button: passthrough("button"),
+    Card: passthrough("div"),
+    CardContent: passthrough("div"),
     Checkbox: React.forwardRef<HTMLInputElement, CheckboxProps>(function CheckboxMock(
       props,
       ref
@@ -109,7 +104,12 @@ export function createShadcnStub() {
     DropdownMenuItem: React.forwardRef<HTMLDivElement, DropdownMenuItemProps>(
       function DropdownMenuItem({ children, onSelect, asChild, onClick, disabled, onKeyDown, ...rest }, ref) {
         if (asChild && React.isValidElement(children)) {
-          return React.cloneElement(children, { ref, ...rest });
+          const childElement = children as CloneableChild;
+          const forwardedProps: Partial<typeof childElement.props> & React.Attributes = {
+            ...rest,
+            ref,
+          };
+          return React.cloneElement(childElement, forwardedProps);
         }
 
         const handleActivate = (event: React.SyntheticEvent<HTMLElement>) => {
@@ -159,7 +159,7 @@ export function createShadcnStub() {
       React.createElement("option", rest, children),
     Dialog: ({ children, onOpenChange: _onOpenChange, open, ...rest }: DialogProps): ReactElement =>
       React.createElement("div", { ...rest, "data-open": open ? "true" : undefined }, children),
-    DialogContent: passthrough<"div">("div"),
+    DialogContent: passthrough("div"),
     DialogHeader: ({ children, ...rest }: DialogSectionProps): ReactElement =>
       React.createElement("div", rest, children),
     DialogTitle: ({ children, ...rest }: DialogSectionProps): ReactElement =>
@@ -170,4 +170,3 @@ export function createShadcnStub() {
       React.createElement("div", rest, children),
   };
 }
-

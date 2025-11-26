@@ -1,0 +1,45 @@
+.loket-footer {
+  padding: clamp(1.5rem, 3vw, 3rem) 0;
+  border-top: 1px solid rgba(228, 61, 18, 0.2);
+}
+
+.loket-footer__inner {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: clamp(0.5rem, 1.5vw, 2rem);
+  font-size: clamp(0.75rem, 1.2vw, 1.2rem);
+  letter-spacing: clamp(0.2em, 0.6vw, 0.35em);
+  text-transform: uppercase;
+  color: var(--skylar-en-accent);
+}
+
+.skylar-shell-root[data-locale="it"] .loket-footer {
+  position: relative;
+  border: 1px solid rgba(216, 176, 114, 0.4);
+  border-radius: 1.25rem;
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding: clamp(2rem, 4vw, 3.5rem);
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.96), rgba(247, 233, 214, 0.92));
+  box-shadow: 0 35px 70px -55px rgba(43, 26, 15, 0.35);
+}
+
+.skylar-shell-root[data-locale="it"] .loket-footer::before {
+  content: "";
+  position: absolute;
+  inset: 0.65rem;
+  border: 1px dashed rgba(216, 176, 114, 0.35);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.skylar-shell-root[data-locale="it"] .loket-footer__inner {
+  position: relative;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.32em;
+  color: var(--it-secondary);
+}

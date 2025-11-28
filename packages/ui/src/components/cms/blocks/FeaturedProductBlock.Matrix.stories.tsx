@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/FeaturedProductBlock.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import FeaturedProductBlock from './FeaturedProductBlock';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './FeaturedProductBlock.fixtures.json';

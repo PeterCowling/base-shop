@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from "react";
-import type { Decorator } from "@storybook/react";
+import type { Decorator } from "@storybook/nextjs";
 import { useChannel } from "storybook/preview-api";
 import {
   HIGHLIGHT,
@@ -34,7 +34,7 @@ const normalizeHighlightParameter = (
   return { options: options as HighlightOptions, resetOnStoryChange };
 };
 
-export const withHighlight: Decorator = (Story, context) => {
+const HighlightDecorator: Decorator = (Story, context) => {
   const highlightParameter = context.parameters.highlight as
     | StoryHighlightParameter
     | undefined;
@@ -71,3 +71,5 @@ export const withHighlight: Decorator = (Story, context) => {
 
   return <Story />;
 };
+
+export const withHighlight: Decorator = HighlightDecorator;

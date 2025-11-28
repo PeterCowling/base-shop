@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/RentalTermsSection.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import RentalTermsSection from './RentalTermsSection';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './RentalTermsSection.fixtures.json';

@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/ImageSlider.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ImageSlider from './ImageSlider';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './ImageSlider.fixtures.json';

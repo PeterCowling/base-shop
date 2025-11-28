@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/ProductCarousel.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { http, HttpResponse, delay } from 'msw';
 import type { SKU } from '@acme/types';
 import { PRODUCTS } from '@acme/platform-core/products/index';

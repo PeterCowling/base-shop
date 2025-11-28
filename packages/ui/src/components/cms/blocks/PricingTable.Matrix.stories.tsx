@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/PricingTable.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import PricingTable from './PricingTable';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './PricingTable.fixtures.json';

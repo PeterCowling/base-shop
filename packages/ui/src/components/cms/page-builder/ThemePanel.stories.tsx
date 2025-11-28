@@ -1,5 +1,5 @@
 // packages/ui/src/components/cms/page-builder/ThemePanel.stories.tsx
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import React from "react";
 import { http, HttpResponse } from "msw";
 import ThemePanel from "./ThemePanel";

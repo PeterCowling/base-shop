@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { useFSM } from "@acme/platform-machine/useFSM";
 
 const meta: Meta = {
@@ -17,23 +17,25 @@ export default meta;
 
 type Story = StoryObj;
 
-export const ToggleExample: Story = {
-  render: () => {
-    const transitions = [
-      { from: "off", event: "toggle", to: "on" },
-      { from: "on", event: "toggle", to: "off" },
-    ] as const;
-    const { state, send } = useFSM("off", transitions);
+const ToggleExampleRender = () => {
+  const transitions = [
+    { from: "off", event: "toggle", to: "on" },
+    { from: "on", event: "toggle", to: "off" },
+  ] as const;
+  const { state, send } = useFSM("off", transitions);
 
-    return (
-      <button
-        className="rounded bg-blue-600 px-4 py-2 text-white"
-        onClick={() => send("toggle")}
-      >
-        {state === "on" ? "Turn Off" : "Turn On"}
-      </button>
-    );
-  },
+  return (
+    <button
+      className="rounded bg-blue-600 px-4 py-2 text-white"
+      onClick={() => send("toggle")}
+    >
+      {state === "on" ? "Turn Off" : "Turn On"}
+    </button>
+  );
+};
+
+export const ToggleExample: Story = {
+  render: ToggleExampleRender,
   // Help the test-runner detect the story has rendered
   play: async ({ canvasElement }) => {
     // Wait a microtask and assert there is content in the canvas

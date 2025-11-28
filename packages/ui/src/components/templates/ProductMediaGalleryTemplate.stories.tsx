@@ -1,4 +1,4 @@
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { fn } from "storybook/test";
 import { ProductMediaGalleryTemplate } from "./ProductMediaGalleryTemplate";
 import type { SKU } from "@acme/types";

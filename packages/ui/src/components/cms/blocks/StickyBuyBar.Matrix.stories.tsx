@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/StickyBuyBar.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import StickyBuyBar from './StickyBuyBar';
 import { makeStateStory } from '../../../story-utils/createStories';
 import { PRODUCTS } from '@acme/platform-core/products/index';

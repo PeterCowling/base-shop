@@ -1,4 +1,4 @@
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { ARViewer } from "./ARViewer";
 
 const meta: Meta<typeof ARViewer> = {

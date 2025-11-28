@@ -1,4 +1,4 @@
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { Error404Template } from "./Error404Template";
 
 const meta: Meta<typeof Error404Template> = {

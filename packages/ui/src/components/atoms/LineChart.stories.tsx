@@ -1,4 +1,4 @@
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import type { ChartOptions } from "chart.js";
 import { LineChart } from "./LineChart";
 

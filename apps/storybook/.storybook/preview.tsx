@@ -1,13 +1,12 @@
 // .storybook/preview.ts
 
 import { withThemeByClassName } from "@storybook/addon-themes";
-import { ThemeProvider as SBThemeProvider, themes } from "storybook/internal/theming";
+import { ThemeProvider as SBThemeProvider, themes, type ThemeVars } from "storybook/theming";
 import { ThemeProvider as EmotionThemeProvider } from "@emotion/react";
 import { DocsContainer, Primary, Stories } from "@storybook/blocks";
-import type { Decorator, Preview } from "@storybook/react";
+import type { Decorator, Preview } from "@storybook/nextjs";
 import type { GlobalTypes } from "@storybook/types";
 import { useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from "react";
-import type { ThemeVars } from "storybook/internal/theming";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import {
   CurrencyProvider,
@@ -26,7 +25,7 @@ import { withRTL } from "./decorators/rtlDecorator";
 import { withPerf } from "./decorators/perfDecorator";
 import { withHighlight } from "./decorators/highlightDecorator";
 import { a11yGlobals, a11yParameters } from "./a11y";
-import { createBackgroundOptions, DEFAULT_BACKGROUND } from "./backgrounds";
+import { createBackgroundOptions } from "./backgrounds";
 import type { ToolbarGlobals, StoryDataState } from "./types";
 import enMessages from "@acme/i18n/en.json";
 import { sb } from "storybook/test";
@@ -322,17 +321,13 @@ const withProviders: Decorator = (Story, context) => {
 
 const preview: Preview = {
   globalTypes: toolbarGlobalTypes,
+
   initialGlobals: {
-    tokens: "base",
-    scenario: "featured",
-    locale: "en",
-    currency: "USD",
-    net: "normal",
-    netError: "off",
-    backgrounds: { value: DEFAULT_BACKGROUND },
-    viewport: { value: "desktop", isRotated: false },
+    ...a11yGlobals,
   },
+
   loaders: [mswLoader],
+
   parameters: {
     ...a11yParameters,
     msw: { handlers: mswHandlers },
@@ -379,9 +374,7 @@ const preview: Preview = {
       options: backgroundOptions,
     },
   },
-  globals: {
-    ...a11yGlobals,
-  },
+
   decorators: [
     (Story) => (
       <EmotionThemeProvider theme={emotionTheme}>
@@ -404,6 +397,8 @@ const preview: Preview = {
     withPerf,
     withProviders,
   ],
+
+  tags: ["autodocs"]
 };
 
 export default preview;

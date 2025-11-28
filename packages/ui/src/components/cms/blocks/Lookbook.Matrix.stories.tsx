@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/Lookbook.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import Lookbook from './Lookbook';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './Lookbook.fixtures.json';

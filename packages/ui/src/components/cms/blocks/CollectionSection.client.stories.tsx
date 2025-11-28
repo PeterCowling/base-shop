@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/CollectionSection.client.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { SKU } from '@acme/types';
 import { PRODUCTS } from '@acme/platform-core/products/index';
 import CollectionSectionClient from './CollectionSection.client';

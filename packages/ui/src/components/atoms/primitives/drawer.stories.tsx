@@ -1,4 +1,4 @@
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerPortal } from "./drawer";
 import { OverlayScrim } from "../index";
 

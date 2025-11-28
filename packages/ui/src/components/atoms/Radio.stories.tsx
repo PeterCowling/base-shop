@@ -1,4 +1,4 @@
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { useState } from "react";
 import { Radio, type RadioProps } from "./Radio";
 import { Stack } from "./primitives/Stack";

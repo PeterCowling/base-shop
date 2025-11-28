@@ -1,5 +1,5 @@
 // packages/ui/src/components/cms/page-builder/LayersPanel.stories.tsx
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import React, { useState } from "react";
 import LayersPanel from "./LayersPanel";
 import type { PageComponent, EditorFlags } from "@acme/types";

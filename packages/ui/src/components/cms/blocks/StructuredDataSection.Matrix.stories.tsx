@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/StructuredDataSection.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import StructuredDataSection from './StructuredDataSection';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './StructuredDataSection.fixtures.json';

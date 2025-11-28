@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { SustainabilityBadgeCluster } from "./SustainabilityBadgeCluster";
 
 const meta: Meta<typeof SustainabilityBadgeCluster> = {

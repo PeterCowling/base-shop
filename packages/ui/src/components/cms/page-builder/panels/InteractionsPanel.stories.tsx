@@ -1,5 +1,5 @@
 // packages/ui/src/components/cms/page-builder/panels/InteractionsPanel.stories.tsx
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import React, { useState } from "react";
 import InteractionsPanel from "./InteractionsPanel";
 import type { PageComponent } from "@acme/types";

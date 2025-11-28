@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/AgeGateSection.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import AgeGateSection from './AgeGateSection';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './AgeGateSection.fixtures.json';

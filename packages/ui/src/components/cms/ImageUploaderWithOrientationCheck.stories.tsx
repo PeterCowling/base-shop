@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import ImageUploaderWithOrientationCheck from "./ImageUploaderWithOrientationCheck";
 
 const meta: Meta<typeof ImageUploaderWithOrientationCheck> = {

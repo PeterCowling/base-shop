@@ -1,5 +1,5 @@
 // packages/ui/src/components/cms/page-builder/OverlayPicker.stories.tsx
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { useState } from "react";
 import OverlayPicker from "./OverlayPicker";
 

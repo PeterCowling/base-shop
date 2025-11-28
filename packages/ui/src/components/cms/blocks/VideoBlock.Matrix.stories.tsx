@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/VideoBlock.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import VideoBlock from './VideoBlock';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './VideoBlock.fixtures.json';

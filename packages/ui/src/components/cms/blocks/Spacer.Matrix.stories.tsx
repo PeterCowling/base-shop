@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/Spacer.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import Spacer from './Spacer';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './Spacer.fixtures.json';

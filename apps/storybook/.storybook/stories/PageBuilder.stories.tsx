@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import React, { useEffect, useMemo, useState } from 'react';
 import MultiColumn from '../../../../packages/ui/src/components/cms/blocks/containers/MultiColumn';
 import StackFlex from '../../../../packages/ui/src/components/cms/blocks/containers/StackFlex';

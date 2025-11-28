@@ -1,5 +1,5 @@
 import { useCart } from "@acme/platform-core/contexts/CartContext";
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import type { CartLine, CartState } from "@acme/platform-core/cart";
 import type { SKU } from "@acme/types";
 import * as React from "react";

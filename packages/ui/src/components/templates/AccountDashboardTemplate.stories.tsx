@@ -1,6 +1,6 @@
 // packages/ui/components/templates/AccountDashboardTemplate.stories.tsx
 
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/nextjs";
 import React from "react";
 
 import type { Column } from "../organisms/DataTable";

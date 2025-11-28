@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { useState } from "react";
 import EmailScheduleForm from "./EmailScheduleForm";
 import EmailSchedulePreviewPanel from "./EmailSchedulePreviewPanel";

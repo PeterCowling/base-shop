@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/AccountSection.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import AccountSection from './AccountSection';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './AccountSection.fixtures.json';

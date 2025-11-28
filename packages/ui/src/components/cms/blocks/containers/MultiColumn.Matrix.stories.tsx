@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/containers/MultiColumn.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import MultiColumn from './MultiColumn';
 import { makeStateStory } from '../../../../story-utils/createStories';
 

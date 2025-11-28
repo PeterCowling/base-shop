@@ -1,4 +1,4 @@
-import type { Decorator, Meta, StoryObj } from "@storybook/react";
+import type { Decorator, Meta, StoryObj } from "@storybook/nextjs";
 import { tokens as baseTokens } from "@themes-local/base/src/tokens";
 import { tokens as brandxTokens } from "@themes-local/brandx/src/tailwind-tokens";
 

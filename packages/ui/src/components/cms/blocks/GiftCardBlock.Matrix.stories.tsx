@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/GiftCardBlock.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import GiftCardBlock from './GiftCardBlock';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './GiftCardBlock.fixtures.json';

@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/ContactForm.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ContactForm from './ContactForm';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './ContactForm.fixtures.json';

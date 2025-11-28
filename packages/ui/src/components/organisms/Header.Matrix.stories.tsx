@@ -1,6 +1,6 @@
 // packages/ui/src/components/organisms/Header.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { Header } from './Header';
 import type { Locale } from '@acme/i18n/locales';
 import { makeStateStory } from '../../story-utils/createStories';

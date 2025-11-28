@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import { Image360Viewer } from "./Image360Viewer";
 
 const meta: Meta<typeof Image360Viewer> = {

@@ -1,16 +1,25 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
+import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 // .storybook/main.ts
 
 import type { StorybookConfig } from "@storybook/nextjs";
 import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
-import path from "node:path";
+import path, { dirname } from "node:path";
+import { getAbsolutePath } from "storybook/internal/common";
 
-import { coverageAddon } from "./coverage";
+import { coverageAddon } from "./coverage.ts";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const require = createRequire(import.meta.url);
 
 const config: StorybookConfig = {
   // Use the Webpack 5 builder explicitly per SB9 docs
   framework: {
-    name: "@storybook/nextjs", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    name: getAbsolutePath("@storybook/nextjs"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
   },
+
   core: {
     builder: {
       name: "@storybook/builder-webpack5", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
@@ -33,24 +42,19 @@ const config: StorybookConfig = {
   ],
 
   addons: [
-    "@storybook/addon-links", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-    // Essentials are largely built-in on SB9; keep only specific addons we use
-    "@storybook/addon-a11y", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-    "@storybook/addon-docs", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-    "@storybook/addon-measure", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-    "@storybook/addon-outline", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-    "@chromatic-com/storybook", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-    // interactions addon is pinned to SB8 and incompatible with SB9
-    "@storybook/addon-themes", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    getAbsolutePath("@storybook/addon-links"),
+    getAbsolutePath("@storybook/addon-a11y"),
+    getAbsolutePath("@storybook/addon-docs"),
+    getAbsolutePath("@chromatic-com/storybook"),
+    getAbsolutePath("@storybook/addon-themes"),
     coverageAddon,
     // Viewport addon removed in SB9; use built-in viewport tool via parameters
     // "storybook-addon-pseudo-states", // disabled: incompatible with SB8
     // "storybook-addon-designs", // disabled: incompatible with SB8
   ],
 
-  docs: { autodocs: true },
-
   // Configure Webpack aliases for workspace-local packages used in stories
+  // Aliases and PostCSS are configured in vite.storybook.ts
   webpackFinal: async (config: WebpackConfiguration) => {
     type AliasMap = Record<string, string | false>;
 
@@ -131,9 +135,11 @@ const config: StorybookConfig = {
     };
 
     return config;
-  },
-
-  // Aliases and PostCSS are configured in vite.storybook.ts
+  }
 };
 
 export default config;
+
+function getAbsolutePath(value: string): any {
+  return dirname(fileURLToPath(import.meta.resolve(`${value}/package.json`)));
+}

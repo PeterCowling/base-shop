@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/FooterBlock.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import FooterBlock from './FooterBlock';
 import type { Locale } from '@acme/i18n/locales';
 import { makeStateStory } from '../../../story-utils/createStories';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import DeviceSelector from './DeviceSelector';
 import { useState } from 'react';
 import { getLegacyPreset } from '../utils/devicePresets';

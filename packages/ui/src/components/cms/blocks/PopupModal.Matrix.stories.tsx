@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/PopupModal.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import PopupModal from './PopupModal';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './PopupModal.fixtures.json';

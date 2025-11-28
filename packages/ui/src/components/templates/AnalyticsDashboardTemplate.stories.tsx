@@ -1,6 +1,6 @@
 // packages/ui/components/templates/AnalyticsDashboardTemplate.stories.tsx
 
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/nextjs";
 import type { ChartData } from "chart.js";
 import React from "react";
 

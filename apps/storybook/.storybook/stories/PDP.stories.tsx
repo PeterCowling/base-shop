@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { within, waitFor } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import PDPDetailsSection from '../../../../packages/ui/src/components/cms/blocks/PDPDetailsSection';

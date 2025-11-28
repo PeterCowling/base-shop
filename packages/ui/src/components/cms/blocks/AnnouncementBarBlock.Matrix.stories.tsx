@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/AnnouncementBarBlock.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import AnnouncementBarBlock from './AnnouncementBarBlock';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './AnnouncementBarBlock.fixtures.json';

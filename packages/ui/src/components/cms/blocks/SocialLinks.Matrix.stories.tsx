@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/SocialLinks.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import SocialLinks from './SocialLinks';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './SocialLinks.fixtures.json';

@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/GuidedSellingSection.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import GuidedSellingSection from './GuidedSellingSection';
 import { makeStateStory } from '../../../story-utils/createStories';
 

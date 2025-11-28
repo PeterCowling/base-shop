@@ -1,6 +1,6 @@
 // packages/ui/components/organisms/OrderSummary.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import OrderSummary from './OrderSummary';
 import { makeStateStory } from '../../story-utils/createStories';
 

@@ -1,4 +1,4 @@
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import FilterBar from "@acme/platform-core/components/shop/FilterBar";
 import type { SKU } from "@acme/types";
 import { SearchResultsTemplate } from "./SearchResultsTemplate";

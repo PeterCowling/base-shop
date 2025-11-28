@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/ReviewsCarousel.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import CmsReviewsCarousel from './ReviewsCarousel';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './ReviewsCarousel.fixtures.json';

@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/SocialFeed.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import SocialFeed from './SocialFeed';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './SocialFeed.fixtures.json';

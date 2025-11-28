@@ -1,5 +1,5 @@
 /* i18n-exempt file -- Storybook demo content uses literal strings */
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { QAModule } from "./QAModule";
 
 const meta: Meta<typeof QAModule> = {

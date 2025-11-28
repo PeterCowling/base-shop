@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/EmailReferralSection.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import EmailReferralSection from './EmailReferralSection';
 import type { Locale } from '@acme/types';
 import { makeStateStory } from '../../../story-utils/createStories';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import EmailReferralSection from "./EmailReferralSection";
 
 const meta: Meta<typeof EmailReferralSection> = {

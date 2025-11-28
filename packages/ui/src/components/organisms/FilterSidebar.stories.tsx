@@ -1,5 +1,5 @@
 "use client";
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { FilterSidebar } from "./FilterSidebar.client";
 
 const meta: Meta<typeof FilterSidebar> = {

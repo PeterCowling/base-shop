@@ -1,6 +1,6 @@
 // packages/ui/src/components/atoms/shadcn/Button.pseudo.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { Button } from './Button';
 
 const meta: Meta<typeof Button> = {

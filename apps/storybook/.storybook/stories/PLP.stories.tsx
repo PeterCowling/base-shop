@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import HeaderSection from '../../../../packages/ui/src/components/cms/blocks/HeaderSection';
 import CollectionSectionClient from '../../../../packages/ui/src/components/cms/blocks/CollectionSection.client';
 import FooterSection from '../../../../packages/ui/src/components/cms/blocks/FooterSection';

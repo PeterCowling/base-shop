@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 import ProductCarousel from "./ProductCarousel";
 import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";

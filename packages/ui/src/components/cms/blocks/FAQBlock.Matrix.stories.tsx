@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/FAQBlock.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import FAQBlock from './FAQBlock';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './FAQBlock.fixtures.json';

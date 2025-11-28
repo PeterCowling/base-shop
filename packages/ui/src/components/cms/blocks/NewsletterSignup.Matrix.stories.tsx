@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/NewsletterSignup.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import NewsletterSignup from './NewsletterSignup';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './NewsletterSignup.fixtures.json';

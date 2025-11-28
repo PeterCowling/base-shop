@@ -1,6 +1,6 @@
 // packages/ui/components/templates/AppShell.stories.tsx
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 
 import { AppShell } from "./AppShell";
 import { buildAppShellArgs } from "./AppShell.story-helpers";

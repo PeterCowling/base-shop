@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/CheckoutSection.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import CheckoutSection from './CheckoutSection';
 import type { Locale } from '@acme/i18n/locales';
 import { makeStateStory } from '../../../story-utils/createStories';

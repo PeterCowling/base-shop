@@ -1,6 +1,6 @@
 // packages/ui/components/templates/AppShell.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/nextjs";
 
 import { makeStateStory } from "../../story-utils/createStories";
 import { AppShell } from "./AppShell";

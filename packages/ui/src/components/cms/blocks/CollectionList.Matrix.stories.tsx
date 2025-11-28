@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/CollectionList.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import CollectionList from './CollectionList';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './CollectionList.fixtures.json';

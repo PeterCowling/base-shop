@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
-import type { Decorator } from '@storybook/react';
+import type { Decorator } from '@storybook/nextjs';
 
 function PerfProbe({ children }: { children: React.ReactNode }) {
   const renders = useRef(0);

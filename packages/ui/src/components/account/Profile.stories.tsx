@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ProfileForm from './ProfileForm';
 
 // Demo of the Profile page UI using ProfileForm only.

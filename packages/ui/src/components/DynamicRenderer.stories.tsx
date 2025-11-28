@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import DynamicRenderer from './DynamicRenderer';
 import type { PageComponent } from '@acme/types';
 

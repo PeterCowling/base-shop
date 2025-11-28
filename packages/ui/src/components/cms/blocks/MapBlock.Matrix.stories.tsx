@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/MapBlock.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import MapBlock from './MapBlock';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './MapBlock.fixtures.json';

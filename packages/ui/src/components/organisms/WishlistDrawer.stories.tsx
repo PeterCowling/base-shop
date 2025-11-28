@@ -1,6 +1,6 @@
 "use client";
 /* i18n-exempt file -- Storybook demo content uses literal strings */
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { WishlistDrawer } from "./WishlistDrawer";
 import type { SKU } from "@acme/types";
 

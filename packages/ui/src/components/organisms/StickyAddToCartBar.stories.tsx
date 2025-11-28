@@ -1,5 +1,5 @@
 /* i18n-exempt file -- Storybook demo content uses literal strings */
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import * as React from "react";
 import { StickyAddToCartBar } from "./StickyAddToCartBar";
 import type { SKU } from "@acme/types";

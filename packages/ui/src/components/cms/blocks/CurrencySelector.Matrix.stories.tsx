@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/CurrencySelector.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import CurrencySelector from './CurrencySelector';
 import { makeStateStory } from '../../../story-utils/createStories';
 

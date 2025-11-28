@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/CampaignHeroSection.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import CampaignHeroSection from './CampaignHeroSection';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './CampaignHeroSection.fixtures.json';

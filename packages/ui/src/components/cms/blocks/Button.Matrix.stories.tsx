@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/Button.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import Button from './Button';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './Button.fixtures.json';

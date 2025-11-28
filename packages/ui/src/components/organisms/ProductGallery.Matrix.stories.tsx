@@ -1,6 +1,6 @@
 // packages/ui/src/components/organisms/ProductGallery.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ProductGallery } from './ProductGallery';
 import { makeStateStory } from '../../story-utils/createStories';
 

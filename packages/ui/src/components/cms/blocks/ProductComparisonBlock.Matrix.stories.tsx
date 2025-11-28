@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/ProductComparisonBlock.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ProductComparisonBlock from './ProductComparisonBlock';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './ProductComparisonBlock.fixtures.json';

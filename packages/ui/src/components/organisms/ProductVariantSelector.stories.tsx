@@ -1,4 +1,4 @@
-import { type Meta, type StoryObj } from "@storybook/react";
+import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { ProductVariantSelector } from "./ProductVariantSelector";
 
 const meta: Meta<typeof ProductVariantSelector> = {

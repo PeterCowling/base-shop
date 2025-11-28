@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ProfileForm from './ProfileForm';
 
 const meta: Meta<typeof ProfileForm> = {

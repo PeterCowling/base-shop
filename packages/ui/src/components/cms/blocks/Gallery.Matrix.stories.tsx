@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/Gallery.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import Gallery from './Gallery';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './Gallery.fixtures.json';

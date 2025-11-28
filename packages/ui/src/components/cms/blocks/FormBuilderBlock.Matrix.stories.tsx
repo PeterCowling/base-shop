@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/FormBuilderBlock.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import FormBuilderBlock from './FormBuilderBlock';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './FormBuilderBlock.fixtures.json';

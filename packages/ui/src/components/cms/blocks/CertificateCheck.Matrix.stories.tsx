@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/CertificateCheck.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import CertificateCheck from './CertificateCheck';
 import { makeStateStory } from '../../../story-utils/createStories';
 import fixture from './CertificateCheck.fixtures.json';

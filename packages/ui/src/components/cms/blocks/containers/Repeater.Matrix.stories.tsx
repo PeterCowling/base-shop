@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/containers/Repeater.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import type { ComponentProps } from 'react';
 import Repeater from './Repeater';
 import { DatasetProvider } from '../data/DataContext';

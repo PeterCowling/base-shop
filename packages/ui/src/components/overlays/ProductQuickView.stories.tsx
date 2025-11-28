@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import ProductQuickView from './ProductQuickView';
 import type { SKU } from '@acme/types';
 import { useState, useRef } from 'react';

@@ -1,6 +1,6 @@
 // packages/ui/src/components/cms/blocks/ShowcaseSection.Matrix.stories.tsx
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/nextjs';
 import { http, HttpResponse, delay } from 'msw';
 import ShowcaseSection from './ShowcaseSection';
 import { PRODUCTS } from '@acme/platform-core/products/index';

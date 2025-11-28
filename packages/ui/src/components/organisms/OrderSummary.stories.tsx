@@ -1,6 +1,6 @@
 // packages/ui/components/organisms/OrderSummary.stories.tsx
 
-import { Meta, StoryObj } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/nextjs";
 
 import OrderSummary from "./OrderSummary";
 import { Price } from "../atoms/Price";

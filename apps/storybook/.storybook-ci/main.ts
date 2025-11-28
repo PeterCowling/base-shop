@@ -30,8 +30,6 @@ const config: StorybookConfig = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-a11y",
-    "@storybook/addon-measure",
-    "@storybook/addon-outline",
     "@chromatic-com/storybook",
     "@storybook/addon-themes",
     "@storybook/addon-viewport",

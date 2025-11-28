@@ -32,6 +32,9 @@ jobs:
       - name: Install deps
         run: pnpm install --frozen-lockfile
 
+      - name: Build @apps/cms
+        run: pnpm --filter @apps/cms build
+
       - name: Ensure puppeteer is available
         run: pnpm add -Dw puppeteer
 

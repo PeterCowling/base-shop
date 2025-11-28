@@ -26,16 +26,23 @@ jobs:
   chromatic:
     name: Chromatic (visuals)
     runs-on: ubuntu-latest
-    if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
     steps:
+      - name: Skip Chromatic (missing token)
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN == '' }}
+        run: echo "CHROMATIC_PROJECT_TOKEN not set; skipping Chromatic publish."
       - uses: actions/checkout@v4
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
       - uses: actions/setup-node@v4
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         with:
           node-version: 20
           cache: pnpm
       - uses: pnpm/action-setup@v4
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
       - run: pnpm install --frozen-lockfile
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
       - name: Publish to Chromatic
+        if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
         run: pnpm chromatic
 
   ui-smoke:

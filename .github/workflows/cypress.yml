@@ -58,7 +58,6 @@ jobs:
       - name: Run Cypress (smoke)
         uses: cypress-io/github-action@v6
         with:
-          start: pnpm --filter @apps/cms build && pnpm --filter @apps/cms start -- --port 3006
+          start: pnpm --filter @apps/cms build && pnpm --filter @apps/cms start
           wait-on: 'http://localhost:3006'
-          command: pnpm exec cypress run --env grepTags=smoke --browser ${{ matrix.browser }} --config viewportWidth=${{ matrix.width }},viewportHeight=${{ matrix.height }}
-
+          command: pnpm exec cypress run --config-file apps/cms/cypress.config.mjs --env grepTags=smoke --browser ${{ matrix.browser }} --config viewportWidth=${{ matrix.width }},viewportHeight=${{ matrix.height }}

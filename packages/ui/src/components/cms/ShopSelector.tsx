@@ -75,7 +75,6 @@ export default function ShopSelector() {
       <span className="text-muted-foreground text-sm">{t("cms.shops.empty")}</span>
     );
 
-  /* eslint-disable ds/no-raw-font -- DS-1234 [ttl=2025-11-30]: rule false-positives on aria-label */
   return (
     <Select
       value={selected ?? ""}
@@ -98,5 +97,4 @@ export default function ShopSelector() {
       </SelectContent>
     </Select>
   );
-  /* eslint-enable ds/no-raw-font */
 }

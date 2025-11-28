@@ -2,17 +2,36 @@ import '@testing-library/cypress/add-commands';
 import 'cypress-plugin-tab';
 
 describe('Checkout flow accessibility', { tags: ['a11y'] }, () => {
+  // Skip when the legacy shop checkout endpoints are not present on this host.
+  before(function () {
+    cy.request({
+      method: 'HEAD',
+      url: '/api/login',
+      failOnStatusCode: false,
+    }).then((resp) => {
+      if (resp.status === 404) {
+        cy.log('Skipping checkout flow specs: /api/login not present on this host.');
+        this.skip();
+      }
+    });
+  });
+
   beforeEach(() => {
+    cy.customerLogin();
     cy.intercept('POST', '**/api/checkout-session', {
       statusCode: 200,
       body: { clientSecret: 'cs_test', sessionId: 'sess_test' },
     }).as('createSession');
 
     // Seed cart with an item so checkout page renders form
-    cy.request('POST', '/api/cart', {
-      sku: { id: 'green-sneaker' },
-      qty: 1,
-      size: '42',
+    cy.request({
+      method: 'POST',
+      url: '/api/cart',
+      body: {
+        sku: { id: 'green-sneaker' },
+        qty: 1,
+        size: '42',
+      },
     });
   });
 

@@ -1,7 +1,7 @@
 # CMS Cypress Suite
 
 Location and layout
-- Config: `apps/cms/cypress.config.ts`
+- Config: `apps/cms/cypress.config.mjs`
 - E2E specs: `apps/cms/cypress/e2e/**/*.cy.ts`
 - Component tests: `apps/cms/cypress/**/*.cy.{ts,tsx}` (CT uses `support/component.ts`)
 - Support files: `apps/cms/cypress/support/*`

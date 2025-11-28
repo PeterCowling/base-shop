@@ -147,6 +147,12 @@ export default [
       "security/detect-non-literal-fs-filename": "off",
     },
   },
+  {
+    files: ["scripts/src/seed-test-data.ts"],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
 
   /* ▸ Your repo-wide TypeScript rules (NO plugins key!) */
   {
@@ -157,6 +163,7 @@ export default [
         project: [
           "./tsconfig.json",
           "./tsconfig.test.json",
+          "./test/tsconfig.json",
           "./apps/*/tsconfig.json",
           "./packages/*/tsconfig.json",
           "./packages/*/tsconfig.eslint.json",
@@ -317,6 +324,17 @@ export default [
       },
     },
   },
+  {
+    files: ["packages/configurator/**/*.{ts,tsx,js,jsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
+  },
 
   /* ▸ i18n package linting without TS project */
   {
@@ -347,6 +365,13 @@ export default [
     files: ["packages/tailwind-config/plugins/*.js"],
     rules: {
       "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+  {
+    files: ["packages/editorial/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+      "security/detect-non-literal-fs-filename": "off",
     },
   },
 
@@ -457,7 +482,7 @@ export default [
   /* ▸ Cypress configs/support: parse outside TS project */
   {
     files: [
-      "apps/cms/cypress.config.ts",
+      "apps/cms/cypress.config.mjs",
       "apps/cms/cypress/**/*.{ts,tsx}",
     ],
     languageOptions: {
@@ -936,6 +961,22 @@ export default [
             "tailwindcss/no-unnecessary-arbitrary-value": "warn",
           }
         : {}),
+    },
+  },
+
+  /* ▸ MSW fixtures: disable hardcoded-copy (test-only strings) */
+  {
+    files: ["test/msw/**/*.{ts,tsx}"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
+  /* ▸ Test shims: disable hardcoded-copy noise in stub error strings */
+  {
+    files: ["test/shims/**/*.{ts,tsx}"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
     },
   },
 

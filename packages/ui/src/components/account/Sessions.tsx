@@ -5,6 +5,15 @@ import type { Locale } from "@acme/i18n/locales";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import RevokeSessionButton from "./RevokeSessionButton";
 import { revoke } from "../../actions/revokeSession";
+import AccountNavigation from "./AccountNavigation";
+import type { ReactNode } from "react";
+import { resolveTranslatableText } from "./translations";
+import {
+  ACCOUNT_PROFILE_PATH,
+  ACCOUNT_ORDERS_PATH,
+  ACCOUNT_SESSIONS_PATH,
+  ACCOUNT_SHELL_TEST_ID,
+} from "./constants";
 
 export { revoke };
 
@@ -22,7 +31,7 @@ export const metadata = { title: "Sessions" };
 
 export default async function SessionsPage({
   title,
-  callbackUrl = "/account/sessions",
+  callbackUrl = ACCOUNT_SESSIONS_PATH,
   locale = "en",
 }: SessionsPageProps = {}) {
   const { getCustomerSession, listSessions, hasPermission } = await import("@auth");
@@ -32,37 +41,58 @@ export default async function SessionsPage({
     redirect(`/login?callbackUrl=${encodeURIComponent(callbackUrl)}`);
     return null as never;
   }
-  if (!hasPermission(session.role, "manage_sessions")) {
-    return <p className="p-6">{t("account.sessions.notAuthorized")}</p>;
-  }
-  const sessions: SessionRecord[] = await listSessions(session.customerId);
-  if (!sessions.length) return <p className="p-6">{t("account.sessions.empty")}</p>;
-  return (
-    <>
-      <h1 className="p-6 text-xl">
-        {
-          title
-            ? (typeof title === "string"
-                ? title
-                : title.type === "key"
-                  ? t(title.key)
-                  : ((title.value as Partial<Record<Locale, string>>)?.[locale] ?? t("account.sessions.title")))
-            : t("account.sessions.title")
-        }
-      </h1>
-      <ul className="space-y-2 p-6">
-        {sessions.map((s) => (
-          <li key={s.sessionId} className="flex items-center justify-between rounded border p-4">
-            <div>
-              <div>{s.userAgent}</div>
-              <div className="text-sm text-muted" data-token="--color-muted"> {/* i18n-exempt -- DEV-000 formatted timestamp */}
-                {s.createdAt.toISOString()}
+  const navLabel = t("account.navigation.ariaLabel");
+  const navItems = [
+    { href: ACCOUNT_PROFILE_PATH, label: t("account.profile.title") },
+    { href: ACCOUNT_ORDERS_PATH, label: t("account.orders.title") },
+    { href: ACCOUNT_SESSIONS_PATH, label: t("account.sessions.title") },
+  ];
+  const headingId = "account-sessions-heading";
+  const heading = resolveTranslatableText(t, title, "account.sessions.title", locale as Locale);
+
+  const canManageSessions = hasPermission(session.role, "manage_sessions");
+  let body: ReactNode;
+
+  if (!canManageSessions) {
+    body = <p>{t("account.sessions.notAuthorized")}</p>;
+  } else {
+    const sessions: SessionRecord[] = await listSessions(session.customerId);
+    if (!sessions.length) {
+      body = <p>{t("account.sessions.empty")}</p>;
+    } else {
+      body = (
+        <ul className="space-y-2">
+          {sessions.map((s) => (
+            <li key={s.sessionId} className="flex items-center justify-between rounded border p-4">
+              <div>
+                <div>{s.userAgent}</div>
+                <div className="text-sm text-muted" data-token="--color-muted"> {/* i18n-exempt -- DEV-000 formatted timestamp */}
+                  {s.createdAt.toISOString()}
+                </div>
               </div>
-            </div>
-            <RevokeSessionButton revoke={revoke} sessionId={s.sessionId} />
-          </li>
-        ))}
-      </ul>
-    </>
+              <RevokeSessionButton revoke={revoke} sessionId={s.sessionId} />
+            </li>
+          ))}
+        </ul>
+      );
+    }
+  }
+
+  return (
+    <div className="p-6">
+      <div className="flex flex-col gap-6 md:flex-row" data-testid={ACCOUNT_SHELL_TEST_ID}>
+        <AccountNavigation ariaLabel={navLabel} currentPath={ACCOUNT_SESSIONS_PATH} items={navItems} />
+        <main
+          className="flex-1 rounded border p-4 md:p-6"
+          role="main"
+          aria-labelledby={headingId}
+        >
+          <h1 id={headingId} className="mb-4 text-xl">
+            {heading}
+          </h1>
+          {body}
+        </main>
+      </div>
+    </div>
   );
 }

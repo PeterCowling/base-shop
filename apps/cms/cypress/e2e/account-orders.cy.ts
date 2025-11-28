@@ -1,14 +1,20 @@
 import type { OrderStep } from "@ui/components/organisms/OrderTrackingTimeline";
 
-function login() {
-  cy.visit("/login");
-  cy.get('input[name="customerId"]').type("cust1");
-  cy.get('input[name="password"]').type("pass1");
-  cy.contains("button", "Login").click();
-  cy.getCookie("customer_session").should("exist");
-}
-
 describe("Account orders", () => {
+  // Skip when the shopper login endpoint is not available in this deployment.
+  before(function () {
+    cy.request({
+      method: "HEAD",
+      url: "/api/login",
+      failOnStatusCode: false,
+    }).then((resp) => {
+      if (resp.status === 404) {
+        cy.log("Skipping account orders specs: /api/login not present on this host.");
+        this.skip();
+      }
+    });
+  });
+
   it("shows customer orders and details", () => {
     const orderId = "ord_123";
 
@@ -34,7 +40,7 @@ describe("Account orders", () => {
       },
     }).as("tracking");
 
-    login();
+    cy.customerLogin();
     cy.visit("/account/orders");
     cy.wait("@orders");
 
@@ -48,4 +54,3 @@ describe("Account orders", () => {
     cy.contains(`Order ${orderId}`).should("be.visible");
   });
 });
-

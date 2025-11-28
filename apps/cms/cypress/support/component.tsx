@@ -11,14 +11,30 @@ import React from 'react';
 import { ThemeProvider } from '@platform-core/contexts/ThemeContext';
 import { LayoutProvider } from '@platform-core/contexts/LayoutContext';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import '@cms/app/globals.css';
+import './component-globals.css';
+import axeSource from 'axe-core/axe.min.js?raw';
 import { TranslationsProvider } from '@i18n';
 import type { Messages } from '@i18n/Translations';
 // Router stub provider is exported from our Vite alias for 'next/navigation'
-// eslint-disable-next-line import/no-duplicates
-import type { RouterStubState } from '../../test/shims/next-navigation-ct';
-// eslint-disable-next-line import/no-duplicates
-import { RouterStubProvider } from '../../test/shims/next-navigation-ct';
+ 
+import type { RouterStubState } from '~test/shims/next-navigation-ct';
+ 
+import { RouterStubProvider } from '~test/shims/next-navigation-ct';
+
+type CypressMountOptions = Parameters<typeof cypressMount>[1];
+
+type RouterOptions = {
+  router?: Partial<RouterStubState> & { pathname?: string; search?: string | URLSearchParams };
+  messages?: Messages;
+};
+
+type RouterLocaleOptions = RouterOptions & {
+  locale?: string;
+};
+
+type RouterRouteParamOptions = RouterLocaleOptions & {
+  params?: Record<string, string>;
+};
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -53,6 +69,8 @@ declare global {
           locale?: string;
         } & Parameters<typeof cypressMount>[1]
       ) => ReturnType<typeof cypressMount>;
+      /** Simulate pressing the Tab key (minimal CT-friendly polyfill). */
+      tab: (options?: { shift?: boolean }) => Chainable<JQuery<HTMLElement>>;
     }
   }
 }
@@ -68,27 +86,41 @@ function Providers({ children }: { children: React.ReactNode }) {
   );
 }
 
-Cypress.Commands.add('mount', (component, options) => {
+function buildRouterState(router?: RouterOptions['router'], paramOverrides?: Record<string, string>): RouterStubState {
+  const pathname = router?.pathname ?? '/';
+  const search = router?.search ?? '';
+  const url = new URL(pathname + (typeof search === 'string' ? search : `?${search.toString()}`), 'http://localhost');
+  const searchParams = new URLSearchParams(url.search);
+  return {
+    pathname,
+    searchParams,
+    params: paramOverrides ?? router?.params ?? {},
+    push: router?.push ?? (() => {}),
+    replace: router?.replace ?? (() => {}),
+    back: router?.back ?? (() => {}),
+    refresh: router?.refresh ?? (() => {}),
+    prefetch: router?.prefetch ?? (async () => {}),
+  };
+}
+
+Cypress.Commands.overwrite('injectAxe', () => {
+  cy.window({ log: false }).then((win) => {
+    if (win.axe) return;
+    const script = win.document.createElement('script');
+    script.id = '__axe-script';
+    script.type = 'text/javascript';
+    script.innerHTML = axeSource;
+    win.document.head.appendChild(script);
+  });
+});
+
+Cypress.Commands.add('mount', (component, options?: CypressMountOptions) => {
   return cypressMount(<Providers>{component}</Providers>, options);
 });
 
-Cypress.Commands.add('mountWithRouter', (component, options = {}) => {
-  const { router, messages, ...mountOpts } = options as any;
-  const pathname = router?.pathname ?? '/';
-  const search = router?.search ?? '';
-  const url = new URL(pathname + (typeof search === 'string' ? search : `?${search.toString()}`), 'http://localhost');
-  const searchParams = new URLSearchParams(url.search);
-  const routerState: RouterStubState = {
-    pathname,
-    searchParams,
-    params: router?.params ?? {},
-    push: router?.push ?? (() => {}),
-    replace: router?.replace ?? (() => {}),
-    back: router?.back ?? (() => {}),
-    refresh: router?.refresh ?? (() => {}),
-    prefetch: router?.prefetch ?? (async () => {}),
-  };
-
+Cypress.Commands.add('mountWithRouter', (component, options: RouterOptions & CypressMountOptions = {}) => {
+  const { router, messages, ...mountOpts } = options;
+  const routerState = buildRouterState(router);
   const msgs: Messages = messages ?? {};
 
   return cypressMount(
@@ -97,29 +129,15 @@ Cypress.Commands.add('mountWithRouter', (component, options = {}) => {
         <Providers>{component}</Providers>
       </RouterStubProvider>
     </TranslationsProvider>,
-    mountOpts as any
+    mountOpts
   );
 });
 
-Cypress.Commands.add('mountWithRouterLocale', (component, options = {}) => {
-  const { router, messages, locale = 'en', ...mountOpts } = options as any;
+Cypress.Commands.add('mountWithRouterLocale', (component, options: RouterLocaleOptions & CypressMountOptions = {}) => {
+  const { router, messages, locale = 'en', ...mountOpts } = options;
   try { document.documentElement.setAttribute('lang', String(locale)); } catch {}
 
-  const pathname = router?.pathname ?? '/';
-  const search = router?.search ?? '';
-  const url = new URL(pathname + (typeof search === 'string' ? search : `?${search.toString()}`), 'http://localhost');
-  const searchParams = new URLSearchParams(url.search);
-  const routerState: RouterStubState = {
-    pathname,
-    searchParams,
-    params: router?.params ?? {},
-    push: router?.push ?? (() => {}),
-    replace: router?.replace ?? (() => {}),
-    back: router?.back ?? (() => {}),
-    refresh: router?.refresh ?? (() => {}),
-    prefetch: router?.prefetch ?? (async () => {}),
-  };
-
+  const routerState = buildRouterState(router);
   const msgs: Messages = messages ?? {};
 
   return cypressMount(
@@ -128,29 +146,15 @@ Cypress.Commands.add('mountWithRouterLocale', (component, options = {}) => {
         <Providers>{component}</Providers>
       </RouterStubProvider>
     </TranslationsProvider>,
-    mountOpts as any
+    mountOpts
   );
 });
 
-Cypress.Commands.add('mountWithRouterRouteParams', (component, options = {}) => {
-  const { router, params = {}, messages, locale = 'en', ...mountOpts } = options as any;
+Cypress.Commands.add('mountWithRouterRouteParams', (component, options: RouterRouteParamOptions & CypressMountOptions = {}) => {
+  const { router, params = {}, messages, locale = 'en', ...mountOpts } = options;
   try { document.documentElement.setAttribute('lang', String(locale)); } catch {}
 
-  const pathname = router?.pathname ?? '/';
-  const search = router?.search ?? '';
-  const url = new URL(pathname + (typeof search === 'string' ? search : `?${search.toString()}`), 'http://localhost');
-  const searchParams = new URLSearchParams(url.search);
-  const routerState: RouterStubState = {
-    pathname,
-    searchParams,
-    params,
-    push: router?.push ?? (() => {}),
-    replace: router?.replace ?? (() => {}),
-    back: router?.back ?? (() => {}),
-    refresh: router?.refresh ?? (() => {}),
-    prefetch: router?.prefetch ?? (async () => {}),
-  };
-
+  const routerState = buildRouterState(router, params);
   const msgs: Messages = messages ?? {};
 
   return cypressMount(
@@ -159,8 +163,46 @@ Cypress.Commands.add('mountWithRouterRouteParams', (component, options = {}) => 
         <Providers>{component}</Providers>
       </RouterStubProvider>
     </TranslationsProvider>,
-    mountOpts as any
+    mountOpts
   );
+});
+
+const FOCUSABLE_SELECTOR = [
+  'a[href]:not([tabindex="-1"])',
+  'button:not([disabled]):not([tabindex="-1"])',
+  'input:not([disabled]):not([type="hidden"]):not([tabindex="-1"])',
+  'select:not([disabled]):not([tabindex="-1"])',
+  'textarea:not([disabled]):not([tabindex="-1"])',
+  '[tabindex]:not([tabindex="-1"])',
+].join(',');
+
+function getFocusableElements(doc: Document) {
+  const nodes = Array.from(doc.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+  return nodes.filter((el) => {
+    const style = doc.defaultView?.getComputedStyle(el);
+    if (!style) return false;
+    const hasSize = el.offsetWidth > 0 || el.offsetHeight > 0 || el.getClientRects().length > 0;
+    return style.visibility !== 'hidden' && style.display !== 'none' && hasSize;
+  });
+}
+
+Cypress.Commands.add('tab', { prevSubject: 'optional' }, (subject, options: { shift?: boolean } = {}) => {
+  const shift = Boolean(options.shift);
+  return cy.wrap(null, { log: false }).then(() => {
+    const doc = (cy.state('document') || window.document) as Document;
+    const focusables = getFocusableElements(doc);
+    if (!focusables.length) return;
+    const start = (subject?.[0] as HTMLElement) || (doc.activeElement as HTMLElement) || focusables[0];
+    const currentIndex = Math.max(focusables.indexOf(start), 0);
+    const delta = shift ? -1 : 1;
+    const nextIndex = (currentIndex + delta + focusables.length) % focusables.length;
+    const next = focusables[nextIndex] ?? start;
+    const eventInit: KeyboardEventInit = { key: 'Tab', code: 'Tab', keyCode: 9, bubbles: true, shiftKey: shift };
+    start.dispatchEvent(new KeyboardEvent('keydown', eventInit));
+    next.focus();
+    next.dispatchEvent(new KeyboardEvent('keyup', eventInit));
+    return cy.wrap(next);
+  });
 });
 
 export {};

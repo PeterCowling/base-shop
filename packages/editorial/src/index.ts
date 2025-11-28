@@ -1,6 +1,7 @@
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import type { Shop } from "@acme/types";
+import { DATA_ROOT } from "@platform-core/dataRoot";
 
 // Lightweight front‑matter parser for scaffolding. Expects YAML‑like key: value
 // pairs delimited by leading and trailing '---' lines.
@@ -39,10 +40,7 @@ export interface EditorialPost {
 }
 
 function getPostsDir(shopId: string) {
-  // Lazy import to avoid pulling platform-core in environments that don’t need it
-  // and to keep this package side‑effect free for tests.
-  const core = require("@platform-core/dataRoot") as { DATA_ROOT: string };
-  return path.join(core.DATA_ROOT, shopId, "blog");
+  return path.join(DATA_ROOT, shopId, "blog");
 }
 
 async function readFileSafe(file: string): Promise<string | null> {

@@ -22,7 +22,6 @@ import { createContext, useCallback, useContext, useMemo } from "react";
 // provider by falling back to English messages bundled with the package.
 // This ensures components render human‑readable strings instead of raw keys
 // when no TranslationsProvider is mounted.
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import enMessages from "./en.json";
 
 /**

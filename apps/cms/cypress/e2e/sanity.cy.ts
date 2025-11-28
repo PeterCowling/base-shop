@@ -1,6 +1,6 @@
 import * as sanityClient from "@sanity/client";
-import { verifyCredentials } from "../../packages/plugins/sanity/index.ts";
-import { connectSanity, createSanityPost } from "../../apps/cms/src/actions/sanity.server.ts";
+import { verifyCredentials } from "../../../../packages/plugins/sanity/index.ts";
+import { connectSanity, createSanityPost } from "../../src/actions/sanity.server.ts";
 
 describe("Sanity blog workflow", () => {
   beforeEach(() => {

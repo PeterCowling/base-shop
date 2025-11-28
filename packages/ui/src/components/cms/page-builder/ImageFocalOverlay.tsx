@@ -87,7 +87,6 @@ export default function ImageFocalOverlay({ value, onChange, visible = false, di
 
   if (!visible) return null;
   return (
-    // eslint-disable-next-line ds/no-raw-font -- DS-1234: false positive; rule matches "aria-label" as "arial"
     <div ref={overlayRef} role="slider" aria-label={String(t("cms.builder.focal.ariaLabel"))} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round((fp.x + fp.y) * 50)} tabIndex={0}
       className="pointer-events-auto relative select-none"
       onPointerDown={handlePointerDown}

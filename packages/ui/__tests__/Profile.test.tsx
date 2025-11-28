@@ -1,4 +1,5 @@
 // packages/ui/__tests__/Profile.test.tsx
+import { render, screen } from "@testing-library/react";
 jest.mock("@auth", () => ({
   __esModule: true,
   getCustomerSession: jest.fn(),
@@ -27,8 +28,11 @@ describe("ProfilePage permissions", () => {
     (hasPermission as jest.Mock).mockReturnValue(false);
     (getCustomerProfile as jest.Mock).mockResolvedValue({ name: "Jane" });
     const element = await ProfilePage({});
+    render(element);
     expect(hasPermission).toHaveBeenCalledWith("viewer", "manage_profile");
-    expect(element.props.children[2]).toBeFalsy();
+    expect(
+      screen.queryByRole("link", { name: /change password/i }),
+    ).not.toBeInTheDocument();
   });
 
   it("shows change password link with permission", async () => {
@@ -39,9 +43,9 @@ describe("ProfilePage permissions", () => {
     (hasPermission as jest.Mock).mockReturnValue(true);
     (getCustomerProfile as jest.Mock).mockResolvedValue({ name: "Jane" });
     const element = await ProfilePage({});
-    const linkWrapper = element.props.children[2];
-    expect(linkWrapper.props.children.props.href).toBe(
-      "/account/change-password",
-    );
+    render(element);
+    expect(
+      screen.getByRole("link", { name: /change password/i }),
+    ).toHaveAttribute("href", "/account/change-password");
   });
 });

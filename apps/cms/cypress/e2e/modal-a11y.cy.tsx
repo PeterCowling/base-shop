@@ -2,13 +2,13 @@ import '@testing-library/cypress/add-commands';
 import 'cypress-plugin-tab';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import PopupModal from '../../packages/ui/src/components/cms/blocks/PopupModal';
-import { ProductQuickView } from '../../packages/ui/src/components/overlays/ProductQuickView';
+import PopupModal from '../../../../packages/ui/src/components/cms/blocks/PopupModal';
+import { ProductQuickView } from '../../../../packages/ui/src/components/overlays/ProductQuickView';
 import {
   Dialog,
   DialogTrigger,
   DialogContent,
-} from '../../packages/ui/src/components/atoms/primitives/dialog';
+} from '../../../../packages/ui/src/components/atoms/primitives/dialog';
 
 describe('Modal accessibility', () => {
   it('PopupModal traps focus and restores on close', () => {
@@ -151,4 +151,3 @@ describe('Modal accessibility', () => {
     cy.focused().should('have.id', 'open-dialog');
   });
 });
-

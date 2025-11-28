@@ -52,7 +52,7 @@ pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory
   - The root `next.config.mjs` has been removed to avoid drift across apps.
   - See `apps/<app>/next.config.mjs` for per-app overrides.
 - Middleware is colocated with the app that uses it (e.g., `apps/cms/middleware.ts`).
-- Cypress lives under the CMS app: config at `apps/cms/cypress.config.ts`, tests at `apps/cms/cypress/e2e`, support at `apps/cms/cypress/support`.
+- Cypress lives under the CMS app: config at `apps/cms/cypress.config.mjs`, tests at `apps/cms/cypress/e2e`, support at `apps/cms/cypress/support`.
   - The root `cypress.config.ts` re-exports the app config for compatibility with existing commands.
 - Storybook can be run via an app wrapper: `apps/storybook`.
   - Use `pnpm storybook:app` to run with the app-level config directory (`apps/storybook/.storybook`) which re-exports the root config.

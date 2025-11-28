@@ -2,11 +2,11 @@
 
 This repo uses Cypress for end‑to‑end and a11y testing. Tests live under `apps/cms/cypress/e2e` and `test/e2e/__tests__`, with a single shared configuration and support layer.
 
-Note: The Cypress config lives with the CMS app at `apps/cms/cypress.config.ts`. The root `cypress.config.ts` re-exports this app config to keep existing scripts working.
+Note: The Cypress config lives with the CMS app at `apps/cms/cypress.config.mjs`. The root `cypress.config.ts` re-exports this app config to keep existing scripts working.
 
 ## Layout
 
-- Config: `apps/cms/cypress.config.ts:1` (root `cypress.config.ts` re-exports this)
+- Config: `apps/cms/cypress.config.mjs:1` (root `cypress.config.ts` re-exports this)
 - Support hooks: `apps/cms/cypress/support/index.ts:1`
 - TypeScript config: `apps/cms/cypress/tsconfig.json:1`
 - E2E specs (new): `apps/cms/cypress/e2e/**/*.cy.ts`
@@ -31,25 +31,25 @@ Scripts are defined in `package.json:34-39`.
 
 ## Config Highlights
 
-See `apps/cms/cypress.config.ts:7`.
+See `apps/cms/cypress.config.mjs:7`.
 
 - `baseUrl` — defaults to `http://localhost:3006`. Override via `CYPRESS_BASE_URL`.
-  - `apps/cms/cypress.config.ts:9`
+  - `apps/cms/cypress.config.mjs:9`
 - `specPattern` — runs both styles of tests: `apps/cms/cypress/e2e/**/*.cy.{js,ts}` and `test/e2e/**/*.spec.{js,ts}`.
-  - `apps/cms/cypress.config.ts:11-16`
+  - `apps/cms/cypress.config.mjs:11-16`
 - `supportFile` — global hooks and utilities.
-  - `apps/cms/cypress.config.ts:16`
+  - `apps/cms/cypress.config.mjs:16`
 - `env` — exposes:
   - `NEXTAUTH_SECRET` for tests that mint session tokens when simulating roles.
-    - `apps/cms/cypress.config.ts:18-21`
+    - `apps/cms/cypress.config.mjs:18-21`
   - `TEST_DATA_ROOT` default pointing at `__tests__/data/shops`.
-    - `apps/cms/cypress.config.ts:22`
+    - `apps/cms/cypress.config.mjs:22`
 - Timeouts — `defaultCommandTimeout: 10000`.
-  - `apps/cms/cypress.config.ts:24`
+  - `apps/cms/cypress.config.mjs:24`
 - Custom tasks — simple `log` plus ephemeral test data helpers `testData:setup`/`testData:cleanup`.
-  - `apps/cms/cypress.config.ts:28-34`
-  - `apps/cms/cypress.config.ts:35-49`
-  - `apps/cms/cypress.config.ts:51-58`
+  - `apps/cms/cypress.config.mjs:28-34`
+  - `apps/cms/cypress.config.mjs:35-49`
+  - `apps/cms/cypress.config.mjs:51-58`
 
 ## Global Support
 
@@ -72,11 +72,11 @@ See also MSW details in docs/testing-with-msw.md.
 - Before running tests, scripts seed fixtures into `TEST_DATA_ROOT` via `scripts/src/seed-test-data.ts:1`.
 - Some specs create an isolated, temporary data root at runtime:
   - `cy.task("testData:setup", shop)` creates a temp directory under the system tmp folder, copies minimal files (`pages.json`, `settings.json`), and returns the path.
-  - `apps/cms/cypress.config.ts:39-49`
+  - `apps/cms/cypress.config.mjs:39-49`
   - The spec can then write extra files (e.g., `products.json`) and set `Cypress.env("TEST_DATA_ROOT", dir)` for the process under test to read.
     - Example: `apps/cms/cypress/e2e/cms-i18n.cy.ts:19-33, 44-50`
   - Clean up with `cy.task("testData:cleanup")`.
-  - `apps/cms/cypress.config.ts:51-58`
+  - `apps/cms/cypress.config.mjs:51-58`
 - The `pnpm e2e:cms:functional` command also isolates `DATA_ROOT` for Next and passes the same root to Cypress via `TEST_DATA_ROOT`, so assertions that read `settings.json`/`settings.history.jsonl` match the app’s writes.
 
 ## Authentication

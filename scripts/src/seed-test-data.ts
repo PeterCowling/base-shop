@@ -1,5 +1,5 @@
 import { cpSync, mkdirSync, readdirSync, rmSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 
 /**
  * Copy test fixtures into the directory pointed to by `TEST_DATA_ROOT`.
@@ -10,6 +10,12 @@ export function seedTestData(): void {
   const root = process.env.TEST_DATA_ROOT || "__tests__/data";
   const srcRoot = join("__tests__", "data", "shops");
   const destRoot = join(root, "shops");
+  const resolvedSrc = resolve(srcRoot);
+  const resolvedDest = resolve(destRoot);
+
+  if (resolvedSrc === resolvedDest) {
+    return;
+  }
 
   mkdirSync(destRoot, { recursive: true });
 

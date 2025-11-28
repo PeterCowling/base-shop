@@ -6,6 +6,7 @@
 import { http } from "msw";
 import type { HttpHandler } from "msw";
 import { setupServer } from "msw/node";
+import type { SetupServerApi } from "msw/node";
 
 export const rest = http;
 
@@ -47,8 +48,14 @@ export const defaultHandlers: HttpHandler[] = [
     res(ctx.status(200), ctx.json({}))
   ),
   rest.post("/cms/api/launch-shop", async (req, res, ctx) => {
-    const body = await req.json().catch(() => ({} as any));
-    const seed = Boolean((body as any)?.seed);
+    type LaunchShopBody = { seed?: boolean };
+    let body: Partial<LaunchShopBody> = {};
+    try {
+      body = (await req.json()) as Partial<LaunchShopBody>;
+    } catch {
+      body = {};
+    }
+    const seed = Boolean(body.seed);
     const steps = [
       { step: "create", status: "success" },
       { step: "init", status: "success" },
@@ -92,9 +99,9 @@ export const defaultHandlers: HttpHandler[] = [
   rest.get("/api/sections/:shop/presets", (_req, res, ctx) =>
     res(ctx.status(200), ctx.json([]))
   ),
-  rest.get("/cms/api/sections/:shop", (req, res, ctx) => {
+  rest.get("/cms/api/sections/:shop", (_req, res, ctx) => {
     // Supports `?page=1&pageSize=500`; return minimal list shape
-    const items: any[] = [];
+    const items: Array<Record<string, unknown>> = [];
     return res(ctx.status(200), ctx.json({ items }));
   }),
 
@@ -118,7 +125,7 @@ export const defaultHandlers: HttpHandler[] = [
  */
 export function createServer(
   ...extraHandlers: HttpHandler[]
-) {
+): SetupServerApi {
   return setupServer(...defaultHandlers, ...extraHandlers);
 }
 

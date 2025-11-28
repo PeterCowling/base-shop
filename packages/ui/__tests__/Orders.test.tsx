@@ -72,7 +72,7 @@ describe("OrdersPage permissions", () => {
     const element = await OrdersPage({ shopId });
     render(element);
     expect(hasPermission).toHaveBeenCalledWith("customer", "view_orders");
-    expect(screen.getByRole("list")).toBeInTheDocument();
+    expect(screen.getByTestId("orders-list")).toBeInTheDocument();
   });
 
   it("prevents roles without view_orders from seeing orders", async () => {

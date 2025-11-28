@@ -74,7 +74,6 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                 className="font-bold" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
               />
             </a>
-            {/* eslint-disable-next-line ds/no-raw-font -- DS-1234: false positive; rule matches "aria-label" as "arial" */}
             <nav aria-label={String(t("nav.mainAriaLabel"))}>
               <Inline gap={6}>
                 {nav.map((section) => (

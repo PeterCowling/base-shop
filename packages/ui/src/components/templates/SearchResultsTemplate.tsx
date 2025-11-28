@@ -44,7 +44,6 @@ export function SearchResultsTemplate({
   ...props
 }: SearchResultsTemplateProps) {
   const t = useTranslations();
-  /* eslint-disable-next-line ds/no-raw-font -- DS-1234: false positive; rule matches "aria-label"/"AriaLabel" as "arial" */
   const searchAriaLabel = t("shop.searchAriaLabel") as string;
   const rawCount = maxItems ?? minItems ?? 1;
   const columnCount =

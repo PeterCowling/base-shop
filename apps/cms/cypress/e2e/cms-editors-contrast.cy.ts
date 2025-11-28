@@ -40,9 +40,9 @@ function mountSamples(win: Window, tokens: TokenMap) {
 
 describe('Editors color contrast across themes', () => {
   const themes: Array<{ name: string; loader: () => Promise<{ tokens: TokenMap }> }> = [
-    { name: 'dark', loader: () => import('../../packages/themes/dark/src/tailwind-tokens') },
-    { name: 'bcd', loader: () => import('../../packages/themes/bcd/src/tailwind-tokens') },
-    { name: 'brandx', loader: () => import('../../packages/themes/brandx/src/tailwind-tokens') },
+    { name: 'dark', loader: () => import('../../../../packages/themes/dark/src/tailwind-tokens') },
+    { name: 'bcd', loader: () => import('../../../../packages/themes/bcd/src/tailwind-tokens') },
+    { name: 'brandx', loader: () => import('../../../../packages/themes/brandx/src/tailwind-tokens') },
   ];
 
   for (const theme of themes) {
@@ -53,7 +53,7 @@ describe('Editors color contrast across themes', () => {
         mountSamples(win, tokens);
 
         // Optionally mount StyleEditor to represent ThemeEditor UI (scoped check below)
-        const { default: StyleEditor } = await import('../../packages/ui/src/components/cms/StyleEditor');
+        const { default: StyleEditor } = await import('../../../../packages/ui/src/components/cms/StyleEditor');
         const root = win.document.createElement('div');
         win.document.body.appendChild(root);
         const baseTokens: TokenMap = tokens;
@@ -73,4 +73,3 @@ describe('Editors color contrast across themes', () => {
     });
   }
 });
-

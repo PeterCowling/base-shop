@@ -6,18 +6,21 @@ import '@acme/cypress-image-snapshot/command';
 import 'cypress-audit/commands';
 import '@cypress/grep';
 // Enable Mock Service Worker for API mocking in Cypress tests
-import { server } from "~test/msw/server";
-import { handlersLoginAs, handlersCheckoutHappyPath } from "~test/msw/flows";
-
 // Prevent tests from failing on uncaught exceptions originating from the app
 Cypress.on("uncaught:exception", (_err, _runnable) => {
   // returning false here prevents Cypress from failing the test
   return false;
 });
 
-before(() => server.listen({ onUnhandledRequest: "error" }));
-afterEach(() => server.resetHandlers());
-after(() => server.close());
+before(() => {
+  cy.task("msw:start");
+});
+afterEach(() => {
+  cy.task("msw:reset");
+});
+after(() => {
+  cy.task("msw:close");
+});
 
 // Sessions are persisted via cy.session in tests where needed.
 
@@ -30,6 +33,8 @@ declare global {
     interface Chainable {
       /** Programmatic login as default admin via credentials provider */
       loginAsAdmin(): Chainable<void>;
+      /** Programmatic login to the shopper experience */
+      customerLogin(customerId?: string, password?: string): Chainable<void>;
       /** Apply MSW handlers to simulate next-auth credentials login for a role. Auto-resets after each test. */
       mswLoginAs(role?: 'admin' | 'viewer'): Chainable<void>;
       /** Apply MSW handlers for a deterministic checkout-session endpoint. */
@@ -93,18 +98,37 @@ Cypress.Commands.add("pbVisitBuilder", (shop: string, pageIdOrSlug: string) => {
 
 // Simple credentials login helper (reused by specs)
 Cypress.Commands.add("loginAsAdmin", () => {
-  cy.request("/api/auth/csrf").then(({ body }) => {
-    const csrf = body.csrfToken as string;
+  return cy.session("admin-session", () =>
+    cy.request("/api/auth/csrf").then(({ body }) => {
+      const csrf = body.csrfToken as string;
+      return cy.request({
+        method: "POST",
+        url: "/api/auth/callback/credentials",
+        form: true,
+        followRedirect: true,
+        body: {
+          csrfToken: csrf,
+          email: "admin@example.com",
+          password: "admin",
+          callbackUrl: "/",
+        },
+      });
+    })
+  );
+});
+
+Cypress.Commands.add("customerLogin", (customerId = "cust1", password = "pass1234") => {
+  return cy.session(`customer-${customerId}`, () => {
+    const csrfToken = `test-${Date.now()}`;
+    cy.setCookie("csrf_token", csrfToken);
     cy.request({
       method: "POST",
-      url: "/api/auth/callback/credentials",
-      form: true,
-      followRedirect: true,
+      url: "/api/login",
+      headers: { "x-csrf-token": csrfToken },
       body: {
-        csrfToken: csrf,
-        email: "admin@example.com",
-        password: "admin",
-        callbackUrl: "/",
+        customerId,
+        password,
+        remember: true,
       },
     });
   });
@@ -112,11 +136,11 @@ Cypress.Commands.add("loginAsAdmin", () => {
 
 // MSW flow helpers
 Cypress.Commands.add("mswLoginAs", (role: 'admin' | 'viewer' = 'admin') => {
-  server.use(...handlersLoginAs(role));
+  cy.task("msw:loginAs", role);
 });
 
 Cypress.Commands.add("mswCheckoutHappyPath", () => {
-  server.use(...handlersCheckoutHappyPath());
+  cy.task("msw:checkout");
 });
 
 Cypress.Commands.add("pbEnsurePaletteOpen", () => {

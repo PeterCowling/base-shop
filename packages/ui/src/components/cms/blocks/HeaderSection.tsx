@@ -144,7 +144,6 @@ export default function HeaderSection({
       </div>
       {showBreadcrumbs && breadcrumbs.length > 1 ? (
         <div className="mx-auto px-4 pb-3 text-sm text-neutral-600">
-          {/* eslint-disable-next-line ds/no-raw-font -- DS-0005: false positive, rule matches 'aria-label' as 'arial' */}
           <nav aria-label={String(t("breadcrumb.ariaLabel"))}>
             <ol>
               {breadcrumbs.map((c, i) => (

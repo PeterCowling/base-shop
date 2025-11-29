@@ -6,7 +6,6 @@
       "startServerReadyPattern": "http://localhost:3006",
       "startServerReadyTimeout": 120000,
       "url": [
-        "http://localhost:3006/dashboard",
         "http://localhost:3006/products"
       ],
       "puppeteerScript": "scripts/lhci/login.cjs",

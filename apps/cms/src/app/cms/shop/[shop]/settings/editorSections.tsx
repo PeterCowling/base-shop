@@ -33,7 +33,7 @@ export interface EditorSectionConfig {
   readonly title: string;
   readonly description?: string;
   readonly wrapWithCard?: boolean;
-  readonly component: ComponentType<unknown>;
+  readonly component: ComponentType<any>;
   readonly props: Record<string, unknown>;
 }
 

@@ -12,13 +12,13 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
       - uses: pnpm/action-setup@v4
         with:
           version: 10.12.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
       - id: set-matrix
         run: |
           matrix=$(pnpm list -r --depth -1 --json | node -e "const fs=require('fs');const list=JSON.parse(fs.readFileSync(0,'utf8'));const cwd=process.cwd();const arr=list.filter(p=>p.path!==cwd).map(p=>p.path.replace(cwd+'/', ''));process.stdout.write(JSON.stringify(arr));")
@@ -33,13 +33,13 @@ jobs:
         workspace: ${{ fromJSON(needs.workspaces.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
       - uses: pnpm/action-setup@v4
         with:
           version: 10.12.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
       - run: pnpm install
       - run: pnpm -r build
       - run: pnpm --filter ./${{ matrix.workspace }} lint

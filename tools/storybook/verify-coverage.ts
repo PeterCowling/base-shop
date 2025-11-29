@@ -1,4 +1,3 @@
-import fg from 'fast-glob';
 import fs from 'node:fs';
 import path from 'node:path';
 import { bucketGlobs, bucketPolicy, type Bucket, allowlist } from './coverage.config';
@@ -39,6 +38,15 @@ function read(file: string): string {
   } catch { return ''; }
 }
 
+async function safeReaddir(dir: string) {
+  // Restrict directory walks to within the repository root
+  const root = path.resolve(process.cwd());
+  const resolved = path.resolve(dir);
+  if (!resolved.startsWith(root + path.sep)) return [];
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- DEVEX-2145 path validated within repo root
+  return fs.promises.readdir(resolved, { withFileTypes: true });
+}
+
 const exportRegexByName: Record<string, RegExp> = {
   Default: /export\s+const\s+Default\b/,
   Loading: /export\s+const\s+Loading\b/,
@@ -67,27 +75,33 @@ function hasMobileViewport(src: string): boolean {
 
 (async () => {
   const ROOT = path.resolve(process.cwd(), 'packages/ui/src/components');
-  const componentFiles = await fg('**/*.tsx', {
-    cwd: ROOT,
-    ignore: [
-      '**/*.stories.tsx', // i18n-exempt -- DEVEX-2146 [ttl=2099-12-31] non-UI glob pattern
-      '**/*.stories.ts', // i18n-exempt -- DEVEX-2146 [ttl=2099-12-31] non-UI glob pattern
-      '**/*.Matrix.stories.tsx', // i18n-exempt -- DEVEX-2146 [ttl=2099-12-31] non-UI glob pattern
-      '**/__tests__/**', // i18n-exempt -- DEVEX-2146 [ttl=2099-12-31] non-UI glob pattern
-    ],
-    absolute: true,
-  });
+  const componentFiles: string[] = [];
+
+  async function walk(dir: string) {
+    const entries = await safeReaddir(dir);
+    for (const entry of entries) {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) {
+        if (entry.name === '__tests__') continue;
+        await walk(full);
+      } else if (entry.isFile()) {
+        if (!entry.name.endsWith('.tsx')) continue;
+        if (/\.stories\.(ts|tsx)$/.test(entry.name)) continue;
+        componentFiles.push(full);
+      }
+    }
+  }
+
+  await walk(ROOT);
 
   const results: ComponentRecord[] = [];
 
   for (const c of componentFiles) {
     const dir = path.dirname(c);
-    const base = path.basename(c, path.extname(c));
-    const stories = await fg([
-      `${dir}/${base}.stories.@(ts|tsx)`,
-      `${dir}/*.stories.@(ts|tsx)`,
-      `${dir}/*.Matrix.stories.@(ts|tsx)`,
-    ], { absolute: true });
+    const entries = await safeReaddir(dir);
+    const stories = entries
+      .filter((e) => e.isFile() && /\.stories\.(ts|tsx)$/.test(e.name))
+      .map((e) => path.join(dir, e.name));
     // Prefer Matrix story when present
     const matrixFirst = stories.sort((a, b) => {
       const am = /\.Matrix\.stories\./.test(a) ? 0 : 1;

@@ -10,7 +10,7 @@ export function middleware(_request: NextRequest) {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: "'self'",
-          baseUri: "'self'",
+          baseURI: "'self'",
           objectSrc: "'none'",
           formAction: "'self'",
           frameAncestors: "'none'",

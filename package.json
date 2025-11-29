@@ -310,7 +310,8 @@
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^4.3.2",
     "wait-on": "^8.0.4",
-    "wrangler": "^4.20.4"
+    "wrangler": "^4.20.4",
+    "fast-glob": "^3.3.2"
   },
   "pnpm": {
     "overrides": {

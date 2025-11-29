@@ -73,7 +73,7 @@ export default function Upgrade() {
           <ul className="space-y-1">
             {components.map((c) => (
               <li key={c.file}>
-                <label className="flex items-center gap-2">
+                <label className="flex min-h-10 items-center gap-2">
                   <input
                     type="checkbox"
                     checked={selected.has(c.file)}
@@ -97,7 +97,7 @@ export default function Upgrade() {
           <button
             onClick={publish}
             disabled={status === "loading"}
-            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded bg-blue-600 px-4 py-2 text-white"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-blue-600 px-4 py-2 text-white"
           >
             {status === "loading"
               ? t("upgrade.publishing")

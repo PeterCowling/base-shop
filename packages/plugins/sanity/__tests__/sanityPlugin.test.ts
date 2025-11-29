@@ -141,6 +141,19 @@ describe("sanity plugin", () => {
     expect(not).toBe(false);
   });
 
+  test("slugExists excludes specific document id when provided", async () => {
+    mockClient.fetch.mockResolvedValue({ _id: "2" });
+    const exists = await slugExists(
+      { projectId: "p", dataset: "d", token: "t" },
+      "foo",
+      "1",
+    );
+    expect(mockClient.fetch).toHaveBeenCalledWith(
+      '*[_type=="post" && slug.current=="foo" && _id!="1"][0]._id',
+    );
+    expect(exists).toBe(true);
+  });
+
   test("slugExists handles network failures", async () => {
     mockClient.fetch.mockRejectedValue(new Error("Network error"));
     await expect(

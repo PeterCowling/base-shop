@@ -14,7 +14,7 @@
         "preset": "perf",
         "throttlingMethod": "simulate",
         "disableStorageReset": true,
-        "chromeFlags": "--no-sandbox --disable-dev-shm-usage",
+        "chromeFlags": "--no-sandbox --disable-dev-shm-usage --ignore-certificate-errors --allow-insecure-localhost",
         "blockedUrlPatterns": [
           "*googletagmanager.com*",
           "*google-analytics.com*",

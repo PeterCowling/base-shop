@@ -59,7 +59,7 @@
     "test-storybook": "pnpm run storybook:smoke",
     "storybook:smoke": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec playwright test .storybook/test-runner/__tests__/{smoke-health,tokens,usefsm}.test.ts --reporter=list\"",
     "storybook:composed": "pnpm --filter @apps/storybook run dev:composed",
-    "storybook:smoke:ui": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook\" http://localhost:6006 \"pnpm exec playwright test apps/storybook/.storybook/test-runner/__tests__/rtl-tokens.test.ts --reporter=list\"",
+    "storybook:smoke:ui": "cross-env WAIT_ON_TIMEOUT=120000 start-server-and-test \"pnpm run storybook:ci\" http://localhost:6007 \"pnpm exec playwright test apps/storybook/.storybook/test-runner/__tests__/rtl-tokens.test.ts --reporter=list\"",
     "preview": "wrangler pages dev",
     "format": "prettier --write .",
     "doc:api": "typedoc",

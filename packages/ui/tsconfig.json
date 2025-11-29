@@ -82,6 +82,8 @@
     "**/__tests__/**",
     "**/*.test.*",
     "**/*.spec.*",
-    "**/*.stories.*"
+    "**/*.stories.*",
+    "src/story-utils/**/*",
+    "src/components/story-utils/**/*"
   ]
 }

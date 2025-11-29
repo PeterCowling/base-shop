@@ -6,7 +6,6 @@
       "startServerReadyPattern": "http://localhost:3004",
       "startServerReadyTimeout": 120000,
       "url": [
-        "http://localhost:3004/en",
         "http://localhost:3004/en/shop",
         "http://localhost:3004/en/product/p1"
       ],

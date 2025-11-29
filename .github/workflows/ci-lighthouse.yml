@@ -35,6 +35,9 @@ jobs:
       - name: Build @apps/cms
         run: pnpm --filter @apps/cms build
 
+      - name: Build @apps/shop-bcd
+        run: pnpm --filter @apps/shop-bcd build
+
       - name: Setup Chrome for LHCI
         id: chrome
         uses: browser-actions/setup-chrome@v1

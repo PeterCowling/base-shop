@@ -67,7 +67,7 @@ describe("PreviewPage", () => {
     const element = (await PreviewPage({
       ...baseParams,
       searchParams: { device: "preset2" },
-    })) as ReactElement;
+    })) as ReactElement<PreviewClientProps>;
     expect(element.props.initialDeviceId).toBe("preset2");
   });
 
@@ -76,7 +76,7 @@ describe("PreviewPage", () => {
     const element = (await PreviewPage({
       ...baseParams,
       searchParams: { view: "mobile" },
-    })) as ReactElement;
+    })) as ReactElement<PreviewClientProps>;
     expect(getLegacyPreset).toHaveBeenCalledWith("mobile");
     expect(element.props.initialDeviceId).toBe("mobile-id");
   });

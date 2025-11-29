@@ -1,4 +1,4 @@
-/* i18n-exempt file -- DS-TRYON-2026 [ttl=2026-01-31] try-on canvas preview helpers; errors are developer diagnostics, not user-facing copy */
+/* i18n-exempt file -- I18N-123 try-on canvas preview helpers; errors are developer diagnostics, not user-facing copy [ttl=2026-01-31] */
 "use client";
 
 import { renderShadow } from "@acme/lib/tryon/fallback/shadow";
@@ -145,11 +145,11 @@ async function loadImage(src: string): Promise<HTMLImageElement> {
           ? event.error ?? new Error(event.message)
           : event instanceof Event
             ? new Error(
-                "Image failed to load", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] developer diagnostic error; swallowed by caller, not user-facing copy */
+                "tryon.preview.imageFailedToLoad",
               )
             : new Error(
                 String(
-                  event ?? "Image failed to load", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] developer diagnostic error; swallowed by caller, not user-facing copy */
+                  event ?? "tryon.preview.imageFailedToLoad",
                 ),
               );
       reject(error);

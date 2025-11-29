@@ -23,3 +23,8 @@
 /* -------- Typography mapping to theme tokens --------------------- */
 /* Ensure authored font selections flow through to runtime elements. */
 /* Heading/body mapping provided by shared typography.css */
+
+/* Try-on stepper active state */
+.tryon-step-active {
+  @apply font-medium text-foreground;
+}

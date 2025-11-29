@@ -59,8 +59,9 @@ describe("POST /api/password-reset/request", () => {
   });
 
   it("uses longer expiry outside test env", async () => {
-    const prevEnv = process.env.NODE_ENV as string;
-    process.env.NODE_ENV = "production";
+    const prevEnv = process.env.NODE_ENV;
+    const env = process.env as Record<string, string | undefined>;
+    env.NODE_ENV = "production";
     jest.resetModules();
     jest.doMock("@platform-core/users", () => ({
       __esModule: true,
@@ -74,6 +75,6 @@ describe("POST /api/password-reset/request", () => {
     const { POST } = await import("./route");
     const res = await POST(makeReq({ email: "a@b.com" }));
     expect(res.status).toBe(200);
-    process.env.NODE_ENV = prevEnv;
+    env.NODE_ENV = prevEnv;
   });
 });

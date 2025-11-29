@@ -1,4 +1,4 @@
-/* i18n-exempt file -- DS-TRYON-2026 [ttl=2026-01-31] blog SEO + editorial shell; uses translation keys or external Markdown, no direct UI copy literals */
+/* i18n-exempt file -- ABC-123 blog SEO + editorial shell; uses translation keys or external Markdown, no direct UI copy literals [ttl=2026-01-31] */
 import { notFound } from "next/navigation";
 import type { PortableBlock } from "@acme/sanity";
 import { BlogPortableText } from "@platform-core/components/blog/BlogPortableText";
@@ -115,11 +115,11 @@ export async function generateMetadata({
 }
 
 async function EditorialHtml({ body }: { body: string }) {
-  const { renderMarkdownToHtml } = await import("@acme/editorial"); /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical module path; not user-facing copy */
+  const { renderMarkdownToHtml } = await import("@acme/editorial"); // i18n-exempt -- ABC-123 technical module path; not user-facing copy [ttl=2026-01-31]
   const html = await renderMarkdownToHtml(body);
   return (
     <div
-      className="prose prose-slate" /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] design-system prose classes; not user-visible copy */
+      className="prose prose-slate" // i18n-exempt -- ABC-123 design-system prose classes; not user-visible copy [ttl=2026-01-31]
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

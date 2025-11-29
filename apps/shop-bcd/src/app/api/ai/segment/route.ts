@@ -8,6 +8,8 @@ export const runtime = "edge";
 
 const Body = z.object({ imageUrl: z.string().url(), idempotencyKey: z.string().uuid() });
 
+type AwsSignedRequest = Request & { url?: string };
+
 // Best-effort in-memory quota (edge isolate)
 const PREVIEW_LIMIT = 20;
 const buckets = new Map<string, { count: number; exp: number }>();
@@ -46,11 +48,6 @@ async function checkQuota(req: Request): Promise<string | null> {
   return null;
 }
 
-type AwsSignOptions = RequestInit & {
-  signQuery?: boolean;
-  expires?: number;
-};
-
 async function signGetForProvider(imageUrl: string): Promise<string> {
   try {
     const u = new URL(imageUrl);
@@ -64,11 +61,10 @@ async function signGetForProvider(imageUrl: string): Promise<string> {
     if (!key.startsWith('tryon/')) return imageUrl;
     const endpoint = `https://${accountId}.r2.cloudflarestorage.com/${bucket}/${key}`;
     const client = new AwsClient({ accessKeyId, secretAccessKey, service: 's3', region: 'auto' });
-    const signed: { url?: string } | string = await client.sign(
+    const signed = (await client.sign(
       endpoint,
-      { method: "GET", signQuery: true, expires: 300 } satisfies AwsSignOptions
-    );
-    if (typeof signed === "string") return signed;
+      { method: "GET", signQuery: true, expires: 300 } as RequestInit
+    )) as AwsSignedRequest;
     return signed.url ?? String(signed);
   } catch { return imageUrl; }
 }

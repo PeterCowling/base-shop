@@ -37,9 +37,13 @@ describe("PdpClient", () => {
     title: "Test SKU",
     description: "A test product",
     price: 100,
+    deposit: 0,
+    stock: 10,
+    forSale: true,
+    forRental: false,
     media: [],
     sizes: ["S", "M"],
-  } as SKU;
+  };
 
   beforeEach(() => {
     addToCartMock.mockClear();

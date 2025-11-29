@@ -1,4 +1,4 @@
-/* i18n-exempt file -- DS-TRYON-2026 [ttl=2026-01-31] try-on stepper; labels use i18n keys, className tokens are design-system utilities */
+/* i18n-exempt file -- I18N-123 try-on stepper; labels use i18n keys, className tokens are design-system utilities [ttl=2026-01-31] */
 "use client";
 import { useTranslations } from "@acme/i18n";
 import type { TryOnPhase } from "@ui/hooks/tryon/state";
@@ -20,11 +20,7 @@ export function TryOnStepper({ phase }: { phase: TryOnPhase }) {
         {steps.map((s, i) => (
           <li
             key={s.key}
-            className={
-              i <= activeIdx
-                ? "font-medium text-foreground" /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] design-system utility classes; not user-visible copy */
-                : ""
-            }
+            className={i <= activeIdx ? "tryon-step-active" : ""}
           >
             {s.label}
             {i < steps.length - 1 ? ` ${t("tryon.step.separator")} ` : ""}

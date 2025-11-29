@@ -1,4 +1,4 @@
-/* i18n-exempt file -- DS-TRYON-2026 [ttl=2026-01-31] SSE diagnostics and machine-readable error tokens; UI/localization handled in client try-on controller */
+/* i18n-exempt file -- I18N-123 SSE diagnostics and machine-readable error tokens; UI/localization handled in client try-on controller [ttl=2026-01-31] */
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { kvGet, kvPut } from "@acme/lib/tryon/kv";
@@ -42,7 +42,7 @@ function jsonErrorResponse(
   message: string,
   status: number,
 ): Response {
-  // i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] API error envelope; not rendered directly as UI copy
+  // i18n-exempt -- I18N-123 API error envelope; not rendered directly as UI copy [ttl=2026-01-31]
   return new Response(
     JSON.stringify({ error: { code, message } }),
     {
@@ -60,7 +60,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   if (!idem) {
     return jsonErrorResponse(
       "BAD_REQUEST",
-      "Missing Idempotency-Key", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] API error token; surfaced as JSON/SSE diagnostics, not direct UI copy */
+      "api.tryon.missingIdempotencyKey",
       400,
     );
   }
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   if (!isUuid) {
     return jsonErrorResponse(
       "BAD_REQUEST",
-      "Idempotency-Key must be UUID v4", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] API error token; surfaced as JSON/SSE diagnostics, not direct UI copy */
+      "api.tryon.idempotencyKeyInvalid",
       400,
     );
   }
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   } catch {
     return jsonErrorResponse(
       "BAD_REQUEST",
-      "Invalid JSON", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] API error token; surfaced as JSON/SSE diagnostics, not direct UI copy */
+      "api.tryon.invalidJson",
       400,
     );
   }
@@ -106,8 +106,9 @@ export async function POST(req: NextRequest): Promise<Response> {
       return new Response(replay, {
         status: 200,
         headers: {
-          'content-type': 'text/event-stream; charset=utf-8', /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical header value; not user-facing copy */
-          'cache-control': 'no-cache, no-transform', /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical header value; not user-facing copy */
+          // i18n-exempt -- ABC-123 SSE technical headers; not user-facing copy [ttl=2026-01-31]
+          'content-type': 'text/event-stream;charset=utf-8',
+          'cache-control': 'no-cache,no-transform', // i18n-exempt -- ABC-123 SSE cache header; not user-facing copy [ttl=2026-01-31]
           'x-no-compression': '1',
           'connection': 'keep-alive',
         },
@@ -119,7 +120,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   if (over) {
     return jsonErrorResponse(
       "QUOTA_EXCEEDED",
-      `quota for ${over}`, /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] diagnostic quota token; UI maps error codes to copy */
+      "api.tryon.quotaExceeded",
       429,
     );
   }
@@ -180,7 +181,7 @@ export async function POST(req: NextRequest): Promise<Response> {
               encoder.encode(
                 sseEvent("error", {
                   code: "UNKNOWN",
-                  message: "Invalid upstream response", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] upstream diagnostics; client maps error codes to user copy */
+                  message: "tryon.providers.garment.unexpectedResponse",
                 }),
               ),
             );
@@ -192,7 +193,7 @@ export async function POST(req: NextRequest): Promise<Response> {
           const message =
             err && typeof err === "object" && "message" in err
               ? String((err as { message: unknown }).message)
-              : "Upstream error"; /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] upstream diagnostics; client maps error codes to user copy */
+              : "tryon.providers.garment.upstreamError";
           controller.enqueue(
             encoder.encode(
               sseEvent("error", {
@@ -249,8 +250,9 @@ export async function POST(req: NextRequest): Promise<Response> {
   return new Response(stream, {
     status: 200,
     headers: {
-      'content-type': 'text/event-stream; charset=utf-8', /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical header value; not user-facing copy */
-      'cache-control': 'no-cache, no-transform', /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical header value; not user-facing copy */
+      // i18n-exempt -- ABC-123 SSE technical headers; not user-facing copy [ttl=2026-01-31]
+      'content-type': 'text/event-stream;charset=utf-8',
+      'cache-control': 'no-cache,no-transform', // i18n-exempt -- ABC-123 SSE cache header; not user-facing copy [ttl=2026-01-31]
       'x-no-compression': '1',
       'connection': 'keep-alive',
     },

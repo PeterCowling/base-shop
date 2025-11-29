@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { POST } from "./route";
 
 jest.mock("@shared-utils", () => ({ parseJsonBody: jest.fn() }));
@@ -18,7 +18,7 @@ describe("POST /api/tax", () => {
   it("returns validation response when parse fails", async () => {
     const resp = NextResponse.json({ error: "bad" }, { status: 400 });
     parseJsonBody.mockResolvedValue({ success: false, response: resp });
-    const res = await POST({} as Request);
+    const res = await POST({} as NextRequest);
     expect(res).toBe(resp);
   });
 
@@ -28,7 +28,7 @@ describe("POST /api/tax", () => {
       data: { provider: "taxjar", amount: 100, toCountry: "US" },
     });
     calculateTax.mockResolvedValue(7);
-    const res = await POST({} as Request);
+    const res = await POST({} as NextRequest);
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ tax: 7 });
   });
@@ -39,7 +39,7 @@ describe("POST /api/tax", () => {
       data: { provider: "taxjar", amount: 100, toCountry: "US" },
     });
     calculateTax.mockRejectedValue(new Error("fail"));
-    const res = await POST({} as Request);
+    const res = await POST({} as NextRequest);
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: "fail" });
   });

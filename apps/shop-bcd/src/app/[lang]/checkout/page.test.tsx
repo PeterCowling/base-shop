@@ -24,10 +24,7 @@ jest.mock("@platform-core/cartCookie", () => {
 });
 
 type GetShopSettings = typeof import("@platform-core/repositories/settings.server").getShopSettings;
-const getShopSettingsMock: jest.Mock<
-  ReturnType<GetShopSettings>,
-  Parameters<GetShopSettings>
-> = jest.fn();
+const getShopSettingsMock = jest.fn();
 jest.mock("@platform-core/repositories/settings.server", () => ({
   getShopSettings: (...args: Parameters<GetShopSettings>) =>
     getShopSettingsMock(...args),
@@ -53,7 +50,14 @@ type DeliverySchedulerOnChange = NonNullable<DeliverySchedulerProps["onChange"]>
 const DeliverySchedulerStub = ({ onChange }: { onChange?: DeliverySchedulerOnChange }) => (
   <button
     data-cy="delivery-scheduler"
-    onClick={() => onChange({ region: "us", window: "am", date: "2024-01-01" })}
+    onClick={() =>
+      onChange?.({
+        mode: "delivery",
+        region: "us",
+        window: "am",
+        date: "2024-01-01",
+      })
+    }
   >
     schedule
   </button>
@@ -101,11 +105,11 @@ describe("CheckoutPage", () => {
     decodeCartCookieMock.mockReturnValue({ line: {} });
     getShopSettingsMock.mockResolvedValue({
       taxRegion: "US",
-      premierDelivery: { windows: ["am"], regions: ["us"] },
+      premierDelivery: { windows: ["am"], regions: ["us"], carriers: [] },
     });
 
-    const fetchMock: jest.Mock<Promise<Response>, [RequestInfo | URL, RequestInit?]> = jest.fn(
-      () => Promise.resolve(new Response(null)),
+    const fetchMock = jest.fn<Promise<Response>, [RequestInfo | URL, RequestInit?]>(() =>
+      Promise.resolve(new Response(null)),
     );
     global.fetch = fetchMock as unknown as typeof fetch;
 

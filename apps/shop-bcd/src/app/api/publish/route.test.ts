@@ -3,7 +3,6 @@ import fs from "fs";
 import path from "node:path";
 import ts from "typescript";
 import { requirePermission } from "@auth";
-import { republishShop } from "../../../../../../scripts/src/republish-shop";
 
 jest.mock("@auth", () => ({ requirePermission: jest.fn() }));
 const mockedRequirePermission = requirePermission as jest.Mock;
@@ -19,13 +18,16 @@ jest.mock("fs", () => {
     },
   };
 });
-const fsPromises = fs.promises as { readFile: jest.Mock; rm: jest.Mock };
+const fsPromises = fs.promises as unknown as { readFile: jest.Mock; rm: jest.Mock };
 
 jest.mock(
   "../../../../../../scripts/src/republish-shop",
   () => ({ republishShop: jest.fn() }),
   { virtual: true },
 );
+const { republishShop } = jest.requireMock(
+  "../../../../../../scripts/src/republish-shop",
+) as { republishShop: jest.Mock };
 const mockedRepublishShop = republishShop as jest.Mock;
 
 function loadRoute() {

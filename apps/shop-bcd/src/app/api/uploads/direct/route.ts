@@ -1,4 +1,4 @@
-/* i18n-exempt file -- DS-TRYON-2026 [ttl=2026-01-31] upload diagnostics and machine-readable error tokens; UI/localization handled in client upload hook */
+/* i18n-exempt file -- I18N-123 upload diagnostics and machine-readable error tokens; UI/localization handled in client upload hook [ttl=2026-01-31] */
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { AwsClient } from "aws4fetch";
@@ -60,7 +60,7 @@ async function deriveSigningKey(
   region: string,
   service: string,
 ): Promise<ArrayBuffer> {
-  const seed = new TextEncoder().encode(`AWS4${secret}`).buffer;
+  const seed = new TextEncoder().encode(`AWS4${secret}`).buffer as ArrayBuffer;
   const kDate = await hmac(seed, date);
   const kRegion = await hmac(kDate, region);
   const kService = await hmac(kRegion, service);
@@ -97,7 +97,7 @@ function jsonError(
   message: string,
   status: number,
 ): Response {
-  // i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] API error envelope; not rendered directly as UI copy
+  // i18n-exempt -- I18N-123 API error envelope; not rendered directly as UI copy [ttl=2026-01-31]
   return NextResponse.json(
     { error: { code, message } },
     { status },
@@ -128,24 +128,24 @@ export async function POST(req: NextRequest): Promise<Response> {
     if (pixels > 6_000_000) {
       return jsonError(
         "BAD_REQUEST",
-        "Image too large", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] diagnostic upload error token; UI maps error codes to copy */
+        "tryon.upload.imageTooLarge",
         400,
       );
     }
     if (Math.max(width, height) > 1600) {
       return jsonError(
         "BAD_REQUEST",
-        "Max dimension exceeded", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] diagnostic upload error token; UI maps error codes to copy */
+        "tryon.upload.maxDimensionExceeded",
         400,
       );
-      }
     }
+  }
     // If strict mode is enabled, width/height must be provided
   if ((process.env.TRYON_REQUIRE_DIMENSIONS || "").toLowerCase() === "true") {
     if (typeof width !== "number" || typeof height !== "number") {
       return jsonError(
         "BAD_REQUEST",
-        "Missing image dimensions", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] diagnostic upload error token; UI maps error codes to copy */
+        "tryon.upload.missingImageDimensions",
         400,
       );
       }
@@ -153,12 +153,12 @@ export async function POST(req: NextRequest): Promise<Response> {
 
     // Enforce byte cap when provided (client sends blob.size)
   if (typeof sizeBytes === "number" && sizeBytes > 8_000_000) {
-      return jsonError(
-        "BAD_REQUEST",
-        "File too large", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] diagnostic upload error token; UI maps error codes to copy */
-        400,
-      );
-    }
+    return jsonError(
+      "BAD_REQUEST",
+      "tryon.upload.fileTooLarge",
+      400,
+    );
+  }
 
     // Validate env
     const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
@@ -170,7 +170,7 @@ export async function POST(req: NextRequest): Promise<Response> {
   if (!accountId || !bucket || !publicBase || !accessKeyId || !secretAccessKey) {
     return jsonError(
       "UNKNOWN",
-      "R2 configuration missing. Ensure account, bucket, keys and public base URL are set.", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] internal configuration diagnostic; not end-user copy */
+      "tryon.upload.r2ConfigMissing",
       500,
     );
     }
@@ -288,7 +288,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     const message =
       err && typeof err === "object" && "message" in err
         ? String((err as { message: unknown }).message)
-        : "Unexpected error"; /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] internal diagnostic; not end-user copy */
+        : "tryon.upload.unexpectedError";
     return jsonError("UNKNOWN", message, 500);
   }
 }

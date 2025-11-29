@@ -46,6 +46,17 @@ async function withRepo(
     { virtual: true },
   );
   jest.doMock(
+    "@acme/config/env/core",
+    () => ({
+      __esModule: true,
+      coreEnv: {
+        PREVIEW_TOKEN_SECRET: "secret",
+        UPGRADE_PREVIEW_TOKEN_SECRET: "secret",
+        NEXT_PUBLIC_SHOP_ID: "demo",
+      },
+    }),
+  );
+  jest.doMock(
     "@acme/zod-utils/initZod",
     () => ({ initZod: () => {} }),
     { virtual: true },
@@ -58,11 +69,6 @@ function tokenFor(id: string): string {
 }
 
 describe("CMS → storefront flow", () => {
-  beforeAll(() => {
-    process.env.PREVIEW_TOKEN_SECRET = "secret";
-    process.env.NEXT_PUBLIC_SHOP_ID = "demo";
-  });
-
   test("published page is returned via preview route", async () => {
     await withRepo(async (repo) => {
       const now = nowIso();

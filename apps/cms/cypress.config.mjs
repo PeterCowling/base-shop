@@ -25,6 +25,27 @@ log("loaded config entry", {
   nodeOptions: process.env.NODE_OPTIONS || "",
 });
 
+// Narrow the spec set for the lightweight smoke suite so GitHub CI doesn't run
+// the entire e2e matrix when `CYPRESS_E2E_SUITE=smoke` is set. Full e2e runs
+// (e.g., `pnpm e2e`) still exercise both the app-local and legacy specs.
+const e2eSpecPattern =
+  process.env.CYPRESS_E2E_SUITE === "smoke"
+    ? [
+        // CMS admin surface basics
+        join(__dirname, "cypress/e2e/dashboard-signin.cy.ts"),
+        join(__dirname, "cypress/e2e/cms-overview-readonly-functional.cy.ts"),
+        join(__dirname, "cypress/e2e/cms-providers-functional.cy.ts"),
+        // Shopper storefront smoke flows
+        join(__dirname, "cypress/e2e/shopper-journey.cy.ts"),
+        join(__dirname, "cypress/e2e/shop-order.cy.ts"),
+        // Fast API health checks
+        join(__dirname, "cypress/e2e/api-headers-smoke.cy.ts"),
+      ]
+    : [
+        join(__dirname, "cypress/e2e/**/*.cy.{js,ts,tsx}"),
+        join(path.resolve(__dirname, "../../test/e2e/**/*.spec.{js,ts}")),
+      ];
+
 function patchRelativeImports(filePath) {
   const source = readFileSync(filePath, "utf8");
   const patched = source.replace(/from\s+(["'])(\.\/[^."']+)\1/g, (_match, quote, spec) => `from ${quote}${spec}.js${quote}`);
@@ -64,10 +85,7 @@ const mswFlowsModulePromise = import(pathToFileURL(mswFlowsOut).href);
 export default defineConfig({
   e2e: {
     baseUrl: process.env.CYPRESS_BASE_URL || "http://localhost:3006",
-    specPattern: [
-      join(__dirname, "cypress/e2e/**/*.cy.{js,ts,tsx}"),
-      join(path.resolve(__dirname, "../../test/e2e/**/*.spec.{js,ts}")),
-    ],
+    specPattern: e2eSpecPattern,
     supportFile: join(__dirname, "cypress/support/index.ts"),
     env: {
       NEXTAUTH_SECRET:

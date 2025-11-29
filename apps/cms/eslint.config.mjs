@@ -68,6 +68,14 @@ const config = [
       "ds/min-tap-size": "off",
     },
   },
+
+  // CMS shop editor wiring: allow `any` for component config
+  {
+    files: ["src/app/cms/shop/*/settings/editorSections.tsx"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
 ];
 
 export default config;

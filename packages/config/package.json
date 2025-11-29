@@ -57,7 +57,7 @@
     "prebuild": "rimraf dist tsconfig.tsbuildinfo && pnpm --filter @acme/zod-utils run build && pnpm run build:stubs",
     "prepare": "pnpm run build:stubs",
     "build:stubs": "node ./scripts/generate-env-stubs.mjs",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -b tsconfig.json",
     "dev": "tsc -p tsconfig.json -w",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "jest packages/config/__tests__ packages/config/src/env/__tests__ --passWithNoTests --runInBand --config jest.preset.cjs",

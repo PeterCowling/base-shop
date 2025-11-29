@@ -58,12 +58,14 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Seed test data
         run: TEST_DATA_ROOT=__tests__/data node --import tsx scripts/src/seed-test-data.ts
+      - name: Build CMS app
+        run: pnpm --filter @apps/cms build
       - name: Install Cypress binary
         run: pnpm exec cypress install
       - name: Run Cypress (smoke)
         uses: cypress-io/github-action@v6
         with:
-          start: pnpm --filter @apps/cms build && pnpm --filter @apps/cms start
+          start: pnpm --filter @apps/cms start
           wait-on: 'http://localhost:3006'
           command: pnpm exec cypress run --config-file apps/cms/cypress.config.mjs --env grepTags=smoke --browser ${{ matrix.browser }} --config viewportWidth=${{ matrix.width }},viewportHeight=${{ matrix.height }}
           install: false

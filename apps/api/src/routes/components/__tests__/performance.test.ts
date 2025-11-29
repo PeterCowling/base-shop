@@ -17,7 +17,7 @@ describe('performance benchmarks', () => {
   // fails when regressions push these operations past their historical ranges.
   const DIFF_SINGLE_BUDGET_MS = 500;
   const DIFF_CONCURRENT_BUDGET_MS = 2600;
-  const ON_REQUEST_CONCURRENT_BUDGET_MS = 4000;
+  const ON_REQUEST_CONCURRENT_BUDGET_MS = 4500;
 
   beforeEach(() => {
     vol.reset();

@@ -3,9 +3,7 @@
 let rest: any;
 
 if (process.env.DISABLE_MSW !== "1") {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const shared = require("~test/msw/server");
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { handlers } = require("./handlers");
   const server = shared.server;
   rest = shared.rest;

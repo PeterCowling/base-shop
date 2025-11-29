@@ -21,7 +21,7 @@ export default function ComponentEditorClient() {
   const [isError, setIsError] = useState(false);
   const [issues, setIssues] = useState<Array<{ path: Array<string | number>; message: string }>>([]);
   // Extract to avoid eslint false positive from key substring 'ariaLabel' matching 'arial'
-  const nameAriaLabel = String(t("cms.componentEditor.name.ariaLabel")); // eslint-disable-line ds/no-raw-font -- false positive: 'ariaLabel' substring triggers rule (ABC-123 [ttl=2025-12-31])
+  const nameAriaLabel = String(t("cms.componentEditor.name.ariaLabel"));
 
   const onChange = useCallback((patch: Partial<PageComponent>) => {
     setComponent((prev: PageComponent) => ({ ...prev, ...patch } as PageComponent));

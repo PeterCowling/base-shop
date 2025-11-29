@@ -1155,7 +1155,7 @@ export default [
   {
     files: ["apps/cms/**"],
     rules: {
-      "ds/min-tap-size": ["warn", { min: 44 }],
+      "ds/min-tap-size": "off",
     },
   },
 

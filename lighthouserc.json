@@ -10,14 +10,16 @@
         "http://localhost:3006/products"
       ],
       "puppeteerScript": "scripts/lhci/login.cjs",
+      "puppeteerLaunchOptions": {
+        "args": [
+          "--no-sandbox",
+          "--disable-dev-shm-usage"
+        ]
+      },
       "settings": {
         "preset": "perf",
         "throttlingMethod": "simulate",
         "disableStorageReset": true,
-        "chromeFlags": [
-          "--no-sandbox",
-          "--disable-dev-shm-usage"
-        ],
         "blockedUrlPatterns": [
           "*googletagmanager.com*",
           "*google-analytics.com*",

@@ -14,7 +14,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 export default function ShopClient({ skus }: { skus: SKU[] }) {
   const t = useTranslations();
   // Extract to avoid eslint false positive from key substring 'ariaLabel' matching 'arial'
-  const searchAriaLabel = String(t("shop.searchAriaLabel")); // eslint-disable-line ds/no-raw-font -- INTL-000 false positive: 'ariaLabel' substring [ttl=2026-03-31]
+  const searchAriaLabel = String(t("shop.searchAriaLabel"));
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();

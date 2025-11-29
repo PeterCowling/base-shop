@@ -30,7 +30,7 @@ const routes: { path: string; checkLayout: (hamburger: boolean) => void }[] = [
         .first()
         .invoke("attr", "style")
         .then((style) => {
-          const match = /repeat\\((\\d+)/.exec(style || "");
+          const match = /repeat\((\d+)/.exec(style || "");
           const count = match ? Number(match[1]) : 0;
           expect(count).to.eq(expectedColumns);
         });

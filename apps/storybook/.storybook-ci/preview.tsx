@@ -1,74 +1,7 @@
-import { withThemeByClassName } from "@storybook/addon-themes";
-import type { Decorator, Preview } from "@storybook/react";
-import type { GlobalTypes } from "@storybook/types";
-import "../../../packages/themes/base/src/tokens.css";
-import en from "../../../packages/i18n/src/en.json";
-import { createBackgroundOptions, DEFAULT_BACKGROUND } from "../.storybook/backgrounds";
-import { VIEWPORTS } from "../.storybook/viewports";
-import { a11yGlobals, a11yParameters } from "../.storybook/a11y";
-import { withHighlight } from "../.storybook/decorators/highlightDecorator";
+// Reuse the primary Storybook preview configuration for CI.
+// This ensures CI stories share the same globals, decorators (including RTL),
+// and theming behaviour as local Storybook.
 
-const t = (key: string) => (en as Record<string, string>)[key] ?? key;
+export * from "../.storybook/preview.tsx";
+export { default } from "../.storybook/preview.tsx";
 
-const toolbarGlobalTypes = {
-  tokens: {
-    name: t("storybook.tokens.name"),
-    description: t("storybook.tokens.description"),
-    defaultValue: "base",
-    toolbar: {
-      icon: "paintbrush",
-      items: [
-        { value: "base", title: t("storybook.tokens.theme.base") },
-        { value: "brandx", title: t("storybook.tokens.theme.brandx") },
-      ],
-    },
-  },
-} satisfies GlobalTypes;
-
-const withTokens: Decorator = (Story, context) => {
-  const { tokens } = context.globals as { tokens: string };
-  const cls = document.documentElement.classList;
-  cls.remove("theme-base", "theme-brandx");
-  cls.add(`theme-${tokens}`);
-  return <Story />;
-};
-
-const backgroundOptions = createBackgroundOptions(t);
-
-const preview: Preview = {
-  globalTypes: toolbarGlobalTypes,
-  initialGlobals: {
-    tokens: "base",
-    backgrounds: { value: DEFAULT_BACKGROUND },
-    viewport: { value: "desktop", isRotated: false },
-  },
-  parameters: {
-    ...a11yParameters,
-    backgrounds: {
-      options: backgroundOptions,
-    },
-    measure: {
-      disable: false,
-    },
-    outline: {
-      disable: false,
-    },
-    viewport: {
-      options: VIEWPORTS,
-    },
-    // CI runs on a curated, fast subset. A11y is enabled per critical story via story parameters.
-  },
-  decorators: [
-    withThemeByClassName({
-      themes: { light: "light", dark: "dark" },
-      defaultTheme: "light",
-    }),
-    withTokens,
-    withHighlight,
-  ],
-  globals: {
-    ...a11yGlobals,
-  },
-};
-
-export default preview;

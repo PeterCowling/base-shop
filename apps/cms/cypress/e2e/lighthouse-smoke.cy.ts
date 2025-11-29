@@ -21,7 +21,7 @@ describe('Lighthouse smoke (authenticated)', { tags: ['smoke', 'lh'] }, () => {
       const user = Cypress.env('E2E_USERNAME');
       const pass = Cypress.env('E2E_PASSWORD');
       if (!user || !pass) {
-        // eslint-disable-next-line no-console
+        // i18n-exempt -- TEST-000 [ttl=2026-12-31] console warning only shown in CI logs when credentials are missing
         console.warn('E2E_USERNAME/E2E_PASSWORD not set; skipping auth.');
         return;
       }

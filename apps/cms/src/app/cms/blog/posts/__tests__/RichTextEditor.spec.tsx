@@ -24,7 +24,9 @@ jest.mock("@ui/components/cms/page-builder", () => ({
 }));
 jest.mock("next/image", () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    <img alt="" {...props} />
+  ),
 }));
 jest.mock("@acme/i18n", () => ({
   useTranslations: () => translate,

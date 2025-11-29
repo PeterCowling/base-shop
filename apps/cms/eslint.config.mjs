@@ -37,8 +37,9 @@ const config = [
   // Cypress + middleware: lint outside TS project to avoid projectService errors
   {
     files: [
+      "cypress.config.mjs",
       "cypress/**/*.{ts,tsx}",
-      "middleware.ts",
+      "middleware.ts"
     ],
     languageOptions: {
       parserOptions: {
@@ -51,6 +52,12 @@ const config = [
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      // Config and test harness code use dynamic paths and fixture regexes
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-unsafe-regex": "off",
+      // Cypress support/harness are not user-facing UI; allow inline copy and bare disables
+      "ds/no-hardcoded-copy": "off",
+      "ds/require-disable-justification": "off",
     },
   },
 

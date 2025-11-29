@@ -26,6 +26,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           command: pnpm ct --browser chrome
+          install: true
 
   e2e-smoke:
     name: E2E Smoke (${{ matrix.browser }} — ${{ matrix.viewport }})
@@ -54,7 +55,7 @@ jobs:
       - name: Install deps
         run: pnpm install --frozen-lockfile
       - name: Seed test data
-        run: TEST_DATA_ROOT=__tests__/data node scripts/src/seed-test-data.ts
+        run: TEST_DATA_ROOT=__tests__/data node --import tsx scripts/src/seed-test-data.ts
       - name: Run Cypress (smoke)
         uses: cypress-io/github-action@v6
         with:

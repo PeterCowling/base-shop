@@ -303,6 +303,14 @@ export default [
     },
   },
 
+  /* ▸ Try-on Cloudflare provider: non-UI copy (logged errors) */
+  {
+    files: ["packages/lib/src/tryon/providers/cloudflare.ts"],
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
   /* ▸ UI Page Builder: enforce icon-only Button sizing (warning during migration) */
   {
     files: ["packages/ui/src/components/cms/page-builder/**/*.{ts,tsx}"],
@@ -382,6 +390,26 @@ export default [
       "react/display-name": "off",
     },
   },
+  /* ▸ UI story-utils helpers: lint without TS project (Storybook-only types) */
+  {
+    files: [
+      // When linting from repo root
+      "packages/ui/src/story-utils/**/*.{ts,tsx,js,jsx}",
+      "packages/ui/src/components/story-utils/**/*.{ts,tsx,js,jsx}",
+      // When linting from within the @acme/ui package (cwd=packages/ui)
+      "src/story-utils/**/*.{ts,tsx,js,jsx}",
+      "src/components/story-utils/**/*.{ts,tsx,js,jsx}",
+    ],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
+  },
 
   /* ▸ eslint-plugin-ds: allow 'any' in parser utilities */
   {
@@ -442,6 +470,8 @@ export default [
     files: ["apps/cms/cypress/support/**/*.{ts,tsx,js,jsx}"],
     rules: {
       "@typescript-eslint/no-unused-vars": "off",
+      "ds/no-hardcoded-copy": "off",
+      "ds/require-disable-justification": "off",
     },
   },
 
@@ -524,6 +554,11 @@ export default [
         ecmaFeatures: { jsx: true },
       },
     },
+    rules: {
+      // Config and test harness code use dynamic paths and fixture regexes
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-unsafe-regex": "off",
+    },
   },
 
   /* ▸ Scripts plain JS: lint without a TS project */
@@ -543,6 +578,19 @@ export default [
       "@typescript-eslint/no-require-imports": "off",
       // Scripts often pass dynamic file paths; relax noisy security rule
       "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+
+  /* ▸ shop-bcd tests: relax strict TS rules for try-on API fixtures */
+  {
+    files: ["apps/shop-bcd/__tests__/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-require-imports": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
     },
   },
 

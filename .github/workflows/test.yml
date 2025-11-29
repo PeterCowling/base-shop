@@ -43,7 +43,12 @@ jobs:
       - run: pnpm -r build
       - run: pnpm --filter ./${{ matrix.workspace }} lint
       - run: pnpm --filter ./${{ matrix.workspace }} typecheck
-      - run: pnpm --filter ./${{ matrix.workspace }} test -- --coverage --coverage-dir=coverage
+      - name: Test with coverage
+        if: matrix.workspace != 'packages/next-config'
+        run: pnpm --filter ./${{ matrix.workspace }} test -- --coverage --coverage-dir=coverage
+      - name: Test next-config (node test runner coverage)
+        if: matrix.workspace == 'packages/next-config'
+        run: pnpm --filter ./packages/next-config test:coverage
       - run: pnpm --filter ./${{ matrix.workspace }} coverage
         if: matrix.workspace == 'apps/api'
       - run: pnpm --filter ./${{ matrix.workspace }} e2e

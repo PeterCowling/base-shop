@@ -40,7 +40,9 @@ jobs:
 
       - name: Resolve Chrome path from puppeteer
         id: chrome
-        run: echo "path=$(node -e \"console.log(require('puppeteer').executablePath())\")" >> \"$GITHUB_OUTPUT\"
+        run: |
+          CHROME_PATH=$(node -e "console.log(require('puppeteer').executablePath())")
+          echo "path=$CHROME_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Run LHCI (mobile/desktop via matrix)
         env:

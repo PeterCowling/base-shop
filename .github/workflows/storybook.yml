@@ -19,6 +19,8 @@ jobs:
           node-version: 20
           cache: pnpm
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
       - run: pnpm install --frozen-lockfile
       - name: Verify story coverage
         run: pnpm stories:verify
@@ -39,6 +41,8 @@ jobs:
           cache: pnpm
       - uses: pnpm/action-setup@v4
         if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
+        with:
+          version: 10.12.1
       - run: pnpm install --frozen-lockfile
         if: ${{ env.CHROMATIC_PROJECT_TOKEN != '' }}
       - name: Publish to Chromatic
@@ -55,6 +59,8 @@ jobs:
           node-version: 20
           cache: pnpm
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
       - run: pnpm install --frozen-lockfile
       - name: Run UI smoke
         run: pnpm storybook:smoke:ui
@@ -69,6 +75,8 @@ jobs:
           node-version: 20
           cache: pnpm
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
       - run: pnpm install --frozen-lockfile
       - name: Run Storybook test runner (ci-tagged)
         run: pnpm test-storybook:runner

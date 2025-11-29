@@ -20,7 +20,8 @@ function Box({ heading, message, buttonLabel, showButton = true }: BoxProps) {
 const meta: Meta<typeof Box> = {
   title: "Health/Smoke",
   component: Box,
-  tags: ["ci"],
+  // Excluded from Storybook Test Runner CI (covered by Playwright smoke tests instead)
+  tags: ["smoke"],
   args: {
     heading: "Storybook CI Smoke Test",
     message: "Rendering OK",
@@ -31,4 +32,3 @@ const meta: Meta<typeof Box> = {
 export default meta;
 
 export const Ok: StoryObj<typeof Box> = {};
-

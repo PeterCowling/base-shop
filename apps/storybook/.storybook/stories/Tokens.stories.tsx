@@ -26,7 +26,8 @@ const withTokens: Decorator = (Story, context) => {
 const meta: Meta = {
   title: "Tokens/All",
   parameters: { layout: "centered" },
-  tags: ["ci"],
+  // Excluded from Storybook Test Runner CI (covered by Playwright smoke tests instead)
+  tags: ["smoke"],
   decorators: [withTokens],
 };
 export default meta;

@@ -3,7 +3,8 @@ import { useFSM } from "@acme/platform-machine/useFSM";
 
 const meta: Meta = {
   title: "Hooks/useFSM",
-  tags: ["ci"],
+  // Excluded from Storybook Test Runner CI (covered by Playwright smoke tests instead)
+  tags: ["smoke"],
   parameters: {
     docs: {
       description: {

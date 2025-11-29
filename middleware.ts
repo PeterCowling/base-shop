@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
-import { createHeadersObject, type ForceHTTPSRedirectOption } from "next-secure-headers";
+import { createHeadersObject } from "next-secure-headers";
 
 export function middleware(request: NextRequest) {
   const response = NextResponse.next();
@@ -11,17 +11,17 @@ export function middleware(request: NextRequest) {
         ? request.nextUrl.hostname
         : undefined;
 
-    const forceHTTPSRedirect: ForceHTTPSRedirectOption =
+    const forceHTTPSRedirect =
       hostname === "localhost"
         ? false
-        : [
+        : ([
             true,
             {
               maxAge: 60 * 60 * 24 * 365,
               includeSubDomains: true,
               preload: true,
             },
-          ];
+          ] as [true, { maxAge: number; includeSubDomains: boolean; preload: boolean }]);
 
     const securityHeaders = createHeadersObject({
       contentSecurityPolicy: {

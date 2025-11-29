@@ -6,12 +6,9 @@ compatibility_date    = "2025-06-20"
   binding = "CART_KV"
 id      = "TODO-replace-with-namespace-id"
 
-[env]
+[vars]
   NEXT_PUBLIC_SHOP_ID = "default"
   CART_TTL = "2592000"
-
-[triggers]
-  crons = ["0 0 * * *"]
 
 [[r2_buckets]]
 binding = "TRYON_R2"

@@ -172,7 +172,12 @@ export default async function ProductDetailPage({
     }
   }
 
-  const cfg = await getReturnLogistics();
+  let cfg: { requireTags?: boolean; allowWear?: boolean } = {};
+  try {
+    cfg = await getReturnLogistics();
+  } catch {
+    cfg = { requireTags: false, allowWear: true };
+  }
   const settings = await getShopSettings(shop.id);
   return (
     <>
@@ -193,7 +198,7 @@ export default async function ProductDetailPage({
         {cfg.requireTags && (
           <p>{t("returns.requireTags")}</p>
         )}
-        {!cfg.allowWear && (
+        {cfg.allowWear === false && (
           <p>{t("returns.noWear")}</p>
         )}
       </div>

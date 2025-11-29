@@ -22,6 +22,11 @@ import sharedConfig from "@acme/next-config/next.config.mjs";
 const nextConfig = {
   // Spread the settings from the shared config to preserve its behaviour.
   ...sharedConfig,
+  // The template app is not exported as static HTML during CI builds.
+  // Override the shared `output: "export"` flag when OUTPUT_EXPORT is set
+  // so that API routes like `/api/preview-token` are allowed to remain
+  // dynamic without breaking the workspace build.
+  output: sharedConfig.output === "export" ? undefined : sharedConfig.output,
   typescript: {
     ...(sharedConfig.typescript ?? {}),
     tsconfigPath: "./tsconfig.json",

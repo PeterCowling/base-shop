@@ -20,7 +20,7 @@
 */
 const fs = require("fs");
 const path = require("path");
-const minimatch = require("minimatch");
+const { minimatch } = require("minimatch");
 
 const ROOT = process.cwd();
 const REPORT_PATH = path.join(ROOT, ".eslint-report.json");

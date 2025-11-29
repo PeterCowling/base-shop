@@ -35,20 +35,13 @@ jobs:
       - name: Build @apps/cms
         run: pnpm --filter @apps/cms build
 
-      - name: Ensure puppeteer is available
-        run: pnpm add -Dw puppeteer
-
-      - name: Resolve Chrome path from puppeteer
-        id: chrome
-        run: |
-          CHROME_PATH=$(node -e "console.log(require('puppeteer').executablePath())")
-          echo "path=$CHROME_PATH" >> "$GITHUB_OUTPUT"
+      - name: Setup Chrome for LHCI
+        uses: browser-actions/setup-chrome@v1
 
       - name: Run LHCI (mobile/desktop via matrix)
         env:
           LHCI_USERNAME: ${{ secrets.LHCI_USERNAME }}
           LHCI_PASSWORD: ${{ secrets.LHCI_PASSWORD }}
-          CHROME_PATH: ${{ steps.chrome.outputs.path }}
         run: pnpm dlx @lhci/cli@latest autorun --config=${{ matrix.config }} --upload.target=temporary-public-storage
 
       - name: Upload LHCI artifacts

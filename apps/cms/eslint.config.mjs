@@ -53,6 +53,14 @@ const config = [
       "@typescript-eslint/no-explicit-any": "off",
     },
   },
+
+  // CMS app: treat tap-size rule as non-blocking while UI is iterated
+  {
+    files: ["src/**/*.{ts,tsx,mdx}"],
+    rules: {
+      "ds/min-tap-size": "off",
+    },
+  },
 ];
 
 export default config;

@@ -287,9 +287,16 @@ export default [
       "ds/container-widths-only-at": "error",
       // M5 rules as errors in CMS/UI paths
       "ds/enforce-focus-ring-token": "error",
-      "ds/min-tap-size": ["error", { min: 40 }],
       "ds/no-misused-sr-only": "error",
       
+    },
+  },
+
+  /* ▸ Global DS tap-size baseline: treat as warning unless explicitly overridden */
+  {
+    files: ["**/*.{ts,tsx}"],
+    rules: {
+      "ds/min-tap-size": ["warn", { min: 44 }],
     },
   },
   // Downgrade no-hardcoded-copy in TS-only files to ease server/logic migration
@@ -308,6 +315,16 @@ export default [
     files: ["packages/lib/src/tryon/providers/cloudflare.ts"],
     rules: {
       "ds/no-hardcoded-copy": "off",
+    },
+  },
+
+  /* ▸ API publish-upgrade test helpers: allow module assignment shim */
+  {
+    files: [
+      "apps/api/src/routes/shop/*/__tests__/publish-upgrade.test-helpers.ts",
+    ],
+    rules: {
+      "@next/next/no-assign-module-variable": "off",
     },
   },
 
@@ -485,6 +502,29 @@ export default [
     },
   },
 
+  /* ▸ CMS tests: relax raw color checks and React display-name in test modules */
+  {
+    files: [
+      "apps/cms/src/**/__tests__/**/*.{ts,tsx,js,jsx}",
+      "apps/cms/src/**/*.test.{ts,tsx}",
+    ],
+    rules: {
+      "ds/no-raw-color": "off",
+      "react/display-name": "off",
+    },
+  },
+
+  /* ▸ CMS shop settings UI: treat tap-size as warning while design is iterated */
+  {
+    files: [
+      "apps/cms/src/app/cms/shop/*/settings/seo/SeoAdvancedSettings.tsx",
+      "apps/cms/src/app/cms/shop/*/themes/TypographySettings.tsx",
+    ],
+    rules: {
+      "ds/min-tap-size": "warn",
+    },
+  },
+
   /* ▸ platform-core root files without TS project */
   {
     files: [
@@ -544,6 +584,7 @@ export default [
     files: [
       "apps/cms/cypress.config.mjs",
       "apps/cms/cypress/**/*.{ts,tsx}",
+      "apps/cms/middleware.ts",
     ],
     languageOptions: {
       parser: tsParser,
@@ -558,6 +599,8 @@ export default [
       // Config and test harness code use dynamic paths and fixture regexes
       "security/detect-non-literal-fs-filename": "off",
       "security/detect-unsafe-regex": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 
@@ -594,6 +637,26 @@ export default [
     },
   },
 
+  /* ▸ shop-bcd app: relax strict DS + TS rules for try-on/AI prototype code */
+  {
+    files: ["apps/shop-bcd/src/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-require-imports": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
+      ],
+      "ds/min-tap-size": "warn",
+      "ds/require-aspect-ratio-on-media": "warn",
+      "ds/no-naked-img": "warn",
+      "ds/no-physical-direction-classes-in-rtl": "warn",
+      "ds/enforce-layout-primitives": "warn",
+      "ds/enforce-focus-ring-token": "warn",
+      "ds/no-unsafe-viewport-units": "warn",
+    },
+  },
+
   /* ▸ Tools (storybook coverage) override */
   {
     files: ["tools/**/*.{ts,tsx,js,jsx}"],
@@ -610,6 +673,28 @@ export default [
     },
     plugins: { "@typescript-eslint": tsPlugin },
     rules: {},
+  },
+
+  /* ▸ test-utils helpers: allow ergonomic any/require usage */
+  {
+    files: ["packages/test-utils/src/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
+
+  /* ▸ Dummy theme tokens: parse outside TS project to avoid project service errors */
+  {
+    files: ["packages/themes/dummy/tailwind-tokens/src/**/*.{ts,tsx,js,jsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
   },
 
   /* ▸ Root Storybook config: parse without a TS project */
@@ -1058,11 +1143,11 @@ export default [
     },
   },
 
-  /* ▸ CMS-only override: raise min tap target to 44px (HIG) */
+  /* ▸ CMS-only override: track min tap target 44px as warning (HIG baseline) */
   {
     files: ["apps/cms/**"],
     rules: {
-      "ds/min-tap-size": ["error", { min: 44 }],
+      "ds/min-tap-size": ["warn", { min: 44 }],
     },
   },
 

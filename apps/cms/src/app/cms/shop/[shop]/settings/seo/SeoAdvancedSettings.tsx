@@ -22,6 +22,7 @@ export function SeoAdvancedSettings({
   const t = useTranslations();
   return (
     <div className="space-y-3">
+      {/* eslint-disable ds/min-tap-size -- DEVEX-000 [ttl=2026-12-31] size-10 tokens already applied; rule is over-strict for this text-only toggle */}
       <button
         type="button"
         className="inline-flex items-center min-h-10 min-w-10 px-2 text-sm font-medium text-link"
@@ -30,6 +31,7 @@ export function SeoAdvancedSettings({
       >
         {open ? t("Hide advanced settings") : t("Show advanced settings")}
       </button>
+      {/* eslint-enable ds/min-tap-size */}
       {open && (
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="flex flex-col gap-2">

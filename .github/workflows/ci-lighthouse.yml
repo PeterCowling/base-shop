@@ -36,12 +36,14 @@ jobs:
         run: pnpm --filter @apps/cms build
 
       - name: Setup Chrome for LHCI
+        id: chrome
         uses: browser-actions/setup-chrome@v1
 
       - name: Run LHCI (mobile/desktop via matrix)
         env:
           LHCI_USERNAME: ${{ secrets.LHCI_USERNAME }}
           LHCI_PASSWORD: ${{ secrets.LHCI_PASSWORD }}
+          CHROME_PATH: ${{ steps.chrome.outputs.chrome-path }}
         run: pnpm dlx @lhci/cli@latest autorun --config=${{ matrix.config }} --upload.target=temporary-public-storage
 
       - name: Upload LHCI artifacts

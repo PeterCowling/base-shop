@@ -384,9 +384,6 @@ importers:
       '@storybook/test-runner':
         specifier: 0.24.2
         version: 0.24.2(@types/node@20.19.4)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.10))(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(ts-node@10.9.2(@swc/core@1.12.9)(@types/node@20.19.4)(typescript@5.8.3))
-      '@storybook/theming':
-        specifier: 8.6.14
-        version: 8.6.14(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
       '@tailwindcss/container-queries':
         specifier: ^0.1.1
         version: 0.1.1(tailwindcss@4.1.11)
@@ -4647,11 +4644,6 @@ packages:
     hasBin: true
     peerDependencies:
       storybook: ^0.0.0-0 || ^10.0.0 || ^10.0.0-0 || ^10.1.0-0 || ^10.2.0-0 || ^10.3.0-0
-
-  '@storybook/theming@8.6.14':
-    resolution: {integrity: sha512-r4y+LsiB37V5hzpQo+BM10PaCsp7YlZ0YcZzQP1OCkPlYXmUAFy2VvDKaFRpD8IeNPKug2u4iFm/laDEbs03dg==}
-    peerDependencies:
-      storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
   '@stripe/react-stripe-js@3.7.0':
     resolution: {integrity: sha512-PYls/2S9l0FF+2n0wHaEJsEU8x7CmBagiH7zYOsxbBlLIHEsqUIQ4MlIAbV9Zg6xwT8jlYdlRIyBTHmO3yM7kQ==}
@@ -17208,10 +17200,6 @@ snapshots:
       - node-notifier
       - supports-color
       - ts-node
-
-  '@storybook/theming@8.6.14(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
-    dependencies:
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
 
   '@stripe/react-stripe-js@3.7.0(@stripe/stripe-js@7.9.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)':
     dependencies:

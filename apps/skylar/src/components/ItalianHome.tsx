@@ -75,7 +75,7 @@ export function ItalianHome({ lang }: { lang: Locale }) {
   const translator = useTranslations();
   const heroPillars = translator("home.it.hero.filters")
     .split("|")
-    .map((filter) => filter.trim())
+    .map((filter: string) => filter.trim())
     .filter(Boolean);
   const heroImage = {
     src: "/hostel-landing.webp", // i18n-exempt -- DS-000 hero placeholder asset [ttl=2026-12-31]

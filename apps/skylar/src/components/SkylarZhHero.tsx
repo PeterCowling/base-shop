@@ -14,7 +14,7 @@ export function SkylarZhHero({ lang }: Props) {
   const translator = useTranslations();
   const serviceLines = translator("home.zh.serviceLines")
     .split("|")
-    .map((line) => line.trim())
+    .map((line: string) => line.trim())
     .filter(Boolean);
   const englishSubtitle = translator("home.zh.hero.subtitleEn");
   const zhBody = translator("hero.copy");

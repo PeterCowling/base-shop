@@ -2,12 +2,14 @@ import type { StorybookConfig } from "@storybook/nextjs";
 import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
 
 import { coverageAddon } from "../.storybook/coverage";
 /* i18n-exempt file -- DS-2410 non-UI Storybook config strings [ttl=2026-01-01] */
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const require = createRequire(import.meta.url);
 
 const config: StorybookConfig = {
   framework: {
@@ -56,6 +58,8 @@ const config: StorybookConfig = {
       "@themes-local": path.resolve(__dirname, "../../../packages/themes"),
       "@acme/design-tokens": path.resolve(__dirname, "../../../packages/design-tokens/src"),
       "@acme/tailwind-config": path.resolve(__dirname, "../../../packages/tailwind-config/src"),
+      // MDX docs import from '@storybook/blocks'; alias to addon-docs' blocks entry
+      "@storybook/blocks": require.resolve("@storybook/addon-docs/blocks"),
     };
 
     config.resolve = { ...resolve, alias: aliases };

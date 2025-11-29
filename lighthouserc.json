@@ -11,7 +11,7 @@
       ],
       "puppeteerScript": "scripts/lhci/login.cjs",
       "settings": {
-        "preset": "mobile",
+        "preset": "perf",
         "throttlingMethod": "simulate",
         "disableStorageReset": true,
         "blockedUrlPatterns": [

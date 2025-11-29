@@ -11,7 +11,7 @@
         "http://localhost:3004/en/product/p1"
       ],
       "settings": {
-        "preset": "mobile",
+        "preset": "perf",
         "throttlingMethod": "simulate",
         "disableStorageReset": true,
         "blockedUrlPatterns": [

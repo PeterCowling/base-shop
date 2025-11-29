@@ -24,14 +24,24 @@ const { default: sharedConfig } = await import("@acme/next-config/next.config.mj
 
 const config = {
   ...sharedConfig,
+  // Shop BCD should not be exported as static HTML when OUTPUT_EXPORT is set.
+  // Override the shared `output: "export"` flag so dynamic API routes such as
+  // `/api/collections/[id]` remain valid during workspace builds.
+  output: sharedConfig.output === "export" ? undefined : sharedConfig.output,
   async headers() {
-    const base = typeof sharedConfig.headers === 'function' ? await sharedConfig.headers() : [];
+    const base =
+      typeof sharedConfig.headers === "function"
+        ? await sharedConfig.headers()
+        : [];
     return [
       ...base,
       {
         source: "/:lang/product/:slug",
         headers: [
-          { key: "Permissions-Policy", value: "camera=(self), microphone=(), geolocation=(), gyroscope=()" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(self), microphone=(), geolocation=(), gyroscope=()",
+          },
         ],
       },
     ];

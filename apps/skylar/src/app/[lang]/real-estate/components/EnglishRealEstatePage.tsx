@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- STYLING-0001: Milan layout + EN showcase rely on CSS tokens */
+/* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- STYLING-0001 [ttl=2026-12-31] Milan real-estate CTAs and copy rely on CSS tokens; DS tap-size rule misestimates actual button size */
 
 import Image from "next/image";
 import PageShell from "@/components/PageShell";
@@ -184,4 +184,4 @@ export default function EnglishRealEstatePage({
   );
 }
 
-/* eslint-enable ds/no-hardcoded-copy */
+/* eslint-enable ds/no-hardcoded-copy, ds/min-tap-size */

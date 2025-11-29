@@ -11,6 +11,7 @@
     "useUnknownInCatchVariables": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "disableSourceOfProjectReferenceRedirect": true,
     "skipLibCheck": false,
     "paths": {
       "@/*": [

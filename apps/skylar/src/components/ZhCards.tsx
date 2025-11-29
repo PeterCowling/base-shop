@@ -18,7 +18,7 @@ export function ZhProductsCard({ lang }: CardProps) {
   const translator = useTranslations();
   const bullets = translator("home.zh.products.bullets")
     .split("|")
-    .map((line) => line.trim())
+    .map((line: string) => line.trim())
     .filter(Boolean);
 
   return (

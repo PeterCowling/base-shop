@@ -120,6 +120,10 @@ const REACT_DOM_SERVER = require.resolve("react-dom/server");
 const nextConfig = {
   // Start from shared preset to keep apps consistent
   ...preset,
+  // CMS should not be exported as static HTML when OUTPUT_EXPORT is set.
+  // Override the shared `output: "export"` flag so dynamic API routes such as
+  // `/api/blog/slug` remain valid during workspace builds.
+  output: preset.output === "export" ? undefined : preset.output,
   reactStrictMode: true,
   experimental: {
     externalDir: true,

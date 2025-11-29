@@ -17,7 +17,7 @@ export default async function ThemeLibraryPage() {
   const t = await getTranslations("en");
 
   // Derive an absolute origin for server-side fetches while keeping tests simple.
-  const hdrs = headers();
+  const hdrs = await headers();
   const host = hdrs.get("host");
   const proto = hdrs.get("x-forwarded-proto") ?? "http";
   const origin =

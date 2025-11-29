@@ -525,6 +525,14 @@ export default [
     },
   },
 
+  /* ▸ CMS shop editor sections: allow any in config wiring */
+  {
+    files: ["apps/cms/src/app/cms/shop/*/settings/editorSections.tsx"],
+    rules: {
+      "@typescript-eslint/no-explicit-any": "off",
+    },
+  },
+
   /* ▸ platform-core root files without TS project */
   {
     files: [

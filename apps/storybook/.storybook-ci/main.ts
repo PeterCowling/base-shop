@@ -4,7 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 
-import { coverageAddon } from "../.storybook/coverage";
+import { coverageAddon } from "../.storybook/coverage.ts";
 /* i18n-exempt file -- DS-2410 non-UI Storybook config strings [ttl=2026-01-01] */
 
 const __filename = fileURLToPath(import.meta.url);

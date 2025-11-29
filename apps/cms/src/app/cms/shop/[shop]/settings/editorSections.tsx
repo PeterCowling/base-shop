@@ -28,13 +28,13 @@ interface ShopEditorSeoState {
   readonly setCatalogFilters: (filters: string[]) => void;
 }
 
-export interface EditorSectionConfig<Props = unknown> {
+export interface EditorSectionConfig {
   readonly key: string;
   readonly title: string;
   readonly description?: string;
   readonly wrapWithCard?: boolean;
-  readonly component: ComponentType<Props>;
-  readonly props: Props;
+  readonly component: ComponentType<any>;
+  readonly props: Record<string, unknown>;
 }
 
 interface CreateShopEditorSectionsArgs {
@@ -168,14 +168,7 @@ export function createShopEditorSections({
   localization,
   seo,
   errors,
-}: CreateShopEditorSectionsArgs): Array<
-  | EditorSectionConfig<IdentitySectionWrapperProps>
-  | EditorSectionConfig<SeoSectionWrapperProps>
-  | EditorSectionConfig<ProvidersSectionWrapperProps>
-  | EditorSectionConfig<ThemeSectionWrapperProps>
-  | EditorSectionConfig<OverridesSectionWrapperProps>
-  | EditorSectionConfig<LocalizationSectionWrapperProps>
-> {
+}: CreateShopEditorSectionsArgs): EditorSectionConfig[] {
   return [
     {
       key: "identity",

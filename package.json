@@ -20,7 +20,7 @@
     "lint:apps": "eslint \"apps/**/*.{ts,tsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
     "lint:all": "cross-env NODE_OPTIONS=\"--max-old-space-size=6144\" pnpm -r --workspace-concurrency=1 --no-bail --if-present run lint",
     "lint:all:raw": "eslint \"{apps,packages,src}/**/*.{ts,tsx,js,jsx}\" --ignore-pattern \"**/dist/**\" --ignore-pattern \"**/.next/**\" --no-warn-ignored",
-    "typecheck": "turbo run typecheck && tsc -b tsconfig.json --pretty",
+    "typecheck": "tsc -b tsconfig.json --pretty && turbo run typecheck",
     "typecheck:watch": "tsc -b -w tsconfig.json --noEmit --preserveWatchOutput --pretty",
     "prepare": "simple-git-hooks",
     "test": "CI=true turbo run test",

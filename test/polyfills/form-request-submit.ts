@@ -14,8 +14,14 @@ function applyFormRequestSubmitPolyfill() {
     return;
   }
 
+  type HtmlFormPrototypeWithRequestSubmit = HTMLFormElement & {
+    requestSubmit?: unknown;
+  } & Record<symbol, unknown>;
+
+  const htmlFormPrototype = HTMLFormElement.prototype as HtmlFormPrototypeWithRequestSubmit;
+
   const hasNativeRequestSubmit =
-    typeof (HTMLFormElement.prototype as any).requestSubmit === "function";
+    typeof htmlFormPrototype.requestSubmit === "function";
   const isJSDOM =
     typeof navigator !== "undefined" &&
     typeof navigator.userAgent === "string" &&
@@ -26,7 +32,7 @@ function applyFormRequestSubmitPolyfill() {
   }
 
   const appliedMarker = Symbol.for("form-request-submit-polyfill");
-  if ((HTMLFormElement.prototype as any)[appliedMarker]) {
+  if (htmlFormPrototype[appliedMarker]) {
     return;
   }
 
@@ -36,7 +42,7 @@ function applyFormRequestSubmitPolyfill() {
   );
 
   const formImpl = implSymbol
-    ? (sampleForm as any)[implSymbol]
+    ? (sampleForm as HTMLFormElement & Record<symbol, unknown>)[implSymbol]
     : undefined;
   const wrapperSymbol = formImpl
     ? Object.getOwnPropertySymbols(formImpl).find(
@@ -110,8 +116,14 @@ function applyFormRequestSubmitPolyfill() {
       });
     }
 
-    const event = new Event("submit", { bubbles: true, cancelable: true });
-    if (submitter && !(event as Record<string, unknown>).submitter) {
+    type SubmitEventLike = Event & { submitter?: HTMLElement };
+
+    const event = new Event("submit", {
+      bubbles: true,
+      cancelable: true,
+    }) as SubmitEventLike;
+
+    if (submitter && !event.submitter) {
       Object.defineProperty(event, "submitter", {
         configurable: true,
         enumerable: false,
@@ -131,14 +143,19 @@ function applyFormRequestSubmitPolyfill() {
 
     const normalizedSubmitter = normalizeSubmitter(submitter);
 
-    if (normalizedSubmitter && normalizedSubmitter.form !== form) {
+    if (
+      normalizedSubmitter &&
+      ((normalizedSubmitter as HTMLElement & { form?: HTMLFormElement | null }).form ?? null) !== form
+    ) {
       if (typeof DOMException === "function") {
         throw new DOMException(
+          // i18n-exempt -- TEST-000 [ttl=2026-12-31] polyfill error message mirrors DOM NotFoundError text
           "The specified element is not owned by this form element",
           "NotFoundError",
         );
       }
       throw new Error(
+        // i18n-exempt -- TEST-000 [ttl=2026-12-31] polyfill error message mirrors DOM NotFoundError text
         "The specified element is not owned by this form element",
       );
     }
@@ -187,11 +204,19 @@ function applyFormRequestSubmitPolyfill() {
       }
     };
 
-    const patchImplMethod = (
-      method: "_doRequestSubmit" | "requestSubmit" | "submit",
-    ) => {
-      if (typeof (formImplProto as any)[method] === "function") {
-        (formImplProto as any)[method] = function (
+    type FormImplProto = {
+      _doRequestSubmit?: (this: unknown, submitter?: HTMLElement) => void;
+      requestSubmit?: (this: unknown, submitter?: HTMLElement) => void;
+      submit?: (this: unknown, submitter?: HTMLElement) => void;
+      [appliedMarker]?: boolean;
+    };
+
+    const protoWithMethods = formImplProto as FormImplProto;
+
+    const patchImplMethod = (method: keyof FormImplProto) => {
+      const original = protoWithMethods[method];
+      if (typeof original === "function") {
+        protoWithMethods[method] = function (
           this: unknown,
           submitter?: HTMLElement,
         ) {

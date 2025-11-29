@@ -10,8 +10,7 @@
     { "path": "./apps/skylar" },
     { "path": "./apps/api" },
     { "path": "packages/platform-core" },
-    { "path": "./scripts" },
-    { "path": "./test" }
+    { "path": "./scripts" }
   ],
   "include": ["cypress.config.ts"],
   "exclude": ["**/__tests__/**", "**/*.test.*", "**/*.spec.*"]

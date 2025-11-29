@@ -2,7 +2,7 @@
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) =>
+    json: <T>(data: T, init?: ResponseInit) =>
       new Response(JSON.stringify(data), init),
   },
 }));
@@ -13,7 +13,7 @@ afterEach(() => {
 });
 
 import { jsonRequest } from "@acme/test-utils";
-const createRequest = (body: any = {}) => jsonRequest(body);
+const createRequest = (body: Record<string, unknown> = {}) => jsonRequest(body);
 
 describe("/api/delivery", () => {
   test("returns error when premier shipping not available", async () => {

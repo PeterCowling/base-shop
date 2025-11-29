@@ -18,8 +18,16 @@ export function SignedViewLink({ objectUrl, label }: { objectUrl: string; label:
     return () => { cancelled = true; };
   }, [objectUrl]);
   if (!href) return null;
-  return <a href={href} target="_blank" rel="noreferrer" className="text-sm text-blue-600 underline">{label}</a>;
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex min-h-11 min-w-11 items-center rounded px-2 text-sm text-blue-600 underline"
+    >
+      {label}
+    </a>
+  );
 }
 
 export default SignedViewLink;
-

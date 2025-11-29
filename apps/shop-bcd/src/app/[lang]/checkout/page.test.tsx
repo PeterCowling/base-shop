@@ -2,21 +2,35 @@ import type { ReactElement } from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import CheckoutPage from "./page";
 import shop from "../../../../shop.json";
+import type { DeliverySchedulerProps } from "@ui/components/organisms/DeliveryScheduler";
 
 const cookiesMock = jest.fn();
 jest.mock("next/headers", () => ({
   cookies: () => cookiesMock(),
 }));
 
-const decodeCartCookieMock = jest.fn();
+type DecodeCartCookie = typeof import("@platform-core/cartCookie").decodeCartCookie;
+const decodeCartCookieMock: jest.Mock<
+  ReturnType<DecodeCartCookie>,
+  Parameters<DecodeCartCookie>
+> = jest.fn();
 jest.mock("@platform-core/cartCookie", () => {
   const actual = jest.requireActual("@platform-core/cartCookie");
-  return { ...actual, decodeCartCookie: (...args: any[]) => decodeCartCookieMock(...args) };
+  return {
+    ...actual,
+    decodeCartCookie: (...args: Parameters<DecodeCartCookie>) =>
+      decodeCartCookieMock(...args),
+  };
 });
 
-const getShopSettingsMock = jest.fn();
+type GetShopSettings = typeof import("@platform-core/repositories/settings.server").getShopSettings;
+const getShopSettingsMock: jest.Mock<
+  ReturnType<GetShopSettings>,
+  Parameters<GetShopSettings>
+> = jest.fn();
 jest.mock("@platform-core/repositories/settings.server", () => ({
-  getShopSettings: (...args: any[]) => getShopSettingsMock(...args),
+  getShopSettings: (...args: Parameters<GetShopSettings>) =>
+    getShopSettingsMock(...args),
 }));
 
 jest.mock("@ui/components/checkout/CheckoutForm", () => {
@@ -34,7 +48,9 @@ jest.mock("@ui/components/organisms/OrderSummary", () => {
   return MockOrderSummary;
 });
 
-const DeliverySchedulerStub = ({ onChange }: any) => (
+type DeliverySchedulerOnChange = NonNullable<DeliverySchedulerProps["onChange"]>;
+
+const DeliverySchedulerStub = ({ onChange }: { onChange?: DeliverySchedulerOnChange }) => (
   <button
     data-cy="delivery-scheduler"
     onClick={() => onChange({ region: "us", window: "am", date: "2024-01-01" })}
@@ -43,7 +59,7 @@ const DeliverySchedulerStub = ({ onChange }: any) => (
   </button>
 );
 jest.mock("@ui/components/organisms", () => ({
-  DeliveryScheduler: (props: any) => DeliverySchedulerStub(props),
+  DeliveryScheduler: (props: DeliverySchedulerProps) => DeliverySchedulerStub(props),
 }));
 
 const originalShippingProviders = [...(shop.shippingProviders || [])];
@@ -69,7 +85,7 @@ describe("CheckoutPage", () => {
 
   it("renders order summary without premier delivery when cart has items", async () => {
     cookiesMock.mockResolvedValue({ get: () => ({ value: "cookie" }) });
-    decodeCartCookieMock.mockReturnValue({ line: {} } as any);
+    decodeCartCookieMock.mockReturnValue({ line: {} });
     getShopSettingsMock.mockResolvedValue({ taxRegion: "US" });
 
     const ui = (await CheckoutPage({ params: Promise.resolve({ lang: "en" }) })) as ReactElement;
@@ -82,14 +98,16 @@ describe("CheckoutPage", () => {
   it("shows premier delivery picker and posts selection", async () => {
     shop.shippingProviders = ["premier-shipping"]; // enable premier shipping
     cookiesMock.mockResolvedValue({ get: () => ({ value: "cookie" }) });
-    decodeCartCookieMock.mockReturnValue({ line: {} } as any);
+    decodeCartCookieMock.mockReturnValue({ line: {} });
     getShopSettingsMock.mockResolvedValue({
       taxRegion: "US",
       premierDelivery: { windows: ["am"], regions: ["us"] },
     });
 
-    const fetchMock = jest.fn(() => Promise.resolve(new Response(null)));
-    global.fetch = fetchMock as any;
+    const fetchMock: jest.Mock<Promise<Response>, [RequestInfo | URL, RequestInit?]> = jest.fn(
+      () => Promise.resolve(new Response(null)),
+    );
+    global.fetch = fetchMock as unknown as typeof fetch;
 
     const ui = (await CheckoutPage({ params: Promise.resolve({ lang: "en" }) })) as ReactElement;
     render(ui);

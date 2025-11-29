@@ -37,7 +37,7 @@ export default function LoginPage() {
       </label>
       <button
         type="submit"
-        className="inline-flex min-h-10 min-w-10 items-center justify-center border px-4"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center border px-4"
       >
         Login
       </button>

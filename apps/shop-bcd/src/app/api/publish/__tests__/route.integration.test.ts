@@ -1,6 +1,6 @@
 /** @jest-environment node */
 
-import fs from "node:fs";
+import fs from "fs";
 import path from "node:path";
 import ts from "typescript";
 import type { Role } from "@auth/types/roles";
@@ -64,7 +64,7 @@ function loadRoute() {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2019 },
   }).outputText;
   js = js.replace(/const require = .*createRequire.*\n/, "");
-  const mod: any = { exports: {} };
+  const mod: { exports: unknown } = { exports: {} };
   const func = new Function("exports", "require", "module", "__filename", "__dirname", js);
   func(mod.exports, require, mod, __filename, path.join(__dirname, ".."));
   return mod.exports as { POST: () => Promise<Response> };
@@ -110,4 +110,3 @@ describe("POST /api/publish errors", () => {
     await expect(res.json()).resolves.toEqual({ error: "Publish failed" });
   });
 });
-

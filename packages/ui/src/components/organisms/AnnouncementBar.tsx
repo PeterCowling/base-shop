@@ -46,7 +46,7 @@ export default function AnnouncementBar({ text, href, closable = false, classNam
           type="button" /* i18n-exempt -- PB-000 [ttl=2025-12-31]: input/button type enum */
           aria-label={t("announcementBar.close") as string}
           onClick={() => setOpen(false)}
-          className="ms-2 inline-flex min-h-10 min-w-10 items-center justify-center text-primary-foreground/70 hover:text-primary-foreground" // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes
+          className="ms-2 inline-flex min-h-11 min-w-11 items-center justify-center text-primary-foreground/70 hover:text-primary-foreground" // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes
           /* i18n-exempt -- PB-000 [ttl=2025-12-31]: design token attribute */
           data-token="--color-primary-fg"
         >
@@ -58,7 +58,7 @@ export default function AnnouncementBar({ text, href, closable = false, classNam
   );
 
   return href ? (
-    <a href={href} className="block w-full min-h-10 min-w-10">{/* i18n-exempt: class names */}
+    <a href={href} className="block w-full min-h-11 min-w-11">{/* i18n-exempt: class names */}
       {content}
     </a>
   ) : (

@@ -28,7 +28,7 @@ export default async function BlogPage({
   }
   const lang = resolveLocale(params.lang);
   const t = await loadTranslations(lang);
-  const provider = getBlogProvider(shop);
+  const provider = await getBlogProvider(shop);
   const posts = await provider.fetchPublishedPosts(shop.id);
   const items = posts.map((p) => ({
     title: p.title,

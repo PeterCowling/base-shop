@@ -13,7 +13,7 @@ afterEach(() => jest.clearAllMocks());
 
 test("destroys session and redirects to home", async () => {
   const req = new Request("http://example.com/logout");
-  const res = await GET(req as any);
+  const res = await GET(req);
   expect(destroyCustomerSession).toHaveBeenCalled();
   expect(res.status).toBe(307);
   expect(res.headers.get("location")).toBe("/");
@@ -22,7 +22,7 @@ test("destroys session and redirects to home", async () => {
 test("propagates errors from session destroy", async () => {
   (destroyCustomerSession as jest.Mock).mockRejectedValueOnce(new Error("boom"));
   const req = new Request("http://example.com/logout");
-  await expect(GET(req as any)).rejects.toThrow("boom");
+  await expect(GET(req)).rejects.toThrow("boom");
 });
 
 test("removes session cookies", async () => {
@@ -47,7 +47,7 @@ test("removes session cookies", async () => {
     s.delete({ name: "csrf_token" });
   });
   const req = new Request("http://example.com/logout");
-  await GET(req as any);
+  await GET(req);
   expect(data.has("customer_session")).toBe(false);
   expect(data.has("csrf_token")).toBe(false);
 });

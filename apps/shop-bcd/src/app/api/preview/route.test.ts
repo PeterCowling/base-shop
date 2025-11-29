@@ -1,10 +1,12 @@
 /** @jest-environment node */
+import type { NextRequest } from "next/server";
 import { POST } from "./route";
 
-function mockReq(result: any, shouldFail = false) {
-  return {
-    json: shouldFail ? jest.fn().mockRejectedValue(result) : jest.fn().mockResolvedValue(result),
-  } as any;
+function mockReq(result: unknown, shouldFail = false): NextRequest {
+  const json = shouldFail
+    ? jest.fn().mockRejectedValue(result)
+    : jest.fn().mockResolvedValue(result);
+  return { json } as unknown as NextRequest;
 }
 
 describe("POST /api/preview", () => {

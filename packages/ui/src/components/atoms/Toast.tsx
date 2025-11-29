@@ -84,7 +84,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
           <button
             type="button"
             onClick={onClose}
-            className="ms-2 font-bold inline-flex items-center justify-center min-h-10 min-w-10" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+            className="ms-2 font-bold inline-flex items-center justify-center min-h-11 min-w-11" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
             data-token={tokenFg}
             aria-label={t("actions.close") as string}
           >

@@ -18,7 +18,7 @@ afterEach(() => {
 
 test("returns steps when providers have events", async () => {
   (getShopSettings as jest.Mock).mockResolvedValue({ trackingProviders: ["ups"] });
-  const res = await GET(makeRequest() as any, { params: { id: "1" } } as any);
+  const res = await GET(makeRequest(), { params: { id: "1" } });
   expect(res).toBeInstanceOf(NextResponse);
   expect(res.status).toBe(200);
   await expect(res.json()).resolves.toEqual({
@@ -31,7 +31,7 @@ test("returns steps when providers have events", async () => {
 
 test("returns 404 with empty steps when no providers configured", async () => {
   (getShopSettings as jest.Mock).mockResolvedValue({ trackingProviders: [] });
-  const res = await GET(makeRequest() as any, { params: { id: "1" } } as any);
+  const res = await GET(makeRequest(), { params: { id: "1" } });
   expect(res).toBeInstanceOf(NextResponse);
   expect(res.status).toBe(404);
   await expect(res.json()).resolves.toEqual({ steps: [] });
@@ -39,9 +39,8 @@ test("returns 404 with empty steps when no providers configured", async () => {
 
 test("returns 404 with empty steps when providers unknown", async () => {
   (getShopSettings as jest.Mock).mockResolvedValue({ trackingProviders: ["fedex"] });
-  const res = await GET(makeRequest() as any, { params: { id: "1" } } as any);
+  const res = await GET(makeRequest(), { params: { id: "1" } });
   expect(res).toBeInstanceOf(NextResponse);
   expect(res.status).toBe(404);
   await expect(res.json()).resolves.toEqual({ steps: [] });
 });
-

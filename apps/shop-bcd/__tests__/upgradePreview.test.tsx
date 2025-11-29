@@ -19,16 +19,33 @@ describe("upgrade preview page", () => {
   });
 
   it("renders component and toggles comparison", async () => {
-    const fetchMock = jest.spyOn(global, "fetch" as any).mockResolvedValue({
-      json: async () => ({
-        components: [
-          {
-            file: "molecules/Breadcrumbs.tsx",
-            componentName: "Breadcrumbs",
-          },
-        ],
-      }),
-    } as any);
+    type UpgradeComponentsResponse = {
+      components: Array<{
+        file: string;
+        componentName: string;
+      }>;
+    };
+
+    type MockFetchResponse = {
+      json: () => Promise<UpgradeComponentsResponse>;
+    };
+
+    const globalWithFetch = global as typeof globalThis & {
+      fetch: () => Promise<MockFetchResponse>;
+    };
+
+    const fetchMock = jest
+      .spyOn(globalWithFetch, "fetch")
+      .mockResolvedValue({
+        json: async () => ({
+          components: [
+            {
+              file: "molecules/Breadcrumbs.tsx",
+              componentName: "Breadcrumbs",
+            },
+          ],
+        }),
+      });
 
     render(<UpgradePreviewPage />);
 
@@ -43,4 +60,3 @@ describe("upgrade preview page", () => {
     fetchMock.mockRestore();
   });
 });
-

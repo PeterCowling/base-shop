@@ -64,7 +64,7 @@ export default function ReviewsCarousel({
         <Inline alignY="center" gap={4} className="mt-8 justify-center">
           <button
             aria-label={prevButtonLabel}
-            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded px-2"
             onClick={prev}
           >
             <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}‹</span>
@@ -72,7 +72,7 @@ export default function ReviewsCarousel({
           </button>
           <button
             aria-label={nextButtonLabel}
-            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded px-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded px-2"
             onClick={next}
           >
             <span aria-hidden="true">{/* i18n-exempt: decorative glyph */}›</span>

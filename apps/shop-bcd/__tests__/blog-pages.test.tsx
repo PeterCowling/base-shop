@@ -1,6 +1,14 @@
 // apps/shop-bcd/__tests__/blog-pages.test.tsx
 import { render, screen } from "@testing-library/react";
 
+type SeoOverrides = {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  openGraph?: { url?: string };
+  twitter?: { card?: string };
+};
+
 afterEach(() => {
   jest.resetModules();
   jest.clearAllMocks();
@@ -26,7 +34,7 @@ describe("Blog listing page", () => {
     const BlogListing = (
       await import("@ui/components/cms/blocks/BlogListing")
     ).default as jest.Mock;
-    await BlogPage({ params: { lang: "en" } } as any);
+    await BlogPage({ params: { lang: "en" } });
     expect(BlogListing).toHaveBeenCalledWith(
       {
         posts: [
@@ -53,14 +61,14 @@ describe("Blog listing page", () => {
     const { default: BlogPage } = await import(
       "../src/app/[lang]/blog/page"
     );
-    await BlogPage({ params: { lang: "en" } } as any);
+    await BlogPage({ params: { lang: "en" } });
     expect(notFound).toHaveBeenCalled();
   });
 
   test("generateMetadata sets canonical and OG/Twitter", async () => {
     jest.doMock("../src/app/util/seo", () => ({
       __esModule: true,
-      getSeo: jest.fn(async (_lang: string, page?: any) => ({
+      getSeo: jest.fn(async (_lang: string, page?: SeoOverrides) => ({
         title: page?.title ?? "Base",
         description: page?.description ?? "Desc",
         canonical: page?.canonical ?? "https://example.com/en",
@@ -69,7 +77,7 @@ describe("Blog listing page", () => {
       })),
     }));
     const { generateMetadata } = await import("../src/app/[lang]/blog/page");
-    const meta = await generateMetadata({ params: { lang: "en" } } as any);
+    const meta = await generateMetadata({ params: { lang: "en" } });
     expect(meta.alternates?.canonical).toBe("https://example.com/en/blog");
     expect(meta.openGraph?.url).toBe("https://example.com/en/blog");
   });
@@ -102,7 +110,7 @@ describe("Blog post page", () => {
     );
     const res = await BlogPostPage({
       params: { lang: "en", slug: "hello" },
-    } as any);
+    });
     expect(notFound).not.toHaveBeenCalled();
     render(res);
     expect(screen.getByRole("heading", { name: "Hello" })).toBeInTheDocument();
@@ -125,7 +133,7 @@ describe("Blog post page", () => {
     const { default: BlogPostPage } = await import(
       "../src/app/[lang]/blog/[slug]/page"
     );
-    await BlogPostPage({ params: { lang: "en", slug: "x" } } as any);
+    await BlogPostPage({ params: { lang: "en", slug: "x" } });
     const { fetchPostBySlug } = await import("@acme/sanity");
     expect(fetchPostBySlug).not.toHaveBeenCalled();
     expect(notFound).toHaveBeenCalled();
@@ -141,7 +149,7 @@ describe("Blog post page", () => {
     const { default: BlogPostPage } = await import(
       "../src/app/[lang]/blog/[slug]/page"
     );
-    await BlogPostPage({ params: { lang: "en", slug: "missing" } } as any);
+    await BlogPostPage({ params: { lang: "en", slug: "missing" } });
     expect(notFound).toHaveBeenCalled();
   });
 
@@ -168,7 +176,7 @@ describe("Blog post page", () => {
     );
     const element = await BlogPostPage({
       params: { lang: "en", slug: "hello" },
-    } as any);
+    });
     render(element);
     expect(
       screen.getByText("Daily Edit scheduled for 2025-05-01")
@@ -186,7 +194,7 @@ describe("Blog post page", () => {
     }));
     jest.doMock("../src/app/util/seo", () => ({
       __esModule: true,
-      getSeo: jest.fn(async (_lang: string, page?: any) => ({
+      getSeo: jest.fn(async (_lang: string, page?: SeoOverrides) => ({
         title: page?.title ?? "Base",
         description: page?.description ?? "Desc",
         canonical: page?.canonical ?? "https://example.com/en",
@@ -199,7 +207,7 @@ describe("Blog post page", () => {
     );
     const meta = await generateMetadata({
       params: { lang: "en", slug: "hello" },
-    } as any);
+    });
     expect(meta.title).toBe("Hello");
     expect(meta.description).toBe("World");
     expect(meta.alternates?.canonical).toBe(

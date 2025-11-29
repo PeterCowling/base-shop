@@ -16,11 +16,13 @@ describe("PasswordResetPage", () => {
   });
 
   it("shows success message when password reset succeeds", async () => {
-    mockUseParams.mockReturnValue({ token: "abc" } as any);
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({}),
-    }) as any;
+    mockUseParams.mockReturnValue({ token: "abc" } as ReturnType<typeof useParams>);
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({
+        ok: true,
+        json: async () => ({}),
+      } as Response) as unknown as typeof global.fetch;
 
     render(<PasswordResetPage />);
 
@@ -33,11 +35,13 @@ describe("PasswordResetPage", () => {
   });
 
   it("shows error message when password reset fails", async () => {
-    mockUseParams.mockReturnValue({ token: "abc" } as any);
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      json: async () => ({ error: "Bad token" }),
-    }) as any;
+    mockUseParams.mockReturnValue({ token: "abc" } as ReturnType<typeof useParams>);
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({
+        ok: false,
+        json: async () => ({ error: "Bad token" }),
+      } as Response) as unknown as typeof global.fetch;
 
     render(<PasswordResetPage />);
 
@@ -49,4 +53,3 @@ describe("PasswordResetPage", () => {
     expect(await screen.findByText("Bad token")).toBeInTheDocument();
   });
 });
-

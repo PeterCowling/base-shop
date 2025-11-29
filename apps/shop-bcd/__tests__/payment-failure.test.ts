@@ -86,7 +86,7 @@ describe("payment failure handling", () => {
       } as unknown as Stripe.Checkout.Session);
     const refundsCreate = jest.fn();
     const paymentIntentsCreate = jest
-      .fn<Promise<unknown>, [any]>()
+      .fn<Promise<unknown>, [Stripe.PaymentIntentCreateParams]>()
       .mockRejectedValue(new Error("fail"));
     const readOrders = jest
       .fn()

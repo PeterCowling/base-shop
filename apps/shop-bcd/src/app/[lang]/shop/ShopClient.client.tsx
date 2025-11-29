@@ -95,7 +95,6 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
 
   return (
     <div className="mx-auto flex flex-col gap-10 p-6">
-      {/* eslint-disable-next-line ds/no-raw-font -- DS-1234: false positive; rule matches "aria-label" as "arial" */}
       <input aria-label={t("shop.searchAriaLabel") as string}
         type="search"
         value={query}

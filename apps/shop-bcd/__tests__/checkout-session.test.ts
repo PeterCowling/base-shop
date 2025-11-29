@@ -1,5 +1,5 @@
 // apps/shop-bcd/__tests__/checkout-session.test.ts
-import { encodeCartCookie, decodeCartCookie } from "@platform-core/cartCookie";
+import { decodeCartCookie } from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
 import { calculateRentalDays } from "@acme/date-utils";
 import { POST } from "../src/api/checkout-session/route";
@@ -8,7 +8,7 @@ import { CART_COOKIE } from "@platform-core/cartCookie";
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) =>
+    json: <T>(data: T, init?: ResponseInit) =>
       new Response(JSON.stringify(data), init),
   },
 }));
@@ -32,7 +32,6 @@ jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
 jest.mock("@platform-core/cartCookie", () => ({
   CART_COOKIE: "__Host-CART_ID",
-  encodeCartCookie: (cart: any) => JSON.stringify(cart),
   // The real decodeCartCookie returns the raw string value of the cookie
   // (after signature verification). Our tests only need to simulate a
   // valid cookie, so the mocked implementation simply echoes back the
@@ -46,8 +45,8 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-const createRequest = (
-  body: any,
+const createRequest = <T extends object>(
+  body: T,
   cookie: string,
   url = "http://store.example/api/checkout-session",
   headers: Record<string, string> = {}
@@ -67,7 +66,7 @@ test("builds Stripe session with correct items and metadata", async () => {
     [`${sku1.id}:${size1}`]: { sku: sku1, qty: 2, size: size1 },
     [`${sku2.id}:${size2}`]: { sku: sku2, qty: 1, size: size2 },
   };
-  const cookie = encodeCartCookie(cart as any);
+  const cookie = JSON.stringify(cart);
   const returnDate = "2025-01-02";
   const expectedDays = calculateRentalDays(returnDate);
   const shipping = {
@@ -119,7 +118,7 @@ test("responds with 400 on invalid returnDate", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
-  const cookie = encodeCartCookie(cart as any);
+  const cookie = JSON.stringify(cart);
   const req = createRequest({ returnDate: "not-a-date", currency: "EUR", taxRegion: "EU" }, cookie);
   const res = await POST(req);
   expect(res.status).toBe(400);
@@ -150,9 +149,10 @@ test("accepts cart object from decodeCartCookie", async () => {
   (decodeCartCookie as jest.Mock).mockReturnValueOnce({
     [`${sku.id}:${size}`]: { sku, qty: 1, size },
   });
+  const sessionModule = await import("@platform-core/checkout/session");
   const spy = jest
-    .spyOn(await import("@platform-core/checkout/session"), "createCheckoutSession")
-    .mockResolvedValueOnce({ id: "sess" } as any);
+    .spyOn(sessionModule, "createCheckoutSession")
+    .mockResolvedValueOnce({ sessionId: "sess" });
   const req = createRequest({}, "ignored");
   const res = await POST(req);
   expect(res.status).toBe(200);
@@ -163,7 +163,7 @@ test("responds with 400 on invalid request body", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
-  const cookie = encodeCartCookie(cart as any);
+  const cookie = JSON.stringify(cart);
   const req = createRequest({ shipping: "invalid" }, cookie);
   const res = await POST(req);
   expect(res.status).toBe(400);
@@ -173,7 +173,7 @@ test("responds with 502 when session creation fails", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
-  const cookie = encodeCartCookie(cart as any);
+  const cookie = JSON.stringify(cart);
   const spy = jest
     .spyOn(await import("@platform-core/checkout/session"), "createCheckoutSession")
     .mockRejectedValueOnce(new Error("boom"));

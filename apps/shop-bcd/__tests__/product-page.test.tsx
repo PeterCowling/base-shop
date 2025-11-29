@@ -19,7 +19,7 @@ describe("Product detail page", () => {
     const notFound = jest.fn();
     jest.doMock("next/navigation", () => ({ notFound }));
     const { default: Page } = await import("../src/app/[lang]/product/[slug]/page");
-    await Page({ params: { slug: "missing", lang: "en" } } as any);
+    await Page({ params: { slug: "missing", lang: "en" } });
     expect(notFound).toHaveBeenCalled();
   });
 
@@ -64,7 +64,7 @@ describe("Product detail page", () => {
       editorialBlog: {},
     }));
     const { default: Page } = await import("../src/app/[lang]/product/[slug]/page");
-    const element = await Page({ params: { slug: "p1", lang: "en" } } as any);
+    const element = await Page({ params: { slug: "p1", lang: "en" } });
     render(element);
     const BlogListing = (await import("@ui/components/cms/blocks/BlogListing")).default as jest.Mock;
     const PdpClient = (await import("../src/app/[lang]/product/[slug]/PdpClient.client")).default as jest.Mock;
@@ -100,7 +100,7 @@ describe("page helpers", () => {
       ]),
     }));
     const { generateMetadata } = await import("../src/app/[lang]/product/[slug]/page");
-    const meta = await generateMetadata({ params: { slug: "p1", lang: "en" } } as any);
+    const meta = await generateMetadata({ params: { slug: "p1", lang: "en" } });
     expect(meta.title).toBe("Prod");
   });
 
@@ -109,7 +109,7 @@ describe("page helpers", () => {
       readRepo: jest.fn().mockResolvedValue([]),
     }));
     const { generateMetadata } = await import("../src/app/[lang]/product/[slug]/page");
-    const meta = await generateMetadata({ params: { slug: "x", lang: "en" } } as any);
+    const meta = await generateMetadata({ params: { slug: "x", lang: "en" } });
     expect(meta.title).toBe("Product not found");
   });
 

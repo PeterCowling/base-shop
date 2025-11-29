@@ -18,7 +18,7 @@ import DynamicRenderer from "@ui/components/DynamicRenderer";
 
 describe("Home page client", () => {
   const components: PageComponent[] = [
-    { id: "c1", type: "HeroBanner" } as any,
+    { id: "c1", type: "HeroBanner" },
   ];
   const locale = "en" as const;
 
@@ -52,4 +52,3 @@ describe("Home page client", () => {
     );
   });
 });
-

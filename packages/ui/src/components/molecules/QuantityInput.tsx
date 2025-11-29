@@ -34,7 +34,7 @@ export const QuantityInput = React.forwardRef<
         disabled={value <= min}
         // Match tests that query by "+"/"-" as the accessible name
         aria-label="-"
-        className="inline-flex min-h-10 min-w-10 items-center justify-center rounded border px-2 disabled:opacity-50"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2 disabled:opacity-50"
       >
         <span aria-hidden="true">-</span>{/* i18n-exempt: decorative glyph */}
         <span className="sr-only">{t("quantity.decrement")}</span>
@@ -46,7 +46,7 @@ export const QuantityInput = React.forwardRef<
         disabled={value >= max}
         // Match tests that query by "+"/"-" as the accessible name
         aria-label="+"
-        className="inline-flex min-h-10 min-w-10 items-center justify-center rounded border px-2 disabled:opacity-50"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2 disabled:opacity-50"
       >
         <span aria-hidden="true">+</span>{/* i18n-exempt: decorative glyph */}
         <span className="sr-only">{t("quantity.increment")}</span>

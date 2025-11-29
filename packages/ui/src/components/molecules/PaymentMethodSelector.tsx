@@ -35,7 +35,7 @@ export function PaymentMethodSelector({
             value={m.value}
             checked={value === m.value}
             onChange={() => onChange?.(m.value)}
-            className="accent-primary size-10"
+            className="accent-primary size-11"
           />
           {m.icon && <span className="size-6">{m.icon}</span>}
           <span>{m.label}</span>

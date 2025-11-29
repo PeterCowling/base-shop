@@ -72,7 +72,7 @@ export function Accordion({ items }: AccordionProps) {
               aria-expanded={isOpen}
               onClick={handleClick}
               onKeyDown={handleKeyDown}
-              className="flex w-full items-center justify-between p-2 text-start min-h-10 min-w-10"
+              className="flex w-full items-center justify-between p-2 text-start min-h-11 min-w-11"
             >
               <span>{item.title}</span>
               <span aria-hidden>

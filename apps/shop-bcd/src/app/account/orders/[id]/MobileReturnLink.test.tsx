@@ -13,9 +13,16 @@ import { MobileReturnLink } from "./MobileReturnLink";
 describe("MobileReturnLink", () => {
   it("renders link and shows QR when ready", async () => {
     const dataUrl = "data:image/png;base64,abc";
+    type QRCodeMock = {
+      toDataURL: jest.Mock;
+      default: {
+        toDataURL: jest.Mock;
+      };
+    };
+    const qrCodeMock = QRCode as unknown as QRCodeMock;
     // Support both default and named export mock shapes
-    (QRCode as any).toDataURL?.mockResolvedValue?.(dataUrl);
-    (QRCode as any).default?.toDataURL?.mockResolvedValue?.(dataUrl);
+    qrCodeMock.toDataURL.mockResolvedValue(dataUrl);
+    qrCodeMock.default.toDataURL.mockResolvedValue(dataUrl);
 
     render(<MobileReturnLink />);
 
@@ -33,4 +40,3 @@ describe("MobileReturnLink", () => {
     );
   });
 });
-

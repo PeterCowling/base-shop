@@ -1,9 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import Success from './page';
+import { render, screen } from "@testing-library/react";
+import Success from "./page";
+import type { Locale } from "@acme/i18n";
 
 describe('Success page (localized)', () => {
-  it('renders thank-you heading and receipt message', () => {
-    render(<Success params={{ lang: 'en' }} /> as any);
+  it("renders thank-you heading and receipt message", async () => {
+    const ui = await Success({ params: { lang: "en" as Locale } });
+    render(ui);
     expect(
       screen.getByRole('heading', {
         name: /Thanks for your order!/i,

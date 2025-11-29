@@ -5,15 +5,15 @@ import { PATCH, POST } from "../src/api/cart/route";
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) =>
+    json: (data: unknown, init?: ResponseInit) =>
       new Response(JSON.stringify(data), init),
   },
 }));
 
 function createRequest(
-  body: any,
+  body: unknown,
   cookie?: string,
-  url = "http://localhost/api/cart"
+  url = "http://localhost/api/cart",
 ): Parameters<typeof POST>[0] {
   return {
     json: async () => body,
@@ -21,7 +21,7 @@ function createRequest(
       get: () => (cookie ? { name: "", value: cookie } : undefined),
     },
     nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
-  } as any;
+  } as Parameters<typeof POST>[0];
 }
 
 afterEach(() => {
@@ -102,4 +102,3 @@ test("PATCH rejects unknown cart item", async () => {
   const res = await PATCH(createRequest({ id, qty: 1 }, cookie));
   expect(res.status).toBe(404);
 });
-

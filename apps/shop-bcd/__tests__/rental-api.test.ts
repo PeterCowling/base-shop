@@ -7,7 +7,7 @@ process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) =>
+    json: (data: unknown, init?: ResponseInit) =>
       new Response(JSON.stringify(data), init),
   },
 }));

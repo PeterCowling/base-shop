@@ -14,16 +14,23 @@ const base = z.object({
 const Started = base.extend({ type: z.literal("TryOnStarted"), mode: z.union([z.literal("accessory"), z.literal("garment")]) });
 const PreviewShown = base.extend({ type: z.literal("TryOnPreviewShown"), mode: z.union([z.literal("accessory"), z.literal("garment")]), preprocessMs: z.number().optional() });
 const Enhanced = base.extend({ type: z.literal("TryOnEnhanced"), generateMs: z.number().optional() });
-const AddToCart = base.extend({ type: z.literal("TryOnAddToCart"), transform: z.record(z.any()).optional() });
+const AddToCart = base.extend({
+  type: z.literal("TryOnAddToCart"),
+  transform: z.record(z.unknown()).optional(),
+});
 const ErrorEv = base.extend({ type: z.literal("TryOnError"), code: z.string().optional(), message: z.string().optional() });
 
 const Body = z.discriminatedUnion("type", [Started, PreviewShown, Enhanced, AddToCart, ErrorEv]);
+
+type TryOnAnalyticsEvent = z.infer<typeof Body> & {
+  shop: string;
+};
 
 function shopId(): string {
   return process.env.NEXT_PUBLIC_SHOP_ID || "default";
 }
 
-async function sendToGA(event: any) {
+async function sendToGA(event: TryOnAnalyticsEvent) {
   const measurementId = process.env.NEXT_PUBLIC_GA4_ID;
   const apiSecret = process.env.GA_API_SECRET;
   if (!measurementId || !apiSecret) return false;

@@ -10,20 +10,20 @@ import { asNextJson } from "@acme/test-utils";
 import { CART_COOKIE } from "@platform-core/cartCookie";
 
 const TEST_SKU = PRODUCTS[0];
-
-declare function expectType<T>(value: T): void;
+type CartItem = { sku: typeof TEST_SKU; qty: number; size: string };
+type CartResponse = { cart: Record<string, CartItem> };
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) =>
+    json: (data: unknown, init?: ResponseInit) =>
       new Response(JSON.stringify(data), init),
   },
 }));
 
 const createRequest = (
-  body: any,
+  body: unknown,
   cookie?: string,
-  url = "http://localhost/api/cart"
+  url = "http://localhost/api/cart",
 ): Parameters<typeof POST>[0] =>
   asNextJson(body, {
     cookies: cookie ? { [CART_COOKIE]: cookie } : undefined,
@@ -40,7 +40,7 @@ test("POST adds items and sets cookie", async () => {
   const id = `${sku.id}:${size}`;
   const req = createRequest({ sku: { id: sku.id }, qty: 2, size });
   const res = await POST(req);
-  const body = (await res.json()) as any;
+  const body = (await res.json()) as CartResponse;
 
   expect(body.cart[id].qty).toBe(2);
   const expected = asSetCookieHeader(
@@ -64,7 +64,7 @@ test("PATCH updates quantity", async () => {
     encodeCartCookie(JSON.stringify(cart))
   );
   const res = await PATCH(req);
-  const body = (await res.json()) as any;
+  const body = (await res.json()) as CartResponse;
   expect(body.cart[id].qty).toBe(5);
   const encoded = res.headers.get("Set-Cookie")!.split(";")[0].split("=")[1];
   expect(decodeCartCookie(encoded)).toEqual(body.cart);
@@ -80,7 +80,7 @@ test("PATCH removes item when qty is 0", async () => {
     encodeCartCookie(JSON.stringify(cart))
   );
   const res = await PATCH(req);
-  const body = (await res.json()) as any;
+  const body = (await res.json()) as CartResponse;
   expect(body.cart[id]).toBeUndefined();
 });
 
@@ -104,7 +104,7 @@ test("DELETE removes item", async () => {
     encodeCartCookie(JSON.stringify(cart))
   );
   const res = await DELETE(req);
-  const body = (await res.json()) as any;
+  const body = (await res.json()) as CartResponse;
   expect(body.cart[id]).toBeUndefined();
 });
 
@@ -116,6 +116,6 @@ test("GET returns cart", async () => {
   const res = await GET(
     createRequest({}, encodeCartCookie(JSON.stringify(cart)))
   );
-  const body = (await res.json()) as any;
+  const body = (await res.json()) as CartResponse;
   expect(body.cart).toEqual(cart);
 });

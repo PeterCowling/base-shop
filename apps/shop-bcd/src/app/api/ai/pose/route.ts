@@ -43,6 +43,11 @@ async function checkQuota(req: Request): Promise<string | null> {
   return null;
 }
 
+type AwsSignOptions = RequestInit & {
+  signQuery?: boolean;
+  expires?: number;
+};
+
 async function signGetForProvider(imageUrl: string): Promise<string> {
   try {
     const u = new URL(imageUrl);
@@ -55,8 +60,12 @@ async function signGetForProvider(imageUrl: string): Promise<string> {
     if (!key.startsWith('tryon/')) return imageUrl;
     const endpoint = `https://${accountId}.r2.cloudflarestorage.com/${bucket}/${key}`;
     const client = new AwsClient({ accessKeyId, secretAccessKey, service: 's3', region: 'auto' });
-    const signed = await client.sign(endpoint, { method: 'GET', signQuery: true, expires: 300 } as any);
-    return (signed as any).url || String(signed);
+    const signed: { url?: string } | string = await client.sign(
+      endpoint,
+      { method: "GET", signQuery: true, expires: 300 } satisfies AwsSignOptions
+    );
+    if (typeof signed === "string") return signed;
+    return signed.url ?? String(signed);
   } catch { return imageUrl; }
 }
 
@@ -71,7 +80,7 @@ export async function POST(req: NextRequest): Promise<Response> {
     const { imageUrl } = parsed.data;
     try {
       const cached = await kvGet(`idem:${parsed.data.idempotencyKey}:pose`);
-      if (cached) return NextResponse.json({ poseUrl: cached, metrics: { preprocessMs: 0 } } as any);
+      if (cached) return NextResponse.json({ poseUrl: cached, metrics: { preprocessMs: 0 } });
     } catch {}
     const provider = getProvider();
     if (!provider.pose) return NextResponse.json({});
@@ -85,8 +94,9 @@ export async function POST(req: NextRequest): Promise<Response> {
     if (resp.error) return NextResponse.json({ error: resp.error }, { status: 502 });
     const url = resp.result?.url;
     try { if (url) await kvPut(`idem:${parsed.data.idempotencyKey}:pose`, url, 86400); } catch {}
-    return NextResponse.json({ poseUrl: url, metrics: { preprocessMs: resp.metrics?.preprocessMs ?? ms } } as any);
-  } catch (err: any) {
-    return NextResponse.json({ error: { code: "UNKNOWN", message: err?.message ?? "Unexpected" } }, { status: 500 });
+    return NextResponse.json({ poseUrl: url, metrics: { preprocessMs: resp.metrics?.preprocessMs ?? ms } });
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : "Unexpected";
+    return NextResponse.json({ error: { code: "UNKNOWN", message } }, { status: 500 });
   }
 }

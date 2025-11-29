@@ -3,7 +3,6 @@ import "@acme/zod-utils/initZod";
 import { getShippingRate } from "@platform-core/shipping/index";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
-import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
@@ -37,7 +36,7 @@ const schema = z
     }
   });
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   const parsed = await parseJsonBody(req, schema, "1mb");
   if ("response" in parsed) {
     return parsed.response;

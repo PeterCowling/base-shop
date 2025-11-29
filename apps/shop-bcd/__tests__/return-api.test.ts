@@ -258,7 +258,18 @@ describe("/api/return", () => {
 
   test("returns 400 for invalid request body", async () => {
     const { POST } = await import("../src/api/return/route");
-    const res = await POST(asNextJson(null as any));
+    const res = await POST({
+      json: async () => null,
+      cookies: {
+        get: () => undefined,
+      },
+      headers: {
+        get: () => null,
+      },
+      nextUrl: Object.assign(new URL("http://localhost"), {
+        clone: () => new URL("http://localhost"),
+      }),
+    } as unknown as import("next/server").NextRequest);
     expect(res.status).toBe(400);
   });
 });

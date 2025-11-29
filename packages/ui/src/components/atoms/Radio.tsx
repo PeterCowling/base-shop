@@ -19,7 +19,7 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
         ref={ref}
         type="radio"
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-        className="accent-primary h-10 w-10"
+        className="accent-primary size-11"
         {...props}
       />
       {label ?? children}

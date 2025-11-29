@@ -18,7 +18,13 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-function makeReq(body: Record<string, any>): NextRequest {
+type DeliveryScheduleRequestBody = {
+  region: string;
+  window: string;
+  carrier?: string;
+};
+
+function makeReq(body: DeliveryScheduleRequestBody): NextRequest {
   parseJsonBody.mockResolvedValue({ success: true, data: body });
   return {} as NextRequest;
 }
@@ -49,4 +55,3 @@ describe("POST", () => {
     setSpy.mockRestore();
   });
 });
-

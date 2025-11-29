@@ -47,7 +47,7 @@ export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
                 key={l.href}
                 href={l.href}
                 // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-                className="inline-flex min-h-10 min-w-10 items-center hover:underline"
+                className="inline-flex min-h-11 min-w-11 items-center hover:underline"
                 data-token="--color-fg"
               >
                 {l.label}

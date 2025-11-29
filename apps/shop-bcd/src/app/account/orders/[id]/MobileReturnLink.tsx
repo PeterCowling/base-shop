@@ -14,7 +14,7 @@ export function MobileReturnLink() {
   }, []);
   return (
     <div className="space-y-2">
-      <a href="/returns/mobile" className="inline-flex min-h-10 min-w-10 items-center text-blue-600 underline px-2">
+      <a href="/returns/mobile" className="inline-flex min-h-11 min-w-11 items-center text-blue-600 underline px-2">
         {t("returns.mobile.link")}
       </a>
       {qr && (

@@ -18,11 +18,11 @@ import { fetchPublishedPosts } from "@acme/sanity";
 
 test("Home receives components from fs and fetches posts when merchandising enabled", async () => {
   const components: PageComponent[] = [
-    { id: "c1", type: "HeroBanner" } as any,
+    { id: "c1", type: "HeroBanner" },
   ];
   (fs.readFile as jest.Mock).mockResolvedValue(JSON.stringify(components));
 
-  const element = await Page({ params: { lang: "en" } } as any);
+  const element = await Page({ params: { lang: "en" } });
 
   expect(fs.readFile).toHaveBeenCalledWith(
     expect.stringContaining("data/shops/bcd/pages/home.json"),

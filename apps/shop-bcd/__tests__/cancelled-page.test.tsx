@@ -8,7 +8,8 @@ jest.mock("next/navigation", () => ({
   useSearchParams: jest.fn(),
 }));
 
-const useSearchParams = require("next/navigation").useSearchParams as jest.Mock;
+const useSearchParams = jest.requireMock("next/navigation")
+  .useSearchParams as jest.Mock;
 
 const cancelledPages: ReadonlyArray<
   [string, () => JSX.Element]

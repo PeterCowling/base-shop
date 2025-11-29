@@ -1,16 +1,42 @@
 import { NextRequest } from "next/server";
 
-const mockReturnService: any = { upsEnabled: true, bagEnabled: false, homePickupEnabled: false };
-const mockGetReturnLogistics = jest.fn();
-const mockSetReturnTracking = jest.fn();
-const mockFetch = jest.fn();
+type MockReturnService = {
+  upsEnabled: boolean;
+  bagEnabled: boolean;
+  homePickupEnabled: boolean;
+};
+
+type ReturnLogistics = {
+  labelService: string;
+  returnCarrier: string[];
+  dropOffProvider?: string;
+  bagType?: string;
+  homePickupZipCodes?: string[];
+};
+
+const mockReturnService: MockReturnService = {
+  upsEnabled: true,
+  bagEnabled: false,
+  homePickupEnabled: false,
+};
+const mockGetReturnLogistics = jest.fn<Promise<ReturnLogistics>, [string]>();
+const mockSetReturnTracking = jest.fn<
+  Promise<void>,
+  [string, string, string, string]
+>();
+const mockFetch = jest.fn<
+  Promise<{ json: () => Promise<unknown> }>,
+  [Request | string, RequestInit?]
+>();
 
 jest.mock("@platform-core/returnLogistics", () => ({
-  getReturnLogistics: (...args: any[]) => mockGetReturnLogistics(...args),
+  getReturnLogistics: (...args: Parameters<typeof mockGetReturnLogistics>) =>
+    mockGetReturnLogistics(...args),
 }));
 
 jest.mock("@platform-core/orders", () => ({
-  setReturnTracking: (...args: any[]) => mockSetReturnTracking(...args),
+  setReturnTracking: (...args: Parameters<typeof mockSetReturnTracking>) =>
+    mockSetReturnTracking(...args),
 }));
 
 jest.mock("../../../../shop.json", () => ({
@@ -34,7 +60,7 @@ beforeEach(() => {
   mockReturnService.upsEnabled = true;
   mockReturnService.bagEnabled = false;
   mockReturnService.homePickupEnabled = false;
-  global.fetch = mockFetch as any;
+  global.fetch = mockFetch as unknown as typeof fetch;
 });
 
 describe("POST /api/return", () => {

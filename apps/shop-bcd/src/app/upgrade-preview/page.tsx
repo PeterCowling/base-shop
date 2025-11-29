@@ -100,7 +100,7 @@ export default function UpgradePreviewPage() {
               <li key={l.id}>
                 <a
                   href={l.url}
-                  className="text-blue-600 underline inline-flex items-center min-h-10 min-w-10"
+                  className="text-blue-600 underline inline-flex items-center min-h-11 min-w-11"
                 >
                   {/* i18n-exempt -- I18N-123 URL path displayed as label [ttl=2025-06-30] */}
                   {`/preview/${l.id}`}
@@ -113,7 +113,7 @@ export default function UpgradePreviewPage() {
       <button
         type="button"
         onClick={handlePublish}
-        className="rounded border px-4 inline-flex items-center justify-center min-h-10 min-w-10"
+        className="rounded border px-4 inline-flex items-center justify-center min-h-11 min-w-11"
         disabled={publishing}
       >
         {publishing ? t("upgrade.publishing") : t("upgrade.approveAndPublish")}

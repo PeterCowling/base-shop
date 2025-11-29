@@ -1,3 +1,4 @@
+/* i18n-exempt file -- DS-TRYON-2026 [ttl=2026-01-31] SSE diagnostics and machine-readable error tokens; UI/localization handled in client try-on controller */
 import { NextRequest } from "next/server";
 import { z } from "zod";
 import { kvGet, kvPut } from "@acme/lib/tryon/kv";
@@ -5,40 +6,89 @@ import { kvGet, kvPut } from "@acme/lib/tryon/kv";
 export const runtime = "edge";
 
 const Body = z.object({
-  mode: z.literal('garment'),
+  mode: z.literal("garment"),
   productId: z.string(),
   sourceImageUrl: z.string().url(),
-  garmentAssets: z.object({ flatUrl: z.string().url().optional(), exemplarUrl: z.string().url().optional() }),
+  garmentAssets: z.object({
+    flatUrl: z.string().url().optional(),
+    exemplarUrl: z.string().url().optional(),
+  }),
   maskUrl: z.string().url().optional(),
   depthUrl: z.string().url().optional(),
   poseUrl: z.string().url().optional(),
 });
 
-function sseLine(line: string): string { return line.endsWith("\n") ? line : line + "\n"; }
+type TryonErrorCode =
+  | "BAD_REQUEST"
+  | "QUOTA_EXCEEDED"
+  | "PROVIDER_UNAVAILABLE"
+  | "UNKNOWN"
+  | "UPSTREAM_TIMEOUT";
+
+function sseLine(line: string): string {
+  return line.endsWith("\n") ? line : `${line}\n`;
+}
+
 function sseEvent(event: string, data: unknown): string {
-  return sseLine(`event: ${event}`) + sseLine(`data: ${JSON.stringify(data)}`) + "\n"; // extra \n between events
+  return (
+    sseLine(`event: ${event}`) +
+    sseLine(`data: ${JSON.stringify(data)}`) +
+    "\n"
+  ); // extra \n between events
+}
+
+function jsonErrorResponse(
+  code: TryonErrorCode,
+  message: string,
+  status: number,
+): Response {
+  // i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] API error envelope; not rendered directly as UI copy
+  return new Response(
+    JSON.stringify({ error: { code, message } }),
+    {
+      status,
+      headers: { "content-type": "application/json" },
+    },
+  );
 }
 
 export async function POST(req: NextRequest): Promise<Response> {
   const t0 = Date.now();
-  const idem = req.headers.get('idempotency-key') || req.headers.get('Idempotency-Key');
+  const idem =
+    req.headers.get("idempotency-key") ||
+    req.headers.get("Idempotency-Key");
   if (!idem) {
-    return new Response(JSON.stringify({ error: { code: 'BAD_REQUEST', message: 'Missing Idempotency-Key' } }), { status: 400, headers: { 'content-type': 'application/json' } });
+    return jsonErrorResponse(
+      "BAD_REQUEST",
+      "Missing Idempotency-Key", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] API error token; surfaced as JSON/SSE diagnostics, not direct UI copy */
+      400,
+    );
   }
-  const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(idem);
+  const isUuid =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+      idem,
+    );
   if (!isUuid) {
-    return new Response(JSON.stringify({ error: { code: 'BAD_REQUEST', message: 'Idempotency-Key must be UUID v4' } }), { status: 400, headers: { 'content-type': 'application/json' } });
+    return jsonErrorResponse(
+      "BAD_REQUEST",
+      "Idempotency-Key must be UUID v4", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] API error token; surfaced as JSON/SSE diagnostics, not direct UI copy */
+      400,
+    );
   }
 
   let body: unknown;
   try {
     body = await req.json();
   } catch {
-    return new Response(JSON.stringify({ error: { code: 'BAD_REQUEST', message: 'Invalid JSON' } }), { status: 400, headers: { 'content-type': 'application/json' } });
+    return jsonErrorResponse(
+      "BAD_REQUEST",
+      "Invalid JSON", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] API error token; surfaced as JSON/SSE diagnostics, not direct UI copy */
+      400,
+    );
   }
   const parsed = Body.safeParse(body);
   if (!parsed.success) {
-    return new Response(JSON.stringify({ error: { code: 'BAD_REQUEST', message: parsed.error.message } }), { status: 400, headers: { 'content-type': 'application/json' } });
+    return jsonErrorResponse("BAD_REQUEST", parsed.error.message, 400);
   }
 
   // Idempotency replay (if KV available)
@@ -56,8 +106,8 @@ export async function POST(req: NextRequest): Promise<Response> {
       return new Response(replay, {
         status: 200,
         headers: {
-          'content-type': 'text/event-stream; charset=utf-8',
-          'cache-control': 'no-cache, no-transform',
+          'content-type': 'text/event-stream; charset=utf-8', /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical header value; not user-facing copy */
+          'cache-control': 'no-cache, no-transform', /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical header value; not user-facing copy */
           'x-no-compression': '1',
           'connection': 'keep-alive',
         },
@@ -67,7 +117,11 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const over = checkEnhanceQuota(req);
   if (over) {
-    return new Response(JSON.stringify({ error: { code: 'QUOTA_EXCEEDED' } }), { status: 429, headers: { 'content-type': 'application/json' } });
+    return jsonErrorResponse(
+      "QUOTA_EXCEEDED",
+      `quota for ${over}`, /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] diagnostic quota token; UI maps error codes to copy */
+      429,
+    );
   }
 
   const upstream = process.env.TRYON_HEAVY_API_URL;
@@ -88,12 +142,19 @@ export async function POST(req: NextRequest): Promise<Response> {
           });
           const ct = res.headers.get('content-type') || '';
           if (!res.ok) {
-            controller.enqueue(encoder.encode(sseEvent('error', { code: 'PROVIDER_UNAVAILABLE', message: `Upstream ${res.status}` })));
+            controller.enqueue(
+              encoder.encode(
+                sseEvent("error", {
+                  code: "PROVIDER_UNAVAILABLE",
+                  message: `Upstream ${res.status}`,
+                }),
+              ),
+            );
             controller.close();
             try { console.log('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: false, status: res.status }); } catch {}
             return;
           }
-          if (ct.includes('text/event-stream') && res.body) {
+          if (ct.includes("text/event-stream") && res.body) {
             const reader = res.body.getReader();
             while (true) {
               const { done, value } = await reader.read();
@@ -105,18 +166,41 @@ export async function POST(req: NextRequest): Promise<Response> {
             return;
           }
           // Non-SSE: accept JSON final as cache hit
-          const json = await res.json().catch(() => ({}));
-          if (json?.url) {
-            controller.enqueue(encoder.encode(sseEvent('final', json)));
-            try { await kvPut(`idem:${idem}`, String(json.url), 86400); } catch {}
+          const json = (await res.json().catch(() => ({}))) as {
+            url?: string;
+            [key: string]: unknown;
+          };
+          if (json.url) {
+            controller.enqueue(encoder.encode(sseEvent("final", json)));
+            try {
+              await kvPut(`idem:${idem}`, String(json.url), 86400);
+            } catch {}
           } else {
-            controller.enqueue(encoder.encode(sseEvent('error', { code: 'UNKNOWN', message: 'Invalid upstream response' })));
+            controller.enqueue(
+              encoder.encode(
+                sseEvent("error", {
+                  code: "UNKNOWN",
+                  message: "Invalid upstream response", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] upstream diagnostics; client maps error codes to user copy */
+                }),
+              ),
+            );
           }
           controller.close();
           try { console.log('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: true, proxied: false }); } catch {}
           return;
-        } catch (err: any) {
-          controller.enqueue(encoder.encode(sseEvent('error', { code: 'UPSTREAM_TIMEOUT', message: err?.message || 'Upstream error' })));
+        } catch (err) {
+          const message =
+            err && typeof err === "object" && "message" in err
+              ? String((err as { message: unknown }).message)
+              : "Upstream error"; /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] upstream diagnostics; client maps error codes to user copy */
+          controller.enqueue(
+            encoder.encode(
+              sseEvent("error", {
+                code: "UPSTREAM_TIMEOUT",
+                message,
+              }),
+            ),
+          );
           controller.close();
           try { console.log('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: false, err: String(err?.message||err) }); } catch {}
           return;
@@ -124,25 +208,49 @@ export async function POST(req: NextRequest): Promise<Response> {
       }
 
       // Fallback synthesised progress for dev
-      controller.enqueue(encoder.encode(sseEvent('preprocess', { ok: true })));
-      controller.enqueue(encoder.encode(sseEvent('compose', { ok: true })));
+      controller.enqueue(
+        encoder.encode(sseEvent("preprocess", { ok: true })),
+      );
+      controller.enqueue(
+        encoder.encode(sseEvent("compose", { ok: true })),
+      );
       for (const p of [0.05, 0.15, 0.3, 0.5, 0.75, 0.9, 1.0]) {
-        controller.enqueue(encoder.encode(sseEvent('enhance', { progress: p })));
+        controller.enqueue(
+          encoder.encode(sseEvent("enhance", { progress: p })),
+        );
         await new Promise((r) => setTimeout(r, 150));
       }
       const { sourceImageUrl } = parsed.data;
-      controller.enqueue(encoder.encode(sseEvent('final', { url: sourceImageUrl, width: 1024, height: 1536, expiresAt: new Date(Date.now() + 3600_000).toISOString() })));
-      try { await kvPut(`idem:${idem}`, String(sourceImageUrl), 86400); } catch {}
+      controller.enqueue(
+        encoder.encode(
+          sseEvent("final", {
+            url: sourceImageUrl,
+            width: 1024,
+            height: 1536,
+            expiresAt: new Date(Date.now() + 3_600_000).toISOString(),
+          }),
+        ),
+      );
+      try {
+        await kvPut(`idem:${idem}`, String(sourceImageUrl), 86400);
+      } catch {}
       controller.close();
-      try { console.log('tryon.garment', { jobId: idem, ms: Date.now()-t0, ok: true, synthetic: true }); } catch {}
+      try {
+        console.log("tryon.garment", {
+          jobId: idem,
+          ms: Date.now() - t0,
+          ok: true,
+          synthetic: true,
+        });
+      } catch {}
     },
   });
 
   return new Response(stream, {
     status: 200,
     headers: {
-      'content-type': 'text/event-stream; charset=utf-8',
-      'cache-control': 'no-cache, no-transform',
+      'content-type': 'text/event-stream; charset=utf-8', /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical header value; not user-facing copy */
+      'cache-control': 'no-cache, no-transform', /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical header value; not user-facing copy */
       'x-no-compression': '1',
       'connection': 'keep-alive',
     },
@@ -157,12 +265,12 @@ function todayKey(id: string) {
   return `${id}:${day}`;
 }
 function identity(req: Request): string {
-  const cookies = req.headers.get('cookie') || '';
+  const cookies = req.headers.get("cookie") || "";
   const m = /(?:^|;\s*)tryon\.uid=([^;]+)/.exec(cookies);
   if (m) return decodeURIComponent(m[1]);
-  const xf = req.headers.get('x-forwarded-for') || '';
-  if (xf) return xf.split(',')[0].trim();
-  return req.headers.get('cf-connecting-ip') || 'anon';
+  const xf = req.headers.get("x-forwarded-for") || "";
+  if (xf) return xf.split(",")[0].trim();
+  return req.headers.get("cf-connecting-ip") || "anon";
 }
 function checkEnhanceQuota(req: Request): string | null {
   const id = identity(req);
@@ -170,8 +278,13 @@ function checkEnhanceQuota(req: Request): string | null {
   const now = Date.now();
   const rec = enhanceBuckets.get(key);
   if (rec && rec.exp > now && rec.count >= ENHANCE_LIMIT) return id;
-  const exp = new Date(); exp.setUTCHours(23,59,59,999);
-  if (!rec || rec.exp <= now) enhanceBuckets.set(key, { count: 1, exp: exp.getTime() });
-  else { rec.count += 1; enhanceBuckets.set(key, rec); }
+  const exp = new Date();
+  exp.setUTCHours(23, 59, 59, 999);
+  if (!rec || rec.exp <= now) {
+    enhanceBuckets.set(key, { count: 1, exp: exp.getTime() });
+  } else {
+    rec.count += 1;
+    enhanceBuckets.set(key, rec);
+  }
   return null;
 }

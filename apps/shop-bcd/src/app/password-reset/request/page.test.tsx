@@ -10,10 +10,12 @@ describe("PasswordResetRequestPage", () => {
   });
 
   it("shows success message on successful request", async () => {
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({}),
-    }) as any;
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({
+        ok: true,
+        json: async () => ({}),
+      } as Response) as unknown as typeof global.fetch;
 
     render(<PasswordResetRequestPage />);
 
@@ -28,10 +30,12 @@ describe("PasswordResetRequestPage", () => {
   });
 
   it("shows error message on failed request", async () => {
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      json: async () => ({ error: "No account found" }),
-    }) as any;
+    global.fetch = jest
+      .fn()
+      .mockResolvedValue({
+        ok: false,
+        json: async () => ({ error: "No account found" }),
+      } as Response) as unknown as typeof global.fetch;
 
     render(<PasswordResetRequestPage />);
 
@@ -43,4 +47,3 @@ describe("PasswordResetRequestPage", () => {
     expect(await screen.findByText("No account found")).toBeInTheDocument();
   });
 });
-

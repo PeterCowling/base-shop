@@ -2,12 +2,12 @@
 import { handleStripeWebhook } from "@platform-core/stripe-webhook";
 import { stripe } from "@acme/stripe";
 import { paymentsEnv } from "@acme/config/env/payments";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 
 export const runtime = "edge";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
   const body = await req.text();
   const signature = req.headers.get("stripe-signature") ?? "";
   let event: Stripe.Event;

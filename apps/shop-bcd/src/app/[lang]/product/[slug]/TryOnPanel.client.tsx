@@ -7,7 +7,6 @@ import type { ImageOrientation } from "@acme/types";
 import { useTryOnController } from "@ui/hooks/tryon/useTryOnController";
 import { tryonMeta } from "../../../../lib/tryonMeta";
 import { ARViewer } from "@ui/components/atoms/ARViewer";
-import { ProductCard } from "@platform-core/components/shop/ProductCard";
 import { RecommendationCarousel } from "@ui/components/organisms";
 import { useCart } from "@platform-core/contexts/CartContext";
 import { ComparePreview } from "./ComparePreview";
@@ -15,7 +14,6 @@ import { SignedViewLink } from "./SignedViewLink";
 import { TryOnStepper } from "./TryOnStepper";
 import { useTranslations } from "@acme/i18n";
 import { drawPreview, computeSmartAnchor } from "./PreviewUtils";
-import type { TryOnPhase } from "@ui/hooks/tryon/state";
 
 interface Props { product: SKU }
 
@@ -29,7 +27,7 @@ export default function TryOnPanel({ product }: Props) {
   const requiredOrientation: ImageOrientation = "landscape" as const;
   const accessoryUrl = useMemo(() => product.media.find(m => m.type === 'image')?.url, [product.media]);
   const assets3d = tryonMeta[product.slug]?.assets3d;
-  const [recs, setRecs] = useState<any[]>([]);
+  const [recs, setRecs] = useState<SKU[]>([]);
 
   const openFileDialog = useCallback(() => inputRef.current?.click(), []);
   const onFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,7 +79,7 @@ export default function TryOnPanel({ product }: Props) {
     if (!pendingFile || !pendingFile.type.startsWith("image/")) return;
     const { objectUrl, jobId } = await ctrl.startUpload(pendingFile, { productId: product.slug, mode: 'accessory' });
     await ctrl.preprocess({ imageUrl: objectUrl, jobId });
-  }, [pendingFile, ctrl]);
+  }, [pendingFile, ctrl, product.slug]);
 
   const startEnhance = useCallback(async () => {
     if (!ctrl.state.sourceImageUrl) return;
@@ -101,7 +99,14 @@ export default function TryOnPanel({ product }: Props) {
   // Try similar (fetch simple recommendations)
   useEffect(() => {
     let ignore = false;
-    fetch(`/api/recommendations?seed=${encodeURIComponent(product.slug)}&limit=4`).then(r => r.json()).then((d) => { if (!ignore) setRecs(d.items || []); }).catch(() => {});
+    fetch(`/api/recommendations?seed=${encodeURIComponent(product.slug)}&limit=4`)
+      .then(r => r.json())
+      .then((d) => {
+        if (ignore) return;
+        const items = Array.isArray(d?.items) ? d.items : [];
+        setRecs(items as SKU[]);
+      })
+      .catch(() => {});
     return () => { ignore = true; };
   }, [product.slug]);
 
@@ -142,7 +147,7 @@ export default function TryOnPanel({ product }: Props) {
       try {
         const cssW = Math.max(1, c.clientWidth);
         const cssH = Math.max(1, c.clientHeight);
-        const anchorHint = (tryonMeta[product.slug]?.anchorHint ?? undefined) as any;
+        const anchorHint = tryonMeta[product.slug]?.anchorHint;
         const pos = await computeSmartAnchor({ cssW, cssH, baseUrl: ctrl.state.sourceImageUrl, maskUrl: ctrl.state.maskUrl, accessoryUrl, scale: overlay.scale, depthUrl: ctrl.state.depthUrl, anchorHint });
         if (pos) setOverlay(o => ({ ...o, x: pos.x, y: pos.y, scale: pos.scale ?? o.scale }));
       } catch {}
@@ -215,7 +220,7 @@ export default function TryOnPanel({ product }: Props) {
           type="button"
           onClick={startUpload}
           disabled={!pendingFile || isVideo}
-          className="rounded bg-black px-3 py-1 text-white disabled:opacity-50"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-black px-3 py-1 text-white disabled:opacity-50"
         >{t("tryon.upload")}</button>
         {ctrl.state.sourceImageUrl && (
           <SignedViewLink objectUrl={ctrl.state.sourceImageUrl} label={t("tryon.viewUploaded") as string} />
@@ -235,7 +240,7 @@ export default function TryOnPanel({ product }: Props) {
           onPointerCancel={onCanvasPointerUp}
           onWheel={onCanvasWheel}
           onKeyDown={onCanvasKeyDown}
-          className="w-full rounded border outline-none focus:ring-2 focus:ring-primary/60"
+          className="w-full rounded border outline-none focus-visible:ring-2 focus-visible:ring-primary/60"
         />
         <div className="flex flex-col gap-2">
           <label className="text-sm font-medium">{t("tryon.scale")}</label>
@@ -244,21 +249,46 @@ export default function TryOnPanel({ product }: Props) {
           <input type="range" min={-45} max={45} value={overlay.rot} onChange={(e) => { setOverlay(o => ({ ...o, rot: Number(e.target.value) })); setWasAdjusted(true); }} />
           <label className="text-sm font-medium">{t("tryon.position")}</label>
           <div className="flex gap-2">
-            <button className="rounded border px-2" onClick={() => setOverlay(o => ({ ...o, y: o.y - 10 }))}>↑</button>
-            <button className="rounded border px-2" onClick={() => setOverlay(o => ({ ...o, y: o.y + 10 }))}>↓</button>
-            <button className="rounded border px-2" onClick={() => setOverlay(o => ({ ...o, x: o.x - 10 }))}>←</button>
-            <button className="rounded border px-2" onClick={() => setOverlay(o => ({ ...o, x: o.x + 10 }))}>→</button>
+            <button
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2"
+              onClick={() => setOverlay(o => ({ ...o, y: o.y - 10 }))}
+            >
+              ↑
+            </button>
+            <button
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2"
+              onClick={() => setOverlay(o => ({ ...o, y: o.y + 10 }))}
+            >
+              ↓
+            </button>
+            <button
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2"
+              onClick={() => setOverlay(o => ({ ...o, x: o.x - 10 }))}
+            >
+              ←
+            </button>
+            <button
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2"
+              onClick={() => setOverlay(o => ({ ...o, x: o.x + 10 }))}
+            >
+              →
+            </button>
           </div>
           <div className="mt-2 flex items-center gap-2">
-            <button className="rounded border px-2 py-1 text-sm" onClick={() => { setOverlay({ x: 50, y: 50, scale: 1.0, rot: 0 }); setWasAdjusted(true); }}>{t("tryon.reset")}</button>
             <button
-              className="rounded border px-2 py-1 text-sm"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2 py-1 text-sm"
+              onClick={() => { setOverlay({ x: 50, y: 50, scale: 1.0, rot: 0 }); setWasAdjusted(true); }}
+            >
+              {t("tryon.reset")}
+            </button>
+            <button
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-2 py-1 text-sm"
               onClick={async () => {
                 try {
                   const c = canvasRef.current; if (!c || !ctrl.state.sourceImageUrl || !ctrl.state.maskUrl || !accessoryUrl) return;
                   const cssW = Math.max(1, c.clientWidth);
                   const cssH = Math.max(1, c.clientHeight);
-                  const anchorHint = (tryonMeta[product.slug]?.anchorHint ?? undefined) as any;
+                  const anchorHint = tryonMeta[product.slug]?.anchorHint;
                   const pos = await computeSmartAnchor({ cssW, cssH, baseUrl: ctrl.state.sourceImageUrl, maskUrl: ctrl.state.maskUrl, accessoryUrl, scale: overlay.scale, depthUrl: ctrl.state.depthUrl, anchorHint });
                   if (pos) setOverlay(o => ({ ...o, x: pos.x, y: pos.y, scale: pos.scale ?? o.scale }));
                 } catch {}
@@ -278,7 +308,7 @@ export default function TryOnPanel({ product }: Props) {
           type="button"
           onClick={startEnhance}
           disabled={!ctrl.state.sourceImageUrl || !ctrl.canEnhance}
-          className="rounded bg-primary px-3 py-1 text-white disabled:opacity-50"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-primary px-3 py-1 text-white disabled:opacity-50"
         >{t("tryon.enhance")}</button>
         {ctrl.state.phase === 'enhancing' && typeof ctrl.progress === 'number' && (
           <div className="h-2 w-48 rounded bg-muted">
@@ -304,18 +334,32 @@ export default function TryOnPanel({ product }: Props) {
       {/* Try similar carousel */}
       <div className="mt-6">
         <h3 className="mb-2 text-lg font-semibold">{t("tryon.trySimilar")}</h3>
-        <RecommendationCarousel products={recs as any} showArrows showDots minItems={1} maxItems={4} tileMinHeight="20rem" />
+        <RecommendationCarousel products={recs} showArrows showDots minItems={1} maxItems={4} tileMinHeight="20rem" />
       </div>
 
       {/* Add to Cart with try-on tag */}
       <div className="mt-4">
-        <button type="button" onClick={addToCartWithTag} className="rounded bg-emerald-600 px-3 py-1 text-white">
+        <button
+          type="button"
+          onClick={addToCartWithTag}
+          className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-emerald-600 px-3 py-1 text-white"
+        >
           {t("tryon.addToCart")}
         </button>
         {ctrl.state.sourceImageUrl && (
           <div className="mt-2 flex items-center gap-3">
-            <button type="button" onClick={openFileDialog} className="rounded border px-3 py-1">{t("tryon.replacePhoto")}</button>
-            <button type="button" onClick={() => ctrl.state.phase !== 'idle' && window.confirm(String(t("tryon.deleteConfirm"))) && (window.location.reload())} className="rounded border px-3 py-1">
+            <button
+              type="button"
+              onClick={openFileDialog}
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-3 py-1"
+            >
+              {t("tryon.replacePhoto")}
+            </button>
+            <button
+              type="button"
+              onClick={() => ctrl.state.phase !== 'idle' && window.confirm(String(t("tryon.deleteConfirm"))) && (window.location.reload())}
+              className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-3 py-1"
+            >
               {t("tryon.deletePhoto")}
             </button>
           </div>

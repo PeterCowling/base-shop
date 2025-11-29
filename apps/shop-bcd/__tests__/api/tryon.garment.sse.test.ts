@@ -2,9 +2,16 @@
 
 import { POST } from "../../src/app/api/tryon/garment/route";
 // Polyfill ReadableStream for Jest Node environment
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { ReadableStream } = require('stream/web');
-(globalThis as any).ReadableStream = (globalThis as any).ReadableStream || ReadableStream;
+import { ReadableStream } from "node:stream/web";
+
+const globalWithStream = globalThis as {
+  ReadableStream?: typeof ReadableStream;
+};
+
+if (!globalWithStream.ReadableStream) {
+  globalWithStream.ReadableStream = ReadableStream;
+}
+
 import { asNextJson } from "@acme/test-utils";
 
 describe("tryon/garment SSE route", () => {
@@ -18,7 +25,7 @@ describe("tryon/garment SSE route", () => {
       garmentAssets: {},
     };
     const req = asNextJson(payload, { headers: { "Idempotency-Key": idem } });
-    const res = await POST(req as any);
+    const res = await POST(req);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toContain("text/event-stream");
     const text = await res.text();

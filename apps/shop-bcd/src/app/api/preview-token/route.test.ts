@@ -24,7 +24,8 @@ describe("GET /api/preview-token", () => {
     const pageId = "abc123";
     const res = await GET(makeReq(`http://x/api/preview-token?pageId=${pageId}`));
     expect(res.status).toBe(200);
-    const body: any = await res.json();
+    type PreviewTokenResponse = { token: string };
+    const body = (await res.json()) as PreviewTokenResponse;
     const expected = createHmac("sha256", "sekret").update(pageId).digest("hex");
     expect(body.token).toBe(expected);
   });
@@ -71,4 +72,3 @@ describe("GET /api/preview-token", () => {
     expect(res.status).toBe(500);
   });
 });
-

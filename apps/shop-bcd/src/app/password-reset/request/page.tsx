@@ -27,7 +27,7 @@ export default function PasswordResetRequestPage() {
         placeholder={String(t("Email"))}
         className="border p-2"
       />
-      <button type="submit" className="border px-4 py-2 min-h-10 min-w-10 inline-flex items-center justify-center">
+      <button type="submit" className="border px-4 py-2 min-h-11 min-w-11 inline-flex items-center justify-center">
         {t("Send reset link")}
       </button>
       {msg && <p>{msg}</p>}

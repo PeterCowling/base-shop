@@ -1,19 +1,32 @@
 // apps/shop-bcd/__tests__/lang-layout.test.tsx
 
 import { render, screen } from "@testing-library/react";
-let LocaleLayout: any;
-let generateMetadata: any;
+import type { getSeo as GetSeoFn } from "../src/lib/seo";
+import type { getShopSettings as GetShopSettingsFn } from "@platform-core/repositories/settings.server";
+import type { Messages } from "@i18n/Translations";
+import type { ReactNode } from "react";
 
-const getSeoMock = jest.fn();
-const getShopSettingsMock = jest.fn();
+type GetSeo = typeof GetSeoFn;
+type GetShopSettings = typeof GetShopSettingsFn;
+type LangLayoutModule = typeof import("../src/app/[lang]/layout");
+
+let LocaleLayout: LangLayoutModule["default"];
+let generateMetadata: LangLayoutModule["generateMetadata"];
+
+const getSeoMock = jest.fn<ReturnType<GetSeo>, Parameters<GetSeo>>();
+const getShopSettingsMock = jest.fn<
+  ReturnType<GetShopSettings>,
+  Parameters<GetShopSettings>
+>();
 
 jest.mock("../src/lib/seo", () => ({
   __esModule: true,
-  getSeo: (...args: any[]) => getSeoMock(...args),
+  getSeo: (...args: Parameters<GetSeo>) => getSeoMock(...args),
 }));
 
 jest.mock("@platform-core/repositories/settings.server", () => ({
-  getShopSettings: (...args: any[]) => getShopSettingsMock(...args),
+  getShopSettings: (...args: Parameters<GetShopSettings>) =>
+    getShopSettingsMock(...args),
 }));
 
 jest.mock("@ui/components/layout/Footer", () => ({
@@ -30,7 +43,13 @@ jest.mock("@ui/components/layout/Header", () => ({
 
 jest.mock("@i18n/Translations", () => ({
   __esModule: true,
-  default: ({ children, messages }: any) => (
+  default: ({
+    children,
+    messages,
+  }: {
+    children: ReactNode;
+    messages: Messages;
+  }) => (
     <div data-cy="provider" data-messages={JSON.stringify(messages)}>
       {children}
     </div>

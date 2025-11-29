@@ -17,15 +17,19 @@ jest.mock("@ui/utils/devicePresets", () => ({
 }));
 
 // Stub DeviceSelector to switch to the second device when clicked
-const DeviceSelector = ({ setDeviceId }: any) => (
+type DeviceSelectorProps = { setDeviceId: (id: string) => void };
+const DeviceSelector = ({ setDeviceId }: DeviceSelectorProps) => (
   <button data-cy="select" onClick={() => setDeviceId("b")}>select</button>
 );
-jest.mock("@ui/components/DeviceSelector", () => ({ __esModule: true, default: (props: any) => DeviceSelector(props) }));
+jest.mock("@ui/components/DeviceSelector", () => ({
+  __esModule: true,
+  default: (props: DeviceSelectorProps) => DeviceSelector(props),
+}));
 
 // Stub DynamicRenderer so we can detect render
 jest.mock("@ui/components/DynamicRenderer", () => ({
   __esModule: true,
-  default: (props: any) => <div data-cy="dynamic" {...props} />,
+  default: (props: Record<string, unknown>) => <div data-cy="dynamic" {...props} />,
 }));
 
 describe("PreviewClient", () => {

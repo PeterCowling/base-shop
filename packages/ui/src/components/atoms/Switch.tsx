@@ -17,7 +17,7 @@ export const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           ref={ref}
           type="checkbox"
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          className="peer absolute h-10 w-10 opacity-0"
+          className="peer absolute size-11 opacity-0"
           {...props}
         />
       </span>

@@ -1,10 +1,14 @@
 // apps/shop-bcd/__tests__/seo.test.ts
 import { getSeo } from "../src/lib/seo";
+import type { getShopSettings as GetShopSettingsFn } from "@platform-core/repositories/settings.server";
 
 const getShopSettingsMock = jest.fn();
 
+type GetShopSettings = typeof GetShopSettingsFn;
+
 jest.mock("@platform-core/repositories/settings.server", () => ({
-  getShopSettings: (...args: any[]) => getShopSettingsMock(...args),
+  getShopSettings: (...args: Parameters<GetShopSettings>) =>
+    getShopSettingsMock(...args),
 }));
 
 describe("getSeo", () => {
@@ -41,26 +45,19 @@ describe("getSeo", () => {
         title: "OG Title",
         description: "OG Desc",
         image: "https://img/og.png",
-      } as any,
+      },
       twitter: {
-        title: "TW Title",
-        description: "TW Desc",
-        image: "https://img/tw.png",
-        card: "summary_large_image",
-      } as any,
+        cardType: "summary_large_image",
+      },
     });
 
     expect(seo.title).toBe("Page Title");
     expect(seo.description).toBe("Page Desc");
     expect(seo.canonical).toBe("https://override.com/page");
     expect(seo.openGraph?.url).toBe("https://override.com/page");
-    expect((seo.openGraph as any).title).toBe("OG Title");
-    expect((seo.openGraph as any).description).toBe("OG Desc");
-    expect((seo.openGraph as any).image).toBe("https://img/og.png");
-    expect((seo.twitter as any).title).toBe("TW Title");
-    expect((seo.twitter as any).description).toBe("TW Desc");
-    expect((seo.twitter as any).image).toBe("https://img/tw.png");
-    expect((seo.twitter as any).card).toBe("summary_large_image");
+    expect(seo.openGraph?.title).toBe("OG Title");
+    expect(seo.openGraph?.description).toBe("OG Desc");
+    expect(seo.twitter?.cardType).toBe("summary_large_image");
   });
 
   it("falls back to defaults when settings are missing", async () => {

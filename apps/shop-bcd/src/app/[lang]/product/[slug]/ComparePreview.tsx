@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "@acme/i18n";
 
 export function ComparePreview({ baseUrl, enhancedUrl }: { baseUrl: string; enhancedUrl: string }) {
@@ -7,12 +8,20 @@ export function ComparePreview({ baseUrl, enhancedUrl }: { baseUrl: string; enha
   const t = useTranslations();
   return (
     <div className="relative h-40 w-64 select-none overflow-hidden rounded border">
-      <img src={baseUrl} alt={t("tryon.alt.original")} className="absolute left-0 top-0 h-full w-full object-cover" />
-      <img
+      <Image
+        src={baseUrl}
+        alt={t("tryon.alt.original")}
+        fill
+        className="object-cover"
+        sizes="256px"
+      />
+      <Image
         src={enhancedUrl}
         alt={t("tryon.alt.enhanced")}
+        fill
+        className="object-cover"
         style={{ clipPath: `inset(0 ${100 - split}% 0 0)` }}
-        className="absolute left-0 top-0 h-full w-full object-cover"
+        sizes="256px"
       />
       <input
         type="range"
@@ -20,7 +29,7 @@ export function ComparePreview({ baseUrl, enhancedUrl }: { baseUrl: string; enha
         max={100}
         value={split}
         onChange={(e) => setSplit(Number(e.target.value))}
-        className="absolute bottom-1 left-1 right-1"
+        className="absolute bottom-1 inset-x-1"
         aria-label={t("tryon.control.compare")}
       />
     </div>

@@ -106,7 +106,7 @@ export default function EditPreviewPage() {
               <li key={l.id}>
                 <a
                   href={l.url}
-                  className="inline-flex min-h-10 min-w-10 items-center text-blue-600 underline"
+                  className="inline-flex min-h-11 min-w-11 items-center text-blue-600 underline"
                 >
                   {`/preview/${l.id}`}
                 </a>
@@ -118,7 +118,7 @@ export default function EditPreviewPage() {
       <button
         type="button"
         onClick={handlePublish}
-        className="inline-flex min-h-10 min-w-10 items-center justify-center rounded border px-4"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border px-4"
         disabled={publishing}
       >
         {publishing ? t("upgrade.publishing") : t("upgrade.approveAndPublish")}

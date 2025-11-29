@@ -81,7 +81,7 @@ export function DataTable<T>({
                 <TableCell className="w-4">
                   <input
                     type="checkbox" /* i18n-exempt -- PB-000 [ttl=2025-12-31]: input type enum value */
-                    className="accent-primary size-10"
+                    className="accent-primary size-11"
                     checked={selected.includes(i)}
                     onChange={() => toggle(i)}
                     onClick={(e) => e.stopPropagation()}

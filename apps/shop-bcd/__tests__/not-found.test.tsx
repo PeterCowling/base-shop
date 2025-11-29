@@ -1,7 +1,14 @@
 // apps/shop-bcd/__tests__/not-found.test.tsx
+import type { AnchorHTMLAttributes, ReactNode } from "react";
+
+interface MockLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  href: string;
+  children?: ReactNode;
+}
+
 jest.mock("next/link", () => ({
   __esModule: true,
-  default: ({ children, href, ...props }: any) => (
+  default: ({ children, href, ...props }: MockLinkProps) => (
     <a href={href} {...props}>
       {children}
     </a>

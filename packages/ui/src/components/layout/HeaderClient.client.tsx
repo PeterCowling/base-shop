@@ -281,7 +281,7 @@ function EnglishHeader({
           <button
             type="button"
             onClick={() => setMenuOpen(false)}
-            className="rounded-full border border-muted/30 px-4 py-2 min-h-10 min-w-10 text-bg transition hover:bg-muted/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bg loket-text-button"
+            className="rounded-full border border-muted/30 px-4 py-2 min-h-11 min-w-11 text-bg transition hover:bg-muted/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bg loket-text-button"
           >
             {closeActionLabel}
           </button>

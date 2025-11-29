@@ -9,6 +9,11 @@ process.env.NEXT_PUBLIC_SHOP_ID = "shop";
 
 afterEach(() => jest.resetModules());
 
+type PreviewOnRequest = (ctx: {
+  params: { pageId: string };
+  request: Request;
+}) => Promise<Response>;
+
 function tokenFor(id: string): string {
   return createHmac("sha256", "testsecret").update(id).digest("hex");
 }
@@ -38,10 +43,11 @@ test("valid token returns page JSON", async () => {
   });
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
-  const res = await onRequest({
+  const handlePreview = onRequest as unknown as PreviewOnRequest;
+  const res = await handlePreview({
     params: { pageId: "1" },
     request: new Request(`http://test?token=${tokenFor("1")}`),
-  } as any);
+  });
 
   expect(res.status).toBe(200);
   expect(await res.json()).toEqual(page);
@@ -62,10 +68,11 @@ test("missing page yields 404", async () => {
   });
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
-  const res = await onRequest({
+  const handlePreview = onRequest as unknown as PreviewOnRequest;
+  const res = await handlePreview({
     params: { pageId: "1" },
     request: new Request(`http://test?token=${tokenFor("1")}`),
-  } as any);
+  });
 
   expect(res.status).toBe(404);
 });
@@ -85,10 +92,11 @@ test("invalid token yields 401", async () => {
   });
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
-  const res = await onRequest({
+  const handlePreview = onRequest as unknown as PreviewOnRequest;
+  const res = await handlePreview({
     params: { pageId: "1" },
     request: new Request(`http://test?token=bad`),
-  } as any);
+  });
 
   expect(res.status).toBe(401);
 });

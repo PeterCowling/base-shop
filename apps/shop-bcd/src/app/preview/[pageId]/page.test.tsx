@@ -1,10 +1,14 @@
-import React from "react";
+import React, { type FC, type ReactElement } from "react";
 
 const notFound = jest.fn();
 jest.mock("next/navigation", () => ({ notFound: () => notFound() }));
 
+type PreviewClientProps = { initialDeviceId?: string } & Record<string, unknown>;
+
 jest.mock("./PreviewClient", () => {
-  const MockPreviewClient = (props: any) => <div data-cy="preview-client" {...props} />;
+  const MockPreviewClient: FC<PreviewClientProps> = (props) => (
+    <div data-cy="preview-client" {...props} />
+  );
   MockPreviewClient.displayName = "MockPreviewClient";
   return MockPreviewClient;
 });
@@ -21,17 +25,20 @@ import PreviewPage from "./page";
 import { getLegacyPreset } from "@ui/utils/devicePresets";
 
 jest.mock("@acme/types", () => ({
-  pageSchema: { parse: (data: any) => data },
+  pageSchema: { parse: (data: unknown) => data },
 }));
 
 afterEach(() => {
-  (global.fetch as any)?.mockReset?.();
+  (global.fetch as unknown as jest.Mock | undefined)?.mockReset?.();
   notFound.mockClear();
   (getLegacyPreset as jest.Mock).mockClear();
 });
 
 describe("PreviewPage", () => {
-  const baseParams = { params: { pageId: "1" }, searchParams: {} } as any;
+  const baseParams = {
+    params: { pageId: "1" },
+    searchParams: {},
+  } as Parameters<typeof PreviewPage>[0];
   const makeSuccess = () =>
     new Response(
       JSON.stringify({ components: [], seo: { title: { en: "T" } } }),
@@ -57,19 +64,19 @@ describe("PreviewPage", () => {
 
   it("uses device search param for initialDeviceId", async () => {
     global.fetch = jest.fn().mockResolvedValue(makeSuccess());
-    const element: any = await PreviewPage({
+    const element = (await PreviewPage({
       ...baseParams,
       searchParams: { device: "preset2" },
-    });
+    })) as ReactElement;
     expect(element.props.initialDeviceId).toBe("preset2");
   });
 
   it("uses view search param for legacy presets", async () => {
     global.fetch = jest.fn().mockResolvedValue(makeSuccess());
-    const element: any = await PreviewPage({
+    const element = (await PreviewPage({
       ...baseParams,
       searchParams: { view: "mobile" },
-    });
+    })) as ReactElement;
     expect(getLegacyPreset).toHaveBeenCalledWith("mobile");
     expect(element.props.initialDeviceId).toBe("mobile-id");
   });

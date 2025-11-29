@@ -36,6 +36,14 @@ import { OrderTrackingTimeline } from "@ui/components/organisms/OrderTrackingTim
 import { redirect } from "next/navigation";
 import shop from "../shop.json";
 
+type TimelineChild = {
+  type?: unknown;
+  props?: {
+    steps?: Array<{ name: string }>;
+    [key: string]: unknown;
+  };
+};
+
 describe("order details page", () => {
   beforeEach(() => {
     jest.resetAllMocks();
@@ -59,8 +67,8 @@ describe("order details page", () => {
       "/api/orders/order1/tracking",
       { cache: "no-store" },
     );
-    const timeline = element.props.children.find(
-      (child: any) => child?.type === OrderTrackingTimeline,
+    const timeline = (element.props.children as TimelineChild[]).find(
+      (child) => child?.type === OrderTrackingTimeline,
     );
     expect(timeline).toBeDefined();
     expect(timeline.props).toEqual(
@@ -106,4 +114,3 @@ describe("order details page", () => {
     expect(element.props.children).toBe("Unable to load order.");
   });
 });
-

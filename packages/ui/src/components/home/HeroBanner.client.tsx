@@ -135,7 +135,7 @@ export default function HeroBanner({
       <button
         aria-label={prevLabel}
         onClick={prev}
-        className="absolute top-1/2 start-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
+        className="absolute top-1/2 start-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-11 min-w-11 text-2xl" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
         /* i18n-exempt -- PB-123 design token attribute [ttl=2025-12-31] */
         data-token="--color-fg"
       >
@@ -144,7 +144,7 @@ export default function HeroBanner({
       <button
         aria-label={nextLabel}
         onClick={next}
-        className="absolute top-1/2 end-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-10 min-w-10 text-2xl" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
+        className="absolute top-1/2 end-4 -translate-y-1/2 rounded-full bg-surface-2/60 hover:bg-surface-2/80 inline-flex items-center justify-center min-h-11 min-w-11 text-2xl" /* i18n-exempt -- PB-123 class names [ttl=2025-12-31] */
         /* i18n-exempt -- PB-123 design token attribute [ttl=2025-12-31] */
         data-token="--color-fg"
       >

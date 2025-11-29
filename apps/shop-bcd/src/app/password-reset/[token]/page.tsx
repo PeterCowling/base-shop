@@ -34,7 +34,7 @@ export default function PasswordResetPage() {
         placeholder={String(t("New password"))}
         className="border p-2"
       />
-      <button type="submit" className="border px-4 py-2 min-h-10 min-w-10 inline-flex items-center justify-center">
+      <button type="submit" className="border px-4 py-2 min-h-11 min-w-11 inline-flex items-center justify-center">
         {t("Reset password")}
       </button>
       {msg && <p>{msg}</p>}

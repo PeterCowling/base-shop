@@ -24,6 +24,11 @@ jest.mock("@acme/config/env/auth", () => {
 
 afterEach(() => jest.resetModules());
 
+type PreviewOnRequest = (ctx: {
+  params: { pageId: string };
+  request: Request;
+}) => Promise<Response>;
+
 function tokenFor(id: string, secret: string): string {
   return createHmac("sha256", secret).update(id).digest("hex");
 }
@@ -50,15 +55,16 @@ test("valid upgrade token returns page JSON", async () => {
     "../../src/app/api/preview-token/route"
   );
   const tokenRes = await tokenGET(
-    new Request("http://test?pageId=1") as any,
+    new Request("http://test?pageId=1"),
   );
   const { token } = await tokenRes.json();
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
-  const res = await onRequest({
+  const handlePreview = onRequest as unknown as PreviewOnRequest;
+  const res = await handlePreview({
     params: { pageId: "1" },
     request: new Request(`http://test?upgrade=${token}`),
-  } as any);
+  });
 
   expect(res.status).toBe(200);
   expect(await res.json()).toEqual(page);
@@ -72,10 +78,11 @@ test("invalid upgrade token yields 401", async () => {
   }));
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
-  const res = await onRequest({
+  const handlePreview = onRequest as unknown as PreviewOnRequest;
+  const res = await handlePreview({
     params: { pageId: "1" },
     request: new Request(`http://test?upgrade=bad`),
-  } as any);
+  });
 
   expect(res.status).toBe(401);
 });
@@ -88,12 +95,13 @@ test("standard token not accepted as upgrade token", async () => {
   }));
 
   const { onRequest } = await import("../../src/routes/preview/[pageId]");
-  const res = await onRequest({
+  const handlePreview = onRequest as unknown as PreviewOnRequest;
+  const res = await handlePreview({
     params: { pageId: "1" },
     request: new Request(
       `http://test?upgrade=${tokenFor("1", "testsecret")}`,
     ),
-  } as any);
+  });
 
   expect(res.status).toBe(401);
 });

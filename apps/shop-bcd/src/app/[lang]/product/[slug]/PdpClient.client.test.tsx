@@ -1,14 +1,20 @@
 /** @jest-environment jsdom */
 import React from "react";
 import { render, screen, fireEvent, configure } from "@testing-library/react";
+import type { ComponentProps } from "react";
+import type AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
+import type { PriceProps } from "@ui/components/atoms/Price";
+import type { SKU } from "@acme/types";
 configure({ testIdAttribute: "data-testid" });
 import PdpClient from "./PdpClient.client";
 
 const addToCartMock = jest.fn();
 
+type AddToCartButtonProps = ComponentProps<typeof AddToCartButton>;
+
 jest.mock("@platform-core/components/shop/AddToCartButton.client", () => ({
   __esModule: true,
-  default: (props: any) => {
+  default: (props: AddToCartButtonProps) => {
     addToCartMock(props);
     return <button data-testid="add-to-cart" disabled={props.disabled} />;
   },
@@ -21,11 +27,11 @@ jest.mock("@platform-core/components/pdp/ImageGallery", () => ({
 
 jest.mock("@ui/components/atoms/Price", () => ({
   __esModule: true,
-  Price: ({ amount }: any) => <span>{amount}</span>,
+  Price: ({ amount }: PriceProps) => <span>{amount}</span>,
 }));
 
 describe("PdpClient", () => {
-  const product = {
+  const product: SKU = {
     id: "sku1",
     slug: "sku1",
     title: "Test SKU",
@@ -33,7 +39,7 @@ describe("PdpClient", () => {
     price: 100,
     media: [],
     sizes: ["S", "M"],
-  } as any;
+  } as SKU;
 
   beforeEach(() => {
     addToCartMock.mockClear();
@@ -81,4 +87,3 @@ describe("PdpClient", () => {
     );
   });
 });
-

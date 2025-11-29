@@ -15,7 +15,13 @@ import {
 } from "@auth";
 import { POST } from "../src/app/api/login/route";
 
-function makeRequest(body: any, headers: Record<string, string> = {}) {
+type LoginBody = {
+  customerId: string;
+  password: string;
+  remember?: boolean;
+};
+
+function makeRequest(body: LoginBody, headers: Record<string, string> = {}) {
   return new Request("http://example.com/api/login", {
     method: "POST",
     headers: { "content-type": "application/json", ...headers },

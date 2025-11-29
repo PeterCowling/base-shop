@@ -1,3 +1,4 @@
+/* i18n-exempt file -- DS-TRYON-2026 [ttl=2026-01-31] blog SEO + editorial shell; uses translation keys or external Markdown, no direct UI copy literals */
 import { notFound } from "next/navigation";
 import type { PortableBlock } from "@acme/sanity";
 import { BlogPortableText } from "@platform-core/components/blog/BlogPortableText";
@@ -25,7 +26,7 @@ export default async function BlogPostPage({
     return notFound();
   }
   const t = await loadTranslations(resolveLocale(params.lang));
-  const provider = getBlogProvider(shop);
+  const provider = await getBlogProvider(shop);
   const post = await provider.fetchPostBySlug(shop.id, params.slug);
   try {
     const mockGlobal = globalThis as unknown as {
@@ -53,7 +54,9 @@ export default async function BlogPostPage({
       />
       {shop.editorialBlog?.promoteSchedule && (
         <p className="rounded bg-muted p-2">
-          {t("Daily Edit scheduled for")} {shop.editorialBlog.promoteSchedule}
+          {t("blog.post.promoteSchedule", {
+            date: shop.editorialBlog.promoteSchedule,
+          })}
         </p>
       )}
       <h1 className="text-2xl font-bold">{post.title}</h1>
@@ -76,10 +79,11 @@ export async function generateMetadata({
 }: {
   params: { lang: string; slug: string };
 }): Promise<Metadata> {
-  const provider = getBlogProvider(shop);
+  const provider = await getBlogProvider(shop);
   const post = await provider.fetchPostBySlug(shop.id, params.slug);
   const lang = resolveLocale(params.lang);
   const baseSeo = await getSeo(lang);
+  const t = await loadTranslations(lang);
   const canonicalRoot = baseSeo.canonical?.replace(/\/$|$/, "") ?? "";
   const canonical = canonicalRoot ? `${canonicalRoot}/blog/${params.slug}` : undefined;
   const settings = await getShopSettings(shop.id);
@@ -92,7 +96,7 @@ export async function generateMetadata({
   for (const l of languages) {
     languagesAlt[l] = `${canonicalRootForLanguages}/${l}/blog/${params.slug}`;
   }
-  const title = post?.title ?? (await loadTranslations(lang))("Blog post");
+  const title = post?.title ?? t("blog.post.fallbackTitle");
   const description = post?.excerpt ?? baseSeo.description;
   const seo = await getSeo(lang, {
     title,
@@ -111,7 +115,12 @@ export async function generateMetadata({
 }
 
 async function EditorialHtml({ body }: { body: string }) {
-  const { renderMarkdownToHtml } = await import("@acme/editorial");
+  const { renderMarkdownToHtml } = await import("@acme/editorial"); /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] technical module path; not user-facing copy */
   const html = await renderMarkdownToHtml(body);
-  return <div className="prose prose-slate" dangerouslySetInnerHTML={{ __html: html }} />;
+  return (
+    <div
+      className="prose prose-slate" /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] design-system prose classes; not user-visible copy */
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
 }

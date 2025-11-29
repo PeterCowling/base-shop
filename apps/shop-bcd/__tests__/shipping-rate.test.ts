@@ -12,8 +12,19 @@ jest.mock("@platform-core/repositories/settings.server", () => ({
 import { getShippingRate } from "@platform-core/shipping/index";
 import { getShopSettings } from "@platform-core/repositories/settings.server";
 import { POST } from "../src/app/api/shipping-rate/route";
+import type { ShopSettings } from "@acme/types";
 
-function makeRequest(body: any) {
+type ShippingRateBody = {
+  provider: "ups" | "dhl" | "premier-shipping";
+  fromPostalCode: string;
+  toPostalCode: string;
+  weight: number;
+  region?: string;
+  window?: string;
+  carrier?: string;
+};
+
+function makeRequest(body: ShippingRateBody) {
   return new Request("http://example.com/api/shipping-rate", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -31,7 +42,7 @@ test("returns shipping rate for valid request", async () => {
       fromPostalCode: "1000",
       toPostalCode: "2000",
       weight: 1,
-    }) as any,
+    }),
   );
   expect(getShippingRate).toHaveBeenCalledWith({
     provider: "dhl",
@@ -54,7 +65,7 @@ test("validates required fields for premier-shipping", async () => {
       fromPostalCode: "1000",
       toPostalCode: "2000",
       weight: 1,
-    }) as any,
+    }),
   );
   expect(res.status).toBe(400);
   expect(getShippingRate).not.toHaveBeenCalled();
@@ -68,17 +79,17 @@ test("returns 500 when provider throws", async () => {
       fromPostalCode: "1",
       toPostalCode: "2",
       weight: 1,
-    }) as any,
+    }),
   );
   expect(res.status).toBe(500);
   await expect(res.json()).resolves.toEqual({ error: "oops" });
 });
 
 test("uses premierDelivery when enabled and region allowed", async () => {
-  const settings = {
+  const settings: Pick<ShopSettings, "luxuryFeatures" | "premierDelivery"> = {
     luxuryFeatures: { premierDelivery: true },
     premierDelivery: { regions: ["EU", "US"] },
-  } as any;
+  };
   (getShopSettings as jest.Mock).mockResolvedValueOnce(settings);
   (getShippingRate as jest.Mock).mockResolvedValue({ rate: 99 });
   const res = await POST(
@@ -90,7 +101,7 @@ test("uses premierDelivery when enabled and region allowed", async () => {
       region: "EU",
       window: "AM",
       carrier: "X",
-    }) as any,
+    }),
   );
   expect(res.status).toBe(200);
   expect(getShippingRate).toHaveBeenCalledWith(
@@ -99,10 +110,10 @@ test("uses premierDelivery when enabled and region allowed", async () => {
 });
 
 test("falls back to dhl when region not allowed", async () => {
-  const settings = {
+  const settings: Pick<ShopSettings, "luxuryFeatures" | "premierDelivery"> = {
     luxuryFeatures: { premierDelivery: true },
     premierDelivery: { regions: ["US"] },
-  } as any;
+  };
   (getShopSettings as jest.Mock).mockResolvedValueOnce(settings);
   (getShippingRate as jest.Mock).mockResolvedValue({ rate: 55 });
   const res = await POST(
@@ -114,7 +125,7 @@ test("falls back to dhl when region not allowed", async () => {
       region: "EU",
       window: "AM",
       carrier: "X",
-    }) as any,
+    }),
   );
   expect(res.status).toBe(200);
   expect(getShippingRate).toHaveBeenCalledWith(

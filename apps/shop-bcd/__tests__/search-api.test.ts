@@ -20,7 +20,7 @@ test("returns matching products and posts", async () => {
   ]);
   const product = PRODUCTS[0];
   const q = product.title.slice(0, 3).toLowerCase();
-  const res = await GET(makeRequest(q) as any);
+  const res = await GET(makeRequest(q));
   expect(fetchPublishedPosts).toHaveBeenCalledWith("bcd");
   expect(res.status).toBe(200);
   const body = await res.json();
@@ -36,7 +36,7 @@ test("ignores blog posts when fetch fails", async () => {
   (fetchPublishedPosts as jest.Mock).mockRejectedValue(new Error("fail"));
   const product = PRODUCTS[0];
   const q = product.title.slice(0, 3).toLowerCase();
-  const res = await GET(makeRequest(q) as any);
+  const res = await GET(makeRequest(q));
   expect(res.status).toBe(200);
   const body = await res.json();
   expect(body.results).toEqual([

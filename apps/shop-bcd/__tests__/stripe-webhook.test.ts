@@ -17,7 +17,7 @@ describe("/api/stripe-webhook", () => {
     const payload = {
       type: "checkout.session.completed",
       data: { object: {} },
-    } as any;
+    };
     const constructEvent = jest.fn().mockReturnValue(payload);
     jest.doMock("@acme/stripe", () => ({
       __esModule: true,
@@ -26,10 +26,12 @@ describe("/api/stripe-webhook", () => {
 
     const { POST } = await import("../src/api/stripe-webhook/route");
     const body = JSON.stringify(payload);
-    const res = await POST({
-      text: async () => body,
+    const req = new Request("http://example.com/api/stripe-webhook", {
+      method: "POST",
       headers: new Headers({ "stripe-signature": "sig" }),
-    } as any);
+      body,
+    });
+    const res = await POST(req);
     expect(constructEvent).toHaveBeenCalledWith(
       body,
       "sig",
@@ -55,10 +57,12 @@ describe("/api/stripe-webhook", () => {
     }));
 
     const { POST } = await import("../src/api/stripe-webhook/route");
-    const res = await POST({
-      text: async () => "{}",
+    const req = new Request("http://example.com/api/stripe-webhook", {
+      method: "POST",
       headers: new Headers({ "stripe-signature": "sig" }),
-    } as any);
+      body: "{}",
+    });
+    const res = await POST(req);
     expect(res.status).toBe(400);
     expect(handleStripeWebhook).not.toHaveBeenCalled();
   });
@@ -81,10 +85,12 @@ describe("/api/stripe-webhook", () => {
     }));
 
     const { POST } = await import("../src/api/stripe-webhook/route");
-    const res = await POST({
-      text: async () => "{}",
+    const req = new Request("http://example.com/api/stripe-webhook", {
+      method: "POST",
       headers: new Headers(),
-    } as any);
+      body: "{}",
+    });
+    const res = await POST(req);
     expect(res.status).toBe(400);
     expect(handleStripeWebhook).not.toHaveBeenCalled();
   });

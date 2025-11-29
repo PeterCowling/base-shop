@@ -1,9 +1,12 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import type { FC } from "react";
 import UpgradePreviewPage from "./page";
 
+type ComponentPreviewProps = { component: { componentName: string } };
+
 jest.mock("@ui/components/ComponentPreview", () => {
-  const MockComponentPreview = ({ component }: any) => (
+  const MockComponentPreview: FC<ComponentPreviewProps> = ({ component }) => (
     <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
   );
   MockComponentPreview.displayName = "MockComponentPreview";
@@ -32,17 +35,17 @@ describe("UpgradePreviewPage", () => {
             }],
             pages: ["123"],
           }),
-        } as any);
+        } as Response);
       }
       if (typeof url === "string" && url.startsWith("/api/preview-token")) {
-        return Promise.resolve({ ok: true, json: async () => ({ token: "tok" }) } as any);
+        return Promise.resolve({ ok: true, json: async () => ({ token: "tok" }) } as Response);
       }
       if (url === "/api/publish") {
-        return Promise.resolve({ ok: true, json: async () => ({}) } as any);
+        return Promise.resolve({ ok: true, json: async () => ({}) } as Response);
       }
       return Promise.reject(new Error("unknown url"));
     });
-    global.fetch = fetchMock as any;
+    global.fetch = fetchMock as unknown as typeof global.fetch;
 
     render(<UpgradePreviewPage />);
 
@@ -64,17 +67,17 @@ describe("UpgradePreviewPage", () => {
         return Promise.resolve({
           ok: true,
           json: async () => ({ components: [], pages: [] }),
-        } as any);
+        } as Response);
       }
       if (url === "/api/publish") {
         return Promise.resolve({
           ok: false,
           json: async () => ({ error: "fail" }),
-        } as any);
+        } as Response);
       }
       return Promise.reject(new Error("unknown url"));
     });
-    global.fetch = fetchMock as any;
+    global.fetch = fetchMock as unknown as typeof global.fetch;
 
     render(<UpgradePreviewPage />);
 

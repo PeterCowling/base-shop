@@ -11,7 +11,7 @@ jest.mock("@platform-core/orders", () => ({
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) =>
+    json: (data: unknown, init?: ResponseInit) =>
       new Response(JSON.stringify(data), init),
   },
 }));

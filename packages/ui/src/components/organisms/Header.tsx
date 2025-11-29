@@ -80,7 +80,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                   <div key={section.title} className="group relative">
                     <a
                       href={section.href}
-                      className="inline-flex min-h-10 min-w-10 items-center font-medium"
+                      className="inline-flex min-h-11 min-w-11 items-center font-medium"
                       data-token="--color-fg"
                     >
                       {section.title}
@@ -93,7 +93,7 @@ export const Header = React.forwardRef<HTMLElement, HeaderProps>(
                           <li key={item.title}>
                             <a
                               href={item.href}
-                              className="block rounded px-3 py-2 text-sm hover:bg-surface-3 min-h-10 min-w-10" /* i18n-exempt */
+                              className="block rounded px-3 py-2 text-sm hover:bg-surface-3 min-h-11 min-w-11" /* i18n-exempt */
                               data-token="--color-fg"
                             >
                               {item.title}

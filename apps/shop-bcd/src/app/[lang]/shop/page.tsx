@@ -10,9 +10,18 @@ import { coreEnv as env } from "@acme/config/env/core";
 import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";
 
-export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
-  const t = await getTranslations(resolveLocale(params.lang));
-  return { title: t("shop.title") };
+export async function generateMetadata({
+  params,
+}: {
+  params: { lang: string };
+}): Promise<Metadata> {
+  try {
+    const t = await getTranslations(resolveLocale(params.lang));
+    return { title: t("shop.title") };
+  } catch {
+    // Fallback metadata when i18n/env lookups fail
+    return { title: "Shop" }; // i18n-exempt -- SEO-1234 [ttl=2025-12-31] LHCI fallback title for /shop
+  }
 }
 
 export default async function ShopIndexPage({
@@ -42,7 +51,7 @@ export default async function ShopIndexPage({
       }
     }
   } catch {
-    /* ignore bad feature flags */
+    /* ignore bad feature flags / blog fetch issues */
   }
   return (
     <>

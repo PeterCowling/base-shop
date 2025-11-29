@@ -1,3 +1,4 @@
+/* i18n-exempt file -- DS-TRYON-2026 [ttl=2026-01-31] try-on canvas preview helpers; errors are developer diagnostics, not user-facing copy */
 "use client";
 
 import { renderShadow } from "@acme/lib/tryon/fallback/shadow";
@@ -32,10 +33,10 @@ export async function drawPreview(args: {
   // Draw overlay into offscreen to allow mask occlusion
   const oc = document.createElement('canvas');
   oc.width = cssW; oc.height = cssH;
-  const octx = oc.getContext('2d');
+  const octx = oc.getContext('2d') as CanvasRenderingContext2D | null;
   if (!octx) return;
   // Shadow
-  renderShadow(octx as any, { x: overlay.x, y: overlay.y, width: ow, height: oh }, { opacity: 0.3, scale: 1, angleDeg: 35 });
+  renderShadow(octx, { x: overlay.x, y: overlay.y, width: ow, height: oh }, { opacity: 0.3, scale: 1, angleDeg: 35 });
   // Overlay bitmap with rotation around center
   octx.save();
   octx.translate(overlay.x + ow / 2, overlay.y + oh / 2);
@@ -137,7 +138,22 @@ async function loadImage(src: string): Promise<HTMLImageElement> {
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => { IMG_CACHE.set(key, img); INFLIGHT.delete(key); resolve(img); };
-    img.onerror = (e) => { INFLIGHT.delete(key); reject(e as any); };
+    img.onerror = (event) => {
+      INFLIGHT.delete(key);
+      const error =
+        event instanceof ErrorEvent
+          ? event.error ?? new Error(event.message)
+          : event instanceof Event
+            ? new Error(
+                "Image failed to load", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] developer diagnostic error; swallowed by caller, not user-facing copy */
+              )
+            : new Error(
+                String(
+                  event ?? "Image failed to load", /* i18n-exempt -- DS-TRYON-2026 [ttl=2026-01-31] developer diagnostic error; swallowed by caller, not user-facing copy */
+                ),
+              );
+      reject(error);
+    };
     img.src = key;
   });
   INFLIGHT.set(key, p);

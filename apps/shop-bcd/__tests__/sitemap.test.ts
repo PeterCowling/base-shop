@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import type { SanityConfig } from "@platform-core/repositories/blog.server";
 
 const getShopSettingsMock = jest.fn();
 const readRepoMock = jest.fn();
@@ -13,7 +14,7 @@ jest.mock("@platform-core/repositories/products.server", () => ({
 }));
 
 jest.mock("@platform-core/repositories/blog.server", () => ({
-  listPosts: (...args: any[]) => listPostsMock(...args),
+  listPosts: (config: SanityConfig) => listPostsMock(config),
 }));
 
 jest.mock("@acme/sanity", () => ({
@@ -89,4 +90,3 @@ describe("sitemap generation", () => {
     });
   });
 });
-

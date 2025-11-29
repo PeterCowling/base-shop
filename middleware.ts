@@ -2,10 +2,27 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { createHeadersObject } from "next-secure-headers";
 
-export function middleware(_request: NextRequest) {
+export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   try {
+    const hostname =
+      typeof request?.nextUrl?.hostname === "string"
+        ? request.nextUrl.hostname
+        : undefined;
+
+    const forceHTTPSRedirect =
+      hostname === "localhost"
+        ? false
+        : [
+            true,
+            {
+              maxAge: 60 * 60 * 24 * 365,
+              includeSubDomains: true,
+              preload: true,
+            },
+          ] as const;
+
     const securityHeaders = createHeadersObject({
       contentSecurityPolicy: {
         directives: {
@@ -16,14 +33,7 @@ export function middleware(_request: NextRequest) {
           frameAncestors: "'none'",
         },
       },
-      forceHTTPSRedirect: [
-        true,
-        {
-          maxAge: 60 * 60 * 24 * 365,
-          includeSubDomains: true,
-          preload: true,
-        },
-      ],
+      forceHTTPSRedirect,
       frameGuard: "deny",
       referrerPolicy: "no-referrer",
       nosniff: "nosniff",

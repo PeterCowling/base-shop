@@ -6,7 +6,11 @@ describe("POST /api/password-reset/[token]", () => {
     jest.clearAllMocks();
   });
 
-  function makeReq(body: any) {
+  type PasswordResetBody = {
+    password: string;
+  };
+
+  function makeReq(body: PasswordResetBody) {
     return new Request("http://x/api/password-reset/t/abc", {
       method: "POST",
       headers: { "content-type": "application/json" },
@@ -16,7 +20,10 @@ describe("POST /api/password-reset/[token]", () => {
 
   it("validates password schema", async () => {
     const { POST } = await import("./route");
-    const res = await POST(makeReq({ password: "short" }), { params: { token: "t1" } } as any);
+    const res = await POST(
+      makeReq({ password: "short" }),
+      { params: { token: "t1" } },
+    );
     expect(res.status).toBe(400);
   });
 
@@ -33,7 +40,10 @@ describe("POST /api/password-reset/[token]", () => {
       hash: jest.fn().mockResolvedValue("hash"),
     }));
     const { POST } = await import("./route");
-    const res = await POST(makeReq({ password: "verysecure" }), { params: { token: "t1" } } as any);
+    const res = await POST(
+      makeReq({ password: "verysecure" }),
+      { params: { token: "t1" } },
+    );
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({ ok: true });
   });
@@ -51,8 +61,10 @@ describe("POST /api/password-reset/[token]", () => {
       hash: jest.fn(),
     }));
     const { POST } = await import("./route");
-    const res = await POST(makeReq({ password: "verysecure" }), { params: { token: "t1" } } as any);
+    const res = await POST(
+      makeReq({ password: "verysecure" }),
+      { params: { token: "t1" } },
+    );
     expect(res.status).toBe(400);
   });
 });
-

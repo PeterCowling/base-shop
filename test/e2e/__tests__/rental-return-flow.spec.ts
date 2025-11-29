@@ -17,6 +17,11 @@ describe("Rental return flow", () => {
     sizes: [] as string[],
     description: "",
   };
+  const login = () => cy.loginAsAdmin();
+
+  before(() => {
+    cy.session("admin-session", login);
+  });
 
   beforeEach(() => {
     // reuse checkout interception from checkout-flow.spec
@@ -30,21 +35,7 @@ describe("Rental return flow", () => {
       body: {},
     }).as("confirmPayment");
 
-    // programmatic sign in as in page-builder.spec
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: body.csrfToken,
-          email: "admin@example.com",
-          password: "admin",
-          callbackUrl: "/",
-        },
-      });
-    });
+    cy.session("admin-session", login);
   });
 
   it("records refunded rental order", () => {

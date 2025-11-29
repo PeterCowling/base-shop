@@ -9,10 +9,16 @@ export const dynamic = "force-dynamic";
 export default async function PluginsPage() {
   // Let the platform-core plugin loader discover the workspace plugins directory
   const plugins = await loadPlugins();
+  const serializablePlugins = plugins.map((plugin) => ({
+    id: plugin.id,
+    name: plugin.name,
+    description: plugin.description,
+    defaultConfig: plugin.defaultConfig ?? {},
+  }));
   return (
     <div>
       <h2 className="mb-4 text-xl font-semibold">Plugins</h2>
-      <PluginList plugins={plugins} />
+      <PluginList plugins={serializablePlugins} />
       <div className="mt-6">
         <Link
           href="/cms/blog/sanity/connect"

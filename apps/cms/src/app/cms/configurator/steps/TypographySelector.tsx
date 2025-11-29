@@ -48,6 +48,7 @@ export default function TypographySelector({ tokens, baseTokens, onChange, tagFi
 
   const ensureGoogle = useCallback((name: string | null | undefined) => {
     if (!name) return;
+    if (typeof document === "undefined") return;
     const id = `google-font-${name}`;
     if (!document.getElementById(id)) {
       const link = document.createElement("link");

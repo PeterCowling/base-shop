@@ -4,23 +4,14 @@ describe("Export to Code page", () => {
   const shopId = "bcd";
   const pageId = "home";
   const exportUrl = `/cms/shop/${shopId}/pages/${pageId}/export`;
+  const login = () => cy.loginAsAdmin();
+
+  before(() => {
+    cy.session("admin-session", login);
+  });
 
   it("shows export page", () => {
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      const csrf = body.csrfToken;
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: csrf,
-          email: "admin@example.com",
-          password: "admin",
-          callbackUrl: exportUrl,
-        },
-      });
-    });
+    cy.session("admin-session", login);
 
     cy.visit(exportUrl);
     cy.contains("Export to Code").should("exist");

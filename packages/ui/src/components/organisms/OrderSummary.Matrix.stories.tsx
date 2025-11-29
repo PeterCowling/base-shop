@@ -17,6 +17,7 @@ const meta: Meta<typeof OrderSummary> = {
     },
     providers: {
       cart: true,
+      currency: true,
     },
   },
 };

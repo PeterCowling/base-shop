@@ -1,18 +1,7 @@
 import '@testing-library/cypress/add-commands';
 
 describe('CMS a11y: Shop + sections', () => {
-  const login = () => {
-    cy.request('/api/auth/csrf').then(({ body }) => {
-      const csrf = body.csrfToken as string;
-      cy.request({
-        method: 'POST',
-        url: '/api/auth/callback/credentials',
-        form: true,
-        followRedirect: true,
-        body: { csrfToken: csrf, email: 'admin@example.com', password: 'admin', callbackUrl: '/' },
-      });
-    });
-  };
+  const login = () => cy.loginAsAdmin();
 
   before(() => { cy.session('admin-session', login); });
 
@@ -23,7 +12,8 @@ describe('CMS a11y: Shop + sections', () => {
     `/cms/shop/${shop}`,
     `/cms/shop/${shop}/media`,
     `/cms/shop/${shop}/themes`,
-    `/cms/shop/${shop}/pages`,
+    // Shop pages route typically redirects to the editor; covered by cms-a11y-full-routes
+    // `/cms/shop/${shop}/pages`,
     `/cms/shop/${shop}/products`,
   ];
 

@@ -3,25 +3,14 @@
 describe("Blog post workflow", () => {
   const shopId = "bcd";
   const baseUrl = `/cms/blog/posts?shopId=${shopId}`;
+  const login = () => cy.loginAsAdmin();
 
-  beforeEach(() => {
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: body.csrfToken,
-          email: "admin@example.com",
-          password: "admin",
-          callbackUrl: baseUrl,
-        },
-      });
-    });
+  before(() => {
+    cy.session("admin-session", login);
   });
 
   it("creates, edits, publishes, unpublishes and deletes a post", () => {
+    cy.session("admin-session", login);
     cy.intercept("POST", "/cms/api/blog/posts", {
       statusCode: 200,
       body: { id: "1" },
@@ -60,4 +49,3 @@ describe("Blog post workflow", () => {
     cy.wait("@deletePost");
   });
 });
-

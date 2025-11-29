@@ -1,25 +1,14 @@
 import '@testing-library/cypress/add-commands';
 
 describe('CMS a11y debug: /cms/products (excluding hero)', () => {
+  const login = () => cy.loginAsAdmin();
+
   before(() => {
-    cy.request('/api/auth/csrf').then(({ body }) => {
-      const csrf = body.csrfToken as string;
-      cy.request({
-        method: 'POST',
-        url: '/api/auth/callback/credentials',
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: csrf,
-          email: 'admin@example.com',
-          password: 'admin',
-          callbackUrl: '/',
-        },
-      });
-    });
+    cy.session('admin-session', login);
   });
 
   it('logs color-contrast violations', () => {
+    cy.session('admin-session', login);
     cy.visit('/cms/products', { failOnStatusCode: false });
     cy.location('pathname').should('eq', '/cms/products');
     cy.injectAxe();
@@ -45,4 +34,3 @@ describe('CMS a11y debug: /cms/products (excluding hero)', () => {
     );
   });
 });
-

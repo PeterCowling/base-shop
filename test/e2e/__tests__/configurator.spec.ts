@@ -4,25 +4,15 @@ describe("Shop configurator flow", () => {
   const shopId = `config-${Date.now()}`;
   const dataDir = Cypress.env("TEST_DATA_ROOT") || "__tests__/data/shops";
   const shopDir = `${dataDir}/${shopId}`;
+  const login = () => cy.loginAsAdmin();
 
   before(() => {
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: body.csrfToken,
-          email: "admin@example.com",
-          password: "admin",
-          callbackUrl: "/cms/configurator",
-        },
-      });
-    });
+    cy.session("admin-session", login);
   });
 
   it("creates and launches a shop", () => {
+    cy.session("admin-session", login);
+
     // Visit dashboard then Shop Details step
     cy.visit("/cms/configurator/shop-details");
 

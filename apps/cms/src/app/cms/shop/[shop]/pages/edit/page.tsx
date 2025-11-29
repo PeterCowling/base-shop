@@ -13,7 +13,7 @@ import { Card, CardContent } from "@/components/atoms/shadcn";
 import { Tag } from "@ui/components/atoms";
 import { cn } from "@ui/utils/style";
 import { Grid as DSGrid } from "@ui/components/atoms/primitives";
-import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations";
+import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
 
 export const revalidate = 0;
 

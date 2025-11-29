@@ -4,7 +4,7 @@
       "id": "1",
       "name": "Admin",
       "email": "admin@example.com",
-      "password": "admin"
+      "password": "$argon2id$v=19$m=65536,t=3,p=4$wk/LadHmszuQO0AkxhFdtA$3lTnTNC7anBDbuZvK62OZnJ1Qu23+QjYeTIfY39w13U"
     },
     "2": {
       "id": "2",
@@ -37,5 +37,6 @@
     "3": "ShopAdmin",
     "4": "CatalogManager",
     "5": "ThemeEditor"
-  }
+  },
+  "permissions": {}
 }

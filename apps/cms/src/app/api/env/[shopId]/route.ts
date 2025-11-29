@@ -11,7 +11,7 @@ import { validateShopName } from "@platform-core/shops";
 import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
 import { parseJsonBody } from "@shared-utils";
 // Use server translation API; alias to avoid hooks lint rule
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 const schema = z.record(z.string(), z.string());
 

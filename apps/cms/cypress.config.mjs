@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress";
+import { encode as nextAuthEncode } from "next-auth/jwt";
 import tsconfigPaths from "vite-tsconfig-paths";
 import istanbul from "vite-plugin-istanbul";
 import { appendFileSync, cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
@@ -71,7 +72,7 @@ export default defineConfig({
     env: {
       NEXTAUTH_SECRET:
         process.env.NEXTAUTH_SECRET ||
-        "test-nextauth-secret-32-chars-long-string!",
+        "dev-nextauth-secret-32-chars-long-string!",
       TEST_DATA_ROOT: process.env.TEST_DATA_ROOT || "__tests__/data/shops",
       SHOP: process.env.CYPRESS_SHOP || "demo",
       SHOP_ALT: process.env.CYPRESS_SHOP_ALT || "bcd",
@@ -125,9 +126,22 @@ export default defineConfig({
           appendFileSync(axeLogPath, `${new Date().toISOString()} ${line}\n`, "utf8");
           return null;
         },
+        async "auth:token"(role = "admin") {
+          const secret = config.env.NEXTAUTH_SECRET || process.env.NEXTAUTH_SECRET;
+          if (!secret) throw new Error("NEXTAUTH_SECRET is required for auth:token task");
+          return nextAuthEncode({
+            token: {
+              role,
+              email: `${role}@example.com`,
+              name: role,
+              sub: role === "admin" ? "1" : "2",
+            },
+            secret,
+          });
+        },
         "testData:setup"(shop) {
           const root = mkdtempSync(join(os.tmpdir(), "cypress-data-"));
-          const src = join("__tests__", "data", "shops", shop);
+          const src = join(repoRoot, "__tests__", "data", "shops", shop);
           const dest = join(root, shop);
           mkdirSync(dest, { recursive: true });
           ["pages.json", "settings.json"].forEach((file) => {

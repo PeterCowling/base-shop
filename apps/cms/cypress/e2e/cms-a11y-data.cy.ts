@@ -1,18 +1,7 @@
 import '@testing-library/cypress/add-commands';
 
 describe('CMS a11y: Data views', () => {
-  const login = () => {
-    cy.request('/api/auth/csrf').then(({ body }) => {
-      const csrf = body.csrfToken as string;
-      cy.request({
-        method: 'POST',
-        url: '/api/auth/callback/credentials',
-        form: true,
-        followRedirect: true,
-        body: { csrfToken: csrf, email: 'admin@example.com', password: 'admin', callbackUrl: '/' },
-      });
-    });
-  };
+  const login = () => cy.loginAsAdmin();
 
   before(() => { cy.session('admin-session', login); });
 

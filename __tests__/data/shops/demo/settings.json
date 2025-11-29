@@ -1,8 +1,11 @@
 {
-  "languages": ["en"],
+  "languages": [
+    "en",
+    "de"
+  ],
   "seo": {},
-  "currency": "EUR",
-  "taxRegion": "",
+  "currency": "USD",
+  "taxRegion": "US-NY",
   "updatedAt": "",
   "updatedBy": ""
 }

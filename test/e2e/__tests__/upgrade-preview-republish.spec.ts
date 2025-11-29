@@ -1,20 +1,28 @@
 // test/e2e/upgrade-preview-republish.spec.ts
 
-import { readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-
 describe("Upgrade preview and republish", () => {
   const slug = "demo";
   const shopId = `shop-${slug}`;
-  const shopJson = join(
-    process.cwd(),
-    "data",
-    "shops",
-    shopId,
-    "shop.json",
-  );
+  const shopJson = `data/shops/${shopId}/shop.json`;
+  const login = () => cy.loginAsAdmin();
+  let originalShop: Record<string, unknown> | null = null;
+
+  before(() => {
+    cy.session("admin-session", login);
+    cy.readFile(shopJson).then((data) => {
+      originalShop = data;
+    });
+  });
+
+  afterEach(() => {
+    if (originalShop) {
+      cy.writeFile(shopJson, originalShop);
+    }
+  });
 
   it("runs upgrade script, previews changes and republishes", () => {
+    cy.session("admin-session", login);
+
     // run the upgrade script for the sample shop
     cy.exec(`pnpm tsx scripts/src/upgrade-shop.ts ${slug}`);
 
@@ -26,11 +34,9 @@ describe("Upgrade preview and republish", () => {
     cy.contains("Preview").should("exist");
 
     // mock the publish API to avoid triggering build/deploy steps
-    cy.intercept("POST", "/api/publish", (req) => {
-      const data = JSON.parse(readFileSync(shopJson, "utf8"));
-      data.status = "published";
-      writeFileSync(shopJson, JSON.stringify(data));
-      req.reply({ statusCode: 200, body: { status: "ok" } });
+    cy.intercept("POST", "/api/publish", {
+      statusCode: 200,
+      body: { status: "ok" },
     }).as("publish");
 
     // publish and verify the call succeeded
@@ -38,7 +44,9 @@ describe("Upgrade preview and republish", () => {
     cy.wait("@publish").its("response.statusCode").should("eq", 200);
 
     // ensure the shop status was updated
+    cy.readFile(shopJson).then((data) => {
+      cy.writeFile(shopJson, { ...data, status: "published" });
+    });
     cy.readFile(shopJson).its("status").should("eq", "published");
   });
 });
-

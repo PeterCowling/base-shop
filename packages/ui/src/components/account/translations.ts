@@ -12,6 +12,6 @@ export function resolveTranslatableText(
   if (!text) return t(fallbackKey);
   if (typeof text === "string") return text;
   if (text.type === "key") return t(text.key);
-  const inline = text.value?.[locale];
+  const inline = (text.value as Record<string, string> | undefined)?.[locale];
   return typeof inline === "string" ? inline : t(fallbackKey);
 }

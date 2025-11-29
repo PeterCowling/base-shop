@@ -8,7 +8,7 @@ import { Button, StatCard } from "@ui/components/atoms";
 import { Grid as DSGrid } from "@ui/components/atoms/primitives";
 import UpgradeButton from "./UpgradeButton";
 import RollbackCard from "./RollbackCard";
-import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations";
+import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await serverUseTranslations("en");

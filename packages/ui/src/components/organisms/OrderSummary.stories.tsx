@@ -12,6 +12,10 @@ const meta: Meta<typeof OrderSummary> = {
   title: "Organisms/Order Summary",
   component: OrderSummary,
   parameters: {
+    providers: {
+      cart: true,
+      currency: true,
+    },
     docs: {
       description: {
         component: "Summarizes cart totals (subtotal, shipping, tax, discounts) from CartContext. Useful within checkout and cart pages.",

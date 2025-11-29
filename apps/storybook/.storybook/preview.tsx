@@ -28,12 +28,6 @@ import { a11yGlobals, a11yParameters } from "./a11y";
 import { createBackgroundOptions } from "./backgrounds";
 import type { ToolbarGlobals, StoryDataState } from "./types";
 import enMessages from "@acme/i18n/en.json";
-import { sb } from "storybook/test";
-
-// Register Storybook automocks for common Next.js modules once for the project
-sb.mock(import("next/navigation"));
-sb.mock(import("next/image"));
-sb.mock(import("next/headers"));
 
 // Lightweight translation function for Storybook config (non-React context)
 const t = (key: string): string => (enMessages as Record<string, string>)[key] ?? key;

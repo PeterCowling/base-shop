@@ -2,24 +2,14 @@ import { expect } from "chai";
 
 describe("Configurator API flow", () => {
   const shopId = `cy-config-${Date.now()}`;
+  const login = () => cy.loginAsAdmin();
 
   before(() => {
-    // programmatically sign in as admin via NextAuth credentials provider
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      const csrf = body.csrfToken as string;
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: csrf,
-          email: "admin@example.com",
-          password: "admin",
-          callbackUrl: "/",
-        },
-      });
-    });
+    cy.session("admin-session", login);
+  });
+
+  beforeEach(() => {
+    cy.session("admin-session", login);
   });
 
   it("creates shop, seeds data and validates environment", () => {
@@ -58,4 +48,3 @@ describe("Configurator API flow", () => {
     });
   });
 });
-

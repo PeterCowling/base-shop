@@ -1,6 +1,7 @@
+import * as PLPStories from './PLP.stories';
 import { Meta, Canvas, Story, Title, Description, Subtitle } from '@storybook/blocks';
 
-<Meta title="Compositions/PLP/Docs" />
+<Meta title="Compositions/PLP/Docs" of={PLPStories} />
 
 <Title>PLP Composition</Title>
 <Subtitle>Collection grid with facets, sort, and pagination modes</Subtitle>
@@ -26,4 +27,3 @@ The composition story below uses MSW to mock <code>/api/collections/:slug</code>
 <Canvas>
   <Story id="compositions-plp--default" />
 </Canvas>
-

@@ -1,5 +1,13 @@
 // test/e2e/cms-access.spec.ts
 
+function loginWithRole(role: string) {
+  return cy.task("auth:token", role).then((token: string) => {
+    cy.clearCookie("next-auth.session-token");
+    cy.setCookie("next-auth.session-token", token, { path: "/" });
+    cy.setCookie("next-auth.callback-url", "/", { path: "/" });
+  });
+}
+
 describe("CMS access control", () => {
   it("redirects unauthenticated users to login", () => {
     cy.visit("/cms/pages");
@@ -7,20 +15,8 @@ describe("CMS access control", () => {
   });
 
   it("allows viewer read-only access but blocks writes", () => {
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: body.csrfToken,
-          email: "viewer@example.com",
-          password: "viewer",
-          callbackUrl: "/cms/pages",
-        },
-      });
-    });
+    const login = () => loginWithRole("viewer");
+    cy.session("viewer-session", login);
 
     cy.visit("/cms/pages");
     cy.contains("Choose a shop").should("be.visible");
@@ -30,20 +26,8 @@ describe("CMS access control", () => {
   });
 
   it("allows admin access to write routes", () => {
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: body.csrfToken,
-          email: "admin@example.com",
-          password: "admin",
-          callbackUrl: "/cms/shop/bcd/settings",
-        },
-      });
-    });
+    const login = () => loginWithRole("admin");
+    cy.session("admin-session", login);
 
     cy.visit("/cms/shop/bcd/settings");
     cy.contains("Settings – bcd").should("be.visible");

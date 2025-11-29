@@ -4,6 +4,7 @@
 // Reusable MSW handler sets for common flows
 //--------------------------------------------------
 import type { HttpHandler } from "msw";
+import { HttpResponse } from "msw";
 import { rest } from "./shared";
 import jwt from "jsonwebtoken";
 
@@ -17,19 +18,38 @@ export function handlersLoginAs(role: "admin" | "viewer" | string = "admin", opt
   const secret = opts?.secret || DEFAULT_SECRET;
   return [
     // Minimal CSRF token so apps that request it can proceed
-    rest.get("/api/auth/csrf", (_req, res, ctx) => {
-      return res(ctx.status(200), ctx.json({ csrfToken: "test-csrf-token" }));
+    rest.get("/api/auth/csrf", ({ request }) => {
+      try {
+        const url = new URL(request.url);
+         
+        console.log("[msw:loginAs] CSRF token issued", { role, path: url.pathname });
+      } catch {
+         
+        console.log("[msw:loginAs] CSRF token issued", { role });
+      }
+      return HttpResponse.json({ csrfToken: "test-csrf-token" });
     }),
 
     // Credentials callback sets a signed session cookie the app will accept
-    rest.post("/api/auth/callback/credentials", async (req, res, ctx) => {
+    rest.post("/api/auth/callback/credentials", async ({ request }) => {
+      try {
+        const url = new URL(request.url);
+         
+        console.log("[msw:loginAs] credentials callback hit", { role, path: url.pathname });
+      } catch {
+         
+        console.log("[msw:loginAs] credentials callback hit", { role });
+      }
       const token = jwt.sign({ role }, secret);
       // Align with NextAuth cookie name used in tests
       const cookie = `next-auth.session-token=${token}; Path=/; HttpOnly`;
-      return res(
-        ctx.status(200),
-        ctx.set('Set-Cookie', cookie),
-        ctx.json({ ok: true, role })
+      return HttpResponse.json(
+        { ok: true, role },
+        {
+          headers: {
+            "Set-Cookie": cookie,
+          },
+        },
       );
     }),
   ];
@@ -41,11 +61,8 @@ export function handlersLoginAs(role: "admin" | "viewer" | string = "admin", opt
  */
 export function handlersCheckoutHappyPath(): HttpHandler[] {
   return [
-    rest.post("/api/checkout-session", async (_req, res, ctx) => {
-      return res(
-        ctx.status(200),
-        ctx.json({ clientSecret: "cs_test", sessionId: "sess_test" })
-      );
+    rest.post("/api/checkout-session", () => {
+      return HttpResponse.json({ clientSecret: "cs_test", sessionId: "sess_test" });
     }),
   ];
 }

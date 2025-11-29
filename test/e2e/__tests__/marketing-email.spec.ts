@@ -5,6 +5,11 @@ describe("CMS marketing email templates", () => {
     { id: "basic", name: "Basic" },
     { id: "centered", name: "Centered" },
   ];
+  const login = () => cy.loginAsAdmin();
+
+  before(() => {
+    cy.session("admin-session", login);
+  });
 
   beforeEach(() => {
     cy.intercept("GET", "/cms/api/page-templates", {
@@ -21,21 +26,7 @@ describe("CMS marketing email templates", () => {
       body: { campaigns: [] },
     });
 
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      const csrf = body.csrfToken;
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: csrf,
-          email: "admin@example.com",
-          password: "admin",
-          callbackUrl: "/cms/marketing/email",
-        },
-      });
-    });
+    cy.session("admin-session", login);
   });
 
   it("populates template dropdown and updates preview", () => {
@@ -56,4 +47,3 @@ describe("CMS marketing email templates", () => {
     );
   });
 });
-

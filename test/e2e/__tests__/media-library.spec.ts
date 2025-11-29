@@ -2,25 +2,14 @@
 
 describe("Media library", () => {
   const shopId = "bcd";
+  const login = () => cy.loginAsAdmin();
 
-  beforeEach(() => {
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: body.csrfToken,
-          email: "admin@example.com",
-          password: "admin",
-          callbackUrl: `/cms/shop/${shopId}/media`,
-        },
-      });
-    });
+  before(() => {
+    cy.session("admin-session", login);
   });
 
   it("uploads, renames and deletes a file", () => {
+    cy.session("admin-session", login);
     cy.visit(`/cms/shop/${shopId}/media`);
 
     cy.intercept("POST", `/cms/api/media?shop=${shopId}`, {
@@ -50,4 +39,3 @@ describe("Media library", () => {
     cy.wait("@deleteFile");
   });
 });
-

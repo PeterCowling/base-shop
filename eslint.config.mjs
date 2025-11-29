@@ -422,6 +422,28 @@ export default [
     rules: {
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-expressions": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "ds/no-raw-color": "off",
+      "ds/no-hsl-var-in-tests": "off",
+    },
+  },
+
+  /* ▸ Cypress support files: allow unused overwrite arguments */
+  {
+    files: ["apps/cms/cypress/support/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off",
+    },
+  },
+
+  /* ▸ End-to-end test specs: allow raw colors and expression-style assertions */
+  {
+    files: ["test/e2e/__tests__/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "@typescript-eslint/no-unused-expressions": "off",
+      "ds/no-raw-color": "off",
+      "ds/no-hsl-var-in-tests": "off",
     },
   },
 

@@ -94,11 +94,14 @@ export class MemoryCartStore implements CartStore {
   private resetTimer(id: string) {
     const existing = this.timers.get(id);
     if (existing) clearTimeout(existing);
-    // Schedule deletion so Jest fake timers can advance and trigger expiry deterministically
+    // Schedule deletion so Jest fake timers can advance and trigger expiry deterministically.
+    // Clamp to the maximum 32-bit signed integer to avoid Node's TimeoutOverflowWarning when
+    // very long TTLs are configured (e.g. 30 days in milliseconds).
+    const delayMs = Math.min(this.ttl * 1000, 2_147_483_647);
     const handle = setTimeout(() => {
       this.carts.delete(id);
       this.timers.delete(id);
-    }, this.ttl * 1000);
+    }, delayMs);
     this.timers.set(id, handle);
   }
 }

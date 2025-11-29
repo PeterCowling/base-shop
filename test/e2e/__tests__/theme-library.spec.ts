@@ -2,7 +2,14 @@
 
 describe("Theme library API", () => {
   const baseUrl = "/cms/api/themes";
+  const login = () => cy.loginAsAdmin();
+
+  before(() => {
+    cy.session("admin-session", login);
+  });
+
   it("creates, fetches and deletes themes", () => {
+    cy.session("admin-session", login);
     const theme = {
       name: "Spec Theme",
       brandColor: "#000",

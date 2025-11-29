@@ -56,10 +56,10 @@ export default function RootRedirectPage() {
 
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center bg-bg text-fg">
-      <p className={`text-xs uppercase ${styles.redirectTagline}`}>{REDIRECT_COPY.notice}</p>
+      <p className={`text-xs uppercase ${styles["redirectTagline"]}`}>{REDIRECT_COPY.notice}</p>
       <p className="mt-4 text-center text-sm">
         <span>{REDIRECT_COPY.instructions} </span>
-        <a className={`${styles.redirectLink} underline decoration-2 underline-offset-4`} href={fallbackHref}>
+        <a className={`${styles["redirectLink"]} underline decoration-2 underline-offset-4`} href={fallbackHref}>
           {REDIRECT_COPY.cta}
         </a>
         <span>.</span>

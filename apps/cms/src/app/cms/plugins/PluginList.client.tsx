@@ -2,10 +2,16 @@
 "use client";
 
 import { useState } from "react";
-import type { Plugin } from "@platform-core/plugins";
+
+interface SerializablePlugin {
+  id: string;
+  name?: string;
+  description?: string;
+  defaultConfig?: Record<string, unknown>;
+}
 
 interface Props {
-  plugins: Plugin[];
+  plugins: SerializablePlugin[];
 }
 
 export default function PluginList({ plugins }: Props) {

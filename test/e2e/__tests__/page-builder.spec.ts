@@ -4,24 +4,14 @@ describe("Page Builder happy path", () => {
   const shopId = "bcd";
   const builderUrl = `/cms/shop/${shopId}/pages/home/builder`;
   const dataDir = Cypress.env("TEST_DATA_ROOT");
+  const login = () => cy.loginAsAdmin();
+
+  before(() => {
+    cy.session("admin-session", login);
+  });
 
   it("drags a block, saves draft and publishes", () => {
-    // programmatically sign in via NextAuth credentials provider
-    cy.request("/api/auth/csrf").then(({ body }) => {
-      const csrf = body.csrfToken;
-      cy.request({
-        method: "POST",
-        url: "/api/auth/callback/credentials",
-        form: true,
-        followRedirect: true,
-        body: {
-          csrfToken: csrf,
-          email: "admin@example.com",
-          password: "admin",
-          callbackUrl: builderUrl,
-        },
-      });
-    });
+    cy.session("admin-session", login);
 
     cy.visit(builderUrl);
     cy.get("aside .cursor-grab", { timeout: 10000 })

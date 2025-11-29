@@ -2,8 +2,6 @@ import "@acme/zod-utils/initZod";
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
-// Use server translation loader; alias name avoids hooks lint
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations";
 import { promises as fs } from "fs";
 import path from "path";
 import { resolveDataRoot } from "@platform-core/dataRoot";
@@ -18,10 +16,9 @@ import { writeJsonFile } from "@/lib/server/jsonIO";
  * Seeds categories and product CSV for a shop.
  */
 export async function POST(req: Request) {
-  const t = await getTranslations("en");
   const session = await getServerSession(authOptions);
   if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: t("cms.errors.forbidden") }, { status: 403 });
+    return NextResponse.json({ error: "cms.errors.forbidden" }, { status: 403 });
   }
 
   try {
@@ -34,20 +31,17 @@ export async function POST(req: Request) {
           .string()
           .optional()
           .transform((s) => (s ? s.replace(/\s+/g, "") : s))
-          .refine(
-            (val) => {
-              if (!val) return true;
-              try {
-                return (
-                  Buffer.from(val, "base64").toString("base64").replace(/=+$/, "") ===
-                  val.replace(/=+$/, "")
-                );
-              } catch {
-                return false;
-              }
-            },
-            { message: t("cms.errors.invalidCsvEncoding") }
-          ),
+          .refine((val) => {
+            if (!val) return true;
+            try {
+              return (
+                Buffer.from(val, "base64").toString("base64").replace(/=+$/, "") ===
+                val.replace(/=+$/, "")
+              );
+            } catch {
+              return false;
+            }
+          }),
         categories: z.array(z.string()).optional(),
       })
       .strict();
@@ -76,7 +70,8 @@ export async function POST(req: Request) {
     }
     return NextResponse.json({ success: true });
   } catch (error) {
-    const key = error instanceof Error && error.message ? error.message : "api.common.invalidRequest";
-    return NextResponse.json({ error: t(key) }, { status: 400 });
+    const key =
+      error instanceof Error && error.message ? error.message : "api.common.invalidRequest";
+    return NextResponse.json({ error: key }, { status: 400 });
   }
 }

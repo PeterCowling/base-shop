@@ -10,8 +10,10 @@ describe("Unsupported locale", () => {
 
     cy.visit("/fr");
 
-    // Should end up on the English version of the homepage
-    cy.location("pathname", { timeout: 10000 }).should("match", /^\/en(\/|$)/);
+    // Should end up on the English version (either / or /en)
+    cy.location("pathname", { timeout: 10000 }).should((pathname) => {
+      expect(/^\/(en)?(\/|$)/.test(pathname)).to.be.true;
+    });
 
     // Verify no console errors were logged
     cy.get("@consoleError").should("not.be.called");

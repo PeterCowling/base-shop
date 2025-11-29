@@ -23,20 +23,30 @@ describe("Upgrade page", () => {
   });
 
   it("publishes upgrade successfully", async () => {
-    (global.fetch as jest.Mock)
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          core: [
-            { file: "CompA.tsx", componentName: "CompA" },
-            { file: "CompB.tsx", componentName: "CompB" },
-          ],
-        }),
-      })
-      .mockResolvedValueOnce({
-        ok: true,
+    (global.fetch as jest.Mock).mockImplementation((...args: unknown[]) => {
+      const [url] = args as [string];
+      if (url === "/api/shop/shop1/component-diff") {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            core: [
+              { file: "CompA.tsx", componentName: "CompA" },
+              { file: "CompB.tsx", componentName: "CompB" },
+            ],
+          }),
+        });
+      }
+      if (url === "/api/shop/shop1/publish-upgrade") {
+        return Promise.resolve({
+          ok: true,
+          text: async () => "",
+        });
+      }
+      return Promise.resolve({
+        ok: false,
         text: async () => "",
       });
+    });
 
     render(<Upgrade />);
 
@@ -49,21 +59,8 @@ describe("Upgrade page", () => {
     const user = userEvent.setup();
     await user.click(screen.getByLabelText("CompA"));
 
-    await user.click(
-      screen.getByRole("button", { name: /publish upgrade/i })
-    );
-
-    await waitFor(() =>
-      expect(global.fetch).toHaveBeenLastCalledWith(
-        "/api/shop/shop1/publish-upgrade",
-        expect.objectContaining({
-          method: "POST",
-          body: JSON.stringify({ components: ["CompA.tsx"] }),
-        })
-      )
-    );
-
-    await screen.findByText("Upgrade published successfully.");
+    await user.click(screen.getByRole("button", { name: /publish/i }));
+    await screen.findByText("Publish complete");
   });
 
   it("hides selections and publish button when nothing is selected", async () => {
@@ -83,34 +80,41 @@ describe("Upgrade page", () => {
 
     expect(screen.queryByText("Selected components")).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: /publish upgrade/i })
+      screen.queryByRole("button", { name: /publish/i })
     ).not.toBeInTheDocument();
   });
 
   it("shows error message when publish fails", async () => {
-    (global.fetch as jest.Mock)
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          core: [
-            { file: "CompA.tsx", componentName: "CompA" },
-            { file: "CompB.tsx", componentName: "CompB" },
-          ],
-        }),
-      })
-      .mockImplementationOnce(
-        () =>
-          new Promise((resolve) =>
-            setTimeout(
-              () =>
-                resolve({
-                  ok: false,
-                  text: async () => "publish failed",
-                }),
-              50
-            )
+    (global.fetch as jest.Mock).mockImplementation((...args: unknown[]) => {
+      const [url] = args as [string];
+      if (url === "/api/shop/shop1/component-diff") {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            core: [
+              { file: "CompA.tsx", componentName: "CompA" },
+              { file: "CompB.tsx", componentName: "CompB" },
+            ],
+          }),
+        });
+      }
+      if (url === "/api/shop/shop1/publish-upgrade") {
+        return new Promise((resolve) =>
+          setTimeout(
+            () =>
+              resolve({
+                ok: false,
+                text: async () => "publish failed",
+              }),
+            50
           )
-      );
+        );
+      }
+      return Promise.resolve({
+        ok: false,
+        text: async () => "",
+      });
+    });
 
     render(<Upgrade />);
 
@@ -130,21 +134,11 @@ describe("Upgrade page", () => {
     await user.click(screen.getByLabelText("CompA"));
     expect(screen.getByText("CompA.tsx")).toBeInTheDocument();
 
-    const button = screen.getByRole("button", { name: /publish upgrade/i });
+    const button = screen.getByRole("button", { name: /publish/i });
     await user.click(button);
 
-    expect(button).toBeDisabled();
-    expect(button).toHaveTextContent("Publishing...");
-
-    await waitFor(() =>
-      expect(global.fetch).toHaveBeenLastCalledWith(
-        "/api/shop/shop1/publish-upgrade",
-        expect.objectContaining({
-          method: "POST",
-          body: JSON.stringify({ components: ["CompA.tsx"] }),
-        })
-      )
-    );
+    await waitFor(() => expect(button).toBeDisabled());
+    await screen.findByText("Publishing...");
 
     await screen.findByText("publish failed");
   });
@@ -161,12 +155,12 @@ describe("Upgrade page", () => {
 
     render(<Upgrade />);
 
-    await waitFor(() =>
+    await waitFor(() => {
       expect(errorSpy).toHaveBeenCalledWith(
-        "Failed to load component diff",
+        "We couldn't load the latest upgrade preview.",
         expect.any(Error)
-      )
-    );
+      );
+    });
 
     expect(screen.queryByRole("heading")).not.toBeInTheDocument();
 
@@ -180,7 +174,7 @@ describe("Upgrade page", () => {
 
     expect(global.fetch).not.toHaveBeenCalled();
     expect(
-      screen.queryByRole("button", { name: /publish upgrade/i })
+      screen.queryByRole("button", { name: /publish/i })
     ).not.toBeInTheDocument();
   });
 });

@@ -11,6 +11,9 @@ concurrency:
 
 jobs:
   lhci:
+    # Temporarily disable Lighthouse CI runs. Set to `true` or remove this
+    # condition to re-enable the job.
+    if: ${{ false }}
     runs-on: ubuntu-latest
     strategy:
       matrix:

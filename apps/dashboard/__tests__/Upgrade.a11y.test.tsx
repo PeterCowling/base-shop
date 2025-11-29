@@ -45,4 +45,3 @@ describe("Upgrade page accessibility (color-contrast)", () => {
     expect(results).toHaveNoViolations();
   });
 });
-

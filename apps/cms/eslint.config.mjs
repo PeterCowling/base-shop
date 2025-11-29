@@ -29,6 +29,28 @@ const config = [
     ],
     rules: {
       "ds/no-raw-color": "off",
+      "ds/no-naked-img": "off",
+      "ds/require-aspect-ratio-on-media": "off",
+      "react/display-name": "off",
+    },
+  },
+  // Cypress + middleware: lint outside TS project to avoid projectService errors
+  {
+    files: [
+      "cypress/**/*.{ts,tsx}",
+      "middleware.ts",
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+        ecmaFeatures: { jsx: true },
+      },
+    },
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 ];

@@ -374,6 +374,14 @@ export default [
       "security/detect-non-literal-fs-filename": "off",
     },
   },
+  {
+    files: [
+      "apps/cms/src/app/cms/configurator/components/__tests__/**/*.{ts,tsx,js,jsx}",
+    ],
+    rules: {
+      "react/display-name": "off",
+    },
+  },
 
   /* ▸ eslint-plugin-ds: allow 'any' in parser utilities */
   {

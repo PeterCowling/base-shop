@@ -16,7 +16,6 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "pnpm --filter @acme/config run build",
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs",

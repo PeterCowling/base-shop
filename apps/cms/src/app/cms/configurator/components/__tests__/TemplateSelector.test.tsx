@@ -86,6 +86,7 @@ describe("TemplateSelector", () => {
         </div>
       );
     };
+    Wrapper.displayName = "TemplateSelectorPageWrapper";
     render(<Wrapper />);
     expect(screen.getByText("One")).toBeInTheDocument();
     fireEvent.click(screen.getByText("next"));

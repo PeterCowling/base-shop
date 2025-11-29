@@ -18,6 +18,8 @@ jobs:
           node-version: 20
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Build ESLint plugin
+        run: pnpm --filter @acme/eslint-plugin-ds build
       - name: Restore ESLint report cache
         uses: actions/cache@v4
         with:

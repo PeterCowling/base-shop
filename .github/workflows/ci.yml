@@ -5,14 +5,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
       - uses: pnpm/action-setup@v4
         with:
           version: 10.12.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
+      - name: Build ESLint plugin
+        run: pnpm --filter @acme/eslint-plugin-ds build
       - name: Lint (fast)
         run: pnpm lint
       - name: Lint (exceptions governance)

@@ -94,7 +94,7 @@ export default function FilterBar({
       <button
         type="button"
         onClick={handleClear}
-        className="text-sm underline min-h-10 min-w-10"
+        className="text-sm underline min-h-11 min-w-11"
       >
         {/* i18n-exempt -- ABC-123 control label */}
         Clear Filters

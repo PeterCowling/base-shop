@@ -105,7 +105,7 @@ export default function ReturnForm({
         />
         <button
           type="submit"
-          className="bg-primary text-white px-4 min-h-10 min-w-10 inline-flex items-center justify-center"
+          className="bg-primary text-white px-4 min-h-11 min-w-11 inline-flex items-center justify-center"
         >
           {t("submit")}
         </button>
@@ -114,7 +114,7 @@ export default function ReturnForm({
         <p>
           <a
             href={labelUrl}
-            className="text-blue-600 underline inline-flex items-center min-h-10 min-w-10"
+            className="text-blue-600 underline inline-flex items-center min-h-11 min-w-11"
             target="_blank"
             rel="noreferrer"
           >

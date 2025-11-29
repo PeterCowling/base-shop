@@ -109,7 +109,7 @@ export default async function SwapPage() {
           <button
             type="submit"
             disabled={!canSwap}
-            className="rounded bg-black px-4 text-white disabled:opacity-50 inline-flex items-center justify-center min-h-10 min-w-10"
+            className="rounded bg-black px-4 text-white disabled:opacity-50 inline-flex items-center justify-center min-h-11 min-w-11"
           >
             {t("action.swap")}
           </button>

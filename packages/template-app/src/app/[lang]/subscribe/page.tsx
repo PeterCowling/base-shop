@@ -69,7 +69,7 @@ export default async function SubscribePage({
         ))}
         <button
           type="submit"
-          className="mt-4 inline-flex min-h-10 min-w-10 items-center justify-center rounded bg-black px-4 text-white"
+          className="mt-4 inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-black px-4 text-white"
         >
           {t("subscribe.cta")}
         </button>

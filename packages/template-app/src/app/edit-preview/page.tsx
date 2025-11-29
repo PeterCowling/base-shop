@@ -96,7 +96,7 @@ export default function EditPreviewPage() {
               <li key={l.id}>
                 <a
                   href={l.url}
-                  className="text-blue-600 underline inline-flex min-h-10 min-w-10 items-center"
+                  className="text-blue-600 underline inline-flex min-h-11 min-w-11 items-center"
                 >
                   {/* i18n-exempt -- ABC-123 [ttl=2025-12-31] path label for preview */}
                   {`/preview/${l.id}`}
@@ -109,7 +109,7 @@ export default function EditPreviewPage() {
       <button
         type="button"
         onClick={handlePublish}
-        className="rounded border px-4 py-2 min-h-10 min-w-10 inline-flex items-center justify-center"
+        className="rounded border px-4 py-2 min-h-11 min-w-11 inline-flex items-center justify-center"
         disabled={publishing}
       >
         {publishing ? t("edit.publishing") : t("edit.approveAndPublish")}

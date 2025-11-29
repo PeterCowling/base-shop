@@ -2,7 +2,8 @@
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) => new Response(JSON.stringify(data), init),
+    json: (data: unknown, init?: ResponseInit) =>
+      new Response(JSON.stringify(data), init),
   },
 }));
 
@@ -27,16 +28,19 @@ describe("analytics/tryon route", () => {
   it("forwards TryOnStarted", async () => {
     const body = { type: "TryOnStarted", productId: "sku-1", mode: "accessory", idempotencyKey: "8a074e68-1234-4abc-9def-aaaaaaaaaaaa" } as const;
     const req = asNextJson(body);
-    const res = await POST(req as any);
+    const res = await POST(req as unknown as Request);
     expect(res.status).toBe(200);
     expect(m.trackTryOnStarted).toHaveBeenCalledWith("default", { productId: "sku-1", mode: "accessory", idempotencyKey: body.idempotencyKey });
   });
 
   it("validates schema (bad uuid)", async () => {
-    const body = { type: "TryOnEnhanced", productId: "sku-1", idempotencyKey: "not-a-uuid" } as any;
+    const body: { type: "TryOnEnhanced"; productId: string; idempotencyKey: string } = {
+      type: "TryOnEnhanced",
+      productId: "sku-1",
+      idempotencyKey: "not-a-uuid",
+    };
     const req = asNextJson(body);
-    const res = await POST(req as any);
+    const res = await POST(req as unknown as Request);
     expect(res.status).toBe(400);
   });
 });
-

@@ -52,9 +52,17 @@ jobs:
       - run: pnpm --filter ./${{ matrix.workspace }} coverage
         if: matrix.workspace == 'apps/api'
       - run: pnpm --filter ./${{ matrix.workspace }} e2e
+      - name: Compute coverage artifact name
+        id: coverage-name
+        if: always()
+        run: |
+          safe="${WORKSPACE//\//-}"
+          echo "name=coverage-${safe}" >> "$GITHUB_OUTPUT"
+        env:
+          WORKSPACE: ${{ matrix.workspace }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: coverage-${{ matrix.workspace }}
+          name: ${{ steps.coverage-name.outputs.name }}
           path: ${{ matrix.workspace }}/coverage
           if-no-files-found: ignore

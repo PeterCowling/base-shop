@@ -104,7 +104,7 @@ export default function ComponentPreview<
         {OldComp && (
           <button
             type="button"
-            className="rounded border px-2 py-1 min-h-10 min-w-10"
+            className="rounded border px-2 py-1 min-h-11 min-w-11"
             onClick={() => setShowCompare((s) => !s)}
           >
             {showCompare ? TXT_HIDE_COMPARISON : TXT_COMPARE}
@@ -118,7 +118,7 @@ export default function ComponentPreview<
               <button
                 type="button"
                 onClick={() => setCompareMode("side")}
-                className={`rounded border px-2 py-1 min-h-10 min-w-10 ${
+                className={`rounded border px-2 py-1 min-h-11 min-w-11 ${
                   compareMode === "side" ? "bg-muted" : ""
                 }`}
               >
@@ -127,7 +127,7 @@ export default function ComponentPreview<
               <button
                 type="button"
                 onClick={() => setCompareMode("toggle")}
-                className={`rounded border px-2 py-1 min-h-10 min-w-10 ${
+                className={`rounded border px-2 py-1 min-h-11 min-w-11 ${
                   compareMode === "toggle" ? "bg-muted" : ""
                 }`}
               >
@@ -143,7 +143,7 @@ export default function ComponentPreview<
               <div className="space-y-2">
                 <button
                   type="button"
-                  className="rounded border px-2 py-1 min-h-10 min-w-10"
+                  className="rounded border px-2 py-1 min-h-11 min-w-11"
                   onClick={() => setShowNew((s) => !s)}
                 >
                   {showNew ? TXT_SHOW_OLD : TXT_SHOW_NEW}

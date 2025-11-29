@@ -2,18 +2,30 @@
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) =>
+    json: (data: unknown, init?: ResponseInit) =>
       new Response(JSON.stringify(data), init),
   },
 }));
 
+type CustomerProfile = {
+  customerId: string;
+  name: string;
+  email: string;
+};
+
 const getCustomerSession = jest.fn();
-let profile: any;
-const updateCustomerProfile = jest.fn(async (id: string, data: any) => {
-  profile = { customerId: id, ...data };
-  return profile;
-});
-const getCustomerProfile = jest.fn(async (id: string) => profile);
+let profile: CustomerProfile | null;
+const updateCustomerProfile = jest.fn(
+  async (_id: string, data: Partial<CustomerProfile>) => {
+    profile = {
+      customerId: _id,
+      name: data.name ?? "",
+      email: data.email ?? "",
+    };
+    return profile;
+  },
+);
+const getCustomerProfile = jest.fn(async (_id: string) => profile);
 
 jest.mock("@auth", () => ({ __esModule: true, getCustomerSession }));
 jest.mock("@platform-core/customerProfiles", () => ({
@@ -24,7 +36,7 @@ jest.mock("@platform-core/customerProfiles", () => ({
 
 import { PUT } from "../../src/app/api/account/profile/route";
 import { jsonRequest } from "@acme/test-utils";
-const createRequest = (body: any) => jsonRequest(body);
+const createRequest = (body: Record<string, unknown>) => jsonRequest(body);
 
 beforeEach(() => {
   jest.clearAllMocks();

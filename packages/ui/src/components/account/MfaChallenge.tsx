@@ -53,7 +53,7 @@ export default function MfaChallenge({ onSuccess, customerId }: MfaChallengeProp
       />
       <button
         type="submit"
-        className="rounded bg-primary px-4 py-2 min-h-10 min-w-10"
+        className="rounded bg-primary px-4 py-2 min-h-11 min-w-11"
         data-token="--color-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute
       >
         <span className="text-primary-fg" data-token="--color-primary-fg"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — DS token attribute */}

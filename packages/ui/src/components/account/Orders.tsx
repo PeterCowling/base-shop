@@ -134,7 +134,7 @@ export default async function OrdersPage({
                 href={returnPolicyUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="underline inline-block min-h-10 min-w-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="underline inline-block min-h-11 min-w-11 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 {t("account.orders.returnPolicy")}
               </a>

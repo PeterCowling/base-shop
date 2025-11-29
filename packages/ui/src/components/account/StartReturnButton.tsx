@@ -92,7 +92,7 @@ export default function StartReturnButton({ sessionId }: Props) {
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className="rounded bg-primary px-3 py-1 min-h-10 min-w-10"
+        className="rounded bg-primary px-3 py-1 min-h-11 min-w-11"
         data-token="--color-primary" // i18n-exempt -- DS-1234 [ttl=2025-11-30] — label below is translated
       >
         <span
@@ -110,7 +110,7 @@ export default function StartReturnButton({ sessionId }: Props) {
             href={labelUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="underline inline-block min-h-10 min-w-10"
+            className="underline inline-block min-h-11 min-w-11"
           >
             {translate("returns.downloadLabel")}
           </a>

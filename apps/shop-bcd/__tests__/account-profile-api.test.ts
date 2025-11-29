@@ -13,7 +13,7 @@ jest.mock("@platform-core/customerProfiles", () => ({
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) =>
+    json: (data: unknown, init?: ResponseInit) =>
       new Response(JSON.stringify(data), init),
   },
 }));
@@ -57,4 +57,3 @@ describe("/api/account/profile GET", () => {
     expect(await res.json()).toEqual({ ok: true, profile });
   });
 });
-

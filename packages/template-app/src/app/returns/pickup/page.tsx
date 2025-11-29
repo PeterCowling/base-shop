@@ -43,7 +43,7 @@ export default async function PickupPage({
             placeholder={t("returns.pickup.zipPlaceholder") as string}
             className="border p-2"
           />
-          <button type="submit" className="px-4 py-2 bg-primary text-white min-h-10 min-w-10">
+          <button type="submit" className="px-4 py-2 bg-primary text-white min-h-11 min-w-11">
             {t("returns.pickup.check")}
           </button>
         </form>

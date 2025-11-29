@@ -12,6 +12,6 @@
     { "path": "packages/platform-core" },
     { "path": "./scripts" }
   ],
-  "include": ["cypress.config.ts"],
+  "include": ["cypress.config.ts", "middleware.ts"],
   "exclude": ["**/__tests__/**", "**/*.test.*", "**/*.spec.*"]
 }

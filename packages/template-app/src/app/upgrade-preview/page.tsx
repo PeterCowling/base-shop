@@ -83,27 +83,40 @@ export default function UpgradePreviewPage() {
           </li>
         ))}
       </ul>
+
       {links.length > 0 && (
         <div className="space-y-2">
           <h2 className="font-semibold">{t("upgrade.previewPages")}</h2>
           <ul className="list-disc pl-4">
             {links.map((l) => (
               <li key={l.id}>
-                <a href={l.url} className="text-blue-600 underline inline-flex items-center min-h-10 min-w-10">{`/preview/${l.id}`}</a> {/* i18n-exempt — URL label */}
+                <a
+                  href={l.url}
+                  className="text-blue-600 underline inline-block min-h-11 min-w-11"
+                >
+                  {/* i18n-exempt -- ABC-123 [ttl=2025-12-31] path label for preview */}
+                  {`/preview/${l.id}`}
+                </a>
               </li>
             ))}
           </ul>
         </div>
       )}
+
       <button
         type="button"
         onClick={handlePublish}
-        className="rounded border px-4 py-2 min-h-10 min-w-10"
+        className="rounded border px-4 py-2 min-h-11 min-w-11"
         disabled={publishing}
       >
         {publishing ? t("upgrade.publishing") : t("upgrade.approveAndPublish")}
       </button>
-      {error && <p role="alert" className="text-red-600">{error}</p>}
+
+      {error && (
+        <p role="alert" className="text-red-600">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

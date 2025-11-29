@@ -6,7 +6,6 @@
       "startServerReadyPattern": "http://localhost:3004",
       "startServerReadyTimeout": 120000,
       "url": [
-        "http://localhost:3004/en",
         "http://localhost:3004/en/shop",
         "http://localhost:3004/en/product/p1"
       ],
@@ -14,7 +13,7 @@
         "preset": "desktop",
         "throttlingMethod": "simulate",
         "disableStorageReset": true,
-        "chromeFlags": "--no-sandbox --disable-dev-shm-usage",
+        "chromeFlags": "--no-sandbox --disable-dev-shm-usage --ignore-certificate-errors --allow-insecure-localhost",
         "blockedUrlPatterns": [
           "*googletagmanager.com*",
           "*google-analytics.com*",

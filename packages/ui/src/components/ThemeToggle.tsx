@@ -47,7 +47,7 @@ export default function ThemeToggle() {
         onClick={toggleTheme}
         onKeyDown={handleKeyDown}
         aria-label={`Switch to ${labels[next]} theme`}
-        className="p-2 min-h-10 min-w-10"
+        className="p-2 min-h-11 min-w-11"
       >
         <Icon />
       </button>

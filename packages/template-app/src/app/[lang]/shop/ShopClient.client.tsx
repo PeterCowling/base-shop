@@ -82,8 +82,8 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
   return (
     <div className="container mx-auto px-4 py-10">
       <h1 className="mb-4 text-3xl font-bold">{t("nav.shop")}</h1>
-      {/* eslint-disable-next-line ds/no-raw-font -- DS-1234: false positive; rule matches "aria-label" as "arial" */}
-      <input aria-label={t("shop.searchAriaLabel") as string}
+      <input
+        aria-label={t("shop.searchAriaLabel") as string}
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}

@@ -18,7 +18,7 @@ export default function NotFound() {
         <p className="opacity-80 mb-6">{t("pages.404.description")}</p>
         <a
           href="/"
-          className="inline-block rounded-md border px-4 py-2 no-underline min-h-10 min-w-10"
+          className="inline-block rounded-md border px-4 py-2 no-underline min-h-11 min-w-11"
         >
           {t("pages.404.cta")}
         </a>

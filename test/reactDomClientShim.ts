@@ -1,4 +1,4 @@
-import * as ReactDOMClient from "react-dom/client";
+import * as ReactDOMClient from "react-dom/client.js";
 import * as ReactDOM from "react-dom";
 
 type ReactDOMClientLike = typeof ReactDOMClient & {

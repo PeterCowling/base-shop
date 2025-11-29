@@ -65,7 +65,7 @@ export function MarketingEmailTemplate({
           <div className="text-center">
             <a
               href={ctaHref}
-              className="bg-primary inline-block rounded-md px-4 py-2 font-medium min-h-10 min-w-10"
+              className="bg-primary inline-block rounded-md px-4 py-2 font-medium min-h-11 min-w-11"
               data-token="--color-primary" // i18n-exempt: design token attribute, not user-visible copy
             >
               <span

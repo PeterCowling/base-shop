@@ -2,7 +2,8 @@
 
 jest.mock("next/server", () => ({
   NextResponse: {
-    json: (data: any, init?: ResponseInit) => new Response(JSON.stringify(data), init),
+    json: (data: unknown, init?: ResponseInit) =>
+      new Response(JSON.stringify(data), init),
   },
 }));
 
@@ -17,10 +18,9 @@ describe("ai/segment route", () => {
   it("validates body and returns {} when provider missing", async () => {
     const body = { imageUrl: "https://r2.example/obj.png", idempotencyKey: "8a074e68-1234-4abc-9def-aaaaaaaaaaaa" };
     const req = asNextJson(body);
-    const res = await POST(req as any);
+    const res = await POST(req as unknown as Request);
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json).toEqual({});
   });
 });
-

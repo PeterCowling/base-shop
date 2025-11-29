@@ -29,10 +29,13 @@ const components: PortableTextComponents = {
             : typeof value?.slug === "string"
               ? [value.slug]
               : [];
+
       const products: SKU[] = ids
         .map((id) => getProductById(id) ?? getProductBySlug(id))
         .filter((p): p is SKU => Boolean(p));
+
       if (products.length === 0) return null;
+
       if (products.length === 1) {
         const p = products[0]!;
         return (
@@ -41,15 +44,14 @@ const components: PortableTextComponents = {
           </Link>
         );
       }
+
       return (
-        <>
-          {/* eslint-disable-next-line ds/enforce-layout-primitives -- ABC-123 horizontal scroller with mapped items */}
-          <div className="inline-flex gap-4 overflow-x-auto py-4">
+        // eslint-disable-next-line ds/enforce-layout-primitives -- ABC-123 horizontal scroller with mapped items
+        <div className="inline-flex gap-4 overflow-x-auto py-4">
           {products.map((p) => (
             <ProductCard key={p.id} sku={p} />
           ))}
-          </div>
-        </>
+        </div>
       );
     },
     embed: ({ value }: PortableTextTypeComponentProps<{ url: string }>) => (
@@ -64,7 +66,7 @@ const components: PortableTextComponents = {
       return (
         <a
           href={href}
-          className="text-blue-600 underline inline-flex min-h-10 min-w-10"
+          className="text-blue-600 underline inline-block min-h-11 min-w-11"
           target="_blank"
           rel="noopener noreferrer"
         >

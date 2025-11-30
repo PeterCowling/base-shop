@@ -15,33 +15,33 @@ export async function runMaintenanceScan(
 ): Promise<void> {
   const shops = await readdir(dataRoot);
   for (const shop of shops) {
-    let inventory;
-    let products;
     try {
-      [inventory, products] = await Promise.all([
+      const [inventory, products] = await Promise.all([
         readInventory(shop),
         readProducts(shop),
       ]);
+      const productMap = new Map(
+        products.map((product) => [product.sku, product]),
+      );
+
+      for (const item of inventory) {
+        const product = productMap.get(item.sku);
+        if (!product) continue;
+        const wear = item.wearCount ?? 0;
+        const limit = product.wearAndTearLimit ?? Infinity;
+        const cycle = product.maintenanceCycle ?? Infinity;
+        if (wear >= limit) {
+          // i18n-exempt: OPS-1234 technical log, not user-facing
+          logger.info("item needs retirement", { shopId: shop, sku: item.sku });
+        } else if (cycle !== Infinity && wear > 0 && wear % cycle === 0) {
+          // i18n-exempt: OPS-1234 technical log, not user-facing
+          logger.info("item needs maintenance", { shopId: shop, sku: item.sku });
+        }
+      }
     } catch (err) {
       // i18n-exempt: OPS-1234 technical log, not user-facing
       logger.error("maintenance scan failed", { shopId: shop, err });
       continue;
-    }
-    const productMap = new Map(products.map((p) => [p.sku, p]));
-
-    for (const item of inventory) {
-      const product = productMap.get(item.sku);
-      if (!product) continue;
-      const wear = item.wearCount ?? 0;
-      const limit = product.wearAndTearLimit ?? Infinity;
-      const cycle = product.maintenanceCycle ?? Infinity;
-      if (wear >= limit) {
-        // i18n-exempt: OPS-1234 technical log, not user-facing
-        logger.info("item needs retirement", { shopId: shop, sku: item.sku });
-      } else if (cycle !== Infinity && wear > 0 && wear % cycle === 0) {
-        // i18n-exempt: OPS-1234 technical log, not user-facing
-        logger.info("item needs maintenance", { shopId: shop, sku: item.sku });
-      }
     }
   }
 }

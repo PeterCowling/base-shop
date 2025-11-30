@@ -79,16 +79,16 @@ describe("authorize", () => {
       roles: {},
     });
     const authorize = getAuthorize({ readRbac });
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
 
     await expect(
       authorize({ email: "user@example.com", password: "plain" })
     ).rejects.toThrow("Invalid email or password");
-    expect(logSpy).toHaveBeenCalledWith("[auth] user password is not hashed", {
-      id: "2",
-    });
-
-    logSpy.mockRestore();
+    expect(logger.warn).toHaveBeenCalledWith(
+      "[auth] user password is not hashed",
+      {
+        id: "2",
+      }
+    );
   });
 
   it("throws in production when password is not hashed", async () => {

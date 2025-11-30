@@ -94,7 +94,9 @@ describe('upload-csv parallel', () => {
     ]);
     const duration = Date.now() - start;
     const throughput = (2 * size) / (duration / 1000) / (1024 * 1024);
-    console.log(`Parallel upload throughput: ${throughput.toFixed(2)} MB/s`);
+    if (process.env.DEBUG_UPLOAD_CSV_PARALLEL_THROUGHPUT) {
+      console.log(`Parallel upload throughput: ${throughput.toFixed(2)} MB/s`);
+    }
 
     expect(r1.status).toBe(200);
     expect(r2.status).toBe(200);

@@ -6,9 +6,12 @@ export interface LogMeta {
 
 const level =
   process.env.LOG_LEVEL ??
-  (process.env.NODE_ENV === "production" ? "info" : "debug");
+  (process.env.NODE_ENV === "production" ? "info" : "silent");
 
-const baseLogger = pino({ level });
+const baseLogger = pino({
+  level,
+  enabled: process.env.NODE_ENV !== "test" ? true : false,
+});
 
 export const logger = {
   error(message: string, meta: LogMeta = {}) {
@@ -24,4 +27,3 @@ export const logger = {
     baseLogger.debug(meta, message);
   },
 };
-

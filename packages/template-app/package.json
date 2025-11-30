@@ -8,6 +8,7 @@
     "./postcss.config.cjs": "./postcss.config.cjs"
   },
   "scripts": {
+    "prebuild": "pnpm --filter @acme/i18n build",
     "dev": "next dev -p 3000",
     "build": "next build",
     "clean": "rimraf dist *.tsbuildinfo",

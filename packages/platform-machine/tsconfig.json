@@ -47,6 +47,10 @@
       "@date-utils": ["packages/date-utils/src/index.ts", "packages/date-utils/dist/index.d.ts"],
       "@date-utils/*": ["packages/date-utils/src/*", "packages/date-utils/dist/*"],
 
+      /* Stripe client */
+      "@acme/stripe": ["packages/stripe/src/index.ts", "packages/stripe/dist/index.d.ts"],
+      "@acme/stripe/*": ["packages/stripe/src/*", "packages/stripe/dist/*"],
+
       /* shared runtime types */
       "@acme/types": ["packages/types/src/index.ts", "packages/types/dist/index.d.ts"],
       "@acme/types/*": ["packages/types/src/*", "packages/types/dist/*"]

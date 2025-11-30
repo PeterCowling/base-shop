@@ -223,6 +223,14 @@ The `@acme/platform-machine` package bundles a small set of runtime helpers:
 
 Configuration and usage examples for both are documented in [docs/machine.md](docs/machine.md).
 
+For CI and local builds that depend on these helpers, prefer the dedicated build
+pipeline, which ensures dependent packages like `@acme/i18n` and
+`@acme/platform-core` are rebuilt first:
+
+```bash
+pnpm run build:platform-machine
+```
+
 # Environment Variables
 
 See [environment variable reference](./docs/.env.reference.md) for a comprehensive list and descriptions.

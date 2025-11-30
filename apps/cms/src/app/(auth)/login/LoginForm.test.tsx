@@ -19,12 +19,23 @@ jest.mock("next/navigation", () => ({
 }));
 
 describe("LoginForm", () => {
+  let consoleLogSpy: jest.SpyInstance;
+  let consoleErrorSpy: jest.SpyInstance;
+
   beforeEach(() => {
     signInMock.mockReset();
     pushMock.mockReset();
     getMock.mockReset();
     __resetReactAuthImpls();
     __setSignInImpl((...args: any[]) => signInMock(...args));
+
+    consoleLogSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    consoleLogSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
   });
 
   it("sanitizes inputs and redirects on successful sign in", async () => {

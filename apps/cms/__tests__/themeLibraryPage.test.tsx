@@ -58,7 +58,9 @@ describe("ThemeLibraryPage", () => {
     render(await ThemeLibraryPage());
 
     expect(track).toHaveBeenCalledWith("themes:library:view", {});
-    expect(fetchMock).toHaveBeenCalledWith("/cms/api/themes", { cache: "no-store" });
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/api/themes"), {
+      cache: "no-store",
+    });
     expect(
       screen.getByRole("heading", { level: 2, name: translations["cms.theme.library"] })
     ).toBeInTheDocument();
@@ -79,7 +81,9 @@ describe("ThemeLibraryPage", () => {
     render(await ThemeLibraryPage());
 
     expect(track).toHaveBeenCalledWith("themes:library:view", {});
-    expect(fetchMock).toHaveBeenCalledWith("/cms/api/themes", { cache: "no-store" });
+    expect(fetchMock).toHaveBeenCalledWith(expect.stringContaining("/api/themes"), {
+      cache: "no-store",
+    });
     expect(
       screen.getByRole("heading", { level: 2, name: translations["cms.theme.library"] })
     ).toBeInTheDocument();

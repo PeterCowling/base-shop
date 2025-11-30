@@ -39,13 +39,15 @@ export async function POST(
       .map(([k, v]) => `${k}=${String(v)}`)
       .join("\n");
     const content = lines ?? "";
-    try {
-      console.log("[env] write .env", { // i18n-exempt -- CMS-2134 [ttl=2026-03-31]
-        shopId,
-        file: path.join(dir, ".env"),
-        bytes: Buffer.byteLength(content, "utf8"),
-      });
-    } catch {}
+    if (process.env.NODE_ENV !== "test") {
+      try {
+        console.log("[env] write .env", { // i18n-exempt -- CMS-2134 [ttl=2026-03-31]
+          shopId,
+          file: path.join(dir, ".env"),
+          bytes: Buffer.byteLength(content, "utf8"),
+        });
+      } catch {}
+    }
     // The path is constrained to the workspace data directory; values are validated.
     // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-101 Validated shopId and joined under data root
     await fs.writeFile(path.join(dir, ".env"), content, "utf8");

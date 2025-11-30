@@ -3,6 +3,7 @@ import { createPost, updatePost, getPosts } from "../src/services/blog";
 
 jest.mock("../src/actions/common/auth", () => ({
   ensureAuthorized: jest.fn(),
+  ensureCanRead: jest.fn(),
 }));
 
 jest.mock("@platform-core/repositories/shop.server", () => ({
@@ -100,4 +101,3 @@ describe("filterExistingProductSlugs", () => {
     expect((global.fetch as jest.Mock).mock.calls.length).toBe(1);
   });
 });
-

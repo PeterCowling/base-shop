@@ -28,10 +28,12 @@ describe("shops API", () => {
       __esModule: true,
       listShops: jest.fn().mockRejectedValue(new Error("boom")),
     }));
+    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
     const { GET } = await import("../src/app/api/shops/route");
     const res = await GET();
     expect(res.status).toBe(500);
     const json = await res.json();
     expect(json).toHaveProperty("error");
+    spy.mockRestore();
   });
 });

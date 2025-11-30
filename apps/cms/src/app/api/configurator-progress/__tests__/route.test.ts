@@ -17,6 +17,17 @@ jest.mock('fs', () => ({
   renameSync: mockRenameSync,
 }));
 
+let consoleLogSpy: jest.SpyInstance | undefined;
+beforeAll(() => {
+  consoleLogSpy = jest
+    .spyOn(console, 'log')
+    .mockImplementation(() => {});
+});
+
+afterAll(() => {
+  consoleLogSpy?.mockRestore();
+});
+
 const mockWriteJsonFile = jest.fn(async (_path: string, data: any) => {
   mockDb = data;
 });

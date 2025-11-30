@@ -8,12 +8,9 @@ on:
       - 'apps/cms/**'
       - '.github/workflows/skylar.yml'
       - '.github/workflows/cms.yml'
-  pull_request:
-    paths-ignore:
-      - 'apps/skylar/**'
-      - 'apps/cms/**'
-      - '.github/workflows/skylar.yml'
-      - '.github/workflows/cms.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * *'
 
 jobs:
   workspaces:

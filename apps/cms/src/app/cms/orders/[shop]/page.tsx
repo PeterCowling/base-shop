@@ -176,13 +176,13 @@ export default async function ShopOrdersPage({
                   order.flaggedForReview || riskLevelLower === "high" || isOverdue;
 
                 return (
-                  <div
-                    role="listitem"
+                  <li
                     key={order.id ?? order.sessionId}
-                  className={cn(
-                    "list-none rounded-2xl border", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-                    highlight ? "border-danger/40 bg-surface-2" : "border-transparent" // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-                  )}
+                    className={cn(
+                      "list-none rounded-2xl border", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+                      highlight ? "border-danger bg-surface-2" : "border-transparent", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+                    )}
+                    role="listitem"
                   >
                     <Card
                       className={cn(
@@ -261,7 +261,7 @@ export default async function ShopOrdersPage({
                         </div>
                       </CardContent>
                     </Card>
-                  </div>
+                  </li>
                 );
               })}
               {orders.length === 0 && (

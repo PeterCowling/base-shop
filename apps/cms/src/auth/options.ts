@@ -69,7 +69,7 @@ export function createAuthOptions(
 
           if (user && !isDevFixture && !user.password.startsWith("$argon2")) {
             // i18n-exempt — ops log
-            console.log("[auth] user password is not hashed", { id: user.id });
+            logger.warn("[auth] user password is not hashed", { id: user.id });
             // i18n-exempt — surfaced via client mapping; tests assert this literal
             throw new Error("Invalid email or password");
           }

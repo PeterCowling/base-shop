@@ -78,6 +78,9 @@ jobs:
       - name: Lint CMS app
         run: pnpm --filter @apps/cms lint
 
+      - name: Typecheck CMS app
+        run: pnpm --filter @apps/cms typecheck
+
       - name: Test CMS app
         run: pnpm --filter @apps/cms test
 

@@ -25,7 +25,7 @@ jest.mock("next/dynamic", () => ({
   default: jest.fn(() => {
     return function PageBuilderStub(props: BuilderProps) {
       capturedBuilderProps = props;
-      return <div data-testid="page-builder-stub" />;
+      return <div data-cy="page-builder-stub" />;
     };
   }),
 }));

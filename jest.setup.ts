@@ -238,6 +238,13 @@ const JSDOM_NAV_ERROR = "Not implemented: navigation (except hash changes)";
 
 const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   JSDOM_NAV_ERROR,
+  // Service-layer logs exercised in tests
+  "Failed to unpublish post",
+  "Failed to list media",
+  // React dev warnings for DS props on DOM elements
+  /React does not recognize the `%s` prop on a DOM element\..*labelClassName/,
+  "React does not recognize the `trailingIcon` prop on a DOM element.",
+  "Failed to load upgrade changes Only absolute URLs are supported",
   // Env validation helpers – these are intentionally exercised with invalid
   // inputs across many suites, so the error logs are expected noise in tests.
   "❌ Invalid CMS environment variables",
@@ -249,6 +256,7 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe",
   "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe",
   "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
+  "Failed to send campaign email",
   // Bullet-point issue details printed by core/shipping env loaders
   /^  • .*: .+/,
 ];

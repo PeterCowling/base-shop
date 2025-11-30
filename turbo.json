@@ -29,9 +29,11 @@
     },
     "test": {
       "dependsOn": [],
-      "cache": false,
       "outputs": [
         "coverage/**"
+      ],
+      "env": [
+        "CI"
       ]
     }
   }

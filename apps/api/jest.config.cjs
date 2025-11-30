@@ -8,6 +8,7 @@ const coveragePathIgnorePatterns = base.coveragePathIgnorePatterns.filter(
 /** @type {import('jest').Config} */
 module.exports = {
   ...base,
+  // Run from the workspace root but limit tests and coverage to the API app
   roots: ["<rootDir>/apps/api/src", "<rootDir>/apps/api/__tests__"],
   testEnvironment: "node",
   setupFilesAfterEnv: [

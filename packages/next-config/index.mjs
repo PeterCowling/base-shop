@@ -51,6 +51,14 @@ export const baseConfig = {
   // above and uncomment the one below.  Either approach fixes the issue.
   // bundlePagesRouterDependencies: true,
 
+  // When building for static export (used by the Skylar Pages deployment),
+  // disable Next.js' built-in image optimizer so that <Image> renders simple
+  // <img> tags pointing at the statically exported files instead of the
+  // dynamic /_next/image route, which does not exist on Cloudflare Pages.
+  images: {
+    unoptimized: Boolean(coreEnv.OUTPUT_EXPORT),
+  },
+
   // Keep the existing "static export in CI only" logic
   ...(coreEnv.OUTPUT_EXPORT ? { output: "export" } : {}),
 

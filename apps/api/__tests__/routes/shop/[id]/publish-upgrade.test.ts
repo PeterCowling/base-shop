@@ -1,10 +1,9 @@
-import request from "supertest";
 import jwt from "jsonwebtoken";
 import * as fs from "fs";
 import * as childProcess from "child_process";
 jest.mock("fs");
 jest.mock("child_process");
-import { createRequestHandler } from "../../../test-utils";
+import { apiRequest } from "../../../test-utils";
 
 describe("publish-upgrade route", () => {
   beforeAll(() => {
@@ -16,32 +15,34 @@ describe("publish-upgrade route", () => {
   });
 
   it("rejects invalid shop id", async () => {
-    const res = await request(createRequestHandler()).post(
-      "/shop/BCD/publish-upgrade",
-    );
+    const res = await apiRequest("POST", "/shop/BCD/publish-upgrade", {
+      json: {},
+    });
     expect(res.status).toBe(400);
   });
 
   it("requires bearer token", async () => {
-    const res = await request(createRequestHandler()).post(
-      "/shop/bcd/publish-upgrade",
-    );
+    const res = await apiRequest("POST", "/shop/bcd/publish-upgrade", {
+      json: {},
+    });
     expect(res.status).toBe(401);
   });
 
   it("rejects invalid bearer token", async () => {
-    const res = await request(createRequestHandler())
-      .post("/shop/bcd/publish-upgrade")
-      .set("Authorization", "Bearer invalid");
+    const res = await apiRequest("POST", "/shop/bcd/publish-upgrade", {
+      headers: { Authorization: "Bearer invalid" },
+      json: {},
+    });
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
 
   it("rejects token signed with wrong secret", async () => {
     const token = jwt.sign({}, "wrongsecret");
-    const res = await request(createRequestHandler())
-      .post("/shop/bcd/publish-upgrade")
-      .set("Authorization", `Bearer ${token}`);
+    const res = await apiRequest("POST", "/shop/bcd/publish-upgrade", {
+      headers: { Authorization: `Bearer ${token}` },
+      json: {},
+    });
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
@@ -70,10 +71,10 @@ describe("publish-upgrade route", () => {
         }) as any,
     );
 
-    const res = await request(createRequestHandler())
-      .post("/shop/valid-id/publish-upgrade")
-      .set("Authorization", `Bearer ${token}`)
-      .send({});
+    const res = await apiRequest("POST", "/shop/valid-id/publish-upgrade", {
+      headers: { Authorization: `Bearer ${token}` },
+      json: {},
+    });
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ ok: true });
@@ -105,10 +106,10 @@ describe("publish-upgrade route", () => {
         }) as any,
     );
 
-    const res = await request(createRequestHandler())
-      .post("/shop/valid-id/publish-upgrade")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ components: "not-an-array" });
+    const res = await apiRequest("POST", "/shop/valid-id/publish-upgrade", {
+      headers: { Authorization: `Bearer ${token}` },
+      json: { components: "not-an-array" },
+    });
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ ok: true });
@@ -147,10 +148,10 @@ describe("publish-upgrade route", () => {
         }) as any,
     );
 
-    const res = await request(createRequestHandler())
-      .post("/shop/valid-id/publish-upgrade")
-      .set("Authorization", `Bearer ${token}`)
-      .send({});
+    const res = await apiRequest("POST", "/shop/valid-id/publish-upgrade", {
+      headers: { Authorization: `Bearer ${token}` },
+      json: {},
+    });
 
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ ok: true });
@@ -187,10 +188,10 @@ describe("publish-upgrade route", () => {
         }) as any,
     );
 
-    const res = await request(createRequestHandler())
-      .post("/shop/valid-id/publish-upgrade")
-      .set("Authorization", `Bearer ${token}`)
-      .send({});
+    const res = await apiRequest("POST", "/shop/valid-id/publish-upgrade", {
+      headers: { Authorization: `Bearer ${token}` },
+      json: {},
+    });
 
     expect(res.status).toBe(500);
     expect(res.body).toEqual({
@@ -233,10 +234,10 @@ describe("publish-upgrade route", () => {
           }) as any,
       );
 
-    const res = await request(createRequestHandler())
-      .post("/shop/valid-id/publish-upgrade")
-      .set("Authorization", `Bearer ${token}`)
-      .send({});
+    const res = await apiRequest("POST", "/shop/valid-id/publish-upgrade", {
+      headers: { Authorization: `Bearer ${token}` },
+      json: {},
+    });
 
     expect(res.status).toBe(500);
     expect(res.body).toEqual({
@@ -252,10 +253,10 @@ describe("publish-upgrade route", () => {
       throw "fail";
     });
 
-    const res = await request(createRequestHandler())
-      .post("/shop/valid-id/publish-upgrade")
-      .set("Authorization", `Bearer ${token}`)
-      .send({});
+    const res = await apiRequest("POST", "/shop/valid-id/publish-upgrade", {
+      headers: { Authorization: `Bearer ${token}` },
+      json: {},
+    });
 
     expect(res.status).toBe(500);
     expect(res.body).toEqual({ error: "fail" });

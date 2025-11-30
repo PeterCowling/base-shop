@@ -55,7 +55,9 @@ Refer to the locale docs for palette, typography, and tone rules unique to each 
 
 ### Deployment via GitHub Actions
 
-- CI workflow: `.github/workflows/skylar.yml` builds the full workspace, runs `OUTPUT_EXPORT=1 pnpm --filter @apps/skylar build`, then deploys with `npx @cloudflare/next-on-pages deploy --project-name=skylar`.
+- CI workflow: `.github/workflows/skylar.yml` builds the full workspace, runs `OUTPUT_EXPORT=1 pnpm --filter @apps/skylar build` to produce a static export in `apps/skylar/out`, then deploys that folder to Cloudflare Pages with `wrangler pages deploy` (no `@cloudflare/next-on-pages` required).
 - Trigger: automatic on pushes to `main`, or manual via **Actions → Deploy Skylar → Run workflow** when you need an ad‑hoc publish.
 - Secrets required in the repo: `CLOUDFLARE_ACCOUNT_ID` (Pages account ID) and `CLOUDFLARE_API_TOKEN` (token scoped with Pages Write + Workers Pages permissions for the `skylar` project).
 - Cloudflare setup: create/rename the Pages project to `skylar`, connect the custom domain, and keep DNS managed in Cloudflare so deployments become live immediately after the action finishes.
+
+Skylar is intentionally deployed as a fully static, read‑only reference site (no auth, APIs, or dashboards), so Cloudflare Pages’ static hosting is sufficient and easier to reason about than a full Next.js runtime. We deliberately avoid `@cloudflare/next-on-pages` here because we do not need SSR, API routes, middleware, or the dynamic image optimizer for this app.

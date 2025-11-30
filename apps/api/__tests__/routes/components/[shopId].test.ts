@@ -1,6 +1,5 @@
-import request from "supertest";
 import jwt from "jsonwebtoken";
-import { createRequestHandler } from "../../test-utils";
+import { apiRequest } from "../../test-utils";
 
 describe("components route", () => {
   beforeAll(() => {
@@ -22,7 +21,7 @@ describe("components route", () => {
     );
 
   it("rejects requests without token", async () => {
-    const res = await request(createRequestHandler()).get("/components/bcd");
+    const res = await apiRequest("GET", "/components/bcd");
     expect(res.status).toBe(403);
   });
 
@@ -38,35 +37,33 @@ describe("components route", () => {
         expiresIn: "1h",
       },
     );
-    const res = await request(createRequestHandler())
-      .get("/components/bcd")
-      .set("Authorization", `Bearer ${token}`);
+    const res = await apiRequest("GET", "/components/bcd", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
 
   it("returns 400 for invalid shop id", async () => {
-    const res = await request(createRequestHandler()).get(
-      "/components/INVALID$ID"
-    );
+    const res = await apiRequest("GET", "/components/INVALID$ID");
     expect(res.status).toBe(400);
     expect(res.body).toEqual({ error: "Invalid shop id" });
   });
 
   it("returns components for valid token", async () => {
     const token = sign("bcd");
-    const res = await request(createRequestHandler())
-      .get("/components/bcd")
-      .set("Authorization", `Bearer ${token}`);
+    const res = await apiRequest("GET", "/components/bcd", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ components: [] });
   });
 
   it("returns config diff when requested", async () => {
     const token = sign("bcd");
-    const res = await request(createRequestHandler())
-      .get("/components/bcd?diff")
-      .set("Authorization", `Bearer ${token}`);
+    const res = await apiRequest("GET", "/components/bcd?diff", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     expect(res.status).toBe(200);
     expect(res.body).toEqual({
       components: [],
@@ -76,36 +73,36 @@ describe("components route", () => {
 
   it("rejects token with mismatched subject", async () => {
     const token = sign("xyz");
-    const res = await request(createRequestHandler())
-      .get("/components/bcd")
-      .set("Authorization", `Bearer ${token}`);
+    const res = await apiRequest("GET", "/components/bcd", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
 
   it("rejects token with mismatched audience", async () => {
     const token = sign("bcd", { audience: "other" });
-    const res = await request(createRequestHandler())
-      .get("/components/bcd")
-      .set("Authorization", `Bearer ${token}`);
+    const res = await apiRequest("GET", "/components/bcd", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
 
   it("rejects token with mismatched issuer", async () => {
     const token = sign("bcd", { issuer: "other" });
-    const res = await request(createRequestHandler())
-      .get("/components/bcd")
-      .set("Authorization", `Bearer ${token}`);
+    const res = await apiRequest("GET", "/components/bcd", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
 
   it("rejects expired token", async () => {
     const token = sign("bcd", { expiresIn: -1 });
-    const res = await request(createRequestHandler())
-      .get("/components/bcd")
-      .set("Authorization", `Bearer ${token}`);
+    const res = await apiRequest("GET", "/components/bcd", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });
@@ -122,9 +119,9 @@ describe("components route", () => {
         noTimestamp: true,
       },
     );
-    const res = await request(createRequestHandler())
-      .get("/components/bcd")
-      .set("Authorization", `Bearer ${token}`);
+    const res = await apiRequest("GET", "/components/bcd", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     expect(res.status).toBe(403);
     expect(res.body).toEqual({ error: "Forbidden" });
   });

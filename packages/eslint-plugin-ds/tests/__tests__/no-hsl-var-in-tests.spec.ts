@@ -44,5 +44,10 @@ tester.run("no-hsl-var-in-tests", rule, {
       languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
       errors: [{ messageId: "noHslVarInTests" }, { messageId: "noHslVarInTests" }],
     },
+    {
+      code: "<div data-x={\"hsl(var(--z))\"} />",
+      languageOptions: { parserOptions: { ecmaFeatures: { jsx: true } } },
+      errors: [{ messageId: "noHslVarInTests" }, { messageId: "noHslVarInTests" }],
+    },
   ],
 });

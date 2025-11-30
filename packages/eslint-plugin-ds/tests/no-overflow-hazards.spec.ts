@@ -18,6 +18,7 @@ const tester = new RuleTester({
 tester.run("no-overflow-hazards", rule, {
   valid: [
     { code: "<div className=\"w-screen\" />", filename: "apps/app/src/app/layout.tsx" },
+    { code: "<div className=\"w-screen overflow-visible\" />", filename: "apps/shop/pages/_app.tsx" },
     // style with non-100vw is allowed by this heuristic
     { code: "<div style={{ width: '50vw' }} />" },
     // non-confident class parsing (spread) should not report
@@ -30,6 +31,10 @@ tester.run("no-overflow-hazards", rule, {
     },
     {
       code: "<div style={{ width: '100vw' }} />",
+      errors: [{ message: /Avoid style 'width: 100vw'/ }],
+    },
+    {
+      code: "<div style={{ 'width': '100vw' }} />",
       errors: [{ message: /Avoid style 'width: 100vw'/ }],
     },
     {

@@ -26,6 +26,16 @@ tester.run("no-arbitrary-tailwind", rule, {
       code: "<div className=\"text-[var(--token)]\" />",
       options: [{ allowedFunctions: ["var"] }],
     },
+    // allowed utility + content pattern (percentage values)
+    {
+      code: "<div className=\"translate-x-[25%]\" />",
+      options: [{ allowedUtilities: ["translate-x"], allowedContentPatterns: ["^-?\\d+(?:\\.\\d+)?%$"] }],
+    },
+    // negative utility variant should also be allowed
+    {
+      code: "<div className=\"-translate-y-[12.5%]\" />",
+      options: [{ allowedUtilities: ["translate-y"], allowedContentPatterns: ["^-?\\d+(?:\\.\\d+)?%$"] }],
+    },
     // broken token without closing bracket should not report
     { code: "<div className=\"bg-[oops\" />" },
     // empty bracket content (end==start) should not report
@@ -39,5 +49,17 @@ tester.run("no-arbitrary-tailwind", rule, {
     { code: "<div className=\"content-['hi']\" />", errors: [{ messageId: "noArbitrary" }] },
     // calc() not in allowlist → report
     { code: "<div className=\"bg-[calc(100%-4px)]\" />", errors: [{ messageId: "noArbitrary" }] },
+    // utility allowed but content pattern does not match → still report
+    {
+      code: "<div className=\"translate-x-[10px]\" />",
+      options: [{ allowedUtilities: ["translate-x"], allowedContentPatterns: ["^-?\\d+(?:\\.\\d+)?%$"] }],
+      errors: [{ messageId: "noArbitrary" }],
+    },
+    // invalid regex pattern should be ignored (catch branch), still reporting the hazard
+    {
+      code: "<div className=\"translate-x-[10px]\" />",
+      options: [{ allowedUtilities: ["translate-x"], allowedContentPatterns: ["("] }],
+      errors: [{ messageId: "noArbitrary" }],
+    },
   ],
 });

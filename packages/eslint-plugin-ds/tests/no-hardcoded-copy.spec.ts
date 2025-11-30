@@ -26,6 +26,11 @@ tester.run("no-hardcoded-copy", rule, {
     { code: '<button aria-description="Long description of control" />' },
     { code: "export const short='Short text';" },
     { code: "const Comp=()=> <span>{'Short text'}</span>" },
+    // directive prologues like "use client" should be ignored
+    { code: "'use client';" },
+    // module specifiers in import/export declarations should be ignored
+    { code: "import { x } from './module';" },
+    { code: "export { x } from './module';" },
   ],
   invalid: [
     {

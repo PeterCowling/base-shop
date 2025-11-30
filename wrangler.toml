@@ -11,9 +11,10 @@ preview_id = "f10f858acbb0429da3910894c9151560"
   NEXT_PUBLIC_SHOP_ID = "default"
   CART_TTL = "2592000"
 
-[[r2_buckets]]
-binding = "TRYON_R2"
-bucket_name = "base-shop-tryon"
+# (Optional) Enable R2 for try-on assets later
+# [[r2_buckets]]
+# binding = "TRYON_R2"
+# bucket_name = "base-shop-tryon"
 
 # (Optional) Enable KV for idempotency/quotas later
 # [[kv_namespaces]]

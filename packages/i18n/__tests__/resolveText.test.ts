@@ -35,6 +35,57 @@ describe("resolveText", () => {
     const v: TranslatableText = { type: "inline", value: {} } as const;
     expect(resolveText(v, "de" as Locale, t)).toBe("");
   });
+
+  it("logs when resolving legacy string in development", () => {
+    const original = process.env.NODE_ENV;
+    process.env.NODE_ENV = "development";
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+    expect(resolveText("Hello", "en" as Locale, t)).toBe("Hello");
+    expect(warn).toHaveBeenCalledWith(
+      "resolveText: legacy string used; treating as inline.en"
+    );
+
+    warn.mockRestore();
+    process.env.NODE_ENV = original;
+  });
+
+  it("logs when inline value is missing across fallbacks in development", () => {
+    const original = process.env.NODE_ENV;
+    process.env.NODE_ENV = "development";
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+    const v: TranslatableText = { type: "inline", value: {} } as const;
+    expect(resolveText(v, "de" as Locale, t)).toBe("");
+
+    expect(warn).toHaveBeenCalledWith(
+      "resolveText: missing inline value across fallbacks",
+      {
+        locale: "de",
+        chain: fallbackChain("de" as Locale),
+      }
+    );
+
+    warn.mockRestore();
+    process.env.NODE_ENV = original;
+  });
+
+  it("logs when value has unknown shape in development", () => {
+    const original = process.env.NODE_ENV;
+    process.env.NODE_ENV = "development";
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+
+    expect(resolveText({} as unknown as TranslatableText, "en" as Locale, t)).toBe(
+      ""
+    );
+    expect(warn).toHaveBeenCalledWith(
+      "resolveText: unknown value shape; returning empty string",
+      {}
+    );
+
+    warn.mockRestore();
+    process.env.NODE_ENV = original;
+  });
 });
 
 describe("fallbackChain", () => {
@@ -44,4 +95,3 @@ describe("fallbackChain", () => {
     expect(fallbackChain("it" as Locale)).toEqual(["it", "en"]);
   });
 });
-

@@ -1,5 +1,5 @@
 // packages/i18n/src/fillLocales.ts
-import { LOCALES, type Locale } from "@acme/types";
+import { LOCALES, type Locale } from "./locales";
 
 /**
  * Ensure all locales have a value, filling in missing entries with a fallback.

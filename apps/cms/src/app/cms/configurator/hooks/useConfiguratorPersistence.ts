@@ -117,7 +117,19 @@ export function useConfiguratorPersistence(
   /* Persist whenever the state changes (skip if no meaningful change) */
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!loadedRef.current) return; // wait until initial load completes
+
+    // Always mirror the latest state to localStorage so preview
+    // consumers stay in sync even if the initial server load fails.
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      window.dispatchEvent(new CustomEvent("configurator:update"));
+    } catch {
+      /* ignore quota */
+    }
+
+    // Skip server sync until the initial load (or fallback) has completed.
+    if (!loadedRef.current) return;
+
     // Hash only the data portion (exclude `completed`, saved separately via PATCH)
     const { completed: _completed, ...data } = state;
     void _completed;
@@ -135,12 +147,6 @@ export function useConfiguratorPersistence(
     }
     setSaving(true);
     const timer = setTimeout(() => {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        window.dispatchEvent(new CustomEvent("configurator:update"));
-      } catch {
-        /* ignore quota */
-      }
       // Persist only data (without completed) via PUT
       fetch("/cms/api/configurator-progress", {
         method: "PUT",

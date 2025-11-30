@@ -223,46 +223,78 @@ try {
 } catch {}
 
 /* -------------------------------------------------------------------------- */
-/* 4.  Silence known noisy console.error output                                */
+/* 4.  Silence known noisy console output                                      */
 /* -------------------------------------------------------------------------- */
 
 /**
  * Some third-party dependencies emit console noise (for example, JSDOM's
  * navigation warnings or env validation helpers that fail intentionally in
  * tests). Filter specific, known-noisy messages to keep logs readable while
- * preserving all other console errors.
+ * preserving all other console output.
  */
-const originalConsoleError = console.error.bind(console);
+type ConsolePattern = string | RegExp;
+
 const JSDOM_NAV_ERROR = "Not implemented: navigation (except hash changes)";
-const IGNORED_ERROR_PATTERNS = [
+
+const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   JSDOM_NAV_ERROR,
+  // Env validation helpers – these are intentionally exercised with invalid
+  // inputs across many suites, so the error logs are expected noise in tests.
   "❌ Invalid CMS environment variables",
+  "❌ Invalid core environment variables",
+  "❌ Invalid email environment variables",
+  "❌ Invalid payments environment variables",
+  "❌ Invalid shipping environment variables",
+  "❌ Unsupported PAYMENTS_PROVIDER:",
+  "❌ Missing STRIPE_SECRET_KEY when PAYMENTS_PROVIDER=stripe",
+  "❌ Missing NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY when PAYMENTS_PROVIDER=stripe",
+  "❌ Missing STRIPE_WEBHOOK_SECRET when PAYMENTS_PROVIDER=stripe",
+  // Bullet-point issue details printed by core/shipping env loaders
+  /^  • .*: .+/,
 ];
 
-const consoleErrorSpy = jest
-  .spyOn(console, "error")
-  .mockImplementation((...args: unknown[]) => {
-    const aggregated = args
-      .map((arg) => {
-        if (typeof arg === "string") return arg;
-        if (arg && typeof (arg as any).message === "string") {
-          return (arg as any).message;
-        }
-        return "";
-      })
-      .join(" ");
-    const shouldIgnore = IGNORED_ERROR_PATTERNS.some((pattern) =>
-      typeof pattern === "string"
-        ? aggregated.includes(pattern)
-        : pattern.test(aggregated)
-    );
-    if (shouldIgnore) return; // ignore known noisy warnings
-    // pass through everything else
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (originalConsoleError as any)(...args);
-  });
+const IGNORED_WARN_PATTERNS: ConsolePattern[] = [
+  "⚠️ Invalid payments environment variables",
+];
 
-afterAll(() => {
-  // Restore the original console.error implementation
-  consoleErrorSpy.mockRestore?.();
-});
+const shouldIgnoreConsoleMessage = (
+  args: unknown[],
+  patterns: ConsolePattern[],
+): boolean => {
+  const aggregated = args
+    .map((arg) => {
+      if (typeof arg === "string") return arg;
+      if (arg && typeof (arg as any).message === "string") {
+        return (arg as any).message;
+      }
+      return "";
+    })
+    .join(" ");
+
+  return patterns.some((pattern) =>
+    typeof pattern === "string"
+      ? aggregated.includes(pattern)
+      : pattern.test(aggregated),
+  );
+};
+
+// Patch the global console so Jest's own console tracking never sees ignored
+// messages. Tests that need to assert on console output can still install
+// their own spies via `jest.spyOn(console, 'error' | 'warn')`.
+(() => {
+  const originalConsole = globalThis.console;
+  const patchedConsole = Object.create(originalConsole) as Console;
+
+  patchedConsole.error = (...args: unknown[]) => {
+    if (shouldIgnoreConsoleMessage(args, IGNORED_ERROR_PATTERNS)) return;
+    originalConsole.error(...(args as []));
+  };
+
+  patchedConsole.warn = (...args: unknown[]) => {
+    if (shouldIgnoreConsoleMessage(args, IGNORED_WARN_PATTERNS)) return;
+    originalConsole.warn(...(args as []));
+  };
+
+  // eslint-disable-next-line no-console
+  globalThis.console = patchedConsole;
+})();

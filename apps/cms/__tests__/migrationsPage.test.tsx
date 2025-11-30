@@ -1,5 +1,18 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
+
+const translations = {
+  "cms.migrations.hero.title": "Upgrade storefronts to the latest tokens",
+  "cms.migrations.actions.openConfigurator": "Open configurator",
+  "cms.migrations.status.automation.tag": "Manual step",
+};
+
+const useTranslations = jest.fn();
+
+jest.mock("@i18n/useTranslations.server", () => ({
+  useTranslations,
+}));
+
 import MigrationsPage from "../src/app/cms/migrations/page";
 
 jest.mock("@/components/atoms/shadcn", () => {
@@ -21,9 +34,15 @@ jest.mock("@/components/atoms/shadcn", () => {
   };
 });
 
+beforeEach(() => {
+  jest.clearAllMocks();
+  const translator = (key: string) => translations[key as keyof typeof translations] ?? key;
+  useTranslations.mockResolvedValue(translator);
+});
+
 describe("MigrationsPage", () => {
-  it("highlights manual migration workflow", () => {
-    render(<MigrationsPage />);
+  it("highlights manual migration workflow", async () => {
+    render(await MigrationsPage());
     expect(
       screen.getByRole("heading", { name: /upgrade storefronts to the latest tokens/i })
     ).toBeInTheDocument();

@@ -71,8 +71,10 @@ export async function POST(
       });
     }
     return NextResponse.json({ success: true });
-  } catch {
-    const t = await getTranslations("en");
-    return NextResponse.json({ error: t("api.common.invalidRequest") }, { status: 400 });
+  } catch (err) {
+    return NextResponse.json(
+      { error: (err as Error).message },
+      { status: 400 },
+    );
   }
 }

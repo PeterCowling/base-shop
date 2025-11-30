@@ -1,7 +1,7 @@
 import { getPosts } from "../list";
 
 jest.mock("../../../../actions/common/auth", () => ({
-  ensureAuthorized: jest.fn().mockResolvedValue(undefined),
+  ensureCanRead: jest.fn().mockResolvedValue(undefined),
 }));
 
 jest.mock("../../config", () => ({
@@ -18,7 +18,7 @@ describe("getPosts", () => {
   });
 
   it("calls authorization, fetches config, and returns posts", async () => {
-    const { ensureAuthorized } = await import(
+    const { ensureCanRead } = await import(
       "../../../../actions/common/auth"
     );
     const { getConfig } = await import("../../config");
@@ -33,14 +33,14 @@ describe("getPosts", () => {
 
     const result = await getPosts("shop123");
 
-    expect(ensureAuthorized).toHaveBeenCalled();
+    expect(ensureCanRead).toHaveBeenCalled();
     expect(getConfig).toHaveBeenCalledWith("shop123");
     expect(listPosts).toHaveBeenCalledWith(config);
     expect(result).toBe(posts);
   });
 
   it("propagates errors from getConfig", async () => {
-    const { ensureAuthorized } = await import(
+    const { ensureCanRead } = await import(
       "../../../../actions/common/auth"
     );
     const { getConfig } = await import("../../config");
@@ -52,8 +52,7 @@ describe("getPosts", () => {
     getConfig.mockRejectedValue(error);
 
     await expect(getPosts("shop123")).rejects.toThrow(error);
-    expect(ensureAuthorized).toHaveBeenCalled();
+    expect(ensureCanRead).toHaveBeenCalled();
     expect(listPosts).not.toHaveBeenCalled();
   });
 });
-

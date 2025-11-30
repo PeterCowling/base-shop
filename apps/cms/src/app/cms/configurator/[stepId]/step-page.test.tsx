@@ -6,25 +6,29 @@ jest.mock("../ConfiguratorContext", () => ({
   useConfigurator: () => ({ state: { completed: {} } }),
 }));
 
-jest.mock("../steps", () => ({
-  ConfiguratorProgress: ({ currentStepId }: any) => (
-    <div data-cy="progress">{currentStepId}</div>
-  ),
-  getSteps: () => [
-    { id: "prev" },
-    { id: "current" },
-    { id: "next" },
-  ],
-  stepIndex: { current: 1 },
-  steps: {
+jest.mock("../steps", () => {
+  const stepsMap = {
     current: {
       id: "current",
       component: ({ prevStepId, nextStepId }: any) => (
         <div data-cy="step" data-prev={prevStepId} data-next={nextStepId} />
       ),
     },
-  },
-}));
+  };
+
+  return {
+    ConfiguratorProgress: ({ currentStepId }: any) => (
+      <div data-cy="progress">{currentStepId}</div>
+    ),
+    getSteps: () => [
+      { id: "prev" },
+      { id: "current" },
+      { id: "next" },
+    ],
+    getStepsMap: () => stepsMap,
+    stepIndex: { current: 1 },
+  };
+});
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -42,4 +46,3 @@ it("renders progress and step component", () => {
   expect(step.getAttribute("data-prev")).toBe("prev");
   expect(step.getAttribute("data-next")).toBe("next");
 });
-

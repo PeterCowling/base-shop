@@ -3,7 +3,8 @@ import { render, screen } from "@testing-library/react";
 describe("Success page", () => {
   it("renders thank-you heading and receipt message", async () => {
     const { default: Success } = await import("./page");
-    render(<Success />);
+    const ui = await Success();
+    render(ui);
 
     expect(
       screen.getByRole("heading", { name: /Thanks for your order!/i })

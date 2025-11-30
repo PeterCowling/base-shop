@@ -41,7 +41,7 @@ describe("MaintenancePage", () => {
     render(await MaintenancePage());
 
     expect(
-      screen.getByRole("heading", { name: /keep your catalog clean and compliant/i })
+      screen.getByRole("heading", { name: /maintenance results/i })
     ).toBeInTheDocument();
 
     expect(screen.getByText(/demo-shop/i)).toBeInTheDocument();

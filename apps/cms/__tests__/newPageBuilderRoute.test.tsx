@@ -17,7 +17,9 @@ describe("NewPageBuilderRoute", () => {
   it("renders header and builder", async () => {
     const Page = await NewPageBuilderRoute({ params: Promise.resolve({ shop: "s1" }) });
     render(Page);
-    expect(screen.getByText("New page - s1")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /create page/i })
+    ).toBeInTheDocument();
     expect(screen.getByTestId("builder")).toBeInTheDocument();
   });
 });

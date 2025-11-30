@@ -10,10 +10,6 @@ jest.mock("@acme/telemetry", () => ({
   track,
 }));
 
-jest.mock("@acme/i18n", () => ({
-  useTranslations: () => (key: string) => key,
-}));
-
 jest.mock("next/navigation", () => ({
   useRouter: jest.fn(),
   useParams: jest.fn(),
@@ -61,13 +57,13 @@ describe("DesignSystemImportPage", () => {
     render(<DesignSystemImportPage />);
     const user = userEvent.setup();
 
-    await user.click(screen.getByRole("link", { name: "cms.theme.packageGuide" }));
+    await user.click(screen.getByRole("link", { name: /package import guide/i }));
     expect(track).toHaveBeenCalledWith("designsystem:import:doc", {
       shop: "demo-shop",
       target: "package",
     });
 
-    await user.click(screen.getByRole("link", { name: "cms.theme.libraryTips" }));
+    await user.click(screen.getByRole("link", { name: /theme library tips/i }));
     expect(track).toHaveBeenCalledWith("designsystem:import:doc", {
       shop: "demo-shop",
       target: "lifecycle",

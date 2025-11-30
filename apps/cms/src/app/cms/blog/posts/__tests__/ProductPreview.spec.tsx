@@ -7,7 +7,12 @@ afterEach(() => {
 
 // Stub atoms that depend on i18n/theme context
 jest.mock("@/components/atoms", () => ({
-  Alert: ({ title }: any) => <div>{title}</div>,
+  Alert: ({ heading, title, children }: any) => (
+    <div>
+      {heading ?? title}
+      {children}
+    </div>
+  ),
 }));
 
 jest.mock("next/image", () => ({

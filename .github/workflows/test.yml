@@ -50,6 +50,8 @@ jobs:
           node-version: 20
           cache: 'pnpm'
       - run: pnpm install
+      - name: Build ESLint plugin
+        run: pnpm --filter @acme/eslint-plugin-ds build
       - name: Build workspace (scoped)
         run: pnpm --filter ./${{ matrix.workspace }}... build
       - run: pnpm --filter ./${{ matrix.workspace }} lint

@@ -2,12 +2,25 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getPages } from "@platform-core/repositories/pages/index.server";
 import type { Page } from "@acme/types";
 import { createPage as createPageAction } from "@cms/actions/pages/create";
+import { authOptions } from "@cms/auth/options";
+import { getServerSession } from "next-auth";
+
+function parsePositiveInt(value: string | null, fallback: number): number {
+  const n = Number.parseInt(value ?? "", 10);
+  if (!Number.isFinite(n) || n <= 0) return fallback;
+  return n;
+}
 
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ shop: string }> }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    }
+
     const { shop } = await context.params;
     const { searchParams } = new URL(req.url);
     const q = (searchParams.get("q") || "").toLowerCase().trim();
@@ -18,7 +31,23 @@ export async function GET(
           return String(p.slug).toLowerCase().includes(q) || String(title).toLowerCase().includes(q);
         })
       : pages;
-    return NextResponse.json(filtered);
+
+    const hasPaginationParams =
+      searchParams.has("page") || searchParams.has("limit");
+    const result =
+      hasPaginationParams && filtered.length > 0
+        ? (() => {
+            const page = parsePositiveInt(searchParams.get("page"), 1);
+            const limit = parsePositiveInt(
+              searchParams.get("limit"),
+              filtered.length,
+            );
+            const start = (page - 1) * limit;
+            return filtered.slice(start, start + limit);
+          })()
+        : filtered;
+
+    return NextResponse.json(result);
   } catch (err) {
     return NextResponse.json({ error: (err as Error).message }, { status: 400 });
   }

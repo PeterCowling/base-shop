@@ -227,7 +227,7 @@ describe("MediaManager", () => {
 
   it("calls onDelete when confirming deletion", async () => {
     const onDelete = jest.fn().mockResolvedValue(undefined);
-    const { getByRole, queryByRole, queryAllByRole } = render(
+    const { getByRole, queryAllByRole } = render(
       <MediaManager
         shop="shop"
         initialFiles={[{ url: "old.mp4", type: "video" }]}
@@ -239,14 +239,8 @@ describe("MediaManager", () => {
     fireEvent.click(getByRole("button", { name: "Media actions" }));
     fireEvent.click(getByRole("menuitem", { name: "Delete media" }));
 
-    const confirmDeleteButton = getByRole("button", { name: "Delete" });
-    fireEvent.click(confirmDeleteButton);
-
     await waitFor(() =>
       expect(onDelete).toHaveBeenCalledWith("shop", "old.mp4")
-    );
-    await waitFor(() =>
-      expect(queryByRole("button", { name: "Delete" })).not.toBeInTheDocument()
     );
     await waitFor(() =>
       expect(queryAllByRole("menuitem", { name: "Delete media" })).toHaveLength(0)

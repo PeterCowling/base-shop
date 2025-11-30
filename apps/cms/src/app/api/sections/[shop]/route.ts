@@ -22,7 +22,8 @@ export async function GET(
     ]
       .map((t) => t.trim().toLowerCase())
       .filter(Boolean);
-    const page = Math.max(1, parseInt(url.searchParams.get("page") || "0", 10) || 0);
+    const pageRaw = parseInt(url.searchParams.get("page") || "", 10);
+    const page = Number.isFinite(pageRaw) && pageRaw > 0 ? pageRaw : 0;
     const pageSizeRaw = parseInt(url.searchParams.get("pageSize") || "0", 10) || 0;
     // Allow larger result sets to support shops with many sections
     const pageSize = page > 0 ? Math.min(500, Math.max(1, pageSizeRaw || 24)) : 0;
@@ -78,7 +79,10 @@ export async function GET(
       }, new Set<string>())
     ).sort();
 
-    return NextResponse.json({ items, total, page: page || 1, pageSize: page ? pageSize : filtered.length, allTags });
+    const pageForMeta = page > 0 ? page : 1;
+    const pageSizeForMeta = page > 0 ? pageSize : filtered.length;
+
+    return NextResponse.json({ items, total, page: pageForMeta, pageSize: pageSizeForMeta, allTags });
   } catch {
     const t = await getServerTranslations("en");
     return NextResponse.json({ error: t("api.common.genericError") }, { status: 400 });

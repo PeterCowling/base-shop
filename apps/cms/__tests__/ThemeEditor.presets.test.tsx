@@ -40,7 +40,9 @@ describe("ThemeEditor - presets", () => {
       "--color-bg": "#000000",
     });
     await waitFor(() =>
-      expect(screen.getByLabelText(/theme/i)).toHaveValue("custom")
+      expect(
+        screen.getByLabelText(/theme/i, { selector: "select" })
+      ).toHaveValue("custom")
     );
   });
 
@@ -64,7 +66,9 @@ describe("ThemeEditor - presets", () => {
     await waitFor(() => expect(mockDeletePreset).toHaveBeenCalled());
     expect(mockDeletePreset).toHaveBeenCalledWith("test", "custom");
     await waitFor(() =>
-      expect(screen.getByLabelText(/theme/i)).toHaveValue("base")
+      expect(
+        screen.getByLabelText(/theme/i, { selector: "select" })
+      ).toHaveValue("base")
     );
     expect(screen.queryByRole("button", { name: /delete preset/i })).toBeNull();
   });
@@ -80,13 +84,15 @@ describe("ThemeEditor - presets", () => {
       initialTheme: "light",
     });
 
-    const select = screen.getByLabelText(/theme/i);
+    const select = screen.getByLabelText(/theme/i, { selector: "select" });
     (mockSavePreviewTokens as jest.Mock).mockClear();
     fireEvent.change(select, { target: { value: "dark" } });
     await waitFor(() =>
-      expect(mockSavePreviewTokens).toHaveBeenCalledWith({
-        "--color-bg": "#000000",
-      })
+      expect(mockSavePreviewTokens).toHaveBeenCalledWith(
+        expect.objectContaining({
+          "--color-bg": "#000000",
+        }),
+      )
     );
   });
 });

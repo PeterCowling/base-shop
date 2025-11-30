@@ -3,6 +3,27 @@
 
 const readSeoAuditsMock = jest.fn();
 const listEventsMock = jest.fn();
+const useTranslations = jest.fn();
+
+const translations: Record<string, string> = {
+  "cms.seo.progress.title": "SEO progress",
+  "cms.seo.progress.subtitle": "Track recent audit scores",
+  "cms.seo.progress.latestScore": "Latest score",
+  "cms.seo.progress.averageScore": "Average score",
+  "cms.seo.progress.auditCount": "Audit count",
+  "cms.seo.progress.noData": "No audit data yet",
+  "cms.seo.progress.latestRecommendations": "Latest recommendations",
+  "cms.seo.progress.recentAudits": "Recent audits",
+  "cms.seo.progress.time": "Time",
+  "cms.seo.progress.score": "Score",
+  "cms.seo.progress.outcome": "Outcome",
+  "cms.seo.progress.ok": "ok",
+  "cms.seo.progress.failed": "failed",
+};
+
+jest.mock("@i18n/useTranslations.server", () => ({
+  useTranslations,
+}));
 
 jest.mock("@platform-core/repositories/seoAudit.server", () => ({
   readSeoAudits: (...a: unknown[]) => readSeoAuditsMock(...a),
@@ -28,6 +49,10 @@ import SeoProgressPanel from "../src/app/cms/shop/[shop]/settings/seo/SeoProgres
 
 beforeEach(() => {
   jest.clearAllMocks();
+
+  const translator = (key: string) =>
+    translations[key as keyof typeof translations] ?? key;
+  useTranslations.mockResolvedValue(translator);
 });
 
 describe("SeoProgressPanel", () => {

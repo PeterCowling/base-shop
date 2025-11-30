@@ -1,17 +1,35 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { sendCampaignEmail } from "@acme/email";
 
-// Minimal stub endpoint for sending marketing campaigns from the CMS UI.
-// Accepts JSON payload and returns success without performing any delivery.
 export async function POST(req: NextRequest) {
+  let payload: unknown;
   try {
-    // Read payload to keep consistent with real-world shape; ignore content.
-    await req.json().catch(() => ({}));
-    return NextResponse.json({ success: true });
-  } catch (err) {
+    payload = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  const { to, subject, body } = (payload ?? {}) as {
+    to?: string;
+    subject?: string;
+    body?: string;
+  };
+
+  if (!to || !subject || !body) {
     return NextResponse.json(
-      { error: (err as Error).message },
+      { error: "Missing required fields" },
       { status: 400 },
     );
   }
-}
 
+  try {
+    await sendCampaignEmail({ to, subject, html: body });
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("Failed to send campaign email", err);
+    return NextResponse.json(
+      { error: "Failed to send" },
+      { status: 500 },
+    );
+  }
+}

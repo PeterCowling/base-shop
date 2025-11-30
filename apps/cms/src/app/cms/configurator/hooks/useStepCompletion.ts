@@ -29,8 +29,12 @@ export const validators: Record<string, Validator> = {
     return (
       titles.length > 0 &&
       descriptions.length > 0 &&
-      titles.every((v) => v.trim().length > 0) &&
-      descriptions.every((v) => v.trim().length > 0)
+      titles.every(
+        (value) => typeof value === "string" && value.trim().length > 0
+      ) &&
+      descriptions.every(
+        (value) => typeof value === "string" && value.trim().length > 0
+      )
     );
   },
   hosting: (s) => Boolean(s.domain),

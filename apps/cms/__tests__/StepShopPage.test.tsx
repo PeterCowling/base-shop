@@ -83,10 +83,18 @@ let state: any;
 const update = jest.fn();
 const markStepComplete = jest.fn();
 const resetDirty = jest.fn();
+const setState = jest.fn((updater: any) => {
+  state = typeof updater === "function" ? updater(state) : updater;
+});
 
-jest.mock("../src/app/cms/configurator/ConfiguratorContext", () => ({
-  useConfigurator: () => ({ state, update, markStepComplete, resetDirty }),
-}));
+jest.mock("../src/app/cms/configurator/ConfiguratorContext", () => {
+  const React = require("react");
+  const ConfiguratorContext = React.createContext(null);
+  return {
+    ConfiguratorContext,
+    useConfigurator: () => ({ state, setState, update, markStepComplete, resetDirty }),
+  };
+});
 
 beforeEach(() => {
   state = { shopPageId: null, completed: {} };

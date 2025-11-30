@@ -161,8 +161,19 @@ export async function PUT(req: Request): Promise<NextResponse> {
     return NextResponse.json({ success: true });
   } catch (err) {
     const t = await getTranslations("en");
-    const key = err instanceof TypeError ? err.message : "api.common.invalidRequest";
-    return NextResponse.json({ error: t(key) }, { status: 400 });
+    if (err instanceof TypeError) {
+      if (err.message === "api.common.invalidRequest") {
+        return NextResponse.json(
+          { error: t("api.common.invalidRequest") },
+          { status: 400 },
+        );
+      }
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+    return NextResponse.json(
+      { error: t("api.common.invalidRequest") },
+      { status: 400 },
+    );
   }
 }
 
@@ -195,7 +206,18 @@ export async function PATCH(req: Request): Promise<NextResponse> {
     return NextResponse.json({ success: true });
   } catch (err) {
     const t = await getTranslations("en");
-    const key = err instanceof TypeError ? err.message : "api.common.invalidRequest";
-    return NextResponse.json({ error: t(key) }, { status: 400 });
+    if (err instanceof TypeError) {
+      if (err.message === "api.common.invalidRequest") {
+        return NextResponse.json(
+          { error: t("api.common.invalidRequest") },
+          { status: 400 },
+        );
+      }
+      return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+    return NextResponse.json(
+      { error: t("api.common.invalidRequest") },
+      { status: 400 },
+    );
   }
 }

@@ -91,7 +91,11 @@ export default function SeoEditor(props: UseSeoEditorProps) {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const result = await submit();
-    setToast({ open: true, message: result.message });
+    const warningSuffix =
+      result.status === "warning" && result.warnings && result.warnings.length > 0
+        ? `: ${result.warnings.join(", ")}`
+        : "";
+    setToast({ open: true, message: `${result.message}${warningSuffix}` });
   };
 
   const handleGenerate = async () => {
@@ -130,13 +134,20 @@ export default function SeoEditor(props: UseSeoEditorProps) {
             />
 
             {warnings.length > 0 && (
-              <Alert variant="warning" tone="soft" heading={String(t("cms.seo.warnings"))}>
-                <ul className="list-disc pl-5">
-                  {warnings.map((warning) => (
-                    <li key={warning}>{warning}</li>
-                  ))}
-                </ul>
-              </Alert>
+              <>
+                <Alert
+                  variant="warning"
+                  tone="soft"
+                  heading={String(t("cms.seo.warnings"))}
+                >
+                  <ul className="list-disc pl-5">
+                    {warnings.map((warning) => (
+                      <li key={warning}>{warning}</li>
+                    ))}
+                  </ul>
+                </Alert>
+                <p className="sr-only">{warnings.join(" ")}</p>
+              </>
             )}
 
             <Stack gap={3} className="sm:flex-row sm:items-center sm:justify-between">

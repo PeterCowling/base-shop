@@ -73,6 +73,7 @@ const buildDraft = (
 type SubmitResult = {
   status: "error" | "success" | "warning";
   message: string;
+  warnings?: string[];
 };
 
 type GenerateResult = {
@@ -199,10 +200,18 @@ export function useSeoEditor({
         const warningList = result.warnings ?? [];
         setWarnings(warningList);
         return warningList.length > 0
-          ? { status: "warning", message: String(t("cms.seo.save.warning")) }
-          : { status: "success", message: String(t("cms.seo.save.success")) };
+          ? {
+              status: "warning",
+              message: String(t("cms.seo.save.warning")),
+              warnings: warningList,
+            }
+          : {
+              status: "success",
+              message: String(t("cms.seo.save.success")),
+              warnings: [],
+            };
       } catch {
-        return { status: "error", message: String(t("cms.seo.save.error")) };
+        return { status: "error", message: String(t("cms.seo.save.error")), warnings: [] };
       } finally {
         setSaving(false);
       }

@@ -15,6 +15,9 @@ jest.mock(
     const React = require("react");
     return {
       __esModule: true,
+      Alert: ({ children }: { children: React.ReactNode }) => (
+        <div>{children}</div>
+      ),
       Tooltip: ({ children }: { children: React.ReactNode }) => (
         <span>{children}</span>
       ),

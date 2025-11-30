@@ -165,8 +165,12 @@ export async function POST(
         resolve(NextResponse.json({ error: t("api.uploadCsv.noBody") }, { status: 400 }));
       }
     });
-  } catch {
+  } catch (err) {
     const t = await getServerTranslations("en");
-    return NextResponse.json({ error: t("api.common.genericError") }, { status: 400 });
+    const message =
+      err instanceof Error && err.message
+        ? err.message
+        : t("api.common.genericError");
+    return NextResponse.json({ error: message }, { status: 400 });
   }
 }

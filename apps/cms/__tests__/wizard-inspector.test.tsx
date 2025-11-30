@@ -43,7 +43,7 @@ function Inspector() {
   return (
     <>
       <ThemeSelector themes={["base", "dark"]} value={theme} onChange={(e) => setTheme(e.target.value)} />
-      <PreviewDeviceSelector onChange={setDevice} />
+      <PreviewDeviceSelector onChange={setDevice} showRotate />
       <WizardPreview style={style} device={device} />
     </>
   );
@@ -85,4 +85,3 @@ describe("Inspector theme and device selections", () => {
     expect(preview2.style.height).toBe("1024px");
   });
 });
-

@@ -33,7 +33,7 @@
 
   --color-bg-dark: 0 0% 4%;
   --color-fg-dark: 0 0% 93%;
-  --color-primary-dark: 220 90% 66%;
+  --color-primary-dark: 220 90% 56%;
   /* In dark mode, on brand colors we still want light foreground text for contrast */
   --color-primary-fg-dark: 0 0% 100%;
   --color-accent-dark: 260 83% 70%;

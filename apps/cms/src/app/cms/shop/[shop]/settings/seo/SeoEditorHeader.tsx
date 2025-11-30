@@ -23,6 +23,7 @@ export function SeoEditorHeader({ freeze, onFreezeChange }: SeoEditorHeaderProps
       <Inline className="shrink-0 text-sm font-medium" alignY="center" gap={2}>
         <input
           type="checkbox"
+          aria-label={t("Freeze translations")}
           checked={freeze}
           onChange={(event) => {
             void onFreezeChange(event.target.checked);

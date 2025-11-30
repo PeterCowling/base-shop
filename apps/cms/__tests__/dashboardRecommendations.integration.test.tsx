@@ -68,11 +68,14 @@ jest.mock("../src/app/cms/configurator/steps", () => {
       track: "foundation",
     },
   ];
+  const stepsMap = Object.fromEntries(steps.map((s) => [s.id, s]));
   return {
     __esModule: true,
     getSteps: () => steps,
     getRequiredSteps: () => steps,
-    steps: Object.fromEntries(steps.map((s) => [s.id, s])),
+    getStepTrackMeta: () => stepTrackMeta,
+    getStepsMap: () => stepsMap,
+    steps: stepsMap,
     stepTrackMeta,
   };
 });

@@ -21,6 +21,12 @@ jest.mock("../../../test/__mocks__/componentStub.js", () => {
   );
   const Toast = ({ open, message }: any) => (open ? <div>{message}</div> : null);
   const Spinner = () => <div>spinner</div>;
+   const Alert = ({ heading, title, children }: any) => (
+     <div>
+       {heading || title}
+       {children}
+     </div>
+   );
   return new Proxy(
     {},
     {
@@ -31,7 +37,9 @@ jest.mock("../../../test/__mocks__/componentStub.js", () => {
             ? Toast
             : prop === "Spinner"
               ? Spinner
-              : Empty,
+              : prop === "Alert"
+                ? Alert
+                : Empty,
     },
   );
 });
@@ -98,4 +106,3 @@ describe("StepLayout", () => {
     expect(markStepComplete).not.toHaveBeenCalled();
   });
 });
-

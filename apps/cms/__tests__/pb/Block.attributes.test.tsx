@@ -19,7 +19,7 @@ const cssVarsMap = {
   "--pb-static-transform": "scale(1.5)",
   "--pb-anim-duration": "250ms",
 };
-jest.mock(require.resolve("@ui/components/cms/utils/style/cssVars"), () => ({ __esModule: true, cssVars: () => ({ ...cssVarsMap }) }));
+jest.mock(require.resolve("@ui/utils/style/cssVars"), () => ({ __esModule: true, cssVars: () => ({ ...cssVarsMap }) }));
 
 import Block from "@ui/components/cms/page-builder/Block";
 
@@ -92,25 +92,22 @@ describe("Block (attributes)", () => {
   });
 
   it("applies static transform wrapper when provided and no hover effects", () => {
-    // Re-mock cssVars to only include static transform
-    jest.isolateModules(() => {
-      jest.doMock(require.resolve("@ui/components/cms/utils/style/cssVars"), () => ({ __esModule: true, cssVars: () => ({ "--pb-static-transform": "rotate(10deg)" }) }));
-      const B = require("@ui/components/cms/page-builder/Block").default as typeof Block;
-      render(
-        <B
-          locale="en" as any
-          component={{ id: "h2", type: "Hero", styles: JSON.stringify({}) } as any}
-        />
-      );
-      const inner = screen.getByTestId("hero").previousElementSibling as HTMLElement;
-      expect(inner.tagName.toLowerCase()).toBe("div");
-      expect(inner.getAttribute("style") ?? "").toMatch("transform: rotate(10deg)");
-    });
+    // Override cssVarsMap for this scenario to only include static transform
+    cssVarsMap["--pb-static-transform"] = "rotate(10deg)";
+    render(
+      <Block
+        locale="en" as any
+        component={{ id: "h2", type: "Hero", styles: JSON.stringify({}) } as any}
+      />
+    );
+    const inner = screen.getByTestId("hero").parentElement as HTMLElement;
+    expect(inner.tagName.toLowerCase()).toBe("div");
+    expect(inner.getAttribute("style") ?? "").toMatch("transform: rotate(10deg)");
   });
 
   it("ignores invalid style JSON without throwing", () => {
-    render(<Block locale="en" as any component={{ id: "t1", type: "Text", styles: "{invalid" } as any} />);
-    expect(screen.getByText("" + "")).toBeInTheDocument();
+    expect(() =>
+      render(<Block locale="en" as any component={{ id: "t1", type: "Text", styles: "{invalid" } as any} />)
+    ).not.toThrow();
   });
 });
-

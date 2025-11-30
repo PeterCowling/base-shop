@@ -69,33 +69,19 @@ describe("UpgradePreviewClient", () => {
   });
 
   it("shows skeleton state while loading", async () => {
-    jest.useFakeTimers();
-    (global.fetch as jest.Mock).mockImplementation(
-      () =>
-        new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({
-              ok: true,
-              json: async () => ({ components: [] }),
-            });
-          }, 1000);
-        })
-    );
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: async () => ({ components: [] }),
+    });
 
     render(<UpgradePreviewClient shop={shop} />);
 
     expect(screen.getAllByTestId("upgrade-skeleton")).toHaveLength(3);
     expect(screen.getByTestId("summary-skeleton")).toBeInTheDocument();
 
-    await act(async () => {
-      jest.advanceTimersByTime(1000);
-      await Promise.resolve();
-    });
-
     await waitFor(() => {
       expect(screen.queryByTestId("summary-skeleton")).not.toBeInTheDocument();
     });
-    jest.useRealTimers();
   });
 
   it("logs error when fetch fails", async () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button, Input } from "@/components/atoms/shadcn";
-import { Alert } from "@/components/atoms";
+import { Alert } from "@ui/components/atoms";
 import { useEffect, type ChangeEvent } from "react";
 import { getDeployStatus, type DeployInfo } from "../../wizard/services/deployShop";
 import useStepCompletion from "../hooks/useStepCompletion";
@@ -101,7 +101,11 @@ export default function StepHosting({
         <p className="text-sm">{t("cms.configurator.hosting.waitingVerification")}</p>
       )}
       {deployInfo?.status === "success" && (
-        <Alert variant="success" tone="soft" heading={String(t("cms.configurator.hosting.deploymentComplete"))} />
+        <Alert
+          variant="success"
+          tone="soft"
+          heading={String(t("cms.configurator.hosting.deploymentComplete"))}
+        />
       )}
       {deployInfo?.status === "error" && deployInfo.error && (
         // i18n-exempt -- ABC-123 [ttl=2099-12-31]

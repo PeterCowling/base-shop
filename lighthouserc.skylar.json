@@ -1,0 +1,53 @@
+{
+  "ci": {
+    "collect": {
+      "numberOfRuns": 3,
+      "startServerCommand": "pnpm --filter @apps/skylar run start",
+      "startServerReadyPattern": "http://localhost:3008",
+      "startServerReadyTimeout": 120000,
+      "url": [
+        "http://localhost:3008/en",
+        "http://localhost:3008/en/products"
+      ],
+      "settings": {
+        "preset": "perf",
+        "throttlingMethod": "simulate",
+        "disableStorageReset": true,
+        "chromeFlags": "--no-sandbox --disable-dev-shm-usage --ignore-certificate-errors --allow-insecure-localhost",
+        "blockedUrlPatterns": [
+          "*googletagmanager.com*",
+          "*google-analytics.com*",
+          "*segment.io*",
+          "*fullstory.com*"
+        ],
+        "budgets": [
+          {
+            "path": "/*",
+            "resourceCounts": [
+              { "resourceType": "third-party", "budget": 5 }
+            ],
+            "resourceSizes": [
+              { "resourceType": "script", "budget": 250 },
+              { "resourceType": "image", "budget": 600 }
+            ]
+          }
+        ]
+      }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["warn", { "minScore": 0.6 }],
+        "largest-contentful-paint": ["warn", { "maxNumericValue": 4000, "aggregationMethod": "median" }],
+        "total-blocking-time": ["warn", { "maxNumericValue": 300, "aggregationMethod": "median" }],
+        "cumulative-layout-shift": ["warn", { "maxNumericValue": 0.1, "aggregationMethod": "median" }],
+        "resource-summary:script:size": ["warn", { "maxNumericValue": 250000 }],
+        "resource-summary:third-party:count": ["warn", { "maxNumericValue": 5 }]
+      }
+    },
+    "upload": {
+      "target": "temporary-public-storage",
+      "githubStatusContextSuffix": "-skylar-mobile"
+    }
+  }
+}
+

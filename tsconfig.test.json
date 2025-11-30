@@ -83,6 +83,6 @@
       { "path": "./packages/zod-utils/tsconfig.test.json" },
     { "path": "./apps/cms/tsconfig.test.json" },
     { "path": "./apps/dashboard/tsconfig.test.json" },
-    { "path": "./apps/shop-bcd/tsconfig.test.json" }
+    { "path": "./apps/cover-me-pretty/tsconfig.test.json" }
   ]
 }

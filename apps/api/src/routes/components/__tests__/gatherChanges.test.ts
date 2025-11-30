@@ -24,7 +24,7 @@ describe('gatherChanges', () => {
 
   it('returns empty array when shop.json contains invalid JSON', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: '{ bad json',
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: '{ bad json',
       [`${root}/packages/foo/package.json`]: JSON.stringify({
         name: '@acme/foo',
         version: '1.2.0',
@@ -64,7 +64,7 @@ describe('gatherChanges', () => {
   it('propagates errors when reading package.json fails', () => {
     const pkgPath = path.join(root, 'packages', 'foo', 'package.json');
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/foo': '1.0.0' },
       }),
       [pkgPath]: JSON.stringify({
@@ -85,7 +85,7 @@ describe('gatherChanges', () => {
 
   it('returns empty array when shop.json lacks componentVersions', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({}),
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({}),
       [`${root}/packages/foo/package.json`]: JSON.stringify({
         name: '@acme/foo',
         version: '1.2.0',
@@ -97,7 +97,7 @@ describe('gatherChanges', () => {
 
   it('treats null componentVersions as empty object', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: null,
       }),
       [`${root}/packages/foo/package.json`]: JSON.stringify({
@@ -110,7 +110,7 @@ describe('gatherChanges', () => {
 
   it('skips stored components without a package.json', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/foo': '1.0.0' },
       }),
     });
@@ -119,7 +119,7 @@ describe('gatherChanges', () => {
 
   it('skips components when versions are unchanged', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/foo': '1.0.0' },
       }),
       [`${root}/packages/foo/package.json`]: JSON.stringify({
@@ -132,7 +132,7 @@ describe('gatherChanges', () => {
 
   it('skips components when version is undefined', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/foo': '1.0.0' },
       }),
       [`${root}/packages/foo/package.json`]: JSON.stringify({
@@ -144,7 +144,7 @@ describe('gatherChanges', () => {
 
   it('returns only components whose versions have changed', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: {
           '@acme/foo': '1.0.0',
           '@acme/bar': '1.0.0',
@@ -172,7 +172,7 @@ describe('gatherChanges', () => {
 
   it('handles missing changelog files', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/foo': '1.0.0' },
       }),
       [`${root}/packages/foo/package.json`]: JSON.stringify({
@@ -193,7 +193,7 @@ describe('gatherChanges', () => {
 
   it('handles changelog with only comments', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/foo': '1.0.0' },
       }),
       [`${root}/packages/foo/package.json`]: JSON.stringify({
@@ -215,7 +215,7 @@ describe('gatherChanges', () => {
 
   it('falls back to stored key and null when pkg.name and old version are missing', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/foo': null },
       }),
       [`${root}/packages/foo/package.json`]: JSON.stringify({
@@ -236,7 +236,7 @@ describe('gatherChanges', () => {
 
   it('surfaces errors from unreadable package directories', () => {
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/foo': '1.0.0' },
       }),
       [`${root}/packages/foo/package.json`]: JSON.stringify({
@@ -262,4 +262,3 @@ describe('gatherChanges', () => {
     fsMod.readFileSync = origReadFile;
   });
 });
-

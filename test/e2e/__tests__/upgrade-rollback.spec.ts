@@ -1,7 +1,7 @@
 // test/e2e/upgrade-rollback.spec.ts
 
 describe("Upgrade and rollback flow", () => {
-  const slug = "bcd";
+  const slug = "cover-me-pretty";
   const shopJson = `data/shops/${slug}/shop.json`;
   const login = () => cy.loginAsAdmin();
   let original: Record<string, unknown> | null = null;

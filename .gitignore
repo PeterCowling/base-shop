@@ -66,3 +66,4 @@ yarn-error.log*
 **/.next/
 **/coverage/
 **/.ts-jest/
+.lighthouseci/

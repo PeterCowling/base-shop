@@ -60,9 +60,7 @@ describe("CartProvider initial load", () => {
     fetchMock.mockRejectedValue(new Error("offline"));
     window.localStorage.setItem("cart", JSON.stringify(server.cart));
     const addSpy = jest.spyOn(window, "addEventListener");
-    const errorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
 
     render(
       <CartProvider>
@@ -74,17 +72,15 @@ describe("CartProvider initial load", () => {
       expect(screen.getByTestId("count").textContent).toBe("1")
     );
     expect(addSpy).toHaveBeenCalledWith("online", expect.any(Function));
-    expect(errorSpy).toHaveBeenCalled();
-    errorSpy.mockRestore();
+    expect(warnSpy).toHaveBeenCalled();
+    warnSpy.mockRestore();
   });
 
   it("keeps state empty and does not register online listener when fetch fails with no cache", async () => {
     fetchMock.mockRejectedValue(new Error("offline"));
     jest.spyOn(Storage.prototype, "getItem").mockReturnValue(null);
     const addSpy = jest.spyOn(window, "addEventListener");
-    const errorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
 
     render(
       <CartProvider>
@@ -96,8 +92,8 @@ describe("CartProvider initial load", () => {
       expect(screen.getByTestId("count").textContent).toBe("0")
     );
     expect(addSpy).not.toHaveBeenCalled();
-    expect(errorSpy).toHaveBeenCalled();
-    errorSpy.mockRestore();
+    expect(warnSpy).toHaveBeenCalled();
+    warnSpy.mockRestore();
   });
 
   it("logs error when cache read fails during sync", async () => {
@@ -107,7 +103,7 @@ describe("CartProvider initial load", () => {
     getSpy.mockImplementationOnce(() => {
       throw new Error("fail");
     });
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
     const addSpy = jest.spyOn(window, "addEventListener");
 
     render(
@@ -124,8 +120,8 @@ describe("CartProvider initial load", () => {
       window.dispatchEvent(new Event("online"));
     });
 
-    expect(errorSpy).toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalled();
     expect(screen.getByTestId("count").textContent).toBe("1");
-    errorSpy.mockRestore();
+    warnSpy.mockRestore();
   });
 });

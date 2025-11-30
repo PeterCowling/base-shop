@@ -37,11 +37,11 @@ describe("getProductById overloads", () => {
   });
 
   it("returns product asynchronously", async () => {
-    await expect(getProductById("shop-bcd", "prod-1")).resolves.toEqual(
+    await expect(getProductById("cover-me-pretty", "prod-1")).resolves.toEqual(
       mockProduct,
     );
     expect(serverMocks.getProductById).toHaveBeenCalledWith(
-      "shop-bcd",
+      "cover-me-pretty",
       "prod-1",
     );
     expect(base.getProductById).not.toHaveBeenCalled();
@@ -54,9 +54,9 @@ describe("getProductById overloads", () => {
   });
 
   it("returns null when product missing asynchronously", async () => {
-    await expect(getProductById("shop-bcd", "no-exist")).resolves.toBeNull();
+    await expect(getProductById("cover-me-pretty", "no-exist")).resolves.toBeNull();
     expect(serverMocks.getProductById).toHaveBeenCalledWith(
-      "shop-bcd",
+      "cover-me-pretty",
       "no-exist",
     );
     expect(base.getProductById).toHaveBeenCalledWith("no-exist");
@@ -68,4 +68,3 @@ describe("getProductById overloads", () => {
     expect(base.getProductBySlug).toHaveBeenCalledWith("prod-1");
   });
 });
-

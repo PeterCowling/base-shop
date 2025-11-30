@@ -101,5 +101,5 @@ Keep objects under a keyed prefix `tryon/<uid>/...` and serve previews via `/api
 ## Dev tips
 
 - Use data URLs for masks/depth to avoid persistence in preview.
-- For AR, ensure `assets3d.glb`/`usdz` is set in `apps/shop-bcd/src/lib/tryonMeta.ts`.
+- For AR, ensure `assets3d.glb`/`usdz` is set in `apps/cover-me-pretty/src/lib/tryonMeta.ts`.
 - To disable provider calls, set `TRYON_PROVIDER` to something else; routes will return `{}` and the UI degrades gracefully.

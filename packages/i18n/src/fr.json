@@ -4,6 +4,8 @@
   "cms.blocks.socialFeed.embedTitle": "Fil social",
   "cms.blocks.socialFeed.loadError": "Impossible de charger le fil social",
   "cms.blocks.socialFeed.missingConfig": "Aucun fil social configuré.",
+  "app.name": "Base-Shop",
+  "header.cart": "Cart",
   "header.menu.close": "Fermer le menu",
   "header.menu.navigationClose": "Fermer la navigation",
   "header.menu.navigationOpen": "Ouvrir la navigation",

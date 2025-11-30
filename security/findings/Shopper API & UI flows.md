@@ -1,7 +1,7 @@
 # Shopper API & UI flows Findings
 
 ## Password reset token leak enables account takeover
-- **Component**: `apps/shop-bcd/src/app/api/password-reset/request/route.ts`
+- **Component**: `apps/cover-me-pretty/src/app/api/password-reset/request/route.ts`
 - **CWE**: CWE-201 – Exposure of Sensitive Information to an Unauthorized Actor
 - **OWASP**: A02:2021 – Cryptographic Failures
 - **Risk**: High
@@ -13,10 +13,10 @@ The password-reset request endpoint minted a reset token, persisted it, and retu
 Send the reset token to the account owner over email instead of returning it to the caller, and return a generic `{ ok: true }` response regardless of whether the address exists. This keeps the token secret while preserving the original non-enumeration behavior.
 
 ### Tests
-`apps/shop-bcd/__tests__/password-reset.test.tsx` now asserts that the request endpoint omits the `token` field and that `@acme/email.sendEmail` is invoked with the generated token. The test fails against the vulnerable handler (because the token is still in the payload and no email is sent) and passes after the fix.
+`apps/cover-me-pretty/__tests__/password-reset.test.tsx` now asserts that the request endpoint omits the `token` field and that `@acme/email.sendEmail` is invoked with the generated token. The test fails against the vulnerable handler (because the token is still in the payload and no email is sent) and passes after the fix.
 
 ## Plaintext password storage during reset flow
-- **Component**: `apps/shop-bcd/src/app/api/password-reset/[token]/route.ts`
+- **Component**: `apps/cover-me-pretty/src/app/api/password-reset/[token]/route.ts`
 - **CWE**: CWE-256 – Plaintext Storage of a Password
 - **OWASP**: A02:2021 – Cryptographic Failures
 - **Risk**: High
@@ -28,4 +28,4 @@ The reset completion endpoint wrote whatever `password` value the client supplie
 Hash the password with argon2 before calling `updatePassword`, so only a slow-to-crack hash ever lands in persistent storage and the authentication flow continues to work.
 
 ### Tests
-`apps/shop-bcd/__tests__/password-reset.test.tsx` now mocks the argon2 hasher and asserts that `updatePassword` receives the hashed output rather than the raw password. The check fails with the vulnerable implementation (because the mock sees the plaintext) and passes after applying the fix.
+`apps/cover-me-pretty/__tests__/password-reset.test.tsx` now mocks the argon2 hasher and asserts that `updatePassword` receives the hashed output rather than the raw password. The check fails with the vulnerable implementation (because the mock sees the plaintext) and passes after applying the fix.

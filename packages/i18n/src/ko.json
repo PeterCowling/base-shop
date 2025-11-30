@@ -4,6 +4,8 @@
   "cms.blocks.socialFeed.embedTitle": "소셜 피드",
   "cms.blocks.socialFeed.loadError": "소셜 피드를 불러오지 못했습니다",
   "cms.blocks.socialFeed.missingConfig": "소셜 피드가 구성되지 않았습니다.",
+  "app.name": "Base-Shop",
+  "header.cart": "Cart",
   "header.menu.close": "메뉴 닫기",
   "header.menu.navigationClose": "탐색 닫기",
   "header.menu.navigationOpen": "탐색 열기",

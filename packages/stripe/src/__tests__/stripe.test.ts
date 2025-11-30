@@ -50,18 +50,51 @@ describe("stripe client", () => {
     expect(httpClient).toHaveProperty("_fetchFn");
   });
 
+  it("exports mock client when STRIPE_USE_MOCK is true", async () => {
+    jest.resetModules();
+    (process.env as Record<string, string>).STRIPE_USE_MOCK = "true";
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { STRIPE_SECRET_KEY: "sk_test_mock" },
+    }));
+
+    const { stripe } = await import("../index.ts");
+
+    const session = await stripe.checkout.sessions.create({ foo: "bar" } as any);
+    expect(session.id).toBe("cs_test_mock");
+
+    const retrieved = await stripe.checkout.sessions.retrieve("cs_test_mock", {
+      expand: ["line_items"],
+    } as any);
+    expect(retrieved.id).toBe("cs_test_mock");
+
+    const refund = await stripe.refunds.create({ amount: 1000 } as any);
+    expect(refund.id).toBe("re_mock");
+
+    const updatedIntent = await stripe.paymentIntents.update("pi_123", {
+      metadata: { foo: "bar" },
+    } as any);
+    expect(updatedIntent.id).toBe("pi_123");
+
+    const createdIntent = await stripe.paymentIntents.create({ amount: 1234 } as any);
+    expect(createdIntent.id).toBe("pi_mock");
+
+    const subscription = await stripe.subscriptions.del("sub_123");
+    expect(subscription.id).toBe("sub_123");
+  });
+
   it("performs requests successfully with mocked API", async () => {
     const { stripe } = await import("../index.ts");
     const stripeInternal = stripe as StripeInternal;
 
     let called = false;
     server.use(
-      rest.post("https://api.stripe.com/v1/customers", (_req, res, ctx) => {
+      rest.post("https://api.stripe.com/v1/customers", ({ request }) => {
         called = true;
-        return res(
-          ctx.status(200),
-          ctx.json({ id: "cus_test", object: "customer" })
-        );
+        void request; // keep signature explicit even if unused
+        return new Response(JSON.stringify({ id: "cus_test", object: "customer" }), {
+          status: 200,
+          headers: { "Content-Type": "application/json" },
+        });
       })
     );
 
@@ -82,11 +115,15 @@ describe("stripe client", () => {
 
     let called = false;
     server.use(
-      rest.post("https://api.stripe.com/v1/customers", (_req, res, ctx) => {
+      rest.post("https://api.stripe.com/v1/customers", ({ request }) => {
         called = true;
-        return res(
-          ctx.status(400),
-          ctx.json({ error: { message: "Invalid request" } })
+        void request;
+        return new Response(
+          JSON.stringify({ error: { message: "Invalid request" } }),
+          {
+            status: 400,
+            headers: { "Content-Type": "application/json" },
+          }
         );
       })
     );
@@ -169,12 +206,15 @@ describe("stripe client", () => {
     server.use(
       rest.post(
         "https://api.stripe.com/v1/checkout/sessions",
-        async (req, res, ctx) => {
-          capturedBody = await req.text();
-          capturedVersion = req.headers.get("stripe-version") ?? "";
-          return res(
-            ctx.status(200),
-            ctx.json({ id: "cs_test", object: "checkout.session" })
+        async ({ request }) => {
+          capturedBody = await request.text();
+          capturedVersion = request.headers.get("stripe-version") ?? "";
+          return new Response(
+            JSON.stringify({ id: "cs_test", object: "checkout.session" }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            }
           );
         }
       )
@@ -203,8 +243,18 @@ describe("stripe client", () => {
     server.use(
       rest.post(
         "https://api.stripe.com/v1/checkout/sessions",
-        (_req, res, ctx) =>
-          res(ctx.status(400), ctx.json({ error: { message: "Bad request" } }))
+        ({ request }) =>
+          new Response(
+            JSON.stringify({ error: { message: "Bad request" } }),
+            {
+              status: 400,
+              headers: {
+                "Content-Type": "application/json",
+                // Preserve incoming headers to keep Stripe client behavior predictable
+                ...Object.fromEntries(request.headers.entries()),
+              },
+            }
+          )
       )
     );
 
@@ -227,16 +277,19 @@ describe("stripe client", () => {
     server.use(
       rest.post(
         "https://api.stripe.com/v1/payment_intents/pi_123",
-        async (req, res, ctx) => {
-          capturedBody = await req.text();
-          capturedVersion = req.headers.get("stripe-version") ?? "";
-          return res(
-            ctx.status(200),
-            ctx.json({
+        async ({ request }) => {
+          capturedBody = await request.text();
+          capturedVersion = request.headers.get("stripe-version") ?? "";
+          return new Response(
+            JSON.stringify({
               id: "pi_123",
               object: "payment_intent",
               metadata: { foo: "bar" },
-            })
+            }),
+            {
+              status: 200,
+              headers: { "Content-Type": "application/json" },
+            }
           );
         }
       )
@@ -259,8 +312,17 @@ describe("stripe client", () => {
     server.use(
       rest.post(
         "https://api.stripe.com/v1/payment_intents/pi_123",
-        (_req, res, ctx) =>
-          res(ctx.status(400), ctx.json({ error: { message: "Bad request" } }))
+        ({ request }) =>
+          new Response(
+            JSON.stringify({ error: { message: "Bad request" } }),
+            {
+              status: 400,
+              headers: {
+                "Content-Type": "application/json",
+                ...Object.fromEntries(request.headers.entries()),
+              },
+            }
+          )
       )
     );
 

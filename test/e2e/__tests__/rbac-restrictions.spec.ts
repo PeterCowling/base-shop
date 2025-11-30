@@ -11,7 +11,7 @@ function loginWithRole(role: string, sessionId: string) {
 }
 
 describe("RBAC restrictions", () => {
-  const shopId = "bcd";
+  const shopId = "cover-me-pretty";
 
   it("blocks viewer from accessing settings", () => {
     const url = `/cms/shop/${shopId}/settings`;

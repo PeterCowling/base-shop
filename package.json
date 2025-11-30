@@ -46,7 +46,7 @@
     "e2e:cms:admin": "TEST_DATA_ROOT=__tests__/data NEXTAUTH_URL=http://localhost:3010 CYPRESS_BASE_URL=http://localhost:3010 start-server-and-test \"pnpm --filter @apps/cms exec next dev -p 3010\" http://localhost:3010 \"env -u ELECTRON_RUN_AS_NODE pnpm exec cypress run --config-file apps/cms/cypress.config.mjs --spec apps/cms/cypress/e2e/cms-a11y-admin.cy.ts\"",
     "e2e:cms:dnd": "NEXTAUTH_URL=http://localhost:3010 CYPRESS_BASE_URL=http://localhost:3010 sh -c 'ROOT=$(node scripts/src/mktemp-data-root.ts) && start-server-and-test \"DATA_ROOT=$ROOT/shops pnpm --filter @apps/cms exec next dev -p 3010\" http://localhost:3010 \"TEST_DATA_ROOT=$ROOT/shops pnpm exec cypress run --config-file apps/cms/cypress.config.mjs --spec apps/cms/cypress/e2e/cms-page-builder-dnd.cy.ts,apps/cms/cypress/e2e/cms-page-builder.cy.ts\"'",
     "e2e:cms:functional": "NEXTAUTH_URL=http://localhost:3010 CYPRESS_BASE_URL=http://localhost:3010 sh -c 'ROOT=$(node scripts/src/mktemp-data-root.ts) && start-server-and-test \"DATA_ROOT=$ROOT/shops pnpm --filter @apps/cms exec next dev -p 3010\" http://localhost:3010 \"TEST_DATA_ROOT=$ROOT/shops pnpm exec cypress run --config-file apps/cms/cypress.config.mjs --spec apps/cms/cypress/e2e/cms-*-functional.cy.ts\"'",
-    "e2e:shop": "TEST_DATA_ROOT=__tests__/data node --import tsx scripts/src/seed-test-data.ts && start-server-and-test \"sh -c 'pnpm --filter @apps/shop-bcd build && pnpm --filter @apps/shop-bcd start'\" http://localhost:3004 \"CYPRESS_BASE_URL=http://localhost:3004 pnpm exec cypress run --config-file apps/cms/cypress.config.mjs --spec apps/cms/cypress/e2e/shop-*.cy.ts,apps/cms/cypress/e2e/session-expiration.cy.ts\"",
+    "e2e:shop": "TEST_DATA_ROOT=__tests__/data node --import tsx scripts/src/seed-test-data.ts && start-server-and-test \"sh -c 'pnpm --filter @apps/cover-me-pretty build && pnpm --filter @apps/cover-me-pretty start'\" http://localhost:3004 \"CYPRESS_BASE_URL=http://localhost:3004 pnpm exec cypress run --config-file apps/cms/cypress.config.mjs --spec apps/cms/cypress/e2e/shop-*.cy.ts,apps/cms/cypress/e2e/session-expiration.cy.ts\"",
     "test:e2e": "pnpm run e2e:dashboard && pnpm run e2e:shop",
     "i18n:extract": "next-intl extract",
     "i18n:check": "ts-node scripts/check-i18n-schemas.ts",
@@ -96,10 +96,12 @@
     "ops:backup-data": "tsx scripts/src/ops/backup-data-root.ts",
     "stripe:send-test-event": "tsx scripts/stripe-send-test-event.ts",
     "prisma:generate": "pnpm --filter @acme/platform-core exec prisma generate",
-    "lhci:cms:mobile": "pnpm dlx @lhci/cli autorun --config=lighthouserc.json",
-    "lhci:cms:desktop": "pnpm dlx @lhci/cli autorun --config=lighthouserc.desktop.json",
-    "lhci:shop:mobile": "pnpm dlx @lhci/cli autorun --config=lighthouserc.shop.json",
-    "lhci:shop:desktop": "pnpm dlx @lhci/cli autorun --config=lighthouserc.shop.desktop.json"
+    "lhci:cms:mobile": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.json",
+    "lhci:cms:desktop": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.desktop.json",
+    "lhci:shop:mobile": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.shop.json",
+    "lhci:shop:desktop": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.shop.desktop.json",
+    "lhci:skylar:mobile": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.skylar.json",
+    "lhci:skylar:desktop": "pnpm dlx @lhci/cli@0.15.1 autorun --config=lighthouserc.skylar.desktop.json"
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx}": [

@@ -92,4 +92,4 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         working-directory: apps/cms
-        run: npx @cloudflare/next-on-pages deploy --project-name=cms --branch=${{ github.ref_name }}
+        run: pnpm exec next-on-pages deploy --project-name cms --branch ${{ github.ref_name }}

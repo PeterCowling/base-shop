@@ -1,4 +1,5 @@
 // scripts/src/validate-env.ts
+/* i18n-exempt file -- ENG-2003 CLI-only env validation messages, not user-facing UI [ttl=2026-12-31] */
 /**
  * Validate environment variables for a given shop.  The original script
  * depends on a schema from the `@config` package and sets up friendly error
@@ -51,13 +52,16 @@ if (!shopId) {
   process.exit(1);
 }
 
-const envPath = join("apps", `shop-${shopId}`, ".env");
+const appSlug = shopId === "bcd" ? "cover-me-pretty" : `shop-${shopId}`;
+const envPath = join("apps", appSlug, ".env");
 
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2003: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
 if (!existsSync(envPath)) {
   console.error(`Missing ${envPath}`);
   process.exit(1);
 }
 
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2003: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
 const envRaw = readFileSync(envPath, "utf8");
 const env: Record<string, string> = {};
 for (const line of envRaw.split(/\n+/)) {

@@ -1,0 +1,36 @@
+@config "../../../../tailwind.config.mjs";
+
+@import "@themes/base/src/tokens.css";
+@import "../../../../packages/ui/src/styles/builder.css";
+@import "../../../../packages/ui/src/styles/typography.css";
+@import "../../../../packages/ui/src/styles/forms.css";
+
+@import "tailwindcss";
+
+/* -------- Layout helpers ---------------------------------------- */
+/* Safe viewport-height grid container for full-page layouts */
+.page-min-h-screen-safe {
+  min-height: 100svh;
+}
+
+/* -------- Text wrapping & overflow safety ------------------------ */
+/*
+   Ensure long user-provided text (names, emails, slugs, URLs) wraps
+   gracefully without overflowing cards or compressing controls.
+   Scoped to storefront content wrapper to avoid global side effects.
+*/
+.sf-content :where(h1,h2,h3,h4,h5,h6,p,span,small,li,dt,dd,blockquote,label,a,strong,em,code,div) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  hyphens: auto;
+}
+.sf-content :where(.min-w-0) { min-width: 0 !important; }
+
+/* -------- Typography mapping to theme tokens --------------------- */
+/* Ensure authored font selections flow through to runtime elements. */
+/* Heading/body mapping provided by shared typography.css */
+
+/* Try-on stepper active state */
+.tryon-step-active {
+  @apply font-medium text-foreground;
+}

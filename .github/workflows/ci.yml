@@ -31,7 +31,7 @@ jobs:
               - 'packages/tailwind-config/**'
               - 'packages/theme/**'
             shop:
-              - 'apps/shop-bcd/**'
+              - 'apps/cover-me-pretty/**'
               - 'apps/cms/**'
               - 'packages/platform-core/**'
               - 'packages/ui/**'
@@ -79,6 +79,6 @@ jobs:
     if: github.ref_name == 'main'
     steps:
       - uses: actions/checkout@v4
-      - run: npx @cloudflare/next-on-pages deploy \
-               --project-name=base-shop \
-               --branch=${{ github.ref_name }}
+      - run: pnpm exec next-on-pages deploy \
+               --project-name base-shop \
+               --branch ${{ github.ref_name }}

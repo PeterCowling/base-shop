@@ -42,7 +42,7 @@ test("rental order is returned and refunded", async () => {
     );
 
     const { POST: returnPost } = await import(
-      "../../../../apps/shop-bcd/src/api/return/route"
+      "../../../../apps/cover-me-pretty/src/api/return/route"
     );
 
     // Seed an order directly via the repository to avoid depending on the rental

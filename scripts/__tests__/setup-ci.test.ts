@@ -51,8 +51,8 @@ describe("setup-ci script", () => {
     expect(readMock).toHaveBeenCalled();
     expect(writeMock).toHaveBeenCalledTimes(1);
     const [wfPath, content] = writeMock.mock.calls[0];
-    expect(wfPath).toBe(path.join(".github", "workflows", "shop-bcd.yml"));
-      expect(content).toContain("shop-bcd");
+    expect(wfPath).toBe(path.join(".github", "workflows", "cover-me-pretty.yml"));
+      expect(content).toContain("@apps/cover-me-pretty");
       expect(content).toContain("STRIPE_SECRET_KEY: sk");
       expect(content).toContain("STRIPE_WEBHOOK_SECRET: whsec");
       expect(exitMock).not.toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe("setup-ci script", () => {
 
     await expect(import("../src/setup-ci")).rejects.toThrow("EXIT:1");
     expect(errorSpy).toHaveBeenCalledWith(
-      `Missing ${path.join("apps", "shop-bcd", ".env")}`
+      `Missing ${path.join("apps", "cover-me-pretty", ".env")}`
     );
     expect(writeMock).not.toHaveBeenCalled();
     expect(exitMock).toHaveBeenCalledWith(1);
@@ -141,4 +141,3 @@ describe("setup-ci script", () => {
     expect(exitMock).toHaveBeenCalledWith(1);
   });
 });
-

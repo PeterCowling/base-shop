@@ -32,13 +32,13 @@ describe('helpers', () => {
     });
 
     it('handles invalid shop.json', () => {
-      vol.fromJSON({ [`${root}/data/shops/bcd/shop.json`]: '{oops}' });
+      vol.fromJSON({ [`${root}/data/shops/cover-me-pretty/shop.json`]: '{oops}' });
       expect(gatherChanges('bcd', root)).toEqual([]);
     });
 
     it("skips components with unchanged versions", () => {
       vol.fromJSON({
-        [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+        [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
           componentVersions: { '@scope/pkg': '1.0.0' },
         }),
         [`${root}/packages/pkg/package.json`]: JSON.stringify({
@@ -52,7 +52,7 @@ describe('helpers', () => {
 
     it('handles version bumps and changelog summaries', () => {
       vol.fromJSON({
-        [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+        [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
           componentVersions: { '@scope/pkg': '1.0.0' },
         }),
         [`${root}/packages/pkg/package.json`]: JSON.stringify({
@@ -76,7 +76,7 @@ describe('helpers', () => {
 
     it('handles packages without CHANGELOG', () => {
       vol.fromJSON({
-        [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+        [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
           componentVersions: { '@scope/pkg': '1.0.0' },
         }),
         [`${root}/packages/pkg/package.json`]: JSON.stringify({
@@ -138,4 +138,3 @@ describe('helpers', () => {
     });
   });
 });
-

@@ -1,9 +1,9 @@
 // test/e2e/theme-editor.spec.ts
 
 describe("Theme editor", () => {
-  const shop = "bcd";
+  const shop = "cover-me-pretty";
   const themeUrl = `/cms/shop/${shop}/themes`;
-  const shopFile = "data/shops/bcd/shop.json";
+  const shopFile = "data/shops/cover-me-pretty/shop.json";
   const login = () => cy.loginAsAdmin();
 
   before(() => {

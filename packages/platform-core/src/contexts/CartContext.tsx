@@ -74,7 +74,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
           return;
         }
         // Non-OK initial response: prefer graceful fallback over throwing.
-        console.error(
+        // Log at warn level so expected cart API issues (e.g. offline dev,
+        // preview environments without a backend) do not surface as hard
+        // console errors.
+        console.warn(
           "[cart] initial fetch not ok", // i18n-exempt -- developer log label, not user-facing
           { status: res.status, statusText: res.statusText }
         );
@@ -145,7 +148,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
             window.removeEventListener("online", handler);
             return;
           } catch (syncErr) {
-            console.error("[cart] sync on online failed", syncErr); // i18n-exempt -- developer log label, not user-facing
+            // Network or runtime error during sync: treat as a warning so
+            // transient failures don't pollute the console with errors.
+            console.warn("[cart] sync on online failed", syncErr); // i18n-exempt -- developer log label, not user-facing
             if (!putResponse) {
               // Network failed – stay subscribed for the next online event.
               return;
@@ -164,15 +169,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
             }
             window.removeEventListener("online", handler);
           } catch (refreshErr) {
-            console.error("[cart] refresh after sync failed", refreshErr); // i18n-exempt -- developer log label, not user-facing
+            // Network or runtime error during refresh: treat as a warning.
+            console.warn("[cart] refresh after sync failed", refreshErr); // i18n-exempt -- developer log label, not user-facing
           }
         };
 
         sync = handler;
         window.addEventListener("online", handler);
       } catch (err) {
-        // Network or runtime error: log at warn to avoid noisy console errors in dev
-        console.error("[cart] initial fetch failed", err); // i18n-exempt -- developer log label, not user-facing
+        // Network or runtime error: log at warn to avoid noisy console errors in dev.
+        // Avoid logging the raw Error object as an error so that the browser
+        // console does not show a scary “Error: Failed to fetch” entry when
+        // the cart API is temporarily unavailable.
+        console.warn(
+          "[cart] initial fetch failed", // i18n-exempt -- developer log label, not user-facing
+          err instanceof Error ? err.message : err,
+        );
 
         let cachedCart: CartState | null = null;
         let hadCachedValue = false;
@@ -239,7 +251,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             window.removeEventListener("online", handler);
             return;
           } catch (syncErr) {
-            console.error("[cart] sync on online failed", syncErr); // i18n-exempt -- developer log label, not user-facing
+            console.warn("[cart] sync on online failed", syncErr); // i18n-exempt -- developer log label, not user-facing
             if (!putResponse) {
               // Network failed – stay subscribed for the next online event.
               return;
@@ -258,7 +270,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             }
             window.removeEventListener("online", handler);
           } catch (refreshErr) {
-            console.error("[cart] refresh after sync failed", refreshErr); // i18n-exempt -- developer log label, not user-facing
+            console.warn("[cart] refresh after sync failed", refreshErr); // i18n-exempt -- developer log label, not user-facing
           }
         };
 

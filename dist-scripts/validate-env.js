@@ -1,4 +1,6 @@
 // scripts/src/validate-env.ts
+/* i18n-exempt file -- ENG-2003 CLI-only env validation messages, not user-facing UI [ttl=2026-12-31] */
+/* eslint-disable @typescript-eslint/no-require-imports -- ENG-2005: dist-scripts are CommonJS entrypoints used by Node and tests [ttl=2026-12-31] */
 /**
  * Validate environment variables for a given shop. This CommonJS build
  * mirrors the TypeScript source used in production, but avoids importing the
@@ -47,11 +49,13 @@ if (!shopId) {
 
 const envPath = join("apps", `shop-${shopId}`, ".env");
 
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2003: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
 if (!existsSync(envPath)) {
   console.error(`Missing ${envPath}`);
   process.exit(1);
 }
 
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2003: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
 const envRaw = readFileSync(envPath, "utf8");
 const env = {};
 for (const line of envRaw.split(/\n+/)) {
@@ -78,4 +82,3 @@ try {
   }
   process.exit(1);
 }
-

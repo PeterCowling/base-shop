@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- SEC-2004: integration test uses temp filesystem paths derived from mkdtemp() and join(); inputs are controlled [ttl=2026-12-31] */
 import { existsSync, mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "fs";
 import { join } from "path";
 import { tmpdir } from "os";
@@ -15,7 +16,7 @@ describe("publish API", () => {
       mkdirSync(routeDir, { recursive: true });
 
       const routeSource = readFileSync(
-        join(__dirname, "../../../apps/shop-bcd/src/app/api/publish/route.ts"),
+        join(__dirname, "../../../apps/cover-me-pretty/src/app/api/publish/route.ts"),
         "utf8"
       );
       let routeJs = ts.transpileModule(routeSource, {
@@ -55,6 +56,7 @@ describe("publish API", () => {
       process.chdir(appDir);
 
       const require = createRequire(__filename);
+      // eslint-disable-next-line security/detect-non-literal-require -- SEC-2004: dynamic require for compiled route under controlled temp dir in test harness [ttl=2026-12-31]
       const { POST } = require(join(routeDir, "route.js"));
       await POST();
 

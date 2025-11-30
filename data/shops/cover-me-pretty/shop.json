@@ -1,0 +1,64 @@
+{
+  "id": "cover-me-pretty",
+  "name": "cover-me-pretty",
+  "catalogFilters": [],
+  "themeId": "base",
+  "themeOverrides": {},
+  "filterMappings": {},
+  "type": "rental",
+  "showCleaningTransparency": true,
+  "shippingProviders": [
+    "dhl"
+  ],
+  "taxProviders": [
+    "taxjar"
+  ],
+  "coverageIncluded": true,
+  "billingProvider": "stripe",
+  "priceOverrides": {},
+  "localeOverrides": {},
+  "rentalInventoryAllocation": true,
+  "componentVersions": {},
+  "lastUpgrade": "1970-01-01T00:00:00.000Z",
+  "sanityBlog": {
+    "projectId": "demo",
+    "dataset": "production",
+    "token": "token"
+  },
+  "editorialBlog": {
+    "enabled": true
+  },
+  "luxuryFeatures": {
+    "blog": true,
+    "contentMerchandising": true,
+    "raTicketing": true,
+    "fraudReviewThreshold": 0,
+    "requireStrongCustomerAuth": false,
+    "strictReturnConditions": true,
+    "trackingDashboard": true,
+    "premierDelivery": false
+  },
+  "rentalSubscriptions": [
+    {
+      "id": "basic",
+      "price": 3000,
+      "itemsIncluded": 3,
+      "swapLimit": 1,
+      "shipmentsPerMonth": 1,
+      "prorateOnChange": true
+    },
+    {
+      "id": "premium",
+      "price": 5000,
+      "itemsIncluded": 5,
+      "swapLimit": 2,
+      "shipmentsPerMonth": 2,
+      "prorateOnChange": true
+    }
+  ],
+  "subscriptionsEnabled": true,
+  "lateFeePolicy": {
+    "gracePeriodDays": 3,
+    "feeAmount": 25
+  }
+}

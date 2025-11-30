@@ -23,7 +23,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -52,7 +52,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -60,9 +60,9 @@ describe('onRequest successful responses', () => {
         version: '1.1.0',
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\n\nFixed bug\n',
-      [`${root}/apps/shop-bcd/src/templates/main.html`]: 'app',
+      [`${root}/apps/cover-me-pretty/src/templates/main.html`]: 'app',
       [`${root}/packages/template-app/src/templates/main.html`]: 'template',
-      [`${root}/apps/shop-bcd/src/translations/en.json`]: '{}',
+      [`${root}/apps/cover-me-pretty/src/translations/en.json`]: '{}',
       [`${root}/packages/template-app/src/translations/en.json`]: '{"foo":"bar"}',
     });
     const res = await onRequest(createRequest({ shopId: 'bcd', token: 'good' }));
@@ -86,7 +86,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -94,9 +94,9 @@ describe('onRequest successful responses', () => {
         version: '1.1.0',
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\n\nFixed bug\n',
-      [`${root}/apps/shop-bcd/src/templates/main.html`]: 'app',
+      [`${root}/apps/cover-me-pretty/src/templates/main.html`]: 'app',
       [`${root}/packages/template-app/src/templates/main.html`]: 'template',
-      [`${root}/apps/shop-bcd/src/translations/en.json`]: '{}',
+      [`${root}/apps/cover-me-pretty/src/translations/en.json`]: '{}',
       [`${root}/packages/template-app/src/translations/en.json`]: '{"foo":"bar"}',
     });
     const res = await onRequest(
@@ -121,7 +121,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -129,12 +129,12 @@ describe('onRequest successful responses', () => {
         version: '1.1.0',
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\\n\\nFixed bug\\n',
-      [`${root}/apps/shop-bcd/src/templates/app-only.html`]: 'app',
-      [`${root}/apps/shop-bcd/src/templates/shared.html`]: 'same',
+      [`${root}/apps/cover-me-pretty/src/templates/app-only.html`]: 'app',
+      [`${root}/apps/cover-me-pretty/src/templates/shared.html`]: 'same',
       [`${root}/packages/template-app/src/templates/template-only.html`]: 'tpl',
       [`${root}/packages/template-app/src/templates/shared.html`]: 'same',
-      [`${root}/apps/shop-bcd/src/translations/app-only.json`]: '{}',
-      [`${root}/apps/shop-bcd/src/translations/common.json`]: '{}',
+      [`${root}/apps/cover-me-pretty/src/translations/app-only.json`]: '{}',
+      [`${root}/apps/cover-me-pretty/src/translations/common.json`]: '{}',
       [`${root}/packages/template-app/src/translations/template-only.json`]: '{}',
       [`${root}/packages/template-app/src/translations/common.json`]: '{}',
     });
@@ -163,7 +163,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.1.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({
@@ -171,9 +171,9 @@ describe('onRequest successful responses', () => {
         version: '1.1.0',
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\\n\\nNothing changed\\n',
-      [`${root}/apps/shop-bcd/src/templates/main.html`]: 'same',
+      [`${root}/apps/cover-me-pretty/src/templates/main.html`]: 'same',
       [`${root}/packages/template-app/src/templates/main.html`]: 'same',
-      [`${root}/apps/shop-bcd/src/translations/en.json`]: '{"foo":"bar"}',
+      [`${root}/apps/cover-me-pretty/src/translations/en.json`]: '{"foo":"bar"}',
       [`${root}/packages/template-app/src/translations/en.json`]: '{"foo":"bar"}',
     });
     const res = await onRequest(
@@ -190,7 +190,7 @@ describe('onRequest successful responses', () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
     vol.fromJSON({
-      [`${root}/data/shops/bcd/shop.json`]: JSON.stringify({
+      [`${root}/data/shops/cover-me-pretty/shop.json`]: JSON.stringify({
         componentVersions: { '@acme/button': '1.0.0' },
       }),
       [`${root}/packages/button/package.json`]: JSON.stringify({

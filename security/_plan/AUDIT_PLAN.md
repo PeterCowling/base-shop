@@ -16,7 +16,7 @@
 
 ### Entry points & workloads
 - **CMS Next.js app** exposes API routes for deploy, media upload, CSV import, and SEO tools (`apps/cms/src/app/api/**`).
-- **Shop BCD Next.js app** handles customer-facing auth, account, checkout, tax/shipping, and preview APIs (`apps/shop-bcd/src/app/api/**`).
+- **Shop BCD Next.js app** handles customer-facing auth, account, checkout, tax/shipping, and preview APIs (`apps/cover-me-pretty/src/app/api/**`).
 - **Cloudflare worker API** provides upgrade-preview and publish endpoints for shops (`apps/api/src/routes/components/[shopId].ts`, `apps/api/src/routes/shop/[id]/publish-upgrade.ts`).
 - **Scheduled workers / cron jobs** for SEO audits and editorial publishing (`functions/src/seoAudit.ts`, `functions/src/publishEditorial.ts`, `wrangler.toml` cron trigger).
 - **Background services** like deposit release, reverse logistics, and stock alerts in `packages/platform-machine/src/**` and `packages/platform-core/src/services/**`.
@@ -46,11 +46,11 @@
 ### Testing & coverage hot spots
 - **Extensive Jest suites** for repositories, services, and worker routes (`apps/api/src/routes/**/__tests__`, `packages/platform-core/src/**/__tests__`, `packages/auth/src/__tests__`).
 - **Cypress E2E coverage** for CMS, dashboard, and shop flows (`apps/cms/cypress/e2e/*.cy.ts`).
-- **Unit tests for Next APIs** across shop and CMS apps (`apps/shop-bcd/src/app/api/**/route.test.ts`, `apps/cms/src/app/api/**/__tests__`).
+- **Unit tests for Next APIs** across shop and CMS apps (`apps/cover-me-pretty/src/app/api/**/route.test.ts`, `apps/cms/src/app/api/**/__tests__`).
 - **Docs** describing test modes and Prisma stubs vs. live DB (`__tests__/docs/testing.md`).
 
 ## 2. Externally reachable surfaces & trust boundaries
-- **Public shopper surface:** `/apps/shop-bcd` routes, static pages, and API endpoints rely on signed customer sessions; they interact with Prisma and JSON stores through `@platform-core` repositories (`apps/shop-bcd/src/app/api/login/route.ts`, `packages/platform-core/src/orders/creation.ts`). Trust boundary between anonymous users, authenticated customers, and backend services.
+- **Public shopper surface:** `/apps/cover-me-pretty` routes, static pages, and API endpoints rely on signed customer sessions; they interact with Prisma and JSON stores through `@platform-core` repositories (`apps/cover-me-pretty/src/app/api/login/route.ts`, `packages/platform-core/src/orders/creation.ts`). Trust boundary between anonymous users, authenticated customers, and backend services.
 - **CMS admin surface:** Protected Next.js routes under `/apps/cms` for media upload, CSV imports, deploy actions, and provider management. Relies on NextAuth and RBAC, writes to `data/shops/<id>` and triggers build/deploy commands (`apps/cms/src/app/api/upload-csv/[shop]/route.ts`, `apps/cms/src/actions/deployShop.server.ts`). Trust boundary between authenticated admins and filesystem/CLI execution environment.
 - **Upgrade worker API:** Cloudflare Worker endpoints for component diffs and publishing upgrades require bearer tokens but run privileged commands (`apps/api/src/routes/components/[shopId].ts`, `apps/api/src/routes/shop/[id]/publish-upgrade.ts`). Boundary between remote callers with token access and repository filesystem/child process execution.
 - **Scheduled jobs:** Cron-triggered SEO audits and editorial publishing iterate over all shops, send email, and append to JSONL logs (`functions/src/seoAudit.ts`, `functions/src/publishEditorial.ts`). Trust boundary between Cloudflare scheduler and outbound providers/analytics store.
@@ -61,7 +61,7 @@
 | ID | Slice | Scope highlights | Est. review effort |
 |----|-------|------------------|--------------------|
 | S1 | CMS Next.js admin APIs | `apps/cms/src/app/api/**`, server actions, auth glue | 2.0 days |
-| S2 | Shopper API & UI flows | `apps/shop-bcd/src/app/api/**`, related pages/hooks | 2.0 days |
+| S2 | Shopper API & UI flows | `apps/cover-me-pretty/src/app/api/**`, related pages/hooks | 2.0 days |
 | S3 | Auth & session platform | `packages/auth/src/**`, CMS NextAuth config | 1.5 days |
 | S4 | Platform data repositories | `packages/platform-core/src/repositories/**`, `dataRoot` | 1.5 days |
 | S5 | Platform services & webhooks | `packages/platform-core/src/services/**`, `webhookHandlers/**` | 1.5 days |
@@ -88,20 +88,20 @@ Focus areas: upload/import endpoints, deploy actions, provider integrations.
   - `apps/cms/src/app/api/providers/[provider]/route.ts`
   - `apps/cms/src/actions/deployShop.server.ts`
 
-### S2 – Shopper API & UI flows (`apps/shop-bcd`)
+### S2 – Shopper API & UI flows (`apps/cover-me-pretty`)
 Covers customer login, session management, account/profile updates, checkout flows.
 - **Top OWASP risks to probe:**
-  1. A07:2021 – Identification and Authentication Failures (login + MFA in `apps/shop-bcd/src/app/api/login/route.ts`).
-  2. A01:2021 – Broken Access Control (session-gated resources like `apps/shop-bcd/src/app/api/orders/route.ts`).
+  1. A07:2021 – Identification and Authentication Failures (login + MFA in `apps/cover-me-pretty/src/app/api/login/route.ts`).
+  2. A01:2021 – Broken Access Control (session-gated resources like `apps/cover-me-pretty/src/app/api/orders/route.ts`).
   3. A02:2021 – Cryptographic Failures (CSRF headers, cookie secrets consumed from `@auth`).
   4. A03:2021 – Injection (JSON parsing and Prisma usage via `@platform-core` in profile/tax endpoints).
   5. A09:2021 – Security Logging & Monitoring Failures (rate limiting + event logging coverage).
 - **Start with files:**
-  - `apps/shop-bcd/src/app/api/login/route.ts`
-  - `apps/shop-bcd/src/app/api/account/profile/route.ts`
-  - `apps/shop-bcd/src/app/api/orders/route.ts`
-  - `apps/shop-bcd/src/app/api/return-request/route.ts`
-  - `apps/shop-bcd/src/app/api/tax/route.ts`
+  - `apps/cover-me-pretty/src/app/api/login/route.ts`
+  - `apps/cover-me-pretty/src/app/api/account/profile/route.ts`
+  - `apps/cover-me-pretty/src/app/api/orders/route.ts`
+  - `apps/cover-me-pretty/src/app/api/return-request/route.ts`
+  - `apps/cover-me-pretty/src/app/api/tax/route.ts`
 
 ### S3 – Auth & session platform (`packages/auth`, CMS auth config)
 Ensure shared session, permission, and MFA logic is hardened.

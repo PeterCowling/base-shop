@@ -74,7 +74,7 @@ test("add to cart then create checkout session", async () => {
     "@platform-core/cartCookie"
   );
   const { POST: CHECKOUT_POST } = await import(
-    "../../../../apps/shop-bcd/src/api/checkout-session/route"
+    "../../../../apps/cover-me-pretty/src/api/checkout-session/route"
   );
   const size = sku.sizes[0];
   const cookie = encodeCartCookie(

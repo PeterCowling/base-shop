@@ -6,7 +6,7 @@
     { "path": "./tsconfig.packages.json" },
     { "path": "./apps/cms" },
     { "path": "./apps/dashboard" },
-    { "path": "./apps/shop-bcd" },
+    { "path": "./apps/cover-me-pretty" },
     { "path": "./apps/skylar" },
     { "path": "./apps/api" },
     { "path": "packages/platform-core" },

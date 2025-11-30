@@ -59,7 +59,7 @@ describe("createRequestHandler", () => {
         this.push(null);
       },
     }) as unknown as IncomingMessage;
-    req.url = "/components/bcd";
+    req.url = "/components/cover-me-pretty";
     req.method = "GET";
     req.headers = {};
 
@@ -77,7 +77,7 @@ describe("createRequestHandler", () => {
     expect(componentsHandlerMock).toHaveBeenCalledTimes(1);
 
     const call = componentsHandlerMock.mock.calls[0][0];
-    expect(call.params).toEqual({ shopId: "bcd" });
+    expect(call.params).toEqual({ shopId: "cover-me-pretty" });
     expect(call.request.method).toBe("GET");
 
     expect(publishUpgradeMock).not.toHaveBeenCalled();

@@ -92,7 +92,7 @@ describe("validate-env script", () => {
     await import("../../dist-scripts/validate-env.js").catch(() => {});
 
     expect(exitSpy).toHaveBeenCalledWith(1);
-    expect(errorSpy).toHaveBeenCalledWith("Missing apps/shop-bcd/.env");
+    expect(errorSpy).toHaveBeenCalledWith("Missing apps/cover-me-pretty/.env");
     expect(logSpy).not.toHaveBeenCalled();
   });
 

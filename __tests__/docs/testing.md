@@ -48,9 +48,9 @@ Run these commands before `pnpm test` so each test suite starts from a clean, se
 
 Load tests use [k6](https://k6.io) and are run manually. They are not executed in continuous integration.
 
-To exercise the rental and return flows:
+To exercise the rental and return flows for the shop app:
 
 ```bash
-cd apps/shop-bcd/load-tests
+cd apps/cover-me-pretty/load-tests
 SHOP_BASE_URL=http://localhost:3004 k6 run rental-return.k6.js
 ```

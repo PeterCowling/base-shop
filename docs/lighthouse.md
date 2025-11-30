@@ -2,7 +2,7 @@
 
 This repo runs Lighthouse in two ways:
 
-- LHCI in CI for mobile and desktop, for CMS and Storefront.
+- LHCI in CI for mobile and desktop, for Storefront and Skylar (CMS configs are available for local runs only).
 - Cypress smoke checks with explicit device settings for quick local validation.
 
 ## Local quickstart
@@ -11,6 +11,8 @@ This repo runs Lighthouse in two ways:
 - Desktop CMS: `pnpm lhci:cms:desktop`
 - Mobile Storefront: `pnpm lhci:shop:mobile`
 - Desktop Storefront: `pnpm lhci:shop:desktop`
+- Mobile Skylar: `pnpm lhci:skylar:mobile`
+- Desktop Skylar: `pnpm lhci:skylar:desktop`
 
 Notes:
 - These commands start the respective app (`next start`) and audit a few URLs.
@@ -22,6 +24,7 @@ Notes:
 
 See `.github/workflows/ci-lighthouse.yml`.
 - Node 20 LTS is used.
+- `@lhci/cli` is pinned (see `package.json` and workflow) for deterministic runs.
 - Upload target: `temporary-public-storage` (public and short‑lived). Migrate to an LHCI server to persist history.
 
 ## Budgets and assertions

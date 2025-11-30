@@ -2,11 +2,11 @@
   "ci": {
     "collect": {
       "numberOfRuns": 3,
-      "startServerCommand": "sh -c 'cd apps/shop-bcd && next start -p 3004'",
+      "startServerCommand": "pnpm --filter @apps/cover-me-pretty run start",
       "startServerReadyPattern": "http://localhost:3004",
       "startServerReadyTimeout": 120000,
       "url": [
-        "http://localhost:3004/en/product/p1"
+        "http://localhost:3004/en/shop"
       ],
       "settings": {
         "preset": "perf",

@@ -17,9 +17,10 @@ import { useForm, UseFormReturn } from "react-hook-form";
 import { isoDateInNDays } from "@acme/date-utils";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string,
-);
+const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+const stripePromise = stripePublishableKey
+  ? loadStripe(stripePublishableKey)
+  : null;
 
 type Props = {
   locale: "en" | "de" | "it";
@@ -39,6 +40,12 @@ export default function CheckoutForm({
   const [retry, setRetry] = useState(0);
   const [currency] = useCurrency();
   const t = useTranslations();
+
+  if (!stripePublishableKey && typeof window !== "undefined") {
+    console.error(
+      "[checkout] NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set; Stripe Elements are disabled in CheckoutForm.", // i18n-exempt -- ENG-2002 developer-focused configuration warning in console only [ttl=2026-12-31]
+    );
+  }
 
   const defaultDate = isoDateInNDays(7);
 

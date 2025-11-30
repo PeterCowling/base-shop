@@ -1,7 +1,7 @@
 // test/e2e/media-library.spec.ts
 
 describe("Media library", () => {
-  const shopId = "bcd";
+  const shopId = "cover-me-pretty";
   const login = () => cy.loginAsAdmin();
 
   before(() => {

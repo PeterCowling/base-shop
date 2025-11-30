@@ -4,6 +4,8 @@
   "cms.blocks.socialFeed.embedTitle": "ソーシャルフィード",
   "cms.blocks.socialFeed.loadError": "ソーシャルフィードを読み込めませんでした",
   "cms.blocks.socialFeed.missingConfig": "ソーシャルフィードが設定されていません。",
+  "app.name": "Base-Shop",
+  "header.cart": "Cart",
   "header.menu.close": "メニューを閉じる",
   "header.menu.navigationClose": "ナビゲーションを閉じる",
   "header.menu.navigationOpen": "ナビゲーションを開く",

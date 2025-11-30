@@ -18,7 +18,7 @@ Note: The Cypress config lives with the CMS app at `apps/cms/cypress.config.mjs`
 - `pnpm e2e` — builds `@apps/cms`, seeds test data, starts the app on port 3006, then runs all Cypress specs headlessly.
 - `pnpm e2e:open` — same as above, but opens the Cypress runner UI.
 - `pnpm e2e:dashboard` — runs a focused subset of CMS flows.
-- `pnpm e2e:shop` — builds and serves `@apps/shop-bcd` on port 3004 and runs shop flows.
+- `pnpm e2e:shop` — builds and serves `@apps/cover-me-pretty` on port 3004 and runs shop flows.
 - `pnpm test:e2e` — convenience wrapper that runs `e2e:dashboard` then `e2e:shop`.
 - Dev server variant (useful for debugging): `pnpm e2e:cms` starts `next dev` on port 3010 and runs a single spec against it. Note the `env -u ELECTRON_RUN_AS_NODE` in this script avoids a known Electron/Next dev interaction.
 - CMS functional flows (using isolated DATA_ROOT): `pnpm e2e:cms:functional` runs functional CMS specs against a temporary data root so file assertions use the same directory the app writes to.

@@ -25,14 +25,14 @@
     "id": "S2",
     "name": "Shopper API & UI flows",
     "scope_paths": [
-      "apps/shop-bcd/src/app/api",
-      "apps/shop-bcd/src/app/account",
-      "apps/shop-bcd/src/app/login"
+      "apps/cover-me-pretty/src/app/api",
+      "apps/cover-me-pretty/src/app/account",
+      "apps/cover-me-pretty/src/app/login"
     ],
     "entry_points": [
-      "apps/shop-bcd/src/app/api/login/route.ts",
-      "apps/shop-bcd/src/app/api/account/profile/route.ts",
-      "apps/shop-bcd/src/app/api/orders/route.ts"
+      "apps/cover-me-pretty/src/app/api/login/route.ts",
+      "apps/cover-me-pretty/src/app/api/account/profile/route.ts",
+      "apps/cover-me-pretty/src/app/api/orders/route.ts"
     ],
     "owasp_focus": [
       "A07:2021 Identification and Authentication Failures",

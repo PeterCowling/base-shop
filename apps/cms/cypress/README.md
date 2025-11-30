@@ -13,7 +13,7 @@ Common commands
 - Focused dashboards: `pnpm e2e:dashboard`
 - Dev server + single spec: `pnpm e2e:cms` (runs against `next dev` on port 3010)
 - Functional flows (isolated DATA_ROOT): `pnpm e2e:cms:functional`
-- Shop flows: `pnpm e2e:shop` (runs against `@apps/shop-bcd` on port 3004)
+- Shop flows: `pnpm e2e:shop` (runs against `@apps/cover-me-pretty` on port 3004)
 - Coverage run: `pnpm e2e:coverage` (instruments client + collects server route coverage)
 
 Scripted spec globs
@@ -25,4 +25,3 @@ Tips
 - Base URL defaults to `http://localhost:3006`; override via `CYPRESS_BASE_URL`.
 - Seed data lives in `__tests__/data/shops`; most scripts seed automatically.
 - Use `cy.task('testData:setup')` to create a temporary fixture root in specs; clean up with `cy.task('testData:cleanup')`.
-

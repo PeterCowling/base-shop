@@ -720,7 +720,7 @@ importers:
 
   apps/dashboard: {}
 
-  apps/shop-bcd:
+  apps/cover-me-pretty:
     dependencies:
       '@acme/config':
         specifier: workspace:*

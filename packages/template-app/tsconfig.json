@@ -54,8 +54,15 @@
         "../date-utils/dist/index.d.ts",
         "../date-utils/dist"
       ],
-      "@date-utils/*": ["../date-utils/src/*", "../date-utils/dist/*"]
-      ,
+      "@date-utils/*": ["../date-utils/src/*", "../date-utils/dist/*"],
+      "@acme/date-utils": [
+        "../date-utils/src/index.ts",
+        "../date-utils/dist/index.d.ts"
+      ],
+      "@acme/date-utils/*": [
+        "../date-utils/src/*",
+        "../date-utils/dist/*"
+      ],
       "@acme/telemetry": [
         "../telemetry/src/index.ts",
         "../telemetry/dist/index.d.ts"

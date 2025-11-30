@@ -632,9 +632,9 @@ export default [
     },
   },
 
-  /* ▸ shop-bcd tests: relax strict TS rules for try-on API fixtures */
+  /* ▸ cover-me-pretty tests: relax strict TS rules for try-on API fixtures */
   {
-    files: ["apps/shop-bcd/__tests__/**/*.{ts,tsx,js,jsx}"],
+    files: ["apps/cover-me-pretty/__tests__/**/*.{ts,tsx,js,jsx}"],
     rules: {
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-require-imports": "warn",
@@ -645,9 +645,9 @@ export default [
     },
   },
 
-  /* ▸ shop-bcd app: relax strict DS + TS rules for try-on/AI prototype code */
+  /* ▸ cover-me-pretty app: relax strict DS + TS rules for try-on/AI prototype code */
   {
-    files: ["apps/shop-bcd/src/**/*.{ts,tsx,js,jsx}"],
+    files: ["apps/cover-me-pretty/src/**/*.{ts,tsx,js,jsx}"],
     rules: {
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-require-imports": "warn",
@@ -1214,7 +1214,7 @@ export default [
       // Apps
       "apps/cms/**/*.{ts,tsx,js,jsx,mdx}",
       "apps/dashboard/**/*.{ts,tsx,js,jsx,mdx}",
-      "apps/shop-bcd/**/*.{ts,tsx,js,jsx,mdx}",
+      "apps/cover-me-pretty/**/*.{ts,tsx,js,jsx,mdx}",
       // Packages
       "packages/auth/**/*.{ts,tsx,js,jsx}",
       "packages/email/**/*.{ts,tsx,js,jsx}",

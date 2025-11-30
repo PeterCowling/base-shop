@@ -37,30 +37,53 @@ export interface StructuredDataSectionProps extends React.HTMLAttributes<HTMLDiv
 export default function StructuredDataSection({ breadcrumbs = true, faq, faqItems, organization, org, localBusiness, local }: StructuredDataSectionProps) {
   const blocks: React.ReactNode[] = [];
 
-  try {
-    if (breadcrumbs) {
-      const path = typeof window !== "undefined" ? window.location.pathname : "/";
+  // Compute breadcrumb JSON-LD only on the client after hydration to avoid
+  // SSR/client mismatches when reading window.location.
+  const [breadcrumbsJson, setBreadcrumbsJson] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!breadcrumbs) return;
+    try {
+      const path =
+        typeof window !== "undefined" && window.location?.pathname
+          ? window.location.pathname
+          : "/";
       const crumbs = getBreadcrumbs(path);
-      if (crumbs.length) {
-        // i18n-exempt -- JSON-LD schema constants and crumb labels are not UI copy
-        const jsonLd = {
-          // i18n-exempt -- schema context URL is not user copy -- ABC-123
-          "@context": SCHEMA_CONTEXT,
-          // i18n-exempt -- schema type identifier -- ABC-123
-          "@type": TYPE_BREADCRUMB_LIST,
-          itemListElement: crumbs.map((c, i) => ({
-            "@type": TYPE_LIST_ITEM,
-            position: i + 1,
-            name: c.label,
-            item: typeof window !== "undefined" ? new URL(c.href, window.location.origin).toString() : c.href,
-          })),
-        };
-        blocks.push(
-          <script key="breadcrumbs" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        );
+      if (!crumbs.length) {
+        setBreadcrumbsJson(null);
+        return;
       }
+      // i18n-exempt -- JSON-LD schema constants and crumb labels are not UI copy
+      const jsonLd = {
+        // i18n-exempt -- schema context URL is not user copy -- ABC-123
+        "@context": SCHEMA_CONTEXT,
+        // i18n-exempt -- schema type identifier -- ABC-123
+        "@type": TYPE_BREADCRUMB_LIST,
+        itemListElement: crumbs.map((c, i) => ({
+          "@type": TYPE_LIST_ITEM,
+          position: i + 1,
+          name: c.label,
+          item:
+            typeof window !== "undefined" && window.location?.origin
+              ? new URL(c.href, window.location.origin).toString()
+              : c.href,
+        })),
+      };
+      setBreadcrumbsJson(JSON.stringify(jsonLd));
+    } catch {
+      setBreadcrumbsJson(null);
     }
-  } catch {}
+  }, [breadcrumbs]);
+
+  if (breadcrumbsJson) {
+    blocks.push(
+      <script
+        key="breadcrumbs"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: breadcrumbsJson }}
+      />,
+    );
+  }
 
   if (faq && Array.isArray(faqItems) && faqItems.length > 0) {
     // i18n-exempt -- JSON-LD schema constants; content comes from CMS

@@ -94,7 +94,7 @@ describe("CMS → storefront flow", () => {
       );
 
       const { onRequest } = await import(
-        "../../../../apps/shop-bcd/src/routes/preview/[pageId].ts"
+        "../../../../apps/cover-me-pretty/src/routes/preview/[pageId].ts"
       );
       const res = await onRequest({
         params: { pageId: "p1" },

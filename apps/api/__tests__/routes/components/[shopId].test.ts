@@ -21,7 +21,7 @@ describe("components route", () => {
     );
 
   it("rejects requests without token", async () => {
-    const res = await apiRequest("GET", "/components/bcd");
+    const res = await apiRequest("GET", "/components/cover-me-pretty");
     expect(res.status).toBe(403);
   });
 
@@ -33,11 +33,11 @@ describe("components route", () => {
         algorithm: "HS256",
         audience: "upgrade-preview",
         issuer: "acme",
-        subject: "shop:bcd:upgrade-preview",
+        subject: "shop:cover-me-pretty:upgrade-preview",
         expiresIn: "1h",
       },
     );
-    const res = await apiRequest("GET", "/components/bcd", {
+    const res = await apiRequest("GET", "/components/cover-me-pretty", {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(403);
@@ -51,8 +51,8 @@ describe("components route", () => {
   });
 
   it("returns components for valid token", async () => {
-    const token = sign("bcd");
-    const res = await apiRequest("GET", "/components/bcd", {
+    const token = sign("cover-me-pretty");
+    const res = await apiRequest("GET", "/components/cover-me-pretty", {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(200);
@@ -60,8 +60,8 @@ describe("components route", () => {
   });
 
   it("returns config diff when requested", async () => {
-    const token = sign("bcd");
-    const res = await apiRequest("GET", "/components/bcd?diff", {
+    const token = sign("cover-me-pretty");
+    const res = await apiRequest("GET", "/components/cover-me-pretty?diff", {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(200);
@@ -73,7 +73,7 @@ describe("components route", () => {
 
   it("rejects token with mismatched subject", async () => {
     const token = sign("xyz");
-    const res = await apiRequest("GET", "/components/bcd", {
+    const res = await apiRequest("GET", "/components/cover-me-pretty", {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(403);
@@ -81,8 +81,8 @@ describe("components route", () => {
   });
 
   it("rejects token with mismatched audience", async () => {
-    const token = sign("bcd", { audience: "other" });
-    const res = await apiRequest("GET", "/components/bcd", {
+    const token = sign("cover-me-pretty", { audience: "other" });
+    const res = await apiRequest("GET", "/components/cover-me-pretty", {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(403);
@@ -90,8 +90,8 @@ describe("components route", () => {
   });
 
   it("rejects token with mismatched issuer", async () => {
-    const token = sign("bcd", { issuer: "other" });
-    const res = await apiRequest("GET", "/components/bcd", {
+    const token = sign("cover-me-pretty", { issuer: "other" });
+    const res = await apiRequest("GET", "/components/cover-me-pretty", {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(403);
@@ -99,8 +99,8 @@ describe("components route", () => {
   });
 
   it("rejects expired token", async () => {
-    const token = sign("bcd", { expiresIn: -1 });
-    const res = await apiRequest("GET", "/components/bcd", {
+    const token = sign("cover-me-pretty", { expiresIn: -1 });
+    const res = await apiRequest("GET", "/components/cover-me-pretty", {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(403);
@@ -115,11 +115,11 @@ describe("components route", () => {
         algorithm: "HS256",
         audience: "upgrade-preview",
         issuer: "acme",
-        subject: "shop:bcd:upgrade-preview",
+        subject: "shop:cover-me-pretty:upgrade-preview",
         noTimestamp: true,
       },
     );
-    const res = await apiRequest("GET", "/components/bcd", {
+    const res = await apiRequest("GET", "/components/cover-me-pretty", {
       headers: { Authorization: `Bearer ${token}` },
     });
     expect(res.status).toBe(403);

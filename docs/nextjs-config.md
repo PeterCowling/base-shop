@@ -36,7 +36,7 @@ These patterns avoid noisy warnings and brittle bundling behaviour in Next.js/Tu
   - App configs set safe defaults in development, such as `EMAIL_PROVIDER=noop`, to keep local builds unblocked while preserving production safety.
   - Examples:
     - `packages/template-app/dev-defaults.mjs:13` sets `EMAIL_PROVIDER` when missing.
-    - `apps/shop-bcd/next.config.mjs:19` and `apps/cms/next.config.mjs:66` apply the same default.
+    - `apps/cover-me-pretty/next.config.mjs:19` and `apps/cms/next.config.mjs:66` apply the same default.
 
 ## Extending Node builtin aliases
 

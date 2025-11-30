@@ -1,4 +1,5 @@
 // scripts/src/setup-ci.ts
+/* i18n-exempt file -- ENG-2001 CLI-only workflow generation messages, not user-facing UI [ttl=2026-12-31] */
 /**
  * Generate a GitHub Actions workflow for a specific shop.  The workflow reads
  * environment variables from the shop's `.env` file and embeds them into the
@@ -11,16 +12,23 @@ import { envSchema } from "@config/src/env";
 
 const shopId = process.argv[2];
 if (!shopId) {
-  console.error("Usage: pnpm ts-node scripts/setup-ci.ts <shopId>");
+  console.error(
+    "Usage: pnpm ts-node scripts/setup-ci.ts <shopId>"
+  ); // i18n-exempt -- ENG-2001 developer-facing usage hint for CLI script [ttl=2026-12-31]
   process.exit(1);
 }
 
-const envPath = join("apps", `shop-${shopId}`, ".env");
+const appSlug = shopId === "bcd" ? "cover-me-pretty" : `shop-${shopId}`;
+const appPackage = `@apps/${appSlug}`;
+
+const envPath = join("apps", appSlug, ".env");
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
 if (!existsSync(envPath)) {
-  console.error(`Missing ${envPath}`);
+  console.error(`Missing ${envPath}`); // i18n-exempt -- ENG-2001 developer-facing missing env file message [ttl=2026-12-31]
   process.exit(1);
 }
 
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
 const envRaw = readFileSync(envPath, "utf8");
 const env: Record<string, string> = {};
 for (const line of envRaw.split(/\n+/)) {
@@ -37,14 +45,16 @@ try {
   });
   envSchema.parse(env);
 } catch (err) {
-  console.error("Invalid environment variables:\n", err);
+  console.error("Invalid environment variables:\n", err); // i18n-exempt -- ENG-2001 developer-facing env validation error label [ttl=2026-12-31]
   process.exit(1);
 }
 
 const shopConfigPath = join("data", "shops", shopId, "shop.json");
 const domainVars: Record<string, string> = {};
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: shopConfigPath is workspace-relative; script is CLI-only and not exposed to HTTP input
 if (existsSync(shopConfigPath)) {
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: shopConfigPath is workspace-relative; script is CLI-only and not exposed to HTTP input
     const shop = JSON.parse(readFileSync(shopConfigPath, "utf8")) as {
       domain?: { name?: string };
     };
@@ -58,8 +68,10 @@ if (existsSync(shopConfigPath)) {
 
 const settingsPath = join("data", "shops", shopId, "settings.json");
 const workerVars: Record<string, string> = {};
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: settingsPath is workspace-relative; script is CLI-only and not exposed to HTTP input
 if (existsSync(settingsPath)) {
   try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: settingsPath is workspace-relative; script is CLI-only and not exposed to HTTP input
     const settings = JSON.parse(readFileSync(settingsPath, "utf8")) as {
       reverseLogisticsService?: { enabled?: boolean };
     };
@@ -77,7 +89,8 @@ const envLines = Object.entries(allEnv)
   .map(([k, v]) => `      ${k}: ${v}`)
   .join("\n");
 
-const wfPath = join(".github", "workflows", `shop-${shopId}.yml`);
+const wfPath = join(".github", "workflows", `${appSlug}.yml`);
+const branchRef = "${{ github.ref_name }}";
 const workflow = `on: [push]
 
 jobs:
@@ -90,11 +103,12 @@ ${envLines}
       - uses: pnpm/action-setup@v3
       - run: pnpm install
       - run: pnpm lint && pnpm test
-      - run: pnpm --filter @apps/shop-${shopId} build
+      - run: pnpm --filter ${appPackage} build
       - run: npx @cloudflare/next-on-pages deploy \
-               --project-name=shop-${shopId} \
-               --branch=\${{ github.ref_name }}
+               --project-name=${appSlug} \
+               --branch=${branchRef}
 `;
 
+// eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2001: wfPath is workspace-relative under .github/workflows; script is CLI-only
 writeFileSync(wfPath, workflow);
 console.log(`Created workflow ${wfPath}`);

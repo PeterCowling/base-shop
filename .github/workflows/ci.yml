@@ -1,3 +1,5 @@
+name: Root CI
+
 on:
   push:
     paths-ignore:

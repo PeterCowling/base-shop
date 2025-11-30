@@ -1,4 +1,4 @@
-name: Cypress
+name: CMS E2E
 
 on:
   push:

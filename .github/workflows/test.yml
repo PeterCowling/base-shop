@@ -38,15 +38,7 @@ jobs:
       matrix:
         workspace: ${{ fromJSON(needs.workspaces.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install
+      - uses: ./.github/actions/setup-repo
       - name: Build ESLint plugin
         run: pnpm --filter @acme/eslint-plugin-ds build
       - name: Build workspace (scoped)

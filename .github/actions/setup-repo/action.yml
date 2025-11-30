@@ -1,0 +1,26 @@
+name: "Setup Repo"
+description: "Checkout, setup Node/PNPM, and install dependencies"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup PNPM
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10.12.1
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: "pnpm"
+
+    - name: Install Dependencies
+      run: pnpm install --frozen-lockfile
+      shell: bash
+

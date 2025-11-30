@@ -53,21 +53,7 @@ jobs:
             lighthouserc.skylar.desktop.json,
           ]
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.1
-
-      - name: Use Node LTS (20.x)
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'pnpm'
-
-      - name: Install deps
-        run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-repo
 
       - name: Build apps for LHCI
         run: |

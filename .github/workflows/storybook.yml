@@ -43,15 +43,7 @@ jobs:
     name: Story coverage policy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-repo
       - name: Verify story coverage
         run: pnpm stories:verify || echo "Story coverage below target; treating as advisory in CI."
 
@@ -83,15 +75,7 @@ jobs:
     name: Storybook UI smoke (tokens + RTL)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-repo
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
       - name: Run UI smoke
@@ -101,15 +85,7 @@ jobs:
     name: Storybook Test Runner (critical set)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
+      - uses: ./.github/actions/setup-repo
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
       - name: Run Storybook test runner (ci-tagged)

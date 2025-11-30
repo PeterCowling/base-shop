@@ -22,16 +22,15 @@
 
 - CI workflows (`ci.yml`, app-specific workflows, and the workspace matrix in `test.yml`) are responsible for running the full test suites (unit, integration, E2E) and acting as the main gate for merges and deploys.
 - For monorepo-wide tests:
-  - `pnpm test` runs `turbo run test` across all workspaces (used on `main` in CI).
-  - `pnpm test:affected` runs `turbo run test --affected`, executing tests only in affected workspaces plus their dependents (used on pull requests and non-`main` branches in CI).
+  - `pnpm test` runs `turbo run test` across all workspaces.
+  - `pnpm test:affected` runs `turbo run test --affected`, executing tests only in affected workspaces plus their dependents (used on all branches in root CI to keep runs fast).
 
 ## CI ownership and app workflows
 
 - Root CI (`.github/workflows/ci.yml`):
   - Runs platform-wide lint/typecheck/test/build.
-  - Uses change-aware tests:
-    - On `main`: runs `pnpm test` (full `turbo run test`).
-    - On other branches/PRs: runs `pnpm test:affected` (change-scoped `turbo run test --affected`).
+  - Uses change-aware tests on all branches:
+    - Runs `pnpm test:affected` (change-scoped `turbo run test --affected`) instead of the full test matrix, so CI time stays reasonable.
   - Runs cross-app E2E smoke tests (`pnpm e2e:dashboard`, `pnpm e2e:shop`) gated by path filters.
   - Deploys the `base-shop` Cloudflare Pages project.
 - Workspace CI (`.github/workflows/test.yml`):

@@ -16,9 +16,7 @@ jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
       - name: Detect E2E-impacting changes
         id: changes
         uses: dorny/paths-filter@v3
@@ -38,29 +36,34 @@ jobs:
               - 'packages/config/**'
               - 'packages/i18n/**'
               - 'packages/shared-utils/**'
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.12.1
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'pnpm'
-      - run: pnpm install --frozen-lockfile
       - name: Build ESLint plugin
         run: pnpm --filter @acme/eslint-plugin-ds build
-      - name: Lint (fast)
+      - name: Restore ESLint report cache
+        uses: actions/cache@v4
+        with:
+          path: .eslint-report.json
+          key: eslint-report-${{ github.sha }}
+          restore-keys: |
+            eslint-report-${{ github.ref_name }}-
+            eslint-report-
+      - name: Restore ESLint cache
+        uses: actions/cache@v4
+        with:
+          path: .eslintcache
+          key: eslint-cache-${{ github.sha }}
+          restore-keys: |
+            eslint-cache-${{ github.ref_name }}-
+            eslint-cache-
+      - name: Lint (standard)
         run: pnpm lint
+      - name: Lint (JSON report)
+        run: pnpm run lint:json || true
       - name: Lint (exceptions governance)
         run: pnpm run lint:exceptions
       - name: Typecheck
         run: pnpm typecheck
       - name: Unit tests
-        run: |
-          if [ "${{ github.ref_name }}" = "main" ]; then
-            pnpm test
-          else
-            pnpm test:affected
-          fi
+        run: pnpm test:affected
       - uses: codecov/codecov-action@v3
         with:
           files: ./coverage/lcov.info

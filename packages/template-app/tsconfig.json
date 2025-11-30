@@ -86,6 +86,14 @@
       "@acme/stripe/*": [
         "../stripe/src/*",
         "../stripe/dist/*"
+      ],
+      "@acme/shared-utils": [
+        "../shared-utils/src/index.ts",
+        "../shared-utils/dist/index.d.ts"
+      ],
+      "@acme/shared-utils/*": [
+        "../shared-utils/src/*",
+        "../shared-utils/dist/*"
       ]
     },
     "allowJs": true,

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-require-imports -- CommonJS Jest runner intentionally uses require for Node CLI entry (ENG-1234) */
 
 const path = require("path");
 const jest = require("jest");

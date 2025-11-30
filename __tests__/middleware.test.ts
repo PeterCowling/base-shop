@@ -31,7 +31,7 @@ describe("middleware security headers", () => {
       contentSecurityPolicy: {
         directives: {
           defaultSrc: "'self'",
-          baseUri: "'self'",
+          baseURI: "'self'",
           objectSrc: "'none'",
           formAction: "'self'",
           frameAncestors: "'none'",

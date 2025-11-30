@@ -3,7 +3,17 @@ name: Workspace CI
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'apps/skylar/**'
+      - 'apps/cms/**'
+      - '.github/workflows/skylar.yml'
+      - '.github/workflows/cms.yml'
   pull_request:
+    paths-ignore:
+      - 'apps/skylar/**'
+      - 'apps/cms/**'
+      - '.github/workflows/skylar.yml'
+      - '.github/workflows/cms.yml'
 
 jobs:
   workspaces:
@@ -20,7 +30,7 @@ jobs:
           node-version: 20
       - id: set-matrix
         run: |
-          matrix=$(pnpm list -r --depth -1 --json | node -e "const fs=require('fs');const list=JSON.parse(fs.readFileSync(0,'utf8'));const cwd=process.cwd();const arr=list.filter(p=>p.path!==cwd).map(p=>p.path.replace(cwd+'/', ''));process.stdout.write(JSON.stringify(arr));")
+          matrix=$(pnpm list -r --depth -1 --json | node -e "const fs=require('fs');const list=JSON.parse(fs.readFileSync(0,'utf8'));const cwd=process.cwd();const arr=list.filter(p=>p.path!==cwd).map(p=>p.path.replace(cwd+'/', '')).filter(p=>p!=='apps/cms' && p!=='apps/skylar');process.stdout.write(JSON.stringify(arr));")
           echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
   quality:
@@ -40,7 +50,8 @@ jobs:
           node-version: 20
           cache: 'pnpm'
       - run: pnpm install
-      - run: pnpm -r build
+      - name: Build workspace (scoped)
+        run: pnpm --filter ./${{ matrix.workspace }}... build
       - run: pnpm --filter ./${{ matrix.workspace }} lint
       - run: pnpm --filter ./${{ matrix.workspace }} typecheck
       - name: Test with coverage

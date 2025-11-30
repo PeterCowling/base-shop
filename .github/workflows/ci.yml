@@ -1,10 +1,35 @@
-on: [push]
+on:
+  push:
+    paths-ignore:
+      - 'apps/skylar/**'
+      - 'apps/cms/**'
+      - '.github/workflows/skylar.yml'
+      - '.github/workflows/cms.yml'
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Detect E2E-impacting changes
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            dashboard:
+              - 'apps/dashboard/**'
+              - 'packages/ui/**'
+              - 'packages/design-tokens/**'
+              - 'packages/tailwind-config/**'
+              - 'packages/theme/**'
+            shop:
+              - 'apps/shop-bcd/**'
+              - 'apps/cms/**'
+              - 'packages/platform-core/**'
+              - 'packages/ui/**'
+              - 'packages/config/**'
+              - 'packages/i18n/**'
+              - 'packages/shared-utils/**'
       - uses: pnpm/action-setup@v4
         with:
           version: 10.12.1
@@ -29,8 +54,10 @@ jobs:
       - name: Build
         run: pnpm build
       - name: E2E (dashboard subset)
+        if: steps.changes.outputs.dashboard == 'true'
         run: pnpm e2e:dashboard
       - name: E2E (shop subset)
+        if: steps.changes.outputs.shop == 'true'
         run: pnpm e2e:shop
 
   release:

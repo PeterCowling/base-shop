@@ -4,6 +4,31 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'apps/skylar/**'
+      - 'packages/config/**'
+      - 'packages/i18n/**'
+      - 'packages/next-config/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/ui/**'
+      - 'packages/platform-core/**'
+      - 'packages/shared-utils/**'
+      - 'packages/themes/**'
+      - 'packages/design-tokens/**'
+      - '.github/workflows/skylar.yml'
+  pull_request:
+    paths:
+      - 'apps/skylar/**'
+      - 'packages/config/**'
+      - 'packages/i18n/**'
+      - 'packages/next-config/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/ui/**'
+      - 'packages/platform-core/**'
+      - 'packages/shared-utils/**'
+      - 'packages/themes/**'
+      - 'packages/design-tokens/**'
+      - '.github/workflows/skylar.yml'
   workflow_dispatch:
 
 jobs:

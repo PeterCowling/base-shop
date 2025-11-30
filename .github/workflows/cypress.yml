@@ -3,7 +3,51 @@ name: Cypress
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'apps/cms/**'
+      - 'packages/config/**'
+      - 'packages/configurator/**'
+      - 'packages/date-utils/**'
+      - 'packages/email/**'
+      - 'packages/email-templates/**'
+      - 'packages/i18n/**'
+      - 'packages/next-config/**'
+      - 'packages/plugins/sanity/**'
+      - 'packages/shared-utils/**'
+      - 'packages/theme/**'
+      - 'packages/telemetry/**'
+      - 'packages/zod-utils/**'
+      - 'packages/themes/**'
+      - 'packages/ui/**'
+      - 'packages/platform-core/**'
+      - 'packages/lib/**'
+      - 'packages/types/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/design-tokens/**'
+      - '.github/workflows/cypress.yml'
   pull_request:
+    paths:
+      - 'apps/cms/**'
+      - 'packages/config/**'
+      - 'packages/configurator/**'
+      - 'packages/date-utils/**'
+      - 'packages/email/**'
+      - 'packages/email-templates/**'
+      - 'packages/i18n/**'
+      - 'packages/next-config/**'
+      - 'packages/plugins/sanity/**'
+      - 'packages/shared-utils/**'
+      - 'packages/theme/**'
+      - 'packages/telemetry/**'
+      - 'packages/zod-utils/**'
+      - 'packages/themes/**'
+      - 'packages/ui/**'
+      - 'packages/platform-core/**'
+      - 'packages/lib/**'
+      - 'packages/types/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/design-tokens/**'
+      - '.github/workflows/cypress.yml'
 
 jobs:
   ct:

@@ -5,8 +5,38 @@ env:
 
 on:
   pull_request:
+    paths:
+      - 'apps/storybook/**'
+      - 'apps/cms/**'
+      - 'apps/shop-bcd/**'
+      - 'packages/ui/**'
+      - 'packages/design-tokens/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/themes/**'
+      - 'packages/theme/**'
+      - 'packages/i18n/**'
+      - 'packages/shared-utils/**'
+      - 'packages/config/**'
+      - 'packages/types/**'
+      - 'docs/storybook.md'
+      - '.github/workflows/storybook.yml'
   push:
     branches: [ main ]
+    paths:
+      - 'apps/storybook/**'
+      - 'apps/cms/**'
+      - 'apps/shop-bcd/**'
+      - 'packages/ui/**'
+      - 'packages/design-tokens/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/themes/**'
+      - 'packages/theme/**'
+      - 'packages/i18n/**'
+      - 'packages/shared-utils/**'
+      - 'packages/config/**'
+      - 'packages/types/**'
+      - 'docs/storybook.md'
+      - '.github/workflows/storybook.yml'
 
 jobs:
   coverage:

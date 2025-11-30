@@ -46,7 +46,7 @@ describe("ShopIndexPage", () => {
         products: ["sku-1"],
       },
     ]);
-    render(await ShopIndexPage({ params: { lang: "en" } }));
+    render(await ShopIndexPage({ params: Promise.resolve({ lang: "en" }) }));
     expect(screen.getByTestId("blog-listing")).toBeInTheDocument();
   });
 
@@ -55,7 +55,7 @@ describe("ShopIndexPage", () => {
       contentMerchandising: false,
       blog: false,
     });
-    render(await ShopIndexPage({ params: { lang: "en" } }));
+    render(await ShopIndexPage({ params: Promise.resolve({ lang: "en" }) }));
     expect(screen.queryByTestId("blog-listing")).toBeNull();
     expect(mockFetchPublishedPosts).not.toHaveBeenCalled();
   });
@@ -66,7 +66,7 @@ describe("ShopIndexPage", () => {
       blog: true,
     });
     mockFetchPublishedPosts.mockRejectedValueOnce(new Error("boom"));
-    render(await ShopIndexPage({ params: { lang: "en" } }));
+    render(await ShopIndexPage({ params: Promise.resolve({ lang: "en" }) }));
     expect(screen.queryByTestId("blog-listing")).toBeNull();
     expect(screen.getByTestId("shop-client")).toBeInTheDocument();
   });

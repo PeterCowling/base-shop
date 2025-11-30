@@ -243,7 +243,7 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   "Failed to list media",
   // React dev warnings for DS props on DOM elements
   /React does not recognize the `%s` prop on a DOM element\..*labelClassName/,
-  "React does not recognize the `trailingIcon` prop on a DOM element.",
+  /React does not recognize the `%s` prop on a DOM element\..*trailingIcon/,
   "Failed to load upgrade changes Only absolute URLs are supported",
   // Env validation helpers – these are intentionally exercised with invalid
   // inputs across many suites, so the error logs are expected noise in tests.

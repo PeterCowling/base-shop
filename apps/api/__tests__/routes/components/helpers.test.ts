@@ -28,12 +28,12 @@ describe('helpers', () => {
     const root = '/root';
 
     it('handles missing shop.json', () => {
-      expect(gatherChanges('bcd', root)).toEqual([]);
+      expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
     });
 
     it('handles invalid shop.json', () => {
       vol.fromJSON({ [`${root}/data/shops/cover-me-pretty/shop.json`]: '{oops}' });
-      expect(gatherChanges('bcd', root)).toEqual([]);
+      expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
     });
 
     it("skips components with unchanged versions", () => {
@@ -47,7 +47,7 @@ describe('helpers', () => {
         }),
       });
 
-      expect(gatherChanges('bcd', root)).toEqual([]);
+      expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
     });
 
     it('handles version bumps and changelog summaries', () => {
@@ -62,7 +62,7 @@ describe('helpers', () => {
         [`${root}/packages/pkg/CHANGELOG.md`]: '# Changelog\n\nAdded feature\nMore',
       });
 
-      const changes = gatherChanges('bcd', root);
+      const changes = gatherChanges('cover-me-pretty', root);
       expect(changes).toEqual([
         {
           name: '@scope/pkg',
@@ -85,7 +85,7 @@ describe('helpers', () => {
         }),
       });
 
-      expect(gatherChanges('bcd', root)).toEqual([
+      expect(gatherChanges('cover-me-pretty', root)).toEqual([
         {
           name: '@scope/pkg',
           from: '1.0.0',

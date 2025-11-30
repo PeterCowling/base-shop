@@ -101,6 +101,7 @@
   "api.cms.sections.untitled": "Untitled Section",
   "api.cms.templates.invalidName": "Invalid template name",
   "api.common.forbidden": "Forbidden",
+  "api.components.invalidShopId": "Invalid shop id",
   "api.common.genericError": "An error occurred",
   "api.common.invalidRequest": "Invalid request",
   "api.common.notFound": "Not found",

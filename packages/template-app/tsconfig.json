@@ -78,6 +78,14 @@
       "@acme/sanity/*": [
         "../sanity/src/*",
         "../sanity/dist/*"
+      ],
+      "@acme/stripe": [
+        "../stripe/src/index.ts",
+        "../stripe/dist/index.d.ts"
+      ],
+      "@acme/stripe/*": [
+        "../stripe/src/*",
+        "../stripe/dist/*"
       ]
     },
     "allowJs": true,

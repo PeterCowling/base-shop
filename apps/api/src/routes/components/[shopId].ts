@@ -1,11 +1,14 @@
 /// <reference types="@cloudflare/workers-types" />
 // apps/api/src/routes/components/[shopId].ts
 
+/* eslint-disable security/detect-non-literal-fs-filename -- ENG-1234: FS paths are constructed from validateShopName-guarded shop IDs, package names, and static repo directories; user input cannot control directory traversal */
+
 import { existsSync, readFileSync, readdirSync } from "fs";
 import path from "path";
 import jwt from "jsonwebtoken";
 import { validateShopName } from "@acme/lib";
 import { logger } from "@acme/shared-utils";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 interface ComponentChange {
   name: string;
@@ -13,6 +16,10 @@ interface ComponentChange {
   to: string;
   summary?: string;
   changelog?: string;
+}
+
+function resolveShopConfigId(shopId: string): string {
+  return shopId === "bcd" ? "cover-me-pretty" : shopId;
 }
 
 function readJson<T = unknown>(file: string): T {
@@ -29,7 +36,8 @@ function extractSummary(log: string): string {
 }
 
 function gatherChanges(shopId: string, root: string): ComponentChange[] {
-  const shopJson = path.join(root, "data", "shops", shopId, "shop.json");
+  const configId = resolveShopConfigId(shopId);
+  const shopJson = path.join(root, "data", "shops", configId, "shop.json");
   let stored: Record<string, string> = {};
   if (existsSync(shopJson)) {
     try {
@@ -108,12 +116,13 @@ export const onRequest = async ({
   params: Record<string, string>;
   request: Request;
 }) => {
+  const t = await getServerTranslations("en");
   let shopId: string;
   try {
     shopId = validateShopName(params.shopId);
   } catch {
-    logger.warn("invalid shop id", { id: params.shopId });
-    return new Response(JSON.stringify({ error: "Invalid shop id" }), {
+    logger.warn("invalid shop id", { id: params.shopId }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
+    return new Response(JSON.stringify({ error: t("api.components.invalidShopId") }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
     });
@@ -121,8 +130,8 @@ export const onRequest = async ({
 
   const authHeader = request.headers.get("authorization") || "";
   if (!authHeader.startsWith("Bearer ")) {
-    logger.warn("missing bearer token", { shopId });
-    return new Response(JSON.stringify({ error: "Forbidden" }), {
+    logger.warn("missing bearer token", { shopId }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
+    return new Response(JSON.stringify({ error: t("api.common.forbidden") }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
     });
@@ -131,8 +140,8 @@ export const onRequest = async ({
   const token = authHeader.slice("Bearer ".length);
   const secret = process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
   if (!secret) {
-    logger.warn("invalid token", { shopId });
-    return new Response(JSON.stringify({ error: "Forbidden" }), {
+    logger.warn("invalid token", { shopId }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
+    return new Response(JSON.stringify({ error: t("api.common.forbidden") }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
     });
@@ -152,8 +161,8 @@ export const onRequest = async ({
       throw new Error("missing exp");
     }
   } catch {
-    logger.warn("invalid token", { shopId });
-    return new Response(JSON.stringify({ error: "Forbidden" }), {
+    logger.warn("invalid token", { shopId }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
+    return new Response(JSON.stringify({ error: t("api.common.forbidden") }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
     });
@@ -169,7 +178,14 @@ export const onRequest = async ({
     });
   }
 
-  const appDir = path.join(root, "apps", `shop-${shopId}`);
+  const appDirCandidates = [
+    ...(shopId === "bcd" ? [path.join(root, "apps", "cover-me-pretty")] : []),
+    path.join(root, "apps", shopId),
+    path.join(root, "apps", `shop-${shopId}`),
+  ];
+  const appDir =
+    appDirCandidates.find((dir) => existsSync(dir)) ??
+    appDirCandidates[appDirCandidates.length - 1];
   const templateDir = path.join(root, "packages", "template-app");
   const configDiff = {
     templates: diffDirectories(
@@ -187,4 +203,3 @@ export const onRequest = async ({
 };
 
 export { extractSummary, gatherChanges, diffDirectories, listFiles };
-

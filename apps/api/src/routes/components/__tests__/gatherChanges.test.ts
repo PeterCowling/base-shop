@@ -19,7 +19,7 @@ describe('gatherChanges', () => {
         version: '1.0.0',
       }),
     });
-    expect(gatherChanges('bcd', root)).toEqual([]);
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
   });
 
   it('returns empty array when shop.json contains invalid JSON', () => {
@@ -30,11 +30,11 @@ describe('gatherChanges', () => {
         version: '1.2.0',
       }),
     });
-    expect(gatherChanges('bcd', root)).toEqual([]);
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
   });
 
   it('returns empty array when reading shop.json fails', () => {
-    const shopPath = path.join(root, 'data', 'shops', 'bcd', 'shop.json');
+    const shopPath = path.join(root, 'data', 'shops', 'cover-me-pretty', 'shop.json');
     vol.fromJSON({
       [shopPath]: JSON.stringify({
         componentVersions: { '@acme/foo': '1.0.0' },
@@ -47,7 +47,7 @@ describe('gatherChanges', () => {
       }
       return (realRead as any).call(fs, file, ...args);
     });
-    expect(gatherChanges('bcd', root)).toEqual([]);
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
     spy.mockRestore();
   });
 
@@ -79,7 +79,7 @@ describe('gatherChanges', () => {
       }
       return (realRead as any).call(fs, file, ...args);
     });
-    expect(() => gatherChanges('bcd', root)).toThrow('pkg fail');
+    expect(() => gatherChanges('cover-me-pretty', root)).toThrow('pkg fail');
     spy.mockRestore();
   });
 
@@ -91,8 +91,8 @@ describe('gatherChanges', () => {
         version: '1.2.0',
       }),
     });
-    expect(() => gatherChanges('bcd', root)).not.toThrow();
-    expect(gatherChanges('bcd', root)).toEqual([]);
+    expect(() => gatherChanges('cover-me-pretty', root)).not.toThrow();
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
   });
 
   it('treats null componentVersions as empty object', () => {
@@ -105,7 +105,7 @@ describe('gatherChanges', () => {
         version: '1.0.0',
       }),
     });
-    expect(gatherChanges('bcd', root)).toEqual([]);
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
   });
 
   it('skips stored components without a package.json', () => {
@@ -114,7 +114,7 @@ describe('gatherChanges', () => {
         componentVersions: { '@acme/foo': '1.0.0' },
       }),
     });
-    expect(gatherChanges('bcd', root)).toEqual([]);
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
   });
 
   it('skips components when versions are unchanged', () => {
@@ -127,7 +127,7 @@ describe('gatherChanges', () => {
         version: '1.0.0',
       }),
     });
-    expect(gatherChanges('bcd', root)).toEqual([]);
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
   });
 
   it('skips components when version is undefined', () => {
@@ -139,7 +139,7 @@ describe('gatherChanges', () => {
         name: '@acme/foo',
       }),
     });
-    expect(gatherChanges('bcd', root)).toEqual([]);
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([]);
   });
 
   it('returns only components whose versions have changed', () => {
@@ -159,7 +159,7 @@ describe('gatherChanges', () => {
         version: '2.0.0',
       }),
     });
-    expect(gatherChanges('bcd', root)).toEqual([
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([
       {
         name: '@acme/bar',
         from: '1.0.0',
@@ -180,7 +180,7 @@ describe('gatherChanges', () => {
         version: '2.0.0',
       }),
     });
-    expect(gatherChanges('bcd', root)).toEqual([
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([
       {
         name: '@acme/foo',
         from: '1.0.0',
@@ -202,7 +202,7 @@ describe('gatherChanges', () => {
       }),
       [`${root}/packages/foo/CHANGELOG.md`]: '# heading\n# another comment\n',
     });
-    expect(gatherChanges('bcd', root)).toEqual([
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([
       {
         name: '@acme/foo',
         from: '1.0.0',
@@ -223,7 +223,7 @@ describe('gatherChanges', () => {
       }),
       [`${root}/packages/foo/CHANGELOG.md`]: 'Initial release',
     });
-    expect(gatherChanges('bcd', root)).toEqual([
+    expect(gatherChanges('cover-me-pretty', root)).toEqual([
       {
         name: '@acme/foo',
         from: null,
@@ -257,7 +257,7 @@ describe('gatherChanges', () => {
       fsMod.readdirSync(path.dirname(file));
       return (origReadFile as any).call(fsMod, file, ...args);
     }) as any;
-    expect(() => gatherChanges('bcd', root)).toThrow('unreadable');
+    expect(() => gatherChanges('cover-me-pretty', root)).toThrow('unreadable');
     fsMod.readdirSync = origReaddir;
     fsMod.readFileSync = origReadFile;
   });

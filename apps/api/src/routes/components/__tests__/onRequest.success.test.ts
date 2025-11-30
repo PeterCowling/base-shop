@@ -14,8 +14,8 @@ describe('onRequest successful responses', () => {
   it('calls validateShopName with provided shop id', async () => {
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });
-    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'good' }));
-    expect(validate).toHaveBeenCalledWith('bcd');
+    const res = await onRequest(createRequest({ shopId: 'cover-me-pretty', token: 'good' }));
+    expect(validate).toHaveBeenCalledWith('cover-me-pretty');
     expect(res.status).toBe(200);
   });
 
@@ -32,7 +32,7 @@ describe('onRequest successful responses', () => {
       }),
       [`${root}/packages/button/CHANGELOG.md`]: '# Changelog\n\nFixed bug\n',
     });
-    const res = await onRequest(createRequest({ shopId: 'bcd', token: 'good' }));
+    const res = await onRequest(createRequest({ shopId: 'cover-me-pretty', token: 'good' }));
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
       components: [
@@ -100,7 +100,7 @@ describe('onRequest successful responses', () => {
       [`${root}/packages/template-app/src/translations/en.json`]: '{"foo":"bar"}',
     });
     const res = await onRequest(
-      createRequest({ shopId: 'bcd', token: 'good', url: 'http://localhost?diff=1' }),
+      createRequest({ shopId: 'cover-me-pretty', token: 'good', url: 'http://localhost?diff=1' }),
     );
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
@@ -139,7 +139,7 @@ describe('onRequest successful responses', () => {
       [`${root}/packages/template-app/src/translations/common.json`]: '{}',
     });
     const res = await onRequest(
-      createRequest({ shopId: 'bcd', token: 'good', url: 'http://localhost?diff=1' }),
+      createRequest({ shopId: 'cover-me-pretty', token: 'good', url: 'http://localhost?diff=1' }),
     );
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({
@@ -177,7 +177,7 @@ describe('onRequest successful responses', () => {
       [`${root}/packages/template-app/src/translations/en.json`]: '{"foo":"bar"}',
     });
     const res = await onRequest(
-      createRequest({ shopId: 'bcd', token: 'good', url: 'http://localhost?diff=1' }),
+      createRequest({ shopId: 'cover-me-pretty', token: 'good', url: 'http://localhost?diff=1' }),
     );
     expect(res.status).toBe(200);
     await expect(res.json()).resolves.toEqual({

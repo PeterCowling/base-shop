@@ -32,7 +32,7 @@ describe('onRequest file operations', () => {
     });
 
     const res = await onRequest(
-      createContext({ shopId: 'bcd', authorization: 'Bearer good' }),
+      createContext({ shopId: 'cover-me-pretty', authorization: 'Bearer good' }),
     );
 
     expect(res.status).toBe(200);
@@ -70,7 +70,7 @@ describe('onRequest file operations', () => {
     });
 
     const res = await onRequest(
-      createContext({ shopId: 'bcd', authorization: 'Bearer good' }),
+      createContext({ shopId: 'cover-me-pretty', authorization: 'Bearer good' }),
     );
 
     expect(res.status).toBe(200);
@@ -109,7 +109,7 @@ describe('onRequest file operations', () => {
     });
 
     const res = await onRequest(
-      createContext({ shopId: 'bcd', authorization: 'Bearer good', url: 'http://localhost?diff=1' }),
+      createContext({ shopId: 'cover-me-pretty', authorization: 'Bearer good', url: 'http://localhost?diff=1' }),
     );
 
     expect(res.status).toBe(200);
@@ -151,7 +151,7 @@ describe('onRequest file operations', () => {
     });
 
     const res = await onRequest(
-      createContext({ shopId: 'bcd', authorization: 'Bearer good', url: 'http://localhost?diff=1' }),
+      createContext({ shopId: 'cover-me-pretty', authorization: 'Bearer good', url: 'http://localhost?diff=1' }),
     );
 
     expect(res.status).toBe(200);
@@ -192,7 +192,7 @@ describe('onRequest file operations', () => {
     });
 
     const res = await onRequest(
-      createContext({ shopId: 'bcd', authorization: 'Bearer good', url: 'http://localhost?diff=1' }),
+      createContext({ shopId: 'cover-me-pretty', authorization: 'Bearer good', url: 'http://localhost?diff=1' }),
     );
 
     expect(res.status).toBe(200);
@@ -218,7 +218,7 @@ describe('onRequest file operations', () => {
     });
 
     const res = await onRequest(
-      createContext({ shopId: 'bcd', authorization: 'Bearer good', url: 'http://localhost?diff=1' }),
+      createContext({ shopId: 'cover-me-pretty', authorization: 'Bearer good', url: 'http://localhost?diff=1' }),
     );
 
     expect(res.status).toBe(200);

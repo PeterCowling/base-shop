@@ -59,6 +59,7 @@ jobs:
     # manual workflow dispatch so it does not block push/PR pipelines.
     if: ${{ github.event_name == 'workflow_dispatch' }}
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
       - name: Build workspace
         run: pnpm -r build
@@ -86,6 +87,7 @@ jobs:
             width: 375
             height: 667
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
       - name: Seed test data
         run: TEST_DATA_ROOT=__tests__/data node --import tsx scripts/src/seed-test-data.ts

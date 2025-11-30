@@ -38,6 +38,7 @@ jobs:
       matrix:
         workspace: ${{ fromJSON(needs.workspaces.outputs.matrix) }}
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
       - name: Build ESLint plugin
         run: pnpm --filter @acme/eslint-plugin-ds build

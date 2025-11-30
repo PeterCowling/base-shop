@@ -53,6 +53,7 @@ jobs:
             lighthouserc.skylar.desktop.json,
           ]
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-repo
 
       - name: Build apps for LHCI

@@ -35,6 +35,9 @@ jobs:
   validate-and-build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: ./.github/actions/setup-repo
 
       - name: Lint
@@ -70,6 +73,9 @@ jobs:
       name: production
       url: https://${{ inputs.project-name }}.pages.dev
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: ./.github/actions/setup-repo
 
       - name: Download Artifact
@@ -85,4 +91,3 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: ${{ inputs.deploy-cmd }}
         shell: bash
-

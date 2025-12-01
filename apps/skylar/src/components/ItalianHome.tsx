@@ -132,7 +132,7 @@ export function ItalianHome({ lang }: { lang: Locale }) {
             </div>
           </div>
           <div className="milan-hero__pillars" role="list">
-            {heroPillars.map((filter) => (
+            {heroPillars.map((filter: string) => (
               <div key={filter} className="milan-hero__pillar" role="listitem">
                 <span className="milan-hero__pillar-dot" aria-hidden="true" />
                 <span className="milan-hero__pillar-label">{filter}</span>

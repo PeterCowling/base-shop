@@ -50,7 +50,7 @@ export function SkylarZhHero({ lang }: Props) {
       </div>
       <div className="zh-panel__services-card">
         <div className="zh-panel__services">
-          {serviceLines.map((line) => (
+          {serviceLines.map((line: string) => (
             <p key={line}>{line}</p>
           ))}
         </div>

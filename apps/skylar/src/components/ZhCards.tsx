@@ -27,7 +27,7 @@ export function ZhProductsCard({ lang }: CardProps) {
       <p className="zh-card__body">{translator("home.zh.products.body")}</p>
       <p className="zh-card__subtitle">{translator("home.zh.products.subtitle")}</p>
       <ul className="zh-card__list">
-        {bullets.map((line) => (
+        {bullets.map((line: string) => (
           <li key={line}>{line}</li>
         ))}
       </ul>

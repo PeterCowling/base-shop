@@ -1,3 +1,4 @@
+import type { ChangeEvent } from "react";
 import type { TelemetryEvent } from "@acme/telemetry";
 import { LineChart } from "@ui/components/atoms";
 import { Loader, Tag } from "@ui/components/atoms";
@@ -82,7 +83,7 @@ export function TelemetryFiltersPanel({
                 {t("cms.telemetry.eventName")}
                 <Input
                   value={filters.name}
-                  onChange={(event) =>
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
                     onFiltersChange({ name: event.target.value })
                   }
                   placeholder={String(t("cms.telemetry.searchEvents"))}
@@ -94,7 +95,7 @@ export function TelemetryFiltersPanel({
                 <Input
                   type="datetime-local" // i18n-exempt: HTML input type, not user-facing copy
                   value={filters.start}
-                  onChange={(event) =>
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
                     onFiltersChange({ start: event.target.value })
                   }
                   className="border-border-2 bg-surface-2 text-foreground"
@@ -105,7 +106,7 @@ export function TelemetryFiltersPanel({
                 <Input
                   type="datetime-local" // i18n-exempt: HTML input type, not user-facing copy
                   value={filters.end}
-                  onChange={(event) =>
+                  onChange={(event: ChangeEvent<HTMLInputElement>) =>
                     onFiltersChange({ end: event.target.value })
                   }
                   className="border-border-2 bg-surface-2 text-foreground"

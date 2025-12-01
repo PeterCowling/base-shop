@@ -1,5 +1,6 @@
 "use client";
 
+import type { ChangeEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { TranslationsProvider, useTranslations } from "@acme/i18n";
@@ -67,7 +68,9 @@ export default function PreviewViewer({ params }: { params: { token: string } })
               <Input
                 type="password"
                 value={pw}
-                onChange={(e) => setPw(e.target.value)}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setPw(e.target.value)
+                }
                 placeholder={t("cms.preview.password.placeholder") as string}
               />
             </div>

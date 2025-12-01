@@ -6,6 +6,7 @@ import { Button, Input } from "@/components/atoms/shadcn";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import type { FormEvent, MouseEvent, ChangeEvent } from "react";
 import { useRef, useState } from "react";
 
 export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
@@ -34,7 +35,9 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
   const [pwd, setPwd] = useState("");
   const formRef = useRef<HTMLFormElement | null>(null);
 
-  async function handleSubmit(e?: React.FormEvent | React.MouseEvent) {
+  async function handleSubmit(
+    e?: FormEvent<HTMLFormElement> | MouseEvent<HTMLButtonElement>
+  ) {
     e?.preventDefault?.();
     setError(null);
     const email = username.trim();
@@ -73,7 +76,9 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
         placeholder="admin@example.com"
         autoComplete="username"
         value={username}
-        onChange={(e) => setUsername(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+          setUsername(e.target.value)
+        }
         className="bg-surface-2 text-foreground"
         required
       />
@@ -84,7 +89,7 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
         placeholder="••••••••"
         autoComplete="current-password"
         value={pwd}
-        onChange={(e) => setPwd(e.target.value)}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => setPwd(e.target.value)}
         className="bg-surface-2 text-foreground"
         required
       />

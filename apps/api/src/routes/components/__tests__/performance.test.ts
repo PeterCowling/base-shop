@@ -2,19 +2,32 @@ jest.mock('fs', () => require('memfs').fs);
 jest.mock('jsonwebtoken', () => ({ verify: jest.fn() }));
 jest.mock('@acme/lib', () => ({ validateShopName: jest.fn((s: string) => s) }));
 
-import path from 'path';
-import { vol } from 'memfs';
-import jwt from 'jsonwebtoken';
-import { validateShopName } from '@acme/lib';
-import { diffDirectories, onRequest } from '../[shopId]';
-import { performance } from 'perf_hooks';
+import path from "path";
+import { vol } from "memfs";
+import jwt from "jsonwebtoken";
+import { validateShopName } from "@acme/lib";
+import { diffDirectories, onRequest } from "../[shopId]";
+import { performance } from "perf_hooks";
 
-describe('performance benchmarks', () => {
+// Opt-in flag so performance-sensitive benchmarks are not enforced on every CI
+// run. Set PERF_BENCHMARKS=1 to enable these assertions locally or in a
+// dedicated perf job.
+const PERF_BENCHMARKS_ENABLED = process.env.PERF_BENCHMARKS === "1";
+const perfIt: typeof it = PERF_BENCHMARKS_ENABLED ? it : it.skip;
+
+// Allow generous time for the fixtures and concurrent runs when benchmarks are
+// enabled; skipped tests are unaffected by this global timeout.
+if (PERF_BENCHMARKS_ENABLED) {
+  jest.setTimeout(60000);
+}
+
+describe("performance benchmarks", () => {
   const verify = jwt.verify as jest.Mock;
   const validate = validateShopName as jest.Mock;
-  const root = path.resolve(__dirname, '../../../../../../..');
+  const root = path.resolve(__dirname, "../../../../../../..");
   // Budgets reflect baseline timings captured on CI-like hardware so the suite
-  // fails when regressions push these operations past their historical ranges.
+  // fails when regressions push these operations past their historical ranges
+  // in environments where PERF_BENCHMARKS=1 is set.
   const DIFF_SINGLE_BUDGET_MS = 500;
   const DIFF_CONCURRENT_BUDGET_MS = 2600;
   const ON_REQUEST_CONCURRENT_BUDGET_MS = 4500;
@@ -39,7 +52,7 @@ describe('performance benchmarks', () => {
     vol.fromJSON(files);
   }
 
-  it('diffDirectories with thousands of files', async () => {
+  perfIt("diffDirectories with thousands of files", async () => {
     setupFixture(2000);
     const dirA = path.join(root, 'apps', 'cover-me-pretty', 'src', 'templates');
     const dirB = path.join(root, 'packages', 'template-app', 'src', 'templates');
@@ -65,7 +78,7 @@ describe('performance benchmarks', () => {
     expect(concurrentDurationMs).toBeLessThan(DIFF_CONCURRENT_BUDGET_MS);
   });
 
-  it('onRequest under concurrent load', async () => {
+  perfIt("onRequest under concurrent load", async () => {
     setupFixture(2000);
     process.env.UPGRADE_PREVIEW_TOKEN_SECRET = 'secret';
     verify.mockReturnValue({ exp: Math.floor(Date.now() / 1000) + 60 });

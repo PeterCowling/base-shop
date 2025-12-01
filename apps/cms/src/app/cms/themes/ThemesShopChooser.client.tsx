@@ -13,12 +13,13 @@ export default function ThemesShopChooser({ shops }: { shops: string[] }) {
       shops={shops}
       card={{
         icon: "🎨",
-        title: (shop) => shop.toUpperCase(),
-        description: (shop) => String(t("cms.themes.card.description", { shop })),
+        title: (shop: string) => shop.toUpperCase(),
+        description: (shop: string) =>
+          String(t("cms.themes.card.description", { shop })),
         ctaLabel: () => String(t("cms.themes.card.cta")),
-        href: (shop) => `/cms/shop/${shop}/themes`,
+        href: (shop: string) => `/cms/shop/${shop}/themes`,
         analyticsEventName: "shopchooser:navigate",
-        analyticsPayload: (shop) => ({ area: "themes", shop }),
+        analyticsPayload: (shop: string) => ({ area: "themes", shop }),
       }}
       emptyState={{
         tagLabel: String(t("cms.themes.empty.tagLabel")),

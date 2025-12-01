@@ -6,6 +6,7 @@ import SizeSelector from "@platform-core/components/pdp/SizeSelector";
 import AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
 import { Price } from "@ui/components/atoms/Price";
 import type { SKU } from "@acme/types";
+import type { ChangeEvent } from "react";
 import { useState } from "react";
 
 export default function PdpClient({ product }: { product: SKU }) {
@@ -37,7 +38,9 @@ export default function PdpClient({ product }: { product: SKU }) {
             type="number"
             min={1}
             value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setQuantity(Number(e.target.value))
+            }
             className="w-20 rounded-md border border-input bg-background p-2"
           />
         </div>

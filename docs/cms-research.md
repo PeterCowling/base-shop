@@ -778,25 +778,39 @@ The main gaps for our “prefab shop” goal are:
   - **Best‑bet direction (current thinking):**
     - *Roles of the three packages*
       - `@acme/page-builder-core` should own **schemas and registries**, not UI:
-        - A `TemplateDescriptor` type that describes page/section templates:
+        - A `TemplateDescriptor` type that describes page/section templates in a mostly declarative way:
           ```ts
           type TemplateKind = "page" | "section" | "slot-fragment";
           interface TemplateDescriptor {
             id: string;            // stable identifier
-            version: string;       // semver string
+            version: string;       // semver string (primarily informational)
             kind: TemplateKind;
             label: string;
             description?: string;
             category: "Hero" | "Features" | "Commerce" | "Legal" | "System";
             pageType?: "marketing" | "legal" | "fragment"; // where it’s valid
             slots?: string[];      // for slot fragments (e.g. ["checkoutSidebar"])
-            build: (ctx: { shopId: string }) => PageComponent[]; // or Page for page-templates
+            // Core content as a raw tree, no shop/locale baked in
+            components: PageComponent[];
+            origin?: "core" | "remote" | "library";
+          }
+
+          interface ScaffoldContext {
+            shopId: string;
+            locale: Locale;
+            primaryLocale: Locale;
+          }
+
+          function scaffoldPageFromTemplate(
+            descriptor: TemplateDescriptor,
+            ctx: ScaffoldContext
+          ): Page { /* clone + apply locale/shop defaults + add seo/slug/origin */ }
           }
           ```
         - A simple registry API:
           - `registerTemplates(descriptors: TemplateDescriptor[])`.
           - `listTemplates(filters)` / `getTemplate(id, version?)`.
-          - `scaffoldPage({ templateId, locale, shopId })` → `Page`.
+          - `scaffoldPageFromTemplate(descriptor, ctx)` and a convenience `scaffoldPage({ templateId, locale, shopId })` → `Page`.
       - `@acme/page-builder-ui` should expose **editor‑level primitives** for templates:
         - “New page from template” flows that call `listTemplates` + `scaffoldPage`.
         - Palette/Library UI that treats templates/presets as first‑class items.
@@ -815,6 +829,11 @@ The main gaps for our “prefab shop” goal are:
         - Built‑ins from `@acme/templates` → registered at boot, tagged as `origin: "core"`.
         - Remote presets → parsed into `TemplateDescriptor` structures with `origin: "remote"` and a source URL/version.
         - Library items → stored as lightweight template descriptors with `origin: "library"`, `shopId`, `createdBy`, and no hard versioning (they are user content).
+      - For core, remote, and library templates, “build” semantics are deliberately simple:
+        - Applying a template or preset means cloning its `components: PageComponent[]` tree and then:
+          - Applying `fillLocales` against the shop’s `primaryLocale`, and
+          - Optionally patching obvious fields like shop name if the template expects it.
+        - There are no side effects beyond producing a new `Page`/section tree.
       - The Page Builder UI doesn’t need to care where a template came from; it just:
         - Fetches descriptors via a unified API.
         - Shows them in “Templates”, “My Library”, or “Remote presets” tabs.
@@ -828,16 +847,31 @@ The main gaps for our “prefab shop” goal are:
         - Optionally record `originTemplateId` and `originTemplateVersion` in page metadata (or `history.editor`) so we can later answer “which pages were seeded from template X v1.2?”.
         - That provenance is for reporting and targeted migrations, not for automatic live updates.
     - *Versioning and evolution*
-      - Template evolution can be handled with **semver and additive behaviour**:
-        - Non‑breaking tweaks (copy, spacing, non‑required props) can bump a minor version and overwrite the descriptor in `@acme/templates`; new pages will use the latest version.
-        - Breaking changes (structural changes, removal of blocks/props) should create a **new template id** or at least a new major version that co‑exists with the old one, so existing pages are unaffected.
+      - Template evolution should be **additive and id‑stable for compatible changes**:
+        - Non‑breaking tweaks (copy, spacing, non‑required props) can bump the descriptor’s `version` in place; new pages will use the latest version.
+        - Breaking changes (structural changes, removal/renaming of blocks/props) should create a **new template id**, full stop. Semver remains useful for humans (`home-hero-a@2.0.0`), but engineers should not reuse ids for incompatible shapes.
       - For pages already created from older templates:
         - We rely primarily on **block schema migrations** (see the next “Schema evolution & block versioning” section) to keep content valid when block props change.
         - Any structural migrations (e.g. “wrap these components in a new Section”) should be explicit tools:
           - A CLI or CMS action that:
-            - Finds pages with `originTemplateId/version` and
+            - Finds pages whose `origin.templateId` matches a given id, and optionally
             - Applies a content transform under operator control, with preview/rollback.
         - We do not auto‑rewrite pages on template edits in v1.
+      - Provenance should have a single, well‑defined home on the page:
+        - Extend `Page` with an optional `origin` field, for example:
+          ```ts
+          type PageOrigin = {
+            templateId?: string;
+            templateVersion?: string;
+            originKind?: "core" | "remote" | "library";
+          };
+
+          interface Page {
+            // ...
+            origin?: PageOrigin;
+          }
+          ```
+        - `scaffoldPageFromTemplate` is responsible for populating `origin` when a page is created from a template; migrations can then target `page.origin.templateId` directly.
     - *How this ties into createShop / scaffolding*
       - `createShop` and any “new shop from template” flows in CMS should:
         - Use a small set of **shop‑level scaffold templates** (e.g. base home page, example PLP, example PDP‑adjacent pages) defined in `@acme/templates` and described by `ScaffoldSpec` and `TemplateDescriptor`.
@@ -845,21 +879,301 @@ The main gaps for our “prefab shop” goal are:
       - This keeps “initial content generation” and “per‑page templates/presets” on the same underlying machinery, and makes it easier to:
         - Upgrade scaffolds over time (new shops pick up new templates; existing shops keep what they already have).
         - Offer a consistent “Start from template” experience whether you’re creating a shop or just adding a new page.
+      - `createShop` should treat `@acme/templates` as its **single source of truth** for initial page scaffolds (home, returns, promo pages):
+        - Adding a new scaffold is “add a template to `@acme/templates` + wire it into the configurator”, not “hand‑code a new seeding function” next to `createShop`.
 - **Schema evolution & block versioning**
   - How do we version and migrate `PageComponent` schemas themselves (not just templates), so that block type changes do not break existing content?
   - Do we need a per‑block version and a migration pipeline that runs on load/save to normalise older block payloads?
+  - **Best‑bet direction (current thinking):**
+    - *Versioning at the block schema level*
+      - The `PageComponent` union in `packages/types/src/page/page.ts` is already the single source of truth for block shapes:
+        - Each block type has a TS interface + Zod schema (`atoms`, `molecules`, `organisms`, `layouts`).
+        - `pageComponentSchema` is a `z.discriminatedUnion("type", [...])` over those schemas, giving us strong validation on read/write.
+      - Rather than introducing explicit per‑block `version` fields in page data for v1, we can:
+        - Treat the Zod schemas as the **current version** of each block type.
+        - Require all migrations from older shapes to happen via **normalising functions** that run before/after validation.
+      - If we later need explicit per‑block versions (for more complex evolutions), we can add them to the schemas and to `componentMetadataSchema` once we have concrete use cases.
+    - *Safe change vs breaking change rules (per block)*
+      - For block schemas, we should adopt simple, enforceable rules:
+        - Non‑breaking changes:
+          - Adding optional props with sensible defaults.
+          - Broadening literal unions (e.g. adding a new variant to `"preset"`).
+          - Relaxing constraints in a way that still accepts existing data.
+        - Breaking changes (require migration):
+          - Renaming or removing required props.
+          - Changing the meaning or type of an existing prop.
+          - Changing `type` discriminant values.
+      - Breaking changes must be accompanied by:
+        - A migration helper for that block type, and
+        - A bump to any templates/presets/library items that rely on the old shape (see previous section).
+    - *Migration pipeline (where to run it)*
+      - The migration story should be **centralised and deterministic**:
+        - Add a `migratePageComponents(page: Page): Page` helper in `platform-core` that:
+          - Walks the `Page.components` tree.
+          - For each block type that has a migration registered, applies `migrateBlock(old)` → `new`.
+          - Returns a normalised `Page` that passes `pageSchema` validation.
+        - Maintain a simple registry:
+          ```ts
+          type BlockMigrateFn = (old: any) => any;
+          const blockMigrations: Record<string, BlockMigrateFn[]> = {
+            // keyed by block type, oldest→newest
+            ProductGrid: [migrateProductGrid_v1_to_v2, migrateProductGrid_v2_to_v3],
+            // ...
+          };
+          ```
+      - Where migrations run:
+        - On **read** in repositories: when `getPages(shopId)` loads data, it passes each page through `migratePageComponents` before returning it.
+        - Optionally on **write** in CMS actions: after a successful save/publish, we may persist the migrated shape back to storage to avoid re‑migrating the same page repeatedly.
+      - For v1, the migration registry can be lightweight and only used when we make real breaking changes; we do not need to pre‑populate it for every block.
+    - *Schema evolution examples*
+      - Simple additive change:
+        - Add an optional `quickView?: boolean` to `ProductGridComponent` schema; no migration needed, as old pages remain valid and the default is `false`.
+      - Renaming a prop (breaking):
+        - Suppose `FeaturedProductComponent` moves from `sku: string` to `skuId: string`:
+          - Add a migration: `migrateFeaturedProduct_v1_to_v2` that copies `component.sku` to `component.skuId` if present, then deletes `sku`.
+          - Register it under `blockMigrations.FeaturedProduct`.
+          - Keep template/library definitions in `@acme/templates` up to date with the new prop.
+      - Changing a nested structure:
+        - E.g., changing `PoliciesAccordion` from three separate HTML fields to an array of items:
+          - Migration would synthesise the new array from existing `shippingHtml`/`returnsHtml`/`warrantyHtml` fields.
+    - *Interaction with history and provenance*
+      - Migrations operate on the **published page state** (and drafts where appropriate), not on `pages.history.jsonl`:
+        - Diff history remains a log of past states; we don’t rewrite it as we migrate.
+        - If needed, diffs can note migration‑related changes like other edits.
+      - When provenance is present (`page.origin`):
+        - Structural migrations that only make sense for certain templates can use both block type and `page.origin.templateId` to decide whether to run.
+        - Block‑level migrations (e.g., prop rename) don’t need origin context; they run for all pages with that block type.
+    - *What we are **not** doing in v1*
+      - We are deliberately **not**:
+        - Storing a per‑block `version` field in every `PageComponent` (adds weight/complexity without clear immediate benefit).
+        - Running migrations in the browser at render time (keeps behaviour consistent and testable on the server).
+        - Auto‑applying large structural changes to pages when templates evolve; those remain explicit operator‑triggered actions as described in the templates section.
 - **History & UX integration**
   - What retention policy and inspection tooling do we need for `pages.history.jsonl` diff logs?
   - How should history be surfaced to non‑technical users (compare, review, rollback) as part of everyday CMS workflows?
+  - **Best‑bet direction (current thinking):**
+    - *What we already have*
+      - Every page write via `savePage` / `updatePage` appends a diff entry to `pages.history.jsonl` per shop:
+        - Each line is `{ timestamp, diff }` where `diff` is a partial `Page` (fields that changed compared to previous).
+        - `diffHistory(shop)` reads and validates these entries for potential inspection.
+      - The Page Builder maintains an in‑memory `HistoryState` per page (undo/redo stacks and editor metadata), and saves the full state to `localStorage` as the user edits.
+      - CMS actions (`createPage`, `updatePage`) already accept a serialised `history` payload and store it on `Page.history`, so we have both:
+        - **Short‑term, interactive history** (undo/redo, local autosave via `HistoryState`), and
+        - **Long‑term, server‑side history** (diff log via `pages.history.jsonl`).
+      - There is currently no explicit `PageVersion` concept; it is helpful to make this first‑class to avoid inventing ad‑hoc versioning later.
+        - A concrete shape could be:
+          ```ts
+          type PageVersionId = string;
+          interface PageVersion {
+            id: PageVersionId;
+            pageId: string;
+            shopId: string;
+            createdAt: string;
+            createdBy: string;
+            label?: string;
+            status: "draft" | "published";
+            snapshot: Page; // full, validated Page
+          }
+
+          function listPageVersions(shopId: string, pageId: string): PageVersion[];
+          function getPageVersion(shopId: string, versionId: PageVersionId): PageVersion | null;
+          function savePageVersion(version: PageVersion): void;
+          ```
+        - With this, we have four clearly scoped “history layers”:
+          - `HistoryState` (in‑memory + localStorage) – per‑session undo/redo and autosave; never leaves the browser unless explicitly saved into `Page.history`.
+          - `Page.history` – the current page’s editor metadata and recent editing timeline; flows with the live draft.
+          - `PageVersion` snapshots – the user‑visible versioning system (“v12 of the checkout page”), used for compare/restore.
+          - `pages.history.jsonl` – low‑level append‑only diff log for audits/forensics and ops tooling.
+    - *User‑facing history views*
+      - Editors need two distinct history concepts:
+        - **“While I’m editing this page”** – undo/redo and autosave within the builder session (already covered by `HistoryState`).
+        - **“What changed over time”** – a per‑page list of saved/published versions, with meaningful labels.
+      - Best‑bet UX for the second:
+        - A **Versions panel** on the page detail screen that shows:
+          - A list of significant events (draft saves, publishes) with timestamps, actor (from `createdBy`/audit logs), and a short summary (derived from `diff`).
+          - A way to select two points and request a **diff view** for that page (field‑level diff for slug/SEO/props; maybe a side‑by‑side visual preview later).
+        - A **“Restore this version”** action that:
+          - Loads the chosen snapshot into the Page Builder as the current draft (do not auto‑publish).
+          - Lets the user review and then explicitly publish.
+      - Implementation sketch:
+        - Backed by `PageVersion`:
+          - `listPageVersions(shopId, pageId)` powers the Versions panel.
+          - `getPageVersion(shopId, versionId)` powers “View version” and “Restore this version”.
+        - For v1, prioritise a simple “Published versions” list (filter `PageVersion.status === "published"`), and use `pages.history.jsonl` as supporting detail for audits, not the primary UI source.
+    - *Rollback and safety*
+      - Rollback for PB‑driven pages should be:
+        - **Page‑scoped** – rolling back page A should not affect other pages.
+        - **Explicit** – always a two‑step “restore as draft → publish” flow, not an immediate revert of live content.
+      - Under the hood:
+        - Use `PageVersion` for versioning:
+          - Each publish writes a new `PageVersion` with `status: "published"` and a full `Page` snapshot (including `components`, `seo`, and any editor metadata we choose to persist).
+          - Optionally, explicit “Save draft” actions outside autosave can also write `PageVersion` entries with `status: "draft"` to support “draft versions” later.
+        - Rollback:
+          - Loads `snapshot` from a chosen version into the Page Builder as the current draft.
+          - On save/publish, writes a **new** `PageVersion` (with a new `id`), leaving the previous version as historical context.
+          - Leaves `pages.history.jsonl` intact as an audit trail.
+    - *How `pages.history.jsonl` fits in*
+      - Treat `pages.history.jsonl` as a **low‑level audit log**, not the direct UI feed:
+        - It’s useful for:
+          - Forensic debugging (“who changed what, when, at a field level?”).
+          - Power‑user tooling (CLI/ops scripts) that need to inspect or export change history.
+        - It is not ideal as the sole data source for end‑user history UX due to its diff‑only nature and potential growth.
+      - For v1 CMS UX:
+        - Use snapshot‑style `PageVersion` records for the primary Versions UI.
+        - Expose `pages.history.jsonl` through admin/ops tooling (e.g. downloadable log, API) for deeper inspection when needed.
+      - Retention and GC (high‑level, to align with the retention section):
+        - Keep at least the last N published versions per page (e.g. 10) or last M days (e.g. 90 days), whichever is more generous.
+        - Older `PageVersion` records can be:
+          - Soft‑deleted (hidden from UI) or
+          - Archived/exported and then purged, depending on compliance needs.
+        - `pages.history.jsonl` can be compacted in tandem:
+          - Cap file size/age per shop.
+          - Provide a CLI/admin tool that truncates entries older than X days or rewrites the file keeping only diffs since the oldest retained `PageVersion`.
+    - *History vs migrations*
+      - Block/schema migrations described earlier operate on the current `Page` state (and drafts) rather than rewriting history:
+        - History remains a record of what was saved at the time.
+      - Safety invariant for any tool that mutates Page content (including migrations):
+        - **Always** create a new `PageVersion` snapshot before applying changes, so “rollback from before this change” is possible.
+        - Append a clear “migration” marker to diff/audit logs (and/or `PageVersion.label`) so operators can see which pages were touched by which migration.
 - **SEO, SSR, performance**
   - How does `DynamicRenderer` interact with SSR/streaming, and what patterns should we encourage/avoid to protect LCP/CLS on highly composed pages?
   - How should Page Builder–authored SEO metadata map onto Next 15 metadata APIs for dynamic routes, especially for core commerce pages?
+  - **Best‑bet direction (current thinking):**
+    - *SSR vs client‑side composition*
+      - The current `DynamicRenderer` implementations in `@acme/ui` and `template-app` are marked `"use client"` and run entirely on the client:
+        - CMS‑driven pages are rendered as a server‑side skeleton (layout + `<main>` shell), then PB blocks hydrate on the client.
+        - Commerce system pages (PLP, PDP, checkout) are still server‑rendered via Next’s App Router (`generateMetadata`, `generateStaticParams`, server components for data fetching), and only parts of the tree (e.g. `DynamicRenderer`, cart/checkout widgets) are client components.
+      - For v1 this is acceptable, but we should keep in mind:
+        - PB‑composed marketing pages may be less optimal for LCP than fully server‑rendered templates.
+        - Critical commerce content (product data, pricing, availability) should continue to be rendered on the server where possible, with PB used for layout and secondary content.
+      - Longer‑term, we would like **server‑first PB rendering** for static content:
+        - Blocks that are mostly static (text, images, basic layout) should be renderable as server components, with only interactive islands hydrated on the client.
+        - To keep that path open, block implementations should avoid patterns that require `window` or client‑side data fetching in their render path; interactive behaviour should live in child client components when needed.
+      - Conceptually, it helps to think of three block classes:
+        - **Static blocks** – text, images, simple layout; should be SSR‑friendly and avoid heavy `useEffect` usage.
+        - **Interactive blocks** – carousels, accordions, forms; can be client components, but should keep props small and delegate data fetching to server components.
+        - **Heavy/experiential blocks** – parallax, Lottie, complex galleries; require explicit opt‑in and should never be the only above‑the‑fold content.
+    - *Patterns to protect LCP/CLS*
+      - Hero/above‑the‑fold sections:
+        - PB blocks used at the top of critical pages (home hero, PDP hero) should:
+          - Have predictable heights (use `minHeight`/height presets and aspect‑ratio wrappers like the `CmsImage` pattern).
+          - Avoid layout thrash on hydration (no large font/spacing changes after first paint).
+        - Where possible, SSR these sections as part of the app shell (e.g. server components that render a known hero template), and use PB for slots below the fold.
+      - Images and media:
+        - Use `next/image` (as `CmsImage` does in the template app) with width/height or `aspectRatio` to prevent CLS.
+        - For PB image blocks, ensure their schemas include enough information (cropAspect, width/height) for the runtime to reserve space correctly.
+      - Animations and scroll effects:
+        - `DynamicRenderer` initialises scroll/timeline/Lottie effects in `useEffect` and uses `data-pb-*` attributes and CSS variables; to avoid jank:
+          - Default animation durations/delays should be modest.
+          - Avoid heavy parallax/scroll effects on long mobile pages unless specifically required.
+      - Hydration:
+        - Keep PB block trees reasonably shallow for above‑the‑fold content; deeply nested layouts and many client components increase hydration cost.
+        - Use server components for data fetching (products, settings) and pass minimal props to PB components.
+      - Streaming:
+        - For PB pages rendered through the App Router, we can still take advantage of streaming:
+          - Render the shell and any above‑the‑fold server content first.
+          - Load PB JSON and hydrate `DynamicRenderer` lower in the tree.
+        - Avoid putting a monolithic `DynamicRenderer` inside a blocking `Suspense` boundary for above‑the‑fold content; if a PB section can be slow, wrap it in its own `Suspense` with a light fallback so the rest of the page can stream.
+    - *SEO metadata wiring*
+      - Next 15 App Router encourages per‑route `generateMetadata` for SEO:
+        - System pages already use this (e.g. `/[lang]/shop`, `/[lang]/product/[slug]`, `/[lang]/checkout`) to set `title`, `description`, and structured data via helper functions.
+      - PB pages should map `Page.seo` into metadata as follows:
+        - For generic PB routes (e.g. future `/[lang]/pages/[slug]`):
+          - `generateMetadata` fetches the `Page`, picks `seo.title[locale]` / `seo.description[locale]`, and returns a `Metadata` object.
+          - `seo.noindex === true` maps to `robots: { index: false }` and exclusion from sitemaps.
+        - For PB‑influenced system pages (e.g. PDP with PB slots), precedence should be explicit:
+          - PDP: `<title>` and main description come from product data (e.g. `product.title · brand` and `product.description`); PB can optionally override OpenGraph image and add extra structured data, but does not own the canonical `<title>`.
+          - PLP: `<title>` derives from category/collection; PB may add structured data snippets or extra sections, but not replace the primary title.
+      - Sitemaps and AI catalog:
+        - Continue to derive sitemaps from App Router routes plus `Page` records where appropriate (see `docs/seo.md`).
+        - The AI catalog API (`/api/ai/catalog`) should remain driven by product data, not PB pages; PB can influence how products are presented, not which products exist.
+    - *Performance budgets and tooling*
+      - Keep a simple budget for PB pages:
+        - As a working budget, a typical PB marketing page should keep the serialised `Page.components` payload under ~50 KB gzipped; if we routinely exceed ~100 KB, we should consider splitting into slots or simplifying block structures.
+        - Blocks must not inline large datasets (e.g. full product catalogues); they should carry filters/handles and rely on server‑side queries.
+        - Runtime payloads for PB pages must not include editor‑only metadata (`history.editor`, selection state, comments, etc.); only the minimal `PageComponent[]` + resolved styles needed for rendering should be sent to the client.
+      - Use existing tooling:
+        - Lighthouse and k6 tests already exist for core flows; extend them to include:
+          - One or two representative PB‑heavy pages (home, campaign) in Lighthouse budgets.
+          - A small number of PB routes in k6 scenarios if they become part of the core funnel.
+      - Where PB is used on critical commerce pages:
+        - Measure LCP/CLS before and after adding PB sections.
+        - Set thresholds (e.g. LCP < 2.5s on 4G) and adjust block usage/layout accordingly.
+        - Feed Web Vitals (LCP, CLS, INP) into the observability pipeline, tagged with `shopId` and route, and alert if PB‑heavy pages exceed agreed thresholds over a rolling window.
 - **Accessibility & guardrails**
   - What accessibility requirements (semantics, keyboard navigation, focus management, ARIA) should blocks adhere to, and where should we enforce them (linting, visual checks, CMS validation)?
   - How do we prevent authors from composing pages that are visually attractive but inaccessible (e.g., contrast, heading structure)?
+  - **Best‑bet direction (current thinking):**
+    - *Block‑level accessibility expectations*
+      - Core PB blocks (headers, navigation, buttons, forms, carousels, product grids, accordions, modals) should follow a written set of a11y requirements:
+        - Correct semantics (`<nav>`, `<main>`, `<header>`, headings in order, landmark roles where appropriate).
+        - Keyboard support (tab order, focus traps in modals, ESC to close, arrow keys for carousels/menus where applicable).
+        - ARIA attributes only where needed (labels for icons, expanded/collapsed state, relationships for accordions/tabs), avoiding ARIA that fights native semantics.
+        - Sufficient colour contrast for default themes; PB style controls should not allow authors to easily violate WCAG contrast without a warning.
+      - These requirements should be codified per block type (e.g. in component docs) so block authors have a clear contract.
+    - *Where to enforce guardrails*
+      - At implementation time (component code):
+        - A11y‑critical behaviours live in the block implementations in `@acme/ui` and `@platform-core/components`:
+          - Use semantic elements by default (e.g. `<button>` instead of clickable `<div>`).
+          - Ensure focus management and keyboard behaviour is baked in.
+        - Add targeted unit tests or Storybook a11y stories for complex blocks (carousels, modals, menus).
+      - At design/content time (Page Builder):
+        - The builder should discourage a11y‑hostile patterns:
+          - Provide heading level guidance (e.g. enforce a single H1 per page, flag multiple H1s).
+          - Warn when authors pick colour combinations that fall below contrast thresholds for body/text blocks.
+          - Limit certain props (e.g. disabling ability to turn off visible focus outlines without an explicit “expert mode”).
+      - At tooling time (linting/CI):
+        - Use existing linting and automated checks (ESLint with a11y plugins, Storybook a11y) on block code.
+        - Optionally add a pre‑publish “quick a11y check” that runs on key templates/pages in CI.
+    - *Preventing inaccessible compositions*
+      - Some issues only arise at the page level (e.g. heading hierarchy, multiple `main` elements, too many auto‑playing videos). Guardrails should include:
+        - Page‑level validators that:
+          - Ensure only one “main” area per page.
+          - Check for at least one top‑level heading and a sane heading structure.
+          - Flag excessive use of disruptive patterns (e.g. multiple auto‑playing blocks above the fold).
+        - Visual affordances in the builder (e.g. a simple accessibility summary per page: “Headings OK / Contrast issues / Motion heavy”).
+      - For v1, we can start small:
+        - Focus on obvious high‑impact issues: headings, contrast, keyboard access to interactive components.
+        - Provide guidance text and non‑blocking warnings rather than hard blockers, except for egregious cases (e.g. non‑dismissible modals).
 - **Extensibility / third‑party blocks**
   - How can internal/external teams introduce new blocks or templates safely (namespacing, review processes, constraints on props/layout)?
   - Do we want a formal plugin model for blocks/templates, or a curated “core only” set for now, and how would that decision affect multi‑shop safety?
+  - **Best‑bet direction (current thinking):**
+    - *Scope for v1*
+      - For now, we assume **blocks are authored by internal teams** and shared across shops; third‑party/extensible blocks are a future concern.
+      - Even so, it is worth shaping the model so that external plugins could be added later without breaking invariants.
+    - *Namespacing and registration*
+      - Blocks are already identified by `PageComponent["type"]` and registered via `blockRegistry` in `@acme/ui` (for CMS) and a separate mapping in `template-app`:
+        - Internal block types should use a clear `PascalCase` naming convention and be documented/owned (e.g. `HeroBanner`, `CartSection`, `AccountSection`).
+        - For potential third‑party blocks, we can reserve a `Vendor:Name` or `plugin::<name>` naming convention (e.g. `acmeVideo:Hero`, `plugin::shoppableInstagram`) to avoid collisions.
+      - Registration should go through explicit APIs:
+        - `registerBlocks(registry: Record<string, BlockRegistryEntry>)` in `page-builder-core/ui`.
+        - Apps/plugins call this during initialisation rather than mutating the registry directly.
+    - *Contracts for block authors*
+      - Any block—core or third‑party—must adhere to the same contracts:
+        - **Props schema**: defined in `@acme/types` with Zod, added to `pageComponentSchema`.
+        - **Public behaviour**: documented expectations around a11y, SSR‑friendliness, performance (as per previous sections).
+        - **Data dependencies**: blocks must not fetch arbitrary data on the client; they should receive either:
+          - Data from server components (for system blocks), or
+          - Query descriptors/ids (for PB blocks) that `DynamicRenderer` or server components resolve.
+      - Before introducing a new block type:
+        - Add its schema and tests in `@acme/types`.
+        - Implement its rendering in `@acme/ui` and, if needed, template‑app mapping.
+        - Optionally add Storybook stories, a11y checks, and basic performance checks.
+    - *Guardrails for “third‑party” blocks*
+      - If/when external plugins are allowed, we will likely want:
+        - A **review process** before enabling them in production (code review, security/a11y/perf checks).
+        - Constraints enforced at registration time:
+          - No access to global window in render.
+          - No direct network calls from client components; use provided hooks/APIs instead.
+          - Size limits on props and bundle to avoid regressions.
+        - A mechanism to **disable** or quarantine problematic blocks (e.g. refuse to render unknown/disabled `type`s at runtime).
+      - PB should treat unknown/unregistered block types as non‑renderable and surface a clear warning in CMS, so a mis‑configured plugin cannot silently break live pages.
+    - *Templates & plugins*
+      - The same `TemplateDescriptor` model described earlier can support third‑party templates:
+        - Vendor templates can register under their own namespace (`templateId` with vendor prefix), with `originKind: "plugin"` or similar.
+        - Shops can opt into specific template sets via configuration (e.g. “enable luxury templates”), and the CMS palette reflects that configuration.
+      - We should prefer a curated “core + approved internal templates” set for v1; a full external plugin marketplace is out of scope but the registration model should not prevent it later.
 
 ---
 
@@ -1411,3 +1725,8 @@ Overall, the repo already has a strong foundation for shared abstractions and te
 - **DX metrics & pain points**
   - What are the current DX bottlenecks (cold-start times, rebuild times, debugging cross-package issues), and how will we measure improvement?
   - Which core workflows (e.g., adding a block, spinning up a new shop, running tests) should we prioritise for DX investment?
+      - Internationalisation and SEO:
+        - For PB routes, use `ShopSettings.languages` and `Page.slug`/`visibility` to drive:
+          - `metadata.alternates.languages` (hreflang) per locale.
+          - Inclusion in sitemaps per locale.
+        - PB edits that affect routes/SEO (e.g. slug, visibility, noindex) should trigger `revalidatePath` or tag‑based revalidation for the affected routes so `generateMetadata` and page payloads stay in sync.

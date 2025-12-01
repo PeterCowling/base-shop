@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "prelint": "pnpm --filter @acme/eslint-plugin-ds build",
+    "pretypecheck": "pnpm --filter @acme/theme build && pnpm --filter @acme/telemetry build",
     "dev": "cross-env next dev -p 3006",
     "build": "next build",
     "start": "next start -p 3006",

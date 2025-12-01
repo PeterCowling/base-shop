@@ -50,7 +50,7 @@
   ],
 
   /* ───── source globs ───── */
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "generate-meta.ts"],
   "exclude": [
     "dist", // freshly emitted output
     "__tests__", // unit/integration tests

@@ -25,14 +25,13 @@ describe("generate-meta script", () => {
   });
 
   it("outputs meta for provided product file", async () => {
-    const scriptPath = require("path").resolve(__dirname, "..", "generate-meta.ts");
-    process.argv[1] = scriptPath;
     process.argv[2] = "product.json";
     const result = { title: "Test" };
     readFileMock.mockResolvedValue("{\"name\":\"test\"}");
     generateMetaMock.mockResolvedValue(result);
     const logSpy = jest.spyOn(console, "log").mockImplementation(() => {});
-    await import("../generate-meta.ts");
+    const { runGenerateMetaCli } = await import("../generate-meta.ts");
+    await runGenerateMetaCli();
     expect(readFileMock).toHaveBeenCalledWith("product.json", "utf8");
     expect(generateMetaMock).toHaveBeenCalledWith({ name: "test" });
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify(result, null, 2));
@@ -47,7 +46,8 @@ describe("generate-meta script", () => {
     const exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
     readFileMock.mockResolvedValue("{}");
     generateMetaMock.mockResolvedValue({});
-    await import("../generate-meta.ts");
+    const { runGenerateMetaCli } = await import("../generate-meta.ts");
+    await runGenerateMetaCli();
     expect(errorSpy).toHaveBeenCalledWith("Usage: generate-meta.ts ");
     expect(exitSpy).toHaveBeenCalledWith(1);
     errorSpy.mockRestore();

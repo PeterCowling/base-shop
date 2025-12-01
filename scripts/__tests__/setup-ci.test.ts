@@ -23,11 +23,11 @@ describe("setup-ci script", () => {
     const { envSchema } = await import("@config/src/env");
     (envSchema.parse as jest.Mock).mockReturnValue({});
 
-      const env = [
-        "STRIPE_SECRET_KEY=sk",
-        "STRIPE_WEBHOOK_SECRET=whsec",
-        "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk",
-      ].join("\n");
+    const env = [
+      "STRIPE_SECRET_KEY=sk",
+      "STRIPE_WEBHOOK_SECRET=whsec",
+      "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk",
+    ].join("\n");
     const existsMock = jest
       .spyOn(fs, "existsSync")
       .mockImplementation((p) => p.toString().endsWith(".env"));
@@ -51,22 +51,24 @@ describe("setup-ci script", () => {
     expect(readMock).toHaveBeenCalled();
     expect(writeMock).toHaveBeenCalledTimes(1);
     const [wfPath, content] = writeMock.mock.calls[0];
-    expect(wfPath).toBe(path.join(".github", "workflows", "cover-me-pretty.yml"));
-      expect(content).toContain("@apps/cover-me-pretty");
-      expect(content).toContain("STRIPE_SECRET_KEY: sk");
-      expect(content).toContain("STRIPE_WEBHOOK_SECRET: whsec");
-      expect(exitMock).not.toHaveBeenCalled();
+    expect(wfPath).toBe(
+      path.join(".github", "workflows", "cover-me-pretty.yml")
+    );
+    expect(content).toContain("@apps/cover-me-pretty");
+    expect(content).toContain("STRIPE_SECRET_KEY: sk");
+    expect(content).toContain("STRIPE_WEBHOOK_SECRET: whsec");
+    expect(exitMock).not.toHaveBeenCalled();
   });
 
   it("injects domain env vars when configured", async () => {
     const { envSchema } = await import("@config/src/env");
     (envSchema.parse as jest.Mock).mockReturnValue({});
 
-      const env = [
-        "STRIPE_SECRET_KEY=sk",
-        "STRIPE_WEBHOOK_SECRET=whsec",
-        "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk",
-      ].join("\n");
+    const env = [
+      "STRIPE_SECRET_KEY=sk",
+      "STRIPE_WEBHOOK_SECRET=whsec",
+      "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk",
+    ].join("\n");
     jest
       .spyOn(fs, "existsSync")
       .mockImplementation((p) => true);

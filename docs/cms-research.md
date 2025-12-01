@@ -8,6 +8,12 @@ Each section captures:
 - **Questions** – concrete topics to research or validate.
 - **Findings** – what we have confirmed in code so far.
 
+### Target outcomes & constraints
+
+- Time from “start configurator” to first live shop should be ≤ 30 minutes for a non‑technical user, assuming required external accounts (e.g. Stripe) already exist.
+- CMS‑authored changes (pages, settings, theme) should appear live on all configured runtimes within ≤ 60 seconds of publish, without manual restarts.
+- Any tenant app that implements a documented contract (providers, routes, env vars, and preview hooks) should be able to use prefabricated cart/checkout/header blocks with zero app-specific code changes.
+
 ---
 
 ## 1. Overall architecture & boundaries
@@ -119,20 +125,341 @@ These findings suggest that:
   - Should Prisma or JSON be treated as authoritative for `Shop` and `ShopSettings`, and in which scenarios?
   - How should drift be handled when a shop exists in the DB but not in `data/shops` (or vice versa)?
   - Is JSON intended as a cache, backup, or first‑class peer to Prisma, and does that differ per repository?
+  - **Best‑bet direction (current thinking):**
+    - In production and other shared environments, `Shop` and `ShopSettings` should be persisted and read **only via Prisma/Postgres**. JSON is a non‑authoritative mirror used for export/import, debugging, and local seeding.
+    - In dev/offline/demo environments, when a repo’s `*_BACKEND` is explicitly set to `"json"`, that repo uses JSON under `DATA_ROOT` as its **sole source of truth** for that environment; Prisma is ignored for that repo (and `DATABASE_URL` may be unset).
+    - For shops/settings specifically:
+      - When `SHOP_BACKEND` / `SETTINGS_BACKEND` are not `"json"` (DB mode):
+        - `readShop` / `readShopSettings` should always read from Prisma; runtime code must not fall back to JSON. Stray JSON files are ignored by runtime code.
+        - JSON snapshots, if desired, are produced via explicit export tooling (and/or optional auto‑snapshotting in local/dev, not in prod).
+      - When `SHOP_BACKEND` / `SETTINGS_BACKEND` are `"json"` (JSON mode):
+        - `readShop` / `readShopSettings` read/write JSON only; Prisma may be unset or unused.
+    - Implementation‑wise, each repository should resolve **one backend per process** based on its `*_BACKEND` (and fail fast if Prisma is selected but `DATABASE_URL` is invalid), route all calls through that backend, and remove “try DB then JSON” reconciliation from core read paths. Hybrid scenarios (e.g. migrating from JSON to DB) should live in dedicated tooling, not in the main repos.
 - **Platform vs tenant responsibilities**
   - Which responsibilities must live in `platform-core` (e.g., domain models, cart/checkout, orders, repositories) vs tenant apps (`apps/cover-me-pretty`, `apps/skylar`)?
   - Which `@acme/*` exports are “public API” that tenant apps can safely depend on, and which are internal details that may change?
+  - **Best‑bet direction (current thinking):**
+    - **Platform‑core responsibilities (`@acme/platform-core`)**
+      - *What it owns*
+        - Business domain and persistence for all shops:
+          - `Shop`, `ShopSettings`, products, inventory, pricing, tax, cart, checkout, orders, returns, subscriptions, analytics, background services (`platform-machine`).
+        - Repository layer:
+          - `@platform-core/repositories/*` for shops/pages/settings/products/orders, with Prisma/JSON implementations hidden behind `resolveRepo` and `*_BACKEND` envs.
+        - Runtime services and shared flows:
+          - React contexts such as `CartContext`, `CurrencyContext`, `ThemeContext`, `LayoutContext`.
+          - Shop lifecycle flows like `createShop`, `deployShop`, and related upgrade/preview helpers.
+      - *Public API surface (apps may depend on these)* — examples (not exhaustive, but should become a documented list):
+        - Cart & checkout:
+          - `@platform-core/cart`, `@platform-core/cartCookie`, `@platform-core/cartStore`, `@platform-core/cartApi`.
+          - `@platform-core/checkout/session`, `@platform-core/pricing`, `@platform-core/tax`, `@platform-core/coupons`.
+        - Domain repositories (server‑side only):
+          - `@platform-core/repositories/shops.server`.
+          - `@platform-core/repositories/settings.server`.
+          - `@platform-core/repositories/pages.server`.
+          - `@platform-core/repositories/products.server`.
+          - `@platform-core/repositories/orders.server`.
+        - Shop lifecycle:
+          - `@platform-core/createShop` (and any related helpers we explicitly bless).
+        - These subpaths are intended as stable, documented contracts; apps can import them directly.
+      - *Internal details (apps should not import these)*
+        - Backend implementations and low‑level utilities:
+          - `*.prisma.server.ts`, `*.json.server.ts`.
+          - `db.ts`, `safeFs.ts`, internal `dataRoot` helpers.
+        - Any `@platform-core/*` path that is not explicitly documented as public.
+        - Contract: if an app imports these, it is in unsupported territory, and they may change without notice.
+        - Rule of thumb: if a symbol is not referenced from docs or from `apps/*` via a clean, documented subpath, treat it as internal to platform-core.
+    - **Tenant app responsibilities (`apps/cover-me-pretty`, `apps/skylar`, …)**
+      - *What they own*
+        - The Next.js shell:
+          - App Router structure (`app/[lang]/…`), layouts, error and not‑found pages, route‑level data fetching.
+          - Brand‑specific route naming and URL structure (within any global constraints we define).
+        - Brand and UX composition:
+          - Choosing fonts, colours, themes, SEO conventions.
+          - Assembling pages with `@acme/ui` components and Page Builder–driven content.
+          - Deciding which Page Builder blocks/templates are available for that brand.
+      - *How they integrate with the platform*
+        - They only consume public APIs from:
+          - `@acme/platform-core` (domain, persistence, flows).
+          - `@acme/ui` (design system, Page Builder UI, layout components).
+        - They must not:
+          - Implement their own cart/checkout/orders/pricing logic.
+          - Talk directly to DB/JSON backends or copy/paste repository logic.
+        - When an app needs behaviour that isn’t exposed yet (e.g., a new checkout variant, new order view), it should:
+          - Request or design a new abstraction in platform-core (via ADR/issue).
+          - Consume that abstraction once it exists, rather than building a one‑off in `apps/*`.
+    - **UI package responsibilities (`@acme/ui`)**
+      - *What it owns*
+        - Shared design system:
+          - Atoms/molecules/organisms/layout components used by CMS and storefront apps.
+        - CMS & Page Builder UI:
+          - Page Builder canvas, block palette, inspector panels.
+          - CMS‑specific components (media manager, nav editor, shop chooser, etc.).
+        - Layout primitives for tenant apps:
+          - Shared `Header`, `Footer`, `AppShell`, grid systems, typography, etc.
+      - *Public API surface*
+        - Exports from `@acme/ui` (the package root) and any documented subpaths (for example, `@acme/ui/layout`, `@acme/ui/page-builder`, `@acme/ui/forms` once formalised).
+        - These should be the only imports apps use from `@acme/ui`.
+      - *Internal details*
+        - Deep imports like `@acme/ui/src/...` are considered internal and should be removed over time:
+          - They may change without notice.
+          - Eventually we can enforce this with lint/CI.
 - **Tenancy & environments**
   - Is the current “one active shop per deployment” model acceptable for the goal of launching many shops from a single CMS, or do we need a multi‑tenant runtime (host-header routing, per‑shop subdomains, etc.)?
   - How do we ensure strict data isolation between shops at the repository level (e.g., consistent scoping by shop ID in all queries)?
   - What is the right abstraction for per‑shop environments (dev/stage/prod) beyond process‑wide env vars?
+  - Where and how are custom domains/subdomains stored and mapped to shops, and how is that mapping updated over time?
+  - **Best‑bet direction (current thinking):**
+    - *Tenancy model (near term)*
+      - Treat the current model as intentional: the CMS and DB are **multi‑shop**, and each storefront deployment is **single‑shop**.
+      - CMS manages many shops in a shared DB using `shopId`‑scoped entities (`Shop`, `ShopSettings`, products, pages, orders, etc.).
+      - Each shop is materialised as a separate app (for example, `apps/shop-<id>` or a brand app like `apps/cover-me-pretty`) built from the template app plus shop data and deployed independently via a `ShopDeploymentAdapter` (Cloudflare by default).
+      - A deployment is bound to a single `shopId` via `NEXT_PUBLIC_SHOP_ID` (or an embedded `shop.json` in brand apps); re‑binding a URL to a different shop requires a new deployment, not an in‑place flip.
+      - Pros we accept for v1:
+        - Strong blast‑radius isolation: perf bugs, deploy failures, or bad env vars affect one shop.
+        - Simplified runtime config: essentially `NEXT_PUBLIC_SHOP_ID` + env vars per app.
+        - Easier custom domain mapping: host → app is handled at the infra level, not via a complex multi‑tenant router.
+      - Cons we accept for v1:
+        - `N` shops ⇒ `N` storefront deployments.
+        - Heavier deploy footprint vs a single multi‑tenant runtime.
+        - Some duplication of code/config across app instances.
+      - These trade‑offs are acceptable as long as deployment remains push‑button via the `ShopDeploymentAdapter`. A host‑header‑based multi‑tenant storefront is a **future optimisation**; our data model already scopes by `shopId`, so a multi‑tenant runtime could be added later without changing persistence.
+    - *Runtime selection & `NEXT_PUBLIC_SHOP_ID`*
+      - Keep `NEXT_PUBLIC_SHOP_ID` (and, for brand apps, embedded `shop.json`) as the mechanism to bind a runtime to a single shop:
+        - Template app reads `NEXT_PUBLIC_SHOP_ID` to resolve `readShop`, `getShopSettings`, preview, sitemap, analytics, etc.
+        - Brand apps embed a specific `shop.json` and `shopId` at build time.
+      - Under this model, a deployment serves exactly one shop; DNS/hosting config decide which app instance a request hits.
+    - *Data isolation in repositories*
+      - All per‑shop repositories take an explicit `shopId: string` parameter (for example, `getPages(shopId)`, `getShopSettings(shopId)`, `listOrders(shopId)`).
+      - Queries for per‑shop data must always include `shopId` in where clauses and, where appropriate, in composite keys/constraints.
+      - Global data (for example, shared rental pricing matrices) is modelled explicitly as global and documented; we avoid ambiguous “sometimes per shop, sometimes global” tables.
+      - Enforcement ideas:
+        - Code‑level: no per‑shop repo functions without a `shopId` parameter; shared helpers like `withShopScope` to reduce “forgot to add `shopId`” mistakes.
+        - DB‑level: composite unique keys that always include `shopId` (e.g. `(shopId, slug)`), foreign keys that keep related rows on the same shop, and (optionally) row‑level policies for background services in future.
+    - *Per‑shop environments (dev/stage/prod)*
+      - Environment boundaries live at the **deployment + DB** level, not inside `Shop`:
+        - A “dev” deployment talks to a dev DB (or schema) and dev env vars.
+        - A “stage” deployment talks to a stage DB and env vars.
+        - A “prod” deployment talks to a prod DB and env vars.
+      - The same logical `shopId` may exist in multiple environments (e.g. `"acme"` in dev vs prod), but each environment is isolated by its own deployment + database (or schema).
+      - We do **not** add an `env` field to `Shop` or multiplex dev/stage/prod inside one DB row; if we need environment metadata per shop (e.g. “this shop has a staging deployment at URL X”), we store that as deployment metadata (e.g. in `deploy.json` or a dedicated table), not on `Shop` itself.
+    - *Domains & DNS mapping*
+      - `Shop.domain` (via `shopDomainSchema`) is the canonical mapping between a shop and its primary domain:
+        - `shop.domain.name` is the primary domain; `status` and `certificateStatus` track provisioning state.
+      - For v1 we support a single primary domain per shop; aliases/secondary domains are out of scope.
+      - Deployment adapters (e.g. `CloudflareDeploymentAdapter`) are responsible for:
+        - Writing deployment metadata (e.g. `deploy.json`) for a shop, including preview URLs and hosting info.
+        - Reconciling DNS / Pages / certificates based on `shopId` + `shop.domain.name` when a shop is created or its domain changes.
+      - Runtime routing remains straightforward:
+        - Infra maps host → app deployment.
+        - Within each app, `NEXT_PUBLIC_SHOP_ID` (or embedded `shop.json`) determines which `Shop` record the code uses.
 - **Deployments & upgrades**
   - What guarantees of repeatability and idempotency do we need for `createShop`, deployments, and `upgrade-shop` across environments?
   - What is the standard per‑shop rollout/rollback story (and how is it surfaced in CMS)?
   - How does `upgrade-shop` behave in the presence of tenant‑level customizations, and how are template/component versions tracked per shop to avoid breakage?
+  - What are the concrete failure modes for `createShop`/deploy/upgrade, and what rollback mechanisms (per shop) do we need when these only partially succeed?
+  - Do we need a notion of “shop health” (healthy/degraded/broken) surfaced in CMS based on recent deploy/upgrade status and runtime checks?
+  - **Best‑bet direction (current thinking):**
+    - *Idempotency and repeatability*
+      - We treat `createShop`, `deployShop`, and the CLI upgrade tools as **per‑shop flows**, but with different guarantees:
+        - `createShop(id, opts)` (`packages/platform-core/src/createShop/createShop.ts`):
+          - Writes a `Shop` row to Prisma and `data/shops/<id>/shop.json`, seeds `Page` rows, and finally calls `deployShop`.
+          - It is **create‑only, not idempotent**: once a `Shop(id)` exists in a given environment, re‑running `createShop` for that `id` should fail loudly with a clear “shop already exists” error and must not attempt to mutate or merge an existing shop.
+          - Given the same `(id, opts)` and the same template version, `createShop` should be **deterministic across environments** (dev/stage/prod), producing the same basic shop shape with no hidden randomness.
+        - `deployShopImpl` (`packages/platform-core/src/createShop/deploy.ts`):
+          - Scaffolds `apps/<id>`, patches `.env` with a generated `SESSION_SECRET`, calls the deployment adapter, and writes `deploy.json` via `writeDeployInfo`.
+          - It is **effectively idempotent per shop and build**: re‑running for the same shop just re‑scaffolds and redeploys that build; `.env` updates are overwriting but bounded, and `deploy.json` is treated as “last known deployment status” for that shop (we can extend it with explicit version/timestamp fields over time).
+        - `upgrade-shop.ts`, `republish-shop.ts`, and `rollback-shop.ts` (`scripts/src/*`):
+          - `upgrade-shop <shop>` copies from `packages/template-app` into `apps/<shop>`, backing up any overwritten files with `.bak`, updates `shop.json.lastUpgrade` and `shop.json.componentVersions` based on the shop’s `package.json`, writes `upgrade-changes.json` (changed components and affected page IDs), and writes `data/shops/<id>/upgrade.json` with component version metadata; `--rollback` restores `.bak` files and removes `lastUpgrade`/`componentVersions` from `shop.json`.
+          - `republish-shop <shop>` reads `upgrade.json` if present, snapshots the current `componentVersions`/`lastUpgrade` into `history.json`, builds and deploys `apps/<shop>`, updates `shop.json.status` to `"published"` and refreshes `componentVersions` from `package.json`, removes `upgrade.json`, `upgrade-changes.json`, and `.bak` files, and appends an entry to `audit.log`.
+          - `rollback-shop <shop>` uses `history.json` to restore the previous `componentVersions`/`lastUpgrade` into `shop.json`, rewrites `apps/<shop>/package.json` dependencies to match, runs `pnpm ... install/build/deploy`, and updates `shop.json.status` back to `"published"`.
+      - For v1, the mental model is:
+        - `createShop` should either succeed once per `shopId` in an environment or fail clearly on duplicates; it is **not** a “converge” operation.
+        - `deployShop`, `upgrade-shop`, `republish-shop`, and `rollback-shop` are **safe to re‑run** for the same shop (and build/version) as “make reality match the current desired state” operations.
+    - *Per‑shop rollout/rollback story*
+      - In a given environment, the intended lifecycle for a shop is:
+        - **Create** – CMS (or CLI) calls `createShop` to seed Prisma + `data/shops/<id>` and optionally deploy an initial app via `deployShop`, which writes `deploy.json` (adapter `status`, `previewUrl`, and any human‑readable `instructions`).
+        - **Upgrade & preview** – when template/UI packages change, `upgrade-shop <shop>` stages updated components into `apps/<shop>`, records `lastUpgrade` and `componentVersions` in `shop.json`, writes `upgrade.json` with component version metadata and `upgrade-changes.json` with changed components and affected pages, and ensures `UPGRADE_PREVIEW_TOKEN_SECRET` exists in `.env` so `/upgrade-preview` can render staged components.
+        - **Republish** – after manual review, `republish-shop <shop>` builds and deploys `apps/<shop>`, updates `shop.json.status` to `"published"`, snapshots the previous `componentVersions`/`lastUpgrade` into `history.json`, cleans up `.bak`, `upgrade.json`, and `upgrade-changes.json`, and appends an entry to `audit.log`.
+        - **Rollback (pre‑publish)** – if a staged upgrade is not acceptable *before* republish, `upgrade-shop <shop> --rollback` restores `.bak` files in `apps/<shop>`/`data/shops/<id>`, removes `lastUpgrade`/`componentVersions` from `shop.json`, and leaves the last published deployment intact.
+        - **Rollback (post‑publish)** – if a published upgrade needs to be undone, `rollback-shop <shop>` restores the previous entry from `history.json`, rewrites `shop.json.componentVersions`/`lastUpgrade` and the app’s `package.json` dependencies, redeploys, and updates `shop.json.status`.
+      - CMS should treat these CLI flows as canonical and surface them as explicit actions for each shop (for example, “Stage upgrade”, “Preview upgrade”, “Republish”, “Rollback staged”, “Rollback to previous version”), backed by the state in `shop.json`, `upgrade.json`, `history.json`, `deploy.json`, and `audit.log`, rather than inventing separate mechanisms.
+    - *Customisations vs template evolution*
+      - `upgrade-shop` is explicitly **template‑centric**: it copies from `packages/template-app` into the shop app and uses `.bak` files plus checksums to detect changes; it does not perform semantic three‑way merges with tenant‑level custom code.
+      - For template‑driven shops (those created from the template and kept in sync):
+        - Code customisation should not live under `apps/<shopId>`; instead, shops rely on shared components from `packages/ui`/`template-app` plus CMS‑managed content and `ShopSettings`.
+        - `shop.json.componentVersions` and `shop.json.lastUpgrade` are **owned by the upgrade tooling** (`upgrade-shop`, `republish-shop`, `rollback-shop`) and should not be mutated by CMS actions; that keeps “template version” state separate from content.
+      - For heavily customised brand apps (e.g. `apps/skylar` or bespoke forks):
+        - They may still consume shared packages (`@acme/ui`, `@acme/platform-core`), but they are treated as **forks**, not as template‑driven shops.
+        - Generic `upgrade-shop <shop>` may still be useful as a diff helper, but upgrades are essentially manual work guided by `upgrade-changes.json` and should not be assumed to be safe or automatic.
+      - Per‑shop `componentVersions` in `shop.json` plus `history.json` give a concrete basis for:
+        - Understanding which template/UI versions a shop is currently on.
+        - Deciding which shops are eligible for a given upgrade.
+        - Auditing how and when upgrades were applied or rolled back.
+    - *Failure modes and health*
+      - The current code already includes some resilience and audit hooks:
+        - `createShop` writes to Prisma first, then attempts filesystem writes, and finally calls `deployShop`; filesystem write errors are swallowed, while deployment errors are captured via the adapter’s `DeployShopResult` and written to `deploy.json`.
+        - `upgrade-shop` always creates `.bak` files before overwriting and exposes `--rollback` to restore them.
+        - `republish-shop` refuses to run without a valid `shopId`, throws on failed `pnpm ... build/deploy`, and leaves `upgrade.json`/`.bak` files in place if an error occurs, so they can be inspected.
+        - `rollback-shop` maintains `history.json` as an append‑only log of previous `componentVersions`/`lastUpgrade` snapshots and uses it to drive rollbacks.
+      - A reasonable v1 health model is **per shop per environment**:
+        - **Data health** – `Shop`/`ShopSettings`/page rows exist in DB and validate; `data/shops/<id>/shop.json` (if present) parses and passes schema checks.
+        - **Deployment health** – the last entry written to `deploy.json` has `status: "success"`; the corresponding app responds to a basic health probe.
+        - **Upgrade health** – no stale `upgrade.json` stuck for longer than a chosen threshold without a matching republish; `history.json` shows a consistent progression of `componentVersions` and `lastUpgrade`.
+      - CMS can surface a coarse **`healthy` / `needs attention` / `broken`** status per shop per environment derived from these artefacts, with links to `deploy.json`, `history.json`, `upgrade.json`, and `audit.log` plus clear calls to action (“retry deploy”, “rollback upgrade”, “repair snapshot”) to help operators resolve issues quickly.
 - **Operational observability**
   - How do we log and surface metrics/traces per shop to debug misbehaving tenants?
   - How do we track “which runtime version + config revision is live for this shop right now?” in a way that CMS can show succinctly?
+  - **Best‑bet direction (current thinking):**
+    - *Logging*
+      - Use `@acme/shared-utils/logger` as the single structured logger across CMS, platform‑core, and runtimes. All logs should be JSON with at least:
+        - `level` (`info` for happy path, `warn` for degraded-but-handled situations, `error` for failing operations),
+        - `timestamp`,
+        - `service` (e.g. `cms`, `template-app`, `platform-core`, `background-worker`),
+        - `env` (`dev`/`stage`/`prod`),
+        - `shopId` (where applicable),
+        - `requestId` (per HTTP request), and
+        - `operationId` (for multi‑step flows like `createShop`, `upgrade-shop`, `deployShop`, so logs from different services for the same logical operation can be tied together).
+      - Log messages should be small, structured events `{ message, meta }` rather than free‑form strings, with `meta` holding additional context (e.g. `pageId`, `userRole`, `endpoint`, `statusCode`). A consistent shape like `{ level, timestamp, service, env, shopId?, requestId?, operationId?, message, meta }` makes shipping logs to any central system trivial later.
+      - Per‑shop observability comes from always including `shopId` when a log relates to a specific shop (CMS actions, repo calls, cart/checkout APIs, deployment/upgrade flows, background jobs). Linting and code review should steer new code away from `console.log` and towards the shared logger so observability doesn’t fragment.
+    - *Metrics*
+      - Focus metrics on a tiny, well‑defined set of core flows, always labelled by `shopId` and `env` (and optionally `service`):
+        - Shop lifecycle: counters for `createShop` attempts/success/failure.
+        - CMS editing: page publishes, settings saves, media uploads.
+        - Commerce flows: cart API calls, checkout attempts, successful checkouts, checkout failures (by coarse reason such as `validation`/`provider_error`).
+        - Upgrades: `upgrade-shop`, `republish-shop`, and `rollback` runs.
+      - Concretely, we expect counters and latency histograms such as:
+        - `cms_shop_create_total{shopId,env,status}`,
+        - `cms_page_publish_total{shopId,env,status}`,
+        - `cms_settings_save_total{shopId,env,status}`,
+        - `cart_checkout_requests_total{shopId,env,status}`,
+        - `upgrade_republish_total{shopId,env,status}`,
+        - plus latency histograms for cart/checkout and CMS save/publish endpoints.
+      - To avoid metric cardinality explosions, we **only** use `shopId`, `env`, and possibly `service` as labels; high‑cardinality data like `userId`, `pageId`, or arbitrary slugs go into logs, not metric labels. The concrete metrics backend (Prometheus, vendor, etc.) can be chosen later as long as these naming and labelling conventions are honoured.
+    - *Traces (future‑ready)*
+      - The codebase is already structured around explicit `shopId`; we can make it more trace‑friendly by standardising a light `RequestContext` object (e.g. `{ shopId, env, requestId, operationId }`) that is passed into platform‑core services and longer‑running flows from CMS and runtimes.
+      - Today, this context can power logging and simple timing; in a future phase, we can attach an OpenTelemetry‑style tracer to the same context to emit spans for key flows (checkout, `createShop`, `upgrade`, `deploy`) without refactoring function signatures again.
+      - For now, `requestId` (per inbound request) and `operationId` (per multi‑step flow) are the main tools for correlating logs and any future traces across CMS, APIs, and storefronts.
+    - *Tracking “which version/config is live?”*
+      - We derive a per‑shop, per‑environment “live state” from a few existing artefacts plus a small amount of extra metadata:
+        - **Runtime code version**:
+          - `data/shops/<id>/deploy.json` (written by the `ShopDeploymentAdapter`) should hold:
+            - `version` (build/artefact ID, e.g. commit SHA or hosting deployment ID),
+            - `status` (`"pending"` | `"success"` | `"error"`),
+            - a `timestamp` for the last attempt, and
+            - the storefront `previewUrl` / `url` plus any human‑readable `instructions`.
+        - **Template/component version**:
+          - `data/shops/<id>/shop.json` already holds `componentVersions` and `lastUpgrade`, reflecting which version of each template‑owned component is currently published for this shop.
+          - `data/shops/<id>/history.json` records previous `componentVersions`/`lastUpgrade` values so we can see how a shop has moved forward (and back) over time; this is primarily about template upgrades rather than day‑to‑day content.
+        - **Config/content revision**:
+          - The DB `Shop` and `ShopSettings` rows carry `updatedAt` (and could grow a dedicated `configRevision`/`publishedAt`); CMS pages carry their own `updatedAt`/`status`.
+          - “Live config” should be interpreted as the latest **published** page revisions plus `ShopSettings` as of their last successful save; draft changes don’t affect this state until published.
+      - Combining these, CMS can surface, for each shop and environment, a concise status such as:
+        - `Live on build abcd1234, template v1.4.2 (header v3, footer v2), config published 2025‑04‑03, domain example.com, healthy`, or
+        - `Upgrade staged (1 package pending), last deploy failed 2025‑04‑02 (view logs)`.
+      - The shop dashboard and shop list can both show this “live state”:
+        - As badges in the list view (`Healthy`, `Needs attention`, `Broken`).
+        - As a richer status panel on the shop detail page with direct links to logs (`deploy.json` / `audit.log`), upgrade history, and the most relevant next actions (retry deploy, rollback, or open upgrade preview).
+- **Security / isolation model**
+  - How are secrets (Stripe keys, env vars, service credentials) isolated per shop and per environment, and where are they stored?
+  - In a future multi‑tenant runtime, what per-request context do we need so isolation is enforced at the app layer (e.g., shop-scoped configuration and data access)?
+  - **Best‑bet direction (current thinking):**
+    - *Secrets and env isolation today*
+      - Secrets are modelled as **environment‑level configuration**, not per‑shop fields:
+        - Core secrets (auth/session) come from `@acme/config/env/auth` (`NEXTAUTH_SECRET`, `SESSION_SECRET`, `PREVIEW_TOKEN_SECRET`, `UPGRADE_PREVIEW_TOKEN_SECRET`, Redis tokens, etc.) and are validated eagerly in production.
+        - Payments are configured via `@acme/config/env/payments` (`PAYMENTS_PROVIDER`, `STRIPE_SECRET_KEY`, `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, `PAYMENTS_SANDBOX`, `PAYMENTS_CURRENCY`).
+        - Shipping/tax integrations use `@acme/config/env/shipping` (`TAXJAR_KEY`, `UPS_KEY`, `DHL_KEY`, etc.), with strong validation to fail fast when required keys are missing.
+        - Cart cookies are signed using `CART_COOKIE_SECRET` read via `loadCoreEnv` in `cartCookie.ts`.
+        - CMS and external content services are configured via `cmsEnv` (`CMS_SPACE_URL`, `CMS_ACCESS_TOKEN`, `SANITY_*` secrets).
+      - Under the current single‑tenant‑per‑deployment model, **each storefront deployment has its own `.env` and env vars**, so secrets are already isolated at the “shop + environment” level by virtue of separate deployments and databases:
+        - `apps/shop-<id>` or brand apps like `apps/cover-me-pretty` read env vars from their own `.env` files (scaffolded and patched by `deployShopImpl`).
+        - CMS runs with its own env (auth, CMS API tokens, etc.); it does not share runtime secrets with storefront apps beyond what is needed for preview and API calls.
+      - Best current stance:
+        - Keep **one secret set per deployment** (shop + env) and avoid ever putting raw secrets into `Shop`, `ShopSettings`, `shop.json`, page content, or Page Builder metadata; those records may be copied, exported, or inspected by people who should not see secrets.
+        - When per‑shop variation is needed (e.g. different Stripe accounts for different shops), represent it as **different deployments with different env** (today), not as secret blobs stored in the database.
+        - Secrets must not be logged or surfaced in CMS UI; logger helpers and UI components should treat anything resembling a secret as sensitive and either avoid logging it or mask it.
+    - *Per‑shop configuration vs secrets*
+      - `ShopSettings` and related domain objects should store **identifiers and configuration**, not secret material:
+        - E.g. `"paymentProviders": [{ type: "stripe", mode: "live", accountLabel: "acme-main", credentialId: "stripe-acme-main" }]`, where `credentialId` is an opaque handle rather than a key.
+        - Shipping/tax providers are selected by provider id/region; underlying keys come from env or, in future, a secrets manager.
+      - This keeps a clear boundary:
+        - CMS can fully manage “which providers/features are enabled for this shop” via structured config.
+        - Secrets remain in env or an external secrets manager, managed via CI/infra tooling and rotated out‑of‑band.
+    - *Future multi‑tenant runtime constraints*
+      - If we later introduce a **multi‑tenant storefront runtime** (host‑header routing, many shops per process), we’ll need a stricter per‑request isolation model:
+        - A `RequestContext` (or similar) would carry `{ shopId, env, requestId, operationId }` and be the **only** way to access per‑shop configuration. `shopId` should be derived once at the routing edge (host header / path prefix) and not trusted from request bodies or query parameters.
+        - Repositories and services already take `shopId` explicitly; in a multi‑tenant runtime they would additionally take a `RequestContext` or derive env‑backed configuration from it, and `shopId` would be non‑optional for storefront requests.
+      - Secret handling in a multi‑tenant runtime should follow one of:
+        - **Single shared secret set** for all shops in that runtime (e.g. one Stripe account per environment). Shop‑specific behaviour is config only, not secrets.
+        - Or a **registry of per‑shop secret handles** (e.g. `stripeAccountKeyId` / `credentialId` stored in `ShopSettings`, with the actual key fetched from a secrets manager keyed by `(env, shopId, keyId)`), never raw secrets in DB.
+        - In practice this looks like a small in‑process config/secrets service:
+          - Reads `ShopSettings` for IDs/modes/labels.
+          - Resolves any handles via env + a secrets manager (with caching and TTL).
+          - Exposes a `getShopRuntimeConfig(shopId)` that controllers/services call using the `RequestContext`, instead of reading env/DB directly.
+      - In both cases:
+        - Secrets are fetched at process start or via a dedicated secrets client, **not** from tenant‑controlled data.
+        - All per‑shop data access continues to be scoped by `shopId`, and any future per‑request context must ensure we never accidentally cross shops in queries or config lookup.
+- **Data retention & privacy**
+  - What retention policies do we need for orders, carts, page histories (`pages.history.jsonl`), media, and audit logs?
+  - What requirements do we have for deletion/DSR flows (GDPR “right to be forgotten”), and how should those be implemented across CMS and runtime apps?
+  - **Best‑bet direction (current thinking):**
+    - *Retention policy (high‑level)*
+      - Treat retention as **policy‑driven per data class**, not ad‑hoc per table/file. Exact durations should be agreed with legal/compliance, but the likely shape is:
+        - **Orders/payments** – retained for the longest period (e.g. 6–7 years) for accounting, tax, fraud, and dispute handling; hard‑delete only when legally required. Where possible, minimise PII attached to orders up front so older records are less sensitive.
+        - **Customers/accounts** – retained while the account is active; subject to deletion/DSR flows on request. When accounts are deleted, associated PII should be removed or pseudonymised, while preserving order/payment records where required.
+        - **Carts** – short‑lived (e.g. 30–90 days) to support “return to cart” UX; expired carts can be hard‑deleted without notice. Cart state is non‑authoritative and should not contain more PII than strictly needed.
+        - **CMS content (pages, shop settings)** – current/published state retained indefinitely; history/logs (diffs, audit logs) subject to a bounded retention window (e.g. 90–365 days) to limit growth while still supporting rollback/audit needs.
+        - **Media** – retained as long as referenced by published content or active products; orphaned media can be soft‑deleted and then hard‑deleted on a schedule.
+      - Concretely, this suggests:
+        - Configurable **retention windows** per data category (e.g. `CART_RETENTION_DAYS`, `PAGE_HISTORY_RETENTION_DAYS`, `AUDIT_LOG_RETENTION_DAYS`, `MEDIA_GRACE_DAYS`) with sensible defaults and clear doc per environment.
+        - Background jobs (in `@acme/platform-machine` or similar) that periodically purge or archive data older than the configured thresholds, using soft‑delete → hard‑delete where appropriate.
+    - *Specific artefacts in this repo*
+      - **`pages.history.jsonl` (per shop)**:
+        - Append‑only log of page diffs; useful for diff/rollback but unbounded by default.
+        - Best‑bet: treat it as *operational history*, not permanent record:
+          - Keep only the last N days/months per shop/page; older entries can be truncated or moved to cold storage if needed.
+          - Provide tooling to inspect, compact, and truncate these logs so they don’t grow without bound.
+      - **`history.json` and `audit.log` under `data/shops/<id>`**:
+        - `history.json` tracks template upgrade history (component versions, timestamps); `audit.log` tracks republish actions.
+        - Best‑bet: retain upgrade history as long as the shop exists (it’s small and valuable for debugging), but:
+          - Allow admins/ops to **export and prune** old entries, and
+          - Apply a retention window to very old audit noise if it becomes a storage issue.
+      - **Orders and payments (Prisma DB + Stripe)**:
+        - Follow accounting/tax guidance; do not purge automatically based solely on time unless a legal/compliance policy is defined.
+        - Ensure PII stored alongside orders is minimised and covered by DSR flows: where orders must be retained, PII can be pseudonymised (e.g. replace names/emails with hashed or placeholder values) while keeping amounts, items, and timestamps.
+      - **Carts**:
+        - Carts are keyed by a signed cookie and stored in memory or Upstash Redis; retention is governed by explicit TTLs (`CART_TTL`) and cookie expiry.
+        - Best‑bet: treat carts as **ephemeral, non‑authoritative**:
+          - Enforce a max TTL (using `CART_TTL` and backend‑level TTLs); expired carts should be dropped automatically from the backing store.
+          - Avoid storing unnecessary PII in cart metadata (no full names/emails; ideally only product SKUs, quantities, and anonymous flags like `tryOn`).
+      - **Media**:
+        - Stored via filesystem or external providers today; production should prefer an object store + CDN.
+        - Best‑bet:
+          - Track media references via CMS metadata (which pages/products use which assets).
+          - Periodically identify **unreferenced** media and mark for soft delete (hidden from UI) with a grace period before hard deletion.
+          - For user‑specific media (avatars, profile images), tie deletion to customer/account DSR flows (see below).
+    - *Deletion / DSR flows*
+      - For GDPR/DSR‑style “right to be forgotten”, we should design explicit flows rather than ad‑hoc scripts:
+        - **Customers / end users**:
+          - Provide a server‑side action (and eventually an API) that, given a stable customer identifier, removes or irreversibly pseudonymises PII in:
+            - customer/account records,
+            - associated profiles/preferences,
+            - any marketing/notification tables we own.
+          - Order/payment records should be preserved where legally required, but PII fields (name, email, phone, address) should be replaced with anonymised placeholders or salted hashes that cannot be reversed.
+        - **CMS users/operators**:
+          - Operator accounts contain PII (names/emails). A DSR flow should:
+            - delete or pseudonymise the operator record, and
+            - preserve action history while breaking the link to the real person (e.g. “Edited by deleted-user-123”).
+        - **Logs and history**:
+          - Logs (`audit.log`, `pages.history.jsonl`, application logs, analytics events) should be designed to avoid unnecessary PII in the first place (use user IDs, not emails, wherever possible).
+          - Where PII is present, DSR flows should either:
+            - redact those fields in place (e.g. overwrite email with `null`/placeholder), or
+            - mark them as anonymised and stop further processing.
+      - Implementation‑wise, this points to:
+        - Explicit **DSR helpers** in `platform-core` that know how to scrub PII per domain entity (customers, CMS users, logs/history), and can be invoked by both CMS and background workers.
+        - Clear CMS‑side UX and documentation that explain what “Delete customer” / “Anonymise customer” does:
+          - which data is removed or anonymised,
+          - what is retained for compliance reasons,
+          - and that some aggregated/derived metrics may remain but are no longer linked to an identifiable person.
 
 ---
 
@@ -243,23 +570,296 @@ The main gaps for our “prefab shop” goal are:
     - Implemented as fixed templates/routes, or
     - Not yet supported?
   - Which additional primitives are needed (login/register, subscription management, richer PLP filters, search results, etc.) to support real shops?
+  - **Best‑bet direction (current thinking):**
+    - *Current coverage (template app + cover‑me‑pretty)*
+      - **Home / marketing landing**:
+        - `apps/cover-me-pretty/src/app/[lang]/page.tsx` loads `PageComponent[]` from `data/shops/<shopId>/pages/home.json` and renders them via `DynamicRenderer` in `page.client.tsx`, optionally prefixed with a blog teaser. This is effectively a **Page Builder–driven home page** with a small amount of app‑specific decoration.
+      - **PLP (“shop” listing)**:
+        - `/[lang]/shop` routes in template app and `cover-me-pretty` are **code‑driven PLPs** (`ShopClient` components) over `PRODUCTS`, with built‑in search and filters based on URL query params. They do not currently consume Page Builder pages; customization is via code and theme, not CMS blocks.
+      - **PDP (product details)**:
+        - `/[lang]/product/[slug]` is a fixed route that fetches products via `@platform-core/products` and renders `PdpClient` plus some extra components (e.g. `CleaningInfo`), with SEO handled via `generateMetadata`. PDP is not Page Builder–driven today.
+      - **Checkout / order confirmation / cancellation**:
+        - `/[lang]/checkout` (template + `cover-me-pretty`) is a fixed route that reads the cart cookie, fetches products/settings, computes totals, and composes `OrderSummary` + `CheckoutForm` inside a `Section` block. Success/cancel pages are simple, non‑PB routes.
+      - **Cart**:
+        - There is currently **no dedicated `/cart` route**; cart UX is handled via `CartContext`, header/cart icon, and components like `CartTemplate` (prefab but not yet wired as a Page Builder block).
+      - **Account / returns / legal**:
+        - Account pages in `cover-me-pretty` (`/account/profile`, `/account/orders`, `/account/sessions`) are wired to templates from `@ui/account`, not Page Builder.
+        - Returns/return‑policy is handled via a fixed `/[lang]/returns` route that renders copy derived from `ShopSettings` and return‑logistics helpers; other legal pages (e.g. terms/privacy) are not yet formalized as Page Builder page types.
+      - **Search & collections**:
+        - Product search is via a dedicated API (`/api/search`) plus in‑page search (e.g. `ShopClient` search input and `collections/[slug]`); there is no explicit `/[lang]/search` Page Builder route.
+    - *Target model for commerce‑critical page types*
+      - Distinguish between:
+        - **System commerce pages** – routes whose primary job is to handle core flows (PLP, PDP, cart, checkout, account, returns, auth, legal/checkout terms).
+        - **Marketing/editorial pages** – home, campaigns, stories, landing pages, blog, and content‑heavy sections.
+      - A concise classification for v1:
+        - Home – PB‑driven (today) via `PageComponent[]` + `DynamicRenderer`, with optional app decorations (e.g. blog teaser).
+        - PLP – system route (`/[lang]/shop`) + PB slots (marketing bands above/below grid).
+        - PDP – system route (`/[lang]/product/[slug]`) + PB slots (secondary content/upsells).
+        - Checkout – system route (`/[lang]/checkout`) + PB slots for trust/upsell/copy only.
+        - Account – system routes (`/account/*`) using `@ui/account` templates, with PB‑composable “adjacent” sections (e.g. support, FAQ) but not full PB pages.
+        - Legal – system routes (e.g. `/[lang]/returns`, `/[lang]/terms`) with PB‑managed content blocks.
+        - Search – system route(s) + PB search blocks (search box/results) that can be reused on other pages.
+        - Cart – system flow (future explicit route) + PB cart blocks (cart icon, mini‑cart, cart table) for layout/header/footer use.
+      - Best‑bet split:
+        - System pages keep **explicit Next routes** (e.g. `/[lang]/shop`, `/[lang]/product/[slug]`, `/[lang]/checkout`, `/account/*`, `/[lang]/returns`), with:
+          - Strong, versioned templates in `@acme/ui`/`template-app` for critical flows (PLP grid, PDP layout, checkout steps, account views).
+          - Limited, well‑defined extension points where Page Builder–authored sections can be injected (e.g. marketing bands above/below PLP grid, upsell sections on PDP, trust badges on checkout).
+        - Marketing/editorial pages are **fully Page Builder–driven** (`PageComponent[]` trees rendered via `DynamicRenderer`), with:
+          - A dedicated CMS page type (e.g. “Marketing Page”) and a generic `[lang]/pages/[slug]` route in future, built on the existing `Page` + `DynamicRenderer` primitives.
+      - For commerce‑critical types, a pragmatic v1 plan is:
+        - **PLP** – keep `/[lang]/shop` as a system route backed by `@platform-core/products`, but:
+          - Introduce PLP‑oriented blocks (`ProductGrid`, filter sidebar, category hero) that can be used both in the PLP template and in Page Builder pages.
+          - Allow limited PB slots (above/below the grid) controlled from CMS.
+        - **PDP** – keep `/[lang]/product/[slug]` as a system route that:
+          - Uses a standard `ProductDetail` template and product data from `platform-core`.
+          - Exposes PB slots for secondary content (e.g. stories, UGC, cross‑sell sections).
+        - **Checkout** – keep `/[lang]/checkout` as a system route with strict templates for the core checkout flow; for v1 we **do not** make checkout fully Page Builder–driven. It only exposes PB slots for secondary content (trust badges, help copy, upsells) around the main flow.
+        - **Account / orders / returns** – keep as system pages using `@ui/account` + platform APIs; for v1 we **do not** make account flows fully Page Builder–driven:
+          - Provide PB blocks for account‑adjacent content (FAQ, support tiles) that can be dropped into layout slots.
+        - **Cart** – continue to treat as a system flow with strict templates, but:
+          - Wrap cart UI (icon + mini‑cart + full cart table) and checkout forms as composable blocks/sections so they can appear in headers/layouts where needed, while still delegating all logic to shared cart/checkout abstractions.
+        - **Legal / policy** – add a small set of legal page types (returns, terms, privacy) where:
+          - Legal text is stored and versioned via CMS.
+          - Routes remain explicit (e.g. `/[lang]/returns`) to avoid SEO/UX surprises.
+        - **Search** – keep search as a dedicated API + template(s), and expose search boxes/result blocks as PB components for marketing pages and headers, rather than making the entire search results page PB‑driven.
+      - In terms of `Page` types, this implies:
+        - Marketing/editorial pages would have `pageType = "marketing"` and be fully PB‑driven, likely served by a generic `[lang]/pages/[slug]` route backed by `Page` + `DynamicRenderer`.
+        - Legal/policy pages could have `pageType = "legal"`, with content managed via PB but bound to explicit routes (/returns, /terms, /privacy).
+        - System commerce pages (PLP, PDP, checkout, account, cart) are **not** `Page` records themselves; they expose well‑defined PB slots that accept `PageComponent[]` subtrees configured from CMS.
+      - For v1 this also means, explicitly:
+        - Checkout and account remain strict, template‑driven flows with limited PB slots; they are **not** arbitrarily reconfigurable PB pages.
+    - *Additional primitives needed*
+      - To make commerce‑critical pages feel “prefab but flexible” from CMS, we likely need:
+        - **Authentication & account blocks** – login/register forms, account overview, addresses, saved cards, order history summary, “my rentals/subscriptions”.
+        - **Cart & checkout blocks** – cart icon + badge, mini‑cart drawer (using `CartTemplate`), full cart section, checkout form sections (billing/shipping, summary, payment), and post‑checkout “thank you” sections.
+        - **PLP/PDP blocks** – product grid, product list, product detail hero/specs/upsell sections, “related products” blocks that can be reused across PLP/PDP and marketing pages. These should be thin wrappers around the same underlying templates/logic used by `/shop` and `/product/[slug]` routes so behaviour (sorting, availability badges, pricing, tracking) stays consistent between system pages and PB‑composed pages.
+        - **Legal/consent blocks** – terms acceptance, privacy notices, marketing opt‑in sections for checkout and account flows.
+        - **Search & discovery blocks** – search box with autocomplete, search results listing that can be embedded in pages or used by a `/search` template.
+      - Many of these primitives (cart icon + badge, mini‑cart drawer, login/account entry point, search box) are also intended for **header/footer layouts**:
+        - Header/footer remain system layout components, but expose PB‑configurable regions that can host these blocks.
+      - All of these should be **backed by platform‑core APIs** (products, cart, checkout, account, orders, search) so that dropping them into a PB‑managed page or layout does not require app‑specific wiring beyond including the right providers and routes.
 - **Page-type model & constraints**
   - Do we need an explicit “page type” on `Page` (Home, PDP, Checkout, Account, Marketing) with:
     - Allowed and required blocks per type,
     - Stronger rules for system pages vs marketing pages?
   - How should these constraints be enforced in the editor (validation) and at save/publish time?
+  - **Best‑bet direction (current thinking):**
+    - *What `pageType` is for (and not for)*
+      - We do want an explicit `pageType` on `Page`, but not to drive **all** routes:
+        - `pageType` applies to **PB‑driven pages** (marketing, legal, editorial, fragments), not to core system pages like `/shop`, `/product/[slug]`, `/checkout`, or `/account/*` (those stay as explicit routes with templates and PB slots as described above).
+        - System commerce pages are not `Page` records themselves; instead, they expose named **slots** that can host PB component trees (e.g. `pdpBelowFold`, `plpAboveGrid`, `checkoutSidebar`), configured from CMS.
+      - Existing pages that have no `pageType` should be treated as `"marketing"` by default for backwards compatibility.
+      - For v1, a minimal `pageType` enum might be:
+        - `"marketing"` – fully PB‑driven marketing/editorial pages (home variants, campaigns, landing pages) served by a generic `[lang]/pages/[slug]` route in future.
+        - `"legal"` – PB‑managed legal/policy pages whose content is stored as `Page` records but bound to explicit routes (e.g. `/[lang]/returns`, `/[lang]/terms`, `/[lang]/privacy`).
+        - `"fragment"` – PB‑composed sections intended for use in slots (e.g. homepage hero variants, checkout trust strips) but not directly routed to.
+        - (Optional future types: `"blog"` for CMS‑driven article pages, `"system"` reserved for internal use.)
+    - *Constraints per page type*
+      - Rather than hard‑coding rules in many places, define a central `pageTypes` config that describes, for each `pageType`, something like:
+        ```ts
+        const pageTypes = {
+          marketing: {
+            allowedBlockTags: ["hero", "section", "form", "product-grid-lite", "content"],
+            forbiddenBlockTypes: ["checkoutSection", "accountSection", "cartSection"],
+            requiredStructure: [{ kind: "atLeastOne", blockTag: "hero" }],
+            reservedSlugs: ["shop", "checkout", "product", "account", "returns"],
+          },
+          legal: {
+            allowedBlockTags: ["text", "heading", "policy", "toc"],
+            forbiddenBlockTypes: ["checkoutSection", "cartSection"],
+            requiredStructure: [{ kind: "atLeastOne", blockTag: "policy" }],
+          },
+          fragment: {
+            allowedBlockTags: ["hero", "banner", "trust", "faq", "upsell"],
+            // fragments are more flexible but still exclude dangerous blocks
+            forbiddenBlockTypes: ["checkoutSection", "accountSection"],
+          },
+        };
+        ```
+      - Enforcement should happen in three layers:
+        - **Palette** – filter/hide disallowed blocks for the current `pageType` so authors can’t easily pick them.
+        - **Editor validation** – show inline warnings if a page violates *soft* rules (e.g. missing hero) before save/publish.
+        - **Server‑side validation** – on publish, reject pages that violate **hard** constraints (e.g. a marketing page containing `checkoutSection`, or a slug that collides with a reserved route), with clear error messages.
+    - *Interaction with routing*
+      - `pageType = "marketing"`:
+        - Pages appear under a generic, CMS‑driven route (e.g. `/[lang]/pages/[slug]`) and in nav/sitemap based on `visibility`.
+        - Slugs are flexible, but validation should prevent conflicts with reserved system routes (`shop`, `checkout`, `account`, etc.).
+      - `pageType = "legal"`:
+        - Pages are associated with fixed routes (e.g. a “Returns policy” page bound to `/[lang]/returns`) via a routing config (e.g. `legalRoute: "/[lang]/returns"` or a `legalKey: "returns"` that the app maps to a route).
+        - Slug changes may be restricted or ignored; the route is determined by configuration, not the slug field.
+      - `pageType = "fragment"`:
+        - Fragments are never directly routed; they are addressable by ID in slot configuration (e.g. `checkout.sidebar = fragment:abcd1234`).
+        - The editor can provide a separate “Fragments” list where authors curate and name these reusable sections, distinct from full pages and from the existing per‑shop “library” of component trees/presets.
+    - *Guardrails for checkout/account*
+      - For v1 we explicitly **do not** make checkout or account flows fully Page Builder–driven:
+        - Checkout/account routes stay as strict templates in `template-app`/`@ui/account`, with PB slots only for secondary content (trust badges, FAQ, banners).
+        - Blocks that materially affect core flow (e.g. `checkoutSection`, `accountSection`, `cartSection`, `thankYouSection`, `dsarSection`) should be:
+          - Hidden by default from generic marketing/fragment pages, and
+          - Only available in dedicated “system slot” editors (e.g. a “Checkout sidebar content” editor that understands it’s configuring a slot, not a standalone page).
+      - This gives strong guarantees that:
+        - You can’t accidentally remove key elements from checkout/account via CMS.
+        - Commerce flows remain testable and versioned at the template level, with PB used for copy/adjacent UX rather than the flow itself.
+    - *How to evolve from here*
+      - Start with a small `pageType` enum and a simple `pageTypes` config:
+        - Focus on `"marketing"` and `"legal"` plus `"fragment"` where needed.
+        - Implement palette filtering + publish‑time validation for obviously dangerous block/pageType combinations.
+      - As more system pages grow PB slots, we can:
+        - Introduce per‑slot constraints (e.g. checkout sidebar only accepts certain block types).
+        - Add richer page types (`"blog"`, `"campaign"`) once we have concrete use cases.
 - **Localization lifecycle**
   - How are block‑level props localized (beyond SEO titles/descriptions), and what are the fallback rules between locales?
   - How do we determine that a page is “publish‑ready” in all required languages, and how is this communicated to editors?
+  - **Best‑bet direction (current thinking):**
+    - *Locales and fallbacks*
+      - Locales are defined centrally in `@acme/types` and re‑exported from `@acme/i18n` as `LOCALES` and `Locale`:
+        - `resolveLocale` normalises arbitrary inputs to a supported locale, falling back to a global `DEFAULT_LOCALE` (usually `"en"`) for UI chrome and framework‑level decisions.
+        - CMS‑authored content uses the shop’s `primaryLocale` (from `ShopSettings.languages[0]`) as its fallback via `fillLocales`.
+      - Translation messages for UI chrome are loaded:
+        - On the server via `useTranslations(locale)` in `@acme/i18n/useTranslations.server` (per‑locale JSON + English fallback).
+        - On the client via `TranslationsProvider` + `useTranslations` (`packages/i18n/src/Translations.tsx`), with a default English bundle when no provider is mounted.
+      - For CMS‑authored structures:
+        - `Page.seo.title/description/image` are explicitly `Record<Locale, string>`; helpers like `mapLocales` and `fillLocales` (`packages/i18n/src/fillLocales.ts`) fill missing translations with a fallback string.
+        - Shop‑level SEO in `ShopSettings.seo` uses a similar pattern: per‑locale records with per‑route overrides managed via `seoService`.
+      - For each shop, the **primary fallback locale** should be derived from configuration:
+        - Use `ShopSettings.languages` (or equivalent) to define the per‑shop language list; the first entry (`languages[0]`) is the `primaryLocale`.
+        - All other locales fall back to `primaryLocale` via `fillLocales`; global `"en"` is just another locale and only acts as primary when chosen as such.
+    - *Block‑level localisation*
+      - Today, most block props are language‑neutral (layout, media URLs, tokens) or rely on runtime translations via `useTranslations` for labels and static copy.
+      - For blocks that carry author‑editable text (headlines, button labels, rich text), the model should be:
+        - **System blocks** (cart, checkout, account, etc.):
+          - Labels like “Add to cart”, “Checkout”, “Sign in” remain **translation‑key driven** (e.g. `t("checkout.addToCart")`), never CMS text fields.
+        - **Marketing blocks** (hero, promo banners, rich text sections):
+          - Headline, body, CTA label, etc. are stored as `Record<Locale, string>` (or per‑locale rich text).
+          - At save time, require a value for the primary locale and use `fillLocales` to copy that value into other locales that have not been explicitly set.
+      - This keeps system copy consistent and localised via code, while letting editors control per‑locale marketing copy without ending up with half‑translated pages by accident.
+    - *“Publish‑ready” per locale*
+      - PB pages and page‑backed SEO need a notion of “translation completeness” per shop:
+        - Let `primaryLocale` and `requiredLocales` come from `ShopSettings.languages` (and possibly a stricter `requiredLocales` subset).
+        - Define a helper, e.g.:
+          ```ts
+          type LocaleReadiness = "complete" | "fallback" | "missing";
+          type PageLocaleStatus = Record<Locale, LocaleReadiness>;
+
+          function pageLocaleStatus(
+            page: Page,
+            requiredLocales: Locale[],
+            primaryLocale: Locale
+          ): PageLocaleStatus { /* inspect seo + block props */ }
+          ```
+        - Rough rules:
+          - `complete` – SEO title/description present and all required localised block fields have a non‑empty value for that locale.
+          - `fallback` – the locale only has values because `fillLocales` copied from `primaryLocale` (no explicit overrides).
+          - `missing` – some required fields are empty even after fallback (e.g. primary locale not set).
+      - Best‑bet v1 UX:
+        - Publish is allowed if:
+          - The primary locale is `complete`, and
+          - All other required locales are either `complete` or `fallback`.
+        - CMS shows:
+          - A per‑locale pill for each required locale (e.g. ✅ Complete / ⚠️ Fallback / ⛔ Missing).
+          - A warning on publish if any required locale is `fallback` or `missing`, but hard‑blocks only if the primary locale is `missing`.
+        - Longer‑term, shops can opt into a stricter flag (e.g. `requireFullLocalization = true`) to enforce “all required locales must be complete before publish”.
+    - *Where localisation logic lives*
+      - The core rules should live in shared helpers:
+        - Pure locale utilities (`fillLocales`, `mapLocales`, `resolveLocale`) stay in `@acme/i18n`.
+        - Domain‑aware helpers like `pageLocaleStatus(page, requiredLocales, primaryLocale)` live in `platform-core` (or a CMS‑specific service), since they understand `Page`, `PageComponent`, and which block props are “localised vs structural”.
+      - Storage vs runtime behaviour:
+        - On **write** (CMS save/publish), use `mapLocales` to normalise inputs and `fillLocales` to persist a fully populated `Record<Locale, string>` keyed by the shop’s `LOCALES` and `primaryLocale`.
+        - On **read**, do not mutate again; runtime code trusts that DB/JSON content is already filled and only uses `resolveLocale` to select the appropriate locale.
+        - In practice, CMS computes `pageLocaleStatus` on the in‑memory form state **before** applying `fillLocales` and saving, so it can distinguish explicit per‑locale values from purely fallback‑derived ones without storing extra markers. The runtime does not need this distinction; it just reads the already‑filled content.
+      - Editor UX:
+        - Page Builder already has a concept of a current editing locale (toolbar switch).
+        - When switching locale:
+          - Inputs show the value for that locale.
+          - If a value is coming purely from fallback (no explicit override), the UI can show a subtle “using primary locale” hint and offer a “Copy primary → this locale” action.
+        - The editor consumes `pageLocaleStatus` to color these hints and publish controls consistently.
 - **Templates/prefabs and evolution**
   - What concrete API should `page-builder-core/ui/templates` expose for reusable templates and prefabs shared across shops?
   - How are template versions tracked, and how do we safely roll out template changes to pages that were created from older versions (including block prop migrations)?
+  - **Best‑bet direction (current thinking):**
+    - *Roles of the three packages*
+      - `@acme/page-builder-core` should own **schemas and registries**, not UI:
+        - A `TemplateDescriptor` type that describes page/section templates:
+          ```ts
+          type TemplateKind = "page" | "section" | "slot-fragment";
+          interface TemplateDescriptor {
+            id: string;            // stable identifier
+            version: string;       // semver string
+            kind: TemplateKind;
+            label: string;
+            description?: string;
+            category: "Hero" | "Features" | "Commerce" | "Legal" | "System";
+            pageType?: "marketing" | "legal" | "fragment"; // where it’s valid
+            slots?: string[];      // for slot fragments (e.g. ["checkoutSidebar"])
+            build: (ctx: { shopId: string }) => PageComponent[]; // or Page for page-templates
+          }
+          ```
+        - A simple registry API:
+          - `registerTemplates(descriptors: TemplateDescriptor[])`.
+          - `listTemplates(filters)` / `getTemplate(id, version?)`.
+          - `scaffoldPage({ templateId, locale, shopId })` → `Page`.
+      - `@acme/page-builder-ui` should expose **editor‑level primitives** for templates:
+        - “New page from template” flows that call `listTemplates` + `scaffoldPage`.
+        - Palette/Library UI that treats templates/presets as first‑class items.
+        - A common modal for inserting **section templates** (built‑in sections, library items, remote presets) regardless of origin.
+      - `@acme/templates` should host the **curated, versioned template catalog**:
+        - Built‑in page templates (e.g. hero‑heavy home variants, simple landing page, legal page skeleton).
+        - Built‑in section templates (what is currently under `builtInSections.data.ts` and `presets.data.ts`).
+        - Commerce‑oriented templates (PLP hero sections, featured product rails, cart/checkout trust strips) backed by platform‑core block types.
+        - These are exported as `TemplateDescriptor[]` and registered via `page-builder-core`.
+    - *Unifying presets, library, and templates*
+      - Today we have:
+        - Built‑in section templates in `builtInSections.data.ts`.
+        - Editor presets in `presets.data.ts`.
+        - A per‑shop/user library (`/cms/api/library?shop=<id>`) and optional remote presets feed (`NEXT_PUBLIC_PAGEBUILDER_PRESETS_URL`) that return bare `PageComponent` trees.
+      - Best‑bet is to normalise everything onto a single **template/preset vocabulary**:
+        - Built‑ins from `@acme/templates` → registered at boot, tagged as `origin: "core"`.
+        - Remote presets → parsed into `TemplateDescriptor` structures with `origin: "remote"` and a source URL/version.
+        - Library items → stored as lightweight template descriptors with `origin: "library"`, `shopId`, `createdBy`, and no hard versioning (they are user content).
+      - The Page Builder UI doesn’t need to care where a template came from; it just:
+        - Fetches descriptors via a unified API.
+        - Shows them in “Templates”, “My Library”, or “Remote presets” tabs.
+        - Applies them by calling `build`/`scaffoldPage`.
+    - *Copy‑on‑use vs live templates*
+      - For v1, templates/prefabs should be **copy‑on‑use**, not live‑linked:
+        - Applying a page or section template inserts a copy of its `PageComponent[]` tree into the current page.
+        - Subsequent changes to the template definition do **not** mutate existing pages; they only affect new pages/sections created from that template.
+        - This matches current behaviour for presets and library items and avoids surprising merchants when templates evolve.
+      - We may still want to track provenance:
+        - Optionally record `originTemplateId` and `originTemplateVersion` in page metadata (or `history.editor`) so we can later answer “which pages were seeded from template X v1.2?”.
+        - That provenance is for reporting and targeted migrations, not for automatic live updates.
+    - *Versioning and evolution*
+      - Template evolution can be handled with **semver and additive behaviour**:
+        - Non‑breaking tweaks (copy, spacing, non‑required props) can bump a minor version and overwrite the descriptor in `@acme/templates`; new pages will use the latest version.
+        - Breaking changes (structural changes, removal of blocks/props) should create a **new template id** or at least a new major version that co‑exists with the old one, so existing pages are unaffected.
+      - For pages already created from older templates:
+        - We rely primarily on **block schema migrations** (see the next “Schema evolution & block versioning” section) to keep content valid when block props change.
+        - Any structural migrations (e.g. “wrap these components in a new Section”) should be explicit tools:
+          - A CLI or CMS action that:
+            - Finds pages with `originTemplateId/version` and
+            - Applies a content transform under operator control, with preview/rollback.
+        - We do not auto‑rewrite pages on template edits in v1.
+    - *How this ties into createShop / scaffolding*
+      - `createShop` and any “new shop from template” flows in CMS should:
+        - Use a small set of **shop‑level scaffold templates** (e.g. base home page, example PLP, example PDP‑adjacent pages) defined in `@acme/templates` and described by `ScaffoldSpec` and `TemplateDescriptor`.
+        - Call a canonical `scaffoldPage({ templateId, locale, shopId })` from `page-builder-core` to materialise initial `Page` records.
+      - This keeps “initial content generation” and “per‑page templates/presets” on the same underlying machinery, and makes it easier to:
+        - Upgrade scaffolds over time (new shops pick up new templates; existing shops keep what they already have).
+        - Offer a consistent “Start from template” experience whether you’re creating a shop or just adding a new page.
+- **Schema evolution & block versioning**
+  - How do we version and migrate `PageComponent` schemas themselves (not just templates), so that block type changes do not break existing content?
+  - Do we need a per‑block version and a migration pipeline that runs on load/save to normalise older block payloads?
 - **History & UX integration**
   - What retention policy and inspection tooling do we need for `pages.history.jsonl` diff logs?
   - How should history be surfaced to non‑technical users (compare, review, rollback) as part of everyday CMS workflows?
 - **SEO, SSR, performance**
   - How does `DynamicRenderer` interact with SSR/streaming, and what patterns should we encourage/avoid to protect LCP/CLS on highly composed pages?
   - How should Page Builder–authored SEO metadata map onto Next 15 metadata APIs for dynamic routes, especially for core commerce pages?
+- **Accessibility & guardrails**
+  - What accessibility requirements (semantics, keyboard navigation, focus management, ARIA) should blocks adhere to, and where should we enforce them (linting, visual checks, CMS validation)?
+  - How do we prevent authors from composing pages that are visually attractive but inaccessible (e.g., contrast, heading structure)?
+- **Extensibility / third‑party blocks**
+  - How can internal/external teams introduce new blocks or templates safely (namespacing, review processes, constraints on props/layout)?
+  - Do we want a formal plugin model for blocks/templates, or a curated “core only” set for now, and how would that decision affect multi‑shop safety?
 
 ---
 
@@ -386,7 +986,7 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
 ### Open questions / gaps
 
 - **Order lifecycle & reconciliation**
-  - When and where are orders created in relation to Stripe checkout sessions and webhooks?
+  - When and where are orders created in relation to Stripe checkout sessions and webhooks, including returns, exchanges, and any partial/multi-shipment flows?
   - How do we handle refunds (full/partial), cancellations, disputes, and reconcile any mismatches between Stripe’s state and our internal order models?
 - **Inventory consistency & concurrency**
   - What behaviour do we want under concurrent add‑to‑cart and checkout operations for the same SKU (oversell vs strict reservations)?
@@ -404,6 +1004,15 @@ The main gaps for “drop-in” prefabricated cart/checkout are:
   - Which `ShopSettings` fields are strictly required for a functioning checkout vs optional enhancements?
   - How should advanced scenarios (multi-currency, multiple tax regions, B2B pricing, customer groups) be represented in settings and supporting code?
   - How do we want merchants to configure and understand the differences between pure sale, rental, and hybrid shop behaviours?
+- **Shipping & tax integrations**
+  - How do carrier/shipping methods and tax services plug in (globally vs per shop), and which parts should be configurable from the CMS?
+  - How do changes to shipping/tax configuration surface in the checkout UX (available methods, prices, validation messages) without code edits?
+- **Customer identity model**
+  - What is the relationship between carts, orders, and customers (guest vs logged‑in), and how should carts be merged or preserved on login?
+  - Which flows must work for guests, and which require authenticated customers (e.g., subscription management, saved payment methods, order history)?
+- **Test strategy for money flows**
+  - What automated tests (unit/integration/E2E) are required to treat prices, taxes, discounts, and refunds as “safety‑critical”, especially around Stripe webhooks?
+  - Which invariants (e.g., totals matching Stripe, no negative totals, idempotent webhook handling) must be covered by tests before changes ship?
 
 ---
 
@@ -529,6 +1138,15 @@ The key gaps for our goal are:
 - **Media pipeline**
   - Where do CMS-uploaded media assets live in production (S3/R2/CDN), and how do preview and live environments resolve media URLs?
   - How should runtime apps consume media in a way that is both performant (responsive images, CDNs) and consistent with CMS storage?
+- **Per-app preview correctness**
+  - How do we guarantee that preview uses the same block registry, layout, and theming as each tenant app (especially once apps diverge from the template app)?
+  - Do we need an explicit “preview adapter” contract that each app implements to integrate CMS-driven preview cleanly?
+- **Unsupported blocks / graceful degradation**
+  - What should happen if a CMS page uses a block type that a given runtime app does not support (build-time error, runtime warning, CMS validation)?
+  - How should we surface unsupported/mismatched blocks back to CMS users so they can fix or avoid them?
+- **Search & discovery**
+  - How should CMS pages and product content participate in site search (indexing strategy, search provider), and how are indexes kept up to date when CMS content changes?
+  - How should search result routes be wired relative to CMS routes so that search and CMS navigation remain consistent?
 
 ---
 
@@ -683,6 +1301,15 @@ For the “extremely easy to use” goal, likely improvements include:
 - **Settings UX**
   - Do we need “basic vs advanced” modes or progressive disclosure for shop settings to avoid overwhelming first-time merchants?
   - How can we better communicate dependencies between settings (e.g., enabling a feature that relies on specific env vars or third-party credentials)?
+- **Audit trail & activity history**
+  - Do we need a human-readable audit log (who changed what, when) for pages, settings, products, and shops, and how should it be stored?
+  - Where should such an audit log be surfaced (per shop, global admin view, or both)?
+- **Concurrency & conflicts beyond pages**
+  - How should we handle concurrent edits to shop settings or products (last-write-wins vs explicit conflict detection/resolution UI)?
+  - Are there particular areas where we must avoid silent overwrites (e.g., tax settings, inventory)?
+- **CMS internationalisation**
+  - Do we need the CMS UI itself localized for non-English operators, and if so, which locales and flows are highest priority?
+  - What is the plan for maintaining CMS i18n (strings, message catalogs) in step with product changes?
 
 ---
 
@@ -767,12 +1394,20 @@ Overall, the repo already has a strong foundation for shared abstractions and te
   - What is the standard, documented developer workflow for adding new prefab blocks so they are:
     - Type-safe, storybook-covered, tested, palette-registered, and mapped into runtimes?
   - Should we provide scaffolding (plop generators, lint rules) to enforce that workflow?
+- **API contracts & public surfaces**
+  - What are the formal public APIs of `@acme/platform-core`, `@acme/ui`, Page Builder packages, and key runtime endpoints (`/api/cart`, `/api/checkout-session`, `/preview/:pageId`), and how do we document and enforce them (contract tests, semver, docs)?
 - **Versioning & breaking changes**
   - How do we manage breaking changes in `platform-core` or `ui` with multiple tenant apps live on different timelines?
   - How should `componentVersions` and `lastUpgrade` in `shop.json` be used to coordinate upgrades and detect incompatible changes?
+  - What release / rollout strategy (branching model, feature flags, canary or pilot shops) do we want for platform and UI changes that affect multiple live tenant apps?
 - **Local dev & data seeding**
   - How easy is it today to spin up a realistic shop locally (products, pages, orders), and what scripts/fixtures do we need to make that trivial?
   - Do we need standard “sample shops” for QA/regression testing of prefabs and flows?
 - **Observability**
   - What logging/metrics/tracing conventions should we use (tagging by shop ID) for critical flows like createShop, publish, upgrade, checkout?
   - How should developers instrument new features so production issues can be quickly attributed to specific shops, versions, or flows?
+- **Third‑party / plugin developer experience**
+  - Do we anticipate external integrators building on this platform, and if so, what guarantees and tooling do they need (SDKs, examples, sandbox shops, test data)?
+- **DX metrics & pain points**
+  - What are the current DX bottlenecks (cold-start times, rebuild times, debugging cross-package issues), and how will we measure improvement?
+  - Which core workflows (e.g., adding a block, spinning up a new shop, running tests) should we prioritise for DX investment?

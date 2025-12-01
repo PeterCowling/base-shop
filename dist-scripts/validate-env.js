@@ -47,7 +47,11 @@ if (!shopId) {
   process.exit(1);
 }
 
-const envPath = join("apps", `shop-${shopId}`, ".env");
+// Map well-known shop IDs onto their app slugs so that the validate-env
+// script aligns with the runtime apps (for example, "bcd" maps to the
+// `apps/cover-me-pretty` app).
+const appSlug = shopId === "bcd" ? "cover-me-pretty" : `shop-${shopId}`;
+const envPath = join("apps", appSlug, ".env");
 
 // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2003: envPath is workspace-relative and derived from a trusted app slug, not HTTP input
 if (!existsSync(envPath)) {

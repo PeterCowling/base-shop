@@ -15,6 +15,12 @@ import {
   type StepStatus,
 } from "@cms/app/cms/wizard/schema";
 import { z } from "zod";
+import { configuratorChecks, type ConfigCheckResult } from "@platform-core/configurator";
+import type {
+  ConfiguratorProgress as ServerConfiguratorProgress,
+  ConfiguratorStepId,
+  StepStatus as ServerStepStatus,
+} from "@acme/types";
 
 interface UserRecord {
   state: unknown;
@@ -26,6 +32,19 @@ interface DB {
 }
 
 const dbSchema = z.record(z.unknown());
+
+const ALL_STEPS: ConfiguratorStepId[] = [
+  "shop-basics",
+  "theme",
+  "payments",
+  "shipping-tax",
+  "checkout",
+  "products-inventory",
+  "navigation-home",
+  "domains",
+  "reverse-logistics",
+  "advanced-seo",
+];
 
 const putBodySchema = z
   .object({
@@ -108,11 +127,87 @@ async function writeDb(db: unknown): Promise<void> {
   await fs.rename(tmp, FILE);
 }
 
-export async function GET(): Promise<NextResponse> {
+function mapCheckResultToStatus(
+  result: ConfigCheckResult,
+): { status: ServerStepStatus; error?: string } {
+  if (result.ok) {
+    return { status: "complete" };
+  }
+  return {
+    status: "error",
+    error: result.reason,
+  };
+}
+
+async function getConfiguratorProgressForShop(
+  shopId: string,
+): Promise<ServerConfiguratorProgress> {
+  const steps: Record<ConfiguratorStepId, ServerStepStatus> = {} as Record<
+    ConfiguratorStepId,
+    ServerStepStatus
+  >;
+  const errors: Partial<Record<ConfiguratorStepId, string>> = {};
+
+  await Promise.all(
+    ALL_STEPS.map(async (stepId) => {
+      const check = configuratorChecks[stepId];
+      if (!check) {
+        steps[stepId] = "pending";
+        return;
+      }
+      try {
+        const result = await check(shopId);
+        const mapped = mapCheckResultToStatus(result);
+        steps[stepId] = mapped.status;
+        if (mapped.error) {
+          errors[stepId] = mapped.error;
+        }
+      } catch (err) {
+        steps[stepId] = "error";
+        if (!errors[stepId]) {
+          errors[stepId] =
+            err && typeof err === "object" && "message" in err
+              ? String((err as { message?: unknown }).message)
+              : "check-failed";
+        }
+      }
+    }),
+  );
+
+  const base: ServerConfiguratorProgress = {
+    shopId,
+    steps,
+    lastUpdated: new Date().toISOString(),
+  };
+
+  if (Object.keys(errors).length > 0) {
+    return { ...base, errors };
+  }
+  return base;
+}
+
+export async function GET(req?: Request): Promise<NextResponse> {
   const session = await getServerSession(authOptions);
   const userId = (session?.user as { id?: string })?.id;
   if (!session || !userId) {
     return NextResponse.json({}, { status: 401 });
+  }
+  const shopId =
+    req && typeof req.url === "string"
+      ? new URL(req.url).searchParams.get("shopId")
+      : null;
+  if (shopId) {
+    try {
+      const progress = await getConfiguratorProgressForShop(shopId);
+      return NextResponse.json(progress, { status: 200 });
+    } catch (err) {
+      const t = await getTranslations("en");
+      const message =
+        err && typeof err === "object" && "message" in err
+          ? String((err as { message?: unknown }).message)
+          : t("api.common.invalidRequest");
+      return NextResponse.json({ error: message }, { status: 500 });
+    }
   }
   const db = await readDb();
   const entry = db[userId];

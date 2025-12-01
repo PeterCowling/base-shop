@@ -1,3 +1,8 @@
+import {
+  buildBlockRegistry,
+  coreBlockDescriptors,
+  type BlockTypeId,
+} from "@acme/page-builder-core";
 import BlogListing from "./BlogListing";
 import ContactForm from "./ContactForm";
 import ContactFormWithMap from "./ContactFormWithMap";
@@ -27,6 +32,7 @@ import PricingTable from "./PricingTable";
 import SocialFeed from "./SocialFeed";
 import SocialProof from "./SocialProof";
 import NewsletterSignup from "./NewsletterSignup";
+import HeaderCart from "./HeaderCart";
 import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
@@ -69,6 +75,7 @@ export {
   SocialProof,
   Button,
   NewsletterSignup,
+  HeaderCart,
   ImageSlider,
   SearchBar,
   PricingTable,
@@ -106,13 +113,39 @@ export {
   overlayRegistry,
 };
 
-export const blockRegistry = {
+export const blockRegistry: Record<string, BlockRegistryEntry<Record<string, unknown>>> = {
   ...layoutRegistry,
   ...containerRegistry,
   ...atomRegistry,
   ...moleculeRegistry,
   ...organismRegistry,
   ...overlayRegistry,
-} satisfies Record<string, BlockRegistryEntry<Record<string, unknown>>>;
+};
 
-export type BlockType = keyof typeof blockRegistry;
+// Subset of the registry built from the shared core block descriptors.
+// This powers runtime renderers and future tooling that rely on the
+// BlockTypeId contract exported from @acme/page-builder-core.
+const coreRegistryEntries = coreBlockDescriptors
+  .map((descriptor) => {
+    const entry =
+      blockRegistry[descriptor.type as keyof typeof blockRegistry];
+    if (!entry) return null;
+    return {
+      type: descriptor.type as BlockTypeId,
+      entry,
+    };
+  })
+  .filter(Boolean) as {
+  type: BlockTypeId;
+  entry: BlockRegistryEntry<Record<string, unknown>>;
+}[];
+
+export const { registry: coreBlockRegistry } =
+  buildBlockRegistry<BlockRegistryEntry<Record<string, unknown>>>(
+    coreBlockDescriptors,
+    coreRegistryEntries,
+  );
+
+// Block types used by runtime and CMS; wired to the shared
+// Page Builder block type id contract in @acme/page-builder-core.
+export type BlockType = BlockTypeId;

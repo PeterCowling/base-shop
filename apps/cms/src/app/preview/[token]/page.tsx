@@ -2,6 +2,8 @@
 
 import type { ChangeEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
+import DynamicRenderer from "@ui/components/DynamicRenderer";
+import type { PageComponent, HistoryState } from "@acme/page-builder-core";
 import { Button, Input } from "@/components/atoms/shadcn";
 import { TranslationsProvider, useTranslations } from "@acme/i18n";
 import en from "@i18n/en.json";
@@ -12,8 +14,8 @@ interface VersionResponse {
   versionId: string;
   label: string;
   timestamp: string;
-  components: unknown[];
-  editor?: Record<string, unknown>;
+  components: PageComponent[];
+  editor?: HistoryState["editor"];
 }
 
 export default function PreviewViewer({ params }: { params: { token: string } }) {
@@ -28,7 +30,15 @@ export default function PreviewViewer({ params }: { params: { token: string } })
     setToken(params.token);
   }, [params]);
 
-  const apiUrl = useMemo(() => (token ? `/cms/api/page-versions/preview/${token}${pw ? `?pw=${encodeURIComponent(pw)}` : ""}` : ""), [token, pw]);
+  const apiUrl = useMemo(
+    () =>
+      token
+        ? `/cms/api/page-versions/preview/${token}${
+            pw ? `?pw=${encodeURIComponent(pw)}` : ""
+          }`
+        : "",
+    [token, pw],
+  );
 
   const load = async () => {
     if (!token) return;
@@ -41,7 +51,8 @@ export default function PreviewViewer({ params }: { params: { token: string } })
         setError(t("cms.preview.error.passwordRequired") as string);
         return;
       }
-      if (!res.ok) throw new Error(`Failed to load preview: ${res.status}`); // i18n-exempt: developer error string
+      if (!res.ok)
+        throw new Error(`Failed to load preview: ${res.status}`); // i18n-exempt: developer error string
       const json = (await res.json()) as VersionResponse;
       setData(json);
     } catch (err) {
@@ -64,24 +75,50 @@ export default function PreviewViewer({ params }: { params: { token: string } })
         <div className="rounded border border-border/10 p-3 space-y-2">
           <div className="flex items-end gap-2">
             <div className="flex-1">
-              <label className="text-sm font-medium">{t("cms.preview.password.label")}</label>
+              <label className="text-sm font-medium">
+                {t("cms.preview.password.label")}
+              </label>
               <Input
                 type="password"
                 value={pw}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setPw(e.target.value)
                 }
-                placeholder={t("cms.preview.password.placeholder") as string}
+                placeholder={
+                  t("cms.preview.password.placeholder") as string
+                }
               />
             </div>
-            <Button className="min-h-10" onClick={load} disabled={loading || !token}>
-              {loading ? t("cms.preview.actions.loading") : t("cms.preview.actions.load")}
+            <Button
+              className="min-h-10"
+              onClick={load}
+              disabled={loading || !token}
+            >
+              {loading
+                ? t("cms.preview.actions.loading")
+                : t("cms.preview.actions.load")}
             </Button>
           </div>
-          {error && <p className="text-sm text-danger-foreground">{error}</p>}
+          {error && (
+            <p className="text-sm text-danger-foreground">{error}</p>
+          )}
         </div>
         {data && (
           <div className="space-y-3">
+            <div className="rounded border border-border/10 p-3">
+              <div className="mb-2 text-sm font-medium">
+                {t("cms.preview.runtime.title")}
+              </div>
+              <div className="overflow-auto rounded border border-border/20 bg-surface-2 p-4">
+                <DynamicRenderer
+                  components={data.components}
+                  // Version previews are currently EN-only; if multi-locale
+                  // support is added, this can be wired to the selected locale.
+                  locale="en"
+                  editor={data.editor}
+                />
+              </div>
+            </div>
             <div className="rounded border border-border/10 p-3">
               <div className="text-sm text-muted-foreground">
                 {t("cms.preview.meta.shop")}:{" "}
@@ -101,16 +138,25 @@ export default function PreviewViewer({ params }: { params: { token: string } })
               </div>
               <div className="text-sm">
                 {/* eslint-disable-next-line ds/no-raw-font -- CMS-202 false positive on 'timestamp' [ttl=2026-03-31] */}
-                {t("cms.preview.meta.timestamp")}: {new Date(data.timestamp).toLocaleString()}
+                {t("cms.preview.meta.timestamp")}:{" "}
+                {new Date(data.timestamp).toLocaleString()}
               </div>
               <div className="mt-2 text-sm">
                 {t("cms.preview.meta.components")}:{" "}
-                <span className="font-mono">{Array.isArray(data.components) ? data.components.length : 0}</span>
+                <span className="font-mono">
+                  {Array.isArray(data.components)
+                    ? data.components.length
+                    : 0}
+                </span>
               </div>
             </div>
             <div className="rounded border border-border/10 p-3">
-              <div className="mb-2 text-sm font-medium">{t("cms.preview.json.title")}</div>
-              <pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words text-xs bg-muted/40 p-2 rounded">{JSON.stringify(data, null, 2)}</pre>
+              <div className="mb-2 text-sm font-medium">
+                {t("cms.preview.json.title")}
+              </div>
+              <pre className="max-h-96 overflow-auto whitespace-pre-wrap break-words text-xs bg-muted/40 p-2 rounded">
+                {JSON.stringify(data, null, 2)}
+              </pre>
               <div className="mt-2 text-xs">
                 <a
                   className="inline-flex items-center min-h-11 min-w-11 text-link underline"

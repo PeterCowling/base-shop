@@ -2,9 +2,9 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-jest.mock("@ui/src/components/ComponentPreview", () => ({
+jest.mock("@ui", () => ({
   __esModule: true,
-  default: ({ component }: any) => <div>{component.componentName}</div>,
+  ComponentPreview: ({ component }: any) => <div>{component.componentName}</div>,
 }));
 
 describe("UpgradePreviewPage", () => {

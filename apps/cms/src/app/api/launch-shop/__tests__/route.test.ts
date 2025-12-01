@@ -64,6 +64,7 @@ const initShop = jest.fn();
 const deployShop = jest.fn();
 const seedShop = jest.fn();
 const getRequiredSteps = jest.fn();
+const configuratorChecks: Record<string, jest.Mock> = {};
 
 jest.mock('../../../cms/wizard/services/createShop', () => ({
   __esModule: true,
@@ -90,9 +91,17 @@ jest.mock('../../../cms/configurator/steps', () => ({
   getRequiredSteps: (...args: any[]) => getRequiredSteps(...args),
 }));
 
+jest.mock('@platform-core/configurator', () => ({
+  __esModule: true,
+  configuratorChecks,
+}));
+
 afterEach(() => {
   jest.resetModules();
   jest.clearAllMocks();
+  for (const key of Object.keys(configuratorChecks)) {
+    delete configuratorChecks[key];
+  }
 });
 
 function parseSse(text: string) {
@@ -119,6 +128,17 @@ describe('launch-shop route', () => {
 
   it('streams done when steps succeed without seeding', async () => {
     getRequiredSteps.mockReturnValue([]);
+    for (const id of [
+      'shop-basics',
+      'theme',
+      'payments',
+      'shipping-tax',
+      'checkout',
+      'products-inventory',
+      'navigation-home',
+    ]) {
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+    }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
     deployShop.mockResolvedValue({ ok: true });
@@ -138,6 +158,17 @@ describe('launch-shop route', () => {
 
   it('reports failure and stops when create step fails', async () => {
     getRequiredSteps.mockReturnValue([]);
+    for (const id of [
+      'shop-basics',
+      'theme',
+      'payments',
+      'shipping-tax',
+      'checkout',
+      'products-inventory',
+      'navigation-home',
+    ]) {
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+    }
     createShop.mockResolvedValue({ ok: false, error: 'nope' });
 
     const { POST } = await import('../route');
@@ -160,6 +191,17 @@ describe('launch-shop route', () => {
 
   it('reports failure and stops when init step fails', async () => {
     getRequiredSteps.mockReturnValue([]);
+    for (const id of [
+      'shop-basics',
+      'theme',
+      'payments',
+      'shipping-tax',
+      'checkout',
+      'products-inventory',
+      'navigation-home',
+    ]) {
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+    }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: false, error: 'nope' });
 
@@ -184,6 +226,17 @@ describe('launch-shop route', () => {
 
   it('reports failure and stops when deploy step fails', async () => {
     getRequiredSteps.mockReturnValue([]);
+    for (const id of [
+      'shop-basics',
+      'theme',
+      'payments',
+      'shipping-tax',
+      'checkout',
+      'products-inventory',
+      'navigation-home',
+    ]) {
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+    }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
     deployShop.mockResolvedValue({ ok: false, error: 'nope' });
@@ -210,6 +263,17 @@ describe('launch-shop route', () => {
 
   it('reports failure and stops when seed step fails', async () => {
     getRequiredSteps.mockReturnValue([]);
+    for (const id of [
+      'shop-basics',
+      'theme',
+      'payments',
+      'shipping-tax',
+      'checkout',
+      'products-inventory',
+      'navigation-home',
+    ]) {
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+    }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
     deployShop.mockResolvedValue({ ok: true });
@@ -238,6 +302,17 @@ describe('launch-shop route', () => {
 
   it('sends failure message when an error is thrown', async () => {
     getRequiredSteps.mockReturnValue([]);
+    for (const id of [
+      'shop-basics',
+      'theme',
+      'payments',
+      'shipping-tax',
+      'checkout',
+      'products-inventory',
+      'navigation-home',
+    ]) {
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+    }
     createShop.mockRejectedValue(new Error('boom'));
 
     const { POST } = await import('../route');
@@ -260,6 +335,17 @@ describe('launch-shop route', () => {
 
   it('executes seed step when seeding enabled', async () => {
     getRequiredSteps.mockReturnValue([]);
+    for (const id of [
+      'shop-basics',
+      'theme',
+      'payments',
+      'shipping-tax',
+      'checkout',
+      'products-inventory',
+      'navigation-home',
+    ]) {
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+    }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
     deployShop.mockResolvedValue({ ok: true });
@@ -287,5 +373,50 @@ describe('launch-shop route', () => {
     ]);
     expect(seedShop).toHaveBeenCalledTimes(1);
   });
-});
 
+  it('fails deploy step when configuration checks fail', async () => {
+    getRequiredSteps.mockReturnValue([]);
+    for (const id of [
+      'shop-basics',
+      'theme',
+      'shipping-tax',
+      'checkout',
+      'products-inventory',
+      'navigation-home',
+    ]) {
+      configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
+    }
+    configuratorChecks['payments'] = jest.fn(async () => ({
+      ok: false,
+      reason: 'missing-payment-provider',
+    }));
+    createShop.mockResolvedValue({ ok: true });
+    initShop.mockResolvedValue({ ok: true });
+    deployShop.mockResolvedValue({ ok: true });
+
+    const { POST } = await import('../route');
+    const req = {
+      json: async () => ({ shopId: '1', state: { completed: {} } }),
+      headers: new Headers(),
+    } as unknown as Request;
+
+    const res = await POST(req);
+    const text = await res.text();
+    const messages = parseSse(text);
+    expect(messages).toEqual([
+      { step: 'create', status: 'pending' },
+      { step: 'create', status: 'success' },
+      { step: 'init', status: 'pending' },
+      { step: 'init', status: 'success' },
+      { step: 'deploy', status: 'pending' },
+      {
+        step: 'deploy',
+        status: 'failure',
+        error:
+          'Configuration checks failed for steps: payments:missing-payment-provider',
+      },
+    ]);
+    expect(deployShop).not.toHaveBeenCalled();
+    expect(seedShop).not.toHaveBeenCalled();
+  });
+});

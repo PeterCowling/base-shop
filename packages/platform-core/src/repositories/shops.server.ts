@@ -1,12 +1,12 @@
 // packages/platform-core/repositories/shops.server.ts
 import "server-only";
 
-import { shopSchema, type Shop } from "@acme/types";
+import type { Shop } from "@acme/types";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import { baseTokens, loadThemeTokens } from "../themeTokens/index";
 import { prisma } from "../db";
 import { getShopById, updateShopInRepo } from "./shop.server";
-import { listShopsInDataRoot, readFromShop } from "../utils/safeFs";
+import { listShopsInDataRoot } from "../utils/safeFs";
 export {
   diffHistory,
   getShopSettings,
@@ -69,31 +69,9 @@ export async function readShop(shop: string): Promise<Shop> {
     const data = await getShopById<Shop>(shop);
     return await applyThemeData(data);
   } catch {
-    // ignore and fall through
-  }
-
-  // When the resolved repository does not contain the shop (e.g. the JSON
-  // backend is selected but the file is missing), attempt to read directly from
-  // the Prisma stub.  This mirrors the behaviour expected in tests where
-  // `prisma.shop.findUnique` is mocked.
-  try {
-    const rec = await prisma.shop.findUnique({ where: { id: shop } });
-    const parsed = rec && shopSchema.safeParse(rec.data);
-    if (parsed?.success) {
-      return await applyThemeData(parsed.data as Shop);
-    }
-  } catch {
-    // ignore and fall through
-  }
-
-  try {
-    const raw = (await readFromShop(shop, "shop.json", "utf8")) as string;
-    const parsed = shopSchema.safeParse(JSON.parse(raw));
-    if (parsed.success) {
-      return await applyThemeData(parsed.data as Shop);
-    }
-  } catch {
-    // ignore and fall through
+    // If the repository cannot supply a shop (for example in tests or when the
+    // backing store is empty), fall through to an in-memory default shape so
+    // callers have a consistent object to work with.
   }
 
   const themeId = "base";

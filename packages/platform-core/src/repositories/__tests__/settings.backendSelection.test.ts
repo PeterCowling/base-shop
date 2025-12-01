@@ -63,6 +63,24 @@ describe("settings repository backend selection", () => {
     expect(mockPrisma.getShopSettings).not.toHaveBeenCalled();
   });
 
+  it('uses prisma repository when SETTINGS_BACKEND="prisma"', async () => {
+    process.env.SETTINGS_BACKEND = "prisma";
+    const {
+      getShopSettings,
+      saveShopSettings,
+      diffHistory,
+    } = await import("../settings.server");
+
+    await getShopSettings("shop");
+    await saveShopSettings("shop", {} as any);
+    await diffHistory("shop");
+
+    expect(mockPrisma.getShopSettings).toHaveBeenCalledWith("shop");
+    expect(mockPrisma.saveShopSettings).toHaveBeenCalledWith("shop", {});
+    expect(mockPrisma.diffHistory).toHaveBeenCalledWith("shop");
+    expect(mockJson.getShopSettings).not.toHaveBeenCalled();
+  });
+
   it("defaults to the Prisma repository when SETTINGS_BACKEND is not set", async () => {
     delete process.env.SETTINGS_BACKEND;
     const {
@@ -81,22 +99,15 @@ describe("settings repository backend selection", () => {
     expect(mockJson.getShopSettings).not.toHaveBeenCalled();
   });
 
-  it("falls back to the Prisma repository when SETTINGS_BACKEND is unknown", async () => {
+  it("throws when SETTINGS_BACKEND has an unsupported value", async () => {
     process.env.SETTINGS_BACKEND = "unknown";
-    const {
-      getShopSettings,
-      saveShopSettings,
-      diffHistory,
-    } = await import("../settings.server");
+    const { getShopSettings } = await import("../settings.server");
 
-    await getShopSettings("shop");
-    await saveShopSettings("shop", {} as any);
-    await diffHistory("shop");
+    await expect(getShopSettings("shop")).rejects.toThrow(
+      /Unsupported backend/i,
+    );
 
-    expect(mockPrisma.getShopSettings).toHaveBeenCalledWith("shop");
-    expect(mockPrisma.saveShopSettings).toHaveBeenCalledWith("shop", {});
-    expect(mockPrisma.diffHistory).toHaveBeenCalledWith("shop");
     expect(mockJson.getShopSettings).not.toHaveBeenCalled();
+    expect(mockPrisma.getShopSettings).not.toHaveBeenCalled();
   });
 });
-

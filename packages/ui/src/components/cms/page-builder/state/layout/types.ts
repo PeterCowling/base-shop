@@ -1,28 +1,6 @@
-import type { PageComponent } from "@acme/types";
-// Local copy to avoid package export mismatch
-export type EditorFlags = {
-  name?: string;
-  locked?: boolean;
-  zIndex?: number;
-  hidden?: ("desktop" | "tablet" | "mobile")[];
-  hiddenDeviceIds?: string[];
-  /** Legacy single strategy (mobile); kept for backwards-compat */
-  stackStrategy?: "default" | "reverse" | "custom";
-  /** Per-device stacking strategies */
-  stackDesktop?: "default" | "reverse" | "custom";
-  stackTablet?: "default" | "reverse" | "custom";
-  stackMobile?: "default" | "reverse" | "custom";
-  /** Custom orders per device (used when corresponding strategy === "custom") */
-  orderDesktop?: number;
-  orderTablet?: number;
-  orderMobile?: number;
-  global?: {
-    id: string;
-    overrides?: unknown;
-    pinned?: boolean;
-    editingSize?: Partial<Record<"desktop" | "tablet" | "mobile", number | null>>;
-  };
-};
+import type { PageComponent, EditorFlags as CoreEditorFlags } from "@acme/page-builder-core";
+
+export type EditorFlags = CoreEditorFlags;
 
 export type AddAction = {
   type: "add";

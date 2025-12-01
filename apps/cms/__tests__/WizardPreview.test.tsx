@@ -28,10 +28,19 @@ jest.mock("@/i18n/Translations", () => ({
 
 jest.mock("@i18n/en.json", () => ({}), { virtual: true });
 
-jest.mock("@ui/components/cms/blocks", () => ({
-  blockRegistry: {
-    Mock: { component: ({ foo }: any) => <div data-cy="mock-block">{foo}</div> }
-  }
+jest.mock("@ui/components/DynamicRenderer", () => ({
+  __esModule: true,
+  default: ({ components }: any) => (
+    <div data-testid="dynamic-renderer">
+      {components.map((c: any) =>
+        c.type === "Unknown" ? null : (
+          <div key={c.id} data-cy={c.type === "Mock" ? "mock-block" : undefined}>
+            {c.text || c.foo}
+          </div>
+        )
+      )}
+    </div>
+  ),
 }));
 
 describe("WizardPreview", () => {
@@ -93,4 +102,3 @@ describe("WizardPreview", () => {
     expect(await screen.findByText("Second")).toBeInTheDocument();
   });
 });
-

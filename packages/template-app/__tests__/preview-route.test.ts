@@ -1,7 +1,10 @@
 import { jest } from "@jest/globals";
 import type { Page } from "@acme/types";
-import { createHmac } from "node:crypto";
 import { nowIso } from "@date-utils";
+import {
+  createPreviewToken,
+  createUpgradePreviewToken,
+} from "@platform-core/previewTokens";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "upgradesecret";
@@ -11,7 +14,9 @@ process.env.NEXT_PUBLIC_SHOP_ID = "shop";
 afterEach(() => jest.resetModules());
 
 function tokenFor(id: string): string {
-  return createHmac("sha256", "testsecret").update(id).digest("hex");
+  const shopId = process.env.NEXT_PUBLIC_SHOP_ID || "default";
+  const secret = process.env.PREVIEW_TOKEN_SECRET || "testsecret";
+  return createPreviewToken({ shopId, pageId: id }, secret);
 }
 
 function mockEnv() {
@@ -247,9 +252,12 @@ test("upgrade token route generates token when authorized", async () => {
 
   expect(res.status).toBe(200);
   const { token } = (await res.json()) as { token: string };
-  const expected = createHmac("sha256", process.env.UPGRADE_PREVIEW_TOKEN_SECRET!)
-    .update("1")
-    .digest("hex");
+  const shopId = process.env.NEXT_PUBLIC_SHOP_ID || "default";
+  const secret = process.env.UPGRADE_PREVIEW_TOKEN_SECRET || "upgradesecret";
+  const expected = createUpgradePreviewToken(
+    { shopId, pageId: "1" },
+    secret,
+  );
   expect(token).toBe(expected);
 });
 

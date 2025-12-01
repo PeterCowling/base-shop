@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { createHmac } from "crypto";
 import { requirePermission } from "@auth";
-import { authEnv as env } from "@acme/config/env/auth";
+import { coreEnv as env } from "@acme/config/env/core";
+import { createUpgradePreviewToken } from "@platform-core/previewTokens";
 
 export const runtime = "nodejs";
 
@@ -26,8 +26,10 @@ export async function GET(req: Request) {
       { status: 500 },
     );
   }
-  const token = createHmac("sha256", secret as string)
-    .update(pageId)
-    .digest("hex");
+  const shopId = env.NEXT_PUBLIC_SHOP_ID || "default";
+  const token = createUpgradePreviewToken(
+    { shopId, pageId },
+    secret as string,
+  );
   return NextResponse.json({ token });
 }

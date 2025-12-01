@@ -1,4 +1,4 @@
-import { extractSessionIdFromCharge } from "../src/helpers/risk";
+import { extractSessionIdFromCharge } from "../src/internal/helpers/risk";
 
 describe("extractSessionIdFromCharge", () => {
   test("returns charge.invoice when present", () => {
@@ -34,4 +34,3 @@ describe("extractSessionIdFromCharge", () => {
     expect(extractSessionIdFromCharge(charge)).toBeUndefined();
   });
 });
-

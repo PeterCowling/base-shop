@@ -1,0 +1,106 @@
+Browserslist: browsers data (caniuse-lite) is 6 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+PASS functions/themes/[theme]/__tests__/rental-return-integration.test.ts (6.382 s)
+  ✓ rental order is returned and refunded (511 ms)
+
+------------------------------------|---------|----------|---------|---------|-------------------
+File                                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+------------------------------------|---------|----------|---------|---------|-------------------
+All files                           |       0 |        0 |       0 |       0 |                   
+ base-shop                          |       0 |        0 |       0 |       0 |                   
+  middleware.ts                     |       0 |        0 |       0 |       0 | 6-76              
+  plopfile.ts                       |       0 |        0 |       0 |       0 | 7-158             
+ base-shop/functions                |       0 |      100 |       0 |       0 |                   
+  marketing-email-sender.ts         |       0 |      100 |       0 |       0 | 6-12              
+ base-shop/functions/src            |       0 |        0 |       0 |       0 |                   
+  previewScheduler.ts               |       0 |        0 |       0 |       0 | 15-103            
+  publishEditorial.ts               |       0 |        0 |       0 |       0 | 7-25              
+  seoAudit.ts                       |       0 |        0 |       0 |       0 | 11-45             
+ base-shop/functions/themes/[theme] |       0 |      100 |       0 |       0 |                   
+  tokens.dynamic.css.ts             |       0 |      100 |       0 |       0 | 3-6               
+ base-shop/packages/template-app    |       0 |        0 |       0 |       0 |                   
+  middleware.ts                     |       0 |        0 |       0 |       0 | 6-23              
+ base-shop/scripts                  |       0 |        0 |       0 |       0 |                   
+  benchmark-loadPlugins.ts          |       0 |        0 |       0 |       0 | 6-67              
+  build-tokens.ts                   |       0 |        0 |       0 |       0 | 23-195            
+  check-tailwind-preset.ts          |       0 |        0 |     100 |       0 | 10-28             
+  generate-meta.ts                  |       0 |        0 |       0 |       0 | 7-22              
+  seo-audit.ts                      |       0 |        0 |       0 |       0 | 4-15              
+  stripe-send-test-event.ts         |       0 |        0 |       0 |       0 | 16-57             
+ base-shop/scripts/src              |       0 |        0 |       0 |       0 |                   
+  add-locale.ts                     |       0 |        0 |       0 |       0 | 6-70              
+  apply-page-template.ts            |       0 |      100 |       0 |       0 | 15-24             
+  build-tokens.ts                   |       0 |        0 |       0 |       0 | 17-187            
+  check-locales.ts                  |       0 |        0 |       0 |       0 | 4-24              
+  component-names.ts                |       0 |        0 |       0 |       0 | 9-89              
+  coverage-summary.ts               |       0 |        0 |       0 |       0 | 15-139            
+  create-shop.ts                    |       0 |        0 |     100 |       0 | 10-31             
+  diff-shadcn.ts                    |       0 |        0 |     100 |       0 | 7-32              
+  generate-example-props.ts         |       0 |        0 |       0 |       0 | 6-73              
+  generate-shop.ts                  |       0 |        0 |       0 |       0 | 4-50              
+  generate-theme.ts                 |       0 |        0 |       0 |       0 | 4-77              
+  init-shop.ts                      |       0 |      100 |       0 |       0 | 7-11              
+  initShop.ts                       |       0 |        0 |       0 |       0 | 37-212            
+  inventory.ts                      |       0 |        0 |       0 |       0 | 13-69             
+  migrate-cms.ts                    |       0 |        0 |       0 |       0 | 17-68             
+  migrate-pages.ts                  |       0 |        0 |       0 |       0 | 5-36              
+  migrate-shop.ts                   |       0 |        0 |       0 |       0 | 12-32             
+  mktemp-data-root.ts               |       0 |      100 |       0 |       0 | 8-16              
+  quickstart-shop.ts                |       0 |        0 |       0 |       0 | 18-163            
+  release-deposits.ts               |       0 |      100 |       0 |       0 | 3-5               
+  republish-shop.ts                 |       0 |        0 |       0 |       0 | 12-119            
+  rollback-shop.ts                  |       0 |        0 |       0 |       0 | 6-69              
+  run-preview-scheduler.ts          |       0 |      100 |       0 |       0 | 7-16              
+  runtime.ts                        |       0 |        0 |       0 |       0 | 8-31              
+  seed-test-data.ts                 |       0 |        0 |       0 |       0 | 10-39             
+  seedShop.ts                       |       0 |        0 |       0 |       0 | 16-48             
+  setup-ci.ts                       |       0 |        0 |       0 |       0 | 13-114            
+  upgrade-shop.ts                   |       0 |        0 |       0 |       0 | 18-212            
+  validate-env.ts                   |       0 |        0 |       0 |       0 | 15-89             
+ base-shop/scripts/src/cli          |       0 |        0 |       0 |       0 |                   
+  initShopArgs.ts                   |       0 |      100 |       0 |       0 | 13-18             
+  parseQuickstartArgs.ts            |       0 |        0 |       0 |       0 | 22-85             
+  quickstartPrompts.ts              |       0 |        0 |       0 |       0 | 34-97             
+ base-shop/scripts/src/codemods     |       0 |        0 |       0 |       0 |                   
+  inline-styles-to-tokens.ts        |       0 |        0 |       0 |       0 | 4                 
+  tokens-to-css-vars.ts             |       0 |        0 |       0 |       0 | 7                 
+ base-shop/scripts/src/createShop   |       0 |        0 |       0 |       0 |                   
+  parse.ts                          |       0 |        0 |       0 |       0 | 7-146             
+  prompts.ts                        |       0 |        0 |       0 |       0 | 18-203            
+  write.ts                          |       0 |      100 |       0 |       0 | 34                
+ base-shop/scripts/src/env          |       0 |        0 |       0 |       0 |                   
+  collectPluginEnv.ts               |       0 |        0 |       0 |       0 | 5-114             
+  writeEnvFiles.ts                  |       0 |        0 |       0 |       0 | 24-70             
+ base-shop/scripts/src/inventory    |       0 |        0 |       0 |       0 |                   
+  check-inventory.ts                |       0 |        0 |       0 |       0 | 9-86              
+  import-json-to-postgres.ts        |       0 |        0 |       0 |       0 | 9-97              
+ base-shop/scripts/src/ops          |       0 |        0 |       0 |       0 |                   
+  backup-data-root.ts               |       0 |        0 |       0 |       0 | 10-46             
+ base-shop/scripts/src/shop         |       0 |        0 |       0 |       0 |                   
+  createShopAndSeed.ts              |       0 |        0 |       0 |       0 | 24-58             
+  init.ts                           |       0 |        0 |       0 |       0 | 21-37             
+ base-shop/scripts/src/types        |       0 |      100 |     100 |       0 |                   
+  env.ts                            |       0 |      100 |     100 |       0 | 7                 
+ base-shop/scripts/src/utils        |       0 |        0 |       0 |       0 |                   
+  args.ts                           |       0 |        0 |       0 |       0 | 25-95             
+  prompts.ts                        |       0 |        0 |       0 |       0 | 6-107             
+  providers.ts                      |       0 |        0 |       0 |       0 | 13-33             
+  templates.ts                      |       0 |        0 |       0 |       0 | 7-67              
+  theme.ts                          |       0 |        0 |       0 |       0 | 7-63              
+------------------------------------|---------|----------|---------|---------|-------------------
+
+=============================== Coverage summary ===============================
+Statements   : 0% ( 0/1913 )
+Branches     : 0% ( 0/745 )
+Functions    : 0% ( 0/241 )
+Lines        : 0% ( 0/1814 )
+================================================================================
+Jest: "global" coverage threshold for branches (80%) not met: 0%
+Jest: "global" coverage threshold for lines (80%) not met: 0%
+Jest: "global" coverage threshold for functions (80%) not met: 0%
+Test Suites: 1 passed, 1 total
+Tests:       1 passed, 1 total
+Snapshots:   0 total
+Time:        7.057 s
+Ran all test suites within paths "functions/themes/[theme]/__tests__/rental-return-integration.test.ts".

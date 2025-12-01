@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import type { PageComponent, HistoryState } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/page-builder-core";
 import type { Locale } from "@i18n/locales";
 import DynamicRenderer from "@ui/components/DynamicRenderer";
 import DeviceSelector from "@ui/components/DeviceSelector";

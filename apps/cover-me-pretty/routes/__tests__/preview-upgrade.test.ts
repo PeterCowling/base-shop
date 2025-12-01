@@ -1,7 +1,10 @@
 import { jest } from "@jest/globals";
 import type { Page } from "@acme/types";
-import { createHmac } from "node:crypto";
 import { nowIso } from "@date-utils";
+import {
+  createPreviewToken,
+  createUpgradePreviewToken,
+} from "@platform-core/previewTokens";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "upgradesecret";
@@ -30,7 +33,10 @@ type PreviewOnRequest = (ctx: {
 }) => Promise<Response>;
 
 function tokenFor(id: string, secret: string): string {
-  return createHmac("sha256", secret).update(id).digest("hex");
+  return createPreviewToken(
+    { shopId: "shop", pageId: id },
+    secret,
+  );
 }
 
 test("valid upgrade token returns page JSON", async () => {
@@ -99,7 +105,10 @@ test("standard token not accepted as upgrade token", async () => {
   const res = await handlePreview({
     params: { pageId: "1" },
     request: new Request(
-      `http://test?upgrade=${tokenFor("1", "testsecret")}`,
+      `http://test?upgrade=${createUpgradePreviewToken(
+        { shopId: "shop", pageId: "1" },
+        "testsecret",
+      )}`,
     ),
   });
 

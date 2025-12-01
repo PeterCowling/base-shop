@@ -10,7 +10,7 @@ describe("email package entry point", () => {
 
   it("injects sendEmail into platform core service", async () => {
     const setEmailService = jest.fn();
-    jest.doMock("@acme/platform-core/services/emailService", () => ({
+    jest.doMock("@acme/platform-core/email", () => ({
       setEmailService,
     }));
 
@@ -87,4 +87,3 @@ describe("email package entry point", () => {
     expect(storage.fsCampaignStore.listShops).toHaveBeenCalledWith("l");
   });
 });
-

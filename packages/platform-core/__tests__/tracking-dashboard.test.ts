@@ -1,5 +1,6 @@
 import { jest } from "@jest/globals";
 import type { TrackingStatus } from "../src/shipping";
+
 jest.mock("../src/shipping", () => ({
   getTrackingStatus: jest.fn(async () => ({
     status: "Delivered",
@@ -13,7 +14,9 @@ describe("tracking dashboard", () => {
   });
 
   test("aggregates built-in provider", async () => {
-    const { getTrackingDashboard } = await import("../src/tracking");
+    const { getTrackingDashboard } = await import(
+      "../src/internal/tracking"
+    );
     const result = await getTrackingDashboard([
       {
         id: "1",
@@ -29,7 +32,9 @@ describe("tracking dashboard", () => {
     const custom = jest
       .fn<Promise<TrackingStatus>, [string]>()
       .mockResolvedValue({ status: "In Transit", steps: [] } as TrackingStatus);
-    const { getTrackingDashboard } = await import("../src/tracking");
+    const { getTrackingDashboard } = await import(
+      "../src/internal/tracking"
+    );
     const result = await getTrackingDashboard(
       [
         {
@@ -53,7 +58,9 @@ describe("tracking dashboard", () => {
     process.env.TWILIO_SID = "sid";
     process.env.TWILIO_TOKEN = "tok";
     process.env.TWILIO_FROM = "+111";
-    const { notifyStatusChange } = await import("../src/tracking");
+    const { notifyStatusChange } = await import(
+      "../src/internal/tracking"
+    );
     await notifyStatusChange(
       { email: "a@b.com", phone: "+1222" },
       { id: "1", type: "shipment", provider: "ups", trackingNumber: "1" },
@@ -73,7 +80,9 @@ describe("tracking dashboard", () => {
     process.env.TWILIO_SID = "sid";
     process.env.TWILIO_TOKEN = "tok";
     process.env.TWILIO_FROM = "+111";
-    const { notifyStatusChange } = await import("../src/tracking");
+    const { notifyStatusChange } = await import(
+      "../src/internal/tracking"
+    );
     await notifyStatusChange(
       { email: "a@b.com", phone: "+1222" },
       { id: "1", type: "shipment", provider: "ups", trackingNumber: "1" },

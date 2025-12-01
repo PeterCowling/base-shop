@@ -2,9 +2,58 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import * as configurator from "../src/configurator";
- 
 
-const { readEnvFile, validateEnvFile, validateShopEnv } = configurator;
+jest.mock("../src/repositories/shops.server", () => ({
+  readShop: jest.fn(),
+  getShopSettings: jest.fn(),
+}));
+
+jest.mock("../src/repositories/pages/index.server", () => ({
+  getPages: jest.fn(),
+}));
+
+jest.mock("../src/repositories/products.server", () => ({
+  readRepo: jest.fn(),
+}));
+
+jest.mock("../src/repositories/inventory.server", () => ({
+  readInventory: jest.fn(),
+}));
+
+const {
+  readEnvFile,
+  validateEnvFile,
+  validateShopEnv,
+  checkShopBasics,
+  checkTheme,
+  checkPayments,
+  checkShippingTax,
+  checkCheckout,
+  checkProductsInventory,
+  checkNavigationHome,
+  configuratorChecks,
+} = configurator;
+
+const shopsRepo = require("../src/repositories/shops.server") as {
+  readShop: jest.Mock;
+  getShopSettings: jest.Mock;
+};
+
+const pagesRepo = require("../src/repositories/pages/index.server") as {
+  getPages: jest.Mock;
+};
+
+const productsRepo = require("../src/repositories/products.server") as {
+  readRepo: jest.Mock;
+};
+
+const inventoryRepo = require("../src/repositories/inventory.server") as {
+  readInventory: jest.Mock;
+};
+
+beforeEach(() => {
+  jest.resetAllMocks();
+});
 
 describe("readEnvFile", () => {
   it("ignores comments and empty values", () => {
@@ -166,5 +215,246 @@ describe("validateShopEnv", () => {
       process.chdir(cwd);
       fs.rmSync(root, { recursive: true, force: true });
     }
+  });
+});
+
+describe("Config checks", () => {
+  const shopId = "test-shop";
+
+  function mockShop(overrides: Partial<unknown> = {}) {
+    shopsRepo.readShop.mockResolvedValue({
+      id: shopId,
+      name: "Test shop",
+      themeId: "base",
+      themeDefaults: {},
+      themeOverrides: {},
+      themeTokens: { primary: "primary" },
+      filterMappings: {},
+      priceOverrides: {},
+      localeOverrides: {},
+      navigation: [],
+      analyticsEnabled: false,
+      coverageIncluded: true,
+      componentVersions: {},
+      rentalSubscriptions: [],
+      subscriptionsEnabled: false,
+      luxuryFeatures: {
+        blog: false,
+        contentMerchandising: false,
+        raTicketing: false,
+        fraudReviewThreshold: 0,
+        requireStrongCustomerAuth: false,
+        strictReturnConditions: false,
+        trackingDashboard: false,
+        premierDelivery: false,
+      },
+      ...(overrides as Record<string, unknown>),
+    });
+  }
+
+  function mockSettings(overrides: Partial<unknown> = {}) {
+    shopsRepo.getShopSettings.mockResolvedValue({
+      languages: ["en"],
+      seo: {},
+      updatedAt: "",
+      updatedBy: "",
+      ...(overrides as Record<string, unknown>),
+    });
+  }
+
+  it("checkShopBasics returns ok when shop and languages exist", async () => {
+    mockShop();
+    mockSettings({ languages: ["en", "de"] });
+
+    const result = await checkShopBasics(shopId);
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("checkShopBasics reports missing languages", async () => {
+    mockShop();
+    mockSettings({ languages: [] });
+
+    const result = await checkShopBasics(shopId);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("missing-languages");
+    }
+  });
+
+  it("checkTheme returns ok when themeId and tokens are present", async () => {
+    mockShop({
+      themeId: "base",
+      themeTokens: { primary: "primary" },
+    });
+    mockSettings();
+
+    const result = await checkTheme(shopId);
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("checkTheme reports missing theme tokens", async () => {
+    mockShop({
+      themeId: "base",
+      themeTokens: {},
+    });
+    mockSettings();
+
+    const result = await checkTheme(shopId);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("missing-theme-tokens");
+    }
+  });
+
+  it("checkPayments validates currency and env vars", async () => {
+    mockShop({
+      paymentProviders: ["stripe"],
+      billingProvider: "stripe",
+    });
+    mockSettings({ currency: "EUR" });
+
+    const originalEnv = { ...process.env };
+    try {
+      process.env.STRIPE_SECRET_KEY = "sk_test";
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
+      process.env.STRIPE_WEBHOOK_SECRET = "whsec";
+
+      const result = await checkPayments(shopId);
+      expect(result).toEqual({ ok: true });
+    } finally {
+      process.env = originalEnv;
+    }
+  });
+
+  it("checkPayments reports missing currency", async () => {
+    mockShop({
+      paymentProviders: ["stripe"],
+      billingProvider: "stripe",
+    });
+    mockSettings({});
+
+    const result = await checkPayments(shopId);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("missing-currency");
+    }
+  });
+
+  it("checkShippingTax returns ok when taxRegion and shippingProviders exist", async () => {
+    mockShop({ shippingProviders: ["dhl"] });
+    mockSettings({ taxRegion: "EU" });
+
+    const result = await checkShippingTax(shopId);
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("checkShippingTax reports missing shipping provider", async () => {
+    mockShop({ shippingProviders: [] });
+    mockSettings({ taxRegion: "EU" });
+
+    const result = await checkShippingTax(shopId);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("missing-shipping-provider");
+    }
+  });
+
+  it("checkCheckout returns ok when a published checkout page exists", async () => {
+    pagesRepo.getPages.mockResolvedValue([
+      {
+        id: "p1",
+        slug: "checkout",
+        status: "published",
+        visibility: "public",
+        components: [],
+        seo: {
+          title: { en: "Checkout" },
+          description: {},
+          image: {},
+        },
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+      },
+    ]);
+
+    const result = await checkCheckout(shopId);
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("checkCheckout reports missing checkout page", async () => {
+    pagesRepo.getPages.mockResolvedValue([]);
+
+    const result = await checkCheckout(shopId);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("missing-checkout-page");
+    }
+  });
+
+  it("checkProductsInventory returns ok when products and inventory are present", async () => {
+    productsRepo.readRepo.mockResolvedValue([
+      {
+        id: "prod1",
+        shop: shopId,
+        status: "active",
+        row_version: 1,
+      },
+    ]);
+    inventoryRepo.readInventory.mockResolvedValue([
+      {
+        sku: "sku1",
+        productId: "prod1",
+        quantity: 5,
+        variantAttributes: {},
+      },
+    ]);
+
+    const result = await checkProductsInventory(shopId);
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("checkProductsInventory reports when no active products", async () => {
+    productsRepo.readRepo.mockResolvedValue([]);
+    inventoryRepo.readInventory.mockResolvedValue([]);
+
+    const result = await checkProductsInventory(shopId);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("no-active-products");
+    }
+  });
+
+  it("checkNavigationHome returns ok when navigation contains a link", async () => {
+    mockShop({
+      navigation: [{ label: "Home", url: "/" }],
+    });
+    mockSettings();
+
+    const result = await checkNavigationHome(shopId);
+    expect(result).toEqual({ ok: true });
+  });
+
+  it("checkNavigationHome reports missing navigation", async () => {
+    mockShop({ navigation: [] });
+    mockSettings();
+
+    const result = await checkNavigationHome(shopId);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe("missing-navigation");
+    }
+  });
+
+  it("configuratorChecks exposes step mappings for core steps", () => {
+    expect(configuratorChecks["shop-basics"]).toBe(checkShopBasics);
+    expect(configuratorChecks.theme).toBe(checkTheme);
+    expect(configuratorChecks.payments).toBe(checkPayments);
+    expect(configuratorChecks["shipping-tax"]).toBe(checkShippingTax);
+    expect(configuratorChecks.checkout).toBe(checkCheckout);
+    expect(configuratorChecks["products-inventory"]).toBe(
+      checkProductsInventory,
+    );
+    expect(configuratorChecks["navigation-home"]).toBe(checkNavigationHome);
   });
 });

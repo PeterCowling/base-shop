@@ -7,8 +7,13 @@
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { z } from "zod";
-
-
+import type {
+  ConfiguratorStepId,
+  ProductPublication,
+  Shop,
+  ShopSettings,
+} from "@acme/types";
+import type { InventoryItem } from "./types/inventory";
 
 // Accept any string key/value pairs. In the full codebase envSchema would
 // include constraints for required environment variables.
@@ -124,3 +129,272 @@ export function validateShopEnv(shop: string): void {
     }
   }
 }
+
+export type ConfigCheckResult =
+  | { ok: true }
+  | {
+      ok: false;
+      reason: string;
+      details?: unknown;
+    };
+
+export type ConfigCheck = (shopId: string) => Promise<ConfigCheckResult>;
+
+async function loadShopAndSettings(
+  shopId: string,
+): Promise<{ shop: Shop; settings: ShopSettings }> {
+  const shopsModule = await import("./repositories/shops.server");
+  const [shop, settings] = await Promise.all([
+    shopsModule.readShop(shopId),
+    shopsModule.getShopSettings(shopId),
+  ]);
+  return { shop, settings };
+}
+
+async function loadPages(shopId: string) {
+  const pagesModule = await import("./repositories/pages/index.server");
+  return pagesModule.getPages(shopId);
+}
+
+async function loadProducts(shopId: string): Promise<ProductPublication[]> {
+  const productsModule = await import("./repositories/products.server");
+  return productsModule.readRepo<ProductPublication>(shopId);
+}
+
+async function loadInventory(shopId: string): Promise<InventoryItem[]> {
+  const inventoryModule = await import("./repositories/inventory.server");
+  return inventoryModule.readInventory(shopId);
+}
+
+function errorResult(
+  shopId: string,
+  reason: string,
+  error: unknown,
+  extra?: Record<string, unknown>,
+): ConfigCheckResult {
+  const message =
+    error && typeof error === "object" && "message" in error
+      ? String((error as { message?: unknown }).message)
+      : undefined;
+  return {
+    ok: false,
+    reason,
+    details: { shopId, ...(message ? { error: message } : {}), ...(extra ?? {}) },
+  };
+}
+
+export const checkShopBasics: ConfigCheck = async (shopId) => {
+  try {
+    const { shop, settings } = await loadShopAndSettings(shopId);
+    if (!shop || !shop.id) {
+      return {
+        ok: false,
+        reason: "missing-shop",
+        details: { shopId },
+      };
+    }
+    const languages = settings.languages ?? [];
+    if (!Array.isArray(languages) || languages.length === 0) {
+      return {
+        ok: false,
+        reason: "missing-languages",
+        details: { shopId },
+      };
+    }
+    const primaryLocale = languages[0];
+    if (!primaryLocale) {
+      return {
+        ok: false,
+        reason: "missing-primary-locale",
+        details: { shopId },
+      };
+    }
+    return { ok: true };
+  } catch (err) {
+    return errorResult(shopId, "shop-basics-error", err);
+  }
+};
+
+export const checkTheme: ConfigCheck = async (shopId) => {
+  try {
+    const { shop } = await loadShopAndSettings(shopId);
+    if (!shop.themeId) {
+      return {
+        ok: false,
+        reason: "missing-theme",
+        details: { shopId },
+      };
+    }
+    const tokens = shop.themeTokens ?? {};
+    if (Object.keys(tokens).length === 0) {
+      return {
+        ok: false,
+        reason: "missing-theme-tokens",
+        details: { shopId },
+      };
+    }
+    return { ok: true };
+  } catch (err) {
+    return errorResult(shopId, "theme-error", err);
+  }
+};
+
+export const checkPayments: ConfigCheck = async (shopId) => {
+  try {
+    const { shop, settings } = await loadShopAndSettings(shopId);
+    if (!settings.currency) {
+      return {
+        ok: false,
+        reason: "missing-currency",
+        details: { shopId },
+      };
+    }
+
+    const plugins = new Set<string>();
+    shop.paymentProviders?.forEach((p) => plugins.add(p));
+    if (shop.billingProvider) plugins.add(shop.billingProvider);
+
+    if (plugins.size === 0) {
+      return {
+        ok: false,
+        reason: "missing-payment-provider",
+        details: { shopId },
+      };
+    }
+
+    const missingEnv: string[] = [];
+    for (const id of plugins) {
+      const vars = pluginEnvVars[id];
+      if (!vars) continue;
+      for (const key of vars) {
+        const value = process.env[key];
+        if (!value || String(value).trim() === "") {
+          missingEnv.push(key);
+        }
+      }
+    }
+
+    if (missingEnv.length > 0) {
+      return {
+        ok: false,
+        reason: "missing-payment-env",
+        details: { shopId, missingEnv },
+      };
+    }
+
+    return { ok: true };
+  } catch (err) {
+    return errorResult(shopId, "payments-error", err);
+  }
+};
+
+export const checkShippingTax: ConfigCheck = async (shopId) => {
+  try {
+    const { shop, settings } = await loadShopAndSettings(shopId);
+    if (!settings.taxRegion) {
+      return {
+        ok: false,
+        reason: "missing-tax-region",
+        details: { shopId },
+      };
+    }
+    if (!shop.shippingProviders || shop.shippingProviders.length === 0) {
+      return {
+        ok: false,
+        reason: "missing-shipping-provider",
+        details: { shopId },
+      };
+    }
+    return { ok: true };
+  } catch (err) {
+    return errorResult(shopId, "shipping-tax-error", err);
+  }
+};
+
+export const checkCheckout: ConfigCheck = async (shopId) => {
+  try {
+    const pages = await loadPages(shopId);
+    const hasCheckout = pages.some(
+      (page) => page.slug === "checkout" && page.status === "published",
+    );
+    if (!hasCheckout) {
+      return {
+        ok: false,
+        reason: "missing-checkout-page",
+        details: { shopId },
+      };
+    }
+    return { ok: true };
+  } catch (err) {
+    return errorResult(shopId, "checkout-error", err);
+  }
+};
+
+export const checkProductsInventory: ConfigCheck = async (shopId) => {
+  try {
+    const [products, inventory] = await Promise.all([
+      loadProducts(shopId),
+      loadInventory(shopId),
+    ]);
+    const activeProducts = products.filter(
+      (p) => p.status === "active" || p.status === "scheduled",
+    );
+    if (activeProducts.length === 0) {
+      return {
+        ok: false,
+        reason: "no-active-products",
+        details: { shopId },
+      };
+    }
+    const hasStock = inventory.some((item) => item.quantity > 0);
+    if (!hasStock) {
+      return {
+        ok: false,
+        reason: "no-inventory",
+        details: { shopId },
+      };
+    }
+    return { ok: true };
+  } catch (err) {
+    return errorResult(shopId, "products-inventory-error", err);
+  }
+};
+
+export const checkNavigationHome: ConfigCheck = async (shopId) => {
+  try {
+    const { shop } = await loadShopAndSettings(shopId);
+    const nav = shop.navigation ?? [];
+    if (!Array.isArray(nav) || nav.length === 0) {
+      return {
+        ok: false,
+        reason: "missing-navigation",
+        details: { shopId },
+      };
+    }
+    const hasLink = nav.some(
+      (item) => typeof item.url === "string" && item.url.trim() !== "",
+    );
+    if (!hasLink) {
+      return {
+        ok: false,
+        reason: "invalid-navigation",
+        details: { shopId },
+      };
+    }
+    return { ok: true };
+  } catch (err) {
+    return errorResult(shopId, "navigation-home-error", err);
+  }
+};
+
+export const configuratorChecks: Partial<
+  Record<ConfiguratorStepId, ConfigCheck>
+> = {
+  "shop-basics": checkShopBasics,
+  theme: checkTheme,
+  payments: checkPayments,
+  "shipping-tax": checkShippingTax,
+  checkout: checkCheckout,
+  "products-inventory": checkProductsInventory,
+  "navigation-home": checkNavigationHome,
+};

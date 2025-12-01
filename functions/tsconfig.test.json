@@ -8,6 +8,12 @@
     "types": ["jest", "@cloudflare/workers-types", "node"]
   },
 
-  /* all test files */
-  "include": ["__tests__/**/*.ts", "__tests__/**/*.tsx"]
+  /* tests plus the source files they exercise */
+  "include": [
+    "__tests__/**/*.ts",
+    "__tests__/**/*.tsx",
+    "src/**/*.ts",
+    "*.ts",
+    "themes/**/*.ts"
+  ]
 }

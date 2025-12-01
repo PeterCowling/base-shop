@@ -786,6 +786,15 @@ export default [
               message:
                 "Import inventory repositories via inventory.server.ts façade instead.",
             },
+            {
+              group: [
+                "@acme/*/src/**",
+                "@ui/src/**",
+                "@platform-core/src/**",
+              ],
+              message:
+                "Import from package public entrypoints (e.g. @acme/<pkg> or documented subpaths) instead of src/* internals.",
+            },
           ],
         },
       ],
@@ -874,6 +883,33 @@ export default [
             {
               target: "./packages/ui/src/components/organisms",
               from: "./packages/ui/src/components/templates",
+            },
+          ],
+        },
+      ],
+    },
+  },
+
+  /* ▸ Package layering: prevent platform-core depending on UI or apps */
+  {
+    files: ["packages/platform-core/**/*.{ts,tsx,js,jsx}"],
+    plugins: { import: importPlugin },
+    rules: {
+      "import/no-restricted-paths": [
+        "error",
+        {
+          zones: [
+            {
+              target: "./packages/ui/src",
+              from: "./packages/platform-core/src",
+              message:
+                "@acme/platform-core must not depend on @acme/ui; keep domain logic UI-agnostic and consume UI from apps or CMS packages instead.",
+            },
+            {
+              target: "./apps",
+              from: "./packages/platform-core/src",
+              message:
+                "@acme/platform-core must not import from apps; expose APIs in platform-core and consume them from apps instead.",
             },
           ],
         },

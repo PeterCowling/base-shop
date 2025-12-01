@@ -23,9 +23,9 @@ async function setupMocks() {
     convertCurrency,
   }));
 
-  const { computeTotals } = await import("../src/checkout/totals");
+  const { computeTotals, computeSaleTotals } = await import("../src/checkout/totals");
 
-  return { computeTotals, priceForDays, convertCurrency };
+  return { computeTotals, computeSaleTotals, priceForDays, convertCurrency };
 }
 
 describe("computeTotals", () => {
@@ -68,3 +68,28 @@ describe("computeTotals", () => {
   });
 });
 
+describe("computeSaleTotals", () => {
+  it("uses SKU price and zero deposit", async () => {
+    const { computeSaleTotals, convertCurrency } = await setupMocks();
+
+    const totals = await computeSaleTotals(cart, 0.1, "USD");
+
+    // Base prices are inferred from mocked priceForDays via setup, but
+    // computeSaleTotals uses sku.price directly; here we only assert the
+    // call pattern and deposit invariant.
+    expect(totals.depositTotal).toBe(0);
+    expect(convertCurrency).toHaveBeenCalledTimes(2);
+  });
+
+  it("handles an empty cart", async () => {
+    const { computeSaleTotals, convertCurrency } = await setupMocks();
+
+    const emptyCart: CartState = {};
+    const totals = await computeSaleTotals(emptyCart, 0, "USD");
+
+    expect(totals).toEqual({ subtotal: 0, depositTotal: 0, discount: 0 });
+    expect(convertCurrency).toHaveBeenCalledTimes(2);
+    expect(convertCurrency).toHaveBeenNthCalledWith(1, 0, "USD");
+    expect(convertCurrency).toHaveBeenNthCalledWith(2, 0, "USD");
+  });
+});

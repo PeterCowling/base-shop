@@ -94,6 +94,14 @@
       "@acme/shared-utils/*": [
         "../shared-utils/src/*",
         "../shared-utils/dist/*"
+      ],
+      "@acme/page-builder-core": [
+        "../page-builder-core/src/index.ts",
+        "../page-builder-core/dist/index.d.ts"
+      ],
+      "@acme/page-builder-core/*": [
+        "../page-builder-core/src/*",
+        "../page-builder-core/dist/*"
       ]
     },
     "allowJs": true,
@@ -121,6 +129,7 @@
     { "path": "../types" },
     { "path": "../date-utils" },
     { "path": "../i18n" },
-    { "path": "../stripe" }
+    { "path": "../stripe" },
+    { "path": "../page-builder-core" }
   ]
 }

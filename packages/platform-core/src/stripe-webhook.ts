@@ -1,2 +1,2 @@
 export { handleStripeWebhook } from "./handleStripeWebhook";
-export { extractSessionIdFromCharge } from "./helpers/risk";
+export { extractSessionIdFromCharge } from "./internal/helpers/risk";

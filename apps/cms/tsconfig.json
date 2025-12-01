@@ -158,6 +158,12 @@
       ],
       "@acme/theme/*": [
         "../../packages/theme/src/*", "../../packages/theme/dist/*"
+      ],
+      "@acme/templates": [
+        "../../packages/templates/src/index.ts", "../../packages/templates/dist/index"
+      ],
+      "@acme/templates/*": [
+        "../../packages/templates/src/*", "../../packages/templates/dist/*"
       ]
     },
     "module": "ESNext",
@@ -206,6 +212,7 @@
     { "path": "../../packages/zod-utils" },
     { "path": "../../packages/telemetry" },
     { "path": "../../packages/theme" },
-    { "path": "../../packages/plugins/sanity" }
+    { "path": "../../packages/plugins/sanity" },
+    { "path": "../../packages/templates" }
   ]
 }

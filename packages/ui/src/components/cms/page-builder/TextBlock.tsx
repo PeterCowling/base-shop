@@ -1,6 +1,6 @@
 "use client";
 
-import type { Locale } from "@acme/i18n/locales";
+import { locales as supportedLocales, type Locale } from "@acme/i18n/locales";
 import { CSS } from "@dnd-kit/utilities";
 import type { TextComponent as BaseTextComponent, HistoryState } from "@acme/types";
 import { memo, useCallback, useRef } from "react";
@@ -88,6 +88,28 @@ const TextBlock = memo(function TextBlock({
   const { editor: textEditor, editing, startEditing, finishEditing } =
     useLocalizedTextEditor(component, locale);
 
+  const primaryLocale = supportedLocales[0] as Locale;
+  const isPrimaryLocale = locale === primaryLocale;
+  const textValue = component.text;
+  const hasLocaleSpecificText =
+    typeof textValue === "string"
+      ? true
+      : !!textValue?.[locale];
+  const primaryText =
+    typeof textValue === "string"
+      ? textValue
+      : textValue?.[primaryLocale] ??
+        (() => {
+          if (!textValue) return "";
+          for (const loc of supportedLocales) {
+            const val = textValue[loc];
+            if (val) return val;
+          }
+          const anyVal = Object.values(textValue).find(Boolean);
+          return (anyVal as string | undefined) ?? "";
+        })();
+  const usesPrimaryFallback = !isPrimaryLocale && !hasLocaleSpecificText && !!primaryText;
+
   const { startResize, startDrag, guides, snapping, nudgeByKeyboard, kbResizing } = useBlockTransform(
     component.id,
     {
@@ -135,6 +157,25 @@ const TextBlock = memo(function TextBlock({
     }
   }, [finishEditing, dispatch, component.id]);
 
+  const handleCopyFromPrimary = useCallback(() => {
+    if (!primaryText) return;
+    const current = component.text;
+    let next: TextComponent["text"];
+    if (typeof current === "string" || current == null) {
+      next = {
+        [primaryLocale]: primaryText,
+        [locale]: primaryText,
+      };
+    } else {
+      next = { ...current, [locale]: primaryText };
+    }
+    dispatch({
+      type: "update",
+      id: component.id,
+      patch: { text: next } as Partial<TextComponent>,
+    });
+  }, [component.id, component.text, dispatch, locale, primaryLocale, primaryText]);
+
   const style = {
     transform: CSS.Transform.toString(transform),
     ...(widthVal ? { width: widthVal } : {}),
@@ -158,11 +199,20 @@ const TextBlock = memo(function TextBlock({
   const content = DOMPurify.sanitize(
     typeof component.text === "string"
       ? component.text
-      : component.text?.[locale] ?? "",
+      : component.text?.[locale] ?? primaryText ?? "",
   );
 
   return (
     <div className="relative" data-component-id={component.id}>
+      <div className="absolute top-1 start-1 rounded bg-surface-3/80 px-1 py-0.5 text-xs leading-none shadow-sm">
+        <span className="font-mono uppercase">{locale}</span>
+        {isPrimaryLocale && (
+          <span className="ms-1 text-muted-foreground">{t("Primary")}</span>
+        )}
+        {usesPrimaryFallback && (
+          <span className="ms-1 text-muted-foreground">{t("Using primary content")}</span>
+        )}
+      </div>
       <div className="absolute top-1 end-10">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -173,6 +223,16 @@ const TextBlock = memo(function TextBlock({
             <DropdownMenuItem onClick={(e) => { e.stopPropagation(); dispatch({ type: "update-editor", id: component.id, patch: { zIndex: 0 } as Partial<EditorFlagsLocal> }); }}>{t("Send to back")}</DropdownMenuItem>
             <DropdownMenuItem onClick={(e) => { e.stopPropagation(); const z = flags.zIndex ?? 0; dispatch({ type: "update-editor", id: component.id, patch: { zIndex: z + 1 } as Partial<EditorFlagsLocal> }); }}>{t("Forward")}</DropdownMenuItem>
             <DropdownMenuItem onClick={(e) => { e.stopPropagation(); const z = flags.zIndex ?? 0; dispatch({ type: "update-editor", id: component.id, patch: { zIndex: Math.max(0, z - 1) } as Partial<EditorFlagsLocal> }); }}>{t("Backward")}</DropdownMenuItem>
+            {usesPrimaryFallback && (
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleCopyFromPrimary();
+                }}
+              >
+                {t("Copy from primary")}
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

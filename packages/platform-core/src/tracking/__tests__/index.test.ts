@@ -1,14 +1,17 @@
-import { jest } from '@jest/globals';
+import { jest } from "@jest/globals";
 
 const getTrackingStatusMock = jest.fn();
-jest.mock('../../shipping', () => ({
+jest.mock("../../shipping", () => ({
   getTrackingStatus: getTrackingStatusMock,
 }));
-jest.mock('../../services/emailService', () => ({
+jest.mock("../../services/emailService", () => ({
   getEmailService: () => ({ sendEmail: jest.fn() }),
 }));
 
-import { getTrackingDashboard, notifyStatusChange } from '../index';
+import {
+  getTrackingDashboard,
+  notifyStatusChange,
+} from "../../internal/tracking";
 
 describe('getTrackingDashboard', () => {
   beforeEach(() => {
@@ -143,4 +146,3 @@ describe('notifyStatusChange', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 });
-

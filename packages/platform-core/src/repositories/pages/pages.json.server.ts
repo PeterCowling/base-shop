@@ -1,13 +1,19 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- DS-000 paths built from validated shop and trusted base directory */
 import "server-only";
 
-import { pageSchema, type Page } from "@acme/types";
+import type { Page } from "@acme/types";
+import { pageSchema } from "@acme/types";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { validateShopName } from "../../shops/index";
 import { DATA_ROOT } from "../../dataRoot";
 import { nowIso } from "@acme/date-utils";
-import { z } from "zod";
+import {
+  diffPage,
+  mergeDefined,
+  parsePageDiffHistory,
+  type PageDiffEntry,
+} from "@acme/page-builder-core";
 
 // Helpers
 
@@ -45,26 +51,6 @@ async function readPagesFromDisk(shop: string): Promise<Page[]> {
   }
 }
 
-function setPatchValue<T extends object, K extends keyof T>(
-  patch: Partial<T>,
-  key: K,
-  value: T[K],
-): void {
-  patch[key] = value;
-}
-
-function diffPages(oldP: Page | undefined, newP: Page): Partial<Page> {
-  const patch: Partial<Page> = {};
-  for (const key of Object.keys(newP) as (keyof Page)[]) {
-    const a = oldP ? JSON.stringify(oldP[key]) : undefined;
-    const b = JSON.stringify(newP[key]);
-    if (a !== b) {
-      setPatchValue(patch, key, newP[key]);
-    }
-  }
-  return patch;
-}
-
 async function appendHistory(
   shop: string,
   diff: Partial<Page>,
@@ -73,11 +59,6 @@ async function appendHistory(
   await ensureDir(shop);
   const entry = { timestamp: nowIso(), diff };
   await fs.appendFile(historyPath(shop), JSON.stringify(entry) + "\n", "utf8");
-}
-
-function mergeDefined<T extends object>(base: T, patch: Partial<T>): T {
-  const definedEntries = Object.entries(patch).filter(([, v]) => v !== undefined);
-  return { ...base, ...(Object.fromEntries(definedEntries) as Partial<T>) };
 }
 
 // Public API
@@ -96,7 +77,7 @@ export async function savePage(
   if (idx === -1) pages.push(page);
   else pages[idx] = page;
   await writePages(shop, pages);
-  const patch = diffPages(previous, page);
+  const patch = diffPage(previous, page);
   await appendHistory(shop, patch);
   return page;
 }
@@ -127,43 +108,17 @@ export async function updatePage(
   updated.updatedAt = nowIso();
   pages[idx] = updated;
   await writePages(shop, pages);
-  const diff = diffPages(previous, updated);
+  const diff = diffPage(previous, updated);
   if (previous) {
     await appendHistory(shop, diff);
   }
   return updated;
 }
 
-export interface PageDiffEntry {
-  timestamp: string;
-  diff: Partial<Page>;
-}
-
-const entrySchema = z
-  .object({
-    timestamp: z.string().datetime(),
-    diff: (pageSchema as unknown as z.AnyZodObject).partial(),
-  })
-  .strict();
-
 export async function diffHistory(shop: string): Promise<PageDiffEntry[]> {
   try {
     const buf = await fs.readFile(historyPath(shop), "utf8");
-    return buf
-      .trim()
-      .split(/\n+/)
-      .filter(Boolean)
-      .map((line) => {
-        try {
-          return JSON.parse(line);
-        } catch {
-          return undefined;
-        }
-      })
-      .filter((p): p is unknown => p !== undefined)
-      .map((p) => entrySchema.safeParse(p))
-      .filter((r) => r.success)
-      .map((r) => (r as z.SafeParseSuccess<PageDiffEntry>).data);
+    return parsePageDiffHistory(buf);
   } catch {
     return [];
   }

@@ -269,3 +269,39 @@ test("returns undefined clientSecret when payment_intent is string", async () =>
 
   expect(result.clientSecret).toBeUndefined();
 });
+
+test("sale mode skips rental-specific fields and deposits", async () => {
+  stripeCreate.mockResolvedValue({
+    id: "sess_sale",
+    payment_intent: { client_secret: "cs_sale" },
+  });
+
+  const rentalSpy = jest.spyOn(dateUtils, "calculateRentalDays");
+  rentalSpy.mockClear();
+
+  const result = await createCheckoutSession(cart, {
+    mode: "sale",
+    currency: "EUR",
+    taxRegion: "EU",
+    successUrl: "x",
+    cancelUrl: "y",
+    shopId: "shop",
+  });
+
+  expect(rentalSpy).not.toHaveBeenCalled();
+  expect(stripeCreate).toHaveBeenCalled();
+
+  const [args] = stripeCreate.mock.calls[0];
+  // Two items (no deposit lines) plus tax.
+  expect(args.line_items).toHaveLength(3);
+  expect(
+    args.line_items.some(
+      (li: any) =>
+        typeof li.price_data?.product_data?.name === "string" &&
+        li.price_data.product_data.name.includes("deposit"),
+    ),
+  ).toBe(false);
+  expect(args.metadata.rentalDays).toBe("0");
+  expect(args.metadata.depositTotal).toBe("0");
+  expect(result.clientSecret).toBe("cs_sale");
+});

@@ -24,5 +24,5 @@ export async function updateMaintenanceSchedule(formData: FormData) {
       logger.error("maintenance scan failed", { err }),
     );
   timer = setInterval(run, freq);
+  timer.unref?.();
 }
-

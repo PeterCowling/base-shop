@@ -1,7 +1,7 @@
 // packages/template-app/src/components/DynamicRenderer.tsx
 "use client";
 
-import NextImage, { ImageProps } from "next/image";
+import NextImage, { type ImageProps } from "next/image";
 import * as React from "react";
 
 import HeroBanner from "@ui/components/cms/blocks/HeroBanner";
@@ -13,18 +13,20 @@ import BlogListing from "@ui/components/cms/blocks/BlogListing";
 import ContactForm from "@ui/components/cms/blocks/ContactForm";
 import ContactFormWithMap from "@ui/components/cms/blocks/ContactFormWithMap";
 import Gallery from "@ui/components/cms/blocks/Gallery";
+import HeaderCart from "@ui/components/cms/blocks/HeaderCart";
 import Testimonials from "@ui/components/cms/blocks/Testimonials";
 import TestimonialSlider from "@ui/components/cms/blocks/TestimonialSlider";
 import { Textarea as TextBlock } from "@ui/components/atoms/primitives/textarea";
 
 import { PRODUCTS } from "@platform-core/products/index";
-import type { PageComponent, SKU, HistoryState } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/page-builder-core";
+import type { SKU } from "@acme/types";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
-import { cssVars } from "@ui/src/utils/style";
+import { cssVars, extractTextThemes, applyTextThemeToOverrides } from "@ui";
 import type { Locale } from "@i18n/locales";
 import { ensureLightboxStyles, initLightbox } from "@ui/components/cms";
 import Section from "@ui/components/cms/blocks/Section";
-import { extractTextThemes, applyTextThemeToOverrides } from "@ui/src/components/cms/page-builder/textThemes";
+import { buildBlockRegistry, coreBlockDescriptors, type BlockTypeId } from "@acme/page-builder-core";
 
 /* ------------------------------------------------------------------
  * next/image wrapper usable in CMS blocks
@@ -68,24 +70,37 @@ const CmsImage = React.memo(function CmsImage({
 /* ------------------------------------------------------------------
  * Registry: block type → React component
  * ------------------------------------------------------------------ */
-const registry: Partial<
-  Record<PageComponent["type"], React.ComponentType<Record<string, unknown>>>
-> = {
-  HeroBanner,
-  ValueProps,
-  ReviewsCarousel,
-  ProductGrid: (ProductGrid as unknown as React.ComponentType<Record<string, unknown>>),
-  Gallery,
-  ContactForm,
-  ContactFormWithMap,
-  BlogListing,
-  Testimonials,
-  TestimonialSlider,
-  Image: (CmsImage as unknown as React.ComponentType<Record<string, unknown>>),
-  Text: TextBlock,
+type BlockComponent = React.ComponentType<Record<string, unknown>>;
+
+const { registry } = buildBlockRegistry<BlockComponent>(coreBlockDescriptors, [
+  { type: "HeroBanner", entry: HeroBanner as BlockComponent },
+  { type: "ValueProps", entry: ValueProps as BlockComponent },
+  { type: "ReviewsCarousel", entry: ReviewsCarousel as BlockComponent },
+  {
+    type: "ProductGrid",
+    entry: ProductGrid as unknown as BlockComponent,
+  },
+  { type: "Gallery", entry: Gallery as BlockComponent },
+  { type: "ContactForm", entry: ContactForm as BlockComponent },
+  {
+    type: "ContactFormWithMap",
+    entry: ContactFormWithMap as BlockComponent,
+  },
+  { type: "BlogListing", entry: BlogListing as BlockComponent },
+  { type: "Testimonials", entry: Testimonials as BlockComponent },
+  {
+    type: "TestimonialSlider",
+    entry: TestimonialSlider as BlockComponent,
+  },
+  {
+    type: "Image",
+    entry: CmsImage as unknown as BlockComponent,
+  },
+  { type: "HeaderCart", entry: HeaderCart as BlockComponent },
+  { type: "Text", entry: TextBlock as BlockComponent },
   // Minimal mapping so Sections render in preview/runtime
-  Section: (Section as unknown as React.ComponentType<Record<string, unknown>>),
-};
+  { type: "Section", entry: Section as unknown as BlockComponent },
+]);
 
 /* ------------------------------------------------------------------
  * DynamicRenderer
@@ -140,7 +155,7 @@ function DynamicRenderer({
   return (
     <>
       {components.map((block) => {
-        const Comp = registry[block.type];
+        const Comp = registry[block.type as BlockTypeId];
         if (!Comp) {
           console.warn(`Unknown component type: ${block.type}`);
           return null;

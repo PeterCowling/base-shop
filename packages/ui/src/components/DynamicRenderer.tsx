@@ -5,14 +5,13 @@
 import { blockRegistry, type BlockType } from "./cms/blocks";
 import type { BlockRegistryEntry } from "./cms/blocks/types";
 import type { Locale } from "@acme/i18n/locales";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/page-builder-core";
 import type { CSSProperties, ReactNode } from "react";
 import { useEffect } from "react";
 import { ensureScrollStyles, ensureAnimationStyles, initScrollEffects } from "./cms/page-builder/scrollEffects";
 import { initTimelines } from "./cms/page-builder/timeline";
 import { initLottie } from "./cms/page-builder/lottie";
 import { ensureLightboxStyles, initLightbox } from "./cms/lightbox";
-import type { HistoryState } from "@acme/types";
 import { cssVars } from "../utils/style";
 import type { StyleOverrides } from "@acme/types/style/StyleOverrides";
 

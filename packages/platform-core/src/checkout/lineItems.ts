@@ -42,3 +42,27 @@ export async function buildLineItemsForItem(
   return lines;
 }
 
+/**
+ * Build Stripe line-items for a simple sale checkout.
+ * Unlike rental flows this only charges the SKU price (no deposit line).
+ */
+export async function buildSaleLineItemsForItem(
+  item: CartLine,
+  discountRate: number,
+  currency: string,
+): Promise<Stripe.Checkout.SessionCreateParams.LineItem[]> {
+  const discounted = Math.round(item.sku.price * (1 - discountRate));
+  const unitConv = await convertCurrency(discounted, currency);
+  const baseName = item.size ? `${item.sku.title} (${item.size})` : item.sku.title;
+
+  return [
+    {
+      price_data: {
+        currency: currency.toLowerCase(),
+        unit_amount: Math.round(unitConv * 100),
+        product_data: { name: baseName },
+      },
+      quantity: item.qty,
+    },
+  ];
+}

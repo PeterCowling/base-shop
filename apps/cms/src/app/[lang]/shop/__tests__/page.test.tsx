@@ -31,7 +31,7 @@ const mockSkus: SKU[] = [
 
 const mockShopClient = jest.fn(() => null);
 
-jest.mock("@platform-core/lib/products", () => ({
+jest.mock("@acme/platform-core/products", () => ({
   PRODUCTS: mockSkus,
 }));
 

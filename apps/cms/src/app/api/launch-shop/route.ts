@@ -1,6 +1,8 @@
+import { TransformStream } from "node:stream/web";
 import type { ConfiguratorState } from "../../cms/wizard/schema";
 import { getRequiredSteps } from "../../cms/configurator/steps";
-import { TransformStream } from "node:stream/web";
+import { configuratorChecks, type ConfigCheckResult } from "@platform-core/configurator";
+import type { ConfiguratorStepId } from "@acme/types";
 
 export type StepStatus = "pending" | "success" | "failure";
 
@@ -22,6 +24,51 @@ interface LaunchStatuses {
   init: StepStatus;
   deploy: StepStatus;
   seed?: StepStatus;
+}
+
+const REQUIRED_CONFIG_CHECK_STEPS: ConfiguratorStepId[] = [
+  "shop-basics",
+  "theme",
+  "payments",
+  "shipping-tax",
+  "checkout",
+  "products-inventory",
+  "navigation-home",
+];
+
+async function runRequiredConfigChecks(
+  shopId: string
+): Promise<{ ok: boolean; error?: string }> {
+  const failures: string[] = [];
+  for (const stepId of REQUIRED_CONFIG_CHECK_STEPS) {
+    const check = configuratorChecks[stepId];
+    if (!check) continue;
+    let result: ConfigCheckResult;
+    try {
+      result = await check(shopId);
+    } catch (err) {
+      const message =
+        err && typeof err === "object" && "message" in err
+          ? String((err as { message?: unknown }).message)
+          : "unknown-error";
+      failures.push(`${stepId}:${message}`);
+      continue;
+    }
+    if (!result.ok) {
+      const reason = result.reason || "failed";
+      failures.push(`${stepId}:${reason}`);
+    }
+  }
+
+  if (failures.length === 0) {
+    return { ok: true };
+  }
+
+  return {
+    ok: false,
+    // i18n-exempt: service-level fallback string; surfaced in UI as-is
+    error: `Configuration checks failed for steps: ${failures.join(", ")}`,
+  };
 }
 
 export async function POST(req: Request) {
@@ -90,9 +137,13 @@ export async function POST(req: Request) {
       const { deployShop } = await import(
         "../../cms/wizard/services/deployShop"
       );
-      const okDeploy = await update("deploy", () =>
-        deployShop(shopId, state.domain ?? "")
-      );
+      const okDeploy = await update("deploy", async () => {
+        const checks = await runRequiredConfigChecks(shopId);
+        if (!checks.ok) {
+          return checks;
+        }
+        return deployShop(shopId, state.domain ?? "");
+      });
       if (!okDeploy) return;
 
       if (seed) {
@@ -123,4 +174,3 @@ export async function POST(req: Request) {
     },
   });
 }
-

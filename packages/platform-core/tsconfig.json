@@ -25,6 +25,14 @@
       "@acme/ui/*": ["../ui/src/*", "../ui/dist/*"],
       "@acme/platform-core": ["src/index.ts", "dist/index.d.ts"],
       "@acme/platform-core/*": ["src/*", "dist/*"],
+      "@acme/page-builder-core": [
+        "../page-builder-core/src/index.ts",
+        "../page-builder-core/dist/index.d.ts"
+      ],
+      "@acme/page-builder-core/*": [
+        "../page-builder-core/src/*",
+        "../page-builder-core/dist/*"
+      ],
 
       "@acme/shared-utils": [
         "../shared-utils/src/index.ts",
@@ -65,7 +73,8 @@
     { "path": "../themes/base" },
     { "path": "../zod-utils" },
     { "path": "../email-templates" },
-    { "path": "../plugins/sanity" }
+    { "path": "../plugins/sanity" },
+    { "path": "../page-builder-core" }
   ],
   "files": ["../../packages/types/src/global.d.ts"]
 }

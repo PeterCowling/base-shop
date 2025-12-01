@@ -2,7 +2,7 @@
 "use client";
 
 import DynamicRenderer from "@ui/components/DynamicRenderer";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent } from "@acme/page-builder-core";
 import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
 import type { Locale } from "@i18n/locales";
 

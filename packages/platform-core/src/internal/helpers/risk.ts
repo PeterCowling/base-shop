@@ -1,11 +1,13 @@
 import type Stripe from "stripe";
-import { updateRisk } from "../orders/risk";
+import { updateRisk } from "../../orders/risk";
 
 export type ChargeWithInvoice = Stripe.Charge & {
   invoice?: string | Stripe.Invoice | null;
 };
 
-export function extractSessionIdFromCharge(charge: ChargeWithInvoice): string | undefined {
+export function extractSessionIdFromCharge(
+  charge: ChargeWithInvoice,
+): string | undefined {
   if (typeof charge.invoice === "string") return charge.invoice;
   if (typeof charge.payment_intent !== "string" && charge.payment_intent) {
     const pi = charge.payment_intent as Stripe.PaymentIntent & {
@@ -19,7 +21,10 @@ export function extractSessionIdFromCharge(charge: ChargeWithInvoice): string | 
   return undefined;
 }
 
-export async function persistRiskFromCharge(shop: string, charge: ChargeWithInvoice) {
+export async function persistRiskFromCharge(
+  shop: string,
+  charge: ChargeWithInvoice,
+) {
   const sessionId = extractSessionIdFromCharge(charge) || charge.id;
   const riskLevel = charge.outcome?.risk_level;
   const riskScore = charge.outcome?.risk_score;
@@ -27,7 +32,7 @@ export async function persistRiskFromCharge(shop: string, charge: ChargeWithInvo
     shop,
     sessionId,
     riskLevel,
-    typeof riskScore === "number" ? riskScore : undefined
+    typeof riskScore === "number" ? riskScore : undefined,
   );
 }
 

@@ -10,7 +10,7 @@ jest.mock("../src/app/[lang]/page.client", () => ({
   default: jest.fn(() => null),
 }));
 
-import type { PageComponent } from "@acme/types";
+import type { PageComponent } from "@acme/page-builder-core";
 import { promises as fs } from "node:fs";
 import Page from "../src/app/[lang]/page";
 import Home from "../src/app/[lang]/page.client";

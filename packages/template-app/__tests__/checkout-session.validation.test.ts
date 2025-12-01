@@ -10,7 +10,9 @@ jest.mock("@platform-core/pricing", () => ({
 }));
 jest.mock("@upstash/redis", () => ({ Redis: class {} }));
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
-jest.mock("@platform-core/repositories/shops.server", () => ({ readShop: jest.fn(async () => ({ coverageIncluded: true })) }));
+jest.mock("@platform-core/repositories/shops.server", () => ({
+  readShop: jest.fn(async () => ({ coverageIncluded: true, type: "rental" })),
+}));
 jest.mock("@acme/config/env/core", () => ({ coreEnv: { NEXT_PUBLIC_DEFAULT_SHOP: "shop" }, loadCoreEnv: () => ({ CART_COOKIE_SECRET: "secret" }) }));
 jest.mock("@platform-core/cartCookie", () => {
   const actual = jest.requireActual("@platform-core/cartCookie");

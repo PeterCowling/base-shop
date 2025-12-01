@@ -8,7 +8,7 @@ try {
       ? require
       : createRequire(process.cwd() + "/");
   const { setEmailService } = req(
-    "@acme/platform-core/services/emailService" // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+    "@acme/platform-core/email", // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
   );
   setEmailService({ sendEmail });
 } catch {

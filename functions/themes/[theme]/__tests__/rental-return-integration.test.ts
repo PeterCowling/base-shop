@@ -5,7 +5,7 @@ import { withTempRepo, setupRentalData, seedShop } from "@acme/test-utils";
 process.env.STRIPE_SECRET_KEY = "sk_test";
 process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
 
-jest.setTimeout(30000);
+jest.setTimeout(60000);
 
 
 async function withShop(

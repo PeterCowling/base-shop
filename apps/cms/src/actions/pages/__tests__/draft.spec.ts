@@ -5,9 +5,6 @@ import { savePageDraft } from "../draft";
 jest.mock("@acme/types", () => ({
   historyStateSchema: { parse: (v: any) => v ?? {} },
 }), { virtual: true });
-jest.mock("@acme/types/src/index", () => ({
-  historyStateSchema: { parse: (v: any) => v ?? {} },
-}), { virtual: true });
 
 jest.mock("../../common/auth", () => ({
   ensureAuthorized: jest.fn().mockResolvedValue({ user: { email: "user@example.com" } }),

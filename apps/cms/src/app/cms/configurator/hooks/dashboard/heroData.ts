@@ -1,12 +1,27 @@
-import type { ConfiguratorHeroData, HeroResumeCta, QuickStat, StepGroupInfo } from "./types";
+import type {
+  ConfiguratorHeroData,
+  HeroResumeCta,
+  QuickStat,
+  StepGroupInfo,
+} from "./types";
 import type { ConfiguratorStep } from "../../types";
+import type { ShopHealthSummary } from "../../../../lib/shopHealth";
 
 export function buildHeroData(
   groups: StepGroupInfo,
   allRequiredDone: boolean,
   onStepClick: (step: ConfiguratorStep) => void,
+  shopHealth?: ShopHealthSummary | null,
 ): { heroData: ConfiguratorHeroData; quickStats: QuickStat[] } {
-  const { requiredSteps, requiredCompleted, optionalSteps, optionalCompleted, skippedOptional, progressPercent, nextStep } = groups;
+  const {
+    requiredSteps,
+    requiredCompleted,
+    optionalSteps,
+    optionalCompleted,
+    skippedOptional,
+    progressPercent,
+    nextStep,
+  } = groups;
 
   const heroDescription = (() => {
     const remainingRequired = requiredSteps.length - requiredCompleted;
@@ -49,15 +64,30 @@ export function buildHeroData(
     optionalCaption = `${optionalCompleted} completed so far`;
   }
 
+  const healthLabel = "Shop health";
+  let healthValue = "Unknown";
+  let healthCaption = "Run configuration checks to see status.";
+
+  if (shopHealth) {
+    if (shopHealth.status === "healthy") {
+      healthValue = "Healthy";
+      healthCaption = "All critical checks are passing.";
+    } else if (shopHealth.status === "degraded") {
+      healthValue = "Needs attention";
+      healthCaption = "Some configuration checks need review.";
+    } else if (shopHealth.status === "broken") {
+      healthValue = "Blocked";
+      healthCaption = "Critical checks are failing; fix before launch.";
+    }
+  }
+
   const quickStats: QuickStat[] = [
     { label: "Core milestones", value: coreValue, caption: coreCaption },
     { label: "Optional upgrades", value: optionalValue, caption: optionalCaption },
     {
-      label: "Launch readiness",
-      value: allRequiredDone ? "Ready" : "In progress",
-      caption: allRequiredDone
-        ? "You can launch whenever you're ready"
-        : "Complete the remaining essentials to unlock launch",
+      label: healthLabel,
+      value: healthValue,
+      caption: healthCaption,
     },
   ];
 

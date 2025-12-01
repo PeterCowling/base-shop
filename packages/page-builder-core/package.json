@@ -12,6 +12,9 @@
     "lint": "eslint .",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
+  "dependencies": {
+    "@acme/types": "workspace:*"
+  },
   "files": [
     "dist"
   ],
@@ -22,8 +25,11 @@
       "default": "./dist/index.js"
     }
   },
+  "dependencies": {
+    "@acme/types": "workspace:*",
+    "zod": "^3.25.0"
+  },
   "devDependencies": {
     "next": "^15.3.5"
   }
 }
-

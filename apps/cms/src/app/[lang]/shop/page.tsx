@@ -1,5 +1,5 @@
 // apps/cms/src/app/[lang]/shop/page.tsx
-import { PRODUCTS } from "@platform-core/lib/products";
+import { PRODUCTS } from "@acme/platform-core/products";
 import type { SKU } from "@acme/types";
 import type { Metadata } from "next";
 import ShopClient from "./ShopClient.client";

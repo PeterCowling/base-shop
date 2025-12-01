@@ -72,5 +72,32 @@ describe("useTextEditor", () => {
     act(() => rerender({ locale: "fr", editing: false }));
     expect(mockSetContent).toHaveBeenCalledWith("<p>Bonjour</p>");
   });
-});
 
+  it("falls back to primary locale when current locale is missing", () => {
+    const comp = {
+      id: "2",
+      type: "Text",
+      text: { en: "<p>Primary</p>" },
+    } as unknown as PageComponent;
+
+    const { result } = renderHook(() =>
+      useTextEditor(comp, "fr" as Locale, false)
+    );
+
+    expect(result.current?.getHTML()).toBe("<p>Primary</p>");
+  });
+
+  it("falls back to any available locale when primary is missing", () => {
+    const comp = {
+      id: "3",
+      type: "Text",
+      text: { it: "<p>Ciao</p>" },
+    } as unknown as PageComponent;
+
+    const { result } = renderHook(() =>
+      useTextEditor(comp, "de" as Locale, false)
+    );
+
+    expect(result.current?.getHTML()).toBe("<p>Ciao</p>");
+  });
+});

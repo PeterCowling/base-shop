@@ -40,4 +40,4 @@ const builtIns = getBuiltInSections(t);
 
 - Seed content within `build()` (e.g., placeholder captions) is minimal and can be localized at render time by the concrete components. Avoid adding marketing copy there.
 - Lint: the `ds/no-hardcoded-copy` rule should not warn for these files when following the pattern above. If you must temporarily add a literal, replace it with a key promptly.
-
+- Text blocks now treat the first configured locale as the **primary** language. When a non‑primary locale has no own text, the editor and canvas fall back to primary text and show an inline “Using primary content” badge with a “Copy from primary” action so authors can materialize localized copies explicitly.

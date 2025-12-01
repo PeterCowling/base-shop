@@ -246,6 +246,22 @@
       "@acme/test-utils/*": [
         "packages/test-utils/src/*",
         "packages/test-utils/dist/*"
+      ],
+      "@acme/page-builder-core": [
+        "packages/page-builder-core/src/index.ts",
+        "packages/page-builder-core/dist/index.d.ts"
+      ],
+      "@acme/page-builder-core/*": [
+        "packages/page-builder-core/src/*",
+        "packages/page-builder-core/dist/*"
+      ],
+      "@acme/templates": [
+        "packages/templates/src/index.ts",
+        "packages/templates/dist/index.d.ts"
+      ],
+      "@acme/templates/*": [
+        "packages/templates/src/*",
+        "packages/templates/dist/*"
       ]
     }
   },

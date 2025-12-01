@@ -62,5 +62,7 @@ export function startMaintenanceScheduler(): NodeJS.Timeout {
       });
   // run immediately then every night
   run();
-  return setInterval(run, day);
+  const timer = setInterval(run, day) as NodeJS.Timeout;
+  timer.unref?.();
+  return timer;
 }

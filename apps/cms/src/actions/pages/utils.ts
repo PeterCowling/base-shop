@@ -1,9 +1,9 @@
 import { LOCALES } from "@acme/i18n";
+import type { Locale } from "@acme/types";
 import {
   historyStateSchema,
   type HistoryState,
-  type Locale,
-} from "@acme/types";
+} from "@acme/page-builder-core";
 import { tryJsonParse } from "../../utils/formData";
 import { captureException } from "@/utils/sentry.server";
 

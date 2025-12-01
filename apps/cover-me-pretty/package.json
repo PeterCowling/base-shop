@@ -20,6 +20,7 @@
     "@acme/stripe": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@acme/template-app": "workspace:*",
+    "@acme/page-builder-core": "workspace:*",
     "@acme/zod-utils": "workspace:^",
     "@themes/base": "workspace:*",
     "qrcode": "^1.5.4",

@@ -14,6 +14,7 @@ import {
   valuePropsComponentSchema,
   reviewsCarouselComponentSchema,
   contactFormComponentSchema,
+  headerCartComponentSchema,
   newsletterSignupComponentSchema,
   searchBarComponentSchema,
   mapBlockComponentSchema,
@@ -104,6 +105,7 @@ export const pageComponentSchema: z.ZodTypeAny = z.lazy(() =>
     imageSliderComponentSchema,
     contactFormComponentSchema,
     newsletterSignupComponentSchema,
+    headerCartComponentSchema,
     searchBarComponentSchema,
     contactFormWithMapComponentSchema,
     mapBlockComponentSchema,
@@ -173,8 +175,15 @@ export interface EditorFlags {
   hidden?: ("desktop" | "tablet" | "mobile")[];
   /** Custom device ids (page-defined breakpoints) to hide this node on */
   hiddenDeviceIds?: string[];
-  /** Container child stacking strategy applied on mobile */
+  /** Legacy single stacking strategy applied on mobile (kept for backwards-compat). */
   stackStrategy?: "default" | "reverse" | "custom";
+  /** Per-device stacking strategies */
+  stackDesktop?: "default" | "reverse" | "custom";
+  stackTablet?: "default" | "reverse" | "custom";
+  stackMobile?: "default" | "reverse" | "custom";
+  /** Per-device custom order values (used when the corresponding strategy === "custom") */
+  orderDesktop?: number;
+  orderTablet?: number;
   /** Per-node custom mobile order (used when stackStrategy = custom on parent) */
   orderMobile?: number;
   /** Builder-only metadata for global (linked) components */
@@ -213,26 +222,33 @@ export const historyStateSchema = z
           name: z.string().optional(),
           locked: z.boolean().optional(),
           zIndex: z.number().int().optional(),
-          hidden: z.array(z.enum(["desktop", "tablet", "mobile"]))
-            .optional(),
+          hidden: z.array(z.enum(["desktop", "tablet", "mobile"])).optional(),
           hiddenDeviceIds: z.array(z.string()).optional(),
+          // Legacy single strategy (mobile); kept for backwards-compat
           stackStrategy: z.enum(["default", "reverse", "custom"]).optional(),
+          // Per-device stacking strategies
+          stackDesktop: z.enum(["default", "reverse", "custom"]).optional(),
+          stackTablet: z.enum(["default", "reverse", "custom"]).optional(),
+          stackMobile: z.enum(["default", "reverse", "custom"]).optional(),
+          // Per-device custom order values
+          orderDesktop: z.number().int().nonnegative().optional(),
+          orderTablet: z.number().int().nonnegative().optional(),
           orderMobile: z.number().int().nonnegative().optional(),
-            global: z
-              .object({
-                id: z.string(),
-                overrides: z.unknown().optional(),
-                pinned: z.boolean().optional(),
-                editingSize: z
-                  .object({
-                    desktop: z.number().int().min(320).max(1920).nullable().optional(),
-                    tablet: z.number().int().min(320).max(1920).nullable().optional(),
-                    mobile: z.number().int().min(320).max(1920).nullable().optional(),
-                  })
-                  .partial()
-                  .optional(),
-              })
-              .optional(),
+          global: z
+            .object({
+              id: z.string(),
+              overrides: z.unknown().optional(),
+              pinned: z.boolean().optional(),
+              editingSize: z
+                .object({
+                  desktop: z.number().int().min(320).max(1920).nullable().optional(),
+                  tablet: z.number().int().min(320).max(1920).nullable().optional(),
+                  mobile: z.number().int().min(320).max(1920).nullable().optional(),
+                })
+                .partial()
+                .optional(),
+            })
+            .optional(),
         })
       )
       .default({})

@@ -1,5 +1,5 @@
 import { render } from "@testing-library/react";
-import type { PageComponent } from "@acme/types";
+import type { PageComponent } from "@acme/page-builder-core";
 import type { BlogPost } from "@ui/components/cms/blocks/BlogListing";
 
 jest.mock("@ui/components/cms/blocks/BlogListing", () => ({

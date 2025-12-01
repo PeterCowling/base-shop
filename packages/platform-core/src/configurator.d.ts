@@ -16,3 +16,22 @@ export declare function validateEnvFile(file: string): void;
  */
 export declare function validateShopEnv(shop: string): void;
 export declare const pluginEnvVars: Record<string, readonly string[]>;
+export type ConfigCheckResult =
+  | { ok: true }
+  | {
+      ok: false;
+      reason: string;
+      details?: unknown;
+    };
+export type ConfigCheck = (shopId: string) => Promise<ConfigCheckResult>;
+export declare const checkShopBasics: ConfigCheck;
+export declare const checkTheme: ConfigCheck;
+export declare const checkPayments: ConfigCheck;
+export declare const checkShippingTax: ConfigCheck;
+export declare const checkCheckout: ConfigCheck;
+export declare const checkProductsInventory: ConfigCheck;
+export declare const checkNavigationHome: ConfigCheck;
+import type { ConfiguratorStepId } from "@acme/types";
+export declare const configuratorChecks: Partial<
+  Record<ConfiguratorStepId, ConfigCheck>
+>;

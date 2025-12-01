@@ -1,8 +1,8 @@
 import { jest } from "@jest/globals";
-import { createHmac } from "node:crypto";
 import { nowIso } from "@date-utils";
 
 import type { Page } from "@acme/types";
+import { createPreviewToken } from "@platform-core/previewTokens";
 
 
 async function withRepo(
@@ -65,7 +65,7 @@ async function withRepo(
 }
 
 function tokenFor(id: string): string {
-  return createHmac("sha256", "secret").update(id).digest("hex");
+  return createPreviewToken({ shopId: "demo", pageId: id }, "secret");
 }
 
 describe("CMS → storefront flow", () => {

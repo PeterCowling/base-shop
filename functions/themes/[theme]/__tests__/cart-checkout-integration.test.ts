@@ -1,6 +1,7 @@
 import { jest } from "@jest/globals";
 import { asNextJson } from "@acme/test-utils";
-import { CART_COOKIE } from "@platform-core/cartCookie";
+
+const CART_COOKIE = "__Host-CART_ID";
 jest.doMock(
   "@acme/zod-utils/initZod",
   () => ({ initZod: () => {} }),
@@ -18,6 +19,29 @@ jest.mock("@acme/stripe", () => ({
   __esModule: true,
   stripe: { checkout: { sessions: { create: jest.fn() } } },
 }));
+
+jest.doMock(
+  "@platform-core/cartCookie",
+  () => ({
+    __esModule: true,
+    CART_COOKIE,
+    encodeCartCookie: (v: string) => v,
+    decodeCartCookie: (v: string | null | undefined) => v,
+    asSetCookieHeader: (v: string) => `${CART_COOKIE}=${v}`,
+  }),
+  { virtual: true },
+);
+
+let mockCart: any = {};
+
+jest.doMock(
+  "@platform-core/cartStore",
+  () => ({
+    __esModule: true,
+    getCart: jest.fn(async () => mockCart),
+  }),
+  { virtual: true },
+);
 
 jest.mock("@platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
@@ -67,20 +91,26 @@ const checkoutReq = (body: any, cookie: string) =>
     url: "http://test/api/checkout-session",
   });
 
-afterEach(() => jest.resetAllMocks());
+afterEach(() => {
+  jest.resetAllMocks();
+  mockCart = {};
+});
 
 test("add to cart then create checkout session", async () => {
-  const { encodeCartCookie, CART_COOKIE } = await import(
-    "@platform-core/cartCookie"
-  );
   const { POST: CHECKOUT_POST } = await import(
     "../../../../apps/cover-me-pretty/src/api/checkout-session/route"
   );
   const size = sku.sizes[0];
-  const cookie = encodeCartCookie(
-    JSON.stringify({ [`${sku.id}${size ? ":" + size : ""}`]: { sku, size, qty: 1 } })
+  mockCart = {
+    [`${sku.id}${size ? ":" + size : ""}`]: { sku, size, qty: 1 },
+  };
+  const cookie = "cart-1";
+  await CHECKOUT_POST(
+    checkoutReq(
+      { returnDate: "2030-01-02", currency: "EUR", taxRegion: "EU" },
+      cookie,
+    ),
   );
-  await CHECKOUT_POST(checkoutReq({}, cookie));
   const { stripe } = await import("@acme/stripe");
   expect(stripe.checkout.sessions.create).toHaveBeenCalled();
 });

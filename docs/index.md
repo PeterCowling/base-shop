@@ -39,6 +39,7 @@
 - [Upgrade flow](./upgrade-flow.md)
 - [Upgrade preview & republish](./upgrade-preview-republish.md)
 - [Edit preview & republish](./edit-preview-republish.md)
+- [Preview flows](./preview-flows.md)
 - [Migration guide](./migration-guide.md)
 - [Argon2 migration](./argon2-migration.md)
 - [Page Builder metadata & CSS](./page-builder-metadata.md)
@@ -46,6 +47,7 @@
 ## Reference
 - [Prebuild preview best practices](./prebuild-preview-best-practices.md)
 - [Architecture](./architecture.md)
+- [Platform vs apps & public API](./platform-vs-apps.md)
 - [Contributing](./contributing.md)
 - [Auth rate limiting](./auth-rate-limiting.md)
 - [Luxury features](./luxury-features.md)

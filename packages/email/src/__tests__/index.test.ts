@@ -39,7 +39,7 @@ describe("email index", () => {
   it("registers sendEmail with email service on import", async () => {
     const setEmailService = jest.fn();
     jest.doMock(
-      "@acme/platform-core/services/emailService",
+      "@acme/platform-core/email",
       () => ({ setEmailService }),
       { virtual: true },
     );
@@ -52,12 +52,12 @@ describe("email index", () => {
   });
 
   it("does not throw if email service module is missing", async () => {
-    jest.unmock("@acme/platform-core/services/emailService");
+    jest.unmock("@acme/platform-core/email");
     try {
       // Ensure the module isn't cached so require will attempt to resolve it
       // and trigger the fallback path in the implementation when absent.
       const path = require.resolve(
-        "@acme/platform-core/services/emailService",
+        "@acme/platform-core/email",
       );
       delete require.cache[path];
     } catch {
@@ -99,4 +99,3 @@ describe("email index", () => {
     expect(mockListShops).toHaveBeenCalled();
   });
 });
-

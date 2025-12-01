@@ -27,6 +27,7 @@
     "@acme/date-utils": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/sanity": "workspace:*",
+    "@acme/page-builder-core": "workspace:*",
     "react": "workspace:^",
     "react-dom": "workspace:^"
   },

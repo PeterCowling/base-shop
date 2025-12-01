@@ -180,7 +180,12 @@ export async function startDepositReleaseService(
       }
 
       await run();
-      timers.push(setInterval(run, cfg.intervalMinutes * 60 * 1000));
+      const timer = setInterval(
+        run,
+        cfg.intervalMinutes * 60 * 1000,
+      ) as NodeJS.Timeout;
+      timer.unref?.();
+      timers.push(timer);
     }),
   );
 

@@ -41,7 +41,7 @@ The script requires a corresponding `data/shops/<id>/upgrade.json`, runs `pnpm -
 
 ## API endpoints
 
-- `GET /preview/:pageId?token=<hmac>` – returns page JSON for previews. Tokens are HMAC-SHA256 digests using `PREVIEW_TOKEN_SECRET`.
+- `GET /preview/:pageId?token=<hmac>` – returns page JSON for previews. Tokens are base64url‑encoded HMAC-SHA256 digests of `shopId:pageId` using `PREVIEW_TOKEN_SECRET` (or `UPGRADE_PREVIEW_TOKEN_SECRET` for upgrade previews).
 
 ## Preview UI
 

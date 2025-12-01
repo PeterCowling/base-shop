@@ -56,7 +56,9 @@ describe("extractSessionIdFromCharge", () => {
     mockStripe();
     mockOrders();
     mockSubscriptions();
-    const { extractSessionIdFromCharge } = await import("../helpers/risk");
+    const { extractSessionIdFromCharge } = await import(
+      "../internal/helpers/risk"
+    );
     const charge = { id: "ch_1", invoice: "in_123" } as any;
     expect(extractSessionIdFromCharge(charge)).toBe("in_123");
   });
@@ -65,7 +67,9 @@ describe("extractSessionIdFromCharge", () => {
     mockStripe();
     mockOrders();
     mockSubscriptions();
-    const { extractSessionIdFromCharge } = await import("../helpers/risk");
+    const { extractSessionIdFromCharge } = await import(
+      "../internal/helpers/risk"
+    );
     const charge = {
       id: "ch_2",
       payment_intent: { latest_charge: { invoice: "in_456" } },
@@ -192,4 +196,3 @@ describe("handleStripeWebhook", () => {
     expect(syncSubscriptionData).toHaveBeenCalledWith("cus_1", null);
   });
 });
-

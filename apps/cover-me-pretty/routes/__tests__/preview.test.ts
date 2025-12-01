@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 import type { Page } from "@acme/types";
-import { createHmac } from "node:crypto";
 import { nowIso } from "@date-utils";
+import { createPreviewToken } from "@platform-core/previewTokens";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.NEXT_PUBLIC_SHOP_ID = "shop";
@@ -15,7 +15,10 @@ type PreviewOnRequest = (ctx: {
 }) => Promise<Response>;
 
 function tokenFor(id: string): string {
-  return createHmac("sha256", "testsecret").update(id).digest("hex");
+  return createPreviewToken(
+    { shopId: "shop", pageId: id },
+    "testsecret",
+  );
 }
 
 test("valid token returns page JSON", async () => {

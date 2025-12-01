@@ -9,6 +9,8 @@ import { Grid as DSGrid } from "@ui/components/atoms/primitives";
 import UpgradeButton from "./UpgradeButton";
 import RollbackCard from "./RollbackCard";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
+import { deriveShopHealth } from "../../../lib/shopHealth";
+import type { ConfiguratorProgress } from "@acme/types";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await serverUseTranslations("en");
@@ -23,7 +25,33 @@ export default async function ShopDashboardPage({
   const t = await serverUseTranslations("en");
   const { shop } = await params;
   if (!(await checkShopExists(shop))) return notFound();
+
+  let healthValue = "Unknown";
+
+  try {
+    const res = await fetch(
+      `/api/configurator-progress?shopId=${encodeURIComponent(shop)}`,
+    );
+    if (res.ok) {
+      const json = (await res.json()) as ConfiguratorProgress;
+      const summary = deriveShopHealth(json);
+      if (summary.status === "healthy") {
+        healthValue = "Healthy";
+      } else if (summary.status === "degraded") {
+        healthValue = "Needs attention";
+      } else if (summary.status === "broken") {
+        healthValue = "Blocked";
+      }
+    }
+  } catch {
+    // If health cannot be loaded, fall back to generic copy.
+  }
+
   const metrics = [
+    {
+      label: "Shop health",
+      value: healthValue,
+    },
     {
       label: t("cms.shop.dashboard.livePages"),
       value: new Intl.NumberFormat().format(18 + shop.length),

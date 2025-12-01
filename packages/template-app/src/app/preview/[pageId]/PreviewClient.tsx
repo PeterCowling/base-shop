@@ -1,12 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import type { PageComponent, HistoryState } from "@acme/types";
+import type { PageComponent, HistoryState } from "@acme/page-builder-core";
 import type { Locale } from "@i18n/locales";
 import DynamicRenderer from "@/components/DynamicRenderer";
-import DeviceSelector from "@ui/src/components/DeviceSelector";
-import { devicePresets } from "@ui/utils/devicePresets";
-import { usePreviewDevice } from "@ui/src/hooks/usePreviewDevice";
+import { DeviceSelector, devicePresets, usePreviewDevice } from "@ui";
 
 interface PreviewClientProps {
   components: PageComponent[];

@@ -8,7 +8,7 @@ describe("webhookHandlers/chargeSucceeded", () => {
 
   test("delegates to persistRiskFromCharge with shop and charge", async () => {
     const persistRiskFromCharge = jest.fn().mockResolvedValue(undefined);
-    jest.doMock("../../helpers/risk", () => ({
+    jest.doMock("../../internal/helpers/risk", () => ({
       persistRiskFromCharge,
     }));
 
@@ -21,4 +21,3 @@ describe("webhookHandlers/chargeSucceeded", () => {
     expect(persistRiskFromCharge).toHaveBeenCalledWith("demo-shop", charge);
   });
 });
-

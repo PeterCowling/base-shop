@@ -69,6 +69,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@acme/page-builder-core": "workspace:*",
     "@acme/config": "workspace:*",
     "@acme/date-utils": "workspace:*",
     "@acme/i18n": "workspace:*",

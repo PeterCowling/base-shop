@@ -39,7 +39,7 @@ pnpm prisma migrate dev
 ## Related docs
 
 - [Installation guide](../../docs/install.md)
-- [Architecture overview](../../docs/architecture.md)
+- [Architecture overview (layering & public surfaces)](../../docs/architecture.md)
+- [Platform vs apps & public API](../../docs/platform-vs-apps.md)
 - [Developer setup](../../doc/setup.md)
 - [Theming](../../docs/theming.md)
-

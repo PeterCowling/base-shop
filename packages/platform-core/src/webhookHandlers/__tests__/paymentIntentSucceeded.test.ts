@@ -8,7 +8,9 @@ describe("webhookHandlers/paymentIntentSucceeded", () => {
 
   test("persists risk when latest_charge is object", async () => {
     const persistRiskFromCharge = jest.fn().mockResolvedValue(undefined);
-    jest.doMock("../../helpers/risk", () => ({ persistRiskFromCharge }));
+    jest.doMock("../../internal/helpers/risk", () => ({
+      persistRiskFromCharge,
+    }));
     const handler = (require("../paymentIntentSucceeded").default) as typeof import("../paymentIntentSucceeded").default;
 
     const pi = {
@@ -22,7 +24,9 @@ describe("webhookHandlers/paymentIntentSucceeded", () => {
 
   test("does nothing when latest_charge is a string", async () => {
     const persistRiskFromCharge = jest.fn().mockResolvedValue(undefined);
-    jest.doMock("../../helpers/risk", () => ({ persistRiskFromCharge }));
+    jest.doMock("../../internal/helpers/risk", () => ({
+      persistRiskFromCharge,
+    }));
     const handler = (require("../paymentIntentSucceeded").default) as typeof import("../paymentIntentSucceeded").default;
 
     const pi = { latest_charge: "ch_2" } as unknown as Stripe.PaymentIntent;
@@ -32,4 +36,3 @@ describe("webhookHandlers/paymentIntentSucceeded", () => {
     expect(persistRiskFromCharge).not.toHaveBeenCalled();
   });
 });
-

@@ -78,6 +78,8 @@ const moduleMapper = {
   "^@acme/platform-core$": " /packages/platform-core/src/index.ts",
   "^@acme/platform-core/(.*)\\.js$": " /packages/platform-core/src/$1",
   "^@acme/platform-core/(.*)$": " /packages/platform-core/src/$1",
+  "^@acme/page-builder-core$": " /packages/page-builder-core/src/index.ts",
+  "^@acme/page-builder-core/(.*)$": " /packages/page-builder-core/src/$1",
   "^@acme/platform-core/contexts/CurrencyContext$":
     " /test/__mocks__/currencyContextMock.tsx",
   // Map i18n workspace package to source for tests so latest messages are used

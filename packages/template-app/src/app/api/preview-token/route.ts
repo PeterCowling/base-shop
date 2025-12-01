@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { createHmac } from "crypto";
 import { requirePermission } from "@auth";
 import { coreEnv } from "@acme/config/env/core";
+import { createUpgradePreviewToken } from "@platform-core/previewTokens";
 
 export const runtime = "nodejs";
 
@@ -18,7 +18,7 @@ export async function GET(req: Request) {
     // i18n-exempt -- ABC-123 [ttl=2025-12-31] API error message
     return NextResponse.json({ error: "Missing pageId" }, { status: 400 });
   }
-    const secret = coreEnv.UPGRADE_PREVIEW_TOKEN_SECRET as string | undefined;
+  const secret = coreEnv.UPGRADE_PREVIEW_TOKEN_SECRET as string | undefined;
   if (!secret) {
     // i18n-exempt -- ABC-123 [ttl=2025-12-31] API error message
     return NextResponse.json(
@@ -26,6 +26,10 @@ export async function GET(req: Request) {
       { status: 500 },
     );
   }
-  const token = createHmac("sha256", secret).update(pageId).digest("hex");
+  const shopId = coreEnv.NEXT_PUBLIC_SHOP_ID || "default";
+  const token = createUpgradePreviewToken(
+    { shopId, pageId },
+    secret as string,
+  );
   return NextResponse.json({ token });
 }

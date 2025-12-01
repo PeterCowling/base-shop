@@ -2,11 +2,8 @@
 // apps/cover-me-pretty/src/app/api/checkout-session/route.ts
 import "@acme/zod-utils/initZod";
 
-import {
-  CART_COOKIE,
-  decodeCartCookie,
-  type CartState,
-} from "@platform-core/cartCookie";
+import { CART_COOKIE, decodeCartCookie, type CartState } from "@platform-core/cartCookie";
+import { getCart } from "@platform-core/cartStore";
 import { getCustomerSession } from "@auth";
 import { createCheckoutSession } from "@platform-core/checkout/session";
 import shop from "../../../shop.json";
@@ -32,14 +29,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
   let cart: CartState = {};
   try {
-    const cartCookie = decodeCartCookie(rawCookie);
-    if (typeof cartCookie === "string") {
-      cart = JSON.parse(cartCookie) as CartState;
-    } else if (cartCookie && typeof cartCookie === "object") {
-      cart = cartCookie as CartState;
-    } else {
-      cart = {};
-    }
+    const decoded = decodeCartCookie(rawCookie);
+    const cartId = typeof decoded === "string" ? decoded : null;
+    cart = cartId ? await getCart(cartId) : {};
   } catch {
     cart = {};
   }
@@ -76,6 +68,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   try {
     const result = await createCheckoutSession(cart, {
+      mode: "rental",
       returnDate,
       coupon,
       currency,

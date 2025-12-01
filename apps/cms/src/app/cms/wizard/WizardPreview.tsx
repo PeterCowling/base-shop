@@ -2,13 +2,12 @@
 
 "use client";
 
-import { blockRegistry } from "@ui/components/cms/blocks";
 import { Footer, Header, SideNav } from "@ui/components/organisms";
 import { AppShell } from "@ui/components/templates";
+import DynamicRenderer from "@ui/components/DynamicRenderer";
 import TranslationsProvider from "@/i18n/Translations";
 import enMessages from "@i18n/en.json";
 import type { PageComponent } from "@acme/types";
-import DOMPurify from "dompurify";
 import React, { useEffect, useState, useMemo, forwardRef } from "react";
 import { STORAGE_KEY } from "../configurator/hooks/useConfiguratorPersistence";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
@@ -84,46 +83,6 @@ const WizardPreview = forwardRef<HTMLDivElement, Props>(function WizardPreview(
     return () => window.removeEventListener(THEME_TOKEN_HOVER_EVENT, handler as EventListener);
   }, [ref]);
 
-  /** Renders a single block component */
-  function Block({ component }: { component: PageComponent }) {
-    /* Plain rich-text blocks are handled separately */
-    if (component.type === "Text") {
-      const text = (component as Record<string, unknown>).text;
-      const value =
-        typeof text === "string"
-          ? text
-          : ((text as Record<string, string>).en ?? "");
-      const sanitized = DOMPurify.sanitize(value);
-      return <div dangerouslySetInnerHTML={{ __html: sanitized }} />;
-    }
-
-    /* Look up the React component in the block registry.
-       We cast through `unknown` first to silence TS2352, because
-       individual block components have stricter prop requirements
-       than the generic Record<string, unknown> we use here. */
-    const entry = (
-      blockRegistry as unknown as Record<
-        string,
-        { component: React.ComponentType<Record<string, unknown>> }
-      >
-    )[component.type];
-
-    const Comp = entry?.component;
-
-    if (!Comp) return null;
-
-    /* Remove metadata fields before spreading props */
-    const {
-      id: _id,
-      type: _type,
-      ...props
-    } = component as Record<string, unknown>;
-    void _id;
-    void _type;
-
-    return <Comp {...props} locale="en" />;
-  }
-
   return (
     <div
       ref={ref}
@@ -137,9 +96,7 @@ const WizardPreview = forwardRef<HTMLDivElement, Props>(function WizardPreview(
           sideNav={<SideNav />}
           footer={<Footer shopName="" />}
         >
-          {components.map((c) => (
-            <Block key={c.id} component={c} />
-          ))}
+          <DynamicRenderer components={components} locale="en" />
         </AppShell>
       </TranslationsProvider>
     </div>

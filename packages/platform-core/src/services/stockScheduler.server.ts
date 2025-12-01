@@ -53,7 +53,8 @@ export function scheduleStockChecks(
     }
   };
 
-  const timer = setInterval(run, intervalMs);
+  const timer = setInterval(run, intervalMs) as NodeJS.Timeout;
+  timer.unref?.();
   schedules.set(shop, { timer, status });
   return status;
 }

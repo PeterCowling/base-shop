@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
-import { pageSchema, type PageComponent } from "@acme/types";
+import { pageSchema, type Page, type PageComponent } from "@acme/page-builder-core";
 import type { Locale } from "@i18n/locales";
 import { devicePresets, getLegacyPreset } from "@ui/utils/devicePresets";
+import { exportComponents } from "@acme/page-builder-core";
 import PreviewClient from "./PreviewClient";
 
 export default async function PreviewPage({
@@ -29,9 +30,9 @@ export default async function PreviewPage({
     // i18n-exempt -- ABC-123 developer exception message; surfaced to logs/error boundary [ttl=2025-06-30]
     throw new Error("Failed to load preview");
   }
-  const page = pageSchema.parse(await res.json());
-  const components = page.components as PageComponent[];
+  const page: Page = pageSchema.parse(await res.json());
   const editor = page.history?.editor;
+  const components = exportComponents(page.components as PageComponent[], editor) as PageComponent[];
   const locale = (Object.keys(page.seo.title)[0] || "en") as Locale;
   const init = searchParams.device ?? searchParams.view;
   const initialDeviceId = (() => {

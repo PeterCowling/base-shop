@@ -1,5 +1,8 @@
 import type Stripe from "stripe";
-import { persistRiskFromCharge, type ChargeWithInvoice } from "../helpers/risk";
+import {
+  persistRiskFromCharge,
+  type ChargeWithInvoice,
+} from "../internal/helpers/risk";
 
 export default async function chargeSucceeded(
   shop: string,

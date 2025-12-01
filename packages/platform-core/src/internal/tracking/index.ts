@@ -1,7 +1,5 @@
-// packages/platform-core/src/tracking/index.ts
-
-import { getTrackingStatus, type TrackingStatus } from "../shipping";
-import { type EmailService, getEmailService } from "../services/emailService";
+import { getTrackingStatus, type TrackingStatus } from "../../shipping";
+import { type EmailService, getEmailService } from "../../services/emailService";
 
 export interface TrackingItem {
   id: string;
@@ -48,10 +46,16 @@ async function sendSms(to: string, body: string): Promise<void> {
     {
       method: "POST",
       headers: {
-        Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString("base64")}`,
+        Authorization: `Basic ${Buffer.from(`${sid}:${token}`).toString(
+          "base64",
+        )}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      body: new URLSearchParams({ From: from, To: to, Body: body }).toString(),
+      body: new URLSearchParams({
+        From: from,
+        To: to,
+        Body: body,
+      }).toString(),
     },
   );
 }
@@ -64,11 +68,18 @@ export async function notifyStatusChange(
   email: EmailService = getEmailService(),
 ): Promise<void> {
   if (previous === current) return;
-  const message = `Tracking update for ${item.id}: ${current ?? "unknown"}`; // i18n-exempt -- CORE-1011 system notification content
+  const message = `Tracking update for ${item.id}: ${
+    current ?? "unknown"
+  }`; // i18n-exempt -- CORE-1011 system notification content
   if (contact.email) {
-    await email.sendEmail(contact.email, "Tracking update", message); // i18n-exempt -- CORE-1011 system notification subject
+    await email.sendEmail(
+      contact.email,
+      "Tracking update",
+      message,
+    ); // i18n-exempt -- CORE-1011 system notification subject
   }
   if (contact.phone) {
     await sendSms(contact.phone, message);
   }
 }
+

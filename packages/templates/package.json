@@ -20,10 +20,10 @@
     }
   },
   "dependencies": {
-    "@acme/ui": "workspace:*"
+    "@acme/ui": "workspace:*",
+    "@acme/page-builder-core": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.5"
   }
 }
-

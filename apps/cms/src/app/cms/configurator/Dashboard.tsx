@@ -22,6 +22,8 @@ export default function ConfiguratorDashboard() {
     heroData,
     trackProgress,
     launchPanelData,
+    quickLaunch,
+    quickLaunchBusy,
   } = useConfiguratorDashboardState();
 
   return (
@@ -30,6 +32,17 @@ export default function ConfiguratorDashboard() {
         <div className="relative grid gap-8 p-8 lg:grid-cols-3 lg:gap-10">
           <div className="lg:col-span-2">
             <ConfiguratorHero {...heroData} />
+            <div className="mt-4 flex flex-wrap gap-3">
+              <ButtonElement
+                className="h-10 px-4 text-xs font-semibold border border-primary/40 bg-primary/5 text-hero-foreground hover:bg-primary/10"
+                onClick={quickLaunch}
+                disabled={quickLaunchBusy}
+              >
+                {quickLaunchBusy
+                  ? t("cms.configurator.hero.quickLaunchBusy")
+                  : t("cms.configurator.hero.quickLaunch")}
+              </ButtonElement>
+            </div>
           </div>
           <div className="lg:col-span-1">
             <LaunchPanel {...launchPanelData} />

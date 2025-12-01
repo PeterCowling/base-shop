@@ -1,6 +1,6 @@
 // packages/template-app/src/app/[lang]/stores/[id]/page.tsx
 import { getStoreById } from "@/data/stores";
-import { StoreLocatorMap } from "@ui/src/components/organisms/StoreLocatorMap";
+import { StoreLocatorMap } from "@ui";
 import { resolveLocale, type Locale } from "@i18n/locales";
 import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
 

@@ -25,6 +25,7 @@
     "@acme/theme": "workspace:*",
     "@acme/telemetry": "workspace:*",
     "@acme/zod-utils": "workspace:^",
+    "@acme/templates": "workspace:*",
     "@sendgrid/eventwebhook": "^7.2.7",
     "@themes/base": "workspace:*",
     "busboy": "^1.6.0",

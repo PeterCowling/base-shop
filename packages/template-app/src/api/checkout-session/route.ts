@@ -93,9 +93,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
 
   const clientIp = req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
+  const checkoutMode: "rental" | "sale" =
+    (shopInfo as { type?: string })?.type === "rental" ? "rental" : "sale";
 
   try {
     const result = await createCheckoutSession(cart, {
+      mode: checkoutMode,
       returnDate,
       coupon,
       currency,

@@ -5,11 +5,21 @@ import { calculateRentalDays } from "@acme/date-utils";
 import { stripe } from "@acme/stripe";
 import type { CartState } from "../cart";
 import type Stripe from "stripe";
-import { buildLineItemsForItem } from "./lineItems";
-import { computeTotals } from "./totals";
+import {
+  buildLineItemsForItem,
+  buildSaleLineItemsForItem,
+} from "./lineItems";
+import { computeTotals, computeSaleTotals } from "./totals";
 import { buildCheckoutMetadata } from "./metadata";
 
 export interface CreateCheckoutSessionOptions {
+  /**
+   * Checkout flow kind.
+   * "rental" uses rental duration + deposit semantics,
+   * "sale" charges SKU prices directly without deposits.
+   * Defaults to "rental" for backward compatibility.
+   */
+  mode?: "rental" | "sale";
   returnDate?: string;
   coupon?: string;
   currency: string;
@@ -34,6 +44,7 @@ export interface CreateCheckoutSessionOptions {
 export async function createCheckoutSession(
   cart: CartState,
   {
+    mode = "rental",
     returnDate,
     coupon,
     currency,
@@ -56,34 +67,62 @@ export async function createCheckoutSession(
     await trackEvent(shopId, { type: "discount_redeemed", code: couponDef.code });
   }
   const discountRate = couponDef ? couponDef.discountPercent / 100 : 0;
-  let rentalDays: number;
-  try {
-    rentalDays = calculateRentalDays(returnDate);
-  } catch {
-    throw new Error("Invalid returnDate"); // i18n-exempt -- Internal validation error surfaced to logs/UI
-  }
-  if (rentalDays <= 0) {
-    throw new Error("Invalid returnDate"); // i18n-exempt -- Internal validation error surfaced to logs/UI
-  }
+  let rentalDays = 0;
+  let effectiveReturnDate: string | undefined = returnDate;
 
-  const lineItemsNested = await Promise.all(
-    Object.values(cart).map((item) =>
-      buildLineItemsForItem(item, rentalDays, discountRate, currency)
-    )
-  );
-  let line_items = lineItemsNested.flat();
-  if (lineItemsExtra.length) line_items = line_items.concat(lineItemsExtra);
+  let line_items: Stripe.Checkout.SessionCreateParams.LineItem[];
+  let subtotal: number;
+  let depositTotal: number;
+  let discount: number;
 
-  const totals = await computeTotals(
-    cart,
-    rentalDays,
-    discountRate,
-    currency
-  );
-  let { subtotal, depositTotal } = totals;
-  const { discount } = totals;
-  subtotal += subtotalExtra;
-  depositTotal += depositAdjustment;
+  if (mode === "sale") {
+    const lineItemsNested = await Promise.all(
+      Object.values(cart).map((item) =>
+        buildSaleLineItemsForItem(item, discountRate, currency),
+      ),
+    );
+    line_items = lineItemsNested.flat();
+    if (lineItemsExtra.length) {
+      line_items = line_items.concat(lineItemsExtra);
+    }
+
+    const totals = await computeSaleTotals(cart, discountRate, currency);
+    ({ subtotal, depositTotal, discount } = totals);
+    subtotal += subtotalExtra;
+    // Deposit totals are always zero for sale flows; depositAdjustment is ignored.
+    depositTotal = 0;
+    rentalDays = 0;
+    effectiveReturnDate = undefined;
+  } else {
+    try {
+      rentalDays = calculateRentalDays(returnDate);
+    } catch {
+      throw new Error("Invalid returnDate"); // i18n-exempt -- Internal validation error surfaced to logs/UI
+    }
+    if (rentalDays <= 0) {
+      throw new Error("Invalid returnDate"); // i18n-exempt -- Internal validation error surfaced to logs/UI
+    }
+
+    const lineItemsNested = await Promise.all(
+      Object.values(cart).map((item) =>
+        buildLineItemsForItem(item, rentalDays, discountRate, currency),
+      ),
+    );
+    line_items = lineItemsNested.flat();
+    if (lineItemsExtra.length) {
+      line_items = line_items.concat(lineItemsExtra);
+    }
+
+    const totals = await computeTotals(
+      cart,
+      rentalDays,
+      discountRate,
+      currency,
+    );
+    ({ subtotal, depositTotal, discount } = totals);
+    subtotal += subtotalExtra;
+    depositTotal += depositAdjustment;
+  }
 
   const taxRate = await getTaxRate(taxRegion);
   const taxAmountCents = Math.round(subtotal * taxRate * 100);
@@ -108,7 +147,7 @@ export async function createCheckoutSession(
   const metadata = buildCheckoutMetadata({
     subtotal,
     depositTotal,
-    returnDate,
+    returnDate: effectiveReturnDate,
     rentalDays,
     customerId,
     discount,

@@ -113,3 +113,21 @@ The schema (see `packages/platform-core/prisma/schema.prisma`) defines:
 
 The connection string is provided via the `DATABASE_URL` environment
 variable.
+
+## Package layering and public surfaces
+
+Beyond UI atoms → templates, the CMS and shop runtime follow a package‑level layering model. Higher layers may depend on lower layers, but never the reverse:
+
+- `@acme/platform-core` – owns domain logic and persistence for shops, pages, cart/checkout, orders, pricing, tax and settings. It may depend on low‑level libraries (`@acme/types`, `@acme/zod-utils`, `@acme/shared-utils`, `@acme/date-utils`, design tokens, telemetry, etc.) but must not import from `@acme/ui`, CMS‑only packages, or any app.
+- `@acme/ui` – design system and CMS/editor UI toolkit. It may depend on platform‑core types and light helpers and on the same low‑level libraries, but must not depend on apps or on app‑specific persistence.
+- CMS‑only packages (for example `@acme/cms-marketing`, `@acme/configurator`) – sit above `platform-core`/`ui` and below the CMS app. They orchestrate CMS flows, dashboards and configurator UIs by depending on `platform-core` for domain operations and `ui` for layout and Page Builder/editor primitives. They must not contain runtime storefront routes or direct database access.
+- Page Builder packages – `@acme/page-builder-core` holds pure PB state and transforms (no React, no I/O). `@acme/page-builder-ui` builds PB React UI on top of `page-builder-core` and `@acme/ui`. `@acme/templates` holds reusable templates and block implementations that compose `ui` and PB primitives.
+- Apps – `packages/template-app` and tenant apps under `apps/*` are thin shells that compose `platform-core`, `ui`, Page Builder and CMS‑only packages. They provide routing, branding and app‑specific glue, but other packages must never depend on apps.
+
+Shared packages expose a deliberately small public surface:
+
+- Public APIs live in the package `exports` map (see `package.json`) and are implemented via `src/index.ts` and, where useful, `src/public/**`. New call sites should import from these entrypoints only.
+- Internal details live under `src/internal/**` and other deep paths in `src/**`. These files are free to change and must not be imported from apps or other packages unless explicitly documented.
+- Apps and feature packages must never import from `@acme/*/src/**`. Instead, they should use `@acme/<package>` or documented subpaths such as `@acme/platform-core/cart` or `@acme/ui` components as exported in each package’s `exports`.
+
+When adding new capabilities, decide first which layer owns the behaviour (domain in `platform-core`, UI in `ui`, CMS glue in `cms-marketing`/configurator, PB logic in the PB packages, or app‑specific glue in apps). Then add or extend a public API at that layer and consume it from higher layers instead of reaching into internal modules.

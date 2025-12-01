@@ -53,3 +53,8 @@ export { default as useBlockDimensions } from "./useBlockDimensions";
 export { default as useBlockDnD } from "./useBlockDnD";
 export { default as useBlockTransform } from "./useBlockTransform";
 export { default as useLocalizedTextEditor } from "./useLocalizedTextEditor";
+export { default as useComponentInputs } from "./useComponentInputs";
+export {
+  extractTextThemes,
+  applyTextThemeToOverrides,
+} from "./textThemes";

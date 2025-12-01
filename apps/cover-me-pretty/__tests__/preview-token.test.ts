@@ -1,6 +1,6 @@
 // apps/cover-me-pretty/__tests__/preview-token.test.ts
 import path from "node:path";
-import { createHmac } from "node:crypto";
+import { createUpgradePreviewToken } from "@platform-core/previewTokens";
 
 describe("/api/preview-token", () => {
   const appDir = path.join(__dirname, "..");
@@ -38,7 +38,10 @@ describe("/api/preview-token", () => {
     const res = await GET(
       new Request("https://example.com/api/preview-token?pageId=abc"),
     );
-    const token = createHmac("sha256", "shhh").update("abc").digest("hex");
+    const token = createUpgradePreviewToken(
+      { shopId: "default", pageId: "abc" },
+      "shhh",
+    );
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ token });
   });

@@ -35,6 +35,7 @@ import Tabs from "./Tabs";
 import ImageSlider from "./ImageSlider";
 import CollectionList from "./CollectionList";
 import SearchBar from "./SearchBar";
+import HeaderCart from "./HeaderCart";
 import ProductComparisonBlock from "./ProductComparisonBlock";
 import GiftCardBlock from "./GiftCardBlock";
 import FormBuilderBlock from "./FormBuilderBlock";
@@ -115,6 +116,7 @@ const organismEntries = {
   SocialProof: { component: SocialProof },
   NewsletterSignup: { component: NewsletterSignup },
   SearchBar: { component: SearchBar },
+  HeaderCart: { component: HeaderCart },
   PricingTable: { component: PricingTable },
   Tabs: { component: Tabs },
   ProductComparison: { component: ProductComparisonBlock },

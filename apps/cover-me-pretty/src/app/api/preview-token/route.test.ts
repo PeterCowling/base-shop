@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { createHmac } from "crypto";
+import { createUpgradePreviewToken } from "@platform-core/previewTokens";
 
 describe("GET /api/preview-token", () => {
   afterEach(() => {
@@ -16,9 +16,12 @@ describe("GET /api/preview-token", () => {
       __esModule: true,
       requirePermission: jest.fn().mockResolvedValue(undefined),
     }));
-    jest.doMock("@acme/config/env/auth", () => ({
+    jest.doMock("@acme/config/env/core", () => ({
       __esModule: true,
-      authEnv: { UPGRADE_PREVIEW_TOKEN_SECRET: "sekret" },
+      coreEnv: {
+        UPGRADE_PREVIEW_TOKEN_SECRET: "sekret",
+        NEXT_PUBLIC_SHOP_ID: "shop",
+      },
     }));
     const { GET } = await import("./route");
     const pageId = "abc123";
@@ -26,7 +29,10 @@ describe("GET /api/preview-token", () => {
     expect(res.status).toBe(200);
     type PreviewTokenResponse = { token: string };
     const body = (await res.json()) as PreviewTokenResponse;
-    const expected = createHmac("sha256", "sekret").update(pageId).digest("hex");
+    const expected = createUpgradePreviewToken(
+      { shopId: "shop", pageId },
+      "sekret",
+    );
     expect(body.token).toBe(expected);
   });
 
@@ -35,9 +41,12 @@ describe("GET /api/preview-token", () => {
       __esModule: true,
       requirePermission: jest.fn().mockRejectedValue(new Error("nope")),
     }));
-    jest.doMock("@acme/config/env/auth", () => ({
+    jest.doMock("@acme/config/env/core", () => ({
       __esModule: true,
-      authEnv: { UPGRADE_PREVIEW_TOKEN_SECRET: "sekret" },
+      coreEnv: {
+        UPGRADE_PREVIEW_TOKEN_SECRET: "sekret",
+        NEXT_PUBLIC_SHOP_ID: "shop",
+      },
     }));
     const { GET } = await import("./route");
     const res = await GET(makeReq("http://x/api/preview-token?pageId=1"));
@@ -49,9 +58,12 @@ describe("GET /api/preview-token", () => {
       __esModule: true,
       requirePermission: jest.fn().mockResolvedValue(undefined),
     }));
-    jest.doMock("@acme/config/env/auth", () => ({
+    jest.doMock("@acme/config/env/core", () => ({
       __esModule: true,
-      authEnv: { UPGRADE_PREVIEW_TOKEN_SECRET: "sekret" },
+      coreEnv: {
+        UPGRADE_PREVIEW_TOKEN_SECRET: "sekret",
+        NEXT_PUBLIC_SHOP_ID: "shop",
+      },
     }));
     const { GET } = await import("./route");
     const res = await GET(makeReq("http://x/api/preview-token"));
@@ -63,9 +75,9 @@ describe("GET /api/preview-token", () => {
       __esModule: true,
       requirePermission: jest.fn().mockResolvedValue(undefined),
     }));
-    jest.doMock("@acme/config/env/auth", () => ({
+    jest.doMock("@acme/config/env/core", () => ({
       __esModule: true,
-      authEnv: {},
+      coreEnv: {},
     }));
     const { GET } = await import("./route");
     const res = await GET(makeReq("http://x/api/preview-token?pageId=1"));

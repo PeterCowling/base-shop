@@ -3,7 +3,7 @@ import Link from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import type { Locale } from "@acme/i18n/locales";
+import { locales, type Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import { useEffect } from "react";
 
@@ -12,10 +12,27 @@ type TextComponent = PageComponent & {
   text?: string | Record<string, string>;
 };
 
+const DEFAULT_LOCALE = locales[0] as Locale;
+
 function getContent(component: TextComponent, locale: Locale) {
-  return typeof component.text === "string"
-    ? component.text
-    : component.text?.[locale] ?? "";
+  const { text } = component;
+  if (typeof text === "string") {
+    return text;
+  }
+  const record = (text ?? {}) as Record<string, string | undefined>;
+  const direct = record[locale];
+  if (typeof direct === "string" && direct.length > 0) return direct;
+
+  const primary = record[DEFAULT_LOCALE];
+  if (typeof primary === "string" && primary.length > 0) return primary;
+
+  for (const loc of locales) {
+    const val = record[loc];
+    if (typeof val === "string" && val.length > 0) return val;
+  }
+
+  const anyVal = Object.values(record).find((v) => typeof v === "string" && v.length > 0);
+  return anyVal ?? "";
 }
 
 export default function useTextEditor(

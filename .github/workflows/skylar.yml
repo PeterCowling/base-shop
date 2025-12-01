@@ -36,7 +36,10 @@ jobs:
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/skylar"
-      build-cmd: pnpm --filter @apps/skylar... build
+      # Use the shared static-export mode for Skylar so that
+      # next/image renders plain <img> tags and the output in
+      # apps/skylar/out is fully compatible with Cloudflare Pages.
+      build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/skylar... build
       artifact-path: apps/skylar/out
       deploy-cmd: >
         pnpm exec wrangler pages deploy apps/skylar/out --project-name skylar --branch ${{ github.ref_name }}

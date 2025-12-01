@@ -167,6 +167,7 @@ export default [
           "./apps/*/tsconfig.json",
           "./packages/*/tsconfig.json",
           "./packages/*/tsconfig.eslint.json",
+          "./functions/tsconfig.json",
         ],
         projectService: true,
         allowDefaultProject: true,

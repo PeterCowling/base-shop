@@ -103,5 +103,42 @@ describe('seoAudit scheduled', () => {
 
     consoleErrorSpy.mockRestore();
   });
-});
 
+  it('skips non-directory entries in DATA_ROOT', async () => {
+    directories.add('/data/shop-dir');
+    const readdirMock = fs.readdir as unknown as jest.Mock;
+    readdirMock.mockImplementationOnce(
+      async (dir: string, opts: { withFileTypes?: boolean }) => {
+        const path = require('node:path');
+        if (opts && opts.withFileTypes) {
+          return [
+            {
+              name: 'file.txt',
+              isDirectory: () => false,
+              isFile: () => true,
+            },
+            {
+              name: 'shop-dir',
+              isDirectory: () => true,
+              isFile: () => false,
+            },
+          ];
+        }
+        return ['file.txt', 'shop-dir'].map((name) => path.basename(name));
+      },
+    );
+
+    runSeoAuditMock.mockResolvedValueOnce({
+      score: 85,
+      recommendations: [],
+    });
+
+    await seoAudit.scheduled();
+
+    expect(trackEventMock).toHaveBeenCalledTimes(1);
+    expect(trackEventMock).toHaveBeenCalledWith(
+      'shop-dir',
+      expect.objectContaining({ success: true }),
+    );
+  });
+});

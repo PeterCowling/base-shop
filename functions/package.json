@@ -2,6 +2,6 @@
   "name": "functions",
   "private": true,
   "scripts": {
-    "test": "jest --config ../jest.config.cjs"
+    "test": "cross-env JEST_FORCE_CJS=1 jest --config ../jest.config.cjs"
   }
 }

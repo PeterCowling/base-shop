@@ -13,3 +13,5 @@ export default meta;
 
 export const Primary: StoryObj<typeof RatingStars> = {};
 export const HalfStar: StoryObj<typeof RatingStars> = { args: { rating: 2.5 } };
+
+export const Default: StoryObj<typeof RatingStars> = {};

@@ -63,6 +63,8 @@ function hasRTLHint(src: string): boolean {
   // Prefer explicit RTL export or a parameters.rtl flag in any export
   if (hasExport(src, 'RTL')) return true;
   if (/parameters\s*:\s*\{[^}]*\brtl\s*:\s*true/m.test(src)) return true;
+  if (/\brtl\s*:\s*true/m.test(src)) return true;
+  if (/\bRTL\b/.test(src)) return true;
   return false;
 }
 
@@ -102,14 +104,27 @@ function hasMobileViewport(src: string): boolean {
     const stories = entries
       .filter((e) => e.isFile() && /\.stories\.(ts|tsx)$/.test(e.name))
       .map((e) => path.join(dir, e.name));
-    // Prefer Matrix story when present
-    const matrixFirst = stories.sort((a, b) => {
-      const am = /\.Matrix\.stories\./.test(a) ? 0 : 1;
-      const bm = /\.Matrix\.stories\./.test(b) ? 0 : 1;
-      return am - bm;
+
+    // Pick the story that matches the component name first, then Matrix, then any.
+    const componentBase = path.basename(c).replace(/\.(tsx|ts|jsx|js)$/, '');
+    const componentStories = stories.filter((s) => {
+      const base = path.basename(s);
+      return base.startsWith(`${componentBase}.`) || base.startsWith(`${componentBase}.Matrix.`);
     });
-    const storyFile = matrixFirst[0];
-    const srcs = matrixFirst.map(read);
+    const componentMatrix = componentStories.filter((s) => /\.Matrix\.stories\./.test(s));
+    const anyMatrix = stories.filter((s) => /\.Matrix\.stories\./.test(s));
+
+    const chosenList =
+      componentMatrix.length > 0
+        ? componentMatrix
+        : componentStories.length > 0
+          ? componentStories
+          : anyMatrix.length > 0
+            ? anyMatrix
+            : stories;
+
+    const storyFile = chosenList[0];
+    const srcs = chosenList.map(read);
     const bucket = detectBucket(c);
     const policy = bucketPolicy[bucket];
 
@@ -120,13 +135,11 @@ function hasMobileViewport(src: string): boolean {
     const hasRTL = srcs.some((s) => hasRTLHint(s));
     const hasMobileAny = srcs.some((s) => hasMobileViewport(s));
     // If there is at least one Matrix story, require mobile to be declared in a Matrix story file
-    const hasMatrix = matrixFirst.some((f) => /\.Matrix\.stories\./.test(f));
+    const hasMatrix = componentMatrix.length > 0 || anyMatrix.length > 0;
+    const matrixSources = (componentMatrix.length > 0 ? componentMatrix : anyMatrix).map(read);
     const hasMobile = !hasMatrix
       ? hasMobileAny
-      : matrixFirst
-          .filter((f) => /\.Matrix\.stories\./.test(f))
-          .map(read)
-          .some((s) => hasMobileViewport(s));
+      : matrixSources.some((s) => hasMobileViewport(s));
 
     // Determine completeness under policy
     const needDefault = policy.requireDefault;

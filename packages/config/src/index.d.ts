@@ -6,6 +6,9 @@ export declare const env: import("zod").objectOutputType<{
     COOKIE_DOMAIN: import("zod").ZodOptional<import("zod").ZodString>;
     LOGIN_RATE_LIMIT_REDIS_URL: import("zod").ZodOptional<import("zod").ZodString>;
     LOGIN_RATE_LIMIT_REDIS_TOKEN: import("zod").ZodOptional<import("zod").ZodString>;
+    RATE_LIMIT_STORE_PROVIDER: import("zod").ZodOptional<import("zod").ZodEnum<["redis", "kv"]>>;
+    CART_STORE_PROVIDER: import("zod").ZodOptional<import("zod").ZodEnum<["redis", "cloudflare", "memory"]>>;
+    SESSION_STORE_PROVIDER: import("zod").ZodOptional<import("zod").ZodEnum<["redis", "cloudflare", "memory"]>>;
     SESSION_STORE: import("zod").ZodOptional<import("zod").ZodEnum<["memory", "redis"]>>;
     UPSTASH_REDIS_REST_URL: import("zod").ZodOptional<import("zod").ZodString>;
     UPSTASH_REDIS_REST_TOKEN: import("zod").ZodOptional<import("zod").ZodString>;

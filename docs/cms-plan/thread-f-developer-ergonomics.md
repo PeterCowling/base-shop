@@ -1,6 +1,12 @@
+Type: Plan
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+Relates-to charter: docs/cms/cms-charter.md
+
 # Thread F – Developer ergonomics & testing
 
-This thread operationalises §6 of `docs/cms-research.md`.
+This thread operationalises §6 of `docs/historical/cms-research.md`.
 
 It focuses on:
 

@@ -2,7 +2,27 @@ import { readFileSync, writeFileSync } from "fs";
 import path from "path";
 import { spawn } from "child_process";
 import jwt from "jsonwebtoken";
-import { logger } from "@acme/shared-utils";
+import {
+  logger,
+  withRequestContext,
+  type RequestContext,
+} from "@acme/shared-utils";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { incrementOperationalError } from "@platform-core/shops";
+
+const SERVICE_NAME = "api";
+const ENV_LABEL: "dev" | "stage" | "prod" =
+  process.env.NODE_ENV === "production" ? "prod" : "dev";
+
+function readJsonFile<T>(filePath: string): T {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- API-4100: path is derived from a validated shop id and workspace root
+  return JSON.parse(readFileSync(filePath, "utf8")) as T;
+}
+
+function writeJsonFile(filePath: string, data: unknown): void {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- API-4100: path is derived from a validated shop id and workspace root
+  writeFileSync(filePath, JSON.stringify(data, null, 2));
+}
 
 export function run(cmd: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -28,20 +48,51 @@ export const onRequestPost = async ({
   params: Record<string, string>;
   request: Request;
 }) => {
+  const requestId =
+    request.headers.get("x-request-id") ??
+    (typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(16).slice(2)}`);
+
+  const ctx: RequestContext = {
+    requestId,
+    env: ENV_LABEL,
+    service: SERVICE_NAME,
+    shopId: params.id,
+  };
+
+  return withRequestContext(ctx, () =>
+    handleRequestPost({
+      params,
+      request,
+    }),
+  );
+};
+
+const handleRequestPost = async ({
+  params,
+  request,
+}: {
+  params: Record<string, string>;
+  request: Request;
+}) => {
+  const id = params.id;
+  const t = await getServerTranslations("en");
+  let shopId: string | null = null;
   try {
-    const id = params.id;
     if (!id || !/^[a-z0-9_-]+$/.test(id)) {
-      logger.warn("invalid shop id", { id });
-      return new Response(JSON.stringify({ error: "Invalid shop id" }), {
+      logger.warn("invalid shop id", { id, service: SERVICE_NAME, env: ENV_LABEL }); // i18n-exempt -- API-4100 developer log label [ttl=2026-12-31]
+      return new Response(JSON.stringify({ error: t("api.components.invalidShopId") }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
     }
+    shopId = id;
 
     const authHeader = request.headers.get("authorization") || "";
     if (!authHeader.startsWith("Bearer ")) {
-      logger.warn("missing bearer token", { id });
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      logger.warn("missing bearer token", { id: shopId, service: SERVICE_NAME, env: ENV_LABEL }); // i18n-exempt -- API-4100 developer log label [ttl=2026-12-31]
+      return new Response(JSON.stringify({ error: t("api.common.unauthorized") }), {
         status: 401,
         headers: { "Content-Type": "application/json" },
       });
@@ -50,8 +101,8 @@ export const onRequestPost = async ({
     const token = authHeader.slice("Bearer ".length);
     const secret = process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
     if (!secret) {
-      logger.warn("invalid token", { id });
-      return new Response(JSON.stringify({ error: "Forbidden" }), {
+      logger.warn("invalid token", { id: shopId, service: SERVICE_NAME, env: ENV_LABEL }); // i18n-exempt -- API-4100 developer log label [ttl=2026-12-31]
+      return new Response(JSON.stringify({ error: t("api.common.forbidden") }), {
         status: 403,
         headers: { "Content-Type": "application/json" },
       });
@@ -59,16 +110,16 @@ export const onRequestPost = async ({
     try {
       jwt.verify(token, secret);
     } catch {
-      logger.warn("invalid token", { id });
-      return new Response(JSON.stringify({ error: "Forbidden" }), {
+      logger.warn("invalid token", { id: shopId, service: SERVICE_NAME, env: ENV_LABEL }); // i18n-exempt -- API-4100 developer log label [ttl=2026-12-31]
+      return new Response(JSON.stringify({ error: t("api.common.forbidden") }), {
         status: 403,
         headers: { "Content-Type": "application/json" },
       });
     }
 
     const root = path.resolve(__dirname, "../../../../../..");
-    const appDir = path.join(root, "apps", `shop-${id}`);
-    const shopFile = path.join(root, "data", "shops", id, "shop.json");
+    const appDir = path.join(root, "apps", `shop-${shopId}`);
+    const shopFile = path.join(root, "data", "shops", shopId, "shop.json");
     const pkgFile = path.join(appDir, "package.json");
 
     const body = (await request.json().catch(() => ({}))) as {
@@ -78,8 +129,12 @@ export const onRequestPost = async ({
       ? (body.components as string[])
       : [];
 
-    const deps = JSON.parse(readFileSync(pkgFile, "utf8")).dependencies ?? {};
-    const shop = JSON.parse(readFileSync(shopFile, "utf8"));
+    const deps = readJsonFile<{ dependencies?: Record<string, string> }>(pkgFile).dependencies ?? {};
+    const shop = readJsonFile<{
+      componentVersions?: Record<string, string>;
+      lastUpgrade?: string;
+      [key: string]: unknown;
+    }>(shopFile);
     shop.componentVersions = shop.componentVersions || {};
 
     const toLock = selected.length > 0 ? selected : Object.keys(deps);
@@ -89,7 +144,7 @@ export const onRequestPost = async ({
       }
     }
     shop.lastUpgrade = new Date().toISOString();
-    writeFileSync(shopFile, JSON.stringify(shop, null, 2));
+    writeJsonFile(shopFile, shop);
 
     if (Object.keys(deps).length === 0) {
       return new Response(JSON.stringify({ ok: true }), {
@@ -97,13 +152,16 @@ export const onRequestPost = async ({
       });
     }
 
-    await run("pnpm", ["--filter", `apps/shop-${id}`, "build"], root);
-    await run("pnpm", ["--filter", `apps/shop-${id}`, "deploy"], root);
+    await run("pnpm", ["--filter", `apps/shop-${shopId}`, "build"], root);
+    await run("pnpm", ["--filter", `apps/shop-${shopId}`, "deploy"], root);
 
     return new Response(JSON.stringify({ ok: true }), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
+    if (shopId) {
+      incrementOperationalError(shopId);
+    }
     const message = err instanceof Error ? err.message : String(err);
     return new Response(JSON.stringify({ error: message }), {
       status: 500,

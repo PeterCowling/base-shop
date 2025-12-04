@@ -11,11 +11,11 @@ import {
 import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
-import { RateLimiterMemory } from "rate-limiter-flexible";
+import { createRateLimiter } from "@auth/rateLimiter";
 
 export const runtime = "nodejs";
 
-const limiter = new RateLimiterMemory({ points: 5, duration: 60 });
+const limiter = createRateLimiter({ points: 5, duration: 60 });
 
 // Mock customer store. In a real application this would be a database or external identity provider.
 const CUSTOMER_STORE: Record<string, { password: string; role: Role }> = {

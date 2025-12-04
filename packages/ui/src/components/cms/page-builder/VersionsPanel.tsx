@@ -130,7 +130,7 @@ export default function VersionsPanel({ shop, pageId, current, editor, onRestore
       <CreateVersionForm onCreate={handleCreateVersion} autoFocusLabel={autoFocusLabel} />
       {error && (
         // i18n-exempt -- error is a runtime string from API
-        <p className="text-sm text-red-500">{error}</p>
+        <p className="text-sm text-destructive">{error}</p>
       )}
       <div className="grid grid-cols-3 gap-3">
         <VersionList versions={versions} selectedId={selectedId} onSelect={setSelectedId} />

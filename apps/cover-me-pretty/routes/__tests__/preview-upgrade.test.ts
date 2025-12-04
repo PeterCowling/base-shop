@@ -1,10 +1,7 @@
 import { jest } from "@jest/globals";
 import type { Page } from "@acme/types";
 import { nowIso } from "@date-utils";
-import {
-  createPreviewToken,
-  createUpgradePreviewToken,
-} from "@platform-core/previewTokens";
+import { createUpgradePreviewToken } from "@platform-core/previewTokens";
 
 process.env.PREVIEW_TOKEN_SECRET = "testsecret";
 process.env.UPGRADE_PREVIEW_TOKEN_SECRET = "upgradesecret";
@@ -31,13 +28,6 @@ type PreviewOnRequest = (ctx: {
   params: { pageId: string };
   request: Request;
 }) => Promise<Response>;
-
-function tokenFor(id: string, secret: string): string {
-  return createPreviewToken(
-    { shopId: "shop", pageId: id },
-    secret,
-  );
-}
 
 test("valid upgrade token returns page JSON", async () => {
   const page: Page = {

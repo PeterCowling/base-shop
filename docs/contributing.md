@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Repo
+Last-reviewed: 2025-12-02
+
 # Contributing
 
 Contributions are welcome! Please open an issue or pull request with improvements.

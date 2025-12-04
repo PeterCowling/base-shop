@@ -32,6 +32,10 @@ const {
   checkProductsInventory,
   checkNavigationHome,
   configuratorChecks,
+  checkReachSocial,
+  getConfiguratorProgressForShop,
+  runRequiredConfigChecks,
+  getLaunchStatus,
 } = configurator;
 
 const shopsRepo = require("../src/repositories/shops.server") as {
@@ -53,6 +57,9 @@ const inventoryRepo = require("../src/repositories/inventory.server") as {
 
 beforeEach(() => {
   jest.resetAllMocks();
+  pagesRepo.getPages.mockResolvedValue([]);
+  productsRepo.readRepo.mockResolvedValue([]);
+  inventoryRepo.readInventory.mockResolvedValue([]);
 });
 
 describe("readEnvFile", () => {
@@ -430,6 +437,30 @@ describe("Config checks", () => {
       navigation: [{ label: "Home", url: "/" }],
     });
     mockSettings();
+    pagesRepo.getPages.mockResolvedValue([
+      {
+        id: "home",
+        slug: "",
+        status: "published",
+        components: [{ id: "h", type: "HeroBanner" }],
+        seo: { title: { en: "Home" }, description: {}, image: {} },
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+        stableId: "core.page.home.default",
+      },
+      {
+        id: "pdp",
+        slug: "products",
+        status: "draft",
+        components: [{ id: "p1", type: "PDPDetailsSection" }],
+        seo: { title: { en: "PDP" }, description: {}, image: {} },
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+        stableId: "core.page.product.default",
+      },
+    ]);
 
     const result = await checkNavigationHome(shopId);
     expect(result).toEqual({ ok: true });
@@ -456,5 +487,248 @@ describe("Config checks", () => {
       checkProductsInventory,
     );
     expect(configuratorChecks["navigation-home"]).toBe(checkNavigationHome);
+  });
+
+  it("getConfiguratorProgressForShop reports complete when all checks pass", async () => {
+    mockShop({
+      navigation: [{ label: "Home", url: "/" }],
+      themeId: "base",
+      themeTokens: { primary: "primary" },
+      paymentProviders: ["stripe"],
+      billingProvider: "stripe",
+      shippingProviders: ["dhl"],
+    });
+    mockSettings({
+      languages: ["en"],
+      currency: "EUR",
+      taxRegion: "EU",
+      seo: { image: "https://example.com/share.jpg" },
+    });
+    pagesRepo.getPages.mockResolvedValue([
+      {
+        id: "p1",
+        slug: "",
+        status: "published",
+        visibility: "public",
+        components: [
+          { id: "h", type: "HeroBanner" },
+          { id: "social-links", type: "SocialLinks", facebook: "fb" },
+          { id: "social-proof", type: "SocialProof" },
+        ],
+        seo: {
+          title: { en: "Home" },
+          description: {},
+          image: {},
+        },
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+        stableId: "core.page.home.default",
+      },
+      {
+        id: "p2",
+        slug: "products",
+        status: "published",
+        visibility: "public",
+        components: [{ id: "pdp-details", type: "PDPDetailsSection" }],
+        seo: {
+          title: { en: "Product" },
+          description: {},
+          image: {},
+        },
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+        stableId: "core.page.product.default",
+      },
+      {
+        id: "p3",
+        slug: "checkout",
+        status: "published",
+        visibility: "public",
+        components: [],
+        seo: {
+          title: { en: "Checkout" },
+          description: {},
+          image: {},
+        },
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+      },
+    ]);
+    productsRepo.readRepo.mockResolvedValue([
+      {
+        id: "prod1",
+        shop: shopId,
+        status: "active",
+        row_version: 1,
+      },
+    ]);
+    inventoryRepo.readInventory.mockResolvedValue([
+      {
+        sku: "sku1",
+        productId: "prod1",
+        quantity: 5,
+        variantAttributes: {},
+      },
+    ]);
+
+    const originalEnv = { ...process.env };
+    try {
+      process.env.STRIPE_SECRET_KEY = "sk_test";
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
+      process.env.STRIPE_WEBHOOK_SECRET = "whsec";
+
+      const progress = await getConfiguratorProgressForShop(shopId);
+      expect(progress.shopId).toBe(shopId);
+      // All known steps should be complete or pending (for steps without checks).
+      expect(progress.steps["shop-basics"]).toBe("complete");
+      expect(progress.steps.theme).toBe("complete");
+      expect(progress.steps.payments).toBe("complete");
+      expect(progress.steps["shipping-tax"]).toBe("complete");
+      expect(progress.steps.checkout).toBe("complete");
+      expect(progress.steps["products-inventory"]).toBe("complete");
+      expect(progress.steps["navigation-home"]).toBe("complete");
+    } finally {
+      process.env = originalEnv;
+    }
+  });
+
+  it("runRequiredConfigChecks reports failures when checks fail", async () => {
+    mockShop({
+      navigation: [],
+      themeId: "",
+      themeTokens: {},
+      paymentProviders: [],
+      shippingProviders: [],
+    });
+    mockSettings({ languages: [], currency: undefined, taxRegion: undefined });
+    pagesRepo.getPages.mockResolvedValue([]);
+    productsRepo.readRepo.mockResolvedValue([]);
+    inventoryRepo.readInventory.mockResolvedValue([]);
+
+    const result = await runRequiredConfigChecks(shopId);
+    expect(result.ok).toBe(false);
+    expect(result.error).toContain("Configuration checks failed for steps:");
+  });
+
+  it("getLaunchStatus returns blocked when required checks fail", async () => {
+    mockShop({
+      navigation: [],
+    });
+    mockSettings({ languages: [] });
+    pagesRepo.getPages.mockResolvedValue([]);
+    productsRepo.readRepo.mockResolvedValue([]);
+    inventoryRepo.readInventory.mockResolvedValue([]);
+
+    const status = await getLaunchStatus("prod", shopId);
+    expect(status.env).toBe("prod");
+    expect(status.status).toBe("blocked");
+    expect(Array.isArray(status.reasons)).toBe(true);
+    expect(status.reasons.length).toBeGreaterThan(0);
+  });
+
+  it("getLaunchStatus returns ok when required checks pass", async () => {
+    mockShop({
+      navigation: [{ label: "Home", url: "/" }],
+      themeId: "base",
+      themeTokens: { primary: "primary" },
+      paymentProviders: ["stripe"],
+      billingProvider: "stripe",
+      shippingProviders: ["dhl"],
+      domain: { name: "example.com" },
+    });
+    mockSettings({
+      languages: ["en"],
+      currency: "EUR",
+      taxRegion: "EU",
+      seo: { image: "https://example.com/share.jpg" },
+    });
+    pagesRepo.getPages.mockResolvedValue([
+      {
+        id: "p1",
+        slug: "",
+        status: "published",
+        visibility: "public",
+        components: [
+          { id: "h", type: "HeroBanner" },
+          { id: "social-links", type: "SocialLinks", facebook: "fb" },
+          { id: "social-proof", type: "SocialProof" },
+        ],
+        seo: {
+          title: { en: "Home" },
+          description: {},
+          image: {},
+        },
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+        stableId: "core.page.home.default",
+      },
+      {
+        id: "p2",
+        slug: "products",
+        status: "published",
+        visibility: "public",
+        components: [{ id: "pdp", type: "PDPDetailsSection" }],
+        seo: {
+          title: { en: "Product" },
+          description: {},
+          image: {},
+        },
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+        stableId: "core.page.product.default",
+      },
+      {
+        id: "p3",
+        slug: "checkout",
+        status: "published",
+        visibility: "public",
+        components: [],
+        seo: {
+          title: { en: "Checkout" },
+          description: {},
+          image: {},
+        },
+        createdAt: "",
+        updatedAt: "",
+        createdBy: "",
+      },
+    ]);
+    productsRepo.readRepo.mockResolvedValue([
+      {
+        id: "prod1",
+        shop: shopId,
+        status: "active",
+        row_version: 1,
+      },
+    ]);
+    inventoryRepo.readInventory.mockResolvedValue([
+      {
+        sku: "sku1",
+        productId: "prod1",
+        quantity: 5,
+        variantAttributes: {},
+      },
+    ]);
+
+    const originalEnv = { ...process.env };
+    try {
+      process.env.STRIPE_SECRET_KEY = "sk_test";
+      process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = "pk_test";
+      process.env.STRIPE_WEBHOOK_SECRET = "whsec";
+
+      const reach = await checkReachSocial(shopId);
+      expect(reach).toEqual({ ok: true });
+      const status = await getLaunchStatus("stage", shopId);
+      expect(status.env).toBe("stage");
+      expect(status.status).toBe("ok");
+      expect(status.reasons).toEqual([]);
+    } finally {
+      process.env = originalEnv;
+    }
   });
 });

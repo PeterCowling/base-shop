@@ -59,6 +59,7 @@ export async function getShopSettings(shop: string): Promise<Settings> {
       return {
         freezeTranslations: false,
         ...(data.analytics ? { analytics: data.analytics } : {}),
+        ...(data.leadCapture ? { leadCapture: data.leadCapture } : {}),
         currency: data.currency ?? "EUR",
         taxRegion: data.taxRegion ?? "",
         ...data,
@@ -93,6 +94,7 @@ export async function getShopSettings(shop: string): Promise<Settings> {
             ...((data.seo ?? {}).aiCatalog ?? {}),
           },
         },
+        leadCapture: data.leadCapture ?? { enabled: true },
       } as Settings;
     }
   } catch {
@@ -108,6 +110,7 @@ export async function getShopSettings(shop: string): Promise<Settings> {
       },
     },
     analytics: undefined,
+    leadCapture: { enabled: true },
     freezeTranslations: false,
     currency: "EUR",
     taxRegion: "",

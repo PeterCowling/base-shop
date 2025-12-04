@@ -8,14 +8,18 @@ import { useState } from "react";
 import { Toast } from "@ui/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
-import TemplateSelector from "./components/TemplateSelector";
+import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
 import useProductPageData from "./hooks/useProductPageData";
 
 interface Props {
   pageTemplates: Array<{
+    id: string;
     name: string;
     components: PageComponent[];
-    preview: string;
+    preview?: string | null;
+    description?: string;
+    category?: string;
+    pageType?: string;
   }>;
   productLayout: string;
   setProductLayout: (v: string) => void;
@@ -60,13 +64,17 @@ export default function StepProductPage({
 
   const [, markComplete] = useStepCompletion("product-page");
   const router = useRouter();
+  const hasTemplate = productLayout.trim().length > 0;
+  const hasSavedAtLeastOnce = Boolean(productPageId);
+  const canProceed = hasTemplate && hasSavedAtLeastOnce && productComponents.length > 0;
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Product Detail Page</h2>
       <TemplateSelector
-        layout={productLayout}
+        value={productLayout}
         pageTemplates={pageTemplates}
-        onSelect={(layout, comps) => {
+        allowBlank={false}
+        onConfirm={(layout, comps) => {
           setProductLayout(layout);
           setProductComponents(comps);
         }}
@@ -77,6 +85,7 @@ export default function StepProductPage({
             id: productPageId ?? "",
             slug: "",
             status: "draft",
+            ...(productLayout ? { stableId: productLayout } : {}),
             components: productComponents,
             seo: {
               title: fillLocales(undefined, ""),
@@ -103,6 +112,7 @@ export default function StepProductPage({
       <div className="flex justify-end">
         <Button
           data-cy="save-return"
+          disabled={!canProceed}
           onClick={() => {
             markComplete(true);
             router.push("/cms/configurator");
@@ -119,4 +129,3 @@ export default function StepProductPage({
     </div>
   );
 }
-

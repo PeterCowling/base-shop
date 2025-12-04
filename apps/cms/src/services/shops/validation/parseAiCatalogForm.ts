@@ -5,7 +5,7 @@ const aiCatalogFormSchema = z
   .object({
     enabled: z.preprocess((v) => v === "on", z.boolean()),
     pageSize: z.coerce.number().int().positive(),
-    fields: z.array(aiCatalogFieldSchema),
+    fields: z.array(aiCatalogFieldSchema).min(1, "Select at least one field"),
   })
   .strict();
 

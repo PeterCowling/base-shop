@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Repo
+Last-reviewed: 2025-12-02
+
 # Package Management
 
 ## Workspace layout

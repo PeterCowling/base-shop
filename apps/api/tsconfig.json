@@ -7,34 +7,37 @@
     "rootDir": "./src",
     "paths": {
       "@acme/lib": [
-        "../../packages/lib/src/index.ts", "../../packages/lib/dist/index.d.ts"
+        "packages/lib/src/index.ts", "packages/lib/dist/index.d.ts"
       ],
       "@acme/lib/*": [
-        "../../packages/lib/src/*", "../../packages/lib/dist/*"
+        "packages/lib/src/*", "packages/lib/dist/*"
       ],
       "@acme/config": [
-        "../../packages/config/src/index.ts", "../../packages/config/dist/index.d.ts"
+        "packages/config/src/index.ts", "packages/config/dist/index.d.ts"
       ],
       "@acme/config/*": [
-        "../../packages/config/src/*", "../../packages/config/dist/*"
+        "packages/config/src/*", "packages/config/dist/*"
       ],
       "@acme/zod-utils": [
-        "../../packages/zod-utils/src/index.ts", "../../packages/zod-utils/dist/index.d.ts"
+        "packages/zod-utils/src/index.ts", "packages/zod-utils/dist/index.d.ts"
       ],
       "@acme/zod-utils/*": [
-        "../../packages/zod-utils/src/*", "../../packages/zod-utils/dist/*"
+        "packages/zod-utils/src/*", "packages/zod-utils/dist/*"
       ],
       "@platform-core": [
-        "../../packages/platform-core/src/index.ts", "../../packages/platform-core/dist/index.d.ts"
+        "packages/platform-core/src/index.ts", "packages/platform-core/dist/index.d.ts"
+      ],
+      "@platform-core/shops": [
+        "packages/platform-core/src/shops/index.ts", "packages/platform-core/dist/shops/index.d.ts"
       ],
       "@platform-core/*": [
-        "../../packages/platform-core/src/*", "../../packages/platform-core/dist/*"
+        "packages/platform-core/src/*", "packages/platform-core/dist/*"
       ],
       "@acme/platform-core": [
-        "../../packages/platform-core/src/index.ts", "../../packages/platform-core/dist/index.d.ts"
+        "packages/platform-core/src/index.ts", "packages/platform-core/dist/index.d.ts"
       ],
       "@acme/platform-core/*": [
-        "../../packages/platform-core/src/*", "../../packages/platform-core/dist/*"
+        "packages/platform-core/src/*", "packages/platform-core/dist/*"
       ]
     }
   },
@@ -48,6 +51,7 @@
     "**/*.test.*"
   ],
   "references": [
-    { "path": "../../packages/lib" }
+    { "path": "../../packages/lib" },
+    { "path": "../../packages/platform-core" }
   ]
 }

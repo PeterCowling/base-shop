@@ -21,6 +21,12 @@ interface ExtendedSeoProps
   openGraph?: OpenGraphImageProps & NextSeoProps["openGraph"];
 }
 
+export type SeoResult = NextSeoProps & {
+  structuredData?: Record<string, unknown> | unknown[];
+  languages: Locale[];
+  canonicalBase?: string;
+};
+
 const fallback: NextSeoProps = {
   title: "",
   description: "",
@@ -29,10 +35,47 @@ const fallback: NextSeoProps = {
   twitter: {},
 };
 
+const FALLBACK_LANGUAGES = LOCALES as readonly Locale[];
+
+const safeAbsoluteUrl = (value?: string): string => {
+  if (!value) return "";
+  try {
+    const url = new URL(value);
+    const cleanedPath = url.pathname.replace(/\/$/, "");
+    return `${url.origin}${cleanedPath}`;
+  } catch {
+    return "";
+  }
+};
+
+const normalizePath = (value?: string): string => {
+  if (!value) return "";
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      return new URL(value).pathname || "";
+    } catch {
+      return "";
+    }
+  }
+  return value.startsWith("/") ? value : "";
+};
+
+const parseStructuredData = (
+  value?: string,
+): Record<string, unknown> | unknown[] | undefined => {
+  if (!value) return undefined;
+  try {
+    const parsed = JSON.parse(value);
+    return parsed && typeof parsed === "object" ? parsed : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
 export async function getSeo(
   locale: Locale,
   pageSeo: Partial<ExtendedSeoProps> = {}
-): Promise<NextSeoProps> {
+): Promise<SeoResult> {
   const shop =
     ((coreEnv as { NEXT_PUBLIC_SHOP_ID?: string }).NEXT_PUBLIC_SHOP_ID as
       | string
@@ -41,29 +84,38 @@ export async function getSeo(
     "@platform-core/repositories/shops.server" // i18n-exempt -- ABC-123 [ttl=2025-12-31] module specifier, not user-facing copy
   );
   const settings: ShopSettings = await getShopSettings(shop);
+  const languages =
+    (Array.isArray(settings.languages) && settings.languages.length
+      ? settings.languages
+      : FALLBACK_LANGUAGES) as Locale[];
   const shopSeo = (settings.seo ?? {}) as Record<string, ExtendedSeoProps>;
+  const fallbackSeo = shopSeo[languages[0]] ?? {};
   const base: ExtendedSeoProps = shopSeo[locale] ?? {};
-  const canonicalBase = base.canonicalBase ?? "";
+  const canonicalBase = safeAbsoluteUrl(base.canonicalBase ?? fallbackSeo.canonicalBase);
 
-  const canonicalOverride = pageSeo.canonical ?? base.canonical;
-  let canonicalPath = "";
-  if (canonicalOverride) {
-      try {
-        canonicalPath = new URL(canonicalOverride).pathname.replace(
-          // eslint-disable-next-line security/detect-non-literal-regexp -- SEO-101 justify: locale string in regex anchor; bounded, not user-provided
-          new RegExp(`^/${locale}`),
-          ""
-        );
-      } catch {
-      canonicalPath = "";
-    }
-  }
+  const canonicalRaw = pageSeo.canonical ?? "";
+  const canonicalPath = normalizePath(canonicalRaw).replace(
+    // eslint-disable-next-line security/detect-non-literal-regexp -- SEO-3202 locale is bounded to known set
+    new RegExp(`^/${locale}(?=/|$)`),
+    "",
+  );
+  const canonicalAbsolute =
+    canonicalRaw && /^https?:\/\//i.test(canonicalRaw)
+      ? (() => {
+          try {
+            return new URL(canonicalRaw).toString();
+          } catch {
+            return "";
+          }
+        })()
+      : "";
 
   const perLocaleCanonical: Partial<Record<Locale, string>> = {};
-  for (const l of LOCALES) {
-    const cBase = shopSeo[l]?.canonicalBase;
+  for (const l of languages) {
+    const cBase = safeAbsoluteUrl(shopSeo[l]?.canonicalBase ?? canonicalBase);
     if (cBase) {
-      perLocaleCanonical[l] = `${cBase}/${l}${canonicalPath}`;
+      const targetPath = canonicalPath || `/${l}`;
+      perLocaleCanonical[l] = new URL(targetPath, cBase).toString();
     }
   }
   const alternates: LinkTag[] = Object.entries(perLocaleCanonical).flatMap(
@@ -78,29 +130,35 @@ export async function getSeo(
     base.openGraph?.image ||
     base.image;
   const resolvedImage =
-    imagePath && !/^https?:/i.test(imagePath)
-      ? `${canonicalBase}${imagePath}`
+    imagePath && canonicalBase && !/^https?:/i.test(imagePath)
+      ? new URL(imagePath, canonicalBase).toString()
       : imagePath;
 
   const canonical =
-    canonicalOverride ??
     perLocaleCanonical[locale] ??
-    (canonicalBase ? `${canonicalBase}/${locale}` : fallback.canonical);
+    (canonicalBase
+      ? new URL(canonicalPath || `/${locale}`, canonicalBase).toString()
+      : canonicalAbsolute || canonicalPath || fallback.canonical);
+
+  const structuredData = parseStructuredData(
+    (pageSeo as { structuredData?: string })?.structuredData ??
+      (base as { structuredData?: string })?.structuredData ??
+      (fallbackSeo as { structuredData?: string })?.structuredData,
+  );
 
   return {
-    title: pageSeo.title ?? base.title ?? fallback.title,
+    title: pageSeo.title ?? base.title ?? fallbackSeo.title ?? fallback.title,
     description:
-      pageSeo.description ?? base.description ?? fallback.description,
+      pageSeo.description ??
+      base.description ??
+      fallbackSeo.description ??
+      fallback.description,
     canonical,
     openGraph: {
       ...(fallback.openGraph ?? {}),
       ...(base.openGraph ?? {}),
       ...(pageSeo.openGraph ?? {}),
-      url:
-        pageSeo.openGraph?.url ??
-        base.openGraph?.url ??
-        perLocaleCanonical[locale] ??
-        (canonicalBase ? `${canonicalBase}/${locale}` : undefined),
+      url: pageSeo.openGraph?.url ?? base.openGraph?.url ?? canonical ?? undefined,
       images: resolvedImage ? [{ url: resolvedImage }] : undefined,
     },
     twitter: {
@@ -109,6 +167,9 @@ export async function getSeo(
       ...(pageSeo.twitter ?? {}),
     },
     additionalLinkTags: alternates,
+    structuredData,
+    languages,
+    canonicalBase,
   };
 }
 
@@ -199,6 +260,6 @@ export function getStructuredData(input: StructuredDataInput) {
   } as Record<string, unknown>;
 }
 
-export function serializeJsonLd(data: Record<string, unknown>) {
+export function serializeJsonLd(data: Record<string, unknown> | unknown[]) {
   return JSON.stringify(data).replace(/</g, "\\u003c");
 }

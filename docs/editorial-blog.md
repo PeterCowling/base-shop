@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Editorial Blog (MDX)
 
 Sprint 6 scaffolds a lightweight editorial blog backed by MD/MDX files on disk.

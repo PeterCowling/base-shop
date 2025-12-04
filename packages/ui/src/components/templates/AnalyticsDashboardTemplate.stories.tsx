@@ -80,4 +80,23 @@ export default meta;
 /* ------------------------------------------------------------------ *
  *  Stories
  * ------------------------------------------------------------------ */
-export const Default: StoryObj<typeof AnalyticsForRows> = {};
+type Story = StoryObj<typeof AnalyticsForRows>;
+const baseArgs = meta.args!;
+
+export const Default: Story = {};
+export const Loading: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "loading" },
+};
+export const Empty: Story = {
+  args: { ...baseArgs, stats: [], tableRows: [] },
+  parameters: { dataState: "empty" },
+};
+export const Error: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "error" },
+};
+export const RTL: Story = {
+  args: { ...baseArgs },
+  parameters: { rtl: true },
+};

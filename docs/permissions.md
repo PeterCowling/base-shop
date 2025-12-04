@@ -1,3 +1,12 @@
+Type: Contract
+Status: Canonical
+Domain: Auth
+Last-reviewed: 2025-12-02
+
+Primary code entrypoints:
+- apps/cms/src/app/cms/rbac/**
+- packages/auth/**
+
 # Permission Guide
 
 This guide lists built-in permissions and their default role mappings.

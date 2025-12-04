@@ -14,10 +14,11 @@ export interface FooterProps extends React.HTMLAttributes<HTMLDivElement> {
   links?: FooterLink[];
   logoVariants?: LogoVariants;
   shopName: string;
+  socialLinks?: FooterLink[];
 }
 
 export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
-  ({ className, links = [], logoVariants, shopName, ...props }, ref) => {
+  ({ className, links = [], logoVariants, shopName, socialLinks = [], ...props }, ref) => {
     const viewport = useViewport();
     const logo = logoVariants?.[viewport];
     // i18n-exempt -- DS-1234 [ttl=2025-11-30]
@@ -53,6 +54,17 @@ export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
                 {l.label}
               </a>
             ))}
+            {socialLinks.map((s) => (
+              <a
+                key={s.href}
+                href={s.href}
+                // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                className="inline-flex min-h-11 min-w-11 items-center hover:underline"
+                data-token="--color-fg"
+              >
+                {s.label}
+              </a>
+            ))}
           </Inline>
           </div>
         </nav>
@@ -61,3 +73,6 @@ export const Footer = React.forwardRef<HTMLDivElement, FooterProps>(
   },
 );
 Footer.displayName = "Footer";
+
+// Provide default export for Storybook/interop expectations.
+export default Footer;

@@ -2,6 +2,8 @@
 
 "use client";
 
+// Docs: docs/shop-editor-refactor.md
+
 import type { Shop } from "@acme/types";
 
 import EditorSectionsAccordion from "./components/EditorSectionsAccordion";

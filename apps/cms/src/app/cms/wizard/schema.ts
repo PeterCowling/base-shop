@@ -119,6 +119,7 @@ const configuratorStateSchemaBase: z.AnyZodObject = z
     contactInfo: z.string().optional().default(""),
     type: z.enum(["sale", "rental"]).optional().default("sale"),
     completed: z.record(stepStatusSchema).optional().default({}),
+    billingProvider: z.string().optional().default(""),
 
     /* ------------------- SEO fields --------------------- */
     pageTitle: localeRecordSchema

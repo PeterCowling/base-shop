@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Button, Input } from "@ui/components/atoms";
-import { ImagePicker } from "@ui/components/cms/page-builder";
+import { ImagePicker } from "@acme/page-builder-ui";
 import Image from "next/image";
 import {
   EditorProvider,

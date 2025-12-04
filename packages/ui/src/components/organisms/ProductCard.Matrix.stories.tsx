@@ -11,7 +11,6 @@ const sample = PRODUCTS[0];
 const meta: Meta<typeof ProductCard> = {
   title: 'Organisms/ProductCard/Matrix',
   component: ProductCard,
-  parameters: { docs: { autodocs: false } },
   args: {
     product: sample,
     showImage: true,
@@ -78,5 +77,31 @@ export const AddToCartFlow: Story = {
     await userEvent.click(await canvas.findByRole('button', { name: /add to cart|أضف إلى السلة/i }));
     // Expectation: nothing to assert visually here without toast; interaction should not error.
     await expect(canvasElement).toBeDefined();
+  },
+};
+
+const brokenMediaProduct = {
+  ...sample,
+  media: [
+    { url: '', type: 'image' },
+    { url: 'https://placehold.co/600x800/png?text=Tall', type: 'image' },
+  ],
+};
+
+export const BrokenMediaFallback: Story = {
+  ...makeStateStory(
+    { ...baseArgs, product: brokenMediaProduct },
+    { showImage: true },
+    'default',
+    { a11y: true, viewports: ['desktop'], tags: ['visual', 'ci'] }
+  ),
+  parameters: {
+    docs: { description: { story: 'Missing primary image with secondary fallback renders gracefully.' } },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const img = canvas.getByRole('img');
+    expect(img).toBeInTheDocument();
+    expect(img.getAttribute('src') || '').not.toBe('');
   },
 };

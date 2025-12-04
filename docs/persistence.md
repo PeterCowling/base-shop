@@ -1,3 +1,12 @@
+Type: Contract
+Status: Canonical
+Domain: Platform
+Last-reviewed: 2025-12-02
+
+Canonical code:
+- packages/platform-core/src/repositories/**
+- packages/platform-core/src/dataRoot.ts
+
 # Persistence and `DATA_ROOT`
 
 Prisma with PostgreSQL is the primary datastore. Some repositories offer filesystem fallbacks when a database or remote service isn't configured. Data for these fallbacks is stored under a shop‑specific directory rooted at `DATA_ROOT`, enabling certain demos and tests to run offline.
@@ -34,6 +43,11 @@ Each variable accepts:
 - _unset_ – defers to `DB_MODE` when it is set. If both the repo‑specific variable and `DB_MODE` are unset, the resolver uses a legacy auto‑detection mode for backwards compatibility:
   - When `DATABASE_URL` is set and a Prisma model delegate exists, Prisma is used.
   - Otherwise the JSON backend is used.
+
+## Failure surface and telemetry
+
+- When a backend is explicitly set to `prisma`, errors such as a missing model delegate or transaction failures are surfaced to callers instead of falling back to JSON. Inventory routes respond with HTTP 503 in this case; CLI tools and jobs should do the same (log and retry/alert) rather than assuming a silent JSON write succeeded.
+- Log inventory/backend errors so observability captures upstream outages; do not down-level to 4xx for these cases.
 
 `DB_MODE` accepts the same values (`"json"` or `"prisma"`) and applies them across all repositories unless overridden by a specific `*_BACKEND` variable. Any other value for `*_BACKEND` or `DB_MODE` is treated as an error and will cause the resolver to throw with a clear message.
 

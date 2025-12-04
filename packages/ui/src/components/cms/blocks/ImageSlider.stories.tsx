@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import ImageSlider from "./ImageSlider";
 
 const meta: Meta<typeof ImageSlider> = {
+  title: "CMS Blocks/ImageSlider",
   component: ImageSlider,
   args: {
     slides: [

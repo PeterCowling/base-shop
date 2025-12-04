@@ -7,6 +7,7 @@ It provides:
 - Atoms/molecules/organisms/layout components used by storefront apps and CMS.
 - CMS and Page Builder UI (blocks, navigational editors, media manager, shop chooser).
 - Layout primitives and helpers for tenant apps.
+- Size/tone guidance for atoms (Buttons/IconButtons/Tags/ProductBadges/Chips): `docs/size-tone-guide.md`.
 
 For layering rules, public import surfaces, and platform vs tenant responsibilities, see:
 

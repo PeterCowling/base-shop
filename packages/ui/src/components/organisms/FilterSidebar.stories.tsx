@@ -5,6 +5,9 @@ import { FilterSidebar } from "./FilterSidebar.client";
 const meta: Meta<typeof FilterSidebar> = {
   title: "Organisms/FilterSidebar",
   component: FilterSidebar,
+  args: {
+    onChange: () => {},
+  },
   decorators: [
     (Story) => (
       <div className="p-8">
@@ -15,6 +18,4 @@ const meta: Meta<typeof FilterSidebar> = {
 };
 export default meta;
 
-export const Default: StoryObj<typeof FilterSidebar> = {
-  render: () => <FilterSidebar onChange={() => {}} />,
-};
+export const Default: StoryObj<typeof FilterSidebar> = {};

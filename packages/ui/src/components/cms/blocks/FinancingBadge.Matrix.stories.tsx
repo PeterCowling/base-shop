@@ -9,7 +9,6 @@ import { z } from 'zod';
 const meta: Meta<typeof FinancingBadge> = {
   title: 'CMS Blocks/FinancingBadge/Matrix',
   component: FinancingBadge,
-  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;
@@ -22,3 +21,8 @@ try { z.object({ provider: z.enum(['affirm','klarna','afterpay','custom']).optio
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 export const APR: Story = makeStateStory(baseArgs, { apr: 9.99 }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });
+export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });

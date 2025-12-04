@@ -64,7 +64,12 @@ const initShop = jest.fn();
 const deployShop = jest.fn();
 const seedShop = jest.fn();
 const getRequiredSteps = jest.fn();
+const getConfiguratorProgressForShop = jest.fn();
+const runRequiredConfigChecks = jest.fn();
 const configuratorChecks: Record<string, jest.Mock> = {};
+const mockCookies = jest.fn(() => ({
+  get: (name: string) => (name === 'csrf_token' ? { value: 'token' } : undefined),
+}));
 
 jest.mock('../../../cms/wizard/services/createShop', () => ({
   __esModule: true,
@@ -94,6 +99,18 @@ jest.mock('../../../cms/configurator/steps', () => ({
 jest.mock('@platform-core/configurator', () => ({
   __esModule: true,
   configuratorChecks,
+  getConfiguratorProgressForShop: (...args: any[]) =>
+    getConfiguratorProgressForShop(...args),
+  runRequiredConfigChecks: (...args: any[]) => runRequiredConfigChecks(...args),
+}));
+
+jest.mock('next/headers', () => ({
+  cookies: (...args: any[]) => mockCookies(...args),
+}));
+
+jest.mock('@cms/actions/common/auth', () => ({
+  __esModule: true,
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { id: 'test-user', role: 'admin' } }),
 }));
 
 afterEach(() => {
@@ -102,6 +119,15 @@ afterEach(() => {
   for (const key of Object.keys(configuratorChecks)) {
     delete configuratorChecks[key];
   }
+});
+
+beforeEach(() => {
+  getConfiguratorProgressForShop.mockResolvedValue({
+    shopId: '1',
+    steps: {},
+    lastUpdated: new Date().toISOString(),
+  });
+  runRequiredConfigChecks.mockResolvedValue({ ok: true });
 });
 
 function parseSse(text: string) {
@@ -115,10 +141,16 @@ function parseSse(text: string) {
 describe('launch-shop route', () => {
   it('returns 400 when required steps are missing', async () => {
     getRequiredSteps.mockReturnValue([{ id: 'a' }]);
+    getConfiguratorProgressForShop.mockResolvedValue({
+      shopId: '1',
+      steps: {},
+      lastUpdated: new Date().toISOString(),
+    });
+    runRequiredConfigChecks.mockResolvedValue({ ok: false, error: 'missing' });
     const { POST } = await import('../route');
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} } }),
-      headers: new Headers(),
+      headers: new Headers({ 'x-csrf-token': 'token' }),
     } as unknown as Request;
     const res = await POST(req);
     expect(res.status).toBe(400);
@@ -142,11 +174,17 @@ describe('launch-shop route', () => {
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
     deployShop.mockResolvedValue({ ok: true });
+    getConfiguratorProgressForShop.mockResolvedValue({
+      shopId: '1',
+      steps: {},
+      lastUpdated: new Date().toISOString(),
+    });
+    runRequiredConfigChecks.mockResolvedValue({ ok: true });
 
     const { POST } = await import('../route');
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} }, seed: false }),
-      headers: new Headers(),
+      headers: new Headers({ 'x-csrf-token': 'token' }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -170,11 +208,17 @@ describe('launch-shop route', () => {
       configuratorChecks[id] = jest.fn(async () => ({ ok: true }));
     }
     createShop.mockResolvedValue({ ok: false, error: 'nope' });
+    getConfiguratorProgressForShop.mockResolvedValue({
+      shopId: '1',
+      steps: {},
+      lastUpdated: new Date().toISOString(),
+    });
+    runRequiredConfigChecks.mockResolvedValue({ ok: true });
 
     const { POST } = await import('../route');
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} } }),
-      headers: new Headers(),
+      headers: new Headers({ 'x-csrf-token': 'token' }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -204,11 +248,17 @@ describe('launch-shop route', () => {
     }
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: false, error: 'nope' });
+    getConfiguratorProgressForShop.mockResolvedValue({
+      shopId: '1',
+      steps: {},
+      lastUpdated: new Date().toISOString(),
+    });
+    runRequiredConfigChecks.mockResolvedValue({ ok: true });
 
     const { POST } = await import('../route');
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} } }),
-      headers: new Headers(),
+      headers: new Headers({ 'x-csrf-token': 'token' }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -244,7 +294,7 @@ describe('launch-shop route', () => {
     const { POST } = await import('../route');
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} } }),
-      headers: new Headers(),
+      headers: new Headers({ 'x-csrf-token': 'token' }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -282,7 +332,7 @@ describe('launch-shop route', () => {
     const { POST } = await import('../route');
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} }, seed: true }),
-      headers: new Headers(),
+      headers: new Headers({ 'x-csrf-token': 'token' }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -295,6 +345,8 @@ describe('launch-shop route', () => {
       { step: 'init', status: 'success' },
       { step: 'deploy', status: 'pending' },
       { step: 'deploy', status: 'success' },
+      { step: 'tests', status: 'pending' },
+      { step: 'tests', status: 'success' },
       { step: 'seed', status: 'pending' },
       { step: 'seed', status: 'failure', error: 'nope' },
     ]);
@@ -318,7 +370,7 @@ describe('launch-shop route', () => {
     const { POST } = await import('../route');
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} } }),
-      headers: new Headers(),
+      headers: new Headers({ 'x-csrf-token': 'token' }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -354,7 +406,7 @@ describe('launch-shop route', () => {
     const { POST } = await import('../route');
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} }, seed: true }),
-      headers: new Headers(),
+      headers: new Headers({ 'x-csrf-token': 'token' }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -367,6 +419,8 @@ describe('launch-shop route', () => {
       { step: 'init', status: 'success' },
       { step: 'deploy', status: 'pending' },
       { step: 'deploy', status: 'success' },
+      { step: 'tests', status: 'pending' },
+      { step: 'tests', status: 'success' },
       { step: 'seed', status: 'pending' },
       { step: 'seed', status: 'success' },
       { done: true },
@@ -393,11 +447,16 @@ describe('launch-shop route', () => {
     createShop.mockResolvedValue({ ok: true });
     initShop.mockResolvedValue({ ok: true });
     deployShop.mockResolvedValue({ ok: true });
+    runRequiredConfigChecks.mockResolvedValue({
+      ok: false,
+      error:
+        'Configuration checks failed for steps: payments:missing-payment-provider',
+    });
 
     const { POST } = await import('../route');
     const req = {
       json: async () => ({ shopId: '1', state: { completed: {} } }),
-      headers: new Headers(),
+      headers: new Headers({ 'x-csrf-token': 'token' }),
     } as unknown as Request;
 
     const res = await POST(req);

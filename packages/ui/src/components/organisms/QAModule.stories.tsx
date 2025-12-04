@@ -3,6 +3,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { QAModule } from "./QAModule";
 
 const meta: Meta<typeof QAModule> = {
+  title: "Organisms/QAModule",
   component: QAModule,
   args: {
     items: [

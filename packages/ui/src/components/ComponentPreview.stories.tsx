@@ -23,6 +23,7 @@ if (typeof globalThis !== 'undefined') {
 }
 
 const meta: Meta<typeof ComponentPreview> = {
+  title: 'Utilities/ComponentPreview',
   component: ComponentPreview,
   tags: ['autodocs'],
   args: {

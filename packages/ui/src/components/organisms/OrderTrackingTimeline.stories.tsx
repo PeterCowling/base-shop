@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { OrderTrackingTimeline } from "./OrderTrackingTimeline";
 
 const meta: Meta<typeof OrderTrackingTimeline> = {
+  title: "Organisms/OrderTrackingTimeline",
   component: OrderTrackingTimeline,
   args: {
     itemSpacing: "space-y-6",

@@ -38,3 +38,5 @@ export const SolidVariants: StoryObj<typeof Toast> = {
     </>
   ),
 };
+
+export const Default: StoryObj<typeof Toast> = {};

@@ -99,7 +99,17 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
     crossBreakpointNotices,
     onCrossBreakpointNoticesChange,
     mode = "page",
+    publishMeta,
+    previewUrl,
+    previewSource,
   } = props;
+
+  const lastPublishedComponents = props.publishMeta?.lastPublishedComponents;
+  const onRevertToPublished = lastPublishedComponents
+    ? (next: unknown) => {
+        props.historyProps?.onRestoreVersion?.(next);
+      }
+    : undefined;
 
   const breakpoints = toolbarProps?.breakpoints;
   const setBreakpoints = toolbarProps?.setBreakpoints;
@@ -151,6 +161,7 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
             shop={shop}
             sidebarProps={sidebarProps}
             mode={mode}
+            allowedTypes={props.allowedBlockTypes}
             onOpenPages={() => setPagesOpen(true)}
             onOpenGlobals={() => setGlobalsOpen(true)}
             onOpenCMS={() => setCmsOpen(true)}
@@ -162,6 +173,8 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
           <div className="flex flex-1 flex-col gap-4 min-h-0">
             <PageBuilderTopBar
               historyProps={historyProps}
+              lastPublishedComponents={lastPublishedComponents}
+              onRevertToPublished={onRevertToPublished}
               showPreview={showPreview}
               togglePreview={togglePreview}
               mode={mode}
@@ -186,6 +199,10 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
               onHelpOpenChange={setHelpOpen}
               canSavePreset={props.canSavePreset}
               onSavePreset={props.onSavePreset}
+              templateActions={props.templateActions}
+              publishMeta={publishMeta}
+              previewUrl={previewUrl}
+              previewSource={previewSource}
             />
             <div aria-live="polite" aria-atomic="true" role="status" className="sr-only">
               {liveMessage}

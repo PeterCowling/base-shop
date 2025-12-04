@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Theming
+Last-reviewed: 2025-12-02
+
 # Advanced Theming
 
 ## Base themes

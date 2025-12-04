@@ -6,6 +6,7 @@ import { PRODUCTS } from '@acme/platform-core/products/index';
 import CollectionSectionClient from './CollectionSection.client';
 
 const meta: Meta<typeof CollectionSectionClient> = {
+  title: 'CMS Blocks/CollectionSection',
   component: CollectionSectionClient,
   args: {
     initial: PRODUCTS as SKU[],

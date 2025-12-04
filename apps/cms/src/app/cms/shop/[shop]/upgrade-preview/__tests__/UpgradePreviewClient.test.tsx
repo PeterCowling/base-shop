@@ -102,4 +102,33 @@ describe("UpgradePreviewClient", () => {
 
     consoleErrorSpy.mockRestore();
   });
+
+  it("publishes upgrade via republish endpoint", async () => {
+    (global.fetch as jest.Mock)
+      // first call: upgrade-changes
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ components: [] }),
+      })
+      // second call: republish
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({ status: "ok" }),
+      });
+
+    render(<UpgradePreviewClient shop={shop} />);
+
+    const publishButton = await screen.findByText("Publish upgrade");
+    await act(async () => {
+      publishButton.click();
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      `/api/shop/${shop}/republish`,
+      expect.objectContaining({ method: "POST" })
+    );
+    expect(
+      await screen.findByText("Upgrade published successfully.")
+    ).toBeInTheDocument();
+  });
 });

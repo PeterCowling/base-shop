@@ -6,7 +6,7 @@ See:
 
 - `docs/architecture.md` – package layering and public surfaces.
 - `docs/platform-vs-apps.md` – platform vs apps responsibilities and public API.
-- `docs/cms-research.md` – Page Builder UX, templates, and block registries.
+- `docs/historical/cms-research.md` – Page Builder UX, templates, and block registries (historical research log).
 
 This package should keep React concerns here, defer pure logic to `@acme/page-builder-core`, and consume only public surfaces from other packages instead of deep `src/` imports.
 
@@ -25,52 +25,63 @@ It should **not**:
 
 ## Public surface
 
-The public API of this package is deliberately small and React‑focused:
+The public API of this package is React‑focused and intentionally small:
 
 - All public exports are re‑exported from `src/index.ts` and surfaced via the `exports` map in `package.json`.
-- New public components/hooks should be exported from `src/index.ts` (and optionally grouped under `src/public/**`) with doc comments.
 - Call sites must import from `@acme/page-builder-ui`, never from `@acme/page-builder-ui/src/**`.
 
-Example (future) usage:
+Today the main entrypoints are:
+
+- **Editor shell**
+  - `PageBuilder` / `PageBuilderProps` – high‑level editor component used by CMS routes.
+  - `PageBuilderLayout` / `PageBuilderLayoutProps` – lower‑level layout shell when callers need custom wiring.
+  - `PageToolbar`, `PageCanvas`, `PageSidebar`, `DragHandle`, `SizeControls`, `PreviewRenderer` – focused UI primitives used by CT and advanced flows.
+
+- **State and interaction hooks**
+  - `usePageBuilderState`, `usePageBuilderDnD`, `usePageBuilderControls`, `usePageBuilderSave`, `useAutoSave`.
+  - Canvas helpers: `useCanvasDrag`, `useCanvasResize`, `useBlockDimensions`, `useBlockDnD`, `useBlockTransform`.
+  - Content helpers: `useLocalizedTextEditor`, `useComponentInputs`.
+
+- **Library and globals**
+  - Types: `LibraryItem`, `GlobalItem`.
+  - Helpers: `listLibrary`, `saveLibrary`, `saveLibraryStrict`, `updateLibrary`, `removeLibrary`, `clearLibrary`, `syncLibraryFromServer`.
+  - Globals helpers: `listGlobals`, `saveGlobal`, `updateGlobal`, `removeGlobal`, plus page‑scoped equivalents (`listGlobalsForPage`, `saveGlobalForPage`, `updateGlobalForPage`, `removeGlobalForPage`).
+
+- **Registry builders and text themes**
+  - Re‑exports from `@acme/page-builder-core`: `buildBlockRegistry`, `BlockTypeId`, `BlockRegistry`, `BlockDescriptor`, `BlockRegistryEntryConfig`, `coreBlockDescriptors`.
+  - Starter registry aligned with the default theme: `starterBlockRegistry` and its types (`StarterBlockRegistry`, `StarterBlockRegistryEntry`), built from `coreBlockDescriptors` and the default UI block implementations in `@acme/ui`.
+  - Text theme helpers shared between editor and runtime: `extractTextThemes`, `applyTextThemeToOverrides`.
+
+Example usage (CMS page editor):
 
 ```ts
 import {
-  PageBuilderProvider,
-  PageBuilderCanvas,
-  TemplatesPanel,
+  PageBuilder,
+  type PageBuilderProps,
+  buildBlockRegistry,
+  type BlockTypeId,
 } from "@acme/page-builder-ui";
 
-import {
-  buildBlockRegistry,
-  coreBlockDescriptors,
-} from "@acme/page-builder-core";
-```
-
-In practice, the CMS currently hosts the editor UI in `@acme/ui`:
-
-- The canonical CMS block registry lives in `packages/ui/src/components/cms/blocks/index.ts`.
-- Runtime rendering in the template app lives in `packages/template-app/src/components/DynamicRenderer.tsx`.
-
-When migrating those pieces into `@acme/page-builder-ui`, follow the same pattern:
-
-```ts
-import {
-  buildBlockRegistry,
-  coreBlockDescriptors,
-} from "@acme/page-builder-core";
+import { coreBlockDescriptors } from "@acme/page-builder-core";
+import HeroBanner from "@ui/components/cms/blocks/HeroBanner";
 
 type BlockComponent = React.ComponentType<Record<string, unknown>>;
 
-const { registry: blockRegistry } =
-  buildBlockRegistry<BlockComponent>(coreBlockDescriptors, [
-    { type: "HeroBanner", entry: HeroBanner },
-    { type: "ProductGrid", entry: ProductGrid },
-  ]);
+const { registry } = buildBlockRegistry<BlockComponent>(coreBlockDescriptors, [
+  { type: "HeroBanner" as BlockTypeId, entry: HeroBanner as BlockComponent },
+]);
 
-// Pass `blockRegistry` into your canvas/components via props or context.
+export function CmsPageBuilder(props: PageBuilderProps) {
+  // `PageBuilder` consumes the shared block registry via props/context in the CMS app.
+  return <PageBuilder {...props} />;
+}
 ```
 
-This keeps the Page Builder UI wired to the shared block vocabulary and public APIs from `@acme/page-builder-core`, matching how CMS and runtime apps are wired today.
+## Versioning and changelog
+
+- Starts at `1.0.0` (PB‑N03) and follows semver for public components, hooks, and registry helpers.
+- Log every breaking/additive/fix change in `packages/page-builder-ui/CHANGELOG.md` and update this README when public exports change.
+- Keep new public APIs wired through `src/index.ts` and document contract updates alongside the changelog entry.
 
 ## Internal modules
 

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import FormBuilderBlock from "./FormBuilderBlock";
 
 const meta: Meta<typeof FormBuilderBlock> = {
+  title: "CMS Blocks/FormBuilderBlock",
   component: FormBuilderBlock,
   args: {
     fields: [

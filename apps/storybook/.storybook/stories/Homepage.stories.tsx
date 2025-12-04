@@ -25,8 +25,25 @@ function HomeComposition({
 }: HomeCompositionProps) {
   return (
     <div>
-      {showCartStatus ? <CartStatus /> : null}
-      <HeaderSection {...headerProps} />
+      <div className="relative">
+        {showCartStatus ? (
+          <aside
+            aria-label="Cart status"
+            aria-live="polite"
+            className="flex justify-end px-4 py-2"
+          >
+            <CartStatus
+              style={{
+                position: "relative",
+                top: 0,
+                right: 0,
+                zIndex: 1,
+              }}
+            />
+          </aside>
+        ) : null}
+        <HeaderSection {...headerProps} />
+      </div>
       <main>
         <CampaignHeroSection {...heroProps} />
         <div style={{ marginTop: 32 }}>

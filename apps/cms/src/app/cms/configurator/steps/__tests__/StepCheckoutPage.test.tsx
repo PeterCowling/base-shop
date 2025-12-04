@@ -1,5 +1,8 @@
 import React from "react";
 import { render, screen, fireEvent, act } from "@testing-library/react";
+import StepCheckoutPage from "../StepCheckoutPage";
+import { ConfiguratorContext, type ConfiguratorContextValue } from "../../ConfiguratorContext";
+import type { ConfiguratorState } from "../../wizard/schema";
 
 const markComplete = jest.fn();
 jest.mock("../../hooks/useStepCompletion", () => ({
@@ -17,124 +20,146 @@ jest.mock("../../lib/api", () => ({
   apiRequest: (...args: any[]) => apiRequest(...args),
 }));
 
-const ulidMock = jest.fn();
-jest.mock("ulid", () => ({
-  ulid: (...args: any[]) => ulidMock(...args),
+jest.mock("../components/TemplateSelector", () => ({
+  __esModule: true,
+  default: ({ pageTemplates, onConfirm }: any) => (
+    <div>
+      <button
+        data-testid="mock-template-confirm"
+        onClick={() => onConfirm(pageTemplates[0].id, pageTemplates[0].components, pageTemplates[0])}
+      >
+        choose template
+      </button>
+    </div>
+  ),
 }));
 
-jest.mock(
-  "@/components/cms/PageBuilder",
-  () => ({
-    __esModule: true,
-    default: ({ onSave, onChange }: any) => (
-      <div>
-        <button onClick={() => onSave(new FormData())}>save</button>
-        <button onClick={() => onChange([{ id: "changed" }])}>change</button>
-      </div>
-    ),
-    Toast: ({ open, message }: any) => (open ? <div>{message}</div> : null),
-  }),
-  { virtual: true },
-);
-
-jest.mock(
-  "@/components/atoms/shadcn",
-  () => {
-    const React = require("react");
-    const Select = ({ value, onValueChange, children, ...props }: any) => {
-      const [, content] = React.Children.toArray(children);
-      return (
-        <select
-          value={value}
-          onChange={(e) => onValueChange(e.target.value)}
-          {...props}
-        >
-          {content?.props.children}
-        </select>
-      );
-    };
-    return {
-      __esModule: true,
-      Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-      Select,
-      SelectContent: ({ children }: any) => <>{children}</>,
-      SelectItem: ({ value, children }: any) => (
-        <option value={value}>{children}</option>
-      ),
-      SelectTrigger: ({ children }: any) => <>{children}</>,
-      SelectValue: ({ placeholder }: any) => (
-        <option value="">{placeholder}</option>
-      ),
-    };
-  },
-  { virtual: true },
-);
-
-jest.mock("../../hooks/useThemeLoader", () => ({
-  useThemeLoader: () => ({}),
+jest.mock("@/components/atoms/shadcn", () => ({
+  __esModule: true,
+  Button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
+  Card: ({ children }: any) => <div>{children}</div>,
+  CardContent: ({ children }: any) => <div>{children}</div>,
 }));
 
-import StepCheckoutPage from "../StepCheckoutPage";
+jest.mock("@/components/atoms", () => ({
+  __esModule: true,
+  Toast: ({ open, message }: any) => (open ? <div>{message}</div> : null),
+}));
+
+jest.mock("@acme/i18n", () => ({
+  __esModule: true,
+  useTranslations: () => (key: string) => key,
+}));
+
+function renderWithContext(
+  stateOverrides: Partial<ConfiguratorState> = {},
+  props?: Partial<React.ComponentProps<typeof StepCheckoutPage>>,
+) {
+  const baseState = {
+    shopId: "shop1",
+    completed: {},
+    checkoutLayout: "",
+    checkoutComponents: [],
+    checkoutPageId: null,
+    themeDefaults: {},
+    themeOverrides: {},
+  } as Partial<ConfiguratorState>;
+
+  const value: ConfiguratorContextValue = {
+    state: { ...baseState, ...stateOverrides } as ConfiguratorState,
+    setState: jest.fn(),
+    update: jest.fn(),
+    markStepComplete: jest.fn(),
+    themeDefaults: {},
+    themeOverrides: {},
+    setThemeOverrides: jest.fn(),
+    dirty: false,
+    resetDirty: jest.fn(),
+    saving: false,
+  };
+
+  return render(
+    <ConfiguratorContext.Provider value={value}>
+      <StepCheckoutPage
+        pageTemplates={[
+          { id: "tpl1", name: "Checkout", components: [{ type: "CheckoutSection" } as any] },
+        ]}
+        {...props}
+      />
+    </ConfiguratorContext.Provider>,
+  );
+}
 
 describe("StepCheckoutPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    apiRequest.mockResolvedValue({ data: undefined, error: undefined });
   });
 
-  const renderStep = () => {
+  it("creates a checkout page when a template is chosen", async () => {
     const setCheckoutLayout = jest.fn();
     const setCheckoutComponents = jest.fn();
     const setCheckoutPageId = jest.fn();
-    const props = {
-      pageTemplates: [
-        { name: "tpl1", components: [{ type: "one" }] },
-        { name: "tpl2", components: [{ type: "two" }, { type: "three" }] },
-      ],
-      checkoutLayout: "",
-      setCheckoutLayout,
-      checkoutComponents: [],
-      setCheckoutComponents,
-      checkoutPageId: null,
-      setCheckoutPageId,
-      shopId: "shop1",
-      themeStyle: {},
+    const summary = {
+      id: "p1",
+      slug: "checkout",
+      status: "draft" as const,
+      updatedAt: "2025-01-01T00:00:00.000Z",
+      previewPath: "/checkout",
+      draftPreviewPath: "/checkout?preview=draft",
+      templateId: "tpl1",
     };
-    render(<StepCheckoutPage {...props} />);
-    return { setCheckoutLayout, setCheckoutComponents, setCheckoutPageId };
-  };
+    apiRequest.mockResolvedValueOnce({ data: summary, error: null });
 
-  it("maps selected template to components", () => {
-    const { setCheckoutLayout, setCheckoutComponents } = renderStep();
-    ulidMock.mockReturnValueOnce("id1").mockReturnValueOnce("id2");
-    fireEvent.change(screen.getByTestId("checkout-layout"), {
-      target: { value: "tpl2" },
-    });
-    expect(setCheckoutLayout).toHaveBeenCalledWith("tpl2");
-    expect(setCheckoutComponents).toHaveBeenCalledWith([
-      { type: "two", id: "id1" },
-      { type: "three", id: "id2" },
-    ]);
-  });
-
-  it("saves draft and shows toast", async () => {
-    const { setCheckoutPageId } = renderStep();
-    apiRequest.mockResolvedValueOnce({ data: { id: "p1" }, error: null });
-    await act(async () => {
-      fireEvent.click(screen.getByText("save"));
-    });
-    expect(apiRequest).toHaveBeenCalledWith(
-      "/cms/api/page-draft/shop1",
-      expect.objectContaining({ method: "POST", body: expect.any(FormData) }),
+    render(
+      <StepCheckoutPage
+        pageTemplates={[{ id: "tpl1", name: "Checkout", components: [{ type: "CheckoutSection" } as any] }]}
+        checkoutLayout=""
+        setCheckoutLayout={setCheckoutLayout}
+        checkoutPageId={null}
+        setCheckoutPageId={setCheckoutPageId}
+        shopId="shop1"
+      />,
     );
+
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("mock-template-confirm"));
+    });
+
+    expect(apiRequest).toHaveBeenCalledWith(
+      "/cms/api/checkout-page/shop1",
+      expect.objectContaining({
+        method: "POST",
+        body: JSON.stringify({ templateId: "tpl1" }),
+      }),
+    );
+    expect(setCheckoutLayout).toHaveBeenCalledWith("tpl1");
     expect(setCheckoutPageId).toHaveBeenCalledWith("p1");
-    await screen.findByText("Draft saved");
+    await screen.findByText("cms.configurator.shopPage.draftSaved");
   });
 
-  it("marks complete and navigates away", () => {
-    renderStep();
+  it("blocks completion until checkout dependencies are met", () => {
+    renderWithContext({
+      checkoutLayout: "tpl1",
+      checkoutPageId: "page-1",
+      completed: {},
+      checkoutStatus: "draft",
+    });
+    expect(screen.getByTestId("save-return")).toBeDisabled();
+  });
+
+  it("allows completion when template, page, and settings are ready", () => {
+    renderWithContext(
+      {
+        checkoutLayout: "tpl1",
+        checkoutPageId: "page-1",
+        completed: { "payment-provider": "complete", shipping: "complete" },
+      },
+      { checkoutLayout: "tpl1", checkoutPageId: "page-1" },
+    );
+
     fireEvent.click(screen.getByTestId("save-return"));
     expect(markComplete).toHaveBeenCalledWith(true);
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator");
   });
 });
-

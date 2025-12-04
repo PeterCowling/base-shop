@@ -10,6 +10,12 @@ export { formatPrice } from "./formatPrice";
 export { formatNumber } from "./formatNumber";
 export { logger } from "./logger";
 export type { LogMeta } from "./logger";
+export {
+  getRequestContext,
+  setRequestContext,
+  withRequestContext,
+} from "./requestContext";
+export type { RequestContext, EnvLabel } from "./requestContext";
 export { getShopFromPath } from "./getShopFromPath";
 export { replaceShopInPath } from "./replaceShopInPath";
 export { buildResponse } from "./buildResponse";

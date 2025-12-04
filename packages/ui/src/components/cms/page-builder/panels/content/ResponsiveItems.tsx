@@ -57,7 +57,7 @@ export default function ResponsiveItems({ component, handleInput }: Props) {
       </div>
       {comp.desktopItems !== undefined && (
         <div className="mt-1 flex items-center gap-2 text-xs">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <span className="rounded bg-muted px-1 text-primary">{t("Override active")}</span>
           <Button
             type="button"
             variant="ghost"
@@ -86,7 +86,7 @@ export default function ResponsiveItems({ component, handleInput }: Props) {
       </div>
       {comp.tabletItems !== undefined && (
         <div className="mt-1 flex items-center gap-2 text-xs">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <span className="rounded bg-muted px-1 text-primary">{t("Override active")}</span>
           <Button
             type="button"
             variant="ghost"
@@ -115,7 +115,7 @@ export default function ResponsiveItems({ component, handleInput }: Props) {
       </div>
       {comp.mobileItems !== undefined && (
         <div className="mt-1 flex items-center gap-2 text-xs">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <span className="rounded bg-muted px-1 text-primary">{t("Override active")}</span>
           <Button
             type="button"
             variant="ghost"

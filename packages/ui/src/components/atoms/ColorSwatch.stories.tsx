@@ -31,3 +31,5 @@ export const Palette: StoryObj<typeof ColorSwatch> = {
     </Inline>
   ),
 };
+
+export const Default: StoryObj<typeof ColorSwatch> = {};

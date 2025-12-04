@@ -95,9 +95,9 @@ export default function StoreLocatorSection({ stores: inputStores = [], adapter,
         <aside className="space-y-3">
           <h3 className="text-lg font-semibold">{t("storeLocator.findAStore")}</h3>
           {origin ? (
-            <p className="text-sm text-neutral-600">{t("storeLocator.showingWithin", { radiusKm })}</p>
+            <p className="text-sm text-muted-foreground">{t("storeLocator.showingWithin", { radiusKm })}</p>
           ) : (
-            <p className="text-sm text-neutral-600">{t("storeLocator.enableLocationToSort")}</p>
+            <p className="text-sm text-muted-foreground">{t("storeLocator.enableLocationToSort")}</p>
           )}
           <ul className="divide-y border rounded">
             {filtered.map((s) => (
@@ -108,16 +108,16 @@ export default function StoreLocatorSection({ stores: inputStores = [], adapter,
                     // i18n-exempt -- ABC-123 [ttl=2025-01-31]
                     const ITEM_BASE_CLASS = "block w-full text-left p-3 min-h-10";
                     // i18n-exempt -- ABC-123 [ttl=2025-01-31]
-                    const ITEM_SELECTED_CLASS = "bg-neutral-50";
+                    const ITEM_SELECTED_CLASS = "bg-muted";
                     // i18n-exempt -- ABC-123 [ttl=2025-01-31]
-                    const ITEM_DEFAULT_CLASS = "bg-white";
+                    const ITEM_DEFAULT_CLASS = "bg-card";
                     return [ITEM_BASE_CLASS, selected?.id === s.id ? ITEM_SELECTED_CLASS : ITEM_DEFAULT_CLASS].join(" ");
                   })()}
                   onClick={() => setSelected(s)}
                 >
                   <div className="font-medium">{s.label}</div>
-                  {s.address ? <div className="text-sm text-neutral-600">{s.address}</div> : null}
-                  {s.stockNote ? <div className="text-xs text-emerald-700">{s.stockNote}</div> : null}
+                  {s.address ? <div className="text-sm text-muted-foreground">{s.address}</div> : null}
+                  {s.stockNote ? <div className="text-xs text-primary">{s.stockNote}</div> : null}
                 </button>
               </li>
             ))}
@@ -138,7 +138,7 @@ export default function StoreLocatorSection({ stores: inputStores = [], adapter,
               {selected.url ? (
                 <a
                   href={selected.url}
-                  className="mt-2 inline-block text-blue-600 underline min-h-10 min-w-10"
+                  className="mt-2 inline-block text-primary underline min-h-10 min-w-10"
                 >
                   {t("storeLocator.viewStorePage")}
                 </a>

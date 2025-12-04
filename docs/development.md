@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Repo
+Last-reviewed: 2025-12-02
+
 # Development
 
 ## Linting and local checks
@@ -67,7 +72,7 @@ When you add a new app, keep CI aligned with the patterns above:
     - Builds `@apps/shop-<id>` and deploys it to Cloudflare Pages via `@cloudflare/next-on-pages`.
   - Make sure the shop’s `.env` and Cloudflare Pages env vars are configured before the first deploy.
 
-- For other apps (e.g. a new dashboard or marketing app):
+  - For other apps (e.g. a new dashboard or marketing app):
   - Create a workspace under `apps/<name>` with standard scripts:
     - `dev`, `build`, `start`, `lint`, `typecheck`, `test` (follow existing apps as templates).
   - Add an app workflow `.github/workflows/<name>.yml` that:
@@ -75,6 +80,21 @@ When you add a new app, keep CI aligned with the patterns above:
     - Installs deps, builds any required packages, then runs `pnpm --filter @apps/<name> lint`, `typecheck`, `test`, and `build`.
     - Deploys the app to its own Cloudflare Pages project (using either `wrangler pages deploy` for static exports or `@cloudflare/next-on-pages` for dynamic apps).
   - Update root CI and any E2E/Storybook workflows with path filters if the new app participates in cross-app flows or shares UI components.
+
+## Shop smoke tests (Thread D)
+
+Thread D introduces a lightweight, non-destructive smoke suite for shop runtimes and wires it into CMS deploy/launch flows.
+
+- Seed a sample shop:
+  - `pnpm seed:sample-shop` (or set `SHOP_ID=<id>` to change the target directory).
+  - This uses the `sample-rental` template under `data/templates/sample-rental` and writes `data/shops/<SHOP_ID>`.
+- Run the shop smoke suite locally:
+  - `SHOP_ID=<id> SHOP_ENV=dev pnpm test:shop-smoke`
+  - The suite resolves the runtime base URL from `data/shops/<SHOP_ID>/deploy.json` and runs basic checks against `/`, listing routes, and core APIs (cart and checkout session), skipping if it cannot determine a runtime host.
+- Opt in to gating deploy/launch on smoke tests:
+  - Set `SHOP_SMOKE_ENABLED=1` in the environment for CMS server-side actions.
+  - CMS deploy (`deploy-shop`) and launch flows will then run `pnpm test:shop-smoke` for the target shop/env and record `testsStatus`, `testsError`, and `lastTestedAt` in `deploy.json`.
+  - When `SHOP_SMOKE_ENABLED` is not set to `1`, deploy/launch treat smoke tests as `not-run` and do not block on them.
 
 Always prefer:
 

@@ -57,7 +57,7 @@ export default function PromoTilesSection({ tiles = [], density = "editorial", c
             className="group relative block overflow-hidden rounded border min-h-10 min-w-10"
           >{/* i18n-exempt: class names */}
             {/* Image */}
-            <div className="aspect-video w-full bg-neutral-100">
+            <div className="aspect-video w-full bg-muted">
               {tile.imageSrc ? (
                 <div className="relative h-full w-full">
                   <Image
@@ -66,7 +66,6 @@ export default function PromoTilesSection({ tiles = [], density = "editorial", c
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes={imgSizes}
-                    priority={false}
                   />
                 </div>
               ) : null}
@@ -82,7 +81,7 @@ export default function PromoTilesSection({ tiles = [], density = "editorial", c
             )}
             {/* Badge */}
             {tile.badge ? (
-              <span className="absolute start-2 top-2 rounded bg-black/80 px-2 py-0.5 text-xs text-white">{/* i18n-exempt: class names */}
+              <span className="absolute start-2 top-2 rounded bg-foreground/80 px-2 py-0.5 text-xs text-foreground">{/* i18n-exempt: class names */}
                 {tile.badge === "rental" ? t("actions.rent") : t("actions.buy")}
               </span>
             ) : null}

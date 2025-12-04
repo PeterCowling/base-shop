@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { Header } from "./Header";
 
 const meta: Meta<typeof Header> = {
+  title: "Organisms/Header",
   component: Header,
   parameters: {
     docs: {

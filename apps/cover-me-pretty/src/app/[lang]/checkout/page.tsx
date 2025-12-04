@@ -14,6 +14,7 @@ import { DeliveryScheduler } from "@ui/components/organisms";
 import OrderSummary from "@ui/components/organisms/OrderSummary";
 import { cookies } from "next/headers";
 import shop from "../../../../shop.json";
+import CheckoutAnalytics from "./CheckoutAnalytics.client";
 
 export async function generateMetadata({
   params,
@@ -61,6 +62,7 @@ export default async function CheckoutPage({
   return (
     <Section contentWidth="normal">
       <div className="flex flex-col gap-10 p-6">
+        <CheckoutAnalytics locale={lang} />
         <OrderSummary />
         {hasPremierShipping && premierDelivery && (
           <PremierDeliveryPicker

@@ -1,4 +1,5 @@
 import { type Meta, type StoryObj } from "@storybook/nextjs";
+import { expect, userEvent, within } from "@storybook/test";
 import { Drawer, DrawerTrigger, DrawerContent, DrawerPortal } from "./drawer";
 import { OverlayScrim } from "../index";
 
@@ -49,4 +50,30 @@ export const Left: StoryObj<typeof Drawer> = {
       </DrawerPortal>
     </Drawer>
   ),
+};
+
+export const Default: StoryObj<typeof Drawer> = {};
+
+export const KeyboardClose: StoryObj<typeof Drawer> = {
+  render: () => (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <button className="rounded border px-4 min-h-10 min-w-10">Open drawer</button>
+      </DrawerTrigger>
+      <DrawerPortal>
+        <OverlayScrim />
+        <DrawerContent side="right" width="w-64" className="p-4">
+          <p className="text-sm">Press Escape to close</p>
+        </DrawerContent>
+      </DrawerPortal>
+    </Drawer>
+  ),
+  parameters: { a11y: true, tags: ["visual", "ci"] },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const trigger = await canvas.findByRole("button", { name: /open drawer/i });
+    await userEvent.click(trigger);
+    await userEvent.keyboard("{Escape}");
+    expect(canvas.queryByText(/Press Escape/)).not.toBeInTheDocument();
+  },
 };

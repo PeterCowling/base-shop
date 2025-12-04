@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import usePageBuilderDnD from "@ui/components/cms/page-builder/hooks/usePageBuilderDnD";
+import { usePageBuilderDnD } from "@acme/page-builder-ui";
 
 // Mock dnd sensors and auto-scroll to keep logic synchronous and deterministic
 jest.mock(require.resolve("@ui/components/cms/page-builder/hooks/dnd/sensors"), () => ({ __esModule: true, useDndSensors: () => [] }));

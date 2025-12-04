@@ -10,7 +10,6 @@ import type { Locale } from '@acme/i18n/locales';
 const meta: Meta<typeof HeaderBlock> = {
   title: 'CMS Blocks/HeaderBlock/Matrix',
   component: HeaderBlock,
-  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Header wrapper block mapping to the Header organism.' } } },
 };
@@ -24,3 +23,7 @@ try { z.object({ nav: z.array(NavItem).optional(), shopName: z.string(), locale:
 
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 export const RTL: Story = makeStateStory(baseArgs, { locale: 'ar' as unknown as Locale }, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });

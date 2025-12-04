@@ -47,3 +47,5 @@ export const WithCustomStyles: StoryObj<typeof StatCard> = {
     },
   },
 };
+
+export const Default: StoryObj<typeof StatCard> = {};

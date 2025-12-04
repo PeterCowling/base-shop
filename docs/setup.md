@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Repo
+Last-reviewed: 2025-12-02
+
 # Project Setup
 
 ## Prerequisites
@@ -83,6 +88,10 @@ from the selected template's `shop.json` when those fields exist. Any missing
 entries fall back to interactive prompts.
 
 After answering the prompts the configurator scaffolds `apps/shop-<id>` and writes your answers to `apps/shop-<id>/.env`.
+The initializer also respects analytics/lead toggles: set `--analytics off` or `--lead-capture off` (or edit `settings.json` after scaffolding) to keep signals disabled until keys are configured.
+During `init-shop`, the starter pages include Consent + Newsletter/Contact blocks so new shops launch with wiring visible; leave analytics/lead toggles off until ready to supply IDs/endpoints.
+If you enable analytics, ensure `NEXT_PUBLIC_GA4_ID` and `GA_API_SECRET` are provided. If you enable lead capture, set `leadCapture.endpoint` (or leave it off for local JSONL persistence only).
+Starter pages now include Consent + Newsletter/Contact blocks automatically; keep analytics/lead toggles off until IDs/endpoints are ready, then re-publish.
 
 To skip the theme prompts, provide overrides via flags:
 
@@ -112,6 +121,12 @@ Once scaffolded, open the CMS and use the [Page Builder](./cms.md#page-builder) 
 includes quick actions for staging upgrades and requesting a rollback—use **Upgrade & preview** to run the templating script and
 review changes at `/cms/shop/<id>/upgrade-preview`, or **Rollback to previous version** to restore the last published template
 without leaving the CMS. See [Upgrade & rollback workflows](./cms.md#upgrade--rollback-workflows) for details.
+
+### Analytics & lead capture switches
+
+- Toggle analytics per shop in `settings.json` → `analytics.enabled` (provider/id set when you’re ready). Consent must still be `true` for browser beacons.
+- Lead capture is gated by `leadCapture.enabled`; submissions persist to `data/shops/<id>/leads.jsonl` or forward to a configured `endpoint`.
+- The client SDK `@platform-core/analytics/client` is used by storefront beacons; no app changes needed when you flip these flags.
 
 ### Rental shops
 

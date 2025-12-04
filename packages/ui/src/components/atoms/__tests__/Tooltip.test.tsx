@@ -4,22 +4,26 @@ import userEvent from "@testing-library/user-event";
 import { Tooltip } from "../Tooltip";
 
 describe("Tooltip", () => {
-  it("renders hidden tooltip text in the DOM", async () => {
-    const { container } = render(
+  it("reveals tooltip on hover and focus and wires aria-describedby", async () => {
+    const user = userEvent.setup();
+    const { getByRole } = render(
       <Tooltip text="Sample text">
         <button>Hover me</button>
       </Tooltip>,
     );
 
-    // The tooltip element is present but hidden by default
-    const wrapper = container.querySelector("span");
-    const tooltip = wrapper?.querySelector('[aria-hidden="true"]');
-    expect(tooltip).toHaveTextContent("Sample text");
-    expect(tooltip).toHaveClass("hidden");
+    const button = getByRole("button", { name: "Hover me" });
+    const tooltip = getByRole("tooltip", { hidden: true });
+    expect(tooltip).toHaveAttribute("aria-hidden", "true");
 
-    // Hovering reveals the tooltip without altering its text
-    await userEvent.hover(wrapper!.querySelector("button")!);
-    expect(tooltip).toHaveTextContent("Sample text");
-    await userEvent.unhover(wrapper!.querySelector("button")!);
+    await user.hover(button);
+    expect(tooltip).toHaveAttribute("data-state", "open");
+    expect(button.getAttribute("aria-describedby")).toContain(tooltip.id);
+
+    await user.unhover(button);
+    expect(tooltip).toHaveAttribute("data-state", "closed");
+
+    await user.tab(); // focus
+    expect(tooltip).toHaveAttribute("data-state", "open");
   });
 });

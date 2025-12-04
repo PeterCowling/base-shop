@@ -14,6 +14,7 @@ import {
 } from "./deploymentAdapter";
 import { ensureDir, writeJSON } from "./fsUtils";
 import type { Shop } from "@acme/types";
+import { recordMetric } from "../utils";
 
 /**
  * Create a new shop app and seed data.
@@ -21,7 +22,7 @@ import type { Shop } from "@acme/types";
  */
 export async function createShop(
   id: string,
-  opts: CreateShopOptions = {} as CreateShopOptions,
+  opts: Partial<CreateShopOptions> = {},
   options?: { deploy?: boolean },
   adapter: ShopDeploymentAdapter = defaultDeploymentAdapter
 ): Promise<DeployShopResult> {
@@ -49,6 +50,7 @@ export async function createShop(
     shippingProviders: prepared.shipping,
     taxProviders: [prepared.tax],
     paymentProviders: prepared.payment,
+    billingProvider: prepared.billingProvider || undefined,
     sanityBlog: prepared.sanityBlog,
     enableEditorial: prepared.enableEditorial,
     subscriptionsEnabled: prepared.enableSubscriptions,
@@ -92,6 +94,11 @@ export async function createShop(
   }
 
   if (options?.deploy === false) {
+    recordMetric("cms_shop_create_total", {
+      shopId: id,
+      service: "platform-core",
+      status: "skipped",
+    });
     return { status: "pending" };
   }
 
@@ -107,7 +114,19 @@ export async function createShop(
   if (fn.mock) {
     fn(id, undefined, adapter);
     fn.mockImplementation?.(mod.deployShopImpl);
-    return mod.deployShopImpl(id, undefined, adapter);
+    const result = await mod.deployShopImpl(id, undefined, adapter);
+    recordMetric("cms_shop_create_total", {
+      shopId: id,
+      service: "platform-core",
+      status: "success",
+    });
+    return result;
   }
-  return fn(id, undefined, adapter);
+  const result = await fn(id, undefined, adapter);
+  recordMetric("cms_shop_create_total", {
+    shopId: id,
+    service: "platform-core",
+    status: "success",
+  });
+  return result;
 }

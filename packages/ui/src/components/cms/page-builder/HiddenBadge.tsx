@@ -18,7 +18,7 @@ export default function HiddenBadge({ hiddenList, isHiddenHere, viewport, compon
     <div className="relative">
       {/* Position within local stacking context; avoid z-index on non-layered UI */}
       <div
-        className="absolute start-1 top-1 rounded bg-amber-500/90 px-1 py-0.5 text-xs text-white shadow"
+        className="absolute start-1 top-1 rounded bg-primary/90 px-1 py-0.5 text-xs text-foreground shadow"
         // i18n-exempt: editor-only helper badge; not user-visible content
         title={isHiddenHere ? `Hidden on ${viewport}` : `Hidden on ${hiddenList.join(', ')}`}
       >

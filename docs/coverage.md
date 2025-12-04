@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Testing
+Last-reviewed: 2025-12-02
+
 # Test Coverage — Jest, Cypress CT, Cypress E2E
 
 This repo generates a single, unified coverage report that combines:
@@ -51,4 +56,3 @@ Open `coverage/index.html` in your browser for a navigable report.
 - E2E coverage is opt‑in to avoid overhead in normal runs. Use `pnpm e2e` for speed; use `pnpm e2e:coverage` when you need instrumentation.
 - If you add another Next app to E2E coverage, add its own `/api/__coverage__` endpoint and extend the Cypress collection step to fetch it before merging.
 - To focus on quick E2E checks for PRs, use `pnpm e2e:smoke`. For only Lighthouse budgets, run `pnpm e2e:lh`.
-

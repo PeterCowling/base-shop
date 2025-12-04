@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Theming
+Last-reviewed: 2025-12-02
+
 # Design System Package Import
 
 Importing a design system package lets the CMS generate tokens and components from an external source.

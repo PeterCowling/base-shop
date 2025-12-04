@@ -102,6 +102,23 @@ kbd {
   display: block; /* avoid baseline gaps/cropping inside fixed-height buttons */
 }
 
+/* -------- Auth form tweaks ----------------------------------------------- */
+/*
+   Ensure login inputs maintain strong contrast for the auth flow, regardless
+   of system or theme mode. Scoped to the sign-in form so other controls
+   continue to follow shared DS tokens.
+*/
+body:has(form[action*="/api/auth/signin"]) input[type="email"],
+body:has(form[action*="/api/auth/signin"]) input[type="password"] {
+  background-color: hsl(var(--surface-input));
+  color: hsl(var(--color-fg));
+}
+
+body:has(form[action*="/api/auth/signin"]) form {
+  width: min(100%, 24rem);
+  margin-inline: auto;
+}
+
 /* Ensure embedded media respects its container without overflowing. */
 .cms-content :where(img, svg, canvas, video, iframe) {
   max-width: 100%;

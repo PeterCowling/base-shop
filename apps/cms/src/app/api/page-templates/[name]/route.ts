@@ -28,7 +28,13 @@ export async function GET(
   }
 
   return NextResponse.json({
+    id: tpl.id,
     name: tpl.label,
+    category: tpl.category,
+    pageType: tpl.pageType,
+    version: tpl.version,
+    origin: tpl.origin ?? "core",
+    previewImage: tpl.previewImage ?? null,
     components: tpl.components,
   });
 }

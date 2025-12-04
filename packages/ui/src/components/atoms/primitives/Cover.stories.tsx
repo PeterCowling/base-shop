@@ -21,3 +21,5 @@ export const Basic: Story = {
   ),
 };
 
+
+export const Default: StoryObj<typeof Cover> = {};

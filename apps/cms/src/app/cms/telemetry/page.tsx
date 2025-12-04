@@ -63,6 +63,32 @@ export function TelemetryAnalyticsView({
     [filteredEvents, t],
   );
 
+  const timerDurations = useMemo(() => {
+    const durations = filteredEvents
+      .filter((event) => event.name === "build_flow_timer_done")
+      .map((event) => {
+        const duration = (event as { payload?: { durationMs?: unknown } }).payload
+          ?.durationMs;
+        return typeof duration === "number" ? duration : null;
+      })
+      .filter((v): v is number => v !== null)
+      .sort((a, b) => a - b);
+    const percentile = (p: number) => {
+      if (!durations.length) return null;
+      const idx = Math.min(
+        durations.length - 1,
+        Math.floor((p / 100) * durations.length),
+      );
+      return durations[idx];
+    };
+    const median =
+      durations.length > 0
+        ? durations[Math.floor(durations.length / 2)]
+        : null;
+    const p90 = percentile(90);
+    return { median, p90 };
+  }, [filteredEvents]);
+
   const firstSeen = filteredEvents.reduce<number | null>((acc, event) => {
     if (!acc) return event.ts;
     return Math.min(acc, event.ts);
@@ -96,6 +122,24 @@ export function TelemetryAnalyticsView({
       value: lastSeen ? new Date(lastSeen).toLocaleString() : "—",
       description: String(t("cms.telemetry.latestInRange")),
     },
+    ...(timerDurations.median
+      ? [
+          {
+            label: String(t("cms.telemetry.timer.median")),
+            value: `${Math.round(timerDurations.median / 60000)}m`,
+            description: String(t("cms.telemetry.timer.medianDesc")),
+          },
+        ]
+      : []),
+    ...(timerDurations.p90
+      ? [
+          {
+            label: String(t("cms.telemetry.timer.p90")),
+            value: `${Math.round(timerDurations.p90 / 60000)}m`,
+            description: String(t("cms.telemetry.timer.p90Desc")),
+          },
+        ]
+      : []),
   ];
 
   function handlePresetSelect(presetId: string) {

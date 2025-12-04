@@ -9,3 +9,6 @@ export const Content = React.forwardRef<HTMLDivElement, ContentProps>(
   )
 );
 Content.displayName = "Content";
+
+// Provide a default export for Storybook/interop patterns that expect it.
+export default Content;

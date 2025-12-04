@@ -56,7 +56,7 @@ export default function RentalTermsSection({ sku, termsVersion, onAdd, className
           <input id="terms" type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />
           <label htmlFor="terms">{labelAcceptTerms(termsVersion)}</label>
         </div>
-        <button type="button" onClick={handleAdd} disabled={!accepted} className="rounded bg-black px-3 py-1 text-white disabled:opacity-50 min-h-10 min-w-10">
+        <button type="button" onClick={handleAdd} disabled={!accepted} className="rounded bg-foreground px-3 py-1 text-foreground disabled:opacity-50 min-h-10 min-w-10">
           {LABEL_ADD_TO_CART}
         </button>
       </div>

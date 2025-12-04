@@ -100,9 +100,12 @@ export async function POST(
     await inventoryRepository.write(shop, parsed.data);
     return NextResponse.json({ success: true, items: parsed.data });
   } catch (err) {
+    console.error("Inventory import failed", err); // i18n-exempt -- non-UX log
+    const message = (err as Error).message;
+    const status = /delegate is unavailable/i.test(message) ? 503 : 400;
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
+      { error: message },
+      { status }
     );
   }
 }

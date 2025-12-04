@@ -19,7 +19,7 @@ export default function ThankYouSection({ headline, message, recommendationPrese
     <Section className={className} contentWidth="narrow" contentAlign="center" {...rest}>
       <div className="w-full space-y-6 text-center">
         <h1 className="text-2xl font-semibold">{computedHeadline}</h1>
-        <p className="text-neutral-700">{computedMessage}</p>
+        <p className="text-muted-foreground">{computedMessage}</p>
       </div>
       <div className="mt-8">
         <ShowcaseSection preset={recommendationPreset} layout="carousel" />

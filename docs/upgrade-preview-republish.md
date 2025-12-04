@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Upgrade, preview and republish
 
 The upgrade flow stages template changes, lets them be previewed, and republishes the shop once verified.

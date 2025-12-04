@@ -9,6 +9,10 @@ import {
   CardContent,
   Checkbox,
   Input,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/atoms/shadcn";
 import { updateAiCatalog } from "@cms/actions/shops.server";
 import { formatTimestamp } from "@acme/date-utils";
@@ -38,6 +42,9 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
     open: false,
     message: "",
   });
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewItems, setPreviewItems] = useState<unknown[]>([]);
+  const [previewLoading, setPreviewLoading] = useState(false);
 
   const toggleField = (field: AiCatalogField) => {
     setState((s) => ({
@@ -80,7 +87,21 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
   };
 
   const handlePreview = () => {
-    setToast({ open: true, message: String(t("Catalog feed preview coming soon")) });
+    setPreviewLoading(true);
+    fetch(`/api/seo/ai-catalog?shop=${shop}&limit=10`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.items) {
+          setPreviewItems(data.items as unknown[]);
+          setPreviewOpen(true);
+        } else {
+          setToast({ open: true, message: String(t("Unable to load preview")) });
+        }
+      })
+      .catch(() => {
+        setToast({ open: true, message: String(t("Unable to load preview")) });
+      })
+      .finally(() => setPreviewLoading(false));
   };
 
   return (
@@ -124,8 +145,8 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
               >
                 {quickActionBusy ? t("Queuing…") : t("Queue crawl")}
               </Button>
-              <Button type="button" variant="outline" onClick={handlePreview}>
-                {t("View feed")}
+              <Button type="button" variant="outline" onClick={handlePreview} disabled={previewLoading}>
+                {previewLoading ? t("Loading…") : t("View feed")}
               </Button>
             </div>
           </div>
@@ -185,6 +206,20 @@ export default function AiCatalogSettings({ shop, initial }: Props) {
         message={toast.message}
         onClose={() => setToast((t) => ({ ...t, open: false }))}
       />
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t("AI catalog preview")}</DialogTitle>
+          </DialogHeader>
+          {previewItems.length === 0 ? (
+            <p className="text-sm text-muted-foreground">{t("No items to preview.")}</p>
+          ) : (
+            <pre className="max-h-80 overflow-auto rounded bg-muted p-3 text-xs">
+              {JSON.stringify(previewItems, null, 2)}
+            </pre>
+          )}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

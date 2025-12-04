@@ -1,7 +1,6 @@
-// i18n-exempt file — builder top bar UI; copy slated for extraction
-import type { ComponentProps } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { useTranslations } from "@acme/i18n";
-import { CheckIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { CheckIcon, ReloadIcon, CopyIcon } from "@radix-ui/react-icons";
 import { Tooltip } from "../../atoms";
 import { Button, Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../atoms/shadcn";
 import PageToolbar from "./PageToolbar";
@@ -14,6 +13,8 @@ import NotificationsBell from "./NotificationsBell";
 import type GridSettings from "./GridSettings";
 import type { PageComponent } from "@acme/types";
 import { Inline } from "../../atoms/primitives/Inline";
+import { derivePublishState } from "./state/publishStatus";
+import { Tooltip as SmallTooltip } from "../../atoms";
 
 interface PageBuilderTopBarProps {
   historyProps: ComponentProps<typeof HistoryControls>;
@@ -42,6 +43,15 @@ interface PageBuilderTopBarProps {
   // Presets authoring
   canSavePreset?: boolean;
   onSavePreset?: () => void;
+  templateActions?: ReactNode;
+  publishMeta?: {
+    status: "draft" | "published";
+    updatedAt?: string;
+    publishedAt?: string;
+    publishedBy?: string;
+  };
+  previewUrl?: string | null;
+  previewSource?: string | null;
 }
 
 const PageBuilderTopBar = ({
@@ -70,8 +80,40 @@ const PageBuilderTopBar = ({
   onHelpOpenChange,
   canSavePreset,
   onSavePreset,
+  templateActions,
+  publishMeta,
+  previewUrl,
+  previewSource,
 }: PageBuilderTopBarProps) => {
   const t = useTranslations();
+  const publishState = publishMeta
+    ? derivePublishState({
+        status: publishMeta.status,
+        updatedAt: publishMeta.updatedAt,
+        publishedAt: publishMeta.publishedAt,
+        publishedRevisionId: publishMeta.publishedRevisionId,
+        currentRevisionId: publishMeta.currentRevisionId,
+      })
+    : "draft";
+  const statusLabel =
+    publishState === "changed"
+      ? t("cms.builder.status.unpublishedChanges")
+      : publishMeta?.status === "published"
+        ? t("cms.pages.status.published")
+        : t("cms.pages.status.draft");
+  const publishedInfo =
+    publishMeta?.publishedAt && publishMeta.publishedAt.trim().length > 0
+      ? new Date(publishMeta.publishedAt).toLocaleString()
+      : null;
+  const updatedInfo =
+    publishMeta?.updatedAt && publishMeta.updatedAt.trim().length > 0
+      ? new Date(publishMeta.updatedAt).toLocaleString()
+      : null;
+  const statusChipClass =
+    publishState === "changed"
+      ? "bg-warning/20 text-warning-foreground" // i18n-exempt -- DS-3471 non-UI style token for publish state chip [ttl=2026-12-31]
+      : "bg-muted text-muted-foreground"; // i18n-exempt -- DS-3471 non-UI style token for publish state chip [ttl=2026-12-31]
+  const previewWindowFeatures = "noopener,noreferrer"; // i18n-exempt -- DS-3471 browser window features string, not user-facing [ttl=2026-12-31]
 
   return (
   <div className="sticky top-0 w-full overflow-x-hidden bg-surface-1/95 backdrop-blur">
@@ -87,6 +129,34 @@ const PageBuilderTopBar = ({
             <CheckIcon className="h-3 w-3" /> {t("actions.autosaved")}
           </span>
         )}
+        <SmallTooltip
+          text={
+            publishMeta?.publishedBy
+              ? t("cms.builder.status.publishedBy", { name: publishMeta.publishedBy })
+              : undefined
+          }
+        >
+          <span className="inline-flex items-center gap-2">
+            <span
+              className={`inline-flex items-center rounded-full px-2 py-1 text-xs ${statusChipClass}`}
+              data-testid="publish-status-chip" // i18n-exempt -- DS-3471 testing hook, not user copy [ttl=2026-12-31]
+            >
+              {statusLabel}
+            </span>
+            {publishedInfo && (
+              <span className="text-xs text-muted-foreground">
+                {publishState === "changed"
+                  ? t("cms.builder.status.lastPublished", { date: publishedInfo })
+                  : t("cms.builder.status.publishedAt", { date: publishedInfo })}
+              </span>
+            )}
+            {updatedInfo && (
+              <span className="text-xs text-muted-foreground">
+                {t("cms.builder.status.lastSaved", { date: updatedInfo })}
+              </span>
+            )}
+          </span>
+        </SmallTooltip>
       </Inline>
       <div className="min-w-0 flex-1" />
       <TopActionBar
@@ -230,6 +300,87 @@ const PageBuilderTopBar = ({
             </Button>
           </Tooltip>
         )}
+        {previewUrl && (
+          <Tooltip
+            text={
+              previewSource
+                ? t("cms.builder.preview.source", { source: previewSource })
+                : t("cms.builder.preview.default")
+            }
+          >
+            <div className="inline-flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                aria-label={t("cms.builder.preview.openLabel") as string}
+                className="min-w-28"
+                onClick={async () => {
+                  try {
+                    await Promise.resolve(historyProps.onSave());
+                  } catch {
+                    /* ignore save failure here; main save flow already surfaces errors */
+                  }
+                  try {
+                    window.open(previewUrl, "_blank", previewWindowFeatures);
+                  } catch {
+                    /* noop */
+                  }
+                }}
+              >
+                {previewSource === "stage"
+                  ? t("cms.builder.preview.stage")
+                  : t("cms.builder.preview.open")}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={t("cms.builder.preview.copyLink") as string}
+                onClick={() => {
+                  try {
+                    void navigator.clipboard?.writeText(previewUrl);
+                    window.dispatchEvent(
+                      new CustomEvent("pb:notify", {
+                        detail: { type: "info", title: t("cms.builder.preview.linkCopied") },
+                      }),
+                    );
+                  } catch {
+                    /* ignore */
+                  }
+                }}
+              >
+                <CopyIcon className="h-4 w-4" />
+              </Button>
+            </div>
+          </Tooltip>
+        )}
+        {!previewUrl && (
+          <Tooltip text={t("cms.builder.preview.unavailable")}>
+            <Button
+              variant="outline"
+              size="sm"
+              aria-label={t("cms.builder.preview.unavailableTitle") as string}
+              disabled
+              onClick={() => {
+                try {
+                  window.dispatchEvent(
+                    new CustomEvent("pb:notify", {
+                      detail: {
+                        type: "error",
+                        title: t("cms.builder.preview.unavailableTitle"),
+                        message: t("cms.builder.preview.unavailableConfigure"),
+                      },
+                    }),
+                  );
+                } catch {
+                  /* noop */
+                }
+              }}
+              >
+                {t("cms.builder.preview.unavailable")}
+              </Button>
+            </Tooltip>
+          )}
+        {templateActions}
         {onSavePreset && (
           <Tooltip text={canSavePreset ? t("cms.builder.presets.saveSelected.tooltip") : t("cms.builder.presets.selectToSave.tooltip")}>
             <Button variant="outline" size="sm" disabled={!canSavePreset} onClick={onSavePreset} aria-disabled={!canSavePreset}>

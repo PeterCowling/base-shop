@@ -10,7 +10,7 @@ export default function SoftLockBanner({ selectedIds, softLocksById }: { selecte
   /* i18n-exempt */ const t = (s: string) => s;
   return (
     <div className="relative">
-      <div className="pointer-events-none absolute start-2 top-2 rounded bg-amber-100/90 px-2 py-1 text-xs text-amber-900 shadow">
+      <div className="pointer-events-none absolute start-2 top-2 rounded bg-secondary/40 px-2 py-1 text-xs text-foreground shadow">
         {lock.label} {t("is editing this block")}
       </div>
     </div>

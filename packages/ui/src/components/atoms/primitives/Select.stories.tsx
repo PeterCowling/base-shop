@@ -1,43 +1,29 @@
-import { type Meta, type StoryObj } from "@storybook/nextjs";
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectSeparator,
   SelectTrigger,
   SelectValue,
+  SelectContent,
+  SelectItem,
 } from "./select";
 
-const meta: Meta<typeof Select> = {
-  title: "Primitives/Select",
-  component: Select,
-  decorators: [
-    (Story) => (
-      <div className="p-8">
-        <Story />
-      </div>
-    ),
-  ],
+const meta: Meta = {
+  title: "Atoms/Primitives/Select",
 };
-export default meta;
 
-export const PanelSurface: StoryObj<typeof Select> = {
+export default meta;
+type Story = StoryObj;
+
+export const Default: Story = {
   render: () => (
-    <Select>
-      <SelectTrigger className="w-56">
-        <SelectValue placeholder="Choose a fruit" />
+    <Select defaultValue="apple">
+      <SelectTrigger className="w-40">
+        <SelectValue placeholder="Choose option" />
       </SelectTrigger>
       <SelectContent>
-        <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectSeparator />
-          <SelectItem value="kiwi">Kiwi</SelectItem>
-        </SelectGroup>
+        <SelectItem value="apple">Apple</SelectItem>
+        <SelectItem value="banana">Banana</SelectItem>
+        <SelectItem value="cherry">Cherry</SelectItem>
       </SelectContent>
     </Select>
   ),

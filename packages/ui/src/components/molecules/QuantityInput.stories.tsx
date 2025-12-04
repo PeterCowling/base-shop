@@ -3,6 +3,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { QuantityInput } from "./QuantityInput";
 
 const meta: Meta<typeof QuantityInput> = {
+  title: "Molecules/QuantityInput",
   component: QuantityInput,
   args: {
     value: 1,
@@ -28,5 +29,14 @@ export const Default: StoryObj<typeof QuantityInput> = {
 
     await expect(changeSpy).toHaveBeenCalledTimes(1);
     await expect(changeSpy).toHaveBeenCalledWith(2);
+  },
+};
+
+export const AtMax: StoryObj<typeof QuantityInput> = {
+  args: { value: 5 },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const increment = await canvas.findByRole("button", { name: "+" });
+    await expect(increment).toBeDisabled();
   },
 };

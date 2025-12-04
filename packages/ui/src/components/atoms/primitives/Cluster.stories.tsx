@@ -19,3 +19,5 @@ export const Basic: Story = {
     </Cluster>
   ),
 };
+
+export const Default: StoryObj<typeof Cluster> = {};

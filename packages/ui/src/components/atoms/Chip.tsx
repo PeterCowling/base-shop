@@ -10,7 +10,7 @@ export interface ChipProps extends TagProps {
 }
 
 export const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
-  ({ onRemove, children, className, ...props }, ref) => {
+  ({ onRemove, children, className, size = "md", ...props }, ref) => {
     const t = useTranslations();
     return (
       <Tag
@@ -19,6 +19,7 @@ export const Chip = React.forwardRef<HTMLSpanElement, ChipProps>(
           "inline-flex items-center gap-1", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
           className,
         )}
+        size={size}
         {...props}
       >
         {children}

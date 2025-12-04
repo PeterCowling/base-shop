@@ -26,6 +26,7 @@ const sample: ProductPublication & { variants: Record<string, string[]> } = {
 };
 
 const meta: Meta<typeof ProductEditorForm> = {
+  title: "CMS/ProductEditorForm",
   component: ProductEditorForm,
   args: {
     product: sample,

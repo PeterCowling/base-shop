@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import ContactFormWithMap from "./ContactFormWithMap";
 
 const meta: Meta<typeof ContactFormWithMap> = {
+  title: "CMS Blocks/ContactFormWithMap",
   component: ContactFormWithMap,
   args: {
     mapSrc:

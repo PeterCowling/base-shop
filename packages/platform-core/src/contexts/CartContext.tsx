@@ -13,6 +13,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { logAnalyticsEvent } from "../analytics/client";
 
 /* ------------------------------------------------------------------
  * Action types
@@ -289,6 +290,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const dispatch: Dispatch = async (action) => {
     let method: string;
     let body: unknown;
+    let analyticsEvent: { type: string; [key: string]: unknown } | null = null;
     switch (action.type) {
       case "add":
         if (action.sku.sizes.length && !action.size) {
@@ -303,18 +305,28 @@ export function CartProvider({ children }: { children: ReactNode }) {
           // Optional rental payload (Phase 3.1)
           rental: action.rental,
         };
+        analyticsEvent = {
+          type: "add_to_cart",
+          productId: action.sku.id,
+          size: action.size,
+          quantity: action.qty ?? 1,
+          source: action.meta?.source,
+        };
         break;
       case "remove":
         method = "DELETE";
         body = { id: action.id };
+        analyticsEvent = { type: "cart_remove", id: action.id };
         break;
       case "setQty":
         method = "PATCH";
         body = { id: action.id, qty: action.qty };
+        analyticsEvent = { type: "cart_set_qty", id: action.id, quantity: action.qty };
         break;
       case "clear":
         method = "DELETE";
         body = {};
+        analyticsEvent = { type: "cart_clear" };
         break;
       default:
         return;
@@ -337,6 +349,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data.cart));
     } catch {
       /* noop */
+    }
+    if (analyticsEvent) {
+      void logAnalyticsEvent(analyticsEvent);
     }
   };
 

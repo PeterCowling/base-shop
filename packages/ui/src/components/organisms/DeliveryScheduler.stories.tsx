@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import { DeliveryScheduler } from "./DeliveryScheduler";
 
 const meta: Meta<typeof DeliveryScheduler> = {
+  title: "Organisms/DeliveryScheduler",
   component: DeliveryScheduler,
   args: {
     regions: ["Zone 1", "Zone 2"],

@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Inventory
+Last-reviewed: 2025-12-02
+
 # Stock check scheduling
 
 `scheduleStockChecks` runs a periodic inventory check using a single long-lived interval.

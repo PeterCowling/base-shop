@@ -1,3 +1,6 @@
+// scripts/src/upgrade-shop.ts
+/* i18n-exempt file -- OPS-3210 CLI-only upgrade helper; messages are developer-facing and not user-facing UI [ttl=2026-12-31] */
+/* eslint-disable security/detect-non-literal-fs-filename -- OPS-3210: paths are confined to the workspace using a validated shop slug; no HTTP input [ttl=2026-12-31] */
 import {
   cpSync,
   existsSync,
@@ -14,27 +17,41 @@ import { getComponentNameMap } from "./component-names";
 import { generateExampleProps } from "./generate-example-props";
 import type { Page, ShopMetadata } from "@acme/types";
 
+const SLUG_PATTERN = /^[a-z0-9-]+$/;
+
 function nowIso(): string {
   return new Date().toISOString();
 }
 
+function assertValidSlug(input: string): string {
+  if (!SLUG_PATTERN.test(input)) {
+    console.error(
+      "Invalid shop slug. Use lowercase letters, numbers, and dashes only."
+    );
+    process.exit(1);
+  }
+  return input;
+}
+
 const args = process.argv.slice(2);
 const rollback = args.includes("--rollback");
-const slug = args.find((a) => !a.startsWith("--"));
+const rawSlug = args.find((a) => !a.startsWith("--"));
 
-if (!slug) {
+if (!rawSlug) {
   console.error(
     "Usage: pnpm ts-node scripts/src/upgrade-shop.ts <shop-slug> [--rollback]"
   );
   process.exit(1);
 }
 
+const slug = assertValidSlug(rawSlug);
 const shopId = slug.startsWith("shop-") ? slug : `shop-${slug}`;
 const rootDir = path.resolve(__dirname, "..", "..");
 const appDir = path.join(rootDir, "apps", shopId);
 const templateDir = path.join(rootDir, "packages", "template-app");
 const shopJsonPath = path.join(rootDir, "data", "shops", shopId, "shop.json");
 const pkgPath = path.join(appDir, "package.json");
+let previousComponentVersions: Record<string, string> | undefined;
 
 if (!existsSync(appDir)) {
   console.error(`Shop app does not exist: ${appDir}`);
@@ -61,6 +78,8 @@ generateExampleProps(shopId, rootDir);
 if (existsSync(shopJsonPath)) {
   cpSync(shopJsonPath, shopJsonPath + ".bak");
   const data = JSON.parse(readFileSync(shopJsonPath, "utf8")) as ShopMetadata;
+  previousComponentVersions = (data.componentVersions ??
+    {}) as Record<string, string>;
   data.lastUpgrade = nowIso();
   data.componentVersions = existsSync(pkgPath)
     ? (JSON.parse(readFileSync(pkgPath, "utf8")).dependencies ?? {})
@@ -158,6 +177,7 @@ writeFileSync(
     {
       timestamp: nowIso(),
       componentVersions,
+      fromComponentVersions: previousComponentVersions,
       components: changedComponents,
     },
     null,

@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: i18n
+Last-reviewed: 2025-12-02
+
 # i18n Key Rename Map (old → new)
 
 Purpose: track key renames as we standardize on domain‑first naming. This helps editors and engineers update references without guesswork.
@@ -20,4 +25,3 @@ How to use this file
 Related
 - ADR: `docs/adr/adr-00-i18n-foundation.md`
 - Source of truth: `packages/i18n/src/en.json`
-

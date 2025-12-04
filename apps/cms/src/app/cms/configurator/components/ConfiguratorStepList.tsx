@@ -30,6 +30,15 @@ interface Props {
 
 type TagVariant = "default" | "success" | "warning" | "destructive";
 
+const TOUR_TARGETS: Record<string, string> = {
+  "shop-details": "quest-basics",
+  theme: "quest-theme",
+  "payment-provider": "quest-payments",
+  shipping: "quest-shipping",
+  inventory: "quest-product",
+  "checkout-page": "quest-checkout",
+};
+
 function useStatusCopy() {
   const t = useTranslations();
   const map: Record<string, { label: string; variant: TagVariant }> = {
@@ -89,6 +98,7 @@ function StepCard({
         "relative overflow-hidden transition-colors hover:border-primary/50 focus-within:ring-2 focus-within:ring-primary/20",
         status === "complete" && "border-success/50"
       )}
+      data-tour={TOUR_TARGETS[step.id]}
     >
       <CardSection className="relative flex min-h-48 flex-col gap-5 pb-16">
         {/* Header */}

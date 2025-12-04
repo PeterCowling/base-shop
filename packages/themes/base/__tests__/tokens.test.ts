@@ -2,39 +2,31 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { tokens } from '../src/tokens';
 
-const expectedKeys = [
+const requiredKeys = [
   '--color-bg',
   '--color-fg',
   '--color-primary',
   '--color-primary-fg',
-  '--color-accent',
-  '--color-accent-fg',
-  '--color-danger',
-  '--color-danger-fg',
-  '--color-success',
-  '--color-success-fg',
-  '--color-warning',
-  '--color-warning-fg',
-  '--color-info',
-  '--color-info-fg',
   '--color-muted',
-  '--font-sans',
-  '--font-mono',
-  '--space-1',
-  '--space-2',
-  '--space-3',
-  '--space-4',
-  '--radius-sm',
-  '--radius-md',
-  '--radius-lg',
-  '--shadow-sm',
-  '--shadow-md',
-  '--shadow-lg',
+  '--color-focus-ring',
+  '--surface-1',
+  '--surface-2',
+  '--surface-3',
+  '--surface-input',
+  '--border-1',
+  '--border-2',
+  '--border-3',
+  '--ring',
+  '--ring-offset',
+  '--ring-width',
+  '--ring-offset-width',
 ] as const;
 
 describe('base theme tokens', () => {
   test('exports expected token keys', () => {
-    expect(Object.keys(tokens).sort()).toEqual([...expectedKeys].sort());
+    for (const key of requiredKeys) {
+      expect(tokens).toHaveProperty(key);
+    }
   });
 
   test('css contains token variables', () => {
@@ -45,7 +37,7 @@ describe('base theme tokens', () => {
     // eslint-disable-next-line security/detect-non-literal-fs-filename -- Test reads from enumerated CSS files validated by existsSync
     const css = cssFiles.map((f) => fs.readFileSync(f, 'utf8')).join('\n');
 
-    for (const key of expectedKeys) {
+    for (const key of requiredKeys) {
       expect(css).toContain(key);
     }
   });

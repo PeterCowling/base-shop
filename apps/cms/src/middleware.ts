@@ -6,7 +6,11 @@ import { getToken } from "next-auth/jwt";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { authSecret } from "./auth/secret";
-import { logger } from "@acme/shared-utils";
+import {
+  logger,
+  withRequestContext,
+  type RequestContext,
+} from "@acme/shared-utils";
 import { createHeadersObject } from "next-secure-headers";
 import helmet from "helmet";
 import type { IncomingMessage, ServerResponse } from "http";
@@ -32,6 +36,10 @@ interface CmsToken {
  */
 const ADMIN_PATH_REGEX =
   /^\/cms\/shop\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$))/;
+
+const SERVICE_NAME = "cms";
+const ENV_LABEL: "dev" | "stage" | "prod" =
+  process.env.NODE_ENV === "production" ? "prod" : "dev";
 
 const securityHeaders = (() => {
   const isDev = process.env.NODE_ENV !== "production";
@@ -109,7 +117,25 @@ function applySecurityHeaders(res: NextResponse) {
 
 export async function middleware(req: NextRequest) {
   const pathname = req.nextUrl.pathname;
-  logger.info("request", { path: pathname });
+  const shopMatch = /\/cms\/shop\/([^/]+)/.exec(pathname);
+  const requestId =
+    req.headers.get("x-request-id") ??
+    (typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(16).slice(2)}`);
+
+  const ctx: RequestContext = {
+    requestId,
+    env: ENV_LABEL,
+    service: SERVICE_NAME,
+    shopId: shopMatch?.[1],
+  };
+
+  return withRequestContext(ctx, () => handleRequest(req, pathname));
+}
+
+async function handleRequest(req: NextRequest, pathname: string) {
+  logger.info("request", { path: pathname, service: SERVICE_NAME, env: ENV_LABEL });
 
   const method = req.method?.toUpperCase() ?? "GET";
 
@@ -122,7 +148,7 @@ export async function middleware(req: NextRequest) {
     const csrfToken = req.headers.get("x-csrf-token");
     const cookieToken = req.cookies.get("csrf_token")?.value || null;
     if (!csrfToken || !cookieToken || csrfToken !== cookieToken) {
-      logger.warn("csrf failed", { path: pathname });
+      logger.warn("csrf failed", { path: pathname, service: SERVICE_NAME, env: ENV_LABEL });
       return applySecurityHeaders(
         new NextResponse("Forbidden", { status: 403 }) // i18n-exempt -- minimal error body for API clients; not UI copy; CMS-1010
       );
@@ -131,7 +157,7 @@ export async function middleware(req: NextRequest) {
 
   /* Allow API routes to handle authentication and authorization */
   if (pathname.startsWith("/api")) {
-    logger.debug("api route", { path: pathname });
+    logger.debug("api route", { path: pathname, service: SERVICE_NAME, env: ENV_LABEL });
     return applySecurityHeaders(NextResponse.next());
   }
 
@@ -142,7 +168,7 @@ export async function middleware(req: NextRequest) {
     pathname === "/signup" ||
     pathname === "/favicon.ico"
   ) {
-    logger.debug("skip", { path: pathname });
+    logger.debug("skip", { path: pathname, service: SERVICE_NAME, env: ENV_LABEL });
     return applySecurityHeaders(NextResponse.next());
   }
 
@@ -153,14 +179,14 @@ export async function middleware(req: NextRequest) {
     secret: authSecret as string,
   })) as CmsToken | null;
   const role: Role | null = token?.role ?? null;
-  logger.debug("role", { role });
+  logger.debug("role", { role, service: SERVICE_NAME, env: ENV_LABEL });
 
   /* Redirect unauthenticated users to /login */
   if (!role) {
     const url = new URL(req.url);
     url.pathname = "/login";
     url.searchParams.set("callbackUrl", pathname);
-    logger.info("redirect to login", { path: url.pathname }); // i18n-exempt -- structured log label; not user-facing; CMS-1010
+    logger.info("redirect to login", { path: url.pathname, service: SERVICE_NAME, env: ENV_LABEL }); // i18n-exempt -- structured log label; not user-facing; CMS-1010
     return applySecurityHeaders(NextResponse.redirect(url));
   }
 
@@ -172,6 +198,8 @@ export async function middleware(req: NextRequest) {
     logger.info("forbidden", {
       path: url.pathname,
       shop: matchShop ? matchShop[1] : undefined,
+      service: SERVICE_NAME,
+      env: ENV_LABEL,
     });
     // In some Jest/node environments NextResponse.rewrite may not be available.
     // Fall back to crafting a middleware rewrite response manually.
@@ -198,6 +226,8 @@ export async function middleware(req: NextRequest) {
     logger.info("viewer blocked", { // i18n-exempt -- structured log label; not user-facing; CMS-1010
       path: url.pathname,
       shop: match[1],
+      service: SERVICE_NAME,
+      env: ENV_LABEL,
     });
     const rewritten = (() => {
       const api = NextResponse as unknown as {
@@ -214,7 +244,7 @@ export async function middleware(req: NextRequest) {
     return applySecurityHeaders(rewritten);
   }
 
-  logger.info("allow", { path: pathname });
+  logger.info("allow", { path: pathname, service: SERVICE_NAME, env: ENV_LABEL });
   return applySecurityHeaders(NextResponse.next());
 }
 

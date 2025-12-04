@@ -9,7 +9,6 @@ import { z } from 'zod';
 const meta: Meta<typeof StoreLocatorSection> = {
   title: 'CMS Blocks/StoreLocatorSection/Matrix',
   component: StoreLocatorSection,
-  parameters: { docs: { autodocs: false } },
   args: { stores: fixture.stores, enableGeolocation: false, radiusKm: 100, emitLocalBusiness: false },
   parameters: { docs: { description: { component: 'Store locator with optional geolocation filtering and JSON-LD emission for selected store.' } } },
 };
@@ -24,3 +23,7 @@ try { z.object({ stores: z.array(Store), enableGeolocation: z.boolean().optional
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });

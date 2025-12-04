@@ -1,8 +1,25 @@
+Type: Plan
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+Relates-to charter: docs/cms/cms-charter.md
+
 # CMS & Shop Platform – Master Thread
 
 This file defines an execution order and priority for all thread tasks so work can proceed in parallel without blocking on missing decisions.
 
 Use it as the “top-level backlog” and pick tasks by ID (e.g. `ARCH-02`, `PB-03`) once their prerequisites are satisfied.
+
+## Active tasks
+
+- **CMS-MASTER-01 — Keep master thread aligned with threads and charter**
+  - Status: ☐
+  - Scope:
+    - Ensure the phases and task IDs in this file stay in sync with `docs/cms-plan/thread-*.md` and `docs/cms/cms-charter.md`.
+  - Dependencies:
+    - Individual thread plans updated as work lands.
+  - Definition of done:
+    - For any major architecture/flow changes, this file and the relevant thread file are updated together.
 
 ---
 
@@ -177,4 +194,4 @@ These tasks can run largely in parallel with tail work from other phases, but id
 
 - When starting new work, pick the earliest phase with unfinished tasks whose prerequisites are met.
 - Within a phase, choose tasks in the order listed if you want to minimise risk, or pick independent tasks in parallel across contributors/agents.
-- Keep `docs/cms-research.md` and the thread files (`thread-*.md`) as the source of truth; update them if direction changes, then adjust this master thread accordingly.
+- Keep `docs/historical/cms-research.md` and the thread files (`thread-*.md`) as the source of truth for research context; update them if direction changes, then adjust this master thread accordingly.

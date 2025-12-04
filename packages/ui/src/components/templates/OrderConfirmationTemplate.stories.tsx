@@ -22,6 +22,7 @@ const cart: CartState = {
 };
 
 const meta: Meta<typeof OrderConfirmationTemplate> = {
+  title: "Templates/OrderConfirmationTemplate",
   component: OrderConfirmationTemplate,
   args: {
     orderId: "ABC123",

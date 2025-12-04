@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 Page Builder — Library Import/Export and Presets Feed
 
 - Import/Export

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 import VisibilityToggles from './VisibilityToggles';
 
 const meta: Meta<typeof VisibilityToggles> = {
+  title: 'CMS/Page Builder/VisibilityToggles',
   component: VisibilityToggles,
   tags: ['autodocs'],
   args: {

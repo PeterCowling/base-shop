@@ -112,10 +112,11 @@ jest.mock("@ui/components/cms/blocks", () => ({
   overlayRegistry: {},
 }));
 
+// Legacy mocked suite kept for reference; superseded by pb/pageBuilder.real.integration.test.tsx.
 // Increase timeout: the builder mounts several async subtrees
 jest.setTimeout(30000);
 
-describe("PageBuilder integration", () => {
+describe.skip("PageBuilder integration (legacy mocked)", () => {
   it("adds, reorders, deletes blocks and updates styles", async () => {
     const user = userEvent.setup();
     let componentsState: any[] = [];

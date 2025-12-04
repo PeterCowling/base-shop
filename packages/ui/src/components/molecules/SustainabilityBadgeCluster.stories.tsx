@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import { SustainabilityBadgeCluster } from "./SustainabilityBadgeCluster";
 
 const meta: Meta<typeof SustainabilityBadgeCluster> = {
+  title: "Molecules/SustainabilityBadgeCluster",
   component: SustainabilityBadgeCluster,
   args: {
     badges: [

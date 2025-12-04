@@ -18,6 +18,7 @@ const sampleColumns: Column<Row>[] = [
 ];
 
 const meta: Meta<typeof DataTable<Row>> = {
+  title: "CMS/DataTable",
   component: DataTable,
   args: {
     rows: sampleRows,

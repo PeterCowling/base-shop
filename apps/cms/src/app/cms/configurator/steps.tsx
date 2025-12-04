@@ -12,6 +12,7 @@ import StepInventory from "./steps/StepInventory";
 import StepEnvVars from "./steps/StepEnvVars";
 import StepImportData from "./steps/StepImportData";
 import StepHosting from "./steps/StepHosting";
+import StepReachSocial from "./steps/StepReachSocial";
 import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import type { StepStatus } from "../wizard/schema";
@@ -188,6 +189,16 @@ const baseStepList: BaseStepDef[] = [
     track: "growth",
     component: StepImportData as unknown as React.ComponentType<ConfiguratorStepProps>,
     optional: true,
+  },
+  {
+    id: "reach-social",
+    labelKey: "cms.configurator.steps.reachSocial.label",
+    descriptionKey: "cms.configurator.steps.reachSocial.description",
+    icon: "📣",
+    track: "growth",
+    component: StepReachSocial as unknown as React.ComponentType<ConfiguratorStepProps>,
+    optional: true,
+    recommended: ["navigation-home", "theme"],
   },
   {
     id: "hosting",

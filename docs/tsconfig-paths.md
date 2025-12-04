@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: TypeScript
+Last-reviewed: 2025-12-02
+
 # TypeScript Workspace Path Mapping
 
 Apps must map workspace packages to both raw sources (`src`) and built outputs (`dist`) so imports resolve whether or not packages have been built.
@@ -58,4 +63,3 @@ Ensure the app extends the base config and, if needed, adds local aliases that i
 - Always list the `src` path(s) first, followed by the built `dist` equivalents.
 - For package‑level imports, map both the entrypoint and the `/*` wildcard.
 - Keep `references` up to date to enable project builds (`tsc -b`).
-

@@ -130,7 +130,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
     <div role="dialog" aria-modal="true" className="relative fixed inset-0 z-50 pointer-events-auto">
       {/* Dimmed backdrop */}
       <div
-        className="absolute inset-0 bg-black/45 cursor-pointer"
+        className="absolute inset-0 bg-foreground/45 cursor-pointer"
         role="button"
         aria-label={t("pb.tour.skipAria")}
         tabIndex={0}
@@ -169,7 +169,7 @@ export default function PageBuilderTour({ steps, run, callback }: PageBuilderTou
 
       {/* Tooltip card */}
       {/* eslint-disable react/forbid-dom-props -- PB-2419: dynamic top/left/width positioning */}
-      <div className="fixed z-50 rounded-lg border border-white/20 bg-surface-1 text-foreground shadow-xl p-3" style={tipStyle}>
+      <div className="fixed z-50 rounded-lg border border-border bg-surface-1 text-foreground shadow-xl p-3" style={tipStyle}>
         <div className="font-semibold mb-2">
           {t("pb.tour.stepXofY", { current: Math.min(active + 1, steps.length), total: steps.length })}
         </div>

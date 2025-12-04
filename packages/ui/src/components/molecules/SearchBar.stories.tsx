@@ -3,6 +3,7 @@ import { expect, fn, userEvent, waitFor, within } from "storybook/test";
 import { SearchBar } from "./SearchBar";
 
 const meta: Meta<typeof SearchBar> = {
+  title: "Molecules/SearchBar",
   component: SearchBar,
   parameters: {
     docs: {
@@ -53,8 +54,19 @@ export const PrefilledQuery: StoryObj<typeof SearchBar> = {
     docs: {
       description: {
         story:
-          "Populate the `query` prop to mirror a search term sourced from URL params or CMS filters.",
+      "Populate the `query` prop to mirror a search term sourced from URL params or CMS filters.",
       },
     },
+  },
+};
+
+export const KeyboardNavigation: StoryObj<typeof SearchBar> = {
+  args: { suggestions: ["Alpha", "Beta", "Gamma"], onSelect: fn() },
+  play: async ({ canvasElement, args }) => {
+    const selectSpy = args.onSelect as ReturnType<typeof fn>;
+    const canvas = within(canvasElement);
+    const input = await canvas.findByRole("searchbox", { name: /search/i });
+    await userEvent.type(input, "a{ArrowDown}{Enter}");
+    await expect(selectSpy).toHaveBeenCalled();
   },
 };

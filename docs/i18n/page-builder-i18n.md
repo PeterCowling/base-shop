@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: i18n
+Last-reviewed: 2025-12-02
+
 # Page Builder i18n
 
 Goal: Maximize user experience and SEO by ensuring all user‑visible copy in the Page Builder is translatable and rendered in the current locale.

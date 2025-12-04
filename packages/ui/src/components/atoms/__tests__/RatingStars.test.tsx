@@ -3,37 +3,33 @@ import { render } from "@testing-library/react";
 import { RatingStars } from "../RatingStars";
 
 describe("RatingStars", () => {
-  it.each([
-    { rating: 3.2, filled: 3 },
-    { rating: 4.8, filled: 5 },
-    { rating: 0, filled: 0 },
-  ])("renders correct stars for rating %p", ({ rating, filled }) => {
+  it("renders filled, half and empty stars based on rating", () => {
     const size = 24;
-    const { container } = render(
-      <RatingStars rating={rating} size={size} />,
-    );
-    const stars = container.querySelectorAll("svg");
+    const { container } = render(<RatingStars rating={3.7} size={size} />);
+    const stars = Array.from(container.querySelectorAll("svg"));
     expect(stars).toHaveLength(5);
-    stars.forEach((star, index) => {
+
+    const overlays = stars.map((star) => star.querySelector("g.fill-warning"));
+    expect(overlays.filter(Boolean)).toHaveLength(4); // 3 full + 1 half
+    expect(overlays[0]).not.toBeNull();
+    expect(overlays[1]).not.toBeNull();
+    expect(overlays[2]).not.toBeNull();
+    expect(overlays[3]).not.toBeNull();
+    expect(overlays[4]).toBeNull();
+
+    const halfStar = overlays[3] as SVGElement;
+    expect(halfStar.style.clipPath).toContain("50%");
+
+    stars.forEach((star) => {
       expect(star).toHaveAttribute("width", size.toString());
       expect(star).toHaveAttribute("height", size.toString());
-      if (index < filled) {
-        expect(star).toHaveClass("fill-warning");
-      } else {
-        expect(star).toHaveClass("fill-muted");
-      }
     });
   });
 
-  it("rounds fractional ratings to the nearest star", () => {
-    const rating = 3.2;
-    const size = 24;
-    const { container } = render(<RatingStars rating={rating} size={size} />);
-
-    const filledStars = container.querySelectorAll("svg.fill-warning");
-    const mutedStars = container.querySelectorAll("svg.fill-muted");
-
-    expect(filledStars).toHaveLength(Math.round(rating));
-    expect(mutedStars).toHaveLength(5 - Math.round(rating));
+  it("clamps rating and exposes an accessible label", () => {
+    const { container } = render(<RatingStars rating={6} />);
+    const wrapper = container.firstChild as HTMLElement;
+    expect(wrapper).toHaveAttribute("role", "img");
+    expect(wrapper).toHaveAttribute("aria-label", "5 out of 5 stars");
   });
 });

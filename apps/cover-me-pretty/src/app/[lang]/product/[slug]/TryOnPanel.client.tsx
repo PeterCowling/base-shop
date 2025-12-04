@@ -14,6 +14,7 @@ import { SignedViewLink } from "./SignedViewLink";
 import { TryOnStepper } from "./TryOnStepper";
 import { useTranslations } from "@acme/i18n";
 import { drawPreview, computeSmartAnchor } from "./PreviewUtils";
+import { logAnalyticsEvent } from "@platform-core/analytics/client";
 
 interface Props { product: SKU }
 
@@ -113,6 +114,7 @@ export default function TryOnPanel({ product }: Props) {
   const [, dispatch] = useCart();
   const addToCartWithTag = useCallback(async () => {
     await dispatch({ type: 'add', sku: product, qty: 1, meta: { source: 'try-on', tryOn: { idempotencyKey: ctrl.state.jobId, transform: overlay } } });
+    void logAnalyticsEvent({ type: "add_to_cart", productId: product.slug, source: "try-on" });
   }, [dispatch, product, ctrl.state.jobId, overlay]);
 
   // Render preview when available (occlusion aware) — rAF-throttled

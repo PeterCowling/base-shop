@@ -19,6 +19,18 @@ jest.mock("../actions/pages/service", () => ({
 
 jest.mock("@acme/config/env/core", () => ({ coreEnv: { NODE_ENV: "test" } }));
 
+const recordMetric = jest.fn();
+const incrementOperationalError = jest.fn();
+
+jest.mock("@platform-core/utils", () => ({
+  recordMetric: (...args: unknown[]) => recordMetric(...args),
+}));
+
+jest.mock("@platform-core/shops/health", () => ({
+  incrementOperationalError: (...args: unknown[]) =>
+    incrementOperationalError(...args),
+}));
+
 jest.mock("@/utils/sentry.server", () => ({ captureException }));
 
 import { createPage } from "../actions/pages/create";
@@ -91,6 +103,46 @@ describe("pages.server", () => {
 
       await expect(createPage("shop", fd)).rejects.toThrow("boom");
       expect(captureException).toHaveBeenCalledWith(err);
+    });
+
+    it("emits publish metric on successful published create", async () => {
+      const saved = { id: "p1", slug: "home", status: "published" } as any;
+      (service.getPages as jest.Mock).mockResolvedValue([]);
+      (service.savePage as jest.Mock).mockResolvedValue(saved);
+
+      const fd = new FormData();
+      fd.set("id", "p1");
+      fd.set("slug", "home");
+      fd.set("status", "published");
+      fd.set("components", "[]");
+
+      await createPage("shop", fd);
+      expect(recordMetric).toHaveBeenCalledWith("cms_page_publish_total", {
+        shopId: "shop",
+        service: "cms",
+        status: "success",
+      });
+      expect(incrementOperationalError).not.toHaveBeenCalled();
+    });
+
+    it("emits failure metric and increments errors when published create fails", async () => {
+      (service.getPages as jest.Mock).mockResolvedValue([]);
+      const err = new Error("boom");
+      (service.savePage as jest.Mock).mockRejectedValue(err);
+
+      const fd = new FormData();
+      fd.set("id", "p1");
+      fd.set("slug", "home");
+      fd.set("status", "published");
+      fd.set("components", "[]");
+
+      await expect(createPage("shop", fd)).rejects.toThrow("boom");
+      expect(recordMetric).toHaveBeenCalledWith("cms_page_publish_total", {
+        shopId: "shop",
+        service: "cms",
+        status: "failure",
+      });
+      expect(incrementOperationalError).toHaveBeenCalledWith("shop");
     });
   });
 
@@ -255,6 +307,68 @@ describe("pages.server", () => {
 
       await expect(updatePage("shop", fd)).rejects.toThrow("boom");
       expect(captureException).toHaveBeenCalledWith(err);
+    });
+
+    it("emits publish metric on successful publish transition", async () => {
+      const existing = {
+        id: "p1",
+        slug: "old",
+        status: "draft",
+        components: [],
+        seo: { title: {}, description: {}, image: {} },
+        createdAt: "now",
+        updatedAt: "now",
+        createdBy: "user",
+      } as any;
+      (service.getPages as jest.Mock).mockResolvedValue([existing]);
+      const saved = { ...existing, status: "published" };
+      (service.updatePage as jest.Mock).mockResolvedValue(saved);
+
+      const fd = new FormData();
+      fd.set("id", "p1");
+      fd.set("updatedAt", "now");
+      fd.set("slug", "home");
+      fd.set("status", "published");
+      fd.set("components", "[]");
+
+      await updatePage("shop", fd);
+      expect(recordMetric).toHaveBeenCalledWith("cms_page_publish_total", {
+        shopId: "shop",
+        service: "cms",
+        status: "success",
+      });
+      expect(incrementOperationalError).not.toHaveBeenCalled();
+    });
+
+    it("emits failure metric and increments errors when publish transition fails", async () => {
+      const existing = {
+        id: "p1",
+        slug: "old",
+        status: "draft",
+        components: [],
+        seo: { title: {}, description: {}, image: {} },
+        createdAt: "now",
+        updatedAt: "now",
+        createdBy: "user",
+      } as any;
+      (service.getPages as jest.Mock).mockResolvedValue([existing]);
+      const err = new Error("boom");
+      (service.updatePage as jest.Mock).mockRejectedValue(err);
+
+      const fd = new FormData();
+      fd.set("id", "p1");
+      fd.set("updatedAt", "now");
+      fd.set("slug", "home");
+      fd.set("status", "published");
+      fd.set("components", "[]");
+
+      await expect(updatePage("shop", fd)).rejects.toThrow("boom");
+      expect(recordMetric).toHaveBeenCalledWith("cms_page_publish_total", {
+        shopId: "shop",
+        service: "cms",
+        status: "failure",
+      });
+      expect(incrementOperationalError).toHaveBeenCalledWith("shop");
     });
   });
 

@@ -9,7 +9,6 @@ import { z } from 'zod';
 const meta: Meta<typeof FeaturedProductBlock> = {
   title: 'CMS Blocks/FeaturedProductBlock/Matrix',
   component: FeaturedProductBlock,
-  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Highlight a single feature product from a collection or explicit SKU.' } } },
 };
@@ -23,3 +22,7 @@ try { z.object({ collectionId: z.string().optional(), sku: z.object({ id: z.stri
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });

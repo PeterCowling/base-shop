@@ -177,10 +177,17 @@ export default function MediaDetailsPanel({
             </div>
           </div>
           <DialogFooter className="border-t pt-4">
-            <Button type="submit" disabled={pending} className={cn()} style={{ minWidth: 120 }}>
+            <Button
+              type="submit"
+              disabled={pending}
+              aria-busy={pending || undefined}
+              aria-label={pending ? (t("actions.saving") as string) : (t("actions.save") as string)}
+              className={cn()}
+              style={{ minWidth: 120 }}
+            >
               {pending ? (
                 <span className="flex items-center gap-2">
-                  <Spinner className="h-4 w-4" />
+                  <Spinner className="h-4 w-4" aria-hidden="true" />
                   <span aria-live="polite" aria-atomic="true">
                     {t("actions.saving")}
                   </span>

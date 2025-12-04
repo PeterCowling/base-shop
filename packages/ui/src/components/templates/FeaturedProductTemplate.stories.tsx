@@ -4,6 +4,7 @@ import { FeaturedProductTemplate } from "./FeaturedProductTemplate";
 import type { SKU } from "@acme/types";
 
 const meta: Meta<typeof FeaturedProductTemplate> = {
+  title: "Templates/FeaturedProductTemplate",
   component: FeaturedProductTemplate,
   args: {
     product: {
@@ -31,4 +32,23 @@ const meta: Meta<typeof FeaturedProductTemplate> = {
 };
 export default meta;
 
-export const Default: StoryObj<typeof FeaturedProductTemplate> = {};
+type Story = StoryObj<typeof FeaturedProductTemplate>;
+const baseArgs = meta.args!;
+
+export const Default: Story = {};
+export const Loading: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "loading" },
+};
+export const Empty: Story = {
+  args: { ...baseArgs, product: undefined },
+  parameters: { dataState: "empty" },
+};
+export const Error: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "error" },
+};
+export const RTL: Story = {
+  args: { ...baseArgs },
+  parameters: { rtl: true },
+};

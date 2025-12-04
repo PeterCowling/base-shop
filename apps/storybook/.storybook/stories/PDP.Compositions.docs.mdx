@@ -1,6 +1,7 @@
 import { Meta, Canvas, Story, Title, Description, Subtitle } from '@storybook/blocks';
+import * as PDPStories from './PDP.stories';
 
-<Meta title="Compositions/PDP/Docs" />
+<Meta of={PDPStories} title="Compositions/PDP/Docs" />
 
 <Title>PDP Compositions</Title>
 <Subtitle>End‑to‑end page composition demos</Subtitle>
@@ -23,4 +24,3 @@ Stories are wrapped with a mocked CartProvider when `parameters: { providers: { 
 <Canvas>
   <Story id="compositions-pdp--ar-and360" />
 </Canvas>
-

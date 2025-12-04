@@ -7,9 +7,10 @@ import { Loader, Tag } from "@ui/components/atoms";
 import { Inline } from "@ui/components/atoms/primitives";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
 
 export default function ConfiguratorStatusBar(): React.JSX.Element {
-  const { saving, dirty } = useConfigurator();
+  const { saving, dirty, state } = useConfigurator();
   const { replay } = useGuidedTour();
   const t = useTranslations();
 
@@ -22,16 +23,52 @@ export default function ConfiguratorStatusBar(): React.JSX.Element {
     status = <CheckIcon className="h-4 w-4 text-success" />;
   }
 
+  const shopId = state.shopId;
+
+  const handleHelpClick = () => {
+    if (shopId) {
+      track("build_flow_help_requested", {
+        shopId,
+        stepId: "summary",
+        surface: "statusBar",
+      });
+    }
+    window.open("/docs/cms/build-shop-guide.md", "_blank", "noreferrer");
+  };
+
+  const handleReplayClick = () => {
+    if (shopId) {
+      track("build_flow_exit", {
+        shopId,
+        reason: "tour",
+        surface: "statusBar",
+      });
+    }
+    replay();
+  };
+
   return (
     <div className="sticky bottom-0 inset-x-0 flex flex-wrap items-center justify-between gap-2 bg-muted py-2 px-4 text-sm">
-      <Inline alignY="center">{status}</Inline>
-      <button
-        type="button"
-        onClick={replay}
-        className="shrink-0 underline inline-flex items-center justify-center min-h-11 min-w-11 size-11"
-      >
-        {t("cms.configurator.replayTour")}
-      </button>
+      <Inline alignY="center">
+        {status}
+      </Inline>
+      <Inline gap={3} alignY="center">
+        <button
+          type="button"
+          onClick={handleHelpClick}
+          aria-label={String(t("cms.configurator.help.openBuildGuide"))}
+          className="shrink-0 underline inline-flex items-center justify-center min-h-11 min-w-11 px-2"
+        >
+          {t("cms.configurator.help.label")}
+        </button>
+        <button
+          type="button"
+          onClick={handleReplayClick}
+          className="shrink-0 underline inline-flex items-center justify-center min-h-11 min-w-11 size-11"
+        >
+          {t("cms.configurator.replayTour")}
+        </button>
+      </Inline>
     </div>
   );
 }

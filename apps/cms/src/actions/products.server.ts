@@ -20,6 +20,8 @@ import { redirect } from "next/navigation";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 import { formDataToObject } from "../utils/formData";
+import { updateInventoryItem } from "@platform-core/repositories/inventory.server";
+import { track } from "@acme/telemetry";
 
 /* -------------------------------------------------------------------------- */
 /*  Helpers                                                                    */
@@ -61,6 +63,88 @@ export async function createDraftRecord(
   const repo = await readRepo<ProductPublication>(shop);
   await writeRepo<ProductPublication>(shop, [draft, ...repo]);
   return draft;
+}
+
+interface MinimalFirstProductInput {
+  name: string;
+  price: number;
+  quantity: number;
+  location?: string;
+  imageUrl?: string;
+}
+
+export async function createMinimalFirstProduct(
+  shop: string,
+  input: MinimalFirstProductInput
+): Promise<ProductPublication> {
+  await ensureAuthorized();
+
+  const now = nowIso();
+  const settings = await readSettings(shop);
+  const locales = settings.languages;
+  const primaryLocale = locales[0] ?? ("en" as Locale);
+
+  const title = fillLocales({ [primaryLocale]: input.name }, input.name);
+  const description = fillLocales(
+    { [primaryLocale]: " " },
+    " "
+  );
+
+  const parsed = productSchema.parse({
+    id: ulid(),
+    price: input.price,
+    title,
+    description,
+    media: input.imageUrl
+      ? [
+          {
+            url: input.imageUrl,
+            type: "image",
+          },
+        ]
+      : [],
+  });
+
+  const repo = await readRepo<ProductPublication>(shop);
+
+  const product: ProductPublication = {
+    id: parsed.id,
+    sku: parsed.id,
+    title: parsed.title as unknown as Record<Locale, string>,
+    description: parsed.description as unknown as Record<Locale, string>,
+    price: parsed.price,
+    currency: settings.currency ?? "EUR",
+    media: parsed.media,
+    status: "active",
+    shop,
+    row_version: 1,
+    created_at: now,
+    updated_at: now,
+  };
+
+  await writeRepo<ProductPublication>(shop, [product, ...repo]);
+
+  await updateInventoryItem(
+    shop,
+    product.sku,
+    {},
+    (current) => ({
+      sku: product.sku,
+      productId: product.id,
+      quantity: current ? current.quantity + input.quantity : input.quantity,
+      variantAttributes: {
+        ...(current?.variantAttributes ?? {}),
+        location: input.location ?? "main",
+      },
+    })
+  );
+
+  track("build_flow_first_product_created", {
+    shopId: shop,
+    productId: product.id,
+  });
+
+  return product;
 }
 
 /* Server-action: called by “New product” button */

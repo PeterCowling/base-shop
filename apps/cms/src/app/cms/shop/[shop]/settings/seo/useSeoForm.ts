@@ -11,6 +11,7 @@ export interface SeoRecord {
   brand: string;
   offers: string;
   aggregateRating: string;
+  structuredData: string;
 }
 
 interface Options {
@@ -50,6 +51,7 @@ export function useSeoForm({
         brand: initialSeo[l]?.brand ?? "",
         offers: initialSeo[l]?.offers ?? "",
         aggregateRating: initialSeo[l]?.aggregateRating ?? "",
+        structuredData: initialSeo[l]?.structuredData ?? "",
       };
     });
     return records;
@@ -84,6 +86,7 @@ export function useSeoForm({
       fd.append("brand", data.brand);
       fd.append("offers", data.offers);
       fd.append("aggregateRating", data.aggregateRating);
+      fd.append("structuredData", data.structuredData);
       const result = await updateSeo(shop, fd);
       if (result.errors) {
         setErrors(result.errors);

@@ -87,7 +87,7 @@ export async function sendEmail(
       });
       return info?.messageId;
     } catch (error) {
-      console.error("Error sending email", error); // i18n-exempt: operational log
+      getLogger().error({ error }, "Error sending email"); // i18n-exempt: operational log
       throw error;
     }
   } else {

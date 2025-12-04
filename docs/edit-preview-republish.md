@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Edit components, preview and republish
 
 Shop owners can tweak individual components in their shops without touching the underlying template. Edits are staged locally so they can be reviewed before publishing.

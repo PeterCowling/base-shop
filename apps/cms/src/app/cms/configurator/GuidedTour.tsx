@@ -12,31 +12,40 @@ import { useTranslations } from "@acme/i18n";
 
 interface StepDefinition {
   selector: string;
-  translationKey: string;
+  translationKey?: string;
+  content?: string;
 }
 
 const TOUR_KEY = "configurator-guided-tour";
 
 const STEP_DEFINITIONS: StepDefinition[] = [
   {
-    selector: '[data-tour="select-template"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-    translationKey: "cms.configurator.tour.selectTemplate",
+    selector: '[data-tour="quest-basics"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    content: "Start with shop basics so the launch timer can begin.",
   },
   {
-    selector: '[data-tour=\"drag-component\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-    translationKey: "cms.configurator.tour.dragComponent",
+    selector: '[data-tour="quest-theme"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    content: "Pick a theme so pages are readable before you publish.",
   },
   {
-    selector: '[data-tour=\"edit-properties\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-    translationKey: "cms.configurator.tour.editProperties",
+    selector: '[data-tour="quest-payments"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    content: "Connect payments to stay within the one-hour goal.",
   },
   {
-    selector: '[data-tour=\"preview\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-    translationKey: "cms.configurator.tour.preview",
+    selector: '[data-tour="quest-shipping"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    content: "Enable shipping and tax so checkout can succeed.",
   },
   {
-    selector: '[data-tour=\"publish\"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
-    translationKey: "cms.configurator.tour.publish",
+    selector: '[data-tour="quest-product"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    content: "Create your first product with stock to unlock launch.",
+  },
+  {
+    selector: '[data-tour="quest-checkout"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    content: "Publish checkout and navigation so customers can finish orders.",
+  },
+  {
+    selector: '[data-tour="quest-launch"]', // i18n-exempt -- CMS-2651 [ttl=2026-12-31]
+    content: "Review the checklist and celebrate when you’re launch-ready.",
   },
 ];
 
@@ -135,7 +144,9 @@ export default function GuidedTour({
   const currentDefinition =
     stepIndex !== null ? STEP_DEFINITIONS[stepIndex] ?? null : null;
   const currentContent = currentDefinition
-    ? t(currentDefinition.translationKey)
+    ? currentDefinition.translationKey
+      ? t(currentDefinition.translationKey)
+      : currentDefinition.content
     : null;
 
   useEffect(() => {

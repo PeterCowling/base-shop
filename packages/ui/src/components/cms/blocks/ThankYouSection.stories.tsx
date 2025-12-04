@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import ThankYouSection from "./ThankYouSection";
 
 const meta: Meta<typeof ThankYouSection> = {
+  title: "CMS Blocks/ThankYouSection",
   component: ThankYouSection,
   args: {
     headline: "Thank you",

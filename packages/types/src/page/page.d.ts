@@ -42,6 +42,14 @@ export interface Page {
   stableId?: string;
   slug: string;
   status: "draft" | "published";
+  /** Timestamp of the most recent successful publish */
+  publishedAt?: string;
+  /** User id/email that performed the most recent publish */
+  publishedBy?: string;
+  /** Optional revision/hash for the last published snapshot */
+  publishedRevisionId?: string;
+  /** Optional snapshot of the last published components for easy revert */
+  lastPublishedComponents?: PageComponent[];
   /** Navigation/Sitemap visibility. Defaults to "public". */
   visibility?: "public" | "hidden";
   components: PageComponent[];
@@ -62,4 +70,3 @@ export declare const pageSchema: z.ZodSchema<Page>;
 
 export { scaffoldSpecSchema } from "./ScaffoldSpec";
 export type { ScaffoldSpec } from "./ScaffoldSpec";
-

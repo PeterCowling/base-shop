@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Repo
+Last-reviewed: 2025-12-02
+
 # Installation
 
 Requires **Node.js >=20**, **pnpm 10.12.1**, and a `DATABASE_URL` pointing to your
@@ -16,122 +21,23 @@ pnpm --filter @acme/platform-core run prisma:generate
 pnpm --filter @acme/platform-core exec prisma db seed
 ```
 
-### Seeding
-
-`pnpm --filter @acme/platform-core exec prisma db seed` loads both inventory and orders, pulling inventory fixtures from `data/shops/*/inventory.json` and computing `variantKey` for each variant.
-
-To skip loading inventory, run:
-
-```bash
-pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory
-```
-
-Use the `--skip-inventory` flag to bypass inventory seeding when needed.
-
-`postinstall` runs `prisma generate` automatically.
-
-If `DATABASE_URL` is unset, the platform falls back to an in-memory test stub.
+`postinstall` runs `prisma generate` automatically. For more details on seeding strategies, backends, and `DATA_ROOT`, see
+[setup](./setup.md) and [persistence](./persistence.md). If `DATABASE_URL` is unset, the platform falls back to an in-memory
+test stub for local development.
 
 ## Getting Started
 
-To scaffold a shop and immediately start the dev server in one step:
+The quickest way to see a local shop is:
 
 ```bash
 pnpm quickstart-shop --id demo --theme base --template template-app --auto-plugins --auto-env --presets
 ```
 
-This wraps the `init-shop` configurator, validates the generated `.env`, and runs `pnpm dev` for the new shop. `--auto-plugins` selects all detected payment and shipping providers, `--auto-env` writes placeholder environment variables, and `--presets` applies default navigation, pages, and a GitHub Actions workflow. You can also provide a configuration file and skip most flags:
+This wraps the `init-shop` configurator, validates the generated `.env`, and starts `pnpm dev` for the new shop. For a full
+explanation of flags, configuration files, seeding options, and CI workflow generation, see [Project Setup](./setup.md).
 
-```bash
-pnpm quickstart-shop --config ./shop.config.json
-```
-
-`quickstart-shop` automatically builds the workspace (`pnpm -r build`) before seeding data or starting the dev server, so you can
-run it without a manual build step.
-
-Example `shop.config.json`:
-
-```json
-{
-  "id": "demo",
-  "theme": "base",
-  "template": "template-app",
-  "payment": ["stripe"],
-  "shipping": ["ups"],
-  "navItems": [{ "label": "Home", "href": "/" }],
-  "pages": [{ "slug": "about", "title": "About Us" }]
-}
-```
-
-1. **Initialize a shop**
-
-   ```bash
-   pnpm init-shop
-   # optionally generate a GitHub Actions workflow
-   pnpm setup-ci <id>
-   ```
-
-   `init-shop` launches an interactive configurator that asks for the shop ID, display name, logo URL,
-   contact email, shop type (`sale` or `rental`), and which theme and template to use. Payment and
-   shipping providers are chosen from guided lists of available providers. It then
-   scaffolds `apps/shop-<id>` and prompts for environment variables like Stripe keys and CMS
-   credentials, writing them directly to `apps/shop-<id>/.env` and generating a matching
-   `.env.template` with the required keys. See [plugin environment variables](./plugins.md) for provider-specific keys. The configurator validates the environment immediately and
-   can fetch secrets from an external vault by providing `--vault-cmd <cmd>` (the command is invoked
-   with each variable name). For scripted setups you can still
-   call `pnpm create-shop <id>` and pass flags like `--name`, `--logo` and `--contact` to skip those
-   prompts. Both `init-shop` and `create-shop` accept a `--seed` flag to copy sample
-   `products.json` and `inventory.json` from `data/templates/default` into the new shop.
-   To reuse answers, place a JSON profile in `profiles/<name>.json` and run
-   `pnpm init-shop --profile <name>`. Combine with `--skip-prompts` to accept
-   defaults for any remaining questions and run non-interactively.
-
-   ```bash
-   pnpm create-shop <id> --name="Demo Shop" --logo=https://example.com/logo.png \
-     --contact=demo@example.com
-   ```
-
-2. **Run the app**
-
-   ```bash
-   cd apps/shop-<id>
-   pnpm dev
-   ```
-
-   The configurator already validated your environment variables. Rerun `pnpm validate-env <id>` after
-   editing `.env` if you need to re-check. Open http://localhost:3000 to view the site. Pages
-   hot-reload on save.
-
-   If `pnpm dev` fails with an `array.length` error, see `docs/troubleshooting.md` to capture detailed logs and diagnose the failure.
-
-3. _(Optional)_ Each Next.js app must provide its own `postcss.config.cjs` that forwards to the repo root configuration so Tailwind resolves correctly. After updating Tailwind or any CSS utilities, run `pnpm tailwind:check` to verify the build.
-
-### Example
-
-```bash
-pnpm init-shop
-? Shop ID … demo
-? Display name … Demo Shop
-? Logo URL … https://example.com/logo.png
-? Contact email … demo@example.com
-? Shop type (sale or rental) … sale
-? Theme › base
-? Template › template-app
-Available payment providers:
-  1) stripe
-  2) paypal
-Select payment providers by number (comma-separated, empty for none): 1
-Available shipping providers:
-  1) dhl
-  2) ups
-Select shipping providers by number (comma-separated, empty for none): 2
-Scaffolded apps/shop-demo
-
-pnpm setup-ci demo  # optional
-pnpm validate-env demo
-cd apps/shop-demo
-pnpm dev
-```
+If you prefer to drive the flow manually with `pnpm init-shop` / `pnpm create-shop`, follow the step‑by‑step guide in
+[`docs/setup.md`](./setup.md#1-create-a-shop).
 
 ### Useful targets
 
@@ -160,39 +66,12 @@ All files         |   100   |      100 |   100   |   100   |
 ------------------|---------|----------|---------|---------|-------------------
 ```
 
-Project Structure
-src/
-├─ app/ // Next.js App Router
-│ ├─ [lang]/… // i18n routes (en, de, it)
-│ └─ api/… // Edge Route Handlers
-├─ components/ // UI building blocks
-├─ contexts/ // React context providers
-├─ lib/ // Server-side helpers (Stripe, products, etc.)
-└─ tests/ // Jest + Cypress
-public/ // Static assets
-Learn More
-Next.js Docs – https://nextjs.org/docs
+## Project layout and deploy
 
-Interactive tutorial – https://nextjs.org/learn
-
-GitHub repo – https://github.com/vercel/next.js
-
-Deploy
-The project is CI-deployed to Cloudflare Pages via
-@cloudflare/next-on-pages.
-
-## Svelte integration
-
-This repo includes a minimal example plugin located at `packages/svelte-tool`.
-The plugin is registered via `svelte.config.ts` and uses the
-`vite-plugin-svelte` Node plugin installed as a dev dependency.
-
-To experiment with Svelte:
-
-```bash
-pnpm install
-pnpm build
-```
+For an overview of the monorepo structure and package layering, see
+[architecture](./architecture.md) and [platform vs apps](./platform-vs-apps.md).
+For CI and deployment details (including Cloudflare Pages), see
+[ci-and-deploy-roadmap](./ci-and-deploy-roadmap.md).
 
 ## Storybook
 

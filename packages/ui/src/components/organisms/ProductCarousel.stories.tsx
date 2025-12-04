@@ -47,6 +47,7 @@ function AutoCarousel(props: ProductCarouselProps & { autoplay?: boolean }) {
 }
 
 const meta: Meta<typeof AutoCarousel> = {
+  title: "Organisms/ProductCarousel",
   component: AutoCarousel,
   parameters: {
     docs: {

@@ -4,7 +4,11 @@ import { FormEvent, useCallback, useMemo, useState } from "react";
 import { useTranslations } from "@i18n/Translations";
 import en from "@i18n/en.json";
 
-import { setFreezeTranslations, updateSeo } from "@cms/actions/shops.server";
+import {
+  generateSeo as runGenerateSeo,
+  setFreezeTranslations,
+  updateSeo,
+} from "@cms/actions/shops.server";
 import type { Locale } from "@acme/types";
 
 export interface SeoData {
@@ -15,6 +19,11 @@ export interface SeoData {
   canonicalBase?: string;
   ogUrl?: string;
   twitterCard?: string;
+  // Structured data helpers captured as JSON strings
+  brand?: string;
+  offers?: string;
+  aggregateRating?: string;
+  structuredData?: string;
 }
 
 export interface UseSeoEditorProps {
@@ -51,6 +60,10 @@ const EMPTY_DRAFT: SeoData = {
   canonicalBase: "",
   ogUrl: "",
   twitterCard: "",
+  brand: "",
+  offers: "",
+  aggregateRating: "",
+  structuredData: "",
 };
 
 const pickShared = (data: SeoData | undefined) => ({
@@ -177,6 +190,15 @@ export function useSeoEditor({
   const submit = useCallback(
     async (event?: FormEvent<HTMLFormElement>): Promise<SubmitResult> => {
       event?.preventDefault();
+      // Client-side JSON sanity check for structured data to avoid bad saves.
+      if (currentDraft.structuredData) {
+        try {
+          JSON.parse(currentDraft.structuredData);
+        } catch {
+          setErrors({ structuredData: ["Structured data must be valid JSON"] });
+          return { status: "error", message: String(t("cms.seo.save.error")) };
+        }
+      }
       setSaving(true);
       const fd = new FormData();
       fd.append("locale", locale);
@@ -187,6 +209,10 @@ export function useSeoEditor({
       fd.append("canonicalBase", currentDraft.canonicalBase ?? "");
       fd.append("ogUrl", currentDraft.ogUrl ?? "");
       fd.append("twitterCard", currentDraft.twitterCard ?? "");
+      fd.append("brand", currentDraft.brand ?? "");
+      fd.append("offers", currentDraft.offers ?? "");
+      fd.append("aggregateRating", currentDraft.aggregateRating ?? "");
+      fd.append("structuredData", currentDraft.structuredData ?? "");
 
       try {
         const result = await updateSeo(shop, fd);
@@ -222,32 +248,21 @@ export function useSeoEditor({
   const generate = useCallback(async (): Promise<GenerateResult> => {
     setGenerating(true);
     try {
-      const res = await fetch("/api/seo/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          shop,
-          id: `${shop}-${locale}`,
-          title: currentDraft.title,
-          description: currentDraft.description,
-        }),
-      });
-
-      if (!res.ok) {
+      const fd = new FormData();
+      fd.append("id", `${shop}-${locale}`);
+      fd.append("locale", locale);
+      fd.append("title", currentDraft.title ?? "");
+      fd.append("description", currentDraft.description ?? "");
+      const res = await runGenerateSeo(shop, fd);
+      if (res.errors || !res.generated) {
         return { status: "error", message: String(t("cms.seo.generate.error")) };
       }
 
-      const data = (await res.json()) as {
-        title: string;
-        description: string;
-        alt: string;
-        image: string;
-      };
-
-      updateField("title", data.title);
-      updateField("description", data.description);
-      updateField("alt", data.alt);
-      updateField("image", data.image);
+      updateField("title", res.generated.title);
+      updateField("description", res.generated.description);
+      if (res.generated.image) {
+        updateField("image", res.generated.image);
+      }
       return { status: "success", message: String(t("cms.seo.generate.success")) };
     } catch {
       return { status: "error", message: String(t("cms.seo.generate.error")) };

@@ -39,7 +39,7 @@ export default function HeaderSection({
   // i18n-exempt -- DS-1023: CSS utility class names, not user copy [ttl=2026-12-31]
   const stickyClass = variant === "sticky" ? "sticky top-0 z-50" : undefined;
   // i18n-exempt -- DS-1023: CSS utility class names, not user copy [ttl=2026-12-31]
-  const transparentClass = variant === "transparent" ? "bg-transparent" : "bg-white";
+  const transparentClass = variant === "transparent" ? "bg-transparent" : "bg-background text-foreground";
   const [open, setOpen] = React.useState(false);
   // Resolve current locale for LanguageSwitcher
   // falls back to "en" when window is undefined
@@ -80,7 +80,7 @@ export default function HeaderSection({
         </ExperimentGate>
         {open ? (
           <div
-            className="fixed inset-0 bg-black/50 p-8"
+            className="fixed inset-0 bg-foreground/50 p-8"
             role="button"
             aria-label={String(t("actions.close"))}
             tabIndex={0}
@@ -93,7 +93,7 @@ export default function HeaderSection({
           >
             <Cover minH="screen" center={
               <div
-                className="bg-white rounded shadow p-4 w-full"
+                className="w-full rounded-lg border border-border bg-card p-4 shadow-sm"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="search-title"
@@ -115,7 +115,7 @@ export default function HeaderSection({
 
   return (
     // eslint-disable-next-line ds/no-hardcoded-copy -- DS-0003: CSS utility classes only [ttl=2026-12-31]
-    <header className={[className, stickyClass, transparentClass, "relative w-full border-b"].filter(Boolean).join(" ") || undefined} {...rest}>
+    <header className={[className, stickyClass, transparentClass, "relative w-full border-b border-border"].filter(Boolean).join(" ") || undefined} {...rest}>
       {announcement ? (
         experimentKey ? (
           <ExperimentGate flag={`${experimentKey}:announcement`}><AnnouncementBar /></ExperimentGate>
@@ -143,7 +143,7 @@ export default function HeaderSection({
         </Cluster>
       </div>
       {showBreadcrumbs && breadcrumbs.length > 1 ? (
-        <div className="mx-auto px-4 pb-3 text-sm text-neutral-600">
+        <div className="mx-auto px-4 pb-3 text-sm text-muted-foreground">
           <nav aria-label={String(t("breadcrumb.ariaLabel"))}>
             <ol>
               {breadcrumbs.map((c, i) => (

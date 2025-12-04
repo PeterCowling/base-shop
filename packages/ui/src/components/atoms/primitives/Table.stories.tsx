@@ -87,3 +87,5 @@ export const HoverVsSelected: Story = {
   args: hoverVsSelectedArgs,
   render: (args) => renderTable(args as TableStoryArgs),
 };
+
+export const Default: StoryObj = {};

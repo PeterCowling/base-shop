@@ -9,7 +9,6 @@ import { z } from 'zod';
 const meta: Meta<typeof CmsRecommendationCarousel> = {
   title: 'CMS Blocks/RecommendationCarousel/Matrix',
   component: CmsRecommendationCarousel,
-  parameters: { docs: { autodocs: false } },
   args: { minItems: 1, maxItems: 4 },
   parameters: {
     layout: 'padded',
@@ -41,3 +40,7 @@ export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
   tags: ['visual'],
 });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });

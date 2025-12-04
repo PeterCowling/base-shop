@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Performance
+Last-reviewed: 2025-12-02
+
 # Performance Budgets
 
 This document outlines p95 latency goals for critical API routes. Each goal mirrors the `http_req_duration` threshold defined in its accompanying [k6](https://k6.io/) load test script.

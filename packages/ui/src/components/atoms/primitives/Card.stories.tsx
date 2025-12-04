@@ -1,45 +1,22 @@
-import { type Meta, type StoryObj } from "@storybook/nextjs";
+import type { Meta, StoryObj } from "@storybook/react";
 import { Card, CardContent } from "./card";
 
-const meta = {
-  title: "Primitives/Card",
-  component: Card,
-  subcomponents: { CardContent },
-  decorators: [
-    (Story) => (
-      <div className="grid gap-4 p-8 @md:grid-cols-2">
-        <Story />
-      </div>
-    ),
-  ],
-} satisfies Meta<typeof Card>;
+const meta: Meta = {
+  title: "Atoms/Primitives/Card",
+};
+
 export default meta;
+type Story = StoryObj;
 
-type Story = StoryObj<typeof meta>;
-
-const surfaceExamples = [
-  {
-    id: "default",
-    elevated: false,
-    label: "Default panel surface",
-  },
-  {
-    id: "elevated",
-    elevated: true,
-    label: "Elevated surface (surface-3)",
-  },
-];
-
-export const SurfaceComparison: Story = {
+export const Default: Story = {
   render: () => (
-    <>
-      {surfaceExamples.map(({ id, elevated, label }) => (
-        <Card key={id} elevated={elevated}>
-          <CardContent>
-            <div className="text-sm">{label}</div>
-          </CardContent>
-        </Card>
-      ))}
-    </>
+    <Card className="max-w-sm">
+      <CardContent className="space-y-2">
+        <h3 className="text-lg font-semibold">Card title</h3>
+        <p className="text-sm text-muted-foreground">
+          Supporting body copy to test wrapping and spacing within the card component.
+        </p>
+      </CardContent>
+    </Card>
   ),
 };

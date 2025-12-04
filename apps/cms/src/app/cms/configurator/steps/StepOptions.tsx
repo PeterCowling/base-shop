@@ -21,8 +21,19 @@ import { useTranslations } from "@acme/i18n";
 export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element {
   const t = useTranslations();
   const { state, update } = useConfigurator();
-  const { shopId, payment, shipping, analyticsProvider, analyticsId } = state;
+  const {
+    shopId,
+    payment,
+    billingProvider,
+    shipping,
+    analyticsProvider,
+    analyticsId,
+  } = state;
   const setPayment = useCallback((v: string[]) => update("payment", v), [update]);
+  const setBillingProvider = useCallback(
+    (v: string) => update("billingProvider", v),
+    [update],
+  );
   const setShipping = useCallback((v: string[]) => update("shipping", v), [update]);
   const setAnalyticsProvider = useCallback(
     (v: string) => update("analyticsProvider", v),
@@ -50,6 +61,12 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
     },
     [setAnalyticsId],
   );
+  const handleBillingChange = useCallback(
+    (providerId: string) => {
+      setBillingProvider(providerId);
+    },
+    [setBillingProvider],
+  );
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -68,7 +85,11 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
     if (!provider) return;
 
     if (paymentIds.includes(provider) && !payment.includes(provider)) {
-      setPayment([...payment, provider]);
+      const next = [...payment, provider];
+      setPayment(next);
+      if (!billingProvider || provider === "stripe") {
+        setBillingProvider(provider);
+      }
     }
     if (shippingIds.includes(provider) && !shipping.includes(provider)) {
       setShipping([...shipping, provider]);
@@ -80,8 +101,10 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
     paymentIds,
     shippingIds,
     payment,
+    billingProvider,
     shipping,
     setPayment,
+    setBillingProvider,
     setShipping,
     router,
   ]);
@@ -115,8 +138,24 @@ export default function StepOptions(_: ConfiguratorStepProps): React.JSX.Element
                 {t("cms.configurator.payment.connect")}
               </Button>
             )}
+            <Button
+              variant="ghost"
+              className="px-2 text-xs"
+              data-cy={`billing-set-${p.id}`}
+              disabled={billingProvider === p.id}
+              onClick={() => handleBillingChange(p.id)}
+            >
+              {/* i18n-exempt -- admin-only dashboard helper text */}
+              {billingProvider === p.id ? "Billing" : "Set billing"}
+            </Button>
           </Inline>
         ))}
+        {billingProvider && (
+          <p className="mt-1 text-xs text-muted-foreground">
+            {/* i18n-exempt -- admin-only dashboard helper text */}
+            Billing provider: {billingProvider}
+          </p>
+        )}
       </div>
       <div>
         <p className="font-medium">{t("cms.configurator.options.shippingProviders")}</p>

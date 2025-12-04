@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Prebuild Preview Best Practices
 
 ## Layout spec tips

@@ -89,9 +89,14 @@ export function useConfiguratorPersistence(
           loadedRef.current = true;
           return;
         }
+        const baseState = { ...(source.state ?? source) } as Record<string, unknown>;
+        // Do not hydrate env secrets from server-side drafts; env is managed via /cms/api/env.
+        if ("env" in baseState) {
+          delete baseState.env;
+        }
         const parsed = configuratorStateSchema.safeParse({
-          ...(source.state ?? source),
-          completed: source.completed ?? {},
+          ...baseState,
+          completed: (source as { completed?: unknown }).completed ?? {},
         });
         if (parsed.success) {
           setState(parsed.data);
@@ -130,9 +135,11 @@ export function useConfiguratorPersistence(
     // Skip server sync until the initial load (or fallback) has completed.
     if (!loadedRef.current) return;
 
-    // Hash only the data portion (exclude `completed`, saved separately via PATCH)
-    const { completed: _completed, ...data } = state;
+    // Hash only the data portion (exclude `completed`, saved separately via PATCH).
+    // Avoid sending env secrets to the server; those are managed via /cms/api/env.
+    const { completed: _completed, env: _env, ...data } = state;
     void _completed;
+    void _env;
     const nextHash = (() => {
       try {
         return JSON.stringify(data);

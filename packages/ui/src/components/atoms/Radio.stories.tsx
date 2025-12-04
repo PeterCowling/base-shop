@@ -35,3 +35,5 @@ const GroupRender = (args: GroupProps) => {
 export const Group: StoryObj<GroupProps> = {
   render: (args) => <GroupRender {...args} />,
 };
+
+export const Default: StoryObj = {};

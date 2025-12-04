@@ -8,6 +8,9 @@ import { Spinner } from "../../atoms";
 import { CheckIcon, RotateCounterClockwiseIcon, UpdateIcon } from "@radix-ui/react-icons";
 import VersionsPanel from "./VersionsPanel";
 import type { PageComponent, HistoryState } from "@acme/types";
+import { useTranslations } from "@acme/i18n";
+import { DialogDescription } from "../../atoms/shadcn/Dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../../atoms/shadcn/AlertDialog";
 
 interface Props {
   canUndo: boolean;
@@ -21,6 +24,8 @@ interface Props {
   saveError?: string | null;
   publishError?: string | null;
   autoSaveState: "idle" | "saving" | "saved" | "error";
+  onRevertToPublished?: (components: PageComponent[]) => void;
+  lastPublishedComponents?: PageComponent[];
   // Versions panel integration (optional)
   shop?: string | null;
   pageId?: string | null;
@@ -45,6 +50,8 @@ const HistoryControls = ({
   saveError,
   publishError,
   autoSaveState,
+  onRevertToPublished,
+  lastPublishedComponents,
   shop,
   pageId,
   currentComponents,
@@ -56,6 +63,7 @@ const HistoryControls = ({
 }: Props) => {
   const [isOpenSave, setIsOpenSave] = useState(false);
   const [isOpenManage, setIsOpenManage] = useState(false);
+  const t = useTranslations();
 
   // Listen for global events to open dialogs
   useEffect(() => {
@@ -105,12 +113,12 @@ const HistoryControls = ({
             )}
             {autoSaveState === "saved" && (
               <Inline gap={1} alignY="center" className="text-sm text-muted-foreground">
-                <CheckIcon className="h-4 w-4 text-green-500" />{/* i18n-exempt -- PB-2414: status message */} All changes saved
+                <CheckIcon className="h-4 w-4 text-primary" />{/* i18n-exempt -- PB-2414: status message */} All changes saved
               </Inline>
             )}
           </Inline>
           {saveError && (
-            <p className="text-sm text-red-500">{saveError}</p>
+            <p className="text-sm text-destructive">{saveError}</p>
           )}
         </Stack>
       )}
@@ -132,7 +140,7 @@ const HistoryControls = ({
             </Button>
           </Tooltip>
           {publishError && (
-            <p className="text-sm text-red-500">{publishError}</p>
+            <p className="text-sm text-destructive">{publishError}</p>
           )}
         </Stack>
       )}
@@ -182,6 +190,46 @@ const HistoryControls = ({
               onRestore={onRestoreVersion}
               autoFocusLabel
             />
+            {lastPublishedComponents && onRevertToPublished && (
+              <div className="mt-4 space-y-2 rounded border border-border/30 p-3">
+                <DialogDescription>
+                  {t("cms.builder.versions.revert.description")}
+                </DialogDescription>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline">{t("cms.builder.versions.revert.cta")}</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>{t("cms.builder.versions.revert.confirmTitle")}</AlertDialogTitle>
+                    </AlertDialogHeader>
+                    <DialogDescription>
+                      {t("cms.builder.versions.revert.confirmDescription")}
+                    </DialogDescription>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>{t("actions.cancel")}</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => {
+                          onRevertToPublished(lastPublishedComponents);
+                          setIsOpenSave(false);
+                          try {
+                            window.dispatchEvent(
+                              new CustomEvent("pb:notify", {
+                                detail: { type: "info", title: t("cms.builder.versions.revert.toast") },
+                              }),
+                            );
+                          } catch {
+                            /* noop */
+                          }
+                        }}
+                      >
+                        {t("actions.revert")}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            )}
           </DialogContent>
         </Dialog>
       )}

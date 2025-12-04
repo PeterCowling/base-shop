@@ -3,6 +3,7 @@ import { fn } from "storybook/test";
 import { PaymentMethodSelector } from "./PaymentMethodSelector";
 
 const meta: Meta<typeof PaymentMethodSelector> = {
+  title: "Molecules/PaymentMethodSelector",
   component: PaymentMethodSelector,
   args: {
     methods: [

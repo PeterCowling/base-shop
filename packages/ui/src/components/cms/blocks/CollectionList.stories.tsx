@@ -9,6 +9,7 @@ const collections = [
 ];
 
 const meta: Meta<typeof CollectionList> = {
+  title: "CMS Blocks/CollectionList",
   component: CollectionList,
   args: { collections },
 };

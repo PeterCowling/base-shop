@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Marketing
+Last-reviewed: 2025-12-02
+
 # Marketing automation
 
 The `@acme/email` package ships with a small CLI for managing email marketing campaigns.

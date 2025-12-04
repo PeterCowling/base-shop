@@ -61,6 +61,13 @@ export interface TemplateDescriptor {
    * validated via `pageComponentSchema` and rendered by DynamicRenderer.
    */
   components: PageComponent[];
+  /**
+   * Optional preview image for UI pickers.
+   *
+   * When present, UIs can render a thumbnail before applying a template
+   * or swapping an existing page.
+   */
+  previewImage?: string;
   /** Provenance of the descriptor (core, remote feed, or per-shop library). */
   origin?: TemplateOrigin;
 }
@@ -118,12 +125,19 @@ export function scaffoldPageFromTemplate(
   },
 ): Page {
   const now = new Date().toISOString();
+  const { seo: overrideSeo, ...restOverrides } = overrides ?? {};
+
+  const title: Page["seo"]["title"] =
+    overrideSeo?.title && Object.keys(overrideSeo.title).length > 0
+      ? overrideSeo.title
+      : { [ctx.primaryLocale]: descriptor.label };
+
   const baseSeo: Page["seo"] = {
-    title: { [ctx.primaryLocale]: descriptor.label },
-    description: {},
-    image: {},
-    ...(overrides?.seo ?? {}),
-  } as Page["seo"];
+    title,
+    description: overrideSeo?.description ?? {},
+    image: overrideSeo?.image ?? {},
+    noindex: overrideSeo?.noindex,
+  };
 
   return {
     id: "",
@@ -136,7 +150,6 @@ export function scaffoldPageFromTemplate(
     createdAt: now,
     updatedAt: now,
     createdBy: "",
-    ...(overrides ?? {}),
+    ...restOverrides,
   };
 }
-

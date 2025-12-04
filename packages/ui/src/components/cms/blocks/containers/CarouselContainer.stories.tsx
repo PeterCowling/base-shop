@@ -14,7 +14,7 @@ const meta: Meta<typeof CarouselContainer> = {
   args: {
     slidesPerView: 2,
     children: [1, 2, 3].map((n) => (
-      <div key={n} className="h-24 w-40 rounded bg-neutral-100 p-3">Slide {n}</div>
+      <div key={n} className="h-24 w-40 rounded bg-muted p-3">Slide {n}</div>
     )),
   },
 };

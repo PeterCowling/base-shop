@@ -2,29 +2,23 @@
 "use server";
 
 import {
-  createShop,
-  type CreateShopOptions,
+  createShopFromConfig,
   type DeployStatusBase,
 } from "@platform-core/createShop";
+import type { ShopConfig } from "@acme/types";
 import { prisma } from "@platform-core/db";
 import { readRbac, writeRbac } from "../lib/server/rbacStore";
 import { ensureAuthorized } from "./common/auth";
 
 export async function createNewShop(
   id: string,
-  options: CreateShopOptions
+  options: ShopConfig
 ): Promise<DeployStatusBase> {
   const session = await ensureAuthorized();
 
   let result: DeployStatusBase;
   try {
-    result = await (
-      createShop as unknown as (
-        id: string,
-        opts: CreateShopOptions,
-        opts2: { deploy?: boolean }
-      ) => Promise<DeployStatusBase>
-    )(id, options, { deploy: false });
+    result = await createShopFromConfig(id, options, { deploy: false });
   } catch (err) {
     console.error("createShop failed", err);
     throw err;

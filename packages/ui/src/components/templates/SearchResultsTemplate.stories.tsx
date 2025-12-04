@@ -33,6 +33,7 @@ const results: SKU[] = [
 ];
 
 const meta: Meta<typeof SearchResultsTemplate> = {
+  title: "Templates/SearchResultsTemplate",
   component: SearchResultsTemplate,
   args: {
     suggestions: ["Product 1", "Product 2"],

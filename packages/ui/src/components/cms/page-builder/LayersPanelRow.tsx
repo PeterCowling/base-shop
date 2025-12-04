@@ -88,10 +88,10 @@ export function LayersPanelRow({ node, index, parentId, selected, onSelect, onTo
               {node.name ?? node.type}
             </span>
             {node.__isGlobal && (
-              <span className="ms-2 rounded bg-green-500/15 px-1 text-xs text-green-700" title={t("cms.builder.global.title") as string}>{t("cms.builder.global.label")}</span>
+              <span className="ms-2 rounded bg-primary/15 px-1 text-xs text-primary" title={t("cms.builder.global.title") as string}>{t("cms.builder.global.label")}</span>
             )}
             {node.__hasOverride && (
-              <span className="ms-1 rounded bg-amber-500/15 px-1 text-xs text-amber-700" title={t("cms.builder.override.title") as string}>{t("cms.builder.override.label")}</span>
+              <span className="ms-1 rounded bg-primary/15 px-1 text-xs text-primary" title={t("cms.builder.override.title") as string}>{t("cms.builder.override.label")}</span>
             )}
           </>
         )}

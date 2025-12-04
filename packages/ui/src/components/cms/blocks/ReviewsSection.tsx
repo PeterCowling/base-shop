@@ -107,7 +107,7 @@ export default function ReviewsSection({ provider = "custom", productId, items: 
         {showAggregate && agg ? (
           <div className="flex items-center gap-3">
             <div className="text-xl font-semibold">{agg.ratingValue.toFixed(1)} / 5</div>
-            <div className="text-sm text-neutral-600">{basedOnReviews(agg.reviewCount)}</div>
+            <div className="text-sm text-muted-foreground">{basedOnReviews(agg.reviewCount)}</div>
           </div>
         ) : null}
         <ul className="space-y-4">
@@ -120,9 +120,9 @@ export default function ReviewsSection({ provider = "custom", productId, items: 
                 ) : null}
               </div>
               {r.title ? <div className="mt-1 font-semibold">{r.title}</div> : null}
-              {r.body ? <p className="mt-2 text-sm text-neutral-700">{r.body}</p> : null}
+              {r.body ? <p className="mt-2 text-sm text-muted-foreground">{r.body}</p> : null}
               {/* i18n-exempt -- Date formatting delegated to locale settings */}
-              {r.createdAt ? <div className="mt-2 text-xs text-neutral-500">{new Date(r.createdAt).toLocaleDateString()}</div> : null}
+              {r.createdAt ? <div className="mt-2 text-xs text-muted-foreground">{new Date(r.createdAt).toLocaleDateString()}</div> : null}
             </li>
           ))}
         </ul>

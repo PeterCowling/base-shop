@@ -1,0 +1,638 @@
+[
+  {
+    "path": "docs/AGENTS.docs.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Documentation"
+  },
+  {
+    "path": "docs/adr/adr-00-i18n-foundation.md",
+    "type": "ADR",
+    "status": "Proposed",
+    "domain": null
+  },
+  {
+    "path": "docs/architecture.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/auth-rate-limiting.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Auth"
+  },
+  {
+    "path": "docs/campaign-marketing-test-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Marketing"
+  },
+  {
+    "path": "docs/ci-and-deploy-roadmap.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CI-Deploy"
+  },
+  {
+    "path": "docs/cms/build-shop-guide.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms/cms-charter.md",
+    "type": "Charter",
+    "status": "Canonical",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms/configurator-contract.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms/shop-build-docs-help-plan.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms/shop-build-gap-analysis.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms/shop-build-journey-map.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms/shop-build-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms/shop-build-ui-audit.md",
+    "type": "Research",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms/shop-build-ui-patterns.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms/shop-build-ui-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/index.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/master-thread.fast-launch.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/master-thread.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-a-architecture.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-a-config-contracts.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-b-page-builder.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-b-runtime-contract.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-c-cart-checkout.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-c-create-deploy-upgrade.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-d-cms-runtime-preview.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-d-quality-gates.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-e-cms-ux-configurator.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-e-observability.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms-plan/thread-f-developer-ergonomics.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/cms.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/commerce-charter.md",
+    "type": "Charter",
+    "status": "Draft",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/commerce-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/contributing.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/coverage.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Testing"
+  },
+  {
+    "path": "docs/customer-profiles.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Customers"
+  },
+  {
+    "path": "docs/cypress.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Testing"
+  },
+  {
+    "path": "docs/deployment-adapters.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Deploy"
+  },
+  {
+    "path": "docs/design-system-package-import.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/development.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/docs-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Documentation"
+  },
+  {
+    "path": "docs/edit-preview-republish.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/editorial-blog.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/elevation-and-hero.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/historical/argon2-migration.md",
+    "type": "Guide",
+    "status": "Historical",
+    "domain": "Auth"
+  },
+  {
+    "path": "docs/historical/cms-research.md",
+    "type": "Research",
+    "status": "Historical",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/historical/loadPlugins-baseline.md",
+    "type": "Research",
+    "status": "Historical",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/i18n/add-translation-keys.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "i18n"
+  },
+  {
+    "path": "docs/i18n/i18n-charter.md",
+    "type": "Charter",
+    "status": "Canonical",
+    "domain": "i18n"
+  },
+  {
+    "path": "docs/i18n/i18n-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "i18n"
+  },
+  {
+    "path": "docs/i18n/key-rename-map.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "i18n"
+  },
+  {
+    "path": "docs/i18n/locale-aware-bind.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "i18n"
+  },
+  {
+    "path": "docs/i18n/page-builder-i18n.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "i18n"
+  },
+  {
+    "path": "docs/i18n/resolveText.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "i18n"
+  },
+  {
+    "path": "docs/index.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Documentation"
+  },
+  {
+    "path": "docs/install.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/inventory-migration.md",
+    "type": "Guide",
+    "status": "Reference",
+    "domain": "Inventory"
+  },
+  {
+    "path": "docs/lighthouse.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Observability"
+  },
+  {
+    "path": "docs/linting.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/logo-guidelines.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Design"
+  },
+  {
+    "path": "docs/luxury-features.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/machine.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/marketing-automation.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Marketing"
+  },
+  {
+    "path": "docs/mfa.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Auth"
+  },
+  {
+    "path": "docs/migration-guide.md",
+    "type": "Guide",
+    "status": "Reference",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/migrations/sections.md",
+    "type": "Guide",
+    "status": "Reference",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/nextjs-config.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/orders.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Orders"
+  },
+  {
+    "path": "docs/package-management.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/page-builder-metadata.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/pagebuilder-library.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/palette.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/performance-budgets.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Performance"
+  },
+  {
+    "path": "docs/permissions.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Auth"
+  },
+  {
+    "path": "docs/persistence.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/platform-vs-apps.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plugins.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/prebuild-preview-best-practices.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/preview-flows.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/returns.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Returns"
+  },
+  {
+    "path": "docs/reverse-logistics-events.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Reverse-Logistics"
+  },
+  {
+    "path": "docs/runtime/runtime-charter.md",
+    "type": "Charter",
+    "status": "Canonical",
+    "domain": "Runtime"
+  },
+  {
+    "path": "docs/runtime/runtime-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Runtime"
+  },
+  {
+    "path": "docs/runtime/template-contract.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Runtime"
+  },
+  {
+    "path": "docs/sanity-blog.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/seo.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "SEO"
+  },
+  {
+    "path": "docs/setup.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/shop-editor-refactor.md",
+    "type": "Research",
+    "status": "Reference",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/stock-checks.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Inventory"
+  },
+  {
+    "path": "docs/storybook.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/subscription-usage.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Commerce"
+  },
+  {
+    "path": "docs/testing-with-msw.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Testing"
+  },
+  {
+    "path": "docs/theme-editor-tokens.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/theme-lifecycle-and-library.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/theming-advanced.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/theming-charter.md",
+    "type": "Charter",
+    "status": "Canonical",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/theming-plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/theming.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/troubleshooting.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Repo"
+  },
+  {
+    "path": "docs/tryon.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Tryon"
+  },
+  {
+    "path": "docs/tsconfig-paths.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "TypeScript"
+  },
+  {
+    "path": "docs/typescript.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "TypeScript"
+  },
+  {
+    "path": "docs/typography-and-color.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "Theming"
+  },
+  {
+    "path": "docs/upgrade-flow.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/upgrade-preview-republish.md",
+    "type": "Guide",
+    "status": "Active",
+    "domain": "CMS"
+  },
+  {
+    "path": "docs/users.md",
+    "type": "Contract",
+    "status": "Canonical",
+    "domain": "Users"
+  }
+]

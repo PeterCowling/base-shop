@@ -11,7 +11,6 @@ import { z } from 'zod';
 const meta: Meta<typeof ShowcaseSection> = {
   title: 'CMS Blocks/ShowcaseSection/Matrix',
   component: ShowcaseSection,
-  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {

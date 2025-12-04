@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Auth
+Last-reviewed: 2025-12-02
+
 # Multi-Factor Authentication (MFA)
 
 This guide describes how the platform uses Time-based One-Time Passwords (TOTP) to protect customer accounts.
@@ -59,4 +64,3 @@ if (await isMfaEnabled(customer.id)) {
 1. **Enroll:** Call `enrollMfa` and present the `otpauth` URI as a QR code for the customer to scan.
 2. **Verify:** Prompt for a TOTP code and call `verifyMfa`. A valid token enables MFA for the account.
 3. **Check:** Use `isMfaEnabled` to gate sensitive actions on the customer account.
-

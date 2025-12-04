@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import { FormField } from "./FormField";
 
 const meta: Meta<typeof FormField> = {
+  title: "Molecules/FormField",
   component: FormField,
   args: {
     label: "Name",

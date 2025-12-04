@@ -1,4 +1,4 @@
-import type { CSSProperties, ComponentProps, RefObject } from "react";
+import type { CSSProperties, ComponentProps, RefObject, ReactNode } from "react";
 import type { Locale } from "@acme/i18n/locales";
 import type { PageComponent } from "@acme/types";
 import type { Step, CallBackProps } from "./PageBuilderTour";
@@ -63,4 +63,17 @@ export interface PageBuilderLayoutProps {
   // Presets authoring (save selected Section as preset)
   canSavePreset?: boolean;
   onSavePreset?: () => void;
+  templateActions?: ReactNode;
+  allowedBlockTypes?: Set<ComponentType>;
+  publishMeta?: {
+    status: "draft" | "published";
+    updatedAt?: string;
+    publishedAt?: string;
+    publishedBy?: string;
+    publishedRevisionId?: string;
+    currentRevisionId?: string;
+  };
+  previewUrl?: string | null;
+  previewSource?: string | null;
+  lastPublishedComponents?: PageComponent[];
 }

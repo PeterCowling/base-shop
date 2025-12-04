@@ -3,11 +3,11 @@
 import type { Meta, StoryObj } from '@storybook/nextjs';
 import { ProductGallery } from './ProductGallery';
 import { makeStateStory } from '../../story-utils/createStories';
+import { expect, within } from '@storybook/test';
 
 const meta: Meta<typeof ProductGallery> = {
   title: 'Organisms/Product Gallery/Matrix',
   component: ProductGallery,
-  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       autodocs: false,
@@ -59,3 +59,25 @@ export const RTL: Story = makeStateStory(baseArgs, {}, 'default', {
   viewports: ['mobile1'],
   tags: ['visual'],
 });
+
+export const MediaFallbacks: Story = {
+  args: {
+    media: [
+      { type: 'image', url: '' },
+      { type: 'image', url: 'https://placehold.co/600x800/png?text=Tall+Image' },
+      { type: 'video', url: 'https://interactive-examples.mdn.mozilla.net/media/examples/flower.mp4' },
+    ],
+  },
+  parameters: {
+    a11y: true,
+    viewports: ['desktop'],
+    tags: ['visual'],
+    docs: {
+      description: { story: 'Mixed aspect ratios with a missing image URL to validate fallback handling.' },
+    },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(canvas.getAllByRole('img', { hidden: true }).length).toBeGreaterThan(0);
+  },
+};

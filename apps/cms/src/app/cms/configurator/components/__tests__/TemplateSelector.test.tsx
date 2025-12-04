@@ -56,6 +56,20 @@ jest.mock("next/image", () => {
   };
 });
 
+const trackMock = jest.fn();
+jest.mock("@acme/telemetry", () => ({
+  __esModule: true,
+  track: (...args: unknown[]) => trackMock(...args),
+}));
+
+jest.mock("@/components/atoms/primitives/Inline", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    Inline: ({ children }: any) => <div>{children}</div>,
+  };
+});
+
 const TemplateSelector = require("../TemplateSelector").default as typeof import("../TemplateSelector").default;
 const atoms = require("@/components/atoms");
 // Jest's moduleNameMapper routes "@/components/atoms" to a simple stub that may
@@ -72,10 +86,14 @@ if (!atoms.Dialog) {
 }
 
 describe("TemplateSelector", () => {
+  beforeEach(() => {
+    trackMock.mockClear();
+  });
+
   it("page navigation changes visible templates", () => {
     const pages = [
-      [{ name: "One", components: [], preview: "" }],
-      [{ name: "Two", components: [], preview: "" }],
+      [{ id: "one", name: "One", components: [], preview: "" }],
+      [{ id: "two", name: "Two", components: [], preview: "" }],
     ];
     const Wrapper = () => {
       const [page, setPage] = React.useState(0);
@@ -88,8 +106,10 @@ describe("TemplateSelector", () => {
     };
     Wrapper.displayName = "TemplateSelectorPageWrapper";
     render(<Wrapper />);
+    fireEvent.click(screen.getByText("Select a template"));
     expect(screen.getByText("One")).toBeInTheDocument();
     fireEvent.click(screen.getByText("next"));
+    fireEvent.click(screen.getByText("Select a template"));
     expect(screen.queryByText("One")).not.toBeInTheDocument();
     expect(screen.getByText("Two")).toBeInTheDocument();
   });
@@ -99,15 +119,21 @@ describe("TemplateSelector", () => {
     render(
       <TemplateSelector
         value=""
-        pageTemplates={[{ name: "Temp", components: [{ type: "comp" } as any], preview: "" }]}
+        pageTemplates={[{ id: "tmp", name: "Temp", components: [{ type: "comp" } as any], preview: "" }]}
         onConfirm={onConfirm}
       />,
     );
+    fireEvent.click(screen.getByText("Select a template"));
     fireEvent.click(screen.getByText("Temp"));
     fireEvent.click(screen.getByText("Confirm"));
     expect(onConfirm).toHaveBeenCalledWith(
-      "Temp",
+      "tmp",
       [expect.objectContaining({ type: "comp", id: expect.any(String) })],
+      expect.objectContaining({ id: "tmp", name: "Temp" }),
+    );
+    expect(trackMock).toHaveBeenCalledWith(
+      "template_select",
+      expect.objectContaining({ templateId: "tmp" }),
     );
   });
 
@@ -116,12 +142,14 @@ describe("TemplateSelector", () => {
     render(
       <TemplateSelector
         value=""
-        pageTemplates={[{ name: "Temp", components: [], preview: "", disabled: true }]}
+        pageTemplates={[{ id: "tmp", name: "Temp", components: [], preview: "", disabled: true }]}
         onConfirm={onConfirm}
       />,
     );
+    fireEvent.click(screen.getByText("Select a template"));
     fireEvent.click(screen.getByText("Temp"));
-    expect(screen.queryByText("Confirm")).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText("Confirm"));
     expect(onConfirm).not.toHaveBeenCalled();
+    expect(trackMock).not.toHaveBeenCalled();
   });
 });

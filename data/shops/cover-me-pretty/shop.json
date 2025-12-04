@@ -25,6 +25,9 @@
     "dataset": "production",
     "token": "token"
   },
+  "termsUrl": "https://cover-me-pretty.example.com/terms",
+  "privacyUrl": "https://cover-me-pretty.example.com/privacy",
+  "returnPolicyUrl": "https://cover-me-pretty.example.com/returns",
   "editorialBlog": {
     "enabled": true
   },

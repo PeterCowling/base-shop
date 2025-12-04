@@ -3,6 +3,11 @@ import os from "node:os";
 import path from "node:path";
 
 import { listShops } from "../src/lib/listShops";
+import { logger } from "@acme/shared-utils";
+
+jest.mock("@acme/shared-utils", () => ({
+  logger: { error: jest.fn() },
+}));
 
 describe("listShops", () => {
   it("returns empty list when no shops", async () => {
@@ -41,20 +46,15 @@ describe("listShops", () => {
     const cwdSpy = jest.spyOn(process, "cwd").mockReturnValue(dir);
     const error = Object.assign(new Error("boom"), { code: "EACCES" });
     const readSpy = jest.spyOn(fs, "readdir").mockRejectedValue(error);
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 
     const expectedDir = shopsDir.startsWith("/private/")
       ? shopsDir.slice("/private".length)
       : shopsDir;
 
     await expect(listShops()).rejects.toBe(error);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      `Failed to list shops at ${expectedDir}:`,
-      error,
-    );
+    expect(logger.error).toHaveBeenCalled();
 
     readSpy.mockRestore();
-    consoleSpy.mockRestore();
     cwdSpy.mockRestore();
     await fs.rm(dir, { recursive: true, force: true });
   });

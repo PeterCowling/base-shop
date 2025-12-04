@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Theming
+Last-reviewed: 2025-12-02
+
 # Design Palette
 
 The base and dark themes share a minimal colour system built around WCAG AA contrast requirements (4.5:1 for normal text).

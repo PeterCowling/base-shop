@@ -18,3 +18,5 @@ const ControlledRender = () => {
 export const Controlled: StoryObj<typeof Switch> = {
   render: () => <ControlledRender />,
 };
+
+export const Default: StoryObj<typeof Switch> = {};

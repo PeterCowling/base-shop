@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Commerce
+Last-reviewed: 2025-12-02
+
 # Subscription Usage
 
 ## Purpose

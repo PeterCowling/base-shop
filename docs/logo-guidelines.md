@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Design
+Last-reviewed: 2025-12-02
+
 # Logo Usage Guidelines
 
 Components that render a shop logo must:

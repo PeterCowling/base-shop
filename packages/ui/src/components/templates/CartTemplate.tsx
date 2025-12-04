@@ -13,12 +13,15 @@ export interface CartTemplateProps
   cart: CartState;
   onQtyChange?: (id: string, qty: number) => void;
   onRemove?: (id: string) => void;
+  /** Optional breakdown to render below line items (totals, duties, taxes, etc.) */
+  totals?: React.ReactNode;
 }
 
 export function CartTemplate({
   cart,
   onQtyChange,
   onRemove,
+  totals,
   className,
   ...props
 }: CartTemplateProps) {
@@ -150,6 +153,7 @@ export function CartTemplate({
           </tr>
         </tfoot>
       </table>
+      {totals}
     </div>
   );
 }

@@ -9,10 +9,12 @@ export interface ProductBadgeProps extends React.HTMLAttributes<HTMLSpanElement>
   color?: "default" | "primary" | "accent" | "success" | "info" | "warning" | "danger";
   /** Visual tone */
   tone?: "solid" | "soft";
+  /** Size scale */
+  size?: "sm" | "md" | "lg";
 }
 
 export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>(
-  ({ label, variant = "default", color, tone, className, ...props }, ref) => {
+  ({ label, variant = "default", color, tone, size = "md", className, ...props }, ref) => {
     const resolvedColor: NonNullable<ProductBadgeProps["color"]> = color ??
       (variant === "sale" ? "danger" : variant === "new" ? "success" : "default");
     const resolvedTone: NonNullable<ProductBadgeProps["tone"]> =
@@ -68,13 +70,20 @@ export const ProductBadge = React.forwardRef<HTMLSpanElement, ProductBadgeProps>
       warning: "--color-warning-fg",
       danger: "--color-danger-fg",
     };
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names for spacing/typography
+    const sizeClasses: Record<NonNullable<ProductBadgeProps["size"]>, string> = {
+      sm: "px-2 py-0.5 text-[11px]", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names for spacing/typography
+      md: "px-2 py-1 text-xs", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names for spacing/typography
+      lg: "px-3 py-1.5 text-sm", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names for spacing/typography
+    };
 
     return (
       <span
         ref={ref}
         data-token={bgToken[resolvedColor]}
         className={cn(
-          "rounded px-2 py-1 text-xs font-semibold", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+          "rounded font-semibold", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
+          sizeClasses[size],
           (resolvedTone === "solid" ? solidBg : softBg)[resolvedColor],
           className
         )}

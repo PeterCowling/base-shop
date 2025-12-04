@@ -26,7 +26,7 @@ const CONTENT_CLASSES = "p-4 focus:outline-none"; // i18n-exempt -- DS-1234 [ttl
 export type Filters = { size?: string };
 
 export interface FilterSidebarProps {
-  onChange: (filters: Filters) => void;
+  onChange?: (filters: Filters) => void;
   /**
    * Width of the sidebar. Provide a Tailwind width class
    * (e.g. "w-64") or a numeric pixel value.
@@ -45,6 +45,7 @@ export function FilterSidebar({
   const t = useTranslations();
 
   React.useEffect(() => {
+    if (!onChange) return;
     onChange({ size: deferredSize || undefined });
   }, [deferredSize, onChange]);
 

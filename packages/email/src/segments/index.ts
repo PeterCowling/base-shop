@@ -4,6 +4,7 @@ import type { AnalyticsEvent } from "@platform-core/analytics";
 import { readSegments, analyticsMTime, SegmentCache, cacheTtl } from "./storage";
 import { matches } from "./filters";
 import { createContact, addToList, listSegments } from "./providers";
+import { logger } from "@acme/shared-utils";
 
 export { createContact, addToList, listSegments };
 export { readSegments, analyticsMTime, SegmentCache, cacheTtl };
@@ -31,7 +32,10 @@ export async function resolveSegment(
   try {
     events = await listEvents(shop);
   } catch (err) {
-    console.error("Failed to list analytics events", err); // i18n-exempt: operational log
+    logger.error("Failed to list analytics events", { // i18n-exempt: operational log
+      shop,
+      error: err,
+    });
   }
   const emails = new Set<string>();
 

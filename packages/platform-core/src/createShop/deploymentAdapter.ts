@@ -14,12 +14,31 @@ export interface ShopDeploymentAdapter {
 
 export class CloudflareDeploymentAdapter implements ShopDeploymentAdapter {
   scaffold(appPath: string): void {
+    const timeoutMs = Number(process.env.SHOP_DEPLOY_SCAFFOLD_TIMEOUT_MS ?? 120_000);
+    try {
+      console.info("[deploy] scaffold:start", { appPath, timeoutMs });
+    } catch {
+      /* ignore */
+    }
     const result = spawnSync("npx", ["--yes", "create-cloudflare", appPath], {
       stdio: "inherit",
+      timeout: timeoutMs,
     });
 
+    if (result.error) {
+      throw new Error(
+        `C3 process failed or not available: ${result.error.message}`, // i18n-exempt -- internal tooling error message
+      );
+    }
     if (result.status !== 0) {
-      throw new Error("C3 process failed or not available. Skipping."); // i18n-exempt -- internal tooling error message
+      throw new Error(
+        `C3 process failed or not available (status ${result.status ?? "unknown"}). Skipping.`, // i18n-exempt -- internal tooling error message
+      );
+    }
+    try {
+      console.info("[deploy] scaffold:done", { appPath });
+    } catch {
+      /* ignore */
     }
   }
 

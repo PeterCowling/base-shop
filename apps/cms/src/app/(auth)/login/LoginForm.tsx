@@ -79,7 +79,6 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setUsername(e.target.value)
         }
-        className="bg-surface-2 text-foreground"
         required
       />
       <Input
@@ -90,7 +89,6 @@ export default function LoginForm({ fallbackUrl }: { fallbackUrl: string }) {
         autoComplete="current-password"
         value={pwd}
         onChange={(e: ChangeEvent<HTMLInputElement>) => setPwd(e.target.value)}
-        className="bg-surface-2 text-foreground"
         required
       />
 

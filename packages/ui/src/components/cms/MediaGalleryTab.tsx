@@ -64,7 +64,7 @@ export default function MediaGalleryTab({
                       loop
                     />
                   )}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 opacity-0 transition-opacity group-hover:opacity-100" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/40 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                   <div className="absolute inset-x-3 top-3 flex items-center justify-between gap-2 opacity-0 transition-opacity group-hover:opacity-100">
                     <div className="flex items-center gap-1">
                       <IconButton

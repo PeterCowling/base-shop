@@ -8,10 +8,11 @@ import type { ButtonProps as BaseButtonProps } from "../primitives/button";
 import { Button as BaseButton } from "../primitives/button";
 import { Slot } from "../primitives/slot";
 
-export interface ButtonProps extends Omit<BaseButtonProps, "variant"> {
+export interface ButtonProps
+  extends Omit<BaseButtonProps, "variant" | "size"> {
   variant?: BaseButtonProps["variant"] | "destructive";
   /** Optional size override */
-  size?: "icon" | "sm";
+  size?: BaseButtonProps["size"] | "icon";
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(

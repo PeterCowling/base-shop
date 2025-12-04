@@ -21,7 +21,7 @@ export default function PresenceAvatars({ shop, pageId }: { shop: string | null;
     <Inline alignY="center" className="-space-x-2">
       {show.map((p) => (
         <div key={p.id} className="inline-flex h-6 w-6 items-center justify-center rounded-full border-2 border-surface-1 text-xs" style={{ backgroundColor: p.color }} title={p.label} aria-label={p.label}>
-          <span className="mix-blend-difference text-white">{p.label?.slice(0, 2).toUpperCase()}</span>
+          <span className="mix-blend-difference text-foreground">{p.label?.slice(0, 2).toUpperCase()}</span>
         </div>
       ))}
       {peers.length > show.length && (

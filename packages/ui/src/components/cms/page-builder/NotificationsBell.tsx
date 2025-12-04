@@ -91,7 +91,7 @@ export default function NotificationsBell({ shop, pageId }: { shop?: string | nu
           <button type="button" aria-label="Notifications" className="relative rounded border px-2 py-1 text-sm min-h-10 min-w-10 inline-flex items-center justify-center">
             <BellIcon className="h-4 w-4" />
             {count > 0 && (
-              <span className="absolute -end-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-xs font-semibold text-white">
+              <span className="absolute -end-1 -top-1 inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-destructive/100 px-1 text-xs font-semibold text-foreground">
                 {count}
               </span>
             )}

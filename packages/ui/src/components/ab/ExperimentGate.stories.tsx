@@ -18,6 +18,7 @@ function Harness() {
 }
 
 const meta: Meta<typeof ExperimentGate> = {
+  title: 'Utilities/ExperimentGate',
   component: ExperimentGate,
   tags: ['autodocs'],
   parameters: {

@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Testing
+Last-reviewed: 2025-12-02
+
 # Cypress E2E Setup
 
 This repo uses Cypress for end‑to‑end and a11y testing. Tests live under `apps/cms/cypress/e2e` and `test/e2e/__tests__`, with a single shared configuration and support layer.

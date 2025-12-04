@@ -27,6 +27,8 @@ export interface PaletteProps {
    * - all (default): show everything
    */
   mode?: "elements" | "sections" | "all";
+  /** Optional allowlist for limiting palette to specific block types. */
+  allowedTypes?: Set<ComponentType>;
 }
 
 export type PaletteTab = "components" | "media";

@@ -7,6 +7,7 @@ import {
   markReturned,
   readOrders,
 } from "@platform-core/repositories/rentalOrders.server";
+import { getReturnBagAndLabel } from "@platform-core/returnLogistics";
 import shop from "../../../shop.json";
 import type { RentalOrder } from "@acme/types";
 
@@ -23,7 +24,50 @@ const schema = z
   .strict();
 
 export async function POST(req: NextRequest) {
-  const parsed = schema.safeParse(await req.json());
+  const body = (await req.json()) as
+    | {
+        sessionId?: string;
+        damage?: string | number;
+        zip?: string;
+        date?: string;
+        time?: string;
+      }
+    | undefined;
+
+  // Optional home pickup branch to align with the template app's
+  // `/api/return` contract. When `zip`, `date`, and `time` are provided
+  // *without* a `sessionId`, treat this as a pickup scheduling request.
+  if (body && !body.sessionId && body.zip && body.date && body.time) {
+    if (!shop.returnsEnabled) {
+      return NextResponse.json(
+        { error: "Returns disabled" }, // i18n-exempt -- server API error; not end-user copy
+        { status: 403 },
+      );
+    }
+    if (!shop.returnService?.homePickupEnabled) {
+      return NextResponse.json(
+        { error: "Home pickup disabled" }, // i18n-exempt -- server API error; not end-user copy
+        { status: 403 },
+      );
+    }
+
+    const info = await getReturnBagAndLabel();
+    if (!info.homePickupZipCodes.includes(body.zip)) {
+      return NextResponse.json(
+        { error: "ZIP not eligible" }, // i18n-exempt -- server API error; not end-user copy
+        { status: 400 },
+      );
+    }
+
+    const appt = { zip: body.zip, date: body.date, time: body.time };
+    // Placeholder side-effects mirroring the template app; persistence
+    // / carrier notification are intentionally lightweight and best‑effort.
+    await savePickup(appt);
+    await notifyCarrier(appt);
+    return NextResponse.json({ ok: true });
+  }
+
+  const parsed = schema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json({ errors: parsed.error.flatten() }, { status: 400 });
   }
@@ -97,4 +141,24 @@ export async function POST(req: NextRequest) {
   }
 
   return NextResponse.json({ ok: true });
+}
+
+async function savePickup(appt: { zip: string; date: string; time: string }) {
+  // Placeholder for database persistence
+  console.log(
+    "pickup scheduled", // i18n-exempt -- ABC-123 [ttl=2025-12-31] developer log, not user-facing
+    appt,
+  );
+}
+
+async function notifyCarrier(appt: { zip: string; date: string; time: string }) {
+  // Simulate notifying external carrier API; ignore failures
+  try {
+    await fetch("https://carrier.invalid/pickup", {
+      method: "POST",
+      body: JSON.stringify(appt),
+    });
+  } catch {
+    /* noop */
+  }
 }

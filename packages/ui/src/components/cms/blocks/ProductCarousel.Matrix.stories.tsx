@@ -12,7 +12,6 @@ import { z } from 'zod';
 const meta: Meta<typeof CmsProductCarousel> = {
   title: 'CMS Blocks/ProductCarousel/Matrix',
   component: CmsProductCarousel,
-  parameters: { docs: { autodocs: false } },
   args: {
     collectionId: 'demo',
     minItems: 1,

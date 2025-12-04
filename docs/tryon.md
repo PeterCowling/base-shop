@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Tryon
+Last-reviewed: 2025-12-02
+
 # Try‑On System Overview
 
 This document describes the edge‑only try‑on pipeline, environment, routes, and UI controller used by the shop app.

@@ -59,6 +59,7 @@ interface PageBuilderLeftPanelProps {
   showFonts?: boolean;
   onOpenTheme?: () => void;
   showTheme?: boolean;
+  allowedTypes?: Set<ComponentType>;
 }
 
 const PageBuilderLeftPanel = ({
@@ -103,6 +104,7 @@ const PageBuilderLeftPanel = ({
   showFonts,
   onOpenTheme,
   showTheme,
+  allowedTypes,
 }: PageBuilderLeftPanelProps) => {
   const showQuickPalette = !showPalette && !showSections;
 
@@ -156,6 +158,7 @@ const PageBuilderLeftPanel = ({
           selectedIsSection={selectedIsSection}
           onInsertPreset={onInsertPreset}
           mode={paletteMode}
+          allowedTypes={allowedTypes}
         />
       )}
       {showSections && (
@@ -164,6 +167,7 @@ const PageBuilderLeftPanel = ({
             shop={shop}
             onInsert={(c) => onInsertPreset?.(c)}
             onInsertLinked={(g) => onInsertLinkedSection?.(g)}
+            allowedTypes={allowedTypes}
           />
         </SidebarPane>
       )}
@@ -201,6 +205,7 @@ const PageBuilderLeftPanel = ({
           onSetSectionBackground={onSetSectionBackground}
           selectedIsSection={selectedIsSection}
           onShowPalette={openPalette}
+          allowedTypes={allowedTypes}
         />
       )}
     </>

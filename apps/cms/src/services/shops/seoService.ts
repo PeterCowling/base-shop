@@ -1,6 +1,8 @@
 import { revalidatePath } from "next/cache";
 import type { Locale, ShopSeoFields, ShopSettings } from "@acme/types";
 import { authorize, fetchSettings, persistSettings, fetchDiffHistory } from "./helpers";
+import { recordMetric } from "@platform-core/utils";
+import { incrementOperationalError } from "@platform-core/shops/health";
 import { parseSeoForm, parseGenerateSeoForm } from "./validation";
 
 export async function updateSeo(
@@ -23,6 +25,12 @@ export async function updateSeo(
   const warnings: string[] = [];
   if (title.length > 70) warnings.push("Title exceeds 70 characters"); // i18n-exempt: validation hint; no translation keys defined yet
   if (description.length > 160) warnings.push("Description exceeds 160 characters"); // i18n-exempt: validation hint; no translation keys defined yet
+  const fieldErrors: Record<string, string[]> = {};
+  if (!title.trim()) fieldErrors.title = ["Title is required"];
+  if (!description.trim()) fieldErrors.description = ["Description is required"];
+  if (Object.keys(fieldErrors).length > 0) {
+    return { errors: fieldErrors, warnings };
+  }
 
   const current = await fetchSettings(shop);
   const seo = { ...(current.seo ?? {}) } as Record<Locale, ShopSeoFields>;
@@ -48,6 +56,26 @@ export async function updateSeo(
     }
     sd = JSON.stringify(sdObj);
   }
+  if (sd) {
+    try {
+      const parsed = JSON.parse(sd);
+      if (!parsed || typeof parsed !== "object") {
+        return { errors: { structuredData: ["Structured data must be a JSON object"] } };
+      }
+      const context = (parsed as Record<string, unknown>)["@context"];
+      const type = (parsed as Record<string, unknown>)["@type"];
+      if (!context || !type) {
+        return { errors: { structuredData: ["Structured data must include @context and @type"] } };
+      }
+      const typeStr = Array.isArray(type) ? (type as string[])[0] : String(type);
+      const allowedTypes = new Set(["Product", "WebPage"]);
+      if (typeStr && !allowedTypes.has(typeStr)) {
+        return { errors: { structuredData: ["@type must be Product or WebPage"] } };
+      }
+    } catch {
+      return { errors: { structuredData: ["Structured data must be valid JSON"] } };
+    }
+  }
 
   seo[locale] = {
     ...existing,
@@ -72,6 +100,12 @@ export async function updateSeo(
     await persistSettings(shop, updated);
   } catch (err) {
     console.error(`[updateSeo] failed to persist settings for shop ${shop}`, err);
+    incrementOperationalError(shop);
+    recordMetric("cms_settings_save_total", {
+      shopId: shop,
+      service: "cms",
+      status: "failure",
+    });
     return { errors: { _global: ["Failed to persist settings"] } }; // i18n-exempt: server error surfaced to UI; tests rely on literal
   }
 
@@ -87,6 +121,11 @@ export async function updateSeo(
     );
   }
 
+  recordMetric("cms_settings_save_total", {
+    shopId: shop,
+    service: "cms",
+    status: "success",
+  });
   return { settings: updated, warnings };
 }
 
@@ -130,29 +169,14 @@ interface DiffEntry {
 export async function revertSeo(shop: string, timestamp: string) {
   await authorize();
   const history = (await fetchDiffHistory(shop)) as DiffEntry[];
-  const sorted = history.sort((a, b) =>
+  const sorted = [...history].sort((a, b) =>
     a.timestamp.localeCompare(b.timestamp),
   );
   const idx = sorted.findIndex((e) => e.timestamp === timestamp);
   if (idx === -1) throw new Error("Version not found"); // i18n-exempt: developer exception message
-  let state: ShopSettings = {
-    languages: [] as Locale[],
-    seo: {},
-    luxuryFeatures: {
-      premierDelivery: false,
-      blog: false,
-      contentMerchandising: false,
-      raTicketing: false,
-      fraudReviewThreshold: 0,
-      requireStrongCustomerAuth: false,
-      strictReturnConditions: false,
-      trackingDashboard: false,
-    },
-    freezeTranslations: false,
-    updatedAt: "",
-    updatedBy: "",
-  };
-  for (let i = 0; i < idx; i++) {
+  const base = await fetchSettings(shop);
+  let state: ShopSettings = { ...base };
+  for (let i = 0; i <= idx; i++) {
     state = { ...state, ...sorted[i].diff } as ShopSettings;
   }
   await persistSettings(shop, state);

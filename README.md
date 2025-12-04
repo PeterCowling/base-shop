@@ -6,9 +6,9 @@ A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **
 
 ## Getting Started
 
-Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/install.md) for installation instructions and [docs/setup.md](docs/setup.md) for full setup and CI guidance.
+Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/install.md) for installation instructions and [docs/setup.md](docs/setup.md) for full setup, shop scaffolding flows, and CI guidance.
 
-Run `pnpm init-shop` to scaffold a new shop. The configurator lists available plugins and, when invoked with `--auto-env`, writes `TODO_*` placeholders for any required environment variables so teams can fill them in later.
+Run `pnpm init-shop` to scaffold a new shop; see [docs/setup.md](docs/setup.md#1-create-a-shop) for flags, seeding options and environment validation details.
 
 ### Type Checking in Development
 
@@ -54,8 +54,8 @@ pnpm --filter @acme/platform-core exec prisma db seed -- --skip-inventory
 - Middleware is colocated with the app that uses it (e.g., `apps/cms/middleware.ts`).
 - Cypress lives under the CMS app: config at `apps/cms/cypress.config.mjs`, tests at `apps/cms/cypress/e2e`, support at `apps/cms/cypress/support`.
   - The root `cypress.config.ts` re-exports the app config for compatibility with existing commands.
-- Storybook can be run via an app wrapper: `apps/storybook`.
-  - Use `pnpm storybook:app` to run with the app-level config directory (`apps/storybook/.storybook`) which re-exports the root config.
+- Storybook runs via the `apps/storybook` wrapper and is **pinned to the Webpack 5 builder** (`apps/storybook/.storybook/main.ts`). We tried Vite and rolled it back; please do not switch builders without an explicit migration plan.
+  - Use `pnpm storybook:app` (alias of `pnpm storybook`) to run with the app-level config directory (`apps/storybook/.storybook`) which re-exports the root config.
 
 ## Key Features
 
@@ -204,6 +204,8 @@ pnpm inventory import demo --file inventory.json
 ```
 
 The underlying API endpoints remain available if you prefer using `curl`.
+
+If the API responds with `503 Inventory backend unavailable`, the Prisma delegate is missing or unreachable. Retry once, verify `DATABASE_URL`/`INVENTORY_BACKEND`, and alert instead of assuming a JSON fallback succeeded—the CLI surfaces this message directly from the CMS.
 
 CSV files use headers to define variant attributes:
 

@@ -1,3 +1,13 @@
+Type: Contract
+Status: Canonical
+Domain: Platform
+Last-reviewed: 2025-12-02
+
+Canonical code:
+- packages/platform-core/**
+- packages/ui/**
+- apps/**
+
 # Platform vs tenant responsibilities and public API
 
 This document is the canonical reference for:

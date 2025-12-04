@@ -16,7 +16,13 @@ describe("page template by name API route", () => {
     });
     const json = await res.json();
     expect(json).toEqual({
+      id: first.id,
       name: first.label,
+      category: first.category,
+      pageType: first.pageType,
+      version: first.version,
+      origin: first.origin ?? "core",
+      previewImage: first.previewImage ?? null,
       components: first.components,
     });
   });

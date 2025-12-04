@@ -1,9 +1,12 @@
+/* i18n-exempt file -- OPS-4201 CLI-only rollback helper; messages are developer-facing [ttl=2026-12-31] */
+/* eslint-disable security/detect-non-literal-fs-filename -- OPS-4201 Paths stay under the workspace root and use validated shop ids */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
+import { validateShopName } from "@acme/lib";
 
-function run(cmd: string, args: string[]): void {
-  const res = spawnSync(cmd, args, { stdio: "inherit" });
+function run(cmd: string, args: string[], cwd: string): void {
+  const res = spawnSync(cmd, args, { stdio: "inherit", cwd });
   if (res.status !== 0) {
     throw new Error(`${cmd} ${args.join(" ")} failed with status ${res.status}`);
   }
@@ -17,7 +20,9 @@ function updateStatus(root: string, id: string): void {
 }
 
 export function rollbackShop(id: string, root = process.cwd()): void {
-  const dir = join(root, "data", "shops", id);
+  const repoRoot = resolve(root);
+  const shopId = validateShopName(id);
+  const dir = join(repoRoot, "data", "shops", shopId);
   const historyFile = join(dir, "history.json");
   if (!existsSync(historyFile)) {
     throw new Error("No history available");
@@ -33,22 +38,22 @@ export function rollbackShop(id: string, root = process.cwd()): void {
     lastUpgrade: shop.lastUpgrade,
     timestamp: new Date().toISOString(),
   };
-  const previous = history.pop();
+  const previous = history[history.length - 1];
   history.push(current);
   writeFileSync(historyFile, JSON.stringify(history, null, 2));
   shop.componentVersions = previous.componentVersions ?? {};
   if (previous.lastUpgrade) shop.lastUpgrade = previous.lastUpgrade;
   writeFileSync(shopFile, JSON.stringify(shop, null, 2));
-  const pkgFile = join(root, "apps", id, "package.json");
+  const pkgFile = join(repoRoot, "apps", shopId, "package.json");
   if (existsSync(pkgFile)) {
     const pkg = JSON.parse(readFileSync(pkgFile, "utf8"));
     pkg.dependencies = previous.componentVersions || {};
     writeFileSync(pkgFile, JSON.stringify(pkg, null, 2));
   }
-  run("pnpm", ["--filter", `apps/${id}`, "install"]);
-  run("pnpm", ["--filter", `apps/${id}`, "build"]);
-  run("pnpm", ["--filter", `apps/${id}`, "deploy"]);
-  updateStatus(root, id);
+  run("pnpm", ["--filter", `apps/${shopId}`, "install"], repoRoot);
+  run("pnpm", ["--filter", `apps/${shopId}`, "build"], repoRoot);
+  run("pnpm", ["--filter", `apps/${shopId}`, "deploy"], repoRoot);
+  updateStatus(repoRoot, shopId);
 }
 
 function main(): void {

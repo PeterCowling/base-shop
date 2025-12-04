@@ -3,6 +3,7 @@ import { ProductGalleryTemplate } from "./ProductGalleryTemplate";
 import type { SKU } from "@acme/types";
 
 const meta: Meta<typeof ProductGalleryTemplate> = {
+  title: "Templates/ProductGalleryTemplate",
   component: ProductGalleryTemplate,
   args: {
     products: [
@@ -59,4 +60,23 @@ const meta: Meta<typeof ProductGalleryTemplate> = {
 };
 export default meta;
 
-export const Default: StoryObj<typeof ProductGalleryTemplate> = {};
+type Story = StoryObj<typeof ProductGalleryTemplate>;
+const baseArgs = meta.args!;
+
+export const Default: Story = {};
+export const Loading: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "loading" },
+};
+export const Empty: Story = {
+  args: { ...baseArgs, products: [] },
+  parameters: { dataState: "empty" },
+};
+export const Error: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "error" },
+};
+export const RTL: Story = {
+  args: { ...baseArgs },
+  parameters: { rtl: true },
+};

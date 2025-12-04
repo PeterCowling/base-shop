@@ -19,3 +19,5 @@ export const Size48: StoryObj<typeof Avatar> = {
 export const Size64: StoryObj<typeof Avatar> = {
   args: { size: 64 },
 };
+
+export const Default: StoryObj<typeof Avatar> = {};

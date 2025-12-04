@@ -1,3 +1,11 @@
+Type: Contract
+Status: Canonical
+Domain: Customers
+Last-reviewed: 2025-12-02
+
+Primary code entrypoints:
+- packages/platform-core/src/customerProfiles.ts
+
 # Customer Profiles
 
 ## Purpose

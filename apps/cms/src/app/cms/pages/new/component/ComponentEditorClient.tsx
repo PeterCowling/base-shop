@@ -3,9 +3,8 @@
 import { useCallback, useMemo, useState } from "react";
 import type { PageComponent } from "@acme/types";
 import { ulid } from "ulid";
-import { ComponentEditor } from "@ui/components/cms/page-builder";
+import { ComponentEditor, saveLibraryStrict, type LibraryItem } from "@acme/page-builder-ui";
 import { useTranslations } from "@acme/i18n";
-import { saveLibraryStrict } from "@ui/components/cms/page-builder/libraryStore";
 import { validateComponentRules } from "@acme/platform-core/validation/componentRules";
 
 export default function ComponentEditorClient() {
@@ -63,7 +62,12 @@ export default function ComponentEditorClient() {
                   setMessage(pre.errors.join("\n"));
                   return;
                 }
-                const item = { id: ulid(), label: label.trim(), template: component, createdAt: Date.now() };
+                const item: LibraryItem = {
+                  id: ulid(),
+                  label: label.trim(),
+                  template: component,
+                  createdAt: Date.now(),
+                };
                 await saveLibraryStrict("_global", item);
                 setMessage(String(t("cms.componentEditor.savedToGlobal")));
                 setIsError(false);

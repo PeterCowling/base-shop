@@ -4,6 +4,10 @@
 /*  Executed **once** before the Jest environment is ready                    */
 /* -------------------------------------------------------------------------- */
 
+// Keep Browserslist from emitting staleness warnings during tests
+process.env.BROWSERSLIST_IGNORE_OLD_DATA = "1";
+process.env.BROWSERSLIST_DISABLE_CACHE = "1";
+
 // DOM shims common to jsdom tests
 import "./test/polyfills/dom-compat";
 
@@ -78,6 +82,8 @@ mutableEnv.CMS_ACCESS_TOKEN ||= "cms-access-token";
 mutableEnv.SANITY_API_VERSION ||= "2023-01-01";
 mutableEnv.AUTH_TOKEN_TTL ||= "15m";
 mutableEnv.EMAIL_FROM ||= "test@example.com";
+// Silence Browserslist “data is 6 months old” warnings during tests
+mutableEnv.BROWSERSLIST_IGNORE_OLD_DATA ||= "1";
 mutableEnv.EMAIL_PROVIDER ||= "smtp";
 // Use Stripe mock client by default in tests to avoid requiring secrets
 mutableEnv.STRIPE_USE_MOCK ||= "true";

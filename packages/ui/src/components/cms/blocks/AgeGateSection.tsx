@@ -45,11 +45,11 @@ export default function AgeGateSection({ minAge = 18, message, confirmLabel: _co
 
   return (
     // i18n-exempt -- DS-1234 [ttl=2025-11-30] — overlay container class composition
-    <div className={["fixed inset-0 z-50 bg-black/70", className].filter(Boolean).join(" ") || undefined} {...rest}>
+    <div className={["fixed inset-0 z-50 bg-foreground/70", className].filter(Boolean).join(" ") || undefined} {...rest}>
       <Cover center={
-        <div className="mx-auto w-full rounded bg-white p-6 text-center shadow-elevation-4">
+        <div className="mx-auto w-full rounded bg-card p-6 text-center shadow-elevation-4">
           <h2 className="mb-2 text-lg font-semibold">{t("ageGate.title")}</h2>
-          <p className="mb-4 text-sm text-neutral-700">{message ?? t("ageGate.message")}</p>
+          <p className="mb-4 text-sm text-muted-foreground">{message ?? t("ageGate.message")}</p>
           <Button type="button" onClick={confirm}>
             {t("ageGate.confirm", { age: minAge })}
           </Button>

@@ -36,6 +36,12 @@ pnpm -r build
 pnpm prisma migrate dev
 ```
 
+## Testing & coverage
+
+- Default Jest runs enforce global coverage thresholds. For narrow, file-scoped runs (for example when iterating on a single test file with `--runTestsByPath` or `--testPathPattern`), the root Jest config now relaxes coverage gates so quick loops don't fail on unrelated files.
+- To force relaxed coverage in other scenarios, set `JEST_ALLOW_PARTIAL_COVERAGE=1` for that run.
+- Full or CI runs still enforce the usual thresholds; use targeted runs only for local iteration.
+
 ## Related docs
 
 - [Installation guide](../../docs/install.md)

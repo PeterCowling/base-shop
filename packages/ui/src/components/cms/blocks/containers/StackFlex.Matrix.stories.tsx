@@ -7,7 +7,6 @@ import { makeStateStory } from '../../../../story-utils/createStories';
 const meta: Meta<typeof StackFlex> = {
   title: 'CMS Blocks/Containers/StackFlex/Matrix',
   component: StackFlex,
-  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {
@@ -20,7 +19,7 @@ const meta: Meta<typeof StackFlex> = {
     wrap: true,
     gap: '1rem',
     children: [1, 2, 3, 4, 5].map((n) => (
-      <div key={n} className="h-12 w-24 rounded bg-neutral-100 p-2">Item {n}</div>
+      <div key={n} className="h-12 w-24 rounded bg-muted p-2">Item {n}</div>
     )),
   },
 };
@@ -41,7 +40,7 @@ export const Loading: Story = makeStateStory(
   {
     direction: 'column',
     children: [1, 2].map((n) => (
-      <div key={n} className="h-12 w-24 rounded bg-neutral-100 p-2">Item {n}</div>
+      <div key={n} className="h-12 w-24 rounded bg-muted p-2">Item {n}</div>
     )),
   },
   'loading',

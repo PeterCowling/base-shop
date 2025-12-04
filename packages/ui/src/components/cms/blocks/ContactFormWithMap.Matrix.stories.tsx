@@ -9,7 +9,6 @@ import { z } from 'zod';
 const meta: Meta<typeof ContactFormWithMap> = {
   title: 'CMS Blocks/ContactFormWithMap/Matrix',
   component: ContactFormWithMap,
-  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Contact form with an embedded map iframe.' } } },
 };
@@ -23,3 +22,7 @@ try { z.object({ mapSrc: z.string().url().optional() }).parse(fixture); } catch 
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });

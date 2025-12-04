@@ -1,86 +1,192 @@
 import { TransformStream } from "node:stream/web";
-import type { ConfiguratorState } from "../../cms/wizard/schema";
+import * as fsSync from "fs";
+import path from "path";
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
+import { ensureAuthorized } from "@cms/actions/common/auth";
 import { getRequiredSteps } from "../../cms/configurator/steps";
-import { configuratorChecks, type ConfigCheckResult } from "@platform-core/configurator";
-import type { ConfiguratorStepId } from "@acme/types";
+import {
+  runRequiredConfigChecks,
+  getConfiguratorProgressForShop,
+} from "@platform-core/configurator";
+import { verifyShopAfterDeploy } from "@cms/actions/verifyShopAfterDeploy.server";
+import { enqueueDeploy } from "@cms/lib/deployQueue";
+import type { Environment } from "@acme/types";
+import {
+  configuratorStateSchema,
+  type ConfiguratorState,
+  type StepStatus,
+} from "../../cms/wizard/schema";
+import {
+  evaluateProdGate,
+  getLaunchGate,
+  recordFirstProdLaunch,
+  recordStageTests,
+} from "@/lib/server/launchGate";
 
-export type StepStatus = "pending" | "success" | "failure";
+export type LaunchStepStatus = "pending" | "success" | "failure";
 
 interface LaunchRequest {
   shopId: string;
   state: ConfiguratorState;
   seed?: boolean;
+  env?: Environment;
 }
 
 interface StreamMessage {
   step?: keyof LaunchStatuses;
-  status?: StepStatus;
+  status?: LaunchStepStatus;
   error?: string;
   done?: boolean;
 }
 
 interface LaunchStatuses {
-  create: StepStatus;
-  init: StepStatus;
-  deploy: StepStatus;
-  seed?: StepStatus;
+  create: LaunchStepStatus;
+  init: LaunchStepStatus;
+  deploy: LaunchStepStatus;
+  tests?: LaunchStepStatus;
+  seed?: LaunchStepStatus;
 }
 
-const REQUIRED_CONFIG_CHECK_STEPS: ConfiguratorStepId[] = [
-  "shop-basics",
-  "theme",
-  "payments",
-  "shipping-tax",
-  "checkout",
-  "products-inventory",
-  "navigation-home",
-];
+type PersistedConfiguratorState = {
+  state: ConfiguratorState;
+  completed: Record<string, StepStatus>;
+};
 
-async function runRequiredConfigChecks(
-  shopId: string
-): Promise<{ ok: boolean; error?: string }> {
-  const failures: string[] = [];
-  for (const stepId of REQUIRED_CONFIG_CHECK_STEPS) {
-    const check = configuratorChecks[stepId];
-    if (!check) continue;
-    let result: ConfigCheckResult;
-    try {
-      result = await check(shopId);
-    } catch (err) {
-      const message =
-        err && typeof err === "object" && "message" in err
-          ? String((err as { message?: unknown }).message)
-          : "unknown-error";
-      failures.push(`${stepId}:${message}`);
-      continue;
+const resolveConfiguratorProgressFile = (): string => {
+  let dir = process.cwd();
+  while (true) {
+    const candidate = path.join(dir, "data", "cms", "configurator-progress.json");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-3106: derived from cwd walk; no user input
+    if (fsSync.existsSync(path.dirname(candidate))) {
+      // Migrate legacy filename if present
+      const legacy = path.join(dir, "data", "cms", "wizard-progress.json");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-3106: fixed filenames in controlled dir
+      if (!fsSync.existsSync(candidate) && fsSync.existsSync(legacy)) {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-3106: migrate validated repo-local files
+        fsSync.renameSync(legacy, candidate);
+      }
+      return candidate;
     }
-    if (!result.ok) {
-      const reason = result.reason || "failed";
-      failures.push(`${stepId}:${reason}`);
-    }
+    const parent = path.dirname(dir);
+    if (parent === dir) break;
+    dir = parent;
   }
+  return path.resolve(process.cwd(), "data", "cms", "configurator-progress.json");
+};
 
-  if (failures.length === 0) {
-    return { ok: true };
-  }
+const CONFIGURATOR_PROGRESS_FILE = resolveConfiguratorProgressFile();
+const CONFIGURATOR_PROGRESS_BACKUP = `${CONFIGURATOR_PROGRESS_FILE}.bak`;
 
-  return {
-    ok: false,
-    // i18n-exempt: service-level fallback string; surfaced in UI as-is
-    error: `Configuration checks failed for steps: ${failures.join(", ")}`,
+function readConfiguratorProgress(): Record<
+  string,
+  { state?: unknown; completed?: Record<string, StepStatus> }
+> {
+  const read = (file: string) => {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-3106: repo-local path derived from validated location
+    const raw = fsSync.readFileSync(file, "utf8");
+    return JSON.parse(raw) as Record<string, { state?: unknown; completed?: Record<string, StepStatus> }>;
   };
+  try {
+    return read(CONFIGURATOR_PROGRESS_FILE);
+  } catch {
+    try {
+      return read(CONFIGURATOR_PROGRESS_BACKUP);
+    } catch {
+      return {};
+    }
+  }
+}
+
+async function readPersistedConfiguratorState(
+  userId: string | undefined,
+): Promise<PersistedConfiguratorState | null> {
+  if (!userId) return null;
+  try {
+    const parsed = readConfiguratorProgress();
+    const entry = parsed[userId];
+    if (!entry || typeof entry !== "object") return null;
+    const safeState = configuratorStateSchema.safeParse({
+      ...(entry.state ?? {}),
+      completed: entry.completed ?? {},
+    });
+    if (!safeState.success) return null;
+    return {
+      state: safeState.data as ConfiguratorState,
+      completed: (safeState.data.completed ?? {}) as Record<string, StepStatus>,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function requireCsrf(req: Request): void {
+  const header = req.headers.get("x-csrf-token");
+  const cookie = cookies().get("csrf_token")?.value || null;
+  if (!header || !cookie || header !== cookie) {
+    throw new Error("Forbidden");
+  }
 }
 
 export async function POST(req: Request) {
+  try {
+    requireCsrf(req);
+  } catch {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  let session: Awaited<ReturnType<typeof ensureAuthorized>>;
+  try {
+    session = await ensureAuthorized();
+  } catch {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const body = (await req.json()) as LaunchRequest;
-  const { shopId, state, seed } = body;
+  const { shopId: bodyShopId, state: incomingState, seed, env: requestedEnv } = body;
+
+  const persisted = await readPersistedConfiguratorState(session.user?.id);
+  const mergedState = configuratorStateSchema.safeParse({
+    ...(persisted?.state ?? {}),
+    ...(incomingState ?? {}),
+    completed: {
+      ...(persisted?.completed ?? {}),
+      ...(incomingState?.completed ?? {}),
+    },
+  });
+  if (!mergedState.success) {
+    return NextResponse.json({ error: "Invalid configurator state" }, { status: 400 });
+  }
+
+  const state = mergedState.data as ConfiguratorState;
+  const shopId = state.shopId || bodyShopId;
 
   const missingSteps = getRequiredSteps()
     .filter((s) => state.completed?.[s.id] !== "complete")
     .map((s) => s.id);
 
+  if (!shopId) {
+    return NextResponse.json({ error: "Missing shop id" }, { status: 400 });
+  }
+
+  // Always re-evaluate server-side configurator checks to avoid stale client state.
+  try {
+    const progress = await getConfiguratorProgressForShop(shopId);
+    const blocking = getRequiredSteps()
+      .map((s) => s.id)
+      .filter((id) => progress.steps[id as keyof typeof progress.steps] !== "complete");
+    if (blocking.length > 0) {
+      return NextResponse.json(
+        { error: "Missing required steps", missingSteps: blocking },
+        { status: 400 },
+      );
+    }
+  } catch {
+    // If progress cannot be loaded, fall back to local validation.
+  }
+
   if (missingSteps.length > 0) {
-    return Response.json(
+    return NextResponse.json(
       { error: "Missing required steps", missingSteps },
       { status: 400 }
     );
@@ -89,6 +195,26 @@ export async function POST(req: Request) {
   const host = req.headers.get("host");
   const protocol = req.headers.get("x-forwarded-proto") || "http";
   const base = `${protocol}://${host}`;
+  const env: Environment = requestedEnv ?? "stage";
+  const smokeEnabled = process.env.SHOP_SMOKE_ENABLED === "1";
+
+  if (env === "prod") {
+    try {
+      const gate = await getLaunchGate(shopId);
+      const evaluation = evaluateProdGate(gate, { smokeEnabled });
+      if (!evaluation.allowed) {
+        return NextResponse.json(
+          { error: "stage-gate", missing: evaluation.missing, env: "stage" },
+          { status: 400 },
+        );
+      }
+    } catch (err) {
+      return NextResponse.json(
+        { error: (err as Error).message ?? "Stage gate blocked" },
+        { status: 400 },
+      );
+    }
+  }
 
   const encoder = new TextEncoder();
   const { readable, writable } = new TransformStream<Uint8Array>();
@@ -142,9 +268,42 @@ export async function POST(req: Request) {
         if (!checks.ok) {
           return checks;
         }
-        return deployShop(shopId, state.domain ?? "");
+        const deployResult = await enqueueDeploy(shopId, () =>
+          deployShop(shopId, state.domain ?? "", env),
+        );
+        if (!deployResult.ok) {
+          return { ok: false, error: deployResult.error };
+        }
+        return deployResult.result ?? { ok: true };
       });
       if (!okDeploy) return;
+
+      const testsTimestamp = new Date().toISOString();
+      const okTests = await update("tests", async () => {
+        const verification = await verifyShopAfterDeploy(shopId, env);
+        if (env === "stage") {
+          try {
+            await recordStageTests(shopId, {
+              status: verification.status,
+              error: verification.error,
+              at: testsTimestamp,
+              version: testsTimestamp,
+              smokeEnabled,
+            });
+          } catch {
+            /* best-effort gate persistence */
+          }
+        }
+        return {
+          // Treat "not-run" as a neutral status so environments that
+          // have not enabled the smoke suite can still launch.
+          ok:
+            verification.status === "passed" ||
+            verification.status === "not-run",
+          error: verification.error,
+        };
+      });
+      if (!okTests) return;
 
       if (seed) {
         const { seedShop } = await import(
@@ -154,6 +313,14 @@ export async function POST(req: Request) {
           seedShop(shopId, undefined, state.categoriesText)
         );
         if (!okSeed) return;
+      }
+
+      if (env === "prod") {
+        try {
+          await recordFirstProdLaunch(shopId);
+        } catch {
+          /* best-effort gate persistence */
+        }
       }
 
       send({ done: true });

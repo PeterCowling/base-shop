@@ -96,11 +96,11 @@ export default function ImageFocalOverlay({ value, onChange, visible = false, di
       {/* crosshair */}
       <div
         ref={crosshairRef}
-        className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-white bg-primary shadow outline-none"
+        className="absolute h-4 w-4 -translate-x-1/2 -translate-y-1/2 transform rounded-full border-2 border-foreground bg-primary shadow outline-none"
         aria-hidden
       />
       {/* helper text */}
-      <div className="absolute start-2 top-2 rounded bg-black/60 px-2 py-1 text-xs text-white shadow dark:bg-white/70 dark:text-black">{t("cms.builder.focal.help")}</div>
+      <div className="absolute start-2 top-2 rounded bg-foreground/60 px-2 py-1 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground">{t("cms.builder.focal.help")}</div>
     </div>
   );
 }

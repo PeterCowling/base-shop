@@ -13,6 +13,7 @@ const baseItem: MediaItem = {
 };
 
 const meta: Meta<typeof MediaFileItem> = {
+  title: "CMS/MediaFileItem",
   component: MediaFileItem,
   args: {
     shop: "demo-shop",

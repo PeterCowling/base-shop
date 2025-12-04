@@ -225,7 +225,7 @@ export default function LibraryPaletteItem({ item, onDelete, onToggleShare, onUp
         <button
           type="button"
           aria-label={(item.shared ? t('pb.library.unshare') : t('pb.library.share')) as string}
-          className={`min-h-10 min-w-10 rounded border px-2 text-xs ${item.shared ? "bg-green-50" : ""}`}
+          className={`min-h-10 min-w-10 rounded border px-2 text-xs ${item.shared ? "bg-primary/10" : ""}`}
           onClick={(e) => {
             e.stopPropagation();
             onToggleShare();

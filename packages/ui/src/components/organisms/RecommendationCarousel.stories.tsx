@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { RecommendationCarousel } from "./RecommendationCarousel";
 
 const meta: Meta<typeof RecommendationCarousel> = {
+  title: "Organisms/RecommendationCarousel",
   component: RecommendationCarousel,
   args: {
     endpoint: "/api/products",

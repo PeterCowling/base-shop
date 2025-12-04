@@ -113,17 +113,17 @@ export default function RulersOverlay({ show = false, canvasRef, step = 50, view
           <div aria-hidden className="absolute inset-y-0">
             {/* Unsafe zones tint */}
             {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic width based on computed safe zone */}
-            <div className="bg-red-500/5 absolute inset-y-0 start-0" style={{ width: Math.max(0, safeLeft) }} />
+            <div className="bg-destructive/100/5 absolute inset-y-0 start-0" style={{ width: Math.max(0, safeLeft) }} />
             {/* eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic width based on computed safe zone */}
-            <div className="bg-red-500/5 absolute inset-y-0 end-0" style={{ width: Math.max(0, size.w - (safeLeft + safeWidth)) }} />
+            <div className="bg-destructive/100/5 absolute inset-y-0 end-0" style={{ width: Math.max(0, size.w - (safeLeft + safeWidth)) }} />
             {/* Safe zone */}
             <div
-              className="bg-green-500/5 absolute inset-y-0 border-x border-green-500/40"
+              className="bg-primary/5 absolute inset-y-0 border-x border-primary/40"
               // eslint-disable-next-line react/forbid-dom-props -- PB-2419 PB-UI: dynamic left/width for safe zone overlay
               style={{ left: safeLeft, width: safeWidth }}
             />
             <div
-              className="absolute top-2 start-1/2 -translate-x-1/2 rounded bg-black/60 px-2 py-0.5 text-xs text-white shadow dark:bg-white/70 dark:text-black opacity-100"
+              className="absolute top-2 start-1/2 -translate-x-1/2 rounded bg-foreground/60 px-2 py-0.5 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground opacity-100"
             >
               {(() => {
                 const viewportPrefix = viewport === "desktop"

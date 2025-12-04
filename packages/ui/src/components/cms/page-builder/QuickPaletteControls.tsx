@@ -4,6 +4,7 @@ import React from "react";
 import { Tooltip, Popover, PopoverTrigger, PopoverContent } from "../../atoms";
 import Palette from "./Palette";
 import type { ComponentType } from "./defaults";
+import type { PaletteProps } from "./palette.types";
 
 interface Props {
   onAdd: (type: ComponentType) => void;
@@ -11,6 +12,7 @@ interface Props {
   onSetSectionBackground: (url: string) => void;
   selectedIsSection: boolean;
   onShowPalette: () => void;
+  allowedTypes?: PaletteProps["allowedTypes"];
 }
 
 /**
@@ -21,7 +23,14 @@ interface Props {
 /* i18n-exempt */
 const t = (s: string) => s;
 
-const QuickPaletteControls = ({ onAdd, onInsertImage, onSetSectionBackground, selectedIsSection, onShowPalette }: Props) => (
+const QuickPaletteControls = ({
+  onAdd,
+  onInsertImage,
+  onSetSectionBackground,
+  selectedIsSection,
+  onShowPalette,
+  allowedTypes,
+}: Props) => (
   <div className="shrink-0 w-8 flex flex-col items-center gap-2 pt-2">
     {/* Quick Components popover */}
     <Popover>
@@ -46,6 +55,7 @@ const QuickPaletteControls = ({ onAdd, onInsertImage, onSetSectionBackground, se
             onSetSectionBackground={onSetSectionBackground}
             selectedIsSection={selectedIsSection}
             defaultTab="components"
+            allowedTypes={allowedTypes}
           />
         </div>
       </PopoverContent>

@@ -60,6 +60,9 @@ export default function usePageBuilderSave({
     fd.append("updatedAt", updatedAt);
     fd.append("slug", page.slug);
     fd.append("status", page.status);
+    if ((page as { stableId?: string }).stableId) {
+      fd.append("stableId", String((page as { stableId?: string }).stableId));
+    }
     fd.append("title", JSON.stringify(page.seo.title));
     fd.append("description", JSON.stringify(page.seo.description ?? {}));
     fd.append("components", JSON.stringify(components));
@@ -164,5 +167,19 @@ export default function usePageBuilderSave({
     }
   }, [page.id, clearHistory]);
 
-  return { formData, handlePublish, handleSave, autoSaveState };
+  const handleRevert = useCallback(
+    async (nextComponents: PageComponent[]) => {
+      const fd = formDataRef.current;
+      const out = new FormData();
+      for (const [k, v] of fd.entries()) {
+        if (k === "components") continue;
+        out.append(k, v);
+      }
+      out.append("components", JSON.stringify(nextComponents));
+      await saveWithMetaUpdate(out);
+    },
+    [saveWithMetaUpdate],
+  );
+
+  return { formData, handlePublish, handleSave, handleRevert, autoSaveState };
 }

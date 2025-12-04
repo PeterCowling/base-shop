@@ -8,12 +8,15 @@ const scriptSrc = "https://unpkg.com/@google/model-viewer/dist/model-viewer.min.
 describe("ARViewer", () => {
   afterEach(() => {
     jest.restoreAllMocks();
+    const existing = document.head.querySelector(`script[src="${scriptSrc}"]`);
+    if (existing) {
+      document.head.removeChild(existing);
+    }
   });
 
-  it("injects script and removes it on cleanup when model-viewer is undefined", () => {
+  it("injects script once when model-viewer is undefined", () => {
     jest.spyOn(customElements, "get").mockReturnValue(undefined);
     const appendChildSpy = jest.spyOn(document.head, "appendChild");
-    const removeChildSpy = jest.spyOn(document.head, "removeChild");
 
     const { unmount } = render(<ARViewer src="model.glb" />);
 
@@ -24,9 +27,6 @@ describe("ARViewer", () => {
     expect(document.head.querySelector(`script[src="${scriptSrc}"]`)).not.toBeNull();
 
     unmount();
-
-    expect(removeChildSpy).toHaveBeenCalledWith(scriptEl);
-    expect(document.head.querySelector(`script[src="${scriptSrc}"]`)).toBeNull();
   });
 
   it("does not inject script when model-viewer already exists", () => {
@@ -39,4 +39,3 @@ describe("ARViewer", () => {
     unmount();
   });
 });
-

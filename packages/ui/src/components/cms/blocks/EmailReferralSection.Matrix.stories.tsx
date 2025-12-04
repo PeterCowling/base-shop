@@ -10,7 +10,6 @@ import { z } from 'zod';
 const meta: Meta<typeof EmailReferralSection> = {
   title: 'CMS Blocks/EmailReferralSection/Matrix',
   component: EmailReferralSection,
-  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Refer-a-friend section with translatable labels and optional adapter to submit.' } } },
 };
@@ -24,3 +23,7 @@ try { z.object({ headline: TT.optional(), subtitle: TT.optional(), giveLabel: TT
 
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 export const RTL: Story = makeStateStory(baseArgs, { locale: 'ar' as Locale }, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });

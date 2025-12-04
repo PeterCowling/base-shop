@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Commerce
+Last-reviewed: 2025-12-02
+
 # Luxury Features
 
 Base Shop includes several optional "luxury" modules. All toggles default to `false`
@@ -24,4 +29,3 @@ These features were designed for high‑touch rental and luxury retail shops.
 Other business types can safely leave them disabled. Each module falls back to
 standard behavior when its toggle is `false`, so non‑luxury shops retain normal
 checkout, return, and CMS flows.
-

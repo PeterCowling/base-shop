@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import StoreLocatorBlock from "./StoreLocatorBlock";
 
 const meta: Meta<typeof StoreLocatorBlock> = {
+  title: "CMS Blocks/StoreLocatorBlock",
   component: StoreLocatorBlock,
   args: {
     locations: [

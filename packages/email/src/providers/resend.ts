@@ -13,6 +13,7 @@ import {
   type ResendStatsResponse,
 } from "../stats";
 import { getDefaultSender } from "../config";
+import { logger } from "@acme/shared-utils";
 
 const apiKey = process.env.RESEND_API_KEY;
 
@@ -56,7 +57,11 @@ export class ResendProvider implements CampaignProvider {
 
   async send(options: CampaignOptions): Promise<void> {
     if (!this.client) {
-      console.warn("Resend API key is not configured; skipping email send"); // i18n-exempt: operational log
+      logger.warn("Resend API key is not configured; skipping email send", { // i18n-exempt: operational log
+        provider: "resend",
+        recipient: options.to,
+        campaignId: options.campaignId,
+      });
       return;
     }
     try {
@@ -70,7 +75,7 @@ export class ResendProvider implements CampaignProvider {
     } catch (error: unknown) {
       if (error && typeof error === "object" && "message" in error) {
         const err = error as ResendError;
-        console.error("Campaign email send failed", { // i18n-exempt: operational log
+        logger.error("Campaign email send failed", { // i18n-exempt: operational log
           provider: "resend",
           recipient: options.to,
           campaignId: options.campaignId,
@@ -87,7 +92,7 @@ export class ResendProvider implements CampaignProvider {
           typeof numericStatus !== "number" || numericStatus >= 500;
         throw new ProviderError(err.message, retryable);
       }
-      console.error("Campaign email send failed", { // i18n-exempt: operational log
+      logger.error("Campaign email send failed", { // i18n-exempt: operational log
         provider: "resend",
         recipient: options.to,
         campaignId: options.campaignId,

@@ -25,12 +25,17 @@ export function setSessionStoreFactory(factory: SessionStoreFactory) {
   customFactory = factory;
 }
 
+type DurableObjectNamespace = {
+  idFromName(name: string): { toString(): string };
+  get(id: { toString(): string }): { fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> };
+};
+
 export async function createSessionStore(): Promise<SessionStore> {
   if (customFactory) {
     return customFactory();
   }
 
-  const storeType = coreEnv.SESSION_STORE;
+  const storeType = coreEnv.SESSION_STORE_PROVIDER ?? coreEnv.SESSION_STORE;
 
   if (
     storeType === "redis" ||
@@ -49,6 +54,26 @@ export async function createSessionStore(): Promise<SessionStore> {
     } catch (error) {
       console.error(
         "Failed to initialize Redis session store", // i18n-exempt: internal diagnostic log; not user-facing
+        error,
+      );
+    }
+  }
+
+  if (storeType === "cloudflare") {
+    try {
+      const binding = (globalThis as Record<string, unknown>).SESSION_DO as
+        | DurableObjectNamespace
+        | undefined;
+      if (binding) {
+        const { CloudflareDurableObjectSessionStore } = await import("./sessionDurableStore");
+        return new CloudflareDurableObjectSessionStore(binding, SESSION_TTL_S);
+      }
+      console.warn(
+        "SESSION_STORE_PROVIDER=cloudflare but no SESSION_DO binding found; falling back to MemorySessionStore"
+      );
+    } catch (error) {
+      console.error(
+        "Failed to initialize Cloudflare session store", // i18n-exempt: internal diagnostic log; not user-facing
         error,
       );
     }

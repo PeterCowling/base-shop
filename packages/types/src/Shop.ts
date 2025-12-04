@@ -84,6 +84,8 @@ export const shopSchema = z
       .optional(),
     enableEditorial: z.boolean().optional(),
     domain: shopDomainSchema.optional(),
+    termsUrl: z.string().url().optional(),
+    privacyUrl: z.string().url().optional(),
     returnPolicyUrl: z.string().url().optional(),
     returnsEnabled: z.boolean().optional(),
     analyticsEnabled: z.boolean().optional(),
@@ -130,6 +132,11 @@ export const shopSchema = z
       })
       .strict()
       .optional(),
+    /**
+     * Optional runtime application identifier for this shop.
+     * Used to determine which runtime app should be built/deployed.
+     */
+    runtimeAppId: z.string().optional(),
   })
   .strict();
 

@@ -38,6 +38,7 @@ const chatMessages: ChatMessage[] = [
 ];
 
 const meta: Meta<typeof LiveShoppingEventTemplate> = {
+  title: "Templates/LiveShoppingEventTemplate",
   component: LiveShoppingEventTemplate,
   args: {
     streamUrl: "video.mp4",
@@ -47,4 +48,23 @@ const meta: Meta<typeof LiveShoppingEventTemplate> = {
 };
 export default meta;
 
-export const Default: StoryObj<typeof LiveShoppingEventTemplate> = {};
+type Story = StoryObj<typeof LiveShoppingEventTemplate>;
+const baseArgs = meta.args!;
+
+export const Default: Story = {};
+export const Loading: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "loading" },
+};
+export const Empty: Story = {
+  args: { streamUrl: "", products: [], chatMessages: [] },
+  parameters: { dataState: "empty" },
+};
+export const Error: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "error" },
+};
+export const RTL: Story = {
+  args: { ...baseArgs },
+  parameters: { rtl: true },
+};

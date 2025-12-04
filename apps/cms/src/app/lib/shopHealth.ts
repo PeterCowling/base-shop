@@ -14,6 +14,7 @@ export interface ShopHealthSummary {
     stepId: ConfiguratorStepId;
     reason: string;
   }>;
+  environments?: Array<{ env: string; status?: string }>;
 }
 
 const REQUIRED_STEPS: ConfiguratorStepId[] = [
@@ -30,6 +31,7 @@ const OPTIONAL_STEPS: ConfiguratorStepId[] = [
   "domains",
   "reverse-logistics",
   "advanced-seo",
+  "reach-social",
 ];
 
 function isIncomplete(status: StepStatus | undefined): boolean {
@@ -88,4 +90,3 @@ export function deriveShopHealth(
   }
   return { status: "healthy", issues };
 }
-

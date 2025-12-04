@@ -1,7 +1,17 @@
 import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
+import enTranslations from "@acme/i18n/en.json";
 import { readEnvFile } from "@acme/platform-core/configurator";
 import type { CreateShopOptions } from "@acme/platform-core/createShop";
+
+const translations = enTranslations as Record<string, string>;
+const t = (key: string, vars?: Record<string, unknown>): string => {
+  const template = translations[key] ?? key;
+  if (!vars) return template;
+  return template.replace(/\{(.*?)\}/g, (match, name) =>
+    Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : match,
+  );
+};
 
 export interface ParsedArgs {
   seed: boolean;
@@ -16,6 +26,8 @@ export interface ParsedArgs {
     contact?: string;
     plugins?: string[];
     setupCI?: boolean;
+    analyticsEnabled?: boolean;
+    leadCaptureEnabled?: boolean;
   };
   envFileVars: Record<string, string>;
   envFilePath?: string;
@@ -45,13 +57,15 @@ export function parseArgs(argv = process.argv.slice(2)): ParsedArgs {
   if (envFileIndex !== -1) {
     envFilePath = argv[envFileIndex + 1];
     if (!envFilePath) {
-      console.error("--env-file flag requires a path");
+      console.error(t("cli.initShop.envFilePathRequired"));
       process.exit(1);
     }
     try {
       envFileVars = readEnvFile(envFilePath);
     } catch (err) {
-      console.error("Failed to load env file:", (err as Error).message);
+      console.error(
+        t("cli.initShop.envFileLoadFailed", { message: (err as Error).message }),
+      );
       process.exit(1);
     }
   }
@@ -60,18 +74,22 @@ export function parseArgs(argv = process.argv.slice(2)): ParsedArgs {
   if (profileIndex !== -1) {
     const profileArg = argv[profileIndex + 1];
     if (!profileArg) {
-      console.error("--profile flag requires a name or path");
+      console.error(t("cli.initShop.profilePathRequired"));
       process.exit(1);
     }
     const profilePath =
       profileArg.includes("/") || profileArg.endsWith(".json")
         ? profileArg
         : join(rootDir, "profiles", `${profileArg}.json`);
+    const resolvedProfilePath = resolve(rootDir, profilePath);
     try {
-      const raw = readFileSync(profilePath, "utf8");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-3205: CLI reads a developer-provided profile path resolved against the workspace, not HTTP input [ttl=2026-12-31]
+      const raw = readFileSync(resolvedProfilePath, "utf8");
       config = JSON.parse(raw);
     } catch (err) {
-      console.error("Failed to load profile file:", (err as Error).message);
+      console.error(
+        t("cli.initShop.profileLoadFailed", { message: (err as Error).message }),
+      );
       process.exit(1);
     }
   }
@@ -79,15 +97,19 @@ export function parseArgs(argv = process.argv.slice(2)): ParsedArgs {
   if (configIndex !== -1) {
     const configPath = argv[configIndex + 1];
     if (!configPath) {
-      console.error("--config flag requires a path");
+      console.error(t("cli.initShop.configPathRequired"));
       process.exit(1);
     }
+    const resolvedConfigPath = resolve(rootDir, configPath);
     try {
-      const raw = readFileSync(configPath, "utf8");
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-3205: CLI reads a developer-provided config path resolved against the workspace, not HTTP input [ttl=2026-12-31]
+      const raw = readFileSync(resolvedConfigPath, "utf8");
       const fileConfig = JSON.parse(raw);
       config = { ...config, ...fileConfig };
     } catch (err) {
-      console.error("Failed to load config file:", (err as Error).message);
+      console.error(
+        t("cli.initShop.configLoadFailed", { message: (err as Error).message }),
+      );
       process.exit(1);
     }
   }
@@ -105,4 +127,3 @@ export function parseArgs(argv = process.argv.slice(2)): ParsedArgs {
     envFilePath,
   };
 }
-

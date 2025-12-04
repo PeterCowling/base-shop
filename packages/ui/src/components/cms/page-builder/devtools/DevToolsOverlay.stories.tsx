@@ -23,6 +23,7 @@ function Harness() {
 }
 
 const meta: Meta<typeof DevToolsOverlay> = {
+  title: 'CMS/Page Builder/DevToolsOverlay',
   component: DevToolsOverlay,
   tags: ['autodocs'],
   parameters: {

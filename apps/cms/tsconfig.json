@@ -164,6 +164,12 @@
       ],
       "@acme/templates/*": [
         "../../packages/templates/src/*", "../../packages/templates/dist/*"
+      ],
+      "@acme/page-builder-core": [
+        "../../packages/page-builder-core/src/index.ts", "../../packages/page-builder-core/dist/index"
+      ],
+      "@acme/page-builder-core/*": [
+        "../../packages/page-builder-core/src/*", "../../packages/page-builder-core/dist/*"
       ]
     },
     "module": "ESNext",
@@ -213,6 +219,7 @@
     { "path": "../../packages/telemetry" },
     { "path": "../../packages/theme" },
     { "path": "../../packages/plugins/sanity" },
+    { "path": "../../packages/page-builder-core" },
     { "path": "../../packages/templates" }
   ]
 }

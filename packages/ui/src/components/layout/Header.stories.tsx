@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import HeaderClient from "./HeaderClient.client";
 
 const meta: Meta<typeof HeaderClient> = {
+  title: "Layout/Header",
   component: HeaderClient,
   args: {
     lang: "en",

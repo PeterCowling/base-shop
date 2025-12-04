@@ -14,6 +14,10 @@ type Totals = {
   tax?: number;
   /** Discount amount applied to the order */
   discount?: number;
+  /** Shipping cost applied to the order */
+  shipping?: number;
+  /** Additional service fees (e.g., signature, duties) */
+  fees?: number;
   total: number;
 };
 
@@ -63,8 +67,10 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
   const subtotal = totals?.subtotal ?? computedTotals.subtotal;
   const deposit = totals?.deposit ?? computedTotals.deposit;
   const tax = totals?.tax ?? 0;
+  const shipping = totals?.shipping ?? 0;
+  const fees = totals?.fees ?? 0;
   const discount = totals?.discount ?? 0;
-  const total = totals?.total ?? subtotal + deposit + tax - discount;
+  const total = totals?.total ?? subtotal + deposit + tax + shipping + fees - discount;
 
   /* ------------------------------------------------------------------
    * Render
@@ -117,6 +123,24 @@ function OrderSummary({ cart: cartProp, totals }: Props) {
             <td className="py-2">{t("Tax")}</td>
             <td className="text-end">
               <Price amount={tax} />
+            </td>
+          </tr>
+        )}
+        {totals?.shipping !== undefined && (
+          <tr>
+            <td />
+            <td className="py-2">{t("Shipping")}</td>
+            <td className="text-end">
+              <Price amount={shipping} />
+            </td>
+          </tr>
+        )}
+        {totals?.fees !== undefined && (
+          <tr>
+            <td />
+            <td className="py-2">{t("Fees")}</td>
+            <td className="text-end">
+              <Price amount={fees} />
             </td>
           </tr>
         )}

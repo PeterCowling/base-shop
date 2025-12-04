@@ -19,7 +19,7 @@ export default function CurrencySelector({ className, ...rest }: CurrencySelecto
         id={CURRENCY_SELECT_ID}
         value={currency}
         onChange={(e) => setCurrency(e.target.value as Currency)}
-        className="rounded border px-2 py-1 text-sm"
+        className="rounded-lg border border-border bg-card text-foreground px-4 py-2 text-base shadow-sm pr-10 appearance-none min-h-11 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       >
         {options.map((opt) => (
           <option key={opt} value={opt}>{opt}</option>

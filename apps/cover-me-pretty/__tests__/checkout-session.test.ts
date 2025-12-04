@@ -20,6 +20,11 @@ jest.mock("@acme/stripe", () => ({
 jest.mock("@platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
   convertCurrency: jest.fn(async (n: number) => n),
+  getPricing: jest.fn(async () => ({
+    coverage: {
+      basic: { fee: 5, waiver: 1 },
+    },
+  })),
 }));
 jest.mock("@platform-core/tax", () => ({
   getTaxRate: jest.fn(async () => 0.2),
@@ -37,7 +42,7 @@ jest.mock("@platform-core/cartCookie", () => ({
   decodeCartCookie: jest.fn((raw: string | null) => raw ?? null),
 }));
 
-let mockCart: any = {};
+let mockCart: Record<string, unknown> = {};
 jest.mock("@platform-core/cartStore", () => ({
   getCart: jest.fn(async () => mockCart),
 }));
@@ -166,7 +171,7 @@ test("responds with 400 on invalid request body", async () => {
   const cart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
   mockCart = cart;
   const cookie = "cart-1";
-  const req = createRequest({ shipping: "invalid" as any }, cookie);
+  const req = createRequest({ shipping: "invalid" as unknown }, cookie);
   const res = await POST(req);
   expect(res.status).toBe(400);
 });
@@ -189,4 +194,55 @@ test("responds with 502 when session creation fails", async () => {
   const body = await res.json();
   expect(body.error).toBe("Checkout failed");
   spy.mockRestore();
+});
+
+test("adds coverage line item and metadata when coverage codes are provided", async () => {
+  jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
+  stripeCreate.mockResolvedValue({
+    id: "sess_cov",
+    payment_intent: { client_secret: "cs_cov" },
+  });
+
+  const [sku] = PRODUCTS;
+  const size = "40";
+  const cart = {
+    [`${sku.id}:${size}`]: { sku, qty: 1, size },
+  };
+  mockCart = cart;
+  const cookie = "cart-coverage";
+
+  const req = createRequest(
+    {
+      returnDate: "2025-01-02",
+      currency: "EUR",
+      taxRegion: "EU",
+      coverage: ["basic"],
+    },
+    cookie,
+    undefined,
+    { "x-forwarded-for": "203.0.113.2" },
+  );
+
+  const res = await POST(req);
+  expect(res.status).toBe(200);
+  const body = await res.json();
+  expect(body.clientSecret).toBe("cs_cov");
+
+  expect(stripeCreate).toHaveBeenCalled();
+  const args = stripeCreate.mock.calls[0][0];
+  const lineItems = Array.isArray(args.line_items) ? args.line_items : [];
+
+  const coverageItem = lineItems.find(
+    (item: unknown) =>
+      typeof item === "object" &&
+      item !== null &&
+      (item as { price_data?: { product_data?: { name?: string } } }).price_data
+        ?.product_data?.name === "Coverage",
+  );
+  expect(coverageItem).toBeDefined();
+  expect(coverageItem.price_data.currency).toBe("eur");
+
+  expect(args.metadata.coverage).toBe("basic");
+  expect(args.metadata.coverageFee).toBe("5");
+  expect(args.metadata.coverageWaiver).toBe("1");
 });

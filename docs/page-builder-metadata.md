@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Page Builder Metadata & CSS (Migration Note)
 
 This note summarizes the new Page Builder metadata model, how it is persisted, and the runtime CSS additions used by the preview/runtime to apply visibility and typography rules.

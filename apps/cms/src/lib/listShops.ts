@@ -2,6 +2,9 @@
 
 import fs from "fs/promises";
 import { resolveDataRoot } from "@platform-core/dataRoot";
+import { logger } from "@acme/shared-utils";
+import { validateShopName } from "@platform-core/shops";
+import path from "path";
 
 export async function listShops(): Promise<string[]> {
   const shopsDir = resolveDataRoot();
@@ -17,7 +20,66 @@ export async function listShops(): Promise<string[]> {
     if ((err as NodeJS.ErrnoException).code === "ENOENT") {
       return [];
     }
-    console.error(`Failed to list shops at ${shopsDir}:`, err);
+    logger.error(`Failed to list shops at ${shopsDir}`, err);
     throw err;
+  }
+}
+
+export type ShopSummary = {
+  id: string;
+  name: string;
+  region?: string | null;
+  lastUpgrade?: string | null;
+  pending?: number;
+  status?: "ready" | "failed" | "up_to_date" | "unknown";
+};
+
+export async function listShopSummaries(): Promise<ShopSummary[]> {
+  const ids = await listShops();
+  const summaries = await Promise.all(ids.map(readShopSummary));
+  return summaries;
+}
+
+async function readShopSummary(id: string): Promise<ShopSummary> {
+  const safeId = validateShopName(id);
+  const shopsDir = resolveDataRoot();
+  const deployFile = path.join(shopsDir, safeId, "deploy.json");
+
+  const base: ShopSummary = {
+    id: safeId,
+    name: safeId,
+    region: null,
+    pending: 0,
+    status: "unknown",
+    lastUpgrade: null,
+  };
+
+  try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- OPS-3209 path constrained via validateShopName + data root [ttl=2026-06-30]
+    const content = await fs.readFile(deployFile, "utf8");
+    const parsed = JSON.parse(content) as Record<string, unknown>;
+    const testsStatus = typeof parsed.testsStatus === "string" ? parsed.testsStatus : undefined;
+    const lastTestedAt =
+      typeof parsed.lastTestedAt === "string" ? parsed.lastTestedAt : undefined;
+    const region = typeof parsed.region === "string" ? parsed.region : null;
+    const status: ShopSummary["status"] =
+      testsStatus === "failed"
+        ? "failed"
+        : testsStatus === "passed"
+          ? "up_to_date"
+          : "ready";
+
+    return {
+      ...base,
+      region,
+      status,
+      lastUpgrade: lastTestedAt ?? null,
+    };
+  } catch (err: unknown) {
+    const code = (err as NodeJS.ErrnoException).code;
+    if (code !== "ENOENT") {
+      logger.error(`Failed to read deploy status for shop ${safeId}`, err);
+    }
+    return base;
   }
 }

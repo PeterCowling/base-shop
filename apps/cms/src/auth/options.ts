@@ -5,6 +5,7 @@ import type { NextAuthOptions } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 import Credentials from "next-auth/providers/credentials";
 import { readRbac as defaultReadRbac } from "../lib/server/rbacStore";
+import { USERS as FALLBACK_USERS } from "./users";
 
 import { logger } from "@acme/shared-utils";
 
@@ -53,21 +54,33 @@ export function createAuthOptions(
           if (!credentials) return null;
 
           const { users, roles } = await readRbac();
-          const user = Object.values(users).find(
+          let user = Object.values(users).find(
             (u) => u.email === credentials.email
           );
+
+          if (!user) {
+            user = Object.values(FALLBACK_USERS).find(
+              (u) => u.email === credentials.email
+            );
+          }
           // i18n-exempt — log/debug string
           logger.debug("[auth] user lookup", { found: Boolean(user) });
 
           /* -------------------------------------------------------------- */
           /*  Password check                                                */
-          /*  - dev fixture allowed only in development                     */
+          /*  - dev fixture allowed only in development (plain "admin")     */
           /*  - otherwise require argon2 hashed passwords                   */
           /* -------------------------------------------------------------- */
-          const isDevFixture =
-            process.env.NODE_ENV === "development" && user?.id === "1";
+          const passwordIsArgonHash =
+            typeof user?.password === "string" &&
+            user.password.startsWith("$argon2");
 
-          if (user && !isDevFixture && !user.password.startsWith("$argon2")) {
+          const isDevFixture =
+            process.env.NODE_ENV === "development" &&
+            user?.id === "1" &&
+            !passwordIsArgonHash;
+
+          if (user && !isDevFixture && !passwordIsArgonHash) {
             // i18n-exempt — ops log
             logger.warn("[auth] user password is not hashed", { id: user.id });
             // i18n-exempt — surfaced via client mapping; tests assert this literal
@@ -78,7 +91,8 @@ export function createAuthOptions(
             user &&
             (isDevFixture
               ? credentials.password === user.password
-              : await argonVerify(user.password, credentials.password));
+              : passwordIsArgonHash &&
+                (await argonVerify(user.password, credentials.password)));
 
           if (ok && user) {
             /* Strip the password before returning */

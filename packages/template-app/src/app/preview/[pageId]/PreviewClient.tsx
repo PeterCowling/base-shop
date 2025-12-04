@@ -4,7 +4,9 @@ import { useMemo } from "react";
 import type { PageComponent, HistoryState } from "@acme/page-builder-core";
 import type { Locale } from "@i18n/locales";
 import DynamicRenderer from "@/components/DynamicRenderer";
-import { DeviceSelector, devicePresets, usePreviewDevice } from "@ui";
+import DeviceSelector from "@ui/components/DeviceSelector";
+import { devicePresets } from "@ui/utils/devicePresets";
+import { usePreviewDevice } from "@ui/hooks/usePreviewDevice";
 
 interface PreviewClientProps {
   components: PageComponent[];

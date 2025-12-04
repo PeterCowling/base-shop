@@ -7,6 +7,7 @@ const files: MediaItem[] = [
 ];
 
 const meta: Meta<typeof MediaManager> = {
+  title: "CMS/MediaManager",
   component: MediaManager,
   args: {
     shop: "demo",

@@ -178,7 +178,7 @@ export default function PresetsModal({ onInsert, sourceUrl, open, onOpenChange, 
         <DialogTitle>{t("cms.builder.presets.sectionLibrary.title")}</DialogTitle>
         <DialogDescription>{t("cms.builder.presets.sectionLibrary.description")}</DialogDescription>
         {loadError && (
-          <div className="rounded border border-red-200 bg-red-50 p-2 text-xs text-red-800">
+          <div className="rounded border border-destructive/40 bg-destructive/10 p-2 text-xs text-destructive">
             {loadError}
           </div>
         )}

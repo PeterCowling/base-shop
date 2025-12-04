@@ -60,6 +60,7 @@ function MiniCartWrapper({ items }: WrapperProps) {
 }
 
 const meta: Meta<typeof MiniCartWrapper> = {
+  title: "Organisms/MiniCart",
   component: MiniCartWrapper,
   parameters: {
     providers: {

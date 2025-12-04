@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Theming
+Last-reviewed: 2025-12-02
+
 # Theme Editor Token Map
 
 The following components expose design tokens via `data-token` attributes so the CMS ThemeEditor can map DOM elements to token keys.
@@ -21,4 +26,3 @@ The following components expose design tokens via `data-token` attributes so the
 | Sessions | `--color-muted` |
 | ProfileForm | `--color-primary`, `--color-primary-fg`, `--color-success`, `--color-danger` |
 | CheckoutForm | `--color-danger`, `--color-fg`, `--color-bg` |
-

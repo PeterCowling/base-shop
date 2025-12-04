@@ -6,6 +6,7 @@ import DataTable from "@ui/components/cms/DataTable";
 import { resetThemeOverride } from "@cms/actions/shops.server";
 import type { Locale } from "@acme/types";
 import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
 
 import {
   createThemeTokenColumns,
@@ -60,9 +61,7 @@ export default function ConfigurationOverview({
           {t("cms.settings.configOverview.title")}
         </h2>
         <p className="text-sm text-muted-foreground">
-          {t(
-            "cms.settings.configOverview.description"
-          )}
+          {t("cms.settings.configOverview.description")}
         </p>
       </div>
       <div className="grid gap-6 lg:grid-cols-2">
@@ -71,9 +70,7 @@ export default function ConfigurationOverview({
             <div className="space-y-1">
               <h3 className="text-lg font-semibold">{t("cms.settings.configOverview.languageCoverage.title")}</h3>
               <p className="text-sm text-muted-foreground">
-                {t(
-                  "cms.settings.configOverview.languageCoverage.description"
-                )}
+                {t("cms.settings.configOverview.languageCoverage.description")}
               </p>
             </div>
             {languages.length > 0 ? (
@@ -97,6 +94,23 @@ export default function ConfigurationOverview({
                 </dd>
               </div>
             </dl>
+            <p className="text-xs text-muted-foreground">
+              <a
+                href="/docs/cms/build-shop-guide.md#first-product"
+                target="_blank"
+                rel="noreferrer"
+                className="underline-offset-2 hover:underline"
+                onClick={() => {
+                  track("build_flow_help_requested", {
+                    shopId: shop,
+                    stepId: "settings",
+                    surface: "configurationOverview",
+                  });
+                }}
+              >
+                {t("cms.settings.configOverview.languageCoverage.helpLink")}
+              </a>
+            </p>
           </CardContent>
         </Card>
         <Card>
@@ -134,9 +148,17 @@ export default function ConfigurationOverview({
             <div className="space-y-1">
               <h3 className="text-lg font-semibold">{t("cms.settings.configOverview.themeTokens.title")}</h3>
               <p className="text-sm text-muted-foreground">
-                {t(
-                  "cms.settings.configOverview.themeTokens.description"
-                )}
+                {t("cms.settings.configOverview.themeTokens.description")}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                <a
+                  href="/docs/theming-charter.md"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="underline-offset-2 hover:underline"
+                >
+                  {t("cms.settings.configOverview.themeTokens.docsLink")}
+                </a>
               </p>
             </div>
             <div className="overflow-hidden rounded-lg border border-border bg-surface-2">

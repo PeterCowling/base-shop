@@ -7,7 +7,6 @@ import { makeStateStory } from '../../../../story-utils/createStories';
 const meta: Meta<typeof MultiColumn> = {
   title: 'CMS Blocks/Containers/MultiColumn/Matrix',
   component: MultiColumn,
-  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {
@@ -19,7 +18,7 @@ const meta: Meta<typeof MultiColumn> = {
     columns: 3,
     gap: '1rem',
     children: [1, 2, 3, 4, 5, 6].map((n) => (
-      <div key={n} className="h-16 rounded bg-neutral-100 p-2">Cell {n}</div>
+      <div key={n} className="h-16 rounded bg-muted p-2">Cell {n}</div>
     )),
   },
 };

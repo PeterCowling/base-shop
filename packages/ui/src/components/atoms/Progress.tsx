@@ -10,14 +10,24 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
-  ({ value, label, className, labelClassName, style: _style, ...props }, ref) => {
+  ({ value, label, className, labelClassName, style, ...props }, ref) => {
     const clampedValue = Number.isFinite(value)
       ? Math.min(100, Math.max(0, value))
       : 0;
     const width = `${clampedValue}%`;
 
     return (
-      <div ref={ref} className={cn("space-y-1", className)} {...props}>
+      <div
+        ref={ref}
+        className={cn("space-y-1", className)}
+        role="progressbar"
+        aria-valuenow={clampedValue}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        // eslint-disable-next-line react/forbid-dom-props -- UI-2610: consumers may pass inline style overrides for layout contexts
+        style={style}
+        {...props}
+      >
         <div
           className={
             "bg-muted h-2 w-full overflow-hidden rounded" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
@@ -27,9 +37,10 @@ export const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
           <div
             className={cn(
               "bg-primary h-full transition-all", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
-              `w-[${width}]`
             )}
             data-token="--color-primary" // i18n-exempt -- UI-000: design token attribute, not user copy [ttl=2026-01-31]
+            // eslint-disable-next-line react/forbid-dom-props -- UI-2610: progress width is derived from value at runtime
+            style={{ width }}
           />
         </div>
         {label ? (

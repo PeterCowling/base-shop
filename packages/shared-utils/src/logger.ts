@@ -1,4 +1,5 @@
 import pino from "pino";
+import { getRequestContext } from "./requestContext";
 
 export interface LogMeta {
   [key: string]: unknown;
@@ -10,17 +11,23 @@ const level =
 
 const baseLogger = pino({ level });
 
+function withContext(meta: LogMeta): LogMeta {
+  const ctx = getRequestContext();
+  if (!ctx) return meta;
+  return { ...ctx, ...meta };
+}
+
 export const logger = {
   error(message: string, meta: LogMeta = {}) {
-    baseLogger.error(meta, message);
+    baseLogger.error(withContext(meta), message);
   },
   warn(message: string, meta: LogMeta = {}) {
-    baseLogger.warn(meta, message);
+    baseLogger.warn(withContext(meta), message);
   },
   info(message: string, meta: LogMeta = {}) {
-    baseLogger.info(meta, message);
+    baseLogger.info(withContext(meta), message);
   },
   debug(message: string, meta: LogMeta = {}) {
-    baseLogger.debug(meta, message);
+    baseLogger.debug(withContext(meta), message);
   },
 };

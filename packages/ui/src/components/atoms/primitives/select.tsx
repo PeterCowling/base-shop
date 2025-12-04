@@ -8,6 +8,7 @@ import * as React from "react";
 import { cn } from "../../../utils/style";
 
 export const Select = SelectPrimitive.Root;
+export type SelectProps = SelectPrimitive.SelectProps;
 export const SelectGroup = SelectPrimitive.Group;
 export const SelectValue = SelectPrimitive.Value;
 export const SelectTrigger = React.forwardRef<
@@ -31,6 +32,7 @@ export const SelectTrigger = React.forwardRef<
   </SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName; // i18n-exempt: component displayName
+export type SelectTriggerProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>;
 
 export const SelectContent = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Content>,

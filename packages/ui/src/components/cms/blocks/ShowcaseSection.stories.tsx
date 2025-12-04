@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 import ShowcaseSection from './ShowcaseSection';
 
 const meta: Meta<typeof ShowcaseSection> = {
+  title: 'CMS Blocks/ShowcaseSection',
   component: ShowcaseSection,
   args: {
     preset: 'featured',

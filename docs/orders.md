@@ -1,3 +1,12 @@
+Type: Contract
+Status: Canonical
+Domain: Orders
+Last-reviewed: 2025-12-02
+
+Primary code entrypoints:
+- packages/platform-core/src/repositories/rentalOrders.server.ts
+- packages/platform-core/src/checkout/session.ts
+
 # Orders
 
 ## Purpose

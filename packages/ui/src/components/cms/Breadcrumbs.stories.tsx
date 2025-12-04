@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import Breadcrumbs from "./Breadcrumbs.client";
 
 const meta: Meta<typeof Breadcrumbs> = {
+  title: "CMS/Breadcrumbs",
   component: Breadcrumbs,
   args: {},
 };

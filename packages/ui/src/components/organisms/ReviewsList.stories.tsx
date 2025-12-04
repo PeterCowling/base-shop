@@ -4,6 +4,7 @@ import { fn } from "storybook/test";
 import { ReviewsList } from "./ReviewsList";
 
 const meta: Meta<typeof ReviewsList> = {
+  title: "Organisms/ReviewsList",
   component: ReviewsList,
   args: {
     reviews: [

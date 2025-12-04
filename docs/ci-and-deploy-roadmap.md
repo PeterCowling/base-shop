@@ -1,3 +1,9 @@
+Type: Plan
+Status: Active
+Domain: CI-Deploy
+Last-reviewed: 2025-12-02
+Relates-to charter: docs/architecture.md
+
 ## CI & Deploy Roadmap — Apps vs Platform
 
 This document tracks the plan to:
@@ -6,6 +12,19 @@ This document tracks the plan to:
 - Make CI more precise for app-only changes.
 - Treat **new apps** differently from **updates** to existing apps.
 - Speed up CI test runs via change-aware test selection and caching.
+
+## Active tasks
+
+- **CI-01 — Finalise CMS deploy workflow**
+  - Status: ☐
+  - Scope:
+    - Complete the remaining P3.3/P5.1 items below for CMS Cloudflare configuration and first deploy.
+  - Dependencies:
+    - Runtime/architecture charters and Base-Shop plan.
+  - Definition of done:
+    - `.github/workflows/cms.yml` and Cloudflare Pages configuration match the design captured in this plan; CMS can be deployed via workflow dispatch.
+
+## Completed / historical
 
 Use the remaining checkboxes as an active action list; completed phases are summarised for context.
 

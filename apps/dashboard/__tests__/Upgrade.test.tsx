@@ -30,8 +30,8 @@ describe("Upgrade page", () => {
           ok: true,
           json: async () => ({
             core: [
-              { file: "CompA.tsx", componentName: "CompA" },
-              { file: "CompB.tsx", componentName: "CompB" },
+              { file: "CompA.tsx", componentName: "CompA", newChecksum: "1" },
+              { file: "CompB.tsx", componentName: "CompB", newChecksum: "2" },
             ],
           }),
         });
@@ -51,15 +51,17 @@ describe("Upgrade page", () => {
     render(<Upgrade />);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      "/api/shop/shop1/component-diff"
+      "/api/shop/shop1/component-diff",
+      expect.objectContaining({ signal: expect.anything() })
     );
 
     await screen.findByText("core");
 
     const user = userEvent.setup();
-    await user.click(screen.getByLabelText("CompA"));
+    await user.click(screen.getByLabelText(/Select CompA/i));
 
     await user.click(screen.getByRole("button", { name: /publish/i }));
+    await user.click(screen.getByRole("button", { name: /publish now/i }));
     await screen.findByText("Publish complete");
   });
 
@@ -68,8 +70,8 @@ describe("Upgrade page", () => {
       ok: true,
       json: async () => ({
         core: [
-          { file: "CompA.tsx", componentName: "CompA" },
-          { file: "CompB.tsx", componentName: "CompB" },
+          { file: "CompA.tsx", componentName: "CompA", newChecksum: "1" },
+          { file: "CompB.tsx", componentName: "CompB", newChecksum: "2" },
         ],
       }),
     });
@@ -85,6 +87,7 @@ describe("Upgrade page", () => {
   });
 
   it("shows error message when publish fails", async () => {
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     (global.fetch as jest.Mock).mockImplementation((...args: unknown[]) => {
       const [url] = args as [string];
       if (url === "/api/shop/shop1/component-diff") {
@@ -92,8 +95,8 @@ describe("Upgrade page", () => {
           ok: true,
           json: async () => ({
             core: [
-              { file: "CompA.tsx", componentName: "CompA" },
-              { file: "CompB.tsx", componentName: "CompB" },
+              { file: "CompA.tsx", componentName: "CompA", newChecksum: "1" },
+              { file: "CompB.tsx", componentName: "CompB", newChecksum: "2" },
             ],
           }),
         });
@@ -119,28 +122,34 @@ describe("Upgrade page", () => {
     render(<Upgrade />);
 
     expect(global.fetch).toHaveBeenCalledWith(
-      "/api/shop/shop1/component-diff"
+      "/api/shop/shop1/component-diff",
+      expect.objectContaining({ signal: expect.anything() })
     );
 
     await screen.findByText("core");
 
     const user = userEvent.setup();
-    await user.click(screen.getByLabelText("CompA"));
-    expect(screen.getByText("CompA.tsx")).toBeInTheDocument();
+    await user.click(screen.getByLabelText(/Select CompA/i));
+    expect(screen.getAllByText("CompA.tsx")[0]).toBeInTheDocument();
 
-    await user.click(screen.getByLabelText("CompA"));
-    expect(screen.queryByText("CompA.tsx")).not.toBeInTheDocument();
+    await user.click(screen.getByLabelText(/Select CompA/i));
+    expect(
+      screen.queryByText("Selected components")
+    ).not.toBeInTheDocument();
 
-    await user.click(screen.getByLabelText("CompA"));
-    expect(screen.getByText("CompA.tsx")).toBeInTheDocument();
+    await user.click(screen.getByLabelText(/Select CompA/i));
+    expect(screen.getAllByText("CompA.tsx")[0]).toBeInTheDocument();
 
     const button = screen.getByRole("button", { name: /publish/i });
     await user.click(button);
+    await user.click(screen.getByRole("button", { name: /publish now/i }));
 
-    await waitFor(() => expect(button).toBeDisabled());
     await screen.findByText("Publishing...");
 
-    await screen.findByText("publish failed");
+    await waitFor(() =>
+      expect(screen.getAllByText(/Publish failed/i).length).toBeGreaterThan(0)
+    );
+    errorSpy.mockRestore();
   });
 
   it("handles component diff fetch failure", async () => {
@@ -162,6 +171,8 @@ describe("Upgrade page", () => {
       );
     });
 
+    await screen.findByText("We couldn't load the latest upgrade preview.");
+
     expect(screen.queryByRole("heading")).not.toBeInTheDocument();
 
     errorSpy.mockRestore();
@@ -176,6 +187,60 @@ describe("Upgrade page", () => {
     expect(
       screen.queryByRole("button", { name: /publish/i })
     ).not.toBeInTheDocument();
+  });
+
+  it("shows an empty state when there are no component updates", async () => {
+    (global.fetch as jest.Mock).mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({ core: [] }),
+    });
+
+    render(<Upgrade />);
+
+    await screen.findByText("You're all caught up—no component updates detected.");
+    expect(screen.queryByRole("button", { name: /publish/i })).not.toBeInTheDocument();
+  });
+
+  it("resets selections when the shop id changes", async () => {
+    (global.fetch as jest.Mock).mockImplementation((url: string) => {
+      if (url.includes("/api/shop/shop1/component-diff")) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            core: [
+              { file: "CompA.tsx", componentName: "CompA", newChecksum: "1" },
+            ],
+          }),
+        });
+      }
+      if (url.includes("/api/shop/shop2/component-diff")) {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            core: [
+              { file: "CompC.tsx", componentName: "CompC", newChecksum: "3" },
+            ],
+          }),
+        });
+      }
+      return Promise.resolve({ ok: true, json: async () => ({}) });
+    });
+
+    const { rerender } = render(<Upgrade />);
+
+    await screen.findByText("core");
+    const user = userEvent.setup();
+    await user.click(screen.getByLabelText(/Select CompA/i));
+    expect(screen.getAllByText("CompA.tsx")[0]).toBeInTheDocument();
+
+    (useRouter as jest.Mock).mockReturnValue({ query: { id: "shop2" } });
+    rerender(<Upgrade />);
+
+    await screen.findByText("CompC");
+    expect(
+      screen.queryByText("Selected components")
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText("CompA.tsx")).not.toBeInTheDocument();
   });
 });
 

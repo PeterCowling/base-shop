@@ -1,5 +1,5 @@
 import React from 'react';
-import DragHandle from '@ui/components/cms/page-builder/DragHandle';
+import { DragHandle } from '@acme/page-builder-ui';
 
 describe('DragHandle (CT)', { tags: ['inspectors'] }, () => {
   it('renders with listeners when unlocked and calls onPointerDown', () => {
@@ -23,4 +23,3 @@ describe('DragHandle (CT)', { tags: ['inspectors'] }, () => {
     cy.get('[role="button"]').should('not.have.attr', 'data-listener');
   });
 });
-

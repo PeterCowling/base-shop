@@ -168,7 +168,7 @@ export default function BlockResizer({
         >
           <div className="group relative">
             <div className="h-6 w-6 cursor-crosshair rounded-full bg-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary" />
-            <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-xs text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
+            <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-foreground/60 px-1 text-xs text-foreground opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-card/70 dark:text-foreground">
               {t("Shift = precise")}
             </div>
           </div>

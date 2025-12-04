@@ -54,6 +54,10 @@
       "types": "./dist/components/cms/blocks/RentalDemoProvider.client.d.ts",
       "import": "./dist/components/cms/blocks/RentalDemoProvider.client.js"
     },
+    "./components/platform/*": {
+      "types": "./dist/components/platform/*.d.ts",
+      "import": "./dist/components/platform/*.js"
+    },
     "./account": {
       "types": "./dist/account.d.ts",
       "import": "./dist/account.js"

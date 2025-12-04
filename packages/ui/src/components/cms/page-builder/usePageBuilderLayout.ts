@@ -2,7 +2,7 @@
 "use client";
 
 import { locales } from "@acme/i18n/locales";
-import { useRef, useState } from "react";
+import { createElement, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import useFileDrop from "./hooks/useFileDrop";
 import usePageBuilderState from "./hooks/usePageBuilderState";
@@ -15,15 +15,18 @@ import { buildCanvasProps, buildGridProps, buildHistoryProps, buildPreviewProps,
 import { createToolbarProps } from "./createToolbarProps";
 import { createLinkedSectionHandler } from "./createLinkedSectionHandler";
 import useSectionModeInitialSelection from "./useSectionModeInitialSelection";
-import type { PageComponent, HistoryState } from "@acme/types";
+import type { PageComponent, HistoryState, Page, Locale } from "@acme/types";
+import { scaffoldPageFromTemplate, type TemplateDescriptor } from "@acme/page-builder-core";
 import type { PageBuilderLayoutProps, PageBuilderProps } from "./PageBuilder.types";
 import usePresetActions from "./hooks/usePresetActions";
+import TemplateActions from "./TemplateActions";
 
 // single-purpose helpers
 import useShop from "./usePageBuilderLayout/useShop";
 import useDnDSetup from "./usePageBuilderLayout/useDnDSetup";
 import useInsertSetup from "./usePageBuilderLayout/useInsertSetup";
 import useSavePublish from "./usePageBuilderLayout/useSavePublish";
+import { computeRevisionId } from "./state/revision";
 
 const usePageBuilderLayout = ({
   page,
@@ -39,8 +42,21 @@ const usePageBuilderLayout = ({
   presetsSourceUrl,
   pagesNav,
   mode = "page",
+  previewUrl,
+  previewSource,
+  locale,
+  primaryLocale,
+  templates,
+  allowedBlockTypes,
+  shopId,
 }: PageBuilderProps): PageBuilderLayoutProps => {
-  const shop = useShop();
+  const derivedShop = useShop();
+  const shop = shopId ?? derivedShop;
+  const [pageMeta, setPageMeta] = useState(page);
+
+  useEffect(() => {
+    setPageMeta(page);
+  }, [page]);
 
   const saveRef = useRef<() => void>(() => {});
   const togglePreviewRef = useRef<() => void>(() => {});
@@ -107,8 +123,8 @@ const usePageBuilderLayout = ({
     handleInsertPreset,
   } = useInsertSetup({ components, selectedIds, setSelectedIds, insertIndex, insertParentId, dispatch, t });
 
-  const { handleSave, publishWithValidation, autoSaveState, toastProps, setToast } = useSavePublish({
-    page,
+  const { handleSave, publishWithValidation, autoSaveState, toastProps, setToast, handleRevert } = useSavePublish({
+    page: pageMeta,
     components,
     state,
     onSave,
@@ -162,7 +178,7 @@ const usePageBuilderLayout = ({
     snapPosition,
     editor: (state as { editor?: HistoryState["editor"] }).editor,
     shop,
-    pageId: page.id,
+    pageId: pageMeta.id,
     showComments,
     zoom: controls.zoom,
     showBaseline: controls.showBaseline,
@@ -191,13 +207,15 @@ const usePageBuilderLayout = ({
     publishError,
     autoSaveState,
     shop,
-    pageId: page.id,
+    pageId: pageMeta.id,
     currentComponents: components,
     editor: (state as Record<string, unknown> & { editor?: Record<string, unknown> }).editor,
     onRestoreVersion: (restored: PageComponent[]) => {
       dispatch({ type: "set", components: restored });
       handleSave();
     },
+    lastPublishedComponents: (pageMeta as { lastPublishedComponents?: PageComponent[] }).lastPublishedComponents,
+    onRevertToPublished: handleRevert,
   });
 
   const tourProps = buildTourProps({
@@ -226,6 +244,108 @@ const usePageBuilderLayout = ({
     setToast,
   });
 
+  const allowedTypes = useMemo(
+    () => (Array.isArray(allowedBlockTypes) ? new Set(allowedBlockTypes) : undefined),
+    [allowedBlockTypes],
+  );
+
+  const seoTitle = pageMeta.seo?.title ?? {};
+  const resolvedPrimaryLocale: Locale =
+    (primaryLocale as Locale | undefined) ??
+    ((Object.keys(seoTitle).find((key) => {
+      const val = seoTitle[key as keyof typeof seoTitle];
+      return typeof val === "string" && val.trim().length > 0;
+    }) as Locale | undefined) ??
+      (locales[0] as Locale));
+  const resolvedLocale: Locale =
+    (locale as Locale | undefined) ?? resolvedPrimaryLocale;
+
+  const templateCatalog = templates ?? [];
+
+  const buildTemplatePage = useCallback(
+    (template: TemplateDescriptor): Page => {
+      const next = scaffoldPageFromTemplate(template, {
+        shopId: shop ?? "",
+        locale: resolvedLocale,
+        primaryLocale: resolvedPrimaryLocale,
+      });
+      return {
+        ...next,
+        id: pageMeta.id,
+        slug: pageMeta.slug ?? "",
+        status: pageMeta.status ?? next.status,
+        visibility:
+          (pageMeta as { visibility?: Page["visibility"] }).visibility ??
+          next.visibility,
+        createdAt: pageMeta.createdAt ?? next.createdAt,
+        updatedAt: pageMeta.updatedAt ?? next.updatedAt,
+        createdBy: pageMeta.createdBy ?? next.createdBy,
+        seo: {
+          ...next.seo,
+          title:
+            pageMeta.seo?.title && Object.keys(pageMeta.seo.title).length > 0
+              ? pageMeta.seo.title
+              : next.seo.title,
+          description:
+            pageMeta.seo?.description &&
+            Object.values(pageMeta.seo.description).some((v) => Boolean(v))
+              ? pageMeta.seo.description
+              : next.seo.description ?? {},
+          image:
+            pageMeta.seo?.image &&
+            Object.keys(pageMeta.seo.image).length > 0
+              ? pageMeta.seo.image
+              : next.seo.image ?? {},
+          noindex: pageMeta.seo?.noindex ?? next.seo.noindex,
+        },
+      };
+    },
+    [pageMeta, resolvedLocale, resolvedPrimaryLocale, shop],
+  );
+
+  const currentPage = useMemo<Page>(
+    () => ({
+      ...pageMeta,
+      components,
+    }),
+    [pageMeta, components],
+  );
+  const currentRevisionId = useMemo(() => {
+    try {
+      return computeRevisionId(components);
+    } catch {
+      return "rev-unknown";
+    }
+  }, [components]);
+
+  const applyTemplate = useCallback(
+    async (template: TemplateDescriptor, nextPage: Page) => {
+      dispatch({ type: "set", components: nextPage.components as PageComponent[] });
+      setPageMeta((prev) => ({
+        ...prev,
+        stableId: template.id,
+        components: nextPage.components,
+        seo: nextPage.seo ?? prev.seo,
+      }));
+      const appliedMessage = t("cms.builder.templates.applied");
+      setToast({
+        open: true,
+        message: appliedMessage,
+      });
+    },
+    [dispatch, setToast, t],
+  );
+
+  const templateActions =
+    templateCatalog.length > 0
+      ? createElement(TemplateActions, {
+          templates: templateCatalog,
+          currentPage,
+          buildTemplatePage,
+          onApply: applyTemplate,
+        })
+      : undefined;
+
   return {
     style,
     paletteOnAdd: handleAddFromPalette,
@@ -245,6 +365,17 @@ const usePageBuilderLayout = ({
     liveMessage,
     dndContext,
     dropAllowed,
+    publishMeta: {
+      status: pageMeta.status,
+      updatedAt: pageMeta.updatedAt,
+      publishedAt: (pageMeta as { publishedAt?: string }).publishedAt,
+      publishedBy: (pageMeta as { publishedBy?: string }).publishedBy,
+      publishedRevisionId: (pageMeta as { publishedRevisionId?: string }).publishedRevisionId,
+      currentRevisionId,
+      lastPublishedComponents: (pageMeta as { lastPublishedComponents?: PageComponent[] }).lastPublishedComponents,
+    },
+    previewUrl: previewUrl ?? null,
+    previewSource: previewSource ?? null,
     dragMeta: dragMeta ? { from: dragMeta.from, type: dragMeta.type, count: dragMeta.count, label: dragMeta.label, thumbnail: dragMeta.thumbnail ?? null } : null,
     frameClass: controls.frameClass,
     viewport: controls.viewport,
@@ -259,7 +390,11 @@ const usePageBuilderLayout = ({
     },
     activeType,
     previewProps,
-    historyProps,
+    historyProps: {
+      ...historyProps,
+      onRevertToPublished: handleRevert,
+      lastPublishedComponents: (pageMeta as { lastPublishedComponents?: PageComponent[] }).lastPublishedComponents,
+    },
     sidebarProps: {
       components,
       selectedIds,
@@ -268,7 +403,7 @@ const usePageBuilderLayout = ({
       editor: (state as { editor?: HistoryState["editor"] }).editor,
       viewport: controls.viewport,
       breakpoints: Array.isArray((state as Record<string, unknown>)["breakpoints"]) ? ((state as Record<string, unknown>)["breakpoints"] as { id: string; label: string; min?: number; max?: number }[]) : [],
-      pageId: page.id,
+      pageId: pageMeta.id,
       crossNotices: controls.crossBreakpointNotices,
     },
     toast: toastProps,
@@ -276,7 +411,7 @@ const usePageBuilderLayout = ({
     parentFirst,
     onParentFirstChange: setParentFirst,
     shop,
-    pageId: page.id,
+    pageId: pageMeta.id,
     editingSizePx: controls.editingSizePx ?? null,
     setEditingSizePx: controls.setEditingSizePx,
     crossBreakpointNotices: controls.crossBreakpointNotices,
@@ -284,6 +419,8 @@ const usePageBuilderLayout = ({
     mode,
     canSavePreset,
     onSavePreset,
+    templateActions,
+    allowedBlockTypes: allowedTypes,
   } as PageBuilderLayoutProps;
 };
 

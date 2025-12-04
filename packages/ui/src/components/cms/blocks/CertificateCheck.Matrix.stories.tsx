@@ -9,7 +9,6 @@ import { z } from 'zod';
 const meta: Meta<typeof CertificateCheck> = {
   title: 'CMS Blocks/CertificateCheck/Matrix',
   component: CertificateCheck,
-  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;
@@ -25,3 +24,8 @@ const failAdapter = async () => ({ ok: false, message: 'Invalid' });
 export const Default: Story = makeStateStory(baseArgs, { adapter: okAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 export const ErrorState: Story = makeStateStory(baseArgs, { adapter: failAdapter }, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });
+export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });

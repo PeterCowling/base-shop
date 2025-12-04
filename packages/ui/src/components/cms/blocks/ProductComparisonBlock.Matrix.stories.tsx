@@ -11,7 +11,6 @@ import type { SKU } from '@acme/types';
 const meta: Meta<typeof ProductComparisonBlock> = {
   title: 'CMS Blocks/ProductComparisonBlock/Matrix',
   component: ProductComparisonBlock,
-  parameters: { docs: { autodocs: false } },
   args: { skus: (PRODUCTS as SKU[]).slice(0, 3), attributes: fixture.attributes },
   parameters: { docs: { description: { component: 'Simple product comparison table for selected SKUs and chosen attributes.' } } },
 };
@@ -24,3 +23,8 @@ try { z.object({ attributes: z.array(z.string()) }).parse(fixture); } catch (e) 
 
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });
+export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });

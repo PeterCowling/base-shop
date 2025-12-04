@@ -3,6 +3,7 @@
 
 import * as React from "react";
 import { cn } from "../../../utils/style";
+import { FormField } from "../FormField";
 
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -10,6 +11,8 @@ export interface TextareaProps
   label?: React.ReactNode;
   /** Error message shown below the control */
   error?: React.ReactNode;
+  /** Optional helper/description text */
+  description?: React.ReactNode;
   /** Enable floating label style */
   floatingLabel?: boolean;
   /** Class applied to the wrapper element */
@@ -22,6 +25,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       className,
       label,
       error,
+      description,
       floatingLabel,
       wrapperClassName,
       id,
@@ -68,64 +72,64 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     /* ------------------------------------------------------------------
      * Render
      * ------------------------------------------------------------------ */
-    const wrapperClasses = cn(
-      "flex flex-col gap-1", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-      floatingLabel && "relative", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-      wrapperClassName
-    );
-
     return (
-      <div className={wrapperClasses}>
-        {floatingLabel ? (
-          <>
-            <textarea
-              id={textareaId}
-              ref={ref}
-              className={baseClasses}
-              aria-invalid={hasError || undefined}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              {...props}
-            />
-            {label && (
-              <label
-                htmlFor={textareaId}
-                className={cn(
-                  "text-muted-foreground pointer-events-none absolute top-2 left-3 transition-all", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-                  (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-                )}
-              >
-                {label}
-              </label>
-            )}
-          </>
-        ) : (
-          <>
-            {label && (
-              <label
-                htmlFor={textareaId}
-                className="block text-sm font-medium" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-              >
-                {label}
-              </label>
-            )}
-            <textarea
-              id={textareaId}
-              ref={ref}
-              className={baseClasses}
-              aria-invalid={hasError || undefined}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              {...props}
-            />
-          </>
-        )}
-        {error && (
-          <p className="text-sm text-danger" data-token="--color-danger"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
-            {error}
-          </p>
-        )}
-      </div>
+      <FormField
+        id={textareaId}
+        label={!floatingLabel ? label : undefined}
+        description={description}
+        error={error}
+        required={props.required}
+        className={wrapperClassName}
+        // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: FormField render prop supplies control ids and describedBy; hoisting would require larger refactor
+        input={({ id: controlId, describedBy, ariaInvalid }) =>
+          floatingLabel ? (
+            <div className="relative flex flex-col gap-1">
+              <textarea
+                id={controlId}
+                ref={ref}
+                className={baseClasses}
+                aria-invalid={ariaInvalid}
+                aria-describedby={describedBy}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                {...props}
+              />
+              {label && (
+                <label
+                  htmlFor={controlId}
+                  className={cn(
+                    "text-muted-foreground pointer-events-none absolute top-2 left-3 transition-all", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                    (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                  )}
+                >
+                  {label}
+                </label>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col gap-1"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
+              {label && (
+                <label
+                  htmlFor={controlId}
+                  className="block text-sm font-medium" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                >
+                  {label}
+                </label>
+              )}
+              <textarea
+                id={controlId}
+                ref={ref}
+                className={baseClasses}
+                aria-invalid={ariaInvalid}
+                aria-describedby={describedBy}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                {...props}
+              />
+            </div>
+          )
+        }
+      />
     );
   }
 );

@@ -35,3 +35,5 @@ export const WithoutTooltip: StoryObj<typeof LineChart> = {
     },
   },
 };
+
+export const Default: StoryObj<typeof LineChart> = {};

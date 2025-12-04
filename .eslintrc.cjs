@@ -97,6 +97,20 @@ module.exports = {
         "@typescript-eslint/no-var-requires": "off",
       },
     },
+    // Prevent raw white/black Tailwind color tokens in shipped UI components; use design tokens instead.
+    {
+      files: ["packages/ui/src/**/*.{ts,tsx}"],
+      excludedFiles: ["**/*.stories.{ts,tsx}", "**/__tests__/**/*", "**/*.test.*", "**/*.spec.*"],
+      rules: {
+        "no-restricted-syntax": [
+          "error",
+          {
+            selector: 'Literal[value=/(#(?:fff|ffffff|000|000000))|\\b(bg|text|border|ring|from|via|to)-(white|black)\\b/]',
+            message: "Use design tokens (surface/fg/overlay) instead of raw white/black colors.",
+          },
+        ],
+      },
+    },
     {
       files: ["packages/config/src/env/*.js"],
       rules: {

@@ -1,4 +1,23 @@
+Type: Plan
+Status: Active
+Domain: Marketing
+Last-reviewed: 2025-12-02
+Relates-to charter: docs/commerce-charter.md
+
 # Campaign Marketing Components – Testing Notes
+
+## Active tasks
+
+- **MKT-01 — Maintain campaign marketing test coverage**
+  - Status: ☐
+  - Scope:
+    - Keep the test checklist below aligned with the current implementation of campaign marketing components and flows.
+  - Dependencies:
+    - Commerce charter (for orders/returns alignment) and UI component contracts in `packages/ui`.
+  - Definition of done:
+    - For any significant changes to campaign marketing flows, this plan and associated test files are updated to match.
+
+## Completed / historical
 
 ## Testing Checklist
 - **Workspace setup**

@@ -272,4 +272,12 @@ describe("/api/return", () => {
     } as unknown as import("next/server").NextRequest);
     expect(res.status).toBe(400);
   });
+
+  test("returns 403 when home pickup is disabled", async () => {
+    const { POST } = await import("../src/api/return/route");
+    const res = await POST(asNextJson({ zip: "12345", date: "2025-01-01", time: "10:00" }));
+    expect(res.status).toBe(403);
+    const body = await res.json();
+    expect(body).toEqual({ error: "Home pickup disabled" });
+  });
 });

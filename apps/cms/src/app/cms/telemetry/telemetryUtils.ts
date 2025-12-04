@@ -75,6 +75,18 @@ export function getPresets(t: (key: string) => unknown): SavedPreset[] {
       description: String(t("cms.telemetry.presets.checkout.description")),
       apply: () => ({ name: "checkout" }),
     },
+    {
+      id: "build-flow",
+      label: String(t("cms.telemetry.presets.buildFlow.label")),
+      description: String(t("cms.telemetry.presets.buildFlow.description")),
+      apply: () => ({ name: "build_flow_" }),
+    },
+    {
+      id: "time-to-launch",
+      label: String(t("cms.telemetry.presets.timeToLaunch.label")),
+      description: String(t("cms.telemetry.presets.timeToLaunch.description")),
+      apply: () => ({ name: "build_flow_timer_" }),
+    },
   ];
 }
 

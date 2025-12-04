@@ -8,7 +8,15 @@ jest.mock("../src/app/cms/configurator/components/TemplateSelector", () => {
   return {
     __esModule: true,
     default: ({ onConfirm }: any) => (
-      <button onClick={() => onConfirm("layout", [{ id: "comp" }])}>
+      <button
+        onClick={() =>
+          onConfirm("layout-id", [{ id: "comp" }], {
+            id: "layout-id",
+            name: "Layout",
+            components: [{ id: "comp" }],
+          })
+        }
+      >
         choose template
       </button>
     ),
@@ -128,11 +136,11 @@ describe("Template selection", () => {
     apiRequest.mockResolvedValueOnce({ data: [], error: null });
     const props = setup();
     fireEvent.click(screen.getByText("choose template"));
-    expect(props.setHomeLayout).toHaveBeenCalledWith("layout");
+    expect(props.setHomeLayout).toHaveBeenCalledWith("layout-id");
     expect(props.setComponents).toHaveBeenCalledWith([{ id: "comp" }]);
     expect(window.localStorage.setItem).toHaveBeenCalledWith(
       STORAGE_KEY,
-      JSON.stringify({ homeLayout: "layout", components: [{ id: "comp" }] }),
+      JSON.stringify({ homeLayout: "layout-id", components: [{ id: "comp" }] }),
     );
     expect(window.dispatchEvent).toHaveBeenCalled();
     expect((window.dispatchEvent as jest.Mock).mock.calls[0][0].type).toBe(
@@ -145,7 +153,7 @@ describe("Template selection", () => {
     apiRequest.mockResolvedValueOnce({ data: [], error: null });
     const props = setup();
     expect(() => fireEvent.click(screen.getByText("choose template"))).not.toThrow();
-    expect(props.setHomeLayout).toHaveBeenCalledWith("layout");
+    expect(props.setHomeLayout).toHaveBeenCalledWith("layout-id");
     expect(window.localStorage.setItem).not.toHaveBeenCalledWith(
       STORAGE_KEY,
       expect.any(String),
@@ -193,7 +201,13 @@ describe("onSave and onPublish callbacks", () => {
 describe("navigation buttons", () => {
   it("renders based on step ids and navigates", () => {
     apiRequest.mockResolvedValueOnce({ data: [], error: null });
-    setup({ prevStepId: "prev", nextStepId: "next" });
+    setup({
+      prevStepId: "prev",
+      nextStepId: "next",
+      homeLayout: "layout-id",
+      homePageId: "home-1",
+      components: [{ id: "c1" } as any],
+    });
     fireEvent.click(screen.getByText("Back"));
     expect(pushMock).toHaveBeenCalledWith("/cms/configurator/prev");
     fireEvent.click(screen.getByText("Next"));

@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: i18n
+Last-reviewed: 2025-12-02
+
 # Locale-aware Bind
 
 Purpose: Resolve TranslatableText props at injection time so downstream components can stay simple and receive plain strings.
@@ -22,4 +27,3 @@ Notes
 - Resolution order for inline: locale → fallback chain (de→en, it→en, en).
 - Logs a warning in dev when a bound path is missing.
 - Keep `raw` for fields that must receive non-strings (e.g., complex objects).
-

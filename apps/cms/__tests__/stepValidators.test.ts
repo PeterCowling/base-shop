@@ -34,6 +34,8 @@ describe("step validators", () => {
 
   it("home page requires id", () => {
     expect(validators["home-page"](base)).toBe(false);
+    const state = { ...base, homeLayout: "core.page.home.default", homePageId: "home-1" };
+    expect(validators["home-page"](state)).toBe(true);
   });
 
   it("checkout page requires id", () => {
@@ -44,7 +46,15 @@ describe("step validators", () => {
     expect(validators["shop-page"](base)).toBe(false);
   });
 
-  // product-page step removed
+  it("product page requires template selection and id", () => {
+    expect(validators["product-page"](base)).toBe(false);
+    const state = {
+      ...base,
+      productLayout: "core.page.product.default",
+      productPageId: "pdp-1",
+    };
+    expect(validators["product-page"](state)).toBe(true);
+  });
 
   it("additional pages require slugs", () => {
     const state = {

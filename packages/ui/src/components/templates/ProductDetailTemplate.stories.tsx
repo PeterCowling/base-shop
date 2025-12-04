@@ -17,6 +17,7 @@ const product: SKU = {
 };
 
 const meta: Meta<typeof ProductDetailTemplate> = {
+  title: "Templates/ProductDetailTemplate",
   component: ProductDetailTemplate,
   args: { product },
 };

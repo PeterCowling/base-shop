@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Testing
+Last-reviewed: 2025-12-02
+
 # Testing with MSW
 
 Centralized network mocking for tests uses a single shared MSW server and a small set of default handlers. Suites can extend or override these per test.

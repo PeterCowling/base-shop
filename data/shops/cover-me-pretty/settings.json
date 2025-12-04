@@ -20,6 +20,7 @@
     "regions": ["us-west"],
     "windows": ["09-10", "10-11"]
   },
+  "leadCapture": { "enabled": true },
   "seo": {
     "aiCatalog": {
       "enabled": false,

@@ -26,6 +26,7 @@ const product: SKU = {
 };
 
 const meta: Meta<typeof ProductCard> = {
+  title: "Organisms/ProductCard",
   component: ProductCard,
   args: { product },
 };

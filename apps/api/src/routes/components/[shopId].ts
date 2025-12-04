@@ -7,8 +7,16 @@ import { existsSync, readFileSync, readdirSync } from "fs";
 import path from "path";
 import jwt from "jsonwebtoken";
 import { validateShopName } from "@acme/lib";
-import { logger } from "@acme/shared-utils";
+import {
+  logger,
+  withRequestContext,
+  type RequestContext,
+} from "@acme/shared-utils";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+
+const SERVICE_NAME = "api";
+const ENV_LABEL: "dev" | "stage" | "prod" =
+  process.env.NODE_ENV === "production" ? "prod" : "dev";
 
 interface ComponentChange {
   name: string;
@@ -116,12 +124,40 @@ export const onRequest = async ({
   params: Record<string, string>;
   request: Request;
 }) => {
+  const requestId =
+    request.headers.get("x-request-id") ??
+    (typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now().toString(36)}-${Math.random().toString(16).slice(2)}`);
+
+  const ctx: RequestContext = {
+    requestId,
+    env: ENV_LABEL,
+    service: SERVICE_NAME,
+    shopId: params.shopId,
+  };
+
+  return withRequestContext(ctx, () =>
+    handleRequest({
+      params,
+      request,
+    }),
+  );
+};
+
+async function handleRequest({
+  params,
+  request,
+}: {
+  params: Record<string, string>;
+  request: Request;
+}) {
   const t = await getServerTranslations("en");
   let shopId: string;
   try {
     shopId = validateShopName(params.shopId);
   } catch {
-    logger.warn("invalid shop id", { id: params.shopId }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
+    logger.warn("invalid shop id", { id: params.shopId, service: SERVICE_NAME, env: ENV_LABEL }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
     return new Response(JSON.stringify({ error: t("api.components.invalidShopId") }), {
       status: 400,
       headers: { "Content-Type": "application/json" },
@@ -130,7 +166,7 @@ export const onRequest = async ({
 
   const authHeader = request.headers.get("authorization") || "";
   if (!authHeader.startsWith("Bearer ")) {
-    logger.warn("missing bearer token", { shopId }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
+    logger.warn("missing bearer token", { shopId, service: SERVICE_NAME, env: ENV_LABEL }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
     return new Response(JSON.stringify({ error: t("api.common.forbidden") }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
@@ -140,7 +176,7 @@ export const onRequest = async ({
   const token = authHeader.slice("Bearer ".length);
   const secret = process.env.UPGRADE_PREVIEW_TOKEN_SECRET;
   if (!secret) {
-    logger.warn("invalid token", { shopId }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
+    logger.warn("invalid token", { shopId, service: SERVICE_NAME, env: ENV_LABEL }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
     return new Response(JSON.stringify({ error: t("api.common.forbidden") }), {
       status: 403,
       headers: { "Content-Type": "application/json" },
@@ -161,7 +197,7 @@ export const onRequest = async ({
       throw new Error("missing exp");
     }
   } catch {
-    logger.warn("invalid token", { shopId }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
+    logger.warn("invalid token", { shopId, service: SERVICE_NAME, env: ENV_LABEL }); // i18n-exempt -- ENG-1234 developer log label [ttl=2026-12-31]
     return new Response(JSON.stringify({ error: t("api.common.forbidden") }), {
       status: 403,
       headers: { "Content-Type": "application/json" },

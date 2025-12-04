@@ -1,4 +1,5 @@
 import { useConfigurator } from "../ConfiguratorContext";
+import { track } from "@acme/telemetry";
 import type { ConfiguratorState } from "../../wizard/schema";
 
 type Validator = (state: ConfiguratorState) => boolean;
@@ -13,10 +14,23 @@ export const validators: Record<string, Validator> = {
     s.analyticsProvider !== "ga" || Boolean(s.analyticsId),
   navigation: (s) => (s.navItems?.length ?? 0) > 0,
   layout: (s) => Boolean(s.headerPageId && s.footerPageId),
-  "home-page": (s) => Boolean(s.homePageId),
-  "checkout-page": (s) => Boolean(s.checkoutPageId),
+  "home-page": (s) =>
+    Boolean(s.homeLayout && s.homeLayout.trim().length > 0 && s.homePageId),
+  "checkout-page": (s) =>
+    Boolean(
+      s.checkoutLayout &&
+        s.checkoutLayout.trim().length > 0 &&
+        s.checkoutPageId &&
+        s.completed?.["payment-provider"] === "complete" &&
+        s.completed?.shipping === "complete",
+    ),
   "shop-page": (s) => Boolean(s.shopPageId),
-  "product-page": (s) => Boolean(s.productPageId),
+  "product-page": (s) =>
+    Boolean(
+      s.productLayout &&
+        s.productLayout.trim().length > 0 &&
+        s.productPageId,
+    ),
   "additional-pages": (s) =>
     Array.isArray(s.pages) && s.pages.every((p) => p.slug.trim().length > 0),
   inventory: (s) => typeof s.inventoryTracking !== "undefined",
@@ -47,6 +61,12 @@ export function useStepCompletion(stepId: string): [boolean, (v: boolean) => voi
   const setCompleted = (v: boolean) => {
     if (v && !validate(state)) return;
     markStepComplete(stepId, v ? "complete" : "pending");
+    if (v && state.shopId) {
+      track("build_flow_step_complete", {
+        shopId: state.shopId,
+        stepId,
+      });
+    }
     if (v) resetDirty();
   };
   return [completed, setCompleted];

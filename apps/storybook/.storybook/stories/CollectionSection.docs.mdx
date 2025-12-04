@@ -1,23 +1,19 @@
-import { Meta, Canvas, Story, Title, Description } from '@storybook/blocks';
-import * as CollectionSectionStories from '../../../../packages/ui/src/components/cms/blocks/CollectionSection.client.stories';
+import { Meta, Title, Description, Subtitle } from '@storybook/blocks';
 
-<Meta title="Sections/Collection/Docs" of={CollectionSectionStories} />
+<Meta title="Sections/Collection/Docs (CMS)" />
 
 <Title>Collection Section</Title>
+
+<Subtitle>Available in CMS-only Storybook</Subtitle>
+
 <Description>
-The Collection section renders a product grid with facets, sort, and either client load‑more or SSR pagination.
-In Storybook we use the client component with MSW handlers for `/api/collections/:slug` to return mock data.
+This section is a Next.js client component that depends on CMS data loaders and server actions.
+To keep the Vite-based UI Storybook lean and RSC-safe, the interactive examples now live in the
+CMS Storybook instance. Use the composed Storybook (`pnpm --filter @apps/storybook dev:composed`)
+to reach the CMS catalog and collection stories.
 </Description>
 
-## Grid (Load more)
-<Canvas>
-  <Story id="packages-ui-src-components-cms-blocks-collectionsection-client--default" />
-  
-</Canvas>
+### Where to find the stories
 
-## SSR Pagination
-<Canvas>
-  <Story id="packages-ui-src-components-cms-blocks-collectionsection-client--ssr-pagination" />
-</Canvas>
-
-## Props
+- CMS Storybook: `Sections/Collection/*`
+- Demo data: handled via MSW in the CMS instance

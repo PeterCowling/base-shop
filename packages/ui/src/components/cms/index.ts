@@ -15,3 +15,35 @@ export { default as ShopChooser } from "./ShopChooser";
 export type { ShopChooserProps } from "./ShopChooser";
 export * from "./marketing";
 export { ensureLightboxStyles, initLightbox } from "./lightbox";
+export { CmsBuildHero } from "./CmsBuildHero";
+export type {
+  CmsBuildHeroProps,
+  CmsBuildHeroCta,
+  CmsBuildHeroMetaItem,
+  CmsBuildHeroTone,
+} from "./CmsBuildHero";
+export { CmsMetricTiles } from "./CmsMetricTiles";
+export type { CmsMetricTilesProps, CmsMetricTile } from "./CmsMetricTiles";
+export { CmsLaunchChecklist } from "./CmsLaunchChecklist";
+export type {
+  CmsLaunchChecklistProps,
+  CmsLaunchChecklistItem,
+  CmsLaunchStatus,
+} from "./CmsLaunchChecklist";
+export { CmsSettingsSnapshot } from "./CmsSettingsSnapshot";
+export type {
+  CmsSettingsSnapshotProps,
+  CmsSettingsSnapshotRow,
+  CmsSettingsTone,
+} from "./CmsSettingsSnapshot";
+export { CmsInlineHelpBanner } from "./CmsInlineHelpBanner";
+export type {
+  CmsInlineHelpBannerProps,
+  CmsInlineHelpLink,
+  CmsInlineHelpTone,
+} from "./CmsInlineHelpBanner";
+
+// Page Builder starter registry exports (core blocks aligned to default theme)
+export { coreBlockRegistry } from "./blocks";
+export type { BlockType } from "./blocks";
+export type { BlockRegistryEntry } from "./blocks/types";

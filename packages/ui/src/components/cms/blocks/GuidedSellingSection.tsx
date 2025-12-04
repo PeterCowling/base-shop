@@ -56,7 +56,7 @@ export default function GuidedSellingSection({ title, questions = defaultQuestio
                       // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                       "rounded border px-3 inline-flex items-center min-h-10 min-w-10",
                       // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-                      answers[q.id] === opt.value ? "bg-black text-white" : "bg-white",
+                      answers[q.id] === opt.value ? "bg-foreground text-foreground" : "bg-card",
                     ].join(" ")}
                     onClick={() => update(q.id, opt.value)}
                   >
@@ -93,7 +93,7 @@ export default function GuidedSellingSection({ title, questions = defaultQuestio
               <a
                 href={link}
                 // i18n-exempt — CSS utility class names
-                className="inline-flex items-center rounded bg-black px-4 min-h-10 min-w-10 text-white"
+                className="inline-flex items-center rounded bg-foreground px-4 min-h-10 min-w-10 text-foreground"
               >
                 {t("guided.viewResults")}
               </a>

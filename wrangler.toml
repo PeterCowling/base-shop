@@ -7,6 +7,17 @@ binding = "CART_KV"
 id = "0e0888a980cd46efa1d28aea3794b3ac"
 preview_id = "f10f858acbb0429da3910894c9151560"
 
+[[kv_namespaces]]
+binding = "LOGIN_RATE_LIMIT_KV"
+id = "00000000000000000000000000000000"
+preview_id = "11111111111111111111111111111111"
+
+[durable_objects]
+bindings = [
+  { name = "CART_DO", class_name = "CartDurableObject" },
+  { name = "SESSION_DO", class_name = "SessionDurableObject" },
+]
+
 [vars]
   NEXT_PUBLIC_SHOP_ID = "default"
   CART_TTL = "2592000"

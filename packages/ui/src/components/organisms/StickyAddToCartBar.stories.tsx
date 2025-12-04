@@ -38,6 +38,7 @@ function ScrollWrapper(args: React.ComponentProps<typeof StickyAddToCartBar>) {
 }
 
 const meta: Meta<typeof StickyAddToCartBar> = {
+  title: "Organisms/StickyAddToCartBar",
   component: StickyAddToCartBar,
   args: { product },
   render: (args) => <ScrollWrapper {...args} />,

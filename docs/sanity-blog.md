@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Sanity Blog Integration
 
 Shop owners can connect a Sanity project to manage blog posts alongside the shop catalog. Follow these steps to enable and use the integration.

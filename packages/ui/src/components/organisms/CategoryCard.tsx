@@ -21,7 +21,9 @@ export interface CategoryCardProps
 }
 
 export const CategoryCard = React.forwardRef<HTMLDivElement, CategoryCardProps>(
-  ({ category, padding = "p-4", className, ...props }, ref) => (
+  ({ category, padding = "p-4", className, ...props }, ref) => {
+    const hasImage = Boolean(category.image);
+    return (
     <div
       ref={ref}
       className={cn(
@@ -36,13 +38,17 @@ export const CategoryCard = React.forwardRef<HTMLDivElement, CategoryCardProps>(
       {/* Constants defined above for CSS classes and sizes */}
       {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
       <div className="relative aspect-square">
-        <Image
-          src={category.image}
-          alt={category.title}
-          fill
-          sizes={IMAGE_SIZES}
-          className={IMAGE_CLASSES}
-        />
+        {hasImage ? (
+          <Image
+            src={category.image}
+            alt={category.title}
+            fill
+            sizes={IMAGE_SIZES}
+            className={IMAGE_CLASSES}
+          />
+        ) : (
+          <div className="h-full w-full rounded-md bg-muted" aria-hidden />
+        )}
       </div>
       {/* i18n-exempt: CSS utility classes only */}
       <h3 className="font-medium">{category.title}</h3>
@@ -51,6 +57,7 @@ export const CategoryCard = React.forwardRef<HTMLDivElement, CategoryCardProps>(
         <p className={DESCRIPTION_CLASSES}>{category.description}</p>
       )}
     </div>
-  )
+    );
+  }
 );
 CategoryCard.displayName = "CategoryCard";

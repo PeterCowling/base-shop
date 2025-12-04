@@ -40,7 +40,7 @@ const DiffDetails = ({ diff, current, onRestore }: Props) => {
                 {m.keys.map((k) => (
                   <div key={k} className="mb-1">
                     <span className="me-1 text-muted-foreground">{k}:</span>
-                    <span className="bg-red-50 dark:bg-red-900/30 px-1 rounded break-words">{JSON.stringify((before as Record<string, unknown>)[k])}</span>
+                    <span className="bg-destructive/10 dark:bg-destructive/30 px-1 rounded break-words">{JSON.stringify((before as Record<string, unknown>)[k])}</span>
                   </div>
                 ))}
               </div>
@@ -49,7 +49,7 @@ const DiffDetails = ({ diff, current, onRestore }: Props) => {
                 {m.keys.map((k) => (
                   <div key={k} className="mb-1">
                     <span className="me-1 text-muted-foreground">{k}:</span>
-                    <span className="bg-green-50 dark:bg-green-900/30 px-1 rounded break-words">{JSON.stringify((after as Record<string, unknown>)[k])}</span>
+                    <span className="bg-primary/10 dark:bg-primary/30 px-1 rounded break-words">{JSON.stringify((after as Record<string, unknown>)[k])}</span>
                   </div>
                 ))}
               </div>

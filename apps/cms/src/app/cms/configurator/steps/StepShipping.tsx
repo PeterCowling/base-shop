@@ -41,10 +41,20 @@ export default function StepShipping(_: ConfiguratorStepProps): React.JSX.Elemen
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">{t("cms.configurator.shipping.title")}</h2>
-      <p className="text-sm text-muted-foreground">
-        {t("cms.configurator.shipping.description")} <code>{t("cms.configurator.options.info.path")}</code>.
-      </p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-semibold" data-tour="quest-shipping">
+            {t("cms.configurator.shipping.title")}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {t("cms.configurator.shipping.description")}{" "}
+            <code>{t("cms.configurator.options.info.path")}</code>.
+          </p>
+        </div>
+        <div className="rounded-full bg-warning/10 px-3 py-1 text-xs font-semibold text-warning-foreground">
+          {t("cms.configurator.time.badge.shipping")}
+        </div>
+      </div>
       <div>
         <p className="font-medium">{t("cms.configurator.options.shippingProviders")}</p>
         {shippingProviders.map((p: Provider) => (

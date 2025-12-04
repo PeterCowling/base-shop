@@ -39,7 +39,7 @@ export default function CanvasOverlays({
         />
         {distances.x !== null && (
           <div
-            className="absolute -top-4 rounded bg-black/75 px-1 font-mono text-xs text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
+            className="absolute -top-4 rounded bg-foreground/75 px-1 font-mono text-xs text-foreground shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-card/75 dark:text-foreground"
             // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic positioning for distance label
             style={{ left: (guides.x ?? 0) + 4, opacity: guides.x !== null ? 1 : 0 }}
           >
@@ -53,7 +53,7 @@ export default function CanvasOverlays({
         />
         {distances.y !== null && (
           <div
-            className="absolute -left-4 rounded bg-black/75 px-1 font-mono text-xs text-white shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-white/75 dark:text-black"
+            className="absolute -left-4 rounded bg-foreground/75 px-1 font-mono text-xs text-foreground shadow transition-opacity duration-150 motion-reduce:transition-none dark:bg-card/75 dark:text-foreground"
             // eslint-disable-next-line react/forbid-dom-props -- PB-0001: dynamic positioning for distance label
             style={{ top: (guides.y ?? 0) + 4, opacity: guides.y !== null ? 1 : 0 }}
           >
@@ -78,14 +78,14 @@ export default function CanvasOverlays({
 
       {/* Size/position readout */}
       {showSizePosition && (
-        <div className="pointer-events-none absolute -top-5 start-0 rounded bg-black/75 px-1 font-mono text-xs text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-5 start-0 rounded bg-foreground/75 px-1 font-mono text-xs text-foreground shadow dark:bg-card/75 dark:text-foreground">
           {Math.round(overlayWidth)}×{Math.round(overlayHeight)} px | {Math.round(overlayLeft)}, {Math.round(overlayTop)} px
         </div>
       )}
 
       {/* Rotation readout */}
       {rotating && (
-        <div className="pointer-events-none absolute -top-8 start-1/2 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-xs text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-8 start-1/2 -translate-x-1/2 rounded bg-foreground/75 px-1 font-mono text-xs text-foreground shadow dark:bg-card/75 dark:text-foreground">
           {Math.round(angle)}°
         </div>
       )}

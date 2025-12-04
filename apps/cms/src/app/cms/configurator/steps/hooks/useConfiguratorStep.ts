@@ -1,7 +1,9 @@
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { ZodTypeAny } from "zod";
 import useStepCompletion from "../../hooks/useStepCompletion";
+import { useConfigurator } from "../../ConfiguratorContext";
+import { track } from "@acme/telemetry";
 
 interface Options<T> {
   stepId: string;
@@ -20,7 +22,9 @@ export default function useConfiguratorStep<T>({
 }: Options<T>) {
   const router = useRouter();
   const [, markComplete] = useStepCompletion(stepId);
+  const { state } = useConfigurator();
   const [errors, setErrors] = useState<Record<string, string[]>>({});
+  const hasLoggedErrorRef = useRef(false);
 
   // Avoid infinite re-validation loops when callers pass a new object literal
   // each render by hashing the values and only re-validating when the hash
@@ -38,6 +42,7 @@ export default function useConfiguratorStep<T>({
     const parsed = schema.safeParse(values);
     if (parsed.success) {
       setErrors((prev) => (Object.keys(prev).length === 0 ? prev : {}));
+      hasLoggedErrorRef.current = false;
     } else {
       const fieldErrors = parsed.error.flatten().fieldErrors as Record<string, string[]>;
       setErrors((prev) => {
@@ -46,8 +51,16 @@ export default function useConfiguratorStep<T>({
           Object.keys(prev).every((k) => prev[k]?.[0] === fieldErrors[k]?.[0]);
         return sameKeys ? prev : fieldErrors;
       });
+      if (!hasLoggedErrorRef.current && state.shopId) {
+        track("build_flow_step_error", {
+          shopId: state.shopId,
+          stepId,
+          reason: "validation",
+        });
+        hasLoggedErrorRef.current = true;
+      }
     }
-  }, [schema, valuesKey, values]);
+  }, [schema, valuesKey, values, state.shopId, stepId]);
 
   const getError = (field: string) => errors[field]?.[0];
   const isValid = Object.keys(errors).length === 0;

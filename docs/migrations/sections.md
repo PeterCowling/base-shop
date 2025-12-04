@@ -1,6 +1,17 @@
+Type: Guide
+Status: Reference
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Migration: Sections-First Pages
 
 This guide outlines a safe path to migrate existing pages to the new Sections-first model.
+
+How to use this doc now:
+
+- This is a **targeted migration playbook** for upgrading legacy pages to the Sections-first Page Builder model.
+- Before running new migrations, cross-check with:
+  - `docs/cms/cms-charter.md` and Page Builder docs (`docs/pagebuilder-library.md`, `docs/page-builder-metadata.md`) to confirm assumptions still hold.
 
 Overview
 - Goal: enforce `Section` at the root of every page so the Page Builder works in Sections mode without flags.
@@ -35,4 +46,3 @@ Rollback
 Notes
 - Large shops: run in batches and paginate the pages list to avoid memory spikes.
 - Backups: export a snapshot of pages prior to migration.
-

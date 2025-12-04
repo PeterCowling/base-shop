@@ -70,7 +70,7 @@ export default function ThemeSpectrum(): React.JSX.Element {
                     {/* eslint-enable react/forbid-dom-props */}
                     {tokens.length > 0 && (
                       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                        <span className="rounded bg-black/40 px-1 text-xs font-medium text-white mix-blend-darken">
+                        <span className="rounded bg-foreground/60 px-1 text-xs font-medium text-background mix-blend-darken">
                           {tokens.slice(0, 2).join(" · ")}{tokens.length > 2 ? ` +${tokens.length - 2}` : ""}
                         </span>
                       </div>

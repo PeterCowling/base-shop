@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
-import { LOCALES } from "@acme/i18n";
+import { LOCALES, useTranslations } from "@acme/i18n";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Locale, Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../../lib/api";
@@ -16,6 +16,8 @@ import useNewPageState from "./useNewPageState";
 import usePagesLoader from "./usePagesLoader";
 import useStepCompletion from "../../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+import { track } from "@acme/telemetry";
+import { CmsInlineHelpBanner } from "@ui/components/cms"; // UI: @ui/components/cms/CmsInlineHelpBanner
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;
@@ -40,6 +42,7 @@ export default function StepAdditionalPages({
   });
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const t = useTranslations();
 
   const {
     slug: newSlug,
@@ -75,6 +78,24 @@ export default function StepAdditionalPages({
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Additional Pages</h2>
+      <CmsInlineHelpBanner
+        heading={String(t("cms.additionalPages.help.heading"))}
+        body={String(t("cms.additionalPages.help.body"))}
+        links={[
+          {
+            id: "open-build-guide",
+            label: String(t("cms.additionalPages.help.openGuide")),
+            href: "/docs/cms/build-shop-guide.md#starter-kits",
+            onClick: () => {
+              track("build_flow_help_requested", {
+                shopId,
+                stepId: "additional-pages",
+                surface: "pageBuilder",
+              });
+            },
+          },
+        ]}
+      />
       {safePages.length > 0 && (
         <ul className="list-disc pl-5 text-sm">
           {safePages.map((p) => (

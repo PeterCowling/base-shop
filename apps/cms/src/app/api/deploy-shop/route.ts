@@ -5,6 +5,7 @@ import {
 } from "@cms/actions/deployShop.server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 import { NextResponse } from "next/server";
+import type { Environment } from "@acme/types";
 
 export async function POST(req: Request) {
   try {
@@ -18,8 +19,12 @@ export async function POST(req: Request) {
   }
   try {
     const body = await req.json();
-    const { id, domain } = body as { id: string; domain?: string };
-    const res = await deployShopHosting(id, domain);
+    const { id, domain, env } = body as {
+      id: string;
+      domain?: string;
+      env?: Environment;
+    };
+    const res = await deployShopHosting(id, domain, env);
     return NextResponse.json(res);
   } catch (err) {
     return NextResponse.json(

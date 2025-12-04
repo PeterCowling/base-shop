@@ -1,3 +1,9 @@
+@import "../../../../packages/themes/base/src/tokens.dynamic.css";
+@import "../../../../packages/ui/src/styles/typography.css";
+@import "../../../../packages/ui/src/styles/builder.css";
+@import "../../../../packages/ui/src/styles/forms.css";
+@import "tailwindcss";
+
 /*
   Storybook preview globals
   -------------------------
@@ -6,15 +12,6 @@
 */
 
 @config "../../../../tailwind.config.mjs";
-
-/* Bring in base design tokens + shared UI layer styles */
-@import "../../../../packages/themes/base/src/tokens.css";
-@import "../../../../packages/ui/src/styles/typography.css";
-@import "../../../../packages/ui/src/styles/builder.css";
-@import "../../../../packages/ui/src/styles/forms.css";
-
-/* Tailwind v4 utilities for DS components */
-@import "tailwindcss";
 
 /* ---------- Base reset aligned with app shells ------------------- */
 *,

@@ -76,7 +76,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
   return (
     <>
       {Array.isArray(issues) && issues.length > 0 && (
-        <div className="mb-3 rounded border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+        <div className="mb-3 rounded border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
           <div className="mb-1 font-semibold">{t("cms.builder.validation.issues")}</div>
           <ul className="list-disc pl-5 space-y-0.5">
             {issues.map((i) => {
@@ -85,7 +85,7 @@ function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor
               return (
                 <li key={key}>
                   <span className="font-medium">{resolved.panel}:</span> {i.message}
-                  <span className="ms-1 text-xs text-red-700/80">{t("cms.builder.validation.fieldLabel", { field: resolved.field })}</span>
+                  <span className="ms-1 text-xs text-destructive/80">{t("cms.builder.validation.fieldLabel", { field: resolved.field })}</span>
                 </li>
               );
             })}

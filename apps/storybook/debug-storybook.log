@@ -1,39 +1,27 @@
-[11:22:58.208] [INFO] storybook v10.1.0
-[11:22:58.703] [DEBUG] Getting package.json info for /Users/petercowling/base-shop/package.json...
-[11:22:58.705] [WARN] You are currently using Storybook [1m10.1.0[22m but you have packages which are incompatible with it:
-
-- @storybook/theming@8.6.14 which depends on ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
- Repo: https://github.com/storybookjs/storybook/tree/next/code/lib/theming
-
-Please consider updating your packages or contacting the maintainers for compatibility details.
-
-For more details on compatibility guidance, see:
-https://github.com/storybookjs/storybook/issues/32836
-[11:22:59.616] [DEBUG] Serving static files from [36mnode_modules/.pnpm/@chromatic-com+storybook@4.1.3_storybook@10.1.0_@testing-library+dom@10.4.0_prettier@3._5da193046decf9ec55472369abb8a6ea/node_modules/@chromatic-com/storybook/assets[39m at [36m/addon-visual-tests-assets[39m
-[11:22:59.616] [DEBUG] Serving static files from [36mpublic[39m at [36m/[39m
-[11:22:59.617] [INFO] Starting...
-[11:23:00.400] [DEBUG] Starting preview..
-[11:23:00.512] [INFO] Addon-docs: using MDX3
-[11:23:00.549] [INFO] Using implicit CSS loaders
-[11:23:00.749] [INFO] Using SWC as compiler
-[11:23:00.861] [INFO] Using default Webpack5 setup
-[11:23:01.174] [DEBUG] Using tsconfig paths for react-docgen
-[11:23:33.363] [WARN] export 'themes' (imported as 'themes') was not found in '@storybook/theming' (module has no exports)
-[11:23:33.363] [WARN] export 'ThemeProvider' (imported as 'SBThemeProvider') was not found in '@storybook/theming' (module has no exports)
-[11:23:33.364] [WARN] export 'ThemeProvider' (imported as 'SBThemeProvider') was not found in '@storybook/theming' (module has no exports)
-[11:23:33.364] [ERROR] Failed to build the preview
-[11:23:33.371] [WARN] Force closed preview build
-[11:23:33.371] [ERROR] [38;2;241;97;97mSB_BUILDER-WEBPACK5_0003 (WebpackCompilationError): There were problems when compiling your code with Webpack.
+[20:01:42.220] [INFO] storybook v10.1.4
+[20:01:42.685] [DEBUG] Getting package.json info for /Users/petercowling/base-shop/package.json...
+[20:01:43.772] [DEBUG] Serving static files from [36mnode_modules/.pnpm/@chromatic-com+storybook@4.1.3_storybook@10.1.4_@testing-library+dom@10.4.0_prettier@3._fc36ada12e85d5297b7be0faddf0a83d/node_modules/@chromatic-com/storybook/assets[39m at [36m/addon-visual-tests-assets[39m
+[20:01:43.772] [DEBUG] Serving static files from [36mpublic[39m at [36m/[39m
+[20:01:43.775] [INFO] Starting...
+[20:01:44.700] [DEBUG] Starting preview..
+[20:01:44.738] [INFO] Addon-docs: using MDX3
+[20:01:44.766] [INFO] Using implicit CSS loaders
+[20:01:45.041] [INFO] Using SWC as compiler
+[20:01:45.178] [INFO] Using default Webpack5 setup
+[20:01:45.518] [DEBUG] Using tsconfig paths for react-docgen
+[20:02:12.105] [ERROR] Failed to build the preview
+[20:02:12.110] [WARN] Force closed preview build
+[20:02:12.111] [ERROR] [38;2;241;97;97mSB_BUILDER-WEBPACK5_0003 (WebpackCompilationError): There were problems when compiling your code with Webpack.
 Run Storybook with --debug-webpack for more information.[39m
-    at starter (file:///Users/petercowling/base-shop/node_modules/.pnpm/@storybook+builder-webpack5@10.1.0_@swc+core@1.12.9_esbuild@0.25.10_msw@2.11.3_@types+n_a4dd2b18eb59751e920b5ed4bd51fe0f/node_modules/@storybook/builder-webpack5/dist/index.js:799:11)
+    at starter (file:///Users/petercowling/base-shop/node_modules/.pnpm/@storybook+builder-webpack5@10.1.4_@swc+core@1.12.9_esbuild@0.25.10_msw@2.11.3_@types+n_9fbecc4337ff64fd1e18d60225cd50d9/node_modules/@storybook/builder-webpack5/dist/index.js:799:11)
     at starter.next (<anonymous>)
-    at Module.start (file:///Users/petercowling/base-shop/node_modules/.pnpm/@storybook+builder-webpack5@10.1.0_@swc+core@1.12.9_esbuild@0.25.10_msw@2.11.3_@types+n_a4dd2b18eb59751e920b5ed4bd51fe0f/node_modules/@storybook/builder-webpack5/dist/index.js:857:34)
+    at Module.start (file:///Users/petercowling/base-shop/node_modules/.pnpm/@storybook+builder-webpack5@10.1.4_@swc+core@1.12.9_esbuild@0.25.10_msw@2.11.3_@types+n_9fbecc4337ff64fd1e18d60225cd50d9/node_modules/@storybook/builder-webpack5/dist/index.js:857:34)
     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at async storybookDevServer (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.0_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_b74a0a2fc0592a95014ce8e78559a19e/node_modules/storybook/dist/core-server/index.js:7180:82)
-    at async buildOrThrow (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.0_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_b74a0a2fc0592a95014ce8e78559a19e/node_modules/storybook/dist/core-server/index.js:5556:12)
-    at async buildDevStandalone (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.0_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_b74a0a2fc0592a95014ce8e78559a19e/node_modules/storybook/dist/core-server/index.js:7582:66)
-    at async withTelemetry (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.0_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_b74a0a2fc0592a95014ce8e78559a19e/node_modules/storybook/dist/_node-chunks/chunk-SF2DKOPT.js:205:12)
-    at async dev (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.0_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_b74a0a2fc0592a95014ce8e78559a19e/node_modules/storybook/dist/bin/core.js:2734:3)
-    at async _Command.<anonymous> (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.0_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_b74a0a2fc0592a95014ce8e78559a19e/node_modules/storybook/dist/bin/core.js:2795:92)
-[11:23:33.372] [WARN] Broken build, fix the error above.
+    at async storybookDevServer (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.4_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_66bf09bad733630f75f0a93b53fb889a/node_modules/storybook/dist/core-server/index.js:7180:82)
+    at async buildOrThrow (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.4_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_66bf09bad733630f75f0a93b53fb889a/node_modules/storybook/dist/core-server/index.js:5556:12)
+    at async buildDevStandalone (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.4_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_66bf09bad733630f75f0a93b53fb889a/node_modules/storybook/dist/core-server/index.js:7582:66)
+    at async withTelemetry (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.4_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_66bf09bad733630f75f0a93b53fb889a/node_modules/storybook/dist/_node-chunks/chunk-6KX7N5UF.js:205:12)
+    at async dev (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.4_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_66bf09bad733630f75f0a93b53fb889a/node_modules/storybook/dist/bin/core.js:2734:3)
+    at async _Command.<anonymous> (file:///Users/petercowling/base-shop/node_modules/.pnpm/storybook@10.1.4_@testing-library+dom@10.4.0_prettier@3.6.2_react-dom@19.2.0-canary-3fb_66bf09bad733630f75f0a93b53fb889a/node_modules/storybook/dist/bin/core.js:2801:92)
+[20:02:12.113] [WARN] Broken build, fix the error above.
 You may need to refresh the browser.

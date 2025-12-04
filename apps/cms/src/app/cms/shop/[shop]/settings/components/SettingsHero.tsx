@@ -1,12 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import { Button, Card, CardContent } from "@/components/atoms/shadcn";
 import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
 import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
 
 import type { SnapshotItem } from "../lib/pageSections";
+import {
+  CmsBuildHero,
+  CmsSettingsSnapshot,
+  type CmsSettingsSnapshotRow,
+} from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero, CmsSettingsSnapshot
 
 interface SettingsHeroProps {
   readonly shop: string;
@@ -20,61 +23,78 @@ export default function SettingsHero({
   snapshotItems,
 }: SettingsHeroProps) {
   const t = useTranslations();
+  const snapshotRows: CmsSettingsSnapshotRow[] = snapshotItems.map(
+    (item) => ({
+      id: item.label,
+      label: item.label,
+      value: item.value,
+    }),
+  );
   return (
     <section className="relative overflow-hidden rounded-3xl border border-border/70 bg-hero-contrast text-hero-foreground shadow-elevation-4">
       <DSGrid gap={8} className="relative p-8 lg:grid-cols-3 lg:gap-10">
         <div className="space-y-6 lg:col-span-2">
-          <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wide text-hero-foreground/80">
-              {t("Shop settings")}
-            </span>
-            <h1 className="text-3xl font-semibold md:text-4xl">
-              {t("Keep {shop} running smoothly", { shop })}
-            </h1>
-            <p className="text-hero-foreground/80">
-              {t(
+          <CmsBuildHero
+            tag={String(t("Shop settings"))}
+            title={String(t("Keep {shop} running smoothly", { shop }))}
+            body={String(
+              t(
                 "Configure languages, service automations, and design tokens so {shop} stays on brand across every channel.",
                 { shop },
-              )}
-            </p>
-          </div>
-          <Inline gap={3} wrap>
-            <Button asChild className="h-11 px-5 text-sm font-semibold">
-              <Link href="#service-editors">{t("Configure services")}</Link>
-            </Button>
-            <Button
-              asChild
-              variant="outline"
-              className="h-11 px-5 text-sm font-semibold border-primary/40 text-hero-foreground hover:bg-primary/10"
-            >
-              <Link href="#theme-tokens">{t("Review theme tokens")}</Link>
-            </Button>
-          </Inline>
+              ),
+            )}
+            tone="operate"
+            primaryCta={{
+              label: String(t("Configure services")),
+              href: "#service-editors",
+            }}
+            secondaryCtas={[
+              {
+                label: String(t("Review theme tokens")),
+                href: "#theme-tokens",
+              },
+              {
+                label: String(t("cms.shop.settings.help.buildGuide")),
+                href: "/docs/cms/build-shop-guide.md",
+                onClick: () => {
+                  track("build_flow_help_requested", {
+                    shopId: shop,
+                    stepId: "settings",
+                    surface: "settingsHero",
+                  });
+                },
+              },
+              {
+                label: String(t("cms.shop.settings.help.journeyMap")),
+                href: "/docs/cms/shop-build-journey-map.md",
+                onClick: () => {
+                  track("build_flow_help_requested", {
+                    shopId: shop,
+                    stepId: "settings",
+                    surface: "settingsHero",
+                  });
+                },
+              },
+            ]}
+          />
         </div>
-        <Card className="border border-primary/20 bg-surface-2 text-foreground shadow-elevation-5">
-          <CardContent className="space-y-5 p-6">
-            <div className="space-y-1">
-              <h2 className="text-lg font-semibold">{t("Current snapshot")}</h2>
-              <p className="text-sm text-muted-foreground">
-                {isAdmin
-                  ? t("You can update storefront details and commerce settings below.")
-                  : t(
-                      "You have read-only access. Contact an admin if changes are required.",
-                    )}
-              </p>
-            </div>
-            <dl className="space-y-3 text-sm text-muted-foreground">
-              {snapshotItems.map((item) => (
-                <div key={item.label} className="space-y-1">
-                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    {item.label}
-                  </dt>
-                  <dd className="text-sm font-medium text-foreground">{item.value}</dd>
-                </div>
-              ))}
-            </dl>
-          </CardContent>
-        </Card>
+        <CmsSettingsSnapshot
+          title={String(t("Current snapshot"))}
+          body={
+            isAdmin
+              ? String(
+                  t(
+                    "You can update storefront details and commerce settings below.",
+                  ),
+                )
+              : String(
+                  t(
+                    "You have read-only access. Contact an admin if changes are required.",
+                  ),
+                )
+          }
+          rows={snapshotRows}
+        />
       </DSGrid>
     </section>
   );

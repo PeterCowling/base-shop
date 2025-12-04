@@ -6,14 +6,16 @@ import { z } from "zod";
 import type { ConfiguratorStepProps } from "@/types/configurator";
 import useConfiguratorStep from "./hooks/useConfiguratorStep";
 import ShopPreview from "./components/ShopPreview";
-import ImagePicker from "@ui/components/cms/page-builder/ImagePicker";
+import { ImagePicker } from "@acme/page-builder-ui";
 import { ConfiguratorContext } from "../ConfiguratorContext";
 import type { ConfiguratorState } from "../../wizard/schema";
 import Image from "next/image";
+import { useTranslations } from "@acme/i18n";
 
 export default function StepShopDetails(
   props: ConfiguratorStepProps,
 ): React.JSX.Element {
+  const t = useTranslations();
   const configurator = useContext(ConfiguratorContext);
 
   const fallbackState: Pick<ConfiguratorState, "shopId" | "storeName" | "logo" | "contactInfo"> = {
@@ -84,7 +86,14 @@ export default function StepShopDetails(
   const isValid = hookValid && Object.keys(errors).length === 0;
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Shop Details</h2>
+      <div className="flex items-start justify-between gap-3">
+        <h2 className="text-xl font-semibold" data-tour="quest-basics">
+          {t("cms.configurator.shopDetails.title")}
+        </h2>
+        <div className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary-foreground">
+          {t("cms.configurator.time.badge.start")}
+        </div>
+      </div>
       <ShopPreview logos={logoRecord} shopName={storeName} />
       <label className="flex flex-col gap-1">
         <span>Shop ID</span>

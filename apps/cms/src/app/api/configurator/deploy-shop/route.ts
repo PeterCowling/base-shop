@@ -7,6 +7,7 @@ import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import type { Session } from "next-auth";
 import { NextResponse } from "next/server";
+import type { Environment } from "@acme/types";
 
 function resolveRole(session: Session | null | undefined): string | undefined {
   const envAssumeAdmin = process.env.CMS_TEST_ASSUME_ADMIN === "1";
@@ -22,8 +23,12 @@ export async function POST(req: Request) {
   }
   try {
     const body = await req.json();
-    const { id, domain } = body as { id: string; domain?: string };
-    const res = await deployShopHosting(id, domain);
+    const { id, domain, env } = body as {
+      id: string;
+      domain?: string;
+      env?: Environment;
+    };
+    const res = await deployShopHosting(id, domain, env);
     return NextResponse.json(res);
   } catch (err) {
     return NextResponse.json(

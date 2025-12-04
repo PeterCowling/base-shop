@@ -1,4 +1,17 @@
+Type: Research
+Status: Reference
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Shop editor refactor research
+
+How to use this doc now:
+
+- This file documents the **current Shop Settings implementation** in detail (data flow, validation, error handling).
+- For high-level goals and contracts, prefer:
+  - `docs/cms/cms-charter.md`
+  - `docs/cms/build-shop-guide.md`
+- Use this research log when refactoring or extending the Shop Settings UI; keep it in sync with `apps/cms/src/app/cms/shop/[shop]/settings/**` as code changes.
 
 ## Current data flow and error handling
 

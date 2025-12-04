@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PageToolbar from '@ui/components/cms/page-builder/PageToolbar';
+import { PageToolbar } from '@acme/page-builder-ui';
 
 describe('PageToolbar (CT)', { tags: ['inspectors'] }, () => {
   it('changes locale when clicking locale button', () => {
@@ -27,4 +27,3 @@ describe('PageToolbar (CT)', { tags: ['inspectors'] }, () => {
     cy.contains('button', 'EN').click();
   });
 });
-

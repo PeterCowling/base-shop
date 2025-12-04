@@ -11,6 +11,7 @@ import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "@acme/i18n";
+import { logAnalyticsEvent } from "@platform-core/analytics/client";
 
 /**
  * ShopClient
@@ -78,7 +79,39 @@ export default function ShopClient({ skus }: { skus: SKU[] }) {
     });
   }, [filters, query, skus]);
 
+  // Log search queries after initial render
+  useEffect(() => {
+    if (!query) return;
+    const timer = setTimeout(() => {
+      void logAnalyticsEvent({ type: "search", query, results: visible.length });
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [query, visible.length]);
+
+  // Log filter changes after initial render
+  useEffect(() => {
+    if (!synced.current) return;
+    const activeFilters: Record<string, string | number> = {};
+    Object.entries(filters).forEach(([k, v]) => {
+      if (v !== undefined && v !== "") activeFilters[k] = v as string | number;
+    });
+    if (Object.keys(activeFilters).length) {
+      void logAnalyticsEvent({
+        type: "filter_change",
+        filters: activeFilters,
+        results: visible.length,
+        resultIds: visible.slice(0, 10).map((p) => p.id),
+      });
+    }
+  }, [filters, visible]);
+
   // Update the URL query string whenever query or filters change (after first run)
+  useEffect(() => {
+    if (pathname) {
+      void logAnalyticsEvent({ type: "page_view", path: pathname });
+    }
+  }, [pathname]);
+
   useEffect(() => {
     if (!synced.current) {
       synced.current = true;

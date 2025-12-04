@@ -7,6 +7,8 @@ import { DocsContainer, Primary, Stories } from "@storybook/blocks";
 import type { Decorator, Preview } from "@storybook/nextjs";
 import type { GlobalTypes } from "@storybook/types";
 import { useEffect, useRef, type ComponentPropsWithoutRef, type ReactNode } from "react";
+import React from "react";
+import * as Scheduler from "scheduler";
 import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import {
   CurrencyProvider,
@@ -24,6 +26,7 @@ import { VIEWPORTS } from "./viewports";
 import { withRTL } from "./decorators/rtlDecorator";
 import { withPerf } from "./decorators/perfDecorator";
 import { withHighlight } from "./decorators/highlightDecorator";
+import { stressGlobal, withStress } from "./decorators/stressDecorator";
 import { a11yGlobals, a11yParameters } from "./a11y";
 import { createBackgroundOptions } from "./backgrounds";
 import type { ToolbarGlobals, StoryDataState } from "./types";
@@ -98,6 +101,7 @@ const toolbarGlobalTypes = {
       ],
     },
   },
+  stress: stressGlobal,
 } satisfies GlobalTypes;
 
 const withTokens: Decorator = (Story, context) => {
@@ -105,6 +109,19 @@ const withTokens: Decorator = (Story, context) => {
   const cls = document.documentElement.classList;
   cls.remove("theme-base", "theme-brandx");
   cls.add(`theme-${tokens}`);
+  return <Story />;
+};
+
+// Sync Storybook theme toggle (light/dark) to token classes for dynamic tokens
+const withThemeClass: Decorator = (Story, context) => {
+  const theme = (context.globals as Record<string, unknown>).theme as string | undefined;
+  const cls = document.documentElement.classList;
+  cls.remove("theme-dark", "dark");
+  if (theme === "dark") {
+    cls.add("theme-dark", "dark");
+  } else {
+    cls.add("theme-base");
+  }
   return <Story />;
 };
 
@@ -142,16 +159,12 @@ type EmotionThemeLike = ThemeVars & Record<string, unknown>;
 
 const emotionTheme = sbTheme as EmotionThemeLike;
 
-// Ensure Docs pages are always wrapped with a theme that includes typography.fonts
+// Ensure Docs pages receive the same theme object without double-wrapping providers
 const ThemedDocsContainer: React.FC<{ context: unknown; children: ReactNode }> = ({ context, children }) => (
-  <EmotionThemeProvider theme={emotionTheme}>
-    <SBThemeProvider theme={sbTheme}>
-      {/* @ts-expect-error - docs container accepts theme in runtime */}
-      <DocsContainer context={context} theme={sbTheme}>
-        {children}
-      </DocsContainer>
-    </SBThemeProvider>
-  </EmotionThemeProvider>
+  // @ts-expect-error - docs container accepts theme in runtime
+  <DocsContainer context={context} theme={sbTheme}>
+    {children}
+  </DocsContainer>
 );
 
 // Minimal, safe Docs page that avoids styled Title/Code blocks
@@ -179,6 +192,32 @@ const docsComponents: {
 };
 
 const backgroundOptions = createBackgroundOptions(t);
+
+// Some Storybook-generated mocks still attempt a runtime require of Next's compiled React.
+// Provide a minimal global require shim to route those calls to the real React module.
+if (typeof globalThis !== "undefined") {
+  const isCompiledReact = (id: string) =>
+    id === "next/dist/compiled/react" || id.startsWith("next/dist/compiled/react");
+  const isCompiledScheduler = (id: string) =>
+    id === "next/dist/compiled/scheduler" || id.startsWith("next/dist/compiled/scheduler");
+
+   
+  (globalThis as any).__SB_REACT_STUB__ = React;
+
+  const baseRequire =
+    typeof (globalThis as Record<string, unknown>).require === "function"
+      ?  
+        (globalThis as any).require
+      : undefined;
+
+   
+  (globalThis as any).require = (id: string) => {
+    if (isCompiledReact(id)) return React;
+    if (isCompiledScheduler(id)) return Scheduler;
+    if (baseRequire) return baseRequire(id);
+    throw new Error(`Dynamic require not supported: ${id}`);
+  };
+}
 
 type ProviderToggle<TConfig extends Record<string, unknown> = Record<string, unknown>> =
   | boolean
@@ -325,10 +364,15 @@ const preview: Preview = {
   parameters: {
     ...a11yParameters,
     msw: { handlers: mswHandlers },
+    // Disable action instrumentation to avoid noisy "unable to determine the source"
+    // manager warnings emitted on docs pages when no action panel is mounted.
+    actions: { disable: true },
     docs: {
       theme: sbTheme,
       container: ThemedDocsContainer,
       page: SafeDocsPage,
+      autodocs: "tag",
+      source: { type: "dynamic" },
       // Work around theming context conflicts by rendering plain code/pre elements
       components: docsComponents,
     },
@@ -367,17 +411,25 @@ const preview: Preview = {
     backgrounds: {
       options: backgroundOptions,
     },
+    providers: {
+      cart: true,
+      currency: true,
+      theme: true,
+    },
   },
 
   decorators: [
     (Story) => (
       <EmotionThemeProvider theme={emotionTheme}>
         <SBThemeProvider theme={sbTheme}>
-          <Story />
+          <main>
+            <Story />
+          </main>
         </SBThemeProvider>
       </EmotionThemeProvider>
     ),
     withTokens,
+    withThemeClass,
     withThemeByClassName({
       themes: {
         light: "light",
@@ -388,6 +440,7 @@ const preview: Preview = {
     withRTL,
     withGlobals,
     withHighlight,
+    withStress,
     withPerf,
     withProviders,
   ],

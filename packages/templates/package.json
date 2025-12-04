@@ -20,8 +20,9 @@
     }
   },
   "dependencies": {
-    "@acme/ui": "workspace:*",
-    "@acme/page-builder-core": "workspace:*"
+    "@acme/i18n": "workspace:*",
+    "@acme/page-builder-core": "workspace:*",
+    "@acme/ui": "workspace:*"
   },
   "devDependencies": {
     "next": "^15.3.5"

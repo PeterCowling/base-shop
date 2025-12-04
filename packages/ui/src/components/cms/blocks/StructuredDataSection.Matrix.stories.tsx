@@ -9,7 +9,6 @@ import { z } from 'zod';
 const meta: Meta<typeof StructuredDataSection> = {
   title: 'CMS Blocks/StructuredDataSection/Matrix',
   component: StructuredDataSection,
-  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Emits JSON-LD for breadcrumbs/FAQ/organization/local business based on flags.' } } },
 };
@@ -22,3 +21,8 @@ try { z.object({ breadcrumbs: z.boolean().optional(), faq: z.boolean().optional(
 
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });
+export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });

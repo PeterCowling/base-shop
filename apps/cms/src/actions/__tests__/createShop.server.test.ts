@@ -1,7 +1,7 @@
 import { createNewShop } from "../createShop.server";
 
 jest.mock("@platform-core/createShop", () => ({
-  createShop: jest.fn(),
+  createShopFromConfig: jest.fn(),
 }));
 
 jest.mock("@platform-core/db", () => ({
@@ -33,12 +33,12 @@ describe("createNewShop", () => {
   });
 
   it("Successful shop creation with RBAC update for new user", async () => {
-    const { createShop } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
 
     const deployResult = { status: "ok" } as any;
-    (createShop as jest.Mock).mockResolvedValue(deployResult);
+    (createShopFromConfig as jest.Mock).mockResolvedValue(deployResult);
     (readRbac as jest.Mock).mockResolvedValue({
       users: {},
       roles: {},
@@ -62,13 +62,13 @@ describe("createNewShop", () => {
   ])(
     "Existing role array vs single role %#",
     async ({ current, expected, shouldWrite }) => {
-      const { createShop } = await import("@platform-core/createShop");
+      const { createShopFromConfig } = await import("@platform-core/createShop");
       const { readRbac, writeRbac } = await import(
         "../../lib/server/rbacStore"
       );
       const { ensureAuthorized } = await import("../common/auth.ts");
 
-      (createShop as jest.Mock).mockResolvedValue({});
+      (createShopFromConfig as jest.Mock).mockResolvedValue({});
       (readRbac as jest.Mock).mockResolvedValue({
         users: {},
         roles: { user1: current },
@@ -90,12 +90,12 @@ describe("createNewShop", () => {
   );
 
   it("Propagates createShop error without touching RBAC", async () => {
-    const { createShop } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
 
     const err = new Error("deploy failed");
-    (createShop as jest.Mock).mockRejectedValue(err);
+    (createShopFromConfig as jest.Mock).mockRejectedValue(err);
     (ensureAuthorized as jest.Mock).mockResolvedValue({ user: { id: "user1" } });
 
     await expect(createNewShop("shop1", {} as any)).rejects.toBe(err);
@@ -104,12 +104,12 @@ describe("createNewShop", () => {
   });
 
   it("Failure reading RBAC → verify rollback deletes created entities and throws", async () => {
-    const { createShop } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
     const { prisma } = await import("@platform-core/db");
 
-    (createShop as jest.Mock).mockResolvedValue({});
+    (createShopFromConfig as jest.Mock).mockResolvedValue({});
     (readRbac as jest.Mock).mockRejectedValue(new Error("fail"));
     (ensureAuthorized as jest.Mock).mockResolvedValue({ user: { id: "user1" } });
 
@@ -124,12 +124,12 @@ describe("createNewShop", () => {
   });
 
   it("Failure writing RBAC → verify rollback deletes created entities and throws", async () => {
-    const { createShop } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
     const { prisma } = await import("@platform-core/db");
 
-    (createShop as jest.Mock).mockResolvedValue({});
+    (createShopFromConfig as jest.Mock).mockResolvedValue({});
     (readRbac as jest.Mock).mockResolvedValue({
       users: {},
       roles: {},
@@ -148,14 +148,14 @@ describe("createNewShop", () => {
   });
 
   it("Logs rollback failure when RBAC write fails", async () => {
-    const { createShop } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import(
       "../../lib/server/rbacStore"
     );
     const { ensureAuthorized } = await import("../common/auth.ts");
     const { prisma } = await import("@platform-core/db");
 
-    (createShop as jest.Mock).mockResolvedValue({});
+    (createShopFromConfig as jest.Mock).mockResolvedValue({});
     (readRbac as jest.Mock).mockResolvedValue({
       users: {},
       roles: {},
@@ -176,12 +176,12 @@ describe("createNewShop", () => {
   });
 
   it("Ensure user without id skips RBAC update", async () => {
-    const { createShop } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
 
     const deployResult = { status: "ok" } as any;
-    (createShop as jest.Mock).mockResolvedValue(deployResult);
+    (createShopFromConfig as jest.Mock).mockResolvedValue(deployResult);
     (ensureAuthorized as jest.Mock).mockResolvedValue({ user: {} });
 
     const result = await createNewShop("shop1", {} as any);
@@ -191,4 +191,3 @@ describe("createNewShop", () => {
     expect(writeRbac).not.toHaveBeenCalled();
   });
 });
-

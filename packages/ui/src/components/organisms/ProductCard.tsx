@@ -8,6 +8,7 @@ import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { useTranslations } from "@acme/i18n";
+import { logAnalyticsEvent } from "@platform-core/analytics/client";
 
 import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
@@ -63,6 +64,11 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
       } else {
         void dispatch({ type: "add", sku: product });
       }
+      void logAnalyticsEvent({
+        type: "add_to_cart",
+        productId: product.id,
+        source: "product_card",
+      });
     };
     // i18n-exempt -- DEV-000: viewports expression and className strings below are CSS-only
     const SIZES = "(min-width: 640px) 25vw, 50vw"; // i18n-exempt -- DEV-000: responsive image sizes string
@@ -87,12 +93,28 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
                 fill
                 sizes={SIZES}
                 className="rounded-md object-cover" /* i18n-exempt: CSS utility classes only */
+                onClick={() =>
+                  logAnalyticsEvent({
+                    type: "media_interaction",
+                    productId: product.id,
+                    action: "media_click",
+                    mediaUrl: media.url,
+                  })
+                }
               />
             ) : (
               <video
                 src={media.url ?? ""}
                 className="h-full w-full rounded-md object-cover" /* i18n-exempt: CSS utility classes only */
                 data-aspect="1/1"
+                onClick={() =>
+                  logAnalyticsEvent({
+                    type: "media_interaction",
+                    productId: product.id,
+                    action: "media_click",
+                    mediaUrl: media.url,
+                  })
+                }
                 muted
                 playsInline
               />
@@ -105,11 +127,11 @@ export const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         )}
         <Button onClick={handleAdd}>{
           (() => {
-            if (!ctaLabel) return t("Add to cart") as string;
+            if (!ctaLabel) return t("actions.addToCart") as string;
             if (typeof ctaLabel === "string") return ctaLabel;
             if (ctaLabel.type === "key") return t(ctaLabel.key, ctaLabel.params) as string;
             if (ctaLabel.type === "inline") return resolveText(ctaLabel, (locale ?? "en"), t);
-            return t("Add to cart") as string;
+            return t("actions.addToCart") as string;
           })()
         }</Button>
       </div>

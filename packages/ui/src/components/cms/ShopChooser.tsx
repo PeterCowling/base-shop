@@ -78,7 +78,7 @@ export default function ShopChooser({
   return (
     <Card
       className={cn(
-        "border border-white/20 bg-slate-950/80 text-white shadow-elevation-4",
+        "border border-border bg-surface-2 text-foreground shadow-elevation-4",
         className
       )}
     >
@@ -86,15 +86,15 @@ export default function ShopChooser({
         {(tag || heading || subheading) && (
           <div className="space-y-2">
             {tag && (
-              <Tag variant="default" className="bg-white/10 text-white">
+              <Tag variant="default" className="bg-muted text-foreground">
                 {tag}
               </Tag>
             )}
             {heading && (
-              <h2 className="text-lg font-semibold text-white">{heading}</h2>
+              <h2 className="text-lg font-semibold text-foreground">{heading}</h2>
             )}
             {subheading && (
-              <p className="text-sm text-white">{subheading}</p>
+              <p className="text-sm text-muted-foreground">{subheading}</p>
             )}
           </div>
         )}
@@ -122,7 +122,7 @@ export default function ShopChooser({
                 <div key={shop} role="listitem">
                   <article
                     className={cn(
-                      "group flex h-full flex-col justify-between gap-4 rounded-2xl border border-white/20 bg-white/10 p-5 text-sm text-white shadow-elevation-1 transition hover:border-white/40 hover:bg-white/15 focus-within:border-white/50 focus-within:bg-white/15",
+                      "group flex h-full flex-col justify-between gap-4 rounded-2xl border border-border bg-card p-5 text-sm text-foreground shadow-elevation-1 transition hover:border-border hover:bg-muted focus-within:border-ring focus-within:bg-muted",
                       card.cardClassName
                     )}
                     aria-labelledby={cardTitleId}
@@ -134,7 +134,7 @@ export default function ShopChooser({
                           <span
                             aria-hidden="true"
                             className={cn(
-                              "flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-2xl",
+                              "flex h-12 w-12 items-center justify-center rounded-xl bg-muted text-2xl",
                               card.iconWrapperClassName
                             )}
                           >
@@ -142,12 +142,12 @@ export default function ShopChooser({
                           </span>
                         )}
                         <div className="space-y-1">
-                          <span className="block text-xs uppercase tracking-wide text-white">
+                          <span className="block text-xs uppercase tracking-wide text-muted-foreground">
                             {resolvedEyebrow}
                           </span>
                           <h3
                             id={cardTitleId}
-                            className="text-lg font-semibold text-white"
+                            className="text-lg font-semibold text-foreground"
                           >
                             {resolvedTitle}
                           </h3>
@@ -155,7 +155,7 @@ export default function ShopChooser({
                       </div>
                       <p
                         id={descriptionId}
-                        className="text-sm leading-relaxed text-white"
+                        className="text-sm leading-relaxed text-muted-foreground"
                       >
                         {resolvedDescription}
                       </p>
@@ -174,7 +174,7 @@ export default function ShopChooser({
                         )
                       }
                       className={cn(
-                        "mt-auto inline-flex h-11 w-full items-center justify-center rounded-xl border border-white/30 bg-white/15 text-sm font-semibold text-white shadow-elevation-1 transition hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
+                        "mt-auto inline-flex h-11 w-full items-center justify-center rounded-xl border border-border bg-secondary text-sm font-semibold text-secondary-foreground shadow-elevation-1 transition hover:bg-secondary/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                         card.ctaClassName
                       )}
                     >
@@ -187,17 +187,17 @@ export default function ShopChooser({
             })}
           </DSGrid>
         ) : (
-          <div className="space-y-4 rounded-2xl border border-dashed border-white/20 bg-white/5 px-5 py-6 text-white/80">
+          <div className="space-y-4 rounded-2xl border border-dashed border-border bg-muted/40 px-5 py-6 text-muted-foreground">
             {emptyState.tagLabel && (
-              <Tag variant="warning" className="bg-amber-500/20 text-amber-100">
+              <Tag variant="warning" className="bg-muted text-foreground">
                 {emptyState.tagLabel}
               </Tag>
             )}
             <div className="space-y-1">
-              <h3 className="text-base font-semibold text-white">
+              <h3 className="text-base font-semibold text-foreground">
                 {emptyState.title}
               </h3>
-              <p className="text-sm text-white/70">{emptyState.description}</p>
+              <p className="text-sm text-muted-foreground">{emptyState.description}</p>
             </div>
             <Link
               href={emptyState.ctaHref}
@@ -208,7 +208,7 @@ export default function ShopChooser({
                   emptyState.analyticsPayload
                 )
               }
-              className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-emerald-500 text-sm font-semibold text-white shadow-elevation-2 shadow-emerald-500/30 transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-200"
+              className="inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-elevation-2 transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               {emptyState.ctaLabel}
             </Link>

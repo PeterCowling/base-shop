@@ -23,7 +23,8 @@ export interface DeployResult {
 
 export async function deployShop(
   shopId: string,
-  domain: string
+  domain: string,
+  env: "dev" | "stage" | "prod" = "stage"
 ): Promise<DeployResult> {
   try {
     validateShopName(shopId);
@@ -37,7 +38,9 @@ export async function deployShop(
   const res = await fetch("/cms/api/configurator/deploy-shop", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id: shopId, domain }),
+    // For now, treat configurator-initiated deploys as targeting the
+    // "stage" environment; this can be made configurable in the UI later.
+    body: JSON.stringify({ id: shopId, domain, env }),
   });
 
   const json = (await res.json()) as DeployInfo;

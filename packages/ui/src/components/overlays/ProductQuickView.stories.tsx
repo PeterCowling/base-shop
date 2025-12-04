@@ -22,6 +22,7 @@ function QuickViewHarness() {
 }
 
 const meta: Meta<typeof ProductQuickView> = {
+  title: 'Organisms/ProductQuickView',
   component: ProductQuickView,
   tags: ['autodocs'],
   parameters: {

@@ -3,9 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import type { PageComponent } from "@acme/types";
 import { ulid } from "ulid";
-import { ComponentEditor } from "@ui/components/cms/page-builder";
-import { saveLibrary } from "@ui/components/cms/page-builder/libraryStore";
-import type { LibraryItem } from "@ui/components/cms/page-builder/libraryStore";
+import { ComponentEditor, saveLibrary, type LibraryItem } from "@acme/page-builder-ui";
 import { useTranslations } from "@acme/i18n";
 
 export default function ComponentEditorClient() {

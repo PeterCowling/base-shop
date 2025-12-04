@@ -34,31 +34,34 @@ export function MediaSelector({
   const t = useTranslations();
   return (
     <Inline gap={2} className={cn(className)} {...props}>
-      {items.map((item, idx) => (
-        <button
-          key={item.src}
-          type="button"
-          onClick={() => onChange?.(idx)}
-          className={cn(
-            "h-16 w-16 overflow-hidden rounded border", // i18n-exempt -- UI-000: class names
-            active === idx && "ring-2 ring-black" // i18n-exempt -- UI-000: class names
-          )}
-        >
-          {item.type === "image" || item.type === "360" ? (
-            <Image
-              src={item.thumbnail || item.src}
-              // Use provided alt text or a generic, translated fallback
-              alt={item.alt || (t("media.thumbnail") as string)}
-              fill
-              className="object-cover"
-            />
-          ) : item.type === "video" ? (
-            <Cover className="h-full w-full text-xs" center={t("media.video") as string} />
-          ) : (
-            <Cover className="h-full w-full text-xs" center={t("media.ar") as string} />
-          )}
-        </button>
-      ))}
+      {items.map((item, idx) => {
+        const thumbnailKey = item.thumbnail ?? item.src ?? item.alt ?? item.frames?.[0] ?? item.type;
+        return (
+          <button
+            key={thumbnailKey}
+            type="button"
+            onClick={() => onChange?.(idx)}
+            className={cn(
+              "h-16 w-16 overflow-hidden rounded border", // i18n-exempt -- UI-000: class names
+              active === idx && "ring-2 ring-[color:hsl(var(--color-border-strong))]" // i18n-exempt -- UI-000: class names
+            )}
+          >
+            {item.type === "image" || item.type === "360" ? (
+              <Image
+                src={item.thumbnail || item.src}
+                // Use provided alt text or a generic, translated fallback
+                alt={item.alt || (t("media.thumbnail") as string)}
+                fill
+                className="object-cover"
+              />
+            ) : item.type === "video" ? (
+              <Cover className="h-full w-full text-xs" center={t("media.video") as string} />
+            ) : (
+              <Cover className="h-full w-full text-xs" center={t("media.ar") as string} />
+            )}
+          </button>
+        );
+      })}
     </Inline>
   );
 }

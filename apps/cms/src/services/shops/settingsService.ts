@@ -1,5 +1,6 @@
 import type { ShopSettings } from "@acme/types";
 import { authorize, fetchSettings, persistSettings } from "./helpers";
+import { recordMetric } from "@platform-core/utils";
 import {
   parseCurrencyTaxForm,
   parseDepositForm,
@@ -20,6 +21,11 @@ export async function setFreezeTranslations(shop: string, freeze: boolean) {
   const current = await fetchSettings(shop);
   const updated: ShopSettings = { ...current, freezeTranslations: freeze };
   await persistSettings(shop, updated);
+  recordMetric("cms_settings_save_total", {
+    shopId: shop,
+    service: "cms",
+    status: "success",
+  });
   return updated;
 }
 
@@ -39,6 +45,11 @@ export async function updateCurrencyAndTax(
     taxRegion: data.taxRegion,
   };
   await persistSettings(shop, updated);
+  recordMetric("cms_settings_save_total", {
+    shopId: shop,
+    service: "cms",
+    status: "success",
+  });
   return { settings: updated };
 }
 
@@ -60,6 +71,11 @@ export async function updateDeposit(
     },
   };
   await persistSettings(shop, updated);
+  recordMetric("cms_settings_save_total", {
+    shopId: shop,
+    service: "cms",
+    status: "success",
+  });
   return { settings: updated };
 }
 
@@ -81,6 +97,11 @@ export async function updateLateFee(
     },
   };
   await persistSettings(shop, updated);
+  recordMetric("cms_settings_save_total", {
+    shopId: shop,
+    service: "cms",
+    status: "success",
+  });
   return { settings: updated };
 }
 
@@ -102,6 +123,11 @@ export async function updateReverseLogistics(
     },
   };
   await persistSettings(shop, updated);
+  recordMetric("cms_settings_save_total", {
+    shopId: shop,
+    service: "cms",
+    status: "success",
+  });
   return { settings: updated };
 }
 
@@ -124,6 +150,11 @@ export async function updateUpsReturns(
     },
   };
   await persistSettings(shop, updated);
+  recordMetric("cms_settings_save_total", {
+    shopId: shop,
+    service: "cms",
+    status: "success",
+  });
   return { settings: updated };
 }
 
@@ -146,6 +177,11 @@ export async function updateStockAlert(
     },
   };
   await persistSettings(shop, updated);
+  recordMetric("cms_settings_save_total", {
+    shopId: shop,
+    service: "cms",
+    status: "success",
+  });
   return { settings: updated };
 }
 

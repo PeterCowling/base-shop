@@ -5,6 +5,7 @@ import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";
 import type { Campaign } from "./types";
 import { syncCampaignAnalytics as fetchCampaignAnalytics } from "./analytics";
+import { logger } from "@acme/shared-utils";
 
 export interface Clock {
   now(): Date;
@@ -115,7 +116,7 @@ async function deliverCampaign(shop: string, c: Campaign): Promise<void> {
           html,
         });
       } catch (error) {
-        console.error("Campaign email send failed", { // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
+        logger.error("Campaign email send failed", { // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
           recipient: r,
           campaignId: c.id,
           error,
@@ -178,7 +179,11 @@ export async function createCampaign(opts: {
     try {
       await deliverCampaign(shop, campaign);
     } catch (err) {
-      console.error(`Failed to deliver campaign ${campaign.id}`, err); // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
+      logger.error("Failed to deliver campaign", { // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
+        campaignId: campaign.id,
+        error: err,
+        shop,
+      });
       throw err;
     }
   }
@@ -203,7 +208,11 @@ export async function sendDueCampaigns(): Promise<void> {
         await deliverCampaign(shop, c);
         changed = true;
       } catch (err) {
-        console.error(`Failed to deliver campaign ${c.id}`, err); // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
+        logger.error("Failed to deliver campaign", { // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
+          campaignId: c.id,
+          error: err,
+          shop,
+        });
         failedCampaigns.push({ id: c.id, error: err });
       }
     }
@@ -211,7 +220,9 @@ export async function sendDueCampaigns(): Promise<void> {
   }
   if (failedCampaigns.length > 0) {
     const ids = failedCampaigns.map((f) => f.id).join(", ");
-    console.error(`Failed campaigns: ${ids}`); // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
+    logger.error("Failed campaigns", { // i18n-exempt -- EMAIL-201 operational log [ttl=2026-03-31]
+      campaignIds: ids,
+    });
     if (failedCampaigns.length === 1) {
       throw failedCampaigns[0].error;
     }

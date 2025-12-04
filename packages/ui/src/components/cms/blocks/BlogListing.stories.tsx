@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import BlogListing from "./BlogListing";
 
 const meta: Meta<typeof BlogListing> = {
+  title: "CMS Blocks/BlogListing",
   component: BlogListing,
   args: {
     posts: [

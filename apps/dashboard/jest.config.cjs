@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // Use the monorepo base Jest config, then tailor it for the dashboard app.
+process.env.JEST_FORCE_CJS = "1";
+process.env.BROWSERSLIST_IGNORE_OLD_DATA = "1";
+process.env.BROWSERSLIST_DISABLE_CACHE = "1";
 const base = require("../../jest.config.cjs");
 
 /** @type {import('jest').Config} */

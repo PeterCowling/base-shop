@@ -27,7 +27,7 @@ const ToggleExampleRender = () => {
 
   return (
     <button
-      className="rounded bg-blue-600 px-4 py-2 text-white"
+      className="rounded-md bg-primary px-4 py-2 text-primary-foreground shadow-sm transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       onClick={() => send("toggle")}
     >
       {state === "on" ? "Turn Off" : "Turn On"}

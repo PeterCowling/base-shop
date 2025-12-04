@@ -5,6 +5,7 @@ import { Button } from "@/components/atoms/shadcn";
 import { Alert } from "@/components/atoms";
 import { Inline } from "@ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
 import ThemePreview from "./ThemePreview";
 import PalettePicker from "./PalettePicker";
 import TypographySettings from "./TypographySettings";
@@ -13,6 +14,7 @@ import PresetControls from "./PresetControls";
 import { useThemeEditor } from "./useThemeEditor";
 import BrandIntensitySelector from "./BrandIntensitySelector";
 import PalettePeek from "./PalettePeek";
+import { CmsInlineHelpBanner } from "@ui/components/cms"; // UI: @ui/components/cms/CmsInlineHelpBanner
 
 export { default as ThemePreview } from "./ThemePreview";
 export { default as PalettePicker } from "./PalettePicker";
@@ -59,6 +61,24 @@ export default function ThemeEditor(props: Props) {
 
   return (
     <div className="space-y-4">
+      <CmsInlineHelpBanner
+        heading={String(t("cms.themes.help.heading"))}
+        body={String(t("cms.themes.help.body"))}
+        links={[
+          {
+            id: "open-build-guide",
+            label: String(t("cms.themes.help.openBuildGuide")),
+            href: "/docs/cms/build-shop-guide.md#starter-kits",
+            onClick: () => {
+              track("build_flow_help_requested", {
+                shopId: props.shop,
+                stepId: "theme",
+                surface: "themeEditor",
+              });
+            },
+          },
+        ]}
+      />
       <ThemeSelector
         themes={availableThemes}
         value={theme}

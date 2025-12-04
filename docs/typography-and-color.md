@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Theming
+Last-reviewed: 2025-12-02
+
 # Typography and Colour System
 
 This document explains how font and colour selection works across the Base‑Shop repo. It covers the token model, Tailwind integration, theming and dark mode, CMS selection flows, and accessibility/performance considerations.

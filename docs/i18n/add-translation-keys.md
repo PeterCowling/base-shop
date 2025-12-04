@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: i18n
+Last-reviewed: 2025-12-02
+
 # Add Translation Keys (no-hardcoded-copy)
 
 Purpose: Replace user-visible literals with keys resolved via `t()`.

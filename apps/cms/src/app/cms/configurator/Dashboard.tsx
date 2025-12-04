@@ -6,6 +6,7 @@ import ConfiguratorStepList from "./components/ConfiguratorStepList";
 import { ConfiguratorHero } from "./components/ConfiguratorHero";
 import { LaunchPanel } from "./components/LaunchPanel";
 import { TrackProgressList } from "./components/TrackProgressList";
+import TimeToLaunchHud from "./components/TimeToLaunchHud";
 import { useConfiguratorDashboardState } from "./hooks/useConfiguratorDashboardState";
 import { useTranslations } from "@acme/i18n";
 
@@ -24,6 +25,8 @@ export default function ConfiguratorDashboard() {
     launchPanelData,
     quickLaunch,
     quickLaunchBusy,
+    timeToLaunch,
+    resetTimer,
   } = useConfiguratorDashboardState();
 
   return (
@@ -44,7 +47,8 @@ export default function ConfiguratorDashboard() {
               </ButtonElement>
             </div>
           </div>
-          <div className="lg:col-span-1">
+          <div className="space-y-4 lg:col-span-1">
+            <TimeToLaunchHud data={timeToLaunch} onResetTimer={resetTimer} />
             <LaunchPanel {...launchPanelData} />
           </div>
         </div>

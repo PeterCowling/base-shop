@@ -1,6 +1,18 @@
+Type: Guide
+Status: Reference
+Domain: Inventory
+Last-reviewed: 2025-12-02
+
 # Inventory Migration Plan
 
 This document outlines the strategy for migrating inventory data from existing JSON sources to a more consistent storage layer such as Prisma with a PostgreSQL database. Inventory data currently lives in JSON files.
+
+How to use this doc now:
+
+- Treat this as a **reference migration plan** for legacy shops that still rely on JSON-backed inventory.
+- For new work and current behaviour, consult:
+  - `docs/persistence.md` (backend selection and `*_BACKEND` semantics), and
+  - `packages/platform-core/src/repositories/inventory.*.server.ts` for the current repository implementations.
 
 ## Goals
 

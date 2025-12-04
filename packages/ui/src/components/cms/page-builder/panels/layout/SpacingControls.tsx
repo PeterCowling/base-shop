@@ -45,7 +45,7 @@ export default function SpacingControls({ component, handleInput, handleResize, 
           />
           {isOverridden(cmp["margin"], cmp[`margin${suffix}`]) && (
             <div className="flex items-center gap-2 text-xs">
-              <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("cms.builder.override.activeTag")}</span>
+              <span className="rounded bg-muted px-1 text-primary">{t("cms.builder.override.activeTag")}</span>
               <button
                 type="button"
                 className="underline inline-flex items-center justify-center min-h-10 min-w-10 px-2"
@@ -67,7 +67,7 @@ export default function SpacingControls({ component, handleInput, handleResize, 
           />
           {isOverridden(cmp["padding"], cmp[`padding${suffix}`]) && (
             <div className="flex items-center gap-2 text-xs">
-              <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("cms.builder.override.activeTag")}</span>
+              <span className="rounded bg-muted px-1 text-primary">{t("cms.builder.override.activeTag")}</span>
               <button
                 type="button"
                 className="underline inline-flex items-center justify-center min-h-10 min-w-10 px-2"

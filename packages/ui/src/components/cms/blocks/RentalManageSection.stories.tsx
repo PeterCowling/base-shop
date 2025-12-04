@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import RentalManageSection from "./RentalManageSection";
 
 const meta: Meta<typeof RentalManageSection> = {
+  title: "CMS Blocks/RentalManageSection",
   component: RentalManageSection,
   args: {
     rentalId: "r-1",

@@ -1,7 +1,8 @@
 // apps/cms/src/app/api/shops/route.ts
 
 import { NextResponse } from "next/server";
-import { listShops } from "../../../lib/listShops";
+import { listShopSummaries } from "../../../lib/listShops";
+import { logger } from "@acme/shared-utils";
 
 export const runtime = "nodejs";
 
@@ -13,10 +14,10 @@ export const runtime = "nodejs";
  */
 export async function GET() {
   try {
-    const shops = await listShops();
+    const shops = await listShopSummaries();
     return NextResponse.json(shops);
   } catch (err) {
-    console.error("[api/shops:GET] error", err);
+    logger.error("[api/shops:GET] error", { error: err });
     return NextResponse.json(
       { error: (err as Error).message },
       { status: 500 }

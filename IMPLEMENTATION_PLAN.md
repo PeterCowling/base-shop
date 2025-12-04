@@ -1,3 +1,8 @@
+Type: Plan
+Status: Active
+Domain: Base-Shop
+Last-reviewed: 2025-12-02
+
 “Base-Shop” — Implementation Plan
 rev 2025-06-21 · Sprint 5 status update ①
 

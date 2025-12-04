@@ -1,3 +1,12 @@
+Type: Contract
+Status: Canonical
+Domain: Platform
+Last-reviewed: 2025-12-02
+
+Canonical code:
+- apps/**
+- packages/**
+
 # Architecture
 
 For testing guidance, see [testing](../__tests__/docs/testing.md).

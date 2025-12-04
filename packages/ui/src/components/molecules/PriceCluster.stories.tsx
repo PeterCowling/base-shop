@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { PriceCluster } from "./PriceCluster";
 
 const meta: Meta<typeof PriceCluster> = {
+  title: "Molecules/PriceCluster",
   component: PriceCluster,
   args: {
     price: 80,

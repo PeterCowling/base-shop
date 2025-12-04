@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: i18n
+Last-reviewed: 2025-12-02
+
 # `resolveText` and `useTextResolver`
 
 Purpose: Provide a single, typed way to render translatable props while remaining backwards compatible with legacy strings.

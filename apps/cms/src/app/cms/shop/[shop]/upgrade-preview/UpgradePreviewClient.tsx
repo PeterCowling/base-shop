@@ -5,8 +5,14 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import type { UpgradeComponent } from "@acme/types/upgrade";
 import ComponentPreview from "@ui/components/ComponentPreview";
-import { Card, CardContent, Skeleton } from "@ui/components/atoms";
+import { Button, Card, CardContent, Skeleton } from "@ui/components/atoms";
 import { Grid as DSGrid } from "@ui/components/atoms/primitives";
+import {
+  CmsInlineHelpBanner,
+  CmsLaunchChecklist,
+  type CmsLaunchChecklistItem,
+  type CmsLaunchStatus,
+} from "@ui/components/cms"; // UI: @ui/components/cms/CmsInlineHelpBanner, CmsLaunchChecklist
 import { z } from "zod";
 
 interface Summary {
@@ -33,6 +39,8 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
   const [changes, setChanges] = useState<UpgradeComponent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [publishing, setPublishing] = useState(false);
+  const [publishMessage, setPublishMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -83,6 +91,58 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
 
   const emptyState = !loading && !error && summary.total === 0;
 
+  const readinessChecklist = useMemo<CmsLaunchChecklistItem[]>(() => {
+    const statusLabel = (status: CmsLaunchStatus): string => {
+      if (status === "complete") {
+        return String(t("cms.configurator.launchChecklist.status.complete"));
+      }
+      if (status === "error") {
+        return String(t("cms.configurator.launchChecklist.status.error"));
+      }
+      if (status === "warning") {
+        return String(t("cms.configurator.launchChecklist.status.warning"));
+      }
+      return String(t("cms.configurator.launchChecklist.status.pending"));
+    };
+
+    const items: CmsLaunchChecklistItem[] = [];
+
+    const previewStatus: CmsLaunchStatus =
+      loading ? "pending" : error ? "error" : "complete";
+    items.push({
+      id: "preview-loaded",
+      label: String(t("cms.upgrade.readiness.previewLoaded")),
+      status: previewStatus,
+      statusLabel: statusLabel(previewStatus),
+    });
+
+    const hasChanges = summary.total > 0;
+    const changesStatus: CmsLaunchStatus =
+      loading ? "pending" : hasChanges ? "complete" : "warning";
+    items.push({
+      id: "changes-detected",
+      label: String(t("cms.upgrade.readiness.hasChanges")),
+      status: changesStatus,
+      statusLabel: statusLabel(changesStatus),
+    });
+
+    const readyToPublishStatus: CmsLaunchStatus =
+      loading || !!error
+        ? "pending"
+        : hasChanges
+          ? "complete"
+          : "warning";
+
+    items.push({
+      id: "ready-to-publish",
+      label: String(t("cms.upgrade.readiness.readyToPublish")),
+      status: readyToPublishStatus,
+      statusLabel: statusLabel(readyToPublishStatus),
+    });
+
+    return items;
+  }, [loading, error, summary.total, t]);
+
   const skeletons = useMemo(
     () =>
       Array.from({ length: 3 }).map((_, index) => (
@@ -101,8 +161,53 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
     []
   );
 
+  async function handlePublish() {
+    setPublishing(true);
+    setPublishMessage(null);
+    try {
+      const res = await fetch(`/api/shop/${shop}/republish`, {
+        method: "POST",
+      });
+
+      if (!res.ok) {
+        const data: unknown = await res.json().catch(() => ({}));
+        if (typeof data === "object" && data && "error" in data) {
+          const { error: errMsg } = data as { error?: unknown };
+          if (typeof errMsg === "string" && errMsg.trim().length > 0) {
+            throw new Error(errMsg);
+          }
+        }
+        throw new Error(t("cms.upgrade.publish.error") as string);
+      }
+
+      setPublishMessage(t("cms.upgrade.publish.success") as string);
+    } catch (err) {
+      const fallback = t("cms.upgrade.publish.error") as string;
+      const message =
+        err instanceof Error && err.message.trim().length > 0
+          ? err.message
+          : fallback;
+      // i18n-exempt -- CMS-201 developer log; not user-facing copy [ttl=2026-03-31]
+      console.error("Publish upgrade failed", err);
+      setPublishMessage(message);
+    } finally {
+      setPublishing(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
+      <CmsInlineHelpBanner
+        heading={String(t("cms.upgrade.summary.heading"))}
+        body={String(t("cms.upgrade.prepare.desc"))}
+        links={[
+          {
+            id: "upgrade-docs",
+            label: String(t("cms.upgrade.viewSteps")),
+            href: "/docs/upgrade-preview-republish.md",
+          },
+        ]}
+      />
       <Card>
         <CardContent className="space-y-4 p-6">
           {loading ? (
@@ -131,6 +236,12 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
                     : t("cms.upgrade.noUpdates")}
                   </p>
                 </div>
+                <CmsLaunchChecklist
+                  heading={String(t("cms.upgrade.readiness.heading"))}
+                  readyLabel={String(t("cms.upgrade.readiness.readyLabel"))}
+                  showReadyCelebration
+                  items={readinessChecklist}
+                />
                 {summary.total > 0 && (
                   <dl className="grid gap-4 sm:grid-cols-3">
                     <div>
@@ -155,6 +266,33 @@ export default function UpgradePreviewClient({ shop }: { shop: string }) {
                 )}
               </div>
           )}
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="flex flex-col gap-3 p-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="space-y-1">
+            <h2 className="text-lg font-semibold">
+              {t("cms.upgrade.publish.cta")}
+            </h2>
+            {publishMessage ? (
+              <p className="text-muted-foreground text-sm">{publishMessage}</p>
+            ) : (
+              <p className="text-muted-foreground text-sm">
+                {t("cms.upgrade.prepare.desc")}
+              </p>
+            )}
+          </div>
+          <Button
+            type="button"
+            className="min-w-40"
+            disabled={publishing || !!error}
+            onClick={handlePublish}
+          >
+            {publishing
+              ? (t("cms.upgrade.publish.loading") as string)
+              : (t("cms.upgrade.publish.cta") as string)}
+          </Button>
         </CardContent>
       </Card>
 

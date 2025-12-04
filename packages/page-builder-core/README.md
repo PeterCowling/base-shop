@@ -6,7 +6,7 @@ See:
 
 - `docs/architecture.md` – package layering and public surfaces.
 - `docs/platform-vs-apps.md` – platform vs apps responsibilities and public API.
-- `docs/cms-research.md` (§“Templates/prefabs and evolution”) – planned data contracts for templates and Page Builder state.
+- `docs/historical/cms-research.md` (§“Templates/prefabs and evolution”) – planned data contracts for templates and Page Builder state (historical research log).
 
 Page Builder domain behaviour should live here first and then be consumed from `@acme/page-builder-ui`, `@acme/templates`, CMS, and apps via the public exports, rather than importing internal `src/` files.
 
@@ -39,6 +39,12 @@ At the moment the public exports are:
 - `BlockTypeId`, `BlockProps`, `BlockFeatureFlags`, `BlockDescriptor`, `BlockDescriptorMap`, `BlockRegistry`, `buildBlockRegistry`, `coreBlockDescriptors` – shared block‑registry contracts and core descriptors used by both CMS and runtime apps (see PB‑03).
 
 As further PB tasks land (`PB-05`, `PB-06`), additional shared schemas and helpers will be exported from `src/index.ts` and documented here.
+
+## Versioning and changelog
+
+- Starts at `1.0.0` (PB‑N03) and follows semver for all public exports and observable behaviour.
+- Record every breaking/additive/fix change in `packages/page-builder-core/CHANGELOG.md` and update this README when the public surface changes.
+- Keep new APIs behind `src/index.ts` exports and describe any contract updates in the changelog entry.
 
 ## Block registry quickstart
 

@@ -1,5 +1,12 @@
 import fs from "fs/promises";
-import { listShops } from "../listShops";
+import fs from "fs/promises";
+import * as dataRootModule from "@platform-core/dataRoot";
+import { listShops, listShopSummaries } from "../listShops";
+import { logger } from "@acme/shared-utils";
+
+jest.mock("@acme/shared-utils", () => ({
+  logger: { error: jest.fn() },
+}));
 
 describe("listShops", () => {
   afterEach(() => {
@@ -28,12 +35,58 @@ describe("listShops", () => {
     const err: NodeJS.ErrnoException = new Error("boom");
     err.code = "EACCES";
     jest.spyOn(fs, "readdir").mockRejectedValueOnce(err);
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation();
 
     await expect(listShops()).rejects.toBe(err);
-    expect(consoleSpy).toHaveBeenCalledWith(
-      expect.stringContaining("Failed to list shops at"),
-      err,
+    expect(logger.error).toHaveBeenCalled();
+  });
+});
+
+describe("listShopSummaries", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it("returns defaults when deploy metadata missing", async () => {
+    jest.spyOn(dataRootModule, "resolveDataRoot").mockReturnValue("/data");
+    jest.spyOn(fs, "readdir").mockResolvedValueOnce([
+      { name: "shop-a", isDirectory: () => true },
+    ] as unknown as fs.Dirent[]);
+    jest.spyOn(fs, "readFile").mockRejectedValueOnce(Object.assign(new Error("nope"), { code: "ENOENT" }));
+
+    await expect(listShopSummaries()).resolves.toEqual([
+      {
+        id: "shop-a",
+        name: "shop-a",
+        region: null,
+        pending: 0,
+        status: "unknown",
+        lastUpgrade: null,
+      },
+    ]);
+  });
+
+  it("derives status and lastUpgrade from deploy.json", async () => {
+    jest.spyOn(dataRootModule, "resolveDataRoot").mockReturnValue("/data");
+    jest.spyOn(fs, "readdir").mockResolvedValueOnce([
+      { name: "shop-a", isDirectory: () => true },
+    ] as unknown as fs.Dirent[]);
+    jest.spyOn(fs, "readFile").mockResolvedValueOnce(
+      JSON.stringify({
+        testsStatus: "passed",
+        lastTestedAt: "2025-01-01T00:00:00Z",
+        region: "NA",
+      })
     );
+
+    await expect(listShopSummaries()).resolves.toEqual([
+      {
+        id: "shop-a",
+        name: "shop-a",
+        region: "NA",
+        pending: 0,
+        status: "up_to_date",
+        lastUpgrade: "2025-01-01T00:00:00Z",
+      },
+    ]);
   });
 });

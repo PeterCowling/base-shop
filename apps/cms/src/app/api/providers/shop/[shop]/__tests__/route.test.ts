@@ -29,7 +29,7 @@ describe("POST", () => {
     __setMockSession({ user: { role: "admin" } } as any);
     parseJsonBody.mockResolvedValue({
       success: true,
-      data: { payment: ["stripe"], shipping: ["ups"] },
+      data: { payment: ["stripe"], billingProvider: "stripe", shipping: ["ups"] },
     });
 
     const res = await POST(req(), { params: Promise.resolve({ shop: "shop1" }) });
@@ -38,7 +38,7 @@ describe("POST", () => {
     expect(await res.json()).toEqual({ success: true });
     expect(writeJsonFile).toHaveBeenCalledWith(
       path.join("/tmp/data", "shop1", "providers.json"),
-      { payment: ["stripe"], shipping: ["ups"] },
+      { payment: ["stripe"], billingProvider: "stripe", shipping: ["ups"] },
     );
   });
 

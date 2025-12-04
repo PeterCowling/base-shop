@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { HomepageTemplate } from "./HomepageTemplate";
 
 const meta: Meta<typeof HomepageTemplate> = {
+  title: "Templates/HomepageTemplate",
   component: HomepageTemplate,
   args: {
     hero: "Hero section",
@@ -16,4 +17,23 @@ const meta: Meta<typeof HomepageTemplate> = {
 };
 export default meta;
 
-export const Default: StoryObj<typeof HomepageTemplate> = {};
+type Story = StoryObj<typeof HomepageTemplate>;
+const baseArgs = meta.args!;
+
+export const Default: Story = {};
+export const Loading: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "loading" },
+};
+export const Empty: Story = {
+  args: { hero: "", recommendations: "", children: "" },
+  parameters: { dataState: "empty" },
+};
+export const Error: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "error" },
+};
+export const RTL: Story = {
+  args: { ...baseArgs },
+  parameters: { rtl: true },
+};

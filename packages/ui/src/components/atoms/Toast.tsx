@@ -2,9 +2,17 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
 import { useTranslations } from "@acme/i18n";
+import { Inline } from "./primitives/Inline";
 
 type ToastVariant = "default" | "success" | "info" | "warning" | "danger" | "error";
 type ToastTone = "soft" | "solid";
+type ToastPlacement =
+  | "top-start"
+  | "top-center"
+  | "top-end"
+  | "bottom-start"
+  | "bottom-center"
+  | "bottom-end";
 
 export interface ToastProps extends React.HTMLAttributes<HTMLDivElement> {
   open: boolean;
@@ -12,6 +20,19 @@ export interface ToastProps extends React.HTMLAttributes<HTMLDivElement> {
   message: string;
   variant?: ToastVariant;
   tone?: ToastTone;
+  /**
+   * Optional action button.
+   */
+  actionLabel?: string;
+  onAction?: () => void;
+  /**
+   * Auto-hide duration in ms. If provided, toast will close after this delay.
+   */
+  duration?: number;
+  /**
+   * Position of the toast on screen.
+   */
+  placement?: ToastPlacement;
 }
 
 const SOFT_BG: Record<Exclude<ToastVariant, "error">, string> = {
@@ -54,9 +75,40 @@ const TOKEN_FG: Record<Exclude<ToastVariant, "error">, string> = {
   danger: "--color-danger-fg",
 };
 
+// i18n-exempt -- UI-000: CSS utility class names for placement, not user-facing copy [ttl=2026-01-31]
+const PLACEMENT_CLASSES: Record<ToastPlacement, string> = {
+  "bottom-center": "bottom-4 start-1/2 -translate-x-1/2", // i18n-exempt -- UI-000: placement utility class string [ttl=2026-01-31]
+  "bottom-start": "bottom-4 start-4", // i18n-exempt -- UI-000: placement utility class string [ttl=2026-01-31]
+  "bottom-end": "bottom-4 end-4", // i18n-exempt -- UI-000: placement utility class string [ttl=2026-01-31]
+  "top-center": "top-4 start-1/2 -translate-x-1/2", // i18n-exempt -- UI-000: placement utility class string [ttl=2026-01-31]
+  "top-start": "top-4 start-4", // i18n-exempt -- UI-000: placement utility class string [ttl=2026-01-31]
+  "top-end": "top-4 end-4", // i18n-exempt -- UI-000: placement utility class string [ttl=2026-01-31]
+};
+
 export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
-  ({ open, onClose, message, className, variant = "default", tone = "soft", ...props }, ref) => {
+  (
+    {
+      open,
+      onClose,
+      message,
+      className,
+      variant = "default",
+      tone = "soft",
+      actionLabel,
+      onAction,
+      duration,
+      placement = "bottom-center",
+      ...props
+    },
+    ref,
+  ) => {
     const t = useTranslations();
+    React.useEffect(() => {
+      if (!open || !duration || !onClose) return;
+      const timer = window.setTimeout(onClose, duration);
+      return () => window.clearTimeout(timer);
+    }, [open, duration, onClose]);
+
     if (!open) return null;
     // Back-compat: "error" maps to "danger"
     const v = variant === "error" ? "danger" : variant;
@@ -64,11 +116,13 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
     const fgClass = tone === "solid" ? FG[v] : "text-fg";
     const token = TOKEN_BG[v];
     const tokenFg = TOKEN_FG[v];
+    const closeLabel = t("actions.close") as string;
     return (
       <div
         ref={ref}
         className={cn(
-          "fixed bottom-4 start-1/2 z-50 -translate-x-1/2 rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 w-full sm:w-96 break-words", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+          "fixed z-50 rounded-md border border-border-2 px-4 py-2 shadow-elevation-3 w-full sm:w-96 break-words", // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+          PLACEMENT_CLASSES[placement],
           bgClass,
           fgClass,
           className
@@ -79,18 +133,32 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>(
         aria-atomic="true"
         {...props}
       >
-        <span data-token={tokenFg}>{message}</span>
-        {onClose && (
-          <button
-            type="button"
-            onClick={onClose}
-            className="ms-2 font-bold inline-flex items-center justify-center min-h-11 min-w-11" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
-            data-token={tokenFg}
-            aria-label={t("actions.close") as string}
-          >
-            ×
-          </button>
-        )}
+        <Inline gap={3} alignY="start" wrap={false} className="items-start">
+          <span className="grow" data-token={tokenFg}>{message}</span>
+          <Inline gap={2} wrap={false} alignY="center" className="shrink-0">
+            {onAction && actionLabel ? (
+              <button
+                type="button"
+                onClick={onAction}
+                className="text-sm font-semibold underline underline-offset-2 decoration-current inline-flex min-h-11 min-w-11 items-center justify-center px-2" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+                data-token={tokenFg}
+              >
+                {actionLabel}
+              </button>
+            ) : null}
+            {onClose && (
+              <button
+                type="button"
+                onClick={onClose}
+                className="ms-1 font-bold inline-flex min-h-11 min-w-11 items-center justify-center" // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
+                data-token={tokenFg}
+                aria-label={closeLabel}
+              >
+                ×
+              </button>
+            )}
+          </Inline>
+        </Inline>
       </div>
     );
   }

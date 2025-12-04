@@ -171,12 +171,12 @@ const TextBlockView = ({
         />
       )}
       {kbResizing && (
-        <div className="pointer-events-none absolute -top-5 start-0 z-30 rounded bg-black/75 px-1 font-mono text-xs text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-5 start-0 z-30 rounded bg-foreground/75 px-1 font-mono text-xs text-foreground shadow dark:bg-card/75 dark:text-foreground">
           {containerRef.current ? `${Math.round(containerRef.current.offsetWidth)}×${Math.round(containerRef.current.offsetHeight)}` : ""}
         </div>
       )}
       {rotating && (
-        <div className="pointer-events-none absolute -top-8 start-1/2 z-30 -translate-x-1/2 rounded bg-black/75 px-1 font-mono text-xs text-white shadow dark:bg-white/75 dark:text-black">
+        <div className="pointer-events-none absolute -top-8 start-1/2 z-30 -translate-x-1/2 rounded bg-foreground/75 px-1 font-mono text-xs text-foreground shadow dark:bg-card/75 dark:text-foreground">
           {Math.round(rotateAngle)}°
         </div>
       )}
@@ -272,7 +272,7 @@ const TextBlockView = ({
                 title={"Rotate (Shift = precise)" /* i18n-exempt: internal builder hint */}
                 className="h-3 w-3 cursor-crosshair rounded-full bg-primary"
               />
-              <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-black/60 px-1 text-xs text-white opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-white/70 dark:text-black">
+              <div className="pointer-events-none absolute -top-7 start-1/2 -translate-x-1/2 rounded bg-foreground/60 px-1 text-xs text-foreground opacity-0 shadow transition-opacity duration-200 delay-200 group-hover:opacity-100 group-hover:delay-0 dark:bg-card/70 dark:text-foreground">
                 {/* i18n-exempt: internal builder hint */}Shift = precise
               </div>
             </div>

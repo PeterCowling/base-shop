@@ -4,6 +4,7 @@ import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
 
 const meta: Meta<typeof ProductCarousel> = {
+  title: "CMS Blocks/ProductCarousel",
   component: ProductCarousel,
   args: { skus: PRODUCTS as SKU[] },
 };

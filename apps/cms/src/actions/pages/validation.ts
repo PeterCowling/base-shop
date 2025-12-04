@@ -36,6 +36,7 @@ const baseSchema = z
   .object({
     slug: z.string().optional().default(""), // allow empty slug on create
     status: z.enum(["draft", "published"]).default("draft"),
+    stableId: z.string().optional().default(""),
     image: z
       .string()
       .optional()

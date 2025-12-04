@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Platform
+Last-reviewed: 2025-12-02
+
 # Machine Utilities
 
 ## Deposit release service

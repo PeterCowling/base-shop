@@ -52,7 +52,7 @@ export default function AccountSection({ showDashboard = true, showOrders = true
         {showDashboard ? (
           <div className="rounded border p-4">
             <h3 className="mb-2 text-lg font-semibold">{t("Dashboard")}</h3>
-            <ul className="text-sm text-neutral-700">
+            <ul className="text-sm text-muted-foreground">
               <li>{t("Orders:") } {orders.length}</li>
               <li>{t("Active rentals:") } {rentals.filter((r) => !r.returnedAt).length}</li>
             </ul>
@@ -61,7 +61,7 @@ export default function AccountSection({ showDashboard = true, showOrders = true
         {showOrders ? (
           <div className="rounded border p-4 md:col-span-2">
             <h3 className="mb-2 text-lg font-semibold">{t("Orders")}</h3>
-            {loading && orders.length === 0 ? <div className="text-sm text-neutral-600">{t("Loading…")}</div> : null}
+            {loading && orders.length === 0 ? <div className="text-sm text-muted-foreground">{t("Loading…")}</div> : null}
             {orders.length ? (
               <table className="w-full text-sm">
                 <thead>
@@ -86,14 +86,14 @@ export default function AccountSection({ showDashboard = true, showOrders = true
                 </tbody>
               </table>
             ) : (
-              <div className="text-sm text-neutral-600">{t("No orders yet.")}</div>
+              <div className="text-sm text-muted-foreground">{t("No orders yet.")}</div>
             )}
           </div>
         ) : null}
         {showRentals ? (
           <div className="rounded border p-4 md:col-span-2">
             <h3 className="mb-2 text-lg font-semibold">{t("Rentals")}</h3>
-            {loading && rentals.length === 0 ? <div className="text-sm text-neutral-600">{t("Loading…")}</div> : null}
+            {loading && rentals.length === 0 ? <div className="text-sm text-muted-foreground">{t("Loading…")}</div> : null}
             {rentals.length ? (
               <table className="w-full text-sm">
                 <thead>
@@ -118,7 +118,7 @@ export default function AccountSection({ showDashboard = true, showOrders = true
                 </tbody>
               </table>
             ) : (
-              <div className="text-sm text-neutral-600">{t("No rentals yet.")}</div>
+              <div className="text-sm text-muted-foreground">{t("No rentals yet.")}</div>
             )}
           </div>
         ) : null}

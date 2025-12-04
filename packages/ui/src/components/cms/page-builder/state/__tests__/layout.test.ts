@@ -244,7 +244,6 @@ describe("historyStateSchema", () => {
       future: [],
       gridCols: 12,
       editor: {},
-      breakpoints: [],
     });
   });
 });

@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Repo
+Last-reviewed: 2025-12-02
+
 # Troubleshooting
 
 Use this guide to capture detailed logs and resolve common issues in this monorepo.

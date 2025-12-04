@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import CampaignHeroSection from "./CampaignHeroSection";
 
 const meta: Meta<typeof CampaignHeroSection> = {
+  title: "CMS Blocks/CampaignHeroSection",
   component: CampaignHeroSection,
   args: {
     mediaType: "image",

@@ -143,7 +143,7 @@ export default function SocialProof({
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 {(u.author || u.handle) && (
-                  <span className="absolute bottom-1 start-1 rounded bg-black/60 px-1.5 py-0.5 text-xs text-white">{u.author || u.handle}</span>
+                  <span className="absolute bottom-1 start-1 rounded bg-foreground/60 px-1.5 py-0.5 text-xs text-foreground">{u.author || u.handle}</span>
                 )}
               </a>
             ))}
@@ -158,12 +158,12 @@ export default function SocialProof({
                 {inf.avatarSrc ? (
                   <Image src={inf.avatarSrc} alt={inf.name} width={40} height={40} className="rounded-full object-cover" />
                 ) : (
-                  <div className="h-10 w-10 rounded-full bg-neutral-200" />
+                  <div className="h-10 w-10 rounded-full bg-muted" />
                 )}
                 <div className="text-start">
                   <div className="font-medium">{inf.name}</div>
-                  {inf.handle ? <div className="text-xs text-neutral-600">{inf.handle}</div> : null}
-                  {inf.quote ? <div className="text-sm text-neutral-800">“{inf.quote}”</div> : null}
+                  {inf.handle ? <div className="text-xs text-muted-foreground">{inf.handle}</div> : null}
+                  {inf.quote ? <div className="text-sm text-foreground">“{inf.quote}”</div> : null}
                 </div>
               </a>
             ))}

@@ -7,14 +7,14 @@ describe("Loader", () => {
   it("applies default size classes", () => {
     const { container } = render(<Loader />);
     const div = container.firstChild as HTMLElement;
-    expect(div).toHaveClass("h-[20px]");
-    expect(div).toHaveClass("w-[20px]");
+    expect(div).toHaveStyle({ width: "20px", height: "20px" });
+    expect(div).toHaveAttribute("role", "status");
   });
 
   it("accepts custom size", () => {
     const { container } = render(<Loader size={40} />);
     const div = container.firstElementChild as HTMLDivElement;
-    expect(div).toHaveClass("h-[40px] w-[40px]");
+    expect(div).toHaveStyle({ width: "40px", height: "40px" });
   });
 
   it("merges class names", () => {

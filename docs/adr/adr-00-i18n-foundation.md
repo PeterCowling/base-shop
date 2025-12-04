@@ -1,3 +1,6 @@
+Type: ADR
+Status: Proposed
+
 # ADR-00: i18n Foundation — Keys, Fallbacks, and Guardrails
 
 - Status: Proposed
@@ -135,4 +138,3 @@ Prop usage
 - Keep `en.json` as the source of truth during migration and use a fill‑locales helper to ensure `de.json` and `it.json` stay key‑synchronized.
 - When renaming keys in Step 2, produce `docs/i18n/key-rename-map.md` mapping old → new keys to aid code reviewers and authors.
 - After Step 3, verify SSR pages like `/de/...` and `/it/...` render localized content without hydration warnings.
-

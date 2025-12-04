@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Theming
+Last-reviewed: 2025-12-02
+
 # Theming and Live Preview
 
 Base themes provide the starting set of design tokens for a shop. The **Theme Editor** lets you pick a base theme and layer token overrides on top. Overrides merge with the base tokens and are persisted with the shop so they can be shared across sessions.

@@ -11,7 +11,6 @@ import type { SKU } from '@acme/types';
 const meta: Meta<typeof ProductBundle> = {
   title: 'CMS Blocks/ProductBundle/Matrix',
   component: ProductBundle,
-  parameters: { docs: { autodocs: false } },
   args: { discount: fixture.discount, quantity: fixture.quantity, skus: (PRODUCTS as SKU[]).slice(0, 2) },
   parameters: { docs: { description: { component: 'Bundle display showing combined price with optional percentage discount.' } } },
 };
@@ -24,3 +23,8 @@ try { z.object({ discount: z.number().optional(), quantity: z.number().optional(
 
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });
+export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });

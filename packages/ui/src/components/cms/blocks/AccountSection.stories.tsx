@@ -3,6 +3,7 @@ import AccountSection from "./AccountSection";
 import type { RentalOrder } from "@acme/types";
 
 const meta: Meta<typeof AccountSection> = {
+  title: "CMS Blocks/AccountSection",
   component: AccountSection,
   args: {
     showDashboard: true,

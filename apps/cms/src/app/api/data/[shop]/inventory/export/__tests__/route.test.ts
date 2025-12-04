@@ -112,4 +112,16 @@ describe("GET", () => {
     expect(res.status).toBe(400);
     expect(await res.json()).toEqual({ error: "oops" });
   });
+
+  it("returns 503 when backend delegate is unavailable", async () => {
+    __setMockSession({ user: { role: "admin" } } as any);
+    read.mockRejectedValue(new Error("Prisma inventory delegate is unavailable"));
+    const res = await GET(req("http://test.local"), {
+      params: Promise.resolve({ shop: "s1" }),
+    });
+    expect(res.status).toBe(503);
+    expect(await res.json()).toEqual({
+      error: "Prisma inventory delegate is unavailable",
+    });
+  });
 });

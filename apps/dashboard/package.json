@@ -1,6 +1,9 @@
 {
   "name": "@apps/dashboard",
   "private": true,
+  "dependencies": {
+    "@acme/telemetry": "workspace:*"
+  },
   "scripts": {
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",
     "lint": "eslint ."

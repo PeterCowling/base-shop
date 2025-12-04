@@ -5,7 +5,7 @@
 import * as React from "react";
 import { cn } from "../../../utils/style";
 import { Inline } from "./Inline";
-import { Stack } from "./Stack";
+import { FormField } from "../FormField";
 
 /* ──────────────────────────────────────────────────────────────────────────────
  * Props
@@ -18,6 +18,8 @@ export interface InputProps
   labelSuffix?: React.ReactNode;
   /** Error message shown below the control */
   error?: React.ReactNode;
+  /** Optional helper/description text */
+  description?: React.ReactNode;
   /** Enable floating-label style */
   floatingLabel?: boolean;
   /** Extra class on the outer wrapper */
@@ -34,6 +36,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
       label,
       labelSuffix,
       error,
+      description,
       floatingLabel,
       wrapperClassName,
       id,
@@ -91,75 +94,73 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
      *  Render
      * ------------------------------------------------------------------ */
     return (
-      <Stack gap={1} className={wrapperClassName}>
-        {floatingLabel ? (
-          <div className="relative">
+      <FormField
+        id={inputId}
+        label={
+          !floatingLabel && (label || labelSuffix) ? (
+            <Inline wrap={false} gap={1}>
+              {label && <span>{label}</span>}
+              {labelSuffix}
+            </Inline>
+          ) : undefined
+        }
+        description={description}
+        error={error}
+        required={props.required}
+        className={wrapperClassName}
+        // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: FormField render prop supplies control ids and describedBy; hoisting would require larger refactor
+        input={({ id: controlId, describedBy, ariaInvalid }) =>
+          floatingLabel ? (
+            <div className="relative">
+              <input
+                id={controlId}
+                ref={ref}
+                data-token="--color-bg"
+                className={baseClasses}
+                aria-invalid={ariaInvalid}
+                aria-describedby={describedBy}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                {...props}
+              />
+              {(label || labelSuffix) && (
+                <Inline
+                  wrap={false}
+                  gap={1}
+                  className="absolute top-2 ms-3 pointer-events-none"
+                >
+                  {label && (
+                    <label
+                      htmlFor={controlId}
+                      className={cn(
+                        "text-muted-foreground pointer-events-none transition-all", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                        (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
+                      )}
+                    >
+                      {label}
+                    </label>
+                  )}
+                  {labelSuffix ? (
+                    <span className="pointer-events-auto">{labelSuffix}</span>
+                  ) : null}
+                </Inline>
+              )}
+            </div>
+          ) : (
             <input
-              id={inputId}
+              id={controlId}
               ref={ref}
               data-token="--color-bg"
               className={baseClasses}
-              aria-invalid={error ? true : undefined}
+              aria-invalid={ariaInvalid}
+              aria-describedby={describedBy}
               onFocus={handleFocus}
               onBlur={handleBlur}
               {...props}
             />
-            {(label || labelSuffix) && (
-              <Inline
-                wrap={false}
-                gap={1}
-                className="absolute top-2 ms-3 pointer-events-none"
-              >
-                {label && (
-                  <label
-                    htmlFor={inputId}
-                    className={cn(
-                      "text-muted-foreground pointer-events-none transition-all", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-                      (focused || hasValue) && "-translate-y-3 text-xs" // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-                    )}
-                  >
-                    {label}
-                  </label>
-                )}
-                {labelSuffix ? (
-                  <span className="pointer-events-auto">{labelSuffix}</span>
-                ) : null}
-              </Inline>
-            )}
-          </div>
-        ) : (
-          <>
-            {(label || labelSuffix) && (
-              <Inline wrap={false} gap={1}>
-                {label && (
-                  <label
-                    htmlFor={inputId}
-                    className="block text-sm font-medium"
-                  >
-                    {label}
-                  </label>
-                )}
-                {labelSuffix}
-              </Inline>
-            )}
-            <input
-              id={inputId}
-              ref={ref}
-              data-token="--color-bg"
-              className={baseClasses}
-              aria-invalid={error ? true : undefined}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              {...props}
-            />
-          </>
-        )}
-        {error && (
-          <p className="text-sm text-danger" data-token="--color-danger"> {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] */}
-            {error}
-          </p>
-        )}
-      </Stack>
+          )
+        }
+      />
     );
   }
 );

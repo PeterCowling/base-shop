@@ -1,6 +1,12 @@
+Type: Plan
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+Relates-to charter: docs/cms/cms-charter.md
+
 # Thread A – Overall architecture & boundaries
 
-This thread operationalises §1 of `docs/cms-research.md` into concrete work.
+This thread operationalises §1 of `docs/historical/cms-research.md` into concrete work.
 
 It focuses on:
 
@@ -46,7 +52,7 @@ Each task is intended to be executable in a single focused Codex run.
     - Add/extend a doc (e.g. `docs/architecture.md` or a new `docs/platform-vs-apps.md`) that:
       - Lists allowed `@acme/platform-core` and `@acme/ui` import subpaths for apps and CMS.
       - Clearly labels internal paths (e.g. `*.prisma.server.ts`, `*.json.server.ts`, `src/internal/**`).
-    - Cross-link from `docs/cms-research.md` and any relevant package-level `README`s.
+- Cross-link from `docs/historical/cms-research.md` and any relevant package-level `README`s.
   - Definition of done:
     - One canonical document enumerating the public API surfaces and import rules.
     - At least one app (`apps/skylar` or `apps/cover-me-pretty`) checked and updated to comply with the documented import rules where trivial.

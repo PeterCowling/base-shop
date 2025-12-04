@@ -25,7 +25,7 @@ jest.mock("../hooks/usePreviewTokens", () => () => ({
 }));
 
 describe("Palette", () => {
-  test("search input, text theme apply event, and My Library actions render", () => {
+  test("search input, text theme apply event, and My Library actions render", async () => {
     const silence = jest.spyOn(console, 'error').mockImplementation(() => {});
     const fetchMock = jest.spyOn(global, "fetch" as any).mockResolvedValue({ ok: true, json: async () => [] } as any);
     localStorage.setItem("pb:recent-types", JSON.stringify(["Text"]));
@@ -51,6 +51,21 @@ describe("Palette", () => {
     expect(apply).toBeInTheDocument();
     const anyButton = screen.getAllByRole("button")[0];
     fireEvent.click(anyButton);
+
+    // "Add Section" template trigger is wired into the palette
+    const addSectionButton = screen.getByRole("button", { name: /Add Section/i });
+    expect(addSectionButton).toBeInTheDocument();
+
+    // Opening presets via the shared pb:open-presets event used by the top bar
+    fireEvent(
+      window,
+      new Event("pb:open-presets")
+    );
+
+    // Selecting a preset from the modal calls onInsertPreset with a PageComponent
+    const heroPresetButton = await screen.findByRole("button", { name: /Hero: Simple/i });
+    fireEvent.click(heroPresetButton);
+    expect(onInsertPreset).toHaveBeenCalledTimes(1);
 
     // Palette renders
     expect(screen.getByPlaceholderText(/Search components/i)).toBeInTheDocument();

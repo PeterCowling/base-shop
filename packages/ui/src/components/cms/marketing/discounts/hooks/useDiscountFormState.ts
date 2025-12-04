@@ -1,3 +1,5 @@
+"use client";
+
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useTranslations } from "@acme/i18n";
 

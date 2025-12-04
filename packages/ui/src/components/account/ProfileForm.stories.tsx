@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/nextjs';
 import ProfileForm from './ProfileForm';
 
 const meta: Meta<typeof ProfileForm> = {
+  title: 'Account/ProfileForm',
   component: ProfileForm,
   tags: ['autodocs'],
   args: { name: 'Ada Lovelace', email: 'ada@example.com' },

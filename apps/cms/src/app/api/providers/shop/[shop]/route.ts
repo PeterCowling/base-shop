@@ -11,6 +11,7 @@ import { writeJsonFile } from "@/lib/server/jsonIO";
 const schema = z
   .object({
     payment: z.array(z.string()).default([]),
+    billingProvider: z.string().optional(),
     shipping: z.array(z.string()).default([]),
   })
   .strict();

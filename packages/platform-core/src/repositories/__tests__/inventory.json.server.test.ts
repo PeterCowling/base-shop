@@ -7,6 +7,7 @@ jest.mock("../../services/stockAlert.server", () => ({ checkAndAlert }));
 
 describe("json inventory repository", () => {
   afterEach(() => {
+    jest.restoreAllMocks();
     jest.resetAllMocks();
   });
 
@@ -222,5 +223,55 @@ describe("json inventory repository", () => {
     expect(data).toEqual([]);
     expect(result).toBeUndefined();
     expect(checkAndAlert).not.toHaveBeenCalled();
+  });
+
+  it("cleans up stale lock files and proceeds", async () => {
+    const handle = { close: jest.fn().mockResolvedValue(undefined) } as any;
+    const open = jest
+      .spyOn(fs, "open")
+      .mockRejectedValueOnce(Object.assign(new Error("exists"), { code: "EEXIST" }))
+      .mockResolvedValueOnce(handle);
+    const stat = jest.spyOn(fs, "stat").mockResolvedValue({ mtimeMs: 0 } as any);
+    const unlink = jest.spyOn(fs, "unlink").mockResolvedValue(undefined);
+    jest.spyOn(fs, "writeFile").mockResolvedValue(undefined);
+    jest.spyOn(fs, "rename").mockResolvedValue(undefined);
+    jest.spyOn(fs, "mkdir").mockResolvedValue(undefined);
+
+    const now = jest.spyOn(Date, "now");
+    now.mockReturnValueOnce(0); // start time
+    now.mockReturnValueOnce(120000); // force timeout/stale check and mark stale
+    now.mockReturnValue(120000);
+
+    process.env.SKIP_STOCK_ALERT = "1";
+    await jsonInventoryRepository.write("shop", [
+      { sku: "a", productId: "p", quantity: 1, variantAttributes: {} },
+    ]);
+
+    expect(open).toHaveBeenCalledTimes(2);
+    expect(stat).toHaveBeenCalled();
+    expect(unlink).toHaveBeenCalled();
+    now.mockRestore();
+  });
+
+  it("throws when lock cannot be acquired before timeout", async () => {
+    jest.spyOn(fs, "open").mockRejectedValue(
+      Object.assign(new Error("exists"), { code: "EEXIST" }),
+    );
+    jest.spyOn(fs, "stat").mockResolvedValue({ mtimeMs: Date.now() } as any);
+    jest.spyOn(fs, "mkdir").mockResolvedValue(undefined);
+
+    const now = jest.spyOn(Date, "now");
+    now.mockReturnValueOnce(0);
+    now.mockReturnValueOnce(6000);
+    now.mockReturnValue(6000);
+
+    process.env.SKIP_STOCK_ALERT = "1";
+    await expect(
+      jsonInventoryRepository.write("shop", [
+        { sku: "a", productId: "p", quantity: 1, variantAttributes: {} },
+      ]),
+    ).rejects.toThrow("Timed out acquiring inventory lock");
+
+    now.mockRestore();
   });
 });

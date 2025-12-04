@@ -1,0 +1,1 @@
+export { logAnalyticsEvent } from "./client";

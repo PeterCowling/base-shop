@@ -79,9 +79,9 @@ export default function CampaignHeroSection({
               </video>
             </div>
           ) : imageSrc ? (
-            <DSImage src={imageSrc} alt={imageAlt ?? ""} cropAspect="16:9" sizes="100vw" priority={false} />
+            <DSImage src={imageSrc} alt={imageAlt ?? ""} cropAspect="16:9" sizes="100vw" />
           ) : (
-            <div className="h-full w-full bg-neutral-200" />
+            <div className="h-full w-full bg-muted" />
           )}
 
           {/* Hotspots */}
@@ -114,10 +114,12 @@ export default function CampaignHeroSection({
             <CountdownTimer targetDate={countdownTarget} timezone={timezone} styles="text-lg font-medium" />
           ) : null}
           {usps.length > 0 ? (
-            <GridPrimitive className="w-full text-center text-sm text-neutral-700 sm:grid-cols-3" cols={1} gap={2}>
+            <GridPrimitive className="w-full text-center text-sm text-muted-foreground sm:grid-cols-3" cols={1} gap={2}>
               <ul className="contents">
                 {usps.map((u) => (
-                  <li key={u} className="rounded border px-3 py-2">{u}</li>
+                  <li key={u} className="rounded border px-3 py-2 bg-card text-foreground">
+                    {u}
+                  </li>
                 ))}
               </ul>
             </GridPrimitive>

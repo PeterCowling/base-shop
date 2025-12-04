@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { ProductGallery } from "./ProductGallery";
 
 const meta: Meta<typeof ProductGallery> = {
+  title: "Organisms/Product Gallery",
   component: ProductGallery,
   args: {
     media: [

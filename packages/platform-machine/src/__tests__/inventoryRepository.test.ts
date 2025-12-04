@@ -98,5 +98,11 @@ describe('inventory repository', () => {
     expect(map).toEqual({ [key1]: items[0], [key2]: items[1] });
     expect(jsonRepo.read).toHaveBeenCalledWith('shop1');
   });
-});
 
+  it('surfaces backend errors instead of falling back', async () => {
+    process.env.INVENTORY_BACKEND = 'prisma';
+    prismaRepo.read.mockRejectedValueOnce(new Error('delegate missing'));
+    const { inventoryRepository } = await import('@acme/platform-core/repositories/inventory.server');
+    await expect(inventoryRepository.read('shop')).rejects.toThrow('delegate missing');
+  });
+});

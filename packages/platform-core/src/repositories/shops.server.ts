@@ -61,6 +61,9 @@ export async function applyThemeData(data: Shop): Promise<Shop> {
     themeOverrides: overrides,
     themeTokens: { ...defaults, ...overrides },
     navigation: data.navigation ?? [],
+    termsUrl: data.termsUrl ?? "https://example.com/terms",
+    privacyUrl: data.privacyUrl ?? "https://example.com/privacy",
+    returnPolicyUrl: data.returnPolicyUrl ?? "https://example.com/returns",
   } as Shop;
 }
 

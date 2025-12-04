@@ -1,7 +1,13 @@
+Type: Guide
+Status: Active
+Domain: UI
+Last-reviewed: 2025-12-02
+
 # Storybook Guide
 
 This project uses **Storybook** for developing and testing UI components.
-The developer instance runs on the Vite builder for fast HMR and startup.
+
+**Builder choice:** we are pinned to the Webpack 5 builder (`apps/storybook/.storybook/main.ts`). We attempted Vite (see `apps/storybook/.storybook/vite.storybook.ts`) and rolled it back because it broke HMR and server/client stubbing for Next 15/React 19. Please do **not** retry Vite unless there is an explicit migration task; it burns time and leaves SB unusable.
 
 ## Running Storybook
 
@@ -36,6 +42,7 @@ most reliable path in this stack (Next 15, React 19) and keeps CI green:
 ```bash
 pnpm test-storybook         # starts SB (CI config) and runs the Playwright smoke tests
 pnpm storybook:smoke        # same, explicit
+pnpm storybook:smoke:ci     # CI-focused Playwright sweep over atoms/molecules/CMS blocks/PageBuilder
 pnpm test-storybook:coverage # start + run the official test-runner with coverage enabled
 ```
 
@@ -54,6 +61,12 @@ Critical stories covered in CI (Matrix):
 - Product Gallery (organisms)
 - Showcase Section (CMS block)
 - Collection Section.client (CMS block)
+- CMS/PageBuilder flows (add/reorder, style edit, template apply, locale/device, checkout composition)
+- CMS/PageBuilder visual matrix (hero → grid → value props → social proof → checkout shell)
+
+Manual guardrails:
+
+- Use `CMS/PageBuilder → Perf probe (50 blocks)` to spot render regressions; it logs initial render time to the console and is tagged `perf` (Chromatic snapshots disabled).
 
 Where the smoke tests live:
 
@@ -79,23 +92,19 @@ class forces dark mode when needed. Theme logic lives in `apps/storybook/.storyb
 
 ## Publishing Previews
 
-Set `CHROMATIC_PROJECT_TOKEN` and run:
+Chromatic is **placeholder only** right now. We are not uploading or gating on Chromatic in the near term.
+If/when we re-enable it, set `CHROMATIC_PROJECT_TOKEN` and run:
 
 ```bash
 pnpm chromatic
 ```
 
 to upload your Storybook to [Chromatic](https://www.chromatic.com/) for visual
-review and regression testing.
+review and regression testing. Until then, leave it disabled.
 
 ### Visual Tests addon (Chromatic)
 
-Storybook now ships with the official Chromatic Visual Tests addon enabled.
-When you run Storybook locally you'll see a **Visual tests** panel where you can
-sign in to Chromatic, link a project, and trigger snapshot builds directly from
-the UI. Use the "Catch a UI change" button to create or update baselines during
-development; any accepted changes will also be honored when Chromatic runs in
-CI.
+The Chromatic Visual Tests addon remains installed but is disabled by default. Do not sign in or trigger snapshots; use the Playwright smoke suites instead. We'll revisit Chromatic when the migration is explicitly scheduled.
 
 ## Date & Time Formatting
 

@@ -11,6 +11,8 @@ import {
 } from "./lineItems";
 import { computeTotals, computeSaleTotals } from "./totals";
 import { buildCheckoutMetadata } from "./metadata";
+import { recordMetric } from "../utils";
+import { incrementOperationalError } from "../shops/health";
 
 export interface CreateCheckoutSessionOptions {
   /**
@@ -61,8 +63,9 @@ export async function createCheckoutSession(
     subtotalExtra = 0,
     depositAdjustment = 0,
   }: CreateCheckoutSessionOptions
-): Promise<{ sessionId: string; clientSecret?: string }> {
-  const couponDef = await findCoupon(shopId, coupon);
+): Promise<{ sessionId: string; clientSecret?: string; amount: number; currency: string; paymentIntentId?: string }> {
+  try {
+    const couponDef = await findCoupon(shopId, coupon);
   if (couponDef) {
     await trackEvent(shopId, { type: "discount_redeemed", code: couponDef.code });
   }
@@ -177,7 +180,7 @@ export async function createCheckoutSession(
     paymentIntentData.billing_details = billing_details;
   }
 
-  const session = await stripe.checkout.sessions.create(
+    const session = await stripe.checkout.sessions.create(
     {
       mode: "payment",
       customer: customerId,
@@ -193,12 +196,32 @@ export async function createCheckoutSession(
       : undefined
   );
 
-  const clientSecret =
-    typeof session.payment_intent === "string"
-      ? undefined
-      : session.payment_intent?.client_secret ?? undefined;
+    const paymentIntentId =
+      typeof session.payment_intent === "string"
+        ? session.payment_intent
+        : session.payment_intent?.id;
+    const clientSecret =
+      typeof session.payment_intent === "string"
+        ? undefined
+        : session.payment_intent?.client_secret ?? undefined;
 
-  return { clientSecret, sessionId: session.id };
+    recordMetric("cart_checkout_requests_total", {
+      shopId,
+      service: "platform-core",
+      status: "success",
+    });
+
+    const amount = subtotal + depositTotal + taxAmount;
+    return { clientSecret, sessionId: session.id, amount, currency, paymentIntentId };
+  } catch (err) {
+    incrementOperationalError(shopId);
+    recordMetric("cart_checkout_requests_total", {
+      shopId,
+      service: "platform-core",
+      status: "failure",
+    });
+    throw err;
+  }
 }
 
 export type { CartState };

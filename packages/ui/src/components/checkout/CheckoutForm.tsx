@@ -12,7 +12,7 @@ import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
 import { fetchJson } from "@acme/shared-utils";
 import { useRouter } from "next/navigation";
 import { Alert, Button } from "../atoms";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { isoDateInNDays } from "@acme/date-utils";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
@@ -21,6 +21,28 @@ const stripePublishableKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 const stripePromise = stripePublishableKey
   ? loadStripe(stripePublishableKey)
   : null;
+
+function hasConsent() {
+  try {
+    if (typeof document === "undefined") return false;
+    return document.cookie.includes("consent.analytics=true"); // i18n-exempt -- ENG-2003 consent cookie flag, not user-facing copy
+  } catch {
+    return false;
+  }
+}
+
+async function logAnalytics(event: { type: string; [key: string]: unknown }) {
+  if (!hasConsent()) return;
+  try {
+    await fetch("/api/analytics/event", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(event),
+    });
+  } catch {
+    /* best effort */
+  }
+}
 
 type Props = {
   locale: "en" | "de" | "it";
@@ -36,11 +58,14 @@ export default function CheckoutForm({
   coverage = [],
 }: Props) {
   const [clientSecret, setClientSecret] = useState<string>();
+  const [sessionId, setSessionId] = useState<string | undefined>(undefined);
+  const [cartValue, setCartValue] = useState<number | undefined>(undefined);
   const [fetchError, setFetchError] = useState(false);
   const [retry, setRetry] = useState(0);
   const [currency] = useCurrency();
+  const [trackedStart, setTrackedStart] = useState(false);
   const t = useTranslations();
-
+  const paymentIntentIdRef = useRef<string | undefined>(undefined);
   if (!stripePublishableKey && typeof window !== "undefined") {
     console.error(
       "[checkout] NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set; Stripe Elements are disabled in CheckoutForm.", // i18n-exempt -- ENG-2002 developer-focused configuration warning in console only [ttl=2026-12-31]
@@ -54,12 +79,28 @@ export default function CheckoutForm({
   });
   const returnDate = form.watch("returnDate");
 
+  useEffect(() => {
+    try {
+      if (typeof window === "undefined") return;
+      const raw = window.localStorage.getItem("cart");
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as Record<string, { sku: { price: number }; qty: number }>;
+      const total = Object.values(parsed).reduce(
+        (sum, line) => sum + (Number(line.sku?.price) || 0) * (Number(line.qty) || 0),
+        0,
+      );
+      if (Number.isFinite(total)) setCartValue(total);
+    } catch {
+      /* ignore parse errors */
+    }
+  }, []);
+
   /* --- create session on mount or when returnDate changes --- */
   useEffect(() => {
     const controller = new AbortController();
     const timeout = setTimeout(async () => {
       try {
-        const { clientSecret } = await fetchJson<{ clientSecret: string }>(
+        const { clientSecret, sessionId, amount, paymentIntentId, orderId } = await fetchJson<{ clientSecret: string; sessionId?: string; amount?: number; paymentIntentId?: string; orderId?: string }>(
           "/api/checkout-session",
           {
             method: "POST",
@@ -69,7 +110,25 @@ export default function CheckoutForm({
           }
         );
         setClientSecret(clientSecret);
+        setSessionId(sessionId);
+        paymentIntentIdRef.current = paymentIntentId ?? undefined;
+        const checkoutValue = typeof amount === "number" ? amount : cartValue;
+        if (typeof amount === "number") setCartValue(amount);
         setFetchError(false);
+        if (!trackedStart && clientSecret) {
+          setTrackedStart(true);
+          void logAnalytics({ type: "checkout_started", currency, value: checkoutValue });
+        }
+        if (orderId) {
+          try {
+            window.sessionStorage.setItem(
+              "lastOrder",
+              JSON.stringify({ orderId, amount: checkoutValue, currency }),
+            );
+          } catch {
+            /* ignore */
+          }
+        }
       } catch (err: unknown) {
         if (err instanceof Error) {
           if (err.name !== "AbortError") {
@@ -87,7 +146,7 @@ export default function CheckoutForm({
       controller.abort();
       clearTimeout(timeout);
     };
-  }, [returnDate, currency, taxRegion, coverage, retry]);
+  }, [returnDate, currency, taxRegion, coverage, retry, trackedStart, cartValue]);
 
   if (!clientSecret) {
     if (fetchError)
@@ -117,7 +176,14 @@ export default function CheckoutForm({
       options={{ clientSecret, locale: locale as StripeElementLocale }}
       key={clientSecret} // re-mount if locale changes
     >
-      <PaymentForm form={form} locale={locale} />
+      <PaymentForm
+        form={form}
+        locale={locale}
+        sessionId={sessionId}
+        paymentIntentIdRef={paymentIntentIdRef}
+        cartValue={cartValue}
+        currency={currency}
+      />
     </Elements>
   );
 }
@@ -127,9 +193,17 @@ export default function CheckoutForm({
 function PaymentForm({
   form,
   locale,
+  sessionId,
+  paymentIntentIdRef,
+  cartValue,
+  currency,
 }: {
   form: UseFormReturn<FormValues>;
   locale: "en" | "de" | "it";
+  sessionId?: string;
+  paymentIntentIdRef: MutableRefObject<string | undefined>;
+  cartValue?: number;
+  currency?: string;
 }) {
   const {
     register,
@@ -150,7 +224,7 @@ function PaymentForm({
       if (!stripe || !elements) return;
       setProcessing(true);
 
-      const { error } = await stripe.confirmPayment({
+      const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         redirect: "if_required",
         confirmParams: {
@@ -165,7 +239,30 @@ function PaymentForm({
         const query = new URLSearchParams({ error: message }).toString();
         router.push(`/${locale}/cancelled?${query}`);
       } else {
-        router.push(`/${locale}/success`);
+        const orderId = paymentIntent?.id ?? paymentIntentIdRef.current ?? sessionId;
+        const amount = cartValue;
+        if (orderId || amount) {
+          void logAnalytics({ type: "order_completed", orderId, amount, currency });
+          try {
+            window.sessionStorage.setItem(
+              "lastOrder",
+              JSON.stringify({ orderId, amount, currency }),
+            );
+          } catch {
+            /* ignore */
+          }
+        } else {
+          void logAnalytics({ type: "order_completed" });
+        }
+        const qp = new URLSearchParams();
+        const hasAmount = amount !== undefined && Number.isFinite(amount);
+        const hasOrderId = Boolean(orderId);
+        const hasOrderDetails = hasAmount || hasOrderId;
+        if (hasOrderId) qp.set("orderId", orderId);
+        if (hasAmount) qp.set("amount", String(amount));
+        if (hasOrderDetails && currency) qp.set("currency", currency);
+        const query = qp.toString();
+        router.push(`/${locale}/success${query ? `?${query}` : ""}`);
       }
     },
     (errs) => {

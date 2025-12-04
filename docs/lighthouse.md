@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Observability
+Last-reviewed: 2025-12-02
+
 # Lighthouse and LHCI Setup
 
 This repo runs Lighthouse in two ways:

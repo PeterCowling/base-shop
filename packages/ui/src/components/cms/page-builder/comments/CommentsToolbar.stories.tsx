@@ -30,6 +30,7 @@ function Harness() {
 }
 
 const meta: Meta<typeof CommentsToolbar> = {
+  title: 'CMS/Page Builder/CommentsToolbar',
   component: CommentsToolbar,
   tags: ['autodocs'],
   parameters: {

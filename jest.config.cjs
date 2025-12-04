@@ -93,6 +93,15 @@ if (isScriptsWorkspace) {
   coverageThreshold.global = { lines: 0, branches: 0, functions: 0 };
 }
 
+// Allow targeted runs (e.g., --runTestsByPath) to skip global coverage gates so
+// quick iteration on a narrow file set doesn't fail on overall thresholds.
+const isTargetedRun =
+  process.argv.includes("--runTestsByPath") ||
+  process.argv.some((arg) => arg.startsWith("--testPathPattern"));
+if (isTargetedRun || process.env.JEST_ALLOW_PARTIAL_COVERAGE === "1") {
+  coverageThreshold.global = { lines: 0, branches: 0, functions: 0 };
+}
+
 const forceCjs = process.env.JEST_FORCE_CJS === "1";
 const isPlatformCorePackage = /packages\/platform-core$/.test(process.cwd());
 const isLibPackage = /packages\/lib$/.test(process.cwd());

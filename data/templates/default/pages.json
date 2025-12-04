@@ -8,7 +8,88 @@
         "en": "Home"
       }
     },
-    "components": [],
+    "components": [
+      {
+        "id": "section-hero",
+        "type": "Section",
+        "children": [
+          {
+            "id": "hero",
+            "type": "HeroBanner",
+            "slides": [
+              {
+                "src": "/images/hero-placeholder.jpg",
+                "alt": {
+                  "type": "inline",
+                  "value": {
+                    "en": "Hero image"
+                  }
+                },
+                "headlineKey": "home.hero.headline",
+                "ctaKey": "home.hero.cta"
+              }
+            ]
+          },
+          {
+            "id": "value-props",
+            "type": "ValueProps",
+            "items": [
+              {
+                "icon": "shipping-fast",
+                "title": "Fast delivery",
+                "desc": "Get your order in 2–3 days."
+              },
+              {
+                "icon": "returns",
+                "title": "Easy returns",
+                "desc": "30-day hassle-free returns."
+              },
+              {
+                "icon": "support",
+                "title": "Human support",
+                "desc": "Real people ready to help."
+              }
+            ]
+          },
+          {
+            "id": "newsletter",
+            "type": "NewsletterSignup",
+            "text": "Join the list for new drops and early access",
+            "placeholder": "you@example.com",
+            "submitLabel": "Subscribe"
+          },
+          {
+            "id": "consent",
+            "type": "ConsentSection"
+          },
+          {
+            "id": "contact",
+            "type": "ContactForm",
+            "text": "Questions? Drop us a note."
+          },
+          {
+            "id": "social-proof",
+            "type": "SocialProof",
+            "logos": [
+              { "src": "/images/logo-placeholder.svg", "alt": "Brand" },
+              { "src": "/images/logo-placeholder.svg", "alt": "Brand" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "section-footer",
+        "type": "Footer",
+        "children": [
+          {
+            "id": "footer-social",
+            "type": "SocialLinks",
+            "facebook": "https://facebook.com/yourbrand",
+            "instagram": "https://instagram.com/yourbrand"
+          }
+        ]
+      }
+    ],
     "status": "draft",
     "updatedAt": "1970-01-01T00:00:00.000Z"
   }

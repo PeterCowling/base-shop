@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import Tabs from "./Tabs";
 
 const meta: Meta<typeof Tabs> = {
+  title: "CMS Blocks/Tabs",
   component: Tabs,
   args: {
     labels: ["Tab 1", "Tab 2"],

@@ -62,3 +62,5 @@ export const Submenu: StoryObj<typeof DropdownMenu> = {
     </DropdownMenu>
   ),
 };
+
+export const Default: StoryObj<typeof DropdownMenu> = {};

@@ -3,6 +3,7 @@ import { expect, fn, userEvent, within } from "storybook/test";
 import { PromoCodeInput } from "./PromoCodeInput";
 
 const meta: Meta<typeof PromoCodeInput> = {
+  title: "Molecules/PromoCodeInput",
   component: PromoCodeInput,
   args: {
     loading: false,

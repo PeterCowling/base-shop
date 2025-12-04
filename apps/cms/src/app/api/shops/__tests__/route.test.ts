@@ -1,6 +1,10 @@
-const listShops = jest.fn();
+const listShopSummaries = jest.fn();
 
-jest.mock("../../../../lib/listShops", () => ({ listShops }));
+jest.mock("../../../../lib/listShops", () => ({ listShopSummaries }));
+
+jest.mock("@acme/shared-utils", () => ({
+  logger: { error: jest.fn() },
+}));
 
 let GET: typeof import("../route").GET;
 
@@ -14,20 +18,19 @@ beforeEach(() => {
 
 describe("GET", () => {
   it("returns list of shops", async () => {
-    listShops.mockResolvedValue([{ id: "s1" }]);
+    listShopSummaries.mockResolvedValue([{ id: "s1", name: "s1" }]);
     const res = await GET();
     expect(res.status).toBe(200);
-    await expect(res.json()).resolves.toEqual([{ id: "s1" }]);
+    await expect(res.json()).resolves.toEqual([{ id: "s1", name: "s1" }]);
   });
 
   it("logs error and returns 500 when listShops fails", async () => {
     const err = new Error("fail");
-    listShops.mockRejectedValue(err);
-    const spy = jest.spyOn(console, "error").mockImplementation(() => {});
+    listShopSummaries.mockRejectedValue(err);
+    const { logger } = await import("@acme/shared-utils");
     const res = await GET();
     expect(res.status).toBe(500);
     await expect(res.json()).resolves.toEqual({ error: "fail" });
-    expect(spy).toHaveBeenCalledWith("[api/shops:GET] error", err);
-    spy.mockRestore();
+    expect(logger.error).toHaveBeenCalledWith("[api/shops:GET] error", { error: err });
   });
 });

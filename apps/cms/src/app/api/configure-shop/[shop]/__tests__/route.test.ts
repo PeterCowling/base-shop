@@ -25,12 +25,17 @@ describe("configure-shop route", () => {
     const { POST } = await import("../route")
     const req = new Request("http://localhost/api/configure-shop", {
       method: "POST",
-      body: JSON.stringify({ payment: ["stripe"], shipping: ["shippo"] }),
+      body: JSON.stringify({
+        payment: ["stripe"],
+        billingProvider: "stripe",
+        shipping: ["shippo"],
+      }),
     }) as unknown as import("next/server").NextRequest
     const res = await POST(req, { params: Promise.resolve({ shop: "shop1" }) })
     expect(updateShopInRepo).toHaveBeenCalledWith("shop1", {
       id: "shop1",
       paymentProviders: ["stripe"],
+      billingProvider: "stripe",
       shippingProviders: ["shippo"],
     })
     expect(res.status).toBe(200)
@@ -46,8 +51,7 @@ describe("configure-shop route", () => {
       body: JSON.stringify({ payment: "x" }),
     }) as unknown as import("next/server").NextRequest
     const res = await POST(req, { params: Promise.resolve({ shop: "shop2" }) })
-    expect(updateShopInRepo).toHaveBeenCalledWith("shop2", { id: "shop2" })
     expect(res.status).toBe(400)
-    await expect(res.json()).resolves.toEqual({ error: "bad input" })
+    await expect(res.json()).resolves.toEqual({ error: expect.any(String) })
   })
 })

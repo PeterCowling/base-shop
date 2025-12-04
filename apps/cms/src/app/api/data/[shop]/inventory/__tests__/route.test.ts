@@ -60,4 +60,19 @@ describe("POST", () => {
     expect(await res.json()).toEqual({ success: true });
     expect(write).toHaveBeenCalledWith("s1", items);
   });
+
+  it("returns 503 when backend delegate is unavailable", async () => {
+    __setMockSession({ user: { role: "admin" } } as any);
+    write.mockRejectedValueOnce(new Error("Prisma inventory delegate is unavailable"));
+    const items = [
+      { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
+    ];
+    const res = await POST(req(items), {
+      params: Promise.resolve({ shop: "s1" }),
+    });
+    expect(res.status).toBe(503);
+    expect(await res.json()).toEqual({
+      error: "Prisma inventory delegate is unavailable",
+    });
+  });
 });

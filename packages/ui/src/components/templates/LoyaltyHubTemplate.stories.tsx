@@ -66,4 +66,23 @@ export default meta;
 /* ------------------------------------------------------------------ *
  *  Stories
  * ------------------------------------------------------------------ */
-export const Default: StoryObj<typeof LoyaltyHubForHistory> = {};
+type Story = StoryObj<typeof LoyaltyHubForHistory>;
+const baseArgs = meta.args!;
+
+export const Default: Story = {};
+export const Loading: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "loading" },
+};
+export const Empty: Story = {
+  args: { stats: [], progress: { current: 0, goal: 0, label: "" }, historyRows: [], historyColumns },
+  parameters: { dataState: "empty" },
+};
+export const Error: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "error" },
+};
+export const RTL: Story = {
+  args: { ...baseArgs },
+  parameters: { rtl: true },
+};

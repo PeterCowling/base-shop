@@ -20,6 +20,7 @@ function getCoreEnv() {
   return _coreEnv;
 }
 export type { AnalyticsEvent };
+export { logAnalyticsEvent } from "./client";
 
 export interface AnalyticsProvider {
   track(event: AnalyticsEvent): Promise<void> | void;

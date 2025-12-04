@@ -69,12 +69,12 @@ function TopBarInner({ role, onConfiguratorStartNew }: TopBarProps) {
         </div>
         <div className="flex flex-wrap items-center gap-2 text-sm">
           {showNewProduct && (
-            <Button asChild className="h-9 rounded-lg bg-emerald-500 px-3 py-2 text-white hover:bg-emerald-400">
+            <Button asChild className="h-9 rounded-lg bg-primary px-3 py-2 text-primary-foreground hover:bg-primary/90">
               <Link href={`/cms/shop/${shop}/products/new`}>{t("New product")}</Link>
             </Button>
           )}
           {showNewPage && (
-            <Button asChild className="h-9 rounded-lg bg-sky-500 px-3 py-2 text-white hover:bg-sky-400">
+            <Button asChild className="h-9 rounded-lg bg-secondary px-3 py-2 text-secondary-foreground hover:bg-secondary/80">
               <Link href={`/cms/shop/${shop}/pages/new/page`}>{t("New page")}</Link>
             </Button>
           )}

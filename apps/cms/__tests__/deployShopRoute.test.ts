@@ -48,7 +48,11 @@ describe("deploy-shop API route", () => {
       const res = await route.POST(req);
       expect(res.status).toBe(200);
       await expect(res.json()).resolves.toEqual({ id: "123" });
-      expect(actions.deployShopHosting).toHaveBeenCalledWith("123", "example.com");
+      expect(actions.deployShopHosting).toHaveBeenCalledWith(
+        "123",
+        "example.com",
+        undefined
+      );
     });
 
     it("returns 403 when unauthorized", async () => {

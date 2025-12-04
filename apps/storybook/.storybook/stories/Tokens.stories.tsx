@@ -57,7 +57,7 @@ export const Overview: Story = {
             <table className="min-w-full border-collapse text-sm">
               <tbody>
                 {group.map(([name, value]) => (
-                  <tr key={name} className="border-b">
+                  <tr key={name} className="border-b border-border">
                     <td className="py-1 pr-4 font-mono text-xs">{name}</td>
                     <td className="px-2 py-1">
                       {name.startsWith("--color") ? (
@@ -72,7 +72,7 @@ export const Overview: Story = {
                         />
                       ) : name.startsWith("--shadow") ? (
                         <span
-                          className="inline-block h-4 w-8 bg-white"
+                          className="inline-block h-4 w-8 rounded border border-border bg-card"
                           style={{ boxShadow: value }}
                         />
                       ) : name.startsWith("--space") ? (

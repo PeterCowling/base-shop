@@ -9,7 +9,6 @@ import type { SKU } from '@acme/types';
 const meta: Meta<typeof StickyBuyBar> = {
   title: 'CMS Blocks/StickyBuyBar/Matrix',
   component: StickyBuyBar,
-  parameters: { docs: { autodocs: false } },
   args: { product: (PRODUCTS as SKU[])[0] },
 };
 export default meta;
@@ -17,3 +16,8 @@ export default meta;
 type Story = StoryObj<typeof StickyBuyBar>;
 export const Default: Story = makeStateStory(meta.args!, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });
+export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });

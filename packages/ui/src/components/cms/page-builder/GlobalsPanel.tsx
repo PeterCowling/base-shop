@@ -92,7 +92,7 @@ export default function GlobalsPanel({ open, onOpenChange, shop = null, pageId =
                           <div className="flex items-center gap-2">
                             <span className="truncate font-medium">{g.label}</span>
                             {used.has(g.globalId) && (
-                              <span className="rounded bg-emerald-500/15 px-1 text-xs text-emerald-700">{t("On this page")}</span>
+                              <span className="rounded bg-primary/15 px-1 text-xs text-primary">{t("On this page")}</span>
                             )}
                           </div>
                           {g.tags && g.tags.length > 0 && (

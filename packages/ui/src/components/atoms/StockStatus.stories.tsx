@@ -22,3 +22,5 @@ export const Variants: StoryObj<typeof StockStatus> = {
     </>
   ),
 };
+
+export const Default: StoryObj<typeof StockStatus> = {};

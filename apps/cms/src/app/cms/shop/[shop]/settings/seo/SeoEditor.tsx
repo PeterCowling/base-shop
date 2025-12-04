@@ -14,6 +14,7 @@ import { SeoAdvancedSettings } from "./SeoAdvancedSettings";
 import { SeoEditorHeader } from "./SeoEditorHeader";
 import { SeoSharedFields } from "./SeoSharedFields";
 import { useSeoEditor, type UseSeoEditorProps } from "./useSeoEditor";
+import { Tag } from "@ui/components/atoms/Tag";
 
 const Tabs = ({
   value,
@@ -67,7 +68,7 @@ const Tabs = ({
 
 export default function SeoEditor(props: UseSeoEditorProps) {
   const t = useTranslations();
-  const { languages } = props;
+  const { languages, initialSeo } = props;
   const {
     locale,
     freeze,
@@ -118,8 +119,24 @@ export default function SeoEditor(props: UseSeoEditorProps) {
               items={languages.map((l) => ({ value: l, label: l.toUpperCase() }))}
             />
           )}
+          <Inline wrap gap={2} role="list">
+            {languages.map((l) => {
+              const draft = initialSeo[l] ?? { title: "", description: "" };
+              const complete = Boolean(draft.title && draft.description);
+              return (
+                <Tag
+                  key={l}
+                  color={complete ? "success" : "warning"}
+                  tone="soft"
+                  size="sm"
+                >
+                  {l.toUpperCase()} {complete ? "Complete" : "Needs content"}
+                </Tag>
+              );
+            })}
+          </Inline>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit} id={`seo-editor-${locale}`}>
             <SeoSharedFields
               draft={currentDraft}
               updateField={updateField}

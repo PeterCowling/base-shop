@@ -1,49 +1,39 @@
-import { type Meta, type StoryObj } from "@storybook/nextjs";
+import type { Meta, StoryObj } from "@storybook/react";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogTrigger,
+  DialogFooter,
 } from "./dialog";
+import { Button } from "./button";
 
-const meta = {
-  title: "Primitives/Dialog",
-  component: Dialog,
-  subcomponents: {
-    DialogTrigger,
-    DialogContent,
-    DialogTitle,
-    DialogDescription,
-  },
-  args: {
-    defaultOpen: true,
-    triggerLabel: "Open dialog",
-    title: "Schedule maintenance",
-    description: "Choose a window that works best for you.",
-  },
-  argTypes: {
-    defaultOpen: { control: "boolean" },
-    triggerLabel: { control: "text" },
-    title: { control: "text" },
-    description: { control: "text" },
-  },
-} satisfies Meta<typeof Dialog>;
+const meta: Meta = {
+  title: "Atoms/Primitives/Dialog",
+};
+
 export default meta;
+type Story = StoryObj;
 
-type Story = StoryObj<typeof meta>;
-
-export const Playground: Story = {
-  render: ({ triggerLabel, title, description, ...args }) => (
-    <Dialog {...args}>
+export const Default: Story = {
+  render: () => (
+    <Dialog>
       <DialogTrigger asChild>
-        <button type="button" className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-primary-foreground">
-          {triggerLabel}
-        </button>
+        <Button>Open dialog</Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
+        <DialogHeader>
+          <DialogTitle>Confirm action</DialogTitle>
+          <DialogDescription>
+            This is a longer description to test wrapping and overflow behaviour in the dialog body.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter className="justify-end">
+          <Button variant="outline">Cancel</Button>
+          <Button>Confirm</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   ),

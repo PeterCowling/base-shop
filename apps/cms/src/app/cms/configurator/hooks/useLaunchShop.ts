@@ -1,22 +1,27 @@
 // apps/cms/src/app/cms/configurator/hooks/useLaunchShop.ts
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+// Docs: docs/cms/build-shop-guide.md
+// Docs: docs/cms/configurator-contract.md
+
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getCsrfToken } from "@acme/shared-utils";
 import { getRequiredSteps } from "../steps";
 import { useTranslations } from "@acme/i18n";
 import type { ConfiguratorState } from "../../wizard/schema";
 import type { ConfiguratorStep } from "../types";
+import type { Environment } from "@acme/types";
 
 export type LaunchStepStatus = "idle" | "pending" | "success" | "failure";
 
 interface Options {
   onIncomplete?: (steps: ConfiguratorStep[]) => void;
+  env?: Environment;
 }
 
 export function useLaunchShop(
   state: ConfiguratorState,
-  options: Options = {}
+  options: Options = {},
 ): {
   launchShop: () => Promise<void>;
   launchStatus: Record<string, LaunchStepStatus> | null;
@@ -24,19 +29,27 @@ export function useLaunchShop(
   failedStep: string | null;
   allRequiredDone: boolean;
   tooltipText: string;
+  missingSteps: ConfiguratorStep[] | null;
+  clearMissingSteps: () => void;
 } {
   const t = useTranslations();
-  const { onIncomplete } = options;
+  const { onIncomplete, env = "stage" } = options;
   const [launchStatus, setLaunchStatus] = useState<
     Record<string, LaunchStepStatus> | null
   >(null);
   const [launchError, setLaunchError] = useState<string | null>(null);
   const [failedStep, setFailedStep] = useState<string | null>(null);
+  const [missingSteps, setMissingSteps] = useState<ConfiguratorStep[] | null>(null);
+
+  const requiredSteps = useMemo(
+    () =>
+      getRequiredSteps(t as unknown as (key: string, vars?: Record<string, unknown>) => string),
+    [t],
+  );
 
   const missingRequired = useMemo(
-    () => getRequiredSteps(t as unknown as (key: string, vars?: Record<string, unknown>) => string)
-      .filter((s) => state?.completed?.[s.id] !== "complete"),
-    [state?.completed, t]
+    () => requiredSteps.filter((s) => state?.completed?.[s.id] !== "complete"),
+    [requiredSteps, state?.completed],
   );
   const allRequiredDone = missingRequired.length === 0;
 
@@ -45,6 +58,12 @@ export function useLaunchShop(
     : (t("cms.configurator.launch.tooltip.completeRequired", {
         list: missingRequired.map((s) => s.label).join(", "),
       }) as string);
+
+  useEffect(() => {
+    if (missingSteps && missingSteps.length > 0 && allRequiredDone) {
+      setMissingSteps(null);
+    }
+  }, [allRequiredDone, missingSteps]);
 
   const launchShop = useCallback(async () => {
     if (!state?.shopId) return;
@@ -68,8 +87,31 @@ export function useLaunchShop(
           "Content-Type": "application/json",
           "x-csrf-token": getCsrfToken() ?? "",
         },
-        body: JSON.stringify({ shopId: state.shopId, state, seed }),
+        body: JSON.stringify({ shopId: state.shopId, state, seed, env }),
       });
+      if (!res.ok) {
+        let payload: { error?: string; missingSteps?: string[] } | null = null;
+        try {
+          payload = (await res.json()) as typeof payload;
+        } catch {
+          /* ignore parse errors */
+        }
+        if (payload?.missingSteps) {
+          const mapped = requiredSteps.filter((s) =>
+            payload?.missingSteps?.includes(s.id),
+          );
+          if (mapped.length > 0) {
+            setMissingSteps(mapped);
+            onIncomplete?.(mapped);
+          }
+        }
+        setLaunchError(
+          payload?.error ?? (t("cms.configurator.launch.failed") as string),
+        );
+        setLaunchStatus(null);
+        return;
+      }
+      setMissingSteps(null);
       if (!res.body) {
         setLaunchError(t("cms.configurator.launch.failed") as string);
         return;
@@ -102,7 +144,7 @@ export function useLaunchShop(
     } catch {
       setLaunchError(t("cms.configurator.launch.failed") as string);
     }
-  }, [state, allRequiredDone, missingRequired, onIncomplete, t]);
+  }, [state, allRequiredDone, missingRequired, onIncomplete, t, env, requiredSteps]);
 
   return {
     launchShop,
@@ -111,6 +153,8 @@ export function useLaunchShop(
     failedStep,
     allRequiredDone,
     tooltipText,
+    missingSteps,
+    clearMissingSteps: () => setMissingSteps(null),
   };
 }
 

@@ -4,6 +4,7 @@
     "composite": true,
     "declaration": true,
     "declarationMap": true,
+    "noEmit": false,
     "outDir": "dist",
     "rootDir": "src",
     "skipLibCheck": true,
@@ -11,7 +12,8 @@
   },
   "include": ["src/**/*"],
   "references": [
-    { "path": "../ui" },
-    { "path": "../page-builder-core" }
+    { "path": "../i18n" },
+    { "path": "../page-builder-core" },
+    { "path": "../ui" }
   ]
 }

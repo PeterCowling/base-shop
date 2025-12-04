@@ -1,5 +1,5 @@
 import React from 'react';
-import PageToolbar from '@ui/components/cms/page-builder/PageToolbar';
+import { PageToolbar } from '@acme/page-builder-ui';
 
 describe('PageToolbar help dialog (CT)', { tags: ['inspectors'] }, () => {
   it('opens keyboard shortcuts dialog', () => {
@@ -23,4 +23,3 @@ describe('PageToolbar help dialog (CT)', { tags: ['inspectors'] }, () => {
     cy.findByText(/Ctrl|⌘ \+ 1/).should('exist');
   });
 });
-

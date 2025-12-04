@@ -44,6 +44,14 @@ export const shopSettingsSchema = z
       })
       .strict()
       .optional(),
+    leadCapture: z
+      .object({
+        enabled: z.boolean().optional(),
+        provider: z.string().optional(),
+        endpoint: z.string().url().optional(),
+      })
+      .strict()
+      .optional(),
     freezeTranslations: z.boolean().optional(),
     /** ISO currency code used as the shop's base currency */
     currency: z.string().length(3).optional(),

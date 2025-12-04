@@ -3,6 +3,7 @@ import { fn } from "storybook/test";
 import { MediaSelector } from "./MediaSelector";
 
 const meta: Meta<typeof MediaSelector> = {
+  title: "Molecules/MediaSelector",
   component: MediaSelector,
   args: {
     items: [

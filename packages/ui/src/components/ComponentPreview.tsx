@@ -80,6 +80,7 @@ export default function ComponentPreview<
       }
       const m = await import(
         /* webpackIgnore: true */
+        /* @vite-ignore */
         p
       );
       return (m as Record<string, React.ComponentType>)[

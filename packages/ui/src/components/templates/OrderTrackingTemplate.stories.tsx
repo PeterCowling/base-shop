@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { OrderTrackingTemplate } from "./OrderTrackingTemplate";
 
 const meta: Meta<typeof OrderTrackingTemplate> = {
+  title: "Templates/OrderTrackingTemplate",
   component: OrderTrackingTemplate,
   args: {
     orderId: "ABC123",

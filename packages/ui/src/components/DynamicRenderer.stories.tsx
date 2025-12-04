@@ -3,6 +3,7 @@ import DynamicRenderer from './DynamicRenderer';
 import type { PageComponent } from '@acme/types';
 
 const meta: Meta<typeof DynamicRenderer> = {
+  title: 'Utilities/DynamicRenderer',
   component: DynamicRenderer,
   tags: ['autodocs'],
   args: {

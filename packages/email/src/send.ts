@@ -6,6 +6,7 @@ import { getDefaultSender } from "./config";
 import { emailSchema, subjectSchema } from "./validators";
 import { prepareContent } from "./content";
 import { getProviderOrder, loadProvider } from "./providers";
+import { logger } from "@acme/shared-utils";
 
 export interface CampaignOptions {
   /** Recipient email address */
@@ -69,7 +70,7 @@ export async function sendCampaignEmail(
   for (let i = 0; i < providerOrder.length; i++) {
     const name = providerOrder[i];
     const isLastProvider = i === providerOrder.length - 1;
-    const log = isLastProvider ? console.error : console.warn;
+    const log = isLastProvider ? logger.error : logger.warn;
     if (name === "smtp") {
       try {
         await sendWithNodemailer(optsWithText);

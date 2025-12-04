@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { Skeleton, Toast, Tooltip } from "@/components/atoms";
 import {
@@ -31,6 +32,7 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
   const [toast, setToast] = useState<{ open: boolean; message: string }>(
     { open: false, message: "" },
   );
+  const router = useRouter();
 
   useEffect(() => {
     let active = true;
@@ -68,6 +70,7 @@ export default function SeoAuditPanel({ shop }: { shop: string }) {
       const record: AuditRecord = await res.json();
       setHistory((prev) => [...prev, record]);
       setToast({ open: true, message: String(t("Audit completed")) });
+      router.refresh();
     } catch {
       setToast({ open: true, message: String(t("Audit failed")) });
     } finally {

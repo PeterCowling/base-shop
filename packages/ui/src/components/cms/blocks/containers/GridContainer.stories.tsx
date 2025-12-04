@@ -15,10 +15,29 @@ const meta: Meta<typeof GridContainer> = {
     columns: 3,
     gap: '1rem',
     children: [1, 2, 3, 4, 5, 6].map((n) => (
-      <div key={n} className="h-16 rounded bg-neutral-100 p-2">Cell {n}</div>
+      <div key={n} className="h-16 rounded bg-muted p-2">Cell {n}</div>
     )),
   },
 };
 export default meta;
 
-export const Default: StoryObj<typeof GridContainer> = {};
+type Story = StoryObj<typeof GridContainer>;
+const baseArgs = meta.args!;
+
+export const Default: Story = {};
+export const Loading: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "loading" },
+};
+export const Empty: Story = {
+  args: { ...baseArgs, children: [] },
+  parameters: { dataState: "empty" },
+};
+export const Error: Story = {
+  args: { ...baseArgs },
+  parameters: { dataState: "error" },
+};
+export const RTL: Story = {
+  args: { ...baseArgs },
+  parameters: { rtl: true },
+};

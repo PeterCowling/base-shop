@@ -8,6 +8,8 @@ import { Inline, Stack, Cluster } from "../atoms/primitives";
 export interface CheckoutStep {
   label: string;
   content: React.ReactNode;
+  /** Optional payload captured for onComplete (e.g., fulfillment mode) */
+  payload?: Record<string, unknown>;
 }
 
 export interface CheckoutTemplateProps
@@ -15,7 +17,7 @@ export interface CheckoutTemplateProps
   steps: CheckoutStep[];
   initialStep?: number;
   onStepChange?: (step: number) => void;
-  onComplete?: () => void;
+  onComplete?: (payload?: Record<string, unknown>) => void;
 }
 
 export function CheckoutTemplate({
@@ -48,6 +50,13 @@ export function CheckoutTemplate({
   }, [step, onStepChange]);
 
   const isLast = step === steps.length - 1;
+  const handleComplete = () => {
+    const payload = steps.reduce<Record<string, unknown>>((acc, s) => {
+      if (s.payload) Object.assign(acc, s.payload);
+      return acc;
+    }, {});
+    onComplete?.(payload);
+  };
 
   return (
     <div className={cn(spacingClass, className)} {...props}>
@@ -78,7 +87,7 @@ export function CheckoutTemplate({
         <Button
           onClick={() => {
             if (isLast) {
-              onComplete?.();
+              handleComplete();
             } else {
               setStep(step + 1);
             }

@@ -55,6 +55,16 @@ export default function AdminTools({
             <p className="text-sm text-muted-foreground">
               {t("cms.shop.adminTools.profile.description")}
             </p>
+            <p className="text-xs text-muted-foreground">
+              <a
+                href="/docs/commerce-charter.md"
+                target="_blank"
+                rel="noreferrer"
+                className="underline-offset-2 hover:underline"
+              >
+                {t("cms.shop.adminTools.profile.docsLink")}
+              </a>
+            </p>
           </div>
           <ShopEditor
             shop={shop}

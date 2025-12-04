@@ -102,6 +102,7 @@ function FakeLiveChatWidget(props: React.HTMLAttributes<HTMLButtonElement>) {
 }
 
 const meta: Meta<typeof LiveChatWidget> = {
+  title: "Organisms/LiveChatWidget",
   component: LiveChatWidget,
   render: (args) => <FakeLiveChatWidget {...args} />,
 };

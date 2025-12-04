@@ -5,6 +5,10 @@ import type { Redis } from "@upstash/redis";
 import type { CartState } from "./cart";
 import { MemoryCartStore } from "./cartStore/memoryStore";
 import { RedisCartStore } from "./cartStore/redisStore";
+import {
+  CloudflareDurableObjectCartStore,
+  type DurableObjectNamespace,
+} from "./cartStore/cloudflareDurableStore";
 
 /** Abstraction for cart storage backends */
 export interface CartStore {
@@ -24,9 +28,11 @@ export interface CartStore {
 }
 
 export interface CartStoreOptions {
-  backend?: "memory" | "redis";
+  backend?: "memory" | "redis" | "cloudflare";
   ttlSeconds?: number;
   redis?: Redis;
+  /** Optional Durable Object namespace binding when using Cloudflare */
+  cloudflare?: DurableObjectNamespace;
 }
 
 const DEFAULT_TTL = 60 * 60 * 24 * 30; // 30 days in seconds
@@ -61,6 +67,17 @@ export function createRedisCartStore(client: Redis, ttl: number): CartStore {
   return new RedisCartStore(client, ttl, new MemoryCartStore(ttl));
 }
 
+export function createCloudflareCartStore(
+  namespace: DurableObjectNamespace,
+  ttl: number
+): CartStore {
+  return new CloudflareDurableObjectCartStore(
+    namespace,
+    ttl,
+    new MemoryCartStore(ttl)
+  );
+}
+
 /** Factory (pure, no side effects) */
 export function createCartStore(options: CartStoreOptions = {}): CartStore {
   const env = getCoreEnv();
@@ -72,7 +89,10 @@ export function createCartStore(options: CartStoreOptions = {}): CartStore {
     (env.UPSTASH_REDIS_REST_URL ?? process.env.UPSTASH_REDIS_REST_URL) &&
       (env.UPSTASH_REDIS_REST_TOKEN ?? process.env.UPSTASH_REDIS_REST_TOKEN)
   );
-  const backend = options.backend ?? (env.SESSION_STORE ?? (hasRedis ? "redis" : "memory"));
+  const backend =
+    options.backend ??
+    (env.CART_STORE_PROVIDER as CartStoreOptions["backend"]) ??
+    (env.SESSION_STORE ?? (hasRedis ? "redis" : "memory"));
 
   if (backend === "redis") {
     const Redis = loadRedis();
@@ -82,6 +102,18 @@ export function createCartStore(options: CartStoreOptions = {}): CartStore {
     if (client) {
       return createRedisCartStore(client, ttl);
     }
+  }
+  if (backend === "cloudflare") {
+    const namespace =
+      options.cloudflare ?? ((globalThis as Record<string, unknown>).CART_DO as
+        | DurableObjectNamespace
+        | undefined);
+    if (namespace) {
+      return createCloudflareCartStore(namespace, ttl);
+    }
+    console.warn(
+      "CART_STORE_PROVIDER=cloudflare but no Durable Object binding found; falling back to MemoryCartStore"
+    );
   }
   return createMemoryCartStore(ttl);
 }

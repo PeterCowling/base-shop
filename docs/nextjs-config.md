@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Platform
+Last-reviewed: 2025-12-02
+
 # Next.js configuration
 
 Cloudflare Pages requires a few non‑default Next.js options. The project's shared config (`packages/next-config/next.config.mjs`) applies them and is imported from app‑level `next.config.mjs` files.

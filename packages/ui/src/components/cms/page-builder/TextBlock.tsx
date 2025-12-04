@@ -2,7 +2,11 @@
 
 import { locales as supportedLocales, type Locale } from "@acme/i18n/locales";
 import { CSS } from "@dnd-kit/utilities";
-import type { TextComponent as BaseTextComponent, HistoryState } from "@acme/types";
+import type {
+  PageComponent,
+  TextComponent as BaseTextComponent,
+  HistoryState,
+} from "@acme/types";
 import { memo, useCallback, useRef } from "react";
 import DOMPurify from "dompurify";
 import useSortableBlock from "./useSortableBlock";
@@ -24,7 +28,7 @@ import {
   Button,
 } from "../../atoms/shadcn";
 
-type TextComponent = BaseTextComponent & {
+type TextComponent = PageComponent & Omit<BaseTextComponent, "text"> & {
   text?: string | Record<string, string>;
   styles?: string;
   [key: string]: unknown;

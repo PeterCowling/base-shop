@@ -1,14 +1,14 @@
 // apps/cms/src/app/api/create-shop/route.ts
 import "@acme/zod-utils/initZod";
 import { createNewShop } from "@cms/actions/createShop.server";
-import { createShopOptionsSchema } from "@platform-core/createShop";
+import { shopConfigSchema, type ShopConfig } from "@acme/types";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
 /**
  * POST /cms/api/create-shop
  *
- * Body: { id: string; ...CreateShopOptions }
+ * Body: { id: string; ...ShopConfig }
  *
  * • Returns **201** and `{ success: true }` when an admin or ShopAdmin
  *   successfully creates a shop.
@@ -21,7 +21,7 @@ export async function POST(req: Request) {
    * ---------------------------------------------------------------- */
   try {
     const body = await req.json();
-    const parsed = createShopOptionsSchema
+    const parsed = shopConfigSchema
       .extend({ id: z.string() })
       .safeParse(body);
 
@@ -32,9 +32,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: message }, { status: 400 });
     }
 
-    const { id, ...options } = parsed.data;
+    const { id, ...config } = parsed.data as { id: string } & ShopConfig;
 
-    const deployment = await createNewShop(id, options);
+    const deployment = await createNewShop(id, config);
 
     /* --------------------------------------------------------------
      *  Success → 201 Created

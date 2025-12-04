@@ -33,7 +33,7 @@ export default function Gallery({ images = [], openInLightbox, id, locale = "en"
             );
           })()}
           {img.caption ? (
-            <figcaption className="absolute inset-x-0 bottom-0 bg-black/60 px-3 py-2 text-xs text-white">
+            <figcaption className="absolute inset-x-0 bottom-0 bg-foreground/60 px-3 py-2 text-xs text-foreground">
               {typeof img.caption === "string" ? img.caption : resolveText(img.caption, locale, t)}
             </figcaption>
           ) : null}

@@ -108,5 +108,23 @@ describe('logger', () => {
     logger.debug('visible');
     expect(debugOutput).toHaveBeenCalledWith({}, 'visible');
   });
-});
 
+  it('includes request context when present', async () => {
+    const { logger, setRequestContext } = await import('../index');
+    setRequestContext({
+      requestId: 'req-123',
+      service: 'test-service',
+      env: 'dev',
+    });
+    logger.info('message', { foo: 'bar' });
+    expect(pinoInstance.info).toHaveBeenCalledWith(
+      expect.objectContaining({
+        requestId: 'req-123',
+        service: 'test-service',
+        env: 'dev',
+        foo: 'bar',
+      }),
+      'message',
+    );
+  });
+});

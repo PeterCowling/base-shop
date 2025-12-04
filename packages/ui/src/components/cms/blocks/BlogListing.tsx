@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "@acme/i18n";
+import { logAnalyticsEvent } from "@platform-core/analytics/client";
 
 import { Inline } from "../../atoms/primitives/Inline";
 
@@ -55,6 +56,13 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
       const query = params.toString();
       const basePath = typeof window !== "undefined" ? window.location.pathname : "";
       router.push(query ? `?${query}` : basePath || "?");
+      if (value) {
+        logAnalyticsEvent({
+          type: "filter_change",
+          filters: { category: value },
+          target: "blog",
+        });
+      }
     },
     [activeCategory, router, searchParamsSnapshot],
   );
@@ -86,7 +94,19 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
         <article key={p.title} className="space-y-1">
           {p.url ? (
             <h3 className="text-lg font-semibold">
-              <Link href={p.url}>{p.title}</Link>
+              <Link
+                href={p.url}
+                onClick={() =>
+                  logAnalyticsEvent({
+                    type: "content_click",
+                    target: "blog_post",
+                    title: p.title,
+                    href: p.url,
+                  })
+                }
+              >
+                {p.title}
+              </Link>
             </h3>
           ) : (
             <h3 className="text-lg font-semibold">{p.title}</h3>
@@ -115,7 +135,18 @@ export default function BlogListing({ posts = [], locale }: { posts?: BlogPost[]
           )}
           {p.shopUrl && (
             <p>
-              <Link href={p.shopUrl} className="text-primary underline">
+              <Link
+                href={p.shopUrl}
+                className="text-primary underline"
+                onClick={() =>
+                  logAnalyticsEvent({
+                    type: "content_click",
+                    target: "shop_story",
+                    href: p.shopUrl,
+                    title: p.title,
+                  })
+                }
+              >
                 {shopStoryCta}
               </Link>
             </p>

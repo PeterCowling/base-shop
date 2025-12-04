@@ -35,3 +35,5 @@ export const Solid: StoryObj<typeof Alert> = {
     </>
   ),
 };
+
+export const Default: StoryObj<typeof Alert> = {};

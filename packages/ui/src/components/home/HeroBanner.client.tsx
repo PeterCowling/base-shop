@@ -53,8 +53,8 @@ export default function HeroBanner({
   const rawPathname = usePathname(); // may be null
   const safePath = rawPathname ?? "/";
   const langPrefix = safePath.split("/")[1] || "en";
-  const prevLabel = t("hero.nav.prev");
-  const nextLabel = t("hero.nav.next");
+  const prevLabel = t("hero.nav.prev") as string;
+  const nextLabel = t("hero.nav.next") as string;
 
   const sanitizedSlides = (slides.length ? slides : DEFAULT_SLIDES).filter(
     (s) => s.src

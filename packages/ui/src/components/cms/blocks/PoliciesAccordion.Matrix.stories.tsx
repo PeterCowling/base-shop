@@ -9,7 +9,6 @@ import { z } from 'zod';
 const meta: Meta<typeof PoliciesAccordion> = {
   title: 'CMS Blocks/PoliciesAccordion/Matrix',
   component: PoliciesAccordion,
-  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
 };
 export default meta;
@@ -21,3 +20,8 @@ try { z.object({ shipping: z.string().optional(), returns: z.string().optional()
 
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });
+export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });

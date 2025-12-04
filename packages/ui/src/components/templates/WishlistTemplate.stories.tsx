@@ -33,6 +33,7 @@ const items: WishlistItem[] = [
 ];
 
 const meta: Meta<typeof WishlistTemplate> = {
+  title: "Templates/WishlistTemplate",
   component: WishlistTemplate,
   args: { items },
 };

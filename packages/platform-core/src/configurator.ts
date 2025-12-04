@@ -1,19 +1,31 @@
 // packages/platform-core/src/configurator.ts
+// Docs: docs/cms/cms-charter.md
+// Docs: docs/cms/configurator-contract.md
 // The original implementation imported an environment schema from
 // `@acme/config/env`.  That package is not available in this environment,
 // so we define a permissive schema locally using zod.  This schema
 // accepts arbitrary string-to-string mappings, deferring strict
 // validation to higher-level modules.
+// NOTE: This module currently exceeds the 350-line guideline because it
+// co-locates environment helpers and configurator checks. Consider
+// splitting into env + launch-check submodules in a follow-up.
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { z } from "zod";
 import type {
   ConfiguratorStepId,
+  ConfiguratorProgress,
+  LaunchCheckResult,
+  LaunchEnv,
+  LaunchStatus,
   ProductPublication,
   Shop,
   ShopSettings,
+  StepStatus as ProgressStepStatus,
 } from "@acme/types";
 import type { InventoryItem } from "./types/inventory";
+import { validateShopName } from "./shops/index";
+import { resolveDataRoot } from "./dataRoot";
 
 // Accept any string key/value pairs. In the full codebase envSchema would
 // include constraints for required environment variables.
@@ -85,10 +97,12 @@ export function validateEnvFile(file: string): void {
  * @param shop Identifier of the shop whose environment should be validated.
  */
 export function validateShopEnv(shop: string): void {
-  const envPath = join("apps", shop, ".env");
+  const safeShop = validateShopName(shop);
+  const envPath = join("apps", safeShop, ".env");
   validateEnvFile(envPath);
 
   const env = readEnvFile(envPath);
+  const dataRoot = resolveDataRoot();
 
   let cfg: {
     paymentProviders?: string[];
@@ -98,9 +112,9 @@ export function validateShopEnv(shop: string): void {
   } | undefined;
 
   try {
-    const shopCfgPath = join("data", "shops", shop, "shop.json");
+    const shopCfgPath = join(dataRoot, safeShop, "shop.json");
     // `shopCfgPath` is derived from a validated shop name.
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123 derived from validated shop name
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-2410 derived from validated shop name and DATA_ROOT
     const cfgRaw = readFileSync(shopCfgPath, "utf8");
     cfg = JSON.parse(cfgRaw) as {
       paymentProviders?: string[];
@@ -127,6 +141,22 @@ export function validateShopEnv(shop: string): void {
         throw new Error(`Missing ${key}`);
       }
     }
+  }
+
+  // Soft validation for analytics/lead capture toggles: warn if enabled without IDs
+  try {
+    const settingsPath = join(dataRoot, safeShop, "settings.json");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-2410 validated shop id + DATA_ROOT
+    const raw = readFileSync(settingsPath, "utf8");
+    const settings = JSON.parse(raw) as { analytics?: { enabled?: boolean; id?: string }; leadCapture?: { enabled?: boolean; endpoint?: string } };
+    if (settings?.analytics?.enabled && !env.NEXT_PUBLIC_GA4_ID) {
+      throw new Error("Analytics enabled but NEXT_PUBLIC_GA4_ID missing");
+    }
+    if (settings?.leadCapture?.enabled && !settings.leadCapture.endpoint) {
+      throw new Error("Lead capture enabled but no endpoint configured");
+    }
+  } catch {
+    /* ignore */
   }
 }
 
@@ -166,6 +196,112 @@ async function loadInventory(shopId: string): Promise<InventoryItem[]> {
   return inventoryModule.readInventory(shopId);
 }
 
+function collectPageComponents(
+  pages: Array<{ components?: unknown[] }> | undefined,
+): unknown[] {
+  const components = pages?.flatMap((p) =>
+    Array.isArray(p.components) ? p.components : [],
+  );
+  const stack = [...(components ?? [])];
+  const result: unknown[] = [];
+
+  while (stack.length > 0) {
+    const current = stack.pop();
+    if (!current || typeof current !== "object") continue;
+    result.push(current);
+
+    const children = (current as { children?: unknown[] }).children;
+    if (Array.isArray(children)) stack.push(...children);
+
+    const templateChildren = (current as { template?: { children?: unknown[] } })
+      .template?.children;
+    if (Array.isArray(templateChildren)) stack.push(...templateChildren);
+  }
+
+  return result;
+}
+
+const LEGAL_PATTERNS = {
+  terms: ["terms", "legal/terms", "tos"],
+  privacy: ["privacy"],
+  refund: ["return", "returns", "refund"],
+} as const;
+
+function isHttpUrl(value: string): boolean {
+  if (typeof value !== "string" || value.trim() === "") return false;
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "http:" || parsed.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function matchesPatterns(value: string, patterns: readonly string[]): boolean {
+  const lower = value.toLowerCase();
+  return patterns.some((pattern) => lower.includes(pattern));
+}
+
+export function evaluateLegalLinks(
+  shop: Pick<
+    Shop,
+    "navigation" | "returnPolicyUrl" | "termsUrl" | "privacyUrl"
+  >,
+  pages: Array<{ slug?: string; status?: string; stableId?: string }> = [],
+): { missing: Array<"terms" | "privacy" | "refund"> } {
+  const navigationUrls =
+    Array.isArray(shop.navigation) && shop.navigation.length > 0
+      ? shop.navigation
+          .map((item) =>
+            item && typeof item.url === "string" ? item.url.trim() : "",
+          )
+          .filter((url) => url.length > 0)
+      : [];
+
+  const pageIdentifiers = pages
+    .filter((page) => page?.status === "published")
+    .flatMap((page) =>
+      [page?.slug, page?.stableId].filter(
+        (value): value is string => typeof value === "string",
+      ),
+    );
+
+  const explicitUrls = {
+    terms: [shop.termsUrl].filter(
+      (value): value is string => typeof value === "string" && value.trim() !== "",
+    ),
+    privacy: [shop.privacyUrl].filter(
+      (value): value is string => typeof value === "string" && value.trim() !== "",
+    ),
+    refund: [shop.returnPolicyUrl].filter(
+      (value): value is string => typeof value === "string" && value.trim() !== "",
+    ),
+  };
+
+  const hasTarget = (
+    patterns: readonly string[],
+    urls: string[],
+  ): boolean => {
+    if (urls.some(isHttpUrl)) return true;
+    if (navigationUrls.some((url) => matchesPatterns(url, patterns))) return true;
+    if (pageIdentifiers.some((id) => matchesPatterns(id, patterns))) return true;
+    return false;
+  };
+
+  const missing: Array<"terms" | "privacy" | "refund"> = [];
+  if (!hasTarget(LEGAL_PATTERNS.terms, explicitUrls.terms)) {
+    missing.push("terms");
+  }
+  if (!hasTarget(LEGAL_PATTERNS.privacy, explicitUrls.privacy)) {
+    missing.push("privacy");
+  }
+  if (!hasTarget(LEGAL_PATTERNS.refund, explicitUrls.refund)) {
+    missing.push("refund");
+  }
+
+  return { missing };
+}
+
 function errorResult(
   shopId: string,
   reason: string,
@@ -182,6 +318,84 @@ function errorResult(
     details: { shopId, ...(message ? { error: message } : {}), ...(extra ?? {}) },
   };
 }
+
+export const checkReachSocial: ConfigCheck = async (shopId) => {
+  try {
+    const pages = await loadPages(shopId);
+    const { shop, settings } = await loadShopAndSettings(shopId);
+
+    const components = collectPageComponents(pages);
+    let hasSocialLinks = false;
+    let hasViralBlock = false;
+
+    for (const node of components) {
+      const type = (node as { type?: string }).type;
+      if (!type) continue;
+
+      if (
+        !hasSocialLinks &&
+        type === "SocialLinks" &&
+        ["facebook", "instagram", "x", "youtube", "linkedin"].some((key) => {
+          const value = (node as Record<string, unknown>)[key];
+          return typeof value === "string" && value.trim() !== "";
+        })
+      ) {
+        hasSocialLinks = true;
+      }
+
+      if (
+        !hasViralBlock &&
+        (type === "SocialFeed" ||
+          type === "SocialProof" ||
+          type === "NewsletterSignup" ||
+          type === "EmailReferralSection")
+      ) {
+        if (type === "SocialFeed") {
+          const account = (node as { account?: string }).account;
+          const hashtag = (node as { hashtag?: string }).hashtag;
+          if (
+            (typeof account === "string" && account.trim() !== "") ||
+            (typeof hashtag === "string" && hashtag.trim() !== "")
+          ) {
+            hasViralBlock = true;
+          }
+        } else {
+          hasViralBlock = true;
+        }
+      }
+
+      if (hasSocialLinks && hasViralBlock) break;
+    }
+
+    const seo = settings?.seo ?? {};
+    const socialImage =
+      (seo as { image?: unknown }).image ??
+      (seo as { openGraph?: { image?: unknown } }).openGraph?.image ??
+      (seo as { twitter?: { image?: unknown } }).twitter?.image;
+    const hasShareImage =
+      typeof socialImage === "string" && socialImage.trim() !== "";
+    const domainName = shop?.domain?.name;
+    const hasDomain = typeof domainName === "string" && domainName.trim() !== "";
+
+    if (hasSocialLinks && hasViralBlock && (hasShareImage || hasDomain)) {
+      return { ok: true };
+    }
+
+    return {
+      ok: false,
+      reason: "missing-social-reach",
+      details: {
+        shopId,
+        hasSocialLinks,
+        hasViralBlock,
+        hasShareImage,
+        hasDomain,
+      },
+    };
+  } catch (err) {
+    return errorResult(shopId, "reach-social-error", err);
+  }
+};
 
 export const checkShopBasics: ConfigCheck = async (shopId) => {
   try {
@@ -363,6 +577,7 @@ export const checkProductsInventory: ConfigCheck = async (shopId) => {
 export const checkNavigationHome: ConfigCheck = async (shopId) => {
   try {
     const { shop } = await loadShopAndSettings(shopId);
+    const pages = await loadPages(shopId);
     const nav = shop.navigation ?? [];
     if (!Array.isArray(nav) || nav.length === 0) {
       return {
@@ -381,9 +596,83 @@ export const checkNavigationHome: ConfigCheck = async (shopId) => {
         details: { shopId },
       };
     }
+    const publishedOrDraft = pages.filter(
+      (page) => page.status === "published" || page.status === "draft",
+    );
+    const homePage = publishedOrDraft.find((page) => {
+      const slug = typeof page.slug === "string" ? page.slug : "";
+      return slug === "" || slug === "home" || slug === "/";
+    });
+    const homeFromTemplate =
+      homePage &&
+      typeof (homePage as { stableId?: unknown }).stableId === "string" &&
+      String((homePage as { stableId?: string }).stableId).startsWith(
+        "core.page.home.",
+      );
+    if (
+      !homePage ||
+      !Array.isArray(homePage.components) ||
+      homePage.components.length === 0 ||
+      !homeFromTemplate
+    ) {
+      return {
+        ok: false,
+        reason: "missing-home-template",
+        details: { shopId },
+      };
+    }
+
+    const flattened = collectPageComponents(publishedOrDraft);
+    const hasPdpTemplate = flattened.some(
+      (component) =>
+        component &&
+        typeof component === "object" &&
+        (component as { type?: string }).type === "PDPDetailsSection",
+    ) ||
+      publishedOrDraft.some((page) => {
+        const stableId =
+          (page as { stableId?: string }).stableId ??
+          (page as { stableId?: unknown }).stableId;
+        return (
+          typeof stableId === "string" &&
+          stableId.startsWith("core.page.product.")
+        );
+      });
+    if (!hasPdpTemplate) {
+      return {
+        ok: false,
+        reason: "missing-product-template",
+        details: { shopId },
+      };
+    }
     return { ok: true };
   } catch (err) {
     return errorResult(shopId, "navigation-home-error", err);
+  }
+};
+
+export const checkLegalLinks: ConfigCheck = async (shopId) => {
+  try {
+    const { shop, settings } = await loadShopAndSettings(shopId);
+    const pages = await loadPages(shopId);
+    const { missing } = evaluateLegalLinks(shop, pages);
+    if (missing.length > 0) {
+      return {
+        ok: false,
+        reason: "missing-legal-links",
+        details: { shopId, missing },
+      };
+    }
+    const canonicalBase =
+      settings?.seo && typeof settings.seo === "object"
+        ? (settings.seo as { canonicalBase?: unknown }).canonicalBase
+        : undefined;
+    return {
+      ok: true,
+      details: canonicalBase ? { shopId, canonicalBase } : { shopId },
+    };
+  } catch (err) {
+    return errorResult(shopId, "legal-links-error", err);
   }
 };
 
@@ -396,5 +685,158 @@ export const configuratorChecks: Partial<
   "shipping-tax": checkShippingTax,
   checkout: checkCheckout,
   "products-inventory": checkProductsInventory,
+  legal: checkLegalLinks,
   "navigation-home": checkNavigationHome,
+  "reach-social": checkReachSocial,
 };
+
+export const REQUIRED_CONFIG_CHECK_STEPS: ConfiguratorStepId[] = [
+  "shop-basics",
+  "theme",
+  "payments",
+  "shipping-tax",
+  "checkout",
+  "products-inventory",
+  "legal",
+  "navigation-home",
+];
+
+export const OPTIONAL_CONFIG_CHECK_STEPS: ConfiguratorStepId[] = [
+  "domains",
+  "reverse-logistics",
+  "advanced-seo",
+  "reach-social",
+];
+
+const allConfiguratorSteps: ConfiguratorStepId[] = [
+  ...REQUIRED_CONFIG_CHECK_STEPS,
+  ...OPTIONAL_CONFIG_CHECK_STEPS,
+];
+
+function mapCheckResultToStatus(
+  result: ConfigCheckResult,
+): { status: ProgressStepStatus; error?: string } {
+  if (result.ok) {
+    return { status: "complete" };
+  }
+  return {
+    status: "error",
+    error: result.reason,
+  };
+}
+
+export async function getConfiguratorProgressForShop(
+  shopId: string,
+  steps: ConfiguratorStepId[] = allConfiguratorSteps,
+): Promise<ConfiguratorProgress> {
+  const statuses: Record<ConfiguratorStepId, ProgressStepStatus> = {} as Record<
+    ConfiguratorStepId,
+    ProgressStepStatus
+  >;
+  const errors: Partial<Record<ConfiguratorStepId, string>> = {};
+
+  await Promise.all(
+    steps.map(async (stepId) => {
+      const check = configuratorChecks[stepId];
+      if (!check) {
+        statuses[stepId] = "pending";
+        return;
+      }
+      try {
+        const result = await check(shopId);
+        const mapped = mapCheckResultToStatus(result);
+        statuses[stepId] = mapped.status;
+        if (mapped.error) {
+          errors[stepId] = mapped.error;
+        }
+      } catch (err) {
+        statuses[stepId] = "error";
+        if (!errors[stepId]) {
+          errors[stepId] =
+            err && typeof err === "object" && "message" in err
+              ? String((err as { message?: unknown }).message)
+              : "check-failed";
+        }
+      }
+    }),
+  );
+
+  const base: ConfiguratorProgress = {
+    shopId,
+    steps: statuses,
+    lastUpdated: new Date().toISOString(),
+  };
+
+  if (Object.keys(errors).length > 0) {
+    return { ...base, errors };
+  }
+  return base;
+}
+
+export async function runRequiredConfigChecks(
+  shopId: string,
+  steps: ConfiguratorStepId[] = REQUIRED_CONFIG_CHECK_STEPS,
+): Promise<{ ok: boolean; error?: string }> {
+  const failures: string[] = [];
+  for (const stepId of steps) {
+    const check = configuratorChecks[stepId];
+    if (!check) continue;
+    let result: ConfigCheckResult;
+    try {
+      result = await check(shopId);
+    } catch (err) {
+      const message =
+        err && typeof err === "object" && "message" in err
+          ? String((err as { message?: unknown }).message)
+          : "unknown-error";
+      failures.push(`${stepId}:${message}`);
+      continue;
+    }
+    if (!result.ok) {
+      const reason = result.reason || "failed";
+      failures.push(`${stepId}:${reason}`);
+    }
+  }
+
+  if (failures.length === 0) {
+    return { ok: true };
+  }
+
+  return {
+    ok: false,
+    // Service-level fallback string; caller is responsible for localisation.
+    error: `Configuration checks failed for steps: ${failures.join(", ")}`,
+  };
+}
+
+export async function getLaunchStatus(
+  env: LaunchEnv,
+  shopId: string,
+): Promise<LaunchCheckResult> {
+  const [required, progress] = await Promise.all([
+    runRequiredConfigChecks(shopId),
+    getConfiguratorProgressForShop(shopId),
+  ]);
+
+  const reasons: string[] = [];
+  let status: LaunchStatus = "ok";
+
+  if (!required.ok) {
+    status = "blocked";
+    if (required.error) {
+      reasons.push(required.error);
+    }
+  }
+
+  const optionalErrors = OPTIONAL_CONFIG_CHECK_STEPS.filter(
+    (id) => progress.steps[id] === "error",
+  );
+  if (optionalErrors.length > 0 && status !== "blocked") {
+    status = "warning";
+    for (const id of optionalErrors) {
+      reasons.push(`optional-step-failed:${id}`);
+    }
+  }
+
+  return { env, status, reasons };
+}

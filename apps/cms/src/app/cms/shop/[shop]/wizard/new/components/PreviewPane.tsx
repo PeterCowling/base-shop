@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
-import PreviewRenderer from "@ui/components/cms/page-builder/PreviewRenderer";
+import { PreviewRenderer } from "@acme/page-builder-ui";
 import DeviceSelector from "@ui/components/common/DeviceSelector";
 
 interface Props {

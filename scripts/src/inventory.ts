@@ -1,43 +1,45 @@
 // scripts/src/inventory.ts
 // Inventory import/export helper calling CMS API endpoints.
+/* i18n-exempt file -- ENG-2401 CLI-only inventory helper messaging; not user-facing UI [ttl=2026-12-31] */
 import { readFile, writeFile } from "node:fs/promises";
-import { basename } from "node:path";
+import { basename, resolve } from "node:path";
 import { parseArgs } from "node:util";
 
-interface Options {
-  file: string;
-  url?: string;
-}
-
 async function importInventory(shop: string, file: string, base: string): Promise<void> {
-  const buf = await readFile(file);
-  const contentType = file.endsWith(".csv") ? "text/csv" : "application/json";
+  const sourcePath = resolve(file);
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2401: developer-supplied CLI path normalized locally; not from HTTP input
+  const buf = await readFile(sourcePath);
+  const contentType = sourcePath.endsWith(".csv") ? "text/csv" : "application/json";
   const form = new FormData();
-  form.append("file", new Blob([buf], { type: contentType }), basename(file));
+  form.append("file", new Blob([buf], { type: contentType }), basename(sourcePath));
   const res = await fetch(`${base}/cms/api/data/${shop}/inventory/import`, {
     method: "POST",
     body: form,
   });
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Import failed: ${res.status} ${text}`);
+    const prefix = res.status >= 500 ? "Inventory backend unavailable" : "Import failed";
+    throw new Error(`${prefix}: ${res.status} ${text}`);
   }
-  console.log(`Imported inventory from ${file}`);
+  console.log(`Imported inventory from ${sourcePath}`);
 }
 
 async function exportInventory(shop: string, file: string, base: string): Promise<void> {
-  const format = file.endsWith(".csv") ? "csv" : "json";
+  const targetPath = resolve(file);
+  const format = targetPath.endsWith(".csv") ? "csv" : "json";
   const url = `${base}/cms/api/data/${shop}/inventory/export${
     format === "csv" ? "?format=csv" : ""
   }`;
   const res = await fetch(url);
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(`Export failed: ${res.status} ${text}`);
+    const prefix = res.status >= 500 ? "Inventory backend unavailable" : "Export failed";
+    throw new Error(`${prefix}: ${res.status} ${text}`);
   }
   const data = Buffer.from(await res.arrayBuffer());
-  await writeFile(file, data);
-  console.log(`Saved inventory to ${file}`);
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-2401: developer-supplied CLI path normalized locally; not from HTTP input
+  await writeFile(targetPath, data);
+  console.log(`Saved inventory to ${targetPath}`);
 }
 
 async function main(): Promise<void> {

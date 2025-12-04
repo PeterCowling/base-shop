@@ -30,18 +30,26 @@ export async function POST(req: NextRequest) {
   const orderItems: Array<{ sku: string; from: string; to: string }> =
     session.metadata?.items ? JSON.parse(session.metadata.items) : [];
   if (shop.rentalInventoryAllocation && orderItems.length) {
-    const [inventory, products]: [InventoryItem[], SKU[]] =
-      await Promise.all([
-        readInventory(SHOP_ID),
-        readProducts<SKU>(SHOP_ID),
-      ]);
-    for (const { sku, from, to } of orderItems) {
-      const skuInfo = products.find(
-        (p: SKU) => p.id === sku || p.slug === sku,
+    try {
+      const [inventory, products]: [InventoryItem[], SKU[]] =
+        await Promise.all([
+          readInventory(SHOP_ID),
+          readProducts<SKU>(SHOP_ID),
+        ]);
+      for (const { sku, from, to } of orderItems) {
+        const skuInfo = products.find(
+          (p: SKU) => p.id === sku || p.slug === sku,
+        );
+        if (!skuInfo) continue;
+        const items = inventory.filter((i) => i.sku === sku);
+        await reserveRentalInventory(SHOP_ID, items, skuInfo, from, to);
+      }
+    } catch (err) {
+      console.error("Rental inventory reservation failed", err); // i18n-exempt -- OPS-3201 non-UX log [ttl=2026-12-31]
+      return NextResponse.json(
+        { error: "Inventory unavailable" }, // i18n-exempt -- OPS-3201 machine-readable API error [ttl=2026-12-31]
+        { status: 503 },
       );
-      if (!skuInfo) continue;
-      const items = inventory.filter((i) => i.sku === sku);
-      await reserveRentalInventory(SHOP_ID, items, skuInfo, from, to);
     }
   }
   await addOrder(SHOP_ID, sessionId, deposit, expected);

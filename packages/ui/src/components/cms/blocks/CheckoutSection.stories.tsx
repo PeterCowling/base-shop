@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import CheckoutSection from "./CheckoutSection";
 
 const meta: Meta<typeof CheckoutSection> = {
+  title: "CMS Blocks/CheckoutSection",
   component: CheckoutSection,
   args: {
     showWallets: true,

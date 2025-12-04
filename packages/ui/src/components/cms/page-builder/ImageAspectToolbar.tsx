@@ -21,7 +21,7 @@ function flip(aspect?: string): string | undefined {
 export default function ImageAspectToolbar({ value, onChange }: { value?: string; onChange: (next?: string) => void }) {
   return (
     <div className="relative">
-      <div className="absolute end-1 top-1 flex items-center gap-1 rounded bg-black/60 p-1 text-white shadow backdrop-blur-sm dark:bg-white/70 dark:text-black">
+      <div className="absolute end-1 top-1 flex items-center gap-1 rounded bg-foreground/60 p-1 text-foreground shadow backdrop-blur-sm dark:bg-card/70 dark:text-foreground">
         {PRESETS.map((p) => (
           <Button key={p.label} type="button" variant={p.value === value ? "default" : "outline"} className="h-6 px-2 text-xs" onClick={() => onChange(p.value)}>
             {p.label}

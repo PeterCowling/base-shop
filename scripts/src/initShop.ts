@@ -1,3 +1,4 @@
+/* i18n-exempt file -- OPS-3400 CLI-only shop bootstrap prompts; developer-facing copy [ttl=2026-12-31] */
 import { validateShopName } from "@acme/platform-core/shops";
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
@@ -52,7 +53,7 @@ export async function initShop(): Promise<void> {
   const name =
     (config.name as string | undefined) ??
     (skipPrompts ? "" : await prompt("Display name (optional): "));
-  const logoCfg = config.logo as any;
+  const logoCfg = config.logo;
   const logo =
     (typeof logoCfg === "string"
       ? logoCfg
@@ -146,6 +147,18 @@ export async function initShop(): Promise<void> {
       : skipPrompts
         ? []
         : await promptPages();
+  const analyticsAns =
+    typeof config.analyticsEnabled === "boolean"
+      ? config.analyticsEnabled
+      : skipPrompts
+        ? false
+        : (await prompt("Enable analytics? (y/N): ", "n")).toLowerCase().startsWith("y");
+  const leadAns =
+    typeof config.leadCaptureEnabled === "boolean"
+      ? config.leadCaptureEnabled
+      : skipPrompts
+        ? false
+        : (await prompt("Enable lead capture forwarder? (y/N): ", "n")).toLowerCase().startsWith("y");
   const themeOverrides =
     (config.themeOverrides as Record<string, string> | undefined) ??
     (skipPrompts ? {} : await promptThemeOverrides());
@@ -191,6 +204,24 @@ export async function initShop(): Promise<void> {
 
   if (pagesTemplate) {
     await applyPageTemplate(prefixedId, pagesTemplate);
+  }
+
+  // Persist default settings toggles
+  try {
+    const settingsPath = join("data", "shops", prefixedId, "settings.json");
+    const settingsRaw = await import("node:fs").then((fs) =>
+      fs.readFileSync(settingsPath, "utf8"),
+    );
+    const settings = JSON.parse(settingsRaw);
+    if (!settings.analytics) settings.analytics = {};
+    settings.analytics.enabled = analyticsAns;
+    if (!settings.leadCapture) settings.leadCapture = {};
+    settings.leadCapture.enabled = leadAns;
+    await import("node:fs").then((fs) =>
+      fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2)),
+    );
+  } catch {
+    /* ignore */
   }
 
   writeEnvFiles({

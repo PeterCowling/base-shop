@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Auth
+Last-reviewed: 2025-12-02
+
 # Authentication Rate Limiting
 
 The NextAuth handler in `apps/cms` is protected with a simple in-memory rate limiter using [`rate-limiter-flexible`](https://www.npmjs.com/package/rate-limiter-flexible).

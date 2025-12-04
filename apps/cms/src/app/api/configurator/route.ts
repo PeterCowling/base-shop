@@ -1,19 +1,19 @@
 import "@acme/zod-utils/initZod";
 import { createNewShop } from "@cms/actions/createShop.server";
-import { createShopOptionsSchema } from "@platform-core/createShop";
+import { shopConfigSchema, type ShopConfig } from "@acme/types";
 import { validateShopEnv } from "@platform-core/configurator";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
 /**
  * POST /cms/api/configurator
- * Body: { id: string; ...CreateShopOptions }
+ * Body: { id: string; ...ShopConfig }
  * Creates a new shop and validates the generated .env file.
  */
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const parsed = createShopOptionsSchema
+    const parsed = shopConfigSchema
       .extend({ id: z.string() })
       .safeParse(body);
 
@@ -22,8 +22,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: message }, { status: 400 });
     }
 
-    const { id, ...options } = parsed.data;
-    const deployment = await createNewShop(id, options);
+    const { id, ...config } = parsed.data as { id: string } & ShopConfig;
+    const deployment = await createNewShop(id, config);
 
     let envError: string | undefined;
     try {

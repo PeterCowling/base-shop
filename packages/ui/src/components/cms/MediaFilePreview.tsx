@@ -85,7 +85,7 @@ export function MediaFilePreview({
         )}
 
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/40 to-transparent opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
           aria-hidden
         />
 

@@ -15,13 +15,13 @@ const items = [
 const meta: Meta<typeof Repeater> = {
   title: 'CMS Blocks/Containers/Repeater/Matrix',
   component: Repeater,
-  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
       description: {
         component: `Repeats its child for each item from DatasetProvider; supports client-side filter/sort/pagination and explicit Loading/Empty/Error states.\n\nUsage:\n\n\`\`\`tsx\nimport { DatasetProvider } from '../data/DataContext';\nimport Repeater from './Repeater';\n\n<DatasetProvider items={[{ id: 1, title: 'A', status: 'published', score: 5 }]} state="loaded">\n  <Repeater filter="status=published" sortBy="score" columns={3} gap="1rem">\n    <div>Item</div>\n  </Repeater>\n</DatasetProvider>\n\n// Key args: filter, sortBy/sortOrder, columns(+responsive), gap(+responsive), initialCount/increment\n\`\`\``,
       },
     },
+    layout: 'padded',
   },
   args: {
     columns: 3,
@@ -31,9 +31,8 @@ const meta: Meta<typeof Repeater> = {
     sortOrder: 'desc',
     initialCount: 2,
     increment: 1,
-    children: <div className="rounded bg-neutral-100 p-2">Item</div>,
+    children: <div className="rounded bg-muted p-2">Item</div>,
   },
-  parameters: { layout: 'padded' },
 };
 export default meta;
 
@@ -53,7 +52,7 @@ export const Loading: Story = {
   ...makeStateStory(baseArgs, {}, 'loading', { viewports: ['mobile1'], tags: ['visual'], docsDescription: 'Shows provided LoadingState while dataset is loading.' }),
   render: (args: ComponentProps<typeof Repeater>) => (
     <DatasetProvider items={[]} state="loading">
-      <Repeater LoadingState={() => <div className="text-sm text-neutral-600">Loading…</div>} {...args} />
+      <Repeater LoadingState={() => <div className="text-sm text-muted-foreground">Loading…</div>} {...args} />
     </DatasetProvider>
   ),
 };
@@ -62,7 +61,7 @@ export const Empty: Story = {
   ...makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'], docsDescription: 'Empty list; renders provided EmptyState component.' }),
   render: (args: ComponentProps<typeof Repeater>) => (
     <DatasetProvider items={[]} state="loaded">
-      <Repeater EmptyState={() => <div className="text-sm text-neutral-600">Nothing here</div>} {...args} />
+      <Repeater EmptyState={() => <div className="text-sm text-muted-foreground">Nothing here</div>} {...args} />
     </DatasetProvider>
   ),
 };
@@ -71,7 +70,7 @@ export const Error: Story = {
   ...makeStateStory(baseArgs, {}, 'error', { a11y: true, critical: true, viewports: ['desktop'], tags: ['visual', 'ci'], docsDescription: 'Dataset in error; renders provided ErrorState component.' }),
   render: (args: ComponentProps<typeof Repeater>) => (
     <DatasetProvider items={[]} state="error">
-      <Repeater ErrorState={() => <div className="text-sm text-red-600">Error!</div>} {...args} />
+      <Repeater ErrorState={() => <div className="text-sm text-destructive">Error!</div>} {...args} />
     </DatasetProvider>
   ),
 };

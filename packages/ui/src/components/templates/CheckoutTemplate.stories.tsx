@@ -8,6 +8,7 @@ const steps = [
 ];
 
 const meta: Meta<typeof CheckoutTemplate> = {
+  title: "Templates/CheckoutTemplate",
   component: CheckoutTemplate,
   args: { steps },
 };

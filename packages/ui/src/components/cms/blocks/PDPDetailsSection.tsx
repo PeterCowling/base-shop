@@ -17,8 +17,8 @@ export default function PDPDetailsSection({ product, preset = "default", classNa
   const titleClass = ["font-semibold", luxury ? "text-3xl tracking-wide" : "text-2xl"].join(" ");
   // i18n-exempt -- DS-1234 [ttl=2025-11-30]
   const descClass = luxury
-    ? "w-full sm:max-w-2xl leading-8 text-neutral-700" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
-    : "w-full sm:max-w-xl text-neutral-700" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */;
+    ? "w-full sm:max-w-2xl leading-8 text-muted-foreground" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */
+    : "w-full sm:max-w-xl text-muted-foreground" /* i18n-exempt -- DS-1234 [ttl=2025-11-30] */;
   return (
     <section className={rootClass || undefined} {...rest}>
       <h1 className={titleClass}>{product.title}</h1>

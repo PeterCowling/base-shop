@@ -15,6 +15,7 @@ function Harness() {
 }
 
 const meta: Meta<typeof DeviceSelector> = {
+  title: 'Utilities/DeviceSelector',
   component: DeviceSelector,
   tags: ['autodocs'],
   parameters: {

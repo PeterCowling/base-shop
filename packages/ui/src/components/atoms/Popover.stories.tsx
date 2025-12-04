@@ -27,3 +27,5 @@ export const PanelSurface: StoryObj<typeof Popover> = {
     </Popover>
   ),
 };
+
+export const Default: StoryObj<typeof Popover> = {};

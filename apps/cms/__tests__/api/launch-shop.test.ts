@@ -26,6 +26,16 @@ const initShop = jest.fn();
 const deployShop = jest.fn();
 const seedShop = jest.fn();
 const getRequiredSteps = jest.fn();
+const getConfiguratorProgressForShop = jest.fn();
+const runRequiredConfigChecks = jest.fn();
+const getLaunchGate = jest.fn();
+const evaluateProdGate = jest.fn();
+const recordFirstProdLaunch = jest.fn();
+const recordStageTests = jest.fn();
+const verifyShopAfterDeploy = jest.fn();
+const mockCookies = jest.fn(() => ({
+  get: (name: string) => (name === "csrf_token" ? { value: "token" } : undefined),
+}));
 
 jest.mock("../../src/app/cms/wizard/services/createShop", () => ({
   __esModule: true,
@@ -52,6 +62,35 @@ jest.mock("../../src/app/cms/configurator/steps", () => ({
   getRequiredSteps: (...args: any[]) => getRequiredSteps(...args),
 }));
 
+jest.mock("@platform-core/configurator", () => ({
+  __esModule: true,
+  getConfiguratorProgressForShop: (...args: any[]) =>
+    getConfiguratorProgressForShop(...args),
+  runRequiredConfigChecks: (...args: any[]) => runRequiredConfigChecks(...args),
+}));
+
+jest.mock("next/headers", () => ({
+  cookies: (...args: any[]) => mockCookies(...args),
+}));
+
+jest.mock("../../src/lib/server/launchGate", () => ({
+  __esModule: true,
+  getLaunchGate: (...args: any[]) => getLaunchGate(...args),
+  evaluateProdGate: (...args: any[]) => evaluateProdGate(...args),
+  recordFirstProdLaunch: (...args: any[]) => recordFirstProdLaunch(...args),
+  recordStageTests: (...args: any[]) => recordStageTests(...args),
+}));
+
+jest.mock("../../src/actions/verifyShopAfterDeploy.server", () => ({
+  __esModule: true,
+  verifyShopAfterDeploy: (...args: any[]) => verifyShopAfterDeploy(...args),
+}));
+
+jest.mock("@cms/actions/common/auth", () => ({
+  __esModule: true,
+  ensureAuthorized: jest.fn().mockResolvedValue({ user: { id: "test-user", role: "admin" } }),
+}));
+
 afterEach(() => {
   jest.resetModules();
   jest.clearAllMocks();
@@ -59,6 +98,17 @@ afterEach(() => {
 
 afterAll(() => {
   process.env = originalEnv;
+});
+
+beforeEach(() => {
+  getConfiguratorProgressForShop.mockResolvedValue({
+    shopId: "1",
+    steps: {},
+    lastUpdated: new Date().toISOString(),
+  });
+  runRequiredConfigChecks.mockResolvedValue({ ok: true });
+  getLaunchGate.mockResolvedValue({});
+  evaluateProdGate.mockReturnValue({ allowed: true, missing: [] });
 });
 
 function parseSse(text: string) {
@@ -82,7 +132,7 @@ describe("launch-shop API", () => {
 
     const req = {
       json: async () => ({ shopId: "1", state: { completed: {} }, seed: true }),
-      headers: new Headers(),
+      headers: new Headers({ "x-csrf-token": "token" }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -109,7 +159,7 @@ describe("launch-shop API", () => {
 
     const req = {
       json: async () => ({ shopId: "1", state: { completed: {} } }),
-      headers: new Headers(),
+      headers: new Headers({ "x-csrf-token": "token" }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -118,6 +168,57 @@ describe("launch-shop API", () => {
       error: "Missing required steps",
       missingSteps: ["a"],
     });
+  });
+
+  it("blocks prod launch when stage gate is not satisfied", async () => {
+    getRequiredSteps.mockReturnValue([]);
+    evaluateProdGate.mockReturnValue({
+      allowed: false,
+      missing: ["stage-tests", "qa-ack"],
+    });
+
+    const { POST } = await import("../../src/app/api/launch-shop/route");
+
+    const req = {
+      json: async () => ({ shopId: "1", state: { completed: {} }, env: "prod" }),
+      headers: new Headers({ "x-csrf-token": "token" }),
+    } as unknown as Request;
+
+    const res = await POST(req);
+    expect(res.status).toBe(400);
+    await expect(res.json()).resolves.toEqual({
+      error: "stage-gate",
+      missing: ["stage-tests", "qa-ack"],
+      env: "stage",
+    });
+  });
+
+  it("allows prod launch after stage gate passes and records first prod launch", async () => {
+    getRequiredSteps.mockReturnValue([]);
+    evaluateProdGate.mockReturnValue({
+      allowed: true,
+      missing: [],
+    });
+    createShop.mockResolvedValue({ ok: true });
+    initShop.mockResolvedValue({ ok: true });
+    deployShop.mockResolvedValue({ ok: true });
+    seedShop.mockResolvedValue({ ok: true });
+    verifyShopAfterDeploy.mockResolvedValue({ status: "passed" });
+
+    const { POST } = await import("../../src/app/api/launch-shop/route");
+
+    const req = {
+      json: async () => ({ shopId: "1", state: { completed: {} }, env: "prod" }),
+      headers: new Headers({ "x-csrf-token": "token" }),
+    } as unknown as Request;
+
+    const res = await POST(req);
+    const text = new TextDecoder().decode(await res.arrayBuffer());
+    const messages = parseSse(text);
+
+    expect(res.status).toBe(200);
+    expect(messages[messages.length - 1]).toEqual({ done: true });
+    expect(recordFirstProdLaunch).toHaveBeenCalledWith("1");
   });
 
   it.skip("emits failure when downstream service errors", async () => {
@@ -131,7 +232,7 @@ describe("launch-shop API", () => {
 
     const req = {
       json: async () => ({ shopId: "1", state: { completed: {} } }),
-      headers: new Headers(),
+      headers: new Headers({ "x-csrf-token": "token" }),
     } as unknown as Request;
 
     const res = await POST(req);
@@ -146,4 +247,3 @@ describe("launch-shop API", () => {
     ]);
   });
 });
-

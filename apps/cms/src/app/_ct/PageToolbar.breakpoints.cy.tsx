@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PageToolbar from '@ui/components/cms/page-builder/PageToolbar';
+import { PageToolbar } from '@acme/page-builder-ui';
 
 describe('PageToolbar breakpoints editor (CT)', { tags: ['inspectors'] }, () => {
   it('adds a breakpoint via Design popover (wide toolbar)', () => {
@@ -85,4 +85,3 @@ describe('PageToolbar breakpoints editor (CT)', { tags: ['inspectors'] }, () => 
     });
   });
 });
-

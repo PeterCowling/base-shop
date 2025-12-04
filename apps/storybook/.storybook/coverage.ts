@@ -16,7 +16,6 @@ const excludeGlobs = [
   "**/*.stories.js",
   "**/*.stories.jsx",
   "**/*.stories.mdx",
-  "**/*.Matrix.stories.tsx",
 ];
 
 const extensions = [".ts", ".tsx", ".js", ".jsx"] as const;

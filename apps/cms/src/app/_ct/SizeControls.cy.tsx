@@ -1,5 +1,5 @@
 import React from 'react';
-import SizeControls from '@ui/components/cms/page-builder/panels/layout/SizeControls';
+import { SizeControls } from '@acme/page-builder-ui';
 
 describe('SizeControls (CT)', { tags: ['inspectors'] }, () => {
   it('emits handleResize and handleFullSize for desktop width', () => {
@@ -28,4 +28,3 @@ describe('SizeControls (CT)', { tags: ['inspectors'] }, () => {
     cy.get('@resize').its('lastCall.args.1').should('match', /%$/);
   });
 });
-

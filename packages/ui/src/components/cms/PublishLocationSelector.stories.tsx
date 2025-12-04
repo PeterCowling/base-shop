@@ -3,6 +3,7 @@ import { fn } from "storybook/test";
 import PublishLocationSelector from "./PublishLocationSelector";
 
 const meta: Meta<typeof PublishLocationSelector> = {
+  title: "CMS/PublishLocationSelector",
   component: PublishLocationSelector,
   args: {
     selectedIds: [],

@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useState, useCallback, useEffect } from "react";
+import { memo, useState, useCallback, useEffect, useMemo } from "react";
 import { useTranslations } from "@acme/i18n";
 import { usePathname } from "next/navigation";
 import { getShopFromPath } from "@acme/shared-utils";
@@ -21,7 +21,16 @@ import TextThemesList from "./palette/TextThemesList";
 import CategoriesList from "./palette/CategoriesList";
 import SearchInput from "./palette/SearchInput";
 
-const Palette = memo(function Palette({ onAdd, onInsertImage: _onInsertImage, onSetSectionBackground: _onSetSectionBackground, selectedIsSection: _selectedIsSection, defaultTab: _defaultTab = "components", onInsertPreset, mode = "all" }: PaletteProps) {
+const Palette = memo(function Palette({
+  onAdd,
+  onInsertImage: _onInsertImage,
+  onSetSectionBackground: _onSetSectionBackground,
+  selectedIsSection: _selectedIsSection,
+  defaultTab: _defaultTab = "components",
+  onInsertPreset,
+  mode = "all",
+  allowedTypes,
+}: PaletteProps) {
   const t = useTranslations();
   const [search, setSearch] = useState("");
   const [presetOpen, setPresetOpen] = useState(false);
@@ -31,7 +40,16 @@ const Palette = memo(function Palette({ onAdd, onInsertImage: _onInsertImage, on
   const { recents, pushRecent } = useRecents();
   const installedApps = useInstalledApps(shop);
   const paletteCategories = usePaletteCategories(installedApps, mode as PaletteMode);
-  const paletteIndex = usePaletteIndex(paletteCategories);
+  const filteredCategories = useMemo(() => {
+    if (!allowedTypes) return paletteCategories;
+    return paletteCategories
+      .map((c) => ({
+        ...c,
+        items: c.items.filter((item) => allowedTypes.has(item.type)),
+      }))
+      .filter((c) => c.items.length > 0);
+  }, [allowedTypes, paletteCategories]);
+  const paletteIndex = usePaletteIndex(filteredCategories);
   const { textThemes, buildPreviewStyle } = useTextThemesPreview();
   const { library, setLibrary, globalLibrary, setGlobalLibrary, removeLibrary, updateLibrary } = useLibraries(shop);
 
@@ -68,7 +86,7 @@ const Palette = memo(function Palette({ onAdd, onInsertImage: _onInsertImage, on
     <div className="flex flex-col gap-4" data-tour="drag-component"> {/* i18n-exempt -- DS-1023 data attribute, not user-facing [ttl=2026-12-31] */}
       {onInsertPreset && (
         <div>
-          <PresetsModal onInsert={onInsertPreset} open={presetOpen} onOpenChange={setPresetOpen} hideTrigger />
+          <PresetsModal onInsert={onInsertPreset} open={presetOpen} onOpenChange={setPresetOpen} />
         </div>
       )}
 
@@ -102,7 +120,7 @@ const Palette = memo(function Palette({ onAdd, onInsertImage: _onInsertImage, on
 
       <TextThemesList textThemes={textThemes} buildPreviewStyle={buildPreviewStyle} onApply={handleApplyTextTheme} />
 
-      <CategoriesList categories={paletteCategories} searchTerm={searchTerm} onAdd={handleAdd} />
+      <CategoriesList categories={filteredCategories} searchTerm={searchTerm} onAdd={handleAdd} />
     </div>
   );
 });

@@ -1,3 +1,12 @@
+Type: Contract
+Status: Canonical
+Domain: Users
+Last-reviewed: 2025-12-02
+
+Primary code entrypoints:
+- packages/auth/**
+- packages/platform-core/src/users/*
+
 # Users
 
 ## User Model

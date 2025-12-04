@@ -3,14 +3,21 @@
 "use client";
 
 import { Button, Input } from "@ui/components/atoms/shadcn";
-import { LOCALES } from "@acme/i18n";
+import { LOCALES, useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/types";
-import React, { useState } from "react";
+import type { ConfiguratorProgress } from "@acme/types";
+import React, { useEffect, useState } from "react";
 import WizardPreview from "../../wizard/WizardPreview";
 import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";
 import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
+import {
+  CmsLaunchChecklist,
+  type CmsLaunchChecklistItem,
+  type CmsLaunchStatus,
+} from "@ui/components/cms"; // UI: @ui/components/cms/CmsLaunchChecklist
+import { buildLaunchChecklist } from "../hooks/dashboard/launchChecklist";
 
 interface Props {
   shopId: string;
@@ -20,6 +27,7 @@ interface Props {
   type: "sale" | "rental";
   theme: string;
   payment: string[];
+  billingProvider?: string;
   shipping: string[];
   analyticsProvider: string;
   pageTitle: Record<Locale, string>;
@@ -43,6 +51,7 @@ export default function StepSummary({
   type,
   theme,
   payment,
+  billingProvider,
   shipping,
   analyticsProvider,
   pageTitle,
@@ -61,40 +70,129 @@ export default function StepSummary({
   const [, markComplete] = useStepCompletion("summary");
   const router = useRouter();
   const [device, setDevice] = useState<DevicePreset>(devicePresets[0]);
+  const t = useTranslations();
+  const [launchItems, setLaunchItems] = useState<CmsLaunchChecklistItem[]>([]);
+
+  useEffect(() => {
+    if (!shopId) return;
+    if (typeof window === "undefined" || typeof fetch === "undefined") return;
+
+    let cancelled = false;
+    const tFunc = t as unknown as (key: string) => string;
+
+    fetch(`/api/configurator-progress?shopId=${encodeURIComponent(shopId)}`)
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json: ConfiguratorProgress | null) => {
+        if (!json || cancelled) return;
+        if (!json.steps) return;
+        const checklist = buildLaunchChecklist({
+          progress: json,
+          translate: tFunc,
+        });
+        const mapped: CmsLaunchChecklistItem[] = checklist.map((item) => ({
+          id: item.id,
+          label: item.label,
+          status: item.status as CmsLaunchStatus,
+          statusLabel: item.statusLabel,
+          fixLabel: item.fixLabel,
+          href: item.targetHref,
+        }));
+        setLaunchItems(mapped);
+      })
+      .catch(() => {
+        // Ignore network errors; summary can still render without the checklist.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [shopId, t]);
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">Summary</h2>
+      <h2 className="text-xl font-semibold">
+        {t("cms.configurator.summary.heading")}
+      </h2>
 
-      <ul className="list-disc pl-5 text-sm">
-        <li>
-          <b>Shop ID:</b> {shopId}
-        </li>
-        <li>
-          <b>Store Name:</b> {name}
-        </li>
-        <li>
-          <b>Logo:</b> {logo["desktop-landscape"] || Object.values(logo)[0] || "none"}
-        </li>
-        <li>
-          <b>Contact:</b> {contactInfo || "none"}
-        </li>
-        <li>
-          <b>Type:</b> {type}
-        </li>
-        <li>
-          <b>Theme:</b> {theme}
-        </li>
-        <li>
-          <b>Payment:</b> {payment.length ? payment.join(", ") : "none"}
-        </li>
-        <li>
-          <b>Shipping:</b> {shipping.length ? shipping.join(", ") : "none"}
-        </li>
-        <li>
-          <b>Analytics:</b> {analyticsProvider || "none"}
-        </li>
-      </ul>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2">
+        <div className="space-y-3">
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("cms.configurator.summary.shopSnapshot")}
+          </h3>
+          <ul className="list-disc pl-5 text-sm">
+            <li>
+              <span className="font-semibold">
+                {t("cms.configurator.summary.shopIdLabel")}
+              </span>{" "}
+              {shopId}
+            </li>
+            <li>
+              <span className="font-semibold">
+                {t("cms.configurator.summary.storeNameLabel")}
+              </span>{" "}
+              {name}
+            </li>
+            <li>
+              <span className="font-semibold">
+                {t("cms.configurator.summary.logoLabel")}
+              </span>{" "}
+              {logo["desktop-landscape"] || Object.values(logo)[0] || t("cms.configurator.summary.none")}
+            </li>
+            <li>
+              <span className="font-semibold">
+                {t("cms.configurator.summary.contactLabel")}
+              </span>{" "}
+              {contactInfo || t("cms.configurator.summary.none")}
+            </li>
+            <li>
+              <span className="font-semibold">
+                {t("cms.configurator.summary.typeLabel")}
+              </span>{" "}
+              {type}
+            </li>
+            <li>
+              <span className="font-semibold">
+                {t("cms.configurator.summary.themeLabel")}
+              </span>{" "}
+              {theme}
+            </li>
+            <li>
+              <span className="font-semibold">
+                {t("cms.configurator.summary.paymentLabel")}
+              </span>{" "}
+              {payment.length ? payment.join(", ") : t("cms.configurator.summary.none")}
+            </li>
+            <li>
+              <span className="font-semibold">
+                Billing {/* i18n-exempt -- CMS summary label; admin-only dashboard copy */}
+              </span>{" "}
+              {billingProvider || t("cms.configurator.summary.none")}
+            </li>
+            <li>
+              <span className="font-semibold">
+                {t("cms.configurator.summary.shippingLabel")}
+              </span>{" "}
+              {shipping.length ? shipping.join(", ") : t("cms.configurator.summary.none")}
+            </li>
+            <li>
+              <span className="font-semibold">
+                {t("cms.configurator.summary.analyticsLabel")}
+              </span>{" "}
+              {analyticsProvider || t("cms.configurator.summary.none")}
+            </li>
+          </ul>
+        </div>
+        {launchItems.length > 0 ? (
+          <div className="space-y-3">
+            <CmsLaunchChecklist
+              heading={String(t("cms.configurator.launchChecklist.heading"))}
+              readyLabel={String(t("cms.configurator.launchChecklist.readyLabel"))}
+              showReadyCelebration
+              items={launchItems}
+            />
+          </div>
+        ) : null}
+      </div>
 
       {languages.map((l) => (
         <div key={l} className="space-y-2">

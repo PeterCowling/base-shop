@@ -49,9 +49,9 @@ export default function RentalManageSection({ rentalId, adapter, className, ...r
           <button type="button" onClick={doExtend} disabled={!adapter || !date || status === "loading"} className="rounded border px-3 py-1 text-sm disabled:opacity-50 min-h-10 min-w-10">{t("Extend")}</button>
           <button type="button" onClick={doReturn} disabled={!adapter || status === "loading"} className="rounded border px-3 py-1 text-sm disabled:opacity-50 min-h-10 min-w-10">{t("Start return")}</button>
         </div>
-        {status === "loading" ? <div className="text-xs text-neutral-600">{t("Working…")}</div> : null}
-        {status === "ok" ? <div className="text-xs text-emerald-700">{t("Success")}{message ? ` — ${message}` : ""}</div> : null}
-        {status === "error" ? <div className="text-xs text-red-600">{t("Error")}{message ? ` — ${message}` : ""}</div> : null}
+        {status === "loading" ? <div className="text-xs text-muted-foreground">{t("Working…")}</div> : null}
+        {status === "ok" ? <div className="text-xs text-primary">{t("Success")}{message ? ` — ${message}` : ""}</div> : null}
+        {status === "error" ? <div className="text-xs text-destructive">{t("Error")}{message ? ` — ${message}` : ""}</div> : null}
       </div>
     </section>
   );

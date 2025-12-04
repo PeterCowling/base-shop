@@ -17,12 +17,12 @@ export interface ShowcaseSectionProps extends React.HTMLAttributes<HTMLDivElemen
 
 function LoadingRecommendations() {
   const t = useTranslations();
-  return <div className="text-sm text-neutral-600">{t("cms.showcase.loadingRecs")}</div>;
+  return <div className="text-sm text-muted-foreground">{t("cms.showcase.loadingRecs")}</div>;
 }
 
 function ErrorRecommendations() {
   const t = useTranslations();
-  return <div className="text-sm text-red-600">{t("cms.showcase.loadFailedRecs")}</div>;
+  return <div className="text-sm text-destructive">{t("cms.showcase.loadFailedRecs")}</div>;
 }
 
 function ShowcaseGrid({ preset, limit, endpoint, gridCols, className, ...rest }: Required<Pick<ShowcaseSectionProps, "preset" | "limit" | "endpoint" | "gridCols">> & React.HTMLAttributes<HTMLDivElement>) {
@@ -48,14 +48,14 @@ function ShowcaseGrid({ preset, limit, endpoint, gridCols, className, ...rest }:
   if (status === 'loading') return (
     <section className={className} {...rest}>
       <div className="mx-auto px-4">
-        <div className="text-sm text-neutral-600">{t("cms.builder.loading")}</div>
+        <div className="text-sm text-muted-foreground">{t("cms.builder.loading")}</div>
       </div>
     </section>
   );
   if (status === 'error') return (
     <section className={className} {...rest}>
       <div className="mx-auto px-4">
-        <div className="text-sm text-red-600">{t("cms.showcase.loadFailedProducts")}</div>
+        <div className="text-sm text-destructive">{t("cms.showcase.loadFailedProducts")}</div>
       </div>
     </section>
   );

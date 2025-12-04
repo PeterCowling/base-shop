@@ -1,11 +1,12 @@
 import { prepareOptions, createShopOptionsSchema as baseCreateShopOptionsSchema, type CreateShopOptions } from "./schema";
 import type { DeployShopResult } from "./deployTypes";
+import type { ShopConfig, Environment } from "@acme/types";
 import { type ShopDeploymentAdapter } from "./deploymentAdapter";
 /**
  * Create a new shop app and seed data.
  * Paths are resolved relative to the repository root.
  */
-export declare function createShop(id: string, opts?: CreateShopOptions, options?: {
+export declare function createShop(id: string, opts?: Partial<CreateShopOptions>, options?: {
     deploy?: boolean;
 }, adapter?: ShopDeploymentAdapter): Promise<DeployShopResult>;
 export declare function deployShop(id: string, domain?: string, adapter?: ShopDeploymentAdapter): DeployShopResult;
@@ -19,6 +20,20 @@ export declare function listThemes(): string[];
  */
 export declare function syncTheme(shop: string, theme: string): Record<string, string>;
 export declare const createShopOptionsSchema: typeof baseCreateShopOptionsSchema;
+export interface ShopCreationState {
+    shopId: string;
+    status: "pending" | "created" | "partial" | "failed";
+    env?: Environment;
+    lastConfigHash?: string;
+    lastError?: string;
+    createdAt?: string;
+    updatedAt?: string;
+}
+export declare function mapConfigToCreateShopOptions(config: ShopConfig): Partial<CreateShopOptions>;
+export declare function createShopFromConfig(id: string, config: ShopConfig, options?: {
+    deploy?: boolean;
+    env?: Environment;
+}): Promise<DeployShopResult>;
 export { prepareOptions };
 export type { CreateShopOptions, PreparedCreateShopOptions, NavItem } from "./schema";
 export type { DeployStatusBase, DeployShopResult } from "./deployTypes";

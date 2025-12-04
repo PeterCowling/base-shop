@@ -92,7 +92,7 @@ function Sidebar({
                   </span>
                   <span className="flex-1 font-medium">{label}</span>
                   {active && (
-                    <span className="h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                    <span className="h-2 w-2 rounded-full bg-primary" aria-hidden />
                   )}
                 </Link>
               ))}

@@ -43,6 +43,9 @@ describe("pages.prisma.server", () => {
       createdAt: "t",
       updatedAt: "t",
       createdBy: "me",
+      publishedAt: "p1",
+      publishedBy: "me",
+      publishedRevisionId: "rev-1",
     } as Page;
     prismaMock.page.findMany.mockResolvedValue([{ data: page }]);
     const res = await repo.getPages(shop);

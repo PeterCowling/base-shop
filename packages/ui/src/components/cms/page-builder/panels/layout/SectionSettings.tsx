@@ -54,7 +54,7 @@ export default function SectionSettings({ component, locked, handleInput, handle
           (component as unknown as Record<string, unknown>)[`contentWidth${vp}`]
         ) ? (
           <div key={`cwo-${vp}`} className="mt-1 flex items-center gap-2 text-xs">
-            <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+            <span className="rounded bg-muted px-1 text-primary">{t("Override active")}</span>
             <Button type="button" variant="ghost" onClick={() => handleResize(`contentWidth${vp}`, "")}>
               {t("Reset")}
             </Button>
@@ -100,7 +100,7 @@ export default function SectionSettings({ component, locked, handleInput, handle
           (component as unknown as Record<string, unknown>)[`contentAlign${vp}`]
         ) ? (
           <div key={`cao-${vp}`} className="mt-1 flex items-center gap-2 text-xs">
-            <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+            <span className="rounded bg-muted px-1 text-primary">{t("Override active")}</span>
             <Button type="button" variant="ghost" onClick={() => setField(`contentAlign${vp}` as keyof PageComponent, undefined as PageComponent[keyof PageComponent])}>{t("Reset")}</Button>
           </div>
         ) : null

@@ -44,7 +44,7 @@ export default function GapControls({ component, handleInput }: Props) {
       </div>
       {isOverridden(comp.gap, comp.gapDesktop) && (
         <div className="flex items-center gap-2 text-xs">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <span className="rounded bg-muted px-1 text-primary">{t("Override active")}</span>
           <Button
             type="button"
             variant="ghost"
@@ -66,7 +66,7 @@ export default function GapControls({ component, handleInput }: Props) {
       </div>
       {isOverridden(comp.gap, comp.gapTablet) && (
         <div className="flex items-center gap-2 text-xs">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <span className="rounded bg-muted px-1 text-primary">{t("Override active")}</span>
           <Button
             type="button"
             variant="ghost"
@@ -88,7 +88,7 @@ export default function GapControls({ component, handleInput }: Props) {
       </div>
       {isOverridden(comp.gap, comp.gapMobile) && (
         <div className="flex items-center gap-2 text-xs">
-          <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("Override active")}</span>
+          <span className="rounded bg-muted px-1 text-primary">{t("Override active")}</span>
           <Button
             type="button"
             variant="ghost"

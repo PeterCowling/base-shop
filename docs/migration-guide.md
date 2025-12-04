@@ -1,3 +1,8 @@
+Type: Guide
+Status: Reference
+Domain: Platform
+Last-reviewed: 2025-12-02
+
 # Migration Guide
 
 Use the `migrate-shop` script to transition a shop to the new theme and token system.
@@ -43,3 +48,10 @@ and import them into the new storage layer using the tooling provided by that
 system. See [Inventory Migration](./inventory-migration.md) for up-to-date
 migration steps. Keep the export handy so the migration can be repeated if the
 target storage changes again.
+
+How to use this doc now:
+
+- This guide is primarily for **one-off migrations** of legacy shops between older storage/layouts and the current system.
+- For new shops and ongoing behaviour:
+  - Prefer `docs/architecture.md`, `docs/persistence.md`, and `docs/platform-vs-apps.md`.
+  - Treat the scripts and commands here as examples rather than canonical interfaces.

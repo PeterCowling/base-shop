@@ -4,6 +4,7 @@ import { Dialog, DialogContent, Button } from "../atoms/shadcn";
 import type { SKU } from "@acme/types";
 import { ProductCard } from "../organisms/ProductCard";
 import { useTranslations } from "@acme/i18n";
+import { logAnalyticsEvent } from "@platform-core/analytics/client";
 
 export interface ProductQuickViewProps {
   /** Product to display */
@@ -35,6 +36,21 @@ export function ProductQuickView({
     width: 0,
     height: 0,
   });
+  const logProductEngagement = React.useCallback(() => {
+    logAnalyticsEvent({
+      type: "media_interaction",
+      productId: product.id,
+      action: "quick_view_open",
+    });
+  }, [product.id]);
+  const handleProductKey = React.useCallback(
+    (event: React.KeyboardEvent<HTMLDivElement>) => {
+      if (event.key === "Enter" || event.key === " ") {
+        logProductEngagement();
+      }
+    },
+    [logProductEngagement],
+  );
 
   React.useEffect(() => {
     if (open && container) {
@@ -68,11 +84,25 @@ export function ProductQuickView({
         >
           {t("Close")}
         </Button>
-        <ProductCard
-          product={product}
-          onAddToCart={onAddToCart}
-          className="h-full w-full overflow-auto"
-        />
+        <div
+          role="presentation"
+          tabIndex={-1}
+          onClick={logProductEngagement}
+          onKeyDownCapture={handleProductKey}
+        >
+          <ProductCard
+            product={product}
+            onAddToCart={(p) => {
+              onAddToCart?.(p);
+              logAnalyticsEvent({
+                type: "add_to_cart",
+                productId: p.id,
+                source: "quick_view",
+              });
+            }}
+            className="h-full w-full overflow-auto"
+          />
+        </div>
       </DialogContent>
     </Dialog>
   );

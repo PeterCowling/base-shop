@@ -589,6 +589,19 @@ export declare const shopSettingsSchema: z.ZodObject<{
         id?: string | undefined;
         enabled?: boolean | undefined;
     }>>;
+    leadCapture: z.ZodOptional<z.ZodObject<{
+        enabled: z.ZodOptional<z.ZodBoolean>;
+        provider: z.ZodOptional<z.ZodString>;
+        endpoint: z.ZodOptional<z.ZodString>;
+    }, "strict", z.ZodTypeAny, {
+        enabled?: boolean | undefined;
+        provider?: string | undefined;
+        endpoint?: string | undefined;
+    }, {
+        enabled?: boolean | undefined;
+        provider?: string | undefined;
+        endpoint?: string | undefined;
+    }>>;
     freezeTranslations: z.ZodOptional<z.ZodBoolean>;
     /** ISO currency code used as the shop's base currency */
     currency: z.ZodOptional<z.ZodString>;

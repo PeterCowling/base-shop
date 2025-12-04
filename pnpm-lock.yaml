@@ -335,7 +335,7 @@ importers:
         version: 7.28.0(@babel/core@7.28.4)
       '@chromatic-com/storybook':
         specifier: 4.1.3
-        version: 4.1.3(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
+        version: 4.1.3(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
       '@cloudflare/workers-types':
         specifier: ^4.20250704.0
         version: 4.20250704.0
@@ -361,29 +361,32 @@ importers:
         specifier: ^1.53.1
         version: 1.53.2
       '@storybook/addon-a11y':
-        specifier: ^10.1.0
-        version: 10.1.0(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
+        specifier: ^10.1.4
+        version: 10.1.4(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
       '@storybook/addon-coverage':
         specifier: ^3.0.0
         version: 3.0.0(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))
       '@storybook/addon-docs':
-        specifier: ^10.1.0
-        version: 10.1.0(@types/react@19.1.8)(esbuild@0.25.10)(rollup@4.44.1)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
+        specifier: ^10.1.4
+        version: 10.1.4(@types/react@19.1.8)(esbuild@0.25.10)(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       '@storybook/addon-links':
-        specifier: ^10.1.0
-        version: 10.1.0(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
+        specifier: ^10.1.4
+        version: 10.1.4(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
       '@storybook/addon-themes':
-        specifier: ^10.1.0
-        version: 10.1.0(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
-      '@storybook/builder-webpack5':
-        specifier: 10.1.0
-        version: 10.1.0(@swc/core@1.12.9)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))
+        specifier: ^10.1.4
+        version: 10.1.4(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
+      '@storybook/builder-vite':
+        specifier: 10.1.4
+        version: 10.1.4(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       '@storybook/nextjs':
-        specifier: ^10.1.0
-        version: 10.1.0(@swc/core@1.12.9)(babel-plugin-macros@3.1.0)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(type-fest@4.41.0)(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack-hot-middleware@2.26.1)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
+        specifier: ^10.1.4
+        version: 10.1.4(@swc/core@1.12.9)(babel-plugin-macros@3.1.0)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(type-fest@4.41.0)(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack-hot-middleware@2.26.1)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
+      '@storybook/nextjs-vite':
+        specifier: ^10.1.4
+        version: 10.1.4(@babel/core@7.28.4)(babel-plugin-macros@3.1.0)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       '@storybook/test-runner':
         specifier: 0.24.2
-        version: 0.24.2(@types/node@20.19.4)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.10))(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(ts-node@10.9.2(@swc/core@1.12.9)(@types/node@20.19.4)(typescript@5.8.3))
+        version: 0.24.2(@types/node@20.19.4)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.10))(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(ts-node@10.9.2(@swc/core@1.12.9)(@types/node@20.19.4)(typescript@5.8.3))
       '@tailwindcss/container-queries':
         specifier: ^0.1.1
         version: 0.1.1(tailwindcss@4.1.11)
@@ -499,8 +502,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1
       eslint-plugin-storybook:
-        specifier: ^10.1.0
-        version: 10.1.0(eslint@9.30.1(jiti@2.4.2))(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)
+        specifier: ^10.1.4
+        version: 10.1.4(eslint@9.30.1(jiti@2.4.2))(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)
       eslint-plugin-testing-library:
         specifier: ^7.5.3
         version: 7.5.3(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3)
@@ -574,8 +577,8 @@ importers:
         specifier: ^2.0.13
         version: 2.0.13
       storybook:
-        specifier: ^10.1.0
-        version: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+        specifier: ^10.1.4
+        version: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       superstruct:
         specifier: ^2.0.2
         version: 2.0.2
@@ -665,6 +668,9 @@ importers:
       '@acme/telemetry':
         specifier: workspace:*
         version: link:../../packages/telemetry
+      '@acme/templates':
+        specifier: workspace:*
+        version: link:../../packages/templates
       '@acme/theme':
         specifier: workspace:*
         version: link:../../packages/theme
@@ -718,8 +724,6 @@ importers:
         specifier: ^6.3.3
         version: 6.3.4
 
-  apps/dashboard: {}
-
   apps/cover-me-pretty:
     dependencies:
       '@acme/config':
@@ -740,6 +744,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
+      '@acme/page-builder-core':
+        specifier: workspace:*
+        version: link:../../packages/page-builder-core
       '@acme/sanity':
         specifier: workspace:*
         version: link:../../packages/sanity
@@ -777,6 +784,12 @@ importers:
       next:
         specifier: ^15.3.5
         version: 15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+
+  apps/dashboard:
+    dependencies:
+      '@acme/telemetry':
+        specifier: workspace:*
+        version: link:../../packages/telemetry
 
   apps/skylar:
     dependencies:
@@ -1027,6 +1040,13 @@ importers:
         version: 15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
 
   packages/page-builder-core:
+    dependencies:
+      '@acme/types':
+        specifier: workspace:*
+        version: link:../types
+      zod:
+        specifier: 3.25.73
+        version: 3.25.73
     devDependencies:
       next:
         specifier: ^15.3.5
@@ -1056,6 +1076,9 @@ importers:
       '@acme/i18n':
         specifier: workspace:^
         version: link:../i18n
+      '@acme/page-builder-core':
+        specifier: workspace:^
+        version: link:../page-builder-core
       '@acme/plugin-sanity':
         specifier: workspace:^
         version: link:../plugins/sanity
@@ -1195,6 +1218,9 @@ importers:
       '@acme/next-config':
         specifier: workspace:*
         version: link:../next-config
+      '@acme/page-builder-core':
+        specifier: workspace:*
+        version: link:../page-builder-core
       '@acme/sanity':
         specifier: workspace:*
         version: link:../sanity
@@ -1220,6 +1246,9 @@ importers:
 
   packages/templates:
     dependencies:
+      '@acme/page-builder-core':
+        specifier: workspace:*
+        version: link:../page-builder-core
       '@acme/ui':
         specifier: workspace:*
         version: link:../ui
@@ -1247,8 +1276,6 @@ importers:
 
   packages/themes/dark: {}
 
-  packages/themes/delegation: {}
-
   packages/types:
     dependencies:
       '@acme/i18n':
@@ -1270,6 +1297,9 @@ importers:
       '@acme/i18n':
         specifier: workspace:*
         version: link:../i18n
+      '@acme/page-builder-core':
+        specifier: workspace:*
+        version: link:../page-builder-core
       '@acme/platform-core':
         specifier: workspace:*
         version: link:../platform-core
@@ -3357,6 +3387,15 @@ packages:
     resolution: {integrity: sha512-H9xg1/sfVvyfU7o3zMfBEjQ1gcsdeTMgqHoYdN79tuLqfTtuu7WckRA1R5whDwOzxaZAeMKTYWqP+WCAi0CHsg==}
     engines: {node: ^18.14.0 || ^20.0.0 || ^22.0.0 || >=24.0.0}
 
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.6.1':
+    resolution: {integrity: sha512-J4BaTocTOYFkMHIra1JDWrMWpNmBl4EkplIwHEsV8aeUOtdWjwSnln9U7twjMFTAEB7mptNtSKyVi1Y2W9sDJw==}
+    peerDependencies:
+      typescript: '>= 4.3.x'
+      vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   '@jridgewell/gen-mapping@0.3.12':
     resolution: {integrity: sha512-OuLGC46TjB5BbN1dH8JULVVZY4WTdkF7tV9Ys6wLL1rubZnCMstOhNHueU5bLCrnRuDhKPDM4g6sw4Bel5Gzqg==}
 
@@ -3420,6 +3459,9 @@ packages:
 
   '@next/env@15.3.5':
     resolution: {integrity: sha512-7g06v8BUVtN2njAX/r8gheoVffhiKFVt4nx74Tt6G4Hqw9HCLYQVx/GkH2qHvPtAHZaUNZ0VXAa0pQP6v1wk7g==}
+
+  '@next/env@16.0.0':
+    resolution: {integrity: sha512-s5j2iFGp38QsG1LWRQaE2iUY3h1jc014/melHFfLdrsMJPqxqDQwWNwyQTcNoUSGZlCVZuM7t7JDMmSyRilsnA==}
 
   '@next/eslint-plugin-next@15.3.5':
     resolution: {integrity: sha512-BZwWPGfp9po/rAnJcwUBaM+yT/+yTWIkWdyDwc74G9jcfTrNrmsHe+hXHljV066YNdVs8cxROxX5IgMQGX190w==}
@@ -4520,53 +4562,59 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
-  '@storybook/addon-a11y@10.1.0':
-    resolution: {integrity: sha512-2AU4mkTqHXaEd+v1A5wvjwOExwjJy8f+/d72nku8FKQI1+7n96D9zb1T5gQocw8oykSU9yxRR5jSn8ShDFudAA==}
+  '@storybook/addon-a11y@10.1.4':
+    resolution: {integrity: sha512-go7SshAyu+pnK7Prq3UnCBCB7DxAQkPMnebsv3fnboeTZHnDXQqfmHdZ15o+pH0JsCedC05RYsdbjd2rMHMvFQ==}
     peerDependencies:
-      storybook: ^10.1.0
+      storybook: ^10.1.4
 
   '@storybook/addon-coverage@3.0.0':
     resolution: {integrity: sha512-ADXpeAXtSvyGs1BSZhtO5Bi2BUedcP6eGPcBm7w3cYSj6KTpww4epEp1lnUD4faojSBBIOI2bRa/a4NA+/zt2Q==}
 
-  '@storybook/addon-docs@10.1.0':
-    resolution: {integrity: sha512-CVW2pc9iAfz1A6/L9S0z8XqKUON+u92xaOTC1x6d3WS8cyOT94nD7tfohT8aWydwvvmtwRHZJzl0aWnKUNgSJw==}
+  '@storybook/addon-docs@10.1.4':
+    resolution: {integrity: sha512-TWLDJNLS/S3AUyTf9x0Hb8k7d+VWMJCH9dWAS0QenvJG8ga9VaehO6r+e+3YyIDbO1ev3UST3GCjh9SY8tzwRA==}
     peerDependencies:
-      storybook: ^10.1.0
+      storybook: ^10.1.4
 
-  '@storybook/addon-links@10.1.0':
-    resolution: {integrity: sha512-05ssgNYu81v0wYtm2TmltBV0jQxyYJ4tYBo5GaSuqfaiU4JTOfW5Xfjm6+QG1TOc6EkB6h/MMhK3f3+/e97Gyw==}
+  '@storybook/addon-links@10.1.4':
+    resolution: {integrity: sha512-GQplzQFYhClraxH1cQDhhiJAuqAlI2loJjcnLjayS9/O2XJfEPyHc0fjkTh83zhF/nIQ6iMpFgpCsrThRUL4ag==}
     peerDependencies:
       react: 19.2.0-canary-3fbfb9ba-20250409
-      storybook: ^10.1.0
+      storybook: ^10.1.4
     peerDependenciesMeta:
       react:
         optional: true
 
-  '@storybook/addon-themes@10.1.0':
-    resolution: {integrity: sha512-llK4HC4+5897SHfOH06EJBlQtDO3/qTXSAeN6nPvFuYoGDPMfgFJje6bQbvK3FGyvhZo40cYKpLunxo+k3o1SA==}
+  '@storybook/addon-themes@10.1.4':
+    resolution: {integrity: sha512-KQR+GAQ9X+eZOWhALuGvAFeLexlGdZcf7c2nBiLLPbTuPzcIl/ifTN4cZ0LqmGeXI/bfLCjTeqbk+B0E/IHZ5g==}
     peerDependencies:
-      storybook: ^10.1.0
+      storybook: ^10.1.4
 
-  '@storybook/builder-webpack5@10.1.0':
-    resolution: {integrity: sha512-WTiuuo9EmQ6y9+/2L4oSAsw5m9ecDnR/+ndEyViZQvhnYcJSimIXX5194IB8g0DxmhvPu/DDAIhF4FIcwRTmvQ==}
+  '@storybook/builder-vite@10.1.4':
+    resolution: {integrity: sha512-3mUQoCzMuhqAIjj8fdbGlwh+GgHaFpCvU+sxL8kIxnZqflW09SuwM5kS47Y5QDzYbHAPYCPqcBFyJ4EfRuf0rw==}
     peerDependencies:
-      storybook: ^10.1.0
+      storybook: ^10.1.4
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
+
+  '@storybook/builder-webpack5@10.1.4':
+    resolution: {integrity: sha512-Q8Ym6iH42xX0zaHnin8SYrHP+MaEIrx7Vn5MMsOGdAaamRPgypUO2DHT58G6T8UEl8Pfngr+fYW88+hR6ZDeWg==}
+    peerDependencies:
+      storybook: ^10.1.4
       typescript: '*'
     peerDependenciesMeta:
       typescript:
         optional: true
 
-  '@storybook/core-webpack@10.1.0':
-    resolution: {integrity: sha512-NppWAITiziTICsF5S0a4nMwHv3xv63xpWuA4Qj7lqNJEikC27v40bTxr42zLqieqnNmPf1PH3TzJGM+jgBcvUw==}
+  '@storybook/core-webpack@10.1.4':
+    resolution: {integrity: sha512-RgmH6TD8RriI6OKcc+NHmLyljO5gNrLlhHgFenYQwtX+ffdQ6SxgNTgGa2BQsSBFCtCOfRNhIykugGVlSPZ1kQ==}
     peerDependencies:
-      storybook: ^10.1.0
+      storybook: ^10.1.4
 
-  '@storybook/csf-plugin@10.1.0':
-    resolution: {integrity: sha512-oApFTBUlHusihoejKmlunprNA2BDpEBmBBx+PcCMzTpUbEiZNI95ZeGrlBuuEepF5dIpAIPAQQD09FibmkQlBQ==}
+  '@storybook/csf-plugin@10.1.4':
+    resolution: {integrity: sha512-nudIBYx8fBz+1j2Xn1pdfGcgMJ78N/1NFB4MYAxI3YEzxGnQwUjihOO1x3siAXPbjFGmnVHoBx7+6IpO3F70GA==}
     peerDependencies:
       esbuild: '*'
       rollup: '*'
-      storybook: ^10.1.0
+      storybook: ^10.1.4
       vite: '*'
       webpack: '*'
     peerDependenciesMeta:
@@ -4588,13 +4636,26 @@ packages:
       react: 19.2.0-canary-3fbfb9ba-20250409
       react-dom: 19.2.0-canary-3fbfb9ba-20250409
 
-  '@storybook/nextjs@10.1.0':
-    resolution: {integrity: sha512-ao5RhB8XHZQvKmmA7FLod5yO1vA6hLr2DHJGicuy7btoMcEXFoJCBUh397zMIbgru8Fev8IivJWr+YMKuQI3pA==}
+  '@storybook/nextjs-vite@10.1.4':
+    resolution: {integrity: sha512-pu7GqxLWJPNVTiZ+Gp9Yha+7j7hLlGsh9AdfqivvOWzMEEwAFJWPqFCThr2g2M9pARO7Jz4Yo11+QNyTHGw5FA==}
     peerDependencies:
       next: ^14.1.0 || ^15.0.0 || ^16.0.0
       react: 19.2.0-canary-3fbfb9ba-20250409
       react-dom: 19.2.0-canary-3fbfb9ba-20250409
-      storybook: ^10.1.0
+      storybook: ^10.1.4
+      typescript: '*'
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
+  '@storybook/nextjs@10.1.4':
+    resolution: {integrity: sha512-s2URBLIXPnHaNFCcZRVs+zey01b2DRIH7NAYUQhX89KaTk55+R6oA3H5OG1uRnXf8mDgDJ7kWhR4QlaeHeuvgw==}
+    peerDependencies:
+      next: ^14.1.0 || ^15.0.0 || ^16.0.0
+      react: 19.2.0-canary-3fbfb9ba-20250409
+      react-dom: 19.2.0-canary-3fbfb9ba-20250409
+      storybook: ^10.1.4
       typescript: '*'
       webpack: ^5.0.0
     peerDependenciesMeta:
@@ -4603,12 +4664,12 @@ packages:
       webpack:
         optional: true
 
-  '@storybook/preset-react-webpack@10.1.0':
-    resolution: {integrity: sha512-iZ5g+yn5V8p8S6/8tmmmf3EAPAHviYcrtZ9a5mW2QssnD6efd9JwLORYxyBlBxA6jZ1XIc9WqshdgBNmTQQpRg==}
+  '@storybook/preset-react-webpack@10.1.4':
+    resolution: {integrity: sha512-uLkSO5j21k/JMdPL0cp10mfh/uNexmoXU2QwrUfeUZTIXsdfLUxGjJf/nPqqnTfHNFn42B9fnCEXK7f01X/mCA==}
     peerDependencies:
       react: 19.2.0-canary-3fbfb9ba-20250409
       react-dom: 19.2.0-canary-3fbfb9ba-20250409
-      storybook: ^10.1.0
+      storybook: ^10.1.4
       typescript: '*'
     peerDependenciesMeta:
       typescript:
@@ -4620,19 +4681,27 @@ packages:
       typescript: '>= 4.x'
       webpack: '>= 4'
 
-  '@storybook/react-dom-shim@10.1.0':
-    resolution: {integrity: sha512-Zb86jWk3ch33lkCmsgqqqsv5q0ePk1wg2wAurM0BMQUAKTLPebdBvwC8esBsti8fp2ZGv0eNbJDGg3qzWYr/Uw==}
+  '@storybook/react-dom-shim@10.1.4':
+    resolution: {integrity: sha512-PARu2HA5nYU1AkioNJNc430pz0oyaHFSSAdN3NEaWwkoGrCOo9ZpAXP9V7wlJANCi1pndbC84gSuHVnBXJBG6g==}
     peerDependencies:
       react: 19.2.0-canary-3fbfb9ba-20250409
       react-dom: 19.2.0-canary-3fbfb9ba-20250409
-      storybook: ^10.1.0
+      storybook: ^10.1.4
 
-  '@storybook/react@10.1.0':
-    resolution: {integrity: sha512-6Uc3SmUhUlAcNjl8PevnLplZC7HtcE2tz6NEPJWYt3KAb7D11bDZB7BD7jGOU9edE+vRXsTHUUPmaxJpWQ+5nQ==}
+  '@storybook/react-vite@10.1.4':
+    resolution: {integrity: sha512-PneYbxBGArczDtDAvQu6Ug5oeDYM5SQiEDSF0i+TNN0ZKO2ROsmbGSI9/7YTFontXR2CqweIO8GyOGQOcz5K9A==}
     peerDependencies:
       react: 19.2.0-canary-3fbfb9ba-20250409
       react-dom: 19.2.0-canary-3fbfb9ba-20250409
-      storybook: ^10.1.0
+      storybook: ^10.1.4
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
+
+  '@storybook/react@10.1.4':
+    resolution: {integrity: sha512-ZBMPdQ99QBv/UtlIZBerDGNsQB30ffxk6twe45FIPutSlKXD6W9r0z7rGa5UWnqmmxa9HjARRhclOFsNGkhs9g==}
+    peerDependencies:
+      react: 19.2.0-canary-3fbfb9ba-20250409
+      react-dom: 19.2.0-canary-3fbfb9ba-20250409
+      storybook: ^10.1.4
       typescript: '>= 4.9.x'
     peerDependenciesMeta:
       typescript:
@@ -7841,11 +7910,11 @@ packages:
     resolution: {integrity: sha512-XjVGBhtDZJfyuhIxnQ/WMm385RbX3DBu7H1J7HNNhmB2tnGxMeqVSnYv79oAj992ayvIBZghsymwkYFS6cGH4Q==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  eslint-plugin-storybook@10.1.0:
-    resolution: {integrity: sha512-5s/Hi9bKl6xSChPOlHwLrQDW+Nj6OXnl9nnQmbKtEQoCdEuSDbAEDc8zZ9NLAyD2rljE2N6Jhe9iP9+2lm43tQ==}
+  eslint-plugin-storybook@10.1.4:
+    resolution: {integrity: sha512-itG2eLrWyuP5RGIL3TMGA5KSGoBOX3aTnQd43qLJu36ZMzd9H4RHN1I8WTVvyiaInppYJMGB4nnXzSdNXUUeTQ==}
     peerDependencies:
       eslint: '>=8'
-      storybook: ^10.1.0
+      storybook: ^10.1.4
 
   eslint-plugin-testing-library@7.5.3:
     resolution: {integrity: sha512-sZk5hIrx0p1ehvdS2qHefKwXHiEysiQN+FMGCzES6xRNUgwI3q4KdWMeAwpPDP9u0RDkNzJpebRUnNch1sJh+A==}
@@ -10355,6 +10424,9 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  module-alias@2.2.3:
+    resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
+
   module-details-from-path@1.0.4:
     resolution: {integrity: sha512-EGWKgxALGMgzvxYF1UyGTy0HXX/2vHLkw6+NvDKW2jypWbHpjQuj4UMcqQWXHERJhVGKikolT06G3bcKe4fi7w==}
 
@@ -10459,6 +10531,7 @@ packages:
   next@15.3.5:
     resolution: {integrity: sha512-RkazLBMMDJSJ4XZQ81kolSpwiCt907l0xcgcpF4xC2Vml6QVcPNXW0NQRwQ80FFtSn7UM52XN0anaw8TEJXaiw==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/CVE-2025-66478 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -12216,8 +12289,8 @@ packages:
     resolution: {integrity: sha512-KXDYZ9dszj6bzvnEMRYvxgeTHU74QBFL54XKtP3nyMuJ81CFYtABZ3bAzL2EdFUaEwJOBOgENyFj3R7oTzDyyw==}
     engines: {node: '>=4', npm: '>=6'}
 
-  storybook@10.1.0:
-    resolution: {integrity: sha512-RCTybwtyQaKRoU1Z8rWGv5h6ZN3+HelSM0WMMWKBsKgXZkpQ00vro1kd/tWILawxNiU2YS9Zo+4On5hx2Rm+8w==}
+  storybook@10.1.4:
+    resolution: {integrity: sha512-FrBjm8I8O+pYEOPHcdW9xWwgXSZxte7lza9q2lN3jFN4vuW79m5j0OnTQeR8z9MmIbBTvkIpp3yMBebl53Yt5Q==}
     hasBin: true
     peerDependencies:
       prettier: ^2 || ^3
@@ -13151,6 +13224,13 @@ packages:
     peerDependencies:
       vite: '>=4 <=7'
 
+  vite-plugin-storybook-nextjs@3.1.5:
+    resolution: {integrity: sha512-Wwp9V2P9ZcAFbe3aWb0eTLEvZAiNtQ7Ry3k0p3vloE2fCgojZO44895ISXU3Fy9ndVGhaOOcmPfxmG4h1YqdcQ==}
+    peerDependencies:
+      next: ^14.1.0 || ^15.0.0 || ^16.0.0
+      storybook: ^0.0.0-0 || ^9.0.0 || ^10.0.0 || ^10.0.0-0 || ^10.1.0-0 || ^10.2.0-0
+      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
+
   vite-plugin-svgr@4.5.0:
     resolution: {integrity: sha512-W+uoSpmVkSmNOGPSsDCWVW/DDAyv+9fap9AZXBvWiQqrboJ08j2vh0tFxTD/LjwqwAd3yYSVJgm54S/1GhbdnA==}
     peerDependencies:
@@ -13158,6 +13238,14 @@ packages:
 
   vite-tsconfig-paths@4.3.2:
     resolution: {integrity: sha512-0Vd/a6po6Q+86rPlntHye7F31zA2URZMbH8M3saAZ/xR9QoGN/L21bxEGfXdWmFdNkqPpRdxFT7nmNe12e9/uA==}
+    peerDependencies:
+      vite: '*'
+    peerDependenciesMeta:
+      vite:
+        optional: true
+
+  vite-tsconfig-paths@5.1.4:
+    resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
     peerDependencies:
       vite: '*'
     peerDependenciesMeta:
@@ -14413,13 +14501,13 @@ snapshots:
     dependencies:
       statuses: 2.0.2
 
-  '@chromatic-com/storybook@4.1.3(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
+  '@chromatic-com/storybook@4.1.3(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
     dependencies:
       '@neoconfetti/react': 1.0.0
       chromatic: 13.3.4
       filesize: 10.1.6
       jsonfile: 6.2.0
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       strip-ansi: 7.1.0
     transitivePeerDependencies:
       - '@chromatic-com/cypress'
@@ -15659,6 +15747,15 @@ snapshots:
       '@types/yargs': 17.0.33
       chalk: 4.1.2
 
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.6.1(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))':
+    dependencies:
+      glob: 10.4.5
+      magic-string: 0.30.19
+      react-docgen-typescript: 2.4.0(typescript@5.8.3)
+      vite: 7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)
+    optionalDependencies:
+      typescript: 5.8.3
+
   '@jridgewell/gen-mapping@0.3.12':
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -15752,6 +15849,8 @@ snapshots:
   '@neoconfetti/react@1.0.0': {}
 
   '@next/env@15.3.5': {}
+
+  '@next/env@16.0.0': {}
 
   '@next/eslint-plugin-next@15.3.5':
     dependencies:
@@ -16948,11 +17047,11 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
-  '@storybook/addon-a11y@10.1.0(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
+  '@storybook/addon-a11y@10.1.4(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
     dependencies:
       '@storybook/global': 5.0.0
       axe-core: 4.10.3
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
 
   '@storybook/addon-coverage@3.0.0(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))':
     dependencies:
@@ -16968,15 +17067,15 @@ snapshots:
       - supports-color
       - vite
 
-  '@storybook/addon-docs@10.1.0(@types/react@19.1.8)(esbuild@0.25.10)(rollup@4.44.1)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))':
+  '@storybook/addon-docs@10.1.4(@types/react@19.1.8)(esbuild@0.25.10)(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))':
     dependencies:
       '@mdx-js/react': 3.1.1(@types/react@19.1.8)(react@19.2.0-canary-3fbfb9ba-20250409)
-      '@storybook/csf-plugin': 10.1.0(esbuild@0.25.10)(rollup@4.44.1)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
+      '@storybook/csf-plugin': 10.1.4(esbuild@0.25.10)(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       '@storybook/icons': 2.0.1(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
-      '@storybook/react-dom-shim': 10.1.0(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
+      '@storybook/react-dom-shim': 10.1.4(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
       react: 19.2.0-canary-3fbfb9ba-20250409
       react-dom: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       ts-dedent: 2.2.0
     transitivePeerDependencies:
       - '@types/react'
@@ -16985,21 +17084,34 @@ snapshots:
       - vite
       - webpack
 
-  '@storybook/addon-links@10.1.0(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
+  '@storybook/addon-links@10.1.4(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
     dependencies:
       '@storybook/global': 5.0.0
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
     optionalDependencies:
       react: 19.2.0-canary-3fbfb9ba-20250409
 
-  '@storybook/addon-themes@10.1.0(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
+  '@storybook/addon-themes@10.1.4(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
     dependencies:
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       ts-dedent: 2.2.0
 
-  '@storybook/builder-webpack5@10.1.0(@swc/core@1.12.9)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))':
+  '@storybook/builder-vite@10.1.4(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))':
     dependencies:
-      '@storybook/core-webpack': 10.1.0(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
+      '@storybook/csf-plugin': 10.1.4(esbuild@0.25.10)(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
+      '@vitest/mocker': 3.2.4(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      ts-dedent: 2.2.0
+      vite: 7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)
+    transitivePeerDependencies:
+      - esbuild
+      - msw
+      - rollup
+      - webpack
+
+  '@storybook/builder-webpack5@10.1.4(@swc/core@1.12.9)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))':
+    dependencies:
+      '@storybook/core-webpack': 10.1.4(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
       '@vitest/mocker': 3.2.4(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))
       case-sensitive-paths-webpack-plugin: 2.4.0
       cjs-module-lexer: 1.4.3
@@ -17008,7 +17120,7 @@ snapshots:
       fork-ts-checker-webpack-plugin: 9.1.0(typescript@5.8.3)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       html-webpack-plugin: 5.6.3(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       magic-string: 0.30.19
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       style-loader: 4.0.0(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       terser-webpack-plugin: 5.3.14(@swc/core@1.12.9)(esbuild@0.25.10)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       ts-dedent: 2.2.0
@@ -17027,14 +17139,14 @@ snapshots:
       - vite
       - webpack-cli
 
-  '@storybook/core-webpack@10.1.0(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
+  '@storybook/core-webpack@10.1.4(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
     dependencies:
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       ts-dedent: 2.2.0
 
-  '@storybook/csf-plugin@10.1.0(esbuild@0.25.10)(rollup@4.44.1)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))':
+  '@storybook/csf-plugin@10.1.4(esbuild@0.25.10)(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))':
     dependencies:
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       unplugin: 2.3.11
     optionalDependencies:
       esbuild: 0.25.10
@@ -17049,7 +17161,30 @@ snapshots:
       react: 19.2.0-canary-3fbfb9ba-20250409
       react-dom: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
 
-  '@storybook/nextjs@10.1.0(@swc/core@1.12.9)(babel-plugin-macros@3.1.0)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(type-fest@4.41.0)(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack-hot-middleware@2.26.1)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))':
+  '@storybook/nextjs-vite@10.1.4(@babel/core@7.28.4)(babel-plugin-macros@3.1.0)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))':
+    dependencies:
+      '@storybook/builder-vite': 10.1.4(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
+      '@storybook/react': 10.1.4(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)
+      '@storybook/react-vite': 10.1.4(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
+      next: 15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      react: 19.2.0-canary-3fbfb9ba-20250409
+      react-dom: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      styled-jsx: 5.1.6(@babel/core@7.28.4)(babel-plugin-macros@3.1.0)(react@19.2.0-canary-3fbfb9ba-20250409)
+      vite: 7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)
+      vite-plugin-storybook-nextjs: 3.1.5(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))
+    optionalDependencies:
+      typescript: 5.8.3
+    transitivePeerDependencies:
+      - '@babel/core'
+      - babel-plugin-macros
+      - esbuild
+      - msw
+      - rollup
+      - supports-color
+      - webpack
+
+  '@storybook/nextjs@10.1.4(@swc/core@1.12.9)(babel-plugin-macros@3.1.0)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(type-fest@4.41.0)(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack-hot-middleware@2.26.1)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/plugin-syntax-bigint': 7.8.3(@babel/core@7.28.4)
@@ -17065,9 +17200,9 @@ snapshots:
       '@babel/preset-typescript': 7.27.1(@babel/core@7.28.4)
       '@babel/runtime': 7.27.6
       '@pmmmwh/react-refresh-webpack-plugin': 0.5.17(react-refresh@0.14.2)(type-fest@4.41.0)(webpack-hot-middleware@2.26.1)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
-      '@storybook/builder-webpack5': 10.1.0(@swc/core@1.12.9)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))
-      '@storybook/preset-react-webpack': 10.1.0(@swc/core@1.12.9)(esbuild@0.25.10)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)
-      '@storybook/react': 10.1.0(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)
+      '@storybook/builder-webpack5': 10.1.4(@swc/core@1.12.9)(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))
+      '@storybook/preset-react-webpack': 10.1.4(@swc/core@1.12.9)(esbuild@0.25.10)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)
+      '@storybook/react': 10.1.4(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)
       '@types/semver': 7.7.0
       babel-loader: 9.2.1(@babel/core@7.28.4)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       css-loader: 6.11.0(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
@@ -17083,7 +17218,7 @@ snapshots:
       resolve-url-loader: 5.0.0
       sass-loader: 16.0.5(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       semver: 7.7.2
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       style-loader: 3.3.4(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       styled-jsx: 5.1.7(@babel/core@7.28.4)(babel-plugin-macros@3.1.0)(react@19.2.0-canary-3fbfb9ba-20250409)
       tsconfig-paths: 4.2.0
@@ -17111,9 +17246,9 @@ snapshots:
       - webpack-hot-middleware
       - webpack-plugin-serve
 
-  '@storybook/preset-react-webpack@10.1.0(@swc/core@1.12.9)(esbuild@0.25.10)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)':
+  '@storybook/preset-react-webpack@10.1.4(@swc/core@1.12.9)(esbuild@0.25.10)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)':
     dependencies:
-      '@storybook/core-webpack': 10.1.0(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
+      '@storybook/core-webpack': 10.1.4(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
       '@storybook/react-docgen-typescript-plugin': 1.0.6--canary.9.0c3f3b7.0(typescript@5.8.3)(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
       '@types/semver': 7.7.0
       magic-string: 0.30.19
@@ -17122,7 +17257,7 @@ snapshots:
       react-dom: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
       resolve: 1.22.10
       semver: 7.7.2
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       tsconfig-paths: 4.2.0
       webpack: 5.99.9(@swc/core@1.12.9)(esbuild@0.25.10)
     optionalDependencies:
@@ -17148,26 +17283,49 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@storybook/react-dom-shim@10.1.0(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
+  '@storybook/react-dom-shim@10.1.4(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))':
     dependencies:
       react: 19.2.0-canary-3fbfb9ba-20250409
       react-dom: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
 
-  '@storybook/react@10.1.0(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)':
+  '@storybook/react-vite@10.1.4(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))':
     dependencies:
-      '@storybook/global': 5.0.0
-      '@storybook/react-dom-shim': 10.1.0(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.6.1(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))
+      '@rollup/pluginutils': 5.3.0(rollup@4.44.1)
+      '@storybook/builder-vite': 10.1.4(esbuild@0.25.10)(msw@2.11.3(@types/node@20.19.4)(typescript@5.8.3))(rollup@4.44.1)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))(webpack@5.99.9(@swc/core@1.12.9)(esbuild@0.25.10))
+      '@storybook/react': 10.1.4(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)
+      empathic: 2.0.0
+      magic-string: 0.30.19
       react: 19.2.0-canary-3fbfb9ba-20250409
       react-docgen: 8.0.2
       react-dom: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      resolve: 1.22.10
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      tsconfig-paths: 4.2.0
+      vite: 7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)
+    transitivePeerDependencies:
+      - esbuild
+      - msw
+      - rollup
+      - supports-color
+      - typescript
+      - webpack
+
+  '@storybook/react@10.1.4(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)':
+    dependencies:
+      '@storybook/global': 5.0.0
+      '@storybook/react-dom-shim': 10.1.4(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))
+      react: 19.2.0-canary-3fbfb9ba-20250409
+      react-docgen: 8.0.2
+      react-dom: 19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
     optionalDependencies:
       typescript: 5.8.3
     transitivePeerDependencies:
       - supports-color
 
-  '@storybook/test-runner@0.24.2(@types/node@20.19.4)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.10))(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(ts-node@10.9.2(@swc/core@1.12.9)(@types/node@20.19.4)(typescript@5.8.3))':
+  '@storybook/test-runner@0.24.2(@types/node@20.19.4)(babel-plugin-macros@3.1.0)(esbuild-register@3.6.0(esbuild@0.25.10))(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(ts-node@10.9.2(@swc/core@1.12.9)(@types/node@20.19.4)(typescript@5.8.3))':
     dependencies:
       '@babel/core': 7.28.4
       '@babel/generator': 7.28.3
@@ -17189,7 +17347,7 @@ snapshots:
       playwright: 1.53.2
       playwright-core: 1.53.2
       rimraf: 3.0.2
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
       uuid: 8.3.2
     transitivePeerDependencies:
       - '@swc/helpers'
@@ -20773,11 +20931,11 @@ snapshots:
     dependencies:
       safe-regex: 2.1.1
 
-  eslint-plugin-storybook@10.1.0(eslint@9.30.1(jiti@2.4.2))(storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3):
+  eslint-plugin-storybook@10.1.4(eslint@9.30.1(jiti@2.4.2))(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3):
     dependencies:
       '@typescript-eslint/utils': 8.35.1(eslint@9.30.1(jiti@2.4.2))(typescript@5.8.3)
       eslint: 9.30.1(jiti@2.4.2)
-      storybook: 10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -24268,6 +24426,8 @@ snapshots:
 
   mkdirp@3.0.1: {}
 
+  module-alias@2.2.3: {}
+
   module-details-from-path@1.0.4: {}
 
   mri@1.2.0: {}
@@ -26393,7 +26553,7 @@ snapshots:
 
   stoppable@1.1.0: {}
 
-  storybook@10.1.0(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409):
+  storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409):
     dependencies:
       '@storybook/global': 5.0.0
       '@storybook/icons': 2.0.1(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
@@ -27459,6 +27619,21 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  vite-plugin-storybook-nextjs@3.1.5(next@15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(storybook@10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409))(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)):
+    dependencies:
+      '@next/env': 16.0.0
+      image-size: 2.0.2
+      magic-string: 0.30.19
+      module-alias: 2.2.3
+      next: 15.3.5(@babel/core@7.28.4)(@opentelemetry/api@1.9.0)(@playwright/test@1.53.2)(babel-plugin-macros@3.1.0)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      storybook: 10.1.4(@testing-library/dom@10.4.0)(prettier@3.6.2)(react-dom@19.2.0-canary-3fbfb9ba-20250409(react@19.2.0-canary-3fbfb9ba-20250409))(react@19.2.0-canary-3fbfb9ba-20250409)
+      ts-dedent: 2.2.0
+      vite: 7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)
+      vite-tsconfig-paths: 5.1.4(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1))
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
   vite-plugin-svgr@4.5.0(rollup@4.44.1)(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)):
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@4.44.1)
@@ -27471,6 +27646,17 @@ snapshots:
       - typescript
 
   vite-tsconfig-paths@4.3.2(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)):
+    dependencies:
+      debug: 4.4.3
+      globrex: 0.1.2
+      tsconfck: 3.1.6(typescript@5.8.3)
+    optionalDependencies:
+      vite: 7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
+  vite-tsconfig-paths@5.1.4(typescript@5.8.3)(vite@7.0.2(@types/node@20.19.4)(jiti@2.4.2)(lightningcss@1.30.1)(terser@5.43.1)(tsx@4.20.3)(yaml@2.8.1)):
     dependencies:
       debug: 4.4.3
       globrex: 0.1.2

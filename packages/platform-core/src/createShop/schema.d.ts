@@ -208,4 +208,4 @@ export type PreparedCreateShopOptions = Required<Omit<CreateShopOptions, "analyt
     checkoutPage: PageComponent[];
 };
 /** Parse and populate option defaults. */
-export declare function prepareOptions(id: string, opts: CreateShopOptions): PreparedCreateShopOptions;
+export declare function prepareOptions(id: string, opts: Partial<CreateShopOptions>): PreparedCreateShopOptions;

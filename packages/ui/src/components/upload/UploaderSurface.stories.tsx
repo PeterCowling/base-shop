@@ -46,6 +46,7 @@ function UploaderHarness() {
 }
 
 const meta: Meta<typeof UploaderSurface> = {
+  title: 'Utilities/UploaderSurface',
   component: UploaderSurface,
   tags: ['autodocs'],
   parameters: {

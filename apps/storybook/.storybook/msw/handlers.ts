@@ -1,10 +1,12 @@
 import { http, HttpResponse, delay } from "msw";
 import { PRODUCTS } from "../../../../packages/platform-core/src/products/index";
+import type { CartState } from "../../../../packages/platform-core/src/cart";
 
 type SBGlobals = { msw?: { delayMs: number; netError: boolean }; scenario?: string; netError?: string };
 
 function pickByPreset(preset?: string) {
-  const list = [...PRODUCTS];
+  // Strip sizes so Storybook flows can add to cart without selecting a size
+  const list = PRODUCTS.map((p) => ({ ...p, sizes: [] }));
   switch (preset) {
     case "new":
       return list.reverse();
@@ -60,7 +62,7 @@ export const handlers = [
     const url = new URL(request.url);
     const globals = (globalThis as { __SB_GLOBALS__?: SBGlobals }).__SB_GLOBALS__;
     const sort = url.searchParams.get("sort") || "";
-    const items = [...PRODUCTS];
+    const items = [...PRODUCTS].map((p) => ({ ...p, sizes: [] }));
     // Scenario can drive a different sort to simulate merchandising
     const scenario = globals?.scenario;
     if (scenario === 'clearance') items.sort((a, b) => (a.price ?? 0) - (b.price ?? 0));
@@ -75,6 +77,56 @@ export const handlers = [
       return HttpResponse.json({ error: 'mock-error' }, { status: 500 });
     }
     return HttpResponse.json({ items }, { status: 200 });
+  }),
+  // Minimal in-memory cart API for Storybook flows
+  ...(() => {
+    let cart: CartState = {};
+    const getCartResponse = () => HttpResponse.json({ cart }, { status: 200 });
+
+    return [
+      http.get(/\/(?:cms\/)?api\/cart/, async () => getCartResponse()),
+      http.post(/\/(?:cms\/)?api\/cart/, async ({ request }) => {
+        const body = (await request.json()) as { sku: { id: string }; qty?: number; size?: string };
+        const id = body.sku.id;
+        const qty = body.qty ?? 1;
+        const product = PRODUCTS.find((p) => p.id === id);
+        const sku = product ? { ...product, sizes: [] } : { ...body.sku, sizes: [] };
+        cart = { ...cart, [id]: { sku, qty, size: body.size } };
+        return getCartResponse();
+      }),
+      http.patch(/\/(?:cms\/)?api\/cart/, async ({ request }) => {
+        const body = (await request.json()) as { id?: string; qty?: number };
+        if (body.id && cart[body.id]) {
+          cart = { ...cart, [body.id]: { ...cart[body.id], qty: body.qty ?? cart[body.id].qty } };
+        }
+        return getCartResponse();
+      }),
+      http.delete(/\/(?:cms\/)?api\/cart/, async ({ request }) => {
+        const body = (await request.json().catch(() => ({}))) as { id?: string };
+        if (body.id) {
+          const next = { ...cart };
+          delete next[body.id];
+          cart = next;
+        } else {
+          cart = {};
+        }
+        return getCartResponse();
+      }),
+    ];
+  })(),
+  // Swallow analytics beacons during stories
+  http.post("/api/analytics/event", async () => {
+    return HttpResponse.json({ ok: true }, { status: 200 });
+  }),
+  // Cart API used by CartProvider; return an empty cart to prevent 404 noise in SB
+  http.get(/\/(?:cms\/)?api\/cart/, async () => {
+    const globals = (globalThis as { __SB_GLOBALS__?: SBGlobals }).__SB_GLOBALS__;
+    const ms = globals?.msw?.delayMs ?? 100;
+    await delay(ms);
+    if (globals?.msw?.netError || globals?.netError === 'on') {
+      return HttpResponse.json({ error: 'mock-error' }, { status: 503 });
+    }
+    return HttpResponse.json({ cart: {} }, { status: 200 });
   }),
   // Serve a dummy binary for 3D model requests used in AR stories
   http.get("/models/bag.glb", () => {

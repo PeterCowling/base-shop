@@ -153,3 +153,4 @@ export function setDomain(shop: Shop, domain: ShopDomain | undefined): Shop {
   return next;
 }
 
+export { incrementOperationalError } from "./health";

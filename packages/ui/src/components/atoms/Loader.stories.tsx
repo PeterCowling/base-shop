@@ -17,3 +17,5 @@ const meta: Meta<typeof Loader> = {
 export default meta;
 
 export const Primary: StoryObj<typeof Loader> = {};
+
+export const Default: StoryObj<typeof Loader> = {};

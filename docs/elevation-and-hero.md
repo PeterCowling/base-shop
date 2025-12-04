@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Theming
+Last-reviewed: 2025-12-02
+
 # Elevation and Hero Contrast
 
 This repo ships a token-driven elevation scale and contrast-safe hero background utilities. Use them to create depth and maintain WCAG contrast in both light and dark themes.
@@ -49,4 +54,3 @@ Examples:
 Notes:
 - Avoid pairing `bg-hero` with `text-primary-foreground` for long-form text. Use `bg-hero-contrast` and `text-hero-foreground` instead.
 - The CMS lints against unsafe `bg-hero` usage.
-

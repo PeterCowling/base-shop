@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: Theming
+Last-reviewed: 2025-12-02
+
 # Theme Lifecycle and Library
 
 A theme library keeps reusable styles in one place and tracks how they evolve over time.

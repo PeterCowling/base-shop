@@ -6,7 +6,7 @@ const seoSchema = z
   .object({
     locale: localeSchema,
     title: z.string().min(1, "Required"),
-    description: z.string().optional().default(""),
+    description: z.string().min(1, "Required"),
     image: z.string().url().optional(),
     alt: z.string().optional(),
     canonicalBase: z.string().url().optional(),

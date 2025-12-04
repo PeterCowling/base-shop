@@ -46,3 +46,5 @@ export * from "./recommendations";
 export * from "./i18n";
 export * from "./tryon";
 export * from "./configurator";
+export * from "./environment";
+export * from "./shop-config";

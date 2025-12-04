@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import CurrencySwitcher from "./CurrencySwitcher.client";
 
 const meta: Meta<typeof CurrencySwitcher> = {
+  title: "Molecules/CurrencySwitcher",
   component: CurrencySwitcher,
   parameters: {
     providers: {

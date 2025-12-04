@@ -22,6 +22,7 @@ const cart: CartState = {
 };
 
 const meta: Meta<typeof CartTemplate> = {
+  title: "Templates/CartTemplate",
   component: CartTemplate,
   args: {
     cart,

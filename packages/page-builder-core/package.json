@@ -1,6 +1,6 @@
 {
   "name": "@acme/page-builder-core",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "main": "./dist/index.js",
@@ -11,9 +11,6 @@
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint .",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
-  },
-  "dependencies": {
-    "@acme/types": "workspace:*"
   },
   "files": [
     "dist"
@@ -27,7 +24,7 @@
   },
   "dependencies": {
     "@acme/types": "workspace:*",
-    "zod": "^3.25.0"
+    "zod": "^3.25.73"
   },
   "devDependencies": {
     "next": "^15.3.5"

@@ -14,6 +14,10 @@ export interface StoreLocatorTemplateProps
   stores: Store[];
   /** Optional map component to render on the page */
   map?: React.ReactNode;
+  /** Optional selection handler for list items (e.g., pickup selection) */
+  onSelectStore?: (store: Store) => void;
+  /** Currently selected store id to highlight (when onSelectStore is provided) */
+  selectedStoreId?: string;
 }
 
 /**
@@ -22,9 +26,15 @@ export interface StoreLocatorTemplateProps
 export function StoreLocatorTemplate({
   stores,
   map,
+  onSelectStore,
+  selectedStoreId,
   className,
   ...props
 }: StoreLocatorTemplateProps) {
+  const listItemBaseClass = "rounded-md border p-4 w-full text-left"; // i18n-exempt -- DS-5678 layout classes only, no user-facing copy [ttl=2026-12-31]
+  const interactiveListItemClass = "cursor-pointer transition hover:border-primary"; // i18n-exempt -- DS-5678 layout classes only, no user-facing copy [ttl=2026-12-31]
+  const selectedListItemClass = "border-primary bg-primary/5"; // i18n-exempt -- DS-5678 layout classes only, no user-facing copy [ttl=2026-12-31]
+
   return (
     <div
       className={cn(
@@ -37,12 +47,37 @@ export function StoreLocatorTemplate({
         {map ?? <div className="bg-muted h-full w-full rounded-md" />}
       </div>
       <ul className="space-y-4">
-        {stores.map((store) => (
-          <li key={store.id} className="rounded-md border p-4">
-            <h3 className="font-semibold">{store.name}</h3>
-            <p className="text-muted-foreground text-sm">{store.address}</p>
-          </li>
-        ))}
+        {stores.map((store) => {
+          const isSelected = store.id === selectedStoreId;
+          const itemClassName = cn(
+            listItemBaseClass,
+            onSelectStore && interactiveListItemClass,
+            onSelectStore && isSelected && selectedListItemClass,
+          );
+          const content = (
+            <>
+              <h3 className="font-semibold">{store.name}</h3>
+              <p className="text-muted-foreground text-sm">{store.address}</p>
+            </>
+          );
+
+          return (
+            <li key={store.id}>
+              {onSelectStore ? (
+                <button
+                  type="button"
+                  onClick={() => onSelectStore(store)}
+                  aria-pressed={isSelected}
+                  className={itemClassName}
+                >
+                  {content}
+                </button>
+              ) : (
+                <div className={itemClassName}>{content}</div>
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

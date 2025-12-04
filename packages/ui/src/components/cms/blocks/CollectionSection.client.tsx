@@ -31,6 +31,8 @@ export default function CollectionSectionClient({ initial, params, paginationMod
 
   const router = useRouter();
   const sp = useSearchParams();
+  // Derive a stable key from search params so effects don't refire every render
+  const searchParamsKey = sp?.toString() ?? "";
 
   const updateUrl = React.useCallback(
     (patch: Record<string, string | undefined>) => {
@@ -56,8 +58,9 @@ export default function CollectionSectionClient({ initial, params, paginationMod
         const url = new URL(`/api/collections/${encodeURIComponent(col)}`, window.location.origin);
         if (sort) url.searchParams.set("sort", sort);
         if (paginationMode === "ssr") {
-          const page = sp?.get("page") ?? "1";
-          const ps = sp?.get("pageSize") ?? String(pageSize);
+          const currentParams = new URLSearchParams(searchParamsKey);
+          const page = currentParams.get("page") ?? "1";
+          const ps = currentParams.get("pageSize") ?? String(pageSize);
           url.searchParams.set("page", page);
           url.searchParams.set("pageSize", ps);
         }
@@ -79,14 +82,15 @@ export default function CollectionSectionClient({ initial, params, paginationMod
     };
     void load();
     return () => controller.abort();
-  }, [sp, params.slug, sort, size, color, price.min, price.max, paginationMode, pageSize]);
+  }, [searchParamsKey, params.slug, sort, size, color, price.min, price.max, paginationMode, pageSize]);
 
   const facetConfig: FacetConfig = { size: true, color: true, price: true };
 
   const [page, setPage] = React.useState<number>(() => Number(sp?.get("page") ?? 1));
   React.useEffect(() => {
-    setPage(Number(sp?.get("page") ?? 1));
-  }, [sp]);
+    const current = Number(new URLSearchParams(searchParamsKey).get("page") ?? 1);
+    setPage(current);
+  }, [searchParamsKey]);
 
   // best-effort; API should include total for real impl
   // const total = items.length;
@@ -95,10 +99,10 @@ export default function CollectionSectionClient({ initial, params, paginationMod
     <div className={className} {...rest}>
       <div className="mx-auto px-4 py-6">
         {status === 'loading' ? (
-          <div className="mb-3 text-sm text-neutral-600">{t("collections.loading")}</div>
+          <div className="mb-3 text-sm text-muted-foreground">{t("collections.loading")}</div>
         ) : null}
         {status === 'error' ? (
-          <div className="mb-3 text-sm text-red-600">{t("collections.loadFailed")}</div>
+          <div className="mb-3 text-sm text-destructive">{t("collections.loadFailed")}</div>
         ) : null}
         <Sidebar className="gap-6">
           <aside>
@@ -128,9 +132,9 @@ export default function CollectionSectionClient({ initial, params, paginationMod
             <DSGrid cols={1} gap={4} className="sm:grid-cols-2 lg:grid-cols-3">
               {items.map((p) => (
                 <div key={p.id} className="border rounded p-3">
-                  <div className="aspect-video bg-neutral-100 mb-2" />
+                  <div className="aspect-video bg-muted mb-2" />
                   <div className="font-medium">{p.title}</div>
-                  <div className="text-sm text-neutral-600">{p.slug}</div>
+                  <div className="text-sm text-muted-foreground">{p.slug}</div>
                 </div>
               ))}
             </DSGrid>
@@ -155,7 +159,7 @@ export default function CollectionSectionClient({ initial, params, paginationMod
             {seoText ? (
               <details className="mt-8" open={!seoCollapsible}>
                 <summary className="cursor-pointer select-none text-sm font-medium">{t("collections.seoSummary")}</summary>
-                <div className="prose mt-2 w-full text-sm text-neutral-700" dangerouslySetInnerHTML={{ __html: seoText }} />
+                <div className="prose mt-2 w-full text-sm text-muted-foreground" dangerouslySetInnerHTML={{ __html: seoText }} />
               </details>
             ) : null}
           </section>

@@ -21,16 +21,20 @@ describe("pages.json.server", () => {
       slug: "home",
       status: "draft",
       components: [],
-      seo: { title: { en: "Home" }, description: { en: "" }, image: { en: "" } } as any,
-      createdAt: "t",
-      updatedAt: "t",
-      createdBy: "tester",
-    } as Page;
+    seo: { title: { en: "Home" }, description: { en: "" }, image: { en: "" } } as any,
+    createdAt: "t",
+    updatedAt: "t",
+    createdBy: "tester",
+    publishedAt: "p1",
+    publishedBy: "tester",
+    publishedRevisionId: "rev-1",
+  } as Page;
 
     await repo.savePage(shop, page, undefined);
     let pages = await repo.getPages(shop);
     expect(pages).toHaveLength(1);
     expect(pages[0].createdBy).toBe("tester");
+    expect(pages[0].publishedRevisionId).toBe("rev-1");
     let history = await repo.diffHistory(shop);
     expect(history).toHaveLength(1);
     expect(history[0].diff).toEqual(page);

@@ -6,7 +6,9 @@ import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";
 import { createSchema } from "./validation";
 import { getPages, savePage } from "./service";
-import { mapLocales, reportError } from "./utils";
+import { computeRevisionId, mapLocales, reportError } from "./utils";
+import { recordMetric } from "@platform-core/utils";
+import { incrementOperationalError } from "@platform-core/shops/health";
 
 export async function createPage(
   shop: string,
@@ -48,6 +50,15 @@ export async function createPage(
     id,
     slug: data.slug,
     status: data.status,
+    ...(data.status === "published"
+      ? {
+          publishedAt: now,
+          publishedBy: session.user.email ?? "unknown",
+          publishedRevisionId: computeRevisionId(data.components),
+          lastPublishedComponents: data.components,
+        }
+      : {}),
+    ...(data.stableId ? { stableId: data.stableId } : {}),
     components: data.components,
     seo: { title, description, image },
     createdAt: now,
@@ -60,8 +71,23 @@ export async function createPage(
 
   try {
     const saved = await savePage(shop, page, prev);
+    if (page.status === "published") {
+      recordMetric("cms_page_publish_total", {
+        shopId: shop,
+        service: "cms",
+        status: "success",
+      });
+    }
     return { page: saved };
   } catch (err) {
+    if (page.status === "published") {
+      recordMetric("cms_page_publish_total", {
+        shopId: shop,
+        service: "cms",
+        status: "failure",
+      });
+      incrementOperationalError(shop);
+    }
     await reportError(err);
     throw err;
   }

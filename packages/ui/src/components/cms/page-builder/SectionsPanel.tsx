@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { PageComponent } from "@acme/types";
 import type { SectionTemplate } from "@acme/types/section/template";
 import { Button, Input } from "../../atoms/shadcn";
@@ -12,6 +12,7 @@ import { useTranslations } from "@acme/i18n";
 import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 import { Stack as DSStack } from "../../atoms/primitives/Stack";
 import { Inline as DSInline } from "../../atoms/primitives/Inline";
+import type { ComponentType } from "./defaults";
 
 function cloneWithIds(node: PageComponent): PageComponent {
   const base = node as unknown as Record<string, unknown>;
@@ -27,13 +28,38 @@ interface Props {
   shop?: string | null;
   onInsert: (component: PageComponent) => void;
   onInsertLinked?: (item: { globalId: string; label: string; component: PageComponent }) => void;
+  allowedTypes?: Set<ComponentType>;
 }
 
 const DATA_CY_SECTIONS_PANEL = "pb-sections-panel";
 
-export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props) {
+function collectTypes(node: PageComponent): Set<ComponentType> {
+  const types = new Set<ComponentType>();
+  const walk = (n: PageComponent) => {
+    const t = (n as { type?: string }).type;
+    if (t) types.add(t as ComponentType);
+    const children = (n as { children?: PageComponent[] }).children;
+    if (Array.isArray(children)) children.forEach(walk);
+  };
+  walk(node);
+  return types;
+}
+
+const isAllowedTemplate = (component: PageComponent, allowedTypes?: Set<ComponentType>): boolean => {
+  if (!allowedTypes) return true;
+  const types = collectTypes(component);
+  for (const t of types) {
+    if (!allowedTypes.has(t)) return false;
+  }
+  return true;
+};
+
+export default function SectionsPanel({ shop, onInsert, onInsertLinked, allowedTypes }: Props) {
   const t = useTranslations();
-  const builtInSections = React.useMemo(() => getBuiltInSections(((k: string) => t(k) as string)), [t]);
+  const builtInSections = useMemo(
+    () => getBuiltInSections(((k: string) => t(k) as string)),
+    [t],
+  );
   const [items, setItems] = useState<SectionTemplate[]>([]);
   const [q, setQ] = useState("");
   // Tag chips replaced by built-in section groups; keep state for compatibility but unused
@@ -141,6 +167,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
         {(() => {
           const groups: Record<string, typeof builtInSections> = {};
           for (const s of builtInSections) {
+            if (!isAllowedTemplate(s.build(), allowedTypes)) continue;
             const key = s.previewType.startsWith("HeaderSection")
               ? String(t("cms.builder.sections.groups.headers"))
               : s.previewType.startsWith("FooterSection")
@@ -166,7 +193,11 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                         type="button"
                         className="rounded border p-1 text-start hover:bg-muted min-h-10 min-w-10"
                         title={titleText}
-                        onClick={() => onInsert(cloneWithIds(p.build()))}
+                        onClick={() => {
+                          const candidate = cloneWithIds(p.build());
+                          if (!isAllowedTemplate(candidate, allowedTypes)) return;
+                          onInsert(candidate);
+                        }}
                       >
                         <div className="relative w-full aspect-video">
                           <Image src={resolvedPreview} alt="" fill className="rounded border bg-muted object-cover" aria-hidden />
@@ -186,7 +217,9 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
       {/* eslint-disable-next-line ds/no-hardcoded-copy -- PB-123 style value string; not user-facing copy */}
       <DSStack gap={2} className="overflow-auto p-2" style={{ maxHeight: "calc(100svh - 6rem)" }}>
         {items.length === 0 && !loading && <div className="p-2 text-sm text-muted-foreground">{t("cms.builder.sections.none")}</div>}
-        {items.map((s) => (
+        {items
+          .filter((s) => isAllowedTemplate(s.template as unknown as PageComponent, allowedTypes))
+          .map((s) => (
           <div key={s.id} className="space-y-1 rounded border p-2">
             <div className="truncate text-sm font-medium">{s.label}</div>
             <div className="text-xs uppercase tracking-wide text-muted-foreground">{s.status}</div>
@@ -213,7 +246,11 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                 type="button"
                 variant="outline"
                 className="min-h-10 min-w-10 px-2 text-xs"
-                onClick={() => onInsert(cloneWithIds(s.template))}
+                onClick={() => {
+                  const candidate = cloneWithIds(s.template);
+                  if (!isAllowedTemplate(candidate, allowedTypes)) return;
+                  onInsert(candidate);
+                }}
               >
                 {t("cms.builder.sections.insertCopy")}
               </Button>
@@ -222,7 +259,11 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked }: Props)
                   type="button"
                   variant="outline"
                   className="min-h-10 min-w-10 px-2 text-xs"
-                  onClick={() => onInsertLinked({ globalId: s.id, label: s.label, component: s.template })}
+                  onClick={() => {
+                    const candidate = cloneWithIds(s.template);
+                    if (!isAllowedTemplate(candidate, allowedTypes)) return;
+                    onInsertLinked({ globalId: s.id, label: s.label, component: candidate });
+                  }}
                 >
                   {t("cms.builder.sections.insertLinked")}
                 </Button>

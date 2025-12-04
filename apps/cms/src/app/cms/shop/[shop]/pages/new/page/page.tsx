@@ -5,6 +5,7 @@ import { getPages } from "@platform-core/repositories/pages/index.server";
 import { fillLocales } from "@i18n/fillLocales";
 import type { Page } from "@acme/types";
 import PageBuilderClient from "./PageBuilderClient";
+import { corePageTemplates } from "@acme/templates";
 
 export const dynamic = "force-dynamic";
 
@@ -61,6 +62,8 @@ export default async function NewPageBuilderRoute({
         page={blank}
         onSave={save}
         onPublish={publish}
+        shopId={shop}
+        templates={corePageTemplates}
         pagesNav={{
           items: [
             { label: "New page", value: "__new__", href: `/cms/shop/${shop}/pages/new/page` },

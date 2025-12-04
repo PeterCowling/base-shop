@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { ConfiguratorProgress, getSteps, getStepsMap, stepIndex, getStepTrackMeta } from "../steps";
 import { useConfigurator } from "../ConfiguratorContext";
 import { Card, CardContent } from "@/components/atoms/shadcn";
@@ -7,17 +8,42 @@ import { Alert, Tag } from "@ui/components/atoms";
 import { cn } from "@ui/utils/style";
 import type { ConfiguratorStep } from "../types";
 import { useTranslations } from "@acme/i18n";
+import { track } from "@acme/telemetry";
 
 interface Props {
   stepId: string;
 }
 
 export default function StepPage({ stepId }: Props) {
+  const { state } = useConfigurator();
+
+  useEffect(() => {
+    if (!state.shopId) return;
+    track("build_flow_step_view", {
+      shopId: state.shopId,
+      stepId,
+    });
+    if (typeof window !== "undefined") {
+      const key = `cms-launch-start-${state.shopId}`;
+      const trackedKey = `cms-launch-start-tracked-${state.shopId}`;
+      if (!window.localStorage.getItem(key)) {
+        const startedAt = Date.now();
+        window.localStorage.setItem(key, String(startedAt));
+        window.localStorage.setItem(trackedKey, "1");
+        track("build_flow_timer_start", { shopId: state.shopId, startedAt });
+      } else if (!window.localStorage.getItem(trackedKey)) {
+        const existing = Number(window.localStorage.getItem(key));
+        const startedAt = Number.isNaN(existing) ? Date.now() : existing;
+        window.localStorage.setItem(trackedKey, "1");
+        track("build_flow_timer_start", { shopId: state.shopId, startedAt });
+      }
+    }
+  }, [state.shopId, stepId]);
+
   const t = useTranslations();
   const tFunc = t as unknown as (key: string, vars?: Record<string, unknown>) => string;
   const stepMap = getStepsMap(tFunc);
   const step = stepMap[stepId];
-  const { state } = useConfigurator();
   if (!step) {
     return null;
   }

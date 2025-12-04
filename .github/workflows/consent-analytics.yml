@@ -1,0 +1,28 @@
+name: Consent & Analytics Checks
+
+on:
+  pull_request:
+    paths:
+      - "apps/cover-me-pretty/src/app/api/analytics/**"
+      - "apps/cover-me-pretty/src/app/api/leads/**"
+      - "packages/platform-core/src/analytics/**"
+      - "packages/platform-core/src/contexts/CartContext.tsx"
+      - ".github/workflows/consent-analytics.yml"
+  workflow_dispatch:
+
+jobs:
+  consent-analytics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: pnpm install --frozen-lockfile
+      - name: Run scoped tests (analytics/leads)
+        run: |
+          pnpm --filter @apps/cover-me-pretty test -- --runTestsByPath src/app/api/analytics/event/route.test.ts src/app/api/leads/route.test.ts
+          pnpm --filter @acme/platform-core test -- --runTestsByPath src/analytics/client.test.ts

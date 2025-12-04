@@ -1,16 +1,13 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import type PageBuilderComponent from "@ui/components/cms/page-builder/PageBuilder";
-
-type PageBuilderProps = React.ComponentProps<typeof PageBuilderComponent>;
+import type { PageBuilderProps } from "@acme/page-builder-ui";
 
 const PageBuilder = dynamic<PageBuilderProps>(
-  () => import("@ui/components/cms/page-builder/PageBuilder"),
+  () => import("@acme/page-builder-ui").then((mod) => mod.PageBuilder),
   { ssr: false },
 );
 
 export default function PageBuilderClient(props: PageBuilderProps) {
   return <PageBuilder {...props} />;
 }
-

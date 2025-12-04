@@ -9,8 +9,9 @@ import { Slot } from "./slot";
 /*  Types                                                                     */
 /* -------------------------------------------------------------------------- */
 type LegacyVariant = "default" | "outline" | "ghost" | "destructive";
-type ButtonTone = "solid" | "soft" | "outline" | "ghost";
+type ButtonTone = "solid" | "soft" | "outline" | "ghost" | "quiet";
 type ButtonColor = "default" | "primary" | "accent" | "success" | "info" | "warning" | "danger";
+type ButtonSize = "sm" | "md" | "lg";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -32,6 +33,8 @@ export interface ButtonProps
   /** Render as square icon-only button (provide aria-label). */
   iconOnly?: boolean;
   asChild?: boolean;
+  /** Size scale for padding/height/typography. */
+  size?: ButtonSize;
 }
 
 /* -------------------------------------------------------------------------- */
@@ -49,6 +52,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       trailingIcon,
       iconSize = "md",
       iconOnly = false,
+      size = "md",
       disabled,
       "aria-busy": ariaBusy,
       asChild = false,
@@ -56,8 +60,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
+    const sizeClasses: Record<ButtonSize, string> = {
+      sm: "h-9 px-3 text-sm",
+      md: "h-10 px-4 text-sm",
+      lg: "h-11 px-5 text-base",
+    };
     const base =
-      "inline-flex h-10 items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
+      "inline-flex items-center justify-center rounded-md py-2 font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50";
 
     // Back-compat: map legacy `variant` into color/tone
     const legacyMap: Record<LegacyVariant, { color: ButtonColor; tone: ButtonTone }> = {
@@ -109,12 +118,22 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       warning: "text-fg hover:bg-warning-soft",
       danger: "text-fg hover:bg-danger-soft",
     };
+    const quietBg: Record<ButtonColor, string> = {
+      default: "text-fg hover:bg-transparent",
+      primary: "text-primary hover:bg-primary-soft/50",
+      accent: "text-accent hover:bg-accent-soft/50",
+      success: "text-success hover:bg-success-soft/50",
+      info: "text-info hover:bg-info-soft/50",
+      warning: "text-warning hover:bg-warning-soft/50",
+      danger: "text-danger hover:bg-danger-soft/50",
+    };
 
     const classesByTone: Record<ButtonTone, Record<ButtonColor, string>> = {
       solid: solidBg,
       soft: softBg,
       outline: outlineBg,
       ghost: ghostBg,
+      quiet: quietBg,
     };
 
     // Render polymorphically: either a real button or our Slot wrapper
@@ -134,12 +153,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const isDisabled = Boolean(disabled) || isLoading;
     const computedClasses = cn(
       base,
+      sizeClasses[size],
       classesByTone[effTone][effColor],
       // Ensure legacy expectations for specific variants
       variant === "outline" && "border-input",
       variant === "ghost" && effColor === "accent" && "hover:bg-accent",
       variant === "destructive" && "bg-destructive",
-      iconOnly && "h-10 w-10 p-0 justify-center",
+      iconOnly && (size === "lg" ? "h-11 w-11" : size === "sm" ? "h-9 w-9" : "h-10 w-10") + " p-0 justify-center",
       isLoading && "cursor-progress opacity-70",
       className,
     );

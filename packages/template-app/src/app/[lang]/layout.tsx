@@ -2,6 +2,8 @@
 import { TranslationsProvider } from "@acme/i18n";
 import { resolveLocale, type Locale } from "@i18n/locales";
 import type { ReactNode } from "react";
+import { DefaultSeo } from "next-seo";
+import { getSeo, serializeJsonLd } from "../../lib/seo";
 
 export default async function LocaleLayout({
   children,
@@ -19,9 +21,18 @@ export default async function LocaleLayout({
       `@i18n/${lang}.json`
     )
   ).default as Record<string, string>;
+  const seo = await getSeo(lang);
 
   return (
-    <TranslationsProvider messages={messages}>{children}</TranslationsProvider>
+    <TranslationsProvider messages={messages}>
+      <DefaultSeo {...seo} additionalLinkTags={seo.additionalLinkTags} />
+      {seo.structuredData && (
+        <script
+          type="application/ld+json" /* i18n-exempt -- SEO-101 [ttl=2026-12-31] schema data script */
+          dangerouslySetInnerHTML={{ __html: serializeJsonLd(seo.structuredData) }}
+        />
+      )}
+      {children}
+    </TranslationsProvider>
   );
 }
-

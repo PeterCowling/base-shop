@@ -19,9 +19,13 @@ import { useTranslations } from "@acme/i18n";
 
 interface Props {
   pageTemplates: Array<{
+    id: string;
     name: string;
     components: PageComponent[];
-    preview: string;
+    preview?: string | null;
+    description?: string;
+    category?: string;
+    pageType?: string;
   }>;
   homeLayout: string;
   setHomeLayout: (v: string) => void;
@@ -76,6 +80,9 @@ export default function StepHomePage({
   const [isPublishing, setIsPublishing] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [publishError, setPublishError] = useState<string | null>(null);
+  const hasTemplate = homeLayout.trim().length > 0;
+  const hasSavedAtLeastOnce = Boolean(homePageId);
+  const canProceed = hasTemplate && hasSavedAtLeastOnce && components.length > 0;
 
   useEffect(() => {
     (async () => {
@@ -112,10 +119,18 @@ export default function StepHomePage({
   }, [shopId, homePageId, setComponents, setHomePageId]);
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">{t("cms.configurator.homePage.title")}</h2>
+      <div className="flex items-start justify-between gap-3">
+        <h2 className="text-xl font-semibold" data-tour="quest-checkout">
+          {t("cms.configurator.homePage.title")}
+        </h2>
+        <div className="rounded-full bg-info/10 px-3 py-1 text-xs font-semibold text-info-foreground">
+          {t("cms.configurator.time.badge.checkout")}
+        </div>
+      </div>
       <TemplateSelector
         value={homeLayout}
         pageTemplates={pageTemplates}
+        allowBlank={false}
         onConfirm={(layout, comps) => {
           setHomeLayout(layout);
           setComponents(comps);
@@ -142,6 +157,7 @@ export default function StepHomePage({
             id: homePageId ?? "",
             slug: "",
             status: "draft",
+            ...(homeLayout ? { stableId: homeLayout } : {}),
             components,
             seo: {
               title: fillLocales(undefined, ""),
@@ -207,6 +223,7 @@ export default function StepHomePage({
         {nextStepId && (
           <Button
             data-cy="next"
+            disabled={!canProceed}
             onClick={() => {
               markComplete(true);
               router.push(`/cms/configurator/${nextStepId}`);

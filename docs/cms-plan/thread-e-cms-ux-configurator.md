@@ -1,6 +1,12 @@
+Type: Plan
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+Relates-to charter: docs/cms/cms-charter.md
+
 # Thread E – CMS UX, configurator, and safety rails
 
-This thread operationalises §5 of `docs/cms-research.md`.
+This thread operationalises §5 of `docs/historical/cms-research.md`.
 
 It focuses on:
 

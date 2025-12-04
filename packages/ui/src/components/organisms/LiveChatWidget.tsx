@@ -8,6 +8,7 @@ import { OverlayScrim } from "../atoms";
 import { useTranslations } from "@acme/i18n";
 import { Stack } from "../atoms/primitives/Stack";
 import { Inline } from "../atoms/primitives/Inline";
+import Image from "next/image";
 
 interface ChatMessage {
   id: number;
@@ -16,7 +17,7 @@ interface ChatMessage {
 }
 
 export interface LiveChatWidgetProps
-  extends Omit<React.HTMLAttributes<HTMLButtonElement>, "color"> {
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "color"> {
   /**
    * Width of the chat dialog. Provide a Tailwind width class
    * (e.g. "w-80") or a numeric pixel value.
@@ -30,6 +31,14 @@ export interface LiveChatWidgetProps
    * @default "bottom-4"
    */
   bottomOffset?: string | number;
+  /** Optional headline for the chat drawer */
+  title?: string;
+  /** Optional subtitle shown under the title */
+  subtitle?: string;
+  /** Optional avatar shown next to the title */
+  avatarUrl?: string;
+  /** Whether the agent is online (renders a tiny status dot) */
+  online?: boolean;
 }
 
 /**
@@ -39,7 +48,11 @@ export function LiveChatWidget({
   className,
   width = "w-80",
   bottomOffset = "bottom-4",
-  ...props
+  title,
+  subtitle,
+  avatarUrl,
+  online,
+  ...buttonProps
 }: LiveChatWidgetProps) {
   const t = useTranslations();
   const [open, setOpen] = React.useState(false);
@@ -77,7 +90,7 @@ export function LiveChatWidget({
             className
           )}
           style={bottomStyle}
-          {...props}
+          {...buttonProps}
         >
           {t("chat.trigger")}
         </Button>
@@ -91,8 +104,30 @@ export function LiveChatWidget({
         className={cn("flex flex-col gap-4 border-border-2 p-6 shadow-elevation-3", bottomClass)} // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
         data-token="--color-bg" /* i18n-exempt -- PB-000 [ttl=2025-12-31]: design token attribute */
       >
-        <DrawerTitle className="text-lg font-semibold">{t("chat.title")}</DrawerTitle>
-        <DrawerDescription className="sr-only">{t("chat.description")}</DrawerDescription>
+        <Inline gap={3} alignY="center" className="items-start">
+          <div className="relative h-10 w-10 overflow-hidden rounded-full bg-muted" aria-hidden={!avatarUrl}>
+            {avatarUrl ? (
+              <Image src={avatarUrl} alt={title ?? (t("chat.title") as string)} fill className="object-cover" />
+            ) : null}
+          </div>
+          <div className="flex-1">
+            <DrawerTitle className="text-lg font-semibold">
+              {title ?? (t("chat.title") as string)}
+            </DrawerTitle>
+            <DrawerDescription className="text-sm text-muted-foreground">
+              {subtitle ?? (t("chat.description") as string)}
+            </DrawerDescription>
+          </div>
+          {online !== undefined ? (
+            <span
+              className={cn(
+                "mt-1 inline-flex h-2.5 w-2.5 rounded-full", // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes only
+                online ? "bg-success" : "bg-muted"
+              )} // i18n-exempt -- PB-000 [ttl=2025-12-31]: design tokens only
+              aria-label={online ? t("status.active") : t("status.archived")}
+            />
+          ) : null}
+        </Inline>
         <Stack gap={2} className="overflow-y-auto py-2">{/* i18n-exempt: CSS utility classes only */}
           {messages.map((m) => (
             <div

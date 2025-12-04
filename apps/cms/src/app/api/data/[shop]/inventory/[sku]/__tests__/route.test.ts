@@ -69,4 +69,18 @@ describe("PATCH", () => {
     expect(await res.json()).toEqual(updated);
     expect(update).toHaveBeenCalledWith("s1", "sku1", {}, expect.any(Function));
   });
+
+  it("returns 503 when backend delegate is unavailable", async () => {
+    __setMockSession({ user: { role: "admin" } } as any);
+    update.mockRejectedValue(
+      new Error("Prisma inventory delegate is unavailable"),
+    );
+    const res = await PATCH(req({ quantity: 1, variantAttributes: {} }), {
+      params: Promise.resolve({ shop: "s1", sku: "sku1" }),
+    });
+    expect(res.status).toBe(503);
+    expect(await res.json()).toEqual({
+      error: "Prisma inventory delegate is unavailable",
+    });
+  });
 });

@@ -1,5 +1,5 @@
 import React from 'react';
-import PageToolbar from '@ui/components/cms/page-builder/PageToolbar';
+import { PageToolbar } from '@acme/page-builder-ui';
 import { getLegacyPreset } from '@ui/utils/devicePresets';
 
 describe('PageToolbar hotkeys (CT)', { tags: ['inspectors'] }, () => {
@@ -35,4 +35,3 @@ describe('PageToolbar hotkeys (CT)', { tags: ['inspectors'] }, () => {
     cy.get('@setOrientation').should('always.be.calledWith', 'portrait');
   });
 });
-

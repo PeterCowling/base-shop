@@ -5,14 +5,15 @@ import { fileURLToPath } from "node:url";
 
 import type { StorybookConfig } from "@storybook/nextjs";
 import type { Configuration as WebpackConfiguration, ResolveOptions } from "webpack";
+import webpack from "webpack";
 import path, { dirname } from "node:path";
-import { getAbsolutePath } from "storybook/internal/common";
 
 import { coverageAddon } from "./coverage.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const require = createRequire(import.meta.url);
+const enableChromaticAddon = process.env.STORYBOOK_ENABLE_CHROMATIC_ADDON === "true";
 
 const config: StorybookConfig = {
   // Use the Webpack 5 builder explicitly per SB9 docs
@@ -36,16 +37,17 @@ const config: StorybookConfig = {
 
   // Find stories and MDX docs across UI package and local Storybook docs
   stories: [
-    "../../../packages/ui/**/*.stories.@(ts|tsx)", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-    "./stories/**/*.stories.@(ts|tsx)", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-    "./stories/**/*.mdx", // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    path.resolve(__dirname, "../../../packages/ui/**/*.stories.@(ts|tsx)"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    path.resolve(__dirname, "./stories/**/*.stories.@(ts|tsx)"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+    path.resolve(__dirname, "./stories/**/*.mdx"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
   ],
 
   addons: [
     getAbsolutePath("@storybook/addon-links"),
     getAbsolutePath("@storybook/addon-a11y"),
     getAbsolutePath("@storybook/addon-docs"),
-    getAbsolutePath("@chromatic-com/storybook"),
+    // Chromatic add-on triggers noisy ariaLabel warnings in SB11; enable only when explicitly requested
+    ...(enableChromaticAddon ? [getAbsolutePath("@chromatic-com/storybook")] : []),
     getAbsolutePath("@storybook/addon-themes"),
     coverageAddon,
     // Viewport addon removed in SB9; use built-in viewport tool via parameters
@@ -90,13 +92,15 @@ const config: StorybookConfig = {
       path.resolve(__dirname, "../../../packages/platform-core/src/products/index.ts"),
       // Stub server-only module used by Next server code paths
       "server-only": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      // Map node: scheme to bare names or stubs to avoid UnhandledSchemeError in Webpack
+      // Map node: scheme to stubs to avoid UnhandledSchemeError in Webpack
       "node:fs": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "node:path": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "node:crypto": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "node:module": false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       // Some files import the bare 'module' builtin; stub it in browser
       module: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+      fs: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+      path: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       // Third-party SDK not needed in Storybook bundles
       openai: false, // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       // Storybook blocks live in addon-docs; alias to avoid extra dep
@@ -133,6 +137,14 @@ const config: StorybookConfig = {
       ...(config.performance ?? {}),
       hints: false,
     };
+
+    // Normalize node: scheme imports to bare modules to avoid UnhandledSchemeError
+    config.plugins = [
+      ...(config.plugins ?? []),
+      new webpack.NormalModuleReplacementPlugin(/^node:(.*)$/, (resource) => {
+        resource.request = resource.request.replace(/^node:/, "");
+      }),
+    ];
 
     return config;
   }

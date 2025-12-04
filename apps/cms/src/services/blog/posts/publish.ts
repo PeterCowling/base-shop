@@ -2,6 +2,8 @@ import { publishPost as repoPublishPost } from "@platform-core/repositories/blog
 import { ensureAuthorized } from "../../../actions/common/auth";
 import { nowIso } from "@date-utils";
 import { getConfig } from "../config";
+import { recordMetric } from "@platform-core/utils";
+import { incrementOperationalError } from "@platform-core/shops/health";
 
 export async function publishPost(
   shopId: string,
@@ -16,8 +18,19 @@ export async function publishPost(
     : nowIso();
   try {
     await repoPublishPost(config, id, publishedAt);
+    recordMetric("cms_page_publish_total", {
+      shopId,
+      service: "cms",
+      status: "success",
+    });
     return { message: "Post published" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   } catch (err) {
+    recordMetric("cms_page_publish_total", {
+      shopId,
+      service: "cms",
+      status: "failure",
+    });
+    incrementOperationalError(shopId);
     console.error("Failed to publish post", err); // i18n-exempt -- developer log; not user-facing; CMS-1010
     return { error: "Failed to publish post" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   }

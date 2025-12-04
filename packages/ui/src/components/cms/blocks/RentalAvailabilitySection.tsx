@@ -45,11 +45,11 @@ export default function RentalAvailabilitySection({ sku, locationId, className, 
             <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} className="rounded border px-2 py-1 min-h-10" />
           </div>
           <div className="self-end">
-            <button type="button" onClick={check} disabled={disabled} className="rounded bg-black px-3 py-1 text-white disabled:opacity-50 min-h-10 min-w-10">{t("Check")}</button>
+            <button type="button" onClick={check} disabled={disabled} className="rounded bg-foreground px-3 py-1 text-foreground disabled:opacity-50 min-h-10 min-w-10">{t("Check")}</button>
           </div>
         </div>
-        {status === "loading" && <p className="text-sm text-neutral-600">{t("Checking availability…")}</p>}
-        {status === "error" && <p className="text-sm text-red-600">{t("Failed to check availability.")}</p>}
+        {status === "loading" && <p className="text-sm text-muted-foreground">{t("Checking availability…")}</p>}
+        {status === "error" && <p className="text-sm text-destructive">{t("Failed to check availability.")}</p>}
         {status === "loaded" && result && (
           <div className="text-sm">
             <p>
@@ -61,7 +61,7 @@ export default function RentalAvailabilitySection({ sku, locationId, className, 
                 </>
               ) : null}
             </p>
-            {notConfigured && <p className="text-neutral-600">{t("Availability provider not configured. This is a demo stub.")}</p>}
+            {notConfigured && <p className="text-muted-foreground">{t("Availability provider not configured. This is a demo stub.")}</p>}
           </div>
         )}
       </div>

@@ -30,14 +30,14 @@ describe("LayoutClient", () => {
         completedRequired: 2,
         totalRequired: 4,
         completedOptional: 1,
-        totalOptional: 3,
+        totalOptional: 4,
       },
     });
 
     render(<LayoutClient>child</LayoutClient>);
 
     const progress = screen.getByTestId("progress");
-    expect(progress).toHaveTextContent("2/4 required, 1/3 optional");
+    expect(progress).toHaveTextContent("2/4 required, 1/4 optional");
     expect(progress).toHaveTextContent("50");
   });
 

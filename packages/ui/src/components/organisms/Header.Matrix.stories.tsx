@@ -8,9 +8,9 @@ import { makeStateStory } from '../../story-utils/createStories';
 const meta: Meta<typeof Header> = {
   title: 'Organisms/Header/Matrix',
   component: Header,
-  parameters: { docs: { autodocs: false } },
   parameters: {
     docs: {
+      autodocs: false,
       description: {
         component: `Primary responsive header with logo, navigation, language switcher and optional search. Matrix covers empty/minimal and RTL.\n\nUsage:\n\n\`\`\`tsx\nimport { Header } from './Header';\n\n<Header\n  locale="en"\n  shopName="Demo"\n  nav={[{ title: 'Home', href: '#' }, { title: 'Shop', href: '#' }]}\n  searchSuggestions={['Shoes', 'Shirts']}\n/>\n\n// Key args: locale, shopName, nav, searchSuggestions, showSearch\n\`\`\``,
       },

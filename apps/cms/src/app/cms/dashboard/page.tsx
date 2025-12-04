@@ -3,14 +3,57 @@ import { listShops } from "../../../lib/listShops";
 import { Button, Card, CardContent, Progress, Tag } from "@/components/atoms/shadcn";
 import { Grid } from "@ui/components/atoms/primitives/Grid";
 import { Sidebar } from "@ui/components/atoms/primitives/Sidebar";
+import { deriveOperationalHealth } from "@platform-core/shops/health";
 
 // i18n-exempt -- CMS-TECH-001 [ttl=2026-01-01]
 const HERO_LABEL_CLASS = "text-hero-foreground/90";
 import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
 
-export default async function DashboardIndexPage() {
+function SeverityFilter({ brokenOnly }: { brokenOnly: boolean }) {
+  return (
+    <div className="flex items-center gap-2">
+      <Link
+        href="/cms/dashboard"
+        className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+          brokenOnly ? "border-border/70 text-muted-foreground" : "border-primary/50 text-primary"
+        }`}
+      >
+        All
+      </Link>
+      <Link
+        href="/cms/dashboard?severity=broken"
+        className={`rounded-full border px-3 py-1 text-xs font-semibold ${
+          brokenOnly ? "border-primary/60 text-primary" : "border-border/70 text-muted-foreground"
+        }`}
+      >
+        Broken only
+      </Link>
+    </div>
+  );
+}
+
+export default async function DashboardIndexPage({
+  searchParams,
+}: {
+  searchParams?: { severity?: string };
+}) {
   const t = await getTranslations("en");
   const shops = await listShops();
+  const healthEntries = await Promise.all(
+    shops.map(async (shop) => {
+      try {
+        const summary = await deriveOperationalHealth(shop);
+        return [shop, summary.status] as const;
+      } catch {
+        return [shop, "needs-attention"] as const;
+      }
+    }),
+  );
+  const shopsNeedingAttention = healthEntries.filter(
+    ([, status]) => status !== "healthy",
+  );
+
+  const BROKEN_ONLY = searchParams?.severity === "broken";
   const quickStats = [
     {
       label: t("cms.dashboard.stats.total.label"),
@@ -136,6 +179,69 @@ export default async function DashboardIndexPage() {
           )}
         </CardContent>
       </Card>
+      {shops.length > 0 && (
+        <Card className="border border-border/60">
+          <CardContent className="space-y-6">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <h2 className="text-lg font-semibold text-foreground">Shops needing attention</h2>
+                <Tag
+                  className="shrink-0"
+                  variant={shopsNeedingAttention.length === 0 ? "success" : "warning"}
+                >
+                  {shopsNeedingAttention.length === 0
+                    ? "All shops healthy"
+                    : `${shopsNeedingAttention.length} shop(s) with issues`}
+                </Tag>
+              </div>
+              <SeverityFilter brokenOnly={BROKEN_ONLY} />
+            </div>
+            {shopsNeedingAttention.length === 0 ? (
+              <p className="text-sm text-foreground">
+                Runtime health checks report all shops as healthy.
+              </p>
+            ) : (
+              <Grid cols={1} gap={3} className="sm:grid-cols-2">
+                {shopsNeedingAttention
+                  .filter(([, status]) =>
+                    BROKEN_ONLY ? status === "broken" : status !== "healthy",
+                  )
+                  .map(([shop, status]) => (
+                  <Card
+                    key={shop}
+                    className="border border-border/60 bg-surface-3"
+                  >
+                    <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-foreground">
+                          {shop}
+                        </p>
+                        <p className="text-xs text-foreground">
+                          Runtime health:{" "}
+                          {status === "broken"
+                            ? "Broken"
+                            : status === "needs-attention"
+                              ? "Needs attention"
+                              : "Unknown"}
+                        </p>
+                      </div>
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="h-10 shrink-0 px-4 text-sm font-medium"
+                      >
+                        <Link href={`/cms/shop/${shop}`}>
+                          Review shop
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </Grid>
+            )}
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

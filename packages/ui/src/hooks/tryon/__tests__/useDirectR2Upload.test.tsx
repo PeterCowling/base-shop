@@ -147,7 +147,7 @@ describe("useDirectR2Upload", () => {
     expect(result.current.progress).toBeNull();
     expect((global.XMLHttpRequest as jest.Mock).mock.results[0].value.open).toHaveBeenCalledWith(
       "POST",
-      undefined,
+      "https://upload",
       true,
     );
   });

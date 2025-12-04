@@ -118,7 +118,7 @@ function NavMenu({ role, onConfiguratorStartNew, label, variant = "cms" }: NavMe
             </span>
             <span className="flex-1">{t("nav.newShop")}</span>
             {onConfigurator ? (
-              <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+              <span className="ms-2 h-2 w-2 rounded-full bg-primary" aria-hidden />
             ) : null}
           </DropdownMenuItem>
         )}
@@ -167,7 +167,7 @@ function NavMenu({ role, onConfiguratorStartNew, label, variant = "cms" }: NavMe
                 </span>
                 <span className="flex-1">{filteredItems[0].label}</span>
                 {isActive(filteredItems[0].active, filteredItems[0].fullHref) ? (
-                  <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                  <span className="ms-2 h-2 w-2 rounded-full bg-primary" aria-hidden />
                 ) : null}
               </DropdownMenuItem>
             )}
@@ -182,7 +182,7 @@ function NavMenu({ role, onConfiguratorStartNew, label, variant = "cms" }: NavMe
                 </span>
                 <span className="flex-1">{t("nav.newPage")}</span>
                 {onNewPage ? (
-                  <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                  <span className="ms-2 h-2 w-2 rounded-full bg-primary" aria-hidden />
                 ) : null}
               </DropdownMenuItem>
             )}
@@ -202,7 +202,7 @@ function NavMenu({ role, onConfiguratorStartNew, label, variant = "cms" }: NavMe
                 </span>
                 <span className="flex-1">{item.label}</span>
                 {isActive(item.active, item.fullHref) ? (
-                  <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                  <span className="ms-2 h-2 w-2 rounded-full bg-primary" aria-hidden />
                 ) : null}
               </DropdownMenuItem>
             ))}
@@ -224,7 +224,7 @@ function NavMenu({ role, onConfiguratorStartNew, label, variant = "cms" }: NavMe
               </span>
               <span className="flex-1">{item.label}</span>
               {item.active ? (
-                <span className="ms-2 h-2 w-2 rounded-full bg-emerald-400" aria-hidden />
+                <span className="ms-2 h-2 w-2 rounded-full bg-primary" aria-hidden />
               ) : null}
             </DropdownMenuItem>
           ))

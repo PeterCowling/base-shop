@@ -48,7 +48,7 @@ export default function FinancingBadge({ provider = "custom", apr = 0, termMonth
     >
       <span
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-        className="rounded bg-black px-1.5 py-0.5 text-white"
+        className="rounded bg-foreground px-1.5 py-0.5 text-foreground"
       >
         {providerLabel} {/* i18n-exempt -- DS-1234 [ttl=2025-11-30] — provider brand/proper noun */}
       </span>{" "}
@@ -56,7 +56,7 @@ export default function FinancingBadge({ provider = "custom", apr = 0, termMonth
       {text ? <span>{text}</span> : null}
       <span
         // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-        className="text-neutral-600"
+        className="text-muted-foreground"
       >
         {aprText}
       </span>

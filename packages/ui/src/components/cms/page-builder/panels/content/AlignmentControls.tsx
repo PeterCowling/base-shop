@@ -78,7 +78,7 @@ export default function AlignmentControls({ component, handleInput }: Props) {
             comp[`justifyItems${vp}` as keyof ContentComponent] as unknown as ContentComponent["justifyItems"],
           ) ? (
             <Inline key={`jio-${vp}`} gap={2} className="text-xs">
-              <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("cms.builder.override.active")}</span>
+              <span className="rounded bg-muted px-1 text-primary">{t("cms.builder.override.active")}</span>
               <button
                 type="button"
                 className="underline min-h-10 min-w-10"
@@ -143,7 +143,7 @@ export default function AlignmentControls({ component, handleInput }: Props) {
             comp[`alignItems${vp}` as keyof ContentComponent] as unknown as ContentComponent["alignItems"],
           ) ? (
             <Inline key={`aio-${vp}`} gap={2} className="text-xs">
-              <span className="rounded bg-amber-500/20 px-1 text-amber-700">{t("cms.builder.override.active")}</span>
+              <span className="rounded bg-muted px-1 text-primary">{t("cms.builder.override.active")}</span>
               <button
                 type="button"
                 className="underline min-h-10 min-w-10"

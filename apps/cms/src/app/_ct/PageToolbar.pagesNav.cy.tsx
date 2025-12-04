@@ -1,5 +1,5 @@
 import React from 'react';
-import PageToolbar from '@ui/components/cms/page-builder/PageToolbar';
+import { PageToolbar } from '@acme/page-builder-ui';
 
 describe('PageToolbar pagesNav (CT)', { tags: ['inspectors'] }, () => {
   it('pushes router when selecting a different page', () => {
@@ -29,4 +29,3 @@ describe('PageToolbar pagesNav (CT)', { tags: ['inspectors'] }, () => {
     cy.get('@push').should('have.been.calledWith', '/cms/shop/demo/pages/about/builder');
   });
 });
-

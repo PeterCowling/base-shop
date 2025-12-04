@@ -32,10 +32,15 @@ export const tokens = {
   "--color-border-strong": { light: "0 0% 65%", dark: "0 0% 45%" },
   "--color-border-muted": { light: "0 0% 88%", dark: "0 0% 22%" },
   "--color-fg-muted": { light: "0 0% 40%", dark: "0 0% 75%" },
+  // Layered surfaces + form inputs
+  "--surface-1": { light: "0 0% 100%", dark: "0 0% 4%" },
+  "--surface-2": { light: "0 0% 96%", dark: "222 14% 13%" },
+  "--surface-3": { light: "0 0% 92%", dark: "222 12% 16%" },
+  "--surface-input": { light: "0 0% 96%", dark: "222 12% 18%" },
   // Brand families
   "--color-primary": { light: "220 90% 56%", dark: "220 90% 66%" },
-  // In dark theme, foreground on primary should remain light for contrast
-  "--color-primary-fg": { light: "0 0% 100%", dark: "0 0% 100%" },
+  // In dark theme, foreground on primary should remain dark for contrast
+  "--color-primary-fg": { light: "0 0% 100%", dark: "0 0% 10%" },
   "--color-primary-soft": { light: "220 90% 96%", dark: "220 90% 18%" },
   "--color-primary-hover": { light: "220 90% 50%", dark: "220 90% 72%" },
   "--color-primary-active": { light: "220 90% 45%", dark: "220 90% 78%" },
@@ -54,15 +59,22 @@ export const tokens = {
   "--color-info": { light: "210 90% 96%", dark: "210 90% 35%" },
   "--color-info-fg": { light: "210 90% 35%", dark: "210 90% 96%" },
   "--color-info-soft": { light: "210 90% 95%", dark: "210 70% 20%" },
-  "--color-muted": { light: "0 0% 88%", dark: "0 0% 60%" },
+  "--color-muted": { light: "0 0% 88%", dark: "0 0% 32%" },
   // Accessible link color (AA on light surfaces)
   "--color-link": { light: "220 75% 40%", dark: "220 80% 70%" },
   // Interaction helpers
   "--color-focus-ring": { light: "220 90% 56%", dark: "220 90% 66%" },
+  "--ring": { light: "220 90% 56%", dark: "220 90% 66%" },
+  "--ring-offset": { light: "0 0% 100%", dark: "0 0% 4%" },
+  "--ring-width": { light: "2px" },
+  "--ring-offset-width": { light: "2px" },
   "--color-selection": { light: "260 83% 92%", dark: "220 30% 40%" },
   "--color-highlight": { light: "260 83% 97%", dark: "220 25% 30%" },
   "--color-muted-fg": { light: "0 0% 20%", dark: "0 0% 92%" },
   "--color-muted-border": { light: "0 0% 72%", dark: "0 0% 40%" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
+  "--border-1": { light: "var(--color-fg) / 0.12", dark: "var(--color-fg) / 0.12" },
+  "--border-2": { light: "var(--color-fg) / 0.22", dark: "var(--color-fg) / 0.22" },
+  "--border-3": { light: "var(--color-fg) / 0.38", dark: "var(--color-fg) / 0.38" },
   // Translucent overlays
   "--overlay-scrim-1": { light: "0 0% 0% / 0.40", dark: "0 0% 100% / 0.40" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]
   "--overlay-scrim-2": { light: "0 0% 0% / 0.64", dark: "0 0% 100% / 0.64" }, // i18n-exempt -- DS-000 design token numeric CSS value [ttl=2026-01-01]

@@ -22,20 +22,34 @@
   --color-info: 210 90% 96%;
   --color-info-fg: 210 90% 35%;
   --color-muted: 0 0% 88%;
+  --color-fg-muted: 0 0% 40%;
   --color-muted-fg: 0 0% 20%;
   --color-muted-border: 0 0% 72%;
+  --surface-1: 0 0% 100%;
+  --surface-2: 0 0% 96%;
+  --surface-3: 0 0% 92%;
+  --surface-input: 0 0% 96%;
+  --border-1: var(--color-fg) / 0.12;
+  --border-2: var(--color-fg) / 0.22;
+  --border-3: var(--color-fg) / 0.38;
 
   /* gradient tokens (used via bg-hero) */
   --gradient-hero-from: 234 89% 60%;
   --gradient-hero-via: 270 83% 60%;
   --gradient-hero-to: 222 47% 11%;
   --hero-contrast-overlay: 0 0% 0% / 0.55; /* overlay used in bg-hero-contrast */
+  /* focus ring tokens */
+  --color-focus-ring: 220 90% 56%;
+  --ring: 220 90% 56%;
+  --ring-offset: 0 0% 100%;
+  --ring-width: 2px;
+  --ring-offset-width: 2px;
 
   --color-bg-dark: 0 0% 4%;
   --color-fg-dark: 0 0% 93%;
   --color-primary-dark: 220 90% 56%;
-  /* In dark mode, on brand colors we still want light foreground text for contrast */
-  --color-primary-fg-dark: 0 0% 100%;
+  /* In dark mode, on brand colors we want dark foreground text for contrast */
+  --color-primary-fg-dark: 0 0% 10%;
   --color-accent-dark: 260 83% 70%;
   --color-accent-fg-dark: 0 0% 10%;
   --color-danger-dark: 0 63% 31%;
@@ -46,9 +60,19 @@
   --color-warning-fg-dark: 40 90% 96%;
   --color-info-dark: 210 90% 35%;
   --color-info-fg-dark: 210 90% 96%;
-  --color-muted-dark: 0 0% 60%;
+  --color-muted-dark: 0 0% 32%;
+  --color-fg-muted-dark: 0 0% 75%;
   --color-muted-fg-dark: 0 0% 92%;
   --color-muted-border-dark: 0 0% 40%;
+  --surface-1-dark: 0 0% 4%;
+  --surface-2-dark: 222 14% 13%;
+  --surface-3-dark: 222 12% 16%;
+  --surface-input-dark: 222 12% 18%;
+  --border-1-dark: var(--color-fg) / 0.12;
+  --border-2-dark: var(--color-fg) / 0.22;
+  --border-3-dark: var(--color-fg) / 0.38;
+  --ring-dark: 220 90% 66%;
+  --ring-offset-dark: 0 0% 4%;
 
   /* typography */
   --font-sans: "Geist Sans", system-ui, sans-serif;
@@ -145,8 +169,19 @@ body {
     --color-info: var(--color-info-dark);
     --color-info-fg: var(--color-info-fg-dark);
     --color-muted: var(--color-muted-dark);
+    --color-fg-muted: var(--color-fg-muted-dark);
     --color-muted-fg: var(--color-muted-fg-dark);
     --color-muted-border: var(--color-muted-border-dark);
+    --surface-1: var(--surface-1-dark);
+    --surface-2: var(--surface-2-dark);
+    --surface-3: var(--surface-3-dark);
+    --surface-input: var(--surface-input-dark);
+    --border-1: var(--border-1-dark);
+    --border-2: var(--border-2-dark);
+    --border-3: var(--border-3-dark);
+    --color-focus-ring: var(--color-primary-dark);
+    --ring: var(--ring-dark);
+    --ring-offset: var(--ring-offset-dark);
     /* Dark-mode elevation refined for low-luminance surfaces */
     --elevation-0: none;
     --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.14);
@@ -169,17 +204,28 @@ html.theme-dark {
   --color-success: var(--color-success-dark);
   --color-success-fg: var(--color-success-fg-dark);
   --color-warning: var(--color-warning-dark);
-  --color-warning-fg: var(--color-warning-fg-dark);
-  --color-info: var(--color-info-dark);
-  --color-info-fg: var(--color-info-fg-dark);
-  --color-muted: var(--color-muted-dark);
-  --color-muted-fg: var(--color-muted-fg-dark);
-  --color-muted-border: var(--color-muted-border-dark);
-  /* Dark-mode elevation refined for low-luminance surfaces */
-  --elevation-0: none;
-  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.14);
-  --elevation-2: 0 2px 6px rgba(0, 0, 0, 0.18);
-  --elevation-3: 0 4px 12px rgba(0, 0, 0, 0.24);
+    --color-warning-fg: var(--color-warning-fg-dark);
+    --color-info: var(--color-info-dark);
+    --color-info-fg: var(--color-info-fg-dark);
+    --color-muted: var(--color-muted-dark);
+    --color-fg-muted: var(--color-fg-muted-dark);
+    --color-muted-fg: var(--color-muted-fg-dark);
+    --color-muted-border: var(--color-muted-border-dark);
+    --surface-1: var(--surface-1-dark);
+    --surface-2: var(--surface-2-dark);
+    --surface-3: var(--surface-3-dark);
+    --surface-input: var(--surface-input-dark);
+    --border-1: var(--border-1-dark);
+    --border-2: var(--border-2-dark);
+    --border-3: var(--border-3-dark);
+    --color-focus-ring: var(--color-primary-dark);
+    --ring: var(--ring-dark);
+    --ring-offset: var(--ring-offset-dark);
+    /* Dark-mode elevation refined for low-luminance surfaces */
+    --elevation-0: none;
+    --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.14);
+    --elevation-2: 0 2px 6px rgba(0, 0, 0, 0.18);
+    --elevation-3: 0 4px 12px rgba(0, 0, 0, 0.24);
   --elevation-4: 0 8px 24px rgba(0, 0, 0, 0.30);
   --elevation-5: 0 12px 36px rgba(0, 0, 0, 0.36);
   /* keep hero gradient consistent across modes by default */

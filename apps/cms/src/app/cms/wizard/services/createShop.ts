@@ -52,6 +52,7 @@ export async function createShop(
     type,
     theme,
     payment,
+    billingProvider,
     shipping,
     pageTitle,
     pageDescription,
@@ -75,6 +76,8 @@ export async function createShop(
     type,
     theme,
     payment,
+    billingProvider:
+      billingProvider || (payment?.includes("stripe") ? "stripe" : payment?.[0]),
     shipping,
     analytics: analyticsProvider
       ? { provider: analyticsProvider, id: analyticsId || undefined }

@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: TypeScript
+Last-reviewed: 2025-12-02
+
 # TypeScript configuration
 
 ## Base `tsconfig`

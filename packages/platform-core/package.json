@@ -77,6 +77,11 @@
       "import": "./dist/shops/index.js",
       "default": "./dist/shops/index.js"
     },
+    "./shops/health": {
+      "types": "./dist/shops/health.d.ts",
+      "import": "./dist/shops/health.js",
+      "default": "./dist/shops/health.js"
+    },
     "./utils": {
       "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js",

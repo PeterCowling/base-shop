@@ -2,6 +2,7 @@ import { type Meta, type StoryObj } from "@storybook/nextjs";
 import { StatsGrid } from "./StatsGrid";
 
 const meta: Meta<typeof StatsGrid> = {
+  title: "Organisms/StatsGrid",
   component: StatsGrid,
   args: {
     items: [

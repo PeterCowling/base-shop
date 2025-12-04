@@ -121,6 +121,8 @@ export declare const shopSchema: z.ZodObject<{
         status?: string | undefined;
         certificateStatus?: string | undefined;
     }>>;
+    termsUrl: z.ZodOptional<z.ZodString>;
+    privacyUrl: z.ZodOptional<z.ZodString>;
     returnPolicyUrl: z.ZodOptional<z.ZodString>;
     returnsEnabled: z.ZodOptional<z.ZodBoolean>;
     analyticsEnabled: z.ZodOptional<z.ZodBoolean>;
@@ -256,6 +258,8 @@ export declare const shopSchema: z.ZodObject<{
         token: string;
     } | undefined;
     enableEditorial?: boolean | undefined;
+    termsUrl?: string | undefined;
+    privacyUrl?: string | undefined;
     returnPolicyUrl?: string | undefined;
     returnsEnabled?: boolean | undefined;
     analyticsEnabled?: boolean | undefined;
@@ -316,6 +320,8 @@ export declare const shopSchema: z.ZodObject<{
         token: string;
     } | undefined;
     enableEditorial?: boolean | undefined;
+    termsUrl?: string | undefined;
+    privacyUrl?: string | undefined;
     returnPolicyUrl?: string | undefined;
     returnsEnabled?: boolean | undefined;
     analyticsEnabled?: boolean | undefined;

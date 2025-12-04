@@ -8,12 +8,14 @@ export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   color?: "default" | "primary" | "accent" | "success" | "info" | "warning" | "danger" | "destructive";
   /** Fill intensity */
   tone?: "solid" | "soft";
+  /** Size scale */
+  size?: "sm" | "md" | "lg";
   /** Back-compat alias for color: 'destructive' maps to 'danger' */
   variant?: "default" | "success" | "warning" | "destructive";
 }
 
 export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
-  ({ className, color, variant, tone, children, ...props }, ref) => {
+  ({ className, color, variant, tone, size = "md", children, ...props }, ref) => {
     const resolvedColor: NonNullable<TagProps["color"]> = color ??
       (variant === "destructive" ? "destructive" :
        variant === "warning" ? "warning" :
@@ -74,6 +76,12 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
       danger: "--color-danger-fg",
       destructive: "--color-danger-fg",
     };
+    // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names for spacing/typography
+    const sizeClasses: Record<NonNullable<TagProps["size"]>, string> = {
+      sm: "px-2 py-0.5 text-[11px]", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names for spacing/typography
+      md: "px-3 py-1 text-xs", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names for spacing/typography
+      lg: "px-4 py-2 text-sm", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names for spacing/typography
+    };
 
     return (
       <span
@@ -84,7 +92,8 @@ export const Tag = React.forwardRef<HTMLSpanElement, TagProps>(
         data-token-fg={fgToken[resolvedColor]}
         className={cn(
           // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          "inline-flex items-center rounded-full px-3 py-1 text-xs font-medium",
+          "inline-flex items-center rounded-full font-medium",
+          sizeClasses[size],
           (resolvedTone === "solid" ? solidBg : softBg)[resolvedColor],
           textFg[resolvedColor],
           className

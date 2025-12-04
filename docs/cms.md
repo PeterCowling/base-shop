@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # CMS Navigation Guide
 
 This document describes how to navigate the in-browser CMS and what each link in the sidebar does.

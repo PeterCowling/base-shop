@@ -14,11 +14,16 @@ import ProductsTable from "@ui/components/cms/ProductsTable.client";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 import { Alert, Progress, Tag } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives";
-import { cn } from "@ui/utils/style";
+import { Inline } from "@ui/components/atoms/primitives";
 import Link from "next/link";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import type { Locale } from "@acme/i18n/locales";
+import { track } from "@acme/telemetry";
+import {
+  CmsBuildHero,
+  CmsMetricTiles,
+  CmsLaunchChecklist,
+} from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist
 
 export const revalidate = 0;
 
@@ -81,30 +86,34 @@ export default async function ProductsPage({
 
   const quickStats = [
     {
+      id: "active",
       label: t("cms.products.status.active"),
       value: String(activeProducts),
       caption: t("cms.products.status.active.caption"),
-      accent: "bg-surface-3 text-foreground", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
     },
     {
+      id: "draft",
       label: t("cms.products.status.draft"),
       value: String(draftProducts),
       caption: t("cms.products.status.draft.caption"),
-      accent: "bg-surface-3 text-foreground", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
     },
     {
+      id: "scheduled",
       label: t("cms.products.status.scheduled"),
       value: String(upcomingProducts),
       caption: t("cms.products.status.scheduled.caption"),
-      accent: "bg-surface-3 text-foreground", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
     },
     {
+      id: "archived",
       label: t("cms.products.status.archived"),
       value: String(archivedProducts),
       caption: t("cms.products.status.archived.caption"),
-      accent: "bg-surface-3 text-foreground", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
     },
   ];
+
+  if (isAdmin && totalProducts === 0) {
+    track("build_flow_first_product_prompt_viewed", { shopId: shop });
+  }
 
   const viewerNotice =
     !isAdmin &&
@@ -120,15 +129,34 @@ export default async function ProductsPage({
       <section className="relative overflow-hidden rounded-3xl border border-border/10 bg-hero-contrast text-hero-foreground shadow-elevation-4">
         <div className="relative grid gap-6 px-6 py-7 lg:grid-cols-3 lg:gap-10">
           <div className="space-y-4 lg:col-span-2">
-            <div className="space-y-1">
-              <Tag variant="default">{t("cms.products.tag.catalog")} · {shop}</Tag>
-              <h1 className="text-3xl font-semibold md:text-4xl">
-                {t("cms.products.hero.title", { shop: shop.toUpperCase() })}
-              </h1>
-              <p className="text-sm text-hero-foreground/80">
-                {t("cms.products.hero.subtitle")}
-              </p>
-            </div>
+            <CmsBuildHero
+              tag={`${t("cms.products.tag.catalog")} · ${shop}`}
+              title={t("cms.products.hero.title", { shop: shop.toUpperCase() })}
+              body={t("cms.products.hero.subtitle")}
+              tone="build"
+            />
+            {isAdmin && totalProducts === 0 && (
+              <div
+                className="space-y-2 text-sm text-hero-foreground/80"
+                data-tour="quest-product"
+              >
+                <div className="space-y-1">
+                  <p>{t("cms.products.firstProduct.headline")}</p>
+                  <p>{t("cms.products.firstProduct.subtitle")}</p>
+                  <p className="text-xs text-hero-foreground/70">
+                    {t("cms.products.firstProduct.timeEstimate")}
+                  </p>
+                </div>
+                <Inline
+                  alignY="center"
+                  gap={2}
+                  wrap={false}
+                  className="w-fit rounded-full bg-primary/20 px-3 py-1 text-xs font-semibold text-primary-foreground"
+                >
+                  {t("cms.configurator.time.badge.product")}
+                </Inline>
+              </div>
+            )}
             <div className="space-y-4">
               <Progress
                 value={completeness}
@@ -139,7 +167,27 @@ export default async function ProductsPage({
                 labelClassName="text-hero-foreground/80" // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
               />
               <div className="flex flex-wrap items-center gap-3">
-                {isAdmin ? (
+                {isAdmin && totalProducts === 0 ? (
+                  <>
+                    <Button
+                      asChild
+                      className="h-11 rounded-xl bg-success px-5 text-sm font-semibold text-success-foreground shadow-elevation-2 hover:bg-success/90"
+                    >
+                      <Link href={`/cms/shop/${shop}/products/first`}>
+                        {t("cms.products.firstWizard.actions.create")}
+                      </Link>
+                    </Button>
+                    <form action={onCreate}>
+                      <Button
+                        type="submit"
+                        variant="outline"
+                        className="h-11 rounded-xl border-border/40 px-5 text-sm font-semibold text-foreground hover:bg-surface-3"
+                      >
+                        {t("cms.products.actions.addNew")}
+                      </Button>
+                    </form>
+                  </>
+                ) : isAdmin ? (
                   <form action={onCreate}>
                     <Button
                       type="submit"
@@ -169,37 +217,58 @@ export default async function ProductsPage({
                 </Button>
               </div>
             </div>
-            <Grid gap={3} className="sm:grid-cols-2 lg:grid-cols-4">
-              {quickStats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className={cn(
-                    "rounded-2xl border border-border/10 px-4 py-3 backdrop-blur", // i18n-exempt -- DS-1023: class names [ttl=2026-12-31]
-                    stat.accent
-                  )}
-                >
-                  <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    {stat.label}
-                  </p>
-                  <p className="text-xl font-semibold text-foreground">{stat.value}</p>
-                  <p className="text-xs text-muted-foreground">{stat.caption}</p>
-                </div>
-              ))}
-            </Grid>
+            <CmsMetricTiles items={quickStats} />
           </div>
           <Card className="border-border/10 bg-surface-2 text-foreground shadow-elevation-4 lg:col-span-1">
-          <CardContent className="space-y-4 p-6">
-              <div className="space-y-1">
-                <h2 className="text-lg font-semibold">{t("cms.products.launchChecklist.title")}</h2>
-                <p className="text-sm text-muted-foreground">{t("cms.products.launchChecklist.subtitle")}</p>
-              </div>
-              <div className="space-y-2 text-xs text-muted-foreground">
-                <p>• {t("cms.products.launchChecklist.items.reviewDrafts")}</p>
-                <p>• {t("cms.products.launchChecklist.items.scheduleReleases")}</p>
-                <p>• {t("cms.products.launchChecklist.items.archiveAging")}</p>
-              </div>
+            <CardContent className="space-y-4 p-6">
+              <CmsLaunchChecklist
+                heading={String(t("cms.products.launchChecklist.title"))}
+                readyLabel={String(t("cms.products.launchChecklist.readyLabel"))}
+                showReadyCelebration
+                items={[
+                  {
+                    id: "review-drafts",
+                    label: String(t("cms.products.launchChecklist.items.reviewDrafts")),
+                    status: draftProducts > 0 ? "warning" : "complete",
+                    statusLabel:
+                      draftProducts > 0
+                        ? String(t("cms.configurator.launchChecklist.status.warning"))
+                        : String(t("cms.configurator.launchChecklist.status.complete")),
+                    fixLabel: String(t("cms.configurator.launchChecklist.fix")),
+                    onFix: () => {
+                      // Navigate to the products list; filtering drafts is a later enhancement.
+                      window.location.href = `/cms/shop/${shop}/products`;
+                    },
+                  },
+                  {
+                    id: "schedule-releases",
+                    label: String(t("cms.products.launchChecklist.items.scheduleReleases")),
+                    status: upcomingProducts > 0 ? "complete" : "pending",
+                    statusLabel:
+                      upcomingProducts > 0
+                        ? String(t("cms.configurator.launchChecklist.status.complete"))
+                        : String(t("cms.configurator.launchChecklist.status.pending")),
+                    fixLabel: String(t("cms.configurator.launchChecklist.fix")),
+                    onFix: () => {
+                      window.location.href = `/cms/shop/${shop}/products/new`;
+                    },
+                  },
+                  {
+                    id: "archive-aging",
+                    label: String(t("cms.products.launchChecklist.items.archiveAging")),
+                    status: "pending",
+                    statusLabel: String(t("cms.configurator.launchChecklist.status.pending")),
+                    fixLabel: String(t("cms.configurator.launchChecklist.fix")),
+                    onFix: () => {
+                      window.location.href = `/cms/shop/${shop}/products`;
+                    },
+                  },
+                ]}
+              />
               <Button asChild variant="outline" className="h-10 w-full">
-                <Link href={`/cms/shop/${shop}/pages/edit/page`}>{t("cms.products.launchChecklist.preview")}</Link>
+                <Link href={`/cms/shop/${shop}/pages/edit/page`}>
+                  {t("cms.products.launchChecklist.preview")}
+                </Link>
               </Button>
             </CardContent>
           </Card>

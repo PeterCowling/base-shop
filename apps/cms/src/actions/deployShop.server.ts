@@ -8,16 +8,78 @@ import path from "path";
 import { writeJsonFile, withFileLock } from "@/lib/server/jsonIO";
 import { ensureAuthorized } from "./common/auth";
 import { validateShopName } from "@platform-core/shops";
+import { verifyShopAfterDeploy } from "./verifyShopAfterDeploy.server";
+import type { Environment } from "@acme/types";
+import { recordStageTests } from "@/lib/server/launchGate";
 
 // API status constant; not user-facing
 const STATUS_PENDING = "pending"; // i18n-exempt -- INTL-000 API status label (non-UI) [ttl=2026-03-31]
 
 export async function deployShopHosting(
   id: string,
-  domain?: string
+  domain?: string,
+  env?: Environment
 ): Promise<DeployShopResult> {
   await ensureAuthorized();
-  return deployShop(id, domain);
+  const result = await deployShop(id, domain);
+
+  const effectiveEnv: Environment = env ?? "stage";
+  const timestamp = new Date().toISOString();
+
+  try {
+    const verification = await verifyShopAfterDeploy(id, effectiveEnv);
+    result.env = effectiveEnv;
+    result.testsStatus = verification.status;
+    if (verification.error) {
+      result.testsError = verification.error;
+    }
+    result.lastTestedAt = timestamp;
+    if (effectiveEnv === "stage") {
+      try {
+        await recordStageTests(id, {
+          status: verification.status,
+          error: verification.error,
+          at: timestamp,
+          version: timestamp,
+          smokeEnabled: process.env.SHOP_SMOKE_ENABLED === "1",
+        });
+      } catch {
+        /* best-effort stage gate persistence */
+      }
+    }
+  } catch (err) {
+    result.env = effectiveEnv;
+    result.testsStatus = "failed";
+    result.testsError =
+      (err as Error).message || "post-deploy verification failed";
+    result.lastTestedAt = timestamp;
+    if (effectiveEnv === "stage") {
+      try {
+        await recordStageTests(id, {
+          status: "failed",
+          error: result.testsError,
+          at: timestamp,
+          version: timestamp,
+          smokeEnabled: process.env.SHOP_SMOKE_ENABLED === "1",
+        });
+      } catch {
+        /* best-effort stage gate persistence */
+      }
+    }
+  }
+
+  try {
+    await updateDeployStatus(id, {
+      env: result.env,
+      testsStatus: result.testsStatus,
+      testsError: result.testsError,
+      lastTestedAt: result.lastTestedAt,
+    });
+  } catch {
+    // best-effort; failure to persist test metadata should not fail deployShopHosting
+  }
+
+  return result;
 }
 
 export async function getDeployStatus(

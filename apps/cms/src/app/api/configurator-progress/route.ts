@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 // Use the server translation loader; alias to avoid React Hooks lint
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { promises as fs } from "fs";
+import { promises as fs, FileHandle as FsFileHandle } from "fs";
 import * as fsSync from "fs";
 import { writeJsonFile } from "@/lib/server/jsonIO";
 import path from "path";
@@ -15,12 +15,7 @@ import {
   type StepStatus,
 } from "@cms/app/cms/wizard/schema";
 import { z } from "zod";
-import { configuratorChecks, type ConfigCheckResult } from "@platform-core/configurator";
-import type {
-  ConfiguratorProgress as ServerConfiguratorProgress,
-  ConfiguratorStepId,
-  StepStatus as ServerStepStatus,
-} from "@acme/types";
+import { getConfiguratorProgressForShop } from "@platform-core/configurator";
 
 interface UserRecord {
   state: unknown;
@@ -32,19 +27,6 @@ interface DB {
 }
 
 const dbSchema = z.record(z.unknown());
-
-const ALL_STEPS: ConfiguratorStepId[] = [
-  "shop-basics",
-  "theme",
-  "payments",
-  "shipping-tax",
-  "checkout",
-  "products-inventory",
-  "navigation-home",
-  "domains",
-  "reverse-logistics",
-  "advanced-seo",
-];
 
 const putBodySchema = z
   .object({
@@ -93,17 +75,54 @@ function resolveFile(): string {
 }
 
 const FILE = resolveFile();
+const LOCK = `${FILE}.lock`;
+const BACKUP = `${FILE}.bak`;
 
-async function readDb(): Promise<DB> {
+async function acquireLock(): Promise<FsFileHandle | null> {
+  const start = Date.now();
+  while (Date.now() - start < 2000) {
+    try {
+      // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-3105: lock file derived from validated path
+      return await fs.open(LOCK, "wx");
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException)?.code !== "EEXIST") throw err;
+      await new Promise((res) => setTimeout(res, 50));
+    }
+  }
+  return null;
+}
+
+async function releaseLock(handle: FsFileHandle | null): Promise<void> {
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Reading a path derived from cwd and constants
-    const buf = await fs.readFile(FILE, "utf8");
+    await handle?.close();
+  } catch {}
+  try {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-3105: lock file derived from validated path
+    await fs.unlink(LOCK);
+  } catch {}
+}
+
+async function readWithBackup(): Promise<DB> {
+  const read = async (file: string) => {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CMS-3105: path derived from validated location
+    const buf = await fs.readFile(file, "utf8");
     const parsed = JSON.parse(buf) as DB;
     if (parsed && typeof parsed === "object") return parsed;
+    return {};
+  };
+  try {
+    return await read(FILE);
   } catch {
-    /* ignore */
+    try {
+      return await read(BACKUP);
+    } catch {
+      return {};
+    }
   }
-  return {};
+}
+
+async function readDb(): Promise<DB> {
+  return readWithBackup();
 }
 
 async function writeDb(db: unknown): Promise<void> {
@@ -115,75 +134,30 @@ async function writeDb(db: unknown): Promise<void> {
   const payload = parsed.data;
   const json = JSON.stringify(payload, null, 2);
   const tmp = `${FILE}.${Date.now()}.tmp`;
+  const lock = await acquireLock();
+  if (!lock) {
+    throw new Error("configurator-progress.lock-timeout");
+  }
   try {
-    console.log("[configurator-progress] write", { // i18n-exempt -- CMS-2134 [ttl=2026-03-31]
-      file: FILE,
-      tmp,
-      bytes: Buffer.byteLength(json, "utf8"),
-    });
-  } catch {}
-  await writeJsonFile(tmp, payload);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Atomic rename of temp file to fixed target
-  await fs.rename(tmp, FILE);
-}
-
-function mapCheckResultToStatus(
-  result: ConfigCheckResult,
-): { status: ServerStepStatus; error?: string } {
-  if (result.ok) {
-    return { status: "complete" };
+    try {
+      console.log("[configurator-progress] write", { // i18n-exempt -- CMS-2134 [ttl=2026-03-31]
+        file: FILE,
+        tmp,
+        bytes: Buffer.byteLength(json, "utf8"),
+      });
+    } catch {}
+    // Best-effort backup before replacing the primary file
+    try {
+      await fs.copyFile(FILE, BACKUP);
+    } catch {
+      /* ignore backup errors */
+    }
+    await writeJsonFile(tmp, payload);
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- ABC-123: Atomic rename of temp file to fixed target
+    await fs.rename(tmp, FILE);
+  } finally {
+    await releaseLock(lock);
   }
-  return {
-    status: "error",
-    error: result.reason,
-  };
-}
-
-async function getConfiguratorProgressForShop(
-  shopId: string,
-): Promise<ServerConfiguratorProgress> {
-  const steps: Record<ConfiguratorStepId, ServerStepStatus> = {} as Record<
-    ConfiguratorStepId,
-    ServerStepStatus
-  >;
-  const errors: Partial<Record<ConfiguratorStepId, string>> = {};
-
-  await Promise.all(
-    ALL_STEPS.map(async (stepId) => {
-      const check = configuratorChecks[stepId];
-      if (!check) {
-        steps[stepId] = "pending";
-        return;
-      }
-      try {
-        const result = await check(shopId);
-        const mapped = mapCheckResultToStatus(result);
-        steps[stepId] = mapped.status;
-        if (mapped.error) {
-          errors[stepId] = mapped.error;
-        }
-      } catch (err) {
-        steps[stepId] = "error";
-        if (!errors[stepId]) {
-          errors[stepId] =
-            err && typeof err === "object" && "message" in err
-              ? String((err as { message?: unknown }).message)
-              : "check-failed";
-        }
-      }
-    }),
-  );
-
-  const base: ServerConfiguratorProgress = {
-    shopId,
-    steps,
-    lastUpdated: new Date().toISOString(),
-  };
-
-  if (Object.keys(errors).length > 0) {
-    return { ...base, errors };
-  }
-  return base;
 }
 
 export async function GET(req?: Request): Promise<NextResponse> {

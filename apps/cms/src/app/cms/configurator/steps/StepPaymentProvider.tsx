@@ -78,10 +78,20 @@ export default function StepPaymentProvider(_: ConfiguratorStepProps): React.JSX
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-semibold">{t("cms.configurator.payment.heading")}</h2>
-      <p className="text-sm text-muted-foreground">
-        {t("cms.configurator.payment.help.intro")} {t("cms.configurator.payment.help.requirements")} <code>{t("cms.configurator.options.info.path")}</code>.
-      </p>
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <h2 className="text-xl font-semibold" data-tour="quest-payments">
+            {t("cms.configurator.payment.heading")}
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {t("cms.configurator.payment.help.intro")} {t("cms.configurator.payment.help.requirements")}{" "}
+            <code>{t("cms.configurator.options.info.path")}</code>.
+          </p>
+        </div>
+        <div className="rounded-full bg-success/10 px-3 py-1 text-xs font-semibold text-success-foreground">
+          {t("cms.configurator.time.badge.payments")}
+        </div>
+      </div>
       <div>
         <p className="font-medium">{t("cms.configurator.payment.providers.label")}</p>
         {paymentProviders.map((p: Provider) => (

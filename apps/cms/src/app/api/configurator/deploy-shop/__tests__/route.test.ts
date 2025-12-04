@@ -57,7 +57,7 @@ describe('POST /api/configurator/deploy-shop', () => {
     const res = await POST(req('POST', { id: 'shop1', domain: 'foo' }));
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
-    expect(deployShopHosting).toHaveBeenCalledWith('shop1', 'foo');
+    expect(deployShopHosting).toHaveBeenCalledWith('shop1', 'foo', undefined);
   });
 
   it('returns 400 for invalid json', async () => {

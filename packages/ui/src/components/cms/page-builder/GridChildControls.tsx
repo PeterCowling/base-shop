@@ -52,7 +52,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
       <div className="absolute -top-3 start-0 flex gap-1">
         <button
           type="button"
-          className="rounded bg-black/60 px-2 text-xs text-white shadow dark:bg-white/70 dark:text-black min-h-10 min-w-10"
+          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-10 min-w-10"
           aria-label="Decrease column span"
           onClick={(e) => {
             e.stopPropagation();
@@ -61,12 +61,12 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
         >
           −
         </button>
-        <span className="rounded bg-black/40 px-1 text-xs text-white dark:bg-white/50 dark:text-black">
+        <span className="rounded bg-foreground/60 px-1 text-xs text-foreground dark:bg-muted/400 dark:text-foreground">
           {currCol} col
         </span>
         <button
           type="button"
-          className="rounded bg-black/60 px-2 text-xs text-white shadow dark:bg-white/70 dark:text-black min-h-10 min-w-10"
+          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-10 min-w-10"
           aria-label="Increase column span"
           onClick={(e) => {
             e.stopPropagation();
@@ -79,7 +79,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
       <div className="absolute -bottom-3 start-0 flex gap-1">
         <button
           type="button"
-          className="rounded bg-black/60 px-2 text-xs text-white shadow dark:bg-white/70 dark:text-black min-h-10 min-w-10"
+          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-10 min-w-10"
           aria-label="Decrease row span"
           onClick={(e) => {
             e.stopPropagation();
@@ -88,12 +88,12 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
         >
           −
         </button>
-        <span className="rounded bg-black/40 px-1 text-xs text-white dark:bg-white/50 dark:text-black">
+        <span className="rounded bg-foreground/60 px-1 text-xs text-foreground dark:bg-muted/400 dark:text-foreground">
           {currRow} row
         </span>
         <button
           type="button"
-          className="rounded bg-black/60 px-2 text-xs text-white shadow dark:bg-white/70 dark:text-black min-h-10 min-w-10"
+          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-10 min-w-10"
           aria-label="Increase row span"
           onClick={(e) => {
             e.stopPropagation();

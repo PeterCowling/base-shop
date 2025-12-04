@@ -111,7 +111,7 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
       {droppables.map((b) => (
         <div
           key={`drop-${b.left}-${b.top}-${b.width}-${b.height}`}
-          className="absolute border border-purple-500/60"
+          className="absolute border border-primary/60"
           style={{ left: b.left, top: b.top, width: b.width, height: b.height }}
         />
       ))}
@@ -119,12 +119,12 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
       {items.map((b) => (
         <div
           key={`item-${b.left}-${b.top}-${b.width}-${b.height}`}
-          className="absolute border border-emerald-500/60"
+          className="absolute border border-primary/60"
           style={{ left: b.left, top: b.top, width: b.width, height: b.height }}
         />
       ))}
       {/* HUD */}
-      <div className="absolute start-2 top-2 rounded bg-black/70 px-2 py-1 text-xs text-white shadow">
+      <div className="absolute start-2 top-2 rounded bg-foreground/70 px-2 py-1 text-xs text-foreground shadow">
         {/* i18n-exempt: developer-only diagnostics UI */}
         <div>DevTools ON</div>
         {/* i18n-exempt: developer-only diagnostics UI */}
@@ -147,25 +147,25 @@ export default function DevToolsOverlay({ scrollRef }: Props) {
           >
             {s.top && (
               <div
-                className="absolute bg-cyan-500/10"
+                className="absolute bg-primary/10"
                 style={{ left: s.top.left, top: s.top.top, width: s.top.width, height: s.top.height }}
               />
             )}
             {s.bottom && (
               <div
-                className="absolute bg-cyan-500/10"
+                className="absolute bg-primary/10"
                 style={{ left: s.bottom.left, top: s.bottom.top, width: s.bottom.width, height: s.bottom.height }}
               />
             )}
             {s.left && (
               <div
-                className="absolute bg-cyan-500/10"
+                className="absolute bg-primary/10"
                 style={{ left: s.left.left, top: s.left.top, width: s.left.width, height: s.left.height }}
               />
             )}
             {s.right && (
               <div
-                className="absolute bg-cyan-500/10"
+                className="absolute bg-primary/10"
                 style={{ left: s.right.left, top: s.right.top, width: s.right.width, height: s.right.height }}
               />
             )}

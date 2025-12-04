@@ -4,6 +4,7 @@ import { PRODUCTS } from "@acme/platform-core/products/index";
 import type { SKU } from "@acme/types";
 
 const meta: Meta<typeof FeaturedProductBlock> = {
+  title: "CMS Blocks/FeaturedProductBlock",
   component: FeaturedProductBlock,
   args: {
     sku: PRODUCTS[0] as SKU,

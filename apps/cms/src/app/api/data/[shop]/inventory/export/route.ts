@@ -35,9 +35,12 @@ export async function GET(
     const json = items.map((i) => flattenInventoryItem(i));
     return NextResponse.json(json);
   } catch (err) {
+    console.error("Inventory export failed", err); // i18n-exempt -- non-UX log
+    const message = (err as Error).message;
+    const status = /delegate is unavailable/i.test(message) ? 503 : 400;
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
+      { error: message },
+      { status }
     );
   }
 }

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import { Header } from "../components/organisms/Header";
 
 const meta: Meta<typeof Header> = {
-  title: "Layout/Header",
+  title: "Layout/Header (Legacy)",
   component: Header,
   tags: ["autodocs"],
   args: { children: "Header" },

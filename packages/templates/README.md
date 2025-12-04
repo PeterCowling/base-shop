@@ -6,7 +6,7 @@ See:
 
 - `docs/architecture.md` – package layering and public surfaces.
 - `docs/platform-vs-apps.md` – platform vs apps responsibilities and public API.
-- `docs/cms-research.md` (§“Templates/prefabs and evolution”) – target API for templates and scaffolding.
+- `docs/historical/cms-research.md` (§“Templates/prefabs and evolution”) – target API for templates and scaffolding (historical research log).
 
 Templates should compose domain behaviour from `@acme/platform-core` and UI from `@acme/ui` via their documented public exports, without importing from internal `src/` paths.
 

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import Sidebar from "./Sidebar.client";
 
 const meta: Meta<typeof Sidebar> = {
+  title: "CMS/Sidebar",
   component: Sidebar,
   args: {
     role: "admin",

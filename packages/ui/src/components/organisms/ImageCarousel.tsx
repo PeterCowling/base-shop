@@ -7,9 +7,11 @@ import { Inline } from "../atoms/primitives/Inline";
 
 export interface ImageCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   images: { src: string; alt?: string }[];
+  /** Optional auto-play interval in ms */
+  interval?: number;
 }
 
-export function ImageCarousel({ images, className, ...props }: ImageCarouselProps) {
+export function ImageCarousel({ images, className, interval: _interval, ...props }: ImageCarouselProps) {
   if (!images.length) return null;
 
   return (
@@ -19,8 +21,7 @@ export function ImageCarousel({ images, className, ...props }: ImageCarouselProp
           <Image
             key={img.src}
             src={img.src}
-            alt={img.alt ?? ""
-            }
+            alt={img.alt ?? ""}
             width={640}
             height={480}
             className="h-auto w-auto shrink-0 snap-start"

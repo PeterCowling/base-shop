@@ -1,6 +1,8 @@
 import type { CSSProperties, ComponentProps } from "react";
-import type { Page, PageComponent, HistoryState } from "@acme/types";
+import type { Page, PageComponent, HistoryState, Locale } from "@acme/types";
+import type { TemplateDescriptor } from "@acme/page-builder-core";
 import type PageBuilderLayout from "./PageBuilderLayout";
+import type { ComponentType } from "./defaults";
 
 export interface PageBuilderProps {
   page: Page;
@@ -16,6 +18,16 @@ export interface PageBuilderProps {
   presetsSourceUrl?: string;
   pagesNav?: { items: { label: string; value: string; href: string }[]; current: string };
   mode?: "page" | "section";
+  templates?: TemplateDescriptor[];
+  shopId?: string | null;
+  locale?: Locale;
+  primaryLocale?: Locale;
+  /** Optional allowlist of block types to expose in the palette (for system pages like checkout). */
+  allowedBlockTypes?: ComponentType[];
+  /** Optional runtime preview URL (tokenised) and source label */
+  previewUrl?: string | null;
+  previewSource?: string | null;
+  publishedRevisionId?: string | null;
 }
 
 export type PageBuilderLayoutProps = ComponentProps<typeof PageBuilderLayout>;

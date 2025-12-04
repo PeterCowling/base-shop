@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Upgrade flow
 
 The upgrade system stages template changes, tracks versions, lets them be previewed and republishes or rolls back depending on the review.

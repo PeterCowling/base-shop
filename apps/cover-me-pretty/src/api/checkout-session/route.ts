@@ -6,12 +6,19 @@ import { CART_COOKIE, decodeCartCookie, type CartState } from "@platform-core/ca
 import { getCart } from "@platform-core/cartStore";
 import { getCustomerSession } from "@auth";
 import { createCheckoutSession } from "@platform-core/checkout/session";
+import { convertCurrency, getPricing } from "@platform-core/pricing";
 import shop from "../../../shop.json";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { shippingSchema, billingSchema } from "@platform-core/schemas/address";
+import type Stripe from "stripe";
+import { addOrder } from "@platform-core/orders/creation";
+import { resolveDataRoot } from "@platform-core/dataRoot";
+import path from "node:path";
+import { promises as fs } from "node:fs";
+import { ulid } from "ulid";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 const schema = z
   .object({
@@ -22,6 +29,11 @@ const schema = z
     customer: z.string().optional(),
     shipping: shippingSchema.optional(),
     billing_details: billingSchema.optional(),
+    // Optional coverage codes to align with the template app's
+    // checkout-session contract. When present and the shop has
+    // coverage included, these codes may add a line-item and adjust
+    // the deposit, mirroring the template runtime behaviour.
+    coverage: z.array(z.string()).optional(),
   })
   .strict();
 
@@ -52,6 +64,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     customer: customerId,
     shipping,
     billing_details,
+    coverage,
   } = parsed.data as {
     returnDate?: string;
     coupon?: string;
@@ -60,11 +73,54 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     customer?: string;
     shipping?: z.infer<typeof shippingSchema>;
     billing_details?: z.infer<typeof billingSchema>;
+    coverage?: string[];
   };
 
   const customerSession = await getCustomerSession();
   const customer = customerId ?? customerSession?.customerId;
   const clientIp = req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
+
+  const coverageCodes = Array.isArray(coverage) ? coverage : [];
+  const lineItemsExtra: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
+  let metadataExtra: Record<string, string> = {};
+  let subtotalExtra = 0;
+  let depositAdjustment = 0;
+
+  if (shop.coverageIncluded && coverageCodes.length) {
+    const pricing = await getPricing();
+    let coverageFee = 0;
+    let coverageWaiver = 0;
+    for (const code of coverageCodes) {
+      const rule = pricing.coverage?.[
+        code as keyof NonNullable<typeof pricing.coverage>
+      ];
+      if (rule) {
+        coverageFee += rule.fee;
+        coverageWaiver += rule.waiver;
+      }
+    }
+    const feeConv = await convertCurrency(coverageFee, currency);
+    const waiveConv = await convertCurrency(coverageWaiver, currency);
+    if (feeConv > 0) {
+      lineItemsExtra.push({
+        price_data: {
+          currency: currency.toLowerCase(),
+          unit_amount: feeConv * 100,
+          product_data: { name: "Coverage" }, // i18n-exempt -- internal line-item label, not user copy
+        },
+        quantity: 1,
+      });
+      subtotalExtra = feeConv;
+    }
+    if (waiveConv > 0) {
+      depositAdjustment = -waiveConv;
+    }
+    metadataExtra = {
+      coverage: coverageCodes.join(","),
+      coverageFee: String(feeConv),
+      coverageWaiver: String(waiveConv),
+    };
+  }
 
   try {
     const result = await createCheckoutSession(cart, {
@@ -80,8 +136,49 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       cancelUrl: `${req.nextUrl.origin}/cancelled`,
       clientIp,
       shopId: shop.id,
+      lineItemsExtra,
+      metadataExtra,
+      subtotalExtra,
+      depositAdjustment,
     });
-    return NextResponse.json(result);
+
+    // Create a platform order id up front (best-effort)
+    let orderId = ulid();
+    const sessionRef = result.paymentIntentId || result.sessionId;
+    try {
+      const order = await addOrder(
+        shop.id,
+        sessionRef,
+        result.amount ?? 0,
+        returnDate,
+      );
+      orderId = order.id;
+      } catch {
+        // fallback to JSONL persistence
+        try {
+          const dir = path.join(resolveDataRoot(), shop.id);
+          // eslint-disable-next-line security/detect-non-literal-fs-filename -- SHOP-3203 path uses validated shop id under resolveDataRoot [ttl=2026-06-30]
+          await fs.mkdir(dir, { recursive: true });
+          const entry = {
+            id: orderId,
+            shop: shop.id,
+            sessionId: sessionRef,
+          amount: result.amount,
+          currency,
+          createdAt: new Date().toISOString(),
+        };
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- SHOP-3203 fallback write stays under resolved data root [ttl=2026-06-30]
+        await fs.appendFile(
+          path.join(dir, "orders.jsonl"),
+          JSON.stringify(entry) + "\n",
+          "utf8",
+        );
+      } catch {
+        /* ignore */
+      }
+    }
+
+    return NextResponse.json({ ...result, orderId });
   } catch (err) {
     if (err instanceof Error && /Invalid returnDate/.test(err.message)) {
       return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 }); // i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30]

@@ -31,6 +31,7 @@ const sku2: SKU = {
 };
 
 const meta: Meta<typeof ProductComparisonBlock> = {
+  title: "CMS Blocks/ProductComparisonBlock",
   component: ProductComparisonBlock,
   args: {
     skus: [sku1, sku2],

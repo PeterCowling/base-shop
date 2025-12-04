@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/style";
 
-export type IconButtonVariant = "primary" | "secondary" | "ghost" | "danger";
+export type IconButtonVariant = "primary" | "secondary" | "ghost" | "danger" | "quiet";
 export type IconButtonSize = "sm" | "md";
 
 export interface IconButtonProps
@@ -22,6 +22,7 @@ const variantClasses: Record<IconButtonVariant, string> = {
   secondary: "bg-muted text-foreground hover:bg-muted/80", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility classes, not user copy
   ghost: "hover:bg-accent hover:text-accent-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility classes, not user copy
   danger: "bg-destructive text-destructive-foreground hover:bg-destructive/90", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — utility classes, not user copy
+  quiet: "text-foreground hover:bg-transparent hover:text-accent-foreground", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 };
 
 const tokenByVariant: Record<IconButtonVariant, string> = {
@@ -29,6 +30,7 @@ const tokenByVariant: Record<IconButtonVariant, string> = {
   secondary: "--color-accent", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS var token names
   ghost: "--color-accent", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS var token names
   danger: "--color-danger", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS var token names
+  quiet: "--color-accent", // i18n-exempt -- DS-1234 [ttl=2025-11-30]
 };
 
 const sizeClasses: Record<IconButtonSize, string> = {
@@ -43,16 +45,39 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
     variant = "ghost",
     size = "sm",
     type = "button",
+    children,
+    "aria-label": ariaLabel,
+    "aria-labelledby": ariaLabelledby,
     ...props
-  }, ref) => (
-    <button
-      ref={ref}
-      type={type}
-      data-token={tokenByVariant[variant]}
-      className={cn(baseClasses, variantClasses[variant], sizeClasses[size], className)}
-      {...props}
-    />
-  ),
+  }, ref) => {
+    const hasTextChild = React.Children.toArray(children).some(
+      (child) => typeof child === "string" && child.trim().length > 0,
+    );
+    const missingAccessibleName = !ariaLabel && !ariaLabelledby && !hasTextChild;
+
+    React.useEffect(() => {
+      if (process.env.NODE_ENV !== "production" && missingAccessibleName) {
+        console.warn(
+          "IconButton: provide aria-label or aria-labelledby for accessible naming.", // i18n-exempt -- UI-2611 developer-facing console hint only
+        );
+      }
+    }, [missingAccessibleName]);
+
+    return (
+      <button
+        ref={ref}
+        type={type}
+        data-token={tokenByVariant[variant]}
+        className={cn(baseClasses, variantClasses[variant], sizeClasses[size], className)}
+        data-size={size}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  },
 );
 
 IconButton.displayName = "IconButton"; // i18n-exempt -- DS-1234 [ttl=2025-11-30] — component displayName, not user-facing

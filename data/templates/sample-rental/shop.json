@@ -1,0 +1,48 @@
+{
+  "id": "sample-rental-template",
+  "name": "Sample Rental Shop",
+  "type": "rental",
+  "catalogFilters": [],
+  "themeId": "base",
+  "themeDefaults": {},
+  "themeOverrides": {},
+  "themeTokens": {},
+  "filterMappings": {},
+  "priceOverrides": {},
+  "localeOverrides": {},
+  "navigation": [
+    {
+      "label": {
+        "type": "inline",
+        "value": {
+          "en": "Home"
+        }
+      },
+      "href": "/"
+    },
+    {
+      "label": {
+        "type": "inline",
+        "value": {
+          "en": "Shop"
+        }
+      },
+      "href": "/shop"
+    }
+  ],
+  "analyticsEnabled": false,
+  "shippingProviders": [
+    "ups"
+  ],
+  "taxProviders": [
+    "taxjar"
+  ],
+  "paymentProviders": [
+    "stripe"
+  ],
+  "sanityBlog": null,
+  "enableEditorial": false,
+  "subscriptionsEnabled": false,
+  "rentalSubscriptions": []
+}
+

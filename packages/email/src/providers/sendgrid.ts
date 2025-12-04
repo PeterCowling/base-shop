@@ -10,6 +10,7 @@ import {
   type SendGridStatsResponse,
 } from "../stats";
 import { getDefaultSender } from "../config";
+import { logger } from "@acme/shared-utils";
 
 const apiKey = process.env.SENDGRID_API_KEY;
 const marketingKey = process.env.SENDGRID_MARKETING_KEY || apiKey;
@@ -56,8 +57,13 @@ export class SendgridProvider implements CampaignProvider {
 
   async send(options: CampaignOptions): Promise<void> {
     if (!apiKey) {
-      console.warn(
-        "Sendgrid API key is not configured; attempting to send email" // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+      logger.warn(
+        "Sendgrid API key is not configured; attempting to send email", // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+        {
+          provider: "sendgrid",
+          recipient: options.to,
+          campaignId: options.campaignId,
+        },
       );
     }
     try {
@@ -70,7 +76,7 @@ export class SendgridProvider implements CampaignProvider {
       });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.error("Campaign email send failed", { // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+        logger.error("Campaign email send failed", { // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
           provider: "sendgrid",
           recipient: options.to,
           campaignId: options.campaignId,
@@ -90,7 +96,7 @@ export class SendgridProvider implements CampaignProvider {
           typeof numericStatus !== "number" || numericStatus >= 500;
         throw new ProviderError(error.message, retryable);
       }
-      console.error("Campaign email send failed", { // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
+      logger.error("Campaign email send failed", { // i18n-exempt -- EMAIL-1000 [ttl=2026-03-31]
         provider: "sendgrid",
         recipient: options.to,
         campaignId: options.campaignId,

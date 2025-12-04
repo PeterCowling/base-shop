@@ -23,7 +23,7 @@ export interface NewsletterFormProps {
 }
 
 export const NewsletterForm = memo(function NewsletterForm({
-  action = "#",
+  action = "/api/leads",
   method = "post",
   placeholder = "",
   submitLabel = "",
@@ -41,10 +41,14 @@ export const NewsletterForm = memo(function NewsletterForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
+      if (!value) {
+        setMessage(String(t("newsletter.submit.error")));
+        return;
+      }
       const res = await fetch(action, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: value }),
+        body: JSON.stringify({ type: "newsletter", email: value, locale, source: "footer" }),
       });
       if (res.ok) {
         setMessage(String(t("newsletter.submit.success")));

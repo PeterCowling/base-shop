@@ -263,6 +263,14 @@ export interface Page {
   stableId?: string;
   slug: string;
   status: "draft" | "published";
+  /** Timestamp of the most recent successful publish */
+  publishedAt?: string;
+  /** User id/email that performed the most recent publish */
+  publishedBy?: string;
+  /** Optional revision/hash for the last published snapshot */
+  publishedRevisionId?: string;
+  /** Optional snapshot of the last published components for easy revert */
+  lastPublishedComponents?: PageComponent[];
   /** Navigation/Sitemap visibility. Defaults to "public". */
   visibility?: "public" | "hidden";
   components: PageComponent[];
@@ -285,6 +293,10 @@ export const pageSchema = z
     stableId: z.string().optional(),
     slug: z.string(),
     status: z.enum(["draft", "published"]),
+    publishedAt: z.string().optional(),
+    publishedBy: z.string().optional(),
+    publishedRevisionId: z.string().optional(),
+    lastPublishedComponents: z.array(pageComponentSchema).optional(),
     visibility: z.enum(["public", "hidden"]).optional(),
     components: z.array(pageComponentSchema).default([]),
     seo: z.object({
@@ -299,6 +311,9 @@ export const pageSchema = z
     history: historyStateSchema.optional(),
   })
   .strict() as z.ZodSchema<Page>;
+
+// Re-export locale schema for callers that import from "./page"
+export { localeSchema };
 
 
 export { scaffoldSpecSchema } from "./ScaffoldSpec";

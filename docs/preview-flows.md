@@ -1,3 +1,8 @@
+Type: Guide
+Status: Active
+Domain: CMS
+Last-reviewed: 2025-12-02
+
 # Preview flows
 
 This document maps the main preview mechanisms across the CMS and runtime apps so new contributors can see how they fit together without reverse‑engineering multiple code paths.
@@ -8,6 +13,7 @@ At a high level there are four primary preview surfaces:
 - **Version preview (CMS)** – runtime‑rendered preview of a saved page version (plus JSON view) via `/cms/api/page-versions/preview/:token` and `/preview/[token]`.
 - **Configurator preview** – in‑CMS live preview while configuring a shop, rendered entirely on the client from local state.
 - **Live dev servers (`/cms/live`)** – discovery panel that links to running tenant apps for “true live” previews during development.
+- **Stage-first Page Builder preview** – builder “Preview” action saves the latest draft and opens the runtime `/preview/[pageId]` URL with a token, preferring the Stage host when available.
 
 ### Overview table
 
@@ -17,6 +23,7 @@ At a high level there are four primary preview surfaces:
 | Version preview (CMS) | `/cms/api/page-versions/preview/:token`, `/preview/[token]` | CMS app (runtime‑rendered + JSON viewer page)   | Opaque link `token`, optional password hash | Shares specific saved versions with a faithful visual preview. |
 | Configurator preview  | `WizardPreview` (local only)                           | CMS configurator / theme editor                 | `STORAGE_KEY`, `PREVIEW_TOKENS_KEY` in `localStorage` | Instant feedback while editing; no runtime calls.             |
 | `/cms/live` panel     | `/cms/live`                                            | CMS “live” dashboard                             | `DATA_ROOT`, filesystem (`apps/shop-*`)     | Dev‑only shop runtime discovery and deep‑linking.             |
+| Stage-first PB preview| `builder Preview` button → `/preview/[pageId]?token=…` | Runtime preview (Stage when available)           | `PREVIEW_TOKEN_SECRET`, deploy `previewUrl`/`url` | Saves draft, generates token, opens Stage URL if present.     |
 
 ### High-level data flow
 
@@ -57,6 +64,9 @@ Upgrade/edit previews for tenant apps are covered in more detail in:
     - Implemented in `apps/cover-me-pretty/src/routes/preview/[pageId].ts`.
   - Next.js route in the template app: `GET /preview/[pageId]`
     - Implemented in `apps/cover-me-pretty/src/app/preview/[pageId]/page.tsx` and `PreviewClient.tsx`.
+  - CMS Page Builder “Preview” button:
+    - Saves the current draft, resolves a preview URL preferring Stage (`readDeployInfo` previewUrl/url; fallback to `NEXT_PUBLIC_BASE_URL` or `http://localhost:3000`), and appends a preview token when secrets are present.
+    - Opens the resolved `/preview/[pageId]` in a new tab and offers a copy-to-clipboard shortcut.
 
 - **Data flow**
   - The Cloudflare function:
@@ -83,6 +93,9 @@ Upgrade/edit previews for tenant apps are covered in more detail in:
     - If unset, preview routes will fail and should be treated as disabled.
   - `NEXT_PUBLIC_SHOP_ID`:
     - Identifies which shop’s pages to read when resolving `pageId`.
+  - Deploy URLs:
+    - Stage is preferred when `deploy.json` exposes `previewUrl`/`url` with `env: "stage"`.
+    - Fallbacks: `NEXT_PUBLIC_BASE_URL` (if set) or `http://localhost:3000` during local dev.
 
 ---
 
@@ -228,4 +241,4 @@ Upgrade/edit previews for tenant apps are covered in more detail in:
 | `STORAGE_KEY`               | Configurator preview (`WizardPreview`)          | LocalStorage key          | Browser `localStorage`                          | Not secret; holds draft components; do not store auth/session data under this key.          |
 | `PREVIEW_TOKENS_KEY`        | Theme preview tokens in configurator            | LocalStorage key          | Browser `localStorage`                          | Not secret; holds theme token values for preview; avoid leaking real secrets into tokens.   |
 
-For more detail on token formats, expiry, and security considerations, see the preview sections in `docs/cms-research.md`.
+For more detail on token formats, expiry, and security considerations, see the preview sections in `docs/historical/cms-research.md`.

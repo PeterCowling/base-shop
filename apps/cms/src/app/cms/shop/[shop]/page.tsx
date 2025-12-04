@@ -6,11 +6,17 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button, StatCard } from "@ui/components/atoms";
 import { Grid as DSGrid } from "@ui/components/atoms/primitives";
+import { CmsBuildHero } from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero
 import UpgradeButton from "./UpgradeButton";
 import RollbackCard from "./RollbackCard";
+import CreationStatus from "./CreationStatus";
+import UpgradeState from "./UpgradeState";
+import HealthDetails from "./HealthDetails";
+import ReRunSmokeButton from "../ReRunSmokeButton.client";
 import { useTranslations as serverUseTranslations } from "@acme/i18n/useTranslations.server";
 import { deriveShopHealth } from "../../../lib/shopHealth";
 import type { ConfiguratorProgress } from "@acme/types";
+import { deriveOperationalHealth } from "@platform-core/shops/health";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await serverUseTranslations("en");
@@ -27,6 +33,9 @@ export default async function ShopDashboardPage({
   if (!(await checkShopExists(shop))) return notFound();
 
   let healthValue = "Unknown";
+  let runtimeHealthValue = "Unknown";
+  let smokeTestsValue = "Unknown";
+  let errorSummaryValue = "None recorded";
 
   try {
     const res = await fetch(
@@ -47,10 +56,77 @@ export default async function ShopDashboardPage({
     // If health cannot be loaded, fall back to generic copy.
   }
 
+  try {
+    const opSummary = await deriveOperationalHealth(shop);
+    if (opSummary.status === "healthy") {
+      runtimeHealthValue = "Healthy";
+    } else if (opSummary.status === "needs-attention") {
+      runtimeHealthValue = "Needs attention";
+    } else if (opSummary.status === "broken") {
+      runtimeHealthValue = "Broken";
+    }
+
+    const testsStatus = opSummary.deploy?.testsStatus;
+    const testedAt = opSummary.deploy?.lastTestedAt;
+    if (testsStatus === "passed") {
+      smokeTestsValue = testedAt
+        ? `Passed @ ${new Date(testedAt).toLocaleString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}`
+        : "Passed";
+    } else if (testsStatus === "failed") {
+      smokeTestsValue = testedAt
+        ? `Failed @ ${new Date(testedAt).toLocaleString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          })}`
+        : "Failed";
+    } else if (testsStatus === "not-run" || testsStatus === undefined) {
+      smokeTestsValue = "Not run";
+    }
+
+    if ((opSummary.errorCount ?? 0) > 0) {
+      const count = opSummary.errorCount ?? 0;
+      const last = opSummary.lastErrorAt
+        ? new Date(opSummary.lastErrorAt).toLocaleString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          })
+        : undefined;
+      errorSummaryValue = last
+        ? `${count} in last 24h (last @ ${last})`
+        : `${count} in last 24h`;
+    }
+  } catch {
+    // If operational health cannot be loaded, leave runtimeHealthValue/smokeTestsValue as Unknown.
+  }
+
   const metrics = [
     {
       label: "Shop health",
       value: healthValue,
+    },
+    {
+      label: "Runtime health",
+      value: runtimeHealthValue,
+    },
+    {
+      label: "Smoke tests",
+      value: smokeTestsValue,
+    },
+    {
+      label: "Recent errors",
+      value: errorSummaryValue,
     },
     {
       label: t("cms.shop.dashboard.livePages"),
@@ -70,15 +146,13 @@ export default async function ShopDashboardPage({
     <div className="space-y-10">
       <section className="overflow-hidden rounded-3xl bg-hero-contrast p-8 text-hero-foreground shadow-elevation-4">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-          <div className="min-w-0 space-y-4">
-            <p className="text-sm font-semibold uppercase tracking-wide text-hero-foreground/80">{t(
-              "cms.shop.dashboard.experienceOverview"
-            )}</p>
-            <h1 className="text-3xl font-bold lg:text-4xl">{shop} {t("cms.shop.dashboard.controlCenterSuffix")}</h1>
-            <p className="text-hero-foreground/80">{t(
-              "cms.shop.dashboard.welcomeHelp"
-            )}</p>
-            {/* Quick action buttons removed as requested */}
+          <div className="min-w-0 lg:flex-1">
+            <CmsBuildHero
+              tag={String(t("cms.shop.dashboard.experienceOverview"))}
+              title={`${shop} ${String(t("cms.shop.dashboard.controlCenterSuffix"))}`}
+              body={String(t("cms.shop.dashboard.welcomeHelp"))}
+              tone="operate"
+            />
           </div>
           <DSGrid cols={1} gap={4} className="w-full sm:grid-cols-2 lg:grid-cols-3">
             {metrics.map((metric) => (
@@ -134,6 +208,17 @@ export default async function ShopDashboardPage({
         <UpgradeButton shop={shop} />
         <RollbackCard shop={shop} />
       </DSGrid>
+
+      <DSGrid cols={1} gap={4} className="lg:grid-cols-2">
+        <CreationStatus shop={shop} />
+        <UpgradeState shop={shop} />
+      </DSGrid>
+
+      <HealthDetails shop={shop} />
+
+      <div className="flex justify-end">
+        <ReRunSmokeButton shopId={shop} env="stage" />
+      </div>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs";
 import Gallery from "./Gallery";
 
 const meta: Meta<typeof Gallery> = {
+  title: "CMS Blocks/Gallery",
   component: Gallery,
   args: {
     images: [

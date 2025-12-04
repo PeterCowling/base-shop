@@ -35,7 +35,14 @@ export async function PATCH(
     );
     return NextResponse.json(updated);
   } catch (err) {
-    const status = (err as Error).message === "Not found" ? 404 : 400;
-    return NextResponse.json({ error: (err as Error).message }, { status });
+    console.error("Inventory patch failed", err); // i18n-exempt -- non-UX log
+    const message = (err as Error).message;
+    const status =
+      message === "Not found"
+        ? 404
+        : /delegate is unavailable/i.test(message)
+          ? 503
+          : 400;
+    return NextResponse.json({ error: message }, { status });
   }
 }

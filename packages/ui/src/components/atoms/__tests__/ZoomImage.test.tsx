@@ -11,7 +11,7 @@ describe("ZoomImage", () => {
     // Initial state
     expect(figure).toHaveClass("cursor-zoom-in");
     expect(figure).not.toHaveClass("cursor-zoom-out");
-    expect(img.style.transform).toBe("");
+    expect(img.style.transform).toBe("scale(1)");
 
     // Zoom in
     fireEvent.click(figure);
@@ -21,6 +21,6 @@ describe("ZoomImage", () => {
     // Zoom out
     fireEvent.click(figure);
     expect(figure).not.toHaveClass("cursor-zoom-out");
-    expect(img.style.transform).toBe("");
+    expect(img.style.transform).toBe("scale(1)");
   });
 });

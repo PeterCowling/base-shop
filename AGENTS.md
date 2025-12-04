@@ -6,6 +6,10 @@ Use this file as the global checklist for working in the Skylar SRL monorepo. Lo
 - `apps/skylar/AGENTS.it.md` — Milan editorial guidelines.
 - `apps/skylar/AGENTS.zh.md` — gold-on-black business card system for ZH.
 
+For documentation structure and how to read/write docs as an agent, see:
+
+- `docs/AGENTS.docs.md` — AI-first documentation runbook.
+
 Always cross-check the relevant locale doc before touching copy, layout, or imagery inside `apps/skylar`.
 
 ## Core Workflow

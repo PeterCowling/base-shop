@@ -9,7 +9,6 @@ import { z } from 'zod';
 const meta: Meta<typeof PromoTilesSection> = {
   title: 'CMS Blocks/PromoTilesSection/Matrix',
   component: PromoTilesSection,
-  parameters: { docs: { autodocs: false } },
   args: { ...fixture },
   parameters: { docs: { description: { component: 'Promotional tiles grid with images, captions and optional badges.' } } },
 };
@@ -25,3 +24,7 @@ try { z.object({ tiles: z.array(Tile), density: z.enum(['editorial','utilitarian
 export const Default: Story = makeStateStory(baseArgs, {}, 'default', { a11y: true, viewports: ['desktop'], tags: ['visual'] });
 export const RTL: Story = makeStateStory(baseArgs, {}, 'default', { rtl: true, viewports: ['mobile1'], tags: ['visual'] });
 
+
+export const Loading: Story = makeStateStory(baseArgs, {}, 'loading', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Empty: Story = makeStateStory(baseArgs, {}, 'empty', { a11y: true, viewports: ['mobile1'], tags: ['visual'] });
+export const Error: Story = makeStateStory(baseArgs, {}, 'error', { critical: true, viewports: ['desktop'], tags: ['visual'] });

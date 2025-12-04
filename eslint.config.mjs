@@ -112,6 +112,38 @@ export default [
     },
   },
 
+  /* ▸ Token enforcement (palette classes + inline hex) across UI + Storybook */
+  {
+    files: [
+      "packages/ui/src/components/**/*.{ts,tsx,js,jsx}",
+      "apps/storybook/.storybook/**/*.{ts,tsx,js,jsx}",
+    ],
+    ignores: ["**/__tests__/**/*", "**/*.test.*", "**/*.spec.*", "**/*.d.ts"],
+    rules: {
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "JSXAttribute[name.name='className'] Literal[value=/\\b(?:text|bg|border)-(?:white|black|slate|zinc|gray|neutral|stone|red|rose|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink)(?:-[0-9]{2,3})?\\b/ ]",
+          message:
+            "Use token-based utilities (e.g., text-foreground, bg-background, border-border) instead of Tailwind palette colors.",
+        },
+        {
+          selector:
+            "JSXAttribute[name.name='className'] TemplateLiteral[quasis.0.value.raw=/.*\\b(?:text|bg|border)-(?:white|black|slate|zinc|gray|neutral|stone|red|rose|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink)(?:-[0-9]{2,3})?\\b.*/ ]",
+          message:
+            "Avoid Tailwind palette colors; prefer token utilities.",
+        },
+        {
+          selector:
+            "JSXAttribute[name.name='style'] ObjectExpression > Property[key.name=/color|background|borderColor/i] Literal[value=/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/]",
+          message:
+            "Avoid inline hex colors; use token-based classes or CSS variables instead.",
+        },
+      ],
+    },
+  },
+
   /* ▸ Next.js presets (bring in @typescript-eslint plugin once) */
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 

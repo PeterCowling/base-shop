@@ -36,6 +36,7 @@ export default function useLocalStrings(locale?: string | null) {
       notify_changes_saved: "Changes saved",
       notify_published: "Page published",
       notify_publish_failed: "Publish failed",
+      "cms.builder.templates.applied": "Template applied",
 
       // Layout: PositionControls
       position_property_hint: "CSS position property",

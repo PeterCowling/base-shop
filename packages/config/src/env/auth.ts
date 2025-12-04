@@ -91,6 +91,9 @@ const booleanFromString = z.preprocess((v) => {
   return v;
 }, z.boolean());
 
+const storeProviderSchema = z.enum(["redis", "cloudflare", "memory"]);
+const rateLimitProviderSchema = z.enum(["redis", "kv"]);
+
 const baseSchema = z.object({
   NEXTAUTH_SECRET: isProd
     ? strongSecret
@@ -103,6 +106,10 @@ const baseSchema = z.object({
   COOKIE_DOMAIN: z.string().optional(),
   LOGIN_RATE_LIMIT_REDIS_URL: z.string().url().optional(),
   LOGIN_RATE_LIMIT_REDIS_TOKEN: strongSecret.optional(),
+  RATE_LIMIT_STORE_PROVIDER: rateLimitProviderSchema.optional(),
+
+  CART_STORE_PROVIDER: storeProviderSchema.optional(),
+  SESSION_STORE_PROVIDER: storeProviderSchema.optional(),
   SESSION_STORE: z.enum(["memory", "redis"]).optional(),
   UPSTASH_REDIS_REST_URL: z.string().url().optional(),
   UPSTASH_REDIS_REST_TOKEN: strongSecret.optional(),
@@ -127,7 +134,10 @@ const baseSchema = z.object({
 });
 
 export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
-  if (env.SESSION_STORE === "redis") {
+  const sessionStoreProvider =
+    env.SESSION_STORE_PROVIDER ?? env.SESSION_STORE ?? "memory";
+
+  if (sessionStoreProvider === "redis") {
     if (!env.UPSTASH_REDIS_REST_URL) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -146,9 +156,14 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
     }
   }
 
+  const rateLimitProvider =
+    env.RATE_LIMIT_STORE_PROVIDER ??
+    (env.LOGIN_RATE_LIMIT_REDIS_URL || env.LOGIN_RATE_LIMIT_REDIS_TOKEN
+      ? "redis"
+      : undefined);
   const hasRateUrl = env.LOGIN_RATE_LIMIT_REDIS_URL;
   const hasRateToken = env.LOGIN_RATE_LIMIT_REDIS_TOKEN;
-  if (hasRateUrl || hasRateToken) {
+  if (rateLimitProvider === "redis" && (hasRateUrl || hasRateToken)) {
     if (!hasRateUrl) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,

@@ -1,6 +1,8 @@
 import { unpublishPost as repoUnpublishPost } from "@platform-core/repositories/blog.server";
 import { ensureAuthorized } from "../../../actions/common/auth";
 import { getConfig } from "../config";
+import { recordMetric } from "@platform-core/utils";
+import { incrementOperationalError } from "@platform-core/shops/health";
 
 export async function unpublishPost(
   shopId: string,
@@ -10,8 +12,19 @@ export async function unpublishPost(
   const config = await getConfig(shopId);
   try {
     await repoUnpublishPost(config, id);
+    recordMetric("cms_page_publish_total", {
+      shopId,
+      service: "cms",
+      status: "skipped",
+    });
     return { message: "Post unpublished" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   } catch (err) {
+    recordMetric("cms_page_publish_total", {
+      shopId,
+      service: "cms",
+      status: "failure",
+    });
+    incrementOperationalError(shopId);
     console.error("Failed to unpublish post", err); // i18n-exempt -- developer log; not user-facing; CMS-1010
     return { error: "Failed to unpublish post" }; // i18n-exempt -- service-layer message; UI translates at boundary; CMS-1010
   }

@@ -6,8 +6,6 @@ import {
   type InventoryItem,
   variantKey,
 } from "../types/inventory";
-// eslint-disable-next-line no-restricted-imports -- DS-000 allow fallback JSON repo import for prisma adapter
-import { jsonInventoryRepository } from "./inventory.json.server";
 import type {
   InventoryRepository,
   InventoryMutateFn,
@@ -50,7 +48,7 @@ function toInventoryItem(record: unknown): InventoryItem {
 async function read(shop: string): Promise<InventoryItem[]> {
   const db = prisma as InventoryDb;
   if (!db.inventoryItem) {
-    return jsonInventoryRepository.read(shop);
+    throw new Error("Prisma inventory delegate is unavailable");
   }
   try {
     const rows = await db.inventoryItem.findMany({
@@ -59,14 +57,14 @@ async function read(shop: string): Promise<InventoryItem[]> {
     return rows.map(toInventoryItem);
   } catch (err) {
     console.error(`Failed to read inventory for ${shop}`, err);
-    return jsonInventoryRepository.read(shop);
+    throw err;
   }
 }
 
 async function write(shop: string, items: InventoryItem[]): Promise<void> {
   const db = prisma as InventoryDb;
   if (!db.inventoryItem) {
-    return jsonInventoryRepository.write(shop, items);
+    throw new Error("Prisma inventory delegate is unavailable");
   }
   const normalized = inventoryItemSchema.array().parse(items);
   try {
@@ -89,7 +87,6 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
         });
       }
     });
-    await jsonInventoryRepository.write(shop, normalized);
 
     const hasLowStock = normalized.some(
       (i: InventoryItem) =>
@@ -102,7 +99,7 @@ async function write(shop: string, items: InventoryItem[]): Promise<void> {
     }
   } catch (err) {
     console.error(`Failed to write inventory for ${shop}`, err);
-    return jsonInventoryRepository.write(shop, items);
+    throw err;
   }
 }
 
@@ -114,7 +111,7 @@ async function update(
 ): Promise<InventoryItem | undefined> {
   const db = prisma as InventoryDb;
   if (!db.inventoryItem) {
-    return jsonInventoryRepository.update(shop, sku, variantAttributes, mutate);
+    throw new Error("Prisma inventory delegate is unavailable");
   }
   const key = variantKey(sku, variantAttributes);
   try {
@@ -182,7 +179,7 @@ async function update(
     return updated;
   } catch (err) {
     console.error(`Failed to update inventory for ${shop}`, err);
-    return jsonInventoryRepository.update(shop, sku, variantAttributes, mutate);
+    throw err;
   }
 }
 

@@ -4,19 +4,29 @@ import { cn } from "../../utils/style";
 export interface LoaderProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Width/height of the loader in pixels. Defaults to 20. */
   size?: number;
+  /** Accessible label for screen readers. */
+  label?: string;
 }
 
 export const Loader = React.forwardRef<HTMLDivElement, LoaderProps>(
-  ({ className, size = 20, ...props }, ref) => {
-    const dimension = `h-[${size}px] w-[${size}px]`;
+  ({ className, size = 20, label = "Loading", style, role, ...props }, ref) => {
+    const dimension = Number.isFinite(size) ? Number(size) : 20;
     return (
       <div
         ref={ref}
         className={cn(
           "animate-spin rounded-full border-2 border-current border-t-transparent", // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
-          dimension,
           className
         )}
+        role={role ?? "status"}
+        aria-label={label}
+        aria-live="polite"
+        // eslint-disable-next-line react/forbid-dom-props -- UI-2610: loader diameter is runtime-configurable; inline size keeps SVG centered without bespoke classes
+        style={{
+          width: dimension,
+          height: dimension,
+          ...style,
+        }}
         {...props}
       />
     );

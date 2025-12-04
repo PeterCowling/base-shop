@@ -1,3 +1,12 @@
+Type: Contract
+Status: Canonical
+Domain: Deploy
+Last-reviewed: 2025-12-02
+
+Primary code entrypoints:
+- packages/platform-core/src/createShop/*
+- packages/platform-core/src/deploy/*
+
 # Deployment adapters
 
 `ShopDeploymentAdapter` abstracts how shop applications are scaffolded and
@@ -34,4 +43,3 @@ await createShop("my-shop", options, { deploy: true }, new CloudflareDeploymentA
 
 To provide an alternative deployment pipeline, implement the interface and pass
 your adapter instance to `createShop`/`deployShop`.
-

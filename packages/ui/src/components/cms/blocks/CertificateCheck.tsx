@@ -53,9 +53,9 @@ export default function CertificateCheck({ productId, placeholder, locale = "en"
           {t("actions.verify")}
         </button>
       </div>
-      {status === "checking" ? <p className="mt-2 text-xs text-neutral-600">{t("cert.checking")}</p> : null}
-      {status === "ok" ? <p className="mt-2 text-xs text-green-600">{t("cert.valid")}{message ? ` — ${message}` : ""}</p> : null}
-      {status === "fail" ? <p className="mt-2 text-xs text-red-600">{t("cert.invalid")}{message ? ` — ${message}` : ""}</p> : null}
+      {status === "checking" ? <p className="mt-2 text-xs text-muted-foreground">{t("cert.checking")}</p> : null}
+      {status === "ok" ? <p className="mt-2 text-xs text-primary">{t("cert.valid")}{message ? ` — ${message}` : ""}</p> : null}
+      {status === "fail" ? <p className="mt-2 text-xs text-destructive">{t("cert.invalid")}{message ? ` — ${message}` : ""}</p> : null}
     </div>
   );
 }

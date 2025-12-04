@@ -36,6 +36,7 @@ export const createShopOptionsSchema = z
     themeOverrides: z.record(z.string()).default({}),
     template: z.string().optional(),
     payment: z.array(z.enum(defaultPaymentProviders)).default([]),
+    billingProvider: z.enum(defaultPaymentProviders).optional(),
     shipping: z.array(z.enum(defaultShippingProviders)).default([]),
     tax: z.enum(defaultTaxProviders).default("taxjar"),
     pageTitle: z.record(localeSchema, z.string()).optional(),
@@ -101,10 +102,15 @@ function prepareNavItems(items: NavItem[]): NavItem[] {
 /** Parse and populate option defaults. */
 export function prepareOptions(
   id: string,
-  opts: CreateShopOptions,
+  opts: Partial<CreateShopOptions>,
 ): PreparedCreateShopOptions {
   const parsed: z.infer<typeof createShopOptionsSchema> =
     createShopOptionsSchema.parse(opts);
+  const billingProvider =
+    parsed.billingProvider ??
+    (parsed.payment.includes("stripe")
+      ? "stripe"
+      : parsed.payment[0] ?? "");
   return {
     name: parsed.name ?? id,
     logo:
@@ -117,6 +123,7 @@ export function prepareOptions(
     template: parsed.template ?? "template-app",
     themeOverrides: parsed.themeOverrides ?? {},
     payment: parsed.payment,
+    billingProvider,
     shipping: parsed.shipping,
     tax: parsed.tax,
     pageTitle: fillLocales(parsed.pageTitle, "Home"),

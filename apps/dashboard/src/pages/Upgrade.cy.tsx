@@ -15,8 +15,8 @@ describe('Dashboard – Upgrade page (CT)', () => {
         ok: true,
         json: async () => ({
           core: [
-            { file: 'CompA.tsx', componentName: 'CompA' },
-            { file: 'CompB.tsx', componentName: 'CompB' },
+            { file: 'CompA.tsx', componentName: 'CompA', newChecksum: '1' },
+            { file: 'CompB.tsx', componentName: 'CompB', newChecksum: '2' },
           ],
         }),
       } as Response;
@@ -37,8 +37,9 @@ describe('Dashboard – Upgrade page (CT)', () => {
     cy.mount(<Upgrade />);
 
     cy.findByText('core');
-    cy.findByLabelText('CompA').click();
-    cy.findByRole('button', { name: /publish upgrade/i }).click();
+    cy.findByLabelText(/Select CompA/i).click();
+    cy.findByRole('button', { name: /publish/i }).click();
+    cy.findByRole('button', { name: /publish now/i }).click();
 
     // Axe color-contrast check on the rendered page
     cy.injectAxe();

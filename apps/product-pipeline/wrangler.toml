@@ -1,0 +1,19 @@
+name = "product-pipeline"
+pages_build_output_dir = "out"
+compatibility_date = "2025-06-20"
+
+[[d1_databases]]
+binding = "PIPELINE_DB"
+database_name = "product-pipeline"
+database_id = "00000000000000000000000000000000" # replace with real D1 id
+
+[[r2_buckets]]
+binding = "PIPELINE_EVIDENCE"
+bucket_name = "product-pipeline-evidence" # replace with real bucket name
+
+[[queues.producers]]
+queue = "pipeline-jobs"
+binding = "PIPELINE_QUEUE"
+
+[vars]
+PIPELINE_ENV = "dev"

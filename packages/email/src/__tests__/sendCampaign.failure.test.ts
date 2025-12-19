@@ -1,3 +1,4 @@
+import { logger } from "@acme/shared-utils";
 import {
   cleanupEnv,
   mockHasProviderErrorFields,
@@ -214,7 +215,10 @@ describe('sendCampaignEmail failure paths', () => {
     mockSanitizeHtml.mockImplementation((html: string) => html);
     mockHasProviderErrorFields.mockImplementation();
 
-    const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    const { logger } = await import("@acme/shared-utils");
+    const consoleSpy = jest.fn();
+    const originalWarn = logger.warn;
+    logger.warn = consoleSpy as any;
 
     setupEnv();
 
@@ -239,6 +243,6 @@ describe('sendCampaignEmail failure paths', () => {
       ]),
     );
 
-    consoleSpy.mockRestore();
+    logger.warn = originalWarn;
   });
 });

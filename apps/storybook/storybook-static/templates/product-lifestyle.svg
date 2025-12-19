@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="360" viewBox="0 0 600 360" fill="none">
+  <rect width="600" height="360" rx="16" fill="#F4F6FA"/>
+  <rect x="24" y="24" width="552" height="312" rx="14" fill="#FFFFFF" stroke="#DFE6F3" stroke-width="2"/>
+  <rect x="44" y="44" width="232" height="232" rx="12" fill="url(#gallery)" />
+  <rect x="44" y="288" width="232" height="32" rx="10" fill="#E9EEF7"/>
+  <rect x="292" y="44" width="264" height="24" rx="8" fill="#E3EAF5"/>
+  <rect x="292" y="76" width="180" height="16" rx="8" fill="#DCE8FF"/>
+  <rect x="292" y="104" width="240" height="12" rx="6" fill="#E9EEF7"/>
+  <rect x="292" y="124" width="210" height="12" rx="6" fill="#E9EEF7"/>
+  <rect x="292" y="148" width="264" height="120" rx="12" fill="#F7F9FC" stroke="#DFE6F3" stroke-width="2"/>
+  <rect x="312" y="168" width="224" height="16" rx="8" fill="#DFE8F5"/>
+  <rect x="312" y="192" width="224" height="16" rx="8" fill="#DFE8F5"/>
+  <rect x="312" y="216" width="224" height="16" rx="8" fill="#DFE8F5"/>
+  <rect x="292" y="276" width="264" height="32" rx="10" fill="#D3E4FF"/>
+  <rect x="292" y="320" width="120" height="12" rx="6" fill="#E9EEF7"/>
+  <rect x="436" y="320" width="120" height="12" rx="6" fill="#E9EEF7"/>
+  <defs>
+    <linearGradient id="gallery" x1="44" y1="44" x2="276" y2="276" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EADFD3"/>
+      <stop offset="1" stop-color="#CFE1F9"/>
+    </linearGradient>
+  </defs>
+</svg>

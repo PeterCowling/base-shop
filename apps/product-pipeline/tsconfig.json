@@ -1,0 +1,52 @@
+{
+  "extends": "@acme/config/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "strict": true,
+    "allowJs": false,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "useUnknownInCatchVariables": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "skipLibCheck": false,
+    "paths": {
+      "@/*": [
+        "src/*",
+        "dist/*"
+      ],
+      "@acme/pipeline-engine": [
+        "../../packages/pipeline-engine/src/index.ts",
+        "../../packages/pipeline-engine/dist/index.d.ts"
+      ],
+      "@acme/pipeline-engine/*": [
+        "../../packages/pipeline-engine/src/*",
+        "../../packages/pipeline-engine/dist/*"
+      ]
+    },
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/**/*",
+    "src/app/**/*",
+    "src/app/**/*.ts",
+    "src/app/**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    ".next/types/server.d.ts",
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "**/*.spec.*",
+    "**/*.test.*"
+  ],
+  "references": [
+    {
+      "path": "../../packages/pipeline-engine"
+    }
+  ]
+}

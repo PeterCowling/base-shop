@@ -17,7 +17,7 @@
  * downstream.
  */
 
-import { createContext, useCallback, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo } from "react";
 // Provide sensible defaults for tests and environments without an explicit
 // provider by falling back to English messages bundled with the package.
 // This ensures components render human‑readable strings instead of raw keys
@@ -33,6 +33,11 @@ import enMessages from "./en.json";
  * details on how this map is consumed.
  */
 export type Messages = Record<string, string>;
+type Translator = (key: string, vars?: Record<string, string | number>) => string;
+type TranslationContextValue = {
+  messages: Messages;
+  translator: Translator;
+};
 
 /**
  * React context used to share translation messages across the component tree.
@@ -44,7 +49,56 @@ export type Messages = Record<string, string>;
 // Default to English messages if no provider is mounted. Call sites can still
 // override via <TranslationsProvider messages={...}>.
 const defaultMessages: Messages = enMessages as unknown as Messages;
-const TContext = createContext<Messages>(defaultMessages);
+const translatorByContent = new Map<string, Translator>();
+const translatorCache = new WeakMap<Messages, Translator>();
+
+function cacheKey(msgs: Messages): string {
+  const keys = Object.keys(msgs).sort();
+  return keys.map((k) => `${k}:${String(msgs[k])}`).join("|");
+}
+
+const createTranslator = (msgMap: Messages): Translator => {
+  return (key: string, vars?: Record<string, string | number>): string => {
+    const msg = (msgMap[key] ?? defaultMessages[key]) as string | undefined;
+    if (msg === undefined) {
+      if (process.env.NODE_ENV === "development") {
+        console.warn(`Missing translation for key: ${key}`);
+      }
+      return key;
+    }
+
+    if (vars) {
+      return msg.replace(/\{(.*?)\}/g, (match, name) => {
+        return Object.prototype.hasOwnProperty.call(vars, name)
+          ? String(vars[name] as string | number)
+          : match;
+      });
+    }
+    return msg;
+  };
+};
+
+function getTranslator(messages: Messages, key?: string): Translator {
+  const direct = translatorCache.get(messages);
+  if (direct) return direct;
+
+  const cacheToken = key ?? cacheKey(messages);
+  const byValue = translatorByContent.get(cacheToken);
+  if (byValue) {
+    translatorCache.set(messages, byValue);
+    return byValue;
+  }
+
+  const built = createTranslator(messages);
+  translatorCache.set(messages, built);
+  translatorByContent.set(cacheToken, built);
+  return built;
+}
+
+const TContext = createContext<TranslationContextValue>({
+  messages: defaultMessages,
+  translator: getTranslator(defaultMessages),
+});
 
 /**
  * Props for {@link TranslationsProvider}.
@@ -84,10 +138,20 @@ function TranslationsProvider({
   // Prefer provided messages when non-empty; otherwise fall back to English.
   // This ensures human‑readable text in environments that forget to mount
   // a provider or accidentally pass an empty map (e.g., some tests).
-  const value = useMemo<Messages>(() => {
+  const activeMessages = useMemo<Messages>(() => {
     if (messages && Object.keys(messages).length > 0) return messages;
     return defaultMessages;
   }, [messages]);
+
+  const messagesKey = useMemo(() => cacheKey(activeMessages), [activeMessages]);
+
+  const value = useMemo<TranslationContextValue>(
+    () => ({
+      messages: activeMessages,
+      translator: getTranslator(activeMessages, messagesKey),
+    }),
+    [activeMessages, messagesKey]
+  );
 
   return <TContext.Provider value={value}>{children}</TContext.Provider>;
 }
@@ -101,50 +165,10 @@ export { TranslationsProvider };
 // Default export to support `import TranslationsProvider from "..."` syntax
 export default TranslationsProvider;
 
-/**
- * Hook that returns a memoised translation function.
- *
- * Consumers call this hook to obtain a function that resolves translation
- * keys to their corresponding messages. The returned function is memoised
- * with `useCallback` and will only be recreated when the underlying
- * messages map changes, enabling consumers to avoid unnecessary renders.
- *
- * @example
- * const t = useTranslations();
- * return <span>{t("welcome")}</span>;
- *
- * @returns A function that resolves a given key to its translated message, or
- *          the key itself if no translation exists.
- */
 export function useTranslations(): (
   key: string,
   vars?: Record<string, string | number>
 ) => string {
-  const messages = useContext(TContext);
-  // Memoise the translation function to keep its identity stable across
-  // renders unless the messages map changes. Without this memoisation,
-  // consumers that store the translator function in state or pass it as a
-  // prop could be triggered to re-render unnecessarily.
-  return useCallback(
-    (key: string, vars?: Record<string, string | number>): string => {
-      // Resolve from active messages, then fall back to bundled English.
-      const msg = (messages[key] ?? defaultMessages[key]) as string | undefined;
-      if (msg === undefined) {
-        if (process.env.NODE_ENV === "development") {
-          console.warn(`Missing translation for key: ${key}`);
-        }
-        return key;
-      }
-
-      if (vars) {
-        return msg.replace(/\{(.*?)\}/g, (match, name) => {
-          return Object.prototype.hasOwnProperty.call(vars, name)
-            ? String(vars[name] as string | number)
-            : match;
-        });
-      }
-      return msg;
-    },
-    [messages]
-  );
+  const ctx = useContext(TContext);
+  return ctx.translator;
 }

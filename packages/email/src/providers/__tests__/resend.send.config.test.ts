@@ -35,8 +35,9 @@ describe("ResendProvider send – config edge cases", () => {
   it("warns and skips send when API key missing", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
     const { send } = require("resend");
+    const { logger } = await import("@acme/shared-utils");
     const warn = jest
-      .spyOn(console, "warn")
+      .spyOn(logger, "warn")
       .mockImplementation(() => undefined);
 
     const { ResendProvider } = await import("../resend");
@@ -45,10 +46,14 @@ describe("ResendProvider send – config edge cases", () => {
 
     expect(warn).toHaveBeenCalledWith(
       "Resend API key is not configured; skipping email send",
+      {
+        provider: "resend",
+        recipient: options.to,
+        campaignId: undefined,
+      }
     );
     expect(send).not.toHaveBeenCalled();
 
     warn.mockRestore();
   });
 });
-

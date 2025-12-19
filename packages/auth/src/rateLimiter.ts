@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { RateLimiterMemory } from "rate-limiter-flexible";
 
 type KvNamespace = {

@@ -1,0 +1,22 @@
+{
+  "name": "@apps/product-pipeline",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3012",
+    "build": "next build",
+    "start": "next start -p 3012",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "@acme/i18n": "workspace:*",
+    "@acme/next-config": "workspace:*",
+    "@acme/tailwind-config": "workspace:*",
+    "@themes/base": "workspace:*",
+    "@acme/pipeline-engine": "workspace:*",
+    "next": "^15.3.5",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  }
+}

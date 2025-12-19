@@ -116,10 +116,7 @@ export async function POST(req: NextRequest) {
   if (newQty > sku.stock) {
     return NextResponse.json({ error: "Insufficient stock" }, { status: 409 }); // i18n-exempt -- CORE-2421: internal API error string, not user-facing UI
   }
-  const normalizedRental =
-    typeof rental === "undefined"
-      ? undefined
-      : { ...rental, sku: rental.sku ?? sku.id };
+  const normalizedRental = typeof rental === "undefined" ? undefined : { ...rental };
   // Only pass `rental` when defined to avoid an extra undefined arg
   const updated = await (typeof normalizedRental === "undefined"
     ? incrementQty(cartId, sku, qty, size)

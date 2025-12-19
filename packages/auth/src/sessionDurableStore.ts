@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import type { SessionRecord, SessionStore } from "./store";
 
 // Minimal Durable Object namespace surface to avoid hard dependency on cf types

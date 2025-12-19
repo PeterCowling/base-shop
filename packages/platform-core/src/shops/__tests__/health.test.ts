@@ -1,4 +1,5 @@
 import { describe, expect, it, jest } from "@jest/globals";
+import * as health from "../health";
 import type { DeployInfo } from "../deployInfo";
 
 jest.mock("../deployInfo", () => {
@@ -9,27 +10,28 @@ jest.mock("../deployInfo", () => {
   };
 });
 
-jest.mock("../health", () => {
-  const actual = jest.requireActual("../health");
-  return {
-    ...actual,
-    // we'll stub readHealthJson and readLatestUpgrade via requireMock below
-  };
-});
-
 const { readDeployInfo } = jest.requireMock("../deployInfo") as {
   readDeployInfo: jest.Mock;
 };
-const { readLatestUpgrade, readHealthJson } = jest.requireMock("../health") as {
-  readLatestUpgrade: jest.Mock;
-  readHealthJson: jest.Mock;
-};
 
 describe("deriveOperationalHealth", () => {
+  let latestUpgrade: jest.SpyInstance;
+  let healthJson: jest.SpyInstance;
+
+  beforeEach(() => {
+    readDeployInfo.mockReset();
+    jest.restoreAllMocks();
+    latestUpgrade = jest
+      .spyOn(health.healthReaders, "readLatestUpgrade")
+      .mockReturnValue(null);
+    healthJson = jest
+      .spyOn(health.healthReaders, "readHealthJson")
+      .mockReturnValue(null);
+  });
+
   it("returns needs-attention when deploy info is missing", async () => {
     readDeployInfo.mockReturnValueOnce(null);
-    const { deriveOperationalHealth } = await import("../health");
-    const summary = await deriveOperationalHealth("shop-1");
+    const summary = await health.deriveOperationalHealth("shop-1");
     expect(summary.status).toBe("needs-attention");
     expect(summary.reasons[0]?.code).toBe("deploy-missing");
   });
@@ -37,8 +39,7 @@ describe("deriveOperationalHealth", () => {
   it("treats deploy error as broken", async () => {
     const info: DeployInfo = { status: "error" };
     readDeployInfo.mockReturnValueOnce(info);
-    const { deriveOperationalHealth } = await import("../health");
-    const summary = await deriveOperationalHealth("shop-1");
+    const summary = await health.deriveOperationalHealth("shop-1");
     expect(summary.status).toBe("broken");
     expect(summary.reasons.map((r) => r.code)).toContain("deploy-error");
   });
@@ -49,8 +50,7 @@ describe("deriveOperationalHealth", () => {
       testsStatus: "failed",
     };
     readDeployInfo.mockReturnValueOnce(info);
-    const { deriveOperationalHealth } = await import("../health");
-    const summary = await deriveOperationalHealth("shop-1");
+    const summary = await health.deriveOperationalHealth("shop-1");
     expect(summary.status).toBe("broken");
     expect(summary.reasons.map((r) => r.code)).toContain("tests-failed");
   });
@@ -61,8 +61,7 @@ describe("deriveOperationalHealth", () => {
       testsStatus: "not-run",
     };
     readDeployInfo.mockReturnValueOnce(info);
-    const { deriveOperationalHealth } = await import("../health");
-    const summary = await deriveOperationalHealth("shop-1");
+    const summary = await health.deriveOperationalHealth("shop-1");
     expect(summary.status).toBe("needs-attention");
     expect(summary.reasons.map((r) => r.code)).toContain("tests-not-run");
   });
@@ -73,8 +72,7 @@ describe("deriveOperationalHealth", () => {
       testsStatus: "passed",
     };
     readDeployInfo.mockReturnValueOnce(info);
-    const { deriveOperationalHealth } = await import("../health");
-    const summary = await deriveOperationalHealth("shop-1");
+    const summary = await health.deriveOperationalHealth("shop-1");
     expect(summary.status).toBe("healthy");
     expect(summary.reasons.length).toBe(0);
   });
@@ -85,13 +83,12 @@ describe("deriveOperationalHealth", () => {
       testsStatus: "passed",
     };
     readDeployInfo.mockReturnValueOnce(info);
-    readLatestUpgrade.mockReturnValueOnce({
+    latestUpgrade.mockReturnValueOnce({
       status: "failed",
       timestamp: "2025-01-01T00:00:00.000Z",
     });
-    readHealthJson.mockReturnValueOnce(null);
-    const { deriveOperationalHealth } = await import("../health");
-    const summary = await deriveOperationalHealth("shop-1");
+    healthJson.mockReturnValueOnce(null);
+    const summary = await health.deriveOperationalHealth("shop-1");
     expect(summary.status).toBe("needs-attention");
     expect(summary.reasons.map((r) => r.code)).toContain("upgrade-failed");
     expect(summary.upgradeStatus).toBe("pending");
@@ -104,14 +101,13 @@ describe("deriveOperationalHealth", () => {
       testsStatus: "passed",
     };
     readDeployInfo.mockReturnValueOnce(info);
-    readLatestUpgrade.mockReturnValueOnce(null);
+    latestUpgrade.mockReturnValueOnce(null);
     const now = new Date().toISOString();
-    readHealthJson.mockReturnValueOnce({
+    healthJson.mockReturnValueOnce({
       recentErrorCount: 3,
       lastErrorAt: now,
     });
-    const { deriveOperationalHealth } = await import("../health");
-    const summary = await deriveOperationalHealth("shop-1");
+    const summary = await health.deriveOperationalHealth("shop-1");
     expect(summary.status).toBe("needs-attention");
     expect(summary.reasons.map((r) => r.code)).toContain("recent-errors");
     expect(summary.errorCount).toBe(3);

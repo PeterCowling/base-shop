@@ -9,6 +9,9 @@
       "default": "./dist/index.js"
     }
   },
+  "dependencies": {
+    "@themes/base": "workspace:*"
+  },
   "types": "./dist/index.d.ts",
   "files": [
     "dist"

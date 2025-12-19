@@ -163,8 +163,13 @@ describe("sendCampaignEmail", () => {
 
   it("retries failing provider then falls back in order", async () => {
     const timeoutSpy = jest.spyOn(global, "setTimeout");
-    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const { logger } = await import("@acme/shared-utils");
+    const originalWarn = logger.warn;
+    const originalError = logger.error;
+    const warnSpy = jest.fn();
+    const errorSpy = jest.fn();
+    logger.warn = warnSpy as any;
+    logger.error = errorSpy as any;
     mockSendgridSend = jest.fn().mockRejectedValue(new ProviderError("fail", true));
     mockResendSend = jest.fn().mockResolvedValue(undefined);
     mockSendMail = jest.fn();
@@ -191,8 +196,8 @@ describe("sendCampaignEmail", () => {
     expect(warnSpy).toHaveBeenCalledTimes(1);
     expect(errorSpy).not.toHaveBeenCalled();
     timeoutSpy.mockRestore();
-    warnSpy.mockRestore();
-    errorSpy.mockRestore();
+    logger.warn = originalWarn;
+    logger.error = originalError;
   });
 
   it("falls back to Nodemailer when no provider available", async () => {
@@ -217,4 +222,3 @@ describe("sendCampaignEmail", () => {
     expect(mockSendMail).toHaveBeenCalledTimes(1);
   });
 });
-

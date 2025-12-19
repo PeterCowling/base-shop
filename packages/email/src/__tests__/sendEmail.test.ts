@@ -252,16 +252,20 @@ describe("sendEmail", () => {
     const getDefaultSender = jest.fn(() => "sender@example.com");
     jest.doMock("../config", () => ({ getDefaultSender }));
 
-    const errorSpy = jest.spyOn(console, "error").mockImplementation();
+    const errorSpy = jest.fn();
+    const pinoMock = jest.fn(() => ({ error: errorSpy, info: jest.fn() }));
+    jest.doMock("pino", () => ({
+      __esModule: true,
+      default: pinoMock,
+    }));
 
     const { sendEmail } = await import("../sendEmail");
     await expect(
       sendEmail("a@b.com", "Hello", "World")
     ).rejects.toThrow("failure");
 
-    expect(errorSpy).toHaveBeenCalledWith("Error sending email", error);
+    expect(errorSpy).toHaveBeenCalledWith({ error }, "Error sending email");
     expect(getDefaultSender).toHaveBeenCalled();
-    errorSpy.mockRestore();
   });
 
   it("logs and rethrows string errors from nodemailer", async () => {
@@ -283,16 +287,20 @@ describe("sendEmail", () => {
     const getDefaultSender = jest.fn(() => "sender@example.com");
     jest.doMock("../config", () => ({ getDefaultSender }));
 
-    const errorSpy = jest.spyOn(console, "error").mockImplementation();
+    const errorSpy = jest.fn();
+    const pinoMock = jest.fn(() => ({ error: errorSpy, info: jest.fn() }));
+    jest.doMock("pino", () => ({
+      __esModule: true,
+      default: pinoMock,
+    }));
 
     const { sendEmail } = await import("../sendEmail");
     await expect(
       sendEmail("a@b.com", "Hello", "World")
     ).rejects.toBe(error);
 
-    expect(errorSpy).toHaveBeenCalledWith("Error sending email", error);
+    expect(errorSpy).toHaveBeenCalledWith({ error }, "Error sending email");
     expect(getDefaultSender).toHaveBeenCalled();
-    errorSpy.mockRestore();
   });
 
   it("logs and rethrows when getDefaultSender throws", async () => {
@@ -317,14 +325,18 @@ describe("sendEmail", () => {
     });
     jest.doMock("../config", () => ({ getDefaultSender }));
 
-    const errorSpy = jest.spyOn(console, "error").mockImplementation();
+    const errorSpy = jest.fn();
+    const pinoMock = jest.fn(() => ({ error: errorSpy, info: jest.fn() }));
+    jest.doMock("pino", () => ({
+      __esModule: true,
+      default: pinoMock,
+    }));
 
     const { sendEmail } = await import("../sendEmail");
     await expect(
       sendEmail("a@b.com", "Hello", "World")
     ).rejects.toThrow("boom");
 
-    expect(errorSpy).toHaveBeenCalledWith("Error sending email", error);
-    errorSpy.mockRestore();
+    expect(errorSpy).toHaveBeenCalledWith({ error }, "Error sending email");
   });
 });

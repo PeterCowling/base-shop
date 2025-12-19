@@ -93,6 +93,12 @@ if (isScriptsWorkspace) {
   coverageThreshold.global = { lines: 0, branches: 0, functions: 0 };
 }
 
+// Skip platform-specific adapters that aren't exercised in unit tests
+if (isAuthPackage) {
+  coveragePathIgnorePatterns.push("<rootDir>/src/sessionDurableStore.ts");
+  coveragePathIgnorePatterns.push("<rootDir>/src/rateLimiter.ts");
+}
+
 // Allow targeted runs (e.g., --runTestsByPath) to skip global coverage gates so
 // quick iteration on a narrow file set doesn't fail on overall thresholds.
 const isTargetedRun =

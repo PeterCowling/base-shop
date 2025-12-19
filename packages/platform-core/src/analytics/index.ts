@@ -32,7 +32,6 @@ class NoopProvider implements AnalyticsProvider {
 
 class ConsoleProvider implements AnalyticsProvider {
   async track(event: AnalyticsEvent): Promise<void> {
-    if (process.env.NODE_ENV === "test") return;
     console.log("analytics", event);
   }
 }

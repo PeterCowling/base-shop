@@ -18,7 +18,8 @@ describe("SendgridProvider send – config edge cases", () => {
 
   it("warns when API key missing", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
-    const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+    const { logger } = await import("@acme/shared-utils");
+    const warn = jest.spyOn(logger, "warn").mockImplementation(() => undefined as any);
     const sgMail = getSgMail();
     sgMail.send.mockResolvedValueOnce(undefined);
     const { SendgridProvider } = await import("../sendgrid");
@@ -26,7 +27,12 @@ describe("SendgridProvider send – config edge cases", () => {
     await provider.send(options);
     expect(warn).toHaveBeenCalledTimes(1);
     expect(warn).toHaveBeenCalledWith(
-      "Sendgrid API key is not configured; attempting to send email"
+      "Sendgrid API key is not configured; attempting to send email",
+      {
+        provider: "sendgrid",
+        recipient: "to@example.com",
+        campaignId: undefined,
+      }
     );
     warn.mockRestore();
   });

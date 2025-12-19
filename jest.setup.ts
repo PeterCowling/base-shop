@@ -139,24 +139,66 @@ try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const en = require("@acme/i18n/en.json");
 
-    // Mutable holder for the current messages map; defaults to English.
-    let currentMessages: Record<string, string> = en;
+    type Messages = Record<string, string>;
 
-    const TranslationsProvider = ({ messages, children }: { messages: Record<string, string>; children: React.ReactNode }) => {
-      currentMessages = messages || en;
-      return children as unknown as React.JSX.Element;
-    };
+    const translatorByRef = new WeakMap<Messages, (key: string, vars?: Record<string, string | number>) => string>();
+    const translatorByContent = new Map<string, (key: string, vars?: Record<string, string | number>) => string>();
 
-    const useTranslations = () => {
+    const cacheKey = (msgs: Messages): string =>
+      Object.keys(msgs)
+        .sort()
+        .map((k) => `${k}:${String(msgs[k])}`)
+        .join("|");
+
+    const createTranslator = (msgs: Messages) => {
       return (key: string, vars?: Record<string, string | number>) => {
-        const template = currentMessages[key];
+        const template = msgs[key];
         const value = typeof template === "string" ? template : key;
         if (!vars) return value;
         return value.replace(/\{(.*?)\}/g, (match, name) =>
-          Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name] as string | number) : match
+          Object.prototype.hasOwnProperty.call(vars, name)
+            ? String(vars[name] as string | number)
+            : match
         );
       };
     };
+
+    const getTranslator = (msgs: Messages) => {
+      const direct = translatorByRef.get(msgs);
+      if (direct) return direct;
+
+      const key = cacheKey(msgs);
+      const byContent = translatorByContent.get(key);
+      if (byContent) {
+        translatorByRef.set(msgs, byContent);
+        return byContent;
+      }
+
+      const built = createTranslator(msgs);
+      translatorByRef.set(msgs, built);
+      translatorByContent.set(key, built);
+      return built;
+    };
+
+    let currentMessages: Messages = en;
+    let currentTranslator = getTranslator(currentMessages);
+
+    const TranslationsProvider = ({
+      messages,
+      children,
+    }: {
+      messages?: Messages;
+      children: React.ReactNode;
+    }) => {
+      const active = messages && Object.keys(messages).length ? messages : en;
+      if (active !== currentMessages) {
+        currentMessages = active;
+        currentTranslator = getTranslator(active);
+      }
+      return children as unknown as React.JSX.Element;
+    };
+
+    const useTranslations = () => currentTranslator;
 
     return {
       ...actual,

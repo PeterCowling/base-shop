@@ -262,6 +262,14 @@
       "@acme/templates/*": [
         "packages/templates/src/*",
         "packages/templates/dist/*"
+      ],
+      "@acme/pipeline-engine": [
+        "packages/pipeline-engine/src/index.ts",
+        "packages/pipeline-engine/dist/index.d.ts"
+      ],
+      "@acme/pipeline-engine/*": [
+        "packages/pipeline-engine/src/*",
+        "packages/pipeline-engine/dist/*"
       ]
     }
   },

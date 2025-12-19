@@ -1,3 +1,4 @@
+/* i18n-exempt file -- ENG-2047 test-only env mock literals [ttl=2026-06-30] */
 // Central mock for @acme/config/env/core
 // Provides a test-friendly `coreEnv`, `coreEnvSchema`, and `loadCoreEnv`
 // driven by process.env and lightweight in-memory overrides. This avoids
@@ -5,12 +6,15 @@
 import { z } from "zod";
 
 type Primitive = string | number | boolean | undefined;
+type EnvLike = Record<string, Primitive>;
 export type TestCoreEnv = Record<string, Primitive> & {
   NEXTAUTH_SECRET?: string;
   SESSION_SECRET?: string;
   EMAIL_FROM?: string;
   EMAIL_PROVIDER?: string;
   OPENAI_API_KEY?: string;
+  PREVIEW_TOKEN_SECRET?: string;
+  UPGRADE_PREVIEW_TOKEN_SECRET?: string;
   // Flags used by configurator tests
   DEPOSIT_RELEASE_ENABLED?: boolean;
   DEPOSIT_RELEASE_INTERVAL_MS?: number;
@@ -31,37 +35,57 @@ export function __resetCoreEnv(): void {
   overrides = Object.create(null);
 }
 
-function ensureFallbackSecret(value: string | undefined, fallback: string) {
+function ensureFallbackSecret(value: Primitive, fallback: string) {
   if (typeof value !== "string" || value.length < 32) return fallback;
   return value;
 }
 
-function computeCoreEnvFrom(raw: NodeJS.ProcessEnv): TestCoreEnv {
+const readString = (value: Primitive): string | undefined =>
+  typeof value === "string" ? value : undefined;
+
+function computeCoreEnvFrom(raw: EnvLike): TestCoreEnv {
   const env = raw;
+  const emailFrom = readString(env.EMAIL_FROM);
+  const emailProvider = readString(env.EMAIL_PROVIDER);
+  const authTokenTtl =
+    typeof env.AUTH_TOKEN_TTL === "string" || typeof env.AUTH_TOKEN_TTL === "number"
+      ? env.AUTH_TOKEN_TTL
+      : undefined;
   // Align defaults with jest.setup.ts so types and expectations match
   const base: TestCoreEnv = {
     NEXTAUTH_SECRET: ensureFallbackSecret(
-      env.NEXTAUTH_SECRET,
+      readString(env.NEXTAUTH_SECRET),
       "test-nextauth-secret-32-chars-long-string!",
     ),
     SESSION_SECRET: ensureFallbackSecret(
-      env.SESSION_SECRET,
+      readString(env.SESSION_SECRET),
       "test-session-secret-32-chars-long-string!",
     ),
-    EMAIL_FROM: env.EMAIL_FROM ?? "test@example.com",
-    EMAIL_PROVIDER: env.EMAIL_PROVIDER ?? (env.EMAIL_FROM ? "smtp" : "noop"),
+    EMAIL_FROM: emailFrom ?? "test@example.com",
+    EMAIL_PROVIDER: emailProvider ?? (emailFrom ? "smtp" : "noop"),
     CART_COOKIE_SECRET: env.CART_COOKIE_SECRET ?? "test-cart-secret",
-    AUTH_TOKEN_TTL: (env.AUTH_TOKEN_TTL as any) ?? "15m",
-    OPENAI_API_KEY: env.OPENAI_API_KEY,
+    AUTH_TOKEN_TTL: authTokenTtl ?? "15m",
+    OPENAI_API_KEY: readString(env.OPENAI_API_KEY),
+    PREVIEW_TOKEN_SECRET: readString(env.PREVIEW_TOKEN_SECRET),
+    UPGRADE_PREVIEW_TOKEN_SECRET: readString(env.UPGRADE_PREVIEW_TOKEN_SECRET),
     // CMS settings used in tests
-    CMS_SPACE_URL: env.CMS_SPACE_URL,
-    CMS_ACCESS_TOKEN: env.CMS_ACCESS_TOKEN,
+    CMS_SPACE_URL: readString(env.CMS_SPACE_URL),
+    CMS_ACCESS_TOKEN: readString(env.CMS_ACCESS_TOKEN),
   };
   // Light coercion for flags used in tests so coreEnv proxy reads are typed
-  const toBool = (v: string | undefined): boolean | undefined =>
-    v == null ? undefined : /^(true|1)$/i.test(v) ? true : /^(false|0)$/i.test(v) ? false : undefined;
-  const toNum = (v: string | undefined): number | undefined =>
-    v == null ? undefined : (Number.isNaN(Number(v)) ? undefined : Number(v));
+  const toBool = (v: Primitive): boolean | undefined => {
+    if (v == null) return undefined;
+    if (typeof v === "boolean") return v;
+    const sv = typeof v === "string" ? v : String(v);
+    if (/^(true|1)$/i.test(sv)) return true;
+    if (/^(false|0)$/i.test(sv)) return false;
+    return undefined;
+  };
+  const toNum = (v: Primitive): number | undefined => {
+    if (v == null) return undefined;
+    const num = typeof v === "number" ? v : Number(v);
+    return Number.isNaN(num) ? undefined : num;
+  };
 
   const derived: Partial<TestCoreEnv> = {
     DEPOSIT_RELEASE_ENABLED: toBool(env.DEPOSIT_RELEASE_ENABLED),
@@ -70,19 +94,19 @@ function computeCoreEnvFrom(raw: NodeJS.ProcessEnv): TestCoreEnv {
     REVERSE_LOGISTICS_INTERVAL_MS: toNum(env.REVERSE_LOGISTICS_INTERVAL_MS),
     LATE_FEE_ENABLED: toBool(env.LATE_FEE_ENABLED),
     LATE_FEE_INTERVAL_MS: toNum(env.LATE_FEE_INTERVAL_MS),
-    NEXT_PUBLIC_BASE_URL: env.NEXT_PUBLIC_BASE_URL,
+    NEXT_PUBLIC_BASE_URL: readString(env.NEXT_PUBLIC_BASE_URL),
   };
 
   return Object.assign(Object.create(null), base, derived, overrides);
 }
 
 function computeCoreEnv(): TestCoreEnv {
-  return computeCoreEnvFrom(process.env as NodeJS.ProcessEnv);
+  return computeCoreEnvFrom(process.env as EnvLike);
 }
 
 export function depositReleaseEnvRefinement(
   env: Record<string, unknown>,
-  ctx: { addIssue: (issue: { code: string; path: string[]; message: string }) => void },
+  ctx: z.RefinementCtx,
 ): void {
   for (const [key, value] of Object.entries(env)) {
     const isDeposit = key.startsWith("DEPOSIT_RELEASE_");
@@ -166,14 +190,15 @@ const baseEnvSchema = z
       ),
   })
   .passthrough()
-  .superRefine((env, ctx) => depositReleaseEnvRefinement(env, ctx as any));
+  .superRefine((env, ctx) => depositReleaseEnvRefinement(env, ctx));
 
 export const coreEnvSchema = baseEnvSchema;
 
-export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env as NodeJS.ProcessEnv): TestCoreEnv {
+export function loadCoreEnv(raw: EnvLike = process.env as EnvLike): TestCoreEnv {
   // Minimal validation to mirror real core behavior used in API tests
   const env = computeCoreEnvFrom(raw);
-  const provider = (raw.AUTH_PROVIDER || "").toLowerCase();
+  const provider =
+    typeof raw.AUTH_PROVIDER === "string" ? raw.AUTH_PROVIDER.toLowerCase() : "";
   // Validation for configurator tests around deposit/reverse/late flags
   const issues: Array<{ path: string; message: string }> = [];
   const addBoolIssue = (key: string, v: unknown) => {
@@ -211,8 +236,9 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env as NodeJS.Proce
   }
 
   // Validate sendgrid when selected
-  if ((raw.EMAIL_PROVIDER || "").toLowerCase() === "sendgrid") {
-    const hasKey = typeof raw.SENDGRID_API_KEY === "string" && raw.SENDGRID_API_KEY.trim() !== "";
+  if (typeof raw.EMAIL_PROVIDER === "string" && raw.EMAIL_PROVIDER.toLowerCase() === "sendgrid") {
+    const hasKey =
+      typeof raw.SENDGRID_API_KEY === "string" && raw.SENDGRID_API_KEY.trim() !== "";
     if (!hasKey) {
       issues.push({ path: "SENDGRID_API_KEY", message: "Required" });
     }
@@ -226,7 +252,7 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env as NodeJS.Proce
 
   // Normalize AUTH_TOKEN_TTL similar to real loader behavior
   const NON_STRING_ENV_SYMBOL = Symbol.for("acme.config.nonStringEnv");
-  const rawTtl = raw.AUTH_TOKEN_TTL as unknown;
+  const rawTtl = raw.AUTH_TOKEN_TTL;
   let normalizedTtl: number | undefined;
   const flagged = Reflect.get(raw, NON_STRING_ENV_SYMBOL) as unknown;
   const globalFlagged = (globalThis as Record<string, unknown>).__ACME_NON_STRING_ENV__;
@@ -255,7 +281,7 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env as NodeJS.Proce
     }
   }
   if (typeof normalizedTtl === "number") {
-    (env as any).AUTH_TOKEN_TTL = normalizedTtl;
+    env.AUTH_TOKEN_TTL = normalizedTtl;
     // console.debug('[core-env-mock] normalized AUTH_TOKEN_TTL ->', normalizedTtl, 'from', rawTtl);
   }
 
@@ -272,12 +298,11 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env as NodeJS.Proce
   } as TestCoreEnv;
   // Debug for TTL test case: ensure normalization is applied when input is number
   if (typeof raw.AUTH_TOKEN_TTL === "number") {
-    // eslint-disable-next-line no-console
     console.error(
       "[core-env-mock] TTL input number=",
       raw.AUTH_TOKEN_TTL,
       "=> returned=",
-      (result as any).AUTH_TOKEN_TTL,
+      result.AUTH_TOKEN_TTL,
     );
   }
   return result;
@@ -315,7 +340,7 @@ export function loadCoreEnv(raw: NodeJS.ProcessEnv = process.env as NodeJS.Proce
 })();
 
 export const coreEnv: TestCoreEnv = new Proxy({} as TestCoreEnv, {
-  get: (_t, prop: string) => (computeCoreEnv() as any)[prop],
+  get: (_t, prop: string) => computeCoreEnv()[prop],
   has: (_t, prop: string) => prop in computeCoreEnv(),
   ownKeys: () => Reflect.ownKeys(computeCoreEnv()),
   getOwnPropertyDescriptor: (_t, prop: string | symbol) =>

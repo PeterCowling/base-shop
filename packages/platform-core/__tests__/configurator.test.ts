@@ -631,13 +631,19 @@ describe("Config checks", () => {
 
   it("getLaunchStatus returns ok when required checks pass", async () => {
     mockShop({
-      navigation: [{ label: "Home", url: "/" }],
+      navigation: [
+        { label: "Home", url: "/" },
+        { label: "Terms", url: "/terms" },
+      ],
       themeId: "base",
       themeTokens: { primary: "primary" },
       paymentProviders: ["stripe"],
       billingProvider: "stripe",
       shippingProviders: ["dhl"],
       domain: { name: "example.com" },
+      termsUrl: "https://example.com/terms",
+      privacyUrl: "https://example.com/privacy",
+      returnPolicyUrl: "https://example.com/refund",
     });
     mockSettings({
       languages: ["en"],

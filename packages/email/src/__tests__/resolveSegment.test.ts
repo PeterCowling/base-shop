@@ -147,11 +147,17 @@ describe('resolveSegment', () => {
       mockStat.mockResolvedValue({ mtimeMs: 1 });
       const err = new Error('listEvents error');
       mockListEvents.mockRejectedValue(err);
-      const spy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const { logger } = await import("@acme/shared-utils");
+      const spy = jest.fn();
+      const originalError = logger.error;
+      logger.error = spy as any;
       const { resolveSegment } = await import('../segments');
       await expect(resolveSegment('shop1', 'vip')).resolves.toEqual([]);
-      expect(spy).toHaveBeenCalledWith('Failed to list analytics events', err);
-      spy.mockRestore();
+      expect(spy).toHaveBeenCalledWith('Failed to list analytics events', {
+        shop: 'shop1',
+        error: err,
+      });
+      logger.error = originalError;
     });
   });
 

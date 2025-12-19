@@ -1,6 +1,7 @@
 import { readFile, stat } from "fs/promises";
 import path from "path";
 import { pathToFileURL } from "url";
+import { createRequire } from "module";
 import { logger } from "../utils";
 
 function unique<T>(arr: T[]): T[] {
@@ -106,10 +107,17 @@ export async function resolvePluginEntry(dir: string): Promise<{
   }
 }
 
-export async function importByType(entryPath: string, _isModule: boolean) {
-  // Always use dynamic import via file URL. In modern Node, importing CJS
-  // yields a namespace object where `default` maps to `module.exports`, which
-  // is compatible with our plugin loader expectations. This also avoids
-  // webpack/Next warnings about createRequire argument parsing during builds.
-  return import(/* webpackIgnore: true */ pathToFileURL(entryPath).href);
+export async function importByType(entryPath: string, isModule: boolean) {
+  const specifier = pathToFileURL(entryPath).href;
+
+  if (isModule) {
+    return import(/* webpackIgnore: true */ specifier);
+  }
+
+  try {
+    const req = createRequire(entryPath);
+    return req(entryPath);
+  } catch {
+    return import(/* webpackIgnore: true */ specifier);
+  }
 }

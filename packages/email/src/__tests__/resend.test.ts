@@ -111,9 +111,10 @@ describe("ResendProvider", () => {
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "from@example.com";
     send.mockRejectedValueOnce("fail");
-    const errorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => undefined);
+    const { logger } = await import("@acme/shared-utils");
+    const errorSpy = jest.fn();
+    const originalError = logger.error;
+    logger.error = errorSpy as any;
     const { ResendProvider } = await import("../providers/resend");
     const provider = new ResendProvider();
     const promise = provider.send({
@@ -128,16 +129,22 @@ describe("ResendProvider", () => {
       message: "Unknown error",
       retryable: true,
     });
-    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith("Campaign email send failed", {
+      provider: "resend",
+      recipient: "t@example.com",
+      campaignId: undefined,
+    });
+    logger.error = originalError;
   });
 
   it("wraps object rejections without message in retryable ProviderError", async () => {
     process.env.RESEND_API_KEY = "rs";
     process.env.CAMPAIGN_FROM = "from@example.com";
     send.mockRejectedValueOnce({ statusCode: 500 });
-    const errorSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => undefined);
+    const { logger } = await import("@acme/shared-utils");
+    const errorSpy = jest.fn();
+    const originalError = logger.error;
+    logger.error = errorSpy as any;
     const { ResendProvider } = await import("../providers/resend");
     const provider = new ResendProvider();
     const promise = provider.send({
@@ -152,14 +159,20 @@ describe("ResendProvider", () => {
       message: "Unknown error",
       retryable: true,
     });
-    expect(errorSpy).toHaveBeenCalledTimes(1);
+    expect(errorSpy).toHaveBeenCalledWith("Campaign email send failed", {
+      provider: "resend",
+      recipient: "t@example.com",
+      campaignId: undefined,
+    });
+    logger.error = originalError;
   });
 
   it("logs warning when API key missing", async () => {
     process.env.CAMPAIGN_FROM = "from@example.com";
-    const warnSpy = jest
-      .spyOn(console, "warn")
-      .mockImplementation(() => undefined);
+    const { logger } = await import("@acme/shared-utils");
+    const warnSpy = jest.fn();
+    const originalWarn = logger.warn;
+    logger.warn = warnSpy as any;
     const { ResendProvider } = await import("../providers/resend");
     const provider = new ResendProvider();
     await provider.send({
@@ -169,9 +182,15 @@ describe("ResendProvider", () => {
       text: "t",
     });
     expect(warnSpy).toHaveBeenCalledWith(
-      "Resend API key is not configured; skipping email send"
+      "Resend API key is not configured; skipping email send",
+      {
+        provider: "resend",
+        recipient: "t@example.com",
+        campaignId: undefined,
+      }
     );
     expect(send).not.toHaveBeenCalled();
+    logger.warn = originalWarn;
   });
 
   it("getCampaignStats returns empty stats when API key missing", async () => {

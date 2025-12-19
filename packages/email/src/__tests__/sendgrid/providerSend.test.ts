@@ -64,7 +64,10 @@ describe("SendgridProvider send", () => {
 
   it("warns when API key is missing", async () => {
     process.env.CAMPAIGN_FROM = "campaign@example.com";
-    const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+    const { logger } = await import("@acme/shared-utils");
+    const warn = jest.fn();
+    const originalWarn = logger.warn;
+    logger.warn = warn as any;
 
     sgMail.send.mockResolvedValueOnce(undefined);
 
@@ -79,11 +82,16 @@ describe("SendgridProvider send", () => {
     });
 
     expect(warn).toHaveBeenCalledWith(
-      "Sendgrid API key is not configured; attempting to send email"
+      "Sendgrid API key is not configured; attempting to send email",
+      {
+        provider: "sendgrid",
+        recipient: "to@example.com",
+        campaignId: undefined,
+      }
     );
     expect(sgMail.send).toHaveBeenCalled();
 
-    warn.mockRestore();
+    logger.warn = originalWarn;
   });
 
   it("throws ProviderError when send fails", async () => {
@@ -197,9 +205,10 @@ describe("SendgridProvider send", () => {
     const { ProviderError } = await import("../../providers/types");
     const provider = new SendgridProvider();
 
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => undefined);
+    const { logger } = await import("@acme/shared-utils");
+    const consoleSpy = jest.fn();
+    const originalError = logger.error;
+    logger.error = consoleSpy as any;
 
     const promise = provider.send({
       to: "to@example.com",
@@ -214,13 +223,16 @@ describe("SendgridProvider send", () => {
       retryable: true,
     });
 
-    expect(consoleSpy).toHaveBeenCalledWith("Campaign email send failed", {
-      provider: "sendgrid",
-      recipient: "to@example.com",
-      campaignId: undefined,
-    });
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "Campaign email send failed",
+      expect.objectContaining({
+        provider: "sendgrid",
+        recipient: "to@example.com",
+        campaignId: undefined,
+      })
+    );
 
-    consoleSpy.mockRestore();
+    logger.error = originalError;
   });
 
   it("wraps object rejection without message in ProviderError", async () => {
@@ -233,9 +245,10 @@ describe("SendgridProvider send", () => {
     const { ProviderError } = await import("../../providers/types");
     const provider = new SendgridProvider();
 
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => undefined);
+    const { logger } = await import("@acme/shared-utils");
+    const consoleSpy = jest.fn();
+    const originalError = logger.error;
+    logger.error = consoleSpy as any;
 
     const promise = provider.send({
       to: "to@example.com",
@@ -250,12 +263,15 @@ describe("SendgridProvider send", () => {
       retryable: true,
     });
 
-    expect(consoleSpy).toHaveBeenCalledWith("Campaign email send failed", {
-      provider: "sendgrid",
-      recipient: "to@example.com",
-      campaignId: undefined,
-    });
+    expect(consoleSpy).toHaveBeenCalledWith(
+      "Campaign email send failed",
+      expect.objectContaining({
+        provider: "sendgrid",
+        recipient: "to@example.com",
+        campaignId: undefined,
+      })
+    );
 
-    consoleSpy.mockRestore();
+    logger.error = originalError;
   });
 });

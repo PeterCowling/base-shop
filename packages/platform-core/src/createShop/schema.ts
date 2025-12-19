@@ -106,11 +106,14 @@ export function prepareOptions(
 ): PreparedCreateShopOptions {
   const parsed: z.infer<typeof createShopOptionsSchema> =
     createShopOptionsSchema.parse(opts);
+  const payments = Array.isArray(parsed.payment) ? parsed.payment : [];
   const billingProvider =
     parsed.billingProvider ??
-    (parsed.payment.includes("stripe")
+    (payments.includes("stripe")
       ? "stripe"
-      : parsed.payment[0] ?? "");
+      : payments[0] ?? "");
+  const shipping = Array.isArray(parsed.shipping) ? parsed.shipping : [];
+  const tax = parsed.tax ?? "taxjar";
   return {
     name: parsed.name ?? id,
     logo:
@@ -122,10 +125,10 @@ export function prepareOptions(
     theme: parsed.theme ?? "base",
     template: parsed.template ?? "template-app",
     themeOverrides: parsed.themeOverrides ?? {},
-    payment: parsed.payment,
+    payment: payments,
     billingProvider,
-    shipping: parsed.shipping,
-    tax: parsed.tax,
+    shipping,
+    tax,
     pageTitle: fillLocales(parsed.pageTitle, "Home"),
     pageDescription: fillLocales(parsed.pageDescription, ""),
     socialImage: parsed.socialImage ?? "",

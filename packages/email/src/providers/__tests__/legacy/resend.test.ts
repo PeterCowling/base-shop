@@ -6,8 +6,8 @@ jest.mock("resend", () => ({ Resend: ResendCtor }));
 describe("ResendProvider", () => {
   const realEnv = process.env;
   const realFetch = global.fetch;
-  const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
-  const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+  let warnSpy: jest.SpyInstance;
+  let errorSpy: jest.SpyInstance;
 
   const options = {
     to: "to@example.com",
@@ -16,22 +16,25 @@ describe("ResendProvider", () => {
     text: "Text",
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     jest.resetModules();
+    const { logger } = await import("@acme/shared-utils");
+    warnSpy = jest.fn();
+    errorSpy = jest.fn();
+    logger.warn = warnSpy as any;
+    logger.error = errorSpy as any;
     process.env = { ...realEnv };
     global.fetch = realFetch;
     mockSend.mockReset();
     ResendCtor.mockClear();
-    warnSpy.mockClear();
-    errorSpy.mockClear();
     delete process.env.RESEND_API_KEY;
   });
 
   afterAll(() => {
     process.env = realEnv;
     global.fetch = realFetch;
-    warnSpy.mockRestore();
-    errorSpy.mockRestore();
+    warnSpy?.mockRestore();
+    errorSpy?.mockRestore();
   });
 
   it("sanityCheck resolves when credentials valid", async () => {
@@ -63,7 +66,14 @@ describe("ResendProvider", () => {
     const provider = new ResendProvider();
     await expect(provider.send(options)).resolves.toBeUndefined();
     expect(mockSend).not.toHaveBeenCalled();
-    expect(warnSpy).toHaveBeenCalled();
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Resend API key is not configured; skipping email send",
+      {
+        provider: "resend",
+        recipient: options.to,
+        campaignId: undefined,
+      }
+    );
   });
 
   it("wraps non-retryable ResendError", async () => {
@@ -210,4 +220,3 @@ describe("ResendProvider", () => {
     });
   });
 });
-

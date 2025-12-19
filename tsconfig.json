@@ -8,6 +8,7 @@
     { "path": "./apps/dashboard" },
     { "path": "./apps/cover-me-pretty" },
     { "path": "./apps/skylar" },
+    { "path": "./apps/product-pipeline" },
     { "path": "./apps/api" },
     { "path": "packages/platform-core" },
     { "path": "./scripts" }

@@ -1,12 +1,17 @@
 // packages/platform-core/repositories/shops.server.ts
 import "server-only";
 
+import { readFile } from "fs/promises";
+import path from "path";
 import type { Shop } from "@acme/types";
+import { shopSchema } from "@acme/types";
 import { defaultFilterMappings } from "../defaultFilterMappings";
 import { baseTokens, loadThemeTokens } from "../themeTokens/index";
 import { prisma } from "../db";
 import { getShopById, updateShopInRepo } from "./shop.server";
 import { listShopsInDataRoot } from "../utils/safeFs";
+import { resolveDataRoot } from "../dataRoot";
+import { validateShopName } from "../shops";
 export {
   diffHistory,
   getShopSettings,
@@ -72,9 +77,45 @@ export async function readShop(shop: string): Promise<Shop> {
     const data = await getShopById<Shop>(shop);
     return await applyThemeData(data);
   } catch {
-    // If the repository cannot supply a shop (for example in tests or when the
-    // backing store is empty), fall through to an in-memory default shape so
-    // callers have a consistent object to work with.
+    // Fall through to the layered fallbacks below.
+  }
+
+  const normalize = (data: Shop): Shop => ({
+    ...data,
+    id: data.id ?? shop,
+    name: data.name ?? shop,
+    themeId: data.themeId ?? "base",
+    filterMappings: data.filterMappings ?? { ...defaultFilterMappings },
+    priceOverrides: data.priceOverrides ?? {},
+    localeOverrides: data.localeOverrides ?? {},
+    navigation: data.navigation ?? [],
+    themeDefaults: data.themeDefaults ?? {},
+    themeOverrides: data.themeOverrides ?? {},
+  });
+
+  const parseAndApply = async (raw: unknown): Promise<Shop | null> => {
+    const parsed = shopSchema.safeParse(raw);
+    if (!parsed.success) return null;
+    return applyThemeData(normalize(parsed.data as Shop));
+  };
+
+  try {
+    const row = await prisma.shop.findUnique({ where: { id: shop } });
+    const fromDb = await parseAndApply((row as { data?: unknown } | null)?.data ?? row);
+    if (fromDb) return fromDb;
+  } catch {
+    // ignore db errors and fall back to filesystem/default
+  }
+
+  try {
+    const safeShop = validateShopName(shop);
+    const fp = path.join(resolveDataRoot(), safeShop, "shop.json");
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- CORE-1010 path validated via validateShopName + resolveDataRoot
+    const raw = await readFile(fp, "utf8");
+    const fromFs = await parseAndApply(JSON.parse(raw));
+    if (fromFs) return fromFs;
+  } catch {
+    // ignore filesystem errors and fall back to defaults
   }
 
   const themeId = "base";

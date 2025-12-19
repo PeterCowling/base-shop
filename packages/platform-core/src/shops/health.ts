@@ -42,7 +42,7 @@ function healthFilePath(shopId: string): string {
   return path.join(DATA_ROOT, id, "health.json");
 }
 
-function readHealthJson(shopId: string): HealthJson | null {
+export function readHealthJson(shopId: string): HealthJson | null {
   try {
     const fp = healthFilePath(shopId);
     // eslint-disable-next-line security/detect-non-literal-fs-filename -- path derived from validated shopId and DATA_ROOT
@@ -82,7 +82,7 @@ interface UpgradeHistoryEntry {
   timestamp?: string;
 }
 
-function readLatestUpgrade(shopId: string): UpgradeHistoryEntry | null {
+export function readLatestUpgrade(shopId: string): UpgradeHistoryEntry | null {
   try {
     const id = validateShopName(shopId);
     const historyPath = path.join(DATA_ROOT, id, "history.json");
@@ -98,13 +98,19 @@ function readLatestUpgrade(shopId: string): UpgradeHistoryEntry | null {
   return null;
 }
 
+export const healthReaders = {
+  readDeployInfo,
+  readHealthJson,
+  readLatestUpgrade,
+};
+
 export async function deriveOperationalHealth(
   shopId: string,
   env?: Environment,
 ): Promise<OperationalHealthSummary> {
-  const info = readDeployInfo(shopId);
-  const healthJson = readHealthJson(shopId);
-  const latestUpgrade = readLatestUpgrade(shopId);
+  const info = healthReaders.readDeployInfo(shopId);
+  const healthJson = healthReaders.readHealthJson(shopId);
+  const latestUpgrade = healthReaders.readLatestUpgrade(shopId);
 
   if (!info) {
     return {

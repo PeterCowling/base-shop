@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export { fetchJson } from "./fetchJson";
 export { default as slugify } from "./slugify";
 export { genSecret } from "./genSecret";

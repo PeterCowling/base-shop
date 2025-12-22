@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Reseförsäkring för Amalfikusten",
+    "description": "Vad du ska tänka på när du väljer reseförsäkring för Positano och Amalfikusten."
+  },
+  "linkLabel": "Reseförsäkring för Amalfikusten",
+  "intro": [
+    "Travel insurance basics for the Amalfi Coast: health, cancellations, electronics, and activity coverage."
+  ],
+  "sections": [
+    {
+      "id": "coverage",
+      "title": "Coverage essentials",
+      "body": [
+        "Health/accident, cancellations/delays, and electronics; consider hiking coverage for the Path of the Gods."
+      ]
+    },
+    {
+      "id": "claims",
+      "title": "Claims & docs",
+      "body": [
+        "Keep receipts, police reports for theft, and confirmations of delays/cancellations; check deadlines and original/copy requirements."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need special coverage for ferries?",
+      "a": [
+        "Usually covered under general transport; weather-related delays/cancellations vary by policy — check the conditions."
+      ]
+    }
+  ]
+}

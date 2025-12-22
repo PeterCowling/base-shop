@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Visszaút: Fornillo Beach → Hostel Brikette",
+    "description": "Kövesd a tengerparti sétányt a Spiaggia Grandéig, nézz körül az üzletekben, majd szállj fel az interno buszra, amely visszavisz a hostelhez."
+  },
+  "linkLabel": "Visszaút: Fornillo Beach → Hostel Brikette",
+  "intro": [
+    "Visszatérés a Hostel Brikette -be a Fornillo Beach -ből, ha a vízpartot követi a Spiaggia Grande felé, és a városközpontból indul az interno busszal. Ez az út a felfelé lépcsők nagy részét a szintű sétányra cseréli, és egy rövid mászást a hostel mellett."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-return",
+      "title": "Tervezze meg a visszatérését",
+      "body": [
+        "Hagyjon extra időt a fotómegállóhoz vagy a Spiaggia Grande körüli üzletek böngészéséhez, mielőtt felszállna a buszra.",
+        "Ez a visszatérési út hosszabb, mint a parancsikon lépcsőjének felmászása, de délután hűvösebb marad, és a tengerparti nap után enyhébb befejezést biztosít."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Útvonal a Fornillo Beach -től a Hostel Brikette -ig",
+      "body": [
+        "1. Sétáljon a Fornillo strand bal oldalán (balra, amikor szembe nézel a tengerrel).",
+        "2. Kövesse a part menti utat a Spiaggia Grande felé, amíg el nem éri a fő strandot és a kikötő területét.",
+        "3. Haladjon át a kikötői kapun, hagyja el a mólót, és folytassa egyenesen a vízparti sétány mentén.",
+        "4. Vegye ki az utat közvetlenül a tengerpartról, és folytassa a szárazföldön.",
+        "5. Forduljon jobbra az üzletek közötti első sikátorban.",
+        "6. Mászjon fel a lépcsőn, amely a Chiesa di Santa Maria Assunta felé vezet.",
+        "7. a sáv tetején forduljon balra, és kövesse felfelé.",
+        "8. Amikor a sáv találkozik a csomópont egyirányú útjával, elérte a Chiesa Nuova interno buszmegállóját. Haladjon egy megállóval a Hostel Brikette számára."
+      ]
+    },
+    {
+      "id": "bus-connection",
+      "title": "Fogd meg az internó buszt",
+      "body": [
+        "A Chiesa Nuova megállójától az Orange Interno Positano busz egy rövid sétára esik a Hostel Brikette -től - tökéletes, ha el akarja kerülni a teljes lépcsőn való mászást.",
+        "A jegyeket a Tabacchi/Newsagent kioszkokban adják el az egész városban, ezért vásárolja meg őket, mielőtt lefelé halad, vagy a recepcióval ellenőrizze a rendelkezésre állást."
+      ]
+    }
+  ],
+  "tips": [
+    "Vásároljon interno buszjegyeket bármilyen Tabacchi/Newsagentnél, mielőtt a tengerpartra megy.",
+    "Mentse el a lépcsőzetes parancsikont a reggelire; Ez a festői visszatérés egy hosszú úszás után nyugodtabb.",
+    "Összekapcsolja azt a Fornillo Beach Guide útmutatóval a Beach Club részleteihez és a csendes helyekhez.",
+    "Olvassa el a Positano strandok áttekintését, hogy megtervezze, hol lehet úszni tartózkodása alatt."
+  ],
+  "faqsTitle": "Útvonal GYIK",
+  "faqs": [
+    {
+      "q": "Mennyi ideig tart a visszatérés?",
+      "a": [
+        "A Spiaggia Grande -n keresztüli sétálás körülbelül 10 extra percet ad hozzá a közvetlen lépcsőhöz képest, de a buszba való felszállás előtt elkerüli a meredek emelkedés nagy részét."
+      ]
+    },
+    {
+      "q": "Hol lehet elkapni a buszt?",
+      "a": [
+        "Lovagoljon a narancssárga interno positano busszal a Chiesa Nuova megállóból a sáv tetején. Ez a hostel közelében esik, és a jegyek a Tabacchi/Newsagent kioszkokból származnak."
+      ]
+    }
+  ]
+}

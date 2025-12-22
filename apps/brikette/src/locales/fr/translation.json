@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Auberge Brikette",
+    "reserve": "Réserver maintenant"
+  },
+  "intro": {
+    "title": "Réservez en direct et économisez",
+    "description": "Réservez votre séjour sur notre site web et recevez une offre de repas gratuite, d'une valeur allant jusqu'à 29 euros par jour."
+  },
+  "rooms": {
+    "title": "Chambres",
+    "value_dorms": "Dortoirs économiques",
+    "premium_dorms": "Chambres Premium",
+    "superior_dorms": "Chambres Supérieures",
+    "private_room": "Chambre Privée"
+  },
+  "careers": {
+    "jobTitle": "Rejoignez l'équipe de l'Hostel Brikette",
+    "jobDescription": "Nous recherchons en permanence des personnes dynamiques qui aiment l'hospitalité. Si vous vous épanouissez dans un environnement au rythme soutenu, contactez-nous !",
+    "ctaLabel": "Demander les postes disponibles"
+  },
+  "errorBoundary": {
+    "title": "Une erreur est survenue.",
+    "reload": "Recharger la page"
+  },
+  "meta": {
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@brikette"
+  },
+  "internalErrors": {
+    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+  }
+}

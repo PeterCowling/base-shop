@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "ラヴェッロ音楽祭ガイド",
+    "description": "開催時期、チケット、ポジターノからのアクセス、コンサートのマナー。"
+  },
+  "linkLabel": "ラヴェッロ音楽祭ガイド",
+  "intro": [
+    "翻訳を準備中です。"
+  ],
+  "sections": [
+    {
+      "id": "tickets",
+      "title": "Securing tickets",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Getting there",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Concert etiquette",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "late-return",
+      "title": "Late return logistics",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "tips": [
+    "翻訳を準備中です。",
+    "翻訳を準備中です。"
+  ],
+  "faqs": [
+    {
+      "q": "翻訳を準備中です。",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "q": "翻訳を準備中です。",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "eventSchema": {
+    "name": "Ravello Festival",
+    "startDate": "2025-07-01",
+    "endDate": "2025-09-15",
+    "locationName": "Ravello Festival venues",
+    "addressLocality": "Ravello",
+    "description": "翻訳を準備中です。"
+  }
+}

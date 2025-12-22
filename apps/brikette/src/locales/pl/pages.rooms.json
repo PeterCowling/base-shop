@@ -1,0 +1,33 @@
+{
+  "detail": {
+    "room_12": {
+      "hero": {
+        "eyebrow": "Dorm mieszany Superior • Taras",
+        "title": "Budź się z panoramą Positano na ogromnym wspólnym tarasie",
+        "subtitle": "Nasz największy taras dormu łączy sześć łóżek z prywatnymi udogodnieniami wewnątrz.",
+        "bullets": [
+          "Panoramiczny taras z leżankami i stolikami śniadaniowymi",
+          "Prywatna łazienka z zapasem świeżych ręczników",
+          "Szybkie Wi‑Fi, klimatyzacja i szafki na karty dla każdego gościa"
+        ]
+      },
+      "outline": {
+        "heading": "Czego spodziewać się w dormie z tarasem",
+        "items": [
+          {
+            "title": "Przestrzeń na zewnątrz dla wszystkich",
+            "body": "Pijcie wieczorne spritzy na sofkach i długich ławach, patrząc na pastelową panoramę Positano przed sobą."
+          },
+          {
+            "title": "Przestronne miejsce do spania",
+            "body": "Sześć solidnych łóżek piętrowych z zasłonkami, indywidualnym oświetleniem i gniazdkami zapewnia ciszę, gdy potrzebujesz odpoczynku."
+          },
+          {
+            "title": "Gotowy na dni na plaży",
+            "body": "Schowaj bagaż w szafkach otwieranych kartą, rozwieś stroje na tarasowych wieszakach i szybko odśwież się w prywatnej łazience."
+          }
+        ]
+      }
+    }
+  }
+}

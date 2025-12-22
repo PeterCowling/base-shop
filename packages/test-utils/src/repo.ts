@@ -1,3 +1,4 @@
+/* i18n-exempt file -- TEST-1234 test env fixtures [ttl=2026-12-31] */
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -25,6 +26,7 @@ export async function withTempRepo(
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), prefix));
   const shopDir = path.join(dir, 'data', 'shops', shopId);
   if (createShopDir) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-1234 temp fixture directory
     await fs.mkdir(shopDir, { recursive: true });
   }
 
@@ -34,7 +36,7 @@ export async function withTempRepo(
   // Response.json shim is loaded globally via test/setup-response-json.ts
 
   // Polyfill setImmediate used by fast-csv in some test environments
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TEST-1234 setImmediate shim needs generic arguments
   (global as any).setImmediate ||= ((fn: (...args: any[]) => void, ...args: any[]) =>
     setTimeout(fn, 0, ...args));
 

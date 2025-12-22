@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Guide to Sorrento (Gateway to the Amalfi Coast)",
+    "description": "Base vs day trip, transport connections, and what to see."
+  },
+  "linkLabel": "Guia de Sorrento (porta de entrada da Costa Amalfitana)",
+  "intro": [
+    "Sorrento é uma base prática: muita oferta de alojamento, ligações ferroviárias fáceis e conexões rápidas para Capri e Pompeia. A troca é menos cenário de postal do que Positano."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Por que ficar em Sorrento",
+      "body": [
+        "Mais escolha de alojamento e acesso ferroviário direto. Troca: menos vistas de postal que em Positano."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Ligações para Positano",
+      "body": [
+        "Autocarros SITA frequentes e ferries sazonais. Compre bilhetes de autocarro antes de embarcar; ferries esgotam em dias de pico."
+      ]
+    },
+    {
+      "id": "see",
+      "title": "O que ver",
+      "body": [
+        "Centro histórico, marinas e miradouros; ponto de partida conveniente para Capri e Pompeia."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Sorrento é mais barato que Positano?",
+      "a": [
+        "Em geral sim — poupe 30–60 € por noite em alojamento e encontre mais opções de refeições a preços intermédios."
+      ]
+    },
+    {
+      "q": "Até que horas circulam os comboios para Nápoles?",
+      "a": [
+        "A Circumvesuviana funciona até cerca das 22:30; depois disso, use autocarros regionais ou pernoite se tiver voo tardio."
+      ]
+    }
+  ]
+}

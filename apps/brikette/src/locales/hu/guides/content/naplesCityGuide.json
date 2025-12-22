@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Ételek, történelem, városrészek és egynapos tippek Positanóból."
+  },
+  "linkLabel": "Nápoly városkalauz az Amalfi-parti utazóknak",
+  "intro": [
+    "Nápoly az Amalfi-part kapuja. Szánj rá egy-két napot a történelmi utcákra, a legendás pizzázókra és a könnyű kiruccanásokra."
+  ],
+  "sections": [
+    {
+      "id": "neighbourhoods",
+      "title": "Kulcsfontosságú városrészek",
+      "body": [
+        "Sétálj végig a Spaccanapolin templomokért, Betlehem-műhelyekért és a San Lorenzo alatti föld alatti túráért.",
+        "Este irány a tengerpart Chiaia negyedében és a Castel dell'Ovo környéke egy szellős andalgáshoz."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Étel és kávé",
+      "body": [
+        "Állj be sorba a Sorbillo vagy a Da Michele pizzázónál (30–45 perc várakozás). Sfogliatellát és presszókávét a Gran Caffè Gambrinusban kóstolj.",
+        "Ha gyors falatra vágysz, próbáld ki a cuoppo frittót (sült tengeri herkentyű papírtölcsérben) 6–8 euróért."
+      ]
+    },
+    {
+      "id": "daytrips",
+      "title": "Egynapos kiruccanások",
+      "body": [
+        "A Napoli Centrale állomásról indulnak a nagysebességű vonatok Rómába (1 óra 10 perc) vagy Pompeii felé (40 perc a Circumvesuvianával).",
+        "Ha Positanóba továbbutazol, a csomagmegőrző 7 euró táskánként a pályaudvaron."
+      ]
+    }
+  ],
+  "tips": [
+    "Legyen nálad érintéses kártya a metróhoz, és vegyél napijegyet (5,60 €), ha sokat utazol.",
+    "Az értékeket tartsd elöl, és használj keresztpántos táskát a zsúfolt sikátorokban."
+  ],
+  "faqs": [
+    {
+      "q": "Biztonságos Nápolyt gyalog bejárni?",
+      "a": [
+        "Igen, a szokásos nagyvárosi óvatossággal. Maradj kivilágított utcákon éjszaka, ne mutogass sok készpénzt, és éjfél után használj hivatalos taxit."
+      ]
+    },
+    {
+      "q": "Hol tudom eltenni a csomagom?",
+      "a": [
+        "A Napoli Centrale és a Piazza Garibaldi állomásokon személyzettel működő megőrzők vannak. Zsúfolt hétvégéken foglalj előre online szekrényt, hogy biztosan legyen hely."
+      ]
+    }
+  ]
+}

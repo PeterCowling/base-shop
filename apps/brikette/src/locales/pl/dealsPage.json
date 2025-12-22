@@ -1,0 +1,49 @@
+{
+  "slug": "deals",
+  "meta": {
+    "title": "Oferta lato 2025 – oszczędź 15%",
+    "description": "Letnia oferta ograniczona czasowo – dodatkowe 15% zniżki przy rezerwacjach bezpośrednich.",
+    "ogImageAlt": "Baner zniżki letniej"
+  },
+  "title": "Oszczędź {{percent}}% na pobycie w sezonie {{season}}",
+  "promo": "Zarezerwuj bezpośrednio tego lata i zyskaj dodatkowe {{percent}}% rabatu.",
+  "banner": "Zostało tylko {{beds}} łóżek w tej cenie — oferta kończy się za {{time}}!",
+  "timeRemaining": {
+    "lessThanHour": "0 godz.",
+    "hours_one": "{{count}} godz.",
+    "hours_other": "{{count}} godz.",
+    "days_one": "{{count}} dzień",
+    "days_other": "{{count}} dni"
+  },
+  "buttonReserve": "Zarezerwuj teraz",
+  "ogImageAlt": "Baner zniżki letniej",
+  "perksHeading": "Korzyści z rezerwacji bezpośredniej",
+  "perksIntro": "Te korzyści są dostępne wyłącznie dla gości rezerwujących bezpośrednio na naszej stronie internetowej.",
+  "perksGuarantee": "Każda rezerwacja dokonana bezpośrednio na naszej stronie automatycznie odblokowuje te ekskluzywne korzyści.",
+  "perksIntroLink": "Zobacz wszystkie aktualne oferty",
+  "perksList": [
+    "Do 25% taniej od ceny regularnej po zastosowaniu kuponu",
+    "Bezpłatne śniadanie",
+    "Bezpłatny napój wieczorny"
+  ],
+  "expired": {
+    "message": "Ta ograniczona oferta zakończyła się __placeholder_0__."
+  },
+  "restrictions": {
+    "heading": "Ważne informacje",
+    "stayWindow": "Ważne dla pobytów od {{from}} do {{to}}.",
+    "minAdvance": "Rezerwuj co najmniej {{days}} dni wcześniej.",
+    "minAdvancePrefix": "Rezerwuj co najmniej",
+    "minAdvanceSuffix": "wcześniej.",
+    "los": "Minimum {{min}} nocy, maksymalnie {{max}} nocy.",
+    "nonRefundable": "Tylko dla stawek bezzwrotnych oraz rezerwacji bezpośrednich (przez stronę hostelu).",
+    "nonRefundablePrefix": "Tylko dla",
+    "nonRefundableSuffix": "oraz rezerwacji bezpośrednich przez stronę hostelu.",
+    "stackable": "{{percent}}% łączy się z naszą standardową 10% zniżką za rezerwację bezpośrednią.",
+    "other": "Obowiązują standardowe warunki."
+  },
+  "seasonLabel": "lato 2025",
+  "robots": {
+    "expiredNoindex": "Noindex, śledź"
+  }
+}

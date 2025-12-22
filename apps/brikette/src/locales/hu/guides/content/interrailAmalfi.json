@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Interrail/olasz vasúti bérlet az Amalfi-partra",
+    "description": "Hogyan kombináld a bérletet a partvidéki buszokkal és kompokkal, foglalási tanácsokkal."
+  },
+  "linkLabel": "Interrail/olasz vasúti bérlet az Amalfi-partra",
+  "intro": [
+    "Interrail vagy Italy Rail Pass használata az Amalfi-partra utazáshoz: mely vonalakat érdemes választani, milyen pótjegyek kellenek, és hogyan jutsz el az utolsó szakaszon Positanóig."
+  ],
+  "sections": [
+    {
+      "id": "routes",
+      "title": "Fő útvonalak",
+      "body": [
+        "Róma → Nápoly/Salerno nagysebességű vonattal; onnan helyi járatok Sorrentóba, majd busz Positanóba."
+      ]
+    },
+    {
+      "id": "supplements",
+      "title": "Pótjegyek és helyfoglalás",
+      "body": [
+        "A Frecciarossa/Italo járatok gyakran kötelező helyjegyesek; a regionális vonatok nem, de zsúfoltak lehetnek."
+      ]
+    },
+    {
+      "id": "last-mile",
+      "title": "Az utolsó szakasz Positanóig",
+      "body": [
+        "Nápolyból: Circumvesuviana Sorrentóig, majd SITA busz. Salernóból: szezonban komp vagy busz."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Megéri a bérlet?",
+      "a": [
+        "Csak akkor, ha több hosszú távú szakaszt használsz; külön jegyekkel gyakran olcsóbbra jössz ki."
+      ]
+    }
+  ]
+}

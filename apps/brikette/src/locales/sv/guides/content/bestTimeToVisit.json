@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Bästa tiden att besöka Positano",
+    "description": "Månad för månad: väder, folkmängder och färjeschema."
+  },
+  "linkLabel": "Bästa tiden att besöka Positano",
+  "intro": [
+    "Planera resan med realistiska förväntningar på väder, folkmängd och färjeutbud.",
+    "Använd säsongstabellen och månad-för-månad-noterna för att hitta när Positano matchar dina prioriteringar."
+  ],
+  "tocTitle": "På denna sida",
+  "toc": [
+    {
+      "href": "#matrix",
+      "label": "Matris: väder / folkmängd / priser"
+    },
+    {
+      "href": "#months",
+      "label": "Notiser månad för månad"
+    },
+    {
+      "href": "#faqs",
+      "label": "Vanliga frågor"
+    }
+  ],
+  "sections": [
+    {
+      "id": "matrix",
+      "title": "Matris: väder / folkmängd / priser",
+      "body": [
+        "Högsäsong (jun–aug) = varmt, trångt och högsta priserna. Skuldersäsong (apr–maj, sep–okt) = mildare väder och bättre värde. Vinter (nov–mar) = lugnt med begränsad service."
+      ]
+    },
+    {
+      "id": "months",
+      "title": "Månad för månad",
+      "body": [
+        "April: färjorna startar; milda temperaturer och få människor.",
+        "Maj: toppenväder; fler avgångar; helgerna blir livligare.",
+        "Juni–augusti: högsäsong; hetta och köer — förboka transporter och aktiviteter.",
+        "September: varmt hav och något lugnare än augusti.",
+        "Oktober: skuldersäsong; färjorna glesas ut mot slutet av månaden.",
+        "November–mars: stilla lågsäsong med reducerad service; bussarna tar över som ryggrad.",
+        "Färjefrekvensen ökar under våren, toppar på sommaren och dras ner i slutet av oktober."
+      ]
+    }
+  ],
+  "schemaMonths": [
+    {
+      "name": "April",
+      "note": "Start på färjesäsongen; milda temperaturer; färre besökare."
+    },
+    {
+      "name": "Maj",
+      "note": "Mycket bra väder; täta färjeavgångar; livligare helger."
+    },
+    {
+      "name": "Juni–augusti",
+      "note": "Högsäsong; varmt; förboka transporter och aktiviteter."
+    },
+    {
+      "name": "September",
+      "note": "Varmt hav; lite färre besökare än i augusti."
+    },
+    {
+      "name": "Oktober",
+      "note": "Skuldersäsong; färjorna glesas ut mot slutet av månaden."
+    },
+    {
+      "name": "November–mars",
+      "note": "Lugnt; många tjänster reducerade; bussar är huvudtransport."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "När är havet som varmast?",
+      "a": [
+        "Vanligtvis från slutet av juni till början av september är vattnet varmast för bad."
+      ]
+    }
+  ]
+}

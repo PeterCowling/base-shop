@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "مقال واحد",
+  "articleCount_other": "{{count}} مقالات",
+  "topTagsHeading": "أبرز الوسوم",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "seo": {
+    "title": "Positano to Pompeii: how to go",
+    "description": "Step-by-step directions to visit Pompeii from Positano using bus + train or ferry + train (summer)."
+  },
+  "linkLabel": "Positano to Pompeii: how to go",
+  "intro": [
+    "Pompeii is vast, dramatic, and easy to overschedule. This plan helps you see the highlights without spending the whole day in transit.",
+    "Expect heat, dust, and crowds in summer — carry water, sun protection, and be realistic about how much of the site you can cover."
+  ],
+  "toc": [
+    {
+      "href": "#at-a-glance",
+      "label": "At a glance"
+    },
+    {
+      "href": "#entry-cost-and-hours",
+      "label": "Entry cost & hours"
+    },
+    {
+      "href": "#other-facilities",
+      "label": "Other facilities"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#self-guided-tour",
+      "label": "Self-guided tour"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "at-a-glance",
+      "title": "At a glance",
+      "body": [
+        "The sheer scale of Pompeii delivers a wow moment as soon as you step inside; almost the entire city has been excavated and is easy to wander.",
+        "It is a low-cost outing if you are happy to self-guide — the historical context comes alive even without a private tour.",
+        "Herculaneum is smaller and better preserved, so keep it in mind if you want intact frescoes and mosaics instead of Pompeii’s sprawling streets.",
+        "Plan for hot, dusty conditions and lengthy transit when travelling by public transport from Positano."
+      ]
+    },
+    {
+      "id": "entry-cost-and-hours",
+      "title": "Entry cost and opening hours",
+      "body": [
+        "Ticket prices and opening hours shift seasonally — check the official Parco Archeologico di Pompei website before you set out.",
+        "Standard admission is usually in the mid-teens (euros), with last entry ranging from late afternoon to early evening depending on the month."
+      ]
+    },
+    {
+      "id": "other-facilities",
+      "title": "Other facilities",
+      "body": [
+        "Collect the free printed map from the information point beside the ticket booths; it makes navigation far easier inside the ruins.",
+        "Audio guides and licensed tour guides are available to hire at the entrance if you prefer commentary.",
+        "Refreshment stands exist but can be limited — arrive with plenty of water, especially in the warmer months.",
+        "You can store luggage for a fee at Pompeii Scavi station or check it for free just inside the site entrance."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Getting there",
+      "body": [
+        "From Positano, ride the SITA bus to Sorrento; buy tickets from the tabacchi or on board and allow about an hour for the journey.",
+        "In Sorrento, climb the stairs to the Circumvesuviana platforms and board the local train to ‘Pompei Scavi – Villa dei Misteri’.",
+        "Exit the station, turn right, and you will reach the Porta Marina Superiore entrance in under a minute."
+      ]
+    },
+    {
+      "id": "self-guided-tour",
+      "title": "Self-guided tour",
+      "body": [
+        "At the entrance, head left to the information point for a map and to arrange any luggage storage before buying your tickets at the booths directly ahead.",
+        "Once inside, locate Porta Marina Superiore on the map — you will be standing on Via Marina with clear signposts in front of you.",
+        "Follow Via Marina towards the amphitheatre, branching off for houses, baths, and forums that interest you before looping back to the main road.",
+        "After exploring the amphitheatre, return through the lower half of the site to cover additional highlights without doubling back.",
+        "This circuit typically delivers 60–80% of the key sights in far less time than trying to walk every street."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Bus to Sorrento",
+        "text": "Catch the SITA bus from Positano and ride it to Sorrento’s main station (about 60 minutes)."
+      },
+      {
+        "name": "Train to Pompeii Scavi",
+        "text": "Transfer upstairs to the Circumvesuviana platforms and take the train to ‘Pompei Scavi – Villa dei Misteri’."
+      },
+      {
+        "name": "Walk to the entrance",
+        "text": "Turn right as you leave the station; Porta Marina Superiore is roughly 50 metres ahead on the left."
+      }
+    ]
+  },
+  "tipsTitle": "On-the-day tips",
+  "tips": [
+    "Grab the free site map before you head through the turnstiles so you can plan detours without backtracking.",
+    "Carry plenty of water and refill whenever you spot a fountain — kiosks can have long queues in summer.",
+    "Note photo spots or frescoes you want to revisit on the way out; it is easy to miss them in the heat of the day."
+  ],
+  "warningsTitle": "Need-to-know warnings",
+  "warnings": [
+    "Peak-season queues for the SITA bus and Circumvesuviana can add 20–30 minutes to each leg; build a buffer into your schedule.",
+    "Large sections of the site are exposed with little shade, so avoid midday visits if you are sensitive to heat."
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Which entrance is best?",
+      "a": [
+        "Porta Marina Superiore beside the Pompei Scavi station is the most convenient for independent visitors — it is metres from the train and close to luggage storage."
+      ]
+    },
+    {
+      "q": "Can I explore without a tour guide?",
+      "a": [
+        "Yes. The free official map is detailed, and most major buildings include English/Italian signage. Audio guides and licensed guides are available if you want deeper commentary."
+      ]
+    },
+    {
+      "q": "Is there somewhere safe to leave bags?",
+      "a": [
+        "Small bags can be stored at Pompeii Scavi station for a fee, while the site itself offers free cloakroom facilities just inside the entrance."
+      ]
+    }
+  ]
+}

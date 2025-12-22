@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Positano költségei más tengerparti úti célokhoz képest",
+    "description": "Árösszehasonlítás Cinque Terre, Ibiza, Santorini és más célpontok között."
+  },
+  "linkLabel": "Positano költségei más tengerparti úti célokhoz képest",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Accommodation vs peers",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport & experiences",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "tips": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "faqs": [
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Overview"
+      },
+      {
+        "href": "#when",
+        "label": "When it’s good value"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "faqLabel": "FAQs",
+    "sections": {
+      "overview": {
+        "heading": "Overview",
+        "body": "A fordítás folyamatban van."
+      },
+      "when": {
+        "heading": "When it’s good value",
+        "body": "A fordítás folyamatban van."
+      }
+    },
+    "faq": {
+      "summary": "A fordítás folyamatban van.",
+      "answer": "A fordítás folyamatban van."
+    }
+  }
+}

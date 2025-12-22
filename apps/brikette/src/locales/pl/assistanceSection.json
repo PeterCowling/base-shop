@@ -1,0 +1,46 @@
+{
+  "slug": "assistance-contact",
+  "meta": {
+    "title": "Pomoc (w tym kontakt) – Hostel Brikette Positano",
+    "description": "Rezerwuj, odkrywaj i kontaktuj się z nami online. Masz pytania? Nasz asystent cyfrowy oferuje dopasowane rekomendacje i przewodniki, by udoskonalić Twój pobyt w Positano."
+  },
+  "heading": "Asysta cyfrowa",
+  "subheading": "Rezerwuj, odkrywaj i łącz się z nami online.",
+  "heroIntro": "Uzyskaj natychmiastowe odpowiedzi od naszego zespołu i asystenta cyfrowego, aby sprawniej zaplanować pobyt.",
+  "otherBookingOptions": "Inne opcje rezerwacji i media społecznościowe",
+  "addressLabel": "Adres:",
+  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookingOptions": {
+    "googleBusiness": "Google Business",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "W czym możemy ",
+  "amaHeadingPart2": "pomóc",
+  "amaParagraph1": "Masz pytania? Chętnie pomożemy. Zapytaj o cokolwiek — jeśli czegoś brakuje, napisz do nas maila, a odpowiemy niezwłocznie.",
+  "amaParagraph2": "Po potwierdzeniu rezerwacji zyskasz natychmiastowy dostęp do asystenta cyfrowego. Narzędzie to oferuje dopasowane rekomendacje atrakcji, aktywności i ukrytych pereł Positano, byś maksymalnie wykorzystał pobyt.",
+  "amaParagraph3": "Uzyskasz też przewodniki podróżnicze: wskazówki transportowe, instrukcje krok po kroku i informacje ułatwiające planowanie.",
+  "amaHelpCenterLink": "Przeglądaj wszystkie artykuły pomocy",
+  "askPlaceholder": "Zapytaj o dojazd, udogodnienia itp...",
+  "clearLabel": "Wyczyść wyszukiwanie",
+  "answersFoundLabel": "wynik(i)",
+  "noMatchesFound": "Brak wyników",
+  "popularGuides": "Popularne przewodniki",
+  "guideReachBudget": "Jak tanio dojechać do Positano",
+  "guideFerrySchedules": "Rozkłady promów do Positano",
+  "guidePathOfTheGods": "Ścieżka Bogów z Brikette",
+  "guideCollections": {
+    "heading": "Zaplanuj swój pobyt z przewodnikami krok po kroku",
+    "description": "Wskazówki, zasady rezerwacji i logistyka przyjazdu zebrane z naszych najczęściej zadawanych pytań.",
+    "taggedHeading": "Planowanie niezbędne oznaczono __placeholder_0__",
+    "taggedDescription": "Te niezbędne rzeczy koncentrują się na __placeholder_0__.Wyczyść filtr, aby przeglądać wszystko, co przygotowaliśmy.",
+    "empty": "Nie mamy jeszcze przewodników planowania __placeholder_0__.Wypróbuj inny znacznik lub zresetuj filtr.",
+    "clearFilter": "Przeglądaj wszystkie niezbędne informacje dotyczące planowania",
+    "cardCta": "Przeczytaj przewodnik planowania „{{guideTitle}}”"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

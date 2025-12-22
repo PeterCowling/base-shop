@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "Positano com orçamento enxuto: guia prático",
+    "description": "Estratégias para reduzir gastos com transporte, comida, passeios e hospedagem sem perder a essência da Costa Amalfitana."
+  },
+  "linkLabel": "Positano com orçamento enxuto",
+  "intro": [
+    "Estique seus euros combinando transporte sem carro, refeições econômicas e mirantes gratuitos sem perder os destaques de Positano."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transporte econômico",
+      "body": [
+        "Pegue o Alibus ou o shuttle Curreri até Sorrento e depois o ônibus SITA para Positano; compre blocos de bilhetes nos tabacchi para evitar sobretaxas.",
+        "Com o mar calmo, combine um trecho de ferry com ônibus para mais conforto — reserve apenas os percursos necessários para não pagar a mais."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Hospedagens inteligentes",
+      "body": [
+        "Reserve dormitórios de hostel ou apartamentos compartilhados perto de Chiesa Nuova para reduzir custos com carregadores e degraus.",
+        "Para estadias longas, considere Meta ou Praiano — o trajeto leva 30–40 minutos, mas os quartos são bem mais baratos no auge da temporada."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Economias em comida e bebida",
+      "body": [
+        "Opte por panini, sfogliatelle e espresso no balcão em vez de brunch sentado; reabasteça uma garrafa de 1 L nas torneiras do hostel antes de sair.",
+        "Divida antipastos, evite coperto escolhendo trattorias casuais e faça piqueniques nas varandas com itens comprados na delicatessen ao pôr do sol."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Experiências de baixo custo",
+      "body": [
+        "Inclua trilhas gratuitas como o Caminho dos Deuses (ônibus até Nocelle) ou passeios ao pôr do sol pela Via Cristoforo Colombo.",
+        "Invista em uma atividade marcante — talvez um passeio de barco compartilhado ou aula de culinária — e equilibre o resto com dias de praia e mirantes."
+      ]
+    }
+  ],
+  "tips": [
+    "Viaje na meia-estação (abril–maio, final de setembro) para pagar menos e achar assentos no ferry com facilidade.",
+    "Registre gastos em um app de notas; dividir custos compartilhados diariamente mantém o grupo alinhado."
+  ],
+  "faqs": [
+    {
+      "q": "Qual orçamento diário devo considerar?",
+      "a": [
+        "€70–€90 cobrem cama em dormitório, refeições em delicatessens, passagens de ônibus e uma atividade paga; acrescente €20–€30 se preferir quarto privativo ou drinques ao pôr do sol."
+      ]
+    },
+    {
+      "q": "É esperado deixar gorjeta?",
+      "a": [
+        "O serviço já está incluído; arredonde €1–€2 em caso de atendimento excelente ou deixe 10% apenas em locais sofisticados se sentir que valeu a pena."
+      ]
+    }
+  ],
+  "tocTitle": "Nesta página",
+  "faqsTitle": "Perguntas frequentes",
+  "heroAlt": "Vista econômica de Positano a partir de um terraço",
+  "costBreakdown": {
+    "title": "Exemplo de gastos diários",
+    "slices": [
+      {
+        "label": "Cama (dormitório)",
+        "value": 45
+      },
+      {
+        "label": "Refeições e lanches",
+        "value": 25
+      },
+      {
+        "label": "Transporte",
+        "value": 12
+      },
+      {
+        "label": "Atividades e extras",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "Mirante gratuito com vista para Positano",
+      "caption": "Mirantes gratuitos"
+    },
+    {
+      "alt": "Piquenique com vista para Positano",
+      "caption": "Piquenique para economizar nas refeições"
+    }
+  ]
+}

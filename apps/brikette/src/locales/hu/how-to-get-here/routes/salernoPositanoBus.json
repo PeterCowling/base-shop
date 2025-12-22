@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Salernóból Positanóba busszal – Hostelek, megállók és menetrendi tippek",
+    "description": "Lépésről lépésre útmutató Salernóból Positanóba a SITA Sud busszal Amalfín keresztül. Tudj meg mindent a jegyvásárlásról, a menetrend olvasásáról és a Hostel Brikette-hez legközelebbi megállóról."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "heading": "Salernóból Positanóba – busszal (Amalfin át)",
+    "body": "Ez az útmutató bemutatja a SITA busszal történő utazást Salernóból Positanóba, amalfi átszállással. Jegyvásárlási tippeket, menetrend-olvasási tanácsokat és a hostelhez vezető legrövidebb leszállási pontot is tartalmazza."
+  },
+  "tip": {
+    "title": "Tipp",
+    "guideLinkLabel": "Hogyan juthatsz el hozzánk áttekintés",
+    "body": "Az összes közlekedési lehetőségre kíváncsi vagy? Nyisd meg a <GuideLink>Hogyan juthatsz el hozzánk áttekintést</GuideLink> kompokért, taxikért és kombinált útvonalakért."
+  },
+  "journey": {
+    "title": "Az út áttekintése",
+    "description": "Salernóból szállj fel a SITA buszra Amalfi felé, majd ott válts a Positano felé tartó SITA járatra. Positanóban a <Strong>Chiesa Nuova</Strong> megállónál szállj le, innen a legrövidebb a séta a hostelhez."
+  },
+  "tickets": {
+    "title": "SITA buszok és jegyek",
+    "description": "Ezen az útvonalon a SITA Sud üzemelteti a buszokat. A jegyeket újságosoknál és tabacchikban árulják. Beszálláskor a sofőr lebélyegzi vagy részben letépi a jegyet az érvényesítéshez — őrizd meg a leszállásig."
+  },
+  "timetable": {
+    "title": "Buszmenetrend",
+    "description": "Az útvonal: <Strong>Salerno → Amalfi</Strong>, majd <Strong>Amalfi → Positano</Strong>.",
+    "link": "A legfrissebb SITA menetrendet itt találod: <ScheduleLink>{{label}}</ScheduleLink>.",
+    "scheduleLinkLabel": "Positano.com",
+    "rowsTitle": "Sorok értelmezése",
+    "columnsTitle": "Oszlopok értelmezése",
+    "combineTitle": "Sorok + oszlopok használata",
+    "rows": [
+      "Az első oszlop sorai az útvonal megállóit sorolják fel."
+    ],
+    "columns": [
+      "Minden oszlop egy betűvel jelölt menetrendi indulást jelent.",
+      "Hétfő–szombat: az „F” és „G” oszlopokat figyeld.",
+      "Vasárnap/ünnepnap: a „G” és „H” oszlopokat nézd."
+    ],
+    "combine": [
+      "Válaszd ki a kiinduló és célállomás sorát, majd olvasd le az adott oszlopban az időpontokat.",
+      "Példa: indulás Salernóból → „Salerno” sor; érkezés Positano (Chiesa Nuova) → „Positano (Chiesa Nuova)” sor."
+    ]
+  },
+  "positanoStop": {
+    "title": "Positanói (Chiesa Nuova) megálló",
+    "facts": [
+      "Legközelebbi megálló: Positano (Chiesa Nuova) a Via G. Marconin.",
+      "Kb. 140 méterre (490 lábra) van a hostel bejáratától.",
+      "A „Bar Internazionale” kávézó/bár előtt található."
+    ]
+  },
+  "walk": {
+    "title": "Séta a Hostel Brikette-hez",
+    "steps": [
+      "Sétálj valamivel több mint 100 métert (330 lábat).",
+      "Fordulj jobbra, és kövesd a lépcsőt a hostel főbejáratáig.",
+      "A hostelhez közeledve keresd a második emeleti terasznál lévő táblánkat.",
+      "Haladj tovább a tábla mellett, majd menj fel az út jobb oldalán található lépcsőn a bejárathoz."
+    ]
+  }
+}

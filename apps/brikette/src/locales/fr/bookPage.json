@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Réservez votre séjour – Site officiel",
+    "description": "Tarifs flexibles et non remboursables. Paiement sécurisé sur notre moteur de réservation officiel."
+  },
+  "heading": "Réservez votre séjour",
+  "roomLabel": "Chambre",
+  "cta": {
+    "flex": "Flexible – Passer au paiement",
+    "nr": "Non remboursable – Passer au paiement"
+  },
+  "checking": "Vérification…",
+  "flex": {
+    "title": "Tarif flexible (remboursable)",
+    "bullets": [
+      "Annulation gratuite jusqu’à 15 h, trois jours complets avant l’arrivée.",
+      "Modifications sous réserve de disponibilité."
+    ]
+  },
+  "nr": {
+    "title": "Non remboursable (prépayé)",
+    "bullets": [
+      "Paiement 100 % à l’avance ; aucun remboursement/en cas de non‑présentation.",
+      "Les paiements échoués sont annulés automatiquement."
+    ]
+  },
+  "unavailable": {
+    "title": "Non disponible à ces dates.",
+    "none": "Aucune alternative directe trouvée.",
+    "seeAll": "Voir toutes les disponibilités",
+    "bookThis": "Réserver"
+  },
+  "policies": {
+    "title": "Politiques et dépôts",
+    "items": [
+      "Taxe de séjour : 2,50 € par personne et par nuit (ajoutée au paiement).",
+      "Dépôt carte/linge : 10 € en espèces à l’arrivée ; restitué au retour.",
+      "Caution de sûreté : jusqu’à une nuit par personne à l’arrivée (ou équivalent en espèces). À défaut, la réservation est annulée.",
+      "Frais administratifs d’annulation : généralement 15 % du montant de la réservation (hors commissions tierces).",
+      "Réception ferme à 22:30 ; en cas de non‑présentation, le débit est le plus élevé entre la première nuit ou l’acompte non remboursable."
+    ],
+    "footer": "La disponibilité finale et le paiement sont effectués sur notre moteur de réservation officiel."
+  },
+  "backToRooms": "Retour aux chambres"
+}

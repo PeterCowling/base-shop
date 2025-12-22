@@ -1,0 +1,46 @@
+{
+  "slug": "assistance-contact",
+  "meta": {
+    "title": "Kapcsolat és digitális segítség – Hostel Brikette Positano",
+    "description": "Foglalj, fedezz fel és lépj kapcsolatba velünk online. Kérdésed van? A digitális asszisztens személyre szabott ajánlásokat és útikalauzokat ad a positanói tartózkodásodhoz."
+  },
+  "heading": "Digitális segítség",
+  "subheading": "Foglalj, fedezz fel és tarts kapcsolatot online.",
+  "heroIntro": "Kapj azonnali válaszokat csapatunktól és digitális asszisztensünktől, hogy gyorsabban megtervezhesd az itt tartózkodást.",
+  "otherBookingOptions": "Egyéb foglalási lehetőségek és közösségi média",
+  "addressLabel": "Cím:",
+  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookingOptions": {
+    "googleBusiness": "Google Business",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "Miben tudunk ",
+  "amaHeadingPart2": "segíteni",
+  "amaParagraph1": "Kérdésed van? Szívesen segítünk. Kérdezz bátran — ha valami kimarad, írj e‑mailt, és hamar válaszolunk.",
+  "amaParagraph2": "A foglalás megerősítése után azonnal hozzáférsz a digitális asszisztenshez. Személyre szabott ajánlásokat ad látnivalókra, programokra és rejtett gyöngyszemekre Positanóban.",
+  "amaParagraph3": "Eléred a kurált útikalauzokat is: közlekedési tippek, lépésről‑lépésre útvonalak, tervezést könnyítő információk.",
+  "amaHelpCenterLink": "Összes súgócikk megtekintése",
+  "askPlaceholder": "Kérdezz útvonalról, felszereltségről stb...",
+  "clearLabel": "Keresés törlése",
+  "answersFoundLabel": "találat",
+  "noMatchesFound": "Nincs találat",
+  "popularGuides": "Népszerű útikalauzok",
+  "guideReachBudget": "Olcsón Positanóba",
+  "guideFerrySchedules": "Positano kompmenetrend",
+  "guidePathOfTheGods": "Az Istenek ösvénye Brikette-től",
+  "guideCollections": {
+    "heading": "Tervezd meg az ott tartózkodást lépésről lépésre útmutatókkal",
+    "description": "Útvonalak, foglalási szabályok és érkezési tippek – a leggyakoribb kérdéseinkre adott válaszok.",
+    "taggedHeading": "Tervezési útmutatók {{tag}} címkével",
+    "taggedDescription": "Ezek az útmutatók a(z) {{tag}} témára fókuszálnak. A szűrő törlésével mindent átböngészhetsz.",
+    "empty": "Még nincs {{tag}} témájú tervezési útmutatónk. Próbálj másik címkét, vagy állítsd vissza a szűrőt.",
+    "clearFilter": "Összes tervezési útmutató böngészése",
+    "cardCta": "Olvasd el a {{guideTitle}} tervezési útmutatót"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

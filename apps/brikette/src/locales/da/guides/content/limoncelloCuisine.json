@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Limoncello og lokale retter",
+    "description": "Søde citroner, drikke og retter du bør smage — og hvor du finder dem."
+  },
+  "linkLabel": "Limoncello og lokale retter",
+  "intro": [
+    "Citroner og limoncello er essensen af Amalfismagen – fra smageflyvninger til søde afslutninger.",
+    "Her finder du steder at smage, hvad du kan købe med hjem, og hvordan du bruger det i køkkenet bagefter."
+  ],
+  "tocTitle": "På denne side",
+  "sections": [
+    {
+      "id": "tasting",
+      "title": "Smagning",
+      "body": [
+        "Besøg små botteghe for håndlavet limoncello, og bed om en smagsprøve for at sammenligne stilene.",
+        "Kombinér smagningerne med citron-gelato, sorbet eller kager for at vurdere sødme og balance."
+      ]
+    },
+    {
+      "id": "purchase",
+      "title": "Indkøb og forsendelse",
+      "body": [
+        "Tjek flyselskabets væskeregler, og pak flasker sikkert i indchecket bagage.",
+        "Se efter IGP Costa d’Amalfi-mærker og genanvendelig emballage fra lokale producenter."
+      ]
+    },
+    {
+      "id": "cooking",
+      "title": "Madlavning med citroner",
+      "body": [
+        "Brug skal og saft i salater, pastaretter med fisk og desserter for ekstra friskhed.",
+        "Opbevar citroner køligt og mørkt, og genbrug skaller til sirupper eller marinader."
+      ]
+    }
+  ],
+  "tips": [
+    "Støt små producenter – smagen er ofte mere intens end souvenirbutikkerne ved stranden.",
+    "Spring de dyre turistbutikker nær hovedstranden over; to gader bagud får du bedre priser."
+  ],
+  "faqs": [
+    {
+      "q": "Må jeg have limoncello i håndbagagen?",
+      "a": [
+        "Ikke over 100 ml – pak standardflasker i indcheckede kufferter med polstring."
+      ]
+    },
+    {
+      "q": "Findes der alkoholfrie alternativer?",
+      "a": [
+        "Prøv frisk lemonade, granita eller citronsirupper, hvis du foretrækker uden alkohol."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Fotogalleri",
+    "items": [
+      {
+        "alt": "Vintageplakat fra Positano med citroner",
+        "caption": "Vintage-citroner"
+      },
+      {
+        "alt": "Terrassebord med limoncello-glas",
+        "caption": "Limoncello på terrassen"
+      }
+    ]
+  }
+}

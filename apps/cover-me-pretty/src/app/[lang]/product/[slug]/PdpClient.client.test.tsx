@@ -30,6 +30,11 @@ jest.mock("@ui/components/atoms/Price", () => ({
   Price: ({ amount }: PriceProps) => <span>{amount}</span>,
 }));
 
+jest.mock("./TryOnPanel.client", () => ({
+  __esModule: true,
+  default: () => <div data-testid="tryon-panel" />,
+}));
+
 describe("PdpClient", () => {
   const product: SKU = {
     id: "sku1",
@@ -77,7 +82,7 @@ describe("PdpClient", () => {
     );
 
     // Change quantity
-    fireEvent.change(screen.getByLabelText("Quantity:"), {
+    fireEvent.change(screen.getByLabelText("Quantity"), {
       target: { value: "2" },
     });
 

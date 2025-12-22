@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Comment nous rejoindre – Bus, ferry et conseils à pied",
+    "description": "Repérez l'arrêt de bus le plus proche, les liaisons ferry et le temps de marche pour rejoindre l'Hostel Brikette à Positano."
+  },
+  "title": "Comment nous rejoindre",
+  "intro": "Nous sommes à environ 100 m (~330 ft) de l'arrêt Chiesa Nuova et à 13 minutes de marche de la plage.",
+  "steps": {
+    "bus": "Depuis Sorrente : bus SITA pour Positano (arrêt Chiesa Nuova).",
+    "ferry": "Depuis Capri/Amalfi : prenez le ferry pour Positano, puis bus ou taxi pour monter.",
+    "walk": "Prévoyez des marches ; la vue en vaut la peine. Suivez les panneaux vers Via G. Marconi 358."
+  },
+  "photos": {
+    "heading": "Visualisez le trajet avant de partir",
+    "items": [
+      {
+        "alt": "Escalier menant à l'Hostel Brikette avec un voyageur qui se dirige vers l'entrée",
+        "caption": "Depuis l'arrêt Chiesa Nuova, suivez les marches pendant une minute environ : notre enseigne apparaît sur la droite."
+      },
+      {
+        "alt": "Façade de l'Hostel Brikette au 358 de la Via G. Marconi",
+        "caption": "Repérez le numéro 358 de la Via G. Marconi sur le mur en pierre ; l'entrée se trouve juste après."
+      },
+      {
+        "alt": "Comptoir de check-in de l'Hostel Brikette dans le hall",
+        "caption": "Une fois à l'intérieur, le comptoir d'accueil se trouve sur votre gauche ; nous gardons vos bagages si la chambre n'est pas encore prête."
+      }
+    ]
+  }
+}

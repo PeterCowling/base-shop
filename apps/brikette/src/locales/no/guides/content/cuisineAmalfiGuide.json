@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Guide til mat fra Amalfikysten",
+    "description": "Hva du bør spise: sjømatfavoritter, sitrondesserter og lokale DOC-viner."
+  },
+  "linkLabel": "Guide til mat fra Amalfikysten",
+  "intro": [
+    "En kjapp innføring i mat fra Amalfikysten: sjømatklassikere, sitrondesserter og hvor du smaker dem i Positano.",
+    "Bruk den som jukselapp før du leser menyer eller besøker nabobyer for regionale spesialiteter."
+  ],
+  "tocTitle": "På denne siden",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Sjømatklassikere",
+      "body": [
+        "Spaghetti alle vongole, scialatielli ai frutti di mare og dagens grillede fangst finnes på de fleste menyer.",
+        "Spør etter sesongens spesialiteter – vårerter, cherrytomater eller squashblomster dukker ofte opp på tavlen."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Markeder og raske biter",
+      "body": [
+        "Morgemarkeder og delikatesse­disker selger focaccia, fritert cuoppo og fersk mozzarella til enkle lunsjer.",
+        "Kjøp sitrusmarmelade, colatura di alici og tørkede urter for å gi piknikken ekstra smak."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Desserter og bakverk",
+      "body": [
+        "Delizia al limone, babà al limoncello og sfogliatella passer perfekt til en espresso etter middag.",
+        "Gelateriaene roterer sitronsorbet, granita og crema al limone – perfekt på varme ettermiddager."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Drikke og kombinasjoner",
+      "body": [
+        "Bestill avkjølt limoncello eller crema di limoncello som digestif etter måltidet.",
+        "DOC-viner fra Tramonti eller Costa d’Amalfi (Furore, Ravello) kompletterer sjømat og sitruspregede retter."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Bestillingsetikette",
+      "body": [
+        "Coperto (kuvertavgift) dekker brød og oppdekking – tips kun ved ekstra god service.",
+        "Del retter familie­stil, men gi beskjed til personalet på forhånd slik at tempo og servise flyter godt."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Får vegetarianere god mat her?",
+      "a": [
+        "Ja – prøv aubergine parmigiana, gnocchi alla sorrentina og salater med lokal ost og grillede grønnsaker."
+      ]
+    },
+    {
+      "q": "Må jeg reservere populære trattoriaer?",
+      "a": [
+        "I høysesongen bør du reservere på forhånd for terrasser eller solnedgangstid; drop-in fungerer bedre til lunsj eller i skuldersesong."
+      ]
+    }
+  ],
+  "itemListTitle": "Signaturretter og hvor du smaker dem",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Fast meny på gård med hjemmelaget pasta, grillede kjøttretter og panoramautsikt fra terrassen."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Dagkafé med sitrusfriske salater, kaldpresset juice og hjemmelagde desserter."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Klassisk trattoria med sjømatpasta, friterte forretter og sesongretter siden 1958."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Bakeri for delizia al limone, babà al limoncello og bakverk som er enkle å ta med til piknik på klippene."
+    }
+  ],
+  "gallery": {
+    "title": "Retthøydepunkter",
+    "items": [
+      {
+        "alt": "Sjømatpasta med sitroner fra Amalfikysten",
+        "caption": "Sjømatklassikere fra Positano-trattoriaer"
+      },
+      {
+        "alt": "Delizia al limone på en tallerken",
+        "caption": "Sitrondesserter å prøve"
+      },
+      {
+        "alt": "Venner som skåler med limoncello i solnedgang",
+        "caption": "Digestif med utsikt"
+      }
+    ]
+  },
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Grunnretter"
+      },
+      {
+        "href": "#sweets",
+        "label": "Søte favoritter"
+      },
+      {
+        "href": "#drinks",
+        "label": "Drikke"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Grunnretter",
+        "body": [
+          "Sjømatpasta, grillet fangst og sitrondrevne salater med lokal olivenolje er basis på menyene langs kysten.",
+          "Spør etter dagens rett – sesongvarer som squashblomster eller cherrytomater står ofte på tavlen."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Søte favoritter",
+        "body": [
+          "Smak delizia al limone, babà al limoncello og sitronsorbet for en sitruspreget desserttrio.",
+          "Kombiner bakverk med espresso eller digestif-limoncello for å avslutte måltidet som lokalbefolkningen."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Drikke",
+        "body": [
+          "Nipp til limoncello eller crema di limone som digestif og utforsk Costa d'Amalfi DOC-viner fra Tramonti, Ravello eller Furore.",
+          "Veksle med kullsyrevann for å holde deg frisk – sommerkveldene er klamme langt utover solnedgang."
+        ]
+      }
+    ]
+  }
+}

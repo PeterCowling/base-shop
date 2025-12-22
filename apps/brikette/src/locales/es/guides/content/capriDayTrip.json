@@ -1,0 +1,118 @@
+{
+  "seo": {
+    "title": "Excursión de un día a Capri desde Positano",
+    "description": "Cómo planificar una excursión a Capri: ferris, tiempos y zonas imprescindibles."
+  },
+  "linkLabel": "Excursión de un día a Capri desde Positano",
+  "intro": [
+    "Capri es una excursión clásica desde Positano: confirma horarios y reserva hueco en los ferris de la mañana para tener más tiempo en la isla.",
+    "Llegar pronto al muelle y planificar qué zonas visitar (Anacapri, Capri pueblo o paseo costero) evita colas y traslados de último minuto."
+  ],
+  "toc": [
+    {
+      "href": "#tickets",
+      "label": "Billetes y horarios"
+    },
+    {
+      "href": "#plan",
+      "label": "Itinerario sugerido"
+    },
+    {
+      "href": "#extras",
+      "label": "Extras opcionales"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes (completas)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "tickets",
+      "title": "Billetes y horarios",
+      "body": [
+        "Revisa los horarios en las webs oficiales (NLG, Positano Jet, Travelmar) y compra ida y vuelta antes del día del viaje, sobre todo en verano.",
+        "Llega al muelle 25–30 minutos antes para validar billete y entrar en la cola; lleva copia digital y en papel por si hay escaneo manual.",
+        "Si el mar está agitado, consulta avisos antes de salir: las compañías suelen publicar retrasos en redes sociales y en la taquilla."
+      ]
+    },
+    {
+      "id": "plan",
+      "title": "Itinerario sugerido",
+      "body": [
+        "Mañana: ferry a Capri y bus o taxi a Anacapri; sube en telesilla a Monte Solaro para vistas panorámicas.",
+        "Mediodía: explora Capri pueblo; busca almuerzo rápido en calles secundarias (Vico Botteghe / Via Le Botteghe) para evitar sobreprecios.",
+        "Tarde: Jardines de Augusto + paseo a Via Krupp si está abierta; baja al muelle con antelación para asegurar lugar en el regreso."
+      ]
+    },
+    {
+      "id": "extras",
+      "title": "Extras opcionales",
+      "body": [
+        "Gruta Azul: evalúa colas y estado del mar; conviene ir temprano y reservar media jornada si es imprescindible.",
+        "Barcos privados: negocia precio en Marina Grande o reserva con antelación; confirma duración y puntos de parada.",
+        "Teleférico desde Marina Grande: opción rápida para llegar al centro de Capri si quieres saltarte el bus."
+      ]
+    }
+  ],
+  "galleryTitle": "Galería de fotos de Capri",
+  "gallery": {
+    "items": {
+      "monteSolaro": {
+        "alt": "Vista desde Monte Solaro, Capri",
+        "caption": "Panorámica de Monte Solaro"
+      },
+      "gardensOfAugustus": {
+        "alt": "Jardines de Augusto, Capri",
+        "caption": "Jardines de Augusto"
+      }
+    }
+  },
+  "faqsTitle": "Preguntas frecuentes",
+  "howTo": {
+    "steps": [
+      {
+        "name": "Revisa los ferris de temporada",
+        "text": "Confirma las salidas de la mañana y los últimos regresos a Positano."
+      },
+      {
+        "name": "Llega temprano al muelle",
+        "text": "Haz fila 20–30 minutos antes de la salida en temporada alta."
+      },
+      {
+        "name": "Planifica tu ruta en Capri",
+        "text": "Prioriza Anacapri o Marina Grande y sus miradores según el tiempo disponible."
+      }
+    ]
+  },
+  "tipsTitle": "Consejos del día",
+  "tips": [
+    "Compra juntos los billetes de ida y vuelta del ferry para poder ajustar la ruta sin buscar asientos a última hora.",
+    "Lleva una mochila pequeña con agua, protector solar y efectivo; los cajeros de Capri pueden quedarse sin dinero en las semanas punta.",
+    "Descarga mapas sin conexión de Capri y los horarios de autobús; la señal cae en Anacapri y en la cola de la Gruta Azul."
+  ],
+  "warningsTitle": "Advertencias imprescindibles",
+  "warnings": [
+    "Las colas del telesilla y del funicular se disparan después de las 15:00; si pierdes tu turno podrías acabar esperando plaza en un ferry en lista de espera.",
+    "El mar agitado puede cancelar travesías tardías sin aviso; revisa los avisos matutinos y ten una conexión vía Sorrento como respaldo.",
+    "La Gruta Azul suele cerrar con viento u oleaje; los operadores pueden seguir vendiendo billetes, así que confirma que esté abierta antes de ponerte en la cola."
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuánto dura la excursión?",
+      "a": [
+        "Con ferris de primera hora y último regreso puedes pasar unas 9–10 horas en Capri, incluidos traslados y colas."
+      ]
+    },
+    {
+      "q": "¿Puedo dejar equipaje en Capri?",
+      "a": [
+        "Sí, hay consigna cerca de Marina Grande; llega temprano porque las plazas son limitadas en verano."
+      ]
+    }
+  ]
+}

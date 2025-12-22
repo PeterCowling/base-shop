@@ -66,9 +66,13 @@ const sensitivities = computeSensitivities({
       delta: 1,
       apply: (input, delta) => ({
         ...input,
-        unitsSoldByDay: input.unitsSoldByDay.map((value) =>
-          Math.min(unitsPlanned, Math.round(value * (1 + delta * 0.08))),
-        ),
+        ...(input.unitsSoldByDay
+          ? {
+              unitsSoldByDay: input.unitsSoldByDay.map((value) =>
+                Math.min(unitsPlanned, Math.round(value * (1 + delta * 0.08))),
+              ),
+            }
+          : {}),
       }),
     },
   ],

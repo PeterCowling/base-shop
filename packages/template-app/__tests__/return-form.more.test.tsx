@@ -26,7 +26,7 @@ describe("ReturnForm extras", () => {
     } as any;
     render(<ReturnForm />);
     await waitFor(() =>
-      expect(screen.getByText(/Unable to access camera/)).toBeInTheDocument()
+      expect(screen.getByText("account.returns.form.cameraError")).toBeInTheDocument()
     );
   });
 
@@ -39,12 +39,12 @@ describe("ReturnForm extras", () => {
       json: async () => ({ labelUrl: "url", tracking: "123" }),
     });
     render(<ReturnForm />);
-    fireEvent.change(screen.getByPlaceholderText("Session ID"), {
+    fireEvent.change(screen.getByPlaceholderText("account.returns.form.sessionIdPlaceholder"), {
       target: { value: "sess" },
     });
-    fireEvent.submit(screen.getByText("Submit").closest("form")!);
+    fireEvent.submit(screen.getByText("account.returns.form.submit").closest("form")!);
     // No Print Label link since tracking is disabled
     await waitFor(() => expect(global.fetch).toHaveBeenCalled());
-    expect(screen.queryByText(/Print Label/)).toBeNull();
+    expect(screen.queryByText("account.returns.form.printLabel")).toBeNull();
   });
 });

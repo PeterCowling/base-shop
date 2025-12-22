@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "title": "Từ Positano đến Ravello bằng xe buýt | Hostel Brikette",
+    "description": "Lộ trình từng bước từ Positano tới Ravello qua Amalfi bằng xe buýt SITA, kèm mẹo vé, cách đọc bảng giờ, thông tin trạm Chiesa Nuova và lưu ý khi chuyển tuyến."
+  },
+  "hero": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Positano đến Ravello – qua Amalfi bằng xe buýt",
+    "description": "Di chuyển từ Positano đến Ravello với một lần đổi xe đơn giản ở Amalfi. Hướng dẫn này cho biết nơi mua vé SITA, cách đọc bảng giờ và những điều cần biết khi đổi tuyến — cùng cách đi từ Hostel Brikette tới trạm xe Positano."
+  },
+  "cta": {
+    "eyebrow": "Mẹo",
+    "beforeLink": "Cần xem mọi lựa chọn? Mở",
+    "linkLabel": "Tổng quan Cách đến đây",
+    "afterLink": "để tham khảo phà, taxi và các hành trình kết hợp."
+  },
+  "journey": {
+    "title": "Tổng quan hành trình",
+    "body": "Tổng thời gian khoảng 1,5–2,5 giờ tùy lần nối chuyến. Trước tiên bắt xe buýt SITA từ Positano (Chiesa Nuova) tới Amalfi, sau đó đổi sang xe SITA đi Ravello."
+  },
+  "sita": {
+    "title": "Xe buýt SITA và vé",
+    "items": [
+      "Các chuyến xe dọc bờ biển Amalfi do SITA (SITA Sud Srl) vận hành.",
+      "Mua vé tại quầy báo hoặc cửa hàng thuốc lá (tabacchi) trước khi lên xe.",
+      "Chuẩn bị sẵn vé; tài xế sẽ đóng dấu hoặc xé vé khi bạn lên xe.",
+      "Mùa cao điểm thường đông; hãy đến sớm để xếp hàng."
+    ]
+  },
+  "timetable": {
+    "title": "Giờ chạy",
+    "beforeLink": "Bạn sẽ đi xe buýt tới Amalfi rồi đổi sang Ravello. Xem lịch mới nhất trên",
+    "linkLabel": "Positano.com (tổng quan lịch SITA)",
+    "afterLink": ".",
+    "linkHref": "https://www.positano.com/en/bus-schedule",
+    "readingHeading": "Cách đọc bảng giờ",
+    "tips": [
+      "Các hàng ở cột đầu liệt kê từng điểm dừng trên tuyến.",
+      "Các cột tương ứng với các chuyến được gắn chữ cái.",
+      "Đi từ thứ Hai đến thứ Bảy? Dùng cột 'F' và 'G'.",
+      "Đi vào Chủ nhật hoặc ngày lễ? Dùng cột 'G' và 'H'."
+    ]
+  },
+  "positanoStop": {
+    "title": "Trạm xe buýt Positano (Chiesa Nuova)",
+    "items": [
+      "Trạm SITA gần nhất là Positano (Chiesa Nuova) trên Via G. Marconi.",
+      "Trạm cách cửa hostel khoảng 140 mét.",
+      "Bạn sẽ chờ bên ngoài quán Bar Internazionale."
+    ],
+    "caption": "Đến sớm vài phút để dễ có chỗ ngồi; mùa hè xe thường kín nhanh.",
+    "alt": "Trạm SITA Chiesa Nuova của Positano phía trước Bar Internazionale"
+  },
+  "walk": {
+    "title": "Đi bộ từ hostel tới trạm",
+    "items": [
+      "Ra khỏi hostel, đi xuống các bậc thang tới đường chính rồi rẽ trái.",
+      "Đi dọc Via G. Marconi khoảng 100 mét.",
+      "Bar Internazionale ở bên trái; trạm SITA nằm ngay phía trước."
+    ]
+  },
+  "buyTickets": {
+    "title": "Mua vé xe buýt",
+    "items": [
+      "Mua vé bên trong Bar Internazionale hoặc tabacchi gần đó.",
+      "Bạn sẽ cần vé cho chặng Positano → Amalfi và Amalfi → Ravello.",
+      "Tùy loại vé, bạn có thể được bán một hoặc hai tấm."
+    ]
+  },
+  "toAmalfi": {
+    "title": "Lên xe đi Amalfi",
+    "items": [
+      "Băng qua đường trước Bar Internazionale tới trạm hướng Amalfi.",
+      "Xếp hàng và lên xe ghi Amalfi; xác nhận vé của bạn.",
+      "Xuống tại bến xe Amalfi để nối chuyến đi Ravello."
+    ]
+  },
+  "change": {
+    "title": "Đổi tuyến tại Amalfi",
+    "items": [
+      "Bạn có thể ghé thăm Amalfi trong lúc chờ chuyến kế tiếp.",
+      "Quay lại khu bến xe để lên chuyến đi Ravello (tuyến 5110/5120).",
+      "Xác nhận vé thứ hai khi lên xe."
+    ]
+  },
+  "arrive": {
+    "title": "Đến Ravello",
+    "items": [
+      "Ravello nằm trên cao so với Amalfi; nhiều điểm tham quan tập trung quanh Piazza Duomo.",
+      "Làm theo biển chỉ dẫn địa phương tới chỗ ở hoặc quảng trường chính.",
+      "Nếu tới muộn và ít chuyến, cân nhắc gọi taxi từ Amalfi."
+    ]
+  }
+}

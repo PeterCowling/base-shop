@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Dans une fabrique de limoncello",
+    "description": "Visites de distillerie : processus, dégustations, achats et options de transport."
+  },
+  "linkLabel": "Dans une fabrique de limoncello",
+  "fallbackParagraph": "Les ingrédients d’un vrai limoncello : des citrons, de l’alcool, du sucre et du temps. Les visites dévoilent chaque étape et se terminent par une dégustation — à éviter avant de reprendre le volant.",
+  "intro": [
+    "Visiter un laboratoire de limoncello permet de voir comment les citrons sfusato Amalfitano deviennent le digestif emblématique de la côte.",
+    "Découvrez les étapes, goûtez des productions en petites séries et apprenez à conserver et rapporter votre cuvée préférée à la maison."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Les citrons sfusato Amalfitano",
+      "body": [
+        "Les producteurs utilisent des citrons sfusato Amalfitano à peau épaisse, cultivés sur des pergolas en terrasses ; leurs huiles essentielles se concentrent dans le zeste plutôt que dans le jus.",
+        "Les meilleures visites commencent par la démonstration de l’épluchage manuel et expliquent l’importance du bio pour une infusion pure et aromatique."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "Du zeste à l’infusion",
+      "body": [
+        "Le zeste frais macère dans de l’alcool neutre de céréales pendant une semaine ou plus, jusqu’à ce que le liquide devienne doré et parfumé.",
+        "Après l’infusion, on filtre puis on assemble avec un sirop simple ; les cuvées reposent pour harmoniser les saveurs avant la mise en bouteille."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "Ce que comprennent les dégustations",
+      "body": [
+        "Les guides vous font généralement parcourir l’atelier puis servent de petites dégustations de limoncello, de crema di limone ou de liqueurs saisonnières.",
+        "Sirotez lentement, notez texture et arômes, et évitez de conduire ensuite : les échantillons sont bien titrés même s’ils paraissent doux."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Acheter et conserver une bouteille",
+      "body": [
+        "Privilégiez des bouteilles en verre opaque ou protégées des UV, et vérifiez sur l’étiquette l’adresse du producteur et la date de production.",
+        "Une fois ouverte, conservez la bouteille au frais ; si vous voyagez avec, caler-la dans des vêtements ou demandez un emballage protecteur à la boutique."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Les moins de 18 ans peuvent-ils participer à la visite ?",
+      "a": [
+        "Oui, les mineurs peuvent observer le processus mais n’ont pas le droit de déguster ; certains producteurs proposent des citronnades ou granitas en alternative."
+      ]
+    },
+    {
+      "q": "Comment rapporter du limoncello en toute sécurité ?",
+      "a": [
+        "Placez les bouteilles dans votre bagage en soute (les limites cabine interdisent les liquides de plus de 100 ml), protégez-les bien et déclarez les quantités si votre pays impose des restrictions d’importation d’alcool."
+      ]
+    },
+    {
+      "q": "Combien de temps le limoncello se conserve-t-il ?",
+      "a": [
+        "Les bouteilles non ouvertes se conservent jusqu’à un an ; après ouverture, gardez-les au réfrigérateur ou au congélateur et consommez-les dans les quelques mois pour profiter des arômes."
+      ]
+    }
+  ]
+}

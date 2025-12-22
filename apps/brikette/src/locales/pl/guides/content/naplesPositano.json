@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Z Neapolu do Positano: jak dojechać",
+    "description": "Porównanie promu, autobusu, samochodu i transferu prywatnego z Neapolu do Positano."
+  },
+  "linkLabel": "Z Neapolu do Positano: jak dojechać",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Train + bus (year-round)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Ferry (summer)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Late arrivals & transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Train + bus (year-round)",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (summer)",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Late arrivals & transfers",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Where to buy SITA tickets?",
+      "a": [
+        "Tobacconists/kiosks near stations. Buy before boarding and validate on the bus."
+      ]
+    },
+    {
+      "q": "Tłumaczenie w przygotowaniu.",
+      "a": [
+        "From ‘Chiesa Nuova’ stop, it’s ~80 m with no staircases."
+      ]
+    }
+  ]
+}

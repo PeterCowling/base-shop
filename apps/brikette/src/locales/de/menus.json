@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "Der Preis beinhaltet einen Mixer nach Wahl aus Tonic, Cola, Cola Zero oder Sprite."
+      },
+      "rum": {
+        "note": "Wähle deinen Rum und sag uns, ob du einen koffeinhaltigen Mixer möchtest. Kaffee servieren wir kalt oder warm, als Espresso-Shot oder verlängert/Americano."
+      },
+      "gin": {
+        "note": "Serviert mit Schweppes Tonic Water, auf Eisflocken und garniert mit köstlicher Amalfi-Zitrone."
+      },
+      "whisky": {
+        "note": "Wähle aus unserer Whiskey-Auswahl und sag uns, ob du Eis, Wasser oder einen koffeinhaltigen Mixer möchtest. Kaffee servieren wir kalt oder warm, als Espresso-Shot oder verlängert/Americano."
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "Der klassische italienische Spritz, serviert auf Eisflocken."
+      },
+      "limoncelloSpritz": {
+        "note": "Eine Spezialität der Amalfiküste, serviert auf Eisflocken."
+      },
+      "hugoSpritz": {
+        "note": "Sekt über Minze, Limette und Holundersaft gegossen. Serviert mit Eisflocken."
+      },
+      "rossiniSpritz": {
+        "note": "Sekt, aufgegossen mit Erdbeersaft. Serviert mit Eisflocken."
+      },
+      "lemonStrawberryMargarita": {
+        "note": "Erdbeer- oder Zitronensaft mit Tequila, Cointreau und Eis – fertig im klassischen Margarita-Stil."
+      },
+      "lemonDropMartini": {
+        "note": "Frisch gepresster Zitronensaft, geschüttelt mit Absolut Vodka, Cointreau und Eis."
+      },
+      "joseCuervoSilver": {
+        "note": "Pur mit Zitrone und Salz, als Tequila Sunrise oder mit Soda/Sprite serviert."
+      },
+      "limoncelloShot": {
+        "note": "Ein klassischer süditalienischer Drink, pur serviert."
+      },
+      "threeScoops": {
+        "note": "Wähle aus den Sorten Zitrone, Schokolade, Vanille und Haselnuss."
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "Klassischer French Toast, serviert mit Sirup."
+      },
+      "nutellaFrenchToast": {
+        "note": "French Toast mit Nutella gefüllt."
+      },
+      "addEggComboItem": {
+        "note": "Wähle einen Artikel aus dem Ei-Kombi-Menü. Zum Beispiel Pfannkuchen mit Zuckersirup plus Rührei für 15,50 €."
+      },
+      "addAdditionalSyrup": {
+        "note": "Wähle mehr als einen Sirup. Zum Beispiel Pfannkuchen mit Zuckersirup plus Nutella für 14 €."
+      },
+      "veggieToast": {
+        "note": "Geröstetes Brot mit saisonalem Gemüse."
+      },
+      "healthyDelight": {
+        "note": "Parfait aus Joghurt, Granola und hausgemachtem Fruchtkompott."
+      },
+      "detoxMe": {
+        "note": "Spinat, Gurke, Ingwer & Zitrone."
+      },
+      "energizeMe": {
+        "note": "Orange, Karotte, Ingwer & Zitrone."
+      },
+      "multiV": {
+        "note": "Apfel, Karotte, Orange, Zitrone, Ingwer."
+      },
+      "orangeJuice": {
+        "note": "Frisch gepresster Orangensaft."
+      }
+    }
+  }
+}

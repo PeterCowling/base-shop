@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "Positano på budget",
+    "description": "Overblik over udgifter, billig overnatning, mad og gratis oplevelser."
+  },
+  "linkLabel": "Positano på budget",
+  "intro": [
+    "Stræk euroene ved at kombinere transport uden bil, budgetvenlig mad og gratis udsigtspunkter uden at misse Positanos højdepunkter."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Billig transport",
+      "body": [
+        "Brug Alibus eller Curreri-shuttlen til Sorrento og derefter SITA-bus til Positano; køb busbilletter i bundter hos tabacchi for at undgå tillæg.",
+        "Når havet er roligt, kombiner én færgetur med busser for komfort — reserver kun de stræk du behøver, så du ikke betaler for meget."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Små priser på overnatning",
+      "body": [
+        "Book sovesale eller delte lejligheder nær Chiesa Nuova for at skære portergebyrer og trapper væk.",
+        "Overvej baser i Meta eller Praiano ved længere ophold — turen tager 30–40 minutter, men værelserne er langt billigere i højsæsonen."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Mad og drikke",
+      "body": [
+        "Snup panini, sfogliatelle og espresso fra barer i stedet for siddende brunch; fyld en 1 L flaske ved hostellets haner, før du går ud.",
+        "Del antipasti, undgå coperto ved at vælge uformelle trattoriaer, og picnic på terrassen med deli-indkøb ved solnedgang."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Oplevelser med lille budget",
+      "body": [
+        "Planlæg gratis hikes som Gudernes Sti (bus til Nocelle) eller solnedgangsture langs Via Cristoforo Colombo.",
+        "Brug penge på én standout-oplevelse — fx delt bådtur eller madlavningskursus — og balancér resten med stranddage og udsigtspunkter."
+      ]
+    }
+  ],
+  "tips": [
+    "Rejs i skuldersæson (april–maj, sidst i september) for lavere priser og lettere færgepladser.",
+    "Før regnskab i en note-app; del fælles udgifter dagligt så alle er med."
+  ],
+  "faqs": [
+    {
+      "q": "Hvilket dagsbudget skal jeg regne med?",
+      "a": [
+        "€70–€90 dækker soveseng, deli-måltider, busbilletter og én betalt aktivitet; læg €20–€30 til, hvis du vil have privat værelse eller sunset-drinks."
+      ]
+    },
+    {
+      "q": "Forventer man drikkepenge?",
+      "a": [
+        "Service er inkluderet; rund op med €1–€2 for god service eller giv 10 % på finere steder, hvis oplevelsen fortjener det."
+      ]
+    }
+  ],
+  "tocTitle": "På denne side",
+  "faqsTitle": "Ofte stillede spørgsmål",
+  "heroAlt": "Budgetudsigt over Positano fra terrasse",
+  "costBreakdown": {
+    "title": "Eksempel på daglige udgifter",
+    "slices": [
+      {
+        "label": "Seng (sovesal)",
+        "value": 45
+      },
+      {
+        "label": "Mad og snacks",
+        "value": 25
+      },
+      {
+        "label": "Transport",
+        "value": 12
+      },
+      {
+        "label": "Aktiviteter",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "Gratis udsigtspunkt over Positano",
+      "caption": "Gratis udsigtspunkter"
+    },
+    {
+      "alt": "Picnic med udsigt over Positano",
+      "caption": "Picnic for at spare på måltider"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Melhor época para visitar Positano",
+    "description": "Resumo por estação: clima, movimento, preços, eventos e como adaptar o roteiro para cada época."
+  },
+  "linkLabel": "Melhor época para visitar Positano",
+  "intro": [
+    "Planeie a visita com expectativas realistas sobre clima, multidões e disponibilidade de ferries.",
+    "Use a matriz sazonal e as notas mês a mês para decidir quando Positano se alinha às suas prioridades."
+  ],
+  "tocTitle": "Nesta página",
+  "toc": [
+    {
+      "href": "#matrix",
+      "label": "Matriz clima/multidões/preços"
+    },
+    {
+      "href": "#months",
+      "label": "Notas mês a mês"
+    },
+    {
+      "href": "#faqs",
+      "label": "Perguntas frequentes"
+    }
+  ],
+  "sections": [
+    {
+      "id": "matrix",
+      "title": "Matriz de clima / multidões / preços",
+      "body": [
+        "Alta (jun–ago) = calor, muita gente e preços no topo. Meia estação (abr–mai, set–out) = clima mais ameno e melhor relação custo-benefício. Inverno (nov–mar) = tranquilo, com serviços reduzidos."
+      ]
+    },
+    {
+      "id": "months",
+      "title": "Notas mês a mês",
+      "body": [
+        "Abril: início dos ferries; temperaturas amenas e menos gente.",
+        "Maio: clima excelente; mais partidas; fins de semana mais movimentados.",
+        "Junho–agosto: época alta; calor e filas — reserve transporte e atividades com antecedência.",
+        "Setembro: mar quente e ligeiramente mais calmo que agosto.",
+        "Outubro: meia estação; os ferries reduzem no fim do mês.",
+        "Novembro–março: baixa temporada tranquila com serviços reduzidos; os autocarros tornam-se fundamentais.",
+        "A frequência de ferries aumenta na primavera, atinge o pico no verão e diminui no fim de outubro."
+      ]
+    }
+  ],
+  "schemaMonths": [
+    {
+      "name": "Abril",
+      "note": "Início da época de ferries; temperaturas amenas; menos multidões."
+    },
+    {
+      "name": "Maio",
+      "note": "Clima ótimo; ferries frequentes; fins de semana mais cheios."
+    },
+    {
+      "name": "Junho–agosto",
+      "note": "Época alta; calor; reserve transporte/atividades cedo."
+    },
+    {
+      "name": "Setembro",
+      "note": "Mar quente; um pouco menos de gente que em agosto."
+    },
+    {
+      "name": "Outubro",
+      "note": "Meia estação; ferries diminuem no fim do mês."
+    },
+    {
+      "name": "Novembro–março",
+      "note": "Tranquilo; muitos serviços reduzidos; autocarros são o principal transporte."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quando o mar está mais quente?",
+      "a": [
+        "Do fim de junho ao início de setembro costuma oferecer a água mais quente para nadar."
+      ]
+    }
+  ]
+}

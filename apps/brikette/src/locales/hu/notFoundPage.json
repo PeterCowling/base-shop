@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Az oldal nem található",
+    "description": "A kért oldal nem létezik."
+  },
+  "heading": "Az oldal nem található",
+  "message": "Fedezd fel szobáinkat vagy foglalj most.",
+  "linksTitle": "Hasznos linkek",
+  "links": {
+    "home": "Főoldal",
+    "deals": "Ajánlatok",
+    "assistance": "Kapcsolat és információ",
+    "about": "Rólunk"
+  },
+  "buttonRooms": "Szobák",
+  "buttonReserve": "Foglalj most"
+}

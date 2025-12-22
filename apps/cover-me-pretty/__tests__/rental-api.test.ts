@@ -54,7 +54,12 @@ describe("/api/rental", () => {
     const res = await POST(asNextJson({ sessionId: "sess" }));
 
     expect(retrieve).toHaveBeenCalledWith("sess");
-    expect(addOrder).toHaveBeenCalledWith("cover-me-pretty", "sess", 25, "2024-01-01");
+    expect(addOrder).toHaveBeenCalledWith({
+      shop: "cover-me-pretty",
+      sessionId: "sess",
+      deposit: 25,
+      expectedReturnDate: "2024-01-01",
+    });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
   });

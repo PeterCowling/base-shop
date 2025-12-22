@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Gratis og rimelige ting å gjøre i Positano",
+    "description": "Nyt Positano på budsjett: utsiktspunkter, strender, byturer og rimelig mat."
+  },
+  "linkLabel": "Gratis og rimelige ting å gjøre i Positano",
+  "intro": [
+    "Gratis og rimelige ting å gjøre i Positano: utsikter, strender og lokale opplevelser uten stor prislapp."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Utsiktspunkter",
+      "body": [
+        "Gå Via Cristoforo Colombo ved soloppgang for å få postkortutsikten uten folkemengder.",
+        "Ta stien opp mot Montepertuso for panoramautsikt mot kysten og fjellene."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Strender",
+      "body": [
+        "Fornillo har gratis strandsone og roligere vann; gå kyststien fra Spiaggia Grande.",
+        "Arienzo har en liten gratisdel – kom før kl. 10 for å sikre plass og ta med egen parasoll."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "Vandringer",
+      "body": [
+        "Utforsk trapper og smug mellom Chiesa Nuova og Marina Grande for gratis sightseeing.",
+        "Ta kveldsturer når temperaturen synker og lyset langs kysten er på sitt mykeste."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Culture without a ticket",
+      "body": [
+        "Step inside Santa Maria Assunta to view the Byzantine icon and majolica dome; shoulders covered is enough dress code.",
+        "Check the commune noticeboard near Piazza dei Mulini for evening concerts or films hosted on the beach during summer weeks."
+      ]
+    }
+  ],
+  "tips": [
+    "Ta med gjenbrukbar flaske og fyll på i fontenene for å spare kjøp av vann.",
+    "Hold et øye med lokale arrangementer – kirker, festivaler og konserter holder ofte gratis kveldsprogram."
+  ],
+  "faqs": [
+    {
+      "q": "Finnes det gratis museer eller kirker?",
+      "a": [
+        "Ja – besøk kirken Santa Maria Assunta gratis, og se etter fri inngangsdager på MAR Positano-museet."
+      ]
+    },
+    {
+      "q": "Kan jeg ta med mat til stranden?",
+      "a": [
+        "På offentlige soner er piknik tillatt; rydd opp etter deg og bruk gjenbrukbare beholdere."
+      ]
+    }
+  ]
+}

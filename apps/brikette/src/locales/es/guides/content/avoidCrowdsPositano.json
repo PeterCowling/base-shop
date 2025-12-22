@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Cómo evitar las multitudes en Positano",
+    "description": "Horarios, rutas tranquilas, pueblos alternativos y puntos fotográficos para disfrutar Positano sin colas."
+  },
+  "linkLabel": "Cómo evitar las multitudes en Positano",
+  "intro": [
+    "Evita las multitudes con buen timing, rutas inteligentes y planes alternativos más tranquilos.",
+    "Las primeras horas del día y el final de la tarde son tus aliados; Fornillo y las calles altas ofrecen espacio para respirar."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Horarios que funcionan",
+      "body": [
+        "Llega temprano para playas y fotos icónicas; vuelve a la hora dorada para disfrutar con menos gente.",
+        "Evita los picos de ferris al mediodía y aprovecha almuerzos en calles secundarias para saltarte las colas."
+      ]
+    },
+    {
+      "id": "routes",
+      "title": "Rutas y miradores",
+      "body": [
+        "Recorre las calles superiores entre Chiesa Nuova y Sponda para vistas clásicas sin multitudes.",
+        "Elige Fornillo en lugar de Spiaggia Grande para pasar el día en la playa con ambiente más calmado."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Pueblos alternativos",
+      "body": [
+        "Praiano al atardecer, Cetara para marisco y Ravello para jardines y música suelen ser más tranquilos que el centro de Positano.",
+        "Los jardines de Ravello o las aldeas en la ladera de Agerola son una buena escapada de día cuando Positano está saturado."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿A qué hora se llenan las playas?",
+      "a": [
+        "Entre las 10:00 y las 16:00, sobre todo en julio y agosto. Llega antes de las 9:00 o quédate hasta el atardecer para tener espacio."
+      ]
+    },
+    {
+      "q": "¿Debo reservar restaurantes?",
+      "a": [
+        "Sí si quieres mesas con vistas en cenas de fin de semana; si eres flexible, llega antes de las 19:00 y evita el pico."
+      ]
+    },
+    {
+      "q": "¿Debería alojarme fuera de Positano para tener noches más tranquilas?",
+      "a": [
+        "Sí, si prefieres noches más calmadas—Praiano, Minori o Agerola mantienen precios más bajos y puedes llegar a Positano en bus o ferry durante el día."
+      ]
+    }
+  ],
+  "tocTitle": "En esta página",
+  "faqsTitle": "Preguntas frecuentes"
+}

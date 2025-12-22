@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "invalidGuideKey": "Ungültiger Guide-Schlüssel",
+    "missingMetaBlock": "Meta-Block fehlt",
+    "metaTitleRequired": "Meta.title muss eine nichtleere Zeichenkette sein",
+    "metaDescriptionRequired": "Meta.description muss eine nichtleere Zeichenkette sein"
+  }
+}

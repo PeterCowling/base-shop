@@ -1,0 +1,56 @@
+{
+  "slug": "apartamentos",
+  "meta": {
+    "title": "Apartamento con cocina | Hostel Brikette Positano",
+    "description": "Descubre nuestro apartamento privado con cocina equipada, terraza con vistas al mar y espacio para cuatro huéspedes en Positano."
+  },
+  "title": "Apartamento con cocina",
+  "body": "Disfruta de un refugio privado con cocina equipada, dormitorio independiente y balcón con vistas al Tirreno. Prepara tus comidas con ingredientes locales y vuelve a relajarte tras explorar la Costa Amalfitana.",
+  "heroImageAlt": "Fachada del edificio del apartamento del Hostel Brikette",
+  "heroTitle": "Apartamento privado con vistas",
+  "heroIntro": "Disfruta de un espacio luminoso con zona de estar, dormitorio independiente y balcón para desayunar frente al mar Tirreno.",
+  "bookButton": "Reserva ahora",
+  "galleryHeading": "Galería",
+  "galleryAlt": "Collage de interiores del apartamento con terraza",
+  "galleryAlts": [
+    "Sala de estar del apartamento con sofá y mesa de comedor",
+    "Dormitorio del apartamento con cama doble",
+    "Terraza compartida con vista panorámica al mar"
+  ],
+  "detailsHeading": "Detalles",
+  "detailsList": [
+    "Capacidad para 4 huéspedes",
+    "Kitchenette con nevera y placa de inducción",
+    "Baño privado con ducha",
+    "Aire acondicionado y calefacción",
+    "Balcón con vista al mar"
+  ],
+  "amenitiesHeading": "Servicios incluidos",
+  "amenitiesImageAlt": "Mesa auxiliar con amenities del apartamento",
+  "amenitiesList": [
+    "Wi-Fi de alta velocidad",
+    "Cocina totalmente equipada",
+    "Aire acondicionado",
+    "Lavadora y secadora compartidas"
+  ],
+  "highlights": {
+    "sectionTitle": "Lo que más gusta",
+    "slides": [
+      {
+        "title": "Vistas panorámicas",
+        "text": "Despierta con un horizonte azul y acantilados cubiertos de buganvillas.",
+        "alt": "Vista desde el balcón del apartamento hacia Positano"
+      },
+      {
+        "title": "Espacios cómodos",
+        "text": "Relájate en la sala después de explorar senderos y playas.",
+        "alt": "Sala amplia con sofá y mesa de centro"
+      },
+      {
+        "title": "Todo cerca",
+        "text": "Estarás a pasos de tiendas locales, la parada del SITA y la escalera al hostel.",
+        "alt": "Calles del centro de Positano cerca del hostel"
+      }
+    ]
+  }
+}

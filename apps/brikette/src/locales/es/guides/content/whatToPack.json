@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Qué meter en la maleta para la Costa Amalfitana",
+    "description": "Lista de equipaje por temporada para Positano: calzado, capas, protección solar y extras útiles."
+  },
+  "linkLabel": "Qué meter en la maleta para la Costa Amalfitana",
+  "intro": [
+    "Empaca ligero pensando en escaleras y clima: capas, calzado con agarre y botella reutilizable."
+  ],
+  "sections": [
+    {
+      "id": "footwear",
+      "title": "Calzado",
+      "body": [
+        "Zapatillas con suela de buen agarre para escaleras mojadas y senderos.",
+        "Sandalias cómodas para playa/escaleras en verano."
+      ]
+    },
+    {
+      "id": "layers",
+      "title": "Capas y clima",
+      "body": [
+        "Capa ligera + impermeable en primavera/otoño; en verano, sombrero y protector solar.",
+        "Una chaqueta impermeable ligera en los meses de temporada media."
+      ]
+    },
+    {
+      "id": "essentials",
+      "title": "Esenciales",
+      "body": [
+        "Botella reutilizable, enchufe/adaptador italiano, pequeño botiquín, toalla compacta.",
+        "Lleva una botella reutilizable; en los comercios venden garrafas grandes para rellenarla."
+      ]
+    }
+  ],
+  "tips": [
+    "Empaca mochilas o maletas con ruedas resistentes: Positano tiene pavimento irregular.",
+    "Deja espacio para souvenirs pequeños como limoncello o cerámica (envuelve bien)."
+  ],
+  "faqs": [
+    {
+      "q": "¿Necesito ropa formal?",
+      "a": [
+        "No es imprescindible; un atuendo casual arreglado basta para la mayoría de restaurantes."
+      ]
+    },
+    {
+      "q": "¿Hace frío por la noche?",
+      "a": [
+        "En primavera y otoño refresca: lleva una capa ligera o sudadera."
+      ]
+    }
+  ]
+}

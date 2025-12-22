@@ -1,0 +1,11 @@
+{
+  "title": "Transportangaben immer prüfen",
+  "items": {
+    "buses": "Übersetzung in Arbeit.",
+    "ferries": "Fähren: Anbieter veröffentlichen saisonale Routen und Zeiten (wetterabhängig). Sieh nach bei <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
+    "airlink": "Du landest in Salerno Costa d’Amalfi (QSR)? Nutze den Airlink-Shuttle nach Salerno — <airportLink>aeroportodisalerno.it</airportLink> und <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
+    "driving": "Auto: SS163 mit wechselnden Kennzeichen-Beschränkungen (Apr–Okt) und ZTL; Parkkosten variieren je nach Saison und Ort. Prüfe offizielle Hinweise.",
+    "premium": "Premium oder saisonal: Uber Boat und Helikopter-Charter laufen nur mit begrenztem Sommerfahrplan — Verfügbarkeit vorher bestätigen."
+  },
+  "srLabel": "Transporthinweis"
+}

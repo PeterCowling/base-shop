@@ -1,0 +1,72 @@
+{
+  "deals": {
+    "loyaltyCta": {
+      "heading": "Zusätzliche Vorteile für Stammgäste",
+      "body": "Tragen Sie sich in unsere Direktbuchungs-Liste ein, um Vorab-Angebote, saisonale Reisetipps und einen zusätzlichen 5 %-Rabattcode für Ihre nächste Buchung auf unserer Website zu erhalten.",
+      "button": "Für Vorteile anmelden"
+    }
+  },
+  "about": {
+    "mission": {
+      "heading": "Unsere Mission",
+      "paragraphs": [
+        "Seit 1995 hilft das Hostel Brikette Reisenden, Positano mit einem vernünftigen Budget zu erleben – ohne auf den Panoramablick über die Amalfiküste zu verzichten.",
+        "Transparenz hat bei uns Vorrang: klare Preise ohne versteckte Gebühren, unkomplizierte Richtlinien und ein Team vor Ort, das bei Änderungen oder Sonderwünschen hilft.",
+        "Unser lokales Team teilt Transportpläne, Tipps für den Umgang mit 23-kg-/50-lb-Gepäck auf den Treppen und Ideen für Aktivitäten, damit Sie jede Minute an der Küste genießen."
+      ]
+    },
+    "values": {
+      "heading": "Unsere Werte",
+      "items": [
+        {
+          "title": "Fair, direkt und transparent",
+          "body": "Wir veröffentlichen klare Preise und Richtlinien, steuern Sie zu den besten Optionen und fügen niemals versteckte Gebühren hinzu."
+        },
+        {
+          "title": "Lokales Wissen, frei geteilt",
+          "body": "Von Fähren bis zu Fußwegen bietet unser Team praktische Ratschläge, sodass Sie Ihre Zeit (und Ihr Budget) optimal nutzen."
+        },
+        {
+          "title": "Warme Gastfreundschaft",
+          "body": "Wir feiern den sozialen Geist der Hostels: eine freundliche Bar, Gemeinschaftsräume und Mitarbeiter, die sich an Ihre Pläne erinnern."
+        }
+      ]
+    }
+  },
+  "careers": {
+    "hiringCta": {
+      "heading": "Arbeiten Sie mit uns auf der Terrasse",
+      "body": "Werden Sie Teil eines kleinen Teams, das Wert auf Charakter, Initiative und Gästebetreuung legt. Unterkunft für das Personal, Frühstück und Messevergünstigungen inklusive.",
+      "button": "Bewerben Sie sich jetzt"
+    }
+  },
+  "experiences": {
+    "meetTheHosts": {
+      "heading": "Lernen Sie das Terrassenteam kennen",
+      "intro": "Diese Menschen sorgen für Leben auf der Terrasse, veranstalten Events zum Sonnenuntergang, führen Wanderungen und beantworten Ihre Fragen, noch bevor Sie in Positano ankommen.",
+      "hosts": [
+        {
+          "name": "Chiara",
+          "role": "Leitung Erlebnisse",
+          "bio": "Koordiniert die Sunset-Bar, stellt lokale Produzenten vor und stellt sicher, dass jede Verkostung etwas für alle bereithält. Wenn Sie feiern oder eine private Veranstaltung planen, sprechen Sie ab 18 Uhr mit ihr auf der Terrasse.",
+          "imageAlt": "Chiara schenkt an der Terrassenbar einen Spritz ein.",
+          "availability": "Treffen Sie Chiara an den meisten Abenden an der Bar oder über unsere digitale Concierge."
+        },
+        {
+          "name": "Luca",
+          "role": "Lokaler Guide",
+          "bio": "Geboren in Praiano, kennt er jeden Pfad an der Amalfiküste. Luca hilft Ihnen bei der Wahl zwischen dem Sentiero degli Dei, Bootstouren zum Sonnenaufgang oder Tagesausflügen nach Ravello – mit fertigen Transportplänen.",
+          "imageAlt": "Luca zeigt von einem Aussichtspunkt an der Amalfiküste in Richtung Horizont.",
+          "availability": "Treffen Sie ihn früh morgens an der Rezeption oder reservieren Sie Wanderplätze über die Concierge."
+        },
+        {
+          "name": "Mariana",
+          "role": "Digitale Concierge",
+          "bio": "Antwortet über WhatsApp und Messenger mit Fährmeldungen, Restauranttipps und Last-Minute-Erinnerungen. Wenn sich das Wetter ändert, schickt sie stressfreie Alternativen.",
+          "imageAlt": "Handybildschirm mit einem Chat mit Mariana, der digitalen Concierge.",
+          "availability": "Schreiben Sie ihr jederzeit – sie stimmt sich in Echtzeit mit dem Rezeptionsteam ab."
+        }
+      ]
+    }
+  }
+}

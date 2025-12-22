@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "Positano con un budget limitato",
+    "description": "Strategie per ridurre i costi: alloggi, trasporti, pasti economici e attività gratuite."
+  },
+  "linkLabel": "Positano con un budget limitato",
+  "intro": [
+    "Traduzione in arrivo."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport on the cheap",
+      "body": [
+        "Use the Alibus or Curreri shuttle to Sorrento then the SITA bus to Positano; buy bus tickets in blocks from tabacchi to avoid mark-ups.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Smart stays",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink savings",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Low-cost experiences",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "tips": [
+    "Traduzione in arrivo.",
+    "Traduzione in arrivo."
+  ],
+  "faqs": [
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Is tipping expected?",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "tocTitle": "On this page",
+  "faqsTitle": "FAQs",
+  "heroAlt": "Traduzione in arrivo.",
+  "costBreakdown": {
+    "title": "Traduzione in arrivo.",
+    "slices": [
+      {
+        "label": "Bed (dorm)",
+        "value": 45
+      },
+      {
+        "label": "Meals & snacks",
+        "value": 25
+      },
+      {
+        "label": "Transport",
+        "value": 12
+      },
+      {
+        "label": "Activities & extras",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "Traduzione in arrivo.",
+      "caption": "Free viewpoints"
+    },
+    {
+      "alt": "Traduzione in arrivo.",
+      "caption": "Picnic to save on meals"
+    }
+  ]
+}

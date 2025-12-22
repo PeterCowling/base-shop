@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "{{count}} cikk",
+  "articleCount_other": "{{count}} cikk",
+  "topTagsHeading": "Legnépszerűbb címkék",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

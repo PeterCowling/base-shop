@@ -26,6 +26,7 @@ mutableEnv.LOGIN_RATE_LIMIT_REDIS_TOKEN ||= "token-value-32-chars-long-string!!"
 mutableEnv.UPSTASH_REDIS_REST_URL ||= "https://example.com";
 mutableEnv.UPSTASH_REDIS_REST_TOKEN ||= "token-value-32-chars-long-string!!";
 mutableEnv.JWT_SECRET ||= "jwt-secret-32-chars-long-string!!!!";
+mutableEnv.OAUTH_ISSUER ||= "https://auth.example.com/realms/base-shop";
 mutableEnv.OAUTH_CLIENT_ID ||= "oauth-client-id";
 mutableEnv.OAUTH_CLIENT_SECRET ||= "oauth-client-secret-32-chars-long-string!!!";
-
+mutableEnv.OAUTH_REDIRECT_ORIGIN ||= "https://shop.example.com";

@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "Velg plan",
+    "options": {
+      "ferry": "Ferje (sesong)",
+      "trainBus": "Tog + buss (året rundt)",
+      "transfer": "Privat transfer"
+    },
+    "selectedLabel": "Valgt:"
+  },
+  "eventInfo": {
+    "title": "Arrangementdetaljer",
+    "labels": {
+      "when": "Når",
+      "where": "Hvor"
+    }
+  }
+}

@@ -1,0 +1,952 @@
+{
+  "routes": {
+    "amalfi-positano-bus": {
+      "contentKey": "howToGetHereAmalfiPositanoBus",
+      "linkBindings": [
+        {
+          "key": "aside.body",
+          "linkObject": { "type": "howToOverview" }
+        },
+        {
+          "key": "sections.tickets.body",
+          "linkObject": {
+            "type": "external",
+            "href": "https://www.positano.com/en/bus-schedule"
+          }
+        }
+      ]
+    },
+    "amalfi-positano-ferry": {
+      "contentKey": "howToGetHereAmalfiPositanoFerry",
+      "linkBindings": [
+        {
+          "key": "tip.body",
+          "linkObject": { "type": "howToOverview" }
+        },
+        {
+          "key": "sections.positanoArrival.cta",
+          "linkObject": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+        }
+      ]
+    },
+    "capri-positano-ferry": {
+      "contentKey": "capriPositanoFerry",
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.capriPort.link",
+          "placeholders": {
+            "capriLink": {
+              "type": "external",
+              "href": "https://www.capri.net/en/t/capri/positano"
+            },
+            "positanoLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            }
+          }
+        },
+        {
+          "key": "sections.bus.link",
+          "placeholders": {
+            "link": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+          }
+        },
+        {
+          "key": "sections.cancelled.link",
+          "placeholders": {
+            "link": { "type": "directions", "slug": "naples-center-train-bus" }
+          }
+        },
+        {
+          "key": "arrival.linkLabel",
+          "linkObject": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+        }
+      ],
+      "galleries": [
+        {
+          "key": "photoGuide.items",
+          "items": [
+            { "id": "scan", "src": "/img/directions/positano-capri-ferry-img01.png", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "mapOverview", "src": "/img/directions/positano-capri-ferry-img02.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "spiaggiaApproach", "src": "/img/directions/positano-capri-ferry-img03.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "spiaggiaDetail", "src": "/img/directions/positano-capri-ferry-img04.png", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "ticketBooths", "src": "/img/directions/positano-capri-ferry-img05.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point1", "src": "/img/directions/positano-capri-ferry-img06.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point2", "src": "/img/directions/positano-capri-ferry-img07.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point3", "src": "/img/directions/positano-capri-ferry-img08.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point4", "src": "/img/directions/positano-capri-ferry-img09.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point5", "src": "/img/directions/positano-capri-ferry-img10.jpg", "aspectRatio": "4/3", "preset": "gallery" }
+          ]
+        }
+      ],
+      "linkLists": [
+        {
+          "key": "journeyOverview.links",
+          "items": [
+            {
+              "id": "capriNet",
+              "target": { "type": "external", "href": "https://www.capri.net/en/t/capri/positano" }
+            },
+            {
+              "id": "positanoCom",
+              "target": { "type": "external", "href": "https://www.positano.com/en/ferry-schedule" }
+            }
+          ]
+        }
+      ]
+    },
+    "naples-airport-positano-bus": {
+      "contentKey": "howToGetHereNaplesAirportPositanoBus",
+      "media": [
+        {
+          "key": "sections.positanoStop.image",
+          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+          "preset": "gallery",
+          "aspectRatio": "4/3"
+        },
+        {
+          "key": "sections.walk.image",
+          "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+          "preset": "gallery",
+          "aspectRatio": "4/3"
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "aside.body",
+          "placeholders": {
+            "Link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.sorrento.body",
+          "placeholders": {
+            "Link": { "type": "external", "href": "https://www.curreriviaggi.it/" }
+          }
+        },
+        {
+          "key": "sections.airport.link.text",
+          "placeholders": {
+            "Link": { "type": "external", "href": "https://www.curreriviaggi.it/" }
+          }
+        },
+        {
+          "key": "sections.timetable.link.text",
+          "placeholders": {
+            "Link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+            }
+          }
+        },
+        {
+          "key": "sections.timetables.items.sita.text",
+          "placeholders": {
+            "Link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+            }
+          }
+        },
+        {
+          "key": "sections.timetables.items.curreri.text",
+          "placeholders": {
+            "Link": { "type": "external", "href": "https://www.curreriviaggi.it/" }
+          }
+        }
+      ]
+    },
+    "naples-center-positano-ferry": {
+      "contentKey": "howToGetHereNaplesCenterPositanoFerry",
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.arrival.copy",
+          "placeholders": {
+            "link": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+          }
+        },
+        {
+          "key": "sections.fallback.cta",
+          "placeholders": {
+            "link": { "type": "directions", "slug": "naples-center-train-bus" }
+          }
+        },
+        {
+          "key": "sections.transfer.map",
+          "placeholders": {
+            "map": {
+              "type": "external",
+              "href": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4"
+            }
+          }
+        },
+        {
+          "key": "sections.tickets.copy",
+          "placeholders": {
+            "capri": {
+              "type": "external",
+              "href": "https://www.capri.net/en/t/napoli/positano"
+            },
+            "positano": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            }
+          }
+        },
+        {
+          "key": "journeyOverview.paragraphs.1",
+          "placeholders": {
+            "ExternalLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            }
+          }
+        },
+        {
+          "key": "arrival.paragraphs.1",
+          "placeholders": {
+            "TramLink": {
+              "type": "external",
+              "href": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4"
+            }
+          }
+        },
+        {
+          "key": "arrival.return",
+          "placeholders": {
+            "ReturnLink": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+          }
+        },
+        {
+          "key": "header.tipCopy",
+          "placeholders": {
+            "GuideLink": { "type": "howToOverview" }
+          }
+        }
+      ]
+    },
+    "naples-center-train-bus": {
+      "contentKey": "naplesCenterTrainBus",
+      "media": [
+        {
+          "key": "header.share",
+          "src": "/directions/naples-center-train-bus/images/image1.png",
+          "preset": "thumb",
+          "aspectRatio": "1/1"
+        },
+        {
+          "key": "sections.positanoStop.figure",
+          "src": "/directions/naples-center-train-bus/images/image3.png",
+          "preset": "gallery",
+          "aspectRatio": "4/3"
+        },
+        {
+          "key": "sections.walk.approachFigure",
+          "src": "/directions/naples-center-train-bus/images/image2.png",
+          "preset": "gallery",
+          "aspectRatio": "4/3"
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "GuideLink": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.timetable.outro",
+          "placeholders": {
+            "TimetableLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule"
+            }
+          }
+        },
+        {
+          "key": "sections.walk.mapLink",
+          "placeholders": {
+            "MapLink": {
+              "type": "external",
+              "href": "https://www.google.com/maps/dir/bar+internazionale/hostel+brikette/@40.6295534,14.479394,17z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634"
+            }
+          }
+        }
+      ]
+    },
+    "positano-amalfi-bus": {
+      "contentKey": "positanoAmalfiBus",
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.arrival.link",
+          "placeholders": {
+            "link": { "type": "directions", "slug": "amalfi-positano-bus" }
+          }
+        },
+        {
+          "key": "sections.timetable.link",
+          "placeholders": {
+            "link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule"
+            }
+          }
+        }
+      ]
+    },
+    "positano-amalfi-ferry": {
+      "contentKey": "positanoAmalfiFerry",
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "linkObject": { "type": "howToOverview" }
+        },
+        {
+          "key": "sections.tickets.intro",
+          "placeholders": {
+            "travelmar": {
+              "type": "external",
+              "href": "https://travelmar.it/en"
+            },
+            "positano": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            }
+          }
+        }
+      ]
+    },
+    "positano-capri-ferry": {
+      "contentKey": "positanoCapriFerry",
+      "galleries": [
+        {
+          "key": "photoGuide.items",
+          "items": [
+            { "id": "scan", "src": "/img/directions/positano-capri-ferry-img01.png", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "mapOverview", "src": "/img/directions/positano-capri-ferry-img02.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "spiaggiaApproach", "src": "/img/directions/positano-capri-ferry-img03.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "spiaggiaDetail", "src": "/img/directions/positano-capri-ferry-img04.png", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "ticketBooths", "src": "/img/directions/positano-capri-ferry-img05.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point1", "src": "/img/directions/positano-capri-ferry-img06.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point2", "src": "/img/directions/positano-capri-ferry-img07.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point3", "src": "/img/directions/positano-capri-ferry-img08.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point4", "src": "/img/directions/positano-capri-ferry-img09.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point5", "src": "/img/directions/positano-capri-ferry-img10.jpg", "aspectRatio": "4/3", "preset": "gallery" }
+          ]
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        }
+      ],
+      "linkLists": [
+        {
+          "key": "journeyOverview.links",
+          "items": [
+            {
+              "id": "capriNet",
+              "target": { "type": "external", "href": "https://www.capri.net/en/t/capri/positano" }
+            },
+            {
+              "id": "positanoCom",
+              "target": { "type": "external", "href": "https://www.positano.com/en/ferry-schedule" }
+            }
+          ]
+        }
+      ],
+      "sectionsRoot": null,
+      "sectionPaths": [
+        "journeyOverview",
+        "photoGuide",
+        "toPort",
+        "tickets",
+        "arrival"
+      ]
+    },
+    "positano-naples-airport-bus": {
+      "contentKey": "howToGetHerePositanoNaplesAirportBus",
+      "media": [
+        {
+          "key": "sections.walk.image",
+          "src": "/img/directions/positano-bus-stop.png",
+          "preset": "gallery",
+          "aspectRatio": "4/3"
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "aside.body",
+          "placeholders": {
+            "Link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.sorrento.body",
+          "placeholders": {
+            "Link": { "type": "external", "href": "https://www.curreriviaggi.it/" }
+          }
+        },
+        {
+          "key": "sections.timetables.items.sita.text",
+          "placeholders": {
+            "Link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+            }
+          }
+        },
+        {
+          "key": "sections.timetables.items.curreri.text",
+          "placeholders": {
+            "Link": { "type": "external", "href": "https://www.curreriviaggi.it/" }
+          }
+        }
+      ]
+    },
+    "positano-naples-center-bus-train": {
+      "contentKey": "positanoNaplesCenterBusTrain",
+      "media": [
+        {
+          "key": "sections.positanoStop",
+          "src": "/img/directions/positano-bus-stop.png",
+          "preset": "gallery",
+          "aspectRatio": "4/3"
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "cta.body",
+          "placeholders": {
+            "Link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.timetable.outro",
+          "placeholders": {
+            "Link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+            }
+          }
+        },
+        {
+          "key": "sections.sorrento.outro",
+          "placeholders": {
+            "Link": {
+              "type": "external",
+              "href": "https://www.sorrentoinsider.com/it/orari-vesuviana-napoli-sorrento?route=sorrento_napoli"
+            }
+          }
+        }
+      ]
+    },
+    "positano-naples-center-ferry": {
+      "contentKey": "positanoNaplesCenterFerry",
+      "galleries": [
+        {
+          "key": "photoGuide.items",
+          "items": [
+            { "id": "scan", "src": "/img/directions/positano-capri-ferry-img01.png", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "mapOverview", "src": "/img/directions/positano-capri-ferry-img02.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "approach", "src": "/img/directions/positano-capri-ferry-img03.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "detailMap", "src": "/img/directions/positano-capri-ferry-img04.png", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "ticketBooths", "src": "/img/directions/positano-capri-ferry-img05.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point1", "src": "/img/directions/positano-capri-ferry-img06.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point2", "src": "/img/directions/positano-capri-ferry-img07.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point3", "src": "/img/directions/positano-capri-ferry-img08.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point4", "src": "/img/directions/positano-capri-ferry-img09.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point5", "src": "/img/directions/positano-capri-ferry-img10.jpg", "aspectRatio": "4/3", "preset": "gallery" }
+          ]
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "header.tipCopy",
+          "placeholders": {
+            "GuideLink": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "journeyOverview.paragraphs.1",
+          "placeholders": {
+            "ExternalLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            }
+          }
+        },
+        {
+          "key": "sections.tickets.copy",
+          "placeholders": {
+            "ScheduleLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            }
+          }
+        },
+        {
+          "key": "arrival.paragraphs.1",
+          "placeholders": {
+            "TramLink": {
+              "type": "external",
+              "href": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4"
+            }
+          }
+        },
+        {
+          "key": "arrival.return",
+          "placeholders": {
+            "ReturnLink": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+          }
+        }
+      ],
+      "sectionsRoot": null,
+      "sectionPaths": [
+        "journeyOverview",
+        "photoGuide",
+        "walk",
+        "tickets",
+        "arrival"
+      ]
+    },
+    "positano-ravello-bus": {
+      "contentKey": "positanoRavelloBus",
+      "media": [
+        {
+          "key": "positanoStop",
+          "src": "/img/directions/positano-bus-stop.png",
+          "preset": "gallery",
+          "aspectRatio": "4/3"
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "cta",
+          "linkObject": { "type": "howToOverview" }
+        }
+      ],
+      "sectionsRoot": null,
+      "sectionPaths": [
+        "journey",
+        "sita",
+        "timetable",
+        "positanoStop",
+        "walk",
+        "buyTickets",
+        "toAmalfi",
+        "change",
+        "arrive"
+      ]
+    },
+    "positano-ravello-ferry-bus": {
+      "contentKey": "howToGetHerePositanoRavelloFerryBus",
+      "linkBindings": [
+        {
+          "key": "tip.body",
+          "placeholders": {
+            "Link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "walk.link",
+          "placeholders": {
+            "Link": { "type": "guide", "guideKey": "chiesaNuovaArrivals" }
+          }
+        },
+        {
+          "key": "ferry.resources",
+          "placeholders": {
+            "TravelmarLink": {
+              "type": "external",
+              "href": "https://www.travelmar.it/en/home"
+            },
+            "PositanoLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            }
+          }
+        },
+        {
+          "key": "transfer.resources",
+          "placeholders": {
+            "SitaLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule"
+            }
+          }
+        }
+      ],
+      "sectionsRoot": null,
+      "sectionPaths": [
+        "overview",
+        "walk",
+        "ferry",
+        "transfer",
+        "arrival"
+      ]
+    },
+    "positano-salerno-bus": {
+      "contentKey": "positanoSalernoBus",
+      "linkBindings": [
+        {
+          "key": "tip.body",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.timetable.intro",
+          "placeholders": {
+            "link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule"
+            }
+          }
+        }
+      ]
+    },
+    "positano-salerno-ferry": {
+      "contentKey": "howToGetHerePositanoSalernoFerry",
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "journey.paragraphs.*",
+          "placeholders": {
+            "positanoLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            },
+            "travelmarLink": {
+              "type": "external",
+              "href": "https://www.travelmar.it/en"
+            }
+          }
+        },
+        {
+          "key": "arrival.paragraphs.*",
+          "placeholders": {
+            "mapLink": {
+              "type": "external",
+              "href": "https://www.google.com/maps/dir/Travelmar+-+Traghetti+Salerno,+Piazza+della+Concordia,+Salerno,+SA/Salerno+Train+Station,+Via+Zara,+Salerno,+SA/@40.6735022,14.7687986,18z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133bc2396c885437:0xe1ccfe3b3efd24a5!2m2!1d14.7675186!2d40.6717407!1m5!1m1!1s0x133bc3b98e72261f:0x6251217dd6a0c63d!2m2!1d14.772223!2d40.6752304!3e2"
+            }
+          }
+        }
+      ]
+    },
+    "positano-sorrento-bus": {
+      "contentKey": "positanoSorrentoBus",
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.timetable.link",
+          "placeholders": {
+            "link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule"
+            }
+          }
+        }
+      ]
+    },
+    "positano-sorrento-ferry": {
+      "contentKey": "positanoSorrentoFerry",
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "walkToPier.note",
+          "placeholders": {
+            "positano": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            },
+            "travelmar": {
+              "type": "external",
+              "href": "https://travelmar.it/en"
+            },
+            "nlg": {
+              "type": "external",
+              "href": "https://www.nlg.it/"
+            }
+          }
+        },
+        {
+          "key": "cta.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        }
+      ],
+      "sectionsRoot": null,
+      "sectionPaths": [
+        "journeyOverview",
+        "walkToPier",
+        "boarding",
+        "arrival"
+      ]
+    },
+    "positano-to-naples-directions-by-ferry": {
+      "contentKey": "howToGetHerePositanoNaplesFerry",
+      "galleries": [
+        {
+          "key": "sections.photoGuide.items",
+          "items": [
+            { "id": "scanGraphic", "src": "/img/directions/positano-capri-ferry-img01.png", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "routeMap", "src": "/img/directions/positano-capri-ferry-img02.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "approach", "src": "/img/directions/positano-capri-ferry-img03.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "detailMap", "src": "/img/directions/positano-capri-ferry-img04.png", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "ticketBooths", "src": "/img/directions/positano-capri-ferry-img05.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point1", "src": "/img/directions/positano-capri-ferry-img06.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point2", "src": "/img/directions/positano-capri-ferry-img07.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point3", "src": "/img/directions/positano-capri-ferry-img08.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point4", "src": "/img/directions/positano-capri-ferry-img09.jpg", "aspectRatio": "4/3", "preset": "gallery" },
+            { "id": "point5", "src": "/img/directions/positano-capri-ferry-img10.jpg", "aspectRatio": "4/3", "preset": "gallery" }
+          ]
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "hero.tip",
+          "placeholders": {
+            "GuideLink": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.journeyOverview.paragraphs.1",
+          "placeholders": {
+            "ScheduleLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            }
+          }
+        },
+        {
+          "key": "sections.arrival.paragraphs.1",
+          "placeholders": {
+            "TramLink": {
+              "type": "external",
+              "href": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4"
+            }
+          }
+        },
+        {
+          "key": "sections.arrival.paragraphs.2",
+          "placeholders": {
+            "LuggageGuideLink": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+          }
+        }
+      ]
+    },
+    "ravello-positano-bus": {
+      "contentKey": "howToGetHereRavelloPositanoBus",
+      "media": [
+        {
+          "key": "arrivingPositano.figure",
+          "src": "/img/directions/positano-bus-stop.png",
+          "preset": "gallery",
+          "aspectRatio": "4/3"
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "tip.body",
+          "placeholders": {
+            "GuideLink": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "timetable.description",
+          "placeholders": {
+            "TimetableLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule"
+            }
+          }
+        }
+      ],
+      "sectionsRoot": null,
+      "sectionPaths": [
+        "journeyOverview",
+        "sitaTickets",
+        "timetable",
+        "ravelloToAmalfi",
+        "waitingInAmalfi",
+        "arrivingPositano",
+        "walking"
+      ]
+    },
+    "salerno-positano-bus": {
+      "contentKey": "salernoPositanoBus",
+      "linkBindings": [
+        {
+          "key": "tip.body",
+          "placeholders": {
+            "GuideLink": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "timetable.link",
+          "placeholders": {
+            "ScheduleLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule"
+            }
+          }
+        },
+        {
+          "key": "sections.timetable.intro",
+          "placeholders": {
+            "link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule"
+            }
+          }
+        }
+      ]
+    },
+    "salerno-positano-ferry": {
+      "contentKey": "howToGetHereSalernoPositanoFerry",
+      "linkBindings": [
+        {
+          "key": "tip.body",
+          "placeholders": {
+            "GuideLink": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.tickets.intro",
+          "placeholders": {
+            "TravelmarLink": {
+              "type": "external",
+              "href": "https://travelmar.it/en"
+            },
+            "PositanoLink": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            }
+          }
+        },
+        {
+          "key": "sections.positanoArrival.cta",
+          "placeholders": {
+            "DockGuideLink": { "type": "guide", "guideKey": "ferryDockToBrikette" }
+          }
+        }
+      ]
+    },
+    "sorrento-positano-bus": {
+      "contentKey": "sorrentoPositanoBus",
+      "media": [
+        {
+          "key": "sections.arrival.image",
+          "src": "/img/directions/positano-bus-stop.png",
+          "preset": "gallery",
+          "aspectRatio": "4/3"
+        }
+      ],
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.timetable.footer",
+          "placeholders": {
+            "link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+            }
+          }
+        },
+        {
+          "key": "sections.timetable.link",
+          "placeholders": {
+            "link": {
+              "type": "external",
+              "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+            }
+          }
+        },
+        {
+          "key": "sections.walk.link",
+          "linkObject": {
+            "type": "guide",
+            "guideKey": "chiesaNuovaArrivals"
+          }
+        }
+      ]
+    },
+    "sorrento-positano-ferry": {
+      "contentKey": "sorrentoPositanoFerry",
+      "linkBindings": [
+        {
+          "key": "tip.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        },
+        {
+          "key": "sections.sorrentoPort.footer",
+          "placeholders": {
+            "linkPositano": {
+              "type": "external",
+              "href": "https://www.positano.com/en/ferry-schedule"
+            },
+            "linkTravelmar": {
+              "type": "external",
+              "href": "https://travelmar.it/en"
+            },
+            "linkNlg": {
+              "type": "external",
+              "href": "https://www.nlg.it/"
+            }
+          }
+        },
+        {
+          "key": "cta.copy",
+          "placeholders": {
+            "link": { "type": "howToOverview" }
+          }
+        }
+      ]
+    }
+  }
+}

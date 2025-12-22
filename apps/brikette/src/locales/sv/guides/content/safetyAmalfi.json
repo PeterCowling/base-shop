@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Så håller du dig säker i Positano och på Amalfikusten",
+    "description": "Praktiska säkerhetstips: bussar, färjor, trappor, sol och nödkontakter – allt att veta innan resan."
+  },
+  "linkLabel": "Så håller du dig säker i Positano och på Amalfikusten",
+  "intro": [
+    "Stay safe on Positano’s stairs, buses, and beaches with a few simple habits."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Stairs & walking routes",
+      "body": [
+        "Map routes with fewer steps (Chiesa Nuova or Sponda) and share loads between a backpack and a light trolley if you have knee concerns.",
+        "Pause on terrace walls or use compact trekking poles for longer climbs like the Path of the Gods."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Buses & ferries",
+      "body": [
+        "Validate SITA tickets, hold the rail, and store bags in the luggage zone—blind curves mean sudden braking.",
+        "On ferries, keep valuables with you and follow crew instructions when stowing heavier suitcases."
+      ]
+    },
+    {
+      "id": "sea",
+      "title": "Sea & sun",
+      "body": [
+        "Check beach safety flags, wear water shoes on pebble beaches, and reapply reef-safe SPF after every swim.",
+        "Hydrate often: carry at least 1 litre (34 oz) per person on hot days and seek shade between midday and 15:00."
+      ]
+    },
+    {
+      "id": "belongings",
+      "title": "Belongings & contacts",
+      "body": [
+        "Split cash/cards between bags and use hostel lockers or safes for passports and electronics.",
+        "Save emergency numbers (112 general, Coast Guard 1530) and local pharmacy hours offline in case signal drops."
+      ]
+    }
+  ],
+  "tips": [
+    "Tell a friend or the hostel desk your planned return time before long hikes and double-check the weather alert level.",
+    "Carry a small torch for late-night stairways—some lanes have uneven lighting after midnight."
+  ],
+  "faqs": [
+    {
+      "q": "Is tap water safe to drink?",
+      "a": [
+        "Yes, Positano’s tap water is potable—refill bottles to reduce plastic and stay hydrated."
+      ]
+    },
+    {
+      "q": "Are there areas to avoid at night?",
+      "a": [
+        "The town is generally calm, but stick to lit routes and use taxis if you’re returning late from Amalfi, Sorrento, or Naples."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Sidan hittades inte",
+    "description": "Sidan du begärde finns inte."
+  },
+  "heading": "Sidan hittades inte",
+  "message": "Utforska våra rum eller boka din vistelse.",
+  "linksTitle": "Användbara länkar",
+  "links": {
+    "home": "Hem",
+    "deals": "Erbjudanden",
+    "assistance": "Kontakt & Info",
+    "about": "Om oss"
+  },
+  "buttonRooms": "Rum",
+  "buttonReserve": "Boka nu"
+}

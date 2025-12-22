@@ -1,3 +1,4 @@
+/* i18n-exempt file -- TEST-1234 test fixtures [ttl=2026-12-31] */
 import type { Session } from 'next-auth';
 
 export const adminSession = {

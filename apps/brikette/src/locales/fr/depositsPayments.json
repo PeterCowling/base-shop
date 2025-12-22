@@ -1,0 +1,43 @@
+{
+  "slug": "depots-paiements",
+  "meta": {
+    "title": "Guide des Dépôts et Paiements – Auberge Brikette, Positano",
+    "description": "Guide complet sur les dépôts, moyens de paiement, confirmations, modifications, annulations et blocages de sécurité lors de votre réservation."
+  },
+  "headings": {
+    "submittingBookingRequest": "Comment Soumettre votre Demande",
+    "processingBookingRequest": "Traitement de votre Demande",
+    "decliningBookingRequest": "Quand Nous Pouvons Refuser",
+    "requestSizeLimit": "Limite par Demande",
+    "counterOffer": "Si votre Chambre n’est pas Disponible",
+    "prepaidNonRefundableBookingsPolicy": "Tarifs Prépayés Non Remboursables",
+    "confirmationEmail": "E-mail de Confirmation",
+    "numberOfGuestsIncluded": "Invités Inclus",
+    "scopeOfFacilitiesIncluded": "Prestations Incluses",
+    "financialObligation": "Responsabilité Financière",
+    "roomAllocation": "Attribution des Lits et Chambres",
+    "allocatingUpgrades": "Surclassements",
+    "thirdPartyPayments": "Paiements via Tiers",
+    "bookingRequestDeposits": "Dépôts de Réservation",
+    "bookingRequestPreauthorisations": "Pré-autorisations Carte",
+    "safeguardingProcess": "Blocage de Sécurité"
+  },
+  "content": {
+    "submittingBookingRequest": "Envoyez votre demande via une OTA autorisée ou sur notre site ; les chats ou passages spontanés ne suffisent pas. En cliquant sur « Réserver », vous confirmez l’exactitude des données et acceptez nos CGV.",
+    "processingBookingRequest": "Nous traitons votre demande dès réception du dépôt, de la pré-autorisation ou du paiement requis. La réservation doit porter le nom du titulaire de la carte. Si différent, envoyez-nous une autorisation écrite avant le traitement.",
+    "decliningBookingRequest": "Nous pouvons refuser une demande (paiement échoué, info manquante, violation de nos CGV).",
+    "requestSizeLimit": "Une demande couvre jusqu’à 7 nuits consécutives et 5 personnes. Pour plus, faites plusieurs demandes.",
+    "counterOffer": "Si la chambre voulue est prise, nous envoyons une contre-proposition. Acceptez-la et réglez pour finaliser.",
+    "prepaidNonRefundableBookingsPolicy": "Le tarif prépayé est moins cher mais exige 100 % immédiat. Trois tentatives carte ; si échec, demande annulée. Ni remboursement ni modification.",
+    "confirmationEmail": "Après paiement, vous recevez un e-mail de confirmation (référence, dates, durée, extras). Vérifiez-le et signalez tout problème.",
+    "numberOfGuestsIncluded": "Votre réservation inclut automatiquement :\n• 1 personne par lit simple\n• 2 personnes par lit double\n• Capacité annoncée d’un appartement\nAu-delà, nous ne pouvons accueillir d’invités supplémentaires.",
+    "scopeOfFacilitiesIncluded": "Chaque invité reçoit :\n• Linge propre et carte clé\n• Douches communes\n• Eau chaude (env. 07 h–10 h 30 et 17 h–22 h 30)\n• Espaces communs\nPetit-déjeuner, Wi-Fi, consigne, etc. sont gratuits selon règles simples.",
+    "financialObligation": "Le titulaire de la carte indiqué est responsable de tous frais : chambre, dommages, nettoyage, amendes. Les soldes impayés seront débités.",
+    "roomAllocation": "Nous garantissons la catégorie réservée. En dortoir, vous avez un lit dans cette catégorie, sans garantie que le groupe partage la même chambre. Les lits sont attribués à l’arrivée par ordre d’enregistrement.",
+    "allocatingUpgrades": "Nous proposons parfois un surclassement gratuit ou payant. Si le surclassement gratuit devient impossible, nous vous remettons dans la catégorie initiale.",
+    "thirdPartyPayments": "Via une OTA, vous payez sur leur plateforme ; nous ne voyons pas vos données carte. Vérifiez toujours la réussite du paiement et la réception de la confirmation.",
+    "bookingRequestDeposits": "Certains tarifs nécessitent un dépôt. Les tarifs prépayés exigent 100 % d’avance, non remboursable. Échec du dépôt = demande annulée.",
+    "bookingRequestPreauthorisations": "Pour les tarifs flexibles, nous pouvons pré-autoriser la première nuit ou la totalité. Échec = refus de la demande.",
+    "safeguardingProcess": "Au check-in, nous pouvons bloquer l’équivalent d’une nuit par invité. Sinon, acceptez espèce ou carte d’un compagnon ; sans garantie, la réservation est annulée."
+  }
+}

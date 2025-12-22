@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "Z Positano do Ravello: jak dojechać",
+    "description": "Jak dotrzeć do Ravello z Positano: połączenia autobusowe, przesiadki i alternatywne rozwiązania."
+  },
+  "linkLabel": "Z Positano do Ravello: jak dojechać",
+  "intro": [
+    "Positano → Ravello via Amalfi: buses all year; ferry + bus in season.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "toc": [
+    {
+      "href": "#via-amalfi",
+      "label": "Via Amalfi"
+    },
+    {
+      "href": "#gardens",
+      "label": "Gardens & villas"
+    },
+    {
+      "href": "#timing",
+      "label": "Timing & returns"
+    }
+  ],
+  "sections": [
+    {
+      "id": "via-amalfi",
+      "title": "Via Amalfi",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "gardens",
+      "title": "Gardens & villas",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & returns",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "tipsTitle": "Tips",
+  "tips": [
+    "Tłumaczenie w przygotowaniu.",
+    "Wear comfortable shoes with grip for Ravello’s slopes and the walk between villas."
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Is the route family-friendly?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Can I combine Capri on the same day?",
+      "a": [
+        "Possible but rushed—plan separate days so you actually enjoy both destinations."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Positano → Amalfi",
+        "text": "Tłumaczenie w przygotowaniu."
+      },
+      {
+        "name": "Amalfi → Ravello",
+        "text": "Tłumaczenie w przygotowaniu."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Travel via Amalfi. In summer, ferries to Amalfi plus a quick bus up to Ravello can save time."
+    ],
+    "toc": [
+      {
+        "href": "#via-amalfi",
+        "label": "Via Amalfi (bus + bus)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Tłumaczenie w przygotowaniu."
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "via-amalfi",
+        "title": "Via Amalfi (bus + bus)",
+        "body": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Tłumaczenie w przygotowaniu.",
+        "body": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      }
+    ],
+    "tipsTitle": "Tips",
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "How long to visit Ravello?",
+        "a": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      }
+    ]
+  }
+}

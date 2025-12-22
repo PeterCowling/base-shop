@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Beste Reisezeit für Positano",
+    "description": "Monat für Monat: Wetter, Andrang und Fährbetrieb."
+  },
+  "linkLabel": "Beste Reisezeit für Positano",
+  "intro": [
+    "Plane deinen Besuch mit realistischen Erwartungen zu Wetter, Andrang und Fährverfügbarkeit.",
+    "Nutze die Saisonübersicht und die Monatsnotizen, um den passenden Zeitraum für Positano zu finden."
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "toc": [
+    {
+      "href": "#matrix",
+      "label": "Matrix Wetter/Andrang/Preise"
+    },
+    {
+      "href": "#months",
+      "label": "Hinweise nach Monaten"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "matrix",
+      "title": "Matrix Wetter / Andrang / Preise",
+      "body": [
+        "Hochsaison (Jun–Aug) = heiß, voll und teuer. Zwischensaison (Apr–Mai, Sep–Okt) = milderes Wetter und besseres Preis-Leistungs-Verhältnis. Winter (Nov–März) = ruhig mit eingeschränktem Angebot."
+      ]
+    },
+    {
+      "id": "months",
+      "title": "Hinweise nach Monaten",
+      "body": [
+        "April: Start der Fährsaison; milde Temperaturen und weniger Menschen.",
+        "Mai: Top-Wetter; mehr Abfahrten; Wochenenden belebter.",
+        "Juni–August: Hochsaison mit Hitze und Schlangen – Transport und Aktivitäten vorbuchen.",
+        "September: warmes Meer, etwas ruhiger als im August.",
+        "Oktober: Zwischensaison; Fährverbindungen nehmen zum Monatsende ab.",
+        "November–März: ruhige Nebensaison mit reduziertem Angebot; Busse sind das Rückgrat.",
+        "Die Fährfrequenz steigt im Frühling, erreicht im Sommer ihren Höhepunkt und nimmt Ende Oktober ab."
+      ]
+    }
+  ],
+  "schemaMonths": [
+    {
+      "name": "April",
+      "note": "Start der Fährsaison; mildes Wetter; weniger Besucher."
+    },
+    {
+      "name": "Mai",
+      "note": "Tolles Wetter; viele Fähren; Wochenenden voller."
+    },
+    {
+      "name": "Juni–August",
+      "note": "Hochsaison; heiß; Transport/Aktivitäten früh buchen."
+    },
+    {
+      "name": "September",
+      "note": "Warmes Meer; etwas weniger Andrang als im August."
+    },
+    {
+      "name": "Oktober",
+      "note": "Zwischensaison; Fährverkehr nimmt gegen Monatsende ab."
+    },
+    {
+      "name": "November–März",
+      "note": "Ruhig; viele Angebote reduziert; Busse wichtigste Verbindung."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Wann ist das Meer am wärmsten?",
+      "a": [
+        "Ende Juni bis Anfang September ist das Wasser meist am wärmsten zum Schwimmen."
+      ]
+    }
+  ]
+}

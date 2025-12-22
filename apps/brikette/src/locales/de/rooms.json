@@ -1,0 +1,56 @@
+{
+  "detail": {
+    "common": {
+      "amenitiesHeading": "Warum Gäste dieses Zimmer buchen",
+      "amenitiesIntro": "Durchdachte Details, die bei deiner Ankunft bereits bereitstehen."
+    },
+    "double_room": {
+      "amenities": [
+        {
+          "title": "Privater Komfort mit eigenem Bad",
+          "body": "Beginne und beende jeden Tag mit einer heißen Dusche, flauschigen Handtüchern und einem Bad ganz für dich allein."
+        },
+        {
+          "title": "Morgens auf der Terrasse mit Meerblick",
+          "body": "Öffne die Türen zu deiner privaten Terrasse für Espresso oder Sundowner mit Blick über Positano."
+        },
+        {
+          "title": "Kühle, ruhige Nächte",
+          "body": "Individuell regelbare Klimaanlage und Verdunklungsfensterläden halten den Raum selbst in Augustnächten angenehm."
+        }
+      ]
+    },
+    "room_11": {
+      "amenities": [
+        {
+          "title": "Terrasse groß genug für alle Mitreisenden",
+          "body": "Trifft euch auf Sofas und Tischen im Freien für Frühstück, Dehnübungen nach Wanderungen oder gemeinsame Skyline-Fotos."
+        },
+        {
+          "title": "Komfort nur für Frauen",
+          "body": "Ein reiner Frauenschlafsaal mit eigenem Bad und Schminkbereich, sodass du nie Schlange stehen musst."
+        },
+        {
+          "title": "Privatsphäre und Sicherheit",
+          "body": "Jedes Bett bietet Vorhänge, Leselampen, Steckdosen und Schlüsselkartenschließfächer für Wertsachen."
+        }
+      ]
+    },
+    "room_12": {
+      "amenities": [
+        {
+          "title": "Extra große Gemeinschaftsterrasse",
+          "body": "Liegestühle und Esstische verwandeln den Schlafsaal in ein gemeinsames Wohnzimmer mit Amalfi-Küstenblick."
+        },
+        {
+          "title": "Eigenes Bad nur für deinen Schlafsaal",
+          "body": "Frische dich in einem privaten Bad mit Föhn, Spiegeln und vielen Haken auf."
+        },
+        {
+          "title": "Stromanschlüsse für jedes Bett",
+          "body": "Jede Koje verfügt über eigene Steckdosen, Leselampen und Schlüsselkartenschließfächer für ein sicheres Gefühl."
+        }
+      ]
+    }
+  }
+}

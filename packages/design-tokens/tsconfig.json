@@ -13,7 +13,10 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": true,
+    "paths": {
+      "@themes/*": ["packages/themes/*/dist/index.d.ts"]
+    }
   },
   "include": ["index.ts", "src/**/*"],
   "exclude": ["dist", ".turbo", "node_modules"],

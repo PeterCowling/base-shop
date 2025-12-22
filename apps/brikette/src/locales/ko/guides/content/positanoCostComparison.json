@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "포시타노 vs 다른 해변 도시 비용 비교",
+    "description": "숙박·식비·교통을 비교하고 포시타노가 좋은 선택이 되는 시나리오를 설명합니다."
+  },
+  "linkLabel": "포시타노 비용 vs 다른 해변 여행지",
+  "intro": [
+    "번역을 준비하고 있습니다."
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Accommodation vs peers",
+      "body": [
+        "번역을 준비하고 있습니다.",
+        "번역을 준비하고 있습니다."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "번역을 준비하고 있습니다.",
+        "번역을 준비하고 있습니다."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport & experiences",
+      "body": [
+        "번역을 준비하고 있습니다.",
+        "번역을 준비하고 있습니다."
+      ]
+    }
+  ],
+  "tips": [
+    "번역을 준비하고 있습니다.",
+    "번역을 준비하고 있습니다."
+  ],
+  "faqs": [
+    {
+      "q": "번역을 준비하고 있습니다.",
+      "a": [
+        "번역을 준비하고 있습니다."
+      ]
+    },
+    {
+      "q": "번역을 준비하고 있습니다.",
+      "a": [
+        "번역을 준비하고 있습니다."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Overview"
+      },
+      {
+        "href": "#when",
+        "label": "When it’s good value"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "faqLabel": "FAQs",
+    "sections": {
+      "overview": {
+        "heading": "Overview",
+        "body": "번역을 준비하고 있습니다."
+      },
+      "when": {
+        "heading": "When it’s good value",
+        "body": "번역을 준비하고 있습니다."
+      }
+    },
+    "faq": {
+      "summary": "번역을 준비하고 있습니다.",
+      "answer": "번역을 준비하고 있습니다."
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Path of the Gods från Hostel Brikette",
+    "description": "Exakt rutt från hostellet till Sentiero degli Dei med transportalternativ och säkerhetstips."
+  },
+  "linkLabel": "Path of the Gods från Brikette",
+  "intro": "Sentiero degli Dei (\"Gudarnas stig\") är en av Italiens mest spektakulära kustleder. Från vandrarhemmet når du starten i Bomerano eller målet i Nocelle med SITA-bussen.",
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Bästa tid att vandra",
+      "body": [
+        "Sikta på april–juni eller september–oktober för klar sikt och behagliga temperaturer; vinterregn kan göra stenstegen hala.",
+        "I juli–augusti bör du starta före 09.00 eller efter 15.00 eftersom leden är utsatt och skugga är begränsad."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Välj din rutt",
+      "body": [
+        "Bomerano → Nocelle är den klassiska 6,5 km-sträckan med jämna stigningar och nedgångar; avsätt 2,5–3 timmars vandring plus restid.",
+        "Ont om tid? Ta bussen till Nocelle, gå panoramaslingan tur och retur till Colle Serra eller gå de 1 700 trappstegen ner till Positano."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Navigering och säkerhet",
+      "body": [
+        "Följ de rödvita CAI-markeringarna och träpilarna Sentiero degli Dei; ladda ner offlinekartor eftersom mobiltäckningen försvinner i ravinerna.",
+        "Leden blandar stensteg, packad jord och lös grus – använd skor med bra grepp och fäll ut vandringsstavar först i brantare partier."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Vatten, snacks och hemväg",
+      "body": [
+        "Fyll på i Bomeranos torg (kaféer, bageri, sista offentliga toaletten) innan du startar; i Nocelle finns kiosk och lemon granita nära kyrkan.",
+        "Tillbaka till Positano: gå ner för trapporna till Arienzo-stranden eller ta SITA-bussen från Nocelle/Montepertuso – ha en extra stämplad biljett i dagspåsen."
+      ]
+    }
+  ],
+  "essentialsTitle": "Det viktigaste",
+  "essentials": [
+    "Bra skor, vatten och solskydd – undvik mitt på dagen under sommaren.",
+    "Bussbiljetter måste köpas innan du går ombord (tobaksbutiker, kiosker).",
+    "Avsätt cirka 4 timmar inklusive restid och fotostopp."
+  ],
+  "typicalCostsTitle": "Typiska kostnader",
+  "typicalCosts": [
+    "SITA-buss (Positano ⇄ Nocelle/Bomerano): cirka 2–4 € enkel resa beroende på biljettyp",
+    "Snacks/vatten: 3–8 € (ta med eget för att spara)",
+    "Leden: gratis (ingen entréavgift)"
+  ],
+  "steps": [
+    {
+      "name": "Gå till busshållplatsen Chiesa Nuova",
+      "text": "Från vandrarhemmet går du cirka 80 meter uppför till SITA-hållplatsen vid Chiesa Nuova."
+    },
+    {
+      "name": "Buss till Nocelle eller Bomerano",
+      "text": "Ta SITA mot Amalfi och kliv av i Nocelle för kortare variant, eller fortsätt till Agerola/Bomerano för klassiska starten."
+    },
+    {
+      "name": "Ingång till leden",
+      "text": "I Nocelle följer du skyltar mot Sentiero degli Dei (slut). I Bomerano leder skyltningen från torget till startpunkten."
+    },
+    {
+      "name": "Välj hemväg",
+      "text": "Avsluta i Nocelle och gå trapporna ner till Positano, eller ta bussen tillbaka till Chiesa Nuova."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Var börjar jag vandringen?",
+      "a": "Den klassiska starten ligger i Bomerano (Agerola). En kortare variant avslutas i Nocelle."
+    },
+    {
+      "q": "Hur lång tid tar det?",
+      "a": "Räkna med cirka fyra timmar inklusive transporter och fotostopp."
+    },
+    {
+      "q": "Vad ska jag ta med?",
+      "a": "Stadiga skor, vatten, solskydd. Undvik mitt på dagen under sommaren."
+    }
+  ],
+  "faqsTitle": "Vanliga frågor",
+  "galleryTitle": "Fotogalleri",
+  "gallery": {
+    "items": [
+      {
+        "alt": "Utsikt längs Gudarnas stig",
+        "caption": "Längs leden"
+      },
+      {
+        "alt": "Vy över byn Nocelle",
+        "caption": "Nocelle uppifrån"
+      }
+    ]
+  },
+  "toc": {
+    "onThisPage": "På denna sida",
+    "essentials": "Det viktigaste",
+    "costs": "Kostnader",
+    "faqs": "Vanliga frågor",
+    "gallery": "Fotogalleri"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Hostel Brikette",
+    "reserve": "Jetzt buchen"
+  },
+  "intro": {
+    "title": "Direkt buchen & sparen",
+    "description": "Buchen Sie Ihren Aufenthalt direkt auf unserer Website und erhalten Sie täglich ein kostenloses Essensangebot im Wert von bis zu 29 Euro."
+  },
+  "rooms": {
+    "title": "Zimmer",
+    "value_dorms": "Günstige Schlafsäle",
+    "premium_dorms": "Premium Zimmer",
+    "superior_dorms": "Superior Zimmer",
+    "private_room": "Privatzimmer"
+  },
+  "careers": {
+    "jobTitle": "Verstärke das Team des Hostel Brikette",
+    "jobDescription": "Wir suchen immer nach energiegeladenen Menschen, die Gastfreundschaft lieben. Wenn du in einem dynamischen Umfeld aufblühst, melde dich gerne bei uns!",
+    "ctaLabel": "Nach offenen Stellen fragen"
+  },
+  "errorBoundary": {
+    "title": "Etwas ist schiefgelaufen.",
+    "reload": "Seite neu laden"
+  },
+  "meta": {
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@brikette"
+  },
+  "internalErrors": {
+    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+  }
+}

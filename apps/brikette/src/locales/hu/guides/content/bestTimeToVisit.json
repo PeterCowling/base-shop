@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Évszakok összehasonlítása időjárással, árakkal, tömegekkel és programokkal."
+  },
+  "linkLabel": "Best time to visit Positano",
+  "intro": [
+    "Úgy tervezze az utat, hogy reális képe legyen az időjárásról, a tömegről és a kompmenetrendről.",
+    "A szezonális táblázat és a hónapról hónapra szóló jegyzetek segítenek eldönteni, mikor passzol legjobban Positano az igényeihez."
+  ],
+  "tocTitle": "Ezen az oldalon",
+  "toc": [
+    {
+      "href": "#matrix",
+      "label": "Időjárás/tömeg/árak mátrix"
+    },
+    {
+      "href": "#months",
+      "label": "Hónapról hónapra jegyzetek"
+    },
+    {
+      "href": "#faqs",
+      "label": "GYIK"
+    }
+  ],
+  "sections": [
+    {
+      "id": "matrix",
+      "title": "Időjárás / tömeg / árak mátrix",
+      "body": [
+        "Csúcsszezon (június–augusztus): forróság, tömeg és a legmagasabb árak. Előszezon (április–május) és utószezon (szeptember–október): enyhébb idő és jobb ár-érték arány. Tél (november–március): csendes időszak csökkentett szolgáltatásokkal."
+      ]
+    },
+    {
+      "id": "months",
+      "title": "Hónapról hónapra jegyzetek",
+      "body": [
+        "Április: indulnak a kompok, enyhe hőmérséklet, kevesebb látogató.",
+        "Május: remek idő, több járat; a hétvégék zsúfoltabbak.",
+        "Június–augusztus: csúcsszezon, hőség és sorok – a közlekedést és programokat előre foglalja le.",
+        "Szeptember: meleg tenger, valamivel nyugodtabb, mint augusztusban.",
+        "Október: utószezon, a hónap vége felé ritkulnak a kompok.",
+        "November–március: csendes holtszezon csökkentett szolgáltatásokkal; ilyenkor a buszok a fő közlekedési mód.",
+        "A kompok sűrűsége tavasztól nő, nyáron tetőzik, majd október végére lecseng."
+      ]
+    }
+  ],
+  "schemaMonths": [
+    {
+      "name": "Április",
+      "note": "A kompok indulása, enyhe idő, kevés turista."
+    },
+    {
+      "name": "Május",
+      "note": "Kiváló időjárás, sűrű kompjáratok, élénkebb hétvégék."
+    },
+    {
+      "name": "Június–augusztus",
+      "note": "Csúcsszezon: meleg, foglalja előre a közlekedést és programokat."
+    },
+    {
+      "name": "Szeptember",
+      "note": "Meleg tenger, valamivel kevesebb tömeg, mint augusztusban."
+    },
+    {
+      "name": "Október",
+      "note": "Utószezon, a hónap végén ritkulnak a kompok."
+    },
+    {
+      "name": "November–március",
+      "note": "Csendes időszak, sok szolgáltatás szünetel; a busz a fő közlekedési eszköz."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Mikor a legmelegebb a tenger?",
+      "a": [
+        "Június vége és szeptember eleje között a legmelegebb a víz úszáshoz."
+      ]
+    }
+  ]
+}

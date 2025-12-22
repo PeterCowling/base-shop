@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Chiesa Nuova/Bar Internazionale érkezés: út a Hostel Brikette-ig",
+    "description": "Lépésről lépésre útvonal a buszmegállótól a hostelhez, rámpás és lépcsőmentes szakaszokkal."
+  },
+  "linkLabel": "Chiesa Nuova/Bar Internazionale érkezés: útvonal a Hostel Brikette-be",
+  "intro": "Busszal érkezik? A “Chiesa Nuova” vagy a “Bar Internazionale” megálló van a legközelebb a hostelhez. Ez a rövid útvonal minél kevesebb lépcsőt tartalmaz a térdek és a csomagok kímélése érdekében.",
+  "image": {
+    "alt": "A positanói SITA Chiesa Nuova megálló a Bar Internazionale előtt",
+    "caption": "Positano (Chiesa Nuova) megálló — várakozzon a Bar Internazionale előtt; nyáron érkezzen kicsit korábban, mert a buszok gyorsan megtelnek."
+  },
+  "toc": {
+    "onThisPage": "Ezen az oldalon",
+    "before": "Indulás előtt",
+    "steps": "Lépésről lépésre",
+    "knees": "Térdek és poggyász",
+    "faqs": "GYIK"
+  },
+  "sections": [
+    {
+      "id": "why-stop",
+      "title": "Miért ez a legjobb megálló",
+      "body": [
+        "A Bar Internazionale nevű kávézó/bár előtti buszmegálló nagyjából 140 méterre van a Hostel Brikette-től."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Buszmenetrend és jegyek",
+      "body": [
+        "Vásároljon SITA-jegyet a megálló melletti tabacchi üzletben, vagy érvényesítse a korábban megvett jegyeket felszálláskor; tartson egy tartalékot az éjszakai visszaútra.",
+        "Este 22:00 után ritkábban járnak a buszok — nézze át előre a menetrendet, és tervezzen az utolsó előtti járattal, hogy elkerülje a taxiköltséget."
+      ]
+    }
+  ],
+  "beforeList": [
+    "Nézze meg előre a SITA menetrendjét, hogy ne az utolsó járatra várjon az út szélén.",
+    "Érvényesítse a jegyét rögtön felszálláskor — az ellenőrök a rövid utaknál is megbüntetik az érvénytelen jegyet.",
+    "Szóljon a hostelnek, ha éjfél után érkezik, hogy az éjszakai személyzet kéznél tartsa az ajtókódot."
+  ],
+  "stepsList": [
+    "A Bar Internazionale előtti megállótól kicsivel több mint 100 métert (330 lábat) sétáljon felfelé a Viale Pasitea mentén — kövesse az alábbi térképen jelzett gyalogos útvonalat lépésről lépésre.",
+    "A kanyarnál haladjon tovább a teraszszinten lévő Hostel Brikette felirat mellett, majd menjen fel a jobb oldali lépcsőn a főbejáratig."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "kneesList": [
+    "Az egész útvonal burkolt, a bejáratnál mindössze egy rövid lépcsősor van.",
+    "Ha a lejtők megterhelik a térdét, tartson rövid pihenőket — a forgalom a kanyarban magától is lelassul."
+  ],
+  "kneesDockPrefix": "Először komppal érkezik?",
+  "kneesDockLinkLabel": "Kikötő → hostel poggyászútvonal",
+  "kneesPorterPrefix": "Segítségre van szüksége a nehéz csomagokkal?",
+  "kneesPorterLinkLabel": "Porterszolgálati útmutató",
+  "faqs": [
+    {
+      "q": "Végig van járda az úton?",
+      "a": "Igen — az útvonal a főút járdáját használja, így elkerülhetők a hosszú lépcsők."
+    },
+    {
+      "q": "Kivilágított az út éjszaka?",
+      "a": "Van közvilágítás; használja a telefon zseblámpáját a sikátorokban a jobb láthatóságért."
+    }
+  ],
+  "howtoSteps": [
+    "A “Chiesa Nuova” megállótól 2–5 perc séta a hostel",
+    "Azokat a kis utcákat válassza, ahol a legkevesebb a lépcső; kerülje a hosszú lépcsősorokat",
+    "Ha nehéz csomagja van, kérjen poggyászfelvételt a megállónál"
+  ]
+}

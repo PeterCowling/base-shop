@@ -1,0 +1,25 @@
+{
+  "slug": "defekter/skador",
+  "meta": {
+    "title": "Fel och skador – guide",
+    "description": "Hur du rapporterar fel i rummet, vår respons vid allvarliga problem, regler för skadedeposition, gästens ansvar och viktig info om förebyggande av vägglöss."
+  },
+  "headings": {
+    "reportingDefects": "Rapportera fel",
+    "assessingDefects": "Bedöma fel",
+    "responseToSeriousDefects": "Åtgärd vid allvarliga fel",
+    "unreportedDefects": "Ej rapporterade fel",
+    "damagesPolicy": "Policy för skador",
+    "bedBugsPolicy": "Policy för vägglöss",
+    "bedBugsPrevention": "Förebygga vägglöss"
+  },
+  "content": {
+    "reportingDefects": "Om du märker något problem eller fel i ditt rum, vänligen informera oss omedelbart. Din snabb anmälan hjälper oss att snabbt åtgärda och lösa problemet.",
+    "assessingDefects": "När du har rapporterat en defekt bedömer vi problemet snabbt och prioriterar vårt svar baserat på hur viktigt det påverkar din komfort och vistelse.",
+    "responseToSeriousDefects": "Om det finns en allvarlig defekt som inte omedelbart kan repareras, erbjuder vi alternativ boende. Om alternativet är billigare än ditt bokade rum, återbetalar vi prisskillnaden. Om du väljer att inte acceptera vårt alternativ, kan du begära en pro-rata återbetalning för de återstående nätterna av din vistelse.",
+    "unreportedDefects": "Om vi upptäcker ett problem i ditt rum som du inte har rapporterat inom en rimlig tidsram, kommer vi att utvärdera eventuella resulterande skador, och vår skadepolicy kan tillämpas.",
+    "damagesPolicy": "För din säkerhet och vår, kan vi förauktorisera ditt kreditkort eller begära en kontant insättning vid incheckning för att täcka eventuella skador eller förluster. Om du inte kan tillhandahålla en insättning eller förauktorisering, kan din bokning annulleras. Insättningar är fullt återbetalningsbara vid kassan, minus avgifter för eventuella skador, förluster, arbetskraft, eller administrativa kostnader. Om dessa avgifter överstiger din insättning, kommer du att vara ansvarig för de extra kostnaderna. Arbetsavgifter för reparationer eller sanering faktureras varje timme: Direktör (50/timme), Chef (35/timme), och Personal (25/timme).",
+    "bedBugsPolicy": "Vi hanterar proaktivt och snabbt eventuella problem med sänglöss. Men om du hittar vägglöss i ditt rum under din vistelse, kan du hållas ansvarig för tillhörande kostnader, såsom förlorade bokningsintäkter, rengöringskostnader och skadedjurskontroll. Rapportera omedelbart alla sänglössskyltar till vår personal.",
+    "bedBugsPrevention": "För att förhindra problem med sänglöss, vänligen: • Informera oss vid incheckningen om du nyligen har bott någonstans med kända problem med sänglöss. • Desinfektera noggrant dina tillhörigheter. • Kontrollera noggrant ditt bagage och dina kläder för sänglöss innan du går in i ditt rum."
+  }
+}

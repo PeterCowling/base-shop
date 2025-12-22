@@ -56,21 +56,21 @@ describe("order creation", () => {
     it("generates ids, timestamps and tracks order", async () => {
       ulidMock.mockReturnValue("ID");
       nowIsoMock.mockReturnValue("2024-01-02T00:00:00.000Z");
-      prismaMock.rentalOrder.create.mockResolvedValue({});
-      prismaMock.shop.findUnique.mockResolvedValue({
-        data: { subscriptionsEnabled: true },
-      });
-      const order = await addOrder(
-        "shop",
-        "sess",
-        10,
-        "exp",
-        "due",
-        "cust",
-        "high",
-        1,
-        true
-      );
+	      prismaMock.rentalOrder.create.mockResolvedValue({});
+	      prismaMock.shop.findUnique.mockResolvedValue({
+	        data: { subscriptionsEnabled: true },
+	      });
+	      const order = await addOrder({
+	        shop: "shop",
+	        sessionId: "sess",
+	        deposit: 10,
+	        expectedReturnDate: "exp",
+	        returnDueDate: "due",
+	        customerId: "cust",
+	        riskLevel: "high",
+	        riskScore: 1,
+	        flaggedForReview: true,
+	      });
       expect(ulidMock).toHaveBeenCalled();
       expect(nowIsoMock).toHaveBeenCalledTimes(2);
       expect(prismaMock.rentalOrder.create).toHaveBeenCalledWith({
@@ -99,19 +99,17 @@ describe("order creation", () => {
 
     it("handles individual optional fields and falsy values", async () => {
       ulidMock.mockReturnValue("ID");
-      nowIsoMock.mockReturnValue("now");
-      prismaMock.rentalOrder.create.mockResolvedValue({});
-      const order = await addOrder(
-        "shop",
-        "sess",
-        10,
-        "exp",
-        undefined,
-        undefined,
-        "low",
-        0,
-        false,
-      );
+	      nowIsoMock.mockReturnValue("now");
+	      prismaMock.rentalOrder.create.mockResolvedValue({});
+	      const order = await addOrder({
+	        shop: "shop",
+	        sessionId: "sess",
+	        deposit: 10,
+	        expectedReturnDate: "exp",
+	        riskLevel: "low",
+	        riskScore: 0,
+	        flaggedForReview: false,
+	      });
       expect(prismaMock.rentalOrder.create).toHaveBeenCalledWith({
         data: order,
       });
@@ -132,10 +130,10 @@ describe("order creation", () => {
     });
 
     it("omits optional fields when not provided and skips subscription usage", async () => {
-      ulidMock.mockReturnValue("ID");
-      nowIsoMock.mockReturnValue("now");
-      prismaMock.rentalOrder.create.mockResolvedValue({});
-      const order = await addOrder("shop", "sess", 10);
+	      ulidMock.mockReturnValue("ID");
+	      nowIsoMock.mockReturnValue("now");
+	      prismaMock.rentalOrder.create.mockResolvedValue({});
+	      const order = await addOrder({ shop: "shop", sessionId: "sess", deposit: 10 });
       expect(prismaMock.rentalOrder.create).toHaveBeenCalledWith({
         data: order,
       });
@@ -155,10 +153,10 @@ describe("order creation", () => {
       ulidMock.mockReturnValue("ID");
       nowIsoMock.mockReturnValue("now");
       prismaMock.rentalOrder.create.mockResolvedValue({});
-      prismaMock.shop.findUnique.mockResolvedValue({
-        data: { subscriptionsEnabled: false },
-      });
-      await addOrder("shop", "sess", 10, undefined, undefined, "cust");
+	      prismaMock.shop.findUnique.mockResolvedValue({
+	        data: { subscriptionsEnabled: false },
+	      });
+	      await addOrder({ shop: "shop", sessionId: "sess", deposit: 10, customerId: "cust" });
       expect(prismaMock.shop.findUnique).toHaveBeenCalledWith({
         select: { data: true },
         where: { id: "shop" },
@@ -170,9 +168,9 @@ describe("order creation", () => {
     it("skips subscription usage when shop not found", async () => {
       ulidMock.mockReturnValue("ID");
       nowIsoMock.mockReturnValue("now");
-      prismaMock.rentalOrder.create.mockResolvedValue({});
-      prismaMock.shop.findUnique.mockResolvedValue(null);
-      await addOrder("shop", "sess", 10, undefined, undefined, "cust");
+	      prismaMock.rentalOrder.create.mockResolvedValue({});
+	      prismaMock.shop.findUnique.mockResolvedValue(null);
+	      await addOrder({ shop: "shop", sessionId: "sess", deposit: 10, customerId: "cust" });
       expect(prismaMock.shop.findUnique).toHaveBeenCalledWith({
         select: { data: true },
         where: { id: "shop" },
@@ -181,12 +179,14 @@ describe("order creation", () => {
       expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
     });
 
-    it("throws when creation fails", async () => {
-      prismaMock.rentalOrder.create.mockRejectedValue(new Error("fail"));
-      await expect(addOrder("shop", "sess", 10)).rejects.toThrow("fail");
-      expect(trackOrder).not.toHaveBeenCalled();
-    });
-  });
+	    it("throws when creation fails", async () => {
+	      prismaMock.rentalOrder.create.mockRejectedValue(new Error("fail"));
+	      await expect(
+	        addOrder({ shop: "shop", sessionId: "sess", deposit: 10 }),
+	      ).rejects.toThrow("fail");
+	      expect(trackOrder).not.toHaveBeenCalled();
+	    });
+	  });
 
   describe("getOrdersForCustomer", () => {
     it("returns normalized orders", async () => {

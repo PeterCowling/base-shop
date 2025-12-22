@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "Positanóból Salernóba kompon | Hostel Brikette",
+    "description": "Ajtótól ajtóig: a Hostel Brikette-től a positanói kikötőig, komp Salernóba, jegytippek és érkezési tudnivalók."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Positanóból Salernóba – Komp",
+    "description": "Kövesse ezeket a lépéseket, hogy a Hostel Brikette-től lesétáljon a positanói kikötőbe, megvegye a kompjegyet és beszálljon Salernó felé. Gyakorlati időzítési és üzemeltetői tippeket, valamint salernói érkezési tanácsokat is tartalmaz, köztük a vasútállomáshoz vezető kapcsolatot."
+  },
+  "tip": {
+    "label": "Tipp",
+    "copy": "Durva a tenger? A <link>Hogyan juthat el hozzánk áttekintés</link> tartalék útvonalakat kínál."
+  },
+  "journey": {
+    "title": "Utazás áttekintése",
+    "paragraphs": [
+      "A kompok Positano és Salerno között tavasztól kora őszig közlekednek a leggyakrabban, és durva tengernél törölhetik a járatokat. Az utazás általában 60–80 perc az üzemeltetőtől és a hajótól függően.",
+      "Menetrend-összehasonlítás és foglalás: <positanoLink>Positano.com (összesített menetrend)</positanoLink> · <travelmarLink>Travelmar – Salerno ↔ Positano</travelmarLink>."
+    ]
+  },
+  "walk": {
+    "title": "Séta a positanói kikötőhöz",
+    "steps": [
+      "Lépjen ki a hostel főbejáratán.",
+      "Menjen le a lépcsőn az útra, forduljon balra, és sétáljon valamivel több mint 100 métert (≈330 láb).",
+      "Az első kereszteződésnél (1. pont) forduljon jobbra a Tabacchi mellett (első épület jobb oldalon).",
+      "Haladjon tovább lefelé; az első hajtűkanyarnál (2. pont) hagyja el az utat, és menjen egyenesen tovább a lépcsőkön.",
+      "A lépcsők alján érje el az utat (3. pont); keljen át és folytassa egyenesen a következő lépcsőn.",
+      "Amikor ezek a lépcsők újra az útra érnek, menjen át, forduljon balra röviden, majd vegye be a lépcsőket (4. pont).",
+      "Az alján forduljon jobbra az 5. ponthoz, majd haladjon tovább a jobb oldali boltív alatt.",
+      "A kikötő (Spiaggia Grande móló) körülbelül 50 méterre (≈160 láb) van tovább a strand jobb oldalán."
+    ]
+  },
+  "tickets": {
+    "title": "Jegyvásárlás és beszállás",
+    "steps": [
+      "A kikötőben minden kompüzemeltetőnek saját pénztára van.",
+      "A pénztár melletti tábla mutatja az adott üzemeltető következő indulását.",
+      "Közvetlenül az üzemeltetőtől vásároljon jegyet. Érkezzen 20–30 perccel korábban, hogy beváltsa a vouchert és sorba álljon.",
+      "A vásárlás után sétáljon a móló végére, és várja meg, amíg megkezdődik a beszállás."
+    ]
+  },
+  "arrival": {
+    "title": "Érkezés Salernóba",
+    "paragraphs": [
+      "Szálljon ki Salerno Concordia/Manfredi kikötőrészén az üzemeltető utasításai szerint. Ha vonattal utazna tovább, sétáljon a salernói főpályaudvarra (Stazione FS). A séta egyszerű és nagyrészt sík.",
+      "Térkép: <mapLink>Concordia kikötő → Salerno vasútállomás</mapLink>.",
+      "Ha az időjárás miatt törlik a kompokat, halassza el az utat, vagy fontolja meg, hogy másnap Szorrentón keresztül utazzon."
+    ]
+  }
+}

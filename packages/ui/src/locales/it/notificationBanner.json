@@ -1,0 +1,19 @@
+{
+  "message": "Prenota direttamente e risparmia fino al 25% — colazione e bevande gratuite!",
+  "cta": "Clicca per saperne di più",
+  "openOffersLabel": "Clicca per saperne di più",
+  "closeLabel": "Chiudi notifica",
+  "modal": {
+    "closeLabel": "Chiudi finestra modale",
+    "title": "Prenota direttamente e risparmia",
+    "description": "Grazie per aver scelto di prenotare direttamente con noi! Come ringraziamento, potrai usufruire di:",
+    "perks": {
+      "discount": "Fino al 25% di sconto sulla tariffa della camera",
+      "breakfast": "Colazione gratuita ogni mattina",
+      "drinks": "Drink di benvenuto gratuiti",
+      "upgrades": "Upgrade di camera prioritari (soggetti a disponibilità)"
+    },
+    "callToAction": "Approfitta subito di questi vantaggi esclusivi!",
+    "button": "Prenota ora"
+  }
+}

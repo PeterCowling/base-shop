@@ -1,0 +1,161 @@
+{
+  "location": {
+    "title": "Nossa Localização",
+    "inputLabel": "Insira sua localização atual:",
+    "inputPlaceholder": "ex.: Nápoles, Itália ou endereço completo",
+    "getDirections": "Obter rotas",
+    "justShowMap": "Mostrar apenas mapa",
+    "close": "Fechar",
+    "nearbyBusCompact": "≈100 m até a paragem de autocarro mais próxima"
+  },
+  "contact": {
+    "title": "Entre em Contato",
+    "description": "Adoraríamos ouvir você! Para dúvidas ou reservas, entre em contato por e-mail:",
+    "revealEmail": "Exibir endereço de e-mail",
+    "close": "Fechar",
+    "buttonClose": "Fechar"
+  },
+  "offers": {
+    "close": "Fechar",
+    "title": "Reserve Direto e Economize",
+    "description": "Obrigado por reservar diretamente conosco! Como forma de agradecimento, você desfrutará de:",
+    "perks": {
+      "discount": "Até 10% de desconto na diária",
+      "breakfast": "Café da manhã gratuito todas as manhãs",
+      "drinks": "Bebidas de boas-vindas gratuitas",
+      "upgrades": "Upgrade prioritário de quarto (sujeito à disponibilidade)"
+    },
+    "callToAction": "Aproveite agora estes benefícios exclusivos!",
+    "button": "Reservar Agora"
+  },
+  "booking": {
+    "title": "Reserve Sua Estadia",
+    "subTitle": "Selecione suas datas e preferências",
+    "close": "Fechar",
+    "checkInLabel": "Check-in",
+    "checkOutLabel": "Check-out",
+    "guestsLabel": "Hóspedes",
+    "buttonAvailability": "Verificar Disponibilidade",
+    "datePlaceholder": "Selecionar data",
+    "guestsSingle": "{{count}} adulto",
+    "guestsPlural": "{{count}} adultos"
+  },
+  "booking2": {
+    "selectDatesTitle": "Selecione suas Datas",
+    "checkInDate": "Data de Check-in",
+    "checkOutDate": "Data de Check-out",
+    "adults": "Número de Adultos",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar"
+  },
+  "facilities": {
+    "title": "Nossas Comodidades",
+    "closeButton": "Fechar",
+    "categories": [
+      {
+        "title": "Banheiro",
+        "items": [
+          "Papel higiênico",
+          "Toalhas / lençóis (taxa extra)",
+          "Vaso sanitário",
+          "Chuveiro",
+          "Secador de cabelo (sob solicitação)"
+        ]
+      },
+      {
+        "title": "Quarto e Roupa de Cama",
+        "items": [
+          "Roupa de cama incluída",
+          "Luz de leitura em beliches"
+        ]
+      },
+      {
+        "title": "Área Externa e Vistas",
+        "items": [
+          "Terraço panorâmico com vista para o mar",
+          "Solário",
+          "Móveis externos",
+          "Área para piquenique"
+        ]
+      },
+      {
+        "title": "Conforto no Quarto",
+        "items": [
+          "Tomada próxima à cama",
+          "Ar-condicionado",
+          "Aquecimento",
+          "Piso de azulejo / mármore"
+        ]
+      },
+      {
+        "title": "Atividades",
+        "items": [
+          "Caminhada (fora da propriedade)",
+          "Mapas de trilhas autoguiadas",
+          "Recomendações de passeios locais"
+        ]
+      },
+      {
+        "title": "Alimentos e Bebidas",
+        "items": [
+          "Bar no local",
+          "Drink de boas-vindas gratuito",
+          "Café da manhã à la carte disponível",
+          "Serviço de lanches"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Wi-Fi gratuito nas áreas comuns",
+          "Wi-Fi de alta velocidade nos quartos",
+          "Ponto de acesso público à Internet"
+        ]
+      },
+      {
+        "title": "Serviços aos Hóspedes",
+        "items": [
+          "Limpeza diária",
+          "Serviço de concierge",
+          "Depósito de bagagem",
+          "Guarda-volumes antes do check-in / após o check-out",
+          "Armários",
+          "Adaptadores disponíveis",
+          "Translado para o aeroporto (custo adicional)",
+          "Recepção (horário limitado)",
+          "Estacionamento para bicicletas"
+        ]
+      },
+      {
+        "title": "Segurança",
+        "items": [
+          "Extintores de incêndio",
+          "CFTV nas áreas comuns",
+          "Acesso com cartão",
+          "Fechaduras eletrônicas",
+          "Armários individuais"
+        ]
+      },
+      {
+        "title": "Geral",
+        "items": [
+          "Somente para adultos (18–39 anos)",
+          "Proibido fumar em todas as áreas",
+          "Quartos para não fumantes"
+        ]
+      },
+      {
+        "title": "Idiomas Falados",
+        "items": [
+          "Inglês",
+          "Espanhol",
+          "Italiano"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "title": "Selecionar idioma",
+    "close": "Fechar"
+  }
+}

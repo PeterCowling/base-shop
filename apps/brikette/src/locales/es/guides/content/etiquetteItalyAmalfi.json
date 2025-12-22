@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Etiqueta local: qué hacer y qué evitar",
+    "description": "Comportamiento en restaurantes, iglesias y calles concurridas."
+  },
+  "linkLabel": "Etiqueta local: qué hacer y qué evitar",
+  "intro": [
+    "Etiqueta práctica para comer fuera, visitar iglesias y moverse por callejones estrechos en la Costa Amalfitana.",
+    "Respeta ritmos locales y ayuda a mantener la convivencia con vecinos y otros viajeros."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "En restaurantes",
+      "body": [
+        "Reserva con antelación en temporada alta y llega puntual.",
+        "Los tiempos entre platos son relajados; pide la cuenta diciendo ‘il conto, per favore’ cuando estés listo.",
+        "La propina no es obligatoria, pero dejar 5–10 % por servicio excelente es bien recibido."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Iglesias y vestimenta",
+      "body": [
+        "Cubre hombros y rodillas al entrar; usa pareo o pañuelo si vienes de la playa.",
+        "Habla en voz baja y evita comer o beber dentro de los recintos."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Callejones compartidos",
+      "body": [
+        "Camina por la derecha y deja pasar a quienes llevan carga pesada.",
+        "En miradores populares, toma la foto y avanza para que otros puedan disfrutar del espacio."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Debo pagar el ‘coperto’?",
+      "a": [
+        "Sí, es un cargo fijo (2–3 €) por servicio y pan; no es propina."
+      ]
+    },
+    {
+      "q": "¿Se puede fumar en terrazas?",
+      "a": [
+        "Solo en áreas designadas; pregunta antes para no molestar a comensales cercanos."
+      ]
+    },
+    {
+      "q": "¿Qué saludo se usa con desconocidos?",
+      "a": [
+        "Utiliza un apretón de manos ligero y contacto visual. Entre amigos cercanos es habitual el doble beso en la mejilla, pero espera a que la otra persona lo inicie."
+      ]
+    },
+    {
+      "q": "¿Puedo entrar a una iglesia con mochila o comida?",
+      "a": [
+        "Se permiten mochilas pequeñas si las llevas al frente para no golpear bancos o arte sacro. Come y bebe fuera: los vigilantes pueden pedirte que salgas si entras con alimentos."
+      ]
+    }
+  ],
+  "tips": [
+    "Saluda con un ‘buongiorno’ o ‘buonasera’ al entrar en tiendas pequeñas.",
+    "Si compras en mercados, pesa la fruta antes de la caja y no manipules piezas sin permiso."
+  ],
+  "faqsTitle": "Preguntas frecuentes"
+}

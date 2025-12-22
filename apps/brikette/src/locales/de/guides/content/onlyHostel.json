@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Das einzige Hostel in Positano: Was dich erwartet (und wie du sparst)",
+    "description": "Unsere Besonderheiten nutzen: Terrassenblick, Bushaltestelle vor der Tür, Bar und Frühstück – plus Tipps zum Direktbuchen, um zu sparen."
+  },
+  "linkLabel": "Das einzige Hostel in Positano: was dich erwartet (und wie du sparst)",
+  "intro": "Willkommen im einzigen Hostel Positanos. Dich erwarten entspannte Vibes, eine Panorama-Terrasse für den Morgenkaffee und eine unschlagbare Lage direkt an der SITA-Haltestelle Chiesa Nuova.",
+  "sections": [
+    {
+      "id": "rooms",
+      "title": "Zimmerarten & Betten",
+      "body": [
+        "Gemeinschaftsdorms für 4–8 Personen mit Leselicht, Steckdose und Spind – TSA-Schloss mitbringen oder an der Rezeption kaufen.",
+        "Privatzimmer gibt es mit eigenem Bad oder Gemeinschaftsbad; Balkon oder Meerblick einfach per E-Mail anfragen, falls wichtig."
+      ]
+    },
+    {
+      "id": "common-areas",
+      "title": "Gemeinschaftsbereiche & Services",
+      "body": [
+        "Die Terrasse bietet Tische, Liegen und Steckdosen – ideal zum Essen, Routen planen oder für Sunset-Aperitivo ohne das Haus zu verlassen.",
+        "In der Lobbybar gibt es Kaffee, Spritz und lokalen Wein; ein saisonales Frühstücksbuffet läuft ca. 07:30–10:00 – Tagesangebot auf der Tafel checken."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Buchung & Richtlinien",
+      "body": [
+        "Direkt über hostelbrikette.com buchen, um den günstigsten flexiblen Tarif zu erhalten – OTAs sind teurer und unflexibler.",
+        "Eine kleine Anzahlung sichert dein Bett; Storno ist bis zur veröffentlichten Frist kostenlos – bei Planänderungen kurz Bescheid geben, damit das Team vorbereitet ist."
+      ]
+    },
+    {
+      "id": "neighbourhood",
+      "title": "In der Umgebung",
+      "body": [
+        "Innerhalb von zwei Minuten erreichst du Minimarkt, Bäckerei und die SITA-Haltestelle Chiesa Nuova – Snacks besser vor den letzten Bussen holen.",
+        "Die Via Pasitea führt bergab zu Restaurants und Gelato; zur Spiaggia Grande brauchst du über den Hauptweg etwa 10–12 Minuten mit minimalen Stufen."
+      ]
+    }
+  ],
+  "highlightsTitle": "Highlights",
+  "highlights": [
+    "Terrassen mit weitem Blick über die Amalfiküste",
+    "~80 m zur Haltestelle – keine Treppen",
+    "Entspannte Bar vor Ort und saisonales Frühstück",
+    "Bezahlbare Dorms und Privatzimmer"
+  ],
+  "saveTitle": "So sparst du",
+  "save": [
+    "Direktbuchung = bester Preis und flexible Regeln",
+    "Reise, wenn möglich, außerhalb der Peak-Wochenenden",
+    "Dorm wählen und leicht packen, um Porter-Gebühren zu sparen"
+  ],
+  "toc": {
+    "onThisPage": "Auf dieser Seite",
+    "rooms": "Zimmer & Ausstattung",
+    "arrival": "Anreise",
+    "etiquette": "Hausregeln & Etikette",
+    "faqs": "FAQs"
+  },
+  "roomsList": [
+    "Gemeinschaftsterrassen mit Panoramablick – Sonnenaufgangskaffee und Golden Hour sind beliebt.",
+    "Bar (faire Preise) und saisonales Frühstück.",
+    "Spinde in Dorms; siehe unsere Packliste.",
+    "Zuverlässiges WLAN; für Deep Work siehe arbeitsfreundliche Cafés."
+  ],
+  "roomsLinks": [
+    "whatToPack",
+    "workCafes"
+  ],
+  "arrivalText": "Vom Stopp ‘Chiesa Nuova’ sind es ~80 m ohne Treppen zum Hostel. Kommst du per Fähre, lohnt sich ein Porter oder der SITA-Bus bergauf.",
+  "arrivalLinks": [
+    "chiesaNuovaArrivals",
+    "ferryDockToBrikette",
+    "ferrySchedules"
+  ],
+  "arrivalRoutesLabel": "Routen:",
+  "arrivalRoutes": [
+    "naplesPositano",
+    "salernoPositano"
+  ],
+  "etiquetteList": [
+    "Nachtruhe respektieren – leise in Dorms spätabends und frühmorgens.",
+    "Kühlschrankitems beschriften, Tische sauber hinterlassen, gemeinsame Bereiche ordentlich halten.",
+    "Wertsachen in Spind packen; Ohrstöpsel/Schlafmaske für Dorms empfohlen."
+  ],
+  "faq": [
+    {
+      "q": "Gibt es Privatzimmer?",
+      "a": "Ja – in der Hochsaison begrenzt. Früh buchen für beste Raten."
+    },
+    {
+      "q": "Kann ich spät anreisen?",
+      "a": "Ja – Rezeption kontaktieren, um Late-Check-in zu organisieren. Bei später Fährankunft ggf. Porter ab dem Dock nutzen."
+    }
+  ]
+}

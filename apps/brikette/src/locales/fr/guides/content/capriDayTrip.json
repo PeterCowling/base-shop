@@ -1,0 +1,114 @@
+{
+  "seo": {
+    "title": "Excursion d'une journée à Capri depuis Positano",
+    "description": "Planifier une journée à Capri : ferries, timing et zones incontournables."
+  },
+  "linkLabel": "Excursion d'une journée à Capri depuis Positano",
+  "intro": [
+    "Capri en une journée depuis Positano : partez tôt, voyagez léger et suivez une boucle qui conjugue Anacapri et un retour serein."
+  ],
+  "toc": [
+    {
+      "href": "#morning",
+      "label": "Matin — arrivée & Anacapri"
+    },
+    {
+      "href": "#midday",
+      "label": "Midi — boucle Marina Piccola"
+    },
+    {
+      "href": "#afternoon",
+      "label": "Après-midi — Capri ville & retour"
+    },
+    {
+      "href": "#gallery",
+      "label": "Galerie photo"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Matin — arrivée & Anacapri",
+      "body": [
+        "Prenez le premier ferry pour devancer les croisiéristes, puis montez en bus à Anacapri et prenez le télésiège du Monte Solaro si les hauteurs vous tentent.",
+        "Prenez un petit-déjeuner simple sur la Piazza Vittoria et achetez immédiatement votre billet retour afin de fixer l'horaire de départ."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Midi — boucle Marina Piccola",
+      "body": [
+        "Descendez à pied ou en bus vers Marina Piccola pour une baignade ou un arrêt photo ; emportez une crème solaire respectueuse des récifs et au moins 1 L d'eau par personne.",
+        "Privilégiez panini ou salades à emporter plutôt qu'un déjeuner long pour remonter sans stress."
+      ]
+    },
+    {
+      "id": "afternoon",
+      "title": "Après-midi — Capri ville & retour",
+      "body": [
+        "Prenez le funiculaire vers Capri ville pour Via Camerelle, les Giardini di Augusto et une ultime pause gelato ou espresso.",
+        "Soyez à Marina Grande au moins 30 minutes avant le départ en cas de file pour le funiculaire ou la consigne bagages."
+      ]
+    }
+  ],
+  "galleryTitle": "Galerie photo",
+  "gallery": {
+    "items": {
+      "monteSolaro": {
+        "alt": "Vue depuis le Monte Solaro, Capri",
+        "caption": "Panorama du Monte Solaro"
+      },
+      "gardensOfAugustus": {
+        "alt": "Jardins d'Auguste, Capri",
+        "caption": "Jardins d'Auguste"
+      }
+    }
+  },
+  "faqsTitle": "FAQ",
+  "howTo": {
+    "steps": [
+      {
+        "name": "Vérifier les ferries saisonniers",
+        "text": "Confirmez les départs du matin et les derniers retours vers Positano."
+      },
+      {
+        "name": "Arriver tôt au quai",
+        "text": "Présentez-vous 20 à 30 minutes avant le départ en haute saison."
+      },
+      {
+        "name": "Tracer votre parcours sur Capri",
+        "text": "Priorisez Anacapri ou Marina Grande + belvédères selon votre timing."
+      }
+    ]
+  },
+  "tipsTitle": "Conseils jour J",
+  "tips": [
+    "Achetez vos billets aller et retour ensemble pour ajuster l'itinéraire sans courir après des places plus tard.",
+    "Voyagez avec un petit sac à dos, de l'eau, de la crème solaire et du liquide — les distributeurs de Capri peuvent être à court en pleine saison.",
+    "Téléchargez des cartes hors ligne de Capri et les horaires de bus ; le signal faiblit autour d'Anacapri et de la file de la Grotte Bleue."
+  ],
+  "warningsTitle": "Points de vigilance",
+  "warnings": [
+    "Les files du télésiège et du funiculaire explosent après 15 h ; les rater peut vous faire basculer sur un ferry en liste d'attente.",
+    "La mer peut devenir agitée et annuler les traversées tardives sans préavis — consultez les bulletins du matin et prévoyez un plan B via Sorrente.",
+    "La Grotte Bleue ferme souvent par vent ou houle ; certains vendeurs continuent pourtant de proposer des billets, vérifiez l'ouverture avant de faire la queue."
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je inclure la Grotte Bleue ?",
+      "a": [
+        "Uniquement si c'est la priorité : prévoyez la navette bateau et 60 à 90 minutes d'attente, ce qui serre le reste du programme."
+      ]
+    },
+    {
+      "q": "Dois-je réserver les billets à l'avance ?",
+      "a": [
+        "Oui pour les ferries du matin en haute saison et envisagez l'achat en ligne du télésiège ou d'une sortie en bateau ; hors saison, l'achat sur place suffit le plus souvent."
+      ]
+    }
+  ]
+}

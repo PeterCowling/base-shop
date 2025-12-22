@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "title": "Từ Positano đến sân bay Naples bằng xe buýt | Hostel Brikette",
+    "description": "Các bước từ Hostel Brikette tới sân bay Naples bằng xe buýt SITA tới Sorrento rồi chuyển sang xe Curreri, kèm mẹo mua vé và liên kết giờ chạy."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Positano đến sân bay Naples — Xe buýt qua Sorrento",
+    "description": "Đi xe buýt SITA Sud từ Positano tới Sorrento, sau đó chuyển sang xe Curreri để đến sân bay Napoli Capodichino. Đây là lựa chọn giao thông công cộng đơn giản nhất, có nhiều chuyến và kết nối thuận tiện tại bến xe Sorrento."
+  },
+  "aside": {
+    "eyebrow": "Cần tuyến khác?",
+    "body": "Mở <Link>Tổng quan Cách đến đây</Link> để xem taxi, phà và các hành trình thay thế."
+  },
+  "sections": {
+    "overview": {
+      "title": "Tổng quan hành trình",
+      "points": [
+        "Đi bộ tới trạm Positano (Chiesa Nuova) phía trước Bar Internazionale.",
+        "Bắt xe buýt SITA tới bến xe/bến tàu Sorrento.",
+        "Đổi sang xe buýt Curreri từ Sorrento tới sân bay Napoli (Capodichino)."
+      ]
+    },
+    "walk": {
+      "title": "Đi bộ tới trạm Positano",
+      "points": [
+        "Ra khỏi hostel và đi xuống các bậc thang tới đường chính.",
+        "Rẽ trái và đi tiếp khoảng 100 mét.",
+        "Bar Internazionale ở bên trái bạn; trạm SITA nằm ngay phía trước."
+      ],
+      "image": {
+        "alt": "Trạm xe buýt SITA Positano (Chiesa Nuova) phía trước Bar Internazionale",
+        "caption": "Vào mùa cao điểm hãy đến sớm vài phút vì xe thường kín chỗ nhanh."
+      }
+    },
+    "tickets": {
+      "title": "Vé và thời gian chờ",
+      "points": [
+        "Mua vé SITA đi Sorrento tại Bar Internazionale hoặc quầy báo gần đó.",
+        "Giữ lại vé sau khi lên xe; tài xế có thể bấm hoặc xé vé.",
+        "Với xe Curreri, bạn có thể mua trực tuyến hoặc mua tại bến (nếu còn)."
+      ]
+    },
+    "sorrento": {
+      "title": "Tại bến xe buýt Sorrento",
+      "body": "Xuống xe tại bến xe buýt và tàu chính của Sorrento. Từ khu đậu xe buýt, lên xe <Link>Curreri Viaggi</Link> đi sân bay Napoli (Capodichino). Kiểm tra giờ chạy mới nhất và cân nhắc mua vé trực tuyến trước vào mùa cao điểm."
+    },
+    "timetables": {
+      "title": "Giờ chạy",
+      "items": {
+        "sita": {
+          "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
+          "label": "Positano.com",
+          "text": "Lịch xe buýt SITA Positano ⇄ Sorrento trên <Link>Positano.com</Link>"
+        },
+        "curreri": {
+          "href": "https://www.curreriviaggi.it/",
+          "label": "curreriviaggi.it",
+          "text": "Giờ chạy Curreri Sorrento ⇄ Napoli Aeroporto trên <Link>curreriviaggi.it</Link>"
+        }
+      }
+    }
+  }
+}

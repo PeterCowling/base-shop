@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Come arrivare a Positano (guida alle opzioni)",
+    "description": "Tabella decisionale per scegliere tra traghetti, bus, transfer e auto in base a budget, stagione e bagagli."
+  },
+  "linkLabel": "Come arrivare a Positano (guida alle opzioni)",
+  "intro": "All realistic ways to reach Positano — compared by season, budget, luggage and arrival time.",
+  "toc": {
+    "onThisPage": "On this page",
+    "naples": "Via Naples",
+    "salerno": "Via Salerno",
+    "ferry": "Ferry (summer)",
+    "private": "Private transfer",
+    "faqs": "FAQs"
+  },
+  "labels": {
+    "whenHeading": "When to choose",
+    "cheapestHeading": "Cheapest route",
+    "seasonalHeading": "Seasonal notes"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Via Naples",
+      "body": [
+        "Airport shuttle to Sorrento + SITA to Positano (cheapest), or train to Sorrento + SITA.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Via Salerno",
+      "body": [
+        "Train to Salerno; ferry onward to Positano in season (luggage‑friendly).",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Private transfer",
+      "body": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "What’s fastest in summer?",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ]
+}

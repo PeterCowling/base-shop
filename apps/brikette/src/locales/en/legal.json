@@ -1,0 +1,21 @@
+{
+  "slug": "legal",
+  "meta": {
+    "title": "Legal Information and Policies for Positano Hostel",
+    "description": "Learn about our legal terms, liability limits, governing law, website content usage, and health-and-safety guidelines so you can plan your stay with confidence."
+  },
+  "headings": {
+    "modificationOfTerms": "Changes to These Terms",
+    "scopeOfLiability": "Our Scope of Liability",
+    "governingLaw": "Governing Law & Jurisdiction",
+    "websiteInformation": "Website Information & Content Usage",
+    "healthAndSafetyPolicy": "Health & Safety Policy"
+  },
+  "content": {
+    "modificationOfTerms": "These Terms and Conditions make up the entire agreement between you and Positano Hostel, replacing any earlier promises or understandings. We may update or modify them at any time, and the new version will apply as soon as it appears online.",
+    "scopeOfLiability": "Our responsibility to you covers only the services and items listed in these Terms. Any compensation is capped at the total amount you have paid for your booking. We are not responsible for indirect or economic losses such as profit, goodwill, or missed opportunities—even if caused by negligence or unforeseen events (force majeure). Secure lockers are available for your valuables, but we cannot accept financial responsibility for items stored there and may relocate belongings during routine cleaning without notice.",
+    "governingLaw": "Your stay—and these Terms—are governed exclusively by Italian law. Any dispute must be brought before the courts of Italy.",
+    "websiteInformation": "We do our best to keep our website accurate, but errors can occur and details may change without notice. Photos show the general style of our facilities and may not reflect exact layouts or features. All content (text, images, trademarks) belongs to Positano Hostel and may not be used without written permission. External links are offered for convenience; we accept no responsibility for their content. Please read our privacy policy to learn how we handle your data.",
+    "healthAndSafetyPolicy": "For everyone's safety, please tell us if you've recently been exposed to any contagious illness, including flu or similar viruses. Pre-paid, non-refundable reservations remain non-refundable in these cases, so we strongly recommend travel insurance to cover health-related disruptions to your plans."
+  }
+}

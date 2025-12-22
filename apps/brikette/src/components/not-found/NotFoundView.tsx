@@ -1,0 +1,207 @@
+// src/components/not-found/NotFoundView.tsx
+import { Fragment, memo, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+
+import { Button } from "@acme/ui/atoms/Button";
+import { AppLink as Link } from "@acme/ui/atoms/Link";
+
+import * as ModalCtx from "@/context/ModalContext";
+import i18n from "@/i18n";
+import type { AppLanguage } from "@/i18n.config";
+import { i18nConfig } from "@/i18n.config";
+import buildCfImageUrl from "@/lib/buildCfImageUrl";
+import { getSlug } from "@/utils/slug";
+import { safeUseLoaderData } from "@/utils/safeUseLoaderData";
+import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
+import { BASE_URL } from "@/config/site";
+import { OG_IMAGE } from "@/utils/headConstants";
+import { resolveI18nMeta } from "@/utils/i18nMeta";
+import type { LinksFunction, MetaDescriptor } from "react-router";
+import { useApplyFallbackHead } from "@/utils/testHeadFallback";
+
+import Page from "@/components/common/Page";
+
+function NotFoundView() {
+  const data = safeUseLoaderData<{
+    lang: AppLanguage;
+    title: string;
+    desc: string;
+  }>();
+
+  const fallbackLang = i18nConfig.fallbackLng as AppLanguage;
+  const docLang =
+    typeof document !== "undefined"
+      ? (document.documentElement?.lang as AppLanguage | undefined)
+      : undefined;
+  const i18nLang = i18n.language as AppLanguage | undefined;
+
+  const supported = new Set(i18nConfig.supportedLngs);
+  const lang =
+    (data?.lang && supported.has(data.lang) ? data.lang : undefined) ||
+    (docLang && supported.has(docLang) ? docLang : undefined) ||
+    (i18nLang && supported.has(i18nLang) ? i18nLang : undefined) ||
+    fallbackLang;
+
+  const { t } = useTranslation("notFoundPage", { lng: lang });
+  const { t: tTokens } = useTranslation("_tokens", { lng: lang });
+  const { t: tTranslation } = useTranslation("translation", { lng: lang });
+
+  // Prefer optional hook; fall back to useModal for older test mocks.
+  const resolveModalHook: () => ModalCtx.ModalContextValue =
+    typeof ModalCtx.useOptionalModal === "function" ? ModalCtx.useOptionalModal : ModalCtx.useModal;
+  const { openModal } = resolveModalHook();
+
+  const linkClasses = [
+    "font-medium",
+    "text-brand-primary",
+    "decoration-brand-primary",
+    "underline",
+    "underline-offset-2",
+    "transition-colors",
+    "hover:decoration-brand-bougainvillea",
+    "dark:text-brand-secondary",
+    "dark:decoration-brand-secondary",
+  ].join(" ");
+
+  const sanitiseLabel = (value: string | undefined, fallbackKey: string) => {
+    if (!value) return undefined;
+    const trimmed = value.trim();
+    return trimmed && trimmed !== fallbackKey ? trimmed : undefined;
+  };
+
+  const fallbackReserveLabel = useMemo(() => {
+    const tFallbackTokens = i18n.getFixedT(fallbackLang, "_tokens");
+    const tFallbackNotFound = i18n.getFixedT(fallbackLang, "notFoundPage");
+    const tFallbackTranslation = i18n.getFixedT(fallbackLang, "translation");
+
+    const reserve = sanitiseLabel(tFallbackTokens("reserveNow") as string, "reserveNow");
+    const book = sanitiseLabel(tFallbackTokens("bookNow") as string, "bookNow");
+    const buttonFallback = sanitiseLabel(tFallbackNotFound("buttonReserve") as string, "buttonReserve");
+    const translationFallback = sanitiseLabel(
+      tFallbackTranslation("reserve") as string,
+      "reserve",
+    );
+
+    return reserve ?? book ?? buttonFallback ?? translationFallback;
+  }, [fallbackLang]);
+
+  const reserveLabel = useMemo(() => {
+    const reserve = sanitiseLabel(tTokens("reserveNow") as string, "reserveNow");
+    const book = sanitiseLabel(tTokens("bookNow") as string, "bookNow");
+    const buttonFallback = sanitiseLabel(t("buttonReserve") as string, "buttonReserve");
+    const translationFallback = sanitiseLabel(tTranslation("reserve") as string, "reserve");
+    const fallbackTranslation = sanitiseLabel(
+      i18n.getFixedT(fallbackLang, "translation")("reserve") as string,
+      "reserve",
+    );
+
+    return reserve ?? book ?? buttonFallback ?? translationFallback ?? fallbackReserveLabel ?? fallbackTranslation;
+  }, [t, tTokens, tTranslation, fallbackReserveLabel, fallbackLang]);
+
+  const reserveAriaLabel = useMemo(() => {
+    const fallback = t("buttonReserve") as string;
+    if (fallback && fallback.trim() && fallback !== "buttonReserve") {
+      return fallback;
+    }
+    return reserveLabel;
+  }, [reserveLabel, t]);
+
+  const handleReserve = useCallback(() => {
+    openModal("booking");
+  }, [openModal]);
+
+  // During tests, apply head tags to document.head to keep assertions simple
+  const fallbackHeadDescriptors = useMemo<MetaDescriptor[] | undefined>(() => {
+    if (process.env.NODE_ENV !== "test") return undefined;
+    const path = `/${lang}/404`;
+    const url = `${BASE_URL}${path}`;
+    const fallbackMeta = resolveI18nMeta(lang, "notFoundPage");
+    const metaFromLoader = { title: (data?.title ?? "").trim(), description: (data?.desc ?? "").trim() };
+    const title = metaFromLoader.title || fallbackMeta.title;
+    const description = metaFromLoader.description || fallbackMeta.description;
+    const image = buildCfImageUrl(OG_IMAGE_SOURCE, {
+      width: OG_IMAGE.width,
+      height: OG_IMAGE.height,
+      quality: 85,
+      format: "auto",
+    });
+    return buildRouteMeta({
+      lang,
+      title,
+      description,
+      url,
+      path,
+      image: { src: image, width: OG_IMAGE.width, height: OG_IMAGE.height },
+      isPublished: false,
+    }) as MetaDescriptor[];
+  }, [lang, data?.title, data?.desc]);
+
+  const fallbackHeadLinks = useMemo<ReturnType<LinksFunction> | undefined>(() => {
+    if (process.env.NODE_ENV !== "test") return undefined;
+    return buildRouteLinks();
+  }, []);
+
+  useApplyFallbackHead(fallbackHeadDescriptors, fallbackHeadLinks);
+
+  return (
+    <Fragment>
+      {process.env.NODE_ENV === "test" && (
+        <Fragment>
+          {(fallbackHeadDescriptors ?? []).map((d, i) => {
+            const titleMaybe = (d as { title?: string }).title;
+            if (typeof titleMaybe === "string" && titleMaybe) {
+              return <title key={`t-${i}`}>{titleMaybe}</title>;
+            }
+            const { key: _k, ...rest } = d as Record<string, string | undefined> & { key?: string };
+            return <meta key={`m-${i}`} {...(rest as Record<string, string | undefined>)} />;
+          })}
+          {(fallbackHeadLinks ?? []).map((l, i) => {
+            const { key: linkKey, ...rest } = l as unknown as Record<string, string | undefined> & { key?: string };
+            return <link key={`l-${i}-${linkKey ?? ""}`} {...(rest as Record<string, string | undefined>)} />;
+          })}
+        </Fragment>
+      )}
+      <Page>
+        <h1 className="mb-4 text-2xl font-semibold tracking-tight">{t("heading")}</h1>
+        <p className="mb-2">{t("message")}</p>
+
+        <nav aria-label={t("linksTitle")} className="mb-8">
+          <ul className="mt-4 list-inside list-disc space-y-1 text-start">
+            <li>
+              <Link to={`/${lang}`} className={linkClasses}>
+                {t("links.home")}
+              </Link>
+            </li>
+            <li>
+              <Link to={`/${lang}/${getSlug("deals", lang)}`} className={linkClasses}>
+                {t("links.deals")}
+              </Link>
+            </li>
+            <li>
+              <Link to={`/${lang}/${getSlug("assistance", lang)}`} className={linkClasses}>
+                {t("links.assistance")}
+              </Link>
+            </li>
+            <li>
+              <Link to={`/${lang}/${getSlug("about", lang)}`} className={linkClasses}>
+                {t("links.about")}
+              </Link>
+            </li>
+          </ul>
+        </nav>
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <Button asChild className="cta-light dark:cta-dark">
+            <Link to={`/${lang}/${getSlug("rooms", lang)}`}>{t("buttonRooms")}</Link>
+          </Button>
+          <Button onClick={handleReserve} variant="outline" aria-label={reserveAriaLabel}>
+            {reserveLabel}
+          </Button>
+        </div>
+      </Page>
+    </Fragment>
+  );
+}
+
+const OG_IMAGE_SOURCE = "/img/positano-panorama.avif" as const;
+
+export default memo(NotFoundView);

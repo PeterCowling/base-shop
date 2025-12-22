@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Limoncello e gastronomia local na Costa Amalfitana",
+    "description": "História, degustações e onde provar pratos clássicos com limão sem gastar além da conta."
+  },
+  "linkLabel": "Limoncello e gastronomia local",
+  "intro": [
+    "Limões e limoncello definem os sabores da Costa Amalfitana — das provas aos finais doces.",
+    "Aqui encontra onde provar, o que comprar e como cozinhar com eles em casa."
+  ],
+  "tocTitle": "Nesta página",
+  "sections": [
+    {
+      "id": "tasting",
+      "title": "Provas",
+      "body": [
+        "Visite pequenas botteghe para limoncello artesanal e peça uma amostra para comparar estilos.",
+        "Combine provas com gelado, sorvete ou pastelaria de limão para avaliar doçura e equilíbrio."
+      ]
+    },
+    {
+      "id": "purchase",
+      "title": "Compra e envio",
+      "body": [
+        "Verifique limites de líquidos das companhias aéreas; embale as garrafas bem protegidas na bagagem de porão.",
+        "Procure rótulos IGP Costa d’Amalfi e embalagens recicláveis de produtores locais."
+      ]
+    },
+    {
+      "id": "cooking",
+      "title": "Cozinhar com limões",
+      "body": [
+        "Use raspa e sumo em saladas, massas de marisco e sobremesas para realçar frescura.",
+        "Guarde os limões em local fresco e escuro e reutilize as cascas para xaropes ou marinadas."
+      ]
+    }
+  ],
+  "tips": [
+    "Apoie produtores pequenos — os sabores são geralmente mais intensos que nas lojas turísticas.",
+    "Evite lojas caras junto à praia principal; duas ruas acima encontra preços melhores."
+  ],
+  "faqs": [
+    {
+      "q": "Posso levar limoncello na bagagem de mão?",
+      "a": [
+        "Não acima de 100 ml — coloque garrafas normais na bagagem de porão com proteção."
+      ]
+    },
+    {
+      "q": "Há alternativas sem álcool?",
+      "a": [
+        "Experimente limonada fresca, granita ou xaropes de limão se preferir evitar álcool."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Galeria de fotos",
+    "items": [
+      {
+        "alt": "Poster vintage de Positano com limões",
+        "caption": "Limões vintage"
+      },
+      {
+        "alt": "Mesa de terraço com copos de limoncello",
+        "caption": "Limoncello no terraço"
+      }
+    ]
+  }
+}

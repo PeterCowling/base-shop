@@ -30,6 +30,17 @@ export const rentalOrderSchema = z
     status: z
       .enum(["received", "cleaning", "repair", "qa", "available"])
       .optional(),
+    currency: z.string().optional(),
+    subtotalAmount: z.number().optional(),
+    taxAmount: z.number().optional(),
+    shippingAmount: z.number().optional(),
+    discountAmount: z.number().optional(),
+    totalAmount: z.number().optional(),
+    cartId: z.string().optional(),
+    stripePaymentIntentId: z.string().optional(),
+    stripeChargeId: z.string().optional(),
+    stripeBalanceTransactionId: z.string().optional(),
+    stripeCustomerId: z.string().optional(),
   })
   .strict();
 

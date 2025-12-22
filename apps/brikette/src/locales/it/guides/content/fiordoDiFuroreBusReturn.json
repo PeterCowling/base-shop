@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Fiordo di Furore → Hostel Brikette in autobus",
+    "description": "Segui questi passaggi per raggiungere la fermata SITA sopra il Fiordo di Furore, tornare verso Positano e completare la breve passeggiata fino a Hostel Brikette."
+  },
+  "linkLabel": "Fiordo di Furore → Hostel Brikette in autobus",
+  "intro": [
+    "Il Fiordo di Furore si trova sotto la Statale Amalfitana, senza biglietterie né negozi una volta arrivati all'acqua. Con questa guida di ritorno risali alla strada, sali sul bus SITA per Positano e percorri l'ultimo tratto verso Hostel Brikette senza incertezze."
+  ],
+  "warningsTitle": "Prima di lasciare la spiaggia",
+  "warnings": [
+    "Acquista in anticipo i biglietti SITA: vicino alla spiaggia non ci sono punti vendita e gli autisti possono rifiutare chi non ha un titolo convalidato."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-road",
+      "title": "Risalire fino alla strada",
+      "body": [
+        "Segui la scalinata dalla spiaggia di ciottoli fino alla Statale Amalfitana.",
+        "La fermata SITA è proprio dove la scala incontra la piazzola stradale; aspetta sul lato monte della carreggiata."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Prendi il bus SITA verso Positano",
+      "body": [
+        "Sali sul bus SITA diretto a Positano: le fermate intermedie dipendono dalle richieste dei passeggeri.",
+        "Il viaggio copre circa 10,8 chilometri lungo la costa prima di arrivare a Positano."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Scendi a Bar Internazionale / Chiesa Nuova",
+      "body": [
+        "Premi il pulsante poco dopo che l'autobus esce dalla galleria sopra Positano e osserva il tabacchi Bar Internazionale.",
+        "Scendi alla fermata Chiesa Nuova; è la più vicina a Hostel Brikette."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Percorri l'ultimo tratto verso l'ostello",
+      "body": [
+        "Prosegui nella stessa direzione dell'autobus per poco più di 100 metri.",
+        "Svolta a destra sulla scalinata accanto al bar e sali fino alla porta dell'ostello."
+      ]
+    }
+  ],
+  "tipsTitle": "Consigli per il rientro",
+  "tips": [
+    "Controlla l'orario aggiornato sul concierge digitale dell'ostello per sapere quando passa il prossimo SITA.",
+    "Usa la %LINK:positanoBeaches|panoramica delle spiagge di Positano% per organizzare altre nuotate da abbinare a un'uscita al Fiordo di Furore.",
+    "Se un bus è pieno o cancellato, preparati a fermare un taxi autorizzato dalla piazzola come piano B."
+  ],
+  "faqsTitle": "Domande comuni",
+  "faqs": [
+    {
+      "q": "Dove devo aspettare l'autobus?",
+      "a": [
+        "Rimani sul lato monte della strada in cima alla scalinata: i bus diretti a Positano si fermano accanto al guard-rail."
+      ]
+    },
+    {
+      "q": "E se non ho il biglietto?",
+      "a": [
+        "Gli autisti richiedono biglietti SITA convalidati prima di salire. Compra l'andata e ritorno a Positano o chiedi in reception la disponibilità prima di partire dall'ostello."
+      ]
+    }
+  ]
+}

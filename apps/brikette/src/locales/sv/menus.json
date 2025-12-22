@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "Priset inkluderar mixer: tonic, cola, cola zero eller sprite."
+      },
+      "rum": {
+        "note": "Välj rom och meddela om du vill ha kaffemixer. Kaffe kallt/varmt, espresso/americano."
+      },
+      "gin": {
+        "note": "Serveras med Schweppes tonic, på krossad is och Amalfi‑citron."
+      },
+      "whisky": {
+        "note": "Välj ur sortimentet; meddela is/vatten/kaffe. Kaffe kallt/varmt, espresso/americano."
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "Klassisk italiensk spritz, serveras med krossad is."
+      },
+      "limoncelloSpritz": {
+        "note": "Specialitet från Amalfikusten, serveras med krossad is."
+      },
+      "hugoSpritz": {
+        "note": "Mousserande vin över mynta, lime och fläder. Serveras med krossad is."
+      },
+      "rossiniSpritz": {
+        "note": "Mousserande vin över jordgubbsjuice. Serveras med krossad is."
+      },
+      "lemonStrawberryMargarita": {
+        "note": "Jordgubbs- eller citronjuice med tequila, Cointreau och is. Klassisk stil."
+      },
+      "lemonDropMartini": {
+        "note": "Färskpressad citron skakas med Absolut Vodka, Cointreau och is."
+      },
+      "joseCuervoSilver": {
+        "note": "Serveras rent med citron och salt, som Tequila Sunrise eller med soda/sprite."
+      },
+      "limoncelloShot": {
+        "note": "Klassisk syditaliensk drink, serveras rent."
+      },
+      "threeScoops": {
+        "note": "Smaker: citron, choklad, vanilj, hasselnöt."
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "Klassisk, serveras med syrup."
+      },
+      "nutellaFrenchToast": {
+        "note": "Fylld med Nutella."
+      },
+      "addEggComboItem": {
+        "note": "Välj ett tillägg från äggmenyn. T.ex. pannkakor + golden syrup + äggröra för €15.50."
+      },
+      "addAdditionalSyrup": {
+        "note": "Välj fler än en syrup. T.ex. pannkakor med golden syrup och Nutella för €14."
+      },
+      "veggieToast": {
+        "note": "Säsongsgrönsaker på toast."
+      },
+      "healthyDelight": {
+        "note": "Yoghurtparfait med granola och fruktkompott."
+      },
+      "detoxMe": {
+        "note": "Spenat, gurka, ingefära och citron."
+      },
+      "energizeMe": {
+        "note": "Apelsin, morot, ingefära och citron."
+      },
+      "multiV": {
+        "note": "Äpple, morot, apelsin, citron, ingefära."
+      },
+      "orangeJuice": {
+        "note": "Nypressad."
+      }
+    }
+  }
+}

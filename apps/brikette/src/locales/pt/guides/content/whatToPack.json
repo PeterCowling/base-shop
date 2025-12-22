@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "O que levar para a Costa Amalfitana",
+    "description": "Checklist sazonal para Positano: calçados para escadas, camadas leves, proteção solar e extras úteis."
+  },
+  "linkLabel": "O que levar para a Costa Amalfitana",
+  "intro": [
+    "Checklist sazonal para Positano: escadas e sol ditam escolhas inteligentes."
+  ],
+  "sections": [
+    {
+      "id": "footwear",
+      "title": "Calçados",
+      "body": [
+        "Tênis com boa aderência para escadas e trilhas; sandálias com sola tratorada para a praia.",
+        "Evite solas lisas — as ladeiras podem ser íngremes e escorregadias."
+      ]
+    },
+    {
+      "id": "layers",
+      "title": "Camadas e sol",
+      "body": [
+        "Leve camadas leves para a noite; chapéu e protetor solar para caminhadas ao meio-dia.",
+        "Um corta-vento leve é útil nas meias-estações."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Bolsas e bagagem",
+      "body": [
+        "Mochilas funcionam melhor do que malas grandes nas escadas; mantenha valores sempre junto ao corpo.",
+        "Leve uma garrafa reutilizável; mercados vendem galões para reabastecer."
+      ]
+    }
+  ],
+  "tips": [
+    "Evite malas rígidas pesadas se a estadia exigir longas subidas de escada.",
+    "Tenha notas pequenas de euro para guarda-sóis, ônibus e lanches rápidos."
+  ],
+  "faqs": [
+    {
+      "q": "Consigo comprar tudo por lá?",
+      "a": [
+        "Sim, mas os preços sobem na alta temporada — leve o essencial para não pagar mais caro."
+      ]
+    },
+    {
+      "q": "Preciso levar roupão?",
+      "a": [
+        "A maioria das hospedagens fornece toalhas; leve um pareô leve apenas se quiser algo extra para a praia."
+      ]
+    }
+  ]
+}

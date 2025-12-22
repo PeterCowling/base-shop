@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Időzítés, wifi, munkafolyamatok és pihenőnapok egyensúlya."
+  },
+  "linkLabel": "Work & Travel: Balancing Remote Work",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi‑Fi & backups",
+      "body": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Work‑friendly cafés",
+      "body": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Routines that work",
+      "body": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ]
+}

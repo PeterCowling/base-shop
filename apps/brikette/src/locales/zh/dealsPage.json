@@ -1,0 +1,49 @@
+{
+  "slug": "tejia",
+  "meta": {
+    "title": "2025年夏季优惠 – 立省 15 %",
+    "description": "限时夏季优惠，直接预订再享额外 15 % 折扣。",
+    "ogImageAlt": "夏季折扣横幅"
+  },
+  "title": "在{{season}}住宿立省 {{percent}} %",
+  "promo": "今夏直接预订再享额外 {{percent}} % 折扣。",
+  "banner": "此价格仅剩 {{beds}} 张床位 – 优惠将于 {{time}} 后结束！",
+  "timeRemaining": {
+    "lessThanHour": "0小时",
+    "hours_one": "{{count}}小时",
+    "hours_other": "{{count}}小时",
+    "days_one": "{{count}}天",
+    "days_other": "{{count}}天"
+  },
+  "buttonReserve": "立即预订",
+  "ogImageAlt": "夏季折扣横幅",
+  "perksHeading": "直接预订福利",
+  "perksIntro": "这些礼遇仅提供给通过我们官网直接预订的住客。",
+  "perksGuarantee": "只要在我们官网直接预订，这些专属礼遇会自动生效。",
+  "perksIntroLink": "查看所有当前优惠",
+  "perksList": [
+    "使用优惠码最高可享 25 % 折扣",
+    "免费早餐",
+    "免费晚间饮品"
+  ],
+  "expired": {
+    "message": "此限时优惠已于 {{endedOn}} 结束。"
+  },
+  "restrictions": {
+    "heading": "关键信息",
+    "stayWindow": "适用于 {{from}} 至 {{to}} 期间的入住。",
+    "minAdvance": "请至少提前 {{days}} 天预订。",
+    "minAdvancePrefix": "请至少提前",
+    "minAdvanceSuffix": "预订。",
+    "los": "最少入住 {{min}} 晚，最多 {{max}} 晚。",
+    "nonRefundable": "仅适用于通过旅舍官网直接预订的不可退款价格。",
+    "nonRefundablePrefix": "仅适用于",
+    "nonRefundableSuffix": "价格，且须通过旅舍官网直接预订。",
+    "stackable": "{{percent}} % 可与我们标准的 10 % 直接预订优惠叠加使用。",
+    "other": "适用标准条款及条件。"
+  },
+  "seasonLabel": "2025年夏季",
+  "robots": {
+    "expiredNoindex": "noindex,follow"
+  }
+}

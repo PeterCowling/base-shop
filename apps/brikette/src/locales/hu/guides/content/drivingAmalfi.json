@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Autózás az Amalfi-parton: tippek road triphez",
+    "description": "Közlekedési szabályok, ZTL zónák, parkolási realitások, rendszámkorlátozások és amikor érdemes másik megoldást választani."
+  },
+  "linkLabel": "Vezetés az Amalfi-parton: tippek autós kiránduláshoz",
+  "intro": [
+    "Az Amalfi-parton vezetni lélegzetelállító és megterhelő egyszerre – szűk sávok, szezonfüggő szabályok és kevés parkoló. Ezek a tippek segítenek eldönteni, mikor érdemes autózni, hol parkolj, és mikor add át inkább a kormányt.",
+    "Ezekkel a tanácsokkal eldöntheti, mikor érdemes vezetni, hol talál parkolót, és mikor jobb autó nélkül folytatni az utat."
+  ],
+  "sections": [
+    {
+      "id": "rules",
+      "title": "Szabályok és korlátozások",
+      "body": [
+        "Indulás előtt nézd meg a ZTL zónákat, a rendszám szerinti korlátozást és a járműszélességi limiteket – nyári hétvégéken gyakran tiltják a nagyobb járműveket a fő szakaszokon.",
+        "Tarts alacsony sebességet, duda jelzéssel vedd a vak kanyarokat, és figyelj a melletted elhaladó robogókra."
+      ]
+    },
+    {
+      "id": "parking",
+      "title": "Parkolási realitások",
+      "body": [
+        "Foglalj előre privát garázst Positanóban/Amalfiban, és egyeztess a nyitvatartásról, a magassági limitről, illetve hogy elfogadnak-e kártyát vagy készpénzes letétet kérnek.",
+        "Főszezonban 35–60 € egy nap a jellemző; az utcai parkolás ritka és szigorúan ellenőrzött."
+      ]
+    },
+    {
+      "id": "when-to-park",
+      "title": "Mikor hagyd inkább az autót",
+      "body": [
+        "Rövid tartózkodáshoz parkolj Sorrentóban vagy Salernóban, és fejezd be busszal vagy komppal – így kevesebb stressz és költség jut a falvak belsejére.",
+        "Viharban, fesztivál idején vagy késő esti visszaúton hagyd ki a vezetést – ilyenkor a tömegközlekedés vagy egy előre foglalt transzfer biztonságosabb."
+      ]
+    }
+  ],
+  "tips": [
+    "Legyen nálad érintésmentes fizetés és apró is – egyes garázsok letétet kérnek távirányítóhoz vagy éjszakai kiálláshoz.",
+    "Borvacsora vagy késő esti koncert után inkább foglalj taxit/transzfert, ne vezess fáradtan a sziklaperemeken."
+  ],
+  "faqs": [
+    {
+      "q": "Kell külön engedély?",
+      "a": [
+        "Nem, de be kell tartanod a rendszám szerinti korlátozásokat és a ZTL szabályokat – indulás előtt nézd meg a prefektúra vagy az önkormányzat tájékoztatását."
+      ]
+    },
+    {
+      "q": "Leparkolhatok az út szélén?",
+      "a": [
+        "Csak jól jelölt öblökben; buszmegálló vagy kanyar akadályozása azonnali bírságot vagy elszállítást jelent."
+      ]
+    }
+  ]
+}

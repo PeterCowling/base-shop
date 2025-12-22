@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Salerno: den andra porten till Amalfikusten",
+    "description": "Hur Salerno fungerar som nav för tåg, färjor och billigare boende nära Positano."
+  },
+  "linkLabel": "Salerno: den andra porten till Amalfikusten",
+  "intro": [
+    "Salerno is a smart arrival point for the Amalfi Coast with better rail connections and calmer streets than Naples."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Why arrive via Salerno",
+      "body": [
+        "High-speed trains from Rome or Milan terminate here, so you can step off the Frecciarossa and onto the ferry pier within minutes.",
+        "Accommodation and dining are cheaper than Positano, making it ideal for first or last nights."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Connections onward",
+      "body": [
+        "Seasonal ferries reach Positano in about 70 minutes. Buses climb the coast year-round; buy UnicoCampania tickets before boarding.",
+        "Airport shuttles run to Naples Capodichino in 60 minutes if you fly out after your stay."
+      ]
+    },
+    {
+      "id": "staying",
+      "title": "Staying in Salerno",
+      "body": [
+        "Explore the lungomare promenade, medieval center, and the Arechi Castle for sunset views.",
+        "Book trattorias around Via Roma for excellent seafood without Positano price tags."
+      ]
+    }
+  ],
+  "tips": [
+    "If you arrive late, overnight in Salerno and catch the first ferry or bus to Positano for smoother transfers.",
+    "Use luggage storage near the station (€5–€7 per bag) to explore hands-free between train and ferry."
+  ],
+  "faqs": [
+    {
+      "q": "Are ferries reliable from Salerno?",
+      "a": [
+        "Yes in summer. Shoulder seasons see occasional weather cancellations, so keep the bus as a backup."
+      ]
+    },
+    {
+      "q": "How early should I arrive for a train?",
+      "a": [
+        "Arrive 15 minutes before departure to find your platform and validate regional tickets if required."
+      ]
+    }
+  ]
+}

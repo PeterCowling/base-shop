@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Hordárszolgáltatások Positanóban",
+    "description": "Hol éred el a hordárokat, mennyibe kerül, és hogyan működik a poggyászfelvétel a lépcsőkön."
+  },
+  "linkLabel": "Hordárszolgáltatások Positanóban",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "how",
+      "title": "How it typically works",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Booking & resources",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiquette & tips",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need porters?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "Where can I book?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "How much does it cost?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "galleryTitle": "Photo gallery",
+  "gallery": {
+    "standsCaption": "Porter stands (example)",
+    "cartsCaption": "Porter carts"
+  }
+}

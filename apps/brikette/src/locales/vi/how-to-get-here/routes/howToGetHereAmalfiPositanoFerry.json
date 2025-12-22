@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Từ Amalfi đến Positano bằng phà | Hostel Brikette",
+    "description": "Phà Amalfi đến Positano: giờ chạy, vé, nơi lên tàu tại Amalfi và cách tới Hostel Brikette từ bến với ít bậc thang nhất."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Amalfi đến Positano — Phà",
+    "description": "Làm theo các bước này để di chuyển từ Amalfi tới Positano bằng phà. Bạn sẽ tìm thấy mẹo mua vé, nơi lên tàu ở Amalfi, những gì cần lưu ý khi cập bến và đường tới Hostel Brikette với ít bậc thang nhất."
+  },
+  "tip": {
+    "label": "Mẹo",
+    "body": {
+      "before": "Cần lựa chọn di chuyển khác? Mở ",
+      "linkLabel": "Tổng quan Cách đến đây",
+      "after": " để xem xe buýt, tuyến kết hợp và dịch vụ đưa đón sân bay."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Tổng quan hành trình",
+      "points": [
+        "Phà theo mùa chạy thường xuyên giữa Amalfi và Positano với tầm nhìn bờ biển tuyệt đẹp.",
+        "Travelmar vận hành các chuyến định kỳ; tần suất có thể thay đổi theo mùa và thời tiết.",
+        "Luôn kiểm tra lịch cập nhật trong ngày khởi hành."
+      ]
+    },
+    "tickets": {
+      "title": "Vé và lịch chạy",
+      "intro": {
+        "before": "Xem giờ và giá mới nhất trên ",
+        "travelmarLabel": "Travelmar",
+        "between": " và ",
+        "positanoLabel": "Positano.com – Lịch phà",
+        "after": "."
+      },
+      "points": [
+        "Mua vé trực tuyến trước trong các tháng cao điểm.",
+        "Đến sớm 15–20 phút để xếp hàng lên tàu.",
+        "Giữ sẵn vé hoặc mã QR để nhân viên kiểm tra."
+      ]
+    },
+    "amalfiBoarding": {
+      "title": "Lên tàu tại Amalfi",
+      "points": [
+        "Đa số chuyến xuất phát từ cầu cảng ven biển Amalfi gần Piazza Flavio Gioia.",
+        "Tìm quầy Travelmar và bảng chỉ dẫn dọc lối đi ven biển.",
+        "Kiểm tra lại bến đúng trên vé; nếu chưa chắc hãy hỏi nhân viên."
+      ]
+    },
+    "positanoArrival": {
+      "title": "Đến Positano",
+      "points": [
+        "Tàu cập bến cầu cảng chính của Positano tại Spiaggia Grande.",
+        "Mang nhiều hành lý? Cân nhắc thuê phu khuân vác hoặc đi xe buýt Interno Positano để giảm bậc thang.",
+        "Đi bộ lên dốc với hành lý nặng giữa trời hè sẽ khá mệt."
+      ],
+      "cta": {
+        "before": "Để biết đường đi từng bước từ bến tới cửa hostel, xem ",
+        "linkLabel": "Bến phà → Hostel Brikette",
+        "after": "."
+      }
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

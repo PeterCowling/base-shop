@@ -8,6 +8,12 @@ import { PRODUCTS } from "../src/products/index";
 
 fetchMock.enableMocks();
 
+const getRequestPath = (input: RequestInfo) => {
+  const raw = input instanceof Request ? input.url : input;
+  return new URL(typeof raw === "string" ? raw : String(raw), "http://localhost")
+    .pathname;
+};
+
 function TestComponent() {
   const [state, dispatch] = useCart();
   const size = PRODUCTS[0].sizes[0];
@@ -60,11 +66,7 @@ describe("CartContext", () => {
 
     const qty = screen.getByTestId("qty");
     await waitFor(() => expect(qty.textContent).toBe("2"));
-    expect(
-      fetchMock.mock.calls[0][0] instanceof Request
-        ? fetchMock.mock.calls[0][0].url
-        : fetchMock.mock.calls[0][0]
-    ).toBe("/api/cart");
+    expect(getRequestPath(fetchMock.mock.calls[0][0])).toBe("/api/cart");
     expect(localStorage.setItem).toHaveBeenCalledWith(
       "cart",
       JSON.stringify(cart)
@@ -101,7 +103,7 @@ describe("CartContext", () => {
 
     await waitFor(() => expect(fetchMock.mock.calls.length).toBe(2));
     const putReq = fetchMock.mock.calls[1][0] as Request;
-    expect(putReq.url).toBe("/api/cart");
+    expect(getRequestPath(putReq)).toBe("/api/cart");
     expect(putReq.method).toBe("PUT");
     await waitFor(() => expect(qty.textContent).toBe("0"));
     expect(localStorage.setItem).toHaveBeenLastCalledWith("cart", "{}");
@@ -149,7 +151,6 @@ describe("CartContext", () => {
     const id = `${PRODUCTS[0].id}:${size}`;
     fetchMock
       .mockResponseOnce(JSON.stringify({ cart: {} }))
-      .mockResponseOnce(JSON.stringify({ cart: {} })) // double initial fetch
       .mockResponseOnce(
         JSON.stringify({ cart: { [id]: { sku: PRODUCTS[0], qty: 1, size } } })
       )
@@ -165,15 +166,15 @@ describe("CartContext", () => {
     );
 
     const qty = screen.getByTestId("qty");
-    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
     const add = screen.getByText("add");
     const set = screen.getByText("set");
     const remove = screen.getByText("remove");
 
     fireEvent.click(add);
     await waitFor(() => expect(qty.textContent).toBe("1"));
-    const postReq = fetchMock.mock.calls[2][0] as Request;
-    expect(postReq.url).toBe("/api/cart");
+    const postReq = fetchMock.mock.calls[1][0] as Request;
+    expect(getRequestPath(postReq)).toBe("/api/cart");
     expect(postReq.method).toBe("POST");
     expect(await postReq.text()).toBe(
       JSON.stringify({ sku: { id: PRODUCTS[0].id }, qty: 1, size })
@@ -181,8 +182,8 @@ describe("CartContext", () => {
 
     fireEvent.click(set);
     await waitFor(() => expect(qty.textContent).toBe("3"));
-    const patchReq = fetchMock.mock.calls[3][0] as Request;
-    expect(patchReq.url).toBe("/api/cart");
+    const patchReq = fetchMock.mock.calls[2][0] as Request;
+    expect(getRequestPath(patchReq)).toBe("/api/cart");
     expect(patchReq.method).toBe("PATCH");
     expect(await patchReq.text()).toBe(
       JSON.stringify({ id, qty: 0 })
@@ -190,8 +191,8 @@ describe("CartContext", () => {
 
     fireEvent.click(remove);
     await waitFor(() => expect(qty.textContent).toBe("0"));
-    const deleteReq = fetchMock.mock.calls[4][0] as Request;
-    expect(deleteReq.url).toBe("/api/cart");
+    const deleteReq = fetchMock.mock.calls[3][0] as Request;
+    expect(getRequestPath(deleteReq)).toBe("/api/cart");
     expect(deleteReq.method).toBe("DELETE");
     expect(await deleteReq.text()).toBe(JSON.stringify({ id }));
   });
@@ -240,4 +241,3 @@ describe("CartContext", () => {
     expect(() => render(<Naked />)).toThrow("inside CartProvider");
   });
 });
-

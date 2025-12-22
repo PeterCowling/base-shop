@@ -12,10 +12,8 @@ describe('@acme/editorial', () => {
     jest.doMock('@platform-core/dataRoot', () => ({
       DATA_ROOT: path.join(repoRoot, 'data', 'shops'),
     }), { virtual: true });
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const core = require('@platform-core/dataRoot');
     expect(core.DATA_ROOT.endsWith(path.join('data','shops'))).toBe(true);
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const editorial = require('../src/index');
     const posts = await editorial.fetchPublishedPosts('demo');
     expect(Array.isArray(posts)).toBe(true);
@@ -29,7 +27,6 @@ describe('@acme/editorial', () => {
     jest.doMock('@platform-core/dataRoot', () => ({
       DATA_ROOT: path.join(repoRoot, 'data', 'shops'),
     }), { virtual: true });
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const editorial = require('../src/index');
     const post = await editorial.fetchPostBySlug('demo', 'hello-world');
     expect(post?.title).toMatch(/hello world/i);

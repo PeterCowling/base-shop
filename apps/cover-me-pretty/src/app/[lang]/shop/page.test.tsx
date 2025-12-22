@@ -9,12 +9,6 @@ jest.mock("@acme/sanity", () => ({
 const mockFetchPublishedPosts =
   fetchPublishedPosts as jest.MockedFunction<typeof fetchPublishedPosts>;
 
-// Mock env.NEXT_PUBLIC_LUXURY_FEATURES
-jest.mock("@acme/config/env/core", () => ({
-  coreEnv: { NEXT_PUBLIC_LUXURY_FEATURES: "{}" },
-}));
-import { coreEnv as mockEnv } from "@acme/config/env/core";
-
 // Mock BlogListing component
 jest.mock("@ui/components/cms/blocks/BlogListing", () => ({
   __esModule: true,
@@ -30,11 +24,11 @@ jest.mock("./ShopClient.client", () => ({
 describe("ShopIndexPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockEnv.NEXT_PUBLIC_LUXURY_FEATURES = "{}";
+    process.env.NEXT_PUBLIC_LUXURY_FEATURES = "{}";
   });
 
   it("renders BlogListing when contentMerchandising and blog flags are true", async () => {
-    mockEnv.NEXT_PUBLIC_LUXURY_FEATURES = JSON.stringify({
+    process.env.NEXT_PUBLIC_LUXURY_FEATURES = JSON.stringify({
       contentMerchandising: true,
       blog: true,
     });
@@ -51,7 +45,7 @@ describe("ShopIndexPage", () => {
   });
 
   it("omits BlogListing when feature flags are disabled", async () => {
-    mockEnv.NEXT_PUBLIC_LUXURY_FEATURES = JSON.stringify({
+    process.env.NEXT_PUBLIC_LUXURY_FEATURES = JSON.stringify({
       contentMerchandising: false,
       blog: false,
     });
@@ -61,7 +55,7 @@ describe("ShopIndexPage", () => {
   });
 
   it("swallows fetchPublishedPosts errors without breaking page render", async () => {
-    mockEnv.NEXT_PUBLIC_LUXURY_FEATURES = JSON.stringify({
+    process.env.NEXT_PUBLIC_LUXURY_FEATURES = JSON.stringify({
       contentMerchandising: true,
       blog: true,
     });

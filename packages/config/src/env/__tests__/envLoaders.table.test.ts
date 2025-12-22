@@ -6,12 +6,19 @@ const NEXT = 'nextauth-secret-32-chars-long-string!';
 const SESSION = 'session-secret-32-chars-long-string!';
 const JWT_SECRET = 'jwt-secret-32-chars-long-string!';
 const OAUTH_CLIENT_SECRET = 'oauth-secret-32-chars-long-string!';
+const OAUTH_ISSUER = 'https://auth.example.com/realms/base-shop';
+const OAUTH_REDIRECT_ORIGIN = 'https://shop.example.com';
 
 const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);
 
 // ------------ auth ------------
 describe('auth env', () => {
-  const base = { NEXTAUTH_SECRET: NEXT, SESSION_SECRET: SESSION };
+  const base = {
+    NEXTAUTH_SECRET: NEXT,
+    SESSION_SECRET: SESSION,
+    OAUTH_ISSUER,
+    OAUTH_REDIRECT_ORIGIN,
+  };
 
   describe.each([
     [{ NODE_ENV: 'production', ...base, AUTH_PROVIDER: 'local', AUTH_TOKEN_TTL: '60s' }],
@@ -79,6 +86,8 @@ describe('auth env', () => {
         NODE_ENV: 'production',
         ...base,
         AUTH_PROVIDER: 'oauth',
+        OAUTH_ISSUER,
+        OAUTH_REDIRECT_ORIGIN,
         OAUTH_CLIENT_ID: 'id',
         OAUTH_CLIENT_SECRET,
         JWT_SECRET,

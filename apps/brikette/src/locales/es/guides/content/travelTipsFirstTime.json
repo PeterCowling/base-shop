@@ -1,0 +1,138 @@
+{
+  "seo": {
+    "title": "Positano: consejos para tu primera visita",
+    "description": "Checklist de primera visita a Positano: transporte, calzado, hidratación, horarios y etiqueta local para disfrutar sin estrés."
+  },
+  "linkLabel": "Consejos para tu primera vez en Positano",
+  "intro": [
+    "¿Primera vez en Positano? Organiza la llegada con pocas escaleras, viaja ligero y alterna ferries con buses SITA según el estado del mar.",
+    "Empieza temprano, hidrátate y deja margen para colas en temporada alta para disfrutar sin estrés."
+  ],
+  "sections": [
+    {
+      "id": "arrival",
+      "title": "Llegada sin agotarte",
+      "body": [
+        "Reserva con antelación los tramos de tren + autobús o ferry cuando sea posible; las primeras salidas de la mañana evitan calor y colas.",
+        "¿Equipo pesado? Combina el autobús SITA hasta Chiesa Nuova con un porteador desde el muelle para que se ocupen de los tramos con más escaleras."
+      ],
+      "list": [
+        "Si llegas en bus, bájate en “Chiesa Nuova”: son 80 m hasta el hostel sin escaleras largas.",
+        "Desde el muelle, valora contratar porteador o subir en SITA hasta “Sponda/Chiesa Nuova” para evitar cargar maletas en las escaleras."
+      ]
+    },
+    {
+      "id": "money",
+      "title": "Dinero y billetes",
+      "body": [
+        "Viaja ligero con mochilas o bolsas blandas que suban escaleras estrechas y quepan en los maleteros de los autobuses.",
+        "Si llegas temprano, usa las consignas de Via dei Mulini para explorar sin equipaje hasta la hora de check-in."
+      ],
+      "list": [
+        "Compra billetes SITA en tabacchi o kioscos antes de subir y valídalos al entrar.",
+        "Lleva efectivo para lavanderías, snacks y minimercados; muchas tiendas aceptan tarjeta pero piden consumo mínimo."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta local",
+      "body": [
+        "Planifica playa y caminatas antes de las 10:00 o después de las 16:00, cuando las calles están más frescas y el transporte va más tranquilo.",
+        "Reserva restaurantes, paseos en barco y shuttle del Sentiero degli Dei al menos con un día de antelación en temporada alta."
+      ],
+      "list": [
+        "Respeta el silencio nocturno en callejones residenciales y deja pasar a vecinos en las escaleras estrechas.",
+        "En las playas comparte espacio: coloca la toalla sin bloquear pasillos y recoge la basura."
+      ]
+    },
+    {
+      "id": "packing",
+      "title": "Qué llevar",
+      "body": [
+        "Las tarjetas se aceptan de forma general, pero muchos cafés y tabacchi piden consumo mínimo: lleva billetes de 5–10 €.",
+        "Los cajeros funcionan, pero las comisiones varían; retira cantidades medias una sola vez y reparte el efectivo."
+      ],
+      "list": [
+        "Calzado con agarre para escaleras y senderos; evita maletas rígidas grandes.",
+        "Protector solar, gorra y botella reutilizable para rellenar en fuentes o bares."
+      ]
+    },
+    {
+      "id": "photos",
+      "title": "Fotos sin multitudes",
+      "body": [
+        "Consigue una eSIM italiana (TIM/Vodafone) o confirma tu roaming; la cobertura es mejor en las zonas altas.",
+        "Descarga mapas sin conexión, horarios de ferry y direcciones del hostel para cuando falle la señal móvil."
+      ],
+      "list": [
+        "Sal al amanecer o al atardecer para luz suave y menos gente en miradores.",
+        "Busca ángulos alternativos como Via Fornillo o terrazas sobre Via Pasitea para variar tus fotos."
+      ]
+    }
+  ],
+  "tips": [
+    "Evita horas punta en buses y ferris; madruga para miradores y playas.",
+    "Hidrátate y usa calzado con agarre para escaleras y senderos.",
+    "Compra billetes antes de subir (bus SITA) y valida al entrar.",
+    "Lleva efectivo para pequeñas compras y lavanderías."
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuánto tiempo debo prever para el traslado desde Nápoles?",
+      "a": [
+        "Cuenta con 2 h 30 min a 3 h combinando tren y bus; añade margen extra si viajas en temporada alta o con maletas pesadas."
+      ]
+    },
+    {
+      "q": "¿Necesito reservar restaurantes con antelación?",
+      "a": [
+        "Para cenas con vistas en verano sí; para comidas informales basta con llegar temprano o elegir turnos fuera de hora punta."
+      ]
+    },
+    {
+      "q": "¿Hay playas gratis?",
+      "a": [
+        "Sí, en Spiaggia Grande y Fornillo hay zonas libres (‘spiaggia libera’); llega pronto con toalla, agua y protección solar."
+      ]
+    }
+  ],
+  "toc": [
+    {
+      "href": "#arrival",
+      "label": "Llegada sin agotarte"
+    },
+    {
+      "href": "#money",
+      "label": "Dinero y billetes"
+    },
+    {
+      "href": "#etiquette",
+      "label": "Etiqueta local"
+    },
+    {
+      "href": "#packing",
+      "label": "Qué llevar"
+    },
+    {
+      "href": "#photos",
+      "label": "Fotos sin multitudes"
+    },
+    {
+      "href": "#links",
+      "label": "Enlaces útiles"
+    }
+  ],
+  "linksHeading": "Enlaces útiles",
+  "links": [
+    {
+      "guideKey": "chiesaNuovaArrivals",
+      "label": "Ruta con menos escaleras: Chiesa Nuova → Hostel Brikette"
+    },
+    {
+      "guideKey": "ferryDockToBrikette",
+      "label": "Muelle → Hostel Brikette"
+    }
+  ],
+  "tipsHeading": "Consejos rápidos",
+  "faqsTitle": "Preguntas frecuentes"
+}

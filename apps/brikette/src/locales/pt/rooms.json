@@ -1,0 +1,56 @@
+{
+  "detail": {
+    "common": {
+      "amenitiesHeading": "Por que os hóspedes escolhem este quarto",
+      "amenitiesIntro": "Detalhes pensados com carinho já à sua espera quando chega."
+    },
+    "double_room": {
+      "amenities": [
+        {
+          "title": "Conforto com casa de banho privativa",
+          "body": "Comece e termine o dia com um duche quente, toalhas macias e um espaço que é só seu."
+        },
+        {
+          "title": "Manhãs no terraço com vista para o mar",
+          "body": "Abra as portas para um terraço privado e desfrute de um expresso ou de uma bebida ao pôr do sol com Positano aos seus pés."
+        },
+        {
+          "title": "Noites frescas e silenciosas",
+          "body": "Ar condicionado com controlo individual e portadas opacas mantêm o quarto calmo mesmo no calor de agosto."
+        }
+      ]
+    },
+    "room_11": {
+      "amenities": [
+        {
+          "title": "Terraço amplo para todo o dormitório",
+          "body": "Juntem-se nos sofás e mesas exteriores para pequenos-almoços, alongamentos após as caminhadas ou fotos do horizonte."
+        },
+        {
+          "title": "Conforto exclusivo para mulheres",
+          "body": "Um dormitório feminino com casa de banho privativa e zona de toucador para que nunca tenha de esperar."
+        },
+        {
+          "title": "Privacidade e tranquilidade",
+          "body": "Cada beliche inclui cortinas, luz de leitura, tomadas e cacifos com cartão para guardar os seus pertences."
+        }
+      ]
+    },
+    "room_12": {
+      "amenities": [
+        {
+          "title": "Terraço partilhado extragrande",
+          "body": "Espreguiçadeiras e mesas criam uma sala de estar social ao ar livre com vistas para a Costa Amalfitana."
+        },
+        {
+          "title": "Casa de banho dedicada",
+          "body": "Refresque-se numa casa de banho exclusiva equipada com secadores, espelhos e muitos cabides."
+        },
+        {
+          "title": "Tomadas sempre à mão",
+          "body": "Cada cama oferece tomadas individuais, luz de leitura e cacifos com cartão para maior tranquilidade."
+        }
+      ]
+    }
+  }
+}

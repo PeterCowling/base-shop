@@ -1,0 +1,73 @@
+{
+  "slug": "bältros-centrum-tåg-buss",
+  "meta": {
+    "title": "Neapel centrum till Positano med tåg och buss | Hostel Brikette",
+    "description": "Steg-för-steg-instruktioner för att resa från Neapel centrum till Hostel Brikette via Circumvesuviana-tåget och SITA-bussen, inklusive biljettips och foton från ankomsten i Positano."
+  },
+  "header": {
+    "eyebrow": "Reseguide för Hostel Brikette",
+    "title": "Neapel centrum till Positano – tåg och sedan buss",
+    "description": "Följ de här anvisningarna för att resa från centrala Neapel till Hostel Brikette via Circumvesuviana-tåget till Sorrento och SITA-bussen till Positano. Guiden innehåller biljettips, råd om busstidtabellen och bilder av den sista sträckan fram till vandrarhemmet."
+  },
+  "tip": {
+    "eyebrow": "Tips",
+    "copy": "Behöver du andra rutter? Utforska hela uppsättningen ankomstvägar på sidan <GuideLink>Så tar du dig hit</GuideLink>.",
+    "linkLabel": "Sidan Så tar du dig hit"
+  },
+  "sections": {
+    "overview": {
+      "title": "Översikt: tåg och sedan buss",
+      "body": "Den här resan täcker den snabbaste kollektivtrafikkombinationen från Neapel centrum: Circumvesuviana-tåget till Sorrento följt av SITA-bussen till Positano. Den omfattar inte resor från Neapels flygplats."
+    },
+    "naplesStation": {
+      "title": "Tågstationen i Neapel",
+      "body": "Circumvesuviana-avgångar mot Sorrento går från nedre planet i stationen Napoli Garibaldi (under Napoli Centrale). Köp din biljett innan du går ner till plattformarna, kontrollera vilket spår din avgång använder och gå ombord på tåget mot Sorrento."
+    },
+    "sorrentoStation": {
+      "title": "Stationen i Sorrento",
+      "body": "När du anländer till Sorrento, gå ut från stationen och köp din SITA-biljett i baren, kiosken eller tobaksbutiken intill — biljetter säljs inte ombord. SITA-hållplatsen ligger längst ner förbi trappan utanför stationen; vänta på bussen mot Amalfi och åk den till Positano."
+    },
+    "timetable": {
+      "title": "Så läser du SITA-tidtabellen",
+      "intro": "SITA:s busstidtabell kan vara svårtolkad — använd de här snabba tipsen för att hitta rätt tur:",
+      "tips": [
+        "Raderna i första kolumnen är hållplatser längs rutten.",
+        "Varje kolumn är en tidtabellsrad som markeras med en bokstav.",
+        "För resor måndag till lördag använder du kolumnerna \"F\" och \"G\".",
+        "För söndagar och helgdagar använder du kolumnerna \"G\" och \"H\"."
+      ],
+      "detail": "Välj avgångsraden för Sorrento för att hitta din busstid. Kontrollera raden för Positano (Chiesa Nuova) i samma kolumn för att se när du anländer.",
+      "outro": "Se den senaste tidtabellen på <TimetableLink>positano.com</TimetableLink>.",
+      "linkLabel": "Positano.com"
+    },
+    "positanoStop": {
+      "title": "Busshållplatsen i Positano",
+      "list": [
+        "Den närmaste hållplatsen är Positano (Chiesa Nuova), cirka 140 meter (490 fot) från vandrarhemmet.",
+        "Den ligger utanför caféet/baren Bar Internazionale.",
+        "Bussen släpper av dig på gatunivå — inga långa trappor krävs för att nå oss."
+      ],
+      "figure": {
+        "alt": "Busshållplatsen Chiesa Nuova utanför Bar Internazionale i Positano",
+        "caption": "Busshållplatsen Chiesa Nuova, där du kliver av för Hostel Brikette."
+      }
+    },
+    "walk": {
+      "title": "Promenera från busshållplatsen",
+      "steps": [
+        "Gå drygt 100 meter / 330 fot från hållplatsen.",
+        "Sväng höger och följ trapporna upp till vandrarhemmets huvudentré."
+      ],
+      "mapLink": "Öppna <MapLink>Google Maps-rutten</MapLink> för sväng-för-sväng-navigering.",
+      "mapLinkLabel": "Google Maps-rutten",
+      "arrival": {
+        "title": "Vid ankomst",
+        "body": "Håll utkik efter vår skylt på terrassen en våning upp. Gå förbi den, följ vägkröken och ta trapporna på höger sida för att nå huvudentrén."
+      },
+      "approachFigure": {
+        "alt": "Gatubild som visar skylten Hostel Brikette ovanför Via G. Marconi",
+        "caption": "Via G. Marconi — gå förbi skylten och ta sedan trapporna till höger."
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Stadtführer Amalfi: Geschichte, Highlights & Tipps",
+    "description": "Dom, Papiermuseum, Kreuzgang, Strände und wie du von Positano aus hinkommst."
+  },
+  "linkLabel": "Stadtführer Amalfi: Geschichte, Highlights & Tipps",
+  "intro": [
+    "Hol das Beste aus einem Tag in Amalfi heraus: wichtigste Sehenswürdigkeiten, Anreise und Timing-Tipps, um Reisebus-Gruppen zuvorzukommen."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Top-Sehenswürdigkeiten",
+      "body": [
+        "Steig die 62 Stufen zum Dom von Amalfi hinauf für die gestreifte Fassade, den Kreuzgang und das Museum (angemessene Kleidung erforderlich).",
+        "Besuche das Museo della Carta, beobachte die Herstellung handgeschöpften Papiers und nimm leichte Souvenirs mit."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Anreise",
+      "body": [
+        "Fähren von Positano brauchen ca. 20 Minuten; Busse 40–50 Minuten je nach Verkehr. Sei vor 10:00 dort, um Schatten auf der Piazza zu ergattern.",
+        "Kauf Rückfahrkarten für die Fähre am frühen Nachmittag, falls Abfahrten wegen Wind angepasst werden."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Beste Zeiten",
+      "body": [
+        "Vormittags (vor 11:00) oder abends (nach 17:00) ist es am ruhigsten, wenn Tagesgäste weg sind.",
+        "Verbinde Amalfi mit Atrani (fünf Gehminuten) für ein Abendessen auf der kleineren Piazza, bevor du zurückfährst."
+      ]
+    }
+  ],
+  "tips": [
+    "Pack einen leichten Schal für Kirchenbesuche und als Sonnenschutz auf der Fähre ein.",
+    "Hol dir eine Zitronen-Granita an den Kiosken an der Promenade, um dich zwischen den Stopps abzukühlen."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Wie viel Zeit sollte ich in Amalfi einplanen?",
+      "a": [
+        "Plane drei bis vier Stunden für Dom, Papiermuseum und eine entspannte Mahlzeit ein. Wenn du am kleinen Stadtstrand schwimmen möchtest, rechne zusätzliche Zeit ein."
+      ]
+    },
+    {
+      "q": "Gibt es Gepäckaufbewahrung?",
+      "a": [
+        "Ja, Gepäckdepots befinden sich nahe dem Fähranleger. Rechne mit 5–8 € pro Tasche für den Tag."
+      ]
+    }
+  ]
+}

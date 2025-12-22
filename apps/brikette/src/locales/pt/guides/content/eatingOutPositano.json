@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Onde Comer em Positano: Guia Gastronómico do Hostel Brikette",
+    "description": "Planeje as refeições perto do Hostel Brikette com dicas de restaurantes locais, opções de transporte, faixas de preço e experiências gastronómicas imperdíveis."
+  },
+  "linkLabel": "Onde comer em Positano",
+  "heroAlt": "Jantar num terraço com vista para Positano",
+  "intro": [
+    "Positano está repleta de restaurantes, desde balcões simples de pizza até menus de degustação para celebrar ocasiões especiais. Os preços aumentam à medida que se aproxima da praia principal, por isso distribua o roteiro entre os clássicos do bairro e mesas de destino.",
+    "Reserve mesas online através de serviços como o TheFork sempre que possível e confirme para as 20h30–22h00, o horário mais concorrido. Para refeições de última hora, tenha algumas opções de entrada direta nas zonas acima do passeio marítimo."
+  ],
+  "sections": [
+    {
+      "id": "signature-experiences",
+      "title": "Experiências imperdíveis",
+      "body": [
+        "A La Gavitella fica do outro lado da baía, em Praiano, e combina uma tarde de beach club com um jantar de marisco. Vá no barco shuttle desde a praia principal de Positano para uma chegada panorâmica, ou apanhe o autocarro SITA em direção a Amalfi e desça a partir da paragem. Conte com peixe fresquíssimo e vistas do pôr do sol sobre Capri.",
+        "Para um capricho inesquecível, reserve o Sunset Cruise and Dinner. O passeio inclui cruzeiro de barco, pôr do sol na costa e um banquete de vários pratos com marisco por cerca de 139 € por pessoa—ideal para ocasiões especiais ou celebrações em grupo."
+      ]
+    },
+    {
+      "id": "farmhouse-feasts",
+      "title": "Banquetes rurais acima de Positano",
+      "body": [
+        "A La Tagliata fica a 3 km encosta acima, perto de Montepertuso e Nocelle. Apanhe o autocarro local em direção a Nocelle e saia pouco depois de Montepertuso, ou combine o transfer do restaurante. O menu fixo inclui antipasti, massa caseira, carnes grelhadas, vinho e sobremesa por cerca de 65 € por pessoa.",
+        "A La Taverna del Leone, perto de Laurito, e o Il Ritrovo, em Montepertuso, completam o circuito clássico de trattorias campestres. Ambos são acessíveis com o autocarro para Amalfi e oferecem serviço descontraído com porções generosas na faixa dos 45–55 €."
+      ]
+    },
+    {
+      "id": "neighbourhood-favourites",
+      "title": "Favoritos do bairro perto do hostel",
+      "body": [
+        "A poucos minutos do Hostel Brikette existem opções casuais como o C’era Una Volta (pizza al taglio entre 7–12 €) e o Il Grottino Azzurro, a apenas 160 metros, com pratos caseiros por cerca de 35 €. Da Gabrisa, Next2 e Da Costantino acrescentam jantares completos com vista para o mar por 30–60 €.",
+        "Mais abaixo, o Luna no Villa Magia e o Da Vincenzo 1958 oferecem cozinha refinada em terraços panorâmicos; calcule 65–100 € por pessoa e peça uma mesa junto à janela ao reservar. Lembre-se do autocarro interno para o regresso íngreme desde locais ao nível da praia, como o Buca di Bacco."
+      ]
+    }
+  ],
+  "essentialsTitle": "Resumo rápido de restaurantes",
+  "essentials": [
+    "C’era Una Volta – em frente ao hostel; pizza para levar 7–12 €.",
+    "Il Grottino Azzurro – 160 m em terreno plano; jantar cerca de 35 €.",
+    "Da Gabrisa – 260 m a descer; terraço com vista, cerca de 60 €.",
+    "Next2 – 270 m a descer; cozinha italiana moderna por cerca de 60 €.",
+    "Da Costantino – 300 m a subir; mesas à janela com menus de 30 €.",
+    "Luna at Villa Magia – 450 m a descer; fine dining perto de 100 €.",
+    "Da Vincenzo 1958 – 500 m a descer; clássicos de Positano por 65 €.",
+    "Ohimà – 1,1 km a descer; use o autocarro interno, conte com 75 €.",
+    "Al Palazzo – 1,2 km a descer; pátio ao ar livre, ~75 €.",
+    "Buca di Bacco – praia principal; melhor opção à beira-mar por cerca de 50 €.",
+    "Il Ritrovo – Montepertuso; acesso de autocarro, cerca de 55 €.",
+    "La Taverna del Leone – Laurito; paragem do autocarro para Amalfi, 45 €.",
+    "La Gavitella – transfer de barco para Praiano; banquete de marisco por cerca de 50 €.",
+    "Sunset Cruise & Dinner – experiência de barco com refeição, 139 €.",
+    "La Tagliata – shuttle para Montepertuso; banquete rural por 65 €."
+  ],
+  "typicalCostsTitle": "Quanto custam as refeições",
+  "typicalCosts": [
+    "Pizza para levar ou panini perto do hostel: 7–12 €.",
+    "Trattorias do bairro com vinho e sobremesa: 30–60 € por pessoa.",
+    "Menus de degustação ou cruzeiros especiais: 65–139 € por pessoa."
+  ],
+  "tips": [
+    "Reserve online ou por telefone para horários entre as 20h30 e as 22h00—o período mais concorrido nos restaurantes de Positano.",
+    "Use os autocarros SITA ou interno, ou transfers dos restaurantes como o da La Tagliata, para evitar subidas longas de escadas após o jantar.",
+    "Leve algum dinheiro para espaços pequenos e gorjetas, mesmo quando aceitam cartão.",
+    "Se pretende nadar antes de jantar na La Gavitella, leve roupa seca para a viagem de regresso de barco."
+  ],
+  "faqs": [
+    {
+      "q": "Como chego à La Gavitella a partir do Hostel Brikette?",
+      "a": [
+        "Vá até à praia principal e apanhe o barco shuttle diretamente para o restaurante para uma chegada panorâmica, ou apanhe o autocarro SITA em direção a Amalfi e saia a meio do percurso, seguindo depois as escadas até ao beach club."
+      ]
+    },
+    {
+      "q": "A La Tagliata oferece transporte de regresso a Positano?",
+      "a": [
+        "Sim. Combine o shuttle do restaurante quando fizer a reserva ou confirmar o jantar para regressar depois do banquete de vários pratos sem se preocupar com autocarros tardios."
+      ]
+    }
+  ]
+}

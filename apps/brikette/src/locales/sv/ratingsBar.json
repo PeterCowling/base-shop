@@ -1,0 +1,20 @@
+{
+  "aria": {
+    "regionLabel": "Omdömen från externa källor",
+    "linkSummary": "{{score}} hos {{provider}}, {{reviews}}, senast kontrollerad {{date}}"
+  },
+  "reviewed": "Betygsatt hos:",
+  "countReviews_one": "{{formattedCount}} omdöme",
+  "countReviews_other": "{{formattedCount}} omdömen",
+  "lastChecked": "Senast kontrollerad:",
+  "sources": {
+    "hostelworld": {
+      "ariaName": "Hostelworld",
+      "label": "Hostelworld"
+    },
+    "booking": {
+      "ariaName": "Booking punkt com",
+      "label": "Booking.com"
+    }
+  }
+}

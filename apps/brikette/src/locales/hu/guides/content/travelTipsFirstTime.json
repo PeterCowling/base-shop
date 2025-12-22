@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Alapvető tudnivalók az érkezésről, etikettől, csomagolásról és a tipikus csapdák elkerüléséről – hostelbarát tanácsokkal."
+  },
+  "linkLabel": "Positano travel tips for first‑time visitors",
+  "intro": [
+    "Először jársz Positanóban? Ezek a tippek lefedik az érkezést, a csomagokat, a fizetést és a kapcsolódást stressz nélkül."
+  ],
+  "sections": [
+    {
+      "id": "arrivals",
+      "title": "Érkezz okosan",
+      "body": [
+        "Foglalj előre, ahol lehet, vonat + busz vagy komp kombinációkat; a kora reggeli indulások elkerülik a hőséget és a sorokat.",
+        "Nehéz csomaggal? Kombináld a SITA buszt a Chiesa Nuováig egy kikötői hordárral, így a legmeredekebb lépcsőket megússzad."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Csomag és lépcsők",
+      "body": [
+        "Pakolj könnyű, puha táskákba vagy hátizsákba, ami elfér a keskeny lépcsőkön és a shuttle csomagtartóiban.",
+        "Korán érkezel? Használd a Via dei Mulini menti csomagmegőrzőket, így check-inig is szabadon mászkálhatsz."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Időzítés és foglalások",
+      "body": [
+        "A strandolást és a hosszabb sétákat 10:00 előtt vagy 16:00 után tervezd, amikor hűvösebbek az utcák és nyugodtabb a közlekedés.",
+        "Éttermeket, hajókirándulást és a Sentiero degli Dei shuttle-t csúcsidőben legalább egy nappal előre foglald."
+      ]
+    },
+    {
+      "id": "payments",
+      "title": "Fizetés és készpénz",
+      "body": [
+        "A kártyát széles körben elfogadják, de sok kávézó és dohánybolt minimum összeget kér – legyen nálad 5–10 eurós bankjegy.",
+        "Az ATM-ek működnek, de a díjak eltérnek; inkább vegyél fel közepes összeget egyszerre, és oszd szét a készpénzt."
+      ]
+    },
+    {
+      "id": "connectivity",
+      "title": "Kapcsolat és tartalék",
+      "body": [
+        "Vegyél olasz eSIM-et (TIM/Vodafone) vagy ellenőrizd a roamingot; a lefedettség a dombtetőn a legjobb.",
+        "Tölts le offline térképeket, kompmenetrendet és a hostel útvonalát, amikor gyenge a mobilnet."
+      ]
+    }
+  ],
+  "tips": [
+    "Ments el offline busz- és kompmenetrendeket, valamint a hostel érkezési útmutatóját arra az esetre, ha nem lenne térerő.",
+    "Legyen nálad újratölthető kulacs (750 ml) és egy könnyű réteg – nappal meleg van, estére pedig hűvösebb a tengerszint felett."
+  ],
+  "faqs": [
+    {
+      "q": "Elég a kézipoggyász?",
+      "a": [
+        "Igen – hozz gyorsan száradó ruhákat, tervezd be a hostel mosást, és tarts utazóméretű pipereket, hogy beleférj a légitársasági limitbe."
+      ]
+    },
+    {
+      "q": "Szükségem van átalakítóra?",
+      "a": [
+        "Olaszországban 230 V-os F/L típusú aljzat van; ha eltér a csatlakozód az EU-s szabványtól, hozz univerzális adaptert."
+      ]
+    }
+  ]
+}

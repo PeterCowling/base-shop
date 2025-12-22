@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "A fordítás folyamatban van."
+  },
+  "linkLabel": "7‑Day Amalfi Coast Itinerary (no car)",
+  "intro": [
+    "Hét autó nélküli nap alatt a klasszikus látnivalókat és a nyugodt falusi időt is kiegyensúlyozhatja – kényelmesebb utakhoz használja a kompokat, értékben a buszokat."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "1–2. nap — beszokás Positanóban",
+      "body": [
+        "Érkezzen Nápolyon vagy Salernón keresztül, fedezze fel a Spiaggia Grandét és Fornillót, és rövid kilátóponti sétákkal szokja meg a lépcsőket.",
+        "A második estére foglaljon közös hajókirándulást vagy főzőkurzust, hogy emlékezetes élménnyel indítsa a hetet."
+      ]
+    },
+    {
+      "id": "day3",
+      "title": "3. nap — Capri kör",
+      "body": [
+        "Fogja el a 08:30-as kompot Caprira, délelőtt összpontosítson Anacaprira, és térjen vissza naplemente előtt, hogy elkerülje az utolsó járatért való rohanást.",
+        "Legyen kéznél tartalék buszjegy, ha leállnának a kompok; a Szorrentón át tartó alternatív út nagyjából 90 perc ajtótól ajtóig."
+      ]
+    },
+    {
+      "id": "days4-5",
+      "title": "4–5. nap — Amalfi és Ravello + túrázás",
+      "body": [
+        "A 4. napot töltse Amalfi városában és Ravello kertjeiben, maradjon estére, ha koncert csábítja.",
+        "Az 5. napot szánja az Ég ösvényére vagy a Montepertuso túrára; induljon korán, vigyen 1,5 liter vizet, és busszal jöjjön vissza."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "6–7. nap — kultúra és tartalék",
+      "body": [
+        "Reggel vonatozzon Pompejibe vagy Salernóba múzeumozni, majd térjen vissza egy laza estére Positanóba.",
+        "Hagyja az utolsó napot tartaléknak időjárásra vagy pihenésre – látogassa meg újra a kedvenc strandot, vagy barangoljon kézműves üzletekben."
+      ]
+    }
+  ],
+  "tips": [
+    "Heti közepi mosással könnyű marad a csomag; használja a Chiesa Nuova közelében lévő önkiszolgáló mosógépeket.",
+    "Szeles időben kövesse a kompjáratok frissítéseit az üzemeltetők Instagram-fiókjain."
+  ],
+  "faqs": [
+    {
+      "q": "Érdemes több városban megszállni?",
+      "a": [
+        "Szálljon meg Positanóban, hogy kevesebbet kelljen pakolni. Csak nagyon korai vonathoz vagy repüléshez adjon hozzá egy éjszakát Nápolyban vagy Salernóban."
+      ]
+    },
+    {
+      "q": "Mindet előre kell foglalni?",
+      "a": [
+        "Foglalja le a kompokat, hajótúrákat és top éttermeket. A túrákat, strandnapokat és helyi buszokat hagyja rugalmasan, hogy alkalmazkodni tudjon az időjáráshoz."
+      ]
+    }
+  ]
+}

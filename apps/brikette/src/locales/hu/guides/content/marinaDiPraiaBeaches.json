@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Hogyan éred el a rejtett öblöket, milyen szolgáltatásokra számíts és mikor menj."
+  },
+  "linkLabel": "Marina di Praia & Secluded Beaches",
+  "intro": [
+    "Fedezd fel a Marina di Praiát és a közeli öblöket, ha változatosságra vágysz Positano fő strandja után."
+  ],
+  "sections": [
+    {
+      "id": "marina",
+      "title": "Marina di Praia alapok",
+      "body": [
+        "Sziklák közé simuló kavicsos strand napágyakkal, kajakkölcsönzővel és a sziklába épült tengeri éttermekkel.",
+        "Érkezz 10:30 előtt, ha első soros napágyat szeretnél; 16:00 után fokozatosan árnyékba borul."
+      ]
+    },
+    {
+      "id": "coves",
+      "title": "Közeli öblök",
+      "body": [
+        "Bérelj kajakot a Grotta di Suppraiano felfedezéséhez, vagy menj rövid csónaktranszferrel eldugott helyekre, mint Gavitella vagy Laurito.",
+        "Vigyél korallbarát naptejet és vízicipőt – a köves aljzat remek sznorkelezési látótávolságot ad."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Megközelítés",
+      "body": [
+        "Szállj fel Positanóból a SITA buszra Amalfi irányába; szólj a sofőrnek, hogy a Marina di Praia megállónál szállsz le, majd sétálj le a rámpán (kb. öt perc).",
+        "A robogókat az öböl tetején lehet leparkolni – legyen nálad apró a fizetős helyekhez."
+      ]
+    }
+  ],
+  "tips": [
+    "Foglalj ebédet az Il Piratában vagy a La Praiában, így fürdések között sziklaparti panorámával étkezhetsz.",
+    "Legyen nálad vízálló tasak az értékeknek; a strand kicsi, és rendezettebb, ha minden egyben marad."
+  ],
+  "faqs": [
+    {
+      "q": "Ingyenes a strand?",
+      "a": [
+        "Van egy szabadon használható rész, de nagyon szűk. Főszezonban számolj 20–25 euróval egy napágy-párosért és napernyőért a strandklubokban."
+      ]
+    },
+    {
+      "q": "Elsétálhatok Positanóból?",
+      "a": [
+        "Gyalog kb. 50 perc az úton, keskeny padkával. Busz vagy robogó biztonságosabb, különösen a főszezoni forgalomban."
+      ]
+    }
+  ]
+}

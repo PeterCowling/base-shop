@@ -1,0 +1,11 @@
+{
+  "title": "Всегда проверяйте информацию о транспорте",
+  "items": {
+    "buses": "Автобусы: проверяйте официальное расписание SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
+    "ferries": "Паромы: операторы публикуют сезонные рейсы и расписания (зависит от погоды). См. <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
+    "airlink": "Летите в Салерно Коста-д’Амальфи (QSR)? Используйте шаттл Airlink до Салерно — <airportLink>aeroportodisalerno.it</airportLink> и <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
+    "driving": "Авто: на SS163 действует правило чередования номеров (апр.–окт.) и ZTL; стоимость парковки зависит от сезона и локации. Проверяйте официальные уведомления.",
+    "premium": "Премиум/сезонные: Uber Boat и вертолётные чартеры работают ограниченно летом — уточняйте доступность."
+  },
+  "srLabel": "Транспортное предупреждение"
+}

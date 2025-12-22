@@ -1,0 +1,72 @@
+{
+  "deals": {
+    "loyaltyCta": {
+      "heading": "Ekstra fordele til tilbagevendende gæster",
+      "body": "Tilmeld dig vores direkte-bookingliste for at få tilbud før alle andre, sæsonbestemte rejsetips og en ekstra rabatkode på 5 % til din næste reservation på vores website.",
+      "button": "Tilmeld dig fordelene"
+    }
+  },
+  "about": {
+    "mission": {
+      "heading": "Vores mission",
+      "paragraphs": [
+        "Siden 1995 har Hostel Brikette hjulpet rejsende med at opleve Positano på et rimeligt budget – uden at give afkald på de panoramiske udsigter over Amalfikysten.",
+        "Vi prioriterer gennemsigtighed: klare priser uden skjulte gebyrer, ligetil politikker og et team på stedet, som står klar til at hjælpe med ændringer eller særlige ønsker.",
+        "Vores lokale team deler transportplaner, tips til at håndtere bagage på 23 kg / 50 lb på trapperne og idéer til aktiviteter, så du kan nyde hvert minut ved kysten."
+      ]
+    },
+    "values": {
+      "heading": "Vores værdier",
+      "items": [
+        {
+          "title": "Fair, direkte og gennemsigtig",
+          "body": "Vi offentliggør tydelige priser og politikker, guider dig til de bedste løsninger og lægger aldrig skjulte gebyrer oveni."
+        },
+        {
+          "title": "Lokalkendskab, delt frit",
+          "body": "Fra færger til vandrestier deler vores team praktiske råd, så du får mest muligt ud af tiden (og budgettet)."
+        },
+        {
+          "title": "Varm gæstfrihed",
+          "body": "Vi hylder hostellets sociale ånd: en venlig bar, fællesområder og medarbejdere, der husker dine planer."
+        }
+      ]
+    }
+  },
+  "careers": {
+    "hiringCta": {
+      "heading": "Arbejd sammen med os på terrassen",
+      "body": "Bliv en del af et lille team, der værdsætter personlighed, initiativ og omsorg for gæsterne. Personalebolig, morgenmad og ordentlige fordele er inkluderet.",
+      "button": "Ansøg nu"
+    }
+  },
+  "experiences": {
+    "meetTheHosts": {
+      "heading": "Mød teamet på terrassen",
+      "intro": "Det er folkene, der holder terrassen levende, arrangerer events ved solnedgang, leder vandreture og svarer på dine spørgsmål allerede før du ankommer til Positano.",
+      "hosts": [
+        {
+          "name": "Chiara",
+          "role": "Ansvarlig for oplevelser",
+          "bio": "Koordinerer solnedgangsbaren, introducerer lokale producenter og sørger for, at hver smagning rummer noget for alle. Hvis du fejrer noget eller planlægger et privat arrangement, så tal med hende på terrassen fra kl. 18.00.",
+          "imageAlt": "Chiara, der serverer en spritz i baren på terrassen.",
+          "availability": "Mød Chiara i baren de fleste aftener eller via vores digitale concierge."
+        },
+        {
+          "name": "Luca",
+          "role": "Lokal guide",
+          "bio": "Født i Praiano og kender hver eneste sti langs Amalfikysten. Luca hjælper dig med at vælge mellem Gudernes sti, bådture ved solopgang eller dagsudflugter til Ravello – med transportplaner klar til brug.",
+          "imageAlt": "Luca, der peger mod horisonten fra et udsigtspunkt på Amalfikysten.",
+          "availability": "Mød ham i receptionen tidligt om morgenen, eller reserver pladser til vandringer gennem conciergen."
+        },
+        {
+          "name": "Mariana",
+          "role": "Digital concierge",
+          "bio": "Svarer på WhatsApp og Messenger med færgeopdateringer, restauranttips og påmindelser i sidste øjeblik. Hvis vejret ændrer sig, sender hun stressfri alternativer.",
+          "imageAlt": "Telefonskærm, der viser en chat med Mariana, den digitale concierge.",
+          "availability": "Skriv når som helst – hun koordinerer i realtid med receptionsteamet."
+        }
+      ]
+    }
+  }
+}

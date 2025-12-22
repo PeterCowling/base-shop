@@ -1,0 +1,161 @@
+{
+  "location": {
+    "title": "Vår beliggenhet",
+    "inputLabel": "Skriv inn din nåværende posisjon:",
+    "inputPlaceholder": "f.eks. Napoli, Italia eller full adresse",
+    "getDirections": "Hent veibeskrivelse",
+    "justShowMap": "Vis bare kart",
+    "close": "Lukk dialog",
+    "nearbyBusCompact": "≈100 m til nærmeste bussholdeplass"
+  },
+  "contact": {
+    "title": "Kontakt oss",
+    "description": "Vi vil gjerne høre fra deg! For spørsmål eller reservasjoner, ta kontakt via e‑post:",
+    "revealEmail": "Vis e‑postadresse",
+    "close": "Lukk dialog",
+    "buttonClose": "Lukk"
+  },
+  "offers": {
+    "close": "Lukk",
+    "title": "Bestill direkte og spar",
+    "description": "Takk for at du velger å bestille direkte hos oss! Som takk får du:",
+    "perks": {
+      "discount": "Opptil 10 % avslag på romprisen",
+      "breakfast": "Gratis frokost hver morgen",
+      "drinks": "Gratis velkomstdrinker",
+      "upgrades": "Prioriterte romoppgraderinger (ved tilgjengelighet)"
+    },
+    "callToAction": "Utnytt disse eksklusive fordelene nå!",
+    "button": "Bestill nå"
+  },
+  "booking": {
+    "title": "Bestill oppholdet",
+    "subTitle": "Velg datoer og preferanser",
+    "close": "Lukk",
+    "checkInLabel": "Innsjekk",
+    "checkOutLabel": "Utsjekk",
+    "guestsLabel": "Gjester",
+    "buttonAvailability": "Sjekk tilgjengelighet",
+    "datePlaceholder": "Velg dato",
+    "guestsSingle": "{{count}} voksen",
+    "guestsPlural": "{{count}} voksne"
+  },
+  "booking2": {
+    "selectDatesTitle": "Velg datoer",
+    "checkInDate": "Innsjekkingsdato",
+    "checkOutDate": "Utsjekkingsdato",
+    "adults": "Antall voksne",
+    "confirm": "Bekreft",
+    "cancel": "Avbryt"
+  },
+  "facilities": {
+    "title": "Våre fasiliteter",
+    "closeButton": "Lukk",
+    "categories": [
+      {
+        "title": "Bad",
+        "items": [
+          "Toalettpapir",
+          "Håndklær / sengetøy (ekstra kostnad)",
+          "Toalett",
+          "Dusj",
+          "Hårføner (på forespørsel)"
+        ]
+      },
+      {
+        "title": "Soverom og sengetøy",
+        "items": [
+          "Sengetøy inkludert",
+          "Leselys ved sengene i sovesal"
+        ]
+      },
+      {
+        "title": "Uteområder og utsikt",
+        "items": [
+          "Panoramaterasse med havutsikt",
+          "Solterrasse",
+          "Utemøbler",
+          "Piknikområde"
+        ]
+      },
+      {
+        "title": "Komfort på rommet",
+        "items": [
+          "Strømkontakt ved sengen",
+          "Aircondition",
+          "Oppvarming",
+          "Fliser / marmorgulv"
+        ]
+      },
+      {
+        "title": "Aktiviteter",
+        "items": [
+          "Fotturer (utenfor området)",
+          "Kart til selvstyrte turer",
+          "Lokale turanbefalinger"
+        ]
+      },
+      {
+        "title": "Mat og drikke",
+        "items": [
+          "Bar på stedet",
+          "Gratis velkomstdrink",
+          "À la carte-frokost tilgjengelig",
+          "Snacksservering"
+        ]
+      },
+      {
+        "title": "Internett",
+        "items": [
+          "Gratis Wi-Fi i fellesområder",
+          "Rask Wi-Fi på rommene",
+          "Offentlig internettpunkt"
+        ]
+      },
+      {
+        "title": "Gjestetjenester",
+        "items": [
+          "Daglig rengjøring",
+          "Concierge-desk",
+          "Bagasjeoppbevaring",
+          "Oppbevaring før innsjekk / etter utsjekk",
+          "Skap",
+          "Adaptere tilgjengelig",
+          "Flyplasstransport (mot tillegg)",
+          "Resepsjon (begrensede åpningstider)",
+          "Sykkelparkering"
+        ]
+      },
+      {
+        "title": "Sikkerhet",
+        "items": [
+          "Brannslukkere",
+          "Kameraovervåkning i fellesområder",
+          "Tilgang med nøkkelkort",
+          "Elektroniske dørlåser",
+          "Personlige skap"
+        ]
+      },
+      {
+        "title": "Generelt",
+        "items": [
+          "Kun for voksne (18–39 år)",
+          "Røykfritt på hele eiendommen",
+          "Røykfrie rom"
+        ]
+      },
+      {
+        "title": "Språk vi snakker",
+        "items": [
+          "Engelsk",
+          "Spansk",
+          "Italiensk"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "title": "Velg språk",
+    "close": "Lukk"
+  }
+}

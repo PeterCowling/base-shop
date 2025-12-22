@@ -1,0 +1,71 @@
+{
+  "seo": {
+    "title": "Cẩm nang bãi biển Fiordo di Furore",
+    "description": "Cách đi xe buýt từ Positano tới Fiordo di Furore, nên mang gì và mong đợi điều gì tại eo vịnh vách đá."
+  },
+  "linkLabel": "Cẩm nang bãi biển Fiordo di Furore",
+  "intro": [
+    "Fiordo di Furore là hẻm núi biểu tượng của Amalfi Coast — lối vào hẹp dưới cây cầu vòm, nước xanh ngọc và vách đá dựng đứng. Đây là eo biển nhỏ, gần như hoang sơ, không có beach club hay nhà hàng, vì vậy hãy chuẩn bị cho một lần tắm biển, vài bức ảnh và màn nhảy vách kịch tính.",
+    "Hãy dùng hướng dẫn này để di chuyển bằng xe buýt, hiểu rõ sự hạn chế về dịch vụ và lên kế hoạch quay về để không bị kẹt khi chuyến SITA cuối cùng kín chỗ."
+  ],
+  "toc": [
+    {
+      "href": "#getting-there",
+      "label": "Di chuyển"
+    },
+    {
+      "href": "#returning",
+      "label": "Quay về"
+    },
+    {
+      "href": "#on-site",
+      "label": "Có gì tại chỗ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Tự tin đi xe buýt SITA",
+      "body": [
+        "Từ Hostel Brikette, đi bộ xuống Via Pasitea tới điểm dừng Sponda và lên xe buýt SITA hướng Amalfi. Nói với tài xế bạn cần xuống \"Fiordo di Furore\" để họ nhớ tấp vào — điểm dừng nằm giữa Praiano và Furore nên rất dễ bỏ qua vào ngày đông.",
+        "Sau khoảng 25 phút, xuống tại điểm dừng ngay trước cây cầu. Theo các bậc thang khắc vào vách đá vài phút là tới bãi sỏi nhỏ nằm dưới vòm cầu."
+      ]
+    },
+    {
+      "id": "returning",
+      "title": "Lên kế hoạch quay về trước khi xuống nước",
+      "body": [
+        "Dưới eo vịnh không có quầy vé hay máy bán vé. Hãy mua vé khứ hồi ở Positano (tabacchi gần Chiesa Nuova hoặc quầy báo Sponda) và đóng dấu khi lên xe.",
+        "Mùa hè xe buýt có thể đầy khách ngay từ khi rời Amalfi. Hãy chọn chuyến sớm hơn bạn nghĩ, và báo với những người chờ tại điểm dừng rằng bạn đang đợi để tài xế chú ý. Nếu hai chuyến liên tiếp không dừng, hãy cân nhắc chung taxi từ đường phía trên."
+      ]
+    },
+    {
+      "id": "on-site",
+      "title": "Chờ đợi vẻ đẹp nguyên sơ, không phải dịch vụ",
+      "body": [
+        "Fiordo di Furore không có beach club, không nhà vệ sinh và chỉ thỉnh thoảng mới có xe đẩy đồ ăn vặt vào cao điểm. Hãy mang nước, đồ ăn nhẹ và thứ gì đó ngồi cho đỡ đau — sỏi to và diện tích hạn chế.",
+        "Người địa phương thường nhảy từ tảng đá cạnh cầu, nhưng luôn kiểm tra độ sâu trước và chỉ nhảy khi đã thấy người bản địa dưới nước. Tôn trọng người đang tắm phía dưới và chú ý thủy triều; eo vịnh râm mát từ cuối chiều."
+      ]
+    }
+  ],
+  "essentialsTitle": "Mong đợi điều gì",
+  "essentials": [
+    "Điểm dừng xe buýt SITA giữa Praiano và Furore — nhờ tài xế thông báo khi tới fiord.",
+    "Cầu thang dốc xuống bãi sỏi nhỏ dưới chân cầu.",
+    "Không có dịch vụ tại chỗ: mang nước, đồ ăn, kem chống nắng và tiền mặt phòng trường hợp phải đi taxi."
+  ],
+  "tipsTitle": "Mẹo nhanh",
+  "tips": [
+    "Xem %LINK:positanoBeaches|tổng quan các bãi biển% để kết hợp Fiordo di Furore với điểm tắm khác trong cùng ngày.",
+    "Đến sớm nếu muốn chụp ảnh dưới cầu mà không bị chen chúc.",
+    "Mang kem chống nắng thân thiện với biển và giày đi nước — đá trơn khi ướt."
+  ],
+  "warningsTitle": "Lưu ý",
+  "warnings": [
+    "Mua vé xe buýt khứ hồi tại Positano; ở fiord không có nơi bán hay đóng dấu vé.",
+    "Xe buýt đôi khi bỏ qua điểm dừng khi đã đầy trong mùa cao điểm — hãy chừa thêm thời gian để về nhà.",
+    "Bãi nhỏ và bóng râm tới sớm vào buổi chiều."
+  ],
+  "faqsTitle": "Câu hỏi thường gặp về Fiordo di Furore",
+  "faqs": []
+}

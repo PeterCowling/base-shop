@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Positano–Amalfi komppal | Hostel Brikette",
+    "description": "Lépésről lépésre bemutatjuk a kompútvonalat Positanóból Amalfiba: jegyek, beszállás a Spiaggia Grande mólójánál, menetrendek és mire számítson érkezéskor."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette útikalauz",
+    "title": "Positano–Amalfi — Komppal",
+    "description": "Kövesse ezeket a lépéseket, ha komppal szeretne Positanóból Amalfiba utazni. Tippeket adunk a jegyekhez, a positanói beszálláshoz, a megérkezéshez és élő menetrendekhez vezető linkeket is talál."
+  },
+  "tip": {
+    "label": "Tipp",
+    "copy": "Más közlekedési lehetőségek érdeklik? Nyissa meg a <link>Hogyan juthat ide áttekintést</link>, ahol busz-, kombinált útvonalakat és reptéri transzfereket is talál."
+  },
+  "sections": {
+    "overview": {
+      "title": "Utazás áttekintése",
+      "points": [
+        "Időszakos kompjáratok kötik össze Positanót és Amalfít, lenyűgöző tengerparti kilátással.",
+        "A járatok szezon és időjárás függvényében változhatnak; indulás napján mindig ellenőrizze a menetrendet.",
+        "A csúcsszezonban hagyjon extra időt a mólónál kialakuló sorokra."
+      ]
+    },
+    "tickets": {
+      "title": "Jegyek és menetrendek",
+      "intro": "A legfrissebb időpontokat és árakat a <travelmar>Travelmar</travelmar>, valamint a <positano>Positano.com – kompmenetrend</positano> oldalán találja.",
+      "points": [
+        "Főszezonban érdemes előre online jegyet venni, vagy a móló melletti pultoknál megvásárolni.",
+        "Indulás előtt 15–20 perccel érkezzen, hogy beválthassa a vouchert és sorba állhasson a beszálláshoz.",
+        "Tartsa kéznél a jegyet vagy QR-kódot az ellenőrzéshez."
+      ]
+    },
+    "positanoPier": {
+      "title": "Beszállás Positanóban",
+      "points": [
+        "A járatok a positanói főmólóról indulnak a Spiaggia Grande partszakaszon.",
+        "A parti sétány mentén sorakoznak az üzemeltetők pultjai; a táblák mutatják a következő indulásokat.",
+        "Ellenőrizze a jegyen a megfelelő mólót; ha bizonytalan, a személyzet szívesen segít."
+      ]
+    },
+    "amalfiArrival": {
+      "title": "Érkezés Amalfiba",
+      "points": [
+        "A hajók Amalfi vízparti mólóinál érkeznek, a Piazza Flavio Gioia közelében.",
+        "A történelmi városrész és a sétány közvetlenül a kikötő mellett található.",
+        "Továbbindulna busszal (például Ravellóba vagy Sorrentóba)? Kövesse a SITA-megállóhoz vezető táblákat a vízpart mellett."
+      ]
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

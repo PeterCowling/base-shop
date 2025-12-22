@@ -1,0 +1,127 @@
+{
+  "seo": {
+    "title": "Længere ophold i lavsæsonen",
+    "description": "Hvordan du bor, arbejder og udforsker Positano, når tempoet er lavere."
+  },
+  "linkLabel": "Langtidsophold i lavsæsonen: tips",
+  "intro": [
+    "Et par uger i lavsæsonen betyder køligere vejr, færre færger og mere tid til at bo som en lokal."
+  ],
+  "sections": [
+    {
+      "id": "housing",
+      "title": "Bolig og priser",
+      "body": [
+        "Forhandl månedsophold direkte med pensioner i de øvre kvarterer af Positano; rabatter på 20–30 % er almindelige fra november til marts.",
+        "Overvej baser i Praiano eller Minori, hvis du vil have supermarkeder og fladere gåture; pendle med bus, når du savner Positano-aftener."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Vejr og pakning",
+      "body": [
+        "Forvent dagtemperaturer omkring 12–16 °C med lejlighedsvis regn – pak lag-på-lag, en vandtæt jakke og sko med godt greb til våde trapper.",
+        "Hav en kompakt paraply klar; vinden trækker gennem dalen, så vindstød føles kraftigere end vejrudsigten antyder."
+      ]
+    },
+    {
+      "id": "work-life",
+      "title": "Arbejde og hverdagsrytme",
+      "body": [
+        "Mange caféer reducerer åbningstiderne, så læg coworking-blokke omkring stabilt Wi-Fi på hostellet eller i din lejlighed.",
+        "Lav mad hjemme oftere – markederne i Meta eller Sorrento har større udvalg, og busserne er roligere til indkøbsture."
+      ]
+    },
+    {
+      "id": "community",
+      "title": "Hold dig social",
+      "body": [
+        "Meld dig ind i lokale Facebook- eller WhatsApp-grupper for sprogudveksling og fællesspisninger.",
+        "Frivillig ved byens oprydningsdage eller kulturevents; kommunen hænger datoer op på opslagstavlerne nær Piazza dei Mulini."
+      ]
+    }
+  ],
+  "tips": [
+    "Gem euromønter til varmeapparater og vaskerier – mange maskiner kører stadig på mønter i vintermånederne.",
+    "Hold øje med de reducerede bus- og færgeplaner fra uge til uge; køreplaner ændres omkring højtider."
+  ],
+  "faqs": [
+    {
+      "q": "Holder restauranter åbent?",
+      "a": [
+        "Et par stykker holder åbent året rundt i Positano, men der er større udvalg i Amalfi og Sorrento – planlæg middage, når du alligevel besøger de byer."
+      ]
+    },
+    {
+      "q": "Er Gudernes sti sikker om vinteren?",
+      "a": [
+        "Ja på tørre dage, men undgå den efter kraftig regn; klipperne bliver glatte, og små jordskred forekommer oftere."
+      ]
+    }
+  ],
+  "fallback": {
+    "tocTitle": "På denne side",
+    "intro": [],
+    "toc": [
+      {
+        "href": "#connectivity",
+        "label": "Forbindelse"
+      },
+      {
+        "href": "#groceries",
+        "label": "Indkøb og fornødenheder"
+      },
+      {
+        "href": "#transport",
+        "label": "Transport i lavsæsonen"
+      },
+      {
+        "href": "#weather",
+        "label": "Vejr og pakning"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "sections": [
+      {
+        "id": "connectivity",
+        "title": "Forbindelse",
+        "body": [
+          "Kombinér caféer med stabilt Wi-Fi og eSIM-backups; tjek dækningskort for TIM/Vodafone/WindTre."
+        ]
+      },
+      {
+        "id": "groceries",
+        "title": "Indkøb og fornødenheder",
+        "body": [
+          "Åbningstiderne varierer uden for sæson – fyld op tidligt på dagen og helst på hverdage."
+        ]
+      },
+      {
+        "id": "transport",
+        "title": "Transport i lavsæsonen",
+        "body": [
+          "Færger nedskaleres; brug busser, og planlæg efter regn- og vinddage."
+        ]
+      },
+      {
+        "id": "weather",
+        "title": "Vejr og pakning",
+        "body": [
+          "Medbring lag og regnbeskyttelse; gode sko til våde trapper."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQ",
+    "faqs": [
+      {
+        "q": "Er noget åbent om vinteren?",
+        "a": [
+          "Ja, men færre muligheder. Fokuser på indkøb, vandreture, udsigtspunkter og nabobyer."
+        ]
+      }
+    ]
+  }
+}

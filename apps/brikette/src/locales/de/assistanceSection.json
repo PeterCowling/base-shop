@@ -1,0 +1,46 @@
+{
+  "slug": "hilfe-kontakt",
+  "meta": {
+    "title": "Unterstützung inklusive Kontaktdaten und Hilfe – Brikette Hostel Positano",
+    "description": "Buche, chatte und hol dir Reise-Tipps direkt beim Hostel Brikette. Unser digitaler Assistent begleitet dich vor und während deines Positano-Aufenthalts."
+  },
+  "heading": "Digitale Unterstützung",
+  "subheading": "Buche, entdecke und verbinde dich online mit uns.",
+  "heroIntro": "Erhalte sofort Antworten von unserem Team und dem digitalen Assistenten, damit du deinen Aufenthalt schneller planen kannst.",
+  "otherBookingOptions": "Weitere Buchungsoptionen & Social Media",
+  "addressLabel": "Adresse:",
+  "addressValue": "Via G. Marconi, 358, 84017 Positano",
+  "bookingOptions": {
+    "googleBusiness": "Google Business",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "Wie können wir ",
+  "amaHeadingPart2": "dir helfen",
+  "amaParagraph1": "Du brauchst Infos zur Buchung oder zur Anreise? Schreib uns im Chat oder per E-Mail – wir melden uns schnell zurück.",
+  "amaParagraph2": "Sobald deine Buchung bestätigt ist, öffnet sich unser digitaler Assistent mit Ideen für Strände, Wanderungen und Food-Spots.",
+  "amaParagraph3": "Dort findest du Guides mit Fahrplänen, Packtipps und Insiderhinweisen, damit du jede Minute in Positano planen kannst.",
+  "amaHelpCenterLink": "Alle Hilfeartikel durchsuchen",
+  "askPlaceholder": "Frag nach Wegbeschreibungen, Einrichtungen, Tipps …",
+  "clearLabel": "Suche löschen",
+  "answersFoundLabel": "Treffer",
+  "noMatchesFound": "Keine Treffer gefunden",
+  "popularGuides": "Beliebte Guides",
+  "guideReachBudget": "Positano günstig erreichen: so klappt es",
+  "guideFerrySchedules": "Fährpläne für Positano",
+  "guidePathOfTheGods": "Pfad der Götter von Brikette",
+  "guideCollections": {
+    "heading": "Plane deinen Aufenthalt mit Schritt-für-Schritt-Guides",
+    "description": "Wegbeschreibungen, Buchungsrichtlinien und Ankunftslogistik aus unseren meistgestellten Fragen.",
+    "taggedHeading": "Planungsgrundlagen mit dem Tag {{tag}}",
+    "taggedDescription": "Diese Essentials drehen sich um {{tag}}. Lösch den Filter, um alles zu sehen, was wir vorbereitet haben.",
+    "empty": "Für {{tag}} haben wir noch keine Planungs-Guides. Versuch es mit einem anderen Tag oder setz den Filter zurück.",
+    "clearFilter": "Alle Planungsgrundlagen durchsuchen",
+    "cardCta": "Lies den Planungsleitfaden „{{guideTitle}}“"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

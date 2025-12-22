@@ -26,6 +26,17 @@ export declare const rentalOrderSchema: z.ZodObject<{
     labelUrl: z.ZodOptional<z.ZodString>;
     returnStatus: z.ZodOptional<z.ZodString>;
     status: z.ZodOptional<z.ZodEnum<["received", "cleaning", "repair", "qa", "available"]>>;
+    currency: z.ZodOptional<z.ZodString>;
+    subtotalAmount: z.ZodOptional<z.ZodNumber>;
+    taxAmount: z.ZodOptional<z.ZodNumber>;
+    shippingAmount: z.ZodOptional<z.ZodNumber>;
+    discountAmount: z.ZodOptional<z.ZodNumber>;
+    totalAmount: z.ZodOptional<z.ZodNumber>;
+    cartId: z.ZodOptional<z.ZodString>;
+    stripePaymentIntentId: z.ZodOptional<z.ZodString>;
+    stripeChargeId: z.ZodOptional<z.ZodString>;
+    stripeBalanceTransactionId: z.ZodOptional<z.ZodString>;
+    stripeCustomerId: z.ZodOptional<z.ZodString>;
 }, "strict", z.ZodTypeAny, {
     shop: string;
     id: string;
@@ -52,6 +63,17 @@ export declare const rentalOrderSchema: z.ZodObject<{
     trackingNumber?: string | undefined;
     labelUrl?: string | undefined;
     returnStatus?: string | undefined;
+    currency?: string | undefined;
+    subtotalAmount?: number | undefined;
+    taxAmount?: number | undefined;
+    shippingAmount?: number | undefined;
+    discountAmount?: number | undefined;
+    totalAmount?: number | undefined;
+    cartId?: string | undefined;
+    stripePaymentIntentId?: string | undefined;
+    stripeChargeId?: string | undefined;
+    stripeBalanceTransactionId?: string | undefined;
+    stripeCustomerId?: string | undefined;
 }, {
     shop: string;
     id: string;
@@ -78,5 +100,16 @@ export declare const rentalOrderSchema: z.ZodObject<{
     trackingNumber?: string | undefined;
     labelUrl?: string | undefined;
     returnStatus?: string | undefined;
+    currency?: string | undefined;
+    subtotalAmount?: number | undefined;
+    taxAmount?: number | undefined;
+    shippingAmount?: number | undefined;
+    discountAmount?: number | undefined;
+    totalAmount?: number | undefined;
+    cartId?: string | undefined;
+    stripePaymentIntentId?: string | undefined;
+    stripeChargeId?: string | undefined;
+    stripeBalanceTransactionId?: string | undefined;
+    stripeCustomerId?: string | undefined;
 }>;
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;

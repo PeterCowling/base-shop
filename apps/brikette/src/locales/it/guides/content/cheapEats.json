@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Mangiare spendendo poco a Positano",
+    "description": "Chioschi, forni, trattorie e piatti da condividere per pranzi e cene sotto i 15 €."
+  },
+  "linkLabel": "Mangiare spendendo poco a Positano",
+  "heroAlt": "Cibo da asporto conveniente a Positano",
+  "intro": [
+    "Mangia bene a Positano senza sforare il budget alternando classici da asporto, picnic da gastronomia e forni locali."
+  ],
+  "sections": [
+    {
+      "id": "grab-and-go",
+      "title": "Classici da asporto",
+      "body": [
+        "Prendi pizza al taglio, panini o arancini dai bar di Via dei Mulini prima di mezzogiorno per evitare le code.",
+        "Ordina l’espresso al banco per la tariffa locale (~1,20 €) invece di sederti per il servizio al tavolo."
+      ]
+    },
+    {
+      "id": "casual-dining",
+      "title": "Trattorie informali",
+      "body": [
+        "Sali verso l’interno per trovare trattorie con coperto contenuto e vino della casa servito in caraffa.",
+        "Condividi gli antipasti, salta il dessert e chiedi acqua del rubinetto per mantenere il conto leggero."
+      ]
+    },
+    {
+      "id": "picnics",
+      "title": "Picnic con vista",
+      "body": [
+        "Fai scorta di formaggi, focaccia e frutta nei minimarket, poi organizza un picnic sulla terrazza dell’ostello o nella sezione libera di Fornillo.",
+        "Porta posate e tovaglioli riutilizzabili per ridurre rifiuti e acquisti extra."
+      ]
+    },
+    {
+      "id": "sweet-breaks",
+      "title": "Pause dolci",
+      "body": [
+        "Prova la granita al limone dai chioschi per un rinfresco da 3 € al posto di cocktail più costosi.",
+        "Dividi una fetta di delizia al limone o tiramisù dal forno per un dessert accessibile."
+      ]
+    }
+  ],
+  "tips": [
+    "Chiedi il “menu del giorno”: molti locali includono primo, acqua e caffè sotto i 18 €.",
+    "Porta un contenitore pieghevole per gli avanzi così puoi gustarli più tardi in ostello."
+  ],
+  "recommendationsTitle": "Dove mangiare",
+  "recommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, insalate e dolci da asporto pronti in pochi minuti."
+    },
+    {
+      "name": "Gastronomie locali",
+      "note": "Componi taglieri, focaccia e forniture da picnic lontano dai rincari del lungomare."
+    },
+    {
+      "name": "Minimarket e fruttivendoli",
+      "note": "Fai scorta di frutta, bottiglie d’acqua grandi e snack per i picnic in terrazza."
+    }
+  ],
+  "gallery": {
+    "title": "Galleria fotografica",
+    "items": [
+      {
+        "alt": "Panini da una gastronomia locale",
+        "caption": "Panini e gastronomia"
+      },
+      {
+        "alt": "Picnic con vista su Positano",
+        "caption": "Punti panoramici per picnic"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "q": "Posso riempire le borracce gratuitamente?",
+      "a": [
+        "Sì: riempi le bottiglie in ostello o alle fontane pubbliche (come quella vicino a Chiesa Nuova); porta sempre almeno 750 ml."
+      ]
+    },
+    {
+      "q": "Ci sono opzioni economiche vegetariane?",
+      "a": [
+        "Certo: prova panini caprese, parmigiana di melanzane a tranci o pasta al pomodoro nelle trattorie informali."
+      ]
+    }
+  ],
+  "fallbackIntro": [
+    "A Positano trovi tante proposte economiche se sai dove cercare."
+  ],
+  "fallbackRecommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, insalate e dolci da asporto pronti in pochi minuti."
+    },
+    {
+      "name": "Gastronomie locali",
+      "note": "Componi taglieri, focaccia e forniture da picnic lontano dai rincari del lungomare."
+    },
+    {
+      "name": "Minimarket e fruttivendoli",
+      "note": "Fai scorta di frutta, bottiglie d’acqua grandi e snack per i picnic in terrazza."
+    }
+  ],
+  "fallbackGalleryItems": [
+    {
+      "alt": "Panini da una gastronomia locale",
+      "caption": "Panini e gastronomia"
+    },
+    {
+      "alt": "Picnic con vista su Positano",
+      "caption": "Punti panoramici per picnic"
+    }
+  ],
+  "fallbackFaqs": [
+    {
+      "q": "I locali accettano carte?",
+      "a": [
+        "Quasi tutti sì, ma avere contanti aiuta con chioschi o importi minimi."
+      ]
+    },
+    {
+      "q": "Ci sono costi extra per il take-away?",
+      "a": [
+        "Alcuni applicano un piccolo sovrapprezzo per l’imballaggio: porta un contenitore riutilizzabile per risparmiare e ridurre rifiuti."
+      ]
+    }
+  ]
+}

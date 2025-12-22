@@ -1,0 +1,88 @@
+{
+  "seo": {
+    "title": "Cais do ferry → Hostel Brikette, com bagagem",
+    "description": "Opções desde o cais: porteiro ou autocarro SITA até paragens próximas; dicas práticas e perguntas frequentes."
+  },
+  "linkLabel": "Cais do ferry → Hostel Brikette, com bagagem",
+  "intro": [
+    "Chega de ferry com malas? Combine o autocarro Interno Positano com os porteiros da cidade para alcançar o Hostel Brikette sem carregar bagagem por escadarias íngremes."
+  ],
+  "beforeList": [
+    "Consulte o horário mais recente do Interno Positano — aqui está o [horário e preços atuais](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Compre bilhetes do Interno Positano em qualquer tabacchi/banca de jornais antes de embarcar.",
+    "Avalie entregar a bagagem pesada aos porteiros que recebem o ferry — diga-lhes que vai ficar no Hostel Brikette."
+  ],
+  "sections": [
+    {
+      "id": "dock-to-mulini",
+      "title": "Do porto à Piazza dei Mulini",
+      "body": [
+        "Suba da praia principal até à Piazza dei Mulini seguindo o passeio sinalizado — use [estas indicações](https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2).",
+        "Se estiver com malas, pense em contratar um dos serviços de porteiro de Positano no cais para que levem tudo encosta acima por si — o nosso [guia de porteiros](guide:porterServices) explica preços e reservas."
+      ]
+    },
+    {
+      "id": "mulini-to-bus",
+      "title": "Da Piazza dei Mulini à paragem do Interno",
+      "body": [
+        "Ao chegar à Piazza dei Mulini, compre um bilhete do Interno numa das lojas de esquina ou tabacchi. Depois dirija-se à paragem de autocarro na extremidade da praça, onde ela encontra a estrada.",
+        "O Interno passa aproximadamente a cada 30 minutos, da manhã até à meia-noite, e segue [este percurso a subir](https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0) em direção ao hostel."
+      ]
+    },
+    {
+      "id": "identify-bus",
+      "title": "Como identificar o autocarro Interno Positano",
+      "body": [
+        "Os veículos variam, mas o letreiro eletrónico frontal indica sempre “interno positano”.",
+        "É um mini-autocarro urbano com espaço para passageiros de pé; suba pelo passeio e valide ou mostre o bilhete ao motorista."
+      ]
+    },
+    {
+      "id": "bus-stop-to-hostel",
+      "title": "Da paragem local ao Hostel Brikette",
+      "body": [
+        "Saia junto ao tabacchi na paragem “Chiesa Nuova”. Desça para a estrada principal e vire à esquerda para a Viale Pasitea.",
+        "Caminhe pouco mais de 100 metros; verá o hostel do lado direito. Procure o nosso letreiro no terraço do segundo piso, continue na curva e suba as escadas à direita para chegar à entrada.",
+        "Precisa de um percurso visual? Siga [estas indicações finais](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2)."
+      ]
+    }
+  ],
+  "stepsList": [
+    "Entregue a bagagem aos porteiros no cais e compre bilhetes do Interno Positano no tabacchi.",
+    "Caminhe da praia principal até à Piazza dei Mulini e siga para a paragem do Interno ao lado do tabacchi na Viale Pasitea.",
+    "Suba no Interno Positano (procure o letreiro “interno positano”) e viaje encosta acima rumo ao número 325 da Viale Pasitea.",
+    "Saia em frente ao tabacchi, vire à esquerda pela Viale Pasitea por pouco mais de 100 m e suba as escadas à direita até ao Hostel Brikette."
+  ],
+  "kneesList": [
+    "Apanhar o Interno Positano elimina centenas de degraus íngremes do trajeto.",
+    "Deixe os porteiros transportar as malas pesadas para poder seguir de mãos livres no autocarro e na curta caminhada."
+  ],
+  "kneesPorterPrefix": "Precisa de mais detalhes sobre preços e reservas dos porteiros? Leia o nosso",
+  "kneesPorterLinkLabel": "guia de serviços de porteiro",
+  "faqs": [
+    {
+      "q": "Onde compro bilhetes para o autocarro Interno Positano?",
+      "a": [
+        "Compre bilhetes em qualquer tabacchi/banca da vila, incluindo o quiosque ao lado da paragem. Os motoristas não vendem bilhetes a bordo."
+      ]
+    },
+    {
+      "q": "Com que frequência passa o Interno Positano?",
+      "a": [
+        "Os serviços estão programados aproximadamente a cada 30 minutos, das 08h00 até à meia-noite, com partidas extra na época alta — confirme sempre o horário antes de embarcar."
+      ]
+    },
+    {
+      "q": "Como funcionam os porteiros no cais?",
+      "a": [
+        "Os porteiros recebem cada ferry, carregam as malas e entregam-nas encosta acima. Diga que está hospedado no Hostel Brikette, pague o valor indicado e mantenha objetos de valor ou medicamentos consigo."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Compre bilhetes do Interno e entregue a bagagem aos porteiros no cais",
+    "Caminhe da praia até à Piazza dei Mulini e à paragem do Interno",
+    "Viaje encosta acima no Interno Positano (procure o letreiro “interno positano”)",
+    "Desça junto ao tabacchi, caminhe 100 m e suba as escadas até ao Hostel Brikette"
+  ]
+}

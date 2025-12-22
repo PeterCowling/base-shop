@@ -1,0 +1,71 @@
+{
+  "seo": {
+    "title": "Strandguide: Fiordo di Furore",
+    "description": "Så tar du dig till Fiordo di Furore med buss från Positano, vad du ska packa och vad som väntar i den dramatiska klippviken."
+  },
+  "linkLabel": "Strandguide: Fiordo di Furore",
+  "intro": [
+    "Fiordo di Furore är Amalfikustens vykortsklyfta – en smal vik under en bågbro med smaragdgrönt vatten och lodräta klippor. Det är en liten, nästan helt orörd strand utan strandklubbar eller restauranger, så kom förberedd på ett dopp, några foton och dramatisk klipphoppning.",
+    "Med den här guiden reser du smidigt med buss, får koll på hur begränsade faciliteterna är och planerar hemresan så att du inte blir strandsatt när sista SITA-bussen är full."
+  ],
+  "toc": [
+    {
+      "href": "#getting-there",
+      "label": "Så tar du dig dit"
+    },
+    {
+      "href": "#returning",
+      "label": "Vägen tillbaka"
+    },
+    {
+      "href": "#on-site",
+      "label": "Det här väntar"
+    }
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Åk SITA-bussen utan stress",
+      "body": [
+        "Från Hostel Brikette går du nerför Via Pasitea till hållplatsen Sponda och stiger på en SITA-buss mot Amalfi. Säg till föraren att du ska till \"Fiordo di Furore\" så att hen kommer ihåg att stanna – hållplatsen ligger mellan Praiano och Furore och missas lätt under intensiva dagar.",
+        "Efter cirka 25 minuter kliver du av vid den markerade hållplatsen strax före bron. Följ trapporna som är uthuggna i klippan i ett par minuter tills du når den lilla stenstranden under valvet."
+      ]
+    },
+    {
+      "id": "returning",
+      "title": "Planera hemresan innan du badar",
+      "body": [
+        "Det finns varken biljettluckor eller automater i ravinen. Köp tur- och returbiljetter i Positano (tabacchin vid Chiesa Nuova eller kiosken vid Sponda) och stämpla dem när du går ombord.",
+        "Sommartid kan bussarna vara fulla redan när de lämnar Amalfi. Satsa på en tidigare avgång än du tror att du behöver och berätta för andra vid hållplatsen att du väntar så att föraren håller utkik. Om två bussar passerar utan att stanna kan det vara värt att dela en taxi från vägen ovanför."
+      ]
+    },
+    {
+      "id": "on-site",
+      "title": "Räkna med rå skönhet – inte service",
+      "body": [
+        "Fiordo di Furore saknar strandklubbar, toaletter och har bara någon enstaka mobil snackvagn under högsäsong. Ta med vatten, snacks och något bekvämt att sitta på – stenarna är grova och ytan är begränsad.",
+        "Klipphopp sker från klipporna vid bron, men kontrollera alltid djupet först och hoppa bara där lokalbor redan är i vattnet. Visa hänsyn mot dem som badar nedanför och ha koll på tidvattnet; viken hamnar i skugga mot sen eftermiddag."
+      ]
+    }
+  ],
+  "essentialsTitle": "Det viktigaste",
+  "essentials": [
+    "SITA-hållplats mellan Praiano och Furore – be föraren ropa ut fjorden.",
+    "Brant trappa ner till en liten stenstrand under bron.",
+    "Ingen service på plats: ta med vatten, snacks, solskydd och kontanter för eventuell taxi."
+  ],
+  "tipsTitle": "Snabba tips",
+  "tips": [
+    "Läs vår %LINK:positanoBeaches|strandöversikt% för att kombinera Fiordo di Furore med ett annat dopp samma dag.",
+    "Kom tidigt om du vill ta bilder under bron utan trängsel.",
+    "Packa revsäker solkräm och badskor – klipporna blir hala när de är blöta."
+  ],
+  "warningsTitle": "Bra att veta",
+  "warnings": [
+    "Köp tur- och returbiljetter i Positano; det går inte att köpa eller stämpla dem nere vid fjorden.",
+    "Bussar hoppar ibland över hållplatsen när de är fulla under högsäsong – planera gott om tid för hemresan.",
+    "Platsen på stranden är begränsad och skuggan når ner tidigt på eftermiddagen."
+  ],
+  "faqsTitle": "Vanliga frågor om Fiordo di Furore",
+  "faqs": []
+}

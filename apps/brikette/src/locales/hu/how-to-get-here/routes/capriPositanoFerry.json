@@ -1,0 +1,67 @@
+{
+  "slug": "capri-positano-ferry",
+  "meta": {
+    "title": "Capriból Positanóba kompon | Hostel Brikette",
+    "description": "Hogyan utazzon Capriból Positanóba kompon: jegyvásárlási tippek, üzemeltetők, érkezési tanácsok és a legkönnyebb út a hostelhez."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Capriból Positanóba – komp",
+    "description": "Használja ezt az útmutatót, hogy teljes egészében tengeren utazzon Capriból Positanóba. Segít kiválasztani a megfelelő szolgáltatót, megmutatja a jegyvásárlást a kikötőben, és tanácsot ad, hogyan legyen a lehető legsimább a séta (vagy busz) a Hostel Brikette felé érkezéskor."
+  },
+  "tip": {
+    "eyebrow": "Tipp",
+    "copy": "Más útvonalakat vagy rossz idő esetére tartalékot keres? Nyissa meg a <link>Hogyan juthat el hozzánk áttekintést</link>.",
+    "linkLabel": "Hogyan juthat el hozzánk áttekintés"
+  },
+  "sections": {
+    "overview": {
+      "title": "Utazás áttekintése",
+      "body": "Capri és Positano között tavasszal és nyáron járnak a leggyakrabban a kompok. Viharos tengernél, főleg a nap vége felé törölhetik a járatokat. Az út rendszerint 30–60 percig tart a hajó és az üzemeltető függvényében."
+    },
+    "capriPort": {
+      "title": "A capri kikötőben",
+      "list": [
+        "Ellenőrizze az időpontokat és árakat, majd keresse meg a választott indulást üzemeltető társaságot.",
+        "Menjen Capri turista kikötőjébe. Jegyet a szolgáltató saját pénztárában vásároljon.",
+        "Érkezzen 20–30 perccel korábban, hogy beválthassa a vouchereket és sorba állhasson a beszálláshoz."
+      ],
+      "link": "Hasonlítsa össze a kompmenetrendeket és foglaljon: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (összesített menetrend)</positanoLink>.",
+      "linkLabelCapri": "Capri.net – Capri ↔ Positano",
+      "linkLabelPositano": "Positano.com (összesített menetrend)"
+    },
+    "arrival": {
+      "title": "Érkezés Positanóba",
+      "list": [
+        "Szálljon le a Positano Spiaggia Grande mólón.",
+        "A hordárok fogadják a kompokat; fontolja meg, hogy rájuk bízza a csomagokat, és előre egyeztessen díjat.",
+        "Készüljön lépcsőzésre a partról felfelé; a helyi Interno busz segít csökkenteni a hostelhez vezető lépcsőket."
+      ]
+    },
+    "bus": {
+      "title": "Kikötőtől a hostelhez Interno busszal",
+      "list": [
+        "Az Interno Positano busz nagyjából 30 percenként közlekedik reggeltől éjfélig.",
+        "Keresse a busz elején az „Interno Positano” feliratú elektronikus kijelzőt.",
+        "A kikötőtől sétáljon a Piazza dei Mulini térre, és szálljon fel a Chiesa Nuova felé tartó hegynek felfelé induló járatra."
+      ],
+      "link": "A mólótól a Hostel Brikette-ig vezető, csomagbarát útvonalért nézze meg: <link>Komp móló → Hostel Brikette</link>.",
+      "linkLabel": "Komp móló → Hostel Brikette"
+    },
+    "finalWalk": {
+      "title": "Az utolsó séta a legközelebbi megállótól",
+      "list": [
+        "Szálljon le a Tabacchi melletti megállónál, a Chiesa Nuova közelében.",
+        "Forduljon jobbra a főút felé, majd balra a Via G. Marconi irányába.",
+        "Sétáljon valamivel több mint 100 métert (≈330 láb) – a hostel a jobb oldalon lesz.",
+        "Forduljon jobbra, és kövesse a lépcsőket a Hostel Brikette főbejáratáig."
+      ]
+    },
+    "cancelled": {
+      "title": "Ha törlik a kompokat",
+      "body": "Ha az időjárás vagy a tengeri viszonyok miatt törlik a járatokat, váltson a Sorrentón keresztül haladó vonat- és buszútvonalra. Hosszabb, de a legtöbb helyzetben közlekedik.",
+      "link": "Használja ezt a tartalékútvonalat: <link>Nápoly belváros → Positano vonattal, majd busszal</link>.",
+      "linkLabel": "Nápoly belváros → Positano vonattal, majd busszal"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "［Stub］ {{count}} article",
+  "articleCount_other": "［Stub］ {{count}} articles",
+  "topTagsHeading": "［Stub］ Top tags",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

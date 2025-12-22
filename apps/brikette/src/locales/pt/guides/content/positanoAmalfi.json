@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Positano a Amalfi: como ir",
+    "description": "Todos os jeitos de viajar entre Positano e Amalfi — ferry, ônibus e táxi — com duração, custos e dicas para evitar filas."
+  },
+  "linkLabel": "Positano a Amalfi: como ir",
+  "intro": [
+    "Positano ↔ Amalfi de autocarro ou ferry sazonal: como escolher e quando ir."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Autocarro (todo o ano)",
+      "body": [
+        "Autocarro SITA; compre e valide bilhetes; filas nas horas de pico — saia cedo.",
+        "Sente-se à direita ao sair de Positano para vistas da falésia."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (sazonal)",
+      "body": [
+        "Mais rápido e cénico com mar calmo; verifique horários em tempo real e reserve margem.",
+        "Chegue cedo na alta temporada para garantir lugares."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quanto dura a viagem?",
+      "a": [
+        "O autocarro demora 40–55 minutos conforme o trânsito; os ferries fazem o trajeto em cerca de 25 minutos com mar calmo."
+      ]
+    },
+    {
+      "q": "Preciso reservar lugar?",
+      "a": [
+        "Compre bilhetes de autocarro com antecedência, mas os lugares são por ordem de chegada; nos ferries pode reservar online e deve garantir saídas concorridas na véspera."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Autocarro SITA para Amalfi",
+        "text": "Suba no SITA rumo a Amalfi; compre bilhetes antes de embarcar."
+      },
+      {
+        "name": "Alternativa: ferry (verão)",
+        "text": "Consulte horários sazonais; os ferries têm grande frequência nos meses de pico."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Use o autocarro SITA pela fiabilidade anual; no verão, os ferries são uma alternativa cénica."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "Autocarro SITA (todo o ano)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry (sazonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "Perguntas frequentes"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "Autocarro SITA (todo o ano)",
+        "body": [
+          "Compre bilhetes antes de embarcar e entre cedo na fila em meses de pico. Saia no terminal de Amalfi."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry (sazonal)",
+        "body": [
+          "Verifique sites das operadoras para horários e avisos de mar bravo; chegue 20–30 minutos antes."
+        ]
+      }
+    ],
+    "faqsTitle": "Perguntas frequentes",
+    "faqs": [
+      {
+        "q": "Qual é mais rápido?",
+        "a": [
+          "No verão, os ferries podem igualar o tempo e oferecem vistas; os autocarros são mais frequentes no geral."
+        ]
+      }
+    ]
+  }
+}

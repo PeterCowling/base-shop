@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "Prisen inkluderer en mixer af tonic, cola, cola zero eller Sprite."
+      },
+      "rum": {
+        "note": "Vælg din rom, og sig til, hvis du vil have en koffeinmixer. Kaffen kan serveres kold eller varm – som espresso-shot eller lungo/americano."
+      },
+      "gin": {
+        "note": "Serveres med Schweppes tonicvand over knust is og pyntes med lækker citron fra Amalfikysten."
+      },
+      "whisky": {
+        "note": "Vælg fra vores whiskyudvalg, og sig til, hvis du ønsker is, vand eller en koffeinmixer. Kaffen kan serveres kold eller varm – som espresso-shot eller lungo/americano."
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "Den klassiske italienske spritz serveret med knust is."
+      },
+      "limoncelloSpritz": {
+        "note": "En specialitet fra Amalfikysten serveret med knust is."
+      },
+      "hugoSpritz": {
+        "note": "Mousserende vin hældt over mynte, lime og hyldeblomstsaft. Serveres med knust is."
+      },
+      "rossiniSpritz": {
+        "note": "Mousserende vin hældt over jordbærsaft. Serveres med knust is."
+      },
+      "lemonStrawberryMargarita": {
+        "note": "Jordbær- eller citronsaft med tequila, Cointreau og is. Afsluttes i klassisk margarita-stil."
+      },
+      "lemonDropMartini": {
+        "note": "Friskpresset citronsaft rystet med Absolut Vodka, Cointreau og is."
+      },
+      "joseCuervoSilver": {
+        "note": "Serveres rent med citron og salt, som en Tequila Sunrise eller med sodavand/Sprite."
+      },
+      "limoncelloShot": {
+        "note": "En klassisk syditaliensk drink serveret rent."
+      },
+      "threeScoops": {
+        "note": "Vælg mellem smagene citron, chokolade, vanilje og hasselnød."
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "Klassisk french toast serveret med sirup."
+      },
+      "nutellaFrenchToast": {
+        "note": "French toast fyldt med Nutella."
+      },
+      "addEggComboItem": {
+        "note": "Vælg en ret fra æg-kombomenuen. For eksempel pandekager med lys sirup plus røræg til 15,50 €."
+      },
+      "addAdditionalSyrup": {
+        "note": "Vælg mere end én sirup. For eksempel pandekager med lys sirup plus Nutella til 14 €."
+      },
+      "veggieToast": {
+        "note": "Sæsonens grøntsager på toast."
+      },
+      "healthyDelight": {
+        "note": "Yoghurtparfait med granola og hjemmelavet frugtkompot."
+      },
+      "detoxMe": {
+        "note": "Spinat, agurk, ingefær og citron."
+      },
+      "energizeMe": {
+        "note": "Appelsin, gulerod, ingefær og citron."
+      },
+      "multiV": {
+        "note": "Æble, gulerod, appelsin, citron, ingefær."
+      },
+      "orangeJuice": {
+        "note": "Friskpresset appelsinjuice."
+      }
+    }
+  }
+}

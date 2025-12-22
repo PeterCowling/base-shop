@@ -1,0 +1,47 @@
+{
+  "aside": {
+    "body": {
+      "after": " pour les ferries, taxis et itinéraires combinés.",
+      "before": "Besoin d'autres options de transport ? Consultez la ",
+      "linkLabel": "présentation « How to Get Here »"
+    },
+    "eyebrow": "Besoin d'autres trajets ?"
+  },
+  "header": {
+    "description": "Utilisez ce guide pour voyager d'Amalfi à Positano en bus SITA. Il explique où embarquer à Amalfi, comment valider votre billet, lire les horaires et où descendre pour une marche minimale jusqu'à l'auberge.",
+    "eyebrow": "Guide de voyage Hostel Brikette",
+    "title": "Amalfi vers Positano — Bus (SITA Sud)"
+  },
+  "meta": {
+    "description": "Bus SITA d'Amalfi à Positano : points d'embarquement, conseils pour les billets, notes sur les horaires et arrêt recommandé pour Hostel Brikette (Chiesa Nuova).",
+    "title": "Amalfi vers Positano en bus | Hostel Brikette"
+  },
+  "sections": {
+    "boarding": {
+      "items": [
+        "Rendez-vous au terminal principal des bus d'Amalfi, à côté de la piazza du front de mer.",
+        "Cherchez les bus SITA affichant “Sorrento” ou “Positano” (les deux desservent Positano).",
+        "Achetez vos billets dans un tabac/kiosque avant de monter (paiement en espèces ou carte selon le point de vente).",
+        "Gardez vos billets prêts ; le conducteur peut les oblitérer ou les déchirer à l'embarquement."
+      ],
+      "title": "Où embarquer à Amalfi"
+    },
+    "overview": {
+      "body": "Le bus SITA direct entre Amalfi et Positano circule fréquemment en haute saison. Prévoyez environ une heure de trajet le long de la côte, selon la circulation.",
+      "title": "Aperçu du trajet"
+    },
+    "tickets": {
+      "body": {
+        "after": ". Utilisez les conseils ci-dessous pour lire le tableau correctement.",
+        "before": "Consultez les horaires les plus récents sur ",
+        "linkLabel": "Positano.com"
+      },
+      "items": [
+        "Les arrêts sont listés en lignes ; chaque colonne lettrée correspond à un trajet.",
+        "Du lundi au samedi, référez-vous généralement aux colonnes “F” et “G” ; le dimanche et les jours fériés, souvent “G” et “H”.",
+        "Repérez “Amalfi” pour votre départ et “Positano (Chiesa Nuova)” pour votre arrivée."
+      ],
+      "title": "Billets et horaires"
+    }
+  }
+}

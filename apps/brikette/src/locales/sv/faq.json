@@ -1,0 +1,149 @@
+{
+  "items": [
+    {
+      "id": "what-kind-of-breakfast-is-served-at-hostel-brikette",
+      "question": "Vilken typ av frukost serveras på Hostel Brikette?",
+      "answer": "Gästerna njuter av en högt rankad à la carte-meny. Boka direkt för att få frukost utan extra kostnad."
+    },
+    {
+      "id": "what-are-the-check-in-and-check-out-times-at-hostel-brikette",
+      "question": "Vilka in- och utcheckningstider gäller på Hostel Brikette?",
+      "answer": "Ordinarie incheckning är 15.00–22.30 och utcheckning 07.30–10.30."
+    },
+    {
+      "id": "how-much-does-it-cost-to-stay-at-hostel-brikette",
+      "question": "Vad kostar det att bo på Hostel Brikette?",
+      "answer": "Priserna varierar beroende på datum och rumstyp. Sök på rum och datum för aktuella priser."
+    },
+    {
+      "id": "what-is-there-to-do-at-hostel-brikette",
+      "question": "Vad kan man göra på Hostel Brikette?",
+      "answer": "Hostellet ordnar eller rekommenderar vandringar; andra aktiviteter kan medföra extra kostnader."
+    },
+    {
+      "id": "how-far-is-hostel-brikette-from-the-centre-of-positano",
+      "question": "Hur långt är det från Hostel Brikette till Positanos centrum?",
+      "answer": "Boendet ligger cirka 350 meter från Positanos centrum."
+    },
+    {
+      "id": "how-close-to-the-beach-is-hostel-brikette",
+      "question": "Hur nära stranden ligger Hostel Brikette?",
+      "answer": "Närmaste strand ligger ungefär 350 meter bort."
+    },
+    {
+      "id": "what-room-types-are-available-at-hostel-brikette",
+      "question": "Vilka rumstyper finns på Hostel Brikette?",
+      "answer": "Du kan boka bäddar i blandade sovsalar, sovsalar endast för kvinnor eller privata dubbelrum med eget badrum."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-terrace-with-sea-views",
+      "question": "Har Hostel Brikette en terrass med havsutsikt?",
+      "answer": "Ja, en stor gemensam terrass blickar ut över Positano och bjuder på panoramautsikt över havet."
+    },
+    {
+      "id": "is-free-wi-fi-provided",
+      "question": "Finns gratis wifi?",
+      "answer": "Ja, gratis wifi finns i hela byggnaden."
+    },
+    {
+      "id": "is-breakfast-included-in-the-rate",
+      "question": "Ingår frukost i priset?",
+      "answer": "Frukost ingår när du bokar direkt; annars tillkommer en extra kostnad."
+    },
+    {
+      "id": "does-hostel-brikette-have-an-on-site-bar",
+      "question": "Har Hostel Brikette en bar på plats?",
+      "answer": "Ja, baren serverar kaffe, lättare snacks, frukost, kvällsmat och drycker dagligen mellan 07.30 och 23.30."
+    },
+    {
+      "id": "can-i-store-my-luggage-before-check-in-or-after-check-out",
+      "question": "Kan jag förvara mitt bagage före incheckning eller efter utcheckning?",
+      "answer": "Ja, bagageförvaring finns från 10.30 för gäster som checkar in och från 07.30 till 15.30 för gäster som checkar ut."
+    },
+    {
+      "id": "are-there-age-restrictions-at-hostel-brikette",
+      "question": "Finns det åldersgränser på Hostel Brikette?",
+      "answer": "Incheckning i sovsalar är endast möjlig för gäster mellan 18 och 39 år. Begränsningen gäller inte privata rum."
+    },
+    {
+      "id": "are-children-allowed",
+      "question": "Är barn tillåtna?",
+      "answer": "Sovsalarna är endast för vuxna och kan inte ta emot barn. Boka ett privat rum om du reser med yngre gäster."
+    },
+    {
+      "id": "are-pets-allowed",
+      "question": "Är husdjur tillåtna?",
+      "answer": "Tyvärr är husdjur inte tillåtna i lokalerna."
+    },
+    {
+      "id": "does-the-hostel-have-its-own-parking",
+      "question": "Har hostellet egen parkering?",
+      "answer": "Nej, hostellet har ingen egen parkering. Offentliga parkeringshus finns i Positano mot avgift."
+    },
+    {
+      "id": "is-air-conditioning-available",
+      "question": "Finns luftkonditionering?",
+      "answer": "Ja, alla rum och sovsalar har luftkonditionering."
+    },
+    {
+      "id": "are-lockers-provided-in-the-dormitories",
+      "question": "Finns det skåp i sovsalarna?",
+      "answer": "Ja, varje bädd har ett eget skåp; ta med eget hänglås eller köp ett i receptionen."
+    },
+    {
+      "id": "are-towels-included",
+      "question": "Ingår handdukar?",
+      "answer": "En duschhandduk ingår vid incheckning. Strandhanddukar kan hyras."
+    },
+    {
+      "id": "is-bed-linen-included",
+      "question": "Ingår sängkläder?",
+      "answer": "Ja, fräscha lakan ingår vid incheckning."
+    },
+    {
+      "id": "does-hostel-brikette-have-laundry-facilities",
+      "question": "Finns det tvättmöjligheter på Hostel Brikette?",
+      "answer": "Det finns ingen egen tvättstuga, men det finns alternativ precis i närheten."
+    },
+    {
+      "id": "does-hostel-brikette-have-quiet-hours",
+      "question": "Har Hostel Brikette tyst tid?",
+      "answer": "Ja, vi håller tyst tid mellan 23.30 och 07.30."
+    },
+    {
+      "id": "how-do-i-get-to-hostel-brikette-from-naples-airport",
+      "question": "Hur tar jag mig från Neapel flygplats till Hostel Brikette?",
+      "answer": "Ta Curreri-bussen till Sorrento och sedan SITA-bussen till Positano; gå av vid hållplatsen Chiesa Nuova."
+    },
+    {
+      "id": "where-is-the-nearest-bus-stop",
+      "question": "Var ligger närmaste busshållplats?",
+      "answer": "Busshållplatsen Chiesa Nuova ligger mindre än 80 meter bort och vägen till hostellet är utan trappor."
+    },
+    {
+      "id": "what-payment-methods-are-accepted",
+      "question": "Vilka betalningssätt accepterar ni?",
+      "answer": "I receptionen tar vi emot Visa, Mastercard, Maestro, bankkort och kontanter."
+    },
+    {
+      "id": "is-reception-open-24-hours",
+      "question": "Är receptionen öppen dygnet runt?",
+      "answer": "Receptionen är öppen 07.30–22.30. Sena ankomster måste föranmälas."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-shared-kitchen",
+      "question": "Finns det ett gemensamt kök på Hostel Brikette?",
+      "answer": "Det finns inget gemensamt kök, men gäster kan använda kylskåp, vattenkokare och mikrovågsugn."
+    },
+    {
+      "id": "does-hostel-brikette-offer-female-only-dorms",
+      "question": "Erbjuder Hostel Brikette sovsalar endast för kvinnor?",
+      "answer": "Ja, det går att boka bäddar i sovsalar endast för kvinnor."
+    },
+    {
+      "id": "is-the-property-wheelchair-accessible",
+      "question": "Är anläggningen tillgänglig med rullstol?",
+      "answer": "Tyvärr är hostellet inte anpassat för rullstol."
+    }
+  ]
+}

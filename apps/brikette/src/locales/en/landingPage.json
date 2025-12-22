@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "title": "Brikette Hostel in Positano - Affordable Amalfi Coast Stay",
+    "description": "Book your stay at Positano's only budget hostel with terrace views. Enjoy free Wi-Fi and digital concierge tips. Reserve direct for the best rate.",
+    "ogImageAlt": "View from hostel terrace"
+  },
+  "introSection": {
+    "title": "A Beautiful Home Away From Home",
+    "titleParts": {
+      "before": "A Beautiful",
+      "between": "Away From",
+      "home": "Home"
+    },
+    "paragraph1": "Hostel Brikette is <strong>Positano's only hostel</strong>, offering <strong>budget-friendly</strong> accommodations that place the Amalfi Coast's highlights right at your doorstep.",
+    "paragraph2": "Perched on the cliffs, we have <strong>incredible sea views</strong>, practical amenities, and round-the-clock local insights through our <strong>digital concierge</strong>—your personal guide to ferry schedules, hiking routes, restaurants, and more.",
+    "paragraph3": "Whether you choose a dorm or a private room, each is designed to provide <strong>comfort</strong> and <strong>convenience</strong>."
+  },
+  "facilitiesModal": {
+    "title": "Facilities & Amenities",
+    "closeButton": "Close",
+    "categories": [
+      {
+        "title": "General",
+        "items": ["Non-smoking rooms", "Free WiFi", "Air conditioning", "Heating"]
+      },
+      {
+        "title": "Bathroom",
+        "items": [
+          "Toilet paper",
+          "Bath towels",
+          "Sheets",
+          "Beach towels (extra fee)",
+          "Toilet",
+          "Shower"
+        ]
+      },
+      {
+        "title": "Outdoors",
+        "items": ["Picnic area", "Outdoor furniture", "Sun terrace", "Terrace"]
+      },
+      {
+        "title": "Activities",
+        "items": ["Hiking (Off-site)"]
+      },
+      {
+        "title": "Food & Drink",
+        "items": ["Bar"]
+      },
+      {
+        "title": "Internet",
+        "items": ["WiFi is available in public areas and is free of charge."]
+      },
+      {
+        "title": "Parking",
+        "items": ["No parking available"]
+      },
+      {
+        "title": "Services",
+        "items": ["Daily housekeeping", "Lockers", "Concierge service", "Luggage storage"]
+      },
+      {
+        "title": "Safety & Security",
+        "items": ["Fire extinguishers", "CCTV in common areas", "Key card access"]
+      },
+      {
+        "title": "Languages Spoken",
+        "items": ["English", "Spanish", "Italian"]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "Panoramic view of Positano from Hostel Brikette terrace",
+    "brandName": "Hostel Brikette",
+    "cityName": "Positano",
+    "address": "Via G. Marconi, 358, 84017 Positano SA",
+    "locationButton": "Location",
+    "contactButton": "Contact Us",
+    "helpButton": "Help",
+    "reserveNow": "Reserve Now"
+  },
+  "quickLinksSection": {
+    "location": "Location",
+    "photosAndVideos": "Photos & Videos",
+    "facilitiesAndAmenities": "Facilities & Amenities",
+    "barMenu": "Bar Menu",
+    "breakfastMenu": "Breakfast Menu"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "Beautiful Common Areas",
+    "slides": [
+      {
+        "title": "Hillside Sanctuary",
+        "text": "Wake up to fresh mountain views on our light-draped terrace.",
+        "alt": "Terrace overlooking Positano hillside"
+      },
+      {
+        "title": "Open-Air Oasis",
+        "text": "Bask in the sunshine and make new friendships.",
+        "alt": "Terrace with bamboo canopy for shade"
+      },
+      {
+        "title": "Incredible Sea Views",
+        "text": "Savor the magic of the horizon as the sun melts into the sea.",
+        "alt": "Sweeping sea horizon from the hostel terrace"
+      }
+    ]
+  }
+}

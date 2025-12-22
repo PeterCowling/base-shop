@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Coste de Positano frente a otros destinos de playa",
+    "description": "Comparativa de alojamiento, comida y transporte, y cuándo Positano ofrece buena relación calidad-precio."
+  },
+  "linkLabel": "Positano vs. otros destinos de playa",
+  "intro": [
+    "Compara el coste de Positano con otros destinos de playa italianos y mediterráneos para ajustar expectativas.",
+    "Los precios reflejan temporada alta; ajusta un 20–30 % a la baja en primavera u otoño."
+  ],
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Alojamiento: 150 € en B&B medio; 45–70 € en hostel.",
+        "Cena con vistas: 40–55 € por persona.",
+        "Sombrilla + tumbonas: 35–60 € por día en Spiaggia Grande."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Alojamiento: 120–150 € en hotel 3★ céntrico.",
+        "Cena frente al Duomo: 30–40 €.",
+        "Lido con tumbonas: 25–35 €."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Alojamiento: 100–140 € hotel 3★ cerca del centro.",
+        "Cena en trattoria: 25–35 €.",
+        "Lido: 20–30 €; plataformas de baño gratuitas en Marina Grande."
+      ]
+    },
+    {
+      "id": "cinque-terre",
+      "title": "Cinque Terre / Monterosso",
+      "body": [
+        "Alojamiento: 140–170 € en habitación doble.",
+        "Cena con pescado: 35–45 €.",
+        "Playa pública gratuita, pero alquiler de tumbona 20–25 €."
+      ]
+    }
+  ],
+  "tips": [
+    "Reserva alojamiento flexible y compara cancelaciones gratuitas para capturar bajadas de precio.",
+    "Si buscas ahorro, combina Positano 2–3 noches con base más económica en Salerno o Sorrento."
+  ],
+  "faqs": [
+    {
+      "q": "¿Positano es siempre el más caro?",
+      "a": [
+        "Sí en temporada alta; en invierno se alinea con Amalfi."
+      ]
+    },
+    {
+      "q": "¿Dónde conviene alojarse si viajo más de una semana?",
+      "a": [
+        "Divide la estancia entre Positano (3 noches) y Sorrento o Salerno para equilibrar presupuesto y acceso a transporte."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Resumen"
+      },
+      {
+        "href": "#when",
+        "label": "Cuándo conviene"
+      },
+      {
+        "href": "#faqs",
+        "label": "Preguntas frecuentes"
+      }
+    ],
+    "faqLabel": "Preguntas frecuentes",
+    "sections": {
+      "overview": {
+        "heading": "Resumen",
+        "body": "El alojamiento puede ser más caro, pero transporte y comida pueden mantenerse asequibles con decisiones inteligentes."
+      },
+      "when": {
+        "heading": "Cuándo conviene",
+        "body": "Temporada media, días entre semana y estancias más largas cerca de Chiesa Nuova reducen costes y esfuerzo."
+      }
+    },
+    "faq": {
+      "summary": "¿Es Positano más caro que Amalfi?",
+      "answer": "A menudo para alojamientos a pie de playa; el valor mejora tierra adentro o cerca de paradas de bus."
+    }
+  }
+}

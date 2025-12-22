@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Positano कैसे पहुँचें: सभी विकल्पों की तुलना",
+    "description": "फेरी, ट्रेन+बस, शटल और निजी ट्रांसफ़र की तुलना — मौसमी नोट्स और सामान से जुड़ी टिप्स के साथ।"
+  },
+  "linkLabel": "Positano कैसे पहुँचें (निर्णय गाइड)",
+  "intro": "अनुवाद तैयार किया जा रहा है।",
+  "toc": {
+    "onThisPage": "On this page",
+    "naples": "Via Naples",
+    "salerno": "Via Salerno",
+    "ferry": "Ferry (summer)",
+    "private": "Private transfer",
+    "faqs": "FAQs"
+  },
+  "labels": {
+    "whenHeading": "When to choose",
+    "cheapestHeading": "Cheapest route",
+    "seasonalHeading": "Seasonal notes"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Via Naples",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Via Salerno",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Private transfer",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "What’s fastest in summer?",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "q": "अनुवाद तैयार किया जा रहा है।",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ]
+}

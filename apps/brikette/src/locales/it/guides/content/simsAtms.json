@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "SIM/eSIM e bancomat a Positano",
+    "description": "Operatori locali, eSIM consigliate, punti vendita affidabili e limiti dei bancomat in alta stagione."
+  },
+  "linkLabel": "SIM/eSIM e bancomat a Positano",
+  "intro": [
+    "Resta connesso e pronto con contanti impostando il piano SIM prima dell'arrivo e programmando i prelievi con commissioni basse."
+  ],
+  "sections": [
+    {
+      "id": "esim",
+      "title": "Attiva una eSIM",
+      "body": [
+        "Carica una eSIM italiana (TIM, Vodafone o provider travel affidabili) mentre sei connesso al Wi-Fi dell'ostello o prima di partire; la copertura è più forte sulle terrazze e lungo la SS163.",
+        "Scegli almeno 10 GB per una settimana se ascolti musica in streaming o carichi foto; controlla l'uso perché in paese le ricariche sono limitate."
+      ]
+    },
+    {
+      "id": "physical-sim",
+      "title": "Acquistare una SIM fisica",
+      "body": [
+        "Fai una deviazione via Sorrento, Salerno o Napoli Centrale per i negozi degli operatori; porta il passaporto e prevedi un pacchetto iniziale da €10–€20 con registrazione ID.",
+        "I tabacchi talvolta vendono SIM pronte all'attivazione nei mesi di punta, ma la disponibilità varia — comprale quando le trovi."
+      ]
+    },
+    {
+      "id": "atm",
+      "title": "Strategia bancomat",
+      "body": [
+        "Preferisci i bancomat bancari come Intesa Sanpaolo con commissioni di €2–€3; le macchinette indipendenti in spiaggia possono chiedere il doppio con tassi sfavorevoli.",
+        "Preleva €100–€150 alla volta e dividi le banconote tra zainetto e tasca sicura nel bagaglio."
+      ]
+    }
+  ],
+  "tips": [
+    "Fai screenshot dei QR code e dei dettagli di attivazione prima di lasciare il Wi-Fi così puoi reinstallare l'eSIM se il telefono si resetta.",
+    "Porta una batteria portatile: nelle zone di segnale debole il telefono aumenta la potenza dell'antenna e consuma più energia."
+  ],
+  "faqs": [
+    {
+      "q": "La copertura arriva fino a Capri e Amalfi?",
+      "a": [
+        "Sì, ma aspettati velocità inferiori al largo; scarica playlist e mappe prima di salire sui traghetti."
+      ]
+    },
+    {
+      "q": "Gli sportelli bancari sono sempre accessibili?",
+      "a": [
+        "Le filiali restano accessibili 24/7, ma se un ATM termina i contanti potresti dover andare ad Amalfi o Sorrento la mattina successiva."
+      ]
+    }
+  ]
+}

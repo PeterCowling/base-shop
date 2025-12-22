@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Guía de autobús de Salerno a Positano – Hostales, paradas y consejos de horarios",
+    "description": "Instrucciones paso a paso para viajar de Salerno a Positano en autobús SITA Sud vía Amalfi. Aprende dónde comprar los billetes, cómo leer el horario y cuál es la mejor parada para el Hostel Brikette."
+  },
+  "hero": {
+    "eyebrow": "Guía de viajes del Hostel Brikette",
+    "heading": "Salerno a Positano – En autobús (vía Amalfi)",
+    "body": "Esta guía cubre el viaje en autobús SITA desde Salerno hasta Positano con un transbordo en Amalfi. Incluye consejos para los billetes, cómo leer el horario y dónde bajar en Positano para caminar lo menos posible hasta el hostal."
+  },
+  "tip": {
+    "title": "Consejo",
+    "guideLinkLabel": "Resumen de Cómo llegar",
+    "body": "¿Necesitas todas las opciones de transporte? Abre el <GuideLink>Resumen de Cómo llegar</GuideLink> para ver itinerarios en ferry, taxi y combinados."
+  },
+  "journey": {
+    "title": "Resumen del trayecto",
+    "description": "Desde Salerno, toma un autobús SITA hasta Amalfi y luego haz trasbordo al autobús SITA con destino a Positano. En Positano, bájate en <Strong>Chiesa Nuova</Strong> para el recorrido a pie más corto hasta el hostal."
+  },
+  "tickets": {
+    "title": "Autobuses SITA y billetes",
+    "description": "SITA Sud opera los autobuses de esta ruta. Los billetes se venden en quioscos y estancos. Al subir, el conductor puede sellar o rasgar parcialmente tu billete para validarlo; consérvalo hasta bajar."
+  },
+  "timetable": {
+    "title": "Horarios de autobús",
+    "description": "Viajarás <Strong>Salerno → Amalfi</Strong> y luego <Strong>Amalfi → Positano</Strong>.",
+    "link": "Consulta el horario más reciente de SITA en <ScheduleLink>{{label}}</ScheduleLink>.",
+    "scheduleLinkLabel": "Positano.com",
+    "rowsTitle": "Cómo leer las filas",
+    "columnsTitle": "Cómo leer las columnas",
+    "combineTitle": "Combinar filas y columnas",
+    "rows": [
+      "Las filas de la primera columna enumeran las paradas de autobús de la ruta."
+    ],
+    "columns": [
+      "Cada columna corresponde a un viaje programado (identificado con una letra).",
+      "Lunes a sábado: céntrate en las columnas «F» y «G».",
+      "Domingos y festivos: céntrate en las columnas «G» y «H»."
+    ],
+    "combine": [
+      "Elige las filas de origen y destino y luego lee hacia la columna seleccionada para encontrar los horarios.",
+      "Ejemplo: salida desde Salerno → fila «Salerno»; llegada a Positano (Chiesa Nuova) → fila «Positano (Chiesa Nuova)»."
+    ]
+  },
+  "positanoStop": {
+    "title": "Parada Positano (Chiesa Nuova)",
+    "facts": [
+      "Parada más cercana: Positano (Chiesa Nuova) en Via G. Marconi.",
+      "Aproximadamente a 140 metros (490 pies) de la entrada del hostal.",
+      "Frente al café/bar «Bar Internazionale»."
+    ]
+  },
+  "walk": {
+    "title": "Camino al Hostel Brikette",
+    "steps": [
+      "Camina un poco más de 100 metros (330 pies).",
+      "Gira a la derecha para seguir las escaleras hasta la puerta principal del hostal.",
+      "Al acercarte al hostal, busca nuestro letrero junto a la terraza del segundo piso.",
+      "Pasa el letrero y toma las escaleras del lado derecho de la carretera hacia la entrada."
+    ]
+  }
+}

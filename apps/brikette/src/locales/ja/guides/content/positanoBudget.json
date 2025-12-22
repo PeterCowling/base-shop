@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "ポジターノ節約ガイド",
+    "description": "交通、格安グルメ、無料ビュー、リーズナブルな宿など節約術満載。"
+  },
+  "linkLabel": "ポジターノ節約ガイド",
+  "intro": [
+    "翻訳を準備中です。"
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport on the cheap",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Smart stays",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink savings",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Low-cost experiences",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "tips": [
+    "翻訳を準備中です。",
+    "翻訳を準備中です。"
+  ],
+  "faqs": [
+    {
+      "q": "翻訳を準備中です。",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "q": "Is tipping expected?",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "tocTitle": "On this page",
+  "faqsTitle": "FAQs",
+  "heroAlt": "翻訳を準備中です。",
+  "costBreakdown": {
+    "title": "翻訳を準備中です。",
+    "slices": [
+      {
+        "label": "Bed (dorm)",
+        "value": 45
+      },
+      {
+        "label": "Meals & snacks",
+        "value": 25
+      },
+      {
+        "label": "Transport",
+        "value": 12
+      },
+      {
+        "label": "Activities & extras",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "翻訳を準備中です。",
+      "caption": "Free viewpoints"
+    },
+    {
+      "alt": "翻訳を準備中です。",
+      "caption": "Picnic to save on meals"
+    }
+  ]
+}

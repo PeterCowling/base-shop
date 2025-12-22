@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Không tìm thấy trang",
+    "description": "Trang bạn yêu cầu không tồn tại."
+  },
+  "heading": "Không tìm thấy trang",
+  "message": "Bạn có thể xem các phòng của chúng tôi hoặc đặt phòng ngay.",
+  "linksTitle": "Liên kết hữu ích",
+  "links": {
+    "home": "Trang chủ",
+    "deals": "Ưu đãi",
+    "assistance": "Liên hệ & Thông tin",
+    "about": "Giới thiệu"
+  },
+  "buttonRooms": "Phòng",
+  "buttonReserve": "Đặt ngay"
+}

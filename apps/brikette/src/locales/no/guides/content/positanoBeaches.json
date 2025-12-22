@@ -1,0 +1,279 @@
+{
+  "seo": {
+    "title": "De beste strendene i Positano",
+    "description": "Oversikt over strendene i Positano: Spiaggia Grande, Fornillo, Arienzo og hvordan du kommer dit."
+  },
+  "linkLabel": "De beste strendene i Positano",
+  "intro": [
+    "Sammenlign strendene i Positano og nærliggende bukter før du bestemmer deg for en solseng. Oversikten fremhever priser, gratisområder og stemning slik at du kan velge et sted som passer budsjettet og energinivået ditt.",
+    "Trykk på et strandenavn i tabellen eller oppsummeringene nedenfor for å åpne de detaljerte guidene våre med veibeskrivelser, mattips og forklaringer på tilgangen steg for steg."
+  ],
+  "galleryTitle": "Positano beach highlights",
+  "toc": [
+    {
+      "href": "#overview",
+      "label": "Slik velger du"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Strender i Positano"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Praiano"
+    },
+    {
+      "href": "#furore-beaches",
+      "label": "Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Amalfi"
+    },
+    {
+      "href": "#logistics",
+      "label": "Logistikk"
+    },
+    {
+      "href": "#faqs",
+      "label": "Spørsmål og svar"
+    }
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Slik velger du riktig strand",
+      "body": [
+        "Positano byr på en kombinasjon av gratis rullesteinstrender og organiserte lidoer. Solsenger koster fra €15 hos mindre klubber til €400 hos prestisjesteder som La Scogliera, så bestem tidlig om du vil ha full service eller foretrekker et gratisområde.",
+        "Sammenligningstabellen vår grupperer strendene etter by. Hver rad viser startpris på solsenger, om det finnes et gratisområde, og raske fordeler og ulemper slik at du kan veie soltimer, folkemengder og bekvemmelighet."
+      ]
+    },
+    {
+      "id": "positano-beaches",
+      "title": "Strendene i Positano på et øyeblikk",
+      "body": [
+        "Fornillo er fortsatt vandrerhjemmets favoritt takket være avslappet stemning, to gratisområder (ett skjult) og strandklubber som Pupetto, Grassi, Ferdinando og La Marinella med priser fra rundt €15. Tilbakeveien er bratt, så mange går over til hovedstranden og tar bussen opp bakken.",
+        "Spiaggia Grande byr på postkortutsikten med Positanos klippeside som bakteppe. Prisene er høyere: L'Incanto starter rundt €25, mens VIP-dekkene til La Scogliera koster €100–€400. En offentlig stripe ligger i midten, men mange gjester foretrekker den roligere atmosfæren på Fornillo.",
+        "Arienzo kombinerer lang ettermiddagssol med en dramatisk trappenedgang. Pakker med solsenger, lunsj og båtskyss starter rundt €60 og inkluderer bruk av klubbens vanntaxi – praktisk fordi egen tilgang er krevende.",
+        "Laurito er en kompakt bukt betjent av Da Adolfo (gratis solsenger når du spiser der) og Villa Tre Ville (fra €30). Solen holder seg langt ut på dagen, men eneste enkle adkomst er via skyttelbåtene deres; den offentlige sonen er minimal."
+      ]
+    },
+    {
+      "id": "praiano-beaches",
+      "title": "Dagsturvalg i Praiano",
+      "body": [
+        "Gavitella i Praiano er et paradis ved solnedgang med restaurantterrasse som passer til aperitivo og middag. Det finnes ingen gratis sone, og middagssolen reflekterer fra betongplattingene, så kom helst på ettermiddagen.",
+        "Marina di Praia er en smal rullesteinsbukt omkranset av fiskebåter og klipper. En liten gratis del ligger ved siden av lidoene – perfekt når du vil bytte miljø uten å miste fasiliteter."
+      ]
+    },
+    {
+      "id": "furore-beaches",
+      "title": "Furores fjordbukt",
+      "body": [
+        "Fiordo di Furore er Amalfi-kystens Instagram-klassiker med steinbro over og steder for stuping. Inngang er gratis og kostnadene lave, men plassen er svært begrenset, så kom tidlig eller utenom rushtid."
+      ]
+    },
+    {
+      "id": "sorrento-beaches",
+      "title": "Regina Giovanna Bath i Sorrento",
+      "body": [
+        "Regina Giovanna Bath (Bagni della Regina Giovanna) nær Sorrento er et naturlig svømmehull hugget inn i klippen. Det er gratis, avkjølende og fortsatt mindre kjent enn hovedstrendene i Positano – ta med badesko og snacks siden det ikke finnes fasiliteter."
+      ]
+    },
+    {
+      "id": "amalfi-beaches",
+      "title": "Strandklubber i Amalfi",
+      "body": [
+        "Hovedstranden Marina Grande i Amalfi er omgitt av klubber som Stella Maris, Marina Grande Beach Club, Silver Moon og Bagni Mar di Cobalto. Forvent klassiske lido-oppsett med servering, dusjer og utsikt mot domkirken – reserver på forhånd i høysesongen for å sikre solsenger på første rad."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Slik kommer du deg til og fra stranden",
+      "body": [
+        "Til Fornillo og Spiaggia Grande går du fra hostellet og ned Viale Pasitea. Føles det tungt å gå opp igjen, fortsetter du langs vannet til hovedstranden og tar den oransje internbussen opp til Chiesa Nuova, et kort stykke fra Hostel Brikette.",
+        "Arienzo og Laurito har private skyttelbåter fra Spiaggia Grande; sjekk siste retur før du blir sittende for en sen aperitivo. For Praiano, Furore, Sorrento eller Amalfi finner du transport, buss- og fergeskjema i de tilknyttede guidene."
+      ]
+    }
+  ],
+  "prosCons": [
+    {
+      "title": "Fornillo",
+      "pros": [
+        "Solsenger fra €15",
+        "Stor og skjult gratis sone",
+        "Avslappet atmosfære"
+      ],
+      "cons": [
+        "Bratt bakke tilbake",
+        "Lite skygge uten leie"
+      ]
+    },
+    {
+      "title": "Spiaggia Grande",
+      "pros": [
+        "Ikonisk skyline i Positano",
+        "Sentrale fergeforbindelser",
+        "Offentlig område tilgjengelig"
+      ],
+      "cons": [
+        "Dyreste solsenger",
+        "Svært fullt midt på dagen"
+      ]
+    },
+    {
+      "title": "Arienzo",
+      "pros": [
+        "Lang ettermiddagssol",
+        "Pakker inkluderer lunsj og båt",
+        "Flotte utsiktspunkter"
+      ],
+      "cons": [
+        "Hundrevis av trappetrinn",
+        "Vanskelig uten klubbens skyttel"
+      ]
+    },
+    {
+      "title": "Laurito",
+      "pros": [
+        "Sen sol",
+        "Da Adolfo er en ikonisk lunsjplass",
+        "Villa Tre Ville tilbyr førsteklasses service"
+      ],
+      "cons": [
+        "Bitteliten offentlig del",
+        "Avhengig av vanntaxiens rutetider"
+      ],
+      "guideKey": "lauritoBeachGuide"
+    },
+    {
+      "title": "Gavitella (Praiano)",
+      "pros": [
+        "Aperitivo i solnedgangen",
+        "Restaurantterrasse"
+      ],
+      "cons": [
+        "Ingen gratis sone",
+        "Betongplattinger blir varme"
+      ]
+    },
+    {
+      "title": "Marina di Praia",
+      "pros": [
+        "Sjarmerende fiskehavn",
+        "Gratis stripe ved siden av lidoene"
+      ],
+      "cons": [
+        "Smal strand",
+        "Mindre sol tidlig på dagen"
+      ]
+    },
+    {
+      "title": "Fiordo di Furore",
+      "pros": [
+        "Gratis inngang",
+        "Mulighet for stuping",
+        "Unik bro som bakgrunn"
+      ],
+      "cons": [
+        "Svært liten strand",
+        "Blir fort fullt"
+      ]
+    },
+    {
+      "title": "Regina Giovanna Bath",
+      "pros": [
+        "Gratis naturlig basseng",
+        "Svalt vann på varme dager"
+      ],
+      "cons": [
+        "Ingen fasiliteter",
+        "Steinete adkomst"
+      ]
+    },
+    {
+      "title": "Amalfi Marina Grande",
+      "pros": [
+        "Flere klubbalternativer",
+        "Enkel tilgang med ferge og buss"
+      ],
+      "cons": [
+        "Høye priser",
+        "Bestill i god tid i høysesongen"
+      ]
+    }
+  ],
+  "itemList": [
+    {
+      "name": "Fornillo",
+      "note": "Lokal favoritt med solsenger til €15 og to gratisområder."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Hovedstrand med ikonisk utsikt, dyre klubber og en offentlig sone."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Solrik terrassestrand med 300 trappetrinn eller skyttelbåt."
+    },
+    {
+      "name": "Laurito",
+      "note": "Kompakt bukt med skyttelbåter fra Da Adolfo og Villa Tre Ville."
+    },
+    {
+      "name": "Gavitella",
+      "note": "Platå i Praiano perfekt for aperitivo i solnedgangen (kun klubb)."
+    },
+    {
+      "name": "Marina di Praia",
+      "note": "Fiskeværstrand med liten gratis del og flere lidoer."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Dramatisk bukt med bro som ramme, gratis inngang og begrenset plass."
+    },
+    {
+      "name": "Regina Giovanna Bath",
+      "note": "Skjult badeplass i Sorrento – gratis, men ta med alt du trenger."
+    },
+    {
+      "name": "Amalfi Marina Grande",
+      "note": "Rekke med klassiske lidoer i Amalfi rett ved domkirken."
+    }
+  ],
+  "faqsTitle": "Spørsmål og svar om strendene i Positano",
+  "faqs": [
+    {
+      "q": "Hvor finner jeg gratis strandområde i Positano?",
+      "a": [
+        "Fornillo har den største gratis sonen i tillegg til en roligere, skjult del forbi hovedklubbene. Spiaggia Grande har også et offentlig område mellom de betalte dekkene, mens Laurito kun har en bitteliten stripe ved siden av bryggen til Da Adolfo."
+      ]
+    },
+    {
+      "q": "Hvordan kommer jeg meg tilbake til Hostel Brikette etter en stranddag?",
+      "a": [
+        "Fra Fornillo følger du kyststien til Spiaggia Grande og tar den oransje internbussen opp til Chiesa Nuova. Bussen stopper et kort stykke fra hostellet og sparer deg for den bratte bakken."
+      ]
+    },
+    {
+      "q": "Må jeg reservere strandklubb på forhånd?",
+      "a": [
+        "Bestill på forhånd for Arienzo, Da Adolfo eller Villa Tre Ville i Laurito, og for første rad på Spiaggia Grande – helgeplasser forsvinner raskt. Mindre klubber på Fornillo tar ofte imot drop-in tidlig på dagen."
+      ]
+    }
+  ],
+  "gallery": [
+    {
+      "alt": "Spiaggia Grande sett ovenfra",
+      "caption": "Spiaggia Grande"
+    },
+    {
+      "alt": "Sti ned til stranden i Fornillo",
+      "caption": "Fornillo"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "title": "Positano do lotniska w Neapolu autobusem | Hostel Brikette",
+    "description": "Instrukcja od drzwi do drzwi z Hostel Brikette na lotnisko w Neapolu: autobus SITA do Sorrento i autobus Curreri, wraz z poradami dotyczącymi biletów i linkami do rozkładów."
+  },
+  "header": {
+    "eyebrow": "Przewodnik podróżny Hostel Brikette",
+    "title": "Positano do lotniska w Neapolu – autobus przez Sorrento",
+    "description": "Jedź autobusem SITA Sud z Positano do Sorrento, a następnie autobusem Curreri na lotnisko Napoli Capodichino. To najprostsza opcja transportu publicznego, z częstymi odjazdami i łatwą przesiadką na dworcu w Sorrento."
+  },
+  "aside": {
+    "eyebrow": "Potrzebujesz innych tras?",
+    "body": "Otwórz <Link>przegląd Jak do nas dotrzeć</Link>, aby zobaczyć trasy z taksówką, promem i inne warianty."
+  },
+  "sections": {
+    "overview": {
+      "title": "Przegląd podróży",
+      "points": [
+        "Dojdź na przystanek Positano (Chiesa Nuova) przed Bar Internazionale.",
+        "Wsiądź w autobus SITA do dworca autobusowo-kolejowego w Sorrento.",
+        "Przesiądź się na autobus Curreri z Sorrento na lotnisko Napoli Aeroporto (Capodichino)."
+      ]
+    },
+    "walk": {
+      "title": "Spacer na przystanek w Positano",
+      "points": [
+        "Wyjdź z hostelu i zejdź schodami na główną drogę.",
+        "Skręć w lewo i idź około 100 metrów (330 stóp).",
+        "Bar Internazionale będzie po lewej; przystanek SITA znajduje się tuż przed nim."
+      ],
+      "image": {
+        "alt": "Przystanek autobusu SITA Positano (Chiesa Nuova) przed Bar Internazionale",
+        "caption": "W szczycie sezonu przyjdź kilka minut wcześniej — autobusy szybko się zapełniają."
+      }
+    },
+    "tickets": {
+      "title": "Bilety i oczekiwanie",
+      "points": [
+        "Kup bilet SITA do Sorrento w Bar Internazionale lub pobliskim kiosku.",
+        "Zachowaj bilet po wejściu; kierowca może go skasować lub naderwać.",
+        "Na autobus Curreri kup bilet online lub na dworcu (jeśli dostępne)."
+      ]
+    },
+    "sorrento": {
+      "title": "Na dworcu autobusowym w Sorrento",
+      "body": "Wysiądź na głównym dworcu autobusowo-kolejowym w Sorrento. Przy stanowiskach autobusowych wsiądź do autobusu <Link>Curreri Viaggi</Link> na lotnisko Napoli Aeroporto (Capodichino). Sprawdź aktualny rozkład i rozważ zakup biletu online z wyprzedzeniem w szczytowych okresach."
+    },
+    "timetables": {
+      "title": "Rozkłady jazdy",
+      "items": {
+        "sita": {
+          "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
+          "label": "Positano.com",
+          "text": "Rozkład autobusów SITA Positano ⇄ Sorrento na <Link>Positano.com</Link>"
+        },
+        "curreri": {
+          "href": "https://www.curreriviaggi.it/",
+          "label": "curreriviaggi.it",
+          "text": "Godziny kursów Curreri Sorrento ⇄ Napoli Aeroporto na <Link>curreriviaggi.it</Link>"
+        }
+      }
+    }
+  }
+}

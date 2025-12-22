@@ -46,7 +46,7 @@ describe("ReturnPolicyPage", () => {
     );
     expect(html).toContain("Drop-off: UPS");
     expect(html).toContain("Home pickup available in: 10001");
-    expect(html).toContain("Tracking enabled.");
+    expect(html).toContain("returns.trackingEnabled");
     expect(html).toContain("Items must have all tags attached for return.");
     expect(html).toContain("Items showing signs of wear may be rejected.");
   });

@@ -1,0 +1,20 @@
+{
+  "aria": {
+    "regionLabel": "Điểm đánh giá từ nguồn bên ngoài",
+    "linkSummary": "{{score}} trên {{provider}}, {{reviews}}, kiểm tra lần cuối {{date}}"
+  },
+  "reviewed": "Được đánh giá trên:",
+  "countReviews_one": "{{formattedCount}} đánh giá",
+  "countReviews_other": "{{formattedCount}} đánh giá",
+  "lastChecked": "Kiểm tra lần cuối:",
+  "sources": {
+    "hostelworld": {
+      "ariaName": "Hostelworld",
+      "label": "Hostelworld"
+    },
+    "booking": {
+      "ariaName": "Booking chấm com",
+      "label": "Booking.com"
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Top Viewpoints on the Amalfi Coast",
+    "description": "Where to catch epic views around the coast, with access notes."
+  },
+  "linkLabel": "Top Viewpoints on the Amalfi Coast",
+  "intro": [
+    "Pinpoint the best viewpoints around the Amalfi Coast for sunrise, golden hour, and night shots."
+  ],
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano classics",
+      "body": [
+        "Via Cristoforo Colombo and the terrace near Hotel Marincanto give layered village views—shoot at sunrise for soft light.",
+        "The La Tagliata terrace in Nocelle faces the Li Galli islands; book dinner for sunset or visit after hiking the Path of the Gods."
+      ]
+    },
+    {
+      "id": "ravello",
+      "title": "Ravello terraces",
+      "body": [
+        "Villa Rufolo's concert stage overlooks the coast; morning light hits the domes best.",
+        "Villa Cimbrone's Infinity Terrace frames the coastline with marble statues—tripods allowed but keep legs narrow to avoid blocking others."
+      ]
+    },
+    {
+      "id": "road",
+      "title": "Roadside panoramas",
+      "body": [
+        "Stop at the Belvedere di Laurito lay-by between Positano and Praiano for sweeping shots; stay behind the guardrail for safety.",
+        "The SS163 between Amalfi and Minori has signed viewpoints—use buses to hop between them if you prefer not to drive."
+      ]
+    }
+  ],
+  "tips": [
+    "Carry a lightweight tripod and ND filter for silky evening shots of ferry trails.",
+    "Always watch traffic when shooting roadside—wear bright clothing and avoid stepping into the lane."
+  ],
+  "faqs": [
+    {
+      "q": "Can I fly a drone?",
+      "a": [
+        "Drone flights are heavily restricted along the Amalfi Coast. Check ENAC rules and local ordinances; fines are steep for unauthorised flights."
+      ]
+    },
+    {
+      "q": "What time is best for sunset photos?",
+      "a": [
+        "Golden hour starts roughly one hour before sunset (around 19:00 in July). Arrive 30 minutes early to set up and secure your spot."
+      ]
+    }
+  ]
+}

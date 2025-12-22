@@ -1,9 +1,30 @@
 import { join } from "path";
+import ts from "typescript";
+import { runInNewContext } from "vm";
 
 const cp = require("node:child_process");
 const fs = require("node:fs");
 const spawnMock = jest.fn();
 fs.existsSync = jest.fn(() => true);
+
+function runDiffShadcn() {
+  const src = fs.readFileSync(
+    join(__dirname, "../../../scripts/src/diff-shadcn.ts"),
+    "utf8"
+  );
+  const transpiled = ts.transpileModule(src, {
+    compilerOptions: { module: ts.ModuleKind.CommonJS },
+  }).outputText;
+  const sandbox: any = {
+    exports: {},
+    module: { exports: {} },
+    require,
+    console,
+    __dirname: join(__dirname, "../../../scripts/src"),
+  };
+  sandbox.exports = sandbox.module.exports;
+  runInNewContext(transpiled, sandbox);
+}
 
 describe("scripts/diff-shadcn", () => {
   beforeEach(() => {
@@ -13,7 +34,7 @@ describe("scripts/diff-shadcn", () => {
   });
 
   it("runs diff for each component", async () => {
-    await import("../../../scripts/diff-shadcn");
+    runDiffShadcn();
 
     const calls = spawnMock.mock.calls;
     const components = [

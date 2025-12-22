@@ -25,14 +25,29 @@ describe("webhookHandlers/checkoutSessionCompleted", () => {
 
     const session = {
       id: "cs_1",
-      metadata: { depositTotal: "100", returnDate: "2025-01-02", customerId: "cus_1" },
+      metadata: {
+        depositTotal: "100",
+        returnDate: "2025-01-02",
+        internal_customer_id: "cust_1",
+        order_id: "ord_1",
+      },
       payment_intent: "pi_123",
     } as unknown as Stripe.Checkout.Session;
     const event = { data: { object: session } } as unknown as Stripe.Event;
 
     await handler("shop1", event);
 
-    expect(addOrder).toHaveBeenCalledWith("shop1", "cs_1", 100, "2025-01-02", "cus_1");
+    expect(addOrder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        shop: "shop1",
+        orderId: "ord_1",
+        sessionId: "cs_1",
+        deposit: 100,
+        expectedReturnDate: "2025-01-02",
+        customerId: "cust_1",
+        stripePaymentIntentId: "pi_123",
+      }),
+    );
     expect(create).toHaveBeenCalledWith({ payment_intent: "pi_123" });
     expect(update).toHaveBeenCalledWith("pi_123", {
       payment_method_options: { card: { request_three_d_secure: "any" } },
@@ -65,10 +80,16 @@ describe("webhookHandlers/checkoutSessionCompleted", () => {
 
     await handler("shop2", event);
 
-    expect(addOrder).toHaveBeenCalledWith("shop2", "cs_2", 25, undefined, undefined);
+    expect(addOrder).toHaveBeenCalledWith(
+      expect.objectContaining({
+        shop: "shop2",
+        sessionId: "cs_2",
+        deposit: 25,
+        stripePaymentIntentId: "pi_456",
+      }),
+    );
     expect(create).not.toHaveBeenCalled();
     expect(update).not.toHaveBeenCalled();
     expect(updateRisk).not.toHaveBeenCalled();
   });
 });
-

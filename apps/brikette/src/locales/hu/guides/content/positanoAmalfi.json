@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Busz, komp és taxicsónak összehasonlítása, viteldíjak, menetrendek és lépcsőmentes érkezés."
+  },
+  "linkLabel": "Positano to Amalfi: how to go",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Bus (year‑round)",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (seasonal)",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How long is the trip?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "SITA bus to Amalfi",
+        "text": "A fordítás folyamatban van."
+      },
+      {
+        "name": "Alternative: ferry (summer)",
+        "text": "A fordítás folyamatban van."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "A fordítás folyamatban van."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "SITA bus (year-round)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry (seasonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "SITA bus (year-round)",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry (seasonal)",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "Which is faster?",
+        "a": [
+          "A fordítás folyamatban van."
+        ]
+      }
+    ]
+  }
+}

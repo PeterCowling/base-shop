@@ -82,17 +82,19 @@ Where request/response schemas are defined in shared packages, the contract is:
 ### 2.2 Checkout session – `/api/checkout-session`
 
 - **Path**: `/api/checkout-session`
-- **Runtime**: Edge (`runtime = "edge"`)
+- **Runtime**: Node.js (`runtime = "nodejs"`)
 - **Handler**: `packages/template-app/src/api/checkout-session/route.ts`
 - **Implementation**:
   - Reads the cart via `@platform-core/cartCookie` and `@platform-core/cartStore`.
   - Computes prices using `@platform-core/pricing` and `convertCurrency`.
-  - Creates a Stripe Checkout session using `@platform-core/checkout/session`.
+  - Creates a Stripe Checkout Session in `ui_mode: custom` using `@platform-core/checkout/session`.
   - Resolves the shop via `coreEnv.NEXT_PUBLIC_DEFAULT_SHOP` and `readShop`.
 - **Contract**:
   - Accepts `POST` with a JSON body that can include:
     - `returnDate`, `coupon`, `currency`, `taxRegion`, `customer`, `shipping`, `billing_details`, `coverage` (see handler for exact fields).
   - Returns `200` with a JSON payload from `createCheckoutSession` on success.
+    - `clientSecret` is the Checkout Session `client_secret` (for `ui_mode: custom`) and must be used with Stripe Custom Checkout (`initCheckout` / `CheckoutProvider`), not `stripe.confirmPayment`.
+    - `orderId` may be included when a runtime reserves a platform order ID during checkout creation.
   - Returns JSON `{ error: string }` with:
     - `400` for validation issues (for example empty cart, invalid `returnDate`).
     - `502` for downstream Stripe/infra failures.
@@ -168,6 +170,20 @@ Where request/response schemas are defined in shared packages, the contract is:
     - `200` with JSON PB document when token is valid and page exists.
     - `401` for invalid/expired tokens.
     - `404` when the page cannot be found.
+
+### 2.5 Stripe webhook – `/api/stripe-webhook`
+
+- **Path**: `/api/stripe-webhook`
+- **Runtime**: Node.js (`runtime = "nodejs"`)
+- **Handler**: `packages/template-app/src/api/stripe-webhook/route.ts`
+- **Implementation**:
+  - Reads the raw request body.
+  - Verifies the `Stripe-Signature` header using the configured webhook secret.
+  - Forwards the verified event to `handleStripeWebhook` in `@platform-core/stripe-webhook`.
+- **Contract**:
+  - Accepts `POST` with the raw Stripe webhook payload.
+  - Returns `200` on success (including duplicate deliveries).
+  - Returns `400` when signature verification fails.
 
 ---
 

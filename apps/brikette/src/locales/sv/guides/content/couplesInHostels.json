@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Resa som par på hostel",
+    "description": "Hur par kan trivas på hostel: rumstyper, förväntningar och rutiner som minskar friktion."
+  },
+  "linkLabel": "Resa som par på hostel",
+  "intro": [
+    "Hostel funkar för par när ni väljer rätt rumstyp, packar lätt och sätter förväntningarna tillsammans."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Rumstyper",
+      "body": [
+        "Boka privatrum om ni vill ha avskildhet; om budgeten är tight, dela kojer i samma sovsal och håll packningen lätt för trapporna."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Hitta lugnet",
+      "body": [
+        "Ha öronproppar och sovmask redo, välj rum bort från bar eller gemensamma utrymmen och använd tidiga morgnar för lugnare sightseeing."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan vi dela privatrum ibland?",
+      "a": [
+        "Ja, många par byter mellan privatrum och sovsal beroende på pris. Boka privatnätter i förväg under högsäsong."
+      ]
+    }
+  ]
+}

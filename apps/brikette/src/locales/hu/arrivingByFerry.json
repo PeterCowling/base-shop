@@ -1,0 +1,59 @@
+{
+  "slug": "arriving-by-ferry",
+  "meta": {
+    "title": "Hogyan juss el a positanói kompkiktől a Hostel Brikette‑ig – lépésről lépésre",
+    "description": "Érkezz stresszmentesen: sétálj, szállj fel az Interno Positano buszra, és kövesd csomagtippjeinket — kevesebb mint 15 perc alatt a hostelnél lehetsz. Élő Google Maps linkekkel, jegyinformációval és akadálymentesítési tanácsokkal."
+  },
+  "headings": {
+    "overview": "Positano kikötő → hostel az Interno busszal",
+    "portToPiazza": "Kikötő a Piazza dei Muliniig",
+    "piazzaToStop": "Piazza dei Mulini → helyi buszmegálló",
+    "busLook": "Milyen a busz?",
+    "busLookExtra": "",
+    "stopToHostel": "Helyi buszmegálló → hostel",
+    "approach": "Tipp: közelítés a hostelhez"
+  },
+  "media": {
+    "busLook": {
+      "alt": "Fehér Interno Positano minibusz"
+    },
+    "busLookExtra": {
+      "alt": "Piros Interno Positano minibusz"
+    },
+    "stopToHostel": {
+      "alt": "A Tabacchi üzlet kívülről, ahol a busz megáll"
+    },
+    "approach": {
+      "alt": "Hostel tábla és lépcső a Via G. Marconin"
+    }
+  },
+  "content": {
+    "overview": "<strong>1. tipp:</strong> <a href=\"https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26\">Interno busz menetrend és jegyárak</a>.<br />\n<strong>2. tipp:</strong> Jegyet bármelyik <em>Tabacchi</em>-ban vagy újságosnál vehetsz.<br />\n<strong>3. tipp:</strong> Sok csomaggal érkezel? A móló hordárai közvetlenül a hostelbe szállítják a poggyászt.",
+    "portToPiazza": "Kövesd <a href=\"https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2\">ezeket a lépéseket</a> a fő strandtól (Spiaggia Grande) a Piazza dei Muliniig.",
+    "piazzaToStop": "• Ne a lépcsőt válaszd – szállj fel az Interno buszra.<br />\n• A járat kb. 30 percenként indul 8:00 és éjfél között.<br />\n• Az útvonal a <a href=\"https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0\">Google Térképen</a> is megnézhető.",
+    "busLook": "Többféle buszt használnak, de az LED-kijelzőn mindig ez áll: <em>„Interno Positano”</em>.",
+    "busLookExtra": "",
+    "stopToHostel": "• A busz a lenti képen látható Tabacchi előtt áll meg.<br />\n• Leszállás után fordulj <strong>jobbra</strong>, és sétálj ki a főútra.<br />\n• Fordulj <strong>balra</strong>, majd haladj kb. 100 métert.<br />\n• A hostel a jobb oldalon lesz – a lépcsőn menj fel a recepcióhoz.<br />\n• Részletes navigáció kell? <a href=\"https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2\">Nyisd meg a Google Térképet</a>.",
+    "approach": "• A hostelhez közeledve meglátod a második emeleti teraszunk tábláját.<br />\n• Menj el mellette, kövesd az ívet, majd a jobb oldali lépcsőn menj fel a recepcióhoz."
+  },
+  "faq": {
+    "items": [
+      {
+        "question": "Egész évben járnak kompok Positanóba?",
+        "answer": "A kompok szezonálisak (általában áprilistól októberig). Télen leginkább busz vagy taxi áll rendelkezésre."
+      },
+      {
+        "question": "Hol nézhetem meg a kompmenetrendet valós időben?",
+        "answer": "A nyári időszakban használd az üzemeltetők oldalait (például NLG, Travelmar, Alilauro) vagy a DirectFerrieshez hasonló gyűjtőoldalakat."
+      },
+      {
+        "question": "Melyik mólót érdemes használni Positanóban?",
+        "answer": "A fő móló a Spiaggia Grande strandnál található. Forgalmas napokon ellenőrizd a jegyen a pontos beszállósávot."
+      },
+      {
+        "question": "Akadálymentes az út a kikötőtől?",
+        "answer": "A hostelhez vezető út sok lépcsőt tartalmaz. Nehéz csomag esetén kérj hordárt vagy válaszd a Chiesa Nuova felé tartó buszt."
+      }
+    ]
+  }
+}

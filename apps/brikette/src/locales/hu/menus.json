@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "Az ár tartalmaz egy mixert: tonik, kóla, kóla zero vagy sprite."
+      },
+      "rum": {
+        "note": "Válasszon rumot; kérésre koffeines mixer (kávé). Kávé: jeges/meleg, espresso/americano."
+      },
+      "gin": {
+        "note": "Schweppes tonikkal, zúzott jégen, Amalfi citrommal."
+      },
+      "whisky": {
+        "note": "Jeget/vizet/kávét kérhet. Kávé: jeges/meleg, espresso/americano."
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "A klasszikus olasz spritz, zúzott jéggel tálalva."
+      },
+      "limoncelloSpritz": {
+        "note": "Az Amalfi-part kedvence, zúzott jéggel szervírozva."
+      },
+      "hugoSpritz": {
+        "note": "Pezsgő friss mentára, lime-ra és bodzára öntve, zúzott jéggel."
+      },
+      "rossiniSpritz": {
+        "note": "Pezsgő eperlével, zúzott jéggel."
+      },
+      "lemonStrawberryMargarita": {
+        "note": "Eper- vagy citromlé tequilával, Cointreau‑val és jéggel; klasszikus stílusban."
+      },
+      "lemonDropMartini": {
+        "note": "Frissen facsart citromlé Absolut vodkával, Cointreau‑val és jéggel összerázva."
+      },
+      "joseCuervoSilver": {
+        "note": "Tálalás: citrommal és sóval tisztán, Tequila Sunrise-ként vagy szóda/sprite kísérettel."
+      },
+      "limoncelloShot": {
+        "note": "Dél-olasz klasszikus, tisztán kínálva."
+      },
+      "threeScoops": {
+        "note": "Választható: citrom, csokoládé, vanília, mogyoró."
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "Klasszikus, sziruppal."
+      },
+      "nutellaFrenchToast": {
+        "note": "Nutellával töltve."
+      },
+      "addEggComboItem": {
+        "note": "Válassz egy tételt a tojás menüből. Pl.: palacsinta + arany szirup + rántotta €15.50-ért."
+      },
+      "addAdditionalSyrup": {
+        "note": "Választhatsz egynél többet is. Pl.: palacsinta arany sziruppal és Nutellával €14-ért."
+      },
+      "veggieToast": {
+        "note": "Szezonális zöldségek pirítóson."
+      },
+      "healthyDelight": {
+        "note": "Joghurt, granola és házi gyümölcspüré parfé."
+      },
+      "detoxMe": {
+        "note": "Spenót, uborka, gyömbér és citrom."
+      },
+      "energizeMe": {
+        "note": "Narancs, répa, gyömbér és citrom."
+      },
+      "multiV": {
+        "note": "Alma, répa, narancs, citrom, gyömbér."
+      },
+      "orangeJuice": {
+        "note": "Frissen facsart."
+      }
+    }
+  }
+}

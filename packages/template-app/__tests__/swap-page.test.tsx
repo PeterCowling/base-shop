@@ -73,6 +73,8 @@ describe("SwapPage", () => {
     const ui = (await SwapPage()) as ReactElement;
     render(ui);
     expect(screen.getByText("Item")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Swap" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "account.swaps.action.swap" }),
+    ).toBeDisabled();
   });
 });

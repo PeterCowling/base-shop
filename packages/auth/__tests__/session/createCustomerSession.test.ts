@@ -219,13 +219,13 @@ describe("createCustomerSession", () => {
       ([name]) => name === CUSTOMER_SESSION_COOKIE,
     );
     expect(sessionCookieCall?.[2]).toMatchObject({
-      domain: undefined,
       path: "/",
-      sameSite: "strict",
+      sameSite: "lax",
     });
+    expect(sessionCookieCall?.[2]).not.toHaveProperty("domain");
   });
 
-  it("honors a custom cookie domain", async () => {
+  it("ignores custom cookie domains for host-only sessions", async () => {
     resetSessionMocks({ cookieDomain: "shop.example" });
     queueRandomUUIDs(["session", "csrf"]);
 
@@ -239,6 +239,6 @@ describe("createCustomerSession", () => {
     const sessionCookieCall = sessionMocks.cookies.set.mock.calls.find(
       ([name]) => name === CUSTOMER_SESSION_COOKIE,
     );
-    expect(sessionCookieCall?.[2]?.domain).toBe("shop.example");
+    expect(sessionCookieCall?.[2]?.domain).toBeUndefined();
   });
 });

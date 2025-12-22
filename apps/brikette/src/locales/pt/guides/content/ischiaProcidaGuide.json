@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Ischia and Procida: Beyond the Amalfi Coast",
+    "description": "Thermal baths, beaches, and ferry routes from Naples/Sorrento."
+  },
+  "linkLabel": "Ischia e Procida: além da Costa Amalfitana",
+  "intro": [
+    "Combine as termas de Ischia com os portos pastel de Procida para uma escapadinha refrescante da Costa Amalfitana."
+  ],
+  "sections": [
+    {
+      "id": "ischia",
+      "title": "Destaques de Ischia",
+      "body": [
+        "Relaxe em parques termais como Poseidon ou Negombo; os passes de dia inteiro variam entre 35–45 €.",
+        "Suba ao Castelo Aragonês para vistas sobre a baía e explore as ruelas pedonais de Sant'Angelo."
+      ]
+    },
+    {
+      "id": "procida",
+      "title": "Destaques de Procida",
+      "body": [
+        "Fotografe as casas pastel da Marina Corricella a partir de Terra Murata e prove as lingue di bue.",
+        "Alugue scooter ou e-bike para chegar a praias recatadas como Chiaiolella."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logística e bilhetes",
+      "body": [
+        "Apanhe os ferries da manhã desde o porto de Beverello, em Nápoles (uma hora até Ischia, 35 minutos até Procida). Dá para combinar num só dia, mas é mais tranquilo dividir em dois.",
+        "Compre ida e volta com antecedência aos fins de semana de verão; os últimos barcos para Nápoles partem por volta das 21:30."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve fato de banho e toalha leve mesmo que planeie apenas passear — as piscinas termais são irresistíveis depois das visitas.",
+    "Pernoite em Ischia para noites calmas e para ver o nascer do sol no castelo antes da chegada dos excursionistas."
+  ],
+  "faqs": [
+    {
+      "q": "Consigo visitar as duas ilhas num dia?",
+      "a": [
+        "É possível, mas corrido. Foque numa ilha por dia ou durma lá para aproveitar o pôr do sol sem stress de ferry."
+      ]
+    },
+    {
+      "q": "Preciso reservar parques termais?",
+      "a": [
+        "Reserve na época alta (junho–setembro). Dias úteis são mais calmos e alguns parques oferecem passes de fim de tarde (após as 16:00) com preços mais baixos."
+      ]
+    }
+  ]
+}

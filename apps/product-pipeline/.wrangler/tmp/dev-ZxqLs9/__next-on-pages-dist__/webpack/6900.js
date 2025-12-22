@@ -1,0 +1,1 @@
+var r={},_=(c,s,i)=>(r.__chunk_6900=(p,l,n)=>{"use strict";function a(e){if(e.url)try{let t=new URL(e.url),o=t.hostname.replace(/^www\./,""),u=t.pathname.replace(/\/+$/,"");return`url:${o}${u}`.toLowerCase()}catch{}if(e.title){let t=e.title.toLowerCase().replace(/[^a-z0-9]+/g," ").trim();return t?`title:${t}`:null}return null}n.d(l,{F:()=>a})},r);export{_ as __getNamedExports};

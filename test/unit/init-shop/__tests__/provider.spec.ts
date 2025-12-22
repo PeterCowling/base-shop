@@ -33,6 +33,8 @@ describe('init-shop configurator - providers', () => {
       'about',
       'About Us',
       '',
+      'n',
+      'n',
       '#336699',
       '',
       'n',
@@ -47,10 +49,17 @@ describe('init-shop configurator - providers', () => {
       const dir = path.dirname(modulePath);
       const mod = { exports: {} };
       const localRequire = (r: string) => {
-        if (r.startsWith('./')) {
-          return loadModule(
-            path.join(dir, r.endsWith('.ts') ? r : `${r}.ts`)
-          );
+        if (r.startsWith('.')) {
+          if (
+            r.includes('generate-theme') ||
+            r.includes('seedShop') ||
+            r.includes('apply-page-template') ||
+            r.includes('runtime')
+          ) {
+            return sandbox.require(r);
+          }
+          const resolved = path.join(dir, r);
+          return loadModule(resolved.endsWith('.ts') ? resolved : `${resolved}.ts`);
         }
         return sandbox.require(r);
       };
@@ -233,4 +242,3 @@ describe('init-shop configurator - providers', () => {
     );
   });
 });
-

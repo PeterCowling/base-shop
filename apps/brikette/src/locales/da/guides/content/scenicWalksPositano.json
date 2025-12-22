@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Smukke gåture i og omkring Positano",
+    "description": "Ruter og rundture med udsigt, realistiske tider og trappetælling."
+  },
+  "linkLabel": "Smukke gåture i og omkring Positano",
+  "intro": [
+    "Link terrace lanes and viewpoints for short scenic loops without turning the day into a full hike."
+  ],
+  "sections": [
+    {
+      "id": "upper",
+      "title": "Upper-village loop",
+      "body": [
+        "Connect Chiesa Nuova and Sponda via terrace lanes for classic skyline views with lighter foot traffic."
+      ]
+    },
+    {
+      "id": "fornillo",
+      "title": "Fornillo coastal path",
+      "body": [
+        "Follow the quieter beach approach and photogenic staircases. Aim for early morning or golden hour."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Nocelle viewpoint stroll",
+      "body": [
+        "Ride the bus up to Nocelle and branch off short spurs for sweeping vistas without long stair descents."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "What shoes should I wear?",
+      "a": [
+        "Choose supportive trainers with grip; some paths include uneven stone steps and can be slick after rain."
+      ]
+    },
+    {
+      "q": "How long are the walks?",
+      "a": [
+        "Each loop takes 30–60 minutes including photo stops. Add bus rides for Nocelle to keep gradients manageable."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "title": "Vår plats",
+  "inputLabel": "Ange din nuvarande plats:",
+  "inputPlaceholder": "t.ex. Neapel, Italien eller fullständig adress",
+  "getDirections": "Hämta vägbeskrivning",
+  "justShowMap": "Visa bara karta",
+  "close": "Stäng dialog"
+}

@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Båtturer i Positano",
+    "description": "Privata och gemensamma båtturer: vad du kan förvänta dig, prisnivåer och bokningstips i säsong."
+  },
+  "linkLabel": "Båtturer i Positano",
+  "intro": [
+    "Båtturer låter dig följa Amalfikustens klippor utan att brottas med trafiken; boka i förväg under högsäsong och ha en väderplan i reserv."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Grupp- och delade turer",
+      "body": [
+        "Delade kryssningar på tre timmar avgår från Positano på förmiddagen och inkluderar badstopp; räkna med 85–120 € per person i juli–augusti.",
+        "Ta med badskor och en lätt tröja — vinden är svalare ute på havet än på terrasserna."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Privata charter",
+      "body": [
+        "Skeppare tar 550–850 € för en halvdag med gozzo (upp till 6 personer) plus bränsle; bekräfta om prosecco eller handdukar ingår.",
+        "Förhandla starttid kring soluppgång eller sen eftermiddag om du vill ha mjukare ljus och färre svallvågor från färjor."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Väder & reservplaner",
+      "body": [
+        "Operatörer ställer in när vinden överstiger styrka 4; ha en buss- eller strandplan redo så dagen förblir avkopplad.",
+        "Havet kan vara krabbigt även på sommaren — packa åksjuke-armband om du är känslig."
+      ]
+    }
+  ],
+  "tips": [
+    "Kom 20 minuter innan avgång för att betala klart och byta till de däcksskor som erbjuds.",
+    "Ta med en vattentät påse för telefoner och en flaska på 1 liter vatten; skugga ombord är begränsad."
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag boka i förväg?",
+      "a": [
+        "Ja under maj–september — båtarna blir ofta fullbokade flera dagar i förväg, särskilt solnedgångsturer."
+      ]
+    },
+    {
+      "q": "Ingår handdukar?",
+      "a": [
+        "Gruppresor brukar erbjuda en per person; privata skeppare varierar, så ta med en snabbtorkande handduk för säkerhets skull."
+      ]
+    }
+  ],
+  "galleryHeading": "Fotogalleri",
+  "gallery": {
+    "primaryAlt": "Båt som kryssar längs Positanos kust",
+    "primaryCaption": "Kustkryssning",
+    "secondaryAlt": "Badstopp nära Positanos klippor",
+    "secondaryCaption": "Badstopp"
+  }
+}

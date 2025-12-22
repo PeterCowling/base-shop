@@ -1,0 +1,33 @@
+{
+  "sidebarLabel": "Navigering i hjälpcenter",
+  "openSidebar": "Öppna hjälpnavigering",
+  "closeSidebar": "Stäng hjälpnavigering",
+  "mobileSidebarLabel": "Navigering i hjälpcenter",
+  "mobileHint": "Svep nedåt eller tryck på knappen för att stänga den här menyn",
+  "nav": {
+    "assistance": "Digital hjälp",
+    "ama": "Fråga oss vad som helst",
+    "bookingBasics": "Bokningsgrunder",
+    "changingCancelling": "Ändring och avbokning",
+    "checkinCheckout": "Guide för in‑ och utcheckning",
+    "depositsPayments": "Betalningar och depositioner",
+    "defectsDamages": "Fel och skador",
+    "security": "Säkerhet",
+    "rules": "Regler",
+    "legal": "Juridik",
+    "ageAccessibility": "Ålder och tillgänglighet",
+    "arrivingByFerry": "Ankomst med färja",
+    "naplesAirportBus": "Neapels flygplats med buss",
+    "travelHelp": "Resehjälp"
+  },
+  "cta": {
+    "readMore": "Läs mer",
+    "readMoreAccessible": "Utforska hjälpartiklar"
+  },
+  "alsoHelpful": "Också hjälpsamt",
+  "alsoHelpfulEyebrow": "Lokala favoriter",
+  "alsoHelpfulDescription": "Planera smartare med handplockade guider och snabba genvägar för bokning.",
+  "alsoHelpfulExplore": "Utforska den här guiden",
+  "alsoHelpfulBook": "Boka din vistelse",
+  "roomsCta": "Se rum och tillgänglighet"
+}

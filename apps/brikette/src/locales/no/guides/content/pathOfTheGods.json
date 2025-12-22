@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Stien til gudene fra Hostel Brikette",
+    "description": "Nøyaktig rute fra vandrerhjemmet til startpunktene for Sentiero degli Dei, med transportvalg og sikkerhetstips."
+  },
+  "linkLabel": "Stien til gudene fra Brikette",
+  "intro": "The Sentiero degli Dei (“Path of the Gods”) is one of Italy’s most scenic coastal hikes. From the hostel you can reach either the classic start in Bomerano or finish in Nocelle using the SITA bus.",
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Best time to hike",
+      "body": [
+        "Target April–June or September–October for clear skies and manageable temperatures; winter showers can make the stone steps slick.",
+        "In July–August start before 09:00 or after 15:00 because the trail is exposed and shade is limited."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Pick your route",
+      "body": [
+        "Bomerano → Nocelle covers the classic 6.5 km ridge with continuous climbs and descents; allow 2.5–3 hours of walking plus transit.",
+        "Short on time? Ride the bus to Nocelle, walk the panoramic section out-and-back to Colle Serra, or descend the 1,700 steps to Positano."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Navigation and safety",
+      "body": [
+        "Follow the red-and-white CAI blazes and wooden Sentiero degli Dei arrows; download an offline map because mobile data drops in the ravines.",
+        "The path mixes stone stairs, packed dirt, and loose gravel—wear trail shoes with grip and keep hiking poles folded until the steeper descents."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Water, snacks, and the return",
+      "body": [
+        "Stock up in Bomerano’s main square (cafés, bakery, last public restroom) before starting; Nocelle has a kiosk and a lemon granita stand near the church.",
+        "Back to Positano: descend the stairs to Arienzo beach or catch the SITA bus from Nocelle/Montepertuso—keep an extra validated ticket in your daypack."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Good footwear, water, sun protection; avoid midday heat in summer.",
+    "Bus tickets must be purchased before boarding (tobacconists, kiosks).",
+    "Allow ~4 hours including transit and photo stops."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "SITA bus (Positano ⇄ Nocelle/Bomerano): ~€2–€4 each way depending on ticket type",
+    "Snacks/water: €3–€8 (bring your own to save)",
+    "Trail: free (no entry fee)"
+  ],
+  "steps": [
+    {
+      "name": "Walk to Chiesa Nuova bus stop",
+      "text": "From the hostel, walk uphill ~80m to the SITA bus stop at Chiesa Nuova."
+    },
+    {
+      "name": "Bus to Nocelle or Bomerano",
+      "text": "Take SITA toward Amalfi and alight at Nocelle for the shorter finish, or continue to Agerola/Bomerano for the classic start."
+    },
+    {
+      "name": "Trail entry",
+      "text": "At Nocelle, follow signs to Sentiero degli Dei (finish). At Bomerano, follow the main square signage to the trailhead (start)."
+    },
+    {
+      "name": "Return options",
+      "text": "Finish in Nocelle and descend to Positano via stairs, or bus back to Chiesa Nuova."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Where do I start the hike?",
+      "a": "Classic start is Bomerano (Agerola). Shorter option finishes in Nocelle."
+    },
+    {
+      "q": "How long is it?",
+      "a": "Allow ~4 hours including transit and photo stops."
+    },
+    {
+      "q": "What should I bring?",
+      "a": "Sturdy shoes, water, sun protection. Avoid midday heat in summer."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "galleryTitle": "Photo gallery",
+  "gallery": {
+    "items": [
+      {
+        "alt": "View along the Path of the Gods",
+        "caption": "Along the trail"
+      },
+      {
+        "alt": "Nocelle village views",
+        "caption": "Nocelle views"
+      }
+    ]
+  },
+  "toc": {
+    "onThisPage": "On this page",
+    "essentials": "Essentials",
+    "costs": "Typical costs",
+    "faqs": "FAQs",
+    "gallery": "Photo gallery"
+  }
+}

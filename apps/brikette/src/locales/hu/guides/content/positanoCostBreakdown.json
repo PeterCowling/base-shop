@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Positano költségbontása",
+    "description": "Napi átlagköltségek szállásra, ételre, közlekedésre és programokra kategóriánként."
+  },
+  "linkLabel": "Positano költségbontása",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport costs",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "A fordítás folyamatban van.",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Activities & extras",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "tips": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "faqs": [
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "At a glance",
+    "tocTitle": "On this page",
+    "tipsTitle": "Where to save",
+    "faqsTitle": "FAQs"
+  }
+}

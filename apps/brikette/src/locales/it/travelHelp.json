@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "title": "Aiuto viaggio | Brikette Hostel Positano",
+    "description": "Sintesi in due minuti su come raggiungerci e sulle gite preferite dagli ospiti, con link alle guide complete su trasporti ed escursioni."
+  },
+  "headings": {
+    "overview": "Aiuto viaggio in breve",
+    "excursions": "Indicazioni rapide per le escursioni più richieste"
+  },
+  "content": {
+    "overview": "Inizia dalle nostre <a href=\"/it/come-arrivare\">guide Come arrivare</a> passo dopo passo per treni, traghetti, transfer privati e cosa fare se ci sono ritardi. Qui trovi solo i punti chiave: considera circa 2 ore da Napoli a Positano, acquista i biglietti SITA prima di salire e scrivici se stai arrivando tardi così organizziamo il check-in.",
+    "excursions": "Una volta sistemato, la <a href=\"/it/esperienze\">raccolta Esperienze</a> offre istruzioni porta a porta per le gite più amate dagli ospiti: traghetti per Capri, accessi al Sentiero degli Dei, bus per Amalfi e Ravello, treni per Pompei e Vesuvio e altro ancora. Scorri quelle guide per orari di prima partenza, consigli sui biglietti e cosa mettere in valigia."
+  },
+  "slug": "travel-help"
+}

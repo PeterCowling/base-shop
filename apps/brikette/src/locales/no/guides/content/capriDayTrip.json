@@ -1,0 +1,114 @@
+{
+  "seo": {
+    "title": "Dagstur til Capri fra Positano",
+    "description": "Slik planlegger du en dagstur til Capri: ferjer, tidsbruk og områder du bør få med deg."
+  },
+  "linkLabel": "Dagstur til Capri fra Positano",
+  "intro": [
+    "Capri på én dag fra Positano: start tidlig, pakk lett og legg en runde som balanserer Anacapri-utsikt med en smidig retur."
+  ],
+  "toc": [
+    {
+      "href": "#morning",
+      "label": "Morgen – ankomst og Anacapri"
+    },
+    {
+      "href": "#midday",
+      "label": "Midt på dagen – runden ved Marina Piccola"
+    },
+    {
+      "href": "#afternoon",
+      "label": "Ettermiddag – Capri by og retur"
+    },
+    {
+      "href": "#gallery",
+      "label": "Bildegalleri"
+    },
+    {
+      "href": "#faqs",
+      "label": "Vanlige spørsmål"
+    }
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Morgen – ankomst og Anacapri",
+      "body": [
+        "Ta den første ferjen slik at du kommer før cruiseturistene, ta bussen opp til Anacapri og prøv stolheisen til Monte Solaro hvis du liker høyder.",
+        "Spis en enkel frokost på Piazza Vittoria og kjøp returbilletten med én gang for å sikre avgangstid."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Midt på dagen – runden ved Marina Piccola",
+      "body": [
+        "Gå eller ta bussen ned mot Marina Piccola for et bad eller fotostopp; bruk revvennlig solkrem og ha minst én liter vann per person.",
+        "Kjøp panini eller salatbokser fra et delikatesseutsalg i stedet for lang lunsj, så kan du gå opp igjen uten stress."
+      ]
+    },
+    {
+      "id": "afternoon",
+      "title": "Ettermiddag – Capri by og retur",
+      "body": [
+        "Ta kabelbanen opp til Capri by for Via Camerelle, Giardini di Augusto og en siste gelato- eller espresso-pause.",
+        "Vær ved Marina Grande minst 30 minutter før avgang i tilfelle kø til kabelbanen eller bagasjelevering."
+      ]
+    }
+  ],
+  "galleryTitle": "Bildegalleri",
+  "gallery": {
+    "items": {
+      "monteSolaro": {
+        "alt": "Utsikt fra Monte Solaro, Capri",
+        "caption": "Oversikt fra Monte Solaro"
+      },
+      "gardensOfAugustus": {
+        "alt": "Augustus-hagene, Capri",
+        "caption": "Augustus-hagene"
+      }
+    }
+  },
+  "faqsTitle": "Vanlige spørsmål",
+  "howTo": {
+    "steps": [
+      {
+        "name": "Sjekk sesongrutene",
+        "text": "Bekreft morgenavganger og siste retur til Positano."
+      },
+      {
+        "name": "Møt opp tidlig ved kaien",
+        "text": "Still deg i kø 20–30 minutter før avgang i høysesongen."
+      },
+      {
+        "name": "Planlegg ruten på Capri",
+        "text": "Prioriter Anacapri eller Marina Grande + utsiktspunkter ut fra hvor mye tid du har."
+      }
+    ]
+  },
+  "tipsTitle": "Dagens tips",
+  "tips": [
+    "Kjøp tur- og returbillett samtidig, så kan du endre planen uten å lete etter ledige seter senere på dagen.",
+    "Ta med en liten dagstursekk med vann, solkrem og kontanter – minibankene på Capri kan gå tomme i travle uker.",
+    "Last ned offline-kart og busstabeller; dekningen svikter rundt Anacapri og køen til den blå grotten."
+  ],
+  "warningsTitle": "Ting du bør vite",
+  "warnings": [
+    "Køene til stolheis og kabelbane øker etter kl. 15; mister du tiden kan du havne på venteliste til ferjen tilbake.",
+    "Urolig sjø kan avlyse sene avganger uten varsel – sjekk morgenbulletinene og ha en Sorrento-rute som backup.",
+    "Den blå grotten stenger ofte ved vind eller dønninger; operatører selger likevel billetter, så bekreft at den er åpen før du stiller deg i kø."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg få med den blå grotten?",
+      "a": [
+        "Bare hvis det er førsteprioritet – beregn skyttelbåt og 60–90 minutter venting, noe som gjør resten av planen trang."
+      ]
+    },
+    {
+      "q": "Må jeg forhåndsbestille billetter?",
+      "a": [
+        "Bestill morgenferjer i høysesongen og vurder å kjøpe plass på stolheisen eller båtturer på nett; i skuldersesongen kan du som regel kjøpe på stedet."
+      ]
+    }
+  ]
+}

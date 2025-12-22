@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Byguide til Amalfi: historie, seværdigheder og tips",
+    "description": "Domkirke, papirmuseum, klostergang, strande — og hvordan du kommer dertil fra Positano."
+  },
+  "linkLabel": "Byguide til Amalfi: historie, seværdigheder og tips",
+  "intro": [
+    "Få mest muligt ud af en dag i Amalfi by: de vigtigste seværdigheder, hvordan du kommer dertil, og planlægningstips der holder dig foran turistbusserne."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Højdepunkter",
+      "body": [
+        "Bestig de 62 trin til Amalfis domkirke for den stribede facade, klostergangen og museet (anstændig påklædning påkrævet).",
+        "Besøg Museo della Carta for at se håndlavet papir i praksis og bring lette souvenirs med hjem."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Sådan kommer du dertil",
+      "body": [
+        "Færger fra Positano tager 20 minutter; busser bruger 40–50 minutter afhængigt af trafikken. Ankom før kl. 10 for at sikre skygge på piazzaen.",
+        "Køb returbilletter til færgen først på eftermiddagen i tilfælde af ændringer pga. vind."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Hvornår du skal afsted",
+      "body": [
+        "Morgener (før kl. 11) eller aftener (efter kl. 17) er roligst, når dagsturisterne er væk.",
+        "Kombinér Amalfi med Atrani (fem minutters gang) for middag på den mindre piazza, før du rejser tilbage."
+      ]
+    }
+  ],
+  "tips": [
+    "Pak et let tørklæde til kirkebesøg og som solskærm på færgeturen.",
+    "Snup en limongranita fra bodernes ved vandet for at køle ned mellem stop."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Hvor lang tid skal jeg bruge i Amalfi?",
+      "a": [
+        "Sæt tre til fire timer af til domkirken, papirmuseet og et roligt måltid. Læg ekstra tid til hvis du vil bade ved den lille bystrand."
+      ]
+    },
+    {
+      "q": "Findes der bagageopbevaring?",
+      "a": [
+        "Ja, der ligger opbevaring nær færgemolen. Regn med €5–€8 pr. taske for en dag."
+      ]
+    }
+  ]
+}

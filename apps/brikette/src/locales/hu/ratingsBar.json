@@ -1,0 +1,20 @@
+{
+  "aria": {
+    "regionLabel": "Külső értékelések pontszámai",
+    "linkSummary": "{{score}} a(z) {{provider}} oldalon, {{reviews}}, utolsó ellenőrzés {{date}}"
+  },
+  "reviewed": "Értékelve itt:",
+  "countReviews_one": "{{formattedCount}} értékelés",
+  "countReviews_other": "{{formattedCount}} értékelés",
+  "lastChecked": "Utoljára ellenőrizve:",
+  "sources": {
+    "hostelworld": {
+      "ariaName": "Hostelworld",
+      "label": "Hostelworld"
+    },
+    "booking": {
+      "ariaName": "Booking pont kom",
+      "label": "Booking.com"
+    }
+  }
+}

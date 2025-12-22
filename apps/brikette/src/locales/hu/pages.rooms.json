@@ -1,0 +1,33 @@
+{
+  "detail": {
+    "room_12": {
+      "hero": {
+        "eyebrow": "Superior vegyes hálóterem • Terasz",
+        "title": "Ébredj Positano látképére a hatalmas közös teraszról",
+        "subtitle": "Hat ágy, privát beltéri kényelem és a hostel legnagyobb kültéri nappalija.",
+        "bullets": [
+          "Panorámás terasz társalgó ülőhelyekkel és reggelizőasztalokkal",
+          "Privát fürdőszoba frissen előkészített törölközőkkel",
+          "Gyors Wi-Fi, légkondi és kártyás szekrény minden vendégnek"
+        ]
+      },
+      "outline": {
+        "heading": "Mit kapsz a teraszos dormban",
+        "items": [
+          {
+            "title": "Kültéri tér mindenkinek",
+            "body": "Naplemente spriccset kortyolhattok a kanapékon vagy hosszú padokon, miközben előttetek tárul Positano pasztell horizontja."
+          },
+          {
+            "title": "Tágas háló rész",
+            "body": "Hat masszív emeletes ágy privát függönnyel, olvasólámpával és konnektorral, hogy nyugodtan pihenhess."
+          },
+          {
+            "title": "Készen a strandnapokra",
+            "body": "A kártyás szekrényekben biztonságban tarthatod a csomagot, a terasz szárítóin gyorsan megszárad a fürdőruha, az ensuite-ben pedig pillanatok alatt felfrissülhetsz."
+          }
+        ]
+      }
+    }
+  }
+}

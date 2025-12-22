@@ -9,6 +9,8 @@ import {
   DEV_NEXTAUTH_SECRET,
   DEV_SESSION_SECRET,
   selectStore,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
 } from "./authEnvTestUtils";
 
 const redisUnset = {
@@ -23,6 +25,8 @@ const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "production",
   NEXTAUTH_SECRET: NEXT_SECRET,
   SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...redisUnset,
   ...overrides,
 });
@@ -31,6 +35,8 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "development",
   NEXTAUTH_SECRET: DEV_NEXTAUTH_SECRET,
   SESSION_SECRET: DEV_SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...redisUnset,
   ...overrides,
 });
@@ -52,6 +58,8 @@ describe("authEnvSchema basics", () => {
     const result = authEnvSchema.safeParse({
       NEXTAUTH_SECRET: NEXT_SECRET,
       SESSION_SECRET,
+      OAUTH_ISSUER,
+      OAUTH_REDIRECT_ORIGIN,
     });
     expect(result.success).toBe(true);
   });
@@ -61,6 +69,8 @@ describe("authEnvSchema session store", () => {
   const baseEnv = {
     NEXTAUTH_SECRET: NEXT_SECRET,
     SESSION_SECRET,
+    OAUTH_ISSUER,
+    OAUTH_REDIRECT_ORIGIN,
     ...redisUnset,
   };
 

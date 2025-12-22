@@ -1,0 +1,19 @@
+{
+  "message": "Réservez en direct et économisez jusqu'à 25 % — petit-déjeuner et boissons offerts !",
+  "cta": "Cliquez pour en savoir plus",
+  "openOffersLabel": "Cliquez pour en savoir plus",
+  "closeLabel": "Fermer la notification",
+  "modal": {
+    "closeLabel": "Fermer la fenêtre",
+    "title": "Réservez en direct et économisez",
+    "description": "Merci d'avoir choisi de réserver directement auprès de nous ! Pour vous remercier, vous profiterez de :",
+    "perks": {
+      "discount": "Jusqu'à 25 % de réduction sur le tarif de votre chambre",
+      "breakfast": "Petit-déjeuner offert chaque matin",
+      "drinks": "Boissons de bienvenue offertes",
+      "upgrades": "Surclassements prioritaires (selon disponibilité)"
+    },
+    "callToAction": "Profitez dès maintenant de ces avantages exclusifs !",
+    "button": "Réserver maintenant"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Bilhetes do ônibus SITA e dicas",
+    "description": "Onde comprar bilhetes SITA, regras de validação, política de bagagem e truques para enfrentar filas na Costa Amalfitana."
+  },
+  "linkLabel": "Bilhetes e dicas para o ônibus SITA",
+  "intro": [
+    "Compre os bilhetes SITA antes de embarcar e considere tempo extra no verão. Guarde o ticket até o fim da viagem."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Onde comprar",
+      "body": [
+        "Compre em tabacarias/jornais ao longo da estrada principal. Faça estoque quando as filas estiverem curtas."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Validação",
+      "body": [
+        "Valide ao embarcar onde houver máquina; mantenha o bilhete até descer."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Posso comprar a bordo?",
+      "a": [
+        "Em geral não; compre antes de embarcar para evitar atrasos."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Day Trips from Positano: Capri, Pompeii, Ravello, Amalfi",
+    "description": "How to plan popular day trips from Positano with ferries and buses, including timing and ticket tips."
+  },
+  "linkLabel": "Day Trips from Positano",
+  "intro": [
+    "Use Positano as a base for day trips by ferry and bus—start early, pre-book key tickets, and always carry a weather fallback."
+  ],
+  "sections": [
+    {
+      "id": "capri",
+      "title": "Capri highlights",
+      "body": [
+        "Book the first ferry out, ride the chairlift to Monte Solaro, and stroll Giardini di Augusto before cruise visitors arrive.",
+        "Return on a late-afternoon sailing and keep a bus timetable screenshot in case seas get rough."
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompeii or Herculaneum",
+      "body": [
+        "Take the early bus to Sorrento and connect with the Circumvesuviana train; buy skip-the-line tickets online to save time.",
+        "Carry water and a sun hat—there is little shade on site, and visits easily run 3–4 hours."
+      ]
+    },
+    {
+      "id": "amalfi-ravello",
+      "title": "Amalfi & Ravello combo",
+      "body": [
+        "Sail to Amalfi, explore the Duomo, then ride the 5110 bus up to Ravello for Villa Cimbrone and lunch with a view.",
+        "Stay for late-afternoon light and catch a twilight ferry or bus back—queues shrink after 18:00."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento & food focus",
+      "body": [
+        "Hop on the mid-morning ferry to Sorrento for a market crawl, limoncello tastings, and sunset at the Villa Comunale terrace.",
+        "Return via late bus to Positano if the last ferry sells out; the ride takes about 50 minutes."
+      ]
+    }
+  ],
+  "tips": [
+    "Pre-load offline maps and timetables; mobile data can dip inside train tunnels and on the Capri cliffs.",
+    "Pack a lightweight rain jacket—summer storms roll in fast and ferries pause during lightning."
+  ],
+  "faqs": [
+    {
+      "q": "Which day trip needs the earliest start?",
+      "a": [
+        "Capri and Pompeii benefit from first departures; they get crowded by mid-morning and involve more travel time."
+      ]
+    },
+    {
+      "q": "Can I fit two towns into one day?",
+      "a": [
+        "Yes—pair Amalfi with Ravello or Sorrento with Pompeii. Avoid stacking Capri with anything else; give it a full day."
+      ]
+    }
+  ]
+}

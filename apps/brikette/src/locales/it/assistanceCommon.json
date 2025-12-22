@@ -1,0 +1,33 @@
+{
+  "sidebarLabel": "Navigazione Centro Assistenza",
+  "openSidebar": "Apri la navigazione assistenza",
+  "closeSidebar": "Chiudi la navigazione assistenza",
+  "mobileSidebarLabel": "Navigazione Centro Assistenza",
+  "mobileHint": "Scorri verso il basso o tocca chiudi per nascondere questo menu di assistenza",
+  "nav": {
+    "assistance": "Assistenza Digitale",
+    "ama": "Chiedici qualsiasi cosa",
+    "bookingBasics": "Nozioni di Base sulla Prenotazione",
+    "changingCancelling": "Modifiche e Cancellazioni",
+    "checkinCheckout": "Guida al check-in e check-out",
+    "depositsPayments": "Pagamenti e Depositi",
+    "defectsDamages": "Difetti e Danni",
+    "security": "Sicurezza",
+    "rules": "Regole",
+    "legal": "Legale",
+    "ageAccessibility": "Età e Accessibilità",
+    "arrivingByFerry": "Arrivare in traghetto",
+    "naplesAirportBus": "Aeroporto di Napoli in autobus",
+    "travelHelp": "Aiuto per il viaggio"
+  },
+  "cta": {
+    "readMore": "Scopri di più",
+    "readMoreAccessible": "Scopri di più (si apre una nuova pagina di assistenza)"
+  },
+  "alsoHelpful": "Utile anche",
+  "alsoHelpfulEyebrow": "Scelte locali",
+  "alsoHelpfulDescription": "Organizza al meglio con guide selezionate e scorciatoie rapide per le prenotazioni.",
+  "alsoHelpfulExplore": "Esplora questa guida",
+  "alsoHelpfulBook": "Prenota il tuo soggiorno",
+  "roomsCta": "Vedi camere e disponibilità"
+}

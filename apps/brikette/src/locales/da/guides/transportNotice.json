@@ -1,0 +1,11 @@
+{
+  "title": "Tjek altid transportoplysninger",
+  "items": {
+    "buses": "Busser: se SITA Suds officielle køreplaner — <sitaLink>sitasudtrasporti.it</sitaLink>.",
+    "ferries": "Færger: operatører offentliggør sæsonruter og tider (afhænger af vejret). Se <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
+    "airlink": "Flyver du til Salerno Costa d’Amalfi (QSR)? Brug Airlink-shuttlen til Salerno — <airportLink>aeroportodisalerno.it</airportLink> og <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
+    "driving": "Bil: SS163 har skiftende nummerpladeregler (apr.–okt.) og ZTL-zoner; parkeringspriser varierer efter sæson og sted. Tjek officielle meldinger.",
+    "premium": "Premium eller sæson: Uber Boat og helikoptercharters kører begrænset sommerskema — bekræft aktuel tilgængelighed."
+  },
+  "srLabel": "Transportnote"
+}

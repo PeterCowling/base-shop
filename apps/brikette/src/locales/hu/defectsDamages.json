@@ -1,0 +1,25 @@
+{
+  "slug": "defects-damages",
+  "meta": {
+    "title": "Hibák és károk – útmutató",
+    "description": "Hogyan jelentsd a szobahibákat, reagálásunk a súlyos problémákra, kauciós szabályok, vendégfelelősség és fontos tudnivalók az ágyi poloska megelőzéséről."
+  },
+  "headings": {
+    "reportingDefects": "Hibák bejelentése",
+    "assessingDefects": "Hibák értékelése",
+    "responseToSeriousDefects": "Intézkedés súlyos hibáknál",
+    "unreportedDefects": "Be nem jelentett hibák",
+    "damagesPolicy": "Károkozási szabályzat",
+    "bedBugsPolicy": "Ágyi poloska szabályzat",
+    "bedBugsPrevention": "Ágyi poloska megelőzése"
+  },
+  "content": {
+    "reportingDefects": "Ha bármilyen hibát vagy rendellenességet észlel a szobában, azonnal jelezze nekünk. A gyors visszajelzés segít, hogy a problémát mielőbb kezelni és megoldani tudjuk.",
+    "assessingDefects": "Amint bejelent egy hibát, azonnal felmérjük, és annak alapján priorizáljuk a beavatkozást, hogy mennyire befolyásolja a kényelmét és a tartózkodását.",
+    "responseToSeriousDefects": "Ha olyan komoly hibáról van szó, amelyet nem tudunk azonnal kijavítani, alternatív szállást biztosítunk. Ha az alternatíva olcsóbb a lefoglalt szobájánál, visszatérítjük a különbözetet. Ha nem fogadja el az alternatívát, kérheti a fennmaradó éjszakák arányos visszatérítését.",
+    "unreportedDefects": "Ha a szobában olyan problémát találunk, amelyet ésszerű időn belül nem jelentett, felmérjük az ebből eredő károkat, és alkalmazhatjuk a károkozási szabályzatot.",
+    "damagesPolicy": "Az Ön és a mi biztonságunk érdekében a check-in során előengedélyezhetjük a bankkártyáját, vagy készpénz letétet kérhetünk az esetleges károk fedezésére. Amennyiben nem tud letétet vagy előengedélyt biztosítani, foglalását törölhetjük. A letéteket a kijelentkezéskor teljes mértékben visszatérítjük, levonva az esetlegesen felmerülő károk, veszteségek, munka- vagy adminisztrációs költségek összegét. Ha ezek meghaladják a letétet, a különbözetet Önnek kell megtérítenie. A javítási vagy takarítási munkadíj óradíjas elszámolású: igazgató (50 €/óra), menedzser (35 €/óra), személyzet (25 €/óra).",
+    "bedBugsPolicy": "Az ágyi poloskával kapcsolatos eseteket proaktívan kezeljük és azonnal intézkedünk. Ha a tartózkodása alatt ágyi poloskát találunk a szobájában, felelősségre vonhatjuk a kapcsolódó költségekért, például a kieső foglalási bevételért, a takarításért vagy a rovarirtásért. Kérjük, azonnal jelezze a személyzetnek, ha ágyi poloska jelenlétének jelét tapasztalja.",
+    "bedBugsPrevention": "Az ágyi poloska megelőzése érdekében kérjük, tegye a következőket:\n• Jelezze check-inkor, ha nemrég olyan helyen szállt meg, ahol ágyi poloska-problémát tapasztaltak.\n• Fertőtlenítse alaposan a holmiját.\n• Gondosan ellenőrizze a bőröndjét és ruháit ágyi poloska jelenléte szempontjából, mielőtt belépne a szobába."
+  }
+}

@@ -9,15 +9,23 @@ jest.mock("@prisma/client", () => ({
 
 const mockDiffHistory = jest.fn();
 const mockSaveShopSettings = jest.fn();
+const mockGetShopSettings = jest.fn();
 
 jest.mock("@platform-core/repositories/settings.server", () => ({
   diffHistory: (...args: any[]) => mockDiffHistory(...args),
   saveShopSettings: (...args: any[]) => mockSaveShopSettings(...args),
+  getShopSettings: (...args: any[]) => mockGetShopSettings(...args),
 }));
 jest.mock("@platform-core/repositories/json.server", () => ({}));
 
 beforeEach(() => {
   jest.clearAllMocks();
+  mockGetShopSettings.mockResolvedValue({
+    languages: [],
+    seo: {},
+    updatedAt: "",
+    updatedBy: "",
+  });
   __setMockSession({ user: { role: "admin" } } as any);
 });
 

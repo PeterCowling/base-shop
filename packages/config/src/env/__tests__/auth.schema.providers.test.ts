@@ -1,7 +1,14 @@
 /** @jest-environment node */
 import { describe, expect, it } from "@jest/globals";
 
-import { JWT_SECRET, OAUTH_SECRET, loadProdSchema, prodSecrets } from "./authTestHelpers";
+import {
+  JWT_SECRET,
+  OAUTH_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
+  loadProdSchema,
+  prodSecrets,
+} from "./authTestHelpers";
 
 describe("auth schema provider dependencies", () => {
   it("requires JWT_SECRET for AUTH_PROVIDER=jwt", async () => {
@@ -23,6 +30,8 @@ describe("auth schema provider dependencies", () => {
     const result = schema.safeParse({
       ...prodSecrets,
       AUTH_PROVIDER: "oauth",
+      OAUTH_ISSUER,
+      OAUTH_REDIRECT_ORIGIN,
     });
     expect(result.success).toBe(false);
     expect(result.error.format()).toMatchObject({
@@ -40,6 +49,8 @@ describe("auth schema provider dependencies", () => {
     const result = schema.safeParse({
       ...prodSecrets,
       AUTH_PROVIDER: "oauth",
+      OAUTH_ISSUER,
+      OAUTH_REDIRECT_ORIGIN,
       OAUTH_CLIENT_ID: "client-id",
       OAUTH_CLIENT_SECRET: OAUTH_SECRET,
     });

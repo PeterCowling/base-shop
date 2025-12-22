@@ -11,6 +11,9 @@ const chargesRetrieve = jest.fn<Promise<any>, [string]>();
 const getShopSettings = jest.fn<Promise<any>, [string]>();
 const updateSubscriptionPaymentStatus = jest.fn();
 const syncSubscriptionData = jest.fn();
+const wasStripeWebhookEventProcessed = jest.fn<Promise<boolean>, [string]>();
+const markStripeWebhookEventProcessed = jest.fn<Promise<void>, [string, any]>();
+const markStripeWebhookEventFailed = jest.fn<Promise<void>, [string, any, any]>();
 
 jest.mock("../src/orders/creation", () => ({ addOrder }));
 jest.mock("../src/orders/refunds", () => ({ markRefunded }));
@@ -29,13 +32,22 @@ jest.mock("@acme/stripe", () => ({
     charges: { retrieve: chargesRetrieve },
   },
 }));
+jest.mock("../src/stripeWebhookEventStore", () => ({
+  wasStripeWebhookEventProcessed,
+  markStripeWebhookEventProcessed,
+  markStripeWebhookEventFailed,
+}));
 
 describe("handleStripeWebhook checkout.session.completed", () => {
   afterEach(() => {
     jest.clearAllMocks();
+    wasStripeWebhookEventProcessed.mockReset();
+    markStripeWebhookEventProcessed.mockReset();
+    markStripeWebhookEventFailed.mockReset();
   });
 
   test("triggers manual review and 3DS above threshold", async () => {
+    wasStripeWebhookEventProcessed.mockResolvedValue(false);
     getShopSettings.mockResolvedValue({
       luxuryFeatures: {
         fraudReviewThreshold: 100,
@@ -55,11 +67,12 @@ describe("handleStripeWebhook checkout.session.completed", () => {
     } as any;
     await handleStripeWebhook("test", event);
     expect(addOrder).toHaveBeenCalledWith(
-      "test",
-      "cs_1",
-      150,
-      undefined,
-      undefined,
+      expect.objectContaining({
+        shop: "test",
+        sessionId: "cs_1",
+        deposit: 150,
+        stripePaymentIntentId: "pi_1",
+      }),
     );
     expect(reviewsCreate).toHaveBeenCalledWith({ payment_intent: "pi_1" });
     expect(piUpdate).toHaveBeenCalledWith("pi_1", {
@@ -75,6 +88,7 @@ describe("handleStripeWebhook checkout.session.completed", () => {
   });
 
   test("below threshold skips review and 3DS", async () => {
+    wasStripeWebhookEventProcessed.mockResolvedValue(false);
     getShopSettings.mockResolvedValue({
       luxuryFeatures: {
         fraudReviewThreshold: 100,
@@ -94,15 +108,36 @@ describe("handleStripeWebhook checkout.session.completed", () => {
     } as any;
     await handleStripeWebhook("test", event);
     expect(addOrder).toHaveBeenCalledWith(
-      "test",
-      "cs_2",
-      50,
-      undefined,
-      undefined,
+      expect.objectContaining({
+        shop: "test",
+        sessionId: "cs_2",
+        deposit: 50,
+        stripePaymentIntentId: "pi_2",
+      }),
     );
     expect(reviewsCreate).not.toHaveBeenCalled();
     expect(piUpdate).not.toHaveBeenCalled();
     expect(updateRisk).not.toHaveBeenCalled();
   });
-});
 
+  test("short-circuits already-processed events and does not re-create orders", async () => {
+    wasStripeWebhookEventProcessed.mockResolvedValue(true);
+    const { handleStripeWebhook } = await import("../src/stripe-webhook");
+    const event: Stripe.Event = {
+      id: "evt_123",
+      type: "checkout.session.completed",
+      data: {
+        object: {
+          id: "cs_dup",
+          payment_intent: "pi_dup",
+          metadata: { depositTotal: "10" },
+        },
+      },
+    } as any;
+    await handleStripeWebhook("test", event);
+
+    expect(addOrder).not.toHaveBeenCalled();
+    expect(markStripeWebhookEventProcessed).not.toHaveBeenCalled();
+    expect(markStripeWebhookEventFailed).not.toHaveBeenCalled();
+  });
+});

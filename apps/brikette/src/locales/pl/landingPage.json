@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Hostel Brikette w Positano – Tani pobyt na Wybrzeżu Amalfitańskim",
+    "description": "Zarezerwuj pobyt w jedynym budżetowym hostelu w Positano z widokiem z tarasu. Bezpłatne Wi‑Fi i wskazówki cyfrowego concierge’a. Rezerwuj bezpośrednio – najlepsza cena.",
+    "ogImageAlt": "Widok z tarasu hostelu"
+  },
+  "introSection": {
+    "title": "Piękny dom z dala od domu",
+    "titleParts": {
+      "before": "Piękny",
+      "between": "dom z dala od",
+      "home": "domu"
+    },
+    "paragraph1": "Hostel Brikette to <strong>jedyny hostel w Positano</strong>, oferujący <strong>przystępne cenowo</strong> noclegi, dzięki którym atrakcje Wybrzeża Amalfitańskiego są na wyciągnięcie ręki.",
+    "paragraph2": "Usytuowani na klifie mamy <strong>niesamowite widoki na morze</strong>, praktyczne udogodnienia oraz całodobowe wskazówki lokalne dzięki <strong>cyfrowemu concierge’owi</strong>—Twojemu przewodnikowi po rozkładach promów, szlakach pieszych, restauracjach i nie tylko.",
+    "paragraph3": "Niezależnie czy wybierzesz łóżko w dormie czy pokój prywatny, każdy zaprojektowano z myślą o <strong>komforcie</strong> i <strong>wygodzie</strong>."
+  },
+  "facilitiesModal": {
+    "title": "Udogodnienia i wyposażenie",
+    "closeButton": "Zamknij",
+    "categories": [
+      {
+        "title": "Ogólne",
+        "items": [
+          "Pokoje dla niepalących",
+          "Bezpłatne Wi‑Fi",
+          "Klimatyzacja",
+          "Ogrzewanie"
+        ]
+      },
+      {
+        "title": "Łazienka",
+        "items": [
+          "Papier toaletowy",
+          "Ręczniki kąpielowe",
+          "Pościel",
+          "Ręczniki plażowe (dodatkowo płatne)",
+          "Toaleta",
+          "Prysznic"
+        ]
+      },
+      {
+        "title": "Na zewnątrz",
+        "items": [
+          "Miejsce piknikowe",
+          "Meble ogrodowe",
+          "Taras słoneczny",
+          "Taras"
+        ]
+      },
+      {
+        "title": "Aktywności",
+        "items": [
+          "Wędrówki piesze (poza obiektem)"
+        ]
+      },
+      {
+        "title": "Jedzenie i napoje",
+        "items": [
+          "Bar"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Wi‑Fi dostępne w częściach wspólnych bezpłatnie"
+        ]
+      },
+      {
+        "title": "Parking",
+        "items": [
+          "Parking niedostępny"
+        ]
+      },
+      {
+        "title": "Usługi",
+        "items": [
+          "Codzienne sprzątanie",
+          "Szafki",
+          "Usługa concierge",
+          "Przechowalnia bagażu"
+        ]
+      },
+      {
+        "title": "Bezpieczeństwo",
+        "items": [
+          "Gaśnice",
+          "Monitoring w częściach wspólnych",
+          "Wejście na kartę"
+        ]
+      },
+      {
+        "title": "Języki",
+        "items": [
+          "Angielski",
+          "Hiszpański",
+          "Włoski"
+        ]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "Panoramiczny widok Positano z tarasu Hostel Brikette",
+    "brandName": "Hostel Brikette",
+    "cityName": "Positano",
+    "address": "Via G. Marconi, 358, 84017 Positano SA",
+    "locationButton": "Lokalizacja",
+    "contactButton": "Kontakt",
+    "helpButton": "Pomoc",
+    "reserveNow": "Zarezerwuj teraz"
+  },
+  "quickLinksSection": {
+    "location": "Lokalizacja",
+    "photosAndVideos": "Zdjęcia i filmy",
+    "facilitiesAndAmenities": "Udogodnienia i wyposażenie",
+    "barMenu": "Menu baru",
+    "breakfastMenu": "Menu śniadaniowe"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "Piękne przestrzenie wspólne",
+    "slides": [
+      {
+        "title": "Wzgórzowe zacisze",
+        "text": "Obudź się z widokiem na góry na naszym słonecznym tarasie.",
+        "alt": "Taras z widokiem na zbocza Positano"
+      },
+      {
+        "title": "Oaza pod gołym niebem",
+        "text": "Wygrzewaj się w słońcu i zawieraj nowe znajomości.",
+        "alt": "Taras z bambusowym zadaszeniem dającym cień"
+      },
+      {
+        "title": "Niesamowite widoki na morze",
+        "text": "Rozkoszuj się magią horyzontu, gdy słońce zanurza się w morzu.",
+        "alt": "Szeroki horyzont morski z tarasu hostelu"
+      }
+    ]
+  }
+}

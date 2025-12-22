@@ -1,3 +1,4 @@
+/* i18n-exempt file -- TEST-1234 test fixtures [ttl=2026-12-31] */
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -21,7 +22,7 @@ export async function withShop(cb: (dir: string) => Promise<void>): Promise<void
 export type ShopSeed = {
   id: string;
   name: string;
-  catalogFilters: any[];
+  catalogFilters: unknown[];
   themeId: string;
   themeDefaults?: Record<string, unknown>;
   themeOverrides?: Record<string, unknown>;
@@ -48,7 +49,9 @@ export async function seedShop(
   }
 ): Promise<void> {
   const shopDir = path.join(dir, 'data', 'shops', shop.id || 'test');
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-1234 temp fixture directory
   await fs.mkdir(shopDir, { recursive: true });
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-1234 temp fixture file
   await fs.writeFile(path.join(shopDir, 'shop.json'), JSON.stringify(shop, null, 2));
 }
 

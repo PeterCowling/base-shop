@@ -1,0 +1,47 @@
+{
+  "hostelworld": {
+    "featured": [
+      {
+        "rating": 9.7,
+        "text": "Vị trí tuyệt vời với tầm nhìn ngoạn mục. Nhân viên cực kỳ thân thiện và nhiệt tình trong suốt thời gian tôi ở đây."
+      },
+      {
+        "rating": 9.5,
+        "text": "Hostel tuyệt! Sân thượng rất lý tưởng để nhâm nhi lúc hoàng hôn. Phòng sạch sẽ và không khí rất tuyệt."
+      },
+      {
+        "rating": 9.4,
+        "text": "Tôi rất thích những mẹo của concierge kỹ thuật số. Chắc chắn sẽ quay lại!"
+      },
+      {
+        "rating": 9.6,
+        "text": "Giường thoải mái và phòng tắm sạch bóng. Đi Positano nhất định phải ở đây."
+      },
+      {
+        "rating": 9.2,
+        "text": "Nhờ đội ngũ dễ thương mà tôi cảm thấy như ở nhà."
+      },
+      {
+        "rating": 9.3,
+        "text": "Hostel giá tốt và vui tươi, chỉ cách bến xe vài phút."
+      }
+    ],
+    "latest": [
+      {
+        "rating": 9.4,
+        "text": "Tôi rất thích những mẹo của concierge kỹ thuật số. Chắc chắn sẽ quay lại!",
+        "datePublished": "2025-10-09"
+      },
+      {
+        "rating": 9.5,
+        "text": "Hostel tuyệt! Sân thượng rất lý tưởng để nhâm nhi lúc hoàng hôn. Phòng sạch sẽ và không khí rất tuyệt.",
+        "datePublished": "2025-10-09"
+      },
+      {
+        "rating": 9.2,
+        "text": "Nhờ đội ngũ dễ thương mà tôi cảm thấy như ở nhà.",
+        "datePublished": "2025-10-09"
+      }
+    ]
+  }
+}

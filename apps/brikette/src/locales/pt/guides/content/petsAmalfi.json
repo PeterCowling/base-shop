@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Traveling the Amalfi Coast with Pets",
+    "description": "Pet‑friendly logistics, ferries, and accommodations to expect."
+  },
+  "linkLabel": "Viajando com pets pela Costa Amalfitana",
+  "intro": [
+    "Viaje pela Costa Amalfitana com animais de estimação em segurança: documentação, estadias pet-friendly e etiqueta local."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Antes de viajar",
+      "body": [
+        "Leve comprovativo de microchip padrão UE, vacinação antirrábica e tratamento antiparasitário conforme o país de origem.",
+        "Embale tigelas dobráveis, tapete leve e sacos para dejetos — muitas vilas têm oferta limitada para pets."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Deslocações",
+      "body": [
+        "Animais pequenos viajam grátis nos autocarros SITA se estiverem com trela ou transportadora; cães maiores precisam de açaime e bilhetes com desconto.",
+        "Ferries aceitam pets nos conveses exteriores; use trela curta e chegue cedo para encontrar sombra."
+      ]
+    },
+    {
+      "id": "where",
+      "title": "Onde são bem-vindos",
+      "body": [
+        "Muitos alojamentos aceitam cães de pequeno porte com aviso prévio — confirme taxas e regras antes de reservar.",
+        "Praias pet-friendly incluem a Bau Bau Beach (Maiori) e zonas da Marina di Praia fora das horas de pico."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve água e tigelas dobráveis; calor e escadas cansam os animais rapidamente no verão.",
+    "Mantenha os pets fora das escadarias das igrejas e só entre em cafés quando convidado — esplanadas são geralmente pet friendly."
+  ],
+  "faqs": [
+    {
+      "q": "Os veterinários falam inglês?",
+      "a": [
+        "Muitos sim, especialmente em Sorrento e Salerno. Guarde uma lista de clínicas próximas e números de emergência antes de viajar."
+      ]
+    },
+    {
+      "q": "Táxis aceitam animais?",
+      "a": [
+        "A maioria aceita pets pequenos se avisar na reserva. Leve uma manta para proteger o banco e ofereça gorjeta pelo extra."
+      ]
+    }
+  ]
+}

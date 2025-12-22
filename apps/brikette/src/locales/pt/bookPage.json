@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Reserve a sua estadia – Site oficial",
+    "description": "Tarifas Flexíveis e Não Reembolsáveis. Pagamento seguro no nosso motor de reservas oficial."
+  },
+  "heading": "Reserve a sua estadia",
+  "roomLabel": "Quarto",
+  "cta": {
+    "flex": "Flexível – Ir ao pagamento",
+    "nr": "Não reembolsável – Ir ao pagamento"
+  },
+  "checking": "A verificar…",
+  "flex": {
+    "title": "Tarifa flexível (reembolsável)",
+    "bullets": [
+      "Cancele grátis até às 15:00, três dias completos antes da chegada.",
+      "Alterações sujeitas a disponibilidade."
+    ]
+  },
+  "nr": {
+    "title": "Não reembolsável (pré‑pago)",
+    "bullets": [
+      "Pagamento 100% antecipado; sem reembolsos/no‑shows.",
+      "Pagamentos falhados são cancelados automaticamente."
+    ]
+  },
+  "unavailable": {
+    "title": "Indisponível para estas datas.",
+    "none": "Não foram encontradas alternativas diretas.",
+    "seeAll": "Ver toda a disponibilidade",
+    "bookThis": "Reservar esta opção"
+  },
+  "policies": {
+    "title": "Políticas e depósitos",
+    "items": [
+      "Taxa municipal/turística: 2,50 € por hóspede e por noite (adicionada no pagamento).",
+      "Depósito de cartão e roupas de cama: 10 € em dinheiro no check‑in; devolvido na entrega.",
+      "Caução de segurança: até uma noite por hóspede no check‑in (ou valor equivalente em dinheiro). Se não for possível, a reserva é cancelada.",
+      "Taxa administrativa de cancelamento: normalmente 15% do valor da reserva (excluindo comissões de terceiros).",
+      "Receção encerra às 22:30; em caso de no‑show, cobra‑se o maior entre a primeira noite ou o depósito não reembolsável."
+    ],
+    "footer": "A disponibilidade final e o pagamento são concluídos no nosso motor de reservas oficial."
+  },
+  "backToRooms": "Voltar aos quartos"
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Kulinarne odkrycia: Neapol i Wybrzeże Amalfi",
+    "description": "Przewodnik po lokalnych smakach: co zjeść, gdzie i jak planować rezerwacje."
+  },
+  "linkLabel": "Kulinarne odkrycia: Neapol i Wybrzeże Amalfi",
+  "intro": [
+    "Navigate the best bites between Naples and the Amalfi Coast with must-try dishes, markets, and local drinks."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Naples essentials",
+      "body": [
+        "Try classic pizza Margherita, fried pizza, and sfogliatella within a single day—pace yourself with espresso breaks.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi Coast specialties",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Street food & markets",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "tips": [
+    "Tłumaczenie w przygotowaniu.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "faqs": [
+    {
+      "q": "Can I do a food tour from Positano?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Do restaurants cater to vegetarians?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "So kommen Sie zu uns – Tipps für Bus, Fähre und Fußweg",
+    "description": "Finden Sie die nächste Bushaltestelle, Fährverbindungen und Gehzeiten, um das Hostel Brikette in Positano zu erreichen."
+  },
+  "title": "So kommen Sie zu uns",
+  "intro": "Wir sind ca. 100 m von der Bushaltestelle Chiesa Nuova entfernt und etwa 13 Gehminuten vom Strand.",
+  "steps": {
+    "bus": "Von Sorrent: Nehmen Sie den SITA-Bus nach Positano (Haltestelle Chiesa Nuova).",
+    "ferry": "Von Capri/Amalfi: Nehmen Sie die Fähre nach Positano, dann Bus oder Taxi hinauf.",
+    "walk": "Rechnen Sie mit Treppen; der Ausblick lohnt sich. Folgen Sie den Schildern zur Via G. Marconi 358."
+  },
+  "photos": {
+    "heading": "Sehen Sie die Route, bevor Sie losgehen",
+    "items": [
+      {
+        "alt": "Stufen, die zum Hostel Brikette führen, während ein Gast zum Eingang geht",
+        "caption": "Von der Haltestelle Chiesa Nuova folgen Sie etwa eine Minute den Stufen – unser Schild erscheint rechts."
+      },
+      {
+        "alt": "Fassade des Hostel Brikette in der Via G. Marconi 358",
+        "caption": "Achten Sie auf die Via G. Marconi 358 an der Steinmauer; der Eingang liegt direkt hinter der Hausnummer."
+      },
+      {
+        "alt": "Check-in-Schalter des Hostel Brikette in der Lobby",
+        "caption": "Im Inneren befindet sich links der Check-in-Schalter – wir bewahren Ihr Gepäck auf, falls Ihr Zimmer noch nicht bereit ist."
+      }
+    ]
+  }
+}

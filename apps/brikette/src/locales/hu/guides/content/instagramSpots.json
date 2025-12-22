@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Térképezd fel a népszerű fotópontokat, a legjobb időpontokat és az etikettet."
+  },
+  "linkLabel": "Positano Instagram Spots (without the crowds)",
+  "intro": [
+    "Biztosítsd be a klasszikus positanói fotókat azzal, hogy előre megtervezed a fényt, a nézőpontokat és az etikettet, így nem akadályozod sem a helyieket, sem a többi utazót."
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Klasszikus képeslap-fotók",
+      "body": [
+        "Napkelte után nem sokkal fotózz a Santa Maria Assunta-templom lépcsőjéről; a strand ilyenkor üres, a kupola pedig aranyfényben izzik.",
+        "Sétálj ki a kompkikötő mólójára, ahonnan nagylátószögben láthatod a sziklafalra épült várost – érkezz 9:00 előtt, mielőtt a napközis csoportok sorba állnak."
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Alulértékelt nézőpontok",
+      "body": [
+        "Mássz fel a Via Trara Genoino kilátójához Fornillo fölé, ahol réteges kompozíciót kapsz a halászhajókról és a pasztell házakról.",
+        "Szállj fel a helyi buszra Nocelléig, majd fotózd a partot az Istenek ösvénye teraszáról; tiszta reggeleken verhetetlen a panoráma."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Aranyórás helyszínek",
+      "body": [
+        "Foglalj helyet a Via Cristoforo Colombo padjain napnyugta előtt kb. 45 perccel; nyáron a nap a Li Galli-szigetek mögé bukik.",
+        "Menj le a Laurito strandra, ahol Positano sziluettje rajzolódik ki – a lépcsők meredekek, ezért viselj tapadós cipőt, és vigyél fejlámpát a visszaútra."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Fotózási etikett",
+      "body": [
+        "A háromlábat tartsd összecsukva, és lépj félre, miután elkészült a kép, hogy a lépcsők járhatók maradjanak.",
+        "Ne reptess drónt a városon belül; az olasz szabályozás engedélyt ír elő, és súlyos bírság jár az engedély nélküli repülésért."
+      ]
+    }
+  ],
+  "tips": [
+    "Legyen nálad mikroszálas kendő a sós permethez és a naptejfoltokhoz az objektíven.",
+    "Mentsd el kedvenc nézőpontjaidat offline a Google Térképben; a teraszokon és ösvényeken gyenge lehet a térerő."
+  ],
+  "faqs": [
+    {
+      "q": "Napkelte vagy napnyugta jobb a fotókhoz?",
+      "a": [
+        "Napkeltekor üresebbek az utcák és lágyabb a fény a Spiaggia Grande fölött; napnyugtakor a nyugat felől érkező fény festi meg a sziklafalat, de több a néző."
+      ]
+    },
+    {
+      "q": "Lehet fotózni a hotelek teraszán, ha nem vagyok vendég?",
+      "a": [
+        "Nem – a teraszok magánterületek. Foglalj asztalt egy étteremben, ha azt a perspektívát szeretnéd, és fotózás előtt mindig kérj engedélyt a személyzettől."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "Positano szinte minden szögből fotogén – de a legnépszerűbb helyek a nap nagy részében zsúfoltak. Így készítheted el a klasszikus képeket sorban állás nélkül, plusz néhány alulértékelt alternatíva.",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "A klasszikusok (számít az időzítés)"
+      },
+      {
+        "href": "#alternatives",
+        "label": "Alulértékelt alternatívák"
+      },
+      {
+        "href": "#sunset",
+        "label": "Napnyugta helyszínek"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etikett és helyi tippek"
+      },
+      {
+        "href": "#faqs",
+        "label": "GYIK"
+      }
+    ],
+    "classics": {
+      "heading": "A klasszikusok (számít az időzítés)",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "Érkezz napkeltekor az üres mólókért és a nyugodt vízért; kerüld a délelőtti sorokat."
+        },
+        {
+          "title": "Fornillo ösvény",
+          "description": "Laza parti sétány réteges sziklafalakkal; legjobb korán reggel vagy közvetlenül napnyugta után."
+        },
+        {
+          "title": "Via Pasitea kanyarjai",
+          "description": "Emelkedő ívek adják a képeslapnézetet tömeg nélkül. Tiszteld a forgalmat, és maradj le az útról."
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Alulértékelt alternatívák",
+      "items": [
+        {
+          "title": "Chiesa Nuova teraszai",
+          "description": "Aranyóra Fornillo fölött; kevés a tömeg, és csak rövid séta a hosteltől."
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "Hosszú hegygerincek; a fény korán a legszebb."
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "Listába szedett helyszínek változatos kompozíciókhoz."
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Napnyugta helyszínek",
+      "paragraphs": [
+        "Ha tömegmentes aranyórát szeretnél, menj a felső Via Pasitea lehúzódóihoz vagy a Chiesa Nuova környéki teraszokra.",
+        "Ha inkább parti sziluetteket fotóznál, érkezz 30–45 perccel napnyugta előtt Fornillóra."
+      ]
+    },
+    "etiquette": {
+      "heading": "Etikett és helyi tippek",
+      "items": [
+        "Ne állj meg a szűk lépcsőkön vagy úttesteken; készítsd el a képet, majd lépj félre.",
+        "Tiszteld a magántulajdont, ne mássz falakra vagy tetőkre.",
+        "Kis állványt csak holtszezonban vagy kevésbé forgalmas időben használj; kerüld a déli csúcsidőt."
+      ]
+    },
+    "faqs": {
+      "heading": "GYIK",
+      "items": [
+        {
+          "summary": "Mikor a legjobb fotózni?",
+          "body": "Napkeltekor üresebbek a jelenetek; aranyórában melegebb tónusokat és lágyabb árnyékokat kapsz."
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Szükség van drónengedélyre?",
+      "body": "Olaszországban szigorú drónszabályok és sok tiltott zóna van. Mindig ellenőrizd az ENAC iránymutatását és a helyi előírásokat; ne repülj tömeg fölött."
+    },
+    "galleryAlt": [
+      "Positano felülnézetből",
+      "Parti panoráma"
+    ],
+    "galleryFallbackAlt": "A positanói partvonal látképe"
+  }
+}

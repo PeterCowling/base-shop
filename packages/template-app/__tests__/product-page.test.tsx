@@ -74,7 +74,7 @@ describe("Pdp components", () => {
     expect(screen.getByText("Sneaker")).toBeInTheDocument();
     fireEvent.click(screen.getByTestId("size"));
     expect(addProps[addProps.length - 1]).toMatchObject({ size: "M", quantity: 1 });
-    fireEvent.change(screen.getByLabelText("Quantity:"), { target: { value: "2" } });
+    fireEvent.change(screen.getByLabelText("Quantity"), { target: { value: "2" } });
     expect(addProps[addProps.length - 1]).toMatchObject({ size: "M", quantity: 2 });
   });
 

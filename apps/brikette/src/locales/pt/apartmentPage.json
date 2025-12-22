@@ -1,0 +1,56 @@
+{
+  "slug": "apartamentos",
+  "meta": {
+    "title": "Acomodação em Apartamento",
+    "description": "Saiba mais sobre o nosso apartamento com cozinha em Positano."
+  },
+  "title": "Apartamento",
+  "body": "O nosso apartamento oferece uma estadia confortável com vistas deslumbrantes.",
+  "heroImageAlt": "Exterior do edifício do apartamento",
+  "heroTitle": "Apartamento privado",
+  "heroIntro": "Aproveite um espaço totalmente equipado com vistas incríveis de Positano.",
+  "bookButton": "Reservar agora",
+  "galleryHeading": "Galeria",
+  "galleryAlt": "Interior do apartamento e vistas do terraço",
+  "galleryAlts": [
+    "Sala de estar do apartamento",
+    "Quarto do apartamento",
+    "Terraço comum com vista para o mar"
+  ],
+  "detailsHeading": "Detalhes",
+  "detailsList": [
+    "Acomoda até 4 hóspedes",
+    "Kitchenette com frigorífico",
+    "Casa de banho privativa",
+    "Ar condicionado",
+    "Varanda com vista para o mar"
+  ],
+  "amenitiesHeading": "Comodidades",
+  "amenitiesImageAlt": "Imagem das comodidades do apartamento",
+  "amenitiesList": [
+    "Wi-Fi incluído",
+    "Cozinha totalmente equipada",
+    "Ar condicionado",
+    "Máquina de lavar e secar roupa"
+  ],
+  "highlights": {
+    "sectionTitle": "Destaques do apartamento",
+    "slides": [
+      {
+        "title": "Vistas panorâmicas",
+        "text": "Acorde todos os dias com paisagens de tirar o fôlego.",
+        "alt": "Vista da varanda do apartamento"
+      },
+      {
+        "title": "Espaços confortáveis",
+        "text": "Há espaço de sobra para relaxar depois de explorar.",
+        "alt": "Sala de estar espaçosa"
+      },
+      {
+        "title": "Localização central",
+        "text": "A poucos passos das lojas e da praia.",
+        "alt": "Ruas de Positano"
+      }
+    ]
+  }
+}

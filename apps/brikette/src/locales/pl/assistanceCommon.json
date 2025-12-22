@@ -1,0 +1,33 @@
+{
+  "sidebarLabel": "Nawigacja Centrum pomocy",
+  "openSidebar": "Otwórz nawigację Centrum pomocy",
+  "closeSidebar": "Zamknij nawigację Centrum pomocy",
+  "mobileSidebarLabel": "Nawigacja Centrum pomocy",
+  "mobileHint": "Przesuń w dół lub stuknij zamknij, aby zamknąć to menu pomocy",
+  "nav": {
+    "assistance": "Asysta cyfrowa",
+    "ama": "Zapytaj nas (AMA)",
+    "bookingBasics": "Podstawy rezerwacji",
+    "changingCancelling": "Zmiany i anulacje",
+    "checkinCheckout": "Przewodnik po zameldowaniu i wymeldowaniu",
+    "depositsPayments": "Płatności i depozyty",
+    "defectsDamages": "Usterki i szkody",
+    "security": "Bezpieczeństwo",
+    "rules": "Zasady",
+    "legal": "Prawne",
+    "ageAccessibility": "Wiek i dostępność",
+    "arrivingByFerry": "Przyjazd promem",
+    "naplesAirportBus": "Lotnisko w Neapolu autobusem",
+    "travelHelp": "Pomoc w podróży"
+  },
+  "cta": {
+    "readMore": "Czytaj więcej",
+    "readMoreAccessible": "Przeglądaj artykuły pomocy w centrum wsparcia"
+  },
+  "alsoHelpful": "Również przydatne",
+  "alsoHelpfulEyebrow": "Lokalne propozycje",
+  "alsoHelpfulDescription": "Planuj sprytniej z wyselekcjonowanymi przewodnikami i szybkimi skrótami do rezerwacji.",
+  "alsoHelpfulExplore": "Zobacz ten przewodnik",
+  "alsoHelpfulBook": "Zarezerwuj pobyt",
+  "roomsCta": "Zobacz pokoje i dostępność"
+}

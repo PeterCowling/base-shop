@@ -34,6 +34,8 @@ describe('init-shop configurator - theme', () => {
       'About Us',
       '',
       'n',
+      'n',
+      'n',
     ];
     const createShop = jest.fn();
     const envParse = jest.fn((env: Record<string, string>) => env);
@@ -239,4 +241,3 @@ describe('init-shop configurator - theme', () => {
     expect(questions.some((q) => q.includes('Primary brand color'))).toBe(false);
   });
 });
-

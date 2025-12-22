@@ -31,23 +31,50 @@ jest.mock("@acme/stripe", () => ({
 }));
 
 describe("handleStripeWebhook charge.succeeded", () => {
-  afterEach(() => {
+  beforeEach(() => {
+    jest.resetModules();
     jest.clearAllMocks();
   });
 
-  test("persists risk details", async () => {
+  test("persists risk details and stores reconciliation ids", async () => {
+    const { prisma } = await import("../src/db");
+    await prisma.rentalOrder.create({
+      data: {
+        id: "o1",
+        shop: "test",
+        sessionId: "cs_1",
+        deposit: 0,
+        startedAt: "2025-01-01T00:00:00Z",
+        stripePaymentIntentId: "pi_1",
+      },
+    });
+
     const { handleStripeWebhook } = await import("../src/stripe-webhook");
     const event: Stripe.Event = {
+      id: "evt_1",
       type: "charge.succeeded",
       data: {
         object: {
           id: "ch_1",
+          payment_intent: "pi_1",
+          balance_transaction: "bt_1",
+          customer: "cus_1",
           outcome: { risk_level: "elevated", risk_score: 42 },
         },
       },
     } as any;
     await handleStripeWebhook("test", event);
     expect(updateRisk).toHaveBeenCalledWith("test", "ch_1", "elevated", 42);
+
+    const updated = await prisma.rentalOrder.findUnique({
+      where: { shop_sessionId: { shop: "test", sessionId: "cs_1" } },
+    });
+    expect(updated).toEqual(
+      expect.objectContaining({
+        stripeChargeId: "ch_1",
+        stripeBalanceTransactionId: "bt_1",
+        stripeCustomerId: "cus_1",
+      }),
+    );
   });
 });
-

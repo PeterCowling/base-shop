@@ -1,0 +1,8 @@
+{
+  "title": "Notre emplacement",
+  "inputLabel": "Entrez votre position actuelle :",
+  "inputPlaceholder": "par ex. Naples, Italie ou adresse complète",
+  "getDirections": "Obtenir l'itinéraire",
+  "justShowMap": "Afficher uniquement la carte",
+  "close": "Fermer la fenêtre"
+}

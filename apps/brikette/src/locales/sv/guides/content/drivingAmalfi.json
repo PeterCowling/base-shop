@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Köra på Amalfikusten: tips för roadtrippen",
+    "description": "Vägregler, ZTL, parkeringsläget, dagar med växelvisa registreringsskyltar och när du bör låta bilen stå – samt säkrare alternativ."
+  },
+  "linkLabel": "Köra på Amalfikusten: tips för roadtrippen",
+  "intro": [
+    "Att köra på Amalfikusten är både spektakulärt och krävande – filerna är smala, reglerna ändras med säsongen och parkering är en bristvara.",
+    "Använd dessa råd för att avgöra när du bör köra, var du parkerar och när det är bättre att lämna bilen."
+  ],
+  "sections": [
+    {
+      "id": "rules",
+      "title": "Regler & begränsningar",
+      "body": [
+        "Kolla ZTL-zoner, växelvisa registreringsskyltar och breddbegränsningar innan du kör – sommarhelger stänger ofta av de bästa sträckorna för större fordon.",
+        "Håll låg hastighet, tuta i blinda kurvor precis som lokalborna och håll utkik efter scootrar som pressar sig förbi."
+      ]
+    },
+    {
+      "id": "parking",
+      "title": "Parkering i praktiken",
+      "body": [
+        "Boka privata garage i Positano/Amalfi och bekräfta öppettider, höjdbegränsning och om de tar kort eller kräver kontant deposition.",
+        "Räkna med 35–60 € per dygn under högsäsong; gatuparkering är sällsynt och hårt bevakad."
+      ]
+    },
+    {
+      "id": "when-to-park",
+      "title": "När du bör lämna bilen",
+      "body": [
+        "Vid kortare vistelser: parkera i Sorrento eller Salerno och ta buss eller färja sista biten för att slippa stress och kostnader inne i byarna.",
+        "Undvik att köra under oväder, festivaler eller sena nätter – vägavstängningar och trötthet gör kollektivtrafik eller förbokad transfer säkrare."
+      ]
+    }
+  ],
+  "tips": [
+    "Ha både kontaktlösa betalmedel och småsedlar – vissa garage tar deposition för fjärrkontroller eller nattlig åtkomst.",
+    "Efter vingårdsbesök eller sena konserter: boka taxi/transfer i stället för att köra trött på klippvägarna."
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag särskilt tillstånd?",
+      "a": [
+        "Nej, men du måste följa systemet med växelvisa registreringsskyltar och ZTL-zoner – kontrollera Prefetturans eller kommunens aviseringar innan du kör in."
+      ]
+    },
+    {
+      "q": "Kan jag parkera längs vägen?",
+      "a": [
+        "Endast på tydligt markerade fickor; att blockera busshållplatser eller kurvor ger omedelbara böter eller bortforsling."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Fährausfälle und rauer Seegang",
+    "description": "Was tun, wenn Fähren wetterbedingt ausfallen, welche Alternativen es gibt und wo du den Status prüfst."
+  },
+  "linkLabel": "Fährausfälle und rauer Seegang",
+  "intro": [
+    "Raues Meer kann Fähren von und nach Positano kurzfristig stoppen.",
+    "Halte einen Plan B an Land bereit und beobachte Live-Meldungen, damit du deine Verbindung trotzdem erreichst."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Live-Updates verfolgen",
+      "body": [
+        "Prüfe Operator-Websites und Apps (Travelmar, NLG, Alilauro) sowie die Anzeigetafeln am Hafen an windigen Tagen alle 30 Minuten.",
+        "Aktiviere SMS/E-Mail-Benachrichtigungen oder folge lokalen Telegram-/Social-Kanälen, damit dich Absagen erreichen, auch wenn du gerade nicht am Pier bist."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Auf Landrouten umsteigen",
+      "body": [
+        "Fallen Fahrten aus, wechsle auf Bus und Bahn: SITA nach Sorrent und weiter mit der Circumvesuviana nach Neapel/Pompeji oder Bus via Amalfi und Regionalzug ab Salerno.",
+        "Plane mindestens 60 Minuten Puffer für die letzten Verbindungen des Tages ein und entwerte Tickets vor dem Einsteigen."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Erstattungen & Gutscheine",
+      "body": [
+        "Bewahre Belege auf und screenshotte die Absage, damit der Betreiber Rückerstattungen, Umbuchungen oder Guthaben bearbeiten kann.",
+        "Teile dem Personal mit, ob du die nächste verfügbare Fahrt oder einen Saison-Gutschein möchtest, bevor du den Schalter verlässt."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Über-Nacht-Verzögerungen",
+      "body": [
+        "Informiere Unterkunft oder Tourveranstalter sofort über Verzögerungen; viele passen Check-in oder Abfahrt an, wenn sie früh Bescheid wissen.",
+        "Frag am Hafen-Infopunkt nach Sammeltaxis, Ersatz-Shuttles oder Gepäckaufbewahrung, falls du bis zum nächsten Morgen warten musst."
+      ]
+    }
+  ],
+  "tips": [
+    "Zieh die Marinevorhersage heran – Winde über 20 Knoten oder Wellen über 1,5 Meter lösen häufig Ausfälle aus.",
+    "Eine Reiseversicherung mit Wetterschutz hilft, zusätzliche Hotelnächte oder Ersatztransfers erstattet zu bekommen.",
+    "Morgendliche Fahrten sind am zuverlässigsten; verlass dich bei Sturmprognosen nicht auf die letzte Fähre des Tages."
+  ],
+  "faqs": [
+    {
+      "q": "Woher weiß ich, wann Fähren wieder fahren?",
+      "a": [
+        "Aktualisiere die Website oder Social-Feeds des Betreibers und hör auf Lautsprecherdurchsagen am Pier – Entscheidungen werden meist binnen 30 Minuten nach geplanter Abfahrt veröffentlicht.",
+        "Das Schalterpersonal kann ebenfalls bestätigen, ob die nächste Fähre fährt, bevor du den Hafen verlässt."
+      ]
+    },
+    {
+      "q": "Was passiert mit meinem Ticket?",
+      "a": [
+        "Zeig Beleg oder QR-Code vor, um Rückerstattung, Gutschein oder Umbuchung auf die nächste Fahrt zu beantragen.",
+        "Bei Online-Agenturen sende den Screenshot der Absage innerhalb von 24 Stunden per Mail, um die Erstattung anzustoßen."
+      ]
+    },
+    {
+      "q": "Gibt es Fähren, die bei schlechtem Wetter garantiert fahren?",
+      "a": [
+        "Nein – schließt die Küstenwache den Hafen, pausieren alle Abfahrten. Habe eine Landroute bereit.",
+        "Einige private Charter fahren bei moderater See, sind aber teuer und abhängig vom Kapitän; Komfort und Kosten gut abwägen."
+      ]
+    }
+  ]
+}

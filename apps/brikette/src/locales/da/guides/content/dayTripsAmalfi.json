@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Dagsture fra Positano",
+    "description": "De bedste udflugter til Capri, Pompeji, Ravello og flere — med transportvalg."
+  },
+  "linkLabel": "Endagsture fra Positano",
+  "intro": [
+    "Brug Positano som base for dagsture med færge og bus — start tidligt, forudbestil nøglebilletter og hav altid en vejrplan B."
+  ],
+  "sections": [
+    {
+      "id": "capri",
+      "title": "Capri-højdepunkter",
+      "body": [
+        "Book første færge ud, kør stolen til Monte Solaro og gå i Giardini di Augusto før krydstogtsgæsterne kommer.",
+        "Tag en sen eftermiddagsfærge retur og gem et buskøreplan-screenshot i tilfælde af uroligt hav."
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompeji eller Herculaneum",
+      "body": [
+        "Tag den tidlige bus til Sorrento og hop på Circumvesuviana; køb skip-the-line-billetter online for at spare tid.",
+        "Medbring vand og solhat — der er næsten ingen skygge, og besøget varer nemt 3–4 timer."
+      ]
+    },
+    {
+      "id": "amalfi-ravello",
+      "title": "Amalfi & Ravello-kombi",
+      "body": [
+        "Sejl til Amalfi, udforsk domkirken, og tag derefter bus 5110 op til Ravello for Villa Cimbrone og frokost med udsigt.",
+        "Bliv til eftermiddagslyset og fang en aftenfærge eller bus tilbage — køerne aftager efter kl. 18."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento & madfokus",
+      "body": [
+        "Tag formiddagsfærgen til Sorrento for markedstur, limoncello-smagning og solnedgang på Villa Comunale-terrassen.",
+        "Rejs retur med sen bus til Positano, hvis sidste færge er udsolgt; turen tager cirka 50 minutter."
+      ]
+    }
+  ],
+  "tips": [
+    "Hent offlinekort og køreplaner; mobildata kan forsvinde i togtunneller og på Capris klipper.",
+    "Pak en let regnjakke — sommerbyger kommer hurtigt, og færger pauser ved lyn."
+  ],
+  "faqs": [
+    {
+      "q": "Hvilken dagstur kræver tidligst start?",
+      "a": [
+        "Capri og Pompeji; de bliver hurtigt overfyldte og kræver mere transporttid."
+      ]
+    },
+    {
+      "q": "Kan jeg nå to byer på én dag?",
+      "a": [
+        "Ja — kombiner Amalfi med Ravello eller Sorrento med Pompeji. Undgå at koble Capri med noget andet; giv øen en hel dag."
+      ]
+    }
+  ]
+}

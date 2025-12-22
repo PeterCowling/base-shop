@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Nápoly repülőtér → Positano busszal | Hostel Brikette",
+    "description": "Nápoly repülőteréről Positanóba Curreri busszal Sorrentóig, majd SITA busszal tovább. Jegytippek, megállók, SITA menetrend és séta a Hostel Brikette-ig."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Nápoly repülőtér → Positano — busz",
+    "description": "Ez a lépésről lépésre útmutató végigvezeti a Curreri busszal Sorrentóig, majd a SITA busszal Positanóig. Tartalmazza, hol vegyen jegyet, hol kell átszállni, hogyan olvassa a SITA menetrendet, és hogyan érje el a Hostel Brikette-t a legközelebbi megállótól."
+  },
+  "aside": {
+    "eyebrow": "Tipp",
+    "body": "Minden közlekedési opcióra kíváncsi? Nyissa meg a <Link>Hogyan juthat el hozzánk áttekintést</Link> kompokhoz, taxikhoz és alternatív útvonalakhoz."
+  },
+  "sections": {
+    "overview": {
+      "title": "Utazás áttekintése",
+      "body": "Utazzon a Curreri Viaggi busszal közvetlenül a nápolyi repülőtérről Sorrentóba, majd szálljon át a SITA buszra Amalfi felé (szálljon le Positanónál – Chiesa Nuova). Főszezonban hagyjon extra időt a sorokra és a zsúfolt járatokra."
+    },
+    "airport": {
+      "title": "Nápoly repülőtér",
+      "points": [
+        "Hagyja el az érkezési csarnokot, és kövesse a buszmegállókat jelző táblákat a kijáratnál.",
+        "Vásároljon Curreri Viaggi jegyet Sorrentóba (online vagy a megállónál).",
+        "Várakozzon a megállóban a következő Sorrentóba tartó buszra, majd szálljon fel."
+      ],
+      "link": {
+        "href": "https://www.curreriviaggi.it/",
+        "text": "Ellenőrizze az aktuális indulásokat és online jegyeket: <Link>Curreri Viaggi</Link>."
+      }
+    },
+    "sorrento": {
+      "title": "Szorrento buszállomás",
+      "points": [
+        "Szálljon le Szorrento fő buszállomásán (ugyanott van a vasútállomás).",
+        "A buszállomásról szálljon fel az Amalfi felé tartó SITA buszra (Positano ezen az útvonalon van).",
+        "Ha szükséges, vásároljon SITA jegyet egy közeli bárban vagy újságosnál.",
+        "Felszálláskor a sofőr lepecsételi vagy letépi a jegyet — őrizze meg az egész útra."
+      ]
+    },
+    "timetable": {
+      "title": "SITA menetrend — hogyan olvassa",
+      "rowTip": "Az első oszlop sorai az útvonal megállóit sorolják fel.",
+      "columnTips": [
+        "Minden menetrendi indulás egy betűvel jelölt oszlopban jelenik meg.",
+        "Hétfőtől szombatig utazik? Használja az \"F\" és \"G\" oszlopokat.",
+        "Vasárnap vagy ünnepnapon utazik? Használja a \"G\" és \"H\" oszlopokat."
+      ],
+      "combineTips": [
+        "Válassza ki az indulási és érkezési sorokat (például \"Sorrento\" → \"Positano – Chiesa Nuova\").",
+        "Olvassa végig a kiválasztott oszlopot az indulási és érkezési időpontokhoz."
+      ],
+      "link": {
+        "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
+        "text": "A legfrissebb menetrend a <Link>Positano.com</Link> oldalon."
+      }
+    },
+    "positanoStop": {
+      "title": "Positano (Chiesa Nuova) buszmegálló",
+      "points": [
+        "A legközelebbi SITA megálló a Positano (Chiesa Nuova) a Via G. Marconin.",
+        "Körülbelül 140 méterre (490 lábra) található a hostel bejáratától.",
+        "A megálló a Bar Internazionale kávézó/bár előtt van."
+      ],
+      "image": {
+        "alt": "SITA buszmegálló Positanóban (Chiesa Nuova) a Bar Internazionale előtt a Via G. Marconin",
+        "caption": "Positano (Chiesa Nuova) megálló — várakozzon a Bar Internazionale előtt; nyáron érkezzen kicsit korábban, mert gyorsan megtelnek a buszok."
+      }
+    },
+    "walk": {
+      "title": "Séta a megállótól a hostelhez",
+      "points": [
+        "Sétáljon valamivel több mint 100 métert / 330 lábat a Via G. Marconin.",
+        "Forduljon jobbra, és kövesse a lépcsőt fel a hostel főbejáratáig."
+      ],
+      "body": "Tipp: ahogy közelít a hostelhez, figyelje a táblánkat a második emeleti terasznál. Haladjon el mellette, kövesse az útkanyart, majd keresse a lépcsőt, amely az út jobb oldaláról vezet fel a főbejárathoz.",
+      "image": {
+        "alt": "Lépcső a Hostel Brikette főbejáratához a Via G. Marconiról",
+        "caption": "Lépcsők a Hostel Brikette bejáratához — az utolsó rövid emelkedő a főúttól."
+      }
+    }
+  }
+}

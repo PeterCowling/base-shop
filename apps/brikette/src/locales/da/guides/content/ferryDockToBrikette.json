@@ -1,0 +1,88 @@
+{
+  "seo": {
+    "title": "Færgehavnen → Hostel Brikette med bagage",
+    "description": "Muligheder fra molen: portør eller SITA-bus til nærmeste stop; praktiske tips og ofte stillede spørgsmål."
+  },
+  "linkLabel": "Færgehavnen → Hostel Brikette med bagage",
+  "intro": [
+    "Ankommer du med færge og kufferter? Kombinér Interno Positano-bussen med byens portører for at nå Hostel Brikette uden at slæbe tasker op ad stejle trapper."
+  ],
+  "beforeList": [
+    "Tjek den seneste Interno Positano-køreplan – her er den [aktuelle køreplan og billetpriser](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Køb Interno Positano-billetter hos en tabacchi/avisforhandler inden du stiger på.",
+    "Overvej at overlade tung bagage til portørerne, når de møder færgen – fortæl dem, at du bor på Hostel Brikette."
+  ],
+  "sections": [
+    {
+      "id": "dock-to-mulini",
+      "title": "Fra havnen til Piazza dei Mulini",
+      "body": [
+        "Gå fra hovedstranden op til Piazza dei Mulini ad den skiltede promenade – brug [denne rutevejledning](https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2).",
+        "Hvis du bærer på tasker, kan du hyre en af Positanos portørservice ved molen, så de transporterer alt op ad bakken – vores [guide til portørservice](guide:porterServices) dækker priser og booking."
+      ]
+    },
+    {
+      "id": "mulini-to-bus",
+      "title": "Piazza dei Mulini til Interno-busstoppestedet",
+      "body": [
+        "Når du ankommer til Piazza dei Mulini, så køb en interno-billet i et af hjørneforretningerne eller tabacchi. Gå derefter til busstoppestedet i kanten af piazzaen – dér hvor pladsen møder vejen.",
+        "Interno-bussen kører cirka hver 30. minut fra morgen til midnat og følger [denne rute op ad bakke](https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0) mod hostellet."
+      ]
+    },
+    {
+      "id": "identify-bus",
+      "title": "Sådan genkender du Interno Positano-bussen",
+      "body": [
+        "Busserne kan variere, men den elektroniske skiltning foran viser altid “interno positano”.",
+        "Forvent en kompakt bybus med ståpladser; stig på ved kantstenen og vis eller valider din billet hos chaufføren."
+      ]
+    },
+    {
+      "id": "bus-stop-to-hostel",
+      "title": "Fra busstoppestedet til Hostel Brikette",
+      "body": [
+        "Stig af ved tabacchi’en ved stoppet ‘Chiesa Nuova’. Træd ud, gå til hovedvejen og drej derefter til venstre ad Viale Pasitea.",
+        "Gå lidt over 100 meter; hostellet ligger på din højre hånd. Kig efter vores skilt på terrassen på første sal, fortsæt rundt om hjørnet og tag trappen til højre op til indgangen.",
+        "Brug for en visuel rute? Følg [disse sidste anvisninger](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2)."
+      ]
+    }
+  ],
+  "stepsList": [
+    "Overlad bagagen til portørerne ved molen og køb Interno Positano-billetter hos tabacchi.",
+    "Gå fra hovedstranden til Piazza dei Mulini og fortsæt til Interno-busstoppestedet ved tabacchi på Viale Pasitea.",
+    "Stig på Interno Positano-bussen (kig efter skiltet “interno positano”) og kør op ad bakken mod Viale Pasitea 325.",
+    "Stig af ved tabacchi’en, drej til venstre ad Viale Pasitea i godt 100 m, og tag trappen til højre op til Hostel Brikette."
+  ],
+  "kneesList": [
+    "Interno Positano-bussen sparer dig for hundredevis af stejle trappetrin.",
+    "Lad portørerne bære de tunge tasker, så du kan rejse håndfrit i bussen og på den korte gåtur."
+  ],
+  "kneesPorterPrefix": "Brug for flere detaljer om priser og booking? Læs vores",
+  "kneesPorterLinkLabel": "guide til portørservice",
+  "faqs": [
+    {
+      "q": "Hvor køber jeg billetter til Interno Positano?",
+      "a": [
+        "Køb billetter hos enhver tabacchi/avisstand i byen, inklusive kiosken ved busstoppestedet. Chauffører sælger ikke billetter ombord."
+      ]
+    },
+    {
+      "q": "Hvor ofte kører Interno Positano-bussen?",
+      "a": [
+        "Der er afgang cirka hver 30. minut fra omkring kl. 08.00 til midnat, med ekstra afgange i højsæsonen – tjek altid køreplanen inden afsejling."
+      ]
+    },
+    {
+      "q": "Hvordan fungerer portørerne ved molen?",
+      "a": [
+        "Portørerne møder hver færge, læsser dine tasker og leverer dem op ad bakken. Fortæl, at du bor på Hostel Brikette, betal den oplyste pris, og behold værdigenstande eller medicin hos dig."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Køb Interno-billetter og overlad bagagen til portørerne ved molen",
+    "Gå fra stranden til Piazza dei Mulini og Interno-busstoppestedet",
+    "Kør Interno Positano-bussen op ad bakken (kig efter skiltet “interno positano”)",
+    "Stig af ved tabacchi’en, gå 100 m og tag trappen op til Hostel Brikette"
+  ]
+}

@@ -80,23 +80,23 @@ describe("addOrder", () => {
     jest.clearAllMocks();
   });
 
-  it("adds order with optional fields set", async () => {
-    prisma.rentalOrder.create.mockResolvedValue({});
-    prisma.shop.findUnique.mockResolvedValue({
-      data: { subscriptionsEnabled: true },
-    });
+	  it("adds order with optional fields set", async () => {
+	    prisma.rentalOrder.create.mockResolvedValue({});
+	    prisma.shop.findUnique.mockResolvedValue({
+	      data: { subscriptionsEnabled: true },
+	    });
 
-    const order = await addOrder(
-      "shop",
-      "sess",
-      10,
-      "exp",
-      "due",
-      "cust",
-      "high",
-      1,
-      true,
-    );
+	    const order = await addOrder({
+	      shop: "shop",
+	      sessionId: "sess",
+	      deposit: 10,
+	      expectedReturnDate: "exp",
+	      returnDueDate: "due",
+	      customerId: "cust",
+	      riskLevel: "high",
+	      riskScore: 1,
+	      flaggedForReview: true,
+	    });
 
     expect(prisma.rentalOrder.create).toHaveBeenCalledWith({
       data: order,
@@ -122,10 +122,10 @@ describe("addOrder", () => {
     );
   });
 
-  it("adds order without optional fields", async () => {
-    prisma.rentalOrder.create.mockResolvedValue({});
+	  it("adds order without optional fields", async () => {
+	    prisma.rentalOrder.create.mockResolvedValue({});
 
-    const order = await addOrder("shop", "sess", 10);
+	    const order = await addOrder({ shop: "shop", sessionId: "sess", deposit: 10 });
 
     expect(prisma.rentalOrder.create).toHaveBeenCalledWith({
       data: order,
@@ -148,13 +148,13 @@ describe("addOrder", () => {
     expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
   });
 
-  it("increments subscription usage only when enabled", async () => {
-    prisma.rentalOrder.create.mockResolvedValue({});
-    prisma.shop.findUnique.mockResolvedValue({
-      data: { subscriptionsEnabled: false },
-    });
+	  it("increments subscription usage only when enabled", async () => {
+	    prisma.rentalOrder.create.mockResolvedValue({});
+	    prisma.shop.findUnique.mockResolvedValue({
+	      data: { subscriptionsEnabled: false },
+	    });
 
-    await addOrder("shop", "sess", 10, undefined, undefined, "cust");
+	    await addOrder({ shop: "shop", sessionId: "sess", deposit: 10, customerId: "cust" });
 
     expect(prisma.shop.findUnique).toHaveBeenCalledWith({
       select: { data: true },
@@ -163,4 +163,3 @@ describe("addOrder", () => {
     expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
   });
 });
-

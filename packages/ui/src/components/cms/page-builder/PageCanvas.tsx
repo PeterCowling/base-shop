@@ -8,7 +8,7 @@ import type { DevicePreset } from "../../../utils/devicePresets";
 import PreviewCanvas from "./PreviewCanvas";
 import EditableCanvas from "./EditableCanvas";
 
-interface Props {
+export interface PageCanvasProps {
   components: PageComponent[];
   selectedIds?: string[];
   onSelectIds?: (ids: string[]) => void;
@@ -70,7 +70,7 @@ const PageCanvas = ({
   dropAllowed = null,
   insertParentId,
   preferParentOnClick = false,
-}: Props) => {
+}: PageCanvasProps) => {
   if (preview) {
     return (
       <PreviewCanvas

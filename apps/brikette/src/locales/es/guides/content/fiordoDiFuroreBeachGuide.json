@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Guía de la playa Fiordo di Furore",
+    "description": "Cómo llegar al Fiordo di Furore en autobús desde Positano, qué llevar y qué esperar en esta cala entre acantilados."
+  },
+  "linkLabel": "Guía de la playa Fiordo di Furore",
+  "intro": [
+    "Fiordo di Furore es la garganta más fotografiada de la Costa Amalfitana: una ensenada estrecha bajo un puente arqueado, con agua esmeralda y paredes verticales. Es una cala pequeña y casi salvaje, sin clubs de playa ni restaurantes, así que ven preparado para nadar, sacar algunas fotos y, si te animas, saltar desde los acantilados.",
+    "Usa esta guía para viajar en autobús, entender lo limitados que son los servicios y planificar tu regreso para no quedarte tirado cuando el último SITA llegue lleno."
+  ],
+  "toc": [
+    { "href": "#getting-there", "label": "Cómo llegar" },
+    { "href": "#returning", "label": "Regreso" },
+    { "href": "#on-site", "label": "Qué encontrarás" }
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Viaja en el autobús SITA con seguridad",
+      "body": [
+        "Desde Hostel Brikette baja por Via Pasitea hasta la parada Sponda y súbete a un autobús SITA en dirección a Amalfi. Indica al conductor que necesitas \"Fiordo di Furore\" para que recuerde detenerse: la parada queda entre Praiano y Furore y puede pasar desapercibida en días concurridos.",
+        "Tras unos 25 minutos bájate en la parada señalizada justo antes del puente. Sigue las escaleras talladas en el acantilado durante un par de minutos hasta llegar a la pequeña playa de cantos rodados bajo el arco."
+      ]
+    },
+    {
+      "id": "returning",
+      "title": "Planifica el regreso antes de nadar",
+      "body": [
+        "No hay taquillas ni máquinas en la garganta. Compra un billete de ida y vuelta en Positano (tabacchi cerca de Chiesa Nuova o el quiosco de Sponda) y valídalo al subir.",
+        "En verano los autobuses pueden llegar llenos desde Amalfi. Intenta salir antes de lo que crees necesario e informa a otros viajeros en la parada para que el conductor esté atento. Si pasan dos autobuses sin detenerse, plantéate compartir un taxi desde la carretera superior."
+      ]
+    },
+    {
+      "id": "on-site",
+      "title": "Belleza en bruto, no servicios",
+      "body": [
+        "Fiordo di Furore no tiene clubs de playa ni baños y solo alguna furgoneta de snacks en plena temporada. Lleva agua, comida y algo cómodo para sentarte: los guijarros son gruesos y el espacio es limitado.",
+        "Los saltos se realizan desde las rocas junto al puente, pero comprueba siempre la profundidad y lánzate únicamente donde ya haya gente local en el agua. Respeta a los bañistas de abajo y controla la marea; la cala queda en sombra a última hora de la tarde."
+      ]
+    }
+  ],
+  "essentialsTitle": "Qué esperar",
+  "essentials": [
+    "Parada de autobús SITA entre Praiano y Furore; pide al conductor que anuncie el fiordo.",
+    "Escalera empinada hasta una diminuta playa de cantos bajo el puente.",
+    "Sin servicios en el lugar: lleva agua, snacks, protección solar y efectivo para un taxi de emergencia."
+  ],
+  "tipsTitle": "Consejos rápidos",
+  "tips": [
+    "Revisa nuestro %LINK:positanoBeaches|resumen de playas% para combinar Fiordo di Furore con otro baño el mismo día.",
+    "Llega temprano si quieres fotos sin multitudes bajo el puente.",
+    "Empaca protector solar respetuoso con los arrecifes y escarpines: las rocas resbalan cuando están mojadas."
+  ],
+  "warningsTitle": "Para tener en cuenta",
+  "warnings": [
+    "Compra los billetes de ida y vuelta en Positano; en el fiordo no hay dónde comprarlos ni validarlos.",
+    "Los autobuses a veces pasan de largo si van llenos en temporada alta; deja margen extra para volver.",
+    "El espacio en la playa es reducido y la sombra llega rápido por la tarde."
+  ],
+  "faqsTitle": "Preguntas frecuentes sobre Fiordo di Furore",
+  "faqs": []
+}

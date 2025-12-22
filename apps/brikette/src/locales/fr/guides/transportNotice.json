@@ -1,0 +1,11 @@
+{
+  "title": "Vérifiez toujours les informations de transport",
+  "items": {
+    "buses": "Bus : consultez les horaires officiels de SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
+    "ferries": "Ferries : les opérateurs publient des routes et horaires saisonniers (selon la météo). Voir <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
+    "airlink": "Vous atterrissez à Salerno Costa d’Amalfi (QSR) ? Utilisez la navette Airlink vers Salerne — <airportLink>aeroportodisalerno.it</airportLink> et <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
+    "driving": "En voiture : restrictions de plaque alternée sur la SS163 (avr.–oct.) et ZTL ; les frais de stationnement varient selon la saison et le lieu. Vérifiez les avis officiels.",
+    "premium": "Premium ou saisonnier : Uber Boat et les hélicoptères n’assurent que quelques rotations estivales — confirmez la disponibilité actuelle."
+  },
+  "srLabel": "Avis transport"
+}

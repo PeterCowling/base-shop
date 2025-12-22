@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Voyager en couple en auberge",
+    "description": "Choisir lit ou chambre privée, astuces confort, gestion du bruit et activités à partager."
+  },
+  "linkLabel": "Voyager en couple en auberge",
+  "intro": [
+    "L'auberge convient aux couples si vous choisissez la bonne chambre, voyagez léger et alignez vos attentes."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Type de chambre",
+      "body": [
+        "Réservez une chambre privée pour l'intimité ; si le budget est serré, partagez un dortoir et limitez les bagages pour gérer les escaliers."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Chercher le calme",
+      "body": [
+        "Prenez bouchons d'oreilles et masque, privilégiez les chambres éloignées du bar/espace commun et profitez des matinées pour visiter au calme."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Une auberge convient-elle aux couples ?",
+      "a": [
+        "Oui — on profite de l'ambiance sociale et d'un bon rapport qualité-prix ; les chambres privées offrent un bon compromis confort/coût."
+      ]
+    }
+  ]
+}

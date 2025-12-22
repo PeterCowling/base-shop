@@ -10,6 +10,8 @@ const REDIS_TOKEN = "redis-token-32-chars-long-string!";
 const JWT_SECRET = "jwt-secret-32-chars-long-string!!!";
 const OAUTH_CLIENT_ID = "client-id";
 const OAUTH_CLIENT_SECRET = "oauth-client-secret-32-chars-long-string!!";
+const OAUTH_ISSUER = "https://auth.example.com/realms/base-shop";
+const OAUTH_REDIRECT_ORIGIN = "https://shop.example.com";
 
 const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);
 
@@ -19,6 +21,8 @@ const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "production",
   NEXTAUTH_SECRET: NEXT_SECRET,
   SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...overrides,
 });
 
@@ -26,6 +30,8 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "development",
   NEXTAUTH_SECRET: NEXT_SECRET,
   SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...overrides,
 });
 

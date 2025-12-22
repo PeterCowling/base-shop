@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "{{count}} लेख",
+  "articleCount_other": "{{count}} लेख",
+  "topTagsHeading": "शीर्ष टैग",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

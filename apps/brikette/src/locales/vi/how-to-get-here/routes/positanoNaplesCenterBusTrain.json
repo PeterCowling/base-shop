@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Từ Positano đến trung tâm Naples bằng xe buýt rồi tàu | Hostel Brikette",
+    "description": "Hướng dẫn từ cửa Hostel Brikette tới Piazza Garibaldi (Napoli) qua xe buýt SITA đến Sorrento và tàu Circumvesuviana, kèm cách xác nhận vé, mẹo xem lịch và ghi chú khi đến nơi."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Positano đến trung tâm Naples – Xe buýt rồi tàu",
+    "description": "Dùng hướng dẫn này khi di chuyển từ Hostel Brikette tới Piazza Garibaldi (Napoli). Bạn sẽ đi xe buýt SITA Sud tới Sorrento rồi chuyển sang tàu Circumvesuviana để vào trung tâm. Chúng tôi cung cấp cách xác nhận vé, đọc bảng giờ SITA và những điều cần biết tại từng điểm nối."
+  },
+  "cta": {
+    "eyebrow": "Mẹo",
+    "body": "Cần xem mọi lựa chọn? Mở <Link>Tổng quan Cách đến đây</Link> để tham khảo phà, taxi và hành trình kết hợp.",
+    "linkLabel": "Tổng quan Cách đến đây"
+  },
+  "sections": {
+    "overview": {
+      "heading": "Tổng quan hành trình",
+      "body": "Vào mùa cao điểm hãy dành hơn hai giờ cho toàn bộ hành trình. Xe buýt SITA rời Positano (Chiesa Nuova) đi Sorrento khá thường xuyên. Tàu Circumvesuviana từ Sorrento chạy khoảng mỗi 20–30 phút và kết thúc tại Napoli Garibaldi."
+    },
+    "tickets": {
+      "heading": "Mua và xác nhận vé SITA",
+      "body": "Mua vé xe buýt SITA tại quầy báo hoặc cửa hàng thuốc lá trước khi lên xe. Đưa vé cho tài xế khi bước lên; họ sẽ đóng dấu hoặc xé để xác nhận. Giữ vé cho tới khi xuống phòng trường hợp có nhân viên kiểm tra trên đường."
+    },
+    "timetable": {
+      "heading": "Cách đọc bảng giờ SITA",
+      "intro": "Lịch chính thức hiển thị các điểm dừng theo hàng và các chuyến theo cột chữ cái. Ghép hàng Sorrento với chữ cái ứng với ngày bạn đi để biết giờ xuất phát, sau đó xem hàng Positano (Chiesa Nuova) cùng cột để biết giờ xe tới lại thị trấn.",
+      "tips": [
+        "Các hàng ở cột đầu liệt kê từng điểm dừng trên tuyến.",
+        "Các cột tương ứng với các chuyến được gắn chữ cái.",
+        "Đi từ thứ Hai đến thứ Bảy? Dùng cột F và G.",
+        "Đi Chủ nhật hoặc ngày lễ? Dùng cột G và H."
+      ],
+      "outro": "Xem lịch cập nhật trên <Link>Positano.com</Link>.",
+      "linkLabel": "Positano.com (tổng quan lịch SITA)"
+    },
+    "positanoStop": {
+      "heading": "Trạm xe buýt Positano (Chiesa Nuova)",
+      "facts": [
+        "Trạm SITA gần nhất là Positano (Chiesa Nuova) trên Via G. Marconi.",
+        "Trạm cách cửa hostel khoảng 140 mét.",
+        "Bạn sẽ chờ bên ngoài quán Bar Internazionale."
+      ],
+      "caption": "Đến sớm vài phút để dễ có chỗ ngồi; mùa hè xe thường kín nhanh.",
+      "imageAlt": "Trạm SITA Chiesa Nuova của Positano phía trước Bar Internazionale"
+    },
+    "walk": {
+      "heading": "Đi bộ từ hostel tới trạm",
+      "steps": [
+        "Ra khỏi hostel, đi xuống các bậc thang tới đường chính rồi rẽ trái.",
+        "Đi dọc Via G. Marconi khoảng 100 mét.",
+        "Bar Internazionale nằm bên trái; trạm SITA ở ngay phía trước."
+      ]
+    },
+    "wait": {
+      "heading": "Mua vé và chờ lên xe",
+      "items": [
+        "Mua vé SITA đi Sorrento tại quán bar hoặc quầy báo gần đó.",
+        "Xếp hàng bên ngoài Bar Internazionale để đón xe đi Sorrento.",
+        "Kiểm tra lại bảng hiển thị của xe — phải ghi Sorrento."
+      ]
+    },
+    "sorrento": {
+      "heading": "Tại ga Sorrento",
+      "intro": "Xe buýt SITA trả bạn cạnh nhà ga kết hợp xe buýt và tàu của Sorrento. Đi lên cầu thang tới sảnh chính, mua vé Circumvesuviana đi Napoli Garibaldi (tiền mặt hoặc thẻ) và xác định đúng sân ga trước khi tàu đến.",
+      "outro": "Xem lịch Circumvesuviana mới nhất trên <Link>Sorrento Insider</Link>.",
+      "outroLinkLabel": "Sorrento Insider (lịch Circumvesuviana)"
+    },
+    "naples": {
+      "heading": "Đến Naples",
+      "body": "Ở lại trên tàu Circumvesuviana cho tới khi kết thúc tại Napoli Garibaldi. Từ đây, đi theo biển chỉ dẫn lên sảnh chính để chuyển sang tàu đường dài, metro hoặc xe buýt sân bay. Piazza Garibaldi nằm ngay bên ngoài cửa ga."
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Rejse med kæledyr på Amalfikysten",
+    "description": "Pet-venlig logistik, færger og overnatningssteder du kan forvente."
+  },
+  "linkLabel": "Rejse med kæledyr på Amalfikysten",
+  "intro": [
+    "Rejs trygt med kæledyr langs Amalfikysten: papirarbejde, pet-venlige steder og lokal etikette."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Før du ankommer",
+      "body": [
+        "Medbring EU-mikrochipdokumentation, rabiesvaccination og evt. ormekur afhængigt af afrejse-land.",
+        "Pak foldbare skåle, let underlag og poser – udvalget af kæledyrsartikler er begrænset i små byer."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Transport",
+      "body": [
+        "Små kæledyr kører gratis i SITA-busser, hvis de er i snor eller transportkasse; større hunde skal have mundkurv og rabatbillet.",
+        "Færger tillader dyr på udendørsdæk; medbring kort line, og kom tidligt for at finde skygge."
+      ]
+    },
+    {
+      "id": "where",
+      "title": "Hvor er kæledyr velkomne",
+      "body": [
+        "Mange overnatningssteder tager små hunde ved forudgående besked – bekræft gebyrer og regler inden booking.",
+        "Pet-venlige strande inkluderer Bau Bau Beach i Maiori og dele af Marina di Praia uden for myldretiden."
+      ]
+    }
+  ],
+  "tips": [
+    "Medbring vand og foldbare skåle; varme og trapper trætter dyr hurtigt om sommeren.",
+    "Hold kæledyr væk fra kirketrin og indendørs caféområder, medmindre du inviteres – udendørs terrasser er normalt pet-venlige."
+  ],
+  "faqs": [
+    {
+      "q": "Taler dyrlæger engelsk?",
+      "a": [
+        "Mange gør, især i Sorrento og Salerno. Gem en liste over klinikker og nødnumre hjemmefra."
+      ]
+    },
+    {
+      "q": "Er taxaer pet-venlige?",
+      "a": [
+        "De fleste chauffører accepterer små dyr, hvis de får besked ved booking. Medbring tæppe til sæderne, og giv gerne drikkepenge for ekstra rengøring."
+      ]
+    }
+  ]
+}

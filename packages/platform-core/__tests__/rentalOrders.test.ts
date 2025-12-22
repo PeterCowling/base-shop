@@ -10,7 +10,12 @@ describe("rental order repository", () => {
   });
 
   it("adds orders and updates status", async () => {
-    const order = await repo.addOrder("test", "sess", 42, "2025-01-01");
+    const order = await repo.addOrder({
+      shop: "test",
+      sessionId: "sess",
+      deposit: 42,
+      expectedReturnDate: "2025-01-01",
+    });
     expect(order).toMatchObject({
       sessionId: "sess",
       deposit: 42,
@@ -37,9 +42,9 @@ describe("rental order repository", () => {
 
   it("returns only orders for matching customer", async () => {
     const shop = "customer-test";
-    await repo.addOrder(shop, "s1", 10, undefined, undefined, "cust1");
-    await repo.addOrder(shop, "s2", 20, undefined, undefined, "cust2");
-    await repo.addOrder(shop, "s3", 30, undefined, undefined, "cust1");
+    await repo.addOrder({ shop, sessionId: "s1", deposit: 10, customerId: "cust1" });
+    await repo.addOrder({ shop, sessionId: "s2", deposit: 20, customerId: "cust2" });
+    await repo.addOrder({ shop, sessionId: "s3", deposit: 30, customerId: "cust1" });
 
     const cust1Orders = await getOrdersForCustomer(shop, "cust1");
     expect(cust1Orders).toHaveLength(2);
@@ -52,7 +57,7 @@ describe("rental order repository", () => {
 
   it("has no side effects when marking unknown sessions", async () => {
     const shop = "missing-test";
-    await repo.addOrder(shop, "known", 5);
+    await repo.addOrder({ shop, sessionId: "known", deposit: 5 });
 
     const before = await repo.readOrders(shop);
     expect(before).toHaveLength(1);

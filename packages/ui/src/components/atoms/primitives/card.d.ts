@@ -1,5 +1,7 @@
 import * as React from "react";
-export type CardProps = React.HTMLAttributes<HTMLDivElement>;
+export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+    /** Elevate surface to surface-3 and stronger shadow */
+    elevated?: boolean;
+}
 export declare const Card: React.ForwardRefExoticComponent<CardProps & React.RefAttributes<HTMLDivElement>>;
 export declare const CardContent: React.ForwardRefExoticComponent<CardProps & React.RefAttributes<HTMLDivElement>>;
-//# sourceMappingURL=card.d.ts.map

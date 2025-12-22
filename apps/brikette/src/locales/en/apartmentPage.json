@@ -1,0 +1,52 @@
+{
+  "slug": "apartment",
+  "meta": {
+    "title": "Apartment Accommodation",
+    "description": "Learn about our self-catering apartment in Positano."
+  },
+  "title": "Apartment",
+  "body": "Our apartment offers a comfortable stay with stunning views.",
+  "heroImageAlt": "Exterior of the apartment building",
+  "heroTitle": "Private Apartment",
+  "heroIntro": "Enjoy a fully equipped space with stunning Positano views.",
+  "bookButton": "Book Now",
+  "galleryHeading": "Gallery",
+  "galleryAlt": "Apartment interior and terrace views",
+  "galleryAlts": ["Apartment living area", "Apartment bedroom", "Communal terrace with sea view"],
+  "detailsHeading": "Details",
+  "detailsList": [
+    "Sleeps up to 4 guests",
+    "Kitchenette with fridge",
+    "Private bathroom",
+    "Air conditioning",
+    "Sea-view balcony"
+  ],
+  "amenitiesHeading": "Amenities",
+  "amenitiesImageAlt": "Apartment amenities image",
+  "amenitiesList": [
+    "Wi-Fi included",
+    "Fully equipped kitchen",
+    "Air conditioning",
+    "Washer and dryer"
+  ],
+  "highlights": {
+    "sectionTitle": "Apartment Highlights",
+    "slides": [
+      {
+        "title": "Panoramic Views",
+        "text": "Wake up to sweeping vistas every morning.",
+        "alt": "View from apartment balcony"
+      },
+      {
+        "title": "Comfortable Spaces",
+        "text": "Plenty of room to relax after exploring.",
+        "alt": "Spacious living area"
+      },
+      {
+        "title": "Central Location",
+        "text": "Steps from shops and the beach.",
+        "alt": "Streets of Positano"
+      }
+    ]
+  }
+}

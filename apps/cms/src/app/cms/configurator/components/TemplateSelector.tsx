@@ -142,13 +142,15 @@ export default function TemplateSelector({
     });
   }, [resolvedTemplates, search, filterCategory, filterKind]);
 
+  const { color: _triggerColor, ...buttonTriggerProps } = triggerProps ?? {};
+
   return (
     <>
       <Button
         variant="outline"
         className="w-full justify-between"
         onClick={() => setOpen(true)}
-        {...triggerProps}
+        {...buttonTriggerProps}
       >
         <span className="truncate">
           {selectedTemplate

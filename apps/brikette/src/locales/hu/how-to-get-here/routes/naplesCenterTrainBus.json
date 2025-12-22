@@ -1,0 +1,73 @@
+{
+  "slug": "naples-center-train-bus",
+  "meta": {
+    "title": "Nápoly központjából Positanóba vonattal, majd busszal | Hostel Brikette",
+    "description": "Lépésről lépésre bemutatjuk, hogyan juthatsz el Nápoly belvárosából a Hostel Brikette-hez a Circumvesuviana vonattal Szorrentóig, majd a SITA busszal Positanóba, jegyvásárlási tippekkel és positanói érkezési fotókkal."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Nápoly központjából Positanóba – vonat, majd busz",
+    "description": "Kövesd ezeket az útmutatókat, hogy Nápoly belvárosából a Circumvesuviana vonattal Szorrentóig, onnan pedig a SITA busszal Positanóba utazz a Hostel Brikette-hez. Az útmutató jegyvásárlási tanácsokat, menetrendi tippeket és fotókat is tartalmaz az érkezés utolsó szakaszáról."
+  },
+  "tip": {
+    "eyebrow": "Tipp",
+    "copy": "Másik útvonal érdekel? Fedezd fel az összes érkezési útmutatót a <GuideLink>Hogyan juthatsz el hozzánk oldalán</GuideLink>.",
+    "linkLabel": "Hogyan juthatsz el hozzánk oldal"
+  },
+  "sections": {
+    "overview": {
+      "title": "Áttekintés: vonat, majd busz",
+      "body": "Ez az útvonal a leggyorsabb tömegközlekedési kombinációt írja le Nápoly belvárosából: a Circumvesuviana vonatot Szorrentóig, majd a SITA buszt Positanóig. A nápolyi repülőtérről induló utazást nem tartalmazza."
+    },
+    "naplesStation": {
+      "title": "Nápolyi vasútállomás",
+      "body": "A Circumvesuviana Szorrentó felé induló járatai a Napoli Garibaldi állomás alsó szintjéről (a Napoli Centrale alatt) indulnak. Vásárold meg a jegyed, mielőtt leereszkedsz a peronokhoz, ellenőrizd, melyik vágányról indul a járatod, majd szállj fel a Szorrentó felé tartó vonatra."
+    },
+    "sorrentoStation": {
+      "title": "Szorrento vasútállomás",
+      "body": "Szorrentóba érkezés után hagyd el az állomást, és vásárold meg SITA-buszjegyedet a közeli bárban, újságosnál vagy trafikban — a buszon nem árulnak jegyet. A SITA megálló közvetlenül az állomás előtti lépcső alján található; várd meg az Amalfi felé tartó buszt, és utazz vele Positanóba."
+    },
+    "timetable": {
+      "title": "A SITA-menetrend értelmezése",
+      "intro": "A SITA busz menetrendje megtévesztő lehet — az alábbi gyors tippek segítenek megtalálni a megfelelő járatot:",
+      "tips": [
+        "Az első oszlop sorai az útvonal menti megállókat jelölik.",
+        "Minden oszlop egy betűvel jelölt menetrendi indulást jelent.",
+        "Hétfőtől szombatig az „F” és „G” oszlopokat használd.",
+        "Vasárnap vagy ünnepnapokon a „G” és „H” oszlopokat nézd."
+      ],
+      "detail": "Válaszd ki a Szorrento indulási sort, hogy megtudd a buszod idejét. Ugyanabban az oszlopban keresd meg a Positano (Chiesa Nuova) sort, így látod majd az érkezési időt is.",
+      "outro": "Tekintsd meg a legfrissebb menetrendet a <TimetableLink>positano.com</TimetableLink> oldalon.",
+      "linkLabel": "positano.com"
+    },
+    "positanoStop": {
+      "title": "Positanói buszmegálló",
+      "list": [
+        "A legközelebbi megálló a Positano (Chiesa Nuova), nagyjából 140 méterre (490 lábra) a hosteltől.",
+        "A Bar Internazionale kávézó/bár előtt található.",
+        "A busz az útszinten tesz le — nem kell hosszú lépcsőkön felmenni hozzánk."
+      ],
+      "figure": {
+        "alt": "A Chiesa Nuova buszmegálló a Bar Internazionale előtt Positanóban",
+        "caption": "A Chiesa Nuova buszmegálló, ahol leszállsz a Hostel Brikette-hez."
+      }
+    },
+    "walk": {
+      "title": "Séta a buszmegállótól",
+      "steps": [
+        "Sétálj valamivel több mint 100 métert / 330 lábat a buszmegállótól.",
+        "Fordulj jobbra, és kövesd a lépcsőket a hostel főbejáratáig."
+      ],
+      "mapLink": "Nyisd meg a <MapLink>Google Térkép útvonalat</MapLink> a lépésről lépésre navigációhoz.",
+      "mapLinkLabel": "Google Térkép útvonal",
+      "arrival": {
+        "title": "Érkezéskor",
+        "body": "Keresd a táblánkat a második emeleti teraszon. Sétálj tovább mellette, kövesd az útkanyart, majd mássz fel a jobb oldali lépcsőn a főbejárathoz."
+      },
+      "approachFigure": {
+        "alt": "Utcarészlet a Hostel Brikette táblájával a Via G. Marconi felett",
+        "caption": "Via G. Marconi — sétálj el a tábla mellett, majd menj fel a jobb oldali lépcsőn."
+      }
+    }
+  }
+}

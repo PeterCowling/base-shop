@@ -1,0 +1,46 @@
+{
+  "slug": "assistance-contact",
+  "meta": {
+    "title": "Digital hjælp og kontakt – Hostel Brikette Positano",
+    "description": "Book, udforsk og hold kontakt online. Vores digitale assistent giver skræddersyede anbefalinger og rejseguider, så du får mere ud af dit ophold i Positano."
+  },
+  "heading": "Digital hjælp",
+  "subheading": "Book, udforsk og hold kontakt online.",
+  "heroIntro": "Få øjeblikkelige svar fra teamet og vores digitale assistent, så planlægningen går hurtigere.",
+  "otherBookingOptions": "Andre bookingmuligheder og sociale medier",
+  "addressLabel": "Adresse:",
+  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookingOptions": {
+    "googleBusiness": "Google Business",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "Hvordan kan vi ",
+  "amaHeadingPart2": "hjælpe",
+  "amaParagraph1": "Har du spørgsmål? Vi er her for at hjælpe. Spørg om hvad som helst — og hvis noget mangler, så send os blot en e-mail, så svarer vi hurtigt.",
+  "amaParagraph2": "Når din booking er bekræftet, får du straks adgang til vores digitale assistent med anbefalinger til seværdigheder, aktiviteter og skjulte perler i Positano.",
+  "amaParagraph3": "Her finder du også kuraterede rejseguider med transporttips, trin-for-trin-anvisninger og indsigter, der gør planlægningen nemmere.",
+  "amaHelpCenterLink": "Gennemse alle hjælpeartikler",
+  "askPlaceholder": "Spørg om vej, faciliteter m.m...",
+  "clearLabel": "Ryd søgning",
+  "answersFoundLabel": "svar fundet",
+  "noMatchesFound": "Ingen resultater",
+  "popularGuides": "Populære guider",
+  "guideReachBudget": "Billigt til Positano",
+  "guideFerrySchedules": "Færgeplaner til Positano",
+  "guidePathOfTheGods": "Gudernes sti fra Brikette",
+  "guideCollections": {
+    "heading": "Planlæg dit ophold med trin-for-trin-guider",
+    "description": "Vejledninger til ruter, bookingregler og ankomstlogistik samlet fra vores mest stillede spørgsmål.",
+    "taggedHeading": "Planlægningsguider tagget {{tag}}",
+    "taggedDescription": "Disse essentials fokuserer på {{tag}}. Ryd filteret for at se alt, vi har forberedt.",
+    "empty": "Vi har endnu ingen planlægningsguider for {{tag}}. Prøv et andet tag eller nulstil filteret.",
+    "clearFilter": "Se alle planlægningsessentials",
+    "cardCta": "Læs planlægningsguiden {{guideTitle}}"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

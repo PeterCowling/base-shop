@@ -19,17 +19,16 @@ describe("orders/creation", () => {
 
     const { addOrder } = require("../creation") as typeof import("../creation");
 
-    const order = await addOrder(
-      "shop1",
-      "sess1",
-      100,
-      "2025-02-01",
-      undefined,
-      "cus_1",
-      "elevated",
-      55,
-      true,
-    );
+    const order = await addOrder({
+      shop: "shop1",
+      sessionId: "sess1",
+      deposit: 100,
+      expectedReturnDate: "2025-02-01",
+      customerId: "cus_1",
+      riskLevel: "elevated",
+      riskScore: 55,
+      flaggedForReview: true,
+    });
 
     expect(create).toHaveBeenCalledWith({ data: expect.objectContaining({ shop: "shop1", sessionId: "sess1", deposit: 100 }) });
     expect(trackOrder).toHaveBeenCalledWith("shop1", expect.any(String), 100);
@@ -48,7 +47,7 @@ describe("orders/creation", () => {
     jest.doMock("@acme/date-utils", () => ({ nowIso: () => "2025-01-15T12:00:00Z" }));
 
     const { addOrder } = require("../creation") as typeof import("../creation");
-    await addOrder("shop1", "sess2", 50);
+    await addOrder({ shop: "shop1", sessionId: "sess2", deposit: 50 });
     expect(trackOrder).toHaveBeenCalled();
     expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
   });

@@ -4,6 +4,8 @@ import { expectInvalidAuthEnvWithConfigEnv } from '../../../test/utils/expectInv
 
 const NEXT = 'nextauth-secret-32-chars-long-string!';
 const SESSION = 'session-secret-32-chars-long-string!';
+const OAUTH_ISSUER = 'https://auth.example.com/realms/base-shop';
+const OAUTH_REDIRECT_ORIGIN = 'https://shop.example.com';
 
 type EnvOverrides = Record<string, string | undefined>;
 
@@ -11,6 +13,8 @@ const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: 'production',
   NEXTAUTH_SECRET: NEXT,
   SESSION_SECRET: SESSION,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...overrides,
 });
 
@@ -18,6 +22,8 @@ const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: 'development',
   NEXTAUTH_SECRET: NEXT,
   SESSION_SECRET: SESSION,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...overrides,
 });
 

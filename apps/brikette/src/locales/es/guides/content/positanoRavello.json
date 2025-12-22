@@ -1,0 +1,137 @@
+{
+  "seo": {
+    "title": "Cómo ir de Positano a Ravello",
+    "description": "Mejores formas de llegar a Ravello desde Positano vía Amalfi (bus + bus o ferry estival + bus)."
+  },
+  "linkLabel": "Cómo ir de Positano a Ravello",
+  "intro": [
+    "Ravello combina bien con Amalfi: sube desde Amalfi en bus y reserva tiempo para Villa Rufolo y sus terrazas panorámicas.",
+    "Añade margen para el transbordo en Amalfi y planifica el regreso antes del atardecer si dependes del último ferry."
+  ],
+  "toc": [
+    {
+      "href": "#via-amalfi",
+      "label": "Ruta vía Amalfi"
+    },
+    {
+      "href": "#gardens",
+      "label": "Jardines y villas"
+    },
+    {
+      "href": "#timing",
+      "label": "Horarios y regreso"
+    },
+    {
+      "href": "#tips",
+      "label": "Consejos rápidos"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes"
+    }
+  ],
+  "sections": [
+    {
+      "id": "via-amalfi",
+      "title": "Ruta vía Amalfi",
+      "body": [
+        "Toma el bus SITA o el ferry estacional hasta Amalfi; compra los billetes con antelación y llega con tiempo para las colas.",
+        "En Amalfi cambia al bus hacia Ravello (anden 5) y camina unos 10 minutos para llegar a Villa Rufolo o Villa Cimbrone."
+      ]
+    },
+    {
+      "id": "gardens",
+      "title": "Jardines y villas",
+      "body": [
+        "Villa Rufolo ofrece conciertos y miradores sobre la bahía; Villa Cimbrone destaca por la Terraza del Infinito.",
+        "Reserva entradas en línea en meses de alta demanda para evitar filas al llegar."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Horarios y regreso",
+      "body": [
+        "Sal de Positano temprano para evitar el calor y las mayores aglomeraciones en los transbordos de Amalfi.",
+        "Regresa antes del anochecer si necesitas luz para las escaleras o dependes del último ferry a Positano."
+      ]
+    }
+  ],
+  "tipsTitle": "Consejos rápidos",
+  "tips": [
+    "Compra entradas para Villa Rufolo en línea si visitas en fin de semana.",
+    "Lleva ropa ligera pero respetuosa: iglesias y villas piden cubrir hombros."
+  ],
+  "faqsTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "q": "¿Hay ferry directo?",
+      "a": [
+        "No, siempre haces transbordo en Amalfi (ferry + bus o doble bus)."
+      ]
+    },
+    {
+      "q": "¿Es apto para familias?",
+      "a": [
+        "Sí, con descansos y ritmo flexible; las escaleras de Ravello no son aptas para carritos, así que lleva mochila portabebés si viajas con peques."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Positano → Amalfi",
+        "text": "Autobús SITA o ferry estacional hasta Amalfi."
+      },
+      {
+        "name": "Amalfi → Ravello",
+        "text": "Transborda al autobús hacia Ravello en Amalfi; compra los billetes antes de subir."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Viaja vía Amalfi. En verano, los ferries a Amalfi más un autobús rápido a Ravello reducen el tiempo total."
+    ],
+    "toc": [
+      {
+        "href": "#via-amalfi",
+        "label": "Vía Amalfi (bus + bus)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry a Amalfi (estacional)"
+      },
+      {
+        "href": "#faqs",
+        "label": "Preguntas frecuentes"
+      }
+    ],
+    "sections": [
+      {
+        "id": "via-amalfi",
+        "title": "Vía Amalfi (bus + bus)",
+        "body": [
+          "Haz transbordo en Amalfi al autobús hacia Ravello; compra los billetes antes de subir y haz fila con tiempo."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry a Amalfi (estacional)",
+        "body": [
+          "Considera un ferry matutino a Amalfi y luego autobús a Ravello; revisa el último regreso disponible."
+        ]
+      }
+    ],
+    "tipsTitle": "Consejos",
+    "faqsTitle": "Preguntas frecuentes",
+    "faqs": [
+      {
+        "q": "¿Cuánto tiempo necesito para visitar Ravello?",
+        "a": [
+          "Reserva al menos 3–4 horas para recorrer las villas y disfrutar de las vistas; añade más tiempo si asistes a eventos."
+        ]
+      }
+    ]
+  },
+  "tocTitle": "En esta página"
+}

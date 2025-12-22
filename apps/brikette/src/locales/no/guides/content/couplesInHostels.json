@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Å reise som par på vandrerhjem",
+    "description": "Tips for sovesaler eller private rom, finne ro og avklare forventninger."
+  },
+  "linkLabel": "Å reise som par på vandrerhjem",
+  "intro": [
+    "Vandrerhjem fungerer for par når dere velger riktig romtype, pakker lett og avklarer forventninger sammen."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Romtyper",
+      "body": [
+        "Bestill privat rom for mer privatliv; strekker dere budsjettet, del køyeseng i samme sovesal og reis lett for å takle trappene."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Finn ro",
+      "body": [
+        "Ha ørepropper og sovemaske, velg rom bort fra baren eller fellesarealer, og bruk tidlige morgener til rolige turer."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Passer vandrerhjem for par?",
+      "a": [
+        "Ja – dere får sosial energi og god verdi; private rom balanserer komfort og pris."
+      ]
+    }
+  ]
+}

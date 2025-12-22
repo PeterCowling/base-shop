@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "title": "Neapel Zentrum nach Positano mit der Fähre | Hostel Brikette",
+    "description": "Schritt für Schritt von Neapels Zentrum nach Positano per Fähre: Transfer zum Hafen, Tickets, Boarding und Tipps zur Ankunft."
+  },
+  "hero": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "title": "Neapel Zentrum nach Positano – Fähre",
+    "description": "Nutze diese Wegbeschreibung, um vom Zentrum Neapels vollständig auf dem Seeweg nach Positano zu reisen. Der Leitfaden erklärt den kurzen Transfer von Napoli Centrale zum Hafen, den Ticketkauf, das Boarding und was dich bei der Ankunft am Pier von Positano erwartet."
+  },
+  "tip": {
+    "label": "Tipp",
+    "copy": "Du brauchst andere Routen oder einen Plan B bei rauer See? Öffne die <link>Übersicht „So kommst du zu uns“</link>."
+  },
+  "sections": {
+    "journey": {
+      "title": "Reiseüberblick",
+      "body": "Fähren zwischen Neapel und Positano verkehren am häufigsten im Frühling und Sommer und können bei schlechtem Wetter ausfallen. Plane insgesamt etwa 1,5–2,5 Stunden ein, abhängig vom Schiffstyp und den Wartezeiten im Hafen."
+    },
+    "transfer": {
+      "title": "Vom Bahnhof zum Hafen",
+      "intro": "Am schnellsten ist die Straßenbahn 1 von der Piazza Garibaldi zum Municipio (für Molo Beverello) bzw. Marittima (für Porta di Massa). Für Gruppen bietet sich auch ein Taxi an – unkompliziert und preiswert.",
+      "items": [
+        "Folge in Napoli Garibaldi/Centrale den Schildern zur Straßenbahnhaltestelle Piazza Garibaldi.",
+        "Nimm die Straßenbahn 1 in Richtung „Municipio/Porto“.",
+        "Steige an „Municipio“ für Molo Beverello (Schnellboote) oder an „Marittima“ für Porta di Massa (Langsamfähren) aus."
+      ],
+      "map": "Sieh dir eine Beispielroute auf <map>Google Maps (Tram zum Hafen)</map> an."
+    },
+    "tickets": {
+      "title": "Fährtickets und Betreiber",
+      "items": [
+        "Kaufe Tickets vorab online oder an den Schaltern in Molo Beverello; im Sommer bilden sich schnell Schlangen.",
+        "Führe bei E-Tickets einen Ausweis mit – Betreiber kontrollieren diesen gelegentlich vor dem Boarding.",
+        "Fahrten können bei rauer See ausfallen; morgendliche Abfahrten sind meist zuverlässiger."
+      ],
+      "copy": "Fährzeiten und Preise: <capri>Capri.net – Neapel ↔ Positano</capri>. Außerdem kannst du Anbieter über <positano>Positano.com (gesammelter Fahrplan)</positano> vergleichen."
+    },
+    "boarding": {
+      "title": "Boarding im Hafen",
+      "body": "Sei 20–30 Minuten vor Abfahrt am Pier, um ggf. Buchungsvoucher einzulösen und dich fürs Boarding anzustellen. Folge den Anweisungen des Personals zur Gepäckablage und pass auf, wenn sich die Gangway mit dem Wellengang bewegt."
+    },
+    "arrival": {
+      "title": "Ankunft in Positano",
+      "items": [
+        "Steige am Pier Spiaggia Grande in Positano aus.",
+        "Am Pier bieten Gepäckträger gegen Gebühr Hilfe an – einigen euch vorab auf den Preis.",
+        "Die Fähren kommen auf Meereshöhe an; rechne mit Treppen bergauf. Der lokale Interno-Bus ab dem Hafen spart Stufen."
+      ],
+      "copy": "Für einen gepäckfreundlichen Weg vom Pier zum Hostel Brikette findest du hier unsere Schritt-für-Schritt-Anleitung: <link>Fähranleger → Hostel Brikette</link>."
+    },
+    "fallback": {
+      "title": "Wenn Fähren ausfallen",
+      "body": "Sollte das Wetter oder der Seegang Fahrten verhindern, wechsle auf die Zug-und-Bus-Route über Sorrent. Sie dauert länger, fährt aber bei fast allen Bedingungen.",
+      "cta": "Nutze diesen Plan B: <link>Neapel Zentrum → Positano mit Zug und Bus</link>."
+    }
+  },
+  "externalLinks": {
+    "map": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4",
+    "capri": "https://www.capri.net/en/t/napoli/positano",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

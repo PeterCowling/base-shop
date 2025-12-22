@@ -1,0 +1,351 @@
+{
+  "meta": {
+    "title": "Prenotazioni Camere — Termini e Condizioni | Hostel Brikette",
+    "description": "Termini ufficiali per le prenotazioni: prenotazioni, cancellazioni, check-in/out, pagamenti, dovere di diligenza e policy."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Prenotazioni Camere",
+    "pageSubtitle": "Termini e Condizioni"
+  },
+  "toc": {
+    "title": "Indice",
+    "aria": "Indice dei contenuti"
+  },
+  "footer": {
+    "end": "Fine del documento.",
+    "backToTop": "Torna all'inizio"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Definizioni e Interpretazioni",
+      "body": [
+        "1.1 \"Termini e Condizioni\" — I termini e le condizioni delineati nel presente documento.",
+        "1.2 \"L’Ostello\", \"noi\" o \"nostro\" — Skylar SRL, con sede legale in Via Guglielmo Marconi, 358, 84017 Positano (SA), Italia.",
+        "1.3 \"Tu\", \"tuo\", cliente, residente o \"ospite\" — Chiunque invii una Richiesta di Prenotazione Camera, sia un Ospite Ufficiale dell’Ostello, un Ospite Temporaneo, un membro dello staff, un organizzatore di eventi, un capogruppo o altro fornitore/acquirente terzo.",
+        "1.4 \"Richiesta di Prenotazione Camera\" — Richiesta di prenotare un soggiorno presso l’Ostello in conformità ai presenti termini e condizioni, inoltrata da te o dalla tua OTA. Solo l’ostello e le OTA autorizzate possono vendere posti letto; tentativi di rivendita da terzi non autorizzati comportano il rifiuto della richiesta o l’annullamento delle prenotazioni confermate.",
+        "1.5 \"Aree Comuni\" — Aree dell’Ostello fruibili sia dagli Ospiti Ufficiali sia dagli Ospiti Temporanei. Includono: ingresso e reception; terrazza comune; bagni comuni.",
+        "1.6 \"Titolare della Carta\" — Proprietario della carta di credito indicata nella Richiesta di Prenotazione Camera.",
+        "1.7 \"Controproposta\" — Variazione di una Richiesta di Prenotazione Camera. La prima controproposta è formulata dall’Ostello; possono seguirne altre.",
+        "1.8 \"Prenotazione Camera Confermata\" — Quando l’Ostello accetta una Richiesta di Prenotazione Camera oppure una Controproposta è accettata da te, si forma un contratto giuridicamente vincolante, comprensivo di strutture, servizi e termini qui definiti.",
+        "1.9 \"No Show\" — Stato applicabile a un singolo ospite o a una Prenotazione Camera Confermata quando uno o più ospiti idonei non effettuano il check‑in entro la fine dell’Orario Ufficiale di Check‑in del primo giorno di prenotazione.",
+        "1.10 \"Penale per No Show\" — Corrispettivo addebitato dall’Ostello nei casi di No Show o di cancellazione confermata fuori Termine di Preavviso. L’importo è quello maggiore tra: costo della prima notte o caparra non rimborsabile previsti dalla prenotazione.",
+        "1.11 \"Richiesta di Cancellazione\" — Richiesta di annullare una Prenotazione Camera Confermata.",
+        "1.12 \"Termine di Preavviso per la Cancellazione\" — Tempo richiesto, in ore, per cancellare una Prenotazione Camera Confermata. Se espresso in giorni, viene convertito in ore (es. 3 giorni = 72 ore).",
+        "1.13 \"Commissione Amministrativa di Cancellazione\" — Importo per la gestione della Richiesta di Cancellazione, calcolato in base alla tariffa concordata.",
+        "1.14 \"Email Ufficiale dell’Ostello\" — hostelpositano@gmail.com.",
+        "1.15 \"Cancellazione Confermata\" — Conferma scritta inviata dall’Ostello tramite l’Email Ufficiale che attesta l’avvenuta cancellazione.",
+        "1.16 \"Richiesta di Modifica Prenotazione\" — Richiesta di modificare una Prenotazione Camera Confermata (riduzione parziale del soggiorno o variazione delle date).",
+        "1.17 \"Modifica Prenotazione Confermata\" — Conferma scritta inviata dall’Ostello che attesta l’avvenuta modifica.",
+        "1.18 \"Indirizzo Email Designato\" — Indirizzo comunicato nella Richiesta di Prenotazione e utilizzato dall’Ostello per tutte le comunicazioni; sei responsabile della sua correttezza e della lettura dei messaggi.",
+        "1.19 \"Richiesta di Estensione\" — Richiesta di prolungare una Prenotazione Camera Confermata.",
+        "1.20 \"Estensione Confermata\" — Conferma scritta dell’avvenuta estensione.",
+        "1.21 \"Richiesta di Check‑in\" — Richiesta di effettuare il check‑in e avviare la prenotazione.",
+        "1.22 \"Orario Ufficiale di Check‑in\" — Fascia 15:00–22:00 del giorno di arrivo.",
+        "1.23 \"Ospite Ufficiale dell’Ostello\" — Persona che ha completato la procedura di check‑in.",
+        "1.24 \"Camera Assegnata\" — Camera specifica assegnata all’Ospite Ufficiale; è consentito accedere solo a tale camera.",
+        "1.25 \"Camere dell’Ostello\" — Camere private e dormitori riservati agli Ospiti Ufficiali.",
+        "1.26 \"Biancheria\" — Kit fornito al check‑in: federa, lenzuolo, sottolenzuolo, asciugamano.",
+        "1.27 \"Upgrade di Camera\" — Assegnazione di una camera più costosa di quella prenotata (rileva solo il prezzo).",
+        "1.28 \"Keycard\" — Tessera plastificata (a deposito) codificata per aprire la porta della Camera Assegnata.",
+        "1.29 \"Preautorizzazione\" — Blocco temporaneo di un importo sulla carta del Titolare; i fondi sono riservati e non addebitati subito.",
+        "1.30 \"Checkout\" — Avviene solo quando: si restituisce la Biancheria; si riconsegna la Keycard; si rimuovono gli effetti personali dalla Camera Assegnata.",
+        "1.31 \"Minorenne\" — Persona con meno di 18 anni in Italia.",
+        "1.32 \"Servizio Gratuito\" — Servizio che l’ostello può offrire senza costi, non incluso nella Prenotazione Camera Confermata (es. Colazione, Bevande, Wi‑Fi, Deposito Bagagli, Frigorifero).",
+        "1.33 \"Ospite Temporaneo\" — Individuo con accesso solo alle Aree Comuni, previa verifica di documento originale. Solo lo Staff può concedere tale status.",
+        "1.34 \"Metodi di Pagamento Accettati\" — Carte Visa o MasterCard; bonifico solo da società. Non si accettano AmEx/PayPal/affini. Contanti in Euro.",
+        "1.35 \"Prenotazioni Prepagate e Non Rimborsabili\" — Tariffe scontate con pagamento integrale al momento della prenotazione; mai rimborsabili.",
+        "1.36 \"Chi Prima Arriva Sceglie\" — Nessuna assegnazione di letti nei dormitori; l’ospite sceglie tra quelli disponibili e può cambiare se se ne libera uno preferito.",
+        "1.37 \"Tipologia di Prenotazione\" — Prepagata Non Rimborsabile o Rimborsabile.",
+        "1.38 \"Prenotazioni Rimborsabili\" — Tariffa standard con condizioni flessibili (date e durata variabili; cancellazioni tolleranti in base ai termini).",
+        "1.39 \"Documento di Identità\" — Passaporto, carta d’identità, patente, tessera militare. Solo originali.",
+        "1.40 \"Difetto Grave\" — Difetto che incide seriamente sul soggiorno (es. letto rotto, temperature non sicure, impossibilità di accesso, mancanza d’acqua).",
+        "1.41 \"OTA\" — Agenzia di viaggi online autorizzata (es. Hostelworld.com, Booking.com)."
+      ]
+    },
+    "s2": {
+      "title": "2. Richieste di Prenotazione",
+      "body": [
+        "2.1 Invio Richiesta — Le richieste devono essere in forma scritta tramite OTA o sito web. I colloqui in presenza sono solo informativi. Inviando la richiesta accetti i presenti Termini e garantisci l’esattezza dei dati.",
+        "2.2 Elaborazione — Inizia dopo l’incasso di deposito/preautorizzazione/pagamento con un metodo accettato. Il Titolare della Carta deve essere identificato e può dover autorizzare per iscritto gli addebiti all’Email Ufficiale; in mancanza la richiesta viene rifiutata.",
+        "2.3 Rifiuto — Possiamo rifiutare qualsiasi Richiesta di Prenotazione Camera per qualsiasi motivo.",
+        "2.4 Limiti della Richiesta — Massimo sette (7) notti e gruppi fino a cinque (5) persone; richieste oltre tali limiti sono trattate come prenotazioni multiple.",
+        "2.5 Controproposta — Se le camere richieste non sono disponibili, possiamo inviare alternative all’Indirizzo Email Designato. L’accettazione avvia i tentativi di pagamento/preautorizzazione.",
+        "2.6 Prepagata Non Rimborsabile — Possiamo richiedere il consenso esplicito ai Termini; il mancato consenso comporta l’annullamento. Effettuiamo fino a tre tentativi di addebito prima di annullare.",
+        "2.7 Conferma — La prenotazione è confermata solo quando inviamo l’email di conferma (riferimento, data di arrivo, durata, ecc.) all’Indirizzo Email Designato. Devi verificare i dati e segnalarci eventuali errori all’Email Ufficiale.",
+        "2.9 Numero di Ospiti Inclusi — Uno per letto singolo; fino a due per letto matrimoniale; appartamenti secondo capienza pubblicizzata. Non è possibile superare la capienza della camera.",
+        "2.9 Ambito delle Strutture — Inclusi biancheria e Keycard per ogni persona, accesso alle docce e all’acqua calda negli orari indicati, accesso alle Aree Comuni. Gli altri servizi sono gratuiti e con termini separati.",
+        "2.10 Obbligo Finanziario — Il Titolare della Carta è responsabile della prenotazione e di eventuali addebiti aggiuntivi (danni, pulizie extra, sanzioni, mancato rispetto del checkout).",
+        "2.11 Assegnazione Camere e Letti in Dormitorio — Assegniamo ciascuna persona a una Camera Assegnata. Nei dormitori i letti sono scelti dall’ospite secondo disponibilità; i gruppi possono essere suddivisi tra camere.",
+        "2.12 Upgrade — Gli upgrade possono essere assegnati a pagamento o per esigenze di inventario; se non pagati possiamo ripristinare la tipologia originale."
+      ]
+    },
+    "s3": {
+      "title": "3. Età e Accessibilità",
+      "body": [
+        "3.1 Requisiti di Accessibilità — Contattaci prima della prenotazione per esigenze specifiche. L’edificio ha scale e non è previsto servizio facchinaggio. Dispositivi sonori per il sonno sono consentiti solo nelle camere private.",
+        "3.2 Autonomia — Non forniamo assistenza continuativa; se non sei in grado di gestirti in autonomia, annulleremo la prenotazione.",
+        "3.3 Minorenni — In Italia i minorenni non possono viaggiare da soli. Fino a 16 anni sono consentite solo camere private con genitore/tutore 18+. I 17enni possono soggiornare in dormitorio solo con un accompagnatore di almeno 18 anni nella stessa camera e con idonea documentazione di tutela; in mancanza la prenotazione sarà annullata secondo la relativa tipologia."
+      ]
+    },
+    "s4": {
+      "title": "4. Processi e Pagamenti di Terze Parti",
+      "body": [
+        "Quando invii una Richiesta di Prenotazione Camera tramite un processore di pagamento di terze parti (OTA), completi il pagamento sulla loro piattaforma secondo i relativi termini e condizioni.",
+        "I pagamenti effettuati direttamente alla terza parte sono regolati dall'accordo tra te e tale soggetto e l’Ostello non ha alcun controllo su tali processi.",
+        "Non riceviamo alcuna parte di tali pagamenti e non possiamo assumerci responsabilità per prenotazioni effettuate in questo modo.",
+        "È tua responsabilità assicurarti che il pagamento sia andato a buon fine e che la prenotazione sia stata confermata prima dell’arrivo in Ostello.",
+        "Per domande relative al pagamento presso un’OTA, contatta direttamente il fornitore terzo."
+      ]
+    },
+    "s5": {
+      "title": "5. Depositi e Preautorizzazioni",
+      "body": [
+        "5.1 Depositi per la Richiesta di Prenotazione — Potremmo richiedere un deposito a garanzia della prenotazione. L’importo varia in base alla tipologia; le prenotazioni prepagate e non rimborsabili richiedono il 100% dell’importo. Tutti i depositi versati all’Ostello non sono rimborsabili. Se non riusciamo a incassare il deposito richiesto, la tua richiesta sarà rifiutata.",
+        "5.2 Preautorizzazioni per la Richiesta di Prenotazione — Potremmo richiedere una preautorizzazione in base al prezzo e alle condizioni concordate. Se non siamo in grado di preautorizzare l’importo richiesto, la tua richiesta sarà rifiutata."
+      ]
+    },
+    "s6": {
+      "title": "6. Addebiti per No Show",
+      "body": [
+        "Se non arrivi per la tua prenotazione, la stessa diventa un No Show e verrà applicata la relativa Penale per No Show.",
+        "L’addebito si applica a ciascuna Prenotazione Camera Confermata. Le prenotazioni possono avere termini di preavviso di cancellazione differenti, che possono incidere sull’esito."
+      ]
+    },
+    "s7": {
+      "title": "7. Cancellazioni",
+      "body": [
+        "Le richieste di cancellazione devono essere inviate per iscritto al nostro Indirizzo Email Ufficiale.",
+        "Ai fini del rispetto del termine di preavviso, il conteggio decorre dal momento in cui riceviamo la tua email fino alle 00:01 del giorno di inizio della prenotazione.",
+        "Può essere applicata una Commissione Amministrativa di Cancellazione (standard 15% del prezzo della prenotazione, al netto di eventuali commissioni già versate a terzi).",
+        "Se accettiamo la richiesta, invieremo conferma via email; fino a tale invio, la prenotazione resta confermata.",
+        "Una prenotazione può essere annullata anche senza richiesta scritta se: non effettui il check‑in prima della chiusura della reception il primo giorno; effettui il checkout prima del termine del soggiorno; violi le policy dell’ostello.",
+        "Eventuali nuove prenotazioni dopo la cancellazione sono soggette a disponibilità.",
+        "Le cancellazioni oltre il termine di preavviso sono trattate come No Show e possono comportare la relativa Penale."
+      ]
+    },
+    "s8": {
+      "title": "8. Modifica delle Prenotazioni Confermate",
+      "body": [
+        "Sostituiamo le Prenotazioni Confermate con nuove prenotazioni anziché modificarle.",
+        "Invia le Richieste di Modifica Prenotazione al nostro Indirizzo Email Ufficiale entro il termine di preavviso applicabile.",
+        "Tutte le modifiche sono soggette a disponibilità e ad altre condizioni.",
+        "Le richieste di variazione della durata sono trattate sia come Richiesta di Modifica Prenotazione sia come Richiesta di Cancellazione o Richiesta di Estensione.",
+        "Le estensioni sono trattate come nuove prenotazioni.",
+        "Se lasci prima senza una Cancellazione Confermata, la prenotazione originaria è considerata adempiuta."
+      ]
+    },
+    "s9": {
+      "title": "9. Trasferibilità della Prenotazione",
+      "body": [
+        "Le Richieste di Prenotazione Camera e le Prenotazioni Confermate sono strettamente non trasferibili, in tutto o in parte.",
+        "Ogni prenotazione deve rimanere intestata al prenotante originale per tutta la sua durata.",
+        "Tentativi di check‑in utilizzando una prenotazione trasferita comportano la responsabilità economica dell’interessato e possono determinare l’annullamento immediato.",
+        "Tentativi di modificare il nominativo dell’ospite assegnato possono parimenti comportare l’annullamento."
+      ]
+    },
+    "s10": {
+      "title": "10. Prenotazioni Prepagate e Non Rimborsabili",
+      "body": [
+        "Il pagamento integrale è richiesto al momento della prenotazione. In caso di mancato pagamento, la richiesta di prenotazione verrà annullata.",
+        "In caso di No Show, non verrà emesso alcun rimborso.",
+        "Le richieste di estensione sono valutate secondo i termini indicati nel presente documento."
+      ]
+    },
+    "s11": {
+      "title": "11. Arrivo",
+      "body": [
+        "11.1 Richiesta di Check‑in — Tutti gli ospiti devono identificarsi e avviare il Check‑in all’arrivo.",
+        "11.2 Arrivo Anticipato — Gli ospiti che arrivano prima delle 10:30 del giorno di prenotazione non potranno accedere all’ostello.",
+        "11.3 Arrivo tra le 10:30 e le 15:00 — Se concordato, potresti diventare Ospite Temporaneo. È possibile un servizio di deposito bagagli, a discrezione e con termini separati.",
+        "11.3 Finestra di Check‑in — Il check‑in regolare avviene durante l’Orario Ufficiale di Check‑in (15:00–22:00).",
+        "11.5 Arrivo Tardivo — La reception chiude dopo le 22:00. A nostra discrezione possiamo fornire istruzioni di check‑in self‑service. Accetti la responsabilità per eventuali problemi dovuti all’impossibilità di ricevere/seguire le istruzioni o a recapiti errati."
+      ]
+    },
+    "s12": {
+      "title": "12. Check‑in",
+      "body": [
+        "12.1 Necessità del Processo — Se non siamo in grado di completare il check‑in, rifiuteremo il check‑in e annulleremo la prenotazione (trattata come No Show).",
+        "12.2 Prova d’Identità — Dobbiamo ricevere un documento valido per ciascun ospite (Nome, Cognome, Luogo di nascita, Cittadinanza, Data di nascita, Numero del documento). La mancata presentazione entro le 22:00 del primo giorno comporta annullamento (No Show).",
+        "12.2 Saldo — Eventuali saldi devono essere pagati con un metodo accettato prima di completare il check‑in. In caso contrario la prenotazione verrà annullata (No Show).",
+        "12.3 Deposito Keycard e Biancheria — È richiesto un deposito in contanti di €10 al check‑in, rimborsato al checkout alla restituzione di Keycard e Biancheria."
+      ]
+    },
+    "s13": {
+      "title": "13. Procedura di Salvaguardia",
+      "body": [
+        "Potremmo trattenere un importo pari a una notte per persona come deposito cauzionale per la durata del soggiorno (tramite preautorizzazione o contanti).",
+        "Questo importo può essere utilizzato per pagare sanzioni, commissioni, estensioni del soggiorno o altre somme dovute, secondo le policy dell’ostello.",
+        "Se non riusciamo a preautorizzare, un altro membro del gruppo può fornirlo oppure puoi versarlo in contanti; in caso contrario la prenotazione può essere annullata."
+      ]
+    },
+    "s14": {
+      "title": "14. Dovere di Cura",
+      "body": [
+        "Devi rispettare gli altri ospiti e lo staff, evitare danni e seguire le regole dell’ostello.",
+        "Le violazioni possono comportare annullamento immediato (si applica la policy No Show) e/o richiesta di lasciare la struttura senza rimborso.",
+        "Eventuali costi o sanzioni causati dalle tue azioni possono essere addebitati. Segnaliamo alle autorità le violazioni di legge quando richiesto."
+      ]
+    },
+    "s15": {
+      "title": "15. Difetti e Danni",
+      "body": [
+        "15.1 Segnalazione dei Difetti — Segnala immediatamente eventuali difetti della camera.",
+        "15.2 Valutazione dei Difetti — Valutiamo e diamo priorità alla risposta in base all’impatto sul soggiorno.",
+        "15.3 Difetti Gravi — Faremo il possibile per risolverli; se non è possibile, cercheremo sistemazioni alternative o rimborsi pro‑quota in base alla differenza di prezzo o alle notti residue.",
+        "15.4 Difetti non Segnalati — Se scoperti successivamente, potremmo applicare la nostra policy su danni e perdite.",
+        "15.5 Danni — Potremmo preautorizzare o richiedere un deposito per coprire danni o perdite. I rimborsi sono al netto dei costi sostenuti. I costi eccedenti (materiali, manodopera, amministrazione) saranno addebitati. Tariffe straordinarie: Direttore €50/ora, Manager €35/ora, Staff €25/ora."
+      ]
+    },
+    "s16": {
+      "title": "16. Cimici del letto",
+      "body": [
+        "Adottiamo misure per prevenire e rimuovere eventuali infestazioni di cimici del letto. Se durante il soggiorno si verifica un’infestazione, potresti essere ritenuto responsabile dei danni, inclusi mancati ricavi da prenotazioni, reclami di altri ospiti e costi di pulizia e disinfestazione.",
+        "Se hai soggiornato in strutture con presenza di cimici del letto, segnalalo al check‑in e disinfetta i tuoi effetti personali.",
+        "Controlla i tuoi beni prima del check‑in e segnala immediatamente qualsiasi sospetto."
+      ]
+    },
+    "s17": {
+      "title": "17. Effetti personali e sicurezza",
+      "body": [
+        "Gli ospiti sono responsabili dei propri effetti personali in ogni momento. L’ostello non è responsabile per perdita, danno o furto, salvo quanto previsto dalla legge.",
+        "Possono essere messi a disposizione armadietti o cassette di sicurezza, ma la responsabilità rimane in capo all’ospite.",
+        "Gli oggetti non reclamati saranno smaltiti dopo 30 giorni dal check‑out.",
+        "Oggetti pericolosi o illegali sono vietati e possono essere confiscati o segnalati alle autorità."
+      ]
+    },
+    "s18": {
+      "title": "18. Identificazione e misure di sicurezza",
+      "body": [
+        "Tutti gli ospiti devono indossare i braccialetti di sicurezza forniti all’interno della struttura e mostrare un documento valido su richiesta dello staff.",
+        "La mancata esibizione del braccialetto o del documento può comportare l’allontanamento senza rimborso.",
+        "Eventuali braccialetti smarriti o danneggiati devono essere segnalati immediatamente; potrebbe essere applicato un piccolo costo di sostituzione."
+      ]
+    },
+    "s19": {
+      "title": "19. Videosorveglianza (CCTV)",
+      "body": [
+        "Telecamere CCTV sono installate nelle aree comuni per la sicurezza di ospiti e beni.",
+        "Le registrazioni sono conservate in modo sicuro, accessibili solo alla direzione autorizzata, e possono essere condivise con le autorità quando richiesto dalla legge.",
+        "La CCTV non garantisce sicurezza assoluta; accettando questi termini, acconsenti al suo utilizzo come descritto."
+      ]
+    },
+    "s20": {
+      "title": "20. Ospiti Temporanei",
+      "body": [
+        "Lo status di Ospite Temporaneo può essere concesso a nostra esclusiva discrezione.",
+        "Gli Ospiti Temporanei possono accedere solo alle Aree Comuni e non sono ammessi nelle camere.",
+        "Gli Ospiti Ufficiali dell’Ostello non possono conferire lo status di Ospite Temporaneo ad altri.",
+        "Le richieste possono essere accettate tra le 9:00 e le 23:00 nei giorni di apertura dell’ostello.",
+        "Ci riserviamo il diritto di rifiutare o revocare lo status di Ospite Temporaneo in qualsiasi momento."
+      ]
+    },
+    "s21": {
+      "title": "21. Persone non registrate",
+      "body": [
+        "Tutte le persone che pernottano devono essere registrate, inclusi gli Ospiti Temporanei.",
+        "Se rileviamo una persona non registrata in camera, potremmo addebitare la tariffa standard per ciascuna persona non registrata, più una commissione amministrativa pari al doppio della tariffa standard.",
+        "La persona non registrata deve effettuare il check‑in e seguire le procedure standard, altrimenti potremmo informare la polizia.",
+        "La mancata segnalazione di una persona non registrata può comportare l’annullamento della prenotazione (può applicarsi la policy No Show)."
+      ]
+    },
+    "s22": {
+      "title": "22. Check‑out",
+      "body": [
+        "L’orario ufficiale di check‑out è tra le 7:30 e le 10:30.",
+        "Dopo il check‑out non rientrare in camera e non lasciare effetti personali all’interno.",
+        "Devi attenerti alle condizioni di Post Check‑out descritte nei presenti termini."
+      ]
+    },
+    "s23": {
+      "title": "23. Check‑out anticipato",
+      "body": [
+        "Se devi partire prima delle 7:30, recati in reception la sera precedente per organizzare il check‑out anticipato e il rimborso del deposito Keycard.",
+        "La mancata restituzione della Keycard comporta la perdita del deposito.",
+        "I depositi sono rimborsati in contanti e solo di persona a un membro dello staff."
+      ]
+    },
+    "s24": {
+      "title": "24. Check‑out posticipato",
+      "body": [
+        "Disponibile solo previa conferma scritta, con check‑out entro le 12:00.",
+        "Servizio discrezionale, soggetto a occupazione, da confermare per iscritto.",
+        "Costo del servizio €40, offerto in base all’ordine di richiesta."
+      ]
+    },
+    "s25": {
+      "title": "25. Mancato check‑out",
+      "body": [
+        "Se non effettui il check‑out entro l’orario concordato, potremmo rimuovere i tuoi effetti personali dalla camera senza responsabilità.",
+        "Eventuali tentativi di accesso alle aree riservate agli ospiti dopo l’orario concordato possono costituire violazione delle misure di sicurezza secondo le nostre policy.",
+        "Potremmo trasferire i tuoi beni a un servizio facchinaggio locale per il deposito; le tariffe di ritiro sono stabilite dal fornitore."
+      ]
+    },
+    "s26": {
+      "title": "26. Post check‑out",
+      "body": [
+        "Al completamento del check‑out, la tua Prenotazione Camera Confermata si considera adempiuta, indipendentemente dalle notti residue.",
+        "Cessi di essere Ospite Ufficiale e diventi Ospite Temporaneo fino alle 15:30.",
+        "Su richiesta potremmo iscriverti al servizio di deposito bagagli, a nostra discrezione e con termini separati."
+      ]
+    },
+    "s27": {
+      "title": "27. Alcol",
+      "body": [
+        "In quanto locale con licenza, non è consentito introdurre in ostello alcol acquistato all’esterno.",
+        "In caso di riscontro, potremmo custodirlo e restituirlo al check‑out o quando garantito che verrà consumato fuori sede.",
+        "La mancata osservanza può comportare l’annullamento immediato della prenotazione (si applica la policy No Show)."
+      ]
+    },
+    "s28": {
+      "title": "28. Modifica dei presenti Termini e Condizioni",
+      "body": [
+        "I presenti Termini e Condizioni costituiscono l’intero accordo tra te e l’Ostello e sostituiscono eventuali intese precedenti, scritte o orali.",
+        "Ci riserviamo il diritto di modificare i presenti Termini e Condizioni in qualsiasi momento."
+      ]
+    },
+    "s29": {
+      "title": "29. Ambito di responsabilità",
+      "body": [
+        "La nostra responsabilità è limitata ai servizi e agli elementi indicati nei presenti termini.",
+        "La responsabilità totale non supererà l’importo da te corrisposto per la prenotazione.",
+        "Non siamo responsabili per perdita o danno a beni personali, salvo quanto richiesto dalla legge.",
+        "Non rispondiamo di danni indiretti, consequenziali o economici, né di perdita di profitto, avviamento o opportunità, anche se causati da negligenza o forza maggiore.",
+        "Mettiamo a disposizione depositi sicuri per oggetti di valore, senza assumerci responsabilità economica sugli stessi.",
+        "Ci riserviamo il diritto di spostare oggetti durante le pulizie senza preavviso."
+      ]
+    },
+    "s30": {
+      "title": "30. Legge applicabile",
+      "body": [
+        "I presenti termini sono regolati dalla legge italiana e ogni azione legale deve essere proposta dinanzi ai tribunali italiani."
+      ]
+    },
+    "s31": {
+      "title": "31. Informazioni sul sito web",
+      "body": [
+        "Facciamo ogni sforzo per garantire l’accuratezza delle informazioni presenti sul nostro sito; tuttavia non possiamo essere ritenuti responsabili per errori o omissioni.",
+        "Ci riserviamo il diritto di apportare modifiche al Sito e ai suoi contenuti in qualsiasi momento senza preavviso.",
+        "Alcune immagini sul Sito possono rappresentare lo stile generale dei nostri prodotti e servizi e potrebbero non raffigurare esattamente il prodotto/aspetto mostrato.",
+        "Tutti i contenuti del Sito, inclusi testi, immagini e marchi, sono di proprietà dell’Ostello e non possono essere utilizzati senza autorizzazione scritta.",
+        "Forniamo link a siti di terze parti per comodità, ma non siamo responsabili dei relativi contenuti o del loro utilizzo.",
+        "Consulta l’informativa privacy per sapere come tuteliamo la tua privacy quando utilizzi il nostro sito."
+      ]
+    },
+    "s32": {
+      "title": "32. Politica di salute e sicurezza",
+      "body": [
+        "Per la sicurezza e il benessere di tutti, chi è stato recentemente esposto a una malattia trasmissibile deve comportarsi responsabilmente.",
+        "Le prenotazioni prepagate e non rimborsabili restano non rimborsabili anche in queste circostanze.",
+        "Si consiglia vivamente di stipulare un’assicurazione di viaggio per coprire eventi imprevisti, inclusa la malattia o l’impossibilità di viaggiare."
+      ]
+    },
+    "s33": {
+      "title": "33. Coupon",
+      "body": [
+        "Possiamo emettere periodicamente coupon promozionali.",
+        "I coupon sono validi esclusivamente per prenotazioni effettuate tramite il nostro sito ufficiale (hostel-positano.com).",
+        "Ogni coupon può essere soggetto a termini specifici aggiuntivi rispetto a quanto qui indicato."
+      ]
+    }
+  }
+}

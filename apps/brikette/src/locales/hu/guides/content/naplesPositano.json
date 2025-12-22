@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "A fordítás folyamatban van."
+  },
+  "linkLabel": "Naples to Positano: how to go",
+  "intro": [
+    "Nápoly → Positano: transzfer Sorrentóba + SITA busz egész évben; nyári komp jó időben; késői érkezéshez privát transzfer."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Vonat + busz (egész évben)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Komp (nyár)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Késői érkezés & transzferek"
+    },
+    {
+      "href": "#faqs",
+      "label": "GYIK"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Vonat + busz (egész évben)",
+      "body": [
+        "A NAP terminálról vedd igénybe a Curreri shuttle-t (vagy Alibus + Circumvesuviana kombinációt) Sorrentóig, onnan pedig a SITA buszt Amalfi irányába.",
+        "A jegyet felszállás előtt vedd meg, nézd meg aznapi menetrendet, és szállj le a ‘Chiesa Nuova’ megállónál – innen a legkevesebb lépcső vezet a Brikette Hostelhez."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Komp (nyár)",
+      "body": [
+        "Alibus a Molo Beverellóig, onnan komp Positanóba; aznap erősítsd meg a jegyárat az üzemeltetőnél.",
+        "Mindig ellenőrizd a járattörléseket, és ha további csatlakozásod van, ne az utolsó járatra hagyatkozz."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Késői érkezés & transzferek",
+      "body": [
+        "Ha az utolsó komp/busz után érkezel, foglalj privát transzfert vagy tölts egy éjszakát Nápolyban/Sorrentóban.",
+        "Egyeztesd a leszállási pontot a szállásodhoz közel, és kérdezz rá a csomagkezelésre is."
+      ]
+    }
+  ],
+  "faqsTitle": "GYIK",
+  "faqs": [
+    {
+      "q": "Hol vegyek SITA jegyet?",
+      "a": [
+        "Az állomások környéki tabacchi vagy kioszkokban. Szállj fel csak érvényesített jeggyel."
+      ]
+    },
+    {
+      "q": "Mennyi lépcső vezet a hostelhez?",
+      "a": [
+        "A ‘Chiesa Nuova’ megállótól nagyjából 80 méter, lépcsők nélkül."
+      ]
+    }
+  ]
+}

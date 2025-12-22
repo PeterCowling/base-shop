@@ -1,0 +1,33 @@
+{
+  "detail": {
+    "room_12": {
+      "hero": {
+        "eyebrow": "Superior blandet sovesal • Terrasse",
+        "title": "Vågn til Positanos skyline fra en kæmpe fælles terrasse",
+        "subtitle": "Vores største sovesalsterrasse kombinerer seks senge med private bekvemmeligheder indenfor.",
+        "bullets": [
+          "Panoramaterrasse med loungemøbler og borde til morgenmaden",
+          "Privat badeværelse fyldt med friske håndklæder",
+          "Hurtigt wi-fi, aircondition og nøglekortskabe til hver gæst"
+        ]
+      },
+      "outline": {
+        "heading": "Det kan du forvente i terrassesovesalen",
+        "items": [
+          {
+            "title": "Udendørs plads til alle",
+            "body": "Nyd aftenspritz sammen i sofaer og på lange bænke, mens Positanos pastelfarvede skyline folder sig ud foran jer."
+          },
+          {
+            "title": "Gode sovepladser",
+            "body": "Seks solide køjer med gardiner, egne lamper og stikkontakter giver ro, når du skal sove."
+          },
+          {
+            "title": "Klar til stranddage",
+            "body": "Opbevar tasker i nøglekortskabene, hæng badetøj på terrassens stativer og skyl sandet af hurtigt i det ensuite-badeværelse."
+          }
+        ]
+      }
+    }
+  }
+}

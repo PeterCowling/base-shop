@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Ravellói Zenei Fesztivál útmutató",
+    "description": "Koncertek, jegyek, ülőhelyek és érkezés Ravellóba Amalfi/Positano felől."
+  },
+  "linkLabel": "Ravellói Zenei Fesztivál útmutató",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "tickets",
+      "title": "Securing tickets",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Getting there",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Concert etiquette",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "late-return",
+      "title": "Late return logistics",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "tips": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "faqs": [
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "eventSchema": {
+    "name": "Ravello Festival",
+    "startDate": "2025-07-01",
+    "endDate": "2025-09-15",
+    "locationName": "Ravello Festival venues",
+    "addressLocality": "Ravello",
+    "description": "A fordítás folyamatban van."
+  }
+}

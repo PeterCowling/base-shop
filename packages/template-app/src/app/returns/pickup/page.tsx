@@ -32,7 +32,7 @@ export default async function PickupPage({
       <h1 className="text-xl font-semibold">{t("returns.pickup.title")}</h1>
       {zip ? (
         isAllowed ? (
-          <p>{`${t("returns.pickup.scheduledFor") as string} ${zip}`}</p>
+          <p>{t("returns.pickup.scheduledFor", { zip })}</p>
         ) : (
           <p>{t("returns.pickup.unavailable")}</p>
         )

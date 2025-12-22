@@ -1,0 +1,88 @@
+{
+  "slug": "positano-salerno-bus",
+  "meta": {
+    "title": "Positano til Salerno med bus – trin for trin",
+    "description": "Dør-til-dør busvejledning fra Hostel Brikette til Salerno via Amalfi: hvor du stiger på, køber billetter, læser køreplaner og skifter i Amalfi."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "heading": "Positano til Salerno – med bus (via Amalfi)",
+    "intro": "Rejs fra Hostel Brikette til Salerno med et skift i Amalfi. Denne guide beskriver, hvor du stiger på i Positano, billetkontrol, hvordan du læser køreplanen, og hvad du kan forvente under skiftet i Amalfi."
+  },
+  "tip": {
+    "label": "Tip",
+    "linkLabel": "Oversigten Sådan kommer du hertil",
+    "body": "Har du brug for andre transportmuligheder? Åbn <link>Oversigten Sådan kommer du hertil</link> for færger, taxaer og kombinerede rejser."
+  },
+  "sections": {
+    "journey": {
+      "title": "Rejseoverblik",
+      "body": [
+        "Ruten består af to SITA-ben: først fra Positano (Chiesa Nuova) til Amalfi og derefter fra Amalfi til Salerno.",
+        "Afsæt ekstra tid i højsæsonen til køer og trafik."
+      ]
+    },
+    "tickets": {
+      "title": "SITA-busser og billetter",
+      "items": [
+        "SITA Sud driver kystbusserne mellem Positano, Amalfi og Salerno.",
+        "Køb billetter før ombordstigning i en tabacchi/kiosk eller café (betalingsmuligheder varierer).",
+        "Hav din billet klar; chaufføren stempler eller river den typisk ved ombordstigning."
+      ]
+    },
+    "timetable": {
+      "title": "Køreplan og planlægning",
+      "linkLabel": "Positano.com",
+      "intro": "Tjek de seneste køreplaner på <link>Positano.com</link>. Slå begge strækninger op og planlæg tid til skiftet i Amalfi.",
+      "items": [
+        "Stop vises som rækker; hver bogstavskolonne er en planlagt afgang.",
+        "Afgange mandag–lørdag bruger ofte kolonnerne \"F\" og \"G\"; søndag/helligdage \"G\" og \"H\".",
+        "Til denne tur skal du bruge to ben: Positano → Amalfi og derefter Amalfi → Salerno."
+      ],
+      "linkHref": "https://www.positano.com/en/bus-schedule"
+    },
+    "positanoStop": {
+      "title": "Busstoppet Positano (Chiesa Nuova)",
+      "items": [
+        "Det nærmeste SITA-stoppested er Positano (Chiesa Nuova) på Via G. Marconi.",
+        "Det ligger omkring 140 meter (490 fod) fra hostellets indgang.",
+        "Du venter udenfor caféen/baren \"Bar Internazionale\"."
+      ],
+      "media": {
+        "src": "/img/directions/positano-bus-stop.png",
+        "alt": "Positanos Chiesa Nuova SITA-stoppested foran Bar Internazionale",
+        "caption": "Kom et par minutter i forvejen for at sikre dig en plads; busserne kan hurtigt blive fyldt op om sommeren."
+      }
+    },
+    "walk": {
+      "title": "Gå fra hostellet til stoppet",
+      "items": [
+        "Forlad hostellet, gå ned ad trappen til hovedvejen, og drej til venstre.",
+        "Fortsæt ad Via G. Marconi i cirka 100 meter (330 fod).",
+        "\"Bar Internazionale\" ligger på venstre hånd; SITA-stoppet er lige udenfor."
+      ]
+    },
+    "wait": {
+      "title": "Køb din billet og vent på ombordstigning",
+      "items": [
+        "Køb en SITA-billet til Amalfi i baren eller den nærliggende kiosk.",
+        "Gå over på den modsatte side af vejen og stil dig i kø til bussen mod Amalfi.",
+        "Kontrollér en ekstra gang, at bustavlen viser \"Amalfi\"."
+      ]
+    },
+    "transfer": {
+      "title": "Skift bus i Amalfi",
+      "items": [
+        "Stig af ved Amalfis hovedbusterminal ved piazzaen ved havnefronten.",
+        "Find standpladsen for SITA-busser mod Salerno; spørg personalet, hvis du er i tvivl.",
+        "Køb om nødvendigt en ny billet til strækningen Amalfi → Salerno, før du går ombord."
+      ]
+    },
+    "arrival": {
+      "title": "Ankomst til Salerno",
+      "body": [
+        "SITA-busser til Salerno ender nær byens transportknudepunkter. Herfra kan du fortsætte med lokalbus, gå til Piazza della Concordia og færgehavnen eller nå Salernos togstation. Følg altid skiltene på stedet eller spørg personalet for den mest direkte forbindelse."
+      ]
+    }
+  }
+}

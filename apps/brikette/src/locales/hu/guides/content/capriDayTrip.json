@@ -1,0 +1,114 @@
+{
+  "seo": {
+    "title": "Egynapos kirándulás Caprira Positanóból",
+    "description": "Kompok, látnivalók, libegő, strandok és időzítés, hogy egy napba beleférjen."
+  },
+  "linkLabel": "Egynapos kirándulás Caprira Positanóból",
+  "intro": [
+    "Egynapos capri kirándulás Positanóból: induljon korán, pakoljon könnyen, és állítson össze egy kört, amelyben Anacapri panorámái és a kényelmes visszaút is belefér."
+  ],
+  "toc": [
+    {
+      "href": "#morning",
+      "label": "Reggel — érkezés és Anacapri"
+    },
+    {
+      "href": "#midday",
+      "label": "Dél — Marina Piccola kör"
+    },
+    {
+      "href": "#afternoon",
+      "label": "Délután — Capri város és visszatérés"
+    },
+    {
+      "href": "#gallery",
+      "label": "Fotógaléria"
+    },
+    {
+      "href": "#faqs",
+      "label": "GYIK"
+    }
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Reggel — érkezés és Anacapri",
+      "body": [
+        "Fogja el az első kompot, hogy még a hajós turistacsoportok előtt érkezzen, majd busszal menjen fel Anacapriba, és ha kedveli a magasságot, üljön fel a Monte Solaro libegőre.",
+        "Egyen egyszerű reggelit a Piazza Vittorián, és már érkezéskor vegye meg a visszaúti jegyet is, így biztos az indulás időpontja."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Dél — Marina Piccola kör",
+      "body": [
+        "Sétáljon vagy busszal ereszkedjen le Marina Piccolába egy csobbanásra vagy fotószünetre; vigyen korallbarát naptejet és fejenként legalább 1 liter (34 uncia) vizet.",
+        "Vásároljon paninit vagy salátát egy deliben ahelyett, hogy hosszú ebédet tartana, így visszaút közben sem kell sietnie."
+      ]
+    },
+    {
+      "id": "afternoon",
+      "title": "Délután — Capri város és visszatérés",
+      "body": [
+        "A siklóval menjen fel Capri városába, sétáljon végig a Via Camerellén, nézze meg a Giardini di Augusto kertjeit, majd tartson egy gelato- vagy presszószünetet.",
+        "Legyen legalább 30 perccel indulás előtt a Marina Grandén, mert sor alakulhat ki a siklóhoz vagy a poggyászmegőrzőhöz."
+      ]
+    }
+  ],
+  "galleryTitle": "Fotógaléria",
+  "gallery": {
+    "items": {
+      "monteSolaro": {
+        "alt": "Kilátás a capri Monte Solaróról",
+        "caption": "Panoráma a Monte Solaróról"
+      },
+      "gardensOfAugustus": {
+        "alt": "Az Augustus-kertek Caprin",
+        "caption": "Az Augustus-kertek"
+      }
+    }
+  },
+  "faqsTitle": "GYIK",
+  "howTo": {
+    "steps": [
+      {
+        "name": "Ellenőrizze a szezonális kompokat",
+        "text": "Nézze meg a reggeli indulásokat és az utolsó visszautakat Positanóba."
+      },
+      {
+        "name": "Érkezzen korán a mólóra",
+        "text": "Csúcsszezonban 20–30 perccel indulás előtt álljon sorba."
+      },
+      {
+        "name": "Tervezze meg a capri útvonalat",
+        "text": "Időkerettől függően helyezze előtérbe Anacaprit vagy Marina Grandét és a kilátópontokat."
+      }
+    ]
+  },
+  "tipsTitle": "Napi tippek",
+  "tips": [
+    "Vegye meg oda- és visszaútra a kompjegyet egyszerre, így napközben szabadabban alakíthatja a programot.",
+    "Vigyen kis hátizsákot vízzel, naptejjel és készpénzzel – Caprin főszezonban kiürülhetnek az ATM-ek.",
+    "Töltsön le offline térképeket és buszmenetrendeket; Anacapri környékén és a Kék-barlang várakozójában gyenge a térerő."
+  ],
+  "warningsTitle": "Fontos figyelmeztetések",
+  "warnings": [
+    "A libegőnél és a siklónál 15:00 után megugrik a sor; ha lekési az időpontot, csak várólistás hajóra fér fel.",
+    "Erősebb hullámzásnál a késő esti járatok értesítés nélkül is elmaradhatnak – reggel nézze át az előrejelzést, és legyen tartalék útvonala Sorrentón át.",
+    "A Kék-barlang gyakran zárva van szél vagy hullámzás miatt – a jegyárusok ilyenkor is árulhatnak jegyet, ezért sorba állás előtt erősítse meg, hogy működik."
+  ],
+  "faqs": [
+    {
+      "q": "Be tudom szorítani a Kék-barlangot is?",
+      "a": [
+        "Csak akkor, ha ez a fő program: transzferhajó és 60–90 perces várakozás is kell hozzá, ami leszűkíti a maradék időt."
+      ]
+    },
+    {
+      "q": "Előre kell foglalni a jegyeket?",
+      "a": [
+        "Csúcsszezonban foglalja előre a reggeli kompokat, és fontolja meg a libegő vagy csónaktúra online jegyét; utószezonban többnyire elég helyben vásárolni."
+      ]
+    }
+  ]
+}

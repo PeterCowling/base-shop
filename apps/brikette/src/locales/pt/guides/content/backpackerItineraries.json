@@ -1,0 +1,142 @@
+{
+  "seo": {
+    "title": "Positano com orçamento mochileiro: roteiros de 1 a 3 dias",
+    "description": "Planos dia a dia que cobrem os destaques de Positano mantendo os custos sob controle."
+  },
+  "linkLabel": "Positano com orçamento mochileiro: roteiros de 1 a 3 dias",
+  "intro": [
+    "Planos práticos, dia a dia, que percorrem os destaques sem rebentar o orçamento."
+  ],
+  "toc": [
+    {
+      "href": "#day1",
+      "label": "Dia 1: Positano essencial"
+    },
+    {
+      "href": "#day2",
+      "label": "Dia 2: Caminho dos Deuses + praia"
+    },
+    {
+      "href": "#day3",
+      "label": "Dia 3: Capri ou Amalfi + Ravello"
+    },
+    {
+      "href": "#savings",
+      "label": "Dicas para poupar"
+    },
+    {
+      "href": "#food",
+      "label": "Comer em conta"
+    },
+    {
+      "href": "#transport",
+      "label": "Sugestões de transporte"
+    }
+  ],
+  "sections": [
+    {
+      "id": "pacing",
+      "title": "Distribua os dias com mais escadas",
+      "body": [
+        "Use o dia de chegada para explorar primeiro Chiesa Nuova e Fornillo; deixe sessões longas de escadas (Caminho dos Deuses, degraus de Arienzo) para depois de uma noite bem dormida.",
+        "Agrupe atividades por nível de altitude para permanecer num patamar de cada vez — termine os miradouros da parte alta antes de descer para a marina."
+      ]
+    },
+    {
+      "id": "budget-mix",
+      "title": "Equilibre atrações pagas e gratuitas",
+      "body": [
+        "Procure uma experiência paga por dia (passeio de barco, degustação de limoncello, ferry para Capri) e preencha o resto com praias gratuitas e caminhadas panorâmicas.",
+        "Leve snacks e garrafas reutilizáveis; fazer compras no minimercado de Chiesa Nuova fica muito mais barato do que nos cafés à beira-mar."
+      ]
+    },
+    {
+      "id": "viewpoints",
+      "title": "Inclua os melhores miradouros",
+      "body": [
+        "A Via Cristoforo Colombo oferece o ângulo clássico de postal ao nascer e pôr do sol sem taxas de entrada.",
+        "Para fotos em sossego, faça um desvio até ao pátio em azulejo junto à Chiesa Nuova ou ao pequeno belvedere acima de Fornillo por volta das 08:00."
+      ]
+    },
+    {
+      "id": "swim-breaks",
+      "title": "Planeie mergulhos económicos",
+      "body": [
+        "A Praia de Fornillo é gratuita e menos concorrida — siga o caminho costeiro a partir da Spiaggia Grande e alugue apenas o equipamento indispensável.",
+        "Se quiser o ambiente de beach club de Arienzo, desça as escadas antes das 10:30 para garantir lugares na zona pública e faça piquenique com focaccia do supermercado."
+      ]
+    },
+    {
+      "id": "evenings",
+      "title": "Noites sem gastar demais",
+      "body": [
+        "O pôr do sol no terraço do hostel é gratuito; prepare o seu próprio spritz com prosecco do supermercado e partilhe petiscos em estilo tapas.",
+        "Veja o quadro de avisos para noites sociais no hostel ou siga para o Music on the Rocks depois das 23:30, quando a entrada fica mais barata para hóspedes — leve identificação."
+      ]
+    }
+  ],
+  "day1Title": "1 dia: essenciais",
+  "day1": [
+    "Manhã: miradouros da Spiaggia Grande → Fornillo pelo caminho costeiro",
+    "Almoço: panini/pizza al taglio perto da Chiesa Nuova para poupar",
+    "Pôr do sol: miradouros do terraço perto do hostel"
+  ],
+  "day2Title": "2 dias: adicionar Caminho dos Deuses",
+  "day2": [
+    "Dia 1 como acima",
+    "Dia 2: SITA até Nocelle → trechos do Sentiero degli Dei → refresco na praia"
+  ],
+  "day3Title": "3 dias: ilha ou combo Amalfi",
+  "day3": [
+    "Opção A: excursão a Capri (ferry cedo) com circuito a pé por conta própria",
+    "Opção B: Amalfi + Ravello de autocarro; jardins da Villa Rufolo e gelado nos degraus do Duomo"
+  ],
+  "savingsTitle": "Dicas para poupar",
+  "savings": [
+    "Viaje em meia estação; use autocarros SITA e caminhe entre miradouros.",
+    "Fique em dormitórios, prepare pequenos-almoços simples e faça piqueniques ao pôr do sol."
+  ],
+  "foodTitle": "Comer em conta",
+  "foodText": "Encontre panini, pizza al taglio e saladas de supermercado na zona central; evite os preços inflacionados junto ao mar.",
+  "transportTitle": "Sugestões de transporte",
+  "transportCompareLabel": "Compare rotas:",
+  "transportCompareLinks": [
+    {
+      "key": "naplesPositano",
+      "label": "Nápoles → Positano"
+    },
+    {
+      "key": "salernoPositano",
+      "label": "Salerno → Positano"
+    }
+  ],
+  "transportFerryPrefix": "Consulte ",
+  "transportFerryLinkLabel": "horários de ferry",
+  "transportFerrySuffix": " e a previsão do tempo; os autocarros são mais baratos.",
+  "faqs": [
+    {
+      "q": "Qual é o melhor plano para 1 dia?",
+      "a": [
+        "Comece na Spiaggia Grande, caminhe até Fornillo, veja o pôr do sol no terraço da Chiesa Nuova e jante com amigos do hostel."
+      ]
+    },
+    {
+      "q": "Como mantenho os custos de transporte baixos?",
+      "a": [
+        "Use autocarros SITA e faça escadas a pé sempre que possível; os ferries são ótimos na época alta, mas custam mais."
+      ]
+    },
+    {
+      "q": "E um itinerário de 2 dias?",
+      "a": [
+        "O Dia 1 cobre o essencial de Positano; o Dia 2 acrescenta o laço do Caminho dos Deuses via Nocelle e tempo de praia em Arienzo ou Fornillo."
+      ]
+    },
+    {
+      "q": "Sugestões para 3 dias?",
+      "a": [
+        "Faça um dia em Capri ou combine Amalfi + Ravello; planeie ferries cedo e leve snacks para poupar."
+      ]
+    }
+  ]
+}

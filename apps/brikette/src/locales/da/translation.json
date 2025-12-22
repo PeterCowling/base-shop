@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Hostel Brikette",
+    "reserve": "Book nu"
+  },
+  "intro": {
+    "title": "Book direkte og spar",
+    "description": "Book dit ophold på vores hjemmeside og få en gratis måltidspakke til en værdi af op til 29 euro pr. dag."
+  },
+  "rooms": {
+    "title": "Værelser",
+    "value_dorms": "Prisvenlige sovesale",
+    "premium_dorms": "Premium-værelser",
+    "superior_dorms": "Superior-værelser",
+    "private_room": "Privat værelse"
+  },
+  "careers": {
+    "jobTitle": "Bliv en del af Hostel Brikette-teamet",
+    "jobDescription": "Vi søger altid energiske mennesker, der brænder for hospitality. Trives du i et travlt miljø? Kontakt os!",
+    "ctaLabel": "Spørg til ledige stillinger"
+  },
+  "errorBoundary": {
+    "title": "Noget gik galt.",
+    "reload": "Genindlæs siden"
+  },
+  "meta": {
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@brikette"
+  },
+  "internalErrors": {
+    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+  }
+}

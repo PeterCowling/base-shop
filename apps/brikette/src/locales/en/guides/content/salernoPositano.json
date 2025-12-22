@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Salerno to Positano: how to go",
+    "description": "Best routes from Salerno to Positano via bus or summer ferry, with timing tips."
+  },
+  "linkLabel": "Salerno to Positano: how to go",
+  "intro": [
+    "Salerno → Positano: ferry is easiest in season (with bags); bus via Amalfi runs all year as a cheaper alternative."
+  ],
+  "sections": [
+    {
+      "id": "ferry",
+      "title": "Ferry (recommended with luggage)",
+      "body": [
+        "Board at Molo Manfredi/Concordia depending on operator and plan for roughly an hour on the water, depending on sea conditions.",
+        "Check sea conditions and the live timetable; seats can sell out on weekends — arrive early."
+      ]
+    },
+    {
+      "id": "bus",
+      "title": "Bus via Amalfi (year‑round)",
+      "body": [
+        "Train to Amalfi (SITA) → change to the Positano line; longer but available off‑season.",
+        "Keep small cash, validate tickets, and allow buffer at the Amalfi interchange while you check the onward departure board."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is the ferry reliable in spring?",
+      "a": [
+        "Yes, but early spring storms can cancel services. Always check on the day."
+      ]
+    },
+    {
+      "q": "Where to stow bags?",
+      "a": [
+        "Use racks on ferries; keep valuables with you."
+      ]
+    }
+  ]
+}

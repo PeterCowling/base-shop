@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Campeggiare sulla Costiera Amalfitana",
+    "description": "Aree sosta, campeggi attrezzati e consigli per raggiungerli con mezzi pubblici o scooter."
+  },
+  "linkLabel": "Campeggiare sulla Costiera Amalfitana",
+  "intro": [
+    "Traduzione in arrivo."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Dove puoi campeggiare",
+      "body": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Accesso e trasporti",
+      "body": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etichetta e sicurezza",
+      "body": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Il campeggio libero è consentito?",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ]
+}

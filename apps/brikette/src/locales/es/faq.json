@@ -1,0 +1,149 @@
+{
+  "items": [
+    {
+      "id": "what-kind-of-breakfast-is-served-at-hostel-brikette",
+      "question": "¿Qué tipo de desayuno se sirve en Hostel Brikette?",
+      "answer": "Los huéspedes disfrutan de un menú a la carta muy valorado. Reserva directamente para obtener desayuno gratuito."
+    },
+    {
+      "id": "what-are-the-check-in-and-check-out-times-at-hostel-brikette",
+      "question": "¿A qué hora son el check-in y el check-out en Hostel Brikette?",
+      "answer": "El horario de check‑in habitual es de 15:00 a 22:30, y el check‑out de 07:30 a 10:30."
+    },
+    {
+      "id": "how-much-does-it-cost-to-stay-at-hostel-brikette",
+      "question": "¿Cuánto cuesta alojarse en Hostel Brikette?",
+      "answer": "Los precios varían según las fechas y el tipo de habitación. Para ver los precios actualizados, busca por habitación y fecha."
+    },
+    {
+      "id": "what-is-there-to-do-at-hostel-brikette",
+      "question": "¿Qué se puede hacer en Hostel Brikette?",
+      "answer": "El albergue organiza o recomienda senderismo; otras actividades pueden implicar cargos adicionales."
+    },
+    {
+      "id": "how-far-is-hostel-brikette-from-the-centre-of-positano",
+      "question": "¿A qué distancia está Hostel Brikette del centro de Positano?",
+      "answer": "El establecimiento está a unos 350 metros del centro de Positano."
+    },
+    {
+      "id": "how-close-to-the-beach-is-hostel-brikette",
+      "question": "¿Qué tan cerca está Hostel Brikette de la playa?",
+      "answer": "La playa más cercana está a unos 350 metros."
+    },
+    {
+      "id": "what-room-types-are-available-at-hostel-brikette",
+      "question": "¿Qué tipos de habitación hay disponibles en Hostel Brikette?",
+      "answer": "Puedes reservar camas en dormitorios mixtos, camas en dormitorios solo para mujeres o habitaciones dobles privadas con baño."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-terrace-with-sea-views",
+      "question": "¿Hostel Brikette dispone de una terraza con vistas al mar?",
+      "answer": "Sí — una amplia terraza compartida domina Positano y ofrece vistas panorámicas al mar."
+    },
+    {
+      "id": "is-free-wi-fi-provided",
+      "question": "¿Se ofrece Wi-Fi gratuito?",
+      "answer": "Sí — hay Wi-Fi gratuito en todas las instalaciones."
+    },
+    {
+      "id": "is-breakfast-included-in-the-rate",
+      "question": "¿El desayuno está incluido en la tarifa?",
+      "answer": "El desayuno está incluido en la tarifa si reservas directamente; de lo contrario, se cobra aparte."
+    },
+    {
+      "id": "does-hostel-brikette-have-an-on-site-bar",
+      "question": "¿Hostel Brikette cuenta con un bar en el establecimiento?",
+      "answer": "Sí — el bar sirve café, tentempiés ligeros, desayuno, cenas y bebidas cada día de 07:30 a 23:30."
+    },
+    {
+      "id": "can-i-store-my-luggage-before-check-in-or-after-check-out",
+      "question": "¿Puedo guardar mi equipaje antes del check-in o después del check-out?",
+      "answer": "Sí — ofrecemos consigna de equipaje a partir de las 10:30 para quienes hacen check-in y de 07:30 a 15:30 para quienes hacen check-out."
+    },
+    {
+      "id": "are-there-age-restrictions-at-hostel-brikette",
+      "question": "¿Hay restricciones de edad en Hostel Brikette?",
+      "answer": "El check-in en dormitorios solo es posible para huéspedes de entre 18 y 39 años. Estas restricciones no se aplican a las habitaciones privadas."
+    },
+    {
+      "id": "are-children-allowed",
+      "question": "¿Se permiten niños?",
+      "answer": "Los dormitorios son solo para adultos y no pueden alojar niños. Reserve habitaciones privadas para superar las restricciones de edad."
+    },
+    {
+      "id": "are-pets-allowed",
+      "question": "¿Se permiten mascotas?",
+      "answer": "Lo sentimos, no se permiten mascotas en el establecimiento."
+    },
+    {
+      "id": "does-the-hostel-have-its-own-parking",
+      "question": "¿El albergue tiene aparcamiento propio?",
+      "answer": "El albergue no dispone de estacionamiento en las instalaciones; hay aparcamientos públicos de pago en Positano."
+    },
+    {
+      "id": "is-air-conditioning-available",
+      "question": "¿Hay aire acondicionado disponible?",
+      "answer": "Sí — todas las habitaciones y los dormitorios cuentan con aire acondicionado."
+    },
+    {
+      "id": "are-lockers-provided-in-the-dormitories",
+      "question": "¿Se proporcionan taquillas en los dormitorios?",
+      "answer": "Sí — cada cama dispone de una taquilla individual; traiga su propio candado o compre uno en recepción."
+    },
+    {
+      "id": "are-towels-included",
+      "question": "¿Se incluyen toallas?",
+      "answer": "Se proporciona una toalla de ducha al hacer el check-in. Las toallas de playa están disponibles para alquilar."
+    },
+    {
+      "id": "is-bed-linen-included",
+      "question": "¿Se incluye la ropa de cama?",
+      "answer": "Sí — se proporciona ropa de cama limpia al hacer el check-in."
+    },
+    {
+      "id": "does-hostel-brikette-have-laundry-facilities",
+      "question": "¿El Hostel Brikette dispone de servicio de lavandería?",
+      "answer": "El albergue no dispone de lavandería; sin embargo, hay algunas cerca."
+    },
+    {
+      "id": "does-hostel-brikette-have-quiet-hours",
+      "question": "¿Hostel Brikette tiene horas de silencio?",
+      "answer": "Las horas de silencio son de 23:30 a 07:30."
+    },
+    {
+      "id": "how-do-i-get-to-hostel-brikette-from-naples-airport",
+      "question": "¿Cómo llego al Hostel Brikette desde el aeropuerto de Nápoles?",
+      "answer": "Toma el autobús lanzadera Curreri a Sorrento y luego el autobús SITA a Positano; bájate en la parada Chiesa Nuova."
+    },
+    {
+      "id": "where-is-the-nearest-bus-stop",
+      "question": "¿Dónde está la parada de autobús más cercana?",
+      "answer": "La parada de autobús Chiesa Nuova está a menos de 80 m (250 ft) y no hay escaleras hasta el albergue."
+    },
+    {
+      "id": "what-payment-methods-are-accepted",
+      "question": "¿Qué métodos de pago se aceptan?",
+      "answer": "En recepción se aceptan Visa, Mastercard, Maestro, tarjeta de débito y efectivo."
+    },
+    {
+      "id": "is-reception-open-24-hours",
+      "question": "¿La recepción está abierta las 24 horas?",
+      "answer": "La recepción abre a las 07:30 y cierra a las 22:30. Las llegadas tardías deben organizarse con antelación."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-shared-kitchen",
+      "question": "¿Hostel Brikette dispone de una cocina compartida?",
+      "answer": "No hay cocina comunitaria, pero los huéspedes tienen acceso a un frigorífico, una tetera y un microondas."
+    },
+    {
+      "id": "does-hostel-brikette-offer-female-only-dorms",
+      "question": "¿Hostel Brikette ofrece dormitorios solo para mujeres?",
+      "answer": "Sí — se pueden reservar camas en dormitorios solo para mujeres."
+    },
+    {
+      "id": "is-the-property-wheelchair-accessible",
+      "question": "¿La propiedad es accesible para sillas de ruedas?",
+      "answer": "El albergue no es accesible para sillas de ruedas."
+    }
+  ]
+}

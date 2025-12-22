@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Porterservice i Positano",
+    "description": "Sådan fungerer porterservice i Positano: hvor du bestiller, prisniveau og hvornår det giver mening."
+  },
+  "linkLabel": "Porterservice i Positano",
+  "intro": [
+    "Portører hjælper med tunge tasker eller hvis mobiliteten driller. Aftal afhentning ved havnen eller busstoppet, bekræft prisen på forhånd, og behold værdigenstande hos dig."
+  ],
+  "sections": [
+    {
+      "id": "how",
+      "title": "Sådan foregår det typisk",
+      "body": [
+        "Aftal mødested og tidspunkt (havnen eller busstoppet). Oplys overnatningssted og mødetid.",
+        "Bliv enige om prisen, før I går i gang. Priserne varierer efter distance, antal trapper og tidspunkt på dagen.",
+        "Behold værdigenstande på dig, og mærk bagagen tydeligt."
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Booking og kontakt",
+      "body": [
+        "Bed dit overnatningssted om anbefalinger til lokale portører ved havnen og de store busstop.",
+        "Til opbevaring eller hjælp uden for normal åbningstid kan du se samlere som Bounce eller Radical Storage."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Kutyme og tips",
+      "body": [
+        "Giv drikkepenge for ekstra service eller meget tung last; hav kontanter i små sedler.",
+        "Del din ankomstplan i forvejen i travle perioder, så du er sikker på at få en tid."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Behøver jeg portører?",
+      "a": [
+        "Anbefales, hvis du har tung bagage; byen har mange trapper og stejle gyder."
+      ]
+    },
+    {
+      "q": "Hvor kan jeg booke?",
+      "a": [
+        "Spørg dit overnatningssted eller lokale services nær hovedstranden og busstoppene."
+      ]
+    },
+    {
+      "q": "Hvad koster det?",
+      "a": [
+        "Det afhænger af distance og vægt – bekræft prisen, før arbejdet begynder."
+      ]
+    }
+  ],
+  "galleryTitle": "Fotogalleri",
+  "gallery": {
+    "standsCaption": "Portørstande (eksempel)",
+    "cartsCaption": "Portørtrucks"
+  }
+}

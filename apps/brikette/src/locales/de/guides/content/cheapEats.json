@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Günstig essen in Positano: Food-Guide",
+    "description": "Wo du in Positano günstig isst: Panini, Pizza al taglio, Take-away-Salate, Minimärkte und Picknick-Spots."
+  },
+  "linkLabel": "Günstig essen in Positano",
+  "heroAlt": "Preiswerte Take-away-Gerichte in Positano",
+  "intro": [
+    "In Positano gut essen ohne viel auszugeben – mit Take-away-Klassikern, Deli-Picknicks und lokalen Bäckereien."
+  ],
+  "sections": [
+    {
+      "id": "grab-and-go",
+      "title": "Schnell & unterwegs",
+      "body": [
+        "Hol Pizza al taglio, Panini oder Arancini in den Bars entlang der Via dei Mulini vor Mittag, um Schlangen zu vermeiden.",
+        "Bestell Espresso am Tresen („al banco“) für den lokalen Preis von rund 1,20 € statt am Tisch zu sitzen."
+      ]
+    },
+    {
+      "id": "casual-dining",
+      "title": "Entspannte Sitzplätze",
+      "body": [
+        "Such Trattorien oberhalb des Strands, wo das Coperto moderat und Hauswein im Karaffenausschank ist.",
+        "Teilt Vorspeisen, verzichtet auf Dessert und fragt nach Leitungswasser („acqua del rubinetto“), um die Rechnung schlank zu halten."
+      ]
+    },
+    {
+      "id": "picnics",
+      "title": "Picknicks mit Aussicht",
+      "body": [
+        "Deck dich mit Käse, Focaccia und Obst aus dem Minimarkt ein und picknicke auf der Hostelterrasse oder im öffentlichen Bereich von Fornillo.",
+        "Nimm Mehrweg-Besteck und Servietten mit, um Einwegmüll und Zusatzkäufe zu vermeiden."
+      ]
+    },
+    {
+      "id": "sweet-breaks",
+      "title": "Süße Pausen",
+      "body": [
+        "Probier Zitronengranita von Straßenständen für rund 3 € statt teurer Bar-Cocktails.",
+        "Teil dir ein Stück Delizia al limone oder Tiramisù aus der Bäckerei für ein günstiges Dessert."
+      ]
+    }
+  ],
+  "tips": [
+    "Frag nach „menu del giorno“ oder Mittagsangeboten – oft gibt es Pasta, Wasser und Kaffee für unter 18 €.",
+    "Pack einen faltbaren Behälter ein, um Reste mitzunehmen und später im Hostel zu essen."
+  ],
+  "recommendationsTitle": "Wo essen?",
+  "recommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, Pizza al taglio, Salate und Gebäck zum Mitnehmen für schnelle Mahlzeiten."
+    },
+    {
+      "name": "Lokale Feinkosttheken",
+      "note": "Deli-Teller, Focaccia und Picknickbedarf fernab der Uferaufschläge."
+    },
+    {
+      "name": "Minimärkte & Obststände",
+      "note": "Vorräte an Obst, großen Wasserflaschen und Snacks für Terrassenpicknicks."
+    }
+  ],
+  "gallery": {
+    "title": "Fotogalerie",
+    "items": [
+      {
+        "alt": "Panini aus einem lokalen Deli",
+        "caption": "Panini & Deli"
+      },
+      {
+        "alt": "Picknick mit Positano-Blick",
+        "caption": "Picknick mit Aussicht"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "q": "Kann ich Wasser kostenlos nachfüllen?",
+      "a": [
+        "Ja – fülle Flaschen im Hostel oder an öffentlichen Brunnen wie nahe Chiesa Nuova; trage immer mindestens 750 ml bei dir."
+      ]
+    },
+    {
+      "q": "Gibt es günstige vegetarische Optionen?",
+      "a": [
+        "Auf jeden Fall – bestell Caprese-Panini, Parmigiana di melanzane stückweise oder Pasta al pomodoro in einfachen Trattorien."
+      ]
+    }
+  ],
+  "fallbackIntro": [
+    "Positano bietet viele günstige Happen, wenn du weißt, wo du suchen musst."
+  ],
+  "fallbackRecommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, Pizza al taglio, Salate und Gebäck zum Mitnehmen für schnelle Mahlzeiten."
+    },
+    {
+      "name": "Lokale Feinkosttheken",
+      "note": "Deli-Platten, Focaccia und Picknickbedarf abseits der Uferaufschläge."
+    },
+    {
+      "name": "Minimärkte & Obststände",
+      "note": "Decke dich mit Obst, großen Wasserflaschen und Snacks für Terrassenpicknicks ein."
+    }
+  ],
+  "fallbackGalleryItems": [
+    {
+      "alt": "Panini aus einem lokalen Deli",
+      "caption": "Panini & Feinkost"
+    },
+    {
+      "alt": "Picknick mit Blick auf Positano",
+      "caption": "Picknick mit Aussicht"
+    }
+  ],
+  "fallbackFaqs": [
+    {
+      "q": "Akzeptieren die Läden Karten?",
+      "a": [
+        "Die meisten ja, aber etwas Bargeld hilft bei Kiosken oder Mindestbeträgen."
+      ]
+    },
+    {
+      "q": "Fallen To-go-Gebühren an?",
+      "a": [
+        "Manche erheben kleine Verpackungsgebühren; bring einen Mehrwegbehälter mit, um zu sparen und Müll zu vermeiden."
+      ]
+    }
+  ]
+}

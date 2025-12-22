@@ -4,10 +4,9 @@ import CheckoutForm from "../src/components/checkout/CheckoutForm";
 import * as RHF from "react-hook-form";
 
 const fetchJson = jest.fn();
-const confirmPayment = jest.fn();
+const confirm = jest.fn();
 const push = jest.fn();
-const useStripeMock = jest.fn();
-const useElementsMock = jest.fn();
+const useCheckoutMock = jest.fn();
 let consoleError: jest.SpyInstance;
 
 jest.mock("@acme/i18n", () => ({
@@ -27,10 +26,11 @@ jest.mock("@acme/shared-utils", () => ({
 }));
 
 jest.mock("@stripe/react-stripe-js", () => ({
-  Elements: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  CheckoutProvider: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
   PaymentElement: () => <div>payment-element</div>,
-  useStripe: () => useStripeMock(),
-  useElements: () => useElementsMock(),
+  useCheckout: () => useCheckoutMock(),
 }));
 
 jest.mock("@stripe/stripe-js", () => ({
@@ -44,10 +44,9 @@ jest.mock("react-hook-form", () => {
 
 beforeEach(() => {
   fetchJson.mockReset();
-  confirmPayment.mockReset();
+  confirm.mockReset();
   push.mockReset();
-  useStripeMock.mockReturnValue({ confirmPayment });
-  useElementsMock.mockReturnValue({});
+  useCheckoutMock.mockReturnValue({ canConfirm: true, confirm });
   (RHF.useForm as jest.Mock).mockImplementation(
     (jest.requireActual("react-hook-form") as any).useForm
   );
@@ -111,7 +110,7 @@ describe("CheckoutForm", () => {
 
   it("redirects on successful payment", async () => {
     fetchJson.mockResolvedValue({ clientSecret: "cs" });
-    confirmPayment.mockResolvedValue({});
+    confirm.mockResolvedValue({ type: "success", session: { id: "csess" } });
 
     render(<CheckoutForm locale="en" taxRegion="eu" />);
     // Ensure the Elements tree is mounted with the PaymentElement
@@ -120,13 +119,13 @@ describe("CheckoutForm", () => {
 
     await userEvent.click(pay);
 
-    expect(confirmPayment).toHaveBeenCalled();
-    expect(push).toHaveBeenCalledWith("/en/success");
+    expect(confirm).toHaveBeenCalled();
+    expect(push).toHaveBeenCalledWith("/en/success?orderId=csess&currency=USD");
   });
 
   it("redirects to cancelled on payment error", async () => {
     fetchJson.mockResolvedValue({ clientSecret: "cs" });
-    confirmPayment.mockResolvedValue({ error: { message: "nope" } });
+    confirm.mockResolvedValue({ type: "error", error: { message: "nope" } });
 
     render(<CheckoutForm locale="en" taxRegion="eu" />);
     await screen.findByText("payment-element");
@@ -139,15 +138,14 @@ describe("CheckoutForm", () => {
 
   it("blocks submission when stripe objects are missing", async () => {
     fetchJson.mockResolvedValue({ clientSecret: "cs" });
-    useStripeMock.mockReturnValue(null);
-    useElementsMock.mockReturnValue(null);
+    useCheckoutMock.mockReturnValue({ canConfirm: false, confirm });
 
     render(<CheckoutForm locale="en" taxRegion="eu" />);
     const pay = await screen.findByRole("button", { name: "checkout.pay" });
 
     await userEvent.click(pay);
 
-    expect(confirmPayment).not.toHaveBeenCalled();
+    expect(confirm).not.toHaveBeenCalled();
     expect(push).not.toHaveBeenCalled();
   });
 

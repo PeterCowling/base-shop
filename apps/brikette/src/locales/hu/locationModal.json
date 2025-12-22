@@ -1,0 +1,8 @@
+{
+  "title": "Elhelyezkedésünk",
+  "inputLabel": "Add meg a jelenlegi helyzeted:",
+  "inputPlaceholder": "pl. Nápoly, Olaszország vagy teljes cím",
+  "getDirections": "Útvonal kérése",
+  "justShowMap": "Csak térkép megjelenítése",
+  "close": "Párbeszédablak bezárása"
+}

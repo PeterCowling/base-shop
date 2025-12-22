@@ -170,6 +170,12 @@
       ],
       "@acme/page-builder-core/*": [
         "../../packages/page-builder-core/src/*", "../../packages/page-builder-core/dist/*"
+      ],
+      "@acme/page-builder-ui": [
+        "../../packages/page-builder-ui/dist/index.d.ts", "../../packages/page-builder-ui/src/index.ts"
+      ],
+      "@acme/page-builder-ui/*": [
+        "../../packages/page-builder-ui/dist/*", "../../packages/page-builder-ui/src/*"
       ]
     },
     "module": "ESNext",

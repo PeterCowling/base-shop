@@ -1,0 +1,481 @@
+@config "../../tailwind.config.mjs";
+
+/* /src/styles/global.css
+   Tailwind 4.1 global stylesheet — tokens, base, utilities
+   ------------------------------------------------------- */
+
+/* 0 ▪ Imports
+   ------------------------------------------------------------------ */
+@import "./fonts.css"; /* font-faces with font-display: optional */
+@import "tailwindcss";
+
+/* 1 ▪ Design-token custom properties
+   ------------------------------------------------------------------ */
+:root {
+  color-scheme: light;
+
+  /* unified theme-switch timing */
+  --theme-transition-duration: 200ms;
+
+  /* fonts */
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Franklin Gothic ATF", "Poppins", ui-sans-serif;
+
+  /* surfaces / content */
+  --color-brand-bg: #ffffff;
+  --color-brand-surface: #f2f3f4;
+  --color-brand-text: #1b1b1b;
+  --color-brand-heading: #1b1b1b;
+  /* semantic outline color for borders in light mode */
+  --color-brand-outline: var(--color-brand-text);
+
+  /* accents — **adjusted for WCAG 4.5 : 1**
+     #00629a on #ffffff ≥ 4.5 : 1
+     #c1364d on #ffffff ≥ 4.5 : 1                                         */
+  --color-brand-primary: #005887; /* ⬅︎ darkened for WCAG AAA     */
+  --color-brand-secondary: #f4d35e;
+  --color-brand-terra: #c4572e;
+  --color-brand-bougainvillea: #9b1b33; /* ⬅︎ deepened for WCAG AAA     */
+
+  /* gradients */
+  --color-brand-gradient-start: #003d73;
+  --color-brand-gradient-mid: #005c9c;
+  --color-brand-gradient-end: var(--color-brand-primary);
+
+  /* partner brand accents */
+  --color-rating-hostelworld: #ff6a00;
+  --color-rating-booking: #003580;
+
+  /* layered UI */
+  --z-modal: 80;
+
+  --color-header-link: #ffffff;
+
+  /* layering */
+  --layer-modal: 9999;
+  --layer-modal-backdrop: 9998;
+
+  /* RGB triplets for Tailwind alpha support (light) */
+  --rgb-brand-bg: 255 255 255;
+  --rgb-brand-surface: 242 243 244;
+  --rgb-brand-text: 27 27 27;
+  --rgb-brand-heading: 27 27 27;
+  --rgb-brand-primary: 0 88 135;
+  --rgb-brand-secondary: 244 211 94;
+  --rgb-brand-terra: 196 87 46;
+  --rgb-brand-bougainvillea: 155 27 51;
+  --rgb-brand-outline: 27 27 27;
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* surfaces / content */
+  --color-brand-bg: #181818;
+  --color-brand-surface: #1f1f1f;
+  --color-brand-text: #f7f7f7;
+  --color-brand-heading: #ffffff;
+  /* semantic outline color for borders in dark mode (contrasts on light cards) */
+  --color-brand-outline: var(--color-brand-surface);
+
+  /* accents — darker mustard guarantees ≥ 4.5 : 1 on white text */
+  --color-brand-primary: #9f6b00; /* ⬅︎ was #ffb74d               */
+  --color-brand-secondary: #d2b53f;
+  --color-brand-terra: #ff5722;
+  --color-brand-bougainvillea: #ffeb3b;
+
+  /* gradients (subtle dark) */
+  --color-brand-gradient-start: #000000;
+  --color-brand-gradient-mid: #1b1b1b;
+  --color-brand-gradient-end: #2b2b2b;
+
+  /* partner brand accents (dark mode keeps brand identifiers) */
+  --color-rating-hostelworld: #ff6a00;
+  --color-rating-booking: #003580;
+
+  --color-header-link: #f7f7f7;
+
+  /* layering */
+  --layer-modal: 9999;
+  --layer-modal-backdrop: 9998;
+
+  /* RGB triplets for Tailwind alpha support (dark) */
+  --rgb-brand-bg: 24 24 24;
+  --rgb-brand-surface: 31 31 31;
+  --rgb-brand-text: 247 247 247;
+  --rgb-brand-heading: 255 255 255;
+  --rgb-brand-primary: 159 107 0;
+  --rgb-brand-secondary: 210 181 63;
+  --rgb-brand-terra: 255 87 34;
+  --rgb-brand-bougainvillea: 255 235 59;
+  --rgb-brand-outline: 31 31 31;
+}
+
+/* 2 ▪ Base layer
+   ------------------------------------------------------------------ */
+@layer base {
+  /* smooth theme transition */
+  *,
+  *::before,
+  *::after {
+    transition-property: background-color, color, border-color, text-decoration-color, fill, stroke,
+      opacity;
+    transition-duration: var(--theme-transition-duration);
+    transition-timing-function: ease;
+  }
+
+  html,
+  body {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    @apply text-base leading-relaxed;
+    background-color: var(--color-brand-bg);
+    color: var(--color-brand-text);
+  }
+
+  main {
+    /* Ensure consistent breathing room before the footer */
+    padding-block-end: clamp(3.5rem, 6vw, 5.5rem);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    @apply font-bold leading-tight;
+    color: var(--color-brand-heading);
+  }
+
+  /* Links */
+  a {
+    color: var(--color-brand-primary);
+    text-decoration-line: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+  }
+  a:hover,
+  a:focus-visible {
+    text-decoration-color: var(--color-brand-bougainvillea);
+  }
+
+  details > summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    inline-size: 100%;
+    border-radius: 0.75rem;
+    transition: color var(--theme-transition-duration) ease,
+      background-color var(--theme-transition-duration) ease;
+  }
+
+  details > summary::marker,
+  details > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  details > summary::before {
+    content: "";
+    inline-size: 0.65rem;
+    block-size: 0.65rem;
+    border-inline-end: 2px solid currentColor;
+    border-block-end: 2px solid currentColor;
+    transform: rotate(-45deg);
+    transition: transform var(--theme-transition-duration) ease;
+    flex-shrink: 0;
+    display: inline-block;
+  }
+
+  details[open] > summary::before {
+    transform: rotate(45deg);
+  }
+
+  details > summary:hover,
+  details > summary:focus-visible {
+    background-color: rgba(var(--rgb-brand-primary), 0.12);
+    color: var(--color-brand-primary);
+  }
+
+  details > summary:focus-visible {
+    outline: 3px solid rgba(var(--rgb-brand-primary), 0.35);
+    outline-offset: 4px;
+  }
+}
+
+/* 3 ▪ Components layer
+   ------------------------------------------------------------------ */
+@layer components {
+  /* ── Hero panel ────────────────────────────────────────────── */
+  .hero-panel {
+    @apply rounded-2xl p-6 md:p-8 backdrop-blur-sm shadow-xl ring-1 ring-white/20;
+    background-image: linear-gradient(
+      135deg,
+      var(--color-brand-gradient-start) 0%,
+      var(--color-brand-primary) 100%
+    );
+    opacity: 0.96;
+    transition: opacity var(--theme-transition-duration) ease,
+      color var(--theme-transition-duration) ease,
+      background-color var(--theme-transition-duration) ease;
+  }
+  .dark .hero-panel {
+    opacity: 1;
+  }
+
+  .careers-hero-panel {
+    inline-size: min(48rem, 92vw);
+  }
+
+  .careers-hero-description {
+    margin-inline: auto;
+    max-inline-size: 52ch;
+  }
+
+  .careers-hero-media {
+    block-size: clamp(26rem, 55svh, 40rem);
+  }
+
+  @media (min-width: 640px) {
+    .careers-hero-media {
+      block-size: clamp(30rem, 60svh, 44rem);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .careers-hero-media {
+      block-size: clamp(32rem, 65svh, 48rem);
+    }
+  }
+
+  /* ── Header overrides ──────────────────────────────────────── */
+  header a:not(.cta),
+  header button.lang-option {
+    color: var(--color-header-link);
+    border-color: var(--color-header-link);
+  }
+  header a:not(.cta):hover {
+    text-decoration-color: var(--color-brand-bougainvillea);
+  }
+
+  /*  selected language chip — white text for ≥ 4.5 : 1 contrast */
+  header button.lang-option[aria-current="true"] {
+    background-color: var(--color-brand-primary);
+    color: #ffffff;
+  }
+
+  /* ── CTA pills for mobile header ───────────────────────────── */
+  .cta-light,
+  .cta-dark {
+    @apply inline-block min-w-[10rem] rounded px-4 py-2 text-center shadow-md;
+    transition: background-color var(--theme-transition-duration) ease,
+      color var(--theme-transition-duration) ease;
+  }
+  .cta-light {
+    background-color: var(--color-brand-secondary);
+    color: var(--color-brand-heading);
+  }
+  .cta-light:hover {
+    background-color: rgb(244 211 94 / 0.9);
+  }
+
+  .cta-dark {
+    background-color: var(--color-brand-primary);
+    color: #ffffff; /* high-contrast text   */
+  }
+  .cta-dark:hover {
+    background-color: rgb(159 107 0 / 0.9);
+  }
+
+  /* ── Drawer nav links & language chips ─────────────────────── */
+  #mobile-menu a {
+    color: var(--color-brand-heading);
+  }
+  .dark #mobile-menu a {
+    color: var(--color-brand-heading);
+  }
+  .dark #mobile-menu a:hover,
+  .dark #mobile-menu a:focus-visible {
+    text-decoration-color: var(--color-brand-primary);
+  }
+
+  #mobile-menu button.lang-option {
+    color: var(--color-brand-heading);
+    border-color: var(--color-brand-heading);
+    transition: background-color var(--theme-transition-duration) ease,
+      color var(--theme-transition-duration) ease,
+      border-color var(--theme-transition-duration) ease;
+  }
+  #mobile-menu button.lang-option:hover,
+  #mobile-menu button.lang-option:focus-visible {
+    background-color: var(--color-brand-surface);
+  }
+  /* selected chip — white text on primary for both themes */
+  #mobile-menu button.lang-option[aria-current="true"] {
+    background-color: var(--color-brand-primary);
+    color: #ffffff;
+  }
+  .dark #mobile-menu button.lang-option:hover,
+  .dark #mobile-menu button.lang-option:focus-visible {
+    background-color: rgb(255 255 255 / 0.12);
+  }
+
+  /* Reusable paddings */
+  .header-row-1 {
+    @apply py-4;
+  }
+  .header-row-2 {
+    @apply mt-4 pt-1 pb-3;
+  }
+
+  .rooms-carousel-nav,
+  .rooms-carousel-nav.swiper-button-next,
+  .rooms-carousel-nav.swiper-button-prev {
+    @apply static mt-0 h-auto w-auto translate-y-0;
+    inset: auto;
+    transform: none;
+  }
+}
+
+@layer utilities {
+  [data-layer="modal"] {
+    z-index: var(--z-modal);
+  }
+}
+
+/* 4 ▪ Utilities layer
+   ------------------------------------------------------------------ */
+@layer utilities {
+  /* Defer rendering work for off-screen sections */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1000px 700px;
+  }
+  /* Background helpers */
+  .bg-brand-primary {
+    background-color: var(--color-brand-primary);
+  }
+  .bg-brand-secondary {
+    background-color: var(--color-brand-secondary);
+  }
+  .bg-brand-bougainvillea {
+    background-color: var(--color-brand-bougainvillea);
+  }
+  .bg-brand-bg {
+    background-color: var(--color-brand-bg);
+  }
+  .bg-brand-surface {
+    background-color: var(--color-brand-surface);
+  }
+
+  .layer-modal {
+    position: relative;
+    z-index: var(--layer-modal);
+  }
+
+  .layer-modal-container {
+    position: fixed;
+    inset: 0;
+    z-index: var(--layer-modal);
+  }
+
+  .layer-modal-panel {
+    position: relative;
+    z-index: var(--layer-modal);
+  }
+
+  .layer-modal-backdrop {
+    z-index: var(--layer-modal-backdrop);
+  }
+
+  .modal-scroll-area {
+    max-block-size: min(70svh, 36rem);
+    overflow-y: auto;
+  }
+
+  /* Text helpers */
+  .text-brand-heading {
+    color: var(--color-brand-heading);
+  }
+  .text-brand-text {
+    color: var(--color-brand-text);
+  }
+  .text-brand-primary {
+    color: var(--color-brand-primary);
+  }
+  .text-brand-bougainvillea {
+    color: var(--color-brand-bougainvillea);
+  }
+  .text-brand-bg {
+    color: var(--color-brand-bg);
+  }
+  .text-brand-bg\/90 {
+    color: rgb(255 255 255 / 0.9);
+  }
+
+  .tracking-eyebrow {
+    letter-spacing: 0.3em;
+  }
+
+  .tracking-kicker {
+    letter-spacing: 0.2em;
+  }
+
+  /* Border helpers */
+  .border-brand-bougainvillea {
+    border-color: var(--color-brand-bougainvillea);
+  }
+  .border-brand-primary {
+    border-color: var(--color-brand-primary);
+  }
+
+  /* Ring helpers */
+  .ring-brand-text {
+    --tw-ring-color: var(--color-brand-text);
+  }
+  .ring-brand-primary {
+    --tw-ring-color: var(--color-brand-primary);
+  }
+  .ring-brand-bougainvillea {
+    --tw-ring-color: var(--color-brand-bougainvillea);
+  }
+
+  /* Header gradient helper */
+  .bg-header-gradient {
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-brand-gradient-start),
+      var(--color-brand-gradient-mid) 40%,
+      var(--color-brand-gradient-end)
+    );
+  }
+
+  /* Progress-bar helpers */
+  .progress-bar-light {
+    background-color: var(--color-brand-secondary);
+  }
+  .progress-bar-dark {
+    background-color: var(--color-brand-secondary);
+  }
+
+  /* 12×12 square icon buttons */
+  .btn-square-12 {
+    @apply h-12 w-12 flex items-center justify-center;
+  }
+
+  /* Hero overlay helper */
+  .hero-gradient-overlay {
+    @apply absolute inset-0 bg-[linear-gradient(135deg,_var(--color-brand-gradient-start)_0%,_var(--color-brand-primary)_100%)] opacity-10;
+    transition: opacity var(--theme-transition-duration) ease;
+  }
+  .dark .hero-gradient-overlay {
+    @apply bg-none opacity-0;
+  }
+}

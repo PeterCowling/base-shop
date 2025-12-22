@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Bestill oppholdet – Offisiell side",
+    "description": "Fleksible og ikke‑refunderbare priser. Sikker betaling i vår offisielle bookingsløsning."
+  },
+  "heading": "Bestill oppholdet",
+  "roomLabel": "Rom",
+  "cta": {
+    "flex": "Fleksibel – Gå til betaling",
+    "nr": "Ikke‑refunderbar – Gå til betaling"
+  },
+  "checking": "Kontrollerer…",
+  "flex": {
+    "title": "Fleksibel pris (refunderbar)",
+    "bullets": [
+      "Gratis avbestilling til kl. 15:00 tre hele dager før ankomst.",
+      "Endringer avhenger av ledig kapasitet."
+    ]
+  },
+  "nr": {
+    "title": "Ikke‑refunderbar (forhåndsbetalt)",
+    "bullets": [
+      "100 % forhåndsbetaling; ingen refusjon/ved uteblitt oppmøte.",
+      "Mislykkede betalinger annulleres automatisk."
+    ]
+  },
+  "unavailable": {
+    "title": "Ikke tilgjengelig for disse datoene.",
+    "none": "Ingen direkte alternativer funnet.",
+    "seeAll": "Se all tilgjengelighet",
+    "bookThis": "Bestill dette"
+  },
+  "policies": {
+    "title": "Retningslinjer og depositum",
+    "items": [
+      "By‑/turistskatt: €2,50 per gjest per natt (legges til ved betaling).",
+      "Depositum for nøkkelkort og sengetøy: €10 kontant ved innsjekk; tilbakebetales ved retur.",
+      "Sikkerhetsbeløp: inntil én natt per gjest ved innsjekk (eller tilsvarende kontant). Hvis ikke mulig, annulleres bestillingen.",
+      "Administrasjonsgebyr ved avbestilling: vanligvis 15 % av bestillingsbeløpet (uten tredjepartsprovisjoner).",
+      "Resepsjonen stenger 22:30; ved uteblitt oppmøte belastes høyeste av første natt eller ikke‑refunderbart depositum."
+    ],
+    "footer": "Endelig tilgjengelighet og betaling fullføres i vår offisielle bookingsløsning."
+  },
+  "backToRooms": "Tilbake til rom"
+}

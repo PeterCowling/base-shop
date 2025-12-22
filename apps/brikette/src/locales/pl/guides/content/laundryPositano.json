@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Pralnie w Positano (samoobsługowe i z obsługą)",
+    "description": "Opcje prania w Positano: samoobsługa, usługi z obsługą i wskazówki dotyczące cen."
+  },
+  "linkLabel": "Pralnie w Positano (samoobsługowe i z obsługą)",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "toc": {
+    "onThisPage": "On this page",
+    "selfService": "Self‑service laundromats",
+    "dropOff": "Drop‑off services",
+    "howto": "How‑to: self‑service",
+    "tips": "Detergent & machines",
+    "faqs": "FAQs"
+  },
+  "selfServiceText": "Tłumaczenie w przygotowaniu.",
+  "dropOffText": "Tłumaczenie w przygotowaniu.",
+  "howtoSteps": [
+    "Choose machine size based on load; don’t overfill.",
+    "Add detergent/softener as directed; some machines auto‑dose.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "tipsList": [
+    "Use gentle cycles for quick‑dry fabrics and swimwear.",
+    "Shared dryers can run hot — check labels and consider hang‑drying."
+  ],
+  "sections": [
+    {
+      "id": "self-service",
+      "title": "Self‑service",
+      "body": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Drop‑off services",
+      "body": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can I buy detergent nearby?",
+      "a": [
+        "Yes — see %LINK:groceriesPharmacies|groceries & pharmacies% for small packs."
+      ]
+    },
+    {
+      "q": "Where to wait while laundry runs?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ]
+}

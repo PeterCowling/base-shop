@@ -11,6 +11,8 @@ const JWT_SECRET = "jwt-secret-32-chars-long-string!!!";
 const OAUTH_CLIENT_ID = "client-id";
 const OAUTH_CLIENT_SECRET =
   "oauth-client-secret-32-chars-long-string!!";
+const OAUTH_ISSUER = "https://auth.example.com/realms/base-shop";
+const OAUTH_REDIRECT_ORIGIN = "https://shop.example.com";
 
 const reload = async () => {
   jest.resetModules();
@@ -30,8 +32,10 @@ const CONTROLLED_ENV_KEYS = [
   'UPSTASH_REDIS_REST_TOKEN',
   'LOGIN_RATE_LIMIT_REDIS_URL',
   'LOGIN_RATE_LIMIT_REDIS_TOKEN',
+  'OAUTH_ISSUER',
   'OAUTH_CLIENT_ID',
   'OAUTH_CLIENT_SECRET',
+  'OAUTH_REDIRECT_ORIGIN',
 ];
 
 const withEnv = async (
@@ -215,7 +219,13 @@ describe('config/env/auth', () => {
     ])('fails when %s', async (_label, extra, missing) => {
       const spy = jest.spyOn(console, "error").mockImplementation(() => {});
       await expectInvalidAuth({
-        env: { NODE_ENV: "development", AUTH_PROVIDER: "oauth", ...extra },
+        env: {
+          NODE_ENV: "development",
+          AUTH_PROVIDER: "oauth",
+          OAUTH_ISSUER,
+          OAUTH_REDIRECT_ORIGIN,
+          ...extra,
+        },
         accessor: (auth) =>
           (auth.authEnv as Record<string, unknown>)[missing],
         consoleErrorSpy: spy,

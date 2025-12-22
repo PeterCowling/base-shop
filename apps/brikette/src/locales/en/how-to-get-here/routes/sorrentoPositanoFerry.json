@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "title": "Sorrento to Positano by Ferry | Hostel Brikette",
+    "description": "Step-by-step from Sorrento to Positano by ferry: tickets, departure tips, and getting from Positano’s port up to Hostel Brikette."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette Travel Guide",
+    "title": "Sorrento to Positano — Ferry",
+    "description": "Take a direct ferry from Sorrento’s Marina Piccola to Positano. This short guide covers where to buy tickets, when to queue, and what to do on arrival at Positano’s port to make the final leg up to Hostel Brikette easier."
+  },
+  "tip": {
+    "label": "Tip",
+    "copy": "Need every transport option? <link>How to Get Here overview</link> for buses, taxis, and mixed itineraries."
+  },
+  "sections": {
+    "overview": {
+      "title": "Journey overview",
+      "points": [
+        "Allow roughly 45–60 minutes dock-to-dock in season.",
+        "Ferries are weather-dependent and can sell out at peak times.",
+        "Buying tickets a little early helps secure seats and smooth boarding."
+      ]
+    },
+    "sorrentoPort": {
+      "title": "Get to Sorrento’s port (Marina Piccola)",
+      "points": [
+        "Head to Sorrento’s Marina Piccola (ferry port) and follow signs to the ticket offices.",
+        "Check the next departure to Positano and confirm the operator (for example, Travelmar or NLG).",
+        "Purchase your ticket at the counter or online and proceed to the indicated gate."
+      ],
+      "footer": "Check times and prices on <linkPositano>Positano.com — Ferry schedules</linkPositano> and the operators’ websites such as <linkTravelmar>Travelmar</linkTravelmar> or <linkNlg>NLG</linkNlg>."
+    },
+    "boarding": {
+      "title": "Buy your ticket and board",
+      "points": [
+        "Arrive 15–20 minutes before departure to queue calmly.",
+        "Keep your ticket handy for inspection and follow crew instructions when boarding.",
+        "Secure luggage in the designated area and keep essentials with you."
+      ]
+    },
+    "arrival": {
+      "title": "Arriving in Positano",
+      "points": [
+        "Disembark at Positano’s main dock (Spiaggia Grande).",
+        "Consider the official porter service at the pier for heavy bags (paid service).",
+        "To reach Hostel Brikette more easily, take the local Interno Bus uphill to “Chiesa Nuova” and walk a short distance to the hostel.",
+        "Alternatively, walk uphill via Via dei Mulini/Via G. Marconi, allowing extra time for the climb."
+      ]
+    }
+  }
+}

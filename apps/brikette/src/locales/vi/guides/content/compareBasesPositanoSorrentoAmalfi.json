@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Đối chiếu phong cảnh, giao thông và ngân sách của ba thị trấn phổ biến."
+  },
+  "linkLabel": "Comparing Bases: Positano vs Sorrento vs Amalfi",
+  "intro": [
+    "So sánh các đánh đổi giữa Positano, Sorrento và Amalfi trước khi chọn nơi làm căn cứ."
+  ],
+  "tocTitle": "Trên trang này",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Phong cảnh biểu tượng kèm vô số bậc thang; lý tưởng nếu bạn muốn thức dậy giữa tấm bưu thiếp sống động.",
+        "Di chuyển cần lên kế hoạch kỹ, hãy chừa thời gian đệm cho phà và xe buýt."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Kết nối tàu và xe buýt tốt nhất với nhiều lựa chọn lưu trú.",
+        "Cảnh không ngoạn mục bằng Positano nhưng giá trị và sự tiện lợi vượt trội."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Trung tâm phà và xe buýt, dễ dàng đi trong ngày tới Ravello và làng lân cận.",
+        "Có nhiều kiểu chỗ ở; cần canh giờ vì buổi tối ít chuyến."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Ai phù hợp với mỗi nơi",
+      "body": [
+        "Positano dành cho tầm nhìn xa hoa và không khí hostel sôi động.",
+        "Sorrento giúp kiểm soát chi phí và di chuyển nhanh.",
+        "Amalfi cân bằng khả năng tiếp cận dọc bờ biển."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Du khách lần đầu nên ở đâu?",
+      "a": [
+        "Chọn Positano nếu bạn muốn cảnh kinh điển, Sorrento để dễ di chuyển và Amalfi cho phương án trung hoà với nhà thờ lịch sử."
+      ]
+    },
+    {
+      "q": "Ở ngoài Positano có cần ô tô không?",
+      "a": [
+        "Không. Phà và xe buýt kết nối cả ba thị trấn; mang ô tô chỉ khiến việc đỗ xe thêm căng thẳng trừ khi bạn muốn khám phá sâu trong đất liền."
+      ]
+    }
+  ]
+}

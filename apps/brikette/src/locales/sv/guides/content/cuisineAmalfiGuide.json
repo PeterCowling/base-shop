@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Guide till köket på Amalfikusten",
+    "description": "Typiska rätter, ingredienser och var du provar dem längs kusten."
+  },
+  "linkLabel": "Guide till köket på Amalfikusten",
+  "intro": [
+    "En snabbguide till Amalfikustens kök: skaldjursklassiker, citronrika desserter och var du provar dem i Positano.",
+    "Använd den som fusklapp innan du spanar in menyer eller åker till grannstäder för regionala specialiteter."
+  ],
+  "tocTitle": "På den här sidan",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Skaldjursklassiker",
+      "body": [
+        "Spaghetti alle vongole, scialatielli ai frutti di mare och grillad dagens fångst dominerar de flesta menyer.",
+        "Fråga efter säsongens specialare – vårprimörer, körsbärstomater eller friterade zucchiniblommor dyker ofta upp på griffeltavlor."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Marknader & snabba bett",
+      "body": [
+        "Morgonmarknader och delidiskar säljer focaccia, friterade cuoppi och färsk mozzarella för enkla luncher.",
+        "Plocka på dig citrusmarmelad, colatura di alici och torkade kryddor som smakförstärkare till picknick."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Desserter & bakverk",
+      "body": [
+        "Delizia al limone, babà al limoncello och sfogliatella passar perfekt med en espresso efter middagen.",
+        "Gelateriorna växlar mellan citronsorbet, granita och crema al limone – perfekt under heta eftermiddagar."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Drycker & matchningar",
+      "body": [
+        "Beställ kyld limoncello eller crema di limoncello som digestif efter måltiden.",
+        "DOC-viner från Tramonti eller Costa d’Amalfi (Furore, Ravello) lyfter skaldjur och citrusbaserade rätter."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Beställningsetikett",
+      "body": [
+        "Coperto (kuvertavgiften) täcker bröd och dukning – lämna dricks bara vid extra bra service.",
+        "Dela gärna rätter familjestil men säg till personalen i förväg så tempo och porslin anpassas."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Äter vegetarianer bra här?",
+      "a": [
+        "Ja – leta efter aubergine parmigiana, gnocchi alla sorrentina och sallader med lokal ost och grillade grönsaker."
+      ]
+    },
+    {
+      "q": "Behöver jag boka populära trattorior?",
+      "a": [
+        "Under högsäsong bör du boka i förväg för terrassplatser eller solnedgångstider; drop-in fungerar bättre till lunch eller i mellansäsong."
+      ]
+    }
+  ],
+  "itemListTitle": "Signaturrätter och var du provar dem",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Fast meny i lantlig miljö med handgjord pasta, grillat kött och vidsträckta terrassvyer."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Dagkafé med citronfokuserade sallader, kallpressade juicer och egenbakade desserter."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Klassisk trattoria som serverar skaldjurspasta, friterade antipasti och säsongsspecialer sedan 1958."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Bageri för delizia al limone, babà al limoncello och bakverk som är lätta att ta med till klipp-picknick."
+    }
+  ],
+  "gallery": {
+    "title": "Rätterna i fokus",
+    "items": [
+      {
+        "alt": "Skaldjurspasta med Amalficitron",
+        "caption": "Skaldjursklassiker från Positanos trattorior"
+      },
+      {
+        "alt": "Delizia al limone på ett fat",
+        "caption": "Citronbaserade desserter att prova"
+      },
+      {
+        "alt": "Vänner som skålar med limoncello i solnedgången",
+        "caption": "Digestif med utsikt"
+      }
+    ]
+  },
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Klassiker"
+      },
+      {
+        "href": "#sweets",
+        "label": "Sötsaker"
+      },
+      {
+        "href": "#drinks",
+        "label": "Drycker"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Klassiker",
+        "body": [
+          "Skaldjurspasta, grillad dagens fångst och citronfriska sallader med lokal olivolja är återkommande på kusten.",
+          "Fråga efter dagens special – säsongsgrönsaker som zucchiniblommor och körsbärstomater dyker ofta upp på griffeltavlor."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Sötsaker",
+        "body": [
+          "Prova delizia al limone, babà al limoncello och citronsorbet för en citrusledd desserttrio.",
+          "Avsluta måltiden med bakverk och espresso eller en limoncello-digestif för en lokal touch."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Drycker",
+        "body": [
+          "Sippa limoncello eller crema di limone som digestif och utforska Costa d'Amalfi DOC-viner från Tramonti, Ravello eller Furore.",
+          "Varva med bubbelvatten för att hålla dig pigg – sommarkvällar är fuktiga långt efter solnedgången."
+        ]
+      }
+    ]
+  }
+}

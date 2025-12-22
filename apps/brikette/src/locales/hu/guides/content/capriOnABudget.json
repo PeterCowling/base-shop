@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Capri költségbarát módon",
+    "description": "Kompjegyek, belépők, olcsó étkezés és hogyan kerüld el a legmagasabb árakat."
+  },
+  "linkLabel": "Capri költségbarát módon",
+  "intro": [
+    "Capri egynapos meglátogatása is maradhat megfizethető, ha előre megtervezi a kompokat, a kilátópontokat és az étkezéseket."
+  ],
+  "sections": [
+    {
+      "id": "ferries",
+      "title": "Kompok és időzítés",
+      "body": [
+        "Csúcsszezonban foglaljon korai kompokat, és célozzon meg kora délutáni visszaindulást, így elkerüli az utolsó járatok tömegét."
+      ]
+    },
+    {
+      "id": "free-views",
+      "title": "Ingyenes kilátópontok",
+      "body": [
+        "A Giardini di Augusto (kis belépővel), az anacapri kilátók és a Marina Piccola pontjai minimális költség mellett kínálnak lenyűgöző panorámát."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Strandlehetőségek",
+      "body": [
+        "Vannak közterületi partszakaszok; vigyen saját törölközőt és vizet, így nem kell bérleti díjat fizetni."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Olcsó falatok",
+      "body": [
+        "Vegyen paninit vagy szeletelt pizzát a kikötő közelében, és kerülje a legforgalmasabb utcák ültetett ebédjeit."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Megéri a Kék-barlang, ha spórolni szeretnék?",
+      "a": [
+        "Feláras és időjárásfüggő program; az anacapri libegő olcsóbb és biztos élmény."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "quickLinksHeading": "クイックヘルプ",
+  "quickLinksIntro": "予約、到着、滞在に関するよくある質問への回答をすぐに確認できます。",
+  "cta": {
+    "readMore": "続きを読む"
+  },
+  "quickLinks": [
+    {
+      "label": "予約の変更・キャンセル",
+      "description": "予定が変わったときに追加料金を避けるための期限とヒントをご確認ください。",
+      "slug": "changingCancelling"
+    },
+    {
+      "label": "チェックイン＆チェックアウトガイド",
+      "description": "ポジターノのHostel Briketteでの到着から出発までを案内するステップバイステップのガイドです。",
+      "slug": "checkinCheckout"
+    },
+    {
+      "label": "ポジターノへの行き方",
+      "description": "フェリー・バス・タクシーを比較できるステップバイステップの交通ガイドです。",
+      "slug": "travelHelp"
+    }
+  ],
+  "contactCta": {
+    "label": "メールで問い合わせる",
+    "href": "mailto:hostelpositano@gmail.com"
+  }
+}

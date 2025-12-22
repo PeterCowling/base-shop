@@ -1,0 +1,33 @@
+{
+  "detail": {
+    "room_12": {
+      "hero": {
+        "eyebrow": "Superior Gemischter Schlafsaal • Terrasse",
+        "title": "Wach auf mit Blick auf Positanos Skyline von einer riesigen Terrasse",
+        "subtitle": "Unser größter Schlafsaal vereint sechs Betten mit privaten Indoor-Komforts.",
+        "bullets": [
+          "Panoramaterrasse mit Loungemöbeln und Frühstückstischen",
+          "Privates Bad mit frischen Handtüchern und Pflegeextras",
+          "Schnelles WLAN, Klimaanlage und Schlüsselkartenschließfächer für jede Person"
+        ]
+      },
+      "outline": {
+        "heading": "Was dich im Terrassenschlafsaal erwartet",
+        "items": [
+          {
+            "title": "Außenbereich für die ganze Gruppe",
+            "body": "Genießt Sundowner auf Sofas und langen Bänken, während sich Positanos Pastellhorizont vor euch ausbreitet."
+          },
+          {
+            "title": "Geräumige Schlafplätze",
+            "body": "Sechs stabile Stockbetten mit Vorhängen, Leselampen und Steckdosen sorgen für Ruhe, wenn du Schlaf brauchst."
+          },
+          {
+            "title": "Bereit für Strandtage",
+            "body": "Verstaue Taschen in Schlüsselkartenschließfächern, hänge Badesachen auf der Terrasse auf und frischt euch schnell im Ensuite auf."
+          }
+        ]
+      }
+    }
+  }
+}

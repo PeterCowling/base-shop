@@ -26,7 +26,7 @@ interface Issue {
   message: string;
 }
 
-interface Props {
+export interface ComponentEditorProps {
   component: PageComponent | null;
   onChange: (patch: Partial<PageComponent>) => void;
   onResize: (patch: {
@@ -53,7 +53,7 @@ interface Props {
   issues?: Issue[];
 }
 
-function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor, onUpdateEditorForId, issues }: Props) {
+function ComponentEditor({ component, onChange, onResize, editor, onUpdateEditor, onUpdateEditorForId, issues }: ComponentEditorProps) {
   const { handleInput } = useComponentInputs(onChange);
   const { handleResize, handleFullSize } = useComponentResize(onResize);
   const t = useTranslations();

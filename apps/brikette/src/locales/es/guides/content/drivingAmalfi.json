@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Conducir por la Costa Amalfitana: consejos para la ruta",
+    "description": "Normas de tráfico, zonas ZTL, realidad del aparcamiento, días de matrículas alternas y cuándo conviene dejar el coche, con alternativas más seguras."
+  },
+  "linkLabel": "Conducir por la Costa Amalfitana: consejos",
+  "intro": [
+    "Conducir por la Costa Amalfitana es espectacular pero exigente: curvas cerradas, carriles estrechos, aparcamiento caro y restricciones puntuales de matrícula. Solo conviene si ya dominas carreteras de montaña.",
+    "Apóyate en estas recomendaciones para decidir cuándo conducir, dónde aparcar y cuándo es mejor dejar el coche."
+  ],
+  "sections": [
+    {
+      "id": "rules",
+      "title": "Normas y condiciones",
+      "body": [
+        "Los límites suelen ser de 30–50 km/h; hay controles frecuentes, así que evita adelantar autobuses en las curvas.",
+        "En los túneles lleva las luces encendidas y cede el paso a buses o minibuses cuando el carril se estrecha."
+      ]
+    },
+    {
+      "id": "ztl",
+      "title": "ZTL y matrículas alternas",
+      "body": [
+        "En temporada alta puede aplicarse la restricción par/impar en la SS163; revisa el calendario oficial antes de salir.",
+        "Los centros de los pueblos tienen ZTL propias; entrar sin permiso genera multas por cámara."
+      ]
+    },
+    {
+      "id": "parking",
+      "title": "Realidad del estacionamiento",
+      "body": [
+        "El aparcamiento en la calle es casi inexistente; lo normal es usar garajes privados desde 25–40 € al día.",
+        "Reserva con antelación y confirma horarios de entrada/salida, altura del vehículo y recargos nocturnos."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Cuándo dejar el coche",
+      "body": [
+        "Si duermes en Positano, deja el coche en Sorrento o Meta y llega en bus o ferry para ahorrar estrés y dinero.",
+        "Las rutas de bus y ferry cubren casi todos los imprescindibles; combinar con paseos a pie ofrece mejores vistas."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva pago sin contacto y efectivo pequeño; algunos garajes añaden depósitos para mandos o accesos nocturnos.",
+    "Después de una cata o un concierto tarde, contrata un taxi o transfer: es más seguro que conducir cansado por las cornisas."
+  ],
+  "faqs": [
+    {
+      "q": "¿Necesito coche en Positano?",
+      "a": [
+        "No. Las calles son estrechas y hay pocas plazas; buses, ferris y caminar bastan para moverte."
+      ]
+    },
+    {
+      "q": "¿Cuándo se limita la SS163 por matrículas?",
+      "a": [
+        "Normalmente fines de semana de junio a septiembre. Consulta la web de la provincia de Salerno antes del viaje."
+      ]
+    },
+    {
+      "q": "¿Qué pasa si entro en una ZTL?",
+      "a": [
+        "La multa llega por correo internacional; las compañías de alquiler añaden un cargo administrativo, así que evita atravesar zonas restringidas."
+      ]
+    }
+  ]
+}

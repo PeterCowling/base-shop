@@ -1,0 +1,20 @@
+{
+  "aria": {
+    "regionLabel": "Avaliações em sites externos",
+    "linkSummary": "{{score}} em {{provider}}, {{reviews}}, verificado em {{date}}"
+  },
+  "reviewed": "Avaliado em:",
+  "countReviews_one": "{{formattedCount}} avaliação",
+  "countReviews_other": "{{formattedCount}} avaliações",
+  "lastChecked": "Última verificação:",
+  "sources": {
+    "hostelworld": {
+      "ariaName": "Hostelworld",
+      "label": "Hostelworld"
+    },
+    "booking": {
+      "ariaName": "Booking ponto com",
+      "label": "Booking.com"
+    }
+  }
+}

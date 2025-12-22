@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Alleinreisen in Positano: Tipps",
+    "description": "Sicherheit, soziale Ideen, Hostel vs. Privatzimmer und Tagespläne, die solo gut funktionieren."
+  },
+  "linkLabel": "Alleinreisen in Positano: Tipps",
+  "intro": [
+    "Positano heißt Alleinreisende willkommen. Bleib über das Hostel sozial, plane Tagesausflüge mit Puffern und setz mittags auf Fähren."
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "toc": [
+    {
+      "href": "#safety",
+      "label": "Sicherheit & Selbstvertrauen"
+    },
+    {
+      "href": "#social",
+      "label": "Social-Tipps"
+    },
+    {
+      "href": "#dayplans",
+      "label": "Solo-taugliche Tagespläne"
+    }
+  ],
+  "sections": [
+    {
+      "id": "safety",
+      "title": "Sicherheit & Selbstvertrauen",
+      "list": [
+        "Teile deine Pläne mit der Rezeption; nimm ein geladenes Handy und Wasser mit.",
+        "Nutze nachts beleuchtete Wege und renne Treppen nicht hektisch hinunter."
+      ]
+    },
+    {
+      "id": "social",
+      "title": "Social-Tipps",
+      "list": [
+        "Nimm an Sonnenuntergangs-Terrassen und Hostelaktivitäten teil – perfekter Anlass für Bekanntschaften.",
+        "Wähle Bootstouren oder Wanderungen in kleinen Gruppen für Gesellschaft ohne großen Aufwand."
+      ]
+    },
+    {
+      "id": "dayplans",
+      "title": "Tagespläne, die solo funktionieren",
+      "list": [
+        "Per Fähre nach Amalfi und Spaziergang nach Atrani; Bus hinauf zu den Ravello-Gärten.",
+        "Capri: Wanderung zur Villa Jovis oder zum Leuchtturm, Rückkehr zur Golden Hour."
+      ]
+    }
+  ],
+  "tips": [
+    "Schau gegen 18:00 Uhr auf die Tafeln an der Rezeption – dort hängen Anmeldelisten für Dinner- oder Bootsbuddies am nächsten Tag.",
+    "Packe einen leichten Tagesrucksack mit 1–1,5 l Wasser und einer Powerbank, damit du für Sonnenuntergangsfotos nicht früher abbrechen musst."
+  ],
+  "faqs": [
+    {
+      "q": "Ist Positano abends alleine sicher?",
+      "a": [
+        "Bleib auf Haupttreppen und beleuchteten Routen, informiere die Rezeption über deine Pläne und trag ein geladenes Telefon bei dir.",
+        "Wenn es spät wird, hilft der orangefarbene Positano-Taxistand an der Piazza dei Mulini mit einer kurzen Fahrt bergauf."
+      ]
+    },
+    {
+      "q": "Wie treffe ich andere Reisende, wenn ich allein unterwegs bin?",
+      "a": [
+        "Besuche die Hostel-Sunset-Sessions oder melde dich für Bootstouren mit maximal 10–12 Gästen an.",
+        "Kochkurse und Stadtrundgänge in Amalfi oder Capri bieten Gesprächsanlässe ohne forciertes Kennenlernen."
+      ]
+    },
+    {
+      "q": "Kann ich den Path of the Gods allein wandern?",
+      "a": [
+        "Ja – starte gegen 9:00 Uhr in Bomerano, nimm mindestens 1,5 l Wasser mit und lade den Trail offline aufs Handy.",
+        "Fahr mit dem SITA-Bus vor Einbruch der Dunkelheit von Nocelle oder Montepertuso zurück; nach 20:00 Uhr wird das Angebot dünn."
+      ]
+    }
+  ]
+}

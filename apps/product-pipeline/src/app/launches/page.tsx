@@ -1,23 +1,71 @@
 import PageHeader from "@/components/PageHeader";
 import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { Stack } from "@ui/components/atoms/primitives";
+import LaunchesClient from "./LaunchesClient";
+import type { LaunchesStrings } from "./types";
 
 export default async function LaunchesPage() {
   const t = await getTranslations("en");
-  const launches = [
-    {
-      id: "PL-12",
-      title: t("pipeline.launches.items.pl12.title"),
-      status: t("pipeline.launches.items.pl12.status"),
-      variance: t("pipeline.launches.items.pl12.variance"),
+  const strings: LaunchesStrings = {
+    plansLabel: t("pipeline.launches.plans.label"),
+    plansTitle: t("pipeline.launches.plans.title"),
+    createLabel: t("pipeline.launches.create.label"),
+    createTitle: t("pipeline.launches.create.title"),
+    ingestLabel: t("pipeline.launches.ingest.label"),
+    ingestTitle: t("pipeline.launches.ingest.title"),
+    fields: {
+      candidate: t("pipeline.launches.fields.candidate"),
+      plannedUnits: t("pipeline.launches.fields.plannedUnits"),
+      plannedUnitsPerDay: t("pipeline.launches.fields.plannedUnitsPerDay"),
+      status: t("pipeline.launches.fields.status"),
+      notes: t("pipeline.launches.fields.notes"),
+      actualVelocity: t("pipeline.launches.fields.actualVelocity"),
+      velocityPrior: t("pipeline.launches.fields.velocityPrior"),
+      velocityPriorSource: t("pipeline.launches.fields.velocityPriorSource"),
+      variance: t("pipeline.launches.fields.variance"),
+      decision: t("pipeline.launches.fields.decision"),
+      decisionNotes: t("pipeline.launches.fields.decisionNotes"),
+      decisionAt: t("pipeline.launches.fields.decisionAt"),
+      decisionBy: t("pipeline.launches.fields.decisionBy"),
+      actualsCsv: t("pipeline.launches.fields.actualsCsv"),
+      actualsHelper: t("pipeline.launches.fields.actualsHelper"),
+      actualCostAmount: t("pipeline.launches.fields.actualCostAmount"),
+      actualLeadTimeDays: t("pipeline.launches.fields.actualLeadTimeDays"),
+      laneActualsLabel: t("pipeline.launches.fields.laneActualsLabel"),
+      laneActualsHelp: t("pipeline.launches.fields.laneActualsHelp"),
+      launchPlan: t("pipeline.launches.fields.launchPlan"),
     },
-    {
-      id: "PL-14",
-      title: t("pipeline.launches.items.pl14.title"),
-      status: t("pipeline.launches.items.pl14.status"),
-      variance: t("pipeline.launches.items.pl14.variance"),
+    actions: {
+      create: t("pipeline.launches.actions.create"),
+      ingest: t("pipeline.launches.actions.ingest"),
+      decide: t("pipeline.launches.actions.decide"),
     },
-  ];
+    messages: {
+      createSuccess: t("pipeline.launches.messages.createSuccess"),
+      createError: t("pipeline.launches.messages.createError"),
+      ingestSuccess: t("pipeline.launches.messages.ingestSuccess"),
+      ingestError: t("pipeline.launches.messages.ingestError"),
+      decisionSuccess: t("pipeline.launches.messages.decisionSuccess"),
+      decisionError: t("pipeline.launches.messages.decisionError"),
+    },
+    statusLabels: {
+      planned: t("pipeline.launches.status.planned"),
+      pilot: t("pipeline.launches.status.pilot"),
+      ingested: t("pipeline.launches.status.ingested"),
+    },
+    decisionLabels: {
+      scale: t("pipeline.launches.decision.scale"),
+      kill: t("pipeline.launches.decision.kill"),
+    },
+    decisionLabel: t("pipeline.launches.decision.label"),
+    decisionTitle: t("pipeline.launches.decision.title"),
+    placeholders: {
+      selectCandidate: t("pipeline.launches.placeholders.selectCandidate"),
+      selectLaunch: t("pipeline.launches.placeholders.selectLaunch"),
+    },
+    emptyLabel: t("pipeline.launches.empty"),
+    notAvailable: t("pipeline.common.notAvailable"),
+  };
 
   return (
     <Stack gap={6}>
@@ -26,41 +74,7 @@ export default async function LaunchesPage() {
         title={t("pipeline.launches.title")}
         subtitle={t("pipeline.launches.subtitle")}
       />
-
-      <section className="pp-card p-6">
-        <Cluster justify="between" alignY="center" className="gap-4">
-          <Stack gap={2}>
-            <span className="text-xs uppercase tracking-widest text-foreground/60">
-              {t("pipeline.launches.section.label")}
-            </span>
-            <h2 className="text-xl font-semibold tracking-tight">
-              {t("pipeline.launches.section.title")}
-            </h2>
-          </Stack>
-          <button className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
-            {t("pipeline.launches.actions.ingest")}
-          </button>
-        </Cluster>
-        <Stack gap={4} className="mt-6">
-          {launches.map((launch) => (
-            <div
-              key={launch.id}
-              className="rounded-3xl border border-border-1 bg-surface-2 p-4"
-            >
-              <div className="text-xs text-foreground/60">
-                {launch.id}
-              </div>
-              <div className="text-lg font-semibold">{launch.title}</div>
-              <div className="mt-2 text-sm text-foreground/70">
-                {launch.status}
-              </div>
-              <div className="mt-2 text-xs text-foreground/60">
-                {t("pipeline.launches.fields.variance")}: {launch.variance}
-              </div>
-            </div>
-          ))}
-        </Stack>
-      </section>
+      <LaunchesClient strings={strings} />
     </Stack>
   );
 }

@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "title": "Positano do Capri promem | Hostel Brikette",
+    "description": "Instrukcje krok po kroku z Hostel Brikette do portu w Positano, zakup biletów, wskazówki dotyczące wejścia na pokład i rejsu na Capri."
+  },
+  "header": {
+    "eyebrow": "Przewodnik turystyczny po hostelu Brikette",
+    "title": "Positano do Capri – prom",
+    "description": "Postępuj według tych kroków, aby dojść z Hostel Brikette do portu w Positano, kupić bilety na prom i popłynąć na Capri. W przewodniku znajdziesz praktyczne wskazówki dotyczące czasu i przewoźników."
+  },
+  "tip": {
+    "label": "Wskazówka",
+    "intro": "Potrzebujesz alternatywy, gdy morze jest wzburzone? Otwórz",
+    "linkLabel": "przegląd Jak do nas dotrzeć",
+    "outro": "aby poznać trasy zastępcze."
+  },
+  "journeyOverview": {
+    "title": "Przegląd podróży",
+    "paragraphs": [
+      "Promy między Positano a Capri kursują najczęściej od wiosny do wczesnej jesieni i mogą być odwoływane przy silnym wietrze. Podróż trwa zazwyczaj 30–60 minut, w zależności od przewoźnika i jednostki."
+    ],
+    "linksIntro": "Porównaj godziny i zarezerwuj:",
+    "linksSeparator": "·",
+    "linksSuffix": ".",
+    "links": {
+      "capriNet": "Capri.net - capri ↔ positano",
+      "positanoCom": "Positano.com (zbiorczy rozkład)"
+    }
+  },
+  "photoGuide": {
+    "title": "Przewodnik fotograficzny (referencja)",
+    "description": "Wizualne odniesienia dla każdego etapu spaceru oraz strefy biletowej w porcie.",
+    "items": {
+      "mapOverview": {
+        "alt": "Mapa pokazująca trasę spaceru z Hostel Brikette do portu w Positano",
+        "caption": "Mapa ogólna: hostel → port Positano"
+      },
+      "spiaggiaApproach": {
+        "alt": "Zdjęcie podejścia do Spiaggia Grande i portu turystycznego w Positano",
+        "caption": "Podejście do Spiaggia Grande (port turystyczny)"
+      },
+      "spiaggiaDetail": {
+        "alt": "Mapa szczegółowa pokazująca prawą stronę Spiaggia Grande z portem",
+        "caption": "Mapa szczegółowa: położenie portu na Spiaggia Grande"
+      },
+      "ticketBooths": {
+        "alt": "Kasy przewoźników promowych w porcie Positano z tablicami najbliższych rejsów",
+        "caption": "Kasy biletowe przewoźników"
+      },
+      "point1": {
+        "alt": "Punkt 1: skrzyżowanie przy Tabacchi na Via G. Marconi w pobliżu Hostel Brikette",
+        "caption": "Punkt 1: skrzyżowanie przy Tabacchi (skręć w prawo)"
+      },
+      "point2": {
+        "alt": "Punkt 2: pierwszy zakręt serpentyny, przy którym schodzisz z drogi na schody",
+        "caption": "Punkt 2: opuść drogę, wejdź na schody"
+      },
+      "point3": {
+        "alt": "Punkt 3: koniec schodów przy drodze przed przejściem",
+        "caption": "Punkt 3: schody kończą się przy drodze"
+      },
+      "point4": {
+        "alt": "Punkt 4: przejdź przez drogę, skręć na chwilę w lewo, potem na schody",
+        "caption": "Punkt 4: przejście przez drogę, w lewo, schody"
+      },
+      "point5": {
+        "alt": "Punkt 5: przejście pod łukiem prowadzące na plażę i do portu",
+        "caption": "Punkt 5: łuk do portu"
+      }
+    }
+  },
+  "toPort": {
+    "title": "Spacer do portu w Positano",
+    "steps": [
+      "Wyjdź głównym wejściem z hostelu.",
+      "Zejdź schodami na drogę, skręć w lewo i przejdź nieco ponad 100 m (≈330 stóp).",
+      "Na pierwszym skrzyżowaniu (punkt 1) skręć w prawo przy Tabacchi (pierwszy budynek po prawej).",
+      "Schodź w dół; na pierwszym zakręcie serpentyny (punkt 2) opuść drogę i idź prosto schodami.",
+      "Na dole schodów dojdziesz do drogi (punkt 3); przejdź przez nią i idź prosto kolejnymi schodami.",
+      "Gdy te schody skończą się przy drodze, przejdź na drugą stronę, skręć w lewo i przejdź około 10 m (≈30 stóp) do punktu 4.",
+      "Skręć w prawo z drogi i podążaj schodami w dół.",
+      "Na dole skręć w prawo, aby dotrzeć do punktu 5, a następnie przejdź pod łukiem po prawej stronie.",
+      "Port (molo Spiaggia Grande) znajduje się około 50 m (≈160 stóp) dalej po prawej stronie plaży."
+    ]
+  },
+  "tickets": {
+    "title": "Kup bilety i wejdź na pokład",
+    "tips": [
+      "W porcie każdy przewoźnik ma własną kasę.",
+      "Tablica obok kasy pokazuje najbliższy rejs danego przewoźnika.",
+      "Kup bilety bezpośrednio u przewoźnika. Przyjdź 20–30 minut wcześniej, aby wymienić ewentualne vouchery i ustawić się w kolejce.",
+      "Po zakupie przejdź na koniec mola i czekaj na rozpoczęcie boardingu."
+    ]
+  },
+  "arrival": {
+    "title": "Po przybyciu na Capri",
+    "paragraphs": [
+      "Wysiądź w porcie turystycznym Capri (Marina Grande). Podążaj za oznaczeniami do kolejki linowej, taksówek lub autobusów, w zależności od planów. W sezonie kolejki mogą być długie — zakup biletu powrotnego z wyprzedzeniem ułatwi podróż w pracowite weekendy.",
+      "Przed powrotem do Positano sprawdź popołudniowe rejsy i komunikaty pogodowe. Jeśli promy zostaną odwołane, rozważ przełożenie powrotu lub podróż przez Sorrento następnego dnia."
+    ],
+    "linkIntro": "Przyjazne dla bagażu wskazówki dotyczące dojścia w Positano znajdziesz w przewodniku:",
+    "linkLabel": "Molo promowe → Hostel Brikette"
+  }
+}

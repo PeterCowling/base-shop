@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "title": "Positano til Sorrento med færge | Hostel Brikette",
+    "description": "Trin for trin fra Positano til Sorrento med færge: gåturen til molen, billetter, tips til ombordstigning og noter om ankomst i Sorrentos Marina Piccola."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Positano til Sorrento – færge",
+    "description": "Tag en direkte færge fra Positanos mole ved Spiaggia Grande til Sorrento. Denne korte guide dækker gåturen til molen, hvor du køber billetter, tips til ombordstigning og hvad du kan forvente ved ankomst til Sorrentos havn."
+  },
+  "cta": {
+    "label": "Tip",
+    "copy": "Har du brug for alle transportmuligheder? Åbn <link>Oversigten Sådan kommer du hertil</link> for busser, taxaer og kombinerede rejser."
+  },
+  "journeyOverview": {
+    "title": "Rejseoverblik",
+    "items": [
+      "Afse cirka 45–60 minutter fra kaj til kaj i sæsonen.",
+      "Færger er vejrafhængige og kan blive udsolgt på travle tidspunkter.",
+      "Køb billetter lidt i forvejen for at sikre sæder og en smidig ombordstigning."
+    ]
+  },
+  "walkToPier": {
+    "title": "Gå til Positanos mole",
+    "items": [
+      "Fra Hostel Brikette går du ned ad bakken mod Spiaggia Grande (hovedstrand/mole).",
+      "Hvis du har tung bagage, kan du overveje at booke den officielle portørservice ved molen.",
+      "Køb billetter ved boderne på havnefronten eller via operatørernes websites (for eksempel Travelmar eller NLG)."
+    ],
+    "note": "Tjek tider og priser på <positano>Positano.com — Færgeplaner</positano> samt på operatørernes websites som <travelmar>Travelmar</travelmar> eller <nlg>NLG</nlg>."
+  },
+  "boarding": {
+    "title": "Køb din billet og gå ombord",
+    "items": [
+      "Mød op 20–30 minutter før afgang, så du kan stå i kø i ro og bytte eventuelle vouchers, hvis det kræves.",
+      "Hav din billet klar og følg besætningens anvisninger under ombordstigningen.",
+      "Placér større tasker i det angivne bagageområde; behold værdigenstande hos dig."
+    ]
+  },
+  "arrival": {
+    "title": "Ankomst til Sorrento",
+    "items": [
+      "Gå i land ved Sorrentos Marina Piccola (færgehavn).",
+      "Følg skiltene op til byen eller brug lokal transport for at nå Sorrentos togstation, hvis du skal videre.",
+      "Tjek videre tog og busser på forhånd, især om aftenen og i skuldersæsonen."
+    ]
+  },
+  "externalLinks": {
+    "positano": "https://www.positano.com/en/ferry-schedule",
+    "travelmar": "https://travelmar.it/en",
+    "nlg": "https://www.nlg.it/"
+  }
+}

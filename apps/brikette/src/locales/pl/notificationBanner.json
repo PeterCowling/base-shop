@@ -1,0 +1,19 @@
+{
+  "message": "Rezerwuj bezpośrednio i oszczędź do 25% — plus darmowe śniadanie i napoje!",
+  "cta": "Zobacz szczegóły",
+  "openOffersLabel": "Zobacz szczegóły",
+  "closeLabel": "Zamknij powiadomienie",
+  "modal": {
+    "closeLabel": "Zamknij okno",
+    "title": "Rezerwuj bezpośrednio i oszczędzaj",
+    "description": "Dziękujemy, że rezerwujesz bezpośrednio u nas! W ramach podziękowania otrzymasz:",
+    "perks": {
+      "discount": "Do 25% rabatu od ceny pokoju",
+      "breakfast": "Bezpłatne śniadanie każdego ranka",
+      "drinks": "Powitalne napoje w prezencie",
+      "upgrades": "Priorytet przy przydziale lepszych pokoi (gdy dostępne)"
+    },
+    "callToAction": "Skorzystaj z tych korzyści już teraz!",
+    "button": "Zarezerwuj teraz"
+  }
+}

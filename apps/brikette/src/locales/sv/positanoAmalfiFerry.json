@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Positano till Amalfi med färja | Hostel Brikette",
+    "description": "Steg-för-steg-guide för färjan från Positano till Amalfi: biljetter, var du går ombord vid Spiaggia Grande, tidtabeller och vad som väntar vid ankomst."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette Reseguide",
+    "title": "Positano till Amalfi — färja",
+    "description": "Följ de här stegen för att resa från Positano till Amalfi med färja. Här finns tips om biljetter, var du går ombord i Positano, vad du kan förvänta dig vid ankomst samt länkar till aktuella tidtabeller."
+  },
+  "tip": {
+    "label": "Tips",
+    "copy": "Behöver du andra färdsätt? Öppna <link>översikten Så tar du dig hit</link> för bussar, kombinerade rutter och flygplatstransfers."
+  },
+  "sections": {
+    "overview": {
+      "title": "Resan i korthet",
+      "points": [
+        "Säsongsfärjor kopplar samman Positano och Amalfi med vackra kustvyer.",
+        "Avgångarna varierar med säsong och väder – kontrollera alltid dagens schema.",
+        "Räkna med extra tid under högsäsong för köer vid piren."
+      ]
+    },
+    "tickets": {
+      "title": "Biljetter och tidtabeller",
+      "intro": "Se aktuella tider och priser på <travelmar>Travelmar</travelmar> och <positano>Positano.com — Färjetidtabeller</positano>.",
+      "points": [
+        "Köp biljetter online i förväg under högsäsong eller vid operatörernas biljettkiosker vid piren.",
+        "Kom 15–20 minuter före avgång för att lösa in eventuella vouchers och ställa dig i kön.",
+        "Ha biljett eller QR-kod redo för personalens kontroll."
+      ]
+    },
+    "positanoPier": {
+      "title": "Var du går ombord i Positano",
+      "points": [
+        "Avgångarna sker från Positanos huvudpir på Spiaggia Grande.",
+        "Operatörernas kiosker ligger längs vattnet; skyltar visar nästa avgång för varje bolag.",
+        "Bekräfta rätt pir på din biljett; personalen hjälper gärna om du är osäker."
+      ]
+    },
+    "amalfiArrival": {
+      "title": "Framme i Amalfi",
+      "points": [
+        "Båtarna anländer till Amalfis pirer vid vattnet nära Piazza Flavio Gioia.",
+        "Historiska centrum och strandpromenaden ligger precis intill hamnen.",
+        "För vidare bussar (t.ex. Ravello eller Sorrento), följ skyltarna till SITA-hållplatsen nära vattnet."
+      ]
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

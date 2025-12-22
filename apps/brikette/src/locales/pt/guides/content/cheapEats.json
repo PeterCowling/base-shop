@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Comidas baratas em Positano: onde economizar",
+    "description": "Lanches, supermercados, padarias e restaurantes acessíveis — com faixas de preço e o que pedir."
+  },
+  "linkLabel": "Comidas baratas em Positano",
+  "heroAlt": "Comida para levar a preços acessíveis em Positano",
+  "intro": [
+    "Coma bem em Positano sem gastar muito, alternando clássicos para levar, piqueniques de delicatessen e pastelarias locais."
+  ],
+  "sections": [
+    {
+      "id": "grab-and-go",
+      "title": "Clássicos para levar",
+      "body": [
+        "Compre pizza al taglio, panini ou arancini nos bares da Via dei Mulini antes do meio-dia para evitar filas.",
+        "Peça espresso ao balcão (“al banco”) para pagar a tarifa local de cerca de 1,20 € em vez do serviço de mesa."
+      ]
+    },
+    {
+      "id": "casual-dining",
+      "title": "Restaurantes descontraídos",
+      "body": [
+        "Procure trattorias acima da praia, onde o coperto é modesto e o vinho da casa é servido em jarro.",
+        "Partilhe entradas, dispense a sobremesa e peça água da torneira (“acqua del rubinetto”) para manter a conta controlada."
+      ]
+    },
+    {
+      "id": "picnics",
+      "title": "Piqueniques com vista",
+      "body": [
+        "Abasteça-se de queijos, focaccia e fruta nos minimercados e pique também no terraço do hostel ou na zona pública de Fornillo.",
+        "Leve talheres e guardanapos reutilizáveis para evitar descartáveis e compras adicionais."
+      ]
+    },
+    {
+      "id": "sweet-breaks",
+      "title": "Doces e pausas",
+      "body": [
+        "Prove granita de limão nas bancas de rua por 3 € em vez de cocktails mais caros nos bares.",
+        "Partilhe uma fatia de delizia al limone ou tiramisù da pastelaria para um doce em conta."
+      ]
+    }
+  ],
+  "tips": [
+    "Peça o “menu del giorno” ou menus de almoço — muitos incluem massa, água e café por menos de 18 €.",
+    "Leve um recipiente dobrável para aproveitar sobras no hostel mais tarde."
+  ],
+  "recommendationsTitle": "Onde comer",
+  "recommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, saladas e pastelaria para refeições rápidas."
+    },
+    {
+      "name": "Balcões de delicatessen locais",
+      "note": "Peça tábuas de charcutaria, focaccia e itens para piquenique longe dos preços da orla."
+    },
+    {
+      "name": "Minimercados e bancas de fruta",
+      "note": "Compre fruta, garrafas grandes de água e snacks para piqueniques no terraço."
+    }
+  ],
+  "gallery": {
+    "title": "Galeria de fotos",
+    "items": [
+      {
+        "alt": "Panini de uma delicatessen local",
+        "caption": "Panini e delicatessen"
+      },
+      {
+        "alt": "Piquenique com vista para Positano",
+        "caption": "Miradouros para piquenique"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "q": "Posso reabastecer água gratuitamente?",
+      "a": [
+        "Sim — encha garrafas no hostel ou em fontes públicas como a junto à Chiesa Nuova; leve sempre pelo menos 750 ml."
+      ]
+    },
+    {
+      "q": "Há opções vegetarianas económicas?",
+      "a": [
+        "Com certeza — peça panini caprese, parmigiana de beringela em fatias ou pasta al pomodoro em trattorias informais."
+      ]
+    }
+  ],
+  "fallbackIntro": [
+    "Positano tem muitas opções acessíveis se souber onde procurar."
+  ],
+  "fallbackRecommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, saladas e pastelaria para refeições rápidas."
+    },
+    {
+      "name": "Balcões de delicatessen locais",
+      "note": "Peça tábuas de charcutaria, focaccia e itens para piquenique longe dos preços da orla."
+    },
+    {
+      "name": "Minimercados e bancas de fruta",
+      "note": "Compre fruta, garrafas grandes de água e snacks para piqueniques no terraço."
+    }
+  ],
+  "fallbackGalleryItems": [
+    {
+      "alt": "Panini de uma delicatessen local",
+      "caption": "Panini e delicatessen"
+    },
+    {
+      "alt": "Piquenique com vista para Positano",
+      "caption": "Miradouros para piquenique"
+    }
+  ],
+  "fallbackFaqs": [
+    {
+      "q": "Os estabelecimentos aceitam cartão?",
+      "a": [
+        "A maioria sim, mas ter dinheiro trocado ajuda em quiosques ou quando há consumo mínimo."
+      ]
+    },
+    {
+      "q": "Há taxas para comida para levar?",
+      "a": [
+        "Alguns locais cobram uma pequena taxa de embalagem; leve um recipiente reutilizável para poupar e reduzir desperdício."
+      ]
+    }
+  ]
+}

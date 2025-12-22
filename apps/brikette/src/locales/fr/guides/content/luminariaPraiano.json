@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Luminaria di San Domenico (Praiano)",
+    "description": "Informations pratiques sur l'événement : dates, ambiance, accès depuis Positano et conseils photo."
+  },
+  "linkLabel": "Luminaria di San Domenico (Praiano)",
+  "intro": [
+    "Préparez votre visite de la Luminaria di San Domenico à Praiano : ruelles illuminées, feux d'artifice et respect du lieu."
+  ],
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Essentiels du festival",
+      "body": [
+        "L'événement se tient la première semaine d'août, avec un pic du 1er au 4 lorsque des milliers de bougies illuminent la Piazza San Gennaro.",
+        "Arrivez avant le coucher du soleil pour observer les bénévoles installer les bougies et trouver un bon point de vue."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Aller/retour",
+      "body": [
+        "Prenez le bus SITA depuis Positano (~20 minutes) ou réservez une navette partagée ; les derniers bus rentrent vers minuit, à confirmer le jour même.",
+        "Si vous restez tard, réservez un taxi à l'avance ou dormez sur place à Praiano pour éviter les files après les feux."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Respect sur place",
+      "body": [
+        "Ne déplacez pas les bougies ; ne franchissez pas les zones balisées et n'obstruez pas les passages avec votre matériel photo.",
+        "Utilisez trépied ou support pour les longues poses, mais libérez les entrées de l'église et les accès secours."
+      ]
+    }
+  ],
+  "tips": [
+    "Prenez une gourde (500 ml) et une petite lampe pour circuler dans les ruelles de Praiano après la nuit.",
+    "Respectez le calme une fois les feux terminés ; les habitants nettoient la cire jusque tard."
+  ],
+  "faqs": [
+    {
+      "q": "Le festival est-il payant ?",
+      "a": [
+        "Non, l'accès est gratuit. Soutenez les stands locaux ou faites un don à l'église pour financer les bougies des prochaines éditions."
+      ]
+    },
+    {
+      "q": "Que se passe-t-il en cas de pluie ?",
+      "a": [
+        "Une forte pluie peut reporter l'illumination ; les organisateurs publient les mises à jour sur la page Facebook de la municipalité de Praiano. Prévoyez une soirée de secours."
+      ]
+    }
+  ],
+  "event": {
+    "date": "1er–4 août (nuits principales)",
+    "location": "Piazza San Gennaro, Praiano",
+    "tips": [
+      "Arrivez avant le coucher du soleil pour voir la mise en place des bougies.",
+      "Gardez une lampe ou la lumière du téléphone pour le retour de nuit dans les ruelles."
+    ]
+  },
+  "gallery": {
+    "terraceAlt": "Lanternes allumées sur une terrasse de Praiano la nuit",
+    "coastAlt": "Côte de Praiano au crépuscule pendant la Luminaria di San Domenico"
+  }
+}

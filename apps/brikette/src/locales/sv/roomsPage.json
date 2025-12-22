@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "title": "Rum och priser | Hostel Brikette Positano",
+    "description": "Privata dubbelrum med havsutsikt och prisvärda sovsalar: se bilder, faciliteter och aktuella priser och boka sedan direkt för bästa erbjudande.",
+    "ogImageAlt": "Interiör av delad sovsal"
+  },
+  "facilities": {
+    "privateRoom": "Privat rum",
+    "mixedDorm": "Blandad sovsal",
+    "femaleDorm": "Sovsal endast för kvinnor",
+    "femaleRoom": "Rum endast för kvinnor",
+    "doubleBedForTwo": "En dubbelsäng för upp till två gäster",
+    "threeSingleBedsThreeGuests": "Tre enkelsängar, för upp till tre gäster",
+    "oneDormBedTwoGuests": "En våningssäng (sovsalsbädd) – totalt två bäddar, upp till två gäster",
+    "threeDormBedsSixGuests": "Tre sovsalsbäddar – totalt sex bäddar, upp till sex gäster",
+    "threeDormBedsPlusSingleSevenGuests": "Tre sovsalsbäddar + en enkelsäng (totalt 7), upp till sju gäster",
+    "fourDormBedsEightGuests": "Fyra sovsalsbäddar – totalt åtta bäddar, upp till åtta gäster",
+    "thirdFloor": "Beläget på tredje våningen",
+    "fourthFloor": "Beläget på fjärde våningen",
+    "bathroomEnsuite": "Eget badrum (ensuite)",
+    "bathroomPrivate": "Privat badrum",
+    "bathroomSharedFemale": "Delat badrum (endast kvinnor)",
+    "seaViewTerrace": "Terrass med havsutsikt",
+    "seaViewExtraLargeTerrace": "Havsutsikt med extra stor terrass",
+    "gardenView": "Trädgårdsutsikt",
+    "courtyardView": "Utsikt mot innergård",
+    "noView": "Ingen utsikt",
+    "airCon": "Luftkonditionering",
+    "keycard": "Nyckelkortsinträde",
+    "linen": "Sängkläder och handduk ingår"
+  },
+  "rooms": {
+    "title": "Våra rum",
+    "double_room": {
+      "title": "Dubbelrum",
+      "bed_intro": "Fantastisk havsutsikt — perfekt för par.",
+      "bed_description": "Vårt dubbelrum är en privat yta med en dubbelsäng för upp till två gäster. Beläget på tredje våningen, med eget badrum, terrass med havsutsikt, luftkonditionering och nyckelkortsinträde. Sängkläder och handdukar ingår.",
+      "facilities": [
+        "privateRoom",
+        "doubleBedForTwo",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 259.2,
+        "flexible": 285.12
+      }
+    },
+    "room_10": {
+      "title": "Blandad sovsal Premium",
+      "bed_intro": "När du vill ha sex bäddar och bättre badrum.",
+      "bed_description": "Premium-sovsal är en blandad sovsal med tre sovsalsbäddar (totalt sex), för upp till sex gäster. På fjärde våningen, med luftkonditionering, nyckelkortsinträde och eget badrum (ingen utsikt). Sängkläder och handduk ges vid incheckning.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 60.75,
+        "flexible": 66.82
+      }
+    },
+    "room_11": {
+      "title": "Kvinnosovsal Superior – Stor terrass",
+      "bed_intro": "De bästa vyerna från en rymlig terrass och ett toppenbadrum.",
+      "bed_description": "Vår kvinnosovsal Superior har tre sovsalsbäddar (totalt sex), för upp till sex gäster. På fjärde våningen, med luftkonditionering, nyckelkortsinträde, eget badrum och havsutsikt med extra stor terrass. Sängkläder och handduk vid incheckning.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 72.4,
+        "flexible": 79.64
+      }
+    },
+    "room_12": {
+      "title": "Blandad sovsal Superior",
+      "bed_intro": "Utmärkta vyer från rymlig terrass och fint badrum.",
+      "bed_description": "Blandad sovsal Superior har tre sovsalsbäddar (totalt sex) för upp till sex gäster. På fjärde våningen; luftkonditionering, nyckelkortsinträde, privat badrum och havsutsikt med extra stor terrass. Sängkläder och handduk ingår vid incheckning.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomPrivate",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 74.4,
+        "flexible": 81.84
+      }
+    },
+    "room_3": {
+      "title": "Kvinnosovsal Value",
+      "bed_intro": "Ett prisvärt val för kvinnliga resenärer.",
+      "bed_description": "Kvinnosovsal Value rymmer upp till åtta gäster över fyra bäddar. På tredje våningen; luftkonditionering, nyckelkortsinträde och tillgång till delat badrum (endast kvinnor). Ingen utsikt. Sängkläder och handduk vid incheckning.",
+      "facilities": [
+        "femaleDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_4": {
+      "title": "Blandad sovsal Value",
+      "bed_intro": "Ett prisvärt val för både kvinnor och män.",
+      "bed_description": "Blandad sovsal Value rymmer upp till åtta gäster på fyra bäddar. På tredje våningen; luftkonditionering, nyckelkortsinträde och tillgång till delat badrum (kvinnor). Ingen utsikt. Sängkläder och handduk vid incheckning.",
+      "facilities": [
+        "mixedDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_5": {
+      "title": "Kvinnosovsal Superior – Havsutsikt",
+      "bed_intro": "Fantastisk havsutsikt och eget badrum.",
+      "bed_description": "Kvinnosovsal Superior rymmer upp till sex gäster i tre bäddar. På tredje våningen; eget badrum, terrass med havsutsikt, luftkonditionering och nyckelkortsinträde. Sängkläder och handduk ingår vid incheckning.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_6": {
+      "title": "Kvinnosovsal Superior – 7 bäddar",
+      "bed_intro": "Fantastisk havsutsikt och eget badrum.",
+      "bed_description": "Kvinnosovsal Superior har tre sovsalsbäddar plus en enkelsäng (totalt 7) för upp till sju gäster. På tredje våningen; eget badrum, terrass med havsutsikt, luftkonditionering och nyckelkort. Sängkläder och handduk vid incheckning.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsPlusSingleSevenGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_9": {
+      "title": "Blandat Deluxe-rum",
+      "bed_intro": "Ett prisvärt sätt att få ett rum med tre bäddar.",
+      "bed_description": "Blandat Deluxe-rum har tre enkelsängar, för upp till tre gäster. På fjärde våningen; eget badrum, utsikt mot innergård, luftkonditionering och nyckelkortsinträde. Sängkläder och handduk vid incheckning.",
+      "facilities": [
+        "mixedDorm",
+        "threeSingleBedsThreeGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "courtyardView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_8": {
+      "title": "Kvinnosovsal med en våningssäng",
+      "bed_intro": "Ett prisvärt alternativ för två kvinnliga resenärer.",
+      "bed_description": "Denna kvinnosovsal har en våningssäng (sovsalsbädd) för upp till två gäster. På tredje våningen; luftkonditionering, nyckelkortsinträde, trädgårdsutsikt och intill delat badrum (kvinnor). Sängkläder och handduk vid incheckning.",
+      "facilities": [
+        "femaleDorm",
+        "oneDormBedTwoGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "gardenView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 78,
+        "flexible": 85.8
+      }
+    }
+  },
+  "fullscreen": {
+    "clickToClose": "Klicka var som helst för att stänga",
+    "closeAria": "Stäng bild i helskärm"
+  },
+  "roomImage": {
+    "clickToEnlarge": "Klicka för att förstora bilden",
+    "prevAria": "Föregående bild",
+    "nextAria": "Nästa bild",
+    "pagination": "{{current}}/{{total}}",
+    "photoAlt": "Foto av {{room}}",
+    "noImage": "Ingen bild tillgänglig"
+  },
+  "carousel": {
+    "previousSlide": "Föregående bild",
+    "nextSlide": "Nästa bild"
+  },
+  "hero": {
+    "heading": "Våra rum",
+    "subheading": "Välj det perfekta rummet för din vistelse"
+  },
+  "filters": {
+    "all": "Alla rum",
+    "private": "Privata rum",
+    "dorms": "Sovsalar"
+  },
+  "filtersAria": "Filtrera efter rumstyp",
+  "checkRatesNonRefundable": "Icke återbetalningsbara priser",
+  "checkRatesFlexible": "Flexibla rumspriser",
+  "ctaSuffix": {
+    "nonRefundable": "Ej återbetalningsbar",
+    "flexible": "Flexibelt"
+  },
+  "details": "Detaljer",
+  "ratesFrom": "Från €{{price}}",
+  "selectDatesTitle": "Välj datum",
+  "checkInDate": "Incheckningsdatum",
+  "checkOutDate": "Utcheckningsdatum",
+  "adults": "Antal vuxna",
+  "confirm": "Bekräfta",
+  "cancel": "Avbryt",
+  "moreAboutThisRoom": "Mer om detta rum",
+  "loadingPrice": "Laddar pris...",
+  "landingImageAlt": "Landningsbild av {{room}}",
+  "priceNotes": {
+    "dorm": "Per night, per guest. One guest in one bunk bed."
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "detail": {
+    "common": {
+      "amenitiesHeading": "Por qué las personas reservan esta habitación",
+      "amenitiesIntro": "Detalles pensados que te esperan al llegar."
+    },
+    "double_room": {
+      "amenities": [
+        {
+          "title": "Comodidad de baño en suite privado",
+          "body": "Empieza y termina el día con una ducha caliente, toallas suaves y un espacio solo para ti."
+        },
+        {
+          "title": "Mañanas en terraza con vista al mar",
+          "body": "Abre las puertas a la terraza privada para tomar un espresso o brindar al atardecer con vistas a Positano."
+        },
+        {
+          "title": "Noches frescas y tranquilas",
+          "body": "El aire acondicionado independiente y las contraventanas opacas mantienen la habitación en calma incluso en pleno agosto."
+        }
+      ]
+    },
+    "room_11": {
+      "amenities": [
+        {
+          "title": "Terraza lo bastante grande para todo el dormitorio",
+          "body": "Reúnanse en sofás y mesas exteriores para desayunar, estirarse tras las caminatas o fotografiar el horizonte."
+        },
+        {
+          "title": "Comodidad exclusiva para mujeres",
+          "body": "Un dormitorio solo para mujeres con baño en suite y tocador para que nunca hagas fila para ducharte."
+        },
+        {
+          "title": "Privacidad y tranquilidad",
+          "body": "Cada litera incluye cortinas, luz de lectura, enchufes y casilleros con tarjeta para tus objetos de valor."
+        }
+      ]
+    },
+    "room_12": {
+      "amenities": [
+        {
+          "title": "Terraza compartida extra grande",
+          "body": "Sillones y mesas crean una sala social con vistas a la Costa Amalfitana."
+        },
+        {
+          "title": "Baño dedicado",
+          "body": "Arréglate en un baño privado con secadores, espejos y muchos ganchos."
+        },
+        {
+          "title": "Energía al alcance de la mano",
+          "body": "Cada cama tiene enchufes propios, luz de lectura y casilleros con tarjeta para tu tranquilidad."
+        }
+      ]
+    }
+  }
+}

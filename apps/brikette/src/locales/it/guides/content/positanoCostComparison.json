@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Costi di Positano vs altre destinazioni balneari",
+    "description": "Confronto di prezzi medi con Grecia, Spagna e altre località italiane per capire quanto mettere a budget."
+  },
+  "linkLabel": "Costi di Positano vs altre destinazioni balneari",
+  "intro": [
+    "Traduzione in arrivo."
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Accommodation vs peers",
+      "body": [
+        "Traduzione in arrivo.",
+        "Stay in Praiano or Sorrento to save €40–€60 per night while keeping ferry/bus access to Positano."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport & experiences",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "tips": [
+    "Traduzione in arrivo.",
+    "Bundle experiences (e.g., hostel cooking class + boat outing) for package discounts instead of booking individual slots."
+  ],
+  "faqs": [
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Overview"
+      },
+      {
+        "href": "#when",
+        "label": "When it’s good value"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "faqLabel": "FAQs",
+    "sections": {
+      "overview": {
+        "heading": "Overview",
+        "body": "Traduzione in arrivo."
+      },
+      "when": {
+        "heading": "When it’s good value",
+        "body": "Traduzione in arrivo."
+      }
+    },
+    "faq": {
+      "summary": "Traduzione in arrivo.",
+      "answer": "Traduzione in arrivo."
+    }
+  }
+}

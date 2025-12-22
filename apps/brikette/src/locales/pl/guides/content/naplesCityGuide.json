@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Przewodnik po Neapolu dla podróżnych na Amalfi",
+    "description": "Kluczowe atrakcje Neapolu, bezpieczeństwo, jedzenie i wskazówki dotyczące transportu na wybrzeże."
+  },
+  "linkLabel": "Przewodnik po Neapolu dla podróżnych na Amalfi",
+  "intro": [
+    "Naples is the gateway to the Amalfi Coast. Spend a day or two exploring historic streets, pizza institutions, and easy side trips."
+  ],
+  "sections": [
+    {
+      "id": "neighbourhoods",
+      "title": "Essential neighbourhoods",
+      "body": [
+        "Walk Spaccanapoli for churches, nativity workshops, and the underground tours beneath San Lorenzo.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & coffee",
+      "body": [
+        "Queue for pizza at Sorbillo or Da Michele (expect 30–45 minutes). Grab sfogliatella and espresso at Gran Caffè Gambrinus.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "daytrips",
+      "title": "Day-trip staging",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "tips": [
+    "Carry contactless cards for metro rides and buy a day pass (€5.60) if you plan multiple hops.",
+    "Keep valuables in front pockets and use cross-body bags in crowded alleys."
+  ],
+  "faqs": [
+    {
+      "q": "Is Naples safe to explore on foot?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Where can I store luggage?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ]
+}

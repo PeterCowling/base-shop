@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Guia de transporte público da Costa Amalfitana",
+    "description": "Como circular sem carro: ônibus, ferries e trens — bilhetes, horários e notas sazonais."
+  },
+  "linkLabel": "Guia de transporte público da Costa Amalfitana",
+  "intro": [
+    "Como circular na Costa Amalfitana sem carro: autocarros para fiabilidade todo o ano, ferries no verão e comboios para percursos longos."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "Autocarros SITA",
+      "body": [
+        "Compre bilhetes em tabacchi/quiosques antes de embarcar e valide a bordo.",
+        "Conte com filas nas horas de pico. Saia cedo e considere o ferry para contornar multidões."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Ferries (sazonais)",
+      "body": [
+        "Rápidos e cénicos entre as principais vilas da primavera ao outono; cancelamentos por tempo são possíveis.",
+        "Verifique horários em tempo real nos sites das operadoras e reserve margem para os últimos barcos do dia."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Comboios (para gateways)",
+      "body": [
+        "Use Trenitalia/Italo para chegar a Sorrento/Salerno/Nápoles e conecte de autocarro ou ferry.",
+        "Percursos Intercity poupam tempo em ligações Roma/Nápoles/Salerno; a Circumvesuviana serve Sorrento."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing e estratégia",
+      "body": [
+        "Saia antes das 09:00 para evitar filas; em regressos ao pôr do sol prefira ferries quando o mar está calmo.",
+        "Leve trocos para bilhetes e chapéu/água para paragens expostas."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Posso levar bagagem nos autocarros?",
+      "a": [
+        "É permitido, mas desconfortável em horas de pico; considere ferries ou porteiros para malas pesadas."
+      ]
+    },
+    {
+      "q": "Existem serviços noturnos?",
+      "a": [
+        "Limitados; confirme o último autocarro/ferry para evitar táxis caros."
+      ]
+    }
+  ]
+}

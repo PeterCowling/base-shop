@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Walk from Hostel Brikette to Positano's main beach",
+    "description": "Step-by-step staircase route that reaches Spiaggia Grande in 15–25 minutes."
+  },
+  "linkLabel": "Walk down to Positano's main beach",
+  "intro": [
+    "Đi bộ từ Hostel Brikette đến bãi biển chính của Positano mất khoảng 15–25 phút tùy thuộc vào tốc độ và điểm dừng chân chụp ảnh.",
+    "Google Maps có thể định tuyến cho bạn qua các đường vòng chậm hơn, vì vậy hãy sử dụng đường dẫn đầu tiên này để đến Spiaggia Grande một cách nhanh chóng và khớp từng điểm kiểm tra với ảnh tham chiếu của khách sạn giá rẻ."
+  ],
+  "sections": [
+    {
+      "id": "before-you-go",
+      "title": "♫ Trước khi ra đi",
+      "body": [
+        "Nhận ảnh cầu thang nhiều lớp từ quầy lễ tân hoặc nhân viên trợ giúp kỹ thuật số để bạn có thể xác nhận năm điểm kiểm tra trên đường đi.",
+        "Mang dép mạnh mẽ cho cuộc đổ bộ bằng đá cuội và mang theo nước — không có cửa hàng trên cầu thang cho đến khi bạn đến lối đi dạo."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Từng bước đi bộ đến Spiaggia Grande",
+      "body": [
+        "1. Thoát khỏi Hostel Brikette qua cửa chính và đi xuống cầu thang phía trước đến Viale Pasitea.",
+        "2. Rẽ trái và đi bộ khoảng 100 mét (330 feet) dọc theo con đường đến góc phải đầu tiên bên cạnh tabacchi/quầy báo — đây là điểm bản đồ 1.",
+        "3. Rẽ phải, ở trên làn đường xuống dốc và đi theo đường cong cho đến khúc cua đầu tiên trên đường (điểm bản đồ 2).",
+        "4. Rời khỏi đường ở khúc cua và tiếp tục đi thẳng xuống cầu thang trước mặt bạn.",
+        "5. Khi cầu thang gặp một con đường khác (bản đồ điểm 3), đi thẳng về phía trước và tiếp tục đi xuống cầu thang có thể nhìn thấy tiếp theo.",
+        "6. Ở chân cầu thang, băng qua đường, rẽ trái khoảng 10 mét (30 feet), sau đó đi cầu thang tiếp theo bên phải của bạn (điểm bản đồ 4).",
+        "7. Đi theo những cầu thang này, rẽ trái khi hạ cánh và ở yên trên lối đi cho đến khi chạm đến đáy.",
+        "8. Rẽ phải, đi vào sân tại điểm bản đồ 5 và kiểm tra chế độ xem phù hợp với ảnh tham chiếu của khách sạn giá rẻ.",
+        "9. Tiếp tục đi thẳng bên dưới cổng vòm, sau đó đi bộ khoảng 50 mét (160 feet) cho đến khi cổng mở ra và Spiaggia Grande xuất hiện bên trái của bạn."
+      ]
+    }
+  ],
+  "tipsTitle": "Mẹo nhanh",
+  "tips": [
+    "Hãy dành thời gian leo núi sau này bằng cách ghép tuyến đường này với tuyến đường %LINK:positanoMainBeachBusBack|xe buýt trở về ký túc xá% sau ngày đi biển.",
+    "So sánh giá phòng chờ, khu vực miễn phí và giá câu lạc bộ trong %LINK:positanoBeaches|Tổng quan về bãi biển Positano% trước khi bạn lên đường.",
+    "Chia sẻ bản đồ qua mã QR của khách sạn giá rẻ hoặc trợ giúp kỹ thuật số nếu bạn bè gặp bạn tại bãi biển."
+  ]
+}

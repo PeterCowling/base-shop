@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Dagsturer fra Positano: Capri, Pompeii, Ravello, Amalfi",
+    "description": "Slik planlegger du populære dagsturer fra Positano med ferjer og busser, inkludert tids- og billettips."
+  },
+  "linkLabel": "Dagsturer fra Positano",
+  "intro": [
+    "Bruk Positano som base for dagsturer med ferje og buss – start tidlig, forhåndsbestill viktige billetter og ha alltid en værplan i bakhånd."
+  ],
+  "sections": [
+    {
+      "id": "capri",
+      "title": "Høydepunkter på Capri",
+      "body": [
+        "Bestill første ferje, ta stolheisen til Monte Solaro og gå gjennom Giardini di Augusto før cruiseturistene kommer.",
+        "Reis tilbake med en sen ettermiddagsavgang og ha et skjermbilde av busstidene i tilfelle sjøen blir urolig."
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompeii eller Herculaneum",
+      "body": [
+        "Ta tidlig buss til Sorrento og bytt til Circumvesuviana; kjøp køfrie billetter på nett for å spare tid.",
+        "Ha med vann og hatt – det er lite skygge på området, og besøket varer gjerne 3–4 timer."
+      ]
+    },
+    {
+      "id": "amalfi-ravello",
+      "title": "Amalfi og Ravello",
+      "body": [
+        "Ta ferje til Amalfi, besøk domkirken og ta 5110-bussen opp til Ravello for Villa Cimbrone og lunsj med utsikt.",
+        "Bli til ettermiddagslyset og ta ferje eller buss tilbake i skumringen – køene avtar etter kl. 18."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento og matfokus",
+      "body": [
+        "Ta formiddagsferjen til Sorrento for markedsturer, limoncello-smaking og solnedgang på terrassen ved Villa Comunale.",
+        "Reis tilbake med sen buss til Positano hvis siste ferje er utsolgt; turen tar omtrent 50 minutter."
+      ]
+    }
+  ],
+  "tips": [
+    "Last ned offline-kart og rutetider; mobildata kan forsvinne i togtunneler og ved klippene på Capri.",
+    "Pakk en lett regnjakke – sommerstormer kommer raskt og ferjene stanser ved lyn."
+  ],
+  "faqs": [
+    {
+      "q": "Hvilken dagstur krever tidligst start?",
+      "a": [
+        "Capri og Pompeii bør starte med første avgang; de blir travle allerede på formiddagen og krever mer reisetid."
+      ]
+    },
+    {
+      "q": "Kan jeg rekke to byer på én dag?",
+      "a": [
+        "Ja – kombiner Amalfi med Ravello eller Sorrento med Pompeii. Ikke kombiner Capri med noe annet; gi øya en hel dag."
+      ]
+    }
+  ]
+}

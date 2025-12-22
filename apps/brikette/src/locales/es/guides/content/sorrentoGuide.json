@@ -1,0 +1,51 @@
+{
+  "seo": {
+    "title": "Guía de Sorrento (puerta de entrada a la costa)",
+    "description": "Base o excursión, conexiones de transporte y qué ver."
+  },
+  "linkLabel": "Guía de Sorrento (puerta de la costa)",
+  "intro": [
+    "Sorrento es una base práctica: abundan los alojamientos, las conexiones ferroviarias son sencillas y llegar a Capri o Pompeya es rápido.",
+    "El intercambio es que las vistas son menos dramáticas que en Positano, pero la logística resulta muy fácil."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Por qué elegir Sorrento",
+      "body": [
+        "Encuentras más tipos de alojamiento y acceso directo a trenes. A cambio, las vistas no son tan icónicas como en Positano.",
+        "La ciudad se mantiene activa todo el año con bares, supermercados y paseos llanos."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Conexiones con Positano",
+      "body": [
+        "Buses SITA frecuentes y ferris de temporada. Compra el billete de bus antes de subir; los ferris se agotan en días pico.",
+        "Para llegar de madrugada o tras el último ferry, reserva traslado privado o duerme en Sorrento."
+      ]
+    },
+    {
+      "id": "see",
+      "title": "Qué ver",
+      "body": [
+        "Centro histórico, Marina Grande y puestas de sol en los acantilados.",
+        "Es un gran punto de partida para Capri, Pompeya y la Península Sorrentina."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuántas noches dedicarías a Sorrento?",
+      "a": [
+        "Al menos dos si la usas como base: una para explorar la ciudad y otra para excursiones."
+      ]
+    },
+    {
+      "q": "¿Dónde conviene alojarse?",
+      "a": [
+        "Cerca de la estación si priorizas trenes; junto a Marina Grande si prefieres vistas y restaurantes de marisco."
+      ]
+    }
+  ]
+}

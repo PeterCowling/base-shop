@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Napoli til Positano: slik gjør du det",
+    "description": "Raskeste og rimeligste alternativer fra Napoli til Positano med buss + tog eller sommerferje."
+  },
+  "linkLabel": "Napoli til Positano: slik gjør du det",
+  "intro": [
+    "Naples → Positano: shuttle to Sorrento + SITA bus year‑round; summer ferries when seas are good; transfers for late arrivals."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Train + bus (year-round)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Ferry (summer)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Late arrivals & transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Train + bus (year-round)",
+      "body": [
+        "From NAP arrivals, take Curreri shuttle (or Alibus + Circumvesuviana) to Sorrento, then ride the SITA bus toward Amalfi.",
+        "Buy tickets before boarding, check the day’s departure board, and get off at ‘Chiesa Nuova’ for the fewest stairs to Hostel Brikette."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (summer)",
+      "body": [
+        "Alibus → Molo Beverello; take a ferry to Positano and confirm fares with the operator on the day.",
+        "Check cancellations and avoid the last boat if you have onward connections."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Late arrivals & transfers",
+      "body": [
+        "Arriving after last ferries/buses? Book a private transfer or stay overnight in Naples/Sorrento.",
+        "Confirm drop-off near your accommodation and ask about luggage handling."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Where to buy SITA tickets?",
+      "a": [
+        "Tobacconists/kiosks near stations. Buy before boarding and validate on the bus."
+      ]
+    },
+    {
+      "q": "How many stairs to the hostel?",
+      "a": [
+        "From ‘Chiesa Nuova’ stop, it’s ~80 m with no staircases."
+      ]
+    }
+  ]
+}

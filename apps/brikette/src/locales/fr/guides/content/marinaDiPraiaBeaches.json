@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Marina di Praia et plages secrètes",
+    "description": "Explorer Marina di Praia et d'autres criques discrètes : accès, services et sécurité."
+  },
+  "linkLabel": "Marina di Praia et plages secrètes",
+  "intro": [
+    "Explorez Marina di Praia et les criques voisines pour changer du rythme de la plage principale de Positano."
+  ],
+  "sections": [
+    {
+      "id": "marina",
+      "title": "L’essentiel de Marina di Praia",
+      "body": [
+        "Blottie entre les falaises, cette plage de galets propose des transats, des locations de kayak et des restaurants de fruits de mer incrustés dans la roche.",
+        "Arrivez avant 10 h 30 pour obtenir les premiers rangs ; l’ombre gagne la plage après 16 h."
+      ]
+    },
+    {
+      "id": "coves",
+      "title": "Criques voisines",
+      "body": [
+        "Louez un kayak pour explorer la Grotta di Suppraiano ou prenez une navette bateau vers des coins confidentiels comme Gavitella ou Laurito.",
+        "Emportez une crème solaire respectueuse des récifs et des chaussures d’eau — le fond rocheux offre une excellente visibilité pour le snorkeling."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "S’y rendre",
+      "body": [
+        "Prenez le bus SITA depuis Positano en direction d’Amalfi ; demandez au chauffeur l’arrêt Marina di Praia puis descendez la rampe (cinq minutes).",
+        "Les scooters peuvent se garer en haut de la crique — ayez de la monnaie pour les places payantes."
+      ]
+    }
+  ],
+  "tips": [
+    "Réservez le déjeuner chez Il Pirata ou La Praia pour un repas à flanc de falaise entre deux baignades.",
+    "Prévoyez un sac étanche pour vos objets de valeur ; l’espace est compté et tout reste plus propre regroupé."
+  ],
+  "faqs": [
+    {
+      "q": "La plage est-elle gratuite ?",
+      "a": [
+        "Une portion est gratuite, mais l’espace est limité. Comptez 20 à 25 € pour une paire de transats et un parasol dans les beach clubs en haute saison."
+      ]
+    },
+    {
+      "q": "Puis-je y aller à pied depuis Positano ?",
+      "a": [
+        "La marche prend environ 50 minutes le long de la route aux bas-côtés étroits. Le bus ou le scooter reste plus sûr, surtout avec la circulation estivale."
+      ]
+    }
+  ]
+}

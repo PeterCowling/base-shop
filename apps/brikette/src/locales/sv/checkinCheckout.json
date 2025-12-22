@@ -1,0 +1,39 @@
+{
+  "slug": "checkin-checkning",
+  "meta": {
+    "title": "Komplett guide för in‑ och utcheckning på Hostel Brikette i Positano",
+    "description": "Steg-för-steg-instruktioner om ankomsttider, ID-krav, bagageförvaring, depositioner och stöd vid utcheckning på Hostel Brikette i Positano."
+  },
+  "headings": {
+    "checkInRequest": "Begäran om incheckning",
+    "earlyArrival": "Tidig ankomst",
+    "middayArrival": "Ankomst mitt på dagen",
+    "checkInWindow": "Incheckningsfönster",
+    "lateArrival": "Sen ankomst",
+    "necessityOfProcess": "Krav på fullständig incheckning",
+    "proofOfIdentity": "ID‑handling",
+    "paymentBalance": "Betalningssaldo",
+    "keycardLinenDeposit": "Deposition för nyckelkort & linne",
+    "checkoutWindow": "Utcheckningsfönster",
+    "earlyCheckout": "Tidig utcheckning",
+    "lateCheckout": "Sen utcheckning",
+    "failureToCheckout": "Misslyckad utcheckning",
+    "postCheckout": "Efter utcheckning"
+  },
+  "content": {
+    "checkInRequest": "När du anländer, besök vår reception för att starta din incheckningsprocess och få din rumsuppgift.",
+    "earlyArrival": "Om du anländer före 10:30 på ditt bokningsdatum, observera att du ännu inte kommer att kunna komma in på vandrarhemmet.",
+    "middayArrival": "Om du anländer mellan kl. 10:30 och 15.00 kan du tillåtas resa in som tillfällig gäst i väntan på godkännande. Under denna tid kan du begära bagageförvaring, förutsatt att utrymmet är tillgängligt. Observera att bagageförvaringen är skild från din rumsbokning och har sina egna villkor.",
+    "checkInWindow": "Du kan checka in från kl. 15.00 till kl. 22.30 dagligen. Under denna tid följer du vår vanliga incheckningsprocess.",
+    "lateArrival": "Om du planerar att anlända efter vår reception stänger klockan 10:30, kan vi erbjuda dig en självbetjäning sena incheckningsalternativ, beroende på tillgänglighet. Vi kommer att skicka instruktioner till de kontaktuppgifter du angav under bokningen. Se till att din enhet debiteras och dina uppgifter är korrekta, eftersom vi inte kan vara ansvariga för frågor som orsakas av felaktig information eller tekniska fel.",
+    "necessityOfProcess": "Du måste slutföra hela incheckningsförfarandet för att komma in på vandrarhemmet. Om du inte kan slutföra incheckningen, din bokning kommer att avbokas och behandlas som en No Show.",
+    "proofOfIdentity": "Vid ankomsten måste du visa upp ett giltigt original-ID (pass, nationellt ID-kort, körkort eller militär-ID). Om du inte anger giltigt ID senast kl. 10:30 på din planerade incheckningsdag ställs din bokning in som en No Show.",
+    "paymentBalance": "Du måste göra en fullständig utbetalning av utestående belopp med hjälp av en godkänd betalningsmetod innan du gör incheckningen. Om du inte kan göra full betalning, kommer din bokning att annulleras och markeras som en No Show.",
+    "keycardLinenDeposit": "Vid incheckningen måste du tillhandahålla en €10 kontant deposition för ditt nyckelkort och linne set. Denna deposition kommer att återbetalas fullt ut i kontanter vid kassan när du returnerar båda objekten. Kredit- eller betalkort kan inte accepteras för denna insättning.",
+    "checkoutWindow": "Checkout är från 07:30 till 10:30. Efter kassan, kan du inte komma in på ditt rum igen eller lämna några personliga tillhörigheter bakom.",
+    "earlyCheckout": "Om du behöver avresa före 07:30, ordna tidig utcheckning i receptionen kvällen innan för att få din insättningsåterbetalning i kontanter. Lämna ditt nyckelkort utan personal bekräftelse kommer att resultera i förverkande av insättningen.",
+    "lateCheckout": "Vi kan inte betala sen utcheckning. Checkouten ska vara klar kl. 10:30.",
+    "failureToCheckout": "Om du inte lämnar ditt rum vid den officiella kassan, kan vi ta bort dina tillhörigheter utan ansvar. Dina objekt kan lagras med en lokal portertjänst på din bekostnad. Varje obehörig post efteråt kommer att behandlas som en säkerhetsintrång.",
+    "postCheckout": "När du checkar ut, din bokning officiellt slutar. Du kan stanna kvar på vandrarhemmets lokaler som tillfällig gäst till 15:30. Du kan begära bagageförvaring, med förbehåll för tillgänglighet och separata villkor."
+  }
+}

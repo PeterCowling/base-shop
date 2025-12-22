@@ -1,0 +1,149 @@
+{
+  "items": [
+    {
+      "id": "what-kind-of-breakfast-is-served-at-hostel-brikette",
+      "question": "Milyen reggelit szolgálnak fel a Hostel Brikette-ben?",
+      "answer": "A vendégek nagyra értékelt à la carte menüt élvezhetnek. Közvetlen foglalás esetén a reggeli díjmentes."
+    },
+    {
+      "id": "what-are-the-check-in-and-check-out-times-at-hostel-brikette",
+      "question": "Mik a be- és kijelentkezési idők a Hostel Brikette-ben?",
+      "answer": "A szokásos bejelentkezés 15:00 és 22:30 között, a kijelentkezés 07:30 és 10:30 között lehetséges."
+    },
+    {
+      "id": "how-much-does-it-cost-to-stay-at-hostel-brikette",
+      "question": "Mennyibe kerül megszállni a Hostel Brikette-ben?",
+      "answer": "Az árak a dátumtól és szobatípustól függenek. A legfrissebb tarifákért válassza ki a kívánt szobát és érkezési időpontot."
+    },
+    {
+      "id": "what-is-there-to-do-at-hostel-brikette",
+      "question": "Mit lehet csinálni a Hostel Brikette-ben?",
+      "answer": "A hostel túrákat szervez vagy ajánl, például túrázást; egyes programok felárasak lehetnek."
+    },
+    {
+      "id": "how-far-is-hostel-brikette-from-the-centre-of-positano",
+      "question": "Milyen messze van a Hostel Brikette Positano központjától?",
+      "answer": "A szállás körülbelül 350 méterre található Positano központjától."
+    },
+    {
+      "id": "how-close-to-the-beach-is-hostel-brikette",
+      "question": "Milyen közel van a tengerparthoz a Hostel Brikette?",
+      "answer": "A legközelebbi strand nagyjából 350 méterre van."
+    },
+    {
+      "id": "what-room-types-are-available-at-hostel-brikette",
+      "question": "Milyen szobatípusok érhetők el a Hostel Brikette-ben?",
+      "answer": "Foglalhat vegyes hálótermi ágyat, kizárólag nőknek fenntartott hálótermi ágyat vagy saját fürdőszobás privát kétágyas szobát."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-terrace-with-sea-views",
+      "question": "Van a Hostel Brikette-nek tengerre néző terasza?",
+      "answer": "Igen — egy nagy közös terasz Positano fölé néz, panorámás tengeri kilátással."
+    },
+    {
+      "id": "is-free-wi-fi-provided",
+      "question": "Biztosítanak ingyenes wifit?",
+      "answer": "Igen — ingyenes wifi érhető el az egész szállás területén."
+    },
+    {
+      "id": "is-breakfast-included-in-the-rate",
+      "question": "Tartalmazza az ár a reggelit?",
+      "answer": "A közvetlen foglalások ára tartalmazza a reggelit; egyébként külön díjat számítunk fel."
+    },
+    {
+      "id": "does-hostel-brikette-have-an-on-site-bar",
+      "question": "Van a Hostel Brikette-ben saját bár?",
+      "answer": "Igen — a bár kávét, könnyű harapnivalókat, reggelit, vacsorát és italokat szolgál fel minden nap 07:30 és 23:30 között."
+    },
+    {
+      "id": "can-i-store-my-luggage-before-check-in-or-after-check-out",
+      "question": "Megőrizhetem a csomagomat bejelentkezés előtt vagy kijelentkezés után?",
+      "answer": "Igen — bejelentkezés előtt 10:30-tól, kijelentkezés után pedig 07:30 és 15:30 között biztosítunk csomagmegőrzést."
+    },
+    {
+      "id": "are-there-age-restrictions-at-hostel-brikette",
+      "question": "Vannak korhatárok a Hostel Brikette-ben?",
+      "answer": "A hálótermekbe csak 18 és 39 év közötti vendégek jelentkezhetnek be. A privát szobákra nem vonatkozik ez a korlátozás."
+    },
+    {
+      "id": "are-children-allowed",
+      "question": "Elszállásolhatók gyermekek?",
+      "answer": "A hálótermek kizárólag felnőtteknek szólnak, gyermekeket nem fogadnak. A korhatár elkerüléséhez privát szobát foglaljon."
+    },
+    {
+      "id": "are-pets-allowed",
+      "question": "Háziállatokat lehet hozni?",
+      "answer": "Sajnáljuk, háziállatokat nem engedélyezünk a szállás területén."
+    },
+    {
+      "id": "does-the-hostel-have-its-own-parking",
+      "question": "Van saját parkolója a hostelnek?",
+      "answer": "A hostelnek nincs saját parkolója; Positano nyilvános parkolóházai térítés ellenében vehetők igénybe."
+    },
+    {
+      "id": "is-air-conditioning-available",
+      "question": "Van légkondicionálás?",
+      "answer": "Igen — minden szoba és hálóterem légkondicionált."
+    },
+    {
+      "id": "are-lockers-provided-in-the-dormitories",
+      "question": "Vannak szekrények a hálótermekben?",
+      "answer": "Igen — minden ágyhoz tartozik saját zárható szekrény; hozzon saját lakatot, vagy vásároljon a recepción."
+    },
+    {
+      "id": "are-towels-included",
+      "question": "Biztosítanak törölközőt?",
+      "answer": "Bejelentkezéskor zuhanytörölközőt adunk, strandtörölközőt bérelni tudsz."
+    },
+    {
+      "id": "is-bed-linen-included",
+      "question": "Tartalmazza az ár az ágyneműt?",
+      "answer": "Igen — friss ágyneműt biztosítunk bejelentkezéskor."
+    },
+    {
+      "id": "does-hostel-brikette-have-laundry-facilities",
+      "question": "Van mosási lehetőség a Hostel Brikette-ben?",
+      "answer": "A hostelben nincs mosoda, de a közelben több szolgáltató is található."
+    },
+    {
+      "id": "does-hostel-brikette-have-quiet-hours",
+      "question": "Vannak csendes órák?",
+      "answer": "Csendes időszak van 23:30 és 07:30 között."
+    },
+    {
+      "id": "how-do-i-get-to-hostel-brikette-from-naples-airport",
+      "question": "Hogyan jutok el a Hostel Brikette-be a nápolyi repülőtérről?",
+      "answer": "Szállj fel a Curreri Shuttle-re Sorrentóig, majd a SITA busszal utazz Positanóba; a Chiesa Nuova megállónál szállj le."
+    },
+    {
+      "id": "where-is-the-nearest-bus-stop",
+      "question": "Hol van a legközelebbi buszmegálló?",
+      "answer": "A Chiesa Nuova buszmegálló kevesebb mint 80 méterre (250 lábra) van, lépcsők nélkül a hostel felé."
+    },
+    {
+      "id": "what-payment-methods-are-accepted",
+      "question": "Milyen fizetési módokat fogadnak el?",
+      "answer": "Visa, Mastercard, Maestro, bankkártya és készpénz is elfogadott a recepción."
+    },
+    {
+      "id": "is-reception-open-24-hours",
+      "question": "Nonstop nyitva van a recepció?",
+      "answer": "A recepció 07:30-kor nyit és 22:30-kor zár. Késői érkezést előre jelezni kell."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-shared-kitchen",
+      "question": "Van közös konyha a Hostel Brikette-ben?",
+      "answer": "Nincs közös konyha, de hűtő, vízforraló és mikrohullámú sütő a vendégek rendelkezésére áll."
+    },
+    {
+      "id": "does-hostel-brikette-offer-female-only-dorms",
+      "question": "Van kizárólag női hálóterem?",
+      "answer": "Igen — foglalhatók csak nőknek fenntartott hálótermi ágyak."
+    },
+    {
+      "id": "is-the-property-wheelchair-accessible",
+      "question": "Akadálymentes a szállás?",
+      "answer": "A hostel nem akadálymentes."
+    }
+  ]
+}

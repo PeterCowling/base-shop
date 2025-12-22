@@ -1,0 +1,67 @@
+{
+  "slug": "capri-positano-ferry",
+  "meta": {
+    "title": "Capri til Positano med færge | Hostel Brikette",
+    "description": "Sådan rejser du fra Capri til Positano med færge, med billettips, operatører, ankomstråd og den nemmeste vej op til hostellet."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Capri til Positano – færge",
+    "description": "Brug denne guide til at rejse fra Capri til Positano helt ad søvejen. Den dækker valg af den rette operatør, køb af billetter i havnen og hvad du skal gøre ved ankomst for den mest problemfri gåtur (eller bus) op til Hostel Brikette."
+  },
+  "tip": {
+    "eyebrow": "Tip",
+    "copy": "Har du brug for andre ruter eller backups når havet er uroligt? Åbn <link>Oversigt over Sådan kommer du hertil</link>.",
+    "linkLabel": "Oversigt over Sådan kommer du hertil"
+  },
+  "sections": {
+    "overview": {
+      "title": "Rejseoverblik",
+      "body": "Færger mellem Capri og Positano sejler hyppigst i forår og sommer. Afgange kan blive aflyst i hårdt vejr, især senere på dagen. Den samlede rejsetid er typisk 30–60 minutter afhængigt af fartøj og operatør."
+    },
+    "capriPort": {
+      "title": "I Capri havn",
+      "list": [
+        "Tjek tider og priser, og identificer operatøren for din valgte afgang.",
+        "Gå til Capris turist-havn. Køb billetter i operatørens eget billetsalg.",
+        "Ankom 20–30 minutter før for at indløse eventuelle vouchers og stå i kø til ombordstigning."
+      ],
+      "link": "Sammenlign færgetider og book: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (samlet tidsplan)</positanoLink>.",
+      "linkLabelCapri": "Capri.net – Capri ↔ Positano",
+      "linkLabelPositano": "Positano.com (samlet tidsplan)"
+    },
+    "arrival": {
+      "title": "Ankomst til Positano",
+      "list": [
+        "Gå fra borde ved molen Positano Spiaggia Grande.",
+        "Portører møder ankommende færger; overvej at bruge dem til bagage og aftal prisen på forhånd.",
+        "Forvent trapper op fra stranden; den lokale Interno-bus hjælper med at reducere trapperne til hostellet."
+      ]
+    },
+    "bus": {
+      "title": "Fra havnen til hostellet med Interno-bus",
+      "list": [
+        "Interno Positano-bussen kører cirka hver 30. minut fra morgen til omkring midnat.",
+        "Se efter det elektroniske skilt ‘Interno Positano’ foran på bussen.",
+        "Fra havnen, gå til Piazza dei Mulini og tag bussen op ad bakke mod Chiesa Nuova."
+      ],
+      "link": "For en detaljeret, bagagevenlig rute fra molen til Hostel Brikette, se: <link>Færgeanløb → Hostel Brikette</link>.",
+      "linkLabel": "Færgeanløb → Hostel Brikette"
+    },
+    "finalWalk": {
+      "title": "Sidste stræk fra nærmeste stoppested",
+      "list": [
+        "Stig af ved stoppestedet ved Tabacchi nær Chiesa Nuova.",
+        "Drej til højre mod hovedvejen, og derefter til venstre ad Via G. Marconi.",
+        "Gå lidt over 100 m (≈330 ft) — hostellet ligger på højre hånd.",
+        "Drej til højre og følg trappen op til Hostel Brikettes hoveddør."
+      ]
+    },
+    "cancelled": {
+      "title": "Hvis færgerne aflyses",
+      "body": "Hvis afgange aflyses på grund af vejr eller havforhold, skift til tog- og busruten via Sorrento. Den tager længere tid men kører i de fleste forhold.",
+      "link": "Brug dette alternativ: <link>Naples Center → Positano med tog og derefter bus</link>.",
+      "linkLabel": "Naples Center → Positano med tog og derefter bus"
+    }
+  }
+}

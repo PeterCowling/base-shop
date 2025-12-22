@@ -1,0 +1,56 @@
+{
+  "slug": "apartment",
+  "meta": {
+    "title": "Apartment-Unterkunft im Hostel Brikette",
+    "description": "Buche das private Apartment im Hostel Brikette: 2 Schlafzimmer, Küche, Meerblickbalkon, schnelles WLAN und Klimaanlage für bis zu 4 Gäste."
+  },
+  "title": "Privates Apartment",
+  "body": "Zieh dich nach Strandtagen in dein eigenes Apartment mit Küche, Balkon und schnellem WLAN zurück.",
+  "heroImageAlt": "Abendstimmung auf der Terrasse des Apartment-Balkons in Positano",
+  "heroTitle": "Privates Apartment",
+  "heroIntro": "Checke in einen privaten Rückzugsort mit Küche, zwei Schlafzimmern und Balkonblick auf die Amalfiküste ein.",
+  "bookButton": "Apartment sichern",
+  "galleryHeading": "Einblicke in dein Apartment",
+  "galleryAlt": "Apartment und Terrasse mit Blick auf Positano",
+  "galleryAlts": [
+    "Wohnbereich des Apartments",
+    "Schlafzimmer des Apartments",
+    "Gemeinschaftsterrasse mit Meerblick"
+  ],
+  "detailsHeading": "Details",
+  "detailsList": [
+    "Platz für bis zu 4 Gäste",
+    "Kitchenette mit Kühlschrank",
+    "Privates Badezimmer",
+    "Klimaanlage",
+    "Balkon mit Meerblick"
+  ],
+  "amenitiesHeading": "Ausstattung",
+  "amenitiesImageAlt": "Symbolbild der Apartmentausstattung",
+  "amenitiesList": [
+    "WLAN inklusive",
+    "Voll ausgestattete Küche mit Geschirr",
+    "Klimaanlage und Heizung",
+    "Waschmaschine, Trockner und Wäscheständer"
+  ],
+  "highlights": {
+    "sectionTitle": "Apartment-Highlights",
+    "slides": [
+      {
+        "title": "Panoramablicke",
+        "text": "Beginnen Sie jeden Morgen mit weitem Ausblick.",
+        "alt": "Blick vom Apartmentbalkon"
+      },
+      {
+        "title": "Komfortable Räume",
+        "text": "Viel Platz zum Entspannen nach dem Erkunden.",
+        "alt": "Geräumiger Wohnbereich"
+      },
+      {
+        "title": "Zentrale Lage",
+        "text": "Nur wenige Schritte von Geschäften und Strand entfernt.",
+        "alt": "Straßen von Positano"
+      }
+    ]
+  }
+}

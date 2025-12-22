@@ -5,6 +5,8 @@ import { calculateRentalDays } from "@acme/date-utils";
 import { POST } from "../src/api/checkout-session/route";
 import { asNextJson } from "@acme/test-utils";
 import { CART_COOKIE } from "@platform-core/cartCookie";
+import { validateInventoryAvailability } from "@platform-core/inventoryValidation";
+import { variantKey } from "@platform-core/types/inventory";
 
 jest.mock("next/server", () => ({
   NextResponse: {
@@ -29,12 +31,25 @@ jest.mock("@platform-core/pricing", () => ({
 jest.mock("@platform-core/tax", () => ({
   getTaxRate: jest.fn(async () => 0.2),
 }));
+jest.mock("@platform-core/inventoryValidation", () => {
+  const actual = jest.requireActual("@platform-core/inventoryValidation");
+  return {
+    ...actual,
+    validateInventoryAvailability: jest.fn(async () => ({ ok: true })),
+  };
+});
 
 import { stripe } from "@acme/stripe";
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
+const validateInventoryAvailabilityMock =
+  validateInventoryAvailability as jest.Mock;
 
 jest.mock("@platform-core/analytics", () => ({ trackEvent: jest.fn() }));
 jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@platform-core/customerProfiles", () => ({ getCustomerProfile: jest.fn(async () => null) }));
+jest.mock("@platform-core/identity", () => ({
+  getOrCreateStripeCustomerId: jest.fn(async () => "stripe-customer"),
+}));
 
 // In tests we treat the cart cookie as carrying a simple cart ID string.
 jest.mock("@platform-core/cartCookie", () => ({
@@ -66,8 +81,9 @@ const createRequest = <T extends object>(
 test("builds Stripe session with correct items and metadata", async () => {
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   stripeCreate.mockResolvedValue({
-    id: "sess_test",
-    payment_intent: { client_secret: "cs_test" },
+    id: "cs_test",
+    client_secret: "cs_test",
+    payment_intent: "pi_test",
   });
 
   const [sku1, sku2] = PRODUCTS;
@@ -148,6 +164,32 @@ test("responds with 400 on invalid returnDate", async () => {
   expect(body.error).toMatch(/invalid/i);
 });
 
+test("responds with 409 when cart exceeds available stock", async () => {
+  const sku = { ...PRODUCTS[0], stock: 1 };
+  const size = sku.sizes[0];
+  mockCart = { [`${sku.id}:${size}`]: { sku, qty: 2, size } };
+  validateInventoryAvailabilityMock.mockResolvedValueOnce({
+    ok: false,
+    insufficient: [
+      {
+        sku: sku.id,
+        variantAttributes: { size },
+        variantKey: variantKey(sku.id, { size }),
+        requested: 2,
+        available: 1,
+      },
+    ],
+  });
+  const req = createRequest(
+    { returnDate: "2025-01-02", currency: "EUR", taxRegion: "EU" },
+    "cart-1",
+  );
+  const res = await POST(req);
+  expect(res.status).toBe(409);
+  const body = await res.json();
+  expect(body.error).toBe("Insufficient stock");
+});
+
 test("responds with 400 when cart is empty", async () => {
   (decodeCartCookie as jest.Mock).mockReturnValueOnce(null);
   const req = createRequest({}, "");
@@ -199,8 +241,9 @@ test("responds with 502 when session creation fails", async () => {
 test("adds coverage line item and metadata when coverage codes are provided", async () => {
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   stripeCreate.mockResolvedValue({
-    id: "sess_cov",
-    payment_intent: { client_secret: "cs_cov" },
+    id: "cs_cov",
+    client_secret: "cs_cov",
+    payment_intent: "pi_cov",
   });
 
   const [sku] = PRODUCTS;

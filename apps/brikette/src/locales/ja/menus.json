@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "翻訳を準備中です。"
+      },
+      "rum": {
+        "note": "翻訳を準備中です。"
+      },
+      "gin": {
+        "note": "翻訳を準備中です。"
+      },
+      "whisky": {
+        "note": "翻訳を準備中です。"
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "翻訳を準備中です。"
+      },
+      "limoncelloSpritz": {
+        "note": "翻訳を準備中です。"
+      },
+      "hugoSpritz": {
+        "note": "翻訳を準備中です。"
+      },
+      "rossiniSpritz": {
+        "note": "翻訳を準備中です。"
+      },
+      "lemonStrawberryMargarita": {
+        "note": "翻訳を準備中です。"
+      },
+      "lemonDropMartini": {
+        "note": "翻訳を準備中です。"
+      },
+      "joseCuervoSilver": {
+        "note": "翻訳を準備中です。"
+      },
+      "limoncelloShot": {
+        "note": "翻訳を準備中です。"
+      },
+      "threeScoops": {
+        "note": "翻訳を準備中です。"
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "翻訳を準備中です。"
+      },
+      "nutellaFrenchToast": {
+        "note": "翻訳を準備中です。"
+      },
+      "addEggComboItem": {
+        "note": "翻訳を準備中です。"
+      },
+      "addAdditionalSyrup": {
+        "note": "翻訳を準備中です。"
+      },
+      "veggieToast": {
+        "note": "翻訳を準備中です。"
+      },
+      "healthyDelight": {
+        "note": "翻訳を準備中です。"
+      },
+      "detoxMe": {
+        "note": "翻訳を準備中です。"
+      },
+      "energizeMe": {
+        "note": "翻訳を準備中です。"
+      },
+      "multiV": {
+        "note": "翻訳を準備中です。"
+      },
+      "orangeJuice": {
+        "note": "翻訳を準備中です。"
+      }
+    }
+  }
+}

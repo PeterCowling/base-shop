@@ -1,0 +1,28 @@
+{
+  "quickLinksHeading": "Assistenza rapida",
+  "quickLinksIntro": "Trova risposte immediate alle domande più frequenti su prenotazioni, arrivi e soggiorno.",
+  "cta": {
+    "readMore": "Scopri di più"
+  },
+  "quickLinks": [
+    {
+      "label": "Modificare o cancellare una prenotazione",
+      "description": "Consulta le scadenze e i suggerimenti per evitare costi extra quando i piani cambiano.",
+      "slug": "changingCancelling"
+    },
+    {
+      "label": "Guida al check-in e check-out",
+      "description": "Segui la nostra guida passo dopo passo per arrivo e partenza all’Hostel Brikette di Positano.",
+      "slug": "checkinCheckout"
+    },
+    {
+      "label": "Come arrivare a Positano",
+      "description": "Confronta traghetti, autobus e taxi con la nostra guida passo dopo passo.",
+      "slug": "travelHelp"
+    }
+  ],
+  "contactCta": {
+    "label": "Scrivici",
+    "href": "mailto:hostelpositano@gmail.com"
+  }
+}

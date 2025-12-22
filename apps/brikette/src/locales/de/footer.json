@@ -1,0 +1,21 @@
+{
+  "home": "Startseite",
+  "rooms": "Zimmer",
+  "apartment": "Wohnung",
+  "assistance": "Hilfe",
+  "careers": "Karriere",
+  "deals": "Angebote",
+  "guides": "Führer",
+  "terms": "Allgemeine Geschäftsbedingungen für Zimmerbuchungen",
+  "copyright": "© 2023 bis {{year}}, Skylar SRL unter dem Namen Hostel Brikette",
+  "backToTop": "Zurück nach oben",
+  "contactHeading": "Kontakt",
+  "email": "E-Mail",
+  "phone": "Telefon",
+  "noPhoneNotice": "Wir bearbeiten keine Anfragen per Telefon. Bitte kontaktiere uns per E-Mail.",
+  "follow": "Folgen Sie uns",
+  "instagram": "Instagram",
+  "facebook": "Facebook",
+  "experiences": "Erlebnisse",
+  "howToGetHere": "Anreise"
+}

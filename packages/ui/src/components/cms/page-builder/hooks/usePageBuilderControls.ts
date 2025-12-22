@@ -10,7 +10,7 @@ import useViewport from "./useViewport";
 import { Step, CallBackProps, STATUS } from "../PageBuilderTour";
 import { useTranslations } from "@acme/i18n";
 
-interface Params {
+export interface PageBuilderControlsParams {
   state: HistoryState;
   dispatch: React.Dispatch<Action>;
 }
@@ -81,7 +81,7 @@ const coerceBreakpoints = (value: unknown): Breakpoint[] => {
   );
 };
 
-const usePageBuilderControls = ({ state, dispatch }: Params) => {
+const usePageBuilderControls = ({ state, dispatch }: PageBuilderControlsParams) => {
   const [deviceId, setDeviceId] = usePreviewDevice(devicePresets[0].id);
   const [orientation, setOrientation] = useState<"portrait" | "landscape">(
     "portrait"

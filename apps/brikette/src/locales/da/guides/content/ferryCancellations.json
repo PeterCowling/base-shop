@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Færgeaflysninger og høj søgang",
+    "description": "Hvad du gør ved aflysninger, alternative ruter og refunderinger, når vejret driller."
+  },
+  "linkLabel": "Færgeaflysninger og høj søgang",
+  "intro": [
+    "Uroligt hav kan standse færger til og fra Positano med kort varsel.",
+    "Hav en landbaseret backup klar og følg liveopdateringer, så du stadig når din forbindelse."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Følg liveopdateringer",
+      "body": [
+        "Tjek operatørernes sider og apps (Travelmar, NLG, Alilauro) samt informationstavlerne på havnen hvert 30. minut på blæsende dage.",
+        "Aktivér SMS/e-mail-varsler eller følg lokale Telegram/SoMe-kanaler, så aflysninger når dig, selv hvis du går væk fra molen."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Skift til landruter",
+      "body": [
+        "Hvis færgerne stopper, så skift til bus og tog: SITA til Sorrento og videre med Circumvesuviana mod Napoli/Pompeji, eller bus via Amalfi og regionaltog fra Salerno.",
+        "Læg mindst 60 minutters buffer ind til dagens sidste afgange og stemple billetter før ombordstigning."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Refundering og vouchers",
+      "body": [
+        "Gem kvitteringer og tag screenshot af aflysningen, så operatøren kan håndtere refundering, ombooking eller tilgodebevis.",
+        "Fortæl personalet, om du foretrækker næste afgang eller et sæsonvoucher, før du forlader skranken."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Hvis du må overnatte",
+      "body": [
+        "Giv din indkvartering eller turarrangør besked så snart forsinkelserne meldes; mange kan justere check-in eller afgang, hvis de får besked i god tid.",
+        "Spørg informationspunktet på havnen om delte taxaer, alternative shuttlebusser eller bagageopbevaring, hvis du skal vente til næste morgen."
+      ]
+    }
+  ],
+  "tips": [
+    "Tjek vejrudsigten for havet — vind over 20 knob eller dønning over 1,5 meter udløser ofte aflysninger.",
+    "Rejseforsikring, der dækker vejrforsinkelser, hjælper med at få dækket ekstra hotelnætter eller erstatningstransport.",
+    "Morgensejladser er mest stabile; undgå at satse på dagens sidste båd, når der varsles storm."
+  ],
+  "faqs": [
+    {
+      "q": "Hvordan ved jeg, hvornår sejladserne genoptages?",
+      "a": [
+        "Opdater operatørens hjemmeside eller sociale medier og lyt til højtalerannoncer på molen — beslutninger meldes typisk inden for 30 minutter fra planlagt afgang.",
+        "Personalet ved billetsalget kan også bekræfte, om næste båd sejler, før du forlader havnen."
+      ]
+    },
+    {
+      "q": "Hvad sker der med min billet?",
+      "a": [
+        "Vis kvittering eller QR-kode for at få refundering, voucher eller ombooking til næste afgang.",
+        "Hvis du købte via et onlinebureau, så mail dem skærmbilledet af aflysningen inden for 24 timer for at starte refunderingen."
+      ]
+    },
+    {
+      "q": "Er nogen færger garanterede i hårdt vejr?",
+      "a": [
+        "Nej — når havnen lukkes af kystvagten, stopper alle afgange. Hav en landrute klar.",
+        "Få private chartere sejler i moderat sø, men de er dyre og afhænger af skipperens vurdering; vurder komfort og pris nøje."
+      ]
+    }
+  ]
+}

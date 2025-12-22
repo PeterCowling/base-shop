@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Guide de Sorrente (porte d'entrée de la côte amalfitaine)",
+    "description": "Accès, connexions transport, quartiers où loger et que faire lors d'une journée à Sorrente."
+  },
+  "linkLabel": "Guide de Sorrente (porte d'entrée de la côte amalfitaine)",
+  "intro": [
+    "Sorrente est une base pratique : large choix d'hébergements, liaisons ferroviaires simples et accès rapide à Capri et Pompéi. En contrepartie, les vues carte postale sont moins nombreuses qu'à Positano."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Pourquoi se baser à Sorrente",
+      "body": [
+        "Plus de choix d'hébergements et un accès ferroviaire direct. En échange, moins de paysages de carte postale qu'à Positano."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Liaisons vers Positano",
+      "body": [
+        "Bus SITA fréquents et ferries saisonniers. Achetez vos billets de bus avant de monter ; les ferries se remplissent les jours de pointe."
+      ]
+    },
+    {
+      "id": "see",
+      "title": "Que voir",
+      "body": [
+        "Centre historique, marinas et belvédères ; un excellent point de départ pour Capri et Pompéi."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Sorrente est-elle moins chère que Positano ?",
+      "a": [
+        "En général oui : comptez 30 à 60 € d'économie par nuit sur l'hébergement et davantage de restaurants à prix intermédiaires."
+      ]
+    },
+    {
+      "q": "Jusqu'à quelle heure les trains retournent-ils à Naples ?",
+      "a": [
+        "La Circumvesuviana circule jusqu'à environ 22 h 30 ; au-delà, prenez un bus régional ou prévoyez une nuit sur place si votre vol est tardif."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "seo": {
+    "title": "Gavitella Beach Guide",
+    "description": "Plan a sunset-friendly day at Praiano's La Gavitella and One Fire beach clubs with transport, reservations, and return tips."
+  },
+  "linkLabel": "Gavitella Beach Guide",
+  "intro": [
+    "Praiano's Gavitella cove faces west, giving you long afternoon sun and golden-hour views back to Positano and Capri. Two lidos — La Gavitella and One Fire — share the small shoreline beside a compact public section carved into the rock.",
+    "Expect a curated, reservation-driven experience: steep stairs limit crowds, the clubs coordinate boat shuttles, and evenings revolve around seafood dinners or DJ-led sunset parties."
+  ],
+  "toc": [
+    {
+      "href": "#overview",
+      "label": "Layout & vibe"
+    },
+    {
+      "href": "#access",
+      "label": "How to reach Gavitella"
+    },
+    {
+      "href": "#gavitella-club",
+      "label": "La Gavitella Beach Club"
+    },
+    {
+      "href": "#one-fire",
+      "label": "One Fire Beach Club"
+    },
+    {
+      "href": "#amenities",
+      "label": "Facilities & planning"
+    }
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Layout and vibe",
+      "body": [
+        "The beach sits below Praiano's Piazza San Gennaro. Roughly 400 steps weave past villas and lemon terraces to a stone platform, a pebble shelf, and a slim free zone between the two lidos.",
+        "La Gavitella occupies the left-hand side (facing the sea) with restaurant tables, sun decks, and moorings for dinner guests. One Fire lines the right-hand pier with bright loungers, a DJ podium, and a dock for their party boats."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "How to reach Gavitella",
+      "body": [
+        "From Hostel Brikette or central Positano, ride the SITA bus toward Amalfi and hop off at Praiano's Piazza San Gennaro stop; give yourself 10–15 minutes to descend the stairway for your booking.",
+        "Praiano's interno shuttle loops between the upper road and Marina di Praia — use it for the return so you are not climbing hundreds of steps after sunset. Both clubs can also arrange boat shuttles from Positano or Marina di Praia when seas are calm."
+      ]
+    },
+    {
+      "id": "gavitella-club",
+      "title": "La Gavitella Beach Club",
+      "body": [
+        "La Gavitella is all about slow lunches, aperitivi, and a sunset boat spin around the Li Galli islets. The kitchen focuses on seasonal seafood — crudo platters, paccheri with local fish, and a lemon-forward dessert list.",
+        "Mention transfer needs when you reserve: staff coordinate tender boats for dinner guests and can store bags while you swim before the aperitif cruise."
+      ]
+    },
+    {
+      "id": "one-fire",
+      "title": "One Fire Beach Club",
+      "body": [
+        "One Fire is the Amalfi Coast's party beach, famous for its afternoon watermelon ritual, DJ sets, and crowd choreography timed perfectly with the sunset.",
+        "Book loungers or cabanas via WhatsApp — deposits are common in July and August. When seas behave, their boats shuttle groups from Positano and back after the music winds down."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Facilities & planning",
+      "body": [
+        "Both clubs include showers, changing cabins, and paid lockers; towels usually come with the lounger fee. Pack reef-safe sunscreen and water shoes for the stone platform and pebble entry.",
+        "A tiny public strip separates the lidos. Space is scarce, so arrive before 10:00 with your own mat, and expect staff to reclaim chairs if swells push them inland."
+      ]
+    }
+  ],
+  "tipsTitle": "Quick tips",
+  "tips": [
+    "Use %LINK:positanoAmalfi|our Positano ↔ Amalfi transport guide% to plan the SITA ride to Piazza San Gennaro before you tackle the 400 steps down.",
+    "Check the %LINK:sitaTickets|SITA bus ticket tips% for return options; Praiano's interno loop saves you from climbing back up in the dark.",
+    "Reserve La Gavitella's cliffside restaurant when you book loungers — the seafood tasting menu and sunset boat spin are worth the splurge.",
+    "Compare loungers, free zones, and alternative coves in our %LINK:positanoBeaches|Positano beaches overview% before you commit."
+  ],
+  "warningsTitle": "Good to know",
+  "warnings": [
+    "Expect around 400 uneven steps each way; Gavitella is not accessible for wheelchairs or heavy luggage.",
+    "The free section can vanish during rough seas — keep a backup plan for windy days.",
+    "Boat shuttles pause when the sea turns, so confirm your return ride before sunset events begin."
+  ],
+  "faqsTitle": "Gavitella FAQs",
+  "faqs": [
+    {
+      "q": "How do I reach Gavitella from Hostel Brikette?",
+      "a": [
+        "Walk to the Chiesa Nuova stop and board the SITA bus toward Amalfi. Get off at Praiano's Piazza San Gennaro, then follow the signed stairway for roughly 400 steps to the beach. In calm weather you can also pre-book boat shuttles from Positano's main pier."
+      ]
+    },
+    {
+      "q": "Do I need to reserve in advance?",
+      "a": [
+        "Yes. Contact La Gavitella or One Fire via WhatsApp or their online forms, share your arrival time, and ask about deposits. Weekends and sunset slots sell out quickly from June through September."
+      ]
+    },
+    {
+      "q": "Is there a free area if I don't rent loungers?",
+      "a": [
+        "A narrow public strip sits between the two clubs. Bring a mat or water shoes, arrive early, and respect any ropes or walkways staff set for boat access."
+      ]
+    },
+    {
+      "q": "Can I stay for dinner or late events?",
+      "a": [
+        "La Gavitella serves dinner on the terrace and often pairs it with a short boat cruise. One Fire runs sunset parties that finish around the last interno bus. Confirm return transport with staff so you are not climbing the stairs at night."
+      ]
+    }
+  ]
+}

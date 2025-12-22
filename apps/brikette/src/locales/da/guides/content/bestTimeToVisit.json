@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Bedste tidspunkt at besøge Positano",
+    "description": "Sæson for sæson: vejr, priser, menneskemængder og arrangementer."
+  },
+  "linkLabel": "Bedste tidspunkt at besøge Positano",
+  "intro": [
+    "Planlæg besøget med realistiske forventninger til vejr, menneskemængder og færgedrift.",
+    "Brug sæsonoversigten og de månedlige noter til at vælge det tidspunkt, hvor Positano passer dine prioriteter."
+  ],
+  "tocTitle": "På denne side",
+  "toc": [
+    {
+      "href": "#matrix",
+      "label": "Oversigt: vejr / menneskemængder / priser"
+    },
+    {
+      "href": "#months",
+      "label": "Måned for måned"
+    },
+    {
+      "href": "#faqs",
+      "label": "Ofte stillede spørgsmål"
+    }
+  ],
+  "sections": [
+    {
+      "id": "matrix",
+      "title": "Vejr / menneskemængder / priser",
+      "body": [
+        "Højsæson (jun–aug) = varmt, travlt og høje priser. Skuldersæson (apr–maj, sep–okt) = mildere vejr og bedre værdi. Vinter (nov–mar) = roligt med færre services."
+      ]
+    },
+    {
+      "id": "months",
+      "title": "Måned for måned",
+      "body": [
+        "April: færgerne starter; milde temperaturer og færre mennesker.",
+        "Maj: fantastisk vejr; flere afgange; weekender er travlere.",
+        "Juni–august: højsæson; varme og køer — forudbestil transport og aktiviteter.",
+        "September: varmt hav og en anelse roligere end august.",
+        "Oktober: skuldersæson; færgerne trapper ned sidst på måneden.",
+        "November–marts: stille lavsæson med reducerede services; busser er rygraden.",
+        "Færgefrekvensen stiger gennem foråret, topper om sommeren og dykker igen sidst i oktober."
+      ]
+    }
+  ],
+  "schemaMonths": [
+    {
+      "name": "April",
+      "note": "Start på færgesæson; milde temperaturer; færre mennesker."
+    },
+    {
+      "name": "Maj",
+      "note": "Skønt vejr; hyppige færger; travle weekender."
+    },
+    {
+      "name": "Juni–august",
+      "note": "Højsæson; varmt; book transport/aktiviteter tidligt."
+    },
+    {
+      "name": "September",
+      "note": "Varmt hav; en smule færre mennesker end i august."
+    },
+    {
+      "name": "Oktober",
+      "note": "Skuldersæson; færgerne skæres ned sidst på måneden."
+    },
+    {
+      "name": "November–marts",
+      "note": "Rolig periode; mange services reduceres; busser er primær transport."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hvornår er havet varmest?",
+      "a": [
+        "Sidst i juni til først i september er vandet typisk varmest til svømning."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Brikette Hostel em Positano - Acomodação acessível na Costa Amalfitana",
+    "description": "O único hostel em Positano oferecendo acomodações econômicas perto das impressionantes paisagens da Costa Amalfitana.",
+    "ogImageAlt": "Vista a partir do terraço do hostel"
+  },
+  "introSection": {
+    "title": "Um belo lar longe de casa",
+    "titleParts": {
+      "before": "Um belo",
+      "between": "lar longe de",
+      "home": "casa"
+    },
+    "paragraph1": "O Hostel Brikette é o <strong>único albergue de Positano</strong>, oferecendo acomodações <strong>econômicas</strong> que colocam os destaques da Costa Amalfitana bem na sua porta.",
+    "paragraph2": "Empoleirado nas falésias, temos <strong>incríveis vistas para o mar</strong>, comodidades práticas e informações locais disponíveis 24 horas por meio do nosso <strong>concierge digital</strong> — seu guia pessoal para horários de balsas, rotas de trilhas, restaurantes e muito mais.",
+    "paragraph3": "Quer você escolha um dormitório ou um quarto privado, cada um é projetado para oferecer <strong>conforto</strong> e <strong>conveniência</strong>."
+  },
+  "facilitiesModal": {
+    "title": "Instalações e Comodidades",
+    "closeButton": "Fechar",
+    "categories": [
+      {
+        "title": "Geral",
+        "items": [
+          "Quartos para não fumantes",
+          "Wi-Fi gratuito",
+          "Ar-condicionado",
+          "Aquecimento"
+        ]
+      },
+      {
+        "title": "Banheiro",
+        "items": [
+          "Papel higiênico",
+          "Toalhas de banho",
+          "Lençóis",
+          "Toalhas de praia (taxa extra)",
+          "Vaso sanitário",
+          "Chuveiro"
+        ]
+      },
+      {
+        "title": "Área externa",
+        "items": [
+          "Área para piquenique",
+          "Móveis externos",
+          "Terraço ao sol",
+          "Terraço"
+        ]
+      },
+      {
+        "title": "Atividades",
+        "items": [
+          "Trilhas a pé (fora do local)"
+        ]
+      },
+      {
+        "title": "Alimentos e Bebidas",
+        "items": [
+          "Bar"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "O Wi-Fi está disponível nas áreas públicas e é gratuito."
+        ]
+      },
+      {
+        "title": "Estacionamento",
+        "items": [
+          "Sem estacionamento disponível"
+        ]
+      },
+      {
+        "title": "Serviços",
+        "items": [
+          "Serviço de limpeza diário",
+          "Armários",
+          "Serviço de concierge",
+          "Depósito de bagagens"
+        ]
+      },
+      {
+        "title": "Segurança",
+        "items": [
+          "Extintores de incêndio",
+          "CCTV nas áreas comuns",
+          "Acesso com cartão-chave"
+        ]
+      },
+      {
+        "title": "Idiomas falados",
+        "items": [
+          "Inglês",
+          "Espanhol",
+          "Italiano"
+        ]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "Vista panorâmica da varanda do Hostel Brikette em Positano",
+    "brandName": "Hostel Brikette",
+    "cityName": "Positano",
+    "address": "Via G. Marconi, 358, 84017 Positano SA",
+    "locationButton": "Localização",
+    "contactButton": "Contate-nos",
+    "helpButton": "Assistência",
+    "reserveNow": "Reserve Agora"
+  },
+  "quickLinksSection": {
+    "location": "Localização",
+    "photosAndVideos": "Fotos e Vídeos",
+    "facilitiesAndAmenities": "Instalações e Comodidades",
+    "barMenu": "Menu do Bar",
+    "breakfastMenu": "Menu do Café da Manhã"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "Belas Áreas Comuns",
+    "slides": [
+      {
+        "title": "Santuário na Colina",
+        "text": "Acorde com vistas frescas das montanhas em nosso terraço banhado de luz.",
+        "alt": "Terraço com vista para a encosta de Positano"
+      },
+      {
+        "title": "Oásis ao Ar Livre",
+        "text": "Aproveite o sol e faça novas amizades.",
+        "alt": "Terraço com cobertura de bambu para sombra"
+      },
+      {
+        "title": "Incríveis Vistas para o Mar",
+        "text": "Saboreie a magia do horizonte enquanto o sol se derrete no mar.",
+        "alt": "Vista ampla do mar a partir do terraço do hostel"
+      }
+    ]
+  }
+}

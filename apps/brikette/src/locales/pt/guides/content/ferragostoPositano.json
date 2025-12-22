@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Ferragosto em Positano (Assunção de Maria)",
+    "description": "O que esperar no feriado de agosto: programação, transporte especial, segurança e dicas para aproveitar sem stress."
+  },
+  "linkLabel": "Ferragosto em Positano (Assunção de Maria)",
+  "intro": [
+    "Ferragosto, a 15 de agosto, traz praias lotadas, fogo de artifício e horários alterados — planeie para que a festa seja divertida e não caótica."
+  ],
+  "sections": [
+    {
+      "id": "expectations",
+      "title": "O que esperar no dia",
+      "body": [
+        "Lojas e minimercados fecham cedo; abasteça snacks e água na noite anterior.",
+        "Espere praias cheias às 09:00 e música amplificada na Spiaggia Grande até ao fogo de artifício da meia-noite."
+      ]
+    },
+    {
+      "id": "bookings",
+      "title": "Reservas",
+      "body": [
+        "Reserve restaurantes e passeios de barco com pelo menos uma semana de antecedência; muitos exigem pré-pagamento ou garantia com cartão.",
+        "Confirme serviços de porteiro 24 h antes se chegar ou partir dia 15 — as equipas operam horários reduzidos."
+      ]
+    },
+    {
+      "id": "beach-day",
+      "title": "Praia e banhos",
+      "body": [
+        "Leve guarda-sol para a zona pública; os lidos esgotam e as tarifas sobem ao máximo.",
+        "Nade cedo ou ao pôr do sol, quando os nadadores-salvadores têm visão mais clara; ao meio-dia as correntes são difíceis de avaliar entre tanta gente."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transporte de backup",
+      "body": [
+        "Autocarros SITA seguem horários de feriado com menos viagens; verifique o quadro e entre na fila cedo.",
+        "Os ferries esgotam; garanta ida e volta no dia anterior e tenha plano de autocarro se o mar piorar."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve tampões para os ouvidos se o quarto der para a praia — o grand finale e a música podem durar até depois da 01:00.",
+    "Traga numerário para caixas de donativo se assistir à missa da Assunção; cartões raramente são aceites."
+  ],
+  "faqs": [
+    {
+      "q": "Os supermercados fecham o dia todo?",
+      "a": [
+        "Muitos fecham totalmente ou abrem apenas de manhã. Compre essenciais até à noite de 14 de agosto."
+      ]
+    },
+    {
+      "q": "Posso ver o fogo de artifício do terraço do hostel?",
+      "a": [
+        "Sim — o terraço tem vista direta para a baía. Chegue cedo para garantir espaço e leve uma camada leve para a brisa."
+      ]
+    }
+  ]
+}

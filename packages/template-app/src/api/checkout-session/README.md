@@ -1,6 +1,6 @@
 # Checkout Session API
 
-Creates a Stripe Checkout Session and returns the Payment Intent client secret.
+Creates a Stripe Checkout Session and returns the Checkout Session client secret.
 
 Request: POST `/api/checkout-session`
 
@@ -29,11 +29,12 @@ Headers:
 Response 200 JSON:
 
 ```json
-{ "sessionId": "sess_...", "clientSecret": "pi_client_secret_..." }
+{ "sessionId": "cs_...", "clientSecret": "cs_test_..._secret_...", "orderId": "01H..." }
 ```
 
 Error responses:
 
 - 400 `{ "error": "Cart is empty" }`
 - 400 `{ "error": "Invalid returnDate" }`
+- 409 `{ "error": "Insufficient stock" }`
 - 502 `{ "error": "Checkout failed" }`

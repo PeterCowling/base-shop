@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Skjulte landsbyer på Amalfikysten",
+    "description": "Cetara, Minori/Maiori, Atrani, Vietri, Furore — roligere perler og hvad du finder dér."
+  },
+  "linkLabel": "Ukendte landsbyer på Amalfikysten",
+  "intro": [
+    "Fem roligere Amalfi-landsbyer, der er værd at tage en omvej for – plus hvordan du kommer dertil."
+  ],
+  "tocTitle": "På denne side",
+  "sections": [
+    {
+      "id": "cetara",
+      "title": "Cetara",
+      "body": [
+        "Anjovis-traditioner og en stille strand med arbejdende fiskerbåde.",
+        "Tag SITA-bus eller sæsonfærger fra Amalfi eller Salerno."
+      ]
+    },
+    {
+      "id": "minori",
+      "title": "Minori/Maiori",
+      "body": [
+        "Flade promenader langs stranden og populære konditorier til et roligt tempo.",
+        "Ankom med bus eller færge; kombiner besøget med citronstien mellem tvillingbyerne."
+      ]
+    },
+    {
+      "id": "atrani",
+      "title": "Atrani",
+      "body": [
+        "Charmerende lomme-piazza lige øst for Amalfi med smalle stræder og strandadgang.",
+        "Gå fra Amalfi på få minutter eller tag ét stop med den lokale bus."
+      ]
+    },
+    {
+      "id": "vietri",
+      "title": "Vietri sul Mare",
+      "body": [
+        "Keramik-hovedstad nær Salerno, hvor værkstederne ligger side om side.",
+        "Tag toget til Salerno og derfra en kort bus- eller færgetur."
+      ]
+    },
+    {
+      "id": "furore",
+      "title": "Furore",
+      "body": [
+        "Dramatisk fjord med begrænset strandplads – kom tidligt for rolige billeder.",
+        "Brug SITA-busser mod Amalfi; om sommeren lægger enkelte færger også til i nærheden."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg besøge flere landsbyer på én dag?",
+      "a": [
+        "Ja – kombiner Cetara, Vietri og Minori via færge eller bus. Start tidligt, og hold øje med tiderne hjem."
+      ]
+    },
+    {
+      "q": "Tager de små byer imod kort?",
+      "a": [
+        "Medbring kontanter til caféer og kiosker; mange har stadig 10-euro minimum eller er kun kontant."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Menu du Bar (2025)",
+    "description": "Découvrez nos boissons : bières, vins, cocktails et sans alcool."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Menu du Bar, 2025",
+    "hours": "Ouvert tous les jours (voir horaires au bar)"
+  },
+  "intro": {
+    "summary": "Aperçu rapide de notre sélection. Pour le détail complet, les spécialités et les prix à jour, ouvrez le menu complet.",
+    "viewFullMenuButton": "Voir le Menu Complet du Bar"
+  },
+  "sections": {
+    "spritzFrozen": {
+      "title": "Spritz & Cocktails glacés"
+    },
+    "houseWine": {
+      "title": "Vin de la maison"
+    },
+    "beer": {
+      "title": "Bière"
+    },
+    "vodka": {
+      "title": "Longs drinks à la vodka",
+      "note": "Prix incluant tonic, coca, coca zero ou sprite."
+    },
+    "rum": {
+      "title": "Longs drinks au rhum",
+      "note": "Choisissez votre rhum et dites‑nous si vous souhaitez du café. Café glacé ou chaud, espresso ou allongé."
+    },
+    "gin": {
+      "title": "Longs drinks au gin",
+      "note": "Avec tonic Schweppes, sur glace pilée, citron d’Amalfi."
+    },
+    "whisky": {
+      "title": "Whisky",
+      "note": "Choisissez dans notre sélection et indiquez glace, eau ou café. Café glacé/chaud, espresso/allongé."
+    },
+    "shots": {
+      "title": "Shots"
+    },
+    "gelato": {
+      "title": "Glace"
+    }
+  },
+  "items": {
+    "aperolSpritz": {
+      "name": "Aperol Spritz",
+      "note": "Spritz italien classique, sur glace pilée."
+    },
+    "limoncelloSpritz": {
+      "name": "Limoncello Spritz",
+      "note": "Spécialité de la Côte amalfitaine, sur glace pilée."
+    },
+    "hugoSpritz": {
+      "name": "Hugo Spritz",
+      "note": "Vin pétillant versé sur menthe, citron vert et fleur de sureau. Sur glace pilée."
+    },
+    "rossiniSpritz": {
+      "name": "Rossini Spritz",
+      "note": "Vin pétillant et jus de fraise. Sur glace pilée."
+    },
+    "lemonStrawberryDaiquiri": {
+      "name": "Daiquiri citron ou fraise"
+    },
+    "lemonStrawberryMargarita": {
+      "name": "Margarita citron ou fraise",
+      "note": "Jus de fraise ou citron avec tequila, Cointreau et glace. Finition classique."
+    },
+    "lemonDropMartini": {
+      "name": "Lemon Drop Martini",
+      "note": "Jus de citron frais, secoué avec Absolut Vodka, Cointreau et glace."
+    },
+    "redWhiteGlass": {
+      "name": "Vin rouge/blanc (verre)"
+    },
+    "redWhiteBottle": {
+      "name": "Vin rouge/blanc (bouteille)"
+    },
+    "proseccoGlass": {
+      "name": "Verre de Prosecco"
+    },
+    "nastro330": {
+      "name": "Nastro, 330ml"
+    },
+    "nastro660": {
+      "name": "Nastro, 660ml"
+    },
+    "peroni330": {
+      "name": "Peroni, 330ml"
+    },
+    "peroni660": {
+      "name": "Peroni, 660ml"
+    },
+    "skyy": {
+      "name": "Skyy"
+    },
+    "absolut": {
+      "name": "Absolut"
+    },
+    "smirnoff": {
+      "name": "Smirnoff"
+    },
+    "greyGoose": {
+      "name": "Grey Goose"
+    },
+    "pampero": {
+      "name": "Pampero"
+    },
+    "bacardiSuperior": {
+      "name": "Bacardi Superior"
+    },
+    "captainMorgan": {
+      "name": "Captain Morgan"
+    },
+    "angosturaReserva": {
+      "name": "Angostura Reserva"
+    },
+    "beefeater": {
+      "name": "Beefeater"
+    },
+    "bombaySapphire": {
+      "name": "Bombay Sapphire"
+    },
+    "tanqueray": {
+      "name": "Tanqueray"
+    },
+    "hendricks": {
+      "name": "Hendrick's"
+    },
+    "jwRed": {
+      "name": "Johnnie Walker Red Label (Blended Scotch)"
+    },
+    "jameson": {
+      "name": "Jameson (Irish)"
+    },
+    "jackDaniels": {
+      "name": "Jack Daniel's Old No.07 (Sour Mash)"
+    },
+    "wildTurkey": {
+      "name": "Wild Turkey (Bourbon)"
+    },
+    "chivas12": {
+      "name": "Chivas Regal 12 Year Old (Blended Scotch)"
+    },
+    "glenfiddich12": {
+      "name": "Glenfiddich 12 ans (single malt)"
+    },
+    "joseCuervoSilver": {
+      "name": "Tequila Jose Cuervo Silver",
+      "note": "Servi nature avec citron et sel, en Tequila Sunrise ou avec soda/sprite."
+    },
+    "limoncelloShot": {
+      "name": "Limoncello",
+      "note": "Classique du sud de l’Italie, servi nature."
+    },
+    "oneScoop": {
+      "name": "1 boule"
+    },
+    "twoScoops": {
+      "name": "2 boules"
+    },
+    "threeScoops": {
+      "name": "3 boules",
+      "note": "Saveurs : citron, chocolat, vanille, noisette."
+    }
+  },
+  "disclaimer": "Les articles et les prix peuvent changer. Veuillez confirmer au bar."
+}

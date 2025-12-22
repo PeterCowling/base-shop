@@ -1,0 +1,33 @@
+{
+  "sidebarLabel": "Navegação do centro de ajuda",
+  "openSidebar": "Abrir navegação de ajuda",
+  "closeSidebar": "Fechar navegação de ajuda",
+  "mobileSidebarLabel": "Navegação do centro de ajuda",
+  "mobileHint": "Deslize para baixo ou toque em fechar para ocultar este menu de ajuda",
+  "nav": {
+    "assistance": "Assistência digital",
+    "ama": "Pergunte-me qualquer coisa",
+    "bookingBasics": "Noções básicas de reserva",
+    "changingCancelling": "Alterações e cancelamentos",
+    "checkinCheckout": "Guia de check-in e check-out",
+    "depositsPayments": "Pagamentos e depósitos",
+    "defectsDamages": "Defeitos e danos",
+    "security": "Segurança",
+    "rules": "Regras",
+    "legal": "Informação jurídica",
+    "ageAccessibility": "Idade e acessibilidade",
+    "arrivingByFerry": "Chegar de ferry",
+    "naplesAirportBus": "Aeroporto de Nápoles de ônibus",
+    "travelHelp": "Ajuda de viagem"
+  },
+  "cta": {
+    "readMore": "Saiba mais",
+    "readMoreAccessible": "Explore os artigos de ajuda da assistência"
+  },
+  "alsoHelpful": "Também útil",
+  "alsoHelpfulEyebrow": "Seleções locais",
+  "alsoHelpfulDescription": "Planeie melhor com guias selecionados e atalhos rápidos para reserva.",
+  "alsoHelpfulExplore": "Explorar este guia",
+  "alsoHelpfulBook": "Reserve a sua estadia",
+  "roomsCta": "Ver quartos e disponibilidade"
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Packlista för Amalfikusten",
+    "description": "Säsongsanpassad packlista för Positano och Amalfikusten: skor, lager, solskydd och extratillbehör."
+  },
+  "linkLabel": "Vad du ska packa till Amalfikusten",
+  "intro": [
+    "Seasonal packing checklist for Positano: stairs and sun define smart choices."
+  ],
+  "sections": [
+    {
+      "id": "footwear",
+      "title": "Footwear",
+      "body": [
+        "Grippy shoes for stairs and hikes; sandals with tread for beaches.",
+        "Avoid slick soles — lanes can be steep and polished."
+      ]
+    },
+    {
+      "id": "layers",
+      "title": "Layers & sun",
+      "body": [
+        "Light layers for evenings; hat and SPF for midday walks.",
+        "A light rain jacket in shoulder months."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Bags & luggage",
+      "body": [
+        "Backpacks beat big suitcases for stairs; keep valuables close.",
+        "Bring a refillable bottle; markets sell large bottles for refills."
+      ]
+    }
+  ],
+  "tips": [
+    "Skip heavy hard-shell suitcases if your stay involves long stair climbs.",
+    "Carry small euro notes for beach umbrellas, buses, and quick snacks."
+  ],
+  "faqs": [
+    {
+      "q": "Can I buy everything locally?",
+      "a": [
+        "Yes, but peak-season prices jump—pack essentials to avoid markups."
+      ]
+    },
+    {
+      "q": "Do I need to bring a bathrobe?",
+      "a": [
+        "Most accommodations supply towels; pack a lightweight cover-up only if you prefer one for the beach."
+      ]
+    }
+  ]
+}

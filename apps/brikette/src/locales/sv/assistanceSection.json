@@ -1,0 +1,46 @@
+{
+  "slug": "biståndskontakt",
+  "meta": {
+    "title": "Hjälp (inkl. kontakt) – Hostel Brikette Positano",
+    "description": "Boka, utforska och håll kontakten online. Har du frågor? Vår digitala assistent ger anpassade rekommendationer och reseguider för att förbättra din vistelse i Positano."
+  },
+  "heading": "Digital hjälp",
+  "subheading": "Boka, utforska och håll kontakten online.",
+  "heroIntro": "Få omedelbara svar från vårt team och vår digitala assistent så att du kan planera din vistelse snabbare.",
+  "otherBookingOptions": "Andra bokningsalternativ & sociala medier",
+  "addressLabel": "Adress:",
+  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookingOptions": {
+    "googleBusiness": "Google-företag",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "Hur kan vi ",
+  "amaHeadingPart2": "hjälpa",
+  "amaParagraph1": "Har du frågor? Vi hjälper gärna. Fråga vad som helst — om något saknas, mejla oss så svarar vi snabbt.",
+  "amaParagraph2": "När din bokning är bekräftad får du omedelbar tillgång till vår digitala assistent. Den ger anpassade rekommendationer om sevärdheter, aktiviteter och dolda pärlor i Positano.",
+  "amaParagraph3": "Du får även våra kuraterade reseguider: tips om transport, steg‑för‑steg‑vägbeskrivningar och insikter som förenklar planeringen.",
+  "amaHelpCenterLink": "Bläddra bland alla hjälpartiklar",
+  "askPlaceholder": "Fråga om vägbeskrivning, faciliteter m.m.",
+  "clearLabel": "Rensa sökning",
+  "answersFoundLabel": "svar hittade",
+  "noMatchesFound": "Inga träffar",
+  "popularGuides": "Populära guider",
+  "guideReachBudget": "Billigt till Positano",
+  "guideFerrySchedules": "Färjetidtabell till Positano",
+  "guidePathOfTheGods": "Gudarnas stig från Brikette",
+  "guideCollections": {
+    "heading": "Planera din vistelse med steg-för-steg-guider",
+    "description": "Vägbeskrivningar, bokningspolicy och ankomstlogistik samlade från våra vanligaste frågor.",
+    "taggedHeading": "Planeringsguider taggade {{tag}}",
+    "taggedDescription": "Dessa guider fokuserar på {{tag}}. Rensa filtret för att bläddra bland allt vi har förberett.",
+    "empty": "Vi har inga planeringsguider för {{tag}} ännu. Prova en annan tagg eller återställ filtret.",
+    "clearFilter": "Bläddra bland alla planeringsguider",
+    "cardCta": "Läs planeringsguiden {{guideTitle}}"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

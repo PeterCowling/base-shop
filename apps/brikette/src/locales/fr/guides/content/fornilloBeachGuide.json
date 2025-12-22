@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Fornillo Beach guide",
+    "description": "Layout map, free sections, and beach club tips for Pupetto, Da Ferdinando, Grassi, and La Marinella — plus shortcuts to and from the hostel."
+  },
+  "linkLabel": "Fornillo Beach guide: clubs & free spots",
+  "intro": [
+    "La plage de Fornillo est une crique décontractée située à quelques pas de l'auberge. Les clubs de plage maintiennent des prix plus doux que Spiaggia Grande, les zones publiques sont généreuses et l'ambiance reste discrète même pendant les semaines de pointe.",
+    "Utilisez la passerelle côtière pour vous déplacer entre les sections de plage, prenez de la nourriture dans les bars et revenez à Spiaggia Grande si vous souhaitez que le bus interno monte."
+  ],
+  "toc": [
+    {
+      "href": "#layout",
+      "label": "Disposition et accès"
+    },
+    {
+      "href": "#main-free",
+      "label": "Section principale gratuite"
+    },
+    {
+      "href": "#pupetto",
+      "label": "Club de plage de Pupetto"
+    },
+    {
+      "href": "#ferdinando",
+      "label": "Ferdinando"
+    },
+    {
+      "href": "#grassi",
+      "label": "Fratelli Grassi"
+    },
+    {
+      "href": "#marinella",
+      "label": "La Marinella"
+    },
+    {
+      "href": "#secret-free",
+      "label": "Crique gratuite cachée"
+    }
+  ],
+  "sections": [
+    {
+      "id": "layout",
+      "title": "Opérateurs d’aménagement et de plage",
+      "body": [
+        "Deux chemins principaux alimentent Fornillo. Le raccourci depuis %LINK:hostelBriketteToFornilloBeach|Auberge de jeunesse Brikette% arrive sur le côté gauche de la plage (face à la mer) ; la promenade du front de mer depuis Spiaggia Grande atteint le côté droit.",
+        "Les clubs de plage fonctionnent en séquence depuis le point d'accès de l'auberge vers le chemin principal de la plage : Pupetto, Da Ferdinando, Fratelli Grassi et La Marinella. Deux zones publiques bordent les lidos : une large étendue libre à côté de Pupetto et une plus petite crique au-delà de La Marinella."
+      ]
+    },
+    {
+      "id": "main-free",
+      "title": "Section principale gratuite",
+      "body": [
+        "La plus grande section gratuite se trouve juste en face du raccourci depuis l'auberge. Arrivez avant 10h30 pour réclamer une place près de la ligne de flottaison ; les cailloux se réchauffent rapidement alors emportez un tapis ou une serviette épaisse.",
+        "Pupetto et Da Ferdinando vendent tous deux des boissons et des panini à emporter – parfaits si vous voulez manger sans louer de chaise longue. Gardez un œil sur la marée pendant les mois intermédiaires ; les tempêtes d'automne peuvent réduire le littoral pendant un jour ou deux."
+      ]
+    },
+    {
+      "id": "pupetto",
+      "title": "Club de plage de Pupetto",
+      "body": [
+        "Pupetto ancre le côté gauche de Fornillo avec des rangées de chaises longues orange, des douches et un restaurant à service complet. Réservez par WhatsApp ou par téléphone en été si vous souhaitez des places au premier rang ; Les arrivées sans rendez-vous se font normalement avant 9h30.",
+        "Les clients utilisant l’espace gratuit peuvent toujours commander des plats à emporter au bar, et les salles de bains de Pupetto sont ouvertes aux clients payants – pratique si vous décidez de surclasser en cours de journée."
+      ]
+    },
+    {
+      "id": "ferdinando",
+      "title": "Ferdinando",
+      "body": [
+        "Da Ferdinando conserve une ambiance de bar de plage décontractée avec des chaises longues bleues, la location de paddleboards et un menu de déjeuner populaire (pensez aux grillades du jour, aux salades et aux pâtes). Attendez-vous à des prix un peu plus élevés que Pupetto mais toujours raisonnables pour Positano.",
+        "Des bateaux-taxis à destination de Laurito et d'Arienzo passent par la jetée de Da Ferdinando, ce qui est utile si vous envisagez d'aller à la plage après une baignade matinale."
+      ]
+    },
+    {
+      "id": "grassi",
+      "title": "Bar de plage Fratelli Grassi",
+      "body": [
+        "Grassi est compact avec des rangées soignées de chaises longues rouges et un bar ombragé pour les cocktails et les granités. L'équipe propose des sacs étanches pour les objets de valeur si vous louez des kayaks pour explorer les grottes voisines.",
+        "Les places étant limitées, les réservations à l'avance sont utiles le week-end. Les visites sans rendez-vous sont généralement possibles en milieu de semaine après 11h00, une fois les réservations anticipées réglées."
+      ]
+    },
+    {
+      "id": "marinella",
+      "title": "La Marinella",
+      "body": [
+        "La Marinella se trouve le plus près de la passerelle Spiaggia Grande et profite du soleil de midi. Attendez-vous à un service attentionné, des plateaux de déjeuner et la possibilité de réserver des chaises longues sur le pont supérieur avec plus d'ombre.",
+        "En basse saison, La Marinella déménage parfois quelques chaises dans la crique voisine. Le personnel doit laisser de l'espace pour la zone publique, mais se préparer à une empreinte plus étroite lorsque la mer est agitée."
+      ]
+    },
+    {
+      "id": "secret-free",
+      "title": "Section gratuite « Secret »",
+      "body": [
+        "Au-delà de La Marinella, une petite crique offre un espace public plus calme avec un plateau de galets et une eau calme. Apportez de la crème solaire et des chaussures d'eau respectueuses des récifs - l'entrée est rocheuse et les oursins peuvent se regrouper près des bords.",
+        "La Marinella y installe occasionnellement des chaises longues de rechange les jours de tempête. La zone reste officiellement gratuite, alors n'hésitez pas à utiliser l'espace si vous arrivez en premier ; laissez simplement de la place pour le retour des chaises ou des kayaks."
+      ]
+    }
+  ],
+  "tipsTitle": "Conseils rapides",
+  "tips": [
+    "Suivez le %LINK:hostelBriketteToFornilloBeach|itinéraire raccourci% pour la descente la plus rapide (15 à 20 minutes).",
+    "Lorsque vous êtes prêt à partir, prenez le %LINK:fornilloBeachToBrikette|itinéraire de retour% le long de la promenade et prenez le bus interno jusqu'à Chiesa Nuova.",
+    "Comparez les prix et les criques alternatives dans notre %LINK:positanoBeaches|Aperçu des plages de Positano% avant de réserver des chaises longues."
+  ],
+  "warningsTitle": "Bon à savoir",
+  "warnings": [
+    "Fornillo est constitué de galets : emportez des chaussures d'eau ou des sandales pour le rivage.",
+    "L'ombre est limitée en fin de matinée, alors prévoyez de louer un parasol ou d'apporter un chapeau et de la crème solaire.",
+    "Les machines à cartes se déconnectent parfois ; emportez de l'argent liquide pour les onglets de bar et les soldes de chaises longues."
+  ],
+  "faqsTitle": "FAQ sur Fornillo",
+  "faqs": [
+    {
+      "q": "Dois-je réserver une chaise longue ?",
+      "a": [
+        "Aide aux réservations les week-ends d’été. Pupetto et La Marinella répondent par téléphone ou WhatsApp ; Da Ferdinando et Grassi surveillent également les DM d'Instagram. Les arrivées anticipées avant 9h30 peuvent généralement bénéficier de places sans rendez-vous."
+      ]
+    },
+    {
+      "q": "Puis-je apporter ma propre nourriture ?",
+      "a": [
+        "Les pique-niques sont les bienvenus dans les sections gratuites. Si vous louez des chaises longues, limitez-vous aux petites collations et aux bouteilles d'eau, sauf indication contraire du club. Chaque opérateur dispose d'un bar ou d'un restaurant pour des repas plus copieux."
+      ]
+    },
+    {
+      "q": "Où puis-je me doucher ou utiliser la salle de bain ?",
+      "a": [
+        "Les installations appartiennent à chaque club de plage. Renseignez-vous au bar avant de les utiliser si vous êtes dans la zone publique – beaucoup autorisent des visites rapides moyennant un petit supplément ou lorsque vous achetez de la nourriture ou des boissons."
+      ]
+    }
+  ]
+}

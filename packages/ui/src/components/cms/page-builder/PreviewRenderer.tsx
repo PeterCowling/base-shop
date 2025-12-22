@@ -1,11 +1,11 @@
 import type { ScaffoldSpec } from "@acme/types/page/ScaffoldSpec";
 
-interface Props {
+export interface PreviewRendererProps {
   spec: ScaffoldSpec;
   deviceId?: string;
 }
 
-const PreviewRenderer = ({ spec }: Props) => {
+const PreviewRenderer = ({ spec }: PreviewRendererProps) => {
   return (
     <div className="p-4" data-device={spec.layout}>
       {spec.hero && <h1>{spec.hero}</h1>}

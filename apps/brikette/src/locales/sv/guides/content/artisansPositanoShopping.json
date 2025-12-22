@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Konst och hantverk i Positano (shopping)",
+    "description": "Lokala hantverkare, vad de skapar och tips för att handla ansvarsfullt."
+  },
+  "linkLabel": "Konst och hantverk i Positano (shopping)",
+  "intro": [
+    "Utforska Positanos hantverksscen utan att betala överpris: sandaler, keramik, tryck och hur du skickar hem fynd."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Måttbeställda sandaler",
+      "body": [
+        "Se skomakare tillverka lädersandaler på runt 30 minuter; priserna börjar kring 80 € för specialbeställda par.",
+        "Ta med eller rita av din fot för att kunna beställa hem i efterhand — många hantverkare skickar världen över när de har dina mått."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Keramik & konst",
+      "body": [
+        "Besök familjedrivna keramikstudior för handmålade kakel och servis. Fråga efter blyfria glasyrer om du ska använda dem till mat.",
+        "Lokala konstnärer säljer tryck och akvareller längs Via Cristoforo Colombo — rörpoströr eller tuber skyddar mot skador under resan."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Betalning & frakt",
+      "body": [
+        "De flesta butiker tar kort men ger ofta rabatt vid kontantbetalning. Ha legitimation redo för taxfree-formulär på köp över 154,94 €.",
+        "Frakta ömtåliga föremål med försäkrat bud (DHL/UPS) och be om dubbel emballering; frånpriserna ligger runt 40 € beroende på vikt."
+      ]
+    }
+  ],
+  "tips": [
+    "Fotografera kvitton och hantverkarens uppgifter så du minns vilken studio som gjort varje objekt.",
+    "Packa bubbelplast om du vill bära keramik i bagaget — hostel har ofta extra emballage från leveranser."
+  ],
+  "faqs": [
+    {
+      "q": "Kan hantverkarna personalisera produkter?",
+      "a": [
+        "Ja. Många präglat initialer på sandaler eller anpassar keramiska färger med några dagars framförhållning."
+      ]
+    },
+    {
+      "q": "Hur får jag tillbaka moms?",
+      "a": [
+        "Be om ett taxfree-formulär vid köpet, stämpla det i flygplatsen eller hamnen och skicka in inom tre månader för återbetalning."
+      ]
+    }
+  ]
+}

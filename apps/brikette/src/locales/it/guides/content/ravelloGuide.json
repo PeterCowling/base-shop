@@ -1,0 +1,93 @@
+{
+  "seo": {
+    "title": "Guida di viaggio a Ravello",
+    "description": "Ville, giardini, eventi musicali e itinerari a piedi tra terrazze sospese sul mare."
+  },
+  "linkLabel": "Guida di viaggio a Ravello",
+  "intro": [
+    "Traduzione in arrivo."
+  ],
+  "sections": [
+    {
+      "id": "villas",
+      "title": "Villas & gardens",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "music",
+      "title": "Music & events",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Getting there",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "tips": [
+    "Traduzione in arrivo.",
+    "Combine Ravello with a stop in Minori for pastries from Sal De Riso on your way back to Positano."
+  ],
+  "faqs": [
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Do I need to pre-book villa tickets?",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#villas",
+        "label": "Villas & gardens"
+      },
+      {
+        "href": "#concerts",
+        "label": "Concerts"
+      },
+      {
+        "href": "#getting",
+        "label": "Getting there"
+      }
+    ],
+    "sections": [
+      {
+        "id": "villas",
+        "title": "Villas & gardens",
+        "body": [
+          "Villa Rufolo and Villa Cimbrone deliver iconic views. Arrive early to avoid queues."
+        ]
+      },
+      {
+        "id": "concerts",
+        "title": "Concerts",
+        "body": [
+          "Traduzione in arrivo."
+        ]
+      },
+      {
+        "id": "getting",
+        "title": "Getting there",
+        "body": [
+          "Traduzione in arrivo."
+        ]
+      }
+    ]
+  }
+}

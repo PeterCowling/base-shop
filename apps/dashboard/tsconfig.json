@@ -5,6 +5,18 @@
     "rootDir": "../..",
     "paths": {
       "@/*": ["./src/*"],
+      "@ui": [
+        "../../packages/ui/dist/index.d.ts", "../../packages/ui/src/index.ts"
+      ],
+      "@ui/*": [
+        "../../packages/ui/dist/*", "../../packages/ui/src/*"
+      ],
+      "@acme/ui": [
+        "../../packages/ui/dist/index.d.ts", "../../packages/ui/src/index.ts"
+      ],
+      "@acme/ui/*": [
+        "../../packages/ui/dist/*", "../../packages/ui/src/*"
+      ],
       "@acme/types": [
         "../../packages/types/src/index.ts", "../../packages/types/dist/index.d.ts"
       ],

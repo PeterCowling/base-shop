@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "title": "Aide au voyage | Brikette Hostel Positano",
+    "description": "Résumé en deux minutes pour savoir comment nous rejoindre et quelles excursions font nos hôtes, avec des liens vers nos guides détaillés."
+  },
+  "headings": {
+    "overview": "Aide au voyage en un coup d'œil",
+    "excursions": "Itinéraires rapides pour les excursions populaires"
+  },
+  "content": {
+    "overview": "Commencez par nos <a href=\"/fr/comment-venir\">guides Comment venir</a> pas à pas pour les trains, ferries, transferts privés et les solutions en cas de retard. Cette page ne souligne que l'essentiel : comptez environ 2 heures de Naples à Positano, achetez vos billets SITA avant de monter et prévenez-nous si vous arrivez en retard afin que nous puissions préparer votre check-in.",
+    "excursions": "Une fois installé, la <a href=\"/fr/experiences\">collection Expériences</a> fournit des itinéraires porte à porte pour les excursions préférées de nos hôtes : ferries pour Capri, accès au Sentier des Dieux, bus pour Amalfi et Ravello, trains pour Pompéi et le Vésuve, etc. Parcourez ces guides pour connaître les premiers départs, les astuces billets et quoi emporter."
+  },
+  "slug": "travel-help"
+}

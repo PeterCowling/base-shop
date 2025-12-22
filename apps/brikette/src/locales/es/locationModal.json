@@ -1,0 +1,8 @@
+{
+  "title": "Nuestra Ubicación",
+  "inputLabel": "Ingrese su ubicación actual:",
+  "inputPlaceholder": "p.ej. Nápoles, Italia o dirección completa",
+  "getDirections": "Obtener direcciones",
+  "justShowMap": "Mostrar solo mapa",
+  "close": "Cerrar modal"
+}

@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Lái xe trên Amalfi Coast: mẹo cho road trip",
+    "description": "Luật đường, vùng ZTL, thực tế chỗ đỗ, ngày giới hạn biển số và khi nào không nên lái — cùng lựa chọn an toàn hơn."
+  },
+  "linkLabel": "Lái xe trên Amalfi Coast: mẹo cho chuyến đi",
+  "intro": [
+    "Lái xe trên Amalfi Coast vừa ngoạn mục vừa căng thẳng — đường hẹp, quy định thay đổi theo mùa và chỗ đỗ xe luôn khan hiếm.",
+    "Các gợi ý dưới đây giúp bạn quyết định khi nào nên lái, nên gửi xe ở đâu và lúc nào nên chuyển sang phương án khác."
+  ],
+  "sections": [
+    {
+      "id": "rules",
+      "title": "Quy định và hạn chế",
+      "body": [
+        "Kiểm tra khu vực ZTL, lịch biển số chẵn lẻ và giới hạn chiều rộng xe trước khi khởi hành — cuối tuần mùa hè thường cấm xe lớn chạy trên các đoạn đẹp nhất.",
+        "Giữ tốc độ thấp, bấm còi khi ôm cua khuất như người bản địa và chú ý xe máy len qua hai bên."
+      ]
+    },
+    {
+      "id": "parking",
+      "title": "Thực tế bãi đỗ xe",
+      "body": [
+        "Đặt trước garage tư nhân ở Positano/Amalfi, xác nhận giờ mở cửa, giới hạn chiều cao và xem họ chấp nhận thẻ hay yêu cầu đặt cọc tiền mặt.",
+        "Mùa cao điểm phí 35–60 € mỗi ngày (khoảng 38–65 $); đỗ ngoài đường rất hiếm và bị kiểm tra gắt gao."
+      ]
+    },
+    {
+      "id": "when-to-park",
+      "title": "Khi nào nên gửi xe",
+      "body": [
+        "Ở ngắn ngày, hãy gửi xe tại Sorrento hoặc Salerno rồi đi tiếp bằng xe buýt hay phà để giảm áp lực và chi phí trong trung tâm làng.",
+        "Tránh lái xe khi có bão, lễ hội hay về khuya — đường có thể bị chặn và bạn dễ mệt mỏi; phương tiện công cộng hoặc xe đặt trước sẽ an toàn hơn."
+      ]
+    }
+  ],
+  "tips": [
+    "Mang cả thẻ thanh toán không chạm lẫn tiền lẻ; một số bãi yêu cầu đặt cọc cho điều khiển từ xa hoặc ra vào ban đêm.",
+    "Sau bữa tối thưởng rượu hay buổi hòa nhạc muộn, nên đặt taxi/xe đưa đón thay vì lái xe mệt mỏi trên đường vách đá."
+  ],
+  "faqs": [
+    {
+      "q": "Tôi có cần giấy phép đặc biệt không?",
+      "a": [
+        "Không, nhưng bạn phải tuân lịch biển số chẵn lẻ và khu ZTL — hãy kiểm tra thông báo của thị trấn hoặc Prefettura trước khi lái xe vào."
+      ]
+    },
+    {
+      "q": "Tôi có thể đỗ tạm bên đường không?",
+      "a": [
+        "Chỉ được dừng ở ô được kẻ rõ; chắn điểm dừng xe buýt hoặc đầu cua sẽ bị phạt hoặc cẩu ngay."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "Wybierz swój plan",
+    "options": {
+      "ferry": "Prom (sezonowy)",
+      "trainBus": "Pociąg + autobus (cały rok)",
+      "transfer": "Transfer prywatny"
+    },
+    "selectedLabel": "Wybrano:"
+  },
+  "eventInfo": {
+    "title": "Szczegóły wydarzenia",
+    "labels": {
+      "when": "Kiedy",
+      "where": "Gdzie"
+    }
+  }
+}

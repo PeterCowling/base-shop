@@ -51,13 +51,13 @@ describe("sendEmail", () => {
       createTransport: () => ({ sendMail }),
     }));
 
-    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    const logError = jest.fn();
+    jest.doMock("pino", () => () => ({ error: logError }));
     const { sendEmail } = await import("../../../packages/email/src/sendEmail");
     await expect(
       sendEmail("a@b.com", "Hello", "World")
     ).rejects.toThrow("failure");
-    expect(consoleSpy).toHaveBeenCalled();
-    consoleSpy.mockRestore();
+    expect(logError).toHaveBeenCalled();
   });
 
   it("logs when credentials are missing", async () => {

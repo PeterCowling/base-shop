@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Positano Food Guide: Signature-Dinner und Restaurants in der Nähe",
+    "description": "Kuratiertes Essen an der Amalfiküste: Sonnenuntergangsfahrten, Bauernhofmenüs und Lokale nur wenige Minuten vom Hostel Brikette entfernt."
+  },
+  "linkLabel": "Gastronomie-Guide Positano",
+  "intro": [
+    "Unser Team hat Lieblingsrestaurants für jedes Budget gesammelt, beginnend mit den nächstgelegenen Optionen zum Hostel Brikette.",
+    "Nutze diesen Guide für Sonnenuntergangs-Highlights, Farm-to-Table-Erlebnisse und schnelle Bissen, wenn du ohne langen Aufstieg gut essen möchtest."
+  ],
+  "toc": [
+    { "href": "#signature-experiences", "label": "Besondere Dinner-Erlebnisse" },
+    { "href": "#near-hostel", "label": "Restaurants in Hostelnähe" },
+    { "href": "#destination-dinners", "label": "Ausflugsziele zum Abendessen" }
+  ],
+  "sections": [
+    {
+      "id": "signature-experiences",
+      "title": "Besondere Dinner-Erlebnisse",
+      "body": [
+        "Die Sunset Cruise von La Gavitella kombiniert die Bootsfahrt ab Spiaggia Grande mit einem Meeresfrüchte-Degustationsmenü auf der Terrasse in Praiano. Das Paket kostet etwa 139 € pro Person und beinhaltet die Rückfahrt – komme früh zum Boarding und genieße die goldene Stunde.",
+        "La Tagliata liegt 3 km bergauf in Montepertuso. Fahre mit dem SITA-Bus Richtung Nocelle und steige direkt nach dem Dorf aus oder buche den Shuttle des Restaurants. Dich erwartet ein großzügiges Bauernhofmenü für 65 € mit Antipasti, handgemachter Pasta, Gegrilltem, Dessert und reichlich Hauswein."
+      ]
+    },
+    {
+      "id": "near-hostel",
+      "title": "Restaurants in Hostelnähe",
+      "body": [
+        "C'era Una Volta liegt fast gegenüber des Hostels an der Via Marconi – ideal für Pizzen zum Mitnehmen für 7–12 € oder ein entspanntes Essen vor Ort.",
+        "Il Grottino Azzurro ist 160 m entfernt auf derselben Straße, eben und in zwei Minuten erreichbar, und serviert klassische kampanische Gerichte für etwa 35 €.",
+        "Da Gabrisa (260 m entfernt, 52 m bergab) und Next2 (270 m, 75 m bergab) heben das Abendessen mit Terrassenblick und Menüs um 60 € auf ein höheres Niveau.",
+        "Da Costantino belohnt einen kurzen Anstieg von 300 m mit Fensteraussicht und großzügigen Portionen ab etwa 30 €, während Luna im Villa Magia in sieben Minuten (450 m bergab) ein besonderes Degustationsmenü für rund 100 € bietet."
+      ]
+    },
+    {
+      "id": "destination-dinners",
+      "title": "Abendessen, die den Weg über Chiesa Nuova hinaus wert sind",
+      "body": [
+        "Buca di Bacco liegt am Hauptstrand, 1 km entfernt (167 m bergab), mit aufmerksamen Service und Dinner am Meer für 50 € – plane den Rückweg bergauf oder buche einen Porter, falls du zu viel genießt.",
+        "Il Ritrovo in Montepertuso und La Taverna del Leone nahe Laurito erfordern beide eine SITA-Busfahrt (2,3 km bzw. 4 km vom Hostel), lohnen sich aber mit Menüs für 45–55 € und weitem Panorama.",
+        "Standardmenüs bei La Tagliata und La Gavitella kosten rund 50 €, wenn du auf Premium-Pakete verzichtest – weiterhin hervorragend für geteilte Gänge, Produkte aus eigenen Gärten und Ausblicke entlang der Küste."
+      ]
+    }
+  ],
+  "typicalCostsTitle": "Durchschnittliche Kosten pro Person",
+  "typicalCosts": [
+    "Sunset Cruise und Dinner bei La Gavitella: etwa 139 € inklusive Bootstransfer und Meeresfrüchte-Menü.",
+    "Bauernhofmenü bei La Tagliata: rund 65 € inklusive Antipasti, Pasta, Grill, Dessert und Hauswein.",
+    "Trattorien in der Nachbarschaft: Pizza zum Mitnehmen für 7–12 € bei C'era Una Volta; Gerichte für ca. 35 € bei Il Grottino Azzurro; Degustationsmenüs um 60 € bei Da Gabrisa oder Next2.",
+    "Auswärts essen: 30 € bei Da Costantino, 45 € bei La Taverna del Leone, 50 € bei Buca di Bacco oder den Standardmenüs von La Tagliata/La Gavitella sowie 100 €+ bei Luna im Villa Magia."
+  ],
+  "tips": [
+    "Reserviere Terrassentische mindestens einen Tag vorher und erwähne Hostel Brikette, damit die Shuttles wissen, wo sie dich abholen.",
+    "Nimm Bargeld oder kontaktlose Karten für SITA-Tickets nach Montepertuso, Nocelle, Laurito oder Praiano mit und plane in der Hochsaison 20 Minuten Puffer ein.",
+    "Für die Bootstransfers von La Gavitella packe eine leichte Schicht für die Rückfahrt ein und bestätige den letzten Shuttle, bevor du dich setzt."
+  ],
+  "warnings": [
+    "Rechne auf dem Rückweg von Dinnern am Meer mit steilen Treppen – trage festes Schuhwerk und lass dir Zeit beim Aufstieg.",
+    "Sunset-Pakete und Shuttleplätze sind schnell ausgebucht; reserviere über die Website oder den Concierge vor Mittag, besonders im Juli und August.",
+    "Bei rauer See fallen Abendboote nach Praiano und Laurito gelegentlich aus, deshalb den SITA-Fahrplan als Plan B bereithalten."
+  ],
+  "faqs": [
+    {
+      "q": "Muss ich La Gavitellas Sunset Cruise im Voraus buchen?",
+      "a": [
+        "Ja – reserviere über das Restaurant oder den Concierge des Hostel Brikette und bitte um das Sunset-Cruise-Paket (ca. 139 €).",
+        "Sei 15 Minuten vorher an der Spiaggia Grande, damit die Crew in Ruhe boarden kann, bevor es losgeht."
+      ]
+    },
+    {
+      "q": "Wie komme ich ohne Auto zur La Tagliata?",
+      "a": [
+        "Nimm den SITA-Bus Richtung Nocelle und steige direkt nach Montepertuso aus, dann folge dem ausgeschilderten Weg für fünf Minuten zu Fuß.",
+        "Alternativ bestätige den kostenlosen Shuttle bei der Reservierung und gib deine Abholzeit am Hostel an, damit die Runde geplant werden kann."
+      ]
+    },
+    {
+      "q": "Gibt es günstige Optionen in der Nähe des Hostels?",
+      "a": [
+        "C'era Una Volta liegt gegenüber und bietet Pizzen für etwa 7–12 € sowie schnellen Take-away.",
+        "Il Grottino Azzurro, Da Gabrisa und Next2 sind innerhalb von fünf Minuten zu Fuß erreichbar und bieten Menüs zwischen 35 und 60 € mit Meerblick."
+      ]
+    }
+  ]
+}

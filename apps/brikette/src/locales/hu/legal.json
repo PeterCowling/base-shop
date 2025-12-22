@@ -1,0 +1,21 @@
+{
+  "slug": "legal",
+  "meta": {
+    "title": "Jogi információk és irányelvek",
+    "description": "Ismerd meg jogi feltételeinket, felelősségi korlátainkat, az irányadó jogot, a webhely‑tartalom használatát és az egészség‑ és biztonsági irányelveket."
+  },
+  "headings": {
+    "modificationOfTerms": "A feltételek módosítása",
+    "scopeOfLiability": "Felelősségünk köre",
+    "governingLaw": "Irányadó jog és joghatóság",
+    "websiteInformation": "Webhely‑információk és tartalomhasználat",
+    "healthAndSafetyPolicy": "Egészség‑ és biztonságpolitika"
+  },
+  "content": {
+    "modificationOfTerms": "Jelen Általános Szerződési Feltételek alkotják a teljes megállapodást Ön és a Positano Hostel között, minden korábbi ígéretet vagy megállapodást felülírva. A feltételeket bármikor frissíthetjük vagy módosíthatjuk, és az új verzió azonnal érvénybe lép, amint online megjelenik.",
+    "scopeOfLiability": "Felelősségünk kizárólag a jelen feltételekben felsorolt szolgáltatásokra és tételekre terjed ki. Bármilyen kártérítés legfeljebb a foglalásért Ön által fizetett összeg mértékéig terjedhet. Nem vállalunk felelősséget közvetett vagy gazdasági veszteségekért, például elmaradt haszonért, jó hírnév csorbulásáért vagy elmaradt lehetőségekért – még akkor sem, ha azokat gondatlanság vagy előre nem látható esemény (vis maior) okozza. Értékei számára zárható szekrényeket biztosítunk, de a bennük tárolt tárgyakért nem vállalunk pénzügyi felelősséget, és a rutintakarítás során előzetes értesítés nélkül áthelyezhetjük a tárgyakat.",
+    "governingLaw": "A tartózkodását – és jelen feltételeket – kizárólag az olasz jog szabályozza. Minden jogvita rendezésére az olasz bíróságok kizárólagosan illetékesek.",
+    "websiteInformation": "Mindig törekszünk arra, hogy weboldalunk pontos legyen, de előfordulhatnak hibák, és részletek értesítés nélkül is változhatnak. A fotók a létesítmény általános stílusát mutatják, és nem feltétlenül tükrözik a pontos alaprajzot vagy felszereltséget. Minden tartalom (szöveg, képek, védjegyek) a Positano Hostel tulajdona, és írásbeli engedély nélkül nem használható fel. A külső hivatkozásokat a kényelem érdekében adjuk meg; azok tartalmáért nem vállalunk felelősséget. Kérjük, olvassa el adatvédelmi szabályzatunkat, hogy megtudja, miként kezeljük adatait.",
+    "healthAndSafetyPolicy": "Mindenki biztonsága érdekében kérjük, jelezze, ha a közelmúltban fertőző betegségnek, például influenzának vagy ahhoz hasonló vírusnak volt kitéve. Az előre kifizetett, nem visszatéríthető foglalások ilyen esetben is nem visszatéríthetők, ezért nyomatékosan javasoljuk utasbiztosítás kötését az egészségügyi okból felmerülő módosítások fedezésére."
+  }
+}

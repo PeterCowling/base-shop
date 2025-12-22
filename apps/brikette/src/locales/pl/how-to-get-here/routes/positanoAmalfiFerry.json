@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Positano do Amalfi promem | Hostel Brikette",
+    "description": "Podróż promem z Positano do Amalfi krok po kroku: bilety, wejście na pokład przy Spiaggia Grande, rozkłady i wskazówki na przyjazd."
+  },
+  "hero": {
+    "eyebrow": "Przewodnik podróżny Hostel Brikette",
+    "title": "Positano do Amalfi — prom",
+    "description": "Postępuj według tych kroków, aby przepłynąć z Positano do Amalfi. Znajdziesz tu wskazówki dotyczące biletów, miejsca wejścia na pokład w Positano, tego, czego spodziewać się po przypłynięciu, oraz linki do aktualnych rozkładów."
+  },
+  "tip": {
+    "label": "Wskazówka",
+    "copy": "Szukasz innych opcji transportu? Otwórz <link>przegląd Jak do nas dotrzeć</link>, aby sprawdzić autobusy, trasy łączone i transfery z lotniska."
+  },
+  "sections": {
+    "overview": {
+      "title": "Przegląd podróży",
+      "points": [
+        "Sezonowe promy łączą Positano i Amalfi, oferując malownicze widoki na wybrzeże.",
+        "Kursy zależą od pory roku i pogody; zawsze sprawdź rozkład w dniu rejsu.",
+        "W szczytowych miesiącach zaplanuj dodatkowy czas na kolejki przy molo."
+      ]
+    },
+    "tickets": {
+      "title": "Bilety i rozkłady",
+      "intro": "Sprawdź najnowsze godziny i ceny na <travelmar>Travelmar</travelmar> oraz <positano>Positano.com — rozkłady promów</positano>.",
+      "points": [
+        "W szczycie sezonu kup bilety z wyprzedzeniem online lub w kasach przewoźników przy molo.",
+        "Przyjdź 15–20 minut przed odpłynięciem, aby wymienić vouchery i ustawić się w kolejce do wejścia.",
+        "Miej bilet lub kod QR pod ręką do kontroli przez załogę."
+      ]
+    },
+    "positanoPier": {
+      "title": "Gdzie wsiąść w Positano",
+      "points": [
+        "Odpłynięcia odbywają się z głównego molo w Positano na Spiaggia Grande.",
+        "Kasy przewoźników znajdują się wzdłuż nabrzeża; tablice pokazują najbliższe rejsy każdej firmy.",
+        "Sprawdź na bilecie właściwe molo; obsługa pomoże, jeśli masz wątpliwości."
+      ]
+    },
+    "amalfiArrival": {
+      "title": "Przypłynięcie do Amalfi",
+      "points": [
+        "Statki cumują przy nabrzeżach w Amalfi, w pobliżu Piazza Flavio Gioia.",
+        "Historyczne centrum i promenada znajdują się tuż obok portu.",
+        "Jeśli jedziesz dalej (np. do Ravello lub Sorrento), kieruj się za znakami na przystanek SITA przy nabrzeżu."
+      ]
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

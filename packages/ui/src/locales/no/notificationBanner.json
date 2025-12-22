@@ -1,0 +1,19 @@
+{
+  "message": "Bestill direkte og spar opptil 25 % – i tillegg til gratis frokost og drikke!",
+  "cta": "Trykk for å lese mer",
+  "openOffersLabel": "Trykk for å lese mer",
+  "closeLabel": "Lukk varsel",
+  "modal": {
+    "closeLabel": "Lukk modal",
+    "title": "Bestill direkte og spar",
+    "description": "Takk for at du bestiller direkte hos oss! Som takk får du:",
+    "perks": {
+      "discount": "Opptil 25 % avslag på romprisen",
+      "breakfast": "Gratis frokost hver morgen",
+      "drinks": "Gratis velkomstdrinker",
+      "upgrades": "Prioriterte romoppgraderinger (ved tilgjengelighet)"
+    },
+    "callToAction": "Bruk disse eksklusive fordelene nå!",
+    "button": "Bestill nå"
+  }
+}

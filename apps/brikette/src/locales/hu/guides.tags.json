@@ -1,0 +1,261 @@
+{
+  "tags": {
+    "accommodation": {
+      "label": "Szállás",
+      "title": "Hol szállj meg"
+    },
+    "amalfi": {
+      "label": "Amalfi",
+      "title": "Amalfi útikalauzok"
+    },
+    "backpackers": {
+      "label": "Hátizsákosok",
+      "title": "Hátizsákos utazóknak"
+    },
+    "beaches": {
+      "label": "Strandok",
+      "title": "Positano strandjai",
+      "description": "Nyilvános szakaszok és lidók, megközelítés és biztonsági tudnivalók."
+    },
+    "boat": {
+      "label": "Hajó",
+      "title": "Hajókirándulások"
+    },
+    "budgeting": {
+      "label": "Költségvetés",
+      "title": "Positano olcsón",
+      "description": "Okos tippek, hogy kevesebbet költs közlekedésre, ételre és programokra."
+    },
+    "bus": {
+      "label": "Busz",
+      "title": "Busz- és SITA-útmutatók"
+    },
+    "camping": {
+      "label": "Kemping",
+      "title": "Kempingezés a parton"
+    },
+    "capri": {
+      "label": "Capri",
+      "title": "Capri olcsón"
+    },
+    "car": {
+      "label": "Autó",
+      "title": "Vezetés és parkolás"
+    },
+    "comparison": {
+      "label": "Összehasonlítás",
+      "title": "Érkezési módok és bázisok összevetése"
+    },
+    "connectivity": {
+      "label": "Kapcsolat",
+      "title": "Wi‑Fi, eSIM és lefedettség"
+    },
+    "cost": {
+      "label": "Költségek",
+      "title": "Költségek és összehasonlítások"
+    },
+    "couples": {
+      "label": "Párok",
+      "title": "Párok a hostelben"
+    },
+    "cuisine": {
+      "label": "Konyha",
+      "title": "Ételek és olcsó falatok"
+    },
+    "culture": {
+      "label": "Kultúra",
+      "title": "Kultúra és események"
+    },
+    "day-trip": {
+      "label": "Egynapos kirándulások",
+      "title": "Egynapos kirándulások"
+    },
+    "decision": {
+      "label": "Döntés",
+      "title": "Döntést segítő útmutatók"
+    },
+    "digital-nomads": {
+      "label": "Digitális nomádok",
+      "title": "Digitális nomádoknak"
+    },
+    "events": {
+      "label": "Események",
+      "title": "Események és fesztiválok"
+    },
+    "experiences": {
+      "label": "Élmények",
+      "title": "Élmények"
+    },
+    "families": {
+      "label": "Családok",
+      "title": "Családoknak"
+    },
+    "faq": {
+      "label": "GYIK",
+      "title": "Utazási GYIK"
+    },
+    "ferragosto": {
+      "label": "Ferragosto",
+      "title": "Ferragosto Positanóban"
+    },
+    "ferry": {
+      "label": "Komp",
+      "title": "Komp-útmutatók"
+    },
+    "free": {
+      "label": "Ingyenes",
+      "title": "Ingyenes és olcsó programok"
+    },
+    "general-tourists": {
+      "label": "Általános turisták",
+      "title": "Általános turistáknak"
+    },
+    "herculaneum": {
+      "label": "Herculaneum",
+      "title": "Egynapos kirándulások Herculaneumba"
+    },
+    "hiking": {
+      "label": "Túrázás",
+      "title": "Túrák és kilátópontok",
+      "description": "Az Isteni ösvény és biztonságosabb alternatívák, lépcsőkre figyelő tippekkel."
+    },
+    "hitchhiking": {
+      "label": "Stopolás",
+      "title": "Stopolás"
+    },
+    "hostel-life": {
+      "label": "Hostelélet",
+      "title": "Hostelélet"
+    },
+    "insurance": {
+      "label": "Biztosítás",
+      "title": "Utazási biztosítás"
+    },
+    "ischia": {
+      "label": "Ischia",
+      "title": "Ischia útikalauzok"
+    },
+    "itinerary": {
+      "label": "Útvonalak",
+      "title": "Amalfi-parti útvonalak"
+    },
+    "laundry": {
+      "label": "Mosás",
+      "title": "Mosás Positanóban"
+    },
+    "logistics": {
+      "label": "Logisztika",
+      "title": "Logisztika és érkezés"
+    },
+    "naples": {
+      "label": "Nápoly",
+      "title": "Nápoly ↔ Positano"
+    },
+    "nightlife": {
+      "label": "Éjszakai élet",
+      "title": "Éjszakai élet"
+    },
+    "off-season": {
+      "label": "Szezonon kívül",
+      "title": "Tippek szezonon kívülre"
+    },
+    "passes": {
+      "label": "Bérletek",
+      "title": "Közlekedési bérletek"
+    },
+    "photography": {
+      "label": "Fotózás",
+      "title": "Positano fotópontjai",
+      "description": "Legjobb szögek, fényviszonyok és etikett, hogy elkerüld a tömeget."
+    },
+    "planning": {
+      "label": "Tervezés",
+      "title": "Tervezési útmutatók"
+    },
+    "pompei": {
+      "label": "Pompeji",
+      "title": "Egynapos kirándulások Pompejibe"
+    },
+    "porters": {
+      "label": "Hordárok",
+      "title": "Hordár és csomag"
+    },
+    "positano": {
+      "label": "Positano",
+      "title": "Positano útikalauzok"
+    },
+    "praiano": {
+      "label": "Praiano",
+      "title": "Praiano útikalauzok"
+    },
+    "procida": {
+      "label": "Procida",
+      "title": "Procida útikalauzok"
+    },
+    "ravello": {
+      "label": "Ravello",
+      "title": "Ravello útikalauzok"
+    },
+    "safety": {
+      "label": "Biztonság",
+      "title": "Biztonság az Amalfi-parton"
+    },
+    "salerno": {
+      "label": "Salerno",
+      "title": "Salerno ↔ Positano"
+    },
+    "shopping": {
+      "label": "Vásárlás",
+      "title": "Vásárlás és kézművesek"
+    },
+    "shoulder": {
+      "label": "Elő- és utószezon",
+      "title": "Tippek az elő- és utószezonra"
+    },
+    "sorrento": {
+      "label": "Sorrento",
+      "title": "Sorrento útikalauzok"
+    },
+    "souvenirs": {
+      "label": "Szuvenírek",
+      "title": "Szuvenírek és vásárlás"
+    },
+    "stairs": {
+      "label": "Kevesebb lépcső",
+      "title": "Útvonalak kevesebb lépcsővel"
+    },
+    "summer": {
+      "label": "Nyár",
+      "title": "Nyár Positanóban"
+    },
+    "tips": {
+      "label": "Tippek",
+      "title": "Utazási tippek"
+    },
+    "train": {
+      "label": "Vonat",
+      "title": "Vasúti kapcsolatok"
+    },
+    "tramonti": {
+      "label": "Tramonti",
+      "title": "Tramonti borászatok"
+    },
+    "transport": {
+      "label": "Közlekedés",
+      "title": "A fordítás folyamatban van.",
+      "description": "Döntést segítő útmutatók buszhoz, komphoz, transzferekhez poggyászbarát tanácsokkal."
+    },
+    "walking-tour": {
+      "label": "Sétatúra",
+      "title": "Sétatúrák"
+    },
+    "winter": {
+      "label": "Tél",
+      "title": "Positano télen"
+    },
+    "work-life": {
+      "label": "Munka és utazás",
+      "title": "Távmunka és kávézók"
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Những gì diễn ra vào ngày lễ, lịch sự kiện và mẹo trải nghiệm như người địa phương."
+  },
+  "linkLabel": "Ferragosto in Positano (Assumption Day)",
+  "intro": [
+    "Ferragosto ngày 15/8 kéo theo bãi biển chật kín, pháo hoa và lịch trình thay đổi — hãy chuẩn bị trước để ngày lễ vui vẻ thay vì hỗn loạn."
+  ],
+  "sections": [
+    {
+      "id": "expectations",
+      "title": "Chuyện gì sẽ diễn ra trong ngày",
+      "body": [
+        "Cửa hàng và siêu thị nhỏ thường đóng sớm; hãy dự trữ đồ ăn vặt và nước uống từ tối 14/8.",
+        "Từ 09:00 bãi biển đã đông nghịt và Spiaggia Grande bật nhạc suốt đến màn pháo hoa nửa đêm."
+      ]
+    },
+    {
+      "id": "bookings",
+      "title": "Đặt chỗ & giữ chỗ",
+      "body": [
+        "Đặt nhà hàng và tour thuyền trước ít nhất một tuần; nhiều nơi yêu cầu trả trước hoặc giữ chỗ bằng thẻ.",
+        "Nếu đến hoặc rời vào ngày 15, hãy xác nhận dịch vụ khuân vác trước 24 giờ vì đội ngũ làm việc ít hơn."
+      ]
+    },
+    {
+      "id": "beach-day",
+      "title": "Mẹo tắm biển",
+      "body": [
+        "Mang ô của riêng bạn cho khu vực bãi biển công cộng; ghế dù ở lido hết chỗ nhanh và giá tăng cao.",
+        "Tắm buổi sáng sớm hoặc chiều muộn khi nhân viên cứu hộ quan sát rõ hơn; giữa trưa đông sẽ khó đánh giá dòng nước."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Phương án dự phòng di chuyển",
+      "body": [
+        "Xe buýt SITA chạy lịch ngày lễ với ít chuyến hơn; xem bảng giờ và xếp hàng sớm.",
+        "Phà có thể hết vé; mua vé khứ hồi từ hôm trước và chuẩn bị phương án xe buýt nếu biển động."
+      ]
+    }
+  ],
+  "tips": [
+    "Mang nút tai nếu phòng hướng ra biển — pháo hoa và nhạc sau show có thể kéo dài tới sau 01:00.",
+    "Mang tiền mặt mệnh giá nhỏ để quyên góp nếu bạn dự lễ Đức Mẹ Lên Trời; thẻ hầu như không được chấp nhận."
+  ],
+  "faqs": [
+    {
+      "q": "Siêu thị có đóng cả ngày không?",
+      "a": [
+        "Nhiều nơi đóng hoàn toàn hoặc chỉ mở buổi sáng rất ngắn. Hãy mua đồ thiết yếu trước tối 14/8."
+      ]
+    },
+    {
+      "q": "Tôi có thể ngắm pháo hoa từ sân thượng hostel không?",
+      "a": [
+        "Có — sân thượng nhìn thẳng ra vịnh. Hãy lên sớm để giữ chỗ và mang thêm áo mỏng chống gió biển."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Fornillo Beach guide",
+    "description": "Layout map, free sections, and beach club tips for Pupetto, Da Ferdinando, Grassi, and La Marinella — plus shortcuts to and from the hostel."
+  },
+  "linkLabel": "Fornillo Beach guide: clubs & free spots",
+  "intro": [
+    "Fornillo Beach er en avslappet vik, en kort spasertur fra vandrerhjemmet. Strandklubbene holder prisene mildere enn Spiaggia Grande, de offentlige sonene er sjenerøse, og atmosfæren holder seg lavmælt selv i høye uker.",
+    "Bruk kystgangen for å bevege deg mellom strandseksjoner, ta mat fra barene og sløyfe tilbake til Spiaggia Grande hvis du vil ha Interno -bussen oppover."
+  ],
+  "toc": [
+    {
+      "href": "#layout",
+      "label": "Oppsett og tilgang"
+    },
+    {
+      "href": "#main-free",
+      "label": "Hoved gratis seksjon"
+    },
+    {
+      "href": "#pupetto",
+      "label": "Pupetto Beach Club"
+    },
+    {
+      "href": "#ferdinando",
+      "label": "Da Ferdinando"
+    },
+    {
+      "href": "#grassi",
+      "label": "Fratelli Grassi"
+    },
+    {
+      "href": "#marinella",
+      "label": "La Marinella"
+    },
+    {
+      "href": "#secret-free",
+      "label": "Skjult gratis Cove"
+    }
+  ],
+  "sections": [
+    {
+      "id": "layout",
+      "title": "Oppsett og strandoperatører",
+      "body": [
+        "To hovedstier fôrer Fornillo. Snarveien fra __link0__ ankommer til venstre på stranden (når du vender mot havet); Vannkanten-promenaden fra Spiaggia Grande når høyre side.",
+        "Strandklubber kjører i rekkefølge fra vandrerhjemmet tilgangspunkt mot hovedstrandstien: Pupetto, Da Ferdinando, Fratelli Grassi og La Marinella. To offentlige soner bookend Lidos - en bred fri strekning ved siden av pupetten og en mindre vik utenfor La Marinella."
+      ]
+    },
+    {
+      "id": "main-free",
+      "title": "Hoved gratis seksjon",
+      "body": [
+        "Den største gratis seksjonen sitter rett foran snarveien fra vandrerhjemmet. Ankom før 10:30 for å kreve et sted i nærheten av vannlinjen; Pebblene varmer raskt så pakker en matte eller tykt håndkle.",
+        "Pupetto og Da Ferdinando selger begge takeaway -drinker og panini - perfekt hvis du vil ha mat uten å leie en lounger. Hold øye med tidevannet i skuldermånedene; Høststormer kan krympe strandlinjen i en dag eller to."
+      ]
+    },
+    {
+      "id": "pupetto",
+      "title": "Pupetto Beach Club",
+      "body": [
+        "Pupetto forankrer venstre side av Fornillo med rader med oransje solsenger, dusjer og en restaurant med full service. Reserve med whatsapp eller telefon om sommeren hvis du vil ha seter foran rad; Walk-ins er normalt bra før 09:30.",
+        "Gjester som bruker det gratis området kan fremdeles bestille takeaway fra baren, og Pupettos bad er åpne for betalende kunder - praktisk hvis du bestemmer deg for å oppgradere Partway gjennom dagen."
+      ]
+    },
+    {
+      "id": "ferdinando",
+      "title": "Da Ferdinando",
+      "body": [
+        "Da Ferdinando holder en kjølt strandfeltvibe med blå solsenger, paddleboard-utleie og en populær lunsjmeny (tenk grillet fangst av dagen, salater og pasta). Forvent priser litt høyere enn pupetto, men fortsatt rimelige for Positano.",
+        "Vanntaxier til Laurito og Arienzo Swing av Da Ferdinandos brygge-nyttig hvis du planlegger å strand-hop etter en morgen svømmetur."
+      ]
+    },
+    {
+      "id": "grassi",
+      "title": "Fratelli Grassi Beach Bar",
+      "body": [
+        "Grassi er kompakt med pene rader med røde solsenger og en skyggelagt bar for cocktailer og granita. Teamet tilbyr tørre poser for verdisaker hvis du leier kajakker for å utforske hulene i nærheten.",
+        "Fordi plassen er begrenset, hjelper forhåndsbestillinger i helgene. Walk-ins er vanligvis mulig midtuke etter 11:00 når de tidlige reservasjonene bosetter seg."
+      ]
+    },
+    {
+      "id": "marinella",
+      "title": "La Marinella",
+      "body": [
+        "La Marinella sitter nærmest Spiaggia Grande -gangveien og fanger middagssolen. Forvent oppmerksom service, lunsjfat og muligheten til å bestille øvre dekksenger med ekstra skygge.",
+        "I skuldersesongen flytter La Marinella noen ganger noen få stoler inn i den nabobyggen. Personalet bør forlate plass til det offentlige området, men vær forberedt på et strammere fotavtrykk når havet er grovt."
+      ]
+    },
+    {
+      "id": "secret-free",
+      "title": "‘Hemmelig’ gratis seksjon",
+      "body": [
+        "Utover La Marinella tilbyr en liten vik et roligere offentlig område med rullesteinhylle og rolig vann. Ta med rev-vennlige solkrem og vannsko-inngangen er steinete og kråkeboller kan klynge seg i nærheten av kantene.",
+        "La Marinella setter tidvis ekstra solsenger her på Stormy Days. Sonen forblir offisielt fri, så føl deg komfortabel med å bruke plassen hvis du ankommer først; Bare la rom for returstoler eller kajakker."
+      ]
+    }
+  ],
+  "tipsTitle": "Raske tips",
+  "tips": [
+    "Følg __link0__ ned for den raskeste nedstigningen (15–20 minutter).",
+    "Når du er klar til å dra, ta __link0__ langs promenaden og sykle på Interno -bussen opp til Chiesa Nuova.",
+    "Sammenlign priser og alternative viker i våre __link0__ før du bestiller solsenger."
+  ],
+  "warningsTitle": "Godt å vite",
+  "warnings": [
+    "Fornillo er rullestein - pakke vannsko eller sandaler til strandlinjen.",
+    "Skygge er begrenset etter sent på morgenen, så planlegg å leie en parasoll eller ta med en hatt og solkrem.",
+    "Kortmaskiner går av og til offline; Ta med litt penger for bar -faner og loungerbalanser."
+  ],
+  "faqsTitle": "Fornillo vanlige spørsmål",
+  "faqs": [
+    {
+      "q": "Må jeg reservere en lounger?",
+      "a": [
+        "Reservasjoner hjelper på sommerhelger. Pupetto og La Marinella svarer på telefon eller WhatsApp; Da Ferdinando og Grassi overvåker også Instagram DMS. Tidlige ankomster før 09:30 kan vanligvis ta opp walk-in-plasser."
+      ]
+    },
+    {
+      "q": "Kan jeg ta med min egen mat?",
+      "a": [
+        "Piknik er velkomne i gratis seksjoner. Hvis du leier solsenger, hold deg til små snacks og vannflasker med mindre klubben bekrefter noe annet. Hver operatør har en bar eller restaurant for større måltider."
+      ]
+    },
+    {
+      "q": "Hvor kan jeg dusje eller bruke badet?",
+      "a": [
+        "Fasiliteter tilhører hver strandklubb. Spør i baren før du bruker dem hvis du er i den offentlige sonen - mange tillater raske besøk mot en liten avgift eller når du kjøper mat eller drikke."
+      ]
+    }
+  ]
+}

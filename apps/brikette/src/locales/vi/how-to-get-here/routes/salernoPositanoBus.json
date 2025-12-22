@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Hướng dẫn xe buýt Salerno đến Positano – Hostel, điểm dừng và mẹo lịch chạy",
+    "description": "Chỉ dẫn từng bước đi xe buýt SITA Sud từ Salerno tới Positano qua Amalfi. Biết nơi mua vé, cách đọc bảng giờ và trạm phù hợp nhất để xuống gần Hostel Brikette."
+  },
+  "hero": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "heading": "Salerno đến Positano – Xe buýt (qua Amalfi)",
+    "body": "Hướng dẫn này mô tả hành trình xe buýt SITA từ Salerno đến Positano với một lần đổi xe tại Amalfi. Bao gồm mẹo vé, cách đọc bảng giờ và vị trí xuống xe ở Positano để đi bộ ngắn nhất tới hostel."
+  },
+  "tip": {
+    "title": "Mẹo",
+    "guideLinkLabel": "Tổng quan Cách đến đây",
+    "body": "Cần xem mọi lựa chọn di chuyển? Mở <GuideLink>Tổng quan Cách đến đây</GuideLink> để tham khảo phà, taxi và hành trình kết hợp."
+  },
+  "journey": {
+    "title": "Tổng quan hành trình",
+    "description": "Từ Salerno, đi xe buýt SITA đến Amalfi rồi chuyển sang xe SITA hướng Positano. Tại Positano, xuống ở <Strong>Chiesa Nuova</Strong> để đi bộ ngắn nhất tới hostel."
+  },
+  "tickets": {
+    "title": "Xe buýt SITA và vé",
+    "description": "SITA Sud vận hành tuyến đường này. Vé bán tại quầy báo và tabacchi. Khi lên xe, tài xế có thể đóng dấu hoặc xé một góc để xác nhận — hãy giữ vé tới khi xuống."
+  },
+  "timetable": {
+    "title": "Lịch xe buýt",
+    "description": "Bạn sẽ đi <Strong>Salerno → Amalfi</Strong> rồi <Strong>Amalfi → Positano</Strong>.",
+    "link": "Xem lịch SITA mới nhất trên <ScheduleLink>{{label}}</ScheduleLink>.",
+    "scheduleLinkLabel": "Positano.com",
+    "rowsTitle": "Đọc các hàng",
+    "columnsTitle": "Đọc các cột",
+    "combineTitle": "Kết hợp hàng và cột",
+    "rows": [
+      "Các hàng ở cột đầu liệt kê các điểm dừng trên tuyến."
+    ],
+    "columns": [
+      "Mỗi cột tương ứng với một chuyến đã lên lịch (được gắn chữ cái).",
+      "Thứ Hai–Bảy: tập trung vào cột 'F' và 'G'.",
+      "Chủ nhật/ngày lễ: tập trung vào cột 'G' và 'H'."
+    ],
+    "combine": [
+      "Chọn hàng điểm đi và điểm đến, rồi đọc ngang sang cột đã chọn để xem giờ.",
+      "Ví dụ: khởi hành từ Salerno → hàng 'Salerno'; đến Positano (Chiesa Nuova) → hàng 'Positano (Chiesa Nuova)'."
+    ]
+  },
+  "positanoStop": {
+    "title": "Trạm Positano (Chiesa Nuova)",
+    "facts": [
+      "Trạm gần nhất: Positano (Chiesa Nuova) trên Via G. Marconi.",
+      "Cách cửa hostel khoảng 140 mét.",
+      "Nằm trước quán 'Bar Internazionale'."
+    ]
+  },
+  "walk": {
+    "title": "Đi bộ tới Hostel Brikette",
+    "steps": [
+      "Đi bộ hơn 100 mét một chút.",
+      "Rẽ phải và đi theo các bậc thang lên cửa chính của hostel.",
+      "Khi đến gần hostel, tìm bảng hiệu của chúng tôi cạnh sân thượng tầng hai.",
+      "Đi qua bảng hiệu và lên cầu thang bên phải đường để vào cửa."
+    ]
+  }
+}

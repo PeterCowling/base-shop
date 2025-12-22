@@ -27,7 +27,12 @@ describe("orders", () => {
       .spyOn(prisma.shop, "findUnique")
       .mockResolvedValue({ data: { subscriptionsEnabled: true } });
 
-    const order = await addOrder(shop, sessionId, 5, undefined, undefined, customerId);
+    const order = await addOrder({
+      shop,
+      sessionId,
+      deposit: 5,
+      customerId,
+    });
 
     expect(order).toMatchObject({ shop, sessionId, deposit: 5 });
     expect(trackOrder).toHaveBeenCalledWith(shop, order.id, 5);
@@ -45,17 +50,15 @@ describe("orders", () => {
     const riskScore = 4;
     const flaggedForReview = true;
 
-    const order = await addOrder(
+    const order = await addOrder({
       shop,
       sessionId,
-      5,
-      undefined,
+      deposit: 5,
       returnDueDate,
-      undefined,
       riskLevel,
       riskScore,
       flaggedForReview,
-    );
+    });
 
     expect(order).toMatchObject({
       shop,
@@ -138,4 +141,3 @@ describe("orders", () => {
     expect((orders[0] as any).foo).toBeUndefined();
   });
 });
-

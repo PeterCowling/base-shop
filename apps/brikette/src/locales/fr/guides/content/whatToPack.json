@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Que mettre dans sa valise pour la côte amalfitaine",
+    "description": "Checklist de bagages selon la saison pour Positano et la côte : chaussures, couches, protection solaire et accessoires utiles."
+  },
+  "linkLabel": "Que mettre dans sa valise pour la côte amalfitaine",
+  "intro": [
+    "Checklist saisonnière pour Positano : escaliers et soleil dictent les bons choix."
+  ],
+  "sections": [
+    {
+      "id": "footwear",
+      "title": "Chaussures",
+      "body": [
+        "Des semelles accrocheuses pour escaliers et randonnées ; des sandales à crampons pour la plage.",
+        "Évitez les semelles lisses — les ruelles sont pentues et parfois polies."
+      ]
+    },
+    {
+      "id": "layers",
+      "title": "Couches & soleil",
+      "body": [
+        "Couche légère pour les soirées ; chapeau et SPF pour les marches de midi.",
+        "Prévoir une veste imperméable légère en intersaison."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Sacs & bagages",
+      "body": [
+        "Les backpacks surpassent les grosses valises pour les escaliers ; gardez les objets de valeur près de vous.",
+        "Prenez une gourde réutilisable ; les commerces vendent de grands formats pour les recharges."
+      ]
+    }
+  ],
+  "tips": [
+    "Évitez les valises rigides lourdes si votre séjour implique de longues montées d’escalier.",
+    "Gardez de petits billets pour les parasols, bus et snacks rapides."
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je tout acheter sur place ?",
+      "a": [
+        "Oui, mais les prix grimpent en haute saison — emportez l’essentiel pour éviter les surcoûts."
+      ]
+    },
+    {
+      "q": "Dois-je apporter un peignoir ?",
+      "a": [
+        "La plupart des hébergements fournissent des serviettes ; emportez un paréo ou une couverture légère seulement si vous le souhaitez pour la plage."
+      ]
+    }
+  ]
+}

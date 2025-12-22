@@ -1,0 +1,56 @@
+{
+  "detail": {
+    "common": {
+      "amenitiesHeading": "Vì sao khách chọn phòng này",
+      "amenitiesIntro": "Những tiện nghi chu đáo đã sẵn sàng chờ bạn khi nhận phòng."
+    },
+    "double_room": {
+      "amenities": [
+        {
+          "title": "Tiện nghi phòng tắm riêng",
+          "body": "Bắt đầu và kết thúc mỗi ngày với vòi sen nước nóng, khăn mềm và không gian hoàn toàn thuộc về bạn."
+        },
+        {
+          "title": "Buổi sáng trên sân thượng nhìn biển",
+          "body": "Mở cửa ra sân thượng riêng để thưởng thức espresso hoặc ngắm hoàng hôn bao quát vịnh Positano."
+        },
+        {
+          "title": "Đêm mát mẻ và yên tĩnh",
+          "body": "Điều hòa tự điều chỉnh cùng rèm che tối giúp căn phòng dễ chịu ngay cả giữa mùa hè tháng Tám."
+        }
+      ]
+    },
+    "room_11": {
+      "amenities": [
+        {
+          "title": "Sân thượng nhìn biển dành riêng cho nữ",
+          "body": "Ghế sofa và bàn dài ngoài trời để cả nhóm thư giãn với phong cảnh Positano ngay trước mắt."
+        },
+        {
+          "title": "Bản dịch đang được chuẩn bị.",
+          "body": "Vòi sen riêng, gương lớn và khăn mới mỗi ngày giúp bạn chuẩn bị nhanh cho các chuyến đi biển."
+        },
+        {
+          "title": "An toàn và thoải mái",
+          "body": "Thẻ từ vào phòng, tủ khóa cá nhân và điều hòa giữ hành lý và giấc ngủ của bạn luôn an tâm."
+        }
+      ]
+    },
+    "room_12": {
+      "amenities": [
+        {
+          "title": "Sân thượng chung cực rộng",
+          "body": "Ghế dài và khu ăn uống biến sân thượng thành phòng khách ngoài trời với góc nhìn Amalfi Coast."
+        },
+        {
+          "title": "Phòng tắm riêng đầy đủ tiện nghi",
+          "body": "Máy sấy tóc, gương và nhiều móc treo để bạn tắm rửa và thay đồ thoải mái sau khi tắm biển."
+        },
+        {
+          "title": "Ổ cắm và khóa thẻ cho từng giường",
+          "body": "Mỗi giường có đèn đọc sách, ổ cắm riêng và tủ khóa sử dụng thẻ từ để bạn sạc thiết bị an toàn."
+        }
+      ]
+    }
+  }
+}

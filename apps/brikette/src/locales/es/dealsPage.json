@@ -1,0 +1,49 @@
+{
+  "slug": "ofertas",
+  "meta": {
+    "title": "Oferta de verano 2025 – Ahorra un 15 %",
+    "description": "Oferta de verano por tiempo limitado con un 15 % de descuento adicional en reservas directas.",
+    "ogImageAlt": "Banner de descuento de verano"
+  },
+  "title": "Ahorra un {{percent}} % en tu estancia de {{season}}",
+  "promo": "Reserva directamente este verano y disfruta de un descuento adicional del {{percent}} %.",
+  "banner": "¡Solo quedan {{beds}} camas a este precio! La oferta termina en {{time}}.",
+  "timeRemaining": {
+    "lessThanHour": "0 h",
+    "hours_one": "{{count}} h",
+    "hours_other": "{{count}} h",
+    "days_one": "{{count}} día",
+    "days_other": "{{count}} días"
+  },
+  "buttonReserve": "Reservar ahora",
+  "ogImageAlt": "Banner de descuento de verano",
+  "perksHeading": "Ventajas de reservar directamente",
+  "perksIntro": "Estas ventajas son exclusivas para quienes reservan directamente en nuestro sitio web.",
+  "perksGuarantee": "Cada reserva realizada directamente en nuestro sitio web activa automáticamente estas ventajas exclusivas.",
+  "perksIntroLink": "Ver todas las ofertas vigentes",
+  "perksList": [
+    "Hasta un 25 % de descuento sobre el precio habitual al aplicar el cupón",
+    "Desayuno gratuito",
+    "Bebida de cortesía por la tarde"
+  ],
+  "expired": {
+    "message": "Esta oferta por tiempo limitado finalizó el {{endedOn}}."
+  },
+  "restrictions": {
+    "heading": "Información importante",
+    "stayWindow": "Válido para estancias del {{from}} al {{to}}.",
+    "minAdvance": "Reserva con al menos {{days}} días de antelación.",
+    "minAdvancePrefix": "Reserva con al menos",
+    "minAdvanceSuffix": "de antelación.",
+    "los": "Mínimo {{min}} noches, máximo {{max}} noches.",
+    "nonRefundable": "Válido solo para tarifas no reembolsables en reservas directas, es decir, realizadas en la web del albergue.",
+    "nonRefundablePrefix": "Válido solo para",
+    "nonRefundableSuffix": "tarifas en reservas directas, es decir, realizadas en la web del albergue.",
+    "stackable": "{{percent}} % se combina con nuestro descuento estándar del 10 % por reserva directa.",
+    "other": "Se aplican los términos y condiciones generales."
+  },
+  "seasonLabel": "verano de 2025",
+  "robots": {
+    "expiredNoindex": "noindex,follow"
+  }
+}

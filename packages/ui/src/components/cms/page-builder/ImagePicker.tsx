@@ -19,12 +19,12 @@ import { Grid as DSGrid } from "../../atoms/primitives/Grid";
 import useMediaLibrary from "./useMediaLibrary";
 import { useTranslations } from "@acme/i18n";
 
-interface Props {
+export interface ImagePickerProps {
   onSelect: (url: string) => void;
   children: React.ReactNode;
 }
 
-function ImagePicker({ onSelect, children }: Props) {
+function ImagePicker({ onSelect, children }: ImagePickerProps) {
   const t = useTranslations();
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState("");

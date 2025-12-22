@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "title": "Positano til Ravello med buss | Hostel Brikette",
+    "description": "Steg-for-steg fra Positano til Ravello via Amalfi med SITA-busser, med billettips, rutetabellhjelp, detaljer om Chiesa Nuova-stoppet og råd for omstigning."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette reiseguide",
+    "title": "Positano til Ravello – via Amalfi med buss",
+    "description": "Reis fra Positano til Ravello med et enkelt bytte i Amalfi. Denne guiden forklarer hvor du kjøper SITA-billetter, hvordan du leser rutetabellen, hva du kan forvente under byttet i Amalfi – og hvordan du kommer deg til bussholdeplassen i Positano fra Hostel Brikette."
+  },
+  "cta": {
+    "eyebrow": "Tips",
+    "beforeLink": "Trenger du alle transportalternativene? Åpne",
+    "linkLabel": "oversikten «Slik kommer du hit»",
+    "afterLink": "for ferger, taxier og kombinasjonsruter."
+  },
+  "journey": {
+    "title": "Reiseoversikt",
+    "body": "Regn med omtrent 1,5–2,5 timer avhengig av forbindelser. Ta først SITA-bussen fra Positano (Chiesa Nuova) til Amalfi, og bytt der til en SITA-buss videre til Ravello."
+  },
+  "sita": {
+    "title": "SITA-busser og billetter",
+    "items": [
+      "Bussene langs Amalfikysten drives av SITA (SITA Sud Srl).",
+      "Kjøp billetter i aviskiosker eller tobakksbutikker (tabacchi) før du går om bord.",
+      "Ha billetten klar; sjåførene validerer/stempler eller river billetten når du går om bord.",
+      "Forvent mye folk i høysesongen – kom litt tidlig for å stille deg i kø."
+    ]
+  },
+  "timetable": {
+    "title": "Rutetabeller",
+    "beforeLink": "Du tar først buss til Amalfi og bytter der til Ravello. Sjekk de nyeste tidene på",
+    "linkLabel": "Positano.com (oversikt over SITA-rutetabellen)",
+    "afterLink": ".",
+    "linkHref": "https://www.positano.com/en/bus-schedule",
+    "readingHeading": "Slik leser du rutetabellen",
+    "tips": [
+      "Radene i første kolonne viser hver holdeplass langs ruten.",
+      "Kolonnene tilsvarer planlagte avganger merket med bokstaver.",
+      "Reiser du mandag til lørdag? Bruk kolonnene «F» og «G».",
+      "Reiser du på søndag eller helligdag? Bruk kolonnene «G» og «H»."
+    ]
+  },
+  "positanoStop": {
+    "title": "Bussholdeplassen Positano (Chiesa Nuova)",
+    "items": [
+      "Den nærmeste SITA-holdeplassen er Positano (Chiesa Nuova) i Via G. Marconi.",
+      "Den ligger omtrent 140 meter fra hostellets inngang.",
+      "Du venter utenfor kafeen/baren «Bar Internazionale»."
+    ],
+    "caption": "Kom noen minutter tidlig for å sikre deg plass – bussene fylles raskt om sommeren.",
+    "alt": "SITA-holdeplassen Chiesa Nuova i Positano utenfor Bar Internazionale"
+  },
+  "walk": {
+    "title": "Gå fra hostellet til stoppet",
+    "items": [
+      "Gå ut av hostellet, ned trappene til hovedveien og sving til venstre.",
+      "Fortsett langs Via G. Marconi i omtrent 100 meter (330 fot).",
+      "Bar Internazionale ligger på venstre side; SITA-holdeplassen er rett utenfor."
+    ]
+  },
+  "buyTickets": {
+    "title": "Kjøp bussbilletter",
+    "items": [
+      "Kjøp billetter inne hos Bar Internazionale eller i en tabacchi i nærheten.",
+      "Du trenger billetter for Positano → Amalfi og Amalfi → Ravello.",
+      "Du kan få én eller to billetter avhengig av hvilket produkt som er tilgjengelig."
+    ]
+  },
+  "toAmalfi": {
+    "title": "Ta bussen til Amalfi",
+    "items": [
+      "Kryss veien fra Bar Internazionale til holdeplassen mot Amalfi.",
+      "Still deg i kø og gå om bord på bussen merket Amalfi; valider billetten.",
+      "Gå av på Amalfis bussterminal for forbindelsen videre til Ravello."
+    ]
+  },
+  "change": {
+    "title": "Bytt i Amalfi",
+    "items": [
+      "Du kan ta en kort tur i Amalfi mens du venter på neste buss.",
+      "Gå tilbake til busstasjonen for å gå om bord i bussen mot Ravello (rutene 5110/5120).",
+      "Valider den andre billetten når du går om bord."
+    ]
+  },
+  "arrive": {
+    "title": "Ved ankomst i Ravello",
+    "items": [
+      "Ravello ligger over Amalfi; mange severdigheter ligger rundt Piazza Duomo.",
+      "Følg lokal skilting til overnattingen din eller til hovedtorget.",
+      "Ved sene ankomster kan du vurdere taxi fra Amalfi hvis forbindelsene er få."
+    ]
+  }
+}

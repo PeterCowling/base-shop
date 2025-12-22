@@ -1,0 +1,39 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Apartment",
+  "@id": "https://hostel-positano.com/apartment",
+  "name": "Self-Catering Apartment",
+  "description": "Private apartment with full kitchen and sea-view terrace.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Via Guglielmo Marconi 358",
+    "addressLocality": "Positano SA",
+    "postalCode": "84017",
+    "addressCountry": "IT"
+  },
+  "amenityFeature": [
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Wi-Fi",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Air Conditioning",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Kitchen",
+      "value": true
+    },
+    {
+      "@type": "LocationFeatureSpecification",
+      "name": "Terrace",
+      "value": true
+    }
+  ],
+  "image": [
+    "https://hostel-positano.com/images/apartment/hero.webp"
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Kostenübersicht Positano",
+    "description": "Tägliche Kosten für Backpacker vs. Komfortreisende: Transport, Essen, Aktivitäten und Sparpotenzial."
+  },
+  "linkLabel": "Kostenübersicht Positano",
+  "intro": [
+    "Ermittle, wie viel Positano pro Tag kostet, und wo du Ausgaben kürzen kannst, ohne auf Highlights zu verzichten."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transportkosten",
+      "body": [
+        "Der Flughafenshuttle nach Sorrent kostet im Schnitt 10–12 €; addiere 2–3 € für den SITA-Bus nach Positano. Fähren zwischen den Orten liegen je nach Strecke bei 8–20 €.",
+        "Plane rund 5 € pro Tag für lokale Busfahrten ein; Taxis starten bei etwa 20 € für kurze Fahrten nachts den Berg hinauf."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Wofür dein Unterkunftsbudget draufgeht",
+      "body": [
+        "Schlafsäle im Hostel Brikette liegen je nach Saison zwischen 30 und 55 €; Privatzimmer starten bei etwa 110 €.",
+        "Apartments und Boutique-Hotels im Ort überschreiten schnell 200 € pro Nacht. Günstigere Selbstversorgerbasen findest du in Praiano oder Sorrent."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Essen & Trinken",
+      "body": [
+        "Frühstücksgebäck plus Kaffee kosten 4–6 €; ein unkompliziertes Panini-Mittagessen landet bei rund 8 €.",
+        "Abendessen in Trattorien mittleren Niveaus liegen bei 20–30 € pro Person ohne Wein; teilt Vorspeisen, um mehr zu probieren, ohne die Rechnung zu verdoppeln."
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Aktivitäten & Extras",
+      "body": [
+        "Bootstouren kosten von 40 € für kleine Sunset-Cruises bis 120 €+ für private Charter. Budget-Alternative: Mit der Fähre für 9 € nach Amalfi fahren und dort erkunden.",
+        "Veranschlage 5–10 € für Gelato, Granita oder Straßenmusik – so fühlt sich der Tagesetat großzügig, aber kontrolliert an."
+      ]
+    }
+  ],
+  "tips": [
+    "Reise im April, Mai, Ende September oder Oktober – Nebensaisonpreise, während Fähren noch häufig fahren.",
+    "Heb Bargeld in Sorrent oder Neapel ab, wo die Gebühren niedriger sind, und teile es in Tagesumschläge ein, um den Überblick zu behalten."
+  ],
+  "faqs": [
+    {
+      "q": "Wie hoch ist ein realistisches Tagesbudget?",
+      "a": [
+        "Backpacker kommen mit 70–90 € pro Tag für Schlafsaal, Mahlzeiten und eine bezahlte Aktivität aus. Mittlerer Komfort liegt näher bei 140 €."
+      ]
+    },
+    {
+      "q": "Kann ich alles mit Karte bezahlen?",
+      "a": [
+        "Die meisten Restaurants akzeptieren Karten, aber Busfahrten, kleine Delis und Souvenirstände bevorzugen oft Bargeld. Halte 20 € in kleinen Scheinen bereit."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "Auf einen Blick",
+    "tocTitle": "Auf dieser Seite",
+    "tipsTitle": "Wo du sparst",
+    "faqsTitle": "FAQ"
+  }
+}

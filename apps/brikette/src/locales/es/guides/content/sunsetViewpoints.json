@@ -1,0 +1,90 @@
+{
+  "seo": {
+    "title": "Mejores miradores para el atardecer en Positano",
+    "description": "Puntos clave para ver el atardecer en Positano y cómo llegar caminando o en bus."
+  },
+  "linkLabel": "Mejores miradores para el atardecer en Positano",
+  "intro": [
+    "Las puestas de sol en Positano son espectaculares: elige bien el mirador y el horario para clavar la foto.",
+    "Con estos ángulos fiables y horas de llegada esquivas las mayores aglomeraciones."
+  ],
+  "itemList": [
+    {
+      "name": "Terraza de Chiesa Nuova",
+      "note": "Acceso fácil junto a la parada SITA con vistas amplias de la bahía."
+    },
+    {
+      "name": "Mirador de Via Positanesi d’America",
+      "note": "Balcón sobre Fornillo; llega 30 minutos antes del atardecer para luz cálida."
+    },
+    {
+      "name": "Nocelle (inicio del Sentiero degli Dei)",
+      "note": "Frente a los islotes Li Galli; lleva una capa para el regreso."
+    }
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Miradores clásicos",
+      "body": [
+        "La terraza de Chiesa Nuova ofrece una vista amplia de la bahía a pocos pasos de la parada SITA.",
+        "Via Positanesi d’America es un balcón sobre Fornillo; llega 30 minutos antes del atardecer para aprovechar la luz dorada."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternativas tranquilas",
+      "body": [
+        "Nocelle, en el inicio del Sentiero degli Dei, mira hacia los islotes Li Galli; lleva una capa para el trayecto de vuelta.",
+        "La playa de Fornillo fuera de las semanas punta se mantiene más calmada; el sol se esconde tras el acantilado, así que monta el trípode con antelación."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Cómo cronometrar tu puesta en escena",
+      "body": [
+        "Colócate 20 minutos antes de la hora dorada para asegurar sitio y ajustar la cámara con calma.",
+        "En verano el sol se pone alrededor de las 20:30; revisa los horarios de autobús para no quedarte tirado a la vuelta."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta en los miradores",
+      "body": [
+        "Mantén libres las escaleras y entradas privadas mientras haces fotos; aparta tras conseguir la toma.",
+        "No dejes residuos y activa el modo silencioso durante conciertos o eventos nocturnos."
+      ]
+    }
+  ],
+  "tips": [
+    "Llega 20–30 minutos antes para asegurar espacio y montar trípodes sin estrés.",
+    "Un trípode ligero o abrazadera ayuda con exposiciones a la hora azul cuando baja la luz."
+  ],
+  "faqs": [
+    {
+      "q": "¿Necesito reserva?",
+      "a": [
+        "En verano, bares y terrazas de hotel suelen pedir reserva; los miradores públicos son por orden de llegada."
+      ]
+    },
+    {
+      "q": "¿Hay iluminación suficiente para volver?",
+      "a": [
+        "La iluminación urbana varía; lleva la linterna del móvil o una luz pequeña para descensos tardíos."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Galería de fotos",
+    "items": [
+      {
+        "caption": "Terraza de Chiesa Nuova",
+        "alt": "Puesta de sol desde la terraza de Chiesa Nuova"
+      },
+      {
+        "caption": "Nocelle",
+        "alt": "Puesta de sol desde Nocelle"
+      }
+    ]
+  }
+}

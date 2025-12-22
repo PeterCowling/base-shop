@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Barkarte (2025)",
+    "description": "Spritz, Cocktails, Weine, Biere, Mixgetränke, Shots und Gelato."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Barkarte, 2025",
+    "hours": "Täglich geöffnet (Uhrzeiten an der Bar)"
+  },
+  "intro": {
+    "summary": "Ein Überblick über unsere Favoriten: Spritz, Hauswein, Biere und gemixte Drinks. Für saisonale Specials und aktuelle Preise wirf bitte zusätzlich einen Blick auf die Karte an der Bar.",
+    "viewFullMenuButton": "Vollständiges Barmenü anzeigen"
+  },
+  "sections": {
+    "spritzFrozen": {
+      "title": "Spritz & Frozen-Cocktails"
+    },
+    "houseWine": {
+      "title": "Hauswein"
+    },
+    "beer": {
+      "title": "Bier"
+    },
+    "vodka": {
+      "title": "Vodka-Mixgetränke",
+      "note": "Im Preis ist ein Mixer mit Tonic, Cola, Coke Zero oder Sprite enthalten."
+    },
+    "rum": {
+      "title": "Rum-Mixgetränke",
+      "note": "Wähle deinen Rum und sag Bescheid, ob du einen koffeinhaltigen Mixer möchtest. Kaffee gibt es kalt oder warm, als Espresso-Shot oder Long/Americano."
+    },
+    "gin": {
+      "title": "Gin-Mixgetränke",
+      "note": "Serviert mit Schweppes Tonic Water über gecrushtem Eis und garniert mit frischer Amalfi-Zitrone."
+    },
+    "whisky": {
+      "title": "Whisky",
+      "note": "Wähle aus unserem Whisky-Sortiment und sag Bescheid, ob du Eis, Wasser oder einen koffeinhaltigen Mixer möchtest. Kaffee gibt es kalt oder warm, als Espresso-Shot oder Long/Americano."
+    },
+    "shots": {
+      "title": "Shots"
+    },
+    "gelato": {
+      "title": "Gelato"
+    }
+  },
+  "items": {
+    "aperolSpritz": {
+      "name": "Aperol Spritz",
+      "note": "Der italienische Klassiker, serviert auf Crushed Ice."
+    },
+    "limoncelloSpritz": {
+      "name": "Limoncello Spritz",
+      "note": "Eine Spezialität der Amalfiküste, serviert mit Crushed Ice."
+    },
+    "hugoSpritz": {
+      "name": "Hugo Spritz",
+      "note": "Sekt über Minze, Limette und Holunderblütensaft. Serviert auf Crushed Ice."
+    },
+    "rossiniSpritz": {
+      "name": "Rossini Spritz",
+      "note": "Sekt über Erdbeersaft. Serviert auf Crushed Ice."
+    },
+    "lemonStrawberryDaiquiri": {
+      "name": "Zitronen- oder Erdbeer-Daiquiri"
+    },
+    "lemonStrawberryMargarita": {
+      "name": "Zitronen- oder Erdbeer-Margarita",
+      "note": "Erdbeer- oder Zitronensaft mit Tequila, Cointreau und Eis – serviert im klassischen Margarita-Stil."
+    },
+    "lemonDropMartini": {
+      "name": "Lemon Drop Martini",
+      "note": "Frisch gepresster Zitronensaft, geschüttelt mit Absolut Vodka, Cointreau und Eis."
+    },
+    "redWhiteGlass": {
+      "name": "Rot- und Weißwein im Glas"
+    },
+    "redWhiteBottle": {
+      "name": "Rot- und Weißwein als Flasche"
+    },
+    "proseccoGlass": {
+      "name": "Glas Prosecco"
+    },
+    "nastro330": {
+      "name": "Nastro, 330 ml"
+    },
+    "nastro660": {
+      "name": "Nastro, 660 ml"
+    },
+    "peroni330": {
+      "name": "Peroni, 330ml"
+    },
+    "peroni660": {
+      "name": "Peroni, 660 ml"
+    },
+    "skyy": {
+      "name": "Skyy"
+    },
+    "absolut": {
+      "name": "Absolut"
+    },
+    "smirnoff": {
+      "name": "Smirnoff"
+    },
+    "greyGoose": {
+      "name": "Grey Goose"
+    },
+    "pampero": {
+      "name": "Pampero"
+    },
+    "bacardiSuperior": {
+      "name": "Bacardi Superior"
+    },
+    "captainMorgan": {
+      "name": "Captain Morgan"
+    },
+    "angosturaReserva": {
+      "name": "Angostura Reserva"
+    },
+    "beefeater": {
+      "name": "Beefeater"
+    },
+    "bombaySapphire": {
+      "name": "Bombay Sapphire"
+    },
+    "tanqueray": {
+      "name": "Tanqueray"
+    },
+    "hendricks": {
+      "name": "Hendrick's"
+    },
+    "jwRed": {
+      "name": "Johnnie Walker Red Label (Blended Scotch)"
+    },
+    "jameson": {
+      "name": "Jameson (Irish)"
+    },
+    "jackDaniels": {
+      "name": "Jack Daniel's Old No. 07 (Sour Mash)"
+    },
+    "wildTurkey": {
+      "name": "Wild Turkey (Bourbon)"
+    },
+    "chivas12": {
+      "name": "Chivas Regal 12 Year Old (Blended Scotch)"
+    },
+    "glenfiddich12": {
+      "name": "Glenfiddich 12 Year Old (Single Malt)"
+    },
+    "joseCuervoSilver": {
+      "name": "Jose Cuervo Tequila, Silber",
+      "note": "Pur mit Zitrone und Salz, als Tequila Sunrise oder mit Soda/Sprite."
+    },
+    "limoncelloShot": {
+      "name": "Limoncello",
+      "note": "Ein süditalienischer Klassiker, pur serviert."
+    },
+    "oneScoop": {
+      "name": "1 Kugel"
+    },
+    "twoScoops": {
+      "name": "2 Kugeln"
+    },
+    "threeScoops": {
+      "name": "3 Kugeln",
+      "note": "Wähle aus Zitrone, Schokolade, Vanille und Haselnuss."
+    }
+  },
+  "disclaimer": "Angebot und Preise können sich ändern. Bitte an der Bar bestätigen."
+}

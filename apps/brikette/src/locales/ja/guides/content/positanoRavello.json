@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "ポジターノからラヴェッロへの行き方",
+    "description": "アマルフィ経由のバス乗り継ぎや夏季フェリー＋バスなど最適な移動方法を比較。"
+  },
+  "linkLabel": "ポジターノからラヴェッロへの行き方",
+  "intro": [
+    "翻訳を準備中です。",
+    "翻訳を準備中です。"
+  ],
+  "toc": [
+    {
+      "href": "#via-amalfi",
+      "label": "Via Amalfi"
+    },
+    {
+      "href": "#gardens",
+      "label": "Gardens & villas"
+    },
+    {
+      "href": "#timing",
+      "label": "Timing & returns"
+    }
+  ],
+  "sections": [
+    {
+      "id": "via-amalfi",
+      "title": "Via Amalfi",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "gardens",
+      "title": "Gardens & villas",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & returns",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "tipsTitle": "Tips",
+  "tips": [
+    "翻訳を準備中です。",
+    "翻訳を準備中です。"
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "翻訳を準備中です。",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "q": "翻訳を準備中です。",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Positano → Amalfi",
+        "text": "翻訳を準備中です。"
+      },
+      {
+        "name": "Amalfi → Ravello",
+        "text": "翻訳を準備中です。"
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "翻訳を準備中です。"
+    ],
+    "toc": [
+      {
+        "href": "#via-amalfi",
+        "label": "Via Amalfi (bus + bus)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry to Amalfi (seasonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "via-amalfi",
+        "title": "Via Amalfi (bus + bus)",
+        "body": [
+          "翻訳を準備中です。"
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry to Amalfi (seasonal)",
+        "body": [
+          "翻訳を準備中です。"
+        ]
+      }
+    ],
+    "tipsTitle": "Tips",
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "翻訳を準備中です。",
+        "a": [
+          "翻訳を準備中です。"
+        ]
+      }
+    ]
+  }
+}

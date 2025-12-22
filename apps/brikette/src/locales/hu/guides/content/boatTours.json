@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Privát és csoportos túrák, szezon, árak és mire figyelj foglaláskor."
+  },
+  "linkLabel": "Boat tours in Positano",
+  "intro": [
+    "A hajós kirándulásokkal végigkövetheti az Amalfi-part szikláit anélkül, hogy a közúti forgalommal küzdene – csúcsszezonban foglaljon előre, és legyen időjárási B-terve."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Csoportos túrák és közös hajók",
+      "body": [
+        "A 3 órás közös hajózások késő délelőtt indulnak Positanóból, úszómegállókat is tartalmaznak; július–augusztusban fejenként 85–120 euróval számoljon.",
+        "Vigyen vízi cipőt és könnyű felsőt – a szél a nyílt vízen hűvösebb, mint a teraszokon."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Privát bérlések",
+      "body": [
+        "A kormányosok fél napos gozzo bérlésre (legfeljebb 6 fő) 550–850 eurót kérnek plusz üzemanyagot; egyeztesse, hogy jár-e prosecco vagy törölköző.",
+        "Alkudja ki a napkelte körüli vagy késő délutáni indulást, ha lágyabb fényeket és kevesebb komp-hullámot szeretne."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Időjárás és tartaléktervek",
+      "body": [
+        "A szolgáltatók lemondják az utat, ha a szél meghaladja a 4-es fokozatot; legyen kéznél buszos vagy strandos alternatíva, hogy a nap laza maradjon.",
+        "Nyáron is lehet hullámos a tenger – vigyen tengeri betegséget enyhítő karkötőt, ha hajlamos a rosszullétre."
+      ]
+    }
+  ],
+  "tips": [
+    "Indulás előtt 20 perccel érkezzen, hogy rendezze a fennmaradó díjat és felvegye a fedélzeti cipőt.",
+    "Legyen vízhatlan táskája a telefonhoz, valamint 1 literes (34 unciás) kulacsa; a fedélzeten kevés az árnyék."
+  ],
+  "faqs": [
+    {
+      "q": "Muszáj előre foglalni?",
+      "a": [
+        "Május és szeptember között igen – a hajók gyakran napokkal előre betelnek, főleg a naplemente-idősávok."
+      ]
+    },
+    {
+      "q": "Adnak törölközőt?",
+      "a": [
+        "A csoportos túrákon általában fejenként egyet biztosítanak; a privát kormányosoknál változó, ezért vigyen gyorsan száradó törölközőt biztos, ami biztos."
+      ]
+    }
+  ],
+  "galleryHeading": "Fotógaléria",
+  "gallery": {
+    "primaryAlt": "Hajó halad Positano partja mentén",
+    "primaryCaption": "Utazás a part mentén",
+    "secondaryAlt": "Fürdőzés megálló Positano sziklái mellett",
+    "secondaryCaption": "Úszómegálló"
+  }
+}

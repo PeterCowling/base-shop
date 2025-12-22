@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "Positano på budget",
+    "description": "Strategier för att njuta av Positano utan stor budget: boende, mat, transporter och gratis upplevelser."
+  },
+  "linkLabel": "Positano på budget",
+  "intro": [
+    "Sträck reskassan genom att kombinera bilfri transport, prisvärda måltider och gratis utsiktsplatser utan att missa Positanos favoriter."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Smarta transporter",
+      "body": [
+        "Ta Alibus eller Curreri-shuttle till Sorrento och därefter SITA-bussen till Positano; köp flerresebiljetter på tabacchi för att undvika påslag.",
+        "När havet är lugnt kan du kombinera en färjeetapp med bussar för bekvämare resa – boka bara de sträckor du verkligen behöver."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Bo prisvärt",
+      "body": [
+        "Välj sovsalar eller delade lägenheter nära Chiesa Nuova för att slippa portaravgifter och långa trappor.",
+        "För längre vistelser fungerar baser i Meta eller Praiano – restiden är 30–40 minuter men rumspriserna är betydligt lägre i högsäsong."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Spara på mat och dryck",
+      "body": [
+        "Plocka panini, sfogliatelle och espresso i barer i stället för sittande brunch; fyll en 1-litersflaska med vandrarhemmets vatten innan du går.",
+        "Dela antipasti, välj enkla trattorior utan coperto och håll solnedgångspicknick på terrasser med deliinhandlade godsaker."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Upplevelser på budget",
+      "body": [
+        "Planera gratisvandringar som Gudarnas stig (buss till Nocelle) eller kvällspromenader längs Via Cristoforo Colombo.",
+        "Lägg pengar på en höjdpunkt – kanske en delad båttur eller matlagningskurs – och balansera resten med stranddagar och utsikter."
+      ]
+    }
+  ],
+  "tips": [
+    "Res under mellansäsong (april–maj, slutet av september) för lägre priser och lättare plats på färjor.",
+    "Följ utgifterna i anteckningsappen; att stämma av gemensamma kostnader dagligen håller gruppen i fas."
+  ],
+  "faqs": [
+    {
+      "q": "Vilken dagsbudget bör jag räkna med?",
+      "a": [
+        "70–90 € täcker sovsal, enklare måltider, bussbiljetter och en betald aktivitet; lägg till 20–30 € om du föredrar privata rum eller drinkar i solnedgången."
+      ]
+    },
+    {
+      "q": "Förväntas dricks?",
+      "a": [
+        "Service ingår; avrunda 1–2 € vid toppenservice eller lämna 10 % på finare ställen om upplevelsen förtjänar det."
+      ]
+    }
+  ],
+  "tocTitle": "På denna sida",
+  "faqsTitle": "Vanliga frågor",
+  "heroAlt": "Budgetvy över Positano från terrass",
+  "costBreakdown": {
+    "title": "Exempel: daglig kostnadsfördelning",
+    "slices": [
+      {
+        "label": "Säng (sovsal)",
+        "value": 45
+      },
+      {
+        "label": "Mat och snacks",
+        "value": 25
+      },
+      {
+        "label": "Transport",
+        "value": 12
+      },
+      {
+        "label": "Aktiviteter & extra",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "Gratis utsiktspunkt över Positano",
+      "caption": "Kostnadsfria vyer"
+    },
+    {
+      "alt": "Picknick med utsikt över Positano",
+      "caption": "Picknick som sparar matkostnader"
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → kompkikötő, csomaggal",
+    "description": "Lépésről lépésre útvonal a hosteltől Positano kompkikötőjéig az Interno busszal és hordárok segítségével."
+  },
+  "linkLabel": "Hostel Brikette → kompkikötő, csomaggal",
+  "intro": [
+    "Csomaggal indulsz a Hostel Brikette-ből? Ülj fel a Positano Interno buszára, és bízd a nehéz bőröndöket a kikötői hordárokra, hogy a lépcsők helyett könnyedén érd el a kompot."
+  ],
+  "beforeList": [
+    "Ellenőrizd az aktuális Interno Positano menetrendet — itt találod a [legfrissebb időpontokat és árakat](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Szerezz be Interno Positano jegyeket a Chiesa Nuova melletti trafikban, mielőtt felszállsz (vagy kérd meg a recepciót, hogy erősítse meg a készletet).",
+    "Szervezz hordársegítséget, ha nagy csomagjaid vannak — a recepció tud telefonálni, vagy nézd meg a [hordárszolgálat útmutatót](guide:porterServices) a számokért és árakért."
+  ],
+  "sections": [
+    {
+      "id": "hostel-to-stop",
+      "title": "A hostel bejáratától a Chiesa Nuova megállóig",
+      "body": [
+        "Jelentkezz ki, majd kövesd a fő lépcsőt lefelé a Viale Pasiteára, és fordulj balra (lejtő irányába). Sétálj nagyjából 100 métert a trafikos-újságosig, ahol érkezéskor is megálltál.",
+        "Az Interno Positano buszmegálló közvetlenül a trafiktól jobbra található. Legyen kéznél a jegyed; ha még venned kell, intézd bent, mielőtt a busz megérkezik."
+      ]
+    },
+    {
+      "id": "bus-to-mulini",
+      "title": "Utazás az Interno Positano busszal a Piazza dei Muliniig",
+      "body": [
+        "Szállj fel az Interno Positano buszra — a kijelzőn \"interno positano\" feliratot látsz. A csomagokat tartsd az öledben vagy a középső részen, hogy a folyosó szabad maradjon.",
+        "Körülbelül 10 percig maradj a buszon a Piazza dei Mulini megállóig (ez az utolsó nagy megálló a gyalogos zóna előtt). Ha bizonytalan vagy, szólj a sofőrnek, hogy a strandra mész."
+      ]
+    },
+    {
+      "id": "mulini-to-dock",
+      "title": "Piazza dei Mulinitól a kompkikötőig",
+      "body": [
+        "Szállj le a buszról, találkozz a hordárokkal, ha előre foglaltad őket, és indulj egyenesen a gyalogos sétányon a Spiaggia Grande felé.",
+        "Kövesd a promenádot lejtőn lefelé körülbelül 7 percig — használd [ezeket az útvonalterveket](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2), hogy a legsimább rámpákon maradj.",
+        "A mólónál jelentkezz be a szolgáltatódnál. A hordárok külön hozzák a csomagokat; az útlevél, gyógyszer és értékek legyenek nálad."
+      ]
+    }
+  ],
+  "stepsList": [
+    "Vásárolj Interno Positano buszjegyet a Chiesa Nuova trafikban, és egyeztesd a hordárokat.",
+    "Sétálj 100 métert lefelé a hosteltől a Chiesa Nuova buszmegállóig, és várj a Viale Pasitea tenger felőli oldalán.",
+    "Utazz az Interno Positano busszal a Piazza dei Muliniig (az utolsó megálló a strand előtt).",
+    "Találkozz a hordárokkal, és sétálj végig a promenádon, amíg ők leviszik a nehéz csomagokat."
+  ],
+  "kneesList": [
+    "Az Interno Positano busz kiváltja a meredek lépcsők százait egy rövid, szintben haladó sétára.",
+    "A hordárok külön kocsikon viszik a bőröndöket, így neked csak egy hátizsákot kell kezelned a promenádon."
+  ],
+  "kneesDockPrefix": "Visszafelé, amikor megérkezel? Olvasd el a",
+  "kneesDockLinkLabel": "Chiesa Nuova érkezési útmutatót",
+  "kneesPorterPrefix": "Árakra és foglalási tippekre kíváncsi? Nézd meg a",
+  "kneesPorterLinkLabel": "hordárszolgálat útmutatót",
+  "faqs": [
+    {
+      "q": "Hol vehetek Interno Positano jegyet a hostel közelében?",
+      "a": [
+        "A Chiesa Nuova megálló melletti trafik/újságos általában tart jegyeket, és a recepció meg tudja erősíteni a napi készletet. A sofőrök a buszon nem árulnak jegyet."
+      ]
+    },
+    {
+      "q": "Mennyivel előre kérjem a hordárokat?",
+      "a": [
+        "Nyáron 30–45 perccel indulás előtt telefonálj, hogy a Piazza dei Mulininál találkozhassatok. Csendesebb hónapokban 15 perc is elég — a recepció szívesen telefonál helyetted."
+      ]
+    },
+    {
+      "q": "Mi van, ha nem jár az Interno busz, amikor indulok?",
+      "a": [
+        "Ha késő este szünetel a szolgáltatás, kérd meg a hordárokat, hogy egészen a mólóig vigyék a csomagokat, te pedig sétálj le a promenádon, vagy használj SITA buszt a Sponda megállóig (az később is jár), és onnan gyalogolj lefelé."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Jegyek és hordárok egyeztetése a Chiesa Nuovánál",
+    "Séta lefelé a hosteltől a Chiesa Nuova buszmegállóig",
+    "Utazás az Interno Positano busszal a Piazza dei Muliniig",
+    "Találkozó a hordárokkal és séta a promenádon a kompkikötőig"
+  ]
+}

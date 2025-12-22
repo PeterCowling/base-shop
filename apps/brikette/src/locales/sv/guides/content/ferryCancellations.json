@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Inställda färjor och grov sjö",
+    "description": "Vad du gör när färjor ställs in på grund av väder, vilka alternativ som finns och hur du kontrollerar status."
+  },
+  "linkLabel": "Inställda färjor och grov sjö",
+  "intro": [
+    "Grov sjö kan ställa in färjor till och från Positano med kort varsel.",
+    "Ha en landbaserad reservplan och följ liveuppdateringar så du ändå hinner till anslutningen."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Följ liveuppdateringar",
+      "body": [
+        "Kolla operatörernas sajter och appar (Travelmar, NLG, Alilauro) samt informationstavlorna i hamnen var 30:e minut under blåsiga dagar.",
+        "Aktivera SMS/mejl-aviseringar eller följ lokala Telegram- och sociala kanaler så du nås av avbokningar även om du lämnar kajen."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Byt till landväg",
+      "body": [
+        "Om avgångarna stoppas, växla till buss och tåg: SITA till Sorrento och Circumvesuviana vidare mot Neapel/Pompeji, eller buss via Amalfi och regiontåg från Salerno.",
+        "Lägg in minst 60 minuters marginal till kvällens sista avgångar och stämpla biljetterna innan ombordstigning."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Återbetalning & tillgodokvitto",
+      "body": [
+        "Spara kvitton och ta skärmdump på beskedet så operatören kan hantera återbetalning, ombokning eller kredit.",
+        "Meddela personalen om du vill ha nästa lediga avgång eller ett säsongstillgodokvitto innan du lämnar disken."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Hantera övernattningsförseningar",
+      "body": [
+        "Informera boendet eller turarrangören så snart förseningen annonseras; många justerar incheckning eller avgång om de får veta i förväg.",
+        "Fråga hamnens infopunkt om samåkningstaxi, ersättningsshuttlar eller bagageförvaring om du måste vänta till morgonen."
+      ]
+    }
+  ],
+  "tips": [
+    "Kolla marinprognosen – vindar över 20 knop eller dyning över 1,5 meter leder ofta till inställda turer.",
+    "Reseförsäkring som täcker väderförseningar hjälper dig få tillbaka kostnader för extra hotellnätter eller ersättningsresor.",
+    "Morgonavgångar är mest pålitliga; undvik att lita på dagens sista båt när oväder väntas."
+  ],
+  "faqs": [
+    {
+      "q": "Hur vet jag när färjorna börjar gå igen?",
+      "a": [
+        "Uppdatera operatörens webbsida eller sociala flöden och lyssna efter utrop i högtalarna – beslut brukar publiceras inom 30 minuter från ordinarie avgång.",
+        "Personal i biljettluckan kan också bekräfta om nästa båt går innan du lämnar hamnen."
+      ]
+    },
+    {
+      "q": "Vad händer med min biljett?",
+      "a": [
+        "Visa kvitto eller QR-kod för att få återbetalning, tillgodokvitto eller ombokning till nästa avgång.",
+        "Har du bokat via onlinebyrå? Mejla dem skärmdumpen inom 24 timmar för att starta återbetalningen."
+      ]
+    },
+    {
+      "q": "Finns det färjor som går även i grov sjö?",
+      "a": [
+        "Nej – när kustbevakningen stänger hamnen stoppas alla avgångar. Ha en landrutt redo.",
+        "Vissa privata chartrar kan gå i måttlig sjö men de är dyra och beror på kaptenens bedömning; väg komfort mot kostnad."
+      ]
+    }
+  ]
+}

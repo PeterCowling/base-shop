@@ -1,0 +1,28 @@
+{
+  "quickLinksHeading": "Ligações rápidas",
+  "quickLinksIntro": "Obtenha respostas diretas às perguntas mais frequentes sobre reservas, chegadas e estadias.",
+  "cta": {
+    "readMore": "Saiba mais"
+  },
+  "quickLinks": [
+    {
+      "label": "Alterar ou cancelar a reserva",
+      "description": "Veja prazos mínimos e como evitar taxas adicionais quando precisar de ajustar a reserva.",
+      "slug": "changingCancelling"
+    },
+    {
+      "label": "Guia de check-in e check-out",
+      "description": "Siga o nosso guia passo a passo para chegada e partida no Hostel Brikette em Positano.",
+      "slug": "checkinCheckout"
+    },
+    {
+      "label": "Chegar facilmente a Positano",
+      "description": "Escolha o ferry, autocarro ou táxi ideal e siga instruções passo a passo desde Nápoles ou Sorrento.",
+      "slug": "travelHelp"
+    }
+  ],
+  "contactCta": {
+    "label": "Enviar e-mail",
+    "href": "mailto:hostelpositano@gmail.com"
+  }
+}

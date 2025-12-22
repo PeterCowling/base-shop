@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Bus from Hostel Brikette to Positano's main beach",
+    "description": "How to ride the orange interno bus downhill to Piazza dei Mulini and stroll to Spiaggia Grande."
+  },
+  "linkLabel": "Bus down to Positano's main beach",
+  "intro": [
+    "Den orangefärgade bussen Interno Positano förbinder Hostel Brikette med Piazza dei Mulini, en kort promenad från Spiaggia Grande.",
+    "Följ dessa steg för att köpa biljetter vid tabacchi, åka nedförsbacke och täcka de sista minuterna till fots."
+  ],
+  "sections": [
+    {
+      "id": "reach-the-stop",
+      "title": "Nå stoppet Chiesa Nuova",
+      "body": [
+        "Avsluta vandrarhemmet, gå nerför den främre trappan och sväng vänster längs Viale Pasitea.",
+        "Efter ungefär 100 meter tar du det första högra hörnet bredvid tabacchi/kiosken — busshållplatsen Chiesa Nuova ligger precis utanför.",
+        "Gå in innan du går ombord för att köpa Interno Positano-biljetter i förväg; det är billigare och undviker förseningar vid dörren."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Åk med Interno Positano-bussen i nedförsbacke",
+      "body": [
+        "Gå ombord på den orange minibussen märkt \"Interno Positano\". Olika fordonstyper kör rutten, men destinationen på den elektroniska skylten förblir densamma.",
+        "Stanna kvar när bussen slingrar sig genom Positanos gator på sluttningarna och går ner mot stadens centrum."
+      ]
+    },
+    {
+      "id": "piazza-dei-mulini",
+      "title": "Gå i land på Piazza dei Mulini",
+      "body": [
+        "Gå av vid Piazza dei Mulini, den centrala hållplatsen i shoppingdistriktet nära apoteket.",
+        "Detta är den lägsta punkten i staden som fordon kan nå och placerar dig inom några minuter från vattnet."
+      ]
+    },
+    {
+      "id": "final-walk",
+      "title": "Gå den sista sträckan till stranden",
+      "body": [
+        "Gå rakt under valvet bredvid torget och följ strandpromenaden mot hamnen.",
+        "Inom 3–4 minuter öppnar Spiaggia Grande till vänster — använd %LINK:positanoMainBeachWalkDown|vandringsguide% om du vill ha varje kontrollpunkt för trappor."
+      ]
+    }
+  ],
+  "tipsTitle": "Busstips",
+  "tips": [
+    "Köp interno-biljetter på tabacchi innan du köar; inköp ombord kostar lite mer och förare säljer ibland slut.",
+    "Skärmdump av tidtabellen från receptionen eller den digitala conciergen — sena kvällstjänster tunnas ut under axelsäsongen.",
+    "Byt till %LINK:positanoMainBeachWalkDown|promenadväg% om du hellre vill sträcka på benen på vägen ner."
+  ]
+}

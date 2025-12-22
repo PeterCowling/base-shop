@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "7-dagers reiseplan for Amalfikysten (uten bil)",
+    "description": "Én uke langs kysten med realistisk tempo og transporttips."
+  },
+  "linkLabel": "7-dagers reiseplan for Amalfikysten (uten bil)",
+  "intro": [
+    "Seven days without a car lets you balance classic sights with slower village time—use ferries for comfort and buses for value."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "Days 1–2 — settle in Positano",
+      "body": [
+        "Arrive via Naples or Salerno, explore Spiaggia Grande and Fornillo, and adjust to the stairs with short walks to viewpoints.",
+        "Book a shared boat or cooking class for the second evening to anchor the week with a standout experience."
+      ]
+    },
+    {
+      "id": "day3",
+      "title": "Day 3 — Capri loop",
+      "body": [
+        "Catch the 08:30 ferry to Capri, focus on Anacapri in the morning, and return before sunset to avoid last-boat scrambles.",
+        "Keep a bus ticket stash ready in case ferries halt; Sorrento back-up routes take around 90 minutes door to door."
+      ]
+    },
+    {
+      "id": "days4-5",
+      "title": "Days 4–5 — Amalfi & Ravello + hiking",
+      "body": [
+        "Spend day 4 between Amalfi town and Ravello’s gardens, staying late if a concert tempts you.",
+        "Dedicate day 5 to the Path of the Gods or Montepertuso trail; start early, carry 1.5 L (51 oz) of water, and ride the bus back."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "Days 6–7 — culture & buffer",
+      "body": [
+        "Take a morning train to Pompeii or Salerno for museums, then return for a relaxed final evening in Positano.",
+        "Keep the last day as a buffer for weather or pure leisure—repeat a favourite beach or wander artisan shops."
+      ]
+    }
+  ],
+  "tips": [
+    "Laundry mid-week keeps bags light; use self-service machines near Chiesa Nuova.",
+    "Track ferry updates on operator Instagram accounts during windy spells."
+  ],
+  "faqs": [
+    {
+      "q": "Should I stay in more than one town?",
+      "a": [
+        "Base in Positano for fewer repacks. Add a night in Naples or Salerno only if you have very early trains or flights."
+      ]
+    },
+    {
+      "q": "Do I need to pre-book everything?",
+      "a": [
+        "Reserve ferries, boat tours, and headline restaurants. Leave hikes, beach days, and local buses flexible so you can adapt to weather."
+      ]
+    }
+  ]
+}

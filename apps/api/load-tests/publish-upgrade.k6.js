@@ -29,7 +29,7 @@ const shops = new SharedArray('shops', () => [
   'epsilon',
 ]);
 
-export default function () {
+export default function publishUpgradeLoadTest() {
   const id = shops[(__VU - 1) % shops.length];
   const url = `${__ENV.API_BASE_URL}/shop/${id}/publish-upgrade`;
   const payload = JSON.stringify({ components: [] });

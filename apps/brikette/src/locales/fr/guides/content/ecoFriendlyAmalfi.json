@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Voyager écoresponsable sur la côte amalfitaine",
+    "description": "Réduisez votre empreinte : points d'eau, itinéraires à pied, ferries plutôt que voiture et journées plage responsables."
+  },
+  "linkLabel": "Voyager écoresponsable sur la côte amalfitaine",
+  "intro": [
+    "Voyager de façon écoresponsable sur la Côte amalfitaine passe par les transports, la gestion des déchets et les gestes quotidiens.",
+    "Réduisez votre empreinte tout en profitant des panoramas côtiers."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transports plus verts",
+      "body": [
+        "Privilégiez bus ou ferries plutôt que les taxis privés dès que possible.",
+        "En ville, parcourez les courtes distances à pied au lieu d’appeler une voiture."
+      ]
+    },
+    {
+      "id": "waste",
+      "title": "Déchets et plastique",
+      "body": [
+        "Emportez une gourde et un sac réutilisable, rechargez-les aux fontaines ou dans les cafés.",
+        "Triez vos déchets quand des bacs sont disponibles et ramenez tout ce que vous avez apporté sur les sentiers."
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Énergie et eau",
+      "body": [
+        "Éteignez climatisation et lumières en quittant votre chambre ; fermez les volets pour garder la fraîcheur.",
+        "Prenez des douches courtes et réutilisez vos serviettes pour économiser l’eau."
+      ]
+    }
+  ],
+  "tips": [
+    "Soutenez les petites entreprises locales qui privilégient les produits régionaux et limitent les déchets.",
+    "Commandez des plats de saison : citrons, anchois et légumes sont à leur meilleur selon les périodes."
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je louer des vélos électriques sur la côte ?",
+      "a": [
+        "Oui à Amalfi, Sorrente et dans certains villages ; réservez tôt car les flottes sont limitées."
+      ]
+    }
+  ]
+}

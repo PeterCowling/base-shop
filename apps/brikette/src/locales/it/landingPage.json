@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Brikette Hostel a Positano - Soggiorno accessibile sulla Costiera Amalfitana",
+    "description": "L'unico ostello a Positano che offre sistemazioni economiche proprio accanto alle spettacolari bellezze della Costiera Amalfitana.",
+    "ogImageAlt": "Panorama dalla terrazza dell'Hostel Brikette su Positano"
+  },
+  "introSection": {
+    "title": "Una splendida casa lontano da casa",
+    "titleParts": {
+      "before": "Una splendida",
+      "between": "casa lontano da",
+      "home": "casa"
+    },
+    "paragraph1": "L'Hostel Brikette è <strong>l'unico ostello di Positano</strong>, offrendo sistemazioni <strong>economiche</strong> che pongono le meraviglie della Costiera Amalfitana proprio a portata di mano.",
+    "paragraph2": "Arroccato sulle scogliere, offriamo <strong>incredibili viste sul mare</strong>, servizi pratici e informazioni locali disponibili 24 ore su 24 tramite il nostro <strong>concierge digitale</strong>: la tua guida personale per orari dei traghetti, percorsi escursionistici, ristoranti e altro ancora.",
+    "paragraph3": "Che tu scelga un dormitorio o una camera privata, ognuna è progettata per offrire <strong>comfort</strong> e <strong>comodità</strong>."
+  },
+  "facilitiesModal": {
+    "title": "Servizi e Comfort",
+    "closeButton": "Chiudi",
+    "categories": [
+      {
+        "title": "Generale",
+        "items": [
+          "Camere non fumatori",
+          "Wi-Fi gratuito",
+          "Aria condizionata",
+          "Riscaldamento"
+        ]
+      },
+      {
+        "title": "Bagno",
+        "items": [
+          "Carta igienica",
+          "Asciugamani da bagno",
+          "Lenzuola",
+          "Asciugamani da spiaggia (a pagamento)",
+          "Toilette",
+          "Doccia"
+        ]
+      },
+      {
+        "title": "Esterni",
+        "items": [
+          "Area picnic",
+          "Arredi da esterno",
+          "Terrazza solarium",
+          "Terrazza"
+        ]
+      },
+      {
+        "title": "Attività",
+        "items": [
+          "Escursionismo (fuori sede)"
+        ]
+      },
+      {
+        "title": "Cibo e Bevande",
+        "items": [
+          "Bar"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Il Wi-Fi è disponibile nelle aree comuni ed è gratuito."
+        ]
+      },
+      {
+        "title": "Parcheggio",
+        "items": [
+          "Parcheggio non disponibile"
+        ]
+      },
+      {
+        "title": "Servizi",
+        "items": [
+          "Pulizie giornaliere",
+          "Armadietti",
+          "Servizio concierge",
+          "Deposito bagagli"
+        ]
+      },
+      {
+        "title": "Sicurezza",
+        "items": [
+          "Estintori",
+          "Videosorveglianza nelle aree comuni",
+          "Accesso con carta"
+        ]
+      },
+      {
+        "title": "Lingue Parlate",
+        "items": [
+          "Inglese",
+          "Spagnolo",
+          "Italiano"
+        ]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "Vista panoramica dalla terrazza dell'Hostel Brikette a Positano",
+    "brandName": "Hostel Brikette",
+    "cityName": "Positano",
+    "address": "Via G. Marconi, 358, 84017 Positano SA",
+    "locationButton": "Posizione",
+    "contactButton": "Contattaci",
+    "helpButton": "Assistenza",
+    "reserveNow": "Prenota Ora"
+  },
+  "quickLinksSection": {
+    "location": "Posizione",
+    "photosAndVideos": "Foto e Video",
+    "facilitiesAndAmenities": "Servizi e Comfort",
+    "barMenu": "Menu del Bar",
+    "breakfastMenu": "Menu della Colazione"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "Bellissime Aree Comuni",
+    "slides": [
+      {
+        "title": "Santuario sulla Collina",
+        "text": "Svegliati con una fresca vista sulle montagne dalla nostra terrazza illuminata.",
+        "alt": "Terrazza con vista sul pendio di Positano"
+      },
+      {
+        "title": "Oasi all'Aperto",
+        "text": "Goditi il sole e fai nuove amicizie.",
+        "alt": "Terrazza con tettoia di bambù per l'ombra"
+      },
+      {
+        "title": "Incredibili Viste sul Mare",
+        "text": "Assapora la magia dell'orizzonte mentre il sole si fonde nel mare.",
+        "alt": "Ampio orizzonte marino dalla terrazza dell'ostello"
+      }
+    ]
+  }
+}

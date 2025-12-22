@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "title": "Chambres & Tarifs | Brikette Hostel Positano",
+    "description": "Chambres doubles privées avec vue sur la mer et dortoirs économiques : découvrez photos, équipements et tarifs en direct, puis réservez en direct pour le meilleur prix au Brikette Hostel Positano.",
+    "ogImageAlt": "Intérieur d’un dortoir partagé"
+  },
+  "facilities": {
+    "privateRoom": "Chambre privée",
+    "mixedDorm": "Dortoir mixte",
+    "femaleDorm": "Dortoir féminin",
+    "femaleRoom": "Chambre féminine",
+    "doubleBedForTwo": "Un lit double pour jusqu’à deux personnes",
+    "threeSingleBedsThreeGuests": "Trois lits simples pour jusqu’à trois personnes",
+    "oneDormBedTwoGuests": "Un lit de dortoir, soit deux lits au total, pour jusqu’à deux personnes",
+    "threeDormBedsSixGuests": "Trois lits de dortoir, soit six lits au total, pour jusqu’à six personnes",
+    "threeDormBedsPlusSingleSevenGuests": "Trois lits de dortoir plus un lit simple, soit sept lits au total, pour jusqu’à sept personnes",
+    "fourDormBedsEightGuests": "Quatre lits de dortoir, soit huit lits au total, pour jusqu’à huit personnes",
+    "thirdFloor": "Situé au troisième étage",
+    "fourthFloor": "Situé au quatrième étage",
+    "bathroomEnsuite": "Salle de bain attenante",
+    "bathroomPrivate": "Salle de bain privée",
+    "bathroomSharedFemale": "Salle de bain partagée (femmes)",
+    "seaViewTerrace": "Terrasse avec vue sur la mer",
+    "seaViewExtraLargeTerrace": "Vue sur la mer avec terrasse extra-large",
+    "gardenView": "Vue sur le jardin",
+    "courtyardView": "Vue sur la cour",
+    "noView": "Sans vue",
+    "airCon": "Climatisation",
+    "keycard": "Accès par carte-clé",
+    "linen": "Draps et serviette fournis"
+  },
+  "rooms": {
+    "title": "Nos chambres",
+    "double_room": {
+      "title": "Chambre Double",
+      "bed_intro": "Superbe vue sur la mer – parfaite pour les couples.",
+      "bed_description": "Notre Chambre Double est un espace privé comprenant un lit double pour jusqu’à deux personnes. Située au troisième étage, elle dispose d’une salle de bain attenante, d’une terrasse avec vue sur la mer, de la climatisation et d’un accès sécurisé par carte-clé. Draps et serviettes fournis.",
+      "facilities": [
+        "privateRoom",
+        "doubleBedForTwo",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 259.2,
+        "flexible": 285.12
+      }
+    },
+    "room_10": {
+      "title": "Dortoir Mixte Premium",
+      "bed_intro": "Quand vous voulez six lits et une salle de bain supérieure.",
+      "bed_description": "Notre Dortoir Premium est un dortoir mixte avec trois lits de dortoir pouvant accueillir jusqu’à six personnes. Situé au quatrième étage, il comprend la climatisation, un accès sécurisé par carte-clé et une salle de bain attenante (sans vue). Draps et serviette fournis à l’arrivée.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 60.75,
+        "flexible": 66.82
+      }
+    },
+    "room_11": {
+      "title": "Dortoir féminin supérieur – Grande terrasse",
+      "bed_intro": "La meilleure vue, depuis une grande terrasse, et une excellente salle de bain.",
+      "bed_description": "Notre Dortoir Féminin Supérieur comprend trois lits de dortoir, soit six lits au total, pouvant accueillir jusqu’à six personnes. Situé au quatrième étage, il dispose de la climatisation, d’un accès sécurisé par carte-clé, d’une salle de bain attenante et d’une vue sur la mer avec une terrasse extra-large. Draps et serviette fournis à l’arrivée.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 72.4,
+        "flexible": 79.64
+      }
+    },
+    "room_12": {
+      "title": "Dortoir Mixte Supérieur",
+      "bed_intro": "La meilleure vue, depuis une grande terrasse, et une excellente salle de bain.",
+      "bed_description": "Notre Dortoir Mixte Supérieur dispose de trois lits de dortoir, soit six lits au total, pouvant accueillir jusqu’à six personnes. Situé au quatrième étage, il comprend la climatisation, un accès sécurisé par carte-clé, une salle de bain privée et une vue sur la mer avec une terrasse extra-large. Draps et serviette fournis à l’arrivée.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomPrivate",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 74.4,
+        "flexible": 81.84
+      }
+    },
+    "room_3": {
+      "title": "Dortoir Féminin Économique",
+      "bed_intro": "Un choix économique pour les voyageuses.",
+      "bed_description": "Notre Dortoir Féminin Économique peut accueillir jusqu’à huit personnes grâce à quatre lits de dortoir. Situé au troisième étage, il offre la climatisation, un accès sécurisé par carte-clé et l’accès à une salle de bain partagée (femmes). Sans vue. Draps et serviette fournis à l’arrivée.",
+      "facilities": [
+        "femaleDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_4": {
+      "title": "Dortoir Mixte Économique",
+      "bed_intro": "Un choix économique pour voyageurs et voyageuses.",
+      "bed_description": "Notre Dortoir Mixte Économique peut accueillir jusqu’à huit personnes grâce à quatre lits de dortoir. Situé au troisième étage, il offre la climatisation, un accès sécurisé par carte-clé et l’accès à une salle de bain partagée (femmes). Sans vue. Draps et serviette fournis à l’arrivée.",
+      "facilities": [
+        "mixedDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_5": {
+      "title": "Dortoir féminin supérieur – Vue sur la mer",
+      "bed_intro": "Vues imprenables sur la mer et salle de bain privée.",
+      "bed_description": "Notre Dortoir Féminin Supérieur peut accueillir jusqu’à six personnes dans trois lits de dortoir. Situé au troisième étage, il dispose d’une salle de bain attenante, d’une terrasse avec vue sur la mer, de la climatisation et d’un accès sécurisé par carte-clé. Draps et serviette fournis à l’arrivée.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_6": {
+      "title": "Dortoir féminin supérieur – 7 lits",
+      "bed_intro": "Vues imprenables sur la mer et salle de bain privée.",
+      "bed_description": "Notre Dortoir Féminin Supérieur dispose de trois lits de dortoir plus un lit simple, soit sept lits au total, pouvant accueillir jusqu’à sept personnes. Situé au troisième étage, il comprend une salle de bain attenante, une terrasse avec vue sur la mer, la climatisation et un accès sécurisé par carte-clé. Draps et serviette fournis à l’arrivée.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsPlusSingleSevenGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_9": {
+      "title": "Chambre Mixte Deluxe",
+      "bed_intro": "Une manière économique d’obtenir un dortoir de trois lits.",
+      "bed_description": "Notre Chambre Mixte Deluxe offre trois lits simples et peut accueillir jusqu’à trois personnes. Située au quatrième étage, elle dispose d’une salle de bain attenante, d’une vue sur la cour, de la climatisation et d’un accès sécurisé par carte-clé. Draps et serviette fournis à l’arrivée.",
+      "facilities": [
+        "mixedDorm",
+        "threeSingleBedsThreeGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "courtyardView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_8": {
+      "title": "Chambre Twin Féminine",
+      "bed_intro": "Une option économique pour deux voyageuses.",
+      "bed_description": "Notre Chambre Twin Féminine comporte un lit superposé (dortoir) et peut accueillir jusqu’à deux personnes. Située au troisième étage, elle offre la climatisation, un accès sécurisé par carte-clé, une vue sur le jardin et se trouve à côté de la salle de bain partagée (femmes). Draps et serviette fournis à l’arrivée.",
+      "facilities": [
+        "femaleDorm",
+        "oneDormBedTwoGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "gardenView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 78,
+        "flexible": 85.8
+      }
+    }
+  },
+  "fullscreen": {
+    "clickToClose": "Cliquez n’importe où pour fermer",
+    "closeAria": "Fermer l’image en plein écran"
+  },
+  "roomImage": {
+    "clickToEnlarge": "Cliquez sur l’image pour l’agrandir",
+    "prevAria": "Image précédente",
+    "nextAria": "Image suivante",
+    "pagination": "{{current}}/{{total}}",
+    "photoAlt": "Photo de {{room}}",
+    "noImage": "Aucune image disponible"
+  },
+  "carousel": {
+    "previousSlide": "Diapositive précédente",
+    "nextSlide": "Diapositive suivante"
+  },
+  "hero": {
+    "heading": "Nos chambres",
+    "subheading": "Choisissez la chambre parfaite pour votre séjour"
+  },
+  "filters": {
+    "all": "Toutes les chambres",
+    "private": "Chambres privées",
+    "dorms": "Dortoirs"
+  },
+  "filtersAria": "Filtrer par type de chambre",
+  "checkRatesNonRefundable": "Tarifs non remboursables",
+  "checkRatesFlexible": "Tarifs flexibles",
+  "ctaSuffix": {
+    "nonRefundable": "Non remboursable",
+    "flexible": "Flexible"
+  },
+  "details": "Détails",
+  "ratesFrom": "À partir de €{{price}}",
+  "selectDatesTitle": "Sélectionnez vos dates",
+  "checkInDate": "Date d’arrivée",
+  "checkOutDate": "Date de départ",
+  "adults": "Nombre d’adultes",
+  "confirm": "Confirmer",
+  "cancel": "Annuler",
+  "moreAboutThisRoom": "En savoir plus sur cette chambre",
+  "loadingPrice": "Chargement du tarif…",
+  "landingImageAlt": "Image d’accueil de {{room}}",
+  "priceNotes": {
+    "dorm": "Per night, per guest. One guest in one bunk bed."
+  }
+}

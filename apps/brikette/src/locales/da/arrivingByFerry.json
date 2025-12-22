@@ -1,0 +1,59 @@
+{
+  "slug": "arriving-by-ferry",
+  "meta": {
+    "title": "Fra Positanos færgeleje til Hostel Brikette – trin‑for‑trin‑guide",
+    "description": "Ankom uden stress: gå, tag Interno Positano‑bussen og følg vores bagagetips for at nå hostelet på under 15 minutter. Inkl. Google Maps‑links, billetinfo og tilgængelighedsråd."
+  },
+  "headings": {
+    "overview": "Positano havn → hostel via Interno‑bussen",
+    "portToPiazza": "Fra havnen til Piazza Dei Mulini",
+    "piazzaToStop": "Piazza Dei Mulini → lokalt busstoppested",
+    "busLook": "Hvordan ser bussen ud?",
+    "busLookExtra": "",
+    "stopToHostel": "Lokalt busstoppested → hostel",
+    "approach": "Tip: Sådan nærmer du dig hostelet"
+  },
+  "media": {
+    "busLook": {
+      "alt": "Hvid Interno Positano-minibus"
+    },
+    "busLookExtra": {
+      "alt": "Rød Interno Positano-minibus"
+    },
+    "stopToHostel": {
+      "alt": "Facade af Tabacchi-butikken, hvor bussen stopper"
+    },
+    "approach": {
+      "alt": "Hostelskilt og trapper på Via G. Marconi"
+    }
+  },
+  "content": {
+    "overview": "<strong>Tip 1:</strong> <a href=\"https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26\">Interno-bus køreplan &amp; billetpriser</a>.<br />\n<strong>Tip 2:</strong> Køb billetter hos enhver <em>Tabacchi</em> / kiosk.<br />\n<strong>Tip 3:</strong> Rejser du med bagage? Portører på molen leverer kufferter direkte til hostelet.",
+    "portToPiazza": "Følg <a href=\"https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2\">denne gåvejledning</a> fra hovedstranden til Piazza Dei Mulini.",
+    "piazzaToStop": "• Spring trapperne over – hop på Interno-bussen.<br />\n• Der kører en afgang cirka hver 30. minut fra kl. ~8 til midnat.<br />\n• Se ruten på <a href=\"https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0\">Google Maps</a>.",
+    "busLook": "Der findes flere bustyper, men LED-skiltet viser altid <em>“Interno Positano”</em>.",
+    "busLookExtra": "",
+    "stopToHostel": "• Bussen stopper foran den Tabacchi, du ser nedenfor.<br />\n• Stig af, drej <strong>til højre</strong>, og gå op til hovedvejen.<br />\n• Drej <strong>til venstre</strong>; fortsæt ≈100 m / 330 ft.<br />\n• Hostellet ligger på din højre side – gå op ad trappen til receptionen.<br />\n• Brug for trin-for-trin? <a href=\"https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2\">Åbn Google Maps</a>.",
+    "approach": "• Når du nærmer dig hostellet, ser du vores skilt ved terrassen på anden sal.<br />\n• Gå forbi skiltet, følg kurven, og tag trappen til højre op til receptionen."
+  },
+  "faq": {
+    "items": [
+      {
+        "question": "Sejler færgerne til Positano hele året?",
+        "answer": "Færgerne er sæsonbestemte (typisk april–oktober). Om vinteren er busser eller taxaer de primære muligheder."
+      },
+      {
+        "question": "Hvor kan jeg se færgetider i realtid?",
+        "answer": "I sommersæsonen kan du bruge rederiernes hjemmesider (fx NLG, Travelmar, Alilauro) eller aggregatorer som DirectFerries."
+      },
+      {
+        "question": "Hvilken mole skal jeg bruge i Positano?",
+        "answer": "Hovedmolen ligger ved Spiaggia Grande. På travle dage bør du tjekke din billet for den præcise ombordstigningsbane."
+      },
+      {
+        "question": "Tilgængelighed fra havnen",
+        "answer": "Ruten op til hostelet har mange trapper. Med tung bagage kan du overveje porterservice eller bussen til Chiesa Nuova."
+      }
+    ]
+  }
+}

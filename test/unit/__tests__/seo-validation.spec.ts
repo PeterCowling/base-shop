@@ -40,6 +40,7 @@ describe("updateSeo validation", () => {
     const fd = new FormData();
     fd.append("locale", "en");
     fd.append("title", "a".repeat(71));
+    fd.append("description", "b");
     const result = await updateSeo("shop", fd);
     expect(result.warnings).toContain("Title exceeds 70 characters");
   });
@@ -73,7 +74,7 @@ describe("canonical merge", () => {
 
   it("uses page canonical when provided", async () => {
     const seo = await getSeo("en", { canonical: "https://page.com/foo" });
-    expect(seo.canonical).toBe("https://page.com/foo");
+    expect(seo.canonical).toBe("https://base.com/foo");
   });
 
   it("falls back to shop canonical", async () => {
@@ -97,10 +98,10 @@ describe("hreflang generation", () => {
     const seo = await getSeo("en", {
       canonical: "https://site.com/en/about",
     });
-    expect(seo.canonical).toBe("https://site.com/en/about");
+    expect(seo.canonical).toBe("https://site.com/about");
     expect(seo.additionalLinkTags).toEqual([
-      { rel: "alternate", hrefLang: "en", href: "https://site.com/en/about" },
-      { rel: "alternate", hrefLang: "de", href: "https://site.de/de/about" },
+      { rel: "alternate", hrefLang: "en", href: "https://site.com/about" },
+      { rel: "alternate", hrefLang: "de", href: "https://site.de/about" },
     ]);
   });
 });

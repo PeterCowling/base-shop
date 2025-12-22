@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Ferragosto i Positano (Marias himmelsfärd)",
+    "description": "Hur Positano firar Ferragosto, vad som är öppet och hur du planerar dagen."
+  },
+  "linkLabel": "Ferragosto i Positano (Marias himmelsfärd)",
+  "intro": [
+    "Ferragosto den 15 augusti innebär fullpackade stränder, fyrverkerier och ändrade tidtabeller – planera i förväg så att helgen känns festlig i stället för stressig."
+  ],
+  "sections": [
+    {
+      "id": "expectations",
+      "title": "Det som händer under dagen",
+      "body": [
+        "Butiker och små matbutiker stänger tidigt – fyll på snacks och vatten kvällen innan.",
+        "Räkna med fulla stränder redan vid 09.00 och högtalare längs Spiaggia Grande fram till fyrverkerierna vid midnatt."
+      ]
+    },
+    {
+      "id": "bookings",
+      "title": "Bokningar och reservationer",
+      "body": [
+        "Boka restauranger och båtturer minst en vecka i förväg; många kräver förskottsbetalning eller kortgaranti under helgdagar.",
+        "Bekräfta bärartjänster 24 timmar i förväg om du anländer eller reser den 15:e – teamen kör reducerade pass."
+      ]
+    },
+    {
+      "id": "beach-day",
+      "title": "Strand- och badtips",
+      "body": [
+        "Ta med eget parasoll till den allmänna delen; lido-solstolar säljer slut och priserna toppar.",
+        "Bada tidigt eller vid solnedgång när livräddarna ser bättre – mitt på dagen gör trängseln strömmarna svårare att läsa."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport som reservplan",
+      "body": [
+        "SITA-bussarna går enligt helgtidtabell med färre turer – kolla anslagen och ställ dig i kö i god tid.",
+        "Färjor kan sälja slut; köp tur- och retur dagen innan och ha en bussplan om sjön blir grov."
+      ]
+    }
+  ],
+  "tips": [
+    "Packa öronproppar om ditt rum vetter mot stranden – fyrverkerierna och musiken efter showen kan pågå efter 01.00.",
+    "Ha småkontanter för kollektboxar om du går på Marias upptagning – kort accepteras sällan."
+  ],
+  "faqs": [
+    {
+      "q": "Är mataffärerna stängda hela dagen?",
+      "a": [
+        "Många håller helt stängt eller öppnar bara en kort stund på morgonen. Köp det du behöver senast kvällen den 14:e."
+      ]
+    },
+    {
+      "q": "Kan jag se fyrverkerierna från hostelterrassen?",
+      "a": [
+        "Ja – terrassen har fri sikt över bukten. Kom i god tid för att hitta plats och ta med en tunn tröja mot havsbrisen."
+      ]
+    }
+  ]
+}

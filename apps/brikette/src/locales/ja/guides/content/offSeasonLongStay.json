@@ -1,0 +1,127 @@
+{
+  "seo": {
+    "title": "オフシーズンの長期滞在ヒント",
+    "description": "静かな時期のネット環境や営業状況、日常の過ごし方を紹介。"
+  },
+  "linkLabel": "オフシーズン長期滞在のコツ",
+  "intro": [
+    "翻訳を準備中です。"
+  ],
+  "sections": [
+    {
+      "id": "housing",
+      "title": "Housing & rates",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Weather & packing",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "work-life",
+      "title": "Work & daily rhythm",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "community",
+      "title": "Staying social",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "tips": [
+    "翻訳を準備中です。",
+    "翻訳を準備中です。"
+  ],
+  "faqs": [
+    {
+      "q": "Do restaurants stay open?",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "q": "翻訳を準備中です。",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "fallback": {
+    "tocTitle": "On this page",
+    "intro": [],
+    "toc": [
+      {
+        "href": "#connectivity",
+        "label": "Connectivity"
+      },
+      {
+        "href": "#groceries",
+        "label": "Groceries & essentials"
+      },
+      {
+        "href": "#transport",
+        "label": "Transport in off‑season"
+      },
+      {
+        "href": "#weather",
+        "label": "Weather & packing"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "connectivity",
+        "title": "Connectivity",
+        "body": [
+          "翻訳を準備中です。"
+        ]
+      },
+      {
+        "id": "groceries",
+        "title": "Groceries & essentials",
+        "body": [
+          "翻訳を準備中です。"
+        ]
+      },
+      {
+        "id": "transport",
+        "title": "Transport in off‑season",
+        "body": [
+          "翻訳を準備中です。"
+        ]
+      },
+      {
+        "id": "weather",
+        "title": "Weather & packing",
+        "body": [
+          "翻訳を準備中です。"
+        ]
+      }
+    ],
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "翻訳を準備中です。",
+        "a": [
+          "翻訳を準備中です。"
+        ]
+      }
+    ]
+  }
+}

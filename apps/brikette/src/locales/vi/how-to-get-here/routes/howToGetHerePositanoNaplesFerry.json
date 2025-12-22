@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "title": "Từ Positano đến Naples bằng phà | Hostel Brikette",
+    "description": "Các bước rõ ràng từ Hostel Brikette xuống cảng Positano rồi đi phà tới Naples, kèm mẹo mua vé và lưu ý khi đến nơi."
+  },
+  "hero": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Positano đến Naples – Hướng dẫn đi phà",
+    "description": "Làm theo các bước này để đi bộ từ Hostel Brikette tới cảng Positano, mua vé phà và tiếp tục tới Naples, bao gồm ghi chú theo mùa và hướng dẫn đến ga Napoli Centrale.",
+    "tipLabel": "Mẹo",
+    "tip": "Nếu phà bị hủy vì thời tiết xấu, hãy chuyển sang hành trình xe buýt/tàu trong <GuideLink>Tổng quan Cách đến đây</GuideLink>."
+  },
+  "sections": {
+    "journeyOverview": {
+      "title": "Tổng quan hành trình",
+      "paragraphs": [
+        "Các chuyến phà giữa Positano và Naples hoạt động nhiều nhất từ mùa xuân đến đầu mùa thu và có thể bị hủy khi biển động. Thời gian di chuyển thường khoảng 70–90 phút tùy hãng và loại tàu.",
+        "So sánh giờ chạy và đặt vé: <ScheduleLink>Positano.com (lịch tổng hợp)</ScheduleLink>."
+      ]
+    },
+    "photoGuide": {
+      "title": "Hướng dẫn hình ảnh (tham khảo)",
+      "description": "Tư liệu hình ảnh cho quãng đường đi bộ và khu bán vé phà tại cảng.",
+      "items": {
+        "routeMap": {
+          "alt": "Bản đồ tổng quan tuyến đi bộ từ Hostel Brikette tới cảng Positano",
+          "caption": "Bản đồ tổng quan: Hostel tới cảng Positano"
+        },
+        "approach": {
+          "alt": "Ảnh lối xuống Spiaggia Grande của Positano và bến du lịch",
+          "caption": "Lối xuống Spiaggia Grande (bến du lịch)"
+        },
+        "detailMap": {
+          "alt": "Bản đồ chi tiết đánh dấu phía tay phải Spiaggia Grande nơi đặt cảng",
+          "caption": "Bản đồ chi tiết: vị trí cảng trên Spiaggia Grande"
+        },
+        "ticketBooths": {
+          "alt": "Quầy vé của các hãng phà tại cảng Positano với bảng giờ chuyến kế tiếp",
+          "caption": "Quầy vé hãng phà"
+        },
+        "point1": {
+          "alt": "Điểm 1: ngã rẽ cạnh cửa hàng Tabacchi trên Via G. Marconi gần Hostel Brikette",
+          "caption": "Điểm 1: Ngã Tabacchi (rẽ phải)"
+        },
+        "point2": {
+          "alt": "Điểm 2: khúc cua đầu tiên nơi bạn rời đường để đi xuống cầu thang",
+          "caption": "Điểm 2: rời đường, xuống cầu thang"
+        },
+        "point3": {
+          "alt": "Điểm 3: cuối bậc thang gặp đường trước khi băng qua",
+          "caption": "Điểm 3: hết cầu thang tới mặt đường"
+        },
+        "point4": {
+          "alt": "Điểm 4: băng qua đường, rẽ trái một đoạn ngắn rồi đi xuống cầu thang",
+          "caption": "Điểm 4: qua đường, rẽ trái, xuống cầu thang"
+        },
+        "point5": {
+          "alt": "Điểm 5: lối vòm dẫn ra bãi biển và bến cảng",
+          "caption": "Điểm 5: vòm lối vào cảng"
+        }
+      }
+    },
+    "walkToPort": {
+      "title": "Đi bộ tới cảng Positano",
+      "steps": [
+        "Ra khỏi hostel bằng cửa chính.",
+        "Đi xuống cầu thang ra đường, rẽ trái và đi khoảng hơn 100 m.",
+        "Ở ngã rẽ đầu tiên (điểm 1), rẽ phải cạnh cửa hàng Tabacchi (tòa nhà đầu tiên bên phải).",
+        "Tiếp tục đi xuống dốc; tại khúc cua gấp đầu tiên (điểm 2), rời đường và đi thẳng xuống cầu thang.",
+        "Xuống hết cầu thang gặp mặt đường (điểm 3); băng qua và đi thẳng xuống dãy cầu thang tiếp theo.",
+        "Khi cầu thang đó kết thúc ở mặt đường, băng qua, rẽ trái một đoạn ngắn rồi xuống cầu thang tại điểm 4.",
+        "Xuống tới đáy, rẽ phải tới điểm 5 rồi đi tiếp qua lối vòm bên phải.",
+        "Bến cảng (cầu tàu Spiaggia Grande) nằm cách đó khoảng 50 m ở phía tay phải bãi biển."
+      ]
+    },
+    "tickets": {
+      "title": "Mua vé và lên tàu",
+      "steps": [
+        "Tại cảng, mỗi hãng phà có quầy riêng.",
+        "Biển bên cạnh quầy hiển thị chuyến khởi hành kế tiếp của hãng đó.",
+        "Mua vé trực tiếp từ hãng; đến sớm 20–30 phút để đổi phiếu (voucher) nếu cần và xếp hàng.",
+        "Sau khi mua vé, đi ra cuối cầu tàu và chờ thông báo lên tàu."
+      ]
+    },
+    "arrival": {
+      "title": "Khi đến Naples",
+      "paragraphs": [
+        "Xuống tàu tại khu cảng rồi tiếp tục tới phương tiện kết nối tiếp theo. Để tới Napoli Centrale (Piazza Garibaldi), tuyến xe điện thường là lựa chọn đơn giản nhất từ khu cảng.",
+        "Lộ trình gợi ý: <TramLink>Đi xe điện giữa cảng và Napoli Centrale</TramLink>.",
+        "Khi quay lại Positano và cần lối đi thuận tiện cho hành lý, xem: <LuggageGuideLink>Bến phà → Hostel Brikette</LuggageGuideLink>."
+      ]
+    }
+  },
+  "links": {
+    "guide": "Tổng quan Cách đến đây",
+    "schedule": "Positano.com (lịch tổng hợp)",
+    "tram": "Đi xe điện giữa cảng và Napoli Centrale",
+    "luggageGuide": "Bến phà → Hostel Brikette"
+  }
+}

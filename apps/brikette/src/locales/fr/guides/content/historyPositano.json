@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Histoire de Positano (résumé)",
+    "description": "Chronologie condensée : commerce maritime, pèlerinages, essor touristique moderne."
+  },
+  "linkLabel": "Histoire de Positano (résumé)",
+  "intro": [
+    "Comprenez l'histoire de Positano — des racines maritimes à la découverte hollywoodienne — pour donner du contexte à vos balades."
+  ],
+  "sections": [
+    {
+      "id": "origins",
+      "title": "Origines & commerce",
+      "body": [
+        "Positano commence comme un ensemble de villas romaines en bord de mer ; plus tard, les marchands médiévaux exportent la laine et importent des épices grâce à la flotte d'Amalfi.",
+        "Les tours de guet le long de la côte prévenaient les raids sarrasins — beaucoup servent encore de points de vue aujourd'hui."
+      ]
+    },
+    {
+      "id": "20th",
+      "title": "Transformation du XXe siècle",
+      "body": [
+        "Après la Seconde Guerre mondiale, des artistes et écrivains comme Steinbeck révèlent le charme de Positano, orientant l'économie vers le tourisme.",
+        "Les routes améliorées dans les années 1950 relient Positano au reste de l'Italie, ouvrant la voie aux hôtels de charme et aux visiteurs."
+      ]
+    },
+    {
+      "id": "today",
+      "title": "Aujourd'hui",
+      "body": [
+        "Le tourisme est désormais central, avec la volonté d'équilibrer préservation et afflux de visiteurs via des quotas de ferries et des zones piétonnes.",
+        "Les artisans locaux fabriquent toujours sandales et céramiques, perpétuant les métiers traditionnels aux côtés de l'hospitalité."
+      ]
+    }
+  ],
+  "tips": [
+    "Visitez la villa romaine sous Santa Maria Assunta pour admirer les mosaïques mises au jour en 1987.",
+    "Repérez les panneaux d'information le long de Via dei Mulini qui mettent en lumière les bâtiments historiques."
+  ],
+  "faqs": [
+    {
+      "q": "Où en apprendre plus sur place ?",
+      "a": [
+        "Le musée MAR Positano combine archéologie et installations multimédias — idéal les jours de pluie."
+      ]
+    },
+    {
+      "q": "Pourquoi y a-t-il autant d'escaliers ?",
+      "a": [
+        "La ville s'est construite verticalement pour épouser la falaise ; les escaliers ont remplacé les rues pour circuler rapidement entre les terrasses."
+      ]
+    }
+  ]
+}

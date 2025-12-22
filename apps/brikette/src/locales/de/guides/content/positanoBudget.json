@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "Positano mit kleinem Budget: Praxisleitfaden",
+    "description": "So genießt du Positano preiswert: Transport, günstiges Essen, kostenlose Ausblicke, Budget-Unterkünfte und Spartipps."
+  },
+  "linkLabel": "Positano mit kleinem Budget",
+  "intro": [
+    "Streck dein Budget, indem du autofrei reist, günstig isst und freie Aussichtspunkte nutzt – ohne auf Positanos Highlights zu verzichten."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Günstig unterwegs",
+      "body": [
+        "Nutze Alibus oder Curreri-Shuttle nach Sorrent und weiter mit dem SITA-Bus nach Positano; kaufe Bustickets blockweise im Tabacchi, um Aufschläge zu vermeiden.",
+        "Bei ruhiger See kombinierst du eine Fährstrecke mit dem Bus – nur die nötigen Abschnitte vorab reservieren, damit du nicht zu viel zahlst."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Günstig übernachten",
+      "body": [
+        "Buche Hostel-Dorms oder geteilte Apartments nahe Chiesa Nuova, um Portergebühren und Treppen zu sparen.",
+        "Für längere Aufenthalte Meta oder Praiano als Basis wählen – die Anfahrt dauert 30–40 Minuten, Zimmer sind in der Hochsaison deutlich günstiger."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Sparen bei Essen & Drinks",
+      "body": [
+        "Greif zu Panini, Sfogliatelle und Espresso an der Bar statt beim Brunch; füll vor dem Losgehen eine 1-Liter-Flasche am Hostel.",
+        "Teilt Antipasti, meidet Coperto durch einfache Trattorien und picknickt bei Sonnenuntergang mit Delieinkäufen auf der Terrasse."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Preiswerte Erlebnisse",
+      "body": [
+        "Plane kostenfreie Wanderungen wie den Path of the Gods (Bus nach Nocelle) oder Sonnenuntergangsspaziergänge auf der Via Cristoforo Colombo.",
+        "Gönn dir eine besondere Aktivität – etwa eine geteilte Bootstour oder einen Kochkurs – und balanciere den Rest mit Strandtagen und Aussichtspunkten aus."
+      ]
+    }
+  ],
+  "tips": [
+    "Reise in der Nebensaison (April–Mai, Ende September) für niedrigere Preise und leichter verfügbare Fährplätze.",
+    "Halte Ausgaben in einer Notiz-App fest; tägliche Aufteilung gemeinsamer Kosten hält Gruppen auf Kurs."
+  ],
+  "faqs": [
+    {
+      "q": "Welches Tagesbudget einplanen?",
+      "a": [
+        "70–90 € decken Schlafsaal, Delimahlzeiten, Busfahrten und eine bezahlte Aktivität ab; für Privatzimmer oder Sundowner 20–30 € addieren."
+      ]
+    },
+    {
+      "q": "Ist Trinkgeld üblich?",
+      "a": [
+        "Service ist inklusive; runde für guten Service 1–2 € auf oder gib in gehobenen Lokalen nur dann 10 %, wenn es sich wirklich lohnt."
+      ]
+    }
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "faqsTitle": "FAQ",
+  "heroAlt": "Budgetblick über Positano von einer Terrasse",
+  "costBreakdown": {
+    "title": "Beispielhafte Tageskosten",
+    "slices": [
+      {
+        "label": "Bett (Dorm)",
+        "value": 45
+      },
+      {
+        "label": "Mahlzeiten & Snacks",
+        "value": 25
+      },
+      {
+        "label": "Transport",
+        "value": 12
+      },
+      {
+        "label": "Aktivitäten & Extras",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "Kostenfreier Aussichtspunkt über Positano",
+      "caption": "Kostenlose Aussichtspunkte"
+    },
+    {
+      "alt": "Picknick mit Positano-Blick",
+      "caption": "Picknick statt Restaurant"
+    }
+  ]
+}

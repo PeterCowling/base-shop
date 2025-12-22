@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "title": "Ravello do Positano autobusem | Hostel Brikette",
+    "description": "Instrukcja krok po kroku z Ravello do Positano przez Amalfi z wykorzystaniem autobusów SITA, ze wskazówkami dotyczącymi rozkładów, przystanków i końcowego dojścia do Hostel Brikette."
+  },
+  "header": {
+    "eyebrow": "Przewodnik podróżny Hostel Brikette",
+    "title": "Ravello → Positano – przez Amalfi autobusem",
+    "description": "Podróżuj z Ravello do Positano z prostą przesiadką w Amalfi. Ten przewodnik wyjaśnia, gdzie kupić i skasować bilety SITA, jak czytać rozkład jazdy oraz czego spodziewać się podczas przesiadki w Amalfi — a także jak pokonać krótki odcinek od przystanku Positano (Chiesa Nuova) do Hostel Brikette."
+  },
+  "tip": {
+    "eyebrow": "Wskazówka",
+    "body": "Chcesz poznać wszystkie opcje transportu? Otwórz <GuideLink>{{guideLabel}}</GuideLink>, aby sprawdzić promy, taksówki i trasy mieszane."
+  },
+  "journeyOverview": {
+    "title": "Przegląd podróży",
+    "description": "Podróż trwa około 1,5–2,5 godziny w zależności od przesiadek. Najpierw jedź autobusem SITA z Ravello do Amalfi, a następnie przesiądź się na autobus SITA w kierunku Positano/Sorrento. W sezonie autobusy kursują często i mogą być zatłoczone — przyjdź nieco wcześniej, aby ustawić się w kolejce."
+  },
+  "sitaTickets": {
+    "title": "Autobusy SITA i bilety",
+    "points": [
+      "Autobusy na trasie Ravello – Amalfi obsługuje SITA (SITA Sud Srl).",
+      "Najpierw musisz dojechać do Amalfi, a następnie przesiąść się na drugi autobus w kierunku Positano.",
+      "Na trasie Ravello → Amalfi kursują dwie opcje: 5110 i 5120. Linia 5110 jest zwykle o ok. 10 minut szybsza.",
+      "Bilety kupisz w kioskach lub sklepach tytoniowych (tabacchi) i przygotuj je do skasowania przy wejściu."
+    ]
+  },
+  "timetable": {
+    "title": "Rozkłady jazdy",
+    "description": "Sprawdź aktualne rozkłady na <TimetableLink>{{timetableLabel}}</TimetableLink>.",
+    "notesTitle": "Jak czytać rozkład",
+    "points": [
+      "Wiersze w pierwszej kolumnie wymieniają każdy przystanek na trasie.",
+      "Kolumny odpowiadają kursom oznaczonym literami.",
+      "Podróżujesz od poniedziałku do soboty? Korzystaj z kolumn „F” i „G”.",
+      "Podróżujesz w niedzielę lub święto? Wybierz kolumny „G” i „H”."
+    ],
+    "linkLabel": "Positano.com (przegląd rozkładu SITA)"
+  },
+  "ravelloToAmalfi": {
+    "title": "Ravello → Amalfi",
+    "points": [
+      "Wsiądź w autobus SITA 5110 lub 5120 z Ravello do Amalfi (5110 jest zwykle szybszy).",
+      "Skasuj bilet przy wejściu i zachowaj go do końca podróży.",
+      "Wysiądź na dworcu autobusowym w Amalfi, aby przesiąść się na kurs do Positano."
+    ]
+  },
+  "waitingInAmalfi": {
+    "title": "Oczekiwanie w Amalfi",
+    "points": [
+      "Po przyjeździe do Amalfi możesz zwiedzić centrum miasteczka podczas oczekiwania.",
+      "Wróć w to samo miejsce przy dworcu autobusowym, gdzie wysiadłeś, aby złapać autobus do Positano.",
+      "Wsiądź do dowolnego autobusu SITA oznaczonego jako Positano/Sorrento przez Wybrzeże Amalfitańskie."
+    ]
+  },
+  "arrivingPositano": {
+    "title": "Przyjazd do Positano (Chiesa Nuova)",
+    "points": [
+      "Najbliższy przystanek SITA to Positano (Chiesa Nuova) przy Via G. Marconi.",
+      "Znajduje się około 140 metrów (490 stóp) od wejścia do hostelu.",
+      "Będziesz czekać na zewnątrz kawiarni/bar „Bar Internazionale”."
+    ],
+    "figure": {
+      "alt": "Przystanek SITA Positano Chiesa Nuova przed barem Bar Internazionale",
+      "caption": "Przyjdź kilka minut wcześniej, aby zapewnić sobie miejsce; latem autobusy szybko się zapełniają."
+    }
+  },
+  "walking": {
+    "title": "Spacer z przystanku do hostelu",
+    "points": [
+      "Od przystanku Chiesa Nuova idź jeszcze ok. 100 metrów (330 stóp).",
+      "Skręć w prawo i wejdź po schodach do głównych drzwi hostelu.",
+      "Wypatruj naszego szyldu przy tarasie; wejście znajduje się tuż nad zakrętem."
+    ]
+  },
+  "links": {
+    "guideOverview": "Przegląd Jak do nas dotrzeć"
+  }
+}

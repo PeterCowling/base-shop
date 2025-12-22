@@ -18,6 +18,12 @@ export {
 export type { CustomerSession } from "./session";
 export type { SessionStore, SessionRecord } from "./store";
 export { setSessionStoreFactory } from "./store";
+export {
+  beginOidcLogin,
+  completeOidcLogin,
+  buildOidcLogoutUrl,
+} from "./oidc";
+export type { OidcProfile } from "./oidc";
 
 export {
   enrollMfa,

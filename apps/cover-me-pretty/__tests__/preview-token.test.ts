@@ -31,8 +31,8 @@ describe("/api/preview-token", () => {
       __esModule: true,
       requirePermission: jest.fn(),
     }));
-    jest.doMock("@acme/config/env/auth", () => ({
-      authEnv: { UPGRADE_PREVIEW_TOKEN_SECRET: "shhh" },
+    jest.doMock("@acme/config/env/core", () => ({
+      coreEnv: { UPGRADE_PREVIEW_TOKEN_SECRET: "shhh" },
     }));
     const { GET } = await import("../src/app/api/preview-token/route");
     const res = await GET(

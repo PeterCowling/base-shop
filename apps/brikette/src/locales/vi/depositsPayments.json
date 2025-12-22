@@ -1,0 +1,43 @@
+{
+  "slug": "deposits-payments",
+  "meta": {
+    "title": "Hướng dẫn đặt cọc & thanh toán – Positano Hostel",
+    "description": "Cẩm nang về đặt cọc, phương thức thanh toán, xác nhận đặt phòng, thay đổi/hủy và khoản giữ bảo đảm khi đặt phòng."
+  },
+  "headings": {
+    "submittingBookingRequest": "Cách gửi yêu cầu đặt phòng",
+    "processingBookingRequest": "Cách chúng tôi xử lý yêu cầu",
+    "decliningBookingRequest": "Khi nào có thể từ chối yêu cầu",
+    "requestSizeLimit": "Giới hạn cho một yêu cầu",
+    "counterOffer": "Nếu phòng bạn muốn không còn",
+    "prepaidNonRefundableBookingsPolicy": "Đặt trước không hoàn tiền",
+    "confirmationEmail": "Email xác nhận",
+    "numberOfGuestsIncluded": "Ai được tính trong đặt phòng",
+    "scopeOfFacilitiesIncluded": "Những gì bao gồm trong kỳ nghỉ",
+    "financialObligation": "Trách nhiệm tài chính của bạn",
+    "roomAllocation": "Cách xếp giường và phòng",
+    "allocatingUpgrades": "Nâng hạng phòng",
+    "thirdPartyPayments": "Thanh toán qua bên thứ ba",
+    "bookingRequestDeposits": "Đặt cọc đặt phòng",
+    "bookingRequestPreauthorisations": "Tạm giữ thẻ",
+    "safeguardingProcess": "Khoản giữ bảo đảm"
+  },
+  "content": {
+    "submittingBookingRequest": "Gửi yêu cầu đặt phòng qua OTA được ủy quyền hoặc trực tiếp trên website của chúng tôi — tin nhắn chat hoặc ghé qua không được tính. Khi nhấn 'Book', bạn xác nhận tên, ngày và số đêm chính xác và đồng ý Điều khoản & điều kiện.",
+    "processingBookingRequest": "Chúng tôi bắt đầu xử lý ngay khi nhận đủ khoản đặt cọc, tạm giữ hoặc thanh toán qua phương thức được chấp nhận. Hãy đảm bảo đặt phòng hiển thị tên chủ thẻ sẽ thanh toán. Nếu người trả tiền khác tên, hãy email giấy ủy quyền ngắn của chủ thẻ trước khi chúng tôi xử lý.",
+    "decliningBookingRequest": "Chúng tôi hiếm khi từ chối đặt phòng nhưng vẫn giữ quyền làm vậy — ví dụ khi thanh toán thất bại, thiếu thông tin bắt buộc hoặc yêu cầu vi phạm Điều khoản & điều kiện.",
+    "requestSizeLimit": "Mỗi yêu cầu đặt phòng bao gồm tối đa bảy (7) đêm liên tiếp và nhiều nhất năm (5) khách. Cần ở lâu hơn hoặc nhóm đông hơn? Hãy tách thành các yêu cầu riêng.",
+    "counterOffer": "Nếu phòng bạn muốn đã được đặt, chúng tôi sẽ gửi email gợi ý phương án gần nhất. Chấp nhận đề nghị và hoàn tất thanh toán hoặc tạm giữ để cố định kỳ nghỉ.",
+    "prepaidNonRefundableBookingsPolicy": "Chọn gói trả trước không hoàn tiền giúp tiết kiệm nhưng yêu cầu thanh toán toàn bộ ngay. Chúng tôi sẽ thử trừ thẻ tối đa ba lần; nếu thất bại, yêu cầu bị hủy. Các đặt phòng này không được hoàn tiền hoặc chỉnh sửa.",
+    "confirmationEmail": "Sau khi thanh toán thành công, chúng tôi gửi email xác nhận đến địa chỉ bạn cung cấp. Email liệt kê mã đặt, ngày đến, thời gian lưu trú và tiện ích kèm theo. Đọc kỹ và báo ngay nếu có sai sót.",
+    "numberOfGuestsIncluded": "Đặt phòng của bạn tự động bao gồm:\n• 1 khách mỗi giường đơn\n• Tối đa 2 khách mỗi giường đôi\n• Tối đa sức chứa công bố của mọi căn hộ bạn đặt\nVì an toàn và thoải mái, chúng tôi không thể nhận thêm khách vượt quá giới hạn phòng.",
+    "scopeOfFacilitiesIncluded": "Mỗi khách được nhận:\n• Đồ vải sạch và thẻ từ\n• Sử dụng phòng tắm chung\n• Nước nóng trong khung giờ quy định (khoảng 07:00–10:30 và 17:00–22:30)\n• Quyền vào các khu sinh hoạt chung\nCác tiện ích khác (bữa sáng, Wi‑Fi, giữ hành lý…) là miễn phí và có quy định riêng.",
+    "financialObligation": "Chủ thẻ được ghi trong đặt phòng chịu trách nhiệm mọi khoản phí: tiền phòng, thiệt hại, dọn dẹp, tiền phạt khi vi phạm nội quy. Khoản chưa thanh toán có thể được trừ trực tiếp vào thẻ lưu trên hệ thống.",
+    "roomAllocation": "Chúng tôi đảm bảo đúng loại giường và hạng phòng bạn đã đặt. Đặt ký túc đảm bảo một giường trong hạng chọn, nhưng chúng tôi không thể chắc chắn cả nhóm ở chung một phòng. Giường được chọn theo nguyên tắc đến trước chọn trước khi bạn check-in.",
+    "allocatingUpgrades": "Đôi khi chúng tôi nâng hạng miễn phí, hoặc bạn có thể trả thêm khi đặt. Nếu sau đó nâng hạng miễn phí không khả thi, chúng tôi có thể chuyển bạn về hạng gốc đã thanh toán.",
+    "thirdPartyPayments": "Khi đặt qua OTA, bạn thanh toán trên hệ thống của họ theo điều khoản riêng. Chúng tôi không nhìn thấy thông tin thẻ và không chịu trách nhiệm cho sự cố trên nền tảng đó. Hãy kiểm tra thanh toán thành công và đã nhận email xác nhận.",
+    "bookingRequestDeposits": "Một số gói yêu cầu đặt cọc để giữ phòng. Gói trả trước cần thanh toán 100% ngay. Tiền đặt cọc không hoàn lại. Nếu chúng tôi không thu được đặt cọc, yêu cầu sẽ tự động hủy.",
+    "bookingRequestPreauthorisations": "Với gói linh hoạt, chúng tôi có thể tạm giữ trên thẻ số tiền bằng đêm đầu hoặc cả kỳ lưu trú để đảm bảo đặt phòng. Nếu tạm giữ thất bại, yêu cầu sẽ bị từ chối.",
+    "safeguardingProcess": "Khi check-in, chúng tôi có thể giữ bảo đảm tương đương một đêm mỗi khách để phòng phí phạt, gia hạn hoặc hư hỏng. Nếu không thể giữ trên thẻ, bạn có thể để tiền mặt tương đương hoặc dùng thẻ của khách khác. Nếu cả hai không khả thi, chúng tôi buộc phải hủy đặt phòng."
+  }
+}

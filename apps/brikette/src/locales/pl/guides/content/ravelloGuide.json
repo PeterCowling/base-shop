@@ -1,0 +1,93 @@
+{
+  "seo": {
+    "title": "Przewodnik po Ravello",
+    "description": "Co zobaczyć w Ravello: ogrody, koncerty, logistyka przyjazdu i powrotu."
+  },
+  "linkLabel": "Przewodnik po Ravello",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "villas",
+      "title": "Villas & gardens",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "music",
+      "title": "Music & events",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Getting there",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Allow extra time for the return bus; late-afternoon departures fill quickly, so queue 20 minutes early."
+      ]
+    }
+  ],
+  "tips": [
+    "Wear comfortable shoes—Ravello's lanes are cobbled and include gentle slopes.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "faqs": [
+    {
+      "q": "Can I walk to Ravello from Amalfi?",
+      "a": [
+        "It is a steep 5 km (3.1 mi) climb via ancient staircases. Only attempt if you are fit, start early, and carry water."
+      ]
+    },
+    {
+      "q": "Do I need to pre-book villa tickets?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#villas",
+        "label": "Villas & gardens"
+      },
+      {
+        "href": "#concerts",
+        "label": "Concerts"
+      },
+      {
+        "href": "#getting",
+        "label": "Getting there"
+      }
+    ],
+    "sections": [
+      {
+        "id": "villas",
+        "title": "Villas & gardens",
+        "body": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      },
+      {
+        "id": "concerts",
+        "title": "Concerts",
+        "body": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      },
+      {
+        "id": "getting",
+        "title": "Getting there",
+        "body": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      }
+    ]
+  }
+}

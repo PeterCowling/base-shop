@@ -10,6 +10,7 @@ interface FindManyArgs {
   where?: {
     shop?: string;
     customerId?: string | null;
+    stripePaymentIntentId?: string | null;
   };
 }
 
@@ -30,6 +31,14 @@ interface FindUniqueArgs {
 
 interface UpdateArgs {
   where: ShopSessionIdWhere | ShopTrackingNumberWhere;
+  data: Partial<RentalOrder>;
+}
+
+interface UpdateManyArgs {
+  where?: {
+    shop?: string;
+    stripePaymentIntentId?: string | null;
+  };
   data: Partial<RentalOrder>;
 }
 
@@ -62,6 +71,7 @@ interface RentalOrderDelegate {
   findUnique(args: FindUniqueArgs): Promise<RentalOrder | null>;
   create(args: { data: RentalOrder }): Promise<RentalOrder>;
   update(args: UpdateArgs): Promise<RentalOrder>;
+  updateMany(args: UpdateManyArgs): Promise<{ count: number }>;
 }
 
 export function createRentalOrderDelegate(): RentalOrderDelegate {
@@ -72,6 +82,11 @@ export function createRentalOrderDelegate(): RentalOrderDelegate {
         if (!where) return true;
         if (where.shop && o.shop !== where.shop) return false;
         if (where.customerId && o.customerId !== where.customerId) return false;
+        if (
+          typeof where.stripePaymentIntentId === "string" &&
+          o.stripePaymentIntentId !== where.stripePaymentIntentId
+        )
+          return false;
         return true;
       });
     },
@@ -110,6 +125,20 @@ export function createRentalOrderDelegate(): RentalOrderDelegate {
       if (!order) throw new Error("Order not found"); // i18n-exempt -- DS-0001 Internal error message, not UI copy
       Object.assign(order, data);
       return order;
+    },
+    async updateMany({ where, data }: UpdateManyArgs) {
+      let count = 0;
+      for (const order of rentalOrders) {
+        if (where?.shop && order.shop !== where.shop) continue;
+        if (
+          typeof where?.stripePaymentIntentId === "string" &&
+          order.stripePaymentIntentId !== where.stripePaymentIntentId
+        )
+          continue;
+        Object.assign(order, data);
+        count += 1;
+      }
+      return { count };
     },
   } satisfies RentalOrderDelegate;
 }

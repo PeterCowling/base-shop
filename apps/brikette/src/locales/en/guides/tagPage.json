@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "{{count}} article",
+  "articleCount_other": "{{count}} articles",
+  "topTagsHeading": "Top tags",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

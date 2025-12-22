@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Phòng đôi riêng nhìn ra biển và ký túc xá tiết kiệm: xem ảnh, tiện nghi và giá theo thời gian thực, sau đó đặt trực tiếp để có giá tốt nhất tại Hostel Brikette Positano.",
+    "ogImageAlt": "Nội thất phòng ký túc xá"
+  },
+  "facilities": {
+    "privateRoom": "Phòng riêng",
+    "mixedDorm": "Ký túc xá hỗn hợp",
+    "femaleDorm": "Ký túc xá nữ",
+    "femaleRoom": "Phòng chỉ dành cho nữ",
+    "doubleBedForTwo": "Một giường đôi cho tối đa hai khách",
+    "threeSingleBedsThreeGuests": "Ba giường đơn, cho tối đa ba khách",
+    "oneDormBedTwoGuests": "Một giường tầng (ký túc) — tổng cộng hai giường, cho tối đa hai khách",
+    "threeDormBedsSixGuests": "Ba giường ký túc — tổng cộng sáu giường, cho tối đa sáu khách",
+    "threeDormBedsPlusSingleSevenGuests": "Ba giường ký túc + một giường đơn (tổng 7), tối đa bảy khách",
+    "fourDormBedsEightGuests": "Bốn giường ký túc — tổng cộng tám giường, cho tối đa tám khách",
+    "thirdFloor": "Nằm ở tầng ba",
+    "fourthFloor": "Nằm ở tầng bốn",
+    "bathroomEnsuite": "Phòng tắm riêng trong phòng",
+    "bathroomPrivate": "Phòng tắm riêng",
+    "bathroomSharedFemale": "Phòng tắm chung (nữ)",
+    "seaViewTerrace": "Sân thượng nhìn ra biển",
+    "seaViewExtraLargeTerrace": "Nhìn ra biển với sân thượng siêu rộng",
+    "gardenView": "Hướng vườn",
+    "courtyardView": "Hướng sân trong",
+    "noView": "Không có tầm nhìn",
+    "airCon": "Điều hòa không khí",
+    "keycard": "Cửa vào bằng thẻ từ",
+    "linen": "Có sẵn ga giường và khăn tắm"
+  },
+  "rooms": {
+    "title": "Danh sách phòng",
+    "double_room": {
+      "title": "Phòng đôi",
+      "bed_intro": "Tầm nhìn biển tuyệt đẹp — lý tưởng cho các cặp đôi.",
+      "bed_description": "Phòng đôi là không gian riêng tư với một giường đôi cho tối đa hai khách. Nằm ở tầng ba, phòng có phòng tắm trong phòng, sân thượng nhìn ra biển, điều hòa và cửa vào bằng thẻ từ. Có sẵn ga giường và khăn tắm.",
+      "facilities": [
+        "privateRoom",
+        "doubleBedForTwo",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 259.2,
+        "flexible": 285.12
+      }
+    },
+    "room_10": {
+      "title": "Bản dịch đang được chuẩn bị.",
+      "bed_intro": "Khi bạn cần sáu giường và phòng tắm cao cấp.",
+      "bed_description": "Ký túc xá Premium là ký túc hỗn hợp với ba giường (tổng sáu), cho tối đa sáu khách. Nằm ở tầng bốn, có điều hòa, cửa vào bằng thẻ từ và phòng tắm trong phòng (không có tầm nhìn). Cung cấp ga giường và khăn tắm khi nhận phòng.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 60.75,
+        "flexible": 66.82
+      }
+    },
+    "room_11": {
+      "title": "Ký túc xá nữ hạng Superior – Sân thượng lớn",
+      "bed_intro": "Tầm nhìn đẹp nhất từ sân thượng rộng rãi và phòng tắm tuyệt vời.",
+      "bed_description": "Ký túc xá nữ hạng Superior có ba giường ký túc (tổng sáu), cho tối đa sáu khách. Nằm ở tầng bốn, có điều hòa, cửa vào thẻ từ, phòng tắm trong phòng và tầm nhìn biển với sân thượng siêu rộng. Cung cấp ga giường và khăn tắm khi nhận phòng.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 72.4,
+        "flexible": 79.64
+      }
+    },
+    "room_12": {
+      "title": "Bản dịch đang được chuẩn bị.",
+      "bed_intro": "Tầm nhìn đẹp nhất từ sân thượng rộng rãi và phòng tắm chất lượng.",
+      "bed_description": "Ký túc xá hỗn hợp hạng Superior có ba giường ký túc (tổng sáu), cho tối đa sáu khách. Nằm ở tầng bốn, gồm điều hòa, cửa vào thẻ từ, phòng tắm riêng và tầm nhìn biển với sân thượng siêu rộng. Cung cấp ga giường và khăn tắm khi nhận phòng.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomPrivate",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 74.4,
+        "flexible": 81.84
+      }
+    },
+    "room_3": {
+      "title": "Ký túc xá nữ giá tốt",
+      "bed_intro": "Lựa chọn tiết kiệm cho khách nữ.",
+      "bed_description": "Ký túc xá nữ giá tốt có bốn giường (tổng tám), cho tối đa tám khách. Nằm ở tầng ba, có điều hòa, cửa vào thẻ từ và sử dụng phòng tắm nữ chung. Không có tầm nhìn. Cung cấp ga giường và khăn tắm khi nhận phòng.",
+      "facilities": [
+        "femaleDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_4": {
+      "title": "Ký túc xá hỗn hợp giá tốt",
+      "bed_intro": "Lựa chọn tiết kiệm cho khách nam và nữ.",
+      "bed_description": "Ký túc xá hỗn hợp giá tốt có bốn giường ký túc (tổng tám), cho tối đa tám khách. Ở tầng ba, có điều hòa, cửa vào thẻ từ và dùng chung phòng tắm nữ. Không có tầm nhìn. Cung cấp ga giường và khăn tắm khi nhận phòng.",
+      "facilities": [
+        "mixedDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_5": {
+      "title": "Bản dịch đang được chuẩn bị.",
+      "bed_intro": "Tầm nhìn biển ấn tượng và phòng tắm riêng.",
+      "bed_description": "Ký túc xá nữ hạng Superior có ba giường (tổng sáu) cho tối đa sáu khách. Ở tầng ba, có phòng tắm trong phòng, sân thượng nhìn ra biển, điều hòa và cửa vào thẻ từ. Cung cấp ga giường và khăn tắm khi nhận phòng.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_6": {
+      "title": "Bản dịch đang được chuẩn bị.",
+      "bed_intro": "Tầm nhìn biển ấn tượng và phòng tắm riêng.",
+      "bed_description": "Ký túc xá nữ hạng Superior có ba giường ký túc cộng một giường đơn (tổng 7), cho tối đa bảy khách. Nằm ở tầng ba, có phòng tắm trong phòng, sân thượng nhìn ra biển, điều hòa và cửa vào thẻ từ. Cung cấp ga giường và khăn tắm khi nhận phòng.",
+      "facilities": [
+        "femaleDorm",
+        "Bản dịch đang được chuẩn bị.",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_9": {
+      "title": "Bản dịch đang được chuẩn bị.",
+      "bed_intro": "Cách tiết kiệm để có phòng ba giường.",
+      "bed_description": "Phòng hỗn hợp hạng Deluxe có ba giường đơn, cho tối đa ba khách. Ở tầng bốn, có phòng tắm trong phòng, hướng sân trong, điều hòa và cửa vào thẻ từ. Cung cấp ga giường và khăn tắm khi nhận phòng.",
+      "facilities": [
+        "mixedDorm",
+        "Bản dịch đang được chuẩn bị.",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "courtyardView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_8": {
+      "title": "Ký túc xá nữ với một giường tầng",
+      "bed_intro": "Lựa chọn tiết kiệm cho hai khách nữ.",
+      "bed_description": "Ký túc xá nữ này có một giường tầng (ký túc), cho tối đa hai khách. Nằm ở tầng ba, có điều hòa, cửa vào thẻ từ, hướng vườn và cạnh phòng tắm nữ chung. Cung cấp ga giường và khăn tắm khi nhận phòng.",
+      "facilities": [
+        "femaleDorm",
+        "oneDormBedTwoGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "gardenView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 78,
+        "flexible": 85.8
+      }
+    }
+  },
+  "fullscreen": {
+    "clickToClose": "Nhấp bất kỳ đâu để đóng",
+    "closeAria": "Đóng ảnh toàn màn hình"
+  },
+  "roomImage": {
+    "clickToEnlarge": "Nhấp để phóng to ảnh",
+    "prevAria": "Ảnh trước",
+    "nextAria": "Ảnh tiếp",
+    "pagination": "{{current}}/{{total}}",
+    "photoAlt": "Ảnh {{room}}",
+    "noImage": "Không có hình ảnh"
+  },
+  "carousel": {
+    "previousSlide": "Trang chiếu trước",
+    "nextSlide": "Trang chiếu tiếp theo"
+  },
+  "hero": {
+    "heading": "Phòng của chúng tôi",
+    "subheading": "Chọn phòng hoàn hảo cho kỳ nghỉ của bạn"
+  },
+  "filters": {
+    "all": "Tất cả phòng",
+    "private": "Phòng riêng",
+    "dorms": "Phòng ký túc"
+  },
+  "filtersAria": "Lọc theo loại phòng",
+  "checkRatesNonRefundable": "Giá không hoàn tiền",
+  "checkRatesFlexible": "Giá linh hoạt",
+  "ctaSuffix": {
+    "nonRefundable": "Non‑Refundable",
+    "flexible": "Flexible"
+  },
+  "details": "Chi tiết",
+  "ratesFrom": "Từ €{{price}}",
+  "selectDatesTitle": "Chọn ngày",
+  "checkInDate": "Ngày nhận phòng",
+  "checkOutDate": "Ngày trả phòng",
+  "adults": "Số người lớn",
+  "confirm": "Xác nhận",
+  "cancel": "Hủy",
+  "moreAboutThisRoom": "Tìm hiểu thêm về phòng này",
+  "loadingPrice": "Đang tải giá…",
+  "landingImageAlt": "Ảnh trang đích của {{room}}",
+  "priceNotes": {
+    "dorm": "Per night, per guest. One guest in one bunk bed."
+  }
+}

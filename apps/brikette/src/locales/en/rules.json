@@ -1,0 +1,15 @@
+{
+  "slug": "rules-policies",
+  "meta": {
+    "title": "Hostel Rules and Policies - Positano Hostel",
+    "description": "Read and follow our core house rules—including our no-outside-alcohol policy and duty-of-care guidelines—to keep everyone safe and ensure you have an enjoyable stay."
+  },
+  "headings": {
+    "alcoholPolicy": "No-Outside-Alcohol Policy",
+    "dutyOfCare": "Your Duty of Care"
+  },
+  "content": {
+    "alcoholPolicy": "Because we are a licensed venue, you may not bring or consume alcohol bought off-site anywhere on hostel property. If you arrive with outside alcohol, our team will store it safely and return it at checkout (or once you confirm it will be consumed off-site). Our team's decision on this is final. Bringing or drinking outside alcohol will cancel your booking on the spot, be treated as a No-Show, and no refund will be issued.",
+    "dutyOfCare": "While you are with us, you share the hostel with other guests, staff, and contractors. Please:\n• Respect everyone's privacy and personal space.\n• Take care not to damage hostel or guest property.\n• Keep noise to a reasonable level and help maintain a calm, friendly atmosphere.\n• Follow any additional rules or instructions given by our staff.\nIf you ignore these duties, we may cancel your booking immediately (recorded as a No-Show), ask you to leave without refund, and hold you financially responsible for fines, legal costs, reputational damage, or any other expense. Any illegal activity will be reported straight away to local authorities."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "message": "Book direkte og spar op til 25 % – plus gratis morgenmad og drikkevarer!",
+  "cta": "Klik for at få mere at vide",
+  "openOffersLabel": "Åbn aktuelle tilbud",
+  "closeLabel": "Luk besked",
+  "modal": {
+    "closeLabel": "Luk vindue",
+    "title": "Book direkte og spar",
+    "description": "Tak fordi du vælger at booke direkte hos os! Som tak får du:",
+    "perks": {
+      "discount": "Op til 25 % rabat på værelsesprisen",
+      "breakfast": "Gratis morgenmad hver morgen",
+      "drinks": "Gratis velkomstdrinks",
+      "upgrades": "Prioriterede værelsesopgraderinger (når tilgængeligt)"
+    },
+    "callToAction": "Udnyt disse eksklusive fordele nu!",
+    "button": "Book nu"
+  }
+}

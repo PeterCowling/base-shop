@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Chiesa Nuova/Bar Internazionale to Hostel Brikette",
+    "description": "Micro‑route from the Chiesa Nuova stop to the hostel with minimal stairs; luggage tips and alternatives."
+  },
+  "linkLabel": "Chiesa Nuova/Bar Internazionale to Hostel Brikette",
+  "intro": "Arriving by bus? “Chiesa Nuova” or “Bar Internazionale” is the closest stop to the hostel. This micro-route minimises stairs for knees and luggage.",
+  "image": {
+    "alt": "Positano's Chiesa Nuova SITA stop outside Bar Internazionale",
+    "caption": "Positano (Chiesa Nuova) stop — wait outside Bar Internazionale; arrive a little early in summer as buses can fill quickly."
+  },
+  "toc": {
+    "onThisPage": "On this page",
+    "before": "Before you head out",
+    "steps": "Step‑by‑step",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "sections": [
+    {
+      "id": "why-stop",
+      "title": "Why this stop works",
+      "body": [
+        "The bus stop outside the cafe/bar called Bar Internazionale is roughly 140 metres (490 feet) from Hostel Brikette."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Bus timing & tickets",
+      "body": [
+        "Buy SITA tickets at the tabacchi near the stop or validate pre-bought tickets on boarding; keep a spare for late-night returns.",
+        "Evening buses thin out after 22:00—check the timetable in advance and aim for the second-to-last service to avoid taxi prices."
+      ]
+    }
+  ],
+  "beforeList": [
+    "Check SITA schedules in advance so you are not waiting on the roadside for the last service.",
+    "Validate your ticket as soon as you board—inspectors fine unvalidated tickets even for short rides.",
+    "Message the hostel if you are arriving after midnight so overnight staff can keep the door code handy."
+  ],
+  "stepsList": [
+    "From the stop outside Bar Internazionale, walk just over 100 metres (330 feet) uphill along Viale Pasitea — follow the walking route in the map below for turn-by-turn guidance.",
+    "At the bend, continue past the terrace-level Hostel Brikette sign, then take the stairs rising on the right-hand side of the road up to the main door."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "kneesList": [
+    "The entire walk is paved with only one short staircase at the entrance.",
+    "If slopes bother your knees, take short breaks—traffic slows naturally on the bend."
+  ],
+  "kneesDockPrefix": "Arriving via ferry first?",
+  "kneesDockLinkLabel": "Dock → Hostel luggage route",
+  "kneesPorterPrefix": "Need a hand with heavy bags?",
+  "kneesPorterLinkLabel": "Porter service guide",
+  "faqs": [
+    {
+      "q": "Is there a sidewalk the whole way?",
+      "a": "Yes — the route uses the main road pavement, avoiding long staircases."
+    },
+    {
+      "q": "Is it lit at night?",
+      "a": "Street lighting is present; use your phone torch for extra visibility on alleys."
+    }
+  ],
+  "howtoSteps": [
+    "From 'Chiesa Nuova' stop, walk 2–5 minutes to the hostel",
+    "Use the fewest‑stairs alleyways; avoid long staircases",
+    "If carrying heavy bags, consider porter pickup at the stop"
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "tags": {
+    "accommodation": {
+      "label": "Chỗ ở",
+      "title": "Nơi lưu trú"
+    },
+    "amalfi": {
+      "label": "Amalfi",
+      "title": "Cẩm nang Amalfi"
+    },
+    "backpackers": {
+      "label": "Du lịch bụi",
+      "title": "Dành cho phượt thủ"
+    },
+    "beaches": {
+      "label": "Bãi biển",
+      "title": "Bãi biển Positano",
+      "description": "Khu công cộng so với lido, lối vào và lưu ý an toàn."
+    },
+    "boat": {
+      "label": "Thuyền",
+      "title": "Tour bằng thuyền"
+    },
+    "budgeting": {
+      "label": "Ngân sách",
+      "title": "Positano tiết kiệm",
+      "description": "Cách chi tiêu thông minh cho di chuyển, ăn uống và hoạt động."
+    },
+    "bus": {
+      "label": "Xe buýt",
+      "title": "Hướng dẫn xe buýt & SITA"
+    },
+    "camping": {
+      "label": "Cắm trại",
+      "title": "Cắm trại ven biển"
+    },
+    "capri": {
+      "label": "Capri",
+      "title": "Capri tiết kiệm"
+    },
+    "car": {
+      "label": "Ô tô",
+      "title": "Lái xe & đỗ xe"
+    },
+    "comparison": {
+      "label": "So sánh",
+      "title": "So sánh điểm đến & nơi ở"
+    },
+    "connectivity": {
+      "label": "Kết nối",
+      "title": "Wi‑Fi, eSIM & vùng phủ"
+    },
+    "cost": {
+      "label": "Chi phí",
+      "title": "Chi phí & so sánh"
+    },
+    "couples": {
+      "label": "Cặp đôi",
+      "title": "Cặp đôi ở hostel"
+    },
+    "cuisine": {
+      "label": "Ẩm thực",
+      "title": "Đồ ăn & món tiết kiệm"
+    },
+    "culture": {
+      "label": "Văn hoá",
+      "title": "Văn hoá & sự kiện"
+    },
+    "day-trip": {
+      "label": "Chuyến đi trong ngày",
+      "title": "Chuyến đi trong ngày"
+    },
+    "decision": {
+      "label": "Quyết định",
+      "title": "Hướng dẫn ra quyết định"
+    },
+    "digital-nomads": {
+      "label": "Du mục số",
+      "title": "Dành cho du mục số"
+    },
+    "events": {
+      "label": "Sự kiện",
+      "title": "Sự kiện & lễ hội"
+    },
+    "experiences": {
+      "label": "Trải nghiệm",
+      "title": "Trải nghiệm"
+    },
+    "families": {
+      "label": "Gia đình",
+      "title": "Dành cho gia đình"
+    },
+    "faq": {
+      "label": "Câu hỏi thường gặp",
+      "title": "Câu hỏi du lịch thường gặp"
+    },
+    "ferragosto": {
+      "label": "Ferragosto",
+      "title": "Ferragosto ở Positano"
+    },
+    "ferry": {
+      "label": "Phà",
+      "title": "Hướng dẫn phà"
+    },
+    "free": {
+      "label": "Miễn phí",
+      "title": "Hoạt động miễn phí & giá rẻ"
+    },
+    "general-tourists": {
+      "label": "Khách du lịch phổ thông",
+      "title": "Dành cho khách du lịch phổ thông"
+    },
+    "herculaneum": {
+      "label": "Herculaneum",
+      "title": "Chuyến đi Herculaneum"
+    },
+    "hiking": {
+      "label": "Đi bộ đường dài",
+      "title": "Đường mòn & điểm ngắm",
+      "description": "Con Đường của Các Vị Thần và lựa chọn an toàn hơn với lưu ý về cầu thang."
+    },
+    "hitchhiking": {
+      "label": "Đi nhờ xe",
+      "title": "Đi nhờ xe"
+    },
+    "hostel-life": {
+      "label": "Cuộc sống hostel",
+      "title": "Cuộc sống tại hostel"
+    },
+    "insurance": {
+      "label": "Bảo hiểm",
+      "title": "Bảo hiểm du lịch"
+    },
+    "ischia": {
+      "label": "Ischia",
+      "title": "Cẩm nang Ischia"
+    },
+    "itinerary": {
+      "label": "Lịch trình",
+      "title": "Lịch trình Amalfi Coast"
+    },
+    "laundry": {
+      "label": "Giặt ủi",
+      "title": "Giặt ủi ở Positano"
+    },
+    "logistics": {
+      "label": "Hậu cần",
+      "title": "Hậu cần & đến nơi"
+    },
+    "naples": {
+      "label": "Naples",
+      "title": "Naples ↔ Positano"
+    },
+    "nightlife": {
+      "label": "Cuộc sống đêm",
+      "title": "Cuộc sống về đêm"
+    },
+    "off-season": {
+      "label": "Mùa thấp điểm",
+      "title": "Mẹo mùa thấp điểm"
+    },
+    "passes": {
+      "label": "Vé trọn gói",
+      "title": "Thẻ/vé giao thông"
+    },
+    "photography": {
+      "label": "Nhiếp ảnh",
+      "title": "Điểm chụp ảnh Positano",
+      "description": "Góc chụp đẹp, ánh sáng và phép lịch sự để tránh chen chúc."
+    },
+    "planning": {
+      "label": "Lập kế hoạch",
+      "title": "Hướng dẫn lập kế hoạch"
+    },
+    "pompei": {
+      "label": "Pompeii",
+      "title": "Chuyến đi Pompeii"
+    },
+    "porters": {
+      "label": "Khuân vác",
+      "title": "Dịch vụ khuân vác & hành lý"
+    },
+    "positano": {
+      "label": "Positano",
+      "title": "Cẩm nang Positano"
+    },
+    "praiano": {
+      "label": "Praiano",
+      "title": "Cẩm nang Praiano"
+    },
+    "procida": {
+      "label": "Procida",
+      "title": "Cẩm nang Procida"
+    },
+    "ravello": {
+      "label": "Ravello",
+      "title": "Cẩm nang Ravello"
+    },
+    "safety": {
+      "label": "An toàn",
+      "title": "Bản dịch đang được chuẩn bị."
+    },
+    "salerno": {
+      "label": "Salerno",
+      "title": "Salerno ↔ Positano"
+    },
+    "shopping": {
+      "label": "Mua sắm",
+      "title": "Mua sắm & thợ thủ công"
+    },
+    "shoulder": {
+      "label": "Mùa giao mùa",
+      "title": "Mẹo mùa giao mùa"
+    },
+    "sorrento": {
+      "label": "Sorrento",
+      "title": "Cẩm nang Sorrento"
+    },
+    "souvenirs": {
+      "label": "Quà lưu niệm",
+      "title": "Quà lưu niệm & mua sắm"
+    },
+    "stairs": {
+      "label": "Ít bậc thang",
+      "title": "Lộ trình ít bậc thang"
+    },
+    "summer": {
+      "label": "Mùa hè",
+      "title": "Mùa hè ở Positano"
+    },
+    "tips": {
+      "label": "Mẹo",
+      "title": "Mẹo du lịch"
+    },
+    "train": {
+      "label": "Tàu",
+      "title": "Kết nối tàu hỏa"
+    },
+    "tramonti": {
+      "label": "Tramonti",
+      "title": "Nhà máy rượu Tramonti"
+    },
+    "transport": {
+      "label": "Di chuyển",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "description": "Hướng dẫn chọn xe buýt, phà, shuttle và chuyển tiếp với mẹo thân thiện cho hành lý."
+    },
+    "walking-tour": {
+      "label": "Tour đi bộ",
+      "title": "Tour đi bộ"
+    },
+    "winter": {
+      "label": "Mùa đông",
+      "title": "Positano mùa đông"
+    },
+    "work-life": {
+      "label": "Làm việc & du lịch",
+      "title": "Làm việc từ xa & quán cà phê"
+    }
+  }
+}

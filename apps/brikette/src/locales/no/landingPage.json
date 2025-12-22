@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Hostel Brikette i Positano – Rimelig opphold på Amalfikysten",
+    "description": "Bestill ditt opphold på Positanos eneste budsjetthostell med utsikt fra terrassen. Gratis Wi‑Fi og tips fra vår digitale concierge. Bestill direkte for best pris.",
+    "ogImageAlt": "Utsikt fra hostellets terrasse"
+  },
+  "introSection": {
+    "title": "Et vakkert hjem borte fra hjemmet",
+    "titleParts": {
+      "before": "Et vakkert",
+      "between": "hjem borte fra",
+      "home": "hjemmet"
+    },
+    "paragraph1": "Hostel Brikette er <strong>Positanos eneste hostell</strong> og tilbyr <strong>budsjettvennlig</strong> overnatting med høydepunktene på Amalfikysten rett utenfor døren.",
+    "paragraph2": "På kanten av klippene har vi <strong>fantastisk havutsikt</strong>, praktiske fasiliteter og døgnåpne lokale tips via vår <strong>digitale concierge</strong>—din guide til fergeruter, turstier, restauranter og mer.",
+    "paragraph3": "Enten du velger sovesal eller privat rom, er alt utformet for <strong>komfort</strong> og <strong>bekvemmelighet</strong>."
+  },
+  "facilitiesModal": {
+    "title": "Fasiliteter og bekvemmeligheter",
+    "closeButton": "Lukk",
+    "categories": [
+      {
+        "title": "Generelt",
+        "items": [
+          "Røykfrie rom",
+          "Gratis Wi‑Fi",
+          "Aircondition",
+          "Oppvarming"
+        ]
+      },
+      {
+        "title": "Bad",
+        "items": [
+          "Toalettpapir",
+          "Badehåndklær",
+          "Sengetøy",
+          "Strandhåndklær (mot tillegg)",
+          "Toalett",
+          "Dusj"
+        ]
+      },
+      {
+        "title": "Utendørs",
+        "items": [
+          "Piknikområde",
+          "Utemøbler",
+          "Solterrasse",
+          "Terrasse"
+        ]
+      },
+      {
+        "title": "Aktiviteter",
+        "items": [
+          "Fotturer (utenfor området)"
+        ]
+      },
+      {
+        "title": "Mat og drikke",
+        "items": [
+          "Bar"
+        ]
+      },
+      {
+        "title": "Internett",
+        "items": [
+          "Wi‑Fi er tilgjengelig i fellesområdene og er gratis."
+        ]
+      },
+      {
+        "title": "Parkering",
+        "items": [
+          "Ingen parkering tilgjengelig"
+        ]
+      },
+      {
+        "title": "Tjenester",
+        "items": [
+          "Daglig rengjøring",
+          "Oppbevaringsskap",
+          "Concierge-tjeneste",
+          "Bagasjeoppbevaring"
+        ]
+      },
+      {
+        "title": "Sikkerhet",
+        "items": [
+          "Brannslukningsapparater",
+          "Overvåkingskamera i fellesområder",
+          "Adgang med nøkkelkort"
+        ]
+      },
+      {
+        "title": "Språk",
+        "items": [
+          "Engelsk",
+          "Spansk",
+          "Italiensk"
+        ]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "Panoramautsikt over Positano fra Hostel Brikettes terrasse",
+    "brandName": "Hostel Brikette",
+    "cityName": "Positano",
+    "address": "Via G. Marconi, 358, 84017 Positano SA",
+    "locationButton": "Plassering",
+    "contactButton": "Kontakt oss",
+    "helpButton": "Hjelp",
+    "reserveNow": "Bestill nå"
+  },
+  "quickLinksSection": {
+    "location": "Plassering",
+    "photosAndVideos": "Bilder og videoer",
+    "facilitiesAndAmenities": "Fasiliteter og bekvemmeligheter",
+    "barMenu": "Barmeny",
+    "breakfastMenu": "Frokostmeny"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "Vakre fellesområder",
+    "slides": [
+      {
+        "title": "Helligdom på åssiden",
+        "text": "Våkne til friske fjellutsikter fra vår solfylte terrasse.",
+        "alt": "Terrasse med utsikt over Positanos åssider"
+      },
+      {
+        "title": "Oase i friluft",
+        "text": "Nyt solskinnet og knytt nye vennskap.",
+        "alt": "Terrasse med bambusskjerming for skygge"
+      },
+      {
+        "title": "Utrolige havutsikter",
+        "text": "Nyt magien i horisonten når solen går ned i havet.",
+        "alt": "Vid horisont over havet fra hostellets terrasse"
+      }
+    ]
+  }
+}

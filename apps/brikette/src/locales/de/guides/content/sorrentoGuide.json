@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Sorrent-Guide (Tor zur Amalfiküste)",
+    "description": "Basis oder Tagesausflug? Verbindungen und Sehenswertes."
+  },
+  "linkLabel": "Sorrent-Guide (Tor zur Amalfiküste)",
+  "intro": [
+    "Sorrent ist eine praktische Basis: viele Unterkünfte, einfache Bahnverbindungen und schnelle Transfers nach Capri und Pompeji. Der Preis dafür sind weniger Postkartenblicke als in Positano."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Warum Sorrent als Basis",
+      "body": [
+        "Mehr Unterkunftsauswahl und unkomplizierte Zuganbindung. Im Gegenzug gibt es weniger dramatische Panoramen als in Positano."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Verbindungen nach Positano",
+      "body": [
+        "Häufige SITA-Busse und saisonale Fähren. Bustickets vor dem Einstieg kaufen; Fähren können an Spitzentagen ausverkauft sein."
+      ]
+    },
+    {
+      "id": "see",
+      "title": "Sehenswürdigkeiten",
+      "body": [
+        "Historisches Zentrum, Marinas und Aussichtspunkte; perfekter Ausgangspunkt für Capri und Pompeji."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Ist Sorrent günstiger als Positano?",
+      "a": [
+        "In der Regel ja – rechne mit Unterkunftsersparnissen von 30–60 € pro Nacht und mehr Restaurants im mittleren Preisniveau."
+      ]
+    },
+    {
+      "q": "Wie spät fahren Züge zurück nach Neapel?",
+      "a": [
+        "Die Circumvesuviana verkehrt bis etwa 22:30 Uhr; danach auf Regionalbusse ausweichen oder bei spätem Flug eine Übernachtung planen."
+      ]
+    }
+  ]
+}

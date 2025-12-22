@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Huỷ phà và khi biển động",
+    "description": "Làm gì khi phà huỷ vì thời tiết, phương án thay thế và cách kiểm tra trạng thái."
+  },
+  "linkLabel": "Huỷ phà và khi biển động",
+  "intro": [
+    "Biển động có thể khiến phà đi/đến Positano bị hủy đột ngột.",
+    "Luôn chuẩn bị phương án di chuyển đường bộ và theo dõi thông báo trực tiếp để kịp chuyến tiếp theo."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Theo dõi cập nhật trực tiếp",
+      "body": [
+        "Xem website và ứng dụng của hãng (Travelmar, NLG, Alilauro) cùng bảng điện tử tại bến mỗi 30 phút khi trời gió.",
+        "Bật thông báo SMS/email hoặc theo dõi kênh Telegram/mạng xã hội địa phương để nhận tin hủy dù bạn rời bến."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Chuyển sang đường bộ",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Chừa ít nhất 60 phút dự phòng cho chuyến cuối ngày và nhớ kích hoạt vé trước khi lên xe."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Hoàn tiền & phiếu tín dụng",
+      "body": [
+        "Giữ hóa đơn và chụp màn hình thông báo hủy để hãng xử lý hoàn tiền, đổi chuyến hoặc cấp voucher.",
+        "Trao đổi với nhân viên trước khi rời quầy xem bạn muốn chuyến kế tiếp hay nhận phiếu sử dụng mùa sau."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Xử lý khi phải qua đêm",
+      "body": [
+        "Báo cho nơi lưu trú hoặc đơn vị tour ngay khi có thông báo trễ; nhiều nơi sẽ dời giờ nhận phòng hoặc khởi hành nếu biết trước.",
+        "Hỏi quầy thông tin bến về taxi ghép, xe thay thế hoặc gửi hành lý nếu bạn phải chờ tới sáng hôm sau."
+      ]
+    }
+  ],
+  "tips": [
+    "Theo dõi dự báo hàng hải — gió trên 20 hải lý/giờ hoặc sóng vượt 1,5 mét thường khiến phà bị hủy.",
+    "Bảo hiểm du lịch có điều khoản chậm do thời tiết giúp bạn nhận lại chi phí khách sạn hoặc xe thay thế.",
+    "Chuyến buổi sáng đáng tin cậy nhất; đừng trông chờ vào chuyến cuối ngày khi dự báo có bão."
+  ],
+  "faqs": [
+    {
+      "q": "Làm sao biết khi phà chạy lại?",
+      "a": [
+        "Tải lại website hoặc kênh mạng xã hội của hãng và nghe loa tại bến — quyết định thường được thông báo trong vòng 30 phút so với giờ khởi hành dự kiến.",
+        "Nhân viên quầy vé cũng có thể xác nhận chuyến kế tiếp trước khi bạn rời bến."
+      ]
+    },
+    {
+      "q": "Vé của tôi được xử lý thế nào?",
+      "a": [
+        "Xuất trình hóa đơn hoặc mã QR để xin hoàn tiền, đổi sang voucher hoặc chuyển sang chuyến tiếp theo.",
+        "Nếu đặt qua đại lý trực tuyến, hãy gửi email kèm ảnh chụp thông báo hủy trong 24 giờ để họ bắt đầu hoàn tiền."
+      ]
+    },
+    {
+      "q": "Có phà nào đảm bảo chạy khi biển động không?",
+      "a": [
+        "Không — khi lực lượng tuần duyên đóng cảng, mọi chuyến đều dừng. Hãy chuẩn bị sẵn tuyến đường bộ.",
+        "Một vài chuyến charter tư nhân có thể chạy khi sóng vừa phải nhưng chi phí cao và tùy vào quyết định của thuyền trưởng; cân nhắc kỹ giữa sự thoải mái và giá tiền."
+      ]
+    }
+  ]
+}

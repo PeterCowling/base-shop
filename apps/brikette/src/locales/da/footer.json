@@ -1,0 +1,21 @@
+{
+  "home": "Hjem",
+  "rooms": "Værelser",
+  "apartment": "Lejlighed",
+  "assistance": "Hjælp",
+  "careers": "Job",
+  "deals": "Tilbud",
+  "guides": "Guides",
+  "terms": "Vilkår for værelsesbookinger",
+  "copyright": "© 2023–{{year}}, Skylar SRL, der opererer som Hostel Brikette",
+  "backToTop": "Til toppen",
+  "contactHeading": "Kontakt",
+  "email": "E-mail",
+  "phone": "Telefon",
+  "noPhoneNotice": "Vi håndterer ikke henvendelser pr. telefon. Kontakt os venligst via e-mail.",
+  "follow": "Følg os",
+  "instagram": "Instagram",
+  "facebook": "Facebook",
+  "experiences": "Oplevelser",
+  "howToGetHere": "Find vej"
+}

@@ -71,12 +71,12 @@ describe('orders', () => {
     });
   });
 
-  describe('addOrder', () => {
-    it('creates minimal order', async () => {
-      const order = await addOrder('shop1', 'sess1', 10);
-      expect(order).toEqual({
-        id: 'id123',
-        sessionId: 'sess1',
+	  describe('addOrder', () => {
+	    it('creates minimal order', async () => {
+	      const order = await addOrder({ shop: 'shop1', sessionId: 'sess1', deposit: 10 });
+	      expect(order).toEqual({
+	        id: 'id123',
+	        sessionId: 'sess1',
         shop: 'shop1',
         deposit: 10,
         startedAt: timestamp,
@@ -85,22 +85,22 @@ describe('orders', () => {
       expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
     });
 
-    it('creates order with all fields and increments usage when enabled', async () => {
-      prisma.shop.findUnique.mockResolvedValueOnce({ data: { subscriptionsEnabled: true } });
-      const order = await addOrder(
-        'shop1',
-        'sess1',
-        10,
-        '2025-01-03',
-        '2025-01-04',
-        'cust1',
-        'high',
-        42,
-        true,
-      );
-      expect(order).toEqual({
-        id: 'id123',
-        sessionId: 'sess1',
+	    it('creates order with all fields and increments usage when enabled', async () => {
+	      prisma.shop.findUnique.mockResolvedValueOnce({ data: { subscriptionsEnabled: true } });
+	      const order = await addOrder({
+	        shop: 'shop1',
+	        sessionId: 'sess1',
+	        deposit: 10,
+	        expectedReturnDate: '2025-01-03',
+	        returnDueDate: '2025-01-04',
+	        customerId: 'cust1',
+	        riskLevel: 'high',
+	        riskScore: 42,
+	        flaggedForReview: true,
+	      });
+	      expect(order).toEqual({
+	        id: 'id123',
+	        sessionId: 'sess1',
         shop: 'shop1',
         deposit: 10,
         startedAt: timestamp,
@@ -114,12 +114,12 @@ describe('orders', () => {
       expect(incrementSubscriptionUsage).toHaveBeenCalledWith('shop1', 'cust1', '2025-01');
     });
 
-    it('skips subscription usage when disabled', async () => {
-      prisma.shop.findUnique.mockResolvedValueOnce({ data: { subscriptionsEnabled: false } });
-      await addOrder('shop1', 'sess1', 10, undefined, undefined, 'cust1');
-      expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
-    });
-  });
+	    it('skips subscription usage when disabled', async () => {
+	      prisma.shop.findUnique.mockResolvedValueOnce({ data: { subscriptionsEnabled: false } });
+	      await addOrder({ shop: 'shop1', sessionId: 'sess1', deposit: 10, customerId: 'cust1' });
+	      expect(incrementSubscriptionUsage).not.toHaveBeenCalled();
+	    });
+	  });
 
   describe('markReturned', () => {
     it('returns updated order', async () => {

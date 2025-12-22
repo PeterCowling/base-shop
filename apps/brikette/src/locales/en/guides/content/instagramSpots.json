@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "Positano Instagram Spots (without the crowds)",
+    "description": "Photo‑worthy spots with the best times to avoid queues, plus underrated alternatives."
+  },
+  "linkLabel": "Positano Instagram Spots (without the crowds)",
+  "intro": [
+    "Lock in the classic Positano shots by planning light, angles, and etiquette so you never block locals or fellow travelers."
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Classic postcard shots",
+      "body": [
+        "Shoot from the Church of Santa Maria Assunta steps just after sunrise; the beach is empty and the dome glows warm.",
+        "Walk to the ferry pier for a wide-angle view back towards the cliffside—arrive before 09:00 when day-trip queues form."
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Underrated angles",
+      "body": [
+        "Climb to the viewpoint on Via Trara Genoino above Fornillo for a layered shot of fishing boats and pastel houses.",
+        "Ride the local bus to Nocelle, then capture the coast from the Path of the Gods terrace; the panorama is unbeatable on clear mornings."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Golden hour setups",
+      "body": [
+        "Grab a spot on the Via Cristoforo Colombo benches about 45 minutes before sunset; the sun drops behind the Li Galli islands in summer.",
+        "Head to Laurito beach for silhouettes of Positano’s skyline—stairs are steep, so wear grippy shoes and carry a headlamp for the walk back."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Photo etiquette",
+      "body": [
+        "Keep tripods compact and step aside once you’ve taken a frame so staircases stay passable.",
+        "Avoid drones inside town limits; Italian regulations require permits and fines are hefty when guards spot unlicensed flights."
+      ]
+    }
+  ],
+  "tips": [
+    "Pack a microfiber cloth for sea spray and sunscreen smudges on lenses.",
+    "Save your favourite angles offline in Google Maps; reception can dip on terraces and trails."
+  ],
+  "faqs": [
+    {
+      "q": "Is sunrise or sunset better for photos?",
+      "a": [
+        "Sunrise offers emptier streets and softer light on Spiaggia Grande; sunsets light up the cliff from the west but attract more people."
+      ]
+    },
+    {
+      "q": "Can I pose on hotel terraces if I am not a guest?",
+      "a": [
+        "No—terraces are private. Book a restaurant table if you want that perspective, and ask staff before setting up shots."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "Positano is photogenic from almost every angle — but the most popular spots are busy for much of the day. Here’s how to capture the classic views without long queues, plus underrated alternatives.",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "The classics (timing matters)"
+      },
+      {
+        "href": "#alternatives",
+        "label": "Underrated alternatives"
+      },
+      {
+        "href": "#sunset",
+        "label": "Sunset choices"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etiquette & local tips"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "classics": {
+      "heading": "The classics (timing matters)",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "Arrive at sunrise for empty docks and calm water; avoid mid‑morning queues."
+        },
+        {
+          "title": "Fornillo path",
+          "description": "Gentle coastal walkway with layered cliff views; best early or just after sunset."
+        },
+        {
+          "title": "Via Pasitea bends",
+          "description": "Elevated curves give the postcard angle without crowds. Respect traffic and stay off the road."
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Underrated alternatives",
+      "items": [
+        {
+          "title": "Chiesa Nuova terraces",
+          "description": "Golden hour over Fornillo; minimal crowds and a short walk from the hostel."
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "Sweeping ridge lines; light is best early."
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "List for varied compositions."
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Sunset choices",
+      "paragraphs": [
+        "For crowd‑free golden hour, head to upper Via Pasitea pull‑offs or the terraces near Chiesa Nuova.",
+        "If you prefer beach silhouettes, arrive 30–45 minutes before sunset at Fornillo."
+      ]
+    },
+    "etiquette": {
+      "heading": "Etiquette & local tips",
+      "items": [
+        "Don’t block narrow stairs or roads; take the shot and step aside.",
+        "Respect private property and avoid climbing walls/roofs.",
+        "Use a small tripod off‑peak; avoid busy paths in midday."
+      ]
+    },
+    "faqs": {
+      "heading": "FAQs",
+      "items": [
+        {
+          "summary": "What’s the best time for photos?",
+          "body": "Sunrise for emptier scenes; golden hour for warm tones and softer shadows."
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Do I need a drone permit?",
+      "body": "Italy has strict drone rules and many no-fly zones. Always check ENAC guidance and local regulations; avoid flying near crowds."
+    },
+    "galleryAlt": [
+      "Positano from above",
+      "Coastal panorama"
+    ],
+    "galleryFallbackAlt": "Scenic view of Positano coastline"
+  }
+}

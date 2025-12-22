@@ -1,0 +1,90 @@
+{
+  "seo": {
+    "title": "Meilleurs points de vue pour le coucher du soleil à Positano",
+    "description": "Belvédères, terrasses et horaires pour profiter des couchers de soleil sans bousculade."
+  },
+  "linkLabel": "Meilleurs points de vue pour le coucher du soleil à Positano",
+  "intro": [
+    "Les couchers de soleil à Positano sont spectaculaires : le bon perchoir et le bon timing font toute la différence.",
+    "Servez-vous de ces angles fiables et horaires d'arrivée pour éviter la foule."
+  ],
+  "itemList": [
+    {
+      "name": "Chiesa Nuova terrace",
+      "note": "Accès facile près de l'arrêt SITA avec vue plongeante sur la baie."
+    },
+    {
+      "name": "Via Positanesi d’America overlook",
+      "note": "Balcon au-dessus de Fornillo ; arrivez 30 minutes avant le coucher du soleil pour une lumière dorée."
+    },
+    {
+      "name": "Nocelle (Path of the Gods start)",
+      "note": "Face aux îlots Li Galli ; emportez une couche chaude pour le trajet retour."
+    }
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Belvédères classiques",
+      "body": [
+        "La terrasse de Chiesa Nuova offre une large vue sur la baie à deux pas de l'arrêt SITA.",
+        "Via Positanesi d'America est un balcon au-dessus de Fornillo ; arrivez 30 minutes avant le coucher du soleil pour profiter d'une lumière chaude."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternatives plus calmes",
+      "body": [
+        "Nocelle, au départ du Sentier des Dieux, fait face aux îlots Li Galli ; prenez une couche chaude pour la descente.",
+        "La plage de Fornillo reste plus paisible hors haute saison ; le soleil passe derrière la falaise, installez-vous tôt."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Gérer le timing",
+      "body": [
+        "Installez-vous 20 minutes avant la golden hour pour sécuriser votre place et régler votre matériel.",
+        "En été, le soleil se couche vers 20 h 30 ; vérifiez les horaires de bus pour éviter de rester coincé après la nuit."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Étiquette",
+      "body": [
+        "Ne bloquez pas les escaliers ni les entrées privées pendant vos photos ; dès que vous avez votre cliché, écartez-vous.",
+        "Récupérez vos déchets et passez en mode silencieux pendant les concerts ou événements du soir."
+      ]
+    }
+  ],
+  "tips": [
+    "Arrivez 20 à 30 minutes en avance pour vous placer et installer votre trépied sans stress.",
+    "Un trépied de voyage léger ou une pince est pratique pour les poses à l'heure bleue quand la lumière baisse."
+  ],
+  "faqs": [
+    {
+      "q": "Faut-il une réservation ?",
+      "a": [
+        "Les bars et terrasses sur les toits demandent souvent une réservation en été ; les belvédères publics restent accessibles sans réservation."
+      ]
+    },
+    {
+      "q": "L'éclairage suffit-il pour le retour ?",
+      "a": [
+        "L'éclairage public varie ; prenez la lampe de votre téléphone ou une petite lumière pour les descentes tardives."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Galerie photo",
+    "items": [
+      {
+        "caption": "Terrasse de Chiesa Nuova",
+        "alt": "Coucher de soleil depuis la terrasse de Chiesa Nuova"
+      },
+      {
+        "caption": "Nocelle",
+        "alt": "Coucher de soleil depuis Nocelle"
+      }
+    ]
+  }
+}

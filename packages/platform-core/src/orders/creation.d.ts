@@ -1,17 +1,29 @@
 import "server-only";
-import type { Shop } from "@acme/types";
 import type { Order } from "./utils";
 export declare function listOrders(shop: string): Promise<Order[]>;
 export declare const readOrders: typeof listOrders;
-export declare function addOrder(
-  shop: string,
-  sessionId: string,
-  deposit: number,
-  expectedReturnDate?: string,
-  returnDueDate?: string,
-  customerId?: string,
-  riskLevel?: string,
-  riskScore?: number,
-  flaggedForReview?: boolean,
-): Promise<Order>;
+export declare type AddOrderInput = {
+  orderId?: string;
+  shop: string;
+  sessionId: string;
+  deposit: number;
+  expectedReturnDate?: string;
+  returnDueDate?: string;
+  customerId?: string;
+  riskLevel?: string;
+  riskScore?: number;
+  flaggedForReview?: boolean;
+  currency?: string;
+  subtotalAmount?: number;
+  taxAmount?: number;
+  shippingAmount?: number;
+  discountAmount?: number;
+  totalAmount?: number;
+  cartId?: string;
+  stripePaymentIntentId?: string;
+  stripeChargeId?: string;
+  stripeBalanceTransactionId?: string;
+  stripeCustomerId?: string;
+};
+export declare function addOrder(input: AddOrderInput): Promise<Order>;
 export declare function getOrdersForCustomer(shop: string, customerId: string): Promise<Order[]>;

@@ -12,6 +12,7 @@ import type { Role } from "@auth/types/roles";
 import { z } from "zod";
 import { parseJsonBody } from "@shared-utils";
 import { createRateLimiter } from "@auth/rateLimiter";
+import { authEnv } from "@acme/config/env/auth";
 
 export const runtime = "nodejs";
 
@@ -49,6 +50,9 @@ async function validateCredentials(
 }
 
 export async function POST(req: Request) {
+  if (authEnv.AUTH_PROVIDER !== "local") {
+    return NextResponse.json({ error: "Not Found" }, { status: 404 }); // i18n-exempt -- API error token, UI maps to translation
+  }
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   if (process.env.NODE_ENV !== "test") {
     try {

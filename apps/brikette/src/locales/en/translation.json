@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Hostel Brikette",
+    "reserve": "Reserve Now"
+  },
+  "intro": {
+    "title": "Book Direct & Save",
+    "description": "Book your stay on our website and receive a complimentary meal deal, valued up to 29 euros per day."
+  },
+  "rooms": {
+    "title": "Rooms",
+    "value_dorms": "Value Dorm Rooms",
+    "premium_dorms": "Premium Rooms",
+    "superior_dorms": "Superior Rooms",
+    "private_room": "Private Room"
+  },
+  "careers": {
+    "jobTitle": "Join the Hostel Brikette team",
+    "jobDescription": "We're always looking for energetic people who love hospitality. If you thrive in a fast-paced environment, get in touch!",
+    "ctaLabel": "Ask about open roles"
+  },
+  "errorBoundary": {
+    "title": "Something went wrong.",
+    "reload": "Reload page"
+  },
+  "meta": {
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@brikette"
+  },
+  "internalErrors": {
+    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+  }
+}

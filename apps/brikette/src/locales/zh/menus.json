@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "价格含混饮：汤力水、可乐、零度可乐或雪碧。"
+      },
+      "rum": {
+        "note": "选择朗姆，如需咖啡混饮请告知。咖啡可冰/热，意式或美式。"
+      },
+      "gin": {
+        "note": "配施韦普斯汤力水，覆碎冰，加阿马尔菲柠檬。"
+      },
+      "whisky": {
+        "note": "自选酒款，可加冰/水或咖啡。咖啡冰/热，意式/美式。"
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "经典意式 Spritz，覆碎冰。"
+      },
+      "limoncelloSpritz": {
+        "note": "阿马尔菲特色，覆碎冰。"
+      },
+      "hugoSpritz": {
+        "note": "起泡酒注入薄荷、青柠与接骨木花汁，覆碎冰。"
+      },
+      "rossiniSpritz": {
+        "note": "起泡酒注入草莓汁，覆碎冰。"
+      },
+      "lemonStrawberryMargarita": {
+        "note": "草莓或柠檬汁配龙舌兰、君度与冰块，经典做法。"
+      },
+      "lemonDropMartini": {
+        "note": "鲜榨柠檬与 Absolut、君度与冰摇制。"
+      },
+      "joseCuervoSilver": {
+        "note": "可纯饮配柠檬与盐，或作 Tequila Sunrise，或加苏打/雪碧。"
+      },
+      "limoncelloShot": {
+        "note": "意大利南部经典，纯饮。"
+      },
+      "threeScoops": {
+        "note": "口味：柠檬、巧克力、香草、榛子。"
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "经典做法，配糖浆。"
+      },
+      "nutellaFrenchToast": {
+        "note": "夹心 Nutella。"
+      },
+      "addEggComboItem": {
+        "note": "可从蛋类菜单中任选一项。例如：松饼＋金黄糖浆＋炒蛋，共 €15.50。"
+      },
+      "addAdditionalSyrup": {
+        "note": "可选择多于一种酱汁。例如：松饼＋金黄糖浆＋Nutella，共 €14。"
+      },
+      "veggieToast": {
+        "note": "时令蔬菜配吐司。"
+      },
+      "healthyDelight": {
+        "note": "酸奶、燕麦格兰诺拉与自制水果酱的芭菲。"
+      },
+      "detoxMe": {
+        "note": "菠菜、黄瓜、姜与柠檬。"
+      },
+      "energizeMe": {
+        "note": "橙子、胡萝卜、姜与柠檬。"
+      },
+      "multiV": {
+        "note": "苹果、胡萝卜、橙子、柠檬、姜。"
+      },
+      "orangeJuice": {
+        "note": "鲜榨。"
+      }
+    }
+  }
+}

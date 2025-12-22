@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Top-Aussichtspunkte an der Amalfiküste",
+    "description": "Wo du spektakuläre Ausblicke findest – inklusive Hinweise zur Erreichbarkeit."
+  },
+  "linkLabel": "Top-Aussichtspunkte an der Amalfiküste",
+  "intro": [
+    "Hier findest du die besten Aussichtspunkte an der Amalfiküste – für Sonnenaufgang, Golden Hour und Nachtaufnahmen."
+  ],
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano-Klassiker",
+      "body": [
+        "Die Via Cristoforo Colombo und die Terrasse neben dem Hotel Marincanto liefern gestaffelte Dorfansichten – ideal zum Sonnenaufgang für weiches Licht.",
+        "Die Terrasse von La Tagliata in Nocelle blickt auf die Li-Galli-Inseln; reserviere zum Sonnenuntergang oder kehre nach dem Path of the Gods ein."
+      ]
+    },
+    {
+      "id": "ravello",
+      "title": "Terrassen in Ravello",
+      "body": [
+        "Die Konzertbühne der Villa Rufolo überblickt die Küste; morgens trifft das Licht die Kuppeln am schönsten.",
+        "Die Infinity Terrace der Villa Cimbrone rahmt die Küstenlinie mit Marmorfiguren – Stative sind erlaubt, aber Beinen schmal halten, um niemanden zu blockieren."
+      ]
+    },
+    {
+      "id": "road",
+      "title": "Panoramen entlang der Straße",
+      "body": [
+        "Am Haltebucht Belvedere di Laurito zwischen Positano und Praiano gelingen weite Aufnahmen; für Sicherheit hinter der Leitplanke bleiben.",
+        "Entlang der SS163 zwischen Amalfi und Minori sind Aussichtspunkte ausgeschildert – nutze Busse, wenn du nicht selbst fahren möchtest."
+      ]
+    }
+  ],
+  "tips": [
+    "Pack ein leichtes Stativ und einen ND-Filter ein, um abends Fährlichter weich zu zeichnen.",
+    "Behalte den Verkehr im Blick, wenn du an der Straße fotografierst – helle Kleidung tragen und nicht in die Fahrspur treten."
+  ],
+  "faqs": [
+    {
+      "q": "Darf ich eine Drohne fliegen?",
+      "a": [
+        "Drohnenflüge sind entlang der Amalfiküste stark reglementiert. Prüfe die ENAC-Regeln und lokale Verordnungen – unerlaubte Flüge werden teuer."
+      ]
+    },
+    {
+      "q": "Wann ist die beste Zeit für Sonnenuntergangsfotos?",
+      "a": [
+        "Die Golden Hour startet etwa eine Stunde vor Sonnenuntergang (ca. 19:00 Uhr im Juli). Komm 30 Minuten früher, um aufzubauen und dir einen Platz zu sichern."
+      ]
+    }
+  ]
+}

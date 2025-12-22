@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Olcsó étkezések Positanóban",
+    "description": "Pizzaszeletek, delik, pékségek, aperitivo – hol kapsz jó ár-érték arányt."
+  },
+  "linkLabel": "Olcsó étkezések Positanóban",
+  "heroAlt": "A fordítás folyamatban van.",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "grab-and-go",
+      "title": "Grab-and-go staples",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "casual-dining",
+      "title": "Casual sit-down spots",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "picnics",
+      "title": "Picnics with a view",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "sweet-breaks",
+      "title": "Sweet breaks & treats",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "tips": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "recommendationsTitle": "Where to eat",
+  "recommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "A fordítás folyamatban van."
+    },
+    {
+      "name": "A fordítás folyamatban van.",
+      "note": "A fordítás folyamatban van."
+    },
+    {
+      "name": "Minimarkets & fruit stands",
+      "note": "A fordítás folyamatban van."
+    }
+  ],
+  "gallery": {
+    "title": "Photo gallery",
+    "items": [
+      {
+        "alt": "Panini from a local deli",
+        "caption": "Panini & deli"
+      },
+      {
+        "alt": "A fordítás folyamatban van.",
+        "caption": "Picnic viewpoints"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "fallbackIntro": [
+    "A fordítás folyamatban van."
+  ],
+  "fallbackRecommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "A fordítás folyamatban van."
+    },
+    {
+      "name": "A fordítás folyamatban van.",
+      "note": "A fordítás folyamatban van."
+    },
+    {
+      "name": "Minimarkets & fruit stands",
+      "note": "A fordítás folyamatban van."
+    }
+  ],
+  "fallbackGalleryItems": [
+    {
+      "alt": "Panini from a local deli",
+      "caption": "Panini & deli"
+    },
+    {
+      "alt": "A fordítás folyamatban van.",
+      "caption": "Picnic viewpoints"
+    }
+  ],
+  "fallbackFaqs": [
+    {
+      "q": "Do places accept cards?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "Are takeaway fees common?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ]
+}

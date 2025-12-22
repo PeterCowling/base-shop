@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Gyors válaszok a leggyakoribb kérdésekre közlekedésről, pénzről, biztonságról és szezonról."
+  },
+  "linkLabel": "Amalfi Coast travel FAQs",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport essentials",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Bookings & budget",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Weather & plan B",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "tips": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "faqs": [
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "What if it rains all day?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "Are ATMs reliable?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ]
+}

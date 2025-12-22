@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Praca zdalna i podróż w Positano",
+    "description": "Jak połączyć pracę zdalną z pobytem w Positano: Wi-Fi, rytm dnia i polecane miejsca."
+  },
+  "linkLabel": "Praca zdalna i podróż w Positano",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "wifi",
+      "title": "Wi‑Fi & backups",
+      "body": [
+        "Use eSIM backups; test speeds; avoid critical calls during ferry unload times on main lanes."
+      ]
+    },
+    {
+      "id": "cafes",
+      "title": "Work‑friendly cafés",
+      "body": [
+        "See our Wi‑Fi & Work‑Friendly Cafés guide; mind sockets and buy regularly."
+      ]
+    },
+    {
+      "id": "routines",
+      "title": "Routines that work",
+      "body": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is remote work viable here?",
+      "a": [
+        "Yes with planning — stay near Chiesa Nuova, use backups, and keep flexible hours."
+      ]
+    }
+  ]
+}

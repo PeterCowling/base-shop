@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Resplaner för Amalfikusten (utan bil)",
+    "description": "Resplaner utan bil: från två dagar till en vecka, med tips om transporter och timing."
+  },
+  "linkLabel": "Resplaner för Amalfikusten (utan bil)",
+  "intro": [
+    "Build a no-car Amalfi Coast itinerary by chaining ferries and buses in a logical loop, leaving time for slow mornings and weather pivots."
+  ],
+  "sections": [
+    {
+      "id": "two-day",
+      "title": "2-day snapshot",
+      "body": [
+        "Day 1: Arrive early, explore Positano’s lanes, relax on Fornillo Beach, and catch sunset from Via Cristoforo Colombo.",
+        "Day 2: Morning ferry to Amalfi for Duomo and lemon granita, afternoon bus up to Ravello, then return to Positano for dinner."
+      ]
+    },
+    {
+      "id": "four-day",
+      "title": "3–4 day stretch",
+      "body": [
+        "Add a Capri day trip on day 3—first ferry out, Anacapri chairlift, and evening return.",
+        "Use day 4 for the Path of the Gods or a boat tour; keep a rainy-day swap like Pompeii ready."
+      ]
+    },
+    {
+      "id": "five-day",
+      "title": "5–6 day slow roll",
+      "body": [
+        "Mix in a Salerno or Sorrento food crawl to sample markets and stock up on supplies.",
+        "Plan a beach-hop day between Arienzo, Laurito, and Marina di Praia using coastal ferries or water taxis."
+      ]
+    },
+    {
+      "id": "seven-day",
+      "title": "7-day loop",
+      "body": [
+        "Anchor the week with two relaxed Positano days, two excursion days (Capri + Pompeii), and two slower adventures (Tramonti wineries or Paestum ruins).",
+        "Leave the final day flexible for repeats or a rest day before onward travel."
+      ]
+    }
+  ],
+  "tips": [
+    "Pre-book long legs (Capri ferries, Pompeii train) but keep at least one buffer day for weather disruptions.",
+    "Group activities by geography so you only climb big stair sets once per day."
+  ],
+  "faqs": [
+    {
+      "q": "How many nights should I stay in Positano?",
+      "a": [
+        "Four nights give you time for Positano itself plus two major day trips without rushing; add more if you prefer slower mornings."
+      ]
+    },
+    {
+      "q": "Can I swap ferries for buses in bad weather?",
+      "a": [
+        "Yes—buses run year-round. Start early, buy tickets in advance, and expect journeys to take 20–30 minutes longer."
+      ]
+    }
+  ]
+}

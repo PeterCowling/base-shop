@@ -116,8 +116,11 @@ const baseSchema = z.object({
 
   AUTH_PROVIDER: z.enum(["local", "jwt", "oauth"]).default("local"),
   JWT_SECRET: strongSecret.optional(),
+  OAUTH_ISSUER: z.string().url().optional(),
   OAUTH_CLIENT_ID: z.string().min(1).optional(),
   OAUTH_CLIENT_SECRET: strongSecret.optional(),
+  OAUTH_REDIRECT_ORIGIN: z.string().url().optional(),
+  OAUTH_ENFORCE_PKCE: booleanFromString.optional(),
 
   AUTH_TOKEN_TTL: z
     .preprocess((v) => (typeof v === "number" ? undefined : v), z.string().optional())
@@ -192,6 +195,13 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
     }
   }
   if (env.AUTH_PROVIDER === "oauth") {
+    if (!env.OAUTH_ISSUER) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["OAUTH_ISSUER"],
+        message: "OAUTH_ISSUER is required when AUTH_PROVIDER=oauth", // i18n-exempt: validation copy (non-UI)
+      });
+    }
     if (!env.OAUTH_CLIENT_ID) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -204,6 +214,14 @@ export const authEnvSchema = baseSchema.superRefine((env, ctx) => {
         code: z.ZodIssueCode.custom,
         path: ["OAUTH_CLIENT_SECRET"],
         message: "OAUTH_CLIENT_SECRET is required when AUTH_PROVIDER=oauth", // i18n-exempt: validation copy (non-UI)
+      });
+    }
+    if (!env.OAUTH_REDIRECT_ORIGIN) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["OAUTH_REDIRECT_ORIGIN"],
+        message:
+          "OAUTH_REDIRECT_ORIGIN is required when AUTH_PROVIDER=oauth", // i18n-exempt: validation copy (non-UI)
       });
     }
   }

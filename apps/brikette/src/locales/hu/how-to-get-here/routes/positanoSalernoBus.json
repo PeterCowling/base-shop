@@ -1,0 +1,88 @@
+{
+  "slug": "positano-salerno-bus",
+  "meta": {
+    "title": "Positanóból Salernóba busszal – Lépésről lépésre",
+    "description": "Ajtótól ajtóig tartó buszos útmutató a Hostel Brikette-től Salernóba Amalfín keresztül: hol szállj fel, hol vásárolj jegyet, hogyan olvasd a menetrendet és miként válts buszt Amalfiban."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "heading": "Positanóból Salernóba – busszal (Amalfin át)",
+    "intro": "Utazz a Hostel Brikette-től Salernóba egy amalfi átszállással. Az útmutató bemutatja, hol szállj fel Positanóban, hogyan érvényesítsd a jegyet, miként olvasd a menetrendet és mire számíts az amalfi átszállásnál."
+  },
+  "tip": {
+    "label": "Tipp",
+    "linkLabel": "Hogyan juthatsz el hozzánk áttekintés",
+    "body": "Más közlekedési lehetőséget keresel? Nyisd meg a <link>Hogyan juthatsz el hozzánk áttekintést</link> kompokhoz, taxikhoz és kombinált útvonalakhoz."
+  },
+  "sections": {
+    "journey": {
+      "title": "Az út áttekintése",
+      "body": [
+        "Ez az útvonal két SITA buszszakaszból áll: először Positanóból (Chiesa Nuova) Amalfiba, majd Amalfiból Salernóba.",
+        "Főszezonban hagyj időt a sorban állásra és a forgalomra."
+      ]
+    },
+    "tickets": {
+      "title": "SITA buszok és jegyek",
+      "items": [
+        "A Positano–Amalfi–Salerno vonalon a SITA Sud üzemelteti a part menti buszokat.",
+        "Jegyet még felszállás előtt vegyél tabacchiban, újságosnál vagy kávézóban (fizetési módok eltérhetnek).",
+        "Tartsd kéznél a jegyet; a sofőr általában bélyegzi vagy kitépi beszálláskor."
+      ]
+    },
+    "timetable": {
+      "title": "Menetrend és tervezés",
+      "linkLabel": "Positano.com",
+      "intro": "A legfrissebb menetrendeket a <link>Positano.com</link> oldalon találod. Nézd meg mindkét szakaszt, és hagyj időt az amalfi átszállásra.",
+      "items": [
+        "A megállók soronként jelennek meg; minden betűvel jelölt oszlop egy tervezett indulást mutat.",
+        "Hétfő–szombati utazásnál jellemzően az „F” és „G” oszlopok érvényesek, vasárnap/ünnepnap a „G” és „H”.",
+        "Ehhez az úthoz két szakasz kell: Positano → Amalfi, majd Amalfi → Salerno."
+      ],
+      "linkHref": "https://www.positano.com/en/bus-schedule"
+    },
+    "positanoStop": {
+      "title": "Positanói (Chiesa Nuova) buszmegálló",
+      "items": [
+        "A legközelebbi SITA megálló a Positano (Chiesa Nuova) a Via G. Marconin.",
+        "Nagyjából 140 méterre (490 lábra) van a hostel bejáratától.",
+        "A „Bar Internazionale” nevű kávézó/bár előtt várakozol."
+      ],
+      "media": {
+        "src": "/img/directions/positano-bus-stop.png",
+        "alt": "A positanói Chiesa Nuova SITA megálló a Bar Internazionale előtt",
+        "caption": "Érkezz néhány perccel korábban, hogy biztosan legyen helyed — nyáron gyorsan megtelnek a buszok."
+      }
+    },
+    "walk": {
+      "title": "Séta a hosteltől a megállóig",
+      "items": [
+        "Lépj ki a hostelből, menj le a lépcsőn a főútig, majd fordulj balra.",
+        "Haladj a Via G. Marconi mentén körülbelül 100 métert (330 lábat).",
+        "Bal oldalon találod a Bar Internazionale-t; a SITA megálló közvetlenül előtte van."
+      ]
+    },
+    "wait": {
+      "title": "Jegyvásárlás és várakozás",
+      "items": [
+        "Vásárolj SITA-jegyet Amalfiba a bárban vagy a közeli újságosnál.",
+        "Menj át az út túloldalára, és állj sorba az Amalfi felé tartó buszhoz.",
+        "Ellenőrizd a kijelzőt – „Amalfi”-t kell mutatnia."
+      ]
+    },
+    "transfer": {
+      "title": "Átszállás Amalfiban",
+      "items": [
+        "Szállj le az Amalfi fő buszpályaudvarán, a vízparti piazza mellett.",
+        "Keresd meg a Salernóba tartó SITA buszok peronját; ha nem vagy biztos, kérdezd meg a személyzetet.",
+        "Szükség esetén vásárolj új jegyet az Amalfi → Salerno szakaszra beszállás előtt."
+      ]
+    },
+    "arrival": {
+      "title": "Érkezés Salernóba",
+      "body": [
+        "A Salernóba tartó SITA buszok a városi közlekedési csomópontok közelében állnak meg. Innen helyi busszal folytathatod, elsétálhatsz a Piazza della Concordiához és a kompterminálhoz, vagy elérheted a Salerno vasútállomást. Mindig kövesd a helyszíni jelzéseket, vagy kérj segítséget a személyzettől a leggyorsabb csatlakozáshoz."
+      ]
+    }
+  }
+}

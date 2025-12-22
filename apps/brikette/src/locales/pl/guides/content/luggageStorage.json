@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Przechowywanie bagażu w Positano",
+    "description": "Gdzie zostawić bagaż w Positano, godziny otwarcia, spodziewane ceny i alternatywy."
+  },
+  "linkLabel": "Przechowywanie bagażu w Positano",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "Near the dock",
+      "body": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Aggregators",
+      "body": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiquette & tips",
+      "body": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Open in the evening?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "tocTitle": "On this page",
+  "faqsTitle": "FAQs",
+  "heroAlt": "Porter guiding a luggage cart up Positano's steps",
+  "serviceType": "Luggage storage",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "Tłumaczenie w przygotowaniu.",
+    "primaryCaption": "Positano panorama",
+    "secondaryAlt": "Porter pushing a luggage cart near Positano's ferry dock",
+    "secondaryCaption": "Porter carts near the dock"
+  }
+}

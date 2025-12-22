@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Exploring Praiano: Laid‑Back Neighbor",
+    "description": "Why visit Praiano: sunsets, Marina di Praia, San Gennaro."
+  },
+  "linkLabel": "Praiano sem pressa: guia da vizinha tranquila",
+  "intro": [
+    "Praiano é a vizinha descontraída de Positano, com pores do sol, preços mais acessíveis e praias tranquilas."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Por que visitar",
+      "body": [
+        "Desfrute do pôr do sol na Piazza San Gennaro sem multidões ombro a ombro.",
+        "O alojamento custa 20–40 € menos por noite do que em Positano, mantendo acesso de autocarro."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Praias e mergulhos",
+      "body": [
+        "A Marina di Praia é uma enseada dramática com beach clubs e kayaks; chegue antes das 11:00 para garantir a primeira fila de espreguiçadeiras.",
+        "A praia da Gavitella está voltada a oeste para banhos ao pôr do sol; conte 400 degraus, portanto leve snacks e água."
+      ]
+    },
+    {
+      "id": "dining",
+      "title": "Comida e noite",
+      "body": [
+        "Reserve Il Pirata ou Kasai para jantares de marisco com vista; garanta mesas ao pôr do sol com alguns dias de antecedência no verão.",
+        "Bares de praia em Praiano têm música ao vivo aos fins de semana — veja cartazes junto à paragem SITA para horários."
+      ]
+    }
+  ],
+  "tips": [
+    "Use o autocarro interno para evitar os trechos mais íngremes entre a parte alta e baixa de Praiano.",
+    "Leve lanterna frontal para subir escadas à noite."
+  ],
+  "faqs": [
+    {
+      "q": "Quanto dura o trajeto de autocarro desde Positano?",
+      "a": [
+        "Cerca de 15 minutos no SITA, mais em horas de pico. No verão, passa aproximadamente a cada 30 minutos."
+      ]
+    },
+    {
+      "q": "Posso ficar em Praiano e visitar Positano diariamente?",
+      "a": [
+        "Sim. Muitos viajantes vão de autocarro ou scooter, aproveitando noites mais calmas e mantendo acesso diurno a Positano."
+      ]
+    }
+  ]
+}

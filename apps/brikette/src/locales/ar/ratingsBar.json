@@ -1,0 +1,20 @@
+{
+  "aria": {
+    "regionLabel": "تقييمات من مواقع خارجية",
+    "linkSummary": "{{score}} على {{provider}}، {{reviews}}، آخر تحقق {{date}}"
+  },
+  "reviewed": "تمت المراجعة عبر:",
+  "countReviews_one": "{{formattedCount}} مراجعة",
+  "countReviews_other": "{{formattedCount}} مراجعات",
+  "lastChecked": "آخر تحقق:",
+  "sources": {
+    "hostelworld": {
+      "ariaName": "Hostelworld",
+      "label": "Hostelworld"
+    },
+    "booking": {
+      "ariaName": "Booking.com",
+      "label": "Booking.com"
+    }
+  }
+}

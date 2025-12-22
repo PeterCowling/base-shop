@@ -1,0 +1,19 @@
+{
+  "message": "¡Reserve directamente y ahorre hasta un 25 % — además desayuno y bebidas gratis!",
+  "cta": "Haga clic para saber más",
+  "openOffersLabel": "Haga clic para saber más",
+  "closeLabel": "Cerrar notificación",
+  "modal": {
+    "closeLabel": "Cerrar modal",
+    "title": "Reserve directamente y ahorre",
+    "description": "¡Gracias por elegir reservar directamente con nosotros! Como muestra de agradecimiento, disfrutará de:",
+    "perks": {
+      "discount": "Hasta un 25 % de descuento en la tarifa de su habitación",
+      "breakfast": "Desayuno gratis cada mañana",
+      "drinks": "Bebidas de bienvenida gratuitas",
+      "upgrades": "Mejoras de habitación prioritarias (según disponibilidad)"
+    },
+    "callToAction": "¡Aproveche ahora estas ventajas exclusivas!",
+    "button": "Reservar ahora"
+  }
+}

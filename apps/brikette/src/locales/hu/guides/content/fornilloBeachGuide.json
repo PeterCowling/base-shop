@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Fornillo Beach guide",
+    "description": "Layout map, free sections, and beach club tips for Pupetto, Da Ferdinando, Grassi, and La Marinella — plus shortcuts to and from the hostel."
+  },
+  "linkLabel": "Fornillo Beach guide: clubs & free spots",
+  "intro": [
+    "A Fornillo Beach egy nyugodt öböl, egy rövid sétára a hosteltől. A tengerparti klubok enyhébbek tartják az árakat, mint a Spiaggia Grande, a nyilvános övezetek nagylelkűek, és a légkör még a csúcsidőben is alacsony.",
+    "Használja a tengerparti sétányt a tengerparti szakaszok közötti mozgáshoz, ragadjon meg ételeket a bárokból, és hurokba lépjen vissza a Spiaggia Grande -be, ha az interno busz felfelé szeretné."
+  ],
+  "toc": [
+    {
+      "href": "#layout",
+      "label": "Elrendezés és hozzáférés"
+    },
+    {
+      "href": "#main-free",
+      "label": "Fő ingyenes szakasz"
+    },
+    {
+      "href": "#pupetto",
+      "label": "Pupetto Beach Club"
+    },
+    {
+      "href": "#ferdinando",
+      "label": "Da ferdinando"
+    },
+    {
+      "href": "#grassi",
+      "label": "Fratelli fű"
+    },
+    {
+      "href": "#marinella",
+      "label": "La Marinella"
+    },
+    {
+      "href": "#secret-free",
+      "label": "Rejtett ingyenes öböl"
+    }
+  ],
+  "sections": [
+    {
+      "id": "layout",
+      "title": "Elrendezés és strand -operátorok",
+      "body": [
+        "Két fő út táplálja a fornillo -t. A __link0__ parancsikon a strand bal oldalára érkezik (amikor a tenger felé néz); A Spiaggia Grande vízparti sétánya eléri a jobb oldalt.",
+        "A tengerparti klubok sorrendben futnak a hostel -hozzáférésből a fő strand út felé: Pupetto, Da Ferdinando, Fratelli Grassi és La Marinella. Két nyilvános zóna a Lidos -ot - egy széles ingyenes szakasz a Pupetto mellett, és egy kisebb öböl a La Marinella mellett."
+      ]
+    },
+    {
+      "id": "main-free",
+      "title": "Fő ingyenes szakasz",
+      "body": [
+        "A legnagyobb szabad szakasz közvetlenül a hostel parancsikonja előtt helyezkedik el. Érkezzen 10:30 előtt, hogy egy helyet igényeljen a vízvonal közelében; A kavicsok gyorsan melegítik, így csomagoljon egy szőnyeget vagy vastag törülközőt.",
+        "A Pupetto és a Da Ferdinando egyaránt árusítják az elvihető italokat és a panini -t - tökéletes, ha ételt szeretne, anélkül, hogy nyugtát bérelne. Figyelje az árapályt a váll hónapokban; Az őszi viharok egy -két napig csökkenthetik a partvonalat."
+      ]
+    },
+    {
+      "id": "pupetto",
+      "title": "Pupetto Beach Club",
+      "body": [
+        "A Pupetto a Fornillo bal oldalát narancssárga nyugalom, zuhanyzók és egy teljes körű szolgáltatást nyújtó étteremmel horgonyozza. Foglaljon a WhatsApp vagy a telefon nyáron, ha elülső sorokat szeretne; A sétálók általában 09:30 előtt rendben vannak.",
+        "A szabad területet használó vendégek továbbra is megrendelhetik a bárból, és a Pupetto fürdőszobái nyitva állnak a fizető ügyfelek számára - ha úgy dönt, hogy a nap folyamán frissül."
+      ]
+    },
+    {
+      "id": "ferdinando",
+      "title": "Da ferdinando",
+      "body": [
+        "A Da Ferdinando hűtött tengerparti hangulatot tart a kékágyakkal, a paddleboard-bérleti díjakkal és a népszerű ebédmenüvel (gondolj a nap grillezett fogása, saláták és tészta). Várjon egy kicsit magasabb árakat, mint a Pupetto, de Positano számára mégis ésszerű.",
+        "Vízi taxik Laurito és Arienzo felé Da Ferdinando mólójával-hasznos, ha egy reggeli úszás után tengerparti hopot tervez."
+      ]
+    },
+    {
+      "id": "grassi",
+      "title": "Fratelli Grassi Beach Bar",
+      "body": [
+        "A Grassi kompakt, tiszta vörös nyugalom soraival és egy árnyékolt rúddal a koktélokhoz és a granitához. A csapat száraz táskákat kínál értéktárgyakhoz, ha kajakokat bérel a közeli barlangok felfedezésére.",
+        "Mivel a hely korlátozott, az előzetes foglalások hétvégén segítenek. A bejárat általában a hét közepén lehetséges, miután 11:00 után a korai foglalások letelepedtek."
+      ]
+    },
+    {
+      "id": "marinella",
+      "title": "La Marinella",
+      "body": [
+        "A La Marinella a Spiaggia Grande sétányhoz legközelebb helyezkedik el, és megragadja a nap déli napját. Várjon figyelmes szolgálatot, ebéd tálokat és lehetőséget arra, hogy extra árnyalatú felső fedélzetet foglaljon le.",
+        "A vállszezonban a La Marinella néha néhány széket költözik a szomszédos öbölbe. A személyzetnek el kell hagynia a helyet a nyilvános területre, de fel kell készülnie a szigorúbb lábnyomra, amikor a tengerek durva."
+      ]
+    },
+    {
+      "id": "secret-free",
+      "title": "„Titkos” ingyenes szakasz",
+      "body": [
+        "A La Marinella mellett egy kis öböl csendesebb nyilvános területet kínál kavicsos polcokkal és nyugodt vízzel. Hozzon be zátonybarát fényvédő és vízvédő cipőt-a bejegyzés sziklás, és a tengeri sün, a szélek közelében csoportosulhatnak.",
+        "A La Marinella időnként tartalékágyakat állít be itt viharos napokon. A zóna hivatalosan szabad marad, ezért érezze magát kényelmesen a hely használatával, ha először érkezik; Csak hagyjon helyet a székek vagy kajak visszatérésére."
+      ]
+    }
+  ],
+  "tipsTitle": "Gyors tippek",
+  "tips": [
+    "Kövesse a __link0__ lefelé történő leereszkedést (15–20 perc).",
+    "Ha készen áll a távozásra, vegye be a __link0__ -t a sétány mentén, és menjen vissza az interno buszon Chiesa Nuova felé.",
+    "Hasonlítsa össze az árakat és az alternatív öböleket a __link0__ -ban, mielőtt az akadályokat foglalja le."
+  ],
+  "warningsTitle": "Jó tudni",
+  "warnings": [
+    "A Fornillo kavicsos - csomagoljon vízcipőt vagy szandált a parthoz.",
+    "Az árnyék késő reggel után korlátozott, ezért tervezze meg, hogy béreljen egy napernyőt, vagy hozzon kalapot és fényvédőt.",
+    "A kártyagépek időnként offline állapotba kerülnek; Vigyen magában néhány készpénzt a bár füléhez és az alsó egyenlegekhez."
+  ],
+  "faqsTitle": "Fornillo GYIK",
+  "faqs": [
+    {
+      "q": "Foglalnom kell egy tárcsát?",
+      "a": [
+        "A foglalások segítséget nyújtanak a nyári hétvégéken. Pupetto és La Marinella válasz telefonon vagy WhatsApp; Da Ferdinando és Grassi szintén figyeli az Instagram DMS -t. A 09:30 előtti korai érkezések általában megragadhatják a beépítést."
+      ]
+    },
+    {
+      "q": "Hozhatom a saját ételemet?",
+      "a": [
+        "A piknikeket szívesen látjuk az ingyenes szakaszokban. Ha nyugtákat bérel, ragaszkodjon a kis harapnivalókhoz és a vizes palackokhoz, hacsak a klub másképp nem igazolja. Minden kezelőnek van bárja vagy étterme nagyobb ételekhez."
+      ]
+    },
+    {
+      "q": "Hol tudok zuhanyozni vagy használni a fürdőszobát?",
+      "a": [
+        "A létesítmények minden tengerparti klubhoz tartoznak. Kérdezze meg a bárban, mielőtt használja őket, ha a nyilvános zónában tartózkodik - sokan gyors látogatást engedélyeznek egy kis díjért, vagy ha ételt vagy italt vásárolnak."
+      ]
+    }
+  ]
+}

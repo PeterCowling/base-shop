@@ -30,7 +30,13 @@ export async function POST(req: NextRequest) {
 
   // Try primary order repository (Prisma)
   try {
-    const order = await addOrder(shop.id, sessionRef, amount, returnDate, undefined, undefined, undefined);
+    const order = await addOrder({
+      shop: shop.id,
+      sessionId: sessionRef,
+      deposit: amount,
+      expectedReturnDate: returnDate,
+      currency: parsed.data.currency,
+    });
     orderId = order.id;
     return NextResponse.json({ ok: true, orderId });
   } catch {

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Neapel-Guide für Amalfiküste-Reisende",
+    "description": "Essen, Geschichte, Viertel – plus Tipps für Tagesausflüge ab Positano."
+  },
+  "linkLabel": "Neapel-Guide für Amalfiküste-Reisende",
+  "intro": [
+    "Neapel ist das Tor zur Amalfiküste. Plane ein bis zwei Tage für historische Gassen, Pizza-Institutionen und unkomplizierte Ausflüge ein."
+  ],
+  "sections": [
+    {
+      "id": "neighbourhoods",
+      "title": "Wichtige Viertel",
+      "body": [
+        "Spaziere durch Spaccanapoli für Kirchen, Krippenwerkstätten und die Untergrundführung unter San Lorenzo.",
+        "Für Abendspaziergänge geht es an die Uferpromenade von Chiaia und zum Castel dell'Ovo mit Meerbrise."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Essen & Kaffee",
+      "body": [
+        "Stell dich für Pizza bei Sorbillo oder Da Michele an (rechne mit 30–45 Minuten). Sfogliatella und Espresso gibt es im Gran Caffè Gambrinus.",
+        "Probier cuoppo fritto (Papiertüten voller frittierter Meeresfrüchte) für 6–8 €, wenn es schnell gehen soll."
+      ]
+    },
+    {
+      "id": "daytrips",
+      "title": "Ausflugsbasis",
+      "body": [
+        "Nutze Napoli Centrale für Hochgeschwindigkeitszüge nach Rom (1:10 h) oder Pompeji (40 Minuten mit der Circumvesuviana).",
+        "Lagere Gepäck im Bahnhof (7 € pro Stück), wenn du später direkt nach Positano weiterreist."
+      ]
+    }
+  ],
+  "tips": [
+    "Nimm kontaktlose Karten für Metrofahrten mit und kaufe bei mehreren Fahrten ein Tagesticket (5,60 €).",
+    "Bewahre Wertsachen in Vorderfächern und nutze Crossbody-Taschen in vollen Gassen."
+  ],
+  "faqs": [
+    {
+      "q": "Ist Neapel zu Fuß sicher?",
+      "a": [
+        "Ja, mit üblicher Großstadt-Achtsamkeit. Bleib nachts auf beleuchteten Straßen, zeig kein viel Bargeld und nimm nach Mitternacht offizielle Taxis."
+      ]
+    },
+    {
+      "q": "Wo kann ich Gepäck lagern?",
+      "a": [
+        "In Napoli Centrale und an der Piazza Garibaldi gibt es bemannte Aufbewahrung. Buche an vollen Wochenenden Schließfächer online, um sicher einen Platz zu haben."
+      ]
+    }
+  ]
+}

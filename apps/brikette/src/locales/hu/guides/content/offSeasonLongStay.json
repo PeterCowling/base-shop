@@ -1,0 +1,127 @@
+{
+  "seo": {
+    "title": "Hosszabb tartózkodás szezonon kívül",
+    "description": "Lakhatás, közművek, bevásárlás és munkához kapcsolódó tippek téli hónapokra."
+  },
+  "linkLabel": "Hosszabb tartózkodás szezonon kívül",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "housing",
+      "title": "Housing & rates",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Weather & packing",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "work-life",
+      "title": "Work & daily rhythm",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "community",
+      "title": "Staying social",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "tips": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "faqs": [
+    {
+      "q": "Do restaurants stay open?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "fallback": {
+    "tocTitle": "On this page",
+    "intro": [],
+    "toc": [
+      {
+        "href": "#connectivity",
+        "label": "Connectivity"
+      },
+      {
+        "href": "#groceries",
+        "label": "Groceries & essentials"
+      },
+      {
+        "href": "#transport",
+        "label": "Transport in off‑season"
+      },
+      {
+        "href": "#weather",
+        "label": "Weather & packing"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "connectivity",
+        "title": "Connectivity",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      },
+      {
+        "id": "groceries",
+        "title": "Groceries & essentials",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      },
+      {
+        "id": "transport",
+        "title": "Transport in off‑season",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      },
+      {
+        "id": "weather",
+        "title": "Weather & packing",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "A fordítás folyamatban van.",
+        "a": [
+          "A fordítás folyamatban van."
+        ]
+      }
+    ]
+  }
+}

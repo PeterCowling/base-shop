@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "阿马尔菲乘巴士前往波西塔诺 | Hostel Brikette",
+    "description": "SITA 巴士阿马尔菲至波西塔诺：包含上车地点、购票贴士、时刻表说明，以及在 Chiesa Nuova 下车即可步行抵达 Hostel Brikette。"
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette 旅行指南",
+    "title": "阿马尔菲 → 波西塔诺 — SITA Sud 巴士",
+    "description": "按照本指南从阿马尔菲搭乘 SITA 巴士前往波西塔诺。内容涵盖在阿马尔菲的上车点、车票验证方式、如何阅读时刻表，以及在哪一站下车可以以最短步行距离抵达旅舍。"
+  },
+  "aside": {
+    "eyebrow": "需要其他路线？",
+    "body": {
+      "before": "想了解更多交通选择？请打开",
+      "linkLabel": "“如何到达”总览",
+      "after": "，获取渡轮、出租车与组合行程资讯。"
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "行程概览",
+      "body": "旺季时阿马尔菲至波西塔诺的 SITA 直达巴士班次频繁。视交通状况不同，全程约 1 小时，可欣赏海岸线风景。"
+    },
+    "boarding": {
+      "title": "在阿马尔菲哪里上车",
+      "items": [
+        "前往靠近海滨广场的阿马尔菲主巴士站。",
+        "寻找显示 “Sorrento” 或 “Positano” 的 SITA 巴士（两者都会停靠波西塔诺）。",
+        "上车前先在烟草店、报刊亭或售票亭购票（是否接受现金/刷卡视店家而定）。",
+        "准备好车票；上车时司机可能会盖章或撕角验证。"
+      ]
+    },
+    "tickets": {
+      "title": "车票与时刻表",
+      "body": {
+        "before": "请在",
+        "linkLabel": "Positano.com",
+        "after": " 查看最新时刻表，并参考以下说明正确读取表格。"
+      },
+      "items": [
+        "路线上的各站以行列出；每个字母列对应一个班次。",
+        "周一至周六通常查看 “F” 与 “G” 列；周日或假日查看 “G” 与 “H” 列。",
+        "出发行选 “Amalfi”，到达行选 “Positano (Chiesa Nuova)”。"
+      ]
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Ankunft Chiesa Nuova/Bar Internazionale: Weg zum Hostel Brikette",
+    "description": "Mikro-Route von der Haltestelle Chiesa Nuova zum Hostel mit minimalen Stufen – plus Gepäcktipps und Alternativen."
+  },
+  "linkLabel": "Ankunft Chiesa Nuova/Bar Internazionale: Weg zum Hostel Brikette",
+  "intro": "Anreise mit dem Bus? „Chiesa Nuova“ oder „Bar Internazionale“ ist die dem Hostel am nächsten gelegene Haltestelle. Diese Mikroroute minimiert Treppen für Knie und Gepäck.",
+  "image": {
+    "alt": "SITA-Haltestelle Chiesa Nuova in Positano vor der Bar Internazionale",
+    "caption": "Haltestelle Positano (Chiesa Nuova) – warten Sie vor der Bar Internazionale; kommen Sie im Sommer etwas früher, da die Busse sich schnell füllen."
+  },
+  "toc": {
+    "onThisPage": "Auf dieser Seite",
+    "before": "Bevor Sie losfahren",
+    "steps": "Schritt für Schritt",
+    "knees": "Beine und Gepäck",
+    "faqs": "FAQs"
+  },
+  "sections": [
+    {
+      "id": "why-stop",
+      "title": "Warum dieser Stopp funktioniert",
+      "body": [
+        "Die Bushaltestelle vor dem Café/Bar namens Bar Internazionale liegt etwa 140 Meter vom Hostel Brikette entfernt."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Busfahrplan und Tickets",
+      "body": [
+        "Kaufen Sie SITA-Tickets im Tabacchi (Kiosk) in der Nähe der Haltestelle oder entwerten Sie vorab gekaufte Tickets beim Einsteigen; halten Sie einen Ersatz für späte Rückfahrten bereit.",
+        "Abendbusse werden nach 22:00 Uhr seltener – überprüfen Sie den Fahrplan im Voraus und planen Sie mit der vorletzten Verbindung, um Taxikosten zu vermeiden."
+      ]
+    }
+  ],
+  "beforeList": [
+    "Überprüfen Sie die SITA-Fahrpläne im Voraus, damit Sie nicht am Straßenrand auf den letzten Service warten müssen.",
+    "Entwerten Sie Ihr Ticket gleich beim Einsteigen – die Kontrolleure bestrafen nicht entwertete Tickets auch für kurze Fahrten.",
+    "Benachrichtigen Sie das Hostel, wenn Sie nach Mitternacht anreisen, damit das Übernachtungspersonal den Türcode griffbereit haben kann."
+  ],
+  "stepsList": [
+    "Gehen Sie von der Haltestelle vor der Bar Internazionale etwas mehr als 100 Meter (330 Fuß) bergauf entlang der Viale Pasitea – folgen Sie der Gehroute in der Karte unten für eine Wegbeschreibung Schritt für Schritt.",
+    "Gehen Sie an der Kurve weiter, vorbei am Schild „Hostel Brikette“ auf Terrassenhöhe, und nehmen Sie dann die Treppe auf der rechten Straßenseite hinauf zur Eingangstür."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "kneesList": [
+    "Der gesamte Weg ist gepflastert und verfügt nur über eine kurze Treppe am Eingang.",
+    "Wenn Steigungen Ihre Knie belasten, legen Sie kurze Pausen ein – der Verkehr verlangsamt sich in der Kurve ganz von selbst."
+  ],
+  "kneesDockPrefix": "Kommen Sie zuerst mit der Fähre an?",
+  "kneesDockLinkLabel": "Dock → Hostel-Gepäckroute",
+  "kneesPorterPrefix": "Brauchen Sie Hilfe bei schweren Taschen?",
+  "kneesPorterLinkLabel": "Gepäckträger-Service-Leitfaden",
+  "faqs": [
+    {
+      "q": "Gibt es auf der gesamten Strecke einen Gehweg?",
+      "a": "Ja – die Route verläuft über den Hauptstraßenbelag und vermeidet lange Treppen."
+    },
+    {
+      "q": "Ist es nachts beleuchtet?",
+      "a": "Straßenbeleuchtung ist vorhanden; Verwenden Sie Ihre Handy-Taschenlampe für zusätzliche Sichtbarkeit in Gassen."
+    }
+  ],
+  "howtoSteps": [
+    "Von der Haltestelle „Chiesa Nuova“ gehen Sie 2–5 Minuten zu Fuß zur Herberge",
+    "Nutzen Sie die Gassen mit den wenigsten Stufen; vermeiden Sie lange Treppen",
+    "Wenn Sie schweres Gepäck transportieren, ziehen Sie eine Abholung durch den Gepäckträger an der Haltestelle in Betracht"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Amalfi đến Positano bằng xe buýt | Hostel Brikette",
+    "description": "Xe buýt SITA từ Amalfi đến Positano: điểm đón, mẹo mua vé, lưu ý giờ chạy và điểm xuống gần Hostel Brikette (Chiesa Nuova)."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển Hostel Brikette",
+    "title": "Amalfi đến Positano — Xe buýt (SITA Sud)",
+    "description": "Dùng hướng dẫn này để đi từ Amalfi đến Positano bằng xe buýt SITA. Bài viết nêu nơi lên xe ở Amalfi, cách xác thực vé, đọc thời khóa biểu và điểm xuống gần hostel nhất."
+  },
+  "aside": {
+    "eyebrow": "Cần tuyến khác?",
+    "body": {
+      "before": "Cần lựa chọn di chuyển khác? Mở ",
+      "linkLabel": "Tổng quan Cách đến đây",
+      "after": " để xem phà, taxi và các hành trình kết hợp."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Tổng quan hành trình",
+      "body": "Xe buýt SITA chạy thẳng từ Amalfi đến Positano hoạt động dày đặc trong mùa cao điểm. Hành trình ven biển mất khoảng một giờ tùy lưu lượng giao thông."
+    },
+    "boarding": {
+      "title": "Nơi lên xe tại Amalfi",
+      "items": [
+        "Di chuyển tới bến xe chính của Amalfi nằm cạnh quảng trường ven biển.",
+        "Tìm xe buýt SITA có bảng điện tử ghi ‘Sorrento’ hoặc ‘Positano’ (cả hai đều dừng ở Positano).",
+        "Mua vé tại cửa hàng tạp hóa/tabacchi hoặc quầy vé trước khi lên xe (chấp nhận tiền mặt/thẻ tùy nơi).",
+        "Chuẩn bị sẵn vé; tài xế có thể đóng dấu hoặc xé vé khi bạn bước lên xe."
+      ]
+    },
+    "tickets": {
+      "title": "Vé và thời gian biểu",
+      "body": {
+        "before": "Kiểm tra lịch mới nhất trên ",
+        "linkLabel": "Positano.com",
+        "after": ". Dùng các lưu ý dưới đây để đọc bảng giờ cho chính xác."
+      },
+      "items": [
+        "Các điểm dừng nằm theo hàng; mỗi cột chữ cái tương ứng một chuyến.",
+        "Thứ Hai–Bảy thường dùng cột ‘F’ và ‘G’; Chủ nhật/ngày lễ thường là ‘G’ và ‘H’.",
+        "Tìm hàng ‘Amalfi’ cho giờ xuất phát và ‘Positano (Chiesa Nuova)’ cho giờ đến của bạn."
+      ]
+    }
+  }
+}

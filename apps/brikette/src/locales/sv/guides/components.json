@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "Välj din plan",
+    "options": {
+      "ferry": "Färja (säsong)",
+      "trainBus": "Tåg + buss (året runt)",
+      "transfer": "Privat transfer"
+    },
+    "selectedLabel": "Vald:"
+  },
+  "eventInfo": {
+    "title": "Evenemangsdetaljer",
+    "labels": {
+      "when": "När",
+      "where": "Var"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "title": "Neapel centrum till Positano med färja | Hostel Brikette",
+    "description": "Steg för steg från centrala Neapel till Positano med färja: transfer till hamnen, biljetter, ombordstigning och tips inför ankomsten."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikettes reseguide",
+    "title": "Neapel centrum till Positano – färja",
+    "description": "Följ dessa anvisningar för att resa från centrala Neapel till Positano helt och hållet sjövägen. Guiden beskriver den korta transfern från Napoli Centrale till hamnen, hur du köper färjebiljetter, går ombord och vad du kan förvänta dig när du anländer till Positanos pir."
+  },
+  "tip": {
+    "label": "Tips",
+    "copy": "Letar du efter andra rutter eller en reservplan om det blir grov sjö? Öppna <link>översikten Så tar du dig hit</link>."
+  },
+  "sections": {
+    "journey": {
+      "title": "Resan i korthet",
+      "body": "Färjorna mellan Neapel och Positano går som oftast under vår och sommar och kan ställas in vid dåligt väder. Den totala restiden är vanligtvis 1,5–2,5 timmar beroende på fartygstyp och väntetider i hamnen."
+    },
+    "transfer": {
+      "title": "Så tar du dig från Napoli Centrale till hamnen",
+      "intro": "Det snabbaste kollektivtrafiksättet är spårvagn 1 från Piazza Garibaldi till Municipio (för Molo Beverello) eller Marittima (för Porta di Massa). Taxi är också enkelt och prisvärt för sällskap.",
+      "items": [
+        "Från Napoli Garibaldi/Centrale följer du skyltarna till spårvagnshållplatsen på Piazza Garibaldi.",
+        "Ta spårvagn 1 i riktning mot “Municipio/Porto”.",
+        "Kliv av vid “Municipio” för Molo Beverello (snabba svävare) eller “Marittima” för Porta di Massa (långsammare färjor)."
+      ],
+      "map": "Se en exempelrutt på <map>Google Maps (spårvagn till hamnen)</map>."
+    },
+    "tickets": {
+      "title": "Färjebiljetter och rederier",
+      "items": [
+        "Köp online i förväg eller i biljettkontoren vid Molo Beverello; köer kan bildas på sommaren.",
+        "Ha en giltig legitimation med foto om du använder e-biljett – personalen kan kontrollera den före ombordstigning.",
+        "Avgångar kan ställas in vid grov sjö; morgonturer är oftast mest pålitliga."
+      ],
+      "copy": "Tidtabeller och priser: <capri>Capri.net – Neapel ↔ Positano</capri>. Du kan också jämföra operatörer via <positano>Positano.com (samlad tidtabell)</positano>."
+    },
+    "boarding": {
+      "title": "Ombordstigning i hamnen",
+      "body": "Var på plats vid kajen 20–30 minuter i förväg för att byta eventuella bokningskvitton och ställa dig i kö. Följ personalens instruktioner för bagaget och se upp när landgången rör sig i svallvågorna."
+    },
+    "arrival": {
+      "title": "När du anländer till Positano",
+      "items": [
+        "Gå i land vid piren Positano Spiaggia Grande.",
+        "Porterarna på piren kan bära bagage mot en avgift – kom överens om priset innan du lämnar över väskorna.",
+        "Färjorna anländer på havsnivå, så räkna med trappor uppför. Överväg den lokala Interno-bussen från hamnen för färre trappsteg."
+      ],
+      "copy": "För en bagagevänlig väg från piren till Hostel Brikette kan du följa vår steg-för-steg-guide: <link>Färjepiren → Hostel Brikette</link>."
+    },
+    "fallback": {
+      "title": "Om färjorna ställs in",
+      "body": "Om turerna ställs in på grund av väder eller sjögång byter du till tåg- och bussrutten via Sorrento. Den tar längre tid men fungerar i de flesta väder.",
+      "cta": "Använd den här reserven: <link>Neapel centrum → Positano med tåg och sedan buss</link>."
+    }
+  },
+  "externalLinks": {
+    "map": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4",
+    "capri": "https://www.capri.net/en/t/napoli/positano",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

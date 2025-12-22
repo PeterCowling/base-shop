@@ -1,0 +1,56 @@
+{
+  "detail": {
+    "common": {
+      "amenitiesHeading": "Pourquoi les voyageurs réservent cette chambre",
+      "amenitiesIntro": "Des attentions utiles déjà prêtes à votre arrivée."
+    },
+    "double_room": {
+      "amenities": [
+        {
+          "title": "Confort d’une salle de bain privée",
+          "body": "Commencez et terminez la journée avec une douche chaude, des serviettes moelleuses et un espace rien qu’à vous."
+        },
+        {
+          "title": "Matins en terrasse avec vue mer",
+          "body": "Ouvrez sur votre terrasse privée pour un espresso ou un apéritif au soleil avec vue sur Positano."
+        },
+        {
+          "title": "Nuits fraîches et paisibles",
+          "body": "Climatisation réglable et volets occultants pour un calme total, même en août."
+        }
+      ]
+    },
+    "room_11": {
+      "amenities": [
+        {
+          "title": "Terrasse assez grande pour toutes les colocataires",
+          "body": "Retrouvez‑vous sur les canapés et tables extérieures pour partager petits‑déjeuners, étirements après randos ou contempler le panorama."
+        },
+        {
+          "title": "Confort réservé aux femmes",
+          "body": "Dortoir réservé aux femmes avec salle de bain et espace coiffeuse pour éviter les files d’attente."
+        },
+        {
+          "title": "Intimité et sérénité",
+          "body": "Chaque lit dispose de rideaux, liseuse, prises et casier à carte pour vos effets."
+        }
+      ]
+    },
+    "room_12": {
+      "amenities": [
+        {
+          "title": "Très grande terrasse partagée",
+          "body": "Fauteuils et espace repas créent un vrai salon commun avec vue sur la côte Amalfitaine."
+        },
+        {
+          "title": "Salle de bain dédiée",
+          "body": "Rafraîchissez‑vous dans une salle de bain privée avec sèche‑cheveux, miroirs et de nombreux crochets."
+        },
+        {
+          "title": "Prises à portée de main",
+          "body": "Chaque lit comprend prises personnelles, liseuse et casier à carte pour plus de tranquillité."
+        }
+      ]
+    }
+  }
+}

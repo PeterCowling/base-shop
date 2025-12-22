@@ -1,0 +1,56 @@
+{
+  "slug": "apartment",
+  "meta": {
+    "title": "Suite appartamento con angolo cottura | Hostel Brikette Positano",
+    "description": "Prenota la suite appartamento dell'Hostel Brikette: cucina attrezzata, terrazza vista mare e privacy per coppie o piccoli gruppi a Positano."
+  },
+  "title": "Suite appartamento",
+  "body": "Soggiorna come a casa con una zona giorno ampia, cucina completa e terrazza privata affacciata sul mare.",
+  "heroImageAlt": "Vista esterna dell'appartamento con terrazza panoramica",
+  "heroTitle": "Suite appartamento privata",
+  "heroIntro": "Hai a disposizione ambienti indipendenti, comfort da casa e la Costiera Amalfitana appena fuori dalla porta.",
+  "bookButton": "Prenota ora",
+  "galleryHeading": "Galleria",
+  "galleryAlt": "Interni luminosi e terrazza della suite appartamento",
+  "galleryAlts": [
+    "Soggiorno della suite appartamento con divano e vista",
+    "Camera da letto dell'appartamento con letto matrimoniale",
+    "Terrazza dell'appartamento con vista mare"
+  ],
+  "detailsHeading": "Dettagli essenziali",
+  "detailsList": [
+    "Fino a 4 ospiti con letto matrimoniale e divano letto",
+    "Angolo cottura completo di frigorifero, piano cottura e stoviglie",
+    "Bagno privato con doccia e asciugacapelli",
+    "Aria condizionata e Wi-Fi ad alta velocità",
+    "Balcone privato con vista mare"
+  ],
+  "amenitiesHeading": "Servizi inclusi",
+  "amenitiesImageAlt": "Illustrazione dei servizi disponibili nell'appartamento",
+  "amenitiesList": [
+    "Wi-Fi illimitato",
+    "Cucina completamente attrezzata",
+    "Aria condizionata regolabile",
+    "Lavatrice e asciugatrice dedicate"
+  ],
+  "highlights": {
+    "sectionTitle": "Perché amerai l'appartamento",
+    "slides": [
+      {
+        "title": "Panorami d'autore",
+        "text": "Svegliati con la luce del mattino e sorseggia il caffè guardando Positano dall'alto.",
+        "alt": "Panorama dalla terrazza privata dell'appartamento"
+      },
+      {
+        "title": "Spazi rilassanti",
+        "text": "Divano ampio, zona pranzo e camera separata per riposare dopo una giornata di esplorazioni.",
+        "alt": "Zona giorno spaziosa con divano e tavolo da pranzo"
+      },
+      {
+        "title": "Vicinanza totale",
+        "text": "Negozi, fermate bus e spiagge sono a pochi passi: ti muovi senza stress.",
+        "alt": "Stradine di Positano viste dall'ingresso dell'appartamento"
+      }
+    ]
+  }
+}

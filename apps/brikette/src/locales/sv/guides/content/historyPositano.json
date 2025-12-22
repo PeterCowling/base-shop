@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positanos historia (kort version)",
+    "description": "En kort historik över Positano och Amalfikusten för att ge sammanhang till sevärdheter."
+  },
+  "linkLabel": "Positanos historia (kort version)",
+  "intro": [
+    "Understand Positano's past—from maritime roots to Hollywood discovery—so your walks have historical context."
+  ],
+  "sections": [
+    {
+      "id": "origins",
+      "title": "Origins & trade",
+      "body": [
+        "Positano began as a Roman seaside villa hub; later, medieval traders exported wool and imported spices via Amalfi's fleet.",
+        "The watchtowers along the coast warned of Saracen raids—many survive as viewpoints today."
+      ]
+    },
+    {
+      "id": "20th",
+      "title": "20th-century transformation",
+      "body": [
+        "After World War II, artists and writers such as Steinbeck publicised Positano's charm, shifting the economy toward tourism.",
+        "Improved roads in the 1950s connected Positano to the rest of Italy, ushering in boutique hotels and visitors."
+      ]
+    },
+    {
+      "id": "today",
+      "title": "Modern day",
+      "body": [
+        "Tourism now anchors the town, with efforts to balance preservation and visitor numbers through ferry quotas and pedestrian zones.",
+        "Local artisans still craft sandals and ceramics, keeping heritage trades alive alongside hospitality."
+      ]
+    }
+  ],
+  "tips": [
+    "Visit the Roman Villa museum under Santa Maria Assunta to see mosaics unearthed in 1987.",
+    "Look for information plaques along Via dei Mulini that highlight key historic buildings."
+  ],
+  "faqs": [
+    {
+      "q": "Where can I learn more on site?",
+      "a": [
+        "The MAR Positano museum combines archaeology and multimedia displays, ideal for rainy days."
+      ]
+    },
+    {
+      "q": "Why are there so many stairs?",
+      "a": [
+        "The town was built vertically to adapt to cliffs; staircases replaced streets for quick movement between terraces."
+      ]
+    }
+  ]
+}

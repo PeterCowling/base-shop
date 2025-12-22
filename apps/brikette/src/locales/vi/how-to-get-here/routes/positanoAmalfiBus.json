@@ -1,0 +1,72 @@
+{
+  "slug": "positano-amalfi-bus",
+  "meta": {
+    "title": "Từ Positano đến Amalfi bằng xe buýt | Hostel Brikette",
+    "description": "Hướng dẫn từng bước đi xe buýt SITA từ Hostel Brikette đến Amalfi, gồm nơi mua vé, điểm dừng Chiesa Nuova và cách đọc bảng giờ."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Positano đến Amalfi – Xe buýt SITA",
+    "description": "Dùng hướng dẫn này để di chuyển suôn sẻ từ Hostel Brikette tới Amalfi bằng xe buýt. Tuyến do SITA Sud vận hành và chạy thường xuyên vào mùa cao điểm. Chúng tôi chỉ bạn nơi mua vé, cách đọc bảng giờ và chính xác vị trí lên xe tại Positano."
+  },
+  "tip": {
+    "eyebrow": "Mẹo",
+    "copy": "Cần toàn bộ lựa chọn di chuyển? Mở <link>Tổng quan Cách đến đây</link> để xem phà, taxi và các hành trình kết hợp."
+  },
+  "sections": {
+    "overview": {
+      "title": "Tổng quan hành trình",
+      "body": "Dành khoảng 45–60 phút vào mùa hè tùy lưu lượng giao thông và hàng chờ. Lên xe tại Positano (Chiesa Nuova) để đi thẳng tới Amalfi. Giờ cao điểm nên tới sớm để chắc có chỗ ngồi."
+    },
+    "tickets": {
+      "title": "SITA và vé xe",
+      "body": "Tuyến xe do SITA (SITA Sud Srl) vận hành. Mua vé trước tại sạp báo hoặc tiệm thuốc lá (tabacchi). Khi lên xe hãy đưa vé cho tài xế để họ đóng dấu hoặc xé kiểm soát. Giữ vé tới khi đến Amalfi."
+    },
+    "timetable": {
+      "title": "Cách đọc bảng giờ SITA",
+      "body": "Bảng giờ chính thức liệt kê các điểm dừng theo hàng và chuyến xe theo cột chữ cái. Chọn hàng Positano và Amalfi nằm cùng một cột chữ cái tương ứng với ngày bạn đi.",
+      "list": [
+        "Cột đầu tiên là danh sách từng điểm dừng trên tuyến.",
+        "Các cột còn lại ứng với chuyến xe được gán chữ cái.",
+        "Đi từ thứ Hai tới thứ Bảy? Dùng cột ‘F’ và ‘G’.",
+        "Đi vào Chủ nhật hoặc ngày lễ? Dùng cột ‘G’ và ‘H’."
+      ],
+      "link": "Xem lịch cập nhật trên <link>Positano.com</link>.",
+      "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+    },
+    "positanoStop": {
+      "title": "Điểm dừng Positano (Chiesa Nuova)",
+      "list": [
+        "Điểm dừng SITA gần nhất là Positano (Chiesa Nuova) trên đường Via G. Marconi.",
+        "Điểm dừng cách cửa hostel khoảng 140 mét (490 ft).",
+        "Bạn sẽ chờ bên ngoài quán cà phê/ba ‘Bar Internazionale’."
+      ],
+      "image": {
+        "alt": "Điểm dừng SITA Chiesa Nuova ở Positano phía trước Bar Internazionale",
+        "caption": "Đến sớm vài phút để đảm bảo có chỗ; xe có thể kín nhanh vào mùa hè.",
+        "src": "/img/directions/positano-amalfi-bus-bus-stop.png"
+      }
+    },
+    "walk": {
+      "title": "Đi bộ từ hostel ra điểm dừng",
+      "list": [
+        "Rời hostel, đi xuống bậc thang ra đường chính rồi rẽ trái.",
+        "Tiếp tục dọc Via G. Marconi khoảng 100 mét (330 ft).",
+        "Bar Internazionale nằm bên trái; điểm dừng SITA ngay phía trước."
+      ]
+    },
+    "wait": {
+      "title": "Mua vé và chờ lên xe",
+      "list": [
+        "Mua vé xe buýt SITA tại quán bar hoặc sạp báo/tabacchi gần đó.",
+        "Băng qua đường và xếp hàng phía bên kia để đón xe đi Amalfi.",
+        "Kiểm tra lại bảng hiển thị trên xe ghi ‘Amalfi’."
+      ]
+    },
+    "arrival": {
+      "title": "Đến Amalfi",
+      "body": "Hầu hết chuyến dừng tại bến xe Amalfi gần cảng. Từ đây bạn có thể chuyển sang Ravello và Salerno, hoặc dạo bộ trung tâm lịch sử Amalfi.",
+      "link": "Muốn lên lịch chiều về? Xem <link>Amalfi đến Positano bằng xe buýt</link>."
+    }
+  }
+}

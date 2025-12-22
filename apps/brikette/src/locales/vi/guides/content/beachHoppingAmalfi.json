@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Hành trình nhiều bãi biển trên Amalfi Coast",
+    "description": "Gợi ý kết hợp bãi biển trong ngày, cách đến và chi phí."
+  },
+  "linkLabel": "Hành trình nhiều bãi biển trên Amalfi Coast",
+  "intro": [
+    "Lên kế hoạch một ngày ghé nhiều bãi biển cân bằng giữa phà, view vách đá và thời gian thư giãn trên cát."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "body": [
+        "Bắt đầu sớm ở Spiaggia Grande để nhúng mình rồi đi bộ theo lối ven biển tới Fornillo lúc 09:30 khi nước êm hơn.",
+        "Nếu cần bóng râm hãy đặt ghế trước; không thì mang theo ô gấp nhẹ."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "body": [
+        "Đi phà cuối buổi sáng tới Amalfi, ăn trưa ở bến rồi tắm biển tại bãi thị trấn hoặc vũng nhỏ của Atrani.",
+        "Gửi đồ ở dịch vụ ký gửi Amalfi để rảnh tay khám phá."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Chiều: Tắm hoàng hôn",
+      "body": [
+        "Kết thúc ở Laurito hoặc Arienzo để ngắm hoàng hôn; cả hai đều hướng tây nên ánh sáng ấm và ít đông sau 17:00.",
+        "Bắt chuyến phà cuối hoặc đặt taxi về để khỏi leo dốc trong bóng tối."
+      ]
+    }
+  ],
+  "tips": [
+    "Bản dịch đang được chuẩn bị.",
+    "Chuẩn bị đồ ăn nhẹ và ít nhất 1 lít nước — quầy bán trên bãi có thể hết hàng vào ngày đông."
+  ],
+  "faqs": [
+    {
+      "q": "Có cần đặt ghế trước không?",
+      "a": [
+        "Có, nhất là tháng 7–8. Liên hệ beach club qua WhatsApp trước một ngày để giữ hàng ghế đầu."
+      ]
+    },
+    {
+      "q": "Tôi mang đồ ăn riêng được không?",
+      "a": [
+        "Khu vực tự do thường cho picnic. Beach club thường cho mang đồ ăn nhẹ nhưng mong bạn mua đồ uống tại quầy."
+      ]
+    }
+  ]
+}

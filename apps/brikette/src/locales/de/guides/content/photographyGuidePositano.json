@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positano-Fotoguide: beste Spots",
+    "description": "Angles, beste Zeiten und Etikette für gelungene Fotos."
+  },
+  "linkLabel": "Positano-Fotoguide: die besten Spots",
+  "intro": [
+    "Fange Positano wie ein Profi ein: ikonische Blickwinkel, Lichtplanung und respektvolle Foto-Etikette."
+  ],
+  "sections": [
+    {
+      "id": "classic",
+      "title": "Klassische Blickwinkel",
+      "body": [
+        "Fotografiere vom Fähranleger, um den gesamten Hang zu erfassen; ein Weitwinkelobjektiv nimmt auch die Kuppel der Santa Maria Assunta auf.",
+        "Spaziere über die Via Cristoforo Colombo für gestaffelte Balkone und Bougainvillea, die das Meer einrahmen."
+      ]
+    },
+    {
+      "id": "light",
+      "title": "Licht & Timing",
+      "body": [
+        "Zum Sonnenaufgang (im Sommer etwa 06:00 Uhr) liegt warmes Licht auf den Häusern – früh da sein, damit keine Boote ins Bild fahren.",
+        "Die Blaue Stunde nach Sonnenuntergang lässt die Dorflichter glühen; nimm ein Mini-Stativ oder eine Klemme für Langzeitbelichtungen mit."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette & Backups",
+      "body": [
+        "Respektiere private Terrassen und blockiere keine Treppen – tritt nach der Aufnahme zügig zur Seite.",
+        "Sichere Dateien täglich in der Cloud oder auf mobilen Laufwerken; feuchte Luft kann Linsen beschlagen, daher Silicagel einpacken."
+      ]
+    }
+  ],
+  "tips": [
+    "Nimm einen Polarisationsfilter mit, um Mittagsblende auf dem Wasser zu reduzieren.",
+    "Halte ein Mikrofasertuch bereit – Gischt und Luftfeuchtigkeit setzen sich schnell auf den Linsen ab."
+  ],
+  "faqs": [
+    {
+      "q": "Darf ich eine Drohne für Luftaufnahmen verwenden?",
+      "a": [
+        "Drohnen sind stark eingeschränkt; Genehmigungen frühzeitig beantragen und Flugverbotszonen rund um den Ort und die Li-Galli-Inseln respektieren."
+      ]
+    },
+    {
+      "q": "Wo kann ich Fotos vor Ort drucken?",
+      "a": [
+        "Fotoshops in Sorrent und Amalfi bieten Same-Day-Drucke an; Bilder auf USB-Stick oder SD-Karte mitbringen."
+      ]
+    }
+  ]
+}

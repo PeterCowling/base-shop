@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Matlagingskurs på Amalfikysten",
+    "description": "Hvordan kursene foregår, hva du lager og hvordan du velger riktig."
+  },
+  "linkLabel": "Matlagingskurs på Amalfikysten",
+  "intro": [
+    "Praktiske matlagingskurs på Amalfikysten kombinerer sfusato-sitroner, fersk pasta og familieoppskrifter i små kjøkken med utsikt.",
+    "Bruk denne guiden til å velge et kurs som passer budsjettet og tidsplanen, og bekreft detaljene før du betaler depositum."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "Slik foregår et typisk kurs",
+      "body": [
+        "Vertene ønsker deg velkommen med kaffe eller prosecco før de går gjennom ingrediensene: nyrevet sitronskall, sesonggrønnsaker og pastadeigen du skal forme.",
+        "Du lager som regel to til tre retter – gjerne fersk pasta, en saus og en sitronbasert dessert – før dere spiser sammen; øktene varer 2,5–4 timer inkludert måltidet."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Velg riktig kurs",
+      "body": [
+        "Sjekk gruppestørrelse og om kjøkkenet ligger i Positano, på en gård i åsene eller i en naboby; transport kan være inkludert eller koste ekstra.",
+        "Avklar hva prisen dekker: ingredienser, vinpakker, utskrevne oppskrifter og om du får beholde forkle eller rester."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Praktisk og timing",
+      "body": [
+        "Kurs i høysesongen fylles uker i forveien; reserver plass før du kommer, særlig for kveldsøkter etter dagsturer.",
+        "Hvis stedet ligger utenfor Positano, bekreft hentepunkt eller sett av penger til taxi; bratte gater gjør komfortable sko nødvendige selv om du tar shuttle."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Kostholdshensyn og etikette",
+      "body": [
+        "Si fra om allergier, vegetar-/veganønsker eller glutenintoleranse når du bestiller; mange kan tilpasse menyen hvis de får beskjed tidlig.",
+        "Bruk lukkede sko, sett opp langt hår og begrens parfyme – kjøkkenene er små og du står tett på ferske ingredienser."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Passer matlagingskurs for nybegynnere?",
+      "a": [
+        "Ja. Instruktørene viser hvert trinn, retter teknikken underveis og fordeler oppgaver slik at alle bidrar uten stress."
+      ]
+    },
+    {
+      "q": "Må jeg kunne italiensk?",
+      "a": [
+        "Nei. De fleste kurs går på engelsk eller tospråklig, og visuelle demonstrasjoner gjør det lett å henge med."
+      ]
+    },
+    {
+      "q": "Hva bør jeg ta med?",
+      "a": [
+        "Ta med en liten notatbok hvis du vil skrive ned tips, ha telefonen fulladet for bilder og ta med kontanter til restbetaling eller transport."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Praktisk pasta, sauser og sitrondesserter; små grupper og kjøkken med utsikt i sesong."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "Hva du kan forvente"
+      },
+      {
+        "href": "#choose",
+        "label": "Slik velger du"
+      },
+      {
+        "href": "#tips",
+        "label": "Tips"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "Hva du kan forvente",
+        "body": [
+          "Praktisk pasta, sauser og sitrondesserter; små grupper og kjøkken med utsikt i sesong."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "Slik velger du",
+        "body": [
+          "Sjekk gruppestørrelse, varighet, hva som er inkludert, og transportalternativer."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Tips",
+        "body": [
+          "Bestill tidlig i høysesongen; informer vertene om kostholdsbehov."
+        ]
+      }
+    ]
+  }
+}

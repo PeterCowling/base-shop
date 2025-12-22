@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Az Amalfi-part konyhája",
+    "description": "Mit érdemes megkóstolni: tengeri fogások, citromos desszertek és helyi DOC borok."
+  },
+  "linkLabel": "Az Amalfi-part konyhája",
+  "intro": [
+    "Gyors áttekintés az Amalfi-part konyhájáról: tengeri klasszikusok, citromos desszertek és hogy hol érdemes megkóstolni őket Positanóban.",
+    "Használja puskaként, mielőtt étlapokat böngészne, vagy mielőtt a közeli városokban keresne helyi specialitásokat."
+  ],
+  "tocTitle": "Ezen az oldalon",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Tengeri alapfogások",
+      "body": [
+        "A spaghetti alle vongole, a scialatielli ai frutti di mare és a napi fogásként grillezett hal szinte minden étlapon alap.",
+        "Érdeklődjön a szezonális különlegességek felől – a táblákon gyakran tűnnek fel tavaszi borsók, koktélparadicsomok vagy tökvirágok."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Piacok és gyors falatok",
+      "body": [
+        "A reggeli piacok és a delipultok focacciát, frissen sült cuoppit és mozzarellát kínálnak gyors ebédhez.",
+        "Vigyen haza citruslekvárt, colatura di alici-t és szárított fűszereket, hogy felpörgesse a piknikeket."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Desszertek és péksütik",
+      "body": [
+        "A delizia al limone, a limoncellós babà és a sfogliatella tökéletes társ egy vacsora utáni espressóhoz.",
+        "A gelatériák váltogatják a citromsorbetet, a granitát és a crema al limonét – ideálisak a forró délutánokra."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Italok és párosítások",
+      "body": [
+        "Rendeljen behűtött limoncellót vagy crema di limoncellót digestivóként az étkezés végén.",
+        "A Tramontiból vagy a Costa d'Amalfi eredetvédett borvidékeiről (Furore, Ravello) származó tételek jól illenek a tengeri és citrusos fogásokhoz."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Rendelési etikett",
+      "body": [
+        "A coperto (terítékdíj) tartalmazza a kenyeret és a terítéket – borravalót csak kiemelkedő kiszolgálásnál hagyjon.",
+        "Nyugodtan ossza meg az ételeket családi stílusban, de jelezze előre, hogy a felszolgálás tempója és a teríték ehhez igazodjon."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Jól tudnak itt enni a vegetáriánusok?",
+      "a": [
+        "Igen – keresse a padlizsán parmigianát, a gnocchi alla sorrentinát, valamint a helyi sajttal és grillezett zöldségekkel készülő salátákat."
+      ]
+    },
+    {
+      "q": "Kell előre foglalni a népszerű trattoriákba?",
+      "a": [
+        "Főszezonban érdemes időben foglalni a teraszokra vagy naplementére; ebédidőben vagy az átmeneti hónapokban könnyebb bejutni bejelentés nélkül."
+      ]
+    }
+  ],
+  "itemListTitle": "Jellegzetes fogások és hol kóstolhatja meg őket",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Fix menüs, vidéki hangulatú vacsora házi tésztával, grillezett húsokkal és lélegzetelállító teraszkilátással."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Nappali kávézó citromos salátákkal, frissen préselt levekkel és házi desszertekkel."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Klasszikus trattoria, ahol 1958 óta szolgálnak fel tengeri tésztákat, rántott előételeket és szezonális fogásokat."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Cukrászda delizia al limonéval, limoncellós babà-val és könnyen csomagolható süteményekkel sziklafal menti piknikhez."
+    }
+  ],
+  "gallery": {
+    "title": "Fogásajánlók",
+    "items": [
+      {
+        "alt": "Tengeri tészta amalfi citrommal",
+        "caption": "Positanói trattoriák tengeri klasszikusai"
+      },
+      {
+        "alt": "Delizia al limone sütemény tányéron",
+        "caption": "Citromos desszertek, amiket érdemes megkóstolni"
+      },
+      {
+        "alt": "Barátok limoncellós poharakkal koccintanak naplementében",
+        "caption": "Digestivo kilátással"
+      }
+    ]
+  },
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Alapfogások"
+      },
+      {
+        "href": "#sweets",
+        "label": "Desszertek"
+      },
+      {
+        "href": "#drinks",
+        "label": "Italok"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Alapfogások",
+        "body": [
+          "Tengeri tészták, grillezett napi fogás és citromos saláták helyi olívaolajjal szinte mindenhol megtalálhatók a part mentén.",
+          "Érdeklődjön a napi ajánlat iránt – a krétatáblákon gyakran szerepel tökvirág vagy koktélparadicsom."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Desszertek",
+        "body": [
+          "Kóstolja meg a delizia al limonét, a limoncellós babà-t és a citromsorbetet egy citrusos desszerttrióhoz.",
+          "Zárja le az étkezést espressóval vagy digestivo limoncellóval, ahogy a helyiek szoktak."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Italok",
+        "body": [
+          "Kortyolgasson limoncellót vagy crema di limonét digestivóként, és fedezze fel a Costa d'Amalfi eredetvédett borait Tramontiból, Ravellóból vagy Furoreiből.",
+          "Időnként váltson szénsavas vízre, hogy felfrissüljön – a nyári esték sokáig párásak."
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Truyền thuyết & dân gian Amalfi Coast",
+    "description": "Những câu chuyện về nàng tiên cá, thánh nhân và thủy thủ gắn với địa danh ngày nay."
+  },
+  "linkLabel": "Truyền thuyết & dân gian Amalfi Coast",
+  "intro": [
+    "Khám phá truyền thuyết Amalfi Coast định hình lễ hội, tượng đài và những câu chuyện dân gian địa phương."
+  ],
+  "sections": [
+    {
+      "id": "saint",
+      "title": "Thánh Andrew",
+      "body": [
+        "Nhà thờ chính tòa Amalfi lưu giữ thánh tích của Thánh Andrew; người dân tin ngài giúp xoa dịu bão tố và bảo vệ ngư dân.",
+        "Ngày 27/6 và 30/11, kiệu rước tượng thánh đi quanh thị trấn kèm pháo hoa và ban nhạc đồng."
+      ]
+    },
+    {
+      "id": "sirens",
+      "title": "Nàng tiên cá Li Galli",
+      "body": [
+        "Truyền thuyết kể rằng quần đảo Li Galli dùng tiếng hát mê hoặc thủy thủ; ngày nay các tour thuyền vẫn kể câu chuyện khi đi ngang cụm đảo tư nhân này.",
+        "Khi ghé Naples hãy chú ý các câu chuyện nhắc tới Parthenope và nàng tiên cá — chúng liên kết truyền thuyết của hai vùng."
+      ]
+    },
+    {
+      "id": "traditions",
+      "title": "Nét truyền thống còn sống",
+      "body": [
+        "Luminaria của Praiano và nghi thức chúc phúc ngư dân ở Positano hòa trộn tín ngưỡng với nghi lễ thắp nến.",
+        "Gạch gốm thủ công thường vẽ hình thánh, chanh hoặc các tích biển — hãy để ý trên bậc thềm và cửa nhà."
+      ]
+    }
+  ],
+  "tips": [
+    "Kiểm tra lịch sự kiện của thị trấn để biết ngày lễ và tham gia một cách tôn trọng.",
+    "Mang khăn choàng mỏng; nhiều sự kiện nối tiếp nghi lễ trong nhà thờ nên trang phục kín đáo luôn được hoan nghênh."
+  ],
+  "faqs": [
+    {
+      "q": "Ai cũng có thể tham gia rước kiệu chứ?",
+      "a": [
+        "Có — hãy đứng bên đường, vỗ tay chào và nhường lối cho người dân khiêng tượng đi trước."
+      ]
+    },
+    {
+      "q": "Nghe nhạc dân gian ở đâu?",
+      "a": [
+        "Tìm các buổi hòa nhạc dân gian tại Atrani và Ravello trong mùa lễ hội hè; văn phòng du lịch công bố lịch hằng tuần."
+      ]
+    }
+  ]
+}

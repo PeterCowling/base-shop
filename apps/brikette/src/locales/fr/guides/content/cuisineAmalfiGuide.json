@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Guide de la cuisine de la côte amalfitaine",
+    "description": "Plats emblématiques, ingrédients locaux et adresses où les goûter près de l'auberge."
+  },
+  "linkLabel": "Guide de la cuisine de la côte amalfitaine",
+  "intro": [
+    "Petit aperçu de la cuisine de la côte amalfitaine : spécialités de la mer, desserts au citron et bonnes adresses où les goûter à Positano.",
+    "Servez-vous-en comme aide-mémoire avant de parcourir les menus ou d’explorer les villes voisines pour leurs spécialités régionales."
+  ],
+  "tocTitle": "Sur cette page",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Incontournables de la mer",
+      "body": [
+        "Spaghetti alle vongole, scialatielli aux fruits de mer et poisson du jour grillé figurent sur la plupart des cartes.",
+        "Demandez les suggestions du moment : petits pois de printemps, tomates cerises ou fleurs de courgette apparaissent souvent sur les ardoises."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Marchés et en-cas rapides",
+      "body": [
+        "Les marchés matinaux et comptoirs traiteur proposent focaccia, cuoppi frits et mozzarella fraîche pour des déjeuners simples.",
+        "Emportez marmelade d’agrumes, colatura di alici et herbes séchées pour relever vos pique-niques."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Desserts et pâtisseries",
+      "body": [
+        "Delizia al limone, babà au limoncello et sfogliatella accompagnent parfaitement un espresso en fin de repas.",
+        "Les gelaterie alternent sorbet au citron, granita et crema al limone — idéals pour les après-midis chauds."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Boissons et accords",
+      "body": [
+        "Commandez un limoncello bien frais ou une crema di limoncello comme digestif.",
+        "Les vins DOC de Tramonti ou Costa d’Amalfi (Furore, Ravello) subliment fruits de mer et plats aux agrumes."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Étiquette de commande",
+      "body": [
+        "Le coperto couvre pain et dressage — laissez un pourboire seulement pour un service remarquable.",
+        "Partagez les plats à la façon familiale, mais prévenez l’équipe pour qu’elle adapte rythme et dressage."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Les végétariens s’en sortent-ils bien ici ?",
+      "a": [
+        "Oui — cherchez parmigiana d’aubergines, gnocchi alla sorrentina et salades aux fromages locaux et légumes grillés."
+      ]
+    },
+    {
+      "q": "Dois-je réserver les trattorie prisées ?",
+      "a": [
+        "En haute saison, réservez pour les terrasses ou le coucher du soleil ; au déjeuner ou en arrière-saison, les clients sans réservation sont plus facilement acceptés."
+      ]
+    }
+  ],
+  "itemListTitle": "Plats signatures et bonnes adresses",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Menu fermier à prix fixe avec pâtes maison, viandes grillées et vue panoramique sur la terrasse."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Café de jour pour salades au citron, jus pressés à froid et desserts faits maison."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Trattoria classique servant pâtes aux fruits de mer, fritures et suggestions de saison depuis 1958."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Pâtisserie pour delizia al limone, babà au limoncello et douceurs à emporter pour un pique-nique en hauteur."
+    }
+  ],
+  "gallery": {
+    "title": "Mets à découvrir",
+    "items": [
+      {
+        "alt": "Pâtes aux fruits de mer et citrons de la côte amalfitaine",
+        "caption": "Classiques marins des trattorie de Positano"
+      },
+      {
+        "alt": "Pâtisserie delizia al limone sur une assiette",
+        "caption": "Desserts au citron à goûter"
+      },
+      {
+        "alt": "Amis trinquant au limoncello au coucher du soleil",
+        "caption": "Digestifs avec vue"
+      }
+    ]
+  },
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Incontournables"
+      },
+      {
+        "href": "#sweets",
+        "label": "Desserts"
+      },
+      {
+        "href": "#drinks",
+        "label": "Boissons"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Incontournables",
+        "body": [
+          "Pâtes aux fruits de mer, poissons grillés et salades aux agrumes arrosées d’huile locale composent les menus tout le long de la côte.",
+          "Demandez la suggestion du jour : fleurs de courgette ou tomates cerises de saison apparaissent souvent sur les ardoises."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Desserts",
+        "body": [
+          "Goûtez la delizia al limone, le babà au limoncello et le sorbet au citron pour un trio très agrumes.",
+          "Associez les pâtisseries à un espresso ou à un limoncello digestif pour conclure comme un local."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Boissons",
+        "body": [
+          "Savourez limoncello ou crema di limone en digestif et explorez les vins DOC Costa d’Amalfi de Tramonti, Ravello ou Furore.",
+          "Alternez avec de l’eau pétillante pour rester au frais — les soirées d’été restent humides bien après le coucher du soleil."
+        ]
+      }
+    ]
+  }
+}

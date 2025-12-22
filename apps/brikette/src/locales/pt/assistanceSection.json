@@ -1,0 +1,46 @@
+{
+  "slug": "contato-de-assistencia",
+  "meta": {
+    "title": "Contacto e informações | Hostel Brikette Positano",
+    "description": "Reserve, explore e ligue-se a nós online. Tem dúvidas? O nosso assistente digital oferece recomendações personalizadas e guias de viagem para melhorar a sua estadia em Positano."
+  },
+  "heading": "Assistência digital",
+  "subheading": "Reserve, explore e ligue-se a nós online.",
+  "heroIntro": "Obtenha respostas imediatas da nossa equipa e do assistente digital para planear a estadia mais rapidamente.",
+  "otherBookingOptions": "Outras opções de reserva e redes sociais",
+  "addressLabel": "Morada:",
+  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookingOptions": {
+    "googleBusiness": "Google Business",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "Como podemos",
+  "amaHeadingPart2": "ajudar",
+  "amaParagraph1": "Tem perguntas? Estamos aqui para ajudar. Pergunte-nos tudo o que precisar; se algo ficar por esclarecer, envie-nos um e-mail direto e respondemos com rapidez.",
+  "amaParagraph2": "Assim que a reserva for confirmada, terá acesso imediato ao nosso assistente digital. A ferramenta sugere atrações, atividades e segredos locais em Positano para que aproveite ao máximo cada dia.",
+  "amaParagraph3": "Também desbloqueia os nossos guias de viagem selecionados, com dicas de transportes, instruções passo a passo e conselhos práticos para planear a estadia.",
+  "amaHelpCenterLink": "Ver todos os artigos de ajuda",
+  "askPlaceholder": "Pergunte sobre direções, instalações, etc...",
+  "clearLabel": "Limpar pesquisa",
+  "answersFoundLabel": "respostas encontradas",
+  "noMatchesFound": "Nenhuma correspondência encontrada",
+  "popularGuides": "Guias populares",
+  "guideReachBudget": "Como chegar a Positano com um orçamento reduzido",
+  "guideFerrySchedules": "Horários dos ferries para Positano",
+  "guidePathOfTheGods": "Trilho dos Deuses a partir do Hostel Brikette",
+  "guideCollections": {
+    "heading": "Planeie a estadia com guias passo a passo",
+    "description": "Direções, políticas de reserva e logística de chegada reunidas a partir das perguntas que mais recebemos.",
+    "taggedHeading": "Essenciais de planeamento marcados com {{tag}}",
+    "taggedDescription": "Estes essenciais focam-se em {{tag}}. Limpe o filtro para explorar tudo o que preparámos.",
+    "empty": "Ainda não temos guias de planeamento para {{tag}}. Experimente outra etiqueta ou reponha o filtro.",
+    "clearFilter": "Ver todos os essenciais de planeamento",
+    "cardCta": "Leia o guia de planejamento {{guideTitle}}"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

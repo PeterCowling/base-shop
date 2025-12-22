@@ -1,0 +1,50 @@
+{
+  "seo": {
+    "title": "Money‑Saving Tips for Amalfi Coast Transport",
+    "description": "Passes vs singles, timing, mixing bus/ferry, and weather contingencies."
+  },
+  "linkLabel": "Money‑Saving Tips for Amalfi Coast Transport",
+  "intro": [
+    "Practical ways to cut transport costs: passes, timing, mixing bus and ferry, and weather contingencies."
+  ],
+  "planChoiceTitle": "Pick your savings focus",
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Passes vs singles",
+      "body": [
+        "Use day passes only if taking several rides; otherwise singles are cheaper. Validate tickets."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & routing",
+      "body": [
+        "Travel outside 10:00–16:00 on peak days; prefer direct buses for ridges and ferries for scenic hops."
+      ]
+    },
+    {
+      "id": "mixing",
+      "title": "Mixing bus and ferry",
+      "body": [
+        "Choose one paid ferry leg (Positano ↔ Amalfi) and use buses elsewhere to save while staying comfortable."
+      ]
+    },
+    {
+      "id": "contingency",
+      "title": "Weather contingency",
+      "body": [
+        "Rough seas cancel ferries: have a bus-first backup and buffer the last sailing of the day."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Are combo tickets worth it?",
+      "a": [
+        "Sometimes for multi-hop ferry days; compare against single fares."
+      ]
+    }
+  ]
+}

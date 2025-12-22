@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Fiordo di Furore strandkalauz",
+    "description": "Így jutsz el Positanóból busszal a Fiordo di Furoréhoz, mit vigyél magaddal, és mire számíts a sziklafalak között."
+  },
+  "linkLabel": "Fiordo di Furore strandkalauz",
+  "intro": [
+    "A Fiordo di Furore az Amalfi-part képeslap-szurdoka – keskeny öböl boltíves híddal, smaragdzöld vízzel és meredek sziklákkal. Egy apró, nagyrészt vad öböl, strandklubok és éttermek nélkül, így készülj úszásra, néhány fotóra és látványos sziklaugrásokra.",
+    "Használd ezt az útmutatót, hogy busszal utazz, megértsd mennyire korlátozottak a helyszíni szolgáltatások, és tervezd meg a hazautat, nehogy a teltházas SITA-járatok miatt ott ragadj."
+  ],
+  "toc": [
+    { "href": "#getting-there", "label": "Utazás" },
+    { "href": "#returning", "label": "Visszaút" },
+    { "href": "#on-site", "label": "Mit találsz ott" }
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Magabiztos buszozás a SITA-val",
+      "body": [
+        "A Hostel Brikettéből indulva sétálj le a Via Pasiteán a Sponda megállóhoz, és szállj fel az Amalfi felé tartó SITA buszra. Szólj a sofőrnek, hogy „Fiordo di Furore”, hogy biztosan megálljon – a megálló Praiano és Furore között van, és zsúfolt napokon könnyű elvéteni.",
+        "Kb. 25 perces út után szállj le a híd előtti megállóban. Kövesd a sziklába vájt lépcsőt néhány percig, és megérkezel a boltív alatti apró kavicsos partra."
+      ]
+    },
+    {
+      "id": "returning",
+      "title": "Tervezd meg a visszautat, mielőtt úsznál",
+      "body": [
+        "A szurdokban nincs jegypénztár vagy automata. Vásárolj retúr jegyet Positanóban (tabacchi a Chiesa Nuova közelében vagy a Sponda újságosnál), és érvényesítsd felszálláskor.",
+        "Nyáron a buszok gyakran már Amalfi után megtelnek. Indulj korábban, mint gondolnád, és jelezd a többi várakozónak, hogy felszállnál, így a sofőr is figyelni fog. Ha két busz is megállás nélkül elhalad, gondolkodj el azon, hogy összefogva taxit osztotok meg a felső útról."
+      ]
+    },
+    {
+      "id": "on-site",
+      "title": "Nyers szépség, nem szolgáltatások",
+      "body": [
+        "A Fiordo di Furore-ban nincs strandklub, nincs mosdó, és csak főszezonban bukkan fel néha egy mozgó büfé. Vigyél vizet, nassolnivalót és valamit, amire leülhetsz – a kavicsok durvák, a hely pedig szűkös.",
+        "A híd melletti sziklákról szoktak ugrani, de mindig ellenőrizd előre a vízmélységet, és csak ott ugorj, ahol a helyiek is a vízben vannak. Légy figyelmes a lent úszókra, és figyeld az árapályt; a kis öböl késő délutánra árnyékba borul."
+      ]
+    }
+  ],
+  "essentialsTitle": "Mire számíts",
+  "essentials": [
+    "SITA megálló Praiano és Furore között – kérd meg a sofőrt, hogy jelezze a fjordot.",
+    "Meredek lépcsősor egy apró kavicsos partra a híd alatt.",
+    "Nincs helyszíni szolgáltatás: vigyél vizet, harapnivalót, napvédőt és készpénzt szükség esetére taxira."
+  ],
+  "tipsTitle": "Gyors tippek",
+  "tips": [
+    "Olvasd el a %LINK:positanoBeaches|positanói strandáttekintést%, és párosítsd a Fiordo di Furorét egy másik fürdőzős hellyel ugyanazon a napon.",
+    "Érkezz korán, ha tömeg nélküli fotókat szeretnél a híd alatt.",
+    "Vigyél környezetbarát naptejet és vízicipőt – a kövek nedvesen csúszósak."
+  ],
+  "warningsTitle": "Fontos tudnivalók",
+  "warnings": [
+    "Vásárolj retúr buszjegyet Positanóban; a fjordnál sehol sem tudod megvenni vagy érvényesíteni.",
+    "Főszezonban a buszok megtelhetnek, és megállás nélkül továbbmennek – hagyj időt a hazajutásra.",
+    "A part szűkös, és a délutáni árnyék gyorsan lehűti a helyet."
+  ],
+  "faqsTitle": "Fiordo di Furore GYIK",
+  "faqs": []
+}

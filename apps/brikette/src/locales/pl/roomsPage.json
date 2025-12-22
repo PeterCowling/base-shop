@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "title": "Pokoje i ceny | Hostel Brikette Positano",
+    "description": "Prywatne dwuosobowe z widokiem na morze i budżetowe dormy: zobacz zdjęcia, udogodnienia i aktualne ceny, a następnie zarezerwuj bezpośrednio, aby uzyskać najlepszą ofertę.",
+    "ogImageAlt": "Wnętrze wspólnego pokoju"
+  },
+  "facilities": {
+    "privateRoom": "Pokój prywatny",
+    "mixedDorm": "Dorm mieszany",
+    "femaleDorm": "Dorm tylko dla kobiet",
+    "femaleRoom": "Pokój tylko dla kobiet",
+    "doubleBedForTwo": "Jedno łóżko podwójne dla maksymalnie dwóch gości",
+    "threeSingleBedsThreeGuests": "Trzy pojedyncze łóżka, dla maksymalnie trzech gości",
+    "oneDormBedTwoGuests": "Jedno łóżko piętrowe (dorm) — łącznie dwa miejsca, dla maks. dwóch gości",
+    "threeDormBedsSixGuests": "Trzy łóżka dormowe — łącznie sześć łóżek, dla maks. sześciu gości",
+    "threeDormBedsPlusSingleSevenGuests": "Trzy łóżka dormowe + jedno pojedyncze (razem 7), dla maks. siedmiu gości",
+    "fourDormBedsEightGuests": "Cztery łóżka dormowe — łącznie osiem łóżek, dla maks. ośmiu gości",
+    "thirdFloor": "Położony na trzecim piętrze",
+    "fourthFloor": "Położony na czwartym piętrze",
+    "bathroomEnsuite": "Łazienka w pokoju (ensuite)",
+    "bathroomPrivate": "Prywatna łazienka",
+    "bathroomSharedFemale": "Wspólna łazienka (tylko dla kobiet)",
+    "seaViewTerrace": "Taras z widokiem na morze",
+    "seaViewExtraLargeTerrace": "Widok na morze z bardzo dużym tarasem",
+    "gardenView": "Widok na ogród",
+    "courtyardView": "Widok na dziedziniec",
+    "noView": "Brak widoku",
+    "airCon": "Klimatyzacja",
+    "keycard": "Wejście na kartę",
+    "linen": "Pościel i ręczniki w zestawie"
+  },
+  "rooms": {
+    "title": "Nasze pokoje",
+    "double_room": {
+      "title": "Pokój dwuosobowy",
+      "bed_intro": "Zachwycające widoki na morze — idealny dla par.",
+      "bed_description": "Nasz pokój dwuosobowy to prywatna przestrzeń z jednym łóżkiem podwójnym dla maksymalnie dwóch gości. Położony na trzecim piętrze, oferuje łazienkę ensuite, taras z widokiem na morze, klimatyzację i wejście na kartę. Zapewniamy pościel i ręczniki.",
+      "facilities": [
+        "privateRoom",
+        "doubleBedForTwo",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 259.2,
+        "flexible": 285.12
+      }
+    },
+    "room_10": {
+      "title": "Dorm mieszany Premium",
+      "bed_intro": "Gdy potrzebujesz sześciu łóżek i lepszej łazienki.",
+      "bed_description": "Dorm Premium to mieszany pokój z trzema łóżkami dormowymi (łącznie sześć miejsc), dla maksymalnie sześciu gości. Położony na czwartym piętrze, posiada klimatyzację, wejście na kartę oraz łazienkę ensuite (bez widoku). Pościel i ręcznik zapewnione przy zameldowaniu.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 60.75,
+        "flexible": 66.82
+      }
+    },
+    "room_11": {
+      "title": "Dorm żeński Superior — duży taras",
+      "bed_intro": "Taras z widokiem na morze, łazienka ensuite i przestrzeń tylko dla kobiet.",
+      "bed_description": "Ten dorm żeński Superior mieści sześć łóżek dormowych i oferuje taras z widokiem na morze oraz mnóstwo przestrzeni na relaks. Znajduje się na czwartym piętrze, ma klimatyzację, wejście na kartę oraz łazienkę ensuite, a na rozległym tarasie czekają leżaki. Pościel i ręczniki otrzymasz przy zameldowaniu.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 72.4,
+        "flexible": 79.64
+      }
+    },
+    "room_12": {
+      "title": "Dorm mieszany Superior",
+      "bed_intro": "Świetne widoki z przestronnego tarasu i wygodna łazienka.",
+      "bed_description": "Dorm mieszany Superior ma trzy łóżka dormowe (razem sześć), dla maksymalnie sześciu gości. Położony na czwartym piętrze; klimatyzacja, wejście na kartę, prywatna łazienka i widok na morze z bardzo dużym tarasem. Pościel i ręcznik dostępne przy zameldowaniu.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomPrivate",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 74.4,
+        "flexible": 81.84
+      }
+    },
+    "room_3": {
+      "title": "Dorm żeński Value",
+      "bed_intro": "Budżetowy wybór dla podróżujących kobiet.",
+      "bed_description": "Dorm żeński Value mieści do ośmiu gości na czterech łóżkach dormowych. Na trzecim piętrze, z klimatyzacją, wejściem na kartę oraz dostępem do wspólnej damskiej łazienki. Brak widoku. Pościel i ręcznik przy zameldowaniu.",
+      "facilities": [
+        "femaleDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_4": {
+      "title": "Dorm mieszany Value",
+      "bed_intro": "Budżetowa opcja dla podróżujących kobiet i mężczyzn.",
+      "bed_description": "Dorm mieszany Value mieści do ośmiu gości na czterech łóżkach dormowych. Na trzecim piętrze; klimatyzacja, wejście na kartę i dostęp do wspólnej damskiej łazienki. Brak widoku. Pościel i ręcznik przy zameldowaniu.",
+      "facilities": [
+        "mixedDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_5": {
+      "title": "Dorm żeński Superior — widok na morze",
+      "bed_intro": "Zachwycające widoki na morze i prywatna łazienka.",
+      "bed_description": "Dorm żeński Superior mieści do sześciu gości na trzech łóżkach dormowych. Na trzecim piętrze; łazienka ensuite, taras z widokiem na morze, klimatyzacja i wejście na kartę. Pościel i ręcznik przy zameldowaniu.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_6": {
+      "title": "Dorm żeński Superior — 7 łóżek",
+      "bed_intro": "Wspaniałe widoki na morze i łazienka ensuite.",
+      "bed_description": "Dorm żeński Superior oferuje trzy łóżka dormowe oraz jedno pojedyncze (razem 7), dla maksymalnie siedmiu gości. Na trzecim piętrze; łazienka ensuite, taras z widokiem na morze, klimatyzacja i wejście na kartę. Pościel i ręcznik dostępne przy zameldowaniu.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsPlusSingleSevenGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_9": {
+      "title": "Pokój mieszany Deluxe",
+      "bed_intro": "Budżetowy sposób na pokój z trzema łóżkami.",
+      "bed_description": "Pokój mieszany Deluxe ma trzy łóżka pojedyncze dla maksymalnie trzech gości. Na czwartym piętrze; łazienka ensuite, widok na dziedziniec, klimatyzacja i wejście na kartę. Pościel i ręcznik przy zameldowaniu.",
+      "facilities": [
+        "mixedDorm",
+        "threeSingleBedsThreeGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "courtyardView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_8": {
+      "title": "Dorm żeński z jednym łóżkiem piętrowym",
+      "bed_intro": "Budżetowa opcja dla dwóch podróżujących kobiet.",
+      "bed_description": "Ten dorm tylko dla kobiet ma jedno łóżko piętrowe (dormowe), dla maksymalnie dwóch gości. Na trzecim piętrze; klimatyzacja, wejście na kartę, widok na ogród i sąsiedztwo wspólnej damskiej łazienki. Pościel i ręcznik przy zameldowaniu.",
+      "facilities": [
+        "femaleDorm",
+        "oneDormBedTwoGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "gardenView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 78,
+        "flexible": 85.8
+      }
+    }
+  },
+  "fullscreen": {
+    "clickToClose": "Kliknij w dowolnym miejscu, aby zamknąć",
+    "closeAria": "Zamknij obraz na pełnym ekranie"
+  },
+  "roomImage": {
+    "clickToEnlarge": "Kliknij obraz, aby powiększyć",
+    "prevAria": "Poprzedni obraz",
+    "nextAria": "Następny obraz",
+    "pagination": "_ Placholder_0 __/_ Ubezpieczeniem _1 __",
+    "photoAlt": "Zdjęcie {{room}}",
+    "noImage": "Brak dostępnego zdjęcia"
+  },
+  "carousel": {
+    "previousSlide": "Poprzedni slajd",
+    "nextSlide": "Następny slajd"
+  },
+  "hero": {
+    "heading": "Nasze pokoje",
+    "subheading": "Wybierz idealny pokój na swój pobyt"
+  },
+  "filters": {
+    "all": "Wszystkie pokoje",
+    "private": "Pokoje prywatne",
+    "dorms": "Dormy"
+  },
+  "filtersAria": "Filtruj według typu pokoju",
+  "checkRatesNonRefundable": "Stawki bezzwrotne",
+  "checkRatesFlexible": "Elastyczne stawki",
+  "ctaSuffix": {
+    "nonRefundable": "Niezbędne",
+    "flexible": "Elastyczny"
+  },
+  "details": "Szczegóły",
+  "ratesFrom": "Od €{{price}}",
+  "selectDatesTitle": "Wybierz daty",
+  "checkInDate": "Data przyjazdu",
+  "checkOutDate": "Data wyjazdu",
+  "adults": "Liczba dorosłych",
+  "confirm": "Potwierdź",
+  "cancel": "Anuluj",
+  "moreAboutThisRoom": "Więcej o tym pokoju",
+  "loadingPrice": "Cena ładowania…",
+  "landingImageAlt": "Obraz lądowania __placeholder_0__",
+  "priceNotes": {
+    "dorm": "Per night, per guest. One guest in one bunk bed."
+  }
+}

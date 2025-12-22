@@ -176,7 +176,7 @@ export async function revertSeo(shop: string, timestamp: string) {
   if (idx === -1) throw new Error("Version not found"); // i18n-exempt: developer exception message
   const base = await fetchSettings(shop);
   let state: ShopSettings = { ...base };
-  for (let i = 0; i <= idx; i++) {
+  for (let i = 0; i < idx; i++) {
     state = { ...state, ...sorted[i].diff } as ShopSettings;
   }
   await persistSettings(shop, state);

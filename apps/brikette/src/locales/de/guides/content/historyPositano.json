@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Geschichte von Positano (kurz)",
+    "description": "Kurzgeschichte Positanos: Händler, Steilküsten, Tourismus."
+  },
+  "linkLabel": "Geschichte von Positano (kurz)",
+  "intro": [
+    "Von einem römischen Hafen über maritime Republik bis hin zum Künstler-Hotspot – Positanos Geschichte prägt noch heute seine Gassen."
+  ],
+  "sections": [
+    {
+      "id": "origins",
+      "title": "Ursprünge & Handel",
+      "body": [
+        "Archäologische Funde zeigen römische Villen und Handel mit dem Osten; Positano florierte als Teil der Seerepublik Amalfi.",
+        "Bis ins 18. Jahrhundert lebte das Dorf vom Fischfang und vom Export von Zitronen, Korallen und handgewebten Stoffen."
+      ]
+    },
+    {
+      "id": "20th",
+      "title": "20. Jahrhundert",
+      "body": [
+        "Nach dem Zweiten Weltkrieg schwärmten Künstler und Schriftsteller – allen voran John Steinbeck – und nannten Positano einen traumhaften Ort, der vertikal zu leben scheint.",
+        "Reisende aus aller Welt entdeckten Positano, traditionelle Webereien und Mode unter dem Label Moda Positano erlebten einen Aufschwung."
+      ]
+    },
+    {
+      "id": "today",
+      "title": "Gegenwart",
+      "body": [
+        "Heute balanciert Positano Tourismus und Erhalt lokaler Traditionen – Zitronenhaine, Keramik und Handwerkskunst bleiben wichtige Säulen.",
+        "Nachhaltige Initiativen fördern Mülltrennung, Wasserstationen und den Schutz der Küstenwege."
+      ]
+    }
+  ],
+  "tips": [
+    "Besuche das Museo Archeologico Romano unter der Kirche Santa Maria Assunta für römische Fresken.",
+    "Lies vor Ort Steinbecks Esquire-Artikel von 1953 – viele Cafés haben ihn eingerahmt."
+  ],
+  "faqs": [
+    {
+      "q": "Gibt es historische Führungen?",
+      "a": [
+        "Ja, Walking-Touren beleuchten römische Ruinen, Seefahrt und Legenden; Tickets erhältst du im Info-Point an der Piazza dei Mulini."
+      ]
+    },
+    {
+      "q": "Wo finde ich mehr zur Geschichte?",
+      "a": [
+        "Das Stadtarchiv im Rathaus (nach Termin) und das Papiermuseum in Amalfi bieten weitere Einblicke in die Handelsvergangenheit."
+      ]
+    }
+  ]
+}

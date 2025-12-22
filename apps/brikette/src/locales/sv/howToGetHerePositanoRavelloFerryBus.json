@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Positano till Ravello med färja och buss | Hostel Brikette",
+    "description": "Steg för steg från Positano till Ravello: gå till hamnen, ta färjan till Amalfi och därefter SITA-buss upp till Ravello – med tips om biljetter, tidplan och smidiga byten."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette reseguide",
+    "title": "Positano till Ravello – färja och buss (via Amalfi)",
+    "description": "Använd den här guiden för att resa från Positano till Ravello genom att kombinera en naturskön färjetur till Amalfi med en SITA-buss upp till Ravello. Här får du veta hur du går till hamnen, biljettips, var du byter i Amalfi och vad som väntar när du kommer fram till Ravello."
+  },
+  "tip": {
+    "label": "Tips",
+    "body": "Behöver du andra resealternativ? Öppna <Link>översikten Så tar du dig hit</Link> för bussar, flygplatstransfer och kombinerade rutter."
+  },
+  "overview": {
+    "title": "Resan i korthet",
+    "points": [
+      "Rutt: Positano → Amalfi med färja, sedan Amalfi → Ravello med SITA-buss.",
+      "Avsätt extra tid under högsäsong för köer och byten.",
+      "Kontrollera aktuella färje- och busstider samma dag som du reser."
+    ]
+  },
+  "walk": {
+    "title": "Gå till Positanos hamn",
+    "intro": "Du kan följa den väl upptrampade trappvägen från vandrarhemmet ner till Spiaggia Grande. Har du tungt bagage kan du skicka väskorna med bärarservice och gå ner lättare.",
+    "steps": [
+      "Gå ut från Hostel Brikette, ner för trapporna till huvudvägen och sväng vänster (Via G. Marconi).",
+      "Gå drygt 100 meter till högersvängen (tabacchi på hörnet).",
+      "Köp gärna bussbiljetten Amalfi → Ravello i tabacchin om det passar.",
+      "Fortsätt nedför; vid den första hårnålskurvan tar du trappgenvägen från vägen.",
+      "Följ trappor och gångar nedför och korsa vägen där det är markerat.",
+      "Längst ner, sväng höger, gå igenom valvet och fortsätt cirka 50 meter till hamnen."
+    ],
+    "link": "Vill du ha en kartbaserad guide? Se <Link>Chiesa Nuova → Stranden (minst trappor)</Link>."
+  },
+  "ferry": {
+    "title": "Köp färjebiljetter",
+    "notes": [
+      "Vid hamnen kan du jämföra avgångar och priser vid operatörernas biljettkiosker.",
+      "Vanliga bolag är Travelmar och Lucibello – bekräfta nästa avgång mot Amalfi.",
+      "Kom 15–20 minuter före avgång under sommaren för ett lugnt påstigande."
+    ],
+    "resources": "Kontrollera senaste tider och priser på <TravelmarLink>Travelmar</TravelmarLink> och <PositanoLink>Positano.com – färjetidtabell</PositanoLink>."
+  },
+  "transfer": {
+    "title": "Byt i Amalfi",
+    "notes": [
+      "Gå av i Amalfi och promenera en kort bit till busshållplatserna.",
+      "Har du inte köpt biljett i Positano, köp en Amalfi → Ravello-biljett nu.",
+      "Ställ dig i kö till bussen mot Ravello; linjerna är oftast 5110/5120 (kontrollera skylten)."
+    ],
+    "resources": "Se SITA-linjer och tider på <SitaLink>Positano.com (översikt över SITA-tidtabeller)</SitaLink>."
+  },
+  "arrival": {
+    "title": "Framme i Ravello",
+    "notes": [
+      "Ravello ligger ovanför Amalfi och många sevärdheter samlas runt Piazza Duomo.",
+      "Följ lokala skyltar från avlämningsplatsen till ditt boende.",
+      "Vid sena ankomster eller långa väntetider kan en taxi från Amalfi vara ett bättre val."
+    ]
+  }
+}

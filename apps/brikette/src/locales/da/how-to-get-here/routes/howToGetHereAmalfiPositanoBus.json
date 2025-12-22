@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Amalfi til Positano med bus | Hostel Brikette",
+    "description": "SITA-bus Amalfi til Positano: påstigningssteder, billetråd, noter om køreplanen og hvor du skal stå af for Hostel Brikette (Chiesa Nuova)."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Amalfi til Positano — Bus (SITA Sud)",
+    "description": "Brug denne guide til at rejse fra Amalfi til Positano med SITA-bus. Den dækker, hvor du går ombord i Amalfi, billetvalidering, hvordan du læser køreplanen, og hvor du skal stå af for den korteste gåtur til hostellet."
+  },
+  "aside": {
+    "eyebrow": "Brug for andre ruter?",
+    "body": {
+      "before": "Har du brug for andre transportmuligheder? Åbn ",
+      "linkLabel": "oversigten Sådan kommer du hertil",
+      "after": " for færger, taxaer og kombinerede rejser."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Rejseoverblik",
+      "body": "Den direkte SITA-bus fra Amalfi til Positano kører hyppigt i højsæsonen. Forvent en naturskøn kysttur på omkring en time afhængigt af trafikken."
+    },
+    "boarding": {
+      "title": "Hvor går du ombord i Amalfi",
+      "items": [
+        "Gå til Amalfis hovedbusterminal ved piazzaen ved vandet.",
+        "Se efter SITA-busser skiltet ‘Sorrento’ eller ‘Positano’ (begge stopper i Positano).",
+        "Køb billetter i en tabacchi/kiosk før du går ombord (kontant/kort varierer).",
+        "Hav billetterne klar; chaufføren kan stemple eller rive dem ved påstigning."
+      ]
+    },
+    "tickets": {
+      "title": "Billetter og køreplan",
+      "body": {
+        "before": "Tjek den seneste køreplan på ",
+        "linkLabel": "Positano.com",
+        "after": ". Brug noterne nedenfor til at læse skemaet korrekt."
+      },
+      "items": [
+        "Stop er listet som rækker; hver bogstavkolonne svarer til en afgang.",
+        "For man–lør bruges normalt kolonnerne ‘F’ og ‘G’; søn-/helligdage ofte ‘G’ og ‘H’.",
+        "Find ‘Amalfi’ for afgang og ‘Positano (Chiesa Nuova)’ for din ankomstrække."
+      ]
+    }
+  }
+}

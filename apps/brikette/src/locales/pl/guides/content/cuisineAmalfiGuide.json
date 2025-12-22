@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Kuchnia Wybrzeża Amalfi",
+    "description": "Najważniejsze potrawy, składniki i polecane miejsca, w których warto ich spróbować."
+  },
+  "linkLabel": "Kuchnia Wybrzeża Amalfi",
+  "intro": [
+    "Tłumaczenie w przygotowaniu.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "tocTitle": "On this page",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Seafood staples",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Markets & quick bites",
+      "body": [
+        "Morning markets and deli counters sell focaccia, fried cuoppi, and fresh mozzarella for easy lunches.",
+        "Pick up citrus marmalade, colatura di alici, and dried herbs as flavour boosters for picnics."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Desserts & pastries",
+      "body": [
+        "Delizia al limone, babà al limoncello, and sfogliatella pair well with an espresso after dinner.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Drinks & pairings",
+      "body": [
+        "Order chilled limoncello or crema di limoncello as a digestivo after meals.",
+        "DOC wines from Tramonti or Costa d’Amalfi (Furore, Ravello) complement seafood and citrus-led dishes."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Ordering etiquette",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Share plates family-style but let staff know upfront so pacing and tableware stay smooth."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can vegetarians eat well here?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Do I need to reserve popular trattorias?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "itemListTitle": "Tłumaczenie w przygotowaniu.",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Fixed-course farmhouse dinner with handmade pasta, grilled meats, and sweeping terrace views."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Daytime café for lemon-forward salads, cold-pressed juices, and house-made desserts."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Tłumaczenie w przygotowaniu."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Tłumaczenie w przygotowaniu."
+    }
+  ],
+  "gallery": {
+    "title": "Dish highlights",
+    "items": [
+      {
+        "alt": "Seafood pasta with Amalfi Coast lemons",
+        "caption": "Seafood staples from Positano trattorias"
+      },
+      {
+        "alt": "Delizia al limone pastry on a plate",
+        "caption": "Lemon desserts to sample"
+      },
+      {
+        "alt": "Friends clinking limoncello glasses at sunset",
+        "caption": "Digestivos with a view"
+      }
+    ]
+  },
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Staples"
+      },
+      {
+        "href": "#sweets",
+        "label": "Sweets"
+      },
+      {
+        "href": "#drinks",
+        "label": "Drinks"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Staples",
+        "body": [
+          "Tłumaczenie w przygotowaniu.",
+          "Tłumaczenie w przygotowaniu."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Sweets",
+        "body": [
+          "Sample delizia al limone, babà al limoncello, and lemon sorbet for a citrus-led dessert trio.",
+          "Pair pastries with espresso or digestivo limoncello to close the meal like a local."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Drinks",
+        "body": [
+          "Tłumaczenie w przygotowaniu.",
+          "Tłumaczenie w przygotowaniu."
+        ]
+      }
+    ]
+  }
+}

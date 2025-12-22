@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Walk back to Hostel Brikette from Spiaggia Grande",
+    "description": "Follow the hostel's staircase checkpoints for the 30–45 minute return climb."
+  },
+  "linkLabel": "Walk back from Positano's main beach",
+  "intro": [
+    "La salita di ritorno dalla Spiaggia Grande all'Hostel Brikette dura circa 30–45 minuti a seconda del ritmo, delle soste fotografiche e del calore.",
+    "Questi gradini rispecchiano le cinque foto del checkpoint dell'ostello in modo da poter rimanere sulla scalinata più veloce per tutta la salita."
+  ],
+  "sections": [
+    {
+      "id": "before-you-climb",
+      "title": "Prima di salire",
+      "body": [
+        "Riempi l'acqua e concediti del tempo per le pause: non ci sono negozi sulle scale fino a quando non raggiungi le strade superiori.",
+        "Prendi le foto di riferimento dalla reception o dal concierge digitale in modo da poter abbinare i punti 4 e 5 durante la salita."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Passeggiata passo dopo passo fino all'ostello",
+      "body": [
+        "1. Parti sul lato sinistro della Spiaggia Grande (di fronte all'acqua) e passa sotto l'arco accanto al porto.",
+        "2. Prosegui dritto attraverso la corsia dello shopping fino a raggiungere il cortile aperto al punto 5 della mappa: verifica che la vista corrisponda alla foto dell'ostello.",
+        "3. Prendi la scala alla tua sinistra, seguila in salita mentre curva a destra e sali in cima.",
+        "4. Girare a destra in alto, quindi prendere immediatamente la scala successiva in salita per raggiungere il punto 4 della mappa.",
+        "5. Dal punto 4, svoltare a sinistra sulla strada, camminare per circa 10 metri (30 piedi), attraversare e prendere la scala direttamente di fronte a voi.",
+        "6. Segui le scale fino a quando non incontrano un'altra strada. Se guardi indietro, la scena dovrebbe corrispondere alla foto del punto 3. Attraversare dritto sulla scala successiva e continuare a salire.",
+        "7. Al termine delle scale, imbocca la strada davanti a te, gira a sinistra e prosegui in salita per poco più di 100 metri.",
+        "8. Svoltare a destra sulla scala familiare che conduce direttamente alla porta principale dell'Hostel Brikette."
+      ]
+    }
+  ],
+  "tipsTitle": "Suggerimenti veloci",
+  "tips": [
+    "Se la salita sembra troppo intensa, passa al %LINK:positanoMainBeachBusBack|autobus di ritorno all'ostello% una volta raggiunta Piazza dei Mulini.",
+    "Inizia la passeggiata prima di mezzogiorno o dopo il tramonto per evitare la parte più calda della giornata.",
+    "Fermati in atterraggi ombreggiati per riprendere fiato e scattare foto del panorama: te le sei guadagnate."
+  ]
+}

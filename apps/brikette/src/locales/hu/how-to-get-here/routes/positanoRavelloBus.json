@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "title": "Positanóból Ravellóba busszal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató Positanóból Ravellóba Amalfín keresztül SITA buszokkal, jegyvásárlási tippekkel, menetrend-olvasási útmutatóval, a Chiesa Nuova megálló részleteivel és átszállási tanácsokkal."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Positanóból Ravellóba – Amalfín át busszal",
+    "description": "Utazz Positanóból Ravellóba egy egyszerű amalfi átszállással. Az útmutató bemutatja, hol vásárolj SITA jegyet, hogyan olvasd a menetrendet, mire számíts az amalfi átszállásnál, és hogyan jutsz el a positanói buszmegállóhoz a Hostel Brikette-ből."
+  },
+  "cta": {
+    "eyebrow": "Tipp",
+    "beforeLink": "Szeretnéd látni az összes közlekedési lehetőséget? Nyisd meg a",
+    "linkLabel": "Hogyan juthatsz el hozzánk áttekintést",
+    "afterLink": "kompokhoz, taxikhoz és kombinált útvonalakhoz."
+  },
+  "journey": {
+    "title": "Az út áttekintése",
+    "body": "Az utazás nagyjából 1,5–2,5 órát vesz igénybe a csatlakozásoktól függően. Először a SITA busszal menj Positanóból (Chiesa Nuova) Amalfiba, majd szállj át a Ravello felé tartó SITA buszra."
+  },
+  "sita": {
+    "title": "SITA buszok és jegyek",
+    "items": [
+      "Az Amalfi-parti buszokat a SITA (SITA Sud Srl) üzemelteti.",
+      "Jegyet még beszállás előtt vegyél újságosnál vagy trafikban (tabacchi).",
+      "Tartsd kéznél a jegyet; a sofőr beszálláskor bélyegzi vagy kitépi.",
+      "Főszezonban zsúfolt lehet, érkezz kicsit korábban, hogy sorba állhass."
+    ]
+  },
+  "timetable": {
+    "title": "Menetrendek",
+    "beforeLink": "Amalfiba utazol, és ott szállsz át Ravelló felé. A legfrissebb menetrendeket itt találod:",
+    "linkLabel": "Positano.com (SITA menetrend áttekintés)",
+    "afterLink": ".",
+    "linkHref": "https://www.positano.com/en/bus-schedule",
+    "readingHeading": "A menetrend olvasása",
+    "tips": [
+      "Az első oszlop sorai az útvonal megállóit sorolják fel.",
+      "Az oszlopok betűkkel jelölt menetrendi indulásokat jelentenek.",
+      "Hétfőtől szombatig az „F” és „G” oszlopokat használd.",
+      "Vasárnap vagy ünnepnapon a „G” és „H” oszlopokat nézd."
+    ]
+  },
+  "positanoStop": {
+    "title": "Positanói (Chiesa Nuova) buszmegálló",
+    "items": [
+      "A legközelebbi SITA megálló a Positano (Chiesa Nuova) a Via G. Marconin.",
+      "Nagyjából 140 méterre (490 lábra) van a hostel bejáratától.",
+      "A „Bar Internazionale” nevű kávézó/bár előtt fogsz várakozni."
+    ],
+    "caption": "Érkezz pár perccel korábban, hogy biztosan legyen helyed — nyáron gyorsan megtelnek a buszok.",
+    "alt": "A positanói Chiesa Nuova SITA megálló a Bar Internazionale előtt"
+  },
+  "walk": {
+    "title": "Séta a hosteltől a megállóig",
+    "items": [
+      "Lépj ki a hostelből, menj le a lépcsőn a főútig, majd fordulj balra.",
+      "Haladj a Via G. Marconi mentén körülbelül 100 métert (330 lábat).",
+      "Bal oldalon találod a Bar Internazionale-t; a SITA megálló közvetlenül előtte van."
+    ]
+  },
+  "buyTickets": {
+    "title": "Buszjegyek vásárlása",
+    "items": [
+      "Vásárolj jegyet a Bar Internazionale-ban vagy a közeli tabacchiban.",
+      "Szükséged lesz Positano → Amalfi és Amalfi → Ravello szakaszra szóló jegyekre.",
+      "A kínált díjterméktől függően egy vagy két jegyet kapsz."
+    ]
+  },
+  "toAmalfi": {
+    "title": "Utazz a buszsal Amalfiba",
+    "items": [
+      "Kelj át az úton a Bar Internazionale-val szemben lévő, Amalfi felé tartó megállóba.",
+      "Állj sorba, majd szállj fel az Amalfi feliratú buszra, és érvényesítsd a jegyed.",
+      "Szállj le az amalfi buszpályaudvaron, ahol a Ravellóba tartó csatlakozásod indul."
+    ]
+  },
+  "change": {
+    "title": "Átszállás Amalfiban",
+    "items": [
+      "Várakozás közben röviden bejárhatod Amalfit.",
+      "Térj vissza a buszpályaudvarra, és szállj fel a Ravello felé tartó buszra (5110/5120-as járatok).",
+      "A második jegyet is érvényesítsd felszálláskor."
+    ]
+  },
+  "arrive": {
+    "title": "Érkezés Ravellóba",
+    "items": [
+      "Ravello Amalfi felett helyezkedik el; a látnivalók többsége a Piazza Duomo környékén található.",
+      "Kövesd a helyi jelzéseket a szállásodhoz vagy a főtérhez.",
+      "Ha későn érkezel vagy ritkák a járatok, fontold meg a taxit Amalfiból."
+    ]
+  }
+}

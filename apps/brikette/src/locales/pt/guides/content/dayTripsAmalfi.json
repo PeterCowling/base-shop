@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Bate-voltas a partir de Positano: Capri, Pompeia, Ravello, Amalfi",
+    "description": "Como encaixar os principais passeios em roteiros curtos — ferries, ônibus, duração e reservas recomendadas."
+  },
+  "linkLabel": "Bate-voltas saindo de Positano",
+  "intro": [
+    "Use Positano como base para bate-voltas de ferry e autocarro — saia cedo, reserve bilhetes-chave e tenha sempre um plano alternativo para mau tempo."
+  ],
+  "sections": [
+    {
+      "id": "capri",
+      "title": "Destaques de Capri",
+      "body": [
+        "Reserve o primeiro ferry, suba de teleférico ao Monte Solaro e visite os Giardini di Augusto antes de chegarem os cruzeiros.",
+        "Regresse num ferry ao fim da tarde e mantenha uma captura de ecrã dos horários de autocarro caso o mar fique agitado."
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompeia ou Herculano",
+      "body": [
+        "Apanhe o autocarro da manhã para Sorrento e ligue à Circumvesuviana; compre bilhetes sem fila online para poupar tempo.",
+        "Leve água e chapéu — há pouca sombra e a visita dura facilmente 3–4 horas."
+      ]
+    },
+    {
+      "id": "amalfi-ravello",
+      "title": "Amalfi & Ravello",
+      "body": [
+        "Vá de ferry até Amalfi, visite o Duomo e apanhe o autocarro 5110 até Ravello para a Villa Cimbrone e almoço com vista.",
+        "Fique até ao fim da tarde e regresse num ferry ou autocarro ao anoitecer — as filas diminuem depois das 18:00."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento com foco gastronómico",
+      "body": [
+        "Pegue o ferry de fim de manhã para Sorrento, explore o mercado, faça provas de limoncello e veja o pôr do sol no terraço da Villa Comunale.",
+        "Se o último ferry esgotar, volte de autocarro noturno para Positano; a viagem dura cerca de 50 minutos."
+      ]
+    }
+  ],
+  "tips": [
+    "Carregue mapas e horários offline; o sinal falha em túneis de comboio e nas falésias de Capri.",
+    "Leve um impermeável leve — trovoadas de verão chegam rápido e os ferries param com relâmpagos."
+  ],
+  "faqs": [
+    {
+      "q": "Qual bate-volta exige saída mais cedo?",
+      "a": [
+        "Capri e Pompeia beneficiam das primeiras partidas; ficam cheios a meio da manhã e exigem mais deslocações."
+      ]
+    },
+    {
+      "q": "Posso encaixar duas cidades no mesmo dia?",
+      "a": [
+        "Sim — combine Amalfi com Ravello ou Sorrento com Pompeia. Evite juntar Capri a outra paragem; dedique-lhe um dia inteiro."
+      ]
+    }
+  ]
+}

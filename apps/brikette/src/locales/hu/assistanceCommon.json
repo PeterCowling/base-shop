@@ -1,0 +1,33 @@
+{
+  "sidebarLabel": "Súgóközpont navigáció",
+  "openSidebar": "Súgó navigáció megnyitása",
+  "closeSidebar": "Súgó navigáció bezárása",
+  "mobileSidebarLabel": "Súgóközpont navigáció",
+  "mobileHint": "Húzd le vagy koppints a bezárásra a súgómenü bezárásához",
+  "nav": {
+    "assistance": "Digitális segítség",
+    "ama": "Kérdezz bármit",
+    "bookingBasics": "Foglalási alapok",
+    "changingCancelling": "Módosítás és lemondás",
+    "checkinCheckout": "Be‑ és kijelentkezési útmutató",
+    "depositsPayments": "Befizetések és fizetés",
+    "defectsDamages": "Hibák és károk",
+    "security": "Biztonság",
+    "rules": "Szabályok",
+    "legal": "Jogi",
+    "ageAccessibility": "Kor és akadálymentesség",
+    "arrivingByFerry": "Érkezés kompon",
+    "naplesAirportBus": "Nápolyi repülőtér busszal",
+    "travelHelp": "Utazási segítség"
+  },
+  "cta": {
+    "readMore": "Olvass tovább",
+    "readMoreAccessible": "Segítségkérő cikkek böngészése"
+  },
+  "alsoHelpful": "Továbbá hasznos",
+  "alsoHelpfulEyebrow": "Helyi ajánlatok",
+  "alsoHelpfulDescription": "Tervezz okosabban, kézzel válogatott útmutatókkal és gyors foglalási hivatkozásokkal.",
+  "alsoHelpfulExplore": "Fedezd fel ezt az útmutatót",
+  "alsoHelpfulBook": "Foglalj szállást",
+  "roomsCta": "Szobák és elérhetőség megtekintése"
+}

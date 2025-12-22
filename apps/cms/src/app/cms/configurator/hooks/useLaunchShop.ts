@@ -19,6 +19,11 @@ interface Options {
   env?: Environment;
 }
 
+type LaunchShopErrorPayload = {
+  error?: string;
+  missingSteps?: string[];
+};
+
 export function useLaunchShop(
   state: ConfiguratorState,
   options: Options = {},
@@ -90,9 +95,9 @@ export function useLaunchShop(
         body: JSON.stringify({ shopId: state.shopId, state, seed, env }),
       });
       if (!res.ok) {
-        let payload: { error?: string; missingSteps?: string[] } | null = null;
+        let payload: LaunchShopErrorPayload | null = null;
         try {
-          payload = (await res.json()) as typeof payload;
+          payload = (await res.json()) as LaunchShopErrorPayload;
         } catch {
           /* ignore parse errors */
         }

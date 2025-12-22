@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Dagsturer från Positano",
+    "description": "Idéer för dagsutflykter från Positano med tider och transportval."
+  },
+  "linkLabel": "Dagsturer från Positano",
+  "intro": [
+    "Använd Positano som bas för dagsutflykter med färja och buss – starta tidigt, förboka viktiga biljetter och ha alltid en väderplan B."
+  ],
+  "sections": [
+    {
+      "id": "capri",
+      "title": "Capri – höjdpunkterna",
+      "body": [
+        "Boka första färjan, ta stolliften till Monte Solaro och promenera i Giardini di Augusto innan kryssningsgästerna anländer.",
+        "Åk hem med en sen eftermiddagsavgång och spara en buss-tidtabell i mobilen ifall havet blir stökigt."
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompeji eller Herculaneum",
+      "body": [
+        "Ta den tidiga bussen till Sorrento och byt till Circumvesuviana; köp skip-the-line-biljetter online för att spara tid.",
+        "Ha vatten och hatt – området har lite skugga och besöket tar lätt 3–4 timmar."
+      ]
+    },
+    {
+      "id": "amalfi-ravello",
+      "title": "Amalfi + Ravello",
+      "body": [
+        "Ta färjan till Amalfi, besök domkyrkan och ta sedan buss 5110 upp till Ravello för Villa Cimbrone och lunch med utsikt.",
+        "Stanna kvar för sen eftermiddagsljus och ta färja eller buss tillbaka i skymningen – köerna minskar efter 18:00."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento & matfokus",
+      "body": [
+        "Ta sen morgonfärja till Sorrento för marknadsrunda, limoncelloprovning och solnedgång vid Villa Comunales terrass.",
+        "Åk tillbaka med sen buss till Positano om sista färjan är full – resan tar cirka 50 minuter."
+      ]
+    }
+  ],
+  "tips": [
+    "Ladda ner offlinekartor och tidtabeller – mobildata kan försvinna i tågtunnlar och på Capris klippor.",
+    "Packa en lätt regnjacka – sommarstormar kommer snabbt och färjorna gör uppehåll vid åska."
+  ],
+  "faqs": [
+    {
+      "q": "Vilken utflykt kräver tidigast start?",
+      "a": [
+        "Capri och Pompeji vinner på första avgången; de blir fulla redan vid förmiddagen och tar längst restid."
+      ]
+    },
+    {
+      "q": "Kan jag hinna två orter på en dag?",
+      "a": [
+        "Ja – kombinera Amalfi med Ravello eller Sorrento med Pompeji. Undvik att pressa in Capri med något annat; ge ön en hel dag."
+      ]
+    }
+  ]
+}

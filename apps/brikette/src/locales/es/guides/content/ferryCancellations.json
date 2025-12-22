@@ -1,0 +1,94 @@
+{
+  "seo": {
+    "title": "Cancelaciones de ferris y mares agitados",
+    "description": "Qué hacer si cancelan los ferris por el clima, alternativas y cómo comprobar el estado."
+  },
+  "linkLabel": "Cancelaciones de ferris y mares agitados",
+  "intro": [
+    "El viento y el oleaje pueden suspender ferris sin previo aviso, incluso en pleno verano.",
+    "Ten siempre un plan alternativo con buses SITA o taxis compartidos para no quedarte bloqueado entre pueblos."
+  ],
+  "sections": [
+    {
+      "id": "motivos",
+      "title": "Por qué se suspenden los ferris",
+      "body": [
+        "Las autoridades portuarias limitan salidas cuando la previsión marca viento fuerte o mar de fondo.",
+        "En días nublados puede mantenerse el servicio; revisa señales amarillas/rojas en los tablones del muelle."
+      ]
+    },
+    {
+      "id": "alternativas",
+      "title": "Alternativas rápidas de transporte",
+      "body": [
+        "Buses SITA entre Positano, Amalfi y Sorrento funcionan con mayor frecuencia en temporada.",
+        "Para traslados con equipaje pesado, coordina taxi compartido o porteadores desde el muelle.",
+        "Si te diriges a Nápoles, conecta en Sorrento (Circumvesuviana) o Salerno (tren regional)."
+      ]
+    },
+    {
+      "id": "reembolsos",
+      "title": "Billetes, cambios y reembolsos",
+      "body": [
+        "Las compañías suelen ofrecer reembolso completo o cambio a otro horario; guarda el ticket físico o email de confirmación.",
+        "Si compraste a través de una agencia, contacta directamente con ellos para acelerar la devolución.",
+        "En caso de excursiones, pregunta si incluyen traslado terrestre como plan B."
+      ]
+    },
+    {
+      "id": "prep",
+      "title": "Cómo prepararte",
+      "body": [
+        "Consulta apps o redes sociales de las navieras la mañana del viaje.",
+        "Ten cargador portátil y agua: las filas para el bus pueden durar 30–40 minutos.",
+        "Informa a tu alojamiento si llegas más tarde por el cambio de ruta."
+      ]
+    }
+  ],
+  "tips": [
+    "Compra billetes de bus SITA con antelación cuando el mar esté agitado: se agotan rápido tras una cancelación.",
+    "Viaja con calzado cómodo; las colas se forman en pendientes y suelos mojados.",
+    "Las salidas matutinas son las más fiables; evita depender del último ferry del día si se anuncian tormentas."
+  ],
+  "faqs": [
+    {
+      "q": "¿Cómo sé si cancelarán antes de llegar al muelle?",
+      "a": [
+        "Sigue a las navieras en redes sociales y consulta el parte marítimo del puerto de Salerno la noche anterior; si hay alerta naranja, espera cambios.",
+        "El personal de taquilla también puede confirmar si el siguiente barco opera antes de que abandones el puerto."
+      ]
+    },
+    {
+      "q": "¿Puedo usar el mismo billete otro día?",
+      "a": [
+        "Depende de la compañía: algunas reprograman automáticamente dentro de la misma semana, otras requieren pasar por taquilla para nuevo cupón.",
+        "Si compraste en una agencia online, envíales la captura de la cancelación en menos de 24 horas para iniciar el reembolso."
+      ]
+    },
+    {
+      "q": "¿Los autobuses aceptan más equipaje cuando se suspenden los ferris?",
+      "a": [
+        "Sí, pero el maletero se llena rápido; llega con tiempo y considera dividir tu grupo en dos salidas consecutivas.",
+        "Algunos charters privados navegan con mar moderado, pero son caros y dependen del criterio del capitán; valora bien comodidad y coste."
+      ]
+    }
+  ],
+  "toc": [
+    {
+      "href": "#motivos",
+      "label": "Por qué cancelan"
+    },
+    {
+      "href": "#alternativas",
+      "label": "Alternativas rápidas"
+    },
+    {
+      "href": "#reembolsos",
+      "label": "Entradas y reembolsos"
+    },
+    {
+      "href": "#prep",
+      "label": "Cómo prepararte"
+    }
+  ]
+}

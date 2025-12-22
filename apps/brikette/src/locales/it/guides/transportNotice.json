@@ -1,0 +1,11 @@
+{
+  "title": "Verifica sempre i dettagli dei trasporti",
+  "items": {
+    "buses": "Autobus: consulta gli orari ufficiali SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
+    "ferries": "Traghetti: gli operatori pubblicano rotte e orari stagionali (soggetti al meteo). Vedi <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
+    "airlink": "Arrivi all'aeroporto Salerno Costa d'Amalfi (QSR)? Usa la navetta Airlink per Salerno — <airportLink>aeroportodisalerno.it</airportLink> e <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
+    "driving": "In auto: SS163 a targhe alterne (apr–ott) e ZTL; i costi dei parcheggi variano per stagione e zona. Controlla gli avvisi ufficiali.",
+    "premium": "Servizi premium/stagionali: Uber Boat e voli in elicottero operano con orari limitati in estate — verifica disponibilità aggiornata."
+  },
+  "srLabel": "Avviso trasporti"
+}

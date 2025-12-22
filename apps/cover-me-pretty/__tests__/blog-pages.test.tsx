@@ -101,6 +101,7 @@ describe("Blog post page", () => {
     jest.doMock("../shop.json", () => ({
       id: "cover-me-pretty",
       luxuryFeatures: { blog: true },
+      sanityBlog: {},
       editorialBlog: {},
     }));
     const notFound = jest.fn();
@@ -169,6 +170,7 @@ describe("Blog post page", () => {
     jest.doMock("../shop.json", () => ({
       id: "cover-me-pretty",
       luxuryFeatures: { blog: true },
+      sanityBlog: {},
       editorialBlog: { promoteSchedule: "2025-05-01" },
     }));
     const { default: BlogPostPage } = await import(
@@ -201,6 +203,12 @@ describe("Blog post page", () => {
         openGraph: { url: page?.openGraph?.url ?? "https://example.com/en" },
         twitter: { card: "summary" },
       })),
+    }));
+    jest.doMock("../shop.json", () => ({
+      id: "cover-me-pretty",
+      luxuryFeatures: { blog: true },
+      sanityBlog: {},
+      editorialBlog: {},
     }));
     const { generateMetadata } = await import(
       "../src/app/[lang]/blog/[slug]/page"

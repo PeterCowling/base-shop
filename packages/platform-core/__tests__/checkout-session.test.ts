@@ -48,7 +48,9 @@ test("creates Stripe session with correct metadata", async () => {
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   stripeCreate.mockResolvedValue({
     id: "sess_test",
-    payment_intent: { client_secret: "cs_test" },
+    client_secret: "cs_test",
+    payment_intent: "pi_test",
+    metadata: { order_id: "ord_123" },
   });
 
   const returnDate = "2025-01-02";
@@ -58,9 +60,8 @@ test("creates Stripe session with correct metadata", async () => {
     returnDate,
     currency: "EUR",
     taxRegion: "EU",
-    successUrl: "http://test/success",
-    cancelUrl: "http://test/cancelled",
-    customerId: "cus_123",
+    returnUrl: "http://test/success",
+    stripeCustomerId: "cus_123",
     clientIp: "203.0.113.1",
     shopId: "shop",
   });
@@ -75,11 +76,38 @@ test("creates Stripe session with correct metadata", async () => {
   ).toBe(true);
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
   expect(args.metadata.client_ip).toBe("203.0.113.1");
+  expect(args.metadata.shop_id).toBe("shop");
   expect(args.metadata.sizes).toBe(
     JSON.stringify({ [sku1.id]: size1, [sku2.id]: size2 })
   );
+  expect(args.customer).toBe("cus_123");
+  expect(args.ui_mode).toBe("custom");
+  expect(args.return_url).toBe("http://test/success");
   expect(options.headers["Stripe-Client-IP"]).toBe("203.0.113.1");
+  expect(typeof options.idempotencyKey).toBe("string");
   expect(result.clientSecret).toBe("cs_test");
+  expect(result.orderId).toBe("ord_123");
+});
+
+test("includes cart id for client_reference_id and metadata", async () => {
+  stripeCreate.mockResolvedValue({
+    id: "sess_cart",
+    client_secret: "cs_cart",
+    payment_intent: "pi_cart",
+  });
+
+  await createCheckoutSession(cart, {
+    returnDate: "2025-01-02",
+    currency: "EUR",
+    taxRegion: "EU",
+    returnUrl: "http://test/success",
+    cartId: "cart_123",
+    shopId: "shop",
+  });
+
+  const [args] = stripeCreate.mock.calls[0];
+  expect(args.client_reference_id).toBe("cart_123");
+  expect(args.metadata.cart_id).toBe("cart_123");
 });
 
 test("throws on invalid returnDate", async () => {
@@ -88,8 +116,7 @@ test("throws on invalid returnDate", async () => {
       returnDate: "not-a-date",
       currency: "EUR",
       taxRegion: "EU",
-      successUrl: "x",
-      cancelUrl: "y",
+      returnUrl: "x",
       shopId: "shop",
     })
   ).rejects.toThrow(/Invalid returnDate/);
@@ -102,8 +129,7 @@ test("throws when rentalDays are non-positive", async () => {
       returnDate: "2025-01-02",
       currency: "EUR",
       taxRegion: "EU",
-      successUrl: "x",
-      cancelUrl: "y",
+      returnUrl: "x",
       shopId: "shop",
     })
   ).rejects.toThrow(/Invalid returnDate/);
@@ -113,7 +139,8 @@ test("applies extra values and billing details without tax", async () => {
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   stripeCreate.mockResolvedValue({
     id: "sess_extra",
-    payment_intent: { client_secret: "cs_extra" },
+    client_secret: "cs_extra",
+    payment_intent: "pi_extra",
   });
 
   (getTaxRate as jest.Mock).mockResolvedValueOnce(0);
@@ -135,8 +162,7 @@ test("applies extra values and billing details without tax", async () => {
     returnDate: "2025-01-03",
     currency: "EUR",
     taxRegion: "EU",
-    successUrl: "http://test/success",
-    cancelUrl: "http://test/cancelled",
+    returnUrl: "http://test/success",
     shopId: "shop",
     lineItemsExtra,
     metadataExtra: { foo: "bar" },
@@ -166,7 +192,8 @@ test("applies extra values and billing details without tax", async () => {
 test("tracks coupon usage when present and not when absent", async () => {
   stripeCreate.mockResolvedValue({
     id: "sess_coupon",
-    payment_intent: { client_secret: "cs_coupon" },
+    client_secret: "cs_coupon",
+    payment_intent: "pi_coupon",
   });
 
   (findCoupon as jest.Mock).mockResolvedValueOnce({
@@ -179,8 +206,7 @@ test("tracks coupon usage when present and not when absent", async () => {
     coupon: "SAVE10",
     currency: "EUR",
     taxRegion: "EU",
-    successUrl: "x",
-    cancelUrl: "y",
+    returnUrl: "x",
     shopId: "shop",
   });
 
@@ -196,8 +222,7 @@ test("tracks coupon usage when present and not when absent", async () => {
     coupon: "SAVE10",
     currency: "EUR",
     taxRegion: "EU",
-    successUrl: "x",
-    cancelUrl: "y",
+    returnUrl: "x",
     shopId: "shop",
   });
 
@@ -207,7 +232,8 @@ test("tracks coupon usage when present and not when absent", async () => {
 test("includes shipping, billing details and client IP when provided", async () => {
   stripeCreate.mockResolvedValue({
     id: "sess_ship",
-    payment_intent: { client_secret: "cs_ship" },
+    client_secret: "cs_ship",
+    payment_intent: "pi_ship",
   });
 
   const shipping = { name: "John" } as any;
@@ -217,8 +243,7 @@ test("includes shipping, billing details and client IP when provided", async () 
     returnDate: "2025-01-02",
     currency: "EUR",
     taxRegion: "EU",
-    successUrl: "x",
-    cancelUrl: "y",
+    returnUrl: "x",
     shopId: "shop",
     shipping,
     billing_details: billing,
@@ -229,51 +254,72 @@ test("includes shipping, billing details and client IP when provided", async () 
   expect(args.payment_intent_data.shipping).toBe(shipping);
   expect(args.payment_intent_data.billing_details).toBe(billing);
   expect(options.headers["Stripe-Client-IP"]).toBe("1.2.3.4");
+  expect(typeof options.idempotencyKey).toBe("string");
 });
 
 test("omits optional fields when not provided", async () => {
   stripeCreate.mockResolvedValue({
     id: "sess_noopts",
-    payment_intent: { client_secret: "cs_noopts" },
+    client_secret: "cs_noopts",
+    payment_intent: "pi_noopts",
   });
 
   await createCheckoutSession(cart, {
     returnDate: "2025-01-02",
     currency: "EUR",
     taxRegion: "EU",
-    successUrl: "x",
-    cancelUrl: "y",
+    returnUrl: "x",
     shopId: "shop",
   });
 
   const [args, options] = stripeCreate.mock.calls[0];
   expect(args.payment_intent_data.shipping).toBeUndefined();
   expect(args.payment_intent_data.billing_details).toBeUndefined();
-  expect(options).toBeUndefined();
+  expect(options.headers).toBeUndefined();
+  expect(typeof options.idempotencyKey).toBe("string");
 });
 
-test("returns undefined clientSecret when payment_intent is string", async () => {
+test("throws when inventory is insufficient", async () => {
+  const sku = { ...PRODUCTS[0], stock: 1 };
+  const size = sku.sizes[0];
+  const lowStockCart = {
+    [`${sku.id}:${size}`]: { sku, qty: 2, size },
+  } as any;
+
+  await expect(
+    createCheckoutSession(lowStockCart, {
+      returnDate: "2025-01-02",
+      currency: "EUR",
+      taxRegion: "EU",
+      returnUrl: "x",
+      shopId: "shop",
+    }),
+  ).rejects.toThrow(/Insufficient stock/);
+});
+
+test("throws when Stripe session is missing client_secret", async () => {
   stripeCreate.mockResolvedValue({
     id: "sess_str",
+    client_secret: null,
     payment_intent: "pi_123",
   });
 
-  const result = await createCheckoutSession(cart, {
-    returnDate: "2025-01-02",
-    currency: "EUR",
-    taxRegion: "EU",
-    successUrl: "x",
-    cancelUrl: "y",
-    shopId: "shop",
-  });
-
-  expect(result.clientSecret).toBeUndefined();
+  await expect(
+    createCheckoutSession(cart, {
+      returnDate: "2025-01-02",
+      currency: "EUR",
+      taxRegion: "EU",
+      returnUrl: "x",
+      shopId: "shop",
+    }),
+  ).rejects.toThrow(/client_secret is missing/i);
 });
 
 test("sale mode skips rental-specific fields and deposits", async () => {
   stripeCreate.mockResolvedValue({
     id: "sess_sale",
-    payment_intent: { client_secret: "cs_sale" },
+    client_secret: "cs_sale",
+    payment_intent: "pi_sale",
   });
 
   const rentalSpy = jest.spyOn(dateUtils, "calculateRentalDays");
@@ -283,8 +329,7 @@ test("sale mode skips rental-specific fields and deposits", async () => {
     mode: "sale",
     currency: "EUR",
     taxRegion: "EU",
-    successUrl: "x",
-    cancelUrl: "y",
+    returnUrl: "x",
     shopId: "shop",
   });
 

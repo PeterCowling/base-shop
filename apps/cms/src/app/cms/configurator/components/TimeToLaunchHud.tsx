@@ -76,7 +76,7 @@ export default function TimeToLaunchHud({ data, onResetTimer }: Props) {
         />
 
         <div className="grid gap-3 rounded-xl border border-border/20 bg-surface-3 p-3 text-sm">
-          <Inline justify="between" alignY="center">
+          <Inline alignY="center" className="justify-between">
             <span className="text-muted-foreground">
               {t("cms.configurator.time.hud.countdown")}
             </span>
@@ -84,13 +84,13 @@ export default function TimeToLaunchHud({ data, onResetTimer }: Props) {
               {countdownLabel}
             </TagElement>
           </Inline>
-          <Inline justify="between" alignY="center">
+          <Inline alignY="center" className="justify-between">
             <span className="text-muted-foreground">
               {t("cms.configurator.time.hud.remaining")}
             </span>
             <span className="font-semibold text-foreground">{remainingLabel}</span>
           </Inline>
-          <Inline justify="between" alignY="center">
+          <Inline alignY="center" className="justify-between">
             <span className="text-muted-foreground">
               {t("cms.configurator.time.hud.eta")}
             </span>

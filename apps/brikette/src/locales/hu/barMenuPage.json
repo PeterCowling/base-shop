@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Bármenü (2025)",
+    "description": "Fedezze fel italainkat: sörök, borok, koktélok és üdítők."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Bármenü, 2025",
+    "hours": "Minden nap nyitva (nyitvatartás a bárban)"
+  },
+  "intro": {
+    "summary": "Friss spritzek, klasszikus long drinkek és házi fagylalt várnak. Görgess le az italválasztékhoz, a teljes árlistát a bárnál erősítheted meg.",
+    "viewFullMenuButton": "Ugrás az italok listájához"
+  },
+  "sections": {
+    "spritzFrozen": {
+      "title": "Spritz és fagyasztott koktélok"
+    },
+    "houseWine": {
+      "title": "Házi bor"
+    },
+    "beer": {
+      "title": "Sör"
+    },
+    "vodka": {
+      "title": "Vodka alapú italok",
+      "note": "Az ár tartalmazza a választott mixert: tonikot, kólát, cukormentes kólát vagy Sprite-ot."
+    },
+    "rum": {
+      "title": "Rum alapú italok",
+      "note": "Válaszd ki a rumot, és jelezd, ha koffeines mixert szeretnél hozzá. A kávé hidegen vagy melegen, eszpresszóként vagy hosszú kávéként (americano) érkezik."
+    },
+    "gin": {
+      "title": "Gin alapú italok",
+      "note": "Schweppes tonikkal, tört jégen, Amalfi-parti citrommal díszítve szolgáljuk fel."
+    },
+    "whisky": {
+      "title": "Whisky",
+      "note": "Válassz a whisky kínálatunkból, és jelezd, kérsz-e jeget, vizet vagy koffeines mixert. A kávé hidegen vagy melegen, eszpresszóként vagy hosszú kávéként (americano) érkezik."
+    },
+    "shots": {
+      "title": "Shotok"
+    },
+    "gelato": {
+      "title": "Gelato"
+    }
+  },
+  "items": {
+    "aperolSpritz": {
+      "name": "Aperol Spritz",
+      "note": "A klasszikus olasz spritz, tört jéggel felszolgálva."
+    },
+    "limoncelloSpritz": {
+      "name": "Limoncello Spritz",
+      "note": "Az Amalfi-part különlegessége, tört jéggel felszolgálva."
+    },
+    "hugoSpritz": {
+      "name": "Hugo Spritz",
+      "note": "Pezsgőt töltünk friss mentára, lime-ra és bodzára, majd tört jéggel tálaljuk."
+    },
+    "rossiniSpritz": {
+      "name": "Rossini Spritz",
+      "note": "Pezsgő eperlé fölött, tört jéggel tálalva."
+    },
+    "lemonStrawberryDaiquiri": {
+      "name": "Citrom- vagy epres daiquiri"
+    },
+    "lemonStrawberryMargarita": {
+      "name": "Citrom- vagy epres margarita",
+      "note": "Eper- vagy citromlé tequilával, Cointreau-val és jéggel, klasszikus margarita stílusban készítve."
+    },
+    "lemonDropMartini": {
+      "name": "Lemon Drop Martini",
+      "note": "Frissen facsart citromlé, Absolut vodkával, Cointreau-val és jéggel összerázva."
+    },
+    "redWhiteGlass": {
+      "name": "Vörös/fehér bor (pohár)"
+    },
+    "redWhiteBottle": {
+      "name": "Vörös/fehér bor (palack)"
+    },
+    "proseccoGlass": {
+      "name": "Prosecco (pohár)"
+    },
+    "nastro330": {
+      "name": "Nastro, 330 ml"
+    },
+    "nastro660": {
+      "name": "Nastro, 660 ml"
+    },
+    "peroni330": {
+      "name": "Peroni, 330 ml"
+    },
+    "peroni660": {
+      "name": "Peroni, 660 ml"
+    },
+    "skyy": {
+      "name": "Skyy"
+    },
+    "absolut": {
+      "name": "Absolut"
+    },
+    "smirnoff": {
+      "name": "Smirnoff"
+    },
+    "greyGoose": {
+      "name": "Grey Goose"
+    },
+    "pampero": {
+      "name": "Pampero"
+    },
+    "bacardiSuperior": {
+      "name": "Bacardi Superior"
+    },
+    "captainMorgan": {
+      "name": "Captain Morgan"
+    },
+    "angosturaReserva": {
+      "name": "Angostura Reserva"
+    },
+    "beefeater": {
+      "name": "Beefeater"
+    },
+    "bombaySapphire": {
+      "name": "Bombay Sapphire"
+    },
+    "tanqueray": {
+      "name": "Tanqueray"
+    },
+    "hendricks": {
+      "name": "Hendrick's"
+    },
+    "jwRed": {
+      "name": "Johnnie Walker Red Label (kevert skót whisky)"
+    },
+    "jameson": {
+      "name": "Jameson (ír whisky)"
+    },
+    "jackDaniels": {
+      "name": "Jack Daniel's Old No. 07 (tennessee whisky)"
+    },
+    "wildTurkey": {
+      "name": "Wild Turkey (bourbon)"
+    },
+    "chivas12": {
+      "name": "Chivas Regal 12 éves (kevert skót whisky)"
+    },
+    "glenfiddich12": {
+      "name": "Glenfiddich 12 éves (single malt skót whisky)"
+    },
+    "joseCuervoSilver": {
+      "name": "Jose Cuervo Tequila, Silver",
+      "note": "Tálalás tisztán citrommal és sóval, vagy Tequila Sunrise-ként, esetleg szóda/Sprite kíséretében."
+    },
+    "limoncelloShot": {
+      "name": "Limoncello",
+      "note": "Dél-olasz klasszikus, tisztán felszolgálva."
+    },
+    "oneScoop": {
+      "name": "1 gombóc"
+    },
+    "twoScoops": {
+      "name": "2 gombóc"
+    },
+    "threeScoops": {
+      "name": "3 gombóc",
+      "note": "Választható ízek: citrom, csokoládé, vanília vagy mogyoró."
+    }
+  },
+  "disclaimer": "A tételek és árak változhatnak. Kérjük, erősítse meg a bárpultnál."
+}

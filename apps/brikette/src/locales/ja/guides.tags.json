@@ -1,0 +1,261 @@
+{
+  "tags": {
+    "accommodation": {
+      "label": "Accommodation",
+      "title": "Where to Stay"
+    },
+    "amalfi": {
+      "label": "アマルフィ",
+      "title": "アマルフィガイド"
+    },
+    "backpackers": {
+      "label": "Backpackers",
+      "title": "For Backpackers"
+    },
+    "beaches": {
+      "label": "ビーチ",
+      "title": "ポジターノのビーチ",
+      "description": "翻訳を準備中です。"
+    },
+    "boat": {
+      "label": "Boat",
+      "title": "Boat Tours"
+    },
+    "budgeting": {
+      "label": "節約",
+      "title": "ポジターノ節約ガイド",
+      "description": "翻訳を準備中です。"
+    },
+    "bus": {
+      "label": "バス",
+      "title": "バス & SITA"
+    },
+    "camping": {
+      "label": "Camping",
+      "title": "Camping on the Coast"
+    },
+    "capri": {
+      "label": "カプリ",
+      "title": "カプリ節約"
+    },
+    "car": {
+      "label": "車",
+      "title": "運転 & 駐車"
+    },
+    "comparison": {
+      "label": "Compare",
+      "title": "Compare Arrivals & Bases"
+    },
+    "connectivity": {
+      "label": "通信",
+      "title": "Wi‑Fi・eSIM・電波"
+    },
+    "cost": {
+      "label": "Costs",
+      "title": "Costs & Comparisons"
+    },
+    "couples": {
+      "label": "Couples",
+      "title": "Couples in Hostels"
+    },
+    "cuisine": {
+      "label": "Cuisine",
+      "title": "Food & Cheap Eats"
+    },
+    "culture": {
+      "label": "Culture",
+      "title": "Culture & Events"
+    },
+    "day-trip": {
+      "label": "Day trips",
+      "title": "Day Trips"
+    },
+    "decision": {
+      "label": "Decision",
+      "title": "Decision Guides"
+    },
+    "digital-nomads": {
+      "label": "Digital nomads",
+      "title": "For Digital Nomads"
+    },
+    "events": {
+      "label": "イベント",
+      "title": "イベント & 祭り"
+    },
+    "experiences": {
+      "label": "Experiences",
+      "title": "Experiences"
+    },
+    "families": {
+      "label": "Families",
+      "title": "For Families"
+    },
+    "faq": {
+      "label": "FAQs",
+      "title": "Travel FAQs"
+    },
+    "ferragosto": {
+      "label": "Ferragosto",
+      "title": "Ferragosto in Positano"
+    },
+    "ferry": {
+      "label": "フェリー",
+      "title": "フェリーガイド"
+    },
+    "free": {
+      "label": "無料",
+      "title": "無料 & 低コスト"
+    },
+    "general-tourists": {
+      "label": "General tourists",
+      "title": "For General Tourists"
+    },
+    "herculaneum": {
+      "label": "Herculaneum",
+      "title": "Herculaneum Day Trips"
+    },
+    "hiking": {
+      "label": "ハイキング",
+      "title": "ハイキング & ビューポイント",
+      "description": "翻訳を準備中です。"
+    },
+    "hitchhiking": {
+      "label": "Hitchhiking",
+      "title": "Hitchhiking"
+    },
+    "hostel-life": {
+      "label": "Hostel life",
+      "title": "Hostel Life"
+    },
+    "insurance": {
+      "label": "Insurance",
+      "title": "Travel Insurance"
+    },
+    "ischia": {
+      "label": "Ischia",
+      "title": "Ischia Guides"
+    },
+    "itinerary": {
+      "label": "行程",
+      "title": "行程プラン"
+    },
+    "laundry": {
+      "label": "ランドリー",
+      "title": "ランドリー"
+    },
+    "logistics": {
+      "label": "Logistics",
+      "title": "Logistics & Arrivals"
+    },
+    "naples": {
+      "label": "ナポリ",
+      "title": "ナポリ ↔ ポジターノ"
+    },
+    "nightlife": {
+      "label": "Nightlife",
+      "title": "Nightlife"
+    },
+    "off-season": {
+      "label": "オフシーズン",
+      "title": "オフシーズンのコツ"
+    },
+    "passes": {
+      "label": "Passes",
+      "title": "Transport Passes"
+    },
+    "photography": {
+      "label": "写真",
+      "title": "写真スポット",
+      "description": "翻訳を準備中です。"
+    },
+    "planning": {
+      "label": "Planning",
+      "title": "Planning Guides"
+    },
+    "pompei": {
+      "label": "Pompeii",
+      "title": "Pompeii Day Trips"
+    },
+    "porters": {
+      "label": "ポーター",
+      "title": "ポーター & 荷物"
+    },
+    "positano": {
+      "label": "ポジターノ",
+      "title": "ポジターノガイド"
+    },
+    "praiano": {
+      "label": "Praiano",
+      "title": "Praiano Guides"
+    },
+    "procida": {
+      "label": "Procida",
+      "title": "Procida Guides"
+    },
+    "ravello": {
+      "label": "ラヴェッロ",
+      "title": "ラヴェッロガイド"
+    },
+    "safety": {
+      "label": "Safety",
+      "title": "翻訳を準備中です。"
+    },
+    "salerno": {
+      "label": "サレルノ",
+      "title": "サレルノ ↔ ポジターノ"
+    },
+    "shopping": {
+      "label": "Shopping",
+      "title": "Shopping & Artisans"
+    },
+    "shoulder": {
+      "label": "Shoulder",
+      "title": "Shoulder Season Tips"
+    },
+    "sorrento": {
+      "label": "Sorrento",
+      "title": "Sorrento Guides"
+    },
+    "souvenirs": {
+      "label": "Souvenirs",
+      "title": "Souvenirs & Shopping"
+    },
+    "stairs": {
+      "label": "階段少なめ",
+      "title": "階段少なめルート"
+    },
+    "summer": {
+      "label": "Summer",
+      "title": "Summer in Positano"
+    },
+    "tips": {
+      "label": "Tips",
+      "title": "Travel Tips"
+    },
+    "train": {
+      "label": "Train",
+      "title": "Train Connections"
+    },
+    "tramonti": {
+      "label": "Tramonti",
+      "title": "Tramonti Wineries"
+    },
+    "transport": {
+      "label": "交通",
+      "title": "アマルフィ海岸の交通ガイド",
+      "description": "翻訳を準備中です。"
+    },
+    "walking-tour": {
+      "label": "Walking tour",
+      "title": "Walking Tours"
+    },
+    "winter": {
+      "label": "冬",
+      "title": "冬のポジターノ"
+    },
+    "work-life": {
+      "label": "Work & Travel",
+      "title": "Remote Work & Cafés"
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Bus back to Hostel Brikette from Positano's main beach",
+    "description": "Follow these steps from the beach to the interno bus, ride up to Bar Internazionale/Chiesa Nuova, and finish the short walk to Hostel Brikette."
+  },
+  "linkLabel": "Bus back to Hostel Brikette from Spiaggia Grande",
+  "intro": [
+    "To catch the bus back to the hostel, walk up the stairs from the beach to the road and look for the bus stop on the opposite side of the road. The bus stop sign is in blue and white, mounted on a metallic pole. Wait at the bus stop for the bus to arrive."
+  ],
+  "sections": [
+    {
+      "id": "take-the-bus",
+      "title": "2. Take the Bus",
+      "body": [
+        "The number of times that the bus will stop before you need to get off will vary. The distance you need to travel is about 4.1km / 2.5 miles."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "3. Get off the Bus",
+      "body": [
+        "You will get off at the Bar Internazionale/Chiesa Nuova bus stop."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "4. Walk to the hostel",
+      "body": [
+        "Continue in the direction the bus you just got off takes for just over 100m / 330 feet.",
+        "Take the steps up to the hostel’s main door."
+      ]
+    }
+  ],
+  "tipsTitle": "Bus tips",
+  "tips": [
+    "Carry a spare ticket so you can board immediately if the bus is busy.",
+    "If services finish early, fall back to the %LINK:positanoMainBeachWalkBack|walking route% — it follows the hostel's staircase checkpoints.",
+    "Let reception know if you spot timetable changes so the digital concierge stays current for other guests."
+  ],
+  "extras": {
+    "photos": {
+      "title": "Photos",
+      "items": {
+        "busInterior": {
+          "alt": "Interno Positano bus at the beach-side stop",
+          "caption": "Interno Positano bus — vehicles vary but the route label stays the same."
+        },
+        "barInternazionaleStop": {
+          "alt": "Chiesa Nuova / Bar Internazionale bus stop",
+          "caption": "Chiesa Nuova (Bar Internazionale) — closest stop to Hostel Brikette."
+        }
+      }
+    }
+  }
+}

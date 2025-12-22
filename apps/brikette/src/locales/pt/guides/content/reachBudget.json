@@ -1,0 +1,99 @@
+{
+  "seo": {
+    "title": "Como chegar a Positano com orçamento limitado",
+    "description": "Rotas mais baratas do Aeroporto de Nápoles a Positano usando shuttle + ônibus SITA, com instruções e custos detalhados."
+  },
+  "linkLabel": "Como chegar a Positano gastando pouco",
+  "intro": "Use o shuttle Aeroporto de Nápoles → Sorrento e depois o autocarro SITA até Positano para a ligação mais barata e fiável.",
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Por que esta rota resulta",
+      "body": [
+        "Um shuttle (~10 €) + um autocarro SITA (~2,10 €) mantém o total abaixo de 13 €, muito mais barato que ferries ou táxis.",
+        "Ambos os trechos deixam perto da Chiesa Nuova, evitando escadarias longas com bagagem."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Antes de sair",
+      "body": [
+        "Reserve o shuttle Curreri online em meses de pico ou compre no balcão fora das chegadas, deixando 15 minutos de margem após o desembarque.",
+        "Leve numerário trocado para bilhetes SITA em Sorrento; quiosques e tabacchi no Corso Italia vendem e podem recusar notas grandes à noite."
+      ]
+    },
+    {
+      "id": "timing-backup",
+      "title": "Horários e planos B",
+      "body": [
+        "Anote a última partida Curreri (cerca das 21:30 no verão, mais cedo fora de época) e ajuste o voo.",
+        "Perdeu o shuttle? Troque para Alibus + Circumvesuviana ou Campania Express até Sorrento e mantenha o mesmo autocarro SITA."
+      ]
+    }
+  ],
+  "mapTitle": "Mapa interativo",
+  "stepByStepTitle": "Passo a passo",
+  "steps": [
+    {
+      "name": "Aeroporto de Nápoles → Sorrento (Curreri Viaggi)",
+      "text": "Saia das chegadas e embarque no shuttle Curreri até à estação de Sorrento. Bilhete ~10 €; duração ~1h15."
+    },
+    {
+      "name": "Sorrento → Positano (autocarro SITA)",
+      "text": "Compre bilhete SITA CIS (~2,10 €). Apanhe o autocarro para Amalfi e saia em Positano Chiesa Nuova."
+    },
+    {
+      "name": "Caminhe até ao Hostel Brikette",
+      "text": "Da paragem Chiesa Nuova, desça ~80 m (sem escadas) até à entrada do hostel."
+    }
+  ],
+  "alternativesTitle": "Alternativas",
+  "trainTitle": "Comboio + autocarro (ligeiramente mais caro, pode ser mais rápido)",
+  "train": [
+    "Alibus from NAP → Napoli Centrale (Garibaldi), then Circumvesuviana to Sorrento (~€6 total).",
+    "SITA from Sorrento → Positano (~€2.10). Time: ~2–2.5 h total."
+  ],
+  "ferryTitle": "Ferry (sazonal, cénico, custo superior)",
+  "ferry": [
+    "Alibus → Molo Beverello, ferry to Positano (summer only; €20–€38 depending on operator).",
+    "Check our ferry schedules guide for live timetables."
+  ],
+  "costsTitle": "Custos resumidos",
+  "costs": [
+    "Shuttle (NAP → Sorrento): ~10 €",
+    "Autocarro SITA (Sorrento → Positano): ~2,10 €",
+    "Total rota económica: ~12,10 €"
+  ],
+  "faq": [
+    {
+      "q": "Qual é a rota mais barata?",
+      "a": "Shuttle Aeroporto de Nápoles → Sorrento seguido de autocarro SITA até Positano (Chiesa Nuova)."
+    },
+    {
+      "q": "Onde compro bilhetes de autocarro?",
+      "a": "Em tabacchi/quiosques junto às estações; compre antes de embarcar e valide no autocarro."
+    },
+    {
+      "q": "Quanto tempo demora?",
+      "a": "Cerca de 2,5 horas com ligações fluidas."
+    }
+  ],
+  "ferryCta": "Prefere ferries no verão? Veja o nosso guia dedicado e o artigo de assistência ‘Arriving by Ferry’ para dicas de porto e notas de acessibilidade.",
+  "mapIframeTitle": "Aeroporto de Nápoles a Positano via Sorrento",
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d768989.930376533!2d14.43034800958525!3d40.7530661290345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x133b089b2b18a3e3%3A0x4bafc3f58a62a2a2!2sNaples%20International%20Airport%20(NAP)!3m2!1d40.8860031!2d14.2907817!4m5!1s0x133b98d2a1b9f60f%3A0x54a8f4e7a3413732!2sHostel%20Brikette%2C%20Via%20Guglielmo%20Marconi%2C%20358%2C%2084017%20Positano%20SA!3m2!1d40.6308766!2d14.487226!5e0!3m2!1sen!2sit!4v1700000000000",
+  "mapReferrerPolicy": "no-referrer-when-downgrade",
+  "howTo": {
+    "totalTime": "PT2H30M",
+    "estimatedCost": {
+      "currency": "EUR",
+      "value": "12.10"
+    }
+  },
+  "sectionIds": {
+    "map": "reach-budget-map",
+    "steps": "reach-budget-steps",
+    "alternatives": "reach-budget-alternatives",
+    "costs": "reach-budget-costs",
+    "tips": "reach-budget-tips"
+  }
+}

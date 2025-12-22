@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Zarezerwuj pobyt — Strona oficjalna",
+    "description": "Taryfy elastyczne i bezzwrotne. Bezpieczna płatność w naszym oficjalnym systemie rezerwacji."
+  },
+  "heading": "Zarezerwuj pobyt",
+  "roomLabel": "Pokój",
+  "cta": {
+    "flex": "Elastyczna — Przejdź do płatności",
+    "nr": "Bezzwrotna — Przejdź do płatności"
+  },
+  "checking": "Sprawdzanie…",
+  "flex": {
+    "title": "Taryfa elastyczna (z możliwością zwrotu)",
+    "bullets": [
+      "Bezpłatne anulowanie do 15:00 na trzy pełne dni przed przyjazdem.",
+      "Zmiany w zależności od dostępności."
+    ]
+  },
+  "nr": {
+    "title": "Bezzwrotna (przedpłata)",
+    "bullets": [
+      "100% przedpłaty; bez zwrotów/braków przyjazdu.",
+      "Nieudane płatności są anulowane automatycznie."
+    ]
+  },
+  "unavailable": {
+    "title": "Niedostępne w tych terminach.",
+    "none": "Nie znaleziono bezpośrednich alternatyw.",
+    "seeAll": "Zobacz całą dostępność",
+    "bookThis": "Zarezerwuj"
+  },
+  "policies": {
+    "title": "Zasady i kaucje",
+    "items": [
+      "Podatek miejski/turystyczny: 2,50 € za osobę za noc (doliczany przy płatności).",
+      "Kaucja za kartę/pościel: 10 € gotówką przy zameldowaniu; zwracana przy zwrocie.",
+      "Depozyt zabezpieczający: do równowartości jednej nocy za osobę przy zameldowaniu (lub gotówka). W przeciwnym razie rezerwacja zostanie anulowana.",
+      "Opłata administracyjna za anulowanie: zwykle 15% wartości rezerwacji (bez prowizji pośredników).",
+      "Recepcja czynna do 22:30; w przypadku no‑show pobierana jest wyższa z kwot: pierwsza noc lub bezzwrotny zadatek."
+    ],
+    "footer": "Ostateczna dostępność i płatność realizowane są w naszym oficjalnym systemie rezerwacji."
+  },
+  "backToRooms": "Powrót do pokoi"
+}

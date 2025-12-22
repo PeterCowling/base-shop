@@ -6,6 +6,18 @@ import {
 } from "./testUtils";
 
 describe("destroyCustomerSession", () => {
+  const expectCookieCleared = (name: string) => {
+    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
+      name,
+      path: "/",
+    });
+    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
+      name,
+      path: "/",
+      domain: "example.com",
+    });
+  };
+
   afterAll(() => {
     restoreEnv();
   });
@@ -28,16 +40,8 @@ describe("destroyCustomerSession", () => {
     await destroyCustomerSession();
 
     expect(sessionMocks.sessionStore.delete).toHaveBeenCalledWith("session");
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CUSTOMER_SESSION_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CSRF_TOKEN_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
+    expectCookieCleared(CUSTOMER_SESSION_COOKIE);
+    expectCookieCleared(CSRF_TOKEN_COOKIE);
   });
 
   it("still clears cookies when the session store delete fails", async () => {
@@ -54,16 +58,8 @@ describe("destroyCustomerSession", () => {
 
     await expect(destroyCustomerSession()).rejects.toThrow(error);
 
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CUSTOMER_SESSION_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CSRF_TOKEN_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
+    expectCookieCleared(CUSTOMER_SESSION_COOKIE);
+    expectCookieCleared(CSRF_TOKEN_COOKIE);
   });
 
   it("clears cookies even when no session cookie is present", async () => {
@@ -76,16 +72,8 @@ describe("destroyCustomerSession", () => {
     await destroyCustomerSession();
 
     expect(sessionMocks.sessionStore.delete).not.toHaveBeenCalled();
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CUSTOMER_SESSION_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CSRF_TOKEN_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
+    expectCookieCleared(CUSTOMER_SESSION_COOKIE);
+    expectCookieCleared(CSRF_TOKEN_COOKIE);
   });
 
   it("skips the session store when the secret is undefined", async () => {
@@ -117,16 +105,8 @@ describe("destroyCustomerSession", () => {
     await destroyCustomerSession();
 
     expect(sessionMocks.sessionStore.delete).not.toHaveBeenCalled();
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CUSTOMER_SESSION_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CSRF_TOKEN_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
+    expectCookieCleared(CUSTOMER_SESSION_COOKIE);
+    expectCookieCleared(CSRF_TOKEN_COOKIE);
   });
 
   it("skips the store when the token lacks a session id", async () => {
@@ -155,15 +135,7 @@ describe("destroyCustomerSession", () => {
     await destroyCustomerSession();
 
     expect(sessionMocks.sessionStore.delete).not.toHaveBeenCalled();
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CUSTOMER_SESSION_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
-    expect(sessionMocks.cookies.delete).toHaveBeenCalledWith({
-      name: CSRF_TOKEN_COOKIE,
-      path: "/",
-      domain: "example.com",
-    });
+    expectCookieCleared(CUSTOMER_SESSION_COOKIE);
+    expectCookieCleared(CSRF_TOKEN_COOKIE);
   });
 });

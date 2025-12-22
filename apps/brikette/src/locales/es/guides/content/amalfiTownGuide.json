@@ -1,0 +1,57 @@
+{
+  "seo": {
+    "title": "Guía de la ciudad de Amalfi: historia, visitas y consejos",
+    "description": "Catedral, museo del papel, claustro, playas y cómo llegar desde Positano."
+  },
+  "linkLabel": "Guía de la ciudad de Amalfi",
+  "intro": [
+    "Amalfi combina historia, mar y conexiones fáciles con otras localidades.",
+    "Úsala como base para subir a Ravello o como parada en una excursión de medio día."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Imprescindibles",
+      "body": [
+        "Duomo di Amalfi y Chiostro del Paradiso; el Museo del Papel para empaparte de historia local.",
+        "Pasea por el lungomare y toma un gelato en las escalinatas del Duomo al atardecer."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Cómo llegar",
+      "body": [
+        "Desde Positano, los ferris de temporada son más cómodos; con mal tiempo recurre al bus SITA (prepárate para las colas).",
+        "Compra el billete de regreso al llegar y confirma el último horario del día."
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "Consejos rápidos",
+      "body": [
+        "Llega antes de las 10:00 para evitar grupos grandes.",
+        "Combínalo con Ravello (bus de 25 minutos) si tienes medio día extra.",
+        "Lleva sombrero y protector: hay poca sombra cerca del muelle."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva un pañuelo ligero para visitar iglesias y para protegerte del sol durante el trayecto en ferry.",
+    "Pide una granita de limón en los quioscos del paseo marítimo para refrescarte entre paradas."
+  ],
+  "faqTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "q": "¿Cuánto tiempo necesito en Amalfi?",
+      "a": [
+        "Con 2–3 horas cubres Duomo, paseo y gelato; añade Ravello para un día completo."
+      ]
+    },
+    {
+      "q": "¿Hay opciones para guardar equipaje?",
+      "a": [
+        "Sí, hay consignas cerca del muelle de ferris. Calcula entre 5 y 8 € por bolsa durante el día."
+      ]
+    }
+  ]
+}

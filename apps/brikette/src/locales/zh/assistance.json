@@ -1,0 +1,28 @@
+{
+  "quickLinksHeading": "快速帮助",
+  "quickLinksIntro": "直接获取我们最常见的预订、到店和住宿问题的答案。",
+  "cta": {
+    "readMore": "了解更多"
+  },
+  "quickLinks": [
+    {
+      "label": "修改或取消预订",
+      "description": "查看截止时间，并了解在计划变更时避免额外费用的小贴士。",
+      "slug": "changingCancelling"
+    },
+    {
+      "label": "入住与退房指南",
+      "description": "按照指南一步步完成在波西塔诺 Hostel Brikette 的到店与离店流程。",
+      "slug": "checkinCheckout"
+    },
+    {
+      "label": "如何前往波西塔诺",
+      "description": "通过我们的分步交通指南比较渡轮、巴士和出租车。",
+      "slug": "travelHelp"
+    }
+  ],
+  "contactCta": {
+    "label": "发送电子邮件",
+    "href": "mailto:hostelpositano@gmail.com"
+  }
+}

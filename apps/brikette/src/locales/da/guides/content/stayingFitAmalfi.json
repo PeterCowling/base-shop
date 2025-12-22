@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Hold dig i form på Amalfikysten",
+    "description": "Trappeworkouts, strandløb og realistiske rutiner, mens du rejser."
+  },
+  "linkLabel": "Hold dig i form på Amalfikysten",
+  "intro": [
+    "Hold formen på Amalfikysten uden fitnessmedlemskab: brug trapper, strande og hostelvenlige rutiner."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Brug trapperne som træning",
+      "body": [
+        "Power-walk de 500+ trin mellem Spiaggia Grande og Chiesa Nuova tidligt om morgenen for at undgå både varme og folkemængder.",
+        "Lav intervaller: to minutter hurtig opstigning, ét minuts pause, gentag fem til otte gange."
+      ]
+    },
+    {
+      "id": "outdoor",
+      "title": "Udendørs træningsspots",
+      "body": [
+        "Brug Fornillo-stranden til kropsvægtstræning (squats, armbøjninger, planke) i sandet; medbring et rejseunderlag mod stenene.",
+        "Løb på kystvejen mellem Positano og Praiano ved solopgang; brug refleks og hold dig på indersiden af vejen."
+      ]
+    },
+    {
+      "id": "recovery",
+      "title": "Restitution og fuel",
+      "body": [
+        "Hydrér med 750 ml genopfyldelige flasker, og fyld salte op med citrus eller granita efter træning.",
+        "Stræk lægge og hofter hver aften; de stejle trapper strammer musklerne hurtigt uden udstrækning."
+      ]
+    }
+  ],
+  "tips": [
+    "Pak elastikker og sjippetov – let gear, der passer i håndbagagen og giver variation.",
+    "Notér træning i en notesapp, så du holder dig ansvarlig, selv når aperitivo frister."
+  ],
+  "faqs": [
+    {
+      "q": "Findes der fitnesscentre i nærheden?",
+      "a": [
+        "Positano har begrænsede faciliteter. Nogle hoteller sælger dagskort, eller tag bussen til Sorrento for større centre."
+      ]
+    },
+    {
+      "q": "Kan jeg svømme året rundt?",
+      "a": [
+        "Ja, men vintervand ligger på 14–16 °C. Brug en kort våddragt til længere svømmeture uden for sommeren."
+      ]
+    }
+  ]
+}

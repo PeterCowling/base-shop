@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Ferragosto i Positano (Marias opptakelse)",
+    "description": "Dette kan du forvente 15. august: folkemengder, stengte butikker, fyrverkeri og transporttips."
+  },
+  "linkLabel": "Ferragosto i Positano (Marias opptakelse)",
+  "intro": [
+    "Ferragosto 15. august betyr fulle strender, fyrverkeri og endrede rutetider – planlegg på forhånd så dagen blir festlig, ikke stressende."
+  ],
+  "sections": [
+    {
+      "id": "expectations",
+      "title": "Hva du kan forvente på dagen",
+      "body": [
+        "Butikker og små matvarebutikker stenger tidlig; fyll opp med snacks og vann kvelden før.",
+        "Forvent folkemengder på stranden innen kl. 09 og høy musikk langs Spiaggia Grande frem mot fyrverkeriet ved midnatt."
+      ]
+    },
+    {
+      "id": "bookings",
+      "title": "Reservasjoner og bestillinger",
+      "body": [
+        "Reserver restauranter og båtturer minst en uke i forveien; mange krever forhåndsbetaling eller kortgaranti på helligdagen.",
+        "Bekreft portørtjenester 24 timer i forveien hvis du ankommer eller reiser 15. august – bemanningen er redusert."
+      ]
+    },
+    {
+      "id": "beach-day",
+      "title": "Strand- og badetips",
+      "body": [
+        "Ta med egen parasoll til den offentlige delen; solsenger på lidoene blir utsolgt og prisene øker til toppnivå.",
+        "Bad tidlig eller ved solnedgang når badevaktene har bedre oversikt; midt på dagen gjør folkemengdene strømmene vanskeligere å lese."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transportbackup",
+      "body": [
+        "SITA-busser kjører fergeruter med færre avganger; sjekk oppslått rutetabell og still deg i kø tidlig.",
+        "Ferjene kan bli utsolgt; kjøp tur/retur-billetter dagen før og ha en bussplan i tilfelle sjøen blir grov."
+      ]
+    }
+  ],
+  "tips": [
+    "Pakk ørepropper hvis rommet ditt vender mot stranden – fyrverkerifinalen og musikken etterpå kan vare til etter kl. 01.",
+    "Ha små kontanter til kollekten i kirken hvis du deltar på messe; kort aksepteres sjelden."
+  ],
+  "faqs": [
+    {
+      "q": "Er dagligvarebutikkene stengt hele dagen?",
+      "a": [
+        "Mange holder helt stengt eller bare åpent en kort morgenperiode. Kjøp det du trenger innen kvelden 14."
+      ]
+    },
+    {
+      "q": "Kan jeg se fyrverkeriet fra hostellets terrasse?",
+      "a": [
+        "Ja – terrassen har fri utsikt over bukten. Kom tidlig for å sikre plass og ta med et lett plagg til sjøbrisen."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "slug": "Capri-Positano-Ferry",
+  "meta": {
+    "title": "Capri nach Positano mit der Fähre | Hostel Brikette",
+    "description": "So reist du von Capri nach Positano mit der Fähre, inklusive Tickettipps, Anbietern, Hinweisen zur Ankunft und dem einfachsten Weg hinauf zum Hostel."
+  },
+  "header": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "title": "Capri nach Positano – Fähre",
+    "description": "Verwende diesen Leitfaden, um vollständig auf dem Seeweg von Capri nach Positano zu reisen. Er erklärt, wie du den richtigen Anbieter auswählst, Tickets im Hafen kaufst und was dich bei der Ankunft erwartet, damit du entspannt zum Hostel Brikette gelangst."
+  },
+  "tip": {
+    "eyebrow": "Tipp",
+    "copy": "Du brauchst andere Routenoptionen oder Alternativen bei rauer See? Öffne die <link>Übersicht „So kommst du zu uns“</link>.",
+    "linkLabel": "Übersicht „So kommst du zu uns“"
+  },
+  "sections": {
+    "overview": {
+      "title": "Reiseüberblick",
+      "body": "Fähren zwischen Capri und Positano verkehren am häufigsten im Frühling und Sommer. Bei rauer See können Fahrten, besonders später am Tag, ausfallen. Die gesamte Reise dauert in der Regel 30–60 Minuten – je nach Schiff und Anbieter."
+    },
+    "capriPort": {
+      "title": "Am Hafen von Capri",
+      "list": [
+        "Prüfe Zeiten und Preise und finde den Anbieter für deine gewählte Abfahrt.",
+        "Begib dich zum Touristenhafen von Capri. Kaufe die Tickets direkt im Büro des jeweiligen Anbieters.",
+        "Sei 20–30 Minuten vorher dort, um Gutscheine einzulösen und dich zum Boarding anzustellen."
+      ],
+      "link": "Fährzeiten vergleichen und buchen: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (gesammelter Fahrplan)</positanoLink>.",
+      "linkLabelCapri": "Capri.net - Capri ↔ Positano",
+      "linkLabelPositano": "Positano.com (Fahrplanübersicht)"
+    },
+    "arrival": {
+      "title": "Ankunft in Positano",
+      "list": [
+        "Gehe am Pier Spiaggia Grande in Positano von Bord.",
+        "Gepäckträger empfangen die Fähren; überlege, ob du den Service nutzt, und kläre den Preis vorher.",
+        "Rechne mit Treppen bergauf vom Strand; der lokale Interno-Bus reduziert die Stufen zum Hostel."
+      ]
+    },
+    "bus": {
+      "title": "Vom Hafen zum Hostel mit dem Interno-Bus",
+      "list": [
+        "Der Interno-Positano-Bus fährt etwa alle 30 Minuten vom Morgen bis ungefähr Mitternacht.",
+        "Achte auf die elektronische Anzeige \"Interno Positano\" an der Front.",
+        "Vom Hafen gehst du zur Piazza dei Mulini und nimmst den Bus bergauf in Richtung Chiesa Nuova."
+      ],
+      "link": "Für eine detaillierte, gepäckfreundliche Route vom Pier zum Hostel Brikette siehe: <link>Fähranleger → Hostel Brikette</link>.",
+      "linkLabel": "Fähranleger → Hostel Brikette"
+    },
+    "finalWalk": {
+      "title": "Letzter Fußweg von der nächsten Haltestelle",
+      "list": [
+        "Steige an der Haltestelle beim Tabacchi nahe Chiesa Nuova aus.",
+        "Biege nach rechts zur Hauptstraße ab und gehe dann links die Via G. Marconi entlang.",
+        "Laufe etwas über 100 m (≈330 ft) – das Hostel liegt auf deiner rechten Seite.",
+        "Biege rechts ab und folge den Stufen hinauf zur Haupteingangstür des Hostel Brikette."
+      ]
+    },
+    "cancelled": {
+      "title": "Wenn Fähren ausfallen",
+      "body": "Bei Ausfällen durch Wetter oder Seegang wechsele auf die Zug- und Busverbindung über Sorrent. Sie dauert länger, fährt aber bei fast jedem Wetter.",
+      "link": "Nutze diesen Plan B: <link>Neapel Zentrum → Positano mit Zug und Bus</link>.",
+      "linkLabel": "Neapel Zentrum → Positano mit Zug und Bus"
+    }
+  }
+}

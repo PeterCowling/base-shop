@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "Chọn kế hoạch",
+    "options": {
+      "ferry": "Phà (theo mùa)",
+      "trainBus": "Tàu + Xe buýt (quanh năm)",
+      "transfer": "Xe riêng"
+    },
+    "selectedLabel": "Đã chọn:"
+  },
+  "eventInfo": {
+    "title": "Chi tiết sự kiện",
+    "labels": {
+      "when": "Khi nào",
+      "where": "Ở đâu"
+    }
+  }
+}

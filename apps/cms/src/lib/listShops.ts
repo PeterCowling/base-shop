@@ -20,7 +20,9 @@ export async function listShops(): Promise<string[]> {
     if ((err as NodeJS.ErrnoException).code === "ENOENT") {
       return [];
     }
-    logger.error(`Failed to list shops at ${shopsDir}`, err);
+    logger.error(`Failed to list shops at ${shopsDir}`, {
+      error: err instanceof Error ? { message: err.message, stack: err.stack } : err,
+    });
     throw err;
   }
 }
@@ -78,7 +80,9 @@ async function readShopSummary(id: string): Promise<ShopSummary> {
   } catch (err: unknown) {
     const code = (err as NodeJS.ErrnoException).code;
     if (code !== "ENOENT") {
-      logger.error(`Failed to read deploy status for shop ${safeId}`, err);
+      logger.error(`Failed to read deploy status for shop ${safeId}`, {
+        error: err instanceof Error ? { message: err.message, stack: err.stack } : err,
+      });
     }
     return base;
   }

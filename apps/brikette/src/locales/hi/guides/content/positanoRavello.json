@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "Positano ↔ Ravello दिन यात्रा",
+    "description": "Amalfi के माध्यम से बस/फेरी संयोजन, बागों का समय और देर शाम वापस लौटने की योजना।"
+  },
+  "linkLabel": "Positano to Ravello: how to go",
+  "intro": [
+    "अनुवाद तैयार किया जा रहा है।",
+    "अनुवाद तैयार किया जा रहा है।"
+  ],
+  "toc": [
+    {
+      "href": "#via-amalfi",
+      "label": "Via Amalfi"
+    },
+    {
+      "href": "#gardens",
+      "label": "Gardens & villas"
+    },
+    {
+      "href": "#timing",
+      "label": "Timing & returns"
+    }
+  ],
+  "sections": [
+    {
+      "id": "via-amalfi",
+      "title": "Via Amalfi",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "gardens",
+      "title": "Gardens & villas",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & returns",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ],
+  "tipsTitle": "Tips",
+  "tips": [
+    "अनुवाद तैयार किया जा रहा है।",
+    "अनुवाद तैयार किया जा रहा है।"
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "अनुवाद तैयार किया जा रहा है।",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "q": "अनुवाद तैयार किया जा रहा है।",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Positano → Amalfi",
+        "text": "अनुवाद तैयार किया जा रहा है।"
+      },
+      {
+        "name": "Amalfi → Ravello",
+        "text": "अनुवाद तैयार किया जा रहा है।"
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "अनुवाद तैयार किया जा रहा है।"
+    ],
+    "toc": [
+      {
+        "href": "#via-amalfi",
+        "label": "Via Amalfi (bus + bus)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry to Amalfi (seasonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "via-amalfi",
+        "title": "Via Amalfi (bus + bus)",
+        "body": [
+          "अनुवाद तैयार किया जा रहा है।"
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry to Amalfi (seasonal)",
+        "body": [
+          "अनुवाद तैयार किया जा रहा है।"
+        ]
+      }
+    ],
+    "tipsTitle": "Tips",
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "अनुवाद तैयार किया जा रहा है।",
+        "a": [
+          "अनुवाद तैयार किया जा रहा है।"
+        ]
+      }
+    ]
+  }
+}

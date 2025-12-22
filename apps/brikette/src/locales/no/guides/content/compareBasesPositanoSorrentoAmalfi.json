@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Sammenlign baser: Positano vs. Sorrento vs. Amalfi",
+    "description": "Kompromisser, transport, priser og hvem hver base passer best for."
+  },
+  "linkLabel": "Sammenlign baser: Positano vs. Sorrento vs. Amalfi",
+  "intro": [
+    "Sammenlign kompromissene mellom Positano, Sorrento og Amalfi før du velger base."
+  ],
+  "tocTitle": "På denne siden",
+  "sections": [
+    {
+      "id": "positano",
+      "title": "Positano",
+      "body": [
+        "Ikonisk utsikt og mange trapper; perfekt hvis du vil våkne midt i postkortet.",
+        "Transporten krever mer planlegging, så legg inn slingringsmonn rundt ferjer og busser."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Beste tog- og bussforbindelser og et stort utvalg av overnatting.",
+        "Utsikten er mindre dramatisk enn i Positano, men pris og bekvemmelighet er sterke."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Knutepunkt for ferje og buss med enkle dagsturer til Ravello og nærliggende landsbyer.",
+        "Forvent variert overnatting og planlegg i forhold til begrenset kvelds­transport."
+      ]
+    },
+    {
+      "id": "who",
+      "title": "Hvem basene passer for",
+      "body": [
+        "Positano for utsikter verdt å unne seg og sosialt hostelliv.",
+        "Sorrento for kontroll på budsjettet og rask transport.",
+        "Amalfi for balansert tilgang langs kysten."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hvilken base passer førstegangsbesøkende?",
+      "a": [
+        "Bo i Positano hvis du vil ha de klassiske utsiktene, i Sorrento for enkel transport, og i Amalfi for et mellomnivå med domkirke i nærheten."
+      ]
+    },
+    {
+      "q": "Trenger jeg bil hvis jeg bor utenfor Positano?",
+      "a": [
+        "Nei. Ferjer og busser knytter alle tre byene sammen; bil gir bare parkeringsstress med mindre du planlegger lange innlandsturer."
+      ]
+    }
+  ]
+}

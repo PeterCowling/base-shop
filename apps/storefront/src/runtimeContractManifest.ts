@@ -6,6 +6,12 @@
 // a full runtime/API surface; it is treated as a pilot convergence target.
 
 type HttpRuntime = "nodejs" | "edge";
+type PaymentsMode = "payment_intent" | "checkout_session_custom" | "hosted_checkout";
+type TaxMode = "static_rates" | "taxjar_api" | "stripe_tax" | "custom";
+type InventoryMode = "none" | "validate_only" | "reserve_ttl";
+type IdentityMode = "none" | "per_site" | "sso_oidc";
+type LogoutMode = "local" | "local_plus_idp" | "global";
+type OrderLinkingMode = "none" | "email_verified" | "explicit_claim";
 
 type ApiRouteDescriptor = {
   path: string;
@@ -60,6 +66,14 @@ export const runtimeContractManifest = {
   capabilities: {
     cart: false,
     checkout: false,
+    webhooks: false,
+    paymentsMode: "payment_intent" satisfies PaymentsMode,
+    taxMode: "static_rates" satisfies TaxMode,
+    inventoryMode: "none" satisfies InventoryMode,
+    identityMode: "none" satisfies IdentityMode,
+    profileApi: false,
+    logoutMode: "local" satisfies LogoutMode,
+    orderLinking: "none" satisfies OrderLinkingMode,
     returns: false,
     preview: false,
     returnsHomePickup: false,

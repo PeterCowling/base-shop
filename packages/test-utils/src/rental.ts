@@ -7,8 +7,10 @@ import path from 'node:path';
  */
 export async function setupRentalData(dir: string, shopId = 'bcd'): Promise<void> {
   const rentalDir = path.join(dir, 'data', 'rental');
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-1234 temp fixture directory
   await fs.mkdir(rentalDir, { recursive: true });
   const shopDir = path.join(dir, 'data', 'shops', shopId);
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- TEST-1234 temp fixture directory
   await fs.mkdir(shopDir, { recursive: true });
 
   // Copy pricing.json from the monorepo's data fixture folder
@@ -16,4 +18,3 @@ export async function setupRentalData(dir: string, shopId = 'bcd'): Promise<void
   const sourcePricing = path.join(repoRoot, 'data', 'rental', 'pricing.json');
   await fs.copyFile(sourcePricing, path.join(rentalDir, 'pricing.json'));
 }
-

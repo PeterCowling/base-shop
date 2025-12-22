@@ -1,0 +1,88 @@
+{
+  "seo": {
+    "title": "Bến phà → Hostel Brikette, kèm hành lý",
+    "description": "Các lựa chọn từ bến: khuân vác hoặc xe buýt SITA tới điểm dừng gần hơn; mẹo thực tế và câu hỏi thường gặp."
+  },
+  "linkLabel": "Bến phà → Hostel Brikette, kèm hành lý",
+  "intro": [
+    "Đến Positano bằng phà và mang theo hành lý? Hãy kết hợp xe buýt Interno Positano với dịch vụ khuân vác ở cảng để tới Hostel Brikette mà không phải kéo vali lên những bậc thang dốc."
+  ],
+  "beforeList": [
+    "Kiểm tra lịch trình Interno Positano mới nhất — đây là [lịch và giá vé hiện tại](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Mua vé Interno Positano tại bất kỳ cửa hàng tabacchi/quầy báo nào trước khi lên xe.",
+    "Cân nhắc giao hành lý nặng cho đội khuân vác ngay khi họ đón phà — hãy nói rằng bạn lưu trú tại Hostel Brikette."
+  ],
+  "sections": [
+    {
+      "id": "dock-to-mulini",
+      "title": "Từ bến đến Piazza dei Mulini",
+      "body": [
+        "Từ bãi biển chính đi bộ lên Piazza dei Mulini theo lối đi dọc bờ biển có biển chỉ dẫn — sử dụng [hướng dẫn này](https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2).",
+        "Nếu mang nhiều hành lý, hãy thuê dịch vụ khuân vác của Positano tại bến để họ vận chuyển tất cả lên dốc giúp bạn — [hướng dẫn dịch vụ khuân vác](guide:porterServices) của chúng tôi nêu chi tiết giá và cách đặt."
+      ]
+    },
+    {
+      "id": "mulini-to-bus",
+      "title": "Piazza dei Mulini tới điểm đón Interno",
+      "body": [
+        "Khi tới Piazza dei Mulini, mua vé interno tại một cửa hàng góc phố hoặc tabacchi. Sau đó đi tới điểm dừng nằm ở rìa quảng trường — ngay nơi quảng trường giao với đường chính.",
+        "Xe buýt Interno chạy khoảng mỗi 30 phút từ sáng tới nửa đêm và đi theo [lộ trình lên dốc này](https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0) về phía hostel."
+      ]
+    },
+    {
+      "id": "identify-bus",
+      "title": "Nhận diện xe buýt Interno Positano",
+      "body": [
+        "Xe có thể khác nhau, nhưng bảng điện tử phía trước luôn ghi \"interno positano\".",
+        "Đây là xe buýt đô thị cỡ nhỏ có chỗ đứng; lên xe từ lề đường và xác nhận hoặc đưa vé cho tài xế."
+      ]
+    },
+    {
+      "id": "bus-stop-to-hostel",
+      "title": "Từ điểm dừng tới Hostel Brikette",
+      "body": [
+        "Xuống xe tại cửa hàng tabacchi ở điểm dừng ‘Chiesa Nuova’. Bước xuống, ra đường chính rồi rẽ trái vào Viale Pasitea.",
+        "Đi bộ hơn 100 mét; bạn sẽ thấy hostel bên tay phải. Tìm biển hiệu trên sân thượng tầng hai, đi tiếp qua khúc cua và leo cầu thang bên phải để tới lối vào.",
+        "Cần xem đường đi trực quan? Làm theo [chỉ dẫn cuối cùng này](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2)."
+      ]
+    }
+  ],
+  "stepsList": [
+    "Giao hành lý cho đội khuân vác tại bến và mua vé xe buýt Interno Positano ở tabacchi.",
+    "Đi bộ từ bãi biển chính tới Piazza dei Mulini, sau đó tới điểm dừng Interno bên cạnh tabacchi trên Viale Pasitea.",
+    "Lên xe buýt Interno Positano (tìm bảng \"interno positano\") và đi lên dốc về phía Viale Pasitea 325.",
+    "Xuống xe trước cửa hàng tabacchi, rẽ trái đi dọc Viale Pasitea hơn 100 m rồi leo cầu thang bên phải để tới Hostel Brikette."
+  ],
+  "kneesList": [
+    "Đi xe buýt Interno Positano giúp bạn tránh hàng trăm bậc thang dốc.",
+    "Để đội khuân vác mang hành lý nặng riêng, bạn có thể rảnh tay trên xe và đoạn đường đi bộ ngắn."
+  ],
+  "kneesPorterPrefix": "Cần thêm thông tin về giá khuân vác và cách đặt? Hãy đọc",
+  "kneesPorterLinkLabel": "hướng dẫn dịch vụ khuân vác",
+  "faqs": [
+    {
+      "q": "Tôi mua vé xe buýt Interno Positano ở đâu?",
+      "a": [
+        "Mua vé tại bất kỳ tabacchi/quầy báo nào trong thị trấn, bao gồm ki-ốt ngay cạnh điểm dừng. Tài xế không bán vé trên xe."
+      ]
+    },
+    {
+      "q": "Xe buýt Interno Positano chạy bao lâu một chuyến?",
+      "a": [
+        "Tuyến hoạt động khoảng mỗi 30 phút từ 08:00 tới nửa đêm, và có thêm chuyến vào cao điểm — luôn kiểm tra lịch trước khi lên phà."
+      ]
+    },
+    {
+      "q": "Dịch vụ khuân vác ở bến hoạt động ra sao?",
+      "a": [
+        "Đội khuân vác chờ sẵn mỗi chuyến phà, bốc hành lý và đưa lên dốc. Hãy nói rằng bạn ở Hostel Brikette, thanh toán mức giá đã báo và giữ vật dụng quý giá hoặc thuốc men bên mình."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Mua vé Interno và giao hành lý cho đội khuân vác tại bến",
+    "Đi bộ từ bãi biển tới Piazza dei Mulini và điểm dừng Interno",
+    "Đi xe buýt Interno Positano lên dốc (tìm bảng \"interno positano\")",
+    "Xuống tại tabacchi, đi bộ 100 m và leo cầu thang vào Hostel Brikette"
+  ]
+}

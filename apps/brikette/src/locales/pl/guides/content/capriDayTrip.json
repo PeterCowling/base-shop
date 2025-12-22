@@ -1,0 +1,114 @@
+{
+  "seo": {
+    "title": "Jednodniowa wycieczka na Capri z Positano",
+    "description": "Jak zaplanować dzień na Capri: promy, rozkład, najważniejsze miejsca."
+  },
+  "linkLabel": "Jednodniowa wycieczka na Capri z Positano",
+  "intro": [
+    "Capri w jeden dzień z Positano: zacznij wcześnie, spakuj się lekko i zaplanuj trasę łączącą widoki Anacapri z wygodnym powrotem."
+  ],
+  "toc": [
+    {
+      "href": "#morning",
+      "label": "Poranek — przyjazd i Anacapri"
+    },
+    {
+      "href": "#midday",
+      "label": "Południe — pętla Marina Piccola"
+    },
+    {
+      "href": "#afternoon",
+      "label": "Popołudnie — miasto Capri i powrót"
+    },
+    {
+      "href": "#gallery",
+      "label": "Galeria zdjęć"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Poranek — przyjazd i Anacapri",
+      "body": [
+        "Złap pierwszy prom, aby dotrzeć przed tłumami z wycieczkowców, następnie jedź autobusem do Anacapri i wjedź kolejką krzesełkową na Monte Solaro, jeśli lubisz wysokości.",
+        "Zjedz proste śniadanie na Piazza Vittoria i od razu kup bilet powrotny na prom, by mieć pewną godzinę powrotu."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Południe — pętla Marina Piccola",
+      "body": [
+        "Zejdź pieszo lub zjedź autobusem do Marina Piccola na kąpiel lub zdjęcia; zabierz krem z filtrem przyjaznym rafom i co najmniej 1 litr wody na osobę.",
+        "Kup panini lub sałatki w delikatesach zamiast długiego lunchu, aby spokojnie wrócić na górę."
+      ]
+    },
+    {
+      "id": "afternoon",
+      "title": "Popołudnie — miasto Capri i powrót",
+      "body": [
+        "Wjedź kolejką linową do miasta Capri, przejdź Via Camerelle, Ogrody Augusta i zakończ gelato lub espresso.",
+        "Bądź w Marina Grande co najmniej 30 minut przed wypłynięciem na wypadek kolejki do kolejki linowej lub depozytu bagażu."
+      ]
+    }
+  ],
+  "galleryTitle": "Galeria zdjęć",
+  "gallery": {
+    "items": {
+      "monteSolaro": {
+        "alt": "Widok z Monte Solaro na Capri",
+        "caption": "Panorama Monte Solaro"
+      },
+      "gardensOfAugustus": {
+        "alt": "Ogrody Augusta na Capri",
+        "caption": "Ogrody Augusta"
+      }
+    }
+  },
+  "faqsTitle": "FAQ",
+  "howTo": {
+    "steps": [
+      {
+        "name": "Sprawdź sezonowe promy",
+        "text": "Potwierdź poranne rejsy i ostatnie powroty do Positano."
+      },
+      {
+        "name": "Przyjedź wcześniej na molo",
+        "text": "Ustaw się w kolejce 20–30 minut przed odpłynięciem w szczycie sezonu."
+      },
+      {
+        "name": "Zaplanuj trasę na Capri",
+        "text": "Zdecyduj, czy priorytetem jest Anacapri, czy Marina Grande z punktami widokowymi — dostosuj plan do dostępnego czasu."
+      }
+    ]
+  },
+  "tipsTitle": "Wskazówki na dzień wycieczki",
+  "tips": [
+    "Kup bilety w obie strony jednocześnie, aby później swobodnie zmieniać trasę bez nerwowego szukania miejsc.",
+    "Noś mały plecak z wodą, filtrem przeciwsłonecznym i gotówką — bankomaty na Capri potrafią się opróżnić w szczycie sezonu.",
+    "Pobierz mapy offline Capri i rozkłady autobusów; sygnał zanika w Anacapri i przy kolejce do Błękitnej Groty."
+  ],
+  "warningsTitle": "Ostrzeżenia",
+  "warnings": [
+    "Kolejki do kolejki krzesełkowej i linowej rosną po 15:00; jeśli je przegapisz, możesz wracać promem rezerwowym.",
+    "Wzburzone morze potrafi bez ostrzeżenia odwołać późne rejsy — sprawdź poranne komunikaty i miej w zapasie połączenie przez Sorrento.",
+    "Błękitna Grota często jest zamykana przy wietrze lub fali; operatorzy mogą mimo to sprzedawać bilety, więc upewnij się, że działa, zanim staniesz w kolejce."
+  ],
+  "faqs": [
+    {
+      "q": "Czy mogę uwzględnić Błękitną Grotę?",
+      "a": [
+        "Tylko jeśli to Twój priorytet — czeka Cię łódź wahadłowa i 60–90 minut oczekiwania, co ogranicza resztę planu."
+      ]
+    },
+    {
+      "q": "Czy muszę rezerwować bilety?",
+      "a": [
+        "Zarezerwuj poranne promy w szczycie sezonu i rozważ zakup miejsc na kolejkę krzesełkową lub rejs online; poza sezonem zwykle można kupić bilety na miejscu."
+      ]
+    }
+  ]
+}

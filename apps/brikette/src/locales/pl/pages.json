@@ -1,0 +1,72 @@
+{
+  "deals": {
+    "loyaltyCta": {
+      "heading": "Dodatkowe korzyści dla powracających gości",
+      "body": "Dołącz do naszej listy rezerwacji bezpośrednich, aby otrzymywać oferty z wcześniejszym dostępem, sezonowe wskazówki podróżne oraz dodatkowy kod rabatowy 5% na kolejną rezerwację na naszej stronie.",
+      "button": "Zapisz się po korzyści"
+    }
+  },
+  "about": {
+    "mission": {
+      "heading": "Nasza misja",
+      "paragraphs": [
+        "Od 1995 roku Hostel Brikette pomaga podróżnym odkrywać Positano przy rozsądnym budżecie – bez rezygnowania z panoramicznych widoków na Wybrzeże Amalfitańskie.",
+        "Stawiamy na przejrzystość: jasne ceny bez ukrytych opłat, proste zasady oraz zespół na miejscu gotowy pomóc przy zmianach lub specjalnych prośbach.",
+        "Nasz lokalny zespół dzieli się planami transportu, poradami jak radzić sobie z bagażem 23 kg / 50 lb na schodach oraz pomysłami na aktywności, abyś mógł cieszyć się każdą minutą nad morzem."
+      ]
+    },
+    "values": {
+      "heading": "Nasze wartości",
+      "items": [
+        {
+          "title": "Uczciwy, bezpośredni i przejrzysty",
+          "body": "Publikujemy jasne ceny i zasady, kierujemy do opcji najlepszej wartości i nigdy nie dodajemy ukrytych opłat."
+        },
+        {
+          "title": "Lokalna wiedza, dzielona swobodnie",
+          "body": "Od promów po ścieżki, nasz zespół oferuje praktyczne porady, dzięki czemu wykorzystasz swój czas (i budżet)."
+        },
+        {
+          "title": "Ciepła gościnność",
+          "body": "Świętujemy społeczny duch hostellelling: przyjazny bar, wspólne przestrzenie i pracownicy, którzy pamiętają twoje plany."
+        }
+      ]
+    }
+  },
+  "careers": {
+    "hiringCta": {
+      "heading": "Pracuj z nami na tarasie",
+      "body": "Dołącz do małego zespołu, który ceni charakter, inicjatywę i opiekę gościnną.W tym obudowa personelu, śniadanie i uczciwe zalety.",
+      "button": "Złóż wniosek teraz"
+    }
+  },
+  "experiences": {
+    "meetTheHosts": {
+      "heading": "Poznaj zespół tarasu",
+      "intro": "To osoby, które tchną życie w taras, organizują wydarzenia o zachodzie słońca, prowadzą wycieczki piesze i odpowiadają na pytania jeszcze przed Twoim przyjazdem do Positano.",
+      "hosts": [
+        {
+          "name": "Chiara",
+          "role": "Koordynatorka doświadczeń",
+          "bio": "Koordynuje bar o zachodzie słońca, przedstawia lokalnych producentów i dba o to, by każda degustacja miała coś dla każdego. Jeśli świętujesz lub planujesz prywatne wydarzenie, porozmawiaj z nią na tarasie od godziny 18:00.",
+          "imageAlt": "Chiara serwująca spritza w barze na tarasie.",
+          "availability": "Spotkasz Chiarę przy barze w większość wieczorów oraz poprzez naszą cyfrową concierge."
+        },
+        {
+          "name": "Luca",
+          "role": "Lokalny przewodnik",
+          "bio": "Urodzony w Praiano, zna każdą ścieżkę na Wybrzeżu Amalfitańskim. Luca pomoże Ci wybrać między Szlakiem Bogów, rejsami o wschodzie słońca lub całodziennymi wycieczkami do Ravello – z gotowymi planami transportu.",
+          "imageAlt": "Luca wskazujący horyzont z punktu widokowego na Wybrzeżu Amalfitańskim.",
+          "availability": "Spotkaj go w recepcji wczesnym rankiem albo zarezerwuj miejsce na wyprawy przez concierge."
+        },
+        {
+          "name": "Mariana",
+          "role": "Cyfrowa concierge",
+          "bio": "Odpowiada przez WhatsApp i Messengera, przesyłając alerty promowe, rekomendacje restauracji oraz przypomnienia na ostatnią chwilę. Gdy pogoda się zmienia, proponuje bezstresowe alternatywy.",
+          "imageAlt": "Ekran telefonu pokazujący czat z Marianą, cyfrową concierge.",
+          "availability": "Napisz o dowolnej porze – koordynuje się w czasie rzeczywistym z zespołem recepcji."
+        }
+      ]
+    }
+  }
+}

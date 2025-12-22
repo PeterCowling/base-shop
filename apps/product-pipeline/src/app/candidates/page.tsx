@@ -1,41 +1,39 @@
 import PageHeader from "@/components/PageHeader";
 import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Cluster, Grid, Inline, Stack } from "@ui/components/atoms/primitives";
+import { Grid, Stack } from "@ui/components/atoms/primitives";
+import CandidatesClient from "./CandidatesClient";
 
 export default async function CandidatesPage() {
   const t = await getTranslations("en");
-  const candidates = [
-    {
-      id: "CN-042",
-      title: t("pipeline.candidates.items.cn042.title"),
-      returnBand: t("pipeline.candidates.items.cn042.returnBand"),
-      peakCash: t("pipeline.candidates.items.cn042.peakCash"),
-      payback: t("pipeline.candidates.items.cn042.payback"),
-      risk: t("pipeline.candidates.items.cn042.risk"),
-      effort: t("pipeline.candidates.items.cn042.effort"),
-      stage: t("pipeline.candidates.items.cn042.stage"),
+  const strings = {
+    rankedLabel: t("pipeline.candidates.section.ranked.label"),
+    rankedTitle: t("pipeline.candidates.section.ranked.title"),
+    runStageKLabel: t("pipeline.candidates.actions.runStageK"),
+    exportCsvLabel: t("pipeline.candidates.actions.exportCsv"),
+    selectAllLabel: t("pipeline.candidates.table.selectAll"),
+    selectLabel: t("pipeline.candidates.table.select"),
+    stageLabel: t("pipeline.candidates.fields.stage"),
+    returnBandLabel: t("pipeline.candidates.fields.returnBand"),
+    peakCashLabel: t("pipeline.candidates.fields.peakCash"),
+    paybackLabel: t("pipeline.candidates.fields.payback"),
+    riskLabel: t("pipeline.candidates.tags.risk"),
+    effortLabel: t("pipeline.candidates.tags.effort"),
+    nextLabel: t("pipeline.candidates.tags.nextLabel"),
+    nextActions: {
+      advance: t("pipeline.candidates.nextActions.advance"),
+      reviewRisk: t("pipeline.candidates.nextActions.reviewRisk"),
+      reviewEffort: t("pipeline.candidates.nextActions.reviewEffort"),
+      needStageK: t("pipeline.candidates.nextActions.needStageK"),
     },
-    {
-      id: "CN-044",
-      title: t("pipeline.candidates.items.cn044.title"),
-      returnBand: t("pipeline.candidates.items.cn044.returnBand"),
-      peakCash: t("pipeline.candidates.items.cn044.peakCash"),
-      payback: t("pipeline.candidates.items.cn044.payback"),
-      risk: t("pipeline.candidates.items.cn044.risk"),
-      effort: t("pipeline.candidates.items.cn044.effort"),
-      stage: t("pipeline.candidates.items.cn044.stage"),
+    bulk: {
+      running: t("pipeline.candidates.bulk.running"),
+      progress: t("pipeline.candidates.bulk.progress"),
+      complete: t("pipeline.candidates.bulk.complete"),
+      error: t("pipeline.candidates.bulk.error"),
+      noneSelected: t("pipeline.candidates.bulk.noneSelected"),
     },
-    {
-      id: "CN-046",
-      title: t("pipeline.candidates.items.cn046.title"),
-      returnBand: t("pipeline.candidates.items.cn046.returnBand"),
-      peakCash: t("pipeline.candidates.items.cn046.peakCash"),
-      payback: t("pipeline.candidates.items.cn046.payback"),
-      risk: t("pipeline.candidates.items.cn046.risk"),
-      effort: t("pipeline.candidates.items.cn046.effort"),
-      stage: t("pipeline.candidates.items.cn046.stage"),
-    },
-  ];
+    notAvailable: t("pipeline.common.notAvailable"),
+  };
 
   const compareItems = [
     t("pipeline.candidates.section.compare.items.price"),
@@ -57,75 +55,7 @@ export default async function CandidatesPage() {
         subtitle={t("pipeline.candidates.subtitle")}
       />
 
-      <section className="pp-card p-6">
-        <Cluster justify="between" alignY="center" className="gap-4">
-          <Stack gap={2}>
-            <span className="text-xs uppercase tracking-widest text-foreground/60">
-              {t("pipeline.candidates.section.ranked.label")}
-            </span>
-            <h2 className="text-xl font-semibold tracking-tight">
-              {t("pipeline.candidates.section.ranked.title")}
-            </h2>
-          </Stack>
-          <button className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
-            {t("pipeline.candidates.actions.runStageK")}
-          </button>
-        </Cluster>
-
-        <Stack gap={4} className="mt-6">
-          {candidates.map((candidate) => (
-            <div
-              key={candidate.id}
-              className="rounded-3xl border border-border-1 bg-surface-2 p-4"
-            >
-              <Cluster justify="between" alignY="center" className="gap-4">
-                <Stack gap={1}>
-                  <span className="text-xs text-foreground/60">
-                    {candidate.id}
-                  </span>
-                  <span className="text-lg font-semibold">
-                    {candidate.title}
-                  </span>
-                  <span className="text-xs text-foreground/60">
-                    {t("pipeline.candidates.fields.stage")}: {candidate.stage}
-                  </span>
-                </Stack>
-                <Inline gap={4} alignY="center" className="text-sm">
-                  <Stack gap={1}>
-                    <span className="text-xs text-foreground/60">
-                      {t("pipeline.candidates.fields.returnBand")}
-                    </span>
-                    <span className="font-semibold">{candidate.returnBand}</span>
-                  </Stack>
-                  <Stack gap={1}>
-                    <span className="text-xs text-foreground/60">
-                      {t("pipeline.candidates.fields.peakCash")}
-                    </span>
-                    <span className="font-semibold">{candidate.peakCash}</span>
-                  </Stack>
-                  <Stack gap={1}>
-                    <span className="text-xs text-foreground/60">
-                      {t("pipeline.candidates.fields.payback")}
-                    </span>
-                    <span className="font-semibold">{candidate.payback}</span>
-                  </Stack>
-                </Inline>
-              </Cluster>
-              <Inline gap={3} className="mt-4 text-xs">
-                <span className="rounded-full border border-border-2 px-3 py-1">
-                  {t("pipeline.candidates.tags.risk")}: {candidate.risk}
-                </span>
-                <span className="rounded-full border border-border-2 px-3 py-1">
-                  {t("pipeline.candidates.tags.effort")}: {candidate.effort}
-                </span>
-                <span className="rounded-full border border-border-2 px-3 py-1">
-                  {t("pipeline.candidates.tags.next")}
-                </span>
-              </Inline>
-            </div>
-          ))}
-        </Stack>
-      </section>
+      <CandidatesClient strings={strings} />
 
       <Grid cols={1} gap={4} className="md:grid-cols-2">
         <div className="pp-card p-6">

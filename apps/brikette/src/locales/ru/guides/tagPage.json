@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "{{count}} статья",
+  "articleCount_other": "{{count}} статей",
+  "topTagsHeading": "Лучшие теги",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

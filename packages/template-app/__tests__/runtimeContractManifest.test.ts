@@ -7,7 +7,7 @@ describe("runtimeContractManifest", () => {
   });
 
   it("describes the core API routes with correct paths and runtimes", () => {
-    const { apiCart, apiCheckoutSession, apiReturn } =
+    const { apiCart, apiCheckoutSession, apiStripeWebhook, apiReturn } =
       runtimeContractManifest.routes;
 
     expect(apiCart.path).toBe("/api/cart");
@@ -15,8 +15,12 @@ describe("runtimeContractManifest", () => {
     expect(apiCart.uses).toBe("@platform-core/cartApi");
 
     expect(apiCheckoutSession.path).toBe("/api/checkout-session");
-    expect(apiCheckoutSession.runtime).toBe("edge");
+    expect(apiCheckoutSession.runtime).toBe("nodejs");
     expect(apiCheckoutSession.uses).toBe("@platform-core/checkout/session");
+
+    expect(apiStripeWebhook.path).toBe("/api/stripe-webhook");
+    expect(apiStripeWebhook.runtime).toBe("nodejs");
+    expect(apiStripeWebhook.uses).toBe("@platform-core/stripe-webhook");
 
     expect(apiReturn.path).toBe("/api/return");
     expect(apiReturn.runtime).toBe("edge");
@@ -46,6 +50,14 @@ describe("runtimeContractManifest", () => {
 
     expect(capabilities.cart).toBe(true);
     expect(capabilities.checkout).toBe(true);
+    expect(capabilities.webhooks).toBe(true);
+    expect(capabilities.paymentsMode).toBe("checkout_session_custom");
+    expect(capabilities.taxMode).toBe("static_rates");
+    expect(capabilities.inventoryMode).toBe("validate_only");
+    expect(capabilities.identityMode).toBe("per_site");
+    expect(capabilities.profileApi).toBe(false);
+    expect(capabilities.logoutMode).toBe("local");
+    expect(capabilities.orderLinking).toBe("none");
     expect(capabilities.returns).toBe(true);
     expect(capabilities.preview).toBe(true);
 

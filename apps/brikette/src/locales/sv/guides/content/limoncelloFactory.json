@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Inne i en limoncellofabrik",
+    "description": "Så tillverkas limoncello och hur du bokar ett besök hos lokala producenter."
+  },
+  "linkLabel": "Inne i en limoncellofabrik",
+  "fallbackParagraph": "Det som krävs för äkta limoncello: citroner, alkohol, socker och tid. Rundturer visar hela processen och avslutas med provsmakning – låt bilen stå efteråt.",
+  "intro": [
+    "Ett besök i ett limoncellolaboratorium visar hur sfusato Amalfitano-citroner blir kustens signaturdigestif.",
+    "Lär dig stegen, prova småskaliga buteljeringar och få tips om hur du förvarar och tar med favoriten hem."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Sfusato Amalfitano-citroner",
+      "body": [
+        "Producenter använder de tjockskaliga sfusato Amalfitano-citronerna som odlas på terrasserade pergolor; de eteriska oljorna sitter i skalet, inte i saften.",
+        "Bra rundturer börjar med att visa hur frukten skalas för hand och varför ekologisk odling ger en ren, aromatisk infusion."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "Från skal till infusion",
+      "body": [
+        "Färskt skal får dra i neutral kornsprit i en vecka eller mer tills vätskan blir gyllene och doftande.",
+        "Efter extraktionen filtreras vätskan och blandas med sockerlag; varje batch får vila så smakerna gifter sig innan buteljering."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "Vad provningen innehåller",
+      "body": [
+        "Guiden visar oftast arbetsytan och häller sedan upp små prov på limoncello, crema di limone eller säsongsbaserade likörer.",
+        "Smutta långsamt, lägg märke till textur och arom och låt bilen stå efteråt – proverna håller full styrka även om de känns lena."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Köpa och förvara en flaska",
+      "body": [
+        "Välj ogenomskinligt glas eller flaskor med UV-skydd och kontrollera etiketten för producentens adress och tappningsdatum.",
+        "Förvara flaskan kall när du öppnat den hemma; ska du resa med den, linda in den i kläder eller be butiken om skyddande emballage."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan besökare under 18 år följa med på en tur?",
+      "a": [
+        "Ja, minderåriga får se processen men får enligt lag inte provsmaka; vissa producenter erbjuder lemonad eller granita som alternativ."
+      ]
+    },
+    {
+      "q": "Hur tar jag med limoncello hem på ett säkert sätt?",
+      "a": [
+        "Packa flaskorna i incheckat bagage (handbagaget tillåter inte mer än 100 ml), stoppa dem ordentligt och deklarera mängden om ditt hemland har stopp för alkoholinförsel."
+      ]
+    },
+    {
+      "q": "Hur länge håller limoncello?",
+      "a": [
+        "Oöppnade flaskor håller upp till ett år; efter öppning bör de stå i kyl eller frys och drickas inom några månader för bästa arom."
+      ]
+    }
+  ]
+}

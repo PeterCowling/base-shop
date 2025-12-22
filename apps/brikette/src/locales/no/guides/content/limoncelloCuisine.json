@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Limoncello og lokal mat på Amalfikysten",
+    "description": "Hva du bør smake i Positano: limoncello, sjømatfavoritter, sitrondesserter og bestillingsetikette."
+  },
+  "linkLabel": "Limoncello og lokal mat",
+  "intro": [
+    "Limoncello og lokal mat på Amalfikysten: hva du bør smake og hvordan du bestiller som en lokal.",
+    "Here’s where to sip, what to buy, and how to cook with them back home."
+  ],
+  "tocTitle": "On this page",
+  "sections": [
+    {
+      "id": "tasting",
+      "title": "Tasting",
+      "body": [
+        "Visit small botteghe for artisan limoncello and ask for a sample to compare styles.",
+        "Pair tastings with lemon gelato, sorbet, or pastries to gauge sweetness and balance."
+      ]
+    },
+    {
+      "id": "purchase",
+      "title": "Buying & shipping",
+      "body": [
+        "Check airline liquid limits; pack bottles securely in checked luggage.",
+        "Look for IGP Costa d’Amalfi labels and recyclable packaging from local producers."
+      ]
+    },
+    {
+      "id": "cooking",
+      "title": "Cooking with lemons",
+      "body": [
+        "Use zest and juice in salads, seafood pasta, and desserts for brightness.",
+        "Store lemons in a cool, dark spot and repurpose peels for syrups or marinades."
+      ]
+    }
+  ],
+  "tips": [
+    "Oppbevar flasker kjølig og mørkt når du reiser hjem – smaken holder seg best slik.",
+    "Spør om frakten; mange produsenter sender internasjonalt og tar hånd om papirarbeidet."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg ta med limoncello i håndbagasjen?",
+      "a": [
+        "Kun miniflasker under væskegrensen; pakk ellers i innsjekket bagasje og beskytt mot knus."
+      ]
+    },
+    {
+      "q": "Hvor lenge holder en flaske?",
+      "a": [
+        "Uåpnet holder den 1–2 år; åpnet bør drikkes innen seks måneder for best smak."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Photo gallery",
+    "items": [
+      {
+        "alt": "Positano vintage poster with lemons",
+        "caption": "Vintage lemons"
+      },
+      {
+        "alt": "Terrace table with limoncello glasses",
+        "caption": "Terrace limoncello"
+      }
+    ]
+  }
+}

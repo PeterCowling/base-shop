@@ -1,0 +1,18 @@
+# Hostel Brikette
+> Cliff-top hostel in Positano, Italy — panoramic Amalfi Coast views.
+
+## Machine-readable sources
+- [Unified graph](/schema/hostel-brikette/graph.jsonld)
+- [Hotel graph](/schema/hostel-brikette/hotel.jsonld)
+- [Rooms graph](/schema/hostel-brikette/rooms.jsonld)
+- [Offers graph](/schema/hostel-brikette/offers.jsonld)
+- [FAQ graph](/schema/hostel-brikette/faq.jsonld)
+- [Guide tags graph](/schema/hostel-brikette/guide-tags.jsonld)
+- [Daily rates](/data/rates.json) — 6-month calendar, hourly updates
+- [OpenAPI spec](/.well-known/openapi.yaml)
+- [AI plugin manifest](/.well-known/ai-plugin.json)
+- [Sitemap index](/sitemap_index.xml)
+
+## Key destinations & operators
+- Positano · Amalfi · Salerno · Sorrento · Ravello · Naples
+- Transit: SITA buses along the Amalfi Coast

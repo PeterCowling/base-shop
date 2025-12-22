@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Bữa sáng 08:00–10:30 hằng ngày. Trứng, món ngọt, món tốt cho sức khỏe, nước ép, sinh tố và cà phê."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Thực Đơn Bữa Sáng, 2025",
+    "hours": "Hằng ngày 08:00 – 10:30"
+  },
+  "intro": {
+    "summary": "Bữa sáng chế biến mới, nước ép vừa ép và cà phê barista được phục vụ mỗi buổi sáng trên sân thượng. Cuộn xuống để xem mọi lựa chọn và mức giá.",
+    "viewFullMenuButton": "Xem toàn bộ thực đơn bữa sáng"
+  },
+  "sections": {
+    "eggs": {
+      "title": "Combo Trứng",
+      "subtitle": "Kết hợp trứng thơm ngon",
+      "howCooked": "Chọn kiểu chế biến trứng",
+      "cooked": [
+        "Ốp lết",
+        "Trứng bác",
+        "Ốp la (vừa)",
+        "Ốp la (lòng đỏ nổi)"
+      ],
+      "addThree": "Chọn 3 nguyên liệu thêm",
+      "ingredients": [
+        "Thịt xông khói",
+        "Giăm bông",
+        "Cà chua",
+        "Nấm",
+        "Bánh mì nướng",
+        "Phô mai",
+        "Đậu"
+      ],
+      "orderExample": "Ví dụ: “Ốp lết với phô mai, thịt xông khói và đậu”."
+    },
+    "sweet": {
+      "title": "Món Ngọt",
+      "chooseOneFreeSyrup": "Chọn 1 loại siro miễn phí:",
+      "syrups": [
+        "Siro vàng",
+        "Chanh",
+        "Cam & quế",
+        "Nutella"
+      ]
+    },
+    "healthy": {
+      "title": "Món Tốt Cho Sức Khỏe"
+    },
+    "juices": {
+      "title": "Nước Ép & Sinh Tố"
+    },
+    "hot": {
+      "title": "Đồ Uống Nóng Có Caffeine"
+    },
+    "iced": {
+      "title": "Đồ Uống Lạnh Có Caffeine"
+    }
+  },
+  "items": {
+    "eggsCombo": {
+      "name": "Combo Trứng"
+    },
+    "frenchToast": {
+      "name": "Bánh mì nướng kiểu Pháp",
+      "note": "Cổ điển, dùng kèm siro."
+    },
+    "nutellaFrenchToast": {
+      "name": "Bánh mì nướng Nutella",
+      "note": "Kẹp Nutella bên trong."
+    },
+    "pancakes": {
+      "name": "Bánh kếp"
+    },
+    "addEggComboItem": {
+      "name": "Thêm món trong Combo Trứng",
+      "note": "Chọn món từ menu trứng. Ví dụ: bánh kếp + siro vàng + trứng bác: €15.50."
+    },
+    "addAdditionalSyrup": {
+      "name": "Thêm siro",
+      "note": "Có thể chọn hơn 1 loại siro. Ví dụ: bánh kếp + siro vàng + Nutella: €14."
+    },
+    "veggieToast": {
+      "name": "Bánh mì nướng rau",
+      "note": "Rau theo mùa trên bánh mì nướng."
+    },
+    "healthyDelight": {
+      "name": "Parfait tốt cho sức khỏe",
+      "note": "Sữa chua, granola & mứt trái cây nhà làm."
+    },
+    "detoxMe": {
+      "name": "Detox Me (nước ép)",
+      "note": "Rau chân vịt, dưa leo, gừng & chanh."
+    },
+    "energizeMe": {
+      "name": "Energize Me (nước ép)",
+      "note": "Cam, cà rốt, gừng & chanh."
+    },
+    "multiV": {
+      "name": "Multi‑V (nước ép)",
+      "note": "Táo, cà rốt, cam, chanh, gừng."
+    },
+    "orangeJuice": {
+      "name": "Nước cam",
+      "note": "Vắt tươi."
+    },
+    "bananaSmoothie": {
+      "name": "Sinh tố chuối"
+    },
+    "strawberrySmoothie": {
+      "name": "Sinh tố dâu"
+    },
+    "saltedCaramelProteinSmoothie": {
+      "name": "Bản dịch đang được chuẩn bị."
+    },
+    "addProtein": {
+      "name": "Bản dịch đang được chuẩn bị."
+    },
+    "tea": {
+      "name": "Trà (đen, xanh, thảo mộc)"
+    },
+    "espresso": {
+      "name": "Espresso (mỗi shot)"
+    },
+    "macchiato": {
+      "name": "Macchiato"
+    },
+    "americano": {
+      "name": "Americano / Long Black"
+    },
+    "cappuccino": {
+      "name": "Cappuccino"
+    },
+    "latte": {
+      "name": "Latte"
+    },
+    "altMilk": {
+      "name": "Sữa đậu nành hoặc gạo — phụ thu"
+    },
+    "icedLatte": {
+      "name": "Latte đá"
+    },
+    "icedSoyLatte": {
+      "name": "Latte đậu nành đá"
+    },
+    "icedRiceLatte": {
+      "name": "Latte sữa gạo đá"
+    },
+    "icedTea": {
+      "name": "Trà chanh hoặc trà đào đá"
+    }
+  }
+}

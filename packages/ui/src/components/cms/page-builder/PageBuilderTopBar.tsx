@@ -49,6 +49,8 @@ interface PageBuilderTopBarProps {
     updatedAt?: string;
     publishedAt?: string;
     publishedBy?: string;
+    publishedRevisionId?: string;
+    currentRevisionId?: string;
   };
   previewUrl?: string | null;
   previewSource?: string | null;

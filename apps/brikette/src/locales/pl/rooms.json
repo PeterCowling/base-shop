@@ -1,0 +1,56 @@
+{
+  "detail": {
+    "common": {
+      "amenitiesHeading": "Dlaczego goście wybierają ten pokój",
+      "amenitiesIntro": "Przemyślane udogodnienia czekają na Ciebie od chwili przyjazdu."
+    },
+    "double_room": {
+      "amenities": [
+        {
+          "title": "Komfort prywatnej łazienki en suite",
+          "body": "Zacznij i zakończ dzień gorącym prysznicem, puszystymi ręcznikami i przestrzenią tylko dla siebie."
+        },
+        {
+          "title": "Poranki na tarasie z widokiem na morze",
+          "body": "Otwórz drzwi na prywatny taras, by wypić espresso lub wieczornego drinka z widokiem na Positano."
+        },
+        {
+          "title": "Chłodne i spokojne noce",
+          "body": "Indywidualna klimatyzacja i zaciemniające okiennice zapewniają ciszę nawet w sierpniowe upały."
+        }
+      ]
+    },
+    "room_11": {
+      "amenities": [
+        {
+          "title": "Taras wystarczająco duży dla wszystkich współlokatorek",
+          "body": "Spotykajcie się na zewnętrznych sofkach i stołach, by jeść śniadania, rozciągać się po wędrówkach i wspólnie podziwiać panoramę."
+        },
+        {
+          "title": "Komfort wyłącznie dla kobiet",
+          "body": "Dorm tylko dla kobiet z łazienką en suite i strefą toaletkową, więc nie czekasz w kolejce pod prysznic."
+        },
+        {
+          "title": "Prywatność i spokój ducha",
+          "body": "Każde łóżko ma zasłonkę, lampkę do czytania, gniazdka oraz szafkę otwieraną kartą na cenne rzeczy."
+        }
+      ]
+    },
+    "room_12": {
+      "amenities": [
+        {
+          "title": "Ponadwymiarowy wspólny taras",
+          "body": "Leżaki i strefa jadalna zamieniają taras w salon z widokiem na Wybrzeże Amalfitańskie."
+        },
+        {
+          "title": "Prywatna łazienka tylko dla tego pokoju",
+          "body": "Odśwież się w prywatnej łazience z suszarkami do włosów, lustrami i mnóstwem wieszaków."
+        },
+        {
+          "title": "Łatwy dostęp do prądu",
+          "body": "Każde łóżko ma własne gniazdka, lampkę i szafkę na kartę, dzięki czemu naładujesz sprzęt i zachowasz spokój."
+        }
+      ]
+    }
+  }
+}

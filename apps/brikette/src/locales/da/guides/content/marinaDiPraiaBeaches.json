@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Marina di Praia og skjulte strande",
+    "description": "Sådan når du de små bugter, og hvad du kan forvente, når du er der."
+  },
+  "linkLabel": "Marina di Praia og skjulte strande",
+  "intro": [
+    "Udforsk Marina di Praia og nærliggende bugter som et afbræk fra Positanos hovedstrand."
+  ],
+  "sections": [
+    {
+      "id": "marina",
+      "title": "Det vigtigste om Marina di Praia",
+      "body": [
+        "Mellem klipperne ligger denne rullestensstrand med solsenge, kajakudlejning og seafood-restauranter bygget ind i klippen.",
+        "Kom før kl. 10.30 for at få pladser forrest; efter kl. 16 kryber skyggen ind."
+      ]
+    },
+    {
+      "id": "coves",
+      "title": "Bugter i nærheden",
+      "body": [
+        "Lej kajak til Grotta di Suppraiano, eller tag en kort bådtur til skjulte steder som Gavitella eller Laurito.",
+        "Medbring reef-safe solcreme og badesko – den stenede bund giver god sigt til snorkling."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Transport",
+      "body": [
+        "Tag SITA-bus fra Positano mod Amalfi; bed chaufføren om stop ved Marina di Praia, og gå ned ad rampen (fem minutter).",
+        "Scootere kan parkere øverst ved bugten – medbring mønter til parkeringsautomater."
+      ]
+    }
+  ],
+  "tips": [
+    "Book frokost hos Il Pirata eller La Praia for klippeside-udsigt mellem svømmeturene.",
+    "Medbring drybag til værdier; pladsen er kompakt og mere ordentlig, når alt er samlet."
+  ],
+  "faqs": [
+    {
+      "q": "Er stranden gratis?",
+      "a": [
+        "Der er et gratis afsnit, men pladsen er begrænset. Regn med €20–€25 for et par solsenge + parasol i højsæsonen."
+      ]
+    },
+    {
+      "q": "Kan jeg gå fra Positano?",
+      "a": [
+        "Turen tager ca. 50 minutter langs vejen med smalle rabatter. Bus eller scooter er sikrere, især i højsæsontrafik."
+      ]
+    }
+  ]
+}

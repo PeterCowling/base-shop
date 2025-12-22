@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "Oplevelser på Hostel Brikette – tagterrasse, vandreture og concierge",
+    "description": "Nyd en spritz i solnedgangen, slut dig til kuraterede vandreture og brug vores digitale concierge til at planlægge nemme Amalfi-dage."
+  },
+  "hero": {
+    "eyebrow": "Oplevelser",
+    "title": "Oplevelser på Hostel Brikette",
+    "description": "Nyd en spritz på tagterrassen, tag på vandreture med panoramaudsigt, og få øjeblikkelige tips via vores digitale concierge.",
+    "supporting": "Alt er åbent for registrerede gæster; skriv til os, hvis du rejser med venner, der bor et andet sted.",
+    "primaryCta": "Book dit ophold",
+    "secondaryCta": "Åbn barmenuen",
+    "tertiaryCta": "Skriv til den digitale concierge",
+    "primaryCtaAria": "Book dit ophold på Hostel Brikette",
+    "secondaryCtaAria": "Se Hostel Brikettes barmenu",
+    "tertiaryCtaAria": "Send en besked til Hostel Brikettes digitale concierge",
+    "breakfastCta": "View the breakfast menu",
+    "breakfastCtaAria": "View the breakfast menu"
+  },
+  "sections": {
+    "bar": {
+      "eyebrow": "Tagterrasse-bar",
+      "title": "Tagterrasse i solnedgang",
+      "description": "Tagterrasse-bar med solnedgangsspritz og lokale vine.",
+      "highlights": [
+        "Signaturspritz og lokale vine serveret iskoldt.",
+        "Sociale aftener og smagninger i højsæsonens uger.",
+        "Panoramisk udsigt perfekt til billeder i gyldent aftenslys."
+      ],
+      "imageAlt": "Gæster skåler på Hostel Brikettes tagterrasse i solnedgangen."
+    },
+    "hikes": {
+      "eyebrow": "Guidede vandreture",
+      "title": "Guidede vandreture og dagsture",
+      "description": "Guidede og selvledte vandreture med kort, tider og udstyrstips.",
+      "highlights": [
+        "Offline kort og køreplaner opdateret hver morgen.",
+        "Ture ledet af personalet, når stierne er mest travle.",
+        "Pakketips plus vejrsikre alternativer."
+      ],
+      "imageAlt": "Hostelgæster vandrer på Guderuten over Amalfikysten."
+    },
+    "concierge": {
+      "eyebrow": "Digital concierge",
+      "title": "Digital concierge med svar hele døgnet",
+      "description": "Digital concierge med færgevarsler, rejseplaner og svar i realtid.",
+      "highlights": [
+        "WhatsApp- og Messenger-svar fra vores team.",
+        "Automatiske varsler ved ændringer i bus- og færgeplaner.",
+        "Personlige forslag tilpasset dine planer."
+      ],
+      "imageAlt": "Telefonskærm med chat fra Hostel Brikettes digitale concierge."
+    }
+  },
+  "faq": {
+    "title": "Ofte stillede spørgsmål",
+    "items": [
+      {
+        "question": "Skal jeg reservere oplevelser på forhånd?",
+        "answer": [
+          "De fleste terrasseaftener og vandreture bekræftes på dagen i receptionen.",
+          "Til private ture eller bådudflugter kan vi holde en plads – skriv blot til conciergen mindst 24 timer før."
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "title": "Klar til at planlægge dine dage på Amalfikysten?",
+    "subtitle": "Book din seng, skim barmenuen, og fortæl os, hvad du vil opleve – vi klarer detaljerne.",
+    "buttons": {
+      "book": "Book nu",
+      "events": "Bar og events",
+      "concierge": "Chat med conciergen",
+      "breakfast": "Breakfast menu"
+    }
+  },
+  "title": "Oplevelser på Hostel Brikette",
+  "intro": "Nyd en spritz på tagterrassen, tag på vandreture med panoramaudsigt, og få øjeblikkelige tips via vores digitale concierge.",
+  "items": {
+    "bar": "Tagterrasse-bar med solnedgangsspritz og lokale vine.",
+    "hikes": "Guidede og selvledte vandreture med kort, tider og udstyrstips.",
+    "concierge": "Digital concierge med færgevarsler, rejseplaner og svar i realtid."
+  },
+  "guideCollections": {
+    "heading": "Få endnu mere ud af vores oplevelsesguides",
+    "description": "Ruter, vandreture, båddage og kulturtips kurateret af teamet og gæster.",
+    "taggedHeading": "Oplevelsesguides tagget {{tag}}",
+    "taggedDescription": "Disse historier fremhæver {{tag}}-øjeblikke. Fjern filteret for at se det hele.",
+    "empty": "Vi har endnu ingen oplevelsesguides for {{tag}}. Prøv et andet tag eller fjern filteret.",
+    "clearFilter": "Vis alle oplevelsesguides",
+    "cardCta": "Udforsk oplevelsesguiden {{guideTitle}}",
+    "filterHeading": "Filter experiences guides",
+    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "grouped": {
+      "beaches": {
+        "guides": {
+          "heading": "Beach guides",
+          "description": "Pick the right stretch of sand and plan your day."
+        },
+        "directions": {
+          "heading": "Beach directions",
+          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        }
+      }
+    }
+  }
+}

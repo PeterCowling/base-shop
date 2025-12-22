@@ -31,7 +31,12 @@ export async function POST(req: NextRequest) {
   const session = await stripe.checkout.sessions.retrieve(sessionId);
   const deposit = Number(session.metadata?.depositTotal ?? 0);
   const expected = session.metadata?.returnDate || undefined;
-  await addOrder("cover-me-pretty", sessionId, deposit, expected);
+  await addOrder({
+    shop: "cover-me-pretty",
+    sessionId,
+    deposit,
+    expectedReturnDate: expected,
+  });
   return NextResponse.json({ ok: true });
 }
 

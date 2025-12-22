@@ -1,0 +1,127 @@
+{
+  "seo": {
+    "title": "Isteni Ösvény nocellei busszal",
+    "description": "Szállj fel a Montepertuso–Nocelle buszra egy oda-vissza túrához a Sentiero degli Dein, időzítésekkel, tippekkel és visszaút opciókkal."
+  },
+  "linkLabel": "Isteni Ösvény nocellei busszal",
+  "intro": [
+    "Kevés az időd, vagy kerülnéd az átszállásokat? Ülj fel a Montepertuso–Nocelle buszra a Hostel Brikette elől, járd be az Isteni Ösvény legpanorámásabb szakaszát oda-vissza, majd térj vissza ugyanígy.",
+    "Ez a változat kihagyja a kompot és az amalfii átszállást, így ideális nyugodtabb napokra vagy azoknak, akik könnyedebb programot szeretnének."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Felkészülés a hostelnél",
+      "body": [
+        "Vásárolj fejenként két buszjegyet a Bar Internazionaléban: Positano → Nocelle és Nocelle → Positano. A személyzet segít kiválasztani a legkedvezőbb kombinációt.",
+        "Ellenőrizd a legfrissebb Montepertuso/Nocelle menetrendet, hogy tudd, mikor indul az utolsó járat napnyugta előtt.",
+        "Pakolj vizet, nassolnivalót és réteges ruhát. A nocellei kioszk szezonban árul italokat, de az ösvény mentén nincsenek boltok."
+      ]
+    },
+    {
+      "id": "bus-to-nocelle",
+      "title": "Buszozz fel Nocellébe",
+      "body": [
+        "Várakozz a Bar Internazionale előtt. A buszok elején „Montepertuso - Nocelle” feliratot látsz.",
+        "Az út Montepertusón keresztül kapaszkodik, mielőtt a nocellei kis parkolónál fordulna vissza. Maradj a buszon, amíg meg nem fordul – ez a te megállód.",
+        "Érvényesítsd a jegyet felszálláskor, és tedd el a visszaútra."
+      ]
+    },
+    {
+      "id": "walk-through-town",
+      "title": "Séta Nocellén át az ösvényhez",
+      "body": [
+        "A parkolóból lépcsőzz le a gyalogútra, majd fordulj balra.",
+        "Sétálj kb. 175 métert, és a kulcsfontosságú elágazásnál tarts jobbra, hogy elkerüld a Positanóba vezető lépcsősort.",
+        "Haladj egyenesen, amíg meg nem látod a Sentiero degli Dei táblákat és a faluból kivezető köves ösvényt."
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Túrázz oda-vissza, ameddig szeretnél",
+      "body": [
+        "Colle Serra felé indulj a legjobb kilátásokért. A teljes oda-vissza út Bomeranóig kb. 11,6 km, de bármikor megfordulhatsz.",
+        "Kövesd a piros-fehér CAI jelzéseket, lépj óvatosan a kitett részeken, és állj meg a panorámás erkélyeknél fotózni.",
+        "Ha eleget láttál, fordulj vissza ugyanazon az útvonalon Nocelle felé."
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Visszatérés Positanóba",
+      "body": [
+        "Sétálj vissza ugyanazon az útvonalon Nocellén keresztül, és a kulcsfontosságú elágazásnál fordulj jobbra a buszmegállóhoz.",
+        "Használd a retúr jegyedet a buszra vissza a Bar Internazionaléig vagy a Chiesa Nuováig. Ha a busz megtelt, le is sétálhatsz az aszfaltos úton (kb. 4 km), de szánj rá 45–60 percet.",
+        "Kerüld a lépcsős rövidítést, hacsak nem szeretnéd tudatosan megdolgoztatni a térdedet – a lépcsősor a város túloldalán ér véget."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Minta menetrend",
+      "body": [
+        "06:30 busz → 06:50 érkezés Nocellébe → 3 órás túra → 09:50 visszabusz → 10:10 érkezés Positanóba (3 óra 40 perc összesen).",
+        "08:30 indulás → 08:50 érkezés Nocellébe → 3 óra 20 perces túra → 11:50 visszabusz → 12:10 érkezés Positanóba (4 óra összesen).",
+        "10:30 indulás → 10:50 érkezés Nocellébe → 3 órás túra → 13:50 visszabusz → 14:10 érkezés Positanóba (3 óra 40 perc összesen)."
+      ]
+    }
+  ],
+  "essentialsTitle": "Alapvető tudnivalók",
+  "essentials": [
+    "Két SITA jegy fejenként (fel és le), plusz egy tartalék.",
+    "Víz, nassolnivaló, naptej és kalap a kitett gerincre.",
+    "Kényelmes, tapadós cipő és opcionálisan túrabot az egyenetlen lépcsőkhöz."
+  ],
+  "typicalCostsTitle": "Jellemző költségek",
+  "typicalCosts": [
+    "Nocelle buszjegyek: 1,80–2,40 euró szakaszonként, bérlettől függően.",
+    "Granita vagy ital a nocellei kioszkból: 3–5 euró.",
+    "Az ösvény használata: ingyenes."
+  ],
+  "tipsTitle": "Útvonal tippek",
+  "tips": [
+    "Célozd meg a korai indulást, hogy hűvösebb időben és kevesebb emberrel túrázhass.",
+    "Vigyél könnyű kabátot – a gerincen szeles lehet akkor is, ha Positanóban meleg van.",
+    "Tarts egy kis jutalomfalatot a templom melletti kioszknál a visszaút után."
+  ],
+  "warningsTitle": "Amire figyelj",
+  "warnings": [
+    "Ne kövesd a Positanóba vezető lépcsőt, hacsak nem szeretnél hosszú, térdet próbáló ereszkedést, amely a város túlsó oldalán ér véget.",
+    "Délután ritkábban járnak a buszok – állíts be emlékeztetőt, hogy elérd az utolsó járatot.",
+    "Az ösvény kitett; kerüld a nap legforróbb szakaszát júliusban és augusztusban."
+  ],
+  "steps": [
+    { "name": "Buszjegy vásárlása", "text": "Szerezd be a nocellei jegyeket a Bar Internazionaléban, mielőtt elindulsz a hosteltől." },
+    { "name": "Utazás Nocellébe", "text": "Szállj fel a Montepertuso–Nocelle buszra, és maradj a parkolóig, ahol a busz megfordul." },
+    { "name": "Eljutás az ösvényig", "text": "Kövesd a gyalogutat a falun át, tarts jobbra, és keresd a Sentiero degli Dei tábláit." },
+    { "name": "Túra oda-vissza", "text": "Sétálj Colle Serra felé, majd fordulj vissza, amikor készen állsz a hazafelé útra." },
+    { "name": "Visszatérés Positanóba", "text": "Térj vissza a buszmegállóhoz, és utazz vissza a Bar Internazionaléig vagy a Chiesa Nuováig." }
+  ],
+  "faqsTitle": "GYIK",
+  "faqs": [
+    {
+      "q": "Meddig érdemes sétálni, mielőtt visszafordulok?",
+      "a": [
+        "Sokan 45–60 percig haladnak Colle Serra felé a legismertebb kilátókig, majd visszafordulnak. Ha Bomeranóig mennél, tervezz több időt."
+      ]
+    },
+    {
+      "q": "Megbízható a nocellei busz?",
+      "a": [
+        "Igen, de fix menetrend szerint jár, a déli órákban hosszabb szünetekkel. Nézd meg a Bar Internazionale kirakatában a menetrendet, és hagyj rá tartalék időt arra az esetre, ha megtelne a busz."
+      ]
+    },
+    {
+      "q": "Lesétálhatok a busz helyett?",
+      "a": [
+        "Le tudsz sétálni az aszfaltos úton körülbelül 45–60 perc alatt. A lépcsősor csak akkor ajánlott, ha kifejezetten edzeni szeretnél és nem zavar a több ezer fok."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "Ezen az oldalon",
+    "essentials": "Alapvető tudnivalók",
+    "costs": "Jellemző költségek",
+    "tips": "Útvonal tippek",
+    "warnings": "Amire figyelj",
+    "faqs": "GYIK"
+  }
+}

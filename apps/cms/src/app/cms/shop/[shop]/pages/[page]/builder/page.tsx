@@ -34,7 +34,7 @@ const CHECKOUT_BLOCK_ALLOWLIST: NonNullable<PageBuilderProps["allowedBlockTypes"
   "Spacer",
 ];
 
-async function ensureCheckoutPage(shop: string, pages: Page[]): Promise<Page | null> {
+async function ensureCheckoutPage(shop: string, pages: Page[]): Promise<Page | undefined> {
   const existing = pages.find(
     (p) =>
       p.slug === CHECKOUT_SLUG ||
@@ -43,7 +43,7 @@ async function ensureCheckoutPage(shop: string, pages: Page[]): Promise<Page | n
   );
   if (existing) return existing;
   const template = checkoutPageTemplates[0];
-  if (!template) return null;
+  if (!template) return undefined;
   const page = scaffoldPageFromTemplate(
     template,
     { shopId: shop, locale: "en", primaryLocale: "en" },

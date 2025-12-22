@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Excursions d'une journée depuis Positano",
+    "description": "Idées de sorties vers Capri, Amalfi, Ravello et plus, avec temps de trajet et budget."
+  },
+  "linkLabel": "Excursions d'une journée depuis Positano",
+  "intro": [
+    "Utilisez Positano comme base pour vos excursions en ferry et en bus : partez tôt, réservez les billets essentiels et gardez toujours un plan B météo."
+  ],
+  "sections": [
+    {
+      "id": "capri",
+      "title": "Incontournables de Capri",
+      "body": [
+        "Réservez le premier ferry, prenez le télésiège vers le Monte Solaro et promenez-vous aux Giardini di Augusto avant l’arrivée des croisiéristes.",
+        "Revenez sur une traversée en fin d’après-midi et conservez une capture d’écran des horaires de bus au cas où la mer deviendrait agitée."
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompéi ou Herculanum",
+      "body": [
+        "Prenez le bus matinal pour Sorrente puis la Circumvesuviana ; achetez vos billets coupe-file en ligne pour gagner du temps.",
+        "Emportez de l’eau et un chapeau : il y a peu d’ombre sur place et la visite dure facilement 3 à 4 heures."
+      ]
+    },
+    {
+      "id": "amalfi-ravello",
+      "title": "Amalfi et Ravello combinés",
+      "body": [
+        "Prenez le ferry jusqu’à Amalfi, visitez le Duomo puis montez en bus 5110 vers Ravello pour la Villa Cimbrone et un déjeuner avec vue.",
+        "Restez pour la lumière de fin d’après-midi et rentrez par un ferry ou un bus au crépuscule ; les files se réduisent après 18 h."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrente et focus gourmand",
+      "body": [
+        "Prenez le ferry de fin de matinée pour Sorrente, explorez le marché, dégustez du limoncello et profitez du coucher de soleil depuis la terrasse de la Villa Comunale.",
+        "Revenez en bus tardif vers Positano si le dernier ferry est complet ; le trajet dure environ 50 minutes."
+      ]
+    }
+  ],
+  "tips": [
+    "Préchargez cartes et horaires hors ligne ; le réseau mobile faiblit dans les tunnels ferroviaires et les falaises de Capri.",
+    "Glissez une veste de pluie légère : les orages d’été arrivent vite et les ferries s’arrêtent en cas d’éclairs."
+  ],
+  "faqs": [
+    {
+      "q": "Quelle excursion nécessite le départ le plus tôt ?",
+      "a": [
+        "Capri et Pompéi gagnent à partir aux premières heures : elles se remplissent dès la fin de matinée et demandent plus de trajet."
+      ]
+    },
+    {
+      "q": "Puis-je visiter deux villes dans la même journée ?",
+      "a": [
+        "Oui : associez Amalfi à Ravello ou Sorrente à Pompéi. Évitez de combiner Capri avec autre chose ; consacrez-lui une journée entière."
+      ]
+    }
+  ]
+}

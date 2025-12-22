@@ -1,0 +1,351 @@
+{
+  "meta": {
+    "title": "Rumsbokningar — Villkor och Bestämmelser | Hostel Brikette",
+    "description": "Officiella villkor för rumsbokningar: bokning, avbokningar, in-/utcheckning, betalningar, omsorgsplikt och policyer."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Rumsbokningar",
+    "pageSubtitle": "Villkor och Bestämmelser"
+  },
+  "toc": {
+    "title": "Innehåll",
+    "aria": "Innehållsförteckning"
+  },
+  "footer": {
+    "end": "Slut på dokumentet.",
+    "backToTop": "Tillbaka till toppen"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Definitioner och tolkning",
+      "body": [
+        "1.1 ‘Villkor och bestämmelser’ — de villkor som anges i detta dokument.",
+        "1.2 ‘Vandrarhemmet’, ‘vi’ eller ‘oss’ — Skylar SRL, registrerad adress: Via Guglielmo Marconi 358, 84017 Positano (SA), Italien.",
+        "1.3 ‘Du’, ‘din’, ‘gäst’ — varje person som lämnar in en Rumsbokningsbegäran, är Officiell vandrarhemsgäst, är Tillfällig gäst, är anställd, evenemangsarrangör, gruppledare eller annan tredje part.",
+        "1.4 ‘Rumsbokningsbegäran’ — en begäran om att boka boende på Vandrarhemmet enligt dessa villkor; lämnad av dig eller din OTA. Endast Vandrarhemmet och auktoriserade OTA:er får sälja bäddar; otillåten vidareförsäljning medför avslag eller annullering av bekräftade bokningar.",
+        "1.5 ‘Gemensamma utrymmen’ — utrymmen i Vandrarhemmet som är tillgängliga för både Officiella gäster och Tillfälliga gäster (entré/lobby, gemensam terrass, gemensamma badrum).",
+        "1.6 ‘Kortinnehavare’ — ägaren till det kreditkort som anges i bokningsbegäran.",
+        "1.7 ‘Motbud’ — en variant av en bokningsbegäran. Första motbudet lämnas av Vandrarhemmet; ytterligare kan följa.",
+        "1.8 ‘Bekräftad rumsbokning’ — rättsligt bindande avtal när Vandrarhemmet accepterar en begäran eller när du accepterar ett motbud; omfattar tjänster, faciliteter och dessa villkor.",
+        "1.9 ‘Utebliven ankomst (No Show)’ — status när en eller flera berättigade gäster inte checkar in före slutet av den Officiella incheckningstiden första dagen.",
+        "1.10 ‘Utebliven-avgift’ — avgift som tas ut vid No Show eller avbokning utanför Avbokningsfristen; det högsta av ‘första nattens pris’ eller ‘icke‑återbetalningsbar deposition’.",
+        "1.11 ‘Avbokningsbegäran’ — begäran om att avboka en bekräftad rumsbokning.",
+        "1.12 ‘Avbokningsfrist’ — krävd framförhållning i timmar för att avboka en bekräftad bokning; dagar omräknas till timmar (t.ex. 3 dagar = 72 timmar).",
+        "1.13 ‘Administrationsavgift för avbokning’ — avgift för handläggning av avbokningsbegäran enligt avtalad taxa.",
+        "1.14 ‘Vandrarhemmets officiella e‑post’ — hostelpositano@gmail.com.",
+        "1.15 ‘Bekräftad avbokning’ — skriftlig bekräftelse från Vandrarhemmets officiella e‑post på att avbokningen har behandlats.",
+        "1.16 ‘Begäran om ändring’ — begäran om att ändra en bekräftad bokning (delvis avbokning eller datumändring).",
+        "1.17 ‘Bekräftad bokningsändring’ — skriftlig bekräftelse på att ändringen har genomförts.",
+        "1.18 ‘Angiven e‑postadress’ — den adress du angav i bokningsbegäran; används för all korrespondens. Du ansvarar för riktighet och uppföljning.",
+        "1.19 ‘Begäran om förlängning’ — begäran om att förlänga en bekräftad rumsbokning.",
+        "1.20 ‘Bekräftad förlängning’ — skriftlig bekräftelse på att förlängningen har genomförts.",
+        "1.21 ‘Incheckningsbegäran’ — begäran om att inleda incheckning vid ankomst.",
+        "1.22 ‘Officiell incheckningstid’ — 15:00–22:00 på ankomstdagen.",
+        "1.23 ‘Officiell vandrarhemsgäst’ — person som slutfört incheckningen.",
+        "1.24 ‘Tilldelat rum’ — det specifika rum som tilldelats den officiella gästen (åtkomst endast dit).",
+        "1.25 ‘Vandrarhemmets rum’ — privata rum och sovsalar, endast för officiella gäster.",
+        "1.26 ‘Sänglinne’ — set som tillhandahålls vid incheckning (örngott, lakan, underlakan, handduk).",
+        "1.27 ‘Rumsuppgradering’ — tilldelning av ett dyrare rum än det bokade (endast pris beaktas).",
+        "1.28 ‘Nyckelkort (Keycard)’ — plastkort med deposition, kodat för att öppna dörren till tilldelat rum.",
+        "1.29 ‘Förhandsauktorisation’ — temporär reservering av belopp på kortet utan omedelbar debitering.",
+        "1.30 ‘Utcheckning’ — sker endast när sänglinne och nyckelkort återlämnats samt alla tillhörigheter avlägsnats från rummet.",
+        "1.31 ‘Minderårig’ — person under 18 år i Italien.",
+        "1.32 ‘Kostnadsfri tjänst’ — tjänst som kan erbjudas utan kostnad men står utanför bokningen (t.ex. frukost, dryck, Wi‑Fi, bagageförvaring, kylförvaring), och har egna villkor.",
+        "1.33 ‘Tillfällig gäst’ — person med åtkomst endast till gemensamma utrymmen efter ID‑kontroll; status ges endast av personalen.",
+        "1.34 ‘Godtagna betalningsmetoder’ — Visa/MasterCard; banköverföring endast från företag. AmEx/PayPal m.fl. accepteras inte. Kontanter i euro.",
+        "1.35 ‘Förbetalda ej återbetalningsbara bokningar’ — rabatterade mot förskottsbetalning i sin helhet; aldrig återbetalningsbara.",
+        "1.36 ‘Först till kvarn väljer säng’ — inga specifika sängar fördelas i sovsal; gäst väljer bland lediga och kan byta när annan blir ledig.",
+        "1.37 ‘Bokningstyp’ — förbetald/ej återbetalningsbar eller återbetalningsbar.",
+        "1.38 ‘Återbetalningsbara bokningar’ — standardtaxa med flexibla villkor (datum/längd kan justeras; mildare avbokningsregler enligt plan).",
+        "1.39 ‘Identitetshandling’ — pass, nationellt ID, körkort eller militärt ID (endast original).",
+        "1.40 ‘Allvarligt fel’ — fel som väsentligt påverkar din vistelse (t.ex. trasig säng, osäker temperatur, ingen åtkomst, avbrott i vatten).",
+        "1.41 ‘OTA’ — auktoriserad nätbaserad resebyrå (t.ex. Hostelworld.com, Booking.com)."
+      ]
+    },
+    "s2": {
+      "title": "2. Bokningsbegäranden",
+      "body": [
+        "2.1 Inlämning — endast skriftligen via OTA eller webbplats; samtal på plats är vägledande. Genom att skicka in godkänner du villkoren och bekräftar uppgifternas riktighet.",
+        "2.2 Handläggning — startar efter mottagen deposition/förhandsauktorisation/betalning. Kortinnehavare ska verifieras; vid avvikelse krävs skriftligt medgivande till debitering till den officiella e‑posten; annars avslag.",
+        "2.3 Avslag — Vandrarhemmet kan avslå begäran av vilken orsak som helst.",
+        "2.4 Omfattning — max 7 nätter och grupper upp till 5 personer; däröver hanteras som flera bokningar.",
+        "2.5 Motbud — vid utebliven tillgänglighet skickar vi alternativ till den angivna e‑posten; accept triggar betalnings-/auktorisationsförsök.",
+        "2.6 Förbetald ej återbetalningsbar — uttryckligt godkännande kan krävas; uteblivet godkännande = annullering. Upp till tre betalningsförsök.",
+        "2.7 Bekräftelse — bokningen är bekräftad först när e‑post skickats till angiven adress (referens, ankomstdag, längd m.m.). Du ska verifiera uppgifterna och meddela fel till den officiella e‑posten.",
+        "2.9 Antal gäster — 1 per enkelsäng; upp till 2 per dubbelsäng; lägenheter enligt annonserad kapacitet. Överkapacitet medges ej.",
+        "2.9 Omfattning av faciliteter — inkluderar sänglinne och nyckelkort per person, dusch och varmvatten vid angivna tider samt åtkomst till gemensamma utrymmen. Övriga tjänster är kostnadsfria och har egna villkor.",
+        "2.10 Ekonomiskt ansvar — Kortinnehavaren ansvarar för bokningen och extra kostnader (skador, extra städning, avgifter, brott mot utcheckningspolicy m.m.).",
+        "2.11 Rums-/sängfördelning — varje person tilldelas ett rum. I sovsal gäller först till kvarn; grupper kan delas upp.",
+        "2.12 Uppgraderingar — kan ges mot betalning eller av lager-/disponeringsskäl; utebliven betalning kan leda till återgång till ursprungstyp."
+      ]
+    },
+    "s3": {
+      "title": "3. Ålder och tillgänglighet",
+      "body": [
+        "3.1 Tillgänglighet — kontakta oss före bokning vid särskilda behov. Byggnaden har trappor och ingen bärhjälp. Ljudalstrande sömnhjälpmedel tillåts endast i privata rum.",
+        "3.2 Självständighet — vi tillhandahåller inte fortlöpande omvårdnad; om du inte kan vistas självständigt annulleras bokningen.",
+        "3.3 Minderåriga — i Italien får minderåriga inte resa ensamma. 16 år och yngre: endast privata rum med vårdnadshavare (18+). 17‑åringar: sovsal endast med 18+ ledsagare i samma rum och med styrkt vårdnad; annars annullering enligt bokningstyp."
+      ]
+    },
+    "s4": {
+      "title": "4. Tredjepartsprocesser och betalningar",
+      "body": [
+        "Vid bokning via tredjepartsbetalning (OTA) slutförs betalningen på deras plattform enligt deras villkor.",
+        "Betalningar till tredje part styrs av ert avtal; Vandrarhemmet kontrollerar inte dessa processer.",
+        "Vi tar inte emot någon del av dessa betalningar och ansvarar inte för bokningar gjorda på detta sätt.",
+        "Det är ditt ansvar att säkerställa att betalningen lyckats och att bokningen är bekräftad före ankomst.",
+        "För frågor om betalning via OTA, kontakta leverantören direkt."
+      ]
+    },
+    "s5": {
+      "title": "5. Depositioner och förhandsauktorisationer",
+      "body": [
+        "5.1 Deposition — kan krävas för att säkra bokningen; belopp beror på bokningstyp. För förbetalda ej återbetalningsbara krävs 100%. Depositioner till Vandrarhemmet är ej återbetalningsbara; vid misslyckad debitering avslås begäran.",
+        "5.2 Förhandsauktorisation — kan krävas enligt överenskommen taxa/villkor; om den inte kan genomföras avslås begäran."
+      ]
+    },
+    "s6": {
+      "title": "6. Avgifter för utebliven ankomst",
+      "body": [
+        "Om du inte anländer på incheckningsdagen markeras bokningen som No Show och avgift tas ut.",
+        "Avgiften gäller per bekräftad bokning; olika bokningar kan ha olika frister vilket påverkar utfallet."
+      ]
+    },
+    "s7": {
+      "title": "7. Avbokningar",
+      "body": [
+        "Endast skriftliga avbokningsbegäranden till den officiella e‑posten accepteras.",
+        "Vid bedömning av fristen räknas från vår mottagningstidpunkt till 00:01 på ankomstdagen.",
+        "Administrationsavgift för avbokning kan tillkomma (standard 15% av bokningspriset minus redan betalda tredjepartsprovisioner).",
+        "Om vi godkänner begäran skickas bekräftelse via e‑post; fram till dess är bokningen bekräftad.",
+        "Bokning kan annulleras utan begäran om: du inte checkar in före receptionens stängning första dagen; du checkar ut i förtid; du bryter mot policyer.",
+        "Ny bokning efter annullering sker i mån av plats.",
+        "Avbokningar efter frist behandlas som No Show och kan medföra avgift."
+      ]
+    },
+    "s8": {
+      "title": "8. Ändring av bekräftade bokningar",
+      "body": [
+        "Vi ersätter bekräftade bokningar med nya istället för att ändra dem.",
+        "Skicka begäran inom aviserad tid till officiell e‑post; ändringar gäller med förbehåll för tillgänglighet och övriga villkor.",
+        "Ändrad vistelselängd behandlas både som ändringsbegäran och som avbokning eller förlängning.",
+        "Förlängningar behandlas som nya bokningar.",
+        "Om du lämnar i förtid utan bekräftad avbokning betraktas ursprungsbokningen som fullgjord.",
+        "Alla ändringar är beroende av tillgänglighet."
+      ]
+    },
+    "s9": {
+      "title": "9. Icke‑överlåtbarhet",
+      "body": [
+        "Rumsbokningsbegäranden och bekräftade rumsbokningar är strikt icke‑överlåtbara, helt eller delvis.",
+        "Varje bokning måste stå i ursprungsbokarens namn under hela perioden.",
+        "Försök att checka in på överlåten bokning medför kostnadsansvar och kan ge omedelbar annullering.",
+        "Försök att ändra tilldelat gästs namn kan också leda till annullering."
+      ]
+    },
+    "s10": {
+      "title": "10. Förbetalda ej återbetalningsbara bokningar",
+      "body": [
+        "Full betalning krävs vid bokning; vid misslyckad betalning annulleras begäran.",
+        "Vid No Show utgår ingen återbetalning.",
+        "Begäran om förlängning prövas enligt detta dokument."
+      ]
+    },
+    "s11": {
+      "title": "11. Ankomst",
+      "body": [
+        "11.1 Incheckningsbegäran — alla gäster ska legitimera sig och initiera check‑in vid ankomst.",
+        "11.2 Tidig ankomst — före 10:30 på ankomstdagen medges inte inträde.",
+        "11.3 Ankomst 10:30–15:00 — efter godkännande kan du bli Tillfällig gäst; bagageförvaring kan erbjudas i mån av plats och på separata villkor.",
+        "11.3 Incheckningsfönster — ordinarie incheckning sker under officiell tid (15:00–22:00).",
+        "11.5 Sen ankomst — efter 22:00 är receptionen stängd; självbetjäningsinstruktioner kan skickas efter bedömning. Ansvar för bristande mottagning/följande eller felaktiga kontaktuppgifter vilar på dig."
+      ]
+    },
+    "s12": {
+      "title": "12. Check‑in",
+      "body": [
+        "12.1 Nödvändighet — om vi inte kan slutföra incheckningen nekas den och bokningen annulleras (No Show).",
+        "12.2 Identitet — giltig originalhandling krävs per gäst (förnamn, efternamn, födelseort, medborgarskap, födelsedatum, ID‑nummer). Avsaknad före 22:00 dag 1 medför annullering (No Show).",
+        "12.2 Betalning av saldo — eventuellt saldo ska betalas med godkänd metod innan check‑in slutförs; annars annullering (No Show).",
+        "12.3 Deposition för nyckelkort/sänglinne — 10 € kontant vid check‑in; återbetalas vid check‑out mot retur."
+      ]
+    },
+    "s13": {
+      "title": "13. Säkerhetsbelopp (safeguarding)",
+      "body": [
+        "Vi kan reservera ett belopp motsvarande en natt per person under vistelsen (förhandsauktorisation eller kontant).",
+        "Beloppet kan användas för avgifter/böter/förlängningar enligt policy.",
+        "Om förhandsauktorisation misslyckas kan annan i gruppen tillhandahålla den eller kontant erläggas; i annat fall avbokas bokningen."
+      ]
+    },
+    "s14": {
+      "title": "14. Omsorgsplikt",
+      "body": [
+        "Gäster ska respektera andra, undvika skador och följa reglerna. Överträdelse kan medföra omedelbar annullering (No Show‑policy) och/eller avhysning utan återbetalning.",
+        "Kostnader/böter som föranleds av ditt handlande kan debiteras; lagöverträdelser kan rapporteras till myndigheter.",
+        "Överträdelse kan leda till omedelbar annullering (No Show‑policy kan gälla) och/eller avvisning utan återbetalning."
+      ]
+    },
+    "s15": {
+      "title": "15. Fel och skador",
+      "body": [
+        "15.1 Rapportera fel omedelbart.",
+        "15.2 Åtgärdsprioritet sätts efter påverkan på vistelsen.",
+        "15.3 Allvarliga fel — vi försöker åtgärda; om det inte är möjligt ordnas alternativt boende eller proportionerlig återbetalning enligt prisskillnad/återstående nätter.",
+        "15.4 Icke rapporterade fel — kan omfattas av skade-/förlustpolicyn.",
+        "15.5 Skador — vi kan förhandsauktorisera eller ta deposition. Återbetalning sker netto efter kostnader. Överstigande kostnader (material, arbete, administration) debiteras. Övertid: Direktör 50 €/h, Manager 35 €/h, Personal 25 €/h."
+      ]
+    },
+    "s16": {
+      "title": "16. Vägglöss (bed bugs)",
+      "body": [
+        "Vi vidtar åtgärder för att förebygga och snabbt sanera angrepp. Uppstår angrepp kan du bli ansvarig för skada inklusive förlorade intäkter, gästkrav samt rengöring/sanering.",
+        "Om du nyligen bott på plats med vägglöss, meddela vid incheckning och desinficera dina tillhörigheter.",
+        "Kontrollera packning före incheckning och rapportera misstankar omedelbart."
+      ]
+    },
+    "s17": {
+      "title": "17. Personliga tillhörigheter och säkerhet",
+      "body": [
+        "Gästen ansvarar för sina tillhörigheter. Vandrarhemmet ansvarar inte för förlust/skada/stöld utom där lag kräver.",
+        "Skåp/säkerhetsbox kan tillhandahållas; ansvaret ligger kvar hos gästen.",
+        "Kvarlämnade tillhörigheter avlägsnas efter 30 dagar från utcheckning.",
+        "Farliga/olagliga föremål eller sådana som strider mot serveringstillstånd är förbjudna och kan beslagtas eller rapporteras."
+      ]
+    },
+    "s18": {
+      "title": "18. Identifikation och säkerhetsåtgärder",
+      "body": [
+        "Av säkerhetsskäl ska gäster bära tillhandahållen säkerhetsarmband inom anläggningen och uppvisa ID på begäran.",
+        "Underlåtenhet kan medföra avvisning utan ersättning.",
+        "Förlust/skada ska omedelbart anmälas; en mindre ersättningsavgift kan tillkomma."
+      ]
+    },
+    "s19": {
+      "title": "19. CCTV‑övervakning",
+      "body": [
+        "Kameror finns i allmänna utrymmen för säkerhet.",
+        "Inspelningar lagras säkert, nås endast av behörig ledning och kan delas med myndigheter enligt lag.",
+        "CCTV garanterar inte fullständig säkerhet; genom att godkänna villkoren samtycker du till denna användning."
+      ]
+    },
+    "s20": {
+      "title": "20. Tillfälliga gäster",
+      "body": [
+        "Status beviljas efter Vandrarhemmets eget gottfinnande.",
+        "Tillfälliga gäster har endast tillgång till gemensamma utrymmen; rum är förbjudet.",
+        "Officiella gäster får inte tilldela denna status till andra.",
+        "Begäranden kan tas emot 09:00–23:00 under öppetdagar.",
+        "Rätt att vägra eller återkalla status när som helst förbehålls."
+      ]
+    },
+    "s21": {
+      "title": "21. Oregistrerade personer",
+      "body": [
+        "Lagen kräver registrering av alla personer som vistas i anläggningen (inkl. tillfälliga gäster).",
+        "Om oregistrerad person upptäcks kan standardrumspris per person samt administrativ avgift motsvarande dubbla standardpriset debiteras.",
+        "Oregistrerad person måste checka in och följa standardrutiner; annars kan polisen underrättas.",
+        "Underlåten rapportering kan leda till annullering av bokning (No Show‑policy)."
+      ]
+    },
+    "s22": {
+      "title": "22. Utcheckning",
+      "body": [
+        "Officiell utcheckningstid: 07:30–10:30.",
+        "Efter utcheckning får du inte återinträda i rummet eller lämna kvar tillhörigheter.",
+        "Följ villkoren för ‘Post Checkout’ i detta dokument."
+      ]
+    },
+    "s23": {
+      "title": "23. Tidig utcheckning",
+      "body": [
+        "Om du måste lämna före 07:30, besök receptionen kvällen innan för att ordna tidig utcheckning och återfå deposition för nyckelkort.",
+        "Ej återlämnat nyckelkort medför förlust av deposition; återbetalning endast kontant till personal.",
+        "Återbetalning via överföring m.m. tillhandahålls inte."
+      ]
+    },
+    "s24": {
+      "title": "24. Sen utcheckning",
+      "body": [
+        "Endast efter skriftligt medgivande, med utcheckning senast 12:00.",
+        "Tjänsten är diskretionär, beroende av beläggning och kräver skriftlig bekräftelse.",
+        "Avgift 40 €; i turordning efter förfrågan."
+      ]
+    },
+    "s25": {
+      "title": "25. Underlåten utcheckning",
+      "body": [
+        "Vid utebliven utcheckning i tid kan vi avlägsna dina tillhörigheter utan ansvar.",
+        "Försök att komma in i gästområden efter tiden kan behandlas som säkerhetsöverträdelse.",
+        "Tillhörigheter kan flyttas till lokal bärar-/förvaringsservice; avgifter enligt deras villkor."
+      ]
+    },
+    "s26": {
+      "title": "26. Efter utcheckning",
+      "body": [
+        "När utcheckning slutförts betraktas bokningen som fullgjord oavsett återstående nätter.",
+        "Du blir Tillfällig gäst till 15:30.",
+        "På begäran kan vi registrera dig till bagageförvaring efter eget gottfinnande och särskilda villkor."
+      ]
+    },
+    "s27": {
+      "title": "27. Alkohol",
+      "body": [
+        "Som licensierad verksamhet får alkohol inköpt utanför inte tas in i vandrarhemmet.",
+        "Upptäckt alkohol kan omhändertas och lämnas tillbaka vid utcheckning eller när extern konsumtion garanteras.",
+        "Underlåtenhet kan leda till omedelbar annullering (No Show‑policy)."
+      ]
+    },
+    "s28": {
+      "title": "28. Ändring av dessa villkor",
+      "body": [
+        "Dessa villkor utgör hela avtalet mellan dig och Vandrarhemmet och ersätter tidigare överenskommelser (skriftliga/muntliga).",
+        "Vi förbehåller oss rätten att ändra villkoren när som helst."
+      ]
+    },
+    "s29": {
+      "title": "29. Ansvarsbegränsning",
+      "body": [
+        "Vårt ansvar är begränsat till tjänster/poster som anges här.",
+        "Samlat ansvar överstiger inte beloppet du betalat för bokningen.",
+        "Vi ansvarar inte för förlust/skada på personliga tillhörigheter där lag inte kräver det.",
+        "Vi ansvarar inte för indirekt/konsekvens/ekonomisk skada eller förlust av vinst/goodwill/möjlighet, inklusive vid vårdslöshet eller force majeure.",
+        "Vi tillhandahåller säker förvaring för värdesaker men tar inget ekonomiskt ansvar för dem.",
+        "Vi kan flytta föremål vid städning utan förvarning."
+      ]
+    },
+    "s30": {
+      "title": "30. Tillämplig lag",
+      "body": [
+        "Villkoren regleras av italiensk lag; alla tvister prövas av italiensk domstol."
+      ]
+    },
+    "s31": {
+      "title": "31. Webbplatsinformation",
+      "body": [
+        "Vi strävar efter korrekt information på webbplatsen men ansvarar inte för fel/utlämnanden.",
+        "Vi kan ändra webbplats och innehåll utan föregående avisering.",
+        "Vissa bilder visar övergripande stil och återspeglar inte alltid exakt produkt/aspekt.",
+        "Allt innehåll (text, bilder, varumärken) tillhör Vandrarhemmet och får inte användas utan skriftligt medgivande.",
+        "Länkar till tredjepart tillhandahålls för bekvämlighet; vi ansvarar inte för innehåll eller användning.",
+        "Se sekretesspolicyn för hur vi skyddar din integritet."
+      ]
+    },
+    "s32": {
+      "title": "32. Hälso- och säkerhetspolicy",
+      "body": [
+        "Gäster som nyligen kan ha exponerats för smittsam sjukdom ska agera ansvarsfullt.",
+        "Förbetalda ej återbetalningsbara bokningar förblir ej återbetalningsbara i sådana fall.",
+        "Vi rekommenderar reseförsäkring för oförutsedda händelser inklusive sjukdom/inställd resa."
+      ]
+    },
+    "s33": {
+      "title": "33. Kuponger",
+      "body": [
+        "Vi kan utfärda kampanjkuponger då och då.",
+        "Kuponger gäller endast för bokningar via vår officiella webbplats (hostel-positano.com).",
+        "Varje kupong kan omfattas av särskilda ytterligare villkor utöver dessa."
+      ]
+    }
+  }
+}

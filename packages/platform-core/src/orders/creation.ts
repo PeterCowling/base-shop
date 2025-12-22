@@ -8,6 +8,16 @@ import { incrementSubscriptionUsage } from "../subscriptionUsage";
 import { normalize } from "./utils";
 import type { Order } from "./utils";
 
+function isPrismaUniqueConstraintError(err: unknown): boolean {
+  return (
+    typeof err === "object" &&
+    err !== null &&
+    "code" in err &&
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- DS-0001 Prisma error is intentionally treated as an untyped runtime value
+    (err as any).code === "P2002"
+  );
+}
+
 export async function listOrders(shop: string): Promise<Order[]> {
   const orders = (await prisma.rentalOrder.findMany({
     where: { shop },
@@ -17,19 +27,59 @@ export async function listOrders(shop: string): Promise<Order[]> {
 
 export const readOrders = listOrders;
 
+export type AddOrderInput = {
+  orderId?: string;
+  shop: string;
+  sessionId: string;
+  deposit: number;
+  expectedReturnDate?: string;
+  returnDueDate?: string;
+  customerId?: string;
+  riskLevel?: string;
+  riskScore?: number;
+  flaggedForReview?: boolean;
+  currency?: string;
+  subtotalAmount?: number;
+  taxAmount?: number;
+  shippingAmount?: number;
+  discountAmount?: number;
+  totalAmount?: number;
+  cartId?: string;
+  stripePaymentIntentId?: string;
+  stripeChargeId?: string;
+  stripeBalanceTransactionId?: string;
+  stripeCustomerId?: string;
+};
+
 export async function addOrder(
-  shop: string,
-  sessionId: string,
-  deposit: number,
-  expectedReturnDate?: string,
-  returnDueDate?: string,
-  customerId?: string,
-  riskLevel?: string,
-  riskScore?: number,
-  flaggedForReview?: boolean,
+  input: AddOrderInput,
 ): Promise<Order> {
+  const {
+    orderId,
+    shop,
+    sessionId,
+    deposit,
+    expectedReturnDate,
+    returnDueDate,
+    customerId,
+    riskLevel,
+    riskScore,
+    flaggedForReview,
+    currency,
+    subtotalAmount,
+    taxAmount,
+    shippingAmount,
+    discountAmount,
+    totalAmount,
+    cartId,
+    stripePaymentIntentId,
+    stripeChargeId,
+    stripeBalanceTransactionId,
+    stripeCustomerId,
+  } = input;
+
   const order: Order = {
-    id: ulid(),
+    id: orderId ?? ulid(),
     sessionId,
     shop,
     deposit,
@@ -40,10 +90,53 @@ export async function addOrder(
     ...(riskLevel ? { riskLevel } : {}),
     ...(typeof riskScore === "number" ? { riskScore } : {}),
     ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
+    ...(currency ? { currency } : {}),
+    ...(typeof subtotalAmount === "number" ? { subtotalAmount } : {}),
+    ...(typeof taxAmount === "number" ? { taxAmount } : {}),
+    ...(typeof shippingAmount === "number" ? { shippingAmount } : {}),
+    ...(typeof discountAmount === "number" ? { discountAmount } : {}),
+    ...(typeof totalAmount === "number" ? { totalAmount } : {}),
+    ...(cartId ? { cartId } : {}),
+    ...(stripePaymentIntentId ? { stripePaymentIntentId } : {}),
+    ...(stripeChargeId ? { stripeChargeId } : {}),
+    ...(stripeBalanceTransactionId ? { stripeBalanceTransactionId } : {}),
+    ...(stripeCustomerId ? { stripeCustomerId } : {}),
   };
-  await prisma.rentalOrder.create({
-    data: order,
-  });
+  try {
+    await prisma.rentalOrder.create({
+      data: order,
+    });
+  } catch (err) {
+    if (isPrismaUniqueConstraintError(err)) {
+      const updated = (await prisma.rentalOrder.update({
+        where: { shop_sessionId: { shop, sessionId } },
+        data: {
+          deposit,
+          ...(expectedReturnDate ? { expectedReturnDate } : {}),
+          ...(returnDueDate ? { returnDueDate } : {}),
+          ...(customerId ? { customerId } : {}),
+          ...(riskLevel ? { riskLevel } : {}),
+          ...(typeof riskScore === "number" ? { riskScore } : {}),
+          ...(typeof flaggedForReview === "boolean" ? { flaggedForReview } : {}),
+          ...(currency ? { currency } : {}),
+          ...(typeof subtotalAmount === "number" ? { subtotalAmount } : {}),
+          ...(typeof taxAmount === "number" ? { taxAmount } : {}),
+          ...(typeof shippingAmount === "number" ? { shippingAmount } : {}),
+          ...(typeof discountAmount === "number" ? { discountAmount } : {}),
+          ...(typeof totalAmount === "number" ? { totalAmount } : {}),
+          ...(cartId ? { cartId } : {}),
+          ...(stripePaymentIntentId ? { stripePaymentIntentId } : {}),
+          ...(stripeChargeId ? { stripeChargeId } : {}),
+          ...(stripeBalanceTransactionId
+            ? { stripeBalanceTransactionId }
+            : {}),
+          ...(stripeCustomerId ? { stripeCustomerId } : {}),
+        },
+      })) as Order | null;
+      if (updated) return normalize(updated);
+    }
+    throw err;
+  }
   await trackOrder(shop, order.id, deposit);
   if (customerId) {
     const month = nowIso().slice(0, 7);
@@ -68,4 +161,3 @@ export async function getOrdersForCustomer(
   })) as Order[];
   return orders.map((order) => normalize(order));
 }
-

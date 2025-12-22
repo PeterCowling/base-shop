@@ -1,0 +1,72 @@
+{
+  "deals": {
+    "loyaltyCta": {
+      "heading": "Ưu đãi thêm cho khách quay lại",
+      "body": "Tham gia danh sách đặt phòng trực tiếp của chúng tôi để nhận ưu đãi mở bán sớm, mẹo du lịch theo mùa và mã giảm thêm 5% cho lần đặt tiếp theo trên website.",
+      "button": "Đăng ký nhận ưu đãi"
+    }
+  },
+  "about": {
+    "mission": {
+      "heading": "Sứ mệnh của chúng tôi",
+      "paragraphs": [
+        "Từ năm 1995, Hostel Brikette đã giúp du khách trải nghiệm Positano với ngân sách hợp lý mà không bỏ lỡ tầm nhìn toàn cảnh bờ biển Amalfi.",
+        "Chúng tôi đặt sự minh bạch lên hàng đầu: bảng giá rõ ràng, không phụ phí ẩn, chính sách dễ hiểu và đội ngũ tại chỗ luôn sẵn sàng hỗ trợ khi bạn cần thay đổi hoặc có yêu cầu đặc biệt.",
+        "Đội ngũ địa phương cung cấp kế hoạch di chuyển, mẹo mang hành lý 23 kg / 50 lb lên xuống cầu thang và gợi ý hoạt động để bạn tận hưởng trọn vẹn từng phút trên bờ biển."
+      ]
+    },
+    "values": {
+      "heading": "Our values",
+      "items": [
+        {
+          "title": "Bản dịch đang được chuẩn bị.",
+          "body": "Bản dịch đang được chuẩn bị."
+        },
+        {
+          "title": "Bản dịch đang được chuẩn bị.",
+          "body": "Bản dịch đang được chuẩn bị."
+        },
+        {
+          "title": "Warm hospitality",
+          "body": "Bản dịch đang được chuẩn bị."
+        }
+      ]
+    }
+  },
+  "careers": {
+    "hiringCta": {
+      "heading": "Bản dịch đang được chuẩn bị.",
+      "body": "Bản dịch đang được chuẩn bị.",
+      "button": "Apply now"
+    }
+  },
+  "experiences": {
+    "meetTheHosts": {
+      "heading": "Gặp gỡ đội ngũ trên sân thượng",
+      "intro": "Họ là những người giữ cho sân thượng luôn sôi động, tổ chức sự kiện ngắm hoàng hôn, dẫn dắt các chuyến đi bộ đường dài và giải đáp câu hỏi của bạn ngay cả trước khi bạn đến Positano.",
+      "hosts": [
+        {
+          "name": "Chiara",
+          "role": "Phụ trách trải nghiệm",
+          "bio": "Điều phối quầy bar hoàng hôn, giới thiệu nhà sản xuất địa phương và đảm bảo mỗi buổi nếm thử đều có món hợp khẩu vị mọi người. Nếu bạn đang kỷ niệm hay muốn tổ chức sự kiện riêng, hãy gặp cô ấy trên sân thượng từ 18:00.",
+          "imageAlt": "Chiara phục vụ spritz tại quầy bar sân thượng.",
+          "availability": "Gặp Chiara tại quầy bar hầu hết các buổi tối hoặc liên hệ qua dịch vụ concierge kỹ thuật số của chúng tôi."
+        },
+        {
+          "name": "Luca",
+          "role": "Hướng dẫn viên địa phương",
+          "bio": "Sinh ra ở Praiano, anh ấy thuộc mọi cung đường trên bờ biển Amalfi. Luca giúp bạn chọn giữa đường mòn Sentiero degli Dei (Path of the Gods), chuyến thuyền bình minh hay hành trình trong ngày tới Ravello — với kế hoạch di chuyển đã chuẩn bị sẵn.",
+          "imageAlt": "Luca chỉ tay về phía đường chân trời từ một điểm ngắm cảnh trên bờ biển Amalfi.",
+          "availability": "Gặp anh ấy tại lễ tân vào sáng sớm, hoặc đặt chỗ tham gia các chuyến đi bộ thông qua concierge."
+        },
+        {
+          "name": "Mariana",
+          "role": "Concierge kỹ thuật số",
+          "bio": "Phản hồi qua WhatsApp và Messenger với thông báo phà, gợi ý nhà hàng và lời nhắc sát giờ. Nếu thời tiết thay đổi, cô ấy gửi những phương án thay thế nhẹ nhàng, không áp lực.",
+          "imageAlt": "Màn hình điện thoại hiển thị cuộc trò chuyện với Mariana, concierge kỹ thuật số.",
+          "availability": "Nhắn tin bất cứ lúc nào — cô ấy kết nối theo thời gian thực với đội ngũ lễ tân."
+        }
+      ]
+    }
+  }
+}

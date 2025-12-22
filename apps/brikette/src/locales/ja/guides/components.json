@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "プランを選ぶ",
+    "options": {
+      "ferry": "フェリー（季節運航）",
+      "trainBus": "電車＋バス（通年）",
+      "transfer": "専用送迎"
+    },
+    "selectedLabel": "選択中："
+  },
+  "eventInfo": {
+    "title": "イベント情報",
+    "labels": {
+      "when": "日時",
+      "where": "場所"
+    }
+  }
+}

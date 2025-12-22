@@ -1,0 +1,56 @@
+{
+  "detail": {
+    "common": {
+      "amenitiesHeading": "Derfor vælger gæster dette værelse",
+      "amenitiesIntro": "Gennemtænkte detaljer venter allerede, når du ankommer."
+    },
+    "double_room": {
+      "amenities": [
+        {
+          "title": "Privat komfort med eget bad",
+          "body": "Start og slut dagen med et varmt brusebad, bløde håndklæder og plads kun til dig."
+        },
+        {
+          "title": "Morgener på terrassen med havudsigt",
+          "body": "Åbn dørene til din egen terrasse og nyd espresso eller en aftendrink med udsigt over Positano."
+        },
+        {
+          "title": "Sval og rolig nattesøvn",
+          "body": "Justerbar aircondition og mørklægningsskodder holder værelset behageligt, selv i augustvarme."
+        }
+      ]
+    },
+    "room_11": {
+      "amenities": [
+        {
+          "title": "Terrasse med plads til alle værelseskammerater",
+          "body": "Saml jer i udendørs sofaer og ved bordene til morgenmad, stræk ud efter vandreture eller fang skylinen sammen."
+        },
+        {
+          "title": "Komfort kun for kvinder",
+          "body": "En sovesal kun for kvinder med eget badeværelse og sminkeområde, så du aldrig skal stå i kø til badet."
+        },
+        {
+          "title": "Privatliv og ro i sindet",
+          "body": "Hver køje har gardiner, læselamper, strømudtag og nøglekortstyrede skabe til dine værdigenstande."
+        }
+      ]
+    },
+    "room_12": {
+      "amenities": [
+        {
+          "title": "Ekstra stor fælles terrasse",
+          "body": "Solstole og spiseplads gør terrassen til et socialt opholdsrum med udsigt over Amalfikysten."
+        },
+        {
+          "title": "Eget badeværelse",
+          "body": "Frisk dig op i et privat badeværelse med hårtørrer, spejle og masser af knager."
+        },
+        {
+          "title": "Nem adgang til strøm",
+          "body": "Hver seng har egne stikkontakter, læselamper og nøglekortskabe, så du kan slappe af."
+        }
+      ]
+    }
+  }
+}

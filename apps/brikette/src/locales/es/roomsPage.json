@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "title": "Habitaciones y Tarifas | Brikette Hostel Positano",
+    "description": "Habitaciones dobles privadas con vista al mar y dormitorios económicos: descubre fotos, servicios y precios en tiempo real, y reserva directamente para obtener la mejor oferta en Brikette Hostel Positano.",
+    "ogImageAlt": "Dormitorio mixto luminoso con literas de madera en Hostel Brikette"
+  },
+  "facilities": {
+    "privateRoom": "Habitación privada",
+    "mixedDorm": "Dormitorio mixto",
+    "femaleDorm": "Dormitorio femenino",
+    "femaleRoom": "Habitación femenina",
+    "doubleBedForTwo": "Una cama doble para hasta dos huéspedes",
+    "threeSingleBedsThreeGuests": "Tres camas individuales para hasta tres huéspedes",
+    "oneDormBedTwoGuests": "Una cama de dormitorio, un total de dos camas, para hasta dos huéspedes",
+    "threeDormBedsSixGuests": "Tres camas de dormitorio, un total de seis camas, para hasta seis huéspedes",
+    "threeDormBedsPlusSingleSevenGuests": "Tres camas de dormitorio más una cama individual, un total de siete camas, para hasta siete huéspedes",
+    "fourDormBedsEightGuests": "Cuatro camas de dormitorio, un total de ocho camas, para hasta ocho huéspedes",
+    "thirdFloor": "Ubicada en el tercer piso",
+    "fourthFloor": "Ubicada en el cuarto piso",
+    "bathroomEnsuite": "Baño en suite",
+    "bathroomPrivate": "Baño privado",
+    "bathroomSharedFemale": "Baño compartido femenino",
+    "seaViewTerrace": "Terraza con vista al mar",
+    "seaViewExtraLargeTerrace": "Vista al mar con terraza extra grande",
+    "gardenView": "Vista al jardín",
+    "courtyardView": "Vista al patio",
+    "noView": "Sin vista",
+    "airCon": "Aire acondicionado",
+    "keycard": "Acceso con tarjeta",
+    "linen": "Ropa de cama y toalla incluidas"
+  },
+  "rooms": {
+    "title": "Nuestras habitaciones",
+    "double_room": {
+      "title": "Habitación Doble",
+      "bed_intro": "Impresionantes vistas al mar: perfecta para parejas.",
+      "bed_description": "Nuestra Habitación Doble es un espacio privado con una cama doble para hasta dos huéspedes. Ubicada en el tercer piso, cuenta con baño en suite, terraza con vista al mar, aire acondicionado y acceso seguro con tarjeta. Se proporcionan ropa de cama y toallas.",
+      "facilities": [
+        "privateRoom",
+        "doubleBedForTwo",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 259.2,
+        "flexible": 285.12
+      }
+    },
+    "room_10": {
+      "title": "Dormitorio Mixto Premium",
+      "bed_intro": "Para quienes quieren seis camas y un baño superior.",
+      "bed_description": "Nuestro Dormitorio Premium es mixto y cuenta con tres camas de dormitorio, con capacidad total para seis huéspedes. Ubicado en el cuarto piso, incluye aire acondicionado, acceso seguro con tarjeta y baño en suite (sin vista). Se proporcionan ropa de cama y toalla al hacer el check-in.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 60.75,
+        "flexible": 66.82
+      }
+    },
+    "room_11": {
+      "title": "Dormitorio femenino superior – Gran terraza",
+      "bed_intro": "Las mejores vistas desde una amplia terraza y un gran baño.",
+      "bed_description": "Nuestro Dormitorio Femenino Superior incluye tres camas de dormitorio, un total de seis camas, con capacidad para seis huéspedes. Ubicado en el cuarto piso, dispone de aire acondicionado, acceso seguro con tarjeta, baño en suite y vista al mar con terraza extra grande. Se proporcionan ropa de cama y toalla al hacer el check-in.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 72.4,
+        "flexible": 79.64
+      }
+    },
+    "room_12": {
+      "title": "Dormitorio Mixto Superior",
+      "bed_intro": "Las mejores vistas desde una amplia terraza y un gran baño.",
+      "bed_description": "Nuestro Dormitorio Mixto Superior tiene tres camas de dormitorio, un total de seis camas, con capacidad para seis huéspedes. Ubicado en el cuarto piso, ofrece aire acondicionado, acceso seguro con tarjeta, baño privado y vista al mar con terraza extra grande. Se proporcionan ropa de cama y toalla al hacer el check-in.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomPrivate",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 74.4,
+        "flexible": 81.84
+      }
+    },
+    "room_3": {
+      "title": "Dormitorio Femenino Económico",
+      "bed_intro": "Una opción económica para viajeras.",
+      "bed_description": "Nuestro Dormitorio Femenino Económico aloja hasta ocho huéspedes en cuatro camas de dormitorio. Ubicado en el tercer piso, ofrece aire acondicionado, acceso seguro con tarjeta y acceso a un baño compartido femenino. Sin vista. Se proporcionan ropa de cama y toalla al hacer el check-in.",
+      "facilities": [
+        "femaleDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_4": {
+      "title": "Dormitorio Mixto Económico",
+      "bed_intro": "Una opción económica para viajeros y viajeras.",
+      "bed_description": "Nuestro Dormitorio Mixto Económico aloja hasta ocho huéspedes en cuatro camas de dormitorio. Ubicado en el tercer piso, ofrece aire acondicionado, acceso seguro con tarjeta y acceso a un baño compartido femenino. Sin vista. Se proporcionan ropa de cama y toalla al hacer el check-in.",
+      "facilities": [
+        "mixedDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_5": {
+      "title": "Dormitorio femenino superior – Vista al mar",
+      "bed_intro": "Impresionantes vistas al mar y baño privado.",
+      "bed_description": "Nuestro Dormitorio Femenino Superior aloja hasta seis huéspedes en tres camas de dormitorio. Ubicado en el tercer piso, cuenta con baño en suite, terraza con vista al mar, aire acondicionado y acceso seguro con tarjeta. Se proporcionan ropa de cama y toalla al hacer el check-in.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_6": {
+      "title": "Dormitorio femenino superior – 7 camas",
+      "bed_intro": "Impresionantes vistas al mar y baño privado.",
+      "bed_description": "Nuestro Dormitorio Femenino Superior cuenta con tres camas de dormitorio y una cama individual, totalizando siete camas, con capacidad para siete huéspedes. Ubicado en el tercer piso, ofrece baño en suite, terraza con vista al mar, aire acondicionado y acceso seguro con tarjeta. Se proporcionan ropa de cama y toalla al hacer el check-in.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsPlusSingleSevenGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_9": {
+      "title": "Habitación Mixta Deluxe",
+      "bed_intro": "Una manera económica de obtener un dormitorio de tres camas.",
+      "bed_description": "Nuestra Habitación Mixta Deluxe ofrece tres camas individuales y puede alojar hasta tres huéspedes. Ubicada en el cuarto piso, cuenta con baño en suite, vista al patio, aire acondicionado y acceso seguro con tarjeta. Se proporcionan ropa de cama y toalla al hacer el check-in.",
+      "facilities": [
+        "mixedDorm",
+        "threeSingleBedsThreeGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "courtyardView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_8": {
+      "title": "Habitación Twin Femenina",
+      "bed_intro": "Una opción económica para dos viajeras.",
+      "bed_description": "Nuestra Habitación Twin Femenina dispone de una litera (cama de dormitorio) con capacidad para dos huéspedes. Ubicada en el tercer piso, ofrece aire acondicionado, acceso seguro con tarjeta, vista al jardín y se sitúa junto al baño compartido femenino. Se proporcionan ropa de cama y toalla al hacer el check-in.",
+      "facilities": [
+        "femaleDorm",
+        "oneDormBedTwoGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "gardenView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 78,
+        "flexible": 85.8
+      }
+    }
+  },
+  "fullscreen": {
+    "clickToClose": "Haz clic en cualquier lugar para cerrar",
+    "closeAria": "Cerrar imagen en pantalla completa"
+  },
+  "roomImage": {
+    "clickToEnlarge": "Haz clic en la imagen para ampliar",
+    "prevAria": "Imagen anterior",
+    "nextAria": "Imagen siguiente",
+    "pagination": "{{current}}/{{total}}",
+    "photoAlt": "Foto de {{room}}",
+    "noImage": "No hay imagen disponible"
+  },
+  "carousel": {
+    "previousSlide": "Diapositiva anterior",
+    "nextSlide": "Siguiente diapositiva"
+  },
+  "hero": {
+    "heading": "Nuestras habitaciones",
+    "subheading": "Elige la habitación perfecta para tu estancia"
+  },
+  "filters": {
+    "all": "Todas las habitaciones",
+    "private": "Habitaciones privadas",
+    "dorms": "Dormitorios"
+  },
+  "filtersAria": "Filtrar por tipo de habitación",
+  "checkRatesNonRefundable": "Tarifas no reembolsables",
+  "checkRatesFlexible": "Tarifas flexibles",
+  "ctaSuffix": {
+    "nonRefundable": "No reembolsable",
+    "flexible": "Flexible"
+  },
+  "details": "Detalles",
+  "ratesFrom": "Desde €{{price}}",
+  "selectDatesTitle": "Selecciona tus fechas",
+  "checkInDate": "Fecha de entrada",
+  "checkOutDate": "Fecha de salida",
+  "adults": "Número de adultos",
+  "confirm": "Confirmar",
+  "cancel": "Cancelar",
+  "moreAboutThisRoom": "Más sobre esta habitación",
+  "loadingPrice": "Cargando precio…",
+  "landingImageAlt": "Imagen principal de {{room}}",
+  "priceNotes": {
+    "dorm": "Per night, per guest. One guest in one bunk bed."
+  }
+}

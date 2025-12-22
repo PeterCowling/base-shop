@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Positano में पोर्टर सेवाएँ",
+    "description": "कब बुक करें, शुल्क कैसे काम करते हैं, संपर्क तरीके और सामान टैग करने की सावधानियाँ।"
+  },
+  "linkLabel": "Positano में पोर्टर सेवाएँ",
+  "intro": [
+    "अनुवाद तैयार किया जा रहा है।"
+  ],
+  "sections": [
+    {
+      "id": "how",
+      "title": "How it typically works",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Booking & resources",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiquette & tips",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need porters?",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "q": "Where can I book?",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "q": "How much does it cost?",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ],
+  "galleryTitle": "Photo gallery",
+  "gallery": {
+    "standsCaption": "Porter stands (example)",
+    "cartsCaption": "Porter carts"
+  }
+}

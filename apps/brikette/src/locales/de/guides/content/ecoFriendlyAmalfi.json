@@ -1,0 +1,49 @@
+{
+  "seo": {
+    "title": "Nachhaltig reisen an der Amalfiküste",
+    "description": "So reduzierst du deinen Fußabdruck: Nachfüllstationen, Geh-Routen, Fähren statt Autos und bewusste Strandtage."
+  },
+  "linkLabel": "Nachhaltig reisen an der Amalfiküste",
+  "intro": [
+    "Nachhaltig reisen an der Amalfiküste heißt Transport, Müll und Energiegewohnheiten bewusst gestalten.",
+    "Halte deinen Fußabdruck klein, ohne auf Küstenblicke zu verzichten."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Grünere Mobilität",
+      "body": [
+        "Wähle Busse oder Fähren statt privater Taxis, wenn immer möglich.",
+        "Gehe kurze Strecken im Ort zu Fuß, statt ein Auto zu rufen."
+      ]
+    },
+    {
+      "id": "waste",
+      "title": "Abfall & Plastik",
+      "body": [
+        "Nimm eine wiederverwendbare Flasche/Tasche mit und fülle sie an Brunnen oder in Cafés nach.",
+        "Trenne Abfall, wo Tonnen vorhanden sind, und nimm alles wieder mit, was du auf Wanderwegen mitbringst."
+      ]
+    },
+    {
+      "id": "energy",
+      "title": "Energie & Wasser",
+      "body": [
+        "Schalte Klima und Licht aus, wenn du das Zimmer verlässt; schließe Fensterläden, um es kühl zu halten.",
+        "Halte Duschen kurz und nutze Handtücher mehrfach, um Wasser zu sparen."
+      ]
+    }
+  ],
+  "tips": [
+    "Unterstütze kleine lokale Betriebe mit regionalen Zutaten und wenig Verpackung.",
+    "Bestell saisonale Gerichte – Zitronen, Sardellen und Gemüse sind in ihren Hochzeiten am besten."
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich an der Küste E-Bikes mieten?",
+      "a": [
+        "Ja, in Amalfi, Sorrent und einigen Dörfern – früh reservieren, die Flotten sind klein."
+      ]
+    }
+  ]
+}

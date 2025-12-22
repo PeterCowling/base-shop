@@ -1,0 +1,28 @@
+{
+  "quickLinksHeading": "Gyors segítség",
+  "quickLinksIntro": "Találja meg a leggyakoribb foglalással, érkezéssel és tartózkodással kapcsolatos kérdésekre adott közvetlen válaszokat.",
+  "cta": {
+    "readMore": "Olvass tovább"
+  },
+  "quickLinks": [
+    {
+      "label": "Foglalás módosítása vagy lemondása",
+      "description": "Ismerje meg a határidőket és tippeket, hogy a tervek változásakor elkerülje a plusz díjakat.",
+      "slug": "changingCancelling"
+    },
+    {
+      "label": "Be- és kijelentkezési útmutató",
+      "description": "Kövesse lépésről lépésre útmutatónkat a positanoi Hostel Brikette érkezési és távozási folyamataihoz.",
+      "slug": "checkinCheckout"
+    },
+    {
+      "label": "Utazás Positanóba",
+      "description": "Hasonlítsa össze a kompokat, buszokat és taxikat lépésről lépésre bemutatott közlekedési útmutatónk segítségével.",
+      "slug": "travelHelp"
+    }
+  ],
+  "contactCta": {
+    "label": "Írjon nekünk e-mailt",
+    "href": "mailto:hostelpositano@gmail.com"
+  }
+}

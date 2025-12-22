@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Isteni ösvény a Hostel Brikette-ből",
+    "description": "Pontos útvonal a hosteltől a Sentiero degli Dei kezdőpontjaihoz, közlekedési opciókkal és biztonsági tanácsokkal."
+  },
+  "linkLabel": "Az Isteni ösvény Brikette-ből",
+  "intro": "A Sentiero degli Dei (\"az istenek ösvénye\") Olaszország egyik legszebb tengerparti túrája. A hosteltől a SITA busszal eléred a klasszikus bomeranói rajtot vagy befejezheted Nocellében.",
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Mikor a legjobb túrázni",
+      "body": [
+        "Április–június és szeptember–október között kristálytiszta az idő és elviselhető a hőmérséklet; téli záporok csúszóssá tehetik a kőlépcsőket.",
+        "Július–augusztusban indulj 09:00 előtt vagy 15:00 után, mert az ösvény nyitott és kevés az árnyék."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Válassz útvonalat",
+      "body": [
+        "A Bomerano → Nocelle szakasz a klasszikus 6,5 km-es gerinctúra folyamatos emelkedőkkel és lejtőkkel; számolj 2,5–3 óra gyaloglással plusz a közlekedéssel.",
+        "Kevés az időd? Busszal menj fel Nocellébe, sétáld végig oda-vissza a panorámás részt Colle Serráig, vagy ereszkedj le a 1700 lépcsőn Positanóba."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Tájékozódás és biztonság",
+      "body": [
+        "Kövesd a piros-fehér CAI jelzéseket és a Sentiero degli Dei fa nyilakat; tölts le offline térképet, mert a szurdokokban elmehet a térerő.",
+        "Az ösvény kőlépcsőket, döngölt földet és laza kavicsot váltogat – viselj tapadós túracipőt, és a túrabotot csak a meredekebb lejtőkön nyisd ki."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Víz, harapnivaló és visszaút",
+      "body": [
+        "Indulás előtt tankolj fel Bomerano főterén (kávézó, pékség, utolsó nyilvános mosdó); Nocellében kioszk és citromgranita-stand vár a templom mellett.",
+        "Vissza Positanóba: lemehetsz a lépcsőkön Arienzo strandig, vagy SITA busszal indulhatsz Nocelléből/Montepertusóból – tarts egy plusz érvényes jegyet a napi hátizsákodban."
+      ]
+    }
+  ],
+  "essentialsTitle": "Alapinformációk",
+  "essentials": [
+    "Masszív túracipő, víz, napvédelem; nyáron kerüld a déli hőséget.",
+    "A buszjegyet felszállás előtt kell megvenned (dohánybolt, kioszk).",
+    "Számolj nagyjából 4 órával, a közlekedést és a fotószüneteket is beleszámítva."
+  ],
+  "typicalCostsTitle": "Tipikus költségek",
+  "typicalCosts": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "steps": [
+    {
+      "name": "A fordítás folyamatban van.",
+      "text": "A hosteltől kb. 80 métert kell felfelé sétálni a SITA Chiesa Nuova megállóig."
+    },
+    {
+      "name": "Busz Nocellébe vagy Bomeranóba",
+      "text": "Szállj fel az Amalfi felé tartó SITA buszra; szállj le Nocellében a rövidebb befejezéshez, vagy utazz tovább Agerola/Bomerano megállóig a klasszikus induláshoz."
+    },
+    {
+      "name": "Belépés az ösvényre",
+      "text": "Nocellében kövesd a Sentiero degli Dei tábláit (befejezés). Bomeranóban a főtéren keresd a trailhead jelzését (indulás)."
+    },
+    {
+      "name": "Visszaút lehetőségek",
+      "text": "Fejezd be Nocellében, és lépcsőzz le Positanóba, vagy buszozz vissza a Chiesa Nuova megállóhoz."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Hol kezdjem a túrát?",
+      "a": "A klasszikus rajt Bomeranóban (Agerola) van. Rövidebb változatként Nocelléből indulhatsz lefelé."
+    },
+    {
+      "q": "Mennyi ideig tart?",
+      "a": "Körülbelül 4 órát szánj rá, beleértve az oda-vissza utat és a fotószüneteket."
+    },
+    {
+      "q": "Mit vigyek magammal?",
+      "a": "A fordítás folyamatban van."
+    }
+  ],
+  "faqsTitle": "GYIK",
+  "galleryTitle": "Fotógaléria",
+  "gallery": {
+    "items": [
+      {
+        "alt": "Kilátás a Sentiero degli Dei ösvényről",
+        "caption": "Az ösvény mentén"
+      },
+      {
+        "alt": "Kilátás Nocelle faluból",
+        "caption": "Nocelle panorámája"
+      }
+    ]
+  },
+  "toc": {
+    "onThisPage": "Ezen az oldalon",
+    "essentials": "Alapinformációk",
+    "costs": "Tipikus költségek",
+    "faqs": "GYIK",
+    "gallery": "Fotógaléria"
+  }
+}

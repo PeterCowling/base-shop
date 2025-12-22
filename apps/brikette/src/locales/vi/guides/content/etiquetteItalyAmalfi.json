@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Ứng xử địa phương: nên và không nên (Ý, ví dụ Amalfi)",
+    "description": "Ứng xử lịch sự ở nhà hàng, nhà thờ và trên các lối đi đông đúc."
+  },
+  "linkLabel": "Ứng xử địa phương: nên và không nên (Ý, ví dụ Amalfi)",
+  "intro": [
+    "Quy tắc ứng xử thực tế khi ăn uống, thăm nhà thờ và đi qua những lối hẹp quanh Positano cùng Amalfi Coast."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "Ăn uống",
+      "body": [
+        "Đặt bàn trước giờ cao điểm, kiên nhẫn giữa các món, xin hóa đơn khi đã sẵn sàng và tip nhẹ khi dịch vụ thật sự nổi bật."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Nhà thờ & trang phục",
+      "body": [
+        "Che vai khi vào nhà thờ và tránh đi xuyên cửa hàng trong đồ bơi."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Lối đi chung",
+      "body": [
+        "Đi bên phải ở các lối cầu thang hẹp, nhường người khác vượt và luân phiên nhanh tại điểm chụp hình đông khách."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Tôi có phải tip không?",
+      "a": [
+        "Tip là tùy chọn; để lại 1–2 € khi dịch vụ thật sự tốt hoặc làm tròn hóa đơn. Phí coperto đã bao gồm bánh mì và dụng cụ bàn."
+      ]
+    },
+    {
+      "q": "Tôi nên mặc gì khi vào nhà thờ?",
+      "a": [
+        "Che vai và đầu gối, tháo mũ và giữ giọng nhẹ nhàng. Mang theo khăn mỏng để khoác thêm nếu mặc áo không tay."
+      ]
+    }
+  ]
+}

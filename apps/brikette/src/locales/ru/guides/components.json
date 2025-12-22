@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "Выберите способ",
+    "options": {
+      "ferry": "Паром (сезонно)",
+      "trainBus": "Поезд + автобус (круглый год)",
+      "transfer": "Частный трансфер"
+    },
+    "selectedLabel": "Выбрано:"
+  },
+  "eventInfo": {
+    "title": "Детали события",
+    "labels": {
+      "when": "Когда",
+      "where": "Где"
+    }
+  }
+}

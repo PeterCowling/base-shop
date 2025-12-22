@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Marina di Praia & Secluded Beaches",
+    "description": "How to reach tucked‑away coves and what to expect there."
+  },
+  "linkLabel": "Marina di Praia e praias escondidas",
+  "intro": [
+    "Explore a Marina di Praia e enseadas vizinhas para variar da praia principal de Positano."
+  ],
+  "sections": [
+    {
+      "id": "marina",
+      "title": "Essenciais da Marina di Praia",
+      "body": [
+        "Entre falésias, a praia de seixos oferece espreguiçadeiras, aluguer de kayaks e restaurantes escavados na rocha.",
+        "Chegue antes das 10:30 para garantir a primeira fila; a sombra avança depois das 16:00."
+      ]
+    },
+    {
+      "id": "coves",
+      "title": "Enseadas próximas",
+      "body": [
+        "Alugue kayak para explorar a Grotta di Suppraiano ou apanhe barco curto até Gavitella ou Laurito.",
+        "Use protetor reef-safe e sapatos de água — o fundo rochoso oferece ótima visibilidade para snorkel."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Como chegar",
+      "body": [
+        "Apanhe o autocarro SITA de Positano para Amalfi; peça ao motorista a paragem Marina di Praia e desça a rampa (cinco minutos).",
+        "Scooters podem estacionar no topo da enseada — leve moedas para parquímetros."
+      ]
+    }
+  ],
+  "tips": [
+    "Reserve almoço no Il Pirata ou La Praia para refeições na falésia entre mergulhos.",
+    "Leve saco estanque para valores; a área é compacta e fica tudo organizado."
+  ],
+  "faqs": [
+    {
+      "q": "A praia é gratuita?",
+      "a": [
+        "Existe zona pública, mas limitada. Conte com 20–25 € por par de espreguiçadeiras + chapéu nos lidos em época alta."
+      ]
+    },
+    {
+      "q": "Posso ir a pé desde Positano?",
+      "a": [
+        "A caminhada leva cerca de 50 minutos pela estrada com bermas estreitas. Autocarro ou scooter são mais seguros, sobretudo em alta temporada."
+      ]
+    }
+  ]
+}

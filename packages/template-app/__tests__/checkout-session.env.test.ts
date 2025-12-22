@@ -24,6 +24,18 @@ jest.mock("@platform-core/checkout/session", () => {
   const actual = jest.requireActual("@platform-core/checkout/session");
   return { ...actual, createCheckoutSession: jest.fn(actual.createCheckoutSession) };
 });
+jest.mock("@platform-core/inventoryValidation", () => {
+  const actual = jest.requireActual("@platform-core/inventoryValidation");
+  return {
+    ...actual,
+    validateInventoryAvailability: jest.fn(async () => ({ ok: true })),
+  };
+});
+jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@platform-core/customerProfiles", () => ({ getCustomerProfile: jest.fn(async () => null) }));
+jest.mock("@platform-core/identity", () => ({
+  getOrCreateStripeCustomerId: jest.fn(async () => "stripe-customer"),
+}));
 
 import { createRequest } from "./checkout-session.helpers";
 import { stripe } from "@acme/stripe";
@@ -48,7 +60,7 @@ test("uses fallback shop ID when env default is missing", async () => {
   // Remove default shop so route should fall back to "shop"
   delete (coreEnv as any).NEXT_PUBLIC_DEFAULT_SHOP;
   readShopMock.mockClear();
-  stripeCreate.mockResolvedValue({ id: "sess_env", payment_intent: { client_secret: "cs_env" } });
+  stripeCreate.mockResolvedValue({ id: "sess_env", client_secret: "cs_env" });
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };

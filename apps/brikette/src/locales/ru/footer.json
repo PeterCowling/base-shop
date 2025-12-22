@@ -1,0 +1,21 @@
+{
+  "home": "Главная",
+  "rooms": "Номера",
+  "apartment": "Апартаменты",
+  "assistance": "Помощь",
+  "careers": "Карьера",
+  "deals": "Скидки",
+  "guides": "Гиды",
+  "terms": "Правила и условия бронирования номеров",
+  "copyright": "© 2023 по {{year}}, Skylar SRL, действующая как Hostel Brikette",
+  "backToTop": "Наверх",
+  "contactHeading": "Контакты",
+  "email": "Эл. почта",
+  "phone": "Телефон",
+  "noPhoneNotice": "Мы не ведём дела по телефону. Пожалуйста, свяжитесь с нами по электронной почте.",
+  "follow": "Подписывайтесь на нас",
+  "instagram": "Instagram",
+  "facebook": "Facebook",
+  "experiences": "Впечатления",
+  "howToGetHere": "Как добраться"
+}

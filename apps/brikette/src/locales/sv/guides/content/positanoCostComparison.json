@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Prisnivå i Positano jämfört med andra strandorter",
+    "description": "Jämförelse av priser mellan Positano och andra kustdestinationer för boende, mat och aktiviteter."
+  },
+  "linkLabel": "Prisnivå i Positano jämfört med andra strandorter",
+  "intro": [
+    "Se hur Positano står sig mot andra europeiska badorter så att du kan bud­getera smart och motivera lyxen."
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Boende jämfört med andra",
+      "body": [
+        "Sovsalar i högsäsong kostar ungefär dubbelt så mycket som i Lissabon eller Split. Privata rum ligger i nivå med Santorini men säljer slut snabbare eftersom utbudet är begränsat.",
+        "Bo i Praiano eller Sorrento för att spara 40–60 € per natt och behåll ändå färje- och bussförbindelserna till Positano."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Mat och dryck",
+      "body": [
+        "Enklare måltider kostar 5–10 € mer än i Bari eller Valencia, men råvarukvaliteten är hög. Aperitivo-brickor gör att du kan äta för cirka 12 € inklusive dryck.",
+        "Gör egen frukost med frukt och bakverk från marknaden för att balansera dyrare middagar med havsutsikt."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport och upplevelser",
+      "body": [
+        "Färjor kostar 9–22 €, lite mer än Kroatien men billigare än water-taxis på grekiska öar.",
+        "Upplevelser som båtturer och matlagningskurser ligger i nivå med Amalfi och Santorini; boka mellansäsong för lägre priser och lugnare hav."
+      ]
+    }
+  ],
+  "tips": [
+    "Res i april, maj eller oktober för priser som påminner om Dubrovnik samtidigt som vädret är svalare.",
+    "Paketera upplevelser (t.ex. hostellets matlagningskurs + båttur) för paketpris i stället för att boka separat."
+  ],
+  "faqs": [
+    {
+      "q": "Är Positano värt premiumpriset?",
+      "a": [
+        "Ja om du prioriterar klippvyer, ikoniska stränder och snabba färjeförbindelser. Håll ned kostnaderna genom att bo i närliggande orter och lägga pengarna på minnesvärda måltider eller turer."
+      ]
+    },
+    {
+      "q": "Var får jag liknande utsikt billigare?",
+      "a": [
+        "Praiano och Minori bjuder på Amalfi-kustens vyer med lägre hotellpriser. Kombinera dem med dagsutflykter till Positano för vykortskänslan."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Översikt"
+      },
+      {
+        "href": "#when",
+        "label": "När det är prisvärt"
+      },
+      {
+        "href": "#faqs",
+        "label": "Vanliga frågor"
+      }
+    ],
+    "faqLabel": "Vanliga frågor",
+    "sections": {
+      "overview": {
+        "heading": "Översikt",
+        "body": "Boende är dyrast, men med kloka val kan transport och mat hållas på rimlig nivå."
+      },
+      "when": {
+        "heading": "När Positano är prisvärt",
+        "body": "Mellansäsong, vardagar och längre vistelser nära Chiesa Nuova minskar både kostnad och ansträngning."
+      }
+    },
+    "faq": {
+      "summary": "Är Positano dyrare än Amalfi?",
+      "answer": "Ofta för boende vid havet; prisbilden blir bättre högre upp i byn eller nära busshållplatserna."
+    }
+  }
+}

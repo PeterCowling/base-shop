@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Sicher unterwegs in Positano & an der Amalfiküste",
+    "description": "Praktische Sicherheitstipps zu Bussen, Fähren, Treppen, Sonne und Notfallkontakten – was du vorab wissen solltest."
+  },
+  "linkLabel": "Sicher unterwegs in Positano & an der Amalfiküste",
+  "intro": [
+    "Bleib auf Positanos Stufen, in Bussen und an Stränden mit ein paar einfachen Gewohnheiten sicher."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Treppen & Gehwege",
+      "body": [
+        "Plane Routen mit weniger Stufen (Chiesa Nuova oder Sponda) und verteile das Gepäck zwischen Rucksack und leichtem Trolley, wenn Knie empfindlich sind.",
+        "Lehne dich für Pausen an Terrassenmauern oder nutze kompakte Trekkingstöcke für längere Anstiege wie den Path of the Gods."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Busse & Fähren",
+      "body": [
+        "SITA-Tickets entwerten, Haltestange halten und Gepäck in die dafür vorgesehene Zone stellen – enge Kurven bedeuten abruptes Bremsen.",
+        "Auf Fähren Wertsachen bei dir behalten und den Anweisungen der Crew beim Verstauen schwerer Koffer folgen."
+      ]
+    },
+    {
+      "id": "sea",
+      "title": "Meer & Sonne",
+      "body": [
+        "Beachte Flaggen zur Badesicherheit, trage Wasserschuhe an Kiesstränden und frische riff-sicheren Sonnenschutz nach jedem Bad auf.",
+        "Hydratisiere regelmäßig: an heißen Tagen mindestens 1 Liter pro Person mitnehmen und zwischen Mittag und 15:00 Uhr Schatten suchen."
+      ]
+    },
+    {
+      "id": "belongings",
+      "title": "Wertsachen & Kontakte",
+      "body": [
+        "Verteile Bargeld/Karten auf mehrere Taschen und nutze Hostel-Schließfächer oder Safes für Pässe und Elektronik.",
+        "Speichere Notrufnummern (112, Küstenwache 1530) und Öffnungszeiten lokaler Apotheken offline, falls das Netz aussetzt."
+      ]
+    }
+  ],
+  "tips": [
+    "Sag Freund:innen oder der Hostelrezeption vor langen Wanderungen deine geplante Rückkehrzeit und prüfe den Wetterwarnlevel.",
+    "Nimm eine kleine Taschenlampe für späte Treppengassen mit – manche Wege sind nach Mitternacht schlecht beleuchtet."
+  ],
+  "faqs": [
+    {
+      "q": "Ist Leitungswasser trinkbar?",
+      "a": [
+        "Ja, das Leitungswasser in Positano ist trinkbar – füll Flaschen nach, um Plastik zu sparen und hydriert zu bleiben."
+      ]
+    },
+    {
+      "q": "Gibt es Bereiche, die man nachts meiden sollte?",
+      "a": [
+        "Der Ort ist generell ruhig, bleib aber auf beleuchteten Wegen und nutze Taxis, wenn du spät aus Amalfi, Sorrent oder Neapel zurückkommst."
+      ]
+    }
+  ]
+}

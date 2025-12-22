@@ -1,0 +1,114 @@
+{
+  "seo": {
+    "title": "Đi Capri trong ngày từ Positano",
+    "description": "Lên kế hoạch đi Capri trong ngày: phà, thời gian và những điểm nhất định phải ghé."
+  },
+  "linkLabel": "Đi Capri trong ngày từ Positano",
+  "intro": [
+    "Du lịch Capri trong ngày từ Positano: xuất phát sớm, mang gọn nhẹ và lên lịch vòng tròn cân bằng giữa Anacapri, cảnh đẹp và chuyến về dễ dàng."
+  ],
+  "toc": [
+    {
+      "href": "#morning",
+      "label": "Bản dịch đang được chuẩn bị."
+    },
+    {
+      "href": "#midday",
+      "label": "Bản dịch đang được chuẩn bị."
+    },
+    {
+      "href": "#afternoon",
+      "label": "Buổi chiều — thị trấn Capri & quay về"
+    },
+    {
+      "href": "#gallery",
+      "label": "Bộ sưu tập ảnh"
+    },
+    {
+      "href": "#faqs",
+      "label": "Câu hỏi thường gặp"
+    }
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "body": [
+        "Bắt chuyến phà đầu tiên để đến trước dòng khách tàu biển, sau đó đi xe buýt lên Anacapri và đi cáp treo Monte Solaro nếu bạn thích độ cao.",
+        "Ăn sáng nhẹ ở Piazza Vittoria và mua vé phà lượt về ngay lập tức để chốt giờ khởi hành."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Bản dịch đang được chuẩn bị.",
+      "body": [
+        "Đi bộ hoặc bắt xe buýt xuống Marina Piccola để tắm hoặc chụp ảnh; mang kem chống nắng thân thiện với san hô và ít nhất 1 lít nước mỗi người.",
+        "Mua panini hoặc salad đóng hộp ở tiệm deli thay vì ăn trưa lâu để có thời gian leo ngược trở lại mà không vội."
+      ]
+    },
+    {
+      "id": "afternoon",
+      "title": "Buổi chiều — thị trấn Capri & quay về",
+      "body": [
+        "Đi tàu điện leo núi lên thị trấn Capri, dạo Via Camerelle, Giardini di Augusto và thưởng thức kem/espresso cuối ngày.",
+        "Có mặt tại Marina Grande ít nhất 30 phút trước giờ phà vì có thể phải xếp hàng tàu điện hoặc gửi hành lý."
+      ]
+    }
+  ],
+  "galleryTitle": "Bộ sưu tập ảnh",
+  "gallery": {
+    "items": {
+      "monteSolaro": {
+        "alt": "Quang cảnh từ Monte Solaro, Capri",
+        "caption": "Toàn cảnh Monte Solaro"
+      },
+      "gardensOfAugustus": {
+        "alt": "Vườn Augustus, Capri",
+        "caption": "Giardini di Augusto"
+      }
+    }
+  },
+  "faqsTitle": "Câu hỏi thường gặp",
+  "howTo": {
+    "steps": [
+      {
+        "name": "Kiểm tra lịch phà theo mùa",
+        "text": "Xác nhận chuyến sáng và chuyến cuối quay về Positano."
+      },
+      {
+        "name": "Đến bến sớm",
+        "text": "Mùa cao điểm nên có mặt trước 20–30 phút."
+      },
+      {
+        "name": "Lên kế hoạch tuyến trên đảo",
+        "text": "Bản dịch đang được chuẩn bị."
+      }
+    ]
+  },
+  "tipsTitle": "Mẹo trong ngày",
+  "tips": [
+    "Mua vé phà lượt đi và về cùng lúc để chủ động điều chỉnh lịch trình mà không phải tìm chỗ trống vào phút cuối.",
+    "Mang balo nhỏ với nước, kem chống nắng và tiền mặt — ATM trên Capri có thể hết tiền vào tuần cao điểm.",
+    "Tải bản đồ ngoại tuyến và lịch xe buýt của Capri; tín hiệu yếu quanh Anacapri và khu chờ Blue Grotto."
+  ],
+  "warningsTitle": "Cảnh báo cần biết",
+  "warnings": [
+    "Cáp treo và tàu điện leo núi đông sau 15:00; lỡ lượt có thể phải chờ chuyến phà standby.",
+    "Biển động có thể huỷ chuyến chiều mà không báo trước — kiểm tra thông báo buổi sáng và chuẩn bị phương án qua Sorrento.",
+    "Blue Grotto thường đóng khi gió hoặc sóng; một số nhà bán vé vẫn mở nên hãy xác nhận hoạt động trước khi xếp hàng."
+  ],
+  "faqs": [
+    {
+      "q": "Có kịp ghé Blue Grotto không?",
+      "a": [
+        "Chỉ nên đi nếu đó là ưu tiên; cần thuyền shuttle và chờ 60–90 phút, dễ làm chật lịch trình còn lại."
+      ]
+    },
+    {
+      "q": "Có cần đặt vé trước?",
+      "a": [
+        "Mùa cao điểm nên giữ chỗ phà buổi sáng và cân nhắc mua vé cáp treo hoặc tour thuyền online; mùa giao mùa thường có thể mua trực tiếp."
+      ]
+    }
+  ]
+}

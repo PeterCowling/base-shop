@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "title": "Salerno till Positano med färja | Hostel Brikette",
+    "description": "Salerno till Positano med färja: tidtabeller, biljettips och hur du tar dig från hamnen till Hostel Brikette med bärarservice eller lokalbuss."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette reseguide",
+    "title": "Salerno till Positano – färja",
+    "description": "Använd den här guiden för att resa från Salerno till Positano med färja. Den täcker biljetter, var du går ombord i Salerno, tidtabellstips och hur du tar dig till Hostel Brikette från Positanos brygga."
+  },
+  "tip": {
+    "label": "Tips",
+    "body": "Behöver du andra resealternativ? Öppna <GuideLink>översikten Så tar du dig hit</GuideLink> för bussar, kombinerade rutter och flygplatstransfer."
+  },
+  "sections": {
+    "overview": {
+      "title": "Resan i korthet",
+      "points": [
+        "Säsongsfärjor går från Salerno till Positano med vackra vyer längs kusten.",
+        "Travelmar kör de flesta avgångarna; avsätt extra tid under högsäsong.",
+        "Färjor kan ställas in vid dåligt väder – kontrollera alltid aktuella uppdateringar innan du reser."
+      ]
+    },
+    "tickets": {
+      "title": "Biljetter och tidtabeller",
+      "intro": "Se aktuella tider och priser på <TravelmarLink>Travelmar</TravelmarLink> och <PositanoLink>Positano.com – färjetidtabell</PositanoLink>.",
+      "points": [
+        "Köp biljetter online i förväg under högsäsong.",
+        "Var på plats 15–20 minuter före avgång för ett lugnt påstigande.",
+        "Ha biljetten redo; personalen skannar eller river den innan ombordstigning."
+      ]
+    },
+    "salernoBoarding": {
+      "title": "Var du går ombord i Salerno",
+      "points": [
+        "De flesta avgångar sker från Piazza della Concordia i Salerno (Travelmar).",
+        "Vissa avgångar använder Molo Manfredi – kontrollera terminalen på biljetten.",
+        "Följ skyltningen vid kajen; personalen kan visa dig rätt pir."
+      ]
+    },
+    "positanoArrival": {
+      "title": "Ankomst till Positano",
+      "points": [
+        "Du anländer till Positanos huvudpier för färjor (Spiaggia Grande).",
+        "Har du bagage rekommenderar vi bärarservice eller den lokala Interno-bussen.",
+        "Att gå uppför med tunga väskor avråds, särskilt i sommarhetta."
+      ],
+      "cta": "För en steg-för-steg-väg från bryggan till vår dörr, läs guiden <DockGuideLink>Färjebryggan → Hostel Brikette</DockGuideLink>."
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import type { CSSProperties, ComponentProps } from "react";
-import type { Page, PageComponent, HistoryState, Locale } from "@acme/types";
+import type { Page, PageComponent, HistoryState } from "@acme/types";
+import type { Locale } from "@acme/i18n/locales";
 import type { TemplateDescriptor } from "@acme/page-builder-core";
 import type PageBuilderLayout from "./PageBuilderLayout";
 import type { ComponentType } from "./defaults";

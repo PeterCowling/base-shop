@@ -1,0 +1,88 @@
+{
+  "seo": {
+    "title": "Kompkikötő → Hostel Brikette csomagokkal",
+    "description": "Opciók a kikötőtől: hordár vagy SITA busz közeli megállókhoz, gyakorlati tippekkel és GYIK-kel."
+  },
+  "linkLabel": "Kompkikötő → Hostel Brikette csomagokkal",
+  "intro": [
+    "Komppal érkezel bőröndökkel? Kombináld az Interno Positano buszt a helyi hordárokkal, így feljutsz a Hostel Brikettéhez anélkül, hogy meredek lépcsősorokon cipelnéd a csomagokat."
+  ],
+  "beforeList": [
+    "Ellenőrizd az aktuális Interno Positano menetrendet – itt találod a [friss menetrendet és jegyárakat](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Vásárolj Interno Positano jegyet bármelyik tabacchiban/újságosnál, mielőtt felszállsz.",
+    "Érdemes a nehéz poggyászt már a kikötőben a hordároknak átadni – mondd el, hogy a Hostel Brikettébe tartasz."
+  ],
+  "sections": [
+    {
+      "id": "dock-to-mulini",
+      "title": "A kikötőtől a Piazza dei Mulinire",
+      "body": [
+        "Sétálj a fő strandtól felfelé a Piazza dei Mulinire a táblákkal jelzett sétányon – használd [ezeket az útvonal-leírásokat](https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2).",
+        "Ha csomagokat cipelsz, béreld fel a pozitánói hordárokat a kikötőben, hogy ők vigyék fel mindent a dombra – a [hordár szolgáltatásról szóló útmutatónk](guide:porterServices) részletesen leírja az árakat és a foglalást."
+      ]
+    },
+    {
+      "id": "mulini-to-bus",
+      "title": "Piazza dei Mulini → Interno buszmegálló",
+      "body": [
+        "Amikor megérkezel a Piazza dei Mulinire, válts interno buszjegyet valamelyik sarokboltban vagy tabacchiban. Ezután menj a buszmegállóhoz a tér szélén – ott, ahol a tér rácsatlakozik az útra.",
+        "Az Interno busz körülbelül 30 percenként jár reggeltől éjfélig, és [ezen a felfelé vezető útvonalon](https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0) halad a hostel felé."
+      ]
+    },
+    {
+      "id": "identify-bus",
+      "title": "Így ismerd fel az Interno Positano buszt",
+      "body": [
+        "A járművek eltérhetnek, de az elektronikus kijelző elején mindig az „interno positano” feliratot látod.",
+        "Egy kompakt városi buszra számíts állóhelyekkel; az útpadkáról szállj fel, és érvényesítsd vagy mutasd fel a jegyet a sofőrnek."
+      ]
+    },
+    {
+      "id": "bus-stop-to-hostel",
+      "title": "A helyi megállótól a Hostel Brikettéig",
+      "body": [
+        "Szállj le a tabacchi előtt a „Chiesa Nuova” megállóban. Lépj ki, menj ki a főútra, majd fordulj balra a Viale Pasiteára.",
+        "Sétálj valamivel több mint 100 métert; a hostel a jobb oldalon lesz. Figyeld a második emeleti teraszon lévő táblánkat, haladj tovább a kanyarig, majd mássz fel a jobb oldali lépcsőn a bejárathoz.",
+        "Szükséged van vizuális útmutatóra? Kövesd [ezeket a záró lépéseket](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2)."
+      ]
+    }
+  ],
+  "stepsList": [
+    "Add át a csomagokat a kikötői hordároknak, és vegyél Interno Positano buszjegyet a tabacchiban.",
+    "Sétálj a fő strandtól a Piazza dei Mulinire, majd tovább az Interno buszmegállóhoz a Viale Pasitea mentén lévő tabacchi mellett.",
+    "Szállj fel az Interno Positano buszra (keresd az „interno positano” feliratot), és utazz felfelé a Viale Pasitea 325 irányába.",
+    "Szállj le a tabacchi előtt, fordulj balra a Viale Pasiteán, sétálj valamivel több mint 100 métert, majd mássz fel a jobb oldali lépcsőn a Hostel Brikettéhez."
+  ],
+  "kneesList": [
+    "Az Interno Positano busz százával spórolja meg a meredek lépcsőket az útból.",
+    "Add át a nehéz bőröndöket a hordároknak, így szabadon utazhatsz és sétálhatsz a rövid gyalogszakaszon."
+  ],
+  "kneesPorterPrefix": "További részletekre van szükséged a hordárdíjakról és a foglalásról? Olvasd el a",
+  "kneesPorterLinkLabel": "hordár szolgáltatás útmutatót",
+  "faqs": [
+    {
+      "q": "Hol vehetek jegyet az Interno Positano buszra?",
+      "a": [
+        "Jegyet bármelyik városi tabacchiban vagy újságosnál, köztük a megálló melletti kioszknál is vehetsz. A sofőrök nem árulnak jegyet a buszon."
+      ]
+    },
+    {
+      "q": "Milyen gyakran közlekedik az Interno Positano busz?",
+      "a": [
+        "A járatok nagyjából 30 percenként indulnak 08:00 körül indulva egészen éjfélig, főszezonban extra indulásokkal – indulás előtt mindig ellenőrizd a menetrendet."
+      ]
+    },
+    {
+      "q": "Hogyan működnek a kikötői hordárok?",
+      "a": [
+        "A hordárok minden komp érkezésénél ott vannak, felrakják a csomagjaidat és felviszik a dombra. Mondd el, hogy a Hostel Brikettébe mész, fizesd ki a megadott díjat, és az értékeket vagy gyógyszereket tartsd magadnál."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Vásárolj interno buszjegyet és add át a poggyászt a kikötői hordároknak",
+    "Sétálj a strandtól a Piazza dei Mulinire és az Interno buszmegállóhoz",
+    "Utazz felfelé az Interno Positano busszal (keresd az „interno positano” feliratot)",
+    "Szállj le a tabacchi előtt, sétálj 100 métert, és mássz fel a lépcsőn a Hostel Brikettéhez"
+  ]
+}

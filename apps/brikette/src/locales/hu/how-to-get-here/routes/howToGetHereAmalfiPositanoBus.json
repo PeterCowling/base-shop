@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Amalfiból Positanóba busszal | Hostel Brikette",
+    "description": "SITA busz Amalfi és Positano között: felszállási pontok, jegytippek, menetrendi megjegyzések, és hol szálljon le a Hostel Brikette-hez (Chiesa Nuova)."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Amalfiból Positanóba – Busz (SITA Sud)",
+    "description": "Használja ezt az útmutatót, hogy SITA busszal utazzon Amalfiból Positanóba. Megmutatja, hol szálljon fel Amalfiban, hogyan érvényesítse a jegyet, miként olvassa a menetrendet, és hol szálljon le, hogy a legrövidebb legyen a séta a hostelhez."
+  },
+  "aside": {
+    "eyebrow": "Más útvonalat keres?",
+    "body": {
+      "before": "Más közlekedési lehetőséget keres? Nyissa meg a ",
+      "linkLabel": "Hogyan juthat el hozzánk áttekintés",
+      "after": " oldalt a kompokhoz, taxikhoz és kombinált útvonalakhoz."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Utazás áttekintése",
+      "body": "A közvetlen SITA busz Amalfi és Positano között szezonban gyakran indul. Készüljön körülbelül egyórás, látványos tengerparti útra a forgalomtól függően."
+    },
+    "boarding": {
+      "title": "Felszállás Amalfiban",
+      "items": [
+        "Menjen Amalfi fő buszpályaudvarára a vízparti tér mellett.",
+        "Keresse a „Sorrento” vagy „Positano” feliratú SITA buszokat (mindkettő megáll Positanóban).",
+        "Vásároljon jegyet indulás előtt egy tabacchiban/újságosnál vagy a kioszknál (készpénz/kártya változó).",
+        "Tartsa kéznél a jegyeket; felszálláskor a sofőr lyukasztja vagy letépi érvényesítéshez."
+      ]
+    },
+    "tickets": {
+      "title": "Jegyek és menetrend",
+      "body": {
+        "before": "Ellenőrizze a legfrissebb menetrendet a ",
+        "linkLabel": "Positano.com",
+        "after": " oldalon. Az alábbi megjegyzések segítenek helyesen olvasni a táblázatot."
+      },
+      "items": [
+        "Az állomásokat sorokban sorolják fel; minden betűvel jelölt oszlop egy járatot jelöl.",
+        "Hétfőtől szombatig általában az „F” és „G” oszlopot használja; vasárnap és ünnepnapokon gyakran a „G” és „H” oszlopot.",
+        "Keresse az „Amalfi” sort induláshoz és a „Positano (Chiesa Nuova)” sort érkezéshez."
+      ]
+    }
+  }
+}

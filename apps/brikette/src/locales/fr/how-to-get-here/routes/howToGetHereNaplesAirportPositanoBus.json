@@ -1,0 +1,83 @@
+{
+  "aside": {
+    "body": "Besoin de toutes les options de transport ? Ouvrez la <Link>présentation « How to Get Here »</Link> pour les ferries, taxis et itinéraires alternatifs.",
+    "eyebrow": "Conseil"
+  },
+  "header": {
+    "description": "Ce guide pas à pas vous mène de l'aéroport de Naples à Positano en utilisant le bus Curreri jusqu'à Sorrente, puis le bus SITA jusqu'à Positano. Il couvre les billets, le lieu de correspondance, la lecture de l'horaire SITA et la façon de rejoindre Hostel Brikette depuis l'arrêt le plus proche.",
+    "eyebrow": "Guide de voyage Hostel Brikette",
+    "title": "Aéroport de Naples vers Positano — Bus"
+  },
+  "meta": {
+    "description": "De l'aéroport de Naples à Positano via le bus Curreri jusqu'à Sorrente puis le bus SITA. Billets, arrêts, conseils d'horaires SITA et itinéraire à pied vers Hostel Brikette.",
+    "title": "Aéroport de Naples vers Positano en bus | Hostel Brikette"
+  },
+  "sections": {
+    "airport": {
+      "link": {
+        "href": "https://www.curreriviaggi.it/",
+        "text": "Consultez l'opérateur pour les derniers horaires et billets en ligne : <Link>Curreri Viaggi</Link>."
+      },
+      "points": [
+        "Sortez de la zone des arrivées et suivez les panneaux vers les quais de bus extérieurs.",
+        "Achetez un billet Curreri Viaggi pour Sorrente (en ligne ou à l'arrêt).",
+        "Attendez au quai le prochain bus pour Sorrente et montez lorsqu'il arrive."
+      ],
+      "title": "Aéroport de Naples"
+    },
+    "overview": {
+      "body": "Prenez le bus Curreri Viaggi directement depuis l'aéroport de Naples jusqu'à Sorrente, puis changez pour le bus SITA en direction d'Amalfi (descendez à Positano – Chiesa Nuova). Prévoyez du temps supplémentaire en haute saison à cause des files d'attente et de l'affluence sur les lignes populaires.",
+      "title": "Aperçu du trajet"
+    },
+    "positanoStop": {
+      "image": {
+        "alt": "Arrêt de bus SITA à Positano Chiesa Nuova devant le Bar Internazionale sur la Via G. Marconi",
+        "caption": "Arrêt Positano (Chiesa Nuova) — attendez devant le Bar Internazionale ; en été, arrivez un peu en avance car les bus peuvent se remplir rapidement."
+      },
+      "points": [
+        "L'arrêt SITA le plus proche est Positano (Chiesa Nuova) sur la Via G. Marconi.",
+        "Il se situe à environ 140 mètres (490 pieds) de l'entrée de l'auberge.",
+        "L'arrêt se trouve devant le café/bar Bar Internazionale."
+      ],
+      "title": "Arrêt de bus Positano (Chiesa Nuova)"
+    },
+    "sorrento": {
+      "points": [
+        "Descendez à la gare routière principale de Sorrente (au même endroit que la gare ferroviaire).",
+        "Depuis la gare routière, prenez le bus SITA en direction d'Amalfi (Positano se trouve sur cet itinéraire).",
+        "Si nécessaire, achetez un billet SITA dans un bar ou kiosque à proximité.",
+        "À l'embarquement, le conducteur oblitérera ou déchirera partiellement votre billet : conservez-le pendant tout le trajet."
+      ],
+      "title": "Gare routière de Sorrente"
+    },
+    "timetable": {
+      "columnTips": [
+        "Chaque trajet programmé est identifié par une lettre en haut d'une colonne.",
+        "Vous voyagez du lundi au samedi ? Utilisez les colonnes \"F\" et \"G\".",
+        "Vous voyagez un dimanche ou jour férié ? Utilisez les colonnes \"G\" et \"H\"."
+      ],
+      "combineTips": [
+        "Choisissez vos lignes de départ et d'arrivée (ex. : \"Sorrento\" → \"Positano – Chiesa Nuova\").",
+        "Suivez la colonne correspondant à la lettre choisie pour trouver les heures de départ et d'arrivée."
+      ],
+      "link": {
+        "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
+        "text": "Consultez le dernier horaire sur <Link>Positano.com</Link>."
+      },
+      "rowTip": "Les lignes de la première colonne indiquent chaque arrêt de bus le long du parcours.",
+      "title": "Horaire SITA — comment le lire"
+    },
+    "walk": {
+      "body": "Astuce : en approchant de l'auberge, vous verrez notre enseigne au niveau de la terrasse du deuxième étage. Dépassez le panneau, suivez la courbe puis repérez les marches qui montent sur la droite de la route pour atteindre l'entrée principale.",
+      "image": {
+        "alt": "Escalier menant à l'entrée principale d'Hostel Brikette depuis la Via G. Marconi",
+        "caption": "Escaliers vers l'entrée d'Hostel Brikette — la dernière petite montée depuis la route principale."
+      },
+      "points": [
+        "Parcourez un peu plus de 100 mètres / 330 pieds le long de la Via G. Marconi.",
+        "Tournez à droite et suivez les marches jusqu'à la porte principale de l'auberge."
+      ],
+      "title": "Marche de l'arrêt jusqu'à l'auberge"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Luminaria di San Domenico (Praiano)",
+    "description": "Praianos lysfestival i starten af august: datoer, transport, bedste udsigt og fototips."
+  },
+  "linkLabel": "Luminaria di San Domenico (Praiano)",
+  "intro": [
+    "Planlæg dit besøg til Praianos Luminaria di San Domenico: lysende gader, fyrværkeri og respektfuld oplevelse."
+  ],
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Festivalens grundinfo",
+      "body": [
+        "Festivalen løber den første uge i august, med højdepunkt cirka 1.–4. august, hvor tusindvis af lys oplyser Piazza San Gennaro.",
+        "Kom før solnedgang for at se frivillige placere lys og for at sikre et godt udsigtspunkt."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport til og fra",
+      "body": [
+        "Tag SITA-bussen fra Positano (20 minutter) eller book en delt shuttle; de sidste busser retur kører omkring midnat – bekræft tiderne samme dag.",
+        "Hvis du bliver sent, så bestil en taxi på forhånd eller overnat i Praiano for at undgå lange ventetider efter fyrværkeriet."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette under visningen",
+      "body": [
+        "Lad lysene stå til de lokale; undgå at træde ind i afspærrede områder eller blokere ruter med stativer.",
+        "Brug stativ eller fast underlag til lange eksponeringer, men hold afstand til kirkeindgange og nødudgange."
+      ]
+    }
+  ],
+  "tips": [
+    "Medbring en genopfyldelig flaske (500 ml) og en lille lommelygte til gåturen gennem Praianos gader efter mørkets frembrud.",
+    "Vis hensyn til natteroen, når fyrværkeriet slutter; beboerne rydder voks sent ud på aftenen."
+  ],
+  "faqs": [
+    {
+      "q": "Er festivalen gratis?",
+      "a": [
+        "Ja, det er gratis at se. Støt gerne boderne ved at købe snacks eller donere i kirken, så der er lys til kommende år."
+      ]
+    },
+    {
+      "q": "Hvad hvis det regner?",
+      "a": [
+        "Kraftig regn kan udskyde lysopsætningen; arrangørerne giver besked på Praianos kommunale Facebook-side. Hav en backup-aften klar."
+      ]
+    }
+  ],
+  "event": {
+    "date": "1.–4. august (højdepunkt)",
+    "location": "Piazza San Gennaro, Praiano",
+    "tips": [
+      "Kom før solnedgang for at se frivillige arrangere lysene.",
+      "Medbring en lille lommelygte eller telefonlys til vandringen gennem mørke gader."
+    ]
+  },
+  "gallery": {
+    "terraceAlt": "Lanternelys på en terrasse i Praiano om natten",
+    "coastAlt": "Praianos kyst ved skumring under Luminaria di San Domenico"
+  }
+}

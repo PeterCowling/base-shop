@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positanos historie (kort fortalt)",
+    "description": "En kort historie om Positano: handel, klipper og turisme."
+  },
+  "linkLabel": "Positanos historie (kort fortalt)",
+  "intro": [
+    "Få indblik i Positanos historie – fra maritime rødder til Hollywood-opdagelse – så dine gåture får historisk perspektiv."
+  ],
+  "sections": [
+    {
+      "id": "origins",
+      "title": "Oprindelse og handel",
+      "body": [
+        "Positano startede som et knudepunkt for romerske kystvillaer; senere eksporterede middelalderens handelsfolk uld og importerede krydderier via Amalfis flåde.",
+        "Vagttårnene langs kysten advarede mod saracenske angreb – mange står tilbage som udsigtspunkter i dag."
+      ]
+    },
+    {
+      "id": "20th",
+      "title": "Forvandlingen i det 20. århundrede",
+      "body": [
+        "Efter Anden Verdenskrig beskrev kunstnere og forfattere som Steinbeck Positanos charme, og økonomien drejede sig mod turisme.",
+        "Bedre veje i 1950'erne forbandt Positano med resten af Italien og banede vejen for boutiquehoteller og flere besøgende."
+      ]
+    },
+    {
+      "id": "today",
+      "title": "I dag",
+      "body": [
+        "Turisme er nu byens hovednæringsvej, og myndighederne forsøger at balancere bevaring og besøgstal med færgekvoter og gågader.",
+        "Lokale håndværkere fremstiller stadig sandaler og keramik, så de traditionelle fag lever side om side med hotel- og restaurantdrift."
+      ]
+    }
+  ],
+  "tips": [
+    "Besøg museet ved den romerske villa under Santa Maria Assunta for at se mosaikkerne, der blev afdækket i 1987.",
+    "Hold øje med informationsskilte langs Via dei Mulini, som fremhæver vigtige historiske bygninger."
+  ],
+  "faqs": [
+    {
+      "q": "Hvor kan jeg lære mere på stedet?",
+      "a": [
+        "Museet MAR Positano kombinerer arkæologi og multimedieudstillinger – perfekt på regnvejrsdage."
+      ]
+    },
+    {
+      "q": "Hvorfor er der så mange trapper?",
+      "a": [
+        "Byen blev bygget vertikalt for at tilpasse sig klipperne; trapper erstattede veje for hurtige forbindelser mellem terrasserne."
+      ]
+    }
+  ]
+}

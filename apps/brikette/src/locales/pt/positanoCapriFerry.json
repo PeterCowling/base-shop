@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "title": "Positano para Capri de ferry | Hostel Brikette",
+    "description": "Passo a passo desde o Hostel Brikette até ao porto de Positano: bilhetes, dicas de embarque e ferry para Capri."
+  },
+  "header": {
+    "eyebrow": "Guia de viagem do Hostel Brikette",
+    "title": "Positano para Capri – Ferry",
+    "description": "Siga estes passos para caminhar do Hostel Brikette até ao porto de Positano, comprar bilhetes de ferry e embarcar para Capri. Inclui horários práticos e dicas sobre operadores."
+  },
+  "tip": {
+    "label": "Dica",
+    "intro": "Precisa de alternativas se o mar estiver agitado? Abra a",
+    "linkLabel": "visão geral de Como Chegar",
+    "outro": "para rotas de apoio."
+  },
+  "journeyOverview": {
+    "title": "Resumo da viagem",
+    "paragraphs": [
+      "Os ferries entre Positano e Capri operam com maior frequência da primavera ao início do outono e podem ser cancelados quando o mar está agitado. A viagem demora normalmente 30–60 minutos, consoante o operador e a embarcação."
+    ],
+    "linksIntro": "Compare horários e reserve:",
+    "linksSeparator": "·",
+    "linksSuffix": ".",
+    "links": {
+      "capriNet": "Capri.net – Capri ↔ Positano",
+      "positanoCom": "Positano.com (horário agregado)"
+    }
+  },
+  "photoGuide": {
+    "title": "Guia fotográfico (referência)",
+    "description": "Referências visuais para cada etapa da caminhada e para a zona de bilhetes do ferry no porto.",
+    "items": {
+      "mapOverview": {
+        "alt": "Vista geral do mapa com o percurso a pé do Hostel Brikette até ao porto de Positano",
+        "caption": "Mapa geral: hostel até ao porto de Positano"
+      },
+      "spiaggiaApproach": {
+        "alt": "Fotografia da aproximação à Spiaggia Grande de Positano e ao porto turístico",
+        "caption": "Chegada à Spiaggia Grande (porto turístico)"
+      },
+      "spiaggiaDetail": {
+        "alt": "Mapa detalhado que destaca o lado direito da Spiaggia Grande onde fica o porto",
+        "caption": "Mapa detalhado: localização do porto na Spiaggia Grande"
+      },
+      "ticketBooths": {
+        "alt": "Balcões de bilhetes dos operadores de ferry no porto de Positano com sinalização das próximas partidas",
+        "caption": "Balcões de bilhetes dos operadores de ferry"
+      },
+      "point1": {
+        "alt": "Ponto 1: entroncamento junto ao Tabacchi na Via G. Marconi, perto do Hostel Brikette",
+        "caption": "Ponto 1: entroncamento do Tabacchi (vira à direita)"
+      },
+      "point2": {
+        "alt": "Ponto 2: primeira curva em cotovelo onde sai da estrada para apanhar as escadas",
+        "caption": "Ponto 2: sair da estrada, descer escadas"
+      },
+      "point3": {
+        "alt": "Ponto 3: final das escadas na estrada antes de atravessar",
+        "caption": "Ponto 3: escadas terminam na estrada"
+      },
+      "point4": {
+        "alt": "Ponto 4: atravessar a estrada, virar brevemente à esquerda e apanhar as escadas",
+        "caption": "Ponto 4: atravessar, virar à esquerda, escadas"
+      },
+      "point5": {
+        "alt": "Ponto 5: passagem em arco que conduz à praia e ao porto",
+        "caption": "Ponto 5: arcada para o porto"
+      }
+    }
+  },
+  "toPort": {
+    "title": "Caminhada até ao porto de Positano",
+    "steps": [
+      "Saia do hostel pela porta principal.",
+      "Desça as escadas até à estrada, vire à esquerda e caminhe pouco mais de 100 m (≈330 ft).",
+      "No primeiro entroncamento (ponto 1), vire à direita junto ao Tabacchi (primeiro edifício à direita).",
+      "Continue a descer; na primeira curva em cotovelo (ponto 2), deixe a estrada e siga pelas escadas em frente.",
+      "No final das escadas, chegue à estrada (ponto 3); atravesse e siga em frente para o próximo lanço de escadas.",
+      "Quando essas escadas terminarem na estrada, atravesse, vire à esquerda, caminhe cerca de 10 m (≈30 ft) até ao ponto 4.",
+      "Vire à direita, saindo da estrada, e siga as escadas a descer.",
+      "No fundo, vire à direita para chegar ao ponto 5 e continue pela arcada à direita.",
+      "O porto (cais da Spiaggia Grande) fica cerca de 50 m (≈160 ft) à frente, do lado direito da praia."
+    ]
+  },
+  "tickets": {
+    "title": "Comprar bilhetes e embarcar",
+    "tips": [
+      "No porto cada operador de ferry tem o seu próprio balcão.",
+      "O painel junto ao balcão mostra a próxima partida desse operador.",
+      "Compre bilhetes diretamente ao operador. Chegue 20–30 minutos antes para trocar eventuais vouchers e entrar na fila.",
+      "Depois de comprar, caminhe até ao final do cais e aguarde o início do embarque."
+    ]
+  },
+  "arrival": {
+    "title": "À chegada a Capri",
+    "paragraphs": [
+      "Desembarque no porto turístico de Capri (Marina Grande). Siga a sinalização para o funicular, táxis ou autocarros, consoante o seu plano. Na época alta, as filas podem ser longas — comprar o regresso com antecedência ajuda nos fins de semana mais concorridos.",
+      "Para o regresso a Positano, confirme as partidas ao final da tarde e os avisos meteorológicos. Se os ferries forem cancelados, considere adiar o regresso ou viajar via Sorrento no dia seguinte."
+    ],
+    "linkIntro": "Dicas para caminhar com bagagem em Positano estão em:",
+    "linkLabel": "Cais do ferry → Hostel Brikette"
+  }
+}

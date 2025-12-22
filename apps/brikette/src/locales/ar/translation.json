@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Hostel Brikette",
+    "reserve": "احجز الآن"
+  },
+  "intro": {
+    "title": "احجز مباشرة ووفر",
+    "description": "احجز إقامتك عبر موقعنا لتحصل على عرض وجبة مجاني بقيمة تصل إلى 29 يورو يوميًا."
+  },
+  "rooms": {
+    "title": "الغرف",
+    "value_dorms": "غرف نوم اقتصادية",
+    "premium_dorms": "غرف بريميوم",
+    "superior_dorms": "غرف سوبريور",
+    "private_room": "غرفة خاصة"
+  },
+  "careers": {
+    "jobTitle": "انضم إلى فريق Hostel Brikette",
+    "jobDescription": "نبحث دائمًا عن أشخاص حيويين يحبون مجال الضيافة. إذا كنت تتألق في بيئة سريعة الوتيرة، تواصل معنا!",
+    "ctaLabel": "اسأل عن الوظائف المتاحة"
+  },
+  "errorBoundary": {
+    "title": "حدث خطأ ما.",
+    "reload": "إعادة تحميل الصفحة"
+  },
+  "meta": {
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@brikette"
+  },
+  "internalErrors": {
+    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+  }
+}

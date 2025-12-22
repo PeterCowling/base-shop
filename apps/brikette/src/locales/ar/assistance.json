@@ -1,0 +1,28 @@
+{
+  "quickLinksHeading": "مساعدة سريعة",
+  "quickLinksIntro": "احصل على إجابات مباشرة لأكثر أسئلتنا شيوعًا حول الحجز والوصول والإقامة.",
+  "cta": {
+    "readMore": "اقرأ المزيد"
+  },
+  "quickLinks": [
+    {
+      "label": "تعديل أو إلغاء الحجز",
+      "description": "تعرّف على المهل المطلوبة وكيف تتجنب الرسوم الإضافية عندما تتغير خططك.",
+      "slug": "changingCancelling"
+    },
+    {
+      "label": "دليل تسجيل الوصول والمغادرة",
+      "description": "اتبع دليلنا خطوة بخطوة للوصول والمغادرة في Hostel Brikette في بوزيتانو.",
+      "slug": "checkinCheckout"
+    },
+    {
+      "label": "الوصول إلى بوزيتانو بسهولة",
+      "description": "قارن بين العبّارة أو الحافلة أو سيارة الأجرة واتبع التعليمات خطوة بخطوة من نابولي أو سورينتو.",
+      "slug": "travelHelp"
+    }
+  ],
+  "contactCta": {
+    "label": "أرسل لنا بريدًا إلكترونيًا",
+    "href": "mailto:hostelpositano@gmail.com"
+  }
+}

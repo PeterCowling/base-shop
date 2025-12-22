@@ -1,0 +1,142 @@
+{
+  "seo": {
+    "title": "Götterweg mit dem Shuttle nach Nocelle",
+    "description": "Mit dem Bus Montepertuso–Nocelle zum Hin- und Rückweg auf dem Sentiero degli Dei – inklusive Zeiten, Tipps und Rückfahrmöglichkeiten."
+  },
+  "linkLabel": "Path of the Gods mit dem Nocelle-Shuttle",
+  "intro": [
+    "Du hast wenig Zeit oder möchtest Umstiege vermeiden? Fahr mit dem Bus Montepertuso–Nocelle vom Hostel Brikette, wandere den panoramischsten Abschnitt des Sentiero degli Dei als Hin- und Rücktour und kehre auf demselben Weg zurück.",
+    "Diese Option spart Fähre und Amalfi-Umstieg und ist ideal für ruhigere Tage oder Reisende, die ein leichteres Programm bevorzugen."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Im Hostel vorbereiten",
+      "body": [
+        "Kaufe pro Person zwei Bustickets an der Bar Internazionale: Positano → Nocelle und Nocelle → Positano. Das Team hilft dir bei der günstigsten Option.",
+        "Check den aktuellen Fahrplan Montepertuso/Nocelle, damit du die letzte Rückfahrt vor Sonnenuntergang kennst.",
+        "Pack Wasser, Snacks und Schichten ein. Der Kiosk in Nocelle verkauft saisonal Getränke, aber auf dem Weg selbst gibt es keine Läden."
+      ]
+    },
+    {
+      "id": "bus-to-nocelle",
+      "title": "Mit dem Bus hinauf nach Nocelle",
+      "body": [
+        "Warte vor der Bar Internazionale. Auf den Bussen steht \"Montepertuso - Nocelle\".",
+        "Die Fahrt führt über Montepertuso und endet am kleinen Parkplatz in Nocelle. Bleib sitzen, bis der Bus oben wendet – dort steigst du aus.",
+        "Entwerte dein Ticket beim Einsteigen und heb es für die Rückfahrt auf."
+      ]
+    },
+    {
+      "id": "walk-through-town",
+      "title": "Durch Nocelle zum Trail",
+      "body": [
+        "Vom Parkplatz gehst du die Fußtreppe hinunter zum Hauptweg und biegst links ab.",
+        "Laufe etwa 175 Meter und halte dich an der wichtigen Kreuzung rechts, um die Treppe hinunter nach Positano zu vermeiden.",
+        "Folge dem Weg weiter, bis du die Schilder \"Sentiero degli Dei\" und den gepflasterten Weg aus dem Ort hinaus erreichst."
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "So weit wandern, wie du magst",
+      "body": [
+        "Richtung Colle Serra warten die schönsten Aussichtspunkte. Die komplette Strecke nach Bomerano und zurück sind etwa 11,6 km, du kannst aber jederzeit umdrehen.",
+        "Folge den rot-weißen CAI-Markierungen, setz deine Schritte vorsichtig auf exponierten Passagen und nutze die Aussichtsbalkone für Fotopausen.",
+        "Wenn du bereit bist, drehst du einfach um und gehst denselben Weg zurück nach Nocelle."
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Rückweg nach Positano",
+      "body": [
+        "Geh durch Nocelle zurück und biege an der wichtigen Kreuzung rechts ab, um die Bushaltestelle zu erreichen.",
+        "Nutze dein Rückticket für den Bus zur Bar Internazionale oder Chiesa Nuova. Wenn die Busse voll sind, kannst du die asphaltierte Straße bergab gehen (ca. 4 km) – dafür 45–60 Minuten einplanen.",
+        "Meide die Treppenabkürzung, außer du möchtest bewusst einen langen, kniestrapazierenden Abstieg, der auf der anderen Seite der Stadt endet."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Beispielzeiten",
+      "body": [
+        "06:30 Bus → 06:50 Ankunft Nocelle → 3-stündige Wanderung → 09:50 Rückfahrt → 10:10 Ankunft Positano (3 h 40 min gesamt).",
+        "08:30 Abfahrt → 08:50 Ankunft Nocelle → 3 h 20 Wanderung → 11:50 Rückfahrt → 12:10 Ankunft Positano (4 h gesamt).",
+        "10:30 Abfahrt → 10:50 Ankunft Nocelle → 3-stündige Wanderung → 13:50 Rückfahrt → 14:10 Ankunft Positano (3 h 40 min gesamt)."
+      ]
+    }
+  ],
+  "essentialsTitle": "Das Wichtigste",
+  "essentials": [
+    "Zwei SITA-Tickets pro Person (bergauf und bergab) plus ein Reserve-Ticket.",
+    "Wasser, Snacks, Sonnencreme und Hut für den exponierten Grat.",
+    "Bequeme Schuhe mit Grip und optional Stöcke für unebene Stufen."
+  ],
+  "typicalCostsTitle": "Typische Kosten",
+  "typicalCosts": [
+    "Tickets für den Nocelle-Shuttle: 1,80–2,40 € pro Fahrt je nach Carnet.",
+    "Granita oder Getränke am Kiosk in Nocelle: 3–5 €.",
+    "Trailzugang: kostenlos."
+  ],
+  "tipsTitle": "Routentipps",
+  "tips": [
+    "Starte früh am Morgen für kühlere Temperaturen und ruhigere Wege.",
+    "Pack eine leichte Jacke ein – auf dem Grat kann es windig sein, selbst wenn Positano heiß ist.",
+    "Heb dir ein Belohnungsgetränk am Kiosk bei der Kirche für die Rückkehr auf."
+  ],
+  "warningsTitle": "Darauf achten",
+  "warnings": [
+    "Ignoriere das Schild Richtung Treppe nach Positano, außer du willst bewusst einen anspruchsvollen Abstieg, der weit vom Hostel endet.",
+    "Nachmittags fahren die Busse seltener – stell dir einen Alarm für die letzte Rückfahrt, die du schaffen willst.",
+    "Der Weg ist exponiert; meide Wanderungen in der größten Mittagshitze im Juli und August."
+  ],
+  "steps": [
+    {
+      "name": "Bustickets kaufen",
+      "text": "Kauf die Nocelle-Tickets vor dem Verlassen des Hostels in der Bar Internazionale."
+    },
+    {
+      "name": "Hinauffahren",
+      "text": "Steig in den Bus Montepertuso–Nocelle und bleib bis zur Wendeschleife am Parkplatz sitzen."
+    },
+    {
+      "name": "Zum Trail gehen",
+      "text": "Folge dem Fußweg durch den Ort und halte dich rechts, um die Sentiero-degli-Dei-Schilder zu finden."
+    },
+    {
+      "name": "Hin- und zurückwandern",
+      "text": "Geh Richtung Colle Serra und dreh um, sobald du bereit bist."
+    },
+    {
+      "name": "Zurück nach Positano",
+      "text": "Geh zurück zur Haltestelle und nimm den Bus zur Bar Internazionale oder Chiesa Nuova."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Wie lange sollte ich wandern, bevor ich umdrehe?",
+      "a": [
+        "Viele Wandernde gehen 45–60 Minuten Richtung Colle Serra für die bekanntesten Aussichtspunkte und drehen dann um. Plan mehr Zeit ein, wenn du bis Bomerano weiter möchtest."
+      ]
+    },
+    {
+      "q": "Ist der Nocelle-Bus zuverlässig?",
+      "a": [
+        "Ja, aber er fährt nach festem Fahrplan mit längeren Pausen mittags. Check die Aushänge an der Bar Internazionale und plane einen Puffer, falls der Bus voll ist."
+      ]
+    },
+    {
+      "q": "Kann ich statt Bus bergab laufen?",
+      "a": [
+        "Du kannst die asphaltierte Straße in etwa 45–60 Minuten hinuntergehen. Meide die Treppe, es sei denn, du möchtest bewusst ein Workout mit tausenden Stufen."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "Auf dieser Seite",
+    "essentials": "Das Wichtigste",
+    "costs": "Typische Kosten",
+    "tips": "Routentipps",
+    "warnings": "Darauf achten",
+    "faqs": "FAQs"
+  }
+}

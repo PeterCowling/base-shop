@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Wi-Fi e caffè adatti al lavoro vicino a Brikette",
+    "description": "Spazi con prese, Wi-Fi stabile e orari tranquilli per lavorare in remoto a pochi minuti dall'ostello."
+  },
+  "linkLabel": "Wi-Fi e caffè adatti al lavoro vicino a Brikette",
+  "intro": [
+    "Caffè vicino all’ostello con Wi-Fi affidabile. Etichetta: ordina regolarmente, evita chiamate lunghe all’interno e occupa poco spazio."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Locali vicino al Brikette",
+      "body": [
+        "I piccoli bar di Via Pasitea e intorno a Chiesa Nuova offrono spesso Wi-Fi stabile.",
+        "Porta una power bank: nelle strutture storiche le prese sono limitate."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Connettività di backup",
+      "body": [
+        "Tieni un’eSIM di riserva; la copertura varia per zona — TIM e Vodafone sono di solito più stabili.",
+        "Usa l’hotspot quando la rete del bar rallenta nelle ore di pranzo."
+      ]
+    }
+  ],
+  "galleryTitle": "Galleria",
+  "gallery": {
+    "item1Alt": "Laptop su un tavolo di un caffè",
+    "item1Caption": "Angolo tranquillo per le call",
+    "item2Alt": "Espresso e taccuino",
+    "item2Caption": "Alterna i locali e ordina con regolarità"
+  },
+  "faqs": [
+    {
+      "q": "Posso lavorare tutto il giorno in un bar?",
+      "a": [
+        "Acquista ogni 60–90 minuti, evita l’ora di pranzo e considera di alternare più locali."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Viajar en pareja alojándote en hostels",
+    "description": "Consejos para dormitorios o privadas, encontrar calma y gestionar expectativas."
+  },
+  "linkLabel": "Viajar en pareja alojándote en hostels",
+  "intro": [
+    "Compartir un hostel como pareja funciona si alinean expectativas sobre privacidad y rutinas compartidas.",
+    "En Positano viajar ligero y elegir bien la habitación ayuda con las escaleras y el descanso."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Tipos de habitación",
+      "body": [
+        "Si priorizas privacidad, reserva habitaciones privadas; si el presupuesto es ajustado, opta por literas en la misma habitación y coordina horarios.",
+        "Empaca ligero: las escaleras del pueblo hacen que cada kilo cuente al llegar o salir."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Encontrar tranquilidad",
+      "body": [
+        "Lleva tapones y antifaz, y pide habitaciones lejos del bar o zonas comunes para dormir mejor.",
+        "Aprovecha las mañanas para explorar con calma antes de que lleguen los grupos de día."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Rutinas y acuerdos",
+      "body": [
+        "Habla con tu pareja sobre expectativas: respeto por compañeros de cuarto, uso de luces y organización del equipaje.",
+        "Reserva tiempo propio: turnos para duchas, ratos en terrazas o escapadas breves ayudan a mantener el equilibrio."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Un hostel es adecuado para parejas?",
+      "a": [
+        "Sí: ofrece ambiente social y buen valor; las habitaciones privadas equilibran comodidad y presupuesto."
+      ]
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes",
+  "tocTitle": "En esta página"
+}

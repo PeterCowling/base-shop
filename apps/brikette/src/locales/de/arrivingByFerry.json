@@ -1,0 +1,59 @@
+{
+  "slug": "anreise-mit-faehre",
+  "meta": {
+    "title": "So erreichst du das Hostel Brikette vom Fähranleger in Positano – Schritt-für-Schritt-Anleitung",
+    "description": "Stressfrei ankommen: zu Fuß oder mit dem Interno-Positano-Bus, inklusive Gepäcktipps, Live-Links, Ticketinfos und Barrierefreiheitshinweisen."
+  },
+  "headings": {
+    "overview": "Hafen von Positano → Hostel mit dem Interno-Bus",
+    "portToPiazza": "Hafen zur Piazza Dei Mulini",
+    "piazzaToStop": "Piazza Dei Mulini → örtliche Bushaltestelle",
+    "busLook": "Wie sieht der Bus aus?",
+    "busLookExtra": "",
+    "stopToHostel": "Lokale Bushaltestelle → Hostel",
+    "approach": "Tipp: Ankunft am Hostel"
+  },
+  "media": {
+    "busLook": {
+      "alt": "Weißer Interno Positano Kleinbus"
+    },
+    "busLookExtra": {
+      "alt": "Roter Interno Positano Kleinbus"
+    },
+    "stopToHostel": {
+      "alt": "Außenansicht des Tabacchi, an dem der Bus hält"
+    },
+    "approach": {
+      "alt": "Hostelschild und Treppen an der Via G. Marconi"
+    }
+  },
+  "content": {
+    "overview": "<strong>Tipp 1:</strong> <a href=\"https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26\">Fahrpläne und Ticketpreise des Interno-Busses</a>.<br />\n<strong>Tipp 2:</strong> Tickets erhältst du in jeder <em>Tabacchi</em>- oder Zeitungskiosk-Filiale.<br />\n<strong>Tipp 3:</strong> Mit Gepäck unterwegs? Die Träger am Pier bringen deine Taschen direkt zum Hostel.",
+    "portToPiazza": "Folge <a href=\"https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2\">dieser Wegbeschreibung</a> vom Hauptstrand zur Piazza dei Mulini.",
+    "piazzaToStop": "• Spare dir die Treppen – nimm den Interno-Bus.<br />\n• Der Service fährt etwa alle 30 Minuten von ca. 8 Uhr bis Mitternacht.<br />\n• Route ansehen auf <a href=\"https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0\">Google Maps</a>.",
+    "busLook": "Es gibt mehrere Fahrzeugtypen, aber die LED-Anzeige trägt stets den Schriftzug <em>„Interno Positano“</em>.",
+    "busLookExtra": "",
+    "stopToHostel": "• Der Bus hält vor dem unten abgebildeten Tabacchi.<br />\n• Steig aus, geh nach <strong>rechts</strong> zur Hauptstraße.<br />\n• Biege <strong>links</strong> ab und geh etwa 100 m / 330 ft weiter.<br />\n• Das Hostel liegt auf der rechten Seite – nimm die Treppe zur Rezeption hinauf.<br />\n• Brauchst du Navigation? <a href=\"https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2\">Google Maps öffnen</a>.",
+    "approach": "• Kurz vor dem Hostel siehst du unser Schild an der Terrasse im zweiten Stock.<br />\n• Geh am Schild vorbei, folge der Kurve und nimm die Treppe rechts hinauf zur Rezeption."
+  },
+  "faq": {
+    "items": [
+      {
+        "question": "Fahren das ganze Jahr über Fähren nach Positano?",
+        "answer": "Fähren verkehren saisonal (meist April–Oktober). Im Winter sind Busse oder Taxis die wichtigsten Optionen."
+      },
+      {
+        "question": "Wo finde ich aktuelle Fahrpläne?",
+        "answer": "Nutze die Webseiten der Anbieter (z. B. NLG, Travelmar, Alilauro) oder in der Hochsaison Aggregatoren wie DirectFerries."
+      },
+      {
+        "question": "Welchen Pier nutze ich in Positano?",
+        "answer": "Der Hauptpier befindet sich an der Spiaggia Grande. An vollen Tagen zeigt dein Ticket die genaue Einstiegszone."
+      },
+      {
+        "question": "Wie barrierefrei ist der Weg vom Hafen?",
+        "answer": "Der Weg zum Hostel umfasst viele Treppen. Bei schwerem Gepäck nutze die Gepäckträger oder nimm den Bus zur Chiesa Nuova."
+      }
+    ]
+  }
+}

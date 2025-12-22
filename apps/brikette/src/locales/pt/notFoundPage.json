@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Página não encontrada",
+    "description": "A página que você solicitou não existe."
+  },
+  "heading": "Página não encontrada",
+  "message": "Talvez explore os nossos quartos ou reserve a sua estadia.",
+  "linksTitle": "Links úteis",
+  "links": {
+    "home": "Início",
+    "deals": "Ofertas",
+    "assistance": "Contato e informações",
+    "about": "Sobre"
+  },
+  "buttonRooms": "Quartos",
+  "buttonReserve": "Reservar agora"
+}

@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Đặt chỗ lưu trú — Trang chính thức",
+    "description": "Giá linh hoạt và không hoàn tiền. Thanh toán an toàn trên công cụ đặt chỗ chính thức."
+  },
+  "heading": "Đặt chỗ lưu trú",
+  "roomLabel": "Phòng",
+  "cta": {
+    "flex": "Linh hoạt — Đi tới thanh toán",
+    "nr": "Không hoàn tiền — Đi tới thanh toán"
+  },
+  "checking": "Đang kiểm tra…",
+  "flex": {
+    "title": "Giá linh hoạt (hoàn tiền)",
+    "bullets": [
+      "Hủy miễn phí trước 15:00, ba ngày đầy đủ trước ngày đến.",
+      "Thay đổi tùy tình trạng phòng."
+    ]
+  },
+  "nr": {
+    "title": "Không hoàn tiền (trả trước)",
+    "bullets": [
+      "Thanh toán 100% trước; không hoàn tiền/không đến.",
+      "Thanh toán thất bại sẽ tự động hủy."
+    ]
+  },
+  "unavailable": {
+    "title": "Không có phòng cho các ngày này.",
+    "none": "Không tìm thấy lựa chọn thay thế trực tiếp.",
+    "seeAll": "Xem toàn bộ tình trạng phòng",
+    "bookThis": "Đặt lựa chọn này"
+  },
+  "policies": {
+    "title": "Chính sách & tiền đặt cọc",
+    "items": [
+      "Thuế thành phố/du lịch: €2.50 mỗi khách mỗi đêm (tính khi thanh toán).",
+      "Tiền đặt cọc thẻ khóa & ga trải giường: €10 tiền mặt khi nhận phòng; hoàn lại khi trả.",
+      "Khoản giữ an toàn: tối đa một đêm/khách khi nhận phòng (hoặc tiền mặt tương đương). Nếu không thể, đặt chỗ bị hủy.",
+      "Phí hành chính hủy: thường là 15% giá trị đặt chỗ (không gồm phí bên thứ ba).",
+      "Lễ tân đóng cửa lúc 22:30; trường hợp không đến sẽ tính khoản cao hơn giữa đêm đầu tiên hoặc đặt cọc không hoàn tiền."
+    ],
+    "footer": "Xác nhận phòng cuối cùng và thanh toán được thực hiện trên công cụ đặt chỗ chính thức."
+  },
+  "backToRooms": "Quay lại phòng"
+}

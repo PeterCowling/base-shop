@@ -1,0 +1,11 @@
+{
+  "title": "Kontrollera alltid information om transporter",
+  "items": {
+    "buses": "Bussar: kontrollera officiella tidtabeller från SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
+    "ferries": "Färjor: rederierna publicerar säsongsavgångar och tider (väderberoende). Se <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
+    "airlink": "Flyger du till Salerno Costa d’Amalfi (QSR)? Använd Airlink-bussen till Salerno — <airportLink>aeroportodisalerno.it</airportLink> och <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
+    "driving": "Bil: SS163 har växelvisa registreringsbegränsningar (apr–okt) och ZTL; parkeringskostnader varierar efter säsong och plats. Kontrollera officiella aviseringar.",
+    "premium": "Premium eller säsong: Uber Boat och helikoptercharter kör begränsade sommarturer — bekräfta aktuell tillgänglighet."
+  },
+  "srLabel": "Transportnotis"
+}

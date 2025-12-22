@@ -39,6 +39,16 @@ export const NAV_SECONDARY: NavItem[] = [
     descriptionKey: "pipeline.nav.suppliers.description",
   },
   {
+    href: "/logistics/lanes",
+    labelKey: "pipeline.nav.logistics.label",
+    descriptionKey: "pipeline.nav.logistics.description",
+  },
+  {
+    href: "/logistics/quote-baskets",
+    labelKey: "pipeline.nav.quoteBaskets.label",
+    descriptionKey: "pipeline.nav.quoteBaskets.description",
+  },
+  {
     href: "/artifacts",
     labelKey: "pipeline.nav.artifacts.label",
     descriptionKey: "pipeline.nav.artifacts.description",

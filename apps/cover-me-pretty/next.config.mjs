@@ -17,6 +17,9 @@ process.env.CMS_ACCESS_TOKEN ??= "placeholder-token";
 process.env.SANITY_API_VERSION ??= "2021-10-21";
 // Email: default to noop provider during local builds so env validation passes
 process.env.EMAIL_PROVIDER ??= "noop";
+if (process.env.NODE_ENV !== "production") {
+  process.env.INVENTORY_AUTHORITY_TOKEN ??= "dev-inventory-token";
+}
 
 // Load the shared Next.js configuration after the defaults run so validation
 // sees the populated values.

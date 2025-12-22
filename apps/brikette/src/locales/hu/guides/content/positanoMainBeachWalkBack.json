@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Walk back to Hostel Brikette from Spiaggia Grande",
+    "description": "Follow the hostel's staircase checkpoints for the 30–45 minute return climb."
+  },
+  "linkLabel": "Walk back from Positano's main beach",
+  "intro": [
+    "A Spiaggia Grande-ról a Hostel Brikette-be való visszatérés körülbelül 30–45 percet vesz igénybe a tempótól, a fotómegállóktól és a hőtől függően.",
+    "Ezek a lépések tükrözik a hostel öt ellenőrzőpont-fotóját, így a leggyorsabb lépcsőn haladhatsz végig felfelé."
+  ],
+  "sections": [
+    {
+      "id": "before-you-climb",
+      "title": "Mielőtt felmászol",
+      "body": [
+        "Töltse fel a vizet, és hagyjon magának időt a szünetekre — a lépcsőházban nincsenek üzletek, amíg el nem éri a felső utakat.",
+        "Ragadd meg a referenciafényképeket a recepcióról vagy a digitális portáról, hogy a 4. és 5. pontot a felemelkedés során összevethesd."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Lépésről lépésre sétáljon vissza a szállóhoz",
+      "body": [
+        "1. Kezdje a Spiaggia Grande bal oldalán (a víztől elfordítva), és haladjon át a nyílás melletti boltív alatt.",
+        "2. Haladjon végig a bevásárlóutcán, amíg el nem éri a nyitott udvart az 5-ös térképpontnál — győződjön meg róla, hogy a kilátás egyezik a hostel fényképével.",
+        "3. Menjen a bal oldali lépcsőn, kövesse felfelé, miközben jobbra kanyarodik, és másszon fel a tetejére.",
+        "4. Forduljon jobbra a tetején, majd azonnal menjen a következő lépcsőn felfelé, hogy elérje a 4. térképpontot.",
+        "5. A 4. ponttól forduljon balra az útra, sétáljon körülbelül 10 métert (30 láb), menjen át, és menjen közvetlenül maga előtt a lépcsőn.",
+        "6. Kövesse a lépcsőt, amíg el nem ér egy másik utat. Ha visszatekintesz, a jelenetnek egyeznie kell a 3. pont szerinti fényképpel. Menjen egyenesen a következő lépcsőházba, és másszon tovább.",
+        "7. Amikor a lépcső befejeződik, sétáljon az előtted lévő útra, forduljon balra, és folytassa az emelkedőt valamivel több mint 100 méteren (330 lábon) keresztül.",
+        "8. Forduljon jobbra az ismerős lépcsőházra, amely egyenesen visszavezet a Hostel Brikette főbejáratához."
+      ]
+    }
+  ],
+  "tipsTitle": "Tippek",
+  "tips": [
+    "Ha a mászás túl intenzívnek tűnik, váltson a %LINK:positanoMainBeachBusBack|busz vissza a szállóhoz% -re, miután elérte a Piazza dei Mulini-t.",
+    "Kezdje el a sétát dél előtt vagy napnyugta után, hogy elkerülje a nap legforróbb részét.",
+    "Szüneteltesd az árnyékos landolásokat, hogy lélegzethez juss, és fényképeket készíts a kilátásról — kiérdemelted őket."
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Menú de Desayuno (2025)",
+    "description": "Desayuno 08:00–10:30 todos los días. Combos de huevos, opciones dulces, saludables, zumos, batidos y café."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Menú de Desayuno, 2025",
+    "hours": "08:00 – 10:30 todos los días"
+  },
+  "intro": {
+    "summary": "Desayunos recién preparados, zumos prensados y café de barista cada mañana en la terraza. Desplázate para ver todas las opciones y precios.",
+    "viewFullMenuButton": "Ver el menú completo de desayuno"
+  },
+  "sections": {
+    "eggs": {
+      "title": "Combo de Huevos",
+      "subtitle": "Una deliciosa combinación de huevos",
+      "howCooked": "Elige cómo quieres tus huevos",
+      "cooked": [
+        "Tortilla",
+        "Revuelto",
+        "A la plancha (poco hecho)",
+        "Fritos (yema arriba)"
+      ],
+      "addThree": "Elige tres ingredientes para añadir",
+      "ingredients": [
+        "Bacon",
+        "Jamón",
+        "Tomates",
+        "Champiñones",
+        "Tostada",
+        "Queso",
+        "Alubias"
+      ],
+      "orderExample": "Haz tu pedido — p. ej., “Tortilla con queso, bacon y alubias”."
+    },
+    "sweet": {
+      "title": "Opciones Dulces",
+      "chooseOneFreeSyrup": "Elige un sirope gratis:",
+      "syrups": [
+        "Dorado",
+        "Limón",
+        "Naranja y canela",
+        "Nutella"
+      ]
+    },
+    "healthy": {
+      "title": "Opciones Saludables"
+    },
+    "juices": {
+      "title": "Zumos y Batidos"
+    },
+    "hot": {
+      "title": "Bebidas Calientes con Cafeína"
+    },
+    "iced": {
+      "title": "Bebidas Frías con Cafeína"
+    }
+  },
+  "items": {
+    "eggsCombo": {
+      "name": "Combo de Huevos"
+    },
+    "frenchToast": {
+      "name": "Tostadas Francesas",
+      "note": "Clásicas, servidas con sirope."
+    },
+    "nutellaFrenchToast": {
+      "name": "Tostadas Francesas con Nutella",
+      "note": "Rellenas de Nutella."
+    },
+    "pancakes": {
+      "name": "Panqueques"
+    },
+    "addEggComboItem": {
+      "name": "Añade un elemento del Combo de Huevos",
+      "note": "Elige un elemento del combo. Ej.: panqueques con sirope dorado + huevos revueltos por 15,50 €."
+    },
+    "addAdditionalSyrup": {
+      "name": "Añade sirope adicional",
+      "note": "Elige más de un sirope. Ej.: panqueques con sirope dorado y Nutella por 14 €."
+    },
+    "veggieToast": {
+      "name": "Tostada Vegetal",
+      "note": "Verduras de temporada sobre tostada."
+    },
+    "healthyDelight": {
+      "name": "Delicia Saludable",
+      "note": "Parfait de yogur, granola y compota casera."
+    },
+    "detoxMe": {
+      "name": "Detox Me (zumo)",
+      "note": "Espinaca, pepino, jengibre y limón."
+    },
+    "energizeMe": {
+      "name": "Energize Me (zumo)",
+      "note": "Naranja, zanahoria, jengibre y limón."
+    },
+    "multiV": {
+      "name": "Multi‑V (zumo)",
+      "note": "Manzana, zanahoria, naranja, limón, jengibre."
+    },
+    "orangeJuice": {
+      "name": "Zumo de Naranja",
+      "note": "Recién exprimido."
+    },
+    "bananaSmoothie": {
+      "name": "Batido de Plátano"
+    },
+    "strawberrySmoothie": {
+      "name": "Batido de Fresa"
+    },
+    "saltedCaramelProteinSmoothie": {
+      "name": "Batido de proteína café‑caramelo salado"
+    },
+    "addProtein": {
+      "name": "Añade proteína (vainilla, chocolate o caramelo salado) — HUEL (40 g de proteína)"
+    },
+    "tea": {
+      "name": "Té (negro, verde, herbal)"
+    },
+    "espresso": {
+      "name": "Espresso (por tiro)"
+    },
+    "macchiato": {
+      "name": "Macchiato (espresso macchiato)"
+    },
+    "americano": {
+      "name": "Americano / café largo"
+    },
+    "cappuccino": {
+      "name": "Capuchino"
+    },
+    "latte": {
+      "name": "Café latte"
+    },
+    "altMilk": {
+      "name": "Leche de soja o arroz — suplemento"
+    },
+    "icedLatte": {
+      "name": "Latte Frío"
+    },
+    "icedSoyLatte": {
+      "name": "Latte Frío de Soja"
+    },
+    "icedRiceLatte": {
+      "name": "Latte Frío de Arroz"
+    },
+    "icedTea": {
+      "name": "Té Frío (limón o melocotón)"
+    }
+  }
+}

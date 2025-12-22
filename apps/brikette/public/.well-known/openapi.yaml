@@ -1,0 +1,505 @@
+# public/.well-known/openapi.yaml
+openapi: 3.1.0
+
+info:
+  title: Hostel Brikette API
+  version: "1.0.4"
+  description: |
+    Machine-friendly endpoints for checking rates and booking beds at **Hostel Brikette**.
+
+    • All responses are JSON and served over HTTPS.  
+    • Some operations are rate-limited — see the `429` response and `X-RateLimit-*` headers.  
+    • All dates are **local hotel time** (Europe/Rome) in `YYYY-MM-DD` format.
+  contact:
+    name: Hostel Brikette
+    url: https://hostel-positano.com
+    email: hostelpositano@gmail.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://hostel-positano.com
+    description: Production
+
+# ─────  ✅  Explicitly declare that the API needs **no** auth ──────
+security: [] # satisfies redocly’s “security-defined” rule
+
+tags:
+  - name: Rates
+    description: Live price & availability
+  - name: Booking
+    description: Reservation operations
+  - name: Metadata
+    description: Static machine-layer artefacts
+
+externalDocs:
+  description: Index of machine-readable resources
+  url: https://hostel-positano.com/llms.txt
+
+components:
+  ####################################
+  # Schemas
+  ####################################
+  schemas:
+    Error:
+      type: object
+      additionalProperties: false
+      required: [code, message]
+      properties:
+        code:
+          type: string
+          description: Machine-readable error slug (e.g. `rate_limit`)
+        message:
+          type: string
+          description: Human-readable description
+
+    RateQuote:
+      type: object
+      additionalProperties: false
+      required: [available, total, currency]
+      properties:
+        available:
+          type: boolean
+          description: Room/beds still free?
+        total:
+          type: number
+          format: float
+          description: Price for the whole stay (excl. city-tax)
+        currency:
+          type: string
+          enum: [EUR]
+
+    # Canonical list of SKUs – extend as inventory grows
+    Sku:
+      type: string
+      description: Internal SKU of the room category
+      enum:
+        - double_room
+        - room_3
+        - room_4
+        - room_5
+        - room_6
+        - room_8
+        - room_9
+        - room_10
+        - room_11
+        - room_12
+
+    BookingRequest:
+      type: object
+      additionalProperties: false
+      required: [sku, checkin, checkout, guestName, email]
+      properties:
+        sku: { $ref: "#/components/schemas/Sku" }
+        checkin:
+          type: string
+          format: date
+          description: Check-in date (`YYYY-MM-DD`)
+        checkout:
+          type: string
+          format: date
+          description: Check-out date (`YYYY-MM-DD`)
+        adults:
+          type: integer
+          minimum: 1
+          default: 1
+          description: Number of adults
+        guestName:
+          type: string
+          minLength: 1
+          maxLength: 100
+        email:
+          type: string
+          format: email
+
+    BookingConfirmation:
+      type: object
+      additionalProperties: false
+      required: [reservationId, status]
+      properties:
+        reservationId:
+          type: string
+          description: Unique reservation code
+        status:
+          type: string
+          enum: [confirmed, pending, failed]
+
+    RateEntry:
+      type: object
+      additionalProperties: false
+      required: [date, nr]
+      properties:
+        date:
+          type: string
+          format: date
+        nr:
+          type: number
+          description: Non-refundable price
+        flex:
+          type: number
+          description: Fully-flexible price
+        currency:
+          type: string
+          enum: [EUR]
+
+    LanguageCode:
+      type: string
+      enum: [en, es, de, fr, it, ja, ko, pt, ru, zh, ar, hi, vi, pl, sv, no, da, hu]
+    LocalizedString:
+      type: object
+      additionalProperties:
+        type: string
+      description: Map of language code to string
+    Money:
+      type: object
+      additionalProperties: false
+      required: [amount, currency]
+      properties:
+        amount: { type: number }
+        currency:
+          type: string
+          example: EUR
+    SeasonalPrice:
+      type: object
+      additionalProperties: false
+      required: [season, start, end, price]
+      properties:
+        season:
+          type: string
+          enum: [low, shoulder, high, event]
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
+        price: { $ref: "#/components/schemas/Money" }
+    RoomAmenity:
+      type: object
+      additionalProperties: false
+      required: [name]
+      properties:
+        name: { type: string }
+        icon:
+          type: string
+          nullable: true
+        paid: { type: boolean }
+    Availability:
+      type: object
+      additionalProperties: false
+      required: [totalBeds, defaultRelease]
+      properties:
+        totalBeds: { type: integer }
+        defaultRelease: { type: integer }
+    ImageSet:
+      type: object
+      additionalProperties: false
+      required: [url, alt]
+      properties:
+        url: { type: string }
+        alt: { $ref: "#/components/schemas/LocalizedString" }
+    RoomCategory:
+      type: object
+      additionalProperties: false
+      required:
+        - sku
+        - name
+        - description
+        - occupancy
+        - pricingModel
+        - basePrice
+        - amenities
+        - availability
+        - images
+      properties:
+        sku: { $ref: "#/components/schemas/Sku" }
+        name: { $ref: "#/components/schemas/LocalizedString" }
+        description: { $ref: "#/components/schemas/LocalizedString" }
+        occupancy: { type: integer }
+        pricingModel:
+          type: string
+          enum: [perBed, perRoom]
+        basePrice: { $ref: "#/components/schemas/Money" }
+        seasonalPrices:
+          type: array
+          items: { $ref: "#/components/schemas/SeasonalPrice" }
+        amenities:
+          type: array
+          items: { $ref: "#/components/schemas/RoomAmenity" }
+        availability: { $ref: "#/components/schemas/Availability" }
+        images:
+          type: array
+          items: { $ref: "#/components/schemas/ImageSet" }
+
+  ####################################
+  # Common headers / parameters
+  ####################################
+  parameters:
+    ApiVersion:
+      name: X-API-Version
+      in: header
+      description: Optional semantic version. Defaults to the latest stable.
+      required: false
+      schema:
+        type: string
+        example: "1.0.4"
+
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: >
+        A unique value (UUID v4 recommended). If supplied, identical requests
+        with the same key within 24 h return the original response, preventing
+        accidental double-bookings.
+      schema:
+        type: string
+        format: uuid
+
+  headers:
+    RateLimit-Limit:
+      description: Maximum requests allowed in the current window
+      schema: { type: integer }
+    RateLimit-Remaining:
+      description: Requests left in the current window
+      schema: { type: integer }
+    RateLimit-Reset:
+      description: Epoch seconds at which the current window resets
+      schema: { type: integer }
+
+  ####################################
+  # Reusable responses
+  ####################################
+  responses:
+    Error4xx:
+      description: Client error
+      headers:
+        RateLimit-Limit: { $ref: "#/components/headers/RateLimit-Limit" }
+        RateLimit-Remaining: { $ref: "#/components/headers/RateLimit-Remaining" }
+        RateLimit-Reset: { $ref: "#/components/headers/RateLimit-Reset" }
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+      examples:
+          badRequest:
+            value: { code: invalid_parameters, message: "Date format must be YYYY-MM-DD." }    
+
+    Error5xx:
+      description: Server error
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+          examples:
+            serverError:
+              value: { code: server_error, message: "Unexpected internal failure." }
+
+    Error404:
+      description: Resource not found
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+          examples:
+            notFound:
+              value: { code: not_found, message: "SKU does not exist." }
+
+    Error429:
+      description: Too many requests
+      headers:
+        RateLimit-Limit: { $ref: "#/components/headers/RateLimit-Limit" }
+        RateLimit-Remaining: { $ref: "#/components/headers/RateLimit-Remaining" }
+        RateLimit-Reset: { $ref: "#/components/headers/RateLimit-Reset" }
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+          examples:
+            rateLimit:
+              value:
+                { code: rate_limit, message: "Slow down, you’re sending requests too quickly." }       
+
+paths:
+  ####################################
+  #  /api/quote
+  ####################################
+  /api/quote:
+    get:
+      summary: Retrieve a rate quote
+      description: |
+        Returns the **cheapest non-refundable price** (`total`) for the
+        requested SKU and date range.
+      operationId: getRateQuote
+      tags: [Rates]
+      parameters:
+        - name: sku
+          in: query
+          required: true
+          schema: { $ref: "#/components/schemas/Sku" }
+        - name: checkin
+          in: query
+          required: true
+          schema: { type: string, format: date }
+        - name: checkout
+          in: query
+          required: true
+          schema: { type: string, format: date }
+        - $ref: "#/components/parameters/ApiVersion"
+      responses:
+        "200":
+          description: Quote response
+          headers:
+            RateLimit-Limit: { $ref: "#/components/headers/RateLimit-Limit" }
+            RateLimit-Remaining: { $ref: "#/components/headers/RateLimit-Remaining" }
+            RateLimit-Reset: { $ref: "#/components/headers/RateLimit-Reset" }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RateQuote" }
+              examples:
+                available:
+                  summary: Rooms available
+                  value: { available: true, total: 120.5, currency: EUR }
+                sold_out:
+                  summary: Sold-out
+                  value: { available: false, total: 0, currency: EUR }
+        "400": { $ref: "#/components/responses/Error4xx" }
+        "404": { $ref: "#/components/responses/Error404" }
+        "429": { $ref: "#/components/responses/Error429" }
+        "500": { $ref: "#/components/responses/Error5xx" }
+
+
+  ####################################
+  #  /api/rooms
+  ####################################
+  /api/rooms:
+    get:
+      summary: List room metadata
+      operationId: getRooms
+      tags: [Metadata]
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - name: sku
+          in: query
+          required: false
+          schema: { $ref: "#/components/schemas/Sku" }
+          description: Return only the room matching this SKU
+      responses:
+        "200":
+          description: Array of room categories
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/RoomCategory" }
+              examples:
+                snippet:
+                  value:
+                    - sku: double_room
+                      name: { en: "Private Double Ensuite" }
+                      occupancy: 2
+        "400": { $ref: "#/components/responses/Error4xx" }
+        "404": { $ref: "#/components/responses/Error404" }
+        "429": { $ref: "#/components/responses/Error429" }
+        "500": { $ref: "#/components/responses/Error5xx" }
+
+  ####################################
+  #  /api/book
+  ####################################
+  /api/book:
+    post:
+      summary: Create a booking
+      operationId: createBooking
+      tags: [Booking]
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/BookingRequest" }
+            examples:
+              example:
+                value:
+                  sku: double_room
+                  checkin: 2025-06-14
+                  checkout: 2025-06-16
+                  adults: 1
+                  guestName: Ada Lovelace
+                  email: ada@example.net
+      responses:
+        "201":
+          description: Reservation created
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BookingConfirmation" }
+              examples:
+                confirmed:
+                  value: { reservationId: ABC123, status: confirmed }
+        "202":
+          description: Booking accepted but still processing
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/BookingConfirmation" }
+              examples:
+                pending:
+                  value: { reservationId: XYZ987, status: pending }
+        "400": { $ref: "#/components/responses/Error4xx" }
+        "404": { $ref: "#/components/responses/Error404" }
+        "409":
+          description: Duplicate idempotency key
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+              examples:
+                duplicateKey:
+                  value:
+                    {
+                      code: duplicate_request,
+                      message: "Booking already processed for this Idempotency-Key.",
+                    }
+        "429": { $ref: "#/components/responses/Error429" }
+        "500": { $ref: "#/components/responses/Error5xx" }
+
+  ####################################
+  #  /data/rates.json
+  ####################################
+  /data/rates.json:
+    get:
+      summary: Six-month rate calendar for every SKU
+      operationId: getRateCalendar
+      tags: [Rates, Metadata]
+      parameters:
+        - $ref: "#/components/parameters/ApiVersion"
+        - name: sku
+            in: query
+            required: false
+            schema: { $ref: "#/components/schemas/Sku" }
+            description: Filter to one SKU
+        - name: start
+            in: query
+            required: false
+            schema: { type: string, format: date }
+            description: Start date (YYYY-MM-DD)
+        - name: end
+            in: query
+            required: false
+            schema: { type: string, format: date }
+            description: End date (YYYY-MM-DD)  
+      responses:
+        "200":
+          description: JSON object keyed by internal rate id
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items: { $ref: "#/components/schemas/RateEntry" }
+              examples:
+                snippet:
+                  summary: Single rate key example
+                  value:
+                    "433488":
+                      - { date: 2025-05-13, nr: 86.4, flex: 86.4, currency: EUR }
+        "400": { $ref: "#/components/responses/Error4xx" } # ← 4XX now present
+        "429": { $ref: "#/components/responses/Error429" } # ← 4XX now present
+        "500": { $ref: "#/components/responses/Error5xx" }

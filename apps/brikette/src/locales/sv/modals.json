@@ -1,0 +1,161 @@
+{
+  "location": {
+    "title": "Vår plats",
+    "inputLabel": "Ange din nuvarande plats:",
+    "inputPlaceholder": "t.ex. Neapel, Italien eller fullständig adress",
+    "getDirections": "Hämta vägbeskrivning",
+    "justShowMap": "Visa bara karta",
+    "close": "Stäng dialog",
+    "nearbyBusCompact": "≈100 m till närmaste busshållplats"
+  },
+  "contact": {
+    "title": "Kontakta oss",
+    "description": "Vi vill gärna höra från dig! För frågor eller bokningar, kontakta oss via e‑post:",
+    "revealEmail": "Visa e‑postadress",
+    "close": "Stäng dialog",
+    "buttonClose": "Stäng"
+  },
+  "offers": {
+    "close": "Stäng",
+    "title": "Boka direkt och spara",
+    "description": "Tack för att du bokar direkt hos oss! Som tack får du:",
+    "perks": {
+      "discount": "Upp till 10 % rabatt på rumspriset",
+      "breakfast": "Gratis frukost varje morgon",
+      "drinks": "Kostnadsfria välkomstdrycker",
+      "upgrades": "Prioriterade rumsuppgraderingar (vid tillgänglighet)"
+    },
+    "callToAction": "Dra nytta av dessa exklusiva förmåner nu!",
+    "button": "Boka nu"
+  },
+  "booking": {
+    "title": "Boka din vistelse",
+    "subTitle": "Välj datum och preferenser",
+    "close": "Stäng",
+    "checkInLabel": "Incheckning",
+    "checkOutLabel": "Utcheckning",
+    "guestsLabel": "Gäster",
+    "buttonAvailability": "Kontrollera tillgänglighet",
+    "datePlaceholder": "Välj datum",
+    "guestsSingle": "{{count}} vuxen",
+    "guestsPlural": "{{count}} vuxna"
+  },
+  "booking2": {
+    "selectDatesTitle": "Välj datum",
+    "checkInDate": "Incheckningsdatum",
+    "checkOutDate": "Utcheckningsdatum",
+    "adults": "Antal vuxna",
+    "confirm": "Bekräfta",
+    "cancel": "Avbryt"
+  },
+  "facilities": {
+    "title": "Våra faciliteter",
+    "closeButton": "Stäng",
+    "categories": [
+      {
+        "title": "Badrum",
+        "items": [
+          "Toalettpapper",
+          "Handdukar / lakan (tilläggsavgift)",
+          "Toalett",
+          "Dusch",
+          "Hårtork (på begäran)"
+        ]
+      },
+      {
+        "title": "Sovrum & sängkläder",
+        "items": [
+          "Sängkläder ingår",
+          "Läslampa vid varje sovsalssäng"
+        ]
+      },
+      {
+        "title": "Utomhus & utsikt",
+        "items": [
+          "Panoramaterass med havsutsikt",
+          "Solterrass",
+          "Utemöbler",
+          "Picknickområde"
+        ]
+      },
+      {
+        "title": "Komfort på rummet",
+        "items": [
+          "Eluttag nära sängen",
+          "Luftkonditionering",
+          "Värme",
+          "Kakel- / marmorgolv"
+        ]
+      },
+      {
+        "title": "Aktiviteter",
+        "items": [
+          "Vandring (utanför området)",
+          "Kartor för egen rundtur",
+          "Lokala rundtursrekommendationer"
+        ]
+      },
+      {
+        "title": "Mat & dryck",
+        "items": [
+          "Bar på plats",
+          "Kostnadsfri välkomstdryck",
+          "À la carte-frukost",
+          "Snacksservice"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Gratis Wi-Fi i allmänna utrymmen",
+          "Snabbt Wi-Fi på rummen",
+          "Allmänt internetuttag"
+        ]
+      },
+      {
+        "title": "Gästservice",
+        "items": [
+          "Daglig städning",
+          "Conciergedisk",
+          "Bagageförvaring",
+          "Bagageförvaring före incheckning / efter utcheckning",
+          "Förvaringsskåp",
+          "Adapter finns att låna",
+          "Flygplatstransfer (avgift)",
+          "Reception (begränsade tider)",
+          "Cykelparkering"
+        ]
+      },
+      {
+        "title": "Säkerhet",
+        "items": [
+          "Brandsläckare",
+          "Kameraövervakning i gemensamma utrymmen",
+          "Nyckelkortstillträde",
+          "Elektroniska dörrlås",
+          "Personliga skåp"
+        ]
+      },
+      {
+        "title": "Allmänt",
+        "items": [
+          "Endast vuxna (18–39 år)",
+          "Rökfritt i hela byggnaden",
+          "Rökfria rum"
+        ]
+      },
+      {
+        "title": "Språk som talas",
+        "items": [
+          "Engelska",
+          "Spanska",
+          "Italienska"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "title": "Välj språk",
+    "close": "Stäng"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "deals": {
+    "loyaltyCta": {
+      "heading": "Extra előnyök visszatérő vendégeinknek",
+      "body": "Csatlakozz közvetlen foglalási listánkhoz, hogy előfoglalási ajánlatokat, szezonális utazási tippeket és egy további 5%-os kedvezménykódot kapj a következő foglalásodhoz a weboldalunkon.",
+      "button": "Iratkozz fel az előnyökért"
+    }
+  },
+  "about": {
+    "mission": {
+      "heading": "Küldetésünk",
+      "paragraphs": [
+        "1995 óta a Hostel Brikette segít az utazóknak felfedezni Positanót elérhető költségvetéssel – anélkül, hogy le kellene mondaniuk az Amalfi-part panorámás kilátásáról.",
+        "Első a transzparencia: tiszta árak rejtett díjak nélkül, egyértelmű szabályok és helyszíni csapat, amely kész segíteni módosításoknál vagy különleges kéréseknél.",
+        "Helyi csapatunk megosztja a közlekedési terveket, tippeket ad a 23 kg / 50 lb poggyász lépcsőzés közbeni kezeléséhez, és programötleteket kínál, hogy minden percet élvezhess a parton."
+      ]
+    },
+    "values": {
+      "heading": "Értékeink",
+      "items": [
+        {
+          "title": "Korrekt, közvetlen és átlátható",
+          "body": "Világos árakat és szabályokat teszünk közzé, a legjobb ár-érték arányt ajánljuk, rejtett díjak nélkül."
+        },
+        {
+          "title": "Helyi tudás, szabadon megosztva",
+          "body": "A kompoktól az ösvényekig gyakorlati tanácsokkal segítünk, hogy az idődet és a keretedet is jól használd."
+        },
+        {
+          "title": "Meleg vendégszeretet",
+          "body": "Ünnepeljük a hostelezés közösségi hangulatát: barátságos bár, közös terek és olyan csapat, amely emlékszik a tervedre."
+        }
+      ]
+    }
+  },
+  "careers": {
+    "hiringCta": {
+      "heading": "Dolgozz velünk a teraszon",
+      "body": "Csatlakozz egy kis csapathoz, amely a személyiséget, a kezdeményezőkészséget és a vendéggondoskodást értékeli. Szállás, reggeli és tisztességes juttatások járnak.",
+      "button": "Jelentkezz most"
+    }
+  },
+  "experiences": {
+    "meetTheHosts": {
+      "heading": "Ismerd meg a terasz csapatát",
+      "intro": "Ők gondoskodnak róla, hogy a terasz mindig pezsegjen, naplementés eseményeket rendeznek, túrákat vezetnek, és még érkezésed előtt megválaszolják a kérdéseidet.",
+      "hosts": [
+        {
+          "name": "Chiara",
+          "role": "Élménykoordinátor",
+          "bio": "Ő hangolja össze a naplemente bárt, bemutatja a helyi termelőket, és gondoskodik róla, hogy minden kóstolón legyen valami mindenki számára. Ha ünnepelsz vagy privát eseményt tervezel, keresd őt a teraszon 18:00 után.",
+          "imageAlt": "Chiara spritzet szolgál fel a terasz bárjában.",
+          "availability": "Chiara a legtöbb estén a bárban megtalálható, és elérhető a digitális concierge-en keresztül is."
+        },
+        {
+          "name": "Luca",
+          "role": "Helyi idegenvezető",
+          "bio": "Praianóban született, és ismeri az Amalfi-part minden ösvényét. Luca segít választani az Istenek ösvénye, a napfelkeltés hajókirándulások vagy a ravellói egynapos kiruccanások között – kész közlekedési tervekkel.",
+          "imageAlt": "Luca az Amalfi-partról látható kilátópontról a horizont felé mutat.",
+          "availability": "Reggelente a recepción találod, vagy foglalj túrahelyet a concierge-en keresztül."
+        },
+        {
+          "name": "Mariana",
+          "role": "Digitális concierge",
+          "bio": "WhatsAppon és Messengeren válaszol kompfigyelmeztetésekkel, éttermi ajánlásokkal és utolsó pillanatos emlékeztetőkkel. Ha változik az időjárás, stresszmentes alternatívákat küld.",
+          "imageAlt": "Telefonképernyő, amelyen Mariana, a digitális concierge beszélgetése látszik.",
+          "availability": "Bármikor írhatsz neki – valós időben egyeztet a recepciós csapattal."
+        }
+      ]
+    }
+  }
+}

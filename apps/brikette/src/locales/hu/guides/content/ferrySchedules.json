@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Mikor járnak a kompok, hol találsz valós idejű menetrendet, szezonális különbségek, társaságok és beszállási tippek."
+  },
+  "linkLabel": "Ferry schedules for Positano",
+  "intro": [
+    "Kompmenetrendek Positanóba és onnan: hol nézd az élő indulásokat, hogyan változik a szezon, és hogyan készíts tartalék tervet."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "Mikor járnak a kompok",
+      "body": [
+        "A főszezon nagyjából áprilistól októberig tart, a legsűrűbb járatok május közepétől szeptemberig közlekednek; télen ritka és időjárásfüggő a szolgáltatás.",
+        "Elő- és utószezonban gyakran rövidítik az első és utolsó indulást – erősíts rá az előző este a menetrendre."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Élő frissítések figyelése",
+      "body": [
+        "Használd az üzemeltetők weboldalait és appjait (Travelmar, NLG, Alilauro, Positano Jet), valamint a kikötői kijelzőket a késések és kapuváltások követésére.",
+        "Készíts képernyőfotót a menetrendről, és kapcsold be az e-mail/SMS értesítéseket, hogy hirtelen időjárási riasztáskor is megkapd az információkat akkor is, ha nincs olasz adatkereted."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Jegyek és biztonsági tartalék",
+      "body": [
+        "Csúcsszezonban órákkal indulás előtt elfogynak a helyek – vásárolj online vagy előző nap, és érkezz 30 perccel korábban személyivel és csomaggal a címkézéshez.",
+        "Hagyj mozgásteret az utolsó csatlakozás előtt, hogy durva tenger esetén azonnal buszra vagy taxira válthass."
+      ]
+    }
+  ],
+  "tips": [
+    "Figyeld a tengeri előrejelzést: 20 csomó feletti szél vagy 1,5 méternél nagyobb hullám gyakran járattörlést jelent.",
+    "Ha kikötőt kell váltanod, előre nézd meg a helyi buszok menetrendjét, hogy stresszmentes maradjon az átszállás."
+  ],
+  "faqs": [
+    {
+      "q": "Mikor teszik közzé a nyári menetrendet?",
+      "a": [
+        "A legtöbb üzemeltető február és március között publikálja a főszezoni menetrendet; az őszi frissítések jellemzően augusztus végén érkeznek."
+      ]
+    },
+    {
+      "q": "Hogyan tudom megerősíteni aznapi járattörlést?",
+      "a": [
+        "Frissítsd az üzemeltető weboldalát vagy közösségi felületeit, és nézd meg a kikötőben kihelyezett értesítéseket; a személyzet hangosbemondón is tájékoztat.",
+        "Legyen kéznél a SITA busz menetrendje vagy egy taxis kontakt, hogy azonnal módosíthasd az útvonalat."
+      ]
+    },
+    {
+      "q": "Vihetek nagy csomagot a fedélzetre?",
+      "a": [
+        "Igen, de a túlméretes csomagokra kisebb felárat számolhatnak; érkezz időben, hogy a személyzet megjelölhesse és biztonságosan elhelyezhesse, az értékeidet pedig tartsd magadnál."
+      ]
+    }
+  ]
+}

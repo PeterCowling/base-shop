@@ -167,6 +167,9 @@ function runCli(args: string[]) {
       if (p === "./createShop/write") {
         return { writeShop: jest.fn().mockResolvedValue(undefined) };
       }
+      if (p === "./runtime") {
+        return { ensureRuntime: jest.fn() };
+      }
       if (p.includes("@acme/platform-core/createShop")) {
         if (p.endsWith("listProviders")) {
           return {

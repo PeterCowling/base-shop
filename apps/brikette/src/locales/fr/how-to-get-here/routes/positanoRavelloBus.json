@@ -1,0 +1,94 @@
+{
+  "arrive": {
+    "items": [
+      "Ravello domine Amalfi ; de nombreux sites se regroupent autour de la Piazza Duomo.",
+      "Suivez la signalisation locale pour rejoindre votre hébergement ou la place principale.",
+      "En cas d'arrivée tardive, envisagez un taxi depuis Amalfi si les correspondances sont limitées."
+    ],
+    "title": "Arriver à Ravello"
+  },
+  "buyTickets": {
+    "items": [
+      "Achetez vos billets à l'intérieur du Bar Internazionale ou dans un tabac proche.",
+      "Vous aurez besoin de billets couvrant : Positano → Amalfi et Amalfi → Ravello.",
+      "On pourra vous vendre un ou deux billets selon la formule tarifaire disponible."
+    ],
+    "title": "Acheter vos billets de bus"
+  },
+  "change": {
+    "items": [
+      "Profitez-en pour visiter Amalfi en attendant le prochain bus.",
+      "Revenez vers la zone de la gare routière pour embarquer dans un bus vers Ravello (lignes 5110/5120).",
+      "Validez votre second billet en montant."
+    ],
+    "title": "Correspondance à Amalfi"
+  },
+  "cta": {
+    "afterLink": "pour les ferries, taxis et itinéraires combinés.",
+    "beforeLink": "Besoin de toutes les options de transport ? Ouvrez la",
+    "eyebrow": "Conseil",
+    "linkLabel": "vue d'ensemble Comment venir"
+  },
+  "hero": {
+    "description": "Voyagez de Positano à Ravello avec une simple correspondance à Amalfi. Ce guide explique où acheter les billets SITA, comment lire l'horaire et ce qu'il faut savoir lors du changement à Amalfi — ainsi que l'itinéraire pour rejoindre l'arrêt de bus de Positano depuis l'Hostel Brikette.",
+    "eyebrow": "Guide de voyage de l'Hostel Brikette",
+    "title": "Positano vers Ravello – via Amalfi en bus"
+  },
+  "journey": {
+    "body": "Comptez environ 1,5 à 2,5 heures selon les correspondances. Prenez d'abord le bus SITA de Positano (Chiesa Nuova) vers Amalfi, puis changez pour un bus SITA à destination de Ravello.",
+    "title": "Aperçu du trajet"
+  },
+  "meta": {
+    "description": "Itinéraire détaillé de Positano à Ravello via Amalfi avec les bus SITA : conseils billets, lecture des horaires, détails sur l'arrêt Chiesa Nuova et recommandations pour la correspondance.",
+    "title": "Positano vers Ravello en bus | Hostel Brikette"
+  },
+  "positanoStop": {
+    "alt": "Arrêt SITA de Positano (Chiesa Nuova) devant le Bar Internazionale",
+    "caption": "Arrivez quelques minutes en avance pour vous assurer une place ; les bus se remplissent vite en été.",
+    "items": [
+      "L'arrêt SITA le plus proche est Positano (Chiesa Nuova) sur la Via G. Marconi.",
+      "Il se situe à environ 140 mètres (490 pieds) de l'entrée de l'auberge.",
+      "Vous attendrez devant le café/bar appelé « Bar Internazionale »."
+    ],
+    "title": "Arrêt de bus Positano (Chiesa Nuova)"
+  },
+  "sita": {
+    "items": [
+      "Les bus de la côte amalfitaine sont exploités par SITA (SITA Sud Srl).",
+      "Achetez vos billets dans un kiosque ou un tabac (tabacchi) avant de monter.",
+      "Gardez votre billet à portée de main ; les conducteurs le valident/tamponnent ou le déchirent à la montée.",
+      "Attendez-vous à de l'affluence en haute saison ; arrivez un peu en avance pour faire la queue."
+    ],
+    "title": "Bus SITA et billets"
+  },
+  "timetable": {
+    "afterLink": ".",
+    "beforeLink": "Vous prendrez un bus jusqu'à Amalfi et y ferez la correspondance pour Ravello. Consultez les derniers horaires sur",
+    "linkHref": "https://www.positano.com/en/bus-schedule",
+    "linkLabel": "Positano.com (aperçu de l'horaire SITA)",
+    "readingHeading": "Lire l'horaire",
+    "tips": [
+      "Les lignes de la première colonne énumèrent chaque arrêt de la ligne.",
+      "Les colonnes correspondent aux trajets programmés identifiés par des lettres.",
+      "Vous voyagez du lundi au samedi ? Utilisez les colonnes « F » et « G ».",
+      "Vous voyagez un dimanche ou un jour férié ? Utilisez les colonnes « G » et « H »."
+    ],
+    "title": "Horaires"
+  },
+  "toAmalfi": {
+    "items": [
+      "Traversez la route en face du Bar Internazionale jusqu'à l'arrêt en direction d'Amalfi.",
+      "Faites la queue et montez dans le bus indiquant Amalfi ; validez votre billet.",
+      "Descendez à la gare routière d'Amalfi pour votre correspondance vers Ravello."
+    ],
+    "title": "Prendre le bus vers Amalfi"
+  },
+  "walk": {
+    "items": [
+      "Sortez de l'auberge, descendez les marches jusqu'à la route principale et tournez à gauche.",
+      "Continuez le long de la Via G. Marconi sur environ 100 mètres (330 pieds).",
+      "Le Bar Internazionale sera sur votre gauche ; l'arrêt SITA est juste devant."
+    ],
+    "title": "Marcher de l'auberge jusqu'à l'arrêt"
+  }
+}

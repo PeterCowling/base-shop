@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "invalidGuideKey": "Érvénytelen útikalauz-kulcs",
+    "missingMetaBlock": "Hiányzó metablokk",
+    "metaTitleRequired": "A Meta.title értékének nem üres karakterláncnak kell lennie",
+    "metaDescriptionRequired": "A Meta.description értékének nem üres karakterláncnak kell lennie"
+  }
+}

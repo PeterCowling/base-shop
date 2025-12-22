@@ -1,0 +1,99 @@
+{
+  "seo": {
+    "title": "Hogyan jutsz el Positanóba költséghatékonyan",
+    "description": "A legolcsóbb útvonalak a nápolyi repülőtérről Positanóba transzferbusszal és SITA járatokkal, részletesen lépésekkel és árakkal."
+  },
+  "linkLabel": "Hogyan juthatsz el Positanóba költséghatékonyan",
+  "intro": "A fordítás folyamatban van.",
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Miért működik ez az útvonal",
+      "body": [
+        "Egy shuttle (~€10) + egy SITA busz (~€2.10) kevesebb mint €13-ból kijön, jóval olcsóbb, mint a kompak vagy taxik.",
+        "Mindkét járat a Chiesa Nuova közelében tesz le, így elkerülöd a hosszú positanoi lépcsősorokat csomaggal."
+      ]
+    },
+    {
+      "id": "before-you-go",
+      "title": "Indulás előtt",
+      "body": [
+        "Főszezonban foglald előre a Curreri shuttle-t, vagy vedd meg a jegyet az érkezési szint előtt álló pultnál – hagyj 15 perc pufferidőt landolás után.",
+        "Vigyél aprót a SITA jegyekhez Sorrentóban; a Corso Italia menti kioszkok és dohányboltok árulják, és késő este nem mindig fogadnak el nagy címletet."
+      ]
+    },
+    {
+      "id": "timing-backup",
+      "title": "Időzítés és B terv",
+      "body": [
+        "Jegyezd fel a nap utolsó Curreri-indulását (nyáron általában ~21:30, szezonon kívül korábban), és igazítsd ehhez a járatot.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "mapTitle": "Interaktív térkép",
+  "stepByStepTitle": "Lépésről lépésre",
+  "steps": [
+    {
+      "name": "A fordítás folyamatban van.",
+      "text": "Lépj ki az érkezési szintre és szállj fel a Curreri shutllere Sorrentóba. Jegy ~€10; menetidő ~1 óra 15 perc."
+    },
+    {
+      "name": "A fordítás folyamatban van.",
+      "text": "Vásárolj SITA CIS jegyet (~€2.10). Szállj fel az Amalfi felé tartó buszra és szállj le Positano Chiesa Nuova megállónál."
+    },
+    {
+      "name": "A fordítás folyamatban van.",
+      "text": "A Chiesa Nuova megállótól ~80 méter lefelé (lépcső nélkül) éred el a hostelt."
+    }
+  ],
+  "alternativesTitle": "Alternatívák",
+  "trainTitle": "A fordítás folyamatban van.",
+  "train": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "ferryTitle": "A fordítás folyamatban van.",
+  "ferry": [
+    "Alibus → Molo Beverello, komp Positanóba (csak nyáron; €20–€38 az üzemeltetőtől függően).",
+    "Élő menetrendhez nézd meg kompútmutatónkat."
+  ],
+  "costsTitle": "Költségek egy pillantásra",
+  "costs": [
+    "Shuttle (NAP → Sorrento): ~€10",
+    "A fordítás folyamatban van.",
+    "Teljes költségvetés-barát út: ~€12.10"
+  ],
+  "faq": [
+    {
+      "q": "Mi a legolcsóbb útvonal?",
+      "a": "A fordítás folyamatban van."
+    },
+    {
+      "q": "Hol vehetek buszjegyet?",
+      "a": "Kioszkokban és dohányboltokban az állomás közelében; felszállás előtt vedd meg és érvényesítsd a buszon."
+    },
+    {
+      "q": "Mennyi ideig tart az út?",
+      "a": "Kb. 2,5 óra, ha a csatlakozások zökkenőmentesek."
+    }
+  ],
+  "ferryCta": "Szeretnél inkább komppal menni nyáron? Nézd meg dedikált komp útmutatónkat és az 'Érkezés komppal' segítségcikkünket a kikötői tippekért és akadálymentességi tudnivalókért.",
+  "mapIframeTitle": "A fordítás folyamatban van.",
+  "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d768989.930376533!2d14.43034800958525!3d40.7530661290345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e3!4m5!1s0x133b089b2b18a3e3%3A0x4bafc3f58a62a2a2!2sNaples%20International%20Airport%20(NAP)!3m2!1d40.8860031!2d14.2907817!4m5!1s0x133b98d2a1b9f60f%3A0x54a8f4e7a3413732!2sHostel%20Brikette%2C%20Via%20Guglielmo%20Marconi%2C%20358%2C%2084017%20Positano%20SA!3m2!1d40.6308766!2d14.487226!5e0!3m2!1sen!2sit!4v1700000000000",
+  "mapReferrerPolicy": "A fordítás folyamatban van.",
+  "howTo": {
+    "totalTime": "PT2H30M",
+    "estimatedCost": {
+      "currency": "EUR",
+      "value": "12.10"
+    }
+  },
+  "sectionIds": {
+    "map": "reach-budget-map",
+    "steps": "reach-budget-steps",
+    "alternatives": "A fordítás folyamatban van.",
+    "costs": "reach-budget-costs",
+    "tips": "reach-budget-tips"
+  }
+}

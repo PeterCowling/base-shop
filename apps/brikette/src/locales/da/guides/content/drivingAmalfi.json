@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Kørsel på Amalfikysten: tips til roadtrip",
+    "description": "Trafikregler, ZTL-zoner, parkeringsrealiteter, skiftedage for nummerplader, og hvornår du bør lade bilen stå."
+  },
+  "linkLabel": "Kørsel på Amalfikysten: tips til roadtrip",
+  "intro": [
+    "At køre langs Amalfikysten er både spektakulært og krævende – vejene er smalle, reglerne ændrer sig efter sæson, og parkering er en mangelvare.",
+    "Brug tipsene her til at beslutte, hvornår du skal køre, hvor du kan parkere, og hvornår bilen bør blive stående."
+  ],
+  "sections": [
+    {
+      "id": "rules",
+      "title": "Regler og restriktioner",
+      "body": [
+        "Tjek ZTL-zoner, ugeskemaer for skiftende nummerplader og breddebegrænsninger, før du kører – sommerweekender låser ofte større biler ude fra nøglestrækninger.",
+        "Hold farten nede, brug hornet i blinde sving ligesom de lokale, og vær opmærksom på scootere, der smutter forbi."
+      ]
+    },
+    {
+      "id": "parking",
+      "title": "Parkeringsrealiteter",
+      "body": [
+        "Reserver private garager i Positano/Amalfi, og afklar åbningstider, højdebegrænsning og om der betales med kort eller kontant depositum.",
+        "Regn med €35–€60 pr. døgn i højsæsonen; gadeparkering er sjælden og håndhæves strengt."
+      ]
+    },
+    {
+      "id": "when-to-park",
+      "title": "Hvornår bilen bør stå",
+      "body": [
+        "Til korte ophold: parker i Sorrento eller Salerno og afslut med bus eller færge for at undgå stress og udgifter i landsbyerne.",
+        "Drop bilen under storme, festivaler eller sene hjemture – vejlukninger og træthed gør offentlig transport eller forudbestilt transfer tryggere."
+      ]
+    }
+  ],
+  "tips": [
+    "Medbring både kontaktløst betalingskort og små sedler; nogle garager tager depositum for fjernbetjeninger eller adgang uden for åbningstid.",
+    "Efter vingårdsbesøg eller sene koncerter er taxi/transfer bedre end at køre træt på klippeveje."
+  ],
+  "faqs": [
+    {
+      "q": "Behøver jeg en særlig tilladelse?",
+      "a": [
+        "Nej, men respekter nummerplade-restriktioner og ZTL’er – tjek Prefettura eller kommuneopslag, før du kører ind."
+      ]
+    },
+    {
+      "q": "Kan jeg parkere langs vejen?",
+      "a": [
+        "Kun i tydeligt markerede båse; blokering af busstop eller sving giver øjeblikkelige bøder eller bortslæbning."
+      ]
+    }
+  ]
+}

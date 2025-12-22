@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Busz + átszállás, komp + busz kombók és privát transzferek Ravellóba."
+  },
+  "linkLabel": "Positano to Ravello: how to go",
+  "intro": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "toc": [
+    {
+      "href": "#via-amalfi",
+      "label": "Via Amalfi"
+    },
+    {
+      "href": "#gardens",
+      "label": "Gardens & villas"
+    },
+    {
+      "href": "#timing",
+      "label": "Timing & returns"
+    }
+  ],
+  "sections": [
+    {
+      "id": "via-amalfi",
+      "title": "Via Amalfi",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "gardens",
+      "title": "Gardens & villas",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & returns",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "tipsTitle": "Tips",
+  "tips": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Positano → Amalfi",
+        "text": "A fordítás folyamatban van."
+      },
+      {
+        "name": "Amalfi → Ravello",
+        "text": "A fordítás folyamatban van."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "A fordítás folyamatban van."
+    ],
+    "toc": [
+      {
+        "href": "#via-amalfi",
+        "label": "Via Amalfi (bus + bus)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry to Amalfi (seasonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "via-amalfi",
+        "title": "Via Amalfi (bus + bus)",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry to Amalfi (seasonal)",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      }
+    ],
+    "tipsTitle": "Tips",
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "A fordítás folyamatban van.",
+        "a": [
+          "A fordítás folyamatban van."
+        ]
+      }
+    ]
+  }
+}

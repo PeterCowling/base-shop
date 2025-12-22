@@ -18,6 +18,30 @@
         "src/*",
         "dist/*"
       ],
+      "@ui": [
+        "../../packages/ui/dist/index.d.ts",
+        "../../packages/ui/src/index.ts"
+      ],
+      "@ui/*": [
+        "../../packages/ui/dist/*",
+        "../../packages/ui/src/*"
+      ],
+      "@acme/ui": [
+        "../../packages/ui/dist/index.d.ts",
+        "../../packages/ui/src/index.ts"
+      ],
+      "@acme/ui/*": [
+        "../../packages/ui/dist/*",
+        "../../packages/ui/src/*"
+      ],
+      "@i18n": [
+        "../../packages/i18n/dist/index.d.ts",
+        "../../packages/i18n/src/index.ts"
+      ],
+      "@i18n/*": [
+        "../../packages/i18n/dist/*",
+        "../../packages/i18n/src/*"
+      ],
       "@acme/pipeline-engine": [
         "../../packages/pipeline-engine/src/index.ts",
         "../../packages/pipeline-engine/dist/index.d.ts"

@@ -6,8 +6,15 @@ const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
 const REDIS_URL = "https://redis.example.com";
 const REDIS_TOKEN = "redis-token-32-chars-long-string!";
+const OAUTH_ISSUER = "https://auth.example.com/realms/base-shop";
+const OAUTH_REDIRECT_ORIGIN = "https://shop.example.com";
 
-const base = { NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET };
+const base = {
+  NEXTAUTH_SECRET: NEXT_SECRET,
+  SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
+};
 
 const selectStore = (env: any) =>
   env.SESSION_STORE ??
@@ -125,6 +132,8 @@ describe("provider selection", () => {
     const env = authEnvSchema.parse({
       ...base,
       AUTH_PROVIDER: "oauth",
+      OAUTH_ISSUER,
+      OAUTH_REDIRECT_ORIGIN,
       OAUTH_CLIENT_ID: "id",
       OAUTH_CLIENT_SECRET: NEXT_SECRET,
     });

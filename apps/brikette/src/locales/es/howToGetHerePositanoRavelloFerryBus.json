@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Positano a Ravello en ferry y autobús | Hostel Brikette",
+    "description": "Paso a paso desde Positano hasta Ravello: camina al puerto, toma el ferry a Amalfi y luego el autobús SITA a Ravello; incluye billetes, tiempos y consejos para un enlace sin contratiempos."
+  },
+  "hero": {
+    "eyebrow": "Guía de viaje del Hostel Brikette",
+    "title": "Positano a Ravello — Ferry y luego autobús (vía Amalfi)",
+    "description": "Utiliza esta guía para viajar de Positano a Ravello combinando un ferry panorámico hasta Amalfi y un autobús SITA que sube a Ravello. Cubre el camino hasta el puerto, consejos sobre billetes, dónde hacer el transbordo en Amalfi y qué esperar al llegar a Ravello."
+  },
+  "tip": {
+    "label": "Consejo",
+    "body": "¿Necesitas otras opciones de transporte? Abre la <Link>guía general de Cómo llegar</Link> para ver autobuses, traslados desde el aeropuerto e itinerarios combinados."
+  },
+  "overview": {
+    "title": "Resumen del viaje",
+    "points": [
+      "Ruta: Positano → Amalfi en ferry y luego Amalfi → Ravello en autobús SITA.",
+      "Reserva tiempo adicional en temporada alta para las filas y conexiones.",
+      "Consulta los horarios en tiempo real de ferris y autobuses el día del viaje."
+    ]
+  },
+  "walk": {
+    "title": "Camina hasta el puerto de Positano",
+    "intro": "Puedes seguir un recorrido de escaleras muy utilizado desde el hostel hasta Spiaggia Grande. Si llevas equipaje pesado, considera enviar las maletas con el servicio de porteadores y caminar ligero.",
+    "steps": [
+      "Sal del Hostel Brikette, baja los escalones hasta la carretera principal y gira a la izquierda (Via G. Marconi).",
+      "Camina algo más de 100 m hasta el giro a la derecha (tabacchi en la esquina).",
+      "Compra un billete de autobús Amalfi → Ravello en el tabacchi si te resulta conveniente.",
+      "Continúa cuesta abajo; en la primera curva cerrada, toma el atajo de escaleras fuera de la carretera.",
+      "Sigue las escaleras y senderos cuesta abajo, cruzando la carretera donde se indica.",
+      "Al final, gira a la derecha, pasa por el arco y continúa ~50 m hasta el puerto."
+    ],
+    "link": "¿Prefieres una guía con mapa? Consulta <Link>Chiesa Nuova → Playa (menos escaleras)</Link>."
+  },
+  "ferry": {
+    "title": "Compra los billetes del ferry",
+    "notes": [
+      "En el puerto, compara salidas y precios en las taquillas de los operadores.",
+      "Operadores habituales: Travelmar y Lucibello (confirma la próxima salida a Amalfi).",
+      "Llega 15–20 minutos antes en verano para embarcar con calma."
+    ],
+    "resources": "Consulta los horarios y precios más recientes en <TravelmarLink>Travelmar</TravelmarLink> y <PositanoLink>Positano.com – Horarios de ferris</PositanoLink>."
+  },
+  "transfer": {
+    "title": "Transbordo en Amalfi",
+    "notes": [
+      "Desembarca en Amalfi y camina una corta distancia hasta la zona de paradas de autobús.",
+      "Si no compraste el billete en Positano, adquiere ahora uno de Amalfi → Ravello.",
+      "Haz fila para el autobús con destino a Ravello; las rutas suelen ser 5110/5120 (verifica la pantalla)."
+    ],
+    "resources": "Consulta las rutas y horarios de SITA en <SitaLink>Positano.com (resumen del horario de SITA)</SitaLink>."
+  },
+  "arrival": {
+    "title": "Llegada a Ravello",
+    "notes": [
+      "Ravello se alza sobre Amalfi; muchos lugares de interés se concentran alrededor de Piazza Duomo.",
+      "Sigue la señalización local hasta tu alojamiento desde el punto de descenso.",
+      "Si llegas tarde o hay largas esperas, considera un taxi desde Amalfi en lugar de esperar."
+    ]
+  }
+}

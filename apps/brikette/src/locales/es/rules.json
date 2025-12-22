@@ -1,0 +1,15 @@
+{
+  "slug": "reglas-politicas",
+  "meta": {
+    "title": "Normas y Políticas del Hostel – Positano Hostel",
+    "description": "Siga nuestras reglas básicas, incluida la política de no alcohol externo y las directrices de deber de cuidado, para garantizar la seguridad de todos y disfrutar de su estancia."
+  },
+  "headings": {
+    "alcoholPolicy": "Política de No Alcohol Externo",
+    "dutyOfCare": "Tu Deber de Cuidado"
+  },
+  "content": {
+    "alcoholPolicy": "Somos un establecimiento con licencia, por lo que no está permitido introducir ni consumir alcohol comprado fuera en ninguna parte del hostel. Si llegas con alcohol externo, nuestro equipo lo guardará de forma segura y lo devolverá al hacer el check-out (o cuando confirmes que lo consumirás fuera). La decisión del equipo es definitiva. Traer o beber alcohol externo cancelará tu reserva de inmediato, se considerará No-Show y no habrá reembolso.",
+    "dutyOfCare": "Mientras estés con nosotros compartes el hostel con otros huéspedes, personal y proveedores. Por favor:\n• Respeta la privacidad y el espacio personal de todos.\n• Cuida de no dañar las instalaciones ni las pertenencias ajenas.\n• Mantén el ruido a un nivel razonable y ayuda a conservar un ambiente tranquilo y amigable.\n• Sigue cualquier regla o instrucción adicional del personal.\nSi ignoras estos deberes, podremos cancelar tu reserva de inmediato (registrada como No-Show), pedirte que abandones el hostel sin reembolso y hacerte responsable de multas, gastos legales, daños reputacionales u otros costos. Cualquier actividad ilegal será reportada de inmediato a las autoridades locales."
+  }
+}

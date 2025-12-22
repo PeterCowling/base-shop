@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "Hostel Brikette - Bar-meny (2025)",
+    "description": "Spritzes, cocktails, viner, øl, blandede drinker, skudd og gelato."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Bar-meny, 2025",
+    "hours": "Åpne hver dag (se bar i timevis)"
+  },
+  "intro": {
+    "summary": "Fullt barvalg med lokale favoritter og klassiske serveringer.",
+    "viewFullMenuButton": "Vis full bar-meny"
+  },
+  "sections": {
+    "spritzFrozen": {
+      "title": "Spritz & Frozen Cocktails"
+    },
+    "houseWine": {
+      "title": "Husvin"
+    },
+    "beer": {
+      "title": "Øl"
+    },
+    "vodka": {
+      "title": "Vodka Mixed Drinks",
+      "note": "Prisen inkluderer en mikser av tonic, cola brus, cola null eller sprite."
+    },
+    "rum": {
+      "title": "Rum blandede drinker",
+      "note": "Velg rom og gi oss beskjed hvis du vil ha en koffeinmikser til. Kaffe kan være islagt eller varm, som et espresso-skudd eller lang/Americano."
+    },
+    "gin": {
+      "title": "Gin Mixed Drinks",
+      "note": "Serveres med Schweppes tonic vann, over flasset is og pyntet med deilig Amalfi-kyst sitron."
+    },
+    "whisky": {
+      "title": "Whisky",
+      "note": "Velg fra whiskyområdet vårt, og gi oss beskjed hvis du trenger is, vann eller en koffeinmikser. Kaffe kan være islagt eller varm, som et espresso-skudd eller lang/Americano."
+    },
+    "shots": {
+      "title": "Skudd"
+    },
+    "gelato": {
+      "title": "Gelato"
+    }
+  },
+  "items": {
+    "aperolSpritz": {
+      "name": "Aperol Spritz",
+      "note": "Den klassiske italienske Spritz, servert med flakert is."
+    },
+    "limoncelloSpritz": {
+      "name": "Limoncello Spritz",
+      "note": "En Amalfi Coast-spesialitet, servert med flakert is."
+    },
+    "hugoSpritz": {
+      "name": "Hugo Spritz",
+      "note": "Glitrende vin, hellet over mynte, kalk og elderblomsterjuice. Servert med flaket is."
+    },
+    "rossiniSpritz": {
+      "name": "Rossini Spritz",
+      "note": "Glitrende vin strømmet over jordbærsaft. Servert med flaket is."
+    },
+    "lemonStrawberryDaiquiri": {
+      "name": "Sitron eller jordbær Daiquiri"
+    },
+    "lemonStrawberryMargarita": {
+      "name": "Sitron eller jordbær Margarita",
+      "note": "Jordbær-eller sitronsaft med tequila, cointreau og is. Ferdig i den klassiske Margarita-stilen."
+    },
+    "lemonDropMartini": {
+      "name": "Sitron drop martini",
+      "note": "Nypresset sitronsaft ristet til Absolut Vodka, Cointreau og Ice."
+    },
+    "redWhiteGlass": {
+      "name": "Rødt og hvitt ved glasset"
+    },
+    "redWhiteBottle": {
+      "name": "Rødt og hvitt ved flasken"
+    },
+    "proseccoGlass": {
+      "name": "Glass Prosecco"
+    },
+    "nastro330": {
+      "name": "Nastro, 330ml"
+    },
+    "nastro660": {
+      "name": "Nastro, 660ml"
+    },
+    "peroni330": {
+      "name": "Peroni, 330 ml"
+    },
+    "peroni660": {
+      "name": "Peroni, 660 ml"
+    },
+    "skyy": {
+      "name": "Skyy"
+    },
+    "absolut": {
+      "name": "Absolut"
+    },
+    "smirnoff": {
+      "name": "Smirnoff"
+    },
+    "greyGoose": {
+      "name": "Grå gås"
+    },
+    "pampero": {
+      "name": "Pampero"
+    },
+    "bacardiSuperior": {
+      "name": "Bacardi Superior"
+    },
+    "captainMorgan": {
+      "name": "Kaptein Morgan"
+    },
+    "angosturaReserva": {
+      "name": "Angostura Reserva"
+    },
+    "beefeater": {
+      "name": "Beefeater"
+    },
+    "bombaySapphire": {
+      "name": "Bombay Sapphire"
+    },
+    "tanqueray": {
+      "name": "Tanqueray"
+    },
+    "hendricks": {
+      "name": "Hendrick's"
+    },
+    "jwRed": {
+      "name": "Johnnie Walker Red Label (blandet Scotch)"
+    },
+    "jameson": {
+      "name": "Jameson (irsk)"
+    },
+    "jackDaniels": {
+      "name": "Jack Daniels gamle nr.07 (sur mos)"
+    },
+    "wildTurkey": {
+      "name": "Wild Turkey (Bourbon)"
+    },
+    "chivas12": {
+      "name": "Chivas Regal 12 år gammel (blandet Scotch)"
+    },
+    "glenfiddich12": {
+      "name": "Glenfiddich 12 år gammel (single malt)"
+    },
+    "joseCuervoSilver": {
+      "name": "Jose Cuervo Tequila, sølv",
+      "note": "Serveres rett opp med sitron og salt, som en tequila soloppgang, eller med brus/sprite."
+    },
+    "limoncelloShot": {
+      "name": "Limoncello",
+      "note": "En klassisk sørlig italiensk drink, servert rett opp."
+    },
+    "oneScoop": {
+      "name": "1 Scoop"
+    },
+    "twoScoops": {
+      "name": "2 Scoops"
+    },
+    "threeScoops": {
+      "name": "3 Scoops",
+      "note": "Velg mellom sitron, sjokolade, vanilje og hasselnøttsmaker."
+    }
+  },
+  "disclaimer": "Menyelementer og priser kan endre seg. Bekreft i baren."
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Local Legends & Folklore of the Amalfi Coast",
+    "description": "Popular tales from around the coast plus where to see their traces."
+  },
+  "linkLabel": "Lendas e folclore da Costa Amalfitana",
+  "intro": [
+    "Mergulhe nas lendas e tradições da Costa Amalfitana que moldam festivais, estátuas e expressões locais."
+  ],
+  "sections": [
+    {
+      "id": "saint",
+      "title": "São André",
+      "body": [
+        "A Catedral de Amalfi guarda relíquias de São André; os moradores acreditam que ele acalma tempestades e protege os pescadores.",
+        "Em 27 de junho e 30 de novembro, procissões levam a imagem pelas ruas com fogo de artifício e bandas."
+      ]
+    },
+    {
+      "id": "sirens",
+      "title": "Sereias de Li Galli",
+      "body": [
+        "O mito diz que as ilhas Li Galli atraíam marinheiros com o canto; hoje, passeios de barco contam a lenda ao contornar os ilhéus privados.",
+        "Ouça referências a Partênope e às sereias quando visitar Nápoles — os mitos das regiões estão ligados."
+      ]
+    },
+    {
+      "id": "traditions",
+      "title": "Tradições vivas",
+      "body": [
+        "A Luminaria de Praiano e as bênçãos aos pescadores em Positano misturam fé e folclore com rituais à luz de velas.",
+        "Azulejos artesanais representam santos, limões ou lendas costeiras — repare nas portas e degraus das igrejas."
+      ]
+    }
+  ],
+  "tips": [
+    "Consulte os calendários municipais de festas para participar com respeito nas celebrações.",
+    "Leve um xaile leve; muitos eventos terminam em missas onde o traje modesto é apreciado."
+  ],
+  "faqs": [
+    {
+      "q": "Qualquer pessoa pode participar das procissões?",
+      "a": [
+        "Sim — posicione-se ao longo do percurso, aplauda com respeito e deixe passar as equipas que transportam as imagens."
+      ]
+    },
+    {
+      "q": "Onde ouvir música tradicional?",
+      "a": [
+        "Procure concertos folclóricos em Atrani e Ravello durante os festivais de verão; os postos de turismo publicam a agenda semanal."
+      ]
+    }
+  ]
+}

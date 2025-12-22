@@ -1,0 +1,21 @@
+{
+  "home": "الرئيسية",
+  "rooms": "الغرف",
+  "apartment": "شقة",
+  "assistance": "مساعدة",
+  "careers": "وظائف",
+  "deals": "العروض",
+  "guides": "أدلة",
+  "terms": "الشروط والأحكام لحجوزات الغرف",
+  "copyright": "© 2023 إلى {{year}}، Skylar SRL تعمل باسم Hostel Brikette",
+  "backToTop": "العودة إلى الأعلى",
+  "contactHeading": "تواصل",
+  "email": "البريد الإلكتروني",
+  "phone": "الهاتف",
+  "noPhoneNotice": "لا نعالج الطلبات عبر الهاتف. يُرجى التواصل معنا عبر البريد الإلكتروني.",
+  "follow": "تابعنا",
+  "instagram": "إنستغرام",
+  "facebook": "فيسبوك",
+  "experiences": "تجارب",
+  "howToGetHere": "كيفية الوصول"
+}

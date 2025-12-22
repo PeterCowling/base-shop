@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "Hostel Brikette 체험 – 테라스 바, 하이킹 & 디지털 컨시어지",
+    "description": "노을빛 스프리츠를 즐기고, 엄선된 하이킹에 참여하며, 디지털 컨시어지로 손쉽게 아말피 해안을 계획하세요."
+  },
+  "hero": {
+    "eyebrow": "체험",
+    "title": "Hostel Brikette 체험",
+    "description": "테라스 바에서 스프리츠를 즐기고, 장엄한 전망을 따라 하이킹을 떠나고, 디지털 컨시어지로 즉시 팁을 받아보세요.",
+    "supporting": "등록된 투숙객이라면 모두 이용 가능합니다. 다른 숙소에 묵는 친구와 함께라면 먼저 메시지를 보내주세요.",
+    "primaryCta": "숙소 예약하기",
+    "secondaryCta": "바 메뉴 열기",
+    "tertiaryCta": "디지털 컨시어지에게 메시지 보내기",
+    "primaryCtaAria": "번역을 준비하고 있습니다.",
+    "secondaryCtaAria": "번역을 준비하고 있습니다.",
+    "tertiaryCtaAria": "Hostel Brikette 디지털 컨시어지에게 메시지를 보내세요",
+    "breakfastCta": "View the breakfast menu",
+    "breakfastCtaAria": "View the breakfast menu"
+  },
+  "sections": {
+    "bar": {
+      "eyebrow": "테라스 바",
+      "title": "노을빛 테라스 바",
+      "description": "노을이 물드는 테라스 바에서 스프리츠와 현지 와인을 제공합니다.",
+      "highlights": [
+        "시그니처 스프리츠와 현지 와인을 차갑게 제공합니다.",
+        "성수기에는 소셜 나이트와 시음회가 열립니다.",
+        "노을빛 사진을 남기기 좋은 파노라마 전망."
+      ],
+      "imageAlt": "노을 지는 테라스에서 건배하는 Hostel Brikette 투숙객들."
+    },
+    "hikes": {
+      "eyebrow": "가이드 하이킹",
+      "title": "가이드 하이킹 & 당일치기",
+      "description": "지도, 소요 시간, 장비 팁이 포함된 가이드 하이킹과 셀프 하이킹.",
+      "highlights": [
+        "오프라인 지도와 교통 시간표를 매일 아침 업데이트합니다.",
+        "트레일이 가장 붐빌 때는 직원이 동행해 안내합니다.",
+        "짐 꾸리기 팁과 날씨에 맞는 대체 일정까지 제공됩니다."
+      ],
+      "imageAlt": "아말피 해안을 내려다보는 신들의 길을 하이킹하는 호스텔 투숙객들."
+    },
+    "concierge": {
+      "eyebrow": "디지털 컨시어지",
+      "title": "24시간 디지털 컨시어지",
+      "description": "페리 알림, 일정표, 맞춤형 답변을 제공하는 디지털 컨시어지.",
+      "highlights": [
+        "번역을 준비하고 있습니다.",
+        "버스와 페리 변동 사항을 자동 알림으로 받아보세요.",
+        "일정에 맞춘 맞춤 추천을 제공합니다."
+      ],
+      "imageAlt": "Hostel Brikette 디지털 컨시어지 채팅을 보여주는 스마트폰 화면."
+    }
+  },
+  "faq": {
+    "title": "자주 묻는 질문",
+    "items": [
+      {
+        "question": "체험을 미리 예약해야 하나요?",
+        "answer": [
+          "대부분의 테라스 저녁 이벤트와 하이킹은 당일 리셉션에서 확정됩니다.",
+          "프라이빗 투어나 보트 투어는 최소 24시간 전에 컨시어지에게 메시지를 보내주시면 자리를 확보해 드립니다."
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "title": "아말피 해안 일정을 준비할 준비가 되셨나요?",
+    "subtitle": "침대를 예약하고 바 라인업을 살펴보고 원하는 체험을 알려주세요. 나머지는 저희가 도와드립니다.",
+    "buttons": {
+      "book": "지금 예약하기",
+      "events": "바 & 이벤트",
+      "concierge": "컨시어지와 채팅하기",
+      "breakfast": "Breakfast menu"
+    }
+  },
+  "title": "Hostel Brikette 체험",
+  "intro": "테라스 바에서 스프리츠를 즐기고, 장엄한 전망을 따라 하이킹을 떠나고, 디지털 컨시어지로 즉시 팁을 받아보세요.",
+  "items": {
+    "bar": "노을이 물드는 테라스 바에서 스프리츠와 현지 와인을 제공합니다.",
+    "hikes": "지도, 소요 시간, 장비 팁이 포함된 가이드 하이킹과 셀프 하이킹.",
+    "concierge": "페리 알림, 일정표, 맞춤형 답변을 제공하는 디지털 컨시어지."
+  },
+  "guideCollections": {
+    "heading": "체험 가이드로 더 깊게 탐험하기",
+    "description": "팀과 게스트가 큐레이션한 일정, 하이킹, 보트 데이, 문화 추천을 한곳에 모았습니다.",
+    "taggedHeading": "{{tag}} 태그가 붙은 체험 가이드",
+    "taggedDescription": "이 스토리들은 {{tag}} 순간을 보여줍니다. 필터를 해제하면 모든 가이드를 확인할 수 있습니다.",
+    "empty": "{{tag}} 관련 체험 가이드는 아직 없습니다. 다른 태그를 선택하거나 필터를 제거하세요.",
+    "clearFilter": "모든 체험 가이드 보기",
+    "cardCta": "“{{guideTitle}}” 체험 가이드를 살펴보세요",
+    "filterHeading": "Filter experiences guides",
+    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "grouped": {
+      "beaches": {
+        "guides": {
+          "heading": "Beach guides",
+          "description": "Pick the right stretch of sand and plan your day."
+        },
+        "directions": {
+          "heading": "Beach directions",
+          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Cẩm nang thị trấn Amalfi",
+    "description": "Điểm nổi bật, cách đến và mẹo tránh đông trong ngày tham quan Amalfi."
+  },
+  "linkLabel": "Amalfi Town Guide: history, sights, and visiting tips",
+  "intro": [
+    "Tận dụng tối đa một ngày ở thị trấn Amalfi: điểm nổi bật, cách đến và mẹo thời gian để tránh đoàn xe du lịch."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Điểm nổi bật hàng đầu",
+      "body": [
+        "Leo 62 bậc tới Nhà thờ Amalfi để ngắm mặt tiền sọc, tu viện và bảo tàng (cần trang phục kín đáo).",
+        "Ghé Museo della Carta xem trình diễn làm giấy thủ công và mang về quà nhẹ, dễ đóng gói."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "Cách đến",
+      "body": [
+        "Phà từ Positano mất khoảng 20 phút; xe buýt mất 40–50 phút tuỳ giao thông. Đến trước 10:00 để còn chỗ râm ở quảng trường.",
+        "Mua vé phà lượt về đầu giờ chiều phòng khi lịch chạy thay đổi vì gió."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Thời điểm nên đi",
+      "body": [
+        "Buổi sáng (trước 11:00) hoặc buổi tối (sau 17:00) yên tĩnh nhất khi khách đi tour trong ngày đã rời đi.",
+        "Kết hợp Amalfi với Atrani (đi bộ 5 phút) để ăn tối ở quảng trường nhỏ rồi hãy quay về."
+      ]
+    }
+  ],
+  "tips": [
+    "Mang khăn choàng nhẹ để vào nhà thờ và che nắng khi đi phà.",
+    "Thưởng thức granita chanh tại các quầy ven biển để hạ nhiệt giữa các điểm dừng."
+  ],
+  "faqTitle": "Câu hỏi thường gặp",
+  "faqs": [
+    {
+      "q": "Tôi cần bao lâu ở Amalfi?",
+      "a": [
+        "Dành 3–4 giờ để tham quan nhà thờ, bảo tàng giấy và thưởng thức bữa ăn thư thả. Nếu muốn tắm ở bãi biển nhỏ của thị trấn, hãy cộng thêm thời gian."
+      ]
+    },
+    {
+      "q": "Có nơi gửi hành lý không?",
+      "a": [
+        "Có, dịch vụ gửi hành lý nằm gần bến phà. Giá khoảng 5–8 € mỗi túi cho cả ngày."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "home": "首页",
+  "rooms": "客房",
+  "apartment": "公寓",
+  "assistance": "帮助",
+  "careers": "招聘",
+  "deals": "优惠",
+  "guides": "指南",
+  "terms": "客房预订条款与条件",
+  "copyright": "© 2023 至 {{year}}，Skylar SRL 以 Hostel Brikette 名义运营",
+  "backToTop": "返回顶部",
+  "contactHeading": "联系方式",
+  "email": "电子邮件",
+  "phone": "电话",
+  "noPhoneNotice": "我们不通过电话办理业务，请通过电子邮件与我们联系。",
+  "follow": "关注我们",
+  "instagram": "Instagram",
+  "facebook": "Facebook",
+  "experiences": "体验",
+  "howToGetHere": "如何到达"
+}

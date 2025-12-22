@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Backpacking i Syditalien: rutt inkl. Amalfikusten",
+    "description": "Backpacker-rutt genom Syditalien med stopp på Amalfikusten, transportval och budgettips."
+  },
+  "linkLabel": "Backpacking i Syditalien: rutt inkl. Amalfikusten",
+  "intro": [
+    "Planera en rundtur i Syditalien där Positano förblir navet utan att budgeten spricker."
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Föreslagen rutt",
+      "body": [
+        "Börja i Neapel för flyg och tåg, stanna 2–3 nätter i Positano eller närliggande Praiano, fortsätt till Salerno och sväng sedan inåt mot Matera eller Apulien innan du vänder tillbaka.",
+        "Använd regionaltåg och långfärdsbussar för de längre sträckorna; boka 4–6 veckor i förväg för platser runt 15–25 €."
+      ]
+    },
+    {
+      "id": "arrivals",
+      "title": "Ankomst & packning",
+      "body": [
+        "Res med en 40 L-ryggsäck så klarar du trappor och bussarnas bagagehyllor utan problem.",
+        "Packa snabbtorkande lager, en kompakt handduk och sandaler för hostellduschar; tvättomater i Positano tar cirka 12–15 € för tvätt och tork."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Budgetknep",
+      "body": [
+        "Kombinera matinköp (färsk focaccia, frukt, mozzarella) med picknick på terrasser; sikta på 8 € för lunch i stället för 18 € för sittande måltid.",
+        "Dela dagsutflykter med hostelkompisar: dela taxi till leder eller hyr scooter i Salerno/Praiano där priserna kan ligga kring 35 € per dag."
+      ]
+    }
+  ],
+  "tips": [
+    "Aktivera ett regionalt SIM eller eSIM (TIM/Vodafone) så kan du ladda busstidtabeller och checka in på hostel i farten.",
+    "Förboka hostel eller guesthouse första och sista natten på rutten och håll mitten flexibel för väderjusteringar."
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag hyra bil?",
+      "a": [
+        "Nej. Tåg, bussar och färjor täcker rutten. En scooter kan vara rolig för kortare sträckor, men trafiken runt Amalfi kräver vana."
+      ]
+    },
+    {
+      "q": "Hur många dagar bör jag avsätta för Positano?",
+      "a": [
+        "Planera minst tre nätter: en för Positano i sig, en för Path of the Gods eller båttur och en flexdag för Amalfi/Ravello eller väderbackup."
+      ]
+    }
+  ]
+}

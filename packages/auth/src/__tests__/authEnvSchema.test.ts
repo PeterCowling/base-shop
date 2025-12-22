@@ -6,6 +6,8 @@ const REDIS_URL = "https://redis.example.com";
 const STRONG_TOKEN = "strongtokenstrongtokenstrongtoken!!";
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
+const OAUTH_ISSUER = "https://auth.example.com/realms/base-shop";
+const OAUTH_REDIRECT_ORIGIN = "https://shop.example.com";
 
 type EnvOverrides = Record<string, string | undefined>;
 
@@ -13,11 +15,15 @@ const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "production",
   NEXTAUTH_SECRET: NEXT_SECRET,
   SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...overrides,
 });
 
 const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "development",
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...overrides,
 });
 
@@ -235,9 +241,11 @@ describe("auth provider specific checks", () => {
   it("parses oauth provider when credentials present", async () => {
     const { authEnv } = await withEnv(
       {
+        OAUTH_ISSUER,
         AUTH_PROVIDER: "oauth",
         OAUTH_CLIENT_ID: "client-id",
         OAUTH_CLIENT_SECRET: STRONG_TOKEN,
+        OAUTH_REDIRECT_ORIGIN,
       },
       () => import("@acme/config/env/auth"),
     );

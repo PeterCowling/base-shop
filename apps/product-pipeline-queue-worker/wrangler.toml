@@ -1,0 +1,22 @@
+name = "product-pipeline-queue"
+main = "src/index.ts"
+compatibility_date = "2025-06-20"
+
+[[d1_databases]]
+binding = "PIPELINE_DB"
+database_name = "product-pipeline"
+database_id = "00000000000000000000000000000000" # replace with real D1 id
+
+[[r2_buckets]]
+binding = "PIPELINE_EVIDENCE"
+bucket_name = "product-pipeline-evidence" # replace with real bucket name
+
+[[queues.consumers]]
+queue = "pipeline-jobs"
+max_batch_size = 1
+max_batch_timeout = 30
+
+[vars]
+PIPELINE_RUNNER_CAPTURE_TIMEOUT_MS = "15000"
+PIPELINE_RUNNER_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+PIPELINE_RUNNER_ACCEPT_LANGUAGE = "en-US,en;q=0.9"

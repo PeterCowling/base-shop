@@ -1,0 +1,115 @@
+@config "../../../../tailwind.config.mjs";
+
+@import "../../../../packages/themes/base/src/tokens.css";
+@import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --color-bg: 42 45% 94%;
+  --color-fg: 33 15% 12%;
+  --color-fg-muted: 33 11% 33%;
+  --color-muted: 40 30% 90%;
+  --color-primary: 9 75% 59%;
+  --color-primary-fg: 0 0% 100%;
+  --color-accent: 9 62% 48%;
+  --color-accent-fg: 0 0% 100%;
+  --color-link: 9 62% 48%;
+  --color-info: 178 51% 29%;
+  --color-info-fg: 0 0% 100%;
+  --color-sand: 38 52% 80%;
+  --color-ocean: 180 32% 46%;
+  --color-berry: 351 54% 60%;
+  --surface-1: 35 100% 98%;
+  --surface-2: 0 0% 100%;
+  --surface-3: 42 45% 92%;
+  --surface-input: 0 0% 100%;
+  --color-panel: 0 0% 100%;
+  --color-focus-ring: var(--color-primary);
+  --ring: var(--color-primary);
+  --ring-offset: var(--color-bg);
+  --gradient-hero-from: 178 51% 29%;
+  --gradient-hero-via: 42 45% 94%;
+  --gradient-hero-to: 9 75% 59%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 500px at -10% -10%, hsl(var(--color-info) / 0.15), transparent 60%),
+    radial-gradient(720px 380px at 110% -5%, hsl(var(--color-primary) / 0.18), transparent 55%),
+    hsl(var(--color-bg));
+  color: hsl(var(--color-fg));
+}
+
+::selection {
+  background: hsl(var(--color-primary) / 0.25);
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display), "Times New Roman", serif;
+  }
+
+  .focus-ring {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    box-shadow: 0 0 0 3px hsl(var(--ring) / 0.45);
+  }
+
+  .shadow-soft {
+    box-shadow: 0 18px 50px -30px rgba(35, 31, 26, 0.35);
+  }
+
+  .surface {
+    background: hsl(var(--surface-1));
+    box-shadow: 0 10px 30px -24px rgba(35, 31, 26, 0.4);
+  }
+
+  .aspect-card {
+    aspect-ratio: 4 / 3;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.7s ease both;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.6s ease both;
+  }
+
+  .delay-1 {
+    animation-delay: 80ms;
+  }
+
+  .delay-2 {
+    animation-delay: 160ms;
+  }
+
+  .delay-3 {
+    animation-delay: 240ms;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

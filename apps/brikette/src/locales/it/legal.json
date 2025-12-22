@@ -1,0 +1,21 @@
+{
+  "slug": "legale",
+  "meta": {
+    "title": "Informazioni Legali e Politiche – Hostel Positano",
+    "description": "Scopri i nostri termini legali, i limiti di responsabilità, la legge applicabile, l’uso dei contenuti del sito e le linee guida su salute e sicurezza per pianificare il soggiorno in tranquillità."
+  },
+  "headings": {
+    "modificationOfTerms": "Modifiche ai Termini",
+    "scopeOfLiability": "Limiti di Responsabilità",
+    "governingLaw": "Legge Applicabile e Foro Competente",
+    "websiteInformation": "Informazioni sul Sito e Uso dei Contenuti",
+    "healthAndSafetyPolicy": "Politica Salute e Sicurezza"
+  },
+  "content": {
+    "modificationOfTerms": "Questi Termini e Condizioni costituiscono l’accordo completo tra te e Positano Hostel e sostituiscono qualsiasi intesa precedente. Possiamo aggiornarli in qualsiasi momento; la versione nuova si applica non appena pubblicata online.",
+    "scopeOfLiability": "La nostra responsabilità copre solo i servizi elencati in questi Termini. Qualsiasi risarcimento è limitato all’importo totale da te corrisposto per la prenotazione. Non rispondiamo di perdite indirette o economiche (profitto, avviamento, opportunità) anche in caso di negligenza o forza maggiore. Sono disponibili armadietti di sicurezza per i valori, ma non accettiamo responsabilità finanziaria per gli oggetti depositati e potremmo spostarli durante le pulizie senza preavviso.",
+    "governingLaw": "Il tuo soggiorno e questi Termini sono regolati esclusivamente dalla legge italiana. Ogni controversia sarà devoluta ai tribunali italiani.",
+    "websiteInformation": "Facciamo del nostro meglio per mantenere il sito accurato, ma errori possono verificarsi e i dettagli possono cambiare senza preavviso. Le foto mostrano lo stile generale e potrebbero non riflettere esattamente la disposizione reale. Tutti i contenuti (testi, immagini, marchi) appartengono a Positano Hostel e non possono essere utilizzati senza permesso scritto. I link esterni sono forniti per comodità; decliniamo ogni responsabilità sul loro contenuto. Consulta la nostra privacy policy per sapere come trattiamo i tuoi dati.",
+    "healthAndSafetyPolicy": "Per la sicurezza di tutti, informaci se sei stato esposto di recente a malattie contagiose, compresa l’influenza. Le prenotazioni prepagate non rimborsabili restano tali anche in questi casi; consigliamo vivamente un’assicurazione viaggio che copra eventuali problemi di salute."
+  }
+}

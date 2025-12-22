@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Passeios de barco em Positano",
+    "description": "Tipos de passeio, preços médios, melhor época para reservar e protocolos caso o mar feche."
+  },
+  "linkLabel": "Passeios de barco em Positano",
+  "intro": [
+    "Passeios de barco permitem seguir as falésias da Costa Amalfitana sem enfrentar o trânsito da estrada; reserve com antecedência nos meses de pico e tenha um plano alternativo se o tempo virar."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Passeios partilhados",
+      "body": [
+        "Cruzeiros partilhados de 3 horas saem de Positano a meio da manhã e incluem paragens para nadar; conte com 85–120 € por pessoa em julho–agosto.",
+        "Leve calçado de água e uma camada leve — a brisa no mar é mais fresca do que nos terraços."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Charters privados",
+      "body": [
+        "Skippers cobram 550–850 € por meio dia em gozzo (até 6 pessoas) mais combustível; confirme o que está incluído, como prosecco ou toalhas.",
+        "Negocie horários ao nascer do sol ou no fim da tarde se quiser luz suave e menos ondulação provocada pelos ferries."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Clima e planos B",
+      "body": [
+        "Operadores cancelam quando o vento ultrapassa força 4; tenha um plano com autocarro ou praia para manter o dia tranquilo.",
+        "O mar pode ficar agitado mesmo no verão — leve pulseiras anti-enjoo se for sensível."
+      ]
+    }
+  ],
+  "tips": [
+    "Chegue 20 minutos antes da partida para liquidar o restante e calçar os sapatos de convés fornecidos.",
+    "Leve um saco estanque para telemóveis e uma garrafa de 1 L de água; há pouca sombra a bordo."
+  ],
+  "faqs": [
+    {
+      "q": "Preciso reservar antes?",
+      "a": [
+        "Sim, de maio a setembro — as vagas esgotam alguns dias antes, sobretudo nos horários de pôr do sol."
+      ]
+    },
+    {
+      "q": "As toalhas estão incluídas?",
+      "a": [
+        "Passeios partilhados normalmente oferecem uma por pessoa; em charters privados varia, por isso leve uma toalha de secagem rápida para garantir."
+      ]
+    }
+  ],
+  "galleryHeading": "Galeria de fotos",
+  "gallery": {
+    "primaryAlt": "Barco a navegar pela costa de Positano",
+    "primaryCaption": "A navegar pela costa",
+    "secondaryAlt": "Paragem para nadar junto às falésias de Positano",
+    "secondaryCaption": "Paragem para nadar"
+  }
+}

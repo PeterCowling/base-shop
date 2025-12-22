@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Brikette Hostel à Positano - Séjour abordable sur la Côte Amalfitaine",
+    "description": "L'unique auberge de Positano offrant un hébergement abordable juste à côté des magnifiques sites de la Côte Amalfitaine.",
+    "ogImageAlt": "Vue depuis la terrasse de l’auberge"
+  },
+  "introSection": {
+    "title": "Un magnifique chez-soi loin de chez soi",
+    "titleParts": {
+      "before": "Un magnifique",
+      "between": "chez-soi loin de",
+      "home": "chez soi"
+    },
+    "paragraph1": "Hostel Brikette est <strong>la seule auberge de Positano</strong>, offrant des hébergements <strong>économiques</strong> qui placent les points forts de la côte amalfitaine à votre porte.",
+    "paragraph2": "Perché sur les falaises, nous offrons des <strong>vues imprenables sur la mer</strong>, des commodités pratiques et des informations locales disponibles 24h/24 grâce à notre <strong>concierge numérique</strong> – votre guide personnel pour les horaires de ferry, les itinéraires de randonnée, les restaurants et plus encore.",
+    "paragraph3": "Que vous choisissiez un dortoir ou une chambre privée, chacun est conçu pour offrir <strong>confort</strong> et <strong>commodité</strong>."
+  },
+  "facilitiesModal": {
+    "title": "Installations & Commodités",
+    "closeButton": "Fermer",
+    "categories": [
+      {
+        "title": "Général",
+        "items": [
+          "Chambres non-fumeurs",
+          "Wi-Fi gratuit",
+          "Climatisation",
+          "Chauffage"
+        ]
+      },
+      {
+        "title": "Salle de bain",
+        "items": [
+          "Papier toilette",
+          "Serviettes de bain",
+          "Draps",
+          "Serviettes de plage (frais supplémentaires)",
+          "Toilettes",
+          "Douche"
+        ]
+      },
+      {
+        "title": "Extérieur",
+        "items": [
+          "Aire de pique-nique",
+          "Mobilier d'extérieur",
+          "Terrasse ensoleillée",
+          "Terrasse"
+        ]
+      },
+      {
+        "title": "Activités",
+        "items": [
+          "Randonnée (hors site)"
+        ]
+      },
+      {
+        "title": "Nourriture & Boissons",
+        "items": [
+          "Bar"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Le Wi-Fi est disponible dans les parties communes et est gratuit."
+        ]
+      },
+      {
+        "title": "Parking",
+        "items": [
+          "Aucun parking disponible"
+        ]
+      },
+      {
+        "title": "Services",
+        "items": [
+          "Service de ménage quotidien",
+          "Casiers",
+          "Service de concierge",
+          "Consigne à bagages"
+        ]
+      },
+      {
+        "title": "Sécurité",
+        "items": [
+          "Extincteurs",
+          "Caméras de surveillance dans les parties communes",
+          "Accès par carte"
+        ]
+      },
+      {
+        "title": "Langues parlées",
+        "items": [
+          "Anglais",
+          "Espagnol",
+          "Italien"
+        ]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "Vue panoramique depuis la terrasse de l'Hostel Brikette à Positano",
+    "brandName": "Hostel Brikette",
+    "cityName": "Positano",
+    "address": "Via G. Marconi, 358, 84017 Positano SA",
+    "locationButton": "Emplacement",
+    "contactButton": "Contactez-nous",
+    "helpButton": "Aide",
+    "reserveNow": "Réservez maintenant"
+  },
+  "quickLinksSection": {
+    "location": "Emplacement",
+    "photosAndVideos": "Photos & Vidéos",
+    "facilitiesAndAmenities": "Installations & Commodités",
+    "barMenu": "Menu du bar",
+    "breakfastMenu": "Menu du petit-déjeuner"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "Belles zones communes",
+    "slides": [
+      {
+        "title": "Sanctuaire sur la colline",
+        "text": "Réveillez-vous avec une vue fraîche sur la montagne depuis notre terrasse baignée de lumière.",
+        "alt": "Terrasse surplombant la colline de Positano"
+      },
+      {
+        "title": "Oasis en plein air",
+        "text": "Profitez du soleil et faites de nouvelles rencontres.",
+        "alt": "Terrasse avec auvent en bambou pour l'ombre"
+      },
+      {
+        "title": "Vues imprenables sur la mer",
+        "text": "Savourez la magie de l'horizon alors que le soleil se fond dans la mer.",
+        "alt": "Large horizon marin depuis la terrasse de l'auberge"
+      }
+    ]
+  }
+}

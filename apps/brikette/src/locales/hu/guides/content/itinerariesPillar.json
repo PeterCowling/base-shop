@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "2, 3 és 7 napos útitervek, kompakt tippekkel időzítéshez és közlekedéshez."
+  },
+  "linkLabel": "Amalfi Coast Itineraries (no car)",
+  "intro": [
+    "Állíts össze autó nélküli Amalfi-parti útitervet úgy, hogy logikus körben fűzöd fel a kompokat és buszokat, miközben marad idő lassú reggelekre és az időjárás miatti átszervezésekre."
+  ],
+  "sections": [
+    {
+      "id": "two-day",
+      "title": "2 napos villámlátogatás",
+      "body": [
+        "1. nap: Érkezz korán, járd be Positano sikátorait, pihenj a Fornillo strandon, majd nézd a naplementét a Via Cristoforo Colombóról.",
+        "2. nap: Reggeli komp Amalfiba a dómért és citromgranitàért, délután busz fel Ravellóba, estére vissza Positanóba vacsorára."
+      ]
+    },
+    {
+      "id": "four-day",
+      "title": "3–4 napos etap",
+      "body": [
+        "3. napon tegyél egy capri kiruccanást – első komp, Anacapri libegő, esti visszaút.",
+        "A 4. napot szánd az Istenek ösvényére vagy egy hajókirándulásra; legyen esőnapra tartalék például Pompeii."
+      ]
+    },
+    {
+      "id": "five-day",
+      "title": "5–6 napos ráérős kör",
+      "body": [
+        "Ikassz be egy salernói vagy sorrentói gasztrotúrát, kóstolj piacokon, és töltsd fel a készleteket.",
+        "Tervezd meg egy strandolós napot Arienzo, Laurito és Marina di Praia között part menti kompokkal vagy vízi taxikkal."
+      ]
+    },
+    {
+      "id": "seven-day",
+      "title": "7 napos körút",
+      "body": [
+        "A hetet alapozd meg két laza positanói nappal, két nagy kirándulással (Capri + Pompeii) és két lassabb kalanddal (tramonti borászatok vagy a paestumi romok).",
+        "Az utolsó napot hagyd rugalmasan ismétlésekre vagy pihenésre az indulás előtt."
+      ]
+    }
+  ],
+  "tips": [
+    "A hosszabb szakaszokat (Capri komp, pompeii vonat) foglald le előre, de tarts legalább egy tartaléknapot az időjárási fennakadásokra.",
+    "Csoportosítsd a programokat földrajzilag, hogy naponta csak egyszer kelljen nagy lépcsősorokat megmászni."
+  ],
+  "faqs": [
+    {
+      "q": "Hány éjszakát érdemes Positanóban tölteni?",
+      "a": [
+        "Négy éjszaka elég időt ad magára Positanóra és két nagyobb egynapos kiruccanásra kapkodás nélkül; ha lassabb reggeleket szeretnél, tervezz többet."
+      ]
+    },
+    {
+      "q": "Rosszul lévő tenger esetén lecserélhetem a kompokat buszra?",
+      "a": [
+        "Igen – a buszok egész évben járnak. Indulj korán, vedd meg a jegyeket előre, és számolj plusz 20–30 perccel az utazási időben."
+      ]
+    }
+  ]
+}

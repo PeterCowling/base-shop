@@ -1,0 +1,52 @@
+{
+  "linkLabel": "Estacionamento em Positano: onde e quanto custa",
+  "intro": [
+    "Estacionar em Positano é raro e caro; reserve uma garagem com antecedência e considere o carro guardado durante a estadia."
+  ],
+  "sections": [
+    {
+      "id": "garages",
+      "title": "Garagens particulares no centro",
+      "body": [
+        "Mandara, Car Park Anna e Di Gennaro aceitam reservas — garanta vaga 7–10 dias antes para chegadas em julho/agosto.",
+        "As diárias ficam em torno de €35–€60; confirme limite de altura (cerca de 1,9 m) e se precisa deixar as chaves com a equipe."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Desembarque e pagamento",
+      "body": [
+        "Use as baias de curta duração perto de Chiesa Nuova ou Sponda para descarregar as malas; ligue o pisca-alerta e seja rápido.",
+        "Leve cartão e dinheiro — a maioria aceita cartão, mas prefere dinheiro para estadias inferiores a 48 horas."
+      ]
+    },
+    {
+      "id": "park-elsewhere",
+      "title": "Estacionar fora de Positano",
+      "body": [
+        "Estacionamentos cobertos em Meta, Piano di Sorrento ou Sorrento custam em torno de €20–€25 por dia e conectam a Positano via ônibus SITA em até 45 minutos.",
+        "Vindo do norte? Deixe o carro nos estacionamentos do porto de Salerno e atravesse de ferry quando o mar estiver calmo."
+      ]
+    }
+  ],
+  "tips": [
+    "Confira avisos de ZTL ou rodízio de placas antes de pegar a SS163; multas chegam ao exterior meses depois.",
+    "Separe uma bolsa de mão com itens essenciais antes de entregar as chaves — a garagem pode acomodar os carros colados até a saída."
+  ],
+  "faqs": [
+    {
+      "q": "Posso estacionar só por algumas horas?",
+      "a": [
+        "As garagens cobram por hora, mas rapidamente viram diária; para paradas curtas use as vagas de 30 minutos perto da curva de Sponda."
+      ]
+    },
+    {
+      "q": "As garagens ficam abertas até tarde?",
+      "a": [
+        "A maioria funciona das 07h00 às 00h00; avise sobre chegadas tardias para deixarem as chaves com o plantonista."
+      ]
+    }
+  ],
+  "tocTitle": "Neste guia",
+  "faqsTitle": "Perguntas frequentes"
+}

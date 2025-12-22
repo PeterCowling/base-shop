@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Neapel → Positano: So kommst du hin",
+    "description": "Schnelle und günstige Optionen von Neapel nach Positano per Zug + Bus oder Sommerfähre."
+  },
+  "linkLabel": "Neapel → Positano: So kommst du hin",
+  "intro": [
+    "Neapel → Positano: Shuttle nach Sorrent plus SITA-Bus das ganze Jahr, Sommerfähren bei ruhiger See, Transfers für späte Ankünfte."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Zug + Bus (ganzjährig)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Fähre (Sommer)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Späte Ankünfte & Transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Zug + Bus (ganzjährig)",
+      "body": [
+        "Vom Flughafen NAP nimmst du den Curreri-Shuttle (oder Alibus + Circumvesuviana) nach Sorrent und steigst dort in den SITA-Bus Richtung Amalfi um.",
+        "Tickets vor dem Einstieg kaufen, Tagesfahrplan prüfen und an der Haltestelle »Chiesa Nuova« aussteigen – dort gibt es am wenigsten Stufen zum Hostel Brikette."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Fähre (Sommer)",
+      "body": [
+        "Alibus → Molo Beverello; von dort fährt die Fähre nach Positano. Preise am Reisetag beim Betreiber bestätigen.",
+        "Auf Ausfälle achten und die letzte Abfahrt vermeiden, wenn du Anschlussverbindungen hast."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Späte Ankünfte & Transfers",
+      "body": [
+        "Kommst du nach der letzten Fähre/Bus an? Buche einen privaten Transfer oder übernachte in Neapel/Sorrent.",
+        "Drop-off nahe deiner Unterkunft bestätigen und nach Gepäckhilfe fragen."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Wo kaufe ich SITA-Tickets?",
+      "a": [
+        "Bei Tabacchi/Kiosken nahe der Haltestellen. Vor dem Einstieg kaufen und im Bus entwerten."
+      ]
+    },
+    {
+      "q": "Wie viele Stufen sind es bis zum Hostel?",
+      "a": [
+        "Von der Haltestelle »Chiesa Nuova« sind es ca. 80 Meter ohne Treppen."
+      ]
+    }
+  ]
+}

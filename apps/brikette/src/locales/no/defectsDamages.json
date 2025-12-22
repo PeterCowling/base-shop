@@ -1,0 +1,25 @@
+{
+  "slug": "feil-skader",
+  "meta": {
+    "title": "Feil og skader – veiledning",
+    "description": "Slik melder du feil på rommet, vår håndtering av alvorlige problemer, depositum for skader, gjestens ansvar og viktig info om forebygging av veggedyr."
+  },
+  "headings": {
+    "reportingDefects": "Melde feil",
+    "assessingDefects": "Vurdere feil",
+    "responseToSeriousDefects": "Tiltak ved alvorlige feil",
+    "unreportedDefects": "Feil som ikke er meldt",
+    "damagesPolicy": "Skadepolicy",
+    "bedBugsPolicy": "Policy for veggedyr",
+    "bedBugsPrevention": "Forebygging av veggedyr"
+  },
+  "content": {
+    "reportingDefects": "Hvis du oppdager et problem eller en feil på rommet, gi oss beskjed med en gang. Rask tilbakemelding gjør at vi kan løse situasjonen så fort som mulig.",
+    "assessingDefects": "Når du melder en feil, vurderer vi straks omfanget og prioriterer oppfølgingen etter hvor mye den påvirker komforten og oppholdet ditt.",
+    "responseToSeriousDefects": "Hvis det oppstår en alvorlig feil som ikke kan utbedres umiddelbart, tilbyr vi alternativ overnatting. Er alternativet rimeligere enn rommet du har bestilt, refunderer vi prisforskjellen. Velger du å ikke benytte tilbudet, kan du be om forholdsmessig refusjon for gjenværende netter.",
+    "unreportedDefects": "Hvis vi oppdager et problem på rommet som ikke er meldt innen rimelig tid, vurderer vi eventuelle konsekvenser og kan anvende skadepolicyen vår.",
+    "damagesPolicy": "Av hensyn til sikkerheten for både deg og oss kan vi forhåndsgodkjenne bankkortet ditt eller be om kontantdepositum ved innsjekk for å dekke eventuelle skader eller tap. Dersom du ikke kan stille depositum eller forhåndsgodkjenning, kan reservasjonen bli annullert. Depositum refunderes i sin helhet ved utsjekk, med fratrekk for eventuelle kostnader til skader, tap, arbeid eller administrative utgifter. Dersom beløpet overstiger depositumet, er du ansvarlig for differansen. Arbeid knyttet til reparasjoner eller ekstra rengjøring faktureres per time: daglig leder (€50/time), avdelingsleder (€35/time) og medarbeider (€25/time).",
+    "bedBugsPolicy": "Vi jobber forebyggende og håndterer veggedyr raskt. Dersom det oppdages veggedyr på rommet ditt under oppholdet, kan du bli ansvarlig for kostnader som tapte bookinginntekter, rengjøring og skadedyrkontroll. Meld fra til personalet umiddelbart hvis du ser tegn på veggedyr.",
+    "bedBugsPrevention": "For å forebygge veggedyr ber vi deg:\n• Fortell oss ved innsjekk hvis du nylig har bodd et sted med kjente veggedyrproblemer.\n• Desinfiser eiendelene dine grundig.\n• Undersøk bagasje og klær nøye før du går inn på rommet."
+  }
+}

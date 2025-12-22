@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Art and Artisans of Positano (shopping)",
+    "description": "Sandals, ceramics, prints — where to find quality and how to ship."
+  },
+  "linkLabel": "Arte e artesãos de Positano (compras)",
+  "intro": [
+    "Descubra o artesanato de Positano sem pagar demasiado: sandálias, cerâmicas, gravuras e como enviar as compras para casa."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Sandálias por medida",
+      "body": [
+        "Veja artesãos a fabricar sandálias de couro em cerca de 30 minutos; os pares personalizados começam por volta de 80 €.",
+        "Traga ou desenhe o contorno do pé para fazer pedidos à distância mais tarde — muitos ateliers enviam para todo o mundo assim que têm as suas medidas."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Cerâmica e arte",
+      "body": [
+        "Explore estúdios familiares para encontrar azulejos e louças pintados à mão. Pergunte sobre vidrados sem chumbo se pretende usar as peças para servir.",
+        "Artistas locais vendem gravuras e aguarelas na Via Cristoforo Colombo — os tubos de cartão protegem as obras durante a viagem."
+      ]
+    },
+    {
+      "id": "shipping",
+      "title": "Pagamentos e envios",
+      "body": [
+        "A maioria das lojas aceita cartões, mas muitas oferecem desconto para pagamento em numerário. Tenha um documento de identificação à mão para preencher o formulário de reembolso de IVA em compras acima de 154,94 €.",
+        "Envie peças frágeis por transportadora com seguro (DHL/UPS) e peça dupla embalagem; as tarifas começam perto de 40 €, consoante o peso."
+      ]
+    }
+  ],
+  "tips": [
+    "Fotografe recibos e detalhes dos artesãos para recordar em que estúdio cada peça foi feita.",
+    "Leve plástico-bolha se tenciona transportar cerâmica na bagagem — os hostels costumam ter material de enchimento extra de entregas."
+  ],
+  "faqs": [
+    {
+      "q": "Os artesãos personalizam itens?",
+      "a": [
+        "Sim. Muitos gravam iniciais em sandálias ou ajustam cores de cerâmica com alguns dias de antecedência."
+      ]
+    },
+    {
+      "q": "Como solicito o reembolso de IVA?",
+      "a": [
+        "Peça o formulário tax-free na compra, carimbe-o no aeroporto ou no porto do ferry e envie-o em até três meses para receber o reembolso."
+      ]
+    }
+  ]
+}

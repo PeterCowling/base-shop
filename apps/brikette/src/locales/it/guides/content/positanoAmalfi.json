@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Da Positano ad Amalfi: come spostarsi",
+    "description": "Durate, costi e frequenze di traghetti, bus e taxi boat tra Positano e Amalfi, con consigli per l'ultimo rientro."
+  },
+  "linkLabel": "Da Positano ad Amalfi: come spostarsi",
+  "intro": [
+    "Traduzione in arrivo."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Bus (year‑round)",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (seasonal)",
+      "body": [
+        "Traduzione in arrivo.",
+        "Arrive early in high season to secure seats."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How long is the trip?",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "SITA bus to Amalfi",
+        "text": "Traduzione in arrivo."
+      },
+      {
+        "name": "Alternative: ferry (summer)",
+        "text": "Traduzione in arrivo."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Traduzione in arrivo."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "SITA bus (year-round)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry (seasonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "SITA bus (year-round)",
+        "body": [
+          "Traduzione in arrivo."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry (seasonal)",
+        "body": [
+          "Traduzione in arrivo."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "Which is faster?",
+        "a": [
+          "Traduzione in arrivo."
+        ]
+      }
+    ]
+  }
+}

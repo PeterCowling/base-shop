@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Amalfi till Positano med buss | Hostel Brikette",
+    "description": "SITA-buss Amalfi till Positano: påstigningsplatser, biljettips, tidtabellsråd och var du ska kliva av för Hostel Brikette (Chiesa Nuova)."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette reseguide",
+    "title": "Amalfi till Positano – buss (SITA Sud)",
+    "description": "Använd den här guiden för att resa från Amalfi till Positano med SITA-buss. Den beskriver var du går ombord i Amalfi, hur du validerar biljetten, hur du läser tidtabellen och var du kliver av för den kortaste promenaden till vandrarhemmet."
+  },
+  "aside": {
+    "eyebrow": "Behöver du andra rutter?",
+    "body": {
+      "before": "Behöver du andra transportsätt? Öppna ",
+      "linkLabel": "Översikten Så tar du dig hit",
+      "after": " för färjor, taxibilar och kombinerade resor."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Resöversikt",
+      "body": "Den direkta SITA-bussen från Amalfi till Positano går ofta under säsong. Räkna med en naturskön kustresa på runt en timme beroende på trafiken."
+    },
+    "boarding": {
+      "title": "Var du kliver på i Amalfi",
+      "items": [
+        "Gå till Amalfis bussterminal bredvid torget vid vattnet.",
+        "Titta efter SITA-bussar skyltade ”Sorrento” eller ”Positano” (båda stannar i Positano).",
+        "Köp biljetter på en tabacchi, tidningskiosk eller kiosk innan du kliver på (kontanter/kort varierar).",
+        "Ha biljetterna redo; föraren kan stämpla eller riva dem när du går ombord."
+      ]
+    },
+    "tickets": {
+      "title": "Biljetter och tidtabell",
+      "body": {
+        "before": "Kontrollera den senaste tidtabellen på ",
+        "linkLabel": "Positano.com",
+        "after": ". Använd tipsen nedan för att läsa rutnätet korrekt."
+      },
+      "items": [
+        "Hållplatserna listas som rader; varje bokstavskolumn motsvarar en tur.",
+        "För måndag–lördag använder du kolumnerna som oftast är markerade ”F” och ”G”; på söndagar och helgdagar oftast ”G” och ”H”.",
+        "Hitta ”Amalfi” som avreser rad och ”Positano (Chiesa Nuova)” som din ankomstrad."
+      ]
+    }
+  }
+}

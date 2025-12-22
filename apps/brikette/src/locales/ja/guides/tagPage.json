@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "記事{{count}}件",
+  "articleCount_other": "記事{{count}}件",
+  "topTagsHeading": "人気のタグ",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

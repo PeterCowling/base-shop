@@ -1,0 +1,67 @@
+{
+  "seo": {
+    "title": "Luminaria di San Domenico (Praiano)",
+    "description": "El festival de las velas de Praiano a inicios de agosto: fechas, cómo llegar, mejores puntos y etiqueta para las fotos."
+  },
+  "linkLabel": "Luminaria di San Domenico (Praiano)",
+  "intro": [
+    "La Luminaria di San Domenico llena Praiano de velas a comienzos de agosto.",
+    "Prepárate para escaleras y multitudes: la atmósfera compensa el esfuerzo."
+  ],
+  "sections": [
+    {
+      "id": "schedule",
+      "title": "Cuándo ocurre",
+      "body": [
+        "Suele celebrarse del 1 al 4 de agosto con clímax la noche del 4/5.",
+        "Consulta la web oficial del municipio para horarios de misas y conciertos."
+      ]
+    },
+    {
+      "id": "getting",
+      "title": "Cómo llegar y moverte",
+      "body": [
+        "Usa bus SITA o taxi compartido desde Positano; bájate en la parada de Praiano y sigue el camino iluminado.",
+        "Lleva calzado cómodo: muchas escaleras unen la plaza con la iglesia de San Gennaro."
+      ]
+    },
+    {
+      "id": "what-to-bring",
+      "title": "Qué llevar",
+      "body": [
+        "Agua, abanico y una capa ligera para el regreso nocturno.",
+        "Respeta las velas y evita bloquear a los vecinos que decoran balcones."
+      ]
+    }
+  ],
+  "tips": [
+    "Lleva una botella reutilizable (500 ml) y una linterna pequeña para moverte por los callejones después del anochecer.",
+    "Respeta el silencio tras los fuegos artificiales: los vecinos limpian la cera hasta entrada la noche."
+  ],
+  "faqs": [
+    {
+      "q": "¿Necesito entrada?",
+      "a": [
+        "No, es un evento público. Algunas zonas VIP venden asientos, pero la mayoría es gratuita."
+      ]
+    },
+    {
+      "q": "¿Hay transporte tarde de regreso a Positano?",
+      "a": [
+        "Suelen habilitar buses especiales hasta cerca de medianoche. Confirma horarios al llegar."
+      ]
+    }
+  ],
+  "event": {
+    "date": "1–4 de agosto (noches principales)",
+    "location": "Piazza San Gennaro, Praiano",
+    "tips": [
+      "Llega antes del atardecer para ver cómo los voluntarios colocan las velas.",
+      "Lleva una linterna pequeña o la luz del móvil para el camino de regreso por callejones oscuros."
+    ]
+  },
+  "gallery": {
+    "terraceAlt": "Farolillos iluminando una terraza de Praiano de noche",
+    "coastAlt": "Costa de Praiano al anochecer durante la Luminaria di San Domenico"
+  }
+}

@@ -45,10 +45,16 @@ export interface PageDiffEntry {
   diff: Partial<Page>;
 }
 
+const pageSchemaObject = pageSchema as unknown as z.AnyZodObject;
+const partialPageSchema =
+  typeof pageSchemaObject.partial === "function"
+    ? pageSchemaObject.partial()
+    : z.object({}).passthrough();
+
 const pageDiffEntrySchema: z.ZodType<PageDiffEntry> = z
   .object({
     timestamp: z.string().datetime(),
-    diff: (pageSchema as unknown as z.AnyZodObject).partial(),
+    diff: partialPageSchema,
   })
   .strict();
 
@@ -78,4 +84,3 @@ export function parsePageDiffHistory(input: string): PageDiffEntry[] {
     .filter((result): result is z.SafeParseSuccess<PageDiffEntry> => result.success)
     .map((result) => result.data);
 }
-

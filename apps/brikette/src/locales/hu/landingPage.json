@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Hostel Brikette Positanóban – Megfizethető szállás az Amalfi-parton",
+    "description": "Foglalj szállást Positano egyetlen budget hostelében teraszról nyíló kilátással. Ingyenes Wi‑Fi és digitális concierge tippek. Foglalj közvetlenül a legjobb árért.",
+    "ogImageAlt": "Kilátás a hostel teraszáról"
+  },
+  "introSection": {
+    "title": "Egy gyönyörű otthon az otthontól távol",
+    "titleParts": {
+      "before": "Egy gyönyörű",
+      "between": "otthon",
+      "home": "az otthontól távol"
+    },
+    "paragraph1": "A Hostel Brikette <strong>Positano egyetlen hostele</strong>, <strong>pénztárcabarát</strong> szállással, hogy az Amalfi‑part látnivalói karnyújtásnyira legyenek.",
+    "paragraph2": "A sziklákon ülve <strong>lélegzetelállító tengeri kilátást</strong>, praktikus kényelmi szolgáltatásokat és éjjel‑nappal elérhető helyi tippeket kínálunk <strong>digitális concierge</strong>‑ünkön keresztül—személyes útmutatód a kompmenetrendekhez, túraútvonalakhoz, éttermekhez és még sok máshoz.",
+    "paragraph3": "Akár hálótermet, akár privát szobát választasz, mindegyik a <strong>kényelem</strong> és a <strong>praktikum</strong> jegyében készült."
+  },
+  "facilitiesModal": {
+    "title": "Szolgáltatások és felszereltség",
+    "closeButton": "Bezárás",
+    "categories": [
+      {
+        "title": "Általános",
+        "items": [
+          "Nemdohányzó szobák",
+          "Ingyenes Wi‑Fi",
+          "Légkondicionálás",
+          "Fűtés"
+        ]
+      },
+      {
+        "title": "Fürdőszoba",
+        "items": [
+          "WC-papír",
+          "Fürdőtörölközők",
+          "Lepedők",
+          "Strandtörölközők (felár ellenében)",
+          "WC",
+          "Zuhany"
+        ]
+      },
+      {
+        "title": "Kültér",
+        "items": [
+          "Piknikező rész",
+          "Kültéri bútorok",
+          "Napozóterasz",
+          "Terasz"
+        ]
+      },
+      {
+        "title": "Programok",
+        "items": [
+          "Túrázás (a szálláson kívül)"
+        ]
+      },
+      {
+        "title": "Ételek és italok",
+        "items": [
+          "Bár"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Wi‑Fi elérhető a közös helyiségekben, díjmentesen."
+        ]
+      },
+      {
+        "title": "Parkolás",
+        "items": [
+          "Parkolási lehetőség nem áll rendelkezésre"
+        ]
+      },
+      {
+        "title": "Szolgáltatások",
+        "items": [
+          "Napi takarítás",
+          "Zárható szekrények",
+          "Concierge szolgáltatás",
+          "Csomagmegőrzés"
+        ]
+      },
+      {
+        "title": "Biztonság",
+        "items": [
+          "Tűzoltó készülékek",
+          "Biztonsági kamerák a közös terekben",
+          "Kulcskártyás beléptetés"
+        ]
+      },
+      {
+        "title": "Beszélt nyelvek",
+        "items": [
+          "Angol",
+          "Spanyol",
+          "Olasz"
+        ]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "Panoráma Positanóról a Hostel Brikette teraszáról",
+    "brandName": "Hostel Brikette",
+    "cityName": "Positano",
+    "address": "Via G. Marconi, 358, 84017 Positano SA",
+    "locationButton": "Helyszín",
+    "contactButton": "Kapcsolat",
+    "helpButton": "Segítség",
+    "reserveNow": "Foglalj most"
+  },
+  "quickLinksSection": {
+    "location": "Helyszín",
+    "photosAndVideos": "Fotók és videók",
+    "facilitiesAndAmenities": "Létesítmények és szolgáltatások",
+    "barMenu": "Bár menü",
+    "breakfastMenu": "Reggeli menü"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "Gyönyörű közösségi terek",
+    "slides": [
+      {
+        "title": "Domboldali menedék",
+        "text": "Ébredj friss hegyi panorámára napfényes teraszunkról.",
+        "alt": "Terasz Positano hegyoldalára néző kilátással"
+      },
+      {
+        "title": "Szabadtéri oázis",
+        "text": "Fürödj a napsütésben és szerezz új barátokat.",
+        "alt": "Terasz bambusztetős árnyékolóval"
+      },
+      {
+        "title": "Hihetetlen tengeri kilátás",
+        "text": "Éld át a horizont varázsát, ahogy a nap a tengerbe olvad.",
+        "alt": "Széles tengeri horizont a hostel teraszáról"
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Bus from Hostel Brikette to Positano's main beach",
+    "description": "How to ride the orange interno bus downhill to Piazza dei Mulini and stroll to Spiaggia Grande."
+  },
+  "linkLabel": "Bus down to Positano's main beach",
+  "intro": [
+    "A narancssárga Interno Positano busz összeköti a Hostel Brikette-et a Piazza dei Mulini-vel, egy rövid sétára a Spiaggia Grande-tól.",
+    "Kövesse ezeket a lépéseket, hogy jegyet vásároljon a tabacchiban, lefele lovagoljon, és gyalogosan fedezze az utolsó perceket."
+  ],
+  "sections": [
+    {
+      "id": "reach-the-stop",
+      "title": "A Chiesa Nuova megálló elérése",
+      "body": [
+        "Hagyd el a szállót, sétálj le az első lépcsőn, és fordulj balra a Viale Pasitea mentén.",
+        "Körülbelül 100 méter (330 láb) után hajtson az első jobb sarokba a tabacchi/újságos mellett — a Chiesa Nuova buszmegálló közvetlenül odakint található.",
+        "Szálljon be, mielőtt beszállna, hogy előre megvásárolja az Interno Positano jegyeket; olcsóbb és elkerüli a késéseket az ajtónál."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Utazz lejjebb az Interno Positano busszal",
+      "body": [
+        "Szálljon fel az „Interno Positano” jelzésű narancssárga minibuszra. Az útvonalon különböző járműstílusok futnak, de az elektronikus táblán szereplő célállomás ugyanaz marad.",
+        "Maradjon, amíg a busz áthalad Positano domboldali utcáin, és leereszkedik a városközpont felé."
+      ]
+    },
+    {
+      "id": "piazza-dei-mulini",
+      "title": "Szálljon le a Piazza dei Mulini téren",
+      "body": [
+        "Szálljon le a Piazza dei Mulinin, a gyógyszertár melletti bevásárlónegyed központi megállójánál.",
+        "Ez a legalacsonyabb pont a városban, ahová a járművek a vízparttól néhány percen belül eljutnak."
+      ]
+    },
+    {
+      "id": "final-walk",
+      "title": "Sétálj végig az utolsó szakaszon a tengerpartig",
+      "body": [
+        "Sétálj egyenesen a tér melletti boltív alatt, és kövesd a sétányt a kikötő felé.",
+        "3–4 percen belül megnyílik a Spiaggia Grande a bal oldalon — használja a %LINK:positanoMainBeachWalkDown|sétavezető% -t, ha minden lépcsőházi ellenőrző pontot szeretne."
+      ]
+    }
+  ],
+  "tipsTitle": "Busz tippek",
+  "tips": [
+    "Vásároljon interno jegyeket a tabacchiban, mielőtt sorba állna; a fedélzeti vásárlások egy kicsit többe kerülnek, és a sofőrök néha eladják magukat.",
+    "Pillanatkép az órarendről a recepcióról vagy a digitális portásról — a késői esti szolgáltatások elvékonyodnak a vállszezonban.",
+    "Váltson a %LINK:positanoMainBeachWalkDown|gyalogút% -re, ha inkább kinyújtóztatná a lábait lefelé menet."
+  ]
+}

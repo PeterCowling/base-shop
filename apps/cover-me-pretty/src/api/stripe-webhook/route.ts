@@ -5,7 +5,7 @@ import { paymentsEnv } from "@acme/config/env/payments";
 import { NextResponse } from "next/server";
 import type Stripe from "stripe";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function POST(req: Request) {
   const body = await req.text();

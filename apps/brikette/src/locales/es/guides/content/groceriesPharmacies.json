@@ -1,0 +1,99 @@
+{
+  "seo": {
+    "title": "Supermercados y farmacias en Positano",
+    "description": "Dónde comprar básicos en Positano: minimercados, horarios ampliados e información de farmacias."
+  },
+  "linkLabel": "Supermercados y farmacias en Positano",
+  "intro": [
+    "Abastecerte en Positano es posible sin gastar de más: combina minimercados cercanos al hostel con supermercados mayores en Sorrento o Amalfi.",
+    "Las farmacias locales cubren medicamentos básicos; para recetas o productos específicos conviene avisar con antelación."
+  ],
+  "sections": [
+    {
+      "id": "minimarkets",
+      "title": "Minimercados cerca del hostel",
+      "body": [
+        "En Via Pasitea encontrarás colmados con frutas, pan, agua y snacks; abren hasta las 21:00 en temporada.",
+        "Pregunta por ofertas de packs de agua de 6 botellas y por la posibilidad de mantener tus compras en la nevera del hostel."
+      ]
+    },
+    {
+      "id": "supermarkets",
+      "title": "Supermercados completos",
+      "body": [
+        "Para una compra grande, toma el bus a Sorrento (parada final) y entra al supermercado frente a la estación de tren (Conad/Coop).",
+        "En Amalfi también hay opciones medianas; planifica la vuelta con bolsas reutilizables y evita horas de mayor calor."
+      ]
+    },
+    {
+      "id": "pharmacies",
+      "title": "Farmacias y turnos de guardia",
+      "body": [
+        "La farmacia de Via G. Marconi cubre básicos (analgésicos, vendajes, repelente).",
+        "Consulta el cartel de guardia nocturna en la puerta o en la web del colegio farmacéutico de Salerno para urgencias fuera de horario."
+      ]
+    },
+    {
+      "id": "saving",
+      "title": "Consejos para ahorrar",
+      "body": [
+        "Compra fruta y verduras en mercados de productores los martes/viernes por la mañana en la parte alta del pueblo.",
+        "Lleva tus propias bolsas reutilizables para evitar recargos y ayudar al medio ambiente.",
+        "Reparte compras pesadas en mochilas; las cuestas hacen que cada kilo cuente."
+      ]
+    }
+  ],
+  "gallery": [
+    {
+      "alt": "Tiendas en la carretera principal de Positano",
+      "caption": "Comercios a lo largo de la vía principal"
+    },
+    {
+      "alt": "Cestas de la compra con fruta fresca",
+      "caption": "Fruta y básicos"
+    }
+  ],
+  "tips": [
+    "Pide ‘fresco’ en charcuterías para cortes del día; suelen preparar paninis a buen precio.",
+    "Para medicamentos con receta escribe a la farmacia con 24 h de margen: pueden pedir el producto a Salerno."
+  ],
+  "faqs": [
+    {
+      "q": "¿Aceptan tarjeta los minimercados?",
+      "a": [
+        "Sí, la mayoría desde 10 €; lleva efectivo para compras pequeñas o cuando la red falla."
+      ]
+    },
+    {
+      "q": "¿Dónde comprar productos sin gluten o veganos?",
+      "a": [
+        "Pregunta en Delikatessen (Via Pasitea) o haz compra grande en Sorrento, donde hay más variedad."
+      ]
+    },
+    {
+      "q": "¿Hay servicio a domicilio?",
+      "a": [
+        "Algunos colmados locales entregan en hoteles/apartamentos cercanos por un pequeño recargo; acuerda hora y pago en efectivo."
+      ]
+    }
+  ],
+  "fallback": "En Positano hay productos básicos en todo el pueblo: compra temprano y ten a mano las farmacias cercanas.",
+  "toc": [
+    {
+      "href": "#minimarkets",
+      "label": "Minimercados cerca"
+    },
+    {
+      "href": "#supermarkets",
+      "label": "Supermercados grandes"
+    },
+    {
+      "href": "#pharmacies",
+      "label": "Farmacias y guardias"
+    },
+    {
+      "href": "#saving",
+      "label": "Consejos de ahorro"
+    }
+  ]
+}

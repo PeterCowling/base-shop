@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "title": "Sorrento a Positano en ferry | Hostel Brikette",
+    "description": "Paso a paso de Sorrento a Positano en ferry: billetes, consejos de salida y cómo subir desde el puerto de Positano hasta el Hostel Brikette."
+  },
+  "hero": {
+    "eyebrow": "Guía de viaje de Hostel Brikette",
+    "title": "Sorrento a Positano — Ferry",
+    "description": "Toma un ferry directo desde Marina Piccola, en Sorrento, hasta Positano. Esta breve guía explica dónde comprar los billetes, cuándo hacer fila y qué hacer al llegar al puerto de Positano para que el último tramo hasta el Hostel Brikette sea más sencillo."
+  },
+  "tip": {
+    "label": "Consejo",
+    "copy": "¿Quieres todas las opciones de transporte? Consulta la <link>guía Cómo llegar</link> para conocer autobuses, taxis y rutas combinadas."
+  },
+  "sections": {
+    "overview": {
+      "title": "Resumen del viaje",
+      "points": [
+        "Calcula unos 45–60 minutos de muelle a muelle en temporada.",
+        "Los ferris dependen del clima y pueden llenarse en los momentos de mayor demanda.",
+        "Comprar los billetes con un poco de antelación ayuda a asegurar asientos y agiliza el embarque."
+      ]
+    },
+    "sorrentoPort": {
+      "title": "Cómo llegar al puerto de Sorrento (Marina Piccola)",
+      "points": [
+        "Dirígete a Marina Piccola, el puerto de ferris de Sorrento, y sigue las señales hacia las taquillas.",
+        "Consulta la próxima salida hacia Positano y confirma la operadora (por ejemplo, Travelmar o NLG).",
+        "Compra tu billete en la ventanilla o en línea y acude a la puerta indicada."
+      ],
+      "footer": "Consulta horarios y precios en <linkPositano>Positano.com — Horarios de ferry</linkPositano> y en los sitios web de las operadoras como <linkTravelmar>Travelmar</linkTravelmar> o <linkNlg>NLG</linkNlg>."
+    },
+    "boarding": {
+      "title": "Compra tu billete y embarca",
+      "points": [
+        "Llega 15–20 minutos antes de la salida para hacer fila con calma.",
+        "Ten tu billete a mano para la inspección y sigue las instrucciones de la tripulación al embarcar.",
+        "Coloca el equipaje en la zona designada y lleva contigo lo imprescindible."
+      ]
+    },
+    "arrival": {
+      "title": "Llegada a Positano",
+      "points": [
+        "Desembarca en el muelle principal de Positano (Spiaggia Grande).",
+        "Para equipaje pesado, considera el servicio oficial de porteadores en el muelle (servicio de pago).",
+        "Para llegar al Hostel Brikette con mayor facilidad, toma el autobús local Interno dirección cuesta arriba hasta “Chiesa Nuova” y camina un tramo corto hasta el hostel.",
+        "Como alternativa, sube a pie por Via dei Mulini/Via G. Marconi, dejando tiempo extra para la subida."
+      ]
+    }
+  }
+}

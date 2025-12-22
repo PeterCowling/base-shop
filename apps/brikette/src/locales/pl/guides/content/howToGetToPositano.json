@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Jak dotrzeć do Positano: porównanie wszystkich opcji",
+    "description": "Porównaj prom, pociąg+autobus, shuttle i transfer prywatny — z uwagami sezonowymi i poradami dotyczącymi bagażu."
+  },
+  "linkLabel": "Jak dotrzeć do Positano (przewodnik po opcjach)",
+  "intro": "Tłumaczenie w przygotowaniu.",
+  "toc": {
+    "onThisPage": "On this page",
+    "naples": "Via Naples",
+    "salerno": "Via Salerno",
+    "ferry": "Ferry (summer)",
+    "private": "Private transfer",
+    "faqs": "FAQs"
+  },
+  "labels": {
+    "whenHeading": "When to choose",
+    "cheapestHeading": "Cheapest route",
+    "seasonalHeading": "Seasonal notes"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Via Naples",
+      "body": [
+        "Airport shuttle to Sorrento + SITA to Positano (cheapest), or train to Sorrento + SITA.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Via Salerno",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Off‑season: bus via Amalfi; slower but reliable."
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Private transfer",
+      "body": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "What’s fastest in summer?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Tłumaczenie w przygotowaniu.",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ]
+}

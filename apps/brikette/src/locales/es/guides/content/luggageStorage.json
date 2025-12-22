@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Dónde guardar equipaje en Positano",
+    "description": "Opciones de consigna y porteadores en Positano, agregadores cercanos y estrategias para llegadas tempranas con maletas."
+  },
+  "linkLabel": "Consigna de equipaje en Positano",
+  "intro": [
+    "Hay consigna cerca del muelle y a lo largo de Via dei Mulini, pero las plazas se agotan rápido en temporada alta: reserva o llega con margen."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "Cerca del muelle",
+      "body": [
+        "Consignas con tarifa por hora/día junto a Spiaggia Grande; espera colas en verano y confirma horario de cierre antes de dejar tus maletas.",
+        "Reserva por adelantado cuando sea posible y lleva efectivo para agilizar el proceso."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Agregadores",
+      "body": [
+        "Bounce y Radical Storage listan opciones en Positano y pueblos vecinos: revisa dirección exacta, acceso y política de cancelación antes de pagar en línea.",
+        "Comprueba si aceptan equipaje voluminoso y llega unos minutos antes para hacer check-in sin prisas."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta y consejos",
+      "body": [
+        "Lleva contigo objetos de valor (pasaporte, electrónica) y etiqueta las maletas con tu nombre y contacto.",
+        "Haz una foto del resguardo o ticket y guarda el recibo por si cambian de turno mientras visitas la ciudad."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Abren hasta tarde?",
+      "a": [
+        "Depende del proveedor: fuera de temporada muchos cierran al atardecer. Confirma la última recogida si piensas regresar después del último ferry o bus."
+      ]
+    }
+  ],
+  "tocTitle": "En esta página",
+  "faqsTitle": "Preguntas frecuentes",
+  "heroAlt": "Porteador guiando un carro de equipaje por las escaleras de Positano",
+  "serviceType": "Consigna de equipaje",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "Casas en los acantilados de Positano con vista al mar",
+    "primaryCaption": "Panorama de Positano",
+    "secondaryAlt": "Porteador empujando un carro de equipaje cerca del muelle de Positano",
+    "secondaryCaption": "Carros de porteadores junto al muelle"
+  }
+}

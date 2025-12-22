@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Beach-Hopping an der Amalfiküste",
+    "description": "Welche Strände sich an einem Tag kombinieren lassen, Zugangstipps und Kosten."
+  },
+  "linkLabel": "Beach-Hopping an der Amalfiküste",
+  "intro": [
+    "Plane einen Beach-Hopping-Tag mit Fähren, Klippenblicken und entspannter Zeit im Sand."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Übersetzung in Arbeit.",
+      "body": [
+        "Starte früh an der Spiaggia Grande für einen kurzen Sprung ins Wasser und geh bis 09:30 den Küstenpfad nach Fornillo für ruhigeres Meer.",
+        "Reserviere Liegen im Voraus, wenn du Schatten möchtest; sonst pack einen leichten Sonnenschirm ein."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Mittag: Amalfi oder Atrani",
+      "body": [
+        "Nimm am späten Vormittag die Fähre nach Amalfi und iss am Pier, bevor du am Stadtstrand oder in Atranis kleiner Bucht schwimmst.",
+        "Lager dein Gepäck im Depot von Amalfi, damit du die Stadt freihändig erkunden kannst."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Abend: Sunset-Schwimmen",
+      "body": [
+        "Beende den Tag in Laurito oder Arienzo für Golden-Hour-Blicke; beide liegen westlich und sind nach 17:00 ruhiger.",
+        "Nimm die letzte Fähre oder reserviere ein Taxi zurück, um Aufstiege im Dunkeln zu vermeiden."
+      ]
+    }
+  ],
+  "tips": [
+    "Nimm ein schnelltrocknendes Handtuch und Wechselkleidung mit, damit du dich auf den Fähren wohlfühlst.",
+    "Pack Snacks und mindestens 1 Liter Wasser ein – Strandkioske sind an vollen Tagen schnell ausverkauft."
+  ],
+  "faqs": [
+    {
+      "q": "Muss ich Liegen vorab reservieren?",
+      "a": [
+        "Ja, im Juli und August. Kontaktiere die Beachclubs am Vortag per WhatsApp, um vordere Reihen zu sichern."
+      ]
+    },
+    {
+      "q": "Darf ich eigenes Essen mitbringen?",
+      "a": [
+        "In den freien Bereichen sind Picknicks meist erlaubt. Beachclubs gestatten kleine Snacks, bevorzugen aber, dass du Getränke an ihrer Bar kaufst."
+      ]
+    }
+  ]
+}

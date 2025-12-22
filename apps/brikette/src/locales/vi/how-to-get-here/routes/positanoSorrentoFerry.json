@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "title": "Từ Positano đến Sorrento bằng phà | Hostel Brikette",
+    "description": "Từng bước đi phà từ Positano tới Sorrento: đi bộ ra cầu tàu, mua vé, mẹo lên tàu và lưu ý khi cập bến Marina Piccola của Sorrento."
+  },
+  "hero": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Positano đến Sorrento — Phà",
+    "description": "Đi phà thẳng từ cầu tàu Spiaggia Grande của Positano tới Sorrento. Hướng dẫn ngắn này bao gồm đường đi xuống cầu tàu, nơi mua vé, mẹo lên tàu và những điều cần biết khi cập cảng Sorrento."
+  },
+  "cta": {
+    "label": "Mẹo",
+    "copy": "Cần xem mọi lựa chọn di chuyển? Mở <link>Tổng quan Cách đến đây</link> để tham khảo xe buýt, taxi và hành trình kết hợp."
+  },
+  "journeyOverview": {
+    "title": "Tổng quan hành trình",
+    "items": [
+      "Dành khoảng 45–60 phút từ cầu tàu tới cầu tàu vào mùa.",
+      "Phà phụ thuộc thời tiết và có thể hết chỗ vào giờ cao điểm.",
+      "Mua vé sớm giúp giữ chỗ và lên tàu thuận lợi."
+    ]
+  },
+  "walkToPier": {
+    "title": "Đi bộ tới cầu tàu Positano",
+    "items": [
+      "Từ Hostel Brikette, đi xuống dốc về phía Spiaggia Grande (bãi biển/cầu tàu chính).",
+      "Nếu mang hành lý nặng, cân nhắc đặt dịch vụ khuân vác chính thức tại cầu tàu.",
+      "Mua vé tại các quầy bên bờ biển hoặc trên trang web của hãng (ví dụ Travelmar hoặc NLG)."
+    ],
+    "note": "Xem giờ chạy và giá trên <positano>Positano.com — Lịch phà</positano> và trên trang của các hãng như <travelmar>Travelmar</travelmar> hoặc <nlg>NLG</nlg>."
+  },
+  "boarding": {
+    "title": "Mua vé và lên tàu",
+    "items": [
+      "Đến sớm 20–30 phút trước giờ khởi hành để đổi phiếu (voucher) nếu cần và xếp hàng thoải mái.",
+      "Giữ vé sẵn và làm theo hướng dẫn của thủy thủ đoàn khi lên tàu.",
+      "Đặt hành lý cỡ lớn vào khu vực quy định; giữ vật dụng giá trị bên mình."
+    ]
+  },
+  "arrival": {
+    "title": "Đến Sorrento",
+    "items": [
+      "Xuống tàu tại Marina Piccola (cảng phà) của Sorrento.",
+      "Làm theo biển chỉ dẫn lên thị trấn hoặc dùng phương tiện địa phương để tới ga tàu Sorrento nếu đi tiếp.",
+      "Kiểm tra trước lịch tàu/xe nối chuyến, đặc biệt vào buổi tối và mùa thấp điểm."
+    ]
+  },
+  "externalLinks": {
+    "positano": "https://www.positano.com/en/ferry-schedule",
+    "travelmar": "https://travelmar.it/en",
+    "nlg": "https://www.nlg.it/"
+  }
+}

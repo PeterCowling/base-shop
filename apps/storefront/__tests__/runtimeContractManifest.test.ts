@@ -32,12 +32,21 @@ describe("storefront runtimeContractManifest", () => {
 
     expect(capabilities.cart).toBe(false);
     expect(capabilities.checkout).toBe(false);
+    expect(capabilities.webhooks).toBe(false);
     expect(capabilities.returns).toBe(false);
     expect(capabilities.preview).toBe(false);
     expect(capabilities.returnsHomePickup).toBe(false);
 
     expect(capabilities.pageBuilderPreview).toBe(false);
     expect(capabilities.pageBuilderMarketingPages).toBe(false);
+
+    expect(capabilities.paymentsMode).toBe("payment_intent");
+    expect(capabilities.taxMode).toBe("static_rates");
+    expect(capabilities.inventoryMode).toBe("none");
+    expect(capabilities.identityMode).toBe("none");
+    expect(capabilities.profileApi).toBe(false);
+    expect(capabilities.logoutMode).toBe("local");
+    expect(capabilities.orderLinking).toBe("none");
 
     expect(capabilities.systemBlocks.cartSection).toBe(false);
     expect(capabilities.systemBlocks.checkoutSection).toBe(false);

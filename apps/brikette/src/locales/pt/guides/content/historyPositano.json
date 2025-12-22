@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "The History of Positano (concise)",
+    "description": "A short history of Positano: traders, cliffs, and tourism."
+  },
+  "linkLabel": "História de Positano (resumo)",
+  "intro": [
+    "Perceba o passado de Positano — das raízes marítimas à descoberta por Hollywood — para dar contexto histórico aos seus passeios."
+  ],
+  "sections": [
+    {
+      "id": "origins",
+      "title": "Origens e comércio",
+      "body": [
+        "Positano começou como núcleo de villas romanas à beira-mar; mais tarde, mercadores medievais exportavam lã e importavam especiarias através da frota de Amalfi.",
+        "As torres de vigia ao longo da costa avisavam de incursões sarracenas — muitas sobrevivem hoje como miradouros."
+      ]
+    },
+    {
+      "id": "20th",
+      "title": "Transformação no século XX",
+      "body": [
+        "Depois da Segunda Guerra Mundial, artistas e escritores como Steinbeck divulgaram o encanto de Positano, orientando a economia para o turismo.",
+        "As estradas melhoradas nos anos 1950 ligaram Positano ao resto de Itália, trazendo hotéis boutique e visitantes."
+      ]
+    },
+    {
+      "id": "today",
+      "title": "Hoje",
+      "body": [
+        "O turismo é o motor atual da vila, com esforços para equilibrar preservação e visitantes através de quotas de ferry e zonas pedonais.",
+        "Artesãos locais continuam a fabricar sandálias e cerâmica, mantendo vivos ofícios tradicionais ao lado da hotelaria."
+      ]
+    }
+  ],
+  "tips": [
+    "Visite a villa romana sob a Santa Maria Assunta para ver mosaicos descobertos em 1987.",
+    "Procure as placas informativas na Via dei Mulini que destacam edifícios históricos."
+  ],
+  "faqs": [
+    {
+      "q": "Onde posso saber mais in loco?",
+      "a": [
+        "O museu MAR Positano combina arqueologia e projeções multimédia — ótimo para dias de chuva."
+      ]
+    },
+    {
+      "q": "Porque há tantas escadas?",
+      "a": [
+        "A vila cresceu na vertical para se adaptar às falésias; as escadarias substituíram ruas para ligar rapidamente os diferentes patamares."
+      ]
+    }
+  ]
+}

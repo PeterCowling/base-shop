@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Pagina non trovata | Hostel Brikette Positano",
+    "description": "La pagina che hai richiesto non esiste o è stata spostata. Usa i link qui sotto per continuare a esplorare."
+  },
+  "heading": "Pagina non trovata",
+  "message": "Dai un'occhiata alle nostre camere o prenota subito il tuo soggiorno.",
+  "linksTitle": "Link utili",
+  "links": {
+    "home": "Pagina iniziale",
+    "deals": "Offerte",
+    "assistance": "Contatti e informazioni",
+    "about": "Chi siamo"
+  },
+  "buttonRooms": "Camere",
+  "buttonReserve": "Prenota ora"
+}

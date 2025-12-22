@@ -42,8 +42,11 @@ export default [
       "packages/auth/dist/",
       "packages/configurator/bin/**",
       "**/.next/**",
+      "**/.vercel/**",
+      "**/.wrangler/**",
       "**/storybook-static/**",
       "apps/skylar/out/**",
+      "apps/*/out/**",
       "packages/cypress-image-snapshot/**",
       "**/build/**",
       "**/coverage/**",
@@ -332,6 +335,13 @@ export default [
       "ds/min-tap-size": ["warn", { min: 44 }],
     },
   },
+  {
+    files: ["apps/cochlearfit/**/*.{ts,tsx,js,jsx}"],
+    rules: {
+      "ds/no-unsafe-viewport-units": "off",
+      "ds/no-nonlayered-zindex": "off",
+    },
+  },
   // Downgrade no-hardcoded-copy in TS-only files to ease server/logic migration
   {
     files: [
@@ -430,6 +440,19 @@ export default [
     rules: {
       "ds/no-hardcoded-copy": "off",
       "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+  {
+    files: ["test/unit/**"],
+    rules: {
+      "security/detect-non-literal-require": "off",
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+  {
+    files: ["test/unit/init-shop/**"],
+    rules: {
+      "ds/no-raw-color": "off",
     },
   },
   {
@@ -618,6 +641,18 @@ export default [
     },
     plugins: { "@typescript-eslint": tsPlugin },
     rules: {},
+  },
+  /* ▸ App scripts: parse without a TS project */
+  {
+    files: ["apps/*/scripts/**/*.{ts,tsx,js,jsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: null,
+        projectService: false,
+        allowDefaultProject: true,
+      },
+    },
   },
 
   /* ▸ Cypress configs/support: parse outside TS project */

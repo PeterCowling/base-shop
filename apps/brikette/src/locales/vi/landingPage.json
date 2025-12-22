@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Đặt phòng tại nhà trọ giá rẻ duy nhất ở Positano với tầm nhìn từ sân thượng. Wi‑Fi miễn phí và gợi ý từ trợ lý số. Đặt trực tiếp để có giá tốt nhất.",
+    "ogImageAlt": "Quang cảnh từ sân thượng của hostel"
+  },
+  "introSection": {
+    "title": "Ngôi nhà đẹp xa nhà",
+    "titleParts": {
+      "before": "Ngôi nhà đẹp",
+      "between": "xa",
+      "home": "nhà"
+    },
+    "paragraph1": "Hostel Brikette là <strong>nhà trọ duy nhất ở Positano</strong>, mang đến chỗ ở <strong>tiết kiệm</strong> giúp bạn chạm tới những điểm nổi bật của Bờ biển Amalfi.",
+    "paragraph2": "Tựa lưng trên vách đá, chúng tôi có <strong>tầm nhìn biển tuyệt đẹp</strong>, tiện ích thiết thực và thông tin địa phương 24/7 qua <strong>trợ lý số</strong>—người bạn đồng hành cho lịch phà, lộ trình trekking, nhà hàng và hơn thế nữa.",
+    "paragraph3": "Dù bạn chọn giường ký túc hay phòng riêng, mọi lựa chọn đều hướng tới <strong>sự thoải mái</strong> và <strong>tiện lợi</strong>."
+  },
+  "facilitiesModal": {
+    "title": "Tiện nghi & Dịch vụ",
+    "closeButton": "Đóng",
+    "categories": [
+      {
+        "title": "Chung",
+        "items": [
+          "Phòng không hút thuốc",
+          "Wi‑Fi miễn phí",
+          "Điều hòa không khí",
+          "Hệ thống sưởi"
+        ]
+      },
+      {
+        "title": "Phòng tắm",
+        "items": [
+          "Giấy vệ sinh",
+          "Khăn tắm",
+          "Ga giường",
+          "Khăn tắm biển (tính phí thêm)",
+          "Bồn cầu",
+          "Vòi sen"
+        ]
+      },
+      {
+        "title": "Ngoài trời",
+        "items": [
+          "Khu dã ngoại",
+          "Bàn ghế ngoài trời",
+          "Sân thượng tắm nắng",
+          "Hiên"
+        ]
+      },
+      {
+        "title": "Hoạt động",
+        "items": [
+          "Leo núi (ngoài khuôn viên)"
+        ]
+      },
+      {
+        "title": "Ăn uống",
+        "items": [
+          "Quầy bar"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Wi‑Fi miễn phí tại khu vực chung"
+        ]
+      },
+      {
+        "title": "Bãi đỗ xe",
+        "items": [
+          "Không có bãi đỗ xe"
+        ]
+      },
+      {
+        "title": "Dịch vụ",
+        "items": [
+          "Dọn phòng hằng ngày",
+          "Tủ khóa",
+          "Dịch vụ lễ tân",
+          "Giữ hành lý"
+        ]
+      },
+      {
+        "title": "An toàn & An ninh",
+        "items": [
+          "Bình chữa cháy",
+          "Camera CCTV tại khu vực chung",
+          "Ra vào bằng thẻ từ"
+        ]
+      },
+      {
+        "title": "Ngôn ngữ",
+        "items": [
+          "Tiếng Anh",
+          "Tiếng Tây Ban Nha",
+          "Tiếng Ý"
+        ]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "Toàn cảnh Positano từ sân thượng Hostel Brikette",
+    "brandName": "Hostel Brikette",
+    "cityName": "Positano",
+    "address": "Bản dịch đang được chuẩn bị.",
+    "locationButton": "Vị trí",
+    "contactButton": "Liên hệ",
+    "helpButton": "Hỗ trợ",
+    "reserveNow": "Đặt ngay"
+  },
+  "quickLinksSection": {
+    "location": "Vị trí",
+    "photosAndVideos": "Ảnh & Video",
+    "facilitiesAndAmenities": "Tiện nghi & Dịch vụ",
+    "barMenu": "Thực đơn quầy bar",
+    "breakfastMenu": "Thực đơn bữa sáng"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "Khu vực chung đẹp mắt",
+    "slides": [
+      {
+        "title": "Chốn trú ẩn sườn đồi",
+        "text": "Thức dậy với khung cảnh núi non thoáng đãng từ sân thượng đầy nắng.",
+        "alt": "Sân thượng nhìn ra sườn đồi Positano"
+      },
+      {
+        "title": "Ốc đảo ngoài trời",
+        "text": "Đắm mình trong nắng ấm và kết thêm bạn mới.",
+        "alt": "Sân thượng với mái che tre tạo bóng mát"
+      },
+      {
+        "title": "Tầm nhìn biển ấn tượng",
+        "text": "Thưởng thức phép màu của đường chân trời khi mặt trời buông mình xuống biển.",
+        "alt": "Đường chân trời biển từ sân thượng hostel"
+      }
+    ]
+  }
+}

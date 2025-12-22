@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Bus back to Hostel Brikette from Positano's main beach",
+    "description": "Catch the interno bus at Piazza dei Mulini and ride up to the tabacchi beside Hostel Brikette."
+  },
+  "linkLabel": "Bus back to Hostel Brikette from Spiaggia Grande",
+  "intro": [
+    "Hopp over 600 trapper etter en stranddag ved å ta den oransje Interno Positano-bussen tilbake til Hostel Brikette.",
+    "Billettene er gyldige i begge retninger, så du kan kjøpe dem på tabacchi før du drar til stranden, eller kjøpe dem på vei tilbake hvis beholdningen tillater det."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-stop",
+      "title": "Gå til Piazza dei Mulini",
+      "body": [
+        "Gå fra Spiaggia Grande gjennom buen ved siden av havnen og følg handlegaten til Piazza dei Mulini.",
+        "Bussholdeplassen interno ligger ved siden av apoteket og den samme tobakkskiosken/aviskiosken som brukes til billetter."
+      ]
+    },
+    {
+      "id": "wait-for-the-bus",
+      "title": "Vent på Piazza dei Mulini",
+      "body": [
+        "Sjekk rutetabellen som er oppslått på krisesenteret eller via den digitale conciergen; tjenesten tynnes ut sent på kvelden og i lavsesongen.",
+        "Stå ved siden av apoteket og tobakken, slik at du kan gå ombord så snart den oransje Interno Positano-bussen ankommer."
+      ]
+    },
+    {
+      "id": "ride-uphill",
+      "title": "Ta interno-bussen oppoverbakke",
+      "body": [
+        "Gå ombord på den oransje vognen merket «Interno Positano» og kjør i sløyfe gjennom byen mot Chiesa Nuova.",
+        "Lytt etter stoppsignalet eller se etter tobakksbjelken der du gikk ombord tidligere på dagen."
+      ]
+    },
+    {
+      "id": "final-steps",
+      "title": "Siste steg til vandrerhjemmet",
+      "body": [
+        "Gå av på tabacchi-holdeplassen, ta til venstre inn på Viale Pasitea og gå omtrent 100 meter oppover.",
+        "Ta trappen til høyre for å komme direkte tilbake til hovedinngangen til Hostel Brikette."
+      ]
+    }
+  ],
+  "tipsTitle": "Busstips",
+  "tips": [
+    "Ta med deg en ekstra billett slik at du kan gå ombord umiddelbart hvis bussen er travel.",
+    "Hvis tjenestene slutter tidlig, gå tilbake til %LINK:positanoMainBeachWalkBack|tursti% – den følger vandrerhjemmets trappesjekkpunkter.",
+    "Gi beskjed til resepsjonen hvis du oppdager endringer i rutetabellen, slik at den digitale conciergen holder seg oppdatert for andre gjester."
+  ],
+  "extras": {
+    "photos": {
+      "title": "Photos",
+      "items": {
+        "busInterior": {
+          "alt": "Interno Positano bus at the beach-side stop",
+          "caption": "Interno Positano bus — vehicles vary but the route label stays the same."
+        },
+        "barInternazionaleStop": {
+          "alt": "Chiesa Nuova / Bar Internazionale bus stop",
+          "caption": "Chiesa Nuova (Bar Internazionale) — closest stop to Hostel Brikette."
+        }
+      }
+    }
+  }
+}

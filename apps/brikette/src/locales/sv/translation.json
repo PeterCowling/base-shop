@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Hostel Brikette",
+    "reserve": "Boka nu"
+  },
+  "intro": {
+    "title": "Boka direkt och spara",
+    "description": "Boka din vistelse på vår webbplats och få ett kostnadsfritt måltidserbjudande värderat upp till 29 euro per dag."
+  },
+  "rooms": {
+    "title": "Rum",
+    "value_dorms": "Prisvärda sovsalar",
+    "premium_dorms": "Premiumrum",
+    "superior_dorms": "Superiorrum",
+    "private_room": "Privat rum"
+  },
+  "careers": {
+    "jobTitle": "Gå med i Hostel Brikette-teamet",
+    "jobDescription": "Vi letar alltid efter energiska personer som älskar service. Trivs du i en snabb miljö? Hör av dig!",
+    "ctaLabel": "Fråga om lediga roller"
+  },
+  "errorBoundary": {
+    "title": "Något gick fel.",
+    "reload": "Ladda om sidan"
+  },
+  "meta": {
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@brikette"
+  },
+  "internalErrors": {
+    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+  }
+}

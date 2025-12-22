@@ -4,11 +4,15 @@ import { expectInvalidAuthEnvWithConfigEnv } from "../../../config/test/utils/ex
 
 const REDIS_URL = "https://example.com";
 const STRONG_TOKEN = "redis-token-32-chars-long-string!";
+const OAUTH_ISSUER = "https://auth.example.com/realms/base-shop";
+const OAUTH_REDIRECT_ORIGIN = "https://shop.example.com";
 
 type EnvOverrides = Record<string, string | undefined>;
 
 const devEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "development",
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...overrides,
 });
 

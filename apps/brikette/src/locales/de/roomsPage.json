@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "title": "Zimmer & Preise | Brikette Hostel Positano",
+    "description": "Private Doppelzimmer mit Meerblick und preisgünstige Schlafsäle: Entdecke Fotos, Ausstattungen und Live-Preise und buche direkt für das beste Angebot im Brikette Hostel Positano.",
+    "ogImageAlt": "Innenraum eines Gemeinschaftsschlafsaals"
+  },
+  "facilities": {
+    "privateRoom": "Privatzimmer",
+    "mixedDorm": "Gemischter Schlafsaal",
+    "femaleDorm": "Schlafsaal nur für Frauen",
+    "femaleRoom": "Zimmer nur für Frauen",
+    "doubleBedForTwo": "Ein Doppelbett für bis zu zwei Gäste",
+    "threeSingleBedsThreeGuests": "Drei Einzelbetten für bis zu drei Gäste",
+    "oneDormBedTwoGuests": "Ein Schlafsaalbett, insgesamt zwei Betten, für bis zu zwei Gäste",
+    "threeDormBedsSixGuests": "Drei Schlafsaalbetten, insgesamt sechs Betten, für bis zu sechs Gäste",
+    "threeDormBedsPlusSingleSevenGuests": "Drei Schlafsaalbetten plus ein Einzelbett, insgesamt sieben Betten, für bis zu sieben Gäste",
+    "fourDormBedsEightGuests": "Vier Schlafsaalbetten, insgesamt acht Betten, für bis zu acht Gäste",
+    "thirdFloor": "Im dritten Stock",
+    "fourthFloor": "Im vierten Stock",
+    "bathroomEnsuite": "Eigenes Bad",
+    "bathroomPrivate": "Privates Bad",
+    "bathroomSharedFemale": "Gemeinschaftsbad (Frauen)",
+    "seaViewTerrace": "Terrasse mit Meerblick",
+    "seaViewExtraLargeTerrace": "Meerblick mit extra großer Terrasse",
+    "gardenView": "Gartenblick",
+    "courtyardView": "Innenhofblick",
+    "noView": "Kein Ausblick",
+    "airCon": "Klimaanlage",
+    "keycard": "Schlüsselkartenzugang",
+    "linen": "Bettwäsche und Handtuch inklusive"
+  },
+  "rooms": {
+    "title": "Unsere Zimmer",
+    "double_room": {
+      "title": "Doppelzimmer",
+      "bed_intro": "Beeindruckender Meerblick – ideal für Paare.",
+      "bed_description": "Unser Doppelzimmer ist ein privater Raum mit einem Doppelbett für bis zu zwei Gäste. Es befindet sich im dritten Stock und bietet ein eigenes Bad, eine Terrasse mit Meerblick, Klimaanlage und sicheren Schlüsselkartenzugang. Bettwäsche und Handtücher sind inklusive.",
+      "facilities": [
+        "privateRoom",
+        "doubleBedForTwo",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 259.2,
+        "flexible": 285.12
+      }
+    },
+    "room_10": {
+      "title": "Premium Gemischter Schlafsaal",
+      "bed_intro": "Wenn du sechs Betten und ein hochwertiges Bad möchtest.",
+      "bed_description": "Unser Premium-Schlafsaal ist ein gemischter Schlafsaal mit drei Schlafsaalbetten und bietet insgesamt Platz für bis zu sechs Gäste. Er befindet sich im vierten Stock und verfügt über Klimaanlage, sicheren Schlüsselkartenzugang und ein eigenes Bad (kein Ausblick). Bettwäsche und Handtuch erhältst du beim Check-in.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 60.75,
+        "flexible": 66.82
+      }
+    },
+    "room_11": {
+      "title": "Superior Frauenschlafsaal – Große Terrasse",
+      "bed_intro": "Die besten Aussichten, eine großzügige Terrasse und ein tolles Bad.",
+      "bed_description": "Unser Superior Frauen-Schlafsaal umfasst drei Schlafsaalbetten, insgesamt sechs Betten, und bietet Platz für bis zu sechs Gäste. Er befindet sich im vierten Stock und verfügt über Klimaanlage, sicheren Schlüsselkartenzugang, ein eigenes Bad sowie Meerblick mit extra großer Terrasse. Bettwäsche und Handtuch erhältst du beim Check-in.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 72.4,
+        "flexible": 79.64
+      }
+    },
+    "room_12": {
+      "title": "Superior Gemischter Schlafsaal",
+      "bed_intro": "Die beste Aussicht, eine große Terrasse und ein großartiges Bad.",
+      "bed_description": "Unser Superior Gemischter Schlafsaal verfügt über drei Schlafsaalbetten, insgesamt sechs Betten, und bietet Platz für bis zu sechs Gäste. Er befindet sich im vierten Stock und bietet Klimaanlage, sicheren Schlüsselkartenzugang, ein privates Bad und Meerblick mit extra großer Terrasse. Bettwäsche und Handtuch erhältst du beim Check-in.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomPrivate",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 74.4,
+        "flexible": 81.84
+      }
+    },
+    "room_3": {
+      "title": "Value Frauen-Schlafsaal",
+      "bed_intro": "Eine preisgünstige Wahl für weibliche Reisende.",
+      "bed_description": "Unser Value Frauen-Schlafsaal bietet bis zu acht Gästen Platz in vier Schlafsaalbetten. Er befindet sich im dritten Stock, verfügt über Klimaanlage, sicheren Schlüsselkartenzugang und Zugang zu einem Gemeinschaftsbad (Frauen). Es gibt keinen Ausblick. Bettwäsche und Handtuch erhältst du beim Check-in.",
+      "facilities": [
+        "femaleDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_4": {
+      "title": "Value Gemischter Schlafsaal",
+      "bed_intro": "Eine preisgünstige Wahl für männliche und weibliche Reisende.",
+      "bed_description": "Unser Value Gemischter Schlafsaal bietet bis zu acht Gästen Platz in vier Schlafsaalbetten. Er befindet sich im dritten Stock, verfügt über Klimaanlage, sicheren Schlüsselkartenzugang und Zugang zu einem Gemeinschaftsbad (Frauen). Es gibt keinen Ausblick. Bettwäsche und Handtuch erhältst du beim Check-in.",
+      "facilities": [
+        "mixedDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_5": {
+      "title": "Superior Frauenschlafsaal – Meerblick",
+      "bed_intro": "Beeindruckende Meeresblicke und ein privates Bad.",
+      "bed_description": "Unser Superior Frauen-Schlafsaal bietet bis zu sechs Gästen Platz in drei Schlafsaalbetten. Er befindet sich im dritten Stock und verfügt über ein eigenes Bad, eine Terrasse mit Meerblick, Klimaanlage und sicheren Schlüsselkartenzugang. Bettwäsche und Handtuch erhältst du beim Check-in.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_6": {
+      "title": "Superior Frauenschlafsaal – 7 Betten",
+      "bed_intro": "Beeindruckende Meeresblicke und ein privates Bad.",
+      "bed_description": "Unser Superior Frauen-Schlafsaal verfügt über drei Schlafsaalbetten plus ein Einzelbett und bietet Platz für bis zu sieben Gäste. Er befindet sich im dritten Stock und bietet ein eigenes Bad, eine Terrasse mit Meerblick, Klimaanlage und sicheren Schlüsselkartenzugang. Bettwäsche und Handtuch erhältst du beim Check-in.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsPlusSingleSevenGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_9": {
+      "title": "Deluxe Gemischtes Zimmer",
+      "bed_intro": "Eine preiswerte Möglichkeit, einen Drei-Bett-Schlafsaal zu bekommen.",
+      "bed_description": "Unser Deluxe Gemischtes Zimmer bietet drei Einzelbetten und Platz für bis zu drei Gäste. Es befindet sich im vierten Stock und verfügt über ein eigenes Bad, Innenhofblick, Klimaanlage und sicheren Schlüsselkartenzugang. Bettwäsche und Handtuch erhältst du beim Check-in.",
+      "facilities": [
+        "mixedDorm",
+        "threeSingleBedsThreeGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "courtyardView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_8": {
+      "title": "Frauen-Schlafsaal mit einem Etagenbett",
+      "bed_intro": "Eine preisgünstige Option für zwei weibliche Reisende.",
+      "bed_description": "Unser Frauen-Schlafsaal mit einem Etagenbett verfügt über ein Schlafsaalbett (Etagenbett) und bietet Platz für bis zu zwei Gäste. Er befindet sich im dritten Stock, bietet Klimaanlage, sicheren Schlüsselkartenzugang, Gartenblick und liegt neben dem Gemeinschaftsbad (Frauen). Bettwäsche und Handtuch erhältst du beim Check-in.",
+      "facilities": [
+        "femaleDorm",
+        "oneDormBedTwoGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "gardenView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 78,
+        "flexible": 85.8
+      }
+    }
+  },
+  "fullscreen": {
+    "clickToClose": "Zum Schließen irgendwo klicken",
+    "closeAria": "Vollbildbild schließen"
+  },
+  "roomImage": {
+    "clickToEnlarge": "Zum Vergrößern auf das Bild klicken",
+    "prevAria": "Vorheriges Bild",
+    "nextAria": "Nächstes Bild",
+    "pagination": "{{current}}/{{total}}",
+    "photoAlt": "Foto von {{room}}",
+    "noImage": "Kein Bild verfügbar"
+  },
+  "carousel": {
+    "previousSlide": "Vorherige Folie",
+    "nextSlide": "Nächste Folie"
+  },
+  "hero": {
+    "heading": "Unsere Zimmer",
+    "subheading": "Wähle das perfekte Zimmer für deinen Aufenthalt"
+  },
+  "filters": {
+    "all": "Alle Zimmer",
+    "private": "Privatzimmer",
+    "dorms": "Schlafsäle"
+  },
+  "filtersAria": "Nach Zimmertyp filtern",
+  "checkRatesNonRefundable": "Nicht erstattbare Preise",
+  "checkRatesFlexible": "Flexible Zimmerpreise",
+  "ctaSuffix": {
+    "nonRefundable": "Nicht erstattbar",
+    "flexible": "Flexibel"
+  },
+  "details": "Einzelheiten",
+  "ratesFrom": "Ab €{{price}}",
+  "selectDatesTitle": "Wähle deine Daten",
+  "checkInDate": "Anreisedatum",
+  "checkOutDate": "Abreisedatum",
+  "adults": "Anzahl der Erwachsenen",
+  "confirm": "Bestätigen",
+  "cancel": "Abbrechen",
+  "moreAboutThisRoom": "Mehr über dieses Zimmer",
+  "loadingPrice": "Preis wird geladen…",
+  "landingImageAlt": "Titelbild von {{room}}",
+  "priceNotes": {
+    "dorm": "Per night, per guest. One guest in one bunk bed."
+  }
+}

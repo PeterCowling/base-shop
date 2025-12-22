@@ -1,0 +1,18 @@
+{
+  "runtime": "edge",
+  "name": "api/stages/k/compose",
+  "deploymentTarget": "v8-worker",
+  "entrypoint": "index.js",
+  "assets": [],
+  "framework": {
+    "slug": "nextjs",
+    "version": "15.3.5"
+  },
+  "environment": {
+    "__NEXT_BUILD_ID": "5ZTXl8XS8OXXDxwlj4yOt",
+    "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "W3GxkxeA3NRRIBrQEnOf71zU+VKXGlFyJTCrFQjCx3k=",
+    "__NEXT_PREVIEW_MODE_ID": "5ccf6ca3e859a0b6eb9293c79b7b5fdb",
+    "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "07a5049f89bb24864a3b4c125c4c2cda95ea90a87ff043eca169cc5b79c1d224",
+    "__NEXT_PREVIEW_MODE_SIGNING_KEY": "a62bbf77877e1c712ea28de7dcb20c72df7c720773d0a15e8cb2f647344ccffc"
+  }
+}

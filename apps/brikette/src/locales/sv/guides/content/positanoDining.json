@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Positano matguide: signaturmiddagar och restauranger i närheten",
+    "description": "Noggrant utvalda tips på Amalfikusten: solnedgångskryssningar, gårdsmiddagar och restauranger bara minuter från Hostel Brikette."
+  },
+  "linkLabel": "Matguide för Positano",
+  "intro": [
+    "Teamet har samlat favoritrestauranger för olika budgetar, med start från de som ligger närmast Hostel Brikette.",
+    "Använd guiden för att planera lyxiga solnedgångsmiddagar, farm-to-table-upplevelser och snabba måltider när du vill äta gott utan lång uppförsbacke."
+  ],
+  "toc": [
+    { "href": "#signature-experiences", "label": "Middagsupplevelser du inte vill missa" },
+    { "href": "#near-hostel", "label": "Restauranger nära Hostel Brikette" },
+    { "href": "#destination-dinners", "label": "Middagar värda en utflykt" }
+  ],
+  "sections": [
+    {
+      "id": "signature-experiences",
+      "title": "Middagsupplevelser du inte vill missa",
+      "body": [
+        "La Gavitellas solnedgångskryssning kombinerar båtturen från Spiaggia Grande med en avsmakningsmeny av skaldjur på deras terrass i Praiano. Paketet kostar cirka 139 € per person och inkluderar returen – kom i god tid för ombordstigning och njut av gyllene timmen.",
+        "La Tagliata ligger tre kilometer upp i Montepertuso. Ta SITA-bussen mot Nocelle och kliv av strax efter byn eller boka restaurangens shuttle. Räkna med en generös gårdsmiddag för 65 € med antipasti, handgjord pasta, grillat, dessert och obegränsat husvin."
+      ]
+    },
+    {
+      "id": "near-hostel",
+      "title": "Restauranger nära Hostel Brikette",
+      "body": [
+        "C'era Una Volta ligger nästan mittemot vandrarhemmet på Via Marconi – perfekt för pizzor att ta med för 7–12 € eller en avslappnad middag vid bordet.",
+        "Il Grottino Azzurro ligger 160 m bort på samma gata, helt plant och två minuters promenad, och serverar klassiska kampanska rätter för runt 35 €.",
+        "Da Gabrisa (260 m bort, 52 m nerför) och Next2 (270 m, 75 m nerför) lyfter middagen med terrassutsikt och setmenyer kring 60 €.",
+        "Da Costantino belönar en kort uppförsbacke på 300 m med fönsterutsikt och rejäla portioner från cirka 30 €, medan Luna på Villa Magia ligger sju minuter, 450 m nerför, och erbjuder en finare avsmakningsmeny för ungefär 100 €."
+      ]
+    },
+    {
+      "id": "destination-dinners",
+      "title": "Middagar värda utflykten bortom Chiesa Nuova",
+      "body": [
+        "Buca di Bacco ligger vid huvudstranden en kilometer bort (167 m nerför) och bjuder på omsorgsfull service och middag vid havet för 50 €. Planera återfärden uppför eller boka bärare om du vill unna dig extra.",
+        "Il Ritrovo i Montepertuso och La Taverna del Leone nära Laurito kräver båda en tur med SITA-bussen (2,3 km respektive 4 km från vandrarhemmet) men belönar med menyer för 45–55 € och vida vyer.",
+        "Standardmenyerna hos La Tagliata och La Gavitella kostar runt 50 € om du hoppar över premium-paketen – fortfarande utmärkta för delade rätter, råvaror från egna odlingar och panoramautsikt över kusten."
+      ]
+    }
+  ],
+  "typicalCostsTitle": "Typisk kostnad per person",
+  "typicalCosts": [
+    "Solnedgångskryssning och middag på La Gavitella: cirka 139 € med båttransfer och skaldjursfest.",
+    "Gårdsmiddag på La Tagliata: omkring 65 € inklusive antipasti, pasta, grillat, dessert och husets vin.",
+    "Kvarters-trattorior: pizzor att ta med för 7–12 € hos C'era Una Volta; rätter kring 35 € hos Il Grottino Azzurro; avsmakningsmenyer för 60 € hos Da Gabrisa eller Next2.",
+    "Utflyktsmiddagar: 30 € hos Da Costantino, 45 € hos La Taverna del Leone, 50 € hos Buca di Bacco eller standardmenyer hos La Tagliata/La Gavitella, samt 100 €+ på Luna vid Villa Magia."
+  ],
+  "tips": [
+    "Boka terrassbord minst en dag i förväg och nämn att du bor på Hostel Brikette så att shuttleförarna vet var de ska hämta dig.",
+    "Ta med kontanter eller kontaktlösa kort för SITA-biljetter till Montepertuso, Nocelle, Laurito eller Praiano och lägg på 20 minuters marginal under högsäsong.",
+    "Om du använder La Gavitellas båttransfer, packa en lätt jacka för hemvägen och bekräfta sista shuttle innan du sätter dig."
+  ],
+  "warnings": [
+    "Räkna med branta trappor på vägen tillbaka från middagar vid havet – ha stabila skor och ta det i din takt.",
+    "Solnedgångspaket och shuttleplatser blir snabbt fullbokade; boka via restaurangens webbplats eller concierge före lunch, särskilt i juli och augusti.",
+    "Blåsig sjö kan ställa in kvällsbåtar till Praiano och Laurito, så behåll SITA-bussens tidtabell som reservplan."
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag boka La Gavitellas solnedgångskryssning i förväg?",
+      "a": [
+        "Ja – boka via restaurangen eller Hostel Brikettes concierge och be om solnedgångspaketet (cirka 139 €).",
+        "Var på Spiaggia Grande 15 minuter före avgång så att besättningen hinner ombordstiga alla i lugn och ro."
+      ]
+    },
+    {
+      "q": "Hur tar jag mig till La Tagliata utan bil?",
+      "a": [
+        "Ta SITA-bussen mot Nocelle och kliv av direkt efter Montepertuso, följ sedan den skyltade stigen i fem minuter till fots.",
+        "Alternativt kan du bekräfta den kostnadsfria shuttlen vid bokning och meddela din upphämtningstid vid vandrarhemmet."
+      ]
+    },
+    {
+      "q": "Finns det prisvärda ställen nära Hostel Brikette?",
+      "a": [
+        "C'era Una Volta ligger mitt emot med pizzor för cirka 7–12 € och snabb take away.",
+        "Il Grottino Azzurro, Da Gabrisa och Next2 ligger alla inom fem minuters promenad med menyer för 35–60 € och havsutsikt."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Audio tour gratuito por Positano",
+    "description": "Recorrido autoguiado desde Chiesa Nuova hasta la playa con puntos destacados."
+  },
+  "linkLabel": "Audio tour gratuito por Positano",
+  "intro": [
+    "Descarga nuestro paseo de audio gratuito por Positano: empieza en Chiesa Nuova, recorre el casco antiguo y termina en Spiaggia Grande.",
+    "Sigue la ruta y los consejos de escucha que verás abajo, y guarda los archivos por Wi‑Fi antes de salir."
+  ],
+  "tocTitle": "En esta página",
+  "toc": [
+    {
+      "href": "#route",
+      "label": "Recorrido"
+    },
+    {
+      "href": "#listen",
+      "label": "Cómo escuchar"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes"
+    }
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Recorrido",
+      "body": [
+        "Empieza en la parada de bus de Chiesa Nuova → detente en los miradores de Via Pasitea → serpentea por los callejones → llega a Spiaggia Grande.",
+        "Tómate tu tiempo en las terrazas, pero respeta a los locales y porteadores que usan las escaleras para repartos."
+      ]
+    },
+    {
+      "id": "listen",
+      "title": "Cómo escuchar",
+      "body": [
+        "Descarga el audio con el Wi‑Fi del hostel o reprodúcelo en los puntos con buena señal a lo largo del recorrido.",
+        "Mantén el volumen bajo en las escaleras y quítate un auricular al cruzar calles o al adelantar a otras personas."
+      ]
+    }
+  ],
+  "faqHeading": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "q": "¿Es muy empinado el recorrido?",
+      "a": [
+        "Sí, hay muchas escaleras. Si necesitas un respiro, haz el recorrido al revés o sube en el bus SITA."
+      ]
+    },
+    {
+      "q": "¿Puedo escucharlo sin conexión?",
+      "a": [
+        "Claro. Guarda los archivos en tu móvil para no depender de la señal irregular en los callejones."
+      ]
+    },
+    {
+      "q": "¿Cuánto tarda el recorrido?",
+      "a": [
+        "Calcula 45–60 minutos incluyendo fotos y paradas en terrazas."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "slug": "assistance-contact",
+  "meta": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Đặt phòng, khám phá và kết nối với chúng tôi trực tuyến. Có câu hỏi? Trợ lý số của chúng tôi cung cấp gợi ý phù hợp và hướng dẫn du lịch để nâng cao kỳ nghỉ của bạn tại Positano."
+  },
+  "heading": "Hỗ trợ số",
+  "subheading": "Đặt phòng, khám phá và kết nối trực tuyến.",
+  "heroIntro": "Nhận câu trả lời tức thì từ đội ngũ và trợ lý số để bạn lên kế hoạch nhanh hơn.",
+  "otherBookingOptions": "Tùy chọn đặt phòng khác & Mạng xã hội",
+  "addressLabel": "Địa chỉ:",
+  "addressValue": "Qua G. Marconi, 358, 84017, Positano",
+  "bookingOptions": {
+    "googleBusiness": "Doanh nghiệp Google",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "Chúng tôi có thể ",
+  "amaHeadingPart2": "hỗ trợ gì",
+  "amaParagraph1": "Có thắc mắc? Chúng tôi sẵn sàng hỗ trợ. Cứ hỏi bất cứ điều gì — nếu còn thiếu, hãy email trực tiếp và chúng tôi sẽ phản hồi nhanh chóng.",
+  "amaParagraph2": "Khi đặt phòng được xác nhận, bạn sẽ truy cập ngay trợ lý số. Công cụ này cung cấp gợi ý phù hợp về điểm tham quan, hoạt động và “viên ngọc ẩn” ở Positano, giúp bạn tận dụng tối đa kỳ nghỉ.",
+  "amaParagraph3": "Bạn cũng mở khóa các hướng dẫn du lịch do chúng tôi biên soạn, gồm mẹo di chuyển, chỉ dẫn từng bước và thông tin giúp việc lên kế hoạch trở nên đơn giản.",
+  "amaHelpCenterLink": "Duyệt tất cả các bài viết trợ giúp",
+  "askPlaceholder": "Hỏi đường đi, tiện nghi, v.v...",
+  "clearLabel": "Xóa tìm kiếm",
+  "answersFoundLabel": "kết quả",
+  "noMatchesFound": "Không tìm thấy kết quả",
+  "popularGuides": "Hướng dẫn phổ biến",
+  "guideReachBudget": "Bản dịch đang được chuẩn bị.",
+  "guideFerrySchedules": "Lịch phà Positano",
+  "guidePathOfTheGods": "Bản dịch đang được chuẩn bị.",
+  "guideCollections": {
+    "heading": "Lên kế hoạch cho kỳ nghỉ với hướng dẫn chi tiết từng bước",
+    "description": "Chỉ đường, chính sách đặt phòng và hậu cần đến nơi được tổng hợp từ những câu hỏi phổ biến nhất.",
+    "taggedHeading": "Những nội dung thiết yếu về {{tag}}",
+    "taggedDescription": "Các nội dung này tập trung vào {{tag}}. Hãy xóa bộ lọc để xem tất cả tài liệu chúng tôi chuẩn bị.",
+    "empty": "Chúng tôi chưa có hướng dẫn lập kế hoạch cho {{tag}}. Thử thẻ khác hoặc đặt lại bộ lọc.",
+    "clearFilter": "Duyệt toàn bộ nội dung thiết yếu",
+    "cardCta": "Đọc hướng dẫn lập kế hoạch {{guideTitle}}"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

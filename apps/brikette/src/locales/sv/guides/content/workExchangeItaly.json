@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Work exchange på italienska hostel",
+    "description": "Vad work exchange innebär i Italien: roller, timmar, juridik och hur du hittar seriösa värdar."
+  },
+  "linkLabel": "Work exchange på italienska hostel",
+  "intro": [
+    "Fundera på ett work exchange-upplägg i Italien? Lär dig hur hostel och gårdar lägger upp passen, vilka papper du behöver och hur du väljer seriösa program."
+  ],
+  "sections": [
+    {
+      "id": "expect",
+      "title": "Vad du kan förvänta dig",
+      "body": [
+        "Vanliga upplägg byter 20–25 timmar av städning, receptionshjälp eller sociala aktiviteter mot sängplats och frukost.",
+        "Passen sprids oftast över fem dagar, så du har två hela dagar för egna utflykter. Säkerställ schemat skriftligt innan du tackar ja."
+      ]
+    },
+    {
+      "id": "vet",
+      "title": "Granska värdar",
+      "body": [
+        "Läs omdömen på Workaway, Worldpackers och hostelgrupper på Facebook. Välj värdar med färska recensioner och tydliga arbetsbeskrivningar.",
+        "Fråga om boendet (sovsal eller eget rum), eventuella tider att passa och om måltider eller personalrabatter ingår."
+      ]
+    },
+    {
+      "id": "paperwork",
+      "title": "Pappren & reglerna",
+      "body": [
+        "Medborgare från EU, Storbritannien, Kanada, Australien och USA kan stanna upp till 90 dagar i Schengen som turister – work exchange ska vara frivilligt.",
+        "Ha en reseförsäkring som täcker volontärinsatser och informellt arbete; vissa värdar kräver ansvarsfrihetsavtal vid ankomst."
+      ]
+    }
+  ],
+  "tips": [
+    "Boka ett videosamtal med värden för att klargöra arbetsuppgifter och se boendet innan du köper flygbiljetter.",
+    "Kom en dag i förväg för att landa, lära dig husreglerna och komma in i rutinen innan första passet."
+  ],
+  "faqs": [
+    {
+      "q": "Får jag fickpengar?",
+      "a": [
+        "De flesta italienska upplägg erbjuder endast logi och mat. Vissa ger dricks från barpass eller utflykter, men se det som bonusar – inte garanterad inkomst."
+      ]
+    },
+    {
+      "q": "Kan jag stanna längre än 90 dagar via work exchange?",
+      "a": [
+        "Nej. Du måste följa Schengenreglerna om vistelselängd om du inte ordnar arbetsvisum eller studenttillstånd. Planera vidare resa eller en Schengen-paus i tid."
+      ]
+    }
+  ]
+}

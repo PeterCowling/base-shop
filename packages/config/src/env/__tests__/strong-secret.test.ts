@@ -1,6 +1,11 @@
 import { describe, it, expect } from "@jest/globals";
 import { expectInvalidAuthEnvWithConfigEnv } from "../../../test/utils/expectInvalidAuthEnv";
-import { NEXT_SECRET, SESSION_SECRET } from "./authEnvTestUtils";
+import {
+  NEXT_SECRET,
+  SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
+} from "./authEnvTestUtils";
 
 type EnvOverrides = Record<string, string | undefined>;
 
@@ -8,6 +13,8 @@ const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "production",
   NEXTAUTH_SECRET: NEXT_SECRET,
   SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...overrides,
 });
 

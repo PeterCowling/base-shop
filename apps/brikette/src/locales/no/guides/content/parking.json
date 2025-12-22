@@ -1,0 +1,52 @@
+{
+  "linkLabel": "Parkering i Positano: hvor og hva det koster",
+  "intro": [
+    "Parkering er knapp og dyr i Positano; reserver garasje tidlig og la bilen stå resten av oppholdet."
+  ],
+  "sections": [
+    {
+      "id": "garages",
+      "title": "Private garasjer i byen",
+      "body": [
+        "Mandara, Car Park Anna og Di Gennaro tar imot reservasjoner – bestill 7–10 dager i forveien for ankomster i juli–august.",
+        "Prisene ligger rundt €35–€60 per døgn; sjekk høydebegrensning (ca. 1,9 m) og om du må legge igjen nøklene hos personalet."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Avlessing og betaling",
+      "body": [
+        "Bruk korttidslommene ved Chiesa Nuova eller Sponda for å sette av bagasje før du parkerer; sett på nødblink og vær effektiv.",
+        "Ha både kort og kontanter – garasjene tar som regel kort, men foretrekker kontanter for opphold under 48 timer."
+      ]
+    },
+    {
+      "id": "park-elsewhere",
+      "title": "Rimeligere parkering utenfor Positano",
+      "body": [
+        "Overbygde parkeringshus i Meta, Piano di Sorrento eller Sorrento koster omtrent €20–€25 per dag og knytter seg til Positano med SITA-busser på under 45 minutter.",
+        "Kommer du nordfra? Sett bilen i havnegarasjene i Salerno og ta ferge over når været er rolig."
+      ]
+    }
+  ],
+  "tips": [
+    "Sjekk ZTL- og oddetalls-/partallsregler før du kjører SS163; bøter sendes internasjonalt flere måneder senere.",
+    "Pakk en dagssekk med det du trenger før du leverer nøklene – garasjen kan parkere bilene tett til utsjekk."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg parkere bare noen timer?",
+      "a": [
+        "Garasjene tar timespris, men går raskt over til døgnpris; til korte ærend, bruk 30-minuttersplassene ved svingen på Sponda."
+      ]
+    },
+    {
+      "q": "Holder garasjene åpent sent?",
+      "a": [
+        "De fleste har åpningstid 07.00–00.00; gi beskjed om sen retur slik at de kan legge nøklene hos nattevakten."
+      ]
+    }
+  ],
+  "tocTitle": "På denne siden",
+  "faqsTitle": "Vanlige spørsmål"
+}

@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Wi-Fi och arbetsvänliga kaféer nära Brikette",
+    "description": "Kaféer med stabilt Wi-Fi, eluttag och rekommenderade tider för att jobba i Positano."
+  },
+  "linkLabel": "Wi-Fi och arbetsvänliga kaféer nära Brikette",
+  "intro": [
+    "Cafés near the hostel with workable Wi‑Fi. Etiquette: buy regularly, avoid long calls indoors, and keep a small footprint."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Spots near Brikette",
+      "body": [
+        "Small cafés on Via Pasitea and around Chiesa Nuova often have stable Wi‑Fi.",
+        "Bring a battery pack; power outlets are limited in older venues."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Backup connectivity",
+      "body": [
+        "Keep an eSIM as a fallback; carriers vary by area — TIM/Vodafone usually strong.",
+        "Tether when the lunchtime rush slows café networks."
+      ]
+    }
+  ],
+  "galleryTitle": "Gallery",
+  "gallery": {
+    "item1Alt": "Laptop on a café table",
+    "item1Caption": "A quiet corner for calls",
+    "item2Alt": "Espresso and notebook",
+    "item2Caption": "Rotate venues and order regularly"
+  },
+  "faqs": [
+    {
+      "q": "Is all‑day work OK?",
+      "a": [
+        "Buy every 60–90 minutes and avoid peak lunch; consider rotating venues."
+      ]
+    }
+  ]
+}

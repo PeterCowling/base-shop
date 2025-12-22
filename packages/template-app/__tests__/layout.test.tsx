@@ -12,12 +12,9 @@ describe("RootLayout", () => {
     expect(metadata.title).toBe("Base-Shop");
   });
 
-  it("renders providers and children", () => {
-    const html = renderToStaticMarkup(
-      <RootLayout>
-        <span>child</span>
-      </RootLayout>
-    );
+  it("renders providers and children", async () => {
+    const element = await RootLayout({ children: <span>child</span> });
+    const html = renderToStaticMarkup(element);
     expect(html).toContain("data-testid=\"analytics\"");
     expect(html).toContain("child");
     expect(html).toContain("<html lang=\"en\"");

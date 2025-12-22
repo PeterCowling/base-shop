@@ -1,0 +1,19 @@
+{
+  "message": "Reserve diretamente e economize até 25% — além de café da manhã e bebidas grátis!",
+  "cta": "Clique para saber mais",
+  "openOffersLabel": "Clique para saber mais",
+  "closeLabel": "Fechar notificação",
+  "modal": {
+    "closeLabel": "Fechar modal",
+    "title": "Reserve diretamente e economize",
+    "description": "Obrigado por escolher reservar diretamente conosco! Como forma de agradecimento, você aproveitará:",
+    "perks": {
+      "discount": "Até 25% de desconto na diária",
+      "breakfast": "Café da manhã gratuito todas as manhãs",
+      "drinks": "Bebidas de boas-vindas gratuitas",
+      "upgrades": "Upgrades prioritários de quarto (quando disponíveis)"
+    },
+    "callToAction": "Aproveite agora estes benefícios exclusivos!",
+    "button": "Reservar agora"
+  }
+}

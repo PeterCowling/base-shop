@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "Positano इंस्टाग्राम स्पॉट (भीड़ से बचकर)",
+    "description": "सुबह और शाम की फोटोग्राफी लोकेशन, भीड़ प्रबंधन टिप्स और संयमित शिष्टाचार।"
+  },
+  "linkLabel": "Positano इंस्टाग्राम स्पॉट (भीड़ के बिना)",
+  "intro": [
+    "अनुवाद तैयार किया जा रहा है।"
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Classic postcard shots",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Underrated angles",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Golden hour setups",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Photo etiquette",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ],
+  "tips": [
+    "अनुवाद तैयार किया जा रहा है।",
+    "अनुवाद तैयार किया जा रहा है।"
+  ],
+  "faqs": [
+    {
+      "q": "अनुवाद तैयार किया जा रहा है।",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "q": "अनुवाद तैयार किया जा रहा है।",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "अनुवाद तैयार किया जा रहा है।",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "अनुवाद तैयार किया जा रहा है।"
+      },
+      {
+        "href": "#alternatives",
+        "label": "Underrated alternatives"
+      },
+      {
+        "href": "#sunset",
+        "label": "Sunset choices"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etiquette & local tips"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "classics": {
+      "heading": "अनुवाद तैयार किया जा रहा है।",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "अनुवाद तैयार किया जा रहा है।"
+        },
+        {
+          "title": "Fornillo path",
+          "description": "अनुवाद तैयार किया जा रहा है।"
+        },
+        {
+          "title": "Via Pasitea bends",
+          "description": "अनुवाद तैयार किया जा रहा है।"
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Underrated alternatives",
+      "items": [
+        {
+          "title": "Chiesa Nuova terraces",
+          "description": "अनुवाद तैयार किया जा रहा है।"
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "अनुवाद तैयार किया जा रहा है।"
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "अनुवाद तैयार किया जा रहा है।"
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Sunset choices",
+      "paragraphs": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    "etiquette": {
+      "heading": "Etiquette & local tips",
+      "items": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    "faqs": {
+      "heading": "FAQs",
+      "items": [
+        {
+          "summary": "अनुवाद तैयार किया जा रहा है।",
+          "body": "अनुवाद तैयार किया जा रहा है।"
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Do I need a drone permit?",
+      "body": "अनुवाद तैयार किया जा रहा है।"
+    },
+    "galleryAlt": [
+      "Positano from above",
+      "Coastal panorama"
+    ],
+    "galleryFallbackAlt": "Scenic view of Positano coastline"
+  }
+}

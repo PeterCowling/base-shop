@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "title": "Từ Positano đến Capri bằng phà | Hostel Brikette",
+    "description": "Lộ trình từng bước từ Hostel Brikette xuống cảng Positano, mua vé, mẹo lên tàu và đi phà sang Capri."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Positano đến Capri – Phà",
+    "description": "Làm theo các bước này để đi bộ từ Hostel Brikette xuống cảng Positano, mua vé phà và lên tàu sang Capri. Bao gồm mẹo thời gian và lựa chọn hãng."
+  },
+  "tip": {
+    "label": "Mẹo",
+    "intro": "Biển động cần phương án khác? Mở",
+    "linkLabel": "Tổng quan Cách đến đây",
+    "outro": "để xem các tuyến dự phòng."
+  },
+  "journeyOverview": {
+    "title": "Tổng quan hành trình",
+    "paragraphs": [
+      "Phà giữa Positano và Capri chạy dày nhất từ mùa xuân tới đầu mùa thu và có thể hủy khi biển động. Thời gian di chuyển thường 30–60 phút tùy hãng và loại tàu."
+    ],
+    "linksIntro": "So sánh giờ chạy và đặt vé:",
+    "linksSeparator": "·",
+    "linksSuffix": ".",
+    "links": {
+      "capriNet": "Capri.net - Capri ↔ Positano",
+      "positanoCom": "Positano.com (lịch tổng hợp)"
+    }
+  },
+  "photoGuide": {
+    "title": "Ảnh hướng dẫn (tham khảo)",
+    "description": "Tài liệu tham khảo trực quan cho mỗi bước đi bộ và cho khu vực vé phà tại cảng.",
+    "items": {
+      "mapOverview": {
+        "alt": "Bản đồ tổng quan tuyến đi bộ từ Hostel Brikette tới cảng Positano",
+        "caption": "Tổng quan bản đồ: Hostel → cảng Positano"
+      },
+      "spiaggiaApproach": {
+        "alt": "Ảnh đoạn đường tiến vào Spiaggia Grande Positano và bến du lịch",
+        "caption": "Đường vào Spiaggia Grande (bến du lịch)"
+      },
+      "spiaggiaDetail": {
+        "alt": "Bản đồ chi tiết phần bên phải Spiaggia Grande nơi đặt bến",
+        "caption": "Bản đồ chi tiết: vị trí bến ở Spiaggia Grande"
+      },
+      "ticketBooths": {
+        "alt": "Quầy vé của các hãng phà tại cảng Positano cùng bảng lịch khởi hành",
+        "caption": "Quầy vé các hãng phà"
+      },
+      "point1": {
+        "alt": "Điểm 1: ngã rẽ cạnh tiệm Tabacchi trên Via G. Marconi gần Hostel Brikette",
+        "caption": "Điểm 1: Ngã ba Tabacchi (rẽ phải)"
+      },
+      "point2": {
+        "alt": "Điểm 2: khúc cua đầu tiên nơi bạn rời đường để xuống cầu thang",
+        "caption": "Điểm 2: rời đường, đi xuống cầu thang"
+      },
+      "point3": {
+        "alt": "Điểm 3: cuối bậc thang chạm đường trước khi băng qua",
+        "caption": "Điểm 3: hết bậc thang gặp đường"
+      },
+      "point4": {
+        "alt": "Điểm 4: băng qua đường, rẽ trái ngắn rồi xuống cầu thang",
+        "caption": "Điểm 4: qua đường, rẽ trái, xuống cầu thang"
+      },
+      "point5": {
+        "alt": "Điểm 5: lối vòm dẫn xuống bãi biển và bến phà",
+        "caption": "Điểm 5: lối vòm vào bến phà"
+      }
+    }
+  },
+  "toPort": {
+    "title": "Đi bộ tới cảng Positano",
+    "steps": [
+      "Ra khỏi hostel bằng cửa chính.",
+      "Đi xuống cầu thang ra đường, rẽ trái và đi hơn 100 m (≈330 ft).",
+      "Tới ngã rẽ đầu tiên (điểm 1), rẽ phải tại tiệm Tabacchi (tòa nhà đầu bên phải).",
+      "Tiếp tục xuống dốc; ở khúc cua đầu tiên (điểm 2) rời đường và xuống cầu thang ngay phía trước.",
+      "Cuối cầu thang gặp đường (điểm 3); băng qua và đi thẳng xuống dãy bậc thang tiếp theo.",
+      "Khi bậc thang đó kết thúc ở đường, băng qua, rẽ trái đi khoảng 10 m (≈30 ft) tới điểm 4.",
+      "Rẽ phải rời đường và theo các bậc thang xuống dốc.",
+      "Dưới chân thang rẽ phải đến điểm 5, sau đó đi dưới lối vòm bên phải.",
+      "Bến phà (cầu cảng Spiaggia Grande) nằm phía trước bên phải bãi biển khoảng 50 m (≈160 ft)."
+    ]
+  },
+  "tickets": {
+    "title": "Mua vé và lên tàu",
+    "tips": [
+      "Tại cảng, mỗi hãng phà có một quầy riêng.",
+      "Bảng hiển thị cạnh quầy cho biết chuyến kế tiếp của hãng đó.",
+      "Mua vé trực tiếp từ hãng. Đến sớm 20–30 phút để đổi phiếu (voucher) nếu cần và xếp hàng.",
+      "Sau khi mua, đi ra cuối cầu cảng và chờ tới giờ lên tàu."
+    ]
+  },
+  "arrival": {
+    "title": "Khi đến Capri",
+    "paragraphs": [
+      "Xuống tàu tại cảng du lịch Capri (Marina Grande). Tùy kế hoạch, đi theo biển chỉ dẫn tới tàu điện leo núi, taxi hoặc xe buýt. Mùa cao điểm hàng chờ có thể dài — mua vé khứ hồi trước giúp tiết kiệm thời gian cuối tuần đông khách.",
+      "Khi về Positano, kiểm tra chuyến cuối buổi chiều và cảnh báo thời tiết. Nếu phà bị hủy, cân nhắc lùi thời gian về hoặc đi vòng qua Sorrento vào ngày hôm sau."
+    ],
+    "linkIntro": "Mẹo đi bộ thuận tiện mang hành lý khi trở lại Positano có tại:",
+    "linkLabel": "Bến phà → Hostel Brikette"
+  }
+}

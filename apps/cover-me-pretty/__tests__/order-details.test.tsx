@@ -85,7 +85,7 @@ describe("order details page", () => {
 
     expect(global.fetch).not.toHaveBeenCalled();
     expect(element.type).toBe("p");
-    expect(element.props.children).toBe("Order not found.");
+    expect(element.props.children).toBe("Order not found");
   });
 
   it("redirects unauthenticated users", async () => {
@@ -111,6 +111,6 @@ describe("order details page", () => {
     const element = await Page({ params: { id: "order1" } });
 
     expect(element.type).toBe("p");
-    expect(element.props.children).toBe("Unable to load order.");
+    expect(element.props.children).toBe("Failed to load order");
   });
 });

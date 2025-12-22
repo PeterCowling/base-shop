@@ -1,0 +1,33 @@
+{
+  "detail": {
+    "room_12": {
+      "hero": {
+        "eyebrow": "Dortoir mixte supérieur • Terrasse",
+        "title": "Réveillez‑vous face au panorama de Positano depuis une grande terrasse partagée",
+        "subtitle": "Notre dortoir avec la plus grande terrasse associe six lits à le confort d’une salle de bain privée.",
+        "bullets": [
+          "Terrasse panoramique avec coins lounge et tables pour le petit‑déjeuner",
+          "Salle de bain privée avec serviettes fournies",
+          "Wi‑Fi rapide, climatisation et casiers à carte pour chaque voyageur"
+        ]
+      },
+      "outline": {
+        "heading": "Ce qui vous attend dans le dortoir terrasse",
+        "items": [
+          {
+            "title": "Un espace extérieur pour tout le monde",
+            "body": "Partagez des spritz au coucher du soleil sur des canapés et longues banquettes pendant que le ciel pastel de Positano s’illumine devant vous."
+          },
+          {
+            "title": "Couchages spacieux",
+            "body": "Six lits superposés robustes avec rideaux d’intimité, liseuses et prises individuelles pour se reposer au calme."
+          },
+          {
+            "title": "Prêt pour les journées plage",
+            "body": "Rangez vos sacs dans des casiers à carte, faites sécher maillots sur les portants de la terrasse et rincez‑vous rapidement dans la salle d’eau attenante."
+          }
+        ]
+      }
+    }
+  }
+}

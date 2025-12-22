@@ -1,0 +1,47 @@
+{
+  "hostelworld": {
+    "featured": [
+      {
+        "rating": 9.7,
+        "text": "Fantastiskt läge med hisnande utsikt. Personalen var supertrevlig och hjälpsam under hela min vistelse."
+      },
+      {
+        "rating": 9.5,
+        "text": "Grymt vandrarhem! Terrassen är perfekt för en drink i solnedgången. Rena rum och riktigt bra stämning."
+      },
+      {
+        "rating": 9.4,
+        "text": "Älskade tipsen från den digitala conciergen. Jag kommer definitivt tillbaka!"
+      },
+      {
+        "rating": 9.6,
+        "text": "Bekväma sängar och skinande rena badrum. Ett måste i Positano."
+      },
+      {
+        "rating": 9.2,
+        "text": "Tack vare det härliga teamet kändes det som ett hem hemifrån."
+      },
+      {
+        "rating": 9.3,
+        "text": "Prisvärt och glatt vandrarhem bara några minuter från busshållplatsen."
+      }
+    ],
+    "latest": [
+      {
+        "rating": 9.4,
+        "text": "Älskade tipsen från den digitala conciergen. Jag kommer definitivt tillbaka!",
+        "datePublished": "2025-10-09"
+      },
+      {
+        "rating": 9.5,
+        "text": "Grymt vandrarhem! Terrassen är perfekt för en drink i solnedgången. Rena rum och riktigt bra stämning.",
+        "datePublished": "2025-10-09"
+      },
+      {
+        "rating": 9.2,
+        "text": "Tack vare det härliga teamet kändes det som ett hem hemifrån.",
+        "datePublished": "2025-10-09"
+      }
+    ]
+  }
+}

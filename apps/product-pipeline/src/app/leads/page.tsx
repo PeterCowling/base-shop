@@ -1,43 +1,31 @@
 import PageHeader from "@/components/PageHeader";
 import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
+import { Grid, Stack } from "@ui/components/atoms/primitives";
+import LeadsClient from "./LeadsClient";
+import Link from "next/link";
 
 export default async function LeadsPage() {
   const t = await getTranslations("en");
-  const leads = [
-    {
-      id: "LD-1402",
-      title: t("pipeline.leads.items.ld1402.title"),
-      source: t("pipeline.leads.items.ld1402.source"),
-      triage: t("pipeline.leads.items.ld1402.triage"),
-      score: 78,
-      status: t("pipeline.leads.items.ld1402.status"),
+  const strings = {
+    intakeLabel: t("pipeline.leads.section.intake.label"),
+    intakeTitle: t("pipeline.leads.section.intake.title"),
+    runStagePLabel: t("pipeline.leads.actions.runStageP"),
+    promoteTopLabel: t("pipeline.leads.actions.promoteTop"),
+    exportCsvLabel: t("pipeline.leads.actions.exportCsv"),
+    leadLabel: t("pipeline.leads.fields.lead"),
+    urlLabel: t("pipeline.leads.fields.url"),
+    submitLabel: t("pipeline.leads.actions.submitLead"),
+    table: {
+      select: t("pipeline.leads.table.select"),
+      id: t("pipeline.leads.table.id"),
+      lead: t("pipeline.leads.table.lead"),
+      source: t("pipeline.leads.table.source"),
+      triage: t("pipeline.leads.table.triage"),
+      score: t("pipeline.leads.table.score"),
+      status: t("pipeline.leads.table.status"),
     },
-    {
-      id: "LD-1409",
-      title: t("pipeline.leads.items.ld1409.title"),
-      source: t("pipeline.leads.items.ld1409.source"),
-      triage: t("pipeline.leads.items.ld1409.triage"),
-      score: 61,
-      status: t("pipeline.leads.items.ld1409.status"),
-    },
-    {
-      id: "LD-1415",
-      title: t("pipeline.leads.items.ld1415.title"),
-      source: t("pipeline.leads.items.ld1415.source"),
-      triage: t("pipeline.leads.items.ld1415.triage"),
-      score: 82,
-      status: t("pipeline.leads.items.ld1415.status"),
-    },
-    {
-      id: "LD-1421",
-      title: t("pipeline.leads.items.ld1421.title"),
-      source: t("pipeline.leads.items.ld1421.source"),
-      triage: t("pipeline.leads.items.ld1421.triage"),
-      score: 45,
-      status: t("pipeline.leads.items.ld1421.status"),
-    },
-  ];
+    notAvailable: t("pipeline.common.notAvailable"),
+  };
 
   const triageSignals = [
     t("pipeline.leads.signals.items.demand"),
@@ -54,64 +42,28 @@ export default async function LeadsPage() {
       />
 
       <section className="pp-card p-6">
-        <Cluster justify="between" alignY="center" className="gap-4">
-          <Stack gap={2}>
-            <span className="text-xs uppercase tracking-widest text-foreground/60">
-              {t("pipeline.leads.section.intake.label")}
-            </span>
-            <h2 className="text-xl font-semibold tracking-tight">
-              {t("pipeline.leads.section.intake.title")}
-            </h2>
-          </Stack>
-          <Cluster gap={2} alignY="center">
-            <button className="min-h-12 min-w-12 rounded-full border border-border-2 px-4 py-2 text-sm">
-              {t("pipeline.leads.actions.runStageP")}
-            </button>
-            <button className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">
-              {t("pipeline.leads.actions.promoteTop")}
-            </button>
-          </Cluster>
-        </Cluster>
-
-        <div className="mt-6 overflow-hidden rounded-2xl border border-border-1">
-          <table className="pp-table">
-            <thead>
-              <tr>
-                <th>{t("pipeline.leads.table.id")}</th>
-                <th>{t("pipeline.leads.table.lead")}</th>
-                <th>{t("pipeline.leads.table.source")}</th>
-                <th>{t("pipeline.leads.table.triage")}</th>
-                <th>{t("pipeline.leads.table.score")}</th>
-                <th>{t("pipeline.leads.table.status")}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leads.map((lead) => (
-                <tr key={lead.id}>
-                  <td className="font-mono text-xs text-foreground/70">
-                    {lead.id}
-                  </td>
-                  <td className="font-semibold">{lead.title}</td>
-                  <td className="text-sm text-foreground/70">
-                    {lead.source}
-                  </td>
-                  <td>
-                    <span className="rounded-full border border-border-2 px-2 py-1 text-xs">
-                      {lead.triage}
-                    </span>
-                  </td>
-                  <td className="font-semibold">{lead.score}</td>
-                  <td>
-                    <span className="text-xs text-foreground/60">
-                      {lead.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <Stack gap={2}>
+          <span className="text-xs uppercase tracking-widest text-foreground/60">
+            {t("pipeline.leads.triageLink.label")}
+          </span>
+          <h2 className="text-xl font-semibold tracking-tight">
+            {t("pipeline.leads.triageLink.title")}
+          </h2>
+        </Stack>
+        <div className="mt-3 text-sm text-foreground/70">
+          {t("pipeline.leads.triageLink.body")}
+        </div>
+        <div className="mt-4">
+          <Link
+            className="rounded-full border border-border-2 px-4 py-2 text-xs font-semibold"
+            href="/leads/triage"
+          >
+            {t("pipeline.leads.triageLink.action")}
+          </Link>
         </div>
       </section>
+
+      <LeadsClient strings={strings} />
 
       <section className="pp-card p-6">
         <span className="text-xs uppercase tracking-widest text-foreground/60">

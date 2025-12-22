@@ -24,6 +24,18 @@ jest.mock("@platform-core/checkout/session", () => {
   const actual = jest.requireActual("@platform-core/checkout/session");
   return { ...actual, createCheckoutSession: jest.fn(actual.createCheckoutSession) };
 });
+jest.mock("@platform-core/inventoryValidation", () => {
+  const actual = jest.requireActual("@platform-core/inventoryValidation");
+  return {
+    ...actual,
+    validateInventoryAvailability: jest.fn(async () => ({ ok: true })),
+  };
+});
+jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@platform-core/customerProfiles", () => ({ getCustomerProfile: jest.fn(async () => null) }));
+jest.mock("@platform-core/identity", () => ({
+  getOrCreateStripeCustomerId: jest.fn(async () => "stripe-customer"),
+}));
 
 import { createRequest } from "./checkout-session.helpers";
 import { stripe } from "@acme/stripe";

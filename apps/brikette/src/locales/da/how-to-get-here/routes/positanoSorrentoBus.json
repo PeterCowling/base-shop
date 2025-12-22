@@ -1,0 +1,72 @@
+{
+  "slug": "positano-sorrento-bus",
+  "meta": {
+    "title": "Positano til Sorrento med bus | Hostel Brikette",
+    "description": "Trin-for-trin-guide fra Hostel Brikette til Sorrento med SITA-bus, inkl. billetter, køreplanstips og stoppet Chiesa Nuova."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Positano til Sorrento – bus (SITA)",
+    "description": "Brug denne guide, når du rejser fra Hostel Brikette til Sorrento med SITA-bussen. Vi gennemgår billetter, hvordan du læser køreplanen, og hvor du stiger på i Positano (Chiesa Nuova)."
+  },
+  "tip": {
+    "eyebrow": "Tip",
+    "copy": "Har du brug for alle transportmuligheder? Åbn <link>oversigten Sådan kommer du hertil</link> for færge-, taxa- og kombinerede rejser.",
+    "linkLabel": "Oversigten Sådan kommer du hertil"
+  },
+  "sections": {
+    "overview": {
+      "title": "Rejseoverblik",
+      "body": "Busser til Sorrento kører hyppigt i sæsonen. Stig på i Positano (Chiesa Nuova), og kør direkte til Sorrentos fælles tog- og busstation. Afsæt lidt ekstra tid i myldretiden."
+    },
+    "tickets": {
+      "title": "SITA og busbilletter",
+      "body": "Busserne drives af SITA Sud. Køb billetter i kiosker eller tobaksbutikker (herunder ved Bar Internazionale). Hav din billet klar ved ombordstigning, så chaufføren kan validere den."
+    },
+    "timetable": {
+      "title": "Sådan læser du køreplanen",
+      "list": [
+        "Rækkerne i den første kolonne viser hvert stop på ruten.",
+        "Kolonnerne svarer til planlagte afgange markeret med bogstaver.",
+        "Rejser du mandag til lørdag? Brug kolonnerne \"F\" og \"G\".",
+        "Rejser du søndag eller på en helligdag? Brug kolonnerne \"G\" og \"H\"."
+      ],
+      "link": "Se den seneste køreplan på <link>Positano.com</link>.",
+      "linkLabel": "Positano.com",
+      "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+    },
+    "positanoStop": {
+      "title": "Busstoppet Positano (Chiesa Nuova)",
+      "list": [
+        "Det nærmeste busstoppested ligger i området \"Chiesa Nuova\" i Positano.",
+        "Det er cirka 140 meter (490 fod) fra hostellet.",
+        "Stoppet ligger foran caféen/baren \"Bar Internazionale\"."
+      ],
+      "image": {
+        "alt": "Positanos Chiesa Nuova SITA-stoppested foran Bar Internazionale",
+        "caption": "Kom et par minutter i forvejen for at sikre dig en plads; busserne kan hurtigt blive fyldt op om sommeren.",
+        "src": "/img/directions/positano-bus-stop.png"
+      }
+    },
+    "walk": {
+      "title": "Gå fra hostellet til stoppet",
+      "list": [
+        "Forlad hostellet gennem hoveddøren og gå ned ad trappen til vejen.",
+        "Drej til venstre og gå cirka 100 meter (330 fod).",
+        "\"Bar Internazionale\" ligger på venstre hånd; SITA-stoppet er udenfor."
+      ]
+    },
+    "wait": {
+      "title": "Køb din billet og vent på ombordstigning",
+      "list": [
+        "Køb en billet til bussen mod Sorrento (inde i baren/kiosken).",
+        "Vent udenfor baren på bussen mod Sorrento.",
+        "Tjek en ekstra gang, at destinationsskiltet på bussen viser \"Sorrento\"."
+      ]
+    },
+    "arrival": {
+      "title": "Ankomst til Sorrento",
+      "body": "SITA-bussen sætter dig af ved Sorrentos fælles tog- og busstation. Herfra kan du fortsætte med Circumvesuviana til Napoli eller udforske Sorrentos historiske centrum lige bag stationen."
+    }
+  }
+}

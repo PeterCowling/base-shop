@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Da Napoli a Positano: come arrivare",
+    "description": "Tutte le combinazioni da aeroporto, stazione centrale e porto con durata, costi e punti di partenza."
+  },
+  "linkLabel": "Da Napoli a Positano: come arrivare",
+  "intro": [
+    "Traduzione in arrivo."
+  ],
+  "toc": [
+    {
+      "href": "#train-bus",
+      "label": "Train + bus (year-round)"
+    },
+    {
+      "href": "#ferry",
+      "label": "Ferry (summer)"
+    },
+    {
+      "href": "#transfer",
+      "label": "Late arrivals & transfers"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Train + bus (year-round)",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (summer)",
+      "body": [
+        "Alibus → Molo Beverello; take a ferry to Positano and confirm fares with the operator on the day.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Late arrivals & transfers",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ]
+}

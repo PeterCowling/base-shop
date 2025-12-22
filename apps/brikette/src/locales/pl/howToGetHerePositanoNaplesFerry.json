@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "title": "Positano do Neapolu – wskazówki promowe | Hostel Brikette",
+    "description": "Jasne, gotowe do wydruku kroki z Hostel Brikette do portu w Positano i dalej do Neapolu promem, wraz z poradami biletowymi i wskazówkami dotyczącymi przyjazdu."
+  },
+  "hero": {
+    "eyebrow": "Przewodnik podróżny Hostel Brikette",
+    "title": "Positano do Neapolu – wskazówki promowe",
+    "description": "Czytelne kroki, jak dojść z Hostel Brikette do portu w Positano, kupić bilety na prom i kontynuować podróż do Neapolu, z uwzględnieniem notatek sezonowych oraz wskazówek dotyczących przyjazdu na Napoli Centrale.",
+    "tipLabel": "Wskazówka",
+    "tip": "Jeśli promy są odwołane z powodu pogody, przełącz się na podróż autobusem/pociągiem w <GuideLink>przeglądzie Jak do nas dotrzeć</GuideLink>."
+  },
+  "sections": {
+    "journeyOverview": {
+      "title": "Przegląd podróży",
+      "paragraphs": [
+        "Promy między Positano a Neapolem kursują najczęściej od wiosny do wczesnej jesieni i mogą być odwoływane przy wzburzonym morzu. Podróż trwa zwykle około 70–90 minut w zależności od przewoźnika i jednostki.",
+        "Porównaj godziny i zarezerwuj: <ScheduleLink>Positano.com (zestawiony rozkład)</ScheduleLink>."
+      ]
+    },
+    "photoGuide": {
+      "title": "Przewodnik zdjęciowy (dla orientacji)",
+      "description": "Wizualne odniesienia do trasy spaceru i strefy biletowej w porcie.",
+      "items": {
+        "routeMap": {
+          "alt": "Mapa poglądowa trasy spaceru z Hostel Brikette do portu w Positano",
+          "caption": "Mapa poglądowa: hostel → port w Positano"
+        },
+        "approach": {
+          "alt": "Zdjęcie podejścia do Spiaggia Grande w Positano i portu turystycznego",
+          "caption": "Podejście do Spiaggia Grande (port turystyczny)"
+        },
+        "detailMap": {
+          "alt": "Szczegółowa mapa z zaznaczoną prawą stroną Spiaggia Grande, gdzie znajduje się port",
+          "caption": "Mapa szczegółowa: położenie portu na Spiaggia Grande"
+        },
+        "ticketBooths": {
+          "alt": "Kasy biletowe przewoźników promowych w porcie Positano z tablicami najbliższych rejsów",
+          "caption": "Kasy biletowe przewoźników promowych"
+        },
+        "point1": {
+          "alt": "Punkt 1: skrzyżowanie przy Tabacchi na Via G. Marconi w pobliżu Hostel Brikette",
+          "caption": "Punkt 1: skrzyżowanie przy Tabacchi (skręć w prawo)"
+        },
+        "point2": {
+          "alt": "Punkt 2: pierwszy zakręt agrafkowy, w którym schodzisz z drogi na schody",
+          "caption": "Punkt 2: opuść drogę, wejdź na schody"
+        },
+        "point3": {
+          "alt": "Punkt 3: koniec schodów przy drodze przed przejściem",
+          "caption": "Punkt 3: koniec schodów przy drodze"
+        },
+        "point4": {
+          "alt": "Punkt 4: przejdź przez drogę, skręć w lewo i wejdź na schody",
+          "caption": "Punkt 4: przejdź przez drogę, skręć w lewo, schody"
+        },
+        "point5": {
+          "alt": "Punkt 5: przejście pod łukiem prowadzące w stronę plaży i portu",
+          "caption": "Punkt 5: przejście łukiem do portu"
+        }
+      }
+    },
+    "walkToPort": {
+      "title": "Spacer do portu w Positano",
+      "steps": [
+        "Wyjdź z hostelu głównymi drzwiami.",
+        "Zejdź schodami na drogę, skręć w lewo i idź nieco ponad 100 m (≈330 stóp).",
+        "Na pierwszym skrzyżowaniu (punkt 1) skręć w prawo przy Tabacchi (pierwszy budynek po prawej).",
+        "Schodź w dół; na pierwszej agrafce (punkt 2) opuść drogę i wejdź na schody na wprost.",
+        "Na dole schodów dojdziesz do drogi (punkt 3); przejdź na drugą stronę i idź prosto kolejnymi schodami.",
+        "Gdy te schody kończą się na drodze, przejdź na drugą stronę, krótko skręć w lewo i wejdź na schody w punkcie 4.",
+        "Na dole skręć w prawo, aby dotrzeć do punktu 5, a następnie przejdź pod łukiem po prawej stronie.",
+        "Molo (przystań Spiaggia Grande) znajduje się około 50 m (≈160 stóp) dalej po prawej stronie plaży."
+      ]
+    },
+    "tickets": {
+      "title": "Kup bilety i wejdź na pokład",
+      "steps": [
+        "W porcie każdy przewoźnik promowy ma własną kasę.",
+        "Tablica obok kasy pokazuje najbliższy rejs tego przewoźnika.",
+        "Kup bilety bezpośrednio u przewoźnika; przybądź 20–30 minut wcześniej, aby wymienić vouchery i ustawić się w kolejce.",
+        "Po zakupie przejdź na koniec molo i poczekaj na rozpoczęcie boardingu."
+      ]
+    },
+    "arrival": {
+      "title": "Po przybyciu do Neapolu",
+      "paragraphs": [
+        "Zejdź na ląd w strefie portowej i kontynuuj do dalszego transportu. Do Napoli Centrale (Piazza Garibaldi) najprostszą opcją z portu jest zwykle tramwaj.",
+        "Proponowana trasa: <TramLink>Wsiądź w tramwaj między portem a Napoli Centrale</TramLink>.",
+        "Po powrocie i spacerze z bagażem w Positano zajrzyj do: <LuggageGuideLink>Przystań promowa → Hostel Brikette</LuggageGuideLink>."
+      ]
+    }
+  },
+  "links": {
+    "guide": "przegląd Jak do nas dotrzeć",
+    "schedule": "Positano.com (zestawiony rozkład)",
+    "tram": "Wsiądź w tramwaj między portem a Napoli Centrale",
+    "luggageGuide": "Przystań promowa → Hostel Brikette"
+  }
+}

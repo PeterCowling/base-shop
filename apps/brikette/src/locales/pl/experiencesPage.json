@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "Doświadczenia w Hostelu Brikette – Taras, wędrówki i concierge cyfrowy",
+    "description": "Wypij spritza o zachodzie słońca, dołącz do kuratorowanych wędrówek i korzystaj z concierge’a cyfrowego, aby planować idealne dni na Wybrzeżu Amalfitańskim."
+  },
+  "hero": {
+    "eyebrow": "Doświadczenia",
+    "title": "Doświadczenia w Hostelu Brikette",
+    "description": "Wypij spritza na naszym tarasie, wybierz się na wędrówki z epickimi widokami i otrzymuj natychmiastowe wskazówki od concierge’a cyfrowego.",
+    "supporting": "Wszystko jest dostępne dla zameldowanych gości; daj nam znać, jeśli podróżujesz z przyjaciółmi zatrzymującymi się gdzie indziej.",
+    "primaryCta": "Zarezerwuj pobyt",
+    "secondaryCta": "Otwórz kartę baru",
+    "tertiaryCta": "Napisz do concierge’a cyfrowego",
+    "primaryCtaAria": "Zarezerwuj pobyt w Hostelu Brikette",
+    "secondaryCtaAria": "Zobacz kartę baru Hostelu Brikette",
+    "tertiaryCtaAria": "Wyślij wiadomość do concierge’a cyfrowego Hostelu Brikette",
+    "breakfastCta": "View the breakfast menu",
+    "breakfastCtaAria": "View the breakfast menu"
+  },
+  "sections": {
+    "bar": {
+      "eyebrow": "Tarasowy bar",
+      "title": "Tarasowy bar o zachodzie słońca",
+      "description": "Tarasowy bar o zachodzie słońca serwujący spritze i lokalne wina.",
+      "highlights": [
+        "Autorskie spritze i lokalne wina serwowane lodowato schłodzone.",
+        "Wieczory towarzyskie i degustacje w najbardziej oblegane tygodnie.",
+        "Panoramiczne widoki idealne na zdjęcia w złotej godzinie."
+      ],
+      "imageAlt": "Goście wznoszą toast na tarasie Hostelu Brikette o zachodzie słońca."
+    },
+    "hikes": {
+      "eyebrow": "Wędrówki z przewodnikiem",
+      "title": "Wędrówki z przewodnikiem i jednodniowe wypady",
+      "description": "Prowadzone i samodzielne wędrówki z mapami, czasami i poradami sprzętowymi.",
+      "highlights": [
+        "Offline’owe mapy i rozkłady jazdy odświeżane każdego ranka.",
+        "Wędrówki prowadzone przez zespół w najbardziej oblegane dni.",
+        "Wskazówki pakowania oraz alternatywy dopasowane do pogody."
+      ],
+      "imageAlt": "Goście hostelu wędrujący Szlakiem Bogów nad Wybrzeżem Amalfitańskim."
+    },
+    "concierge": {
+      "eyebrow": "Concierge cyfrowy",
+      "title": "Concierge cyfrowy dostępny non stop",
+      "description": "Concierge cyfrowy z alertami promowymi, planami dni i odpowiedziami na żądanie.",
+      "highlights": [
+        "Odpowiedzi przez WhatsApp i Messengera od naszego zespołu.",
+        "Automatyczne alerty o zmianach rozkładów autobusów i promów.",
+        "Personalizowane sugestie dopasowane do Twoich planów."
+      ],
+      "imageAlt": "Ekran telefonu z czatem concierge’a cyfrowego Hostelu Brikette."
+    }
+  },
+  "faq": {
+    "title": "Najczęściej zadawane pytania",
+    "items": [
+      {
+        "question": "Czy muszę rezerwować atrakcje z wyprzedzeniem?",
+        "answer": [
+          "Większość wieczorów na tarasie i wędrówek potwierdzamy tego samego dnia w recepcji.",
+          "W przypadku prywatnych wycieczek lub rejsów możemy zarezerwować miejsce — napisz do concierge’a co najmniej 24 godziny wcześniej."
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "title": "Gotowy, aby zaplanować dni na Wybrzeżu Amalfitańskim?",
+    "subtitle": "Zarezerwuj łóżko, przejrzyj kartę baru i powiedz, jakie doświadczenia Cię interesują — my zajmiemy się resztą.",
+    "buttons": {
+      "book": "Zarezerwuj pobyt",
+      "events": "Bar i wydarzenia",
+      "concierge": "Porozmawiaj z concierge’em",
+      "breakfast": "Breakfast menu"
+    }
+  },
+  "title": "Doświadczenia w Hostelu Brikette",
+  "intro": "Wypij spritza na naszym tarasie, wybierz się na wędrówki z epickimi widokami i otrzymuj natychmiastowe wskazówki od concierge’a cyfrowego.",
+  "items": {
+    "bar": "Tarasowy bar o zachodzie słońca serwujący spritze i lokalne wina.",
+    "hikes": "Prowadzone i samodzielne wędrówki z mapami, czasami i poradami sprzętowymi.",
+    "concierge": "Concierge cyfrowy z alertami promowymi, planami dni i odpowiedziami na żądanie."
+  },
+  "guideCollections": {
+    "heading": "Poznaj więcej dzięki naszym przewodnikom po doświadczeniach",
+    "description": "Trasy, wędrówki, dni na łodzi i kulturalne polecenia kuratorowane przez nasz zespół i gości.",
+    "taggedHeading": "Przewodniki z tagiem {{tag}}",
+    "taggedDescription": "Te historie podkreślają chwile związane z {{tag}}. Usuń filtr, aby zobaczyć wszystkie.",
+    "empty": "Nie mamy jeszcze przewodników doświadczeń dla {{tag}}. Wybierz inny tag lub usuń filtr.",
+    "clearFilter": "Pokaż wszystkie przewodniki doświadczeń",
+    "cardCta": "Odkryj przewodnik po doświadczeniach „{{guideTitle}}”",
+    "filterHeading": "Filter experiences guides",
+    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "grouped": {
+      "beaches": {
+        "guides": {
+          "heading": "Beach guides",
+          "description": "Pick the right stretch of sand and plan your day."
+        },
+        "directions": {
+          "heading": "Beach directions",
+          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        }
+      }
+    }
+  }
+}

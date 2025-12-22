@@ -1,0 +1,19 @@
+{
+  "message": "Đặt trực tiếp tiết kiệm tới 25% – kèm bữa sáng và đồ uống miễn phí!",
+  "cta": "Tìm hiểu thêm",
+  "openOffersLabel": "Tìm hiểu thêm",
+  "closeLabel": "Đóng thông báo",
+  "modal": {
+    "closeLabel": "Đóng hộp thoại",
+    "title": "Đặt trực tiếp & tiết kiệm",
+    "description": "Cảm ơn bạn đã đặt trực tiếp với chúng tôi! Như một lời tri ân, bạn sẽ nhận:",
+    "perks": {
+      "discount": "Giảm tới 25% giá phòng",
+      "breakfast": "Bữa sáng miễn phí mỗi ngày",
+      "drinks": "Đồ uống chào mừng miễn phí",
+      "upgrades": "Ưu tiên nâng hạng phòng (khi còn trống)"
+    },
+    "callToAction": "Tận hưởng ngay những ưu đãi độc quyền này!",
+    "button": "Đặt ngay"
+  }
+}

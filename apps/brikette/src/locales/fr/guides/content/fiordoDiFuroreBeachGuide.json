@@ -1,0 +1,71 @@
+{
+  "seo": {
+    "title": "Guide de la plage du Fiordo di Furore",
+    "description": "Comment rejoindre le Fiordo di Furore en bus depuis Positano, quoi emporter et à quoi s'attendre dans cette crique encadrée de falaises."
+  },
+  "linkLabel": "Guide de la plage du Fiordo di Furore",
+  "intro": [
+    "Le Fiordo di Furore est le décor de carte postale de la côte amalfitaine : une gorge étroite sous un pont en arc, avec une eau émeraude et des falaises abruptes. La crique est petite et quasi sauvage, sans lido ni restaurant ; prévoyez de venir pour vous baigner, prendre quelques photos et admirer (ou tenter) les plongeons depuis les rochers.",
+    "Ce guide vous aide à y aller en bus, à comprendre la rareté des équipements sur place et à planifier votre retour pour ne pas rester coincé une fois le dernier bus SITA plein."
+  ],
+  "toc": [
+    {
+      "href": "#getting-there",
+      "label": "S'y rendre"
+    },
+    {
+      "href": "#returning",
+      "label": "Revenir"
+    },
+    {
+      "href": "#on-site",
+      "label": "Sur place"
+    }
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Prendre le bus SITA en toute sérénité",
+      "body": [
+        "Depuis l'Hostel Brikette, descendez Viale Pasitea jusqu'à l'arrêt Sponda et montez dans un bus SITA en direction d'Amalfi. Indiquez au chauffeur que vous descendez au \"Fiordo di Furore\" pour qu'il pense à s'arrêter — l'arrêt se situe entre Praiano et Furore et passe facilement inaperçu les jours d'affluence.",
+        "Après environ 25 minutes de trajet, descendez à l'arrêt signalé juste avant le pont. Suivez les marches taillées dans la falaise pendant quelques minutes pour atteindre la plage de galets nichée sous l'arche."
+      ]
+    },
+    {
+      "id": "returning",
+      "title": "Organisez votre retour avant de vous baigner",
+      "body": [
+        "Aucun guichet ni machine ne se trouve dans la gorge. Achetez votre billet aller-retour à Positano (tabac près de Chiesa Nuova ou kiosque de Sponda) et validez-le en montant.",
+        "En été, les bus arrivant d'Amalfi peuvent être déjà pleins. Prévoyez de repartir plus tôt que nécessaire et signalez votre présence aux autres voyageurs à l'arrêt pour que le chauffeur vous repère. Si deux bus passent sans s'arrêter, envisagez de partager un taxi depuis la route au-dessus."
+      ]
+    },
+    {
+      "id": "on-site",
+      "title": "Beauté brute, services inexistants",
+      "body": [
+        "Le Fiordo di Furore n'a ni lido, ni toilettes, et seulement un vendeur ambulant ponctuel en très haute saison. Emportez de l'eau, des encas et de quoi vous asseoir confortablement — les galets sont grossiers et l'espace limité.",
+        "Les plongeons se font depuis les rochers près du pont, mais vérifiez toujours la profondeur avant de sauter et ne vous élancez que là où des habitués sont déjà dans l'eau. Respectez les baigneurs en dessous et surveillez la marée ; la crique passe à l'ombre en fin d'après-midi."
+      ]
+    }
+  ],
+  "essentialsTitle": "À quoi s'attendre",
+  "essentials": [
+    "Arrêt de bus SITA entre Praiano et Furore — demandez au chauffeur d'annoncer le fiord.",
+    "Escalier raide menant à une minuscule plage de galets sous le pont.",
+    "Aucun service sur place : apportez eau, collations, protection solaire et espèces pour un taxi de secours."
+  ],
+  "tipsTitle": "Conseils rapides",
+  "tips": [
+    "Consultez notre %LINK:positanoBeaches|aperçu des plages% pour combiner le Fiordo di Furore avec une autre baignade le même jour.",
+    "Arrivez tôt si vous voulez des photos sans la foule sous le pont.",
+    "Emportez une crème solaire respectueuse des récifs et des chaussures d'eau — les rochers sont glissants lorsqu'ils sont mouillés."
+  ],
+  "warningsTitle": "Bon à savoir",
+  "warnings": [
+    "Achetez vos billets aller-retour de bus à Positano ; aucun endroit ne permet de les acheter ou de les valider au fiord.",
+    "Les bus peuvent ignorer l'arrêt lorsqu'ils sont pleins en haute saison — prévoyez du temps supplémentaire pour le retour.",
+    "La plage est exiguë et l'ombre arrive rapidement dans l'après-midi."
+  ],
+  "faqsTitle": "FAQ sur le Fiordo di Furore",
+  "faqs": []
+}

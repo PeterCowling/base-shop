@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Egy limoncello-üzem kulisszái",
+    "description": "Hogyan készül a limoncello, és mire figyelj minőségi palack vásárlásakor."
+  },
+  "linkLabel": "Egy limoncello-üzem kulisszái",
+  "fallbackParagraph": "Mi kell a valódi limoncellóhoz: citrom, alkohol, cukor és idő. A túrákon bemutatják a folyamatot, majd kóstolóval zárnak – utána ne vezess.",
+  "intro": [
+    "Egy limoncello labor bejárása megmutatja, hogyan lesz az sfusato Amalfitano citromból a part ikonikus digestivója.",
+    "Ismerd meg a lépéseket, kóstolj kis szériás palackokat, és tanulj tippeket a kedvenc változatod otthoni tárolásához és szállításához."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Sfusato Amalfitano citromok",
+      "body": [
+        "A termelők vastag héjú sfusato Amalfitano citromokat használnak, amelyeket teraszos pergolákon nevelnek; az illóolajok főként a héjban vannak, nem a lében.",
+        "A jó túrák azzal kezdődnek, hogy megmutatják, hogyan hámozzák kézzel a gyümölcsöt, és miért fontos a bio gazdálkodás a tiszta, aromás infúzióhoz."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "A héjtól az infúzióig",
+      "body": [
+        "A friss héj semleges gabonaalkoholban ázik egy hétig vagy tovább, amíg az ital aranyszínűvé és illatos­sá válik.",
+        "Az áztatás után a folyadékot leszűrik, cukorsziruppal keverik, majd pihentetik, hogy az ízek házasodjanak a palackozás előtt."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "Mit tartalmaz a kóstoló",
+      "body": [
+        "Az idegenvezetők általában végigvezetnek a műhelyen, majd kis kóstolókat töltenek limoncellóból, crema di limonéból vagy szezonális likőrökből.",
+        "Kortyolj lassan, figyeld a textúrát és az aromát, és kerüld a vezetést utána – a minták teljes erősségűek, még ha selymesnek is érződnek."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Palack vásárlása és tárolása",
+      "body": [
+        "Válassz átláthatatlan vagy UV-védett üveget, és nézd meg a címkén a termelő címét és a gyártási dátumot.",
+        "A felbontott palackot otthon tartsd hűtve; ha utaznál vele, béleld ruhákkal, vagy kérj a bolttól védő csomagolást."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Részt vehetnek 18 év alattiak a túrán?",
+      "a": [
+        "Igen, a kiskorúak megnézhetik a folyamatot, de jogilag nem kóstolhatnak; egyes termelők friss limonádét vagy granitát kínálnak helyette."
+      ]
+    },
+    {
+      "q": "Hogyan vihetem haza biztonságosan a limoncellót?",
+      "a": [
+        "A palackokat feladott poggyászban vidd (a kézipoggyászban 100 ml a limit), béleld ki alaposan, és jelentsd be, ha az országod szigorú alkohimport-szabályokkal él."
+      ]
+    },
+    {
+      "q": "Meddig áll el a limoncello?",
+      "a": [
+        "A bontatlan palack akár egy évig is friss marad; felbontás után tedd hűtőbe vagy fagyasztóba, és néhány hónapon belül idd meg, hogy csúcsaromát kapj."
+      ]
+    }
+  ]
+}

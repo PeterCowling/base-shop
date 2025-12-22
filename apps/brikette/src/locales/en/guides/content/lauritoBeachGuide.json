@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Laurito Beach Guide",
+    "description": "Located out of Positano’s town center, Laurito beach features two prominent beach clubs."
+  },
+  "linkLabel": "Laurito Beach Guide",
+  "intro": [
+    "Located out of Positano’s town center, Laurito beach features two prominent beach clubs."
+  ],
+  "toc": [
+    {
+      "href": "#layout-and-operators",
+      "label": "Layout and Beach Operators"
+    },
+    {
+      "href": "#tre-ville",
+      "label": "1. Tre Ville Beachclub"
+    },
+    {
+      "href": "#da-adolfo",
+      "label": "3. Da Adolfo"
+    }
+  ],
+  "sections": [
+    {
+      "id": "layout-and-operators",
+      "title": "Layout and Beach Operators",
+      "body": [
+        "1 - Free section.",
+        "2 - Tre Ville.",
+        "3 - Da Adolfo."
+      ]
+    },
+    {
+      "id": "tre-ville",
+      "title": "1. Tre Ville Beachclub",
+      "body": [
+        "The Tre Ville hotel is known for being one of the most expensive on the coast, with room rates reaching as high as 20,000 euros per night. Its beach club is unsurprisingly considered one of the most luxurious on the Amalfi Coast."
+      ]
+    },
+    {
+      "id": "da-adolfo",
+      "title": "3. Da Adolfo",
+      "body": [
+        "Da Adolfo is known for making it difficult to secure a booking, possibly as a way to appear more exclusive than they really are. If you are unable to make a booking, you can try going to the main beach port and joining the guests who have already made a booking on their water taxi. Once you arrive at the beach club, you can ask to be put on their waiting list."
+      ]
+    }
+  ],
+  "tips": [
+    "Getting to the beach by bus.",
+    "Getting back from the beach by bus.",
+    "See our Beaches Overview"
+  ],
+  "warnings": [],
+  "faqs": [],
+  "gallery": {
+    "alt": "Laurito Beach shoreline"
+  }
+}

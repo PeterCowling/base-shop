@@ -1,0 +1,117 @@
+{
+  "seo": {
+    "title": "Przewodnik po Positano",
+    "description": "Pełen przegląd: dojazd, noclegi, jedzenie, plaże i praktyczne wskazówki dla odwiedzających."
+  },
+  "linkLabel": "Przewodnik po Positano",
+  "intro": [
+    "Tłumaczenie w przygotowaniu.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "when",
+      "title": "When to visit",
+      "body": [
+        "Shoulder months (April–May, late September–October) balance weather and prices.",
+        "Summer brings ferries and long days but also heat and queues — start early."
+      ]
+    },
+    {
+      "id": "getting-around",
+      "title": "Getting around",
+      "body": [
+        "Walk, SITA buses, and seasonal ferries cover most routes; stairs are common.",
+        "Use our public transport guide for tickets, timing, and crowd‑dodging tips."
+      ]
+    },
+    {
+      "id": "highlights",
+      "title": "Highlights",
+      "body": [
+        "Spiaggia Grande and Fornillo beaches; sunset viewpoints above Via Pasitea.",
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "stays",
+      "title": "Where to stay",
+      "body": [
+        "Stay near ‘Chiesa Nuova’ or ‘Sponda’ bus stops to minimise stairs with luggage.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need a car?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "How many days?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Tłumaczenie w przygotowaniu."
+    ],
+    "gallery": {
+      "items": [
+        {
+          "alt": "Hostel terrace with panoramic view",
+          "caption": "Sunset from the terrace — stay steps from the Chiesa Nuova bus stop."
+        },
+        {
+          "alt": "Positano panorama",
+          "caption": "Fornillo and Spiaggia Grande are walkable; expect stairs."
+        }
+      ]
+    },
+    "sections": {
+      "whereToStay": {
+        "title": "Where to stay",
+        "body": "Staying near <em>Chiesa Nuova</em> means fewer stairs on arrival and departure. Hostel Brikette is ~80 m from the bus stop with panoramic terraces and affordable beds and private rooms. Beachfront stays near Spiaggia Grande are scenic but come with more stairs and higher prices."
+      },
+      "whenToVisit": {
+        "title": "When to visit",
+        "body": "Tłumaczenie w przygotowaniu."
+      },
+      "gettingAround": {
+        "title": "Getting around",
+        "arrivals": "Tłumaczenie w przygotowaniu.",
+        "withinTown": "Tłumaczenie w przygotowaniu.",
+        "ferries": "Tłumaczenie w przygotowaniu."
+      },
+      "thingsToDo": {
+        "title": "Things to do",
+        "beaches": "<linkBeaches>Beaches</linkBeaches>: Spiaggia Grande for the classic view; Fornillo for a quieter vibe; Arienzo for a scenic cliffside swim.",
+        "pathOfTheGods": "Tłumaczenie w przygotowaniu.",
+        "dayTrips": "Day trips: <linkCapri>Capri</linkCapri>, <linkAmalfi>Amalfi</linkAmalfi>, and <linkRavello>Ravello</linkRavello>."
+      },
+      "moneySavers": {
+        "title": "Money savers",
+        "eat": "Tłumaczenie w przygotowaniu.",
+        "travel": "Travel outside peak weekends; compare <linkBudgetArrival>budget arrival options</linkBudgetArrival>.",
+        "stay": "Tłumaczenie w przygotowaniu."
+      }
+    },
+    "tipsTitle": "Where to save",
+    "faqHeading": "FAQs",
+    "faqs": [
+      {
+        "question": "Is Positano doable on a budget?",
+        "answer": "Yes. Use buses, plan ferries selectively, and focus on free viewpoints and beach time."
+      },
+      {
+        "question": "Where should I base myself?",
+        "answer": "Tłumaczenie w przygotowaniu."
+      }
+    ]
+  }
+}

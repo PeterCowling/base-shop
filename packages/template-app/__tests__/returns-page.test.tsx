@@ -15,13 +15,18 @@ describe("ReturnForm", () => {
       json: async () => ({ labelUrl: "url", tracking: "123" }),
     }) as any;
     render(<ReturnForm bagType="poly" tracking />);
-    fireEvent.change(screen.getByPlaceholderText("Session ID"), {
+    fireEvent.change(
+      screen.getByPlaceholderText("account.returns.form.sessionIdPlaceholder"),
+      {
       target: { value: "abc" },
-    });
-    const form = screen.getByText("Submit").closest("form")!;
+    },
+    );
+    const form = screen.getByText("account.returns.form.submit").closest("form")!;
     fireEvent.submit(form);
-    await waitFor(() => expect(screen.getByText(/Print Label/)).toBeInTheDocument());
-    expect(screen.getByText(/Tracking: 123/)).toBeInTheDocument();
+    await waitFor(() =>
+      expect(screen.getByText("account.returns.form.printLabel")).toBeInTheDocument(),
+    );
+    expect(screen.getByText("account.returns.form.tracking")).toBeInTheDocument();
   });
 });
 
@@ -49,7 +54,7 @@ describe("ReturnsPage", () => {
     (getReturnLogistics as jest.Mock).mockResolvedValue({ mobileApp: false });
     const ui = (await ReturnsPage()) as ReactElement;
     render(ui);
-    expect(screen.getByText(/Mobile returns are not enabled/)).toBeInTheDocument();
+    expect(screen.getByText("account.returns.mobileDisabled")).toBeInTheDocument();
   });
 
   it("renders form with bag and tracking", async () => {

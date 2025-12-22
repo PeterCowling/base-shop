@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Positano vs inne kurorty plażowe: porównanie kosztów",
+    "description": "Porównanie cen noclegów, jedzenia i transportu z innymi popularnymi celami nadmorskimi."
+  },
+  "linkLabel": "Positano vs inne kurorty plażowe: porównanie kosztów",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Accommodation vs peers",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport & experiences",
+      "body": [
+        "Ferries run €9–€22, slightly higher than Croatia but cheaper than Greek island water taxis.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "tips": [
+    "Tłumaczenie w przygotowaniu.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "faqs": [
+    {
+      "q": "Tłumaczenie w przygotowaniu.",
+      "a": [
+        "Yes if you prioritise cliffside views, iconic beaches, and quick ferry links. You can trim costs by staying nearby and focusing spend on standout meals or tours."
+      ]
+    },
+    {
+      "q": "Where should I go if I want similar views for less?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Overview"
+      },
+      {
+        "href": "#when",
+        "label": "When it’s good value"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "faqLabel": "FAQs",
+    "sections": {
+      "overview": {
+        "heading": "Overview",
+        "body": "Tłumaczenie w przygotowaniu."
+      },
+      "when": {
+        "heading": "When it’s good value",
+        "body": "Shoulder season, weekdays, and longer stays near Chiesa Nuova reduce costs and effort."
+      }
+    },
+    "faq": {
+      "summary": "Is Positano more expensive than Amalfi?",
+      "answer": "Often for seafront stays; value improves inland or near bus stops."
+    }
+  }
+}

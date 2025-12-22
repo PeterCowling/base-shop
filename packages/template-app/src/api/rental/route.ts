@@ -52,7 +52,12 @@ export async function POST(req: NextRequest) {
       );
     }
   }
-  await addOrder(SHOP_ID, sessionId, deposit, expected);
+  await addOrder({
+    shop: SHOP_ID,
+    sessionId,
+    deposit,
+    expectedReturnDate: expected,
+  });
   return NextResponse.json({ ok: true });
 }
 

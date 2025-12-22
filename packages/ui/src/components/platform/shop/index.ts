@@ -1,7 +1,8 @@
+/* i18n-exempt file -- ABC-123 [ttl=2026-12-31] module specifiers are not user-facing copy */
 import type { ComponentProps } from "react";
-import type AddToCartButtonComponent from "@acme/platform-core/components/shop/AddToCartButton.client";
-import type { ProductCard as PlatformProductCard } from "@acme/platform-core/components/shop/ProductCard";
-import type { ProductGrid as PlatformProductGrid } from "@acme/platform-core/components/shop/ProductGrid";
+type AddToCartButtonComponent = typeof import("@acme/platform-core/components/shop/AddToCartButton.client").default;
+type PlatformProductCard = typeof import("@acme/platform-core/components/shop/ProductCard").ProductCard;
+type PlatformProductGrid = typeof import("@acme/platform-core/components/shop/ProductGrid").ProductGrid;
 export { default as AddToCartButton } from "@acme/platform-core/components/shop/AddToCartButton.client";
 export type AddToCartButtonProps = ComponentProps<AddToCartButtonComponent>;
 

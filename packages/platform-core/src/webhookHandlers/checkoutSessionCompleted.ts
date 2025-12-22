@@ -10,18 +10,62 @@ export default async function checkoutSessionCompleted(
 ): Promise<void> {
   const session = event.data.object as Stripe.Checkout.Session;
   const deposit = Number(session.metadata?.depositTotal ?? 0);
-  const returnDate = session.metadata?.returnDate || undefined;
-  const customerId = session.metadata?.customerId || undefined;
-  await addOrder(shop, session.id, deposit, returnDate, customerId);
+  const expectedReturnDate = session.metadata?.returnDate || undefined;
+  const customerId = session.metadata?.internal_customer_id || undefined;
+  const orderId = session.metadata?.order_id || undefined;
+  const cartId = session.metadata?.cart_id || undefined;
+
+  const currency =
+    typeof session.currency === "string" ? session.currency.toUpperCase() : undefined;
+  const subtotalAmount =
+    typeof session.amount_subtotal === "number" ? session.amount_subtotal : undefined;
+  const totalAmount =
+    typeof session.amount_total === "number" ? session.amount_total : undefined;
+  const taxAmount =
+    typeof session.total_details?.amount_tax === "number"
+      ? session.total_details.amount_tax
+      : undefined;
+  const shippingAmount =
+    typeof session.total_details?.amount_shipping === "number"
+      ? session.total_details.amount_shipping
+      : undefined;
+  const discountAmount =
+    typeof session.total_details?.amount_discount === "number"
+      ? session.total_details.amount_discount
+      : undefined;
+
+  const piId =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent?.id;
+
+  const stripeCustomerId =
+    typeof session.customer === "string"
+      ? session.customer
+      : session.metadata?.stripe_customer_id || undefined;
+
+  await addOrder({
+    orderId,
+    shop,
+    sessionId: session.id,
+    deposit,
+    expectedReturnDate,
+    customerId,
+    currency,
+    subtotalAmount,
+    taxAmount,
+    shippingAmount,
+    discountAmount,
+    totalAmount,
+    cartId,
+    stripePaymentIntentId: piId,
+    stripeCustomerId,
+  });
 
   const settings = await getShopSettings(shop);
   const threshold = settings.luxuryFeatures.fraudReviewThreshold;
   const requireSCA = settings.luxuryFeatures.requireStrongCustomerAuth;
   if (deposit > threshold) {
-    const piId =
-      typeof session.payment_intent === "string"
-        ? session.payment_intent
-        : session.payment_intent?.id;
     if (piId) {
       const reviews = stripe.reviews as unknown as {
         create: (params: { payment_intent: string }) => Promise<unknown>;

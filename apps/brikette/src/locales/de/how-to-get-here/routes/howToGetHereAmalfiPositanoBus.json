@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Amalfi nach Positano mit dem Bus | Hostel Brikette",
+    "description": "SITA-Bus von Amalfi nach Positano: Einstiegsstellen, Tickettipps, Fahrplanhinweise und der richtige Ausstieg für das Hostel Brikette (Chiesa Nuova)."
+  },
+  "header": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "title": "Amalfi nach Positano – Bus (SITA Sud)",
+    "description": "Nutze diesen Leitfaden für die Fahrt mit dem SITA-Bus von Amalfi nach Positano. Er erklärt, wo du in Amalfi einsteigst, wie du Fahrkarten entwertest, den Fahrplan liest und wo du aussteigst, um den kürzesten Weg zum Hostel zu haben."
+  },
+  "aside": {
+    "eyebrow": "Andere Routen nötig?",
+    "body": {
+      "before": "Brauchst du andere Transportoptionen? Öffne die ",
+      "linkLabel": "Übersicht „So kommst du zu uns“",
+      "after": " für Fähren, Taxis und kombinierte Reisen."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Reiseüberblick",
+      "body": "Der direkte SITA-Bus von Amalfi nach Positano fährt in der Saison häufig. Rechne mit einer malerischen Küstenfahrt von etwa einer Stunde – abhängig vom Verkehr."
+    },
+    "boarding": {
+      "title": "Einstieg in Amalfi",
+      "items": [
+        "Gehe zum Hauptbusbahnhof von Amalfi neben der Piazza am Wasser.",
+        "Achte auf SITA-Busse mit der Anzeige „Sorrento“ oder „Positano“ (beide halten in Positano).",
+        "Kaufe Fahrkarten vor dem Einsteigen in einem Tabacchi/Kiosk – Zahlung je nach Verkaufsstelle bar oder mit Karte.",
+        "Halte deine Tickets bereit; der Fahrer kann sie beim Einstieg stempeln oder einreißen."
+      ]
+    },
+    "tickets": {
+      "title": "Tickets und Fahrplan",
+      "body": {
+        "before": "Prüfe den aktuellen Fahrplan auf ",
+        "linkLabel": "Positano.com",
+        "after": ". Nutze die folgenden Hinweise, um das Raster richtig zu lesen."
+      },
+      "items": [
+        "Haltestellen stehen in den Zeilen; jede Spalte mit Buchstaben entspricht einer Fahrt.",
+        "Für Mo–Sa werden meist die Spalten „F“ und „G“ genutzt; So/Feiertage oft „G“ und „H“.",
+        "Suche nach „Amalfi\" in der Abfahrtszeile und nach „Positano (Chiesa Nuova)\" in der Ankunftszeile."
+      ]
+    }
+  }
+}

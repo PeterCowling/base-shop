@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Klesvask i Positano (selvbetjent og innlevering)",
+    "description": "Hvor du kan vaske klær, hvordan selvbetjening fungerer, forventninger til innlevering og praktiske tips."
+  },
+  "linkLabel": "Klesvask i Positano (selvbetjent og innlevering)",
+  "intro": [
+    "Slik ordner du klesvask i Positano – selvbetjening, innlevering og tips for å få klærne tørre i fuktig klima."
+  ],
+  "toc": {
+    "onThisPage": "On this page",
+    "selfService": "Self‑service laundromats",
+    "dropOff": "Drop‑off services",
+    "howto": "How‑to: self‑service",
+    "tips": "Detergent & machines",
+    "faqs": "FAQs"
+  },
+  "selfServiceText": "Expect compact European machines. Bring small change and consider off‑peak times to avoid queues (late mornings or early afternoons outside turnover days).",
+  "dropOffText": "Ask for wash‑and‑fold pricing per kg and same‑day turnaround. During peak periods, early drop‑off improves chances.",
+  "howtoSteps": [
+    "Choose machine size based on load; don’t overfill.",
+    "Add detergent/softener as directed; some machines auto‑dose.",
+    "Select program (cold/warm) and start. Set a timer to return before cycle ends."
+  ],
+  "tipsList": [
+    "Use gentle cycles for quick‑dry fabrics and swimwear.",
+    "Shared dryers can run hot — check labels and consider hang‑drying."
+  ],
+  "sections": [
+    {
+      "id": "self-service",
+      "title": "Selvbetjent vask",
+      "body": [
+        "Selvbetjente vaskerier har maskiner på 30–40 minutter; ta med mynter eller spør om veksling."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Innlevering",
+      "body": [
+        "Innlevering koster mer, men du får klær brettet og klar neste dag."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Tar vaskeriene kort?",
+      "a": [
+        "De fleste tar kontanter; enkelte aksepterer kort, men ha mynter tilgjengelig."
+      ]
+    },
+    {
+      "q": "Hvor lang tid bør jeg beregne?",
+      "a": [
+        "Selvbetjent vask + tørk tar 1,5–2 timer; innlevering tar vanligvis et døgn."
+      ]
+    }
+  ]
+}

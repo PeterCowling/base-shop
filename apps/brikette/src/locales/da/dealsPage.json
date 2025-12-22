@@ -1,0 +1,49 @@
+{
+  "slug": "deals",
+  "meta": {
+    "title": "Sommertilbud 2025 – spar 15 %",
+    "description": "Tidsbegrænset sommertilbud med ekstra 15 % rabat ved direkte booking.",
+    "ogImageAlt": "Banner for sommer-rabat"
+  },
+  "title": "Spar {{percent}} % på dit {{season}}-ophold",
+  "promo": "Book direkte denne sommer og få ekstra {{percent}} % rabat.",
+  "banner": "Kun {{beds}} senge tilbage til denne pris – tilbuddet slutter om {{time}}!",
+  "timeRemaining": {
+    "lessThanHour": "0 t",
+    "hours_one": "{{count}} time",
+    "hours_other": "{{count}} timer",
+    "days_one": "{{count}} dag",
+    "days_other": "{{count}} dage"
+  },
+  "buttonReserve": "Book nu",
+  "ogImageAlt": "Banner for sommer-rabat",
+  "perksHeading": "Fordele ved direkte booking",
+  "perksIntro": "Disse fordele gælder kun gæster, der booker direkte på vores hjemmeside.",
+  "perksGuarantee": "Hver direkte booking på vores hjemmeside låser automatisk disse eksklusive fordele op.",
+  "perksIntroLink": "Se alle aktuelle tilbud",
+  "perksList": [
+    "Op til 25 % rabat på normalprisen, når kuponen anvendes",
+    "Gratis morgenmad",
+    "Gratis aften-drik"
+  ],
+  "expired": {
+    "message": "Dette tidsbegrænsede tilbud sluttede den {{endedOn}}."
+  },
+  "restrictions": {
+    "heading": "Vigtigt at vide",
+    "stayWindow": "Gyldigt for ophold fra {{from}} til {{to}}.",
+    "minAdvance": "Book mindst {{days}} dage i forvejen.",
+    "minAdvancePrefix": "Book mindst",
+    "minAdvanceSuffix": "i forvejen.",
+    "los": "Minimum {{min}} nætter, maksimum {{max}} nætter.",
+    "nonRefundable": "Gælder kun for ikke-refunderbare priser ved direkte booking via hostellets website.",
+    "nonRefundablePrefix": "Gælder kun for",
+    "nonRefundableSuffix": "ved direkte booking via hostellets website.",
+    "stackable": "{{percent}} % kan kombineres med vores standard 10 % rabat for direkte booking.",
+    "other": "Standardvilkår gælder."
+  },
+  "seasonLabel": "Sommeren 2025",
+  "robots": {
+    "expiredNoindex": "noindex,follow"
+  }
+}

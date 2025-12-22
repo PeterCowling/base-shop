@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "{{count}} 篇文章",
+  "articleCount_other": "{{count}} 篇文章",
+  "topTagsHeading": "热门标签",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

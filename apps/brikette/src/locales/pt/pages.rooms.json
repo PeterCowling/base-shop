@@ -1,0 +1,33 @@
+{
+  "detail": {
+    "room_12": {
+      "hero": {
+        "eyebrow": "Dormitório Misto Superior • Terraço",
+        "title": "Acorde com o horizonte de Positano num terraço partilhado enorme",
+        "subtitle": "O nosso maior dormitório com terraço combina seis camas com conforto interior privativo.",
+        "bullets": [
+          "Terraço panorâmico com sofás e mesas para pequeno-almoço",
+          "Casa de banho privativa com toalhas frescas",
+          "Wi-Fi rápido, ar condicionado e cacifos com cartão para cada hóspede"
+        ]
+      },
+      "outline": {
+        "heading": "O que esperar no dormitório com terraço",
+        "items": [
+          {
+            "title": "Espaço exterior para toda a gente",
+            "body": "Brinde ao pôr do sol em sofás e bancos compridos enquanto o horizonte pastel de Positano se estende à frente."
+          },
+          {
+            "title": "Zona de descanso espaçosa",
+            "body": "Seis beliches sólidos com cortinas de privacidade, luzes individuais e tomadas mantêm o silêncio quando precisa de descansar."
+          },
+          {
+            "title": "Preparado para dias de praia",
+            "body": "Guarde malas em cacifos com cartão, estenda fatos de banho nos varões do terraço e refresque-se rapidamente na casa de banho privativa."
+          }
+        ]
+      }
+    }
+  }
+}

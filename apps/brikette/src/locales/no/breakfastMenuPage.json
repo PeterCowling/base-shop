@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Frokostmeny (2025)",
+    "description": "Frokost 08:00–10:30 daglig. Egg‑kombinasjoner, søte alternativer, sunne valg, juice, smoothies og kaffe."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Frokostmeny, 2025",
+    "hours": "Daglig 08:00 – 10:30"
+  },
+  "intro": {
+    "summary": "Fersktilberedt frokost, nypressede juicer og baristakaffe serveres hver morgen på terrassen. Rull ned for å se alle valgene og prisene.",
+    "viewFullMenuButton": "Se hele frokostmenyen"
+  },
+  "sections": {
+    "eggs": {
+      "title": "Egg‑kombo",
+      "subtitle": "En deilig kombinasjon av egg",
+      "howCooked": "Velg hvordan du vil ha eggene",
+      "cooked": [
+        "Omelett",
+        "Eggerøre",
+        "Speilegg (lett)",
+        "Speilegg (sunny side-up)"
+      ],
+      "addThree": "Velg tre ingredienser",
+      "ingredients": [
+        "Bacon",
+        "Skinke",
+        "Tomater",
+        "Sopp",
+        "Toast",
+        "Ost",
+        "Bønner"
+      ],
+      "orderExample": "Eksempel: “Omelett med ost, bacon og bønner”."
+    },
+    "sweet": {
+      "title": "Søte alternativer",
+      "chooseOneFreeSyrup": "Velg én gratis sirup:",
+      "syrups": [
+        "Golden",
+        "Sitron",
+        "Appelsin & kanel",
+        "Nutella"
+      ]
+    },
+    "healthy": {
+      "title": "Sunne alternativer"
+    },
+    "juices": {
+      "title": "Juice og Smoothies"
+    },
+    "hot": {
+      "title": "Varme koffeinholdige drikker"
+    },
+    "iced": {
+      "title": "Kalde koffeinholdige drikker"
+    }
+  },
+  "items": {
+    "eggsCombo": {
+      "name": "Egg‑kombo"
+    },
+    "frenchToast": {
+      "name": "French toast",
+      "note": "Klassisk french toast, servert med sirup."
+    },
+    "nutellaFrenchToast": {
+      "name": "French toast med Nutella",
+      "note": "French toast fylt med Nutella."
+    },
+    "pancakes": {
+      "name": "Pannekaker"
+    },
+    "addEggComboItem": {
+      "name": "Legg til fra egg‑menyen",
+      "note": "Velg en vare fra egg‑komboen. For eksempel pannekaker med gyllen sirup pluss eggerøre for €15,50."
+    },
+    "addAdditionalSyrup": {
+      "name": "Ekstra sirup",
+      "note": "Velg mer enn én sirup. For eksempel pannekaker med gyllen sirup pluss Nutella for €14."
+    },
+    "veggieToast": {
+      "name": "Grønnsakstoast",
+      "note": "Sesongens grønnsaker på toast."
+    },
+    "healthyDelight": {
+      "name": "Sunn nytelse",
+      "note": "Parfait av yoghurt, granola og hjemmelaget fruktkompott."
+    },
+    "detoxMe": {
+      "name": "Detox Me (juice)",
+      "note": "Spinat, agurk, ingefær og sitron."
+    },
+    "energizeMe": {
+      "name": "Energize Me (juice)",
+      "note": "Appelsin, gulrot, ingefær og sitron."
+    },
+    "multiV": {
+      "name": "Multi‑V (juice)",
+      "note": "Eple, gulrot, appelsin, sitron og ingefær."
+    },
+    "orangeJuice": {
+      "name": "Appelsinjuice",
+      "note": "Ferskpresset appelsinjuice."
+    },
+    "bananaSmoothie": {
+      "name": "Banan‑smoothie"
+    },
+    "strawberrySmoothie": {
+      "name": "Jordbær‑smoothie"
+    },
+    "saltedCaramelProteinSmoothie": {
+      "name": "Protein‑smoothie med kaffe & salt karamell"
+    },
+    "addProtein": {
+      "name": "Legg til protein (vanilje/sjokolade/salt karamell) — HUEL (40g protein)"
+    },
+    "tea": {
+      "name": "Te (svart, grønn, urt)"
+    },
+    "espresso": {
+      "name": "Espresso (per porsjon)"
+    },
+    "macchiato": {
+      "name": "Macchiato"
+    },
+    "americano": {
+      "name": "Americano / lang svart"
+    },
+    "cappuccino": {
+      "name": "Cappuccino"
+    },
+    "latte": {
+      "name": "Latte"
+    },
+    "altMilk": {
+      "name": "Soyamelk eller risdrikk — tillegg"
+    },
+    "icedLatte": {
+      "name": "Islatte"
+    },
+    "icedSoyLatte": {
+      "name": "Islatte med soyamelk"
+    },
+    "icedRiceLatte": {
+      "name": "Islatte med risdrikk"
+    },
+    "icedTea": {
+      "name": "Iste (sitron eller fersken)"
+    }
+  }
+}

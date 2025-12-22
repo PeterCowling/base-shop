@@ -1,0 +1,72 @@
+{
+  "deals": {
+    "loyaltyCta": {
+      "heading": "Avantages supplémentaires pour nos habitués",
+      "body": "Inscrivez-vous à notre liste de réservation directe pour recevoir des offres en avant-première, des conseils de voyage saisonniers et un code de réduction supplémentaire de 5 % pour votre prochaine réservation sur notre site.",
+      "button": "S’inscrire aux avantages"
+    }
+  },
+  "about": {
+    "mission": {
+      "heading": "Notre mission",
+      "paragraphs": [
+        "Depuis 1995, l’auberge Brikette aide les voyageurs à découvrir Positano avec un budget raisonnable sans renoncer aux vues panoramiques sur la côte amalfitaine.",
+        "Nous privilégions la transparence : des tarifs clairs sans frais cachés, des politiques simples et une équipe sur place prête à vous aider pour toute modification ou demande spéciale.",
+        "Notre équipe locale partage des plans de transport, des conseils pour porter des bagages de 23 kg / 50 lb dans les escaliers et des idées d’activités pour profiter de chaque minute sur la côte."
+      ]
+    },
+    "values": {
+      "heading": "Nos valeurs",
+      "items": [
+        {
+          "title": "Équitable, direct et transparent",
+          "body": "Nous publions des tarifs et des politiques clairs, vous orientons vers les options au meilleur rapport qualité-prix et n’ajoutons jamais de frais cachés."
+        },
+        {
+          "title": "Expertise locale, partagée librement",
+          "body": "Des ferries aux sentiers, notre équipe partage des conseils pratiques pour que vous profitiez pleinement de votre temps (et de votre budget)."
+        },
+        {
+          "title": "Hospitalité chaleureuse",
+          "body": "Nous cultivons l’esprit convivial des auberges : un bar accueillant, des espaces communs et une équipe qui se souvient de vos projets."
+        }
+      ]
+    }
+  },
+  "careers": {
+    "hiringCta": {
+      "heading": "Rejoignez-nous sur la terrasse",
+      "body": "Rejoignez une petite équipe qui valorise la personnalité, l’initiative et l’attention portée aux voyageurs. Logement du personnel, petit-déjeuner et avantages équitables inclus.",
+      "button": "Postuler maintenant"
+    }
+  },
+  "experiences": {
+    "meetTheHosts": {
+      "heading": "Rencontrez l’équipe de la terrasse",
+      "intro": "Ce sont les personnes qui font vivre la terrasse, organisent les événements au coucher du soleil, guident les randonnées et répondent à vos questions avant même votre arrivée à Positano.",
+      "hosts": [
+        {
+          "name": "Chiara",
+          "role": "Responsable des expériences",
+          "bio": "Coordonne le bar du coucher de soleil, présente des producteurs locaux et veille à ce que chaque dégustation propose quelque chose pour tout le monde. Si vous fêtez un événement ou préparez une soirée privée, retrouvez-la sur la terrasse à partir de 18 h.",
+          "imageAlt": "Chiara servant un spritz au bar de la terrasse.",
+          "availability": "Retrouvez Chiara au bar la plupart des soirées ainsi que via notre conciergerie numérique."
+        },
+        {
+          "name": "Luca",
+          "role": "Guide local",
+          "bio": "Né à Praiano, il connaît chaque sentier de la côte amalfitaine. Luca vous aide à choisir entre le Sentier des Dieux, les sorties en bateau au lever du soleil ou les excursions d’une journée à Ravello, avec des plans de transport prêts à l’emploi.",
+          "imageAlt": "Luca pointant l’horizon depuis un belvédère de la côte amalfitaine.",
+          "availability": "Passez le voir à la réception tôt le matin ou réservez vos randonnées via la conciergerie."
+        },
+        {
+          "name": "Mariana",
+          "role": "Concierge numérique",
+          "bio": "Répond sur WhatsApp et Messenger avec des alertes ferry, des recommandations de restaurants et des rappels de dernière minute. Si la météo change, elle propose des alternatives sans stress.",
+          "imageAlt": "Écran de téléphone montrant une conversation avec Mariana, la concierge numérique.",
+          "availability": "Écrivez-lui à tout moment — elle coordonne en temps réel avec l’équipe de réception."
+        }
+      ]
+    }
+  }
+}

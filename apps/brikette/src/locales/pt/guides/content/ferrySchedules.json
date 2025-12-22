@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Horários de ferry para Positano",
+    "description": "Quando os ferries operam, onde consultar horários em tempo real, sazonalidade, empresas e dicas práticas de embarque."
+  },
+  "linkLabel": "Horários de ferry para Positano",
+  "intro": [
+    "Horários de ferry de/para Positano: onde consultar partidas em tempo real, como funciona a sazonalidade e como manter planos de contingência."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "Quando os ferries operam",
+      "body": [
+        "A época principal decorre aproximadamente de abril a outubro, com mais frequências de meados de maio até setembro; no inverno as travessias são raras e dependem do tempo.",
+        "Nos meses intermédios, as primeiras e últimas partidas são frequentemente reduzidas — confirme o horário na noite anterior."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Ver atualizações em tempo real",
+      "body": [
+        "Use os sites e apps dos operadores (Travelmar, NLG, Alilauro, Positano Jet) e os painéis do porto para atrasos e mudanças de porta.",
+        "Faça capturas de ecrã dos horários e ative alertas por e-mail/SMS para receber avisos meteorológicos mesmo sem dados de um SIM italiano."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Bilhetes e margens de segurança",
+      "body": [
+        "Na época alta os lugares podem esgotar horas antes — compre online ou no dia anterior e chegue 30 minutos antes com identificação e bagagem pronta para etiquetar.",
+        "Guarde margem antes da última ligação do dia para poder mudar para autocarro ou táxi se o mar piorar."
+      ]
+    }
+  ],
+  "tips": [
+    "Acompanhe as previsões marítimas (vento acima de 20 nós ou ondulação superior a 1,5 m costuma gerar cancelamentos).",
+    "Se precisar de trocar de porto, verifique os horários de autocarro com antecedência para manter a ligação sem stress."
+  ],
+  "faqs": [
+    {
+      "q": "Quando são publicados os horários de verão?",
+      "a": [
+        "A maioria dos operadores lança os horários de época alta entre fevereiro e março; as atualizações de outono costumam sair no fim de agosto."
+      ]
+    },
+    {
+      "q": "Como confirmo um cancelamento no próprio dia?",
+      "a": [
+        "Atualize o site ou as redes sociais do operador e procure avisos impressos no cais; a equipa também anuncia mudanças pelos altifalantes.",
+        "Tenha o horário dos autocarros SITA ou um contacto de táxi à mão caso precise de alterar a rota de imediato."
+      ]
+    },
+    {
+      "q": "Posso viajar com bagagem grande?",
+      "a": [
+        "Sim, mas volumes maiores podem ter suplemento; chegue cedo para que a tripulação etiquete e arrume com segurança enquanto mantém objetos de valor consigo."
+      ]
+    }
+  ]
+}

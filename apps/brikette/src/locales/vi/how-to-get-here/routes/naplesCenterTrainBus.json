@@ -1,0 +1,73 @@
+{
+  "slug": "naples-center-train-bus",
+  "meta": {
+    "title": "Từ trung tâm Naples đến Positano bằng tàu rồi xe buýt | Hostel Brikette",
+    "description": "Hướng dẫn từng bước đi từ trung tâm Naples tới Hostel Brikette bằng tàu Circumvesuviana và xe buýt SITA, kèm mẹo mua vé và ảnh khi đến Positano."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Trung tâm Naples đến Positano – Tàu rồi xe buýt",
+    "description": "Làm theo hướng dẫn này để đi từ trung tâm Naples tới Hostel Brikette bằng tàu Circumvesuviana đến Sorrento và xe buýt SITA tới Positano. Bài viết có mẹo mua vé, tư vấn đọc lịch xe buýt và ảnh đoạn đường cuối đến hostel."
+  },
+  "tip": {
+    "eyebrow": "Mẹo",
+    "copy": "Cần tuyến khác? Xem toàn bộ hướng dẫn đến nơi tại <GuideLink>trang Cách đến đây</GuideLink>.",
+    "linkLabel": "Trang Cách đến đây"
+  },
+  "sections": {
+    "overview": {
+      "title": "Tổng quan tàu rồi xe buýt",
+      "body": "Hành trình này là phương án giao thông công cộng nhanh nhất từ trung tâm Naples: tàu Circumvesuviana tới Sorrento rồi xe buýt SITA đến Positano. Không áp dụng cho việc di chuyển từ sân bay Naples."
+    },
+    "naplesStation": {
+      "title": "Ga tàu Naples",
+      "body": "Các chuyến Circumvesuviana đi Sorrento khởi hành từ tầng dưới của ga Napoli Garibaldi (bên dưới Napoli Centrale). Mua vé trước khi xuống sân ga, kiểm tra số đường ray tàu của bạn rồi lên chuyến hướng Sorrento."
+    },
+    "sorrentoStation": {
+      "title": "Ga Sorrento",
+      "body": "Đến Sorrento, ra khỏi ga và mua vé xe buýt SITA tại quán bar, sạp báo hoặc cửa hàng thuốc lá gần đó — xe buýt không bán vé. Điểm dừng SITA nằm ở chân cầu thang ngoài ga; đợi xe hướng Amalfi và đi đến Positano."
+    },
+    "timetable": {
+      "title": "Cách đọc lịch SITA",
+      "intro": "Lịch xe buýt SITA có thể gây rối — dùng các gợi ý sau để tìm đúng chuyến:",
+      "tips": [
+        "Các hàng ở cột đầu là những điểm dừng trên tuyến.",
+        "Mỗi cột là một chuyến được đánh bằng chữ cái.",
+        "Đi từ Thứ Hai đến Thứ Bảy thì xem cột 'F' và 'G'.",
+        "Đi Chủ Nhật hoặc ngày lễ thì xem cột 'G' và 'H'."
+      ],
+      "detail": "Chọn hàng khởi hành từ Sorrento để tìm giờ xe. Kiểm tra hàng Positano (Chiesa Nuova) trong cùng cột để biết thời gian đến.",
+      "outro": "Xem lịch mới nhất trên <TimetableLink>positano.com</TimetableLink>.",
+      "linkLabel": "positano.com"
+    },
+    "positanoStop": {
+      "title": "Điểm dừng Positano",
+      "list": [
+        "Điểm gần nhất là Positano (Chiesa Nuova), cách hostel khoảng 140 mét (490 feet).",
+        "Nằm ngay trước quán Bar Internazionale.",
+        "Xe buýt trả khách ở mặt đường — không cần leo cầu thang dài để tới chúng tôi."
+      ],
+      "figure": {
+        "alt": "Điểm dừng Chiesa Nuova trước Bar Internazionale ở Positano",
+        "caption": "Điểm dừng Chiesa Nuova, nơi bạn xuống xe để tới Hostel Brikette."
+      }
+    },
+    "walk": {
+      "title": "Đi bộ từ điểm dừng",
+      "steps": [
+        "Đi bộ hơn 100 mét / 330 feet từ điểm dừng.",
+        "Rẽ phải và theo các bậc thang lên cửa chính của hostel."
+      ],
+      "mapLink": "Mở <MapLink>lộ trình Google Maps</MapLink> để xem chỉ dẫn từng bước.",
+      "mapLinkLabel": "Lộ trình Google Maps",
+      "arrival": {
+        "title": "Khi tới nơi",
+        "body": "Hãy tìm biển hiệu của chúng tôi trên ban công tầng hai. Đi ngang qua, theo khúc cua và leo cầu thang bên phải đường để tới cửa chính."
+      },
+      "approachFigure": {
+        "alt": "Ảnh phố với biển Hostel Brikette trên Via G. Marconi",
+        "caption": "Via G. Marconi — đi qua biển hiệu rồi rẽ vào bậc thang bên phải."
+      }
+    }
+  }
+}

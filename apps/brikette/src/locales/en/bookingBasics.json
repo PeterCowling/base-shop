@@ -1,0 +1,125 @@
+{
+  "slug": "bookings-reservations",
+  "meta": {
+    "title": "Booking Basics: Your Essential Guide to Staying at Hostel Brikette, Positano - the Only Hostel in Positano",
+    "description": "Discover everything you need to know before you book the only hostel in Positano, on Italy's Amalfi Coast. Learn about secure payments, flexible and non-refundable bookings, check-in rules, cancellation policies, and insider tips for an unforgettable stay in Positano's only hostel."
+  },
+  "headings": {
+    "aboutOurHostel": "About Our Hostel",
+    "termsAndConditions": "Terms and Conditions",
+    "youCustomerGuest": "Who This Guide Applies To",
+    "roomBookingRequest": "How to Book Your Stay",
+    "onlyHostelPositano": "Only Hostel Positano",
+    "communalAreas": "Hostel Facilities and Communal Areas",
+    "creditCardHolder": "Understanding Credit-Card Holder Requirements",
+    "counteroffer": "Availability and Counter-offers",
+    "confirmedRoomBooking": "Confirming Your Room Booking",
+    "noShow": "No-Shows and Charges",
+    "roomCancellationRequest": "Cancelling Your Booking",
+    "cancellationNoticePeriod": "Cancellation Notice Period",
+    "cancellationAdministrationFee": "Cancellation Administration Fees",
+    "hostelOfficialEmail": "Official Communication and Email",
+    "bookingChangeRequest": "Modifying Your Booking",
+    "designatedEmailAddress": "Providing Your Email Address",
+    "bookingExtensionRequest": "Extending Your Stay",
+    "checkInRequest": "Checking-In",
+    "assignedRoom": "Room Assignments",
+    "hostelRooms": "Accommodation Types",
+    "linen": "Linen and Amenities",
+    "roomUpgrade": "Room Upgrades",
+    "keycard": "Keycard Access",
+    "preauthorization": "Payment Pre-authorisation",
+    "checkout": "Checking-Out",
+    "minor": "Special Guidelines for Minors",
+    "complimentaryService": "Complimentary Hostel Services",
+    "temporaryGuest": "Temporary Visitors",
+    "acceptedPaymentMethods": "Accepted Payment Methods",
+    "prepaidNonRefundableBookings": "Pre-paid, Non-Refundable Bookings",
+    "firstComeFirstToChoose": "Dormitory Bed Selection",
+    "refundableBookings": "Flexible, Refundable Bookings",
+    "proofOfIdentity": "Proof of Identity Requirements",
+    "seriousDefect": "Reporting Issues",
+    "ota": "Online Travel Agencies"
+  },
+  "content": {
+    "aboutOurHostel": "Skylar SRL proudly operates Hostel Brikette, Positano - the only hostel in Positano. You'll find us at Via Guglielmo Marconi 358, 84017 Positano, Salerno, Italy. We are perfectly located for the Amalfi Coast, being central to Amalfi, Ravello, Sorrento, and the island of Capri - making us perfect not just for Positano but also day trips to each of those places. From our panoramic terrace, you will be surrounded by mountains, and have great views of the famous limestone cliffs as they plunge into the sea below. If you're searching for affordability, social atmosphere, unbeatable views, great service, then check out Hostel Brikette.",
+
+    "termsAndConditions": "Our terms and conditions are transparent, concise, and designed to protect both you and us. They outline essential details like payment schedules, security deposit rules, quiet-hour policies, and guest-only access to dormitories. The terms and conditions are aligned with Italian tourism legislation and standard hostel practices across Europe. We strongly encourage all guests to familiarise themselves with these terms before arriving so that there are no surprises after check-in. By completing your booking, you acknowledge that you have read, understood, and accepted Hostel Brikette's Terms & Conditions, ",
+
+    "youCustomerGuest": "This booking guide aims to help every guest who either stays overnight or interacts with the hostel on someone else's behalf. Whether you are a solo backpacker, a digital nomad, a couple on a romantic getaway, a group leader coordinating a school trip, or simply a temporary visitor dropping by to enjoy the terrace, these guidelines ensure that everyone is treated fairly and the hostel operates smoothly.",
+
+    "roomBookingRequest": "Booking your stay at Hostel Brikette is quick and secure. You can reserve directly on <a href=\"https://www.hostel-positano.com/\" target=\"_blank\" rel=\"noopener noreferrer\">Hostel Brikette's official website</a> for the best rates, flexible policies, and to gain access to complimentary breakfast and evening drinks. You can also book to stay at the hostel through trusted online travel agencies (OTAs) such as <a href=\"https://www.hostelworld.com/hosteldetails.php?Positano-Hostel/\" target=\"_blank\" rel=\"noopener noreferrer\">Hostelworld</a> and <a href=\"https://www.booking.com/hotel/it/positano-hostel.en-gb.html\" target=\"_blank\" rel=\"noopener noreferrer\">Booking.com</a>.",
+
+    "onlyHostelPositano": "Hostel Brikette is Positano's only hostel. Book directly or contact us to ensure you make a valid booking at our hostel. Please also note that unauthorised resale or transfer of bookings is strictly prohibited and will result in immediate cancellation without refund.",
+
+    "communalAreas": "Our communal areas are designed for social interaction and unrivalled Mediterranean vistas. Enjoy morning cappuccinos on our terrace, join sunset aperitivo hour overlooking Positano's bay area, or catch up on remote work in beautiful lobby equipped with free Wi-Fi. We also provide spacious, gender-segregated communal bathrooms with hot-water available 24/7. Temporary visitors may share these areas during visiting hours, as long as they present valid ID at reception.",
+
+    "creditCardHolder": "The credit-card holder - the person whose name appears on the card used to secure the booking - is ultimately responsible for all accommodation charges, add-ons, and penalties incurred. If you are booking on behalf of someone else, please ensure you have written permission from the card holder, or contact us so we can arrange a secure third-party payment link.",
+
+    "counteroffer": "In high-demand periods such as June to September, certain room types may sell out fast. If your preferred dorm bed or private room is unavailable, we'll promptly send you a friendly counter-offer suggesting alternative dates or room categories. Feel free to accept, reject, or negotiate - our team is all based here in the Amalfi Coast and will help you lock in the ideal hostel experience.",
+
+    "confirmedRoomBooking": "Your reservation is considered confirmed the instant you receive our automated confirmation email. This document details your booking reference, arrival date, number of nights, bed type (mixed dorm, female-only dorm, or private room), and total cost. Keep this email handy - you'll need to show it at check-in if your surname doesn't match the booking name.",
+
+    "noShow": "A \"no-show\" occurs when a guest fails to arrive and complete check-in by 22:00 (local time) on the scheduled arrival date. To protect our small, independent business from lost revenue, no-shows are charged the full first night or the entire non-refundable balance, whichever amount is greater. If you anticipate a late arrival, simply email us before 21:00 so we can arrange a late self-check-in kit.",
+
+    "roomCancellationRequest": "Plans change - we get it! If you must cancel your stay in Positano, please notify us as early as possible by emailing <a href=\"mailto:hostelpositano@gmail.com\">hostelpositano@gmail.com</a>. Early cancellations free up beds for other backpackers exploring the Amalfi Coast and may reduce or eliminate any applicable fees for you.",
+
+    "cancellationNoticePeriod": "Unless otherwise stated on your rate plan, a standard 72-hour cancellation policy applies. This means you must cancel by 15:00, three full days before your arrival date, to avoid charges. Non-refundable or \"early bird\" discounted rates may have different terms, so always check your confirmation email for specifics.",
+
+    "cancellationAdministrationFee": "A small €5 administration fee per booking may apply to cover transaction costs associated with processing refunds and updating inventory across multiple booking platforms. This fee is clearly displayed at the time of reservation and reiterated in your confirmation email.",
+
+    "hostelOfficialEmail": "For any official correspondence - whether it's a special request, group inquiry, or visa confirmation letter - write to our dedicated inbox at <a href=\"mailto:hostelpositano@gmail.com\">hostelpositano@gmail.com</a>. We answer emails daily from 08:00 to 22:00.",
+
+    "bookingChangeRequest": "Need to move your booking forward a week, add another traveller, or upgrade to a sea-view private? Send your request by email using the subject line \"Booking Change - [Your Surname, Arrival Date].\" Changes are subject to availability but we always do our best to keep guests happy and flexibility high.",
+
+    "designatedEmailAddress": "A valid email address is mandatory at the time of booking because it is how we send confirmation that you have booked to stay with us at Hostel Brikette. If you do not receive an email within ten minutes of booking, please check your spam folder and mark us as a safe sender. We also send access to an application that you can use to plan your travel, time whilst you are at the hostel, place orders for food and drink, and so on. This application is very helpful, and will ensure you get the most of your time at Hostel Brikette, in Positano and along the Amalfi Coast.",
+
+    "bookingExtensionRequest": "Once you've experienced Positano's cliffside charm, you may decide you never want to leave. No problem - email or speak to reception about extending your stay. Extra nights are granted on a first-come, first-serve basis, so let us know early, especially during the peak Amalfi Coast season.",
+
+    "checkInRequest": "Check-in runs daily from 15:00 to 22:00. If you reach Positano before room time, we'll store your luggage for free (we can store luggage from 10:30am, daily), so you can head straight to Spiaggia Grande, the Sentiero degli Dei hiking trail, grab a bite to eat, etc. Please have your passport or ID ready for a swift registration.",
+
+    "assignedRoom": "During check-in we'll assign you a bed or private room best suited to your reservation type and group size. Housekeeping prepares rooms between 10:30 and 15:00, so earlier access cannot always be guaranteed; however, our terrace are available if you'd like to freshen up immediately after arrival.",
+
+    "hostelRooms": "Choose among accommodation categories: 4-bed, 6-bed, 7-bed, and 8-bed dorms.  Whether you want a mixed bed or female-only room.  We have rooms with and without views.  We have a private double with en-suite. All dorms have secure lockers, reading lights, USB charging ports, WiFi, and air-conditioning.",
+
+    "linen": "Each guest receives freshly laundered cotton sheets, a comfy pillow, and a bath towel. For ecological reasons, we change linens every fourth night of extended stays. Additional towels are available for a small fee - just ask at reception.",
+
+    "roomUpgrade": "Occasionally, we surprise lucky guests with a complimentary upgrade, but we do cannot guarantee to do so, nor do we have a rewards scheme or such which promotes an upgrade chance.  Whilst paid upgrade might be possible, during peak summer months, and possibly at other busy times, it might not be possible. We recommend booking the room you want to ensure you get what you are looking for.",
+
+    "keycard": "We issue RFID keycards at check-in, on 10 euros deposit.  The keycard grants 24-hour access to your specific room. Lost cards incur a €10 replacement fee, so please keep yours safe. Remember to return your keycard at check-out, so that we can refund your deposit.",
+
+    "preauthorization": "To secure your spot, we may perform a temporary pre-authorisation on your card equal to the cost of the first night. This hold is released automatically by your bank within a few days, depending on their policies. It is not a debit - simply a guarantee that you intend to enjoy your stay at Hostel Brikette.",
+
+    "checkout": "Check-out time is 10:30am, giving our housekeeping team enough time to prepare rooms for incoming travellers. Before leaving, strip your bed, return your linens and keycard, and pick up any belongings from communal areas or the luggage room. Luggage storage after check-out is free until 15:30pm.",
+
+    "minor": "Under Italian law, anyone under 18 must present a notarised parental consent form if travelling without a legal guardian. Minors are only permitted in private rooms, and may not share mixed dormitories with unrelated adults.",
+
+    "complimentaryService": "If you book directly with Hostel Brikette, we can provide complimentary perks to stretch your budget: a quality breakfast and evening drinks.  All guests may receive complimentary Wi-Fi throughout the property, use of a communal fridge to store snacks, and luggage storage before check-in or after check-out. These services are complimentary, and subject to terms and conditions.",
+
+    "temporaryGuest": "We understand that friends and travel companions staying elsewhere may want to visit you. Temporary guests might be allowed to visit, in the lobby and terrace, between 10:30am and 20:00pm.  We need any temporary visitors to sign-in at reception with valid ID. We may decline to host temporary visitors for any reason, including that we need to ensure the safety and security of guests. Overnight stays without a booking are not permitted.",
+
+    "acceptedPaymentMethods": "We accept Visa and Mastercard credit or debit cards, as well as cash in euros. Corporations and universities organising group trips can pay via bank transfer by prior arrangement. Unfortunately, we do not accept American Express or cryptocurrency at this time.",
+
+    "prepaidNonRefundableBookings": "Pre-paid, non-refundable bookings lock in the lowest available price for your chosen dates. The total amount is charged immediately after reservation and cannot be refunded under any circumstances, even in the event of travel disruptions. This rate is ideal for travellers who are 100 % certain of their itinerary and wish to secure a bed in Positano's only hostel during the busy summer months.",
+
+    "firstComeFirstToChoose": "Dormitory bunks operate on a first-come, first-choose basis, allowing early arrivals the privilege of selecting top or bottom bunks. If you have mobility concerns and require a lower bunk, please note that we cannot guarantee that you will get one.",
+
+    "refundableBookings": "Flexible, refundable bookings offer peace of mind to travellers with uncertain schedules. Pay only a small deposit today and settle the balance on arrival. Cancellations within the permitted window incur no additional charge, and date changes are usually possible subject to availability.",
+
+    "proofOfIdentity": "Italian law requires us to register every guest with local authorities. Acceptable forms of ID include passport (recommended), EU national identity card, valid driver's licence, or military ID. Photocopies are not accepted. Failure to produce ID may result in denied check-in without refund.",
+
+    "seriousDefect": "Your comfort and safety are our top priorities. If you find any defect - from a flickering reading light to a leaky shower - alert reception immediately. We will either fix the issue on the spot or relocate you to another bed or room of equal value.",
+
+    "ota": "While booking directly guarantees the best price and flexibility, we proudly partner with Hostelworld, Booking.com, and other OTAs so you can read thousands of verified traveller reviews before deciding to stay at Hostel Brikette - the top-rated, only hostel on Italy's legendary Amalfi Coast."
+  },
+  "mediaAlt": {
+    "aboutOurHostel": "Colourful cliffside hostel façade on the Amalfi Coast",
+    "communalAreas": "Panoramic terrace overlooking the Amalfi Coast at sunset",
+    "hostelRooms": "Shared dormitory and private ensuite room split view",
+    "linen": "Fresh linens neatly folded on a hostel bunk bed",
+    "checkInRequest": "Traveller checking in at reception with friendly staff",
+    "keycard": "Guest tapping secure keycard on door sensor",
+    "complimentaryService": "Collage of free Wi-Fi, breakfast and luggage storage",
+    "firstComeFirstToChoose": "Happy backpackers choosing bunks in a dorm room"
+  }
+}

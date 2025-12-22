@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "A fordítás folyamatban van."
+  },
+  "linkLabel": "Ischia and Procida: Beyond the Amalfi Coast",
+  "intro": [
+    "Kösd össze Ischia termálfürdőit Procida pasztellszínű kikötőivel, ha frissítő kitérőt keresel az Amalfi-partról."
+  ],
+  "sections": [
+    {
+      "id": "ischia",
+      "title": "Ischia legjava",
+      "body": [
+        "Mártózz meg a Poseidon vagy a Negombo termálparkjaiban; az egész napos belépők 35–45 euró között mozognak.",
+        "Mássz fel az Aragonese kastélyba az öbölre nyíló kilátásért, és fedezd fel Sant'Angelo gyalogos sikátorait."
+      ]
+    },
+    {
+      "id": "procida",
+      "title": "Procida legjava",
+      "body": [
+        "Fotózd le Marina Corricella pasztell házait a Terra Muratáról, és kóstold meg a lingue di bue süteményt.",
+        "Bérelj robogót vagy e-bike-ot, hogy eljuss a félreeső strandokra, például Chiaiolellára."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logisztika és jegyek",
+      "body": [
+        "Indulj korai kompokkal a nápolyi Beverellóról (Ischiáig körülbelül egy óra, Procidáig 35 perc). Egy nap alatt mindkettő megoldható, de kényelmesebb két napra osztani.",
+        "Nyári hétvégéken előre vedd meg a retúrjegyeket; az utolsó hajók Nápoly felé 21:30 körül indulnak."
+      ]
+    }
+  ],
+  "tips": [
+    "Mindig legyen nálad fürdőruha és könnyű törölköző, még ha csak nézelődnél is – városnézés után nehéz ellenállni a termálmedencéknek.",
+    "Tölts egy éjszakát Ischián, így nyugodt estét kaphatsz, és napkeltekor is megnézheted a kastélyt a napközis tömeg előtt."
+  ],
+  "faqs": [
+    {
+      "q": "Be lehet járni mindkét szigetet egy nap alatt?",
+      "a": [
+        "Lehetséges, de kapkodós. Inkább szánj egy napot egy szigetre, vagy maradj éjszakára, hogy naplementét is nézhess kompstressz nélkül."
+      ]
+    },
+    {
+      "q": "Kell előre foglalni a termálparkokba?",
+      "a": [
+        "Főszezonban (június–szeptember) érdemes előre foglalni. Hétköznap csendesebb, és néhány park 16:00 után kedvezőbb árú esti belépőt kínál."
+      ]
+    }
+  ]
+}

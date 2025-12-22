@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Bonnes adresses à petit prix à Positano",
+    "description": "Suggestions de restaurants, snacks et marchés abordables tout en mangeant local."
+  },
+  "linkLabel": "Bonnes adresses à petit prix à Positano",
+  "heroAlt": "Restauration à emporter abordable à Positano",
+  "intro": [
+    "Mangez bien à Positano sans exploser votre budget en alternant classiques à emporter, pique-niques improvisés et boulangeries locales."
+  ],
+  "sections": [
+    {
+      "id": "grab-and-go",
+      "title": "Classiques à emporter",
+      "body": [
+        "Récupérez pizza al taglio, panini ou arancini dans les bars de la Via dei Mulini avant midi pour éviter les files.",
+        "Commandez votre espresso au comptoir (« al banco ») pour profiter du tarif local d’environ 1,20 € au lieu du service à table."
+      ]
+    },
+    {
+      "id": "casual-dining",
+      "title": "Tables détendues",
+      "body": [
+        "Repérez les trattorie en hauteur par rapport à la plage : le coperto y reste modeste et le vin de la maison se commande en carafe.",
+        "Partagez les antipasti, laissez le dessert de côté et demandez de l’eau du robinet (« acqua del rubinetto ») pour tenir votre note."
+      ]
+    },
+    {
+      "id": "picnics",
+      "title": "Pique-niques avec vue",
+      "body": [
+        "Faites le plein de fromages, focaccia et fruits dans les minimarchés, puis installez-vous sur la terrasse de l’auberge ou la section publique de Fornillo.",
+        "Emportez des couverts et serviettes réutilisables pour éviter les déchets et les achats supplémentaires."
+      ]
+    },
+    {
+      "id": "sweet-breaks",
+      "title": "Pauses sucrées",
+      "body": [
+        "Préférez une granita au citron chez les vendeurs ambulants pour une pause rafraîchissante à 3 € plutôt qu’un cocktail onéreux.",
+        "Partagez une part de delizia al limone ou de tiramisù de la boulangerie pour une touche sucrée accessible."
+      ]
+    }
+  ],
+  "tips": [
+    "Demandez le « menu del giorno » ou les formules déjeuner — beaucoup proposent pâtes, eau et café pour moins de 18 €.",
+    "Glissez un contenant pliable pour emporter les restes et les savourer plus tard à l’auberge."
+  ],
+  "recommendationsTitle": "Où manger",
+  "recommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, salades et pâtisseries à emporter pour les repas pressés."
+    },
+    {
+      "name": "Comptoirs de charcuterie locaux",
+      "note": "Commandez planches, focaccia et provisions de pique-nique loin des surcharges du front de mer."
+    },
+    {
+      "name": "Minimarchés et étals de fruits",
+      "note": "Faites le plein de fruits, grandes bouteilles d’eau et snacks pour les pique-niques en terrasse."
+    }
+  ],
+  "gallery": {
+    "title": "Galerie photo",
+    "items": [
+      {
+        "alt": "Panini d’une charcuterie locale",
+        "caption": "Panini et comptoirs traiteur"
+      },
+      {
+        "alt": "Pique-nique avec vue sur Positano",
+        "caption": "Points de vue pour pique-niquer"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "q": "Puis-je remplir mes gourdes gratuitement ?",
+      "a": [
+        "Oui — remplissez vos bouteilles à l’auberge ou aux fontaines publiques comme celle de Chiesa Nuova ; gardez toujours au moins 750 ml (25 oz)."
+      ]
+    },
+    {
+      "q": "Existe-t-il des options végétariennes abordables ?",
+      "a": [
+        "Bien sûr — optez pour des panini caprese, de la parmigiana d’aubergine à la coupe ou des pâtes al pomodoro dans les trattorie décontractées."
+      ]
+    }
+  ],
+  "fallbackIntro": [
+    "Positano regorge de bonnes affaires culinaires si vous savez où chercher."
+  ],
+  "fallbackRecommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, salades et pâtisseries à emporter pour les repas pressés."
+    },
+    {
+      "name": "Comptoirs de charcuterie locaux",
+      "note": "Commandez planches, focaccia et provisions de pique-nique loin des surcharges du front de mer."
+    },
+    {
+      "name": "Minimarchés et étals de fruits",
+      "note": "Faites le plein de fruits, grandes bouteilles d’eau et snacks pour les pique-niques en terrasse."
+    }
+  ],
+  "fallbackGalleryItems": [
+    {
+      "alt": "Panini d’une charcuterie locale",
+      "caption": "Panini et comptoirs traiteur"
+    },
+    {
+      "alt": "Pique-nique avec vue sur Positano",
+      "caption": "Points de vue pour pique-niquer"
+    }
+  ],
+  "fallbackFaqs": [
+    {
+      "q": "Les établissements acceptent-ils la carte ?",
+      "a": [
+        "La plupart oui, mais prévoyez de la petite monnaie pour les kiosques ou les minimums de paiement."
+      ]
+    },
+    {
+      "q": "Les frais d’emballage sont-ils fréquents ?",
+      "a": [
+        "Certains facturent un petit supplément ; apportez un contenant réutilisable pour économiser et limiter les déchets."
+      ]
+    }
+  ]
+}

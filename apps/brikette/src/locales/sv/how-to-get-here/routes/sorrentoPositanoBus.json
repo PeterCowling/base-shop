@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "title": "Sorrento till Positano med buss | Hostel Brikette",
+    "description": "Steg-för-steg från Sorrento till Hostel Brikette med SITA-buss till Positano (Chiesa Nuova): biljetter, tidtabellstips och vägen från hållplatsen till vandrarhemmet."
+  },
+  "hero": {
+    "eyebrow": "Reseguide från Hostel Brikette",
+    "title": "Sorrento till Positano — SITA-buss",
+    "description": "Använd den här guiden när du reser från Sorrento till Positano. Du tar SITA Sud-bussen och går av vid Positano (Chiesa Nuova), den hållplats som ligger närmast vandrarhemmet. Vi går igenom biljettgrunderna, hur du läser tidtabellen och hur du tar dig från hållplatsen till vandrarhemmet."
+  },
+  "tip": {
+    "label": "Tips",
+    "copy": "Behöver du alla transportalternativ? <link>Översikten Så tar du dig hit</link> har färjor, taxiinformation och alternativ."
+  },
+  "sections": {
+    "journey": {
+      "title": "Översikt över resan",
+      "body": "Räkna med 1–1,5 timme under högsäsong. Bussarna går ofta mellan Sorrento och Positano. Köp biljetten innan du kliver ombord och ha den redo för validering."
+    },
+    "tickets": {
+      "title": "Biljetter och validering",
+      "body": "SITA (SITA Sud) kör den här sträckan. Köp biljetter i tidningskiosker eller tabacchi. Visa biljetten för föraren när du kliver ombord och behåll den till resans slut. Validera den före användning där det krävs."
+    },
+    "timetable": {
+      "title": "Läs tidtabellen",
+      "points": [
+        "Raderna i första kolumnen visar varje busshållplats längs linjen.",
+        "Kolumnerna motsvarar schemalagda turer som markeras med bokstäver.",
+        "Reser du måndag till lördag? Använd kolumnerna ”F” och ”G”.",
+        "Reser du på söndag eller helgdag? Använd kolumnerna ”G” och ”H”."
+      ],
+      "footer": "Se den senaste tidtabellen på <link>Positano.com</link>."
+    },
+    "arrival": {
+      "title": "Ankomst till Positano (Chiesa Nuova)",
+      "points": [
+        "Det finns två SITA-hållplatser listade för Positano: ”Sponda” och ”Chiesa Nuova”.",
+        "För vandrarhemmet är ”Positano (Chiesa Nuova)” rätt hållplats på Via G. Marconi.",
+        "Hållplatsen ligger utanför caféet/baret ”Bar Internazionale”."
+      ],
+      "image": {
+        "src": "/img/directions/positano-bus-stop.png",
+        "alt": "SITA-hållplatsen Positano Chiesa Nuova utanför Bar Internazionale",
+        "caption": "Kliv av vid ”Positano — Chiesa Nuova” för den enklaste promenaden till vandrarhemmet."
+      }
+    },
+    "walk": {
+      "title": "Gå till Hostel Brikette",
+      "points": [
+        "Gå drygt 100 meter (330 fot) längs Via G. Marconi.",
+        "Håll utkik efter vår skylt ovanför terrassen på andra våningen till höger.",
+        "Sväng höger uppför trapporna för att nå vandrarhemmets huvudentré."
+      ],
+      "link": "Vill du ha en karta? Följ vår <link>guide Chiesa Nuova → Hostel</link>."
+    }
+  }
+}

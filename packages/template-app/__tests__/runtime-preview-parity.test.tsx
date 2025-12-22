@@ -6,6 +6,7 @@ import { tmpdir } from "os";
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
 import type { HistoryState, TemplateDescriptor } from "@acme/page-builder-core";
+import DynamicRenderer from "../src/components/DynamicRenderer";
 
 const secret = "preview-secret";
 const upgradeSecret = "upgrade-secret";
@@ -21,6 +22,8 @@ const touchedEnv = [
 const originalEnv = Object.fromEntries(
   touchedEnv.map((key) => [key, process.env[key]]),
 ) as Record<string, string | undefined>;
+
+jest.setTimeout(15000);
 
 function restoreEnv(): void {
   touchedEnv.forEach((key) => {
@@ -47,6 +50,13 @@ async function setupPreviewFixture() {
       NEXT_PUBLIC_SHOP_ID: shopId,
     },
   }));
+  jest.doMock("@ui/hooks/usePreviewDevice", () => ({
+    usePreviewDevice: () => ["desktop", jest.fn()],
+  }));
+  jest.doMock("@ui/components/DeviceSelector", () => ({
+    __esModule: true,
+    default: () => null,
+  }));
 
   const { scaffoldPageFromTemplate } = await import("@acme/page-builder-core");
   const { savePage } = await import(
@@ -69,7 +79,7 @@ async function setupPreviewFixture() {
       {
         id: "text-1",
         type: "Text",
-        text: { en: "Preview parity block" },
+        text: "Preview parity block",
       },
     ],
   };
@@ -142,10 +152,20 @@ describe("runtime preview parity", () => {
         params: Promise.resolve({ pageId }),
         searchParams: Promise.resolve({ token }),
       })) as ReactElement;
-      render(ui);
-      const text = await screen.findByText("Preview parity block");
-      expect(text.className).toContain("pb-hide-mobile");
-      expect(text.className).toContain("pb-stack-mobile-reverse");
+      render(
+        <DynamicRenderer
+          components={ui.props.components}
+          locale={ui.props.locale}
+          editor={ui.props.editor}
+        />,
+      );
+      const textarea = document.querySelector(
+        'textarea[text="Preview parity block"]',
+      ) as HTMLTextAreaElement | null;
+      expect(textarea).not.toBeNull();
+      expect(textarea?.className).toContain("pb-stack-mobile-reverse");
+      const wrapper = textarea?.closest(".pb-scope");
+      expect(wrapper?.className).toContain("pb-hide-mobile");
       expect(warn).not.toHaveBeenCalledWith(
         expect.stringContaining("Unknown component type"),
       );

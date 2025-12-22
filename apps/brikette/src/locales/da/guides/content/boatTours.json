@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Bådture i Positano",
+    "description": "Private, delte og solnedgangsture — hvad de koster, og hvordan du vælger den rette."
+  },
+  "linkLabel": "Bådture i Positano",
+  "intro": [
+    "Bådture lader dig følge Amalfikystens klipper uden bilkøer; book i god tid i højsæsonen og hav en vejrplan B klar."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Gruppeture og delte både",
+      "body": [
+        "3-timers delte cruises afgår fra Positano om formiddagen og inkluderer badestop; regn med €85–€120 pr. person i juli–august.",
+        "Medbring badesko og et let lag — brisen på havet er køligere end på terrasserne."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Private chartere",
+      "body": [
+        "Skippere tager €550–€850 for halvdagsture i gozzo (op til 6 personer) plus brændstof; bekræft hvad der er inkluderet, fx prosecco eller håndklæder.",
+        "Forhandl starttid ved solopgang eller sen eftermiddag, hvis du vil have blødere lys og færre færgevåger."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Vejr og plan B",
+      "body": [
+        "Operatører aflyser, når vinden når styrke 4 og opefter; hav en bus- eller strandplan klar, så dagen stadig bliver afslappet.",
+        "Søen kan være urolig selv om sommeren — pak søsygearmbånd, hvis du er følsom."
+      ]
+    }
+  ],
+  "tips": [
+    "Mød op 20 minutter før afgang for at afregne og få de udleverede dæk-sko på.",
+    "Medbring en vandtæt pose (drybag) til telefoner og en 1 L vandflaske; skygge ombord er begrænset."
+  ],
+  "faqs": [
+    {
+      "q": "Skal jeg forudbestille?",
+      "a": [
+        "Ja i maj–september — bådene bliver ofte udsolgt flere dage i forvejen, især solnedgangstider."
+      ]
+    },
+    {
+      "q": "Får vi håndklæder?",
+      "a": [
+        "Gruppeture giver normalt ét pr. person; private skippere varierer, så medbring et hurtigtørrende håndklæde for en sikkerheds skyld."
+      ]
+    }
+  ],
+  "galleryHeading": "Fotogalleri",
+  "gallery": {
+    "primaryAlt": "Båd der sejler langs Positanos kyst",
+    "primaryCaption": "Sejlads langs kysten",
+    "secondaryAlt": "Badestop ved klipperne i Positano",
+    "secondaryCaption": "Badestop"
+  }
+}

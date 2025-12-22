@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Amalfi to Positano by Ferry | Hostel Brikette",
+    "description": "Amalfi to Positano by ferry: times, tickets, where to board in Amalfi, and how to reach Hostel Brikette from the dock with minimal stairs."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette Travel Guide",
+    "title": "Amalfi to Positano — Ferry",
+    "description": "Follow these steps to travel from Amalfi to Positano by ferry. You’ll find tips on tickets, where to board in Amalfi, what to expect on arrival, and how to reach Hostel Brikette from the dock with as few stairs as possible."
+  },
+  "tip": {
+    "label": "Tip",
+    "body": {
+      "before": "Need other transport options? Open the ",
+      "linkLabel": "How to Get Here overview",
+      "after": " for buses, mixed routes, and airport transfers."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Journey overview",
+      "points": [
+        "Frequent seasonal ferries link Amalfi and Positano with scenic coastal views.",
+        "Travelmar operates regular services; services may vary by season and weather.",
+        "Always check live schedules on the day of travel."
+      ]
+    },
+    "tickets": {
+      "title": "Tickets and schedules",
+      "intro": {
+        "before": "Check latest times and prices on ",
+        "travelmarLabel": "Travelmar",
+        "between": " and ",
+        "positanoLabel": "Positano.com – Ferry schedules",
+        "after": "."
+      },
+      "points": [
+        "Buy tickets online in advance during peak months.",
+        "Arrive 15–20 minutes early for boarding queues.",
+        "Keep your ticket or QR code accessible for staff checks."
+      ]
+    },
+    "amalfiBoarding": {
+      "title": "Where to board in Amalfi",
+      "points": [
+        "Most departures leave from Amalfi’s waterfront piers near Piazza Flavio Gioia.",
+        "Look for Travelmar desks and signage along the promenade.",
+        "Confirm the correct pier on your ticket; staff can direct you if unsure."
+      ]
+    },
+    "positanoArrival": {
+      "title": "Arriving in Positano",
+      "points": [
+        "Boats arrive at Positano’s main dock on Spiaggia Grande.",
+        "With luggage, consider the porter service or Interno Positano bus to reduce stairs.",
+        "Walking uphill with heavy bags can be strenuous in summer heat."
+      ],
+      "cta": {
+        "before": "For a step-by-step route from the dock to our door, read the ",
+        "linkLabel": "Ferry dock → Hostel Brikette, with luggage guide",
+        "after": "."
+      }
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "title": "تحقق دائمًا من تفاصيل المواصلات",
+  "items": {
+    "buses": "الحافلات: تحقق من الجداول الرسمية لشركة SITA Sud — <sitaLink>sitasudtrasporti.it</sitaLink>.",
+    "ferries": "العبّارات: تنشر الشركات الجداول والمسارات الموسمية (تعتمد على الطقس). راجع <travelmarLink>Travelmar</travelmarLink> و<nlgLink>NLG</nlgLink>.",
+    "airlink": "تصل عبر مطار ساليرنو كوستا دي أمالفي (QSR)؟ استخدم حافلة Airlink إلى ساليرنو — <airportLink>aeroportodisalerno.it</airportLink> و<airlinkLink>FS Busitalia Airlink</airlinkLink>.",
+    "driving": "القيادة: طريق SS163 يطبق نظام تبادل لوحات المركبات (أبريل–أكتوبر) ومناطق دخول محدودة؛ تختلف تكاليف المواقف حسب الموسم والموقع. تحقق من الإشعارات الرسمية.",
+    "premium": "الخدمات المميزة أو الموسمية: تعمل خدمات أوبر بوت ورحلات الهليكوبتر بجداول صيفية محدودة — أكّد التوفر الحالي."
+  },
+  "srLabel": "تنبيه المواصلات"
+}

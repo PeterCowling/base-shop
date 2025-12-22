@@ -1,0 +1,128 @@
+{
+  "seo": {
+    "title": "Positano en temporada baja: estancias largas",
+    "description": "Conectividad, cierres y vida diaria durante los meses tranquilos."
+  },
+  "linkLabel": "Estancias largas en temporada baja",
+  "intro": [
+    "Vivir varias semanas en Positano entre noviembre y marzo significa ritmos locales, precios más bajos y logística extra.",
+    "Planifica rutinas flexibles para compras, trabajo remoto y transporte antes de que lleguen los temporales."
+  ],
+  "sections": [
+    {
+      "id": "pros",
+      "title": "Ventajas claras",
+      "body": [
+        "Alojamientos con 20–40 % de descuento: negocia limpieza y suministros incluidos si te quedas más de dos semanas.",
+        "Calles y senderos casi vacíos: ideal para trabajar con calma y explorar en horas de luz."
+      ]
+    },
+    {
+      "id": "housing",
+      "title": "Alojamiento y confort",
+      "body": [
+        "Elige lugares con calefacción fiable, deshumidificador y cocina equipada; la humedad sube con la lluvia y el mar.",
+        "Deja por escrito cambio de sábanas, limpiezas extra y posibles recargos por consumo eléctrico."
+      ]
+    },
+    {
+      "id": "routine",
+      "title": "Rutina diaria",
+      "body": [
+        "Supermercados y hornos cierran algún día a la semana: haz compras grandes en Sorrento/Salerno y completa con tiendas locales.",
+        "Para trabajar, combina sala común del hostel y cafés con Wi-Fi estable; consume algo cada 60–90 minutos para mantener la cortesía."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Clima y desplazamientos",
+      "body": [
+        "La lluvia y el viento fuerte paran ferris: ten abonos de bus vigentes y horarios actualizados para volver aunque el mar cierre.",
+        "Anochece sobre las 16:45 en diciembre: programa trekking o recados antes de media tarde y lleva linterna frontal."
+      ]
+    }
+  ],
+  "tips": [
+    "Planifica escapadas quincenales a ciudades grandes para reabastecerte y cambiar de ambiente; enlaza siempre un plan B por si llueve.",
+    "Descarga series, cursos y playlists offline: durante las tormentas la conexión móvil puede ralentizarse."
+  ],
+  "faqs": [
+    {
+      "q": "¿Los supermercados abren todo el año?",
+      "a": [
+        "Sí, pero con horarios reducidos y cierres algunas tardes: revisa los carteles actualizados y haz despensa antes de puentes largos."
+      ]
+    },
+    {
+      "q": "¿Puedo trabajar en remoto sin problemas de red?",
+      "a": [
+        "Pide router dedicado o una SIM extra como respaldo; la fibra no llega a todas las casas y los temporales pueden cortar el ADSL unas horas."
+      ]
+    }
+  ],
+  "fallback": {
+    "tocTitle": "En esta página",
+    "intro": [],
+    "toc": [
+      {
+        "href": "#connectivity",
+        "label": "Conectividad"
+      },
+      {
+        "href": "#groceries",
+        "label": "Supermercados y básicos"
+      },
+      {
+        "href": "#transport",
+        "label": "Transporte en temporada baja"
+      },
+      {
+        "href": "#weather",
+        "label": "Clima y equipaje"
+      },
+      {
+        "href": "#faqs",
+        "label": "Preguntas frecuentes"
+      }
+    ],
+    "sections": [
+      {
+        "id": "connectivity",
+        "title": "Conectividad",
+        "body": [
+          "Combina cafeterías con Wi-Fi fiable con eSIM de respaldo; revisa los mapas de cobertura de TIM/Vodafone/WindTre."
+        ]
+      },
+      {
+        "id": "groceries",
+        "title": "Supermercados y básicos",
+        "body": [
+          "Fuera de temporada los horarios varían; abastece temprano y entre semana."
+        ]
+      },
+      {
+        "id": "transport",
+        "title": "Transporte en temporada baja",
+        "body": [
+          "Los ferris reducen frecuencia; apóyate en los autobuses y planifica días de lluvia o viento."
+        ]
+      },
+      {
+        "id": "weather",
+        "title": "Clima y equipaje",
+        "body": [
+          "Lleva capas y protección para la lluvia; buen calzado para escaleras mojadas."
+        ]
+      }
+    ],
+    "faqsTitle": "Preguntas frecuentes",
+    "faqs": [
+      {
+        "q": "¿Hay algo abierto en invierno?",
+        "a": [
+          "Sí, pero con menos opciones. Céntrate en supermercados, rutas de senderismo, miradores y pueblos cercanos."
+        ]
+      }
+    ]
+  }
+}

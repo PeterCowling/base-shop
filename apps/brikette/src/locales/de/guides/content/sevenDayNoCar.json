@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "7-Tage-Itinerar Amalfiküste (ohne Auto)",
+    "description": "Eine Woche entlang der Küste mit realistischem Tempo und Verkehrstipps."
+  },
+  "linkLabel": "7-Tage-Itinerar an der Amalfiküste (ohne Auto)",
+  "intro": [
+    "Sieben Tage ohne Auto bringen eine gute Balance zwischen klassischen Sehenswürdigkeiten und ruhigen Dorfmomenten – nutze Fähren für Komfort und Busse für ein gutes Preis-Leistungs-Verhältnis."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "Tage 1–2 – in Positano ankommen",
+      "body": [
+        "Reise über Neapel oder Salerno an, erkunde Spiaggia Grande und Fornillo und gewöhne dich mit kurzen Spaziergängen zu Aussichtspunkten an die vielen Stufen.",
+        "Buche für den zweiten Abend ein geteiltes Boot oder einen Kochkurs, damit die Woche gleich mit einem Highlight startet."
+      ]
+    },
+    {
+      "id": "day3",
+      "title": "Tag 3 – Capri-Runde",
+      "body": [
+        "Nimm die Fähre um 08:30 Uhr nach Capri, konzentriere dich vormittags auf Anacapri und fahre vor Sonnenuntergang zurück, um Stress beim letzten Boot zu vermeiden.",
+        "Halte einen Vorrat an Bustickets bereit, falls die Fähren ausfallen; alternative Routen über Sorrent dauern rund 90 Minuten von Tür zu Tür."
+      ]
+    },
+    {
+      "id": "days4-5",
+      "title": "Tage 4–5 – Amalfi & Ravello plus Wandern",
+      "body": [
+        "Verbringe den vierten Tag zwischen Amalfi-Stadt und den Gärten von Ravello und bleib länger, wenn dich ein Konzert lockt.",
+        "Widme den fünften Tag dem Götterpfad oder dem Montepertuso-Trail; starte früh, nimm 1,5 L Wasser mit und fahr mit dem Bus zurück."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "Tage 6–7 – Kultur & Puffer",
+      "body": [
+        "Nimm morgens den Zug nach Pompeji oder Salerno für Museen und kehre danach für einen entspannten letzten Abend nach Positano zurück.",
+        "Halte den letzten Tag als Puffer für Wetter oder pure Erholung frei – wiederhole einen Lieblingsstrand oder schlendere durch Kunsthandwerksläden."
+      ]
+    }
+  ],
+  "tips": [
+    "Wäsche in der Wochenmitte hält das Gepäck leicht; nutze die Selbstbedienungswaschsalons nahe Chiesa Nuova.",
+    "Verfolge Fähr-Updates bei windigem Wetter auf den Instagram-Kanälen der Betreiber."
+  ],
+  "faqs": [
+    {
+      "q": "Sollte ich in mehr als einer Stadt übernachten?",
+      "a": [
+        "Bleib in Positano, um seltener umziehen zu müssen. Ergänze nur eine Nacht in Neapel oder Salerno, wenn du sehr frühe Züge oder Flüge hast."
+      ]
+    },
+    {
+      "q": "Muss ich alles im Voraus buchen?",
+      "a": [
+        "Reserviere Fähren, Bootstouren und die großen Restaurants. Lass Wanderungen, Strandtage und lokale Busse flexibel, damit du dich dem Wetter anpassen kannst."
+      ]
+    }
+  ]
+}

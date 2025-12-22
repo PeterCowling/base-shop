@@ -1,0 +1,8 @@
+{
+  "title": "Unser Standort",
+  "inputLabel": "Geben Sie Ihren aktuellen Standort ein:",
+  "inputPlaceholder": "z. B. Neapel, Italien oder vollständige Adresse",
+  "getDirections": "Route berechnen",
+  "justShowMap": "Nur Karte anzeigen",
+  "close": "Modal schließen"
+}

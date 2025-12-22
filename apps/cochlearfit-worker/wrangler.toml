@@ -1,0 +1,19 @@
+name = "cochlearfit-api"
+main = "src/index.ts"
+compatibility_date = "2025-06-20"
+
+[vars]
+PAGES_ORIGIN = "http://localhost:3011"
+SITE_URL = "http://localhost:3011"
+# Override these in production via the Cloudflare dashboard or Wrangler secrets.
+INVENTORY_AUTHORITY_URL = "http://localhost:3000"
+INVENTORY_AUTHORITY_TOKEN = "dev-inventory-token"
+
+[env.production.vars]
+INVENTORY_AUTHORITY_URL = "https://inventory-authority.example"
+INVENTORY_AUTHORITY_TOKEN = "REPLACE_ME"
+
+[[kv_namespaces]]
+binding = "ORDERS_KV"
+id = "00000000000000000000000000000000"
+preview_id = "11111111111111111111111111111111"

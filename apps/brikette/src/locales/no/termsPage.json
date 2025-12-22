@@ -1,0 +1,351 @@
+{
+  "meta": {
+    "title": "Romreservasjoner — Vilkår og Betingelser | Hostel Brikette",
+    "description": "Offisielle vilkår for romreservasjoner: reservasjon, avbestilling, inn-/utsjekk, betalinger, aktsomhetsplikt og policyer."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Romreservasjoner",
+    "pageSubtitle": "Vilkår og Betingelser"
+  },
+  "toc": {
+    "title": "Innhold",
+    "aria": "Innholdsfortegnelse"
+  },
+  "footer": {
+    "end": "Slutt på dokumentet.",
+    "backToTop": "Til toppen"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Definisjoner og tolkning",
+      "body": [
+        "1.1 ‘Vilkår og betingelser’ — vilkårene fastsatt i dette dokumentet.",
+        "1.2 ‘Vandrerhjemmet’, ‘vi’, ‘oss’ — Skylar SRL, registrert adresse: Via Guglielmo Marconi 358, 84017 Positano (SA), Italia.",
+        "1.3 ‘Du’, ‘din’, ‘gjest’ — enhver som sender Innmeldingsforespørsel for Rom, er Offisiell vandrerhjemsgjest, er Midlertidig gjest, er ansatt, arrangør, gruppeleder eller annen tredjepart.",
+        "1.4 ‘Innmeldingsforespørsel for Rom’ — forespørsel om opphold ved Vandrerhjemmet i henhold til disse vilkårene; sendt av deg eller din OTA. Kun Vandrerhjemmet og autoriserte OTA-er kan selge senger; uautorisert videresalg kan medføre avslag eller annullering av bekreftede reservasjoner.",
+        "1.5 ‘Fellesområder’ — områder tilgjengelige for Offisielle gjester og Midlertidige gjester (inngang/lobby, felles terrasse, felles bad).",
+        "1.6 ‘Kortholder’ — eier av kredittkortet oppgitt i forespørselen.",
+        "1.7 ‘Mottilbud’ — variant av forespørselen; første fremsettes av Vandrerhjemmet, flere kan følge.",
+        "1.8 ‘Bekreftet romreservasjon’ — rettslig bindende avtale når Vandrerhjemmet aksepterer forespørselen eller du aksepterer mottilbud; omfatter tjenester, fasiliteter og disse vilkårene.",
+        "1.9 ‘Manglende oppmøte (No Show)’ — status når en eller flere berettigede gjester ikke sjekker inn før utløpet av Offisiell innsjekk første dag.",
+        "1.10 ‘Gebyr for manglende oppmøte’ — gebyr når No Show oppstår eller når avbestilling skjer utenfor Frist for avbestilling; høyeste av ‘første natts pris’ eller ‘ikke-refunderbart depositum’.",
+        "1.11 ‘Avbestillingsforespørsel’ — forespørsel om å avbestille bekreftet romreservasjon.",
+        "1.12 ‘Frist for avbestilling’ — påkrevd varsel i timer; angis frist i dager omregnes dette (f.eks. 3 dager = 72 timer).",
+        "1.13 ‘Administrasjonsgebyr ved avbestilling’ — gebyr for behandling av avbestillingsforespørselen, i henhold til avtalt sats.",
+        "1.14 ‘Vandrerhjemmets offisielle e‑postadresse’ — hostelpositano@gmail.com.",
+        "1.15 ‘Bekreftet avbestilling’ — skriftlig bekreftelse sendt fra offisiell e‑post om at avbestilling er fullført.",
+        "1.16 ‘Forespørsel om endring’ — anmodning om å endre en bekreftet reservasjon (delvis avbestilling eller datoendring).",
+        "1.17 ‘Bekreftet endring’ — skriftlig bekreftelse om at endringen er utført.",
+        "1.18 ‘Angitt e‑postadresse’ — adressen du oppgir i forespørselen; brukes for all korrespondanse. Du er ansvarlig for riktighet og oppfølging.",
+        "1.19 ‘Forespørsel om forlengelse’ — anmodning om å forlenge bekreftet reservasjon.",
+        "1.20 ‘Bekreftet forlengelse’ — skriftlig bekreftelse om at forlengelsen er utført.",
+        "1.21 ‘Innsjekkingsforespørsel’ — anmodning om å starte innsjekk ved ankomst.",
+        "1.22 ‘Offisiell innsjekk’ — 15:00–22:00 på ankomstdagen.",
+        "1.23 ‘Offisiell vandrerhjemsgjest’ — person som har fullført innsjekkingsprosessen.",
+        "1.24 ‘Tildelt rom’ — det rommet som er tildelt den offisielle gjesten (tilgang kun dit).",
+        "1.25 ‘Vandrerhjemmets rom’ — private rom og sovesaler kun for offisielle gjester.",
+        "1.26 ‘Sengetøy’ — sett ved innsjekk (putetrekk, laken, underlaken, håndkle).",
+        "1.27 ‘Romoppgradering’ — tildeling av et dyrere rom enn det bestilte (kun pris legges til grunn).",
+        "1.28 ‘Nøkkelkort (Keycard)’ — plastkort med depositum, kodet for å åpne døren til tildelt rom.",
+        "1.29 ‘Forhåndsautorisasjon’ — midlertidig reservasjon av beløp på kortholders kort uten umiddelbar belastning.",
+        "1.30 ‘Utsjekk’ — skjer kun når sengetøy og nøkkelkort er returnert og alle eiendeler er fjernet fra rommet.",
+        "1.31 ‘Mindreårig’ — person under 18 år i Italia.",
+        "1.32 ‘Kostnadsfri tjeneste’ — tjeneste utenfor reservasjonen som kan gis vederlagsfritt (f.eks. frokost, drikke, Wi‑Fi, bagasjeoppbevaring, kjøleoppbevaring), med egne vilkår.",
+        "1.33 ‘Midlertidig gjest’ — individ med tilgang kun til fellesområder etter ID‑kontroll; status gis utelukkende av personalet.",
+        "1.34 ‘Godkjente betalingsmetoder’ — Visa/MasterCard; bankoverføring kun fra foretak. AmEx/PayPal m.fl. aksepteres ikke. Kontant i euro.",
+        "1.35 ‘Forhåndsbetalte, ikke‑refunderbare reservasjoner’ — rabattert mot full forhåndsbetaling; ingen refusjon i etterkant.",
+        "1.36 ‘Først til mølla velger seng’ — ingen faste senger i sovesal; velg blant ledige, og bytt ved ny ledighet.",
+        "1.37 ‘Reservasjonstype’ — forhåndsbetalt/ikke‑refunderbar eller refunderbar.",
+        "1.38 ‘Refunderbare reservasjoner’ — standardtakst med fleksible vilkår (dato/varighet kan justeres; mer imøtekommende avbestillingsregler pr. plan).",
+        "1.39 ‘ID‑dokument’ — pass, nasjonalt ID, førerkort eller militært ID (kun original).",
+        "1.40 ‘Alvorlig mangel’ — mangel som vesentlig påvirker oppholdet (f.eks. ødelagt seng, utrygg temperatur, ingen tilgang, vannstans).",
+        "1.41 ‘OTA’ — autorisert nettbasert reisebyrå (f.eks. Hostelworld.com, Booking.com)."
+      ]
+    },
+    "s2": {
+      "title": "2. Forespørsler om reservasjon",
+      "body": [
+        "2.1 Innsending — kun skriftlig via OTA eller nettsted; samtaler på stedet er kun veiledende. Innsending innebærer aksept av vilkårene og bekreftelse av riktige opplysninger.",
+        "2.2 Behandling — starter etter mottatt depositum/forhåndsautorisasjon/betaling. Kortholder må verifiseres; ved avvik kreves skriftlig samtykke til belastning til offisiell e‑post; ellers avslag.",
+        "2.3 Avslag — Vandrerhjemmet kan avslå hvilken som helst forespørsel uten grunn.",
+        "2.4 Omfang — maks. 7 netter og grupper opptil 5 personer; over dette behandles som flere reservasjoner.",
+        "2.5 Mottilbud — ved manglende tilgjengelighet sender vi alternativer til angitt e‑post; aksept utløser forsøk på betaling/forhåndsautorisasjon.",
+        "2.6 Forhåndsbetalt/ikke‑refunderbar — uttrykkelig aksept av vilkår kan kreves; manglende aksept = annullering. Inntil tre betalingsforsøk.",
+        "2.7 Bekreftelse — reservasjonen er bekreftet først når bekreftelse sendes til angitt e‑post (referanse, ankomstdato, varighet m.m.). Du skal kontrollere opplysningene og melde feil til offisiell e‑post.",
+        "2.9 Antall gjester — 1 pr. enkeltseng; inntil 2 pr. dobbeltseng; leiligheter etter annonsert kapasitet. Overbelegg ikke tillatt.",
+        "2.9 Omfang av fasiliteter — inkluderer sengetøy og nøkkelkort per person, tilgang til dusjer og varmtvann i oppgitte tider, samt fellesområder. Øvrige tjenester er kostnadsfrie med egne vilkår.",
+        "2.10 Økonomisk ansvar — Kortholder er ansvarlig for reservasjonen og ekstra kostnader (skader, ekstra rengjøring, gebyrer, brudd på utsjekkspolicy osv.).",
+        "2.11 Rom-/sengfordeling — hver person tildeles et rom. I sovesal gjelder først til mølla; grupper kan splittes.",
+        "2.12 Oppgraderinger — kan gis mot betaling eller av lagerhensyn; ved manglende betaling kan tilbakeføring til opprinnelig kategori skje."
+      ]
+    },
+    "s3": {
+      "title": "3. Alder og tilgjengelighet",
+      "body": [
+        "3.1 Tilgjengelighet — kontakt oss før bestilling ved særskilte behov. Bygget har trapper og ingen portertjeneste. Støyende soveutstyr kun i private rom.",
+        "3.2 Selvstendighet — vi yter ikke løpende omsorg; hvis du ikke kan klare deg selvstendig, annulleres reservasjonen.",
+        "3.3 Mindreårige — i Italia kan mindreårige ikke reise alene. 16 år og yngre: bare private rom med verge 18+. 17 år: sovesal kun med ledsager 18+ i samme rom og dokumentert vergeforhold; ellers annullering."
+      ]
+    },
+    "s4": {
+      "title": "4. Tredjepartsprosesser og betalinger",
+      "body": [
+        "Ved bestilling via tredjeparts betalingsbehandler (OTA) fullføres betaling på deres plattform iht. deres vilkår.",
+        "Betalinger til tredjepart reguleres av din avtale med dem; Vandrerhjemmet kontrollerer ikke disse prosessene.",
+        "Vi mottar ingen andel av disse betalingene og kan ikke holdes ansvarlig for slike reservasjoner.",
+        "Du må forsikre deg om at betalingen var vellykket og at reservasjonen er bekreftet før ankomst.",
+        "Spørsmål om betaling via OTA rettes direkte til leverandøren."
+      ]
+    },
+    "s5": {
+      "title": "5. Depositum og forhåndsautorisasjoner",
+      "body": [
+        "5.1 Depositum — kan kreves for å sikre reservasjonen. Beløp varierer etter type; ikke‑refunderbare forhåndsbetalte krever 100%. Alle innbetalte depositum er ikke refunderbare; manglende innbetaling = avslag.",
+        "5.2 Forhåndsautorisasjon — kan kreves iht. avtalt pris/vilkår; hvis ikke mulig, avslås forespørselen."
+      ]
+    },
+    "s6": {
+      "title": "6. Gebyr ved manglende oppmøte",
+      "body": [
+        "Dersom du ikke møter opp første dag, blir reservasjonen markert som No Show og gebyr påløper.",
+        "Gjelder per bekreftet reservasjon; frister kan variere mellom reservasjoner."
+      ]
+    },
+    "s7": {
+      "title": "7. Avbestillinger",
+      "body": [
+        "Kun skriftlige avbestillinger sendt til offisiell e‑post godtas.",
+        "For fristvurdering regnes fra mottakstidspunkt til 00:01 på ankomstdagen.",
+        "Administrasjonsgebyr kan gjelde (standard 15% av reservasjonspris fratrukket tredjepartsprovisjoner).",
+        "Ved godkjenning sendes bekreftelse pr. e‑post; inntil da er reservasjonen i kraft.",
+        "Reservasjon kan annulleres uten forespørsel dersom: du ikke sjekker inn før resepsjonen stenger første dag; du sjekker ut før tiden; du bryter husregler.",
+        "Ny reservasjon etter annullering avhenger av tilgjengelighet.",
+        "Avbestilling etter frist behandles som No Show og kan medføre gebyr."
+      ]
+    },
+    "s8": {
+      "title": "8. Endring av bekreftede reservasjoner",
+      "body": [
+        "Vi erstatter bekreftede reservasjoner med nye i stedet for å endre dem.",
+        "Send forespørsel om endring innen frist til offisiell e‑post; underlagt tilgjengelighet og øvrige vilkår.",
+        "Endring av varighet regnes både som endringsforespørsel og som avbestillings‑ eller forlengelsesforespørsel.",
+        "Forlengelser behandles som nye reservasjoner.",
+        "Tidlig avreise uten bekreftet avbestilling anses som oppfyllelse av opprinnelig reservasjon.",
+        "Alle endringer er avhengig av tilgjengelighet."
+      ]
+    },
+    "s9": {
+      "title": "9. Ikke‑overførbarhet",
+      "body": [
+        "Reservasjonsforespørsler og bekreftede reservasjoner er strengt tatt ikke overførbare, helt eller delvis.",
+        "Hver reservasjon må forbli i opprinnelig bestillers navn gjennom hele perioden.",
+        "Forsøk på innsjekk med overført reservasjon medfører økonomisk ansvar og kan annulleres umiddelbart.",
+        "Forsøk på å endre tildelt gjestens navn kan også medføre annullering."
+      ]
+    },
+    "s10": {
+      "title": "10. Forhåndsbetalte, ikke‑refunderbare",
+      "body": [
+        "Full betaling kreves ved bestilling; ved mislykket betaling annulleres forespørselen.",
+        "Ingen refusjon ved No Show.",
+        "Forlengelser vurderes i henhold til disse vilkårene."
+      ]
+    },
+    "s11": {
+      "title": "11. Ankomst",
+      "body": [
+        "11.1 Innsjekkingsforespørsel — alle gjester skal legitimere seg og starte innsjekk ved ankomst.",
+        "11.2 Tidlig ankomst — før 10:30 på ankomstdagen er det ikke adgang.",
+        "11.3 Ankomst 10:30–15:00 — etter skjønn kan du bli Midlertidig gjest; bagasjeoppbevaring kan tilbys på egne vilkår.",
+        "11.3 Innsjekkingsvindu — ordinær innsjekk skjer i Offisiell innsjekk (15:00–22:00).",
+        "11.5 Sen ankomst — resepsjonen er stengt etter 22:00; vi kan sende selvbetjeningsinstruksjoner. Mottak/etterlevelse/korrekte kontaktopplysninger er ditt ansvar."
+      ]
+    },
+    "s12": {
+      "title": "12. Innsjekk",
+      "body": [
+        "12.1 Nødvendighet — hvis vi ikke kan fullføre innsjekk, avslås den og reservasjonen annulleres (No Show).",
+        "12.2 ID — gyldig originaldokument kreves per gjest (fornavn, etternavn, fødested, statsborgerskap, fødselsdato, ID‑nummer). Manglende fremvisning innen 22:00 dag 1 = No Show.",
+        "12.2 Restbeløp — alt utestående må betales med godkjent metode før innsjekk fullføres; ellers No Show.",
+        "12.3 Depositum for nøkkelkort/sengetøy — 10 € kontant ved innsjekk; refunderes ved utsjekk mot retur."
+      ]
+    },
+    "s13": {
+      "title": "13. Sikringsbeløp",
+      "body": [
+        "Vi kan holde et beløp tilsvarende én natt per person i oppholdsperioden (forhåndsautorisasjon eller kontant).",
+        "Beløpet kan brukes til gebyrer/bøter/forlengelser iht. policy.",
+        "Hvis forhåndsautorisasjon ikke er mulig, kan annet gruppemedlem stille beløpet eller kontant betales; ellers annullering."
+      ]
+    },
+    "s14": {
+      "title": "14. Aktsomhetsplikt",
+      "body": [
+        "Gjest skal respektere andre, unngå skade og følge husregler. Brudd kan medføre umiddelbar annullering (No Show‑policy) og/eller bortvisning uten refusjon.",
+        "Kostnader/bøter som følge av dine handlinger kan kreves inn; lovbrudd rapporteres ved behov.",
+        "Brudd kan føre til umiddelbar annullering (No Show‑policy kan gjelde) og/eller bortvisning uten refusjon."
+      ]
+    },
+    "s15": {
+      "title": "15. Mangler og skader",
+      "body": [
+        "15.1 Meld mangler umiddelbart.",
+        "15.2 Tiltak prioriteres etter påvirkning på oppholdet.",
+        "15.3 Alvorlige mangler — vi forsøker utbedring; hvis ikke mulig, ordnes alternativt opphold eller forholdsmessig refusjon etter prisskjev/igjenstående netter.",
+        "15.4 Ikke‑meldte mangler — kan omfattes av skade-/taps‑policy.",
+        "15.5 Skader — vi kan forhåndsautorisere eller kreve depositum. Refusjon netto etter kostnader. Overstigende kostnader (materialer/arbeid/adm.) belastes. Overtid: Direktør 50 €/t, Manager 35 €/t, Personale 25 €/t."
+      ]
+    },
+    "s16": {
+      "title": "16. Veggedyr (bed bugs)",
+      "body": [
+        "Vi forebygger og fjerner angrep så raskt som mulig. Ved angrep kan du holdes ansvarlig for tap, inkl. bortfalt inntekt, krav fra andre gjester og rengjøring/skadedyrbekjempelse.",
+        "Dersom du nylig har bodd på sted med veggedyr, informer ved innsjekk og desinfiser eiendeler.",
+        "Kontroller eiendeler før innsjekk og meld mistanke straks."
+      ]
+    },
+    "s17": {
+      "title": "17. Personlige eiendeler og sikkerhet",
+      "body": [
+        "Gjest er selv ansvarlig for egne eiendeler. Vandrerhjemmet er ikke ansvarlig for tap/skade/tyveri med mindre loven krever det.",
+        "Skap/safe kan tilbys; ansvar forblir hos gjesten.",
+        "Gjenstander som ikke hentes, kastes etter 30 dager fra utsjekk.",
+        "Farlige/ulovlige gjenstander eller gjenstander som strider mot skjenkebevilling er forbudt og kan beslaglegges eller rapporteres."
+      ]
+    },
+    "s18": {
+      "title": "18. Identifikasjon og sikkerhetstiltak",
+      "body": [
+        "Av sikkerhetshensyn skal gjester bære utlevert sikkerhetsarmbånd og fremvise gyldig ID på forespørsel.",
+        "Manglende etterlevelse kan medføre bortvisning uten refusjon.",
+        "Tap/skade meldes umiddelbart; byttegebyr kan tilkomme."
+      ]
+    },
+    "s19": {
+      "title": "19. CCTV-overvåkning",
+      "body": [
+        "Kameraer finnes i fellesområder for gjesters og eiendommens sikkerhet.",
+        "Opptak lagres sikkert, kun tilgjengelig for autorisert ledelse, og kan deles med myndigheter ved behov.",
+        "CCTV garanterer ikke full sikkerhet; ved å akseptere vilkårene samtykker du til slik bruk."
+      ]
+    },
+    "s20": {
+      "title": "20. Midlertidige gjester",
+      "body": [
+        "Status gis etter Vandrerhjemmets eget skjønn.",
+        "Midlertidige gjester har kun tilgang til fellesområder; rom er forbudt.",
+        "Offisielle gjester kan ikke tildele status til andre.",
+        "Forespørsler kan aksepteres 09:00–23:00 på åpningsdager.",
+        "Vi forbeholder oss retten til å avslå/trekke status når som helst."
+      ]
+    },
+    "s21": {
+      "title": "21. Uregistrerte personer",
+      "body": [
+        "Lov krever registrering av alle boende (inkludert midlertidige gjester).",
+        "Oppdages uregistrert person på rom, kan standardpris pr. person samt administrasjonsgebyr lik to ganger standardpris kreves.",
+        "Uregistrert person må sjekke inn og følge rutiner; ved manglende etterlevelse kan politiet varsles.",
+        "Unnlatelse av å varsle om uregistrert person kan medføre annullering (No Show‑policy)."
+      ]
+    },
+    "s22": {
+      "title": "22. Utsjekk",
+      "body": [
+        "Offisiell utsjekk er 07:30–10:30.",
+        "Etter utsjekk er det ikke tillatt å gå inn på rommet eller etterlate eiendeler.",
+        "Følg ‘Post Checkout’‑vilkårene i dette dokumentet."
+      ]
+    },
+    "s23": {
+      "title": "23. Tidlig utsjekk",
+      "body": [
+        "Ved avreise før 07:30, kontakt resepsjonen kvelden før for tidlig utsjekk og kontant refusjon av nøkkelkort‑depositum.",
+        "Manglende retur av nøkkelkort medfører tap av depositum; refusjon kun kontant, personlig.",
+        "Refusjon via overføring o.l. gis ikke."
+      ]
+    },
+    "s24": {
+      "title": "24. Sen utsjekk",
+      "body": [
+        "Kun etter skriftlig avtale, utsjekk innen 12:00.",
+        "Tjenesten er skjønnsmessig, avhengig av belegg og krever skriftlig bekreftelse.",
+        "Pris 40 €; tildeles etter førstemann til mølla."
+      ]
+    },
+    "s25": {
+      "title": "25. Manglende utsjekk",
+      "body": [
+        "Ved manglende utsjekk til avtalt tid kan vi fjerne eiendeler fra rommet uten ansvar.",
+        "Forsøk på adgang til gjesteområder etter tid kan anses som sikkerhetsbrudd.",
+        "Eiendeler kan overføres til lokal porter/oppbevaring; gebyrer etter leverandørens satser."
+      ]
+    },
+    "s26": {
+      "title": "26. Etter utsjekk",
+      "body": [
+        "Når utsjekk er fullført, anses reservasjonen oppfylt uansett gjenværende netter.",
+        "Du går over til Midlertidig gjest frem til 15:30.",
+        "Etter forespørsel kan vi registrere deg til bagasjeoppbevaring etter skjønn og særvilkår."
+      ]
+    },
+    "s27": {
+      "title": "27. Alkohol",
+      "body": [
+        "Som lisensiert virksomhet er det ikke tillatt å ta med alkohol kjøpt utenfor inn i vandrerhjemmet.",
+        "Oppdaget alkohol kan oppbevares og tilbakeleveres ved utsjekk eller når konsum utenfor er garantert.",
+        "Brudd kan medføre umiddelbar annullering (No Show‑policy)."
+      ]
+    },
+    "s28": {
+      "title": "28. Endring av vilkår",
+      "body": [
+        "Disse vilkår utgjør hele avtalen mellom deg og Vandrerhjemmet og erstatter tidligere avtaler.",
+        "Vi forbeholder oss retten til å endre vilkår når som helst."
+      ]
+    },
+    "s29": {
+      "title": "29. Ansvarsomfang",
+      "body": [
+        "Vårt ansvar begrenses til tjenester/poster oppført her.",
+        "Samlet ansvar overstiger ikke beløpet du har betalt for reservasjonen.",
+        "Vi er ikke ansvarlige for tap/skade på personlige eiendeler utover lovkrav.",
+        "Vi er ikke ansvarlige for indirekte/konsekvens/økonomisk tap eller tap av fortjeneste/goodwill/mulighet, også ved uaktsomhet eller force majeure.",
+        "Vi tilbyr sikker oppbevaring av verdisaker, uten økonomisk ansvar.",
+        "Vi kan flytte gjenstander under rengjøring uten varsel."
+      ]
+    },
+    "s30": {
+      "title": "30. Gjeldende lov",
+      "body": [
+        "Vilkårene reguleres av italiensk rett; tvister bringes inn for italienske domstoler."
+      ]
+    },
+    "s31": {
+      "title": "31. Nettstedsinformasjon",
+      "body": [
+        "Vi bestreber nøyaktig informasjon, men kan ikke holdes ansvarlig for feil/utelatelser og kan endre nettsted og innhold uten varsel.",
+        "Noen bilder viser generell stil og gjenspeiler ikke alltid nøyaktig produkt/aspekt.",
+        "Alt innhold (tekst, bilder, varemerker) eies av Vandrerhjemmet og kan ikke brukes uten skriftlig tillatelse.",
+        "Lenker til tredjeparter gis for bekvemmelighet; vi er ikke ansvarlige for innhold/bruk.",
+        "Se personvernerklæringen for informasjon om hvordan vi beskytter personvernet ditt.",
+        "Vi forbeholder oss retten til å gjøre endringer på nettstedet og i innholdet når som helst uten varsel."
+      ]
+    },
+    "s32": {
+      "title": "32. Helse- og sikkerhetspolicy",
+      "body": [
+        "Gjest som nylig kan ha vært eksponert for smittsom sykdom, skal opptre ansvarlig.",
+        "Forhåndsbetalte, ikke‑refunderbare reservasjoner forblir ikke‑refunderbare i slike tilfeller.",
+        "Vi anbefaler reiseforsikring mot uforutsette hendelser, inkl. sykdom/reiseudyktighet."
+      ]
+    },
+    "s33": {
+      "title": "33. Kuponger",
+      "body": [
+        "Vi kan utstede kampanjekuponger fra tid til annen.",
+        "Kuponger er kun gyldige for reservasjoner via vårt offisielle nettsted (hostel-positano.com).",
+        "Hver kupong kan være underlagt spesifikke vilkår i tillegg til disse."
+      ]
+    }
+  }
+}

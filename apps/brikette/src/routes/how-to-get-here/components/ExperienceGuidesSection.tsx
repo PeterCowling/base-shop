@@ -1,0 +1,138 @@
+import clsx from "clsx";
+import { Link } from "react-router-dom";
+import type { TFunction } from "i18next";
+
+import { Grid } from "@acme/ui/atoms/Grid";
+
+import { EXPERIENCE_GUIDE_KEYS } from "@/data/guides.index";
+import type { AppLanguage } from "@/i18n.config";
+import { guideHref, guideSlug, type GuideKey } from "@/routes.guides-helpers";
+import { getSlug } from "@/utils/slug";
+
+import { TRANSPORT_MODE_ICONS } from "../transport";
+import { Cluster, Inline, Stack } from "../ui";
+import type { ExperienceGuidesContent } from "../types";
+
+export type ExperienceGuidesSectionProps = {
+  content: ExperienceGuidesContent;
+  lang: AppLanguage;
+  t: TFunction<"howToGetHere">;
+};
+
+const EXPERIENCE_GUIDE_KEY_SET = new Set<GuideKey>(EXPERIENCE_GUIDE_KEYS);
+
+function resolveGuideHref(lang: AppLanguage, guideKey: GuideKey) {
+  if (EXPERIENCE_GUIDE_KEY_SET.has(guideKey)) {
+    const experiencesSlug = getSlug("experiences", lang);
+    const slug = guideSlug(lang, guideKey);
+    return `/${lang}/${experiencesSlug}/${slug}`;
+  }
+
+  return guideHref(lang, guideKey);
+}
+
+const badgeClassName = clsx(
+  "inline-flex",
+  "items-center",
+  "gap-2",
+  "rounded-full",
+  "border",
+  "border-brand-outline/20",
+  "bg-brand-primary/5",
+  "px-3",
+  "py-1",
+  "text-xs",
+  "font-semibold",
+  "uppercase",
+  "tracking-wide",
+  "text-brand-primary",
+  "transition",
+  "group-hover:border-brand-primary/30",
+  "group-hover:bg-brand-primary/10",
+  "dark:border-brand-outline/30",
+  "dark:bg-brand-surface/20",
+  "dark:text-brand-secondary",
+);
+
+export function ExperienceGuidesSection({ content, lang, t }: ExperienceGuidesSectionProps) {
+  if (!content.items.length) {
+    return null;
+  }
+
+  const columns = (content.items.length >= 3 ? 3 : content.items.length === 2 ? 2 : 1) as 1 | 2 | 3;
+
+  return (
+    <section className="rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/60">
+      <header className="space-y-3 text-brand-text dark:text-brand-surface/80">
+        {content.eyebrow ? (
+          <p className="text-xs font-semibold uppercase tracking-widest text-brand-secondary">
+            {content.eyebrow}
+          </p>
+        ) : null}
+        <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">{content.title}</h2>
+        {content.description ? (
+          <p className="text-base leading-relaxed">{content.description}</p>
+        ) : null}
+      </header>
+
+      <Grid
+        as="ul"
+        columns={{ base: 1, md: columns }}
+        gap={5}
+        className="mt-6"
+      >
+        {content.items.map((item) => {
+          const href = resolveGuideHref(lang, item.guideKey);
+          const [primaryMode] = item.transportModes;
+          const PrimaryIcon = primaryMode ? TRANSPORT_MODE_ICONS[primaryMode] : null;
+
+          return (
+            <li key={item.guideKey} className="h-full">
+              <Stack
+                as={Link}
+                prefetch="intent"
+                to={href}
+                className="group flex h-full flex-col justify-between rounded-2xl border border-brand-outline/30 bg-brand-surface/80 p-5 text-start shadow-sm transition hover:border-brand-primary/40 hover:shadow-md dark:border-brand-outline/20 dark:bg-brand-surface/70"
+              >
+                <Stack className="gap-3">
+                  <Inline as="div" className="w-full gap-3 text-start">
+                    {PrimaryIcon ? (
+                      <Inline
+                        as="span"
+                        className="size-10 justify-center rounded-full bg-brand-primary/10 text-brand-primary transition group-hover:bg-brand-primary/15 dark:bg-brand-secondary/20 dark:text-brand-secondary"
+                      >
+                        <PrimaryIcon aria-hidden className="size-5" />
+                      </Inline>
+                    ) : null}
+                    <span className="text-lg font-semibold text-brand-heading dark:text-brand-surface">
+                      {item.label}
+                    </span>
+                  </Inline>
+                  {item.summary ? (
+                    <p className="text-sm leading-relaxed text-brand-text dark:text-brand-surface/80">
+                      {item.summary}
+                    </p>
+                  ) : null}
+                </Stack>
+                {item.transportModes.length ? (
+                  <Cluster as="div" className="mt-4">
+                    {item.transportModes.map((mode) => {
+                      const ModeIcon = TRANSPORT_MODE_ICONS[mode];
+                      const label = t(`filters.transportModes.${mode}`) as string;
+                      return (
+                        <span key={`${item.guideKey}-${mode}`} className={badgeClassName}>
+                          {ModeIcon ? <ModeIcon aria-hidden className="size-3.5" /> : null}
+                          {label}
+                        </span>
+                      );
+                    })}
+                  </Cluster>
+                ) : null}
+              </Stack>
+            </li>
+          );
+        })}
+      </Grid>
+    </section>
+  );
+}

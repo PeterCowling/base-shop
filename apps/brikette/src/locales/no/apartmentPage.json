@@ -1,0 +1,56 @@
+{
+  "slug": "leilighet",
+  "meta": {
+    "title": "Leilighet – overnatting",
+    "description": "Les om vår selvbetjente leilighet i Positano."
+  },
+  "title": "Leilighet",
+  "body": "Leiligheten vår gir et komfortabelt opphold med fantastisk utsikt.",
+  "heroImageAlt": "Utsiden av leilighetsbygget",
+  "heroTitle": "Privat leilighet",
+  "heroIntro": "Nyt et fullt utstyrt sted med flott utsikt over Positano.",
+  "bookButton": "Bestill nå",
+  "galleryHeading": "Galleri",
+  "galleryAlt": "Interiør og terrasseutsikt fra leiligheten",
+  "galleryAlts": [
+    "Stue i leiligheten",
+    "Soverom i leiligheten",
+    "Felles terrasse med havutsikt"
+  ],
+  "detailsHeading": "Detaljer",
+  "detailsList": [
+    "Plass til opptil 4 gjester",
+    "Kjøkkenkrok med kjøleskap",
+    "Privat bad",
+    "Aircondition",
+    "Balkong med havutsikt"
+  ],
+  "amenitiesHeading": "Fasiliteter",
+  "amenitiesImageAlt": "Bilde av leilighetens fasiliteter",
+  "amenitiesList": [
+    "Wi‑Fi inkludert",
+    "Fullt utstyrt kjøkken",
+    "Aircondition",
+    "Vaskemaskin og tørketrommel"
+  ],
+  "highlights": {
+    "sectionTitle": "Leilighetens høydepunkter",
+    "slides": [
+      {
+        "title": "Panoramautsikt",
+        "text": "Våkne hver morgen til storslåtte utsikter.",
+        "alt": "Utsikt fra leilighetens balkong"
+      },
+      {
+        "title": "Komfortable soner",
+        "text": "God plass til å slappe av etter utforsking.",
+        "alt": "Romslig stue"
+      },
+      {
+        "title": "Sentralt beliggende",
+        "text": "Noen skritt fra butikker og strand.",
+        "alt": "Positanos gater"
+      }
+    ]
+  }
+}

@@ -1,0 +1,648 @@
+{
+  "meta": {
+    "title": "Hostel Brikette - यात्रा दिशानिर्देशों की सूची",
+    "description": "अमाल्फी, कैप्रि, नेपल्स, सालर्नो, रवेल्लो, रोम और सोरेंटो से Hostel Brikette तक पहुँचने के लिए व्यावहारिक दिशानिर्देश, साथ ही परिवहन के फायदे और नुकसान।"
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette",
+    "title": "यात्रा दिशानिर्देशों की सूची",
+    "description": "अमाल्फी तट पर अपने गंतव्य और होस्टल ब्रिकेट तक आने-जाने के लिए इस गाइड का उपयोग करें।",
+    "heroAlt": "Hostel Brikette के प्रवेश द्वार की ओर जाती बूगनवेलिया से घिरी पत्थरों की सीढ़ियाँ",
+    "heroAltFallback": "बूगनवेलिया से घिरी पत्थरों की सीढ़ियाँ",
+    "transportLabel": "परिवहन कवरेज",
+    "stats": {
+      "routes": "डोर-टू-डोर मार्ग",
+      "destinations": "कवर किए गए स्थानीय क्षेत्र",
+      "transport": "परिवहन प्रकार",
+      "experienceRoutes": "Experience routes"
+    }
+  },
+  "preview": {
+    "notPublished": "Preview only – this page is not published"
+  },
+  "intro": {
+    "taxi": "टैक्सी मंगाने के लिए आप व्हाट्सऐप पर अंग्रेज़ी या इतालवी में इस नंबर से संपर्क कर सकते हैं: <Strong>{{contact}}</Strong>।",
+    "shuttle": "शटल पसंद करते हैं? Sea Horse Car Service साझा ट्रांसफ़र चलाती है। उनकी <Link>आधिकारिक शटल पेज</Link> पर सीट आरक्षित करें।",
+    "taxiContact": "+39 379 125 6222",
+    "taxiEyebrow": "Hostel Brikette by Taxi",
+    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+  },
+  "destinations": {
+    "filterLabel": "स्थान",
+    "filterAll": "सभी स्थान",
+    "sections": [
+      {
+        "name": "पोज़ितानो के भीतर",
+        "description": "पोज़ितानो पहुँच चुके हैं, लेकिन हॉस्टल तक कैसे जाएँ यह समझ नहीं आ रहा? इन गाइड्स को देखें:",
+        "image": {
+          "src": "/img/positano-panorama.avif",
+          "alt": "पोसितानो की चट्टान पर बने घरों का पैनोरमिक दृश्य"
+        },
+        "links": [
+          {
+            "label": "कीएसा नुओवा/Bar Internazionale से Hostel Brikette",
+            "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
+            "internal": true
+          },
+          {
+            "label": "फेरी डॉक से Hostel Brikette",
+            "href": "ferry-dock-to-hostel-brikette-with-luggage",
+            "internal": true
+          },
+          {
+            "label": "Hostel Brikette से कीएसा नुओवा/Bar Internazionale",
+            "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "अमाल्फी",
+        "image": {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "तटीय मार्गों के लिए अमाल्फी का SITA Sud बस स्टॉप"
+        },
+        "links": [
+          {
+            "label": "अमाल्फी से पोसितानो बस द्वारा",
+            "href": "amalfi-positano-bus",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से अमाल्फी बस द्वारा",
+            "href": "positano-amalfi-bus",
+            "internal": true
+          },
+          {
+            "label": "अमाल्फी से पोसितानो फेरी द्वारा",
+            "href": "amalfi-positano-ferry",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से अमाल्फी फेरी द्वारा",
+            "href": "positano-amalfi-ferry",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "कैप्रि",
+        "image": {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "कैप्रि के मरीना ग्रांडे पर लगती हुई फेरी"
+        },
+        "links": [
+          {
+            "label": "कैप्रि से पोसितानो फेरी द्वारा",
+            "href": "capri-positano-ferry",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से कैप्रि फेरी द्वारा",
+            "href": "positano-capri-ferry",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "नेपल्स सेंटर",
+        "image": {
+          "src": "/img/tabacchi.webp",
+          "alt": "नेपल्स के केंद्र में सड़क किनारे तंबाकी की दुकान"
+        },
+        "links": [
+          {
+            "label": "नेपल्स सेंटर से पोसितानो ट्रेन और बस द्वारा",
+            "href": "naples-center-train-bus",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से नेपल्स सेंटर बस फिर ट्रेन द्वारा",
+            "href": "positano-naples-center-bus-train",
+            "internal": true
+          },
+          {
+            "label": "नेपल्स सेंटर से पोसितानो फेरी द्वारा",
+            "href": "naples-center-positano-ferry",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से नेपल्स सेंटर फेरी द्वारा",
+            "href": "positano-naples-center-ferry",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से नेपल्स के लिए दिशा-निर्देश (फेरी)",
+            "href": "positano-to-naples-directions-by-ferry",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "नेपल्स हवाई अड्डा",
+        "image": {
+          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+          "alt": "नेपल्स अंतरराष्ट्रीय हवाई अड्डे के बाहर Curreri शटल लोडिंग क्षेत्र"
+        },
+        "links": [
+          {
+            "label": "पोसितानो से नेपल्स हवाई अड्डा बस द्वारा",
+            "href": "positano-naples-airport-bus",
+            "internal": true
+          },
+          {
+            "label": "नेपल्स हवाई अड्डे से पोसितानो बस द्वारा",
+            "href": "naples-airport-positano-bus",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "सालर्नो",
+        "image": {
+          "src": "/img/hostel-coastal-horizon.webp",
+          "alt": "अमाल्फी तट से सालर्नो की ओर दिखाई देता दृश्य"
+        },
+        "links": [
+          {
+            "label": "सालर्नो से पोसितानो बस द्वारा",
+            "href": "salerno-positano-bus",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से सालर्नो बस द्वारा",
+            "href": "positano-salerno-bus",
+            "internal": true
+          },
+          {
+            "label": "Salerno to Positano by Ferry",
+            "href": "salerno-positano-ferry",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से सालर्नो फेरी द्वारा",
+            "href": "positano-salerno-ferry",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "रवेल्लो",
+        "image": {
+          "src": "/img/hostel-communal-terrace-lush-view.webp",
+          "alt": "रवेल्लो के पास तट को निहारते चट्टानी उद्यान"
+        },
+        "links": [
+          {
+            "label": "रवेल्लो से पोसितानो बस द्वारा",
+            "href": "ravello-positano-bus",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से रवेल्लो बस द्वारा",
+            "href": "positano-ravello-bus",
+            "internal": true
+          },
+          {
+            "label": "पोसितानो से रवेल्लो फेरी फिर बस द्वारा",
+            "href": "positano-ravello-ferry-bus",
+            "internal": true
+          }
+        ]
+      }
+    ]
+  },
+  "rome": {
+    "title": "रोम",
+    "description": "नेपल्स या सालर्नो पहुँचने के लिए हमारे लिखित गाइड में दिए गए निर्देशों का पालन करें, और फिर उन शहरों में से किसी से ट्रेन पकड़ें।",
+    "table": {
+      "headers": {
+        "route": "मार्ग",
+        "toRome": "रोम जाते समय",
+        "toHostel": "हॉस्टल आते समय"
+      },
+      "options": [
+        {
+          "route": {
+            "label": "नेपल्स सेंटर ↔ पोसितानो (बस/ट्रेन)",
+            "href": "positano-naples-center-bus-train",
+            "internal": true
+          },
+          "toRome": {
+            "heading": "रोम जाते समय",
+            "points": [
+              "+ पोसितानो बस स्टॉप हॉस्टल से बहुत करीब है।",
+              "+ बस आपको सीधे सोरेंटो के रेलवे स्टेशन पर उतारती है।",
+              "+ बस और ट्रेन दोनों बहुत किफ़ायती हैं।",
+              "+ आप सीधे नेपल्स के रेलवे स्टेशन पर पहुँचते हैं।",
+              "- बस से ट्रेन में बदलना पड़ता है।",
+              "- बस और ट्रेन आमतौर पर भीड़भाड़ वाली होती हैं।",
+              "- यात्रा में कुछ घंटे लगते हैं।"
+            ]
+          },
+          "toHostel": {
+            "heading": "हॉस्टल आते समय",
+            "points": [
+              "+ नेपल्स में ट्रेन बदलना अपेक्षाकृत आसान है।",
+              "+ ट्रेन आपको सीधे सोरेंटो के बस स्टेशन पर उतारती है।",
+              "+ बस और ट्रेन दोनों बहुत किफ़ायती हैं।",
+              "+ पोसितानो बस स्टॉप हॉस्टल से बहुत करीब है।",
+              "- सोरेंटो में ट्रेन से बस में बदलना पड़ता है।",
+              "- बस और ट्रेन आमतौर पर भीड़भाड़ वाली होती हैं।",
+              "- यात्रा में कुछ घंटे लगते हैं।"
+            ]
+          }
+        },
+        {
+          "route": {
+            "label": "सालर्नो ↔ पोसितानो (बस)",
+            "href": "salerno-positano-bus",
+            "internal": true
+          },
+          "toRome": {
+            "heading": "रोम जाते समय",
+            "points": [
+              "+ पोसितानो बस स्टॉप हॉस्टल से कुछ ही दूरी पर है।",
+              "+ बस आपको सीधे सालर्नो के रेलवे स्टेशन पर उतारती है।",
+              "+ बस का किराया बहुत कम है।",
+              "- अमाल्फी में बस बदलनी पड़ती है।",
+              "- बस आमतौर पर भीड़भाड़ वाली होती है।"
+            ]
+          },
+          "toHostel": {
+            "heading": "हॉस्टल आते समय",
+            "points": [
+              "+ पोसितानो बस स्टॉप हॉस्टल से कुछ ही दूरी पर है।",
+              "+ बस आपको सीधे सालर्नो के रेलवे स्टेशन से लेती है।",
+              "+ बस का किराया बहुत कम है।",
+              "- अमाल्फी में बस बदलनी पड़ती है।",
+              "- बस आमतौर पर भीड़भाड़ वाली होती है।"
+            ]
+          }
+        },
+        {
+          "route": {
+            "label": "सालर्नो ↔ पोसितानो (फेरी)",
+            "href": "salerno-positano-ferry",
+            "internal": true
+          },
+          "note": {
+            "parts": [
+              {
+                "type": "text",
+                "value": "आपको "
+              },
+              {
+                "type": "link",
+                "label": "सालर्नो के पोर्ट और रेलवे स्टेशन के बीच पैदल चलना",
+                "href": "https://www.google.com/maps/dir/Travelmar+-+Traghetti+Salerno,+Piazza+della+Concordia,+Salerno,+SA/Salerno+Train+Station,+Via+Zara,+Salerno,+SA/@40.6735022,14.7687986,18z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133bc2396c885437:0xe1ccfe3b3efd24a5!2m2!1d14.7675186!2d40.6717407!1m5!1m1!1s0x133bc3b98e72261f:0x6251217dd6a0c63d!2m2!1d14.772223!2d40.6752304!3e2",
+                "external": true
+              },
+              {
+                "type": "text",
+                "value": " होगा।"
+              }
+            ]
+          },
+          "toRome": {
+            "heading": "रोम जाते समय",
+            "points": [
+              "+ अपने बैग पोर्टर्स को सौंपने से यात्रा अधिक आरामदायक और आसान हो जाती है।",
+              "+ फेरी यात्रा स्वयं आनंददायक और सरल है।",
+              "+ सालर्नो रेलवे स्टेशन से पोर्ट तक की पैदल दूरी छोटी और सीधी है।",
+              "- फेरी का किराया बस की तुलना में अधिक है।",
+              "- पोसितानो के Interno बस और पोर्टर्स की मदद के बावजूद, पोर्ट से हॉस्टल तक का सफर काफी मेहनत वाला है; इसलिए SITA बस से पहुँचना आसान होता है।"
+            ]
+          },
+          "toHostel": {
+            "heading": "हॉस्टल आते समय",
+            "points": [
+              "+ अपने बैग पोर्टर्स को सौंपने से यात्रा अधिक आरामदायक और आसान हो जाती है।",
+              "+ फेरी यात्रा स्वयं आनंददायक और सरल है।",
+              "+ सालर्नो रेलवे स्टेशन से पोर्ट तक की पैदल दूरी छोटी और सीधी है।",
+              "- फेरी का किराया बस की तुलना में अधिक है।",
+              "- पोसितानो के Interno बस और पोर्टर्स की मदद के बावजूद, पोर्ट से हॉस्टल तक का सफर काफी मेहनत वाला है; इसलिए SITA बस से पहुँचना आसान होता है।"
+            ]
+          }
+        },
+        {
+          "route": {
+            "label": "नेपल्स ↔ पोसितानो (फेरी)",
+            "href": "positano-naples-center-ferry",
+            "internal": true
+          },
+          "note": {
+            "parts": [
+              {
+                "type": "link",
+                "label": "पोर्ट और रेलवे स्टेशन के बीच ट्राम लें",
+                "href": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4",
+                "external": true
+              },
+              {
+                "type": "text",
+                "value": "।"
+              }
+            ]
+          },
+          "toRome": {
+            "heading": "रोम जाते समय",
+            "points": [
+              "+ अपने बैग पोर्टर्स को सौंपने से यात्रा अधिक आरामदायक और आसान हो जाती है।",
+              "+ फेरी यात्रा स्वयं आनंददायक और सरल है।",
+              "- नेपल्स का पोर्ट और शहर हर किसी के लिए उपयुक्त महसूस नहीं हो सकता।",
+              "- फेरी अन्य परिवहन विकल्पों की तुलना में कम बार चलती हैं।",
+              "- फेरी का किराया ट्रेन या बस से अधिक है।"
+            ]
+          },
+          "toHostel": {
+            "heading": "हॉस्टल आते समय",
+            "points": [
+              "+ अपने बैग पोर्टर्स को सौंपने से यात्रा अधिक आरामदायक और आसान हो जाती है।",
+              "+ फेरी यात्रा स्वयं आनंददायक और सरल है।",
+              "- नेपल्स का पोर्ट और शहर हर किसी के लिए उपयुक्त महसूस नहीं हो सकता।",
+              "- फेरी अन्य परिवहन विकल्पों की तुलना में कम बार चलती हैं।",
+              "- फेरी का किराया ट्रेन और बस से अधिक है।",
+              "- पोसितानो के Interno बस और पोर्टर्स की मदद के बावजूद, पोर्ट से हॉस्टल तक का सफर काफी मेहनत वाला है; इसलिए SITA बस से पहुँचना आसान होता है।"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sorrento": {
+    "title": "सोरेंटो",
+    "links": [
+      {
+        "label": "सोरेंटो से बस द्वारा",
+        "href": "sorrento-positano-bus",
+        "internal": true
+      },
+      {
+        "label": "सोरेंटो की ओर बस द्वारा",
+        "href": "positano-sorrento-bus",
+        "internal": true
+      },
+      {
+        "label": "सोरेंटो से फेरी द्वारा",
+        "href": "sorrento-positano-ferry",
+        "internal": true
+      },
+      {
+        "label": "सोरेंटो की ओर फेरी द्वारा",
+        "href": "positano-sorrento-ferry",
+        "internal": true
+      }
+    ]
+  },
+  "filters": {
+    "title": "मार्ग फिल्टर करें",
+    "transportLabel": "परिवहन प्रकार",
+    "transportAll": "सभी",
+    "transportModes": {
+      "bus": "बस",
+      "ferry": "फेरी",
+      "train": "ट्रेन",
+      "car": "कार / टैक्सी",
+      "walk": "पैदल"
+    },
+    "directionLabel": "दिशा",
+    "directionAll": "सभी",
+    "directionTo": "पोसितानो की ओर",
+    "directionFrom": "पोसितानो से",
+    "helper": "अपनी यात्रा के अनुसार यात्रा योजनाएँ चुनने के लिए इन फ़िल्टरों का उपयोग करें।",
+    "activeLabel": "सक्रिय फ़िल्टर",
+    "clearLabel": "फ़िल्टर साफ़ करें",
+    "noResults": "इन फ़िल्टरों से कोई मार्ग मेल नहीं खाता।"
+  },
+  "romePlanner": {
+    "title": "Rome ↔ Positano: How to Travel",
+    "subtitle": "Pick a direction, set your preferences, and we’ll suggest a route.",
+    "directionPrompt": "Pick a direction",
+    "tabs": {
+      "from": "From Rome → Hostel",
+      "to": "From Hostel → Rome"
+    },
+    "reco": {
+      "title": "Best match for your picks",
+      "why": "Why this route?"
+    },
+    "otherMatches": "Other matches for your pick",
+    "disclaimer": "Always check operators for latest schedules and availability. Crowding and journey times vary by season.",
+    "pref": {
+      "prompt": "Any preference?",
+      "cheapest": {
+        "label": "Cheapest",
+        "description": "Prioritize lower cost over comfort."
+      },
+      "scenic": {
+        "label": "Scenic",
+        "description": "Prioritize sea views (ferries)."
+      },
+      "heavyPrefix": "I have",
+      "heavy_luggage": {
+        "label": "Heavy luggage",
+        "description": "Minimize uphill walks and stairs with bags."
+      }
+    },
+    "route": {
+      "naples": {
+        "busTrain": {
+          "title": "Via Naples — Bus + Train",
+          "summary": {
+            "from": "Bus to Sorrento → train to Naples → train to Rome.",
+            "to": "Train to Naples → train to Sorrento → bus to Positano."
+          },
+          "steps": {
+            "from": {
+              "1": "Bus Positano → Sorrento (drops at Sorrento train station).",
+              "2": "Local train Sorrento → Naples (arrive at Naples train station).",
+              "3": "Train Naples → Rome."
+            },
+            "to": {
+              "1": "Train Rome → Naples (arrive at Naples train station).",
+              "2": "Local train Naples → Sorrento (arrive at Sorrento bus station).",
+              "3": "Bus Sorrento → Positano (stop close to the hostel)."
+            }
+          }
+        },
+        "ferry": {
+          "title": "Via Naples — Ferry",
+          "summary": {
+            "from": "Positano port → ferry to Naples → tram to station → train to Rome.",
+            "to": "Train to Naples → tram to port → ferry to Positano."
+          },
+          "steps": {
+            "from": {
+              "1": "Positano → port (porters can help with bags).",
+              "2": "Ferry Positano → Naples.",
+              "3": "Tram Naples port → train station.",
+              "4": "Train Naples → Rome."
+            },
+            "to": {
+              "1": "Train Rome → Naples (arrive at Naples station).",
+              "2": "Tram Naples station → port.",
+              "3": "Ferry Naples → Positano.",
+              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+            }
+          }
+        }
+      },
+      "salerno": {
+        "bus": {
+          "title": "Via Salerno — Bus (to/from Salerno)",
+          "summary": {
+            "from": "Bus Positano → Amalfi (change) → Salerno → train to Rome.",
+            "to": "Train to Salerno → bus to Amalfi (change) → Positano."
+          },
+          "steps": {
+            "from": {
+              "1": "Bus Positano → Amalfi (change buses in Amalfi).",
+              "2": "Bus Amalfi → Salerno (drops at Salerno train station).",
+              "3": "Train Salerno → Rome."
+            },
+            "to": {
+              "1": "Train Rome → Salerno (arrive at Salerno train station).",
+              "2": "Bus Salerno → Amalfi (change buses in Amalfi).",
+              "3": "Bus Amalfi → Positano (short walk to hostel)."
+            }
+          }
+        },
+        "ferry": {
+          "title": "Via Salerno — Ferry",
+          "summary": {
+            "from": "Positano port → ferry to Salerno → short walk to station → train to Rome.",
+            "to": "Train to Salerno → short walk to port → ferry to Positano."
+          },
+          "steps": {
+            "from": {
+              "1": "Positano → port (porters can help with bags).",
+              "2": "Ferry Positano → Salerno.",
+              "3": "Walk Salerno port → train station.",
+              "4": "Train Salerno → Rome."
+            },
+            "to": {
+              "1": "Train Rome → Salerno (arrive at Salerno station).",
+              "2": "Walk to Salerno port.",
+              "3": "Ferry Salerno → Positano.",
+              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+            }
+          }
+        }
+      }
+    },
+    "note": {
+      "salerno": {
+        "walkPortStation": "Walk between Salerno’s port and train station (short, straightforward)."
+      },
+      "naples": {
+        "tramPortStation": "Take the tram between Naples port and the train station."
+      }
+    },
+    "pro": {
+      "posBusNearHostel": "Positano bus stop close to the hostel.",
+      "busDropsSorrentoStation": "Bus drops you right at the train station in Sorrento.",
+      "cheapBusTrain": "Bus and train are both very cheap.",
+      "arriveNaplesStation": "You arrive right at the train station in Naples.",
+      "easySwapNaples": "Swapping trains in Naples is relatively easy.",
+      "trainDropsSorrentoBusStation": "Train drops you right at the bus station in Sorrento.",
+      "salerno": {
+        "busStopNearHostel": "The Positano bus stop is just a short walk from the hostel."
+      },
+      "busCollectsSalernoStation": "Bus collects you right at the train station in Salerno.",
+      "busDropsSalernoStation": "Bus drops you right at the train station in Salerno.",
+      "busCheap": "Bus is very cheap.",
+      "portersHelp": "Giving your bags to the porters allows you to travel more comfortably and easily.",
+      "ferryEnjoyableEasy": "The ferry journey itself is enjoyable and easy.",
+      "shortWalkSalernoStationPort": "The walk from Salerno’s Train Station to the port is short and straightforward."
+    },
+    "con": {
+      "changeBusToTrain": "Have to change from bus to train.",
+      "crowdedBusTrain": "Bus and train are both usually crowded.",
+      "fewHours": "Takes a few hours.",
+      "changeTrainToBusSorrento": "Have to change from train to bus in Sorrento.",
+      "busUsuallyCrowded": "Bus is usually crowded.",
+      "ferryCostHigherBus": "The cost of taking the ferry is higher than the cost of taking the bus.",
+      "hostelEasierBySita": "Arriving at the hostel via SITA bus is easier than arriving by ferry (the journey from the port is quite laborious — even with Positano’s Interno Bus and porters).",
+      "naplesPortComfort": "The port and city of Naples may not be suitable for everyone, as some people may not feel comfortable there.",
+      "ferriesLessFrequent": "Ferries do not run as frequently as other transportation options.",
+      "ferryCostHigherTrainBus": "The cost of taking the ferry is higher than the cost of taking the train or bus.",
+      "changeBusesAmalfi": "Have to change buses in Amalfi."
+    },
+    "tag": {
+      "cheap": "Budget",
+      "directish": "Simple",
+      "scenic": "Scenic",
+      "transfer": "Transfer",
+      "bus": "Bus",
+      "train": "Train",
+      "ferry": "Ferry"
+    },
+    "reasons": {
+      "cheapest": {
+        "busTrain": "Cheapest → bus/train options are very cheap.",
+        "ferry": "Cheapest → ferry costs higher than bus/train."
+      },
+      "fewest_changes": {
+        "busTrain": "Fewest changes → bus + train requires a mode change.",
+        "bus": "Fewest changes → bus route changes in Amalfi."
+      },
+      "scenic": {
+        "ferry": "Scenic → ferry journey is enjoyable and easy."
+      },
+      "heavy_luggage": {
+        "ferryFromRome": "Heavy luggage → arriving via ferry from the port is more laborious.",
+        "busStopClose": "Heavy luggage → Positano bus stop is close to the hostel."
+      }
+    },
+    "ui": {
+      "showDetails": "Show details",
+      "hideDetails": "Hide details",
+      "steps": "Steps",
+      "notes": "Notes",
+      "pros": "Pros",
+      "cons": "Cons"
+    }
+  },
+  "experienceGuides": {
+    "eyebrow": "Experience planners",
+    "title": "Experience routes with built-in directions",
+    "description": "These experiences combine the on-trail highlights with the exact transfers you need to leave and return to Hostel Brikette. Open one when you want the itinerary and the transport plan in the same guide.",
+    "items": [
+      {
+        "guideKey": "pathOfTheGodsFerry",
+        "label": "Path of the Gods via Amalfi (ferry + hike)",
+        "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
+        "transportModes": [
+          "ferry",
+          "bus",
+          "walk"
+        ]
+      },
+      {
+        "guideKey": "pathOfTheGodsBus",
+        "label": "Path of the Gods via Amalfi (bus + hike)",
+        "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
+        "transportModes": [
+          "bus",
+          "walk"
+        ]
+      },
+      {
+        "guideKey": "pathOfTheGodsNocelle",
+        "label": "Path of the Gods via Nocelle shuttle",
+        "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
+        "transportModes": [
+          "bus",
+          "walk"
+        ]
+      }
+    ]
+  },
+  "breadcrumbs": {
+    "itemTitleFallback": "Directions"
+  },
+  "galleries": {
+    "defaultAlt": "Directions photo"
+  }
+}

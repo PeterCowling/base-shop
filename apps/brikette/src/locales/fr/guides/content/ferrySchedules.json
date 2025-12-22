@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Horaires des ferries pour Positano",
+    "description": "Quand les ferries circulent, où consulter les horaires en temps réel, la saisonnalité, les compagnies et des conseils pratiques pour l'embarquement."
+  },
+  "linkLabel": "Horaires des ferries pour Positano",
+  "intro": [
+    "Horaires des ferries vers/depuis Positano : où consulter les départs en direct, comprendre la saisonnalité et garder des plans de secours."
+  ],
+  "sections": [
+    {
+      "id": "seasonality",
+      "title": "Périodes de navigation",
+      "body": [
+        "La saison principale s'étend grosso modo d'avril à octobre avec une fréquence maximale de mi-mai à septembre ; l'hiver, les traversées sont rares et dépendent de la météo.",
+        "En intersaison, les premiers et derniers départs sont souvent réduits — vérifiez les horaires la veille au soir."
+      ]
+    },
+    {
+      "id": "live-updates",
+      "title": "Suivre les mises à jour",
+      "body": [
+        "Consultez les sites/apps des opérateurs (Travelmar, NLG, Alilauro, Positano Jet) ainsi que les panneaux des ports pour les retards et changements de quai.",
+        "Faites une capture des horaires et activez les alertes e-mail/SMS afin de recevoir les avis météo même sans data italienne."
+      ]
+    },
+    {
+      "id": "tickets",
+      "title": "Billets & marges",
+      "body": [
+        "En haute saison, les traversées affichent complet plusieurs heures à l'avance : achetez en ligne ou la veille et arrivez 30 minutes avant avec pièce d'identité et bagages prêts à étiqueter.",
+        "Gardez une marge avant votre dernière correspondance du jour pour pouvoir basculer sur un bus ou un taxi si la mer devient agitée."
+      ]
+    }
+  ],
+  "tips": [
+    "Surveillez les bulletins maritimes (vent > 20 nœuds ou houle > 1,5 m entraînent souvent des annulations).",
+    "Si vous devez changer de port, vérifiez à l'avance les horaires des bus locaux pour garder un trajet serein."
+  ],
+  "faqs": [
+    {
+      "q": "Quand les horaires d'été sont-ils publiés ?",
+      "a": [
+        "La plupart des opérateurs dévoilent les horaires de pleine saison entre février et mars ; ceux d'automne arrivent généralement fin août."
+      ]
+    },
+    {
+      "q": "Comment confirmer une annulation le jour même ?",
+      "a": [
+        "Actualisez le site ou les réseaux sociaux de l'opérateur et cherchez les avis imprimés au quai ; les équipes annoncent aussi les changements au haut-parleur.",
+        "Gardez l'horaire des bus SITA ou un contact taxi sous la main pour réagir immédiatement."
+      ]
+    },
+    {
+      "q": "Puis-je embarquer avec de gros bagages ?",
+      "a": [
+        "Oui, mais les bagages volumineux peuvent entraîner un léger supplément ; arrivez tôt pour que l'équipage puisse les étiqueter et les arrimer pendant que vous gardez vos objets de valeur."
+      ]
+    }
+  ]
+}

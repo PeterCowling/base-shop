@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "title": "Positano do Ravello autobusem | Hostel Brikette",
+    "description": "Instrukcja krok po kroku z Positano do Ravello przez Amalfi na autobusach SITA: wskazówki biletowe, rozkład, szczegóły przystanku Chiesa Nuova i podpowiedzi dotyczące przesiadki."
+  },
+  "hero": {
+    "eyebrow": "Przewodnik podróżny Hostel Brikette",
+    "title": "Positano do Ravello – przez Amalfi autobusem",
+    "description": "Podróżuj z Positano do Ravello z prostą przesiadką w Amalfi. Ten przewodnik pokazuje, gdzie kupić bilety SITA, jak czytać rozkład jazdy i czego oczekiwać podczas przesiadki w Amalfi — oraz jak dojść z Hostel Brikette na przystanek w Positano."
+  },
+  "cta": {
+    "eyebrow": "Wskazówka",
+    "beforeLink": "Potrzebujesz wszystkich opcji transportu? Otwórz",
+    "linkLabel": "przegląd Jak do nas dotrzeć",
+    "afterLink": "aby sprawdzić promy, taksówki i trasy łączone."
+  },
+  "journey": {
+    "title": "Przegląd podróży",
+    "body": "Zaplanuj około 1,5–2,5 godziny w zależności od przesiadek. Najpierw wsiądź w Positano (Chiesa Nuova) do autobusu SITA do Amalfi, a następnie przesiądź się na autobus SITA do Ravello."
+  },
+  "sita": {
+    "title": "Autobusy SITA i bilety",
+    "items": [
+      "Autobusy na Wybrzeżu Amalfitańskim obsługuje SITA (SITA Sud Srl).",
+      "Kup bilety w kioskach lub sklepach tytoniowych (tabacchi) przed wejściem.",
+      "Miej bilet pod ręką; kierowcy kasują go, stemplując lub odrywając fragment przy wejściu.",
+      "W sezonie spodziewaj się tłumów; przyjdź kilka minut wcześniej, by ustawić się w kolejce."
+    ]
+  },
+  "timetable": {
+    "title": "Rozkłady jazdy",
+    "beforeLink": "Najpierw pojedziesz do Amalfi i tam przesiądziesz się do Ravello. Sprawdź aktualne rozkłady na",
+    "linkLabel": "Positano.com (przegląd rozkładu SITA)",
+    "afterLink": ".",
+    "linkHref": "https://www.positano.com/en/bus-schedule",
+    "readingHeading": "Jak czytać rozkład",
+    "tips": [
+      "Wiersze w pierwszej kolumnie wypisują każdy przystanek na trasie.",
+      "Kolumny odpowiadają zaplanowanym kursom oznaczonym literami.",
+      "Podróżujesz od poniedziałku do soboty? Korzystaj z kolumn „F” i „G”.",
+      "Podróżujesz w niedzielę lub święto? Sprawdź kolumny „G” i „H”."
+    ]
+  },
+  "positanoStop": {
+    "title": "Przystanek Positano (Chiesa Nuova)",
+    "items": [
+      "Najbliższy przystanek SITA to Positano (Chiesa Nuova) przy Via G. Marconi.",
+      "Znajduje się około 140 metrów (490 stóp) od wejścia do hostelu.",
+      "Na autobus poczekasz przed kawiarnią/barem „Bar Internazionale”."
+    ],
+    "caption": "Przyjdź kilka minut wcześniej, aby mieć pewność miejsca; w lecie autobusy szybko się zapełniają.",
+    "alt": "Przystanek SITA Positano Chiesa Nuova przed Bar Internazionale"
+  },
+  "walk": {
+    "title": "Spacer z hostelu na przystanek",
+    "items": [
+      "Wyjdź z hostelu, zejdź schodami do głównej drogi i skręć w lewo.",
+      "Idź dalej Via G. Marconi przez około 100 metrów (330 stóp).",
+      "Bar Internazionale będzie po lewej stronie; przystanek SITA znajduje się tuż przed nim."
+    ]
+  },
+  "buyTickets": {
+    "title": "Zakup biletów autobusowych",
+    "items": [
+      "Kup bilety w Bar Internazionale lub pobliskim tabacchi.",
+      "Potrzebujesz biletów na odcinki: Positano → Amalfi oraz Amalfi → Ravello.",
+      "W zależności od dostępnej taryfy możesz otrzymać jeden lub dwa bilety."
+    ]
+  },
+  "toAmalfi": {
+    "title": "Podróż autobusem do Amalfi",
+    "items": [
+      "Przejdź na drugą stronę ulicy od Bar Internazionale na przystanek w kierunku Amalfi.",
+      "Ustaw się w kolejce i wsiądź do autobusu z napisem Amalfi; skasuj bilet.",
+      "Wysiądź na dworcu autobusowym w Amalfi, aby złapać przesiadkę do Ravello."
+    ]
+  },
+  "change": {
+    "title": "Przesiadka w Amalfi",
+    "items": [
+      "W oczekiwaniu na kolejny autobus możesz krótko zwiedzić Amalfi.",
+      "Wróć w okolice dworca autobusowego, aby wsiąść do autobusu do Ravello (linie 5110/5120).",
+      "Skasuj drugi bilet przy wejściu."
+    ]
+  },
+  "arrive": {
+    "title": "Przyjazd do Ravello",
+    "items": [
+      "Ravello leży powyżej Amalfi; wiele atrakcji skupia się wokół Piazza Duomo.",
+      "Kieruj się za lokalnymi znakami do zakwaterowania lub głównego placu.",
+      "Jeśli docierasz późno, rozważ taksówkę z Amalfi, gdy połączeń jest niewiele."
+    ]
+  }
+}

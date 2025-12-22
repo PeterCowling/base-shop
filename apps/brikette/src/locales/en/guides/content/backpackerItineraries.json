@@ -1,0 +1,142 @@
+{
+  "seo": {
+    "title": "Positano on a backpacker budget: 1–3 day itineraries",
+    "description": "Day‑by‑day plans that hit Positano’s highlights while keeping costs in check."
+  },
+  "linkLabel": "Positano on a backpacker budget: 1–3 day itineraries",
+  "intro": [
+    "Practical day-by-day plans that hit the highlights without blowing your budget."
+  ],
+  "toc": [
+    {
+      "href": "#day1",
+      "label": "Day 1: Core Positano"
+    },
+    {
+      "href": "#day2",
+      "label": "Day 2: Path of the Gods + beach"
+    },
+    {
+      "href": "#day3",
+      "label": "Day 3: Capri or Amalfi + Ravello"
+    },
+    {
+      "href": "#savings",
+      "label": "Money-saving tips"
+    },
+    {
+      "href": "#food",
+      "label": "Cheap eats"
+    },
+    {
+      "href": "#transport",
+      "label": "Transport tips"
+    }
+  ],
+  "sections": [
+    {
+      "id": "pacing",
+      "title": "Pace the climb-heavy days",
+      "body": [
+        "Use arrival day to explore Chiesa Nuova and Fornillo first; save longer stair sessions (Path of the Gods, Arienzo steps) for after a full night of sleep.",
+        "Group activities by elevation so you stay on one terrace level at a time—finish upper-town viewpoints before descending to the marina."
+      ]
+    },
+    {
+      "id": "budget-mix",
+      "title": "Balance paid and free highlights",
+      "body": [
+        "Aim for one paid experience per day (boat tour, limoncello tasting, Capri ferry) and fill the rest with free beaches and scenic walks.",
+        "Carry snacks and refillable bottles; grocery runs at the Chiesa Nuova minimarket are far cheaper than waterfront cafés."
+      ]
+    },
+    {
+      "id": "viewpoints",
+      "title": "Squeeze in the best viewpoints",
+      "body": [
+        "Via Cristoforo Colombo delivers the classic postcard angle at sunrise and golden hour without entry fees.",
+        "For quiet photos, detour to the tiled courtyard by Chiesa Nuova or the small belvedere above Fornillo around 08:00."
+      ]
+    },
+    {
+      "id": "swim-breaks",
+      "title": "Plan budget swim breaks",
+      "body": [
+        "Fornillo Beach is free and less crowded—walk the coastal path from Spiaggia Grande and rent only the gear you need.",
+        "If you want Arienzo’s beach club vibe, take the stairs before 10:30 to snag public-space spots, then picnic with supermarket focaccia."
+      ]
+    },
+    {
+      "id": "evenings",
+      "title": "Evenings without overspending",
+      "body": [
+        "Sunset on the hostel terrace is free; mix your own spritz with supermarket prosecco and share tapas-style snacks.",
+        "Check the noticeboard for hostel social nights or head to Music on the Rocks after 23:30 when cover drops for hostel guests—bring ID."
+      ]
+    }
+  ],
+  "day1Title": "1 day: essentials",
+  "day1": [
+    "Morning: Spiaggia Grande lookouts → Fornillo via coastal path",
+    "Lunch: panini/pizza al taglio near Chiesa Nuova to save",
+    "Sunset: terrace viewpoints near the hostel"
+  ],
+  "day2Title": "2 days: add Path of the Gods",
+  "day2": [
+    "Day 1 as above",
+    "Day 2: SITA to Nocelle → Sentiero degli Dei segments → beach cooldown"
+  ],
+  "day3Title": "3 days: island or Amalfi combo",
+  "day3": [
+    "Option A: Day trip to Capri (early ferry) with DIY walking loop",
+    "Option B: Amalfi + Ravello via bus; Villa Rufolo gardens then gelato on the Duomo steps"
+  ],
+  "savingsTitle": "Money-saving tips",
+  "savings": [
+    "Travel in shoulder seasons; use SITA buses and walk between viewpoints.",
+    "Stay in dorms, cook simple breakfasts, and picnic at viewpoints for sunset."
+  ],
+  "foodTitle": "Cheap eats",
+  "foodText": "Find panini, pizza al taglio, and supermarket salads around mid-town; avoid waterfront price spikes.",
+  "transportTitle": "Transport tips",
+  "transportCompareLabel": "Compare routes:",
+  "transportCompareLinks": [
+    {
+      "key": "naplesPositano",
+      "label": "Naples → Positano"
+    },
+    {
+      "key": "salernoPositano",
+      "label": "Salerno → Positano"
+    }
+  ],
+  "transportFerryPrefix": "Check ",
+  "transportFerryLinkLabel": "ferry schedules",
+  "transportFerrySuffix": " and weather; buses are cheaper.",
+  "faqs": [
+    {
+      "q": "What’s the best 1-day plan?",
+      "a": [
+        "Start at Spiaggia Grande, hike to Fornillo, sunset from Chiesa Nuova terrace, dinner with hostel friends."
+      ]
+    },
+    {
+      "q": "How can I keep transport costs low?",
+      "a": [
+        "Use SITA buses and walk stairs where possible; ferries are great in season but cost more."
+      ]
+    },
+    {
+      "q": "What about a 2-day itinerary?",
+      "a": [
+        "Day 1 covers Positano’s essentials; Day 2 adds the Path of the Gods loop via Nocelle plus beach time at Arienzo or Fornillo."
+      ]
+    },
+    {
+      "q": "Any 3-day add-ons?",
+      "a": [
+        "Capri day trip or an Amalfi + Ravello combo; plan early ferries and bring snacks to save."
+      ]
+    }
+  ]
+}

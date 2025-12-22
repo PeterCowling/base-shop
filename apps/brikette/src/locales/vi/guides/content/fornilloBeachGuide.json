@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Fornillo Beach guide",
+    "description": "Layout map, free sections, and beach club tips for Pupetto, Da Ferdinando, Grassi, and La Marinella — plus shortcuts to and from the hostel."
+  },
+  "linkLabel": "Fornillo Beach guide: clubs & free spots",
+  "intro": [
+    "Bãi biển Fornillo là một vịnh nhỏ thư giãn cách nhà trọ một quãng đi bộ ngắn. Các câu lạc bộ bãi biển giữ mức giá nhẹ nhàng hơn Spiaggia Grande, các khu vực công cộng rộng rãi và bầu không khí thoải mái ngay cả trong những tuần cao điểm.",
+    "Sử dụng lối đi bộ ven biển để di chuyển giữa các khu vực bãi biển, lấy đồ ăn từ các quán bar và quay trở lại Spiaggia Grande nếu bạn muốn đi xe buýt nội địa lên dốc."
+  ],
+  "toc": [
+    {
+      "href": "#layout",
+      "label": "Bố cục và quyền truy cập"
+    },
+    {
+      "href": "#main-free",
+      "label": "Phần miễn phí chính"
+    },
+    {
+      "href": "#pupetto",
+      "label": "Câu lạc bộ bãi biển Pupetto"
+    },
+    {
+      "href": "#ferdinando",
+      "label": "Da Ferdinando"
+    },
+    {
+      "href": "#grassi",
+      "label": "Fratelli Grassi"
+    },
+    {
+      "href": "#marinella",
+      "label": "La Marinella"
+    },
+    {
+      "href": "#secret-free",
+      "label": "Vịnh nhỏ ẩn giấu"
+    }
+  ],
+  "sections": [
+    {
+      "id": "layout",
+      "title": "Bố trí và điều hành bãi biển",
+      "body": [
+        "Hai con đường chính dẫn tới Fornillo. Lối tắt từ %LINK:hostelBriketteToFornilloBeach|Nhà nghỉ Brikette% đến phía bên trái của bãi biển (khi hướng ra biển); lối đi dạo ven sông từ Spiaggia Grande đến phía bên tay phải.",
+        "Các câu lạc bộ bãi biển chạy theo trình tự từ điểm vào của nhà trọ hướng tới con đường chính trên bãi biển: Pupetto, Da Ferdinando, Fratelli Grassi và La Marinella. Hai khu vực công cộng bao quanh các lidos - một dải đất rộng tự do bên cạnh Pupetto và một vịnh nhỏ hơn ngoài La Marinella."
+      ]
+    },
+    {
+      "id": "main-free",
+      "title": "Phần miễn phí chính",
+      "body": [
+        "Khu vực miễn phí lớn nhất nằm ngay phía trước lối tắt từ nhà trọ. Đến trước 10:30 để giành chỗ gần mực nước; sỏi ấm lên nhanh chóng nên hãy mang theo một tấm thảm hoặc khăn dày.",
+        "Pupetto và Da Ferdinando đều bán đồ uống mang đi và bánh panini - hoàn hảo nếu bạn muốn ăn uống mà không cần thuê ghế dài. Theo dõi thủy triều trong các tháng vai; những cơn bão mùa thu có thể thu hẹp bờ biển trong một hoặc hai ngày."
+      ]
+    },
+    {
+      "id": "pupetto",
+      "title": "Câu lạc bộ bãi biển Pupetto",
+      "body": [
+        "Pupetto neo ở phía bên trái của Fornillo với những dãy ghế dài màu cam, vòi sen và một nhà hàng đầy đủ dịch vụ. Đặt trước qua WhatsApp hoặc điện thoại vào mùa hè nếu bạn muốn ngồi ở hàng ghế đầu; việc đi bộ thường ổn trước 09:30.",
+        "Những khách sử dụng khu vực miễn phí vẫn có thể đặt hàng mang đi từ quầy bar và phòng tắm của Pupetto mở cửa cho khách hàng trả tiền - rất tiện lợi nếu bạn quyết định nâng cấp giữa chừng trong ngày."
+      ]
+    },
+    {
+      "id": "ferdinando",
+      "title": "Da Ferdinando",
+      "body": [
+        "Da Ferdinando mang đến bầu không khí mát mẻ của quán bar trên bãi biển với những chiếc ghế dài màu xanh lam, dịch vụ cho thuê ván chèo và thực đơn bữa trưa phổ biến (hãy nghĩ đến món nướng trong ngày, salad và mì ống). Mong đợi giá cao hơn Pupetto một chút nhưng vẫn hợp lý cho Positano.",
+        "Taxi nước đến Laurito và Arienzo đi ngang qua cầu cảng của Da Ferdinando - rất hữu ích nếu bạn định đi biển sau khi bơi buổi sáng."
+      ]
+    },
+    {
+      "id": "grassi",
+      "title": "Quán bar bãi biển Fratelli Grassi",
+      "body": [
+        "Grassi nhỏ gọn với những hàng ghế dài màu đỏ gọn gàng và quầy bar có bóng râm phục vụ cocktail và granita. Nhóm cung cấp túi khô đựng đồ có giá trị nếu bạn thuê thuyền kayak để khám phá các hang động gần đó.",
+        "Vì không gian có hạn nên việc đặt trước sẽ có ích vào cuối tuần. Thường có thể đến vào giữa tuần sau 11:00 sau khi việc đặt chỗ sớm được giải quyết."
+      ]
+    },
+    {
+      "id": "marinella",
+      "title": "La Marinella",
+      "body": [
+        "La Marinella nằm gần lối đi Spiaggia Grande nhất và đón ánh nắng giữa trưa. Mong đợi dịch vụ chu đáo, đĩa ăn trưa và tùy chọn đặt ghế dài ở tầng trên có thêm bóng râm.",
+        "Vào mùa vai, La Marinella đôi khi di dời một vài chiếc ghế sang vịnh lân cận. Nhân viên nên chừa không gian cho khu vực công cộng nhưng hãy chuẩn bị tinh thần cho việc di chuyển chặt chẽ hơn khi biển động."
+      ]
+    },
+    {
+      "id": "secret-free",
+      "title": "Phần miễn phí 'Bí mật'",
+      "body": [
+        "Ngoài La Marinella, một vịnh nhỏ có khu vực công cộng yên tĩnh hơn với thềm đá cuội và mặt nước tĩnh lặng. Mang theo kem chống nắng và giày đi nước thân thiện với rạn san hô - lối vào có nhiều đá và nhím biển có thể tụ tập gần rìa.",
+        "La Marinella thỉnh thoảng đặt những chiếc ghế dài dự phòng ở đây vào những ngày giông bão. Khu vực này chính thức vẫn miễn phí, vì vậy hãy cảm thấy thoải mái khi sử dụng không gian nếu bạn đến trước; chỉ chừa chỗ cho ghế hoặc thuyền kayak."
+      ]
+    }
+  ],
+  "tipsTitle": "Mẹo nhanh",
+  "tips": [
+    "Đi theo %LINK:hostelBriketteToFornilloBeach|tuyến đường tắt% để xuống dốc nhanh nhất (15–20 phút).",
+    "Khi bạn đã sẵn sàng khởi hành, hãy bắt %LINK:fornilloBeachToBrikette|tuyến đường trở về% dọc theo lối đi dạo và bắt xe buýt nội địa quay trở lại Chiesa Nuova.",
+    "So sánh giá cả và các vịnh thay thế trong %LINK:positanoBeaches|Tổng quan về bãi biển Positano% của chúng tôi trước khi bạn đặt ghế nằm."
+  ],
+  "warningsTitle": "Thật tốt khi biết",
+  "warnings": [
+    "Fornillo có nhiều đá cuội - hãy mang giày hoặc dép đi trong nước để đi dọc bờ biển.",
+    "Bóng râm bị hạn chế sau buổi sáng muộn, vì vậy hãy lên kế hoạch thuê dù che nắng hoặc mang theo mũ và kem chống nắng.",
+    "Máy thẻ thỉnh thoảng ngoại tuyến; mang theo một ít tiền mặt để thanh toán và số dư trên ghế dài."
+  ],
+  "faqsTitle": "Câu hỏi thường gặp về Fornillo",
+  "faqs": [
+    {
+      "q": "Tôi có cần đặt trước ghế nằm không?",
+      "a": [
+        "Trợ giúp đặt phòng vào cuối tuần mùa hè. Pupetto và La Marinella trả lời qua điện thoại hoặc WhatsApp; Da Ferdinando và Grassi cũng theo dõi tin nhắn trực tiếp trên Instagram. Những người đến sớm trước 09:30 thường có thể giành được chỗ ngồi không cần hẹn trước."
+      ]
+    },
+    {
+      "q": "Tôi có thể mang theo đồ ăn của riêng mình được không?",
+      "a": [
+        "Những buổi dã ngoại được chào đón trong các phần miễn phí. Nếu bạn thuê ghế nằm, hãy mang theo đồ ăn nhẹ và chai nước trừ khi câu lạc bộ xác nhận khác. Mỗi nhà điều hành đều có một quán bar hoặc nhà hàng phục vụ những bữa ăn lớn hơn."
+      ]
+    },
+    {
+      "q": "Tôi có thể tắm hoặc sử dụng phòng tắm ở đâu?",
+      "a": [
+        "Cơ sở vật chất thuộc về từng câu lạc bộ bãi biển. Hãy hỏi quầy bar trước khi sử dụng nếu bạn đang ở khu vực công cộng - nhiều quán cho phép bạn ghé thăm nhanh với một khoản phí nhỏ hoặc khi bạn mua đồ ăn hoặc đồ uống."
+      ]
+    }
+  ]
+}

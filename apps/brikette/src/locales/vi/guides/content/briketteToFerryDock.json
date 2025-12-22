@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → bến phà, mang hành lý",
+    "description": "Lộ trình từng bước từ hostel tới bến phà Positano bằng xe buýt Interno và dịch vụ khuân vác."
+  },
+  "linkLabel": "Hostel Brikette → bến phà, mang hành lý",
+  "intro": [
+    "Rời Hostel Brikette với nhiều hành lý? Hãy đi xe buýt Interno Positano xuống dốc và nhờ đội khuân vác tại bến chuyển các vali nặng để bạn ra phà mà không phải vật lộn với cầu thang Positano."
+  ],
+  "beforeList": [
+    "Kiểm tra lịch xe buýt Interno Positano hiện tại — đây là [lịch trình và giá vé mới nhất](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Mua vé Interno Positano tại quầy tabacchi cạnh Chiesa Nuova trước khi lên xe (hoặc nhờ lễ tân xác nhận còn vé).",
+    "Sắp xếp dịch vụ khuân vác nếu bạn có hành lý cồng kềnh — lễ tân có thể gọi trước, hoặc xem [hướng dẫn dịch vụ khuân vác](guide:porterServices) để biết số điện thoại và giá cả."
+  ],
+  "sections": [
+    {
+      "id": "hostel-to-stop",
+      "title": "Từ cổng hostel đến điểm dừng Chiesa Nuova",
+      "body": [
+        "Làm thủ tục trả phòng, sau đó đi xuống cầu thang chính tới Viale Pasitea và rẽ trái (xuống dốc). Đi bộ hơn 100 mét để tới quầy tabacchi/quầy báo mà bạn đã dùng khi đến nơi.",
+        "Điểm dừng xe buýt Interno Positano nằm ngay cạnh quầy tabacchi. Hãy chuẩn bị sẵn vé; nếu cần mua thêm, hãy vào trong mua trước khi xe đến."
+      ]
+    },
+    {
+      "id": "bus-to-mulini",
+      "title": "Đi xe buýt Interno Positano tới Piazza dei Mulini",
+      "body": [
+        "Lên xe buýt Interno Positano — bảng điểm đến sẽ ghi \"interno positano\". Giữ hành lý trên đùi hoặc ở khu vực giữa để lối đi thông thoáng.",
+        "Ngồi khoảng 10 phút đến điểm Piazza dei Mulini (điểm dừng lớn cuối cùng trước khu đi bộ). Nếu không chắc, hãy báo với tài xế rằng bạn đang đi ra bãi biển."
+      ]
+    },
+    {
+      "id": "mulini-to-dock",
+      "title": "Từ Piazza dei Mulini đến bến phà",
+      "body": [
+        "Xuống xe, gặp đội khuân vác nếu bạn đã đặt trước và đi thẳng vào lối đi dành cho người đi bộ dẫn tới Spiaggia Grande.",
+        "Đi dọc lối ven biển khoảng 7 phút — dùng [lộ trình này](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) để đi trên những đoạn dốc thoải nhất.",
+        "Tại cầu tàu, làm thủ tục với hãng phà của bạn. Đội khuân vác sẽ chuyển hành lý riêng; hãy giữ hộ chiếu, thuốc men và đồ giá trị bên người."
+      ]
+    }
+  ],
+  "stepsList": [
+    "Mua vé xe buýt Interno Positano tại quầy tabacchi Chiesa Nuova và xác nhận dịch vụ khuân vác.",
+    "Đi bộ 100 m xuống dốc từ hostel tới điểm dừng Chiesa Nuova và chờ ở phía hướng biển của Viale Pasitea.",
+    "Đi xe buýt Interno Positano đến Piazza dei Mulini (điểm dừng lớn cuối cùng trước bãi biển).",
+    "Gặp đội khuân vác và đi dọc lối ven biển tới bến phà trong khi họ chuyển hành lý nặng."
+  ],
+  "kneesList": [
+    "Đi xe buýt Interno Positano giúp bạn tránh hàng trăm bậc dốc bằng một quãng đi bộ ngắn, bằng phẳng.",
+    "Đội khuân vác có thể chở vali trên xe đẩy riêng nên bạn chỉ cần mang balô nhỏ trên lối đi ven biển."
+  ],
+  "kneesDockPrefix": "Cần lộ trình leo ngược khi quay về? Xem",
+  "kneesDockLinkLabel": "hướng dẫn đến Chiesa Nuova",
+  "kneesPorterPrefix": "Muốn biết giá và cách đặt dịch vụ khuân vác? Xem",
+  "kneesPorterLinkLabel": "hướng dẫn dịch vụ khuân vác",
+  "faqs": [
+    {
+      "q": "Tôi có thể mua vé Interno Positano ở đâu gần hostel?",
+      "a": [
+        "Quầy tabacchi/quầy báo cạnh điểm dừng Chiesa Nuova luôn có sẵn vé và lễ tân có thể xác nhận còn vé trong ngày. Tài xế không bán vé trên xe."
+      ]
+    },
+    {
+      "q": "Tôi nên đặt đội khuân vác trước bao lâu?",
+      "a": [
+        "Vào mùa hè hãy gọi trước 30–45 phút trước giờ bạn muốn rời đi để họ gặp bạn tại Piazza dei Mulini. Mùa vắng khách, 15 phút thường là đủ — lễ tân có thể gọi giúp bạn."
+      ]
+    },
+    {
+      "q": "Nếu xe buýt Interno không chạy khi tôi đi thì sao?",
+      "a": [
+        "Nếu dịch vụ tạm dừng vào đêm muộn, hãy nhờ đội khuân vác mang hành lý xuống tận nơi và bạn tự đi bộ dọc lối ven biển, hoặc đi xe buýt SITA về hướng Sponda (chạy muộn hơn) rồi tiếp tục đi bộ xuống dốc."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Xác nhận vé và dịch vụ khuân vác tại Chiesa Nuova",
+    "Đi bộ xuống dốc từ hostel đến điểm dừng Chiesa Nuova",
+    "Đi xe buýt Interno Positano tới Piazza dei Mulini",
+    "Gặp đội khuân vác và đi bộ tới cầu phà"
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "seo": {
+    "title": "Dłuższy pobyt poza sezonem: wskazówki",
+    "description": "Jak przygotować się do dłuższego pobytu zimą lub poza szczytem: zakupy, pogoda, transport."
+  },
+  "linkLabel": "Dłuższy pobyt poza sezonem: wskazówki",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "housing",
+      "title": "Housing & rates",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Weather & packing",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Carry a compact umbrella; winds funnel through the valley so gusts feel stronger than the forecast suggests."
+      ]
+    },
+    {
+      "id": "work-life",
+      "title": "Work & daily rhythm",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "community",
+      "title": "Staying social",
+      "body": [
+        "Join local Facebook groups or WhatsApp chats for language exchanges and community dinners.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "tips": [
+    "Keep some euro coins for heaters and laundromats—coin slots still run many machines in winter months.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "faqs": [
+    {
+      "q": "Do restaurants stay open?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Tłumaczenie w przygotowaniu.",
+      "a": [
+        "Yes on dry days, but avoid it after heavy rain; rocks become slick and small landslides are more common."
+      ]
+    }
+  ],
+  "fallback": {
+    "tocTitle": "On this page",
+    "intro": [],
+    "toc": [
+      {
+        "href": "#connectivity",
+        "label": "Connectivity"
+      },
+      {
+        "href": "#groceries",
+        "label": "Groceries & essentials"
+      },
+      {
+        "href": "#transport",
+        "label": "Tłumaczenie w przygotowaniu."
+      },
+      {
+        "href": "#weather",
+        "label": "Weather & packing"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "connectivity",
+        "title": "Connectivity",
+        "body": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      },
+      {
+        "id": "groceries",
+        "title": "Groceries & essentials",
+        "body": [
+          "Off-season hours vary; stock up earlier in the day and on weekdays."
+        ]
+      },
+      {
+        "id": "transport",
+        "title": "Tłumaczenie w przygotowaniu.",
+        "body": [
+          "Ferries scale back; rely on buses and plan for rain/wind days."
+        ]
+      },
+      {
+        "id": "weather",
+        "title": "Weather & packing",
+        "body": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "Tłumaczenie w przygotowaniu.",
+        "a": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      }
+    ]
+  }
+}

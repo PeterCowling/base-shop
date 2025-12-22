@@ -1,0 +1,78 @@
+{
+  "seo": {
+    "title": "Ferragosto en Positano (15 de agosto)",
+    "description": "Qué esperar el 15 de agosto: multitudes, cierres, fuegos artificiales y consejos de transporte."
+  },
+  "linkLabel": "Ferragosto en Positano (15 de agosto)",
+  "intro": [
+    "Ferragosto (15 de agosto) mezcla fiesta religiosa, playa y fuegos artificiales en Positano.",
+    "Planifica con antelación: la ocupación es máxima y los horarios cambian."
+  ],
+  "sections": [
+    {
+      "id": "programa",
+      "title": "Programa típico",
+      "body": [
+        "Misa y procesión de la Asunción en la iglesia de Santa Maria Assunta a media mañana.",
+        "Por la noche, fuegos artificiales sobre Spiaggia Grande; llega una hora antes para conseguir sitio."
+      ]
+    },
+    {
+      "id": "transporte",
+      "title": "Transporte y accesos",
+      "body": [
+        "Buses y ferris operan con horarios especiales; consulta el día previo.",
+        "El tráfico se intensifica: evita llegar en coche y opta por buses SITA o traslado privado temprano."
+      ]
+    },
+    {
+      "id": "consejos",
+      "title": "Consejos prácticos",
+      "body": [
+        "Reserva restaurantes y tumbonas con semanas de antelación.",
+        "Lleva agua, sombrero y protector solar; las colas para comprar en playa son largas.",
+        "Respeta las áreas reservadas para la procesión y evita bloquear los accesos."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Planes de respaldo",
+      "body": [
+        "Los buses SITA operan horarios festivos con menos salidas; revisa la cartelera y haz fila con antelación.",
+        "Los ferris pueden agotarse; compra ida y vuelta el día anterior y ten listo un plan por bus si el mar se complica."
+      ]
+    }
+  ],
+  "tips": [
+    "Si quieres fotos sin gente, madruga el 16 de agosto cuando muchos visitantes ya se han marchado.",
+    "Coordina check-in/check-out fuera del 15 para evitar esperas prolongadas."
+  ],
+  "faqs": [
+    {
+      "q": "¿Los comercios cierran en Ferragosto?",
+      "a": [
+        "Algunos sí durante la mañana; supermercados y panaderías abren pocas horas. Haz compras el día anterior."
+      ]
+    },
+    {
+      "q": "¿Se permiten fuegos artificiales personales?",
+      "a": [
+        "No; deja el espectáculo al municipio y evita riesgos en playas y terrazas."
+      ]
+    }
+  ],
+  "toc": [
+    {
+      "href": "#programa",
+      "label": "Programa típico"
+    },
+    {
+      "href": "#transporte",
+      "label": "Transporte"
+    },
+    {
+      "href": "#consejos",
+      "label": "Consejos prácticos"
+    }
+  ]
+}

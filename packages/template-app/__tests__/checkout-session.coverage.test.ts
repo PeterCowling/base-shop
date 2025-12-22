@@ -24,6 +24,18 @@ jest.mock("@platform-core/checkout/session", () => {
   const actual = jest.requireActual("@platform-core/checkout/session");
   return { ...actual, createCheckoutSession: jest.fn(actual.createCheckoutSession) };
 });
+jest.mock("@platform-core/inventoryValidation", () => {
+  const actual = jest.requireActual("@platform-core/inventoryValidation");
+  return {
+    ...actual,
+    validateInventoryAvailability: jest.fn(async () => ({ ok: true })),
+  };
+});
+jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@platform-core/customerProfiles", () => ({ getCustomerProfile: jest.fn(async () => null) }));
+jest.mock("@platform-core/identity", () => ({
+  getOrCreateStripeCustomerId: jest.fn(async () => "stripe-customer"),
+}));
 
 import { createRequest } from "./checkout-session.helpers";
 import { stripe } from "@acme/stripe";
@@ -62,7 +74,7 @@ test("applies coverage fee and waiver", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
-  stripeCreate.mockResolvedValue({ id: "sess_cov", payment_intent: { client_secret: "cs_cov" } });
+  stripeCreate.mockResolvedValue({ id: "sess_cov", client_secret: "cs_cov" });
   const cookie = encodeCartCookie("test");
   const res = await POST(createRequest({ returnDate: "2025-01-02", coverage: ["damage"] }, cookie) as any);
   await res.json();
@@ -92,7 +104,7 @@ test("skips coverage when shop coverageIncluded is false", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
-  stripeCreate.mockResolvedValue({ id: "sess_skip", payment_intent: { client_secret: "cs_skip" } });
+  stripeCreate.mockResolvedValue({ id: "sess_skip", client_secret: "cs_skip" });
   const cookie = encodeCartCookie("test");
   await POST(createRequest({ returnDate: "2025-01-02", coverage: ["damage"] }, cookie) as any);
   expect(getPricingMock).not.toHaveBeenCalled();
@@ -115,7 +127,7 @@ test("handles coverage codes with no matching rules", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
-  stripeCreate.mockResolvedValue({ id: "sess_none", payment_intent: { client_secret: "cs_none" } });
+  stripeCreate.mockResolvedValue({ id: "sess_none", client_secret: "cs_none" });
   const cookie = encodeCartCookie("test");
   await POST(createRequest({ returnDate: "2025-01-02", coverage: ["unknown"] }, cookie) as any);
   expect(getPricingMock).toHaveBeenCalled();
@@ -141,7 +153,7 @@ test("skips adjustments when currency conversion yields zero", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
-  stripeCreate.mockResolvedValue({ id: "sess_zero", payment_intent: { client_secret: "cs_zero" } });
+  stripeCreate.mockResolvedValue({ id: "sess_zero", client_secret: "cs_zero" });
   const cookie = encodeCartCookie("test");
   await POST(createRequest({ returnDate: "2025-01-02", coverage: ["damage"] }, cookie) as any);
   expect(convertCurrencyMock).toHaveBeenCalledWith(5, "EUR");
@@ -164,7 +176,7 @@ test("ignores non-array coverage input", async () => {
   const sku = PRODUCTS[0];
   const size = sku.sizes[0];
   mockCart = { [`${sku.id}:${size}`]: { sku, qty: 1, size } };
-  stripeCreate.mockResolvedValue({ id: "sess_str", payment_intent: { client_secret: "cs_str" } });
+  stripeCreate.mockResolvedValue({ id: "sess_str", client_secret: "cs_str" });
   const cookie = encodeCartCookie("test");
   await POST(createRequest({ returnDate: "2025-01-02", coverage: "damage" as any }, cookie) as any);
   expect(getPricingMock).not.toHaveBeenCalled();

@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Transport publiczny na Wybrzeżu Amalfitańskim",
+    "description": "Jak poruszać się bez samochodu: autobusy, promy i pociągi — bilety, rozkłady i sezonowe niuanse."
+  },
+  "linkLabel": "Transport publiczny na Wybrzeżu Amalfitańskim",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "SITA buses",
+      "body": [
+        "Buy tickets at tobacconists/newstands before boarding and validate on the bus.",
+        "Expect queues at peak times. Start early and consider a ferry as a crowd bypass."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Ferries (seasonal)",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Trains (to gateways)",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Intercity legs save time on Rome/Naples/Salerno routing; local Circumvesuviana serves Sorrento."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & strategy",
+      "body": [
+        "Leave before 09:00 to beat queues; for sunset returns, prefer ferries when seas are calm.",
+        "Carry small change for tickets and a hat/water for exposed stops."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can I bring luggage on buses?",
+      "a": [
+        "Allowed but not ideal at peak; consider ferries or porters for heavy bags."
+      ]
+    },
+    {
+      "q": "Tłumaczenie w przygotowaniu.",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ]
+}

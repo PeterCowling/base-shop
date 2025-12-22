@@ -1,0 +1,12 @@
+{
+  "currency": "EUR",
+  "horizonStart": "2025-01-01",
+  "horizonEnd": "2025-12-31",
+  "rows": [
+    { "date": "2025-10-19", "sku": "double_room", "plan": "flex", "price": 259.2, "available": true },
+    { "date": "2025-10-19", "sku": "double_room", "plan": "nr", "price": 239.0, "available": true },
+    { "date": "2025-10-19", "sku": "room_10", "plan": "flex", "price": 60.75, "available": true },
+    { "date": "2025-10-19", "sku": "room_10", "plan": "nr", "price": 54.5, "available": true }
+  ]
+}
+

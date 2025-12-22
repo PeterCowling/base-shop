@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Page introuvable",
+    "description": "La page que vous avez demandée n'existe pas."
+  },
+  "heading": "Page introuvable",
+  "message": "Explorez peut-être nos chambres ou réservez votre séjour.",
+  "linksTitle": "Liens utiles",
+  "links": {
+    "home": "Accueil",
+    "deals": "Offres",
+    "assistance": "Contact et infos",
+    "about": "À propos"
+  },
+  "buttonRooms": "Chambres",
+  "buttonReserve": "Réserver maintenant"
+}

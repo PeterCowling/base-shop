@@ -28,18 +28,29 @@ interface DurableObjectState {
 
 type DORequest =
   | { op: "get"; id: string; ttl: number }
-  | { op: "set"; record: SessionRecord; ttl: number }
+  | { op: "set"; record: SerializedSessionRecord; ttl: number }
   | { op: "delete"; id: string; ttl: number }
   | { op: "list"; customerId: string; ttl: number };
 
 type DOResponse =
-  | { ok: true; record?: SessionRecord | null; records?: SessionRecord[] }
+  | { ok: true; record?: SerializedSessionRecord | null; records?: SerializedSessionRecord[] }
   | { ok: false };
 
 type StoredSession = SessionRecord & { expiresAt: number };
+type SerializedSessionRecord = Omit<SessionRecord, "createdAt"> & { createdAt: string };
 
 const SESSION_PREFIX = "session:";
 const CUSTOMER_PREFIX = "customer:";
+
+const serializeRecord = (record: SessionRecord): SerializedSessionRecord => ({
+  ...record,
+  createdAt: record.createdAt.toISOString(),
+});
+
+const hydrateRecord = (record: SerializedSessionRecord): SessionRecord => ({
+  ...record,
+  createdAt: new Date(record.createdAt),
+});
 
 /** Cloudflare Durable Object-backed implementation of SessionStore */
 export class CloudflareDurableObjectSessionStore implements SessionStore {
@@ -76,16 +87,16 @@ export class CloudflareDurableObjectSessionStore implements SessionStore {
     const result = await this.call<DOResponse>({ op: "get", id, ttl: this.ttl });
     if (result?.ok) {
       const rec = result.record ?? null;
-      return rec ? { ...rec, createdAt: new Date(rec.createdAt) } : null;
+      return rec ? hydrateRecord(rec) : null;
     }
     return null;
   }
 
   async set(record: SessionRecord): Promise<void> {
-    const payload = { ...record, createdAt: record.createdAt.toISOString() };
+    const payload = serializeRecord(record);
     const result = await this.call<DOResponse>({
       op: "set",
-      record: payload as SessionRecord,
+      record: payload,
       ttl: this.ttl,
     });
     if (!result?.ok) {
@@ -104,7 +115,7 @@ export class CloudflareDurableObjectSessionStore implements SessionStore {
       ttl: this.ttl,
     });
     if (result?.ok && result.records) {
-      return result.records.map((r) => ({ ...r, createdAt: new Date(r.createdAt) }));
+      return result.records.map(hydrateRecord);
     }
     return [];
   }
@@ -159,7 +170,16 @@ export class SessionDurableObject {
       switch (body.op) {
         case "get": {
           const stored = await this.load(body.id);
-          return json({ ok: true, record: stored ? { ...stored, createdAt: stored.createdAt } : null });
+          if (!stored) {
+            return json({ ok: true, record: null });
+          }
+          const record: SessionRecord = {
+            sessionId: stored.sessionId,
+            customerId: stored.customerId,
+            userAgent: stored.userAgent,
+            createdAt: stored.createdAt,
+          };
+          return json({ ok: true, record: serializeRecord(record) });
         }
         case "set": {
           const createdAt = new Date(body.record.createdAt);
@@ -177,16 +197,17 @@ export class SessionDurableObject {
         case "list": {
           const prefix = this.customerKey(body.customerId);
           const refs = await this.state.storage.list<string>({ prefix });
-          const records: SessionRecord[] = [];
+          const records: SerializedSessionRecord[] = [];
           for (const [, sessionId] of refs) {
             const stored = await this.load(sessionId);
             if (stored) {
-              records.push({
+              const record: SessionRecord = {
                 sessionId: stored.sessionId,
                 customerId: stored.customerId,
                 userAgent: stored.userAgent,
                 createdAt: new Date(stored.createdAt),
-              });
+              };
+              records.push(serializeRecord(record));
             } else {
               await this.state.storage.delete(`${prefix}${sessionId}`);
             }

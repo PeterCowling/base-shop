@@ -1,0 +1,149 @@
+{
+  "items": [
+    {
+      "id": "what-kind-of-breakfast-is-served-at-hostel-brikette",
+      "question": "Hostel Brikette phục vụ bữa sáng như thế nào?",
+      "answer": "Khách được thưởng thức thực đơn gọi món được đánh giá cao. Đặt trực tiếp để nhận bữa sáng miễn phí."
+    },
+    {
+      "id": "what-are-the-check-in-and-check-out-times-at-hostel-brikette",
+      "question": "Giờ nhận phòng và trả phòng tại Hostel Brikette là khi nào?",
+      "answer": "Nhận phòng diễn ra từ 15:00 đến 22:30; trả phòng từ 07:30 đến 10:30."
+    },
+    {
+      "id": "how-much-does-it-cost-to-stay-at-hostel-brikette",
+      "question": "Chi phí lưu trú tại Hostel Brikette là bao nhiêu?",
+      "answer": "Giá phòng thay đổi theo ngày và loại phòng. Để xem giá mới nhất, hãy tìm kiếm theo phòng và ngày bạn muốn ở."
+    },
+    {
+      "id": "what-is-there-to-do-at-hostel-brikette",
+      "question": "Ở Hostel Brikette có những hoạt động nào?",
+      "answer": "Hostel tổ chức hoặc gợi ý các chuyến đi bộ đường dài; những hoạt động khác có thể tính thêm phí."
+    },
+    {
+      "id": "how-far-is-hostel-brikette-from-the-centre-of-positano",
+      "question": "Hostel Brikette cách trung tâm Positano bao xa?",
+      "answer": "Chỗ nghỉ cách trung tâm Positano khoảng 350 mét."
+    },
+    {
+      "id": "how-close-to-the-beach-is-hostel-brikette",
+      "question": "Hostel Brikette cách bãi biển bao xa?",
+      "answer": "Bãi biển gần nhất cách khoảng 350 mét."
+    },
+    {
+      "id": "what-room-types-are-available-at-hostel-brikette",
+      "question": "Hostel Brikette có những loại phòng nào?",
+      "answer": "Bạn có thể đặt giường trong phòng ngủ tập thể hỗn hợp, phòng tập thể nữ hoặc phòng đôi riêng có phòng tắm khép kín."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-terrace-with-sea-views",
+      "question": "Hostel Brikette có sân thượng ngắm biển không?",
+      "answer": "Có. Sân thượng chung rộng rãi nhìn trọn Positano và mở ra tầm nhìn biển toàn cảnh."
+    },
+    {
+      "id": "is-free-wi-fi-provided",
+      "question": "Có Wi-Fi miễn phí không?",
+      "answer": "Có. Wi-Fi miễn phí phủ sóng toàn bộ khuôn viên."
+    },
+    {
+      "id": "is-breakfast-included-in-the-rate",
+      "question": "Giá phòng có bao gồm bữa sáng không?",
+      "answer": "Nếu bạn đặt trực tiếp thì giá đã bao gồm bữa sáng; đặt qua kênh khác sẽ tính thêm phí bữa sáng."
+    },
+    {
+      "id": "does-hostel-brikette-have-an-on-site-bar",
+      "question": "Hostel Brikette có quầy bar tại chỗ không?",
+      "answer": "Có. Quầy bar phục vụ cà phê, đồ ăn nhẹ, bữa sáng, món tối và đồ uống hằng ngày từ 07:30 đến 23:30."
+    },
+    {
+      "id": "can-i-store-my-luggage-before-check-in-or-after-check-out",
+      "question": "Tôi có thể gửi hành lý trước giờ nhận phòng hoặc sau khi trả phòng không?",
+      "answer": "Có. Chúng tôi giữ hành lý cho khách nhận phòng từ 10:30 trở đi, và cho khách trả phòng từ 07:30 đến 15:30."
+    },
+    {
+      "id": "are-there-age-restrictions-at-hostel-brikette",
+      "question": "Hostel Brikette có giới hạn độ tuổi không?",
+      "answer": "Phòng ngủ tập thể chỉ nhận khách từ 18 đến 39 tuổi. Phòng riêng không áp dụng giới hạn này."
+    },
+    {
+      "id": "are-children-allowed",
+      "question": "Có cho phép trẻ em lưu trú không?",
+      "answer": "Phòng ngủ tập thể chỉ dành cho người lớn và không nhận trẻ em. Hãy đặt phòng riêng nếu bạn cần tránh giới hạn độ tuổi."
+    },
+    {
+      "id": "are-pets-allowed",
+      "question": "Có cho mang theo thú cưng không?",
+      "answer": "Rất tiếc, chúng tôi không cho phép thú cưng trong khuôn viên."
+    },
+    {
+      "id": "does-the-hostel-have-its-own-parking",
+      "question": "Hostel có bãi đỗ xe riêng không?",
+      "answer": "Không có chỗ đỗ xe trong khuôn viên; bạn có thể gửi xe tại các bãi công cộng có thu phí ở Positano."
+    },
+    {
+      "id": "is-air-conditioning-available",
+      "question": "Có điều hòa không?",
+      "answer": "Có. Mọi phòng riêng và phòng ngủ tập thể đều được trang bị điều hòa."
+    },
+    {
+      "id": "are-lockers-provided-in-the-dormitories",
+      "question": "Phòng tập thể có tủ khóa riêng không?",
+      "answer": "Có. Mỗi giường đều có tủ khóa riêng; hãy mang theo ổ khóa của bạn hoặc mua tại lễ tân."
+    },
+    {
+      "id": "are-towels-included",
+      "question": "Giá phòng có bao gồm khăn tắm không?",
+      "answer": "Chúng tôi phát khăn tắm khi bạn nhận phòng; khăn đi biển có thể thuê thêm."
+    },
+    {
+      "id": "is-bed-linen-included",
+      "question": "Có bao gồm ga giường không?",
+      "answer": "Có. Chúng tôi chuẩn bị bộ ga giường sạch khi bạn nhận phòng."
+    },
+    {
+      "id": "does-hostel-brikette-have-laundry-facilities",
+      "question": "Hostel Brikette có dịch vụ giặt là không?",
+      "answer": "Không có máy giặt trong khuôn viên, nhưng có vài tiệm giặt là ngay gần hostel."
+    },
+    {
+      "id": "does-hostel-brikette-have-quiet-hours",
+      "question": "Hostel Brikette có giờ yên tĩnh không?",
+      "answer": "Giờ yên tĩnh từ 23:30 đến 07:30."
+    },
+    {
+      "id": "how-do-i-get-to-hostel-brikette-from-naples-airport",
+      "question": "Tôi đi từ sân bay Naples đến Hostel Brikette bằng cách nào?",
+      "answer": "Bản dịch đang được chuẩn bị."
+    },
+    {
+      "id": "where-is-the-nearest-bus-stop",
+      "question": "Trạm xe buýt gần nhất ở đâu?",
+      "answer": "Điểm dừng Chiesa Nuova cách hostel chưa tới 80 m (khoảng 250 ft) và không có bậc thang trên đường đi."
+    },
+    {
+      "id": "what-payment-methods-are-accepted",
+      "question": "Nhận những phương thức thanh toán nào?",
+      "answer": "Lễ tân chấp nhận Visa, Mastercard, Maestro, thẻ ATM và tiền mặt."
+    },
+    {
+      "id": "is-reception-open-24-hours",
+      "question": "Quầy lễ tân có mở 24/24 không?",
+      "answer": "Lễ tân mở cửa từ 07:30 đến 22:30. Nếu đến muộn, bạn cần báo trước để sắp xếp."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-shared-kitchen",
+      "question": "Hostel Brikette có bếp dùng chung không?",
+      "answer": "Không có bếp chung, nhưng bạn có thể dùng tủ lạnh, ấm đun nước và lò vi sóng."
+    },
+    {
+      "id": "does-hostel-brikette-offer-female-only-dorms",
+      "question": "Hostel Brikette có phòng ngủ tập thể dành riêng cho nữ không?",
+      "answer": "Có. Bạn có thể đặt giường trong phòng ngủ tập thể dành riêng cho nữ."
+    },
+    {
+      "id": "is-the-property-wheelchair-accessible",
+      "question": "Chỗ nghỉ có phù hợp cho xe lăn không?",
+      "answer": "Rất tiếc, hostel chưa hỗ trợ tiếp cận bằng xe lăn."
+    }
+  ]
+}

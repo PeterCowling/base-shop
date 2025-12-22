@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Guide d'Amalfi : histoire, lieux à voir et conseils",
+    "description": "Incontournables d'Amalfi, comment s'y rendre, temps à prévoir et idées de prolongement vers Ravello."
+  },
+  "linkLabel": "Guide d'Amalfi : histoire, lieux à voir et conseils",
+  "intro": [
+    "Profitez au maximum d'une journée à Amalfi : incontournables, accès et conseils horaires pour éviter les bus touristiques."
+  ],
+  "sections": [
+    {
+      "id": "highlights",
+      "title": "Incontournables",
+      "body": [
+        "Montez les 62 marches de la cathédrale d'Amalfi pour admirer la façade rayée, le cloître et le musée (tenue couvrante obligatoire).",
+        "Visitez le Museo della Carta pour assister aux démonstrations de papier fait main et rapporter des souvenirs légers."
+      ]
+    },
+    {
+      "id": "arrival",
+      "title": "S'y rendre",
+      "body": [
+        "Les ferries depuis Positano prennent environ 20 minutes ; les bus mettent 40 à 50 minutes selon la circulation. Arrivez avant 10 h pour trouver de l'ombre sur la piazza.",
+        "Achetez vos billets de ferry retour en début d'après-midi au cas où les traversées changeraient avec le vent."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Quand y aller",
+      "body": [
+        "Les matinées (avant 11 h) ou les soirées (après 17 h) sont les plus calmes une fois les excursionnistes repartis.",
+        "Combinez Amalfi avec Atrani (cinq minutes à pied) pour dîner sur la petite piazza avant de rentrer."
+      ]
+    }
+  ],
+  "tips": [
+    "Emportez un foulard léger pour les visites d'églises et pour vous protéger du soleil pendant la traversée.",
+    "Goûtez une granita au citron aux kiosques du front de mer pour vous rafraîchir entre deux arrêts."
+  ],
+  "faqTitle": "FAQ",
+  "faqs": [
+    {
+      "q": "Combien de temps prévoir à Amalfi ?",
+      "a": [
+        "Comptez trois à quatre heures pour la cathédrale, le musée du papier et un repas tranquille. Ajoutez du temps si vous voulez nager sur la petite plage du centre."
+      ]
+    },
+    {
+      "q": "Existe-t-il une consigne à bagages ?",
+      "a": [
+        "Oui, des consignes sont installées près du quai des ferries. Prévoyez 5 à 8 € par bagage pour la journée."
+      ]
+    }
+  ]
+}

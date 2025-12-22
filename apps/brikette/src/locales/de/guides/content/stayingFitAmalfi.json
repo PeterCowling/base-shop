@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Fit bleiben auf Reisen (Amalfiküste)",
+    "description": "Treppen-Workouts, Läufe am Strand und alltagstaugliche Aktiv-Routinen."
+  },
+  "linkLabel": "Fit bleiben auf Reisen (Amalfi)",
+  "intro": [
+    "Bleib an der Amalfiküste aktiv, ganz ohne Fitnessstudio – nutze Treppen, Strände und hostelkompatible Routinen."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Treppen als Workout",
+      "body": [
+        "Bewältige die 500+ Stufen zwischen Spiaggia Grande und Chiesa Nuova früh am Morgen, um Hitze und Menschenmengen zu umgehen.",
+        "Baue Intervalle ein: zwei Minuten zügig steigen, eine Minute Pause – fünf bis acht Wiederholungen."
+      ]
+    },
+    {
+      "id": "outdoor",
+      "title": "Outdoor-Trainingsspots",
+      "body": [
+        "Am Strand Fornillo eignen sich Bodyweight-Circuits (Squats, Push-ups, Planks) im Sand – Reise-Yogamatte gegen Kiesel mitnehmen.",
+        "Die Küstenstraße zwischen Positano und Praiano zum Sonnenaufgang joggen; reflektierende Kleidung tragen und auf der Innenseite bleiben."
+      ]
+    },
+    {
+      "id": "recovery",
+      "title": "Regeneration & Fuel",
+      "body": [
+        "Hydriere dich mit 750-ml-Flaschen und fülle Salze mit Zitrusfrüchten oder Granita nach dem Training auf.",
+        "Calf- und Hüftmuskulatur jeden Abend dehnen – steile Treppen belasten ohne Cooldown schnell."
+      ]
+    }
+  ],
+  "tips": [
+    "Resistance-Bänder und Springseil einpacken – leichtes Equipment für mehr Abwechslung.",
+    "Workouts in einer Notiz-App tracken, um auch in Aperitivo-Stunden dranzubleiben."
+  ],
+  "faqs": [
+    {
+      "q": "Gibt es Fitnessstudios in der Nähe?",
+      "a": [
+        "In Positano gibt es nur wenige Studios. Einige Hotels verkaufen Day-Pässe oder du fährst mit dem Bus nach Sorrent für größere Gyms."
+      ]
+    },
+    {
+      "q": "Kann ich das ganze Jahr über schwimmen?",
+      "a": [
+        "Ja, aber im Winter fällt die Wassertemperatur auf 14–16 °C. Für längere Sessions einen Shorty mitnehmen."
+      ]
+    }
+  ]
+}

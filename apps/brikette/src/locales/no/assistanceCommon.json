@@ -1,0 +1,33 @@
+{
+  "sidebarLabel": "Navigasjon i hjelpesenter",
+  "openSidebar": "Åpne hjelpenavigasjon",
+  "closeSidebar": "Lukk hjelpenavigasjon",
+  "mobileSidebarLabel": "Navigasjon i hjelpesenter",
+  "mobileHint": "Sveip ned eller trykk lukk for å lukke denne hjelpemenyen",
+  "nav": {
+    "assistance": "Digital hjelp",
+    "ama": "Spør oss om hva som helst",
+    "bookingBasics": "Grunnleggende om booking",
+    "changingCancelling": "Endring og avbestilling",
+    "checkinCheckout": "Guide for innsjekk og utsjekk",
+    "depositsPayments": "Betalinger og deposita",
+    "defectsDamages": "Feil og skader",
+    "security": "Sikkerhet",
+    "rules": "Regler",
+    "legal": "Juridisk",
+    "ageAccessibility": "Alder og tilgjengelighet",
+    "arrivingByFerry": "Ankomst med ferge",
+    "naplesAirportBus": "Napoli lufthavn med buss",
+    "travelHelp": "Reisehjelp"
+  },
+  "cta": {
+    "readMore": "Les mer",
+    "readMoreAccessible": "Utforsk alle hjelpesaker"
+  },
+  "alsoHelpful": "Også nyttig",
+  "alsoHelpfulEyebrow": "Lokale favoritter",
+  "alsoHelpfulDescription": "Planlegg smartere med håndplukkede guider og raske snarveier til booking.",
+  "alsoHelpfulExplore": "Utforsk denne guiden",
+  "alsoHelpfulBook": "Bestill oppholdet ditt",
+  "roomsCta": "Se rom og tilgjengelighet"
+}

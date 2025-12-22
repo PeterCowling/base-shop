@@ -1,0 +1,50 @@
+{
+  "seo": {
+    "title": "Sparetips til transport på Amalfikysten",
+    "description": "Pass, rabatter, timed billetter og hvornår du bør gå eller sejle i stedet."
+  },
+  "linkLabel": "Sparetips til transport på Amalfikysten",
+  "intro": [
+    "Praktiske måder at trimme transportbudgettet: kort, timing, kombination af bus og færge samt vejrafhængige backup-planer."
+  ],
+  "planChoiceTitle": "Vælg dit sparet fokus",
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Kort vs. enkeltbilletter",
+      "body": [
+        "Brug dagskort kun hvis du tager flere ture; ellers er enkeltbilletter billigere. Husk at validere."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing og rutevalg",
+      "body": [
+        "Rejs uden for 10–16 på travle dage; vælg direkte busser i bjergene og færger for de sceniske stræk."
+      ]
+    },
+    {
+      "id": "mixing",
+      "title": "Kombinér bus og færge",
+      "body": [
+        "Tag én betalt færgetur (Positano ↔ Amalfi) og brug busser til resten for at spare uden at gå på kompromis med komforten."
+      ]
+    },
+    {
+      "id": "contingency",
+      "title": "Vejrplan",
+      "body": [
+        "Uroligt hav aflyser færger: hav en bus-først backup og læg buffer ind, hvis du satser på dagens sidste afgang."
+      ]
+    }
+  ],
+  "faqsTitle": "Ofte stillede spørgsmål",
+  "faqs": [
+    {
+      "q": "Kan kombobilletter betale sig?",
+      "a": [
+        "Nogle gange ved flere færgehops; sammenlign med enkeltbilletter."
+      ]
+    }
+  ]
+}

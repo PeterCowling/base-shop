@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Hogyan juthat ide – busz-, komp- és gyalogos tippek",
+    "description": "Találja meg a legközelebbi buszmegállót, kompútvonalakat és gyaloglási időket, hogy elérje a Hostel Brikette-et Positanóban."
+  },
+  "title": "Hogyan juthat el hozzánk",
+  "intro": "Kb. 100 méterre vagyunk a Chiesa Nuova buszmegállótól, és körülbelül 13 perc séta a strand.",
+  "steps": {
+    "bus": "Sorrentóból: SITA busz Positanóba (szálljon le a Chiesa Nuova megállónál).",
+    "ferry": "Capriból/Amalfiból: menjen komppal Positanóba, majd busszal vagy taxival a hegyre.",
+    "walk": "Számítson lépcsőkre; a kilátás megéri. Kövesse a Via G. Marconi 358 feliratú táblákat."
+  },
+  "photos": {
+    "heading": "Nézze meg az útvonalat indulás előtt",
+    "items": [
+      {
+        "alt": "Lépcsők a Hostel Brikette felé, egy vendég a bejárat felé sétál",
+        "caption": "A Chiesa Nuova megállótól nagyjából egy percig kövesse a lépcsőket – a táblánk a jobb oldalon bukkan fel."
+      },
+      {
+        "alt": "A Hostel Brikette homlokzata a Via G. Marconi 358 alatt",
+        "caption": "Keresse a Via G. Marconi 358 feliratot a kőfalon; a bejárat közvetlenül a házszám után található."
+      },
+      {
+        "alt": "A Hostel Brikette recepciója a lobbyban",
+        "caption": "Belépés után balra találja a recepciót – ha a szoba még nem kész, megőrizzük a csomagját."
+      }
+    ]
+  }
+}

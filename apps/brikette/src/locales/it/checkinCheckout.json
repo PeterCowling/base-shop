@@ -1,0 +1,39 @@
+{
+  "slug": "arrivo-partenza",
+  "meta": {
+    "title": "Guida completa al check-in e check-out dell’Hostel Brikette di Positano",
+    "description": "Istruzioni passo dopo passo su orari di arrivo, requisiti d’identità, deposito bagagli, cauzioni e supporto al check-out presso l’Hostel Brikette di Positano."
+  },
+  "headings": {
+    "checkInRequest": "Richiesta di check-in",
+    "earlyArrival": "Arrivo anticipato",
+    "middayArrival": "Arrivo a metà giornata",
+    "checkInWindow": "Finestra di check-in",
+    "lateArrival": "Arrivo tardivo",
+    "necessityOfProcess": "Necessità del processo completo",
+    "proofOfIdentity": "Documento di identità",
+    "paymentBalance": "Saldo da pagare",
+    "keycardLinenDeposit": "Deposito per chiave e lenzuola",
+    "checkoutWindow": "Finestra di check-out",
+    "earlyCheckout": "Check-out anticipato",
+    "lateCheckout": "Check-out tardivo",
+    "failureToCheckout": "Mancato check-out",
+    "postCheckout": "Dopo il check-out"
+  },
+  "content": {
+    "checkInRequest": "Al tuo arrivo recati alla reception per avviare il check-in e ricevere l’assegnazione della stanza.",
+    "earlyArrival": "Se arrivi prima delle 10:30 nel giorno della prenotazione, non potrai ancora accedere all’ostello.",
+    "middayArrival": "Se arrivi tra le 10:30 e le 15:00 potresti essere ammesso/a come Visitatore diurno, previa approvazione. Puoi richiedere il deposito bagagli, salvo disponibilità. Il deposito è separato dalla prenotazione della stanza e ha termini e condizioni propri.",
+    "checkInWindow": "Il check-in è disponibile tutti i giorni dalle 15:00 alle 22:30. In tale orario si segue la procedura standard.",
+    "lateArrival": "Se prevedi di arrivare dopo la chiusura della reception alle 22:30, potremmo offrire, salvo disponibilità, un’opzione di late check-in self-service. Invieremo le istruzioni ai recapiti forniti in fase di prenotazione. Assicurati che il dispositivo sia carico e che i dati siano corretti: non possiamo essere responsabili di problemi dovuti a informazioni errate o guasti tecnici.",
+    "necessityOfProcess": "È necessario completare l’intero processo di check-in per accedere all’ostello. Diversamente la prenotazione verrà annullata e segnata come No Show.",
+    "proofOfIdentity": "All’arrivo è necessario presentare un documento originale valido (passaporto, carta d’identità, patente o tessera militare). Se non viene fornito un documento valido entro le 22:30 del giorno di arrivo, la prenotazione sarà annullata come No Show.",
+    "paymentBalance": "Eventuali importi residui devono essere saldati integralmente con un metodo di pagamento accettato prima di completare il check-in. Se non puoi effettuare il pagamento completo, la prenotazione sarà annullata e contrassegnata come No Show.",
+    "keycardLinenDeposit": "Al check-in è richiesto un deposito di 10 € in contanti per chiave elettronica e set lenzuola. Il deposito verrà restituito per intero in contanti al check-out previa riconsegna di entrambi gli articoli. Carte di credito o debito non sono accettate per questo deposito.",
+    "checkoutWindow": "Il check-out è previsto dalle 7:30 alle 10:30. Dopo il check-out non è consentito rientrare in camera né lasciare effetti personali.",
+    "earlyCheckout": "Se devi partire prima delle 7:30, concorda un check-out anticipato la sera precedente per ottenere il rimborso del deposito in contanti. Lasciare la chiave senza conferma dello staff comporterà la perdita del deposito.",
+    "lateCheckout": "Non è previsto il late check-out. Il check-out deve essere completato entro le 10:30.",
+    "failureToCheckout": "Se non liberi la stanza entro l’orario stabilito, potremmo rimuovere i tuoi effetti personali senza responsabilità. Gli oggetti potranno essere custoditi presso un servizio di facchinaggio locale a tue spese. Qualsiasi accesso non autorizzato successivo sarà considerato una violazione della sicurezza.",
+    "postCheckout": "Dopo il check-out la prenotazione termina ufficialmente. Puoi rimanere nei locali come Visitatore diurno fino alle 15:30. Il deposito bagagli è disponibile, salvo disponibilità, con condizioni separate."
+  }
+}

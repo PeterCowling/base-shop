@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Historia de Positano (resumen)",
+    "description": "Historia breve de Positano: comerciantes, acantilados y turismo."
+  },
+  "linkLabel": "Historia de Positano (versión breve)",
+  "intro": [
+    "Positano evolucionó de puerto romano a refugio artístico del siglo XX.",
+    "Conocer su historia ayuda a interpretar iglesias, torres y leyendas locales."
+  ],
+  "sections": [
+    {
+      "id": "roman",
+      "title": "Raíces romanas",
+      "body": [
+        "La Villa Romana subterránea junto a la catedral muestra mosaicos preservados por el Vesubio.",
+        "El comercio marítimo conectaba Positano con Pompeya y Capri, trayendo especias y mármol."
+      ]
+    },
+    {
+      "id": "medieval",
+      "title": "Edad Media y comercio",
+      "body": [
+        "Entre los siglos X y XIII, Positano fue un puesto estratégico de la República Amalfitana.",
+        "Las torres de vigilancia a lo largo de la costa alertaban sobre incursiones sarracenas."
+      ]
+    },
+    {
+      "id": "modern",
+      "title": "Renacimiento turístico",
+      "body": [
+        "En los años 50 artistas y escritores difundieron Positano como retiro bohemio.",
+        "Hoy el turismo sostiene la economía, pero sobreviven tradiciones pesqueras y cerámicas."
+      ]
+    }
+  ],
+  "tips": [
+    "Visita el museo de la Villa Romana bajo Santa Maria Assunta para ver los mosaicos descubiertos en 1987.",
+    "Busca placas informativas en Via dei Mulini que señalan edificios históricos clave."
+  ],
+  "faqs": [
+    {
+      "q": "¿Dónde puedo ver la Villa Romana?",
+      "a": [
+        "La entrada está bajo la Iglesia de Santa Maria Assunta; reserva visita guiada para entender las excavaciones."
+      ]
+    },
+    {
+      "q": "¿Quedan torres visitables?",
+      "a": [
+        "Sí, algunas torres costeras se transformaron en hoteles y restaurantes; consulta disponibilidad."
+      ]
+    }
+  ]
+}

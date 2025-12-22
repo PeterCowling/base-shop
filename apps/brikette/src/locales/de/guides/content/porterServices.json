@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Porterservices in Positano",
+    "description": "Wie Porterservices in Positano funktionieren: wo du buchst, welche Preise üblich sind und wann sie sich lohnen."
+  },
+  "linkLabel": "Porterservice in Positano",
+  "intro": [
+    "Porter helfen bei schwerem Gepäck oder eingeschränkter Mobilität. Vereinbare Treffpunkt am Dock oder an der Bushaltestelle, bestätige vorher den Preis und behalte Wertsachen immer bei dir."
+  ],
+  "sections": [
+    {
+      "id": "how",
+      "title": "So läuft es ab",
+      "body": [
+        "Treffpunkt und Uhrzeit festlegen (Hafen oder Bushaltestelle) und die Unterkunft nennen, damit das Team den Weg kennt.",
+        "Preis vor dem Loslaufen absprechen – Tarife variieren nach Distanz, Treppen und Tageszeit.",
+        "Wertsachen selbst tragen und Gepäckstücke klar beschriften."
+      ]
+    },
+    {
+      "id": "resources",
+      "title": "Buchung & Anlaufstellen",
+      "body": [
+        "Unterkunft nach verlässlichen Anbietern in Hafennähe oder an den Hauptbushaltestellen fragen.",
+        "Für Aufbewahrung oder Nachtankünfte Aggregatoren wie Bounce oder Radical Storage prüfen."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etikette & Tipps",
+      "body": [
+        "Für besonderen Service oder schwere Lasten ein Trinkgeld geben; passendes Bargeld bereithalten.",
+        "In der Hochsaison den Anreiseplan früh teilen, um einen Slot zu sichern."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Brauche ich Porter?",
+      "a": [
+        "Empfehlenswert bei schwerem Gepäck – der Ort hat viele Treppen und steile Gassen."
+      ]
+    },
+    {
+      "q": "Wo kann ich buchen?",
+      "a": [
+        "Über die Unterkunft oder bei lokalen Services nahe Hauptstrand und Bushaltestellen."
+      ]
+    },
+    {
+      "q": "Was kostet das?",
+      "a": [
+        "Hängt von Strecke und Gepäckmenge ab; Preis vor Start bestätigen."
+      ]
+    }
+  ],
+  "galleryTitle": "Fotogalerie",
+  "gallery": {
+    "standsCaption": "Porter-Stände (Beispiel)",
+    "cartsCaption": "Porter-Wagen"
+  }
+}

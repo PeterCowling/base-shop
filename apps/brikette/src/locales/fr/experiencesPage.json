@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "Expériences à l’Hostel Brikette – Bar en terrasse, randonnées & conciergerie",
+    "description": "Savourez un spritz au coucher du soleil, rejoignez des randonnées guidées et utilisez notre conciergerie numérique pour planifier des journées simples et réussies sur la côte Amalfitaine."
+  },
+  "hero": {
+    "eyebrow": "Expériences",
+    "title": "Couchers de soleil, matins doux et bons plans locaux",
+    "description": "Associez votre séjour à des boissons en terrasse, des randonnées sélectionnées et une conciergerie numérique qui vous informe même avant votre arrivée.",
+    "supporting": "Toutes les activités sont ouvertes aux clients enregistrés ; écrivez‑nous si vous voyagez avec des amis logés ailleurs.",
+    "primaryCta": "Réserver votre séjour",
+    "secondaryCta": "Ouvrir la carte du bar",
+    "tertiaryCta": "Contacter la conciergerie numérique",
+    "primaryCtaAria": "Réserver votre séjour à l’Hostel Brikette",
+    "secondaryCtaAria": "Voir la carte du bar de l’Hostel Brikette",
+    "tertiaryCtaAria": "Envoyer un message à la conciergerie numérique de l’Hostel Brikette",
+    "breakfastCta": "View the breakfast menu",
+    "breakfastCtaAria": "View the breakfast menu"
+  },
+  "sections": {
+    "bar": {
+      "eyebrow": "Bar en terrasse",
+      "title": "Bar en terrasse au coucher du soleil",
+      "description": "Chaque soir, notre terrasse en surplomb se transforme en lounge avec spritz, vins de Campanie et parfois des DJ invités.",
+      "highlights": [
+        "Spritz signatures et vins locaux servis bien frais.",
+        "Soirées sociales et dégustations pendant les semaines de pointe.",
+        "Vues panoramiques idéales pour des photos à l’heure dorée."
+      ],
+      "imageAlt": "Clients trinquant sur la terrasse de l’Hostel Brikette au coucher du soleil."
+    },
+    "hikes": {
+      "eyebrow": "Randonnées guidées",
+      "title": "Randonnées guidées & excursions",
+      "description": "Nous vous aidons à planifier le Sentier des Dieux, des navettes partagées et des excursions en ferry sur toute la côte Amalfitaine.",
+      "highlights": [
+        "Cartes hors‑ligne et horaires mis à jour chaque matin.",
+        "Balades menées par l’équipe lorsque les sentiers sont les plus fréquentés.",
+        "Conseils d’équipement et alternatives selon la météo."
+      ],
+      "imageAlt": "Voyageurs de l’hostel sur le Sentier des Dieux au‑dessus de la côte Amalfitaine."
+    },
+    "concierge": {
+      "eyebrow": "Conciergerie numérique",
+      "title": "Conciergerie numérique, toujours disponible",
+      "description": "Recevez des alertes en temps réel sur les changements de ferries, les ouvertures de restaurants et des idées adaptées à votre rythme et budget.",
+      "highlights": [
+        "Réponses WhatsApp et Messenger de notre équipe.",
+        "Alertes automatiques pour les ajustements de bus et de ferries.",
+        "Suggestions personnalisées autour de vos plans."
+      ],
+      "imageAlt": "Écran de téléphone affichant la conversation avec la conciergerie numérique de l’Hostel Brikette."
+    }
+  },
+  "faq": {
+    "title": "Questions fréquentes",
+    "items": [
+      {
+        "question": "Dois‑je réserver les expériences à l’avance ?",
+        "answer": [
+          "La plupart des soirées en terrasse et des randonnées se confirment le jour même à la réception.",
+          "Pour les visites privées ou sorties en bateau, nous pouvons bloquer une place — envoyez simplement un message à la conciergerie au moins 24 heures avant."
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "title": "Prêt à organiser vos journées sur la côte Amalfitaine ?",
+    "subtitle": "Réservez votre lit, jetez un œil à la carte du bar et dites‑nous ce que vous voulez vivre — nous nous occupons des détails.",
+    "buttons": {
+      "book": "Réserver",
+      "events": "Bar & événements",
+      "concierge": "Discuter avec la conciergerie",
+      "breakfast": "Breakfast menu"
+    }
+  },
+  "title": "Expériences à l’Hostel Brikette",
+  "intro": "Savourez un spritz sur notre terrasse, rejoignez des randonnées aux vues imprenables et recevez des conseils instantanés de notre conciergerie numérique.",
+  "items": {
+    "bar": "Bar en terrasse au coucher du soleil proposant spritz et vins locaux.",
+    "hikes": "Randonnées guidées et en autonomie avec cartes, horaires et conseils d’équipement.",
+    "concierge": "Conciergerie numérique avec alertes ferries, itinéraires et réponses à la demande."
+  },
+  "guideCollections": {
+    "heading": "Approfondissez avec nos guides d’expériences",
+    "description": "Itinéraires, randonnées, journées en bateau et idées culturelles, sélectionnés par notre équipe et nos voyageurs.",
+    "taggedHeading": "Guides d’expériences étiquetés {{tag}}",
+    "taggedDescription": "Ces récits mettent en avant des moments {{tag}}. Retirez le filtre pour tout explorer.",
+    "empty": "Nous n’avons pas encore de guides d’expériences pour {{tag}}. Essayez une autre étiquette ou retirez le filtre.",
+    "clearFilter": "Afficher tous les guides d’expériences",
+    "cardCta": "Explorez le guide d'expériences « {{guideTitle}} »",
+    "filterHeading": "Filter experiences guides",
+    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "grouped": {
+      "beaches": {
+        "guides": {
+          "heading": "Beach guides",
+          "description": "Pick the right stretch of sand and plan your day."
+        },
+        "directions": {
+          "heading": "Beach directions",
+          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Meilleure période pour visiter Positano",
+    "description": "Comparatif saison par saison : météo, foule, prix, événements et disponibilité des transports."
+  },
+  "linkLabel": "Meilleure période pour visiter Positano",
+  "intro": [
+    "Choisissez votre période en connaissant la météo, l'affluence et la disponibilité des ferries.",
+    "Appuyez-vous sur la matrice saisonnière et les notes mois par mois pour décider quand Positano correspond à vos priorités."
+  ],
+  "tocTitle": "Sur cette page",
+  "toc": [
+    {
+      "href": "#matrix",
+      "label": "Matrice météo/foule/prix"
+    },
+    {
+      "href": "#months",
+      "label": "Notes mois par mois"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQ"
+    }
+  ],
+  "sections": [
+    {
+      "id": "matrix",
+      "title": "Matrice météo / foule / prix",
+      "body": [
+        "Haute saison (juin-août) : chaleur, foule et tarifs au plus haut. Intersaison (avril-mai, septembre-octobre) : météo douce et meilleur rapport qualité-prix. Hiver (novembre-mars) : calme avec services réduits."
+      ]
+    },
+    {
+      "id": "months",
+      "title": "Notes mois par mois",
+      "body": [
+        "Avril : reprise des ferries ; températures douces et foule légère.",
+        "Mai : météo idéale ; plus de départs ; week-ends plus chargés.",
+        "Juin-août : pleine saison ; chaleur et files — réservez transports et activités à l'avance.",
+        "Septembre : mer chaude et un peu plus calme qu'en août.",
+        "Octobre : intersaison ; les ferries diminuent en fin de mois.",
+        "Novembre-mars : basse saison tranquille avec services réduits ; les bus deviennent essentiels.",
+        "La fréquence des ferries augmente au printemps, atteint un pic l'été puis baisse fin octobre."
+      ]
+    }
+  ],
+  "schemaMonths": [
+    {
+      "name": "Avril",
+      "note": "Début de saison des ferries ; températures douces ; peu de monde."
+    },
+    {
+      "name": "Mai",
+      "note": "Très beau temps ; ferries fréquents ; week-ends plus animés."
+    },
+    {
+      "name": "Juin-août",
+      "note": "Haute saison ; chaleur ; réservez tôt transports et activités."
+    },
+    {
+      "name": "Septembre",
+      "note": "Mer chaude ; un peu moins de foule qu'en août."
+    },
+    {
+      "name": "Octobre",
+      "note": "Intersaison ; les ferries diminuent fin de mois."
+    },
+    {
+      "name": "Novembre-mars",
+      "note": "Calme ; nombreux services réduits ; bus comme transport principal."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quand la mer est-elle la plus chaude ?",
+      "a": [
+        "De fin juin à début septembre, l'eau est généralement la plus agréable pour la baignade."
+      ]
+    }
+  ]
+}

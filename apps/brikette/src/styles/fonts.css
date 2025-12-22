@@ -1,0 +1,21 @@
+/* /src/styles/fonts.css */
+
+@layer base {
+  /* Poppins variable – covers 100-900 */
+  @font-face {
+    font-family: "Poppins";
+    src: url("/fonts/poppins-var.woff2") format("woff2-variations");
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap; /* prefer immediate text visibility */
+  }
+
+  /* Libre Franklin 400 */
+  @font-face {
+    font-family: "Libre Franklin";
+    src: url("/fonts/libre-franklin-400.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap; /* prefer immediate text visibility */
+  }
+}

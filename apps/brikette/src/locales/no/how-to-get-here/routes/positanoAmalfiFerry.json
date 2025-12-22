@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Positano til Amalfi med ferge | Hostel Brikette",
+    "description": "Trinnvis fergetur fra Positano til Amalfi: billetter, hvor du går om bord ved Spiaggia Grande, rutetider og hva som venter ved ankomst."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette reiseguide",
+    "title": "Positano til Amalfi — ferge",
+    "description": "Følg disse trinnene for å reise fra Positano til Amalfi med ferge. Du får tips om billetter, hvor du går om bord i Positano, hva du kan forvente ved ankomst og lenker til oppdaterte rutetider."
+  },
+  "tip": {
+    "label": "Tips",
+    "copy": "Trenger du andre transportalternativer? Åpne <link>Oversikt: Slik kommer du hit</link> for busser, kombinerte ruter og flyplasstransport."
+  },
+  "sections": {
+    "overview": {
+      "title": "Reiseoversikt",
+      "points": [
+        "Sesongbaserte ferger knytter Positano og Amalfi med naturskjønne kystutsikter.",
+        "Avgangene kan variere med sesong og vær; sjekk alltid dagens rutetid.",
+        "Sett av ekstra tid i høysesongen for kø ved brygga."
+      ]
+    },
+    "tickets": {
+      "title": "Billetter og rutetider",
+      "intro": "Se oppdaterte tider og priser på <travelmar>Travelmar</travelmar> og <positano>Positano.com — fergesruter</positano>.",
+      "points": [
+        "Kjøp billetter på nett i høysesongen eller ved operatørbodene langs brygga.",
+        "Møt opp 15–20 minutter før avgang for å løse inn billetter og stille deg i kø.",
+        "Hold billetten eller QR-koden tilgjengelig for personalets kontroll."
+      ]
+    },
+    "positanoPier": {
+      "title": "Hvor du går om bord i Positano",
+      "points": [
+        "Avgangene skjer fra Positanos hovedbrygge på Spiaggia Grande.",
+        "Operatørbodene ligger langs vannkanten; skilting viser neste avgang for hvert selskap.",
+        "Bekreft riktig brygge på billetten din; personalet hjelper deg hvis du er usikker."
+      ]
+    },
+    "amalfiArrival": {
+      "title": "Ankomst i Amalfi",
+      "points": [
+        "Båtene legger til ved Amalfi-havnens brygger nær Piazza Flavio Gioia.",
+        "Det historiske sentrumet og promenaden ligger rett ved havnen.",
+        "For videre bussreise (f.eks. Ravello eller Sorrento), følg skiltene til SITA-holdeplassen ved vannkanten."
+      ]
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "invalidGuideKey": "مفتاح الدليل غير صالح",
+    "missingMetaBlock": "كتلة البيانات الوصفية مفقودة",
+    "metaTitleRequired": "Meta.title يجب أن يكون نصًا غير فارغ",
+    "metaDescriptionRequired": "Meta.description يجب أن يكون نصًا غير فارغ"
+  }
+}

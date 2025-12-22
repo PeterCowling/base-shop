@@ -1,0 +1,56 @@
+{
+  "slug": "apartment",
+  "meta": {
+    "title": "Hébergement en appartement",
+    "description": "Découvrez notre appartement indépendant à Positano."
+  },
+  "title": "Appartement",
+  "body": "Notre appartement offre un séjour confortable avec une vue imprenable.",
+  "heroImageAlt": "Vue extérieure de l'appartement",
+  "heroTitle": "Appartement privé",
+  "heroIntro": "Profitez d'un espace tout équipé avec une vue imprenable sur Positano.",
+  "bookButton": "Réserver",
+  "galleryHeading": "Galerie",
+  "galleryAlt": "Photos de l'intérieur et de la terrasse de l'appartement",
+  "galleryAlts": [
+    "Salon de l'appartement",
+    "Chambre de l'appartement",
+    "Terrasse commune avec vue sur la mer"
+  ],
+  "detailsHeading": "Détails",
+  "detailsList": [
+    "Jusqu'à 4 personnes",
+    "Kitchenette avec réfrigérateur",
+    "Salle de bain privée",
+    "Climatisation",
+    "Balcon avec vue sur la mer"
+  ],
+  "amenitiesHeading": "Équipements",
+  "amenitiesImageAlt": "Image des équipements de l'appartement",
+  "amenitiesList": [
+    "Wi-Fi inclus",
+    "Cuisine entièrement équipée",
+    "Climatisation",
+    "Lave-linge et sèche-linge"
+  ],
+  "highlights": {
+    "sectionTitle": "Points forts de l'appartement",
+    "slides": [
+      {
+        "title": "Vues panoramiques",
+        "text": "Réveillez-vous chaque matin face à des panoramas à couper le souffle.",
+        "alt": "Vue depuis le balcon de l'appartement"
+      },
+      {
+        "title": "Espaces confortables",
+        "text": "Profitez de tout l'espace nécessaire pour vous détendre après vos explorations.",
+        "alt": "Grand salon de l'appartement"
+      },
+      {
+        "title": "Emplacement central",
+        "text": "À quelques pas des boutiques et de la plage.",
+        "alt": "Rues de Positano"
+      }
+    ]
+  }
+}

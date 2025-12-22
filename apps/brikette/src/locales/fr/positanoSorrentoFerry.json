@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "title": "Positano vers Sorrente en ferry | Hostel Brikette",
+    "description": "Étapes de Positano à Sorrente en ferry : accès à l'embarcadère, billets, conseils d'embarquement et arrivée à la Marina Piccola de Sorrente."
+  },
+  "hero": {
+    "eyebrow": "Guide de voyage Hostel Brikette",
+    "title": "Positano vers Sorrente — Ferry",
+    "description": "Prenez un ferry direct depuis le quai de Spiaggia Grande à Positano vers Sorrente. Ce court guide explique comment rejoindre le quai, où acheter vos billets, des conseils d'embarquement et quoi attendre à l'arrivée au port de Sorrente."
+  },
+  "cta": {
+    "label": "Conseil",
+    "copy": "Besoin de toutes les options de transport ? Ouvrez la <link>vue d’ensemble Comment arriver</link> pour les bus, taxis et itinéraires combinés."
+  },
+  "journeyOverview": {
+    "title": "Aperçu du trajet",
+    "items": [
+      "Comptez environ 45 à 60 minutes de quai à quai en saison.",
+      "Les ferries dépendent de la météo et peuvent être complets aux heures de pointe.",
+      "Acheter les billets un peu en avance permet de garantir une place et un embarquement fluide."
+    ]
+  },
+  "walkToPier": {
+    "title": "Rejoindre le quai de Positano",
+    "items": [
+      "Depuis Hostel Brikette, descendez vers Spiaggia Grande (plage/quai principal).",
+      "Si vous transportez de lourds bagages, envisagez de réserver le service de porteurs officiel au quai.",
+      "Achetez vos billets aux guichets en front de mer ou sur les sites des opérateurs (par exemple Travelmar ou NLG)."
+    ],
+    "note": "Consultez les horaires et tarifs sur <positano>Positano.com — Horaires des ferries</positano> et sur les sites des opérateurs comme <travelmar>Travelmar</travelmar> ou <nlg>NLG</nlg>."
+  },
+  "boarding": {
+    "title": "Acheter votre billet et embarquer",
+    "items": [
+      "Arrivez 20 à 30 minutes avant le départ pour faire la queue tranquillement et échanger tout bon si nécessaire.",
+      "Gardez votre billet à portée de main et suivez les instructions de l'équipage pendant l'embarquement.",
+      "Placez les bagages volumineux dans l'espace prévu et gardez vos objets de valeur avec vous."
+    ]
+  },
+  "arrival": {
+    "title": "Arrivée à Sorrente",
+    "items": [
+      "Débarquez à la Marina Piccola de Sorrente (port des ferries).",
+      "Suivez la signalisation pour monter en ville ou utilisez les transports locaux pour rejoindre la gare de Sorrente si vous poursuivez votre voyage.",
+      "Vérifiez à l'avance les trains ou bus de correspondance, surtout le soir et en basse saison."
+    ]
+  },
+  "externalLinks": {
+    "positano": "https://www.positano.com/en/ferry-schedule",
+    "travelmar": "https://travelmar.it/en",
+    "nlg": "https://www.nlg.it/"
+  }
+}

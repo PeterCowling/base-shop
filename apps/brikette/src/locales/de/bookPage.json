@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Buchen Sie Ihren Aufenthalt – Offizielle Website",
+    "description": "Flexible und nicht erstattbare Tarife. Sicherer Checkout auf unserer offiziellen Buchungsseite."
+  },
+  "heading": "Buchen Sie Ihren Aufenthalt",
+  "roomLabel": "Zimmer",
+  "cta": {
+    "flex": "Flexibel – Zur Kasse",
+    "nr": "Nicht erstattbar – Zur Kasse"
+  },
+  "checking": "Prüfe Verfügbarkeit…",
+  "flex": {
+    "title": "Flex‑Tarif (stornierbar)",
+    "bullets": [
+      "Kostenlose Stornierung bis 15:00 Uhr, drei volle Tage vor Anreise.",
+      "Änderungen vorbehaltlich Verfügbarkeit."
+    ]
+  },
+  "nr": {
+    "title": "Nicht erstattbar (Vorauszahlung)",
+    "bullets": [
+      "100 % Vorauszahlung; keine Erstattungen/No‑Shows.",
+      "Fehlgeschlagene Zahlungen werden automatisch storniert."
+    ]
+  },
+  "unavailable": {
+    "title": "Für diese Daten nicht verfügbar.",
+    "none": "Keine direkten Alternativen gefunden.",
+    "seeAll": "Alle Verfügbarkeiten anzeigen",
+    "bookThis": "Dieses Zimmer buchen"
+  },
+  "policies": {
+    "title": "Richtlinien & Kautionen",
+    "items": [
+      "City‑/Touristensteuer: 2,50 € pro Gast pro Nacht (bei der Bezahlung hinzugefügt).",
+      "Schlüsselkarte & Bettwäsche: 10 € Kaution in bar beim Check‑in; Rückerstattung bei Rückgabe.",
+      "Sicherungsbetrag: Bis zu eine Nacht pro Gast beim Check‑in (oder entsprechender Barbetrag). Wenn beides nicht möglich ist, wird die Buchung storniert.",
+      "Verwaltungsgebühr bei Stornierung: in der Regel 15 % des Buchungsbetrags (ohne Drittanbieterprovisionen).",
+      "Rezeption schließt um 22:30; bei Nichterscheinen fällt der höhere Betrag aus erster Nacht oder der nicht erstattbaren Anzahlung an."
+    ],
+    "footer": "Die endgültige Verfügbarkeit und Zahlung erfolgen in unserer offiziellen Buchungs‑Engine."
+  },
+  "backToRooms": "Zurück zu den Zimmern"
+}

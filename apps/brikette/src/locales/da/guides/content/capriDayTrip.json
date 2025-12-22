@@ -1,0 +1,114 @@
+{
+  "seo": {
+    "title": "Endagstur til Capri fra Positano",
+    "description": "Sådan planlægger du en dag på Capri med færger, transport på øen og must-see stop."
+  },
+  "linkLabel": "Endagstur til Capri fra Positano",
+  "intro": [
+    "Capri på én dag fra Positano: start tidligt, rejs let, og læg en rute der balancerer udsigter i Anacapri med en behagelig hjemtur."
+  ],
+  "toc": [
+    {
+      "href": "#morning",
+      "label": "Morgen — ankomst og Anacapri"
+    },
+    {
+      "href": "#midday",
+      "label": "Middag — rundtur ved Marina Piccola"
+    },
+    {
+      "href": "#afternoon",
+      "label": "Eftermiddag — Capri by og retur"
+    },
+    {
+      "href": "#gallery",
+      "label": "Fotogalleri"
+    },
+    {
+      "href": "#faqs",
+      "label": "Ofte stillede spørgsmål"
+    }
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Morgen — ankomst og Anacapri",
+      "body": [
+        "Tag første færge, så du er fremme før krydstogtskibene; hop derefter på bussen til Anacapri og tag stoleliften til Monte Solaro, hvis du er tryg ved højder.",
+        "Snup en simpel morgenmad på Piazza Vittoria og køb returbilletten med det samme, så din afgangstid er sikret."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Middag — rundtur ved Marina Piccola",
+      "body": [
+        "Gå eller tag bussen ned mod Marina Piccola for en svømmetur eller fotostop; brug revsikker solcreme og mindst 1 liter vand pr. person.",
+        "Køb panini eller salatbokse fra en deli i stedet for lange frokoster, så du kan gå op igen uden stress."
+      ]
+    },
+    {
+      "id": "afternoon",
+      "title": "Eftermiddag — Capri by og retur",
+      "body": [
+        "Tag kabelbanen til Capri by for Via Camerelle, Giardini di Augusto og en afsluttende gelato eller espresso.",
+        "Vær ved Marina Grande mindst 30 minutter før afgang, i tilfælde af kø til kabelbanen eller bagageopbevaring."
+      ]
+    }
+  ],
+  "galleryTitle": "Fotogalleri",
+  "gallery": {
+    "items": {
+      "monteSolaro": {
+        "alt": "Udsigt fra Monte Solaro, Capri",
+        "caption": "Overblik fra Monte Solaro"
+      },
+      "gardensOfAugustus": {
+        "alt": "Giardini di Augusto, Capri",
+        "caption": "Giardini di Augusto"
+      }
+    }
+  },
+  "faqsTitle": "Ofte stillede spørgsmål",
+  "howTo": {
+    "steps": [
+      {
+        "name": "Tjek sæsonfærger",
+        "text": "Bekræft morgenafgange og sidste returrejse til Positano."
+      },
+      {
+        "name": "Mød tidligt ved molen",
+        "text": "Stil dig i kø 20–30 minutter før afgang i højsæsonen."
+      },
+      {
+        "name": "Planlæg ruten på Capri",
+        "text": "Prioritér Anacapri eller Marina Grande + udsigtsposter alt efter tid."
+      }
+    ]
+  },
+  "tipsTitle": "Tips til selve dagen",
+  "tips": [
+    "Køb ud- og returbillet sammen, så du kan justere ruten uden at mangle sæder sidst på dagen.",
+    "Medbring en lille dagtursrygsæk med vand, solcreme og kontanter — hæveautomater på Capri kan løbe tør i spidsbelastning.",
+    "Download offlinekort over Capri og bustider; signalet falder omkring Anacapri og ved køen til Den Blå Grotte."
+  ],
+  "warningsTitle": "Vigtige advarsler",
+  "warnings": [
+    "Stolelift og kabelbane får lange køer efter kl. 15; hvis du misser din tid, risikerer du standby-retur.",
+    "Havet kan blive uroligt uden varsel og aflyse sene afgange — tjek morgenmeldinger og hav en Sorrento-forbindelse klar som reserve.",
+    "Den Blå Grotte lukker ofte ved vind eller dønninger; operatører kan stadig sælge billetter, så bekræft at den er åben, før du stiller dig i kø."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg nå Den Blå Grotte?",
+      "a": [
+        "Kun hvis det er topprioritet — forvent shuttlebåd og 60–90 minutters ventetid, hvilket presser resten af programmet."
+      ]
+    },
+    {
+      "q": "Skal jeg forudbestille billetter?",
+      "a": [
+        "Reserver morgenfærger i højsæsonen og overvej at købe stolelift- eller bådturbilletter online; i skuldersæsonen kan du som regel købe på stedet."
+      ]
+    }
+  ]
+}

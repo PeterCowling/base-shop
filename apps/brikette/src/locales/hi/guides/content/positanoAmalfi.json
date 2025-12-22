@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Positano ↔ Amalfi कैसे जाएँ",
+    "description": "फेरी, बस और टैक्सी विकल्पों की तुलना — मौसम पर निर्भरता, टिकट और यात्रा समय सहित।"
+  },
+  "linkLabel": "Positano to Amalfi: how to go",
+  "intro": [
+    "अनुवाद तैयार किया जा रहा है।"
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Bus (year‑round)",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (seasonal)",
+      "body": [
+        "अनुवाद तैयार किया जा रहा है।",
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How long is the trip?",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    },
+    {
+      "q": "अनुवाद तैयार किया जा रहा है।",
+      "a": [
+        "अनुवाद तैयार किया जा रहा है।"
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "SITA bus to Amalfi",
+        "text": "अनुवाद तैयार किया जा रहा है।"
+      },
+      {
+        "name": "Alternative: ferry (summer)",
+        "text": "अनुवाद तैयार किया जा रहा है।"
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "अनुवाद तैयार किया जा रहा है।"
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "SITA bus (year-round)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry (seasonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "SITA bus (year-round)",
+        "body": [
+          "अनुवाद तैयार किया जा रहा है।"
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry (seasonal)",
+        "body": [
+          "अनुवाद तैयार किया जा रहा है।"
+        ]
+      }
+    ],
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "Which is faster?",
+        "a": [
+          "अनुवाद तैयार किया जा रहा है।"
+        ]
+      }
+    ]
+  }
+}

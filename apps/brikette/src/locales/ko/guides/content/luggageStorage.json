@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "포시타노 짐 보관 옵션",
+    "description": "짐 보관소 위치, 운영 시간, 예상 요금, 대체 방법까지 정리했습니다."
+  },
+  "linkLabel": "포시타노 수하물 보관 옵션",
+  "intro": [
+    "번역을 준비하고 있습니다."
+  ],
+  "sections": [
+    {
+      "id": "near-dock",
+      "title": "Near the dock",
+      "body": [
+        "번역을 준비하고 있습니다."
+      ]
+    },
+    {
+      "id": "aggregators",
+      "title": "Aggregators",
+      "body": [
+        "번역을 준비하고 있습니다."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiquette & tips",
+      "body": [
+        "번역을 준비하고 있습니다."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Open in the evening?",
+      "a": [
+        "번역을 준비하고 있습니다."
+      ]
+    }
+  ],
+  "tocTitle": "On this page",
+  "faqsTitle": "FAQs",
+  "heroAlt": "번역을 준비하고 있습니다.",
+  "serviceType": "Luggage storage",
+  "areaServed": "Positano",
+  "gallery": {
+    "primaryAlt": "번역을 준비하고 있습니다.",
+    "primaryCaption": "Positano panorama",
+    "secondaryAlt": "번역을 준비하고 있습니다.",
+    "secondaryCaption": "번역을 준비하고 있습니다."
+  }
+}

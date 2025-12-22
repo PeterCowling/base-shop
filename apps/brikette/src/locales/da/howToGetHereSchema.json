@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "invalidGuideKey": "Ugyldig guide-nøgle",
+    "missingMetaBlock": "Meta-blok mangler",
+    "metaTitleRequired": "Meta.title skal være en ikke-tom streng",
+    "metaDescriptionRequired": "Meta.description skal være en ikke-tom streng"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "slug": "naples-center-train-bus",
+  "meta": {
+    "title": "Neapel Zentrum nach Positano mit Zug und Bus | Hostel Brikette",
+    "description": "Schritt-für-Schritt-Anleitung von Neapel Zentrum zum Hostel Brikette mit der Circumvesuviana nach Sorrent und dem SITA-Bus, inklusive Tickettipps und Ankunftsfotos."
+  },
+  "header": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "title": "Neapel Zentrum → Positano – Zug und Bus",
+    "description": "Folge diesen Wegbeschreibungen, um vom Zentrum Neapels über die Circumvesuviana nach Sorrent und mit dem SITA-Bus nach Positano zum Hostel Brikette zu fahren. Der Leitfaden enthält Tickettipps, Hinweise zum Fahrplan und Fotos deiner letzten Schritte zum Hostel."
+  },
+  "tip": {
+    "eyebrow": "Tipp",
+    "copy": "Brauchst du andere Routen? Sieh dir alle Anreiseoptionen auf der <GuideLink>Übersichtsseite „So kommst du zu uns“</GuideLink> an.",
+    "linkLabel": "Übersichtsseite „So kommst du zu uns“"
+  },
+  "sections": {
+    "overview": {
+      "title": "Überblick: Zug und Bus",
+      "body": "Diese Strecke kombiniert die schnellsten öffentlichen Verkehrsmittel ab Neapel Zentrum: die Circumvesuviana nach Sorrent und den SITA-Bus nach Positano. Sie deckt nicht die Anreise vom Flughafen Neapel ab."
+    },
+    "naplesStation": {
+      "title": "Bahnhof Neapel",
+      "body": "Die Circumvesuviana nach Sorrent fährt im Untergeschoss des Bahnhofs Napoli Garibaldi (unter Napoli Centrale) ab. Kaufe dein Ticket, bevor du zu den Gleisen hinuntergehst, prüfe das Gleis und steige in den Zug nach Sorrent."
+    },
+    "sorrentoStation": {
+      "title": "Bahnhof Sorrent",
+      "body": "Nach deiner Ankunft in Sorrent verlässt du den Bahnhof und kaufst dein SITA-Busticket in der nahegelegenen Bar, im Kiosk oder Tabakladen – im Bus werden keine Tickets verkauft. Die SITA-Haltestelle befindet sich unten an der Treppe vor dem Bahnhof; nimm den Bus Richtung Amalfi und fahre bis Positano."
+    },
+    "timetable": {
+      "title": "Den SITA-Fahrplan lesen",
+      "intro": "Der Fahrplan der SITA kann verwirrend sein – nutze diese kurzen Hinweise, um den richtigen Kurs zu finden:",
+      "tips": [
+        "Die Zeilen in der ersten Spalte stehen für Haltestellen entlang der Strecke.",
+        "Jede Spalte ist eine Abfahrt und mit einem Buchstaben gekennzeichnet.",
+        "Für Fahrten von Montag bis Samstag nutze die Spalten „F“ und „G“.",
+        "Für Sonntage oder Feiertage nutze die Spalten „G“ und „H“."
+      ],
+      "detail": "Wähle die Zeile für Sorrento aus, um deine Abfahrtszeit zu finden. Prüfe in derselben Spalte die Zeile Positano (Chiesa Nuova), um zu sehen, wann du ankommst.",
+      "outro": "Den aktuellen Fahrplan findest du auf <TimetableLink>positano.com</TimetableLink>.",
+      "linkLabel": "positano.com"
+    },
+    "positanoStop": {
+      "title": "Bushaltestelle in Positano",
+      "list": [
+        "Die nächste Haltestelle ist Positano (Chiesa Nuova), etwa 140 Meter (490 Fuß) vom Hostel entfernt.",
+        "Sie befindet sich vor der Bar Internazionale.",
+        "Der Bus setzt dich auf Straßenniveau ab – lange Treppen sind nicht nötig, um zu uns zu gelangen."
+      ],
+      "figure": {
+        "alt": "Bushaltestelle Chiesa Nuova vor der Bar Internazionale in Positano",
+        "caption": "Bushaltestelle Chiesa Nuova – hier steigst du für das Hostel Brikette aus."
+      }
+    },
+    "walk": {
+      "title": "Fußweg von der Bushaltestelle",
+      "steps": [
+        "Gehe gut 100 Meter bzw. 330 Fuß von der Haltestelle die Straße entlang.",
+        "Biege rechts ab und folge den Stufen hinauf zur Haupteingangstür des Hostels."
+      ],
+      "mapLink": "Öffne die <MapLink>Google-Maps-Route</MapLink> für eine Navigation Schritt für Schritt.",
+      "mapLinkLabel": "Google-Maps-Route",
+      "arrival": {
+        "title": "Bei der Ankunft",
+        "body": "Achte auf unser Schild auf der Terrasse im zweiten Stock. Gehe daran vorbei, folge der Kurve und nimm die Treppe auf der rechten Straßenseite zum Haupteingang."
+      },
+      "approachFigure": {
+        "alt": "Straßenansicht mit dem Hostel-Brikette-Schild über der Via G. Marconi",
+        "caption": "Via G. Marconi – gehe am Schild vorbei und nimm dann die Stufen rechts."
+      }
+    }
+  }
+}

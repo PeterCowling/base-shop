@@ -99,8 +99,8 @@
     "chart.js": "^4.5.0",
     "clsx": "^2.1.1",
     "dompurify": "^3.2.6",
-    "lottie-web": "^5.12.2",
     "focus-trap": "^7.6.5",
+    "lottie-web": "^5.12.2",
     "next-auth": "^4.24.11",
     "qrcode": "^1.5.4",
     "react-chartjs-2": "^5.3.0",
@@ -110,9 +110,18 @@
     "zod": "3.25.73"
   },
   "peerDependencies": {
+    "@headlessui/react": "^2.2.3",
+    "dayjs": "^1.11.13",
+    "focus-trap-react": "^11.0.4",
+    "fuse.js": "^7.1.0",
+    "i18next": "^24.2.3",
+    "lucide-react": "^0.511.0",
     "tailwindcss": "^4",
     "react": ">=19 <20",
-    "react-dom": ">=19 <20"
+    "react-datepicker": "^8.3.0",
+    "react-dom": ">=19 <20",
+    "react-i18next": "^15.5.3",
+    "swiper": "^11.2.6"
   },
   "devDependencies": {
     "@types/qrcode": "^1.5.5",

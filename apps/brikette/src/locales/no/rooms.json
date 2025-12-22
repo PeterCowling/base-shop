@@ -1,0 +1,56 @@
+{
+  "detail": {
+    "common": {
+      "amenitiesHeading": "Derfor velger gjestene dette rommet",
+      "amenitiesIntro": "Gjennomtenkte detaljer står klare når du sjekker inn."
+    },
+    "double_room": {
+      "amenities": [
+        {
+          "title": "Privat komfort med eget bad",
+          "body": "Start og avslutt dagen med en varm dusj, myke håndklær og et rom som bare er ditt."
+        },
+        {
+          "title": "Morgener på terrassen med havutsikt",
+          "body": "Skyv opp dørene til din egen terrasse for espresso eller solnedrikk med utsikt over Positano."
+        },
+        {
+          "title": "Svale og stille netter",
+          "body": "Individuelt styrt aircondition og lystette skodder holder rommet rolig selv i augustvarmen."
+        }
+      ]
+    },
+    "room_11": {
+      "amenities": [
+        {
+          "title": "Terrace big enough for every roommate",
+          "body": "Gather on outdoor sofas and tables to share breakfasts, stretch after hikes or capture the skyline together."
+        },
+        {
+          "title": "All-female comfort",
+          "body": "A women-only dorm with ensuite bathroom and vanity space so you never queue for a shower."
+        },
+        {
+          "title": "Privacy and peace of mind",
+          "body": "Each bunk includes curtains, reading lights, charging points and key-card lockers for valuables."
+        }
+      ]
+    },
+    "room_12": {
+      "amenities": [
+        {
+          "title": "Ekstra stor felles terrasse",
+          "body": "Solsenger og spiseplasser gjør sovesalen til en sosial stue med utsikt over Amalfikysten."
+        },
+        {
+          "title": "Eget bad for alle gjester",
+          "body": "Frisk deg opp i et privat bad med hårføner, speil og rikelig med knagger."
+        },
+        {
+          "title": "Enkel tilgang til strøm",
+          "body": "Hver seng har personlig stikkontakt, leselys og nøkkelkortskap for trygg oppbevaring."
+        }
+      ]
+    }
+  }
+}

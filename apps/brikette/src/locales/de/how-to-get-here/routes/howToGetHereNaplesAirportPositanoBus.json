@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Flughafen Neapel nach Positano mit dem Bus | Hostel Brikette",
+    "description": "Vom Flughafen Neapel nach Positano über den Curreri-Bus nach Sorrent und weiter mit dem SITA-Bus. Tickets, Haltestellen, Fahrplantipps und der Fußweg zum Hostel Brikette."
+  },
+  "header": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "title": "Flughafen Neapel nach Positano – Bus",
+    "description": "Dieser Schritt-für-Schritt-Leitfaden bringt dich vom Flughafen Neapel mit dem Curreri-Bus nach Sorrent und anschließend mit dem SITA-Bus nach Positano. Er erklärt Tickets, Umstieg, das Lesen des SITA-Fahrplans und wie du vom nächstgelegenen Stopp das Hostel Brikette erreichst."
+  },
+  "aside": {
+    "eyebrow": "Tipp",
+    "body": "Brauchst du alle Verkehrsoptionen? Öffne die <Link>Übersicht „So kommst du zu uns“</Link> für Fähren, Taxis und alternative Routen."
+  },
+  "sections": {
+    "overview": {
+      "title": "Reiseüberblick",
+      "body": "Nimm den Curreri-Viaggi-Bus direkt vom Flughafen Neapel nach Sorrent und steige dort in den SITA-Bus Richtung Amalfi um (aussteigen in Positano – Chiesa Nuova). Plane in der Hochsaison zusätzliche Zeit für Warteschlangen und volle Busse ein."
+    },
+    "airport": {
+      "title": "Flughafen Neapel",
+      "points": [
+        "Verlasse den Ankunftsbereich und folge den Schildern zu den Bushaltestellen draußen.",
+        "Kaufe ein Curreri-Viaggi-Ticket nach Sorrent (online oder direkt an der Haltestelle).",
+        "Warte am Steig auf den nächsten Bus nach Sorrent und steige ein, sobald er eintrifft."
+      ],
+      "link": {
+        "href": "https://www.curreriviaggi.it/",
+        "text": "Prüfe aktuelle Zeiten und Online-Tickets beim Betreiber: <Link>Curreri Viaggi</Link>."
+      }
+    },
+    "sorrento": {
+      "title": "Busbahnhof Sorrent",
+      "points": [
+        "Steige am Hauptbusbahnhof von Sorrent aus (gleicher Standort wie der Bahnhof).",
+        "Nimm vom Busbahnhof den SITA-Bus in Richtung Amalfi (Positano liegt auf dieser Strecke).",
+        "Falls nötig, kaufe ein SITA-Ticket in einer Bar oder einem Tabacchi in der Nähe.",
+        "Beim Einsteigen stempelt oder reißt der Fahrer dein Ticket an – bewahre es für die gesamte Fahrt auf."
+      ]
+    },
+    "timetable": {
+      "title": "SITA-Fahrplan – so liest du ihn",
+      "rowTip": "In der ersten Spalte stehen die einzelnen Haltestellen entlang der Strecke.",
+      "columnTips": [
+        "Jede Fahrt ist oben in einer Spalte mit einem Buchstaben gekennzeichnet.",
+        "Unterwegs von Montag bis Samstag? Nutze die Spalten „F“ und „G“.",
+        "Unterwegs am Sonntag oder Feiertag? Nutze die Spalten „G“ und „H“."
+      ],
+      "combineTips": [
+        "Wähle die Zeilen für Start und Ziel (z. B. „Sorrento“ → „Positano – Chiesa Nuova“).",
+        "Lies entlang des gewählten Spaltenbuchstabens, um Abfahrts- und Ankunftszeiten zu finden."
+      ],
+      "link": {
+        "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
+        "text": "Sieh dir den aktuellen Fahrplan auf <Link>Positano.com</Link> an."
+      }
+    },
+    "positanoStop": {
+      "title": "Positano (Chiesa Nuova) – Bushaltestelle",
+      "points": [
+        "Die nächstgelegene SITA-Haltestelle ist Positano (Chiesa Nuova) in der Via G. Marconi.",
+        "Sie liegt etwa 140 Meter (490 Fuß) vom Hosteleingang entfernt.",
+        "Die Haltestelle befindet sich vor der Bar Internazionale."
+      ],
+      "image": {
+        "alt": "SITA-Bushaltestelle Positano Chiesa Nuova vor der Bar Internazionale an der Via G. Marconi",
+        "caption": "Haltestelle Positano (Chiesa Nuova) – warte vor der Bar Internazionale; komm im Sommer etwas früher, da Busse schnell voll werden können."
+      }
+    },
+    "walk": {
+      "title": "Fußweg von der Haltestelle zum Hostel",
+      "points": [
+        "Gehe etwas mehr als 100 Meter bzw. 330 Fuß die Via G. Marconi entlang.",
+        "Biege rechts ab und folge den Stufen hinauf zur Haupteingangstür des Hostels."
+      ],
+      "body": "Tipp: Wenn du dich dem Hostel näherst, siehst du unser Schild auf Höhe der Terrasse im zweiten Stock. Gehe am Schild vorbei, folge der Kurve und nimm die Treppe, die auf der rechten Straßenseite nach oben führt, um den Haupteingang zu erreichen.",
+      "image": {
+        "alt": "Treppe vom Via G. Marconi hinauf zum Haupteingang des Hostel Brikette",
+        "caption": "Treppen zum Eingang des Hostel Brikette – der letzte kurze Aufstieg von der Hauptstraße."
+      }
+    }
+  }
+}

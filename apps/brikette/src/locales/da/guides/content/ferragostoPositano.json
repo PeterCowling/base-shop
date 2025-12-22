@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Ferragosto i Positano (Maria Himmelfart)",
+    "description": "Hvad der sker 15. august: traditioner, fyrværkeri og praktiske tips."
+  },
+  "linkLabel": "Ferragosto i Positano (Maria Himmelfart)",
+  "intro": [
+    "Ferragosto den 15. august betyder fyldte strande, fyrværkeri og ændrede køreplaner – planlæg i god tid, så dagen føles festlig frem for hektisk."
+  ],
+  "sections": [
+    {
+      "id": "expectations",
+      "title": "Det kan du forvente",
+      "body": [
+        "Butikker og små dagligvareforretninger lukker tidligt; fyld mad og vand op aftenen før.",
+        "Regn med strandmylder allerede kl. 09.00 og høj musik langs Spiaggia Grande frem mod fyrværkeriet ved midnat."
+      ]
+    },
+    {
+      "id": "bookings",
+      "title": "Reservationer",
+      "body": [
+        "Book restauranter og bådture mindst en uge i forvejen; mange kræver forudbetaling eller kortgaranti på helligdage.",
+        "Bekræft portørservice 24 timer før, hvis du ankommer eller rejser den 15. – bemandingen er reduceret."
+      ]
+    },
+    {
+      "id": "beach-day",
+      "title": "Strand og badning",
+      "body": [
+        "Medbring egen parasol til det offentlige område; lido-solstole bliver udsolgt, og priserne stiger til højsæsonniveau.",
+        "Tag en dukkert tidligt eller ved solnedgang, når livreddere har bedre overblik; midt på dagen gør trængsel strømforhold sværere at vurdere."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transportbackup",
+      "body": [
+        "SITA-busser kører helligdagsplaner med færre afgange; tjek opslaget og stil dig i kø i god tid.",
+        "Færger kan blive udsolgt; køb tur/retur-dag 14., og hav en busplan klar, hvis havet bliver uroligt."
+      ]
+    }
+  ],
+  "tips": [
+    "Pak ørepropper, hvis dit værelse vender mod stranden – fyrværkeri og efterfølgende musik kan fortsætte efter kl. 01.",
+    "Medbring små kontanter til kirkens donationsbøsser, hvis du deltager i messe på Maria Himmelfart; kort accepteres sjældent."
+  ],
+  "faqs": [
+    {
+      "q": "Holder supermarkeder lukket hele dagen?",
+      "a": [
+        "Mange holder helt lukket eller åbner kun kort om morgenen. Køb det nødvendige senest om aftenen den 14."
+      ]
+    },
+    {
+      "q": "Kan jeg se fyrværkeriet fra hostellets terrasse?",
+      "a": [
+        "Ja – terrassen har frit udsyn over bugten. Kom i god tid for at sikre plads, og tag et let lag med til havbrisen."
+      ]
+    }
+  ]
+}

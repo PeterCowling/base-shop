@@ -1,0 +1,8 @@
+{
+  "title": "Vores placering",
+  "inputLabel": "Indtast din nuværende placering:",
+  "inputPlaceholder": "fx Napoli, Italien eller fuld adresse",
+  "getDirections": "Få rutevejledning",
+  "justShowMap": "Vis kun kort",
+  "close": "Luk dialog"
+}

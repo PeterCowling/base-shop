@@ -1,0 +1,142 @@
+{
+  "seo": {
+    "title": "Positano con budget da backpacker: itinerari da 1 a 3 giorni",
+    "description": "Itinerari modulabili per chi viaggia leggero: attrazioni principali, pause economiche e quando conviene usare traghetti o bus."
+  },
+  "linkLabel": "Positano con budget da backpacker: itinerari da 1 a 3 giorni",
+  "intro": [
+    "Itinerari da 1 a 3 giorni pensati per backpacker che vogliono godersi Positano spendendo poco."
+  ],
+  "toc": [
+    {
+      "href": "#day1",
+      "label": "Giorno 1: Positano essenziale"
+    },
+    {
+      "href": "#day2",
+      "label": "Giorno 2: Sentieri e spiaggia"
+    },
+    {
+      "href": "#day3",
+      "label": "Giorno 3: Gita fuori porta"
+    },
+    {
+      "href": "#savings",
+      "label": "Consigli per risparmiare"
+    },
+    {
+      "href": "#food",
+      "label": "Cibo economico"
+    },
+    {
+      "href": "#transport",
+      "label": "Suggerimenti sui trasporti"
+    }
+  ],
+  "sections": [
+    {
+      "id": "pacing",
+      "title": "Ritmo consigliato",
+      "body": [
+        "Abbina tratti a piedi e pause vista mare per non consumarti sulle scale.",
+        "Anticipa le uscite nelle ore fresche e prevedi soste ombra o sieste nelle fasce più calde."
+      ]
+    },
+    {
+      "id": "budget-mix",
+      "title": "Attività a costo basso",
+      "body": [
+        "Alterna spiagge libere, percorsi panoramici e degustazioni gratuite per bilanciare il budget.",
+        "Prenota tour o trasferimenti a pagamento solo quando aggiungono valore reale, come una guida sul Sentiero degli Dei."
+      ]
+    },
+    {
+      "id": "viewpoints",
+      "title": "Punti panoramici gratuiti",
+      "body": [
+        "Salendo Via Trara Genoino al mattino ottieni foto senza folla sul centro storico.",
+        "Al tramonto spostati a Liparlati o al cimitero di Positano per viste sulla baia illuminate."
+      ]
+    },
+    {
+      "id": "swim-breaks",
+      "title": "Organizza bagni low cost",
+      "body": [
+        "Prediligi Arienzo e Fornillo: hanno tratti di spiaggia libera con docce e bar accessibili.",
+        "Porta sandali da scoglio e una sacca impermeabile per evitare noleggi extra."
+      ]
+    },
+    {
+      "id": "evenings",
+      "title": "Serate economiche",
+      "body": [
+        "Acquista bevande al minimarket e goditi la terrazza pubblica di Piazza dei Mulini.",
+        "Controlla gli eventi gratuiti al campo sportivo o le serate live al bar dell’ostello."
+      ]
+    }
+  ],
+  "day1Title": "1 giorno: essenziali",
+  "day1": [
+    "Mattina: colazione veloce, passeggiata tra Via dei Mulini e Spiaggia Grande, briefing logistico in ostello.",
+    "Tarda mattina: sentiero panoramico verso Fornillo o barca navetta per un bagno e pranzo al sacco.",
+    "Pomeriggio-sera: esplora Liparlati, tramonto da via Cristoforo Colombo e aperitivo economico al bar dell’ostello."
+  ],
+  "day2Title": "2 giorni: sentieri e mare",
+  "day2": [
+    "Ripeti il programma del Giorno 1 come base.",
+    "Giorno 2: autobus SITA fino a Nocelle, percorri il Sentiero degli Dei fino a Bomerano e rientra con bus o navetta; chiudi con un bagno ad Arienzo o Fornillo."
+  ],
+  "day3Title": "3 giorni: gita extra",
+  "day3": [
+    "Opzione A: traghetto mattutino per Capri con itinerario a piedi da Marina Grande ad Anacapri e ritorno via Marina Piccola.",
+    "Opzione B: visita Amalfi + Ravello in autobus includendo Villa Rufolo o Villa Cimbrone prima del rientro serale."
+  ],
+  "savingsTitle": "Consigli per risparmiare",
+  "savings": [
+    "Sfrutta i negozi di alimentari per pranzo al sacco e riempi le borracce alle fontanelle pubbliche.",
+    "Compra biglietti SITA multipli in anticipo e convalidali solo quando sali a bordo per evitare multe."
+  ],
+  "foodTitle": "Cibo economico",
+  "foodText": "Pasticcerie e panifici lungo Via Pasitea offrono tranci di pizza, panini e dolci tra 3 e 6 €. Per la sera prenota in anticipo le formule pasto dell’ostello oppure scegli focacce e fritti da asporto.",
+  "transportTitle": "Suggerimenti sui trasporti",
+  "transportCompareLabel": "Confronta i percorsi:",
+  "transportCompareLinks": [
+    {
+      "key": "naplesPositano",
+      "label": "Napoli → Positano"
+    },
+    {
+      "key": "salernoPositano",
+      "label": "Salerno → Positano"
+    }
+  ],
+  "transportFerryPrefix": "Controlla ",
+  "transportFerryLinkLabel": "gli orari dei traghetti",
+  "transportFerrySuffix": "per aggiornamenti su cancellazioni o cambi di banchina.",
+  "faqs": [
+    {
+      "q": "Qual è il miglior piano se ho solo un giorno?",
+      "a": [
+        "Concentrati sul centro storico al mattino, scegli una spiaggia libera nel pomeriggio e chiudi con il tramonto dai belvedere alti."
+      ]
+    },
+    {
+      "q": "Devo prenotare traghetti o tour con largo anticipo?",
+      "a": [
+        "Prenota online solo nei weekend di alta stagione; altrimenti presentati 30 minuti prima e tieni sempre un piano B via autobus in caso di mare mosso."
+      ]
+    },
+    {
+      "q": "Come dividere al meglio due giorni?",
+      "a": [
+        "Il primo giorno copre gli essenziali di Positano; il secondo aggiunge il Sentiero degli Dei da Nocelle con rientro in spiaggia ad Arienzo o Fornillo."
+      ]
+    },
+    {
+      "q": "Idee extra per un terzo giorno?",
+      "a": [
+        "Scegli tra Capri (traghetto presto) o Amalfi + Ravello: entrambe le opzioni si combinano con un rientro serale senza auto."
+      ]
+    }
+  ]
+}

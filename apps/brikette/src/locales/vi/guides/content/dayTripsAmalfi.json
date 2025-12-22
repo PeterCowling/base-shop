@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Chuyến đi trong ngày từ Positano",
+    "description": "Những điểm nên đi trong ngày, thời gian di chuyển và mẹo quay về đúng giờ."
+  },
+  "linkLabel": "Chuyến đi trong ngày từ Positano",
+  "intro": [
+    "Dùng Positano làm căn cứ cho các chuyến đi trong ngày bằng phà và xe buýt — xuất phát sớm, đặt vé quan trọng trước và luôn có phương án dự phòng khi thời tiết xấu."
+  ],
+  "sections": [
+    {
+      "id": "capri",
+      "title": "Điểm nhấn Capri",
+      "body": [
+        "Đặt chuyến phà đầu tiên, đi cáp treo Monte Solaro và dạo Giardini di Augusto trước khi khách tàu biển đổ bộ.",
+        "Đi phà về vào cuối chiều và lưu lại ảnh chụp lịch xe buýt phòng khi biển động."
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompeii hoặc Herculaneum",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "amalfi-ravello",
+      "title": "Combo Amalfi & Ravello",
+      "body": [
+        "Đi phà tới Amalfi, tham quan Nhà thờ rồi bắt xe buýt 5110 lên Ravello ngắm Villa Cimbrone và ăn trưa với view đẹp.",
+        "Nán lại tới cuối chiều và về bằng phà hoặc xe buýt lúc hoàng hôn — hàng chờ giảm sau 18:00."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento & chủ đề ẩm thực",
+      "body": [
+        "Đi phà giữa buổi sáng tới Sorrento để lượn chợ, nếm limoncello và ngắm hoàng hôn từ sân thượng Villa Comunale.",
+        "Nếu phà cuối hết chỗ hãy về Positano bằng xe buýt đêm; hành trình mất khoảng 50 phút."
+      ]
+    }
+  ],
+  "tips": [
+    "Tải sẵn bản đồ và lịch trình offline; tín hiệu di động yếu trong hầm tàu và vách đá Capri.",
+    "Bản dịch đang được chuẩn bị."
+  ],
+  "faqs": [
+    {
+      "q": "Chuyến đi nào cần khởi hành sớm nhất?",
+      "a": [
+        "Capri và Pompeii nên đi chuyến đầu vì đông nhanh và di chuyển mất thời gian."
+      ]
+    },
+    {
+      "q": "Có thể ghép hai thị trấn trong một ngày không?",
+      "a": [
+        "Có — kết hợp Amalfi với Ravello hoặc Sorrento với Pompeii. Đừng ghép Capri với điểm khác; hãy dành trọn một ngày cho đảo."
+      ]
+    }
+  ]
+}

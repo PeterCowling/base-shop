@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Menu Petit-Déjeuner (2025)",
+    "description": "Petit-déjeuner 08:00–10:30 tous les jours. Combos d’œufs, options sucrées, saines, jus, smoothies et café."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Menu Petit-Déjeuner, 2025",
+    "hours": "08:00 – 10:30 tous les jours"
+  },
+  "intro": {
+    "summary": "Petit-déjeuners préparés à la minute, jus pressés et cafés servis chaque matin sur la terrasse. Faites défiler pour découvrir toutes nos options et leurs prix.",
+    "viewFullMenuButton": "Découvrir tout le menu du petit-déjeuner"
+  },
+  "sections": {
+    "eggs": {
+      "title": "Combo Œufs",
+      "subtitle": "Une délicieuse combinaison d’œufs",
+      "howCooked": "Choisissez la cuisson de vos œufs",
+      "cooked": [
+        "Omelette",
+        "Brouillés",
+        "Au plat (peu cuit)",
+        "Au plat (jaune apparent)"
+      ],
+      "addThree": "Choisissez trois ingrédients à ajouter",
+      "ingredients": [
+        "Bacon",
+        "Jambon",
+        "Tomates",
+        "Champignons",
+        "Toast",
+        "Fromage",
+        "Haricots"
+      ],
+      "orderExample": "Exemple — « Omelette avec fromage, bacon et haricots »"
+    },
+    "sweet": {
+      "title": "Options Sucrées",
+      "chooseOneFreeSyrup": "Choisissez un sirop gratuit :",
+      "syrups": [
+        "Doré",
+        "Citron",
+        "Orange cannelle",
+        "Nutella"
+      ]
+    },
+    "healthy": {
+      "title": "Options Saines"
+    },
+    "juices": {
+      "title": "Jus et Smoothies"
+    },
+    "hot": {
+      "title": "Boissons Chaudes Caféinées"
+    },
+    "iced": {
+      "title": "Boissons Froides Caféinées"
+    }
+  },
+  "items": {
+    "eggsCombo": {
+      "name": "Combo Œufs"
+    },
+    "frenchToast": {
+      "name": "Pain Perdu",
+      "note": "Classique, servi avec sirop."
+    },
+    "nutellaFrenchToast": {
+      "name": "Pain Perdu à la Nutella",
+      "note": "Garniture Nutella."
+    },
+    "pancakes": {
+      "name": "Pancakes"
+    },
+    "addEggComboItem": {
+      "name": "Ajouter un élément du Combo Œufs",
+      "note": "Choisissez un élément du menu œufs. Ex. : pancakes + sirop doré + œufs brouillés pour 15,50 €."
+    },
+    "addAdditionalSyrup": {
+      "name": "Ajouter un sirop supplémentaire",
+      "note": "Choisissez plus d’un sirop. Ex. : pancakes au sirop doré et Nutella pour 14 €."
+    },
+    "veggieToast": {
+      "name": "Toast aux Légumes",
+      "note": "Légumes de saison sur toast."
+    },
+    "healthyDelight": {
+      "name": "Plaisir Santé",
+      "note": "Parfait yaourt, granola et compote maison."
+    },
+    "detoxMe": {
+      "name": "Detox Me (jus)",
+      "note": "Épinard, concombre, gingembre et citron."
+    },
+    "energizeMe": {
+      "name": "Energize Me (jus)",
+      "note": "Orange, carotte, gingembre et citron."
+    },
+    "multiV": {
+      "name": "Multi‑V (jus)",
+      "note": "Pomme, carotte, orange, citron, gingembre."
+    },
+    "orangeJuice": {
+      "name": "Jus d’Orange",
+      "note": "Fraîchement pressé."
+    },
+    "bananaSmoothie": {
+      "name": "Smoothie Banane"
+    },
+    "strawberrySmoothie": {
+      "name": "Smoothie Fraise"
+    },
+    "saltedCaramelProteinSmoothie": {
+      "name": "Smoothie protéiné café‑caramel salé"
+    },
+    "addProtein": {
+      "name": "Ajouter des protéines (vanille, chocolat ou caramel salé) — HUEL (40 g de protéines)"
+    },
+    "tea": {
+      "name": "Thé (noir, vert, infusion)"
+    },
+    "espresso": {
+      "name": "Espresso (par shot)"
+    },
+    "macchiato": {
+      "name": "Macchiato (espresso macchiato)"
+    },
+    "americano": {
+      "name": "Américano / Long Black"
+    },
+    "cappuccino": {
+      "name": "Cappuccino italien"
+    },
+    "latte": {
+      "name": "Café latte"
+    },
+    "altMilk": {
+      "name": "Lait de soja ou riz — supplément"
+    },
+    "icedLatte": {
+      "name": "Latte Glacé"
+    },
+    "icedSoyLatte": {
+      "name": "Latte Glacé au Soja"
+    },
+    "icedRiceLatte": {
+      "name": "Latte Glacé au Lait de Riz"
+    },
+    "icedTea": {
+      "name": "Thé Glacé (citron ou pêche)"
+    }
+  }
+}

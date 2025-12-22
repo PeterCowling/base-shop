@@ -1,0 +1,89 @@
+{
+  "seo": {
+    "title": "Hostel Brikette → Fiordo di Furore by bus",
+    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+  },
+  "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
+  "intro": [
+    "Follow this route to travel from Hostel Brikette to Fiordo di Furore on the SITA bus without missing a stop or arriving unprepared.",
+    "The fiord has no ticketing facilities or shops, so these steps cover tickets, the nearest bus stop, and the staircase that leads down to the beach."
+  ],
+  "warningsTitle": "Before you leave the hostel",
+  "warnings": [
+    "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
+    "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-bus-stop",
+      "title": "Walk to the Chiesa Nuova bus stop",
+      "body": [
+        "The closest SITA stop is in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel entrance.",
+        "Exit through the main door, walk down the stairs to Via Pasitea, turn left, and continue roughly 100 metres (330 feet).",
+        "Look for Bar Internazionale on the left-hand side; the bus stop sits directly outside the café."
+      ]
+    },
+    {
+      "id": "buy-bus-tickets",
+      "title": "Buy round-trip bus tickets",
+      "body": [
+        "Go into Bar Internazionale and ask for SITA tickets to Fiordo di Furore.",
+        "Staff may suggest one-way or return tickets depending on the price that day — buy a return so you are covered for the ride back."
+      ]
+    },
+    {
+      "id": "wait-for-bus",
+      "title": "Wait on the seaward side of the road",
+      "body": [
+        "Cross Via Pasitea to the opposite side from the bar and wait at the marked SITA stop.",
+        "Arrive early and give yourself time for a second bus in case the first one is already full."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Ride the SITA bus towards Amalfi",
+      "body": [
+        "Board a bus heading for Amalfi or Agerola and tell the driver you need the Fiordo di Furore stop so they know to pull over.",
+        "The ride covers about 10.8 kilometres (6.7 miles); intermediate stops depend on other passengers requesting them.",
+        "If you have mobile data, track the stop by searching for \"JH73+PQ Furore, Province of Salerno\" on Google Maps."
+      ]
+    },
+    {
+      "id": "walk-to-beach",
+      "title": "Take the stairs down to the beach",
+      "body": [
+        "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
+        "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
+        "Use the same staircase to return to the road when you are ready to leave."
+      ]
+    }
+  ],
+  "tipsTitle": "Extra tips",
+  "tips": [
+    "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
+    "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
+    "Save the %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette return guide% for your trip back.",
+    "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
+  ],
+  "faqsTitle": "Common questions",
+  "faqs": [
+    {
+      "q": "Do I really need to buy a return ticket in advance?",
+      "a": [
+        "Yes. Drivers expect validated SITA tickets and there are no machines or shops at the beach, so buy both legs in Positano before boarding."
+      ]
+    },
+    {
+      "q": "What should I do if the bus is full when it arrives?",
+      "a": [
+        "Wait for the next scheduled service and keep an eye on the timetable — during peak season it is normal for one or two buses to pass before space opens up."
+      ]
+    },
+    {
+      "q": "How will I recognise the right stop?",
+      "a": [
+        "After the bus crosses the arched bridge over the fiord it will stop beside the crash barrier. Watch for the bridge views, listen for the driver, and use Google Maps’ \"JH73+PQ Furore\" pin as a backup."
+      ]
+    }
+  ]
+}

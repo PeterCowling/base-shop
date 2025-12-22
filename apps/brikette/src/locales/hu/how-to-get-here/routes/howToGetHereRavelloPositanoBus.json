@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "title": "Ravellóból Positanóba busszal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató Ravellóból Positanóba Amalfín keresztül, SITA buszokkal: menetrendi tippek, megállóinformációk és a rövid séta a Hostel Brikette-ig."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Ravellóból Positanóba – Amalfín át busszal",
+    "description": "Utazz Ravellóból Positanóba egy egyszerű amalfi átszállással. Az útmutató bemutatja, hol vásárolhatod és érvényesítheted a SITA jegyeket, hogyan olvasd a menetrendet, mire számíts az amalfi átszállásnál, valamint a rövid sétát a positanói Chiesa Nuova megállótól a Hostel Brikette-ig."
+  },
+  "tip": {
+    "eyebrow": "Tipp",
+    "body": "Szeretnéd látni az összes közlekedési lehetőséget? Nyisd meg a <GuideLink>{{guideLabel}}</GuideLink> oldalt kompokért, taxikért és kombinált útvonalakért."
+  },
+  "journeyOverview": {
+    "title": "Az út áttekintése",
+    "description": "Az utazás nagyjából 1,5–2,5 órát vesz igénybe a csatlakozásoktól függően. Először SITA busszal menj Ravellóból Amalfiba, majd szállj át egy Positano/Szorrento irányába tartó SITA buszra. Főszezonban sűrűn járnak a buszok, de zsúfoltak lehetnek — érkezz kicsit korábban, hogy sorba állhass."
+  },
+  "sitaTickets": {
+    "title": "SITA buszok és jegyek",
+    "points": [
+      "A Ravello és Amalfi közötti buszokat a SITA (SITA Sud Srl) üzemelteti.",
+      "Először Amalfiba kell utaznod, majd átszállni egy Positano felé tartó második buszra.",
+      "Két járat közlekedik Ravello → Amalfi között: az 5110 és az 5120; az 5110 általában kb. 10 perccel gyorsabb.",
+      "Jegyeket újságosoknál vagy trafikokban (tabacchi) vásárolj, és készülj az érvényesítésre beszálláskor."
+    ]
+  },
+  "timetable": {
+    "title": "Menetrendek",
+    "description": "A legfrissebb menetrendeket a <TimetableLink>{{timetableLabel}}</TimetableLink> oldalon találod.",
+    "notesTitle": "A menetrend olvasása",
+    "points": [
+      "Az első oszlop sorai az útvonal megállóit sorolják fel.",
+      "Az oszlopok betűkkel jelölt indulásokat mutatnak.",
+      "Hétfőtől szombatig az „F” és „G” oszlopokat használd.",
+      "Vasárnap vagy ünnepnapon a „G” és „H” oszlopokat nézd."
+    ],
+    "linkLabel": "Positano.com (SITA menetrend áttekintés)"
+  },
+  "ravelloToAmalfi": {
+    "title": "Ravello → Amalfi",
+    "points": [
+      "Szállj fel a SITA 5110-es vagy 5120-as buszára Ravellóból Amalfiba (az 5110 általában gyorsabb).",
+      "Érvényesítsd a jegyed beszálláskor, és őrizd meg az érkezésig.",
+      "Amalfi buszpályaudvarán szállj le, itt csatlakozhatsz a Positano felé tartó járatra."
+    ]
+  },
+  "waitingInAmalfi": {
+    "title": "Várakozás Amalfiban",
+    "points": [
+      "Amalfiba érkezve várakozás közben bejárhatod a belvárost.",
+      "Térj vissza ugyanarra a buszállomásra, ahol leszálltál, hogy felszállj a Positano felé tartó járatra.",
+      "Bármely SITA busz jó, amely Positano/Szorrento felé tart az Amalfi-part mentén."
+    ]
+  },
+  "arrivingPositano": {
+    "title": "Érkezés Positanóba (Chiesa Nuova)",
+    "points": [
+      "A legközelebbi SITA megálló a Positano (Chiesa Nuova) a Via G. Marconin.",
+      "Nagyjából 140 méterre (490 lábra) van a hostel bejáratától.",
+      "A „Bar Internazionale” kávézó/bár előtt várakozol."
+    ],
+    "figure": {
+      "alt": "A positanói Chiesa Nuova SITA megálló a Bar Internazionale előtt",
+      "caption": "Érkezz pár perccel korábban, hogy biztosan legyen helyed — nyáron gyorsan megtelnek a buszok."
+    }
+  },
+  "walking": {
+    "title": "Séta a buszmegállótól a hostelhez",
+    "points": [
+      "A Chiesa Nuova megállótól sétálj tovább kb. 100 métert (330 lábat).",
+      "Fordulj jobbra, és kövesd a lépcsőket a hostel főbejáratáig.",
+      "Keresd a terasznál lévő táblánkat; a bejárat közvetlenül a kanyar felett található."
+    ]
+  },
+  "links": {
+    "guideOverview": "Hogyan juthatsz el hozzánk áttekintés"
+  }
+}

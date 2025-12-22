@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Supermercati e farmacie a Positano",
+    "description": "Dove acquistare generi alimentari, farmaci, cosmetici e orari utili vicino alle principali fermate."
+  },
+  "linkLabel": "Supermercati e farmacie a Positano",
+  "intro": [
+    "You will not find large supermarkets in Positano, so plan for compact shops, a weekly market, and a couple of reliable pharmacies for essentials."
+  ],
+  "sections": [
+    {
+      "id": "mini-markets",
+      "title": "Mini-markets & delis",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "produce",
+      "title": "Produce & markets",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "pharmacies",
+      "title": "Pharmacies & health items",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "late-hours",
+      "title": "Late-night essentials",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "gallery": [
+    {
+      "alt": "Positano main road shops",
+      "caption": "Traduzione in arrivo."
+    },
+    {
+      "alt": "Traduzione in arrivo.",
+      "caption": "Fruit and essentials"
+    }
+  ],
+  "tips": [
+    "Traduzione in arrivo.",
+    "Traduzione in arrivo."
+  ],
+  "faqs": [
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "fallback": "Essentials are available throughout Positano — shop earlier in the day and keep local pharmacies noted."
+}

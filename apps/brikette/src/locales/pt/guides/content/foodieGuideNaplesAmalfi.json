@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "A Foodie’s Guide to Naples & the Amalfi Coast",
+    "description": "What to eat and where; classic dishes and local specialties."
+  },
+  "linkLabel": "Guia gastronômico de Nápoles e da Costa Amalfitana",
+  "intro": [
+    "Descubra os melhores sabores entre Nápoles e a Costa Amalfitana: pratos imperdíveis, mercados e bebidas locais."
+  ],
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Essenciais de Nápoles",
+      "body": [
+        "Prove pizza Margherita clássica, pizza frita e sfogliatella no mesmo dia — intercale com pausas para espresso.",
+        "Visite o mercado da Pignasecca para mariscos, queijos e produtos frescos para levar para a costa."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Especialidades da Costa Amalfitana",
+      "body": [
+        "Peça scialatielli ai frutti di mare, delizia al limone e limoncello artesanal para uma degustação completa.",
+        "Procure caseifici para mozzarella, provola fumada e caciocavallo — perfeitos para saborear no terraço do hostel."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Street food e mercados",
+      "body": [
+        "Compre cones de cuoppo fritto, anchovas fritas ou arancini por 4–6 € para segurar a fome entre viagens de ferry.",
+        "Feiras de domingo em Positano e Praiano vendem fruta da estação e pastelaria — leve sacos reutilizáveis."
+      ]
+    }
+  ],
+  "tips": [
+    "Reserve aulas de culinária com antecedência se quiser sessões práticas de massa e sobremesas — no verão esgotam rápido.",
+    "Informe restrições alimentares ao reservar; muitos anfitriões ajustam menus com aviso prévio."
+  ],
+  "faqs": [
+    {
+      "q": "Posso fazer um food tour a partir de Positano?",
+      "a": [
+        "Sim. Participe de degustações guiadas em Nápoles ou Sorrento; a maioria começa a meio da manhã, permitindo viajar cedo de comboio ou ferry."
+      ]
+    },
+    {
+      "q": "Restaurantes atendem vegetarianos?",
+      "a": [
+        "Com certeza. Procure parmigiana de beringela, gnocchi alla sorrentina, saladas e antipasti de legumes por toda a região."
+      ]
+    }
+  ]
+}

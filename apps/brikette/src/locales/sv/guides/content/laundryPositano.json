@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Tvätt i Positano (självservice & inlämning)",
+    "description": "Var du kan tvätta, hur självservice fungerar, vad inlämning kostar och praktiska tips."
+  },
+  "linkLabel": "Tvätt i Positano (självservice & inlämning)",
+  "intro": [
+    "Det finns både självbetjäning och inlämning i Positano; dubbelkolla öppettider i mellansäsong och räkna med köer på bytesdagar."
+  ],
+  "toc": {
+    "onThisPage": "På den här sidan",
+    "selfService": "Självtvätt",
+    "dropOff": "Inlämningstjänster",
+    "howto": "Så gör du: självservice",
+    "tips": "Tvättmedel & maskiner",
+    "faqs": "Vanliga frågor"
+  },
+  "selfServiceText": "Maskinerna är kompakta europeiska modeller. Ta med mynt eller småsedlar och sikta på tider utanför rusningen (sen förmiddag eller tidig eftermiddag när det inte är bytesdag).",
+  "dropOffText": "Fråga efter tvätt-och-vik-pris per kilo och om de kan bli klara samma dag. Under högsäsong ökar chanserna om du lämnar in tidigt.",
+  "howtoSteps": [
+    "Välj maskinstorlek efter mängd tvätt och fyll inte över kanten.",
+    "Tillsätt tvättmedel/sköljmedel enligt anvisningarna; vissa maskiner doserar automatiskt.",
+    "Välj program (kallt/varmt) och starta. Sätt ett alarm så du är tillbaka innan programmet är klart."
+  ],
+  "tipsList": [
+    "Välj skonsamma program för snabbtorkande plagg och badkläder.",
+    "Gemensamma torktumlare blir heta – kontrollera tvättråd och överväg att hängtorka."
+  ],
+  "sections": [
+    {
+      "id": "self-service",
+      "title": "Självtvätt",
+      "body": [
+        "Maskinerna är kompakta europeiska modeller. Ta med mynt eller småsedlar och försök tvätta när det är lugnt – sen förmiddag eller tidig eftermiddag när det inte är bytesdag."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Inlämningstjänster",
+      "body": [
+        "Be om pris per kilo för tvätt och vikning samt om samma dags leverans. Under högsäsong ökar tidig inlämning chanserna."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Kan jag köpa tvättmedel i närheten?",
+      "a": [
+        "Ja – se %LINK:groceriesPharmacies|livsmedel & apotek% för små förpackningar."
+      ]
+    },
+    {
+      "q": "Var kan jag vänta medan tvätten går?",
+      "a": [
+        "Sätt dig på ett närliggande kafé (se %LINK:workCafes|arbetsvänliga kaféer%) eller ta en kort promenad."
+      ]
+    }
+  ]
+}

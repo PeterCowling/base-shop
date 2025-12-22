@@ -1,0 +1,21 @@
+{
+  "slug": "säkerhet",
+  "meta": {
+    "title": "Riktlinjer för säkerhet – Positano Hostel",
+    "description": "All viktig information om hur vi håller gäster och deras tillhörigheter säkra, inklusive skåp, säkerhetsarmband, CCTV och riktlinjer för besökare."
+  },
+  "headings": {
+    "personalBelongingsSecurity": "Ta hand om dina tillhörigheter",
+    "identificationSecurityBands": "Säkerhetsarmband",
+    "cctvSurveillance": "CCTV & videoövervakning",
+    "temporaryGuestsPolicy": "Välkomna dagbesökare",
+    "unregisteredPersonsPolicy": "Registrering av nattgäster"
+  },
+  "content": {
+    "personalBelongingsSecurity": "Varje gäst ansvarar för sina tillhörigheter under hela vistelsen. Där det finns tillgängligt erbjuder vi skåp och värdefack; användningen är enkel men flyttar inte ansvaret till hostelet — håll därför din reseförsäkring uppdaterad. För allas trygghet, håll rumsdörrar stängda och lås tilldelat skåp. Föremål som lämnas kvar i mer än 30 dagar kan doneras, återvinnas eller kasseras.",
+    "identificationSecurityBands": "För att personalen snabbt ska känna igen registrerade gäster får alla ett säkerhetsarmband vid incheckning. Bär det på hostelområdet; vi kan också be att få se legitimation. Om armbandet tappas bort eller skadas, meddela receptionen — en mindre ersättningsavgift tillkommer. Gäster som inte bär armband eller vägrar visa legitimation kan ombes lämna, och återbetalning kan utebli.",
+    "cctvSurveillance": "Gemensamma utrymmen — inklusive entré, korridorer, terrass och sällskapsrum — övervakas med CCTV dygnet runt. Inspelningar lagras säkert och nås endast av behörig personal. Kamerorna stödjer gästernas säkerhet men kan inte garantera mot förlust, stöld eller skada; var uppmärksam och skydda dina värdesaker.",
+    "temporaryGuestsPolicy": "Prata med receptionen innan du bjuder in vänner så kan vi ge dem status som dagbesökare. När de registrerat sig med giltig ID får de nyttja gemensamma ytor mellan 10:30 och 20:00. Av hänsyn till allas integritet är gästrum endast för registrerade nattgäster. Hostelet kan neka eller återkalla dagbesökarstatus efter eget gottfinnande.",
+    "unregisteredPersonsPolicy": "Enligt italiensk lag måste varje nattgäst vara registrerad. Om en oregistrerad person påträffas i ett rum debiteras den/de registrerade gästen/gästerna ordinarie rumspris för personen samt en administrativ avgift motsvarande dubbla det beloppet. Den extra gästen måste omedelbart slutföra incheckning eller lämna; vid vägran är vi skyldiga att kontakta lokala myndigheter. Att inte anmäla en nattgäst kan också leda till att bokningen markeras som no‑show."
+  }
+}

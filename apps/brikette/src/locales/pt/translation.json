@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Hostel Brikette",
+    "reserve": "Reservar agora"
+  },
+  "intro": {
+    "title": "Reserve diretamente e poupe",
+    "description": "Reserve a sua estadia no nosso site e receba um plano de refeições gratuito, no valor de até 29 euros por dia."
+  },
+  "rooms": {
+    "title": "Quartos",
+    "value_dorms": "Dormitórios económicos",
+    "premium_dorms": "Quartos premium",
+    "superior_dorms": "Quartos superiores",
+    "private_room": "Quarto privado"
+  },
+  "careers": {
+    "jobTitle": "Junte-se à equipa do Hostel Brikette",
+    "jobDescription": "Procuramos pessoas enérgicas que adoram hospitalidade. Se prospera num ambiente dinâmico, fale connosco!",
+    "ctaLabel": "Pergunte pelas vagas disponíveis"
+  },
+  "errorBoundary": {
+    "title": "Algo deu errado.",
+    "reload": "Recarregar a página"
+  },
+  "meta": {
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@brikette"
+  },
+  "internalErrors": {
+    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "intro": [
+    "Spiaggia Grande est la plage de carte postale de Positano : un large croissant de galets avec une ligne d'horizon au sommet d'une falaise derrière les parasols et les ferries qui vont et viennent toute la journée.",
+    "Nager et retourner en ville est inoubliable, mais l'expérience à terre dépend de l'endroit où vous vous asseyez : de la zone franche centrale aux ponts ultra-premium creusés dans la roche."
+  ],
+  "toc": [
+    {
+      "href": "#layout",
+      "label": "Aménagement & zones clés"
+    },
+    {
+      "href": "#free-zone",
+      "label": "Section plage gratuite"
+    },
+    {
+      "href": "#residents",
+      "label": "Bande des résidents"
+    },
+    {
+      "href": "#lincanto",
+      "label": "Club de plage L'Incanto"
+    },
+    {
+      "href": "#la-scogliera",
+      "label": "Pont de La Scogliera"
+    },
+    {
+      "href": "#fornillo-link",
+      "label": "Passerelle vers Fornillo"
+    }
+  ],
+  "sections": [
+    {
+      "id": "layout",
+      "title": "Plan et zones clés",
+      "body": [
+        "Face à la mer, l'embarcadère public du ferry et les pontons des bateaux-taxis se trouvent à droite, la bande principale gratuite s'étend au centre et les clubs payants bordent les rochers de gauche.",
+        "La carte numérotée sur la plage indique généralement le numéro 1 comme zone publique, le numéro 2 comme la bande des résidents de Positano et le numéro 3/#4 comme les deux opérateurs payants : L'Incanto sur le sable et La Scogliera sur le pont surélevé."
+      ]
+    },
+    {
+      "id": "free-zone",
+      "title": "Section de plage gratuite (#1)",
+      "body": [
+        "La zone gratuite la plus large se situe entre les deux clubs privés. Arrivez avant 10h00 pour une place au premier rang et apportez un tapis ou une serviette épaisse - les cailloux se réchauffent rapidement et deviennent inconfortables sans rembourrage.",
+        "Des douches et des toilettes publiques sont situées à côté de l'entrée du quai du ferry. Les collations proviennent de kiosques derrière la plage ou de comptoirs de plats à emporter au Blu Bar de L'Incanto (à payer séparément)."
+      ]
+    },
+    {
+      "id": "residents",
+      "title": "Bande des résidents (#2)",
+      "body": [
+        "Une zone clôturée à côté de la partie publique est réservée aux résidents de Positano. Attendez-vous à ce que les sauveteurs vérifient les bracelets ; les visiteurs doivent respecter la signalisation et s’en tenir aux transats gratuits ou aux transats du club.",
+        "Si la zone publique est bondée, continuez le long de la promenade et suivez le chemin menant à Fornillo pour plus d'espace – il faut compter cinq minutes de marche une fois que vous êtes sur le chemin."
+      ]
+    },
+    {
+      "id": "lincanto",
+      "title": "Club de plage L'Incanto (#3)",
+      "body": [
+        "L'Incanto couvre la majeure partie du sable avec des rangées de chaises longues orange, des douches, des vestiaires et un service de serveur. Comptez entre 25 et 35 € par personne pour un ensemble standard en haute saison, les surclassements au premier rang ou en cabane coûtant plus cher.",
+        "Réservez via WhatsApp ou par e-mail en juillet-août ; Les arrivées sans rendez-vous avant 9h30 sont généralement acceptables pendant les mois intermédiaires. Blu Bar (leur restaurant décontracté) fait face à la promenade et est pratique pour déguster des pizzas, des salades et des apéritifs sans quitter votre chaise longue."
+      ]
+    },
+    {
+      "id": "la-scogliera",
+      "title": "Pont de La Scogliera (#4)",
+      "body": [
+        "La Scogliera se trouve sur les rochers à l'extrême gauche avec des ponts en teck, des lits balinais et des échelles marines directement dans les eaux profondes. Les forfaits démarrent autour de 100 € pour les transats du dernier rang et peuvent dépasser 400 € pour les nids VIP panoramiques avec prosecco inclus.",
+        "Le service est en nappe blanche : le restaurant à l'étage donne sur le port et le personnel appelle des bateaux-taxis si vous souhaitez vous rendre à Laurito ou Arienzo pour le coucher du soleil. Le code vestimentaire est chic et décontracté après 18h00."
+      ]
+    },
+    {
+      "id": "fornillo-link",
+      "title": "Passerelle vers Fornillo",
+      "body": [
+        "Pour changer de plage sans grimper, dirigez-vous vers l'extrémité du port où les bateaux chargent et déchargent. Restez à droite et passez l’arche signalisée jusqu’au sentier côtier.",
+        "Suivez la promenade pendant environ cinq minutes ; il passe devant les cafés et les points de vue avant de vous conduire à l'entrée principale de Fornillo. Associez la promenade à notre %LINK:fornilloBeachGuide|Fornillo beach guide% pour les détails du club de l'autre côté."
+      ]
+    }
+  ],
+  "tipsTitle": "Conseils rapides",
+  "tips": [
+    "Descendez Viale Pasitea depuis l'auberge en 20 à 25 minutes, en vous arrêtant aux belvédères en bordure de route pour prendre des photos avant de vous rendre sur la Piazza dei Mulini et la promenade Spiaggia Grande.",
+    "Vous préférez les roues ? Prenez le bus orange interno depuis Chiesa Nuova jusqu'aux arrêts Sponda ou Piazza dei Mulini ; achetez des billets à 1,50 € au Bar Internazionale avant d'embarquer.",
+    "Après une journée à la plage, remontez à bord du bus interno depuis le terminal situé à côté de l'embarcadère du ferry pour éviter la montée raide jusqu'à l'auberge Brikette.",
+    "Planifiez votre budget chaise longue avec notre %LINK:positanoBeaches|Positano beaches overview% : il compare les prix et les sections gratuites dans chaque crique à proximité."
+  ],
+  "warningsTitle": "Bon à savoir",
+  "warnings": [
+    "Spiaggia Grande est entièrement pavée : emportez des chaussures d'eau ou des sandales pour faciliter l'entrée dans l'eau.",
+    "Les chaises longues et les parasols du premier rang se vendent plusieurs jours à l'avance en août – réservez si vous avez besoin d'une ombre garantie.",
+    "Les distributeurs de cartes se déconnectent occasionnellement ; transportez de l'argent liquide pour les kiosques, les soldes des chaises et le chauffeur du bus interno."
+  ],
+  "faqsTitle": "FAQ Spiaggia Grande",
+  "faqs": [
+    {
+      "q": "Dois-je réserver L'Incanto ou La Scogliera à l'avance ?",
+      "a": [
+        "Pour L'Incanto, la pré-réservation est indispensable fin juillet et août, mais les matins d'intersaison disposent d'un espace de plain-pied avant 9h30. La Scogliera nécessite des réservations pour tous les ponts premium – par e-mail ou WhatsApp au moins un jour à l'avance pour verrouiller un lit."
+      ]
+    },
+    {
+      "q": "Y a-t-il des douches et des sanitaires pour la partie gratuite ?",
+      "a": [
+        "Oui. Des douches publiques se trouvent près de l'embarcadère du ferry et les toilettes municipales se trouvent derrière la promenade. Gardez les pièces de monnaie à portée de main pour les tourniquets ; Les installations du club privé sont réservées aux clients payants."
+      ]
+    },
+    {
+      "q": "Où puis-je laisser mes sacs avant d'aller à la plage ?",
+      "a": [
+        "Déposez vos bagages au %LINK:luggageStorage|Positano luggage storage% près de la Piazza dei Mulini ou utilisez le local de stockage de votre hébergement. Les sacs ne sont pas autorisés sur les ponts de La Scogliera et doivent être placés derrière les chaises longues de L'Incanto."
+      ]
+    }
+  ]
+}

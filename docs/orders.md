@@ -1,7 +1,7 @@
 Type: Contract
 Status: Canonical
 Domain: Orders
-Last-reviewed: 2025-12-02
+Last-reviewed: 2025-12-21
 
 Primary code entrypoints:
 - packages/platform-core/src/repositories/rentalOrders.server.ts
@@ -17,8 +17,10 @@ The orders module manages rental orders for a shop. It stores each order's statu
 - `id` – primary key.
 - `shop` and `sessionId` – unique per order.
 - `deposit` – amount held for the rental.
+- Optional reconciliation fields: `currency`, `subtotalAmount`, `taxAmount`, `shippingAmount`, `discountAmount`, `totalAmount`, `cartId`, and Stripe identifiers (`stripePaymentIntentId`, `stripeChargeId`, `stripeBalanceTransactionId`, `stripeCustomerId`).
 - Timestamps: `startedAt`, `returnedAt`, `refundedAt`, `fulfilledAt`, `shippedAt`, `deliveredAt`, `cancelledAt`.
 - Optional fields like `expectedReturnDate`, `returnDueDate`, `customerId`, `damageFee`, `riskLevel`, `riskScore`, `flaggedForReview`, `trackingNumber`, `labelUrl`, and `returnStatus`.
+- `customerId` is the internal customer identifier (not the Stripe customer id). Stripe is stored separately in `stripeCustomerId`.
 
 Unique constraints:
 - `@@unique([shop, sessionId])`
@@ -30,7 +32,13 @@ Unique constraints:
 import { addOrder, listOrders, markShipped } from "@platform-core/orders";
 
 // create a new order
-await addOrder("shop1", "sess_123", 500, "2025-01-01", undefined, "cust_1");
+await addOrder({
+  shop: "shop1",
+  sessionId: "sess_123",
+  deposit: 500,
+  expectedReturnDate: "2025-01-01",
+  customerId: "cust_1",
+});
 
 // list orders for a shop
 const orders = await listOrders("shop1");
@@ -45,15 +53,16 @@ Other lifecycle helpers include `markFulfilled`, `markDelivered`, `markCancelled
 Checkout sessions for both rentals and straight sales are created via the shared helper `createCheckoutSession` in `@platform-core/checkout/session`:
 
 - **Rental checkout**
-  - Call `createCheckoutSession(cart, { mode: "rental", returnDate, currency, taxRegion, shopId, ... })`.
+  - Call `createCheckoutSession(cart, { mode: "rental", returnDate, currency, taxRegion, shopId, internalCustomerId, stripeCustomerId, ... })`.
   - Uses rental duration and deposit semantics, building separate rental and deposit line items plus a tax line.
   - Metadata includes `rentalDays`, `returnDate`, `depositTotal`, and per-SKU `sizes`; these are later consumed by rental order and returns flows (for example `/api/rental` handlers).
+  - When authenticated, pass both `internalCustomerId` (platform ID) and `stripeCustomerId` (Stripe ID). `internalCustomerId` is persisted on orders; `stripeCustomerId` is used for Stripe attachment and reconciliation.
   - Rental readiness is driven by:
     - `Shop.type === "rental"` and SKU flags like `forRental`,
     - `ShopSettings.currency` and `ShopSettings.taxRegion` for currency and tax region.
 
 - **Sale checkout**
-  - Call `createCheckoutSession(cart, { mode: "sale", currency, taxRegion, shopId, ... })`.
+  - Call `createCheckoutSession(cart, { mode: "sale", currency, taxRegion, shopId, internalCustomerId, stripeCustomerId, ... })`.
   - Charges SKU prices directly using `sku.price`, without adding deposit line items; `depositTotal` is always `0` in metadata.
   - Rental-specific metadata (`rentalDays`, `returnDate`) is set to neutral values and ignored by downstream rental workflows.
   - Flow selection is typically based on `Shop.type` (`"sale"` vs `"rental"`) and catalogue flags (`forSale`/`forRental`), with `ShopSettings.currency` and `ShopSettings.taxRegion` continuing to drive totals and tax.

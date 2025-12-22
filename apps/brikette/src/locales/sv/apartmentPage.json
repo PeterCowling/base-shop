@@ -1,0 +1,56 @@
+{
+  "slug": "Lägenhet",
+  "meta": {
+    "title": "Lägenhetsboende",
+    "description": "Läs om vår självhushållslägenhet i Positano."
+  },
+  "title": "Lägenhet",
+  "body": "Vår lägenhet ger en bekväm vistelse med fantastisk utsikt.",
+  "heroImageAlt": "Lägenhetshusets utsida",
+  "heroTitle": "Privat lägenhet",
+  "heroIntro": "Njut av en fullt utrustad yta med fantastisk utsikt över Positano.",
+  "bookButton": "Boka nu",
+  "galleryHeading": "Galleri",
+  "galleryAlt": "Interiör och terrassutsikt från lägenheten",
+  "galleryAlts": [
+    "Lägenhetens vardagsrum",
+    "Lägenhetens sovrum",
+    "Gemensam terrass med havsutsikt"
+  ],
+  "detailsHeading": "Detaljer",
+  "detailsList": [
+    "Rymmer upp till 4 gäster",
+    "Pentry med kylskåp",
+    "Privat badrum",
+    "Luftkonditionering",
+    "Balkong med havsutsikt"
+  ],
+  "amenitiesHeading": "Bekvämligheter",
+  "amenitiesImageAlt": "Bild på lägenhetens bekvämligheter",
+  "amenitiesList": [
+    "Wi‑Fi ingår",
+    "Fullt utrustat kök",
+    "Luftkonditionering",
+    "Tvättmaskin och torktumlare"
+  ],
+  "highlights": {
+    "sectionTitle": "Lägenhetens höjdpunkter",
+    "slides": [
+      {
+        "title": "Panoramautsikt",
+        "text": "Vakna varje morgon till vidsträckta vyer.",
+        "alt": "Utsikt från lägenhetens balkong"
+      },
+      {
+        "title": "Bekväma ytor",
+        "text": "Gott om plats att koppla av efter utflykter.",
+        "alt": "Rymligt vardagsrum"
+      },
+      {
+        "title": "Centralt läge",
+        "text": "Några steg från butiker och strand.",
+        "alt": "Positanos gator"
+      }
+    ]
+  }
+}

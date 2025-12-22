@@ -1,0 +1,49 @@
+{
+  "slug": "ofertas",
+  "meta": {
+    "title": "Oferta de Verão 2025 – Poupe 15 %",
+    "description": "Oferta de verão por tempo limitado com mais 15 % de desconto em reservas diretas.",
+    "ogImageAlt": "Banner de desconto de verão"
+  },
+  "title": "Poupe {{percent}} % na sua estadia de {{season}}",
+  "promo": "Reserve diretamente este verão e obtenha mais {{percent}} % de desconto.",
+  "banner": "Apenas {{beds}} camas disponíveis a esta tarifa – a oferta termina dentro de {{time}}!",
+  "timeRemaining": {
+    "lessThanHour": "0 h",
+    "hours_one": "{{count}} h",
+    "hours_other": "{{count}} h",
+    "days_one": "{{count}} dia",
+    "days_other": "{{count}} dias"
+  },
+  "buttonReserve": "Reservar agora",
+  "ogImageAlt": "Banner de desconto de verão",
+  "perksHeading": "Vantagens de reservar diretamente",
+  "perksIntro": "Estes benefícios são exclusivos para hóspedes que reservam diretamente no nosso site.",
+  "perksGuarantee": "Cada reserva feita diretamente no nosso site ativa automaticamente estes benefícios exclusivos.",
+  "perksIntroLink": "Ver todas as ofertas disponíveis",
+  "perksList": [
+    "Até 25 % de desconto sobre o preço normal ao aplicar o cupão",
+    "Pequeno-almoço gratuito",
+    "Bebida de cortesia à noite"
+  ],
+  "expired": {
+    "message": "Esta oferta de duração limitada terminou em {{endedOn}}."
+  },
+  "restrictions": {
+    "heading": "Informações essenciais",
+    "stayWindow": "Válido para estadias de {{from}} a {{to}}.",
+    "minAdvance": "Reserve com pelo menos {{days}} dias de antecedência.",
+    "minAdvancePrefix": "Reserve com pelo menos",
+    "minAdvanceSuffix": "de antecedência.",
+    "los": "Mínimo de {{min}} noites, máximo de {{max}} noites.",
+    "nonRefundable": "Válido apenas para tarifas não reembolsáveis em reservas diretas, ou seja, feitas no site do hostel.",
+    "nonRefundablePrefix": "Válido apenas para",
+    "nonRefundableSuffix": "tarifas em reservas diretas, ou seja, feitas no site do hostel.",
+    "stackable": "{{percent}} % pode ser combinado com nosso desconto padrão de 10 % para reservas diretas.",
+    "other": "Aplicam-se os termos e condições padrão."
+  },
+  "seasonLabel": "verão de 2025",
+  "robots": {
+    "expiredNoindex": "noindex,follow"
+  }
+}

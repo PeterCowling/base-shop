@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "ポジターノと他ビーチリゾートの費用比較",
+    "description": "宿泊・食事・交通のコストを比較し、ポジターノが割安になる条件を解説。"
+  },
+  "linkLabel": "ポジターノと他のビーチ費用比較",
+  "intro": [
+    "翻訳を準備中です。"
+  ],
+  "sections": [
+    {
+      "id": "stay",
+      "title": "Accommodation vs peers",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transport & experiences",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "tips": [
+    "翻訳を準備中です。",
+    "翻訳を準備中です。"
+  ],
+  "faqs": [
+    {
+      "q": "翻訳を準備中です。",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "q": "翻訳を準備中です。",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#overview",
+        "label": "Overview"
+      },
+      {
+        "href": "#when",
+        "label": "When it’s good value"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "faqLabel": "FAQs",
+    "sections": {
+      "overview": {
+        "heading": "Overview",
+        "body": "翻訳を準備中です。"
+      },
+      "when": {
+        "heading": "When it’s good value",
+        "body": "翻訳を準備中です。"
+      }
+    },
+    "faq": {
+      "summary": "翻訳を準備中です。",
+      "answer": "翻訳を準備中です。"
+    }
+  }
+}

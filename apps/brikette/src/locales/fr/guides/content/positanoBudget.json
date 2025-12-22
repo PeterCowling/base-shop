@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "Positano avec un petit budget",
+    "description": "Astuces hébergement, transport, repas et activités pour profiter de Positano sans se ruiner."
+  },
+  "linkLabel": "Positano avec un petit budget",
+  "intro": [
+    "Étirez votre budget en combinant transports sans voiture, repas abordables et points de vue gratuits sans rater les incontournables de Positano."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport à petit prix",
+      "body": [
+        "Prenez l’Alibus ou la navette Curreri jusqu’à Sorrente puis le bus SITA vers Positano ; achetez les billets de bus par carnets chez les tabacchi pour éviter les surcoûts.",
+        "Par mer calme, combinez un trajet en ferry avec les bus pour plus de confort — ne réservez que les segments nécessaires afin de ne pas payer de trop."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Hébergements malins",
+      "body": [
+        "Réservez un lit en dortoir ou un appartement partagé près de Chiesa Nuova pour limiter les frais de portage et les escaliers.",
+        "Pour un séjour plus long, envisagez Meta ou Praiano : le trajet prend 30 à 40 minutes mais les chambres restent bien moins chères en haute saison."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Économies sur les repas",
+      "body": [
+        "Préférez panini, sfogliatelle et espresso au bar plutôt qu’un brunch assis ; remplissez une bouteille de 1 L (34 oz) aux robinets de l’auberge avant de sortir.",
+        "Partagez les antipasti, évitez les coperti en choisissant des trattorias simples et organisez un pique-nique sur une terrasse avec des produits d’épicerie au coucher du soleil."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Expériences à petit budget",
+      "body": [
+        "Planifiez des randonnées gratuites comme le Sentier des Dieux (bus pour Nocelle) ou des balades au coucher du soleil le long de la Via Cristoforo Colombo.",
+        "Investissez dans une activité marquante — sortie en bateau partagé ou cours de cuisine — et équilibrez le reste avec des journées plage et des panoramas."
+      ]
+    }
+  ],
+  "tips": [
+    "Voyagez en intersaison (avril-mai, fin septembre) pour des prix plus doux et des ferries moins chargés.",
+    "Suivez vos dépenses dans une appli de notes ; faire les comptes chaque jour facilite le partage en groupe."
+  ],
+  "faqs": [
+    {
+      "q": "Quel budget quotidien prévoir ?",
+      "a": [
+        "70 à 90 € couvrent un lit en dortoir, des repas d’épicerie, des billets de bus et une activité payante ; ajoutez 20 à 30 € si vous préférez une chambre privée ou un apéritif au coucher du soleil."
+      ]
+    },
+    {
+      "q": "Faut-il laisser un pourboire ?",
+      "a": [
+        "Le service est inclus ; arrondissez de 1 à 2 € pour un excellent service ou laissez 10 % seulement dans les lieux haut de gamme si l’expérience le justifie."
+      ]
+    }
+  ],
+  "tocTitle": "Sur cette page",
+  "faqsTitle": "FAQ",
+  "heroAlt": "Vue économique sur Positano depuis une terrasse",
+  "costBreakdown": {
+    "title": "Répartition type d’un budget quotidien",
+    "slices": [
+      {
+        "label": "Lit (dortoir)",
+        "value": 45
+      },
+      {
+        "label": "Repas et encas",
+        "value": 25
+      },
+      {
+        "label": "Transport",
+        "value": 12
+      },
+      {
+        "label": "Activités et extras",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "Point de vue gratuit sur Positano",
+      "caption": "Points de vue gratuits"
+    },
+    {
+      "alt": "Pique-nique face à Positano",
+      "caption": "Pique-nique pour économiser sur les repas"
+    }
+  ]
+}

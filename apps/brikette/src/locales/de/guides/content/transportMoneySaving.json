@@ -1,0 +1,50 @@
+{
+  "seo": {
+    "title": "Spar-Tipps für den Transport an der Amalfiküste",
+    "description": "Pässe vs. Einzelfahrten, Timing, Kombi Bus/Fähre und Alternativen bei schlechtem Wetter."
+  },
+  "linkLabel": "Spar-Tipps für den Transport an der Amalfiküste",
+  "intro": [
+    "Praktische Wege, die Transportkosten zu senken: Pässe, Timing, Bus-Fähre-Mix und Schlechtwetter-Plan."
+  ],
+  "planChoiceTitle": "Wähle deinen Sparfokus",
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Pässe oder Einzelfahrscheine",
+      "body": [
+        "Nutze Tagespässe nur, wenn du mehrere Fahrten machst; sonst sind Einzelfahrscheine günstiger. Tickets immer entwerten."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & Routenwahl",
+      "body": [
+        "Reise an Spitzentagen außerhalb von 10:00–16:00; nutze direkte Busse für Höhenrouten und Fähren für aussichtsreiche Etappen."
+      ]
+    },
+    {
+      "id": "mixing",
+      "title": "Bus und Fähre kombinieren",
+      "body": [
+        "Wähle eine bezahlte Fährstrecke (z. B. Positano ↔ Amalfi) und nutze für den Rest Busse, um zu sparen und trotzdem bequem zu reisen."
+      ]
+    },
+    {
+      "id": "contingency",
+      "title": "Plan B bei Wetter",
+      "body": [
+        "Bei rauer See fallen Fähren aus – hab einen Bus-Backup parat und Puffer vor der letzten Abfahrt des Tages."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Lohnen sich Kombitickets?",
+      "a": [
+        "Manchmal an Tagen mit mehreren Fährstopps; vergleiche sie mit Einzelfahrpreisen."
+      ]
+    }
+  ]
+}

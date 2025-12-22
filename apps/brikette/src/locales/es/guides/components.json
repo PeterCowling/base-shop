@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "Elige tu plan",
+    "options": {
+      "ferry": "Ferry (estacional)",
+      "trainBus": "Tren + autobús (todo el año)",
+      "transfer": "Traslado privado"
+    },
+    "selectedLabel": "Seleccionado:"
+  },
+  "eventInfo": {
+    "title": "Detalles del evento",
+    "labels": {
+      "when": "Cuándo",
+      "where": "Dónde"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "slug": "positano-sorrento-bus",
+  "meta": {
+    "title": "Positano para Sorrento de autocarro | Hostel Brikette",
+    "description": "Instruções passo a passo desde o Hostel Brikette até Sorrento no autocarro SITA, com bilhetes, dicas de horário e a paragem Chiesa Nuova."
+  },
+  "header": {
+    "eyebrow": "Guia de viagem do Hostel Brikette",
+    "title": "Positano para Sorrento – Autocarro (SITA)",
+    "description": "Use este guia para viajar do Hostel Brikette até Sorrento no autocarro SITA. Explicamos como comprar bilhetes, ler o horário e onde embarcar em Positano (Chiesa Nuova)."
+  },
+  "tip": {
+    "eyebrow": "Dica",
+    "copy": "Precisa de todas as opções de transporte? Abra a <link>visão geral de Como Chegar</link> para itinerários de ferry, táxi e percursos combinados.",
+    "linkLabel": "Visão geral de Como Chegar"
+  },
+  "sections": {
+    "overview": {
+      "title": "Resumo da viagem",
+      "body": "Os autocarros para Sorrento circulam com frequência na época alta. Embarque em Positano (Chiesa Nuova) e viaje diretamente até ao terminal conjunto de comboios e autocarros de Sorrento. Preveja tempo extra nas horas de maior procura."
+    },
+    "tickets": {
+      "title": "SITA e bilhetes de autocarro",
+      "body": "Os autocarros são operados pela SITA Sud. Compre os bilhetes em quiosques ou tabacarias (incluindo no Bar Internazionale). Tenha o bilhete pronto ao embarcar para que o motorista o possa validar."
+    },
+    "timetable": {
+      "title": "Como ler o horário",
+      "list": [
+        "A primeira coluna apresenta cada paragem ao longo do percurso.",
+        "As colunas correspondem às viagens programadas, identificadas por letras.",
+        "Vai viajar de segunda a sábado? Use as colunas “F” e “G”.",
+        "Vai viajar ao domingo ou feriado? Use as colunas “G” e “H”."
+      ],
+      "link": "Consulte o horário mais recente em <link>Positano.com</link>.",
+      "linkLabel": "Positano.com",
+      "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+    },
+    "positanoStop": {
+      "title": "Paragem Positano (Chiesa Nuova)",
+      "list": [
+        "A paragem SITA mais próxima fica na Via G. Marconi, em Positano (Chiesa Nuova).",
+        "Encontra-se a cerca de 140 metros da entrada do hostel.",
+        "Vai esperar no exterior do Bar Internazionale."
+      ],
+      "image": {
+        "alt": "Paragem SITA de Chiesa Nuova em Positano, no exterior do Bar Internazionale",
+        "caption": "Chegue alguns minutos antes para garantir lugar; no verão os autocarros enchem depressa.",
+        "src": "/img/directions/positano-bus-stop.png"
+      }
+    },
+    "walk": {
+      "title": "Caminhada do hostel até à paragem",
+      "list": [
+        "Saia do hostel, desça as escadas até à estrada principal e vire à esquerda.",
+        "Percorra cerca de 100 metros pela Via G. Marconi.",
+        "O Bar Internazionale ficará à sua esquerda; a paragem SITA está mesmo ali."
+      ]
+    },
+    "wait": {
+      "title": "Comprar bilhete e aguardar",
+      "list": [
+        "Compre um bilhete SITA no bar ou no quiosque/tabacaria mais próximo.",
+        "Atravesse para o lado oposto da estrada e forme fila para o autocarro com destino a Sorrento.",
+        "Confirme que o mostrador do autocarro indica “Sorrento”."
+      ]
+    },
+    "arrival": {
+      "title": "Chegada a Sorrento",
+      "body": "O autocarro termina no terminal combinado de comboios e autocarros de Sorrento. A partir daí pode seguir a pé para o centro histórico ou apanhar ligações regionais."
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "title": "Positano til Napoli sentrum med ferge | Hostel Brikette",
+    "description": "Trinn-for-trinn fra Hostel Brikette til havnen i Positano, billetter, ombordstigning og tips for ankomsten med ferge til Napoli sentrum."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette reiseguide",
+    "title": "Positano til Napoli sentrum – ferge",
+    "description": "Følg disse trinnene for å gå fra Hostel Brikette til havnen i Positano, kjøpe fergebilletter og seile til Napoli. Vi deler operatørtips, sesonghensyn og råd for ankomst til Napoli Centrale.",
+    "tipLabel": "Tips",
+    "tipCopy": "Trenger du alternativer hvis sjøen er urolig? Åpne <GuideLink>oversikten «Slik kommer du hit»</GuideLink> for reserveplaner."
+  },
+  "journeyOverview": {
+    "title": "Reiseoversikt",
+    "paragraphs": [
+      "Fergene mellom Positano og Napoli går oftest fra våren til tidlig høst, og kan bli kansellert ved høy sjø. Selve overfarten tar vanligvis rundt 70–90 minutter avhengig av operatør og fartøy.",
+      "Sammenlign tider og bestill: <ExternalLink>Positano.com (samlet rutetabell)</ExternalLink>."
+    ]
+  },
+  "photoGuide": {
+    "title": "Fotoguide (referanse)",
+    "description": "Visuelle referanser for hvert steg av gåturen og billettområdet ved fergehavnen.",
+    "items": {
+      "mapOverview": {
+        "alt": "Kartoversikt over gangruten fra Hostel Brikette til havnen i Positano",
+        "caption": "Kartoversikt: hostellet til havnen i Positano"
+      },
+      "approach": {
+        "alt": "Foto av tilkomsten til Positanos Spiaggia Grande og turistkaien",
+        "caption": "Inngang til Spiaggia Grande (turisthavnen)"
+      },
+      "detailMap": {
+        "alt": "Detaljkart som viser høyresiden av Spiaggia Grande der havnen ligger",
+        "caption": "Detaljkart: havnens plassering på Spiaggia Grande"
+      },
+      "ticketBooths": {
+        "alt": "Billettluker for fergeoperatørene ved havnen i Positano med skilt for neste avgang",
+        "caption": "Billettluker for fergeoperatørene"
+      },
+      "point1": {
+        "alt": "Punkt 1: krysset ved Tabacchi i Via G. Marconi nær Hostel Brikette",
+        "caption": "Punkt 1: Tabacchi-krysset (sving til høyre)"
+      },
+      "point2": {
+        "alt": "Punkt 2: første hårnålssving der du forlater veien og tar trappene",
+        "caption": "Punkt 2: gå av veien, ta trappene"
+      },
+      "point3": {
+        "alt": "Punkt 3: nederst i trappen ved veien før du krysser",
+        "caption": "Punkt 3: trappen ender ved veien"
+      },
+      "point4": {
+        "alt": "Punkt 4: kryss veien, sving kort til venstre og ta trappene",
+        "caption": "Punkt 4: kryss veien, sving venstre, ta trappene"
+      },
+      "point5": {
+        "alt": "Punkt 5: hvelvet passasje som leder mot stranden og havnen",
+        "caption": "Punkt 5: hvelvet inngang til havnen"
+      }
+    }
+  },
+  "walk": {
+    "title": "Gå til havnen i Positano",
+    "steps": [
+      "Gå ut hoveddøren fra hostellet.",
+      "Gå ned trappene til veien, sving til venstre og gå litt over 100 m (≈330 fot).",
+      "Ved det første krysset (punkt 1) svinger du til høyre ved Tabacchi (første bygg på høyre side).",
+      "Fortsett nedover; ved den første hårnålssvingen (punkt 2) forlater du veien og tar trappene rett frem.",
+      "Nederst i trappen kommer du ut i veien (punkt 3); kryss og fortsett rett inn på neste trapp.",
+      "Når den trappen ender ved veien, kryss over, sving kort til venstre og ta trappen ved punkt 4.",
+      "Nederst svinger du til høyre for å nå punkt 5, og fortsetter under hvelvet på høyre side.",
+      "Havnen (brygga Spiaggia Grande) ligger rundt 50 m (≈160 fot) lenger frem på høyre side av stranden."
+    ]
+  },
+  "tickets": {
+    "title": "Kjøp billetter og gå om bord",
+    "items": [
+      "På havnen har hver fergeoperatør sin egen luke.",
+      "Skiltet ved siden av luken viser neste avgang for den operatøren.",
+      "Kjøp billetter direkte fra operatøren; kom 20–30 minutter tidlig for å bytte eventuelle vouchere og stille deg i kø.",
+      "Når du har kjøpt, går du til enden av brygga og venter til ombordstigningen starter."
+    ]
+  },
+  "arrival": {
+    "title": "Ved ankomst i Napoli",
+    "paragraphs": [
+      "Gå i land i havneområdet og fortsett til neste transportmiddel. Til Napoli Centrale (Piazza Garibaldi) er trikken som regel det enkleste alternativet fra havnen.",
+      "Foreslått rute: <TramLink>Ta trikken mellom havnen og Napoli Centrale</TramLink>."
+    ],
+    "return": "For bagasjevennlig gange i Positano når du kommer tilbake, se: <ReturnLink>Fergekaien → Hostel Brikette</ReturnLink>."
+  }
+}

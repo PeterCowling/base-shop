@@ -1,0 +1,68 @@
+{
+  "seo": {
+    "title": "Budget per Positano: ripartizione dei costi",
+    "description": "Quanto spendere al giorno per dormire, mangiare, spostarsi e divertirsi in alta e bassa stagione."
+  },
+  "linkLabel": "Budget per Positano: ripartizione dei costi",
+  "intro": [
+    "Traduzione in arrivo."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport costs",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Traduzione in arrivo.",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "activities",
+      "title": "Activities & extras",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "tips": [
+    "Traduzione in arrivo.",
+    "Traduzione in arrivo."
+  ],
+  "faqs": [
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "labels": {
+    "atAGlance": "At a glance",
+    "tocTitle": "On this page",
+    "tipsTitle": "Where to save",
+    "faqsTitle": "FAQs"
+  }
+}

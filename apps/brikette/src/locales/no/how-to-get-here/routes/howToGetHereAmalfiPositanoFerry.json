@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Amalfi til Positano med ferge | Hostel Brikette",
+    "description": "Amalfi til Positano med ferge: tider, billetter, hvor du går om bord i Amalfi og hvordan du kommer deg fra kaien til Hostel Brikette med minst mulig trapper."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette reiseguide",
+    "title": "Amalfi til Positano — ferge",
+    "description": "Følg disse trinnene for å reise fra Amalfi til Positano med ferge. Du får tips om billetter, hvor du går om bord i Amalfi, hva som venter ved ankomst og hvordan du kommer deg til Hostel Brikette fra kaien med færrest mulig trapper."
+  },
+  "tip": {
+    "label": "Tips",
+    "body": {
+      "before": "Trenger du andre transportalternativer? Åpne ",
+      "linkLabel": "oversikten Slik kommer du hit",
+      "after": " for busser, kombinerte ruter og flyplasstransfer."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Reiseoversikt",
+      "points": [
+        "Hyppige sesongferger forbinder Amalfi og Positano med naturskjønne kystutsikter.",
+        "Travelmar driver jevnlige avganger; rutene kan variere med sesong og vær.",
+        "Sjekk alltid oppdaterte rutetider på reisedagen."
+      ]
+    },
+    "tickets": {
+      "title": "Billetter og rutetider",
+      "intro": {
+        "before": "Sjekk siste tider og priser hos ",
+        "travelmarLabel": "Travelmar",
+        "between": " og ",
+        "positanoLabel": "Positano.com – fergeruter",
+        "after": "."
+      },
+      "points": [
+        "Kjøp billetter på nett på forhånd i høysesongen.",
+        "Møt opp 15–20 minutter før avgang for ombordstigningskøene.",
+        "Ha billetten eller QR-koden klar for kontroll av personalet."
+      ]
+    },
+    "amalfiBoarding": {
+      "title": "Hvor du går om bord i Amalfi",
+      "points": [
+        "De fleste avgangene går fra Amalfis brygger ved Piazza Flavio Gioia.",
+        "Se etter Travelmar-skranker og skilt langs promenaden.",
+        "Bekreft riktig brygge på billetten; personalet kan vise deg hvis du er usikker."
+      ]
+    },
+    "positanoArrival": {
+      "title": "Ankomst i Positano",
+      "points": [
+        "Båtene legger til ved Positanos hovedkai på Spiaggia Grande.",
+        "Med bagasje kan du vurdere portertjenesten eller Interno Positano-bussen for færre trapper.",
+        "Å gå oppover med tunge kofferter kan være krevende i sommervarmen."
+      ],
+      "cta": {
+        "before": "For en trinnvis rute fra kaien til døren vår, les ",
+        "linkLabel": "guiden Fergekaien → Hostel Brikette",
+        "after": "."
+      }
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

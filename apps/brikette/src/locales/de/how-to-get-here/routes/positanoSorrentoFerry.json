@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "title": "Positano nach Sorrent mit der Fähre | Hostel Brikette",
+    "description": "Schritt für Schritt von Positano nach Sorrent mit der Fähre: Weg zum Pier, Tickets, Boarding-Tipps und Hinweise zur Ankunft in Sorrent Marina Piccola."
+  },
+  "hero": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "title": "Positano nach Sorrent – Fähre",
+    "description": "Nimm die Direktfähre vom Pier Spiaggia Grande in Positano nach Sorrent. Dieser kurze Leitfaden erklärt den Fußweg zum Pier, wo du Tickets kaufst, Boarding-Tipps und was dich bei der Ankunft im Hafen von Sorrent erwartet."
+  },
+  "cta": {
+    "label": "Tipp",
+    "copy": "Du brauchst alle Transportoptionen? Öffne die <link>Übersicht „So kommst du zu uns“</link> für Busse, Taxis und kombinierte Routen."
+  },
+  "journeyOverview": {
+    "title": "Reiseüberblick",
+    "items": [
+      "Plane in der Saison etwa 45–60 Minuten von Pier zu Pier ein.",
+      "Fähren sind wetterabhängig und können zu Spitzenzeiten ausgebucht sein.",
+      "Tickets etwas früher zu kaufen, sichert Sitzplätze und erleichtert das Boarding."
+    ]
+  },
+  "walkToPier": {
+    "title": "Zum Pier von Positano laufen",
+    "items": [
+      "Gehe vom Hostel Brikette bergab Richtung Spiaggia Grande (Hauptstrand/Pier).",
+      "Bei schwerem Gepäck lohnt sich der offizielle Gepäckservice am Pier.",
+      "Kaufe Tickets an den Schaltern an der Uferpromenade oder über die Websites der Anbieter (z. B. Travelmar oder NLG)."
+    ],
+    "note": "Zeiten und Preise findest du auf <positano>Positano.com – Fährpläne</positano> und auf den Webseiten der Anbieter wie <travelmar>Travelmar</travelmar> oder <nlg>NLG</nlg>."
+  },
+  "boarding": {
+    "title": "Ticket kaufen und an Bord gehen",
+    "items": [
+      "Sei 20–30 Minuten vor Abfahrt dort, um entspannt anzustehen und ggf. Gutscheine einzulösen.",
+      "Halte dein Ticket griffbereit und folge den Anweisungen der Crew beim Boarding.",
+      "Stelle größere Taschen in den vorgesehenen Gepäckbereich und behalte Wertsachen bei dir."
+    ]
+  },
+  "arrival": {
+    "title": "Ankunft in Sorrent",
+    "items": [
+      "Gehe in Sorrent an der Marina Piccola (Fährhafen) von Bord.",
+      "Folge den Schildern hinauf in die Stadt oder nutze lokale Verkehrsmittel, um den Bahnhof von Sorrent zu erreichen.",
+      "Prüfe Anschlusszüge oder -busse im Voraus, besonders abends und in der Nebensaison."
+    ]
+  },
+  "externalLinks": {
+    "positano": "https://www.positano.com/en/ferry-schedule",
+    "travelmar": "https://travelmar.it/en",
+    "nlg": "https://www.nlg.it/"
+  }
+}

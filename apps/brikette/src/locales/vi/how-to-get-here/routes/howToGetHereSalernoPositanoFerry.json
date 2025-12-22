@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "title": "Từ Salerno đến Positano bằng phà | Hostel Brikette",
+    "description": "Đi phà từ Salerno tới Positano: lịch chạy, mẹo mua vé và cách tới Hostel Brikette từ bến bằng dịch vụ khuân vác hoặc xe buýt địa phương."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Salerno đến Positano — Phà",
+    "description": "Dùng hướng dẫn này để đi từ Salerno đến Positano bằng phà. Bài viết nêu nơi mua vé, điểm lên tàu tại Salerno, mẹo xem giờ và cách tới Hostel Brikette từ bến Positano."
+  },
+  "tip": {
+    "label": "Mẹo",
+    "body": "Cần phương án khác? Mở <GuideLink>Tổng quan Cách đến đây</GuideLink> để xem xe buýt, tuyến kết hợp và dịch vụ sân bay."
+  },
+  "sections": {
+    "overview": {
+      "title": "Tổng quan hành trình",
+      "points": [
+        "Phà theo mùa chạy từ Salerno tới Positano với khung cảnh ven biển đẹp mắt.",
+        "Travelmar khai thác nhiều chuyến nhất; hãy chừa thêm thời gian vào mùa cao điểm.",
+        "Phà có thể bị hủy khi thời tiết xấu — luôn kiểm tra thông tin mới trước khi đi."
+      ]
+    },
+    "tickets": {
+      "title": "Vé và lịch chạy",
+      "intro": "Xem giờ chạy và giá mới nhất trên <TravelmarLink>Travelmar</TravelmarLink> và <PositanoLink>Positano.com – Lịch phà</PositanoLink>.",
+      "points": [
+        "Mua vé trực tuyến trước trong các tháng cao điểm.",
+        "Đến sớm 15–20 phút trước giờ khởi hành để lên tàu thoải mái.",
+        "Giữ vé sẵn; nhân viên sẽ quét hoặc xé trước khi lên tàu."
+      ]
+    },
+    "salernoBoarding": {
+      "title": "Điểm lên tàu tại Salerno",
+      "points": [
+        "Đa số chuyến khởi hành từ Piazza della Concordia của Salerno (Travelmar).",
+        "Một số chuyến dùng Molo Manfredi — kiểm tra bến trên vé của bạn.",
+        "Làm theo biển chỉ dẫn ven bờ; nhân viên có thể hướng bạn đến cầu tàu đúng."
+      ]
+    },
+    "positanoArrival": {
+      "title": "Đến Positano",
+      "points": [
+        "Bạn sẽ cập bến chính của Positano (Spiaggia Grande).",
+        "Nếu mang nhiều hành lý, nên dùng dịch vụ khuân vác hoặc xe buýt nội thị Interno.",
+        "Không nên leo dốc mang đồ nặng trong cái nóng mùa hè."
+      ],
+      "cta": "Cần lộ trình từng bước từ bến về hostel? Xem <DockGuideLink>Bến phà → Hostel Brikette</DockGuideLink>."
+    }
+  }
+}

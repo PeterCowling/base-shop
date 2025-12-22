@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Comment éviter la foule à Positano (hors des sentiers battus)",
+    "description": "Choisir le bon moment, itinéraires calmes, villes alternatives et spots photo futés pour profiter de Positano sans les files."
+  },
+  "linkLabel": "Comment éviter la foule à Positano (hors des sentiers battus)",
+  "intro": [
+    "Éviter la foule à Positano passe par le bon timing, des ruelles moins fréquentées et l'art de s'échapper vers une ville plus calme quand il le faut."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Horaires gagnants",
+      "body": [
+        "Arrivez à Spiaggia Grande ou sur les principaux points de vue au lever du soleil ou pendant l'heure dorée ; déjeuner tard (après 14 h 30) évite l'affluence sur les terrasses.",
+        "Faites une pause à l'ombre ou une sieste en milieu de journée : la plupart des excursionnistes remplissent les ruelles entre 10 h et 16 h."
+      ]
+    },
+    {
+      "id": "routes",
+      "title": "Parcours & coins paisibles",
+      "body": [
+        "Empruntez la promenade haute entre Chiesa Nuova et Sponda pour profiter de vues en balcon sans l'entonnoir de la Via dei Mulini.",
+        "Rejoignez la plage de Fornillo ou le belvédère de la Via Positanesi d'America pour des baignades et des photos plus tranquilles."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Bases alternatives",
+      "body": [
+        "Praiano et Cetara offrent des soirées plus calmes, des couchers de soleil faciles et des repas moins chers sans perdre la vue sur la côte.",
+        "Les jardins de Ravello ou les villages perchés d'Agerola sont d'excellentes échappées lorsque Positano est saturée."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Quand Spiaggia Grande est-elle calme ?",
+      "a": [
+        "Avant 9 h ou après 18 h 30, vous trouverez de la place pour vous installer et une lumière plus douce pour les photos — emportez une serviette et arrivez tôt."
+      ]
+    },
+    {
+      "q": "Où faire des photos sans foule ?",
+      "a": [
+        "Montez Via Cristoforo Colombo pour des terrasses surélevées ou prenez le bus vers Nocelle pour les panoramas du Sentier des Dieux."
+      ]
+    },
+    {
+      "q": "Faut-il dormir hors de Positano pour plus de tranquillité ?",
+      "a": [
+        "Oui si vous préférez des soirées calmes : Praiano, Minori ou Agerola restent abordables et vous pouvez rejoindre Positano en bus ou en ferry la journée."
+      ]
+    }
+  ]
+}

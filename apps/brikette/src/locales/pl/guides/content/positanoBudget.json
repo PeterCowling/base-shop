@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "Positano niskim kosztem",
+    "description": "Strategie na oszczędne zwiedzanie Positano: noclegi, wyżywienie, transport i atrakcje."
+  },
+  "linkLabel": "Positano niskim kosztem",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport on the cheap",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Smart stays",
+      "body": [
+        "Book hostel dorms or shared apartments near Chiesa Nuova to cut porter fees and stair climbs.",
+        "Consider bases in Meta or Praiano for longer trips—the commute is 30–40 minutes but rooms are far cheaper in peak season."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink savings",
+      "body": [
+        "Grab panini, sfogliatelle, and espresso from bars instead of sit-down brunch; refill a 1 L (34 oz) bottle at hostel taps before heading out.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Low-cost experiences",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "tips": [
+    "Travel in shoulder months (April–May, late September) for lower prices and easier ferry seats.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "faqs": [
+    {
+      "q": "What daily budget should I plan?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Is tipping expected?",
+      "a": [
+        "Service is included; round up €1–€2 for great service or leave 10% in upscale venues only if you feel the experience warranted it."
+      ]
+    }
+  ],
+  "tocTitle": "On this page",
+  "faqsTitle": "FAQs",
+  "heroAlt": "Budget views over Positano from terrace",
+  "costBreakdown": {
+    "title": "Tłumaczenie w przygotowaniu.",
+    "slices": [
+      {
+        "label": "Bed (dorm)",
+        "value": 45
+      },
+      {
+        "label": "Meals & snacks",
+        "value": 25
+      },
+      {
+        "label": "Transport",
+        "value": 12
+      },
+      {
+        "label": "Activities & extras",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "Tłumaczenie w przygotowaniu.",
+      "caption": "Free viewpoints"
+    },
+    {
+      "alt": "Picnic with Positano view",
+      "caption": "Picnic to save on meals"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "slug": "contacto-de-asistencia",
+  "meta": {
+    "title": "Contacto e Información | Hostel Brikette Positano",
+    "description": "Reserva, explora y conéctate con nosotros en línea. ¿Tienes preguntas? Nuestro asistente digital ofrece recomendaciones personalizadas y guías de viaje para mejorar tu estancia en Positano."
+  },
+  "heading": "Asistencia Digital",
+  "subheading": "Reserva, explora y conéctate con nosotros en línea.",
+  "heroIntro": "Obtén respuestas instantáneas de nuestro equipo y asistente digital para planificar tu estancia más rápido.",
+  "otherBookingOptions": "Otras Opciones de Reserva y Redes Sociales",
+  "addressLabel": "Dirección:",
+  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookingOptions": {
+    "googleBusiness": "Google Business",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "¿Cómo podemos ",
+  "amaHeadingPart2": "ayudarte?",
+  "amaParagraph1": "¿Tienes preguntas? Estamos aquí para ayudarte. Siéntete libre de preguntarnos lo que sea; si no cubrimos todo lo que necesitas, simplemente envíanos un correo electrónico directamente y te responderemos con rapidez.",
+  "amaParagraph2": "Una vez confirmada tu reserva, obtendrás acceso instantáneo a nuestro asistente digital. Esta herramienta ofrece recomendaciones personalizadas sobre atracciones, actividades y joyas ocultas en Positano, garantizando que aproveches al máximo tu estancia.",
+  "amaParagraph3": "También desbloquearás acceso a nuestras guías de viaje seleccionadas a través del asistente. Estas incluyen recursos prácticos como consejos de transporte, indicaciones paso a paso e información para facilitar tu planificación.",
+  "amaHelpCenterLink": "Ver todos los artículos de ayuda",
+  "askPlaceholder": "Pregunta por direcciones, instalaciones, etc...",
+  "clearLabel": "Borrar búsqueda",
+  "answersFoundLabel": "respuestas encontradas",
+  "noMatchesFound": "No se encontraron coincidencias",
+  "popularGuides": "Guías populares",
+  "guideReachBudget": "Cómo llegar a Positano con poco presupuesto",
+  "guideFerrySchedules": "Horarios de ferris para Positano",
+  "guidePathOfTheGods": "Sendero de los Dioses desde el hostel",
+  "guideCollections": {
+    "heading": "Planifica tu estancia con guías paso a paso",
+    "description": "Direcciones, políticas de reservas y logística de llegada recopiladas de nuestras preguntas más frecuentes.",
+    "taggedHeading": "Esenciales de planificación etiquetados con {{tag}}",
+    "taggedDescription": "Estos esenciales se centran en {{tag}}. Borra el filtro para explorar todo lo que hemos preparado.",
+    "empty": "Aún no tenemos guías de planificación para {{tag}}. Prueba con otra etiqueta o restablece el filtro.",
+    "clearFilter": "Ver todos los esenciales de planificación",
+    "cardCta": "Lee la guía de planificación {{guideTitle}}"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

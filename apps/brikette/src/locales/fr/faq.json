@@ -1,0 +1,149 @@
+{
+  "items": [
+    {
+      "id": "what-kind-of-breakfast-is-served-at-hostel-brikette",
+      "question": "Quel type de petit-déjeuner est servi au Hostel Brikette ?",
+      "answer": "Les clients profitent d’un menu à la carte très apprécié. Réservez en direct pour un petit-déjeuner offert."
+    },
+    {
+      "id": "what-are-the-check-in-and-check-out-times-at-hostel-brikette",
+      "question": "Quels sont les horaires d’arrivée et de départ au Hostel Brikette ?",
+      "answer": "L’enregistrement habituel s’effectue de 15 h à 22 h 30, et le départ de 7 h 30 à 10 h 30."
+    },
+    {
+      "id": "how-much-does-it-cost-to-stay-at-hostel-brikette",
+      "question": "Combien coûte un séjour au Hostel Brikette ?",
+      "answer": "Les tarifs dépendent des dates et du type de chambre. Pour connaître les prix à jour, effectuez une recherche par chambre et par date."
+    },
+    {
+      "id": "what-is-there-to-do-at-hostel-brikette",
+      "question": "Que faire au Hostel Brikette ?",
+      "answer": "L’auberge organise ou recommande des randonnées ; d’autres activités peuvent entraîner des frais."
+    },
+    {
+      "id": "how-far-is-hostel-brikette-from-the-centre-of-positano",
+      "question": "À quelle distance se trouve le Hostel Brikette du centre de Positano ?",
+      "answer": "L’établissement se situe à environ 350 mètres du centre de Positano."
+    },
+    {
+      "id": "how-close-to-the-beach-is-hostel-brikette",
+      "question": "Hostel Brikette est-il proche de la plage ?",
+      "answer": "La plage la plus proche se trouve à environ 350 mètres."
+    },
+    {
+      "id": "what-room-types-are-available-at-hostel-brikette",
+      "question": "Quels types de chambres sont disponibles au Hostel Brikette ?",
+      "answer": "Vous pouvez réserver des lits en dortoir mixte, des lits en dortoir réservé aux femmes ou des chambres doubles privées avec salle de bain."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-terrace-with-sea-views",
+      "question": "Le Hostel Brikette dispose-t-il d'une terrasse donnant sur la mer ?",
+      "answer": "Oui — une grande terrasse commune surplombe Positano et offre une vue panoramique sur la mer."
+    },
+    {
+      "id": "is-free-wi-fi-provided",
+      "question": "Le Wi-Fi gratuit est-il fourni ?",
+      "answer": "Oui — une connexion Wi-Fi gratuite est disponible dans tout l’établissement."
+    },
+    {
+      "id": "is-breakfast-included-in-the-rate",
+      "question": "Le petit-déjeuner est-il inclus dans le tarif ?",
+      "answer": "Le petit-déjeuner est inclus si vous réservez en direct ; sinon il est facturé en supplément."
+    },
+    {
+      "id": "does-hostel-brikette-have-an-on-site-bar",
+      "question": "Le Hostel Brikette dispose-t-il d’un bar sur place ?",
+      "answer": "Oui — le bar propose café, en-cas légers, petit-déjeuner, repas du soir et boissons chaque jour de 7 h 30 à 23 h 30."
+    },
+    {
+      "id": "can-i-store-my-luggage-before-check-in-or-after-check-out",
+      "question": "Puis-je déposer mes bagages avant l’enregistrement ou après le départ ?",
+      "answer": "Oui — la bagagerie est ouverte à partir de 10 h 30 pour les arrivées et de 7 h 30 à 15 h 30 pour les départs."
+    },
+    {
+      "id": "are-there-age-restrictions-at-hostel-brikette",
+      "question": "Y a-t-il des restrictions d’âge au Hostel Brikette ?",
+      "answer": "L’enregistrement dans les dortoirs n’est possible que pour les clients âgés de 18 à 39 ans. Ces restrictions ne s’appliquent pas aux chambres privées."
+    },
+    {
+      "id": "are-children-allowed",
+      "question": "Les enfants sont-ils autorisés ?",
+      "answer": "Les dortoirs sont réservés aux adultes et ne peuvent pas accueillir d’enfants. Réservez une chambre privée pour contourner les restrictions d’âge."
+    },
+    {
+      "id": "are-pets-allowed",
+      "question": "Les animaux domestiques sont-ils autorisés ?",
+      "answer": "Désolé, les animaux domestiques ne sont pas autorisés dans l’établissement."
+    },
+    {
+      "id": "does-the-hostel-have-its-own-parking",
+      "question": "L’auberge dispose-t-elle d’un parking sur place ?",
+      "answer": "L’auberge ne possède pas de parking sur place ; des parkings publics payants sont disponibles à Positano."
+    },
+    {
+      "id": "is-air-conditioning-available",
+      "question": "La climatisation est-elle disponible ?",
+      "answer": "Oui — toutes les chambres et tous les dortoirs sont climatisés."
+    },
+    {
+      "id": "are-lockers-provided-in-the-dormitories",
+      "question": "Des casiers sont-ils fournis dans les dortoirs ?",
+      "answer": "Oui — chaque lit dispose d’un casier individuel ; apportez votre propre cadenas ou achetez-en un à la réception."
+    },
+    {
+      "id": "are-towels-included",
+      "question": "Les serviettes sont-elles incluses ?",
+      "answer": "Une serviette de douche est fournie lors de l’enregistrement. Des serviettes de plage peuvent être louées."
+    },
+    {
+      "id": "is-bed-linen-included",
+      "question": "Le linge de lit est-il inclus ?",
+      "answer": "Oui — du linge de lit frais est fourni lors de l’enregistrement."
+    },
+    {
+      "id": "does-hostel-brikette-have-laundry-facilities",
+      "question": "L’auberge dispose-t-elle d’une laverie ?",
+      "answer": "L’auberge ne possède pas de laverie ; cependant, il y en a à proximité."
+    },
+    {
+      "id": "does-hostel-brikette-have-quiet-hours",
+      "question": "Y a-t-il des heures de silence au Hostel Brikette ?",
+      "answer": "Les heures de silence sont observées de 23 h 30 à 7 h 30."
+    },
+    {
+      "id": "how-do-i-get-to-hostel-brikette-from-naples-airport",
+      "question": "Comment rejoindre le Hostel Brikette depuis l’aéroport de Naples ?",
+      "answer": "Prenez la navette Curreri jusqu’à Sorrente, puis le bus SITA jusqu’à Positano ; descendez à l’arrêt Chiesa Nuova."
+    },
+    {
+      "id": "where-is-the-nearest-bus-stop",
+      "question": "Où se trouve l’arrêt de bus le plus proche ?",
+      "answer": "L’arrêt de bus Chiesa Nuova se trouve à moins de 80 m (250 ft) et il n’y a pas d’escaliers pour rejoindre l’auberge."
+    },
+    {
+      "id": "what-payment-methods-are-accepted",
+      "question": "Quels modes de paiement sont acceptés ?",
+      "answer": "La réception accepte les paiements par Visa, Mastercard, Maestro, carte de débit et espèces."
+    },
+    {
+      "id": "is-reception-open-24-hours",
+      "question": "La réception est-elle ouverte 24 h/24 ?",
+      "answer": "La réception ouvre à 07 h 30 et ferme à 22 h 30. Les arrivées tardives doivent être convenues à l’avance."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-shared-kitchen",
+      "question": "L’auberge dispose-t-elle d’une cuisine commune ?",
+      "answer": "Il n’y a pas de cuisine commune, mais les clients ont accès à un réfrigérateur, une bouilloire et un micro-ondes."
+    },
+    {
+      "id": "does-hostel-brikette-offer-female-only-dorms",
+      "question": "Le Hostel Brikette propose-t-il des dortoirs réservés aux femmes ?",
+      "answer": "Oui — il est possible de réserver des lits dans des dortoirs réservés aux femmes."
+    },
+    {
+      "id": "is-the-property-wheelchair-accessible",
+      "question": "La propriété est-elle accessible en fauteuil roulant ?",
+      "answer": "L’auberge n’est pas accessible en fauteuil roulant."
+    }
+  ]
+}

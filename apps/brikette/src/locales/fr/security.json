@@ -1,0 +1,21 @@
+{
+  "slug": "securite",
+  "meta": {
+    "title": "Consignes de Sécurité et de Protection – Positano Hostel",
+    "description": "Toutes les informations essentielles sur la manière dont nous veillons à la sécurité de chaque personne – et de ses effets personnels – au Positano Hostel, notamment les casiers, les bracelets de sécurité, la vidéosurveillance et les règles pour les visiteur·euse·s."
+  },
+  "headings": {
+    "personalBelongingsSecurity": "Protection de vos effets personnels",
+    "identificationSecurityBands": "Bracelets de sécurité",
+    "cctvSurveillance": "Vidéosurveillance CCTV",
+    "temporaryGuestsPolicy": "Accueil des visiteur·euse·s de jour",
+    "unregisteredPersonsPolicy": "Enregistrement des personnes passant la nuit"
+  },
+  "content": {
+    "personalBelongingsSecurity": "Chaque personne hébergée est responsable de ses effets personnels pendant toute la durée du séjour. Des casiers et coffres-forts sont mis à disposition lorsque cela est possible ; leur utilisation est simple mais n’engage pas la responsabilité de l’auberge, nous vous conseillons donc de maintenir votre assurance voyage à jour. Pour la tranquillité de toutes et tous, gardez la porte de votre chambre fermée et verrouillez le casier fourni ; les objets laissés sans protection peuvent limiter toute réclamation. Les biens oubliés depuis plus de 30 jours seront donnés, recyclés ou éliminés.",
+    "identificationSecurityBands": "Afin que notre équipe reconnaisse rapidement les personnes inscrites, un bracelet de sécurité est remis à chaque arrivée. Portez-le dans l’ensemble de l’établissement ; nos équipes peuvent également demander une pièce d’identité avec photo. Si vous perdez ou endommagez votre bracelet, informez la réception ; de légers frais de remplacement s’appliquent. Les personnes ne portant pas de bracelet ou refusant de présenter une pièce d’identité peuvent être invitées à quitter les lieux sans possibilité de remboursement.",
+    "cctvSurveillance": "Les espaces communs – y compris l’entrée, les couloirs, la terrasse et les salles communes – sont surveillés par CCTV 24 h/24. Les enregistrements sont stockés en toute sécurité et ne sont consultés que par du personnel autorisé. Les caméras contribuent à la sécurité mais ne garantissent pas l’absence de perte, vol ou dommage ; restez donc vigilant·e et protégez vos objets de valeur.",
+    "temporaryGuestsPolicy": "Veuillez contacter la réception avant d’inviter des ami·e·s, afin que nous puissions leur attribuer le statut de Visiteur·rice de jour. Une fois inscrit·e·s avec une pièce d’identité valide, les visiteur·euse·s de jour peuvent utiliser les espaces communs entre 10 h 30 et 20 h 00. Pour préserver la vie privée de chacun, les chambres sont réservées aux personnes enregistrées pour la nuit. L’auberge peut refuser ou retirer ce statut à sa discrétion.",
+    "unregisteredPersonsPolicy": "La loi italienne impose que chaque personne passant la nuit soit enregistrée. Si une personne non enregistrée est trouvée dans une chambre, les clientes et clients inscrits se verront facturer le tarif standard de la couchette concernée, plus des frais administratifs équivalents au double de ce montant. La personne supplémentaire doit effectuer son enregistrement immédiatement ou quitter les lieux ; en cas de refus, l’auberge est tenue de contacter les autorités locales. Le défaut de déclaration d’une personne supplémentaire peut également entraîner l’enregistrement de la réservation comme « No-Show »."
+  }
+}

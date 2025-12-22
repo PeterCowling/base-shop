@@ -1,4 +1,7 @@
+/** @jest-environment jsdom */
+
 import type { ReactElement } from "react";
+import { render, screen } from "@testing-library/react";
 import type { CartState } from "@platform-core/cartCookie";
 import CheckoutPage from "../src/app/[lang]/checkout/page";
 
@@ -8,7 +11,7 @@ jest.mock("next/headers", () => ({
 
 jest.mock("@/components/checkout/CheckoutForm", () => {
   function CheckoutFormMock() {
-    return <div data-testid="checkout-form" />;
+    return <div data-cy="checkout-form" />;
   }
   return CheckoutFormMock;
 });
@@ -18,9 +21,9 @@ jest.mock("@/components/organisms/OrderSummary", () => {
     const { cart = {}, totals = {} } = props ?? {};
     return (
       <div>
-        <div data-testid="subtotal">{totals.subtotal}</div>
-        <div data-testid="deposit">{totals.deposit}</div>
-        <div data-testid="total">{totals.total}</div>
+        <div data-cy="subtotal">{totals.subtotal}</div>
+        <div data-cy="deposit">{totals.deposit}</div>
+        <div data-cy="total">{totals.total}</div>
         {Object.values(cart).map((l: any) => (
           <div key={l.sku.id}>{l.sku.title}</div>
         ))}
@@ -87,8 +90,13 @@ describe("CheckoutPage", () => {
     const ui = (await CheckoutPage({
       params: Promise.resolve({ lang: "en" }),
     })) as ReactElement;
-    const summary = (ui.props.children as any)[0];
-    expect(summary.props.totals).toEqual({ subtotal: 200, deposit: 20, total: 220 });
+    render(ui);
+    const [subtotal] = screen.getAllByTestId("subtotal").filter((node) => node.textContent);
+    const [deposit] = screen.getAllByTestId("deposit").filter((node) => node.textContent);
+    const [total] = screen.getAllByTestId("total").filter((node) => node.textContent);
+    expect(subtotal).toHaveTextContent("200");
+    expect(deposit).toHaveTextContent("20");
+    expect(total).toHaveTextContent("220");
   });
 
   it("renders rental flow with pricing and deposit", async () => {
@@ -104,9 +112,14 @@ describe("CheckoutPage", () => {
     const ui = (await CheckoutPage({
       params: Promise.resolve({ lang: "en" }),
     })) as ReactElement;
-    const summary = (ui.props.children as any)[0];
     expect(priceForDaysMock).toHaveBeenCalled();
-    expect(summary.props.totals).toEqual({ subtotal: 200, deposit: 50, total: 250 });
+    render(ui);
+    const [subtotal] = screen.getAllByTestId("subtotal").filter((node) => node.textContent);
+    const [deposit] = screen.getAllByTestId("deposit").filter((node) => node.textContent);
+    const [total] = screen.getAllByTestId("total").filter((node) => node.textContent);
+    expect(subtotal).toHaveTextContent("200");
+    expect(deposit).toHaveTextContent("50");
+    expect(total).toHaveTextContent("250");
   });
 
   it("shows message for invalid return date in rental flow", async () => {

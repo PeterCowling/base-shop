@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "Từ Positano đến Salerno bằng phà | Hostel Brikette",
+    "description": "Từ cửa hostel tới cảng Positano, đi phà đến Salerno, kèm mẹo vé và ghi chú khi đến nơi."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Positano đến Salerno – Phà",
+    "description": "Làm theo các bước này để đi bộ từ Hostel Brikette tới cảng Positano, mua vé phà và lên tàu đi Salerno. Bài viết cung cấp mẹo căn thời gian, lựa chọn hãng cũng như thông tin khi cập cảng Salerno và nối chuyến tới ga tàu."
+  },
+  "tip": {
+    "label": "Mẹo",
+    "copy": "Biển động cần phương án dự phòng? Xem <link>Tổng quan Cách đến đây</link> để chọn tuyến thay thế."
+  },
+  "journey": {
+    "title": "Tổng quan hành trình",
+    "paragraphs": [
+      "Phà giữa Positano và Salerno chạy nhiều nhất từ mùa xuân đến đầu mùa thu và có thể bị hủy khi biển động. Thời gian di chuyển thường khoảng 60–80 phút tùy hãng và loại tàu.",
+      "So sánh giờ chạy và đặt vé: <positanoLink>Positano.com (lịch tổng hợp)</positanoLink> · <travelmarLink>Travelmar – Salerno ↔ Positano</travelmarLink>."
+    ]
+  },
+  "walk": {
+    "title": "Đi bộ tới cảng Positano",
+    "steps": [
+      "Ra khỏi hostel bằng cửa chính.",
+      "Đi xuống cầu thang tới mặt đường, rẽ trái và đi hơn 100 m.",
+      "Ở ngã rẽ đầu tiên (điểm 1), rẽ phải cạnh cửa hàng Tabacchi (tòa nhà đầu tiên bên phải).",
+      "Tiếp tục xuống dốc; tại khúc cua gấp đầu tiên (điểm 2), rời đường và đi thẳng xuống cầu thang.",
+      "Xuống hết cầu thang gặp đường (điểm 3); băng qua và đi tiếp xuống dãy cầu thang kế tiếp.",
+      "Khi cầu thang đó kết thúc ở mặt đường, băng qua, rẽ trái một đoạn ngắn rồi xuống cầu thang (điểm 4).",
+      "Xuống tới cuối, rẽ phải tới điểm 5 rồi đi tiếp qua lối vòm bên phải.",
+      "Cảng (cầu tàu Spiaggia Grande) nằm cách khoảng 50 m phía tay phải bãi biển."
+    ]
+  },
+  "tickets": {
+    "title": "Mua vé và lên tàu",
+    "steps": [
+      "Tại cảng, mỗi hãng phà có quầy riêng.",
+      "Biển bên cạnh quầy hiển thị chuyến khởi hành tiếp theo của hãng đó.",
+      "Mua vé trực tiếp từ hãng. Đến sớm 20–30 phút để đổi phiếu (voucher) nếu cần và xếp hàng.",
+      "Sau khi mua vé, đi ra cuối cầu tàu và chờ tới lượt lên tàu."
+    ]
+  },
+  "arrival": {
+    "title": "Khi đến Salerno",
+    "paragraphs": [
+      "Xuống tàu tại khu cảng Concordia/Manfredi của Salerno tùy hướng dẫn từ hãng. Nếu cần bắt tàu, đi bộ tới ga chính Salerno (Stazione FS); đường đi dễ dàng và hầu như bằng phẳng.",
+      "Bản đồ: <mapLink>Từ cảng Concordia → ga tàu Salerno</mapLink>.",
+      "Nếu phà bị hủy vì thời tiết, hãy hoãn chuyến hoặc cân nhắc đi qua Sorrento vào ngày hôm sau."
+    ]
+  }
+}

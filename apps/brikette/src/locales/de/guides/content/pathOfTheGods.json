@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Pfad der Götter ab Hostel Brikette",
+    "description": "Exakte Route vom Hostel zu den Einstiegen des Sentiero degli Dei – inklusive Verkehrsmitteloptionen und Sicherheitstipps."
+  },
+  "linkLabel": "Pfad der Götter ab Brikette",
+  "intro": "Der Sentiero degli Dei (\"Pfad der Götter\") gehört zu den spektakulärsten Küstenwanderungen Italiens. Vom Hostel erreichst du entweder den klassischen Start in Bomerano oder das Finale in Nocelle mit dem SITA-Bus.",
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Beste Zeit für die Wanderung",
+      "body": [
+        "Ideal sind April–Juni sowie September–Oktober: klare Sicht und angenehme Temperaturen; Winterregen macht die Steinstufen rutschig.",
+        "Im Juli/August vor 09:00 oder nach 15:00 starten – der Weg liegt frei und bietet kaum Schatten."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Route wählen",
+      "body": [
+        "Bomerano → Nocelle umfasst den klassischen 6,5-km-Kamm mit stetigen Auf- und Abstiegen; für den Fußweg 2,5–3 Stunden plus An- und Abreise einplanen.",
+        "Wenig Zeit? Fahr mit dem Bus nach Nocelle, geh den Panoramaabschnitt als Hin- und Rückweg bis Colle Serra oder steig die 1.700 Stufen nach Positano hinab."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Navigation & Sicherheit",
+      "body": [
+        "Folge den rot-weißen CAI-Markierungen und den hölzernen Sentiero-degli-Dei-Pfeilen; lade eine Offline-Karte, da der Empfang in den Schluchten aussetzt.",
+        "Der Pfad mischt Steintreppen, festgetretene Erde und lose Kiespassagen – trage Schuhe mit Profil und nutze Stöcke erst in den steileren Abstiegen."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Versorgung & Rückweg",
+      "body": [
+        "Decke dich vor dem Start am Hauptplatz von Bomerano ein (Cafés, Bäckerei, letzte öffentliche Toilette); in Nocelle findest du einen Kiosk und eine Limonen-Granita neben der Kirche.",
+        "Zurück nach Positano: Stufen hinunter bis Arienzo-Strand oder SITA-Bus ab Nocelle/Montepertuso – ein entwertetes Ersatzticket gehört in den Tagesrucksack."
+      ]
+    }
+  ],
+  "essentialsTitle": "Das Wichtigste",
+  "essentials": [
+    "Gutes Schuhwerk, Wasser, Sonnenschutz; Sommerhitze zur Mittagszeit meiden.",
+    "Bustickets vor dem Einstieg kaufen (Tabacchi, Kioske).",
+    "Plane rund 4 Stunden inklusive Transfer und Fotostopps ein."
+  ],
+  "typicalCostsTitle": "Typische Kosten",
+  "typicalCosts": [
+    "SITA-Bus (Positano ⇄ Nocelle/Bomerano): ca. 2–4 € je nach Ticket",
+    "Snacks/Wasser: 3–8 € (eigene Vorräte sparen Geld)",
+    "Pfad: kostenlos (kein Eintritt)"
+  ],
+  "steps": [
+    {
+      "name": "Zu Fuß zur Haltestelle Chiesa Nuova",
+      "text": "Vom Hostel rund 80 m bergauf zur SITA-Haltestelle Chiesa Nuova gehen."
+    },
+    {
+      "name": "Bus nach Nocelle oder Bomerano",
+      "text": "SITA Richtung Amalfi nehmen und in Nocelle für das kürzere Finale oder weiter bis Agerola/Bomerano für die klassische Route fahren."
+    },
+    {
+      "name": "Einstieg in den Pfad",
+      "text": "In Nocelle den Schildern Sentiero degli Dei (Finale) folgen; in Bomerano ab dem Hauptplatz der Beschilderung zum Einstieg folgen."
+    },
+    {
+      "name": "Rückweg",
+      "text": "In Nocelle enden und über die Stufen nach Positano absteigen oder mit dem Bus zurück nach Chiesa Nuova fahren."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Wo starte ich die Wanderung?",
+      "a": "Klassischer Start ist Bomerano (Agerola). Kürzer wird es, wenn du in Nocelle beginnst."
+    },
+    {
+      "q": "Wie lange dauert die Tour?",
+      "a": "Plane rund 4 Stunden inklusive Transfer und Fotopausen ein."
+    },
+    {
+      "q": "Was soll ich mitnehmen?",
+      "a": "Feste Schuhe, Wasser, Sonnenschutz – meide die Mittagshitze im Sommer."
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "galleryTitle": "Fotogalerie",
+  "gallery": {
+    "items": [
+      {
+        "alt": "Blick entlang des Sentiero degli Dei",
+        "caption": "Entlang des Pfads"
+      },
+      {
+        "alt": "Blick auf das Dorf Nocelle",
+        "caption": "Blick auf Nocelle"
+      }
+    ]
+  },
+  "toc": {
+    "onThisPage": "Auf dieser Seite",
+    "essentials": "Das Wichtigste",
+    "costs": "Typische Kosten",
+    "faqs": "FAQ",
+    "gallery": "Fotogalerie"
+  }
+}

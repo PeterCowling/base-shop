@@ -96,7 +96,7 @@
     "add-locale": "tsx scripts/src/add-locale.ts",
     "check:tailwind-preset": "node scripts/src/check-tailwind-preset.mjs",
     "shadcn:diff": "ts-node scripts/diff-shadcn.ts",
-    "tailwind:check": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" pnpm exec jest test/unit/tailwind-build.spec.ts test/unit/postcss-config.spec.ts test/unit/tailwind-postcss.spec.ts",
+    "tailwind:check": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" pnpm exec jest --runTestsByPath test/unit/__tests__/tailwind-build.spec.ts test/unit/__tests__/postcss-config.spec.ts test/unit/__tests__/tailwind-postcss.spec.ts",
     "clean": "pnpm -r exec rimraf dist build lib *.tsbuildinfo",
     "test:cms": "pnpm exec jest --ci --runInBand --detectOpenHandles --passWithNoTests --config ./jest.config.cjs",
     "ops:backup-data": "tsx scripts/src/ops/backup-data-root.ts",

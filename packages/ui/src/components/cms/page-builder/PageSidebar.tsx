@@ -7,7 +7,7 @@ import { useTranslations } from "@acme/i18n";
 import PageSidebarMultipleSelection from "./components/PageSidebarMultipleSelection";
 import PageSidebarSingleSelection from "./components/PageSidebarSingleSelection";
 
-interface Props {
+export interface PageSidebarProps {
   components: PageComponent[];
   selectedIds: string[];
   onSelectIds: (ids: string[]) => void;
@@ -18,7 +18,7 @@ interface Props {
   pageId?: string | null;
   crossNotices?: boolean;
 }
-const PageSidebar = ({ components, selectedIds, onSelectIds: _onSelectIds, dispatch, editor, viewport = "desktop", breakpoints = [], pageId = null, crossNotices: _crossNotices = true }: Props) => {
+const PageSidebar = ({ components, selectedIds, onSelectIds: _onSelectIds, dispatch, editor, viewport = "desktop", breakpoints = [], pageId = null, crossNotices: _crossNotices = true }: PageSidebarProps) => {
   const selectedComponent = useMemo(() => components.find((c) => c.id === selectedIds[0]) ?? null, [components, selectedIds]);
   const t = useTranslations();
 

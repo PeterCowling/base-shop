@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "title": "Nápoly központjából Positanóba komppal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató a nápolyi belvárosból Positanóba tartó kompútról: átszállás a kikötőhöz, jegyek, beszállás és tippek az érkezéshez."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Nápoly központjából Positanóba — komp",
+    "description": "Használd ezeket az útmutatásokat, hogy teljes egészében tengeren utazz Nápoly belvárosából Positanóba. Az útmutató bemutatja a rövid utat a Napoli Centrale állomástól a kikötőig, a kompjegyek vásárlását, a beszállást és azt, mire számíts Positanó mólóján érkezéskor."
+  },
+  "tip": {
+    "label": "Tipp",
+    "copy": "Más útvonalat keresel vagy tartalékot viharos tenger esetére? Nyisd meg a <link>Hogyan juthatsz el hozzánk áttekintést</link>."
+  },
+  "sections": {
+    "journey": {
+      "title": "Út áttekintése",
+      "body": "A Nápoly és Positano közötti kompok tavasszal és nyáron közlekednek a leggyakrabban, rossz idő esetén pedig törölhetik őket. Az utazás általában 1,5–2,5 órát vesz igénybe a hajó típusától és a kikötői várakozási időtől függően."
+    },
+    "transfer": {
+      "title": "Juss el a kikötőbe a Napoli Centrale állomástól",
+      "intro": "A leggyorsabb tömegközlekedési megoldás az 1-es villamos a Piazza Garibaldiról a Municipio (Molo Beverello) vagy Marittima (Porta di Massa) megállóig. Csoportoknak a taxi is egyszerű és megfizethető.",
+      "items": [
+        "A Napoli Garibaldi/Centrale állomásról kövesd a Piazza Garibaldi villamosmegállóhoz vezető táblákat.",
+        "Szállj fel az 1-es villamosra a „Municipio/Porto” irányába.",
+        "Szállj le a „Municipio” megállónál a Molo Beverellohoz (gyors szárnyashajók), vagy a „Marittima” megállónál a Porta di Massa kompjaihoz (lassabb járatok)."
+      ],
+      "map": "Mintautat találsz a <map>Google Térképen (villamossal a kikötőig)</map>."
+    },
+    "tickets": {
+      "title": "Kompjegyek és szolgáltatók",
+      "items": [
+        "Vásárolj előre online, vagy a Molo Beverello jegypénztáraiban – nyáron sor alakulhat ki.",
+        "Elektronikus jegy használata esetén legyen nálad fényképes igazolvány; a személyzet indulás előtt ellenőrizheti.",
+        "Viharos tenger miatt törölhetik a járatokat; a reggeli indulások jellemzően megbízhatóbbak."
+      ],
+      "copy": "Menetrendek és árak: <capri>Capri.net – Nápoly ↔ Positano</capri>. Több szolgáltató ajánlatait is összehasonlíthatod a <positano>Positano.com (összesített menetrend)</positano> oldalon."
+    },
+    "boarding": {
+      "title": "Beszállás a kikötőben",
+      "body": "Érkezz 20–30 perccel korábban a mólóra, hogy szükség esetén beválthasd a foglalási vouchereket, és beállhass a beszálláshoz. Kövesd a személyzet utasításait a csomagok elhelyezésénél, és figyelj a lépteidre, amikor a palló a hullámzással együtt mozog."
+    },
+    "arrival": {
+      "title": "Érkezés Positanóba",
+      "items": [
+        "A Positano Spiaggia Grande mólón szállj le.",
+        "A mólón hordárok díj ellenében segítenek a csomagokkal; egyezz meg az árban, mielőtt átadod a táskákat.",
+        "A komp a tengerszinten érkezik; számíts lépcsőzésre felfelé. Ha kevesebb lépcsőt szeretnél, fontold meg a helyi Interno buszt a kikötőből."
+      ],
+      "copy": "Csomagbarát útvonalat keresel a mólótól a Hostel Brikette-ig? Nézd meg lépésről lépésre útmutatónkat: <link>Kikötő → Hostel Brikette</link>."
+    },
+    "fallback": {
+      "title": "Ha törlik a kompokat",
+      "body": "Ha az időjárás vagy a tenger állapota miatt törlik a járatokat, válts a Szorrentón át vezető vonat + busz útvonalra. Hosszabb, de a legtöbb körülmény között közlekedik.",
+      "cta": "Tartalék útvonal: <link>Nápoly központja → Positano vonattal, majd busszal</link>."
+    }
+  },
+  "externalLinks": {
+    "map": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4",
+    "capri": "https://www.capri.net/en/t/napoli/positano",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

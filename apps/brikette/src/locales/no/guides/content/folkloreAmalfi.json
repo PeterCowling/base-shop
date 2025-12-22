@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Lokale legender og folketro på Amalfikysten",
+    "description": "Populære fortellinger fra kysten og hvor du kan se sporene etter dem."
+  },
+  "linkLabel": "Lokale legender og folketro på Amalfikysten",
+  "intro": [
+    "Fordyp deg i legendene fra Amalfikysten som preger festivaler, statuer og lokale uttrykk."
+  ],
+  "sections": [
+    {
+      "id": "saint",
+      "title": "Apostelen Andreas",
+      "body": [
+        "Domkirken i Amalfi huser relikviene etter apostelen Andreas; lokalbefolkningen gir ham æren for å roe stormer og beskytte fiskere.",
+        "Hver 27. juni og 30. november bæres statuen i prosesjon gjennom byen med fyrverkeri og brassband."
+      ]
+    },
+    {
+      "id": "sirens",
+      "title": "Sirenen på Li Galli",
+      "body": [
+        "Ifølge sagnet lokket øyene Li Galli sjømenn med sang; i dag forteller båtturer historien når du passerer de private øyene.",
+        "Hør etter referanser til Parthenope og sirenene når du besøker Napoli – mytene binder regionene sammen."
+      ]
+    },
+    {
+      "id": "traditions",
+      "title": "Levende tradisjoner",
+      "body": [
+        "Praianos Luminaria og Positanos fiskervelsignelser blander tro og folklore i lysseremonier.",
+        "Håndmalte keramikkfliser og lokale legender holder historiene levende i smug og på trapper."
+      ]
+    }
+  ],
+  "tips": [
+    "Check municipal event calendars for feast days so you can join respectful celebrations.",
+    "Carry a lightweight shawl; many events lead into church services where modest dress is appreciated."
+  ],
+  "faqs": [
+    {
+      "q": "Can anyone join the processions?",
+      "a": [
+        "Yes—stand along the route, clap respectfully, and allow locals carrying statues to pass first."
+      ]
+    },
+    {
+      "q": "Where do I hear traditional music?",
+      "a": [
+        "Look for folk concerts in Atrani and Ravello during summer festivals; tourist offices post weekly schedules."
+      ]
+    }
+  ]
+}

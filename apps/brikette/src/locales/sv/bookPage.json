@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Boka din vistelse – Officiell sida",
+    "description": "Flexibla och icke återbetalningsbara priser. Säker betalning i vår officiella bokningsmotor."
+  },
+  "heading": "Boka din vistelse",
+  "roomLabel": "Rum",
+  "cta": {
+    "flex": "Flexibel – Gå till betalning",
+    "nr": "Ej återbetalningsbar – Gå till betalning"
+  },
+  "checking": "Kontrollerar…",
+  "flex": {
+    "title": "Flexibel taxa (återbetalningsbar)",
+    "bullets": [
+      "Gratis avbokning till 15:00 tre hela dagar före ankomst.",
+      "Ändringar i mån av tillgänglighet."
+    ]
+  },
+  "nr": {
+    "title": "Ej återbetalningsbar (förskottsbetalning)",
+    "bullets": [
+      "100 % förskott; inga återbetalningar/vid utebliven ankomst.",
+      "Misslyckade betalningar avbokas automatiskt."
+    ]
+  },
+  "unavailable": {
+    "title": "Inte tillgängligt för dessa datum.",
+    "none": "Inga direkta alternativ hittades.",
+    "seeAll": "Visa all tillgänglighet",
+    "bookThis": "Boka detta"
+  },
+  "policies": {
+    "title": "Policyer och depositioner",
+    "items": [
+      "Stad-/turistskatt: 2,50 € per gäst och natt (läggs till vid betalning).",
+      "Deposition för nyckelkort och lakan: 10 € kontant vid incheckning; återbetalas vid återlämning.",
+      "Säkerhetshållning: upp till en natt per gäst vid incheckning (eller motsvarande kontanter). Om det inte är möjligt avbokas bokningen.",
+      "Administrationsavgift vid avbokning: normalt 15 % av bokningens pris (exklusive tredjepartsavgifter).",
+      "Receptionen stänger 22:30; vid utebliven ankomst debiteras det högsta av första natten eller ej återbetalningsbar deposition."
+    ],
+    "footer": "Slutlig tillgänglighet och betalning sker i vår officiella bokningsmotor."
+  },
+  "backToRooms": "Tillbaka till rum"
+}

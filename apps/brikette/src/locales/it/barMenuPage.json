@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "Traduzione in arrivo.",
+    "description": "Spritz, cocktail, vini, birre, long drink, shot e gelato."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Menù del bar, 2025",
+    "hours": "Aperto tutti i giorni (orari disponibili al bar)"
+  },
+  "intro": {
+    "summary": "Selezione completa del bar con specialità locali e grandi classici.",
+    "viewFullMenuButton": "Apri il menù completo del bar"
+  },
+  "sections": {
+    "spritzFrozen": {
+      "title": "Spritz e cocktail frozen"
+    },
+    "houseWine": {
+      "title": "Vino della casa"
+    },
+    "beer": {
+      "title": "Birra"
+    },
+    "vodka": {
+      "title": "Long drink alla vodka",
+      "note": "Il prezzo include un mixer a scelta tra tonica, Coca-Cola, Coca-Cola Zero o Sprite."
+    },
+    "rum": {
+      "title": "Long drink al rum",
+      "note": "Scegli il rum e facci sapere se vuoi aggiungere un mixer al caffè. Il caffè può essere freddo o caldo, espresso o lungo/americano."
+    },
+    "gin": {
+      "title": "Long drink al gin",
+      "note": "Servito con tonica Schweppes, su ghiaccio tritato e guarnito con limone della Costiera Amalfitana."
+    },
+    "whisky": {
+      "title": "Whisky",
+      "note": "Scegli dalla nostra selezione e indica se preferisci ghiaccio, acqua o un mixer al caffè. Il caffè può essere freddo o caldo, espresso o lungo/americano."
+    },
+    "shots": {
+      "title": "Shot"
+    },
+    "gelato": {
+      "title": "Gelato"
+    }
+  },
+  "items": {
+    "aperolSpritz": {
+      "name": "Aperol Spritz",
+      "note": "Lo spritz italiano classico, servito con ghiaccio tritato."
+    },
+    "limoncelloSpritz": {
+      "name": "Limoncello Spritz",
+      "note": "Specialità della Costiera Amalfitana, servita con ghiaccio tritato."
+    },
+    "hugoSpritz": {
+      "name": "Hugo Spritz",
+      "note": "Vino spumante con menta, lime e fiori di sambuco. Servito con ghiaccio tritato."
+    },
+    "rossiniSpritz": {
+      "name": "Rossini Spritz",
+      "note": "Vino spumante con succo di fragola. Servito con ghiaccio tritato."
+    },
+    "lemonStrawberryDaiquiri": {
+      "name": "Daiquiri al limone o fragola"
+    },
+    "lemonStrawberryMargarita": {
+      "name": "Margarita al limone o fragola",
+      "note": "Succo di fragola o limone con tequila, Cointreau e ghiaccio. Rifinitura classica."
+    },
+    "lemonDropMartini": {
+      "name": "Lemon Drop Martini",
+      "note": "Succo di limone fresco shakerato con Absolut Vodka, Cointreau e ghiaccio."
+    },
+    "redWhiteGlass": {
+      "name": "Rosso o bianco (calice)"
+    },
+    "redWhiteBottle": {
+      "name": "Rosso o bianco (bottiglia)"
+    },
+    "proseccoGlass": {
+      "name": "Calice di Prosecco"
+    },
+    "nastro330": {
+      "name": "Nastro, 330 ml"
+    },
+    "nastro660": {
+      "name": "Nastro, 660 ml"
+    },
+    "peroni330": {
+      "name": "Peroni, 330 ml"
+    },
+    "peroni660": {
+      "name": "Peroni, 660 ml"
+    },
+    "skyy": {
+      "name": "Skyy"
+    },
+    "absolut": {
+      "name": "Absolut"
+    },
+    "smirnoff": {
+      "name": "Smirnoff"
+    },
+    "greyGoose": {
+      "name": "Grey Goose"
+    },
+    "pampero": {
+      "name": "Pampero"
+    },
+    "bacardiSuperior": {
+      "name": "Bacardi Superior"
+    },
+    "captainMorgan": {
+      "name": "Captain Morgan"
+    },
+    "angosturaReserva": {
+      "name": "Angostura Reserva"
+    },
+    "beefeater": {
+      "name": "Beefeater"
+    },
+    "bombaySapphire": {
+      "name": "Bombay Sapphire"
+    },
+    "tanqueray": {
+      "name": "Tanqueray"
+    },
+    "hendricks": {
+      "name": "Hendrick's"
+    },
+    "jwRed": {
+      "name": "Traduzione in arrivo."
+    },
+    "jameson": {
+      "name": "Jameson (Irish)"
+    },
+    "jackDaniels": {
+      "name": "Traduzione in arrivo."
+    },
+    "wildTurkey": {
+      "name": "Wild Turkey (Bourbon)"
+    },
+    "chivas12": {
+      "name": "Traduzione in arrivo."
+    },
+    "glenfiddich12": {
+      "name": "Traduzione in arrivo."
+    },
+    "joseCuervoSilver": {
+      "name": "Traduzione in arrivo.",
+      "note": "Servito liscio con limone e sale, come Tequila Sunrise oppure con soda/Sprite."
+    },
+    "limoncelloShot": {
+      "name": "Limoncello",
+      "note": "Classico del Sud Italia, servito liscio."
+    },
+    "oneScoop": {
+      "name": "1 pallina"
+    },
+    "twoScoops": {
+      "name": "2 palline"
+    },
+    "threeScoops": {
+      "name": "3 palline",
+      "note": "Scegli tra limone, cioccolato, vaniglia e nocciola."
+    }
+  },
+  "disclaimer": "Articoli e prezzi possono variare. Chiedi conferma al bar."
+}

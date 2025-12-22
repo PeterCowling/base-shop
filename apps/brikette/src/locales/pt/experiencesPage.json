@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "Experiências no Hostel Brikette – Bar no terraço, trilhos e concierge",
+    "description": "Brinde ao pôr do sol, participe em caminhadas guiadas e use o concierge digital para planear dias fáceis na Costa Amalfitana."
+  },
+  "hero": {
+    "eyebrow": "Experiências",
+    "title": "Pôr-do-sol, manhãs calmas e dicas de quem vive aqui",
+    "description": "Combine a sua estadia com bebidas no terraço, caminhadas curadas e um concierge digital que envia alertas mesmo antes de chegar.",
+    "supporting": "Tudo está disponível para hóspedes registados; avise-nos se viajar com amigos que ficam noutro alojamento.",
+    "primaryCta": "Reservar estadia",
+    "secondaryCta": "Abrir menu do bar",
+    "tertiaryCta": "Falar com o concierge digital",
+    "primaryCtaAria": "Reservar a sua estadia no Hostel Brikette",
+    "secondaryCtaAria": "Ver o menu do bar do Hostel Brikette",
+    "tertiaryCtaAria": "Enviar mensagem ao concierge digital do Hostel Brikette",
+    "breakfastCta": "View the breakfast menu",
+    "breakfastCtaAria": "View the breakfast menu"
+  },
+  "sections": {
+    "bar": {
+      "eyebrow": "Bar do terraço",
+      "title": "Bar ao pôr-do-sol",
+      "description": "O nosso terraço no topo da falésia transforma-se num lounge todas as noites com spritzes, vinhos campanos e DJ convidados pontuais.",
+      "highlights": [
+        "Spritzes de assinatura e vinhos locais servidos bem frescos.",
+        "Noites sociais e provas durante as semanas de maior movimento.",
+        "Vistas panorâmicas perfeitas para fotos na golden hour."
+      ],
+      "imageAlt": "Hóspedes a brindar no terraço do Hostel Brikette ao pôr-do-sol."
+    },
+    "hikes": {
+      "eyebrow": "Caminhadas guiadas",
+      "title": "Caminhadas e passeios de dia inteiro",
+      "description": "Ajudamos a planear trilhos no Sentiero degli Dei, shuttles partilhados e passeios de ferry por toda a Costa Amalfitana.",
+      "highlights": [
+        "Mapas offline e horários de transportes atualizados todas as manhãs.",
+        "Passeios guiados pela equipa quando os trilhos estão mais concorridos.",
+        "Sugestões de equipamento e alternativas para dias com meteorologia instável."
+      ],
+      "imageAlt": "Hóspedes do hostel a caminhar no Trilho dos Deuses acima da Costa Amalfitana."
+    },
+    "concierge": {
+      "eyebrow": "Concierge digital",
+      "title": "Concierge digital sempre ligado",
+      "description": "Receba alertas sobre ferries, aberturas de restaurantes e ideias adaptadas ao seu ritmo e orçamento.",
+      "highlights": [
+        "Respostas via WhatsApp e Messenger diretamente da nossa equipa.",
+        "Alertas automáticos para ajustes em autocarros e ferries.",
+        "Sugestões personalizadas alinhadas com os seus planos."
+      ],
+      "imageAlt": "Ecrã de telemóvel com o chat do concierge digital do Hostel Brikette."
+    }
+  },
+  "faq": {
+    "title": "Perguntas frequentes",
+    "items": [
+      {
+        "question": "Preciso reservar as experiências com antecedência?",
+        "answer": [
+          "A maioria das noites no terraço e caminhadas é confirmada no próprio dia na receção.",
+          "Para tours privados ou passeios de barco podemos guardar a sua vaga – envie mensagem ao concierge pelo menos 24 horas antes."
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "title": "Pronto para planear os seus dias na Costa Amalfitana?",
+    "subtitle": "Reserve a sua cama, reveja a carta do bar e conte-nos o que gostaria de experimentar – tratamos dos detalhes por si.",
+    "buttons": {
+      "book": "Reservar agora",
+      "events": "Bar e eventos",
+      "concierge": "Conversar com o concierge",
+      "breakfast": "Breakfast menu"
+    }
+  },
+  "title": "Experiências no Hostel Brikette",
+  "intro": "Beba um spritz no nosso terraço, junte-se às caminhadas com vistas épicas e receba dicas instantâneas do concierge digital.",
+  "items": {
+    "bar": "Bar ao pôr-do-sol com spritzes e vinhos locais.",
+    "hikes": "Caminhadas guiadas e auto-guiadas com mapas, horários e conselhos de equipamento.",
+    "concierge": "Concierge digital com alertas de ferry, itinerários e respostas em tempo real."
+  },
+  "guideCollections": {
+    "heading": "Aprofunde-se nas nossas guias de experiências",
+    "description": "Itinerários, trilhos, dias de barco e sugestões culturais curados pela equipa e pelos hóspedes.",
+    "taggedHeading": "Guias de experiências com a etiqueta {{tag}}",
+    "taggedDescription": "Estas histórias mostram momentos de {{tag}}. Remova o filtro para explorar tudo.",
+    "empty": "Ainda não temos guias de experiências para {{tag}}. Experimente outra etiqueta ou remova o filtro.",
+    "clearFilter": "Mostrar todas as guias de experiências",
+    "cardCta": "Explore o guia de experiências {{guideTitle}}",
+    "filterHeading": "Filter experiences guides",
+    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "grouped": {
+      "beaches": {
+        "guides": {
+          "heading": "Beach guides",
+          "description": "Pick the right stretch of sand and plan your day."
+        },
+        "directions": {
+          "heading": "Beach directions",
+          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        }
+      }
+    }
+  }
+}

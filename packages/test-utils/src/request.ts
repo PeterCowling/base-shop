@@ -21,16 +21,24 @@ export function jsonRequest(body: unknown, init: JsonRequestInit = {}): Request 
  * Minimal NextRequest-like stub for route tests that call `req.json()` and
  * optionally read cookies. Use when the handler signature is `NextRequest`.
  */
+type NextJsonRequestStub<T> = {
+  json: () => Promise<T>;
+  cookies: { get: (name: string) => { name: string; value: string } | undefined };
+  headers: { get: (key: string) => string | null };
+  nextUrl: URL & { clone: () => URL };
+};
+
 export function asNextJson<T extends object>(
   body: T,
   options: { cookies?: Record<string, string>; url?: string; headers?: Record<string, string> } = {}
-): any {
+): NextJsonRequestStub<T> {
   const url = options.url || "http://localhost";
   const headersLower: Record<string, string> = {};
   for (const [k, v] of Object.entries(options.headers || {})) {
     headersLower[k.toLowerCase()] = v;
   }
-  return {
+  const nextUrl = Object.assign(new URL(url), { clone: () => new URL(url) });
+  const request = {
     json: async () => body,
     cookies: {
       get: (name: string) =>
@@ -41,6 +49,7 @@ export function asNextJson<T extends object>(
     headers: {
       get: (key: string) => headersLower[key.toLowerCase()] ?? null,
     },
-    nextUrl: Object.assign(new URL(url), { clone: () => new URL(url) }),
-  } as any;
+    nextUrl,
+  } satisfies NextJsonRequestStub<T>;
+  return request;
 }

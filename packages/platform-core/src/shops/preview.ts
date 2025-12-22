@@ -29,24 +29,25 @@ export function resolvePreviewBaseUrl({
   const candidates: { raw: string | undefined; source: PreviewSource }[] = [];
 
   if (info) {
-    const stageCandidate =
-      info.env === "stage" ? info.previewUrl ?? info.url : undefined;
+    const env = info.env as Environment | undefined;
+    const isStage = env === "stage";
+    const stageCandidate = isStage ? info.previewUrl ?? info.url : undefined;
     if (stageCandidate) {
       candidates.push({ raw: stageCandidate, source: "stage" });
     }
 
     // If a specific env is preferred and matches the recorded env, keep that early in the list.
     const preferredMatch =
-      info.env && preferEnv.includes(info.env) ? info.previewUrl ?? info.url : undefined;
-    if (preferredMatch && info.env !== "stage") {
-      candidates.push({ raw: preferredMatch, source: info.env === "stage" ? "stage" : "url" });
+      env && preferEnv.includes(env) ? info.previewUrl ?? info.url : undefined;
+    if (preferredMatch && !isStage) {
+      candidates.push({ raw: preferredMatch, source: isStage ? "stage" : "url" });
     }
 
     if (info.previewUrl) {
-      candidates.push({ raw: info.previewUrl, source: info.env === "stage" ? "stage" : "preview" });
+      candidates.push({ raw: info.previewUrl, source: isStage ? "stage" : "preview" });
     }
     if (info.url) {
-      candidates.push({ raw: info.url, source: info.env === "stage" ? "stage" : "url" });
+      candidates.push({ raw: info.url, source: isStage ? "stage" : "url" });
     }
   }
 

@@ -1,0 +1,88 @@
+{
+  "slug": "Positano-Salerno-Bus",
+  "meta": {
+    "title": "Positano nach Salerno mit dem Bus – Schritt für Schritt",
+    "description": "Tür-zu-Tür-Anleitung vom Hostel Brikette nach Salerno über Amalfi: Wo du einsteigst, Tickets kaufst, Fahrpläne liest und in Amalfi umsteigst."
+  },
+  "hero": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "heading": "Positano nach Salerno – mit dem Bus (via Amalfi)",
+    "intro": "Reise vom Hostel Brikette nach Salerno mit einem Umstieg in Amalfi. Dieser Leitfaden erklärt, wo du in Positano einsteigst, wie du Tickets entwertest, den Fahrplan liest und was dich beim Umstieg in Amalfi erwartet."
+  },
+  "tip": {
+    "label": "Tipp",
+    "linkLabel": "Übersicht „So kommst du zu uns“",
+    "body": "Du brauchst andere Transportoptionen? Öffne die <link>Übersicht „So kommst du zu uns“</link> für Fähren, Taxis und kombinierte Routen."
+  },
+  "sections": {
+    "journey": {
+      "title": "Reiseüberblick",
+      "body": [
+        "Diese Strecke besteht aus zwei SITA-Busetappen: zuerst von Positano (Chiesa Nuova) nach Amalfi, danach von Amalfi nach Salerno.",
+        "Plane in der Hochsaison zusätzliche Zeit für Warteschlangen und Verkehr ein."
+      ]
+    },
+    "tickets": {
+      "title": "SITA-Busse und Tickets",
+      "items": [
+        "SITA Sud betreibt die Küstenbusse zwischen Positano, Amalfi und Salerno.",
+        "Kaufe Tickets vor dem Einsteigen im Tabacchi, Kiosk oder Café (Zahlungsarten variieren).",
+        "Halte dein Ticket bereit; der Fahrer stempelt oder reißt es beim Einstieg an."
+      ]
+    },
+    "timetable": {
+      "title": "Fahrplan und Planung",
+      "linkLabel": "Poitano.com",
+      "intro": "Prüfe die aktuellen Zeiten auf <link>Positano.com</link>. Suche beide Etappen und plane Pufferzeit für den Umstieg in Amalfi ein.",
+      "items": [
+        "Haltestellen stehen als Zeilen; jede mit Buchstaben markierte Spalte ist eine Fahrt.",
+        "Von Montag bis Samstag nutzt du meist die Spalten \"F\" und \"G\"; an Sonn- und Feiertagen \"G\" und \"H\".",
+        "Für diese Reise brauchst du zwei Abschnitte: Positano → Amalfi und Amalfi → Salerno."
+      ],
+      "linkHref": "https://www.positano.com/en/bus-schedule"
+    },
+    "positanoStop": {
+      "title": "Positano (Chiesa Nuova) – Bushaltestelle",
+      "items": [
+        "Die nächstgelegene SITA-Haltestelle ist Positano (Chiesa Nuova) an der Via G. Marconi.",
+        "Sie liegt rund 140 Meter vom Hosteleingang entfernt.",
+        "Du wartest vor der Bar Internazionale."
+      ],
+      "media": {
+        "src": "/img/directions/positano-bus-stop.png",
+        "alt": "SITA-Bushaltestelle Positano Chiesa Nuova vor der Bar Internazionale",
+        "caption": "Komme ein paar Minuten früher, um dir einen Sitzplatz zu sichern – im Sommer füllen sich die Busse schnell."
+      }
+    },
+    "walk": {
+      "title": "Zu Fuß vom Hostel zur Haltestelle",
+      "items": [
+        "Verlasse das Hostel, geh die Stufen zur Hauptstraße hinunter und biege links ab.",
+        "Gehe entlang der Via G. Marconi etwa 100 Meter (330 Fuß) weiter.",
+        "Die Bar Internazionale liegt links; die SITA-Haltestelle befindet sich direkt davor."
+      ]
+    },
+    "wait": {
+      "title": "Ticket kaufen und aufs Boarding warten",
+      "items": [
+        "Kaufe ein SITA-Busticket nach Amalfi in der Bar oder am nahegelegenen Kiosk.",
+        "Wechsle auf die gegenüberliegende Straßenseite und stelle dich für den Bus Richtung Amalfi an.",
+        "Prüfe die Anzeige des Busses – sie sollte „Amalfi“ zeigen."
+      ]
+    },
+    "transfer": {
+      "title": "In Amalfi umsteigen",
+      "items": [
+        "Steige am Hauptbusbahnhof von Amalfi neben der Piazza am Wasser aus.",
+        "Finde den Bereich für SITA-Busse nach Salerno; frag bei Unsicherheit das Personal.",
+        "Falls nötig, kaufe vor dem Einstieg ein neues Ticket für den Abschnitt Amalfi → Salerno."
+      ]
+    },
+    "arrival": {
+      "title": "Ankunft in Salerno",
+      "body": [
+        "SITA-Busse nach Salerno enden in der Nähe der städtischen Verkehrsknotenpunkte. Von dort kannst du mit dem Stadtbus weiterfahren, zur Piazza della Concordia und dem Fährhafen laufen oder den Bahnhof Salerno erreichen. Folge stets der Beschilderung vor Ort oder frag Mitarbeitende nach der direktesten Verbindung."
+      ]
+    }
+  }
+}

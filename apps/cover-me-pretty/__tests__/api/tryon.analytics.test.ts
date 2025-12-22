@@ -7,22 +7,15 @@ jest.mock("next/server", () => ({
   },
 }));
 
-const m = {
-  trackTryOnStarted: jest.fn(),
-  trackTryOnPreviewShown: jest.fn(),
-  trackTryOnEnhanced: jest.fn(),
-  trackTryOnAddToCart: jest.fn(),
-  trackTryOnError: jest.fn(),
-};
-jest.mock("@acme/platform-core/analytics", () => ({ __esModule: true, ...m }));
-
 import { POST } from "../../src/app/api/analytics/tryon/route";
 import { asNextJson } from "@acme/test-utils";
 
 describe("analytics/tryon route", () => {
   beforeEach(() => {
-    Object.values(m).forEach((fn) => (fn as jest.Mock).mockClear());
     process.env.NEXT_PUBLIC_SHOP_ID = "default";
+    process.env.NEXT_PUBLIC_GA4_ID = "G-TEST";
+    process.env.GA_API_SECRET = "secret";
+    global.fetch = jest.fn().mockResolvedValue({ ok: true });
   });
 
   it("forwards TryOnStarted", async () => {
@@ -30,7 +23,10 @@ describe("analytics/tryon route", () => {
     const req = asNextJson(body);
     const res = await POST(req as unknown as Request);
     expect(res.status).toBe(200);
-    expect(m.trackTryOnStarted).toHaveBeenCalledWith("default", { productId: "sku-1", mode: "accessory", idempotencyKey: body.idempotencyKey });
+    expect(global.fetch).toHaveBeenCalledWith(
+      expect.stringContaining("measurement_id=G-TEST"),
+      expect.objectContaining({ method: "POST" })
+    );
   });
 
   it("validates schema (bad uuid)", async () => {

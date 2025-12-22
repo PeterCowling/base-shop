@@ -1,0 +1,117 @@
+{
+  "seo": {
+    "title": "Positano útikalauz",
+    "description": "Látnivalók, strandok, logisztika és gyakorlati tippek a tartalmas látogatáshoz."
+  },
+  "linkLabel": "Positano útikalauz",
+  "intro": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "when",
+      "title": "When to visit",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "getting-around",
+      "title": "Getting around",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "highlights",
+      "title": "Highlights",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "stays",
+      "title": "Where to stay",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need a car?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "How many days?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "A fordítás folyamatban van."
+    ],
+    "gallery": {
+      "items": [
+        {
+          "alt": "A fordítás folyamatban van.",
+          "caption": "A fordítás folyamatban van."
+        },
+        {
+          "alt": "Positano panorama",
+          "caption": "A fordítás folyamatban van."
+        }
+      ]
+    },
+    "sections": {
+      "whereToStay": {
+        "title": "Where to stay",
+        "body": "A fordítás folyamatban van."
+      },
+      "whenToVisit": {
+        "title": "When to visit",
+        "body": "A fordítás folyamatban van."
+      },
+      "gettingAround": {
+        "title": "Getting around",
+        "arrivals": "A fordítás folyamatban van.",
+        "withinTown": "A fordítás folyamatban van.",
+        "ferries": "A fordítás folyamatban van."
+      },
+      "thingsToDo": {
+        "title": "Things to do",
+        "beaches": "A fordítás folyamatban van.",
+        "pathOfTheGods": "A fordítás folyamatban van.",
+        "dayTrips": "A fordítás folyamatban van."
+      },
+      "moneySavers": {
+        "title": "Money savers",
+        "eat": "A fordítás folyamatban van.",
+        "travel": "A fordítás folyamatban van.",
+        "stay": "A fordítás folyamatban van."
+      }
+    },
+    "tipsTitle": "Where to save",
+    "faqHeading": "FAQs",
+    "faqs": [
+      {
+        "question": "A fordítás folyamatban van.",
+        "answer": "Yes. Use buses, plan ferries selectively, and focus on free viewpoints and beach time."
+      },
+      {
+        "question": "A fordítás folyamatban van.",
+        "answer": "A fordítás folyamatban van."
+      }
+    ]
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "detail": {
+    "room_12": {
+      "hero": {
+        "eyebrow": "Superior blandad sovsal • Terrass",
+        "title": "Vakna till Positanos silhuett från vår stora delade terrass",
+        "subtitle": "Vår största terrass-sovsal kombinerar sex bäddar med privata bekvämligheter inomhus.",
+        "bullets": [
+          "Panoramautsikt med loungemöbler och frukostbord på terrassen",
+          "Privat badrum utrustat med fräscha handdukar",
+          "Snabbt wifi, luftkonditionering och nyckelkortsskåp för varje gäst"
+        ]
+      },
+      "outline": {
+        "heading": "Det här väntar i terrass-sovsal",
+        "items": [
+          {
+            "title": "Uteplats där alla får plats",
+            "body": "Njut av kvällsdrinkar på soffor och långbänkar medan Positanos pastellfärgade skyline breder ut sig framför dig."
+          },
+          {
+            "title": "Rymliga sovplatser",
+            "body": "Sex stabila våningssängar med gardiner, lampor och uttag ger dig lugn vila när du vill sova."
+          },
+          {
+            "title": "Redo för stranddagar",
+            "body": "Förvara väskor i nyckelkortsskåpen, häng badkläder på terrassens ställningar och fräscha upp dig snabbt i ensuite-badrummet."
+          }
+        ]
+      }
+    }
+  }
+}

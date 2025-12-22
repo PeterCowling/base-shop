@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Dentro una fabbrica di limoncello",
+    "description": "Visite guidate, processo di produzione e dove acquistare bottiglie ben confezionate per il viaggio."
+  },
+  "linkLabel": "Dentro una fabbrica di limoncello",
+  "fallbackParagraph": "Traduzione in arrivo.",
+  "intro": [
+    "Traduzione in arrivo.",
+    "Traduzione in arrivo."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Traduzione in arrivo.",
+      "body": [
+        "I produttori usano limoni sfusato Amalfitano dalla buccia spessa coltivati su pergolati terrazzati; gli oli essenziali sono concentrati nella scorza, non nel succo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "Dalla scorza all'infusione",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "Cosa include la degustazione",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Traduzione in arrivo.",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ]
+}

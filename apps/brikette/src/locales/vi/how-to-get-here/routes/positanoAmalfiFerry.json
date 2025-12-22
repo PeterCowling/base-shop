@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Từ Positano đến Amalfi bằng phà | Hostel Brikette",
+    "description": "Hành trình đi phà từ Positano đến Amalfi từng bước: mua vé, nơi lên tàu ở Spiaggia Grande, lịch chạy và những điều cần lưu ý khi đến nơi."
+  },
+  "hero": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Positano đến Amalfi — Phà",
+    "description": "Làm theo các bước sau để đi từ Positano tới Amalfi bằng phà. Bạn sẽ tìm thấy mẹo mua vé, nơi lên tàu tại Positano, những điều cần lưu ý khi đến nơi và liên kết xem lịch trực tiếp."
+  },
+  "tip": {
+    "label": "Mẹo",
+    "copy": "Cần phương án di chuyển khác? Mở <link>Tổng quan Cách đến đây</link> để xem xe buýt, tuyến kết hợp và dịch vụ đưa đón sân bay."
+  },
+  "sections": {
+    "overview": {
+      "title": "Tổng quan hành trình",
+      "points": [
+        "Các chuyến phà theo mùa nối Positano và Amalfi với khung cảnh biển tuyệt đẹp.",
+        "Lịch chạy thay đổi theo mùa và thời tiết; luôn kiểm tra lịch chạy trong ngày.",
+        "Vào cao điểm hãy chừa thêm thời gian để xếp hàng tại bến."
+      ]
+    },
+    "tickets": {
+      "title": "Vé và lịch chạy",
+      "intro": "Kiểm tra giờ và giá mới nhất tại <travelmar>Travelmar</travelmar> và <positano>Positano.com — Lịch phà</positano>.",
+      "points": [
+        "Mua vé trực tuyến trước mùa cao điểm hoặc tại quầy của hãng ngay bến tàu.",
+        "Đến trước giờ khởi hành 15–20 phút để đổi phiếu (voucher) nếu cần và xếp hàng lên tàu.",
+        "Giữ sẵn vé hoặc mã QR để nhân viên kiểm tra."
+      ]
+    },
+    "positanoPier": {
+      "title": "Lên tàu ở Positano",
+      "points": [
+        "Các chuyến khởi hành từ cầu cảng chính của Positano tại Spiaggia Grande.",
+        "Dọc bờ biển có các quầy của hãng; bảng thông tin hiển thị chuyến kế tiếp của từng hãng.",
+        "Kiểm tra bến chính xác trên vé; nhân viên sẽ hướng dẫn nếu bạn chưa chắc."
+      ]
+    },
+    "amalfiArrival": {
+      "title": "Đến Amalfi",
+      "points": [
+        "Tàu cập bến các cầu cảng ven biển Amalfi gần Piazza Flavio Gioia.",
+        "Khu trung tâm lịch sử và đường dạo biển nằm ngay cạnh cảng.",
+        "Muốn đi tiếp bằng xe buýt (ví dụ Ravello hoặc Sorrento), theo biển chỉ tới điểm dừng SITA gần bờ biển."
+      ]
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

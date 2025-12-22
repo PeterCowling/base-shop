@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "키에사 누오바 정류장 도착 가이드",
+    "description": "계단을 최소화하는 루트와 SITA 버스 이용 팁을 정리했습니다."
+  },
+  "linkLabel": "키에사 누오바/Bar Internazionale 도착: 브리케테 호스텔 경로",
+  "intro": "버스로 오시나요? “Chiesa Nuova” 또는 “Bar Internazionale” 정류장이 호스텔에서 가장 가깝습니다. 이 짧은 경로는 무릎과 짐에 부담이 되는 계단을 최소화합니다.",
+  "image": {
+    "alt": "Bar Internazionale 앞 포지타노 SITA ‘Chiesa Nuova’ 정류장",
+    "caption": "포지타노(Chiesa Nuova) 정류장 — Bar Internazionale 앞에서 대기하세요. 여름철에는 버스가 금방 만석이 되니 조금 일찍 도착하는 것이 좋습니다."
+  },
+  "toc": {
+    "onThisPage": "이 페이지에서",
+    "before": "출발 전 체크",
+    "steps": "이동 순서",
+    "knees": "무릎과 짐 팁",
+    "faqs": "자주 묻는 질문"
+  },
+  "sections": [
+    {
+      "id": "why-stop",
+      "title": "이 정류장을 추천하는 이유",
+      "body": [
+        "Bar Internazionale라는 카페/바 앞 버스 정류장은 Hostel Brikette에서 약 140미터 떨어져 있습니다."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "버스 시간표와 티켓",
+      "body": [
+        "정류장 옆 타바키(담배 가게)에서 SITA 티켓을 구입하거나, 미리 구매한 티켓은 탑승 즉시 검표기에 찍어 주세요. 늦은 시간 귀환을 대비해 예비 티켓을 하나 챙겨 두면 좋습니다.",
+        "22시 이후에는 저녁 버스가 드물어지니 시간표를 미리 확인하고, 택시 요금을 피하려면 마지막에서 두 번째 버스를 이용하는 것이 안전합니다."
+      ]
+    }
+  ],
+  "beforeList": [
+    "길가에서 마지막 버스를 기다리지 않도록 SITA 시간표를 미리 확인하세요.",
+    "버스에 오르자마자 티켓을 검표하세요. 짧은 구간이라도 미검표 티켓은 벌금 대상입니다.",
+    "자정 이후 도착 예정이라면 호스텔에 미리 연락해 야간 직원이 출입문 코드를 준비할 수 있도록 하세요."
+  ],
+  "stepsList": [
+    "Bar Internazionale 앞 정류장에서 Viale Pasitea를 따라 약 100미터(330피트) 정도 오르막으로 이동합니다. 아래 지도에 표시된 도보 경로를 따라가면 단계별 안내를 확인할 수 있습니다.",
+    "커브 구간에서 테라스층의 Hostel Brikette 간판을 지나 오른쪽 도로변에 있는 계단을 올라가면 정문에 도착합니다."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sBar+Internazionale!4m1!2sHostel+Brikette",
+  "kneesList": [
+    "전체 구간이 포장되어 있으며 입구 쪽에 짧은 계단이 하나 있을 뿐입니다.",
+    "경사가 부담된다면 짧게 휴식을 취하세요. 커브에서는 차량 속도도 자연스럽게 줄어듭니다."
+  ],
+  "kneesDockPrefix": "먼저 페리로 도착하시나요?",
+  "kneesDockLinkLabel": "부두 → 호스텔 짐 이동 경로",
+  "kneesPorterPrefix": "무거운 짐이 걱정되나요?",
+  "kneesPorterLinkLabel": "포터 서비스 안내",
+  "faqs": [
+    {
+      "q": "전 구간에 보도가 있나요?",
+      "a": "네. 주요 도로의 보도를 이용하는 루트라 긴 계단을 피할 수 있습니다."
+    },
+    {
+      "q": "밤에도 밝나요?",
+      "a": "가로등이 설치되어 있습니다. 골목에서는 휴대전화 손전등을 켜면 더 잘 보입니다."
+    }
+  ],
+  "howtoSteps": [
+    "‘Chiesa Nuova’ 정류장에서 호스텔까지 도보 2~5분",
+    "계단이 적은 골목을 선택하고 긴 계단길은 피하세요",
+    "짐이 무겁다면 정류장에서 포터 픽업을 요청하는 것도 고려하세요"
+  ]
+}

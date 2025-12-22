@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Lezioni di cucina sulla Costiera Amalfitana",
+    "description": "Scuole, agriturismi e chef privati con focus su pasta fresca, limoni e cucina contadina."
+  },
+  "linkLabel": "Lezioni di cucina sulla Costiera Amalfitana",
+  "intro": [
+    "Traduzione in arrivo.",
+    "Traduzione in arrivo."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "Traduzione in arrivo.",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Choosing the right class",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistics and timing",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Traduzione in arrivo.",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "What should I bring?",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Traduzione in arrivo."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "What to expect"
+      },
+      {
+        "href": "#choose",
+        "label": "How to choose"
+      },
+      {
+        "href": "#tips",
+        "label": "Tips"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "What to expect",
+        "body": [
+          "Traduzione in arrivo."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "How to choose",
+        "body": [
+          "Traduzione in arrivo."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Tips",
+        "body": [
+          "Traduzione in arrivo."
+        ]
+      }
+    ]
+  }
+}

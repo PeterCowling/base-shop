@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Capri tiết kiệm",
+    "description": "Đến Capri không tốn kém: phà sớm, đi bộ vòng quanh và chọn điểm ăn uống phải chăng."
+  },
+  "linkLabel": "Capri tiết kiệm",
+  "intro": [
+    "Đi Capri trong ngày vẫn tiết kiệm nếu bạn lên kế hoạch phà, viewpoint và bữa ăn từ trước."
+  ],
+  "sections": [
+    {
+      "id": "ferries",
+      "title": "Phà & thời gian",
+      "body": [
+        "Đặt phà sớm vào mùa cao điểm và quay về giữa buổi chiều để tránh đám đông chuyến cuối."
+      ]
+    },
+    {
+      "id": "free-views",
+      "title": "Viewpoint ít tốn kém",
+      "body": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Bãi biển",
+      "body": [
+        "Có khu vực công cộng; mang khăn và nước để khỏi thuê dịch vụ."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Ăn uống tiết kiệm",
+      "body": [
+        "Mua panini hoặc pizza al taglio gần bến, tránh bữa trưa ngồi tại những tuyến phố đông nhất."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Blue Grotto có đáng đi khi hạn chế ngân sách?",
+      "a": [
+        "Đây là trải nghiệm giá cao và phụ thuộc thời tiết; cáp treo Anacapri là lựa chọn nổi bật rẻ hơn."
+      ]
+    }
+  ]
+}

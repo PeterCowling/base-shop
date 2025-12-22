@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "{{count}} bài viết",
+  "articleCount_other": "{{count}} bài viết",
+  "topTagsHeading": "Thẻ nổi bật",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Capri på budsjett",
+    "description": "Rimelige måter å oppleve Capri: ferjer, gratis utsiktspunkter, strender og rimelig mat."
+  },
+  "linkLabel": "Capri på budsjett",
+  "intro": [
+    "En dagstur til Capri kan holdes rimelig hvis du planlegger ferjer, utsiktspunkt og måltider på forhånd."
+  ],
+  "sections": [
+    {
+      "id": "ferries",
+      "title": "Ferjer og timing",
+      "body": [
+        "Bestill tidlige ferjer i høysesongen og planlegg retur midt på ettermiddagen for å unngå trengsel på siste avgang."
+      ]
+    },
+    {
+      "id": "free-views",
+      "title": "Gratis utsiktspunkter",
+      "body": [
+        "Giardini di Augusto (liten avgift), utsiktspunkter i Anacapri og punktene ved Marina Piccola gir stor utsikt for liten kostnad."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Strandvalg",
+      "body": [
+        "Det finnes offentlige strandsoner; ta med eget håndkle og vann for å slippe leie."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Rimelig mat",
+      "body": [
+        "Kjøp panini eller pizza al taglio nær marinaen og unngå sittende lunsjer i de travleste gatene."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er den blå grotten verdt det på budsjett?",
+      "a": [
+        "Det er et kostbart tillegg og avhenger av været; stolheisen i Anacapri er et rimeligere høydepunkt."
+      ]
+    }
+  ]
+}

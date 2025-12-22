@@ -1,0 +1,19 @@
+{
+  "message": "Foglalj közvetlenül és spórolj akár 25%-ot — plusz ingyenes reggeli és welcome ital!",
+  "cta": "Kattints a részletekért",
+  "openOffersLabel": "Kattints a részletekért",
+  "closeLabel": "Értesítés bezárása",
+  "modal": {
+    "closeLabel": "Modál bezárása",
+    "title": "Foglalj közvetlenül és spórolj",
+    "description": "Köszönjük, hogy közvetlenül nálunk foglalsz! Hálánk jeléül a következő előnyök várnak:",
+    "perks": {
+      "discount": "Akár 25% kedvezmény a szobaárból",
+      "breakfast": "Ingyenes reggeli minden reggel",
+      "drinks": "Ajándék welcome italok",
+      "upgrades": "Elsőbbségi szobafrissítés (ha elérhető)"
+    },
+    "callToAction": "Használd ki ezeket az exkluzív előnyöket most!",
+    "button": "Foglalok"
+  }
+}

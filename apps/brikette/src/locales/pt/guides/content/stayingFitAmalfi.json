@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Como manter a forma viajando (Costa Amalfitana)",
+    "description": "Rotinas com escadas, corridas e trilhas, horários mais frescos e equipamentos leves para treinar viajando."
+  },
+  "linkLabel": "Como manter a forma viajando (Costa Amalfitana)",
+  "intro": [
+    "Mantenha-se ativo na Costa Amalfitana sem ginásio: use escadas, praias e rotinas amigas do hostel."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Transforme escadas em treino",
+      "body": [
+        "Suba em ritmo acelerado os 500+ degraus entre a Spiaggia Grande e a Chiesa Nuova cedo para evitar calor e multidões.",
+        "Adicione intervalos: dois minutos de subida vigorosa, um minuto de descanso, repetindo cinco a oito vezes."
+      ]
+    },
+    {
+      "id": "outdoor",
+      "title": "Locais ao ar livre",
+      "body": [
+        "Use a praia de Fornillo para circuitos com peso corporal (agachamentos, flexões, pranchas); leve um tapete de viagem para isolar as pedras.",
+        "Corra na estrada costeira entre Positano e Praiano ao nascer do sol; use roupa refletora e mantenha-se no interior da berma."
+      ]
+    },
+    {
+      "id": "recovery",
+      "title": "Recuperação e combustível",
+      "body": [
+        "Hidrate-se com garrafas reutilizáveis de 750 ml e reponha sais com citrinos ou granita após os treinos.",
+        "Alongue gémeos e ancas todas as noites; escadas íngremes contraem músculos rapidamente sem cooldown."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve bandas elásticas e corda de saltar — equipamento leve que cabe na bagagem de mão e dá variedade.",
+    "Registe os treinos numa app de notas para manter disciplina mesmo na hora do aperitivo."
+  ],
+  "faqs": [
+    {
+      "q": "Há ginásios por perto?",
+      "a": [
+        "Positano tem oferta limitada. Alguns hotéis vendem day pass, ou pode ir de autocarro a Sorrento para ginásios maiores."
+      ]
+    },
+    {
+      "q": "Posso nadar o ano todo?",
+      "a": [
+        "Sim, mas no inverno a água desce para 14–16 °C. Use fato curto para sessões prolongadas fora do verão."
+      ]
+    }
+  ]
+}

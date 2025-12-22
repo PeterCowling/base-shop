@@ -11,12 +11,15 @@ import {
   createPageDelegate,
   createCustomerProfileDelegate,
   createCustomerMfaDelegate,
+  createCustomerIdentityDelegate,
+  createCustomerStripeMappingDelegate,
   createSubscriptionUsageDelegate,
   createUserDelegate,
   createReverseLogisticsEventDelegate,
   createProductDelegate,
   createInventoryItemDelegate,
   createSectionTemplateDelegate,
+  createStripeWebhookEventDelegate,
   type InventoryItemDelegate,
 } from './db/stubs';
 
@@ -41,6 +44,9 @@ function createTestPrismaStub(): Pick<
   | 'shop'
   | 'page'
   | 'customerProfile'
+  | 'customerIdentity'
+  | 'customerStripeMapping'
+  | "stripeWebhookEvent"
   | 'subscriptionUsage'
   | 'user'
   | 'reverseLogisticsEvent'
@@ -53,6 +59,9 @@ function createTestPrismaStub(): Pick<
     shop: createShopDelegate() as unknown as PrismaClientType['shop'],
     page: createPageDelegate() as unknown as PrismaClientType['page'],
     customerProfile: createCustomerProfileDelegate() as unknown as PrismaClientType['customerProfile'],
+    customerIdentity: createCustomerIdentityDelegate() as unknown as PrismaClientType['customerIdentity'],
+    customerStripeMapping: createCustomerStripeMappingDelegate() as unknown as PrismaClientType['customerStripeMapping'],
+    stripeWebhookEvent: createStripeWebhookEventDelegate() as unknown as PrismaClientType["stripeWebhookEvent"],
     customerMfa: createCustomerMfaDelegate() as unknown as PrismaClientType['customerMfa'],
     subscriptionUsage: createSubscriptionUsageDelegate() as unknown as PrismaClientType['subscriptionUsage'],
     user: createUserDelegate() as unknown as PrismaClientType['user'],
@@ -66,6 +75,9 @@ function createTestPrismaStub(): Pick<
     | 'shop'
     | 'page'
     | 'customerProfile'
+    | 'customerIdentity'
+    | 'customerStripeMapping'
+    | "stripeWebhookEvent"
     | 'subscriptionUsage'
     | 'user'
     | 'reverseLogisticsEvent'

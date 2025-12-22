@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Ścieżka Bogów z Hostelu Brikette",
+    "description": "Dokładna trasa z hostelu do wejść na Sentiero degli Dei, opcje dojazdu i wskazówki dotyczące bezpieczeństwa."
+  },
+  "linkLabel": "Ścieżka Bogów z Hostelu Brikette",
+  "intro": "Sentiero degli Dei („Ścieżka Bogów”) to jeden z najbardziej widowiskowych szlaków nadmorskich we Włoszech. Z hostelu dotrzesz zarówno na klasyczny start w Bomerano, jak i na finisz w Nocelle, korzystając z autobusów SITA.",
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Najlepsza pora na wędrówkę",
+      "body": [
+        "Celuj w kwiecień–czerwiec lub wrzesień–październik, gdy niebo jest przejrzyste, a temperatura przyjemna; zimowe opady potrafią uczynić kamienne stopnie śliskimi.",
+        "W lipcu i sierpniu startuj przed 09:00 lub po 15:00 — szlak jest odkryty i brakuje cienia."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Wybierz wariant trasy",
+      "body": [
+        "Odcinek Bomerano → Nocelle ma około 6,5 km grzbietu z ciągłymi podejściami i zejściami; zarezerwuj 2,5–3 godziny marszu plus czas na dojazd.",
+        "Masz mniej czasu? Dojedź autobusem do Nocelle, przespaceruj się tam i z powrotem do przełęczy Colle Serra albo zejdź 1700 stopni do Positano."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Nawigacja i bezpieczeństwo",
+      "body": [
+        "Podążaj za biało-czerwonymi znakami CAI i drewnianymi strzałkami Sentiero degli Dei; pobierz offline’ową mapę, bo w wąwozach zanika zasięg.",
+        "Szlak miesza kamienne stopnie, ubity grunt i luźny żwir — załóż buty trekkingowe z dobrą przyczepnością, a kijki rozkładaj dopiero na stromych zejściach."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Woda, przekąski i powrót",
+      "body": [
+        "Zaopatrz się na rynku w Bomerano (kawiarnie, piekarnia, ostatnia toaleta publiczna) przed startem; w Nocelle znajdziesz kiosk i stoisko z granitą cytrynową przy kościele.",
+        "Powrót do Positano: zejdź schodami do plaży Arienzo albo złap autobus SITA z Nocelle/Montepertuso — trzymaj w plecaku dodatkowy skasowany bilet."
+      ]
+    }
+  ],
+  "essentialsTitle": "Niezbędnik",
+  "essentials": [
+    "Dobre obuwie, woda, ochrona przeciwsłoneczna; unikaj południowego upału latem.",
+    "Bilety autobusowe kup przed wejściem (tabacchi, kioski).",
+    "Zarezerwuj ok. 4 godziny łącznie z dojazdem i przerwami na zdjęcia."
+  ],
+  "typicalCostsTitle": "Typowe koszty",
+  "typicalCosts": [
+    "Autobus SITA (Positano ⇄ Nocelle/Bomerano): około 2–4 € w jedną stronę w zależności od biletu",
+    "Przekąski/woda: 3–8 € (zabierz własne, jeśli chcesz oszczędzić)",
+    "Szlak: bezpłatny (brak opłaty wejściowej)"
+  ],
+  "steps": [
+    {
+      "name": "Podejdź do przystanku Chiesa Nuova",
+      "text": "Z hostelu przejdź ok. 80 m pod górę do przystanku SITA przy Chiesa Nuova."
+    },
+    {
+      "name": "Autobus do Nocelle lub Bomerano",
+      "text": "Wsiądź w autobus SITA w kierunku Amalfi i wysiądź w Nocelle, jeśli chcesz krótszego wariantu, albo jedź dalej do Agerola/Bomerano na klasyczny start."
+    },
+    {
+      "name": "Wejście na szlak",
+      "text": "W Nocelle kieruj się znakami Sentiero degli Dei (finisz). W Bomerano podążaj za oznaczeniami z placu głównego do wejścia na szlak (start)."
+    },
+    {
+      "name": "Opcje powrotu",
+      "text": "Zakończ w Nocelle i zejdź schodami do Positano albo wróć autobusem do Chiesa Nuova."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Gdzie zacząć wędrówkę?",
+      "a": "Klasyczny start to Bomerano (Agerola). Krótszy wariant kończy się w Nocelle."
+    },
+    {
+      "q": "Ile to trwa?",
+      "a": "Zarezerwuj ok. 4 godziny łącznie z dojazdami i przerwami na zdjęcia."
+    },
+    {
+      "q": "Co zabrać?",
+      "a": "Solidne buty, wodę, ochronę przeciwsłoneczną. Unikaj południowego upału latem."
+    }
+  ],
+  "faqsTitle": "FAQ",
+  "galleryTitle": "Galeria zdjęć",
+  "gallery": {
+    "items": [
+      {
+        "alt": "Widok na Sentiero degli Dei",
+        "caption": "Na trasie"
+      },
+      {
+        "alt": "Panorama wioski Nocelle",
+        "caption": "Widoki w Nocelle"
+      }
+    ]
+  },
+  "toc": {
+    "onThisPage": "Na tej stronie",
+    "essentials": "Niezbędnik",
+    "costs": "Typowe koszty",
+    "faqs": "FAQ",
+    "gallery": "Galeria zdjęć"
+  }
+}

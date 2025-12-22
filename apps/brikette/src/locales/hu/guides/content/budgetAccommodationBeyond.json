@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Kedvező szállások Positanón túl",
+    "description": "A fordítás folyamatban van."
+  },
+  "linkLabel": "Kedvező szállások Positanón túl",
+  "intro": [
+    "Positanón kívüli, pénztárcabarát bázisok valós közlekedési kompromisszumokkal."
+  ],
+  "sections": [
+    {
+      "id": "sorrento",
+      "title": "Sorrento",
+      "body": [
+        "Jó ár-érték arányú bázis sűrű vonat- és kompmenetrenddel; a késő esti érkezések is egyszerűbbek."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Salerno",
+      "body": [
+        "Megfizethető és jól bekötött város; szezonban közvetlen kompok indulnak Amalfiba és Positanóba."
+      ]
+    },
+    {
+      "id": "amalfi-area",
+      "title": "Amalfi környéke",
+      "body": [
+        "A kisebb települések a holtszezonban kedvezőbb árakat adhatnak; figyelje a buszmenetrend sűrűségét."
+      ]
+    },
+    {
+      "id": "tradeoffs",
+      "title": "Kompromisszumok",
+      "body": [
+        "Hosszabb ingázás alacsonyabb árakért. Rövid tartózkodásnál érdemes Positanóban megszállni, hogy időt spóroljon."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Megéri ingázni?",
+      "a": [
+        "Ha az ár fontosabb és beleférnek a hosszabb utazások, akkor igen – különösen előszezonban és utószezonban."
+      ]
+    }
+  ]
+}

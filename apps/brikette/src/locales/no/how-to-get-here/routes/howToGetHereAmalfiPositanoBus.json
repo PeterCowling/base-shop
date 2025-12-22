@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Amalfi til Positano med buss | Hostel Brikette",
+    "description": "SITA-buss Amalfi til Positano: påstigningspunkter, billettips, notater til rutetabellen og hvor du går av for Hostel Brikette (Chiesa Nuova)."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette reiseguide",
+    "title": "Amalfi til Positano — buss (SITA Sud)",
+    "description": "Bruk denne guiden for å reise fra Amalfi til Positano med SITA-buss. Den dekker hvor du går om bord i Amalfi, billettvalidering, hvordan du leser rutetabellen og hvor du går av for den korteste turen til hostellet."
+  },
+  "aside": {
+    "eyebrow": "Trenger du andre ruter?",
+    "body": {
+      "before": "Trenger du flere transportalternativer? Åpne ",
+      "linkLabel": "oversikten Slik kommer du hit",
+      "after": " for ferger, taxi og kombinerte reiser."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Reiseoversikt",
+      "body": "Den direkte SITA-bussen fra Amalfi til Positano går hyppig i sesongen. Regn med en naturskjønn kysttur på rundt en time, avhengig av trafikken."
+    },
+    "boarding": {
+      "title": "Hvor du går om bord i Amalfi",
+      "items": [
+        "Gå til Amalfis hovedbussterminal ved piazzaen nede ved vannet.",
+        "Se etter SITA-busser merket ‘Sorrento’ eller ‘Positano’ (begge stopper i Positano).",
+        "Kjøp billetter på et tabacchi-/kiosksalg før du går om bord (kontant/kort varierer).",
+        "Ha billettene klare; sjåføren kan stemple eller rive av dem når du går inn."
+      ]
+    },
+    "tickets": {
+      "title": "Billetter og rutetabell",
+      "body": {
+        "before": "Sjekk siste rutetider på ",
+        "linkLabel": "Positano.com",
+        "after": ". Bruk notatene nedenfor for å lese tabellen riktig."
+      },
+      "items": [
+        "Stoppene står som rader; hver bokstavkolonne tilsvarer en avgang.",
+        "For man–lør bruker du vanligvis kolonnene ‘F’ og ‘G’; søn-/helligdager ofte ‘G’ og ‘H’.",
+        "Finn ‘Amalfi’ for avreise og ‘Positano (Chiesa Nuova)’ for ankomstraden."
+      ]
+    }
+  }
+}

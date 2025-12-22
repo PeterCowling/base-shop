@@ -37,7 +37,7 @@ export default function useSavePublish({
   const safeOnSave = onSave ?? (async () => ({}));
   const safeOnPublish = onPublish ?? (async () => ({}));
 
-  const { handlePublish, handleSave, autoSaveState } = usePageBuilderSave({
+  const { handlePublish, handleSave, handleRevert, autoSaveState } = usePageBuilderSave({
     page,
     components,
     state,
@@ -70,5 +70,5 @@ export default function useSavePublish({
     togglePreview,
   });
 
-  return { handleSave, publishWithValidation, autoSaveState, toastProps, setToast } as const;
+  return { handleSave, handleRevert, publishWithValidation, autoSaveState, toastProps, setToast } as const;
 }

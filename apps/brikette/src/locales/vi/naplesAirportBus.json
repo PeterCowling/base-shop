@@ -1,0 +1,38 @@
+{
+  "slug": "naples-airport-to-positano-bus",
+  "meta": {
+    "title": "Từ sân bay Naples đến Positano bằng xe buýt – Từng bước",
+    "description": "Đi shuttle Curreri tới Sorrento, sau đó đi xe buýt SITA tới Positano (Chiesa Nuova). Kèm hình ảnh, mẹo xem giờ và hướng dẫn đi bộ tới Hostel Brikette."
+  },
+  "headings": {
+    "overview": "Tổng quan shuttle Curreri + xe buýt SITA",
+    "naplesAirport": "Khởi hành từ sân bay Naples",
+    "sorrentoStation": "Tại bến xe buýt Sorrento",
+    "timetable": "Đọc bảng giờ SITA",
+    "positanoStop": "Đến Positano (Chiesa Nuova)",
+    "walk": "Đi bộ từ Chiesa Nuova tới hostel",
+    "spotSign": "Mẹo: Nhận biết lối vào hostel"
+  },
+  "cta": {
+    "heading": "Cần xem toàn bộ hướng dẫn đến nơi?",
+    "copy": "Mở trang Cách đến đây để xem mẹo đi phà, lộ trình đi bộ và ảnh lối vào hostel.",
+    "button": "Mở Cách đến đây"
+  },
+  "media": {
+    "positanoStop": {
+      "alt": "Điểm dừng Chiesa Nuova phía trước Bar Internazionale ở Positano"
+    },
+    "walk": {
+      "alt": "Cầu thang dẫn lên lối vào Hostel Brikette"
+    }
+  },
+  "content": {
+    "overview": "Mẹo 1: Để xem giờ xe từ Sorrento tới Positano, <a href=\"https://www.positano.com/en/bus-schedule?route=sorrento_positano_amalfi\">xem lịch chính thức</a>.<br />Mẹo 2: Với tuyến từ sân bay Naples đến Sorrento, <a href=\"https://www.curreriviaggi.it/it/navetta-aeroporto-di-napoli\">xem Curreri Viaggi</a> (chọn \"Da Napoli Aeroporto - Per Sorrento\"). Bạn cũng có thể mua vé shuttle ngay tại bến.",
+    "naplesAirport": "Rời sảnh đến và đi thẳng ra khu bến xe buýt. Mua vé Curreri Viaggi đi Sorrento (trực tuyến hoặc tại ki-ốt) rồi chờ ở ô được đánh dấu. Xe chạy khoảng mỗi 60–90 phút; mùa cao điểm nên đến sớm 15 phút để chắc có chỗ.",
+    "sorrentoStation": "Xuống tại ga trung tâm Sorrento, nơi vừa là bến tàu vừa là bến xe buýt.<br />Từ sân ga, lên xe buýt SITA hướng Amalfi (Positano là điểm dừng giữa).<br />Cần vé? Mua tại quầy bar hoặc sạp báo cạnh bãi đậu trước khi xếp hàng.<br />Khi lên xe, tài xế sẽ đóng dấu hoặc xé vé của bạn. Giữ vé trong tay để xuất trình khi được kiểm tra.",
+    "timetable": "Bảng giờ SITA liệt kê điểm dừng theo hàng và các chuyến được đánh chữ cái theo cột. Khớp điểm xuất phát của bạn với cột tương ứng ngày đi: Thứ Hai–Bảy nằm ở cột F và G; Chủ nhật và ngày lễ ở cột G và H.",
+    "positanoStop": "Ngồi trên xe tới điểm dừng Chiesa Nuova ở Positano. Điểm dừng cách hostel khoảng 140 m (450 ft) bên ngoài Bar Internazionale. Dùng ảnh để chắc chắn bạn đã tới đúng nơi trước khi xuống xe.",
+    "walk": "Từ điểm dừng, đi bộ hơn 100 m / 330 ft dọc Via G. Marconi.<br />Rẽ phải vào con hẻm nhỏ và đi theo các bậc thang lên cửa chính của chúng tôi.<br />Muốn chỉ đường từng bước? <a href=\"https://www.google.com/maps/dir/bar+internazionale/hostel+brikette/@40.6295534,14.479394,17z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634\">Mở cùng tuyến trên Google Maps</a>.",
+    "spotSign": "Khi tới gần, hãy nhìn biển Hostel Brikette trên sân thượng tầng hai. Đi qua biển, men theo khúc cua và leo cầu thang bên phải để tới quầy lễ tân."
+  }
+}

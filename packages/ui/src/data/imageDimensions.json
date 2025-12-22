@@ -1,0 +1,446 @@
+{
+  "/img/10/10_1.webp": {
+    "width": 1920,
+    "height": 1213
+  },
+  "/img/10/10_2.webp": {
+    "width": 1920,
+    "height": 1277
+  },
+  "/img/10/landing.webp": {
+    "width": 451,
+    "height": 300
+  },
+  "/img/11/11_1.webp": {
+    "width": 3840,
+    "height": 3840
+  },
+  "/img/11/11_2.webp": {
+    "width": 1920,
+    "height": 1296
+  },
+  "/img/11/11_3.webp": {
+    "width": 1920,
+    "height": 1277
+  },
+  "/img/11/11_4.webp": {
+    "width": 1920,
+    "height": 1287
+  },
+  "/img/11/11_5.webp": {
+    "width": 1920,
+    "height": 1297
+  },
+  "/img/11/landing.webp": {
+    "width": 3840,
+    "height": 2558
+  },
+  "/img/12/12_1.webp": {
+    "width": 2558,
+    "height": 3840
+  },
+  "/img/12/12_2.webp": {
+    "width": 2475,
+    "height": 3840
+  },
+  "/img/12/12_3.webp": {
+    "width": 3840,
+    "height": 2558
+  },
+  "/img/12/12_4.webp": {
+    "width": 3840,
+    "height": 3840
+  },
+  "/img/12/12_5.webp": {
+    "width": 2558,
+    "height": 3840
+  },
+  "/img/12/12_6.webp": {
+    "width": 2558,
+    "height": 3840
+  },
+  "/img/12/landing.webp": {
+    "width": 3840,
+    "height": 2558
+  },
+  "/img/3/landing.webp": {
+    "width": 1920,
+    "height": 1280
+  },
+  "/img/4/4_1.webp": {
+    "width": 1920,
+    "height": 1277
+  },
+  "/img/4/4_2.webp": {
+    "width": 1920,
+    "height": 1280
+  },
+  "/img/4/4_3.webp": {
+    "width": 1920,
+    "height": 1277
+  },
+  "/img/4/landing.webp": {
+    "width": 3840,
+    "height": 2558
+  },
+  "/img/5/landing.webp": {
+    "width": 400,
+    "height": 266
+  },
+  "/img/6/6_1.webp": {
+    "width": 1920,
+    "height": 1215
+  },
+  "/img/6/6_2.webp": {
+    "width": 400,
+    "height": 266
+  },
+  "/img/6/6_3.webp": {
+    "width": 1920,
+    "height": 1240
+  },
+  "/img/6/6_4.webp": {
+    "width": 1920,
+    "height": 1370
+  },
+  "/img/6/6_5.webp": {
+    "width": 1920,
+    "height": 1277
+  },
+  "/img/6/6_6.webp": {
+    "width": 1920,
+    "height": 1277
+  },
+  "/img/6/landing.webp": {
+    "width": 1920,
+    "height": 1253
+  },
+  "/img/7/7_1.webp": {
+    "width": 3840,
+    "height": 2558
+  },
+  "/img/7/7_2.webp": {
+    "width": 3840,
+    "height": 2558
+  },
+  "/img/7/7_3.webp": {
+    "width": 3840,
+    "height": 2558
+  },
+  "/img/7/landing.webp": {
+    "width": 1920,
+    "height": 1279
+  },
+  "/img/8/8_1.webp": {
+    "width": 1920,
+    "height": 1239
+  },
+  "/img/8/landing.webp": {
+    "width": 1536,
+    "height": 1024
+  },
+  "/img/9/9_1.webp": {
+    "width": 3840,
+    "height": 2558
+  },
+  "/img/9/9_2.webp": {
+    "width": 2558,
+    "height": 3840
+  },
+  "/img/9/9_3.webp": {
+    "width": 1024,
+    "height": 1536
+  },
+  "/img/9/9_4.webp": {
+    "width": 2558,
+    "height": 3840
+  },
+  "/img/9/landing.webp": {
+    "width": 2558,
+    "height": 3840
+  },
+  "/img/arriving-at-hostel.webp": {
+    "width": 1024,
+    "height": 1161
+  },
+  "/img/bunk-choice.avif": {
+    "width": 822,
+    "height": 600
+  },
+  "/img/c1.avif": {
+    "width": 822,
+    "height": 600
+  },
+  "/img/c2.avif": {
+    "width": 600,
+    "height": 900
+  },
+  "/img/checkin-desk.avif": {
+    "width": 822,
+    "height": 600
+  },
+  "/img/directions/hostel-brikette-entrance-steps.png": {
+    "width": 890,
+    "height": 1398
+  },
+  "/img/directions/naples-airport-positano-bus-bus-stop.png": {
+    "width": 550,
+    "height": 310
+  },
+  "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png": {
+    "width": 890,
+    "height": 1398
+  },
+  "/img/directions/positano-amalfi-bus-bus-stop.png": {
+    "width": 550,
+    "height": 310
+  },
+  "/img/directions/positano-bus-stop.png": {
+    "width": 550,
+    "height": 310
+  },
+  "/img/directions/positano-capri-ferry-img01.png": {
+    "width": 450,
+    "height": 450
+  },
+  "/img/directions/positano-capri-ferry-img02.jpg": {
+    "width": 1071,
+    "height": 564
+  },
+  "/img/directions/positano-capri-ferry-img03.jpg": {
+    "width": 1100,
+    "height": 538
+  },
+  "/img/directions/positano-capri-ferry-img04.png": {
+    "width": 835,
+    "height": 470
+  },
+  "/img/directions/positano-capri-ferry-img05.jpg": {
+    "width": 900,
+    "height": 538
+  },
+  "/img/directions/positano-capri-ferry-img06.jpg": {
+    "width": 667,
+    "height": 538
+  },
+  "/img/directions/positano-capri-ferry-img07.jpg": {
+    "width": 933,
+    "height": 498
+  },
+  "/img/directions/positano-capri-ferry-img08.jpg": {
+    "width": 291,
+    "height": 463
+  },
+  "/img/directions/positano-capri-ferry-img09.jpg": {
+    "width": 588,
+    "height": 370
+  },
+  "/img/directions/positano-capri-ferry-img10.jpg": {
+    "width": 1134,
+    "height": 556
+  },
+  "/img/facade.avif": {
+    "width": 822,
+    "height": 600
+  },
+  "/img/free-perks.avif": {
+    "width": 822,
+    "height": 600
+  },
+  "/img/fresh-linens.avif": {
+    "width": 822,
+    "height": 600
+  },
+  "/img/guides/arienzo-beach/image1.jpg": {
+    "width": 450,
+    "height": 450
+  },
+  "/img/guides/arienzo-beach/image2.jpg": {
+    "width": 800,
+    "height": 516
+  },
+  "/img/guides/arienzo-beach/image3.jpg": {
+    "width": 800,
+    "height": 600
+  },
+  "/img/guides/hostel-brikette-to-arienzo-bus/image1.jpg": {
+    "width": 451,
+    "height": 451
+  },
+  "/img/guides/hostel-brikette-to-arienzo-bus/image2.jpg": {
+    "width": 550,
+    "height": 310
+  },
+  "/img/guides/hostel-brikette-to-arienzo-bus/image3.jpg": {
+    "width": 861,
+    "height": 548
+  },
+  "/img/guides/hostel-brikette-to-regina-giovanna-bath/image1.png": {
+    "width": 870,
+    "height": 706
+  },
+  "/img/guides/hostel-brikette-to-regina-giovanna-bath/image2.png": {
+    "width": 1100,
+    "height": 1150
+  },
+  "/img/guides/hostel-brikette-to-regina-giovanna-bath/image3.png": {
+    "width": 550,
+    "height": 310
+  },
+  "/img/guides/hostel-brikette-to-regina-giovanna-bath/image4.png": {
+    "width": 1999,
+    "height": 795
+  },
+  "/img/guides/hostel-brikette-to-regina-giovanna-bath/image5.png": {
+    "width": 1626,
+    "height": 706
+  },
+  "/img/guides/hostel-brikette-to-regina-giovanna-bath/image6.png": {
+    "width": 450,
+    "height": 450
+  },
+  "/img/guides/hostel-brikette-to-regina-giovanna-bath/image7.png": {
+    "width": 1876,
+    "height": 864
+  },
+  "/img/guides/laurito-bus/bus-en-route.jpg": {
+    "width": 1596,
+    "height": 804
+  },
+  "/img/guides/laurito-bus/image1.png": {
+    "width": 451,
+    "height": 451
+  },
+  "/img/guides/laurito-bus/image2.jpg": {
+    "width": 1024,
+    "height": 516
+  },
+  "/img/guides/laurito-bus/image3.jpg": {
+    "width": 1024,
+    "height": 577
+  },
+  "/img/guides/laurito/laurito-1.jpg": {
+    "width": 450,
+    "height": 450
+  },
+  "/img/guides/laurito/laurito-2.jpg": {
+    "width": 1500,
+    "height": 1000
+  },
+  "/img/guides/laurito/laurito-3.jpg": {
+    "width": 403,
+    "height": 500
+  },
+  "/img/guides/laurito/laurito-4.jpg": {
+    "width": 1280,
+    "height": 1600
+  },
+  "/img/guides/laurito/laurito-5.jpg": {
+    "width": 512,
+    "height": 215
+  },
+  "/img/guides/laurito/laurito-bus-qr.jpg": {
+    "width": 451,
+    "height": 451
+  },
+  "/img/guides/laurito/laurito-bus-ride.jpg": {
+    "width": 1596,
+    "height": 804
+  },
+  "/img/guides/laurito/laurito-chiesa-nuova-stop.jpg": {
+    "width": 550,
+    "height": 310
+  },
+  "/img/guides/positano-main-beach-bus-back/bar-internazionale-stop.jpg": {
+    "width": 550,
+    "height": 310
+  },
+  "/img/guides/positano-main-beach-bus-back/interno-positano-bus.jpg": {
+    "width": 1596,
+    "height": 804
+  },
+  "/img/guides/sunrise-hike/01-qr.png": {
+    "width": 450,
+    "height": 450
+  },
+  "/img/guides/sunrise-hike/02-house.jpg": {
+    "width": 876,
+    "height": 530
+  },
+  "/img/guides/sunrise-hike/03-viewpoint.jpg": {
+    "width": 677,
+    "height": 600
+  },
+  "/img/guides/top-of-the-mountain/image1.jpg": {
+    "width": 800,
+    "height": 397
+  },
+  "/img/guides/top-of-the-mountain/image2.png": {
+    "width": 451,
+    "height": 451
+  },
+  "/img/guides/top-of-the-mountain/image3.jpg": {
+    "width": 409,
+    "height": 333
+  },
+  "/img/hostel-coastal-horizon.webp": {
+    "width": 4096,
+    "height": 2220
+  },
+  "/img/hostel-communal-terrace-lush-view.webp": {
+    "width": 1280,
+    "height": 870
+  },
+  "/img/hostel-terrace-bamboo-canopy.webp": {
+    "width": 1242,
+    "height": 820
+  },
+  "/img/hostel_brikette_icon.png": {
+    "width": 60,
+    "height": 60
+  },
+  "/img/interno1.webp": {
+    "width": 411,
+    "height": 368
+  },
+  "/img/interno2.webp": {
+    "width": 922,
+    "height": 725
+  },
+  "/img/keycard-tap.avif": {
+    "width": 822,
+    "height": 600
+  },
+  "/img/landing-blur.webp": {
+    "width": 192,
+    "height": 127
+  },
+  "/img/landing-mobile.avif": {
+    "width": 320,
+    "height": 213
+  },
+  "/img/landing-xl.webp": {
+    "width": 4096,
+    "height": 2720
+  },
+  "/img/positano-panorama.avif": {
+    "width": 500,
+    "height": 333
+  },
+  "/img/positano-vintage.avif": {
+    "width": 500,
+    "height": 522
+  },
+  "/img/rooms-split.avif": {
+    "width": 822,
+    "height": 600
+  },
+  "/img/tabacchi.webp": {
+    "width": 688,
+    "height": 367
+  },
+  "/img/terrace.avif": {
+    "width": 822,
+    "height": 600
+  }
+}

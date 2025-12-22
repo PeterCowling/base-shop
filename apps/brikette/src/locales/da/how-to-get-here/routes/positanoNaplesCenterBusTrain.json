@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Positano til Napoli centrum med bus og tog | Hostel Brikette",
+    "description": "Dør-til-dør-vejledning fra Hostel Brikette til Napoli Piazza Garibaldi via SITA-bussen til Sorrento og Circumvesuviana-toget, inklusive billetvalidering, tidstabeller og ankomsttips."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Positano til Napoli centrum – bus og derefter tog",
+    "description": "Brug denne guide, når du rejser fra Hostel Brikette til Napoli Piazza Garibaldi. Du tager SITA Sud-bussen til Sorrento og skifter derefter til Circumvesuviana-toget for at nå centrum. Vi dækker billetvalidering, hvordan du læser SITA-tidstabellen, og hvad du kan forvente ved hver forbindelse."
+  },
+  "cta": {
+    "eyebrow": "Tip",
+    "body": "Skal du se alle transportmuligheder? Åbn <Link>Oversigt over Sådan kommer du hertil</Link> for færge-, taxa- og kombinerede rejser.",
+    "linkLabel": "Oversigt over Sådan kommer du hertil"
+  },
+  "sections": {
+    "overview": {
+      "heading": "Rejseoverblik",
+      "body": "Sæt godt to timer af dør til dør i højsæsonen. SITA-busserne kører ofte fra Positano (Chiesa Nuova) til Sorrento. Circumvesuviana-toget fra Sorrento afgår cirka hver 20.–30. minut og ender på Napoli Garibaldi."
+    },
+    "tickets": {
+      "heading": "Køb og validering af SITA-billetter",
+      "body": "Køb SITA-busbilletter i kiosker eller tobaksforretninger, før du går ombord. Vis billetten til chaufføren, når du stiger på; de stempler eller river den for at validere rejsen. Gem billetten, indtil du stiger af, i tilfælde af billetkontrol undervejs."
+    },
+    "timetable": {
+      "heading": "Sådan læser du SITA-tidstabellen",
+      "intro": "Den officielle tidstabel viser stoppesteder som rækker og afgange som bogstavkolonner. Find rækken for Sorrento og match den med bogstavet for din rejsedag for at se afgangstiderne. Se derefter på Positano (Chiesa Nuova)-rækken i samme kolonne for ankomsttidspunktet tilbage i byen.",
+      "tips": [
+        "Rækkerne i den første kolonne viser hvert stop på ruten.",
+        "Kolonnerne svarer til planlagte afgange markeret med bogstaver.",
+        "Rejser du mandag til lørdag? Brug kolonnerne F og G.",
+        "Rejser du søndag eller på helligdage? Brug kolonnerne G og H."
+      ],
+      "outro": "Tjek den nyeste køreplan på <Link>Positano.com</Link>.",
+      "linkLabel": "Positano.com (overblik over SITA-tidstabel)"
+    },
+    "positanoStop": {
+      "heading": "Positano (Chiesa Nuova) busstoppested",
+      "facts": [
+        "Det nærmeste SITA-stoppested er Positano (Chiesa Nuova) på Via G. Marconi.",
+        "Det ligger cirka 140 meter (490 fod) fra hostellets indgang.",
+        "Du venter udenfor caféen/baren Bar Internazionale."
+      ],
+      "caption": "Kom et par minutter før for at sikre dig en plads; busserne bliver hurtigt fyldte om sommeren.",
+      "imageAlt": "SITA-stoppestedet Positano Chiesa Nuova foran Bar Internazionale"
+    },
+    "walk": {
+      "heading": "Gå fra hostellet til stoppestedet",
+      "steps": [
+        "Forlad hostellet, gå ned ad trappen til hovedvejen, og drej til venstre.",
+        "Fortsæt langs Via G. Marconi i cirka 100 meter (330 fod).",
+        "Bar Internazionale er på venstre hånd; SITA-stoppet er lige udenfor."
+      ]
+    },
+    "wait": {
+      "heading": "Køb billet og vent på ombordstigning",
+      "items": [
+        "Køb en SITA-busbillet til Sorrento i baren eller den nærliggende kiosk.",
+        "Stil dig i kø udenfor Bar Internazionale til bussen mod Sorrento.",
+        "Dobbelttjek skiltet på bussen – der skal stå Sorrento."
+      ]
+    },
+    "sorrento": {
+      "heading": "På Sorrentos togstation",
+      "intro": "SITA-bussen sætter dig af ved Sorrentos kombinerede tog- og busstation. Gå op ad trappen til hovedhallen, køb din Circumvesuviana-billet til Napoli Garibaldi (kontant eller kort), og find det rigtige spor, før toget ankommer.",
+      "outro": "Se den seneste Circumvesuviana-tidstabel på <Link>Sorrento Insider</Link>.",
+      "outroLinkLabel": "Sorrento Insider (Circumvesuviana-tidstabel)"
+    },
+    "naples": {
+      "heading": "Ankomst til Napoli",
+      "body": "Bliv på Circumvesuviana, indtil den ender på Napoli Garibaldi. Følg derefter skiltene op til hovedhallen for at skifte til fjerntog, metro eller lufthavnsbusser. Piazza Garibaldi ligger lige uden for stationsindgangen."
+    }
+  }
+}

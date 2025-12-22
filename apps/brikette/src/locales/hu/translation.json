@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Hostel Brikette",
+    "reserve": "Foglalj most"
+  },
+  "intro": {
+    "title": "Foglalj közvetlenül és spórolj",
+    "description": "Foglalj a weboldalunkon, és kapj egy ingyenes ételcsomagot, akár napi 29 euró értékben."
+  },
+  "rooms": {
+    "title": "Szobák",
+    "value_dorms": "Kedvező árú hálótermek",
+    "premium_dorms": "Prémium szobák",
+    "superior_dorms": "Superior szobák",
+    "private_room": "Privát szoba"
+  },
+  "careers": {
+    "jobTitle": "Csatlakozz a Hostel Brikette csapatához",
+    "jobDescription": "Folyamatosan keresünk lendületes, vendéglátást szerető embereket. Ha gyors tempójú környezetben érzed jól magad, vedd fel velünk a kapcsolatot!",
+    "ctaLabel": "Érdeklődj a nyitott pozíciókról"
+  },
+  "errorBoundary": {
+    "title": "Valami hiba történt.",
+    "reload": "Töltse újra az oldalt"
+  },
+  "meta": {
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@brikette"
+  },
+  "internalErrors": {
+    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+  }
+}

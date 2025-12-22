@@ -1,0 +1,508 @@
+{
+  "labels": {
+    "onThisPage": "På den här sidan",
+    "before": "Innan du ger dig av",
+    "steps": "Steg-för-steg-rutt",
+    "knees": "Knän & bagage",
+    "faqs": "Vanliga frågor"
+  },
+  "folkloreAmalfi": {
+    "intro": [
+      "Sjölvjungfrur, helgon och sjömän – berättelser som färgar Amalfikusten och platserna de nämner i dag."
+    ],
+    "sections": [
+      {
+        "title": "Fiskarnas historier",
+        "body": [
+          "Legender om beskyddande helgon och plötsliga väderomslag till havs förklarar lokala ritualer och festivaler."
+        ]
+      },
+      {
+        "title": "Myter om ortnamn",
+        "body": [
+          "Hur namn och landmärken har fått sina historier genom århundradena."
+        ]
+      }
+    ]
+  },
+  "compareBasesPositanoSorrentoAmalfi": {
+    "intro": [],
+    "toc": [
+      {
+        "href": "#positano",
+        "label": "Positano"
+      },
+      {
+        "href": "#sorrento",
+        "label": "Sorrento"
+      },
+      {
+        "href": "#amalfi",
+        "label": "Amalfi"
+      },
+      {
+        "href": "#who",
+        "label": "Vem respektive bas passar"
+      }
+    ],
+    "sections": [
+      {
+        "id": "positano",
+        "title": "Positano",
+        "body": [
+          "Ikoniska vyer och trappor; perfekt om du vill vakna i vykortet.",
+          "Transport kräver planering, särskilt kring tidiga färjor och sena bussar."
+        ]
+      },
+      {
+        "id": "sorrento",
+        "title": "Sorrento",
+        "body": [
+          "Bästa förbindelserna och ett brett utbud av boenden för de flesta budgetar.",
+          "Utsikten är mindre dramatisk än i Positano, men praktiken är hög."
+        ]
+      },
+      {
+        "id": "amalfi",
+        "title": "Amalfi",
+        "body": [
+          "Centralt nav för färjor och bussar med enkel access till Ravello.",
+          "Räkna med varierade boendestilar och lagom många kvällsavgångar."
+        ]
+      },
+      {
+        "id": "who",
+        "title": "Vilken bas som passar vem",
+        "body": [
+          "Positano för utsikter att lyxa med och hostelns sociala liv.",
+          "Sorrento för värdejagare som vill ha snabba transporter.",
+          "Amalfi för balanserad access längs kusten."
+        ]
+      }
+    ],
+    "faqs": [],
+    "faqsTitle": "Vanliga frågor"
+  },
+  "interrailItalyRailPassAmalfiCoast": {
+    "toc": [
+      {
+        "href": "#routes",
+        "label": "Huvudsträckor"
+      },
+      {
+        "href": "#supplements",
+        "label": "Tillägg/bokningskrav"
+      },
+      {
+        "href": "#last-mile",
+        "label": "Sista biten till Positano"
+      },
+      {
+        "href": "#faqs",
+        "label": "Vanliga frågor"
+      }
+    ],
+    "sections": [
+      {
+        "id": "routes",
+        "title": "Huvudsträckor",
+        "body": [
+          "Rom → Neapel/Salerno med snabbtåg; lokaltåg till Sorrento; bussar till Positano."
+        ]
+      },
+      {
+        "id": "supplements",
+        "title": "Tillägg/bokningskrav",
+        "body": [
+          "Frecciarossa/Italo kräver oftast platsreservation; regionaltågen gör det inte men kan vara fullsatta."
+        ]
+      },
+      {
+        "id": "last-mile",
+        "title": "Sista biten till Positano",
+        "body": [
+          "Från Neapel: Circumvesuviana till Sorrento och sedan SITA-buss. Från Salerno: färja/buss i säsong."
+        ]
+      }
+    ],
+    "faqsTitle": "Vanliga frågor",
+    "faqs": [
+      {
+        "q": "Är ett pass värt det?",
+        "a": [
+          "Endast om du gör tillräckligt många långdistansresor; annars kan enkelbiljetter vara billigare."
+        ]
+      }
+    ]
+  },
+  "photographyGuidePositano": {
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "Klassiska vinklar"
+      },
+      {
+        "href": "#crowds",
+        "label": "Undvik folkmassor"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etikett"
+      }
+    ],
+    "sections": [
+      {
+        "id": "classics",
+        "title": "Klassiska vinklar",
+        "body": [
+          "Övre kurvorna på Via Pasitea, Fornillo-stigen och kajen med blicken bakåt – bäst vid soluppgång eller gyllene timmen."
+        ]
+      },
+      {
+        "id": "crowds",
+        "title": "Undvik folkmassor",
+        "body": [
+          "Gå ut tidigt eller vänta till efter solnedgången för blå timmen utan dagsturister."
+        ]
+      },
+      {
+        "id": "etiquette",
+        "title": "Etikett",
+        "body": [
+          "Dela utrymmet, lämna företräde i smala trappor och blockera inte butiksentréer."
+        ]
+      }
+    ]
+  },
+  "simsAtms": {
+    "intro": [
+      "eSIM är smidiga och ofta billigare; om du behöver ett fysiskt SIM eller bankomat, planera i god tid under högsäsong."
+    ],
+    "faqs": [
+      {
+        "q": "Kan jag köpa ett lokalt SIM i Positano?",
+        "a": [
+          "Butikerna är få; överväg eSIM eller köp i Neapel/Sorrento för bättre priser."
+        ]
+      },
+      {
+        "q": "Är täckningen tillförlitlig?",
+        "a": [
+          "Generellt bra i stan, men fläckvis längs leder och klippor."
+        ]
+      },
+      {
+        "q": "Finns det bankomater?",
+        "a": [
+          "Det finns bankomater men avgifterna varierar; välj bankdrivna automater och ha ett reservkort."
+        ]
+      }
+    ]
+  },
+  "ferrySchedules": {
+    "intro": [
+      "Färjor till Positano är säsongsbundna. Under sommaren förbinder flera operatörer Neapel, Sorrento, Amalfi och Capri med Positano. Bekräfta alltid på operatörens webbplats då tidtabellerna ändras med väder och efterfrågan."
+    ],
+    "tipsTitle": "Smart tips för färjan",
+    "tips": [
+      "Kolla avgångsuppdateringar kvällen innan – vind och grov sjö kan ställa in turer med kort varsel.",
+      "Boka biljetter online under högsäsong för att undvika slutsålda avgångar i biljettluckorna.",
+      "Ha några euro kontant om du planerar att anlita bärare från kajen upp i byn.",
+      "Ha SITA-bussens tidtabell nära till hands som reserv när havet är för hårt för färjor."
+    ],
+    "sections": [
+      {
+        "id": "seasonality",
+        "title": "Säsong",
+        "body": [
+          "Färjor kör främst april–oktober. Vintertrafiken är begränsad eller pausad; använd bussar i stället."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Snabba tips",
+        "body": [
+          "Högsäsong: april–oktober. Begränsade eller inga avgångar på vintern.",
+          "Kom i god tid före avgång för att köa och validera biljetten.",
+          "Från hamnen till hostelet är det uppför; överväg bärare eller buss till \"Chiesa Nuova\".",
+          "För fler ankomsttips, se vår hjälpartikel \"Anländer med färja\"."
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Går färjorna till Positano året runt?",
+        "a": [
+          "Färjorna är säsongsbundna (vanligen april–oktober). Vintertid är bussar/taxi huvudalternativ."
+        ]
+      },
+      {
+        "q": "Var kan jag se aktuella färjetidtabeller?",
+        "a": [
+          "Använd operatörernas webbplatser (t.ex. NLG, Travelmar, Alilauro) eller aggregatorer som DirectFerries under sommaren."
+        ]
+      },
+      {
+        "q": "Vilken pir ska jag använda i Positano?",
+        "a": [
+          "Huvudpiren ligger vid Spiaggia Grande. Kontrollera biljetten för rätt ombordstigningsfil under intensiva dagar."
+        ]
+      },
+      {
+        "q": "Hur tidigt ska jag komma före avgång?",
+        "a": [
+          "Var på plats 20–30 minuter innan; köer är vanliga under högsäsong (juni–september)."
+        ]
+      },
+      {
+        "q": "Är promenaden från hamnen till Hostel Brikette jobbig?",
+        "a": [
+          "Det är en uppförsbacke med många trappor. Överväg porterservice eller buss till Chiesa Nuova om du bär tungt."
+        ]
+      }
+    ],
+    "gallery": [
+      {
+        "alt": "Positanos pirområde",
+        "caption": "Pir vid Spiaggia Grande"
+      },
+      {
+        "alt": "Färja närmar sig Amalfi",
+        "caption": "Färjor längs kusten"
+      }
+    ],
+    "faqsTitle": "Vanliga frågor om färjan till Positano",
+    "galleryTitle": "Färjornas fotohöjdpunkter"
+  },
+  "drivingAmalfi": {
+    "intro": [
+      "Att köra på SS163 är vackert men krävande. Överväg färjor och bussar först; om du kör, planera för smala körfält, begränsad parkering och säsongsregler."
+    ]
+  },
+  "ecoFriendlyAmalfi": {
+    "intro": [
+      "Minska ditt avtryck och njut av kusten. Gå trappleder, välj färjor framför bil i säsong, fyll på vatten och ta med skräp tillbaka."
+    ],
+    "toc": [
+      {
+        "href": "#getting-around",
+        "label": "Ta sig runt"
+      },
+      {
+        "href": "#refills",
+        "label": "Påfyllning & avfall"
+      },
+      {
+        "href": "#trails",
+        "label": "Ledetikett"
+      }
+    ],
+    "sections": [
+      {
+        "id": "getting-around",
+        "title": "Ta sig runt",
+        "body": [
+          "Välj färjor och bussar framför privata bilar; promenera mellan närliggande byar när det är säkert.",
+          "Res utanför rusning för att underlätta driften och undvika trängsel längs kusten."
+        ]
+      },
+      {
+        "id": "refills",
+        "title": "Påfyllning & avfall",
+        "body": [
+          "Använd offentliga fontäner eller be kaféer om påfyllning; bär en återanvändbar flaska.",
+          "Sortera avfallet när det går och hoppa över engångsartiklar på stranden."
+        ]
+      },
+      {
+        "id": "trails",
+        "title": "Ledetikett",
+        "body": [
+          "Lämna företräde på smala avsnitt, ta med allt skräp och respektera privat mark.",
+          "Starta tidigt för att undvika värme och trängsel på lederna."
+        ]
+      }
+    ],
+    "faqs": [],
+    "faqsTitle": "Vanliga frågor"
+  },
+  "itinerariesPillar": {
+    "intro": "Du behöver ingen bil för att njuta av Amalfikusten. Använd färjor för vackra hopp, bussar för byar uppe på höjden och lite timing för att undvika de mest trafikerade perioderna. Börja med dessa mallar och anpassa dem.",
+    "toc": {
+      "twoDays": "2 dagar: fokus på Positano",
+      "threeDays": "3 dagar: lägg till Capri eller Amalfi+Ravello",
+      "sevenDays": "7 dagar: hela rundan",
+      "tips": "Tips om timing & transport",
+      "faqs": "Vanliga frågor"
+    },
+    "twoDaysHeading": "2 dagar: fokus på Positano",
+    "twoDaysItems": [
+      "Dag 1: Positanos gamla stad, Fornillo via kuststigen, solnedgång vid svängarna på Via Pasitea.",
+      "Dag 2: <pathOfTheGodsLink>Gudarnas stig (Path of the Gods)</pathOfTheGodsLink> från Nocelle; svalka dig på stranden efteråt."
+    ],
+    "threeDaysHeading": "3 dagar: lägg till Capri eller Ravello",
+    "threeDaysIntro": "Välj ett:",
+    "threeDaysOptions": [
+      "Capri: tidig färja → Marina Grande → Anacapri-linbanan → rundtur via Marina Piccola.",
+      "Amalfi + Ravello: buss till Amalfi, vidare till Ravello för trädgårdar och utsikter; tillbaka med buss/färja."
+    ],
+    "sevenDaysHeading": "7 dagar: hela rundan",
+    "sevenDaysItems": [
+      "Bas i Positano (2–3 nätter)",
+      "Amalfi/Ravello (2 nätter)",
+      "Capri (1 natt) eller Sorrento (1–2 nätter) för smidigare transporter"
+    ],
+    "tipsHeading": "Tips om timing & transport",
+    "tips": [
+      "Använd färjor mellan 10:00–16:00 sparsamt under högsäsong. Åk tidigare eller senare.",
+      "Köp bussbiljetter i förväg; stämpla när du kliver på.",
+      "När havet är stökigt, byt till bussplaner; kontrollera operatörernas aviseringar."
+    ],
+    "faqHeading": "Vanliga frågor",
+    "faqs": [
+      {
+        "q": "Är det värt att ha bil?",
+        "a": [
+          "Brist på parkering, ZTL och alternerande nummerskyltar gör bilfria resor enklare större delen av året."
+        ]
+      }
+    ]
+  },
+  "amalfiTownGuide": {
+    "headings": {
+      "highlights": "Höjdpunkter",
+      "gettingThere": "Så tar du dig dit",
+      "tips": "Tips"
+    },
+    "highlights": [
+      "Duomo di Amalfi och Chiostro del Paradiso (klostergång).",
+      "Pappersmuseet (Museo della Carta) – unikt för Amalfis historia.",
+      "Strandpromenaden och gelato på trapporna."
+    ],
+    "gettingThere": "Från Positano är färjor (i säsong) både sceniska och bekväma. Annars tar du SITA-bussen; räkna med köer under högsäsong. Köp biljetter i förväg.",
+    "tips": [
+      "Kom tidigt; besök Ravellos trädgårdar med buss från Amalfi för en heldag.",
+      "Ta med solskydd – det finns begränsat med skugga på kajen."
+    ]
+  },
+  "sevenDayNoCar": {
+    "intro": "Bo 3 nätter i Positano, 2 i Amalfi/Ravello och 1–2 i Capri eller Sorrento för smidiga byten.",
+    "toc": {
+      "onThisPage": "På denna sida",
+      "overview": "Översikt",
+      "dayByDay": "Dag för dag",
+      "tips": "Transport- och timingtips",
+      "faqs": "Vanliga frågor"
+    },
+    "days": [
+      {
+        "id": "day1",
+        "label": "Dag 1",
+        "items": [
+          "Ankomst till Positano; gamla stan & Fornillo"
+        ]
+      },
+      {
+        "id": "day2",
+        "label": "Dag 2",
+        "items": [
+          "Gudarnas stig från Nocelle"
+        ]
+      },
+      {
+        "id": "day3",
+        "label": "Dag 3",
+        "items": [
+          "Capri-dagstur eller strand + båttur"
+        ]
+      },
+      {
+        "id": "day4",
+        "label": "Dag 4",
+        "items": [
+          "Transfer till Amalfi; Duomo; solnedgång vid piren"
+        ]
+      },
+      {
+        "id": "day5",
+        "label": "Dag 5",
+        "items": [
+          "Ravellos trädgårdar (Villa Rufolo/Villa Cimbrone)"
+        ]
+      },
+      {
+        "id": "day6",
+        "label": "Dag 6",
+        "items": [
+          "Övernatta på Capri eller hoppa över till Sorrento"
+        ]
+      },
+      {
+        "id": "day7",
+        "label": "Dag 7",
+        "items": [
+          "Avresa"
+        ]
+      }
+    ],
+    "tips": [
+      "Färjorna är säsongsbundna; ha en bussplan i reserv om havet blir hårt.",
+      "Res före 10.00 eller efter 16.00 under toppdagar för att undvika köer."
+    ],
+    "faq": [
+      {
+        "q": "Bör jag byta bas?",
+        "a": [
+          "Två baser minimerar bagageslitet och håller bytena effektiva."
+        ]
+      }
+    ]
+  },
+  "chiesaNuovaDepartures": {
+    "intro": [
+      "Ska du lämna vandrarhemmet för att ta bussen mot Amalfi eller Sorrento? Den här minirutten visar den snabbaste vägen från Hostel Brikette till hållplatsen Chiesa Nuova/Bar Internazionale och ger dig några tips."
+    ],
+    "sections": [
+      {
+        "title": "Why this route works",
+        "body": [
+          "Det är 120 meter (400 fot) från vandrarhemmets entré till hållplatsen längs huvudvägen.",
+          "Om du ska mot Amalfi ligger hållplatsen mittemot Bar Internazionale. Ställ dig i kö på vägens havssida. Om du ska mot Sorrento väntar du precis utanför baren."
+        ]
+      },
+      {
+        "title": "Tickets and timing",
+        "body": [
+          "Köp en SITA-biljett i tobaksbutiken eller inne i baren. Försök inte kliva ombord utan biljett – du kan inte köpa en på bussen. Visa biljetten för föraren när du går på. Ska du med första bussen, köp biljetten dagen innan och kom förbi receptionen för att ordna utcheckning.",
+          "Sommarbussarna blir ofta fulla. Planera därefter, särskilt under de mest hektiska perioderna."
+        ]
+      }
+    ],
+    "beforeList": [],
+    "stepsList": [
+      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Följ trottoaren cirka 120 meter (400 fot) längs huvudvägen tills du når Bar Internazionale."
+    ],
+    "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+    "kneesList": [],
+    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
+    "kneesDockLinkLabel": "Ferry dock luggage route",
+    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
+    "kneesPorterLinkLabel": "porter service guide",
+    "faqs": [
+      {
+        "q": "Do buses stop right outside the hostel?",
+        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+      },
+      {
+        "q": "Can I buy tickets at the last minute?",
+        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+      }
+    ],
+    "howtoSteps": [
+      "Leave Hostel Brikette and follow Viale Pasitea downhill",
+      "Join the queue at Bar Internazionale and validate on boarding"
+    ],
+    "faqsTitle": "FAQs"
+  }
+}

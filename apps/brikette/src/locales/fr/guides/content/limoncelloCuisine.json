@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Limoncello et cuisine locale",
+    "description": "Spécialités gastronomiques, où déguster les meilleurs plats et ateliers autour du limoncello."
+  },
+  "linkLabel": "Limoncello et cuisine locale",
+  "intro": [
+    "Les citrons et le limoncello incarnent les saveurs de la côte amalfitaine — des dégustations aux douceurs finales.",
+    "Voici où siroter, quoi rapporter et comment les cuisiner une fois rentré."
+  ],
+  "tocTitle": "Sur cette page",
+  "sections": [
+    {
+      "id": "tasting",
+      "title": "Dégustation",
+      "body": [
+        "Visitez les petites botteghe pour du limoncello artisanal et demandez un échantillon afin de comparer les styles.",
+        "Accompagnez la dégustation d’un gelato au citron, d’un sorbet ou d’une pâtisserie pour évaluer douceur et équilibre."
+      ]
+    },
+    {
+      "id": "purchase",
+      "title": "Achat et transport",
+      "body": [
+        "Vérifiez les limites de liquides imposées par votre compagnie aérienne ; emballez les bouteilles soigneusement dans votre bagage en soute.",
+        "Recherchez les étiquettes IGP Costa d’Amalfi et des emballages recyclables issus de producteurs locaux."
+      ]
+    },
+    {
+      "id": "cooking",
+      "title": "Cuisiner avec des citrons",
+      "body": [
+        "Utilisez le zeste et le jus pour illuminer salades, pâtes aux fruits de mer et desserts.",
+        "Conservez les citrons dans un endroit frais et sombre et réutilisez les écorces pour des sirops ou marinades."
+      ]
+    }
+  ],
+  "tips": [
+    "Soutenez les petits producteurs — leurs arômes sont souvent plus intenses que ceux des boutiques attrape-touristes.",
+    "Évitez les souvenirs surfacturés près de la plage principale ; reculez de quelques rues pour de meilleurs prix."
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je transporter du limoncello en cabine ?",
+      "a": [
+        "Pas au-delà de 100 ml — placez les bouteilles standard dans la soute avec une bonne protection."
+      ]
+    },
+    {
+      "q": "Existe-t-il des alternatives sans alcool ?",
+      "a": [
+        "Optez pour une limonade fraîche, une granita ou des sirops de citron si vous souhaitez éviter l’alcool."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Galerie photo",
+    "items": [
+      {
+        "alt": "Affiche vintage de Positano avec des citrons",
+        "caption": "Citrons vintage"
+      },
+      {
+        "alt": "Table en terrasse avec des verres de limoncello",
+        "caption": "Limoncello en terrasse"
+      }
+    ]
+  }
+}

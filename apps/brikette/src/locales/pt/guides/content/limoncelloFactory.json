@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Inside a Limoncello Factory",
+    "description": "How limoncello is made and what to look for in a quality bottle."
+  },
+  "linkLabel": "Dentro de uma fábrica de limoncello",
+  "fallbackParagraph": "O que entra num limoncello autêntico: limões, álcool, açúcar e tempo. As visitas mostram o processo e terminam com provas — não conduza a seguir.",
+  "intro": [
+    "Visitar um laboratório de limoncello revela como os limões sfusato Amalfitano se transformam no digestivo emblemático da costa.",
+    "Conheça as etapas, prove garrafas de pequenos lotes e aprenda a guardar e transportar o seu blend preferido para casa."
+  ],
+  "sections": [
+    {
+      "id": "lemons",
+      "title": "Limões sfusato Amalfitano",
+      "body": [
+        "Os produtores usam limões sfusato Amalfitano de casca grossa, cultivados em pergolados em socalcos; os óleos essenciais ficam na casca, não no sumo.",
+        "Boas visitas começam mostrando como a fruta é descascada à mão e porque a agricultura biológica é crucial para uma infusão limpa e aromática."
+      ]
+    },
+    {
+      "id": "infusion",
+      "title": "Da casca à infusão",
+      "body": [
+        "A casca fresca macera em álcool neutro de cereais durante uma semana ou mais, até o líquido ficar dourado e perfumado.",
+        "Depois da infusão, o líquido é filtrado e misturado com xarope simples; os lotes repousam para harmonizar sabores antes de engarrafar."
+      ]
+    },
+    {
+      "id": "tasting",
+      "title": "O que as provas incluem",
+      "body": [
+        "Os guias costumam mostrar o espaço de produção e depois servem provas de limoncello, crema di limone ou licores sazonais.",
+        "Prove devagar, note a textura e o aroma e evite conduzir a seguir — as amostras têm graduação completa, mesmo que pareçam suaves."
+      ]
+    },
+    {
+      "id": "shopping",
+      "title": "Comprar e guardar uma garrafa",
+      "body": [
+        "Prefira vidro opaco ou protegido contra UV e verifique rótulos com morada do produtor e data de produção.",
+        "Mantenha a garrafa fresca depois de aberta; se for viajar com ela, envolva-a em roupa ou peça embalagem protetora na loja."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Menores de 18 podem visitar?",
+      "a": [
+        "Sim, podem acompanhar o processo, mas não provar; alguns produtores oferecem limonadas ou granita como alternativa."
+      ]
+    },
+    {
+      "q": "Como levar limoncello em segurança?",
+      "a": [
+        "Transporte as garrafas na bagagem de porão (na cabine só é permitido até 100 ml), proteja bem e declare quantidades se o seu país tiver limites rígidos de importação de álcool."
+      ]
+    },
+    {
+      "q": "Quanto tempo dura o limoncello?",
+      "a": [
+        "Garrafa fechada mantém-se fresca até um ano; depois de aberta, guarde no frigorífico ou congelador e consuma em poucos meses para aroma máximo."
+      ]
+    }
+  ]
+}

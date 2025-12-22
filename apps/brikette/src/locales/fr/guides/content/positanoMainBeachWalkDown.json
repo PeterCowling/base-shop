@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Walk from Hostel Brikette to Positano's main beach",
+    "description": "Step-by-step staircase route that reaches Spiaggia Grande in 15–25 minutes."
+  },
+  "linkLabel": "Walk down to Positano's main beach",
+  "intro": [
+    "Marcher de l'auberge Brikette à la plage principale de Positano prend environ 15–25 minutes en fonction du rythme et des arrêts photo.",
+    "Google Maps peut vous guider à travers des détours plus lents, alors empruntez ce premier chemin d'escalier pour atteindre rapidement Spiaggia Grande et associez chaque point de contrôle aux photos de référence de l'auberge."
+  ],
+  "sections": [
+    {
+      "id": "before-you-go",
+      "title": "Avant de partir",
+      "body": [
+        "Prenez les photos de l'escalier stratifié à la réception ou au concierge numérique afin de pouvoir confirmer les cinq points de contrôle en cours de route.",
+        "Portez des sandales robustes pour les débarquements de galets et transportez de l'eau — il n'y a pas de magasins dans les escaliers jusqu'à ce que vous atteigniez la promenade."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Promenade pas à pas jusqu'à Spiaggia Grande",
+      "body": [
+        "1. Sortez de l'auberge Brikette par la porte principale et descendez l'escalier avant vers Viale Pasitea.",
+        "2. Tournez à gauche et marchez environ 100 mètres (330 pieds) le long de la route jusqu'au premier coin à droite à côté du tabacchi/marchand de journaux — c'est le point de carte 1.",
+        "3. Tournez à droite, restez sur la voie de descente et suivez le virage jusqu'au premier virage de la route (point de carte 2).",
+        "4. Quittez la route au virage et continuez tout droit en descendant l'escalier devant vous.",
+        "5. Lorsque les escaliers rencontrent une autre route (point 3 de la carte), traversez tout droit et continuez à descendre l'escalier visible suivant.",
+        "6. Au bas de l'escalier, traverser la route, tourner à gauche pendant environ 10 mètres (30 pieds), puis prendre l'escalier suivant sur votre droite (point de carte 4).",
+        "7. Suivez ces escaliers, tournez à gauche au palier et restez sur le chemin jusqu'à ce que vous atteigniez le bas.",
+        "8. Tournez à droite, entrez dans la cour au point 5 de la carte et vérifiez que la vue correspond à la photo de référence de l'auberge.",
+        "9. Continuez tout droit sous l'arcade, puis marchez pendant environ 50 mètres (160 pieds) jusqu'à ce que le port s'ouvre et que Spiaggia Grande apparaisse sur votre gauche."
+      ]
+    }
+  ],
+  "tipsTitle": "Astuces",
+  "tips": [
+    "Réservez l'ascension pour plus tard en jumelant cet itinéraire avec le %LINK:positanoMainBeachBusBack|bus pour retourner à l'auberge% après votre journée à la plage.",
+    "Comparez les chaises longues, les zones franches et les prix des clubs dans le %LINK:positanoBeaches|Aperçu des plages de Positano% avant de partir.",
+    "Partagez la carte via le code QR de l'auberge ou le concierge numérique si des amis vous rencontrent à la plage."
+  ]
+}

@@ -3,16 +3,15 @@
 
 import { useTranslations } from "@acme/i18n";
 import {
-  Elements,
+  CheckoutProvider,
   PaymentElement,
-  useElements,
-  useStripe,
+  useCheckout,
 } from "@stripe/react-stripe-js";
-import { loadStripe, StripeElementLocale } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { fetchJson } from "@acme/shared-utils";
 import { useRouter } from "next/navigation";
 import { Alert, Button } from "../atoms";
-import { useEffect, useRef, useState, type MutableRefObject } from "react";
+import { useEffect, useState } from "react";
 import { useForm, UseFormReturn } from "react-hook-form";
 import { isoDateInNDays } from "@acme/date-utils";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
@@ -57,7 +56,7 @@ export default function CheckoutForm({
   taxRegion,
   coverage = [],
 }: Props) {
-  const [clientSecret, setClientSecret] = useState<string>();
+  const [checkoutClientSecret, setCheckoutClientSecret] = useState<string>();
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const [cartValue, setCartValue] = useState<number | undefined>(undefined);
   const [fetchError, setFetchError] = useState(false);
@@ -65,7 +64,6 @@ export default function CheckoutForm({
   const [currency] = useCurrency();
   const [trackedStart, setTrackedStart] = useState(false);
   const t = useTranslations();
-  const paymentIntentIdRef = useRef<string | undefined>(undefined);
   if (!stripePublishableKey && typeof window !== "undefined") {
     console.error(
       "[checkout] NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY is not set; Stripe Elements are disabled in CheckoutForm.", // i18n-exempt -- ENG-2002 developer-focused configuration warning in console only [ttl=2026-12-31]
@@ -100,7 +98,12 @@ export default function CheckoutForm({
     const controller = new AbortController();
     const timeout = setTimeout(async () => {
       try {
-        const { clientSecret, sessionId, amount, paymentIntentId, orderId } = await fetchJson<{ clientSecret: string; sessionId?: string; amount?: number; paymentIntentId?: string; orderId?: string }>(
+        const { clientSecret, sessionId, amount, orderId } = await fetchJson<{
+          clientSecret: string;
+          sessionId?: string;
+          amount?: number;
+          orderId?: string;
+        }>(
           "/api/checkout-session",
           {
             method: "POST",
@@ -109,9 +112,8 @@ export default function CheckoutForm({
             signal: controller.signal,
           }
         );
-        setClientSecret(clientSecret);
+        setCheckoutClientSecret(clientSecret);
         setSessionId(sessionId);
-        paymentIntentIdRef.current = paymentIntentId ?? undefined;
         const checkoutValue = typeof amount === "number" ? amount : cartValue;
         if (typeof amount === "number") setCartValue(amount);
         setFetchError(false);
@@ -148,7 +150,7 @@ export default function CheckoutForm({
     };
   }, [returnDate, currency, taxRegion, coverage, retry, trackedStart, cartValue]);
 
-  if (!clientSecret) {
+  if (!checkoutClientSecret) {
     if (fetchError)
       return (
         <div className="space-y-3">
@@ -170,21 +172,21 @@ export default function CheckoutForm({
   }
 
   return (
-    <Elements
+    <CheckoutProvider
       stripe={stripePromise}
-      /*  👇 cast locale to StripeElementLocale to satisfy TS  */
-      options={{ clientSecret, locale: locale as StripeElementLocale }}
-      key={clientSecret} // re-mount if locale changes
+      options={{
+        fetchClientSecret: async () => checkoutClientSecret,
+      }}
+      key={checkoutClientSecret} // re-mount if returnDate changes
     >
       <PaymentForm
         form={form}
         locale={locale}
         sessionId={sessionId}
-        paymentIntentIdRef={paymentIntentIdRef}
         cartValue={cartValue}
         currency={currency}
       />
-    </Elements>
+    </CheckoutProvider>
   );
 }
 
@@ -194,14 +196,12 @@ function PaymentForm({
   form,
   locale,
   sessionId,
-  paymentIntentIdRef,
   cartValue,
   currency,
 }: {
   form: UseFormReturn<FormValues>;
   locale: "en" | "de" | "it";
   sessionId?: string;
-  paymentIntentIdRef: MutableRefObject<string | undefined>;
   cartValue?: number;
   currency?: string;
 }) {
@@ -211,8 +211,7 @@ function PaymentForm({
     formState: { errors },
     setFocus,
   } = form;
-  const stripe = useStripe();
-  const elements = useElements();
+  const checkout = useCheckout();
   const t = useTranslations();
   const router = useRouter();
 
@@ -221,25 +220,23 @@ function PaymentForm({
 
   const onSubmit = handleSubmit(
     async () => {
-      if (!stripe || !elements) return;
+      if (!checkout.canConfirm) return;
       setProcessing(true);
 
-      const { error, paymentIntent } = await stripe.confirmPayment({
-        elements,
+      const result = await checkout.confirm({
         redirect: "if_required",
-        confirmParams: {
-          return_url: `${window.location.origin}/${locale}/success`,
-        },
+        returnUrl: `${window.location.origin}/${locale}/success`,
       });
 
-      if (error) {
-        const message = error.message ?? (t("checkout.paymentFailed") as string);
+      if (result.type === "error") {
+        const message =
+          result.error.message ?? (t("checkout.paymentFailed") as string);
         setError(message);
         setProcessing(false);
         const query = new URLSearchParams({ error: message }).toString();
         router.push(`/${locale}/cancelled?${query}`);
       } else {
-        const orderId = paymentIntent?.id ?? paymentIntentIdRef.current ?? sessionId;
+        const orderId = result.session.id ?? sessionId;
         const amount = cartValue;
         if (orderId || amount) {
           void logAnalytics({ type: "order_completed", orderId, amount, currency });
@@ -292,7 +289,7 @@ function PaymentForm({
         />
       )}
       {error && <Alert variant="danger" tone="soft" heading={error} />}
-      <Button type="submit" disabled={!stripe || processing} className="w-full" color="primary" tone="solid">
+      <Button type="submit" disabled={!checkout.canConfirm || processing} className="w-full" color="primary" tone="solid">
         {processing ? t("checkout.processing") : t("checkout.pay")}
       </Button>
     </form>

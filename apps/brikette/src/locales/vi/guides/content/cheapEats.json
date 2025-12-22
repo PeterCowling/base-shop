@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Ăn rẻ ở Positano",
+    "description": "Quán ăn giá phải chăng, món nên thử và mẹo đặt chỗ."
+  },
+  "linkLabel": "Ăn rẻ ở Positano",
+  "heroAlt": "Bản dịch đang được chuẩn bị.",
+  "intro": [
+    "Ăn ngon ở Positano mà không vượt ngân sách bằng cách kết hợp món mang đi, picnic từ quầy deli và tiệm bánh địa phương."
+  ],
+  "sections": [
+    {
+      "id": "grab-and-go",
+      "title": "Món mang đi nhanh",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Uống espresso tại quầy (\"al banco\") để được giá địa phương khoảng 1,20 € thay vì ngồi bàn."
+      ]
+    },
+    {
+      "id": "casual-dining",
+      "title": "Quán ngồi giản dị",
+      "body": [
+        "Chọn trattoria trên cao so với bãi biển, nơi phí phục vụ nhẹ và rượu nhà bán theo carafe.",
+        "Chia sẻ món khai vị, bỏ qua tráng miệng và xin nước máy (\"acqua del rubinetto\") để giữ hoá đơn gọn."
+      ]
+    },
+    {
+      "id": "picnics",
+      "title": "Picnic ngắm cảnh",
+      "body": [
+        "Mua phô mai, focaccia và trái cây từ minimarket rồi picnic trên sân thượng hostel hoặc khu công cộng của Fornillo.",
+        "Mang bộ dao nĩa và khăn tái sử dụng để tránh đồ dùng một lần và chi phí phát sinh."
+      ]
+    },
+    {
+      "id": "sweet-breaks",
+      "title": "Đồ ngọt & món giải khát",
+      "body": [
+        "Thử granita chanh từ xe đẩy với giá khoảng 3 € thay vì cocktail đắt tiền ở quầy bar.",
+        "Chia nhau một miếng delizia al limone hoặc tiramisù từ tiệm bánh để thoả cơn thèm đồ ngọt giá phải chăng."
+      ]
+    }
+  ],
+  "tips": [
+    "Bản dịch đang được chuẩn bị.",
+    "Mang hộp gấp để đựng đồ ăn thừa và ăn tiếp tại hostel."
+  ],
+  "recommendationsTitle": "Ăn ở đâu",
+  "recommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Bản dịch đang được chuẩn bị."
+    },
+    {
+      "name": "Quầy deli địa phương",
+      "note": "Đặt đĩa đồ nguội, focaccia và đồ picnic tránh mức giá đội ở bờ biển."
+    },
+    {
+      "name": "Minimarket & sạp trái cây",
+      "note": "Mua trái cây, nước chai lớn và snack cho picnic sân thượng."
+    }
+  ],
+  "gallery": {
+    "title": "Bộ sưu tập ảnh",
+    "items": [
+      {
+        "alt": "Bản dịch đang được chuẩn bị.",
+        "caption": "Panini & deli"
+      },
+      {
+        "alt": "Picnic nhìn ra Positano",
+        "caption": "Picnic với view đẹp"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "q": "Có refill nước miễn phí không?",
+      "a": [
+        "Có — đổ bình ở hostel hoặc vòi công cộng như gần Chiesa Nuova; luôn mang ít nhất 750 ml."
+      ]
+    },
+    {
+      "q": "Có món chay giá rẻ không?",
+      "a": [
+        "Có — panini caprese, cà tím nướng phô mai bán theo miếng hoặc pasta al pomodoro tại trattoria bình dân."
+      ]
+    }
+  ],
+  "fallbackIntro": [
+    "Positano có nhiều món ngon giá phải chăng nếu bạn biết tìm ở đâu."
+  ],
+  "fallbackRecommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Bản dịch đang được chuẩn bị."
+    },
+    {
+      "name": "Bản dịch đang được chuẩn bị.",
+      "note": "Gọi đĩa đồ nguội, focaccia và đồ picnic xa khu bờ biển để tránh bị đội giá."
+    },
+    {
+      "name": "Minimarket & sạp trái cây",
+      "note": "Mua trái cây, nước chai lớn và snack để picnic trên sân thượng."
+    }
+  ],
+  "fallbackGalleryItems": [
+    {
+      "alt": "Bản dịch đang được chuẩn bị.",
+      "caption": "Panini & deli"
+    },
+    {
+      "alt": "Picnic nhìn ra Positano",
+      "caption": "Picnic với view đẹp"
+    }
+  ],
+  "fallbackFaqs": [
+    {
+      "q": "Các quầy có nhận thẻ không?",
+      "a": [
+        "Hầu hết có, nhưng nên mang tiền lẻ cho xe đẩy hoặc nơi yêu cầu mức chi tối thiểu."
+      ]
+    },
+    {
+      "q": "Có phụ phí đồ mang đi không?",
+      "a": [
+        "Một số nơi thu phí đóng gói nhỏ; mang hộp riêng để tiết kiệm và giảm rác."
+      ]
+    }
+  ]
+}

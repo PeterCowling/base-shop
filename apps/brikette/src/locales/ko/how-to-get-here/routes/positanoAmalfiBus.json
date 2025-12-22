@@ -1,0 +1,72 @@
+{
+  "slug": "positano-amalfi-bus",
+  "meta": {
+    "title": "포지타노에서 아말피까지 버스로 이동 | Hostel Brikette",
+    "description": "Hostel Brikette에서 아말피까지 가는 SITA 버스 단계별 안내입니다. 티켓을 구입할 곳, Chiesa Nuova 정류장, 시간표 읽는 법을 포함합니다."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette 여행 가이드",
+    "title": "포지타노 → 아말피 – SITA 버스",
+    "description": "이 가이드는 Hostel Brikette에서 아말피까지 버스로 간단히 이동하는 방법을 안내합니다. 버스는 SITA Sud에서 운행하며 성수기에는 자주 다닙니다. 티켓 구매처, 시간표 읽는 법, 포지타노에서 탑승할 위치를 모두 소개합니다."
+  },
+  "tip": {
+    "eyebrow": "팁",
+    "copy": "모든 교통수단이 궁금하신가요? <link>찾아오는 방법 개요</link>에서 페리, 택시, 복합 경로를 확인하세요."
+  },
+  "sections": {
+    "overview": {
+      "title": "여정 개요",
+      "body": "교통량과 대기열에 따라 여름철에는 45~60분 정도를 예상하세요. 포지타노(Chiesa Nuova) 정류장에서 아말피 직행 버스에 탑승합니다. 혼잡한 시간대에는 좌석을 확보하려면 미리 도착하세요."
+    },
+    "tickets": {
+      "title": "SITA와 티켓",
+      "body": "버스는 SITA(SITA Sud Srl)에서 운행합니다. 가판대나 담배 가게에서 미리 티켓을 구매하세요. 탑승할 때 운전기사에게 티켓을 보여주면 확인 도장을 찍거나 절취합니다. 아말피에 도착할 때까지 티켓을 보관하세요."
+    },
+    "timetable": {
+      "title": "SITA 시간표 읽기",
+      "body": "공식 시간표는 행에 정류장을, 열에 문자가 붙은 운행을 표시합니다. 여행하는 날짜에 맞춰 같은 열에서 포지타노 행과 아말피 행을 짝지어 시간을 확인하세요.",
+      "list": [
+        "첫 번째 열의 행에는 노선의 각 정류장이 나열됩니다.",
+        "각 열은 문자로 표시된 예정 운행을 의미합니다.",
+        "월요일부터 토요일에 이동한다면 'F'와 'G' 열을 확인하세요.",
+        "일요일이나 공휴일에 이동한다면 'G'와 'H' 열을 사용하세요."
+      ],
+      "link": "최신 시간표는 <link>Positano.com</link>에서 확인하세요.",
+      "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
+    },
+    "positanoStop": {
+      "title": "포지타노(Chiesa Nuova) 버스 정류장",
+      "list": [
+        "가장 가까운 SITA 정류장은 Via G. Marconi에 있는 ‘Positano (Chiesa Nuova)’입니다.",
+        "호스텔 입구에서 약 140미터(490피트) 거리입니다.",
+        "정류장은 Bar Internazionale 카페 바로 앞에 있습니다."
+      ],
+      "image": {
+        "alt": "Bar Internazionale 앞 포지타노 Chiesa Nuova SITA 버스 정류장",
+        "caption": "여름철에는 버스가 금방 만석이 되니 몇 분 먼저 도착해 좌석을 확보하세요.",
+        "src": "/img/directions/positano-amalfi-bus-bus-stop.png"
+      }
+    },
+    "walk": {
+      "title": "호스텔에서 정류장까지 걷기",
+      "list": [
+        "호스텔을 나와 계단을 내려가 메인 도로에 닿으면 왼쪽으로 꺾습니다.",
+        "Via G. Marconi를 따라 약 100미터(330피트) 이동합니다.",
+        "왼편에 Bar Internazionale가 보이면 정류장은 바로 그 앞입니다."
+      ]
+    },
+    "wait": {
+      "title": "티켓을 사고 탑승을 기다리기",
+      "list": [
+        "바 또는 근처 가판대(tabacchi)에서 SITA 버스 티켓을 구매하세요.",
+        "도로 건너 맞은편에 줄을 서서 아말피행 버스를 기다립니다.",
+        "버스 표시에 Amalfi가 적혀 있는지 다시 확인하세요."
+      ]
+    },
+    "arrival": {
+      "title": "아말피 도착",
+      "body": "대부분의 노선은 항구 근처의 아말피 버스 터미널에서 종착합니다. 여기에서 라벨로와 살레르노행 버스로 갈아타거나 아말피의 역사적인 중심지를 걸어서 둘러볼 수 있습니다.",
+      "link": "돌아올 계획인가요? <link>아말피에서 포지타노까지 버스</link> 안내를 확인하세요."
+    }
+  }
+}

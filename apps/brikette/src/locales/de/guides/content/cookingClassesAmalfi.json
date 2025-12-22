@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Kochkurse an der Amalfiküste",
+    "description": "So laufen Kurse ab, das kochst du und darauf achtest du bei der Wahl."
+  },
+  "linkLabel": "Kochkurse an der Amalfiküste",
+  "intro": [
+    "Hands-on-Kochkurse an der Amalfiküste verbinden Sfusato-Zitronen, frische Pasta und Familienrezepte in kleinen Küchen mit Aussicht.",
+    "Nutze diesen Guide, um einen Kurs zu finden, der zu Budget und Zeitplan passt, und kläre Details, bevor du eine Anzahlung leistest."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "So läuft ein typischer Kurs",
+      "body": [
+        "Gastgeber begrüßen dich mit Kaffee oder Prosecco, bevor sie Zutaten erklären: frisch abgeriebene Zitronen, saisonales Gemüse und der Pastateig, den ihr formt.",
+        "Du kochst zwei bis drei Gänge – meist frische Pasta, eine Sauce und ein zitroniges Dessert – und esst anschließend gemeinsam; plane 2,5–4 Stunden inklusive Mahlzeit ein."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Den passenden Kurs wählen",
+      "body": [
+        "Prüfe Gruppengröße und Ort: Küche in Positano, Bauernhof im Hinterland oder Nachbarort; Transfers können inklusive oder extra sein.",
+        "Klär, was im Preis steckt: Zutaten, Weinbegleitung, Rezeptdrucke und ob du Schürzen oder Reste behalten darfst."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Organisation & Timing",
+      "body": [
+        "In der Hochsaison sind Kurse Wochen im Voraus ausgebucht; sichere dir vor Anreise einen Platz, besonders für Abendtermine nach Ausflügen.",
+        "Liegt der Veranstaltungsort außerhalb von Positano, bestätige Abholpunkte oder plane ein Taxi ein; steile Gassen bedeuten bequeme Schuhe – auch mit Shuttle."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Ernährung & Etikette",
+      "body": [
+        "Informiere Gastgeber bei der Buchung über Allergien, vegetarische/vegane Wünsche oder Glutenunverträglichkeit – viele passen Menüs an, wenn sie früh Bescheid wissen.",
+        "Trag geschlossene Schuhe, binde lange Haare zusammen und dosiere Parfüm sparsam – die Küchen sind klein und du arbeitest nah an frischen Zutaten."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Sind Kochkurse auch für Anfänger geeignet?",
+      "a": [
+        "Ja. Die Kursleiter zeigen jeden Schritt, korrigieren Techniken und teilen Aufgaben auf, damit niemand gestresst ist."
+      ]
+    },
+    {
+      "q": "Muss ich Italienisch sprechen können?",
+      "a": [
+        "Nein. Die meisten Kurse laufen auf Englisch oder zweisprachig, und die visuellen Demonstrationen machen das Mitkochen leicht."
+      ]
+    },
+    {
+      "q": "Was sollte ich mitbringen?",
+      "a": [
+        "Ein kleines Notizbuch für Tipps, ein geladenes Handy für Fotos und Bargeld für Restzahlungen oder Transport."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Praktische Pasta, Saucen und Zitronendesserts; kleine Gruppen und Küchen mit Aussicht in der Saison."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "Was dich erwartet"
+      },
+      {
+        "href": "#choose",
+        "label": "So wählst du aus"
+      },
+      {
+        "href": "#tips",
+        "label": "Tipps"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "Was dich erwartet",
+        "body": [
+          "Hands-on Pasta, Saucen und Zitronendesserts; kleine Gruppen und stimmungsvolle Küchen in der Saison."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "So wählst du aus",
+        "body": [
+          "Achte auf Gruppengröße, Dauer, Leistungen und Transferoptionen."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Tipps",
+        "body": [
+          "In Spitzenmonaten früh buchen; Gastgeber über Ernährungsbedürfnisse informieren."
+        ]
+      }
+    ]
+  }
+}

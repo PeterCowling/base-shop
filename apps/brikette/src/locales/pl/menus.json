@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "Cena obejmuje wybrany mixer: tonik, colę, colę zero lub Sprite."
+      },
+      "rum": {
+        "note": "Wybierz rum i daj znać, czy chcesz dodać kofeinowy mixer. Kawa może być na lodzie lub na ciepło, jako espresso albo lungo/americano."
+      },
+      "gin": {
+        "note": "Podawany z tonikiem Schweppes, na kruszonym lodzie, z dodatkiem cytryny z Wybrzeża Amalfi."
+      },
+      "whisky": {
+        "note": "Wybierz coś z naszej oferty whisky i daj znać, czy potrzebujesz lodu, wody lub kofeinowego miksu. Kawa może być podana na lodzie lub na ciepło, jako espresso albo lungo/americano."
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "Klasyczny włoski spritz, podawany na kruszonym lodzie."
+      },
+      "limoncelloSpritz": {
+        "note": "Specjał z Wybrzeża Amalfi, podawany na kruszonym lodzie."
+      },
+      "hugoSpritz": {
+        "note": "Wino musujące z miętą, limonką i sokiem z kwiatów bzu, podawane na kruszonym lodzie."
+      },
+      "rossiniSpritz": {
+        "note": "Wino musujące z sokiem truskawkowym, podawane na kruszonym lodzie."
+      },
+      "lemonStrawberryMargarita": {
+        "note": "Sok truskawkowy lub cytrynowy z tequilą, Cointreau i lodem, wykończony w klasycznym stylu margarita."
+      },
+      "lemonDropMartini": {
+        "note": "Świeżo wyciskany sok z cytryny mieszany z wódką Absolut, Cointreau i lodem."
+      },
+      "joseCuervoSilver": {
+        "note": "Podawany sauté z cytryną i solą, jako Tequila Sunrise lub z sodą/Spritem."
+      },
+      "limoncelloShot": {
+        "note": "Klasyczny południowowłoski trunek, podawany jako shot."
+      },
+      "threeScoops": {
+        "note": "Wybierz spośród smaków: cytrynowego, czekoladowego, waniliowego i orzecha laskowego."
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "Klasyczny francuski tost podawany z syropem."
+      },
+      "nutellaFrenchToast": {
+        "note": "Francuskie tosty nadziewane Nutellą."
+      },
+      "addEggComboItem": {
+        "note": "Wybierz pozycję z menu zestawów jajecznych. Przykład: naleśniki z syropem klonowym plus jajecznica za 15,50 €."
+      },
+      "addAdditionalSyrup": {
+        "note": "Dodaj więcej niż jeden syrop. Przykład: naleśniki z syropem klonowym i Nutellą za 14 €."
+      },
+      "veggieToast": {
+        "note": "Grzanka z sezonowymi warzywami."
+      },
+      "healthyDelight": {
+        "note": "Parfait z jogurtu, granoli i domowego musu owocowego."
+      },
+      "detoxMe": {
+        "note": "Szpinak, ogórek, imbir i cytryna."
+      },
+      "energizeMe": {
+        "note": "Pomarańcza, marchew, imbir i cytryna."
+      },
+      "multiV": {
+        "note": "Jabłko, marchew, pomarańcza, cytryna, imbir."
+      },
+      "orangeJuice": {
+        "note": "Świeżo wyciskany sok pomarańczowy."
+      }
+    }
+  }
+}

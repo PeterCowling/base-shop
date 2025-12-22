@@ -9,19 +9,30 @@ import {
   convertCurrency,
   getPricing,
 } from "@platform-core/pricing";
-import { createCheckoutSession } from "@platform-core/checkout/session";
+import {
+  createCheckoutSession,
+  INSUFFICIENT_STOCK_ERROR,
+} from "@platform-core/checkout/session";
+import {
+  cartToInventoryRequests,
+  validateInventoryAvailability,
+} from "@platform-core/inventoryValidation";
 import { coreEnv } from "@acme/config/env/core";
 import { readShop } from "@platform-core/repositories/shops.server";
+import { getCustomerSession } from "@auth";
+import { getCustomerProfile } from "@platform-core/customerProfiles";
+import { getOrCreateStripeCustomerId } from "@platform-core/identity";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
+import { ulid } from "ulid";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
-  const cartId = decodeCartCookie(rawCookie);
-  const cart: CartState =
-    typeof cartId === "string" ? await getCart(cartId) : {};
+  const decodedCartId = decodeCartCookie(rawCookie);
+  const cartId = typeof decodedCartId === "string" ? decodedCartId : undefined;
+  const cart: CartState = cartId ? await getCart(cartId) : {};
 
   if (!Object.keys(cart).length) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
@@ -32,7 +43,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     coupon,
     currency = "EUR",
     taxRegion = "",
-    customer: customerId,
+    customer,
     shipping,
     billing_details,
     coverage,
@@ -47,8 +58,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     coverage?: string[];
   };
 
-    const shop = (coreEnv.NEXT_PUBLIC_DEFAULT_SHOP as string | undefined) || "shop";
-    const shopInfo = await readShop(shop);
+  const shop = (coreEnv.NEXT_PUBLIC_DEFAULT_SHOP as string | undefined) || "shop";
+  const shopInfo = await readShop(shop);
+
+  const customerSession = await getCustomerSession();
+  const internalCustomerId = customerSession?.customerId;
+  let stripeCustomerId = customer;
+  if (internalCustomerId) {
+    const profile = await getCustomerProfile(internalCustomerId).catch(() => null);
+    stripeCustomerId = await getOrCreateStripeCustomerId({
+      internalCustomerId,
+      email: profile?.email,
+      name: profile?.name,
+    });
+  }
 
   const coverageCodes = Array.isArray(coverage) ? coverage : [];
   const lineItemsExtra: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
@@ -96,29 +119,62 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const checkoutMode: "rental" | "sale" =
     (shopInfo as { type?: string })?.type === "rental" ? "rental" : "sale";
 
+  let inventoryCheck: Awaited<
+    ReturnType<typeof validateInventoryAvailability>
+  >;
   try {
+    inventoryCheck = await validateInventoryAvailability(
+      shop,
+      cartToInventoryRequests(cart),
+    );
+  } catch (err) {
+    console.error("Inventory validation failed", err); // i18n-exempt -- ABC-123: developer log
+    return NextResponse.json(
+      { error: "Inventory backend unavailable" }, // i18n-exempt -- ABC-123: machine-readable API error
+      { status: 503 },
+    );
+  }
+  if (!inventoryCheck.ok) {
+    return NextResponse.json(
+      {
+        error: INSUFFICIENT_STOCK_ERROR,
+        code: "inventory_insufficient",
+        items: inventoryCheck.insufficient,
+      },
+      { status: 409 },
+    );
+  }
+
+  try {
+    const orderId = ulid();
     const result = await createCheckoutSession(cart, {
       mode: checkoutMode,
       returnDate,
       coupon,
       currency,
       taxRegion,
-      customerId,
+      internalCustomerId,
+      stripeCustomerId,
       shipping,
       billing_details,
-      successUrl: `${req.nextUrl.origin}/success`,
-      cancelUrl: `${req.nextUrl.origin}/cancelled`,
+      returnUrl: `${req.nextUrl.origin}/success`,
+      cartId,
       clientIp,
       shopId: shop,
       lineItemsExtra,
       metadataExtra,
       subtotalExtra,
       depositAdjustment,
+      orderId,
+      skipInventoryValidation: true,
     });
-    return NextResponse.json(result);
+    return NextResponse.json({ ...result, orderId: result.orderId ?? orderId });
   } catch (err) {
     if (err instanceof Error && /Invalid returnDate/.test(err.message)) {
       return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 }); // i18n-exempt -- ABC-123: machine-readable API error
+    }
+    if (err instanceof Error && err.message === INSUFFICIENT_STOCK_ERROR) {
+      return NextResponse.json({ error: INSUFFICIENT_STOCK_ERROR }, { status: 409 }); // i18n-exempt -- ABC-123: machine-readable API error
     }
     console.error("Failed to create Stripe checkout session", err); // i18n-exempt -- ABC-123: developer log
     return NextResponse.json({ error: "Checkout failed" }, { status: 502 }); // i18n-exempt -- ABC-123: machine-readable API error

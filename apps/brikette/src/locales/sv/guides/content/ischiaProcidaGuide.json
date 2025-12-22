@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Ischia och Procida: bortom Amalfikusten",
+    "description": "Guide till öarna Ischia och Procida med transport, sevärdheter och planeringstips."
+  },
+  "linkLabel": "Ischia och Procida: bortom Amalfikusten",
+  "intro": [
+    "Combine Ischia's thermal spas with Procida's pastel harbours for a refreshing detour from the Amalfi Coast."
+  ],
+  "sections": [
+    {
+      "id": "ischia",
+      "title": "Ischia highlights",
+      "body": [
+        "Soak in thermal parks like Poseidon or Negombo; full-day passes range from €35–€45.",
+        "Climb Aragonese Castle for views across the bay and explore Sant'Angelo's pedestrian lanes."
+      ]
+    },
+    {
+      "id": "procida",
+      "title": "Procida highlights",
+      "body": [
+        "Photograph Marina Corricella's pastel houses from Terra Murata and sample lingue di bue pastries.",
+        "Rent a scooter or e-bike to reach secluded beaches like Chiaiolella."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logistics & tickets",
+      "body": [
+        "Take early ferries from Naples Beverello (one hour to Ischia, 35 minutes to Procida). A combined day trip is possible but better split over two days.",
+        "Buy return tickets in advance during summer weekends; last boats back to Naples leave around 21:30."
+      ]
+    }
+  ],
+  "tips": [
+    "Pack swimwear and a light towel even if you only plan to explore—thermal pools are irresistible after sightseeing.",
+    "Stay overnight on Ischia for relaxed evenings and to catch sunrise at the castle before day-trippers arrive."
+  ],
+  "faqs": [
+    {
+      "q": "Can I visit both islands in one day?",
+      "a": [
+        "It's possible but rushed. Focus on one island per day or stay overnight to enjoy sunsets without ferry stress."
+      ]
+    },
+    {
+      "q": "Do I need reservations for thermal parks?",
+      "a": [
+        "Book ahead in high season (June–September). Weekdays are quieter, and some parks offer evening passes after 16:00 for lower prices."
+      ]
+    }
+  ]
+}

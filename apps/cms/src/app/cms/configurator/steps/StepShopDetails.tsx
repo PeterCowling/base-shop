@@ -130,7 +130,7 @@ export default function StepShopDetails(
         <label key={key} className="flex flex-col gap-1">
           <span className="capitalize">{key.replace("-", " ")} logo</span>
           <div className="flex items-center gap-3">
-            <ImagePicker onSelect={(url) => setLogo({ ...logoRecord, [key]: url })}>
+            <ImagePicker onSelect={(url: string) => setLogo({ ...logoRecord, [key]: url })}>
               <Button type="button">Select</Button>
             </ImagePicker>
             {logoRecord[key] ? (

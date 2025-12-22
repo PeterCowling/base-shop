@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Lebensmittel & Apotheken in Positano",
+    "description": "Wo du das Nötigste kaufst: kleine Supermärkte, späte Öffnungszeiten und Apothekeninfos."
+  },
+  "linkLabel": "Lebensmittel & Apotheken in Positano",
+  "intro": [
+    "Grundversorgung in Positano: wo du Lebensmittel, frisches Obst, Apotheken und Spätkauf findest."
+  ],
+  "sections": [
+    {
+      "id": "mini-markets",
+      "title": "Minimärkte & Feinkostläden",
+      "body": [
+        "Mini-Märkte entlang der Via dei Mulini und Via Pasitea verkaufen Brot, Käse, Aufschnitt und Wein zu moderaten Preisen.",
+        "Viele Delitheken schneiden Focaccia frisch auf – ideal für Picknicks oder ein schnelles Lunch zum Mitnehmen."
+      ]
+    },
+    {
+      "id": "produce",
+      "title": "Obst & Märkte",
+      "body": [
+        "Obst- und Gemüsestände stehen morgens am Sponda-Knick und bei der Haltestelle Chiesa Nuova; hab Kleingeld für schnelle Käufe bereit.",
+        "Viele Händler vakuumieren Bufala-Mozzarella oder Salami auf Wunsch – praktisch für Reisen oder Picknicks."
+      ]
+    },
+    {
+      "id": "pharmacies",
+      "title": "Apotheken & Gesundheitsartikel",
+      "body": [
+        "Apotheken findest du an der Piazza dei Mulini und weiter oben an der Via Pasitea; dort gibt es Sonnenschutz, Pflaster und Reiseapotheke.",
+        "Bewahre Ausweis oder EU-Gesundheitskarte griffbereit – bei rezeptpflichtigen Produkten wird sie häufig verlangt."
+      ]
+    },
+    {
+      "id": "late-hours",
+      "title": "Mitternachtsbedarf",
+      "body": [
+        "Für späte Snacks oder Getränke bleibt der Minimarkt an der Via Pasitea häufig bis 23:00 geöffnet.",
+        "Nach Mitternacht bekommst du Wasser und Kleinigkeiten an den Kiosken der Spiaggia Grande – beachte Aufschläge."
+      ]
+    }
+  ],
+  "gallery": [
+    {
+      "alt": "Geschäfte an der Hauptstraße von Positano",
+      "caption": "Geschäfte entlang der Via Pasitea"
+    },
+    {
+      "alt": "Einkaufskörbe mit Obst",
+      "caption": "Obst und Grundbedarf"
+    }
+  ],
+  "tips": [
+    "Viele Läden schließen mittags zwischen 13:30 und 16:00 – plane Einkäufe morgens oder abends.",
+    "Nutze wiederbefüllbare Flaschen: die meisten Geschäfte verkaufen 1,5-l-Flaschen günstig, und im Hostel gibt es gefilterte Leitungen."
+  ],
+  "faqs": [
+    {
+      "q": "Gibt es glutenfreie Produkte?",
+      "a": [
+        "Ja – achte auf „senza glutine“-Regale in den Minimärkten oder frag die Apotheke; der Vorrat ist begrenzt, also zuschlagen, wenn du etwas siehst."
+      ]
+    },
+    {
+      "q": "Wo bekomme ich Trinkwasser nachgeladen?",
+      "a": [
+        "An öffentlichen Brunnen (z. B. Piazza dei Mulini, Chiesa Nuova) oder kostenlos im Hostel – Flasche auffüllen statt neu kaufen."
+      ]
+    }
+  ],
+  "fallback": "Minimärkte liefern Brot, Käse und Wein; Apotheken versorgen dich mit Sonnenschutz und Pflastern."
+}

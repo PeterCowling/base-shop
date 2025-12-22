@@ -1,0 +1,19 @@
+{
+  "message": "Boka direkt och spara upp till 25 % – frukost och drinkar ingår!",
+  "cta": "Klicka för att läsa mer",
+  "openOffersLabel": "Klicka för att läsa mer",
+  "closeLabel": "Stäng avisering",
+  "modal": {
+    "closeLabel": "Stäng dialogruta",
+    "title": "Boka direkt och spara",
+    "description": "Tack för att du bokar direkt hos oss! Som tack får du:",
+    "perks": {
+      "discount": "Upp till 25 % rabatt på rumspriset",
+      "breakfast": "Gratis frukost varje morgon",
+      "drinks": "Kostnadsfria välkomstdrycker",
+      "upgrades": "Prioriterade rumsuppgraderingar (i mån av plats)"
+    },
+    "callToAction": "Ta vara på de här exklusiva förmånerna nu!",
+    "button": "Boka nu"
+  }
+}

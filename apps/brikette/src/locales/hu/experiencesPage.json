@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "Élmények a Hostel Brikette-ben – Teraszbár, túrák és digitális concierge",
+    "description": "Kortyoljon naplemente spriccet, csatlakozzon válogatott túrákhoz, és tervezze meg gondtalan Amalfi-parti napjait digitális asszisztensünkkel."
+  },
+  "hero": {
+    "eyebrow": "Élmények",
+    "title": "Naplementék, ráérős reggelek és helyi tudás",
+    "description": "Egészítse ki tartózkodását teraszbárral, szervezett túrákkal és egy digitális concierge-zsel, amely már érkezés előtt képben tartja.",
+    "supporting": "Minden élmény a regisztrált vendégek előtt nyitva áll; írjon nekünk, ha máshol megszálló barátokkal érkezik.",
+    "primaryCta": "Foglalja le tartózkodását",
+    "secondaryCta": "Nézze meg az itallapot",
+    "tertiaryCta": "Üzenjen a digitális concierge-nek",
+    "primaryCtaAria": "Foglalja le tartózkodását a Hostel Brikette-ben",
+    "secondaryCtaAria": "Tekintse meg a Hostel Brikette bárjának kínálatát",
+    "tertiaryCtaAria": "Küldjön üzenetet a Hostel Brikette digitális concierge-ének",
+    "breakfastCta": "View the breakfast menu",
+    "breakfastCtaAria": "View the breakfast menu"
+  },
+  "sections": {
+    "bar": {
+      "eyebrow": "Teraszbár",
+      "title": "Naplementés teraszbár",
+      "description": "Sziklaszirten álló teraszunk esténként lounge-á válik spriccekkel, campaniai borokkal és alkalmanként vendég DJ-kkel.",
+      "highlights": [
+        "Jegesre hűtött signature spriccek és helyi borok.",
+        "Közösségi esték és kóstolók a legforgalmasabb hetekben.",
+        "Panorámás kilátás aranyórás fotókhoz."
+      ],
+      "imageAlt": "Vendégek koccintanak a Hostel Brikette teraszán naplementekor."
+    },
+    "hikes": {
+      "eyebrow": "Vezetett túrák",
+      "title": "Vezetett túrák és egynapos kiruccanások",
+      "description": "Segítünk megtervezni a Sentiero degli Dei túrákat, közös transzfereket és kompokkal összekötött Amalfi-parti kirándulásokat.",
+      "highlights": [
+        "Offline térképek és menetrendek, amelyeket minden reggel frissítünk.",
+        "Személyzetünk által vezetett séták a legforgalmasabb napokon.",
+        "Csomagolási tippek és időjáráshoz igazított alternatívák."
+      ],
+      "imageAlt": "Vendégek túráznak az Istenek ösvényén az Amalfi-part felett."
+    },
+    "concierge": {
+      "eyebrow": "Digitális concierge",
+      "title": "Mindig elérhető digitális concierge",
+      "description": "Valós idejű értesítéseket küldünk kompváltozásokról, éttermekről és az Ön tempójához, költségvetéséhez igazított ötletekről.",
+      "highlights": [
+        "WhatsApp- és Messenger-válaszok közvetlenül csapatunktól.",
+        "Automatikus riasztások busz- és kompmenetrend módosításokról.",
+        "Személyre szabott javaslatok az Ön tervei alapján."
+      ],
+      "imageAlt": "Telefonképernyő, rajta a Hostel Brikette digitális concierge beszélgetése."
+    }
+  },
+  "faq": {
+    "title": "Gyakran ismételt kérdések",
+    "items": [
+      {
+        "question": "Előre le kell foglalnom az élményeket?",
+        "answer": [
+          "A legtöbb esti teraszprogramot és túrát aznap a recepción erősítjük meg.",
+          "Privát túrák vagy hajókirándulások esetén fenntartjuk a helyet – csak írjon a concierge-nek legalább 24 órával korábban."
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "title": "Készen áll megtervezni Amalfi-parti napjait?",
+    "subtitle": "Foglalja le ágyát, nézze át az itallapot, és ossza meg velünk, milyen élményekre vágyik – mi intézzük a részleteket.",
+    "buttons": {
+      "book": "Foglaljon most",
+      "events": "Bár és programok",
+      "concierge": "Csevegés a concierge-vel",
+      "breakfast": "Breakfast menu"
+    }
+  },
+  "title": "Élmények a Hostel Brikette-ben",
+  "intro": "Kortyoljon spriccet a teraszbárban, csatlakozzon lélegzetelállító túrákhoz, és kapjon azonnali tippeket digitális concierge-ünktől.",
+  "items": {
+    "bar": "Naplementés teraszbár spriccekkel és helyi borokkal.",
+    "hikes": "Vezetett és önálló túrák térképekkel, menetrendekkel és felszerelési tanácsokkal.",
+    "concierge": "Digitális concierge kompértesítésekkel, útitervvel és azonnali válaszokkal."
+  },
+  "guideCollections": {
+    "heading": "Merüljön el élménykalauzainkban",
+    "description": "Útiterv-ötletek, túrák, hajós napok és kulturális válogatások csapatunktól és vendégeinktől.",
+    "taggedHeading": "Élménykalauzok {{tag}} címkével",
+    "taggedDescription": "Ezek a történetek a {{tag}} pillanatokat emelik ki. Törölje a szűrőt, hogy mindent lásson.",
+    "empty": "Még nincs élménykalauzunk {{tag}} témában. Próbáljon másik címkét vagy vegye le a szűrőt.",
+    "clearFilter": "Összes élménykalauz megjelenítése",
+    "cardCta": "Fedezd fel a {{guideTitle}} élménykalauzt",
+    "filterHeading": "Filter experiences guides",
+    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "grouped": {
+      "beaches": {
+        "guides": {
+          "heading": "Beach guides",
+          "description": "Pick the right stretch of sand and plan your day."
+        },
+        "directions": {
+          "heading": "Beach directions",
+          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        }
+      }
+    }
+  }
+}

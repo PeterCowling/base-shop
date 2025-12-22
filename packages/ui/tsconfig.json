@@ -47,7 +47,10 @@
       "@acme/page-builder-core/*": [
         "../page-builder-core/src/*",
         "../page-builder-core/dist/*"
-      ]
+      ],
+      "react-router": ["types-compat/react-router"],
+      "react-router-dom": ["types-compat/react-router-dom"],
+      "react-router/dom": ["types-compat/react-router-dom"]
     }
   },
   "references": [

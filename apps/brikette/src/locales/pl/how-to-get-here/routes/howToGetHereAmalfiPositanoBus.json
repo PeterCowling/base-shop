@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Amalfi do Positano autobusem | Hostel Brikette",
+    "description": "Autobus SITA z Amalfi do Positano: miejsca wsiadania, wskazówki biletowe, notatki o rozkładzie i informacja, gdzie wysiąść, aby dojść do Hostel Brikette (Chiesa Nuova)."
+  },
+  "header": {
+    "eyebrow": "Przewodnik podróżny Hostel Brikette",
+    "title": "Amalfi do Positano — autobus (SITA Sud)",
+    "description": "Skorzystaj z tego przewodnika, aby pojechać z Amalfi do Positano autobusem SITA. Omawiamy miejsce odjazdu w Amalfi, kasowanie biletów, sposób czytania rozkładu oraz to, gdzie wysiąść, by mieć najkrótszy spacer do hostelu."
+  },
+  "aside": {
+    "eyebrow": "Szukasz innych tras?",
+    "body": {
+      "before": "Potrzebujesz innych opcji transportu? Otwórz ",
+      "linkLabel": "przegląd Jak do nas dotrzeć",
+      "after": ", aby sprawdzić promy, taksówki i trasy mieszane."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Przegląd podróży",
+      "body": "Bezpośredni autobus SITA z Amalfi do Positano kursuje często w sezonie. Licz na malowniczą jazdę wybrzeżem trwającą około godzinę, zależnie od ruchu."
+    },
+    "boarding": {
+      "title": "Gdzie wsiąść w Amalfi",
+      "items": [
+        "Udaj się na główny terminal autobusowy w Amalfi, obok nabrzeżnego placu.",
+        "Szukaj autobusów SITA z tablicami „Sorrento” lub „Positano” (oba zatrzymują się w Positano).",
+        "Kup bilet w tabacchi/kiosku lub stoisku przed wejściem (płatność gotówką lub kartą zależnie od miejsca).",
+        "Miej bilety gotowe; kierowca może je skasować stemplem lub oderwaniem części biletu podczas wejścia."
+      ]
+    },
+    "tickets": {
+      "title": "Bilety i rozkład",
+      "body": {
+        "before": "Sprawdź aktualny rozkład na ",
+        "linkLabel": "Positano.com",
+        "after": ". Skorzystaj z poniższych wskazówek, aby prawidłowo czytać tabelę."
+      },
+      "items": [
+        "Przystanki znajdują się w wierszach; każda kolumna z literą odpowiada konkretnemu kursowi.",
+        "Od poniedziałku do soboty korzystaj zwykle z kolumn „F” i „G”; w niedziele/święta często „G” i „H”.",
+        "Znajdź wiersz „Amalfi” jako miejsce odjazdu oraz „Positano (Chiesa Nuova)” jako miejsce wysiadania."
+      ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Reserva tu estancia – Sitio oficial",
+    "description": "Tarifas flexibles y no reembolsables. Pago seguro en nuestro motor de reservas oficial."
+  },
+  "heading": "Reserva tu estancia",
+  "roomLabel": "Habitación",
+  "cta": {
+    "flex": "Flexible – Ir al pago",
+    "nr": "No reembolsable – Ir al pago"
+  },
+  "checking": "Comprobando…",
+  "flex": {
+    "title": "Tarifa flexible (reembolsable)",
+    "bullets": [
+      "Cancela gratis hasta las 15:00 tres días completos antes de la llegada.",
+      "Cambios sujetos a disponibilidad."
+    ]
+  },
+  "nr": {
+    "title": "No reembolsable (prepago)",
+    "bullets": [
+      "Pago del 100 % por adelantado; sin reembolsos/no‑shows.",
+      "Los pagos fallidos se cancelan automáticamente."
+    ]
+  },
+  "unavailable": {
+    "title": "No disponible para estas fechas.",
+    "none": "No se han encontrado alternativas directas.",
+    "seeAll": "Ver toda la disponibilidad",
+    "bookThis": "Reservar esta"
+  },
+  "policies": {
+    "title": "Políticas y depósitos",
+    "items": [
+      "Impuesto municipal/turístico: 2,50 € por huésped y noche (se añade al pagar).",
+      "Depósito de tarjeta y ropa de cama: 10 € en efectivo al hacer check‑in; se devuelve al entregarlos.",
+      "Retención de seguridad: hasta una noche por huésped al hacer check‑in (o efectivo equivalente). Si no es posible, la reserva se cancela.",
+      "Gastos administrativos por cancelación: normalmente 15 % del precio de la reserva (sin comisiones de terceros).",
+      "Recepción cierra a las 22:30; el cargo por no presentación es el mayor entre la primera noche o el depósito no reembolsable."
+    ],
+    "footer": "La disponibilidad final y el pago se completan en nuestro motor de reservas oficial."
+  },
+  "backToRooms": "Volver a habitaciones"
+}

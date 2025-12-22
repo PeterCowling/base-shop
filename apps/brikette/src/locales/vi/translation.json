@@ -1,0 +1,33 @@
+{
+  "header": {
+    "title": "Hostel Brikette",
+    "reserve": "Đặt ngay"
+  },
+  "intro": {
+    "title": "Đặt trực tiếp và tiết kiệm",
+    "description": "Đặt phòng trên trang web của chúng tôi và nhận gói bữa ăn miễn phí trị giá tới 29 euro mỗi ngày."
+  },
+  "rooms": {
+    "title": "Phòng",
+    "value_dorms": "Phòng tập thể tiết kiệm",
+    "premium_dorms": "Phòng cao cấp",
+    "superior_dorms": "Phòng hạng superior",
+    "private_room": "Phòng riêng"
+  },
+  "careers": {
+    "jobTitle": "Tham gia đội ngũ Hostel Brikette",
+    "jobDescription": "Chúng tôi luôn tìm kiếm những người năng động yêu thích ngành dịch vụ. Nếu bạn phát triển tốt trong môi trường nhịp độ nhanh, hãy liên hệ với chúng tôi!",
+    "ctaLabel": "Hỏi về vị trí đang tuyển"
+  },
+  "errorBoundary": {
+    "title": "Đã xảy ra sự cố.",
+    "reload": "Tải lại trang"
+  },
+  "meta": {
+    "twitterCard": "summary_large_image",
+    "twitterHandle": "@brikette"
+  },
+  "internalErrors": {
+    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+  }
+}

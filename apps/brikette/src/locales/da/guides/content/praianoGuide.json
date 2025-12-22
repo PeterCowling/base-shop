@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Udforsk Praiano: afslappet nabo",
+    "description": "Hvorfor du bør besøge Praiano: solnedgange, Marina di Praia og San Gennaro."
+  },
+  "linkLabel": "Udforsk Praiano: afslappet nabo",
+  "intro": [
+    "Praiano er Positanos afslappede nabo med solnedgangsudsigt, rimelige priser og rolige strande."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Hvorfor besøge",
+      "body": [
+        "Nyd panoramiske solnedgange fra Piazza San Gennaro uden trængsel.",
+        "Overnatning er €20–€40 billigere pr. nat end i Positano, og busadgangen er bevaret."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Strande og badning",
+      "body": [
+        "Marina di Praia er en dramatisk bugt med strandklubber og kajakudlejning; kom før kl. 11 for pladser i første række.",
+        "Gavitella-stranden vender mod vest til gyldentime-badning; der er 400 trin ned, så medbring snacks og vand."
+      ]
+    },
+    {
+      "id": "dining",
+      "title": "Mad og aftenliv",
+      "body": [
+        "Book Il Pirata eller Kasai til fiskemiddage med terrasseudsigt; reserver solnedgangsborde et par dage i forvejen om sommeren.",
+        "Praianos strandbarer har livemusik i weekenden – tjek plakater ved SITA-stoppet for tider."
+      ]
+    }
+  ],
+  "tips": [
+    "Brug den lokale minibus til at undgå de stejleste stræk mellem øvre og nedre Praiano.",
+    "Medbring pandelampe til sen aften på trapperne hjem."
+  ],
+  "faqs": [
+    {
+      "q": "Hvor lang tid tager bussen fra Positano?",
+      "a": [
+        "Cirka 15 minutter med SITA-bus, længere i myldretid. Der er ca. 30 minutters interval om sommeren."
+      ]
+    },
+    {
+      "q": "Kan jeg bo i Praiano og besøge Positano dagligt?",
+      "a": [
+        "Ja. Mange pendler med bus eller scooter og nyder roligere aftener, mens de har adgang til Positano om dagen."
+      ]
+    }
+  ]
+}

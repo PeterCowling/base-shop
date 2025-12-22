@@ -1,0 +1,96 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Szállás, étkezés, közlekedés spórolós tippjei és napi költségkeretek."
+  },
+  "linkLabel": "Positano on a Budget",
+  "intro": [
+    "A fordítás folyamatban van."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transport on the cheap",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "stay",
+      "title": "Smart stays",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Food & drink savings",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "id": "experiences",
+      "title": "Low-cost experiences",
+      "body": [
+        "A fordítás folyamatban van.",
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "tips": [
+    "A fordítás folyamatban van.",
+    "A fordítás folyamatban van."
+  ],
+  "faqs": [
+    {
+      "q": "A fordítás folyamatban van.",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    },
+    {
+      "q": "Is tipping expected?",
+      "a": [
+        "A fordítás folyamatban van."
+      ]
+    }
+  ],
+  "tocTitle": "On this page",
+  "faqsTitle": "FAQs",
+  "heroAlt": "A fordítás folyamatban van.",
+  "costBreakdown": {
+    "title": "A fordítás folyamatban van.",
+    "slices": [
+      {
+        "label": "Bed (dorm)",
+        "value": 45
+      },
+      {
+        "label": "Meals & snacks",
+        "value": 25
+      },
+      {
+        "label": "Transport",
+        "value": 12
+      },
+      {
+        "label": "Activities & extras",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "A fordítás folyamatban van.",
+      "caption": "Free viewpoints"
+    },
+    {
+      "alt": "A fordítás folyamatban van.",
+      "caption": "Picnic to save on meals"
+    }
+  ]
+}

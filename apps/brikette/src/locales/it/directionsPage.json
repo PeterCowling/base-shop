@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Come arrivare – Autobus, traghetti e consigli a piedi",
+    "description": "Trova la fermata dell'autobus più vicina, le rotte dei traghetti e i tempi a piedi per raggiungere l'Hostel Brikette a Positano."
+  },
+  "title": "Come arrivare",
+  "intro": "Siamo a circa 100 m (~330 ft) dalla fermata Chiesa Nuova e a 13 minuti a piedi dalla spiaggia.",
+  "steps": {
+    "bus": "Da Sorrento: autobus SITA per Positano (fermata Chiesa Nuova).",
+    "ferry": "Da Capri/Amalfi: prendi il traghetto per Positano, poi autobus o taxi per salire.",
+    "walk": "Preparati alle scale: la vista ripaga. Segui le indicazioni per Via G. Marconi 358."
+  },
+  "photos": {
+    "heading": "Guarda il percorso prima di metterti in cammino",
+    "items": [
+      {
+        "alt": "Scalinata che conduce all'Hostel Brikette con un ospite diretto verso l'ingresso",
+        "caption": "Dalla fermata Chiesa Nuova segui i gradini per circa un minuto: troverai la nostra insegna sulla destra."
+      },
+      {
+        "alt": "Facciata dell'Hostel Brikette in via G. Marconi 358",
+        "caption": "Cerca il civico 358 di via G. Marconi sul muro in pietra; l'ingresso è subito dopo il numero."
+      },
+      {
+        "alt": "Bancone del check-in dell'Hostel Brikette nella hall",
+        "caption": "Una volta dentro troverai il banco check-in sulla sinistra; possiamo custodire i bagagli se la camera non è ancora pronta."
+      }
+    ]
+  }
+}

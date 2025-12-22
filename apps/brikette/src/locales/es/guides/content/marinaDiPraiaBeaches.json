@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Marina di Praia y playas escondidas",
+    "description": "Cómo llegar a calas apartadas y qué esperar en cada una."
+  },
+  "linkLabel": "Marina di Praia y playas escondidas",
+  "intro": [
+    "Marina di Praia es una cala estrecha entre acantilados con mezcla de barcas pesqueras y beach clubs.",
+    "Planifica la subida y bajada por escaleras empinadas o llega en taxi-barco."
+  ],
+  "sections": [
+    {
+      "id": "layout",
+      "title": "Cómo es la ensenada",
+      "body": [
+        "La playa es pequeña y de cantos rodados; las rocas laterales dan fotos dramáticas.",
+        "Hay zona pública limitada: llega temprano para asegurarte espacio."
+      ]
+    },
+    {
+      "id": "access",
+      "title": "Cómo llegar",
+      "body": [
+        "Toma el bus SITA hasta Praiano y baja a pie unos 10 minutos por las escaleras señalizadas.",
+        "Los taxis-barco desde Positano te dejan en el muelle; confirma horarios para el regreso."
+      ]
+    },
+    {
+      "id": "extras",
+      "title": "Servicios disponibles",
+      "body": [
+        "Los beach clubs alquilan tumbonas, kayaks y organizan cenas al atardecer.",
+        "Hay baños sencillos y duchas frías: lleva toalla ligera y sandalias cerradas."
+      ]
+    }
+  ],
+  "tips": [
+    "Reserva almuerzo en Il Pirata o La Praia para comer sobre el acantilado entre baño y baño.",
+    "Lleva una bolsa estanca para objetos de valor: la playa es compacta y es más cómodo mantener todo junto."
+  ],
+  "faqs": [
+    {
+      "q": "¿Vale la pena para hacer snorkel?",
+      "a": [
+        "Sí, las rocas protegen peces pequeños. Usa máscara y escarpines."
+      ]
+    },
+    {
+      "q": "¿Es accesible para movilidad reducida?",
+      "a": [
+        "Lamentablemente no: las escaleras son largas e inclinadas. Para accesibilidad mejor playas en Amalfi con pasarelas."
+      ]
+    }
+  ]
+}

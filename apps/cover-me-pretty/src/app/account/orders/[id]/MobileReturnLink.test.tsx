@@ -15,14 +15,16 @@ describe("MobileReturnLink", () => {
     const dataUrl = "data:image/png;base64,abc";
     type QRCodeMock = {
       toDataURL: jest.Mock;
-      default: {
+      default?: {
         toDataURL: jest.Mock;
       };
     };
     const qrCodeMock = QRCode as unknown as QRCodeMock;
     // Support both default and named export mock shapes
     qrCodeMock.toDataURL.mockResolvedValue(dataUrl);
-    qrCodeMock.default.toDataURL.mockResolvedValue(dataUrl);
+    if (qrCodeMock.default?.toDataURL) {
+      qrCodeMock.default.toDataURL.mockResolvedValue(dataUrl);
+    }
 
     render(<MobileReturnLink />);
 

@@ -1,0 +1,21 @@
+{
+  "slug": "sicherheit",
+  "meta": {
+    "title": "Sicherheits- & Schutzrichtlinien – Positano Hostel",
+    "description": "Alle wichtigen Informationen darüber, wie wir jede*n Gast – und dessen Eigentum – im Positano Hostel schützen, inklusive Schließfächer, Sicherheitsarmbänder, CCTV und Besucher-Richtlinien."
+  },
+  "headings": {
+    "personalBelongingsSecurity": "Schutz Ihres Eigentums",
+    "identificationSecurityBands": "Sicherheitsarmbänder",
+    "cctvSurveillance": "CCTV- & Videoüberwachung",
+    "temporaryGuestsPolicy": "Tagesbesucher willkommen heißen",
+    "unregisteredPersonsPolicy": "Übernachtungsgäste registrieren"
+  },
+  "content": {
+    "personalBelongingsSecurity": "Jede*r Gast ist während des gesamten Aufenthalts für das eigene Eigentum verantwortlich. Wo verfügbar stellen wir Schließfächer und Safes bereit; deren Nutzung ist unkompliziert, überträgt die Haftung jedoch nicht auf das Hostel. Halten Sie daher Ihre Reiseversicherung aktuell. Zu Ihrer und unserer Sicherheit halten Sie bitte Zimmertüren geschlossen und schließen Sie das bereitgestellte Schließfach – ungesicherte Gegenstände können eventuelle Ansprüche einschränken. Zurückgelassene Gegenstände werden nach mehr als 30 Tagen gespendet, recycelt oder entsorgt.",
+    "identificationSecurityBands": "Damit das Team registrierte Gäste schnell erkennt, erhält jede*r beim Check-in ein Sicherheitsarmband. Bitte tragen Sie es auf dem gesamten Hostelgelände; unser Team kann auch jederzeit um einen Lichtbildausweis bitten. Melden Sie sich an der Rezeption, falls Ihr Armband verloren geht oder beschädigt wird – es fällt eine geringe Ersatzgebühr an. Gäste ohne Armband oder die eine Ausweiskontrolle ablehnen, können aufgefordert werden zu gehen; eine Rückerstattung ist dann möglicherweise nicht möglich.",
+    "cctvSurveillance": "Gemeinschaftsbereiche – einschließlich Eingang, Flure, Terrasse und Aufenthaltsräume – werden rund um die Uhr per CCTV überwacht. Aufzeichnungen werden sicher gespeichert, nur von autorisiertem Personal eingesehen und ausschließlich im Rahmen des italienischen Rechts an Strafverfolgungsbehörden weitergegeben. Die Kameras erhöhen Ihre Sicherheit, können jedoch Verluste, Diebstahl oder Schäden nicht vollständig verhindern. Bitte achten Sie daher weiterhin auf Ihre Wertsachen.",
+    "temporaryGuestsPolicy": "Bitte wenden Sie sich an die Rezeption, bevor Sie Freund*innen einladen, damit wir ihnen den Status Tagesbesucher verleihen können. Nach Anmeldung mit gültigem Ausweis dürfen Tagesgäste die Gemeinschaftsbereiche zwischen 10:30 und 20:00 Uhr nutzen. Aus Rücksicht auf die Privatsphäre sind Schlafräume ausschließlich registrierten Übernachtungsgästen vorbehalten. Das Hostel kann den Tagesbesucher-Status jederzeit verweigern oder widerrufen.",
+    "unregisteredPersonsPolicy": "Nach italienischem Recht muss jede übernachtende Person registriert sein. Wird ein*e nicht registrierte*r Übernachtungsgast in einem Zimmer angetroffen, wird den registrierten Gäst*innen der reguläre Zimmerpreis dieser Person sowie eine Verwaltungsgebühr in doppelter Höhe berechnet. Die zusätzliche Person muss entweder sofort einchecken oder das Hostel verlassen; bei Weigerung ist das Hostel verpflichtet, die lokalen Behörden zu informieren. Das Nichtmelden einer zusätzlichen Übernachtungsperson kann außerdem dazu führen, dass die Buchung als No-Show vermerkt wird."
+  }
+}

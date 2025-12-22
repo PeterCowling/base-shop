@@ -1,0 +1,76 @@
+{
+  "seo": {
+    "title": "Getting to Laurito Beach by Bus",
+    "description": "Go to the Chiesa Nuova stop by Bar Internazionale, buy tickets, ride the Amalfi Coast bus, then take the stairs down to Laurito Beach."
+  },
+  "linkLabel": "Getting to Laurito Beach by Bus",
+  "lead": {
+    "shareLabel": "Scan to Share",
+    "qrAlt": "QR code to share this guide",
+    "figures": [
+      {
+        "alt": "Chiesa Nuova bus stop beside Bar Internazionale",
+        "caption": "Chiesa Nuova – Bar Internazionale stop"
+      },
+      {
+        "alt": "Staircase down to Laurito Beach (signposted)",
+        "caption": "Signposted stairs down to Laurito"
+      }
+    ]
+  },
+  "intro": [
+    "Reaching Laurito Beach from Hostel Brikette is straightforward on the blue SITA Amalfi Coast bus that stops at Chiesa Nuova.",
+    "Use this guide to find the nearest stop, buy tickets, ride to Laurito, and follow the final stairs down to the water."
+  ],
+  "sections": [
+    {
+      "id": "reach-bus-stop",
+      "title": "Go to the nearest bus stop",
+      "body": [
+        "The nearest bus stop is located in the \"Chiesa Nuova\" area of Positano.",
+        "It is approximately 140 meters (490 feet) from the hostel.",
+        "The bus stop is located outside the cafe/bar called \"Bar Internazionale\".",
+        "Exit the hostel through the main door and go down the steps to the road.",
+        "Turn left and walk about 100 meters (330 feet).",
+        "You will see the cafe/bar called \"Bar Internazionale\" on the left side of the road."
+      ]
+    },
+    {
+      "id": "buy-tickets",
+      "title": "Buy bus tickets",
+      "body": [
+        "Go into Bar Internazionale and purchase your tickets.",
+        "You may be offered one or two tickets, depending on the most cost‑effective option."
+      ]
+    },
+    {
+      "id": "wait-for-bus",
+      "title": "Wait for the bus",
+      "body": [
+        "Cross over the road from Bar Internazionale, where you will wait for the Amalfi bus."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Take the bus",
+      "body": [
+        "The number of times the bus will stop before you need to disembark will depend on the requests of other passengers on the bus.",
+        "The distance you need to travel is about 4.1km / 2.5 miles."
+      ]
+    },
+    {
+      "id": "walk-down",
+      "title": "Walk down to the beach",
+      "body": [
+        "Once you get off the bus, walk back in the direction the bus came from, and take the stairs down (at the signpost)."
+      ]
+    }
+  ],
+  "tipsTitle": "Tips",
+  "tips": [
+    "Bus Timetable. Note that the timetable includes Positano times, but not Laurito ones. Laurito bus stop is located about 10 minutes after Sponda.",
+    "Buy your bus ticket to cover your journey both to and then back from the beach, as there’s no shops close to the beach.",
+    "See our %LINK:lauritoBeachGuide|Laurito Beach Guide%.",
+    "See our %LINK:positanoBeaches|Beaches Overview%."
+  ]
+}

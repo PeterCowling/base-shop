@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Capri avec un budget limité",
+    "description": "Astuces pour profiter de Capri sans exploser le budget : transports, visites, repas et plages."
+  },
+  "linkLabel": "Capri avec un budget limité",
+  "intro": [
+    "Une excursion à la journée sur Capri reste abordable si vous planifiez ferries, points de vue et repas à l’avance."
+  ],
+  "sections": [
+    {
+      "id": "ferries",
+      "title": "Ferries et horaires",
+      "body": [
+        "Réservez les premiers ferries en haute saison et prévoyez un retour en milieu d’après-midi pour éviter la foule des dernières traversées."
+      ]
+    },
+    {
+      "id": "free-views",
+      "title": "Points de vue gratuits",
+      "body": [
+        "Les Giardini di Augusto (petit droit d’entrée), les belvédères d’Anacapri et les points de vue de Marina Piccola offrent des panoramas à faible coût."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Options plage",
+      "body": [
+        "Des sections de plage publique existent ; apportez votre serviette et de l’eau pour éviter les locations."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Restauration économique",
+      "body": [
+        "Prenez un panini ou une part de pizza al taglio près du port et évitez les restaurants assis dans les ruelles les plus fréquentées."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "La Grotte Bleue vaut-elle la peine avec un petit budget ?",
+      "a": [
+        "C’est un supplément haut de gamme et dépendant de la météo ; le télésiège d’Anacapri est un point fort moins coûteux."
+      ]
+    }
+  ]
+}

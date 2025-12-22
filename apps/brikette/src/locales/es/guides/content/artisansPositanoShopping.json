@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Artesanía y compras en Positano",
+    "description": "Sandalias, cerámica e ilustraciones: dónde encontrar calidad y cómo enviar tus compras."
+  },
+  "linkLabel": "Artesanía y compras en Positano",
+  "intro": [
+    "Positano mantiene talleres familiares de sandalias, cerámica y arte ligero; compra con intención y viaja sin sobresaltos.",
+    "Recorrer las calles altas al final del día te permite conversar con artesanos y personalizar tus piezas."
+  ],
+  "sections": [
+    {
+      "id": "sandals",
+      "title": "Sandalias a medida",
+      "body": [
+        "Las botteghe miden tu pie y montan el par en 30–60 minutos; pregunta por el origen del cuero y revisa costuras y suelas antideslizantes.",
+        "Solicita recibo con contacto y prueba los zapatos unos minutos dentro de la tienda para asegurar comodidad antes de pagar."
+      ]
+    },
+    {
+      "id": "ceramics",
+      "title": "Cerámica y decoración",
+      "body": [
+        "Las piezas auténticas llevan firma bajo el esmalte y peso consistente; desconfía de souvenirs demasiado ligeros o sin sello Vietri.",
+        "Si envías a casa, pide embalaje doble con burbujas y caja rígida, haz fotos del paquete y contrata envío con seguimiento e incluso seguro."
+      ]
+    },
+    {
+      "id": "prints",
+      "title": "Arte, textiles y recuerdos",
+      "body": [
+        "Ilustraciones, pósters y pañuelos se venden en tiradas cortas; solicita certificado o tarjeta del artista y pregunta por derechos de reproducción si quieres compartir las imágenes.",
+        "Transporta las compras en tubo rígido o envuélvelas entre prendas suaves; evita humedad y arena para conservar colores."
+      ]
+    }
+  ],
+  "tips": [
+    "Compara precios entre talleres: en calles paralelas a Via dei Mulini suele haber mejor relación calidad-precio.",
+    "Prefiere pagos trazables (tarjeta o transferencia) para tener comprobante en caso de envíos dañados."
+  ],
+  "faqs": [
+    {
+      "q": "¿Envían al extranjero?",
+      "a": [
+        "La mayoría trabaja con mensajerías; pide presupuesto por escrito con seguro y plazo estimado, o usa un servicio con seguimiento si gestionas el envío por tu cuenta."
+      ]
+    },
+    {
+      "q": "¿Se puede negociar el precio?",
+      "a": [
+        "Sí, con tacto, sobre todo en compras múltiples; evita regateos agresivos en negocios familiares.",
+        "Recuerda que las personalizaciones y grabados suelen estar incluidos en el precio original."
+      ]
+    }
+  ]
+}

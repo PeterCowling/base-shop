@@ -1,0 +1,59 @@
+{
+  "slug": "arriving-by-ferry",
+  "meta": {
+    "title": "How to Reach Hostel Brikette from Positano Ferry Pier – Complete Step-by-Step Guide",
+    "description": "Arrive stress-free: walk, ride the Interno Positano bus, and follow our luggage tips to get from Positano’s ferry dock to Hostel Brikette in under 15 minutes. Includes live Google Maps links, ticket info and accessibility advice."
+  },
+  "headings": {
+    "overview": "Positano Port → Hostel via the Interno Bus",
+    "portToPiazza": "Port to Piazza Dei Mulini",
+    "piazzaToStop": "Piazza Dei Mulini → Local Bus Stop",
+    "busLook": "What Does the Bus Look Like?",
+    "busLookExtra": "",
+    "stopToHostel": "Local Bus Stop → Hostel",
+    "approach": "Tip: Approaching the Hostel"
+  },
+  "media": {
+    "busLook": {
+      "alt": "White Interno Positano minibus"
+    },
+    "busLookExtra": {
+      "alt": "Red Interno Positano minibus"
+    },
+    "stopToHostel": {
+      "alt": "Exterior of the Tabacchi where the bus stops"
+    },
+    "approach": {
+      "alt": "Hostel sign and stairs on Via G. Marconi"
+    }
+  },
+  "content": {
+    "overview": "<strong>Tip 1:</strong> <a href=\"https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26\">Interno Bus timetable &amp; ticket prices</a>.<br />\n<strong>Tip 2:</strong> Buy tickets at any <em>Tabacchi</em> / newsagent.<br />\n<strong>Tip 3:</strong> Travelling with luggage? Porters at the pier will deliver bags directly to the hostel.",
+    "portToPiazza": "Follow <a href=\"https://www.google.com/maps/dir/Positano+Spiaggia/2+Viale+Pasitea+Positano,+Campania/@40.6289096,14.4857482,18z/data=!4m14!4m13!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!3e2\">these walking directions</a> from the Main Beach to Piazza Dei Mulini.",
+    "piazzaToStop": "• Skip the stairs – hop on the Interno bus.<br />\n• The service runs every 30 min from ~8 am – midnight.<br />\n• View the route on <a href=\"https://www.google.com/maps/dir/2+Viale+Pasitea+Positano,+Campania/Viale+Pasitea,+323,+84017+Positano+SA/@40.6309188,14.4819138,16z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133b976f39841bc9:0x5425cf574fd9d282!2m2!1d14.4857716!2d40.6301562!1m5!1m1!1s0x133b97667312711d:0xa2b15bca59b377fa!2m2!1d14.4824389!2d40.6293416!3e0\">Google Maps</a>.",
+    "busLook": "Several vehicle types exist, but the LED sign always reads <em>“Interno Positano”</em>.",
+    "busLookExtra": "",
+    "stopToHostel": "• The bus stops outside the Tabacchi pictured below.<br />\n• Exit, turn <strong>right</strong>, and walk to the main road.<br />\n• Turn <strong>left</strong>; continue ≈100 m / 330 ft.<br />\n• The hostel is on your right – climb the stairs to reception.<br />\n• Need turn-by-turn? <a href=\"https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Tabacchi+Cafiero+Emanuele,+Viale+Pasitea,+325a,+84017+Positano+SA/@40.6292434,14.4813669,19z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b97660ef186c1:0xc9eb9ab54d880307!2m2!1d14.4823321!2d40.6293865!3e2\">Open Google Maps</a>.",
+    "approach": "• As you near the hostel you’ll see our sign by the second-floor terrace.<br />\n• Walk past the sign, follow the bend, and take the stairs on the right to reception."
+  },
+  "faq": {
+    "items": [
+      {
+        "question": "Do ferries operate to Positano year-round?",
+        "answer": "Ferries are seasonal (typically April–October). In winter, buses/taxis are the primary options."
+      },
+      {
+        "question": "Where can I check real-time ferry schedules?",
+        "answer": "Use operators’ sites (e.g., NLG, Travelmar, Alilauro) or aggregators like DirectFerries during summer."
+      },
+      {
+        "question": "Which pier should I use in Positano?",
+        "answer": "The main pier is at Spiaggia Grande. Check your ticket for the exact boarding lane on busy days."
+      },
+      {
+        "question": "Accessibility from the port",
+        "answer": "The walk to the hostel includes many stairs. For heavy luggage, consider porter services or the bus to Chiesa Nuova."
+      }
+    ]
+  }
+}

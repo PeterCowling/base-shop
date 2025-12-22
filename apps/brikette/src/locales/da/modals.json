@@ -1,0 +1,161 @@
+{
+  "location": {
+    "title": "Vores placering",
+    "inputLabel": "Indtast din nuværende placering:",
+    "inputPlaceholder": "fx Napoli, Italien eller fuld adresse",
+    "getDirections": "Få rutevejledning",
+    "justShowMap": "Vis kun kort",
+    "close": "Luk dialog",
+    "nearbyBusCompact": "≈100 m til nærmeste busstoppested"
+  },
+  "contact": {
+    "title": "Kontakt os",
+    "description": "Vi vil meget gerne høre fra dig! For spørgsmål eller reservationer, skriv til os på e‑mail:",
+    "revealEmail": "Vis e‑mailadresse",
+    "close": "Luk dialog",
+    "buttonClose": "Luk"
+  },
+  "offers": {
+    "close": "Luk",
+    "title": "Book direkte og spar",
+    "description": "Tak fordi du vælger at booke direkte hos os! Som tak får du:",
+    "perks": {
+      "discount": "Op til 10 % rabat på værelsesprisen",
+      "breakfast": "Gratis morgenmad hver morgen",
+      "drinks": "Gratis velkomstdrinks",
+      "upgrades": "Prioriterede opgraderinger (når tilgængelige)"
+    },
+    "callToAction": "Udnyt disse eksklusive fordele nu!",
+    "button": "Book nu"
+  },
+  "booking": {
+    "title": "Book dit ophold",
+    "subTitle": "Vælg datoer og præferencer",
+    "close": "Luk",
+    "checkInLabel": "Check‑in",
+    "checkOutLabel": "Check‑out",
+    "guestsLabel": "Gæster",
+    "buttonAvailability": "Tjek tilgængelighed",
+    "datePlaceholder": "Vælg dato",
+    "guestsSingle": "{{count}} voksen",
+    "guestsPlural": "{{count}} voksne"
+  },
+  "booking2": {
+    "selectDatesTitle": "Vælg dine datoer",
+    "checkInDate": "Indtjekningsdato",
+    "checkOutDate": "Udtjekningsdato",
+    "adults": "Antal voksne",
+    "confirm": "Bekræft",
+    "cancel": "Annullér"
+  },
+  "facilities": {
+    "title": "Vores faciliteter",
+    "closeButton": "Luk",
+    "categories": [
+      {
+        "title": "Badeværelse",
+        "items": [
+          "Toiletpapir",
+          "Håndklæder / sengelinned (mod tillægsgebyr)",
+          "Toilet",
+          "Bruser",
+          "Hårtørrer (efter anmodning)"
+        ]
+      },
+      {
+        "title": "Soveværelse og linned",
+        "items": [
+          "Linned inkluderet",
+          "Læselys ved køjesenge"
+        ]
+      },
+      {
+        "title": "Udendørs og udsigt",
+        "items": [
+          "Panoramaterrasse med havudsigt",
+          "Solterrasse",
+          "Udendørsmøbler",
+          "Picnicområde"
+        ]
+      },
+      {
+        "title": "Komfort på værelset",
+        "items": [
+          "Stikkontakt ved sengen",
+          "Aircondition",
+          "Opvarmning",
+          "Gulv i fliser/marmor"
+        ]
+      },
+      {
+        "title": "Aktiviteter",
+        "items": [
+          "Vandreture (uden for området)",
+          "Kort til selv-guidede ruter",
+          "Anbefalinger til lokale ture"
+        ]
+      },
+      {
+        "title": "Mad og drikke",
+        "items": [
+          "Bar på stedet",
+          "Gratis velkomstdrink",
+          "À la carte-morgenmad tilgængelig",
+          "Snackservice"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Gratis wi-fi i fællesområder",
+          "Hurtigt wi-fi på værelserne",
+          "Offentligt internetadgangspunkt"
+        ]
+      },
+      {
+        "title": "Gæsteservice",
+        "items": [
+          "Daglig rengøring",
+          "Concierge",
+          "Bagageopbevaring",
+          "Opbevaring før check-in/efter check-out",
+          "Skabe",
+          "Adaptere til rådighed",
+          "Lufthavnstransport (mod gebyr)",
+          "Reception (begrænsede åbningstider)",
+          "Cykelparkering"
+        ]
+      },
+      {
+        "title": "Sikkerhed",
+        "items": [
+          "Brandslukkere",
+          "Videoovervågning i fællesområder",
+          "Adgang med nøglekort",
+          "Elektroniske dørlåse",
+          "Personlige skabe"
+        ]
+      },
+      {
+        "title": "Generelt",
+        "items": [
+          "Kun for voksne (18–39 år)",
+          "Røgfrit overalt",
+          "Røgfri værelser"
+        ]
+      },
+      {
+        "title": "Talte sprog",
+        "items": [
+          "Engelsk",
+          "Spansk",
+          "Italiensk"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "title": "Vælg sprog",
+    "close": "Luk"
+  }
+}

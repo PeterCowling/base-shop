@@ -1,0 +1,38 @@
+{
+  "slug": "naples-airport-to-positano-bus",
+  "meta": {
+    "title": "Aéroport de Naples à Positano en bus – étape par étape",
+    "description": "Prenez la navette Curreri jusqu'à Sorrente, puis le bus SITA jusqu'à Positano (Chiesa Nuova). Photos, conseils sur les horaires et itinéraire à pied vers l'Hostel Brikette."
+  },
+  "headings": {
+    "overview": "Aperçu navette Curreri + bus SITA",
+    "naplesAirport": "Départ de l'aéroport de Naples",
+    "sorrentoStation": "À la gare routière de Sorrente",
+    "timetable": "Lire l'horaire SITA",
+    "positanoStop": "Arrivée à Positano (Chiesa Nuova)",
+    "walk": "Marcher de Chiesa Nuova à l'auberge",
+    "spotSign": "Astuce : repérer l'entrée de l'auberge"
+  },
+  "cta": {
+    "heading": "Besoin de toute la vue d'ensemble ?",
+    "copy": "Ouvrez la page Comment venir pour des conseils sur les ferries, les itinéraires à pied et des photos de l'entrée de l'auberge.",
+    "button": "Ouvrir Comment venir"
+  },
+  "media": {
+    "positanoStop": {
+      "alt": "Arrêt de bus Chiesa Nuova devant le Bar Internazionale à Positano"
+    },
+    "walk": {
+      "alt": "Escaliers menant à l'entrée de l'Hostel Brikette"
+    }
+  },
+  "content": {
+    "overview": "Astuce 1 : pour l'horaire Sorrente → Positano, <a href=\"https://www.positano.com/en/bus-schedule?route=sorrento_positano_amalfi\">consultez l'horaire officiel</a>.<br />Astuce 2 : pour l'aéroport de Naples vers Sorrente, <a href=\"https://www.curreriviaggi.it/it/navetta-aeroporto-di-napoli\">voir Curreri Viaggi</a> (choisissez \"Da Napoli Aeroporto - Per Sorrento\"). Vous pouvez aussi y acheter votre billet de navette.",
+    "naplesAirport": "Sortez du hall des arrivées directement vers les quais de bus. Achetez un billet Curreri Viaggi pour Sorrente (en ligne ou au kiosque) et attendez à l'emplacement indiqué. Les cars partent environ toutes les 60 à 90 minutes ; en haute saison, arrivez 15 minutes en avance pour garantir votre place.",
+    "sorrentoStation": "- Descendez à la gare principale de Sorrente, qui est à la fois la gare ferroviaire et routière.<br />- Depuis l'esplanade, prenez le bus SITA en direction d'Amalfi (Positano est un arrêt intermédiaire).<br />- Besoin d'un billet ? Achetez-le au bar ou au kiosque à journaux à côté des quais avant de faire la queue.<br />- À la montée, le conducteur composte ou déchire votre billet. Gardez-le à portée de main pour les contrôles.",
+    "timetable": "L'horaire SITA présente les arrêts en lignes et les trajets par colonnes. Faites correspondre votre arrêt de départ avec la lettre de colonne pour votre jour de voyage : du lundi au samedi, cherchez les colonnes F et G ; les dimanches et jours fériés, les départs se trouvent dans les colonnes G et H.",
+    "positanoStop": "Restez dans le bus jusqu'à l'arrêt Chiesa Nuova à Positano. Il se situe à environ 140 m (450 ft) de l'auberge, devant le Bar Internazionale. Utilisez la photo pour confirmer que vous êtes au bon endroit avant de descendre.",
+    "walk": "Depuis l'arrêt, marchez un peu plus de 100 m / 330 ft le long de la Via G. Marconi.<br />Tournez à droite dans la petite ruelle et suivez les marches jusqu'à notre porte d'entrée.<br />Besoin d'un itinéraire détaillé ? <a href=\"https://www.google.com/maps/dir/bar+internazionale/hostel+brikette/@40.6295534,14.479394,17z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634\">Ouvrez le même trajet dans Google Maps</a>.",
+    "spotSign": "À l'approche, repérez l'enseigne Hostel Brikette au niveau de la terrasse du deuxième étage. Passez devant, suivez le virage de la route et montez les escaliers sur la droite pour atteindre la réception."
+  }
+}

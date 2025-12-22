@@ -1,0 +1,648 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Lista över resevägar",
+    "description": "Praktiska vägbeskrivningar till Hostel Brikette från Amalfi, Capri, Neapel, Salerno, Ravello, Rom och Sorrento – inklusive för- och nackdelar för varje transportsätt."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette",
+    "title": "Lista över resevägar",
+    "description": "Använd den här guiden för att ta dig till och från destinationen på Amalfikusten och Hostel Brikette.",
+    "heroAlt": "Stentrappa med bougainvillea som leder till Hostel Brikettes entré",
+    "heroAltFallback": "Stentrappa med bougainvillea",
+    "transportLabel": "Transportöversikt",
+    "stats": {
+      "routes": "Dörr-till-dörr-rutter",
+      "destinations": "Täckta områden",
+      "transport": "Transporttyper",
+      "experienceRoutes": "Experience routes"
+    }
+  },
+  "preview": {
+    "notPublished": "Preview only – this page is not published"
+  },
+  "intro": {
+    "taxi": "Vill du boka taxi? Skicka ett WhatsApp-meddelande på engelska eller italienska till <Strong>{{contact}}</Strong>.",
+    "shuttle": "Föredrar du shuttle? Sea Horse Car Service kör delade transfer. Boka en plats via deras <Link>officiella shuttlesida</Link>.",
+    "taxiContact": "+39 379 125 6222",
+    "taxiEyebrow": "Hostel Brikette by Taxi",
+    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+  },
+  "destinations": {
+    "filterLabel": "Plats",
+    "filterAll": "Alla platser",
+    "sections": [
+      {
+        "name": "Inom Positano",
+        "description": "Redan framme i Positano men osäker på hur du tar dig till vandrarhemmet? Kolla in de här guiderna:",
+        "image": {
+          "src": "/img/positano-panorama.avif",
+          "alt": "Panoramavy över Positanos hus på klippväggen"
+        },
+        "links": [
+          {
+            "label": "Chiesa Nuova/Bar Internazionale till Hostel Brikette",
+            "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
+            "internal": true
+          },
+          {
+            "label": "Färjekajen till Hostel Brikette",
+            "href": "ferry-dock-to-hostel-brikette-with-luggage",
+            "internal": true
+          },
+          {
+            "label": "Hostel Brikette till Chiesa Nuova/Bar Internazionale",
+            "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "Amalfi",
+        "image": {
+          "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
+          "alt": "SITA Sud-busshållplatsen i Amalfi för kustlinjen"
+        },
+        "links": [
+          {
+            "label": "Amalfi till Positano med buss",
+            "href": "amalfi-positano-bus",
+            "internal": true
+          },
+          {
+            "label": "Positano till Amalfi med buss",
+            "href": "positano-amalfi-bus",
+            "internal": true
+          },
+          {
+            "label": "Amalfi till Positano med färja",
+            "href": "amalfi-positano-ferry",
+            "internal": true
+          },
+          {
+            "label": "Positano till Amalfi med färja",
+            "href": "positano-amalfi-ferry",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "Capri",
+        "image": {
+          "src": "/img/directions/positano-capri-ferry-img09.jpg",
+          "alt": "Färja som lägger till i Marinan på Capri"
+        },
+        "links": [
+          {
+            "label": "Capri till Positano med färja",
+            "href": "capri-positano-ferry",
+            "internal": true
+          },
+          {
+            "label": "Positano till Capri med färja",
+            "href": "positano-capri-ferry",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "Neapels centrum",
+        "image": {
+          "src": "/img/tabacchi.webp",
+          "alt": "Tabacchi-butik på gatuplan i centrala Neapel"
+        },
+        "links": [
+          {
+            "label": "Neapels centrum till Positano med tåg och buss",
+            "href": "naples-center-train-bus",
+            "internal": true
+          },
+          {
+            "label": "Positano till Neapels centrum med buss och sedan tåg",
+            "href": "positano-naples-center-bus-train",
+            "internal": true
+          },
+          {
+            "label": "Neapels centrum till Positano med färja",
+            "href": "naples-center-positano-ferry",
+            "internal": true
+          },
+          {
+            "label": "Positano till Neapels centrum med färja",
+            "href": "positano-naples-center-ferry",
+            "internal": true
+          },
+          {
+            "label": "Positano till Neapel – färjeväg",
+            "href": "positano-to-naples-directions-by-ferry",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "Neapels flygplats",
+        "image": {
+          "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+          "alt": "Curreri-shuttle som lastar passagerare utanför Neapels flygplats"
+        },
+        "links": [
+          {
+            "label": "Positano till Neapels flygplats med buss",
+            "href": "positano-naples-airport-bus",
+            "internal": true
+          },
+          {
+            "label": "Neapels flygplats till Positano med buss",
+            "href": "naples-airport-positano-bus",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "Salerno",
+        "image": {
+          "src": "/img/hostel-coastal-horizon.webp",
+          "alt": "Utsikt över Amalfikusten mot Salerno"
+        },
+        "links": [
+          {
+            "label": "Salerno till Positano med buss",
+            "href": "salerno-positano-bus",
+            "internal": true
+          },
+          {
+            "label": "Positano till Salerno med buss",
+            "href": "positano-salerno-bus",
+            "internal": true
+          },
+          {
+            "label": "Salerno till Positano med färja",
+            "href": "salerno-positano-ferry",
+            "internal": true
+          },
+          {
+            "label": "Positano till Salerno med färja",
+            "href": "positano-salerno-ferry",
+            "internal": true
+          }
+        ]
+      },
+      {
+        "name": "Ravello",
+        "image": {
+          "src": "/img/hostel-communal-terrace-lush-view.webp",
+          "alt": "Klippor och trädgårdar vid Ravello med utsikt över kusten"
+        },
+        "links": [
+          {
+            "label": "Ravello till Positano med buss",
+            "href": "ravello-positano-bus",
+            "internal": true
+          },
+          {
+            "label": "Positano till Ravello med buss",
+            "href": "positano-ravello-bus",
+            "internal": true
+          },
+          {
+            "label": "Positano till Ravello med färja och buss",
+            "href": "positano-ravello-ferry-bus",
+            "internal": true
+          }
+        ]
+      }
+    ]
+  },
+  "rome": {
+    "title": "Rom",
+    "description": "Följ våra skriftliga guider till Neapel eller Salerno och ta sedan tåget vidare därifrån.",
+    "table": {
+      "headers": {
+        "route": "Resväg",
+        "toRome": "När du reser till Rom",
+        "toHostel": "När du reser till vandrarhemmet"
+      },
+      "options": [
+        {
+          "route": {
+            "label": "Till/från Neapels centrum med buss/tåg",
+            "href": "positano-naples-center-bus-train",
+            "internal": true
+          },
+          "toRome": {
+            "heading": "När du reser till Rom",
+            "points": [
+              "+ Busshållplatsen i Positano ligger nära vandrarhemmet.",
+              "+ Bussen släpper av dig intill tågstationen i Sorrento.",
+              "+ Buss och tåg är mycket billiga.",
+              "+ Du anländer direkt till tågstationen i Neapel.",
+              "- Du måste byta från buss till tåg.",
+              "- Både buss och tåg är oftast fulla.",
+              "- Resan tar några timmar."
+            ]
+          },
+          "toHostel": {
+            "heading": "När du reser till vandrarhemmet",
+            "points": [
+              "+ Tågbyte i Neapel är relativt enkelt.",
+              "+ Tåget släpper av dig precis vid busstationen i Sorrento.",
+              "+ Buss och tåg är mycket billiga.",
+              "+ Busshållplatsen i Positano ligger nära vandrarhemmet.",
+              "- Du måste byta från tåg till buss i Sorrento.",
+              "- Både buss och tåg är oftast fulla.",
+              "- Resan tar några timmar."
+            ]
+          }
+        },
+        {
+          "route": {
+            "label": "Till/från Salerno med buss",
+            "href": "salerno-positano-bus",
+            "internal": true
+          },
+          "toRome": {
+            "heading": "När du reser till Rom",
+            "points": [
+              "+ Busshållplatsen i Positano ligger på kort gångavstånd från vandrarhemmet.",
+              "+ Bussen lämnar dig vid tågstationen i Salerno.",
+              "+ Bussen är mycket billig.",
+              "- Du måste byta buss i Amalfi.",
+              "- Bussen är oftast full."
+            ]
+          },
+          "toHostel": {
+            "heading": "När du reser till vandrarhemmet",
+            "points": [
+              "+ Busshållplatsen i Positano ligger på kort gångavstånd från vandrarhemmet.",
+              "+ Bussen hämtar dig vid tågstationen i Salerno.",
+              "+ Bussen är mycket billig.",
+              "- Du måste byta buss i Amalfi.",
+              "- Bussen är oftast full."
+            ]
+          }
+        },
+        {
+          "route": {
+            "label": "Till/från Salerno med färja",
+            "href": "salerno-positano-ferry",
+            "internal": true
+          },
+          "note": {
+            "parts": [
+              {
+                "type": "text",
+                "value": "Du behöver "
+              },
+              {
+                "type": "link",
+                "label": "gå mellan Salernos hamn och tågstation",
+                "href": "https://www.google.com/maps/dir/Travelmar+-+Traghetti+Salerno,+Piazza+della+Concordia,+Salerno,+SA/Salerno+Train+Station,+Via+Zara,+Salerno,+SA/@40.6735022,14.7687986,18z/data=!3m1!4b1!4m14!4m13!1m5!1m1!1s0x133bc2396c885437:0xe1ccfe3b3efd24a5!2m2!1d14.7675186!2d40.6717407!1m5!1m1!1s0x133bc3b98e72261f:0x6251217dd6a0c63d!2m2!1d14.772223!2d40.6752304!3e2",
+                "external": true
+              },
+              {
+                "type": "text",
+                "value": "."
+              }
+            ]
+          },
+          "toRome": {
+            "heading": "När du reser till Rom",
+            "points": [
+              "+ Lämna väskorna till bärarna för en bekvämare resa.",
+              "+ Själva färjeturen är trevlig och enkel.",
+              "+ Promenaden mellan Salernos tågstation och hamnen är kort och rak.",
+              "- Färjan kostar mer än bussen.",
+              "- Det är enklare att komma till vandrarhemmet med SITA-buss än via färja, eftersom sträckan upp från hamnen är ganska ansträngande – även med Positanos Interno-buss och bärarhjälp."
+            ]
+          },
+          "toHostel": {
+            "heading": "När du reser till vandrarhemmet",
+            "points": [
+              "+ Lämna väskorna till bärarna för en bekvämare resa.",
+              "+ Själva färjeturen är trevlig och enkel.",
+              "+ Promenaden mellan Salernos tågstation och hamnen är kort och rak.",
+              "- Färjan kostar mer än bussen.",
+              "- Det är enklare att komma till vandrarhemmet med SITA-buss än via färja, eftersom sträckan upp från hamnen är ganska ansträngande – även med Positanos Interno-buss och bärarhjälp."
+            ]
+          }
+        },
+        {
+          "route": {
+            "label": "Till/från Neapel med färja",
+            "href": "positano-naples-center-ferry",
+            "internal": true
+          },
+          "note": {
+            "parts": [
+              {
+                "type": "link",
+                "label": "Ta spårvagnen",
+                "href": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4",
+                "external": true
+              },
+              {
+                "type": "text",
+                "value": " mellan hamnen och tågstationen."
+              }
+            ]
+          },
+          "toRome": {
+            "heading": "När du reser till Rom",
+            "points": [
+              "+ Lämna väskorna till bärarna för en bekvämare resa.",
+              "+ Själva färjeturen är trevlig och enkel.",
+              "- Hamnen och staden Neapel passar inte alla – vissa känner sig tryggare på andra alternativ.",
+              "- Färjorna går inte lika ofta som andra transportmedel.",
+              "- Färjan kostar mer än tåget eller bussen."
+            ]
+          },
+          "toHostel": {
+            "heading": "När du reser till vandrarhemmet",
+            "points": [
+              "+ Lämna väskorna till bärarna för en bekvämare resa.",
+              "+ Själva färjeturen är trevlig och enkel.",
+              "- Hamnen och staden Neapel passar inte alla – vissa känner sig tryggare på andra alternativ.",
+              "- Färjorna går inte lika ofta som andra transportmedel.",
+              "- Färjan kostar mer än kombinationen tåg och buss.",
+              "- Det är enklare att komma till vandrarhemmet med SITA-buss än via färja, eftersom sträckan upp från hamnen är ganska ansträngande – även med Positanos Interno-buss och bärarhjälp."
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sorrento": {
+    "title": "Sorrento",
+    "links": [
+      {
+        "label": "Från Sorrento med buss",
+        "href": "sorrento-positano-bus",
+        "internal": true
+      },
+      {
+        "label": "Till Sorrento med buss",
+        "href": "positano-sorrento-bus",
+        "internal": true
+      },
+      {
+        "label": "Från Sorrento med färja",
+        "href": "sorrento-positano-ferry",
+        "internal": true
+      },
+      {
+        "label": "Till Sorrento med färja",
+        "href": "positano-sorrento-ferry",
+        "internal": true
+      }
+    ]
+  },
+  "filters": {
+    "title": "Filtrera rutter",
+    "transportLabel": "Transporttyp",
+    "transportAll": "Alla",
+    "transportModes": {
+      "bus": "Buss",
+      "ferry": "Färja",
+      "train": "Tåg",
+      "car": "Bil / Taxi",
+      "walk": "Promenad"
+    },
+    "directionLabel": "Riktning",
+    "directionAll": "Alla",
+    "directionTo": "Till Positano",
+    "directionFrom": "Från Positano",
+    "helper": "Använd filtren för att anpassa resvägarna till din resa.",
+    "activeLabel": "Aktiva filter",
+    "clearLabel": "Rensa filter",
+    "noResults": "Inga rutter matchar dina filter."
+  },
+  "romePlanner": {
+    "title": "Rome ↔ Positano: How to Travel",
+    "subtitle": "Pick a direction, set your preferences, and we’ll suggest a route.",
+    "directionPrompt": "Pick a direction",
+    "tabs": {
+      "from": "From Rome → Hostel",
+      "to": "From Hostel → Rome"
+    },
+    "reco": {
+      "title": "Best match for your picks",
+      "why": "Why this route?"
+    },
+    "otherMatches": "Other matches for your pick",
+    "disclaimer": "Always check operators for latest schedules and availability. Crowding and journey times vary by season.",
+    "pref": {
+      "prompt": "Any preference?",
+      "cheapest": {
+        "label": "Cheapest",
+        "description": "Prioritize lower cost over comfort."
+      },
+      "scenic": {
+        "label": "Scenic",
+        "description": "Prioritize sea views (ferries)."
+      },
+      "heavyPrefix": "I have",
+      "heavy_luggage": {
+        "label": "Heavy luggage",
+        "description": "Minimize uphill walks and stairs with bags."
+      }
+    },
+    "route": {
+      "naples": {
+        "busTrain": {
+          "title": "Via Naples — Bus + Train",
+          "summary": {
+            "from": "Bus to Sorrento → train to Naples → train to Rome.",
+            "to": "Train to Naples → train to Sorrento → bus to Positano."
+          },
+          "steps": {
+            "from": {
+              "1": "Bus Positano → Sorrento (drops at Sorrento train station).",
+              "2": "Local train Sorrento → Naples (arrive at Naples train station).",
+              "3": "Train Naples → Rome."
+            },
+            "to": {
+              "1": "Train Rome → Naples (arrive at Naples train station).",
+              "2": "Local train Naples → Sorrento (arrive at Sorrento bus station).",
+              "3": "Bus Sorrento → Positano (stop close to the hostel)."
+            }
+          }
+        },
+        "ferry": {
+          "title": "Via Naples — Ferry",
+          "summary": {
+            "from": "Positano port → ferry to Naples → tram to station → train to Rome.",
+            "to": "Train to Naples → tram to port → ferry to Positano."
+          },
+          "steps": {
+            "from": {
+              "1": "Positano → port (porters can help with bags).",
+              "2": "Ferry Positano → Naples.",
+              "3": "Tram Naples port → train station.",
+              "4": "Train Naples → Rome."
+            },
+            "to": {
+              "1": "Train Rome → Naples (arrive at Naples station).",
+              "2": "Tram Naples station → port.",
+              "3": "Ferry Naples → Positano.",
+              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+            }
+          }
+        }
+      },
+      "salerno": {
+        "bus": {
+          "title": "Via Salerno — Bus (to/from Salerno)",
+          "summary": {
+            "from": "Bus Positano → Amalfi (change) → Salerno → train to Rome.",
+            "to": "Train to Salerno → bus to Amalfi (change) → Positano."
+          },
+          "steps": {
+            "from": {
+              "1": "Bus Positano → Amalfi (change buses in Amalfi).",
+              "2": "Bus Amalfi → Salerno (drops at Salerno train station).",
+              "3": "Train Salerno → Rome."
+            },
+            "to": {
+              "1": "Train Rome → Salerno (arrive at Salerno train station).",
+              "2": "Bus Salerno → Amalfi (change buses in Amalfi).",
+              "3": "Bus Amalfi → Positano (short walk to hostel)."
+            }
+          }
+        },
+        "ferry": {
+          "title": "Via Salerno — Ferry",
+          "summary": {
+            "from": "Positano port → ferry to Salerno → short walk to station → train to Rome.",
+            "to": "Train to Salerno → short walk to port → ferry to Positano."
+          },
+          "steps": {
+            "from": {
+              "1": "Positano → port (porters can help with bags).",
+              "2": "Ferry Positano → Salerno.",
+              "3": "Walk Salerno port → train station.",
+              "4": "Train Salerno → Rome."
+            },
+            "to": {
+              "1": "Train Rome → Salerno (arrive at Salerno station).",
+              "2": "Walk to Salerno port.",
+              "3": "Ferry Salerno → Positano.",
+              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+            }
+          }
+        }
+      }
+    },
+    "note": {
+      "salerno": {
+        "walkPortStation": "Walk between Salerno’s port and train station (short, straightforward)."
+      },
+      "naples": {
+        "tramPortStation": "Take the tram between Naples port and the train station."
+      }
+    },
+    "pro": {
+      "posBusNearHostel": "Positano bus stop close to the hostel.",
+      "busDropsSorrentoStation": "Bus drops you right at the train station in Sorrento.",
+      "cheapBusTrain": "Bus and train are both very cheap.",
+      "arriveNaplesStation": "You arrive right at the train station in Naples.",
+      "easySwapNaples": "Swapping trains in Naples is relatively easy.",
+      "trainDropsSorrentoBusStation": "Train drops you right at the bus station in Sorrento.",
+      "salerno": {
+        "busStopNearHostel": "The Positano bus stop is just a short walk from the hostel."
+      },
+      "busCollectsSalernoStation": "Bus collects you right at the train station in Salerno.",
+      "busDropsSalernoStation": "Bus drops you right at the train station in Salerno.",
+      "busCheap": "Bus is very cheap.",
+      "portersHelp": "Giving your bags to the porters allows you to travel more comfortably and easily.",
+      "ferryEnjoyableEasy": "The ferry journey itself is enjoyable and easy.",
+      "shortWalkSalernoStationPort": "The walk from Salerno’s Train Station to the port is short and straightforward."
+    },
+    "con": {
+      "changeBusToTrain": "Have to change from bus to train.",
+      "crowdedBusTrain": "Bus and train are both usually crowded.",
+      "fewHours": "Takes a few hours.",
+      "changeTrainToBusSorrento": "Have to change from train to bus in Sorrento.",
+      "busUsuallyCrowded": "Bus is usually crowded.",
+      "ferryCostHigherBus": "The cost of taking the ferry is higher than the cost of taking the bus.",
+      "hostelEasierBySita": "Arriving at the hostel via SITA bus is easier than arriving by ferry (the journey from the port is quite laborious — even with Positano’s Interno Bus and porters).",
+      "naplesPortComfort": "The port and city of Naples may not be suitable for everyone, as some people may not feel comfortable there.",
+      "ferriesLessFrequent": "Ferries do not run as frequently as other transportation options.",
+      "ferryCostHigherTrainBus": "The cost of taking the ferry is higher than the cost of taking the train or bus.",
+      "changeBusesAmalfi": "Have to change buses in Amalfi."
+    },
+    "tag": {
+      "cheap": "Budget",
+      "directish": "Simple",
+      "scenic": "Scenic",
+      "transfer": "Transfer",
+      "bus": "Bus",
+      "train": "Train",
+      "ferry": "Ferry"
+    },
+    "reasons": {
+      "cheapest": {
+        "busTrain": "Cheapest → bus/train options are very cheap.",
+        "ferry": "Cheapest → ferry costs higher than bus/train."
+      },
+      "fewest_changes": {
+        "busTrain": "Fewest changes → bus + train requires a mode change.",
+        "bus": "Fewest changes → bus route changes in Amalfi."
+      },
+      "scenic": {
+        "ferry": "Scenic → ferry journey is enjoyable and easy."
+      },
+      "heavy_luggage": {
+        "ferryFromRome": "Heavy luggage → arriving via ferry from the port is more laborious.",
+        "busStopClose": "Heavy luggage → Positano bus stop is close to the hostel."
+      }
+    },
+    "ui": {
+      "showDetails": "Show details",
+      "hideDetails": "Hide details",
+      "steps": "Steps",
+      "notes": "Notes",
+      "pros": "Pros",
+      "cons": "Cons"
+    }
+  },
+  "experienceGuides": {
+    "eyebrow": "Experience planners",
+    "title": "Experience routes with built-in directions",
+    "description": "These experiences combine the on-trail highlights with the exact transfers you need to leave and return to Hostel Brikette. Open one when you want the itinerary and the transport plan in the same guide.",
+    "items": [
+      {
+        "guideKey": "pathOfTheGodsFerry",
+        "label": "Path of the Gods via Amalfi (ferry + hike)",
+        "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
+        "transportModes": [
+          "ferry",
+          "bus",
+          "walk"
+        ]
+      },
+      {
+        "guideKey": "pathOfTheGodsBus",
+        "label": "Path of the Gods via Amalfi (bus + hike)",
+        "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
+        "transportModes": [
+          "bus",
+          "walk"
+        ]
+      },
+      {
+        "guideKey": "pathOfTheGodsNocelle",
+        "label": "Path of the Gods via Nocelle shuttle",
+        "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
+        "transportModes": [
+          "bus",
+          "walk"
+        ]
+      }
+    ]
+  },
+  "breadcrumbs": {
+    "itemTitleFallback": "Directions"
+  },
+  "galleries": {
+    "defaultAlt": "Directions photo"
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Menu do Bar (2025)",
+    "description": "Descubra as nossas bebidas: cervejas, vinhos, cocktails, misturas e refrigerantes."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Menu do Bar 2025",
+    "hours": "Aberto diariamente (consulte os horários no bar)"
+  },
+  "intro": {
+    "summary": "Veja um panorama rápido da nossa seleção. Para mais detalhes, sugestões especiais e preços atualizados, consulte o menu completo.",
+    "viewFullMenuButton": "Ver menu completo do bar"
+  },
+  "sections": {
+    "spritzFrozen": {
+      "title": "Spritz e Frozen"
+    },
+    "houseWine": {
+      "title": "Vinho da casa"
+    },
+    "beer": {
+      "title": "Cerveja"
+    },
+    "vodka": {
+      "title": "Cocktails com vodka",
+      "note": "O preço inclui um mixer à escolha: tónica, coca-cola, coca-cola zero ou sprite."
+    },
+    "rum": {
+      "title": "Cocktails com rum",
+      "note": "Escolha o rum preferido e diga-nos se quer adicionar um mixer com cafeína. O café pode ser servido gelado ou quente, como espresso ou lungo/americano."
+    },
+    "gin": {
+      "title": "Cocktails com gin",
+      "note": "Servido com água tónica Schweppes, sobre gelo picado e decorado com um delicioso limão da Costa Amalfitana."
+    },
+    "whisky": {
+      "title": "Whisky",
+      "note": "Escolha entre os nossos whiskies e indique se precisa de gelo, água ou um mixer com cafeína. O café pode ser servido gelado ou quente, como espresso ou lungo/americano."
+    },
+    "shots": {
+      "title": "Shots"
+    },
+    "gelato": {
+      "title": "Gelado"
+    }
+  },
+  "items": {
+    "aperolSpritz": {
+      "name": "Aperol Spritz",
+      "note": "O clássico spritz italiano, servido com gelo picado."
+    },
+    "limoncelloSpritz": {
+      "name": "Limoncello Spritz",
+      "note": "Especialidade da Costa Amalfitana, servida com gelo picado."
+    },
+    "hugoSpritz": {
+      "name": "Hugo Spritz",
+      "note": "Espumante servido sobre hortelã, lima e sumo de flor de sabugueiro, acompanhado de gelo picado."
+    },
+    "rossiniSpritz": {
+      "name": "Rossini Spritz",
+      "note": "Espumante servido sobre sumo de morango, acompanhado de gelo picado."
+    },
+    "lemonStrawberryDaiquiri": {
+      "name": "Daiquiri de limão ou morango"
+    },
+    "lemonStrawberryMargarita": {
+      "name": "Margarita de limão ou morango",
+      "note": "Sumo de morango ou limão com tequila, Cointreau e gelo, finalizado no estilo clássico da margarita."
+    },
+    "lemonDropMartini": {
+      "name": "Lemon Drop Martini",
+      "note": "Sumo de limão espremido na hora agitado com vodka Absolut, Cointreau e gelo."
+    },
+    "redWhiteGlass": {
+      "name": "Vinho tinto/branco (taça)"
+    },
+    "redWhiteBottle": {
+      "name": "Vinho tinto/branco (garrafa)"
+    },
+    "proseccoGlass": {
+      "name": "Taça de Prosecco"
+    },
+    "nastro330": {
+      "name": "Nastro 330 ml"
+    },
+    "nastro660": {
+      "name": "Nastro 660 ml"
+    },
+    "peroni330": {
+      "name": "Peroni 330 ml"
+    },
+    "peroni660": {
+      "name": "Peroni 660 ml"
+    },
+    "skyy": {
+      "name": "Skyy"
+    },
+    "absolut": {
+      "name": "Absolut"
+    },
+    "smirnoff": {
+      "name": "Smirnoff"
+    },
+    "greyGoose": {
+      "name": "Grey Goose"
+    },
+    "pampero": {
+      "name": "Pampero"
+    },
+    "bacardiSuperior": {
+      "name": "Bacardi Superior"
+    },
+    "captainMorgan": {
+      "name": "Captain Morgan"
+    },
+    "angosturaReserva": {
+      "name": "Angostura Reserva"
+    },
+    "beefeater": {
+      "name": "Beefeater"
+    },
+    "bombaySapphire": {
+      "name": "Bombay Sapphire"
+    },
+    "tanqueray": {
+      "name": "Tanqueray"
+    },
+    "hendricks": {
+      "name": "Hendrick's"
+    },
+    "jwRed": {
+      "name": "Johnnie Walker Red Label (whisky escocês blended)"
+    },
+    "jameson": {
+      "name": "Jameson (irlandês)"
+    },
+    "jackDaniels": {
+      "name": "Jack Daniel's Old No.07 (whisky Tennessee sour mash)"
+    },
+    "wildTurkey": {
+      "name": "Wild Turkey (bourbon)"
+    },
+    "chivas12": {
+      "name": "Chivas Regal 12 anos (whisky escocês blended)"
+    },
+    "glenfiddich12": {
+      "name": "Glenfiddich 12 anos (single malt)"
+    },
+    "joseCuervoSilver": {
+      "name": "Jose Cuervo Tequila Silver",
+      "note": "Servido simples com limão e sal, como Tequila Sunrise ou com soda/sprite."
+    },
+    "limoncelloShot": {
+      "name": "Limoncello",
+      "note": "Licor clássico do sul de Itália, servido simples."
+    },
+    "oneScoop": {
+      "name": "1 bola"
+    },
+    "twoScoops": {
+      "name": "2 bolas"
+    },
+    "threeScoops": {
+      "name": "3 bolas",
+      "note": "Escolha entre sabores de limão, chocolate, baunilha e avelã."
+    }
+  },
+  "disclaimer": "As opções e os preços podem mudar. Confirme no bar."
+}

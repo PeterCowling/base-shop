@@ -1,0 +1,53 @@
+{
+  "meta": {
+    "title": "Positanóból Szorrentóba komppal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató a Positano–Szorrento kompúthoz: séta a mólóhoz, jegyvásárlás, beszállási tippek és tudnivalók a szorrentói Marina Piccolába érkezéskor."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Positanóból Szorrentóba — komp",
+    "description": "Szállj fel közvetlen kompra Positano Spiaggia Grande mólójáról Szorrentóba. Ez a rövid útmutató bemutatja a mólóhoz vezető sétát, a jegyvásárlási lehetőségeket, beszállási tippeket és azt, mire számíts a szorrentói kikötőben."
+  },
+  "cta": {
+    "label": "Tipp",
+    "copy": "Szeretnéd ismerni az összes közlekedési opciót? Nyisd meg a <link>Hogyan juthatsz el hozzánk áttekintést</link> buszokhoz, taxikhoz és kombinált útvonalakhoz."
+  },
+  "journeyOverview": {
+    "title": "Az út áttekintése",
+    "items": [
+      "Szezonban nagyjából 45–60 perc a két kikötő közötti idő.",
+      "A kompok időjárásfüggők, csúcsidőben pedig gyorsan megtelhetnek.",
+      "A korai jegyvásárlás segít biztosítani a helyet és gördülékennyé teszi a beszállást."
+    ]
+  },
+  "walkToPier": {
+    "title": "Séta a positanói mólóhoz",
+    "items": [
+      "A Hostel Brikette-től indulj lefelé a Spiaggia Grande (fő strand/móló) irányába.",
+      "Ha nehéz csomagod van, fontold meg a mólón elérhető hivatalos porter szolgáltatás igénybevételét.",
+      "Jegyet a vízparti pénztáraknál vagy az üzemeltetők weboldalain (például Travelmar, NLG) vehetsz."
+    ],
+    "note": "Időpontokat és árakat a <positano>Positano.com – kompmenetrend</positano> oldalon, illetve az olyan szolgáltatók webhelyein találsz, mint a <travelmar>Travelmar</travelmar> vagy az <nlg>NLG</nlg>."
+  },
+  "boarding": {
+    "title": "Jegyvásárlás és beszállás",
+    "items": [
+      "Érkezz 20–30 perccel indulás előtt, hogy nyugodtan sorban állhass és beválthasd az esetleges vouchereket.",
+      "Tartsd kéznél a jegyed, és kövesd a személyzet utasításait a beszálláskor.",
+      "A nagyobb csomagokat helyezd a kijelölt csomagmegőrzőbe; az értékeket tartsd magadnál."
+    ]
+  },
+  "arrival": {
+    "title": "Érkezés Szorrentóba",
+    "items": [
+      "A szorrentói Marina Piccola (kompkikötő) területén szállj le.",
+      "Kövesd a táblákat a város felé, vagy használd a helyi közlekedést, ha tovább utazol a szorrentói vasútállomásra.",
+      "Különösen estére és előszezonban nézd meg előre a továbbutazó vonatokat/buszokat."
+    ]
+  },
+  "externalLinks": {
+    "positano": "https://www.positano.com/en/ferry-schedule",
+    "travelmar": "https://travelmar.it/en",
+    "nlg": "https://www.nlg.it/"
+  }
+}

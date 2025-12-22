@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "Le prix inclut un mélangeur : tonic, Coca-Cola, Coca Zero ou Sprite."
+      },
+      "rum": {
+        "note": "Choisissez votre rhum et dites-nous si vous souhaitez ajouter un mélangeur caféiné. Le café peut être servi glacé ou chaud, en espresso ou en allongé/americano."
+      },
+      "gin": {
+        "note": "Servi avec du tonic Schweppes sur de la glace pilée et garni d’un citron de la côte amalfitaine."
+      },
+      "whisky": {
+        "note": "Choisissez dans notre sélection de whiskies et précisez si vous souhaitez de la glace, de l’eau ou un mélangeur caféiné. Le café peut être servi glacé ou chaud, en espresso ou en allongé/americano."
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "Le spritz italien classique, servi sur glace pilée."
+      },
+      "limoncelloSpritz": {
+        "note": "Une spécialité de la côte amalfitaine, servie sur glace pilée."
+      },
+      "hugoSpritz": {
+        "note": "Vin pétillant versé sur de la menthe, du citron vert et du sirop de fleur de sureau. Servi sur glace pilée."
+      },
+      "rossiniSpritz": {
+        "note": "Vin pétillant et jus de fraise, servi sur glace pilée."
+      },
+      "lemonStrawberryMargarita": {
+        "note": "Jus de fraise ou de citron avec tequila, Cointreau et glace, terminé dans le style margarita classique."
+      },
+      "lemonDropMartini": {
+        "note": "Jus de citron fraîchement pressé, mélangé à de la vodka Absolut, du Cointreau et de la glace."
+      },
+      "joseCuervoSilver": {
+        "note": "Servi nature avec citron et sel, en tequila sunrise ou avec soda/Sprite."
+      },
+      "limoncelloShot": {
+        "note": "Un classique du sud de l’Italie, servi nature."
+      },
+      "threeScoops": {
+        "note": "Choisissez entre citron, chocolat, vanille et noisette."
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "Pain perdu classique servi avec du sirop."
+      },
+      "nutellaFrenchToast": {
+        "note": "Pain perdu garni de Nutella."
+      },
+      "addEggComboItem": {
+        "note": "Choisissez un plat dans le menu œufs. Par exemple, pancakes au sirop doré avec des œufs brouillés pour 15,50 €."
+      },
+      "addAdditionalSyrup": {
+        "note": "Ajoutez un sirop supplémentaire. Par exemple, pancakes au sirop doré et Nutella pour 14 €."
+      },
+      "veggieToast": {
+        "note": "Toast garni de légumes de saison."
+      },
+      "healthyDelight": {
+        "note": "Parfait de yaourt, granola et compote de fruits maison."
+      },
+      "detoxMe": {
+        "note": "Épinards, concombre, gingembre et citron."
+      },
+      "energizeMe": {
+        "note": "Orange, carotte, gingembre et citron."
+      },
+      "multiV": {
+        "note": "Pomme, carotte, orange, citron, gingembre."
+      },
+      "orangeJuice": {
+        "note": "Jus d’orange fraîchement pressé."
+      }
+    }
+  }
+}

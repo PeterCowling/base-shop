@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "invalidGuideKey": "Chave de guia inválida",
+    "missingMetaBlock": "Bloco meta em falta",
+    "metaTitleRequired": "Meta.title tem de ser uma cadeia não vazia",
+    "metaDescriptionRequired": "Meta.description tem de ser uma cadeia não vazia"
+  }
+}

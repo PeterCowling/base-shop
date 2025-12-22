@@ -1,7 +1,10 @@
 {
   "freezeTranslations": false,
+  "leadCapture": {
+    "enabled": true
+  },
   "currency": "EUR",
-  "taxRegion": "EU",
+  "taxRegion": "",
   "languages": [
     "en",
     "de",
@@ -9,7 +12,7 @@
   ],
   "seo": {
     "aiCatalog": {
-      "enabled": false,
+      "enabled": true,
       "fields": [
         "id",
         "title",
@@ -20,18 +23,8 @@
       "pageSize": 50
     },
     "en": {
-      "title": {
-        "type": "inline",
-        "value": {
-          "en": "t"
-        }
-      },
-      "description": {
-        "type": "inline",
-        "value": {
-          "en": "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-        }
-      }
+      "title": "t",
+      "description": "ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
     }
   },
   "depositService": {
@@ -39,10 +32,6 @@
     "intervalMinutes": 60
   },
   "reverseLogisticsService": {
-    "enabled": true,
-    "intervalMinutes": 30
-  },
-  "lateFeeService": {
     "enabled": false,
     "intervalMinutes": 60
   },

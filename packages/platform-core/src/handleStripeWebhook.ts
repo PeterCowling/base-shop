@@ -11,6 +11,11 @@ import chargeSucceeded from "./webhookHandlers/chargeSucceeded";
 import reviewOpened from "./webhookHandlers/reviewOpened";
 import reviewClosed from "./webhookHandlers/reviewClosed";
 import radarEarlyFraudWarning from "./webhookHandlers/radarEarlyFraudWarning";
+import {
+  markStripeWebhookEventFailed,
+  markStripeWebhookEventProcessed,
+  wasStripeWebhookEventProcessed,
+} from "./stripeWebhookEventStore";
 
 const noop = async () => {};
 
@@ -32,10 +37,18 @@ export async function handleStripeWebhook(
   shop: string,
   event: Stripe.Event,
 ): Promise<void> {
+  const eventId = typeof event.id === "string" && event.id.length ? event.id : undefined;
+  if (eventId && (await wasStripeWebhookEventProcessed(eventId))) return;
   const handler =
     handlers[event.type] ||
     (event.type.startsWith("radar.early_fraud_warning.")
       ? radarEarlyFraudWarning
       : noop);
-  await handler(shop, event);
+  try {
+    await handler(shop, event);
+    if (eventId) await markStripeWebhookEventProcessed(shop, event);
+  } catch (err) {
+    if (eventId) await markStripeWebhookEventFailed(shop, event, err);
+    throw err;
+  }
 }

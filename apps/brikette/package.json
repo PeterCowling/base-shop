@@ -1,0 +1,31 @@
+{
+  "name": "@apps/brikette",
+  "private": true,
+  "scripts": {
+    "dev": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next dev -p 3012",
+    "build": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next build",
+    "start": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next start -p 3012",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs --passWithNoTests"
+  },
+  "dependencies": {
+    "@acme/next-config": "workspace:*",
+    "@acme/ui": "workspace:*",
+    "@headlessui/react": "^2.2.3",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
+    "fuse.js": "^7.1.0",
+    "i18next": "^24.2.3",
+    "i18next-resources-to-backend": "^1.2.1",
+    "lucide-react": "^0.511.0",
+    "next": "^15.3.5",
+    "react": "19.1.0",
+    "react-datepicker": "^8.3.0",
+    "react-dom": "19.1.0",
+    "react-i18next": "^15.5.3",
+    "swiper": "^11.2.6",
+    "web-vitals": "^5.0.2",
+    "zod": "^3.25.73"
+  }
+}

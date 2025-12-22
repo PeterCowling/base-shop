@@ -1,0 +1,25 @@
+{
+  "slug": "defects-damages",
+  "meta": {
+    "title": "Defects and Damages Guide for Positano Hostel",
+    "description": "Understand how to report room defects, our response to serious issues, damage deposit policies, guest liability, and essential information on bed-bug prevention at Positano's exclusive hostel."
+  },
+  "headings": {
+    "reportingDefects": "Reporting Defects",
+    "assessingDefects": "Assessing Defects",
+    "responseToSeriousDefects": "Response to Serious Defects",
+    "unreportedDefects": "Unreported Defects",
+    "damagesPolicy": "Damages Policy",
+    "bedBugsPolicy": "Bed-Bugs Policy",
+    "bedBugsPrevention": "Bed-Bugs Prevention"
+  },
+  "content": {
+    "reportingDefects": "If you notice any issue or defect in your room, please inform us immediately. Your prompt notification helps us quickly address and resolve the problem.",
+    "assessingDefects": "Once you report a defect, we'll assess the issue promptly and prioritize our response based on how significantly it impacts your comfort and stay.",
+    "responseToSeriousDefects": "If there's a serious defect that cannot be immediately repaired, we'll provide alternative accommodation. If the alternative is cheaper than your booked room, we'll refund you the price difference. If you decide not to accept our alternative, you can request a pro-rata refund for the remaining nights of your stay.",
+    "unreportedDefects": "If we discover an issue in your room that you haven't reported within a reasonable timeframe, we will evaluate any resulting damages, and our damage policy may be applied.",
+    "damagesPolicy": "For your security and ours, we may pre-authorize your credit card or request a cash deposit at check-in to cover potential damages or losses. If you cannot provide a deposit or pre-authorization, your reservation may be canceled. Deposits are fully refundable at checkout, minus charges for any damages, losses, labour, or administrative expenses incurred. If these charges exceed your deposit, you will be responsible for the additional costs. Labour rates for repairs or cleanup are billed hourly: Director (€50/hour), Manager (€35/hour), and Staff (€25/hour).",
+    "bedBugsPolicy": "We proactively manage and promptly address any bed-bug issues. However, if bed bugs are found in your room during your stay, you may be held responsible for associated costs, such as lost booking revenue, cleaning expenses, and pest control. Please immediately report any bed-bug signs to our staff.",
+    "bedBugsPrevention": "To help prevent bed-bug issues, please:\n• Inform us at check-in if you've recently stayed somewhere with known bed-bug problems.\n• Thoroughly disinfect your belongings.\n• Carefully inspect your luggage and clothing for bed bugs before entering your room."
+  }
+}

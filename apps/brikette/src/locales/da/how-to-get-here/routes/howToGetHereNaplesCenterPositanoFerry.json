@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "title": "Napoli centrum til Positano med færge | Hostel Brikette",
+    "description": "Trin for trin fra det centrale Napoli til Positano med færge: transport til havnen, billetter, ombordstigning og tips til ankomsten."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Napoli centrum til Positano — færge",
+    "description": "Brug denne vejledning til at rejse fra Napoli centrum til Positano udelukkende ad søvejen. Guiden dækker den korte tur fra Napoli Centrale til havnen, køb af færgebilletter, ombordstigning og hvad du kan forvente, når du ankommer til Positanos mole."
+  },
+  "tip": {
+    "label": "Tip",
+    "copy": "Leder du efter andre ruter eller en backup ved hårdt vejr? Åbn <link>oversigten over Sådan kommer du hertil</link>."
+  },
+  "sections": {
+    "journey": {
+      "title": "Rejseoverblik",
+      "body": "Færger mellem Napoli og Positano sejler hyppigst i foråret og sommeren og kan blive aflyst ved dårligt vejr. Den samlede rejsetid er typisk 1,5–2,5 time afhængigt af fartøjstype og ventetid i havnen."
+    },
+    "transfer": {
+      "title": "Sådan kommer du fra Napoli Centrale til havnen",
+      "intro": "Den hurtigste offentlige transport er sporvogn 1 fra Piazza Garibaldi til Municipio (for Molo Beverello) eller Marittima (for Porta di Massa). En taxi er også enkel og prisvenlig for grupper.",
+      "items": [
+        "Fra Napoli Garibaldi/Centrale følger du skiltene til sporvognsstoppet på Piazza Garibaldi.",
+        "Tag sporvogn 1 i retning mod “Municipio/Porto”.",
+        "Stå af ved “Municipio” til Molo Beverello (hurtige hydrofoils) eller “Marittima” til Porta di Massa (langsommere færger)."
+      ],
+      "map": "Se en eksempelrute på <map>Google Maps (sporvogn til havnen)</map>."
+    },
+    "tickets": {
+      "title": "Færgebilletter og operatører",
+      "items": [
+        "Køb online på forhånd eller i billetkontorerne ved Molo Beverello; der kan dannes køer om sommeren.",
+        "Medbring billed-id, hvis du bruger e-billet; personale kan tjekke før ombordstigning.",
+        "Afgange kan blive aflyst ved hård sø; afgange om morgenen er normalt mest pålidelige."
+      ],
+      "copy": "Færgetider og priser: <capri>Capri.net – Napoli ↔ Positano</capri>. Du kan også sammenligne operatørerne på <positano>Positano.com (samlet køreplan)</positano>."
+    },
+    "boarding": {
+      "title": "Ombordstigning i havnen",
+      "body": "Ankom til molen 20–30 minutter før afgang for at ombytte eventuelle bookingbeviser og komme i kø. Følg personalets instruktioner om bagageplacering, og hold øje med gangbroen, når den bevæger sig med bølgerne."
+    },
+    "arrival": {
+      "title": "Ankomst til Positano",
+      "items": [
+        "Gå i land ved Positano Spiaggia Grande-molen.",
+        "Havneportere kan bære bagage mod betaling; aftal prisen, før du afleverer taskerne.",
+        "Færger ankommer i havniveau; forvent trapper opad. Overvej den lokale Interno-bus fra havnen for færre trapper."
+      ],
+      "copy": "Se vores trin-for-trin-guide for en bagagevenlig rute fra molen til Hostel Brikette: <link>Færgemole → Hostel Brikette</link>."
+    },
+    "fallback": {
+      "title": "Hvis færgerne er aflyst",
+      "body": "Bliver afgangen aflyst på grund af vejr eller søforhold, kan du skifte til tog- og busruten via Sorrento. Det tager længere tid, men kører i de fleste forhold.",
+      "cta": "Brug denne backup: <link>Napoli centrum → Positano med tog og bus</link>."
+    }
+  },
+  "externalLinks": {
+    "map": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4",
+    "capri": "https://www.capri.net/en/t/napoli/positano",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

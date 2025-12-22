@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Bus from Hostel Brikette to Positano's main beach",
+    "description": "How to ride the orange interno bus downhill to Piazza dei Mulini and stroll to Spiaggia Grande."
+  },
+  "linkLabel": "Bus down to Positano's main beach",
+  "intro": [
+    "Xe buýt màu cam Interno Positano nối Hostel Brikette với quảng trường Piazza dei Mulini, cách Spiaggia Grande một quãng đi bộ ngắn.",
+    "Thực hiện theo các bước sau để mua vé tại tabacchi, đi xuống dốc và đi bộ vào những phút cuối cùng."
+  ],
+  "sections": [
+    {
+      "id": "reach-the-stop",
+      "title": "Đến điểm dừng Chiesa Nuova",
+      "body": [
+        "Ra khỏi khách sạn giá rẻ, đi xuống cầu thang phía trước và rẽ trái dọc theo Viale Pasitea.",
+        "Sau khoảng 100 mét (330 feet), đi đến góc bên phải đầu tiên bên cạnh tabacchi/quầy báo — trạm xe buýt Chiesa Nuova nằm ngay bên ngoài.",
+        "Đi vào bên trong trước khi lên máy bay để mua vé Interno Positano trước; nó rẻ hơn và tránh sự chậm trễ tại cửa."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Đi xe buýt Interno Positano xuống dốc",
+      "body": [
+        "Lên xe buýt mini màu cam được đánh dấu \"Interno Positano\". Các kiểu xe khác nhau chạy trên tuyến đường, nhưng điểm đến trên biển báo điện tử vẫn giữ nguyên.",
+        "Tiếp tục đi khi xe buýt đi qua các con đường bên sườn đồi của Positano và đi xuống trung tâm thị trấn."
+      ]
+    },
+    {
+      "id": "piazza-dei-mulini",
+      "title": "Xuống tại Piazza dei Mulini",
+      "body": [
+        "Xuống xe tại Piazza dei Mulini, điểm dừng trung tâm trong khu mua sắm gần hiệu thuốc.",
+        "Đây là điểm thấp nhất trong thành phố mà các phương tiện có thể đến và đưa bạn đến trong vòng vài phút từ bờ sông."
+      ]
+    },
+    {
+      "id": "final-walk",
+      "title": "Đi bộ đoạn đường cuối cùng đến bãi biển",
+      "body": [
+        "Đi thẳng bên dưới cổng vòm bên cạnh quảng trường và đi theo lối đi dạo về phía cảng.",
+        "Trong vòng 3–4 phút, Spiaggia Grande mở cửa ở bên trái của bạn — sử dụng %LINK:positanoMainBeachWalkDown|hướng dẫn đi bộ% nếu bạn muốn kiểm tra từng cầu thang."
+      ]
+    }
+  ],
+  "tipsTitle": "Lời khuyên về xe buýt",
+  "tips": [
+    "Mua vé interno tại tabacchi trước khi xếp hàng; mua hàng trên tàu có giá cao hơn một chút và tài xế đôi khi bán hết vé.",
+    "Chụp màn hình thời gian biểu từ quầy lễ tân hoặc nhân viên trợ giúp kỹ thuật số — các dịch vụ buổi tối muộn mỏng đi trong mùa vai.",
+    "Chuyển sang %LINK:positanoMainBeachWalkDown|tuyến đường đi bộ% nếu bạn muốn duỗi chân trên đường đi xuống."
+  ]
+}

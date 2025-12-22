@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Capri mit kleinem Budget",
+    "description": "Capri preiswert erleben: Fähren, kostenlose Aussichtspunkte, Strände und günstiges Essen."
+  },
+  "linkLabel": "Capri mit kleinem Budget",
+  "intro": [
+    "Ein Tagesausflug nach Capri bleibt erschwinglich, wenn du Fähren, Aussichtspunkte und Mahlzeiten im Voraus planst."
+  ],
+  "sections": [
+    {
+      "id": "ferries",
+      "title": "Fähren & Timing",
+      "body": [
+        "Buche in der Hochsaison frühe Fähren und peile eine Rückfahrt am frühen Nachmittag an, um den letzten-Andrang zu vermeiden."
+      ]
+    },
+    {
+      "id": "free-views",
+      "title": "Kostenlose Aussichtspunkte",
+      "body": [
+        "Giardini di Augusto (kleiner Eintritt), Anacapri-Aussichten und die Viewpoints in Marina Piccola bieten große Kulissen für wenig Geld."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Strandoptionen",
+      "body": [
+        "Es gibt öffentliche Strandabschnitte; bring eigenes Handtuch und Wasser mit, um Mieten zu sparen."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Günstig essen",
+      "body": [
+        "Hol dir Panini oder Pizza al taglio in Hafennähe und meide längere Mittagessen in den belebtesten Gassen."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Lohnt sich die Blaue Grotte mit kleinem Budget?",
+      "a": [
+        "Sie ist ein teurer Zusatz und wetterabhängig; der Sessellift in Anacapri ist die günstigere Attraktion."
+      ]
+    }
+  ]
+}

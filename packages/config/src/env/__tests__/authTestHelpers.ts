@@ -10,6 +10,8 @@ import {
 export const STRONG_TOKEN = "token-value-32-chars-long-string!!";
 export const JWT_SECRET = "jwt-secret-32-chars-long-string!!!";
 export const OAUTH_SECRET = "oauth-secret-32-chars-long-string!!";
+export const OAUTH_ISSUER = "https://auth.example.com/realms/base-shop";
+export const OAUTH_REDIRECT_ORIGIN = "https://shop.example.com";
 
 export type EnvOverrides = Record<string, string | undefined>;
 
@@ -17,10 +19,14 @@ const baseProdEnv: EnvOverrides = {
   NODE_ENV: "production",
   NEXTAUTH_SECRET: NEXT_SECRET,
   SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
 };
 
 const baseDevEnv: EnvOverrides = {
   NODE_ENV: "development",
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
 };
 
 const baseTestEnv: EnvOverrides = {

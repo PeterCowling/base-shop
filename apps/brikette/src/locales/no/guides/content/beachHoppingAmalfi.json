@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Strandhopping på Amalfikysten",
+    "description": "Hvilke strender du kan kombinere på en dag, tilgjengelighet og kostnader."
+  },
+  "linkLabel": "Strandhopping på Amalfikysten",
+  "intro": [
+    "Planlegg en strandhopping-dag som balanserer ferjeturer, klippeutsikt og rolige timer i sanden."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Morgen: Positano til Fornillo",
+      "body": [
+        "Start tidlig på Spiaggia Grande for et raskt bad, og gå deretter kyststien til Fornillo før kl. 09:30 for roligere vann.",
+        "Bestill solsenger på forhånd hvis du vil ha skygge; ellers ta med en lett paraply."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Midt på dagen: Amalfi eller Atrani",
+      "body": [
+        "Ta en sen formiddagsferje til Amalfi og spis lunsj på kaien før du bader på bystranden eller i den lille bukten i Atrani.",
+        "Sett fra deg bagasjen på oppbevaringen i Amalfi slik at du kan utforske uten å bære tungt."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Kveld: Solnedgangsbad",
+      "body": [
+        "Avslutt på Laurito eller Arienzo for gyllent lys; begge vender mot vest og har færre folk etter kl. 17.",
+        "Ta siste ferje eller bestill taxi tilbake for å slippe oppoverbakker i mørket."
+      ]
+    }
+  ],
+  "tips": [
+    "Ha med et hurtigtørkende håndkle og skift slik at du holder deg komfortabel på ferjene.",
+    "Pakk snacks og minst én liter vann – strandkioskene kan gå tomme på travle dager."
+  ],
+  "faqs": [
+    {
+      "q": "Må jeg forhåndsbestille solsenger?",
+      "a": [
+        "Ja, i juli–august. Kontakt strandklubbene via WhatsApp dagen før for å sikre plass på første rad."
+      ]
+    },
+    {
+      "q": "Kan jeg ta med egen mat?",
+      "a": [
+        "De fleste gratisområder tillater piknik. Strandklubber godtar som regel små snacks, men vil ofte at du kjøper drikke i baren."
+      ]
+    }
+  ]
+}

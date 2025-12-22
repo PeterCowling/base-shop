@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "title": "Salerno a Positano en ferry | Hostel Brikette",
+    "description": "Salerno a Positano en ferry: horarios, consejos para los billetes y cómo llegar al Hostel Brikette desde el puerto utilizando porteadores o el autobús local."
+  },
+  "header": {
+    "eyebrow": "Guía de viaje del Hostel Brikette",
+    "title": "Salerno a Positano — Ferry",
+    "description": "Usa esta guía para viajar de Salerno a Positano en ferry. Incluye billetes, dónde embarcar en Salerno, consejos sobre horarios y cómo llegar al Hostel Brikette desde el muelle de Positano."
+  },
+  "tip": {
+    "label": "Consejo",
+    "body": "¿Necesitas otras opciones de transporte? Abre la <GuideLink>guía general Cómo llegar</GuideLink> para buses, rutas combinadas y traslados desde el aeropuerto."
+  },
+  "sections": {
+    "overview": {
+      "title": "Resumen del viaje",
+      "points": [
+        "Los ferris estacionales conectan Salerno con Positano y ofrecen vistas panorámicas de la costa.",
+        "Travelmar opera los servicios más frecuentes; deja tiempo adicional en temporada alta.",
+        "Los ferris pueden cancelarse con mal tiempo; consulta siempre los avisos en directo antes de viajar."
+      ]
+    },
+    "tickets": {
+      "title": "Billetes y horarios",
+      "intro": "Consulta los últimos horarios y precios en <TravelmarLink>Travelmar</TravelmarLink> y <PositanoLink>Positano.com – Horarios de ferry</PositanoLink>.",
+      "points": [
+        "Compra los billetes por internet con antelación durante los meses de mayor afluencia.",
+        "Llega 15–20 minutos antes de la salida para embarcar con calma.",
+        "Ten el billete a mano; el personal lo escaneará o lo romperá antes de embarcar."
+      ]
+    },
+    "salernoBoarding": {
+      "title": "Dónde embarcar en Salerno",
+      "points": [
+        "La mayoría de los servicios salen de la Piazza della Concordia de Salerno (Travelmar).",
+        "Algunas salidas utilizan el Molo Manfredi; confirma la terminal en tu billete.",
+        "Sigue la señalización del paseo marítimo; el personal puede indicarte el muelle correcto."
+      ]
+    },
+    "positanoArrival": {
+      "title": "Llegada a Positano",
+      "points": [
+        "Llegarás al muelle principal de ferris de Positano (Spiaggia Grande).",
+        "Si llevas equipaje, recomendamos el servicio de porteadores o el autobús local Interno.",
+        "No se aconseja subir a pie con maletas pesadas bajo el calor del verano."
+      ],
+      "cta": "Para un recorrido paso a paso desde el muelle hasta nuestra puerta, lee la guía <DockGuideLink>Muelle del ferry → Hostel Brikette</DockGuideLink>."
+    }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Guide de Naples pour les voyageurs de la côte amalfitaine",
+    "description": "Que voir, où manger et comment se déplacer à Naples avant ou après Positano."
+  },
+  "linkLabel": "Guide de Naples pour les voyageurs de la côte amalfitaine",
+  "intro": [
+    "Naples est la porte d’entrée de la côte amalfitaine. Prenez une à deux journées pour explorer ses rues historiques, ses institutions de la pizza et des excursions faciles."
+  ],
+  "sections": [
+    {
+      "id": "neighbourhoods",
+      "title": "Quartiers incontournables",
+      "body": [
+        "Parcourez Spaccanapoli pour ses églises, ses ateliers de crèches et les visites souterraines sous San Lorenzo.",
+        "Rejoignez le front de mer à Chiaia et Castel dell'Ovo pour des promenades vespérales ventilées."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Gastronomie et café",
+      "body": [
+        "Faites la queue pour une pizza chez Sorbillo ou Da Michele (30 à 45 minutes d’attente). Prenez une sfogliatella et un espresso au Gran Caffè Gambrinus.",
+        "Testez un cuoppo fritto (cornet de fruits de mer frits) pour 6 à 8 € si vous avez besoin d’un encas rapide."
+      ]
+    },
+    {
+      "id": "daytrips",
+      "title": "Point de départ des excursions",
+      "body": [
+        "Depuis Napoli Centrale, prenez les trains à grande vitesse vers Rome (1 h 10) ou la Circumvesuviana vers Pompéi (40 minutes).",
+        "Déposez vos bagages à la consigne de la gare (7 € par bagage) si vous poursuivez ensuite directement vers Positano."
+      ]
+    }
+  ],
+  "tips": [
+    "Gardez une carte sans contact pour le métro et achetez un pass journée (5,60 €) si vous multipliez les trajets.",
+    "Gardez vos objets de valeur dans les poches avant et utilisez un sac bandoulière dans les ruelles animées."
+  ],
+  "faqs": [
+    {
+      "q": "Est-il sûr de visiter Naples à pied ?",
+      "a": [
+        "Oui, avec la vigilance habituelle des grandes villes. Restez dans les rues éclairées la nuit, évitez d’exhiber de grosses sommes et prenez un taxi officiel après minuit."
+      ]
+    },
+    {
+      "q": "Où puis-je laisser mes bagages ?",
+      "a": [
+        "Napoli Centrale et Piazza Garibaldi disposent de consignes surveillées. Réservez un casier en ligne les week-ends chargés pour garantir de la place."
+      ]
+    }
+  ]
+}

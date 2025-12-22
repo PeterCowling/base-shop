@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Darmowe audio-przewodniki spacerowe po Positano",
+    "description": "Gdzie pobrać trasy audio, jak przygotować sprzęt i zasady dobrego zachowania na szlakach."
+  },
+  "linkLabel": "Darmowe audio-przewodniki spacerowe po Positano",
+  "intro": [
+    "Tłumaczenie w przygotowaniu.",
+    "Follow the route and listening tips below, and save the files over Wi-Fi before you step outside."
+  ],
+  "tocTitle": "On this page",
+  "toc": [
+    {
+      "href": "#route",
+      "label": "Route"
+    },
+    {
+      "href": "#listen",
+      "label": "How to listen"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Route",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Take your time on terraces, but stay mindful of locals and porters using the staircases for deliveries."
+      ]
+    },
+    {
+      "id": "listen",
+      "title": "How to listen",
+      "body": [
+        "Download the audio on hostel Wi-Fi or stream at known hotspots along the route.",
+        "Keep volume low on stairs and pop one earbud out when crossing roads or passing other walkers."
+      ]
+    }
+  ],
+  "faqHeading": "FAQs",
+  "faqs": [
+    {
+      "q": "Is the loop steep?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Can I listen offline?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "How long does it take?",
+      "a": [
+        "Plan for 45–60 minutes including photo stops and terrace breaks."
+      ]
+    }
+  ]
+}

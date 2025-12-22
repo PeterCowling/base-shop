@@ -221,7 +221,7 @@ async function loadHistories(
       const data = (await res.json()) as unknown;
       if (!Array.isArray(data) || data.length === 0) return null;
       const entry = data[0] as Record<string, unknown>;
-      const status = entry.status === "failed" ? "failed" : "success";
+      const status: "success" | "failed" = entry.status === "failed" ? "failed" : "success";
       const timestamp =
         typeof entry.timestamp === "string" ? entry.timestamp : new Date().toISOString();
       return { shopId: shop.id, status, timestamp };

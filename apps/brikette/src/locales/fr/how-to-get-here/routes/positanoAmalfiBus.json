@@ -1,0 +1,72 @@
+{
+  "header": {
+    "description": "Suivez ce guide pour un trajet en bus simple de l'Hostel Brikette à Amalfi. Les bus sont opérés par SITA Sud et circulent fréquemment en haute saison. Nous détaillons où acheter les billets, comment lire les horaires et l'emplacement précis de l'embarquement à Positano.",
+    "eyebrow": "Guide de voyage Hostel Brikette",
+    "title": "Positano vers Amalfi – en bus SITA"
+  },
+  "meta": {
+    "description": "Itinéraire détaillé en bus SITA de l'Hostel Brikette à Amalfi, avec achat des billets, arrêt Chiesa Nuova et lecture des horaires.",
+    "title": "Positano vers Amalfi en bus | Hostel Brikette"
+  },
+  "sections": {
+    "arrival": {
+      "body": "La plupart des services terminent à la gare routière d'Amalfi près du port. De là, vous pouvez poursuivre vers Ravello ou Salerne, ou explorer à pied le centre historique d'Amalfi.",
+      "link": "Vous préparez le retour ? Consultez <link>Amalfi vers Positano en bus</link>.",
+      "title": "Arrivée à Amalfi"
+    },
+    "overview": {
+      "body": "Prévoyez 45 à 60 minutes en été selon la circulation et l'affluence. Montez à Positano (Chiesa Nuova) pour un bus direct vers Amalfi. Aux heures de pointe, arrivez en avance pour avoir une place assise.",
+      "title": "Vue d'ensemble du trajet"
+    },
+    "positanoStop": {
+      "image": {
+        "alt": "Arrêt SITA Chiesa Nuova à Positano, devant le Bar Internazionale",
+        "caption": "Arrivez quelques minutes en avance pour assurer une place ; les bus se remplissent vite en été.",
+        "src": "/img/directions/positano-amalfi-bus-bus-stop.png"
+      },
+      "list": [
+        "L'arrêt SITA le plus proche est Positano (Chiesa Nuova) sur la Via G. Marconi.",
+        "Il se trouve à environ 140 mètres (490 pieds) de l'entrée de l'auberge.",
+        "Vous attendrez devant le café-bar « Bar Internazionale »."
+      ],
+      "title": "Arrêt de bus Positano (Chiesa Nuova)"
+    },
+    "tickets": {
+      "body": "Les bus sont opérés par SITA (SITA Sud Srl). Achetez vos billets à l'avance dans les kiosques à journaux ou les bureaux de tabac. Présentez le billet au conducteur en montant – il sera tamponné ou déchiré pour validation. Conservez-le jusqu'à votre arrivée à Amalfi.",
+      "title": "SITA et ses billets"
+    },
+    "timetable": {
+      "body": "L'horaire officiel liste les arrêts en lignes et les trajets en colonnes lettres. Faites correspondre les lignes Positano et Amalfi dans la même colonne pour votre jour de voyage.",
+      "link": "Consultez l'horaire le plus récent sur <link>Positano.com</link>.",
+      "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
+      "list": [
+        "La première colonne énumère chaque arrêt du parcours.",
+        "Les colonnes correspondent aux trajets programmés identifiés par des lettres.",
+        "Vous voyagez du lundi au samedi ? Utilisez les colonnes « F » et « G ».",
+        "Vous voyagez le dimanche ou un jour férié ? Utilisez les colonnes « G » et « H »."
+      ],
+      "title": "Lire l'horaire SITA"
+    },
+    "wait": {
+      "list": [
+        "Achetez un billet de bus SITA au bar ou au kiosque à journaux (tabacchi) à proximité.",
+        "Traversez de l'autre côté de la rue et faites la queue pour le bus en direction d'Amalfi.",
+        "Vérifiez que l'affichage du bus indique bien « Amalfi »."
+      ],
+      "title": "Achetez votre billet et attendez l'embarquement"
+    },
+    "walk": {
+      "list": [
+        "Sortez de l'auberge, descendez les marches jusqu'à la route principale et tournez à gauche.",
+        "Continuez sur la Via G. Marconi sur environ 100 mètres (330 pieds).",
+        "Le Bar Internazionale sera sur votre gauche ; l'arrêt SITA est juste devant."
+      ],
+      "title": "Marche depuis l'auberge jusqu'à l'arrêt"
+    }
+  },
+  "slug": "positano-amalfi-bus",
+  "tip": {
+    "copy": "Besoin de toutes les options de transport ? Ouvrez la page <link>Comment venir</link> pour les ferries, taxis et itinéraires combinés.",
+    "eyebrow": "Astuce"
+  }
+}

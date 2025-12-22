@@ -1,0 +1,44 @@
+{
+  "seo": {
+    "title": "Salerno vs Neapel: ankomster",
+    "description": "Jämförelse mellan att anlända via Salerno eller Neapel – kostnader, restid och bekvämlighet."
+  },
+  "linkLabel": "Salerno vs Neapel: ankomster",
+  "intro": [
+    "Both gateways work. In summer, Salerno often wins quietly thanks to extra ferries and calmer queues."
+  ],
+  "sections": [
+    {
+      "id": "when-salerno",
+      "title": "When Salerno wins",
+      "body": [
+        "Seasonal ferries run direct to Positano or Amalfi with lighter crowds than Naples piers.",
+        "Pair Salerno Costa d'Amalfi (QSR) airport with the Airlink shuttle to keep transfers simple."
+      ]
+    },
+    {
+      "id": "when-naples",
+      "title": "When Naples wins",
+      "body": [
+        "Off-season reliability: high-speed trains plus SITA via Sorrento keep running when ferries pause.",
+        "Late arrivals find more accommodation and onward transport choices around Naples."
+      ]
+    },
+    {
+      "id": "luggage",
+      "title": "Luggage & stairs",
+      "body": [
+        "Arrive at Chiesa Nuova to minimise stairs up to the hostel.",
+        "Landing by ferry? Book a porter at the dock or ride the SITA bus uphill instead of hauling bags."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Is Salerno Airport (QSR) worth it?",
+      "a": [
+        "Increasingly yes for summer: combine QSR flights with the Airlink shuttle and ferry when seas are calm, and fall back to buses if weather turns."
+      ]
+    }
+  ]
+}

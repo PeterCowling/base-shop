@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Sân bay Naples đến Positano bằng xe buýt | Hostel Brikette",
+    "description": "Từ sân bay Naples tới Positano bằng Curreri đến Sorrento rồi xe buýt SITA. Bao gồm vé, điểm dừng, mẹo đọc bảng giờ SITA và đường đi bộ tới Hostel Brikette."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển Hostel Brikette",
+    "title": "Sân bay Naples đến Positano — Xe buýt",
+    "description": "Hướng dẫn từng bước này đưa bạn từ sân bay Naples tới Positano bằng xe buýt Curreri tới Sorrento rồi tiếp tục xe buýt SITA tới Positano. Nội dung gồm vé, điểm chuyển tuyến, cách đọc bảng giờ SITA và đường đi bộ từ điểm dừng gần hostel nhất."
+  },
+  "aside": {
+    "eyebrow": "Mẹo",
+    "body": "Cần mọi lựa chọn di chuyển? Mở <Link>Tổng quan Cách đến đây</Link> để xem phà, taxi và các tuyến thay thế."
+  },
+  "sections": {
+    "overview": {
+      "title": "Tổng quan hành trình",
+      "body": "Đi xe buýt Curreri Viaggi thẳng từ sân bay Naples tới Sorrento, sau đó chuyển sang xe buýt SITA hướng Amalfi (xuống tại Positano – Chiesa Nuova). Mùa cao điểm hãy chừa thêm thời gian vì phải xếp hàng và xe có thể đông."
+    },
+    "airport": {
+      "title": "Sân bay Naples",
+      "points": [
+        "Rời khu đến và theo biển chỉ dẫn ra khu bến xe bên ngoài.",
+        "Mua vé Curreri Viaggi đi Sorrento (trực tuyến hoặc ngay tại bến).",
+        "Chờ tại bến cho chuyến xe tiếp theo đi Sorrento và lên xe khi tới."
+      ],
+      "link": {
+        "href": "https://www.curreriviaggi.it/",
+        "text": "Xem giờ chạy mới nhất và mua vé trực tuyến tại: <Link>Curreri Viaggi</Link>."
+      }
+    },
+    "sorrento": {
+      "title": "Bến xe buýt Sorrento",
+      "points": [
+        "Xuống tại bến xe buýt chính của Sorrento (cùng vị trí với ga tàu).",
+        "Từ bến xe, bắt xe buýt SITA hướng Amalfi (tuyến này đi qua Positano).",
+        "Nếu cần, mua vé SITA tại quán bar hoặc sạp báo gần đó.",
+        "Khi lên xe, tài xế sẽ đóng dấu hoặc xé một góc vé — giữ vé suốt hành trình."
+      ]
+    },
+    "timetable": {
+      "title": "Bảng giờ SITA — cách đọc",
+      "rowTip": "Các hàng ở cột đầu liệt kê từng điểm dừng trên tuyến.",
+      "columnTips": [
+        "Mỗi chuyến được đánh dấu bằng một chữ cái ở đầu cột.",
+        "Đi vào Thứ Hai đến Thứ Bảy? Dùng cột \"F\" và \"G\".",
+        "Đi vào Chủ nhật hoặc ngày lễ? Dùng cột \"G\" và \"H\"."
+      ],
+      "combineTips": [
+        "Chọn hàng điểm đi và điểm đến của bạn (ví dụ \"Sorrento\" → \"Positano – Chiesa Nuova\").",
+        "Đọc theo dòng trong cột đã chọn để biết giờ khởi hành và giờ đến."
+      ],
+      "link": {
+        "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
+        "text": "Xem lịch mới nhất trên <Link>Positano.com</Link>."
+      }
+    },
+    "positanoStop": {
+      "title": "Điểm dừng Positano (Chiesa Nuova)",
+      "points": [
+        "Điểm dừng SITA gần nhất là Positano (Chiesa Nuova) trên Via G. Marconi.",
+        "Điểm dừng cách cửa vào hostel khoảng 140 mét (490 ft).",
+        "Điểm dừng nằm phía trước quán cà phê/bar Bar Internazionale."
+      ],
+      "image": {
+        "alt": "Điểm dừng xe buýt SITA Positano Chiesa Nuova trước Bar Internazionale trên Via G. Marconi",
+        "caption": "Điểm dừng Positano (Chiesa Nuova) — chờ bên ngoài Bar Internazionale; mùa hè nên đến sớm vì xe có thể kín chỗ nhanh chóng."
+      }
+    },
+    "walk": {
+      "title": "Đi bộ từ điểm dừng tới hostel",
+      "points": [
+        "Đi bộ hơn 100 mét / 330 ft dọc Via G. Marconi.",
+        "Rẽ phải và đi theo cầu thang lên cửa chính của hostel."
+      ],
+      "body": "Mẹo: khi đến gần hostel, bạn sẽ thấy biển hiệu trên sân thượng tầng hai. Đi vượt qua biển, men theo khúc cua và tìm cầu thang bên phải đường để lên cửa chính.",
+      "image": {
+        "alt": "Cầu thang lên lối vào chính của Hostel Brikette từ Via G. Marconi",
+        "caption": "Cầu thang lên lối vào Hostel Brikette — đoạn leo ngắn cuối cùng từ đường chính."
+      }
+    }
+  }
+}

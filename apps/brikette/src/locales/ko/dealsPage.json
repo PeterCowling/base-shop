@@ -1,0 +1,49 @@
+{
+  "slug": "hyumsae",
+  "meta": {
+    "title": "2025년 여름 특가 – 15 % 할인",
+    "description": "직접 예약 시 추가 15 % 할인이 제공되는 한정 기간 여름 프로모션.",
+    "ogImageAlt": "여름 할인 배너"
+  },
+  "title": "{{season}} 숙박 시 {{percent}} % 할인",
+  "promo": "올여름 공식 웹사이트에서 직접 예약하고 추가 {{percent}} % 할인 혜택을 챙기세요.",
+  "banner": "이 요금으로 남은 침대 {{beds}}개 · 프로모션 종료까지 {{time}} 남았습니다!",
+  "timeRemaining": {
+    "lessThanHour": "0시간",
+    "hours_one": "{{count}}시간",
+    "hours_other": "{{count}}시간",
+    "days_one": "{{count}}일",
+    "days_other": "{{count}}일"
+  },
+  "buttonReserve": "지금 예약하기",
+  "ogImageAlt": "여름 할인 배너",
+  "perksHeading": "직접 예약 혜택",
+  "perksIntro": "이 혜택은 저희 공식 웹사이트에서 직접 예약하신 고객에게만 제공됩니다.",
+  "perksGuarantee": "공식 웹사이트에서 직접 예약하면 이러한 독점 혜택이 자동으로 적용됩니다.",
+  "perksIntroLink": "현재 진행 중인 모든 혜택 보기",
+  "perksList": [
+    "정상가 대비 최대 25 % 자동 할인",
+    "무료 조식 제공",
+    "무료 저녁 음료 제공"
+  ],
+  "expired": {
+    "message": "이 한정 프로모션은 {{endedOn}}에 종료되었습니다."
+  },
+  "restrictions": {
+    "heading": "필수 정보",
+    "stayWindow": "숙박 가능 기간은 {{from}}부터 {{to}}까지입니다.",
+    "minAdvance": "최소 {{days}}일 전에 예약해 주세요.",
+    "minAdvancePrefix": "최소",
+    "minAdvanceSuffix": "일 전에 예약해 주세요.",
+    "los": "최소 {{min}}박, 최대 {{max}}박.",
+    "nonRefundable": "호스텔 웹사이트를 통한 직접 예약 시, 환불 불가 요금에만 적용됩니다.",
+    "nonRefundablePrefix": "환불 불가",
+    "nonRefundableSuffix": "요금이며, 호스텔 웹사이트를 통한 직접 예약에만 적용됩니다.",
+    "stackable": "{{percent}} %는 기본 10 % 직접 예약 할인과 중복 적용 가능합니다.",
+    "other": "표준 약관이 적용됩니다."
+  },
+  "seasonLabel": "2025년 여름",
+  "robots": {
+    "expiredNoindex": "noindex,follow"
+  }
+}

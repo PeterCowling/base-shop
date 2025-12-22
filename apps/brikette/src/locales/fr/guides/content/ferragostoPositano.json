@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Ferragosto à Positano (Assomption)",
+    "description": "Ce qui se passe le 15 août : festivités, foule, transports et idées pour célébrer."
+  },
+  "linkLabel": "Ferragosto à Positano (Assomption)",
+  "intro": [
+    "Ferragosto, le 15 août, rime avec plages bondées, feux d'artifice et horaires perturbés : anticipez pour vivre la fête sans stress."
+  ],
+  "sections": [
+    {
+      "id": "expectations",
+      "title": "À quoi s'attendre le jour J",
+      "body": [
+        "Les boutiques et petits supermarchés ferment plus tôt ; faites le plein d'en-cas et d'eau la veille au soir.",
+        "Attendez-vous à des plages pleines dès 09 h 00 et à de la musique amplifiée le long de Spiaggia Grande jusqu'aux feux d'artifice de minuit."
+      ]
+    },
+    {
+      "id": "bookings",
+      "title": "Réservations",
+      "body": [
+        "Réservez restaurants et sorties en bateau au moins une semaine à l'avance ; beaucoup demandent un acompte ou une carte en garantie pour le service de fête.",
+        "Confirmez les services de porteurs 24 heures avant si vous arrivez ou repartez le 15 : les équipes tournent en effectif réduit."
+      ]
+    },
+    {
+      "id": "beach-day",
+      "title": "Conseils plage et baignade",
+      "body": [
+        "Apportez votre propre parasol pour la partie publique ; les transats des lidos partent vite et les prix atteignent les tarifs de pointe.",
+        "Baignez-vous tôt ou au coucher du soleil quand les maîtres-nageurs ont une meilleure visibilité ; à midi la foule rend les courants plus difficiles à lire."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Transports saturés",
+      "body": [
+        "Les bus SITA suivent des horaires fériés avec moins de trajets ; consultez l'affichage et faites la queue tôt.",
+        "Les ferries peuvent afficher complet ; achetez l'aller-retour la veille et prévoyez un plan bus si la mer se lève."
+      ]
+    }
+  ],
+  "tips": [
+    "Prenez des bouchons d'oreilles si votre chambre donne sur la plage : le final des feux d'artifice et la musique peuvent durer après 01 h 00.",
+    "Gardez de la petite monnaie pour les troncs d'église si vous assistez à la messe de l'Assomption ; les paiements par carte sont rares."
+  ],
+  "faqs": [
+    {
+      "q": "Les supermarchés sont-ils fermés toute la journée ?",
+      "a": [
+        "Beaucoup ferment complètement ou n'ouvrent qu'une courte plage horaire le matin. Achetez l'essentiel avant la soirée du 14."
+      ]
+    },
+    {
+      "q": "Peut-on voir les feux d'artifice depuis la terrasse de l'auberge ?",
+      "a": [
+        "Oui, la terrasse offre une vue dégagée sur la baie. Arrivez tôt pour garder une place et prévoyez une couche légère pour la brise marine."
+      ]
+    }
+  ]
+}

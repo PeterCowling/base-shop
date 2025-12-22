@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "title": "波西塔诺至那不勒斯渡轮路线 | Hostel Brikette",
+    "description": "从 Hostel Brikette 前往波西塔诺港口并乘船到那不勒斯的清晰可打印步骤，涵盖购票与抵达提示。"
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette 旅行指南",
+    "title": "波西塔诺前往那不勒斯 — 渡轮路线",
+    "description": "逐步讲解如何从 Hostel Brikette 步行至波西塔诺港口、购买渡轮车票并继续前往那不勒斯，包括季节性注意事项及抵达那不勒斯中央车站的建议。",
+    "tipLabel": "贴士",
+    "tip": "如遇天气原因停航，请在<GuideLink>“如何到达”总览</GuideLink>中改用巴士/火车行程。"
+  },
+  "sections": {
+    "journeyOverview": {
+      "title": "行程概览",
+      "paragraphs": [
+        "波西塔诺与那不勒斯之间的渡轮多在春季至初秋运行，海况不佳时可能取消。根据运营商与船型不同，航程通常约 70–90 分钟。",
+        "比较班次并预订：<ScheduleLink>Positano.com（综合时刻表）</ScheduleLink>。"
+      ]
+    },
+    "photoGuide": {
+      "title": "图解参考",
+      "description": "提供步行路线与港口购票区域的视觉参考。",
+      "items": {
+        "routeMap": {
+          "alt": "从 Hostel Brikette 前往波西塔诺港口的步行路线示意图",
+          "caption": "概览地图：旅舍至波西塔诺港"
+        },
+        "approach": {
+          "alt": "通往波西塔诺 Spiaggia Grande 及旅游港口的照片",
+          "caption": "接近 Spiaggia Grande（旅游港）"
+        },
+        "detailMap": {
+          "alt": "突出显示 Spiaggia Grande 右侧港口位置的详细地图",
+          "caption": "详细地图：Spiaggia Grande 的港口位置"
+        },
+        "ticketBooths": {
+          "alt": "波西塔诺港口的渡轮运营商售票亭及下一班次指示牌",
+          "caption": "渡轮运营商售票亭"
+        },
+        "point1": {
+          "alt": "点位 1：Hostel Brikette 附近 Via G. Marconi 的烟草店路口",
+          "caption": "点位 1：烟草店路口（右转）"
+        },
+        "point2": {
+          "alt": "点位 2：离开公路转入楼梯的第一个回头弯",
+          "caption": "点位 2：离开公路，走楼梯"
+        },
+        "point3": {
+          "alt": "点位 3：楼梯底部与道路相接的位置",
+          "caption": "点位 3：楼梯到达道路"
+        },
+        "point4": {
+          "alt": "点位 4：过马路、短暂左转然后继续走楼梯",
+          "caption": "点位 4：过马路、左转、上楼梯"
+        },
+        "point5": {
+          "alt": "点位 5：通往海滩与港口的拱道通道",
+          "caption": "点位 5：通往港口的拱道"
+        }
+      }
+    },
+    "walkToPort": {
+      "title": "步行前往波西塔诺港口",
+      "steps": [
+        "从旅舍正门离开。",
+        "下楼到马路，向左转，步行约 100 米（≈330 英尺）。",
+        "在第一个路口（点位 1）于路边烟草店处右转。",
+        "继续下坡，在第一个回头弯（点位 2）离开道路，走正前方的楼梯。",
+        "在楼梯底部（点位 3）到达马路，穿过并继续走向下一段楼梯。",
+        "当楼梯再次接到马路时，穿过道路，稍向左行，然后在点位 4 上楼梯。",
+        "到达楼梯底部后右转前往点位 5，再沿右侧拱道前行。",
+        "港口（Spiaggia Grande 码头）位于海滩右侧约 50 米（≈160 英尺）处。"
+      ]
+    },
+    "tickets": {
+      "title": "购票并登船",
+      "steps": [
+        "港口内每家渡轮公司都有自己的售票亭。",
+        "售票亭旁的标牌会显示该运营商的下一班船。",
+        "请直接向运营商购票；旺季请提前 20–30 分钟到达以换票并排队。",
+        "购票后步行至码头尽头，等待登船开始。"
+      ]
+    },
+    "arrival": {
+      "title": "抵达那不勒斯",
+      "paragraphs": [
+        "在那不勒斯港口下船后前往后续交通。前往那不勒斯中央车站（Piazza Garibaldi）时，电车通常是最简便的选择。",
+        "推荐路线：<TramLink>乘电车往返港口与那不勒斯中央车站</TramLink>。",
+        "若返程携带行李重返波西塔诺，请参阅：<LuggageGuideLink>携带行李从渡轮码头到 Hostel Brikette</LuggageGuideLink>。"
+      ]
+    }
+  },
+  "links": {
+    "guide": "“如何到达”总览",
+    "schedule": "Positano.com（综合时刻表）",
+    "tram": "乘电车往返港口与那不勒斯中央车站",
+    "luggageGuide": "携带行李：渡轮码头 → Hostel Brikette"
+  }
+}

@@ -15,7 +15,7 @@ import { Tooltip } from "../../atoms";
 // Avoid useRouter to keep this component usable in test/standalone environments
 import { Inline } from "../../atoms/primitives/Inline";
 
-interface Props {
+export interface PageToolbarProps {
   deviceId: string;
   setDeviceId: (id: string) => void;
   orientation: "portrait" | "landscape";
@@ -59,7 +59,7 @@ const PageToolbar = ({
   pagesNav,
   hideDeviceManager,
   hidePagesNav,
-}: Props) => {
+}: PageToolbarProps) => {
   const t = useTranslations();
   // Only access Next.js router when the pages navigator is used to avoid
   // requiring an app router context in tests/standalone usage.

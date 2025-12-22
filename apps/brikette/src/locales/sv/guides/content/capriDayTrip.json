@@ -1,0 +1,114 @@
+{
+  "seo": {
+    "title": "Dagstur till Capri från Positano",
+    "description": "Så planerar du en dagstur till Capri: färjor, tidsplan och områden att besöka."
+  },
+  "linkLabel": "Dagstur till Capri från Positano",
+  "intro": [
+    "Capri på en dag från Positano: starta tidigt, packa lätt och följ en loop som balanserar Anacapri-vyer med en smidig hemresa."
+  ],
+  "toc": [
+    {
+      "href": "#morning",
+      "label": "Förmiddag — ankomst & Anacapri"
+    },
+    {
+      "href": "#midday",
+      "label": "Mitt på dagen — Marina Piccola-slinga"
+    },
+    {
+      "href": "#afternoon",
+      "label": "Eftermiddag — Capri stad & retur"
+    },
+    {
+      "href": "#gallery",
+      "label": "Fotogalleri"
+    },
+    {
+      "href": "#faqs",
+      "label": "Vanliga frågor"
+    }
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Förmiddag — ankomst & Anacapri",
+      "body": [
+        "Ta första färjan så du kommer före kryssningsgästerna, ta sedan bussen upp till Anacapri och åk linbanan till Monte Solaro om du gillar höjd.",
+        "Ät en enkel frukost på Piazza Vittoria och köp returbiljetten direkt för att säkra hemresan."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Mitt på dagen — Marina Piccola-slinga",
+      "body": [
+        "Gå eller ta bussen ner mot Marina Piccola för bad eller fotostopp; ta med revsäker solkräm och minst 1 liter vatten per person.",
+        "Köp panini eller salladslådor från en deli i stället för långa luncher så att du hinner tillbaka upp utan stress."
+      ]
+    },
+    {
+      "id": "afternoon",
+      "title": "Eftermiddag — Capri stad & retur",
+      "body": [
+        "Ta bergbanan till Capri stad för Via Camerelle, Giardini di Augusto och en sista gelato eller espresso.",
+        "Var vid Marina Grande minst 30 minuter innan avgång ifall det är kö till bergbanan eller bagageinlämningen."
+      ]
+    }
+  ],
+  "galleryTitle": "Fotogalleri",
+  "gallery": {
+    "items": {
+      "monteSolaro": {
+        "alt": "Utsikt från Monte Solaro, Capri",
+        "caption": "Vy från Monte Solaro"
+      },
+      "gardensOfAugustus": {
+        "alt": "Giardini di Augusto, Capri",
+        "caption": "Giardini di Augusto"
+      }
+    }
+  },
+  "faqsTitle": "Vanliga frågor",
+  "howTo": {
+    "steps": [
+      {
+        "name": "Kolla säsongsfärjor",
+        "text": "Bekräfta morgonavgångar och sista returer till Positano."
+      },
+      {
+        "name": "Var i god tid vid kajen",
+        "text": "Ställ dig i kö 20–30 minuter före avgång under högsäsong."
+      },
+      {
+        "name": "Planera rutten på Capri",
+        "text": "Prioritera Anacapri eller Marina Grande + utsiktspunkter beroende på tid."
+      }
+    ]
+  },
+  "tipsTitle": "Tips för dagen",
+  "tips": [
+    "Köp tur- och returbiljetter samtidigt så du kan justera rutten utan att jaga platser senare.",
+    "Ta en liten dagryggsäck med vatten, solskydd och kontanter — bankomaterna på Capri kan ta slut under intensiva veckor.",
+    "Ladda ner offlinekartor för Capri och busstidtabeller; täckningen försvinner vid Anacapri och kön till Blå grottan."
+  ],
+  "warningsTitle": "Viktigt att veta",
+  "warnings": [
+    "Köerna till linbanan och bergbanan ökar efter 15.00; missar du ditt tidsfönster riskerar du att få stå på väntlista till färjan.",
+    "Grov sjö kan ställa in sena avgångar utan förvarning — kolla morgonrapporter och ha en Sorrento-anslutning som backup.",
+    "Blå grottan stänger ofta vid vind eller svall; operatörer kan ändå sälja biljetter, så bekräfta att den är öppen innan du ställer dig i kö."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jag hinna med Blå grottan?",
+      "a": [
+        "Endast om det är prio — räkna med skyttelbåt och 60–90 minuters väntan, vilket tränger undan resten av schemat."
+      ]
+    },
+    {
+      "q": "Behöver jag förköpa biljetter?",
+      "a": [
+        "Första färjan räcker oftast, men boka returen om du reser i högsäsong. Attraktioner som Monte Solaro-linbanan säljer biljetter på plats."
+      ]
+    }
+  ]
+}

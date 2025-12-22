@@ -1,0 +1,149 @@
+{
+  "items": [
+    {
+      "id": "what-kind-of-breakfast-is-served-at-hostel-brikette",
+      "question": "Hostel Brikette에서는 어떤 아침 식사가 제공되나요?",
+      "answer": "투숙객은 평점이 높은 일품요리 메뉴를 즐길 수 있습니다. 공식 채널로 직접 예약하면 조식이 무료로 제공됩니다."
+    },
+    {
+      "id": "what-are-the-check-in-and-check-out-times-at-hostel-brikette",
+      "question": "Hostel Brikette의 체크인/체크아웃 시간은 어떻게 되나요?",
+      "answer": "정규 체크인은 15:00~22:30, 체크아웃은 07:30~10:30입니다."
+    },
+    {
+      "id": "how-much-does-it-cost-to-stay-at-hostel-brikette",
+      "question": "번역을 준비하고 있습니다.",
+      "answer": "요금은 날짜와 객실 유형에 따라 달라집니다. 최신 요금을 보려면 객실과 날짜로 검색하세요."
+    },
+    {
+      "id": "what-is-there-to-do-at-hostel-brikette",
+      "question": "번역을 준비하고 있습니다.",
+      "answer": "호스텔은 하이킹을 주선하거나 추천합니다. 기타 활동은 추가 요금이 발생할 수 있습니다."
+    },
+    {
+      "id": "how-far-is-hostel-brikette-from-the-centre-of-positano",
+      "question": "Hostel Brikette는 포지타노 중심부에서 얼마나 떨어져 있나요?",
+      "answer": "숙소는 포지타노 중심부에서 약 350 m 거리에 있습니다."
+    },
+    {
+      "id": "how-close-to-the-beach-is-hostel-brikette",
+      "question": "번역을 준비하고 있습니다.",
+      "answer": "가장 가까운 해변은 약 350 m 거리에 있습니다."
+    },
+    {
+      "id": "what-room-types-are-available-at-hostel-brikette",
+      "question": "Hostel Brikette에서는 어떤 객실 종류를 이용할 수 있나요?",
+      "answer": "혼성 도미토리 침대, 여성 전용 도미토리 침대 또는 전용 욕실이 있는 프라이빗 더블룸을 예약할 수 있습니다."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-terrace-with-sea-views",
+      "question": "Hostel Brikette에는 바다 전망이 있는 테라스가 있나요?",
+      "answer": "네 — 넓은 공용 테라스가 포지타노를 내려다보며 탁 트인 바다 전망을 제공합니다."
+    },
+    {
+      "id": "is-free-wi-fi-provided",
+      "question": "무료 Wi-Fi가 제공되나요?",
+      "answer": "네 — 숙소 전 구역에서 무료 Wi-Fi를 이용하실 수 있습니다."
+    },
+    {
+      "id": "is-breakfast-included-in-the-rate",
+      "question": "요금에 아침 식사가 포함되어 있나요?",
+      "answer": "직접 예약하시면 아침 식사가 요금에 포함되며, 그렇지 않으면 추가 요금이 부과됩니다."
+    },
+    {
+      "id": "does-hostel-brikette-have-an-on-site-bar",
+      "question": "번역을 준비하고 있습니다.",
+      "answer": "네 — 바에서는 매일 07:30~23:30 사이에 커피, 가벼운 스낵, 아침 식사, 저녁 식사, 음료를 제공합니다."
+    },
+    {
+      "id": "can-i-store-my-luggage-before-check-in-or-after-check-out",
+      "question": "체크인 전이나 체크아웃 후에 짐을 보관할 수 있나요?",
+      "answer": "네 — 체크인 고객은 10:30부터, 체크아웃 고객은 07:30~15:30 사이에 짐을 보관하실 수 있습니다."
+    },
+    {
+      "id": "are-there-age-restrictions-at-hostel-brikette",
+      "question": "번역을 준비하고 있습니다.",
+      "answer": "도미토리룸 체크인은 18세 이상 39세 이하의 고객만 가능합니다. 이 제한은 프라이빗룸에는 적용되지 않습니다."
+    },
+    {
+      "id": "are-children-allowed",
+      "question": "어린이는 숙박할 수 있나요?",
+      "answer": "도미토리룸은 성인 전용으로 어린이를 수용할 수 없습니다. 연령 제한을 피하려면 프라이빗룸을 예약해 주세요."
+    },
+    {
+      "id": "are-pets-allowed",
+      "question": "반려동물 동반이 가능한가요?",
+      "answer": "죄송하지만, 본 시설에서는 반려동물 동반이 허용되지 않습니다."
+    },
+    {
+      "id": "does-the-hostel-have-its-own-parking",
+      "question": "호스텔에 자체 주차장이 있나요?",
+      "answer": "호스텔에는 구내 주차장이 없습니다. 포지타노의 유료 공용 주차장을 이용하실 수 있습니다."
+    },
+    {
+      "id": "is-air-conditioning-available",
+      "question": "에어컨이 있나요?",
+      "answer": "네 — 모든 객실과 도미토리룸에 에어컨이 설치되어 있습니다."
+    },
+    {
+      "id": "are-lockers-provided-in-the-dormitories",
+      "question": "도미토리룸에 개인 사물함이 제공되나요?",
+      "answer": "네 — 각 침대마다 개인 사물함이 있으며, 자물쇠는 직접 가져오시거나 리셉션에서 구매하실 수 있습니다."
+    },
+    {
+      "id": "are-towels-included",
+      "question": "수건이 포함되어 있나요?",
+      "answer": "체크인 시 샤워용 수건이 제공됩니다. 비치타월은 대여하실 수 있습니다."
+    },
+    {
+      "id": "is-bed-linen-included",
+      "question": "침대 린넨이 포함되어 있나요?",
+      "answer": "네 — 체크인 시 새 침대 린넨이 제공됩니다."
+    },
+    {
+      "id": "does-hostel-brikette-have-laundry-facilities",
+      "question": "번역을 준비하고 있습니다.",
+      "answer": "호스텔에는 세탁 시설이 없지만, 인근에 몇 곳이 있습니다."
+    },
+    {
+      "id": "does-hostel-brikette-have-quiet-hours",
+      "question": "번역을 준비하고 있습니다.",
+      "answer": "조용한 시간은 23:30부터 07:30까지입니다."
+    },
+    {
+      "id": "how-do-i-get-to-hostel-brikette-from-naples-airport",
+      "question": "나폴리 공항에서 Hostel Brikette까지 어떻게 가나요?",
+      "answer": "Curreri 셔틀을 타고 소렌토로 간 뒤 SITA 버스를 타고 포지타노로 가서 치에사 누오바(Chiesa Nuova) 정류장에서 내리세요."
+    },
+    {
+      "id": "where-is-the-nearest-bus-stop",
+      "question": "가장 가까운 버스 정류장은 어디인가요?",
+      "answer": "치에사 누오바(Chiesa Nuova) 버스 정류장은 80 m(250 ft)도 채 떨어져 있지 않으며, 호스텔까지 계단이 없습니다."
+    },
+    {
+      "id": "what-payment-methods-are-accepted",
+      "question": "어떤 결제 수단을 이용할 수 있나요?",
+      "answer": "프런트 데스크에서는 Visa, Mastercard, Maestro, 체크카드 및 현금 결제가 가능합니다."
+    },
+    {
+      "id": "is-reception-open-24-hours",
+      "question": "리셉션은 24시간 운영되나요?",
+      "answer": "리셉션은 07:30에 열고 22:30에 닫습니다. 늦은 체크인은 사전에 협의해 주셔야 합니다."
+    },
+    {
+      "id": "does-hostel-brikette-have-a-shared-kitchen",
+      "question": "번역을 준비하고 있습니다.",
+      "answer": "공용 주방은 없지만, 냉장고, 전기 주전자, 전자레인지를 이용하실 수 있습니다."
+    },
+    {
+      "id": "does-hostel-brikette-offer-female-only-dorms",
+      "question": "번역을 준비하고 있습니다.",
+      "answer": "네 — 여성 전용 도미토리 침대를 예약할 수 있습니다."
+    },
+    {
+      "id": "is-the-property-wheelchair-accessible",
+      "question": "휠체어로 접근이 가능한가요?",
+      "answer": "이 호스텔은 휠체어 접근이 불가능합니다."
+    }
+  ]
+}

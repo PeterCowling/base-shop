@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "title": "Positano till Neapels flygplats med buss | Hostel Brikette",
+    "description": "Från dörr till dörr från Hostel Brikette till Neapels flygplats via SITA-buss till Sorrento och Curreris buss, med biljettips och länkar till tidtabeller."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikettes reseguide",
+    "title": "Positano till Neapels flygplats – buss via Sorrento",
+    "description": "Ta SITA Sud-bussen från Positano till Sorrento och fortsätt med Curreris buss till flygplatsen Napoli Capodichino. Detta är det enklaste alternativet med kollektivtrafik, med täta avgångar och smidiga byten vid Sorrentos busstation."
+  },
+  "aside": {
+    "eyebrow": "Behöver du andra rutter?",
+    "body": "Öppna <Link>översikten Så tar du dig hit</Link> för taxi, färjor och alternativa resvägar."
+  },
+  "sections": {
+    "overview": {
+      "title": "Resan i korthet",
+      "points": [
+        "Gå till hållplatsen Positano (Chiesa Nuova) utanför Bar Internazionale.",
+        "Ta SITA-bussen till Sorrentos buss- och tågstation.",
+        "Byt till Curreris buss från Sorrento till Napoli Aeroporto (Capodichino)."
+      ]
+    },
+    "walk": {
+      "title": "Gå till hållplatsen i Positano",
+      "points": [
+        "Lämna vandrarhemmet och gå ner för trapporna till huvudvägen.",
+        "Sväng vänster och fortsätt cirka 100 meter (330 fot).",
+        "Bar Internazionale ligger på vänster sida; SITA-hållplatsen finns precis utanför."
+      ],
+      "image": {
+        "alt": "SITA-hållplatsen Positano (Chiesa Nuova) utanför Bar Internazionale",
+        "caption": "Kom några minuter i förväg under högsäsong – bussarna blir snabbt fulla."
+      }
+    },
+    "tickets": {
+      "title": "Biljetter och väntetid",
+      "points": [
+        "Köp en SITA-biljett till Sorrento i Bar Internazionale eller i en närliggande tidningskiosk.",
+        "Behåll biljetten efter att du gått ombord – föraren kan stämpla eller riva den.",
+        "Till Curreris buss kan du köpa biljett online eller på stationen (om tillgängligt)."
+      ]
+    },
+    "sorrento": {
+      "title": "På busstationen i Sorrento",
+      "body": "Gå av vid Sorrentos centrala buss- och tågstation. Från bussfickorna kliver du på <Link>Curreri Viaggis</Link> buss mot Napoli Aeroporto (Capodichino). Kontrollera den senaste tidtabellen och överväg att köpa biljetter online i förväg under högsäsong."
+    },
+    "timetables": {
+      "title": "Tidtabeller",
+      "items": {
+        "sita": {
+          "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
+          "label": "Positano.com",
+          "text": "Tidtabell för SITA-bussen Positano ⇄ Sorrento på <Link>Positano.com</Link>"
+        },
+        "curreri": {
+          "href": "https://www.curreriviaggi.it/",
+          "label": "curreriviaggi.it",
+          "text": "Tider för Curreri Sorrento ⇄ Napoli Aeroporto på <Link>curreriviaggi.it</Link>"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Đường đến hostel – Mẹo đi xe buýt, phà và đi bộ",
+    "description": "Tìm điểm dừng xe buýt gần nhất, tuyến phà và thời gian đi bộ để đến Hostel Brikette tại Positano."
+  },
+  "title": "Cách đến Hostel",
+  "intro": "Chúng tôi cách trạm xe buýt Chiesa Nuova khoảng 100 m và mất chừng 13 phút đi bộ xuống bãi biển.",
+  "steps": {
+    "bus": "Từ Sorrento: đi xe buýt SITA đến Positano (xuống trạm Chiesa Nuova).",
+    "ferry": "Từ Capri/Amalfi: đi phà tới Positano rồi bắt xe buýt hoặc taxi lên đồi.",
+    "walk": "Chuẩn bị leo bậc thang; khung cảnh rất xứng đáng. Làm theo biển chỉ dẫn tới Via G. Marconi 358."
+  },
+  "photos": {
+    "heading": "Xem lộ trình trước khi xuất phát",
+    "items": [
+      {
+        "alt": "Bậc thang dẫn lên Hostel Brikette với khách đang bước về lối vào",
+        "caption": "Từ trạm Chiesa Nuova, đi theo bậc thang khoảng một phút — bảng hiệu của chúng tôi ở bên phải."
+      },
+      {
+        "alt": "Mặt tiền Hostel Brikette trên Via G. Marconi 358",
+        "caption": "Tìm số nhà Via G. Marconi 358 trên tường đá; lối vào nằm ngay sau biển số."
+      },
+      {
+        "alt": "Quầy lễ tân Hostel Brikette bên trong sảnh",
+        "caption": "Vào bên trong, quầy check-in nằm bên trái — chúng tôi sẽ giữ hành lý nếu phòng chưa sẵn sàng."
+      }
+    ]
+  }
+}

@@ -24,6 +24,18 @@ jest.mock("@platform-core/checkout/session", () => {
   const actual = jest.requireActual("@platform-core/checkout/session");
   return { ...actual, createCheckoutSession: jest.fn(actual.createCheckoutSession) };
 });
+jest.mock("@platform-core/inventoryValidation", () => {
+  const actual = jest.requireActual("@platform-core/inventoryValidation");
+  return {
+    ...actual,
+    validateInventoryAvailability: jest.fn(async () => ({ ok: true })),
+  };
+});
+jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@platform-core/customerProfiles", () => ({ getCustomerProfile: jest.fn(async () => null) }));
+jest.mock("@platform-core/identity", () => ({
+  getOrCreateStripeCustomerId: jest.fn(async () => "stripe-customer"),
+}));
 
 import { createRequest } from "./checkout-session.helpers";
 import { stripe } from "@acme/stripe";
@@ -48,7 +60,7 @@ test("builds Stripe session with correct items and metadata and forwards IP", as
   jest.useFakeTimers().setSystemTime(new Date("2025-01-01T00:00:00Z"));
   stripeCreate.mockResolvedValue({
     id: "sess_test",
-    payment_intent: { client_secret: "cs_test" },
+    client_secret: "cs_test",
   });
 
   const [sku1, sku2] = PRODUCTS;
@@ -87,6 +99,7 @@ test("builds Stripe session with correct items and metadata and forwards IP", as
   expect(args.payment_intent_data.billing_details.email).toBe("jane@example.com");
   expect(args.payment_intent_data.payment_method_options.card.request_three_d_secure).toBe("automatic");
   expect(options.headers["Stripe-Client-IP"]).toBe("203.0.113.1");
+  expect(typeof options.idempotencyKey).toBe("string");
   expect(args.metadata.rentalDays).toBe(expectedDays.toString());
   expect(args.metadata.sizes).toBe(JSON.stringify({ [sku1.id]: size1, [sku2.id]: size2 }));
   expect(args.metadata.subtotal).toBe("30");

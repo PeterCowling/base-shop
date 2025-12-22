@@ -1,0 +1,508 @@
+{
+  "labels": {
+    "onThisPage": "On this page",
+    "before": "Before you head out",
+    "steps": "Step-by-step route",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "folkloreAmalfi": {
+    "intro": [
+      "Sereias, santos e marinheiros — histórias que dão cor à Costa Amalfitana e aos lugares que elas nomeiam hoje."
+    ],
+    "sections": [
+      {
+        "title": "Histórias de pescadores",
+        "body": [
+          "Lendas de santos protetores e mudanças repentinas no mar explicam rituais e festivais locais."
+        ]
+      },
+      {
+        "title": "Mitos sobre topônimos",
+        "body": [
+          "Como nomes e marcos ganharam suas lendas ao longo dos séculos."
+        ]
+      }
+    ]
+  },
+  "compareBasesPositanoSorrentoAmalfi": {
+    "intro": [],
+    "toc": [
+      {
+        "href": "#positano",
+        "label": "Positano"
+      },
+      {
+        "href": "#sorrento",
+        "label": "Sorrento"
+      },
+      {
+        "href": "#amalfi",
+        "label": "Amalfi"
+      },
+      {
+        "href": "#who",
+        "label": "Quem cada base atende"
+      }
+    ],
+    "sections": [
+      {
+        "id": "positano",
+        "title": "Positano",
+        "body": [
+          "Cenário icônico e muitas escadas; ótimo se você quer acordar dentro do cartão-postal.",
+          "Transporte exige planejamento, especialmente para ferries cedo e ônibus tarde."
+        ]
+      },
+      {
+        "id": "sorrento",
+        "title": "Sorrento",
+        "body": [
+          "Melhores conexões e ampla oferta de acomodações para vários orçamentos.",
+          "As vistas são menos dramáticas do que em Positano, mas a praticidade é alta."
+        ]
+      },
+      {
+        "id": "amalfi",
+        "title": "Amalfi",
+        "body": [
+          "Ponto central para ferries e ônibus, com acesso fácil a Ravello.",
+          "Espere estilos de hospedagem variados e opções moderadas de transporte noturno."
+        ]
+      },
+      {
+        "id": "who",
+        "title": "Quem cada base atende",
+        "body": [
+          "Positano para vistas de tirar o fôlego e vida social de hostel.",
+          "Sorrento para quem busca custo-benefício e conexões rápidas.",
+          "Amalfi para acesso equilibrado ao longo da costa."
+        ]
+      }
+    ],
+    "faqs": [],
+    "faqsTitle": "Perguntas frequentes"
+  },
+  "interrailItalyRailPassAmalfiCoast": {
+    "toc": [
+      {
+        "href": "#routes",
+        "label": "Rotas principais"
+      },
+      {
+        "href": "#supplements",
+        "label": "Suplementos/reservas"
+      },
+      {
+        "href": "#last-mile",
+        "label": "Último trecho até Positano"
+      },
+      {
+        "href": "#faqs",
+        "label": "Perguntas frequentes"
+      }
+    ],
+    "sections": [
+      {
+        "id": "routes",
+        "title": "Rotas principais",
+        "body": [
+          "Roma → Nápoles/Salerno em trem de alta velocidade; trens locais até Sorrento; ônibus para Positano."
+        ]
+      },
+      {
+        "id": "supplements",
+        "title": "Suplementos/reservas",
+        "body": [
+          "Frecciarossa/Italo geralmente exigem reserva de assento; trens regionais não exigem, mas podem lotar."
+        ]
+      },
+      {
+        "id": "last-mile",
+        "title": "Último trecho até Positano",
+        "body": [
+          "De Nápoles: Circumvesuviana até Sorrento e depois ônibus SITA. De Salerno: ferry/ônibus na temporada."
+        ]
+      }
+    ],
+    "faqsTitle": "Perguntas frequentes",
+    "faqs": [
+      {
+        "q": "Vale a pena comprar o passe?",
+        "a": [
+          "Só compensa se você fizer trechos suficientes de longa distância; do contrário, bilhetes ponto a ponto podem sair mais baratos."
+        ]
+      }
+    ]
+  },
+  "photographyGuidePositano": {
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "Ângulos clássicos"
+      },
+      {
+        "href": "#crowds",
+        "label": "Evitando multidões"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etiqueta"
+      }
+    ],
+    "sections": [
+      {
+        "id": "classics",
+        "title": "Ângulos clássicos",
+        "body": [
+          "Curvas da parte alta da Via Pasitea, caminho de Fornillo e o píer olhando para a cidade — melhores no nascer do sol ou na golden hour."
+        ]
+      },
+      {
+        "id": "crowds",
+        "title": "Evitando multidões",
+        "body": [
+          "Vá cedo ou espere após o pôr do sol para fotografar a blue hour sem os excursionistas do dia."
+        ]
+      },
+      {
+        "id": "etiquette",
+        "title": "Etiqueta",
+        "body": [
+          "Compartilhe o espaço, dê passagem em escadas estreitas e não bloqueie fachadas de lojas."
+        ]
+      }
+    ]
+  },
+  "simsAtms": {
+    "intro": [
+      "eSIMs são práticas e geralmente mais baratas; se precisar de um SIM físico ou de um caixa eletrônico, planeje-se na alta temporada."
+    ],
+    "faqs": [
+      {
+        "q": "Posso comprar um SIM local em Positano?",
+        "a": [
+          "As lojas são poucas; considere eSIMs ou compre em Nápoles/Sorrento para preços melhores."
+        ]
+      },
+      {
+        "q": "A cobertura é confiável?",
+        "a": [
+          "Geralmente boa no centro, com pontos instáveis em trilhas e falésias."
+        ]
+      },
+      {
+        "q": "Existem caixas eletrônicos?",
+        "a": [
+          "Há caixas, mas as tarifas variam; prefira máquinas de bancos e leve um cartão reserva."
+        ]
+      }
+    ]
+  },
+  "ferrySchedules": {
+    "intro": [
+      "Os ferries para Positano são sazonais. No verão, vários operadores ligam Nápoles, Sorrento, Amalfi e Capri a Positano. Sempre confirme no site da operadora, pois os horários mudam com o clima e a demanda."
+    ],
+    "tipsTitle": "Dicas espertas para o ferry",
+    "tips": [
+      "Confira as atualizações de partida na noite anterior — vento e mar agitado podem cancelar viagens com pouco aviso.",
+      "Compre os bilhetes online na alta temporada para evitar lotação esgotada nas bilheteiras do cais.",
+      "Leve alguns euros em dinheiro se pretende usar os carregadores do cais até a parte alta da vila.",
+      "Tenha o horário de ônibus da SITA à mão como plano B quando o mar estiver muito agitado para os ferries."
+    ],
+    "sections": [
+      {
+        "id": "seasonality",
+        "title": "Sazonalidade",
+        "body": [
+          "Os ferries operam principalmente de abril a outubro. No inverno, os serviços são limitados ou suspensos; use ônibus no lugar."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Dicas rápidas",
+        "body": [
+          "Alta temporada: abril a outubro. Serviços limitados ou inexistentes no inverno.",
+          "Chegue cedo para entrar na fila e validar os bilhetes.",
+          "Do porto ao hostel é ladeira acima; considere carregadores ou o ônibus até “Chiesa Nuova”.",
+          "Para mais dicas de chegada, consulte nosso artigo de Assistência “Chegando de ferry”."
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Os ferries funcionam o ano todo para Positano?",
+        "a": [
+          "Os ferries são sazonais (geralmente abril–outubro). No inverno, ônibus/táxis são as opções principais."
+        ]
+      },
+      {
+        "q": "Onde posso ver horários de ferry em tempo real?",
+        "a": [
+          "Use os sites das operadoras (ex.: NLG, Travelmar, Alilauro) ou agregadores como o DirectFerries no verão."
+        ]
+      },
+      {
+        "q": "Qual píer devo usar em Positano?",
+        "a": [
+          "O píer principal fica na Spiaggia Grande. Em dias cheios, confira na passagem a baia de embarque correta."
+        ]
+      },
+      {
+        "q": "Com quanta antecedência devo chegar antes do embarque?",
+        "a": [
+          "Chegue 20–30 minutos antes; filas são comuns nos meses de pico (junho–setembro)."
+        ]
+      },
+      {
+        "q": "A caminhada do porto até o Hostel Brikette é difícil?",
+        "a": [
+          "É uma subida com muitas escadas. Considere um serviço de carregador ou o ônibus para Chiesa Nuova se estiver com malas pesadas."
+        ]
+      }
+    ],
+    "gallery": [
+      {
+        "alt": "Área do píer de Positano",
+        "caption": "Píer da Spiaggia Grande"
+      },
+      {
+        "alt": "Ferry se aproximando de Amalfi",
+        "caption": "Ferries pela costa"
+      }
+    ],
+    "faqsTitle": "Perguntas frequentes sobre o ferry para Positano",
+    "galleryTitle": "Destaques fotográficos do ferry"
+  },
+  "drivingAmalfi": {
+    "intro": [
+      "Dirigir pela SS163 é lindo, mas desafiador. Considere ferries e ônibus primeiro; se for dirigir, planeje-se para pistas estreitas, pouco estacionamento e restrições sazonais."
+    ]
+  },
+  "ecoFriendlyAmalfi": {
+    "intro": [
+      "Reduza o impacto enquanto aproveita a costa. Use rotas de escadas, prefira ferries a carros na temporada, reabasteça garrafas e leve de volta o que levar para trilhas."
+    ],
+    "toc": [
+      {
+        "href": "#getting-around",
+        "label": "Como se locomover"
+      },
+      {
+        "href": "#refills",
+        "label": "Reabastecimentos e resíduos"
+      },
+      {
+        "href": "#trails",
+        "label": "Etiqueta nas trilhas"
+      }
+    ],
+    "sections": [
+      {
+        "id": "getting-around",
+        "title": "Como se locomover",
+        "body": [
+          "Prefira ferries e ônibus a carros particulares; caminhe entre vilas próximas quando for seguro.",
+          "Viaje fora dos horários de pico para aliviar a operação e evitar lotações."
+        ]
+      },
+      {
+        "id": "refills",
+        "title": "Reabastecimentos e resíduos",
+        "body": [
+          "Use fontes públicas ou peça para encher a garrafa em cafés; leve uma garrafa reutilizável.",
+          "Separe o lixo quando possível e evite itens descartáveis de praia."
+        ]
+      },
+      {
+        "id": "trails",
+        "title": "Etiqueta nas trilhas",
+        "body": [
+          "Dê passagem em trechos estreitos, leve todo o lixo de volta e respeite propriedades privadas.",
+          "Comece cedo para escapar do calor e do movimento nas trilhas."
+        ]
+      }
+    ],
+    "faqs": [],
+    "faqsTitle": "Perguntas frequentes"
+  },
+  "itinerariesPillar": {
+    "intro": "Você não precisa de carro para aproveitar a Costa Amalfitana. Use ferries para saltos cênicos, ônibus para vilas no alto e um pouco de planejamento para evitar os horários mais cheios. Comece com estes modelos e depois personalize.",
+    "toc": {
+      "twoDays": "2 dias: foco em Positano",
+      "threeDays": "3 dias: acrescente Capri ou Amalfi + Ravello",
+      "sevenDays": "7 dias: volta completa",
+      "tips": "Dicas de horário e transporte",
+      "faqs": "Perguntas frequentes"
+    },
+    "twoDaysHeading": "2 dias: foco em Positano",
+    "twoDaysItems": [
+      "Dia 1: Centro histórico de Positano, caminho para Fornillo pela costa, pôr do sol nas curvas da Via Pasitea.",
+      "Dia 2: <pathOfTheGodsLink>Path of the Gods</pathOfTheGodsLink> a partir de Nocelle; refresco na praia depois."
+    ],
+    "threeDaysHeading": "3 dias: inclua Capri ou Ravello",
+    "threeDaysIntro": "Escolha uma opção:",
+    "threeDaysOptions": [
+      "Capri em um dia: ferry cedo → Marina Grande → teleférico de Anacapri → volta por Marina Piccola.",
+      "Amalfi + Ravello: ônibus até Amalfi, continue para Ravello para jardins e vistas; retorne de ônibus/ferry."
+    ],
+    "sevenDaysHeading": "7 dias: volta completa",
+    "sevenDaysItems": [
+      "Base em Positano (2–3 noites)",
+      "Amalfi/Ravello (2 noites)",
+      "Capri (1 noite) ou Sorrento (1–2 noites) para facilitar os deslocamentos"
+    ],
+    "tipsHeading": "Dicas de horário e transporte",
+    "tips": [
+      "Use ferries entre 10h00 e 16h00 com moderação nos dias de pico. Comece mais cedo ou mais tarde.",
+      "Compre bilhetes de ônibus com antecedência; valide ao embarcar.",
+      "Se o mar estiver agitado, mude para planos de ônibus; acompanhe os avisos das operadoras."
+    ],
+    "faqHeading": "Perguntas frequentes",
+    "faqs": [
+      {
+        "q": "Vale a pena alugar um carro?",
+        "a": [
+          "Escassez de estacionamento, ZTL e placas alternadas tornam a viagem sem carro mais simples na maior parte do ano."
+        ]
+      }
+    ]
+  },
+  "amalfiTownGuide": {
+    "headings": {
+      "highlights": "Destaques",
+      "gettingThere": "Como chegar",
+      "tips": "Dicas"
+    },
+    "highlights": [
+      "Duomo di Amalfi e o Chiostro del Paradiso (claustro).",
+      "Museu do Papel (Museo della Carta) — singular na história de Amalfi.",
+      "Calçadão à beira-mar e gelato nos degraus."
+    ],
+    "gettingThere": "Saindo de Positano, os ferries (na temporada) são cênicos e confortáveis. Caso contrário, pegue o ônibus SITA; espere filas nos horários de pico. Compre bilhetes com antecedência.",
+    "tips": [
+      "Chegue cedo; visite os jardins de Ravello de ônibus a partir de Amalfi para um dia completo.",
+      "Leve proteção solar; há pouca sombra no píer."
+    ]
+  },
+  "sevenDayNoCar": {
+    "intro": "Fique 3 noites em Positano, 2 em Amalfi/Ravello e 1–2 em Capri ou Sorrento para manter os deslocamentos simples.",
+    "toc": {
+      "onThisPage": "Nesta página",
+      "overview": "Visão geral",
+      "dayByDay": "Dia a dia",
+      "tips": "Dicas de transporte e horários",
+      "faqs": "Perguntas frequentes"
+    },
+    "days": [
+      {
+        "id": "day1",
+        "label": "Dia 1",
+        "items": [
+          "Chegada a Positano; centro histórico e Fornillo"
+        ]
+      },
+      {
+        "id": "day2",
+        "label": "Dia 2",
+        "items": [
+          "Path of the Gods a partir de Nocelle"
+        ]
+      },
+      {
+        "id": "day3",
+        "label": "Dia 3",
+        "items": [
+          "Capri em um dia ou praia + passeio de barco"
+        ]
+      },
+      {
+        "id": "day4",
+        "label": "Dia 4",
+        "items": [
+          "Traslado para Amalfi; Duomo; pôr do sol no píer"
+        ]
+      },
+      {
+        "id": "day5",
+        "label": "Dia 5",
+        "items": [
+          "Jardins de Ravello (Villa Rufolo/Villa Cimbrone)"
+        ]
+      },
+      {
+        "id": "day6",
+        "label": "Dia 6",
+        "items": [
+          "Pernoite em Capri ou salto para Sorrento"
+        ]
+      },
+      {
+        "id": "day7",
+        "label": "Dia 7",
+        "items": [
+          "Partida"
+        ]
+      }
+    ],
+    "tips": [
+      "Os ferries são sazonais; tenha um plano de ônibus caso o mar fique agitado.",
+      "Viaje antes das 10h00 ou depois das 16h00 nos dias de pico para evitar filas."
+    ],
+    "faq": [
+      {
+        "q": "Vale mudar de base?",
+        "a": [
+          "Duas bases minimizam o vai e vem com bagagem e mantêm os deslocamentos eficientes."
+        ]
+      }
+    ]
+  },
+  "chiesaNuovaDepartures": {
+    "intro": [
+      "Vai sair do hostel para apanhar o autocarro para Amalfi ou Sorrento? Este micro-itinerário mostra-lhe o caminho mais rápido do Hostel Brikette até à paragem Chiesa Nuova/Bar Internazionale e partilha algumas dicas."
+    ],
+    "sections": [
+      {
+        "title": "Why this route works",
+        "body": [
+          "São 120 metros (400 pés) a pé desde a entrada do hostel até à paragem, pela estrada principal.",
+          "Se for em direção a Amalfi, a paragem fica em frente ao Bar Internazionale. Faça fila no lado da estrada virado para o mar. Se for em direção a Sorrento, espere mesmo à porta do bar."
+        ]
+      },
+      {
+        "title": "Tickets and timing",
+        "body": [
+          "Compre um bilhete da SITA na tabacaria ou dentro do bar. Não tente entrar no autocarro sem bilhete, porque não o poderá comprar a bordo. Apresente o bilhete ao motorista ao subir. Se for apanhar o primeiro autocarro do dia, compre o bilhete na véspera e passe na receção para combinar o check-out.",
+          "No verão, os autocarros enchem-se com frequência. Planeie em conformidade, sobretudo nos períodos de maior movimento."
+        ]
+      }
+    ],
+    "beforeList": [],
+    "stepsList": [
+      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Siga o passeio durante cerca de 120 metros (400 pés) ao longo da estrada principal até chegar ao Bar Internazionale."
+    ],
+    "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+    "kneesList": [],
+    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
+    "kneesDockLinkLabel": "Ferry dock luggage route",
+    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
+    "kneesPorterLinkLabel": "porter service guide",
+    "faqs": [
+      {
+        "q": "Do buses stop right outside the hostel?",
+        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+      },
+      {
+        "q": "Can I buy tickets at the last minute?",
+        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+      }
+    ],
+    "howtoSteps": [
+      "Leave Hostel Brikette and follow Viale Pasitea downhill",
+      "Join the queue at Bar Internazionale and validate on boarding"
+    ],
+    "faqsTitle": "FAQs"
+  }
+}

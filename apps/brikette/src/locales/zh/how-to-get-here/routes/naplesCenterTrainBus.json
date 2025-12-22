@@ -1,0 +1,73 @@
+{
+  "slug": "naples-center-train-bus",
+  "meta": {
+    "title": "那不勒斯市中心乘火车与巴士前往波西塔诺 | Hostel Brikette",
+    "description": "按照步骤从那不勒斯市中心经环维苏威火车和 SITA 巴士前往 Hostel Brikette，包含购票提示及抵达波西塔诺的照片。"
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette 旅行指南",
+    "title": "那不勒斯市中心前往波西塔诺 – 先火车后巴士",
+    "description": "按照以下指引，从那不勒斯市中心乘坐环维苏威火车前往索伦托，再转乘 SITA 巴士到波西塔诺的 Hostel Brikette。指南包含购票提示、巴士时刻建议以及抵达旅舍前的照片。"
+  },
+  "tip": {
+    "eyebrow": "小贴士",
+    "copy": "需要其他路线？请在<GuideLink>“如何前来”页面</GuideLink>浏览完整的抵达指引。",
+    "linkLabel": "“如何前来”页面"
+  },
+  "sections": {
+    "overview": {
+      "title": "火车接巴士概览",
+      "body": "此行程涵盖从那不勒斯市中心出发最快的公共交通组合：先乘环维苏威火车到索伦托，再转乘 SITA 巴士到波西塔诺。本指南不包含从那不勒斯机场出发的路线。"
+    },
+    "naplesStation": {
+      "title": "那不勒斯火车站",
+      "body": "开往索伦托的环维苏威列车从那不勒斯加里波第站（位于那不勒斯中央车站下层）发车。请在下楼至站台前先购买车票，确认列车所在轨道，然后乘坐开往索伦托的列车。"
+    },
+    "sorrentoStation": {
+      "title": "索伦托火车站",
+      "body": "抵达索伦托后，离开车站并在附近的酒吧、报刊亭或烟草店购买 SITA 巴士票——车上不售票。SITA 站点位于车站外楼梯下方，等候开往阿马尔菲的巴士并乘车前往波西塔诺。"
+    },
+    "timetable": {
+      "title": "如何阅读 SITA 时刻表",
+      "intro": "SITA 巴士时刻表可能较难理解——请按照以下提示找到正确的班次：",
+      "tips": [
+        "首列中的每一行代表沿途的停靠站。",
+        "每一列都是一个以字母标注的班次。",
+        "周一至周六出行，请查看 F 和 G 列。",
+        "周日或公共假日，请查看 G 和 H 列。"
+      ],
+      "detail": "在索伦托对应的行选择出发时间，再在同一列中的波西塔诺（Chiesa Nuova）一行查看抵达时间。",
+      "outro": "访问<TimetableLink>positano.com</TimetableLink>查看最新时刻表。",
+      "linkLabel": "positano.com"
+    },
+    "positanoStop": {
+      "title": "波西塔诺巴士站",
+      "list": [
+        "最近的站点是波西塔诺（Chiesa Nuova），距离旅舍约 140 米（490 英尺）。",
+        "车站位于 Bar Internazionale 咖啡吧门前。",
+        "巴士在道路平面停车——前往我们这里无需长时间爬楼梯。"
+      ],
+      "figure": {
+        "alt": "波西塔诺 Bar Internazionale 外的 Chiesa Nuova 巴士站",
+        "caption": "Chiesa Nuova 巴士站——在此下车即可前往 Hostel Brikette。"
+      }
+    },
+    "walk": {
+      "title": "从巴士站步行",
+      "steps": [
+        "从巴士站步行 100 多米 / 330 英尺。",
+        "右转并沿台阶上行至旅舍正门。"
+      ],
+      "mapLink": "打开<MapLink>Google 地图路线</MapLink>获取逐步导航。",
+      "mapLinkLabel": "Google 地图路线",
+      "arrival": {
+        "title": "抵达后",
+        "body": "留意二层露台上的招牌。走过招牌，沿着弯道前行，并在道路右侧的楼梯上行即可到达主入口。"
+      },
+      "approachFigure": {
+        "alt": "街景展示 Via G. Marconi 上方的 Hostel Brikette 招牌",
+        "caption": "Via G. Marconi——走过招牌后，从右侧的楼梯上行。"
+      }
+    }
+  }
+}

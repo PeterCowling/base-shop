@@ -1,7 +1,13 @@
 import { describe, it, expect } from "@jest/globals";
 import { withEnv } from "../../../test/utils/withEnv";
 import { expectInvalidAuthEnvWithConfigEnv } from "../../../test/utils/expectInvalidAuthEnv";
-import { NEXT_SECRET, SESSION_SECRET, REDIS_TOKEN } from "./authEnvTestUtils";
+import {
+  NEXT_SECRET,
+  SESSION_SECRET,
+  REDIS_TOKEN,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
+} from "./authEnvTestUtils";
 
 type EnvOverrides = Record<string, string | undefined>;
 
@@ -9,6 +15,8 @@ const prodEnv = (overrides: EnvOverrides = {}): EnvOverrides => ({
   NODE_ENV: "production",
   NEXTAUTH_SECRET: NEXT_SECRET,
   SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
   ...overrides,
 });
 
@@ -22,7 +30,12 @@ const expectInvalidProd = (
   });
 
 describe("authEnvSchema provider credentials", () => {
-  const baseEnv = { NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET };
+  const baseEnv = {
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET,
+    OAUTH_ISSUER,
+    OAUTH_REDIRECT_ORIGIN,
+  };
 
   it("requires JWT_SECRET when AUTH_PROVIDER=jwt", async () => {
     const { authEnvSchema } = await import("../auth");

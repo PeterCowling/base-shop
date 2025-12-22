@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Limoncello & lokale Küche an der Amalfiküste",
+    "description": "Was du in Positano probieren solltest: Limoncello, Klassiker mit Meeresfrüchten, Zitronendesserts und Bestell-Etikette."
+  },
+  "linkLabel": "Limoncello & lokale Küche",
+  "intro": [
+    "Limoncello gehört zur Amalfiküste wie Zitronenhaine und Meerblick – hier erfährst du, wo du verkostest, was du kaufen solltest und wie du mit Amalfi-Zitronen kochst.",
+    "Achte auf handwerkliche Produktion, Herkunft und Transporttipps, damit der Geschmack auch zu Hause überzeugt."
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "sections": [
+    {
+      "id": "tasting",
+      "title": "Verkostungen",
+      "body": [
+        "Verkostungen in kleinen Manufakturen wie „Sapori di Positano“ oder „Lemon Shop“ bieten Limoncello, Crema di Limone und Mandarinetto – immer gut gekühlt serviert.",
+        "Frag nach der Mazerationszeit und ob frische Amalfi-Zitronen (g.g.A.) verwendet werden – ein Qualitätsindikator."
+      ]
+    },
+    {
+      "id": "purchase",
+      "title": "Kauf & Versand",
+      "body": [
+        "500-ml-Flaschen reisen sicher im Aufgabegepäck, eingewickelt in Kleidung oder spezielle Flaschenhüllen.",
+        "Für Versand nutzen Shops zertifizierte Verpackungen und Zollpapiere; Kosten innerhalb Europas ca. 25–40 €."
+      ]
+    },
+    {
+      "id": "cooking",
+      "title": "Kochen mit Zitronen",
+      "body": [
+        "Amalfi-Zitronen veredeln Risotto al limone, Insalata di limoni (mit roter Zwiebel & Minze) oder Limoncello-Tiramisu.",
+        "Schale fein abziehen (weiße Schicht vermeiden) und sofort verwenden; Rest-Sirup eignet sich für Spritz oder Dessertsoßen."
+      ]
+    }
+  ],
+  "tips": [
+    "Achte auf die Kennzeichnung „Limone Costa d’Amalfi g.g.A.“ – sie garantiert Herkunft und Qualität.",
+    "Serviere Limoncello eisgekühlt aus dem Gefrierfach; so bleibt die Textur seidiger."
+  ],
+  "faqs": [
+    {
+      "q": "Darf Limoncello ins Handgepäck?",
+      "a": [
+        "Nur bis 100 ml – größere Flaschen gehören ins Aufgabegepäck, gut gepolstert."
+      ]
+    },
+    {
+      "q": "Gibt es alkoholfreie Alternativen?",
+      "a": [
+        "Ja, probiere Limonata, alkoholfreien Zitronen-Sirup oder Crema di Limone ohne Alkohol – viele Shops kennzeichnen entsprechende Produkte."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Fotogalerie",
+    "items": [
+      {
+        "alt": "Limoncello-Verkostung in Positano",
+        "caption": "Verkostung mit Blick auf die Küste"
+      },
+      {
+        "alt": "Zitronen an einem Baum",
+        "caption": "Zitronenhaine der Amalfiküste"
+      }
+    ]
+  }
+}

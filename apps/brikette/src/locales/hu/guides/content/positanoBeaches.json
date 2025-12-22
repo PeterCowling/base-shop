@@ -1,0 +1,279 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Public és fizetős strandok, liftek, lépcsők, szolgáltatások és mikor érdemes érkezni."
+  },
+  "linkLabel": "Positano legjobb strandjai",
+  "intro": [
+    "Hasonlítsa össze Positano strandjait és a közeli egynapos öblöket, mielőtt elkötelezné magát egy nyugágy mellett. Ez az áttekintés kiemeli az árakat, a szabad zónákat és az általános hangulatot, így a helyet a költségvetéshez és az energiaszinthez igazíthatja.",
+    "Válassza ki a strand nevét az alábbi táblázatban vagy összefoglalókban, hogy megnyissa részletes útmutatóinkat útbaigazításokkal, ételjavaslatokkal és lépésenkénti hozzáférési megjegyzésekkel."
+  ],
+  "galleryTitle": "Positano tengerparti látnivalók",
+  "toc": [
+    {
+      "href": "#overview",
+      "label": "Hogyan válasszunk"
+    },
+    {
+      "href": "#positano-beaches",
+      "label": "Positano strandjai"
+    },
+    {
+      "href": "#praiano-beaches",
+      "label": "Praiano strandok"
+    },
+    {
+      "href": "#furore-beaches",
+      "label": "Furore"
+    },
+    {
+      "href": "#sorrento-beaches",
+      "label": "Sorrento"
+    },
+    {
+      "href": "#amalfi-beaches",
+      "label": "Amalfi"
+    },
+    {
+      "href": "#logistics",
+      "label": "Logisztika"
+    },
+    {
+      "href": "#faqs",
+      "label": "FAQs"
+    }
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Hogyan válasszuk ki a megfelelő strandot",
+      "body": [
+        "A Positano ingyenes kavicsos szakaszokat és szervezett strandokat kínál. A nyugágyak ára kisebb klubokban 15 eurótól egészen 400 euróig terjed az olyan előkelő fedélzeteken, mint a La Scogliera, ezért döntse el mielőbb, hogy teljes körű szolgáltatást vagy ingyenes törölközőhelyet szeretne.",
+        "Összehasonlító táblázatunk településenként csoportosítja a strandokat. Minden bejegyzés felsorolja a nyugágyak kezdő költségeit, ha van szabad terület, valamint gyors előnyeit és hátrányait, így egyensúlyba hozhatja a napsütést, a tömeget és a kényelmet."
+      ]
+    },
+    {
+      "id": "positano-beaches",
+      "title": "Positano strandjai egy pillantással",
+      "body": [
+        "Fornillo továbbra is a szálló kedvence marad a laza hangulatának, két ingyenes részlegének (az egyik el van rejtve) és a tengerparti kluboknak, például a Pupetto, a Grassi, a Ferdinando és a La Marinella 15 euró körüli árának köszönhetően. A visszafelé emelkedés meredek, ezért sok gyalogos átvág a fő strandra, és busszal száll felfelé – tekintse meg a %LINK:fornilloBeachGuide|Fornillo strandkalauzt% az operátor részleteiért és a szabad zóna térképeiért.",
+        "A Spiaggia Grande képeslapképet nyújt Positano sziklaoldali látképével az esernyők mögött. Magasabb árakra számíthat: a L'Incanto 25 euró körül kezdődik, míg a La Scogliera VIP paklik 100-400 euróba kerülnek. Középen van egy nyilvános sáv, de a legtöbb vendég Fornillo nyugodtabb tájait részesíti előnyben – kövesse %LINK:positanoMainBeachWalkDown|sétaútvonalunkat% vagy %LINK:positanoMainBeachBusDown|buszútmutatónkat%, hogy gyorsan megérkezzen, majd használja a %LINK:positanoMainBeachBusBack|visszaútra vonatkozó busztippeket%, ha vissza szeretne mászni.",
+        "Arienzo ötvözi a hosszú délutáni napsütést egy drámai lépcsős ereszkedéssel. A nyugágyakat, ebédet és hajótranszfert tartalmazó csomagok ára 60 euró körül kezdődik, és a klub vízi taxiját is tartalmazza – ez ideális, mert a független hozzáférés kihívást jelent.",
+        "A Laurito egy kompakt öböl, amelyet a Da Adolfo (ingyenes nyugágyak étteremmel) és a Villa Tre Ville (30 eurótól) szolgál ki. A napsütés a nap végéig tart, de az egyetlen könnyű hozzáférés a transzferhajókon keresztül van; a nyilvános rész pici."
+      ]
+    },
+    {
+      "id": "praiano-beaches",
+      "title": "Praiano egynapos kirándulási lehetőségek",
+      "body": [
+        "A Praiano's Gavitella Beach egy naplemente menedékhely az étterem terasszal, amely ideális aperitivekhez és vacsorákhoz. Nincs szabad zóna, és a déli hőség visszaverődik a betonperonokról, ezért célozzon késő délutánra.",
+        "Marina di Praia egy keskeny kavicsos öblöt kínál, amelyet halászhajók és sziklák kereteznek. A strandok mellett marad egy szerény, ingyenes rész – tökéletes, ha a szolgáltatások elvesztése nélkül szeretne tájat váltani."
+      ]
+    },
+    {
+      "id": "furore-beaches",
+      "title": "Furore fjordszerű öble",
+      "body": [
+        "A Fiordo di Furore az Amalfi-part klasszikusa az Instagramon, kőhíddal a feje fölött és sziklákat ugráló helyekkel. A belépés ingyenes, a költségek alacsonyak, de a hely rendkívül korlátozott, ezért érkezzen korán, vagy látogasson el a csúcsidőn kívül."
+      ]
+    },
+    {
+      "id": "sorrento-beaches",
+      "title": "Sorrentói Regina Giovanna fürdő",
+      "body": [
+        "A Sorrento közelében található Regina Giovanna fürdő (Bagni della Regina Giovanna) egy természetes úszólyuk, amelyet a sziklába véstek. A belépés ingyenes, üdítően hűvös, és Positano fő strandjaihoz képest továbbra is a radar alatt áll – vízcipőt és harapnivalót kell csomagolni, mert nincsenek létesítmények."
+      ]
+    },
+    {
+      "id": "amalfi-beaches",
+      "title": "Amalfi város tengerparti klubjai",
+      "body": [
+        "Amalfi fő Marina Grande strandját olyan klubok szegélyezik, mint a Stella Maris, a Marina Grande Beach Club, a Silver Moon és a Bagni Mar di Cobalto. Klasszikus strandfelszerelésekre számíthat pincérszolgálattal, zuhanyzókkal és kilátással a Dóm hátterére – a főszezonban érdemes előre lefoglalni az első sor nyugágyait."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Megközelítés a strandra és onnan",
+      "body": [
+        "Fornillo és Spiaggia Grande felé induljon el a szállóból, és ereszkedjen le a Viale Pasiteán keresztül. Ha a visszamászás ijesztőnek tűnik, menjen tovább a vízparton a fő strandig, és menjen fel a narancssárga belső busszal a Chiesa Nuovához, amely egy rövid sétára található a Hostel Brikette épületétől.",
+        "Arienzo és Laurito privát transzferhajókat üzemeltet Spiaggia Grande városából; erősítse meg az utolsó visszautazást, mielőtt elkötelezi magát egy késői aperitif mellett. Praiano, Furore, Sorrento vagy Amalfi esetében kövesse a linkelt útmutatókat a közlekedési útvonalakkal, a buszmenetrendekkel és a kompopciókkal kapcsolatban."
+      ]
+    }
+  ],
+  "prosCons": [
+    {
+      "title": "Fornillo",
+      "pros": [
+        "Nyugágyak 15 €-tól",
+        "Nagy és titkos szabad zónák",
+        "Nyugodt légkör"
+      ],
+      "cons": [
+        "Meredek visszaséta",
+        "Korlátozott árnyékoló bérlet nélkül"
+      ]
+    },
+    {
+      "title": "Spiaggia Grande",
+      "pros": [
+        "Ikonikus Positano látképe",
+        "Központi kompjáratok",
+        "Nyilvános szalag elérhető"
+      ],
+      "cons": [
+        "A legdrágább nyugágyak",
+        "Nagyon zsúfolt délben"
+      ]
+    },
+    {
+      "title": "Arienzo",
+      "pros": [
+        "Hosszú délutáni napsütés",
+        "A csomagajánlatok tartalmazzák az ebédet és a hajót",
+        "Remek nézőpontok"
+      ],
+      "cons": [
+        "Több száz lépcső",
+        "Nehezen megközelíthető klubbusz nélkül"
+      ]
+    },
+    {
+      "title": "Laurito",
+      "pros": [
+        "Késői nap",
+        "Da Adolfo ikonikus ebédlőhelye",
+        "Villa Tre Ville prémium szolgáltatás"
+      ],
+      "cons": [
+        "Apró nyilvános rész",
+        "A hozzáférés a vízitaxi időzítésétől függ"
+      ],
+      "guideKey": "lauritoBeachGuide"
+    },
+    {
+      "title": "Gavitella (Praiano)",
+      "pros": [
+        "Naplemente aperitiv",
+        "Étterem terasz"
+      ],
+      "cons": [
+        "Nincs szabad terület",
+        "A betonplatformok felforrósodnak"
+      ]
+    },
+    {
+      "title": "Marina di Praia",
+      "pros": [
+        "Bájos horgászöböl",
+        "Szabad szakasz a strand mellett"
+      ],
+      "cons": [
+        "Keskeny tengerpart",
+        "Korlátozott napsütés a nap elején"
+      ]
+    },
+    {
+      "title": "Fiordo di Furore",
+      "pros": [
+        "Ingyenes belépés",
+        "Sziklaugrás",
+        "Egyedi hídháttér"
+      ],
+      "cons": [
+        "Rendkívül kicsi strand",
+        "Gyorsan gyűlnek a tömegek"
+      ]
+    },
+    {
+      "title": "Regina Giovanna Bath",
+      "pros": [
+        "Ingyenes természetes medence",
+        "Hűvös víz a forró napokra"
+      ],
+      "cons": [
+        "Nincsenek szolgáltatások",
+        "Sziklás bekötőút"
+      ]
+    },
+    {
+      "title": "Amalfi Marina Grande",
+      "pros": [
+        "Többféle klub választás",
+        "Könnyű komp- és buszközlekedés"
+      ],
+      "cons": [
+        "Prémium árképzés",
+        "Foglaljon előre a főszezonban"
+      ]
+    }
+  ],
+  "itemList": [
+    {
+      "name": "Fornillo",
+      "note": "Helyi kedvenc 15 eurós nyugágyakkal és két ingyenes résszel."
+    },
+    {
+      "name": "Spiaggia Grande",
+      "note": "Fő strand ikonikus kilátással, drága klubokkal és központi szabad zónával."
+    },
+    {
+      "name": "Arienzo",
+      "note": "Napos terasz stílusú strand, amely 300 lépcsőn vagy klubvízi taxival érhető el."
+    },
+    {
+      "name": "Laurito",
+      "note": "Kompakt öböl, amelyet a Da Adolfo és a Villa Tre Ville transzferhajók szolgálnak ki."
+    },
+    {
+      "name": "Gavitella",
+      "note": "A Praiano platform tökéletes naplemente aperitivekhez (csak klubban)."
+    },
+    {
+      "name": "Marina di Praia",
+      "note": "Horgászfalu strandja kis ingyenes folttal és strandokkal."
+    },
+    {
+      "name": "Fiordo di Furore",
+      "note": "Drámai hídvázas öböl ingyenes belépéssel és korlátozott hellyel."
+    },
+    {
+      "name": "Regina Giovanna Bath",
+      "note": "Rejtett sorrentói úszólyuk – ingyenes, de hozzon kelléket."
+    },
+    {
+      "name": "Amalfi Marina Grande",
+      "note": "Klasszikus Amalfi strandok sora a Dómmal szemben."
+    }
+  ],
+  "faqsTitle": "Positano beach GYIK",
+  "faqs": [
+    {
+      "q": "Hol találok ingyenes strandot Positanóban?",
+      "a": [
+        "Fornillóban van a legnagyobb szabad szakasz, valamint egy csendesebb rejtett rész a fő klubok mellett. A Spiaggia Grande nyilvános zónát is tart a fizetős fedélzetek között, míg Laurito csak egy apró foltot kínál Da Adolfo pontonja mellett."
+      ]
+    },
+    {
+      "q": "Hogyan juthatok vissza a Hostel Brikette-be egy tengerparti nap után?",
+      "a": [
+        "Fornillóból kövesse a tengerparti utat Spiaggia Grande felé, és menjen fel a narancssárga belső busszal a Chiesa Nuova felé. Ez egy rövid sétára engedi Önt a szállótól, és megóvja a meredek emelkedőt."
+      ]
+    },
+    {
+      "q": "Előre kell foglalnom a strandklubokat?",
+      "a": [
+        "Foglaljon előre Arienzo, Laurito's Da Adolfo vagy Villa Tre Ville és Spiaggia Grande első soraiba – a hétvégi ülések gyorsan elfogynak. Fornillo kisebb klubjai gyakran már a nap elején fogadják a belépőket."
+      ]
+    }
+  ],
+  "gallery": [
+    {
+      "alt": "Spiaggia Grande felülről",
+      "caption": "Spiaggia Grande"
+    },
+    {
+      "alt": "Fornillo tengerparti ösvény",
+      "caption": "Fornillo"
+    }
+  ]
+}

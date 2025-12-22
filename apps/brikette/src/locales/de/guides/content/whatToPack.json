@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Packliste für die Amalfiküste",
+    "description": "Saisonale Packliste für Positano und die Amalfiküste: Schuhe, Schichten, Sonnenschutz und Extras."
+  },
+  "linkLabel": "Packliste für die Amalfiküste",
+  "intro": [
+    "Packliste nach Saison für Positano: Stufen und Sonne bestimmen die Smart-Packing-Strategie."
+  ],
+  "sections": [
+    {
+      "id": "footwear",
+      "title": "Schuhe",
+      "body": [
+        "Schuhe mit Profil für Treppen und Wanderungen; Sandalen mit rutschfester Sohle für den Strand.",
+        "Vermeide glatte Sohlen – Gassen können steil und poliert sein."
+      ]
+    },
+    {
+      "id": "layers",
+      "title": "Schichten & Sonne",
+      "body": [
+        "Leichte Schichten für den Abend; Hut und SPF für Mittagswege.",
+        "Eine leichte Regenjacke in der Nebensaison."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Taschen & Gepäck",
+      "body": [
+        "Rucksäcke sind Stufenfreundlicher als große Koffer; Wertsachen nah am Körper tragen.",
+        "Nimm eine wiederbefüllbare Flasche mit; in Märkten gibt es große Wasserflaschen zum Nachfüllen."
+      ]
+    }
+  ],
+  "tips": [
+    "Schwere Hartschalenkoffer vermeiden, wenn viele Treppen anstehen.",
+    "Hab kleine Euroscheine für Sonnenschirme, Busse und Snacks bereit."
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich alles vor Ort kaufen?",
+      "a": [
+        "Ja, aber in der Hochsaison steigen die Preise – packe Essentials ein, um Aufschläge zu vermeiden."
+      ]
+    },
+    {
+      "q": "Brauche ich einen Bademantel?",
+      "a": [
+        "Die meisten Unterkünfte stellen Handtücher; nimm nur einen leichten Überwurf mit, wenn du einen für den Strand bevorzugst."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "Trải nghiệm tại Hostel Brikette – Quán bar sân thượng, trekking & trợ lý số",
+    "description": "Nhâm nhi spritz lúc hoàng hôn, tham gia các cung đường trekking có tầm nhìn ngoạn mục và dùng trợ lý số để lên kế hoạch ngày khám phá Bờ biển Amalfi thật gọn nhẹ."
+  },
+  "hero": {
+    "eyebrow": "Trải nghiệm",
+    "title": "Trải nghiệm tại Hostel Brikette",
+    "description": "Nhâm nhi một ly spritz trên quán bar sân thượng, tham gia các buổi trekking ngắm toàn cảnh và nhận gợi ý tức thì từ trợ lý số của chúng tôi.",
+    "supporting": "Tất cả hoạt động đều dành cho khách đã đăng ký; nếu đi cùng bạn bè ở nơi khác, cứ nhắn cho chúng tôi nhé.",
+    "primaryCta": "Đặt phòng ngay",
+    "secondaryCta": "Xem menu quán bar",
+    "tertiaryCta": "Nhắn trợ lý số",
+    "primaryCtaAria": "Đặt phòng tại Hostel Brikette",
+    "secondaryCtaAria": "Bản dịch đang được chuẩn bị.",
+    "tertiaryCtaAria": "Gửi tin nhắn cho trợ lý số Hostel Brikette",
+    "breakfastCta": "View the breakfast menu",
+    "breakfastCtaAria": "View the breakfast menu"
+  },
+  "sections": {
+    "bar": {
+      "eyebrow": "Quán bar sân thượng",
+      "title": "Quán bar sân thượng ngắm hoàng hôn",
+      "description": "Quán bar sân thượng phục vụ spritz và rượu vang địa phương lúc hoàng hôn.",
+      "highlights": [
+        "Spritz đặc trưng và rượu vang địa phương luôn được ướp lạnh.",
+        "Tối giao lưu và thử rượu trong các tuần cao điểm.",
+        "Góc nhìn toàn cảnh lý tưởng để chụp ảnh khoảnh khắc hoàng hôn."
+      ],
+      "imageAlt": "Khách cụng ly trên sân thượng Hostel Brikette lúc hoàng hôn."
+    },
+    "hikes": {
+      "eyebrow": "Trekking có hướng dẫn",
+      "title": "Trekking có hướng dẫn & tour trong ngày",
+      "description": "Các cung đường trekking được đội ngũ gợi ý với bản đồ, thời gian và mẹo chuẩn bị.",
+      "highlights": [
+        "Bản đồ offline và lịch tàu xe được cập nhật mỗi sáng.",
+        "Đi bộ cùng đội ngũ chúng tôi vào những ngày đường mòn đông nhất.",
+        "Gợi ý đồ cần mang kèm phương án thay thế theo thời tiết."
+      ],
+      "imageAlt": "Khách hostel trekking trên cung đường Con Đường Của Các Vị Thần nhìn ra Amalfi."
+    },
+    "concierge": {
+      "eyebrow": "Trợ lý số",
+      "title": "Trợ lý số luôn sẵn sàng",
+      "description": "Trợ lý số cập nhật giờ phà, gợi ý lịch trình và trả lời câu hỏi ngay lập tức.",
+      "highlights": [
+        "Đội ngũ phản hồi qua WhatsApp và Messenger.",
+        "Thông báo tự động khi lịch xe buýt hoặc phà thay đổi.",
+        "Gợi ý cá nhân hóa dựa trên lịch trình của bạn."
+      ],
+      "imageAlt": "Màn hình điện thoại hiển thị cuộc trò chuyện với trợ lý số Hostel Brikette."
+    }
+  },
+  "faq": {
+    "title": "Câu hỏi thường gặp",
+    "items": [
+      {
+        "question": "Có cần đặt chỗ trước cho các trải nghiệm không?",
+        "answer": [
+          "Hầu hết các buổi tối trên sân thượng và chuyến trekking được xác nhận trong ngày tại lễ tân.",
+          "Với tour riêng hoặc chuyến thuyền, hãy nhắn trợ lý ít nhất 24 giờ trước để chúng tôi giữ chỗ."
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "title": "Sẵn sàng lên kế hoạch cho những ngày ở Amalfi Coast?",
+    "subtitle": "Đặt giường, xem nhanh menu quán bar và cho chúng tôi biết bạn muốn trải nghiệm gì—chúng tôi lo phần còn lại.",
+    "buttons": {
+      "book": "Đặt ngay",
+      "events": "Quán bar & sự kiện",
+      "concierge": "Trò chuyện với trợ lý",
+      "breakfast": "Breakfast menu"
+    }
+  },
+  "title": "Trải nghiệm tại Hostel Brikette",
+  "intro": "Nhâm nhi một ly spritz trên quán bar sân thượng, tham gia các buổi trekking ngắm toàn cảnh và nhận gợi ý tức thì từ trợ lý số của chúng tôi.",
+  "items": {
+    "bar": "Quán bar sân thượng phục vụ spritz và rượu vang địa phương lúc hoàng hôn.",
+    "hikes": "Các cung đường trekking được đội ngũ gợi ý với bản đồ, thời gian và mẹo chuẩn bị.",
+    "concierge": "Trợ lý số cập nhật giờ phà, gợi ý lịch trình và trả lời câu hỏi ngay lập tức."
+  },
+  "guideCollections": {
+    "heading": "Khám phá thêm với bộ hướng dẫn trải nghiệm",
+    "description": "Lộ trình, trekking, ngày đi thuyền và gợi ý văn hóa do đội ngũ và khách của chúng tôi tuyển chọn.",
+    "taggedHeading": "Hướng dẫn trải nghiệm gắn thẻ {{tag}}",
+    "taggedDescription": "Những câu chuyện này làm nổi bật các khoảnh khắc {{tag}}. Hãy bỏ lọc để xem tất cả.",
+    "empty": "Hiện chưa có hướng dẫn trải nghiệm cho {{tag}}. Thử thẻ khác hoặc bỏ lọc.",
+    "clearFilter": "Hiển thị tất cả hướng dẫn trải nghiệm",
+    "cardCta": "Khám phá hướng dẫn trải nghiệm {{guideTitle}}",
+    "filterHeading": "Filter experiences guides",
+    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "grouped": {
+      "beaches": {
+        "guides": {
+          "heading": "Beach guides",
+          "description": "Pick the right stretch of sand and plan your day."
+        },
+        "directions": {
+          "heading": "Beach directions",
+          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        }
+      }
+    }
+  }
+}

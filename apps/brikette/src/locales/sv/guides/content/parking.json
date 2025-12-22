@@ -1,0 +1,52 @@
+{
+  "linkLabel": "Parkering i Positano: var och vad det kostar",
+  "intro": [
+    "Parkering är sällsynt och dyr i Positano – boka garage tidigt och räkna med att bilen står avställd under hela vistelsen."
+  ],
+  "sections": [
+    {
+      "id": "garages",
+      "title": "Privata garage i Positano",
+      "body": [
+        "Mandara, Car Park Anna och Di Gennaro tar emot bokningar – reservera 7–10 dagar i förväg för ankomster i juli–augusti.",
+        "Priserna ligger runt 35–60 € per dygn; bekräfta maxhöjd (cirka 1,9 m) och om du måste lämna nycklarna hos personalen."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Avlastning och betalning",
+      "body": [
+        "Använd korttidszonerna vid Chiesa Nuova eller Sponda för att lasta av bagage innan du parkerar; slå på varningsblinkers och håll tempot uppe.",
+        "Ha både kort och kontanter redo – garage accepterar ofta kort men föredrar kontanter för vistelser under 48 timmar."
+      ]
+    },
+    {
+      "id": "park-elsewhere",
+      "title": "Billigare parkering utanför Positano",
+      "body": [
+        "Täckta garage i Meta, Piano di Sorrento eller Sorrento kostar cirka 20–25 € per dag och nås från Positano med SITA-bussar på under 45 minuter.",
+        "Kommer du norrifrån? Lämna bilen i Salernos hamngarage och ta färjan över när havet är lugnt."
+      ]
+    }
+  ],
+  "tips": [
+    "Kontrollera ZTL- och varannan-skyltar innan du kör SS163; böter kan skickas internationellt flera månader senare.",
+    "Packa en dagsväska med det viktigaste innan du lämnar över nycklarna – bilen kan stå tätt parkerad tills du checkar ut."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jag parkera bara några timmar?",
+      "a": [
+        "Garagen tar timpris men växlar snabbt till dygnstaxa; för korta ärenden är 30-minutersplatserna vid Sponda-kurvan smidigast."
+      ]
+    },
+    {
+      "q": "Har garagen öppet sent?",
+      "a": [
+        "De flesta håller öppet 07.00–00.00; meddela personalen om sena returer så att nycklarna lämnas till nattportiern."
+      ]
+    }
+  ],
+  "tocTitle": "På denna sida",
+  "faqsTitle": "Vanliga frågor"
+}

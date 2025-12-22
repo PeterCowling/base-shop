@@ -1,0 +1,97 @@
+{
+  "seo": {
+    "title": "Excursiones de un día desde Positano: Capri, Pompeya, Ravello, Amalfi",
+    "description": "Cómo organizar las excursiones más populares con ferris y buses, incluyendo tiempos y consejos de billetes."
+  },
+  "linkLabel": "Excursiones de un día desde Positano",
+  "intro": [
+    "Capri, Pompeya, Ravello y Amalfi caben en excursiones de un día si sales temprano y controlas los horarios de regreso.",
+    "Comprueba siempre la última salida del ferry o bus y deja margen extra en temporada alta."
+  ],
+  "sections": [
+    {
+      "id": "capri",
+      "title": "Capri",
+      "body": [
+        "Reserva uno de los primeros ferris (antes de las 09:00) y compra el regreso al llegar al muelle.",
+        "Recorre Anacapri con telesilla al Monte Solaro, baja a Capri pueblo y termina en Marina Piccola o Giardini di Augusto."
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompeya",
+      "body": [
+        "Bus SITA a Sorrento y Circumvesuviana hasta ‘Pompei Scavi – Villa dei Misteri’; apunta a la apertura para evitar calor y colas.",
+        "Lleva agua, gorra y algo de efectivo para consigna o audioguías; el sitio tiene poca sombra y se camina mucho."
+      ]
+    },
+    {
+      "id": "ravello",
+      "title": "Amalfi + Ravello",
+      "body": [
+        "Ferry o bus a Amalfi, visita el Duomo y el Museo del Papel y sube en bus o taxi compartido hasta Ravello.",
+        "Reserva Villa Rufolo/Cimbrone online y baja antes del atardecer; los buses de retorno se espacian al final del día."
+      ]
+    },
+    {
+      "id": "amalfi",
+      "title": "Amalfi",
+      "body": [
+        "Ideal para medio día: paseo marítimo, plaza del Duomo y helado en los escalones.",
+        "Combina con Atrani o con un rato de playa si el mar está tranquilo."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logística y márgenes",
+      "body": [
+        "Verifica el parte meteorológico la noche anterior: viento fuerte puede cancelar ferris y alargar rutas de bus.",
+        "Guarda números de taxis y horarios offline para reaccionar si pierdes una conexión; desde Amalfi siempre puedes volver vía Sorrento o Salerno."
+      ]
+    }
+  ],
+  "tips": [
+    "Prepara una mochila ligera con power bank, snacks salados y botella reutilizable: no en todas las paradas hay fuentes.",
+    "Compra billetes de bus en tabacchi la tarde anterior y valida siempre los tickets de papel."
+  ],
+  "faqs": [
+    {
+      "q": "¿Puedo combinar Capri y Pompeya el mismo día?",
+      "a": [
+        "Es una maratón y arriesgas perder el último ferry; dedica un día completo a cada destino y usa el otro como plan alternativo si cambia el clima."
+      ]
+    },
+    {
+      "q": "¿Hace falta reservar ferris con antelación?",
+      "a": [
+        "En pleno verano sí para las salidas tempranas; fuera de temporada basta con llegar 30–40 minutos antes."
+      ]
+    }
+  ],
+  "toc": [
+    {
+      "href": "#capri",
+      "label": "Capri"
+    },
+    {
+      "href": "#pompeii",
+      "label": "Pompeya"
+    },
+    {
+      "href": "#ravello",
+      "label": "Ravello"
+    },
+    {
+      "href": "#amalfi",
+      "label": "Amalfi"
+    },
+    {
+      "href": "#logistics",
+      "label": "Logística"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes"
+    }
+  ]
+}

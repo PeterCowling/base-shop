@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Fiordo di Furore-stranden → Hostel Brikette med bus",
+    "description": "Følg trinene for at nå SITA-stoppet over Fiordo di Furore, køre tilbage mod Positano og gå det sidste stykke til Hostel Brikette."
+  },
+  "linkLabel": "Fiordo di Furore-stranden → Hostel Brikette med bus",
+  "intro": [
+    "Fiordo di Furore ligger under kystvejen uden billetkontor eller butikker nede ved vandet. Brug denne hjemrejseguide til at gå op til vejen, tage SITA-bussen mod Positano og klare den korte gåtur til Hostel Brikette uden gætteri."
+  ],
+  "warningsTitle": "Før du forlader stranden",
+  "warnings": [
+    "Køb SITA-billetter på forhånd – der er ingen steder at købe dem ved stranden, og chaufføren kan afvise dig uden stemplet billet."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-road",
+      "title": "Gå tilbage til vejen",
+      "body": [
+        "Følg trappen fra stenstranden op til Amalfikystens hovedvej.",
+        "SITA-stoppet ligger der, hvor trappen møder rabatten; vent her på bjergsiden af vejen."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Tag SITA-bussen mod Positano",
+      "body": [
+        "Stig på SITA-bussen i retning mod Positano – bussen stopper kun efter behov, så antallet af mellemstop afhænger af de øvrige passagerer.",
+        "Turen dækker cirka 10,8 kilometer langs kysten, før du når Positano."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Stig af ved Bar Internazionale / Chiesa Nuova",
+      "body": [
+        "Tryk stopknappen, kort efter bussen forlader tunnelen over Positano, og hold øje med tabacchi’en Bar Internazionale.",
+        "Stig af ved stoppet Chiesa Nuova; det er det SITA-stop, der ligger tættest på Hostel Brikette."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Gå det sidste stykke til Hostel Brikette",
+      "body": [
+        "Fortsæt i samme retning som bussen i lidt over 100 meter.",
+        "Drej til højre ved trappen ved siden af baren, og gå op til hostellets hoveddør."
+      ]
+    }
+  ],
+  "tipsTitle": "Tips til hjemturen",
+  "tips": [
+    "Tjek den seneste køreplan via hostellets digitale concierge, så du ved, hvornår næste SITA-bus ankommer.",
+    "Brug %LINK:positanoBeaches|oversigten over Positanos strande% til at planlægge andre badesteder, der passer godt sammen med en tur til Fiordo di Furore.",
+    "Hvis en bus er fuld eller aflyst, så vær klar til at praje en autoriseret taxa fra rabatten som backup."
+  ],
+  "faqsTitle": "Typiske spørgsmål",
+  "faqs": [
+    {
+      "q": "Hvor skal jeg vente på bussen?",
+      "a": [
+        "Stå på bjergsiden af vejen øverst på trappen – busser mod Positano holder ved autoværnet."
+      ]
+    },
+    {
+      "q": "Hvad hvis jeg ikke har billet?",
+      "a": [
+        "Chaufførerne forventer stemplede SITA-billetter, før du stiger på. Køb en returbillet i Positano, eller spørg receptionen, om de har billetter, inden du tager afsted."
+      ]
+    }
+  ]
+}

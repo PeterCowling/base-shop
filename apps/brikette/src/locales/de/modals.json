@@ -1,0 +1,161 @@
+{
+  "location": {
+    "title": "Unser Standort",
+    "inputLabel": "Geben Sie Ihren aktuellen Standort ein:",
+    "inputPlaceholder": "z.B. Neapel, Italien oder vollständige Adresse",
+    "getDirections": "Route berechnen",
+    "justShowMap": "Nur Karte anzeigen",
+    "close": "Schließen",
+    "nearbyBusCompact": "≈100 m zur nächsten Bushaltestelle"
+  },
+  "contact": {
+    "title": "Kontaktieren Sie uns",
+    "description": "Wir freuen uns, von Ihnen zu hören! Für Anfragen oder Reservierungen kontaktieren Sie uns bitte per E-Mail:",
+    "revealEmail": "E-Mail-Adresse anzeigen",
+    "close": "Schließen",
+    "buttonClose": "Schließen"
+  },
+  "offers": {
+    "close": "Schließen",
+    "title": "Direkt buchen & sparen",
+    "description": "Vielen Dank, dass Sie direkt bei uns buchen! Als Dankeschön erhalten Sie:",
+    "perks": {
+      "discount": "Bis zu 10 % Rabatt auf den Zimmerpreis",
+      "breakfast": "Kostenloses Frühstück jeden Morgen",
+      "drinks": "Kostenlose Begrüßungsgetränke",
+      "upgrades": "Bevorzugte Zimmer-Upgrades (nach Verfügbarkeit)"
+    },
+    "callToAction": "Nutzen Sie jetzt diese exklusiven Vorteile!",
+    "button": "Jetzt reservieren"
+  },
+  "booking": {
+    "title": "Ihren Aufenthalt buchen",
+    "subTitle": "Wählen Sie Ihre Daten und Präferenzen",
+    "close": "Schließen",
+    "checkInLabel": "Anreise",
+    "checkOutLabel": "Abreise",
+    "guestsLabel": "Gäste",
+    "buttonAvailability": "Verfügbarkeit prüfen",
+    "datePlaceholder": "Datum auswählen",
+    "guestsSingle": "{{count}} Erwachsener",
+    "guestsPlural": "{{count}} Erwachsene"
+  },
+  "booking2": {
+    "selectDatesTitle": "Wählen Sie Ihre Daten",
+    "checkInDate": "Anreisedatum",
+    "checkOutDate": "Abreisedatum",
+    "adults": "Anzahl der Erwachsenen",
+    "confirm": "Bestätigen",
+    "cancel": "Abbrechen"
+  },
+  "facilities": {
+    "title": "Unsere Ausstattung",
+    "closeButton": "Schließen",
+    "categories": [
+      {
+        "title": "Badezimmer",
+        "items": [
+          "Toilettenpapier",
+          "Handtücher / Bettwäsche (Gebühr)",
+          "Toilette",
+          "Dusche",
+          "Haartrockner (auf Anfrage)"
+        ]
+      },
+      {
+        "title": "Schlafzimmer & Bettwäsche",
+        "items": [
+          "Bettwäsche vorhanden",
+          "Leselampe an jedem Bett im Schlafsaal"
+        ]
+      },
+      {
+        "title": "Außenbereich & Aussicht",
+        "items": [
+          "Panoramaterrasse mit Meerblick",
+          "Sonnenterrasse",
+          "Gartenmöbel",
+          "Picknickbereich"
+        ]
+      },
+      {
+        "title": "Komfort im Zimmer",
+        "items": [
+          "Steckdose in Bettnähe",
+          "Klimaanlage",
+          "Heizung",
+          "Fliesen-/ Marmorboden"
+        ]
+      },
+      {
+        "title": "Aktivitäten",
+        "items": [
+          "Wandern (außerhalb der Unterkunft)",
+          "Wanderkarten für Selbstgeführte",
+          "Empfehlungen für lokale Touren"
+        ]
+      },
+      {
+        "title": "Essen & Trinken",
+        "items": [
+          "Bar vor Ort",
+          "Kostenloses Begrüßungsgetränk",
+          "À-la-carte-Frühstück verfügbar",
+          "Snackservice"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Kostenloses WLAN in öffentlichen Bereichen",
+          "Highspeed-WLAN in den Zimmern",
+          "Öffentlicher Internetzugangspunkt"
+        ]
+      },
+      {
+        "title": "Gästeservices",
+        "items": [
+          "Tägliche Reinigung",
+          "Conciergeservice",
+          "Gepäckaufbewahrung",
+          "Gepäckaufbewahrung vor dem Check-in / nach dem Check-out",
+          "Schließfächer",
+          "Adapter verfügbar",
+          "Flughafentransfers (Aufpreis)",
+          "Rezeption (begrenzte Öffnungszeiten)",
+          "Fahrradabstellplatz"
+        ]
+      },
+      {
+        "title": "Sicherheit",
+        "items": [
+          "Feuerlöscher",
+          "Videoüberwachung in Gemeinschaftsbereichen",
+          "Keycard-Zugang",
+          "Elektronische Türschlösser",
+          "Persönliche Schließfächer"
+        ]
+      },
+      {
+        "title": "Allgemein",
+        "items": [
+          "Nur für Erwachsene (18–39 Jahre)",
+          "Rauchfrei in allen Bereichen",
+          "Nichtraucherzimmer"
+        ]
+      },
+      {
+        "title": "Gesprochene Sprachen",
+        "items": [
+          "Englisch",
+          "Spanisch",
+          "Italienisch"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "title": "Sprache auswählen",
+    "close": "Schließen"
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "location": {
+    "title": "Vị trí của chúng tôi",
+    "inputLabel": "Nhập vị trí hiện tại của bạn:",
+    "inputPlaceholder": "Bản dịch đang được chuẩn bị.",
+    "getDirections": "Xem đường đi",
+    "justShowMap": "Chỉ hiển thị bản đồ",
+    "close": "Đóng hộp thoại",
+    "nearbyBusCompact": "≈100 m đến trạm xe buýt gần nhất"
+  },
+  "contact": {
+    "title": "Liên hệ",
+    "description": "Rất hân hạnh được lắng nghe từ bạn! Với câu hỏi hoặc đặt phòng, vui lòng liên hệ qua email:",
+    "revealEmail": "Hiện địa chỉ email",
+    "close": "Đóng hộp thoại",
+    "buttonClose": "Đóng"
+  },
+  "offers": {
+    "close": "Đóng",
+    "title": "Đặt trực tiếp và tiết kiệm",
+    "description": "Cảm ơn bạn đã chọn đặt trực tiếp với chúng tôi! Như một lời tri ân, bạn sẽ nhận được:",
+    "perks": {
+      "discount": "Giảm tới 10% giá phòng",
+      "breakfast": "Bản dịch đang được chuẩn bị.",
+      "drinks": "Đồ uống chào mừng miễn phí",
+      "upgrades": "Ưu tiên nâng hạng phòng (khi có)"
+    },
+    "callToAction": "Tận dụng ngay những quyền lợi độc quyền này!",
+    "button": "Đặt ngay"
+  },
+  "booking": {
+    "title": "Đặt kỳ nghỉ của bạn",
+    "subTitle": "Chọn ngày và tùy chọn",
+    "close": "Đóng",
+    "checkInLabel": "Nhận phòng",
+    "checkOutLabel": "Trả phòng",
+    "guestsLabel": "Khách",
+    "buttonAvailability": "Kiểm tra phòng trống",
+    "datePlaceholder": "Chọn ngày",
+    "guestsSingle": "{{count}} người lớn",
+    "guestsPlural": "{{count}} người lớn"
+  },
+  "booking2": {
+    "selectDatesTitle": "Chọn ngày",
+    "checkInDate": "Ngày nhận phòng",
+    "checkOutDate": "Ngày trả phòng",
+    "adults": "Số người lớn",
+    "confirm": "Xác nhận",
+    "cancel": "Hủy"
+  },
+  "facilities": {
+    "title": "Tiện nghi",
+    "closeButton": "Đóng",
+    "categories": [
+      {
+        "title": "Phòng tắm",
+        "items": [
+          "Giấy vệ sinh",
+          "Khăn tắm / ga giường (phụ phí)",
+          "Bồn cầu",
+          "Vòi sen",
+          "Máy sấy tóc (yêu cầu tại lễ tân)"
+        ]
+      },
+      {
+        "title": "Phòng ngủ & đồ vải",
+        "items": [
+          "Có sẵn ga gối",
+          "Đèn đọc sách tại giường ký túc"
+        ]
+      },
+      {
+        "title": "Ngoài trời & tầm nhìn",
+        "items": [
+          "Sân thượng toàn cảnh nhìn ra biển",
+          "Sân tắm nắng",
+          "Bàn ghế ngoài trời",
+          "Khu picnic"
+        ]
+      },
+      {
+        "title": "Tiện nghi trong phòng",
+        "items": [
+          "Ổ cắm gần giường",
+          "Điều hòa không khí",
+          "Hệ thống sưởi",
+          "Sàn gạch/đá cẩm thạch"
+        ]
+      },
+      {
+        "title": "Hoạt động",
+        "items": [
+          "Trekking (ngoài khuôn viên)",
+          "Bản đồ đường mòn tự khám phá",
+          "Gợi ý tour địa phương"
+        ]
+      },
+      {
+        "title": "Ăn uống",
+        "items": [
+          "Quán bar tại chỗ",
+          "Đồ uống chào mừng miễn phí",
+          "Có bữa sáng gọi món",
+          "Phục vụ snack"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Wi-Fi miễn phí ở khu vực chung",
+          "Wi-Fi tốc độ cao trong phòng",
+          "Điểm truy cập internet công cộng"
+        ]
+      },
+      {
+        "title": "Dịch vụ cho khách",
+        "items": [
+          "Vệ sinh hằng ngày",
+          "Lễ tân hỗ trợ",
+          "Giữ hành lý",
+          "Giữ hành lý trước nhận phòng / sau trả phòng",
+          "Tủ khóa cá nhân",
+          "Bản dịch đang được chuẩn bị.",
+          "Dịch vụ đưa đón sân bay (tính phí)",
+          "Lễ tân (giờ phục vụ giới hạn)",
+          "Bãi đỗ xe đạp"
+        ]
+      },
+      {
+        "title": "An toàn & an ninh",
+        "items": [
+          "Bình chữa cháy",
+          "Camera CCTV tại khu vực chung",
+          "Ra vào bằng thẻ từ",
+          "Khóa cửa điện tử",
+          "Tủ đồ cá nhân"
+        ]
+      },
+      {
+        "title": "Thông tin chung",
+        "items": [
+          "Chỉ dành cho khách 18–39 tuổi",
+          "Toàn bộ khu vực không hút thuốc",
+          "Phòng không hút thuốc"
+        ]
+      },
+      {
+        "title": "Ngôn ngữ sử dụng",
+        "items": [
+          "Tiếng Anh",
+          "Tiếng Tây Ban Nha",
+          "Tiếng Ý"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "title": "Chọn ngôn ngữ",
+    "close": "Đóng"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "arrivingPositano": {
+    "figure": {
+      "alt": "Arrêt SITA de Chiesa Nuova à Positano devant le Bar Internazionale",
+      "caption": "Arrivez quelques minutes en avance pour vous assurer une place ; les bus se remplissent vite en été."
+    },
+    "points": [
+      "L'arrêt SITA le plus proche est Positano (Chiesa Nuova) sur la Via G. Marconi.",
+      "Il se trouve à environ 140 mètres (490 pieds) de l'entrée de l'auberge.",
+      "L'attente se fait devant le café/bar « Bar Internazionale »."
+    ],
+    "title": "Arrivée à Positano (Chiesa Nuova)"
+  },
+  "header": {
+    "description": "Voyagez de Ravello à Positano avec une simple correspondance à Amalfi. Ce guide explique où acheter et valider les billets SITA, comment lire les horaires et à quoi vous attendre lors du changement à Amalfi — ainsi que la courte marche entre l'arrêt Chiesa Nuova de Positano et l'Hostel Brikette.",
+    "eyebrow": "Guide de voyage Hostel Brikette",
+    "title": "Ravello à Positano – via Amalfi en bus"
+  },
+  "journeyOverview": {
+    "description": "Comptez environ 1,5 à 2,5 heures selon les correspondances. Prenez d'abord le bus SITA de Ravello à Amalfi, puis changez pour un bus SITA à destination de Positano/Sorrente. Les bus circulent fréquemment en haute saison et peuvent être bondés — arrivez un peu en avance pour faire la queue.",
+    "title": "Aperçu du trajet"
+  },
+  "links": {
+    "guideOverview": "Vue d'ensemble \"Comment venir\""
+  },
+  "meta": {
+    "description": "Itinéraire détaillé de Ravello à Positano via Amalfi en utilisant les bus SITA, avec des conseils sur les horaires, les arrêts et la dernière portion à pied jusqu'à l'Hostel Brikette.",
+    "title": "Ravello à Positano en bus | Hostel Brikette"
+  },
+  "ravelloToAmalfi": {
+    "points": [
+      "Prenez le bus SITA 5110 ou 5120 de Ravello à Amalfi (le 5110 est généralement plus rapide).",
+      "Validez votre billet en montant et conservez-le jusqu'à l'arrivée.",
+      "Descendez à la gare routière d'Amalfi pour votre correspondance vers Positano."
+    ],
+    "title": "Ravello → Amalfi"
+  },
+  "sitaTickets": {
+    "points": [
+      "Les bus entre Ravello et Amalfi sont opérés par SITA (SITA Sud Srl).",
+      "Vous devez d'abord rejoindre Amalfi, puis monter dans un second bus à destination de Positano.",
+      "Deux lignes relient Ravello → Amalfi : la 5110 et la 5120. La 5110 est généralement environ 10 minutes plus rapide.",
+      "Achetez vos billets dans les kiosques à journaux ou les bureaux de tabac (tabacchi) et préparez-les pour les valider à la montée."
+    ],
+    "title": "Bus SITA et billets"
+  },
+  "timetable": {
+    "description": "Consultez les derniers horaires sur <TimetableLink>{{timetableLabel}}</TimetableLink>.",
+    "linkLabel": "Positano.com (aperçu des horaires SITA)",
+    "notesTitle": "Lire le tableau des horaires",
+    "points": [
+      "Les lignes de la première colonne répertorient chaque arrêt du parcours.",
+      "Les colonnes correspondent aux trajets programmés, identifiés par des lettres.",
+      "Vous voyagez du lundi au samedi ? Utilisez les colonnes « F » et « G ».",
+      "Vous voyagez un dimanche ou un jour férié ? Utilisez les colonnes « G » et « H »."
+    ],
+    "title": "Horaires"
+  },
+  "tip": {
+    "body": "Besoin de toutes les options de transport ? Ouvrez le <GuideLink>{{guideLabel}}</GuideLink> pour les ferries, les taxis et les itinéraires combinés.",
+    "eyebrow": "Astuce"
+  },
+  "waitingInAmalfi": {
+    "points": [
+      "À votre arrivée à Amalfi, vous pouvez visiter le centre-ville pendant l'attente.",
+      "Revenez dans la même zone de gare routière où vous avez été déposé pour prendre le bus vers Positano.",
+      "Montez dans tout service SITA indiqué Positano/Sorrente via la côte amalfitaine."
+    ],
+    "title": "En attendant à Amalfi"
+  },
+  "walking": {
+    "points": [
+      "Depuis l'arrêt Chiesa Nuova, continuez sur environ 100 mètres (330 pieds).",
+      "Tournez à droite et montez les marches jusqu'à la porte principale de l'auberge.",
+      "Repérez notre enseigne près de la terrasse ; l'entrée se trouve juste au-dessus du virage."
+    ],
+    "title": "Marcher de l'arrêt de bus jusqu'à l'auberge"
+  }
+}

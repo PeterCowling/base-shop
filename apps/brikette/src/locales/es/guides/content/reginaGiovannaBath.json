@@ -1,0 +1,108 @@
+{
+  "seo": {
+    "title": "Guía de la piscina Regina Giovanna",
+    "description": "Planifica un baño tranquilo en la piscina natural de Sorrento con indicaciones de autobús, consejos de equipaje y notas de seguridad."
+  },
+  "linkLabel": "Guía de la piscina Regina Giovanna",
+  "intro": [
+    "Bagni della Regina Giovanna es una cueva marina derrumbada en la península de Sorrento donde el agua cristalina entra en una piscina natural protegida. No hay clubs de playa ni chiringuitos: solo acantilados de caliza, aguas esmeralda y arcos fotogénicos.",
+    "Usa esta guía para llegar a la cala en autobús público, empacar como un local y aprovechar las plataformas de baño antes de volver a Sorrento para comer."
+  ],
+  "toc": [
+    { "href": "#why-go", "label": "Por qué ir" },
+    { "href": "#getting-there", "label": "Cómo llegar" },
+    { "href": "#what-to-pack", "label": "Qué llevar" },
+    { "href": "#swimming", "label": "Baño y seguridad" },
+    { "href": "#pair-it", "label": "Combínalo con Sorrento" }
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Por qué merece la pena Regina Giovanna",
+      "body": [
+        "Las ruinas de una villa romana enmarcan el agua turquesa que entra desde el mar por un arco natural. Si llegas temprano podrás flotar bajo los acantilados con apenas unos cuantos locales a tu alrededor.",
+        "A diferencia de los lidos de Positano, este lugar es gratuito todo el año. Lleva todo lo que necesites y prepárate para trepar por rocas: la recompensa es una poza espectacular que luce especialmente bien al atardecer."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Cómo tomar el autobús hasta el inicio del sendero",
+      "body": [
+        "Desde Hostel Brikette, toma el autobús SITA hacia Sorrento y enlaza con la línea local A o C (operada por EAV). Pide \"Capo di Sorrento\" o \"Regina Giovanna\" para que el conductor sepa que bajarás cerca del inicio del sendero.",
+        "La parada está a unos 15 minutos de la estación de Sorrento. Sigue Via Capo hasta ver los carteles de \"Bagni della Regina Giovanna\" y toma el camino asfaltado cuesta abajo. Calcula 10 minutos hasta las ruinas y otros cinco para descender las escaleras de piedra hasta la cala.",
+        "Los autobuses de regreso pasan aproximadamente cada 30 minutos hasta el anochecer; vigila el horario expuesto y planea volver a la carretera antes de que oscurezca."
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "Qué llevar cuando no hay servicios",
+      "body": [
+        "No hay socorristas, baños ni quioscos en el lugar. Lleva agua, comida y una bolsa para tus residuos para poder sacar todo contigo.",
+        "Usa calzado resistente para el sendero rocoso y lleva escarpines para las plataformas resbaladizas. Una toalla ligera y una bolsa estanca ayudan a mantener tus pertenencias lejos del salpiqueo.",
+        "En pleno verano añade protector solar, sombrero y al menos 1,5 litros de agua por persona: apenas hay sombra cuando el sol supera los acantilados."
+      ]
+    },
+    {
+      "id": "swimming",
+      "title": "Baños, saltos y seguridad",
+      "body": [
+        "La piscina es lo bastante profunda para nadadores seguros, pero no hay escalera como tal. Entra despacio usando las plataformas naturales y evita zambullirte si no has comprobado la profundidad tú mismo.",
+        "Algunos locales saltan desde el arco con marea alta; sigue su ejemplo solo si el mar está en calma y te sientes cómodo con la altura. Si no, disfruta flotando dentro de la piscina y cruza al lado que da al mar para vistas más amplias.",
+        "Tras las tormentas, los peldaños de acceso pueden quedar resbaladizos por algas. Avanza con cuidado y considera llevar guantes si dependes de la barandilla para equilibrarte."
+      ]
+    },
+    {
+      "id": "pair-it",
+      "title": "Combina el baño con lo mejor de Sorrento",
+      "body": [
+        "Lleva un picnic o planea un almuerzo tardío en el centro histórico de Sorrento después de nadar. Bar Ruccio en Marina Piccola y Da Emilia frente al mar sirven platos informales de marisco con vistas.",
+        "Si te quedas hasta el atardecer, calcula 20 minutos para subir de nuevo a la parada y tomar el autobús al pueblo. Los trenes y ferris hacia Nápoles y la Costa Amalfitana se espacian después de las 20:30, así que revisa los horarios antes de quedarte más tiempo."
+      ]
+    }
+  ],
+  "essentialsTitle": "Qué esperar",
+  "essentials": [
+    "Piscina natural gratuita excavada en los acantilados al oeste de Sorrento; no hay tumbonas ni restaurantes.",
+    "Autobús + paseo corto: toma el autobús EAV A o C hasta Capo di Sorrento y sigue el camino señalizado cuesta abajo.",
+    "Acceso rocoso con escalones irregulares; lleva calzado firme y retira toda tu basura."
+  ],
+  "typicalCostsTitle": "Costes orientativos",
+  "typicalCosts": [
+    "Autobús SITA Positano ⇄ Sorrento: 2–3 € por trayecto según el tipo de billete.",
+    "Autobús local EAV a Capo di Sorrento: 1,50 € si lo compras por adelantado.",
+    "Taxi de vuelta a Sorrento (si pierdes el bus): 18–22 € para hasta cuatro personas."
+  ],
+  "tipsTitle": "Consejos rápidos",
+  "tips": [
+    "Valida cada billete de autobús; los inspectores son habituales en las rutas de Sorrento, especialmente en verano.",
+    "Llega antes de las 10:00 para disfrutar de aguas más tranquilas y menos bañistas en las plataformas estrechas.",
+    "Lleva una bolsa estanca y sujétala a las rocas; no hay taquillas ni personal vigilando."
+  ],
+  "warningsTitle": "Para tener en cuenta",
+  "warnings": [
+    "Sin socorristas ni equipamiento de seguridad; nada dentro de tus límites y vigila la marea.",
+    "Sombra limitada después del mediodía; el calor se acumula rápidamente en las rocas durante julio y agosto.",
+    "El camino es irregular y resbaladizo cuando está mojado; evita las chanclas y extrema la precaución tras la lluvia."
+  ],
+  "faqsTitle": "Preguntas frecuentes sobre Regina Giovanna",
+  "faqs": [
+    {
+      "q": "¿Puedo llevar comida y bebida a la piscina?",
+      "a": [
+        "Sí, pero no hay papeleras: prepara tu propio picnic y llévate todo de vuelta. Las botellas de agua congeladas sirven como bolsas de hielo y se mantienen frías para el viaje de regreso."
+      ]
+    },
+    {
+      "q": "¿Hay algún lugar para cambiarse o usar el baño?",
+      "a": [
+        "Las instalaciones se limitan a las ruinas en la parte superior del sendero, que a menudo están cerradas. Cámbiate en tu alojamiento o usa los baños de Sorrento antes de subir al autobús."
+      ]
+    },
+    {
+      "q": "¿Cuánto tiempo debo calcular para la excursión desde Positano?",
+      "a": [
+        "Calcula unas tres horas de puerta a puerta: una hora por trayecto para los autobuses y la conexión, más al menos una hora en la cala. Añade tiempo extra si quieres explorar Sorrento después."
+      ]
+    }
+  ]
+}

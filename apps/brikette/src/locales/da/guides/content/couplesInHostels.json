@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Rejse som par på hostels",
+    "description": "Tips til dorms og private værelser, ro, og forventningsafstemning."
+  },
+  "linkLabel": "Rejse som par på hostels",
+  "intro": [
+    "Hostels fungerer fint for par, når I vælger den rigtige værelsestype, pakker let og afstemmer forventningerne sammen."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Værelsestyper",
+      "body": [
+        "Book et privat værelse for ro og privatliv; hvis budgettet er stramt, så vælg køjesenge i samme sovesal og pak let, så trapperne er nemmere at klare."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Sådan finder I ro",
+      "body": [
+        "Medbring ørepropper og sovemaske, vælg værelser væk fra baren og fællesområderne, og brug de tidlige morgener til sightseeing i roligere omgivelser."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er et hostel velegnet til par?",
+      "a": [
+        "Ja – I får både social stemning og god valuta for pengene; private værelser giver en god balance mellem komfort og pris."
+      ]
+    }
+  ]
+}

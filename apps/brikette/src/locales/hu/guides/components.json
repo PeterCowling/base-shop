@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "Válaszd ki az útvonalad",
+    "options": {
+      "ferry": "Komp (szezonális)",
+      "trainBus": "Vonat + busz (egész évben)",
+      "transfer": "Privát transzfer"
+    },
+    "selectedLabel": "Kiválasztva:"
+  },
+  "eventInfo": {
+    "title": "Esemény részletei",
+    "labels": {
+      "when": "Mikor",
+      "where": "Hol"
+    }
+  }
+}

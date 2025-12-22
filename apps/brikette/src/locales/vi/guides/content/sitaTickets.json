@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Vé xe buýt SITA và mẹo",
+    "description": "Mua vé SITA ở đâu, cách xác nhận vé, mẹo mang hành lý và xếp hàng cho xe buýt Amalfi Coast."
+  },
+  "linkLabel": "Vé xe buýt SITA và mẹo",
+  "intro": [
+    "Mua vé SITA trước khi lên xe và chừa thêm thời gian vào mùa hè. Giữ vé đến khi kết thúc hành trình."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Mua ở đâu",
+      "body": [
+        "Mua tại tabacchi/quầy kiosk dọc đường chính. Tranh thủ mua thêm lúc hàng còn vắng."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Xác nhận vé",
+      "body": [
+        "Xác nhận khi lên xe nếu có máy; giữ vé tới khi xuống."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Có mua vé trên xe được không?",
+      "a": [
+        "Hầu như không; hãy mua trước khi lên để tránh trễ chuyến."
+      ]
+    }
+  ]
+}

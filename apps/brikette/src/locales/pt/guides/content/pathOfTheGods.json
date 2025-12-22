@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Trilha Path of the Gods a partir do Hostel Brikette",
+    "description": "Rota exata do hostel até os acessos da trilha Sentiero degli Dei, com opções de transporte e dicas de segurança."
+  },
+  "linkLabel": "Path of the Gods saindo do Brikette",
+  "intro": "O Sentiero degli Dei (Caminho dos Deuses) é uma das trilhas costeiras mais cênicas de Itália. A partir do hostel chega ao início clássico em Bomerano ou termina em Nocelle usando o autocarro SITA.",
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Quando ir",
+      "body": [
+        "Prefira abril–junho ou setembro–outubro para céu limpo e temperaturas suportáveis; chuvas de inverno deixam os degraus escorregadios.",
+        "Em julho–agosto, comece antes das 09:00 ou depois das 15:00, pois a trilha é exposta e há pouca sombra."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Escolha a rota",
+      "body": [
+        "Bomerano → Nocelle cobre os 6,5 km clássicos com subidas e descidas contínuas; reserve 2,5–3 horas de caminhada mais o transporte.",
+        "Pouco tempo? Vá de autocarro até Nocelle, faça o trecho panorâmico de ida e volta até Colle Serra ou desça os 1.700 degraus até Positano."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Navegação e segurança",
+      "body": [
+        "Siga as marcas vermelhas e brancas do CAI e as setas de madeira Sentiero degli Dei; descarregue mapa offline porque o sinal falha nos desfiladeiros.",
+        "O piso mistura escadas de pedra, terra compacta e gravilha — use calçado com aderência e mantenha bastões dobrados até aos trechos mais íngremes."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Água, snacks e regresso",
+      "body": [
+        "Abasteça-se na praça de Bomerano (cafés, padaria, último WC público) antes de sair; Nocelle tem quiosque e granita de limão junto à igreja.",
+        "Para regressar a Positano: desça as escadas para a praia de Arienzo ou apanhe o autocarro SITA em Nocelle/Montepertuso — mantenha um bilhete validado extra na mochila."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essenciais",
+  "essentials": [
+    "Bom calçado, água, proteção solar; evite o calor do meio-dia no verão.",
+    "Bilhetes de autocarro devem ser comprados antes de embarcar (tabacchi, quiosques).",
+    "Reserve ~4 horas incluindo transporte e paragens para fotos."
+  ],
+  "typicalCostsTitle": "Custos típicos",
+  "typicalCosts": [
+    "Autocarro SITA (Positano ⇄ Nocelle/Bomerano): ~2–4 € por trajeto conforme o bilhete",
+    "Snacks/água: 3–8 € (leve os seus para poupar)",
+    "Trilha: gratuita (sem taxa de entrada)"
+  ],
+  "steps": [
+    {
+      "name": "Caminhe até à paragem Chiesa Nuova",
+      "text": "Do hostel, suba cerca de 80 m até à paragem SITA em Chiesa Nuova."
+    },
+    {
+      "name": "Autocarro para Nocelle ou Bomerano",
+      "text": "Apanhe o SITA rumo a Amalfi e desça em Nocelle para a versão curta, ou siga até Agerola/Bomerano para o início clássico."
+    },
+    {
+      "name": "Entrada da trilha",
+      "text": "Em Nocelle, siga as placas Sentiero degli Dei (final). Em Bomerano, siga a sinalização na praça principal para o trailhead (início)."
+    },
+    {
+      "name": "Regresso",
+      "text": "Termine em Nocelle e desça as escadas até Positano ou volte de autocarro para Chiesa Nuova."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Onde começa a caminhada?",
+      "a": "O início clássico é Bomerano (Agerola). A opção curta termina em Nocelle."
+    },
+    {
+      "q": "Quanto tempo dura?",
+      "a": "Reserve ~4 horas incluindo transporte e paragens."
+    },
+    {
+      "q": "O que levar?",
+      "a": "Calçado firme, água, proteção solar. Evite o calor do meio-dia no verão."
+    }
+  ],
+  "faqsTitle": "Perguntas frequentes",
+  "galleryTitle": "Galeria de fotos",
+  "gallery": {
+    "items": [
+      {
+        "alt": "Vista ao longo do Caminho dos Deuses",
+        "caption": "Ao longo da trilha"
+      },
+      {
+        "alt": "Vistas da aldeia de Nocelle",
+        "caption": "Nocelle"
+      }
+    ]
+  },
+  "toc": {
+    "onThisPage": "Nesta página",
+    "essentials": "Essenciais",
+    "costs": "Custos típicos",
+    "faqs": "Perguntas frequentes",
+    "gallery": "Galeria de fotos"
+  }
+}

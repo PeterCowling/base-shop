@@ -1,0 +1,33 @@
+{
+  "sidebarLabel": "Điều hướng Trung tâm trợ giúp",
+  "openSidebar": "Mở điều hướng trung tâm trợ giúp",
+  "closeSidebar": "Đóng điều hướng trung tâm trợ giúp",
+  "mobileSidebarLabel": "Điều hướng Trung tâm trợ giúp",
+  "mobileHint": "Vuốt xuống hoặc chạm vào đóng để ẩn menu trợ giúp này",
+  "nav": {
+    "assistance": "Trợ giúp số",
+    "ama": "Hỏi gì cũng được",
+    "bookingBasics": "Cơ bản về đặt phòng",
+    "changingCancelling": "Đổi và hủy",
+    "checkinCheckout": "Hướng dẫn nhận & trả phòng",
+    "depositsPayments": "Thanh toán & Đặt cọc",
+    "defectsDamages": "Hỏng hóc & Thiệt hại",
+    "security": "An ninh",
+    "rules": "Nội quy",
+    "legal": "Pháp lý",
+    "ageAccessibility": "Độ tuổi & Khả năng tiếp cận",
+    "arrivingByFerry": "Đến bằng phà",
+    "naplesAirportBus": "Xe buýt sân bay Naples",
+    "travelHelp": "Hỗ trợ đi lại"
+  },
+  "cta": {
+    "readMore": "Xem thêm",
+    "readMoreAccessible": "Khám phá các bài viết trợ giúp"
+  },
+  "alsoHelpful": "Cũng hữu ích",
+  "alsoHelpfulEyebrow": "Lựa chọn địa phương",
+  "alsoHelpfulDescription": "Lập kế hoạch thông minh hơn với các hướng dẫn được tuyển chọn và lối tắt đặt phòng nhanh chóng.",
+  "alsoHelpfulExplore": "Khám phá hướng dẫn này",
+  "alsoHelpfulBook": "Đặt chỗ lưu trú",
+  "roomsCta": "Xem phòng & tình trạng trống"
+}

@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Capri på budget",
+    "description": "Sådan oplever du Capri uden at sprænge budgettet — transport, mad og gratis udsigter."
+  },
+  "linkLabel": "Capri på budget",
+  "intro": [
+    "En dagstur til Capri kan holdes budgetvenlig, hvis du planlægger færger, udsigtspunkter og måltider på forhånd."
+  ],
+  "sections": [
+    {
+      "id": "ferries",
+      "title": "Færger og timing",
+      "body": [
+        "Book tidlige færger i højsæsonen, og sigt efter retur midt på eftermiddagen for at undgå kø ved sidste afgang."
+      ]
+    },
+    {
+      "id": "free-views",
+      "title": "Gratis udsigtspunkter",
+      "body": [
+        "Giardini di Augusto (lille entré), udsigter i Anacapri og Marina Piccola leverer store panoramaer for små penge."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Strandmuligheder",
+      "body": [
+        "Der er offentlige strandafsnit; medbring håndklæde og vand, så du kan springe leje og barpriser over."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Billig mad",
+      "body": [
+        "Køb panini eller pizza al taglio tæt på marinaen, og undgå siddende frokoster på de travleste stræder."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Er Den Blå Grotte pengene værd på budget?",
+      "a": [
+        "Det er en dyr ekstraoplevelse og afhænger af vejret; stoleliften i Anacapri er en billigere højdepunkt."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Backpacker dans le sud de l'Italie : itinéraire incluant l'Amalfi",
+    "description": "Combiner Naples, la côte amalfitaine et la Sicile avec un sac à dos : transports, budget et timing."
+  },
+  "linkLabel": "Backpacker dans le sud de l'Italie : itinéraire incluant l'Amalfi",
+  "intro": [
+    "Planifiez une boucle dans le sud de l'Italie en gardant Positano au centre sans exploser votre budget."
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Boucle suggérée",
+      "body": [
+        "Commencez par Naples pour les vols et le rail, passez 2 à 3 nuits à Positano ou Praiano, continuez vers Salerne puis vers l'intérieur à Matera ou en Pouilles avant de revenir.",
+        "Utilisez trains régionaux et autocars pour les tronçons longs à moindre coût ; réservez 4 à 6 semaines à l'avance pour des billets à 15–25 €."
+      ]
+    },
+    {
+      "id": "arrivals",
+      "title": "Arrivées & bagages",
+      "body": [
+        "Voyagez avec un sac à dos de 40 L pour franchir escaliers et soutes des bus sans difficulté.",
+        "Emportez des couches à séchage rapide, une serviette compacte et des sandales pour les douches d'auberge ; les laveries de Positano facturent 12–15 € pour un lavage-séchage."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Astuce budget",
+      "body": [
+        "Faites vos courses (focaccia, fruits, mozzarella) et pique-niquez en terrasse ; comptez 8 € pour un déjeuner plutôt que 18 € assis.",
+        "Partagez les excursions avec des camarades d'auberge : mutualisez taxis vers les départs de randonnée ou louez un scooter à Salerne/Praiano où les tarifs tombent à 35 € par jour."
+      ]
+    }
+  ],
+  "tips": [
+    "Activez une SIM ou eSIM régionale (TIM/Vodafone) pour consulter horaires de bus et check-in d'auberge en déplacement.",
+    "Réservez vos nuits d'hébergement pour le début et la fin de la boucle, puis restez flexible au milieu pour adapter la météo."
+  ],
+  "faqs": [
+    {
+      "q": "Dois-je louer une voiture ?",
+      "a": [
+        "Non. Trains, bus et ferries couvrent la boucle. Louer un scooter sur de courtes portions peut être sympa, mais la circulation autour d'Amalfi demande de l'assurance."
+      ]
+    },
+    {
+      "q": "Combien de jours consacrer à Positano ?",
+      "a": [
+        "Prévoyez au moins trois nuits : une pour Positano, une pour le Sentier des Dieux ou une journée en bateau, et une journée flexible pour Amalfi/Ravello ou un plan météo."
+      ]
+    }
+  ]
+}

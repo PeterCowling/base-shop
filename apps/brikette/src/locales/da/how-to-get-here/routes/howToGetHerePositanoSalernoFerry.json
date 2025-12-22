@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "Positano til Salerno med færge | Hostel Brikette",
+    "description": "Dør-til-dør: fra Hostel Brikette til Positanos havn, færge til Salerno, billettips og ankomstnoter."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Positano til Salerno – færge",
+    "description": "Følg disse trin for at gå fra Hostel Brikette til Positanos havn, købe færgebilletter og gå ombord mod Salerno. Inkluderer praktiske tids- og operatørtips samt ankomstnoter til Salernos havn og forbindelsen til togstationen."
+  },
+  "tip": {
+    "label": "Tip",
+    "copy": "Har du brug for alternativer, hvis havet er uroligt? <link>Oversigten Sådan kommer du hertil</link> giver reserve-ruter."
+  },
+  "journey": {
+    "title": "Rejseoverblik",
+    "paragraphs": [
+      "Færger mellem Positano og Salerno sejler hyppigst fra forår til tidligt efterår og kan blive aflyst i hårdt vejr. Rejsetiden er typisk 60–80 minutter afhængigt af operatør og fartøj.",
+      "Sammenlign tider og book: <positanoLink>Positano.com (samlet køreplan)</positanoLink> · <travelmarLink>Travelmar – Salerno ↔ Positano</travelmarLink>."
+    ]
+  },
+  "walk": {
+    "title": "Gå til Positanos havn",
+    "steps": [
+      "Forlad hostellet gennem hoveddøren.",
+      "Gå ned ad trapperne til vejen, drej til venstre og gå lige over 100 m (≈330 ft).",
+      "Ved det første kryds (punkt 1) drejer du til højre ved Tabacchi (den første bygning på højre side).",
+      "Fortsæt ned ad bakke; ved det første hårnålesving (punkt 2) forlader du vejen og tager trapperne ligeud.",
+      "Nederst på trapperne når du vejen (punkt 3); kryds over og fortsæt lige ud til næste trappe.",
+      "Når disse trapper ender ved vejen, kryds over, drej kort til venstre og tag derefter trapperne (punkt 4).",
+      "I bunden drejer du til højre for at nå punkt 5 og fortsætter derefter gennem buen på højre hånd.",
+      "Havnen (molen ved Spiaggia Grande) ligger omkring 50 m (≈160 ft) fremme på højre side af stranden."
+    ]
+  },
+  "tickets": {
+    "title": "Køb billetter og gå ombord",
+    "steps": [
+      "Ved havnen har hver færgeoperatør sin egen skranke.",
+      "Skiltet ved skranken viser næste afgang for den operatør.",
+      "Køb billetter direkte hos operatøren. Kom 20–30 minutter før for at ombytte eventuelle vouchere og stille dig i kø.",
+      "Efter købet går du til enden af molen og venter på, at ombordstigningen begynder."
+    ]
+  },
+  "arrival": {
+    "title": "Ved ankomst til Salerno",
+    "paragraphs": [
+      "Gå fra borde ved Salernos Concordia-/Manfredi-havneområde afhængigt af operatørens anvisninger. Skal du videre med tog, så gå til Salernos hovedstation (Stazione FS). Turen er ligetil og næsten flad.",
+      "Kort: <mapLink>Concordia havn → Salernos togstation</mapLink>.",
+      "Hvis færger bliver aflyst på grund af vejret, så udsæt rejsen eller overvej at rejse via Sorrento dagen efter."
+    ]
+  }
+}

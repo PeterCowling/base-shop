@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Itinerario de 7 días por la Costa Amalfitana sin coche",
+    "description": "Una semana por la costa con ritmos realistas y consejos de transporte."
+  },
+  "linkLabel": "Itinerario de 7 días por la costa sin coche",
+  "intro": [
+    "Una semana sin coche funciona si alternas bases compactas, transportes públicos y márgenes realistas.",
+    "Mezcla días activos con pausas junto al mar para mantener energía, sobre todo en pleno verano."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "Días 1–2: instalarse en Positano",
+      "body": [
+        "Llega vía Nápoles o Salerno, orienta las paradas SITA (Chiesa Nuova, Sponda) y ubica rutas para el equipaje.",
+        "Explora Spiaggia Grande y Fornillo, sube a miradores al atardecer y cena ligero para madrugar sin cansancio."
+      ]
+    },
+    {
+      "id": "days3-4",
+      "title": "Días 3–4: Amalfi y Ravello",
+      "body": [
+        "Trasládate a Amalfi por la mañana (bus o ferry) y úsalo como base para visitar Ravello, Atrani o la Valle delle Ferriere.",
+        "Reserva entradas a Villa Rufolo/Cimbrone y deja tiempo para regresar con luz; por la noche pasea por el lungomare o vuelve a Positano en ferry."
+      ]
+    },
+    {
+      "id": "day5",
+      "title": "Día 5: Capri o Pompeya",
+      "body": [
+        "Capri: primer ferry, subida a Anacapri, vistas en Monte Solaro y regreso con billete cerrado.",
+        "Pompeya: bus a Sorrento + Circumvesuviana; lleva entradas skip-the-line, sombrero y agua porque casi no hay sombra."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "Días 6–7: Sorrento o Salerno como hub",
+      "body": [
+        "Cierra el viaje acercándote a Sorrento o Salerno para facilitar trenes y vuelos tempranos, aprovechando excursiones cortas (Castello di Arechi, casco histórico de Sorrento).",
+        "Último día para compras, almuerzo relajado y traslado con tiempo de sobra al aeropuerto o estación."
+      ]
+    }
+  ],
+  "tips": [
+    "Elige alojamientos cerca de paradas clave para no cargar maletas por tramos interminables de escaleras.",
+    "Guarda horarios, mapas y reservas offline; la señal cae a menudo en curvas y muelles."
+  ],
+  "faqs": [
+    {
+      "q": "¿Merece la pena cambiar de base?",
+      "a": [
+        "Sí: dividir la semana entre Positano y Amalfi (más Sorrento/Salerno si lo necesitas) reduce traslados diarios y permite salidas tempranas."
+      ]
+    },
+    {
+      "q": "¿Qué hago con el equipaje en los traslados?",
+      "a": [
+        "Coordina con el siguiente alojamiento un drop-off anticipado, usa consignas y valora contratar porter cuando haya muchas escaleras; viaja con equipaje flexible."
+      ]
+    },
+    {
+      "q": "¿Y si el mar está revuelto?",
+      "a": [
+        "Activa el plan B por carretera: buses SITA, transfer compartido o tren regional; los billetes de ferry oficiales suelen permitir cambio si avisas antes de la salida."
+      ]
+    }
+  ]
+}

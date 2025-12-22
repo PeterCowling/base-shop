@@ -1,0 +1,117 @@
+{
+  "seo": {
+    "title": "ポジターノ旅行ガイド：計画の立て方",
+    "description": "宿泊エリア、訪れる時期、移動手段、見どころを凝縮紹介。"
+  },
+  "linkLabel": "ポジターノ総合旅行ガイド",
+  "intro": [
+    "翻訳を準備中です。",
+    "翻訳を準備中です。"
+  ],
+  "sections": [
+    {
+      "id": "when",
+      "title": "When to visit",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "getting-around",
+      "title": "Getting around",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "highlights",
+      "title": "Highlights",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "id": "stays",
+      "title": "Where to stay",
+      "body": [
+        "翻訳を準備中です。",
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need a car?",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    },
+    {
+      "q": "How many days?",
+      "a": [
+        "翻訳を準備中です。"
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "翻訳を準備中です。"
+    ],
+    "gallery": {
+      "items": [
+        {
+          "alt": "翻訳を準備中です。",
+          "caption": "翻訳を準備中です。"
+        },
+        {
+          "alt": "Positano panorama",
+          "caption": "翻訳を準備中です。"
+        }
+      ]
+    },
+    "sections": {
+      "whereToStay": {
+        "title": "Where to stay",
+        "body": "翻訳を準備中です。"
+      },
+      "whenToVisit": {
+        "title": "When to visit",
+        "body": "翻訳を準備中です。"
+      },
+      "gettingAround": {
+        "title": "Getting around",
+        "arrivals": "翻訳を準備中です。",
+        "withinTown": "翻訳を準備中です。",
+        "ferries": "翻訳を準備中です。"
+      },
+      "thingsToDo": {
+        "title": "Things to do",
+        "beaches": "翻訳を準備中です。",
+        "pathOfTheGods": "翻訳を準備中です。",
+        "dayTrips": "翻訳を準備中です。"
+      },
+      "moneySavers": {
+        "title": "Money savers",
+        "eat": "翻訳を準備中です。",
+        "travel": "翻訳を準備中です。",
+        "stay": "翻訳を準備中です。"
+      }
+    },
+    "tipsTitle": "Where to save",
+    "faqHeading": "FAQs",
+    "faqs": [
+      {
+        "question": "翻訳を準備中です。",
+        "answer": "翻訳を準備中です。"
+      },
+      {
+        "question": "翻訳を準備中です。",
+        "answer": "翻訳を準備中です。"
+      }
+    ]
+  }
+}

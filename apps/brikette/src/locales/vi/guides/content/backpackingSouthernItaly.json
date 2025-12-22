@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Lộ trình ba lô kết hợp Naples, Amalfi Coast và các điểm lân cận."
+  },
+  "linkLabel": "Backpacking Southern Italy: Route incl. Amalfi",
+  "intro": [
+    "Lên kế hoạch vòng quanh miền Nam Ý, giữ Positano làm tâm điểm mà vẫn thân thiện ngân sách."
+  ],
+  "sections": [
+    {
+      "id": "route",
+      "title": "Lộ trình gợi ý",
+      "body": [
+        "Bắt đầu ở Naples vì thuận tiện chuyến bay và tàu, ở 2–3 đêm tại Positano hoặc Praiano, tiếp tục tới Salerno rồi vòng vào đất liền thăm Matera hoặc Puglia trước khi quay lại.",
+        "Dùng tàu vùng và xe khách cho những đoạn dài để tiết kiệm; đặt vé trước 4–6 tuần có chỗ 15–25 €."
+      ]
+    },
+    {
+      "id": "arrivals",
+      "title": "Đến nơi & hành lý",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Chuẩn bị quần áo mau khô, khăn nhỏ gọn và dép dùng trong phòng tắm hostel; tiệm giặt ở Positano tính 12–15 € cho một mẻ giặt sấy."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Mẹo ngân sách",
+      "body": [
+        "Kết hợp mua đồ ở siêu thị (focaccia nóng, trái cây, mozzarella) với picnic trên sân thượng; đặt mục tiêu bữa trưa 8 € thay vì 18 € ở nhà hàng.",
+        "Đi chung chuyến trong ngày với bạn hostel: chia taxi tới điểm đầu đường mòn hoặc thuê xe tay ga ở Salerno/Praiano, nơi giá khoảng 35 € mỗi ngày."
+      ]
+    }
+  ],
+  "tips": [
+    "Kích hoạt SIM/eSIM vùng (TIM/Vodafone) để tra lịch xe buýt và làm thủ tục hostel khi đang di chuyển.",
+    "Đặt trước chỗ ở cho đêm đầu và cuối hành trình, giữ linh hoạt giữa chuyến để xoay theo thời tiết."
+  ],
+  "faqs": [
+    {
+      "q": "Có cần thuê ô tô không?",
+      "a": [
+        "Không. Tàu, xe buýt và phà đủ cho cả vòng. Thuê xe tay ga cho quãng ngắn khá vui, nhưng giao thông Amalfi đòi hỏi tay lái vững."
+      ]
+    },
+    {
+      "q": "Nên dành bao nhiêu ngày cho Positano?",
+      "a": [
+        "Tối thiểu ba đêm: một cho Positano, một cho Con Đường của Các Vị Thần hoặc tour thuyền, và một ngày linh hoạt cho Amalfi/Ravello hoặc phòng khi trời xấu."
+      ]
+    }
+  ]
+}

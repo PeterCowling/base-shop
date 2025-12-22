@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "title": "Szobák és árak | Hostel Brikette Positano",
+    "description": "Privát, tengerre néző franciaágyas szobák és pénztárcabarát hálótermek: nézd meg a fotókat, szolgáltatásokat és élő árakat, majd foglalj közvetlenül a legjobb ajánlatért.",
+    "ogImageAlt": "Közös hálóterem belső tere"
+  },
+  "facilities": {
+    "privateRoom": "Privát szoba",
+    "mixedDorm": "Vegyes hálóterem",
+    "femaleDorm": "Női hálóterem",
+    "femaleRoom": "Csak nőknek szoba",
+    "doubleBedForTwo": "Egy franciaágy legfeljebb két vendégnek",
+    "threeSingleBedsThreeGuests": "Három egyszemélyes ágy, legfeljebb három vendégnek",
+    "oneDormBedTwoGuests": "Egy emeletes ágy (dorm) – összesen két fekhely, legfeljebb két vendégnek",
+    "threeDormBedsSixGuests": "Három hálótermi ágy – összesen hat fekhely, legfeljebb hat vendégnek",
+    "threeDormBedsPlusSingleSevenGuests": "Három hálótermi ágy + egy egyszemélyes (összesen 7), legfeljebb hét vendégnek",
+    "fourDormBedsEightGuests": "Négy hálótermi ágy – összesen nyolc fekhely, legfeljebb nyolc vendégnek",
+    "thirdFloor": "A harmadik emeleten található",
+    "fourthFloor": "A negyedik emeleten található",
+    "bathroomEnsuite": "Saját fürdőszoba (ensuite)",
+    "bathroomPrivate": "Privát fürdőszoba",
+    "bathroomSharedFemale": "Közös női fürdőszoba",
+    "seaViewTerrace": "Tengerre néző terasz",
+    "seaViewExtraLargeTerrace": "Tengerre néző, extra nagy terasz",
+    "gardenView": "Kertre néző",
+    "courtyardView": "Udvarra néző",
+    "noView": "Nincs kilátás",
+    "airCon": "Légkondicionálás",
+    "keycard": "Beléptetés kártyával",
+    "linen": "Ágynemű és törölköző biztosítva"
+  },
+  "rooms": {
+    "title": "Szobáink",
+    "double_room": {
+      "title": "Franciaágyas szoba",
+      "bed_intro": "Lélegzetelállító tengeri kilátás — pároknak tökéletes.",
+      "bed_description": "Franciaágyas szobánk privát tér, egy franciaággyal legfeljebb két vendég számára. A harmadik emeleten található; saját fürdőszoba, tengerre néző terasz, légkondicionálás és kártyás beléptetés. Ágynemű és törölköző biztosított.",
+      "facilities": [
+        "privateRoom",
+        "doubleBedForTwo",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 259.2,
+        "flexible": 285.12
+      }
+    },
+    "room_10": {
+      "title": "Prémium vegyes hálóterem",
+      "bed_intro": "Ha hat fekhelyet és jobb fürdőt szeretnél.",
+      "bed_description": "Prémium hálótermünk vegyes elrendezésű, három hálótermi ággyal (összesen hat), legfeljebb hat vendégnek. A negyedik emeleten; légkondicionálás, kártyás beléptetés és saját fürdőszoba (nincs kilátás). Ágynemű és törölköző a check‑in során biztosított.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 60.75,
+        "flexible": 66.82
+      }
+    },
+    "room_11": {
+      "title": "Superior női hálóterem – nagy terasz",
+      "bed_intro": "A legszebb kilátások tágas teraszról és remek fürdő.",
+      "bed_description": "A Superior női hálóterem három hálótermi ággyal (összesen hat fekhellyel) legfeljebb hat vendéget fogad. A negyedik emeleten található; légkondicionálás, kártyás beléptetés, saját fürdőszoba és tengerre néző, extra nagy terasz tartozik hozzá. Ágyneműt és törölközőt a check-in során biztosítunk.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 72.4,
+        "flexible": 79.64
+      }
+    },
+    "room_12": {
+      "title": "Superior vegyes hálóterem",
+      "bed_intro": "Pazar kilátás tágas teraszról és kényelmes fürdő.",
+      "bed_description": "A Superior vegyes hálóterem három hálótermi ágyat kínál (összesen hat fekhely), legfeljebb hat vendégnek. A negyedik emeleten található; légkondicionálás, kártyás beléptetés, privát fürdőszoba és tengerre néző, extra nagy terasz tartozik hozzá. Ágyneműt és törölközőt a check-in során biztosítunk.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomPrivate",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 74.4,
+        "flexible": 81.84
+      }
+    },
+    "room_3": {
+      "title": "Női hálóterem Value",
+      "bed_intro": "Pénztárcabarát választás női utazóknak.",
+      "bed_description": "A Value női hálóterem legfeljebb nyolc vendéget fogad négy hálótermi ágyon. A harmadik emeleten; légkondicionálás, kártyás beléptetés és hozzáférés a közös női fürdőszobához. Nincs kilátás. Ágynemű és törölköző biztosított a check‑in során.",
+      "facilities": [
+        "femaleDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_4": {
+      "title": "Vegyes hálóterem Value",
+      "bed_intro": "Pénztárcabarát megoldás nőknek és férfiaknak egyaránt.",
+      "bed_description": "A Value vegyes hálóterem négy hálótermi ággyal (összesen nyolc) legfeljebb nyolc vendégnek. A harmadik emeleten; légkondicionálás, kártyás beléptetés és hozzáférés a közös (női) fürdőszobához. Nincs kilátás. Ágynemű és törölköző a check‑in során biztosított.",
+      "facilities": [
+        "mixedDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_5": {
+      "title": "Superior női hálóterem – tengerre néző",
+      "bed_intro": "Lenyűgöző tengeri kilátás és saját fürdő.",
+      "bed_description": "A Superior női hálóterem három hálótermi ággyal (összesen hat fekhely) legfeljebb hat vendéget fogad. A harmadik emeleten; saját fürdőszoba, tengerre néző terasz, légkondicionálás és kártyás beléptetés tartozik hozzá. Ágyneműt és törölközőt a check-in során biztosítunk.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_6": {
+      "title": "Superior női hálóterem – 7 ágy",
+      "bed_intro": "Pazar tengeri kilátás és saját fürdő.",
+      "bed_description": "A Superior női hálóterem három hálótermi ágyat és egy egyszemélyes ágyat kínál (összesen hét fekhely), legfeljebb hét vendégnek. A harmadik emeleten található; saját fürdőszoba, tengerre néző terasz, légkondicionálás és kártyás beléptetés tartozik hozzá. Ágyneműt és törölközőt a check-in során biztosítunk.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsPlusSingleSevenGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_9": {
+      "title": "Deluxe vegyes szoba",
+      "bed_intro": "Kedvező árú mód három ágyas elhelyezésre.",
+      "bed_description": "A Deluxe vegyes szoba három egyszemélyes ággyal legfeljebb három vendégnek. A negyedik emeleten; saját fürdőszoba, udvarra néző kilátás, légkondicionálás és kártyás beléptetés. Ágynemű és törölköző biztosított.",
+      "facilities": [
+        "mixedDorm",
+        "threeSingleBedsThreeGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "courtyardView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_8": {
+      "title": "Női hálóterem — egy emeletes ággyal",
+      "bed_intro": "Pénztárcabarát opció két női utazónak.",
+      "bed_description": "Ez a női hálóterem egy emeletes ággyal rendelkezik, legfeljebb két vendég számára. A harmadik emeleten; légkondicionálás, kártyás beléptetés, kertre néző kilátás és a közös női fürdőszoba mellett. Ágynemű és törölköző a check‑in során biztosított.",
+      "facilities": [
+        "femaleDorm",
+        "oneDormBedTwoGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "gardenView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 78,
+        "flexible": 85.8
+      }
+    }
+  },
+  "fullscreen": {
+    "clickToClose": "Kattints bárhová a bezáráshoz",
+    "closeAria": "Teljes képernyős kép bezárása"
+  },
+  "roomImage": {
+    "clickToEnlarge": "Kattints a nagyításhoz",
+    "prevAria": "Előző kép",
+    "nextAria": "Következő kép",
+    "pagination": "{{current}}/{{total}}",
+    "photoAlt": "{{room}} fényképe",
+    "noImage": "Nincs elérhető kép"
+  },
+  "carousel": {
+    "previousSlide": "Előző dia",
+    "nextSlide": "Következő dia"
+  },
+  "hero": {
+    "heading": "Szobáink",
+    "subheading": "Válaszd ki a tökéletes szobát a tartózkodásodhoz"
+  },
+  "filters": {
+    "all": "Összes szoba",
+    "private": "Privát szobák",
+    "dorms": "Hálótermek"
+  },
+  "filtersAria": "Szűrés szobatípus szerint",
+  "checkRatesNonRefundable": "Nem visszatéríthető árak",
+  "checkRatesFlexible": "Rugalmas szobaárak",
+  "ctaSuffix": {
+    "nonRefundable": "Nem visszatéríthető",
+    "flexible": "Rugalmas"
+  },
+  "details": "Részletek",
+  "ratesFrom": "€{{price}}‑tól",
+  "selectDatesTitle": "Válassz dátumokat",
+  "checkInDate": "Érkezés dátuma",
+  "checkOutDate": "Távozás dátuma",
+  "adults": "Felnőttek száma",
+  "confirm": "Megerősít",
+  "cancel": "Mégse",
+  "moreAboutThisRoom": "További tudnivalók a szobáról",
+  "loadingPrice": "Ár betöltése…",
+  "landingImageAlt": "A(z) {{room}} nyitóképe",
+  "priceNotes": {
+    "dorm": "Per night, per guest. One guest in one bunk bed."
+  }
+}

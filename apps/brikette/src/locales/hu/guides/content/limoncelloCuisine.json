@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Mit kóstolj: citromos desszertek, tenger gyümölcsei, DOC borok és hol találod meg."
+  },
+  "linkLabel": "Limoncello & Local Cuisine",
+  "intro": [
+    "A citrom és a limoncello határozza meg az amalfi ízeket – a kóstoló soroktól az édes finálékig.",
+    "Íme, hol kóstolj, mit vásárolj, és hogyan főzz velük otthon."
+  ],
+  "tocTitle": "Ezen az oldalon",
+  "sections": [
+    {
+      "id": "tasting",
+      "title": "Kóstolás",
+      "body": [
+        "Látogass el kis bottegékbe, ahol kézműves limoncellót kínálnak, és kérj mintát, hogy összehasonlíthasd a stílusokat.",
+        "Párosítsd a kóstolót citromfagyival, szorbéval vagy péksütivel, így jobban érzed az édességet és az egyensúlyt."
+      ]
+    },
+    {
+      "id": "purchase",
+      "title": "Vásárlás és szállítás",
+      "body": [
+        "Ellenőrizd a légitársaság folyadéklimitjét; a palackokat biztosan csomagold feladott poggyászba.",
+        "Keresd az IGP Costa d’Amalfi címkéket és a helyi termelők újrahasznosítható csomagolását."
+      ]
+    },
+    {
+      "id": "cooking",
+      "title": "Főzés citrommal",
+      "body": [
+        "Használd a héjat és a levet salátákhoz, tengeri herkentyűs tésztákhoz és desszertekhez, hogy frissítő legyen.",
+        "A citromokat hűvös, sötét helyen tárold, a héjakat pedig szirupokhoz vagy páchoz is felhasználhatod."
+      ]
+    }
+  ],
+  "tips": [
+    "Támogasd a kis termelőket – az ízek gyakran intenzívebbek, mint a turistacsapdákban árult márkák.",
+    "Kerüld a fő strand melletti túlárazott szuvenírboltokat; nézz be egy-két utcával beljebb a jobb árakért."
+  ],
+  "faqs": [
+    {
+      "q": "Felvihetek limoncellót a kézipoggyászban?",
+      "a": [
+        "100 ml fölött nem – a normál palackokat bélelt feladott bőröndben vidd."
+      ]
+    },
+    {
+      "q": "Van alkoholmentes alternatíva?",
+      "a": [
+        "Próbáld ki a friss limonádét, a granitát vagy citromszirupokat, ha kerülnéd az alkoholt."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Fotógaléria",
+    "items": [
+      {
+        "alt": "Positano régi plakát citromokkal",
+        "caption": "Vintage citromok"
+      },
+      {
+        "alt": "Teraszasztal limoncellós poharakkal",
+        "caption": "Teraszon kortyolt limoncello"
+      }
+    ]
+  }
+}

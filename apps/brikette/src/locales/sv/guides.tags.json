@@ -1,0 +1,261 @@
+{
+  "tags": {
+    "accommodation": {
+      "label": "Boende",
+      "title": "Var du kan bo"
+    },
+    "amalfi": {
+      "label": "Amalfi",
+      "title": "Guider till Amalfi"
+    },
+    "backpackers": {
+      "label": "Backpackare",
+      "title": "För backpackare"
+    },
+    "beaches": {
+      "label": "Stränder",
+      "title": "Stränder i Positano",
+      "description": "Skillnader mellan allmän strand och lido, hur du tar dig dit och säkerhetstips."
+    },
+    "boat": {
+      "label": "Båt",
+      "title": "Båtturer"
+    },
+    "budgeting": {
+      "label": "Budget",
+      "title": "Positano på liten budget",
+      "description": "Så sparar du på transport, mat och aktiviteter."
+    },
+    "bus": {
+      "label": "Buss",
+      "title": "Guider till buss och SITA"
+    },
+    "camping": {
+      "label": "Camping",
+      "title": "Camping längs kusten"
+    },
+    "capri": {
+      "label": "Capri",
+      "title": "Capri med liten budget"
+    },
+    "car": {
+      "label": "Bil",
+      "title": "Köra och parkera"
+    },
+    "comparison": {
+      "label": "Jämför",
+      "title": "Jämför ankomster och basorter"
+    },
+    "connectivity": {
+      "label": "Uppkoppling",
+      "title": "Wi‑Fi, eSIM och täckning"
+    },
+    "cost": {
+      "label": "Kostnader",
+      "title": "Kostnader och jämförelser"
+    },
+    "couples": {
+      "label": "Par",
+      "title": "Par på hostel"
+    },
+    "cuisine": {
+      "label": "Mat",
+      "title": "Mat och prisvärda måltider"
+    },
+    "culture": {
+      "label": "Kultur",
+      "title": "Kultur och evenemang"
+    },
+    "day-trip": {
+      "label": "Dagsturer",
+      "title": "Dagsturer"
+    },
+    "decision": {
+      "label": "Beslut",
+      "title": "Beslutsguider"
+    },
+    "digital-nomads": {
+      "label": "Digitala nomader",
+      "title": "För digitala nomader"
+    },
+    "events": {
+      "label": "Evenemang",
+      "title": "Evenemang och festivaler"
+    },
+    "experiences": {
+      "label": "Upplevelser",
+      "title": "Upplevelser"
+    },
+    "families": {
+      "label": "Familjer",
+      "title": "För familjer"
+    },
+    "faq": {
+      "label": "Vanliga frågor",
+      "title": "Vanliga resefrågor"
+    },
+    "ferragosto": {
+      "label": "Ferragosto",
+      "title": "Ferragosto i Positano"
+    },
+    "ferry": {
+      "label": "Färjor",
+      "title": "Guider till färjor"
+    },
+    "free": {
+      "label": "Gratis",
+      "title": "Gratis och billigt"
+    },
+    "general-tourists": {
+      "label": "Vanliga turister",
+      "title": "För vanliga turister"
+    },
+    "herculaneum": {
+      "label": "Herculaneum",
+      "title": "Dagsturer till Herculaneum"
+    },
+    "hiking": {
+      "label": "Vandring",
+      "title": "Vandringar och utsiktspunkter",
+      "description": "Gudarnas stig och säkrare alternativ med koll på trappor."
+    },
+    "hitchhiking": {
+      "label": "Liftning",
+      "title": "Liftning"
+    },
+    "hostel-life": {
+      "label": "Hostelliv",
+      "title": "Livet på hostel"
+    },
+    "insurance": {
+      "label": "Försäkring",
+      "title": "Reseförsäkring"
+    },
+    "ischia": {
+      "label": "Ischia",
+      "title": "Guider till Ischia"
+    },
+    "itinerary": {
+      "label": "Resplaner",
+      "title": "Resplaner för Amalfikusten"
+    },
+    "laundry": {
+      "label": "Tvätt",
+      "title": "Tvätt i Positano"
+    },
+    "logistics": {
+      "label": "Logistik",
+      "title": "Logistik och ankomst"
+    },
+    "naples": {
+      "label": "Neapel",
+      "title": "Neapel ↔ Positano"
+    },
+    "nightlife": {
+      "label": "Nattliv",
+      "title": "Nattliv"
+    },
+    "off-season": {
+      "label": "Lågsäsong",
+      "title": "Tips för lågsäsongen"
+    },
+    "passes": {
+      "label": "Pass",
+      "title": "Transportkort och pass"
+    },
+    "photography": {
+      "label": "Foto",
+      "title": "Fotoplatser i Positano",
+      "description": "Bästa vinklar, ljus och etikett för att undvika trängsel."
+    },
+    "planning": {
+      "label": "Planering",
+      "title": "Planeringsguider"
+    },
+    "pompei": {
+      "label": "Pompeji",
+      "title": "Dagsturer till Pompeji"
+    },
+    "porters": {
+      "label": "Bärare",
+      "title": "Bärhjälp och bagage"
+    },
+    "positano": {
+      "label": "Positano",
+      "title": "Guider till Positano"
+    },
+    "praiano": {
+      "label": "Praiano",
+      "title": "Guider till Praiano"
+    },
+    "procida": {
+      "label": "Procida",
+      "title": "Guider till Procida"
+    },
+    "ravello": {
+      "label": "Ravello",
+      "title": "Guider till Ravello"
+    },
+    "safety": {
+      "label": "Säkerhet",
+      "title": "Säkerhet på Amalfikusten"
+    },
+    "salerno": {
+      "label": "Salerno",
+      "title": "Salerno ↔ Positano"
+    },
+    "shopping": {
+      "label": "Shopping",
+      "title": "Shopping och hantverk"
+    },
+    "shoulder": {
+      "label": "Mellansäsong",
+      "title": "Tips för mellansäsongen"
+    },
+    "sorrento": {
+      "label": "Sorrento",
+      "title": "Guider till Sorrento"
+    },
+    "souvenirs": {
+      "label": "Souvenirer",
+      "title": "Souvenirer och shopping"
+    },
+    "stairs": {
+      "label": "Färre trappor",
+      "title": "Rutter med färre trappor"
+    },
+    "summer": {
+      "label": "Sommar",
+      "title": "Sommar i Positano"
+    },
+    "tips": {
+      "label": "Tips",
+      "title": "Resetips"
+    },
+    "train": {
+      "label": "Tåg",
+      "title": "Tågförbindelser"
+    },
+    "tramonti": {
+      "label": "Tramonti",
+      "title": "Vingårdar i Tramonti"
+    },
+    "transport": {
+      "label": "Transport",
+      "title": "Transportguider för Amalfikusten",
+      "description": "Beslutsguider för buss, färja, shuttle och transfer – med tips för resor med bagage."
+    },
+    "walking-tour": {
+      "label": "Vandringstur",
+      "title": "Vandringsturer"
+    },
+    "winter": {
+      "label": "Vinter",
+      "title": "Positano på vintern"
+    },
+    "work-life": {
+      "label": "Jobb och resor",
+      "title": "Distansarbete och kaféer"
+    }
+  }
+}

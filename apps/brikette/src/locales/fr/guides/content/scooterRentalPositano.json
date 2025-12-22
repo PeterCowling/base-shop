@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Location de scooter à Positano : guide",
+    "description": "Permis, agences, tarifs, sécurité et alternatives si les scooters ne sont pas disponibles."
+  },
+  "linkLabel": "Location de scooter à Positano : guide",
+  "intro": [
+    "Louer un scooter à Positano peut sembler séduisant, mais évaluez d'abord la disponibilité, les formalités et la sécurité sur les routes de falaise."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Où louer",
+      "body": [
+        "L'offre à Positano fluctue et les tarifs sont élevés ; Sorrente propose généralement plus de choix et des prix plus stables."
+      ]
+    },
+    {
+      "id": "rules",
+      "title": "Règles et documents",
+      "body": [
+        "Présentez votre permis (plus un permis international si nécessaire) et une carte de crédit, puis vérifiez précisément ce que couvre l'assurance."
+      ]
+    },
+    {
+      "id": "safety",
+      "title": "Sécurité et cas où éviter",
+      "body": [
+        "Les routes côtières sont étroites, avec des virages aveugles et des bus ; si vous manquez d'expérience, préférez ferries et bus, bien plus sûrs."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Les débutants devraient-ils louer un scooter ici ?",
+      "a": [
+        "Pas vraiment : sans bonne maîtrise du scooter, ces routes en corniche sont stressantes. Restez sur les transports en commun."
+      ]
+    }
+  ]
+}

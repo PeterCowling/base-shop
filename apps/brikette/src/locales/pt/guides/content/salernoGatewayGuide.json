@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Salerno: The Other Amalfi Coast Gateway",
+    "description": "Why Salerno is a smart arrival for Positano in season; ferry links."
+  },
+  "linkLabel": "Salerno: a outra porta de entrada da Costa Amalfitana",
+  "intro": [
+    "Salerno é uma porta de entrada inteligente para a Costa Amalfitana, com melhores ligações ferroviárias e ruas mais calmas do que Nápoles."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Por que chegar via Salerno",
+      "body": [
+        "Comboios de alta velocidade de Roma ou Milão terminam aqui, permitindo sair do Frecciarossa e alcançar o cais de ferries em minutos.",
+        "Alojamento e refeições são mais baratos que em Positano, ideal para as primeiras ou últimas noites."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Ligações adiante",
+      "body": [
+        "Ferries sazonais chegam a Positano em cerca de 70 minutos. Autocarros sobem a costa todo o ano; compre bilhetes UnicoCampania antes de embarcar.",
+        "Shuttles ligam ao aeroporto de Nápoles Capodichino em 60 minutos, útil para voos após a estadia."
+      ]
+    },
+    {
+      "id": "staying",
+      "title": "Ficar em Salerno",
+      "body": [
+        "Explore o passeio marítimo (lungomare), o centro medieval e o Castelo Arechi para vistas ao pôr do sol.",
+        "Reserve trattorias na Via Roma para marisco excelente sem preços de Positano."
+      ]
+    }
+  ],
+  "tips": [
+    "Se chegar tarde, passe a noite em Salerno e apanhe o primeiro ferry ou autocarro para Positano para transferências mais suaves.",
+    "Use guarda-volumes perto da estação (5–7 € por bagagem) para explorar sem peso entre comboio e ferry."
+  ],
+  "faqs": [
+    {
+      "q": "Os ferries de Salerno são fiáveis?",
+      "a": [
+        "Sim, no verão. Em meia estação podem ocorrer cancelamentos por clima, por isso mantenha o autocarro como plano B."
+      ]
+    },
+    {
+      "q": "Com quanto tempo devo chegar para o comboio?",
+      "a": [
+        "Chegue 15 minutos antes para localizar a plataforma e validar bilhetes regionais, se necessário."
+      ]
+    }
+  ]
+}

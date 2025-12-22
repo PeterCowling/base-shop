@@ -1,0 +1,42 @@
+{
+  "seo": {
+    "title": "Walk from Hostel Brikette to Positano's main beach",
+    "description": "Step-by-step staircase route that reaches Spiaggia Grande in 15–25 minutes."
+  },
+  "linkLabel": "Walk down to Positano's main beach",
+  "intro": [
+    "A caminhada do Hostel Brikette até a praia principal de Positano leva cerca de 15 a 25 minutos, dependendo do ritmo e das paradas para fotos.",
+    "O Google Maps pode encaminhá-lo através de desvios mais lentos, então use este primeiro caminho de escada para chegar à Praia Grande rapidamente e combinar cada ponto de verificação com as fotos de referência do albergue."
+  ],
+  "sections": [
+    {
+      "id": "before-you-go",
+      "title": "Antes de sair… ",
+      "body": [
+        "Pegue as fotos laminadas da escada na recepção ou no concierge digital para confirmar os cinco pontos de verificação ao longo do caminho.",
+        "Use sandálias resistentes para os patamares de seixos e carregue água — não há lojas nas escadas até chegar ao calçadão."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Caminhada passo a passo até a Praia Grande",
+      "body": [
+        "1. Saia do Hostel Brikette pela porta principal e desça a escada da frente para Viale Pasitea.",
+        "2. Vire à esquerda e caminhe cerca de 100 metros ao longo da estrada até o primeiro canto direito ao lado do tabacchi/banca de jornal — este é o ponto 1 do mapa.",
+        "3. Vire à direita, permaneça na pista de descida e siga a curva até a primeira curva da estrada (ponto 2 do mapa).",
+        "4. Deixe a estrada na curva e continue em frente descendo a escada à sua frente.",
+        "5. Quando as escadas encontrarem outra estrada (ponto 3 do mapa), atravesse em frente e continue descendo a próxima escada visível.",
+        "6. Na base da escada, atravesse a estrada, vire à esquerda por cerca de 10 metros (30 pés) e, em seguida, pegue a próxima escada à direita (ponto 4 do mapa).",
+        "7. Siga estas escadas, vire à esquerda no patamar e permaneça no caminho até chegar ao fundo.",
+        "8. Vire à direita, entre no pátio no ponto 5 do mapa e verifique se a vista corresponde à foto de referência do albergue.",
+        "9. Continue em linha reta sob o arco, depois caminhe por cerca de 50 metros até que o porto se abra e a Praia Grande apareça à sua esquerda."
+      ]
+    }
+  ],
+  "tipsTitle": "Dicas Rápidas",
+  "tips": [
+    "Guarde a subida para mais tarde combinando esta rota com o %LINK:positanoMainBeachBusBack|autocarro de volta para o hostel% após o seu dia na praia.",
+    "Compare espreguiçadeiras, zonas francas e preços de clubes no %LINK:positanoBeaches|Visão geral das praias de Positano% antes de partir.",
+    "Partilhe o mapa através do código QR do hostel ou do concierge digital se os amigos se encontrarem consigo na praia."
+  ]
+}

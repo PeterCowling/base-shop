@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "title": "Ravello til Positano med bus | Hostel Brikette",
+    "description": "Trin-for-trin vejledning fra Ravello til Positano via Amalfi med SITA-busser, inkl. tips til køreplaner, stoppesteder og den sidste gåtur til Hostel Brikette."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Ravello til Positano – via Amalfi med bus",
+    "description": "Rejs fra Ravello til Positano med et enkelt skift i Amalfi. Denne guide forklarer, hvor du køber og validerer SITA-billetter, hvordan du læser køreplanen, og hvad du kan forvente ved skiftet i Amalfi — plus den korte gåtur fra Positanos Chiesa Nuova-stop til Hostel Brikette."
+  },
+  "tip": {
+    "eyebrow": "Tip",
+    "body": "Skal du bruge alle transportmuligheder? Åbn <GuideLink>{{guideLabel}}</GuideLink> for færger, taxaer og kombinationsture."
+  },
+  "journeyOverview": {
+    "title": "Rejseoverblik",
+    "description": "Forvent cirka 1,5–2,5 timer afhængigt af forbindelserne. Tag først SITA-bussen fra Ravello til Amalfi, og skift derefter til en SITA-bus mod Positano/Sorrento. Busser kører ofte i højsæsonen og kan være fyldte — kom lidt tidligere for at stå i kø."
+  },
+  "sitaTickets": {
+    "title": "SITA-busser og billetter",
+    "points": [
+      "Busser mellem Ravello og Amalfi drives af SITA (SITA Sud Srl).",
+      "Du skal først til Amalfi og derefter skifte til en anden bus mod Positano.",
+      "To linjer kører Ravello → Amalfi: 5110 og 5120. 5110 er som regel ~10 minutter hurtigere.",
+      "Køb billetter i kiosker eller tobaksforretninger (tabacchi), og hav dem klar til validering ved ombordstigning."
+    ]
+  },
+  "timetable": {
+    "title": "Køreplaner",
+    "description": "Tjek de seneste tider på <TimetableLink>{{timetableLabel}}</TimetableLink>.",
+    "notesTitle": "Sådan læser du køreplanen",
+    "points": [
+      "Rækkerne i den første kolonne viser hvert stop på ruten.",
+      "Kolonnerne svarer til planlagte afgange markeret med bogstaver.",
+      "Rejser du mandag til lørdag? Brug kolonnerne ‘F’ og ‘G’.",
+      "Rejser du søndag eller på en helligdag? Brug kolonnerne ‘G’ og ‘H’."
+    ],
+    "linkLabel": "Positano.com (overblik over SITA-køreplanen)"
+  },
+  "ravelloToAmalfi": {
+    "title": "Ravello → Amalfi",
+    "points": [
+      "Tag SITA 5110 eller 5120 fra Ravello til Amalfi (5110 er som regel hurtigere).",
+      "Valider din billet ved ombordstigning og gem den, til du ankommer.",
+      "Stig af ved Amalfis busterminal for at skifte til bussen mod Positano."
+    ]
+  },
+  "waitingInAmalfi": {
+    "title": "Mens du venter i Amalfi",
+    "points": [
+      "Når du ankommer til Amalfi, kan du besøge centrum, mens du venter.",
+      "Vend tilbage til samme busterminal, hvor du blev sat af, for at tage bussen til Positano.",
+      "Stig på enhver SITA-afgang markeret Positano/Sorrento via Amalfikysten."
+    ]
+  },
+  "arrivingPositano": {
+    "title": "Ankomst til Positano (Chiesa Nuova)",
+    "points": [
+      "Det nærmeste SITA-stoppested er Positano (Chiesa Nuova) på Via G. Marconi.",
+      "Det ligger cirka 140 meter (490 fod) fra hostellets indgang.",
+      "Du venter udenfor caféen/baren ‘Bar Internazionale’."
+    ],
+    "figure": {
+      "alt": "SITA-stoppestedet Chiesa Nuova i Positano foran Bar Internazionale",
+      "caption": "Kom et par minutter før afgang for at få en plads; busserne bliver hurtigt fyldt om sommeren."
+    }
+  },
+  "walking": {
+    "title": "Gå fra busstoppet til hostellet",
+    "points": [
+      "Fra Chiesa Nuova-stoppet fortsætter du ~100 meter (330 fod).",
+      "Drej til højre og følg trapperne op til hostellets hoveddør.",
+      "Hold øje med vores skilt ved terrassen; indgangen ligger lige over svinget."
+    ]
+  },
+  "links": {
+    "guideOverview": "Oversigten Sådan kommer du hertil"
+  }
+}

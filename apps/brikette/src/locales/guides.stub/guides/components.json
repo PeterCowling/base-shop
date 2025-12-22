@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "［Stub］ Pick your plan",
+    "options": {
+      "ferry": "［Stub］ Ferry (seasonal)",
+      "trainBus": "［Stub］ Train + Bus (year‑round)",
+      "transfer": "［Stub］ Private transfer"
+    },
+    "selectedLabel": "［Stub］ Selected:"
+  },
+  "eventInfo": {
+    "title": "［Stub］ Event details",
+    "labels": {
+      "when": "［Stub］ When",
+      "where": "［Stub］ Where"
+    }
+  }
+}

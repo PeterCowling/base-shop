@@ -1,0 +1,90 @@
+{
+  "seo": {
+    "title": "Bästa platserna för solnedgång i Positano",
+    "description": "Toppställen för att se solnedgången i Positano med tips på hur du tar dig dit till fots eller med buss."
+  },
+  "linkLabel": "Bästa platserna för solnedgång i Positano",
+  "intro": [
+    "Solnedgångarna i Positano är dramatiska – rätt plats och timing gör hela bilden.",
+    "Använd dessa säkra vinklar och ankomsttider för att undvika den största trängseln."
+  ],
+  "itemList": [
+    {
+      "name": "Terrassen vid Chiesa Nuova",
+      "note": "Lätt att nå nära SITA-hållplatsen med vidsträckt utsikt över bukten."
+    },
+    {
+      "name": "Utsiktspunkten på Via Positanesi d’America",
+      "note": "Balkong ovanför Fornillo – kom 30 minuter före solnedgången för varmt ljus."
+    },
+    {
+      "name": "Nocelle (starten på Gudarnas stig)",
+      "note": "Vetter mot Li Galli-öarna – ta med ett extra lager till resan tillbaka."
+    }
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Klassiska utsiktsplatser",
+      "body": [
+        "Terrassen vid Chiesa Nuova ger en bred vy över bukten bara några steg från SITA-hållplatsen.",
+        "Via Positanesi d’America är en balkong ovanför Fornillo – kom 30 minuter före solnedgången för varmt ljus."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Tystare alternativ",
+      "body": [
+        "Nocelle, vid startpunkten för Gudarnas stig, vetter mot Li Galli-öarna – ta med ett extralager till hemresan.",
+        "Fornillo-stranden är lugnare utanför högsäsongsveckorna; solen försvinner bakom klippan så rigga tidigt."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Tajma din uppställning",
+      "body": [
+        "Var på plats 20 minuter före golden hour för att säkra en plats och justera inställningarna.",
+        "Sommarens solnedgångar är runt 20.30 – kolla busstidtabellen så att du inte blir kvar efter mörkrets inbrott."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiquette",
+      "body": [
+        "Håll trappor och privata ingångar fria medan du fotograferar – kliv åt sidan när du fått bilden.",
+        "Ta med ditt skräp och slå över kameran till tyst läge under kvällskonserter eller evenemang."
+      ]
+    }
+  ],
+  "tips": [
+    "Kom 20–30 minuter tidigt för att få plats och ställa upp stativet utan stress.",
+    "Ett lätt resestativ eller en klämma är praktiskt för exponeringar i blå timmen när ljuset avtar."
+  ],
+  "faqs": [
+    {
+      "q": "Behöver jag boka plats?",
+      "a": [
+        "Barer och takterrasser kräver ofta bokning på sommaren; offentliga utsiktsplatser är först till kvarn."
+      ]
+    },
+    {
+      "q": "Finns det tillräckligt med belysning för vägen tillbaka?",
+      "a": [
+        "Gatubelysningen varierar – ta med ficklampa eller mobilens ljus för sena nedstigningar."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Photo gallery",
+    "items": [
+      {
+        "caption": "Terrassen vid Chiesa Nuova",
+        "alt": "Solnedgång från Chiesa Nuova"
+      },
+      {
+        "caption": "Nocelle",
+        "alt": "Solnedgång från Nocelle"
+      }
+    ]
+  }
+}

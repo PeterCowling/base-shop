@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "波西塔诺至那不勒斯市中心（先巴士后火车） | Hostel Brikette",
+    "description": "提供从 Hostel Brikette 前往那不勒斯加里波第广场的全程指引：先搭乘开往索伦托的 SITA 巴士，再转乘环维苏威火车，涵盖验票、时刻表阅读及抵达提示。"
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette 旅行指南",
+    "title": "波西塔诺至那不勒斯市中心 — 巴士接驳火车",
+    "description": "出发前往那不勒斯加里波第广场时，请参考本指南。路线为先乘 SITA Sud 巴士到索伦托，再换乘环维苏威列车进入市中心。我们讲解验票方式、如何阅读 SITA 时刻表，以及各换乘节点的注意事项。"
+  },
+  "cta": {
+    "eyebrow": "贴士",
+    "body": "想了解所有交通方式？请打开<Link>“如何到达”总览</Link>，查看渡轮、出租车与组合路线。",
+    "linkLabel": "“如何到达”总览"
+  },
+  "sections": {
+    "overview": {
+      "heading": "行程概览",
+      "body": "旺季请预留稍超过两小时的门到门时间。SITA 巴士会从波西塔诺（Chiesa Nuova）频繁发车前往索伦托，环维苏威列车则大约每 20–30 分钟一班，终点站为那不勒斯加里波第站。"
+    },
+    "tickets": {
+      "heading": "购买与验证 SITA 车票",
+      "body": "请在上车前于报刊亭或烟草店购买 SITA 巴士车票。上车时将车票递给司机，他们会盖章或撕角以完成验证。务必保留车票至下车，以备途中查票。"
+    },
+    "timetable": {
+      "heading": "阅读 SITA 时刻表",
+      "intro": "官方时刻表以行列出各个站点、以字母列对应不同班次。先找到与你出行日期相符的索伦托行对应字母，再在同一列中查看波西塔诺（Chiesa Nuova）行以确认发车时间。",
+      "tips": [
+        "第一列的行列出了线路上的所有停靠站。",
+        "各列对应以字母标注的预定班次。",
+        "周一至周六出行？请参考 F 与 G 列。",
+        "周日或公共假日出行？请参考 G 与 H 列。"
+      ],
+      "outro": "请在<Link>Positano.com</Link> 查询最新班次。",
+      "linkLabel": "Positano.com（SITA 时刻表概览）"
+    },
+    "positanoStop": {
+      "heading": "波西塔诺（Chiesa Nuova）车站",
+      "facts": [
+        "最近的 SITA 车站位于 G. Marconi 大街的波西塔诺（Chiesa Nuova）。",
+        "车站距离旅舍入口约 140 米（490 英尺）。",
+        "等车地点在 Bar Internazionale 咖啡吧外。"
+      ],
+      "caption": "请提前几分钟抵达以确保有座位；夏季班车会很快坐满。",
+      "imageAlt": "波西塔诺 Bar Internazionale 外的 Chiesa Nuova SITA 车站"
+    },
+    "walk": {
+      "heading": "从旅舍步行至车站",
+      "steps": [
+        "离开旅舍，下台阶到主干道后向左转。",
+        "沿 G. Marconi 大街步行约 100 米（330 英尺）。",
+        "左手边可见 Bar Internazionale，SITA 车站就在门口。"
+      ]
+    },
+    "wait": {
+      "heading": "购票并等候上车",
+      "items": [
+        "在酒吧或附近报刊亭购买前往索伦托的 SITA 车票。",
+        "在 Bar Internazionale 外排队等候开往索伦托的巴士。",
+        "确认车辆显示屏写着 “Sorrento”。"
+      ]
+    },
+    "sorrento": {
+      "heading": "抵达索伦托火车站",
+      "intro": "SITA 巴士会在索伦托火车与长途汽车综合站旁下客。上楼到主大厅，购买前往那不勒斯加里波第的环维苏威列车车票（可刷卡或付现），并在列车到站前确认正确站台。",
+      "outro": "请在<Link>Sorrento Insider</Link> 查看最新的环维苏威列车时刻表。",
+      "outroLinkLabel": "Sorrento Insider（环维苏威时刻表）"
+    },
+    "naples": {
+      "heading": "抵达那不勒斯",
+      "body": "环维苏威列车的终点即为那不勒斯加里波第站，请保持乘坐直至终点。到站后按照指示牌上楼到主大厅，便可换乘长途列车、地铁或机场巴士。车站出口外即是加里波第广场。"
+    }
+  }
+}

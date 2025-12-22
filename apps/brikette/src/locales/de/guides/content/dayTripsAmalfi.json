@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Tagesausflüge ab Positano: Capri, Pompeji, Ravello, Amalfi",
+    "description": "So planst du beliebte Ausflüge mit Fähren und Bussen – inklusive Timing- und Ticket-Tipps."
+  },
+  "linkLabel": "Tagesausflüge ab Positano",
+  "intro": [
+    "Nutze Positano als Basis für Tagesausflüge per Fähre und Bus – starte früh, buche wichtige Tickets vorab und hab stets einen Wetter-Plan B."
+  ],
+  "sections": [
+    {
+      "id": "capri",
+      "title": "Capri-Highlights",
+      "body": [
+        "Buche die erste Fähre, nimm den Sessellift zum Monte Solaro und spaziere durch die Giardini di Augusto, bevor Kreuzfahrtgäste ankommen.",
+        "Fahr am späten Nachmittag zurück und speichere einen Busfahrplan-Screenshot, falls das Meer rau wird."
+      ]
+    },
+    {
+      "id": "pompeii",
+      "title": "Pompeji oder Herculaneum",
+      "body": [
+        "Nimm den Frühbus nach Sorrent und steig dort in die Circumvesuviana um; kauf Skip-the-Line-Tickets online, um Zeit zu sparen.",
+        "Bring Wasser und Sonnenhut mit – es gibt wenig Schatten und der Besuch dauert leicht 3–4 Stunden."
+      ]
+    },
+    {
+      "id": "amalfi-ravello",
+      "title": "Amalfi & Ravello Kombi",
+      "body": [
+        "Fahre per Fähre nach Amalfi, besichtige den Dom und nimm dann den Bus 5110 nach Ravello für Villa Cimbrone und Mittagessen mit Aussicht.",
+        "Bleib bis zum Spätnachmittagslicht und nimm die Dämmerungs-Fähre oder den Bus zurück – nach 18:00 werden die Schlangen kürzer."
+      ]
+    },
+    {
+      "id": "sorrento",
+      "title": "Sorrento & Genuss",
+      "body": [
+        "Nimm die Fähre am späten Vormittag nach Sorrent für einen Marktbummel, Limoncello-Verkostungen und Sonnenuntergang auf der Terrasse der Villa Comunale.",
+        "Falls die letzte Fähre ausgebucht ist, nutze den späten Bus nach Positano; die Fahrt dauert etwa 50 Minuten."
+      ]
+    }
+  ],
+  "tips": [
+    "Lade Offline-Karten und Fahrpläne vorab – Mobilfunk fällt in Bahntunneln und an Capris Klippen oft aus.",
+    "Pack eine leichte Regenjacke ein – Sommergewitter ziehen schnell auf und Fähren pausieren bei Blitz."
+  ],
+  "faqs": [
+    {
+      "q": "Welcher Tagesausflug braucht den frühesten Start?",
+      "a": [
+        "Capri und Pompeji profitieren von den ersten Abfahrten – sie werden ab dem späten Vormittag voll und erfordern mehr Reisezeit."
+      ]
+    },
+    {
+      "q": "Kann ich zwei Orte an einem Tag schaffen?",
+      "a": [
+        "Ja – kombiniere Amalfi mit Ravello oder Sorrent mit Pompeji. Capri solltest du nicht mit anderem kombinieren; gönn der Insel einen ganzen Tag."
+      ]
+    }
+  ]
+}

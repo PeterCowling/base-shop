@@ -20,7 +20,7 @@ describe('init-shop configurator - runtime checks', () => {
         if (p === 'node:child_process') {
           return { execSync: () => '10.0.0' };
         }
-        if (p.includes('./env')) {
+        if (p.includes('./initShop')) {
           return { initShop: jest.fn().mockResolvedValue(undefined) };
         }
         if (p.startsWith('./')) {
@@ -77,7 +77,7 @@ describe('init-shop configurator - runtime checks', () => {
         if (p === 'node:child_process') {
           return { execSync: () => '9.0.0' };
         }
-        if (p.includes('./env')) {
+        if (p.includes('./initShop')) {
           return { initShop: jest.fn().mockResolvedValue(undefined) };
         }
         if (p.startsWith('./')) {
@@ -118,4 +118,3 @@ describe('init-shop configurator - runtime checks', () => {
     );
   });
 });
-

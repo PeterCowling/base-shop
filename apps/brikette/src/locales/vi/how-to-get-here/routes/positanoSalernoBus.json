@@ -1,0 +1,88 @@
+{
+  "slug": "positano-salerno-bus",
+  "meta": {
+    "title": "Từ Positano đến Salerno bằng xe buýt – Từng bước",
+    "description": "Chỉ dẫn xe buýt từ Hostel Brikette tới Salerno qua Amalfi: nơi lên xe, mua vé, đọc bảng giờ và chuyển tuyến tại Amalfi."
+  },
+  "hero": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "heading": "Positano đến Salerno – Xe buýt (qua Amalfi)",
+    "intro": "Di chuyển từ Hostel Brikette tới Salerno với một lần đổi xe tại Amalfi. Hướng dẫn này bao gồm nơi lên xe ở Positano, cách xác nhận vé, cách đọc bảng giờ và những điều cần lưu ý khi chuyển tuyến ở Amalfi."
+  },
+  "tip": {
+    "label": "Mẹo",
+    "linkLabel": "Tổng quan Cách đến đây",
+    "body": "Cần phương án khác? Mở <link>Tổng quan Cách đến đây</link> để xem phà, taxi và các hành trình kết hợp."
+  },
+  "sections": {
+    "journey": {
+      "title": "Tổng quan hành trình",
+      "body": [
+        "Hành trình gồm hai chặng xe buýt SITA: từ Positano (Chiesa Nuova) đến Amalfi, sau đó Amalfi đến Salerno.",
+        "Mùa cao điểm nên chừa thêm thời gian cho hàng chờ và giao thông."
+      ]
+    },
+    "tickets": {
+      "title": "Xe buýt SITA và vé",
+      "items": [
+        "SITA Sud vận hành các tuyến dọc bờ biển giữa Positano, Amalfi và Salerno.",
+        "Mua vé trước khi lên xe tại tabacchi/quầy báo hoặc quán cà phê (hình thức thanh toán tùy nơi).",
+        "Giữ vé sẵn; tài xế thường đóng dấu hoặc xé để xác nhận khi bạn lên xe."
+      ]
+    },
+    "timetable": {
+      "title": "Lịch chạy và kế hoạch",
+      "linkLabel": "Positano.com",
+      "intro": "Xem giờ chạy mới nhất trên <link>Positano.com</link>. Tra cứu cả hai chặng và chừa thời gian đổi tuyến tại Amalfi.",
+      "items": [
+        "Các điểm dừng xuất hiện theo hàng; mỗi cột chữ cái là một chuyến đã lên lịch.",
+        "Thứ Hai–Bảy thường dùng cột 'F' và 'G'; Chủ nhật/ngày lễ dùng 'G' và 'H'.",
+        "Chuyến này cần hai chặng: Positano → Amalfi rồi Amalfi → Salerno."
+      ],
+      "linkHref": "https://www.positano.com/en/bus-schedule"
+    },
+    "positanoStop": {
+      "title": "Trạm xe buýt Positano (Chiesa Nuova)",
+      "items": [
+        "Trạm SITA gần nhất là Positano (Chiesa Nuova) trên Via G. Marconi.",
+        "Trạm cách cửa hostel khoảng 140 mét.",
+        "Bạn sẽ chờ bên ngoài quán Bar Internazionale."
+      ],
+      "media": {
+        "src": "/img/directions/positano-bus-stop.png",
+        "alt": "Trạm SITA Chiesa Nuova của Positano phía trước Bar Internazionale",
+        "caption": "Đến sớm vài phút để dễ có chỗ ngồi; mùa hè xe thường kín nhanh."
+      }
+    },
+    "walk": {
+      "title": "Đi bộ từ hostel tới trạm",
+      "items": [
+        "Ra khỏi hostel, đi xuống các bậc thang tới đường chính rồi rẽ trái.",
+        "Đi dọc Via G. Marconi khoảng 100 mét.",
+        "Bar Internazionale ở bên trái; trạm SITA nằm ngay phía trước."
+      ]
+    },
+    "wait": {
+      "title": "Mua vé và chờ lên xe",
+      "items": [
+        "Mua vé SITA đi Amalfi tại quán bar hoặc quầy báo gần đó.",
+        "Băng qua phía bên kia đường và xếp hàng đón xe đi Amalfi.",
+        "Kiểm tra lại bảng hiển thị trên xe — phải ghi 'Amalfi'."
+      ]
+    },
+    "transfer": {
+      "title": "Đổi xe tại Amalfi",
+      "items": [
+        "Xuống tại bến xe chính của Amalfi cạnh quảng trường ven biển.",
+        "Tìm khu vực dành cho xe SITA đi Salerno; hỏi nhân viên nếu chưa rõ.",
+        "Nếu cần, mua thêm vé chặng Amalfi → Salerno trước khi lên xe."
+      ]
+    },
+    "arrival": {
+      "title": "Đến Salerno",
+      "body": [
+        "Xe SITA đi Salerno kết thúc gần các đầu mối giao thông của thành phố. Từ đây bạn có thể tiếp tục bằng xe buýt nội đô, đi bộ tới Piazza della Concordia và bến phà, hoặc tới ga tàu Salerno. Luôn theo biển chỉ dẫn hoặc hỏi nhân viên để chọn tuyến thuận tiện nhất."
+      ]
+    }
+  }
+}

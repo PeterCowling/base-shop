@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Ferjeinnstillinger og grov sjø",
+    "description": "Hva du gjør når ferjene kanselleres på grunn av vær, alternativer og hvordan sjekke status."
+  },
+  "linkLabel": "Ferjeinnstillinger og grov sjø",
+  "intro": [
+    "Urolig sjø kan stoppe ferjene til og fra Positano på kort varsel.",
+    "Ha en backup på land klar og følg med på livevarsler slik at du fortsatt rekker forbindelsen."
+  ],
+  "sections": [
+    {
+      "id": "monitoring",
+      "title": "Følg med på oppdateringer",
+      "body": [
+        "Sjekk operatørenes nettsider og apper (Travelmar, NLG, Alilauro) samt tavlene i havnen hvert 30. minutt på vindfulle dager.",
+        "Aktiver SMS/e-postvarsler eller følg lokale Telegram-/soMe-kanaler slik at du får beskjed selv om du går bort fra kaien."
+      ]
+    },
+    {
+      "id": "plan-b",
+      "title": "Bytt til landruter",
+      "body": [
+        "Hvis avgangene stopper, bytt til buss og tog: SITA til Sorrento og videre med Circumvesuviana mot Napoli/Pompeii, eller buss via Amalfi og regiontog fra Salerno.",
+        "Legg inn minst 60 minutters buffer på dagens siste avganger og valider billettene før ombordstigning."
+      ]
+    },
+    {
+      "id": "refunds",
+      "title": "Refusjoner og vouchere",
+      "body": [
+        "Ta vare på kvitteringer og ta skjermbilde av kanselleringsmeldingen slik at operatøren kan behandle refusjon, ombooking eller tilgodelapp.",
+        "Gi beskjed om du ønsker neste ledige avgang eller en sesongvoucher før du forlater skranken."
+      ]
+    },
+    {
+      "id": "overnight",
+      "title": "Når du må overnatte",
+      "body": [
+        "Gi beskjed til overnattingen eller turoperatøren så snart forsinkelser meldes; mange justerer innsjekk eller avreise hvis de får varsel tidlig.",
+        "Spør informasjonskontoret i havnen om delte taxier, erstatningsshuttle eller bagasjeoppbevaring hvis du må vente til morgenen etter."
+      ]
+    }
+  ],
+  "tips": [
+    "Sjekk sjøværmeldingen – vind over 20 knop eller bølger over 1,5 meter utløser ofte kanselleringer.",
+    "Reiseforsikring som dekker værforsinkelser hjelper deg å få igjen ekstra hotellnetter eller alternative transporter.",
+    "Morgenturer er mest pålitelige; unngå å satse på siste båt når det varsles uvær."
+  ],
+  "faqs": [
+    {
+      "q": "Hvordan vet jeg at avgangene starter igjen?",
+      "a": [
+        "Oppdater operatørens nettside eller sosiale medier og lytt etter høyttalerannonser på kaien – beslutninger legges vanligvis ut innen 30 minutter etter planlagt avgang.",
+        "Personalet ved billettskranken kan også bekrefte om neste båt går før du forlater havnen."
+      ]
+    },
+    {
+      "q": "Hva skjer med billetten min?",
+      "a": [
+        "Vis kvittering eller QR-kode for å be om refusjon, voucher eller ombooking på neste avgang.",
+        "Hvis du bestilte via en nettaktør, send dem skjermbilde av kanselleringen innen 24 timer for å starte refusjonen."
+      ]
+    },
+    {
+      "q": "Finnes det ferjer som alltid går i dårlig vær?",
+      "a": [
+        "Nei – når kystvakten stenger havnen stopper alle avganger. Ha en landrute klar.",
+        "Noen private charter kan seile i moderat sjø, men de er dyre og avhenger av skipperens vurdering; vei komfort og kostnad nøye."
+      ]
+    }
+  ]
+}

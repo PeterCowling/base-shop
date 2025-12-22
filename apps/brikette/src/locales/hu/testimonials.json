@@ -1,0 +1,47 @@
+{
+  "hostelworld": {
+    "featured": [
+      {
+        "rating": 9.7,
+        "text": "Lenyűgöző fekvés lélegzetelállító kilátással. A személyzet a tartózkodásom alatt rendkívül barátságos és segítőkész volt."
+      },
+      {
+        "rating": 9.5,
+        "text": "Szuper hostel! A terasz tökéletes egy naplementés italhoz. A szobák tiszták, a hangulat remek."
+      },
+      {
+        "rating": 9.4,
+        "text": "Nagyon tetszettek a digitális concierge tippjei. Biztosan visszatérek!"
+      },
+      {
+        "rating": 9.6,
+        "text": "Kényelmes ágyak és makulátlan fürdők. Kötelező hely Positanóban."
+      },
+      {
+        "rating": 9.2,
+        "text": "A kedves csapatnak köszönhetően olyan volt, mintha otthon lennék."
+      },
+      {
+        "rating": 9.3,
+        "text": "Olcsó és vidám hostel, mindössze pár percnyire a buszmegállótól."
+      }
+    ],
+    "latest": [
+      {
+        "rating": 9.4,
+        "text": "Nagyon tetszettek a digitális concierge tippjei. Biztosan visszatérek!",
+        "datePublished": "2025-10-09"
+      },
+      {
+        "rating": 9.5,
+        "text": "Szuper hostel! A terasz tökéletes egy naplementés italhoz. A szobák tiszták, a hangulat remek.",
+        "datePublished": "2025-10-09"
+      },
+      {
+        "rating": 9.2,
+        "text": "A kedves csapatnak köszönhetően olyan volt, mintha otthon lennék.",
+        "datePublished": "2025-10-09"
+      }
+    ]
+  }
+}

@@ -186,7 +186,15 @@ describe("session", () => {
     expect(mockCookies.delete).toHaveBeenCalledWith({
       name: CUSTOMER_SESSION_COOKIE,
       path: "/",
+    });
+    expect(mockCookies.delete).toHaveBeenCalledWith({
+      name: CUSTOMER_SESSION_COOKIE,
+      path: "/",
       domain: "example.com",
+    });
+    expect(mockCookies.delete).toHaveBeenCalledWith({
+      name: CSRF_TOKEN_COOKIE,
+      path: "/",
     });
     expect(mockCookies.delete).toHaveBeenCalledWith({
       name: CSRF_TOKEN_COOKIE,
@@ -213,4 +221,3 @@ describe("session", () => {
     expect(mockSessionStore.delete).toHaveBeenCalledWith("sid");
   });
 });
-

@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Z Positano do Amalfi: jak dojechać",
+    "description": "Opcje autobusowe i promowe między Positano a Amalfi, z czasami przejazdu i wskazówkami."
+  },
+  "linkLabel": "Z Positano do Amalfi: jak dojechać",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "bus",
+      "title": "Bus (year‑round)",
+      "body": [
+        "SITA bus; buy and validate tickets; queues at peaks — start early.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (seasonal)",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "How long is the trip?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Do I need to reserve seats?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "SITA bus to Amalfi",
+        "text": "Tłumaczenie w przygotowaniu."
+      },
+      {
+        "name": "Tłumaczenie w przygotowaniu.",
+        "text": "Check seasonal timetables; ferries run frequently in peak months."
+      }
+    ]
+  },
+  "fallback": {
+    "intro": [
+      "Use the SITA bus for reliability year-round; in summer, ferries are a scenic alternative."
+    ],
+    "toc": [
+      {
+        "href": "#bus",
+        "label": "SITA bus (year-round)"
+      },
+      {
+        "href": "#ferry",
+        "label": "Ferry (seasonal)"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "sections": [
+      {
+        "id": "bus",
+        "title": "SITA bus (year-round)",
+        "body": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      },
+      {
+        "id": "ferry",
+        "title": "Ferry (seasonal)",
+        "body": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQs",
+    "faqs": [
+      {
+        "q": "Which is faster?",
+        "a": [
+          "Tłumaczenie w przygotowaniu."
+        ]
+      }
+    ]
+  }
+}

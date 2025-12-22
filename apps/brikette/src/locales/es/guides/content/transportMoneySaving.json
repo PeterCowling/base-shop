@@ -1,0 +1,65 @@
+{
+  "seo": {
+    "title": "Ahorra en transporte por la Costa Amalfitana",
+    "description": "Pases frente a billetes sencillos, horarios recomendados, combinar bus y ferry y planes ante el clima."
+  },
+  "linkLabel": "Ahorra en transporte por la Costa Amalfitana",
+  "intro": [
+    "Formas prácticas de reducir costes de transporte combinando buses, ferris y pases diarios.",
+    "Ajusta tus horarios según la afluencia y ten siempre un plan B por si el mar se levanta."
+  ],
+  "planChoiceTitle": "Elige tu enfoque de ahorro",
+  "sections": [
+    {
+      "id": "passes",
+      "title": "Billetes sueltos vs abonos",
+      "body": [
+        "Compra abono diario SITA (8 €) solo si harás cuatro o más trayectos; si no, paga billetes sueltos.",
+        "Valida el ticket al subir para evitar multas; guarda el recibo hasta final de trayecto."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Horarios inteligentes",
+      "body": [
+        "Viaja antes de las 09:30 o después de las 18:00 para evitar colas largas y tener asiento.",
+        "Si vas a pueblos altos (Nocelle, Montepertuso) usa buses directos; evita combinar rutas en horas punta."
+      ]
+    },
+    {
+      "id": "mixing",
+      "title": "Combinar bus y ferry",
+      "body": [
+        "Haz un solo trayecto panorámico en ferry (Positano ↔ Amalfi) y regresa en bus para ahorrar.",
+        "Compra ida y vuelta en el muelle si ya sabes tu horario: suele ser 10 % más barato."
+      ]
+    },
+    {
+      "id": "contingency",
+      "title": "Plan B por clima",
+      "body": [
+        "Cuando haya viento fuerte, ten billete de bus listo y llega 30 min antes al punto de salida.",
+        "Evita programar el último ferry del día como única opción: deja margen de un servicio extra."
+      ]
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes",
+  "faqs": [
+    {
+      "q": "¿Conviene comprar tickets combinados ferry + bus?",
+      "a": [
+        "Solo si planeas múltiples trayectos en un mismo día; compara sumando los billetes sueltos antes de pagar el paquete."
+      ]
+    },
+    {
+      "q": "¿Hay descuentos por reservar online?",
+      "a": [
+        "Algunas navieras ofrecen 5–10 % menos comprando con antelación; revisa políticas de cambio antes de pagar."
+      ]
+    }
+  ],
+  "tips": [
+    "Agrupa excursiones por zonas para reducir saltos innecesarios.",
+    "Camina tramos cortos como Positano ↔ Fornillo ↔ Arienzo para ahorrar billetes y disfrutar de vistas."
+  ]
+}

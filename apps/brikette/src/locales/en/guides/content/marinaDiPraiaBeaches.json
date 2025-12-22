@@ -1,0 +1,110 @@
+{
+  "seo": {
+    "title": "Marina di Praia Beach Guide",
+    "description": "Bus directions, beach layout, and dinner tips for Praiano’s hidden cove."
+  },
+  "linkLabel": "Marina di Praia Beach Guide",
+  "intro": [
+    "Marina di Praia is Praiano’s tucked-away pebble cove — a short bus ride from Hostel Brikette but far quieter than Positano’s headline beaches. Fishing boats, a historic watchtower, and stone walkways wrap the bay so you still have services without the crowds.",
+    "Use this guide to ride the bus there and back confidently, understand how the lido works, and plan a relaxed dinner before heading home."
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Why go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & services"
+    },
+    {
+      "href": "#evening",
+      "label": "Stay for dinner"
+    }
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Why add Marina di Praia to your beach list",
+      "body": [
+        "Unlike Spiaggia Grande or Fornillo, Marina di Praia sits in a narrow gorge just outside Praiano. The cliffs shelter the water from swells, fishing boats bob in the harbour, and the vibe stays low key even in August.",
+        "It is an easy add-on to a Praiano day trip or a change of scenery mid-week. The smaller footprint means fewer loungers overall, but you trade that for calmer crowds and photogenic scenery for sunset."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Getting there and back by bus",
+      "body": [
+        "From Hostel Brikette walk down Via Pasitea to the Sponda bus stop and catch the SITA bus heading towards Amalfi. Ask the driver for \"Marina di Praia\" so they know to stop — it is roughly 20 minutes from Positano depending on traffic.",
+        "Hop off at the signed stop (between Praiano and Furore) and follow the stone path downhill for two minutes to the waterfront. The walk is paved the entire way. For the return journey, wait at the same stop on the opposite side; buses towards Positano usually run every 30–40 minutes in season but thin out after 20:30.",
+        "Buy and validate your SITA tickets before boarding — the tobacconist near the Chiesa Nuova stop and the newsstand in Positano both stock them. Review the %LINK:sitaTickets|SITA bus guide% if you need a refresher on ticket types and late-night options."
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Beach layout and operators",
+      "body": [
+        "A small public strip sits at the centre of the cove — arrive before 10:30 if you want a free spot near the water. The main operator is Marina di Praia Beach Club with rows of loungers, parasols, showers, and kayak rentals; expect packages from €25–€35 for a chair and umbrella in high season.",
+        "Along the walkway you will also find Da Armandino and Il Pirata restaurants plus small kiosks for cold drinks. Card machines can be temperamental, so carry enough cash for lounger balances or a seafood lunch.",
+        "Shade disappears early because the cliffs block the sun, so plan a morning swim, then transition to bar seating or a late lunch as the bay cools down."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Stay for dinner without stress",
+      "body": [
+        "The cove transforms after sunset: strings of lights reflect on the water and restaurants shift to full dinner service. Reserve ahead if you have your heart set on Da Armandino or Il Pirata — both specialise in fresh catch and house-made pasta.",
+        "Aim for the 21:00 SITA bus back towards Positano (times vary by season) or split a taxi with friends if you linger for dessert. The ride back drops you at Sponda so you only have a short uphill walk to the hostel."
+      ]
+    }
+  ],
+  "essentialsTitle": "What to expect",
+  "essentials": [
+    "20-minute SITA bus ride from Positano; ask for the Marina di Praia stop and walk two minutes downhill.",
+    "Narrow pebble beach with one main lido plus a small free section in the middle.",
+    "Restaurants and snack kiosks line the walkway — ideal for a sunset dinner before heading home."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Lounger + umbrella at Marina di Praia Beach Club: €25–€35 for the day (two-person sets available).",
+    "Kayak hire: around €20 per hour for two people.",
+    "Dinner mains at Da Armandino or Il Pirata: €16–€28 depending on catch and pasta specials."
+  ],
+  "tipsTitle": "Quick tips",
+  "tips": [
+    "Validate your bus ticket as soon as you board and keep a spare for the ride home in case the kiosk is closed in the evening.",
+    "Pack water shoes — the pebbles can be slick and the shoreline drops off quickly.",
+    "Compare other coastal options in our %LINK:positanoBeaches|beaches overview% if you want to pair Marina di Praia with a Positano day."
+  ],
+  "warningsTitle": "Good to know",
+  "warnings": [
+    "Space is limited; the free area fills first and lido loungers sell out on weekends.",
+    "The cliffs block direct sun by mid-afternoon — great for cooling down but it can feel chilly on windy days.",
+    "Mobile reception dips inside the gorge; download bus timetables or dinner booking confirmations beforehand."
+  ],
+  "faqsTitle": "Marina di Praia FAQs",
+  "faqs": [
+    {
+      "q": "Where exactly do I catch the bus from Positano?",
+      "a": [
+        "Use the Sponda stop on Via Pasitea for buses heading towards Amalfi. It is a 10-minute walk downhill from the hostel; arrive 10 minutes early in high season so you can board before the bus fills up."
+      ]
+    },
+    {
+      "q": "Is there a free area or do I have to rent loungers?",
+      "a": [
+        "A modest public strip sits in the centre of the cove. Bring a mat or thick towel — the pebbles are coarse — and be ready to slide closer to the rocks as the tide shifts. Loungers at the Marina di Praia Beach Club include showers and bathrooms if you prefer a set-up."
+      ]
+    },
+    {
+      "q": "How late can I stay for dinner and still get back to Hostel Brikette?",
+      "a": [
+        "The last SITA buses towards Positano vary by month but typically run until around 21:30 in summer. Check the posted timetable when you arrive and aim for the second-to-last service in case one is full. After the final bus, taxis from Praiano to Positano cost €35–€45, so split with travel mates if you linger longer."
+      ]
+    }
+  ]
+}

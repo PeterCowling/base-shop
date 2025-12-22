@@ -185,13 +185,6 @@ export function useConfiguratorDashboardState(): {
     fetchLaunchGate(state.shopId);
   }, [state.shopId, fetchLaunchGate]);
 
-  useEffect(() => {
-    if (!state.shopId) return;
-    if (launchStatus?.tests === "success" && launchEnv === "stage") {
-      fetchLaunchGate(state.shopId);
-    }
-  }, [launchStatus?.tests, launchEnv, state.shopId, fetchLaunchGate]);
-
   const [markStepComplete] = useConfiguratorPersistence(state, setState);
   const t = useTranslations();
   const tFunc = t as unknown as (key: string, vars?: Record<string, unknown>) => string;
@@ -411,6 +404,13 @@ export function useConfiguratorDashboardState(): {
           .join(", ")}`,
       }),
   });
+
+  useEffect(() => {
+    if (!state.shopId) return;
+    if (launchStatus?.tests === "success" && launchEnv === "stage") {
+      fetchLaunchGate(state.shopId);
+    }
+  }, [launchStatus?.tests, launchEnv, state.shopId, fetchLaunchGate]);
 
   const rerunSmoke = useCallback(async () => {
     if (!state.shopId) return;

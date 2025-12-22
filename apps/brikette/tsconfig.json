@@ -1,0 +1,68 @@
+{
+  "extends": "@acme/config/tsconfig.app.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "strict": true,
+    "allowJs": false,
+    "exactOptionalPropertyTypes": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "useUnknownInCatchVariables": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "disableSourceOfProjectReferenceRedirect": true,
+    "skipLibCheck": false,
+    "paths": {
+      "@/*": [
+        "src/*",
+        "dist/*",
+        "../../packages/ui/dist/*"
+      ],
+      "@acme/ui": [
+        "../../packages/ui/dist/index.d.ts",
+        "../../packages/ui/src/index.ts"
+      ],
+      "@acme/ui/*": [
+        "../../packages/ui/dist/*",
+        "../../packages/ui/src/*"
+      ],
+      "@ui": [
+        "../../packages/ui/dist/index.d.ts",
+        "../../packages/ui/src/index.ts"
+      ],
+      "@ui/*": [
+        "../../packages/ui/dist/*",
+        "../../packages/ui/src/*"
+      ],
+      "react-router": [
+        "src/compat/react-router.tsx"
+      ],
+      "react-router-dom": [
+        "src/compat/react-router-dom.tsx"
+      ],
+      "react-router/dom": [
+        "src/compat/react-router-dom.tsx"
+      ],
+      "@react-router/dev/routes": [
+        "src/compat/react-router-dev-routes.ts"
+      ]
+    },
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "instrumentation.ts",
+    "src/**/*.d.ts",
+    "src/**/*.json",
+    "src/**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    ".next/types/server.d.ts",
+    "**/__mocks__/**",
+    "**/__tests__/**",
+    "**/*.spec.*",
+    "**/*.test.*"
+  ]
+}

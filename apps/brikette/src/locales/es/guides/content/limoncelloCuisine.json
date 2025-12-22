@@ -1,0 +1,77 @@
+{
+  "seo": {
+    "title": "Limoncello y gastronomía local en la Costa Amalfitana",
+    "description": "Qué probar en Positano: limoncello, clásicos de mar, postres de limón y etiqueta al pedir."
+  },
+  "linkLabel": "Limoncello y gastronomía local",
+  "intro": [
+    "Guía cítrica para comer y beber en la Costa Amalfitana: limoncello, mariscos frescos y postres de limón irresistibles.",
+    "Aprende dónde degustar, qué comprar y cómo pedir sin sorpresas durante tu estancia en Positano."
+  ],
+  "tocTitle": "En esta página",
+  "sections": [
+    {
+      "id": "limoncello",
+      "title": "Limoncello y licores de limón",
+      "body": [
+        "Busca productores artesanales en Positano, Amalfi o Ravello; pregunta por limones Costa d’Amalfi IGP y grados alcohólicos antes de comprar.",
+        "Sirve el limoncello muy frío, sin hielo, al final de la comida; reserva visitas a limonares o degustaciones con antelación en temporada alta."
+      ]
+    },
+    {
+      "id": "seafood",
+      "title": "Mariscos imprescindibles",
+      "body": [
+        "Spaghetti alle vongole, fritto misto y anchoas frescas son básicos locales; muchos menús cambian según la captura del día.",
+        "Acompaña los sabores cítricos con vinos blancos de Campania o cerveza artesanal ligera para equilibrar la salinidad."
+      ]
+    },
+    {
+      "id": "desserts",
+      "title": "Postres y pastelería de limón",
+      "body": [
+        "Delizia al limone, babás rellenos y granitas artesanales se encuentran en pastelerías familiares; pregunta por porciones individuales si viajas en grupo pequeño.",
+        "Combina el postre con un chupito de limoncello o un espresso para cerrar la comida."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Pedir como un local",
+      "body": [
+        "El coperto cubre pan y servicio de mesa; deja propina solo si recibes una atención destacada.",
+        "Si compras botellas para llevar, embálalas bien o solicita envío: muchas tiendas gestionan envíos internacionales con seguro."
+      ]
+    }
+  ],
+  "tips": [
+    "Evita botellas con color fluorescente: el limoncello auténtico luce amarillo opaco gracias a la infusión natural.",
+    "Lleva efectivo para compras pequeñas en mercados o productores que no aceptan tarjeta."
+  ],
+  "faqs": [
+    {
+      "q": "¿Hay alternativas sin alcohol?",
+      "a": [
+        "Sí: prueba granitas artesanales, limonadas caseras o siropes de limón mezclados con agua con gas."
+      ]
+    },
+    {
+      "q": "¿Cómo transportar limoncello en avión?",
+      "a": [
+        "Coloca botellas de más de 100 ml en equipaje facturado, acolchadas entre ropa, o pide envío desde la tienda si prefieres evitar el peso."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Galería de fotos",
+    "items": [
+      {
+        "alt": "Cartel vintage de Positano con limones",
+        "caption": "Póster vintage"
+      },
+      {
+        "alt": "Mesa en terraza con copas de limoncello",
+        "caption": "Limoncello en la terraza"
+      }
+    ]
+  }
+}

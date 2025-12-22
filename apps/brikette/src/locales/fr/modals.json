@@ -1,0 +1,161 @@
+{
+  "location": {
+    "title": "Notre emplacement",
+    "inputLabel": "Entrez votre position actuelle :",
+    "inputPlaceholder": "ex. Naples, Italie ou adresse complète",
+    "getDirections": "Obtenir l’itinéraire",
+    "justShowMap": "Afficher uniquement la carte",
+    "close": "Fermer",
+    "nearbyBusCompact": "≈100 m de l’arrêt de bus le plus proche"
+  },
+  "contact": {
+    "title": "Nous contacter",
+    "description": "Nous serions ravis d’avoir de vos nouvelles ! Pour toute question ou réservation, veuillez nous écrire par e-mail :",
+    "revealEmail": "Afficher l’adresse e-mail",
+    "close": "Fermer",
+    "buttonClose": "Fermer"
+  },
+  "offers": {
+    "close": "Fermer",
+    "title": "Réservez en direct & économisez",
+    "description": "Merci de réserver directement chez nous ! En guise de remerciement, vous bénéficierez :",
+    "perks": {
+      "discount": "Jusqu’à 10 % de réduction sur le tarif de la chambre",
+      "breakfast": "Petit-déjeuner gratuit chaque matin",
+      "drinks": "Boissons de bienvenue offertes",
+      "upgrades": "Surclassement prioritaire (sous réserve de disponibilité)"
+    },
+    "callToAction": "Profitez dès maintenant de ces avantages exclusifs !",
+    "button": "Réserver maintenant"
+  },
+  "booking": {
+    "title": "Réservez votre séjour",
+    "subTitle": "Sélectionnez vos dates et préférences",
+    "close": "Fermer",
+    "checkInLabel": "Arrivée",
+    "checkOutLabel": "Départ",
+    "guestsLabel": "Voyageurs",
+    "buttonAvailability": "Vérifier la disponibilité",
+    "datePlaceholder": "Sélectionnez la date",
+    "guestsSingle": "{{count}} adulte",
+    "guestsPlural": "{{count}} adultes"
+  },
+  "booking2": {
+    "selectDatesTitle": "Sélectionnez vos dates",
+    "checkInDate": "Date d’arrivée",
+    "checkOutDate": "Date de départ",
+    "adults": "Nombre d’adultes",
+    "confirm": "Confirmer",
+    "cancel": "Annuler"
+  },
+  "facilities": {
+    "title": "Nos équipements",
+    "closeButton": "Fermer",
+    "categories": [
+      {
+        "title": "Salle de bain",
+        "items": [
+          "Papier toilette",
+          "Serviettes / draps (frais supplémentaires)",
+          "Toilettes",
+          "Douche",
+          "Sèche-cheveux (sur demande)"
+        ]
+      },
+      {
+        "title": "Chambre & linge de lit",
+        "items": [
+          "Linge de lit fourni",
+          "Lampe de lecture aux lits superposés"
+        ]
+      },
+      {
+        "title": "Extérieurs & vues",
+        "items": [
+          "Terrasse panoramique avec vue sur la mer",
+          "Solarium",
+          "Mobilier d’extérieur",
+          "Aire de pique-nique"
+        ]
+      },
+      {
+        "title": "Confort en chambre",
+        "items": [
+          "Prise près du lit",
+          "Climatisation",
+          "Chauffage",
+          "Sol en carrelage / marbre"
+        ]
+      },
+      {
+        "title": "Activités",
+        "items": [
+          "Randonnée (hors établissement)",
+          "Cartes de sentiers autoguidés",
+          "Recommandations de tours locaux"
+        ]
+      },
+      {
+        "title": "Restauration & boissons",
+        "items": [
+          "Bar sur place",
+          "Boisson de bienvenue offerte",
+          "Petit-déjeuner à la carte disponible",
+          "Service de snacks"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Wi-Fi gratuit dans les parties communes",
+          "Wi-Fi haut débit dans les chambres",
+          "Point d’accès Internet public"
+        ]
+      },
+      {
+        "title": "Services aux invités",
+        "items": [
+          "Nettoyage quotidien",
+          "Service de conciergerie",
+          "Consigne à bagages",
+          "Consigne avant l’enregistrement / après le départ",
+          "Casiers",
+          "Adaptateurs disponibles",
+          "Transferts aéroport (supplément)",
+          "Réception (horaires limités)",
+          "Parking à vélos"
+        ]
+      },
+      {
+        "title": "Sécurité",
+        "items": [
+          "Extincteurs",
+          "CCTV dans les parties communes",
+          "Accès par carte",
+          "Serrures électroniques",
+          "Casiers personnels"
+        ]
+      },
+      {
+        "title": "Général",
+        "items": [
+          "Établissement réservé aux adultes (18–39 ans)",
+          "Établissement non-fumeurs",
+          "Chambres non-fumeurs"
+        ]
+      },
+      {
+        "title": "Langues parlées",
+        "items": [
+          "Anglais",
+          "Espagnol",
+          "Italien"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "title": "Choisir la langue",
+    "close": "Fermer"
+  }
+}

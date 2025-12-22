@@ -33,22 +33,20 @@ const isSecureEnv = process.env.NODE_ENV !== "development";
 function cookieOptions(maxAge = SESSION_TTL_S) {
   return {
     httpOnly: true,
-    sameSite: "strict" as const,
+    sameSite: "lax" as const,
     secure: isSecureEnv,
     path: "/",
     maxAge,
-    domain: coreEnv.COOKIE_DOMAIN,
   };
 }
 
 function csrfCookieOptions(maxAge = SESSION_TTL_S) {
   return {
     httpOnly: false,
-    sameSite: "strict" as const,
+    sameSite: "lax" as const,
     secure: isSecureEnv,
     path: "/",
     maxAge,
-    domain: coreEnv.COOKIE_DOMAIN,
   };
 }
 
@@ -164,13 +162,23 @@ export async function destroyCustomerSession(): Promise<void> {
   store.delete({
     name: CUSTOMER_SESSION_COOKIE,
     path: "/",
-    domain: coreEnv.COOKIE_DOMAIN,
   });
   store.delete({
     name: CSRF_TOKEN_COOKIE,
     path: "/",
-    domain: coreEnv.COOKIE_DOMAIN,
   });
+  if (coreEnv.COOKIE_DOMAIN) {
+    store.delete({
+      name: CUSTOMER_SESSION_COOKIE,
+      path: "/",
+      domain: coreEnv.COOKIE_DOMAIN,
+    });
+    store.delete({
+      name: CSRF_TOKEN_COOKIE,
+      path: "/",
+      domain: coreEnv.COOKIE_DOMAIN,
+    });
+  }
   if (error) throw error;
 }
 

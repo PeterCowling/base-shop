@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Positanos historie (kortversjon)",
+    "description": "En kort historie om Positano: handel, klipper og turisme."
+  },
+  "linkLabel": "Positanos historie (kortversjon)",
+  "intro": [
+    "Forstå Positanos historie – fra maritime røtter til Hollywoods oppdagelse – slik at vandringene får historisk kontekst."
+  ],
+  "sections": [
+    {
+      "id": "origins",
+      "title": "Opprinnelse og handel",
+      "body": [
+        "Positano startet som et romersk villasenter ved sjøen; senere eksporterte middelalderhandlere ull og importerte krydder via Amalfis flåte.",
+        "Vakttårnene langs kysten varslet om sarasenerangrep – mange står fortsatt som utkikkspunkter i dag."
+      ]
+    },
+    {
+      "id": "20th",
+      "title": "Forvandlingen på 1900-tallet",
+      "body": [
+        "Etter andre verdenskrig gjorde kunstnere og forfattere som Steinbeck Positano kjent, og økonomien dreide mot turisme.",
+        "Forbedrede veier på 1950-tallet knyttet Positano til resten av Italia og brakte boutiquehoteller og besøkende."
+      ]
+    },
+    {
+      "id": "today",
+      "title": "I dag",
+      "body": [
+        "Turisme er nå bærebjelken, og byen jobber for å balansere vern og besøkstall gjennom ferjekvoter og gågater.",
+        "Lokale håndverkere lager fortsatt sandaler og keramikk, og holder tradisjoner levende ved siden av reiselivet."
+      ]
+    }
+  ],
+  "tips": [
+    "Besøk det romerske villamuseet under Santa Maria Assunta for mosaikker som ble funnet i 1987.",
+    "Se etter informasjonsplakater langs Via dei Mulini som forteller om viktige historiske bygg."
+  ],
+  "faqs": [
+    {
+      "q": "Hvor kan jeg lære mer på stedet?",
+      "a": [
+        "MAR Positano-museet kombinerer arkeologi og multimedia – perfekt på regnværsdager."
+      ]
+    },
+    {
+      "q": "Finnes det guidede historiske turer?",
+      "a": [
+        "Ja, flere lokale guider tilbyr kvelds- og kulturvandringer; reserver i god tid i høysesongen."
+      ]
+    }
+  ]
+}

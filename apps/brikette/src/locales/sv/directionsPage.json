@@ -1,0 +1,30 @@
+{
+  "meta": {
+    "title": "Så tar du dig hit – buss-, färje- och gångtips",
+    "description": "Hitta närmaste busshållplats, färjerutter och gångtider för att nå Hostel Brikette i Positano."
+  },
+  "title": "Så tar du dig hit",
+  "intro": "Vi ligger cirka 100 m från busshållplatsen Chiesa Nuova och ungefär 13 minuters promenad från stranden.",
+  "steps": {
+    "bus": "Från Sorrento: SITA-buss till Positano (hållplats Chiesa Nuova).",
+    "ferry": "Från Capri/Amalfi: ta färjan till Positano, sedan buss eller taxi upp.",
+    "walk": "Räkna med trappor; utsikten är värd det. Följ skyltarna mot Via G. Marconi 358."
+  },
+  "photos": {
+    "heading": "Se rutten innan du ger dig av",
+    "items": [
+      {
+        "alt": "Trappor som leder till Hostel Brikette med en gäst på väg mot entrén",
+        "caption": "Från hållplatsen Chiesa Nuova, följ trapporna i ungefär en minut — vår skylt syns på höger sida."
+      },
+      {
+        "alt": "Fasaden på Hostel Brikette på Via G. Marconi 358",
+        "caption": "Leta efter Via G. Marconi 358 på sten muren; ingången ligger precis efter gatunumret."
+      },
+      {
+        "alt": "Hostel Brikettes incheckningsdisk inne i lobbyn",
+        "caption": "Väl inne ligger incheckningsdisken på vänster sida — vi förvarar gärna bagage om rummet inte är klart än."
+      }
+    ]
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "seo": {
+    "title": "Conseils pour un long séjour hors saison",
+    "description": "Gérer hébergement, météo, transports réduits et rythme quotidien sur la côte en hiver."
+  },
+  "linkLabel": "Conseils pour un long séjour hors saison",
+  "intro": [
+    "Séjourner quelques semaines hors saison signifie une météo plus fraîche, moins de ferries et davantage de temps pour vivre comme un local."
+  ],
+  "sections": [
+    {
+      "id": "housing",
+      "title": "Logement et tarifs",
+      "body": [
+        "Négociez directement avec les maisons d’hôtes des quartiers hauts de Positano pour des séjours mensuels ; des remises de 20 à 30 % sont courantes de novembre à mars.",
+        "Envisagez Praiano ou Minori comme base si vous souhaitez des supermarchés et des balades plus plates ; prenez le bus quand vous rêvez d’une soirée à Positano."
+      ]
+    },
+    {
+      "id": "weather",
+      "title": "Météo et bagages",
+      "body": [
+        "Comptez des maximales diurnes autour de 12–16 °C (54–61 °F) avec des pluies ponctuelles ; prévoyez des couches, une veste imperméable et des chaussures adhérentes pour les escaliers mouillés.",
+        "Gardez un parapluie compact ; le vent s’engouffre dans la vallée et les rafales semblent plus fortes que ne l’annonce la météo."
+      ]
+    },
+    {
+      "id": "work-life",
+      "title": "Travail et rythme quotidien",
+      "body": [
+        "Beaucoup de cafés réduisent leurs horaires ; organisez vos plages de coworking autour du Wi-Fi fiable de l’auberge ou de votre appartement.",
+        "Cuisinez plus souvent vous-même : les marchés de Meta ou Sorrente offrent un plus grand choix, et les bus sont plus calmes pour les courses."
+      ]
+    },
+    {
+      "id": "community",
+      "title": "Vie sociale",
+      "body": [
+        "Rejoignez des groupes Facebook ou des chats WhatsApp locaux pour les échanges linguistiques et les repas communautaires.",
+        "Faites du bénévolat lors des nettoyages de la ville ou des événements culturels ; la commune affiche le planning sur les panneaux près de Piazza dei Mulini."
+      ]
+    }
+  ],
+  "tips": [
+    "Gardez quelques pièces en euro pour les chauffages d’appoint et les laveries — beaucoup de machines fonctionnent encore à la monnaie en hiver.",
+    "Suivez chaque semaine les horaires réduits des bus et ferries ; les plannings s’ajustent autour des fêtes."
+  ],
+  "faqs": [
+    {
+      "q": "Les restaurants restent-ils ouverts ?",
+      "a": [
+        "Quelques adresses demeurent ouvertes toute l’année à Positano, mais le choix est plus large à Amalfi et Sorrente — profitez-en pour y planifier vos dîners."
+      ]
+    },
+    {
+      "q": "Le Sentier des Dieux est-il praticable en hiver ?",
+      "a": [
+        "Oui par temps sec, mais évitez-le après de fortes pluies ; les rochers deviennent glissants et les petites coulées sont plus fréquentes."
+      ]
+    }
+  ],
+  "fallback": {
+    "tocTitle": "Sur cette page",
+    "intro": [],
+    "toc": [
+      {
+        "href": "#connectivity",
+        "label": "Connectivité"
+      },
+      {
+        "href": "#groceries",
+        "label": "Courses et essentiels"
+      },
+      {
+        "href": "#transport",
+        "label": "Transports hors saison"
+      },
+      {
+        "href": "#weather",
+        "label": "Météo et bagages"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQ"
+      }
+    ],
+    "sections": [
+      {
+        "id": "connectivity",
+        "title": "Connectivité",
+        "body": [
+          "Combinez des cafés au Wi-Fi fiable avec des eSIM de secours ; vérifiez les cartes de couverture (TIM/Vodafone/WindTre)."
+        ]
+      },
+      {
+        "id": "groceries",
+        "title": "Courses et essentiels",
+        "body": [
+          "Les horaires d’hiver varient ; faites le plein plus tôt dans la journée et en semaine."
+        ]
+      },
+      {
+        "id": "transport",
+        "title": "Transports hors saison",
+        "body": [
+          "Les ferries se raréfient ; comptez sur les bus et prévoyez des solutions les jours de pluie ou de vent."
+        ]
+      },
+      {
+        "id": "weather",
+        "title": "Météo et bagages",
+        "body": [
+          "Emportez des couches et une protection contre la pluie ; de bonnes chaussures pour les escaliers mouillés."
+        ]
+      }
+    ],
+    "faqsTitle": "FAQ",
+    "faqs": [
+      {
+        "q": "Quelque chose reste-t-il ouvert en hiver ?",
+        "a": [
+          "Oui, mais avec moins d’options. Concentrez-vous sur les courses, les randonnées, les points de vue et les villes voisines."
+        ]
+      }
+    ]
+  }
+}

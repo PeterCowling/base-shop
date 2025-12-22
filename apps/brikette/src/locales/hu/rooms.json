@@ -1,0 +1,56 @@
+{
+  "detail": {
+    "common": {
+      "amenitiesHeading": "Miért szeretik a vendégek",
+      "amenitiesIntro": "Ezek a kényelmi extrák már érkezéskor várnak."
+    },
+    "double_room": {
+      "amenities": [
+        {
+          "title": "Privát fürdőszobás kényelem",
+          "body": "Forró zuhannyal, puha törölközőkkel és kizárólag a tiédként használt térrel kezdheted és zárhatod a napot."
+        },
+        {
+          "title": "Tengerre néző reggelek",
+          "body": "Csak csúsztasd félre az ajtót, és a saját teraszodon kortyolhatod az eszpresszót vagy a naplemente italát Positano fölött."
+        },
+        {
+          "title": "Hűvös, nyugodt éjszakák",
+          "body": "Egyedileg szabályozható légkondi és sötétítő zsaluk gondoskodnak a pihentető alvásról még augusztusi hőségben is."
+        }
+      ]
+    },
+    "room_11": {
+      "amenities": [
+        {
+          "title": "Terasz, ami mindenkinek jut",
+          "body": "Kanapékon és szabadtéri asztaloknál reggelizhettek, nyújtózhattok túra után, és együtt fotózhatjátok a panorámát."
+        },
+        {
+          "title": "Csak nőknek szóló kényelem",
+          "body": "Nőknek fenntartott hálóterem saját fürdővel és pipere térrel, így nem kell sorban állni a zuhanyhoz."
+        },
+        {
+          "title": "Privát szféra és biztonság",
+          "body": "Minden fekhelyhez függöny, olvasólámpa, töltőpont és kártyás szekrény tartozik, hogy nyugodtan pihenhess."
+        }
+      ]
+    },
+    "room_12": {
+      "amenities": [
+        {
+          "title": "Extra nagy közös terasz",
+          "body": "Kanapék és étkezőasztalok adják a dorm közös nappaliját, ahonnan az Amalfi-part panorámája tárul eléd."
+        },
+        {
+          "title": "Saját fürdő minden vendégnek",
+          "body": "Hajszárítóval, tükrökkel és rengeteg akasztóval felszerelt fürdőszoba vár, hogy gyorsan felfrissülj."
+        },
+        {
+          "title": "Saját áramforrás és tárolás",
+          "body": "Minden ágyhoz tartozik konnektor, olvasólámpa és kártyás szekrény, így értékeid biztonságban vannak."
+        }
+      ]
+    }
+  }
+}

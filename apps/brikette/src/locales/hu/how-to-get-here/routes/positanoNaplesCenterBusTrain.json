@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Positanóból Nápoly központjába busszal, majd vonattal | Hostel Brikette",
+    "description": "Ajtótól ajtóig útmutató a Hostel Brikette-től a Napoli Piazza Garibaldi állomásig: SITA busz Szorrentóba, majd Circumvesuviana vonat, jegyérvényesítési lépésekkel, menetrendi tippekkel és érkezési tanácsokkal."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Positanóból Nápoly központjába – busz, majd vonat",
+    "description": "Használd ezt az útmutatót, amikor a Hostel Brikette-től a Napoli Piazza Garibaldi állomásra utazol. A SITA Sud busszal Szorrentóig, majd a Circumvesuviana vonattal a belvárosba jutsz. Bemutatjuk a jegyérvényesítést, a SITA menetrend értelmezését és azt, mire számíts az egyes csatlakozásoknál."
+  },
+  "cta": {
+    "eyebrow": "Tipp",
+    "body": "Szükséged van az összes közlekedési lehetőségre? Nyisd meg a <Link>Hogyan juthatsz el hozzánk áttekintést</Link> kompokhoz, taxikhoz és kombinált útvonalakhoz.",
+    "linkLabel": "Hogyan juthatsz el hozzánk áttekintés"
+  },
+  "sections": {
+    "overview": {
+      "heading": "Az út áttekintése",
+      "body": "Főszezonban számolj valamivel több mint két órával ajtótól ajtóig. A SITA buszok sűrűn indulnak Positano (Chiesa Nuova) megállóból Szorrentóba. A Circumvesuviana vonat Szorrentóból nagyjából 20–30 percenként indul, és a Napoli Garibaldi állomáson végállomásozik."
+    },
+    "tickets": {
+      "heading": "SITA jegyek vásárlása és érvényesítése",
+      "body": "A SITA buszjegyet még beszállás előtt vásárold meg újságosnál vagy trafikban. Belépéskor mutasd meg a sofőrnek; ő bélyegzi vagy tépi le a jegyet az érvényesítéshez. Őrizd meg leszállásig, mert útközben ellenőrök is kérhetik."
+    },
+    "timetable": {
+      "heading": "A SITA menetrend olvasása",
+      "intro": "A hivatalos menetrend a megállókat sorokban, az indulásokat betűkkel jelölt oszlopokban mutatja. Keresd meg a Szorrento sort az utazási napodhoz tartozó betűnél, majd ugyanabban az oszlopban nézd meg a Positano (Chiesa Nuova) sort az érkezési időért.",
+      "tips": [
+        "Az első oszlop sorai az útvonal megállóit sorolják fel.",
+        "Az oszlopok betűkkel jelölt menetrendi indulásokat jelentenek.",
+        "Hétfőtől szombatig az F és G oszlopokat használd.",
+        "Vasárnap vagy ünnepnapon a G és H oszlopokat nézd."
+      ],
+      "outro": "A legfrissebb menetrendet a <Link>Positano.com</Link> oldalon találod.",
+      "linkLabel": "Positano.com (SITA menetrend áttekintés)"
+    },
+    "positanoStop": {
+      "heading": "Positanói (Chiesa Nuova) buszmegálló",
+      "facts": [
+        "A legközelebbi SITA megálló a Positano (Chiesa Nuova) a Via G. Marconin.",
+        "Nagyjából 140 méterre (490 lábra) van a hostel bejáratától.",
+        "A Bar Internazionale kávézó/bár előtt fogsz várakozni."
+      ],
+      "caption": "Érkezz néhány perccel korábban, hogy biztosan legyen helyed — nyáron gyorsan megtelnek a buszok.",
+      "imageAlt": "A positanói Chiesa Nuova SITA megálló a Bar Internazionale előtt"
+    },
+    "walk": {
+      "heading": "Séta a hosteltől a megállóig",
+      "steps": [
+        "Lépj ki a hostelből, menj le a lépcsőn a főútig, majd fordulj balra.",
+        "Haladj a Via G. Marconi mentén körülbelül 100 métert (330 lábat).",
+        "A Bal oldalon találod a Bar Internazionale-t; a SITA megálló közvetlenül előtte van."
+      ]
+    },
+    "wait": {
+      "heading": "Jegyvásárlás és várakozás",
+      "items": [
+        "Vásárolj SITA-jegyet Szorrentóig a bárban vagy a közeli újságosnál.",
+        "Állj sorba a Bar Internazionale előtt a Szorrento felé tartó buszhoz.",
+        "Ellenőrizd még egyszer a kijelzőt — Szorrentót kell mutatnia."
+      ]
+    },
+    "sorrento": {
+      "heading": "A szorrentói vasútállomáson",
+      "intro": "A SITA busz a szorrentói busz- és vasútállomás mellett tesz le. Menj fel a lépcsőn a fő csarnokba, vásárolj Circumvesuviana jegyet Napoli Garibaldi állomásig (készpénzzel vagy kártyával), és keresd meg a megfelelő peront, mielőtt befut a vonat.",
+      "outro": "A legfrissebb Circumvesuviana menetrendet a <Link>Sorrento Insider</Link> oldalon ellenőrizheted.",
+      "outroLinkLabel": "Sorrento Insider (Circumvesuviana menetrend)"
+    },
+    "naples": {
+      "heading": "Érkezés Nápolyba",
+      "body": "Maradj a Circumvesuvianán egészen a végállomásig, Napoli Garibaldióig. Onnan kövesd a táblákat a fő csarnok felé, ahol átszállhatsz távolsági vonatokra, metróra vagy repülőtéri buszokra. A Piazza Garibaldi közvetlenül az állomás bejárata előtt található."
+    }
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "title": "Positanóból Nápoly központjába komppal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató a Hostel Brikette-től a positanói kikötőig, jegyvásárlási, beszállási és érkezési tippekkel a Nápoly belvárosába tartó kompúthoz."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Positanóból Nápoly központjába – komp",
+    "description": "Kövesd ezeket a lépéseket, hogy elsétálj a Hostel Brikette-től a positanói kikötőig, megvásárold a kompjegyed, majd Nápolyba hajózz. Szolgáltatói tippeket, szezonális tudnivalókat és érkezési útmutatót is tartalmaz a Napoli Centrale állomáshoz.",
+    "tipLabel": "Tipp",
+    "tipCopy": "Alternatívát keresel, ha hullámzik a tenger? Nyisd meg a <GuideLink>Hogyan juthatsz el hozzánk áttekintést</GuideLink> a tartalék útvonalakért."
+  },
+  "journeyOverview": {
+    "title": "Az út áttekintése",
+    "paragraphs": [
+      "A Positano és Nápoly közötti kompok leginkább tavasztól kora őszig közlekednek, és viharos tengernél törölhetik őket. Az út általában 70–90 percig tart a szolgáltató és a hajó típusától függően.",
+      "Időpontok összehasonlítása és foglalás: <ExternalLink>Positano.com (összesített menetrend)</ExternalLink>."
+    ]
+  },
+  "photoGuide": {
+    "title": "Fotós útmutató (referencia)",
+    "description": "Képes támpontok a séta minden lépéséhez és a kikötői jegypénztárakhoz.",
+    "items": {
+      "mapOverview": {
+        "alt": "Térképes áttekintés a Hostel Brikette-től a positanói kikötőig",
+        "caption": "Térkép: hostel → positanói kikötő"
+      },
+      "approach": {
+        "alt": "Fotó a Spiaggia Grande-hoz és a turistakikötőhöz vezető útról",
+        "caption": "Megközelítés a Spiaggia Grande-hoz (turistakikötő)"
+      },
+      "detailMap": {
+        "alt": "Részlettérkép a Spiaggia Grande jobb oldaláról, ahol a kikötő található",
+        "caption": "Részlettérkép: a kikötő helye a Spiaggia Grande-n"
+      },
+      "ticketBooths": {
+        "alt": "Kompjegy-pénztárak a positanói kikötőben a következő indulások jelzésével",
+        "caption": "Kompjegy-pénztárak"
+      },
+      "point1": {
+        "alt": "1. pont: kereszteződés a Tabacchi mellett a Via G. Marconin, a Hostel Brikette közelében",
+        "caption": "1. pont: Tabacchi kereszteződés (fordulj jobbra)"
+      },
+      "point2": {
+        "alt": "2. pont: első hajtűkanyar, ahol letérsz az útról a lépcsőre",
+        "caption": "2. pont: térj le az útról, lépcső következik"
+      },
+      "point3": {
+        "alt": "3. pont: a lépcső vége az útnál, átkelés előtt",
+        "caption": "3. pont: lépcső vége az útnál"
+      },
+      "point4": {
+        "alt": "4. pont: menj át az úton, fordulj röviden balra, majd lépcső",
+        "caption": "4. pont: átkelés, balra fordulás, lépcső"
+      },
+      "point5": {
+        "alt": "5. pont: árkádos átjáró a strand és a kikötő felé",
+        "caption": "5. pont: árkád a kikötőhöz"
+      }
+    }
+  },
+  "walk": {
+    "title": "Séta a positanói kikötőhöz",
+    "steps": [
+      "Lépj ki a hostel főbejáratán.",
+      "Menj le a lépcsőn az útra, fordulj balra, és sétálj valamivel több mint 100 métert (≈330 lábat).",
+      "Az első kereszteződésnél (1. pont) fordulj jobbra a Tabacchi-nál (jobb oldali első épület).",
+      "Haladj lefelé; az első hajtűkanyarnál (2. pont) térj le az útról, és menj egyenesen a lépcsőkön.",
+      "A lépcső alján érsz az útra (3. pont); kelj át, és folytasd egyenesen a következő lépcsőkön.",
+      "Amikor ezek a lépcsők az útra érnek, kelj át, fordulj röviden balra, majd vedd a lépcsőt a 4. pontnál.",
+      "Alul fordulj jobbra az 5. ponthoz, majd haladj tovább a jobb oldali árkádban.",
+      "A kikötő (Spiaggia Grande móló) kb. 50 méterre (≈160 lábra) van előre, a strand jobb oldalán."
+    ]
+  },
+  "tickets": {
+    "title": "Jegyvásárlás és beszállás",
+    "items": [
+      "A kikötőben minden kompüzemeltetőnek saját pultja van.",
+      "A pult melletti tábla jelzi az adott szolgáltató következő indulását.",
+      "A jegyeket közvetlenül a szolgáltatótól vedd; érkezz 20–30 perccel korábban, hogy beválthasd a vouchereket és beállhass a sorba.",
+      "Vásárlás után sétálj a móló végére, és várd meg a beszállás kezdetét."
+    ]
+  },
+  "arrival": {
+    "title": "Érkezés Nápolyba",
+    "paragraphs": [
+      "A kikötőben szállj le, majd folytasd utad a továbbutazáshoz. A Napoli Centrale (Piazza Garibaldi) állomáshoz általában a villamos a legegyszerűbb megoldás a kikötő környékéről.",
+      "Javasolt útvonal: <TramLink>Utazz villamossal a kikötő és a Napoli Centrale között</TramLink>."
+    ],
+    "return": "Ha a visszaúton csomagbarát sétát keresel Positanóban, nézd meg: <ReturnLink>Kikötő → Hostel Brikette</ReturnLink>."
+  }
+}

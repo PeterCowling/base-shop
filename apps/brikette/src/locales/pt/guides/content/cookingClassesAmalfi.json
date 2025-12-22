@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Cooking Class Experiences on the Amalfi Coast",
+    "description": "What classes are like, what you’ll cook, and how to choose one."
+  },
+  "linkLabel": "Aulas de culinária na Costa Amalfitana",
+  "intro": [
+    "Aulas práticas na Costa Amalfitana combinam limões sfusato, massa fresca e receitas de família em cozinhas pequenas com vista.",
+    "Use este guia para escolher a aula que encaixa no seu orçamento e agenda e para confirmar todos os detalhes antes de pagar o sinal."
+  ],
+  "sections": [
+    {
+      "id": "flow",
+      "title": "Como decorre uma aula típica",
+      "body": [
+        "Os anfitriões recebem com café ou prosecco antes de apresentar os ingredientes: limões acabados de raspar, legumes da estação e a massa que irá moldar.",
+        "Conte preparar duas a três receitas — normalmente uma massa fresca, um molho e uma sobremesa cítrica — e depois partilhar a refeição; as sessões duram 2,5–4 horas incluindo o jantar."
+      ]
+    },
+    {
+      "id": "choose",
+      "title": "Como escolher a aula certa",
+      "body": [
+        "Verifique o tamanho do grupo e se a cozinha fica em Positano, numa quinta nas colinas ou numa cidade vizinha; alguns incluem transfers, outros cobram à parte.",
+        "Esclareça o que está incluído no preço: ingredientes, harmonização de vinhos, receitas impressas e se pode levar o avental ou as sobras."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Logística e horários",
+      "body": [
+        "Na época alta, as aulas esgotam semanas antes; garanta lugar antes de chegar, sobretudo para sessões ao fim do dia depois de passeios.",
+        "Se o local ficar fora de Positano, confirme pontos de recolha ou reserve orçamento para táxi; as ruas íngremes pedem calçado confortável mesmo quando há shuttle."
+      ]
+    },
+    {
+      "id": "dietary",
+      "title": "Restrições e etiqueta",
+      "body": [
+        "Comunique alergias, preferências vegetarianas/veganas ou intolerância ao glúten ao reservar; muitos anfitriões adaptam menus com aviso prévio.",
+        "Use sapatos fechados, prenda o cabelo comprido e evite perfume forte — as cozinhas são pequenas e estará sobre os ingredientes frescos."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "As aulas servem para principiantes?",
+      "a": [
+        "Sim. Os instrutores demonstram cada passo, ajustam a técnica enquanto cozinha e dividem tarefas para que todos participem sem pressão."
+      ]
+    },
+    {
+      "q": "Preciso falar italiano?",
+      "a": [
+        "Não. A maioria das aulas decorre em inglês ou é bilingue, e as demonstrações visuais tornam fácil acompanhar."
+      ]
+    },
+    {
+      "q": "O que devo levar?",
+      "a": [
+        "Leve um caderno pequeno se gosta de anotar dicas, mantenha o telemóvel carregado para fotos e tenha dinheiro vivo para saldar o valor ou pagar transporte."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Massa, molhos e sobremesas de limão com mãos na massa; grupos pequenos e cozinhas panorâmicas na época."
+    ],
+    "toc": [
+      {
+        "href": "#what",
+        "label": "O que esperar"
+      },
+      {
+        "href": "#choose",
+        "label": "Como escolher"
+      },
+      {
+        "href": "#tips",
+        "label": "Dicas"
+      }
+    ],
+    "sections": [
+      {
+        "id": "what",
+        "title": "O que esperar",
+        "body": [
+          "Massa, molhos e sobremesas de limão com mãos na massa; grupos pequenos e cozinhas panorâmicas na época."
+        ]
+      },
+      {
+        "id": "choose",
+        "title": "Como escolher",
+        "body": [
+          "Analise tamanho da turma, duração, inclusões e opções de transporte."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Dicas",
+        "body": [
+          "Reserve cedo nos meses de pico; informe restrições alimentares aos anfitriões."
+        ]
+      }
+    ]
+  }
+}

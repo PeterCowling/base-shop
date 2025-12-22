@@ -1,5 +1,4 @@
 /* istanbul ignore file */
-/* eslint-disable @typescript-eslint/no-var-requires */
 jest.mock('fs', () => require('memfs').fs);
 jest.mock('jsonwebtoken', () => ({ verify: jest.fn() }));
 jest.mock('@acme/lib', () => ({ validateShopName: jest.fn((s: string) => s) }));
@@ -37,6 +36,7 @@ export function createRequest({
   headers?: Record<string, string>;
 } = {}) {
   const params = shopId === undefined ? ({} as any) : { shopId };
+  // eslint-disable-next-line security/detect-possible-timing-attacks -- API-4100 test helper input branching
   if (token === '') {
     return {
       params,
@@ -47,6 +47,7 @@ export function createRequest({
     };
   }
   const allHeaders: Record<string, string> = { ...headers };
+  // eslint-disable-next-line security/detect-possible-timing-attacks -- API-4100 test helper input branching
   if (token !== undefined) {
     allHeaders.authorization = `Bearer ${token}`;
   }

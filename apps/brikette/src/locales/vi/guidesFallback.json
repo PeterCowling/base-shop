@@ -1,0 +1,508 @@
+{
+  "labels": {
+    "onThisPage": "On this page",
+    "before": "Before you head out",
+    "steps": "Step-by-step route",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "folkloreAmalfi": {
+    "intro": [
+      "Những nàng tiên cá, các vị thánh và người thủy thủ — những câu chuyện tô điểm cho Bờ biển Amalfi cùng các địa danh hiện nay."
+    ],
+    "sections": [
+      {
+        "title": "Chuyện kể của ngư dân",
+        "body": [
+          "Huyền thoại về các vị thánh bảo trợ và những lần biển đổi thất thường lý giải các nghi lễ, lễ hội địa phương."
+        ]
+      },
+      {
+        "title": "Huyền tích tên gọi",
+        "body": [
+          "Cách các tên gọi và mốc địa lý tích lũy những câu chuyện qua nhiều thế kỷ."
+        ]
+      }
+    ]
+  },
+  "compareBasesPositanoSorrentoAmalfi": {
+    "intro": [],
+    "toc": [
+      {
+        "href": "#positano",
+        "label": "Positano"
+      },
+      {
+        "href": "#sorrento",
+        "label": "Sorrento"
+      },
+      {
+        "href": "#amalfi",
+        "label": "Amalfi"
+      },
+      {
+        "href": "#who",
+        "label": "Ai phù hợp với mỗi nơi"
+      }
+    ],
+    "sections": [
+      {
+        "id": "positano",
+        "title": "Positano",
+        "body": [
+          "Khung cảnh biểu tượng và vô số bậc thang; lý tưởng nếu bạn muốn thức dậy giữa tấm bưu thiếp sống động.",
+          "Việc di chuyển cần được lên kế hoạch, đặc biệt với phà sớm và xe buýt muộn."
+        ]
+      },
+      {
+        "id": "sorrento",
+        "title": "Sorrento",
+        "body": [
+          "Kết nối giao thông tốt nhất và nhiều lựa chọn lưu trú phù hợp phần lớn ngân sách.",
+          "Quang cảnh kém ngoạn mục hơn Positano nhưng tính thực dụng lại rất cao."
+        ]
+      },
+      {
+        "id": "amalfi",
+        "title": "Amalfi",
+        "body": [
+          "Trung tâm phà và xe buýt với lối vào Ravello dễ dàng.",
+          "Có nhiều phong cách lưu trú và lựa chọn di chuyển buổi tối ở mức vừa phải."
+        ]
+      },
+      {
+        "id": "who",
+        "title": "Ai phù hợp với mỗi nơi",
+        "body": [
+          "Positano dành cho tầm nhìn xa hoa và đời sống xã hội tại hostel.",
+          "Sorrento dành cho người tìm giá trị muốn kết nối di chuyển nhanh.",
+          "Amalfi dành cho khả năng tiếp cận cân bằng dọc bờ biển."
+        ]
+      }
+    ],
+    "faqs": [],
+    "faqsTitle": "Câu hỏi thường gặp"
+  },
+  "interrailItalyRailPassAmalfiCoast": {
+    "toc": [
+      {
+        "href": "#routes",
+        "label": "Tuyến chính"
+      },
+      {
+        "href": "#supplements",
+        "label": "Phụ phí/đặt chỗ"
+      },
+      {
+        "href": "#last-mile",
+        "label": "Chặng cuối đến Positano"
+      },
+      {
+        "href": "#faqs",
+        "label": "Câu hỏi thường gặp"
+      }
+    ],
+    "sections": [
+      {
+        "id": "routes",
+        "title": "Tuyến chính",
+        "body": [
+          "Bản dịch đang được chuẩn bị."
+        ]
+      },
+      {
+        "id": "supplements",
+        "title": "Phụ phí/đặt chỗ",
+        "body": [
+          "Frecciarossa/Italo thường yêu cầu đặt chỗ ngồi; tàu vùng không cần nhưng có thể đông."
+        ]
+      },
+      {
+        "id": "last-mile",
+        "title": "Chặng cuối đến Positano",
+        "body": [
+          "Bản dịch đang được chuẩn bị."
+        ]
+      }
+    ],
+    "faqsTitle": "Câu hỏi thường gặp",
+    "faqs": [
+      {
+        "q": "Vé pass có đáng mua không?",
+        "a": [
+          "Chỉ đáng nếu bạn đi đủ nhiều chặng đường dài; nếu không, mua từng chặng có thể rẻ hơn."
+        ]
+      }
+    ]
+  },
+  "photographyGuidePositano": {
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "Góc chụp kinh điển"
+      },
+      {
+        "href": "#crowds",
+        "label": "Tránh đám đông"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Ứng xử"
+      }
+    ],
+    "sections": [
+      {
+        "id": "classics",
+        "title": "Góc chụp kinh điển",
+        "body": [
+          "Những khúc cua trên Via Pasitea, lối đi Fornillo và bến tàu nhìn ngược lại — đẹp nhất vào bình minh hoặc giờ vàng."
+        ]
+      },
+      {
+        "id": "crowds",
+        "title": "Tránh đám đông",
+        "body": [
+          "Đi thật sớm, hoặc đợi sau hoàng hôn để chụp giờ xanh khi không còn khách đi trong ngày."
+        ]
+      },
+      {
+        "id": "etiquette",
+        "title": "Ứng xử",
+        "body": [
+          "Chia sẻ không gian, nhường đường trên cầu thang hẹp và đừng chắn trước mặt tiền cửa hàng."
+        ]
+      }
+    ]
+  },
+  "simsAtms": {
+    "intro": [
+      "eSIM tiện lợi và thường rẻ hơn; nếu cần SIM vật lý hoặc ATM, hãy chủ động vào mùa cao điểm."
+    ],
+    "faqs": [
+      {
+        "q": "Tôi có thể mua SIM địa phương ở Positano không?",
+        "a": [
+          "Cửa hàng khá ít; hãy cân nhắc eSIM hoặc mua tại Naples/Sorrento để có giá tốt hơn."
+        ]
+      },
+      {
+        "q": "Sóng có ổn định không?",
+        "a": [
+          "Trong thị trấn nhìn chung tốt, nhưng sẽ chập chờn dọc các đường mòn và vách đá."
+        ]
+      },
+      {
+        "q": "Có ATM không?",
+        "a": [
+          "Có nhưng phí thay đổi; ưu tiên máy của ngân hàng và mang theo thẻ dự phòng."
+        ]
+      }
+    ]
+  },
+  "ferrySchedules": {
+    "intro": [
+      "Phà tới Positano hoạt động theo mùa. Vào mùa hè, nhiều hãng kết nối Naples, Sorrento, Amalfi và Capri với Positano. Luôn kiểm tra trên trang của hãng vì lịch trình thay đổi theo thời tiết và nhu cầu."
+    ],
+    "tipsTitle": "Mẹo thông minh khi đi phà",
+    "tips": [
+      "Kiểm tra cập nhật lịch khởi hành vào tối hôm trước; gió lớn hoặc sóng mạnh có thể khiến chuyến bị hủy đột ngột.",
+      "Mùa cao điểm hãy mua vé trực tuyến để tránh tình trạng hết chỗ tại quầy vé ở bến.",
+      "Mang theo một ít tiền euro mặt nếu bạn định thuê người khuân vác từ bến lên thị trấn.",
+      "Giữ sẵn lịch xe buýt SITA như phương án dự phòng khi biển động khiến phà ngừng chạy."
+    ],
+    "sections": [
+      {
+        "id": "seasonality",
+        "title": "Theo mùa",
+        "body": [
+          "Phà chủ yếu chạy từ tháng 4 đến tháng 10. Mùa đông dịch vụ hạn chế hoặc tạm ngừng; hãy dùng xe buýt thay thế."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Mẹo nhanh",
+        "body": [
+          "Mùa cao điểm: tháng 4–10. Mùa đông dịch vụ hạn chế hoặc không có.",
+          "Đến sớm trước giờ khởi hành để xếp hàng và kích hoạt vé.",
+          "Từ cảng lên hostel là đường dốc; cân nhắc dịch vụ khuân vác hoặc xe buýt tới “Chiesa Nuova”.",
+          "Bản dịch đang được chuẩn bị."
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Phà tới Positano có chạy quanh năm không?",
+        "a": [
+          "Phà chạy theo mùa (thường tháng 4–10). Mùa đông chủ yếu dùng xe buýt/taxi."
+        ]
+      },
+      {
+        "q": "Tôi kiểm tra lịch phà theo thời gian thực ở đâu?",
+        "a": [
+          "Sử dụng trang của nhà khai thác (ví dụ NLG, Travelmar, Alilauro) hoặc các trang tổng hợp như DirectFerries vào mùa hè."
+        ]
+      },
+      {
+        "q": "Bản dịch đang được chuẩn bị.",
+        "a": [
+          "Bến chính nằm tại Spiaggia Grande. Trên ngày cao điểm, hãy xem vé để biết làn lên tàu chính xác."
+        ]
+      },
+      {
+        "q": "Tôi nên đến trước giờ khởi hành bao lâu?",
+        "a": [
+          "Nên đến sớm 20–30 phút; tháng 6–9 thường phải xếp hàng."
+        ]
+      },
+      {
+        "q": "Từ cảng đến Hostel Brikette có khó không?",
+        "a": [
+          "Đường lên dốc và nhiều bậc. Nếu mang hành lý nặng hãy cân nhắc dịch vụ khuân vác hoặc xe buýt tới Chiesa Nuova."
+        ]
+      }
+    ],
+    "gallery": [
+      {
+        "alt": "Khu vực bến Positano",
+        "caption": "Bến Spiaggia Grande"
+      },
+      {
+        "alt": "Phà đang cập Amalfi",
+        "caption": "Những chuyến phà dọc bờ biển"
+      }
+    ],
+    "faqsTitle": "Câu hỏi thường gặp về phà đến Positano",
+    "galleryTitle": "Những khoảnh khắc phà nổi bật"
+  },
+  "drivingAmalfi": {
+    "intro": [
+      "Lái xe trên tuyến SS163 rất đẹp nhưng cũng đầy thách thức. Hãy ưu tiên phà và xe buýt; nếu lái xe, cần chuẩn bị cho làn đường hẹp, chỗ đỗ ít và các hạn chế theo mùa."
+    ]
+  },
+  "ecoFriendlyAmalfi": {
+    "intro": [
+      "Giảm dấu chân khi tận hưởng bờ biển. Đi bộ các tuyến cầu thang, chọn phà thay vì ô tô vào mùa, mang theo chai tái sử dụng và thu gom rác trên đường mòn."
+    ],
+    "toc": [
+      {
+        "href": "#getting-around",
+        "label": "Di chuyển"
+      },
+      {
+        "href": "#refills",
+        "label": "Tiếp nước & rác thải"
+      },
+      {
+        "href": "#trails",
+        "label": "Ứng xử trên đường mòn"
+      }
+    ],
+    "sections": [
+      {
+        "id": "getting-around",
+        "title": "Di chuyển",
+        "body": [
+          "Ưu tiên phà và xe buýt thay vì ô tô; đi bộ giữa các làng gần nhau khi an toàn.",
+          "Đi vào giờ thấp điểm để giảm tải cho dịch vụ và tránh chen chúc trên bờ biển."
+        ]
+      },
+      {
+        "id": "refills",
+        "title": "Tiếp nước & rác thải",
+        "body": [
+          "Dùng vòi nước công cộng hoặc xin tiếp nước tại quán cà phê; mang theo chai tái sử dụng.",
+          "Phân loại rác khi có thể và hạn chế đồ dùng một lần trên bãi biển."
+        ]
+      },
+      {
+        "id": "trails",
+        "title": "Ứng xử trên đường mòn",
+        "body": [
+          "Nhường đường ở đoạn hẹp, mang rác xuống và tôn trọng tài sản tư nhân.",
+          "Khởi hành sớm để tránh nắng gắt và cảnh đông đúc trên đường mòn."
+        ]
+      }
+    ],
+    "faqs": [],
+    "faqsTitle": "Câu hỏi thường gặp"
+  },
+  "itinerariesPillar": {
+    "intro": "Bạn không cần ô tô để khám phá Amalfi Coast. Dùng phà để di chuyển cảnh đẹp, xe buýt cho các thị trấn trên sườn núi và thay đổi thời gian để tránh khung giờ đông nhất. Bắt đầu với các gợi ý này rồi tùy chỉnh.",
+    "toc": {
+      "twoDays": "2 ngày: tập trung Positano",
+      "threeDays": "3 ngày: thêm Capri hoặc Amalfi+Ravello",
+      "sevenDays": "7 ngày: vòng trọn",
+      "tips": "Mẹo thời gian & di chuyển",
+      "faqs": "Câu hỏi thường gặp"
+    },
+    "twoDaysHeading": "2 ngày: tập trung Positano",
+    "twoDaysItems": [
+      "Ngày 1: Phố cổ Positano, Fornillo qua lối ven biển, ngắm hoàng hôn từ các khúc cua Via Pasitea.",
+      "Ngày 2: <pathOfTheGodsLink>Con Đường của Các Vị Thần</pathOfTheGodsLink> từ Nocelle; xuống biển làm mát sau đó."
+    ],
+    "threeDaysHeading": "3 ngày: thêm Capri hoặc Ravello",
+    "threeDaysIntro": "Chọn một:",
+    "threeDaysOptions": [
+      "Bản dịch đang được chuẩn bị.",
+      "Amalfi + Ravello: xe buýt tới Amalfi, đi tiếp lên Ravello ngắm vườn và cảnh; về bằng xe buýt/phà."
+    ],
+    "sevenDaysHeading": "7 ngày: vòng trọn",
+    "sevenDaysItems": [
+      "Ở Positano (2–3 đêm)",
+      "Amalfi/Ravello (2 đêm)",
+      "Capri (1 đêm) hoặc Sorrento (1–2 đêm) để tiện di chuyển"
+    ],
+    "tipsHeading": "Mẹo thời gian & di chuyển",
+    "tips": [
+      "Hạn chế đi phà 10:00–16:00 vào ngày cao điểm; hãy khởi hành sớm hoặc muộn hơn.",
+      "Mua vé xe buýt trước và xác nhận khi lên xe.",
+      "Khi biển động, chuyển sang kế hoạch xe buýt; kiểm tra thông báo của nhà khai thác."
+    ],
+    "faqHeading": "Câu hỏi thường gặp",
+    "faqs": [
+      {
+        "q": "Có nên thuê ô tô không?",
+        "a": [
+          "Thiếu chỗ đỗ, ZTL và quy định biển số luân phiên khiến đi lại không cần xe đơn giản hơn trong phần lớn năm."
+        ]
+      }
+    ]
+  },
+  "amalfiTownGuide": {
+    "headings": {
+      "highlights": "Điểm nổi bật",
+      "gettingThere": "Cách đến",
+      "tips": "Mẹo"
+    },
+    "highlights": [
+      "Nhà thờ Duomo di Amalfi và chiêm ngưỡng Chiostro del Paradiso (tu viện).",
+      "Bản dịch đang được chuẩn bị.",
+      "Dạo bộ ven biển và ăn kem trên những bậc thang."
+    ],
+    "gettingThere": "Từ Positano, phà (vào mùa) vừa đẹp vừa thoải mái. Nếu không, đi xe buýt SITA; hãy chờ xếp hàng vào giờ cao điểm và mua vé trước.",
+    "tips": [
+      "Đến sớm; ghé thăm vườn ở Ravello bằng xe buýt từ Amalfi để có trọn ngày.",
+      "Mang theo đồ chống nắng; trên bến tàu ít bóng râm."
+    ]
+  },
+  "sevenDayNoCar": {
+    "intro": "Ở 3 đêm tại Positano, 2 đêm tại Amalfi/Ravello và 1–2 đêm ở Capri hoặc Sorrento để việc di chuyển nhẹ nhàng hơn.",
+    "toc": {
+      "onThisPage": "Trên trang này",
+      "overview": "Tổng quan",
+      "dayByDay": "Lịch trình từng ngày",
+      "tips": "Mẹo di chuyển & thời gian",
+      "faqs": "Câu hỏi thường gặp"
+    },
+    "days": [
+      {
+        "id": "day1",
+        "label": "Ngày 1",
+        "items": [
+          "Bản dịch đang được chuẩn bị."
+        ]
+      },
+      {
+        "id": "day2",
+        "label": "Ngày 2",
+        "items": [
+          "Con Đường của Các Vị Thần từ Nocelle"
+        ]
+      },
+      {
+        "id": "day3",
+        "label": "Ngày 3",
+        "items": [
+          "Capri trong ngày hoặc tắm biển + tour thuyền"
+        ]
+      },
+      {
+        "id": "day4",
+        "label": "Ngày 4",
+        "items": [
+          "Đi Amalfi; thăm Nhà thờ; hoàng hôn trên bến"
+        ]
+      },
+      {
+        "id": "day5",
+        "label": "Ngày 5",
+        "items": [
+          "Bản dịch đang được chuẩn bị."
+        ]
+      },
+      {
+        "id": "day6",
+        "label": "Ngày 6",
+        "items": [
+          "Qua đêm Capri hoặc chuyển sang Sorrento"
+        ]
+      },
+      {
+        "id": "day7",
+        "label": "Ngày 7",
+        "items": [
+          "Khởi hành"
+        ]
+      }
+    ],
+    "tips": [
+      "Phà chạy theo mùa; khi biển động hãy chuẩn bị phương án xe buýt dự phòng.",
+      "Di chuyển trước 10:00 hoặc sau 16:00 vào ngày cao điểm để tránh xếp hàng."
+    ],
+    "faq": [
+      {
+        "q": "Tôi có nên đổi nơi ở không?",
+        "a": [
+          "Chọn hai điểm lưu trú giúp hạn chế chuyển hành lý nhưng vẫn di chuyển hiệu quả."
+        ]
+      }
+    ]
+  },
+  "chiesaNuovaDepartures": {
+    "intro": [
+      "Bạn rời hostel để bắt xe buýt đi Amalfi hoặc Sorrento? Lộ trình ngắn này chỉ cho bạn đường đi nhanh nhất từ Hostel Brikette đến trạm xe buýt Chiesa Nuova/Bar Internazionale và kèm thêm một vài mẹo."
+    ],
+    "sections": [
+      {
+        "title": "Why this route works",
+        "body": [
+          "Từ cửa hostel đến trạm chỉ 120 mét (400 feet) đi bộ dọc theo con đường chính.",
+          "Nếu bạn đi hướng Amalfi, trạm nằm đối diện Bar Internazionale. Hãy xếp hàng ở phía đường nhìn ra biển. Nếu bạn đi hướng Sorrento, bạn sẽ chờ ngay trước cửa quán bar."
+        ]
+      },
+      {
+        "title": "Tickets and timing",
+        "body": [
+          "Mua vé SITA tại tiệm thuốc lá hoặc bên trong quán bar. Đừng cố lên xe mà không có vé vì bạn sẽ không thể mua trên xe. Xuất trình vé cho tài xế khi lên xe. Nếu bạn bắt chuyến đầu tiên trong ngày, hãy mua vé từ ngày hôm trước và ghé quầy lễ tân để sắp xếp thủ tục trả phòng.",
+          "Vào mùa hè xe buýt thường kín chỗ. Hãy lên kế hoạch phù hợp, đặc biệt trong những thời điểm đông nhất."
+        ]
+      }
+    ],
+    "beforeList": [],
+    "stepsList": [
+      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Đi theo vỉa hè khoảng 120 mét (400 feet) dọc theo đường chính để tới Bar Internazionale."
+    ],
+    "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+    "kneesList": [],
+    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
+    "kneesDockLinkLabel": "Ferry dock luggage route",
+    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
+    "kneesPorterLinkLabel": "porter service guide",
+    "faqs": [
+      {
+        "q": "Do buses stop right outside the hostel?",
+        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+      },
+      {
+        "q": "Can I buy tickets at the last minute?",
+        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+      }
+    ],
+    "howtoSteps": [
+      "Leave Hostel Brikette and follow Viale Pasitea downhill",
+      "Join the queue at Bar Internazionale and validate on boarding"
+    ],
+    "faqsTitle": "FAQs"
+  }
+}

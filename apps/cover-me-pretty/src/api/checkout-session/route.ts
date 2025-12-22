@@ -5,7 +5,16 @@ import "@acme/zod-utils/initZod";
 import { CART_COOKIE, decodeCartCookie, type CartState } from "@platform-core/cartCookie";
 import { getCart } from "@platform-core/cartStore";
 import { getCustomerSession } from "@auth";
-import { createCheckoutSession } from "@platform-core/checkout/session";
+import { getCustomerProfile } from "@platform-core/customerProfiles";
+import { getOrCreateStripeCustomerId } from "@platform-core/identity";
+import {
+  createCheckoutSession,
+  INSUFFICIENT_STOCK_ERROR,
+} from "@platform-core/checkout/session";
+import {
+  cartToInventoryRequests,
+  validateInventoryAvailability,
+} from "@platform-core/inventoryValidation";
 import { convertCurrency, getPricing } from "@platform-core/pricing";
 import shop from "../../../shop.json";
 import { NextRequest, NextResponse } from "next/server";
@@ -39,12 +48,14 @@ const schema = z
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const rawCookie = req.cookies.get(CART_COOKIE)?.value;
+  let cartId: string | undefined;
   let cart: CartState = {};
   try {
     const decoded = decodeCartCookie(rawCookie);
-    const cartId = typeof decoded === "string" ? decoded : null;
+    cartId = typeof decoded === "string" ? decoded : undefined;
     cart = cartId ? await getCart(cartId) : {};
   } catch {
+    cartId = undefined;
     cart = {};
   }
 
@@ -61,7 +72,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     coupon,
     currency = "EUR",
     taxRegion = "",
-    customer: customerId,
+    customer,
     shipping,
     billing_details,
     coverage,
@@ -77,7 +88,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   };
 
   const customerSession = await getCustomerSession();
-  const customer = customerId ?? customerSession?.customerId;
+  const internalCustomerId = customerSession?.customerId;
+  let stripeCustomerId = customer;
+  if (internalCustomerId) {
+    const profile = await getCustomerProfile(internalCustomerId).catch(() => null);
+    stripeCustomerId = await getOrCreateStripeCustomerId({
+      internalCustomerId,
+      email: profile?.email,
+      name: profile?.name,
+    });
+  }
   const clientIp = req.headers?.get?.("x-forwarded-for")?.split(",")[0] ?? "";
 
   const coverageCodes = Array.isArray(coverage) ? coverage : [];
@@ -122,47 +142,80 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     };
   }
 
+  let inventoryCheck: Awaited<
+    ReturnType<typeof validateInventoryAvailability>
+  >;
   try {
+    inventoryCheck = await validateInventoryAvailability(
+      shop.id,
+      cartToInventoryRequests(cart),
+    );
+  } catch (err) {
+    console.error("Inventory validation failed", err); // i18n-exempt -- ABC-123 developer log [ttl=2025-06-30]
+    return NextResponse.json(
+      { error: "Inventory backend unavailable" }, // i18n-exempt -- ABC-123 machine-readable API error [ttl=2025-06-30]
+      { status: 503 },
+    );
+  }
+  if (!inventoryCheck.ok) {
+    return NextResponse.json(
+      {
+        error: INSUFFICIENT_STOCK_ERROR,
+        code: "inventory_insufficient",
+        items: inventoryCheck.insufficient,
+      },
+      { status: 409 },
+    );
+  }
+
+  try {
+    const orderId = ulid();
     const result = await createCheckoutSession(cart, {
       mode: "rental",
       returnDate,
       coupon,
       currency,
       taxRegion,
-      customerId: customer,
+      internalCustomerId,
+      stripeCustomerId,
       shipping,
       billing_details,
-      successUrl: `${req.nextUrl.origin}/success`,
-      cancelUrl: `${req.nextUrl.origin}/cancelled`,
+      returnUrl: `${req.nextUrl.origin}/success`,
+      cartId: cartId ?? undefined,
       clientIp,
       shopId: shop.id,
       lineItemsExtra,
       metadataExtra,
       subtotalExtra,
       depositAdjustment,
+      orderId,
+      skipInventoryValidation: true,
     });
+    const resolvedOrderId = result.orderId ?? orderId;
 
     // Create a platform order id up front (best-effort)
-    let orderId = ulid();
-    const sessionRef = result.paymentIntentId || result.sessionId;
+    const sessionRef = result.sessionId ?? ulid();
     try {
-      const order = await addOrder(
-        shop.id,
-        sessionRef,
-        result.amount ?? 0,
-        returnDate,
-      );
-      orderId = order.id;
-      } catch {
-        // fallback to JSONL persistence
-        try {
-          const dir = path.join(resolveDataRoot(), shop.id);
-          // eslint-disable-next-line security/detect-non-literal-fs-filename -- SHOP-3203 path uses validated shop id under resolveDataRoot [ttl=2026-06-30]
-          await fs.mkdir(dir, { recursive: true });
-          const entry = {
-            id: orderId,
-            shop: shop.id,
-            sessionId: sessionRef,
+      await addOrder({
+        orderId: resolvedOrderId,
+        shop: shop.id,
+        sessionId: sessionRef,
+        deposit: result.amount ?? 0,
+        expectedReturnDate: returnDate,
+        currency,
+        cartId: cartId ?? undefined,
+        stripePaymentIntentId: result.paymentIntentId,
+      });
+    } catch {
+      // fallback to JSONL persistence
+      try {
+        const dir = path.join(resolveDataRoot(), shop.id);
+        // eslint-disable-next-line security/detect-non-literal-fs-filename -- SHOP-3203 path uses validated shop id under resolveDataRoot [ttl=2026-06-30]
+        await fs.mkdir(dir, { recursive: true });
+        const entry = {
+          id: orderId,
+          shop: shop.id,
+          sessionId: sessionRef,
           amount: result.amount,
           currency,
           createdAt: new Date().toISOString(),
@@ -178,10 +231,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       }
     }
 
-    return NextResponse.json({ ...result, orderId });
+    return NextResponse.json({ ...result, orderId: resolvedOrderId });
   } catch (err) {
     if (err instanceof Error && /Invalid returnDate/.test(err.message)) {
       return NextResponse.json({ error: "Invalid returnDate" }, { status: 400 }); // i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30]
+    }
+    if (err instanceof Error && err.message === INSUFFICIENT_STOCK_ERROR) {
+      return NextResponse.json({ error: INSUFFICIENT_STOCK_ERROR }, { status: 409 }); // i18n-exempt -- ABC-123 machine-readable API error, not user-facing UI [ttl=2025-06-30]
     }
     console.error(
       "Failed to create Stripe checkout session" /* i18n-exempt -- ABC-123 developer log [ttl=2025-06-30] */,

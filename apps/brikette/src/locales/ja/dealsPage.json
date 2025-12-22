@@ -1,0 +1,49 @@
+{
+  "slug": "otoku",
+  "meta": {
+    "title": "2025年夏の特別セール – 15 %オフ",
+    "description": "期間限定の夏の直予約でさらに15 %の割引。",
+    "ogImageAlt": "夏の割引バナー"
+  },
+  "title": "{{season}}のご滞在が{{percent}} %オフ",
+  "promo": "この夏に直接予約して追加で{{percent}} %割引を手に入れよう。",
+  "banner": "この料金で残り{{beds}}ベッドのみ – セール終了まであと{{time}}！",
+  "timeRemaining": {
+    "lessThanHour": "0時間",
+    "hours_one": "{{count}}時間",
+    "hours_other": "{{count}}時間",
+    "days_one": "{{count}}日",
+    "days_other": "{{count}}日"
+  },
+  "buttonReserve": "今すぐ予約",
+  "ogImageAlt": "夏の割引バナー",
+  "perksHeading": "直接予約の特典",
+  "perksIntro": "これらの特典は、当ホステルの公式サイトから直接ご予約いただいたお客様だけのものです。",
+  "perksGuarantee": "当サイトでの直接予約なら、これらの限定特典が自動的に適用されます。",
+  "perksIntroLink": "現在実施中のすべてのプランを見る",
+  "perksList": [
+    "クーポン利用で通常料金から最大25 %オフ",
+    "無料朝食付き",
+    "夕方のウェルカムドリンク無料"
+  ],
+  "expired": {
+    "message": "この期間限定オファーは{{endedOn}}に終了しました。"
+  },
+  "restrictions": {
+    "heading": "必須情報",
+    "stayWindow": "対象宿泊期間は{{from}}から{{to}}までです。",
+    "minAdvance": "ご予約は少なくとも{{days}}日前までにお願いいたします。",
+    "minAdvancePrefix": "少なくとも",
+    "minAdvanceSuffix": "前までにご予約ください。",
+    "los": "最少 {{min}} 泊、最長 {{max}} 泊。",
+    "nonRefundable": "返金不可料金での直接予約（ホステル公式サイトでの予約）に限り有効です。",
+    "nonRefundablePrefix": "返金不可の",
+    "nonRefundableSuffix": "料金で、ホステル公式サイトでの直接予約に限ります。",
+    "stackable": "{{percent}} % は通常の10 %直接予約割引と併用できます。",
+    "other": "標準の利用規約が適用されます。"
+  },
+  "seasonLabel": "2025年夏",
+  "robots": {
+    "expiredNoindex": "noindex,follow"
+  }
+}

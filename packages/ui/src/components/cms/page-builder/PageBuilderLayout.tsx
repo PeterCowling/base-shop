@@ -104,13 +104,6 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
     previewSource,
   } = props;
 
-  const lastPublishedComponents = props.publishMeta?.lastPublishedComponents;
-  const onRevertToPublished = lastPublishedComponents
-    ? (next: unknown) => {
-        props.historyProps?.onRestoreVersion?.(next);
-      }
-    : undefined;
-
   const breakpoints = toolbarProps?.breakpoints;
   const setBreakpoints = toolbarProps?.setBreakpoints;
 
@@ -173,8 +166,6 @@ const PageBuilderLayout = (props: PageBuilderLayoutProps) => {
           <div className="flex flex-1 flex-col gap-4 min-h-0">
             <PageBuilderTopBar
               historyProps={historyProps}
-              lastPublishedComponents={lastPublishedComponents}
-              onRevertToPublished={onRevertToPublished}
               showPreview={showPreview}
               togglePreview={togglePreview}
               mode={mode}

@@ -1,0 +1,47 @@
+{
+  "hostelworld": {
+    "featured": [
+      {
+        "rating": 9.7,
+        "text": "Emplacement incroyable avec une vue à couper le souffle. L'équipe a été super sympathique et serviable pendant mon séjour."
+      },
+      {
+        "rating": 9.5,
+        "text": "Auberge géniale ! La terrasse est parfaite pour un verre au coucher du soleil. Chambres propres et très bonne ambiance."
+      },
+      {
+        "rating": 9.4,
+        "text": "J'ai adoré les conseils du concierge numérique. Je reviendrai sans hésiter !"
+      },
+      {
+        "rating": 9.6,
+        "text": "Lits confortables et salles de bain impeccables. Un incontournable à Positano."
+      },
+      {
+        "rating": 9.2,
+        "text": "Grâce à l'équipe adorable, je me suis senti comme à la maison."
+      },
+      {
+        "rating": 9.3,
+        "text": "Auberge abordable et pleine de bonne humeur à quelques minutes de l'arrêt de bus."
+      }
+    ],
+    "latest": [
+      {
+        "rating": 9.4,
+        "text": "J'ai adoré les conseils du concierge numérique. Je reviendrai sans hésiter !",
+        "datePublished": "2025-10-09"
+      },
+      {
+        "rating": 9.5,
+        "text": "Auberge géniale ! La terrasse est parfaite pour un verre au coucher du soleil. Chambres propres et très bonne ambiance.",
+        "datePublished": "2025-10-09"
+      },
+      {
+        "rating": 9.2,
+        "text": "Grâce à l'équipe adorable, je me suis senti comme à la maison.",
+        "datePublished": "2025-10-09"
+      }
+    ]
+  }
+}

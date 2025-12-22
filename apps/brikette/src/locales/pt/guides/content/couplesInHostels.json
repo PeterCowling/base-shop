@@ -1,0 +1,34 @@
+{
+  "seo": {
+    "title": "Viajando em casal e ficando em hostels",
+    "description": "Como garantir privacidade, escolher beliches estratégicos e alinhar expectativas em dormitórios compartilhados."
+  },
+  "linkLabel": "Viajando em casal e ficando em hostels",
+  "intro": [
+    "Hostels funcionam bem para casais quando escolhem o tipo de quarto certo, fazem malas leves e alinham expectativas."
+  ],
+  "sections": [
+    {
+      "id": "room-types",
+      "title": "Tipos de quarto",
+      "body": [
+        "Reserve um quarto privado para ter privacidade; se precisar apertar o orçamento, partilhem beliches no mesmo dormitório e mantenham a bagagem leve para as escadas."
+      ]
+    },
+    {
+      "id": "quiet",
+      "title": "Encontrar tranquilidade",
+      "body": [
+        "Leve tampões para os ouvidos e máscara de dormir, escolha quartos afastados do bar ou das áreas comuns e aproveite as manhãs cedo para passeios mais calmos."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hostel é adequado para casais?",
+      "a": [
+        "Sim — oferece ambiente social e bom custo-benefício; quartos privados equilibram conforto e preço."
+      ]
+    }
+  ]
+}

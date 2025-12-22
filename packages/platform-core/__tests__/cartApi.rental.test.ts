@@ -25,7 +25,10 @@ describe("cart API POST rental branch", () => {
     const { POST } = await import("../src/cartApi");
     const rental = { start: "2024-01-01", end: "2024-01-03", durationUnit: "day", termsVersion: "v1" } as any;
     const res = await POST(buildRequest({ sku: { id: sku.id }, qty: 1, rental }));
-    expect(inc).toHaveBeenCalledWith("c1", sku, 1, undefined, rental);
+    expect(inc).toHaveBeenCalledWith("c1", sku, 1, undefined, {
+      ...rental,
+      sku: sku.id,
+    });
     const json = await res.json();
     expect(json.ok).toBe(true);
     expect(json.cart).toEqual(updated);

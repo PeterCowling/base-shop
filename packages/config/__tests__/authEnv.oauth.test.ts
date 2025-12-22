@@ -5,6 +5,8 @@ import { expectInvalidAuthEnvWithConfigEnv as expectInvalidAuth } from "../test/
 const NEXT_SECRET = "nextauth-secret-32-chars-long-string!";
 const SESSION_SECRET = "session-secret-32-chars-long-string!";
 const STRONG_TOKEN = "token-value-32-chars-long-string!!";
+const OAUTH_ISSUER = "https://auth.example.com/realms/base-shop";
+const OAUTH_REDIRECT_ORIGIN = "https://shop.example.com";
 
 describe("authEnv - OAuth provider", () => {
   afterEach(() => {
@@ -19,7 +21,9 @@ describe("authEnv - OAuth provider", () => {
         NEXTAUTH_SECRET: NEXT_SECRET,
         SESSION_SECRET,
         AUTH_PROVIDER: "oauth",
+        OAUTH_ISSUER,
         OAUTH_CLIENT_SECRET: STRONG_TOKEN,
+        OAUTH_REDIRECT_ORIGIN,
       },
       accessor: (auth) => auth.authEnv.OAUTH_CLIENT_ID,
       consoleErrorSpy: spy,
@@ -40,7 +44,9 @@ describe("authEnv - OAuth provider", () => {
         NEXTAUTH_SECRET: NEXT_SECRET,
         SESSION_SECRET,
         AUTH_PROVIDER: "oauth",
+        OAUTH_ISSUER,
         OAUTH_CLIENT_ID: "client-id",
+        OAUTH_REDIRECT_ORIGIN,
       },
       accessor: (auth) => auth.authEnv.OAUTH_CLIENT_SECRET,
       consoleErrorSpy: spy,
@@ -61,8 +67,10 @@ describe("authEnv - OAuth provider", () => {
         NEXTAUTH_SECRET: NEXT_SECRET,
         SESSION_SECRET,
         AUTH_PROVIDER: "oauth",
+        OAUTH_ISSUER,
         OAUTH_CLIENT_ID: "client-id",
         OAUTH_CLIENT_SECRET: STRONG_TOKEN,
+        OAUTH_REDIRECT_ORIGIN,
       },
       () => import("../src/env/auth"),
     );
@@ -74,4 +82,3 @@ describe("authEnv - OAuth provider", () => {
     expect(spy).not.toHaveBeenCalled();
   });
 });
-

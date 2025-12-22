@@ -64,6 +64,17 @@ model RentalOrder {
   cancelledAt        String?
   refundTotal        Int?
   status             String?
+  currency           String?
+  subtotalAmount     Int?
+  taxAmount          Int?
+  shippingAmount     Int?
+  discountAmount     Int?
+  totalAmount        Int?
+  cartId             String?
+  stripePaymentIntentId       String?
+  stripeChargeId              String?
+  stripeBalanceTransactionId  String?
+  stripeCustomerId            String?
 
   @@unique([shop, sessionId])
   @@unique([shop, trackingNumber])
@@ -84,6 +95,32 @@ model CustomerProfile {
   customerId String @id
   name       String
   email      String
+}
+
+model CustomerIdentity {
+  id                 String   @id @default(cuid())
+  issuer             String
+  subject            String
+  internalCustomerId String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@unique([issuer, subject])
+  @@unique([internalCustomerId])
+  @@index([internalCustomerId])
+}
+
+model CustomerStripeMapping {
+  id                 String   @id @default(cuid())
+  internalCustomerId String
+  stripeCustomerId   String
+  environment        String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@unique([internalCustomerId, environment])
+  @@unique([stripeCustomerId, environment])
+  @@index([internalCustomerId])
 }
 
 model CustomerMfa {
@@ -150,4 +187,20 @@ model SettingDiff {
   diff      Json
 
   @@index([shop])
+}
+
+model StripeWebhookEvent {
+  /// Stripe event id.
+  id        String   @id
+  shop      String
+  type      String
+  /// "processed" | "failed" (kept as string for backward-compatible evolution).
+  status    String
+  lastError String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([shop])
+  @@index([status])
+  @@index([updatedAt])
 }

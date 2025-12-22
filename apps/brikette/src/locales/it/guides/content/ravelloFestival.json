@@ -1,0 +1,70 @@
+{
+  "seo": {
+    "title": "Guida al Ravello Music Festival",
+    "description": "Programmi, biglietti, logistica e suggerimenti per vivere i concerti in terrazza sul mare."
+  },
+  "linkLabel": "Guida al Ravello Music Festival",
+  "intro": [
+    "Traduzione in arrivo."
+  ],
+  "sections": [
+    {
+      "id": "tickets",
+      "title": "Securing tickets",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Getting there",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Concert etiquette",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "id": "late-return",
+      "title": "Late return logistics",
+      "body": [
+        "Traduzione in arrivo.",
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "tips": [
+    "Traduzione in arrivo.",
+    "Traduzione in arrivo."
+  ],
+  "faqs": [
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    },
+    {
+      "q": "Traduzione in arrivo.",
+      "a": [
+        "Traduzione in arrivo."
+      ]
+    }
+  ],
+  "eventSchema": {
+    "name": "Ravello Festival",
+    "startDate": "2025-07-01",
+    "endDate": "2025-09-15",
+    "locationName": "Ravello Festival venues",
+    "addressLocality": "Ravello",
+    "description": "Traduzione in arrivo."
+  }
+}

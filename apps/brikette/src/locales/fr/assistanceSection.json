@@ -1,0 +1,46 @@
+{
+  "slug": "contact-assistance",
+  "meta": {
+    "title": "Contact et informations | Brikette Hostel Positano",
+    "description": "Réservez, explorez et connectez-vous avec nous en ligne. Des questions? Notre assistant numérique offre des recommandations sur mesure et des guides de voyage pour améliorer votre séjour à Positano."
+  },
+  "heading": "Assistance Numérique",
+  "subheading": "Réservez, explorez et connectez-vous avec nous en ligne.",
+  "heroIntro": "Obtenez des réponses instantanées de notre équipe et de l'assistant numérique pour planifier votre séjour plus rapidement.",
+  "otherBookingOptions": "Autres options de réservation et réseaux sociaux",
+  "addressLabel": "Adresse :",
+  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookingOptions": {
+    "googleBusiness": "Google Business",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "Comment pouvons-nous ",
+  "amaHeadingPart2": "vous aider",
+  "amaParagraph1": "Vous avez des questions ? Nous sommes là pour vous aider. N'hésitez pas à nous demander quoi que ce soit – si nous ne couvrons pas tout ce dont vous avez besoin, envoyez-nous simplement un e-mail directement, et nous vous répondrons rapidement.",
+  "amaParagraph2": "Une fois votre réservation confirmée, vous obtiendrez un accès immédiat à notre assistant numérique. Cet outil offre des recommandations personnalisées sur les attractions, les activités et les trésors cachés à Positano, afin que vous profitiez pleinement de votre séjour.",
+  "amaParagraph3": "Vous aurez également accès à nos guides de voyage soigneusement préparés via l'assistant. Ceux-ci incluent des ressources pratiques telles que des conseils de transport, des instructions détaillées et des informations pour simplifier votre planification.",
+  "amaHelpCenterLink": "Parcourir tous les articles d’aide",
+  "askPlaceholder": "Demandez des itinéraires, des informations sur les installations, etc...",
+  "clearLabel": "Effacer la recherche",
+  "answersFoundLabel": "réponses trouvées",
+  "noMatchesFound": "Aucun résultat trouvé",
+  "popularGuides": "Guides populaires",
+  "guideReachBudget": "Atteindre Positano avec un petit budget",
+  "guideFerrySchedules": "Horaires des ferries pour Positano",
+  "guidePathOfTheGods": "Sentier des Dieux depuis Brikette",
+  "guideCollections": {
+    "heading": "Planifiez votre séjour avec des guides étape par étape",
+    "description": "Itinéraires, politiques de réservation et logistique d'arrivée réunis à partir de nos questions les plus fréquentes.",
+    "taggedHeading": "Essentiels de planification pour {{tag}}",
+    "taggedDescription": "Ces essentiels mettent l'accent sur {{tag}}. Effacez le filtre pour parcourir tout ce que nous avons préparé.",
+    "empty": "Nous n'avons pas encore de guides de planification pour {{tag}}. Essayez un autre tag ou réinitialisez le filtre.",
+    "clearFilter": "Parcourir tous les essentiels de planification",
+    "cardCta": "Consultez le guide de planification « {{guideTitle}} »"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

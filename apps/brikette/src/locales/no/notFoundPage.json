@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Siden ble ikke funnet",
+    "description": "Siden du ba om finnes ikke."
+  },
+  "heading": "Siden ble ikke funnet",
+  "message": "Utforsk rommene våre eller bestill oppholdet ditt.",
+  "linksTitle": "Nyttige lenker",
+  "links": {
+    "home": "Hjem",
+    "deals": "Tilbud",
+    "assistance": "Kontakt & info",
+    "about": "Om oss"
+  },
+  "buttonRooms": "Rom",
+  "buttonReserve": "Bestill nå"
+}

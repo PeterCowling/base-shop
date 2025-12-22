@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Strandolás az Amalfi-parton",
+    "description": "Mely strandokat érdemes összekötni egy nap alatt, megközelítés és költségek."
+  },
+  "linkLabel": "Strandolás az Amalfi-parton",
+  "intro": [
+    "Így szervezzen strandolós napot, amelyben a kompok, a sziklás panorámák és a homokos pihenés is egyensúlyban van."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Reggel: Positano → Fornillo",
+      "body": [
+        "Kezdje korán a Spiaggia Grande partján egy gyors fürdéssel, majd 9:30-ra sétáljon át a parti ösvényen Fornillóba, amikor még nyugodt a víz.",
+        "Foglaljon napágyat előre, ha árnyékot szeretne, különben vigyen magával könnyű napernyőt."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Délidő: Amalfi vagy Atrani",
+      "body": [
+        "Késő délelőtt induljon komppal Amalfiba, ebédeljen a mólón, majd ússzon a városi strandon vagy Atrani apró öblében.",
+        "Adja le a táskákat Amalfi csomagmegőrzőjében, így szabadon fedezheti fel a környéket."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Este: naplementés fürdő",
+      "body": [
+        "Zárja a napot Lauritóban vagy Arienzóban az aranyórás fényekért; mindkettő nyugatra néz, így 17:00 után kevesebb a tömeg.",
+        "Fogja el az utolsó kompot, vagy foglaljon visszaútra taxit, hogy elkerülje az éjszakai kaptatást."
+      ]
+    }
+  ],
+  "tips": [
+    "Vigyen gyorsan száradó törölközőt és váltóruhát, hogy a kompokon is kényelmes maradjon.",
+    "Pakoljon harapnivalót és legalább 1 liter vizet; a parti büfék zsúfolt napokon kifogyhatnak a készletből."
+  ],
+  "faqs": [
+    {
+      "q": "Előre kell foglalni a napágyakat?",
+      "a": [
+        "Igen, július–augusztusban érdemes. Írjon WhatsAppon a strandkluboknak előző nap, ha az első sorok valamelyikét szeretné."
+      ]
+    },
+    {
+      "q": "Vihetek saját ételt?",
+      "a": [
+        "A közterületi részeken lehet piknikezni. A strandklubok többnyire engednek apró harapnivalót, de az italokat inkább a bárjukból kérik megvenni."
+      ]
+    }
+  ]
+}

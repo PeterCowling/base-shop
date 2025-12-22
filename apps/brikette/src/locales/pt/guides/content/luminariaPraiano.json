@@ -1,0 +1,66 @@
+{
+  "seo": {
+    "title": "Luminaria di San Domenico (Praiano)",
+    "description": "Praiano’s candlelit festival in early August: dates, how to get there, where to watch, and photo etiquette."
+  },
+  "linkLabel": "Luminaria di San Domenico (Praiano)",
+  "intro": [
+    "Planeie a visita ao festival Luminaria di San Domenico, em Praiano: ruas iluminadas a velas, fogo de artifício e como assistir com respeito."
+  ],
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Essenciais do festival",
+      "body": [
+        "O evento decorre na primeira semana de agosto, com noites de pico a 1–4 de agosto, quando milhares de velas iluminam a Piazza San Gennaro.",
+        "Chegue antes do pôr do sol para ver os voluntários a colocar as velas e garantir um bom ponto de observação."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Como chegar e sair",
+      "body": [
+        "Apanhe o autocarro SITA desde Positano (20 minutos) ou reserve um shuttle partilhado; os últimos autocarros regressam perto da meia-noite, mas confirme no próprio dia.",
+        "Se tenciona ficar até tarde, combine táxi com antecedência ou passe a noite em Praiano para evitar longas esperas após o fogo de artifício."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta durante o evento",
+      "body": [
+        "Mantenha as velas intactas para os moradores; não entre em áreas delimitadas nem bloqueie percursos com tripés.",
+        "Use tripé ou apoio estável para exposições longas, mas mantenha distância das entradas da igreja e rotas de emergência."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve garrafa reutilizável (500 ml) e uma lanterna pequena para caminhar por Praiano depois de escurecer.",
+    "Respeite o silêncio após o fogo de artifício; os residentes limpam a cera noite adentro."
+  ],
+  "faqs": [
+    {
+      "q": "O festival é gratuito?",
+      "a": [
+        "Sim, a observação é gratuita. Apoie as bancas locais comprando snacks ou faça donativo na igreja para ajudar a financiar velas futuras."
+      ]
+    },
+    {
+      "q": "E se chover?",
+      "a": [
+        "Chuva forte pode adiar a instalação das velas; os organizadores publicam atualizações na página Facebook do município de Praiano. Reserve uma noite extra no calendário."
+      ]
+    }
+  ],
+  "event": {
+    "date": "1–4 de agosto (noites de pico)",
+    "location": "Piazza San Gennaro, Praiano",
+    "tips": [
+      "Chegue antes do pôr do sol para ver os voluntários a dispor as velas.",
+      "Leve lanterna ou luz do telemóvel para o regresso por ruas escuras."
+    ]
+  },
+  "gallery": {
+    "terraceAlt": "Lanternas iluminadas num terraço de Praiano à noite",
+    "coastAlt": "Litoral de Praiano ao anoitecer durante a Luminaria di San Domenico"
+  }
+}

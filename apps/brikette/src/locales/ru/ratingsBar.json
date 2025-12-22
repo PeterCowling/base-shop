@@ -1,0 +1,20 @@
+{
+  "aria": {
+    "regionLabel": "Оценки из внешних отзывов",
+    "linkSummary": "{{score}} на {{provider}}, {{reviews}}, проверено {{date}}"
+  },
+  "reviewed": "Оценено на:",
+  "countReviews_one": "{{formattedCount}} отзыв",
+  "countReviews_other": "{{formattedCount}} отзывов",
+  "lastChecked": "Последняя проверка:",
+  "sources": {
+    "hostelworld": {
+      "ariaName": "Hostelworld",
+      "label": "Hostelworld"
+    },
+    "booking": {
+      "ariaName": "Booking точка ком",
+      "label": "Booking.com"
+    }
+  }
+}

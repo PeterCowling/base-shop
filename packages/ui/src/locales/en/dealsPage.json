@@ -1,0 +1,49 @@
+{
+  "slug": "deals",
+  "meta": {
+    "title": "Summer 2025 Deal - Save 15 %",
+    "description": "Limited-time summer offer with an extra 15 % off direct bookings.",
+    "ogImageAlt": "Summer discount banner"
+  },
+  "title": "Save {{percent}} % on your {{season}} stay",
+  "promo": "Book direct this summer and pocket an extra {{percent}} % discount.",
+  "banner": "Only {{beds}} beds left at this rate - deal ends in {{time}}!",
+  "timeRemaining": {
+    "lessThanHour": "0h",
+    "hours_one": "{{count}}h",
+    "hours_other": "{{count}}h",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days"
+  },
+  "buttonReserve": "Reserve Now",
+  "ogImageAlt": "Summer discount banner",
+  "perksHeading": "Direct booking perks",
+  "perksIntro": "These perks are unique to guests who book directly on our website.",
+  "perksGuarantee": "Every booking made directly on our website unlocks these exclusive perks automatically.",
+  "perksIntroLink": "See all current deals",
+  "perksList": [
+    "Up to 25 % off the regular price (auto-applied)",
+    "Complimentary breakfast",
+    "Complimentary evening drink"
+  ],
+  "expired": {
+    "message": "This limited-time offer ended on {{endedOn}}."
+  },
+  "restrictions": {
+    "heading": "Need-to-knows",
+    "stayWindow": "Valid for stays from {{from}} to {{to}}.",
+    "minAdvance": "Book at least {{days}} days in advance.",
+    "minAdvancePrefix": "Book at least",
+    "minAdvanceSuffix": "in advance.",
+    "los": "Minimum {{min}} nights, maximum {{max}} nights.",
+    "nonRefundable": "Valid only on non-refundable rates, for direct bookings i.e. made via the hostel's website.",
+    "nonRefundablePrefix": "Valid only on",
+    "nonRefundableSuffix": "rates, for direct bookings i.e. made via the hostel's website.",
+    "stackable": "{{percent}} % stacks with our standard 10 % direct-booking discount.",
+    "other": "Standard terms and conditions apply."
+  },
+  "seasonLabel": "Summer 2025",
+  "robots": {
+    "expiredNoindex": "noindex,follow"
+  }
+}

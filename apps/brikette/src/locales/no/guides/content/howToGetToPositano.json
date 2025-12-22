@@ -1,0 +1,60 @@
+{
+  "seo": {
+    "title": "Slik kommer du deg til Positano: alle alternativer sammenlignet",
+    "description": "Sammenlign ferje, tog + buss, shuttle og private transfer – med sesongnotater og tips for bagasje."
+  },
+  "linkLabel": "Hvordan reise til Positano (beslutningsguide)",
+  "intro": "All realistic ways to reach Positano — compared by season, budget, luggage and arrival time.",
+  "toc": {
+    "onThisPage": "On this page",
+    "naples": "Via Naples",
+    "salerno": "Via Salerno",
+    "ferry": "Ferry (summer)",
+    "private": "Private transfer",
+    "faqs": "Vanlige spørsmål"
+  },
+  "labels": {
+    "whenHeading": "When to choose",
+    "cheapestHeading": "Cheapest route",
+    "seasonalHeading": "Seasonal notes"
+  },
+  "sections": [
+    {
+      "id": "naples",
+      "title": "Via Napoli",
+      "body": [
+        "Flybuss til Sorrento + SITA til Positano (rimeligst), eller tog til Sorrento + SITA.",
+        "Sommer: ferjer fra Molo Beverello når været er rolig; sjekk kanselleringer."
+      ]
+    },
+    {
+      "id": "salerno",
+      "title": "Via Salerno",
+      "body": [
+        "Tog til Salerno, ferje videre til Positano i sesong (bagasjevennlig).",
+        "Utenom sesong: buss via Amalfi; tregere, men pålitelig."
+      ]
+    },
+    {
+      "id": "private",
+      "title": "Private transfer",
+      "body": [
+        "Door‑to‑door; pricier but easiest for late arrivals or heavy luggage."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hvilken rute er raskest i høysesongen?",
+      "a": [
+        "Ferje fra Salerno eller Napoli er raskest når været er stabilt; ellers velg tog + buss via Sorrento."
+      ]
+    },
+    {
+      "q": "Hva er best med mye bagasje?",
+      "a": [
+        "Ferje fra Salerno eller en privat transfer – færre trapper og lettere av- og pålasting."
+      ]
+    }
+  ]
+}

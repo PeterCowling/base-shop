@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "Selezione base perfetta per long drink classici; chiedi in bar per etichette premium."
+      },
+      "rum": {
+        "note": "Rum chiari e scuri ideali per cocktail estivi e frozen."
+      },
+      "gin": {
+        "note": "Gin mediterranei con botaniche agrumate e profilo fresco."
+      },
+      "whisky": {
+        "note": "Whisky blended scozzesi morbidi, ottimi on the rocks."
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "Il classico spritz italiano, servito con ghiaccio tritato."
+      },
+      "limoncelloSpritz": {
+        "note": "Limoncello artigianale, Prosecco e soda serviti con ghiaccio e scorza di limone."
+      },
+      "hugoSpritz": {
+        "note": "Prosecco, sciroppo di sambuco, menta fresca e splash di soda."
+      },
+      "rossiniSpritz": {
+        "note": "Prosecco con purea di fragole fresche e ghiaccio tritato."
+      },
+      "lemonStrawberryMargarita": {
+        "note": "Succo di fragola o limone con tequila, Cointreau e ghiaccio. Rifinito nello stile classico della margarita."
+      },
+      "lemonDropMartini": {
+        "note": "Vodka agrumata, succo di limone e bordo di zucchero per un finale brillante."
+      },
+      "joseCuervoSilver": {
+        "note": "Shot di tequila Jose Cuervo Silver servito liscio o con sale e lime."
+      },
+      "limoncelloShot": {
+        "note": "Limoncello della costiera servito ghiacciato."
+      },
+      "threeScoops": {
+        "note": "Tre palline a scelta tra i gelati artigianali del giorno."
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "Pane dolce con cannella leggermente dorato, servito con sciroppo d’acero."
+      },
+      "nutellaFrenchToast": {
+        "note": "Toast francese con Nutella, zucchero a velo e nocciole tritate."
+      },
+      "addEggComboItem": {
+        "note": "Aggiungi un uovo strapazzato di accompagnamento."
+      },
+      "addAdditionalSyrup": {
+        "note": "Extra di sciroppo d’acero o agave."
+      },
+      "veggieToast": {
+        "note": "Pane integrale tostato con hummus, verdure di stagione e semi."
+      },
+      "healthyDelight": {
+        "note": "Yogurt greco con frutta fresca, granola croccante e miele locale."
+      },
+      "detoxMe": {
+        "note": "Centrifuga verde con sedano, mela e zenzero."
+      },
+      "energizeMe": {
+        "note": "Estratto energizzante di arancia, carota e zenzero."
+      },
+      "multiV": {
+        "note": "Succo multivitaminico con agrumi e frutti tropicali."
+      },
+      "orangeJuice": {
+        "note": "Succo d’arancia spremuto al momento."
+      }
+    }
+  }
+}

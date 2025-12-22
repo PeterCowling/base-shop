@@ -1,0 +1,55 @@
+{
+  "seo": {
+    "title": "Capri con presupuesto ajustado",
+    "description": "Formas asequibles de disfrutar Capri: ferris, miradores gratuitos, playas y comida económica."
+  },
+  "linkLabel": "Capri con presupuesto ajustado",
+  "intro": [
+    "Capri puede ser asequible si planificas horarios, priorizas vistas gratuitas y llevas tus propios básicos.",
+    "Reserva ferris temprano y regresa a media tarde para evitar las aglomeraciones del último servicio."
+  ],
+  "sections": [
+    {
+      "id": "ferries",
+      "title": "Ferris y horarios",
+      "body": [
+        "Compra o reserva billetes con antelación en temporada alta y llega con margen para validar.",
+        "Regresa antes del último ferry para evitar colas largas y posibles sobreventas."
+      ]
+    },
+    {
+      "id": "free-views",
+      "title": "Miradores gratuitos",
+      "body": [
+        "Giardini di Augusto cobra una tasa simbólica; compénsalo con los miradores de Anacapri y los puntos altos sobre Marina Piccola.",
+        "Empieza temprano para tener luz suave y menos gente en los ángulos clásicos."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Opciones de playa",
+      "body": [
+        "Hay franjas públicas junto a Marina Piccola y Marina Grande; lleva toalla y agua para reducir gastos.",
+        "Si optas por lido, comparte sombrilla o reserva con antelación para evitar recargos."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Comer barato",
+      "body": [
+        "Panini y pizza al taglio cerca del muelle ofrecen buena relación calidad-precio.",
+        "Evita almuerzos formales en las calles más concurridas y busca trattorias en zonas secundarias."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Merece la pena la Gruta Azul con presupuesto ajustado?",
+      "a": [
+        "Es un extra premium y depende del estado del mar; valora el telesilla de Anacapri como alternativa destacada."
+      ]
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes",
+  "tocTitle": "En esta página"
+}

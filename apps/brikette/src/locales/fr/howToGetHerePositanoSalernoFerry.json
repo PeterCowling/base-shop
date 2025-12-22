@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "title": "Positano → Salerne en ferry | Hostel Brikette",
+    "description": "Porte à porte : Hostel Brikette jusqu'au port de Positano, ferry vers Salerne, conseils billets et notes d'arrivée."
+  },
+  "header": {
+    "eyebrow": "Guide de voyage Hostel Brikette",
+    "title": "Positano → Salerne – Ferry",
+    "description": "Suivez ces étapes pour descendre de l'Hostel Brikette au port de Positano, acheter vos billets de ferry et embarquer pour Salerne. Comprend des conseils pratiques sur le timing et les opérateurs, ainsi que des indications d'arrivée au port de Salerne et pour rejoindre la gare."
+  },
+  "tip": {
+    "label": "Astuce",
+    "copy": "Besoin d'alternatives si la mer est agitée ? Consultez la <link>vue d'ensemble Comment venir</link> pour des itinéraires de secours."
+  },
+  "journey": {
+    "title": "Aperçu du trajet",
+    "paragraphs": [
+      "Les ferries entre Positano et Salerne circulent surtout du printemps au début de l'automne et peuvent être annulés lorsque la mer est forte. Le trajet dure généralement 60 à 80 minutes selon l'opérateur et le navire.",
+      "Comparez les horaires et réservez : <positanoLink>Positano.com (horaires regroupés)</positanoLink> · <travelmarLink>Travelmar – Salerno ↔ Positano</travelmarLink>."
+    ]
+  },
+  "walk": {
+    "title": "Descendre jusqu'au port de Positano",
+    "steps": [
+      "Sortez de l'auberge par la porte principale.",
+      "Descendez les marches jusqu'à la route, tournez à gauche et parcourez un peu plus de 100 m (≈330 ft).",
+      "Au premier carrefour (point 1), tournez à droite au niveau du tabac (premier bâtiment sur la droite).",
+      "Continuez en descente ; au premier virage en épingle (point 2), quittez la route et prenez les escaliers tout droit.",
+      "En bas des escaliers, vous arrivez sur la route (point 3) ; traversez et continuez tout droit sur l'escalier suivant.",
+      "Lorsque ces marches débouchent sur la route, traversez, tournez brièvement à gauche puis prenez les escaliers (point 4).",
+      "En bas, tournez à droite pour atteindre le point 5 puis continuez sous l'arcade sur la droite.",
+      "Le port (jetée de la Spiaggia Grande) se situe environ 50 m (≈160 ft) plus loin sur le côté droit de la plage."
+    ]
+  },
+  "tickets": {
+    "title": "Acheter les billets et embarquer",
+    "steps": [
+      "Au port, chaque compagnie de ferry possède son propre guichet.",
+      "Le panneau à côté du guichet indique le prochain départ de cet opérateur.",
+      "Achetez vos billets directement auprès de l'opérateur. Arrivez 20 à 30 minutes en avance pour échanger vos bons et faire la file.",
+      "Après l'achat, rendez-vous au bout de la jetée et attendez le début de l'embarquement."
+    ]
+  },
+  "arrival": {
+    "title": "À l'arrivée à Salerne",
+    "paragraphs": [
+      "Débarquez dans la zone portuaire Concordia/Manfredi de Salerne selon les indications de l'opérateur. Pour les trains, marchez jusqu'à la gare principale de Salerne (Stazione FS). La marche est simple et presque entièrement plate.",
+      "Carte : <mapLink>Port Concordia → gare de Salerne</mapLink>.",
+      "Si les ferries sont annulés à cause de la météo, reportez votre voyage ou envisagez de passer par Sorrente le lendemain."
+    ]
+  }
+}

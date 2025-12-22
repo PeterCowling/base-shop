@@ -1,0 +1,59 @@
+{
+  "seo": {
+    "title": "Wäschereien in Positano (Self-Service & Abgabe)",
+    "description": "Wo du Wäsche erledigst, wie Self-Service funktioniert, was bei Abgabe gilt und praktische Tipps."
+  },
+  "linkLabel": "Wäschereien in Positano (Self-Service & Abgabe)",
+  "intro": [
+    "In Positano gibt es Self-Service-Wäschereien und Abgabestellen – prüfe Öffnungszeiten in der Nebensaison und rechne an Wechseltagen mit Wartezeiten."
+  ],
+  "toc": {
+    "onThisPage": "Auf dieser Seite",
+    "selfService": "Self-Service-Wäschereien",
+    "dropOff": "Abgabe-Services",
+    "howto": "Self-Service: Schritt für Schritt",
+    "tips": "Waschmittel & Maschinen",
+    "faqs": "FAQ"
+  },
+  "selfServiceText": "Self-Service-Laundrys befinden sich an der Via Pasitea (Nähe Chiesa Nuova) und in der oberen Via Fornillo; beide arbeiten mit Tokenautomaten.",
+  "dropOffText": "Abgabeservices in Hotellobbys oder Delis bieten Wasch+Trocknung innerhalb von 12–24 h – Preise vorher erfragen und Quittung aufbewahren.",
+  "howtoSteps": [
+    "Token oder Münzen am Automaten kaufen (Wechselgeld bereithalten).",
+    "Waschmittel/Weichspüler je nach Maschine dosieren – einige Anlagen geben automatisch zu.",
+    "Programm wählen, Start drücken und während der Laufzeit nicht unbeaufsichtigt lassen (30–40 Minuten)."
+  ],
+  "tipsList": [
+    "Füll Maschinen nur zu ¾, sonst bleiben Sand oder Salzreste in der Kleidung.",
+    "Gemeinschaftstrockner werden sehr heiß – Pflegeetiketten prüfen und empfindliche Teile lieber auf dem Balkon trocknen."
+  ],
+  "sections": [
+    {
+      "id": "self-service",
+      "title": "Selbstbedienung",
+      "body": [
+        "Die „Lava & Asciuga“-Filiale an der Via Pasitea 261 ist täglich 07:00–23:00 geöffnet; Automaten akzeptieren Münzen/Token, Waschmittel steht bereit. Bring eigene Waschbeutel für delikate Stoffe mit – Körbe vor Ort sind begrenzt."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Abgabe-Services",
+      "body": [
+        "Viele Hotels und Hostels kooperieren mit lokalen Wäschediensten (ca. 12–15 € pro 5-kg-Sack). Frag nach Express-Service, wenn du am selben Tag abreist, und notiere Übergabezeit sowie Ansprechpartner."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Gibt es Waschmittel vor Ort?",
+      "a": [
+        "Ja, Self-Service-Stationen verkaufen kleine Portionsbeutel; wer Allergien hat, bringt eigenes Pulver/Pods mit."
+      ]
+    },
+    {
+      "q": "Kann ich nachts waschen?",
+      "a": [
+        "Die meisten Automaten schließen gegen 23:00. Lass Wäsche nicht über Nacht liegen – Personal räumt bei Schließung aus Sicherheitsgründen aus."
+      ]
+    }
+  ]
+}

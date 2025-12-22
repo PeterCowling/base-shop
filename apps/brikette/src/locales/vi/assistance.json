@@ -1,0 +1,28 @@
+{
+  "quickLinksHeading": "Liên kết nhanh",
+  "quickLinksIntro": "Nhận câu trả lời nhanh cho những câu hỏi phổ biến nhất về đặt phòng, di chuyển và lưu trú.",
+  "cta": {
+    "readMore": "Đọc thêm"
+  },
+  "quickLinks": [
+    {
+      "label": "Đổi hoặc hủy đặt phòng",
+      "description": "Xem thời hạn báo trước tối thiểu và cách tránh phí phát sinh khi bạn cần điều chỉnh kế hoạch.",
+      "slug": "changingCancelling"
+    },
+    {
+      "label": "Hướng dẫn nhận và trả phòng",
+      "description": "Làm theo hướng dẫn từng bước để đến và rời Hostel Brikette tại Positano một cách thuận tiện.",
+      "slug": "checkinCheckout"
+    },
+    {
+      "label": "Đến Positano thuận tiện",
+      "description": "Chọn tuyến phà, xe buýt hoặc taxi phù hợp và nhận hướng dẫn từng bước từ Naples hoặc Sorrento.",
+      "slug": "travelHelp"
+    }
+  ],
+  "contactCta": {
+    "label": "Gửi email cho chúng tôi",
+    "href": "mailto:hostelpositano@gmail.com"
+  }
+}

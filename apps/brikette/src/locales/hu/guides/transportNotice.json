@@ -1,0 +1,11 @@
+{
+  "title": "Mindig ellenőrizd a közlekedési információkat",
+  "items": {
+    "buses": "Buszok: ellenőrizd a SITA Sud hivatalos menetrendjeit — <sitaLink>sitasudtrasporti.it</sitaLink>.",
+    "ferries": "Kompok: az üzemeltetők időjárásfüggő szezonális menetrendet adnak ki. Ajánlott oldalak: <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
+    "airlink": "Salerno Costa d'Amalfi (QSR) reptérre érkezel? Használd az Airlink shuttle-t Salernóig — <airportLink>aeroportodisalerno.it</airportLink> és <airlinkLink>FS Busitalia Airlink</airlinkLink>.",
+    "driving": "Autózás: SS163 rendszám szerinti korlátozások (ápr.–okt.) és ZTL. A parkolási díjak szezononként és helyszínenként változnak – ellenőrizd a hivatalos közleményeket.",
+    "premium": "Prémium vagy szezonális: az Uber Boat és a helikopteres charter limitált nyári menetrenddel fut — mindig erősítsd meg az aktuális elérhetőséget."
+  },
+  "srLabel": "Közlekedési figyelmeztetés"
+}

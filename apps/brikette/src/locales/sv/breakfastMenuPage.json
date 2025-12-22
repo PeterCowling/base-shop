@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Frukostmeny (2025)",
+    "description": "Frukost serveras 08:00–10:30 dagligen. Äggkombinationer, söta val, hälsosamma alternativ, juicer, smoothies och kaffe."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Frukostmenyn 2025",
+    "hours": "Dagligen 08:00–10:30"
+  },
+  "intro": {
+    "summary": "Kom ner till baren mellan 08:00 och 10:30 och välj hur du vill starta dagen. Blanda ägg, pannkakor, smoothies och kaffe efter humör.",
+    "viewFullMenuButton": "Visa hela frukostmenyn"
+  },
+  "sections": {
+    "eggs": {
+      "title": "Äggcombo",
+      "subtitle": "En generös kombination av ägg",
+      "howCooked": "Välj hur du vill ha äggen",
+      "cooked": [
+        "Omelett",
+        "Äggröra",
+        "Stekt ägg (over easy)",
+        "Stekt ägg (sunny side up)"
+      ],
+      "addThree": "Välj tre ingredienser",
+      "ingredients": [
+        "Bacon",
+        "Skinka",
+        "Tomater",
+        "Svamp",
+        "Toast",
+        "Ost",
+        "Bönor"
+      ],
+      "orderExample": "Exempel: \"Omelett med ost, bacon och bönor\"."
+    },
+    "sweet": {
+      "title": "Söta alternativ",
+      "chooseOneFreeSyrup": "Välj en syrup utan extra kostnad:",
+      "syrups": [
+        "Lönnsirap",
+        "Citron",
+        "Apelsin & kanel",
+        "Nutella"
+      ]
+    },
+    "healthy": {
+      "title": "Hälsosamma alternativ"
+    },
+    "juices": {
+      "title": "Juicer & smoothies"
+    },
+    "hot": {
+      "title": "Varma kaffedrycker"
+    },
+    "iced": {
+      "title": "Kalla kaffedrycker"
+    }
+  },
+  "items": {
+    "eggsCombo": {
+      "name": "Äggcombo"
+    },
+    "frenchToast": {
+      "name": "French toast",
+      "note": "Klassisk fattig riddare serverad med sirap."
+    },
+    "nutellaFrenchToast": {
+      "name": "French toast med Nutella",
+      "note": "Fattig riddare fylld med Nutella."
+    },
+    "pancakes": {
+      "name": "Pannkakor"
+    },
+    "addEggComboItem": {
+      "name": "Lägg till från äggmenyn",
+      "note": "Välj ett tillbehör från äggmenyn. Exempel: pannkakor med lönnsirap och äggröra för 15,50 €."
+    },
+    "addAdditionalSyrup": {
+      "name": "Extra syrup",
+      "note": "Välj fler än en syrup. Exempel: pannkakor med lönnsirap och Nutella för 14 €."
+    },
+    "veggieToast": {
+      "name": "Grönsakstoast",
+      "note": "Säsongens grönsaker på rostat bröd."
+    },
+    "healthyDelight": {
+      "name": "Hälsodeli",
+      "note": "Yoghurtparfait med granola och hemgjord fruktkompott."
+    },
+    "detoxMe": {
+      "name": "Detox Me (juice)",
+      "note": "Spenat, gurka, ingefära och citron."
+    },
+    "energizeMe": {
+      "name": "Energize Me (juice)",
+      "note": "Apelsin, morot, ingefära och citron."
+    },
+    "multiV": {
+      "name": "Multi-V (juice)",
+      "note": "Äpple, morot, apelsin, citron och ingefära."
+    },
+    "orangeJuice": {
+      "name": "Apelsinjuice",
+      "note": "Nypressad apelsinjuice."
+    },
+    "bananaSmoothie": {
+      "name": "Banansmoothie"
+    },
+    "strawberrySmoothie": {
+      "name": "Jordgubbssmoothie"
+    },
+    "saltedCaramelProteinSmoothie": {
+      "name": "Proteinsmoothie med kaffe och salt karamell"
+    },
+    "addProtein": {
+      "name": "Lägg till protein (vanilj/choklad/salt karamell) – HUEL (40 g protein)"
+    },
+    "tea": {
+      "name": "Te (svart, grönt eller ört)"
+    },
+    "espresso": {
+      "name": "Espresso (per shot)"
+    },
+    "macchiato": {
+      "name": "Macchiato"
+    },
+    "americano": {
+      "name": "Americano / lång svart"
+    },
+    "cappuccino": {
+      "name": "Cappuccino"
+    },
+    "latte": {
+      "name": "Latte"
+    },
+    "altMilk": {
+      "name": "Soja- eller rismjölk – tillägg"
+    },
+    "icedLatte": {
+      "name": "Islatte"
+    },
+    "icedSoyLatte": {
+      "name": "Islatte med soja"
+    },
+    "icedRiceLatte": {
+      "name": "Islatte med rismjölk"
+    },
+    "icedTea": {
+      "name": "Is-te (citron eller persika)"
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "El precio incluye un mixer a elegir: tónica, refresco de cola, cola zero o Sprite."
+      },
+      "rum": {
+        "note": "Elige tu ron y dinos si quieres añadir un mixer con cafeína. El café puede ser frío o caliente, como espresso corto o largo/americano."
+      },
+      "gin": {
+        "note": "Servido con tónica Schweppes, hielo picado y una rodaja de limón de la Costa Amalfitana."
+      },
+      "whisky": {
+        "note": "Elige de nuestra selección de whisky y cuéntanos si quieres hielo, agua o un mixer con cafeína. El café puede servirse frío o caliente, en espresso corto o largo/americano."
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "El spritz italiano clásico, servido con hielo picado."
+      },
+      "limoncelloSpritz": {
+        "note": "Especialidad de la Costa Amalfitana, servido con hielo picado."
+      },
+      "hugoSpritz": {
+        "note": "Vino espumoso servido sobre menta, lima y flor de saúco. Se acompaña con hielo picado."
+      },
+      "rossiniSpritz": {
+        "note": "Vino espumoso vertido sobre zumo de fresa y servido con hielo picado."
+      },
+      "lemonStrawberryMargarita": {
+        "note": "Zumo de fresa o limón con tequila, Cointreau y hielo, acabado en estilo margarita clásico."
+      },
+      "lemonDropMartini": {
+        "note": "Zumo de limón recién exprimido agitado con Absolut Vodka, Cointreau y hielo."
+      },
+      "joseCuervoSilver": {
+        "note": "Servido solo con limón y sal, como Tequila Sunrise o con soda/Sprite."
+      },
+      "limoncelloShot": {
+        "note": "Clásico licor del sur de Italia, servido solo."
+      },
+      "threeScoops": {
+        "note": "Elige entre sabores de limón, chocolate, vainilla o avellana."
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "Tostada francesa clásica, servida con sirope."
+      },
+      "nutellaFrenchToast": {
+        "note": "Tostada francesa rellena de Nutella."
+      },
+      "addEggComboItem": {
+        "note": "Elige un ítem del menú de combos con huevo. Ejemplo: tortitas con sirope dorado más huevos revueltos por 15,50 €."
+      },
+      "addAdditionalSyrup": {
+        "note": "Añade más de un sirope. Ejemplo: tortitas con sirope dorado más Nutella por 14 €."
+      },
+      "veggieToast": {
+        "note": "Verduras de temporada sobre tostada."
+      },
+      "healthyDelight": {
+        "note": "Parfait de yogur, granola y compota de fruta casera."
+      },
+      "detoxMe": {
+        "note": "Espinaca, pepino, jengibre y limón."
+      },
+      "energizeMe": {
+        "note": "Naranja, zanahoria, jengibre y limón."
+      },
+      "multiV": {
+        "note": "Manzana, zanahoria, naranja, limón y jengibre."
+      },
+      "orangeJuice": {
+        "note": "Zumo de naranja recién exprimido."
+      }
+    }
+  }
+}

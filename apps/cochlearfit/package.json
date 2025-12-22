@@ -1,0 +1,22 @@
+{
+  "name": "@apps/cochlearfit",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3011",
+    "build": "next build",
+    "start": "next start -p 3011",
+    "preview": "OUTPUT_EXPORT=1 next build && python3 -m http.server 3011 --directory out",
+    "preview:pages": "OUTPUT_EXPORT=1 next build && pnpm exec wrangler pages dev out --compatibility-flag=nodejs_compat --port 3011",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+  },
+  "dependencies": {
+    "@acme/i18n": "workspace:*",
+    "@acme/next-config": "workspace:*",
+    "@acme/tailwind-config": "workspace:*",
+    "next": "^15.3.5",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  }
+}

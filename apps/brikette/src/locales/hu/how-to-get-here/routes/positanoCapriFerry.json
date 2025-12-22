@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "title": "Positanóból Caprira komppal | Hostel Brikette",
+    "description": "Lépésről lépésre útmutató a Hostel Brikette-től a positanói kikötőig, jegyvásárlási és beszállási tippekkel, valamint a Caprira tartó komputazással."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Positanóból Caprira – komp",
+    "description": "Kövesd ezeket a lépéseket, hogy elsétálj a Hostel Brikette-től a positanói kikötőig, megvásárold a kompjegyed, és felszállj Capri felé. Hasznos időzítési és szolgáltatói tippeket is találsz."
+  },
+  "tip": {
+    "label": "Tipp",
+    "intro": "Alternatívát keresel rossz tengeri időben? Nyisd meg a",
+    "linkLabel": "Hogyan juthatsz el hozzánk áttekintést",
+    "outro": "a tartalék útvonalakért."
+  },
+  "journeyOverview": {
+    "title": "Az út áttekintése",
+    "paragraphs": [
+      "A Positano és Capri közötti kompok tavasszal és kora ősszel járnak a leggyakrabban, viharos tengernél pedig törölhetik őket. Az út 30–60 percig tart, a szolgáltatótól és a hajótól függően."
+    ],
+    "linksIntro": "Időpontok összehasonlítása és foglalás:",
+    "linksSeparator": "·",
+    "linksSuffix": ".",
+    "links": {
+      "capriNet": "Capri.net – Capri ↔ Positano",
+      "positanoCom": "Positano.com (összesített menetrend)"
+    }
+  },
+  "photoGuide": {
+    "title": "Fotós útmutató (referencia)",
+    "description": "Képes támpontok a séta minden lépéséhez és a kikötői jegypénztár zónájához.",
+    "items": {
+      "mapOverview": {
+        "alt": "Térképes áttekintés a Hostel Brikette-től a positanói kikötőig vezető sétáról",
+        "caption": "Térkép: hostel → positanói kikötő"
+      },
+      "spiaggiaApproach": {
+        "alt": "Fotó a Spiaggia Grande-hoz és a turistakikötőhöz vezető útról",
+        "caption": "Megközelítés a Spiaggia Grande-hoz (turistakikötő)"
+      },
+      "spiaggiaDetail": {
+        "alt": "Részlettérkép, amely a Spiaggia Grande jobb oldalát emeli ki, ahol a kikötő található",
+        "caption": "Részlettérkép: a kikötő helye a Spiaggia Grande-n"
+      },
+      "ticketBooths": {
+        "alt": "Kompjegy-pénztárak a positanói kikötőben a következő indulás jelzésével",
+        "caption": "Kompjegy-pénztárak"
+      },
+      "point1": {
+        "alt": "1. pont: kereszteződés a Tabacchi mellett a Via G. Marconin, a Hostel Brikette közelében",
+        "caption": "1. pont: Tabacchi kereszteződés (fordulj jobbra)"
+      },
+      "point2": {
+        "alt": "2. pont: első hajtűkanyar, ahol letérsz az útról a lépcsőre",
+        "caption": "2. pont: térj le az útról, lépcső következik"
+      },
+      "point3": {
+        "alt": "3. pont: a lépcső vége az útnál, átkelés előtt",
+        "caption": "3. pont: lépcső vége az útnál"
+      },
+      "point4": {
+        "alt": "4. pont: menj át az úton, fordulj röviden balra, majd lépcső",
+        "caption": "4. pont: átkelés, balra fordulás, lépcső"
+      },
+      "point5": {
+        "alt": "5. pont: árkádos átjáró a strand és a kikötő felé",
+        "caption": "5. pont: árkád a kikötőhöz"
+      }
+    }
+  },
+  "toPort": {
+    "title": "Séta a positanói kikötőhöz",
+    "steps": [
+      "Lépj ki a hostel főbejáratán.",
+      "Menj le a lépcsőn az útra, fordulj balra, és sétálj valamivel több mint 100 métert (≈330 lábat).",
+      "Az első kereszteződésnél (1. pont) fordulj jobbra a Tabacchi-nál (jobb oldali első épület).",
+      "Haladj tovább lefelé; az első hajtűkanyarnál (2. pont) térj le az útról, és menj egyenesen a lépcsőkön.",
+      "A lépcső alján érsz az útra (3. pont); kelj át, és menj tovább a következő lépcsőkön.",
+      "Amikor ezek a lépcsők ismét az útra érnek, kelj át, fordulj balra, sétálj kb. 10 métert (≈30 lábat) a 4. pontig.",
+      "Fordulj le jobbra az útról, és kövesd a lépcsőket lefelé.",
+      "Alul fordulj jobbra az 5. ponthoz, majd haladj tovább a jobb oldali árkádban.",
+      "A kikötő (Spiaggia Grande móló) kb. 50 méterre (≈160 lábra) van előre, a strand jobb oldalán."
+    ]
+  },
+  "tickets": {
+    "title": "Jegyvásárlás és beszállás",
+    "tips": [
+      "A kikötőben minden kompüzemeltetőnek saját pultja van.",
+      "A pult melletti tábla mutatja a szolgáltató következő indulását.",
+      "A jegyeket közvetlenül a szolgáltatótól vedd. Érkezz 20–30 perccel korábban, hogy beválthasd a vouchereket, és beállj a sorba.",
+      "Vásárlás után sétálj a móló végére, és várd meg a beszállás kezdetét."
+    ]
+  },
+  "arrival": {
+    "title": "Érkezés Caprira",
+    "paragraphs": [
+      "Capri turistakikötőjében (Marina Grande) szállj le. Kövesd a felvonó, taxik vagy buszok feliratait attól függően, hová tartasz. Főszezonban hosszú sorokra számíts — a retúrjegyek előre megváltása segíthet zsúfolt hétvégéken.",
+      "A positanói visszaút előtt nézd meg a késő délutáni járatokat és az időjárási figyelmeztetéseket. Ha törlik a kompokat, érdemes elhalasztani a visszautat, vagy másnap Szorrentón keresztül hazautazni."
+    ],
+    "linkIntro": "A positanói érkezés csomagbarát útvonalát itt találod:",
+    "linkLabel": "Kikötő → Hostel Brikette"
+  }
+}

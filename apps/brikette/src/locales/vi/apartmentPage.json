@@ -1,0 +1,56 @@
+{
+  "slug": "apartment",
+  "meta": {
+    "title": "Căn hộ lưu trú",
+    "description": "Tìm hiểu về căn hộ tự phục vụ của chúng tôi tại Positano."
+  },
+  "title": "Căn hộ",
+  "body": "Căn hộ của chúng tôi mang đến không gian thoải mái cùng tầm nhìn ngoạn mục.",
+  "heroImageAlt": "Bên ngoài tòa nhà căn hộ",
+  "heroTitle": "Căn hộ riêng",
+  "heroIntro": "Tận hưởng không gian đầy đủ tiện nghi với tầm nhìn tuyệt đẹp ra Positano.",
+  "bookButton": "Đặt ngay",
+  "galleryHeading": "Thư viện ảnh",
+  "galleryAlt": "Nội thất căn hộ và tầm nhìn từ sân thượng",
+  "galleryAlts": [
+    "Phòng sinh hoạt của căn hộ",
+    "Phòng ngủ căn hộ",
+    "Sân thượng chung nhìn ra biển"
+  ],
+  "detailsHeading": "Chi tiết",
+  "detailsList": [
+    "Chứa tối đa 4 khách",
+    "Bếp nhỏ có tủ lạnh",
+    "Phòng tắm riêng",
+    "Điều hòa không khí",
+    "Ban công nhìn ra biển"
+  ],
+  "amenitiesHeading": "Tiện nghi",
+  "amenitiesImageAlt": "Hình tiện nghi căn hộ",
+  "amenitiesList": [
+    "Wi‑Fi miễn phí",
+    "Bếp đầy đủ tiện nghi",
+    "Điều hòa không khí",
+    "Máy giặt và máy sấy"
+  ],
+  "highlights": {
+    "sectionTitle": "Điểm nổi bật của căn hộ",
+    "slides": [
+      {
+        "title": "Tầm nhìn toàn cảnh",
+        "text": "Thức dậy mỗi sáng với khung cảnh bao quát.",
+        "alt": "Quang cảnh từ ban công căn hộ"
+      },
+      {
+        "title": "Không gian thoải mái",
+        "text": "Nhiều không gian để thư giãn sau khi khám phá.",
+        "alt": "Khu sinh hoạt rộng rãi"
+      },
+      {
+        "title": "Vị trí trung tâm",
+        "text": "Chỉ vài bước tới cửa hàng và bãi biển.",
+        "alt": "Những con phố Positano"
+      }
+    ]
+  }
+}

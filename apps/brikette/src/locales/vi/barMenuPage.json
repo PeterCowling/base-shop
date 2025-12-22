@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Khám phá đồ uống: bia, rượu vang, cocktail và nước giải khát."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Thực Đơn Quầy Bar, 2025",
+    "hours": "Mở cửa hằng ngày (giờ cụ thể xem tại quầy bar)"
+  },
+  "intro": {
+    "summary": "Xem nhanh lựa chọn đồ uống bên dưới. Chi tiết, món đặc biệt và giá mới nhất có trong thực đơn đầy đủ.",
+    "viewFullMenuButton": "Xem Thực Đơn Đầy Đủ"
+  },
+  "sections": {
+    "spritzFrozen": {
+      "title": "Spritz & Cocktail đông lạnh"
+    },
+    "houseWine": {
+      "title": "Rượu vang nhà làm"
+    },
+    "beer": {
+      "title": "Bia"
+    },
+    "vodka": {
+      "title": "Đồ uống pha với Vodka",
+      "note": "Bản dịch đang được chuẩn bị."
+    },
+    "rum": {
+      "title": "Đồ uống pha với Rum",
+      "note": "Chọn loại rum bạn thích; có thể thêm mixer cà phê. Phục vụ kèm cà phê đá/nóng, espresso hoặc americano."
+    },
+    "gin": {
+      "title": "Đồ uống pha với Gin",
+      "note": "Phục vụ cùng tonic Schweppes, đá bào và lát chanh Amalfi."
+    },
+    "whisky": {
+      "title": "Whisky",
+      "note": "Chọn trực tiếp tại quầy; cho chúng tôi biết nếu bạn muốn thêm đá, nước hoặc cà phê (đá/nóng, espresso hoặc americano)."
+    },
+    "shots": {
+      "title": "Shots"
+    },
+    "gelato": {
+      "title": "Gelato"
+    }
+  },
+  "items": {
+    "aperolSpritz": {
+      "name": "Aperol Spritz",
+      "note": "Spritz Ý kinh điển, phục vụ cùng đá bào."
+    },
+    "limoncelloSpritz": {
+      "name": "Limoncello Spritz",
+      "note": "Đặc sản Amalfi Coast, phục vụ với đá bào."
+    },
+    "hugoSpritz": {
+      "name": "Hugo Spritz",
+      "note": "Rượu vang sủi rót cùng bạc hà, chanh và siro hoa cơm cháy, phục vụ với đá bào."
+    },
+    "rossiniSpritz": {
+      "name": "Rossini Spritz",
+      "note": "Rượu vang sủi hòa với nước dâu tây, phục vụ cùng đá bào."
+    },
+    "lemonStrawberryDaiquiri": {
+      "name": "Daiquiri Chanh hoặc Dâu"
+    },
+    "lemonStrawberryMargarita": {
+      "name": "Margarita Chanh hoặc Dâu",
+      "note": "Nước dâu hoặc chanh tươi cùng Tequila, Cointreau và đá – lắc theo phong cách cổ điển."
+    },
+    "lemonDropMartini": {
+      "name": "Lemon Drop Martini",
+      "note": "Nước cốt chanh tươi lắc với Absolut Vodka, Cointreau và đá."
+    },
+    "redWhiteGlass": {
+      "name": "Vang đỏ/trắng (ly)"
+    },
+    "redWhiteBottle": {
+      "name": "Vang đỏ/trắng (chai)"
+    },
+    "proseccoGlass": {
+      "name": "Prosecco (ly)"
+    },
+    "nastro330": {
+      "name": "Nastro, 330ml"
+    },
+    "nastro660": {
+      "name": "Nastro, 660ml"
+    },
+    "peroni330": {
+      "name": "Peroni, 330ml"
+    },
+    "peroni660": {
+      "name": "Peroni, 660ml"
+    },
+    "skyy": {
+      "name": "Skyy"
+    },
+    "absolut": {
+      "name": "Absolut"
+    },
+    "smirnoff": {
+      "name": "Smirnoff"
+    },
+    "greyGoose": {
+      "name": "Grey Goose"
+    },
+    "pampero": {
+      "name": "Pampero"
+    },
+    "bacardiSuperior": {
+      "name": "Bacardi Superior"
+    },
+    "captainMorgan": {
+      "name": "Captain Morgan"
+    },
+    "angosturaReserva": {
+      "name": "Angostura Reserva"
+    },
+    "beefeater": {
+      "name": "Beefeater"
+    },
+    "bombaySapphire": {
+      "name": "Bombay Sapphire"
+    },
+    "tanqueray": {
+      "name": "Tanqueray"
+    },
+    "hendricks": {
+      "name": "Hendrick's"
+    },
+    "jwRed": {
+      "name": "Bản dịch đang được chuẩn bị."
+    },
+    "jameson": {
+      "name": "Jameson (Irish)"
+    },
+    "jackDaniels": {
+      "name": "Bản dịch đang được chuẩn bị."
+    },
+    "wildTurkey": {
+      "name": "Wild Turkey (Bourbon)"
+    },
+    "chivas12": {
+      "name": "Bản dịch đang được chuẩn bị."
+    },
+    "glenfiddich12": {
+      "name": "Bản dịch đang được chuẩn bị."
+    },
+    "joseCuervoSilver": {
+      "name": "Bản dịch đang được chuẩn bị.",
+      "note": "Có thể thưởng thức nguyên chất với chanh và muối, pha kiểu Tequila Sunrise hoặc kèm soda/sprite."
+    },
+    "limoncelloShot": {
+      "name": "Limoncello",
+      "note": "Thức uống cổ điển miền Nam Ý, phục vụ nguyên chất."
+    },
+    "oneScoop": {
+      "name": "1 viên"
+    },
+    "twoScoops": {
+      "name": "2 viên"
+    },
+    "threeScoops": {
+      "name": "3 viên",
+      "note": "Hương vị: chanh, sô-cô-la, vani, hạt phỉ."
+    }
+  },
+  "disclaimer": "Món và giá có thể thay đổi. Vui lòng xác nhận tại quầy bar."
+}

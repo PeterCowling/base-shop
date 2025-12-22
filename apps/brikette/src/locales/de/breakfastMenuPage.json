@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Frühstücksmenü (2025)",
+    "description": "Frühstück täglich 08:00–10:30. Eier-Kombis, süße Varianten, gesunde Bowls, Säfte, Smoothies und Kaffee."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Frühstücksmenü, 2025",
+    "hours": "08:00 – 10:30 täglich"
+  },
+  "intro": {
+    "summary": "Frisch zubereitetes Frühstück, frisch gepresste Säfte und Barista-Kaffee – jeden Morgen auf der Terrasse. Scrolle weiter, um alle Optionen und Preise zu entdecken.",
+    "viewFullMenuButton": "Zur kompletten Frühstückskarte"
+  },
+  "sections": {
+    "eggs": {
+      "title": "Eier‑Kombi",
+      "subtitle": "Eine köstliche Kombination aus Eiern",
+      "howCooked": "Wähle die Zubereitungsart",
+      "cooked": [
+        "Omelett",
+        "Rührei",
+        "Spiegelei (weich)",
+        "Spiegelei (Sunnyside‑up)"
+      ],
+      "addThree": "Wähle drei Zutaten",
+      "ingredients": [
+        "Speck",
+        "Schinken",
+        "Tomaten",
+        "Champignons",
+        "Toast",
+        "Käse",
+        "Bohnen"
+      ],
+      "orderExample": "Bestellbeispiel – „Omelett mit Käse, Bacon und Bohnen“."
+    },
+    "sweet": {
+      "title": "Süße Optionen",
+      "chooseOneFreeSyrup": "Wähle einen gratis Sirup:",
+      "syrups": [
+        "Golden",
+        "Zitrone",
+        "Orange & Zimt",
+        "Nutella"
+      ]
+    },
+    "healthy": {
+      "title": "Gesunde Optionen"
+    },
+    "juices": {
+      "title": "Säfte und Smoothies"
+    },
+    "hot": {
+      "title": "Heiße Koffeingetränke"
+    },
+    "iced": {
+      "title": "Kalte Koffeingetränke"
+    }
+  },
+  "items": {
+    "eggsCombo": {
+      "name": "Eier‑Kombi"
+    },
+    "frenchToast": {
+      "name": "Armer Ritter",
+      "note": "Klassisch, serviert mit Sirup."
+    },
+    "nutellaFrenchToast": {
+      "name": "Armer Ritter mit Nutella",
+      "note": "Gefüllt mit Nutella."
+    },
+    "pancakes": {
+      "name": "Pfannkuchen"
+    },
+    "addEggComboItem": {
+      "name": "Zusatz aus Eier‑Kombi",
+      "note": "Wähle ein Item aus dem Eiermenü. Z. B. Pfannkuchen + Goldsirup + Rührei für 15,50 €."
+    },
+    "addAdditionalSyrup": {
+      "name": "Zusätzlicher Sirup",
+      "note": "Mehr als ein Sirup. Z. B. Pfannkuchen mit Goldsirup und Nutella für 14 €."
+    },
+    "veggieToast": {
+      "name": "Gemüse‑Toast",
+      "note": "Saisonales Gemüse auf Toast."
+    },
+    "healthyDelight": {
+      "name": "Gesund & Lecker",
+      "note": "Parfait aus Joghurt, Granola und hausgemachtem Fruchtkompott."
+    },
+    "detoxMe": {
+      "name": "Detox Me (Saft)",
+      "note": "Spinat, Gurke, Ingwer & Zitrone."
+    },
+    "energizeMe": {
+      "name": "Energize Me (Saft)",
+      "note": "Orange, Karotte, Ingwer & Zitrone."
+    },
+    "multiV": {
+      "name": "Multi‑V (Saft)",
+      "note": "Apfel, Karotte, Orange, Zitrone, Ingwer."
+    },
+    "orangeJuice": {
+      "name": "Orangensaft",
+      "note": "Frisch gepresst."
+    },
+    "bananaSmoothie": {
+      "name": "Bananensmoothie"
+    },
+    "strawberrySmoothie": {
+      "name": "Erdbeersmoothie"
+    },
+    "saltedCaramelProteinSmoothie": {
+      "name": "Protein-Smoothie mit Kaffee & Salzkaramell"
+    },
+    "addProtein": {
+      "name": "Füge Protein zu deinem Smoothie hinzu (Vanille, Schokolade oder Salzkaramell) — HUEL Complete Nutrition (40 g Protein)"
+    },
+    "tea": {
+      "name": "Tee (schwarz, grün, Kräuter)"
+    },
+    "espresso": {
+      "name": "Espresso (pro Shot)"
+    },
+    "macchiato": {
+      "name": "Macchiato"
+    },
+    "americano": {
+      "name": "Americano / langes Schwarz"
+    },
+    "cappuccino": {
+      "name": "Cappuccino"
+    },
+    "latte": {
+      "name": "Latte"
+    },
+    "altMilk": {
+      "name": "Soja‑ oder Reismilch — Aufpreis"
+    },
+    "icedLatte": {
+      "name": "Iced Latte"
+    },
+    "icedSoyLatte": {
+      "name": "Iced Latte mit Sojamilch"
+    },
+    "icedRiceLatte": {
+      "name": "Iced Latte mit Reisdrink"
+    },
+    "icedTea": {
+      "name": "Eistee (Zitrone oder Pfirsich)"
+    }
+  }
+}

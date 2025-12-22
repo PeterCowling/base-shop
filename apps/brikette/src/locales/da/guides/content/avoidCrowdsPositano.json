@@ -1,0 +1,56 @@
+{
+  "seo": {
+    "title": "Sådan undgår du menneskemængder i Positano",
+    "description": "Timing, rolige ruter, alternative byer og fotospots, så du kan nyde Positano uden køer."
+  },
+  "linkLabel": "Sådan undgår du menneskemængder i Positano (uden for alfavej)",
+  "intro": [
+    "At undgå menneskemængder i Positano handler om timing, små smutveje og at vide, hvornår du skal hoppe til en roligere by."
+  ],
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Timing der virker",
+      "body": [
+        "Ankom til Spiaggia Grande eller de klassiske udsigtspunkter ved solopgang eller gyldentime; sene frokoster (efter kl. 14.30) undgår også spidsbelastning på restauranterne.",
+        "Hold pause midt på dagen i skygge eller tag en siesta — de fleste dagsturister fylder gaderne mellem kl. 10 og 16."
+      ]
+    },
+    {
+      "id": "routes",
+      "title": "Ruter og roligere steder",
+      "body": [
+        "Brug gangvejen øverst mellem Chiesa Nuova og Sponda for altanudsigt uden flaskehalsen på Via dei Mulini.",
+        "Gå til Fornillo-stranden eller udsigtspunktet på Via Positanesi d’America for fredeligere badeture og fotos."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternative baser",
+      "body": [
+        "Praiano og Cetara byder på rolige aftener, nemme solnedgangspunkter og billigere måltider uden at miste havudsigten.",
+        "Ravellos haver eller Agerolas bjergbyer er gode dagsudflugter, når Positano føles overfyldt."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Hvornår er Spiaggia Grande rolig?",
+      "a": [
+        "Før kl. 09 eller efter kl. 18.30 finder du plads at ligge og blødere lys til fotos — pak et håndklæde og kom tidligt."
+      ]
+    },
+    {
+      "q": "Hvor kan jeg tage billeder uden menneskemængder?",
+      "a": [
+        "Gå op ad Via Cristoforo Colombo for terrasser i højden, eller tag bussen til Nocelle for brede panoramaer på Gudernes Sti."
+      ]
+    },
+    {
+      "q": "Skal jeg bo uden for Positano for roligere aftener?",
+      "a": [
+        "Ja, hvis du foretrækker ro om aftenen — Praiano, Minori eller Agerola holder priserne nede, og du kan tage bus eller færge til Positano om dagen."
+      ]
+    }
+  ]
+}

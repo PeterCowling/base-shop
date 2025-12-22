@@ -1,0 +1,49 @@
+{
+  "slug": "tilbud",
+  "meta": {
+    "title": "Sommer 2025 – spar 15 %",
+    "description": "Sommerkampanje i en begrenset periode med ekstra 15 % på direktebestillinger.",
+    "ogImageAlt": "Banner for sommerrabatt"
+  },
+  "title": "Spar {{percent}} % på ditt {{season}}-opphold",
+  "promo": "Bestill direkte i sommer og få ekstra {{percent}} % rabatt.",
+  "banner": "Bare {{beds}} senger igjen til denne prisen – tilbudet avsluttes om {{time}}!",
+  "timeRemaining": {
+    "lessThanHour": "0 t",
+    "hours_one": "{{count}} time",
+    "hours_other": "{{count}} timer",
+    "days_one": "{{count}} dag",
+    "days_other": "{{count}} dager"
+  },
+  "buttonReserve": "Bestill nå",
+  "ogImageAlt": "Banner for sommerrabatt",
+  "perksHeading": "Fordeler ved direktebestilling",
+  "perksIntro": "Disse fordelene gjelder bare gjester som bestiller direkte på nettsiden vår.",
+  "perksGuarantee": "Hver direktebestilling på nettsiden vår låser automatisk opp disse eksklusive fordelene.",
+  "perksIntroLink": "Se alle aktuelle tilbud",
+  "perksList": [
+    "Opptil 25 % avslag fra ordinær pris når kupong brukes",
+    "Gratis frokost",
+    "Gratis kveldsdrink"
+  ],
+  "expired": {
+    "message": "Dette tidsbegrensede tilbudet avsluttet {{endedOn}}."
+  },
+  "restrictions": {
+    "heading": "Viktig å vite",
+    "stayWindow": "Gyldig for opphold fra {{from}} til {{to}}.",
+    "minAdvance": "Bestill minst {{days}} dager i forveien.",
+    "minAdvancePrefix": "Bestill minst",
+    "minAdvanceSuffix": "i forveien.",
+    "los": "Minimum {{min}} netter, maksimum {{max}} netter.",
+    "nonRefundable": "Gjelder kun for ikke-refunderbare priser, for direktebestillinger via hostellets nettside.",
+    "nonRefundablePrefix": "Gjelder kun for",
+    "nonRefundableSuffix": "for direktebestillinger via hostellets nettside.",
+    "stackable": "{{percent}} % kan kombineres med vår standard 10 % direktebestillingsrabatt.",
+    "other": "Standard vilkår gjelder."
+  },
+  "seasonLabel": "Sommeren 2025",
+  "robots": {
+    "expiredNoindex": "noindex,follow"
+  }
+}

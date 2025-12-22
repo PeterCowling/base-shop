@@ -1,0 +1,56 @@
+{
+  "slug": "apartment",
+  "meta": {
+    "title": "Tengerre néző apartman Positanóban",
+    "description": "Foglalj tengerre néző apartmanlakosztályt Positanóban: 40 m²-es nappali, felszerelt konyha, saját terasz és gyors Wi‑Fi pároknak vagy barátoknak."
+  },
+  "title": "Apartman lakosztály",
+  "body": "Tágas, 40 m²-es apartmanunk otthonos kényelmet ad privát terasszal, ahonnan az Amalfi-part panorámája köszönt minden reggel.",
+  "heroImageAlt": "A Hostel Brikette privát apartmanjának külső homlokzata",
+  "heroTitle": "Privát apartman",
+  "heroIntro": "Teljesen felszerelt belső tér, külön hálószoba és tengerre néző terasz vár, mindössze pár lépésre Positano lépcsőitől.",
+  "bookButton": "Foglalj apartmant most",
+  "galleryHeading": "Fotók a lakosztályról",
+  "galleryAlt": "Az apartman belső tere és a tengerre néző terasza",
+  "galleryAlts": [
+    "Nappali kanapéval és étkezőasztallal",
+    "Hálószoba franciaággyal és természetes fénnyel",
+    "Tengerre néző privát terasz reggelizősarokkal"
+  ],
+  "detailsHeading": "Legfontosabb részletek",
+  "detailsList": [
+    "Legfeljebb 4 vendég számára kialakítva (1 franciaágy + 1 kihúzható kanapé)",
+    "40 m² / 430 sq ft saját tér étkezővel és nappalival",
+    "Teljesen felszerelt konyhasarok hűtővel és főzőlappal",
+    "Privát zuhanyzós fürdő törölközővel és hajszárítóval",
+    "Egyénileg szabályozható légkondicionáló és gyors Wi‑Fi"
+  ],
+  "amenitiesHeading": "Minden benne van",
+  "amenitiesImageAlt": "Az apartman felszereltsége: konyha, Wi‑Fi és mosás",
+  "amenitiesList": [
+    "Korlátlan, gyors Wi‑Fi",
+    "Teljesen felszerelt konyha edényekkel és eszközökkel",
+    "Állítható légkondicionálás minden helyiségben",
+    "Saját mosógép és szárítógép"
+  ],
+  "highlights": {
+    "sectionTitle": "Miért szeretik a vendégek",
+    "slides": [
+      {
+        "title": "Lélegzetelállító reggelek",
+        "text": "Kortyolj eszpresszót a teraszon, miközben Positano színes házsorai alattad ébrednek.",
+        "alt": "Vendég az apartman teraszán a napfelkeltét nézi"
+      },
+      {
+        "title": "Kényelmes, rugalmas terek",
+        "text": "A nappali és a háló külön, így egyszerre pihenhettek, dolgozhattok vagy készülhettek estére.",
+        "alt": "Tágas nappali kanapéval és munkaasztallal"
+      },
+      {
+        "title": "Percek a strandtól",
+        "text": "Lépcsők, boltok és a buszmegálló néhány percre vannak, ezért könnyű mozogni csomagok nélkül is.",
+        "alt": "Positano utcája üzletekkel a lejtőn"
+      }
+    ]
+  }
+}

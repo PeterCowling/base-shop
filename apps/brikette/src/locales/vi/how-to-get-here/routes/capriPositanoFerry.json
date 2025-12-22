@@ -1,0 +1,67 @@
+{
+  "slug": "capri-positano-ferry",
+  "meta": {
+    "title": "Từ Capri đến Positano bằng phà | Hostel Brikette",
+    "description": "Cách di chuyển từ Capri đến Positano bằng phà, cùng mẹo mua vé, chọn hãng tàu, lời khuyên khi đến nơi và lộ trình dễ nhất lên hostel."
+  },
+  "header": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Capri đến Positano – Phà",
+    "description": "Hãy dùng hướng dẫn này để đi từ Capri tới Positano hoàn toàn bằng đường biển. Bài viết bao gồm cách chọn hãng phù hợp, mua vé tại cảng và những việc cần làm khi cập bến để lên Hostel Brikette nhẹ nhàng nhất (đi bộ hoặc đi xe buýt)."
+  },
+  "tip": {
+    "eyebrow": "Mẹo",
+    "copy": "Cần các phương án tuyến khác hoặc dự phòng khi biển động? Mở <link>Tổng quan Cách đến đây</link>.",
+    "linkLabel": "Tổng quan Cách đến đây"
+  },
+  "sections": {
+    "overview": {
+      "title": "Tổng quan hành trình",
+      "body": "Các chuyến phà giữa Capri và Positano hoạt động dày đặc nhất vào mùa xuân và mùa hè. Dịch vụ có thể bị hủy khi biển động, đặc biệt vào cuối ngày. Tổng thời gian di chuyển thường khoảng 30–60 phút tùy tàu và nhà khai thác."
+    },
+    "capriPort": {
+      "title": "Tại cảng Capri",
+      "list": [
+        "Kiểm tra giờ và giá, sau đó xác định hãng khai thác chuyến bạn chọn.",
+        "Di chuyển tới cảng du lịch của Capri. Mua vé tại quầy bán vé của chính hãng đó.",
+        "Đến sớm 20–30 phút để đổi phiếu (voucher) nếu cần và xếp hàng lên tàu."
+      ],
+      "link": "So sánh giờ phà và đặt vé: <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (lịch tổng hợp)</positanoLink>.",
+      "linkLabelCapri": "Capri.net – Capri ↔ Positano",
+      "linkLabelPositano": "Positano.com (lịch tổng hợp)"
+    },
+    "arrival": {
+      "title": "Đến Positano",
+      "list": [
+        "Xuống tàu tại cầu cảng Positano Spiaggia Grande.",
+        "Phu khuân vác sẽ đón các chuyến phà; cân nhắc nhờ họ mang hành lý và chốt phí trước.",
+        "Sẽ có nhiều bậc thang đi lên từ bãi biển; xe buýt địa phương Interno giúp giảm bớt việc leo thang tới hostel."
+      ]
+    },
+    "bus": {
+      "title": "Từ cảng tới hostel bằng xe buýt Interno",
+      "list": [
+        "Xe buýt Interno Positano chạy khoảng mỗi 30 phút từ sáng cho tới gần nửa đêm.",
+        "Tìm bảng điện tử ghi ‘Interno Positano’ ở phía trước xe.",
+        "Từ cảng, đi bộ tới Piazza dei Mulini và lên chuyến xe chạy lên dốc về hướng Chiesa Nuova."
+      ],
+      "link": "Cần lộ trình chi tiết, thuận tiện mang hành lý từ cầu cảng tới Hostel Brikette, xem: <link>Bến phà → Hostel Brikette</link>.",
+      "linkLabel": "Bến phà → Hostel Brikette"
+    },
+    "finalWalk": {
+      "title": "Đoạn đi bộ cuối từ điểm dừng gần nhất",
+      "list": [
+        "Xuống tại điểm dừng cạnh tiệm Tabacchi gần Chiesa Nuova.",
+        "Rẽ phải về phía đường chính, rồi rẽ trái vào Via G. Marconi.",
+        "Đi bộ thêm hơn 100 m (≈330 ft) — hostel nằm bên tay phải bạn.",
+        "Rẽ phải và đi theo bậc thang lên cửa chính của Hostel Brikette."
+      ]
+    },
+    "cancelled": {
+      "title": "Nếu phà bị hủy",
+      "body": "Nếu chuyến bị hủy vì thời tiết hay điều kiện biển, hãy chuyển sang tuyến tàu hỏa và xe buýt qua Sorrento. Tuy mất thời gian hơn nhưng hầu hết điều kiện đều chạy được.",
+      "link": "Phương án dự phòng: <link>Trung tâm Naples → Positano bằng tàu rồi xe buýt</link>.",
+      "linkLabel": "Trung tâm Naples → Positano bằng tàu rồi xe buýt"
+    }
+  }
+}

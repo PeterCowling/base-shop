@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Tooltip } from "@/components/atoms";
+import { Tooltip, type TagProps } from "@/components/atoms";
 import { cn } from "@ui/utils/style";
 import type { LaunchPanelData } from "../hooks/useConfiguratorDashboardState";
 import { ButtonElement, CardRoot, CardSection, TagElement } from "./DashboardPrimitives";
@@ -284,7 +284,7 @@ export function LaunchPanel({
                 />
                 <div className="flex items-center gap-3">
                   <ButtonElement
-                    variant="primary"
+                    variant="default"
                     onClick={() => onQaAcknowledge(qaNote)}
                     disabled={qaAckStatus === "pending"}
                   >

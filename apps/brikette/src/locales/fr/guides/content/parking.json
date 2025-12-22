@@ -1,0 +1,52 @@
+{
+  "linkLabel": "Stationnement à Positano : où et combien",
+  "intro": [
+    "Le stationnement est rare et coûteux à Positano ; réservez un garage à l’avance et considérez que la voiture restera garée pendant tout le séjour."
+  ],
+  "sections": [
+    {
+      "id": "garages",
+      "title": "Garages privés en ville",
+      "body": [
+        "Mandara, Car Park Anna et Di Gennaro acceptent les réservations — bloquez une place 7 à 10 jours avant pour une arrivée en juillet-août.",
+        "Comptez 35 à 60 € par tranche de 24 h ; vérifiez la hauteur maximale (environ 1,9 m) et si vous devez laisser les clés au personnel."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Dépose bagages et paiement",
+      "body": [
+        "Utilisez les aires d’arrêt minute près de Chiesa Nuova ou Sponda pour décharger avant de stationner ; warnings allumés et efficacité de rigueur.",
+        "Ayez carte et espèces : les garages acceptent souvent les cartes mais préfèrent le liquide pour les séjours de moins de 48 h."
+      ]
+    },
+    {
+      "id": "park-elsewhere",
+      "title": "Stationner moins cher hors de Positano",
+      "body": [
+        "Les parkings couverts de Meta, Piano di Sorrento ou Sorrente coûtent environ 20 à 25 € par jour et relient Positano en moins de 45 minutes via les bus SITA.",
+        "Vous arrivez du nord ? Laissez la voiture dans les garages du port de Salerne et traversez en ferry lorsque la mer est clémente."
+      ]
+    }
+  ],
+  "tips": [
+    "Vérifiez les ZTL/alternances de plaques avant d’emprunter la SS163 ; les amendes arrivent à l’international plusieurs mois après.",
+    "Préparez un sac de jour avec l’essentiel avant de remettre les clés — les garages rangent parfois les voitures pare-chocs contre pare-chocs jusqu’au départ."
+  ],
+  "faqs": [
+    {
+      "q": "Puis-je me garer seulement quelques heures ?",
+      "a": [
+        "Les garages facturent à l’heure mais basculent rapidement au forfait journée ; pour une course rapide, utilisez les places de 30 minutes près du virage de Sponda."
+      ]
+    },
+    {
+      "q": "Les garages restent-ils ouverts tard ?",
+      "a": [
+        "La plupart fonctionnent de 7 h à minuit ; prévenez en cas de retour tardif pour qu’ils laissent les clés au veilleur de nuit."
+      ]
+    }
+  ],
+  "tocTitle": "Sur cette page",
+  "faqsTitle": "FAQ"
+}

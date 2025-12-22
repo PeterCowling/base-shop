@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Marina di Praia & versteckte Strände",
+    "description": "So erreichst du abgelegene Buchten und das erwartet dich vor Ort."
+  },
+  "linkLabel": "Marina di Praia & versteckte Strände",
+  "intro": [
+    "Entdecke Marina di Praia und nahegelegene Buchten als Abwechslung zum Hauptstrand von Positano."
+  ],
+  "sections": [
+    {
+      "id": "marina",
+      "title": "Marina-di-Praia-Basics",
+      "body": [
+        "Zwischen Klippen gelegen bietet der Kiesstrand Liegen, Kajakverleih und Meeresfrüchte-Restaurants direkt im Felsen.",
+        "Komm vor 10:30, um Liegen in der ersten Reihe zu sichern; ab 16:00 wandert Schatten in die Bucht."
+      ]
+    },
+    {
+      "id": "coves",
+      "title": "Nahe Buchten",
+      "body": [
+        "Leih ein Kajak, um die Grotta di Suppraiano zu erkunden, oder nimm ein Boot zu versteckten Spots wie Gavitella oder Laurito.",
+        "Pack riffverträgliche Sonnencreme und Wasserschuhe ein – der felsige Boden bietet hervorragende Schnorchelsicht."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Anreise",
+      "body": [
+        "Steig in Positano in den SITA-Bus Richtung Amalfi; bitte den Fahrer um Halt bei Marina di Praia und geh die Rampe (5 Minuten) hinab.",
+        "Roller parken oben an der Bucht – nimm Münzen für die Parkautomaten mit."
+      ]
+    }
+  ],
+  "tips": [
+    "Reserviere zum Mittagessen im Il Pirata oder La Praia für Essen auf der Klippe zwischen zwei Badegängen.",
+    "Pack einen Drybag für Wertsachen ein – der Strand ist kompakt, und geordnete Taschen sparen Platz."
+  ],
+  "faqs": [
+    {
+      "q": "Ist der Strand kostenlos?",
+      "a": [
+        "Es gibt einen freien Bereich, aber er ist klein. Rechne in der Hochsaison mit 20–25 € für zwei Liegen plus Schirm in den Strandbädern."
+      ]
+    },
+    {
+      "q": "Kann ich von Positano laufen?",
+      "a": [
+        "Der Fußweg entlang der Straße dauert rund 50 Minuten und hat schmale Seitenstreifen. Bus oder Roller sind sicherer – besonders im Verkehr der Hochsaison."
+      ]
+    }
+  ]
+}

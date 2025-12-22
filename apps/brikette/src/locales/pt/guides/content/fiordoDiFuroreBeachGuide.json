@@ -1,0 +1,71 @@
+{
+  "seo": {
+    "title": "Guia da Praia de Fiordo di Furore",
+    "description": "Como chegar de autocarro desde Positano ao Fiordo di Furore, o que levar e o que esperar da enseada entre falésias."
+  },
+  "linkLabel": "Guia da Praia de Fiordo di Furore",
+  "intro": [
+    "O Fiordo di Furore é o desfiladeiro postal da Costa Amalfitana — uma enseada estreita sob uma ponte em arco, com água esmeralda e falésias verticais. É uma pequena baía praticamente selvagem, sem beach clubs nem restaurantes, por isso vá preparado para nadar, tirar algumas fotos e assistir (ou participar) a saltos das rochas.",
+    "Use este guia para viajar de autocarro, perceber quão limitadas são as infraestruturas e planear a saída para não ficar preso quando o último SITA encher."
+  ],
+  "toc": [
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#returning",
+      "label": "Heading back"
+    },
+    {
+      "href": "#on-site",
+      "label": "What you'll find"
+    }
+  ],
+  "sections": [
+    {
+      "id": "getting-there",
+      "title": "Viaje de SITA com confiança",
+      "body": [
+        "Desde o Hostel Brikette desça a Via Pasitea até à paragem Sponda e apanhe um autocarro SITA em direção a Amalfi. Avise o motorista que precisa do \"Fiordo di Furore\" para que se recorde de parar — a paragem fica entre Praiano e Furore e pode passar despercebida em dias movimentados.",
+        "Após cerca de 25 minutos, desça na paragem sinalizada pouco antes da ponte. Siga as escadas escavadas na falésia durante alguns minutos até chegar à praia de seixos escondida sob o arco."
+      ]
+    },
+    {
+      "id": "returning",
+      "title": "Planeie o regresso antes de ir a banhos",
+      "body": [
+        "Não há bilheteiras ou máquinas no desfiladeiro. Compre ida e volta em Positano (no tabacchi perto da Chiesa Nuova ou na banca de Sponda) e valide ao embarcar.",
+        "No verão os autocarros podem chegar cheios depois de sair de Amalfi. Planeie partir mais cedo do que acha necessário e informe quem estiver na paragem para que o motorista saiba que há passageiros à espera. Se dois autocarros passarem sem parar, pense em partilhar um táxi na estrada superior."
+      ]
+    },
+    {
+      "id": "on-site",
+      "title": "Conte com beleza bruta, não com serviços",
+      "body": [
+        "No Fiordo di Furore não há beach clubs, casas de banho ou restaurantes — apenas, ocasionalmente, uma carrinha de snacks na alta temporada. Leve água, comida e algo confortável para se sentar: os seixos são grossos e o espaço é reduzido.",
+        "Os saltos acontecem nas rochas junto à ponte, mas confirme sempre a profundidade e só salte onde já vir locais na água. Respeite os nadadores lá em baixo e vigie as marés; a enseada fica à sombra no final da tarde."
+      ]
+    }
+  ],
+  "essentialsTitle": "O que esperar",
+  "essentials": [
+    "Paragem do SITA entre Praiano e Furore — peça ao motorista para anunciar o fiorde.",
+    "Escadaria íngreme até uma pequena praia de seixos sob a ponte.",
+    "Sem serviços no local: leve água, snacks, proteção solar e dinheiro para um táxi de emergência."
+  ],
+  "tipsTitle": "Dicas rápidas",
+  "tips": [
+    "Veja a nossa %LINK:positanoBeaches|visão geral das praias% para combinar o Fiordo di Furore com outro mergulho no mesmo dia.",
+    "Chegue cedo se quiser fotos sem multidões debaixo da ponte.",
+    "Leve protetor solar amigo dos recifes e calçado aquático — as rochas ficam escorregadias quando molhadas."
+  ],
+  "warningsTitle": "Importa saber",
+  "warnings": [
+    "Compre bilhetes de ida e volta em Positano; não há onde comprá-los ou validá-los no fiorde.",
+    "Os autocarros às vezes ignoram a paragem quando estão cheios nos meses de pico — deixe margem extra para regressar.",
+    "O espaço na praia é reduzido e a sombra chega rapidamente à tarde."
+  ],
+  "faqsTitle": "Perguntas frequentes sobre o Fiordo di Furore",
+  "faqs": []
+}

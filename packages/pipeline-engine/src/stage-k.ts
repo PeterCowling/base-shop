@@ -10,7 +10,8 @@ function buildCashflowTimeline(input: StageKInput): StageKTimeline {
     if (!Number.isFinite(event.day)) continue;
     const day = Math.floor(event.day);
     if (day < 0 || day > horizonDays) continue;
-    cashflowCents[day] = cashflowCents[day] + event.amountCents;
+    const current = cashflowCents[day] ?? 0n;
+    cashflowCents[day] = current + event.amountCents;
   }
 
   const cumulativeCents: bigint[] = [];
@@ -32,7 +33,8 @@ function buildCashflowTimeline(input: StageKInput): StageKTimeline {
 
 function findPaybackDay(timeline: StageKTimeline): number | null {
   for (let i = 0; i < timeline.cumulativeCents.length; i += 1) {
-    if (timeline.cumulativeCents[i] >= 0n) return i;
+    const value = timeline.cumulativeCents[i] ?? 0n;
+    if (value >= 0n) return i;
   }
   return null;
 }
@@ -48,9 +50,11 @@ function findSellThroughDay(
 
   let lastValue = 0;
   for (let day = 0; day < unitsSoldByDay.length; day += 1) {
-    const value = Number.isFinite(unitsSoldByDay[day])
-      ? unitsSoldByDay[day]
-      : lastValue;
+    const current = unitsSoldByDay[day];
+    const value =
+      typeof current === "number" && Number.isFinite(current)
+        ? current
+        : lastValue;
     lastValue = value;
     if (value >= target) return day;
   }

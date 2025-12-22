@@ -1,0 +1,118 @@
+{
+  "seo": {
+    "title": "Guía de Positano: planifica tu visita",
+    "description": "Dónde alojarte, cuándo ir, cómo moverte y qué hacer en Positano."
+  },
+  "linkLabel": "Guía de viaje de Positano",
+  "intro": [
+    "Guía esencial para planear Positano: áreas, temporadas, cómo moverse y dónde ahorrar sin perder lo mejor.",
+    "Este resumen enlaza a guías detalladas sobre transporte, playas, rutas de senderismo, excursiones y presupuesto."
+  ],
+  "sections": [
+    {
+      "id": "areas",
+      "title": "Zonas y orientación",
+      "body": [
+        "Spiaggia Grande (centro y muelle), Fornillo (más tranquilo), calles altas (vistas y menos escaleras hacia el hostel).",
+        "En verano hay más ferris y días largos, pero también calor y colas: empieza temprano."
+      ]
+    },
+    {
+      "id": "seasons",
+      "title": "Temporadas",
+      "body": [
+        "Verano: más ferris y ambiente; precios altos y calor.",
+        "Primavera/otoño: equilibrio clima‑coste; mejor para senderismo.",
+        "Invierno: tranquilo; ferris limitados; apóyate en bus."
+      ]
+    },
+    {
+      "id": "budget",
+      "title": "Ahorro y logística",
+      "body": [
+        "Panini, pizza al taglio y picnics; miradores al amanecer/atardecer.",
+        "Para llegar con pocas escaleras, baja en ‘Chiesa Nuova’ o usa porteadores desde el muelle.",
+        "Excursión a Capri (primer ferry de la mañana) o quédate en la zona para cafés con vistas en los acantilados."
+      ]
+    },
+    {
+      "id": "stays",
+      "title": "Dónde alojarse",
+      "body": [
+        "Quédate cerca de las paradas ‘Chiesa Nuova’ o ‘Sponda’ para minimizar escaleras con equipaje.",
+        "¿Presupuesto ajustado? Considera alojarte en Sorrento/Meta y entra a Positano en ferry o bus para visitas de día."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Conviene alquilar coche?",
+      "a": [
+        "No en el pueblo: parking caro/limitado; usa bus/ferry."
+      ]
+    },
+    {
+      "q": "¿Cuántos días necesito?",
+      "a": [
+        "2–3 días para lo esencial; 4–5 si añades senderos y excursiones."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Positano es vertical, preciosa y muy concurrida en temporada alta. Esta guía se centra en decisiones prácticas: dónde alojarte, cuándo venir, cómo moverte y qué hacer realmente cuando estés aquí."
+    ],
+    "gallery": {
+      "items": [
+        {
+          "alt": "Terraza del hostel con vista panorámica",
+          "caption": "Atardecer desde la terraza: alójate a pocos pasos de la parada de bus Chiesa Nuova."
+        },
+        {
+          "alt": "Panorama de Positano",
+          "caption": "Fornillo y Spiaggia Grande se recorren a pie; prepárate para escaleras."
+        }
+      ]
+    },
+    "sections": {
+      "whereToStay": {
+        "title": "Dónde alojarse",
+        "body": "Alojarse cerca de <em>Chiesa Nuova</em> supone menos escaleras a la llegada y salida. Hostel Brikette está a ~80 m de la parada de autobús, con terrazas panorámicas y camas y habitaciones privadas asequibles. Las estancias frente al mar cerca de Spiaggia Grande son pintorescas, pero implican más escaleras y precios más altos."
+      },
+      "whenToVisit": {
+        "title": "Cuándo visitar",
+        "body": "El verano es animado pero concurrido; los meses intermedios equilibran clima y espacio. Consulta el desglose completo en <linkBestTime>mejor época para visitar Positano</linkBestTime>. Los ferris son estacionales y reducen frecuencia fuera de los meses de mayor actividad."
+      },
+      "gettingAround": {
+        "title": "Cómo moverse",
+        "arrivals": "<strong>Llegadas</strong>: empieza con la guía de decisiones <linkHowTo>cómo llegar a Positano</linkHowTo>, luego profundiza en <linkNaples>Nápoles → Positano</linkNaples> y <linkSalerno>Salerno → Positano</linkSalerno>.",
+        "withinTown": "<strong>Dentro del pueblo</strong>: los autobuses conectan <em>Chiesa Nuova</em>, <em>Sponda</em> y la playa. Caminar es habitual; planifica tus rutas para evitar escaleras innecesarias.",
+        "ferries": "<strong>Ferris</strong>: consulta <linkFerries>horarios de ferris</linkFerries> y deja siempre margen por si el tiempo cambia."
+      },
+      "thingsToDo": {
+        "title": "Qué hacer",
+        "beaches": "<linkBeaches>Playas</linkBeaches>: Spiaggia Grande para la vista clásica; Fornillo para un ambiente más tranquilo; Arienzo para un baño escénico junto al acantilado.",
+        "pathOfTheGods": "<linkPath>Camino de los Dioses</linkPath> desde Nocelle o Bomerano para vistas espectaculares.",
+        "dayTrips": "Excursiones de un día: <linkCapri>Capri</linkCapri>, <linkAmalfi>Amalfi</linkAmalfi> y <linkRavello>Ravello</linkRavello>."
+      },
+      "moneySavers": {
+        "title": "Ahorros",
+        "eat": "Come de nuestra <linkCheapEats>lista de comidas económicas</linkCheapEats> y lleva una botella reutilizable.",
+        "travel": "Viaja fuera de los fines de semana punta; compara <linkBudgetArrival>opciones de llegada económicas</linkBudgetArrival>.",
+        "stay": "Alójate cerca de <em>Chiesa Nuova</em> para minimizar tarifas de porteador y escaleras a la llegada."
+      }
+    },
+    "tipsTitle": "Dónde ahorrar",
+    "faqHeading": "Preguntas frecuentes",
+    "faqs": [
+      {
+        "question": "¿Se puede disfrutar Positano con presupuesto?",
+        "answer": "Sí. Usa autobuses, planifica ferris selectivos y céntrate en miradores gratuitos y tiempo de playa."
+      },
+      {
+        "question": "¿Dónde conviene alojarse?",
+        "answer": "Para logística sencilla, cerca de <em>Chiesa Nuova</em>. Para ambiente de playa, más cerca de Spiaggia Grande (habrá más escaleras)."
+      }
+    ]
+  }
+}

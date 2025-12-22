@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Seite nicht gefunden",
+    "description": "Die angeforderte Seite existiert nicht."
+  },
+  "heading": "Seite nicht gefunden",
+  "message": "Vielleicht möchten Sie unsere Zimmer entdecken oder Ihren Aufenthalt reservieren.",
+  "linksTitle": "Nützliche Links",
+  "links": {
+    "home": "Startseite",
+    "deals": "Angebote",
+    "assistance": "Kontakt & Infos",
+    "about": "Über uns"
+  },
+  "buttonRooms": "Zimmer",
+  "buttonReserve": "Jetzt reservieren"
+}

@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Brikette Hostel 在波西塔诺 - 价格实惠的阿马尔菲海岸住宿",
+    "description": "预订波西塔诺唯一的经济型青年旅舍：坐拥露台海景、免费 Wi-Fi 与数字礼宾服务，获取渡轮、徒步与餐饮的即时贴士。",
+    "ogImageAlt": "从旅舍露台俯瞰波西塔诺全景"
+  },
+  "introSection": {
+    "title": "一个美丽的家外之家",
+    "titleParts": {
+      "before": "一个美丽的",
+      "between": "家外",
+      "home": "之家"
+    },
+    "paragraph1": "Hostel Brikette 是<strong>波西塔诺唯一的青年旅舍</strong>，提供<strong>经济实惠</strong>的住宿，让您近距离体验阿马尔菲海岸的精彩。",
+    "paragraph2": "旅舍坐落在悬崖上，拥有<strong>令人惊叹的海景</strong>、实用的设施，以及全天候的<strong>数字礼宾服务</strong>，为您提供渡轮时刻表、徒步路线、餐厅等本地信息。",
+    "paragraph3": "无论您选择宿舍床位还是私人房间，每间客房都旨在提供<strong>舒适</strong>和<strong>便利</strong>。"
+  },
+  "facilitiesModal": {
+    "title": "设施与服务",
+    "closeButton": "关闭",
+    "categories": [
+      {
+        "title": "通用设施",
+        "items": [
+          "禁烟客房",
+          "免费 WiFi",
+          "空调",
+          "暖气"
+        ]
+      },
+      {
+        "title": "浴室",
+        "items": [
+          "卫生纸",
+          "浴巾",
+          "床单",
+          "沙滩毛巾（额外收费）",
+          "厕所",
+          "淋浴"
+        ]
+      },
+      {
+        "title": "户外",
+        "items": [
+          "野餐区",
+          "户外家具",
+          "阳光露台",
+          "露台"
+        ]
+      },
+      {
+        "title": "活动",
+        "items": [
+          "徒步旅行（场外）"
+        ]
+      },
+      {
+        "title": "餐饮",
+        "items": [
+          "酒吧"
+        ]
+      },
+      {
+        "title": "互联网",
+        "items": [
+          "公共区域提供 WiFi，且免费。"
+        ]
+      },
+      {
+        "title": "停车",
+        "items": [
+          "无停车位"
+        ]
+      },
+      {
+        "title": "服务",
+        "items": [
+          "每日清洁服务",
+          "储物柜",
+          "礼宾服务",
+          "行李寄存"
+        ]
+      },
+      {
+        "title": "安全",
+        "items": [
+          "灭火器",
+          "公共区域闭路电视监控",
+          "门禁卡进入"
+        ]
+      },
+      {
+        "title": "使用语言",
+        "items": [
+          "英语",
+          "西班牙语",
+          "意大利语"
+        ]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "从 Brikette 青年旅社位于波西塔诺的露台俯瞰的全景",
+    "brandName": "Hostel Brikette",
+    "cityName": "波西塔诺",
+    "address": "意大利波西塔诺 Via G. Marconi 358",
+    "locationButton": "查看位置",
+    "contactButton": "联系邮箱",
+    "helpButton": "获取协助",
+    "reserveNow": "立即预订"
+  },
+  "quickLinksSection": {
+    "location": "位置",
+    "photosAndVideos": "照片与视频",
+    "facilitiesAndAmenities": "设施与服务",
+    "barMenu": "酒吧菜单",
+    "breakfastMenu": "早餐菜单"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "美丽的公共区域",
+    "slides": [
+      {
+        "title": "山坡圣地",
+        "text": "在我们阳光明媚的露台上醒来，欣赏清新的山景。",
+        "alt": "俯瞰波西塔诺山坡的露台"
+      },
+      {
+        "title": "露天绿洲",
+        "text": "沐浴阳光，结交新朋友。",
+        "alt": "配有竹棚遮阴的露台"
+      },
+      {
+        "title": "令人惊叹的海景",
+        "text": "当太阳沉入海中，享受地平线的魔力。",
+        "alt": "从旅舍露台眺望广阔海景"
+      }
+    ]
+  }
+}

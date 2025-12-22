@@ -1,0 +1,48 @@
+{
+  "seo": {
+    "title": "Capri com orçamento enxuto",
+    "description": "Como planejar Capri sem gastar demais: bilhetes, passeios, horários e refeições acessíveis."
+  },
+  "linkLabel": "Capri com orçamento enxuto",
+  "intro": [
+    "Um bate-volta a Capri pode continuar acessível se planear ferries, miradouros e refeições com antecedência."
+  ],
+  "sections": [
+    {
+      "id": "ferries",
+      "title": "Ferries e horários",
+      "body": [
+        "Reserve ferries cedo na época alta e tente regressar a meio da tarde para evitar a multidão das últimas partidas."
+      ]
+    },
+    {
+      "id": "free-views",
+      "title": "Miradouros gratuitos",
+      "body": [
+        "Giardini di Augusto (taxa simbólica), miradouros de Anacapri e os pontos de Marina Piccola oferecem paisagens incríveis por pouco dinheiro."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Opções de praia",
+      "body": [
+        "Existem áreas públicas; leve toalha e água para dispensar alugueres."
+      ]
+    },
+    {
+      "id": "food",
+      "title": "Comer em conta",
+      "body": [
+        "Compre panini ou pizza al taglio perto da marina e evite almoços demorados nas ruas mais movimentadas."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "A Gruta Azul compensa com orçamento apertado?",
+      "a": [
+        "É um extra caro e dependente do tempo; o teleférico de Anacapri é um destaque mais em conta."
+      ]
+    }
+  ]
+}

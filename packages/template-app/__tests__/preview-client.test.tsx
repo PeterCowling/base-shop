@@ -7,13 +7,19 @@ jest.mock("@/components/DynamicRenderer", () => ({
   default: (props: any) => <div data-cy="renderer" {...props} />,
 }));
 
-jest.mock("@ui", () => ({
+jest.mock("@ui/components/DeviceSelector", () => ({
   __esModule: true,
-  DeviceSelector: () => <div data-cy="selector" />,
+  default: () => <div data-cy="selector" />,
+}));
+
+jest.mock("@ui/utils/devicePresets", () => ({
   devicePresets: [
     { id: "phone", width: 10, height: 20 },
     { id: "tablet", width: 30, height: 40 },
   ],
+}));
+
+jest.mock("@ui/hooks/usePreviewDevice", () => ({
   usePreviewDevice: () => ["phone", jest.fn()],
 }));
 

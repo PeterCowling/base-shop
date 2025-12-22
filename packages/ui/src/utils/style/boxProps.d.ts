@@ -9,4 +9,3 @@ export declare function boxProps({ width, height, padding, margin }: BoxOptions)
     classes: string;
     style: React.CSSProperties;
 };
-//# sourceMappingURL=boxProps.d.ts.map

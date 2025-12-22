@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Amalfi–Positano komp | Hostel Brikette",
+    "description": "Komp Amalfi és Positano között: menetrendek, jegyek, beszállás Amalfiból és útvonal a Hostel Brikette-hez minimális lépcsővel."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette utazási útmutató",
+    "title": "Amalfi → Positano — Komp",
+    "description": "Kövesse ezeket a lépéseket, ha Amalfiból Positanóba komppal érkezik. Tippeket talál a jegyekhez, a beszállási ponthoz, az érkezés utáni teendőkhöz és ahhoz, hogyan jusson el a Hostel Brikette-hez a lehető legkevesebb lépcsővel."
+  },
+  "tip": {
+    "label": "Tipp",
+    "body": {
+      "before": "Más közlekedési lehetőséget keres? Nyissa meg a ",
+      "linkLabel": "Hogyan juthat el hozzánk áttekintést",
+      "after": " buszokhoz, kombinált útvonalakhoz és reptéri transzferekhez."
+    }
+  },
+  "sections": {
+    "overview": {
+      "title": "Utazás áttekintése",
+      "points": [
+        "Szezonban gyakori kompok járnak Amalfi és Positano között, csodás tengerparti panorámával.",
+        "A Travelmar üzemelteti a legtöbb járatot; a menetrend az évszaktól és az időjárástól függően változhat.",
+        "Indulás napján mindig ellenőrizze az aktuális menetrendet."
+      ]
+    },
+    "tickets": {
+      "title": "Jegyek és menetrend",
+      "intro": {
+        "before": "A legfrissebb időpontokat és árakat a ",
+        "travelmarLabel": "Travelmar",
+        "between": " és a ",
+        "positanoLabel": "Positano.com – kompmenetrend",
+        "after": " oldalán találja."
+      },
+      "points": [
+        "A csúcsszezonban érdemes előre, online jegyet vásárolni.",
+        "Érkezzen 15–20 perccel előbb a beszállási sorok miatt.",
+        "Tartsa kéznél a jegyet vagy QR-kódot az ellenőrzéshez."
+      ]
+    },
+    "amalfiBoarding": {
+      "title": "Beszállás Amalfi városában",
+      "points": [
+        "A legtöbb járat az amalfii vízparti mólókról indul, a Piazza Flavio Gioia közelében.",
+        "Keresse a Travelmar pultjait és a sétány menti táblákat.",
+        "Jegyén ellenőrizze a megfelelő mólót; bizonytalanság esetén a személyzet segít."
+      ]
+    },
+    "positanoArrival": {
+      "title": "Érkezés Positanóba",
+      "points": [
+        "A hajók Positano fő mólójára, a Spiaggia Grande strandra érkeznek.",
+        "Csomaggal érdemes igénybe venni a hordárszolgálatot vagy az Interno Positano buszt, hogy elkerülje a lépcsőket.",
+        "A meredek emelkedő nyári hőségben megterhelő lehet, ha nehéz bőröndöt visz."
+      ],
+      "cta": {
+        "before": "Lépésről lépésre leírást a mólótól a bejáratig a ",
+        "linkLabel": "Kikötő → Hostel Brikette útmutatóban",
+        "after": " talál."
+      }
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

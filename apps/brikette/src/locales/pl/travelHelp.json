@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "title": "Pomoc w podróży | Hostel Brikette Positano",
+    "description": "Dwuminutowe podsumowanie, jak do nas dotrzeć i dokąd goście zwykle jadą dalej, z linkami do pełnych przewodników transportowych i wycieczek."
+  },
+  "headings": {
+    "overview": "Pomoc w podróży w skrócie",
+    "excursions": "Szybkie wskazówki do popularnych wycieczek"
+  },
+  "content": {
+    "overview": "Po szczegółowe instrukcje zajrzyj najpierw do naszych <a href=\"/pl/jak-dojechac\">przewodników „Jak do nas dotrzeć”</a> — opisują pociągi, promy, prywatne transfery oraz to, co robić w razie opóźnień. Tutaj przypominamy tylko najważniejsze: zaplanuj ok. 2 godziny z Neapolu do Positano, kup bilety SITA przed wejściem i daj nam znać, jeśli się spóźniasz, abyśmy przygotowali zameldowanie.",
+    "excursions": "Gdy już się rozgościsz, kolekcja <a href=\"/pl/doswiadczenia\">„Doświadczenia”</a> prowadzi krok po kroku do najczęściej wybieranych wycieczek jednodniowych — promów na Capri, wejść na Szlak Bogów, autobusów do Amalfi i Ravello, pociągów do Pompejów i Wezuwiusza i wielu innych. Zajrzyj tam, aby sprawdzić pierwsze odjazdy, wskazówki biletowe i listę rzeczy do spakowania."
+  },
+  "slug": "travel-help"
+}

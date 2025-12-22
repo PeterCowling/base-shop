@@ -1,0 +1,81 @@
+{
+  "bar": {
+    "sections": {
+      "vodka": {
+        "note": "Preço inclui tónica, coca, coca zero ou sprite."
+      },
+      "rum": {
+        "note": "Escolha o rum e avise se prefere café como mixer. Café gelado/quente, espresso ou americano."
+      },
+      "gin": {
+        "note": "Com tónica Schweppes, gelo picado e limão da Costa Amalfitana."
+      },
+      "whisky": {
+        "note": "Escolha da nossa carta e informe se deseja gelo, água ou café. Café gelado/quente, espresso/americano."
+      }
+    },
+    "items": {
+      "aperolSpritz": {
+        "note": "O clássico spritz italiano, servido com gelo picado."
+      },
+      "limoncelloSpritz": {
+        "note": "Especialidade da Costa Amalfitana, com gelo picado."
+      },
+      "hugoSpritz": {
+        "note": "Espumante sobre hortelã, lima e flor de sabugueiro. Com gelo picado."
+      },
+      "rossiniSpritz": {
+        "note": "Espumante com sumo de morango. Com gelo picado."
+      },
+      "lemonStrawberryMargarita": {
+        "note": "Sumo de morango ou limão com tequila, Cointreau e gelo. Final clássico."
+      },
+      "lemonDropMartini": {
+        "note": "Sumo de limão fresco batido com Absolut Vodka, Cointreau e gelo."
+      },
+      "joseCuervoSilver": {
+        "note": "Servido puro com limão e sal, em Tequila Sunrise ou com soda/sprite."
+      },
+      "limoncelloShot": {
+        "note": "Clássico do sul da Itália, servido puro."
+      },
+      "threeScoops": {
+        "note": "Sabores: limão, chocolate, baunilha, avelã."
+      }
+    }
+  },
+  "breakfast": {
+    "items": {
+      "frenchToast": {
+        "note": "Clássica, servida com xarope."
+      },
+      "nutellaFrenchToast": {
+        "note": "Recheada com Nutella."
+      },
+      "addEggComboItem": {
+        "note": "Escolha um item do menu de ovos. Ex.: panquecas com xarope dourado + ovos mexidos por €15,50."
+      },
+      "addAdditionalSyrup": {
+        "note": "Escolha mais de um xarope. Ex.: panquecas com xarope dourado e Nutella por €14."
+      },
+      "veggieToast": {
+        "note": "Legumes sazonais sobre torrada."
+      },
+      "healthyDelight": {
+        "note": "Parfait de iogurte, granola e compota caseira."
+      },
+      "detoxMe": {
+        "note": "Espinafre, pepino, gengibre e limão."
+      },
+      "energizeMe": {
+        "note": "Laranja, cenoura, gengibre e limão."
+      },
+      "multiV": {
+        "note": "Maçã, cenoura, laranja, limão, gengibre."
+      },
+      "orangeJuice": {
+        "note": "Espremido na hora."
+      }
+    }
+  }
+}

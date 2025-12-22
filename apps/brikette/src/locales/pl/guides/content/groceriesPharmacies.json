@@ -1,0 +1,73 @@
+{
+  "seo": {
+    "title": "Sklepy spożywcze i apteki w Positano",
+    "description": "Lista sklepów i aptek, godziny otwarcia oraz wskazówki, gdzie kupić podstawowe rzeczy."
+  },
+  "linkLabel": "Sklepy spożywcze i apteki w Positano",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "mini-markets",
+      "title": "Mini-markets & delis",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "produce",
+      "title": "Produce & markets",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "pharmacies",
+      "title": "Pharmacies & health items",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "late-hours",
+      "title": "Late-night essentials",
+      "body": [
+        "A few alimentari stay open until 22:00 in high season; otherwise grab snacks at the 24-hour vending machines near the bus stops.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "gallery": [
+    {
+      "alt": "Positano main road shops",
+      "caption": "Shops along the main road"
+    },
+    {
+      "alt": "Tłumaczenie w przygotowaniu.",
+      "caption": "Fruit and essentials"
+    }
+  ],
+  "tips": [
+    "Tłumaczenie w przygotowaniu.",
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "faqs": [
+    {
+      "q": "Can I buy gluten-free items locally?",
+      "a": [
+        "Yes—look for “senza glutine” shelves in the mini-markets or ask the pharmacist; stock is limited so buy when you see it."
+      ]
+    },
+    {
+      "q": "Tłumaczenie w przygotowaniu.",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "fallback": "Tłumaczenie w przygotowaniu."
+}

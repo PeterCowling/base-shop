@@ -80,11 +80,17 @@ describe("authEnvSchema.safeParse", () => {
     const result = parse({ AUTH_PROVIDER: "oauth" });
     expect(result.success).toBe(false);
     const formatted = result.error.format();
+    expect(formatted.OAUTH_ISSUER?._errors).toContain(
+      "OAUTH_ISSUER is required when AUTH_PROVIDER=oauth",
+    );
     expect(formatted.OAUTH_CLIENT_ID?._errors).toContain(
       "OAUTH_CLIENT_ID is required when AUTH_PROVIDER=oauth",
     );
     expect(formatted.OAUTH_CLIENT_SECRET?._errors).toContain(
       "OAUTH_CLIENT_SECRET is required when AUTH_PROVIDER=oauth",
+    );
+    expect(formatted.OAUTH_REDIRECT_ORIGIN?._errors).toContain(
+      "OAUTH_REDIRECT_ORIGIN is required when AUTH_PROVIDER=oauth",
     );
   });
 });

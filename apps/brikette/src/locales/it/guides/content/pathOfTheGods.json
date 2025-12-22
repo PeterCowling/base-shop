@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Sentiero degli Dei da Hostel Brikette",
+    "description": "Percorso esatto dall'ostello ai punti di accesso del Sentiero degli Dei, con opzioni di trasporto e consigli di sicurezza."
+  },
+  "linkLabel": "Sentiero degli Dei da Brikette",
+  "intro": "Il Sentiero degli Dei è una delle camminate costiere più spettacolari d’Italia. Dall’ostello raggiungi l’inizio classico a Bomerano o l’uscita di Nocelle con gli autobus SITA.",
+  "sections": [
+    {
+      "id": "timing",
+      "title": "Quando partire",
+      "body": [
+        "Punta su aprile–giugno o settembre–ottobre: cielo limpido e temperature gestibili; in inverno la pioggia rende scivolosi i gradini in pietra.",
+        "A luglio–agosto parti prima delle 09:00 o dopo le 15:00 perché il sentiero è esposto e l’ombra è limitata."
+      ]
+    },
+    {
+      "id": "route-options",
+      "title": "Scegli il percorso",
+      "body": [
+        "Bomerano → Nocelle copre i 6,5 km classici in cresta con continui saliscendi: considera 2,5–3 ore di cammino più i trasferimenti.",
+        "Hai poco tempo? Salta sull’autobus per Nocelle, percorri il tratto panoramico di andata e ritorno fino a Colle Serra oppure scendi i 1.700 gradini verso Positano."
+      ]
+    },
+    {
+      "id": "navigation",
+      "title": "Orientamento e sicurezza",
+      "body": [
+        "Segui i segnavia bianco-rossi CAI e le frecce in legno “Sentiero degli Dei”; scarica una mappa offline perché il segnale cala nelle gole.",
+        "Il tracciato alterna scalini in pietra, terra battuta e ghiaia: indossa scarpe da trekking con grip e tieni i bastoncini ripiegati finché non inizi le discese ripide."
+      ]
+    },
+    {
+      "id": "amenities",
+      "title": "Acqua, snack e rientro",
+      "body": [
+        "Fai scorta nella piazza principale di Bomerano (bar, forno, ultimo bagno pubblico) prima di partire; a Nocelle trovi un chiosco e una granita al limone vicino alla chiesa.",
+        "Per tornare a Positano scendi le scale verso la spiaggia di Arienzo oppure prendi la SITA da Nocelle/Montepertuso: tieni un biglietto convalidato di riserva nello zaino."
+      ]
+    }
+  ],
+  "essentialsTitle": "Cosa portare",
+  "essentials": [
+    "Scarpe con buona aderenza, acqua, protezione solare: evita le ore centrali in estate.",
+    "I biglietti SITA si comprano prima di salire (tabacchi, edicole).",
+    "Considera ~4 ore totali includendo trasferimenti e pause foto."
+  ],
+  "typicalCostsTitle": "Costi indicativi",
+  "typicalCosts": [
+    "Autobus SITA (Positano ⇄ Nocelle/Bomerano): ~2–4 € a tratta in base al titolo di viaggio",
+    "Snack/acqua: 3–8 € (porta il necessario per risparmiare)",
+    "Sentiero: gratuito (nessun biglietto d’ingresso)"
+  ],
+  "steps": [
+    {
+      "name": "Raggiungi la fermata Chiesa Nuova",
+      "text": "Dall’ostello cammina in salita per ~80 m fino alla fermata SITA di Chiesa Nuova."
+    },
+    {
+      "name": "Autobus per Nocelle o Bomerano",
+      "text": "Prendi la SITA verso Amalfi: scendi a Nocelle per l’uscita breve, prosegui fino ad Agerola/Bomerano per la partenza classica."
+    },
+    {
+      "name": "Ingresso al sentiero",
+      "text": "A Nocelle segui i cartelli “Sentiero degli Dei” (fine). A Bomerano segui le indicazioni dalla piazza principale all’imbocco (inizio)."
+    },
+    {
+      "name": "Opzioni di rientro",
+      "text": "Concludi a Nocelle e scendi le scale fino a Positano oppure torna in autobus a Chiesa Nuova."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Da dove parto?",
+      "a": "Il percorso classico inizia a Bomerano (Agerola). In alternativa puoi percorrere il tratto breve da Nocelle."
+    },
+    {
+      "q": "Quanto dura?",
+      "a": "Calcola circa 4 ore totali includendo trasferimenti e pause panoramiche."
+    },
+    {
+      "q": "Cosa devo portare?",
+      "a": "Scarpe robuste, acqua, protezione solare e strati leggeri; evita le ore centrali in estate."
+    }
+  ],
+  "faqsTitle": "Domande frequenti",
+  "galleryTitle": "Galleria fotografica",
+  "gallery": {
+    "items": [
+      {
+        "alt": "Vista lungo il Sentiero degli Dei",
+        "caption": "Lungo il sentiero"
+      },
+      {
+        "alt": "Panorama del borgo di Nocelle",
+        "caption": "Vedute di Nocelle"
+      }
+    ]
+  },
+  "toc": {
+    "onThisPage": "In questa pagina",
+    "essentials": "Cosa portare",
+    "costs": "Costi indicativi",
+    "faqs": "Domande frequenti",
+    "gallery": "Galleria fotografica"
+  }
+}

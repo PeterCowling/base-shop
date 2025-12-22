@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Salerne : l'autre porte d'entrée de la côte amalfitaine",
+    "description": "Pourquoi utiliser Salerne, liaisons ferries/bus, quartiers où séjourner et services utiles."
+  },
+  "linkLabel": "Salerne : l'autre porte d'entrée de la côte amalfitaine",
+  "intro": [
+    "Salerne est une porte d'entrée futée vers la côte amalfitaine, avec de meilleures liaisons ferroviaires et des rues plus calmes que Naples."
+  ],
+  "sections": [
+    {
+      "id": "why",
+      "title": "Pourquoi arriver par Salerne",
+      "body": [
+        "Les trains à grande vitesse depuis Rome ou Milan terminent ici ; vous descendez du Frecciarossa et rejoignez l'embarcadère des ferries en quelques minutes.",
+        "Les hébergements et restaurants sont moins chers qu'à Positano, idéal pour la première ou la dernière nuit."
+      ]
+    },
+    {
+      "id": "connections",
+      "title": "Correspondances ensuite",
+      "body": [
+        "Les ferries saisonniers rejoignent Positano en environ 70 minutes. Les bus longent la côte toute l'année ; achetez vos billets UnicoCampania avant de monter.",
+        "Des navettes relient l'aéroport de Naples Capodichino en 60 minutes si vous repartez en avion après votre séjour."
+      ]
+    },
+    {
+      "id": "staying",
+      "title": "Séjourner à Salerne",
+      "body": [
+        "Flânez sur la promenade du lungomare, dans le centre médiéval et jusqu'au château d'Arechi pour les couchers de soleil.",
+        "Réservez une trattoria autour de la Via Roma pour savourer d'excellents fruits de mer sans les prix de Positano."
+      ]
+    }
+  ],
+  "tips": [
+    "Si vous arrivez tard, passez la nuit à Salerne et prenez le premier ferry ou bus vers Positano pour des correspondances tranquilles.",
+    "Utilisez la consigne près de la gare (5 à 7 € par bagage) pour explorer les mains libres entre train et ferry."
+  ],
+  "faqs": [
+    {
+      "q": "Les ferries sont-ils fiables au départ de Salerne ?",
+      "a": [
+        "Oui en été. En intersaison, des annulations météo peuvent survenir : gardez le bus en solution de repli."
+      ]
+    },
+    {
+      "q": "Combien de temps avant dois-je arriver pour un train ?",
+      "a": [
+        "Arrivez 15 minutes avant le départ pour repérer votre quai et valider les billets régionaux si nécessaire."
+      ]
+    }
+  ]
+}

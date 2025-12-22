@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Mejor época para visitar Positano",
+    "description": "Mes a mes: clima, afluencia y ferris disponibles."
+  },
+  "linkLabel": "Mejor época para visitar Positano",
+  "intro": [
+    "Planifica tu visita con expectativas realistas sobre clima, afluencia y disponibilidad de ferris.",
+    "Usa la matriz por temporadas y las notas mes a mes para elegir cuándo Positano encaja con tus prioridades."
+  ],
+  "tocTitle": "En esta página",
+  "toc": [
+    {
+      "href": "#matrix",
+      "label": "Matriz clima / afluencia / precios"
+    },
+    {
+      "href": "#months",
+      "label": "Notas mes a mes"
+    },
+    {
+      "href": "#faqs",
+      "label": "Preguntas frecuentes"
+    }
+  ],
+  "sections": [
+    {
+      "id": "matrix",
+      "title": "Matriz de clima / afluencia / precios",
+      "body": [
+        "Temporada alta (jun–ago) = calor, multitudes y precios máximos. Media (abr–may, sep–oct) = clima más suave y mejor relación calidad-precio. Invierno (nov–mar) = calma con servicios reducidos."
+      ]
+    },
+    {
+      "id": "months",
+      "title": "Notas mes a mes",
+      "body": [
+        "Abril: comienzan los ferris; temperaturas suaves y menos gente.",
+        "Mayo: clima excelente; más salidas; fines de semana con más afluencia.",
+        "Junio–agosto: temporada punta; calor y colas — reserva transporte y actividades con antelación.",
+        "Septiembre: mar cálido y un respiro respecto a agosto.",
+        "Octubre: temporada media; los ferris se reducen hacia fin de mes.",
+        "Noviembre–marzo: temporada baja tranquila con servicios reducidos; los autobuses son el soporte principal.",
+        "La frecuencia de ferris sube en primavera, alcanza el pico en verano y disminuye a finales de octubre."
+      ]
+    }
+  ],
+  "schemaMonths": [
+    {
+      "name": "Abril",
+      "note": "Inicio de temporada de ferris; temperaturas suaves; poca afluencia."
+    },
+    {
+      "name": "Mayo",
+      "note": "Clima excelente; ferris frecuentes; fines de semana más concurridos."
+    },
+    {
+      "name": "Junio–agosto",
+      "note": "Temporada alta; mucho calor; reserva transporte y actividades con antelación."
+    },
+    {
+      "name": "Septiembre",
+      "note": "Mar cálido; algo menos de gente que en agosto."
+    },
+    {
+      "name": "Octubre",
+      "note": "Temporada media; los ferris se reducen a finales de mes."
+    },
+    {
+      "name": "Noviembre–marzo",
+      "note": "Ambiente tranquilo; muchos servicios reducidos; los autobuses son el principal transporte."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuándo está el mar más cálido?",
+      "a": [
+        "De finales de junio a principios de septiembre el agua suele estar más templada para nadar."
+      ]
+    }
+  ]
+}

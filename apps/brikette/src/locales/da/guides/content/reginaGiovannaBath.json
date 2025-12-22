@@ -1,0 +1,108 @@
+{
+  "seo": {
+    "title": "Guide til Bagni della Regina Giovanna",
+    "description": "Planlæg en svømmetur uden trængsel i Sorrentos naturlige pool med busvejledning, pakkeliste og sikkerhedstips."
+  },
+  "linkLabel": "Guide til Bagni della Regina Giovanna",
+  "intro": [
+    "Bagni della Regina Giovanna er en kollapset havgrotte på Sorrentohalvøen, hvor klart vand flyder ind i en beskyttet, naturlig pool. Her er ingen strandklubber eller snackbarer – kun kalkstensklipper, smaragdgrønne lavvande og fotovenlige buer.",
+    "Brug guiden til at nå bugten med offentlig bus, pakke som en lokal og få mest muligt ud af svømmeafsatsene, før du vender tilbage til Sorrento for mad."
+  ],
+  "toc": [
+    { "href": "#why-go", "label": "Derfor skal du tage af sted" },
+    { "href": "#getting-there", "label": "Sådan kommer du dertil" },
+    { "href": "#what-to-pack", "label": "Hvad skal du pakke" },
+    { "href": "#swimming", "label": "Svømning & sikkerhed" },
+    { "href": "#pair-it", "label": "Kombinér med Sorrento" }
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Hvorfor Bagni della Regina Giovanna er omvejen værd",
+      "body": [
+        "De romerske villaruiner over poolen indrammer turkis vand, der strømmer ind fra havet gennem en naturlig bue. Kom tidligt, og du kan flyde under klipperne med kun få lokale omkring dig.",
+        "I modsætning til Positanos lidos er stedet gratis året rundt. Tag alt med selv og vær klar til at klatre over klipper – belønningen er et dramatisk svømmehul, der er smukt ved solnedgang."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Sådan tager du bussen til stiens begyndelse",
+      "body": [
+        "Fra Hostel Brikette tager du SITA-bussen til Sorrento og skifter til lokalbus linje A eller C (drives af EAV). Bed om \"Capo di Sorrento\" eller \"Regina Giovanna\", så chaufføren ved, at du vil hoppe af ved stiens start.",
+        "Stoppet ligger omkring 15 minutter fra Sorrentos station. Følg Via Capo, indtil du ser skilte mod \"Bagni della Regina Giovanna\", og tag den asfalterede vej ned. Beregn 10 minutter til ruinerne og yderligere fem for at gå ned ad stenstrinene til bugten.",
+        "Returbusser kører cirka hvert 30. minut til tidlig aften; hold øje med køreplanen og planlæg at være tilbage på vejen før solnedgang."
+      ]
+    },
+    {
+      "id": "what-to-pack",
+      "title": "Hvad du skal pakke, når der ingen faciliteter er",
+      "body": [
+        "Der er ingen livreddere, toiletter eller kiosker på stedet. Pak vand, snacks og en pose til affald, så du kan bære alt ud igen.",
+        "Brug solide sko til den stenede sti, og tag badesko med til de glatte afsatser. Et let håndklæde og en drybag gør det lettere at holde tingene tørre.",
+        "Om sommeren skal du tage solcreme, hat og mindst 1,5 liter vand per person – der er begrænset skygge, når solen står højt."
+      ]
+    },
+    {
+      "id": "swimming",
+      "title": "Svømning, hop og sikkerhed",
+      "body": [
+        "Poolen er dyb nok til sikre svømmere, men der er ingen stige. Gå roligt i via naturlige klippehylder, og undgå at dykke, medmindre du selv har tjekket dybden.",
+        "Lokale hopper nogle gange fra buen ved højvande; følg kun deres eksempel, hvis havet er roligt, og du er tryg ved højden. Ellers kan du flyde inde i poolen og klatre over til siden ud mod havet for bredere udsigt.",
+        "Efter storme kan trapperne blive glatte af alger. Gå forsigtigt, og overvej handsker, hvis du bruger gelænderet for balancen."
+      ]
+    },
+    {
+      "id": "pair-it",
+      "title": "Kombinér svømmeturen med Sorrentos klassikere",
+      "body": [
+        "Tag en picnic med eller planlæg en sen frokost i Sorrentos historiske centrum efter svømmeturen. Bar Ruccio ved Marina Piccola og Da Emilia langs havnepromenaden serverer begge afslappede fiskeretter med udsigt.",
+        "Hvis du bliver til solnedgang, så beregn 20 minutter til at gå op til busstoppet og tage bussen tilbage til byen. Tog og færger mod Napoli og Amalfikysten bliver færre efter kl. 20.30, så tjek videreforbindelserne, før du bliver hængende."
+      ]
+    }
+  ],
+  "essentialsTitle": "Det kan du forvente",
+  "essentials": [
+    "Gratis naturpool hugget i klipperne vest for Sorrento – ingen liggestole eller restauranter.",
+    "Bus + kort gåtur: tag EAV-bus A eller C til Capo di Sorrento og følg den skiltede vej ned.",
+    "Stenet adgang med ujævne trin; brug solide sko og tag alt affald med tilbage."
+  ],
+  "typicalCostsTitle": "Typiske udgifter",
+  "typicalCosts": [
+    "SITA-bus Positano ⇄ Sorrento: €2–€3 pr. stræk afhængigt af billettype.",
+    "EAV-lokalbus til Capo di Sorrento: €1,50, hvis den købes på forhånd.",
+    "Taxa tilbage til Sorrento (hvis du misser bussen): €18–€22 for op til fire personer."
+  ],
+  "tipsTitle": "Hurtige tips",
+  "tips": [
+    "Stem alle busbilletter – kontrollører er aktive på Sorrento-ruterne, især om sommeren.",
+    "Ankom før kl. 10 for roligere vand og færre gæster på de smalle klippehylder.",
+    "Medbring en drybag og fastgør den til klipperne; der er ingen skabe eller bemandede faciliteter."
+  ],
+  "warningsTitle": "Værd at vide",
+  "warnings": [
+    "Ingen livreddere eller redningsudstyr – svøm inden for din komfortzone og hold øje med tidevandet.",
+    "Begrænset skygge efter middag; klipperne bliver hurtigt varme i juli og august.",
+    "Stien er ujævn og glat, når den er våd; undgå klipklapper og vær ekstra forsigtig efter regn."
+  ],
+  "faqsTitle": "Ofte stillede spørgsmål om Bagni della Regina Giovanna",
+  "faqs": [
+    {
+      "q": "Må jeg tage mad og drikke med til poolen?",
+      "a": [
+        "Ja, men der er ingen skraldespande – pak din egen picnic, og tag alt med tilbage. Frosne vandflasker fungerer som køleelementer og holder sig kolde til busturen hjem."
+      ]
+    },
+    {
+      "q": "Er der et sted at klæde om eller gå på toilettet?",
+      "a": [
+        "Faciliteterne er begrænset til ruinerne øverst på stien, og de er ofte lukkede. Skift tøj på dit overnatningssted, eller brug toiletterne i Sorrento, før du tager bussen."
+      ]
+    },
+    {
+      "q": "Hvor lang tid skal jeg regne med tur-retur fra Positano?",
+      "a": [
+        "Afsæt omkring tre timer i alt: én time hver vej til busserne og skift, plus mindst en time på stedet. Læg ekstra tid ind, hvis du vil udforske Sorrento bagefter."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "title": "Always verify transport details",
+  "items": {
+    "buses": "Buses: check SITA Sud official timetables — <sitaLink>sitasudtrasporti.it</sitaLink>.",
+    "ferries": "Ferries: operators publish seasonal routes and times (weather-dependent). See <travelmarLink>Travelmar</travelmarLink>, <nlgLink>NLG</nlgLink>.",
+    "airlink": "Tłumaczenie w przygotowaniu.",
+    "driving": "Tłumaczenie w przygotowaniu.",
+    "premium": "Tłumaczenie w przygotowaniu."
+  },
+  "srLabel": "Transport notice"
+}

@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "title": "Esperienze all'Hostel Brikette – Terrazza bar, escursioni e concierge digitale",
+    "description": "Sorseggia spritz al tramonto, unisciti a escursioni curate e usa il concierge digitale per pianificare giornate senza stress sulla Costiera Amalfitana."
+  },
+  "hero": {
+    "eyebrow": "Esperienze",
+    "title": "Tramonti, mattine lente e consigli da chi vive qui",
+    "description": "Abbina il tuo soggiorno a drink in terrazza, escursioni curate e a un concierge digitale che ti aggiorna prima ancora di arrivare.",
+    "supporting": "Tutte le attività sono aperte agli ospiti registrati; se viaggi con amici esterni scrivici e verifichiamo la disponibilità.",
+    "primaryCta": "Prenota il tuo soggiorno",
+    "secondaryCta": "Apri il menu del bar",
+    "tertiaryCta": "Scrivi al concierge digitale",
+    "primaryCtaAria": "Prenota il tuo soggiorno all'Hostel Brikette",
+    "secondaryCtaAria": "Visualizza il menu del bar dell'Hostel Brikette",
+    "tertiaryCtaAria": "Invia un messaggio al concierge digitale dell'Hostel Brikette",
+    "breakfastCta": "View the breakfast menu",
+    "breakfastCtaAria": "View the breakfast menu"
+  },
+  "sections": {
+    "bar": {
+      "eyebrow": "Terrazza bar",
+      "title": "Terrazza bar al tramonto",
+      "description": "Ogni sera trasformiamo la terrazza in un salotto con spritz, vini campani e DJ set occasionali.",
+      "highlights": [
+        "Spritz artigianali e vini locali serviti ghiacciati.",
+        "Serate sociali e degustazioni nelle settimane più animate.",
+        "Ampia terrazza con vista mare perfetta per le foto al tramonto."
+      ],
+      "imageAlt": "Ospiti che brindano al tramonto sulla terrazza dell'Hostel Brikette."
+    },
+    "hikes": {
+      "eyebrow": "Escursioni",
+      "title": "Escursioni e gite curate",
+      "description": "Ti aiutiamo a organizzare il Sentiero degli Dei, navette condivise e gite in traghetto in tutta la Costiera Amalfitana.",
+      "highlights": [
+        "Mappe offline e orari dei trasporti aggiornati ogni mattina.",
+        "Passeggiate guidate dallo staff nei periodi di maggiore affluenza.",
+        "Suggerimenti su cosa portare e piani alternativi in caso di meteo incerto."
+      ],
+      "imageAlt": "Ospiti dell'ostello durante un'escursione sul Sentiero degli Dei sopra Positano."
+    },
+    "concierge": {
+      "eyebrow": "Concierge digitale",
+      "title": "Concierge digitale sempre attivo",
+      "description": "Ricevi avvisi in tempo reale su traghetti, ristoranti e idee su misura per il tuo ritmo e il tuo budget.",
+      "highlights": [
+        "Traduzione in arrivo.",
+        "Notifiche automatiche su variazioni di bus e traghetti.",
+        "Suggerimenti personalizzati costruiti sul tuo itinerario."
+      ],
+      "imageAlt": "Schermo di smartphone con la chat del concierge digitale dell'Hostel Brikette."
+    }
+  },
+  "faq": {
+    "title": "Domande frequenti",
+    "items": [
+      {
+        "question": "Devo prenotare in anticipo le attività?",
+        "answer": [
+          "La maggior parte delle serate in terrazza e delle escursioni si conferma in reception il giorno stesso.",
+          "Per tour privati o uscite in barca possiamo tenerti un posto: scrivi al concierge digitale almeno 24 ore prima."
+        ]
+      }
+    ]
+  },
+  "cta": {
+    "title": "Pronto a vivere la Costiera come un locale?",
+    "subtitle": "Prenota il letto, sfoglia il menu del bar e raccontaci cosa vuoi fare: ti seguiamo passo dopo passo.",
+    "buttons": {
+      "book": "Prenota ora",
+      "events": "Bar & eventi",
+      "concierge": "Contatta il concierge",
+      "breakfast": "Breakfast menu"
+    }
+  },
+  "title": "Esperienze all'Hostel Brikette",
+  "intro": "Sorseggia uno spritz sulla nostra terrazza, partecipa a escursioni panoramiche e ricevi consigli immediati dal concierge digitale.",
+  "items": {
+    "bar": "Bar in terrazza al tramonto con spritz e vini locali.",
+    "hikes": "Escursioni guidate e autonome con mappe, orari e suggerimenti sull'attrezzatura.",
+    "concierge": "Concierge digitale con avvisi sui traghetti, itinerari e risposte on-demand."
+  },
+  "guideCollections": {
+    "heading": "Approfondisci con le nostre guide di esperienze",
+    "description": "Itinerari, escursioni, giornate in barca e spunti culturali curati dal nostro team e dagli ospiti.",
+    "taggedHeading": "Guide di esperienze con il tag {{tag}}",
+    "taggedDescription": "Queste storie mettono in evidenza momenti {{tag}}. Rimuovi il filtro per scoprirle tutte.",
+    "empty": "Non abbiamo ancora guide di esperienze per {{tag}}. Prova un altro tag o rimuovi il filtro.",
+    "clearFilter": "Mostra tutte le guide di esperienze",
+    "cardCta": "Esplora la guida esperienziale {{guideTitle}}",
+    "filterHeading": "Filter experiences guides",
+    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "grouped": {
+      "beaches": {
+        "guides": {
+          "heading": "Beach guides",
+          "description": "Pick the right stretch of sand and plan your day."
+        },
+        "directions": {
+          "heading": "Beach directions",
+          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        }
+      }
+    }
+  }
+}

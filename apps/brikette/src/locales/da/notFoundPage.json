@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Siden blev ikke fundet",
+    "description": "Den anmodede side findes ikke."
+  },
+  "heading": "Siden blev ikke fundet",
+  "message": "Udforsk vores værelser eller book dit ophold.",
+  "linksTitle": "Nyttige links",
+  "links": {
+    "home": "Hjem",
+    "deals": "Tilbud",
+    "assistance": "Kontakt & info",
+    "about": "Om os"
+  },
+  "buttonRooms": "Værelser",
+  "buttonReserve": "Book nu"
+}

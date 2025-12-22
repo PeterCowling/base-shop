@@ -1,0 +1,43 @@
+{
+  "slug": "deposits-payments",
+  "meta": {
+    "title": "Deposits and Payments Guide for Positano Hostel",
+    "description": "Your go-to guide on deposits, payment methods, booking confirmations, changes, cancellations, and security holds when reserving your stay at Positano Hostel."
+  },
+  "headings": {
+    "submittingBookingRequest": "How to Submit Your Booking Request",
+    "processingBookingRequest": "How We Process Your Request",
+    "decliningBookingRequest": "When We May Decline a Request",
+    "requestSizeLimit": "Size Limits for One Request",
+    "counterOffer": "What Happens if Your Room Isn't Available",
+    "prepaidNonRefundableBookingsPolicy": "Pre-paid Non-Refundable Bookings",
+    "confirmationEmail": "Your Confirmation Email",
+    "numberOfGuestsIncluded": "Who Is Included in Your Booking",
+    "scopeOfFacilitiesIncluded": "What Is Included in Your Stay",
+    "financialObligation": "Your Financial Responsibility",
+    "roomAllocation": "How Beds and Rooms Are Assigned",
+    "allocatingUpgrades": "Room Upgrades",
+    "thirdPartyPayments": "Paying Through Third-Party Sites",
+    "bookingRequestDeposits": "Booking Deposits",
+    "bookingRequestPreauthorisations": "Card Pre-authorisations",
+    "safeguardingProcess": "Our Safeguarding Hold"
+  },
+  "content": {
+    "submittingBookingRequest": "Send us your booking request through an authorised Online Travel Agent (OTA) or directly on our website — chats or walk-ins alone don't count. By clicking 'Book', you confirm that all names, dates, and stay length are correct and that you accept our Terms & Conditions.",
+    "processingBookingRequest": "We start processing your request as soon as we successfully receive any required deposit, pre-authorisation, or payment using one of our accepted payment methods. Make sure the booking shows the name of the credit-card holder who will pay. If the payer's name is different, email us a short authorisation from the cardholder before we process your request.",
+    "decliningBookingRequest": "We rarely decline a booking, but we reserve the right to do so at our discretion — for example, if payment fails, required information is missing, or the request breaches our Terms & Conditions.",
+    "requestSizeLimit": "One booking request can cover up to seven (7) consecutive nights and a maximum of five (5) guests. Need a longer stay or a bigger group? Simply split it into separate requests.",
+    "counterOffer": "If your preferred room is already taken, we'll email you a counter-offer with the closest alternative. Accept the offer and complete the payment or pre-authorisation to lock in your stay.",
+    "prepaidNonRefundableBookingsPolicy": "Choosing a Pre-paid Non-Refundable rate saves you money but requires full payment upfront. We'll try your card up to three times. If all attempts fail, we'll cancel the request. These bookings cannot be refunded or modified.",
+    "confirmationEmail": "Once your payment clears, we'll send a confirmation email to the address you gave us. It lists your booking reference, arrival date, length of stay, and any extras. Read it carefully and tell us immediately if anything looks wrong.",
+    "numberOfGuestsIncluded": "Your booking automatically covers the following:\n• 1 guest per single bed\n• Up to 2 guests per double bed\n• Up to the advertised capacity of any apartment you book\nFor safety and comfort we can't accommodate extra guests above the room's limit.",
+    "scopeOfFacilitiesIncluded": "Every guest receives:\n• Fresh linen and a keycard\n• Use of the shared showers\n• Hot water during scheduled hours (about 07:00-10:30 and 17:00-22:30)\n• Access to our communal areas\nOther perks (breakfast, Wi-Fi, luggage storage, etc.) are complimentary and follow their own simple rules.",
+    "financialObligation": "The credit-card holder named on your booking is liable for all charges — room fees, damages, cleaning fees, fines, or penalties for breaking house rules. Unpaid amounts may be charged directly to the card on file.",
+    "roomAllocation": "We guarantee you the bed type and room category you booked. Dorm bookings secure a bed in the chosen category, but we can't promise that groups will share the same room. Beds in dorms are chosen first-come, first-served when you check in.",
+    "allocatingUpgrades": "Sometimes we upgrade you to a better room free of charge, or you can pay to upgrade when you book. If the free upgrade later becomes impractical, we may move you back to the category you originally paid for.",
+    "thirdPartyPayments": "When you book through an OTA, you'll pay through their system under their terms. We never see your card details from the OTA and aren't liable for issues on their platform. Always check that your payment went through and that you received a confirmation.",
+    "bookingRequestDeposits": "Some rates need a deposit to hold the room. Pre-paid rates require 100% up-front. Deposits are non-refundable. If we can't take the deposit, the booking request is automatically cancelled.",
+    "bookingRequestPreauthorisations": "For flexible rates we may pre-authorise your card for the first night or the full stay to guarantee your booking. If the pre-authorisation fails, we'll decline the request.",
+    "safeguardingProcess": "When you check in, we may place a security hold equal to one night per guest to cover possible fines, fees, extensions, or damages. If a card hold isn't possible, you can leave the same amount in cash or use another guest's card. If neither option works, we unfortunately have to cancel your booking."
+  }
+}

@@ -89,7 +89,12 @@ describe("/api/rental POST", () => {
       "2025-01-01",
       "2025-01-05",
     );
-    expect(addOrder).toHaveBeenCalledWith("bcd", "sess", 50, "2030-01-02");
+    expect(addOrder).toHaveBeenCalledWith({
+      shop: "bcd",
+      sessionId: "sess",
+      deposit: 50,
+      expectedReturnDate: "2030-01-02",
+    });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
   });
@@ -143,7 +148,12 @@ describe("/api/rental POST", () => {
     expect(readInventory).not.toHaveBeenCalled();
     expect(readProducts).not.toHaveBeenCalled();
     expect(reserveRentalInventory).not.toHaveBeenCalled();
-    expect(addOrder).toHaveBeenCalledWith("bcd", "sess", 50, "2030-01-02");
+    expect(addOrder).toHaveBeenCalledWith({
+      shop: "bcd",
+      sessionId: "sess",
+      deposit: 50,
+      expectedReturnDate: "2030-01-02",
+    });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
   });
@@ -204,7 +214,12 @@ describe("/api/rental POST", () => {
       "2025-01-01",
       "2025-01-05",
     );
-    expect(addOrder).toHaveBeenCalledWith("bcd", "sess", 50, "2030-01-02");
+    expect(addOrder).toHaveBeenCalledWith({
+      shop: "bcd",
+      sessionId: "sess",
+      deposit: 50,
+      expectedReturnDate: "2030-01-02",
+    });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
   });

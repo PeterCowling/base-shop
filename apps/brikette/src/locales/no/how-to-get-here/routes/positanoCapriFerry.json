@@ -1,0 +1,104 @@
+{
+  "meta": {
+    "title": "Positano til Capri med ferge | Hostel Brikette",
+    "description": "Trinn for trinn fra Hostel Brikette til Positanos havn, billetter, ombordstigningstips og fergen til Capri."
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette reiseguide",
+    "title": "Positano til Capri – ferge",
+    "description": "Følg disse trinnene for å gå fra Hostel Brikette til Positanos havn, kjøpe fergebilletter og gå om bord til Capri. Inkluderer praktiske tids- og operatørtips."
+  },
+  "tip": {
+    "label": "Tips",
+    "intro": "Trenger du alternativer hvis sjøen er urolig? Åpne ",
+    "linkLabel": "Oversikt: Slik kommer du hit",
+    "outro": " for alternative ruter."
+  },
+  "journeyOverview": {
+    "title": "Reiseoversikt",
+    "paragraphs": [
+      "Ferger mellom Positano og Capri går hyppigst fra våren til tidlig høst og kan bli kansellert ved grov sjø. Reisetiden er vanligvis 30–60 minutter avhengig av operatør og fartøy."
+    ],
+    "linksIntro": "Sammenlign tider og bestill:",
+    "linksSeparator": "·",
+    "linksSuffix": ".",
+    "links": {
+      "capriNet": "Capri.net – Capri ↔ Positano",
+      "positanoCom": "Positano.com (samlet rutetabell)"
+    }
+  },
+  "photoGuide": {
+    "title": "Fotoguide (referanse)",
+    "description": "Visuelle referanser for hvert trinn av gåturen og for billettområdet ved havnen.",
+    "items": {
+      "mapOverview": {
+        "alt": "Kartoversikt over gangruten fra Hostel Brikette til Positanos havn",
+        "caption": "Kartoversikt: Hostel til Positanos havn"
+      },
+      "spiaggiaApproach": {
+        "alt": "Foto av innfarten til Positanos Spiaggia Grande og turistkaien",
+        "caption": "Innfart til Spiaggia Grande (turisthavnen)"
+      },
+      "spiaggiaDetail": {
+        "alt": "Detaljkart som viser høyresiden av Spiaggia Grande der havnen ligger",
+        "caption": "Detaljkart: havnens plassering på Spiaggia Grande"
+      },
+      "ticketBooths": {
+        "alt": "Fergeoperatørenes billettboder ved Positano havn med skilt for neste avgang",
+        "caption": "Fergeoperatørenes billettboder"
+      },
+      "point1": {
+        "alt": "Punkt 1: krysset ved Tabacchi i Via G. Marconi nær Hostel Brikette",
+        "caption": "Punkt 1: Tabacchi-krysset (ta til høyre)"
+      },
+      "point2": {
+        "alt": "Punkt 2: første hårnålssving hvor du forlater veien for å ta trappene",
+        "caption": "Punkt 2: forlat veien, ta trappene"
+      },
+      "point3": {
+        "alt": "Punkt 3: enden av trappene ved veien før du krysser",
+        "caption": "Punkt 3: trappene ender ved veien"
+      },
+      "point4": {
+        "alt": "Punkt 4: kryss veien, ta kort til venstre og deretter trappene",
+        "caption": "Punkt 4: kryss veien, ta til venstre, trapper"
+      },
+      "point5": {
+        "alt": "Punkt 5: hvelvgang som leder mot stranden og havnen",
+        "caption": "Punkt 5: hvelvgang til havnen"
+      }
+    }
+  },
+  "toPort": {
+    "title": "Gå til Positanos havn",
+    "steps": [
+      "Gå ut av hostellet gjennom hoveddøren.",
+      "Gå ned trappene til veien, ta til venstre og gå litt over 100 m (≈330 fot).",
+      "Ved det første krysset (punkt 1) tar du til høyre ved Tabacchi (første bygning på høyre side).",
+      "Fortsett nedover; ved den første hårnålssvingen (punkt 2) forlater du veien og tar trappene rett frem.",
+      "Nederst i trappene når du veien (punkt 3); kryss og fortsett rett frem til neste trapper.",
+      "Når de trappene ender ved veien, kryss over, ta til venstre og gå ~10 m (≈30 fot) til punkt 4.",
+      "Ta til høyre av veien og følg trappene nedover.",
+      "Nederst tar du til høyre mot punkt 5, og fortsetter deretter under hvelvgangen på høyre side.",
+      "Havnen (Spiaggia Grande-brygga) ligger omtrent 50 m (≈160 fot) foran på høyre side av stranden."
+    ]
+  },
+  "tickets": {
+    "title": "Kjøp billetter og gå om bord",
+    "tips": [
+      "Ved havnen har hver fergeoperatør sin egen billettbod.",
+      "Skiltet ved boden viser neste avgang for operatøren.",
+      "Kjøp billetter direkte fra operatøren. Kom 20–30 minutter tidlig for å løse inn eventuelle kuponger og stille deg i kø.",
+      "Etter kjøpet går du til enden av brygga og venter på at ombordstigningen starter."
+    ]
+  },
+  "arrival": {
+    "title": "Ved ankomst på Capri",
+    "paragraphs": [
+      "Gå i land ved Capris turisthavn (Marina Grande). Følg skiltene til taubanen, drosjer eller busser avhengig av planene dine. I høysesongen kan køene være lange – returbilletter kjøpt på forhånd kan hjelpe på travle helger.",
+      "Tilbaketuren til Positano: sjekk ettermiddagsavganger og værmeldinger. Hvis fergene kanselleres, vurder å utsette returen eller reise via Sorrento neste dag."
+    ],
+    "linkIntro": "Bagasjevennlig gangveiledning for ankomster i Positano finner du i:",
+    "linkLabel": "Ferjekai → Hostel Brikette"
+  }
+}

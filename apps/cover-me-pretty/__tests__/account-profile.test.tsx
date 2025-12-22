@@ -17,7 +17,8 @@ jest.mock("next/navigation", () => ({
 
 import { getCustomerSession } from "@auth";
 import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
-import { ProfilePage, ProfileForm } from "@ui/account";
+import { render, screen } from "@testing-library/react";
+import { ProfilePage } from "@ui/account";
 import { redirect } from "next/navigation";
 
 describe("/account/profile", () => {
@@ -45,14 +46,10 @@ describe("/account/profile", () => {
     expect(getCustomerSession).toHaveBeenCalled();
     expect(getCustomerProfile).toHaveBeenCalledWith("cust1");
     expect(redirect).not.toHaveBeenCalled();
-    expect(element.type).toBe("div");
-    expect(element.props.children[0].props.children).toBe("Profile");
-    const form = element.props.children[1];
-    expect(form.type).toBe(ProfileForm);
-    expect(form.props).toMatchObject({
-      name: "Jane Doe",
-      email: "jane@example.com",
-    });
+    render(element);
+    expect(screen.getByRole("heading", { name: "Profile" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Name")).toHaveValue("Jane Doe");
+    expect(screen.getByLabelText("Email")).toHaveValue("jane@example.com");
   });
 
   it("redirects when session token expired", async () => {

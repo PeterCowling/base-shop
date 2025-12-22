@@ -1,0 +1,8 @@
+{
+  "articleCount_one": "{{count}} article publié",
+  "articleCount_other": "{{count}} articles publiés",
+  "topTagsHeading": "Tags principaux",
+  "robots": {
+    "noindexFollow": "noindex,follow"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Walk back to Hostel Brikette from Spiaggia Grande",
+    "description": "Follow the hostel's staircase checkpoints for the 30–45 minute return climb."
+  },
+  "linkLabel": "Walk back from Positano's main beach",
+  "intro": [
+    "La subida de regreso de Spiaggia Grande a Hostel Brikette dura aproximadamente 30–45 minutos, dependiendo del ritmo, las paradas para hacer fotos y el calor.",
+    "Estos escalones reflejan las cinco fotos del punto de control del albergue para que puedas permanecer en la ruta de escalera más rápida durante todo el camino."
+  ],
+  "sections": [
+    {
+      "id": "before-you-climb",
+      "title": "Antes de subir",
+      "body": [
+        "Rellene el agua y tómese un tiempo para los descansos: no hay tiendas en la escalera hasta que llegue a las carreteras superiores.",
+        "Tome las fotos de referencia de la recepción o del conserje digital para que pueda emparejar los puntos 4 y 5 durante el ascenso."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Caminata paso a paso de regreso al albergue",
+      "body": [
+        "1. Comienza en el lado izquierdo de Spiaggia Grande (de espaldas al agua) y pasa por debajo del arco junto al puerto.",
+        "2. Continúa recto por el carril comercial hasta llegar al patio abierto en el punto 5 del mapa. Confirma que la vista coincida con la foto del albergue.",
+        "3. Toma la escalera a tu izquierda, síguela cuesta arriba mientras se curva a la derecha y sube a la cima.",
+        "4. Gire a la derecha en la parte superior, luego tome inmediatamente la siguiente escalera en dirección cuesta arriba para llegar al punto 4 del mapa.",
+        "5. Desde el punto 4, gire a la izquierda en la carretera, camine unos 10 metros (30 pies), cruce y tome la escalera directamente frente a usted.",
+        "6. Siga las escaleras hasta que se encuentren con otro camino. Si miras hacia atrás, la escena debe coincidir con la foto del punto 3. Cruza recto hacia la siguiente escalera y sigue subiendo.",
+        "7. Cuando terminen las escaleras, camine hacia la carretera, gire a la izquierda y continúe cuesta arriba por poco más de 100 metros (330 pies).",
+        "8. Gira a la derecha en la escalera familiar que conduce directamente a la puerta principal del Hostel Brikette."
+      ]
+    }
+  ],
+  "tipsTitle": "Consejos rápidos",
+  "tips": [
+    "Si la subida es demasiado intensa, cambia al %LINK:positanoMainBeachBusBack|autobús de regreso al albergue% una vez que llegues a la Piazza dei Mulini.",
+    "Comienza la caminata antes del mediodía o después del atardecer para esquivar la parte más calurosa del día.",
+    "Haz una pausa en los descansillos sombreados para recuperar el aliento y tomar fotos de la vista: te las has ganado."
+  ]
+}

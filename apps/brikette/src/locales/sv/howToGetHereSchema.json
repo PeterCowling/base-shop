@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "invalidGuideKey": "Ogiltig guidenyckel",
+    "missingMetaBlock": "Metablocket saknas",
+    "metaTitleRequired": "Meta.title måste vara en icke-tom sträng",
+    "metaDescriptionRequired": "Meta.description måste vara en icke-tom sträng"
+  }
+}

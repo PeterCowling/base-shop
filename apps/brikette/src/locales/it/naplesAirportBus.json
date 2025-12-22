@@ -1,0 +1,38 @@
+{
+  "slug": "naples-airport-to-positano-bus",
+  "meta": {
+    "title": "Dall'aeroporto di Napoli a Positano in autobus – Guida passo passo",
+    "description": "Prendi la navetta Curreri per Sorrento e poi il bus SITA per Positano (Chiesa Nuova). Foto, consigli sugli orari e indicazioni a piedi per Hostel Brikette."
+  },
+  "headings": {
+    "overview": "Panoramica navetta Curreri + bus SITA",
+    "naplesAirport": "Partenza dall'aeroporto di Napoli",
+    "sorrentoStation": "Alla stazione degli autobus di Sorrento",
+    "timetable": "Come leggere l'orario SITA",
+    "positanoStop": "Arrivo a Positano (Chiesa Nuova)",
+    "walk": "A piedi da Chiesa Nuova all'ostello",
+    "spotSign": "Consiglio: riconoscere l'ingresso"
+  },
+  "cta": {
+    "heading": "Ti serve la guida completa all'arrivo?",
+    "copy": "Apri la pagina Come arrivare per suggerimenti sul traghetto, percorsi a piedi e foto dell'ingresso dell'ostello.",
+    "button": "Apri Come arrivare"
+  },
+  "media": {
+    "positanoStop": {
+      "alt": "Fermata degli autobus Chiesa Nuova davanti al Bar Internazionale di Positano"
+    },
+    "walk": {
+      "alt": "Scalinata che conduce all'ingresso dell'Hostel Brikette"
+    }
+  },
+  "content": {
+    "overview": "Consiglio 1: Per l'orario Sorrento → Positano <a href=\"https://www.positano.com/en/bus-schedule?route=sorrento_positano_amalfi\">consulta l'orario ufficiale</a>.<br />Consiglio 2: Per Napoli Aeroporto → Sorrento visita <a href=\"https://www.curreriviaggi.it/it/navetta-aeroporto-di-napoli\">Curreri Viaggi</a> (scegli \"Da Napoli Aeroporto - Per Sorrento\"). Lì puoi acquistare il biglietto.",
+    "naplesAirport": "Esci dall'area arrivi verso le pensiline. Acquista un biglietto Curreri Viaggi per Sorrento (online o al chiosco) e attendi alla banchina indicata. I bus partono ogni 60-90 minuti; nei mesi di punta arriva 15 minuti prima per assicurarti il posto.",
+    "sorrentoStation": "- Scendi alla stazione principale di Sorrento, nodo di treni e autobus.<br />- Dal piazzale prendi il bus SITA in direzione Amalfi (Positano è una fermata intermedia).<br />- Ti serve un biglietto? Compralo al bar o all'edicola accanto alle banchine prima di metterti in fila.<br />- Quando sali, l'autista vidimerà o strapperà il biglietto. Conservalo per eventuali controlli.",
+    "timetable": "L'orario SITA mostra le fermate sulle righe e le corse sulle colonne. Incrocia la tua fermata con la lettera della corsa per il giorno di viaggio: da lunedì a sabato cerca le colonne F e G; domeniche e festivi sono sotto G e H.",
+    "positanoStop": "Rimani a bordo fino alla fermata Chiesa Nuova a Positano. Si trova a circa 140 m dall'ostello, davanti al Bar Internazionale. Confronta con la foto per essere sicuro di scendere al punto giusto.",
+    "walk": "Dalla fermata percorri poco più di 100 m lungo Via G. Marconi.<br />Svolta a destra nel vicolo e segui i gradini fino alla nostra porta.<br />Vuoi le indicazioni passo passo? <a href=\"https://www.google.com/maps/dir/bar+internazionale/hostel+brikette/@40.6295534,14.479394,17z/data=!3m1!4b1!4m13!4m12!1m5!1m1!1s0x133b976673927785:0x5187a720325ee588!2m2!1d14.482264!2d40.629495!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634\">Apri lo stesso percorso su Google Maps</a>.",
+    "spotSign": "Avvicinandoti vedrai l'insegna di Hostel Brikette sulla terrazza al secondo piano. Superala, segui la curva e prendi le scale a destra fino alla reception."
+  }
+}

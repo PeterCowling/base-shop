@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import type { BlogPortableText as PlatformBlogPortableText } from "@acme/platform-core/components/blog/BlogPortableText";
+import { BlogPortableText } from "@acme/platform-core/components/blog/BlogPortableText";
 
 export { BlogPortableText } from "@acme/platform-core/components/blog/BlogPortableText";
-export type BlogPortableTextProps = ComponentProps<PlatformBlogPortableText>;
+export type BlogPortableTextProps = ComponentProps<typeof BlogPortableText>;

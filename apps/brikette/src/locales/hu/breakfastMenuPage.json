@@ -1,0 +1,154 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Reggeli menü (2025)",
+    "description": "Reggeli naponta 08:00–10:30. Tojásos kombinációk, édes és egészséges opciók, levek, turmixok és kávé – görgess le a részletekhez."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Reggeli menü, 2025",
+    "hours": "Naponta 08:00 – 10:30"
+  },
+  "intro": {
+    "summary": "Frissen készített reggelik, szezonális levek és kávék várnak minden délelőtt. Görgess tovább a részletes kínálathoz.",
+    "viewFullMenuButton": "Ugrás a reggeli kínálathoz"
+  },
+  "sections": {
+    "eggs": {
+      "title": "Tojás kombó",
+      "subtitle": "Finom tojásos kombináció",
+      "howCooked": "Válaszd ki, hogyan kéred a tojást",
+      "cooked": [
+        "Omlett",
+        "Rántotta",
+        "Tükörtojás (lágy)",
+        "Tükörtojás (egyoldalas)"
+      ],
+      "addThree": "Válassz három hozzávalót",
+      "ingredients": [
+        "Bacon",
+        "Sonka",
+        "Paradicsom",
+        "Gomba",
+        "Pirítós",
+        "Sajt",
+        "Bab"
+      ],
+      "orderExample": "Példa: „Omlett sajttal, baconnel és babbal”."
+    },
+    "sweet": {
+      "title": "Édes opciók",
+      "chooseOneFreeSyrup": "Válassz egy ingyenes szirupot:",
+      "syrups": [
+        "Arany",
+        "Citrom",
+        "Narancs & fahéj",
+        "Nutella"
+      ]
+    },
+    "healthy": {
+      "title": "Egészséges opciók"
+    },
+    "juices": {
+      "title": "Juice-ok és turmixok"
+    },
+    "hot": {
+      "title": "Forró koffeines italok"
+    },
+    "iced": {
+      "title": "Jeges koffeines italok"
+    }
+  },
+  "items": {
+    "eggsCombo": {
+      "name": "Tojás kombó"
+    },
+    "frenchToast": {
+      "name": "Bundás kenyér",
+      "note": "Klasszikus bundás kenyér, sziruppal tálalva."
+    },
+    "nutellaFrenchToast": {
+      "name": "Nutellás bundás kenyér",
+      "note": "Nutellával töltött bundás kenyér."
+    },
+    "pancakes": {
+      "name": "Palacsinta"
+    },
+    "addEggComboItem": {
+      "name": "Plusz tétel a tojás menüből",
+      "note": "Válassz egy elemet a tojásos menüből. Például: palacsinta aranysziruppal és rántottával 15,50 €-ért."
+    },
+    "addAdditionalSyrup": {
+      "name": "Plusz szirup",
+      "note": "Válassz többféle szirupot. Például: palacsinta aranysziruppal és Nutellával 14 €-ért."
+    },
+    "veggieToast": {
+      "name": "Zöldséges pirítós",
+      "note": "Szezonális zöldségek pirítóson tálalva."
+    },
+    "healthyDelight": {
+      "name": "Egészséges finomság",
+      "note": "Parfait joghurttal, granolával és házi gyümölcsraguval."
+    },
+    "detoxMe": {
+      "name": "Detox Me (lé)",
+      "note": "Spenót, uborka, gyömbér és citrom."
+    },
+    "energizeMe": {
+      "name": "Energize Me (lé)",
+      "note": "Narancs, sárgarépa, gyömbér és citrom."
+    },
+    "multiV": {
+      "name": "Multi‑V (lé)",
+      "note": "Alma, sárgarépa, narancs, citrom, gyömbér."
+    },
+    "orangeJuice": {
+      "name": "Narancslé",
+      "note": "Frissen facsart narancslé."
+    },
+    "bananaSmoothie": {
+      "name": "Banán turmix"
+    },
+    "strawberrySmoothie": {
+      "name": "Eper turmix"
+    },
+    "saltedCaramelProteinSmoothie": {
+      "name": "Sós karamellás kávés fehérje turmix"
+    },
+    "addProtein": {
+      "name": "Extra fehérje (vanília, csoki vagy sós karamell) — HUEL (40g fehérje)"
+    },
+    "tea": {
+      "name": "Tea (fekete, zöld, gyógy)"
+    },
+    "espresso": {
+      "name": "Eszpresszó (adagonként)"
+    },
+    "macchiato": {
+      "name": "Macchiato"
+    },
+    "americano": {
+      "name": "Americano / Long Black"
+    },
+    "cappuccino": {
+      "name": "Cappuccino"
+    },
+    "latte": {
+      "name": "Latte"
+    },
+    "altMilk": {
+      "name": "Szójatej vagy rizstej — felár"
+    },
+    "icedLatte": {
+      "name": "Jeges latte"
+    },
+    "icedSoyLatte": {
+      "name": "Jeges szójatejes latte"
+    },
+    "icedRiceLatte": {
+      "name": "Jeges rizstejes latte"
+    },
+    "icedTea": {
+      "name": "Jeges tea (citrom vagy barack)"
+    }
+  }
+}

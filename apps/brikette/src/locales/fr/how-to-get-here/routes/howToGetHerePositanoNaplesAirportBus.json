@@ -1,0 +1,64 @@
+{
+  "aside": {
+    "body": "Ouvrez la <Link>vue d'ensemble Comment venir</Link> pour les taxis, ferries et autres trajets.",
+    "eyebrow": "Besoin d'autres itinéraires ?"
+  },
+  "header": {
+    "description": "Prenez le bus SITA Sud de Positano à Sorrente, puis le bus Curreri jusqu'à l'aéroport de Napoli Capodichino. C'est l'option de transport public la plus simple, avec des départs fréquents et une correspondance facile à la gare routière de Sorrente.",
+    "eyebrow": "Guide de voyage Hostel Brikette",
+    "title": "Positano → aéroport de Naples — Bus via Sorrente"
+  },
+  "meta": {
+    "description": "Itinéraire porte à porte depuis l'Hostel Brikette jusqu'à l'aéroport de Naples via le bus SITA pour Sorrente puis le bus Curreri, avec des conseils billets et des liens vers les horaires.",
+    "title": "Positano → aéroport de Naples en bus | Hostel Brikette"
+  },
+  "sections": {
+    "overview": {
+      "points": [
+        "Rejoignez à pied l'arrêt Positano (Chiesa Nuova) devant le Bar Internazionale.",
+        "Prenez le bus SITA jusqu'à la gare routière/ferroviaire de Sorrente.",
+        "Correspondance avec le bus Curreri de Sorrente à l'aéroport de Naples (Capodichino)."
+      ],
+      "title": "Aperçu du trajet"
+    },
+    "sorrento": {
+      "body": "Descendez à la gare routière et ferroviaire principale de Sorrente. Depuis les quais, montez dans le bus <Link>Curreri Viaggi</Link> vers l'aéroport de Naples (Capodichino). Consultez les horaires les plus récents et envisagez d'acheter vos billets en ligne à l'avance en période de pointe.",
+      "title": "À la gare routière de Sorrente"
+    },
+    "tickets": {
+      "points": [
+        "Achetez un billet SITA pour Sorrente au Bar Internazionale ou dans un kiosque à proximité.",
+        "Conservez votre billet après l'embarquement ; le conducteur peut le composter ou le déchirer.",
+        "Pour le bus Curreri, achetez en ligne ou à la gare (si disponible)."
+      ],
+      "title": "Billets et attente"
+    },
+    "timetables": {
+      "items": {
+        "curreri": {
+          "href": "https://www.curreriviaggi.it/",
+          "label": "curreriviaggi.it",
+          "text": "Horaires du Curreri Sorrente ⇄ aéroport de Naples sur <Link>curreriviaggi.it</Link>"
+        },
+        "sita": {
+          "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
+          "label": "Positano.com",
+          "text": "Horaires du bus SITA Positano ⇄ Sorrente sur <Link>Positano.com</Link>"
+        }
+      },
+      "title": "Horaires"
+    },
+    "walk": {
+      "image": {
+        "alt": "Arrêt de bus SITA Positano (Chiesa Nuova) devant le Bar Internazionale",
+        "caption": "Arrivez quelques minutes en avance en haute saison : les bus se remplissent vite."
+      },
+      "points": [
+        "Sortez de l'auberge et descendez les marches jusqu'à la route principale.",
+        "Tournez à gauche et continuez sur environ 100 mètres (330 pieds).",
+        "Le Bar Internazionale se trouve sur votre gauche ; l'arrêt SITA est juste devant."
+      ],
+      "title": "Rejoindre l'arrêt de Positano"
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "deals": {
+    "loyaltyCta": {
+      "heading": "Vantagens extras para hóspedes frequentes",
+      "body": "Entre para a nossa lista de reservas diretas para receber ofertas com acesso antecipado, dicas de viagem sazonais e um código de desconto extra de 5% para a sua próxima reserva no nosso site.",
+      "button": "Inscreva-se para receber vantagens"
+    }
+  },
+  "about": {
+    "mission": {
+      "heading": "A nossa missão",
+      "paragraphs": [
+        "Desde 1995, o Hostel Brikette ajuda viajantes a descobrir Positano com um orçamento acessível, sem abrir mão das vistas panorâmicas da Costa Amalfitana.",
+        "Priorizamos a transparência: tarifas claras sem taxas escondidas, políticas objetivas e uma equipa no local pronta para ajudar com alterações ou pedidos especiais.",
+        "A nossa equipa local partilha planos de transporte, dicas para levar bagagens de 23 kg / 50 lb pelas escadas e ideias de atividades para aproveitar cada minuto na costa."
+      ]
+    },
+    "values": {
+      "heading": "Os nossos valores",
+      "items": [
+        {
+          "title": "Justos, diretos e transparentes",
+          "body": "Publicamos preços e políticas claras, orientamo-lo para as opções com melhor relação qualidade-preço e nunca adicionamos taxas escondidas."
+        },
+        {
+          "title": "Conhecimento local partilhado livremente",
+          "body": "Dos ferries aos trilhos, a nossa equipa dá conselhos práticos para aproveitar ao máximo o seu tempo (e orçamento)."
+        },
+        {
+          "title": "Hospitalidade calorosa",
+          "body": "Celebramos o espírito social do hostelling: um bar acolhedor, espaços comuns e uma equipa que se lembra dos seus planos."
+        }
+      ]
+    }
+  },
+  "careers": {
+    "hiringCta": {
+      "heading": "Trabalhe connosco no terraço",
+      "body": "Junte-se a uma equipa pequena que valoriza a atitude, a iniciativa e o cuidado com os hóspedes. Inclui alojamento para a equipa, pequeno-almoço e benefícios justos.",
+      "button": "Candidate-se agora"
+    }
+  },
+  "experiences": {
+    "meetTheHosts": {
+      "heading": "Conheça a equipa do terraço",
+      "intro": "São as pessoas que mantêm o terraço animado, organizam eventos ao pôr do sol, conduzem caminhadas e respondem às suas perguntas mesmo antes de chegar a Positano.",
+      "hosts": [
+        {
+          "name": "Chiara",
+          "role": "Responsável pelas experiências",
+          "bio": "Coordena o bar do pôr do sol, apresenta produtores locais e garante que cada degustação tenha algo para todos. Se estiver a celebrar ou a planear um evento privado, fale com ela no terraço a partir das 18h00.",
+          "imageAlt": "Chiara a servir um spritz no bar do terraço.",
+          "availability": "Encontre a Chiara no bar na maioria das noites e também através da nossa concierge digital."
+        },
+        {
+          "name": "Luca",
+          "role": "Guia local",
+          "bio": "Nascido em Praiano, conhece todos os trilhos da Costa Amalfitana. O Luca ajuda-o a escolher entre o Caminho dos Deuses, passeios de barco ao nascer do sol ou excursões de um dia a Ravello — com planos de transporte prontos a usar.",
+          "imageAlt": "Luca a apontar para o horizonte a partir de um miradouro na Costa Amalfitana.",
+          "availability": "Encontre-o na receção nas primeiras horas da manhã ou reserve vagas para as caminhadas através da concierge."
+        },
+        {
+          "name": "Mariana",
+          "role": "Concierge digital",
+          "bio": "Responde pelo WhatsApp e Messenger com alertas de ferry, dicas de restaurantes e lembretes de última hora. Se o tempo mudar, envia alternativas sem stress.",
+          "imageAlt": "Ecrã de telemóvel a mostrar uma conversa com a Mariana, a concierge digital.",
+          "availability": "Envie mensagem a qualquer hora — ela coordena-se em tempo real com a equipa da receção."
+        }
+      ]
+    }
+  }
+}

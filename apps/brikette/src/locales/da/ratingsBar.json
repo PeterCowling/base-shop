@@ -1,0 +1,20 @@
+{
+  "aria": {
+    "regionLabel": "Bedømmelser fra eksterne anmeldelser",
+    "linkSummary": "{{score}} hos {{provider}}, {{reviews}}, senest tjekket {{date}}"
+  },
+  "reviewed": "Bedømt hos:",
+  "countReviews_one": "{{formattedCount}} anmeldelse",
+  "countReviews_other": "{{formattedCount}} anmeldelser",
+  "lastChecked": "Senest tjekket:",
+  "sources": {
+    "hostelworld": {
+      "ariaName": "Hostelworld",
+      "label": "Hostelworld"
+    },
+    "booking": {
+      "ariaName": "Booking punktum com",
+      "label": "Booking.com"
+    }
+  }
+}

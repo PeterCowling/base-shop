@@ -1,0 +1,106 @@
+{
+  "seo": {
+    "title": "Positano con presupuesto mochilero",
+    "description": "Cómo ahorrar en Positano: transporte, alojamientos económicos, miradores gratuitos, itinerarios de ejemplo y trucos prácticos."
+  },
+  "linkLabel": "Positano con presupuesto reducido",
+  "intro": [
+    "Con las elecciones adecuadas, Positano se puede disfrutar con presupuesto mochilero.",
+    "Usa transporte público, prioriza vistas y planes gratuitos y elige alojamientos sociales para ahorrar."
+  ],
+  "sections": [
+    {
+      "id": "transport",
+      "title": "Transporte que ahorra",
+      "body": [
+        "Desde Nápoles: lanzadera a Sorrento + SITA a Positano (baja en ‘Chiesa Nuova’ para menos escaleras).",
+        "En temporada, ferris para tramos panorámicos puntuales; fuera de temporada, prioriza bus."
+      ]
+    },
+    {
+      "id": "free-views",
+      "title": "Vistas y planes gratuitos",
+      "body": [
+        "Miradores en Chiesa Nuova y calles altas; paseo a Fornillo por el camino costero.",
+        "Amanecer y golden hour ofrecen mejor luz y menos gente para fotos."
+      ]
+    },
+    {
+      "id": "stays",
+      "title": "Alojamientos que ayudan al presupuesto",
+      "body": [
+        "Hostels y dormitorios reducen costes y facilitan el ambiente social.",
+        "Viaja fuera de fines de semana pico y con equipaje ligero para evitar porteadores."
+      ]
+    },
+    {
+      "id": "food-savings",
+      "title": "Ahorro en comida",
+      "body": [
+        "Panini/pizza al taglio para comidas; picnics al atardecer.",
+        "Minimercados para fruta/agua; comparte platos en restaurantes con vistas para una experiencia puntual."
+      ]
+    },
+    {
+      "id": "sample-itineraries",
+      "title": "Itinerarios de ejemplo",
+      "body": [
+        "1 día: Spiaggia Grande → paseo a Fornillo → atardecer en Chiesa Nuova.",
+        "2 días: añade Sentiero degli Dei + playa de Arienzo.",
+        "3 días: excursión a Capri o Amalfi + Ravello."
+      ]
+    }
+  ],
+  "tips": [
+    "Viaja en temporada media (abril–mayo, finales de septiembre) para precios más bajos y ferris con más plazas disponibles.",
+    "Controla tus gastos en una app de notas; repartir los costes compartidos a diario mantiene al grupo alineado."
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuál es el mes más barato?",
+      "a": [
+        "Temporada media (abril–mayo, finales de septiembre–octubre) equilibra precios y clima."
+      ]
+    },
+    {
+      "q": "¿Puedo cocinar?",
+      "a": [
+        "Algunos alojamientos tienen cocina compartida; si no, opta por picnic y desayunos sencillos."
+      ]
+    }
+  ],
+  "tocTitle": "En esta página",
+  "faqsTitle": "Preguntas frecuentes",
+  "heroAlt": "Vistas económicas de Positano desde la terraza",
+  "costBreakdown": {
+    "title": "Desglose diario de gastos (ejemplo)",
+    "slices": [
+      {
+        "label": "Cama (dormitorio)",
+        "value": 45
+      },
+      {
+        "label": "Comidas y snacks",
+        "value": 25
+      },
+      {
+        "label": "Transporte",
+        "value": 12
+      },
+      {
+        "label": "Actividades y extras",
+        "value": 18
+      }
+    ]
+  },
+  "gallery": [
+    {
+      "alt": "Mirador gratuito sobre Positano",
+      "caption": "Miradores gratuitos"
+    },
+    {
+      "alt": "Picnic con vista a Positano",
+      "caption": "Picnic para ahorrar en comidas"
+    }
+  ]
+}

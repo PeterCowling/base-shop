@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Viewpoint, bãi biển công cộng và trải nghiệm DIY đáng thử không tốn nhiều chi phí."
+  },
+  "linkLabel": "Free and low‑cost things to do in Positano",
+  "intro": [
+    "Positano chiều lòng những ai dậy sớm và thích khám phá; bạn có thể tận hưởng cảnh đẹp, tắm biển và văn hóa mà chỉ tốn vài euro."
+  ],
+  "sections": [
+    {
+      "id": "viewpoints",
+      "title": "Điểm ngắm cảnh đáng công leo",
+      "body": [
+        "Bắt đầu tại sân thượng ngoài nhà thờ Chiesa Nuova để đón bình minh nhuộm màu vịnh; mang theo chai nước 500 ml vì quanh đó không có vòi.",
+        "Dạo Via Cristoforo Colombo và ban công Viale Pasitea lúc hoàng hôn để có góc ảnh bưu thiếp mà không cần đặt bàn."
+      ]
+    },
+    {
+      "id": "beaches",
+      "title": "Tắm biển miễn phí",
+      "body": [
+        "Spiaggia Grande có dải bãi biển công cộng phía tay phải — mang khăn mỏng và ngồi sát mép nước để tránh khu ghế dù.",
+        "Đi bộ theo lối ven biển tới bãi Fornillo yên tĩnh hơn; mất khoảng 12 phút với ít bậc thang và khu công cộng luôn miễn phí."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "Lộ trình đi bộ tự túc",
+      "body": [
+        "Khám phá các hẻm nhỏ ở khu Liparlati, len vào sân gạch và cầu thang ốp gốm giữa Via dei Mulini và Via Pasitea.",
+        "Bắt shuttle miễn phí đến Montepertuso rồi đi xuống các bậc đá cổ về Positano trong 25–35 phút, dừng lại tại vòm đá tự nhiên để ngắm cảnh."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Văn hóa không cần vé",
+      "body": [
+        "Vào nhà thờ Santa Maria Assunta để chiêm ngưỡng bức biểu tượng Byzantine và mái vòm gốm; chỉ cần che vai là đủ lịch sự.",
+        "Xem bảng thông báo gần Piazza dei Mulini để biết các buổi hòa nhạc hay chiếu phim ngoài biển vào mùa hè."
+      ]
+    }
+  ],
+  "tips": [
+    "Mang chai nước tái sử dụng và châm tại vòi công cộng gần Chiesa Nuova trước khi lên điểm ngắm cảnh.",
+    "Mang kem chống nắng thân thiện với biển và khăn sarong; chúng vừa làm thảm nằm biển vừa là áo choàng nhẹ khi vào nhà thờ."
+  ],
+  "faqs": [
+    {
+      "q": "Trên bãi biển có vòi sen miễn phí không?",
+      "a": [
+        "Có — Spiaggia Grande có vòi sen nước lạnh gần khu công cộng. Mang dép vì nền bê tông rất nóng vào buổi trưa."
+      ]
+    },
+    {
+      "q": "Đi Path of the Gods có cần vé không?",
+      "a": [
+        "Đường mòn miễn phí quanh năm. Dự trù 2,40 € cho xe buýt SITA lên Nocelle và về nếu bạn không muốn leo cả hai chiều."
+      ]
+    }
+  ]
+}

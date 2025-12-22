@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Praia do Fiordo di Furore → Hostel Brikette de autocarro",
+    "description": "Siga estes passos para chegar à paragem SITA acima do Fiordo di Furore, regressar em direção a Positano e completar a curta caminhada até ao Hostel Brikette."
+  },
+  "linkLabel": "Praia do Fiordo di Furore → Hostel Brikette de autocarro",
+  "intro": [
+    "O Fiordo di Furore fica abaixo da estrada costeira de Amalfi e não há bilheteira nem lojas quando chega à água. Use este guia de regresso para voltar à estrada, apanhar o autocarro SITA rumo a Positano e terminar a caminhada até ao Hostel Brikette sem complicações."
+  ],
+  "warningsTitle": "Antes de sair da praia",
+  "warnings": [
+    "Compre bilhetes SITA com antecedência — não há onde adquiri-los perto da praia e os motoristas podem recusar o embarque sem um bilhete validado."
+  ],
+  "sections": [
+    {
+      "id": "walk-to-road",
+      "title": "Suba de volta à estrada",
+      "body": [
+        "Suba a escadaria que liga a praia de seixos à estrada da Costa Amalfitana.",
+        "A paragem do SITA fica exatamente onde as escadas chegam à bolsa de estacionamento; espere aqui, do lado da montanha."
+      ]
+    },
+    {
+      "id": "ride-the-bus",
+      "title": "Viaje no SITA em direção a Positano",
+      "body": [
+        "Entre no autocarro SITA que segue para Positano — as paragens intermédias são a pedido, por isso o número de paragens depende dos outros passageiros.",
+        "Conte com cerca de 10,8 quilómetros ao longo da costa antes de chegar a Positano."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Saia no Bar Internazionale / Chiesa Nuova",
+      "body": [
+        "Carregue no botão de paragem pouco depois de o autocarro sair do túnel acima de Positano e procure o tabacchi Bar Internazionale.",
+        "Desça na paragem Chiesa Nuova; é a paragem SITA mais próxima do Hostel Brikette."
+      ]
+    },
+    {
+      "id": "walk-to-hostel",
+      "title": "Percorra o último troço até ao Hostel Brikette",
+      "body": [
+        "Continue no mesmo sentido do autocarro por pouco mais de 100 metros.",
+        "Vire à direita na escadaria ao lado do bar e suba até à porta de entrada do hostel."
+      ]
+    }
+  ],
+  "tipsTitle": "Dicas para o regresso",
+  "tips": [
+    "Consulte o horário atualizado através do concierge digital do hostel para saber quando chega o próximo SITA.",
+    "Use a %LINK:positanoBeaches|visão geral das praias de Positano% para planear outros mergulhos que combinam com o Fiordo di Furore.",
+    "Se um autocarro estiver cheio ou for cancelado, esteja preparado para chamar um táxi licenciado a partir do recuo na estrada."
+  ],
+  "faqsTitle": "Perguntas frequentes",
+  "faqs": [
+    {
+      "q": "Onde devo esperar pelo autocarro?",
+      "a": [
+        "Fique do lado da montanha, no topo da escadaria — os autocarros para Positano param junto ao rail de proteção."
+      ]
+    },
+    {
+      "q": "E se eu não tiver bilhete?",
+      "a": [
+        "Os motoristas esperam bilhetes SITA validados antes do embarque. Compre ida e volta em Positano ou pergunte na receção sobre a disponibilidade antes de sair do hostel."
+      ]
+    }
+  ]
+}

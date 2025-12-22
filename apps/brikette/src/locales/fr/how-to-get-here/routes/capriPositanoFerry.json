@@ -1,0 +1,67 @@
+{
+  "header": {
+    "description": "Utilisez ce guide pour voyager de Capri à Positano entièrement par la mer. Il explique comment choisir le bon opérateur, acheter vos billets au port et quoi faire à l'arrivée pour monter à Hostel Brikette à pied (ou en bus) le plus facilement possible.",
+    "eyebrow": "Guide de voyage Hostel Brikette",
+    "title": "Capri → Positano – Ferry"
+  },
+  "meta": {
+    "description": "Comment voyager de Capri à Positano en ferry, avec des conseils sur les billets, les opérateurs, l'arrivée et la montée la plus simple vers l'auberge.",
+    "title": "Capri à Positano en ferry | Hostel Brikette"
+  },
+  "sections": {
+    "arrival": {
+      "list": [
+        "Débarquez au quai de Positano Spiaggia Grande.",
+        "Des porteurs attendent les ferries : envisagez de les utiliser pour vos bagages et confirmez le prix à l'avance.",
+        "Prévoyez des escaliers en montée depuis la plage ; le bus local Interno aide à réduire les marches jusqu'à l'auberge."
+      ],
+      "title": "Arrivée à Positano"
+    },
+    "bus": {
+      "link": "Pour un itinéraire détaillé et adapté aux bagages du quai jusqu'à Hostel Brikette, consultez : <link>Quai du ferry → Hostel Brikette</link>.",
+      "linkLabel": "Quai du ferry → Hostel Brikette",
+      "list": [
+        "Le bus Interno Positano circule environ toutes les 30 minutes du matin jusqu'à minuit.",
+        "Repérez l'affichage électronique « Interno Positano » à l'avant du bus.",
+        "Depuis le port, rejoignez la Piazza dei Mulini et prenez le bus qui monte vers Chiesa Nuova."
+      ],
+      "title": "Du port à l'auberge en bus Interno"
+    },
+    "cancelled": {
+      "body": "En cas d'annulation due à la météo ou à la mer, basculez vers l'itinéraire train + bus via Sorrente. C'est plus long mais cela fonctionne dans la plupart des conditions.",
+      "link": "Utilisez ce plan B : <link>Centre de Naples → Positano en train puis bus</link>.",
+      "linkLabel": "Centre de Naples → Positano en train puis bus",
+      "title": "Si les ferries sont annulés"
+    },
+    "capriPort": {
+      "link": "Comparez les horaires de ferry et réservez : <capriLink>Capri.net – Capri ↔ Positano</capriLink> · <positanoLink>Positano.com (horaires regroupés)</positanoLink>.",
+      "linkLabelCapri": "Capri.net – Capri ↔ Positano",
+      "linkLabelPositano": "Positano.com (horaires regroupés)",
+      "list": [
+        "Vérifiez les horaires et les tarifs puis identifiez l'opérateur de votre traversée.",
+        "Rendez-vous au port de plaisance de Capri. Achetez vos billets au guichet de l'opérateur.",
+        "Arrivez 20 à 30 minutes en avance pour échanger vos vouchers et patienter pour l'embarquement."
+      ],
+      "title": "Au port de Capri"
+    },
+    "finalWalk": {
+      "list": [
+        "Descendez à l'arrêt près du tabac (tabacchi) à Chiesa Nuova.",
+        "Tournez à droite vers la route principale, puis à gauche sur la Via G. Marconi.",
+        "Parcourez un peu plus de 100 m (≈330 pieds) ; l'auberge se trouve sur votre droite.",
+        "Tournez à droite et montez les escaliers jusqu'à l'entrée principale d'Hostel Brikette."
+      ],
+      "title": "Dernier tronçon à pied depuis l'arrêt le plus proche"
+    },
+    "overview": {
+      "body": "Les ferries entre Capri et Positano circulent surtout au printemps et en été. Les traversées peuvent être annulées si la mer est agitée, notamment en fin de journée. Le trajet dure généralement 30 à 60 minutes selon le navire et l'opérateur.",
+      "title": "Aperçu du trajet"
+    }
+  },
+  "slug": "capri-positano-ferry",
+  "tip": {
+    "copy": "Besoin d'autres itinéraires ou de plans B quand la mer est agitée ? Ouvrez la <link>vue d'ensemble Comment venir</link>.",
+    "eyebrow": "Astuce",
+    "linkLabel": "Vue d'ensemble Comment venir"
+  }
+}

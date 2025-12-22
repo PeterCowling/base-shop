@@ -1,0 +1,57 @@
+{
+  "meta": {
+    "title": "Sorrento til Positano med buss | Hostel Brikette",
+    "description": "Trinn-for-trinn fra Sorrento til Hostel Brikette via Sita Bus til Positano (Chiesa Nuova): Billetter, timeplaner og hvordan du kan nå vandrerhjemmet fra stoppet."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette Travel Guide",
+    "title": "Sorrento til Positano - SITA BUS",
+    "description": "Bruk denne guiden når du reiser fra Sorrento til Positano. Du tar Sita Sud-bussen og går av på Positano (Chiesa Nuova), det nærmeste stoppet til vandrerhjemmet. Vi dekker grunnleggende billett, hvordan du kan lese timeplanen, og hvordan vi kan nå vandrerhjemmet fra stoppet."
+  },
+  "tip": {
+    "label": "Tips",
+    "copy": "Trenger du hvert transportalternativ? <link>Hvise å komme over oversikt</link> for ferger, taxiinfo og alternativer."
+  },
+  "sections": {
+    "journey": {
+      "title": "Reiseoversikt",
+      "body": "Tillat 1–1,5 timer i høysesongen. Busser kjører ofte mellom Sorrento og Positano. Kjøp billetten din før du går ombord og har den klar til validering."
+    },
+    "tickets": {
+      "title": "Billetter og validering",
+      "body": "Sita (Sita Sud) driver denne ruten. Kjøp billetter på kiosker eller Tabacchi. Presentere billetten din til sjåføren når du går ombord; Hold det til reisen slutter. Valider før bruk der det er nødvendig."
+    },
+    "timetable": {
+      "title": "Leser timeplanen",
+      "points": [
+        "Radene i den første kolonnen viser hvert bussholdeplass langs ruten.",
+        "Kolonner tilsvarer planlagte reiser merket med bokstaver.",
+        "Reise mandag til lørdag? Bruk kolonnene “F” og “G”.",
+        "Reise på søndag eller en helligdag? Bruk kolonnene “G” og “H”."
+      ],
+      "footer": "Rådfør deg med den siste planen på <link>positano.com</link>."
+    },
+    "arrival": {
+      "title": "Ankommer Positano (Chiesa Nuova)",
+      "points": [
+        "Det er to Sita-stopp oppført for Positano: “Sponda” og “Chiesa Nuova”.",
+        "For vandrerhjemmet er “Positano (Chiesa Nuova)” riktig stopp på via G. Marconi.",
+        "Stoppet sitter utenfor kafé/bar “Bar Internazionale”."
+      ],
+      "image": {
+        "src": "/img/directions/positano-bus-stop.png",
+        "alt": "Sita bussholdeplass på Positano Chiesa Nuova utenfor bar internazionale",
+        "caption": "Avslutt ved “Positano - Chiesa Nuova” for den enkleste turen til vandrerhjemmet."
+      }
+    },
+    "walk": {
+      "title": "Gå til Hostel Brikette",
+      "points": [
+        "Gå litt over 100 meter (330 fot) sammen via G. Marconi.",
+        "Se etter tegnet vårt over terrassen i andre etasje til høyre.",
+        "Sving til høyre opp trinnene for å nå vandrerhjemmets hoveddør."
+      ],
+      "link": "Foretrekker en kartlagt rute? Følg vår <link>chiesa nuova → Hostel Guide</link>."
+    }
+  }
+}

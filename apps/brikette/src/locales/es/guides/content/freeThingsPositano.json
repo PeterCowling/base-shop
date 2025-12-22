@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Planes gratis o económicos en Positano",
+    "description": "Disfruta Positano con poco presupuesto: miradores, playas, paseos por el pueblo y comida asequible."
+  },
+  "linkLabel": "Planes gratis o baratos en Positano",
+  "intro": [
+    "Planes gratis o de bajo coste para disfrutar Positano: miradores, paseos y playas públicas."
+  ],
+  "sections": [
+    {
+      "id": "views",
+      "title": "Miradores",
+      "body": [
+        "Terraza de Chiesa Nuova y calles altas para vistas amplias.",
+        "Mejor luz al amanecer y al atardecer; menos gente."
+      ]
+    },
+    {
+      "id": "walks",
+      "title": "Paseos escénicos",
+      "body": [
+        "Senda a Fornillo desde Spiaggia Grande; parte de Sentiero degli Dei desde Nocelle.",
+        "Sigue el sendero costero hasta la playa de Fornillo para una cala más tranquila; son unos 12 minutos de caminata con escaleras moderadas y la zona pública sigue siendo gratuita."
+      ]
+    },
+    {
+      "id": "beaches-public",
+      "title": "Zonas de playa públicas",
+      "body": [
+        "Franjas sin lido en Spiaggia Grande/Fornillo; lleva toalla y agua.",
+        "Respeta señalización y recoge residuos."
+      ]
+    },
+    {
+      "id": "culture",
+      "title": "Cultura sin entrada",
+      "body": [
+        "Entra en Santa Maria Assunta para ver el icono bizantino y la cúpula de mayólica; basta con cubrir los hombros.",
+        "Revisa el tablón municipal cerca de Piazza dei Mulini para conciertos o cine en la playa durante las semanas de verano."
+      ]
+    }
+  ],
+  "tips": [
+    "Empieza temprano para evitar colas en buses.",
+    "Lleva snacks y agua para aprovechar los miradores como picnic."
+  ],
+  "faqs": [
+    {
+      "q": "¿Puedo ver la puesta de sol gratis?",
+      "a": [
+        "Sí: Chiesa Nuova, senda sobre Fornillo y calles altas ofrecen buenos ángulos."
+      ]
+    },
+    {
+      "q": "¿Necesito entradas para el Camino de los Dioses?",
+      "a": [
+        "El sendero es gratuito todo el año. Calcula €2,40 por trayecto para el bus SITA a Nocelle si no quieres caminar ida y vuelta."
+      ]
+    }
+  ]
+}

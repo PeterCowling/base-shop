@@ -1,0 +1,87 @@
+{
+  "seo": {
+    "title": "A Guide to Amalfi Coast Cuisine",
+    "description": "What to eat: seafood staples, lemon sweets, and local DOC wines."
+  },
+  "linkLabel": "Guia da culinária da Costa Amalfitana",
+  "intro": [
+    "Um guia rápido da cozinha da Costa Amalfitana: mariscos emblemáticos, sobremesas cheias de limão e onde prová-los em Positano.",
+    "Use-o como recordatório antes de ver ementas ou visitar cidades vizinhas em busca de especialidades regionais."
+  ],
+  "tocTitle": "Nesta página",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Clássicos de marisco",
+      "body": [
+        "Spaghetti alle vongole, scialatielli ai frutti di mare e o peixe do dia grelhado dominam muitas ementas.",
+        "Pergunte pelos pratos sazonais — ervilhas de primavera, tomates-cereja ou flores de curgete costumam aparecer nos quadros."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Mercados e petiscos",
+      "body": [
+        "Mercados matinais e balcões de delicatessen vendem focaccia, cuoppi fritos e mozzarella fresca para almoços descomplicados.",
+        "Leve marmelada cítrica, colatura di alici e ervas secas para potenciar os sabores dos piqueniques."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Sobremesas e pastelaria",
+      "body": [
+        "Delizia al limone, babà al limoncello e sfogliatella combinam com um espresso depois do jantar.",
+        "Gelatarias alternam sorvete de limão, granita e crema al limone — perfeitos para tardes quentes."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Bebidas e harmonizações",
+      "body": [
+        "Peça limoncello fresco ou crema di limoncello como digestivo após as refeições.",
+        "Vinhos DOC de Tramonti ou Costa d’Amalfi (Furore, Ravello) harmonizam com marisco e pratos cítricos."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Etiqueta ao pedir",
+      "body": [
+        "O coperto cobre pão e serviço de mesa — deixe gorjeta apenas por um atendimento excecional.",
+        "Partilhe pratos em estilo familiar, mas avise a equipa logo de início para que o ritmo e a loiça acompanhem."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Vegetarianos comem bem aqui?",
+      "a": [
+        "Sim — procure parmigiana de beringela, gnocchi alla sorrentina e saladas com queijos locais e legumes grelhados."
+      ]
+    },
+    {
+      "q": "Preciso reservar trattorias famosas?",
+      "a": [
+        "Na época alta, reserve com antecedência para conseguir mesas na esplanada ou ao pôr do sol; fora do pico, almoços e meses de meia estação aceitam melhor clientes sem reserva."
+      ]
+    }
+  ],
+  "itemListTitle": "Pratos emblemáticos e onde prová-los",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Jantar fixo em quinta familiar com massa artesanal, grelhados e vistas amplas do terraço."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Café diurno com saladas cítricas, sumos prensados a frio e sobremesas da casa."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Trattoria clássica a servir massas de marisco, fritos de entrada e especiais sazonais desde 1958."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Pastelaria para delizia al limone, babà al limoncello e doces ideais para levar a um piquenique nas falésias."
+    }
+  ]
+}

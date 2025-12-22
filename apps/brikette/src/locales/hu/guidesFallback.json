@@ -1,0 +1,508 @@
+{
+  "labels": {
+    "onThisPage": "On this page",
+    "before": "Before you head out",
+    "steps": "Step-by-step route",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "folkloreAmalfi": {
+    "intro": [
+      "Sellők, szentek és tengerészek – történetek, amelyek színt visznek az Amalfi-partra és máig formálják a helyeket."
+    ],
+    "sections": [
+      {
+        "title": "Halászhistóriák",
+        "body": [
+          "A védőszentekről és hirtelen viharfelhőkről szóló legendák megmagyarázzák a helyi szertartásokat és ünnepeket."
+        ]
+      },
+      {
+        "title": "Helynevek mítoszai",
+        "body": [
+          "Hogyan kapták nevüket és hírnevüket a jellegzetes helyek az évszázadok során."
+        ]
+      }
+    ]
+  },
+  "compareBasesPositanoSorrentoAmalfi": {
+    "intro": [],
+    "toc": [
+      {
+        "href": "#positano",
+        "label": "Positano"
+      },
+      {
+        "href": "#sorrento",
+        "label": "Sorrento"
+      },
+      {
+        "href": "#amalfi",
+        "label": "Amalfi"
+      },
+      {
+        "href": "#who",
+        "label": "Kinek melyik való"
+      }
+    ],
+    "sections": [
+      {
+        "id": "positano",
+        "title": "Positano",
+        "body": [
+          "Ikonikus látvány és lépcsők; tökéletes, ha a képeslapban szeretnél ébredni.",
+          "A közlekedést meg kell tervezni, különösen a korai kompoknál és a késői buszoknál."
+        ]
+      },
+      {
+        "id": "sorrento",
+        "title": "Sorrento",
+        "body": [
+          "A legjobb kapcsolatok és széles szálláskínálat szinte minden pénztárcának.",
+          "A kilátás kevésbé drámai, mint Positanóban, de a praktikum elsőrangú."
+        ]
+      },
+      {
+        "id": "amalfi",
+        "title": "Amalfi",
+        "body": [
+          "Központi csomópont a kompokhoz és buszokhoz, egyszerű eléréssel Ravellóba.",
+          "Változatos szállásstílusok és mérsékelt esti közlekedési lehetőségek."
+        ]
+      },
+      {
+        "id": "who",
+        "title": "Kinek melyik bázis ideális",
+        "body": [
+          "Positano a pazar kilátásokért és a hostel közösségi életért.",
+          "Sorrento azoknak, akik jó ár-érték arányt és gyors kapcsolatokat keresnek.",
+          "Amalfi, ha kiegyensúlyozott hozzáférést szeretnél a part mentén."
+        ]
+      }
+    ],
+    "faqs": [],
+    "faqsTitle": "GYIK"
+  },
+  "interrailItalyRailPassAmalfiCoast": {
+    "toc": [
+      {
+        "href": "#routes",
+        "label": "Fő útvonalak"
+      },
+      {
+        "href": "#supplements",
+        "label": "Pótdíjak/foglalások"
+      },
+      {
+        "href": "#last-mile",
+        "label": "A fordítás folyamatban van."
+      },
+      {
+        "href": "#faqs",
+        "label": "GYIK"
+      }
+    ],
+    "sections": [
+      {
+        "id": "routes",
+        "title": "Fő útvonalak",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      },
+      {
+        "id": "supplements",
+        "title": "Pótdíjak/foglalások",
+        "body": [
+          "A Frecciarossa/Italo járatok gyakran helyfoglalást igényelnek; a regionális vonatok nem, de zsúfoltak lehetnek."
+        ]
+      },
+      {
+        "id": "last-mile",
+        "title": "A fordítás folyamatban van.",
+        "body": [
+          "A fordítás folyamatban van."
+        ]
+      }
+    ],
+    "faqsTitle": "GYIK",
+    "faqs": [
+      {
+        "q": "Megéri a bérlet?",
+        "a": [
+          "Csak akkor, ha elég sok távolsági szakaszt teljesítesz; külön jegyekkel gyakran olcsóbb."
+        ]
+      }
+    ]
+  },
+  "photographyGuidePositano": {
+    "toc": [
+      {
+        "href": "#golden",
+        "label": "Aranyóra helyszínei"
+      },
+      {
+        "href": "#night",
+        "label": "Esti fotózás"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Illemszabályok"
+      }
+    ],
+    "sections": [
+      {
+        "id": "golden",
+        "title": "Aranyóra helyszínei",
+        "body": [
+          "Via Cristoforo Colombo kanyarjai és a központi strand a legklasszikusabb sziluettekhez."
+        ]
+      },
+      {
+        "id": "night",
+        "title": "Esti fotózás",
+        "body": [
+          "Állvány nélkül támaszkodj korlátokra; használj magasabb ISO-t és rövid záridőt, hogy elkerüld az elmosódást."
+        ]
+      },
+      {
+        "id": "etiquette",
+        "title": "Fotóetika",
+        "body": [
+          "Tiszteld a helyiek magánszféráját; egy egyszerű mosoly vagy kézjel sokat számít."
+        ]
+      }
+    ]
+  },
+  "simsAtms": {
+    "intro": [
+      "Az eSIM kényelmes és gyakran olcsóbb megoldás; ha fizikai SIM-re vagy ATM-re van szükséged, tervezd meg előre a főszezonban."
+    ],
+    "faqs": [
+      {
+        "q": "Vásárolhatok helyi SIM-et Positanóban?",
+        "a": [
+          "Kevés üzlet van; érdemes eSIM-et választani vagy Nápolyban/Sorrentóban beszerezni jobb árakon."
+        ]
+      },
+      {
+        "q": "Megbízható a lefedettség?",
+        "a": [
+          "A településen általában jó, a túraösvényeken és sziklák mentén azonban vannak gyenge pontok."
+        ]
+      },
+      {
+        "q": "Vannak bankautomaták?",
+        "a": [
+          "Van néhány ATM, de a díjak változóak; részesítsd előnyben a bankfiókokat, és legyen tartalék kártyád."
+        ]
+      }
+    ]
+  },
+  "ferrySchedules": {
+    "intro": [
+      "A Positanóba közlekedő kompok szezonálisak. Nyáron több üzemeltető köti össze Nápolyt, Sorrentót, Amalfit és Caprit Positanóval. Mindig az operátor oldalán erősítsd meg, mert az idők időjárástól és kereslettől függően módosulnak."
+    ],
+    "tipsTitle": "Hasznos komp-tippek",
+    "tips": [
+      "Ellenőrizd az indulási frissítéseket előző este – erős szél vagy hullámzás rövid határidővel törölheti a járatokat.",
+      "Főszezonban vásárold meg a jegyet online, hogy elkerüld a kifogyott járatokat a móló pénztárainál.",
+      "Vigyél magaddal némi euró készpénzt, ha igénybe vennéd a hordárszolgálatot a mólótól a város felső részéig.",
+      "Tartsd kéznél a SITA buszmenetrendet tartalékként, ha a tenger túl viharos a kompokhoz."
+    ],
+    "sections": [
+      {
+        "id": "season",
+        "title": "Szezonalitás",
+        "body": [
+          "A kompok főként áprilistól októberig járnak. Télen korlátozott vagy szünetelő szolgáltatás – ilyenkor buszra válts."
+        ]
+      },
+      {
+        "id": "tips",
+        "title": "Gyors tippek",
+        "body": [
+          "Főszezon: április–október. Télen kevés vagy semmilyen járat.",
+          "Érkezz időben sorba állni és jegyet érvényesíteni.",
+          "A kikötőtől a hostelhez emelkedik az út; gondolj hordárra vagy a “Chiesa Nuova” buszra.",
+          "Még több érkezési tanácsért nézd meg az „Érkezés komppal” segítségcikket."
+        ]
+      }
+    ],
+    "faqs": [
+      {
+        "q": "Egész évben járnak kompok Positanóba?",
+        "a": [
+          "A kompok szezonálisak (általában áprilistól októberig). Télen a buszok vagy taxik maradnak."
+        ]
+      },
+      {
+        "q": "Where can I check real-time ferry schedules?",
+        "a": [
+          "Use operators’ sites (e.g., NLG, Travelmar, Alilauro) or aggregators like DirectFerries during summer."
+        ]
+      },
+      {
+        "q": "Which pier should I use in Positano?",
+        "a": [
+          "The main pier is at Spiaggia Grande. Check your ticket for the exact boarding lane on busy days."
+        ]
+      },
+      {
+        "q": "How early should I arrive before departure?",
+        "a": [
+          "Arrive 20–30 minutes early; queues are common in peak months (June–September)."
+        ]
+      },
+      {
+        "q": "Is the walk from the port to Hostel Brikette difficult?",
+        "a": [
+          "It’s an uphill walk with many stairs. Consider a porter service or bus to Chiesa Nuova if carrying heavy bags."
+        ]
+      }
+    ],
+    "gallery": [
+      {
+        "alt": "Positano pier area",
+        "caption": "Spiaggia Grande pier"
+      },
+      {
+        "alt": "Ferry approaching Amalfi",
+        "caption": "Ferries along the coast"
+      }
+    ],
+    "faqsTitle": "Gyakori kérdések a positanói kompokról",
+    "galleryTitle": "Kiemelt fotók a kompokról"
+  },
+  "drivingAmalfi": {
+    "intro": [
+      "A panorámás SS163-as út látványos, de szűk kanyarokkal, szezonális szabályokkal és parkolási korlátokkal jár."
+    ]
+  },
+  "ecoFriendlyAmalfi": {
+    "intro": [
+      "Legyél kíméletes a partvidékkel: közlekedj tömegközlekedéssel, töltsd újra az üveged, és válassz alacsony terhelésű programokat."
+    ],
+    "toc": [
+      {
+        "href": "#getting-around",
+        "label": "Getting around"
+      },
+      {
+        "href": "#refills",
+        "label": "Refills & waste"
+      },
+      {
+        "href": "#trails",
+        "label": "Trails etiquette"
+      }
+    ],
+    "sections": [
+      {
+        "id": "getting-around",
+        "title": "Getting around",
+        "body": [
+          "Prefer ferries and buses to private cars; walk between nearby villages when it’s safe.",
+          "Travel off-peak to ease operations and avoid crowding on the coast."
+        ]
+      },
+      {
+        "id": "refills",
+        "title": "Refills & waste",
+        "body": [
+          "Use public fountains or ask cafés for refills; carry a reusable bottle.",
+          "Sort waste where possible and skip single-use beach gear."
+        ]
+      },
+      {
+        "id": "trails",
+        "title": "Trails etiquette",
+        "body": [
+          "Give way on narrow sections, pack out all rubbish, and respect private property.",
+          "Start early to beat the heat and trail congestion."
+        ]
+      }
+    ],
+    "faqs": [],
+    "faqsTitle": "FAQs"
+  },
+  "itinerariesPillar": {
+    "intro": "You don’t need a car to enjoy the Amalfi Coast. Use ferries for scenic hops, buses for ridge towns, and a little timing to avoid the busiest windows. Start with these templates, then customise.",
+    "toc": {
+      "twoDays": "2 nap: Positano fókusz",
+      "threeDays": "3 nap: Capri vagy Ravello",
+      "sevenDays": "7 nap: teljes kör",
+      "tips": "Időzítés és közlekedés",
+      "faqs": "GYIK"
+    },
+    "twoDaysHeading": "2 nap: Positano fókusz",
+    "twoDaysItems": [
+      "A fordítás folyamatban van.",
+      "A fordítás folyamatban van."
+    ],
+    "threeDaysHeading": "3 nap: Capri vagy Ravello",
+    "threeDaysIntro": "Válassz egyet:",
+    "threeDaysOptions": [
+      "A fordítás folyamatban van.",
+      "Amalfi + Ravello: busz Amalfig, onnan fel Ravellóba kertekért és kilátásért; vissza busz/komp."
+    ],
+    "sevenDaysHeading": "7 nap: teljes kör",
+    "sevenDaysItems": [
+      "Bázis Positanóban (2–3 éj)",
+      "Amalfi/Ravello (2 éj)",
+      "Capri (1 éj) vagy Sorrento (1–2 éj) a gördülékeny átszállásokért"
+    ],
+    "tipsHeading": "Időzítés és közlekedés tippek",
+    "tips": [
+      "A kompok csúcsidőben 10:00–16:00 között zsúfoltak; indulj korábban vagy később.",
+      "Vásárold meg a buszjegyeket előre és érvényesítsd felszálláskor.",
+      "Ha hullámzik a tenger, válts buszra; ellenőrizd az üzemeltetők frissítéseit."
+    ],
+    "faqHeading": "GYIK",
+    "faqs": [
+      {
+        "q": "Érdemes váltogatni a bázist?",
+        "a": [
+          "Két bázis minimalizálja a csomagcipelést és hatékonyabbá teszi az utazást."
+        ]
+      }
+    ]
+  },
+  "amalfiTownGuide": {
+    "headings": {
+      "highlights": "Highlights",
+      "gettingThere": "Getting there",
+      "tips": "Tips"
+    },
+    "highlights": [
+      "Duomo di Amalfi and the Chiostro del Paradiso (cloister).",
+      "Paper Museum (Museo della Carta) — unique to Amalfi’s history.",
+      "Beachfront promenade and gelato on the steps."
+    ],
+    "gettingThere": "From Positano, ferries (in season) are scenic and comfortable. Otherwise, take the SITA bus; expect queues in peak time. Buy tickets in advance.",
+    "tips": [
+      "Vigyél könnyű sálat a templomokba és napvédőnek a kompra.",
+      "Hűsítsd magad citromgranitéval a vízparti kioszkoknál a megállók között."
+    ]
+  },
+  "sevenDayNoCar": {
+    "intro": "Állítsd be bázisod 3 éjszakára Positanóban, 2 éjszakára Amalfi/Ravellóban, és 1–2 éjszakára Caprin vagy Sorrentóban, hogy egyszerű maradjon az utazás.",
+    "toc": {
+      "onThisPage": "Ezen az oldalon",
+      "overview": "Áttekintés",
+      "dayByDay": "Napokra bontva",
+      "tips": "Közlekedési tippek",
+      "faqs": "GYIK"
+    },
+    "days": [
+      {
+        "id": "day1",
+        "label": "1. nap",
+        "items": [
+          "A fordítás folyamatban van."
+        ]
+      },
+      {
+        "id": "day2",
+        "label": "2. nap",
+        "items": [
+          "Isteni ösvény Nocelléből"
+        ]
+      },
+      {
+        "id": "day3",
+        "label": "3. nap",
+        "items": [
+          "Egynapos kirándulás Caprira vagy strand + hajókirándulás"
+        ]
+      },
+      {
+        "id": "day4",
+        "label": "4. nap",
+        "items": [
+          "A fordítás folyamatban van."
+        ]
+      },
+      {
+        "id": "day5",
+        "label": "5. nap",
+        "items": [
+          "A fordítás folyamatban van."
+        ]
+      },
+      {
+        "id": "day6",
+        "label": "6. nap",
+        "items": [
+          "Éjszaka Caprin vagy átszállás Sorrentóba"
+        ]
+      },
+      {
+        "id": "day7",
+        "label": "7. nap",
+        "items": [
+          "Hazautazás"
+        ]
+      }
+    ],
+    "tips": [
+      "A kompok szezonálisak; legyen B terved buszra, ha rossz az idő.",
+      "A legforgalmasabb napokon indulj 10:00 előtt vagy 16:00 után, hogy elkerüld a sorokat."
+    ],
+    "faq": [
+      {
+        "q": "Érdemes váltogatni a bázist?",
+        "a": [
+          "Két bázissal minimális a csomagmozgatás és hatékony marad a program."
+        ]
+      }
+    ]
+  },
+  "chiesaNuovaDepartures": {
+    "intro": [
+      "A Brikette Hostelből indulnál az Amalfi vagy Sorrento felé tartó busszal? Ez a miniútvonal megmutatja a leggyorsabb utat a Hostel Brikettétől a Chiesa Nuova/Bar Internazionale buszmegállóig, és néhány tippet is ad."
+    ],
+    "sections": [
+      {
+        "title": "Why this route works",
+        "body": [
+          "A megálló 120 méterre (400 lábra) van a hostel bejáratától, a főúton lefelé.",
+          "Ha Amalfi felé tartasz, a megálló a Bar Internazionale túloldalán van. Sorakozz az út tenger felőli oldalán. Ha Sorrentóba mész, közvetlenül a bár előtt várakozol."
+        ]
+      },
+      {
+        "title": "Tickets and timing",
+        "body": [
+          "Vegyél SITA-jegyet a dohányboltban vagy a bárban. Ne próbálj jegy nélkül felszállni, mert a buszon nem tudsz vásárolni. Felszálláskor mutasd meg a jegyed a sofőrnek. Ha az első reggeli busszal mennél, vedd meg a jegyet előző nap, és gyere be a recepciónkra a kijelentkezés egyeztetéséhez.",
+          "Nyáron a buszok gyakran megtelnek. Ennek megfelelően tervezz, különösen a legforgalmasabb időszakokban."
+        ]
+      }
+    ],
+    "beforeList": [],
+    "stepsList": [
+      "Exit Hostel Brikette, take the short staircase to Viale Pasitea, and turn left.",
+      "Kövesd a járdát körülbelül 120 méteren (400 lábon) át a főúton, amíg el nem éred a Bar Internazionale-t."
+    ],
+    "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+    "kneesList": [],
+    "kneesDockPrefix": "Starting with luggage at the ferry dock? Use our",
+    "kneesDockLinkLabel": "Ferry dock luggage route",
+    "kneesPorterPrefix": "Need porter pricing or booking help? Check the",
+    "kneesPorterLinkLabel": "porter service guide",
+    "faqs": [
+      {
+        "q": "Do buses stop right outside the hostel?",
+        "a": "They stop at Bar Internazionale—about 120 metres (400 feet) downhill from the entrance."
+      },
+      {
+        "q": "Can I buy tickets at the last minute?",
+        "a": "Yes, the tabacchi next to the stop sells SITA tickets, but expect queues at peak times."
+      }
+    ],
+    "howtoSteps": [
+      "Leave Hostel Brikette and follow Viale Pasitea downhill",
+      "Join the queue at Bar Internazionale and validate on boarding"
+    ],
+    "faqsTitle": "FAQs"
+  }
+}

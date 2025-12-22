@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Légendes et folklore de la côte amalfitaine",
+    "description": "Mythes de sirènes, saints et marins qui éclairent les fêtes et traditions locales."
+  },
+  "linkLabel": "Légendes et folklore de la côte amalfitaine",
+  "intro": [
+    "Plongez dans les légendes de la Côte Amalfitaine qui inspirent festivals, statues et expressions locales."
+  ],
+  "sections": [
+    {
+      "id": "saint",
+      "title": "Saint André",
+      "body": [
+        "La cathédrale d'Amalfi abrite les reliques de saint André ; les habitants lui attribuent la capacité d'apaiser les tempêtes et de protéger les pêcheurs.",
+        "Les 27 juin et 30 novembre, des processions portent sa statue à travers la ville accompagnées de feux d'artifice et de fanfares."
+      ]
+    },
+    {
+      "id": "sirens",
+      "title": "Les sirènes de Li Galli",
+      "body": [
+        "La légende raconte que les îles Li Galli attiraient les marins par leur chant ; aujourd'hui, les excursions en bateau relatent l'histoire en longeant ces îlots privés.",
+        "À Naples, écoutez les références à Parthénope et aux sirènes : elles relient les mythes des deux régions."
+      ]
+    },
+    {
+      "id": "traditions",
+      "title": "Traditions vivantes",
+      "body": [
+        "La Luminaria de Praiano et les bénédictions des pêcheurs à Positano mêlent foi et folklore dans des rituels aux chandelles.",
+        "Les carreaux en céramique artisanale représentent souvent saints, citrons ou légendes côtières : repérez-les sur les portes et les marches d'église."
+      ]
+    }
+  ],
+  "tips": [
+    "Consultez les calendriers municipaux pour connaître les fêtes et participer aux célébrations dans le respect des habitants.",
+    "Gardez un châle léger ; beaucoup d'événements s'enchaînent avec une messe où une tenue modeste est appréciée."
+  ],
+  "faqs": [
+    {
+      "q": "Tout le monde peut-il rejoindre les processions ?",
+      "a": [
+        "Oui : placez-vous le long du parcours, applaudissez avec respect et laissez passer en priorité les porteurs de statues."
+      ]
+    },
+    {
+      "q": "Où entendre de la musique traditionnelle ?",
+      "a": [
+        "Cherchez les concerts folk à Atrani et Ravello pendant les festivals d'été ; les offices de tourisme affichent les programmes hebdomadaires."
+      ]
+    }
+  ]
+}

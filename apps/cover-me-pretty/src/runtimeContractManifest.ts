@@ -7,6 +7,12 @@
 /* i18n-exempt file -- SHOP-3207 manifest enumerates literal route identifiers [ttl=2026-06-30] */
 //
 type HttpRuntime = "nodejs" | "edge";
+type PaymentsMode = "payment_intent" | "checkout_session_custom" | "hosted_checkout";
+type TaxMode = "static_rates" | "taxjar_api" | "stripe_tax" | "custom";
+type InventoryMode = "none" | "validate_only" | "reserve_ttl";
+type IdentityMode = "none" | "per_site" | "sso_oidc";
+type LogoutMode = "local" | "local_plus_idp" | "global";
+type OrderLinkingMode = "none" | "email_verified" | "explicit_claim";
 
 type ApiRouteDescriptor = {
   path: string;
@@ -39,8 +45,14 @@ export const runtimeContractManifest = {
     // on the template contract; document current path/runtime for now.
     apiCheckoutSession: {
       path: "/api/checkout-session",
-      runtime: "edge",
+      runtime: "nodejs",
       uses: "@platform-core/checkout/session",
+    } satisfies ApiRouteDescriptor,
+
+    apiStripeWebhook: {
+      path: "/api/stripe-webhook",
+      runtime: "nodejs",
+      uses: "@platform-core/stripe-webhook",
     } satisfies ApiRouteDescriptor,
 
     apiReturn: {
@@ -67,6 +79,14 @@ export const runtimeContractManifest = {
   capabilities: {
     cart: true,
     checkout: true,
+    webhooks: true,
+    paymentsMode: "checkout_session_custom" satisfies PaymentsMode,
+    taxMode: "static_rates" satisfies TaxMode,
+    inventoryMode: "validate_only" satisfies InventoryMode,
+    identityMode: "per_site" satisfies IdentityMode,
+    profileApi: false,
+    logoutMode: "local" satisfies LogoutMode,
+    orderLinking: "none" satisfies OrderLinkingMode,
     returns: true,
     preview: true,
     // cover-me-pretty implements both the core rental return/refund flow via

@@ -3,8 +3,8 @@ import fs from 'node:fs';
 import ts from 'typescript';
 import { runInNewContext } from 'vm';
 
-/* eslint-disable @typescript-eslint/no-require-imports */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+ 
+ 
 
 jest.mock('@prisma/client', () => ({
   PrismaClient: jest.fn().mockImplementation(() => ({})),
@@ -32,6 +32,8 @@ describe('init-shop configurator - vault', () => {
       'about',
       'About Us',
       '',
+      'n',
+      'n',
       '#336699',
       '',
       'n',
@@ -54,7 +56,40 @@ describe('init-shop configurator - vault', () => {
       envParse(env);
     });
 
-    const sandbox: any = {
+    const sandbox: any = {};
+    const loadModule = (modulePath: string): any => {
+      const src = fs.readFileSync(modulePath, 'utf8');
+      const dir = path.dirname(modulePath);
+      const mod = { exports: {} };
+      const localRequire = (r: string) => {
+        if (r.startsWith('.')) {
+          if (
+            r.includes('generate-theme') ||
+            r.includes('seedShop') ||
+            r.includes('apply-page-template')
+          ) {
+            return sandbox.require(r);
+          }
+          const resolved = path.join(dir, r);
+          return loadModule(resolved.endsWith('.ts') ? resolved : `${resolved}.ts`);
+        }
+        return sandbox.require(r);
+      };
+      const transpiled = ts.transpileModule(src, {
+        compilerOptions: { module: ts.ModuleKind.CommonJS, esModuleInterop: true },
+      }).outputText;
+      runInNewContext(transpiled, {
+        ...sandbox,
+        require: localRequire,
+        module: mod,
+        exports: mod.exports,
+        __dirname: dir,
+        __filename: modulePath,
+      });
+      return mod.exports;
+    };
+
+    Object.assign(sandbox, {
       exports: {},
       module: { exports: {} },
       process: {
@@ -151,7 +186,7 @@ describe('init-shop configurator - vault', () => {
             }),
           };
         }
-        if (p.includes('./env')) {
+        if (p.includes('./initShop')) {
           return {
             initShop: async () => {
               const secret = execSync('vault STRIPE_SECRET_KEY', {
@@ -161,10 +196,7 @@ describe('init-shop configurator - vault', () => {
               envParse({ STRIPE_SECRET_KEY: secret });
               const fs = require('node:fs');
               sandbox.templateContent = 'STRIPE_SECRET_KEY=';
-              fs.writeFileSync(
-                'apps/shop-demo/.env',
-                `STRIPE_SECRET_KEY=${secret}`
-              );
+              fs.writeFileSync('apps/shop-demo/.env', `STRIPE_SECRET_KEY=${secret}`);
               fs.writeFileSync(
                 'apps/shop-demo/.env.template',
                 'STRIPE_SECRET_KEY='
@@ -195,15 +227,17 @@ describe('init-shop configurator - vault', () => {
         if (p === '@prisma/client') {
           return { PrismaClient: jest.fn().mockImplementation(() => ({})) };
         }
-        if (p.startsWith("./")) {
-          // Resolve relative imports like "./runtime" against the directory of
-          // the init-shop script so the sandboxed `require` can locate the
-          // helper modules.
-          return require(path.join(__dirname, "../../../../scripts/src", p));
+        if (p.startsWith('./')) {
+          const filePath = path.join(
+            __dirname,
+            '../../../../scripts/src',
+            p.endsWith('.ts') ? p : `${p}.ts`
+          );
+          return loadModule(filePath);
         }
         return require(p);
       },
-    };
+    });
 
     const src = fs.readFileSync(
       path.join(__dirname, '../../../../scripts/src/init-shop.ts'),
@@ -223,4 +257,3 @@ describe('init-shop configurator - vault', () => {
     expect(sandbox.templateContent).toContain('STRIPE_SECRET_KEY=');
   });
 });
-

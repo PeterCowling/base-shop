@@ -1,0 +1,18 @@
+{
+  "planChoice": {
+    "title": "Vælg din plan",
+    "options": {
+      "ferry": "Færge (sæson)",
+      "trainBus": "Tog + bus (året rundt)",
+      "transfer": "Privat transfer"
+    },
+    "selectedLabel": "Valgt:"
+  },
+  "eventInfo": {
+    "title": "Detaljer om arrangementet",
+    "labels": {
+      "when": "Hvornår",
+      "where": "Hvor"
+    }
+  }
+}

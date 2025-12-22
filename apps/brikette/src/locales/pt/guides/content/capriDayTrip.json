@@ -1,0 +1,114 @@
+{
+  "seo": {
+    "title": "Bate-volta a Capri saindo de Positano",
+    "description": "Planeje um dia completo em Capri: ferries cedo, roteiro por Anacapri e Marina Piccola, tempo de retorno e planos reserva para mar agitado."
+  },
+  "linkLabel": "Bate-volta a Capri saindo de Positano",
+  "intro": [
+    "Capri em um dia a partir de Positano: saia cedo, leve bagagem leve e trace um circuito que equilibre vistas de Anacapri com um regresso tranquilo."
+  ],
+  "toc": [
+    {
+      "href": "#morning",
+      "label": "Manhã — chegada e Anacapri"
+    },
+    {
+      "href": "#midday",
+      "label": "Meio do dia — circuito por Marina Piccola"
+    },
+    {
+      "href": "#afternoon",
+      "label": "Tarde — vila de Capri e regresso"
+    },
+    {
+      "href": "#gallery",
+      "label": "Galeria de fotos"
+    },
+    {
+      "href": "#faqs",
+      "label": "Perguntas frequentes"
+    }
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Manhã — chegada e Anacapri",
+      "body": [
+        "Apanhe o primeiro ferry para chegar antes das multidões de cruzeiros, suba de autocarro até Anacapri e, se gosta de alturas, faça o teleférico até Monte Solaro.",
+        "Tome um pequeno-almoço simples na Piazza Vittoria e compre logo o bilhete de regresso para garantir o horário de partida."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Meio do dia — circuito por Marina Piccola",
+      "body": [
+        "Desça a pé ou de autocarro até Marina Piccola para um mergulho ou fotos; leve protetor solar reef-safe e pelo menos 1 litro de água por pessoa.",
+        "Compre panini ou saladas numa delicatessen em vez de almoços demorados para subir de volta sem pressa."
+      ]
+    },
+    {
+      "id": "afternoon",
+      "title": "Tarde — vila de Capri e regresso",
+      "body": [
+        "Suba no funicular até à vila de Capri para passear na Via Camerelle, visitar os Giardini di Augusto e fazer uma pausa final para gelado ou espresso.",
+        "Esteja na Marina Grande pelo menos 30 minutos antes da partida caso haja fila para o funicular ou para despachar bagagem."
+      ]
+    }
+  ],
+  "galleryTitle": "Galeria de fotos",
+  "gallery": {
+    "items": {
+      "monteSolaro": {
+        "alt": "Vista a partir do Monte Solaro, Capri",
+        "caption": "Panorâmica do Monte Solaro"
+      },
+      "gardensOfAugustus": {
+        "alt": "Jardins de Augusto, Capri",
+        "caption": "Jardins de Augusto"
+      }
+    }
+  },
+  "faqsTitle": "Perguntas frequentes",
+  "howTo": {
+    "steps": [
+      {
+        "name": "Verifique os ferries sazonais",
+        "text": "Confirme as partidas da manhã e os últimos regressos para Positano."
+      },
+      {
+        "name": "Chegue cedo ao cais",
+        "text": "Forme fila 20–30 minutos antes na época alta."
+      },
+      {
+        "name": "Planeie o percurso em Capri",
+        "text": "Priorize Anacapri ou Marina Grande + miradouros consoante o tempo disponível."
+      }
+    ]
+  },
+  "tipsTitle": "Dicas para o dia",
+  "tips": [
+    "Compre os bilhetes de ida e volta juntos para ajustar o circuito sem ter de procurar lugares mais tarde.",
+    "Leve uma mochila pequena com água, protetor solar e dinheiro — os multibancos em Capri podem ficar sem notas nas semanas de pico.",
+    "Descarregue mapas offline de Capri e horários de autocarros; o sinal cai em Anacapri e na fila da Gruta Azul."
+  ],
+  "warningsTitle": "Alertas importantes",
+  "warnings": [
+    "As filas do teleférico e funicular disparam depois das 15:00; perder o horário pode significar regressar em standby.",
+    "Mar agitado pode cancelar partidas tardias sem aviso — consulte os boletins de manhã e tenha uma ligação via Sorrento como plano B.",
+    "A Gruta Azul fecha com vento ou ondulação; operadores podem continuar a vender bilhetes, por isso confirme que está aberta antes de entrar na fila."
+  ],
+  "faqs": [
+    {
+      "q": "Consigo incluir a Gruta Azul?",
+      "a": [
+        "Só se for prioridade — conte com barco shuttle e 60–90 minutos de espera, o que aperta o resto do roteiro."
+      ]
+    },
+    {
+      "q": "Preciso comprar bilhetes antecipadamente?",
+      "a": [
+        "Reserve ferries da manhã na época alta e considere comprar online lugares no teleférico ou passeios de barco; em meia estação costuma dar para comprar na hora."
+      ]
+    }
+  ]
+}

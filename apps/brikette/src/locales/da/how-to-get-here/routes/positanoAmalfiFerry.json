@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Positano til Amalfi med færge | Hostel Brikette",
+    "description": "Trin-for-trin færgerejse fra Positano til Amalfi: billetter, hvor du går ombord ved Spiaggia Grande, køreplaner og hvad du kan forvente ved ankomst."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Positano til Amalfi — færge",
+    "description": "Følg disse trin for at rejse fra Positano til Amalfi med færge. Du får tips om billetter, hvor du går ombord i Positano, hvad du kan forvente ved ankomst, og links til live-køreplaner."
+  },
+  "tip": {
+    "label": "Tip",
+    "copy": "Brug for andre transportmuligheder? Åbn <link>Oversigt over Sådan kommer du hertil</link> for busser, kombinerede ruter og lufthavnstransport."
+  },
+  "sections": {
+    "overview": {
+      "title": "Rejseoverblik",
+      "points": [
+        "Sæsonfærger forbinder Positano og Amalfi med smuk kystudsigt.",
+        "Afgange varierer efter sæson og vejr; tjek altid dagens køreplan.",
+        "Afsæt ekstra tid i højsæsonen til køer ved molen."
+      ]
+    },
+    "tickets": {
+      "title": "Billetter og køreplaner",
+      "intro": "Se de nyeste tider og priser på <travelmar>Travelmar</travelmar> og <positano>Positano.com — færgetider</positano>.",
+      "points": [
+        "Køb billetter online på forhånd i højsæsonen eller i operatørernes boder ved molen.",
+        "Ankom 15–20 minutter før afgang for at bytte vouchers og stille dig i kø til ombordstigning.",
+        "Hav billet eller QR-kode klar til kontrol fra personalet."
+      ]
+    },
+    "positanoPier": {
+      "title": "Hvor du går ombord i Positano",
+      "points": [
+        "Afgangene sker fra Positanos hovedmole på Spiaggia Grande.",
+        "Operatørernes boder ligger langs vandkanten; skilte viser næste afgang for hvert selskab.",
+        "Bekræft den rigtige mole på din billet; personalet kan hjælpe, hvis du er i tvivl."
+      ]
+    },
+    "amalfiArrival": {
+      "title": "Ankomst til Amalfi",
+      "points": [
+        "Bådene anløber Amalfis moler ved Piazza Flavio Gioia.",
+        "Den historiske bymidte og promenaden ligger lige ved havnen.",
+        "For videre busser (fx Ravello eller Sorrento) følger du skiltene til SITA-stoppet nær vandet."
+      ]
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

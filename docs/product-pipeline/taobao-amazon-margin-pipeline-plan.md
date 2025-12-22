@@ -3,9 +3,9 @@
 China Sourcing → EU Multi-Channel Capital Return Pipeline
 
 Type: Plan
-Status: Draft
+Status: In progress (repo audit 2025-12-22)
 Domain: Commerce / Sourcing / Market Intelligence / Capital Analytics / Ops Enablement
-Last-reviewed: 2025-12-19
+Last-reviewed: 2025-12-22
 Relates-to charter: (planned) docs/product-pipeline/product-pipeline-charter.md
 
 Note: This plan exceeds 350 lines to keep the full end-to-end pipeline in one view. Follow-up: split into docs/product-pipeline/{scope,stages,architecture,testing}.md once scope is locked.
@@ -39,6 +39,25 @@ It has its own Cloudflare Pages project (name: product-pipeline), Worker API, D1
 It does not integrate into existing apps beyond shared design tokens/components and core utilities.
 Plan for repo-style isolation (app, packages, CI, deploy) so it can be extracted later without rework.
 This app launches before Base-Shop v1.
+
+0.2 Implementation progress (repo audit 2025-12-22)
+
+Completed in repo (apps/product-pipeline + queue-worker + @acme/pipeline-engine)
+
+- App + infra: dedicated Next.js app with Cloudflare Pages + Worker bindings (wrangler.toml), queue worker for Stage M, D1 migrations for leads/candidates/stage_runs/launches/logistics lanes/velocity priors/artifacts, and audit log + CSV exports.
+- Core CRUD: Leads/Candidates APIs with fingerprinting, triage fields, duplicate linking, exports, and audit log feeds; Activity API exposes logs.
+- Stages implemented: P (triage + dedupe + promotion budget + cooldown checks), A/B/C/D/K/N/R/S endpoints with cooldown enforcement; K engine shipped as @acme/pipeline-engine with sensitivities; Scenario Lab uses approx vs exact recompute; Stage X cooldown API.
+- Stage M path: queue producer with per-site budgets, queue worker fetches HTML, parses Amazon/Taobao search/listing HTML, stores artifacts to R2, updates stage_runs and candidate status.
+- Launch loop: launch plan CRUD, Stage L actuals ingestion from CSV, Stage K recompute from actuals, velocity prior insertion, and scale/kill decisions.
+- UI footprint: pages for Leads/Candidates/Scenario Lab/Launches/Activity/Exports wired to APIs; basic HUD cards for Portfolio, Suppliers, Logistics lanes.
+
+Partial/remaining gaps vs plan
+
+- Data acquisition: Stage M runner now supports Playwright headful capture, human-gate prompt with playbook macros, HTML+PNG artifacts, scroll/wait controls, basic playbooks (Amazon/Taobao selectors + cookie accepts), session reuse/rotation, capture-profile allowlisting, and runner heartbeat status UI; still missing full operator login macros, session rotation policy enforcement across accounts, and richer assisted-capture playbooks per marketplace.
+- Evidence gating: Stage S is manual risk inputs; no automated compliance/hazmat/package checks or artifact gating/checklist enforcement yet.
+- Portfolio solver: Portfolio page is static copy; no constraint-based recommendation/selection engine or cash/capacity/effort optimizer.
+- Supplier ops: Supplier view is static; no supplier scorecards, terms history, or negotiation task loops feeding Stage N.
+- Scheduling: jobs run on-demand; no maturity-aware scheduler enforcing per-stage throughput beyond Stage P/M daily limits.
 
 1. Outcomes and non-goals
    1.1 Outcomes
@@ -785,6 +804,108 @@ Tier 1 (instant): apply stored sensitivities to approximate deltas across lists
 Tier 2 (exact): recompute Stage K precisely for selected candidates/top N impacted
 
 UI must clearly label “Approx” vs “Exact.”
+
+10.5 Gamified, highly visual UX (3D-first overlay)
+
+Goal: make the product-pipeline feel like a trading sim where operators “fly” through opportunities, while keeping Stage P→L truth visible and auditable.
+
+Theme and scene framing
+
+- Command Deck (default view): Leads/Candidates rendered as ships/cards on a 3D starmap; maturity level = unlocked sectors; effort/risk shown as “heat” and “armor”; cooldowns shown as “frozen” hexes.
+- Scenario Lab → Simulation Chamber: physics-ish 3D dials for price/freight/velocity; “approx” vs “exact” rendered as holo vs solid panels; rerun pulses a ripple through affected nodes.
+- Portfolio → War Room: cash, capacity, and effort shown as resource bars; recommended picks animate into slots; stop-losses as shields that can be toggled.
+- Launches → Mission Log: pilot outcomes animate as trajectory lines; variance shows as turbulence; scale/kill decisions stamp the card.
+
+Game loop structure (maps to maturity levels)
+
+- M0 tutorial path: narrative onboarding that grants “scanner access” after Stage P is run on 5 leads; single-player, low visual load.
+- M1 missions: daily “triage runs” (run Stage P on N leads), “promotion sorties” (promote top K), and “lookup raids” (Stage M jobs) with streak bonuses (operator XP, not coins).
+- M2 expeditions: timed “portfolio builds” with resource caps; Scenario Lab combos (chain 3 what-ifs to reveal hidden sensitivity chips); supplier negotiation runs unlock “term upgrade” badges.
+- M3 control: audit-grade overlays; RBAC shows as squad roles; achievements shift to reliability (zero failed cooldown attempts in a week).
+
+Entity mapping (consistent nouns and visuals)
+
+- Leads = signals/beacons; TriageScore drives beacon brightness; duplicates snap together with a magnetic effect.
+- Candidates = ships/cards; stage rail shows as modules attached; risk/effort chips are “status lights”; evidence crates (R2 assets) hoverable with screenshots as holograms.
+- Suppliers = stations; terms history visualized as concentric rings with better rings glowing.
+- Markets = sectors; velocity bands shown as orbit speeds; IP/compliance risk as radiation fields.
+
+Interactions and controls
+
+- 3D navigation: orbit controls with keyboard arrows/WASD; mini-map radar for zoomed-out context; ctrl+click to lasso select Leads/Candidates for bulk actions.
+- Actions are tactile: drag a lead beacon onto the “Gate” to trigger Stage P; drag top candidates into “Priority Queue slots”; drop artifacts onto checklist slots to satisfy compliance.
+- Scenario Lab: knobs/sliders with haptic-like easing; instant mode = shimmering approximation; exact recompute = solidifying panel and data pulse to impacted cards.
+- Cooldowns: frozen cards with countdown rings; recheck triggers appear as “intel drops” that can thaw the card.
+
+Feedback and rewards (aligned to real work, not gambling)
+
+- Operator XP tied to completed, compliant actions (triage batches, evidence uploads, enforced cooldowns).
+- Achievements/badges: “Steady Hands” (0 cooldown violations), “Signal Booster” (triage accuracy), “Term Whisperer” (Stage N improvements), “Simulator Ace” (Scenario Lab coverage).
+- Dashboards show streaks and reliability; no loot boxes or random rewards.
+
+Tech stack guidance (visual but performant)
+
+- 3D: Three.js with react-three-fiber + @react-three/drei; postprocessing for glow/heat; use instancing for large point clouds (Leads).
+- UI shell: Next.js/React (existing), with layered Canvas panels per scene; fall back to 2D canvas/SVG on low-power devices (progressive degradation).
+- Motion: Framer Motion for UI chrome; GSAP or react-spring for HUD transitions; keep animation budgets <10ms/frame, and cap particle counts per maturity level.
+- Audio cues (subtle): soft chime on successful stage run, low thud on reject, hover whispers on evidence hover (muted by default; per-user toggle).
+
+Instrumentation and guardrails
+
+- FPS and GPU budget indicator in HUD; auto-switch to low-visual mode if <45fps sustained.
+- All actions still write to audit log; visuals are a layer over the true state; “Show raw” toggle exposes classic table view for accessibility and debugging.
+- Accessibility: colorblind-safe palette options; keyboard-first controls; motion-reduction toggle disables camera moves and uses static cards.
+
+Implementation slices (map to milestones)
+
+- Milestone 0-1: establish Command Deck shell with 3D starmap and card hover states; low-poly, no heavy effects.
+- Milestone 2: drag-to-Stage-P gate, triage beacon effects, duplicate magnetization; basic streak counter.
+- Milestone 3: Simulation Chamber visuals for Amazon lookup returns (evidence crates as popups), budget bars as resources.
+- Milestone 4: Scenario Lab instant vs exact holo/solid panels; sensitivity ripples.
+- Milestone 5: cooldown freeze/shatter effects; intel drops for recheck triggers.
+- Milestone 6: Mission Log trajectories for pilot actuals; scale/kill stamps.
+
+10.6 Gamified prep backlog (naming + assets + instrumentation)
+
+Canonical stage naming (use in UI, achievements, copy, and telemetry)
+
+- Stage P — Pre-selection/Triage → “Gate Scan” (Lead → Candidate)
+- Stage A — Naive economics → “Reality Check”
+- Stage M — Market & velocity → “Market Sweep”
+- Stage S — Safety & feasibility → “Safety Shield”
+- Stage N — Negotiation & terms → “Negotiation Bay”
+- Stage D — Productization → “Forge”
+- Stage B — Landed + fulfillment → “Landing Bay”
+- Stage C — Unit contribution & payout timing → “Payout Rail”
+- Stage K — Capital timeline & returns → “Capital Run”
+- Stage R — Risk + effort + ranking → “Command Rank”
+- Stage L — Launch experiments & learning → “Mission Log”
+- Stage X — Cooldown/recheck → “Cryo Cooldown”
+
+Copy + UX guardrails
+
+- Replace “Stage <letter>” labels in UI chrome with the canonical names; keep the letter as a chip for operators who know the pipeline (e.g., “Gate Scan (P)”).
+- Use the same names in achievements/badges and mission text to avoid cognitive dissonance.
+- Add a glossary modal linking canonical names to pipeline definitions; include keyboard shortcut (?).
+
+Asset + theme prep
+
+- Icon kit per stage (line + filled) with matching 3D glyphs; export to SVG + GLTF; design for low-poly readability.
+- FX palette per stage (e.g., Gate Scan = scan sweep; Safety Shield = radial shield; Cryo Cooldown = frost shader) with perf budget notes.
+- Sound cues mapped per stage (soft, minimal); define “quiet mode” and per-user toggles.
+- HUD tokens: resource bars, streak meters, cooldown rings; ensure colorblind-safe variants.
+
+Instrumentation readiness
+
+- Telemetry events include canonical stage name, letter, scene (Command Deck/Simulation Chamber/etc.), GPU mode (high/low), FPS bucket, and motion preference.
+- Add “raw view” toggle usage metrics to ensure accessibility path is used/tested.
+- Log failed cooldown attempts and thaw triggers to power “Steady Hands” achievement.
+
+Content and localization
+
+- Provide short tooltips (<=60 chars) and longer popovers (<=200 chars) for each canonical name.
+- Keep strings in a single namespace so visual themes can change without recoding copy.
+- Validate translations keep metaphors coherent (no literal sci-fi if locale prefers neutral).
 
 11. Reference architecture (Cloudflare-first, scraper-runner hybrid)
 

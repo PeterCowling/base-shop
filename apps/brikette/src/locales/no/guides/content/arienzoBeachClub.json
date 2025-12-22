@@ -1,0 +1,125 @@
+{
+  "seo": {
+    "title": "Guide til Arienzo Beach Club",
+    "description": "Reserver solsenger, velg mellom 300 trappetrinn eller skyttelbåt, og planlegg mat og transport til Arienzo Beach Club."
+  },
+  "linkLabel": "Guide til Arienzo Beach Club",
+  "intro": [
+    "Arienzo ligger like øst for Positano med lang ettermiddagssol, turkist vann og en dramatisk trapp som slynger seg ned fra Amalfi-kystveien. Det er den livligste lidoen i nærheten av Hostel Brikette, men med både trapper og reserveringskrav lønner det seg å ha en plan før du drar.",
+    "Bruk denne guiden til å sikre deg plass, velge om du vil ta skyttelbåten eller gå de 300 trappetrinnene, og sette av budsjett til lunsj, drikke og turen hjem igjen."
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Hvorfor velge Arienzo"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Slik kommer du dit"
+    },
+    {
+      "href": "#layout",
+      "label": "Område og tjenester"
+    },
+    {
+      "href": "#packages",
+      "label": "Pakker og servering"
+    },
+    {
+      "href": "#heading-back",
+      "label": "Turen tilbake"
+    }
+  ],
+  "sections": [
+    {
+      "id": "why-go",
+      "title": "Hvorfor Arienzo passer for gjester på Hostel Brikette",
+      "body": [
+        "Arienzo er den nærmeste strandklubben med full service utenfor trengselen på Spiaggia Grande. Terrassene i klippene har sol til tidlig kveld, vannet holder seg klart for bading, og baren sørger for god stemning uten at det glir over i natteliv.",
+        "Dere kan dele dere mellom pakker som inkluderer solsenger og lunsj, eller reservere en platting på første rad for en ekstra luksusdag. Med litt planlegging unngår dere køer og rekker tilbake til hostellet før solnedgangsdrinken på terrassen."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Slik kommer du dit: skyttelbåt eller 300 trappetrinn",
+      "body": [
+        "Den enkleste veien er skyttelbåten til Arienzo Beach Club som går fra Spiaggia Grande. Båtene går omtrent hvert 30. minutt fra kl. 09.30, og siste avgang utover pleier å være rundt kl. 13.30. Bekreftelsen din inneholder en QR-kode – vis den på brygga og noter deg tidene for returen.",
+        "Du kan også gå hvis du heller vil slippe båten. Ta SITA-bussen mot Amalfi (gå på ved holdeplassen Sponda, 10 minutters gange nedover fra hostellet) og gå av på det skiltede stoppet for Arienzo. Derfra går du 300 trapper gjennom sitronterassene ned til inngangen.",
+        "Å komme med bil eller scooter frarådes; parkering er ekstremt begrenset og trafikkpolitiet bøtelegger kjøretøy som blokkerer svingene."
+      ]
+    },
+    {
+      "id": "layout",
+      "title": "Område, fasiliteter og solforhold",
+      "body": [
+        "Hoveddekket tilhører Arienzo Beach Club med oransje solsenger, håndkleservice, ferskvannsdyss og en livlig bar. Et mindre, gratis område ligger helt til høyre ved båtkaien, men plassen forsvinner etter kl. 10.30 og du må uansett håndtere trappene med alt utstyret ditt.",
+        "Solen når de to første radene til omtrent kl. 17.30 om sommeren før klippene gir skygge. Be personalet vinkle parasollene etter hvert som lyset flytter seg, spesielt hvis du vil ha en hel dag med soling.",
+        "Ferskvannsdyss, skap og garderober er inkludert i dagspakkene. Wi-Fi er ustabilt; last ned spillelister eller fergeoppdateringer før du kommer."
+      ]
+    },
+    {
+      "id": "packages",
+      "title": "Pakker, servering og reservasjoner",
+      "body": [
+        "Standard dagsenger starter rundt €70 for to personer og inkluderer parasoll, håndklær, to velkomstdrinker og skyttelbåt.",
+        "Platåer på første rad og eksklusive cabanaer koster €120–€200 avhengig av måned.",
+        "Lunsj serveres fra kl. 12.30 med sjømatpasta, salater og grillretter. Regn med €18–€28 per rett; reserver bord når du sjekker inn for å unngå rushet rundt kl. 14.00.",
+        "Bestillinger håndteres direkte via Arienzos nettside eller på WhatsApp. Betalingsinformasjon bekrefter plassen din; avbestillinger innen 48 timer gir som regel gebyr, så sjekk værmeldingen og fergeplanene først."
+      ]
+    },
+    {
+      "id": "heading-back",
+      "title": "Tilbake til Hostel Brikette",
+      "body": [
+        "Returbåtene går fra Arienzo på halvtime fra rundt kl. 15.00; den siste skyttelen pleier å gå kl. 18.00, men tidene endrer seg i skuldersesong – sjekk tavlen ved resepsjonen.",
+        "Hvis du gikk ned, bruk 15–20 minutter på å gå opp trappene til veien. Busser mot Positano passerer hver 30.–40. minutt på ettermiddagen; valider billetten om bord og ha en ekstra for sene returer.",
+        "Vil du ha et kveldsbad? Avtal henting med taxi via resepsjonen eller den digitale conciergen på forhånd, siden ride-hailing-apper ikke er til å stole på langs kysten."
+      ]
+    }
+  ],
+  "essentialsTitle": "Dette kan du forvente",
+  "essentials": [
+    "Obligatoriske reservasjoner i høysesong – bestill på nett eller via WhatsApp før du forlater hostellet.",
+    "Velg mellom skyttelbåten fra Spiaggia Grande eller trappen med 300 trinn fra SITA-holdeplassen.",
+    "Strandklubb med full service: bar, restaurant, dusjer og håndkleservice inkludert i dagspakkene."
+  ],
+  "typicalCostsTitle": "Typiske kostnader",
+  "typicalCosts": [
+    "Dagseng for to med skyttelbåt: €70–€90 avhengig av sesong.",
+    "Platå eller cabana på første rad: €120–€200 for to gjester.",
+    "Lunsjretter: €18–€28, cocktails €12–€15, flaskevann €3–€4."
+  ],
+  "tipsTitle": "Kjappe tips",
+  "tips": [
+    "Ta skjermbilde av bookingbekreftelsen; mobilsignalet forsvinner både i trappene og ved brygga.",
+    "Ha med en gjenbrukbar vannflaske – du kan fylle på i baren og holde kostnadene nede på varme dager.",
+    "Sammenlign andre alternativer langs kysten i vår %LINK:positanoBeaches|oversikt over strendene% hvis du ønsker et roligere eller gratis alternativ."
+  ],
+  "warningsTitle": "Greit å vite",
+  "warnings": [
+    "Ingen kontantrefusjon ved sen ankomst; ring på forhånd hvis du blir forsinket, så holder personalet av solsengene.",
+    "Den gratis sonen er svært liten og krever uansett at du tar hele trappen med alt utstyret ditt.",
+    "Bølgeforhold kan av og til stoppe skyttelbåten – personalet sender tekstmelding, men ha bussplanen klar."
+  ],
+  "faqsTitle": "Vanlige spørsmål om Arienzo Beach Club",
+  "faqs": [
+    {
+      "q": "Hvor lang tid i forveien bør jeg bestille?",
+      "a": [
+        "Bestill minst tre til fem dager i forveien i juni–september, spesielt for helger eller plasser på første rad. I skuldersesong (april, mai, oktober) finner du ofte ledige plasser fra dag til dag, men bekreft alltid skytteltidene."
+      ]
+    },
+    {
+      "q": "Kan jeg komme uten å kjøpe pakke?",
+      "a": [
+        "Ja, men mulighetene er begrenset. En liten offentlig stripe ligger ved siden av klubben og fylles opp før formiddagen er over. Du får ikke tilgang til toaletter eller dusjer uten pakke, og du må fortsatt håndtere den lange trappen."
+      ]
+    },
+    {
+      "q": "Hva bør jeg ha på til trappene?",
+      "a": [
+        "Bruk gode sandaler eller joggesko til nedstigningen. Bær det tyngste i en sekk og stopp på avsatser underveis. På vei opp igjen, ta pauser i skyggen og fyll på med vann før du går på buss eller taxi."
+      ]
+    }
+  ]
+}

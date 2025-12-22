@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Hvor skal man spise i Positano: Hostel Brikettes spiseguide",
+    "description": "Planlæg måltider omkring Hostel Brikette med lokale restauranttips, transportråd, prisniveauer og uforglemmelige madoplevelser."
+  },
+  "linkLabel": "Spise ude i Positano",
+  "heroAlt": "Middag på en terrasse med udsigt over Positano",
+  "intro": [
+    "Positano er fyldt med restauranter fra enkle pizzadisks til festlige tasting-menuer. Priserne stiger, jo tættere du kommer på hovedstranden, så planlæg en blanding af nabolagsklassikere og særlige destinationer.",
+    "Book borde online via tjenester som TheFork, når det er muligt, og sigt efter tidsrum mellem 20.30 og 22.00, hvor spisestederne er mest travle. Til måltider i sidste øjeblik er det godt at have et par steder med drop-in lidt oppe i byen fra havnefronten."
+  ],
+  "sections": [
+    {
+      "id": "signature-experiences",
+      "title": "Signaturoplevelser",
+      "body": [
+        "La Gavitella ligger på den anden side af bugten i Praiano og kombinerer en eftermiddag i beach club med en fiskemiddag. Tag shuttlebåden fra Positanos hovedstrand for en scenisk ankomst, eller hop på SITA-bussen mod Amalfi og gå ned fra stoppestedet. Forvent ultrafrisk fangst og solnedgangsudsigter mod Capri.",
+        "Til en uforglemmelig luksusoplevelse kan du reservere Sunset Cruise and Dinner. Turen inkluderer en bådudflugt, solnedgang langs kysten og en flerretters fiskemenu til ca. €139 pr. person – perfekt til særlige anledninger eller grupper."
+      ]
+    },
+    {
+      "id": "farmhouse-feasts",
+      "title": "Landlige middage over Positano",
+      "body": [
+        "La Tagliata ligger 3 km oppe i nærheden af Montepertuso og Nocelle. Tag lokalbussen mod Nocelle og stå af kort efter Montepertuso, eller bestil restaurantens shuttle. Den faste menu dækker antipasti, hjemmelavet pasta, grillede kødretter, vin og dessert for omkring €65 pr. person.",
+        "La Taverna del Leone nær Laurito og Il Ritrovo i Montepertuso fuldender ruten af klassiske trattoriaer på landet. Begge kan nås med bussen mod Amalfi og byder på afslappet service med generøse portioner i €45–55-klassen."
+      ]
+    },
+    {
+      "id": "neighbourhood-favourites",
+      "title": "Nabolagsfavoritter omkring hostellet",
+      "body": [
+        "Få minutter fra Hostel Brikette finder du hverdagsfavoritter som C’era Una Volta (pizza al taglio fra €7–12) og Il Grottino Azzurro, kun 160 meter væk med husets specialiteter omkring €35. Da Gabrisa, Next2 og Da Costantino tilbyder siddende middage med havudsigt til €30–60.",
+        "Lidt længere nede leverer Luna på Villa Magia og Da Vincenzo 1958 raffinerede måltider på terrasser med udsigt; sæt €65–100 af pr. person og bed om et vinduesbord ved booking. Husk interno-bussen til den stejle tur tilbage op fra steder ved stranden som Buca di Bacco."
+      ]
+    }
+  ],
+  "essentialsTitle": "Spisekort i kort form",
+  "essentials": [
+    "C’era Una Volta – overfor hostellet; takeaway-pizza €7–12.",
+    "Il Grottino Azzurro – 160 m fladt; middag ca. €35.",
+    "Da Gabrisa – 260 m ned ad bakke; terrasseudsigt, omkring €60.",
+    "Next2 – 270 m ned ad bakke; moderne italiensk menu omkring €60.",
+    "Da Costantino – 300 m op ad bakke; vinduespladser med €30 menuer.",
+    "Luna på Villa Magia – 450 m ned ad bakke; gourmetservering nær €100.",
+    "Da Vincenzo 1958 – 500 m ned ad bakke; klassisk Positano-køkken til €65.",
+    "Ohimà – 1,1 km ned; tag interno-bussen, forvent ca. €75.",
+    "Al Palazzo – 1,2 km ned; gårdhave under åben himmel, ~€75.",
+    "Buca di Bacco – hovedstranden; bedste strandvalg omkring €50.",
+    "Il Ritrovo – Montepertuso; busforbindelse, ca. €55.",
+    "La Taverna del Leone – Laurito; busstoppestedet mod Amalfi tæt på, €45.",
+    "La Gavitella – Praiano med bådtransfer; fiskegilde ca. €50.",
+    "Sunset Cruise & Dinner – bådoplevelse med middag, €139.",
+    "La Tagliata – shuttle fra Montepertuso; landligt festmåltid til €65."
+  ],
+  "typicalCostsTitle": "Hvad koster måltider",
+  "typicalCosts": [
+    "Takeaway-pizza eller panini nær hostellet: €7–12.",
+    "Trattoriaer i nabolaget med vin og dessert: €30–60 pr. person.",
+    "Tasting-menuer eller krydstogter: €65–139 pr. person."
+  ],
+  "tips": [
+    "Book online eller pr. telefon til tidspunkter mellem 20.30 og 22.00 – her er Positanos restauranter mest efterspurgte.",
+    "Brug SITA- eller interno-busser eller restaurantshuttle som La Tagliatas for at undgå lange trapper efter middagen.",
+    "Hav lidt kontanter til mindre steder og drikkepenge, selv når der tages imod kort.",
+    "Vil du bade før middagen på La Gavitella, så pak tørt skiftetøj til turen tilbage med båd."
+  ],
+  "faqs": [
+    {
+      "q": "Hvordan kommer jeg til La Gavitella fra Hostel Brikette?",
+      "a": [
+        "Gå ned til hovedstranden og tag shuttlebåden direkte til restauranten for en smuk ankomst, eller kør med SITA-bussen mod Amalfi, stå af undervejs og følg trapperne ned til beach clubben."
+      ]
+    },
+    {
+      "q": "Tilbyder La Tagliata transport tilbage til Positano?",
+      "a": [
+        "Ja. Aftal restaurantens shuttle, når du reserverer eller bekræfter middagen, så du kan køre tilbage efter den lange menu uden at bekymre dig om sene busser."
+      ]
+    }
+  ]
+}

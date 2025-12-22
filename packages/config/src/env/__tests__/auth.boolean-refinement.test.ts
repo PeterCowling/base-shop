@@ -7,12 +7,16 @@ import {
   SESSION_SECRET,
   REDIS_URL,
   REDIS_TOKEN,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
 } from "./authEnvTestUtils";
 
 const base = {
   NODE_ENV: "test",
   NEXTAUTH_SECRET: NEXT_SECRET,
   SESSION_SECRET,
+  OAUTH_ISSUER,
+  OAUTH_REDIRECT_ORIGIN,
 };
 
 const expectInvalidAuth = createExpectInvalidAuthEnv(withEnv);
@@ -58,7 +62,12 @@ describe("booleanFromString refinement", () => {
 });
 
 describe("authEnvSchema.superRefine", () => {
-  const baseEnv = { NEXTAUTH_SECRET: NEXT_SECRET, SESSION_SECRET };
+  const baseEnv = {
+    NEXTAUTH_SECRET: NEXT_SECRET,
+    SESSION_SECRET,
+    OAUTH_ISSUER,
+    OAUTH_REDIRECT_ORIGIN,
+  };
 
   it("errors when SESSION_STORE=redis without credentials", async () => {
     await withEnv(base, async () => {

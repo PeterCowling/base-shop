@@ -1,0 +1,41 @@
+{
+  "seo": {
+    "title": "Walk back to Hostel Brikette from Spiaggia Grande",
+    "description": "Follow the hostel's staircase checkpoints for the 30–45 minute return climb."
+  },
+  "linkLabel": "Walk back from Positano's main beach",
+  "intro": [
+    "Returstigningen fra Spiaggia Grande til Hostel Brikette tager ca. 30–45 minutter afhængigt af tempo, fotostop og varme.",
+    "Disse trin afspejler vandrerhjemmets fem checkpoint-billeder, så du kan blive på den hurtigste trapperute hele vejen op."
+  ],
+  "sections": [
+    {
+      "id": "before-you-climb",
+      "title": "Før du klatrer",
+      "body": [
+        "Påfyld vand og giv dig selv tid til pauser — der er ingen butikker på trappen, før du når de øvre veje.",
+        "Tag referencebillederne fra receptionen eller den digitale concierge, så du kan matche punkt 4 og 5 under opstigningen."
+      ]
+    },
+    {
+      "id": "route",
+      "title": "Trinvis gåtur tilbage til vandrerhjemmet",
+      "body": [
+        "1. Start på venstre side af Spiaggia Grande (vender væk fra vandet) og passer under buegangen ved siden af havnen.",
+        "2. Fortsæt lige igennem indkøbsvejen, indtil du når den åbne gårdhave ved kortpunkt 5 — bekræft, at udsigten matcher vandrerhjemmets foto.",
+        "3. Tag trappen til venstre, følg den op ad bakke, når den svinger til højre, og klatr op til toppen.",
+        "4. Drej til højre øverst, og tag straks den næste trappe op ad bakke for at nå kortpunkt 4.",
+        "5. Fra punkt 4 skal du dreje til venstre ud på vejen, gå omkring 10 meter, krydse over og tage trappen direkte foran dig.",
+        "6. Følg trappen, indtil de møder en anden vej. Hvis du ser tilbage, skal scenen matche punkt 3-billedet. Gå lige ud på den næste trappe, og fortsæt med at klatre.",
+        "7. Når trappen er færdig, skal du gå ud på vejen foran, dreje til venstre og fortsætte op ad bakke i lidt over 100 meter (330 fod).",
+        "8. Drej til højre ind på den velkendte trappe, der fører lige tilbage til Hostel Brikette's hoveddør."
+      ]
+    }
+  ],
+  "tipsTitle": "Hurtige vink",
+  "tips": [
+    "Hvis stigningen føles for intens, skal du skifte til %LINK:positanoMainBeachBusBack|bus tilbage til vandrerhjemmet%, når du når Piazza dei Mulini.",
+    "Start turen før middag eller efter solnedgang for at undgå den varmeste del af dagen.",
+    "Hold pause i skyggefulde landinger for at få vejret og tage billeder af udsigten — du har fortjent dem."
+  ]
+}

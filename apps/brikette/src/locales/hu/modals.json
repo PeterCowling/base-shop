@@ -1,0 +1,161 @@
+{
+  "location": {
+    "title": "Elhelyezkedésünk",
+    "inputLabel": "Add meg a jelenlegi helyzeted:",
+    "inputPlaceholder": "pl. Nápoly, Olaszország vagy teljes cím",
+    "getDirections": "Útvonal kérése",
+    "justShowMap": "Csak térkép megjelenítése",
+    "close": "Párbeszédablak bezárása",
+    "nearbyBusCompact": "≈100 m a legközelebbi buszmegállóig"
+  },
+  "contact": {
+    "title": "Kapcsolat",
+    "description": "Örömmel hallunk felőled! Kérdés vagy foglalás esetén írj e‑mailt:",
+    "revealEmail": "E‑mail cím megjelenítése",
+    "close": "Párbeszédablak bezárása",
+    "buttonClose": "Bezárás"
+  },
+  "offers": {
+    "close": "Bezárás",
+    "title": "Foglalj közvetlenül és spórolj",
+    "description": "Köszönjük, hogy közvetlen foglalást választottál! Hálánk jeléül a következőket kapod:",
+    "perks": {
+      "discount": "Akár 10% kedvezmény a szobaárból",
+      "breakfast": "Ingyenes reggeli minden reggel",
+      "drinks": "Ingyenes üdvözlőital",
+      "upgrades": "Elsőbbségi szobafrissítések (elérhetőség függvényében)"
+    },
+    "callToAction": "Használd ki ezeket az exkluzív előnyöket most!",
+    "button": "Foglalj most"
+  },
+  "booking": {
+    "title": "Foglalás",
+    "subTitle": "Válassz dátumokat és beállításokat",
+    "close": "Bezárás",
+    "checkInLabel": "Érkezés",
+    "checkOutLabel": "Távozás",
+    "guestsLabel": "Vendégek",
+    "buttonAvailability": "Elérhetőség ellenőrzése",
+    "datePlaceholder": "Válassz dátumot",
+    "guestsSingle": "{{count}} felnőtt",
+    "guestsPlural": "{{count}} felnőtt"
+  },
+  "booking2": {
+    "selectDatesTitle": "Válassz dátumokat",
+    "checkInDate": "Érkezés dátuma",
+    "checkOutDate": "Távozás dátuma",
+    "adults": "Felnőttek száma",
+    "confirm": "Megerősít",
+    "cancel": "Mégse"
+  },
+  "facilities": {
+    "title": "Létesítményeink",
+    "closeButton": "Bezárás",
+    "categories": [
+      {
+        "title": "Fürdőszoba",
+        "items": [
+          "WC-papír",
+          "Törölközők / lepedők (felár ellenében)",
+          "WC",
+          "Zuhany",
+          "Hajszárító (kérésre)"
+        ]
+      },
+      {
+        "title": "Hálószoba és ágynemű",
+        "items": [
+          "Ágynemű biztosítva",
+          "Olvasólámpa minden hálótermi ágynál"
+        ]
+      },
+      {
+        "title": "Kültér és kilátás",
+        "items": [
+          "Panorámás, tengerre néző terasz",
+          "Napozóterasz",
+          "Kültéri bútorok",
+          "Piknikező rész"
+        ]
+      },
+      {
+        "title": "Szobai kényelem",
+        "items": [
+          "Ágy melletti konnektor",
+          "Légkondicionálás",
+          "Fűtés",
+          "Járólap / márványpadló"
+        ]
+      },
+      {
+        "title": "Programok",
+        "items": [
+          "Túrázás (a szálláson kívül)",
+          "Önálló túraútvonal-térképek",
+          "Helyi túraajánlások"
+        ]
+      },
+      {
+        "title": "Ételek és italok",
+        "items": [
+          "Helyszíni bár",
+          "Ingyenes üdvözlőital",
+          "Á la carte reggeli kérhető",
+          "Snack szolgáltatás"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "Ingyenes Wi‑Fi a közös helyiségekben",
+          "Nagysebességű Wi‑Fi a szobákban",
+          "Nyilvános internet-hozzáférési pont"
+        ]
+      },
+      {
+        "title": "Vendégszolgáltatások",
+        "items": [
+          "Napi takarítás",
+          "Recepció/concierge pult",
+          "Csomagmegőrzés",
+          "Csomagmegőrzés bejelentkezés előtt / kijelentkezés után",
+          "Zárható szekrények",
+          "Adapterek elérhetők",
+          "Reptéri transzfer (felár ellenében)",
+          "Recepció (korlátozott nyitvatartás)",
+          "Kerékpártároló"
+        ]
+      },
+      {
+        "title": "Biztonság",
+        "items": [
+          "Tűzoltó készülékek",
+          "Biztonsági kamerák a közös terekben",
+          "Kulcskártyás beléptetés",
+          "Elektronikus ajtózárak",
+          "Személyes szekrények"
+        ]
+      },
+      {
+        "title": "Általános",
+        "items": [
+          "Csak felnőtteknek (18–39 év)",
+          "Dohányzásmentes az egész épületben",
+          "Nemdohányzó szobák"
+        ]
+      },
+      {
+        "title": "Beszélt nyelvek",
+        "items": [
+          "Angol",
+          "Spanyol",
+          "Olasz"
+        ]
+      }
+    ]
+  },
+  "language": {
+    "title": "Nyelv kiválasztása",
+    "close": "Bezárás"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "slug": "legal",
+  "meta": {
+    "title": "Información Legal y Políticas del Hostel de Positano",
+    "description": "Conozca nuestros términos legales, límites de responsabilidad, ley aplicable, uso de contenidos del sitio web y directrices de salud y seguridad para planificar su estancia con confianza."
+  },
+  "headings": {
+    "modificationOfTerms": "Cambios en estos Términos",
+    "scopeOfLiability": "Alcance de Nuestra Responsabilidad",
+    "governingLaw": "Ley Aplicable y Jurisdicción",
+    "websiteInformation": "Información del Sitio y Uso de Contenidos",
+    "healthAndSafetyPolicy": "Política de Salud y Seguridad"
+  },
+  "content": {
+    "modificationOfTerms": "Estos Términos y Condiciones constituyen el acuerdo íntegro entre usted y Positano Hostel, sustituyendo cualquier compromiso o entendimiento previo. Podemos actualizarlos en cualquier momento; la versión nueva rige desde su publicación en línea.",
+    "scopeOfLiability": "Nuestra responsabilidad se limita a los servicios y artículos detallados en estos Términos. Cualquier compensación está limitada al total que haya pagado por su reserva. No respondemos por pérdidas indirectas o económicas (beneficios, fondo de comercio, oportunidades perdidas), incluso por negligencia o fuerza mayor. Disponemos de taquillas para objetos de valor, pero no aceptamos responsabilidad financiera por lo almacenado y podemos mover pertenencias durante la limpieza sin aviso previo.",
+    "governingLaw": "Su estancia y estos Términos se rigen exclusivamente por la legislación italiana. Cualquier disputa se someterá a los tribunales de Italia.",
+    "websiteInformation": "Nos esforzamos por mantener la precisión del sitio web, pero pueden ocurrir errores y los detalles cambiar sin previo aviso. Las fotos reflejan el estilo general y no necesariamente la distribución exacta. Todo el contenido (texto, imágenes, marcas) pertenece a Positano Hostel y no puede usarse sin permiso escrito. Los enlaces externos se ofrecen por conveniencia; no asumimos responsabilidad por su contenido. Consulte nuestra política de privacidad para saber cómo tratamos sus datos.",
+    "healthAndSafetyPolicy": "Por seguridad de todos, avísenos si ha estado expuesto recientemente a alguna enfermedad contagiosa, incluida la gripe. Las reservas prepagas no reembolsables siguen siendo no reembolsables en estos casos; le recomendamos contratar un seguro de viaje que cubra interrupciones por motivos de salud."
+  }
+}

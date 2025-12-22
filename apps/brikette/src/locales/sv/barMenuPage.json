@@ -1,0 +1,171 @@
+{
+  "meta": {
+    "title": "Hostel Brikette – Barmenyn (2025)",
+    "description": "Spritzar, cocktails, viner, öl, longdrinks, shots och gelato."
+  },
+  "header": {
+    "brand": "Hostel Brikette",
+    "menuTitle": "Barmenyn 2025",
+    "hours": "Öppet dagligen (fråga baren om öppettider)"
+  },
+  "intro": {
+    "summary": "Ett komplett barutbud med lokala favoriter och klassiska serveringar.",
+    "viewFullMenuButton": "Visa hela barmenyn"
+  },
+  "sections": {
+    "spritzFrozen": {
+      "title": "Spritz & frysta cocktails"
+    },
+    "houseWine": {
+      "title": "Husets viner"
+    },
+    "beer": {
+      "title": "Öl"
+    },
+    "vodka": {
+      "title": "Vodkadrinkar",
+      "note": "Priset inkluderar mixer: tonic, cola, cola zero eller Sprite."
+    },
+    "rum": {
+      "title": "Rumdrinkar",
+      "note": "Välj din rom och säg till om du vill lägga till en koffeindryck. Kaffet kan serveras kallt eller varmt, som espresso eller lungo/americano."
+    },
+    "gin": {
+      "title": "Gindrinkar",
+      "note": "Serveras med Schweppes tonicvatten, över krossad is och garnerad med Amalfi-citron."
+    },
+    "whisky": {
+      "title": "Whisky",
+      "note": "Välj från vårt whiskyutbud och meddela om du vill ha is, vatten eller en koffeindryck. Kaffet kan serveras kallt eller varmt, som espresso eller lungo/americano."
+    },
+    "shots": {
+      "title": "Shots"
+    },
+    "gelato": {
+      "title": "Gelato"
+    }
+  },
+  "items": {
+    "aperolSpritz": {
+      "name": "Aperol Spritz",
+      "note": "Den klassiska italienska spritzen, serveras med krossad is."
+    },
+    "limoncelloSpritz": {
+      "name": "Limoncello Spritz",
+      "note": "Amalfikustens specialitet, serveras med krossad is."
+    },
+    "hugoSpritz": {
+      "name": "Hugo Spritz",
+      "note": "Mousserande vin över mynta, lime och fläderblomssaft. Serveras med krossad is."
+    },
+    "rossiniSpritz": {
+      "name": "Rossini Spritz",
+      "note": "Mousserande vin över jordgubbssaft. Serveras med krossad is."
+    },
+    "lemonStrawberryDaiquiri": {
+      "name": "Citron- eller jordgubbsdaiquiri"
+    },
+    "lemonStrawberryMargarita": {
+      "name": "Citron- eller jordgubbsmargarita",
+      "note": "Jordgubbs- eller citronsaft med tequila, Cointreau och is. Serveras i klassisk margaritaglas."
+    },
+    "lemonDropMartini": {
+      "name": "Lemon Drop Martini",
+      "note": "Färskpressad citronsaft skakas med Absolut Vodka, Cointreau och is."
+    },
+    "redWhiteGlass": {
+      "name": "Rött eller vitt – per glas"
+    },
+    "redWhiteBottle": {
+      "name": "Rött eller vitt – per flaska"
+    },
+    "proseccoGlass": {
+      "name": "Glas prosecco"
+    },
+    "nastro330": {
+      "name": "Nastro, 330 ml"
+    },
+    "nastro660": {
+      "name": "Nastro, 660 ml"
+    },
+    "peroni330": {
+      "name": "Peroni, 330 ml"
+    },
+    "peroni660": {
+      "name": "Peroni, 660 ml"
+    },
+    "skyy": {
+      "name": "Skyy"
+    },
+    "absolut": {
+      "name": "Absolut"
+    },
+    "smirnoff": {
+      "name": "Smirnoff"
+    },
+    "greyGoose": {
+      "name": "Grey Goose"
+    },
+    "pampero": {
+      "name": "Pampero"
+    },
+    "bacardiSuperior": {
+      "name": "Bacardi Superior"
+    },
+    "captainMorgan": {
+      "name": "Captain Morgan"
+    },
+    "angosturaReserva": {
+      "name": "Angostura Reserva"
+    },
+    "beefeater": {
+      "name": "Beefeater"
+    },
+    "bombaySapphire": {
+      "name": "Bombay Sapphire"
+    },
+    "tanqueray": {
+      "name": "Tanqueray"
+    },
+    "hendricks": {
+      "name": "Hendrick's"
+    },
+    "jwRed": {
+      "name": "Johnnie Walker Red Label (blended scotch)"
+    },
+    "jameson": {
+      "name": "Jameson (irländsk)"
+    },
+    "jackDaniels": {
+      "name": "Jack Daniel's Old No.07 (sour mash)"
+    },
+    "wildTurkey": {
+      "name": "Wild Turkey (bourbon)"
+    },
+    "chivas12": {
+      "name": "Chivas Regal 12 år (blended scotch)"
+    },
+    "glenfiddich12": {
+      "name": "Glenfiddich 12 år (single malt)"
+    },
+    "joseCuervoSilver": {
+      "name": "Jose Cuervo Tequila, Silver",
+      "note": "Serveras rent med citron och salt, som Tequila Sunrise eller med soda/Sprite."
+    },
+    "limoncelloShot": {
+      "name": "Limoncello",
+      "note": "En klassisk syditaliensk digestif, serveras naturell."
+    },
+    "oneScoop": {
+      "name": "1 kula"
+    },
+    "twoScoops": {
+      "name": "2 kulor"
+    },
+    "threeScoops": {
+      "name": "3 kulor",
+      "note": "Välj mellan citron, choklad, vanilj och hasselnöt."
+    }
+  },
+  "disclaimer": "Utbud och priser kan ändras – kontrollera i baren."
+}

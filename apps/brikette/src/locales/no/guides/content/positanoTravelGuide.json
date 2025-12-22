@@ -1,0 +1,117 @@
+{
+  "seo": {
+    "title": "Reiseguide til Positano: planlegg besøket",
+    "description": "Hvor du bør bo, når du bør reise, hvordan du kommer deg rundt og hva du kan gjøre i Positano."
+  },
+  "linkLabel": "Reiseguide til Positano",
+  "intro": [
+    "Planlegg besøket ditt i Positano: hvor du bør bo, hvordan du kommer deg rundt, beste tidspunkter og høydepunkter du ikke vil gå glipp av.",
+    "Denne oversikten lenker videre til grundigere guider om transport, strender, fotturer, dagsturer og budsjettplanlegging."
+  ],
+  "sections": [
+    {
+      "id": "when",
+      "title": "Når bør du reise",
+      "body": [
+        "Skuldersesongene (april–mai, slutten av september–oktober) gir god balanse mellom vær og priser.",
+        "Sommeren byr på flere ferger og lange dager, men også varme og køer – start tidlig."
+      ]
+    },
+    {
+      "id": "getting-around",
+      "title": "Slik kommer du deg rundt",
+      "body": [
+        "Gange, SITA-busser og sesongbaserte ferger dekker det meste; trapper er en del av hverdagen.",
+        "Bruk vår guide til kollektivtransport for billetter, tidspunkter og tips til å unngå trengsel."
+      ]
+    },
+    {
+      "id": "highlights",
+      "title": "Høydepunkter",
+      "body": [
+        "Spiaggia Grande og Fornillo-stranden; utsiktspunkter ved Via Pasitea i solnedgang.",
+        "Path of the Gods (Nocelle- eller Bomerano-etappen); dagsturer til Amalfi og Ravello.",
+        "Dagsutflukt til Capri (første ferge ut), eller bli i Positano for klippekaféer og utsikt."
+      ]
+    },
+    {
+      "id": "stays",
+      "title": "Hvor bør du bo",
+      "body": [
+        "Bo nær busstoppene «Chiesa Nuova» eller «Sponda» for færre trapper med bagasje.",
+        "På budsjett? Vurder base i Sorrento/Meta og ta ferge eller buss inn for dagsturer."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Trenger jeg bil?",
+      "a": [
+        "Nei – busser og ferger dekker kysten; parkering er begrenset og dyr."
+      ]
+    },
+    {
+      "q": "Hvor mange dager bør jeg sette av?",
+      "a": [
+        "2–3 dager for en smakebit; 4–5 dager for å legge til en fottur og en dagstur."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": [
+      "Positano er vertikalt, vakkert og travelt i høysesongen. Denne guiden hjelper deg med de praktiske valgene: hvor du bør bo, når du bør komme, hvordan du beveger deg og hva du faktisk bør gjøre når du er her."
+    ],
+    "gallery": {
+      "items": [
+        {
+          "alt": "Hostelterrasse med panoramautsikt",
+          "caption": "Solnedgang fra terrassen – bo få skritt fra busstoppet Chiesa Nuova."
+        },
+        {
+          "alt": "Panoramautsikt over Positano",
+          "caption": "Fornillo og Spiaggia Grande er innen gangavstand; forvent trapper."
+        }
+      ]
+    },
+    "sections": {
+      "whereToStay": {
+        "title": "Hvor bør du bo",
+        "body": "Å bo nær <em>Chiesa Nuova</em> betyr færre trapper ved ankomst og avreise. Hostel Brikette ligger ~80 m fra busstoppet med panoramaterrasser samt rimelige senger og privatrom. Overnatting ved Spiaggia Grande er naturskjønt, men innebærer flere trapper og høyere priser."
+      },
+      "whenToVisit": {
+        "title": "Når bør du reise",
+        "body": "Sommeren er livlig, men tettpakket; skuldersesong gir balanse mellom vær og plass. Se hele oversikten i vår <linkBestTime>guide til beste reisetid for Positano</linkBestTime>. Ferger er sesongbaserte og trappes ned utenom høysesong."
+      },
+      "gettingAround": {
+        "title": "Slik kommer du deg rundt",
+        "arrivals": "<strong>Ankomst</strong>: start med <linkHowTo>beslutningsguiden for hvordan du kommer deg til Positano</linkHowTo>, og les videre i <linkNaples>Napoli → Positano</linkNaples> og <linkSalerno>Salerno → Positano</linkSalerno>.",
+        "withinTown": "<strong>I byen</strong>: busser knytter <em>Chiesa Nuova</em>, <em>Sponda</em> og stranden sammen. Det meste gjøres til fots – planlegg rutene for å unngå unødvendige trapper.",
+        "ferries": "<strong>Ferge</strong>: sjekk <linkFerries>fergerutene</linkFerries> og legg alltid inn slingringsmonn for været."
+      },
+      "thingsToDo": {
+        "title": "Hva kan du gjøre",
+        "beaches": "<linkBeaches>Strender</linkBeaches>: Spiaggia Grande for den klassiske utsikten; Fornillo for roligere stemning; Arienzo for en dramatisk klippeopplevelse.",
+        "pathOfTheGods": "<linkPath>Path of the Gods</linkPath> fra Nocelle eller Bomerano for spektakulær utsikt.",
+        "dayTrips": "Dagsturer: <linkCapri>Capri</linkCapri>, <linkAmalfi>Amalfi</linkAmalfi> og <linkRavello>Ravello</linkRavello>."
+      },
+      "moneySavers": {
+        "title": "Slik sparer du",
+        "eat": "Spis etter vår <linkCheapEats>liste over rimelige spisesteder</linkCheapEats> og ta med en gjenbrukbar flaske.",
+        "travel": "Reis utenom de mest populære helgene; sammenlign <linkBudgetArrival>rimelige ankomster</linkBudgetArrival>.",
+        "stay": "Bo nær <em>Chiesa Nuova</em> for å minimere portørkostnader og trapper ved ankomst."
+      }
+    },
+    "tipsTitle": "Hvor du kan spare",
+    "faqHeading": "Vanlige spørsmål",
+    "faqs": [
+      {
+        "question": "Er Positano mulig på budsjett?",
+        "answer": "Ja. Bruk buss, planlegg ferger med omhu og fokuser på gratis utsiktspunkter og strandtid."
+      },
+      {
+        "question": "Hvor bør jeg basere meg?",
+        "answer": "For enkel logistikk, bo nær <em>Chiesa Nuova</em>. For strandstemning, velg området rundt Spiaggia Grande (beregn flere trapper)."
+      }
+    ]
+  }
+}

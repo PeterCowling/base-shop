@@ -1,0 +1,62 @@
+{
+  "seo": {
+    "title": "Costa Amalfitana em 7 dias (sem carro)",
+    "description": "Plano dia a dia com duas bases, dicas de transporte e perguntas frequentes para viajar leve."
+  },
+  "linkLabel": "Costa Amalfitana em 7 dias (sem carro)",
+  "intro": [
+    "Sete dias sem carro permitem equilibrar ícones com tempo nas vilas — use ferries pelo conforto e autocarros pelo valor."
+  ],
+  "sections": [
+    {
+      "id": "days1-2",
+      "title": "Dias 1–2 — instalar-se em Positano",
+      "body": [
+        "Chegue via Nápoles ou Salerno, explore Spiaggia Grande e Fornillo e habitue-se às escadas com caminhadas curtas a miradouros.",
+        "Reserve passeio de barco partilhado ou aula de culinária para a segunda noite e comece a semana com uma experiência marcante."
+      ]
+    },
+    {
+      "id": "day3",
+      "title": "Dia 3 — volta a Capri",
+      "body": [
+        "Apanhe o ferry das 08:30 para Capri, foque em Anacapri de manhã e regresse antes do pôr do sol para evitar corrida ao último barco.",
+        "Mantenha bilhetes de autocarro prontos caso os ferries parem; rotas via Sorrento demoram cerca de 90 minutos porta a porta."
+      ]
+    },
+    {
+      "id": "days4-5",
+      "title": "Dias 4–5 — Amalfi & Ravello + trilhos",
+      "body": [
+        "Passe o dia 4 entre Amalfi e os jardins de Ravello, ficando até tarde se houver concerto.",
+        "Dedique o dia 5 ao Caminho dos Deuses ou trilho de Montepertuso; comece cedo, leve 1,5 L de água e regresse de autocarro."
+      ]
+    },
+    {
+      "id": "days6-7",
+      "title": "Dias 6–7 — cultura e folga",
+      "body": [
+        "Faça o comboio matinal para Pompeia ou Salerno para museus e regresse para uma noite tranquila em Positano.",
+        "Guarde o último dia como buffer para clima ou descanso — repita a praia favorita ou visite ateliers artesanais."
+      ]
+    }
+  ],
+  "tips": [
+    "Lave roupa a meio da semana para manter bagagem leve; use lavandarias self-service perto da Chiesa Nuova.",
+    "Acompanhe atualizações de ferries nos perfis Instagram das operadoras em dias ventosos."
+  ],
+  "faqs": [
+    {
+      "q": "Devo ficar em mais de uma vila?",
+      "a": [
+        "Baseie-se em Positano para evitar refazer malas. Acrescente uma noite em Nápoles ou Salerno apenas se tiver comboios/voos muito cedo."
+      ]
+    },
+    {
+      "q": "Preciso reservar tudo com antecedência?",
+      "a": [
+        "Reserve ferries, passeios de barco e restaurantes de destaque. Deixe trilhos, dias de praia e autocarros flexíveis para adaptar ao clima."
+      ]
+    }
+  ]
+}

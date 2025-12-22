@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Hvad skal du pakke til Amalfikysten",
+    "description": "Pak smart til trapper, sol, skiftende vejr og hostels — inkl. plads til souvenirs."
+  },
+  "linkLabel": "Hvad skal du pakke til Amalfikysten",
+  "intro": [
+    "Sæsonbaseret pakkeliste til Positano: trapper og sol afgør de klogeste valg."
+  ],
+  "sections": [
+    {
+      "id": "footwear",
+      "title": "Fodtøj",
+      "body": [
+        "Sko med godt greb til trapper og vandring; sandaler med mønster til stranden.",
+        "Undgå glatte såler – gaderne er stejle og blankpolerede."
+      ]
+    },
+    {
+      "id": "layers",
+      "title": "Lag og sol",
+      "body": [
+        "Lette lag til aftener, hat og SPF til middagsturen.",
+        "En let regnjakke i skuldersæsonerne."
+      ]
+    },
+    {
+      "id": "bags",
+      "title": "Tasker og bagage",
+      "body": [
+        "Rygsække slår store kufferter på trapper; opbevar værdier tæt på kroppen.",
+        "Medbring en genopfyldelig flaske; butikker sælger store flasker til påfyldning."
+      ]
+    }
+  ],
+  "tips": [
+    "Drop tunge hardcase-kufferter, hvis opholdet kræver mange trappeture.",
+    "Hav små euro-sedler til strandparasol, busser og hurtige snacks."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg købe det hele lokalt?",
+      "a": [
+        "Ja, men priserne stiger i højsæsonen – pak basisvarer for at undgå overpriser."
+      ]
+    },
+    {
+      "q": "Behøver jeg badekåbe?",
+      "a": [
+        "De fleste steder har håndklæder; medbring kun en let cover-up, hvis du ønsker én til stranden."
+      ]
+    }
+  ]
+}

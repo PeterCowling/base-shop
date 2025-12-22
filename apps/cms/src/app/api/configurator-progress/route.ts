@@ -5,7 +5,8 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 // Use the server translation loader; alias to avoid React Hooks lint
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { promises as fs, FileHandle as FsFileHandle } from "fs";
+import { promises as fs } from "fs";
+import type { FileHandle as FsFileHandle } from "fs/promises";
 import * as fsSync from "fs";
 import { writeJsonFile } from "@/lib/server/jsonIO";
 import path from "path";

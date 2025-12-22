@@ -1,0 +1,46 @@
+{
+  "slug": "assistance-contact",
+  "meta": {
+    "title": "Help centre with contact details and travel support - Hostel Brikette Positano",
+    "description": "Book, explore & connect with us online. Have questions? Our digital assistant offers tailored recommendations and travel guides to enhance your stay in Positano."
+  },
+  "heading": "Help Centre",
+  "subheading": "Book, explore & connect with us online.",
+  "heroIntro": "Get instant answers from our team and digital assistant so you can plan your stay faster.",
+  "otherBookingOptions": "Other Booking Options & Social Media",
+  "addressLabel": "Address:",
+  "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookingOptions": {
+    "googleBusiness": "Google Business",
+    "bookingCom": "Booking.com",
+    "hostelWorld": "Hostelworld",
+    "instagram": "Instagram"
+  },
+  "amaHeadingPart1": "How can We ",
+  "amaHeadingPart2": "Help",
+  "amaParagraph1": "Have questions? We're here to help. Feel free to ask us anything—if we don't cover everything you need, simply email us directly, and we'll respond promptly.",
+  "amaParagraph2": "Once your booking is confirmed, you'll gain instant access to our digital assistant. This tool offers tailored recommendations for attractions, activities, and hidden gems in Positano, ensuring you make the most of your stay.",
+  "amaParagraph3": "You'll also unlock access to our curated travel guides through the assistant. These include practical resources like transportation tips, step-by-step directions, and insights to simplify your planning.",
+  "amaHelpCenterLink": "Browse all help articles",
+  "askPlaceholder": "Ask for directions, about facilities, etc...",
+  "clearLabel": "Clear search",
+  "answersFoundLabel": "answers found",
+  "noMatchesFound": "No matches found",
+  "popularGuides": "Popular guides",
+  "guideReachBudget": "How to reach Positano on a budget",
+  "guideFerrySchedules": "Ferry schedules for Positano",
+  "guidePathOfTheGods": "Path of the Gods from Brikette",
+  "guideCollections": {
+    "heading": "Plan your stay with step-by-step guides",
+    "description": "Directions, booking policies, and arrival logistics collected from our most-asked questions.",
+    "taggedHeading": "Planning essentials tagged {{tag}}",
+    "taggedDescription": "These essentials focus on {{tag}}. Clear the filter to browse everything we've prepared.",
+    "empty": "We don’t have planning guides for {{tag}} yet. Try another tag or reset the filter.",
+    "clearFilter": "Browse all planning essentials",
+    "cardCta": "Read the {{guideTitle}} planning guide"
+  },
+  "crosslinks": {
+    "heading": "{{howToTitle}} · {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+  }
+}

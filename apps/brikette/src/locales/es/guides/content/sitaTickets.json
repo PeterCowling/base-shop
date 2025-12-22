@@ -1,0 +1,39 @@
+{
+  "seo": {
+    "title": "Billetes SITA y consejos",
+    "description": "Dónde comprar billetes SITA, reglas de validación, equipaje y trucos para las colas en los autobuses de la costa."
+  },
+  "linkLabel": "Billetes SITA y consejos",
+  "intro": [
+    "Compra los billetes SITA antes de subir al autobús: no se venden a bordo y las colas pueden alargarse en temporada alta.",
+    "Lleva efectivo suelto para tickets simples y guarda cada billete validado hasta que termines el trayecto."
+  ],
+  "sections": [
+    {
+      "id": "where",
+      "title": "Dónde comprar",
+      "body": [
+        "Tabacchi, quioscos y algunos bares en la carretera principal venden billetes simples y carnets CIS; lleva efectivo y compra varios cuando no haya cola.",
+        "En Sorrento y Amalfi hay taquillas SITA: confirma horarios reducidos fuera de temporada y aprovecha para cargar billetes de regreso."
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Validar y conservar",
+      "body": [
+        "Valida al subir en las máquinas amarillas; si están fuera de servicio, pide al conductor que selle el billete.",
+        "Guarda el ticket hasta bajar: los revisores suben en tramos largos como Positano → Amalfi/Nápoles y las multas por no validar rondan los 40–50 €."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "¿Puedo comprar el billete a bordo?",
+      "a": [
+        "Generalmente no; compra antes de subir para evitar retrasos y multas. Si un punto de venta está cerrado, busca otro tabacchi o pregunta en bares cercanos."
+      ]
+    }
+  ],
+  "tocTitle": "En esta página",
+  "faqsTitle": "Preguntas frecuentes"
+}

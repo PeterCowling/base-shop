@@ -1,0 +1,8 @@
+{
+  "errors": {
+    "invalidGuideKey": "Khóa hướng dẫn không hợp lệ",
+    "missingMetaBlock": "Thiếu khối meta",
+    "metaTitleRequired": "Meta.title phải là chuỗi không rỗng",
+    "metaDescriptionRequired": "Meta.description phải là chuỗi không rỗng"
+  }
+}

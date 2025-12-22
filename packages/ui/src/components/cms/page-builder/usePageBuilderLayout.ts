@@ -1,7 +1,7 @@
 // i18n-exempt -- Next.js directive literal (not user-facing copy)
 "use client";
 
-import { locales } from "@acme/i18n/locales";
+import { locales, type Locale } from "@acme/i18n/locales";
 import { createElement, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import useFileDrop from "./hooks/useFileDrop";
@@ -15,7 +15,7 @@ import { buildCanvasProps, buildGridProps, buildHistoryProps, buildPreviewProps,
 import { createToolbarProps } from "./createToolbarProps";
 import { createLinkedSectionHandler } from "./createLinkedSectionHandler";
 import useSectionModeInitialSelection from "./useSectionModeInitialSelection";
-import type { PageComponent, HistoryState, Page, Locale } from "@acme/types";
+import type { PageComponent, HistoryState, Page } from "@acme/types";
 import { scaffoldPageFromTemplate, type TemplateDescriptor } from "@acme/page-builder-core";
 import type { PageBuilderLayoutProps, PageBuilderProps } from "./PageBuilder.types";
 import usePresetActions from "./hooks/usePresetActions";

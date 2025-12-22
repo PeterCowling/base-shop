@@ -1,0 +1,56 @@
+{
+  "slug": "apartment",
+  "meta": {
+    "title": "Lejlighed – indkvartering",
+    "description": "Læs om vores selvforplejnings‑lejlighed i Positano."
+  },
+  "title": "Lejlighed",
+  "body": "Vores lejlighed giver et behageligt ophold med betagende udsigt.",
+  "heroImageAlt": "Ydersiden af lejlighedsbygningen",
+  "heroTitle": "Privat lejlighed",
+  "heroIntro": "Nyd en fuldt udstyret bolig med fantastisk udsigt over Positano.",
+  "bookButton": "Book nu",
+  "galleryHeading": "Galleri",
+  "galleryAlt": "Lejlighedens interiør og udsigt fra terrassen",
+  "galleryAlts": [
+    "Lejlighedens opholdsstue",
+    "Lejlighedens soveværelse",
+    "Fælles terrasse med havudsigt"
+  ],
+  "detailsHeading": "Detaljer",
+  "detailsList": [
+    "Plads til op til 4 gæster",
+    "Tekøkken med køleskab",
+    "Privat badeværelse",
+    "Aircondition",
+    "Altan med havudsigt"
+  ],
+  "amenitiesHeading": "Faciliteter",
+  "amenitiesImageAlt": "Billede af lejlighedens faciliteter",
+  "amenitiesList": [
+    "Wi‑Fi inkluderet",
+    "Fuldt udstyret køkken",
+    "Aircondition",
+    "Vaskemaskine og tørretumbler"
+  ],
+  "highlights": {
+    "sectionTitle": "Lejlighedens højdepunkter",
+    "slides": [
+      {
+        "title": "Panoramaudsigt",
+        "text": "Vågn hver morgen til vidstrakt udsigt.",
+        "alt": "Udsigt fra lejlighedens altan"
+      },
+      {
+        "title": "Behagelige rum",
+        "text": "Masser af plads til at slappe af efter oplevelser.",
+        "alt": "Rummelig opholdsstue"
+      },
+      {
+        "title": "Central beliggenhed",
+        "text": "Få skridt fra butikker og strand.",
+        "alt": "Positanos gader"
+      }
+    ]
+  }
+}

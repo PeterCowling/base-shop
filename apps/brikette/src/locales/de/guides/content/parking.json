@@ -1,0 +1,52 @@
+{
+  "linkLabel": "Parken in Positano: Wo und zu welchen Kosten",
+  "intro": [
+    "Parkplätze sind in Positano knapp und teuer; reserviere frühzeitig eine Garage und plane, das Auto während des Aufenthalts stehenzulassen."
+  ],
+  "sections": [
+    {
+      "id": "garages",
+      "title": "Private Garagen im Ort",
+      "body": [
+        "Mandara, Car Park Anna und Di Gennaro nehmen Reservierungen entgegen – für Anreisen im Juli/August 7–10 Tage vorher buchen.",
+        "Die Tarife liegen bei etwa 35–60 € pro 24 Stunden; prüfe Höhenbegrenzungen (ca. 1,90 m) und ob du den Schlüssel beim Personal lassen musst."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Anfahrt & Bezahlroutine",
+      "body": [
+        "Nutze die Kurzhaltebuchten bei Chiesa Nuova oder Sponda, um Gepäck auszuladen, bevor du parkst; Warnblinker an und zügig weiterfahren.",
+        "Nimm Karte und Bargeld mit – Garagen akzeptieren zwar Karten, bevorzugen bei Aufenthalten unter 48 Stunden aber oft Cash."
+      ]
+    },
+    {
+      "id": "park-elsewhere",
+      "title": "Günstiger parken außerhalb Positanos",
+      "body": [
+        "Überdachte Parkhäuser in Meta, Piano di Sorrento oder Sorrent kosten rund 20–25 € pro Tag und sind per SITA-Bus innerhalb von 45 Minuten mit Positano verbunden.",
+        "Kommst du aus dem Norden? Lass das Auto in den Hafengaragen von Salerno und setz bei ruhiger See per Fähre über."
+      ]
+    }
+  ],
+  "tips": [
+    "Prüfe vor der Fahrt über die SS163 Hinweise zu ZTL oder wechselnden Kennzeichen – Bußgelder kommen oft erst Monate später per Post.",
+    "Pack eine Tages- oder Overnight-Tasche, bevor du die Schlüssel abgibst – die Garage stellt Autos bis zum Check-out stoßstange an stoßstange."
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich nur für ein paar Stunden parken?",
+      "a": [
+        "Garagen rechnen zwar stundenweise ab, wechseln aber schnell auf Tagessätze; für kurze Erledigungen nutze die 30-Minuten-Plätze an der Kurve Sponda."
+      ]
+    },
+    {
+      "q": "Haben Garagen abends geöffnet?",
+      "a": [
+        "Die meisten arbeiten von 07:00 bis 00:00; kündige späte Rückkehr an, damit die Mitarbeitenden den Schlüssel beim Nachtdienst hinterlegen."
+      ]
+    }
+  ],
+  "tocTitle": "Auf dieser Seite",
+  "faqsTitle": "FAQ"
+}

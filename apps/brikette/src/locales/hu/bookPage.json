@@ -1,0 +1,45 @@
+{
+  "meta": {
+    "title": "Foglalja le tartózkodását – Hivatalos oldal",
+    "description": "Rugalmas és nem visszatéríthető árak. Biztonságos fizetés hivatalos foglalási rendszerünkben."
+  },
+  "heading": "Foglalja le tartózkodását",
+  "roomLabel": "Szoba",
+  "cta": {
+    "flex": "Rugalmas – Tovább a fizetéshez",
+    "nr": "Nem visszatéríthető – Tovább a fizetéshez"
+  },
+  "checking": "Ellenőrzés…",
+  "flex": {
+    "title": "Rugalmas díj (visszatéríthető)",
+    "bullets": [
+      "Ingyenes lemondás az érkezés előtti harmadik teljes nap 15:00‑ig.",
+      "Módosítások a rendelkezésre állástól függnek."
+    ]
+  },
+  "nr": {
+    "title": "Nem visszatéríthető (előrefizetés)",
+    "bullets": [
+      "100% előrefizetés; nincs visszatérítés/meg nem jelenés esetén.",
+      "Sikertelen fizetések automatikusan törlődnek."
+    ]
+  },
+  "unavailable": {
+    "title": "Ezekre a dátumokra nem elérhető.",
+    "none": "Nem találhatók közvetlen alternatívák.",
+    "seeAll": "Összes elérhetőség megtekintése",
+    "bookThis": "Foglalás"
+  },
+  "policies": {
+    "title": "Szabályzatok és kauciók",
+    "items": [
+      "Idegenforgalmi adó: €2,50/fő/éj (fizetéskor kerül felszámításra).",
+      "Kártyakulcs és ágynemű kaució: 10 € készpénz érkezéskor; visszajár visszaadáskor.",
+      "Biztonsági letét: érkezéskor fejenként legfeljebb egy éjszaka (vagy ennek megfelelő készpénz). Ellenkező esetben a foglalás törlésre kerül.",
+      "Lemondási adminisztrációs díj: általában a foglalás értékének 15%-a (harmadik felek jutaléka nélkül).",
+      "Recepció 22:30‑kor zár; meg nem jelenéskor a magasabb összeg terhelendő: első éjszaka vagy a nem visszatéríthető előleg."
+    ],
+    "footer": "A végleges elérhetőség és a fizetés a hivatalos foglalási rendszerünkben történik."
+  },
+  "backToRooms": "Vissza a szobákhoz"
+}

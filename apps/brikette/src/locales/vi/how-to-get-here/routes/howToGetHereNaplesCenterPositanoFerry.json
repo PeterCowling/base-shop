@@ -1,0 +1,63 @@
+{
+  "meta": {
+    "title": "Trung tâm Naples đến Positano bằng phà | Hostel Brikette",
+    "description": "Từng bước từ trung tâm Naples tới Positano bằng phà: chuyển từ ga tới cảng, mua vé, lên tàu và mẹo khi cập bến."
+  },
+  "hero": {
+    "eyebrow": "Cẩm nang di chuyển của Hostel Brikette",
+    "title": "Trung tâm Naples đến Positano — Phà",
+    "description": "Làm theo chỉ dẫn này để đi từ trung tâm Naples tới Positano hoàn toàn bằng đường biển. Hướng dẫn gồm chuyển tuyến ngắn từ Napoli Centrale ra cảng, mua vé phà, quy trình lên tàu và những điều cần biết khi đến cầu cảng Positano."
+  },
+  "tip": {
+    "label": "Mẹo",
+    "copy": "Cần tuyến khác hoặc phương án dự phòng khi biển động? Mở <link>Tổng quan Cách đến đây</link>."
+  },
+  "sections": {
+    "journey": {
+      "title": "Tổng quan hành trình",
+      "body": "Phà giữa Naples và Positano chạy dày vào mùa xuân – hè và có thể bị hủy khi thời tiết xấu. Tổng thời gian thường 1,5–2,5 giờ tùy loại tàu và thời gian chờ ở cảng."
+    },
+    "transfer": {
+      "title": "Ra cảng từ Napoli Centrale",
+      "intro": "Phương tiện công cộng nhanh nhất là tàu điện Tram 1 từ Piazza Garibaldi tới Municipio (ra Molo Beverello) hoặc Marittima (ra Porta di Massa). Đi taxi cũng đơn giản và tiết kiệm cho nhóm.",
+      "items": [
+        "Từ Napoli Garibaldi/Centrale, đi theo biển chỉ đến điểm tàu điện Piazza Garibaldi.",
+        "Bắt Tram 1 hướng “Municipio/Porto”.",
+        "Xuống tại “Municipio” để tới Molo Beverello (tàu cao tốc) hoặc “Marittima” cho Porta di Massa (phà thường)."
+      ],
+      "map": "Xem lộ trình mẫu trên <map>Google Maps (tàu điện ra cảng)</map>."
+    },
+    "tickets": {
+      "title": "Vé phà và hãng khai thác",
+      "items": [
+        "Mua vé trực tuyến trước hoặc tại quầy ở Molo Beverello; mùa hè có thể phải xếp hàng.",
+        "Mang theo giấy tờ tùy thân có ảnh nếu dùng vé điện tử; nhân viên có thể kiểm tra trước khi lên tàu.",
+        "Dịch vụ có thể hủy khi biển động; các chuyến buổi sáng thường ổn định hơn."
+      ],
+      "copy": "Giờ chạy và giá vé: <capri>Capri.net – Naples ↔ Positano</capri>. Bạn cũng có thể so sánh giữa các hãng trên <positano>Positano.com (lịch tổng hợp)</positano>."
+    },
+    "boarding": {
+      "title": "Lên tàu tại cảng",
+      "body": "Đến bến trước 20–30 phút để đổi phiếu (voucher) nếu cần và xếp hàng lên tàu. Làm theo hướng dẫn của nhân viên khi xếp hành lý và chú ý bước chân khi cầu dẫn lắc theo sóng."
+    },
+    "arrival": {
+      "title": "Đến Positano",
+      "items": [
+        "Xuống tàu tại cầu cảng Positano Spiaggia Grande.",
+        "Phu khuân vác ở bến có thể giúp mang hành lý với một khoản phí; thống nhất giá trước khi giao hành lý.",
+        "Phà cập ở cao độ mặt biển nên sẽ có nhiều bậc thang đi lên. Cân nhắc đi xe buýt địa phương Interno từ bến để giảm leo thang."
+      ],
+      "copy": "Lộ trình thân thiện với hành lý từ bến đến Hostel Brikette xem tại hướng dẫn từng bước: <link>Bến phà → Hostel Brikette</link>."
+    },
+    "fallback": {
+      "title": "Nếu phà bị hủy",
+      "body": "Nếu phà bị hủy do thời tiết hoặc tình trạng biển, hãy chuyển sang tuyến tàu + xe buýt qua Sorrento. Tuy lâu hơn nhưng hầu hết điều kiện đều chạy được.",
+      "cta": "Phương án dự phòng: <link>Trung tâm Naples → Positano bằng tàu rồi xe buýt</link>."
+    }
+  },
+  "externalLinks": {
+    "map": "https://www.google.com/maps/dir/40.8408941,14.2611372/Napoli+Centrale,+P.za+Giuseppe+Garibaldi,+80142+Napoli+NA/@40.8375677,14.2464964,14z/data=!4m10!4m9!1m0!1m5!1m1!1s0x133b081659811bf3:0x26f7eaf2d2c03d87!2m2!1d14.2723487!2d40.8529222!3e3!5i4",
+    "capri": "https://www.capri.net/en/t/napoli/positano",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

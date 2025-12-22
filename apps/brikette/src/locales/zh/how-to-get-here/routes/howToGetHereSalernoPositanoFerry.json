@@ -1,0 +1,51 @@
+{
+  "meta": {
+    "title": "乘渡轮从萨莱诺前往波西塔诺 | Hostel Brikette",
+    "description": "萨莱诺至波西塔诺渡轮行程：班次、购票贴士，以及抵达后借助行李搬运或市内公交前往 Hostel Brikette 的方法。"
+  },
+  "header": {
+    "eyebrow": "Hostel Brikette 旅行指南",
+    "title": "萨莱诺 → 波西塔诺 — 渡轮",
+    "description": "使用本指南乘坐渡轮从萨莱诺前往波西塔诺。内容涵盖购票、萨莱诺登船地点、时刻建议，以及从波西塔诺码头前往 Hostel Brikette 的方式。"
+  },
+  "tip": {
+    "label": "提示",
+    "body": "需要其他交通方式？查看<GuideLink>如何到达这里概览</GuideLink>，了解巴士、组合路线与机场接送。"
+  },
+  "sections": {
+    "overview": {
+      "title": "行程概览",
+      "points": [
+        "萨莱诺至波西塔诺的季节性渡轮沿途可欣赏海岸风景。",
+        "Travelmar 班次最为频繁；旺季请预留更多时间。",
+        "恶劣天气时渡轮可能停航——出发前务必查看最新通知。"
+      ]
+    },
+    "tickets": {
+      "title": "票务与班次",
+      "intro": "在 <TravelmarLink>Travelmar</TravelmarLink> 与 <PositanoLink>Positano.com – Ferry schedules</PositanoLink> 查看最新时刻与价格。",
+      "points": [
+        "旺季请提前在线购票。",
+        "出发前 15–20 分钟抵达，轻松排队登船。",
+        "随身保管船票；工作人员会在登船前扫描或撕票。"
+      ]
+    },
+    "salernoBoarding": {
+      "title": "萨莱诺的登船地点",
+      "points": [
+        "多数航班从萨莱诺的 Piazza della Concordia（Travelmar）出发。",
+        "部分班次使用 Molo Manfredi——请根据船票确认登船码头。",
+        "沿海滨区域的指示牌行走；工作人员也可为你指引正确的码头。"
+      ]
+    },
+    "positanoArrival": {
+      "title": "抵达波西塔诺",
+      "points": [
+        "渡轮将在波西塔诺主码头（Spiaggia Grande）靠岸。",
+        "若携带行李，建议使用行李搬运服务或乘坐当地 Interno 公交。",
+        "在夏日高温下不建议拖着重行李徒步上坡。"
+      ],
+      "cta": "想了解从码头到旅舍大门的详细路线，请阅读<DockGuideLink>渡轮码头 → Hostel Brikette 指南</DockGuideLink>。"
+    }
+  }
+}

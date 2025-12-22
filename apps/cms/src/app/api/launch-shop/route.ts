@@ -120,9 +120,10 @@ async function readPersistedConfiguratorState(
   }
 }
 
-function requireCsrf(req: Request): void {
+async function requireCsrf(req: Request): Promise<void> {
   const header = req.headers.get("x-csrf-token");
-  const cookie = cookies().get("csrf_token")?.value || null;
+  const cookieStore = await cookies();
+  const cookie = cookieStore.get("csrf_token")?.value || null;
   if (!header || !cookie || header !== cookie) {
     throw new Error("Forbidden");
   }
@@ -130,7 +131,7 @@ function requireCsrf(req: Request): void {
 
 export async function POST(req: Request) {
   try {
-    requireCsrf(req);
+    await requireCsrf(req);
   } catch {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }

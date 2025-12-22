@@ -1,0 +1,8 @@
+{
+  "title": "Vår beliggenhet",
+  "inputLabel": "Skriv inn din nåværende posisjon:",
+  "inputPlaceholder": "f.eks. Napoli, Italia eller full adresse",
+  "getDirections": "Hent veibeskrivelse",
+  "justShowMap": "Vis bare kart",
+  "close": "Lukk dialog"
+}

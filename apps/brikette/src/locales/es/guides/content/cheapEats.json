@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Dónde comer barato en Positano",
+    "description": "Panini, pizza al taglio, minimercados y zonas de picnic para comer bien en Positano sin gastar de más, con consejos de efectivo y agua."
+  },
+  "linkLabel": "Dónde comer barato en Positano",
+  "heroAlt": "Comida para llevar asequible en Positano",
+  "intro": [
+    "En Positano puedes comer bien sin gastar de más si eliges bien dónde y cuándo.",
+    "Prioriza panini y pizza al taglio, ensaladas para llevar de minimercados y mira bancos/vistas para picnics con sombra."
+  ],
+  "sections": [
+    {
+      "id": "panini-pizza",
+      "title": "Panini y pizza al taglio",
+      "body": [
+        "Busca paninerías y pizzerías al corte lejos del paseo marítimo para mejores precios.",
+        "Combina un panini + fruta del día y una botella grande de agua para una comida completa a bajo coste."
+      ]
+    },
+    {
+      "id": "takeaway-salads",
+      "title": "Platos para llevar",
+      "body": [
+        "Delicatessen y mostradores de ensaladas ofrecen raciones por peso: pasta fría, verduras a la parrilla, legumbres.",
+        "Pregunta por cubiertos y servilletas; recuerda recoger los residuos al terminar."
+      ]
+    },
+    {
+      "id": "minimarkets",
+      "title": "Minimercados y básicos",
+      "body": [
+        "Compra agua en formato grande para rellenar botellas y ahorrar.",
+        "Snacks: fruta de temporada, pan, yogures y galletas suelen tener mejor relación calidad‑precio."
+      ]
+    },
+    {
+      "id": "picnic",
+      "title": "Dónde hacer picnic (con vistas)",
+      "body": [
+        "Bancos y miradores en zonas altas dan sombra y vistas; evita zonas privadas y respeta el entorno.",
+        "En verano, come temprano o al atardecer para evitar el calor."
+      ]
+    },
+    {
+      "id": "tips",
+      "title": "Consejos rápidos",
+      "body": [
+        "Evita el frente de playa para comer; dos calles arriba los precios bajan.",
+        "Lleva efectivo para locales que no aceptan tarjeta en consumos pequeños.",
+        "Pide agua del grifo cuando sea posible (acqua del rubinetto)."
+      ]
+    }
+  ],
+  "tips": [
+    "Pregunta por el “menu del giorno” o los menús de mediodía: muchos locales incluyen pasta, agua y café por menos de 18 €.",
+    "Lleva un recipiente plegable para las sobras y así puedes disfrutarlas más tarde en el hostal."
+  ],
+  "recommendationsTitle": "Dónde comer",
+  "recommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, ensaladas y repostería para llevar para comidas rápidas."
+    },
+    {
+      "name": "Mostradores de charcutería local",
+      "note": "Pide tablas de charcutería, focaccia y provisiones para picnic lejos de los recargos del paseo marítimo."
+    },
+    {
+      "name": "Minimercados y puestos de fruta",
+      "note": "Abastécete de fruta, botellas grandes de agua y snacks para picnics en la terraza."
+    }
+  ],
+  "gallery": {
+    "title": "Galería de fotos",
+    "items": [
+      {
+        "alt": "Panini de una charcutería local",
+        "caption": "Panini y charcutería"
+      },
+      {
+        "alt": "Picnic con vistas a Positano",
+        "caption": "Miradores para picnic"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "q": "¿Es fácil encontrar comida barata?",
+      "a": [
+        "Sí: panini/pizza al taglio y ensaladas al peso fuera del paseo marítimo."
+      ]
+    },
+    {
+      "q": "¿Se puede hacer picnic?",
+      "a": [
+        "Sí: usa bancos y miradores públicos; recoge siempre los residuos."
+      ]
+    }
+  ],
+  "fallbackIntro": [
+    "Positano tiene muchas opciones asequibles si sabes dónde buscar."
+  ],
+  "fallbackRecommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, ensaladas y repostería para llevar para comidas rápidas."
+    },
+    {
+      "name": "Mostradores de charcutería local",
+      "note": "Pide tablas de charcutería, focaccia y provisiones para picnic lejos de los recargos del paseo marítimo."
+    },
+    {
+      "name": "Minimercados y puestos de fruta",
+      "note": "Abastécete de fruta, botellas grandes de agua y snacks para picnics en la terraza."
+    }
+  ],
+  "fallbackGalleryItems": [
+    {
+      "alt": "Panini de una charcutería local",
+      "caption": "Panini y charcutería"
+    },
+    {
+      "alt": "Picnic con vistas a Positano",
+      "caption": "Miradores para picnic"
+    }
+  ],
+  "fallbackFaqs": [
+    {
+      "q": "¿Los locales aceptan tarjeta?",
+      "a": [
+        "La mayoría sí, pero llevar algo de efectivo ayuda en quioscos o cuando hay consumos mínimos."
+      ]
+    },
+    {
+      "q": "¿Son comunes las tarifas de comida para llevar?",
+      "a": [
+        "Algunos cobran pequeños recargos por envases; lleva un recipiente reutilizable para ahorrar y reducir residuos."
+      ]
+    }
+  ],
+  "toc": {
+    "title": "En esta página",
+    "faqs": "Preguntas frecuentes"
+  }
+}

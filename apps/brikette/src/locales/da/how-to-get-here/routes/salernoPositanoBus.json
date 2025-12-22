@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "Salerno til Positano med bus – hostel, stoppesteder og køreplanstips",
+    "description": "Trin-for-trin-vejledning til rejsen fra Salerno til Positano med SITA Sud via Amalfi. Lær hvor du køber billetter, hvordan du læser køreplanen, og hvilket stop der er bedst til Hostel Brikette."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "heading": "Salerno til Positano – med bus (via Amalfi)",
+    "body": "Guiden dækker SITA-busrejsen fra Salerno til Positano med omstigning i Amalfi. Vi giver billettips, viser hvordan køreplanen læses, og fortæller hvor du skal stå af i Positano for den korteste gåtur til hostellet."
+  },
+  "tip": {
+    "title": "Tip",
+    "guideLinkLabel": "Oversigt: Sådan kommer du hertil",
+    "body": "Brug for alle transportmuligheder? Åbn <GuideLink>oversigten Sådan kommer du hertil</GuideLink> for færge-, taxa- og kombinationsruter."
+  },
+  "journey": {
+    "title": "Rejseoverblik",
+    "description": "Tag SITA-bussen fra Salerno til Amalfi, og skift derefter til SITA-bussen mod Positano. Stig af ved <Strong>Chiesa Nuova</Strong> for den korteste gåtur til hostellet."
+  },
+  "tickets": {
+    "title": "SITA-busser og billetter",
+    "description": "SITA Sud driver busserne på denne rute. Billetter sælges i kiosker og tabacchi. Når du stiger på, kan chaufføren stemple eller rive billetten for at validere den — gem den til du går af."
+  },
+  "timetable": {
+    "title": "Buskøreplaner",
+    "description": "Du kører først <Strong>Salerno → Amalfi</Strong> og derefter <Strong>Amalfi → Positano</Strong>.",
+    "link": "Se den seneste SITA-køreplan på <ScheduleLink>{{label}}</ScheduleLink>.",
+    "scheduleLinkLabel": "Positano.com",
+    "rowsTitle": "Sådan læser du rækkerne",
+    "columnsTitle": "Sådan læser du kolonnerne",
+    "combineTitle": "Kombinér rækker og kolonner",
+    "rows": [
+      "Rækkerne i første kolonne viser stoppestederne langs ruten."
+    ],
+    "columns": [
+      "Hver kolonne svarer til en planlagt afgang (markeret med et bogstav).",
+      "Mandag–lørdag: fokuser på kolonne ‘F’ og ‘G’.",
+      "Søndag/helligdage: fokuser på kolonne ‘G’ og ‘H’."
+    ],
+    "combine": [
+      "Vælg rækkerne for start og destination, og læs hen over den valgte kolonne for at finde tiderne.",
+      "Eksempel: afgang fra Salerno → rækken ‘Salerno’; ankomst til Positano (Chiesa Nuova) → rækken ‘Positano (Chiesa Nuova)’."
+    ]
+  },
+  "positanoStop": {
+    "title": "Stoppet Positano (Chiesa Nuova)",
+    "facts": [
+      "Nærmeste stop: Positano (Chiesa Nuova) på Via G. Marconi.",
+      "Ca. 140 meter (490 fod) fra hostellets indgang.",
+      "Lige uden for caféen/baren ‘Bar Internazionale’."
+    ]
+  },
+  "walk": {
+    "title": "Gå til Hostel Brikette",
+    "steps": [
+      "Gå lidt over 100 meter (330 fod).",
+      "Drej til højre og følg trappen op til hostellets hoveddør.",
+      "Når du nærmer dig, så kig efter vores skilt ved terrassen på anden sal.",
+      "Fortsæt forbi skiltet og tag trappen på højre side af vejen op til indgangen."
+    ]
+  }
+}

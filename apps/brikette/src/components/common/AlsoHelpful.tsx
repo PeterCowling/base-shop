@@ -1,0 +1,337 @@
+// src/components/common/AlsoHelpful.tsx
+import { memo, useMemo } from "react";
+import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { getSlug } from "@/utils/slug";
+import { getGuideLinkLabel } from "@/utils/translationFallbacks";
+import { guideHref, type GuideKey } from "@/routes.guides-helpers";
+import type { AppLanguage } from "@/i18n.config";
+import { relatedGuidesByTags } from "@/utils/related";
+import type { GuideSection } from "@/data/guides.index";
+import clsx from "clsx";
+import { getNamespaceTranslator, getStringWithFallback } from "@/utils/i18nSafe";
+import type { TFunction } from "@/utils/i18nSafe";
+
+function buildSeoCta(prefix: string, subject: string): string {
+  const cleanedSubject = subject.replace(/→/g, " ").replace(/\s+/g, " ").trim();
+  if (!cleanedSubject) {
+    return prefix;
+  }
+  return `${prefix} — ${cleanedSubject}`;
+}
+
+function joinTokens(value: unknown, joiner: " " | "" = " "): string {
+  if (Array.isArray(value)) {
+    return (value as unknown[])
+      .map((v) => (typeof v === "string" ? v : String(v ?? "")))
+      .join(joiner)
+      .trim();
+  }
+  if (typeof value === "string") return value.trim();
+  return String(value ?? "").trim();
+}
+
+function normaliseForAria(value: unknown): string {
+  const joined = joinTokens(value, " ").replace(/→/g, " ");
+  // Collapse whitespace and strip trailing punctuation artifacts after token joins
+  return joined.replace(/\s+/g, " ").replace(/[\s,.;:]+$/, "").trim();
+}
+
+type SectionProps = JSX.IntrinsicElements["section"];
+const SECTION_BASE_CLASSES = ["mx-auto", "mt-16", "max-w-5xl", "px-4", "sm:px-6", "lg:px-0"] as const;
+function Section({ className, ...props }: SectionProps): JSX.Element {
+  return <section className={clsx(SECTION_BASE_CLASSES, className)} {...props} />;
+}
+
+type GridProps = JSX.IntrinsicElements["ul"];
+const GRID_BASE_CLASSES = ["grid", "sm:grid-cols-2", "lg:grid-cols-3"] as const;
+function Grid({ className, ...props }: GridProps): JSX.Element {
+  return <ul className={clsx(GRID_BASE_CLASSES, className)} {...props} />;
+}
+
+const CARD_SHARED_CLASSES = [
+  "group",
+  "flex",
+  "h-full",
+  "flex-col",
+  "justify-between",
+  "rounded-2xl",
+  "border",
+  "px-5",
+  "py-4",
+  "text-start",
+  "text-brand-heading",
+  "shadow-sm",
+  "transition",
+  "duration-200",
+  "hover:-translate-y-1",
+  "focus-visible:outline",
+  "focus-visible:outline-2",
+  "focus-visible:outline-offset-2",
+  "focus-visible:outline-brand-primary",
+] as const;
+
+const STANDARD_CARD_VARIANTS = [
+  "border-brand-outline/30",
+  "bg-brand-bg/95",
+  "hover:border-brand-primary/50",
+  "hover:shadow-lg",
+  "dark:border-brand-outline/50",
+  "dark:bg-brand-surface/80",
+  "dark:text-brand-text",
+] as const;
+
+const FEATURED_CARD_VARIANTS = [
+  "border-brand-primary/55",
+  "bg-brand-primary/5",
+  "hover:border-brand-primary/70",
+  "hover:bg-brand-primary/12",
+  "dark:border-brand-secondary/60",
+  "dark:bg-brand-secondary/25",
+  "dark:text-brand-heading",
+  "dark:hover:bg-brand-secondary/35",
+] as const;
+
+type Props = {
+  lang: AppLanguage;
+  tags?: string[];
+  excludeGuide?: GuideKey | GuideKey[];
+  includeRooms?: boolean;
+  titleKey?: { ns: string; key: string } | string; // default assistanceCommon.alsoHelpful
+  section?: GuideSection;
+};
+
+function AlsoHelpful({
+  lang,
+  tags = [],
+  excludeGuide,
+  includeRooms = true,
+  titleKey,
+  section,
+}: Props): JSX.Element | null {
+  const { t: tAssistance, i18n } = useTranslation("assistanceCommon", { lng: lang });
+
+  // Guarded helpers in case tests partially mock i18nSafe and omit exports
+  const safeGetNs = useMemo(() => {
+    // Match the defaultValue behaviour in our fallback utilities
+    type DefaultValueOption = { defaultValue?: unknown } & Record<string, unknown>;
+    const fallbackTranslator: TFunction = ((key: string, opts?: DefaultValueOption) => {
+      if (opts && Object.prototype.hasOwnProperty.call(opts, "defaultValue")) {
+        const dv = (opts as DefaultValueOption).defaultValue;
+        if (typeof dv === "string") {
+          const trimmed = dv.trim();
+          if (trimmed.length > 0) return trimmed;
+        } else if (dv !== undefined && dv !== null) {
+          return String(dv);
+        }
+      }
+      return key;
+    }) as unknown as TFunction;
+
+    type I18nLike = Parameters<typeof getNamespaceTranslator>[0];
+
+    return (i18nLike: I18nLike, lng: string, ns: string): TFunction => {
+      if (typeof getNamespaceTranslator === "function") {
+        return getNamespaceTranslator(i18nLike, lng, ns, fallbackTranslator);
+      }
+      const fixed = i18nLike?.getFixedT?.(lng, ns);
+      if (typeof fixed === "function") return fixed as unknown as TFunction;
+      return fallbackTranslator;
+    };
+  }, []);
+  const safeGetStr = useMemo(
+    () =>
+      (typeof getStringWithFallback === "function"
+        ? getStringWithFallback
+        : ((primary: TFunction, fallback: TFunction, key: string): string | undefined => {
+            const p = typeof primary === "function" ? primary(key) : undefined;
+            const s1 = typeof p === "string" ? p.trim() : "";
+            if (s1 && s1 !== key) return s1;
+            const fb = typeof fallback === "function" ? fallback(key) : undefined;
+            const s2 = typeof fb === "string" ? fb.trim() : "";
+            if (s2 && s2 !== key) return s2;
+            return undefined;
+          })) as typeof getStringWithFallback,
+    []
+  );
+
+  // Safe translators for cross-namespace lookups
+  const guidesT = useMemo(() => safeGetNs(i18n, lang, "guides"), [i18n, lang, safeGetNs]);
+  const guidesEnT = useMemo(() => safeGetNs(i18n, "en", "guides"), [i18n, safeGetNs]);
+  const assistanceEnT = useMemo(
+    () => safeGetNs(i18n, "en", "assistanceCommon"),
+    [i18n, safeGetNs],
+  );
+
+  const related = useMemo<GuideKey[]>(() => {
+    return relatedGuidesByTags(tags, {
+      ...(excludeGuide !== undefined ? { exclude: excludeGuide } : {}),
+      ...(section !== undefined ? { section } : {}),
+      limit: 3,
+    });
+  }, [excludeGuide, section, tags]);
+
+  const heading = useMemo(() => {
+    if (!titleKey) {
+      return safeGetStr(tAssistance, assistanceEnT, "alsoHelpful") ?? "Also helpful";
+    }
+    if (typeof titleKey === "string") {
+      return safeGetStr(guidesT, guidesEnT, titleKey) ?? titleKey;
+    }
+    const translator = safeGetNs(i18n, lang, titleKey.ns);
+    const fallback = safeGetNs(i18n, "en", titleKey.ns);
+    return safeGetStr(translator, fallback, titleKey.key) ?? titleKey.key;
+  }, [titleKey, tAssistance, assistanceEnT, guidesT, guidesEnT, i18n, lang, safeGetNs, safeGetStr]);
+
+  const description = useMemo(() => {
+    return safeGetStr(tAssistance, assistanceEnT, "alsoHelpfulDescription") ?? "";
+  }, [assistanceEnT, tAssistance, safeGetStr]);
+
+  const exploreCtaPrefix = useMemo(() => {
+    // Prefer compact join for arrow-tokenised prefixes to yield "Esplorato" in aria-labels
+    const tokens = tAssistance("alsoHelpfulExplore", { returnObjects: true, defaultValue: [] }) as unknown;
+    const joined = joinTokens(tokens, "");
+    if (joined) return joined;
+    const str = safeGetStr(tAssistance, assistanceEnT, "alsoHelpfulExplore");
+    if (typeof str === "string" && str.trim()) return str.trim();
+    return "Explore";
+  }, [assistanceEnT, tAssistance, safeGetStr]);
+
+  const bookCtaPrefix = useMemo(() => {
+    const tokens = tAssistance("alsoHelpfulBook", { returnObjects: true, defaultValue: [] }) as unknown;
+    const joined = joinTokens(tokens, "");
+    if (joined) return joined;
+    const str = safeGetStr(tAssistance, assistanceEnT, "alsoHelpfulBook");
+    if (typeof str === "string" && str.trim()) return str.trim();
+    return "Book";
+  }, [assistanceEnT, tAssistance, safeGetStr]);
+
+  const hasAny = includeRooms || related.length > 0;
+  if (!hasAny) return null;
+
+  return (
+    <Section>
+      <div className="relative isolate overflow-hidden rounded-3xl border border-brand-outline/30 bg-brand-surface/80 px-6 py-8 shadow-lg backdrop-blur dark:border-brand-outline/50 dark:bg-brand-bg/85">
+        <div
+          className="pointer-events-none absolute inset-y-0 end-0 w-40 bg-gradient-to-l from-brand-primary/10 to-transparent"
+          aria-hidden="true"
+        />
+        <div className="relative flex flex-col gap-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-start gap-4">
+              <span
+                className="flex size-12 items-center justify-center rounded-2xl bg-brand-primary/15 text-brand-primary dark:bg-brand-secondary/30 dark:text-brand-secondary"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  className="size-6"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M6 7.5a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3V18a1.5 1.5 0 0 1-2.529 1.06L12 15.5l-3.471 3.56A1.5 1.5 0 0 1 6 18z"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path d="M9 7.5h6" strokeLinecap="round" />
+                </svg>
+              </span>
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-widest text-brand-secondary/80 dark:text-brand-secondary/70">
+                  {tAssistance("alsoHelpfulEyebrow", {
+                    defaultValue: assistanceEnT("alsoHelpfulEyebrow"),
+                  })}
+                </p>
+                <h2 className="mt-1 text-2xl font-semibold text-brand-heading dark:text-brand-heading">{heading}</h2>
+                {description && typeof description === "string" && (
+                  <p className="mt-2 text-brand-muted dark:text-brand-text/80 text-base">
+                    {description}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <Grid className="gap-4">
+            {related.map((key, index) => {
+              const label = getGuideLinkLabel(guidesT, guidesEnT, key);
+              const labelText = normaliseForAria(label);
+              const ctaText = buildSeoCta(exploreCtaPrefix, labelText);
+              const ariaLabel = ctaText.replace(/→/g, "to");
+              return (
+                <li key={`${key}-${index}`} className="h-full">
+                  <Link
+                    to={guideHref(lang, key)}
+                    prefetch="intent"
+                    className={clsx(CARD_SHARED_CLASSES, STANDARD_CARD_VARIANTS)}
+                    aria-label={ariaLabel}
+                  >
+                    <span className="text-base font-semibold leading-snug text-brand-heading dark:text-brand-text group-hover:text-brand-primary dark:group-hover:text-brand-secondary">
+                      {label}
+                    </span>
+                    <span className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-brand-primary dark:text-brand-secondary">
+                      <span>{ctaText}</span>
+                      <svg viewBox="0 0 20 20" fill="none" className="size-4" aria-hidden="true">
+                        <path
+                          d="m7.5 5.5 5 4.5-5 4.5"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+            {includeRooms && (() => {
+              // Prefer tokenised arrays for the rooms label (e.g., ["Camere", "disponibili"])
+              // and only fall back to a plain string when tokens are unavailable.
+              const roomsTokens = tAssistance("roomsCta", {
+                returnObjects: true,
+                defaultValue: [],
+              }) as unknown;
+              const labelFromTokens = joinTokens(roomsTokens, " ");
+              const roomsLabel = labelFromTokens || (safeGetStr(tAssistance, assistanceEnT, "roomsCta") ?? "");
+              const roomsLabelText = roomsLabel.trim();
+              const roomsCtaText = buildSeoCta(bookCtaPrefix, roomsLabelText);
+              const roomsAriaLabel = roomsCtaText.replace(/→/g, "to");
+              return (
+                <li key="rooms" className="h-full">
+                  <Link
+                    to={`/${lang}/${getSlug("rooms", lang)}`}
+                    prefetch="intent"
+                    className={clsx(CARD_SHARED_CLASSES, FEATURED_CARD_VARIANTS)}
+                    aria-label={roomsAriaLabel}
+                  >
+                    <span className="text-base font-semibold leading-snug text-brand-heading group-hover:text-brand-primary dark:group-hover:text-brand-secondary">
+                      {roomsLabel}
+                    </span>
+                    <span className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-brand-primary dark:text-brand-secondary">
+                      <span>{roomsCtaText}</span>
+                      <svg viewBox="0 0 20 20" fill="none" className="size-4" aria-hidden="true">
+                        <path
+                          d="m7.5 5.5 5 4.5-5 4.5"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })()}
+          </Grid>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+export default memo(AlsoHelpful);

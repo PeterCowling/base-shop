@@ -1,0 +1,261 @@
+{
+  "tags": {
+    "accommodation": {
+      "label": "Alojamiento",
+      "title": "Dónde alojarse"
+    },
+    "amalfi": {
+      "label": "Amalfi",
+      "title": "Guías de Amalfi"
+    },
+    "backpackers": {
+      "label": "Mochileros",
+      "title": "Para mochileros"
+    },
+    "beaches": {
+      "label": "Playas",
+      "title": "Playas de Positano",
+      "description": "Zonas públicas frente a lidos, accesos y notas de seguridad."
+    },
+    "boat": {
+      "label": "Barco",
+      "title": "Paseos en barco"
+    },
+    "budgeting": {
+      "label": "Ahorro",
+      "title": "Positano con presupuesto",
+      "description": "Formas inteligentes de gastar menos en transporte, comida y actividades."
+    },
+    "bus": {
+      "label": "Autobús",
+      "title": "SITA y autobuses"
+    },
+    "camping": {
+      "label": "Camping",
+      "title": "Camping en la costa"
+    },
+    "capri": {
+      "label": "Capri",
+      "title": "Capri con presupuesto"
+    },
+    "car": {
+      "label": "Coche",
+      "title": "Conducir y aparcar"
+    },
+    "comparison": {
+      "label": "Comparar",
+      "title": "Comparar llegadas y bases"
+    },
+    "connectivity": {
+      "label": "Conectividad",
+      "title": "Wi‑Fi, eSIM y cobertura"
+    },
+    "cost": {
+      "label": "Costes",
+      "title": "Costes y comparativas"
+    },
+    "couples": {
+      "label": "Parejas",
+      "title": "Parejas en hostels"
+    },
+    "cuisine": {
+      "label": "Gastronomía",
+      "title": "Comida y low‑cost"
+    },
+    "culture": {
+      "label": "Cultura",
+      "title": "Cultura y eventos"
+    },
+    "day-trip": {
+      "label": "Excursiones",
+      "title": "Excursiones de un día"
+    },
+    "decision": {
+      "label": "Decisión",
+      "title": "Guías de decisión"
+    },
+    "digital-nomads": {
+      "label": "Nómadas digitales",
+      "title": "Para nómadas digitales"
+    },
+    "events": {
+      "label": "Eventos",
+      "title": "Eventos y festivales"
+    },
+    "experiences": {
+      "label": "Experiencias",
+      "title": "Experiencias"
+    },
+    "families": {
+      "label": "Familias",
+      "title": "Para familias"
+    },
+    "faq": {
+      "label": "FAQs",
+      "title": "Preguntas frecuentes de viaje"
+    },
+    "ferragosto": {
+      "label": "Ferragosto",
+      "title": "Ferragosto en Positano"
+    },
+    "ferry": {
+      "label": "Ferry",
+      "title": "Guías de ferris"
+    },
+    "free": {
+      "label": "Gratis",
+      "title": "Gratis y económico"
+    },
+    "general-tourists": {
+      "label": "Turistas generales",
+      "title": "Para turistas en general"
+    },
+    "herculaneum": {
+      "label": "Herculano",
+      "title": "Excursiones de un día a Herculano"
+    },
+    "hiking": {
+      "label": "Senderismo",
+      "title": "Rutas y miradores",
+      "description": "Camino de los Dioses y alternativas más seguras teniendo en cuenta las escaleras."
+    },
+    "hitchhiking": {
+      "label": "Autostop",
+      "title": "Autostop"
+    },
+    "hostel-life": {
+      "label": "Vida en el hostel",
+      "title": "Vida en el hostel"
+    },
+    "insurance": {
+      "label": "Seguro",
+      "title": "Seguro de viaje"
+    },
+    "ischia": {
+      "label": "Isquia",
+      "title": "Guías de Isquia"
+    },
+    "itinerary": {
+      "label": "Itinerarios",
+      "title": "Itinerarios"
+    },
+    "laundry": {
+      "label": "Lavandería",
+      "title": "Lavandería en Positano"
+    },
+    "logistics": {
+      "label": "Logística",
+      "title": "Llegadas y logística"
+    },
+    "naples": {
+      "label": "Nápoles",
+      "title": "Nápoles ↔ Positano"
+    },
+    "nightlife": {
+      "label": "Vida nocturna",
+      "title": "Vida nocturna"
+    },
+    "off-season": {
+      "label": "Temporada baja",
+      "title": "Consejos de temporada baja"
+    },
+    "passes": {
+      "label": "Pases",
+      "title": "Pases de transporte"
+    },
+    "photography": {
+      "label": "Fotografía",
+      "title": "Lugares para fotos en Positano",
+      "description": "Los mejores ángulos, luz y etiqueta para evitar aglomeraciones."
+    },
+    "planning": {
+      "label": "Planificación",
+      "title": "Guías de planificación"
+    },
+    "pompei": {
+      "label": "Pompeya",
+      "title": "Excursiones de un día a Pompeya"
+    },
+    "porters": {
+      "label": "Porteadores",
+      "title": "Porteadores y equipaje"
+    },
+    "positano": {
+      "label": "Positano",
+      "title": "Guías de Positano"
+    },
+    "praiano": {
+      "label": "Praiano",
+      "title": "Guías de Praiano"
+    },
+    "procida": {
+      "label": "Procida",
+      "title": "Guías de Procida"
+    },
+    "ravello": {
+      "label": "Ravello",
+      "title": "Guías de Ravello"
+    },
+    "safety": {
+      "label": "Seguridad",
+      "title": "Seguridad en la Costa Amalfitana"
+    },
+    "salerno": {
+      "label": "Salerno",
+      "title": "Salerno ↔ Positano"
+    },
+    "shopping": {
+      "label": "Compras",
+      "title": "Compras y artesanos"
+    },
+    "shoulder": {
+      "label": "Temporada media",
+      "title": "Consejos de temporada media"
+    },
+    "sorrento": {
+      "label": "Sorrento",
+      "title": "Guías de Sorrento"
+    },
+    "souvenirs": {
+      "label": "Souvenirs",
+      "title": "Souvenirs y compras"
+    },
+    "stairs": {
+      "label": "Menos escaleras",
+      "title": "Rutas con menos escaleras"
+    },
+    "summer": {
+      "label": "Verano",
+      "title": "Verano en Positano"
+    },
+    "tips": {
+      "label": "Consejos",
+      "title": "Consejos de viaje"
+    },
+    "train": {
+      "label": "Tren",
+      "title": "Conexiones de tren"
+    },
+    "tramonti": {
+      "label": "Tramonti",
+      "title": "Bodegas de Tramonti"
+    },
+    "transport": {
+      "label": "Transporte",
+      "title": "Transporte en la Costa Amalfitana",
+      "description": "Guías de decisión para buses, ferris, shuttles y traslados con consejos para manejar el equipaje."
+    },
+    "walking-tour": {
+      "label": "Ruta a pie",
+      "title": "Rutas a pie"
+    },
+    "winter": {
+      "label": "Invierno",
+      "title": "Positano en invierno"
+    },
+    "work-life": {
+      "label": "Trabajo y viaje",
+      "title": "Trabajo remoto y cafés"
+    }
+  }
+}

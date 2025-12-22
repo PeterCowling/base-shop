@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Dónde aparcar en Positano y cuánto cuesta",
+    "description": "Listado de parkings en Positano, tarifas aproximadas, plazas cubiertas y alternativas para reducir escaleras y sorpresas en temporada alta."
+  },
+  "linkLabel": "Dónde aparcar en Positano",
+  "intro": [
+    "Aparcar en Positano es limitado y caro; en temporada alta los garajes privados son la norma.",
+    "Reserva con antelación y confirma horarios, altura máxima y cómo gestionar el equipaje antes de llegar."
+  ],
+  "sections": [
+    {
+      "id": "garages",
+      "title": "Garajes privados",
+      "body": [
+        "Reserva con tiempo en verano y pregunta por horarios de entrada/salida, altura máxima y suplementos nocturnos.",
+        "Confirma si permiten dejar el coche varios días y si ofrecen ayuda con el equipaje."
+      ]
+    },
+    {
+      "id": "street",
+      "title": "Aparcamiento en la calle (escaso)",
+      "body": [
+        "Hay plazas de pago señalizadas pero son muy limitadas y con tiempo restringido.",
+        "Lee bien la señalización para evitar multas o retirada del vehículo."
+      ]
+    },
+    {
+      "id": "alternatives",
+      "title": "Alternativas sin aparcar en Positano",
+      "body": [
+        "Deja el coche en Sorrento/Meta o Salerno y completa el trayecto en bus o ferry.",
+        "Si te alojas en el centro, plantéate llegar sin coche; el transporte público cubre lo esencial."
+      ]
+    }
+  ],
+  "tips": [
+    "Revisa las ZTL y las restricciones de matrículas antes de conducir por la SS163; las multas llegan por correo meses después.",
+    "Prepara una mochila con lo esencial antes de entregar las llaves: algunos garajes estacionan los coches muy juntos hasta el check-out."
+  ],
+  "faqs": [
+    {
+      "q": "¿Existe aparcamiento gratuito?",
+      "a": [
+        "No. Las plazas libres son residenciales o con disco horario; planifica un garaje privado."
+      ]
+    },
+    {
+      "q": "¿Cuánto cuesta?",
+      "a": [
+        "Entre 35 y 60 € por día en temporada alta; algo menos fuera de temporada pero sigue siendo tarifa premium."
+      ]
+    },
+    {
+      "q": "¿Puedo dejar maletas antes de aparcar?",
+      "a": [
+        "Sí. Detente cerca del hostel para descargar y después dirígete al garaje asignado."
+      ]
+    }
+  ],
+  "tocTitle": "En esta página",
+  "faqsTitle": "Preguntas frecuentes"
+}

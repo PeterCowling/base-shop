@@ -1,0 +1,271 @@
+{
+  "meta": {
+    "title": "Værelser og priser | Hostel Brikette Positano",
+    "description": "Private dobbeltværelser med havudsigt og prisvenlige sovesale: se billeder, faciliteter og aktuelle priser, og book derefter direkte for den bedste pris.",
+    "ogImageAlt": "Interiør af delt sovesal"
+  },
+  "facilities": {
+    "privateRoom": "Privat værelse",
+    "mixedDorm": "Blandet sovesal",
+    "femaleDorm": "Sovesal kun for kvinder",
+    "femaleRoom": "Værelse kun for kvinder",
+    "doubleBedForTwo": "Én dobbeltseng til op til to gæster",
+    "threeSingleBedsThreeGuests": "Tre enkeltsenge, til op til tre gæster",
+    "oneDormBedTwoGuests": "En køjeseng (sovesalseng) – i alt to senge, op til to gæster",
+    "threeDormBedsSixGuests": "Tre sovesalsenge – i alt seks senge, op til seks gæster",
+    "threeDormBedsPlusSingleSevenGuests": "Tre sovesalsenge + en enkeltseng (i alt 7), op til syv gæster",
+    "fourDormBedsEightGuests": "Fire sovesalsenge – i alt otte senge, op til otte gæster",
+    "thirdFloor": "Beliggende på tredje sal",
+    "fourthFloor": "Beliggende på fjerde sal",
+    "bathroomEnsuite": "Eget badeværelse (ensuite)",
+    "bathroomPrivate": "Privat badeværelse",
+    "bathroomSharedFemale": "Fælles badeværelse (kun kvinder)",
+    "seaViewTerrace": "Terrasse med havudsigt",
+    "seaViewExtraLargeTerrace": "Havudsigt med ekstra stor terrasse",
+    "gardenView": "Haveudsigt",
+    "courtyardView": "Udsigt til gårdhave",
+    "noView": "Ingen udsigt",
+    "airCon": "Aircondition",
+    "keycard": "Adgang med nøglekort",
+    "linen": "Sengetøj og håndklæde inkluderet"
+  },
+  "rooms": {
+    "title": "Vores værelser",
+    "double_room": {
+      "title": "Dobbeltværelse",
+      "bed_intro": "Fantastisk havudsigt — perfekt til par.",
+      "bed_description": "Vores dobbeltværelse er et privat rum med en dobbeltseng til op til to gæster. Beliggende på tredje sal med eget badeværelse, terrasse med havudsigt, aircondition og adgang med nøglekort. Sengetøj og håndklæder er inkluderet.",
+      "facilities": [
+        "privateRoom",
+        "doubleBedForTwo",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 259.2,
+        "flexible": 285.12
+      }
+    },
+    "room_10": {
+      "title": "Blandet sovesal Premium",
+      "bed_intro": "Når du vil have seks senge og et bedre badeværelse.",
+      "bed_description": "Premium-sovesalen er en blandet sovesal med tre senge (i alt seks), til op til seks gæster. På fjerde sal med aircondition, nøglekort og eget badeværelse (ingen udsigt). Sengetøj og håndklæde udleveres ved check‑in.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 60.75,
+        "flexible": 66.82
+      }
+    },
+    "room_11": {
+      "title": "Kvinde‑sovesal Superior – Stor terrasse",
+      "bed_intro": "De bedste udsigter fra en rummelig terrasse og et lækkert badeværelse.",
+      "bed_description": "Vores kvinde‑sovesal Superior har tre sovesalsenge (i alt seks), til op til seks gæster. På fjerde sal; aircondition, nøglekort, eget badeværelse og havudsigt med ekstra stor terrasse. Sengetøj og håndklæde ved check‑in.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 72.4,
+        "flexible": 79.64
+      }
+    },
+    "room_12": {
+      "title": "Blandet sovesal Superior",
+      "bed_intro": "Flotte udsigter fra rummelig terrasse og godt badeværelse.",
+      "bed_description": "Blandet sovesal Superior har tre sovesalsenge (i alt seks) til op til seks gæster. På fjerde sal; aircondition, nøglekort, privat badeværelse og havudsigt med ekstra stor terrasse. Sengetøj og håndklæde ved check‑in.",
+      "facilities": [
+        "mixedDorm",
+        "threeDormBedsSixGuests",
+        "fourthFloor",
+        "bathroomPrivate",
+        "seaViewExtraLargeTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 74.4,
+        "flexible": 81.84
+      }
+    },
+    "room_3": {
+      "title": "Kvinde‑sovesal Value",
+      "bed_intro": "Et prisvenligt valg for kvindelige rejsende.",
+      "bed_description": "Kvinde‑sovesal Value rummer op til otte gæster på fire senge. På tredje sal; aircondition, nøglekort og adgang til fælles badeværelse (kun kvinder). Ingen udsigt. Sengetøj og håndklæde ved check‑in.",
+      "facilities": [
+        "femaleDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_4": {
+      "title": "Blandet sovesal Value",
+      "bed_intro": "Et prisvenligt valg for både kvinder og mænd.",
+      "bed_description": "Blandet sovesal Value rummer op til otte gæster på fire senge. På tredje sal; aircondition, nøglekort og adgang til fælles badeværelse (kvinder). Ingen udsigt. Sengetøj og håndklæde ved check‑in.",
+      "facilities": [
+        "mixedDorm",
+        "fourDormBedsEightGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "noView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 55,
+        "flexible": 60.5
+      }
+    },
+    "room_5": {
+      "title": "Kvinde‑sovesal Superior – Havudsigt",
+      "bed_intro": "Fantastisk havudsigt og eget badeværelse.",
+      "bed_description": "Kvinde‑sovesal Superior rummer op til seks gæster i tre senge. På tredje sal; eget badeværelse, terrasse med havudsigt, aircondition og nøglekort. Sengetøj og håndklæde ved check‑in.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsSixGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_6": {
+      "title": "Kvinde‑sovesal Superior – 7 senge",
+      "bed_intro": "Fantastisk havudsigt og eget badeværelse.",
+      "bed_description": "Kvinde‑sovesal Superior har tre sovesalsenge plus en enkeltseng (i alt 7) til op til syv gæster. På tredje sal; eget badeværelse, terrasse med havudsigt, aircondition og nøglekort. Sengetøj og håndklæde ved check‑in.",
+      "facilities": [
+        "femaleDorm",
+        "threeDormBedsPlusSingleSevenGuests",
+        "thirdFloor",
+        "bathroomEnsuite",
+        "seaViewTerrace",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_9": {
+      "title": "Deluxe‑værelse (blandet)",
+      "bed_intro": "En prisvenlig måde at få et værelse med tre senge.",
+      "bed_description": "Deluxe‑værelset (blandet) har tre enkeltsenge til op til tre gæster. På fjerde sal; eget badeværelse, udsigt til gårdhave, aircondition og nøglekort. Sengetøj og håndklæde ved check‑in.",
+      "facilities": [
+        "mixedDorm",
+        "threeSingleBedsThreeGuests",
+        "fourthFloor",
+        "bathroomEnsuite",
+        "courtyardView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 66.5,
+        "flexible": 73.15
+      }
+    },
+    "room_8": {
+      "title": "Kvinde‑sovesal med én køjeseng",
+      "bed_intro": "Et prisvenligt valg for to kvindelige rejsende.",
+      "bed_description": "Denne kvinde‑sovesal har én køjeseng (sovesalseng) til op til to gæster. På tredje sal; aircondition, nøglekort, haveudsigt og ved siden af fælles badeværelse (kvinder). Sengetøj og håndklæde ved check‑in.",
+      "facilities": [
+        "femaleDorm",
+        "oneDormBedTwoGuests",
+        "thirdFloor",
+        "bathroomSharedFemale",
+        "gardenView",
+        "airCon",
+        "keycard",
+        "linen"
+      ],
+      "prices": {
+        "nonRefundable": 78,
+        "flexible": 85.8
+      }
+    }
+  },
+  "fullscreen": {
+    "clickToClose": "Klik hvor som helst for at lukke",
+    "closeAria": "Luk billede i fuld skærm"
+  },
+  "roomImage": {
+    "clickToEnlarge": "Klik for at forstørre billedet",
+    "prevAria": "Forrige billede",
+    "nextAria": "Næste billede",
+    "pagination": "{{current}}/{{total}}",
+    "photoAlt": "Foto af {{room}}",
+    "noImage": "Intet billede tilgængeligt"
+  },
+  "carousel": {
+    "previousSlide": "Forrige slide",
+    "nextSlide": "Næste slide"
+  },
+  "hero": {
+    "heading": "Vores værelser",
+    "subheading": "Vælg det perfekte værelse til dit ophold"
+  },
+  "filters": {
+    "all": "Alle værelser",
+    "private": "Private værelser",
+    "dorms": "Sovesale"
+  },
+  "filtersAria": "Filtrer efter værelsestype",
+  "checkRatesNonRefundable": "Ikke‑refunderbare priser",
+  "checkRatesFlexible": "Fleksible værelsespriser",
+  "ctaSuffix": {
+    "nonRefundable": "Ikke‑refunderbar",
+    "flexible": "Fleksibel"
+  },
+  "details": "Detaljer",
+  "ratesFrom": "Fra €{{price}}",
+  "selectDatesTitle": "Vælg dine datoer",
+  "checkInDate": "Indtjekningsdato",
+  "checkOutDate": "Udtjekningsdato",
+  "adults": "Antal voksne",
+  "confirm": "Bekræft",
+  "cancel": "Annullér",
+  "moreAboutThisRoom": "Mere om dette værelse",
+  "loadingPrice": "Indlæser pris…",
+  "landingImageAlt": "Forsidebillede af {{room}}",
+  "priceNotes": {
+    "dorm": "Per night, per guest. One guest in one bunk bed."
+  }
+}

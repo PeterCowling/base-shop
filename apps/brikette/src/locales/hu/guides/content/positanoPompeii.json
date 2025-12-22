@@ -1,0 +1,135 @@
+{
+  "seo": {
+    "title": "A fordítás folyamatban van.",
+    "description": "Lépésről lépésre útmutató Positanóból Pompeiibe busszal + vonattal vagy (nyáron) komppal + vonattal."
+  },
+  "linkLabel": "Positano to Pompeii: how to go",
+  "intro": [
+    "Pompeji hatalmas, lenyűgöző, és könnyű túlzsúfolni a programot. Ez a terv segít úgy megnézni a fő látnivalókat, hogy ne az egész nap menjen el utazással.",
+    "Nyáron hőségre, porra és tömegre számíts – vigyél vizet, napvédőt, és reálisan mérd fel, a terület mekkora részét tudod bejárni."
+  ],
+  "toc": [
+    {
+      "href": "#at-a-glance",
+      "label": "Röviden"
+    },
+    {
+      "href": "#entry-cost-and-hours",
+      "label": "Belépő és nyitvatartás"
+    },
+    {
+      "href": "#other-facilities",
+      "label": "Szolgáltatások"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Megközelítés"
+    },
+    {
+      "href": "#self-guided-tour",
+      "label": "Önálló bejárás"
+    },
+    {
+      "href": "#faqs",
+      "label": "GYIK"
+    }
+  ],
+  "sections": [
+    {
+      "id": "at-a-glance",
+      "title": "Röviden",
+      "body": [
+        "Pompeji mérete már a bejáratnál lenyűgöz; a város nagy része feltárt, gyalog könnyen bejárható.",
+        "Ha magad fedezed fel, olcsó program – a történelmi környezet kalauz nélkül is átjön.",
+        "Herculaneum kisebb és jobban megőrzött, ezért fontold meg, ha inkább ép freskókat és mozaikokat néznél Pompeji tágas utcái helyett.",
+        "Positanóból tömegközlekedéssel számíts melegre, porra és hosszabb utazási időre."
+      ]
+    },
+    {
+      "id": "entry-cost-and-hours",
+      "title": "Belépő és nyitvatartás",
+      "body": [
+        "A jegyárak és a nyitvatartás szezonálisan változik – indulás előtt nézd meg a Parco Archeologico di Pompei hivatalos oldalát.",
+        "A normál belépő általában valamivel 15 euró felett van; az utolsó belépés hónaptól függően késő délután és kora este között mozog."
+      ]
+    },
+    {
+      "id": "other-facilities",
+      "title": "Szolgáltatások",
+      "body": [
+        "Vedd fel az ingyenes térképet a jegypénztár melletti információs pultnál; sokkal könnyebb lesz tájékozódni.",
+        "A bejáratnál audioguide-ot bérelhetsz vagy hivatalos idegenvezetőt fogadhatsz, ha részletesebb magyarázatot szeretnél.",
+        "Vannak büfék, de a kínálat korlátozott – főleg a meleg hónapokban legyen nálad elegendő víz.",
+        "A Pompeii Scavi állomáson díj ellenében, a helyszín bejáratán belül pedig ingyenes ruhatárban hagyhatod a csomagot."
+      ]
+    },
+    {
+      "id": "getting-there",
+      "title": "Megközelítés",
+      "body": [
+        "Positanóból szállj fel a SITA buszra Sorrentóig; a jegyet tabacchiban vagy a buszon veheted, az út körülbelül egy óra.",
+        "Sorrentóban menj fel a lépcsőn a Circumvesuviana peronjaira, és szállj fel a ‘Pompei Scavi – Villa dei Misteri’ helyi vonatra.",
+        "Kilépve az állomásról fordulj jobbra; balra, nagyjából 50 méterre találod a Porta Marina Superiore bejáratot."
+      ]
+    },
+    {
+      "id": "self-guided-tour",
+      "title": "Önálló bejárás",
+      "body": [
+        "Belépéskor fordulj balra az információs pulthoz, vedd fel a térképet, és intézd el a csomagmegőrzést, mielőtt a szemközti kasszánál jegyet veszel.",
+        "Odabent keresd meg a térképen a Porta Marina Superiore-t – a Via Marinán állsz, előtted egyértelmű útbaigazító táblákkal.",
+        "Kövesd a Via Marinát az amfiteátrum felé, térj ki az érdekes házakhoz, fürdőkhöz, fórumokhoz, majd térj vissza a fő útra.",
+        "Az amfiteátrum után az alsó részen keresztül sétálj vissza, így újabb csúcspontokat látsz anélkül, hogy ugyanazt az utat kétszer járnád.",
+        "Ez a kör általában a legfontosabb látnivalók 60–80%-át lefedi, jóval gyorsabban, mint ha minden utcát bejárnál."
+      ]
+    }
+  ],
+  "howTo": {
+    "steps": [
+      {
+        "name": "Busz Sorrentóba",
+        "text": "Szállj fel Positanóban a SITA buszra, és utazz Sorrento főpályaudvaráig (kb. 60 perc)."
+      },
+      {
+        "name": "Vonat Pompeii Scavihoz",
+        "text": "Menj fel a Circumvesuviana peronjaira, és ülj fel a ‘Pompei Scavi – Villa dei Misteri’ járatra."
+      },
+      {
+        "name": "Séta a bejáratig",
+        "text": "Kilépve az állomásról fordulj jobbra; balra, mintegy 50 méterre találod a Porta Marina Superiore-t."
+      }
+    ]
+  },
+  "tipsTitle": "Tippek a látogatás napjára",
+  "tips": [
+    "Mielőtt átmennél a beléptető kapun, vedd fel az ingyenes térképet, így visszafordulás nélkül tervezhetsz kitérőket.",
+    "Legyen nálad bőséges víz, és töltsd újra minden ivókútnál – nyáron hosszú sorok lehetnek a büféknél.",
+    "Jegyezd fel a fotópontokat vagy freskókat, amelyekhez visszatérnél kifelé menet; a hőségben könnyű megfeledkezni róluk."
+  ],
+  "warningsTitle": "Fontos figyelmeztetések",
+  "warnings": [
+    "Főszezonban a SITA buszhoz és a Circumvesuviana vonathoz vezető sorok 20–30 perccel meghosszabbíthatják az utat – tervezz be időtartalékot.",
+    "A terület nagy része árnyék nélkül van, ezért ha rosszul viseled a meleget, kerüld a déli órákat."
+  ],
+  "faqsTitle": "GYIK",
+  "faqs": [
+    {
+      "q": "Melyik bejárat a legkényelmesebb?",
+      "a": [
+        "A Pompei Scavi állomás melletti Porta Marina Superiore a legegyszerűbb az önálló utazóknak – pár lépésre van a vonattól és közel a csomagmegőrzőhöz."
+      ]
+    },
+    {
+      "q": "Lehet idegenvezető nélkül is bejárni?",
+      "a": [
+        "Igen. Az ingyenes hivatalos térkép részletes, és a legtöbb fontos épületnél olasz és angol feliratokat találsz. Audioguide és hivatalos vezető is bérelhető, ha több magyarázatra van szükséged."
+      ]
+    },
+    {
+      "q": "Hol hagyhatom a csomagot?",
+      "a": [
+        "A kisebb csomagokat díj ellenében a Pompei Scavi állomáson adhatod le, a bejárat után pedig ingyenes ruhatár működik."
+      ]
+    }
+  ]
+}

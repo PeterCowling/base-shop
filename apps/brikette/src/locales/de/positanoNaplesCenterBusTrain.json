@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Positano nach Neapel Zentrum mit Bus und Zug | Hostel Brikette",
+    "description": "Wegbeschreibung von Tür zu Tür vom Hostel Brikette zur Piazza Garibaldi in Neapel über den SITA-Bus nach Sorrent und die Circumvesuviana, inklusive Ticketentwertung, Fahrplantipps und Hinweisen zur Ankunft."
+  },
+  "header": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "title": "Positano → Neapel Zentrum – Bus und Zug",
+    "description": "Nutze diesen Leitfaden für die Reise vom Hostel Brikette zur Piazza Garibaldi in Neapel. Du nimmst den SITA Sud Bus nach Sorrent und steigst dort in die Circumvesuviana um, um das Stadtzentrum zu erreichen. Wir erklären die Ticketentwertung, das Lesen des SITA-Fahrplans und was dich bei jedem Umstieg erwartet."
+  },
+  "cta": {
+    "eyebrow": "Tipp",
+    "body": "Du möchtest alle Verkehrsoptionen sehen? Öffne die <Link>Übersicht „So kommst du zu uns“</Link> für Fähre, Taxi und kombinierte Routen.",
+    "linkLabel": "Übersicht „So kommst du zu uns“"
+  },
+  "sections": {
+    "overview": {
+      "heading": "Reiseüberblick",
+      "body": "Plane in der Hochsaison etwas mehr als zwei Stunden von Tür zu Tür ein. SITA-Busse fahren häufig von Positano (Chiesa Nuova) nach Sorrent. Die Circumvesuviana ab Sorrent fährt ungefähr alle 20–30 Minuten und endet in Napoli Garibaldi."
+    },
+    "tickets": {
+      "heading": "SITA-Tickets kaufen und entwerten",
+      "body": "Kaufe deine SITA-Bustickets vorab im Kiosk oder Tabakladen. Zeige das Ticket beim Einstieg dem Fahrpersonal; es wird abgestempelt oder eingerissen, um die Fahrt zu entwerten. Bewahre das Ticket bis zum Ausstieg auf, falls unterwegs kontrolliert wird."
+    },
+    "timetable": {
+      "heading": "Den SITA-Fahrplan lesen",
+      "intro": "Der offizielle Fahrplan listet Haltestellen als Zeilen und Fahrten als Spalten mit Buchstaben. Suche die Zeile für Sorrent und den Buchstaben für deinen Reisetag, um die Abfahrtszeit zu finden, und prüfe in derselben Spalte die Zeile Positano (Chiesa Nuova), um die Rückkehrzeit zu sehen.",
+      "tips": [
+        "Die Zeilen in der ersten Spalte nennen jede Haltestelle entlang der Strecke.",
+        "Die Spalten entsprechen geplanten Fahrten, gekennzeichnet durch Buchstaben.",
+        "Reist du Montag bis Samstag? Nutze die Spalten F und G.",
+        "Reist du am Sonntag oder an einem Feiertag? Nutze die Spalten G und H."
+      ],
+      "outro": "Den aktuellen Plan findest du auf <Link>Positano.com</Link>.",
+      "linkLabel": "Positano.com (SITA-Fahrplanübersicht)"
+    },
+    "positanoStop": {
+      "heading": "Bushaltestelle Positano (Chiesa Nuova)",
+      "facts": [
+        "Die nächstgelegene SITA-Haltestelle ist Positano (Chiesa Nuova) an der Via G. Marconi.",
+        "Sie liegt etwa 140 Meter (490 Fuß) vom Hosteleingang entfernt.",
+        "Du wartest vor dem Café/der Bar Bar Internazionale."
+      ],
+      "caption": "Sei ein paar Minuten früher da, um einen Platz zu sichern – in den Sommermonaten füllen sich die Busse schnell.",
+      "imageAlt": "SITA-Haltestelle Chiesa Nuova in Positano vor der Bar Internazionale"
+    },
+    "walk": {
+      "heading": "Fußweg vom Hostel zur Haltestelle",
+      "steps": [
+        "Verlasse das Hostel, gehe die Stufen zur Hauptstraße hinunter und biege links ab.",
+        "Folge der Via G. Marconi für rund 100 Meter (330 Fuß).",
+        "Die Bar Internazionale liegt zu deiner Linken; die SITA-Haltestelle befindet sich direkt davor."
+      ]
+    },
+    "wait": {
+      "heading": "Ticket kaufen und auf den Einstieg warten",
+      "items": [
+        "Kaufe ein SITA-Busticket nach Sorrent in der Bar oder im Kiosk daneben.",
+        "Stelle dich vor der Bar Internazionale für den Bus nach Sorrent an.",
+        "Prüfe die Anzeige – dort sollte „Sorrento“ stehen."
+      ]
+    },
+    "sorrento": {
+      "heading": "Am Bahnhof Sorrent",
+      "intro": "Der SITA-Bus lässt dich direkt am kombinierten Bus- und Bahnhof von Sorrent aussteigen. Gehe die Treppe zur Haupthalle hinauf, kaufe dein Circumvesuviana-Ticket nach Napoli Garibaldi (Barzahlung oder Karte) und finde das richtige Gleis, bevor der Zug eintrifft.",
+      "outro": "Den aktuellen Circumvesuviana-Fahrplan findest du auf <Link>Sorrento Insider</Link>.",
+      "outroLinkLabel": "Sorrento Insider (Circumvesuviana-Fahrplan)"
+    },
+    "naples": {
+      "heading": "Ankunft in Neapel",
+      "body": "Bleib in der Circumvesuviana, bis sie in Napoli Garibaldi endet. Folge den Schildern zur Haupthalle, um zu Fernzügen, Metro oder Flughafenbussen zu wechseln. Die Piazza Garibaldi liegt direkt vor dem Bahnhofseingang."
+    }
+  }
+}

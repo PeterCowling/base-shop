@@ -1,0 +1,98 @@
+{
+  "seo": {
+    "title": "Jedyny hostel w Positano: czego się spodziewać (i jak oszczędzać)",
+    "description": "Wykorzystaj naszą wyjątkowość: taras z widokiem, bliskość przystanku, bar i śniadania — oraz porady, jak oszczędzać przy rezerwacji bezpośredniej."
+  },
+  "linkLabel": "Jedyny hostel w Positano: czego się spodziewać (i jak oszczędzać)",
+  "intro": "Witamy w jedynym hostelu w Positano. Czeka Cię przyjazna atmosfera, panoramiczny taras idealny na poranną kawę i bezkonkurencyjna lokalizacja tuż przy przystanku SITA Chiesa Nuova.",
+  "sections": [
+    {
+      "id": "rooms",
+      "title": "Pokoje i łóżka",
+      "body": [
+        "Dormitoria mieszczą 4–8 osób i mają indywidualne lampki, gniazdka oraz szafki — zabierz kłódkę TSA albo kup ją w recepcji.",
+        "Pokoje prywatne dostępne są z łazienką w pokoju lub współdzieloną; jeśli zależy Ci na balkonie lub widoku na morze, napisz do zespołu z prośbą przy rezerwacji."
+      ]
+    },
+    {
+      "id": "common-areas",
+      "title": "Strefy wspólne i udogodnienia",
+      "body": [
+        "Taras z stolikami, leżakami i gniazdkami pozwala zjeść, zaplanować dzień lub dołączyć do wieczornego aperitivo bez opuszczania obiektu.",
+        "Bar w lobby serwuje kawę, spritza i lokalne wino; sezonowy bufet śniadaniowy działa zwykle 07:30–10:00 — sprawdź tablicę z menu dnia."
+      ]
+    },
+    {
+      "id": "booking",
+      "title": "Rezerwacja i zasady",
+      "body": [
+        "Rezerwuj bezpośrednio na hostelbrikette.com, by otrzymać najniższą elastyczną stawkę; portale pośredniczące pobierają wyższe opłaty i narzucają sztywniejsze warunki zmian.",
+        "Niewielki depozyt gwarantuje łóżko; anulowanie jest bezpłatne do opublikowanego terminu — daj nam znać, jeśli plany się zmienią, abyśmy mogli dostosować sprzątanie."
+      ]
+    },
+    {
+      "id": "neighbourhood",
+      "title": "Co jest w pobliżu",
+      "body": [
+        "W dwie minuty dojdziesz do minimarketu, piekarni i przystanku SITA Chiesa Nuova — zaopatrz się przed ostatnimi kursami.",
+        "Idąc w dół Via Pasitea dotrzesz do restauracji i lodziarni; zaplanuj 10–12 minut, by dojść główną drogą na Spiaggia Grande przy minimalnej liczbie schodów."
+      ]
+    }
+  ],
+  "highlightsTitle": "Najważniejsze atuty",
+  "highlights": [
+    "Tarasy z szerokim widokiem na Wybrzeże Amalfi",
+    "Około 80 m od przystanku autobusowego, bez schodów",
+    "Kameralny bar na miejscu i sezonowe śniadania",
+    "Przystępne łóżka w dormach i pokoje prywatne"
+  ],
+  "saveTitle": "Jak oszczędzać",
+  "save": [
+    "Rezerwuj bezpośrednio, by otrzymać najlepszą stawkę i elastyczne zasady",
+    "Jeśli możesz, wybieraj terminy poza szczytowym weekendem",
+    "Śpij w dormach i pakuj się lekko, by nie płacić porterom"
+  ],
+  "toc": {
+    "onThisPage": "Na tej stronie",
+    "rooms": "Pokoje i udogodnienia",
+    "arrival": "Jak do nas dotrzeć",
+    "etiquette": "Zasady i etykieta",
+    "faqs": "FAQ"
+  },
+  "roomsList": [
+    "Wspólne tarasy z panoramą — poranna kawa i złota godzina to ulubione momenty gości.",
+    "Bar z rozsądnymi cenami oraz sezonowe śniadanie.",
+    "Szafki w dormitoriach; zajrzyj do naszej listy pakowania.",
+    "Stabilne Wi-Fi; miejsca do pracy znajdziesz w przewodniku po kawiarniach."
+  ],
+  "roomsLinks": [
+    "whatToPack",
+    "workCafes"
+  ],
+  "arrivalText": "Jesteśmy ~80 m od przystanku SITA „Chiesa Nuova”, bez schodów po drodze. Przyjeżdżasz promem? Rozważ porterów lub autobus SITA pod górę.",
+  "arrivalLinks": [
+    "chiesaNuovaArrivals",
+    "ferryDockToBrikette",
+    "ferrySchedules"
+  ],
+  "arrivalRoutesLabel": "Trasy:",
+  "arrivalRoutes": [
+    "naplesPositano",
+    "salernoPositano"
+  ],
+  "etiquetteList": [
+    "Cisza nocna: zachowaj się cicho w dormitoriach późno wieczorem i wczesnym rankiem.",
+    "Oznaczaj produkty w lodówce, sprzątaj po sobie stoły i dbaj o wspólne przestrzenie.",
+    "Przechowuj cenne rzeczy w szafkach; w dormach przydadzą się stopery i opaska na oczy."
+  ],
+  "faq": [
+    {
+      "q": "Czy macie pokoje prywatne?",
+      "a": "Tak — liczba jest ograniczona w szczycie sezonu, więc rezerwuj z wyprzedzeniem dla najlepszych cen."
+    },
+    {
+      "q": "Czy mogę przyjechać późno?",
+      "a": "Tak — skontaktuj się z recepcją, by ustalić późne zameldowanie. Przy nocnych promach rozważ porterów z mola."
+    }
+  ]
+}

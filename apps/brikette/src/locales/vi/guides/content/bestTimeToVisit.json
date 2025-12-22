@@ -1,0 +1,82 @@
+{
+  "seo": {
+    "title": "Thời điểm tốt nhất tới Positano",
+    "description": "Theo từng tháng: thời tiết, lượng khách và lịch phà."
+  },
+  "linkLabel": "Thời điểm tốt nhất tới Positano",
+  "intro": [
+    "Lên kế hoạch với kỳ vọng thực tế về thời tiết, lượng khách và lịch phà.",
+    "Dùng bảng mùa vụ và ghi chú từng tháng để chọn thời điểm Positano phù hợp ưu tiên của bạn."
+  ],
+  "tocTitle": "Trên trang này",
+  "toc": [
+    {
+      "href": "#matrix",
+      "label": "Bảng thời tiết/đông đúc/giá"
+    },
+    {
+      "href": "#months",
+      "label": "Ghi chú từng tháng"
+    },
+    {
+      "href": "#faqs",
+      "label": "Câu hỏi thường gặp"
+    }
+  ],
+  "sections": [
+    {
+      "id": "matrix",
+      "title": "Bảng thời tiết / đông đúc / giá cả",
+      "body": [
+        "Cao điểm (tháng 6–8): nóng, đông và giá cao nhất. Mùa giao mùa (tháng 4–5, 9–10): thời tiết dễ chịu, giá hợp lý. Mùa đông (tháng 11–3): yên tĩnh, dịch vụ giảm."
+      ]
+    },
+    {
+      "id": "months",
+      "title": "Ghi chú từng tháng",
+      "body": [
+        "Tháng 4: phà bắt đầu, thời tiết mát và ít đông.",
+        "Tháng 5: thời tiết tuyệt, thêm chuyến phà, cuối tuần đông hơn.",
+        "Tháng 6–8: cao điểm; nắng nóng và xếp hàng — đặt trước phương tiện và hoạt động.",
+        "Tháng 9: biển còn ấm và đỡ đông hơn tháng 8 đôi chút.",
+        "Tháng 10: mùa giao mùa; phà giảm dần vào cuối tháng.",
+        "Tháng 11–3: mùa thấp điểm yên tĩnh, nhiều dịch vụ đóng cửa; xe buýt trở thành phương tiện chính.",
+        "Tần suất phà tăng dần qua mùa xuân, đạt đỉnh mùa hè và giảm từ cuối tháng 10."
+      ]
+    }
+  ],
+  "schemaMonths": [
+    {
+      "name": "Tháng 4",
+      "note": "Phà bắt đầu chạy; thời tiết mát; ít khách."
+    },
+    {
+      "name": "Tháng 5",
+      "note": "Thời tiết đẹp; phà dày hơn; cuối tuần đông."
+    },
+    {
+      "name": "Tháng 6–8",
+      "note": "Mùa cao điểm; nóng; cần đặt sớm phương tiện/hoạt động."
+    },
+    {
+      "name": "Tháng 9",
+      "note": "Biển ấm; đông đúc giảm nhẹ so với tháng 8."
+    },
+    {
+      "name": "Tháng 10",
+      "note": "Mùa giao mùa; cuối tháng phà giảm."
+    },
+    {
+      "name": "Tháng 11–3",
+      "note": "Yên tĩnh; nhiều dịch vụ giảm; xe buýt là phương tiện chính."
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Khi nào nước biển ấm nhất?",
+      "a": [
+        "Cuối tháng 6 tới đầu tháng 9 thường là thời gian nước ấm nhất để tắm biển."
+      ]
+    }
+  ]
+}

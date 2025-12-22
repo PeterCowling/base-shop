@@ -24,6 +24,18 @@ jest.mock("@platform-core/checkout/session", () => {
   const actual = jest.requireActual("@platform-core/checkout/session");
   return { ...actual, createCheckoutSession: jest.fn(actual.createCheckoutSession) };
 });
+jest.mock("@platform-core/inventoryValidation", () => {
+  const actual = jest.requireActual("@platform-core/inventoryValidation");
+  return {
+    ...actual,
+    validateInventoryAvailability: jest.fn(async () => ({ ok: true })),
+  };
+});
+jest.mock("@auth", () => ({ getCustomerSession: jest.fn(async () => null) }));
+jest.mock("@platform-core/customerProfiles", () => ({ getCustomerProfile: jest.fn(async () => null) }));
+jest.mock("@platform-core/identity", () => ({
+  getOrCreateStripeCustomerId: jest.fn(async () => "stripe-customer"),
+}));
 
 import { createRequest } from "./checkout-session.helpers";
 import { stripe } from "@acme/stripe";
@@ -34,6 +46,8 @@ import { getCart } from "@platform-core/cartStore";
 import { coreEnv } from "@acme/config/env/core";
 import { encodeCartCookie, decodeCartCookie } from "@platform-core/cartCookie";
 import { PRODUCTS } from "@platform-core/products";
+import { validateInventoryAvailability } from "@platform-core/inventoryValidation";
+import { variantKey } from "@platform-core/types/inventory";
 import { POST } from "../src/api/checkout-session/route";
 
 const stripeCreate = stripe.checkout.sessions.create as jest.Mock;
@@ -43,6 +57,8 @@ const convertCurrencyMock = convertCurrency as jest.Mock;
 const readShopMock = readShop as jest.Mock;
 const getCartMock = getCart as jest.Mock;
 const decodeCartCookieMock = decodeCartCookie as jest.Mock;
+const validateInventoryAvailabilityMock =
+  validateInventoryAvailability as jest.Mock;
 
 test("returns 400 when returnDate is invalid", async () => {
   const sku = PRODUCTS[0];
@@ -84,4 +100,27 @@ test("handles invalid JSON body and returns 400 for missing returnDate", async (
   expect(body.error).toMatch(/invalid returnDate/i);
   const [, opts] = createCheckoutSessionMock.mock.calls[0];
   expect(opts.returnDate).toBeUndefined();
+});
+
+test("returns 409 when cart exceeds available stock", async () => {
+  const sku = { ...PRODUCTS[0], stock: 1 };
+  const size = sku.sizes[0];
+  mockCart = { [`${sku.id}:${size}`]: { sku, qty: 2, size } };
+  validateInventoryAvailabilityMock.mockResolvedValueOnce({
+    ok: false,
+    insufficient: [
+      {
+        sku: sku.id,
+        variantAttributes: { size },
+        variantKey: variantKey(sku.id, { size }),
+        requested: 2,
+        available: 1,
+      },
+    ],
+  });
+  const cookie = encodeCartCookie("test");
+  const res = await POST(createRequest({ returnDate: "2025-01-02" }, cookie) as any);
+  expect(res.status).toBe(409);
+  const body = await res.json();
+  expect(body.error).toBe("Insufficient stock");
 });

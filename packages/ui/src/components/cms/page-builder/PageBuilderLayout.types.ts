@@ -72,8 +72,8 @@ export interface PageBuilderLayoutProps {
     publishedBy?: string;
     publishedRevisionId?: string;
     currentRevisionId?: string;
+    lastPublishedComponents?: PageComponent[];
   };
   previewUrl?: string | null;
   previewSource?: string | null;
-  lastPublishedComponents?: PageComponent[];
 }

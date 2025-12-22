@@ -1,0 +1,33 @@
+{
+  "detail": {
+    "room_12": {
+      "hero": {
+        "eyebrow": "Dormitorio mixto superior • Terraza",
+        "title": "Despierta con el horizonte de Positano desde una gran terraza compartida",
+        "subtitle": "Nuestra terraza de dormitorio más amplia combina seis camas con comodidades privadas en el interior.",
+        "bullets": [
+          "Terraza panorámica con sofás lounge y mesas para desayunar.",
+          "Baño privado con toallas frescas listas.",
+          "Wi-Fi veloz, aire acondicionado y casilleros con tarjeta para cada huésped."
+        ]
+      },
+      "outline": {
+        "heading": "Qué esperar en el dormitorio con terraza",
+        "items": [
+          {
+            "title": "Un exterior amplio para todas las personas",
+            "body": "Brinda con spritz al atardecer en sofás y bancos largos mientras el paisaje pastel de Positano se abre frente a ustedes."
+          },
+          {
+            "title": "Literas con espacio de sobra",
+            "body": "Seis literas robustas con cortinas de privacidad, luces individuales y enchufes mantienen la calma cuando necesitas descansar."
+          },
+          {
+            "title": "Listo para los días de playa",
+            "body": "Guarda mochilas en casilleros con tarjeta, cuelga los trajes de baño en la terraza y enjuágate rápido en el baño privado."
+          }
+        ]
+      }
+    }
+  }
+}

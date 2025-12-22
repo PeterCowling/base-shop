@@ -1,0 +1,93 @@
+{
+  "seo": {
+    "title": "Ravello-Reiseführer",
+    "description": "Villen, Konzerte und Gartenblicke – so erreichst du Ravello ab Amalfi/Positano."
+  },
+  "linkLabel": "Ravello-Reiseführer",
+  "intro": [
+    "Ravello thront über Amalfi mit Villengärten, klassischen Konzerten und Panoramaterrassen. Dieser Guide hilft dir, den Besuch zu planen."
+  ],
+  "sections": [
+    {
+      "id": "villas",
+      "title": "Villen & Gärten",
+      "body": [
+        "Villa Rufolo bietet Panoramaterrassen und die ikonische Konzertbühne, die über dem Meer schwebt.",
+        "Die Infinity Terrace der Villa Cimbrone ist ein Foto-Must – früh kommen, um Warteschlangen auf dem schmalen Steg zu vermeiden."
+      ]
+    },
+    {
+      "id": "music",
+      "title": "Musik & Veranstaltungen",
+      "body": [
+        "Den Ravello-Festival-Kalender (Juni–September) für Abendkonzerte prüfen; Tickets kosten je nach Sitzplatz 25–70 €.",
+        "Eine leichte Schicht einpacken – auf 365 m Höhe kann es abends selbst im Sommer frisch werden."
+      ]
+    },
+    {
+      "id": "logistics",
+      "title": "Anreise",
+      "body": [
+        "SITA-Bus ab Amalfi (25 Minuten bergauf) oder die schnellere 15-Minuten-Fahrt im geteilten Taxi.",
+        "Für die Rückfahrt extra Zeit einplanen: Spätnachmittags füllen sich die Busse schnell – 20 Minuten vorher anstellen."
+      ]
+    }
+  ],
+  "tips": [
+    "Bequeme Schuhe tragen – Ravellos Gassen sind gepflastert und leicht abschüssig.",
+    "Ravello mit einem Stopp in Minori kombinieren und auf dem Rückweg Gebäck von Sal De Riso mitnehmen."
+  ],
+  "faqs": [
+    {
+      "q": "Kann ich von Amalfi nach Ravello laufen?",
+      "a": [
+        "Es geht steil 5 km über alte Treppen bergauf. Nur versuchen, wenn du fit bist, früh startest und Wasser dabei hast."
+      ]
+    },
+    {
+      "q": "Muss ich Villen-Tickets vorab buchen?",
+      "a": [
+        "Tickets gibt es am Eingang. An Sommernachmittagen kann es kurze Schlangen geben – am besten morgens kommen."
+      ]
+    }
+  ],
+  "fallback": {
+    "toc": [
+      {
+        "href": "#villas",
+        "label": "Villengärten"
+      },
+      {
+        "href": "#concerts",
+        "label": "Konzerte"
+      },
+      {
+        "href": "#getting",
+        "label": "Anreise"
+      }
+    ],
+    "sections": [
+      {
+        "id": "villas",
+        "title": "Villen & Gärten",
+        "body": [
+          "Villa Rufolo und Villa Cimbrone liefern die ikonischen Ausblicke. Früh kommen, um Schlangen zu vermeiden."
+        ]
+      },
+      {
+        "id": "concerts",
+        "title": "Konzerte",
+        "body": [
+          "Das Ravello Festival läuft im Sommer – offizielle Termine checken und warme Kleidung für die kühlen Abende mitnehmen."
+        ]
+      },
+      {
+        "id": "getting",
+        "title": "Anreise",
+        "body": [
+          "Bus ab Amalfi, Rückfahrten werden spät dünn – für die Abendtour extra Zeit einplanen."
+        ]
+      }
+    ]
+  }
+}

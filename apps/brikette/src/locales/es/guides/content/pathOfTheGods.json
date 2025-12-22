@@ -1,0 +1,107 @@
+{
+  "seo": {
+    "title": "Sendero de los Dioses: cómo llegar desde Positano",
+    "description": "Preparación para el Sentiero degli Dei: cómo llegar desde el Hostel Brikette, qué llevar, horarios recomendados y pasos clave de la ruta."
+  },
+  "linkLabel": "Sendero de los Dioses desde el hostel",
+  "intro": "El Sentiero degli Dei (“Path of the Gods”) es una de las rutas costeras más espectaculares de Italia. Desde el Hostel Brikette puedes llegar al inicio clásico en Bomerano o terminar en Nocelle usando el autobús SITA.",
+  "sections": [
+    {
+      "id": "mejor-momento",
+      "title": "Cuándo hacer la ruta",
+      "body": [
+        "Apunta a abril–junio u septiembre–octubre para disfrutar de buen tiempo y temperaturas llevaderas; en invierno la piedra puede estar resbaladiza.",
+        "En julio–agosto empieza antes de las 09:00 o después de las 15:00 porque el sendero tiene poca sombra."
+      ]
+    },
+    {
+      "id": "elige-recorrido",
+      "title": "Elige tu recorrido",
+      "body": [
+        "Bomerano → Nocelle cubre los 6,5 km clásicos con subidas y bajadas continuas; calcula 2,5–3 horas de caminata más traslados.",
+        "¿Con poco tiempo? Sube en bus a Nocelle, recorre el tramo panorámico de ida y vuelta hasta Colle Serra o desciende los 1.700 escalones hacia Positano."
+      ]
+    },
+    {
+      "id": "navegacion",
+      "title": "Navegación y seguridad",
+      "body": [
+        "Sigue las marcas rojo-blancas del CAI y las flechas de “Sentiero degli Dei”; descarga un mapa offline porque la señal cae en los barrancos.",
+        "El terreno mezcla escaleras de piedra, tierra compacta y grava suelta: lleva calzado con agarre y bastones plegables para los descensos más fuertes."
+      ]
+    },
+    {
+      "id": "servicios",
+      "title": "Agua, snacks y regreso",
+      "body": [
+        "Abastécete en la plaza de Bomerano (cafés, panadería, último baño público) antes de empezar; en Nocelle hay quiosco y granita de limón junto a la iglesia.",
+        "Para volver a Positano baja por las escaleras hasta Arienzo o toma el autobús desde Nocelle/Montepertuso; lleva un billete validado extra en la mochila."
+      ]
+    }
+  ],
+  "essentialsTitle": "Imprescindibles",
+  "essentials": [
+    "Buen calzado, agua y protección solar; evita el calor del mediodía en verano.",
+    "Los billetes de autobús se compran antes de subir (estancos y kioscos).",
+    "Calcula ~4 horas incluyendo traslados y paradas para fotos."
+  ],
+  "typicalCostsTitle": "Costes aproximados",
+  "typicalCosts": [
+    "Autobús SITA (Positano ⇄ Nocelle/Bomerano): ~2–4 € por trayecto según el billete",
+    "Snacks/agua: 3–8 € (lleva lo tuyo para ahorrar)",
+    "Sendero: gratis (sin entrada)"
+  ],
+  "steps": [
+    {
+      "name": "Camina hasta la parada de Chiesa Nuova",
+      "text": "Desde el hostel sube unos 80 m hasta la parada de autobús SITA en Chiesa Nuova."
+    },
+    {
+      "name": "Autobús a Nocelle o Bomerano",
+      "text": "Toma el SITA hacia Amalfi y bájate en Nocelle para el final corto, o sigue hasta Agerola/Bomerano para el inicio clásico."
+    },
+    {
+      "name": "Entrada al sendero",
+      "text": "En Nocelle sigue las señales a Sentiero degli Dei (final). En Bomerano, sigue la señalización de la plaza principal hasta el inicio del sendero."
+    },
+    {
+      "name": "Opciones de regreso",
+      "text": "Termina en Nocelle y baja a Positano por las escaleras, o vuelve en autobús hasta Chiesa Nuova."
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Dónde empieza el sendero?",
+      "a": "El inicio clásico está en Bomerano (Agerola). Nocelle ofrece una versión más corta para finalizar."
+    },
+    {
+      "q": "¿Cuánto tiempo tarda?",
+      "a": "Calcula unas 4 horas incluyendo traslados y paradas para fotos."
+    },
+    {
+      "q": "¿Qué debo llevar?",
+      "a": "Calzado firme, agua y protección solar. Evita las horas centrales en verano."
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes",
+  "galleryTitle": "Galería de fotos",
+  "gallery": {
+    "items": [
+      {
+        "alt": "Vista a lo largo del Camino de los Dioses",
+        "caption": "A lo largo del sendero"
+      },
+      {
+        "alt": "Vistas del pueblo de Nocelle",
+        "caption": "Vistas de Nocelle"
+      }
+    ]
+  },
+  "toc": {
+    "onThisPage": "En esta página",
+    "essentials": "Imprescindibles",
+    "costs": "Costes aproximados",
+    "faqs": "Preguntas frecuentes",
+    "gallery": "Galería de fotos"
+  }
+}

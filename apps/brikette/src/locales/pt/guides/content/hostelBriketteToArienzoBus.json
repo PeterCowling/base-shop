@@ -1,0 +1,69 @@
+{
+  "seo": {
+    "title": "Bus to Arienzo Beach from Hostel Brikette",
+    "description": "Catch the Amalfi Coast bus from Chiesa Nuova, ride three kilometres south, and take the cliffside stairs down to Arienzo Beach."
+  },
+  "linkLabel": "Bus to Arienzo Beach",
+  "intro": [
+    "Arienzo Beach sits a few kilometres south of Hostel Brikette and is easiest to reach by the Amalfi Coast bus.",
+    "Follow these steps to find the stop, buy tickets, ride with confidence, and finish the trip with the correct staircase down to the sand."
+  ],
+  "sections": [
+    {
+      "id": "reach-bus-stop",
+      "title": "Go to the Chiesa Nuova bus stop",
+      "body": [
+        "Leave Hostel Brikette through the main entrance and walk down the stairs to the road.",
+        "Turn left and continue roughly 100 metres (330 feet) until you reach Bar Internazionale.",
+        "The SITA bus stop sits outside the bar in the Chiesa Nuova area, about 140 metres (490 feet) from the hostel."
+      ]
+    },
+    {
+      "id": "buy-tickets",
+      "title": "Buy bus tickets inside the bar",
+      "body": [
+        "Enter Bar Internazionale and purchase your tickets from the tabacchi counter.",
+        "Ask for both outbound and return tickets — staff may recommend either one combined ticket or two singles depending on the current pricing."
+      ]
+    },
+    {
+      "id": "wait-for-bus",
+      "title": "Wait for the Amalfi Coast bus",
+      "body": [
+        "Cross the road to the marked bus stop opposite Bar Internazionale.",
+        "Stand where the driver can see you and flag the coach as it approaches from the Positano direction."
+      ]
+    },
+    {
+      "id": "ride-to-arienzo",
+      "title": "Ride to the Arienzo stop",
+      "body": [
+        "Stay alert during the journey — the bus will make intermediate stops based on passenger requests.",
+        "Expect the trip to cover roughly 3 kilometres (1.9 miles). Arienzo comes two to five minutes after the Positano Sponda stop.",
+        "Use mobile data or download Google Maps offline and search for \"JFGW+X6 Arienzo, Province of Salerno\" if you want live confirmation of the stop."
+      ]
+    },
+    {
+      "id": "walk-to-beach",
+      "title": "Walk down to the beach",
+      "body": [
+        "After stepping off the bus, walk a short distance back in the direction you arrived from.",
+        "Look for the Arienzo signpost and the staircase on the seaward side of the road, then follow the steps down to the lido entrance."
+      ]
+    }
+  ],
+  "tipsTitle": "Bus tips",
+  "tips": [
+    "Printed timetables list Positano stops; expect Arienzo to appear about 2–5 minutes after Positano Sponda when heading from town.",
+    "Buy return tickets before leaving the hostel — there are no shops at the beach to sell you more if you decide to stay longer.",
+    "Check our %LINK:beaches|Positano beaches overview% for Arienzo facilities, shuttle boats, and alternative ways back to town."
+  ],
+  "afterArticle": {
+    "scanToShareHeading": "Scan to Share",
+    "scanToShareGalleryAlt": [
+      "Scan to share – Arienzo bus guide QR or card",
+      "Bar Internazionale area and Chiesa Nuova bus stop",
+      "Example bus route context for Arienzo stop"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "slug": "avtal",
+  "meta": {
+    "title": "Sommaren 2025 – spara 15 %",
+    "description": "Sommarerbjudande under begränsad tid med extra 15 % vid direktbokning.",
+    "ogImageAlt": "Banner för sommarerbjudande"
+  },
+  "title": "Spara {{percent}} % på din vistelse i {{season}}",
+  "promo": "Boka direkt i sommar och få extra {{percent}} % rabatt.",
+  "banner": "Endast {{beds}} sängar kvar till detta pris – erbjudandet slutar om {{time}}!",
+  "timeRemaining": {
+    "lessThanHour": "0 h",
+    "hours_one": "{{count}} h",
+    "hours_other": "{{count}} h",
+    "days_one": "{{count}} dag",
+    "days_other": "{{count}} dagar"
+  },
+  "buttonReserve": "Boka nu",
+  "ogImageAlt": "Banner för sommarerbjudande",
+  "perksHeading": "Fördelar med direktbokning",
+  "perksIntro": "Dessa förmåner gäller bara gäster som bokar direkt på vår webbplats.",
+  "perksGuarantee": "Varje direktbokning via vår webbplats låser automatiskt upp dessa exklusiva förmåner.",
+  "perksIntroLink": "Se alla aktuella erbjudanden",
+  "perksList": [
+    "Upp till 25 % rabatt på ordinarie pris när kupongen används",
+    "Kostnadsfri frukost",
+    "Kostnadsfri kvällsdrink"
+  ],
+  "expired": {
+    "message": "Detta tidsbegränsade erbjudande avslutades {{endedOn}}."
+  },
+  "restrictions": {
+    "heading": "Bra att veta",
+    "stayWindow": "Gäller för vistelser från {{from}} till {{to}}.",
+    "minAdvance": "Boka minst {{days}} dagar i förväg.",
+    "minAdvancePrefix": "Boka minst",
+    "minAdvanceSuffix": "i förväg.",
+    "los": "Minst {{min}} nätter, högst {{max}} nätter.",
+    "nonRefundable": "Gäller endast på icke återbetalningsbara priser, för direktbokningar via hostellets webbplats.",
+    "nonRefundablePrefix": "Gäller endast på",
+    "nonRefundableSuffix": "för direktbokningar via hostellets webbplats.",
+    "stackable": "{{percent}} % läggs ovanpå vår ordinarie 10 % direktbokningsrabatt.",
+    "other": "Standardvillkor gäller."
+  },
+  "seasonLabel": "sommaren 2025",
+  "robots": {
+    "expiredNoindex": "ingetindex, följande"
+  }
+}

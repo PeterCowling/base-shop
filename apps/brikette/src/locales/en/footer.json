@@ -1,0 +1,21 @@
+{
+  "home": "Home",
+  "rooms": "Rooms",
+  "apartment": "Apartment",
+  "assistance": "Help",
+  "careers": "Careers",
+  "deals": "Deals",
+  "guides": "Guides",
+  "terms": "Terms and Conditions for Room Bookings",
+  "copyright": "© 2023 to {{year}}, Skylar SRL operating as Hostel Brikette",
+  "backToTop": "Back to top",
+  "contactHeading": "Contact",
+  "email": "Email",
+  "phone": "Phone",
+  "noPhoneNotice": "We do not conduct business by telephone. Please contact us via email.",
+  "follow": "Follow us",
+  "instagram": "Instagram",
+  "facebook": "Facebook",
+  "experiences": "Experiences",
+  "howToGetHere": "How to Get Here"
+}

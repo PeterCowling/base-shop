@@ -1,0 +1,105 @@
+{
+  "seo": {
+    "title": "Naples to Positano: step‑by‑step",
+    "description": "Year‑round route via Sorrento train + SITA bus, where to get off in Positano, and how to walk to Hostel Brikette — plus summer ferry and late‑arrival options."
+  },
+  "linkLabel": "Naples to Positano: step‑by‑step",
+  "intro": [
+    "From Naples Airport or city, reach Positano year‑round by taking a shuttle or Alibus + train to Sorrento, then the SITA bus toward Amalfi. In summer, ferries run when seas are calm. This guide shows exactly where to get off (Chiesa Nuova/Bar Internazionale) and how to walk the final 2–5 minutes to Hostel Brikette."
+  ],
+  "toc": [
+    { "href": "#train-bus", "label": "Train + bus (year‑round)" },
+    { "href": "#sorrento-bus", "label": "Sorrento → Positano by SITA" },
+    { "href": "#get-off", "label": "Get off: Chiesa Nuova" },
+    { "href": "#walk", "label": "Walk to Hostel Brikette" },
+    { "href": "#ferry", "label": "Ferry (summer)" },
+    { "href": "#transfer", "label": "Late arrivals & transfers" },
+    { "href": "#faqs", "label": "FAQs" }
+  ],
+  "sections": [
+    {
+      "id": "train-bus",
+      "title": "Train + bus (year‑round)",
+      "body": [
+        "Airport → Sorrento: From NAP arrivals, either take the Curreri shuttle to Sorrento (direct, paid on board/online) or ride the Alibus to Napoli Centrale/Garibaldi and connect to the Circumvesuviana train for Sorrento.",
+        "At Sorrento: Exit the station and follow signs to the bus stands. Buy SITA tickets at the tabacchi/newsstand (you must have a validated ticket before boarding)."
+      ]
+    },
+    {
+      "id": "sorrento-bus",
+      "title": "Sorrento → Positano by SITA",
+      "body": [
+        "Board the SITA bus signed for Amalfi/Positano. Luggage goes underneath; keep valuables with you. Services are more frequent in summer but can be busy — arrive early and queue.",
+        "Ride the coastal road past Priora and Piano; after the village of Montepertuso turnoff, you will descend toward Positano’s upper stops."
+      ]
+    },
+    {
+      "id": "get-off",
+      "title": "Get off at ‘Chiesa Nuova’ (Bar Internazionale)",
+      "body": [
+        "For Hostel Brikette, alight at ‘Chiesa Nuova’ outside the café/bar called Bar Internazionale. This is the closest stop to the hostel.",
+        "The ride length and number of stops vary with traffic. From the stop, the hostel is roughly 140 m (450 ft) away with minimal stairs."
+      ]
+    },
+    {
+      "id": "walk",
+      "title": "Walk to Hostel Brikette",
+      "body": [
+        "From the Bar Internazionale stop, continue in the same direction the bus was traveling for just over 100 m (330 ft) along Viale Pasitea.",
+        "Look for the Hostel Brikette sign on the terrace level. Continue around the bend and take the stairs on the right up to the main door."
+      ]
+    },
+    {
+      "id": "ferry",
+      "title": "Ferry (summer)",
+      "body": [
+        "From Naples city, take the Alibus to Molo Beverello, then a ferry to Positano (seasonal; weather‑dependent). Confirm times and fares on the day and avoid the last sailing if you have onward plans.",
+        "From the dock in Positano, combine the Interno Positano bus with porters if carrying luggage — see our %LINK:ferryDockToBrikette|dock → hostel route% and %LINK:porterServices|porter guide%."
+      ]
+    },
+    {
+      "id": "transfer",
+      "title": "Late arrivals & transfers",
+      "body": [
+        "If you arrive after the last bus/ferry, book a private transfer or plan an overnight near the station in Naples or in Sorrento.",
+        "Confirm the drop‑off near your accommodation and ask about luggage handling if needed."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "Where do I buy SITA tickets?",
+      "a": [
+        "At tabacchi/newsagents near the stands in Sorrento and at Bar Internazionale in Positano. Buy before boarding and validate on the bus if required."
+      ]
+    },
+    {
+      "q": "Which stop is best for the hostel?",
+      "a": [
+        "‘Chiesa Nuova’ (outside Bar Internazionale). It is the closest stop to Hostel Brikette and avoids long staircases."
+      ]
+    },
+    {
+      "q": "How long is the final walk?",
+      "a": [
+        "About 2–5 minutes and roughly 140 m (450 ft) with only a short staircase at the entrance."
+      ]
+    }
+  ],
+  "gallery": {
+    "title": "Reference images",
+    "items": [
+      {
+        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+        "alt": "Chiesa Nuova / Bar Internazionale SITA stop in Positano",
+        "caption": "Bar Internazionale / Chiesa Nuova stop"
+      },
+      {
+        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+        "alt": "Stairs to the main entrance of Hostel Brikette",
+        "caption": "Hostel Brikette entrance stairs"
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "quickLinksHeading": "Hurtig hjælp",
+  "quickLinksIntro": "Få direkte svar på vores mest almindelige spørgsmål om booking, ankomst og ophold.",
+  "cta": {
+    "readMore": "Læs mere"
+  },
+  "quickLinks": [
+    {
+      "label": "Ændr eller annullér en booking",
+      "description": "Se fristerne og få tips til at undgå ekstra gebyrer, når planerne ændrer sig.",
+      "slug": "changingCancelling"
+    },
+    {
+      "label": "Guide til check-in og check-out",
+      "description": "Følg vores trin-for-trin-guide til ankomst og afrejse på Hostel Brikette i Positano.",
+      "slug": "checkinCheckout"
+    },
+    {
+      "label": "Kom nemt til Positano",
+      "description": "Sammenlign færger, busser og taxaer med vores trin-for-trin-transportguide.",
+      "slug": "travelHelp"
+    }
+  ],
+  "contactCta": {
+    "label": "Skriv en e-mail",
+    "href": "mailto:hostelpositano@gmail.com"
+  }
+}

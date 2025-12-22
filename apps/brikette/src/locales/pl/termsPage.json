@@ -1,0 +1,351 @@
+{
+  "meta": {
+    "title": "Rezerwacje Pokoi — Regulamin | Hostel Brikette",
+    "description": "Oficjalne warunki rezerwacji w Hostel Brikette: rezerwacje, anulacje, check‑in/check‑out, płatności, obowiązek należytej staranności i polityki."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Rezerwacje Pokoi",
+    "pageSubtitle": "Regulamin"
+  },
+  "toc": {
+    "title": "Spis treści",
+    "aria": "Spis treści"
+  },
+  "footer": {
+    "end": "Koniec dokumentu.",
+    "backToTop": "Wróć na górę"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Definicje i interpretacja",
+      "body": [
+        "1.1 ‘Regulamin’ — warunki określone w niniejszym dokumencie.",
+        "1.2 ‘Hostel’, ‘my’, ‘nasz’ — Skylar SRL, siedziba: Via Guglielmo Marconi 358, 84017 Positano (SA), Włochy.",
+        "1.3 ‘Ty’, ‘Twój’, ‘gość’ — osoba składająca Wniosek o Rezerwację Pokoju, Oficjalny Gość Hostelu, Gość Tymczasowy, członek personelu, organizator wydarzenia, lider grupy lub inny podmiot trzeciej strony.",
+        "1.4 ‘Wniosek o Rezerwację Pokoju’ — wniosek o pobyt w Hostelu zgodnie z niniejszym Regulaminem, złożony przez Ciebie lub Twoją OTA. Wyłącznie Hostel i autoryzowane OTA mogą oferować łóżka; nieuprawniona odsprzedaż skutkuje odrzuceniem wniosku lub anulowaniem potwierdzonych rezerwacji.",
+        "1.5 ‘Części Wspólne’ — wyznaczone strefy dostępne dla Oficjalnych Gości Hostelu i Gości Tymczasowych (wejście i lobby, taras wspólny, łazienki wspólne).",
+        "1.6 ‘Posiadacz Karty’ — właściciel karty kredytowej wskazanej we wniosku.",
+        "1.7 ‘Kontroferta’ — zmiana warunków wniosku. Pierwszą składa Hostel; mogą następować kolejne.",
+        "1.8 ‘Potwierdzona Rezerwacja Pokoju’ — prawnie wiążąca umowa zawarta, gdy Hostel akceptuje wniosek lub Ty akceptujesz kontrofertę; obejmuje nabycie usług i niniejsze warunki.",
+        "1.9 ‘No‑Show’ — status nadawany, gdy jeden lub więcej uprawnionych gości nie zamelduje się do końca Oficjalnych Godzin Check‑in pierwszego dnia rezerwacji.",
+        "1.10 ‘Opłata No‑Show’ — opłata pobierana w przypadku no‑show lub anulacji poza Okresem Powiadomienia o Anulacji; stanowi większą z kwot: koszt pierwszej nocy albo bezzwrotnej zaliczki.",
+        "1.11 ‘Wniosek o Anulację’ — prośba o anulowanie Potwierdzonej Rezerwacji Pokoju.",
+        "1.12 ‘Okres Powiadomienia o Anulacji’ — wymagany czas (w godzinach) na anulację; jeśli podany w dniach, przelicza się na godziny (np. 3 dni = 72 godz.).",
+        "1.13 ‘Opłata Administracyjna za Anulację’ — opłata za obsługę wniosku o anulację, liczona wg uzgodnionej stawki.",
+        "1.14 ‘Oficjalny Adres E‑mail Hostelu’ — hostelpositano@gmail.com.",
+        "1.15 ‘Potwierdzone Anulowanie’ — pisemne potwierdzenie z Oficjalnego Adresu E‑mail, że anulacja została przetworzona.",
+        "1.16 ‘Wniosek o Zmianę Rezerwacji’ — prośba o modyfikację potwierdzonej rezerwacji (częściowe anulowanie, zmiana daty rozpoczęcia/zakończenia).",
+        "1.17 ‘Potwierdzona Zmiana Rezerwacji’ — pisemne potwierdzenie dokonania zmiany.",
+        "1.18 ‘Wskazany Adres E‑mail’ — adres podany we wniosku; Hostel wykorzystuje go do korespondencji. Odpowiadasz za jego poprawność i odczyt wiadomości.",
+        "1.19 ‘Wniosek o Przedłużenie’ — prośba o przedłużenie Potwierdzonej Rezerwacji Pokoju.",
+        "1.20 ‘Potwierdzone Przedłużenie’ — potwierdzenie dokonania przedłużenia.",
+        "1.21 ‘Wniosek o Check‑in’ — prośba o rozpoczęcie pobytu i zameldowanie.",
+        "1.22 ‘Oficjalne Godziny Check‑in’ — 15:00–22:00 w dniu przyjazdu.",
+        "1.23 ‘Oficjalny Gość Hostelu’ — osoba, która zakończyła procedurę zameldowania.",
+        "1.24 ‘Przydzielony Pokój’ — pokój przydzielony Oficjalnemu Gościowi; dostęp wyłącznie do tego pokoju.",
+        "1.25 ‘Pokoje Hostelu’ — pokoje prywatne i dormitoria wyłącznie dla Oficjalnych Gości.",
+        "1.26 ‘Pościel’ — zestaw wydawany przy check‑in (poszewka, prześcieradło, prześcieradło dolne, ręcznik).",
+        "1.27 ‘Upgrade Pokoju’ — przydział pokoju droższego niż zarezerwowany (liczy się wyłącznie cena).",
+        "1.28 ‘Karta Dostępu (Keycard)’ — plastikowa karta (za kaucją) kodowana do otwierania drzwi Przydzielonego Pokoju.",
+        "1.29 ‘Preautoryzacja’ — czasowe zablokowanie środków na karcie Posiadacza Karty; brak natychmiastowego obciążenia.",
+        "1.30 ‘Check‑out’ — następuje wyłącznie po: zwrocie pościeli, zwrocie karty, usunięciu rzeczy osobistych z pokoju.",
+        "1.31 ‘Małoletni’ — osoba poniżej 18 roku życia we Włoszech.",
+        "1.32 ‘Usługa Bezpłatna’ — usługa, którą Hostel może świadczyć nieodpłatnie poza zakresem rezerwacji (np. śniadanie, napoje, Wi‑Fi, przechowalnia bagażu, lodówka) — każda z własnym regulaminem.",
+        "1.33 ‘Gość Tymczasowy’ — osoba z dostępem wyłącznie do Części Wspólnych, po weryfikacji dokumentu tożsamości; status nadawany wyłącznie przez personel.",
+        "1.34 ‘Akceptowane Metody Płatności’ — wyłącznie karty Visa/MasterCard; przelew tylko z rachunku firmowego. AmEx/PayPal itp. nie są akceptowane. Gotówka w EUR.",
+        "1.35 ‘Rezerwacje Przedpłacone i Bezzwrotne’ — tańsze od standardu, wymagają pełnej płatności przy rezerwacji; bez prawa do zwrotu.",
+        "1.36 ‘Kto pierwszy, ten wybiera’ — brak przydziału konkretnych łóżek w dormitorium; gość wybiera spośród dostępnych i może zmienić, gdy zwolni się inne.",
+        "1.37 ‘Rodzaj Rezerwacji’ — przedpłacona bezzwrotna albo zwrotna.",
+        "1.38 ‘Rezerwacje Zwrotne’ — stawka standardowa z elastycznymi warunkami (daty/czas pobytu regulowane; łagodniejsze zasady anulowania wg taryfy).",
+        "1.39 ‘Dokument Tożsamości’ — paszport, dowód osobisty, prawo jazdy, legitymacja wojskowa (wyłącznie oryginały).",
+        "1.40 ‘Poważna Wada’ — wada istotnie wpływająca na pobyt (np. uszkodzone łóżko, niebezpieczna temperatura, brak dostępu, brak wody).",
+        "1.41 ‘OTA’ — autoryzowana internetowa agencja turystyczna (np. Hostelworld.com, Booking.com)."
+      ]
+    },
+    "s2": {
+      "title": "2. Wnioski o rezerwację",
+      "body": [
+        "2.1 Złożenie — wyłącznie pisemnie przez OTA lub stronę www; rozmowy osobiste mają charakter informacyjny. Składając wniosek, akceptujesz Regulamin i potwierdzasz poprawność danych.",
+        "2.2 Przetwarzanie — rozpoczyna się po wpływie zaliczki/preautoryzacji/płatności zaakceptowaną metodą. Wymagana weryfikacja Posiadacza Karty; w razie niezgodności konieczna pisemna zgoda na obciążenia na Oficjalny E‑mail; w przeciwnym razie odrzucenie.",
+        "2.3 Odrzucenie — Hostel może odrzucić dowolny wniosek bez podania przyczyny.",
+        "2.4 Limit — maks. 7 nocy i grupy do 5 osób; powyżej traktowane jako wiele rezerwacji.",
+        "2.5 Kontroferta — przy braku dostępności prześlemy alternatywy na Wskazany E‑mail; akceptacja uruchamia próby płatności/preautoryzacji.",
+        "2.6 Przedpłata bezzwrotna — możemy wymagać wyraźnej akceptacji Regulaminu; brak akceptacji = anulacja. Do 3 prób obciążenia.",
+        "2.7 Potwierdzenie — rezerwacja jest potwierdzona dopiero po wysłaniu e‑maila (nr rezerwacji, data przyjazdu, długość pobytu) na Wskazany E‑mail; zobowiązujesz się sprawdzić dane i zgłosić błędy.",
+        "2.9 Liczba osób — 1 os./łóżko pojedyncze; do 2 os./łóżko podwójne; apartament wg ogłoszonego limitu. Bez przekroczenia pojemności.",
+        "2.9 Zakres świadczeń — pościel i karta na osobę, dostęp do pryszniców i ciepłej wody w określonych godzinach, dostęp do Części Wspólnych. Pozostałe świadczenia to usługi bezpłatne na odrębnych zasadach.",
+        "2.10 Odpowiedzialność finansowa — Posiadacz Karty odpowiada za rezerwację oraz koszty dodatkowe (zniszczenia, sprzątanie, kary, naruszenie zasad check‑out itp.).",
+        "2.11 Przydział pokoi/łóżek — przypisujemy każdą osobę do Przydzielonego Pokoju. W dormitoriach łóżka wybierane są samodzielnie; grupy mogą zostać rozdzielone.",
+        "2.12 Upgrade — możliwy odpłatnie lub z przyczyn operacyjnych; w razie braku płatności powrót do pierwotnej kategorii."
+      ]
+    },
+    "s3": {
+      "title": "3. Wiek i dostępność",
+      "body": [
+        "3.1 Dostępność — skontaktuj się z nami przed rezerwacją w sprawie szczególnych potrzeb. Budynek posiada schody i nie oferujemy usługi bagażowej. Urządzenia dźwiękowe wspomagające sen dozwolone wyłącznie w pokojach prywatnych.",
+        "3.2 Samodzielność — nie zapewniamy stałej opieki; jeśli nie możesz funkcjonować samodzielnie, rezerwacja zostanie anulowana.",
+        "3.3 Małoletni — we Włoszech nie mogą podróżować sami. 16 lat i mniej — tylko pokój prywatny z opiekunem 18+. 17 lat — dormitorium wyłącznie z pełnoletnim opiekunem w tym samym pokoju i z dokumentem potwierdzającym opiekę; w przeciwnym razie anulacja zgodnie z typem rezerwacji."
+      ]
+    },
+    "s4": {
+      "title": "4. Procesy stron trzecich i płatności",
+      "body": [
+        "Składając wniosek przez zewnętrzny procesor płatności (OTA), płatność odbywa się na jego platformie zgodnie z jego regulaminem.",
+        "Płatności dokonywane do podmiotu trzeciego podlegają Twojej umowie z nim; Hostel nie kontroluje tych procesów.",
+        "Hostel nie otrzymuje tych środków i nie ponosi odpowiedzialności za rezerwacje dokonane w ten sposób.",
+        "Twoim obowiązkiem jest upewnić się, że płatność powiodła się i rezerwacja została potwierdzona przed przyjazdem.",
+        "W sprawach płatności prosimy kontaktować się bezpośrednio z danym podmiotem."
+      ]
+    },
+    "s5": {
+      "title": "5. Zaliczki i preautoryzacje",
+      "body": [
+        "5.1 Zaliczki — możemy poprosić o zaliczkę; kwota zależna od typu rezerwacji. Rezerwacje bezzwrotne wymagają 100% płatności. Wszystkie zaliczki dla Hostelu są bezzwrotne; brak wpłaty = odrzucenie wniosku.",
+        "5.2 Preautoryzacje — możemy wymagać preautoryzacji wg uzgodnionej ceny/warunków; brak możliwości — odrzucenie wniosku."
+      ]
+    },
+    "s6": {
+      "title": "6. Opłaty za no‑show",
+      "body": [
+        "Niepojawienie się w dniu przyjazdu powoduje status no‑show i naliczenie opłaty.",
+        "Opłata dotyczy każdej Potwierdzonej Rezerwacji Pokoju; różne rezerwacje mogą mieć różne okresy powiadomienia o anulacji."
+      ]
+    },
+    "s7": {
+      "title": "7. Anulacje",
+      "body": [
+        "Akceptujemy wyłącznie pisemne wnioski wysłane na Oficjalny E‑mail Hostelu.",
+        "Okres oceny terminowości liczy się od otrzymania wiadomości do godz. 00:01 dnia przyjazdu.",
+        "Może zostać naliczona Opłata Administracyjna (standardowo 15% ceny rezerwacji, pomniejszona o prowizje dla podmiotów trzecich).",
+        "Po przyjęciu wniosku wyślemy potwierdzenie na Wskazany E‑mail; do tego czasu rezerwacja pozostaje ważna.",
+        "Rezerwacja może zostać anulowana bez wniosku, jeżeli: nie zameldujesz się przed zamknięciem recepcji pierwszego dnia; opuścisz hostel wcześniej; naruszysz regulaminy.",
+        "Po anulacji chęć dalszego pobytu wymaga nowej rezerwacji (wg dostępności).",
+        "Anulacje po terminie traktowane są jako no‑show i mogą skutkować opłatą."
+      ]
+    },
+    "s8": {
+      "title": "8. Zmiana potwierdzonych rezerwacji",
+      "body": [
+        "Zasadą jest zastąpienie rezerwacji nową zamiast jej modyfikacji.",
+        "Wnioski o zmianę prosimy wysyłać w okresie powiadomienia na Oficjalny E‑mail; obowiązuje dostępność i inne warunki.",
+        "Zmiana długości pobytu traktowana jest jednocześnie jako wniosek o zmianę i o anulację lub przedłużenie.",
+        "Przedłużenia traktujemy jako nowe rezerwacje.",
+        "Wyjazd przed terminem bez Potwierdzonej Anulacji oznacza, że pierwotna rezerwacja została zrealizowana.",
+        "Wszystkie zmiany podlegają dostępności i innym warunkom."
+      ]
+    },
+    "s9": {
+      "title": "9. Nieprzenoszalność rezerwacji",
+      "body": [
+        "Wnioski i Potwierdzone Rezerwacje są ściśle nieprzenoszalne — w całości ani w części.",
+        "Każda rezerwacja musi pozostać na nazwisko pierwotnego rezerwującego przez cały pobyt.",
+        "Próba zameldowania na podstawie przeniesionej rezerwacji obciąża finansowo daną osobę i może skutkować natychmiastową anulacją.",
+        "Próby zmiany nazwiska gościa przypisanego do rezerwacji również mogą skutkować anulacją."
+      ]
+    },
+    "s10": {
+      "title": "10. Rezerwacje przedpłacone, bezzwrotne",
+      "body": [
+        "Wymagana pełna płatność przy rezerwacji; niepowodzenie płatności = anulacja wniosku.",
+        "W przypadku no‑show brak zwrotów.",
+        "Wnioski o przedłużenie rozpatrywane zgodnie z niniejszymi warunkami."
+      ]
+    },
+    "s11": {
+      "title": "11. Przyjazd",
+      "body": [
+        "11.1 Wniosek o Check‑in — wszyscy goście muszą się wylegitymować i rozpocząć procedurę check‑in po przyjeździe.",
+        "11.2 Wcześniejszy przyjazd — przed 10:30 brak możliwości wejścia.",
+        "11.3 Przyjazd 10:30–15:00 — za zgodą możesz zostać Gościem Tymczasowym; przechowalnia bagażu może być dostępna (uznaniowo, na osobnych warunkach).",
+        "11.3 Okno check‑in — standardowo podczas Oficjalnych Godzin (15:00–22:00).",
+        "11.5 Późny przyjazd — po 22:00 recepcja nieczynna; możemy przesłać instrukcje samoobsługowego zameldowania. Odpowiadasz za problemy wynikłe z braku zasilania urządzeń, błędnych danych kontaktowych czy nieprzestrzegania instrukcji."
+      ]
+    },
+    "s12": {
+      "title": "12. Check‑in",
+      "body": [
+        "12.1 Konieczność — jeśli nie możemy ukończyć procedury, odmówimy check‑in i anulujemy rezerwację (no‑show).",
+        "12.2 Tożsamość — dla każdego gościa wymagamy ważnego dokumentu (imię, nazwisko, miejsce urodzenia, obywatelstwo, data urodzenia, nr dokumentu). Brak dokumentu do 22:00 pierwszego dnia = no‑show/anulacja.",
+        "12.2 Płatność salda — przed zakończeniem check‑in należy uregulować ewentualne saldo dopuszczalną metodą; w przeciwnym razie anulacja (no‑show).",
+        "12.3 Kaucja za kartę i pościel — 10 EUR gotówką przy check‑in, zwrot przy check‑out po oddaniu karty i pościeli."
+      ]
+    },
+    "s13": {
+      "title": "13. Procedura zabezpieczenia (safeguarding)",
+      "body": [
+        "Możemy zablokować kwotę równą 1 nocy/os. jako kaucję na czas pobytu (preautoryzacja lub gotówka).",
+        "Kwota może pokrywać kary/opłaty/przedłużenia i inne należności zgodnie z politykami.",
+        "Jeśli preautoryzacja nie powiedzie się, inny członek grupy może jej dokonać lub trzeba wpłacić gotówkę; w przeciwnym razie anulacja."
+      ]
+    },
+    "s14": {
+      "title": "14. Obowiązek należytej staranności",
+      "body": [
+        "Goście muszą szanować innych, unikać szkód i przestrzegać zasad. Naruszenia mogą skutkować natychmiastową anulacją (polityka no‑show) i/lub prośbą o opuszczenie obiektu bez zwrotu kosztów.",
+        "Koszty/mandaty wynikłe z Twojego działania mogą być obciążone na Ciebie; naruszenia prawa zgłaszamy właściwym organom.",
+        "Naruszenia prawa zgłaszamy zgodnie z obowiązującymi przepisami."
+      ]
+    },
+    "s15": {
+      "title": "15. Wady i szkody",
+      "body": [
+        "15.1 Zgłaszanie wad — prosimy o natychmiastowe zgłaszanie.",
+        "15.2 Ocena — priorytetyzujemy działania w zależności od wpływu na pobyt.",
+        "15.3 Poważne wady — podejmujemy próbę naprawy; jeśli niemożliwe, zapewnimy zakwaterowanie zastępcze albo zwrot proporcjonalny według różnicy ceny lub pozostałych nocy.",
+        "15.4 Niezgłoszone wady — wykryte później mogą skutkować zastosowaniem polityki szkód/strat.",
+        "15.5 Szkody — możemy dokonać preautoryzacji lub pobrać kaucję. Zwroty pomniejszamy o koszty; nadwyżkowe koszty (materiały, robocizna, administracja) będą doliczane. Stawki za nadgodziny: Dyrektor 50 €/h, Manager 35 €/h, Personel 25 €/h."
+      ]
+    },
+    "s16": {
+      "title": "16. Pluskwy łóżkowe",
+      "body": [
+        "Podejmujemy działania prewencyjne i interwencyjne. W razie wystąpienia infestacji możesz odpowiadać za szkody, utracone przychody z rezerwacji, roszczenia innych gości oraz koszty czyszczenia i dezynsekcji.",
+        "Jeśli przebywałeś w miejscu z historią pluskiew, zgłoś to przy check‑in i zdezynfekuj bagaż.",
+        "Przed przyjazdem sprawdź swoje rzeczy i natychmiast zgłaszaj podejrzenia."
+      ]
+    },
+    "s17": {
+      "title": "17. Rzeczy osobiste i bezpieczeństwo",
+      "body": [
+        "Goście ponoszą odpowiedzialność za swoje mienie. Hostel nie odpowiada za utratę, zniszczenie ani kradzież (chyba że wymaga tego prawo).",
+        "Możemy udostępnić szafki/sejfy, ale odpowiedzialność pozostaje po stronie gościa.",
+        "Rzeczy pozostawione po check‑out zostaną zutylizowane po 30 dniach.",
+        "Nie wolno wnosić przedmiotów niebezpiecznych/nielegalnych lub naruszających licencję alkoholową; mogą zostać skonfiskowane lub zgłoszone organom."
+      ]
+    },
+    "s18": {
+      "title": "18. Identyfikacja i środki bezpieczeństwa",
+      "body": [
+        "Dla bezpieczeństwa wszyscy goście muszą nosić opaski bezpieczeństwa na terenie obiektu i okazywać dokument na żądanie personelu.",
+        "Brak opaski lub odmowa okazania dokumentu może skutkować nakazem opuszczenia obiektu bez zwrotu kosztów.",
+        "Utratę/uszkodzenie należy niezwłocznie zgłosić; może obowiązywać niewielka opłata za wymianę."
+      ]
+    },
+    "s19": {
+      "title": "19. Monitoring CCTV",
+      "body": [
+        "Kamery CCTV działają w przestrzeniach wspólnych dla bezpieczeństwa gości i mienia.",
+        "Nagrania przechowywane są w sposób bezpieczny, dostępny wyłącznie dla upoważnionej kadry; mogą być udostępniane organom ścigania zgodnie z prawem.",
+        "CCTV nie gwarantuje pełnego bezpieczeństwa; akceptując Regulamin, wyrażasz zgodę na taki sposób użycia."
+      ]
+    },
+    "s20": {
+      "title": "20. Goście tymczasowi",
+      "body": [
+        "Status Gościa Tymczasowego przyznajemy według własnego uznania.",
+        "Goście Tymczasowi mają dostęp wyłącznie do Części Wspólnych; wejście do pokoi jest zabronione.",
+        "Oficjalni Goście nie mogą nadawać tego statusu innym osobom.",
+        "Wnioski mogą być przyjmowane 9:00–23:00 w dniach pracy Hostelu.",
+        "Zastrzegamy prawo do odmowy lub cofnięcia statusu w dowolnym czasie."
+      ]
+    },
+    "s21": {
+      "title": "21. Osoby niezarejestrowane",
+      "body": [
+        "Zgodnie z prawem każda osoba przebywająca w obiekcie (w tym Goście Tymczasowi) musi być zarejestrowana.",
+        "W razie ujawnienia noclegu osoby niezarejestrowanej możemy naliczyć stawkę standardową za każdą taką osobę oraz opłatę administracyjną równą dwukrotności stawki standardowej.",
+        "Osoba niezarejestrowana musi się zameldować i stosować do procedur; w przeciwnym razie powiadomimy policję.",
+        "Niepowiadomienie o osobie niezarejestrowanej może skutkować anulacją rezerwacji (zastosowanie polityki no‑show)."
+      ]
+    },
+    "s22": {
+      "title": "22. Check‑out",
+      "body": [
+        "Godziny check‑out: 7:30–10:30.",
+        "Po zakończeniu check‑out nie wolno ponownie wchodzić do pokoju ani zostawiać w nim rzeczy.",
+        "Należy przestrzegać warunków ‘po check‑out’ opisanych w niniejszym dokumencie."
+      ]
+    },
+    "s23": {
+      "title": "23. Wcześniejszy check‑out",
+      "body": [
+        "Jeśli wyjazd następuje przed 7:30, prosimy dzień wcześniej podejść do recepcji w celu uzgodnienia wcześniejszego check‑out i zwrotu kaucji za kartę.",
+        "Brak zwrotu karty skutkuje utratą kaucji; zwroty wyłącznie gotówką do rąk personelu.",
+        "Nie realizujemy zwrotów przelewem ani innymi metodami."
+      ]
+    },
+    "s24": {
+      "title": "24. Późniejszy check‑out",
+      "body": [
+        "Dostępny wyłącznie po wcześniejszym uzgodnieniu na piśmie — do godziny 12:00.",
+        "Usługa uznaniowa, zależna od obłożenia, wymagane potwierdzenie pisemne.",
+        "Koszt 40 EUR; przydział wg kolejności zgłoszeń."
+      ]
+    },
+    "s25": {
+      "title": "25. Brak check‑out o czasie",
+      "body": [
+        "W razie niedokonania check‑out o umówionej porze możemy usunąć rzeczy z pokoju bez odpowiedzialności.",
+        "Dalsze próby wejścia do stref dla gości mogą być traktowane jako naruszenie bezpieczeństwa.",
+        "Rzeczy mogą zostać przekazane do lokalnej przechowalni/porterów — opłaty wg cennika usługodawcy."
+      ]
+    },
+    "s26": {
+      "title": "26. Po check‑out",
+      "body": [
+        "Po ukończeniu check‑out rezerwacja uznawana jest za zrealizowaną niezależnie od pozostałego czasu.",
+        "Przestajesz być Oficjalnym Gościem i stajesz się Gościem Tymczasowym do 15:30.",
+        "Na prośbę możemy zaproponować przechowanie bagażu — uznaniowo, wg odrębnych warunków."
+      ]
+    },
+    "s27": {
+      "title": "27. Alkohol",
+      "body": [
+        "Jako obiekt licencjonowany nie zezwalamy na wnoszenie alkoholu kupionego poza hostelem.",
+        "W razie stwierdzenia przechowamy alkohol i zwrócimy przy wyjeździe lub po potwierdzeniu spożycia poza obiektem.",
+        "Naruszenie skutkuje natychmiastową anulacją rezerwacji (polityka no‑show)."
+      ]
+    },
+    "s28": {
+      "title": "28. Zmiana niniejszego Regulaminu",
+      "body": [
+        "Niniejszy Regulamin stanowi całość porozumienia między Tobą a Hostelem i zastępuje wcześniejsze uzgodnienia pisemne/ustne.",
+        "Zastrzegamy sobie prawo do zmiany warunków w dowolnym czasie."
+      ]
+    },
+    "s29": {
+      "title": "29. Zakres odpowiedzialności",
+      "body": [
+        "Odpowiedzialność Hostelu ogranicza się do usług/elementów wskazanych w niniejszych warunkach.",
+        "Łączna odpowiedzialność nie przekroczy kwoty zapłaconej za rezerwację.",
+        "Nie odpowiadamy za utratę/uszkodzenie mienia prywatnego, chyba że wymagają tego przepisy.",
+        "Nie ponosimy odpowiedzialności za szkody pośrednie, następcze, ekonomiczne ani za utratę zysków, renomy czy szans (również wskutek zaniedbań lub siły wyższej).",
+        "Zapewniamy bezpieczne miejsca na kosztowności, bez przyjmowania odpowiedzialności finansowej.",
+        "Zastrzegamy prawo do przenoszenia przedmiotów podczas sprzątania bez powiadomienia."
+      ]
+    },
+    "s30": {
+      "title": "30. Prawo właściwe",
+      "body": [
+        "Warunki podlegają prawu włoskiemu; spory rozstrzygane przez sądy włoskie."
+      ]
+    },
+    "s31": {
+      "title": "31. Informacje na stronie internetowej",
+      "body": [
+        "Dokładamy starań, by informacje były poprawne, ale nie odpowiadamy za błędy lub pominięcia.",
+        "Możemy zmieniać stronę i treści w dowolnym czasie, bez zapowiedzi.",
+        "Część zdjęć ma charakter poglądowy i może nie odzwierciedlać dokładnie produktu/elementu.",
+        "Wszelkie treści (tekst, obrazy, znaki towarowe) są własnością Hostelu — zabronione użycie bez pisemnej zgody.",
+        "Odsyłacze do stron trzecich zamieszczamy dla wygody; nie odpowiadamy za ich treść ani wykorzystanie.",
+        "Polityka prywatności wyjaśnia, jak chronimy Twoją prywatność podczas korzystania ze strony."
+      ]
+    },
+    "s32": {
+      "title": "32. Polityka zdrowia i bezpieczeństwa",
+      "body": [
+        "W trosce o bezpieczeństwo, osoby z niedawną ekspozycją na choroby zakaźne powinny zachować szczególną ostrożność.",
+        "Rezerwacje przedpłacone i bezzwrotne pozostają bezzwrotne w takich okolicznościach.",
+        "Zalecamy wykupienie ubezpieczenia podróżnego na wypadek choroby lub niemożności podróży."
+      ]
+    },
+    "s33": {
+      "title": "33. Kupony",
+      "body": [
+        "Możemy okresowo wydawać kupony promocyjne.",
+        "Kupony obowiązują wyłącznie przy rezerwacjach przez oficjalną stronę (hostel-positano.com).",
+        "Dla każdego kuponu mogą obowiązywać dodatkowe szczegółowe warunki."
+      ]
+    }
+  }
+}

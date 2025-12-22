@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "title": "Positano nach Amalfi mit der Fähre | Hostel Brikette",
+    "description": "Schritt-für-Schritt von Positano nach Amalfi per Fähre: Tickets, Einstieg an der Spiaggia Grande, Fahrpläne und Hinweise zur Ankunft."
+  },
+  "hero": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "title": "Positano nach Amalfi – Fähre",
+    "description": "Folge diesen Schritten für die Fährfahrt von Positano nach Amalfi. Du findest Tipps zu Tickets, zum Einstieg in Positano, zu Erwartungen bei der Ankunft sowie Links zu aktuellen Fahrplänen."
+  },
+  "tip": {
+    "label": "Tipp",
+    "copy": "Brauchst du andere Verkehrsoptionen? Öffne die <link>Übersicht „So kommst du zu uns“</link> für Busse, kombinierte Routen und Transfers."
+  },
+  "sections": {
+    "overview": {
+      "title": "Reiseüberblick",
+      "points": [
+        "Saisonale Fähren verbinden Positano und Amalfi mit eindrucksvollen Küstenblicken.",
+        "Angebot und Zeiten variieren je nach Saison und Wetter – prüfe immer den aktuellen Fahrplan.",
+        "Plane in den Hauptmonaten zusätzliche Zeit für Warteschlangen am Pier ein."
+      ]
+    },
+    "tickets": {
+      "title": "Tickets und Fahrpläne",
+      "intro": "Prüfe aktuelle Zeiten und Preise auf <travelmar>Travelmar</travelmar> und <positano>Positano.com – Fährpläne</positano>.",
+      "points": [
+        "Kaufe in der Hochsaison Tickets vorab online oder an den Schaltern der Betreiber am Pier.",
+        "Sei 15–20 Minuten vor Abfahrt da, um Gutscheine einzulösen und dich anzustellen.",
+        "Halte dein Ticket oder den QR-Code für Kontrollen durch das Personal bereit."
+      ]
+    },
+    "positanoPier": {
+      "title": "Einstieg in Positano",
+      "points": [
+        "Die Abfahrten erfolgen vom Hauptpier Positanos an der Spiaggia Grande.",
+        "Entlang der Uferpromenade findest du die Schalter der Betreiber; Anzeigen zeigen die nächste Abfahrt je Gesellschaft.",
+        "Prüfe auf deinem Ticket den richtigen Anleger – das Personal hilft dir bei Unsicherheit."
+      ]
+    },
+    "amalfiArrival": {
+      "title": "Ankunft in Amalfi",
+      "points": [
+        "Die Boote legen an den Uferstegen von Amalfi nahe der Piazza Flavio Gioia an.",
+        "Das historische Zentrum und die Promenade schließen direkt an den Hafen an.",
+        "Für Weiterfahrten (z. B. nach Ravello oder Sorrent) folge der Beschilderung zur SITA-Haltestelle am Wasser."
+      ]
+    }
+  },
+  "externalLinks": {
+    "travelmar": "https://www.travelmar.it/en/home",
+    "positano": "https://www.positano.com/en/ferry-schedule"
+  }
+}

@@ -1,0 +1,146 @@
+{
+  "seo": {
+    "title": "Bản dịch đang được chuẩn bị.",
+    "description": "Món đặc trưng, quán gợi ý và cách gọi món tự tin."
+  },
+  "linkLabel": "A Guide to Amalfi Coast Cuisine",
+  "intro": [
+    "Tóm lược ẩm thực Amalfi Coast: hải sản chủ đạo, tráng miệng vị chanh và nơi thưởng thức tại Positano.",
+    "Dùng như tờ cheat sheet trước khi xem menu hoặc ghé thị trấn lân cận tìm đặc sản vùng."
+  ],
+  "tocTitle": "Trên trang này",
+  "sections": [
+    {
+      "id": "staples",
+      "title": "Hải sản chủ đạo",
+      "body": [
+        "Spaghetti alle vongole, scialatielli hải sản và cá nướng trong ngày là món trụ cột trên hầu hết thực đơn.",
+        "Hỏi món theo mùa — đậu Hà Lan đầu xuân, cà chua bi hay bông bí thường được ghi trên bảng phấn."
+      ]
+    },
+    {
+      "id": "markets",
+      "title": "Chợ & món nhanh",
+      "body": [
+        "Chợ sáng và quầy deli bán focaccia, cuoppo chiên và mozzarella tươi cho bữa trưa tiện lợi.",
+        "Mua mứt cam chanh, colatura di alici và thảo mộc khô để tăng hương cho picnic."
+      ]
+    },
+    {
+      "id": "sweets",
+      "title": "Tráng miệng & bánh ngọt",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "id": "drinks",
+      "title": "Đồ uống & pairing",
+      "body": [
+        "Bản dịch đang được chuẩn bị.",
+        "Rượu DOC từ Tramonti hay Costa d’Amalfi (Furore, Ravello) kết hợp tuyệt vời với hải sản và món vị chanh."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Ứng xử gọi món",
+      "body": [
+        "Coperto (phí phục vụ) bao gồm bánh mì và dao nĩa — chỉ boa khi dịch vụ thực sự xuất sắc.",
+        "Chia sẻ món theo kiểu gia đình nhưng hãy báo trước để nhân viên sắp xếp nhịp ra món và dụng cụ."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Người ăn chay có dễ ăn không?",
+      "a": [
+        "Bản dịch đang được chuẩn bị."
+      ]
+    },
+    {
+      "q": "Có cần đặt chỗ trattoria nổi tiếng?",
+      "a": [
+        "Mùa cao điểm nên đặt trước nếu muốn bàn sân thượng hoặc giờ hoàng hôn; buổi trưa hoặc mùa giao mùa đi thẳng dễ hơn."
+      ]
+    }
+  ],
+  "itemListTitle": "Món đặc trưng & nơi thử",
+  "itemList": [
+    {
+      "name": "La Tagliata (Nocelle)",
+      "note": "Bữa tối set menu kiểu nông trại với pasta thủ công, thịt nướng và view sân thượng rộng mở."
+    },
+    {
+      "name": "Casa e Bottega",
+      "note": "Quán ban ngày với salad đậm vị chanh, nước ép lạnh và tráng miệng nhà làm."
+    },
+    {
+      "name": "Da Vincenzo",
+      "note": "Trattoria cổ điển phục vụ pasta hải sản, đồ chiên khai vị và món theo mùa từ 1958."
+    },
+    {
+      "name": "La Zagara Pasticceria",
+      "note": "Bản dịch đang được chuẩn bị."
+    }
+  ],
+  "gallery": {
+    "title": "Món nổi bật",
+    "items": [
+      {
+        "alt": "Bản dịch đang được chuẩn bị.",
+        "caption": "Bản dịch đang được chuẩn bị."
+      },
+      {
+        "alt": "Bản dịch đang được chuẩn bị.",
+        "caption": "Tráng miệng vị chanh nên thử"
+      },
+      {
+        "alt": "Bạn bè cụng ly limoncello lúc hoàng hôn",
+        "caption": "Digestivo với tầm nhìn đẹp"
+      }
+    ]
+  },
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Món chủ đạo"
+      },
+      {
+        "href": "#sweets",
+        "label": "Tráng miệng"
+      },
+      {
+        "href": "#drinks",
+        "label": "Đồ uống"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Món chủ đạo",
+        "body": [
+          "Pasta hải sản, cá nướng và salad vị chanh với dầu ô liu địa phương là món quen thuộc trên khắp bờ biển.",
+          "Hỏi món theo ngày — nguyên liệu theo mùa như bông bí hay cà chua bi thường được viết trên bảng."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Tráng miệng",
+        "body": [
+          "Bản dịch đang được chuẩn bị.",
+          "Kết hợp pastry với espresso hoặc limoncello digestivo để kết thúc bữa như người địa phương."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Đồ uống",
+        "body": [
+          "Bản dịch đang được chuẩn bị.",
+          "Đan xen nước có ga để giải nhiệt — buổi tối mùa hè vẫn ẩm nóng sau hoàng hôn."
+        ]
+      }
+    ]
+  }
+}

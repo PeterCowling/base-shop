@@ -1,0 +1,39 @@
+{
+  "slug": "empleos",
+  "meta": {
+    "title": "Hostel Brikette Empleo - Trabajos en el Hostel en Positano",
+    "description": "Únete al equipo que valora el carácter y la pasión más que el currículum. Descubre oportunidades dinámicas y una hospitalidad moderna en el Brikette Hostel en Positano."
+  },
+  "careersSection": {
+    "title": "Sé parte de algo único",
+    "section1Title": "Únete al equipo que te valora a ti—no a tu currículum",
+    "section1Paragraph1": "En Hostel Brikette, valoramos más tu carácter, dedicación y entusiasmo genuino por la hospitalidad que cualquier calificación formal. Si crees que puedes ofrecer a nuestros huéspedes experiencias memorables a través de una amabilidad sincera y una actitud positiva, queremos saber de ti.",
+    "section1Paragraph2": "Envíanos un correo electrónico a hostelpositano@gmail.com y cuéntanos qué te hace destacar. Háblanos de tus logros pasados—personales o profesionales—y cómo superarás las expectativas de nuestros huéspedes. Buscamos personas comprometidas y enérgicas que prosperen en un entorno enfocado en las personas y de ritmo acelerado.",
+    "section2Paragraph1": "Ofrecemos un paquete de beneficios que va más allá de los estándares habituales de hostales u hoteles. Piensa en alojamiento cómodo en el lugar, desayuno de cortesía, acceso a nuestro bar a precio de costo e incluso viajes gratuitos.",
+    "section2Paragraph2": "Como un negocio familiar con un equipo central dedicado, nos entusiasma dar la bienvenida a nuevos talentos y nuevas perspectivas.",
+    "section3Paragraph1": "Hemos desarrollado nuestro propio software para optimizar las operaciones, permitiéndote enfocarte en lo que realmente importa: brindar un servicio excepcional a los huéspedes. Nuestro chatbot maneja las preguntas de rutina, para que no pases el tiempo respondiendo las mismas dudas una y otra vez. Y cuando algún proceso requiera tu atención, nuestras aplicaciones minimalistas e intuitivas hacen que sea fácil aprender y ejecutar. Te enseñaremos todo lo que necesitas saber, y luego te daremos espacio para que destaques.",
+    "requirementsHeading": "Si estás interesado en unirte a nosotros, deberías:",
+    "requirementsList": [
+      "Rendir bien bajo presión",
+      "Ser auto-motivado, organizado y buen comunicador",
+      "Asumir la responsabilidad de tus acciones y mantener el deseo de aprender",
+      "Estar dispuesto a arremangarte y trabajar duro",
+      "Para puestos de tiempo completo, debes estar legalmente autorizado para trabajar en Europa durante toda la duración de tu empleo"
+    ],
+    "notGoodFitHeading": "No encajarás bien si:",
+    "notGoodFitList": [
+      "Eres voluntario y buscas quedarte menos de tres meses"
+    ],
+    "forCustomerFacingHeading": "Para roles de atención al cliente:",
+    "forCustomerFacingParagraph1": "Deberías disfrutar genuinamente de ofrecer un servicio de primera a nuestros huéspedes. Si no estás preparado para dar lo mejor de ti por las personas, este no es el lugar para ti.",
+    "rolesParagraph": "Siempre estamos en busca de limpiadores dedicados (un puesto de tiempo completo), así como miembros del equipo para turnos de desayuno, turnos nocturnos, recepción y roles relacionados con experiencias, como guías de senderismo o capitanes de barco.",
+    "closingParagraph": "Si esto resuena contigo, envíanos un correo a hostelpositano arroba gmail punto com con tu experiencia relevante, el puesto que buscas y por qué crees que serías una gran opción. ¡Esperamos conectarnos contigo pronto!",
+    "section4Paragraph1": "Hostel Brikette comenzó en 1995, cuando Positano era más conocido por su escena de moda que por el turismo global. Nuestra visión era presentar la vibrante esencia de la Costa Amalfitana a los viajeros—especialmente a los más jóvenes. Empezamos humildemente, atendiendo las necesidades básicas de los exploradores de aquella época.",
+    "section5Paragraph1": "Desde entonces, Positano se ha convertido en un destino de lujo de primer nivel. En respuesta, nos hemos modernizado, agregando nueva tecnología y comodidades, mejorando nuestras opciones de desayuno y creando un ambiente social que hace que los huéspedes sigan hablando de ello mucho después de su estadía. Muchos nos dicen que Hostel Brikette es lo mejor de su viaje.",
+    "altAmenities": "Área comunitaria del Hostel Brikette",
+    "altProfessional": "Enfoque profesional del Hostel Brikette",
+    "altVintage": "Vista vintage de Positano",
+    "altPanorama": "Vista moderna de Positano",
+    "apply": "Solicitar ahora"
+  }
+}

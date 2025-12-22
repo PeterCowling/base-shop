@@ -1,0 +1,158 @@
+{
+  "seo": {
+    "title": "Miejsca na Instagram w Positano (bez tłumów)",
+    "description": "Zdjęcia bez tłumów: najlepsze miejscówki i pory dnia dla spokojnych kadrów."
+  },
+  "linkLabel": "Miejsca na Instagram w Positano (bez tłumów)",
+  "intro": [
+    "Tłumaczenie w przygotowaniu."
+  ],
+  "sections": [
+    {
+      "id": "classics",
+      "title": "Classic postcard shots",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Underrated angles",
+      "body": [
+        "Tłumaczenie w przygotowaniu.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "sunset",
+      "title": "Golden hour setups",
+      "body": [
+        "Grab a spot on the Via Cristoforo Colombo benches about 45 minutes before sunset; the sun drops behind the Li Galli islands in summer.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "id": "etiquette",
+      "title": "Photo etiquette",
+      "body": [
+        "Keep tripods compact and step aside once you’ve taken a frame so staircases stay passable.",
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "tips": [
+    "Tłumaczenie w przygotowaniu.",
+    "Save your favourite angles offline in Google Maps; reception can dip on terraces and trails."
+  ],
+  "faqs": [
+    {
+      "q": "Is sunrise or sunset better for photos?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "Can I pose on hotel terraces if I am not a guest?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ],
+  "fallback": {
+    "intro": "Tłumaczenie w przygotowaniu.",
+    "toc": [
+      {
+        "href": "#classics",
+        "label": "The classics (timing matters)"
+      },
+      {
+        "href": "#alternatives",
+        "label": "Underrated alternatives"
+      },
+      {
+        "href": "#sunset",
+        "label": "Sunset choices"
+      },
+      {
+        "href": "#etiquette",
+        "label": "Etiquette & local tips"
+      },
+      {
+        "href": "#faqs",
+        "label": "FAQs"
+      }
+    ],
+    "classics": {
+      "heading": "The classics (timing matters)",
+      "items": [
+        {
+          "title": "Spiaggia Grande",
+          "description": "Arrive at sunrise for empty docks and calm water; avoid mid‑morning queues."
+        },
+        {
+          "title": "Fornillo path",
+          "description": "Tłumaczenie w przygotowaniu."
+        },
+        {
+          "title": "Via Pasitea bends",
+          "description": "Tłumaczenie w przygotowaniu."
+        }
+      ]
+    },
+    "alternatives": {
+      "heading": "Underrated alternatives",
+      "items": [
+        {
+          "title": "Chiesa Nuova terraces",
+          "description": "Golden hour over Fornillo; minimal crowds and a short walk from the hostel."
+        },
+        {
+          "link": {
+            "guideKey": "pathOfTheGods"
+          },
+          "description": "Tłumaczenie w przygotowaniu."
+        },
+        {
+          "link": {
+            "guideKey": "sunsetViewpoints"
+          },
+          "description": "Tłumaczenie w przygotowaniu."
+        }
+      ]
+    },
+    "sunset": {
+      "heading": "Sunset choices",
+      "paragraphs": [
+        "Tłumaczenie w przygotowaniu.",
+        "If you prefer beach silhouettes, arrive 30–45 minutes before sunset at Fornillo."
+      ]
+    },
+    "etiquette": {
+      "heading": "Etiquette & local tips",
+      "items": [
+        "Don’t block narrow stairs or roads; take the shot and step aside.",
+        "Tłumaczenie w przygotowaniu.",
+        "Use a small tripod off‑peak; avoid busy paths in midday."
+      ]
+    },
+    "faqs": {
+      "heading": "FAQs",
+      "items": [
+        {
+          "summary": "What’s the best time for photos?",
+          "body": "Sunrise for emptier scenes; golden hour for warm tones and softer shadows."
+        }
+      ]
+    },
+    "drone": {
+      "summary": "Do I need a drone permit?",
+      "body": "Tłumaczenie w przygotowaniu."
+    },
+    "galleryAlt": [
+      "Positano from above",
+      "Coastal panorama"
+    ],
+    "galleryFallbackAlt": "Scenic view of Positano coastline"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "meta": {
+    "title": "Brikette Hostel in Positano - Erschwinglicher Aufenthalt an der Amalfi-Küste",
+    "description": "Das einzige Hostel in Positano, das preisgünstige Unterkünfte direkt an den atemberaubenden Sehenswürdigkeiten der Amalfi-Küste bietet.",
+    "ogImageAlt": "Blick von der Terrasse der Herberge"
+  },
+  "introSection": {
+    "title": "Ein wunderschönes Zuhause fernab der Heimat",
+    "titleParts": {
+      "before": "Ein schöner",
+      "between": "Weg von",
+      "home": "Heim"
+    },
+    "paragraph1": "Hostel Brikette ist <strong>Positanos einziges Hostel</strong> und bietet <strong>preisgünstige</strong> Unterkünfte, die die Highlights der Amalfiküste direkt vor Ihre Haustür bringen.",
+    "paragraph2": "Auf den Klippen gelegen, bieten wir <strong>unglaubliche Meerblicke</strong>, praktische Annehmlichkeiten und rund um die Uhr lokale Einblicke durch unseren <strong>digitalen Concierge</strong> – Ihr persönlicher Führer zu Fährplänen, Wanderwegen, Restaurants und mehr.",
+    "paragraph3": "Ob Sie sich für ein Schlafsaal oder ein privates Zimmer entscheiden, jedes ist darauf ausgelegt, <strong>Komfort</strong> und <strong>Bequemlichkeit</strong> zu bieten."
+  },
+  "facilitiesModal": {
+    "title": "Einrichtungen & Annehmlichkeiten",
+    "closeButton": "Schließen",
+    "categories": [
+      {
+        "title": "Allgemein",
+        "items": [
+          "Nichtraucherzimmer",
+          "Kostenfreies WLAN",
+          "Klimaanlage",
+          "Heizung"
+        ]
+      },
+      {
+        "title": "Badezimmer",
+        "items": [
+          "Toilettenpapier",
+          "Badetücher",
+          "Bettwäsche",
+          "Strandtücher (gegen Aufpreis)",
+          "Toilette",
+          "Dusche"
+        ]
+      },
+      {
+        "title": "Außenbereich",
+        "items": [
+          "Picknickbereich",
+          "Gartenmöbel",
+          "Sonnenterrasse",
+          "Terrasse"
+        ]
+      },
+      {
+        "title": "Aktivitäten",
+        "items": [
+          "Wandern (außerhalb der Unterkunft)"
+        ]
+      },
+      {
+        "title": "Essen & Trinken",
+        "items": [
+          "Bar"
+        ]
+      },
+      {
+        "title": "Internet",
+        "items": [
+          "WLAN ist in öffentlichen Bereichen verfügbar und kostenfrei."
+        ]
+      },
+      {
+        "title": "Parkmöglichkeiten",
+        "items": [
+          "Keine Parkplätze verfügbar"
+        ]
+      },
+      {
+        "title": "Dienstleistungen",
+        "items": [
+          "Tägliche Reinigung",
+          "Schließfächer",
+          "Concierge-Service",
+          "Gepäckaufbewahrung"
+        ]
+      },
+      {
+        "title": "Sicherheit",
+        "items": [
+          "Feuerlöscher",
+          "Videoüberwachung in Gemeinschaftsbereichen",
+          "Zugang mit Schlüsselkarte"
+        ]
+      },
+      {
+        "title": "Gesprochene Sprachen",
+        "items": [
+          "Englisch",
+          "Spanisch",
+          "Italienisch"
+        ]
+      }
+    ]
+  },
+  "heroSection": {
+    "imageAlt": "Panoramablick auf Positano von der Terrasse des Hostel Brikette",
+    "brandName": "Hostel Brikette",
+    "cityName": "Positano",
+    "address": "Via G. Marconi, 358, 84017 Positano SA",
+    "locationButton": "Standort",
+    "contactButton": "Kontaktieren Sie uns",
+    "helpButton": "Hilfe",
+    "reserveNow": "Jetzt reservieren"
+  },
+  "quickLinksSection": {
+    "location": "Standort",
+    "photosAndVideos": "Fotos & Videos",
+    "facilitiesAndAmenities": "Einrichtungen & Annehmlichkeiten",
+    "barMenu": "Barkarte",
+    "breakfastMenu": "Frühstücksmenü"
+  },
+  "destinationSlideshow": {
+    "sectionTitle": "Wunderschöne Gemeinschaftsbereiche",
+    "slides": [
+      {
+        "title": "Zufluchtsort am Hang",
+        "text": "Erwachen Sie zu frischen Bergblicken auf unserer lichtdurchfluteten Terrasse.",
+        "alt": "Terrasse mit Blick auf den Positano-Hang"
+      },
+      {
+        "title": "Freiluft-Oase",
+        "text": "Genießen Sie die Sonne und schließen Sie neue Freundschaften.",
+        "alt": "Terrasse mit Bambusdach für Schatten"
+      },
+      {
+        "title": "Unglaubliche Meerblicke",
+        "text": "Erleben Sie die Magie des Horizonts, wenn die Sonne ins Meer taucht.",
+        "alt": "Weitreichender Meerblick von der Hostelterrasse"
+      }
+    ]
+  }
+}

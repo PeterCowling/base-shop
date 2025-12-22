@@ -1,0 +1,17 @@
+{
+  "meta": {
+    "title": "Strony nie znaleziono",
+    "description": "Żądana strona nie istnieje."
+  },
+  "heading": "Nie znaleziono strony",
+  "message": "Możesz zobaczyć nasze pokoje lub zarezerwować pobyt.",
+  "linksTitle": "Przydatne linki",
+  "links": {
+    "home": "Strona główna",
+    "deals": "Oferty",
+    "assistance": "Kontakt i informacje",
+    "about": "O nas"
+  },
+  "buttonRooms": "Pokoje",
+  "buttonReserve": "Zarezerwuj teraz"
+}

@@ -1,0 +1,52 @@
+{
+  "linkLabel": "Parkering i Positano: hvor og hvad det koster",
+  "intro": [
+    "Parkering er knap og dyr i Positano; reserver en garage i god tid, og regn med at bilen står stille under hele opholdet."
+  ],
+  "sections": [
+    {
+      "id": "garages",
+      "title": "Private garager i byen",
+      "body": [
+        "Mandara, Car Park Anna og Di Gennaro tager reservationer – book 7–10 dage i forvejen til ankomster i juli–august.",
+        "Priserne ligger omkring €35–€60 pr. døgn; bekræft højdebegrænsninger (ca. 1,9 m) og om du skal lade nøglerne blive hos personalet."
+      ]
+    },
+    {
+      "id": "drop-off",
+      "title": "Af- og pålæsning samt betaling",
+      "body": [
+        "Brug korttidslommerne ved Chiesa Nuova eller Sponda til at læsse bagage af, før du parkerer; slå katastrofeblinket til, og vær hurtig.",
+        "Hav både kort og kontanter – garager tager ofte kort, men foretrækker kontanter ved ophold under 48 timer."
+      ]
+    },
+    {
+      "id": "park-elsewhere",
+      "title": "Billigere parkering uden for Positano",
+      "body": [
+        "P-huse i Meta, Piano di Sorrento eller Sorrento koster cirka €20–€25 om dagen og forbinder til Positano med SITA-busser på under 45 minutter.",
+        "Kommer du nordfra? Stil bilen i havnegaragerne i Salerno, og tag færgen over, når vejret er roligt."
+      ]
+    }
+  ],
+  "tips": [
+    "Tjek ZTL-/skiftende nummerplade-regler, før du kører på SS163; bøder sendes internationalt flere måneder senere.",
+    "Pak en dagstaske med det nødvendige, før du afleverer nøglerne – garagen kan parkere bilerne kofanger mod kofanger til check-ud."
+  ],
+  "faqs": [
+    {
+      "q": "Kan jeg parkere i få timer?",
+      "a": [
+        "Garager tager timetakst, men skifter hurtigt til dagspris; til korte ærinder kan du bruge 30-minutters-pladserne ved Sponda-svinget."
+      ]
+    },
+    {
+      "q": "Holder garagerne åbent sent?",
+      "a": [
+        "De fleste har åbent 07.00–00.00; giv besked om sen tilbagekomst, så nøglerne kan afleveres til natportieren."
+      ]
+    }
+  ],
+  "tocTitle": "På denne side",
+  "faqsTitle": "FAQ"
+}

@@ -1,0 +1,43 @@
+{
+  "seo": {
+    "title": "Wi-Fi et cafés adaptés au travail près de Brikette",
+    "description": "Cafés et espaces avec Wi-Fi fiable, prises et ambiance pour travailler à distance à proximité de l'auberge."
+  },
+  "linkLabel": "Wi-Fi et cafés adaptés au travail près de Brikette",
+  "intro": [
+    "Des cafés près de l’auberge avec un Wi-Fi correct. Règle d’or : consommez régulièrement, évitez les longs appels à l’intérieur et restez discret."
+  ],
+  "sections": [
+    {
+      "id": "spots",
+      "title": "Spots près de Brikette",
+      "body": [
+        "Les petits cafés de la Via Pasitea et autour de Chiesa Nuova offrent souvent un Wi-Fi stable.",
+        "Prenez une batterie externe : les prises sont rares dans les établissements historiques."
+      ]
+    },
+    {
+      "id": "backup",
+      "title": "Connexion de secours",
+      "body": [
+        "Gardez une eSIM en solution de repli ; la couverture varie mais TIM/Vodafone restent les plus fiables.",
+        "Partagez la connexion de votre téléphone quand l’affluence du midi ralentit le réseau des cafés."
+      ]
+    }
+  ],
+  "galleryTitle": "Galerie",
+  "gallery": {
+    "item1Alt": "Ordinateur portable sur une table de café",
+    "item1Caption": "Un coin calme pour les appels",
+    "item2Alt": "Espresso et carnet de notes",
+    "item2Caption": "Alternez les lieux et consommez régulièrement"
+  },
+  "faqs": [
+    {
+      "q": "Puis-je travailler toute la journée ?",
+      "a": [
+        "Commandez toutes les 60 à 90 minutes et évitez l’heure de pointe du déjeuner ; alternez les adresses pour rester bienvenu."
+      ]
+    }
+  ]
+}

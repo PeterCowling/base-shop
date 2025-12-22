@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "title": "Positano til Napoli – rutevejledning med færge | Hostel Brikette",
+    "description": "Trin-for-trin vejledning fra Hostel Brikette til Positanos havn og videre til Napoli med færge, inklusive billet- og ankomsttips."
+  },
+  "hero": {
+    "eyebrow": "Hostel Brikette rejseguide",
+    "title": "Positano til Napoli – med færge",
+    "description": "Klare trin til at gå fra Hostel Brikette til Positanos havn, købe færgebilletter og fortsætte til Napoli, inklusive sæsonbemærkninger og ankomstvejledning til Napoli Centrale.",
+    "tipLabel": "Tip",
+    "tip": "Hvis færgerne aflyses på grund af vejret, så skift til en bus-/togrute i <GuideLink>Oversigten Sådan kommer du hertil</GuideLink>."
+  },
+  "sections": {
+    "journeyOverview": {
+      "title": "Rejseoverblik",
+      "paragraphs": [
+        "Færger mellem Positano og Napoli sejler hyppigst fra forår til tidligt efterår og kan blive aflyst ved uroligt hav. Rejsetiden er normalt omkring 70–90 minutter afhængigt af operatør og fartøj.",
+        "Sammenlign tider og book: <ScheduleLink>Positano.com (samlet køreplan)</ScheduleLink>."
+      ]
+    },
+    "photoGuide": {
+      "title": "Fotoguide (reference)",
+      "description": "Visuelle referencer til gåturen og billetområdet ved havnen.",
+      "items": {
+        "routeMap": {
+          "alt": "Kortoversigt over gåturen fra Hostel Brikette til Positanos havn",
+          "caption": "Kortoversigt: Hostel til Positanos havn"
+        },
+        "approach": {
+          "alt": "Foto af nedgangen til Positanos Spiaggia Grande og turisthavnen",
+          "caption": "Ankomst til Spiaggia Grande (turisthavn)"
+        },
+        "detailMap": {
+          "alt": "Detaljeret kort med højre side af Spiaggia Grande, hvor havnen ligger",
+          "caption": "Detaljekort: havnens placering på Spiaggia Grande"
+        },
+        "ticketBooths": {
+          "alt": "Billetboder for færgeselskaberne i Positanos havn med skilte for næste afgange",
+          "caption": "Billetboder for færgeoperatører"
+        },
+        "point1": {
+          "alt": "Punkt 1: krydset ved Tabacchi på Via G. Marconi nær Hostel Brikette",
+          "caption": "Punkt 1: Tabacchi-krydset (drej til højre)"
+        },
+        "point2": {
+          "alt": "Punkt 2: første hårnålssving hvor du forlader vejen for at tage trapperne",
+          "caption": "Punkt 2: forlad vejen, tag trapperne"
+        },
+        "point3": {
+          "alt": "Punkt 3: slutningen af trapperne ved vejen før du krydser",
+          "caption": "Punkt 3: trapperne ender ved vejen"
+        },
+        "point4": {
+          "alt": "Punkt 4: kryds vejen, drej kort til venstre og tag derefter trapperne",
+          "caption": "Punkt 4: kryds vejen, drej til venstre, trapper"
+        },
+        "point5": {
+          "alt": "Punkt 5: buegang der fører mod stranden og havnen",
+          "caption": "Punkt 5: buegang til havnen"
+        }
+      }
+    },
+    "walkToPort": {
+      "title": "Gå til Positanos havn",
+      "steps": [
+        "Forlad hostellet via hoveddøren.",
+        "Gå ned ad trapperne til vejen, drej til venstre og gå lidt over 100 m (≈330 ft).",
+        "Ved det første kryds (punkt 1) drejer du til højre ved Tabacchi'en (den første bygning på højre hånd).",
+        "Fortsæt ned ad bakke; ved det første hårnålssving (punkt 2) forlader du vejen og tager trapperne lige frem.",
+        "For enden af trapperne (punkt 3) når du vejen; kryds over og fortsæt lige frem til næste trappe.",
+        "Når de trapper ender ved vejen, krydser du, drejer kort til venstre og tager trapperne ved punkt 4.",
+        "I bunden drejer du til højre mod punkt 5 og fortsætter under buegangen til højre.",
+        "Havnen (molen ved Spiaggia Grande) ligger cirka 50 m (≈160 ft) fremme på højre side af stranden."
+      ]
+    },
+    "tickets": {
+      "title": "Køb billetter og gå ombord",
+      "steps": [
+        "Ved havnen har hver færgeoperatør sin egen bod.",
+        "Skiltet ved siden af boden viser den næste afgang for operatøren.",
+        "Køb billetter direkte hos operatøren; kom 20–30 minutter før for at ombytte vouchers og stille dig i kø.",
+        "Efter købet går du til enden af molen og venter på, at ombordstigning starter."
+      ]
+    },
+    "arrival": {
+      "title": "Ved ankomst til Napoli",
+      "paragraphs": [
+        "Gå i land ved havneområdet og fortsæt til din videre transport. Til Napoli Centrale (Piazza Garibaldi) er sporvognen typisk den letteste mulighed fra havnen.",
+        "Foreslået rute: <TramLink>Tag sporvognen mellem havnen og Napoli Centrale</TramLink>.",
+        "For en bagagevenlig gåtur i Positano på hjemrejsen, se: <LuggageGuideLink>Færgemole → Hostel Brikette</LuggageGuideLink>."
+      ]
+    }
+  },
+  "links": {
+    "guide": "Oversigten Sådan kommer du hertil",
+    "schedule": "Positano.com (samlet køreplan)",
+    "tram": "Tag sporvognen mellem havnen og Napoli Centrale",
+    "luggageGuide": "Færgemole → Hostel Brikette"
+  }
+}

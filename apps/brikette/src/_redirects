@@ -1,0 +1,5 @@
+# /src/_redirects  ─ Cloudflare Pages syntax
+/      /en/     302
+
+# Single-page app fallback so client-side routes work in production
+/*         /en/index.html  200

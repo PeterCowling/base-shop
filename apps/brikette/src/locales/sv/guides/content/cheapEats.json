@@ -1,0 +1,132 @@
+{
+  "seo": {
+    "title": "Prisvärd mat i Positano",
+    "description": "Prisvärda ställen att äta på i Positano och hur du håller matkostnaderna nere."
+  },
+  "linkLabel": "Prisvärd mat i Positano",
+  "heroAlt": "Prisvärd takeaway-mat i Positano",
+  "intro": [
+    "Ät gott i Positano utan att spräcka budgeten genom att kombinera klassisk take away, delipicknickar och lokala bagerier."
+  ],
+  "sections": [
+    {
+      "id": "grab-and-go",
+      "title": "Snabbt i farten",
+      "body": [
+        "Hämta pizza al taglio, panini eller arancini från barerna längs Via dei Mulini före lunchrusningen.",
+        "Beställ espresso vid disken (\"al banco\") för den lokala prisnivån runt 1,20 € i stället för att sitta vid bord."
+      ]
+    },
+    {
+      "id": "casual-dining",
+      "title": "Enkla sittande ställen",
+      "body": [
+        "Sök efter trattorior uppför backen från stranden där coperto är lägre och husets vin serveras på karaff.",
+        "Dela förrätter, hoppa över dessert och be om kranvatten (\"acqua del rubinetto\") för att hålla notan nere."
+      ]
+    },
+    {
+      "id": "picnics",
+      "title": "Picknick med utsikt",
+      "body": [
+        "Fyll på med ost, focaccia och frukt i minimarknader och picknicka på hostellets terrass eller den fria delen av Fornillo.",
+        "Ta med återanvändbart bestick och servetter för att undvika engångsartiklar och extra inköp."
+      ]
+    },
+    {
+      "id": "sweet-breaks",
+      "title": "Söta pauser & godsaker",
+      "body": [
+        "Ta en citrongranita från stånden för en uppfriskning runt 3 € i stället för dyrare cocktails.",
+        "Dela en bit delizia al limone eller tiramisù från bageriet för en prisvärd dessert."
+      ]
+    }
+  ],
+  "tips": [
+    "Fråga efter \"menù del giorno\" eller lunchmenyer — många ställen erbjuder pasta, vatten och kaffe för under 18 €.",
+    "Ta med en hopfällbar matlåda för rester så kan du njuta av dem senare på hostellet."
+  ],
+  "recommendationsTitle": "Var äter man",
+  "recommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, sallader och take away-bakverk för snabba måltider."
+    },
+    {
+      "name": "Lokala delikatessdiskar",
+      "note": "Beställ delifat, focaccia och picknickkit bortom vattenfrontens påslag."
+    },
+    {
+      "name": "Minimarknader & fruktstånd",
+      "note": "Fyll på med frukt, stora vattenflaskor och snacks för terrasspicknickar."
+    }
+  ],
+  "gallery": {
+    "title": "Fotogalleri",
+    "items": [
+      {
+        "alt": "Panini från en lokal deli",
+        "caption": "Panini & delikatesser"
+      },
+      {
+        "alt": "Picknick med utsikt över Positano",
+        "caption": "Picknick med utsikt"
+      }
+    ]
+  },
+  "faqs": [
+    {
+      "q": "Kan jag fylla på vatten gratis?",
+      "a": [
+        "Ja — fyll flaskor på hostellet eller vid offentliga fontäner som den vid Chiesa Nuova; bär alltid minst 750 ml (25 oz)."
+      ]
+    },
+    {
+      "q": "Finns det billiga vegetariska alternativ?",
+      "a": [
+        "Absolut – beställ caprese-panini, aubergine parmigiana i portionsbit eller pasta al pomodoro på enklare trattorior."
+      ]
+    }
+  ],
+  "fallbackIntro": [
+    "Positano har gott om prisvärda matställen om du vet var du ska leta."
+  ],
+  "fallbackRecommendations": [
+    {
+      "name": "Collina Bakery",
+      "note": "Panini, pizza al taglio, sallader och take away-bakverk för snabba måltider."
+    },
+    {
+      "name": "Lokala delikatessdiskar",
+      "note": "Beställ delifat, focaccia och picknickkit bortom vattenfrontens påslag."
+    },
+    {
+      "name": "Minimarknader & fruktstånd",
+      "note": "Fyll på med frukt, stora vattenflaskor och snacks för terrasspicknickar."
+    }
+  ],
+  "fallbackGalleryItems": [
+    {
+      "alt": "Panini från en lokal deli",
+      "caption": "Panini & delikatesser"
+    },
+    {
+      "alt": "Picknick med utsikt över Positano",
+      "caption": "Picknick med utsikt"
+    }
+  ],
+  "fallbackFaqs": [
+    {
+      "q": "Tar ställena kort?",
+      "a": [
+        "De flesta gör det, men ha småkontanter redo för kiosker eller minibelopp."
+      ]
+    },
+    {
+      "q": "Är take away-avgifter vanliga?",
+      "a": [
+        "Vissa tar en liten förpackningsavgift; ta med en återanvändbar låda för att spara pengar och minska avfallet."
+      ]
+    }
+  ]
+}

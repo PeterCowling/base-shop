@@ -1,0 +1,351 @@
+{
+  "meta": {
+    "title": "Reservas de Habitaciones — Términos y Condiciones | Hostel Brikette",
+    "description": "Términos oficiales para reservas: reservas, cancelaciones, check-in/out, pagos, deber de cuidado y políticas."
+  },
+  "headings": {
+    "pageTitle": "Hostel Brikette — Reservas de Habitaciones",
+    "pageSubtitle": "Términos y Condiciones"
+  },
+  "toc": {
+    "title": "Contenido",
+    "aria": "Tabla de contenidos"
+  },
+  "footer": {
+    "end": "Fin del documento.",
+    "backToTop": "Volver arriba"
+  },
+  "sections": {
+    "s1": {
+      "title": "1. Definiciones e Interpretaciones",
+      "body": [
+        "1.1 \"Términos y Condiciones\" — Los términos y condiciones establecidos en este documento.",
+        "1.2 \"El Hostal\", \"nosotros\" o \"nuestro\" — Skylar SRL, con domicilio social en Via Guglielmo Marconi, 358, 84017, Positano, Salerno, Italia.",
+        "1.3 \"Tú\", \"tu\", cliente, residente u \"huésped\" — Cualquier persona que presente una Solicitud de Reserva de Habitación, sea Huésped Oficial del Hostal, sea Huésped Temporal, miembro del personal, organizador de eventos, jefe de grupo u otro proveedor/comprador tercero.",
+        "1.4 \"Solicitud de Reserva de Habitación\" — Solicitud para reservar una estancia en el Hostal conforme a estos términos y condiciones, ya sea por ti o por tu OTA. Solo el hostal y las OTA autorizadas pueden ofrecer camas en venta; cualquier reventa por terceros no autorizados supondrá rechazar la solicitud o cancelar reservas confirmadas.",
+        "1.5 \"Zonas Comunes\" — Áreas del Hostal de uso tanto para Huéspedes Oficiales como para Huéspedes Temporales. Incluyen: entrada y recepción; terraza común; baños comunes.",
+        "1.6 \"Titular de la Tarjeta\" — Propietario de la tarjeta de crédito indicada en la Solicitud de Reserva de Habitación.",
+        "1.7 \"Contrapropuesta\" — Variación de una Solicitud de Reserva de Habitación. La primera la formulará el Hostal; pueden seguir otras.",
+        "1.8 \"Reserva de Habitación Confirmada\" — Cuando el Hostal acepta una Solicitud de Reserva de Habitación o tú aceptas una Contrapropuesta, se formaliza un contrato jurídicamente vinculante que incluye las instalaciones, servicios y términos definidos en este documento.",
+        "1.9 \"No Show\" — Estado aplicable a un huésped o a una Reserva de Habitación Confirmada cuando uno o más huéspedes elegibles no se presentan antes de que finalice el Horario Oficial de Check‑in del primer día de la reserva.",
+        "1.10 \"Cargo por No Show\" — Importe aplicado por el Hostal cuando se produce un No Show o cuando una Cancelación Confirmada se realiza fuera del Plazo de Preaviso. El cargo será el mayor entre: el coste de la primera noche o el depósito no reembolsable pactado en la reserva.",
+        "1.11 \"Solicitud de Cancelación de Habitación\" — Petición para cancelar una Reserva de Habitación Confirmada.",
+        "1.12 \"Plazo de Preaviso de Cancelación\" — Tiempo requerido, en horas, para cancelar una Reserva de Habitación Confirmada. Si figura en días, se convierte a horas (p. ej., tres días = 72 horas).",
+        "1.13 \"Cargo Administrativo de Cancelación\" — Importe por la tramitación de una Solicitud de Cancelación de Habitación, calculado según la tarifa acordada.",
+        "1.14 \"Correo Electrónico Oficial del Hostal\" — hostelpositano@gmail.com.",
+        "1.15 \"Cancelación Confirmada\" — Confirmación escrita del Hostal, enviada desde el Correo Electrónico Oficial, de que la cancelación ha sido procesada.",
+        "1.16 \"Solicitud de Cambio de Reserva\" — Petición para modificar una Reserva Confirmada (cancelación parcial o cambio de fechas).",
+        "1.17 \"Cambio de Reserva Confirmado\" — Confirmación escrita del Hostal de que el cambio ha sido efectuado.",
+        "1.18 \"Correo Electrónico Designado\" — Dirección de correo indicada en tu Solicitud de Reserva; el Hostal la usará para toda comunicación. Eres responsable de su exactitud y de revisar tu buzón.",
+        "1.19 \"Solicitud de Ampliación de Reserva\" — Petición para ampliar una Reserva de Habitación Confirmada.",
+        "1.20 \"Ampliación de Reserva Confirmada\" — Confirmación escrita de que la ampliación ha sido realizada.",
+        "1.21 \"Solicitud de Check‑in\" — Petición para registrarse en el Hostal e iniciar la reserva.",
+        "1.22 \"Horario Oficial de Check‑in\" — Franja de 15:00 a 22:00 del día de llegada.",
+        "1.23 \"Huésped Oficial del Hostal\" — Persona que ha completado el proceso de check‑in.",
+        "1.24 \"Habitación Asignada\" — Habitación asignada al Huésped Oficial; solo puede acceder a esta.",
+        "1.25 \"Habitaciones del Hostal\" — Dormitorios y habitaciones privadas disponibles exclusivamente para Huéspedes Oficiales.",
+        "1.26 \"Ropa de cama\" — Juego entregado al check‑in: funda de almohada, sábana, bajera y toalla.",
+        "1.27 \"Mejora de Habitación\" — Asignación de una habitación más cara que la reservada (solo prima el precio).",
+        "1.28 \"Tarjeta de acceso (Keycard)\" — Tarjeta de plástico, sujeta a depósito, codificada para abrir la puerta de la Habitación Asignada.",
+        "1.29 \"Preautorización\" — Retención temporal de un importe en la tarjeta del Titular; los fondos quedan reservados y no se cargan de inmediato.",
+        "1.30 \"Check‑out\" — Ocurre solo cuando: se devuelve la ropa de cama; se devuelve la Keycard; se retiran todas las pertenencias de la Habitación Asignada.",
+        "1.31 \"Menor\" — Persona menor de 18 años en Italia.",
+        "1.32 \"Servicio Complementario\" — Servicio que el hostal puede ofrecer sin coste, no incluido en la Reserva Confirmada (p. ej., Desayuno, Bebidas, Wi‑Fi, Consigna de equipaje, Frigorífico).",
+        "1.33 \"Huésped Temporal\" — Persona con acceso únicamente a Zonas Comunes, previa verificación de documento original. Solo el personal del Hostal puede otorgar este estatus.",
+        "1.34 \"Métodos de Pago Aceptados\" — Tarjetas Visa o MasterCard; transferencia bancaria solo de empresa. No se aceptan AmEx/PayPal y similares. Efectivo en euros.",
+        "1.35 \"Reservas Prepago y No Reembolsables\" — Tarifas reducidas con pago íntegro al reservar; no admiten reembolso.",
+        "1.36 \"Orden de llegada para elegir cama\" — No asignamos camas en dormitorios; el huésped elige entre las disponibles y puede cambiar si queda otra libre.",
+        "1.37 \"Tipo de Reserva\" — Prepago No Reembolsable o Reembolsable.",
+        "1.38 \"Reservas Reembolsables\" — Tarifas estándar con condiciones flexibles (fechas y duración variables; políticas de cancelación más permisivas según términos).",
+        "1.39 \"Documento de Identidad\" — Pasaporte, DNI, permiso de conducir o tarjeta militar. Solo originales.",
+        "1.40 \"Defecto Grave\" — Defecto que afecta seriamente a la estancia (p. ej., cama rota, temperatura insegura, inaccesibilidad, falta de agua).",
+        "1.41 \"OTA\" — Agencia de viajes online autorizada (p. ej., Hostelworld.com, Booking.com)."
+      ]
+    },
+    "s2": {
+      "title": "2. Solicitudes de Reserva",
+      "body": [
+        "2.1 Envío de Solicitud — Debe realizarse por escrito mediante una OTA o nuestro sitio web. Las conversaciones presenciales son solo informativas. Al enviar la solicitud aceptas estos Términos y confirmas la exactitud de tus datos.",
+        "2.2 Tramitación — Comienza tras recibir el depósito, la preautorización o el pago requerido mediante un método aceptado. El Titular de la Tarjeta debe identificarse y, en su caso, autorizar por escrito los cargos a través del Correo Oficial; de no obtenerse verificación, se rechazará la solicitud.",
+        "2.3 Rechazo — Podemos rechazar cualquier Solicitud de Reserva de Habitación por cualquier motivo.",
+        "2.4 Límite de la Solicitud — Máximo siete (7) noches y grupos de hasta cinco (5) personas. Peticiones superiores se tratarán como reservas múltiples.",
+        "2.5 Contrapropuesta — Si no hay disponibilidad en lo solicitado, podremos ofrecer alternativas al Correo Electrónico Designado. La aceptación inicia intentos de cobro/preautorización.",
+        "2.6 Prepago No Reembolsable — Podemos exigir aceptación expresa de estos Términos; la falta de aceptación conlleva anulación. Realizamos hasta tres intentos de cobro antes de cancelar.",
+        "2.7 Confirmación — La reserva solo queda confirmada cuando enviamos un correo con la confirmación (referencia, fecha de llegada, duración, etc.) al Correo Electrónico Designado. Te comprometes a verificar los datos y a notificarnos errores por el Correo Oficial.",
+        "2.9 Número de Huéspedes Incluidos — Uno por cama individual; hasta dos por cama doble; apartamentos según aforo anunciado. No se puede superar la capacidad de la habitación.",
+        "2.9 Alcance de las Instalaciones — Incluye un juego de ropa de cama y una Keycard por persona, acceso a duchas y agua caliente en horarios establecidos, y acceso a Zonas Comunes. Los demás servicios son complementarios y tienen condiciones propias.",
+        "2.10 Obligación Financiera — El Titular de la Tarjeta es responsable de la reserva y de cargos adicionales (daños, limpieza extra, sanciones, incumplimiento de la política de check‑out, etc.).",
+        "2.11 Asignación de Habitaciones y Camas en Dormitorio — Asignamos a cada persona una Habitación Asignada. En dormitorios, las camas se eligen por orden de llegada; los grupos pueden dividirse en varias habitaciones.",
+        "2.12 Asignación de Mejoras — Las mejoras pueden asignarse mediante pago o por gestión de inventario; si no se abonan, podremos revertir a la tipología original."
+      ]
+    },
+    "s3": {
+      "title": "3. Edad y Accesibilidad",
+      "body": [
+        "3.1 Requisitos de Accesibilidad — Contáctanos antes de reservar para necesidades específicas. El edificio tiene escaleras y no hay servicio de porteadores. Los dispositivos sonoros para dormir solo están permitidos en habitaciones privadas.",
+        "3.2 Autonomía — No prestamos atención continuada; si no puedes gestionar tu estancia de forma independiente, cancelaremos la reserva.",
+        "3.3 Menores — En Italia los menores no pueden viajar solos. Los de 16 años o menos solo pueden alojarse en habitaciones privadas con tutor legal de 18+. Los de 17 años pueden alojarse en dormitorios únicamente con un acompañante de 18+ en la misma habitación y con documentación de tutela; en caso contrario, se cancelará la reserva según su tipología."
+      ]
+    },
+    "s4": {
+      "title": "4. Procesos y Pagos de Terceros",
+      "body": [
+        "Cuando envías una Solicitud de Reserva de Habitación a través de un procesador de pagos de terceros (OTA), completas el pago en su plataforma conforme a sus términos y condiciones.",
+        "Los pagos realizados directamente a la tercera parte se rigen por tu acuerdo con ella, y el Hostal no tiene control sobre dichos procesos.",
+        "No recibimos ninguna parte de esos pagos y no podemos asumir responsabilidad por reservas realizadas de esta forma.",
+        "Eres responsable de asegurarte de que el pago se haya efectuado correctamente y de que la reserva esté confirmada antes de llegar al Hostal.",
+        "Para dudas sobre el pago en una OTA, contacta directamente con el proveedor tercero."
+      ]
+    },
+    "s5": {
+      "title": "5. Depósitos y Preautorizaciones",
+      "body": [
+        "5.1 Depósitos de Solicitud — Podemos requerir un depósito para garantizar tu reserva. El importe varía según el tipo; las reservas prepago y no reembolsables exigen el 100%. Todo depósito abonado al Hostal es no reembolsable. Si no podemos cobrarlo, rechazaremos tu solicitud.",
+        "5.2 Preautorizaciones de Solicitud — Podemos requerir una preautorización basada en el precio y condiciones acordadas. Si no podemos procesar el importe requerido, rechazaremos tu solicitud."
+      ]
+    },
+    "s6": {
+      "title": "6. Cargos por No Show",
+      "body": [
+        "Si no te presentas a tu reserva, esta se considerará No Show y se aplicará el Cargo por No Show.",
+        "El cargo se aplica a cada Reserva de Habitación Confirmada. Diferentes reservas pueden tener distintos plazos de preaviso, lo que puede afectar al resultado."
+      ]
+    },
+    "s7": {
+      "title": "7. Cancelaciones",
+      "body": [
+        "Las solicitudes de cancelación deben enviarse por escrito a nuestro Correo Electrónico Oficial.",
+        "Para determinar si una solicitud cumple el plazo de preaviso, se cuenta desde la recepción de tu correo hasta las 00:01 del día de inicio de la reserva.",
+        "Puede aplicarse un Cargo Administrativo de Cancelación (estándar del 15% del precio de la reserva, menos cualquier comisión ya pagada a terceros).",
+        "Si aceptamos la solicitud, lo confirmaremos por correo electrónico; hasta ese momento, la reserva sigue confirmada.",
+        "Una reserva puede cancelarse sin solicitud escrita si: no realizas el check‑in antes del cierre de recepción el primer día; haces check‑out antes de tiempo; o incumples las políticas del hostal.",
+        "Cualquier nueva reserva tras la cancelación queda sujeta a disponibilidad.",
+        "Las cancelaciones fuera del plazo de preaviso se tratan como No Show y pueden conllevar Cargo por No Show."
+      ]
+    },
+    "s8": {
+      "title": "8. Cambios en Reservas Confirmadas",
+      "body": [
+        "Sustituimos las Reservas Confirmadas por nuevas reservas en lugar de modificarlas.",
+        "Envía las Solicitudes de Cambio de Reserva a nuestro Correo Oficial dentro del plazo de preaviso aplicable.",
+        "Todos los cambios están sujetos a disponibilidad y otras condiciones.",
+        "Las solicitudes de cambio de duración se consideran tanto Solicitud de Cambio como Solicitud de Cancelación o de Ampliación.",
+        "Las ampliaciones se consideran nuevas reservas.",
+        "Si abandonas antes sin Cancelación Confirmada, la reserva original se considera cumplida."
+      ]
+    },
+    "s9": {
+      "title": "9. Transferibilidad de la Reserva",
+      "body": [
+        "Las Solicitudes de Reserva de Habitación y las Reservas Confirmadas son estrictamente intransferibles, total o parcialmente.",
+        "Cada reserva debe permanecer a nombre del titular original durante toda su vigencia.",
+        "Intentar hacer check‑in usando una reserva transferida hace responsable económicamente al interesado y puede suponer la cancelación inmediata.",
+        "Los intentos de cambiar el nombre del huésped asignado también pueden conllevar cancelación."
+      ]
+    },
+    "s10": {
+      "title": "10. Reservas Prepago y No Reembolsables",
+      "body": [
+        "El pago íntegro es obligatorio en el momento de la reserva. Si el pago falla, la solicitud será cancelada.",
+        "En caso de No Show, no se emitirá reembolso alguno.",
+        "Las solicitudes de ampliación se considerarán según los términos de este documento."
+      ]
+    },
+    "s11": {
+      "title": "11. Llegada",
+      "body": [
+        "11.1 Solicitud de Check‑in — Todos los huéspedes deben identificarse e iniciar el Check‑in al llegar.",
+        "11.2 Llegada Temprana — Los huéspedes que lleguen antes de las 10:30 el día de la reserva no podrán acceder al hostal.",
+        "11.3 Llegada entre 10:30 y 15:00 — Si se acuerda, podrás convertirte en Huésped Temporal. Puede haber consigna de equipaje, discrecional y con condiciones propias.",
+        "11.3 Ventana de Check‑in — El check‑in regular se realiza durante el Horario Oficial (15:00–22:00).",
+        "11.5 Llegada Tardía — La recepción cierra después de las 22:00. A nuestra discreción podemos proporcionar instrucciones de auto check‑in. Asumes la responsabilidad por problemas derivados de no recibir/seguir las instrucciones o por datos de contacto incorrectos."
+      ]
+    },
+    "s12": {
+      "title": "12. Check‑in",
+      "body": [
+        "12.1 Necesidad del Proceso — Si no podemos completar el check‑in, rechazaremos el registro y cancelaremos tu reserva (tratada como No Show).",
+        "12.2 Prueba de Identidad — Debemos recibir un documento válido por huésped (Nombre, Apellidos, Lugar de nacimiento, Nacionalidad, Fecha de nacimiento, Número de documento). La falta de presentación antes de las 22:00 del primer día supone cancelación (No Show).",
+        "12.2 Saldo — Cualquier saldo pendiente debe abonarse mediante un método aceptado antes de completar el check‑in. En caso contrario, la reserva será cancelada (No Show).",
+        "12.3 Depósito de Keycard y Ropa de cama — Se requiere un depósito en efectivo de 10 € en el check‑in; se reembolsa en el check‑out al devolver la Keycard y la ropa de cama."
+      ]
+    },
+    "s13": {
+      "title": "13. Proceso de Salvaguarda",
+      "body": [
+        "Podemos retener un importe igual a una noche por persona como depósito de seguridad durante tu estancia (vía preautorización o efectivo).",
+        "Este importe puede usarse para pagar sanciones, tasas, ampliaciones u otros importes debidos según las políticas del hostal.",
+        "Si no podemos preautorizar, otro miembro del grupo puede aportar el importe o puedes abonarlo en efectivo; de lo contrario, la reserva podrá cancelarse."
+      ]
+    },
+    "s14": {
+      "title": "14. Deber de Cuidado",
+      "body": [
+        "Debes respetar a los demás huéspedes y al personal, evitar daños y cumplir las normas del hostal.",
+        "Las infracciones pueden conllevar cancelación inmediata (puede aplicarse la política de No Show) y/o la solicitud de abandonar la propiedad sin reembolso.",
+        "Los costes o sanciones provocados por tus actos podrán facturarse. Denunciaremos a las autoridades las infracciones legales cuando sea necesario."
+      ]
+    },
+    "s15": {
+      "title": "15. Defectos y Daños",
+      "body": [
+        "15.1 Comunicación de Defectos — Informa de cualquier defecto de la habitación de forma inmediata.",
+        "15.2 Evaluación de Defectos — Priorizamos la respuesta según el impacto en tu estancia.",
+        "15.3 Defectos Graves — Intentaremos resolverlos; si no es posible, buscaremos alojamiento alternativo o reembolsos prorrateados según diferencia de precio o noches restantes.",
+        "15.4 Defectos no Comunicados — Si se detectan posteriormente, podremos aplicar nuestra política de daños y pérdidas.",
+        "15.5 Daños — Podemos preautorizar o solicitar un depósito para cubrir daños/pérdidas. Los reembolsos se realizan netos de cargos. Los costes excedentes (materiales, mano de obra, administración) se facturarán. Tarifas extraordinarias: Director 50 €/h, Manager 35 €/h, Staff 25 €/h."
+      ]
+    },
+    "s16": {
+      "title": "16. Chinches (bed bugs)",
+      "body": [
+        "Adoptamos medidas para prevenir y eliminar infestaciones de chinches. Si se produce una infestación durante tu estancia, podrás ser responsable de daños, incluidos pérdida de ingresos por reservas, reclamaciones de otros huéspedes y costes de limpieza y desinsectación.",
+        "Si has estado previamente en un lugar con chinches, comunícalo en el check‑in y desinfecta tus pertenencias.",
+        "Revisa tus pertenencias antes del check‑in y comunica cualquier sospecha de inmediato."
+      ]
+    },
+    "s17": {
+      "title": "17. Pertenencias Personales y Seguridad",
+      "body": [
+        "Los huéspedes son responsables de sus pertenencias en todo momento. El hostal no se hace responsable de pérdidas, daños o robos, salvo lo exigido por la ley.",
+        "Pueden proporcionarse taquillas o cajas fuertes, pero la responsabilidad de las pertenencias recae en el huésped.",
+        "Los objetos no reclamados se desecharán pasados 30 días desde el check‑out.",
+        "Está prohibido introducir objetos peligrosos o ilegales; podrán confiscarse o comunicarse a las autoridades."
+      ]
+    },
+    "s18": {
+      "title": "18. Identificación y Medidas de Seguridad",
+      "body": [
+        "Todos los huéspedes deben llevar las pulseras de seguridad facilitadas dentro del recinto y mostrar un documento válido cuando lo solicite el personal.",
+        "No llevar la pulsera o no presentar identificación puede suponer el desalojo sin reembolso.",
+        "Las pulseras perdidas o dañadas deben comunicarse de inmediato; puede aplicarse un pequeño cargo de sustitución."
+      ]
+    },
+    "s19": {
+      "title": "19. Videovigilancia (CCTV)",
+      "body": [
+        "Hay cámaras CCTV en zonas públicas para la seguridad de huéspedes y bienes.",
+        "Las grabaciones se almacenan de forma segura, solo accesibles para la dirección autorizada, y pueden compartirse con las autoridades cuando la ley lo requiera.",
+        "La CCTV no garantiza seguridad total. Al aceptar estos términos, consientes su uso como se describe."
+      ]
+    },
+    "s20": {
+      "title": "20. Huéspedes Temporales",
+      "body": [
+        "El estatus de Huésped Temporal puede concederse a nuestra entera discreción.",
+        "Los Huéspedes Temporales solo pueden acceder a Zonas Comunes y no están autorizados a entrar en las habitaciones.",
+        "Los Huéspedes Oficiales del Hostal no pueden otorgar estatus de Huésped Temporal a terceros.",
+        "Las solicitudes pueden aceptarse entre las 9:00 y las 23:00 en días de apertura del hostal.",
+        "Nos reservamos el derecho de rechazar o revocar el estatus de Huésped Temporal en cualquier momento."
+      ]
+    },
+    "s21": {
+      "title": "21. Personas no Registradas",
+      "body": [
+        "Por ley, todas las personas que se alojen deben estar registradas, incluidos los Huéspedes Temporales.",
+        "Si detectamos a una persona no registrada en una habitación, podremos cobrar la tarifa estándar por cada persona no registrada, más una comisión administrativa igual al doble de la tarifa estándar.",
+        "La persona no registrada debe hacer check‑in y seguir los procedimientos estándar, o podremos informar a la policía.",
+        "No informar sobre una persona no registrada puede conllevar la cancelación de la reserva (puede aplicarse la política de No Show)."
+      ]
+    },
+    "s22": {
+      "title": "22. Check‑out",
+      "body": [
+        "El horario oficial de check‑out es de 7:30 a 10:30.",
+        "Tras completar el check‑out, no vuelvas a entrar en la habitación ni dejes pertenencias dentro.",
+        "Debes cumplir las condiciones de Post Check‑out descritas en estos términos."
+      ]
+    },
+    "s23": {
+      "title": "23. Check‑out Anticipado",
+      "body": [
+        "Si necesitas irte antes de las 7:30, acude a recepción la noche anterior para organizar el check‑out anticipado y el reembolso del depósito de la Keycard.",
+        "La no devolución de la Keycard implica la pérdida del depósito.",
+        "Los depósitos se reembolsan únicamente en efectivo y en persona a un miembro del personal."
+      ]
+    },
+    "s24": {
+      "title": "24. Check‑out Tardío",
+      "body": [
+        "Disponible solo con acuerdo previo por escrito, permitiendo el check‑out hasta las 12:00.",
+        "Es un servicio discrecional, sujeto a la ocupación, y debe confirmarse por escrito.",
+        "El servicio cuesta 40 € y se ofrece por orden de solicitud."
+      ]
+    },
+    "s25": {
+      "title": "25. Falta de Check‑out",
+      "body": [
+        "Si no haces check‑out a la hora acordada, podremos retirar tus pertenencias de la habitación sin responsabilidad.",
+        "Cualquier intento de acceder a zonas reservadas a huéspedes tras la hora acordada puede considerarse una infracción de seguridad conforme a nuestras políticas.",
+        "Podremos trasladar tus pertenencias a un servicio local de porteadores para su almacenamiento; las tarifas de recogida las fija dicho servicio."
+      ]
+    },
+    "s26": {
+      "title": "26. Post Check‑out",
+      "body": [
+        "Una vez completado el check‑out, tu Reserva de Habitación Confirmada se considera cumplida, con independencia de las noches restantes.",
+        "Dejas de ser Huésped Oficial y pasas a ser Huésped Temporal hasta las 15:30.",
+        "A solicitud, podremos inscribirte en nuestra consigna de equipaje, a discreción y con condiciones separadas."
+      ]
+    },
+    "s27": {
+      "title": "27. Bebidas alcohólicas",
+      "body": [
+        "Al ser un establecimiento con licencia, no está permitido introducir en el hostal alcohol comprado fuera.",
+        "Si detectamos alcohol externo, podremos custodiarlo y devolverlo en el check‑out o cuando se garantice su consumo fuera del establecimiento.",
+        "El incumplimiento puede conllevar la cancelación inmediata de la reserva (aplica la política de No Show)."
+      ]
+    },
+    "s28": {
+      "title": "28. Modificación de estos Términos y Condiciones",
+      "body": [
+        "Estos Términos y Condiciones constituyen el acuerdo íntegro entre tú y el Hostal y sustituyen cualquier acuerdo o entendimiento previo, escrito u oral.",
+        "Nos reservamos el derecho de modificarlos en cualquier momento."
+      ]
+    },
+    "s29": {
+      "title": "29. Ámbito de Responsabilidad",
+      "body": [
+        "Nuestra responsabilidad se limita a los servicios y elementos enumerados en estos términos.",
+        "La responsabilidad total no excederá el importe que hayas pagado por la reserva.",
+        "No respondemos por pérdidas o daños a bienes personales, salvo cuando lo exija la ley.",
+        "No respondemos por pérdidas indirectas, consecuenciales o económicas, ni por pérdida de beneficio, clientela u oportunidad, incluso si se deben a negligencia o fuerza mayor.",
+        "Ofrecemos almacén seguro para objetos de valor, pero sin asumir responsabilidad económica por ellos.",
+        "Nos reservamos el derecho de mover objetos durante la limpieza sin previo aviso."
+      ]
+    },
+    "s30": {
+      "title": "30. Ley Aplicable",
+      "body": [
+        "Estos términos y condiciones se rigen por las leyes de Italia; cualquier acción legal deberá interponerse ante los tribunales italianos."
+      ]
+    },
+    "s31": {
+      "title": "31. Información del Sitio Web",
+      "body": [
+        "Nos esforzamos por asegurar la exactitud de la información del sitio web; no obstante, no podemos responsabilizarnos de errores u omisiones.",
+        "Nos reservamos el derecho a realizar cambios en el Sitio y su contenido en cualquier momento, sin previo aviso.",
+        "Algunas imágenes del Sitio representan el estilo general de nuestros productos e instalaciones y pueden no reflejar exactamente el producto o aspecto mostrado.",
+        "Todo el contenido del Sitio (textos, imágenes, marcas) es propiedad del Hostal y no puede usarse sin permiso escrito.",
+        "Ofrecemos enlaces a sitios de terceros por conveniencia; no nos responsabilizamos de su contenido o uso.",
+        "Consulta la política de privacidad para conocer cómo protegemos tu privacidad al usar nuestro sitio."
+      ]
+    },
+    "s32": {
+      "title": "32. Política de Salud y Seguridad",
+      "body": [
+        "Para la seguridad y el bienestar de todos, cualquier huésped recientemente expuesto a una enfermedad transmisible debe actuar con responsabilidad.",
+        "Las reservas prepago y no reembolsables siguen siendo no reembolsables en estas circunstancias.",
+        "Recomendamos encarecidamente contratar un seguro de viaje que cubra imprevistos, incluida enfermedad o imposibilidad de viajar."
+      ]
+    },
+    "s33": {
+      "title": "33. Cupones",
+      "body": [
+        "Podemos emitir cupones promocionales de forma periódica.",
+        "Los cupones son válidos exclusivamente para reservas realizadas a través de nuestro sitio oficial (hostel-positano.com).",
+        "Cada cupón puede estar sujeto a términos específicos adicionales a los aquí establecidos."
+      ]
+    }
+  }
+}

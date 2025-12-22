@@ -1,0 +1,58 @@
+{
+  "seo": {
+    "title": "Guide till kollektivtrafiken på Amalfikusten",
+    "description": "Så tar du dig runt utan bil: bussar, färjor och tåg – biljetter, tider och säsongsnotiser."
+  },
+  "linkLabel": "Guide till kollektivtrafiken på Amalfikusten",
+  "intro": [
+    "How to get around the Amalfi Coast without a car: buses for year‑round reliability, ferries in summer, and trains for long hops."
+  ],
+  "sections": [
+    {
+      "id": "buses",
+      "title": "SITA buses",
+      "body": [
+        "Buy tickets at tobacconists/newstands before boarding and validate on the bus.",
+        "Expect queues at peak times. Start early and consider a ferry as a crowd bypass."
+      ]
+    },
+    {
+      "id": "ferries",
+      "title": "Ferries (seasonal)",
+      "body": [
+        "Fast and scenic between main towns from spring to autumn; weather cancellations are possible.",
+        "Check live schedules on operator sites and allow buffer for last boats of the day."
+      ]
+    },
+    {
+      "id": "trains",
+      "title": "Trains (to gateways)",
+      "body": [
+        "Use Trenitalia/Italo to reach Sorrento/Salerno/Naples, then connect by bus or ferry.",
+        "Intercity legs save time on Rome/Naples/Salerno routing; local Circumvesuviana serves Sorrento."
+      ]
+    },
+    {
+      "id": "timing",
+      "title": "Timing & strategy",
+      "body": [
+        "Leave before 09:00 to beat queues; for sunset returns, prefer ferries when seas are calm.",
+        "Carry small change for tickets and a hat/water for exposed stops."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Can I bring luggage on buses?",
+      "a": [
+        "Allowed but not ideal at peak; consider ferries or porters for heavy bags."
+      ]
+    },
+    {
+      "q": "Are there night services?",
+      "a": [
+        "Limited; check the last bus/ferry well ahead to avoid expensive taxis."
+      ]
+    }
+  ]
+}

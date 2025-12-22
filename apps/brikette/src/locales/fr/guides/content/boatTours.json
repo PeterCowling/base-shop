@@ -1,0 +1,61 @@
+{
+  "seo": {
+    "title": "Excursions en bateau à Positano",
+    "description": "Tours privés ou partagés, saisonnalité, budget et conseils pour choisir la bonne sortie en mer."
+  },
+  "linkLabel": "Excursions en bateau à Positano",
+  "intro": [
+    "Les sorties en bateau permettent de longer les falaises de la côte amalfitaine sans subir la circulation ; réservez en haute saison et gardez un plan météo de secours."
+  ],
+  "sections": [
+    {
+      "id": "group-tours",
+      "title": "Excursions partagées",
+      "body": [
+        "Les croisières de 3 heures quittent Positano en fin de matinée avec pauses baignade ; comptez 85 à 120 € par personne en juillet-août.",
+        "Prenez des chaussures d'eau et une couche légère : le vent marin est plus frais qu'en terrasse."
+      ]
+    },
+    {
+      "id": "private-charters",
+      "title": "Privatisation d'un gozzo",
+      "body": [
+        "Les skippers facturent 550 à 850 € pour une demi-journée (jusqu'à 6 personnes) plus carburant ; vérifiez les inclus (prosecco, serviettes).",
+        "Négociez un départ à l'aube ou en fin d'après-midi si vous cherchez une lumière douce et moins de remous de ferries."
+      ]
+    },
+    {
+      "id": "weather-backup",
+      "title": "Météo & plans B",
+      "body": [
+        "Les opérateurs annulent au-delà d'un vent force 4 ; gardez un plan bus ou plage sous le coude pour rester détendu.",
+        "La mer peut être agitée même l'été — prévoyez des bracelets anti-mal de mer si besoin."
+      ]
+    }
+  ],
+  "tips": [
+    "Arrivez 20 minutes avant le départ pour régler le solde et enfiler les chaussures de pont fournies.",
+    "Prenez un sac étanche pour les téléphones et une gourde d'1 L ; l'ombre est limitée à bord."
+  ],
+  "faqs": [
+    {
+      "q": "Dois-je réserver à l'avance ?",
+      "a": [
+        "Oui de mai à septembre : les bateaux affichent complet quelques jours avant, surtout pour les sorties coucher de soleil."
+      ]
+    },
+    {
+      "q": "Les serviettes sont-elles fournies ?",
+      "a": [
+        "Les tours partagés fournissent généralement une serviette par personne ; les skippers privés varient, mieux vaut prendre une serviette séchage rapide."
+      ]
+    }
+  ],
+  "galleryHeading": "Galerie photo",
+  "gallery": {
+    "primaryAlt": "Bateau longeant la côte de Positano",
+    "primaryCaption": "Navigation le long de la côte",
+    "secondaryAlt": "Pause baignade près des falaises de Positano",
+    "secondaryCaption": "Pause baignade"
+  }
+}

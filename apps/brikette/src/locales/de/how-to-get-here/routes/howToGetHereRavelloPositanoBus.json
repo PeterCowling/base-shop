@@ -1,0 +1,79 @@
+{
+  "meta": {
+    "title": "Ravello nach Positano mit dem Bus | Hostel Brikette",
+    "description": "Schritt-für-Schritt-Anleitung von Ravello nach Positano über Amalfi mit SITA-Bussen – inklusive Fahrplanhinweisen, Haltestellen und dem kurzen Fußweg zum Hostel Brikette."
+  },
+  "header": {
+    "eyebrow": "Reiseführer Hostel Brikette",
+    "title": "Ravello nach Positano – via Amalfi mit dem Bus",
+    "description": "Reise von Ravello nach Positano mit einem einfachen Umstieg in Amalfi. Dieser Leitfaden erklärt, wo du SITA-Tickets kaufst und entwertest, wie du den Fahrplan liest und was dich beim Umstieg in Amalfi erwartet – plus der kurze Weg von Positanos Haltestelle Chiesa Nuova zum Hostel Brikette."
+  },
+  "tip": {
+    "eyebrow": "Tipp",
+    "body": "Brauchst du alle Verkehrsoptionen? Öffne die <GuideLink>{{guideLabel}}</GuideLink> für Fähren, Taxis und kombinierte Routen."
+  },
+  "journeyOverview": {
+    "title": "Reiseüberblick",
+    "description": "Plane insgesamt etwa 1,5–2,5 Stunden, abhängig von den Anschlüssen. Fahre zuerst mit dem SITA-Bus von Ravello nach Amalfi und steige dort in einen SITA-Bus Richtung Positano/Sorrent um. In der Hochsaison fahren Busse häufig und können voll sein – sei etwas früher da, um anzustehen."
+  },
+  "sitaTickets": {
+    "title": "SITA-Busse und Tickets",
+    "points": [
+      "Zwischen Ravello und Amalfi verkehren SITA-Busse (SITA Sud Srl).",
+      "Du fährst zunächst nach Amalfi und steigst dort in einen Bus nach Positano um.",
+      "Es fahren zwei Linien Ravello → Amalfi: 5110 und 5120. Die 5110 ist meist etwa 10 Minuten schneller.",
+      "Tickets bekommst du in Tabacchi oder Kiosken und solltest sie beim Einsteigen zur Entwertung bereithalten."
+    ]
+  },
+  "timetable": {
+    "title": "Fahrpläne",
+    "description": "Prüfe die aktuellen Zeiten auf <TimetableLink>{{timetableLabel}}</TimetableLink>.",
+    "notesTitle": "So liest du den Fahrplan",
+    "points": [
+      "In der ersten Spalte stehen die Haltestellen entlang der Strecke.",
+      "Die Spalten entsprechen den Fahrten, die mit Buchstaben gekennzeichnet sind.",
+      "Unterwegs von Montag bis Samstag? Nutze die Spalten „F“ und „G“.",
+      "Unterwegs am Sonntag oder Feiertag? Nutze die Spalten „G“ und „H“."
+    ],
+    "linkLabel": "Positano.com (SITA-Fahrplanübersicht)"
+  },
+  "ravelloToAmalfi": {
+    "title": "Ravello → Amalfi",
+    "points": [
+      "Nimm die SITA-Linie 5110 oder 5120 von Ravello nach Amalfi (die 5110 ist meist schneller).",
+      "Entwerte dein Ticket beim Einstieg und bewahre es bis zur Ankunft auf.",
+      "Steige am Busbahnhof in Amalfi aus, um dort nach Positano umzusteigen."
+    ]
+  },
+  "waitingInAmalfi": {
+    "title": "Warten in Amalfi",
+    "points": [
+      "Nach deiner Ankunft kannst du das Zentrum von Amalfi erkunden, während du wartest.",
+      "Kehre für die Weiterfahrt an den gleichen Busbereich zurück, an dem du ausgestiegen bist.",
+      "Steige in jeden SITA-Bus mit Ziel Positano/Sorrent über die Amalfiküste ein."
+    ]
+  },
+  "arrivingPositano": {
+    "title": "Ankunft in Positano (Chiesa Nuova)",
+    "points": [
+      "Die nächstgelegene SITA-Haltestelle ist Positano (Chiesa Nuova) in der Via G. Marconi.",
+      "Sie liegt etwa 140 Meter (490 Fuß) vom Hosteleingang entfernt.",
+      "Du wartest vor der Bar Internazionale."
+    ],
+    "figure": {
+      "alt": "SITA-Bushaltestelle Positano Chiesa Nuova vor der Bar Internazionale",
+      "caption": "Sei ein paar Minuten früher da, um einen Sitzplatz zu sichern – Busse sind im Sommer schnell voll."
+    }
+  },
+  "walking": {
+    "title": "Fußweg von der Haltestelle zum Hostel",
+    "points": [
+      "Gehe von der Haltestelle Chiesa Nuova etwa 100 Meter (330 Fuß) weiter.",
+      "Biege rechts ab und folge den Stufen hinauf zur Haupteingangstür des Hostels.",
+      "Achte auf unser Schild an der Terrasse; der Eingang liegt direkt oberhalb der Kurve."
+    ]
+  },
+  "links": {
+    "guideOverview": "Übersicht „So kommst du zu uns“"
+  }
+}

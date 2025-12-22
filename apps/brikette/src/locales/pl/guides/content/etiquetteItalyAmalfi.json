@@ -1,0 +1,47 @@
+{
+  "seo": {
+    "title": "Lokalna etykieta: co wypada we Włoszech (przykłady z Amalfi)",
+    "description": "Najważniejsze zasady dobrego zachowania: w restauracjach, transporcie i podczas spotkań z mieszkańcami."
+  },
+  "linkLabel": "Lokalna etykieta: co wypada we Włoszech (przykłady z Amalfi)",
+  "intro": [
+    "Practical etiquette for dining, visiting churches, and sharing narrow lanes around Positano and the Amalfi Coast."
+  ],
+  "sections": [
+    {
+      "id": "dining",
+      "title": "Dining",
+      "body": [
+        "Book ahead at peak times, be patient between courses, ask for the bill when ready, and tip modestly for standout service."
+      ]
+    },
+    {
+      "id": "churches",
+      "title": "Churches & dress",
+      "body": [
+        "Cover shoulders inside churches and avoid passing through shops in swimwear."
+      ]
+    },
+    {
+      "id": "lanes",
+      "title": "Shared lanes",
+      "body": [
+        "Keep right on narrow stair lanes, let others pass, and take turns quickly at popular photo spots."
+      ]
+    }
+  ],
+  "faqs": [
+    {
+      "q": "Do I need to tip?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    },
+    {
+      "q": "What should I wear inside churches?",
+      "a": [
+        "Tłumaczenie w przygotowaniu."
+      ]
+    }
+  ]
+}

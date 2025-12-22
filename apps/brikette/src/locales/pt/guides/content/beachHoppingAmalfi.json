@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Beach‑Hopping on the Amalfi Coast",
+    "description": "Which beaches to combine in a day, access tips, and costs."
+  },
+  "linkLabel": "Roteiro de praias na Costa Amalfitana",
+  "intro": [
+    "Planeie um dia de praia a saltar entre enseadas, equilibrando viagens de ferry, vistas nas falésias e tempo para descansar na areia."
+  ],
+  "sections": [
+    {
+      "id": "morning",
+      "title": "Manhã: Positano a Fornillo",
+      "body": [
+        "Comece cedo na Spiaggia Grande para um mergulho rápido e siga o caminho costeiro até Fornillo por volta das 09:30 para encontrar o mar mais calmo.",
+        "Reserve espreguiçadeiras com antecedência se quiser sombra; caso contrário, leve um guarda-sol leve."
+      ]
+    },
+    {
+      "id": "midday",
+      "title": "Meio do dia: Amalfi ou Atrani",
+      "body": [
+        "Apanhe um ferry no fim da manhã para Amalfi, almoce no cais e nade na praia da vila ou na pequena enseada de Atrani.",
+        "Guarde as mochilas no depósito de Amalfi para explorar de mãos livres."
+      ]
+    },
+    {
+      "id": "evening",
+      "title": "Fim de tarde: banho ao pôr do sol",
+      "body": [
+        "Termine em Laurito ou Arienzo para vistas douradas; ambas voltadas a oeste, com luz quente e menos gente depois das 17:00.",
+        "Apanhe o último ferry ou reserve um táxi de regresso para evitar subidas no escuro."
+      ]
+    }
+  ],
+  "tips": [
+    "Leve uma toalha de secagem rápida e muda de roupa para permanecer confortável nos ferries.",
+    "Prepare snacks e pelo menos 1 L de água — os quiosques de praia podem esgotar nos dias mais concorridos."
+  ],
+  "faqs": [
+    {
+      "q": "Preciso reservar espreguiçadeiras?",
+      "a": [
+        "Sim, em julho e agosto. Contacte os beach clubs por WhatsApp no dia anterior para garantir as primeiras filas."
+      ]
+    },
+    {
+      "q": "Posso levar comida?",
+      "a": [
+        "A maioria das zonas gratuitas permite piqueniques. Os beach clubs aceitam snacks pequenos, mas preferem que compre bebidas no bar."
+      ]
+    }
+  ]
+}

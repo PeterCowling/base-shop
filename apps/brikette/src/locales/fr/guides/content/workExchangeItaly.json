@@ -1,0 +1,54 @@
+{
+  "seo": {
+    "title": "Échange de travail/volontariat dans les auberges italiennes",
+    "description": "Comprendre les programmes work exchange : rôles, heures, légalité et critères pour évaluer une offre."
+  },
+  "linkLabel": "Échange de travail/volontariat dans les auberges italiennes",
+  "intro": [
+    "Envie d'un échange travail-logement en Italie ? Comprenez l'organisation en auberge ou à la ferme, les formalités et comment choisir un programme sérieux."
+  ],
+  "sections": [
+    {
+      "id": "expect",
+      "title": "À quoi s'attendre",
+      "body": [
+        "La plupart des échanges demandent 20 à 25 heures de ménage, aide réception ou animation sociale contre lit et petit-déjeuner.",
+        "Les rotations s'étalent généralement sur cinq jours, laissant deux jours entiers pour explorer. Faites confirmer les plannings par écrit avant de vous engager."
+      ]
+    },
+    {
+      "id": "vet",
+      "title": "Évaluer les hôtes",
+      "body": [
+        "Lisez les avis sur Workaway, Worldpackers et les groupes Facebook d'auberges. Recherchez des hôtes avec retours récents et tâches détaillées.",
+        "Demandez la configuration du logement (dortoir vs chambre), les couvre-feux et si les repas ou remises staff sont inclus."
+      ]
+    },
+    {
+      "id": "paperwork",
+      "title": "Formalités & règles",
+      "body": [
+        "Citoyens UE, UK, Canada, Australie et USA peuvent rester 90 jours en Schengen comme touristes — l'échange doit rester volontaire.",
+        "Souscrivez une assurance voyage couvrant bénévolat et travail informel ; certains hôtes demandent une décharge de responsabilité à l'arrivée."
+      ]
+    }
+  ],
+  "tips": [
+    "Planifiez un appel vidéo avec l'hôte pour clarifier les tâches et voir les lieux avant d'acheter vos billets.",
+    "Arrivez un jour plus tôt pour vous installer, apprendre les règles de la maison et vous caler avant votre premier shift."
+  ],
+  "faqs": [
+    {
+      "q": "Reçois-je de l'argent de poche ?",
+      "a": [
+        "La plupart des échanges italiens offrent seulement le gîte et le couvert. Certains donnent des pourboires pour le bar ou les excursions, mais considérez-les comme des bonus non garantis."
+      ]
+    },
+    {
+      "q": "Puis-je dépasser 90 jours en échange de travail ?",
+      "a": [
+        "Non. Respectez la limite Schengen sauf visa de travail ou étudiant. Préparez une sortie ou un ‘reset’ Schengen en conséquence."
+      ]
+    }
+  ]
+}

@@ -65,5 +65,20 @@
         "Von der Haltestelle »Chiesa Nuova« sind es ca. 80 Meter ohne Treppen."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Referenzbilder",
+    "items": [
+      {
+        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+        "alt": "SITA-Haltestelle Chiesa Nuova / Bar Internazionale in Positano",
+        "caption": "Haltestelle Bar Internazionale / Chiesa Nuova"
+      },
+      {
+        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+        "alt": "Treppen zum Haupteingang des Hostel Brikette",
+        "caption": "Eingangstreppen des Hostel Brikette"
+      }
+    ]
+  }
 }

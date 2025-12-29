@@ -5,21 +5,21 @@
   },
   "linkLabel": "Reseförsäkring för Amalfikusten",
   "intro": [
-    "Travel insurance basics for the Amalfi Coast: health, cancellations, electronics, and activity coverage."
+    "Grunderna för reseförsäkringar för Amalfikusten: hälsa, avbokningar, elektronik och aktivitetsskydd."
   ],
   "sections": [
     {
       "id": "coverage",
       "title": "Coverage essentials",
       "body": [
-        "Health/accident, cancellations/delays, and electronics; consider hiking coverage for the Path of the Gods."
+        "Hälsa/olycka, avbokningar/förseningar och elektronik; överväga vandring täckning för Path of the Gods."
       ]
     },
     {
       "id": "claims",
       "title": "Claims & docs",
       "body": [
-        "Keep receipts, police reports for theft, and confirmations of delays/cancellations; check deadlines and original/copy requirements."
+        "Spara kvitton, polisanmälningar för stöld och bekräftelser på förseningar/inställda; kontrollera deadlines och krav på original/kopia."
       ]
     }
   ],
@@ -27,7 +27,7 @@
     {
       "q": "Do I need special coverage for ferries?",
       "a": [
-        "Usually covered under general transport; weather-related delays/cancellations vary by policy — check the conditions."
+        "Vanligtvis omfattas av allmänna transporter; väderrelaterade förseningar/avbokningar varierar beroende på policy - kontrollera villkoren."
       ]
     }
   ]

@@ -5,7 +5,7 @@
   },
   "linkLabel": "Z Positano do Ravello: jak dojechać",
   "intro": [
-    "Positano → Ravello via Amalfi: buses all year; ferry + bus in season.",
+    "Positano → Ravello przez Amalfi: autobusy przez cały rok; prom + autobus w sezonie.",
     "Tłumaczenie w przygotowaniu."
   ],
   "toc": [
@@ -51,7 +51,7 @@
   "tipsTitle": "Tips",
   "tips": [
     "Tłumaczenie w przygotowaniu.",
-    "Wear comfortable shoes with grip for Ravello’s slopes and the walk between villas."
+    "Załóż wygodne buty z przyczepnością na stoki Ravello i spacer pomiędzy willami."
   ],
   "faqsTitle": "FAQs",
   "faqs": [
@@ -64,7 +64,7 @@
     {
       "q": "Can I combine Capri on the same day?",
       "a": [
-        "Possible but rushed—plan separate days so you actually enjoy both destinations."
+        "Możliwe, ale pospieszne — zaplanuj osobne dni, aby rzeczywiście cieszyć się obydwoma miejscami docelowymi."
       ]
     }
   ],
@@ -82,7 +82,7 @@
   },
   "fallback": {
     "intro": [
-      "Travel via Amalfi. In summer, ferries to Amalfi plus a quick bus up to Ravello can save time."
+      "Podróż przez Amalfi. Latem promy do Amalfi i szybki autobus do Ravello mogą zaoszczędzić czas."
     ],
     "toc": [
       {

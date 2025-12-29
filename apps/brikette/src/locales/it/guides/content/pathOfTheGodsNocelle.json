@@ -89,11 +89,26 @@
     "Il sentiero è esposto; evita le ore più calde durante luglio e agosto."
   ],
   "steps": [
-    { "name": "Compra i biglietti", "text": "Acquista i biglietti per Nocelle al Bar Internazionale prima di lasciare l'ostello." },
-    { "name": "Sali fino a Nocelle", "text": "Prendi il bus Montepertuso–Nocelle e resta a bordo finché fa manovra nel parcheggio." },
-    { "name": "Raggiungi il sentiero", "text": "Segui il percorso pedonale attraverso il paese, mantenendo la destra per trovare i cartelli del Sentiero degli Dei." },
-    { "name": "Escursione A/R", "text": "Cammina verso Colle Serra e torna indietro quando preferisci rientrare." },
-    { "name": "Torna a Positano", "text": "Ripercorri i tuoi passi fino alla fermata e viaggia di nuovo verso Bar Internazionale o Chiesa Nuova." }
+    {
+      "name": "Compra i biglietti",
+      "text": "Acquista i biglietti per Nocelle al Bar Internazionale prima di lasciare l'ostello."
+    },
+    {
+      "name": "Sali fino a Nocelle",
+      "text": "Prendi il bus Montepertuso–Nocelle e resta a bordo finché fa manovra nel parcheggio."
+    },
+    {
+      "name": "Raggiungi il sentiero",
+      "text": "Segui il percorso pedonale attraverso il paese, mantenendo la destra per trovare i cartelli del Sentiero degli Dei."
+    },
+    {
+      "name": "Escursione A/R",
+      "text": "Cammina verso Colle Serra e torna indietro quando preferisci rientrare."
+    },
+    {
+      "name": "Torna a Positano",
+      "text": "Ripercorri i tuoi passi fino alla fermata e viaggia di nuovo verso Bar Internazionale o Chiesa Nuova."
+    }
   ],
   "faqsTitle": "Domande frequenti",
   "faqs": [

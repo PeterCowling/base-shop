@@ -1,75 +1,75 @@
 {
   "seo": {
-    "title": "Bus back to Hostel Brikette from Laurito Beach",
-    "description": "Climb to the Laurito bus stop, ride the Amalfi Coast service to Chiesa Nuova, and finish with a short walk to Hostel Brikette."
+    "title": "العودة بالحافلة إلى هوستل بريكيت من شاطئ لوريتو",
+    "description": "اصعد إلى موقف حافلات لوريتو، اركب خدمة ساحل أمالفي إلى تشيزا نوفا، وأنهِ بمشية قصيرة إلى هوستل بريكيت."
   },
   "linkLabel": "Bus back from Laurito Beach",
   "intro": [
-    "Skip the full stair climb from Laurito by boarding the Amalfi Coast bus that stops beside the beach access road and runs back up to Chiesa Nuova.",
-    "Buy your return ticket in town before heading down to the cove — there is nowhere near Laurito to purchase one, and without it you'll need to take the shuttle boat back to Positano."
+    "تجنب تسلق الدرج بالكامل من لوريتو عبر ركوب حافلة ساحل أمالفي التي تتوقف بجوار طريق الوصول إلى الشاطئ وتصعد بك إلى تشيزا نوفا.",
+    "اشترِ تذكرة العودة من البلدة قبل النزول إلى الخليج — لا يوجد مكان قرب لوريتو لشرائها، وبدونها ستحتاج إلى قارب النقل للعودة إلى بوسيتانو."
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the Laurito bus stop",
+      "title": "اصعد إلى موقف حافلات لوريتو",
       "body": [
-        "Follow the stairs from the beach up to the coastal road and cross carefully to the uphill side.",
-        "Look for the blue-and-white SITA sign mounted on the metal pole and wait on the lay-by so the driver can see you."
+        "اتبع الدرج من الشاطئ إلى الطريق الساحلي واعبر بحذر إلى الجانب الصاعد.",
+        "ابحث عن لافتة SITA الزرقاء والبيضاء المثبتة على عمود معدني وانتظر في منطقة التوقف ليتمكن السائق من رؤيتك."
       ]
     },
     {
       "id": "board-the-bus",
-      "title": "Board the Amalfi Coast bus",
+      "title": "اصعد حافلة ساحل أمالفي",
       "body": [
-        "Flag the driver as the Amalfi- or Positano-bound coach approaches and have your validated ticket ready.",
-        "The ride covers roughly 4.1 kilometres (2.5 miles) with several village stops; hold on as the bus climbs the hairpins toward Positano."
+        "لوّح للسائق عند اقتراب الحافلة المتجهة إلى أمالفي أو بوسيتانو واحتفظ بتذكرتك المفعّلة جاهزة.",
+        "يغطي المسار حوالي 4.1 كيلومترات مع عدة محطات في القرى؛ تشبث جيداً بينما تتسلق الحافلة المنعطفات نحو بوسيتانو."
       ]
     },
     {
       "id": "arrive-chiesa-nuova",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "انزل عند بار إنترناسيونالي / تشيزا نوفا",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — it is the first major stop once you re-enter Positano.",
-        "Press the stop button in advance and step off beside the tabacchi corner opposite Hostel Brikette."
+        "استمع إلى الإعلان أو راقب كشك التبغ بار إنترناسيونالي — إنها أول محطة رئيسية عند دخول بوسيتانو.",
+        "اضغط زر التوقف مبكراً وانزل بجانب زاوية كشك التبغ المقابلة لهوستل بريكيت."
       ]
     },
     {
       "id": "final-steps",
-      "title": "Walk back to Hostel Brikette",
+      "title": "امشِ عائداً إلى هوستل بريكيت",
       "body": [
-        "Continue in the same direction as the bus for just over 100 metres (330 feet) along Viale Pasitea.",
-        "Take the staircase on your right to return directly to Hostel Brikette's main entrance."
+        "تابع في نفس اتجاه الحافلة لأكثر من 100 متر قليلاً على فيالي باسيتيّا.",
+        "خذ الدرج على يمينك لتعود مباشرة إلى المدخل الرئيسي لهوستل بريكيت."
       ]
     }
   ],
   "tipsTitle": "Bus tips",
   "tips": [
-    "The printed timetable lists Positano times, not Laurito; expect the Laurito stop about 10 minutes before the Positano Sponda arrival.",
-    "If you run out of tickets, use the Laurito shuttle boat back to Spiaggia Grande so you can buy more at the tabacchi before trying again.",
-    "Check our %LINK:beaches|Positano beaches overview% for more details on Laurito facilities and shuttle options."
+    "الجداول المطبوعة تعرض أوقات بوسيتانو وليس لوريتو؛ توقّع مرور الحافلة على لوريتو قبل وصولها بوسيتانو سبوندا بنحو 10 دقائق.",
+    "إذا نفدت التذاكر، استخدم قارب لوريتو إلى سبياجيا غراندي لتشتري المزيد من كشك التبغ قبل المحاولة مرة أخرى.",
+    "اطلع على %LINK:beaches|نظرة عامة على شواطئ بوسيتانو% لمزيد من التفاصيل حول مرافق لوريتو وخيارات القوارب."
   ],
   "faqs": [
     {
-      "q": "Where can I validate my Laurito bus ticket?",
+      "q": "أين يمكنني تفعيل تذكرة حافلة لوريتو؟",
       "a": [
-        "Validate SITA tickets before boarding using the machine on the bus or at the Chiesa Nuova tabacchi when you buy them.",
-        "If the validator is out of service, write the date and time on the ticket in pen to show inspectors."
+        "فعّل تذاكر SITA قبل الصعود باستخدام الجهاز في الحافلة أو في كشك تشيزا نوفا عند شرائها.",
+        "إذا كان الجهاز خارج الخدمة، اكتب التاريخ والوقت على التذكرة بالقلم لتُبرزها للمفتشين."
       ]
     },
     {
-      "q": "What if the bus back to Positano is full?",
+      "q": "ماذا لو كانت الحافلة العائدة إلى بوسيتانو ممتلئة؟",
       "a": [
-        "Buses can fill up after beach hours. Let the driver know you're waiting; if there's no room, wait for the next service, which usually arrives every 20–30 minutes in summer.",
-        "Alternatively, take the Laurito shuttle boat to Spiaggia Grande and connect with local buses from there."
+        "يمكن أن تمتلئ الحافلات بعد أوقات الشاطئ. أخبر السائق أنك تنتظر؛ إذا لم يكن هناك متسع فانتظر الخدمة التالية التي تصل عادة كل 20–30 دقيقة في الصيف.",
+        "بدلاً من ذلك، خذ قارب لوريتو إلى سبياجيا غراندي ثم واصل مع الحافلات المحلية من هناك."
       ]
     }
   ],
   "articleLead": {
     "scanHeading": "Scan to Share",
     "qrAlt": "QR code to share this guide",
-    "rideAlt": "Amalfi Coast bus en route from Laurito",
-    "rideCaption": "Ride from Laurito toward Positano",
-    "stopAlt": "Bar Internazionale / Chiesa Nuova bus stop",
-    "stopCaption": "Bar Internazionale / Chiesa Nuova stop"
+    "rideAlt": "حافلة ساحل أمالفي في الطريق من لوريتو",
+    "rideCaption": "رحلة من لوريتو باتجاه بوسيتانو",
+    "stopAlt": "موقف بار إنترناسيونالي / تشيزا نوفا",
+    "stopCaption": "موقف بار إنترناسيونالي / تشيزا نوفا"
   }
 }

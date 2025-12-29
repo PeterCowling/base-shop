@@ -9,11 +9,26 @@
     "Ce guide vous aide à rejoindre la crique en bus, à préparer votre sac comme un local et à profiter des plates-formes de baignade avant de retourner à Sorrente pour manger."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Pourquoi y aller" },
-    { "href": "#getting-there", "label": "S'y rendre" },
-    { "href": "#what-to-pack", "label": "Quoi emporter" },
-    { "href": "#swimming", "label": "Baignade & sécurité" },
-    { "href": "#pair-it", "label": "Associer avec Sorrente" }
+    {
+      "href": "#why-go",
+      "label": "Pourquoi y aller"
+    },
+    {
+      "href": "#getting-there",
+      "label": "S'y rendre"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Quoi emporter"
+    },
+    {
+      "href": "#swimming",
+      "label": "Baignade & sécurité"
+    },
+    {
+      "href": "#pair-it",
+      "label": "Associer avec Sorrente"
+    }
   ],
   "sections": [
     {

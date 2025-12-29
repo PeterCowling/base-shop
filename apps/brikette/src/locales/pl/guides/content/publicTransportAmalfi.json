@@ -12,8 +12,8 @@
       "id": "buses",
       "title": "SITA buses",
       "body": [
-        "Buy tickets at tobacconists/newstands before boarding and validate on the bus.",
-        "Expect queues at peak times. Start early and consider a ferry as a crowd bypass."
+        "Kup bilety w sklepach tytoniowych/kioskach przed wejściem na pokład i kasuj w autobusie.",
+        "Należy spodziewać się kolejek w godzinach szczytu. Zacznij wcześnie i rozważ prom jako obejście tłumu."
       ]
     },
     {
@@ -29,15 +29,15 @@
       "title": "Trains (to gateways)",
       "body": [
         "Tłumaczenie w przygotowaniu.",
-        "Intercity legs save time on Rome/Naples/Salerno routing; local Circumvesuviana serves Sorrento."
+        "Odcinki międzymiastowe oszczędzają czas na trasach Rzym/Neapol/Salerno; lokalna Circumvesuviana obsługuje Sorrento."
       ]
     },
     {
       "id": "timing",
       "title": "Timing & strategy",
       "body": [
-        "Leave before 09:00 to beat queues; for sunset returns, prefer ferries when seas are calm.",
-        "Carry small change for tickets and a hat/water for exposed stops."
+        "Leave before 09:00 to beat queues; w przypadku powrotów o zachodzie słońca preferuj promy, gdy morze jest spokojne.",
+        "Zabierz ze sobą drobne drobne na bilety i kapelusz/wodę na odsłonięte przystanki."
       ]
     }
   ],
@@ -45,7 +45,7 @@
     {
       "q": "Can I bring luggage on buses?",
       "a": [
-        "Allowed but not ideal at peak; consider ferries or porters for heavy bags."
+        "Dozwolone, ale nie idealne w szczycie; rozważ promy lub tragarzy do ciężkich toreb."
       ]
     },
     {

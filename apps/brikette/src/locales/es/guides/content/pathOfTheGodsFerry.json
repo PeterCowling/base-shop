@@ -116,12 +116,30 @@
     "Las tardes de verano son expuestas y calurosas; si pierdes el ferry de la mañana, retrasa la salida hasta última hora en lugar de caminar bajo el sol más fuerte."
   ],
   "steps": [
-    { "name": "Camina al puerto", "text": "Sal de Hostel Brikette, compra billetes de autobús en Bar Internazionale y baja hasta Spiaggia Grande." },
-    { "name": "Compra los billetes del ferry", "text": "Elige la próxima salida de Travelmar o Lucibello a Amalfi y haz fila 15 minutos antes." },
-    { "name": "Navega a Amalfi", "text": "Disfruta de los 25 minutos de travesía y dirígete directamente a las dársenas junto al puerto." },
-    { "name": "Autobús a Bomerano", "text": "Viaja en el SITA marcado Agerola/Bomerano y sigue la calle lateral hasta el inicio del sendero." },
-    { "name": "Camina hasta Nocelle", "text": "Sigue las marcas del Sentiero degli Dei a lo largo de la cresta hasta que empiece la pasarela de hormigón." },
-    { "name": "Vuelve a Positano", "text": "Toma el autobús de Nocelle de regreso al Bar Internazionale o baja por la carretera si los autobuses van llenos." }
+    {
+      "name": "Camina al puerto",
+      "text": "Sal de Hostel Brikette, compra billetes de autobús en Bar Internazionale y baja hasta Spiaggia Grande."
+    },
+    {
+      "name": "Compra los billetes del ferry",
+      "text": "Elige la próxima salida de Travelmar o Lucibello a Amalfi y haz fila 15 minutos antes."
+    },
+    {
+      "name": "Navega a Amalfi",
+      "text": "Disfruta de los 25 minutos de travesía y dirígete directamente a las dársenas junto al puerto."
+    },
+    {
+      "name": "Autobús a Bomerano",
+      "text": "Viaja en el SITA marcado Agerola/Bomerano y sigue la calle lateral hasta el inicio del sendero."
+    },
+    {
+      "name": "Camina hasta Nocelle",
+      "text": "Sigue las marcas del Sentiero degli Dei a lo largo de la cresta hasta que empiece la pasarela de hormigón."
+    },
+    {
+      "name": "Vuelve a Positano",
+      "text": "Toma el autobús de Nocelle de regreso al Bar Internazionale o baja por la carretera si los autobuses van llenos."
+    }
   ],
   "faqsTitle": "Preguntas frecuentes",
   "faqs": [

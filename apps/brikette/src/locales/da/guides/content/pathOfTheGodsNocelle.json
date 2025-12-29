@@ -89,11 +89,26 @@
     "Stien er eksponeret; undgå de varmeste timer i juli og august."
   ],
   "steps": [
-    { "name": "Køb busbilletter", "text": "Køb Nocelle-billetter hos Bar Internazionale, før du forlader hostellet." },
-    { "name": "Kør til Nocelle", "text": "Tag Montepertuso–Nocelle-bussen og bliv på, til den vender ved parkeringspladsen." },
-    { "name": "Find stien", "text": "Følg gangstien gennem byen, hold til højre og find skiltene til Sentiero degli Dei." },
-    { "name": "Gå ud og tilbage", "text": "Gå mod Colle Serra og vend om, når du er klar til turen tilbage." },
-    { "name": "Tilbage til Positano", "text": "Gå tilbage til busstoppet og tag turen ned til Bar Internazionale eller Chiesa Nuova." }
+    {
+      "name": "Køb busbilletter",
+      "text": "Køb Nocelle-billetter hos Bar Internazionale, før du forlader hostellet."
+    },
+    {
+      "name": "Kør til Nocelle",
+      "text": "Tag Montepertuso–Nocelle-bussen og bliv på, til den vender ved parkeringspladsen."
+    },
+    {
+      "name": "Find stien",
+      "text": "Følg gangstien gennem byen, hold til højre og find skiltene til Sentiero degli Dei."
+    },
+    {
+      "name": "Gå ud og tilbage",
+      "text": "Gå mod Colle Serra og vend om, når du er klar til turen tilbage."
+    },
+    {
+      "name": "Tilbage til Positano",
+      "text": "Gå tilbage til busstoppet og tag turen ned til Bar Internazionale eller Chiesa Nuova."
+    }
   ],
   "faqsTitle": "Ofte stillede spørgsmål",
   "faqs": [

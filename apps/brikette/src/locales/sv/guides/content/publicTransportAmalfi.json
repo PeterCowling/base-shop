@@ -5,39 +5,39 @@
   },
   "linkLabel": "Guide till kollektivtrafiken på Amalfikusten",
   "intro": [
-    "How to get around the Amalfi Coast without a car: buses for year‑round reliability, ferries in summer, and trains for long hops."
+    "Hur man tar sig runt Amalfikusten utan bil: bussar för pålitlighet året runt, färjor på sommaren och tåg för långa hopp."
   ],
   "sections": [
     {
       "id": "buses",
       "title": "SITA buses",
       "body": [
-        "Buy tickets at tobacconists/newstands before boarding and validate on the bus.",
-        "Expect queues at peak times. Start early and consider a ferry as a crowd bypass."
+        "Köp biljetter på tobaksbutiker/tidningskiosker innan du går ombord och validera på bussen.",
+        "Räkna med köer vid rusningstid. Börja tidigt och betrakta en färja som en förbifart av folkmassan."
       ]
     },
     {
       "id": "ferries",
       "title": "Ferries (seasonal)",
       "body": [
-        "Fast and scenic between main towns from spring to autumn; weather cancellations are possible.",
-        "Check live schedules on operator sites and allow buffer for last boats of the day."
+        "Snabbt och naturskönt mellan huvudstäderna från vår till höst; väderavbokningar är möjliga.",
+        "Kontrollera livescheman på operatörsplatser och tillåt buffert för dagens sista båtar."
       ]
     },
     {
       "id": "trains",
       "title": "Trains (to gateways)",
       "body": [
-        "Use Trenitalia/Italo to reach Sorrento/Salerno/Naples, then connect by bus or ferry.",
-        "Intercity legs save time on Rome/Naples/Salerno routing; local Circumvesuviana serves Sorrento."
+        "Använd Trenitalia/Italo för att nå Sorrento/Salerno/Neapel och anslut sedan med buss eller färja.",
+        "Intercity-sträckor sparar tid på Rom/Neapel/Salerno-rutt; lokala Circumvesuviana serverar Sorrento."
       ]
     },
     {
       "id": "timing",
       "title": "Timing & strategy",
       "body": [
-        "Leave before 09:00 to beat queues; for sunset returns, prefer ferries when seas are calm.",
-        "Carry small change for tickets and a hat/water for exposed stops."
+        "Lämna före 09:00 för att slå köerna; för solnedgången återvänder, föredrar färjor när havet är lugnt.",
+        "Ta med småpengar för biljetter och hatt/vatten för utsatta hållplatser."
       ]
     }
   ],
@@ -45,13 +45,13 @@
     {
       "q": "Can I bring luggage on buses?",
       "a": [
-        "Allowed but not ideal at peak; consider ferries or porters for heavy bags."
+        "Tillåtet men inte idealiskt vid topp; överväga färjor eller bärare för tunga väskor."
       ]
     },
     {
       "q": "Are there night services?",
       "a": [
-        "Limited; check the last bus/ferry well ahead to avoid expensive taxis."
+        "Begränsad; kolla sista bussen/färjan i god tid för att undvika dyra taxibilar."
       ]
     }
   ]

@@ -5,8 +5,8 @@
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
-    "Follow this route to travel from Hostel Brikette to Fiordo di Furore on the SITA bus without missing a stop or arriving unprepared.",
-    "The fiord has no ticketing facilities or shops, so these steps cover tickets, the nearest bus stop, and the staircase that leads down to the beach."
+    "このルートに従って、SITA バスでホステル ブリケットからフィオルド ディ フローレまで移動すると、停留所に乗り遅れたり、準備ができていない状態で到着したりすることはありません。",
+    "フィヨルドにはチケット販売施設やショップがないため、チケット、最寄りのバス停、ビーチに続く階段をこれらの手順でカバーします。"
   ],
   "warningsTitle": "Before you leave the hostel",
   "warnings": [
@@ -54,7 +54,7 @@
       "body": [
         "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
         "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
-        "Use the same staircase to return to the road when you are ready to leave."
+        "出発する準備ができたら、同じ階段を使用して道路に戻ります。"
       ]
     }
   ],
@@ -62,27 +62,27 @@
   "tips": [
     "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
     "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
-    "Save the %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette return guide% for your trip back.",
+    "帰りの際に備えて、%LINK:fiordoDiFuroreBusReturn|フィオルド ディ フローレ → ホステル ブリケットの往復ガイド%を保存してください。",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
   "faqsTitle": "Common questions",
   "faqs": [
     {
-      "q": "Do I really need to buy a return ticket in advance?",
+      "q": "本当に往復の切符を事前に購入する必要があるのでしょうか？",
       "a": [
-        "Yes. Drivers expect validated SITA tickets and there are no machines or shops at the beach, so buy both legs in Positano before boarding."
+        "はい。運転手は有効な SITA チケットを期待しており、ビーチには自動販売機や売店がないため、乗車前にポジターノで両脚を購入してください。"
       ]
     },
     {
-      "q": "What should I do if the bus is full when it arrives?",
+      "q": "到着時にバスが満席の場合はどうすればよいですか?",
       "a": [
-        "Wait for the next scheduled service and keep an eye on the timetable — during peak season it is normal for one or two buses to pass before space opens up."
+        "次の定期便を待ち、時刻表に注意してください。ピークシーズンには、スペースが空く前に 1 台か 2 台のバスが通過するのが通常です。"
       ]
     },
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "After the bus crosses the arched bridge over the fiord it will stop beside the crash barrier. Watch for the bridge views, listen for the driver, and use Google Maps’ \"JH73+PQ Furore\" pin as a backup."
+        "バスはフィヨルドにかかるアーチ型の橋を渡ると、衝突防止柵の横で止まります。橋の景色に注意し、ドライバーの声に耳を傾け、Google マップの「JH73+PQ Furore」ピンをバックアップとして使用してください。"
       ]
     }
   ]

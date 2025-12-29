@@ -4,7 +4,10 @@
     "description": "Pontos útvonal a hosteltől a Sentiero degli Dei kezdőpontjaihoz, közlekedési opciókkal és biztonsági tanácsokkal."
   },
   "linkLabel": "Az Isteni ösvény Brikette-ből",
-  "intro": "A Sentiero degli Dei (\"az istenek ösvénye\") Olaszország egyik legszebb tengerparti túrája. A hosteltől a SITA busszal eléred a klasszikus bomeranói rajtot vagy befejezheted Nocellében.",
+  "intro": [
+    "A Sentiero degli Dei (Az istenek ösvénye) sziklák tetején lévő teraszokat, gesztenyés ligeteket és elsöprő kilátást nyújt az Amalfi-partra. A Hostel Brikette-től a helyi kompok és a SITA buszok kombinálásával érheti el az ösvényt anélkül, hogy egy drága túrához csatlakozna.",
+    "Három fő megközelítés indul a szállótól: vitorlázás Amalfiba és buszozás Bomeranóba, a buszhálózat végigjárása, vagy az átszállások kihagyása és a Nocelle-ből való ki- és visszatúrázás. Használja ezt az áttekintést annak eldöntésére, hogy melyik részletes útvonal felel meg az időnek, a költségvetésnek és a magassági kényelemnek."
+  ],
   "sections": [
     {
       "id": "timing",
@@ -102,6 +105,33 @@
     "essentials": "Alapinformációk",
     "costs": "Tipikus költségek",
     "faqs": "GYIK",
-    "gallery": "Fotógaléria"
-  }
+    "gallery": "Fotógaléria",
+    "tips": "Smart timing"
+  },
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Július-augusztusban induljon 09:00 előtt, vagy törekedjen az aranyórákra tavasszal és ősszel a hűvösebb hőmérséklet és a lágyabb fény érdekében.",
+    "Kerülje el az 1700 lépéses ereszkedést Positanóba, hacsak nem friss a térd – a Montepertuso lépcsőn lemenni egy hosszú túra után brutális.",
+    "Használjon könnyű napozótáskát, és tartsa összehajtva a túrabotokat, amíg el nem éri a meredekebb lépcsőket."
+  ],
+  "faqs": [
+    {
+      "q": "Mennyi ideig tart a túra háztól házig?",
+      "a": [
+        "Költségvetés 3-5 óra szállítással együtt. A komp útvonala a leghosszabb; a Nocelle ki-hátra belefér egy fél napba."
+      ]
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": [
+        "Igen, feltéve, hogy stabilan áll a lábán, és kényelmesen tartja magát a magasságban. Nincsenek technikai emelkedők, csak egyenletes emelkedők és ereszkedések."
+      ]
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": [
+        "Váltson át a buszra Amalfin keresztül, vagy utazzon közvetlenül Nocelle-be. Mindig tartson tartalék buszjegyet, hogy alkalmazkodni tudjon a tengeri vagy időjárási viszonyokhoz."
+      ]
+    }
+  ]
 }

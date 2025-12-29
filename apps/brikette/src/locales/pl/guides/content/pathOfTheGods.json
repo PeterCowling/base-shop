@@ -4,7 +4,10 @@
     "description": "Dokładna trasa z hostelu do wejść na Sentiero degli Dei, opcje dojazdu i wskazówki dotyczące bezpieczeństwa."
   },
   "linkLabel": "Ścieżka Bogów z Hostelu Brikette",
-  "intro": "Sentiero degli Dei („Ścieżka Bogów”) to jeden z najbardziej widowiskowych szlaków nadmorskich we Włoszech. Z hostelu dotrzesz zarówno na klasyczny start w Bomerano, jak i na finisz w Nocelle, korzystając z autobusów SITA.",
+  "intro": [
+    "Sentiero degli Dei (Ścieżka Bogów) łączy tarasy na szczytach klifów, gaje kasztanowe i przepiękne widoki na wybrzeże Amalfi. Z hostelu Brikette można dotrzeć na szlak, korzystając z lokalnych promów i autobusów SITA, bez konieczności uczestniczenia w drogiej wycieczce.",
+    "Z hostelu zaczynają się trzy główne możliwości: rejs do Amalfi i przejazd autobusem do Bomerano, przejazd całą trasą siecią autobusową lub pominięcie przesiadek i wycieczka tam i z powrotem z Nocelle. Skorzystaj z tego przeglądu, aby zdecydować, która szczegółowa trasa odpowiada Twojemu czasowi, budżetowi i wygodzie ze względu na wysokość."
+  ],
   "sections": [
     {
       "id": "timing",
@@ -102,6 +105,33 @@
     "essentials": "Niezbędnik",
     "costs": "Typowe koszty",
     "faqs": "FAQ",
-    "gallery": "Galeria zdjęć"
-  }
+    "gallery": "Galeria zdjęć",
+    "tips": "Smart timing"
+  },
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Wyjedź przed 09:00 w lipcu i sierpniu lub staraj się cieszyć złotymi godzinami wiosną i jesienią, gdy panuje niższa temperatura i łagodniejsze światło.",
+    "Unikaj zejścia do Positano liczącego 1700 stopni, chyba że masz świeże kolana – zejście po schodach Montepertuso po długiej wędrówce jest brutalne.",
+    "Użyj lekkiego plecaka dziennego i trzymaj kijki trekkingowe złożone, aż dojdziesz do bardziej stromych schodów."
+  ],
+  "faqs": [
+    {
+      "q": "Jak długo trwa wędrówka od drzwi do drzwi?",
+      "a": [
+        "Budżet 3–5 godzin łącznie z transportem. Trasa promu jest najdłuższa; podróż Nocelle tam i z powrotem zajmuje pół dnia."
+      ]
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": [
+        "Tak, pod warunkiem, że stoisz stabilnie na nogach i czujesz się komfortowo na wysokości. Nie ma technicznych podjazdów, są tylko ciągłe podjazdy i zjazdy."
+      ]
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": [
+        "Przejdź do autobusu przez Amalfi lub jedź bezpośrednio do Nocelle. Zawsze miej zapasowy bilet autobusowy, aby móc dostosować się do warunków morskich i pogodowych."
+      ]
+    }
+  ]
 }

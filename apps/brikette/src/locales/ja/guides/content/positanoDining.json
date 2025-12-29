@@ -9,9 +9,18 @@
     "このガイドを活用して、夕日を眺めながらの贅沢ディナーやファーム・トゥ・テーブル体験、坂をあまり登らずに済む気軽な食事を計画してください。"
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "必食のディナー体験" },
-    { "href": "#near-hostel", "label": "Hostel Brikette周辺のレストラン" },
-    { "href": "#destination-dinners", "label": "足を延ばす価値のあるディナー" }
+    {
+      "href": "#signature-experiences",
+      "label": "必食のディナー体験"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Hostel Brikette周辺のレストラン"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "足を延ばす価値のあるディナー"
+    }
   ],
   "sections": [
     {

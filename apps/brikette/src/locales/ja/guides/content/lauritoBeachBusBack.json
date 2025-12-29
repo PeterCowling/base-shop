@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Bus back to Hostel Brikette from Laurito Beach",
+    "title": "ラウリトビーチからバスでホステル ブリケットに戻ります",
     "description": "Climb to the Laurito bus stop, ride the Amalfi Coast service to Chiesa Nuova, and finish with a short walk to Hostel Brikette."
   },
   "linkLabel": "Bus back from Laurito Beach",
@@ -46,21 +46,21 @@
   "tips": [
     "The printed timetable lists Positano times, not Laurito; expect the Laurito stop about 10 minutes before the Positano Sponda arrival.",
     "If you run out of tickets, use the Laurito shuttle boat back to Spiaggia Grande so you can buy more at the tabacchi before trying again.",
-    "Check our %LINK:beaches|Positano beaches overview% for more details on Laurito facilities and shuttle options."
+    "ラウリトの施設とシャトル オプションの詳細については、%LINK:ビーチ|ポジターノ ビーチの概要%をご確認ください。"
   ],
   "faqs": [
     {
-      "q": "Where can I validate my Laurito bus ticket?",
+      "q": "ラウリトのバスチケットはどこで確認できますか?",
       "a": [
-        "Validate SITA tickets before boarding using the machine on the bus or at the Chiesa Nuova tabacchi when you buy them.",
-        "If the validator is out of service, write the date and time on the ticket in pen to show inspectors."
+        "SITA チケットを購入する場合は、乗車前にバス内の機械を使用するか、Chiesa Nuova tabacchi で有効化してください。",
+        "バリデーターが稼働していない場合は、チケットにペンで日付と時刻を書き込み、検査員に提示してください。"
       ]
     },
     {
-      "q": "What if the bus back to Positano is full?",
+      "q": "ポジターノに戻るバスが満席の場合はどうなりますか?",
       "a": [
-        "Buses can fill up after beach hours. Let the driver know you're waiting; if there's no room, wait for the next service, which usually arrives every 20–30 minutes in summer.",
-        "Alternatively, take the Laurito shuttle boat to Spiaggia Grande and connect with local buses from there."
+        "バスはビーチアワーを過ぎると満席になることがあります。運転手に待っていることを伝えてください。空きがない場合は、次の便を待ちます。夏期は通常 20 ～ 30 分ごとに到着します。",
+        "あるいは、ラウリトのシャトルボートでスピアッジャ・グランデまで行き、そこからローカルバスに乗り継ぎます。"
       ]
     }
   ],
@@ -69,7 +69,7 @@
     "qrAlt": "QR code to share this guide",
     "rideAlt": "Amalfi Coast bus en route from Laurito",
     "rideCaption": "Ride from Laurito toward Positano",
-    "stopAlt": "Bar Internazionale / Chiesa Nuova bus stop",
+    "stopAlt": "バール インテルナツィオナーレ / ヌオーヴァ教会バス停",
     "stopCaption": "Bar Internazionale / Chiesa Nuova stop"
   }
 }

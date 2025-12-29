@@ -65,5 +65,20 @@
         "Bản dịch đang được chuẩn bị."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Hình tham khảo",
+    "items": [
+      {
+        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+        "alt": "Điểm dừng SITA Chiesa Nuova / Bar Internazionale ở Positano",
+        "caption": "Điểm dừng Bar Internazionale / Chiesa Nuova"
+      },
+      {
+        "src": "/img/directions/naples-airport-positano-bus-hostel-entry-steps.png",
+        "alt": "Cầu thang lên lối vào chính Hostel Brikette",
+        "caption": "Cầu thang lối vào Hostel Brikette"
+      }
+    ]
+  }
 }

@@ -65,5 +65,20 @@
         "From ‘Chiesa Nuova’ stop, it’s ~80 m with no staircases."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Referansebilder",
+    "items": [
+      {
+        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+        "alt": "SITA-holdeplassen Chiesa Nuova / Bar Internazionale i Positano",
+        "caption": "Bar Internazionale / Chiesa Nuova-holdeplass"
+      },
+      {
+        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+        "alt": "Trappene opp til hovedinngangen til Hostel Brikette",
+        "caption": "Inngangstrappen til Hostel Brikette"
+      }
+    ]
+  }
 }

@@ -5,22 +5,22 @@
   },
   "linkLabel": "Vad du ska packa till Amalfikusten",
   "intro": [
-    "Seasonal packing checklist for Positano: stairs and sun define smart choices."
+    "Säsongsbetonad packningschecklista för Positano: trappor och sol definierar smarta val."
   ],
   "sections": [
     {
       "id": "footwear",
       "title": "Footwear",
       "body": [
-        "Grippy shoes for stairs and hikes; sandals with tread for beaches.",
-        "Avoid slick soles — lanes can be steep and polished."
+        "Gripande skor för trappor och vandringar; sandaler med slitbana för stränder.",
+        "Undvik hala sulor – banorna kan vara branta och polerade."
       ]
     },
     {
       "id": "layers",
       "title": "Layers & sun",
       "body": [
-        "Light layers for evenings; hat and SPF for midday walks.",
+        "Lätt lager för kvällar; mössa och SPF för middagspromenader.",
         "A light rain jacket in shoulder months."
       ]
     },
@@ -28,26 +28,26 @@
       "id": "bags",
       "title": "Bags & luggage",
       "body": [
-        "Backpacks beat big suitcases for stairs; keep valuables close.",
-        "Bring a refillable bottle; markets sell large bottles for refills."
+        "Ryggsäckar slår stora resväskor för trappor; hålla värdesaker nära.",
+        "Ta med en påfyllningsbar flaska; marknader säljer stora flaskor för påfyllning."
       ]
     }
   ],
   "tips": [
-    "Skip heavy hard-shell suitcases if your stay involves long stair climbs.",
-    "Carry small euro notes for beach umbrellas, buses, and quick snacks."
+    "Hoppa över tunga resväskor med hårda skal om din vistelse innebär långa trappor.",
+    "Bär små eurosedlar för parasoller, bussar och snabba snacks."
   ],
   "faqs": [
     {
       "q": "Can I buy everything locally?",
       "a": [
-        "Yes, but peak-season prices jump—pack essentials to avoid markups."
+        "Ja, men högsäsongspriserna stiger – packa det viktigaste för att undvika påslag."
       ]
     },
     {
       "q": "Do I need to bring a bathrobe?",
       "a": [
-        "Most accommodations supply towels; pack a lightweight cover-up only if you prefer one for the beach."
+        "De flesta boenden tillhandahåller handdukar; packa bara en lätt cover-up om du föredrar en för stranden."
       ]
     }
   ]

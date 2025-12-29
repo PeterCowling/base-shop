@@ -4,7 +4,10 @@
     "description": "Preparación para el Sentiero degli Dei: cómo llegar desde el Hostel Brikette, qué llevar, horarios recomendados y pasos clave de la ruta."
   },
   "linkLabel": "Sendero de los Dioses desde el hostel",
-  "intro": "El Sentiero degli Dei (“Path of the Gods”) es una de las rutas costeras más espectaculares de Italia. Desde el Hostel Brikette puedes llegar al inicio clásico en Bomerano o terminar en Nocelle usando el autobús SITA.",
+  "intro": [
+    "El Sentiero degli Dei (Camino de los Dioses) reúne terrazas en lo alto de acantilados, castaños y vistas panorámicas de la costa de Amalfi. Desde el Hostel Brikette puedes llegar al sendero combinando ferries locales y autobuses SITA sin tener que realizar un recorrido costoso.",
+    "Desde el albergue parten tres opciones principales: navegar hasta Amalfi y viajar en autobús hasta Bomerano, viajar en la red de autobuses durante todo el camino o saltarse los traslados y hacer una caminata de ida y vuelta desde Nocelle. Utilice esta descripción general para decidir qué ruta detallada se adapta a su tiempo, presupuesto y comodidad con las alturas."
+  ],
   "sections": [
     {
       "id": "mejor-momento",
@@ -102,6 +105,33 @@
     "essentials": "Imprescindibles",
     "costs": "Costes aproximados",
     "faqs": "Preguntas frecuentes",
-    "gallery": "Galería de fotos"
-  }
+    "gallery": "Galería de fotos",
+    "tips": "Smart timing"
+  },
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Salga antes de las 09:00 en julio y agosto o busque las horas doradas en primavera y otoño para disfrutar de temperaturas más frescas y una luz más suave.",
+    "Evite el descenso de 1.700 escalones hasta Positano a menos que tenga las rodillas frescas; bajar las escaleras de Montepertuso después de una larga caminata es brutal.",
+    "Use una mochila liviana y mantenga los bastones de trekking doblados hasta llegar a escaleras más empinadas."
+  ],
+  "faqs": [
+    {
+      "q": "¿Cuánto dura la caminata puerta a puerta?",
+      "a": [
+        "Presupuesto de 3 a 5 horas, incluido el transporte. La ruta del ferry es la más larga; El viaje de ida y vuelta de Nocelle dura medio día."
+      ]
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": [
+        "Sí, siempre que se mantenga firme y se sienta cómodo con las alturas. No hay subidas técnicas, sólo subidas y bajadas constantes."
+      ]
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": [
+        "Cambie al autobús vía Amalfi o viaje directamente a Nocelle. Lleva siempre un billete de autobús de repuesto para poder adaptarte a las condiciones del mar o del clima."
+      ]
+    }
+  ]
 }

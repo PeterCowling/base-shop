@@ -9,9 +9,18 @@
     "Используйте этот гид, чтобы спланировать ужины на закате, farm-to-table меню и быстрые перекусы, когда хочется вкусно поесть без долгого подъёма."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Особенные гастрономические впечатления" },
-    { "href": "#near-hostel", "label": "Рестораны рядом с Hostel Brikette" },
-    { "href": "#destination-dinners", "label": "Ужины, ради которых стоит съездить" }
+    {
+      "href": "#signature-experiences",
+      "label": "Особенные гастрономические впечатления"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Рестораны рядом с Hostel Brikette"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Ужины, ради которых стоит съездить"
+    }
   ],
   "sections": [
     {

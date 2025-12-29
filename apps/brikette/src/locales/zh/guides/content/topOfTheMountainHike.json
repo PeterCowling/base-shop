@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "Top of the Mountain Hike from Hostel Brikette",
-    "description": "Reach Monte Sant'Angelo, the Amalfi Coast's highest point, with these directions, prep tips, and warnings."
+    "title": "从 Hostel Brikette 出发的山顶徒步旅行",
+    "description": "带着这些指示、准备提示和警告，到达阿马尔菲海岸的最高点圣天使山。"
   },
-  "linkLabel": "Top of the Mountain hike from Hostel Brikette",
+  "linkLabel": "从 Hostel Brikette 出发的山顶徒步旅行",
   "intro": [
     "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
     "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
@@ -40,51 +40,51 @@
   ],
   "essentialsTitle": "Essentials",
   "essentials": [
-    "At least 2 litres of water per person plus salty snacks; there are no reliable refills after Santa Maria del Castello.",
-    "Solid hiking shoes with grip—sections of the upper trail are rocky, loose, and exposed.",
-    "Sun protection and layers for the summit; wind can whip across the ridge even on warm days."
+    "每人至少2升水加上咸味零食；圣玛丽亚德尔城堡之后没有可靠的补充。",
+    "坚固的徒步鞋，具有抓地力——上层步道的部分是岩石、松散且暴露的。",
+    "山顶的防晒和分层；即使在温暖的日子里，风也能吹过山脊。"
   ],
   "typicalCostsTitle": "Typical costs",
   "typicalCosts": [
-    "Trail access is free; budget €5–€10 if you plan to reward yourself with a drink or snack in Santa Maria del Castello.",
-    "Return SITA bus tickets or ferry fares if you decide to descend via another village instead of hiking all the way back."
+    "步道免费；如果您打算在 Santa Maria del Castello 用饮料或小吃奖励自己，预算为 5 欧元至 10 欧元。",
+    "如果您决定途经另一个村庄而不是一路徒步返回，请返还 SITA 巴士票或渡轮票价。"
   ],
   "tipsTitle": "Smart timing",
   "tips": [
-    "Start at dawn in summer to avoid climbing under peak heat; late autumn and spring afternoons offer softer light without the scorching sun.",
-    "Check the forecast for storms—cloud cover can erase the views and wet rock makes the summit steps slippery.",
-    "Let someone at the hostel know your plan and expected return time before you set off."
+    "夏季黎明时分出发，避免高峰期登山；深秋和春天的午后光线较柔和，没有烈日。",
+    "查看暴风雨预报——云层遮蔽了视野，潮湿的岩石使山顶台阶变得湿滑。",
+    "在出发前让旅舍的工作人员了解您的计划和预计返回时间。"
   ],
   "warningsTitle": "When to reconsider",
   "warnings": [
-    "Skip the hike if you lack mountain experience or strong fitness; the sustained elevation gain is punishing and there are few bailout points.",
-    "Avoid the route if heights unsettle you—exposed ledges and steep drops challenge even confident hikers.",
-    "Do not attempt the summit during peak summer afternoons when heat and the need to carry extra water add to the strain."
+    "如果您缺乏登山经验或身体素质不佳，请跳过徒步；持续的海拔上升是一种惩罚，而且几乎没有救援点。",
+    "如果高度让您感到不安，请避开这条路线——暴露的壁架和陡峭的山坡即使是自信的徒步旅行者也会感到挑战。",
+    "不要在夏季高峰的下午尝试登顶，因为炎热和需要携带额外的水会增加压力。"
   ],
   "steps": [
     {
       "name": "Climb to Santa Maria del Castello",
-      "text": "Use the hostel's route to Santa Maria del Castello; reaching the square means you have completed roughly a third of the elevation."
+      "text": "使用旅舍的路线前往圣玛丽亚德尔城堡（Santa Maria del Castello）；到达正方形意味着您已经完成了大约三分之一的高度。"
     },
     {
       "name": "Join the mountain trail",
-      "text": "From the village crossroads, turn right, then left past the restaurant, and leave the road on the right-hand path that skirts the houses."
+      "text": "从村庄的十字路口右转，然后左转经过餐厅，然后沿着房屋周围的右侧小路离开道路。"
     },
     {
       "name": "Commit to the upper ascent",
-      "text": "Follow the rugged trail to the signed crossroads and choose the path that heads straight uphill toward the summit."
+      "text": "沿着崎岖的小路到达有标志的十字路口，然后选择直上山顶的路径。"
     },
     {
       "name": "Navigate the zig-zags",
-      "text": "Work through steep switchbacks until the trail flattens along the mountain's left flank."
+      "text": "穿过陡峭的之字形路段，直到小路沿着山的左翼变得平坦。"
     },
     {
       "name": "Take the rock-cut stairs",
-      "text": "Climb the stone steps on the right, looping behind the mountain face to the final ramp."
+      "text": "爬上右侧的石阶，在山壁后面绕一圈到达最后的坡道。"
     },
     {
       "name": "Reach the summit",
-      "text": "Follow the last ascent to the top and enjoy the panorama before retracing your steps to Santa Maria."
+      "text": "沿着最后的上升路线到达山顶，欣赏全景，然后返回圣玛丽亚。"
     }
   ],
   "faqsTitle": "FAQs",
@@ -92,19 +92,19 @@
     {
       "q": "How long does the full hike take?",
       "a": [
-        "Allow 6–7 hours for the round trip from Hostel Brikette, including breaks in Santa Maria and time at the summit."
+        "从 Hostel Brikette 出发的往返时间需要 6 至 7 小时，包括在圣玛丽亚的休息和登顶的时间。"
       ]
     },
     {
       "q": "Is the trail marked?",
       "a": [
-        "Markers are sparse beyond Santa Maria; carry an offline map and pay attention to the obvious worn trail and signposts at junctions."
+        "圣玛丽亚以外的地方标记稀疏；携带离线地图，注意路口明显磨损的步道和路标。"
       ]
     },
     {
       "q": "Can I turn back early?",
       "a": [
-        "Yes. If the upper section feels too exposed, enjoy the views from Santa Maria or the lower switchbacks and return the way you came."
+        "是的。如果上半部分感觉太暴露，可以从圣玛丽亚或下之字形路段欣赏美景，然后原路返回。"
       ]
     }
   ],
@@ -112,5 +112,22 @@
     "labels": {
       "warnings": "When to reconsider"
     }
+  },
+  "gallery": {
+    "title": "照片集",
+    "items": [
+      {
+        "alt": "Looking across the peninsula to Capri",
+        "caption": "眺望半岛对面的卡普里"
+      },
+      {
+        "alt": "Scan to Share QR code",
+        "caption": "扫码分享"
+      },
+      {
+        "alt": "Trail near the summit",
+        "caption": "接近山顶的路段"
+      }
+    ]
   }
 }

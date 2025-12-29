@@ -1,6 +1,63 @@
 {
   "seo": {
     "title": "ホステル・ブリケット → キエーザ・ヌオーヴァ／バール・インテルナツィオナーレ バス停",
-    "description": "Micro-route from Hostel Brikette to the Chiesa Nuova bus stop with minimal stairs; ticket checks and departure timing."
-  }
+    "description": "Hostel Brikette から Chiesa Nuova バス停までの階段を最小限に抑えたマイクロルート。チケットの確認と出発時間。"
+  },
+  "linkLabel": "ホステル ブリケットからヌオーヴァ教会/バール インテルナツィオナーレのバス停まで",
+  "intro": "ホステルを出てアマルフィ、ソレント行きのバスに乗りますか?このマイクロルートは、Hostel Brikette から Chiesa Nuova/Bar Internazionale バス停までの最速の方法といくつかのヒントを示しています。",
+  "image": {
+    "alt": "ポジターノのヌオーヴァ教会 SITA はバル インテルナツィオナーレの外に停まります",
+    "caption": "Hostel Brikette は、停留所から 1 つ坂を曲がったところにあります。バスが到着する前に列に加わることができるよう、数分お待ちください。"
+  },
+  "toc": {
+    "onThisPage": "On this page",
+    "before": "Before you leave",
+    "steps": "Step-by-step",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Why this route works",
+      "body": [
+        "ホステルの入り口から停留所までは幹線道路に沿って 120 メートル (400 フィート) 歩きます。",
+        "アマルフィ方面に向かう場合は、Bar Internazionale の向かいに停留所があります。道路の海が見える側に並びます。  ソレント方面に向かう場合は、バー自体の外で直接待つことになります。"
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Tickets and timing",
+      "body": [
+        "タバッキまたはバー内で SITA チケットを購入します。  バス車内ではチケットを購入することができませんので、チケットなしでバスに乗ろうとしないでください。  乗車時に運転手に切符を提示してください。  始発のバスに乗る場合は、前日にチケットを購入し、チェックアウトの手配のためフロントまでお越しください。",
+        "夏期のバスは満席になることが多いです。特に最も忙しい時期には、それに応じて計画を立ててください。"
+      ]
+    }
+  ],
+  "beforeList": [],
+  "stepsList": [
+    "フロントを出て、短い階段を Viale Pasitea まで下り、左折して下り坂に向かいます。",
+    "Bar Internazionale までは、幹線道路に沿って舗装道路を約 120 メートル (400 フィート) 進みます。"
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+  "kneesList": [],
+  "kneesDockPrefix": "まずはフェリー乗り場の荷物から？私たちのを使用してください",
+  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesPorterPrefix": "ポーターの価格設定や予約に関するサポートが必要ですか?チェックしてください",
+  "kneesPorterLinkLabel": "porter service guide",
+  "faqs": [
+    {
+      "q": "How early should I reach the stop?",
+      "a": "夏は選択したバスの少なくとも 10 分前に到着し、避難所の近くで列に並んで快適に乗車できるようにします。"
+    },
+    {
+      "q": "Where can I buy or validate tickets?",
+      "a": "チケットの販売には、Bar Internazionale の隣にある tabacchi をご利用ください。バリデーターが参加しています。乗車したらすぐにチケットをクリップまたはスキャンしてください。"
+    }
+  ],
+  "howtoSteps": [
+    "Hostel Brikette から Bar Internazionale 停留所まで下り坂を 2 ～ 4 分歩きます。",
+    "道路の海側に並び、乗車時にチケットを確認します。",
+    "その後の旅行にはフェリーまたは長距離ガイドと組み合わせてください。"
+  ]
 }

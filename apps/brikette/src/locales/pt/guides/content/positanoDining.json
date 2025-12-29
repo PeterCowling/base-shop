@@ -9,9 +9,18 @@
     "Use este guia para planejar experiências ao pôr do sol, menus farm-to-table e lanches rápidos quando quiser comer bem sem longas subidas."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Experiências gastronômicas imperdíveis" },
-    { "href": "#near-hostel", "label": "Restaurantes perto do Hostel Brikette" },
-    { "href": "#destination-dinners", "label": "Jantares que valem a viagem" }
+    {
+      "href": "#signature-experiences",
+      "label": "Experiências gastronômicas imperdíveis"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Restaurantes perto do Hostel Brikette"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Jantares que valem a viagem"
+    }
   ],
   "sections": [
     {

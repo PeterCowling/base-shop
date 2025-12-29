@@ -9,11 +9,26 @@
     "Med den här guiden tar du dig till viken med lokalbuss, packar som en lokalbo och får ut mesta möjliga av badplatserna innan du vänder tillbaka via Sorrento för mat."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Varför åka" },
-    { "href": "#getting-there", "label": "Ta sig dit" },
-    { "href": "#what-to-pack", "label": "Vad du ska packa" },
-    { "href": "#swimming", "label": "Bad & säkerhet" },
-    { "href": "#pair-it", "label": "Kombinera med Sorrento" }
+    {
+      "href": "#why-go",
+      "label": "Varför åka"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Ta sig dit"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Vad du ska packa"
+    },
+    {
+      "href": "#swimming",
+      "label": "Bad & säkerhet"
+    },
+    {
+      "href": "#pair-it",
+      "label": "Kombinera med Sorrento"
+    }
   ],
   "sections": [
     {

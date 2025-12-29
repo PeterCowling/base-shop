@@ -5,7 +5,7 @@
   },
   "linkLabel": "Supermercati e farmacie a Positano",
   "intro": [
-    "You will not find large supermarkets in Positano, so plan for compact shops, a weekly market, and a couple of reliable pharmacies for essentials."
+    "Non troverai grandi supermercati a Positano, quindi pianifica negozi piccoli, un mercato settimanale e un paio di farmacie affidabili per gli articoli di prima necessità."
   ],
   "sections": [
     {
@@ -69,5 +69,5 @@
       ]
     }
   ],
-  "fallback": "Essentials are available throughout Positano — shop earlier in the day and keep local pharmacies noted."
+  "fallback": "Gli articoli essenziali sono disponibili in tutta Positano: fai acquisti nelle prime ore della giornata e tieni annotate le farmacie locali."
 }

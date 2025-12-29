@@ -89,11 +89,26 @@
     "步道缺乏遮蔽；7、8 月请避免在正午高温时段徒步。"
   ],
   "steps": [
-    {"name": "购买巴士票", "text": "离开旅舍前先在 Bar Internazionale 购买 Nocelle 车票。"},
-    {"name": "乘车前往 Nocelle", "text": "搭乘 Montepertuso–Nocelle 巴士，直到车辆在停车场掉头准备下山再下车。"},
-    {"name": "抵达步道", "text": "穿过小镇的步行道，保持右侧即可看到众神之路标示。"},
-    {"name": "往返徒步", "text": "朝 Colle Serra 方向前进，想折返时随时掉头。"},
-    {"name": "返回波西塔诺", "text": "原路回到巴士站，搭车返回 Bar Internazionale 或 Chiesa Nuova。"}
+    {
+      "name": "购买巴士票",
+      "text": "离开旅舍前先在 Bar Internazionale 购买 Nocelle 车票。"
+    },
+    {
+      "name": "乘车前往 Nocelle",
+      "text": "搭乘 Montepertuso–Nocelle 巴士，直到车辆在停车场掉头准备下山再下车。"
+    },
+    {
+      "name": "抵达步道",
+      "text": "穿过小镇的步行道，保持右侧即可看到众神之路标示。"
+    },
+    {
+      "name": "往返徒步",
+      "text": "朝 Colle Serra 方向前进，想折返时随时掉头。"
+    },
+    {
+      "name": "返回波西塔诺",
+      "text": "原路回到巴士站，搭车返回 Bar Internazionale 或 Chiesa Nuova。"
+    }
   ],
   "faqsTitle": "常见问题",
   "faqs": [

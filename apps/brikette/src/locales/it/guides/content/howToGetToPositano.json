@@ -4,7 +4,7 @@
     "description": "Tabella decisionale per scegliere tra traghetti, bus, transfer e auto in base a budget, stagione e bagagli."
   },
   "linkLabel": "Come arrivare a Positano (guida alle opzioni)",
-  "intro": "All realistic ways to reach Positano — compared by season, budget, luggage and arrival time.",
+  "intro": "Tutti i modi realistici per raggiungere Positano, confrontati per stagione, budget, bagagli e orario di arrivo.",
   "toc": {
     "onThisPage": "On this page",
     "naples": "Via Naples",
@@ -23,7 +23,7 @@
       "id": "naples",
       "title": "Via Naples",
       "body": [
-        "Airport shuttle to Sorrento + SITA to Positano (cheapest), or train to Sorrento + SITA.",
+        "Navetta aeroportuale per Sorrento + SITA per Positano (più economica), oppure treno per Sorrento + SITA.",
         "Traduzione in arrivo."
       ]
     },
@@ -31,7 +31,7 @@
       "id": "salerno",
       "title": "Via Salerno",
       "body": [
-        "Train to Salerno; ferry onward to Positano in season (luggage‑friendly).",
+        "Train to Salerno; traghetto per Positano in stagione (adatto ai bagagli).",
         "Traduzione in arrivo."
       ]
     },

@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Bus back to Hostel Brikette from Arienzo Beach",
+    "title": "एरिएन्ज़ो बीच से हॉस्टल ब्रिकेट के लिए बस",
     "description": "Climb from the shoreline to the road, ride three kilometres to Chiesa Nuova, and finish with a short walk back to Hostel Brikette."
   },
   "linkLabel": "Bus back from Arienzo Beach",
@@ -44,9 +44,18 @@
   ],
   "tipsTitle": "Bus tips",
   "tips": [
-    "Printed timetables list only Positano stops; expect Arienzo around 2–5 minutes before Positano Sponda on the way back.",
+    "मुद्रित समय सारिणी में केवल पॉसिटानो स्टॉप की सूची है; वापसी के रास्ते में पोसिटानो स्पोंडा से लगभग 2-5 मिनट पहले एरिएंज़ो की उम्मीद करें।",
     "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
     "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
     "Browse the %LINK:beaches|Positano beaches overview% to compare other coves and plan future visits."
-  ]
+  ],
+  "gallery": {
+    "title": "अरीएंज़ो बस स्टॉप संदर्भ",
+    "items": [
+      {
+        "alt": "धातु के खंभे पर नीले-सफेद SITA बस स्टॉप का साइन",
+        "caption": "अरिएंज़ो के ऊपर सड़क के अंदरूनी तरफ SITA का साइन ढूंढें।"
+      }
+    ]
+  }
 }

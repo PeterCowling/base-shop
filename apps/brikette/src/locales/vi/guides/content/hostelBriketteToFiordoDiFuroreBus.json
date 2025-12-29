@@ -5,8 +5,8 @@
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
-    "Follow this route to travel from Hostel Brikette to Fiordo di Furore on the SITA bus without missing a stop or arriving unprepared.",
-    "The fiord has no ticketing facilities or shops, so these steps cover tickets, the nearest bus stop, and the staircase that leads down to the beach."
+    "Đi theo tuyến đường này để đi từ Hostel Brikette đến Fiordo di Furore trên xe buýt SITA mà không bị lỡ trạm dừng hoặc đến nơi mà không chuẩn bị trước.",
+    "Fiord không có cơ sở bán vé hoặc cửa hàng nên những bậc thang này bao gồm vé, trạm xe buýt gần nhất và cầu thang dẫn xuống bãi biển."
   ],
   "warningsTitle": "Before you leave the hostel",
   "warnings": [
@@ -54,7 +54,7 @@
       "body": [
         "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
         "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
-        "Use the same staircase to return to the road when you are ready to leave."
+        "Sử dụng cùng một cầu thang để quay lại đường khi bạn sẵn sàng rời đi."
       ]
     }
   ],
@@ -62,27 +62,27 @@
   "tips": [
     "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
     "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
-    "Save the %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette return guide% for your trip back.",
+    "Lưu %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hướng dẫn hoàn trả của Hostel Brikette% cho chuyến trở về của bạn.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
   "faqsTitle": "Common questions",
   "faqs": [
     {
-      "q": "Do I really need to buy a return ticket in advance?",
+      "q": "Tôi có thực sự cần phải mua vé khứ hồi trước không?",
       "a": [
-        "Yes. Drivers expect validated SITA tickets and there are no machines or shops at the beach, so buy both legs in Positano before boarding."
+        "Đúng. Người lái xe mong muốn có vé SITA đã được xác thực và không có máy móc hoặc cửa hàng nào trên bãi biển, vì vậy hãy mua cả hai chặng ở Positano trước khi lên xe."
       ]
     },
     {
-      "q": "What should I do if the bus is full when it arrives?",
+      "q": "Tôi nên làm gì nếu xe buýt đầy người khi đến nơi?",
       "a": [
-        "Wait for the next scheduled service and keep an eye on the timetable — during peak season it is normal for one or two buses to pass before space opens up."
+        "Đợi chuyến xe theo lịch trình tiếp theo và theo dõi lịch trình - trong mùa cao điểm, việc một hoặc hai xe buýt chạy qua trước khi có chỗ trống là điều bình thường."
       ]
     },
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "After the bus crosses the arched bridge over the fiord it will stop beside the crash barrier. Watch for the bridge views, listen for the driver, and use Google Maps’ \"JH73+PQ Furore\" pin as a backup."
+        "Sau khi xe buýt đi qua cây cầu hình vòm bắc qua vịnh hẹp, xe sẽ dừng bên cạnh rào chắn va chạm. Theo dõi khung cảnh cây cầu, lắng nghe người lái xe và sử dụng mã pin \"JH73+PQ Furore\" của Google Maps để dự phòng."
       ]
     }
   ]

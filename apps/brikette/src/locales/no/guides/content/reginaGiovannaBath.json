@@ -9,11 +9,26 @@
     "Bruk denne guiden til å komme deg til viken med lokalbuss, pakke som en lokal og få mest mulig ut av svømmehyllene før du tar turen tilbake til Sorrento for mat."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Derfor bør du dra" },
-    { "href": "#getting-there", "label": "Slik kommer du dit" },
-    { "href": "#what-to-pack", "label": "Dette bør du pakke" },
-    { "href": "#swimming", "label": "Bading og sikkerhet" },
-    { "href": "#pair-it", "label": "Kombiner med Sorrento" }
+    {
+      "href": "#why-go",
+      "label": "Derfor bør du dra"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Slik kommer du dit"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Dette bør du pakke"
+    },
+    {
+      "href": "#swimming",
+      "label": "Bading og sikkerhet"
+    },
+    {
+      "href": "#pair-it",
+      "label": "Kombiner med Sorrento"
+    }
   ],
   "sections": [
     {

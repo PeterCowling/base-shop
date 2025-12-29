@@ -9,9 +9,18 @@
     "Brug guiden til at planlægge luksuriøse solnedgangsmiddage, farm-to-table oplevelser og hurtige måltider, når du vil spise godt uden lang opstigning."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Middagshøjdepunkter du skal prøve" },
-    { "href": "#near-hostel", "label": "Restauranter tæt på Hostel Brikette" },
-    { "href": "#destination-dinners", "label": "Middage der er turen værd" }
+    {
+      "href": "#signature-experiences",
+      "label": "Middagshøjdepunkter du skal prøve"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Restauranter tæt på Hostel Brikette"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Middage der er turen værd"
+    }
   ],
   "sections": [
     {
@@ -46,7 +55,7 @@
   "typicalCosts": [
     "Solnedgangstur og middag hos La Gavitella: omkring 139 € inklusive bådtransfer og skaldyrsfest.",
     "Gårdmiddag hos La Tagliata: cirka 65 € med antipasti, pasta, grill, dessert og husets vin.",
-    "Kvarterets trattoriaer: takeaway-pizza til 7–12 € hos C'era Una Volta; retter omkring 35 € hos Il Grottino Azzurro; smagsmenuer til 60 € hos Da Gabrisa eller Next2.",    
+    "Kvarterets trattoriaer: takeaway-pizza til 7–12 € hos C'era Una Volta; retter omkring 35 € hos Il Grottino Azzurro; smagsmenuer til 60 € hos Da Gabrisa eller Next2.",
     "Udflugtsmiddage: 30 € hos Da Costantino, 45 € hos La Taverna del Leone, 50 € hos Buca di Bacco eller standardmenuerne hos La Tagliata/La Gavitella, og 100 €+ hos Luna i Villa Magia."
   ],
   "tips": [

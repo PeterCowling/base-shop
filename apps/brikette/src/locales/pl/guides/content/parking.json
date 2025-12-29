@@ -1,14 +1,14 @@
 {
   "linkLabel": "Parkowanie w Positano: gdzie i za ile",
   "intro": [
-    "Parking is scarce and pricey in Positano; reserve a garage early and treat the car as stored for your stay."
+    "Parkingi w Positano są rzadkie i drogie; zarezerwuj garaż wcześniej i traktuj samochód jako przechowywany na czas pobytu."
   ],
   "sections": [
     {
       "id": "garages",
       "title": "Tłumaczenie w przygotowaniu.",
       "body": [
-        "Mandara, Car Park Anna, and Di Gennaro take reservations—book 7–10 days ahead for July–August arrivals.",
+        "Mandara, Car Parking Anna i Di Gennaro przyjmują rezerwacje — zarezerwuj 7–10 dni wcześniej na przyjazdy w okresie od lipca do sierpnia.",
         "Tłumaczenie w przygotowaniu."
       ]
     },
@@ -48,5 +48,9 @@
     }
   ],
   "tocTitle": "On this page",
-  "faqsTitle": "FAQs"
+  "faqsTitle": "FAQs",
+  "seo": {
+    "title": "Parkowanie w Positano: garaże, zasady na ulicy i alternatywy",
+    "description": "Gdzie parkować w Positano, ile kosztują garaże, kiedy miejsca na ulicy są realne i mądrzejsze opcje bez auta."
+  }
 }

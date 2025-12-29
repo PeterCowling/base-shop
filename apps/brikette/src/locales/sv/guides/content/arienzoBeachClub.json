@@ -120,5 +120,22 @@
         "Bär stadiga sandaler eller träningsskor för nedstigningen. Ha tyngre saker i en ryggsäck och pausa på avsatserna halvvägs. På vägen upp, ta pauser i skuggan och fyll på med vatten innan du går på bussen eller taxin."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Bildhöjdpunkter från Arienzo",
+    "items": [
+      {
+        "alt": "Terrasserna vid Arienzo Beach Club",
+        "caption": "Klippdäck med orange solstolar"
+      },
+      {
+        "alt": "Bryggan för Arienzos shuttlebåt",
+        "caption": "Stig ombord på shuttlen vid Spiaggia Grande"
+      },
+      {
+        "alt": "Trappor ned till Arienzo",
+        "caption": "300 trappsteg genom citronterrasser"
+      }
+    ]
+  }
 }

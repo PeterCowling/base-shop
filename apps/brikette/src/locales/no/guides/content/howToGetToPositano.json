@@ -4,7 +4,7 @@
     "description": "Sammenlign ferje, tog + buss, shuttle og private transfer – med sesongnotater og tips for bagasje."
   },
   "linkLabel": "Hvordan reise til Positano (beslutningsguide)",
-  "intro": "All realistic ways to reach Positano — compared by season, budget, luggage and arrival time.",
+  "intro": "Alle realistiske måter å nå Positano - sammenlignet med sesong, budsjett, bagasje og ankomsttid.",
   "toc": {
     "onThisPage": "On this page",
     "naples": "Via Naples",
@@ -39,7 +39,7 @@
       "id": "private",
       "title": "Private transfer",
       "body": [
-        "Door‑to‑door; pricier but easiest for late arrivals or heavy luggage."
+        "Dør-til-dør; dyrere, men enklest for sene ankomster eller tung bagasje."
       ]
     }
   ],

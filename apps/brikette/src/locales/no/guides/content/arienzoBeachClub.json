@@ -121,5 +121,22 @@
         "Bruk gode sandaler eller joggesko til nedstigningen. Bær det tyngste i en sekk og stopp på avsatser underveis. På vei opp igjen, ta pauser i skyggen og fyll på med vann før du går på buss eller taxi."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Bildehøydepunkter fra Arienzo",
+    "items": [
+      {
+        "alt": "Terrassene ved Arienzo Beach Club",
+        "caption": "Dekker på klippen med oransje solsenger"
+      },
+      {
+        "alt": "Bryggen for Arienzos shuttle-båt",
+        "caption": "Gå om bord på shuttlen ved Spiaggia Grande"
+      },
+      {
+        "alt": "Trapper ned til Arienzo",
+        "caption": "300 trappetrinn gjennom sitronterasser"
+      }
+    ]
+  }
 }

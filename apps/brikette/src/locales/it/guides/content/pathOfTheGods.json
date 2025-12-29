@@ -4,7 +4,10 @@
     "description": "Percorso esatto dall'ostello ai punti di accesso del Sentiero degli Dei, con opzioni di trasporto e consigli di sicurezza."
   },
   "linkLabel": "Sentiero degli Dei da Brikette",
-  "intro": "Il Sentiero degli Dei è una delle camminate costiere più spettacolari d’Italia. Dall’ostello raggiungi l’inizio classico a Bomerano o l’uscita di Nocelle con gli autobus SITA.",
+  "intro": [
+    "Il Sentiero degli Dei unisce terrazze a picco sulla scogliera, castagneti e ampie vedute sulla Costiera Amalfitana. Dall'Hostel Brikette puoi raggiungere il sentiero combinando traghetti locali e autobus SITA senza partecipare a un tour costoso.",
+    "Tre approcci principali partono dall'ostello: salpare per Amalfi e prendere l'autobus fino a Bomerano, utilizzando la rete di autobus per tutto il percorso, oppure saltare i trasferimenti e fare un'andata e ritorno da Nocelle. Utilizza questa panoramica per decidere quale percorso dettagliato si adatta al tuo tempo, al tuo budget e al tuo comfort in caso di altezze."
+  ],
   "sections": [
     {
       "id": "timing",
@@ -102,6 +105,33 @@
     "essentials": "Cosa portare",
     "costs": "Costi indicativi",
     "faqs": "Domande frequenti",
-    "gallery": "Galleria fotografica"
-  }
+    "gallery": "Galleria fotografica",
+    "tips": "Smart timing"
+  },
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Parti prima delle 09:00 in luglio-agosto oppure punta alle ore dorate in primavera e autunno per temperature più fresche e luce più morbida.",
+    "Evita la discesa di 1.700 gradini verso Positano a meno che le tue ginocchia non siano fresche: scendere le scale di Montepertuso dopo una lunga camminata è brutale.",
+    "Usa uno zaino leggero e tieni i bastoncini da trekking piegati finché non raggiungi le scale più ripide."
+  ],
+  "faqs": [
+    {
+      "q": "Quanto tempo dura l'escursione porta a porta?",
+      "a": [
+        "Budget 3-5 ore compreso il trasporto. La tratta del traghetto è la più lunga; l'andata e il ritorno di Nocelle si svolge in mezza giornata."
+      ]
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": [
+        "Sì, a condizione che tu sia stabile in piedi e a tuo agio con le altezze. Non ci sono salite tecniche, solo salite e discese costanti."
+      ]
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": [
+        "Passare all'autobus via Amalfi o andare direttamente a Nocelle. Conserva sempre un biglietto dell'autobus di riserva in modo da poterti adattare alle condizioni del mare o del tempo."
+      ]
+    }
+  ]
 }

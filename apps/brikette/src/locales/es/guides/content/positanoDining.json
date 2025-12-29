@@ -9,9 +9,18 @@
     "Usa esta guía para planear caprichos al atardecer, banquetes de kilómetro cero y bocados rápidos cuando quieras buena comida sin largas subidas."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Experiencias gastronómicas imperdibles" },
-    { "href": "#near-hostel", "label": "Restaurantes cerca de Hostel Brikette" },
-    { "href": "#destination-dinners", "label": "Cenas que valen el viaje" }
+    {
+      "href": "#signature-experiences",
+      "label": "Experiencias gastronómicas imperdibles"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Restaurantes cerca de Hostel Brikette"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Cenas que valen el viaje"
+    }
   ],
   "sections": [
     {

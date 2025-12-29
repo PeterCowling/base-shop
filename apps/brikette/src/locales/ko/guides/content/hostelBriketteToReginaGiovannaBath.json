@@ -5,15 +5,30 @@
   },
   "linkLabel": "Hostel Brikette to Regina Giovanna Bath",
   "intro": [
-    "Regina Giovanna Bath is a natural sea pool carved into the cliffs west of Sorrento. From Hostel Brikette you can reach it without a car by combining the local SITA bus with a short walk along Via Capo.",
-    "Use this checklist to leave the hostel, buy the right tickets at Bar Internazionale, ride to the Metropole stop in Sorrento, and follow the pedestrian lane down to the cove."
+    "레지나 지오반나 바스(Regina Giovanna Bath)는 소렌토 서쪽 절벽을 깎아 만든 천연 바다 수영장입니다. Hostel Brikette에서 지역 SITA 버스를 타고 Via Capo를 따라 조금만 걸어가면 자동차 없이도 갈 수 있습니다.",
+    "이 체크리스트를 사용하여 호스텔을 떠나 Bar Internazionale에서 올바른 티켓을 구매하고 Sorrento의 Metropole 정류장까지 이동한 다음 보행자 도로를 따라 작은 만까지 따라가세요."
   ],
   "toc": [
-    { "href": "#reach-stop", "label": "Reach the Chiesa Nuova bus stop" },
-    { "href": "#buy-tickets", "label": "Buy and validate tickets" },
-    { "href": "#bus-to-sorrento", "label": "Ride the bus to Sorrento" },
-    { "href": "#walk-to-baths", "label": "Walk to the baths" },
-    { "href": "#before-you-return", "label": "Plan your return" }
+    {
+      "href": "#reach-stop",
+      "label": "Reach the Chiesa Nuova bus stop"
+    },
+    {
+      "href": "#buy-tickets",
+      "label": "Buy and validate tickets"
+    },
+    {
+      "href": "#bus-to-sorrento",
+      "label": "Ride the bus to Sorrento"
+    },
+    {
+      "href": "#walk-to-baths",
+      "label": "Walk to the baths"
+    },
+    {
+      "href": "#before-you-return",
+      "label": "Plan your return"
+    }
   ],
   "sections": [
     {
@@ -105,13 +120,27 @@
   "scanToShare": {
     "title": "Scan to Share",
     "items": [
-      { "alt": "Scan to Share / route image 1" },
-      { "alt": "Scan to Share / route image 2" },
-      { "alt": "Scan to Share / route image 3" },
-      { "alt": "Scan to Share / route image 4" },
-      { "alt": "Scan to Share / route image 5" },
-      { "alt": "Scan to Share / route image 6" },
-      { "alt": "Scan to Share / route image 7" }
+      {
+        "alt": "Scan to Share / route image 1"
+      },
+      {
+        "alt": "Scan to Share / route image 2"
+      },
+      {
+        "alt": "Scan to Share / route image 3"
+      },
+      {
+        "alt": "Scan to Share / route image 4"
+      },
+      {
+        "alt": "Scan to Share / route image 5"
+      },
+      {
+        "alt": "Scan to Share / route image 6"
+      },
+      {
+        "alt": "Scan to Share / route image 7"
+      }
     ]
   }
 }

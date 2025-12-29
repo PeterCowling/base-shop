@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "Bus back to Hostel Brikette from Positano's main beach",
+    "title": "ポジターノのメインビーチからバスでホステル ブリケットに戻ります",
     "description": "Catch the interno bus at Piazza dei Mulini and ride up to the tabacchi beside Hostel Brikette."
   },
-  "linkLabel": "Bus back to Hostel Brikette from Spiaggia Grande",
+  "linkLabel": "Spiaggia GrandeからHostel Briketteに戻るバス",
   "intro": [
     "オレンジ色のInterno Positanoバスに乗ってHostel Briketteに戻り、ビーチで1日を過ごした後、600段以上の階段をスキップしてください。",
     "チケットはどちらの方向でも有効なので、ビーチに向かう前にタバコで購入するか、在庫があれば帰りに購入することができます。"
@@ -53,12 +53,12 @@
       "title": "Photos",
       "items": {
         "busInterior": {
-          "alt": "Interno Positano bus at the beach-side stop",
-          "caption": "Interno Positano bus — vehicles vary but the route label stays the same."
+          "alt": "ビーチサイドの停留所にあるインテルノ ポジターノ バス",
+          "caption": "インテルノ ポジターノ バス — 車両は異なりますが、路線ラベルは同じです。"
         },
         "barInternazionaleStop": {
-          "alt": "Chiesa Nuova / Bar Internazionale bus stop",
-          "caption": "Chiesa Nuova (Bar Internazionale) — closest stop to Hostel Brikette."
+          "alt": "ヌオーヴァ教会 / バル インテルナツィオナーレバス停",
+          "caption": "Chiesa Nuova (Bar Internazionale) — Hostel Brikette の最寄りの停留所。"
         }
       }
     }

@@ -9,11 +9,26 @@
     "Ez az útmutató segít eljutni a kis öbölbe menetrend szerinti busszal, profi módra bepakolni, és kiélvezni az ugróköveket, mielőtt visszatérsz Sorrentóba egy étkezésre."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Miért érdemes" },
-    { "href": "#getting-there", "label": "Megközelítés" },
-    { "href": "#what-to-pack", "label": "Mit vigyél" },
-    { "href": "#swimming", "label": "Fürdés és biztonság" },
-    { "href": "#pair-it", "label": "Párosítsd Sorrentóval" }
+    {
+      "href": "#why-go",
+      "label": "Miért érdemes"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Megközelítés"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Mit vigyél"
+    },
+    {
+      "href": "#swimming",
+      "label": "Fürdés és biztonság"
+    },
+    {
+      "href": "#pair-it",
+      "label": "Párosítsd Sorrentóval"
+    }
   ],
   "sections": [
     {

@@ -50,5 +50,43 @@
         "搭乘 SITA 公交往阿马尔菲方向，在 Marina di Praia 站下车，再沿楼梯走向海湾。"
       ]
     }
-  ]
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Why go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & services"
+    },
+    {
+      "href": "#evening",
+      "label": "Stay for dinner"
+    }
+  ],
+  "essentialsTitle": "What to expect",
+  "essentials": [
+    "从波西塔诺乘坐 SITA 巴士 20 分钟；询问 Marina di Praia 站，然后步行两分钟下坡。",
+    "狭窄的卵石海滩，有一个主要的海滨浴场，中间还有一小块免费区域。",
+    "人行道上设有餐馆和小吃亭，非常适合在回家前享用日落晚餐。"
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Marina di Praia 海滩俱乐部的躺椅 + 遮阳伞：当天 25 欧元至 35 欧元（提供两人套餐）。",
+    "皮艇租赁：两人每小时约 20 欧元。",
+    "Da Armandino 或 Il Pirata 的晚餐主菜：16 欧元至 28 欧元，具体取决于捕获的海鲜和特色面食。"
+  ],
+  "tipsTitle": "Quick tips",
+  "warningsTitle": "Good to know",
+  "warnings": [
+    "空间有限；免费区域首先就满了，而周末的利多躺椅就卖完了。",
+    "下午三点左右，悬崖会遮挡阳光直射，非常适合降温，但在大风天会感觉寒冷。",
+    "峡谷内的移动信号接收能力下降；提前下载巴士时刻表或晚餐预订确认书。"
+  ],
+  "faqsTitle": "Marina di Praia FAQs"
 }

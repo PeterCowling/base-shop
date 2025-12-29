@@ -5,8 +5,8 @@
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
-    "Follow this route to travel from Hostel Brikette to Fiordo di Furore on the SITA bus without missing a stop or arriving unprepared.",
-    "The fiord has no ticketing facilities or shops, so these steps cover tickets, the nearest bus stop, and the staircase that leads down to the beach."
+    "एसआईटीए बस में हॉस्टल ब्रिकेट से फियोर्डो डी फ्यूरोर तक यात्रा करने के लिए इस मार्ग का अनुसरण करें, बिना कोई स्टॉप चूके या बिना तैयारी के पहुंचे।",
+    "फ़िओर्ड में कोई टिकटिंग सुविधा या दुकानें नहीं हैं, इसलिए ये सीढ़ियाँ टिकट, निकटतम बस स्टॉप और समुद्र तट की ओर जाने वाली सीढ़ी को कवर करती हैं।"
   ],
   "warningsTitle": "Before you leave the hostel",
   "warnings": [
@@ -54,7 +54,7 @@
       "body": [
         "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
         "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
-        "Use the same staircase to return to the road when you are ready to leave."
+        "जब आप जाने के लिए तैयार हों तो सड़क पर लौटने के लिए उसी सीढ़ी का उपयोग करें।"
       ]
     }
   ],
@@ -62,27 +62,27 @@
   "tips": [
     "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
     "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
-    "Save the %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette return guide% for your trip back.",
+    "अपनी वापसी यात्रा के लिए %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → हॉस्टल ब्रिकेट रिटर्न गाइड% सहेजें।",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
   "faqsTitle": "Common questions",
   "faqs": [
     {
-      "q": "Do I really need to buy a return ticket in advance?",
+      "q": "क्या मुझे वाकई पहले से वापसी टिकट खरीदने की ज़रूरत है?",
       "a": [
-        "Yes. Drivers expect validated SITA tickets and there are no machines or shops at the beach, so buy both legs in Positano before boarding."
+        "हाँ। ड्राइवर वैध एसआईटीए टिकटों की उम्मीद करते हैं और समुद्र तट पर कोई मशीन या दुकानें नहीं हैं, इसलिए बोर्डिंग से पहले पोसिटानो में दोनों पैर खरीद लें।"
       ]
     },
     {
-      "q": "What should I do if the bus is full when it arrives?",
+      "q": "यदि बस आते समय पूरी भरी हो तो मुझे क्या करना चाहिए?",
       "a": [
-        "Wait for the next scheduled service and keep an eye on the timetable — during peak season it is normal for one or two buses to pass before space opens up."
+        "अगली निर्धारित सेवा की प्रतीक्षा करें और समय सारिणी पर नज़र रखें - पीक सीज़न के दौरान जगह खुलने से पहले एक या दो बसों का गुजरना सामान्य है।"
       ]
     },
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "After the bus crosses the arched bridge over the fiord it will stop beside the crash barrier. Watch for the bridge views, listen for the driver, and use Google Maps’ \"JH73+PQ Furore\" pin as a backup."
+        "बस फ़ोर्ड पर बने धनुषाकार पुल को पार करने के बाद क्रैश बैरियर के पास रुकेगी। पुल के दृश्य देखें, ड्राइवर की सुनें और बैकअप के रूप में Google मानचित्र के \"JH73+PQ फ्यूरोर\" पिन का उपयोग करें।"
       ]
     }
   ]

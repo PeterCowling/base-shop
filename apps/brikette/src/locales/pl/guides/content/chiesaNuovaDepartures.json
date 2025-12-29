@@ -1,6 +1,63 @@
 {
   "seo": {
     "title": "Hostel Brikette – przystanek Chiesa Nuova/Bar Internazionale",
-    "description": "Micro-route from Hostel Brikette to the Chiesa Nuova bus stop with minimal stairs; ticket checks and departure timing."
-  }
+    "description": "Mikrotrasa z Hostelu Brikette do przystanku autobusowego Chiesa Nuova z minimalnymi schodami; kontrola biletów i godzina odjazdu."
+  },
+  "linkLabel": "Z hostelu Brikette można dojechać na przystanek autobusowy Chiesa Nuova/Bar Internazionale",
+  "intro": "Opuszczasz hostel i udajesz się do autobusu do Amalfi w Sorrento? Ta mikrotrasa pokazuje najszybszą drogę z Hostelu Brikette do przystanku autobusowego Chiesa Nuova/Bar Internazionale i zawiera kilka wskazówek.",
+  "image": {
+    "alt": "Przystanek Chiesa Nuova SITA w Positano przed Barem Internazionale",
+    "caption": "Hostel Brikette znajduje się jeden zakręt pod górę od przystanku. Poczekaj kilka minut, aby móc dołączyć do kolejki przed przyjazdem autobusu."
+  },
+  "toc": {
+    "onThisPage": "On this page",
+    "before": "Before you leave",
+    "steps": "Step-by-step",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Why this route works",
+      "body": [
+        "Od wejścia do hostelu do przystanku, przy głównej drodze, jest 120 metrów (400 stóp).",
+        "Jeśli jedziesz w kierunku Amalfi, przystanek znajduje się naprzeciwko Bar Internazionale. Kolejka po stronie drogi z widokiem na morze.  Jeśli wybierasz się w stronę Sorrento, poczekaj bezpośrednio przed samym barem."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Tickets and timing",
+      "body": [
+        "Kup bilet SITA w tabacchi lub w barze.  Nie próbuj wsiadać do autobusu bez biletu, ponieważ nie będziesz mógł go kupić w samym autobusie.  Okaż swój bilet kierowcy przy wejściu na pokład.  Jeśli jedziesz pierwszym autobusem, kup bilet dzień wcześniej i przyjdź do recepcji, aby umówić się na kasę.",
+        "Letnie autobusy często się zapełniają. Odpowiednio planuj, szczególnie w najbardziej pracowitych okresach."
+      ]
+    }
+  ],
+  "beforeList": [],
+  "stepsList": [
+    "Wyjdź z recepcji, zejdź krótkimi schodami do Viale Pasitea i skręć w lewo, kierując się w dół.",
+    "Podążaj chodnikiem przez około 120 metrów (400 stóp) wzdłuż głównej drogi, aby dotrzeć do Bar Internazionale."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+  "kneesList": [],
+  "kneesDockPrefix": "Zaczynasz od bagażu w przystani promowej? Skorzystaj z naszego",
+  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesPorterPrefix": "Potrzebujesz pomocy w sprawie wyceny lub rezerwacji portiera? Sprawdź",
+  "kneesPorterLinkLabel": "porter service guide",
+  "faqs": [
+    {
+      "q": "How early should I reach the stop?",
+      "a": "Latem przyjedź co najmniej 10 minut przed wybranym autobusem, aby móc ustawić się w kolejce w pobliżu schroniska i wygodnie wejść na pokład."
+    },
+    {
+      "q": "Where can I buy or validate tickets?",
+      "a": "Do sprzedaży biletów użyj tabacchi obok Baru Internazionale. Walidatory są na pokładzie; przypnij lub zeskanuj bilet zaraz po wejściu."
+    }
+  ],
+  "howtoSteps": [
+    "Spacer 2–4 minuty w dół z hostelu Brikette do przystanku Bar Internazionale",
+    "Ustaw się w kolejce po stronie morza i zweryfikuj bilety przy wejściu na pokład",
+    "Połącz z promem lub przewodnikami dalekobieżnymi, aby kontynuować podróż"
+  ]
 }

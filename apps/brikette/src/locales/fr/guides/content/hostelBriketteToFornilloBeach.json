@@ -2,5 +2,60 @@
   "seo": {
     "title": "Hostel Brikette → Fornillo Beach à pied",
     "description": "Itinéraire détaillé de l'auberge jusqu'à la plage de Fornillo, plus des conseils pour la descente la plus rapide et le retour."
-  }
+  },
+  "linkLabel": "Hostel Brikette → Guide de marche de la plage de Fornillo",
+  "intro": [
+    "Marcher de l'auberge Brikette à la plage de Fornillo prend environ 15 à 25 minutes sur un itinéraire principalement étagé. Suivez ce raccourci pour rester sur l'escalier le plus rapide et la voie pavée jusqu'en bas."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-walk",
+      "title": "Plan your walk",
+      "body": [
+        "Allow around 20 minutes to reach the sand; le temps varie en fonction des arrêts photo et de votre confort sur les marches de Positano.",
+        "Google Maps envoie parfois des invités vers des détours plus lents. Restez fidèle à cet itinéraire pour suivre l'escalier principal et la chaussée lisse tout au long du trajet."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Carte de l'itinéraire Hostel Brikette-Fornillo Beach",
+      "body": [
+        "1. Sortez de l'auberge Brikette et descendez l'escalier principal jusqu'à Viale Pasitea.",
+        "2. Traversez la route et continuez tout droit en descendant les escaliers marqués du numéro de maison 31.",
+        "3. Suivez les escaliers jusqu'à ce qu'ils rencontrent la route, puis tournez à droite et restez dans la courbe qui descend.",
+        "4. Passez devant les parkings des deux côtés et restez à droite lorsque vous vous approchez du panneau Hotel Posa Posa.",
+        "5. Juste après l'hôtel, prendre un virage et tourner à droite sur le chemin réservé aux piétons en direction de Fornillo.",
+        "6. Restez sur le chemin pavé jusqu'au bord de mer ; la finale ombragée se termine à côté du club de plage de Pupetto."
+      ]
+    },
+    {
+      "id": "return-options",
+      "title": "Getting back up",
+      "body": [
+        "Après la baignade, continuez le long du front de mer jusqu'à Spiaggia Grande et prenez le bus interne orange jusqu'à Chiesa Nuova si vous préférez éviter la montée.",
+        "Récupérez vos billets de bus au tabacchi/kiosque à journaux à côté de l'arrêt Chiesa Nuova avant de partir ou demandez à la réception de confirmer le stock."
+      ]
+    }
+  ],
+  "tips": [
+    "Remontez la colline à bord du bus Interno Positano pour éviter la montée raide du retour.",
+    "Apportez de l'eau pour la section des escaliers - il n'y a pas de magasins jusqu'à ce que vous atteigniez le rivage.",
+    "Planifiez du temps supplémentaire à la plage avec notre %LINK:fornilloBeachGuide|Fornillo beach guide% et notre %LINK:positanoBeaches|Positano plages aperçu%.",
+    "Découvrez comment cette promenade s'intègre dans un voyage complet dans l'aperçu de voyage de Positano."
+  ],
+  "faqsTitle": "Route FAQs",
+  "faqs": [
+    {
+      "q": "How long does the walk take?",
+      "a": [
+        "La plupart des clients atteignent Fornillo en 15 à 25 minutes en fonction du rythme et des arrêts photo. Partir plus tôt dans la journée permet de garder les escaliers plus frais."
+      ]
+    },
+    {
+      "q": "Are there many stairs?",
+      "a": [
+        "Le raccourci descend plusieurs étages depuis l'auberge avant de passer à une voie pavée. Utilisez le bus pour le retour si vous préférez éviter de remonter."
+      ]
+    }
+  ]
 }

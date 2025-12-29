@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Bus back to Hostel Brikette from Laurito Beach",
+    "title": "Bus zurück zum Hostel Brikette vom Laurito Beach",
     "description": "Climb to the Laurito bus stop, ride the Amalfi Coast service to Chiesa Nuova, and finish with a short walk to Hostel Brikette."
   },
   "linkLabel": "Bus back from Laurito Beach",
@@ -46,21 +46,21 @@
   "tips": [
     "The printed timetable lists Positano times, not Laurito; expect the Laurito stop about 10 minutes before the Positano Sponda arrival.",
     "If you run out of tickets, use the Laurito shuttle boat back to Spiaggia Grande so you can buy more at the tabacchi before trying again.",
-    "Check our %LINK:beaches|Positano beaches overview% for more details on Laurito facilities and shuttle options."
+    "Weitere Informationen zu den Einrichtungen und Shuttle-Optionen von Laurito finden Sie in unserer %LINK:Strände|Übersicht über die Strände von Positano%."
   ],
   "faqs": [
     {
-      "q": "Where can I validate my Laurito bus ticket?",
+      "q": "Wo kann ich mein Laurito-Busticket entwerten?",
       "a": [
-        "Validate SITA tickets before boarding using the machine on the bus or at the Chiesa Nuova tabacchi when you buy them.",
-        "If the validator is out of service, write the date and time on the ticket in pen to show inspectors."
+        "Entwerten Sie SITA-Tickets vor dem Einsteigen am Automaten im Bus oder beim Kauf in der Chiesa Nuova tabacchi.",
+        "Wenn der Entwerter außer Betrieb ist, schreiben Sie das Datum und die Uhrzeit mit einem Kugelschreiber auf das Ticket, um es den Kontrolleuren vorzuzeigen."
       ]
     },
     {
-      "q": "What if the bus back to Positano is full?",
+      "q": "Was ist, wenn der Bus zurück nach Positano voll ist?",
       "a": [
-        "Buses can fill up after beach hours. Let the driver know you're waiting; if there's no room, wait for the next service, which usually arrives every 20–30 minutes in summer.",
-        "Alternatively, take the Laurito shuttle boat to Spiaggia Grande and connect with local buses from there."
+        "Nach den Strandzeiten können die Busse voll sein. Teilen Sie dem Fahrer mit, dass Sie warten. Wenn kein Platz frei ist, warten Sie auf den nächsten Service, der im Sommer normalerweise alle 20–30 Minuten eintrifft.",
+        "Alternativ können Sie das Laurito-Shuttleboot nach Spiaggia Grande nehmen und von dort aus in die örtlichen Busse umsteigen."
       ]
     }
   ],
@@ -69,7 +69,7 @@
     "qrAlt": "QR code to share this guide",
     "rideAlt": "Amalfi Coast bus en route from Laurito",
     "rideCaption": "Ride from Laurito toward Positano",
-    "stopAlt": "Bar Internazionale / Chiesa Nuova bus stop",
+    "stopAlt": "Bushaltestelle Bar Internazionale / Chiesa Nuova",
     "stopCaption": "Bar Internazionale / Chiesa Nuova stop"
   }
 }

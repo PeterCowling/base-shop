@@ -1,6 +1,63 @@
 {
   "seo": {
     "title": "Hostel Brikette til Chiesa Nuova/Bar Internazionale busstoppested",
-    "description": "Micro-route from Hostel Brikette to the Chiesa Nuova bus stop with minimal stairs; ticket checks and departure timing."
-  }
+    "description": "Mikrorute fra Hostel Brikette til Chiesa Nuova busstoppested med minimale trapper; billetkontrol og afgangstidspunkt."
+  },
+  "linkLabel": "Hostel Brikette til Chiesa Nuova/Bar Internazionale busstoppested",
+  "intro": "Forlader vandrerhjemmet med bussen til Amalfi, Sorrento? Denne mikrorute viser den hurtigste vej fra Hostel Brikette til busstoppestedet Chiesa Nuova/Bar Internazionale og giver nogle tips.",
+  "image": {
+    "alt": "Positanos Chiesa Nuova SITA stop uden for Bar Internazionale",
+    "caption": "Hostel Brikette ligger et sving op ad bakke fra stoppestedet. Tillad et par minutter, så du kan stå i køen, inden bussen ankommer."
+  },
+  "toc": {
+    "onThisPage": "On this page",
+    "before": "Before you leave",
+    "steps": "Step-by-step",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Why this route works",
+      "body": [
+        "Det er 120 meter (400 fod) gang fra vandrerhjemmets indgang til stoppestedet på hovedvejen.",
+        "Skal du mod Amalfi, er stoppestedet overfor Bar Internazionale. Kø på siden af ​​vejen med havudsigt.  Hvis du skal mod Sorrento, venter du lige uden for selve baren."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Tickets and timing",
+      "body": [
+        "Køb en SITA billet på tabacchi eller inde i baren.  Forsøg ikke at gå ombord på bussen uden billet, da du ikke vil kunne købe en på selve bussen.  Fremvis din billet til chaufføren ved boarding.  Hvis du skal nå den første bus ud, så køb din billet dagen før, og kom til os i receptionen for at arrangere kassen.",
+        "Sommerbusser fylder ofte. Planlæg i overensstemmelse hermed, især i de mest travle perioder."
+      ]
+    }
+  ],
+  "beforeList": [],
+  "stepsList": [
+    "Forlad receptionen, ned ad den korte trappe til Viale Pasitea, og drej til venstre for at gå ned ad bakke.",
+    "Følg fortovet i cirka 120 meter (400 fod) langs hovedvejen for at nå Bar Internazionale."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+  "kneesList": [],
+  "kneesDockPrefix": "Starter du med bagage ved færgelejet? Brug vores",
+  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesPorterPrefix": "Har du brug for portørpriser eller bookinghjælp? Tjek",
+  "kneesPorterLinkLabel": "porter service guide",
+  "faqs": [
+    {
+      "q": "How early should I reach the stop?",
+      "a": "Ankom mindst 10 minutter før din valgte bus om sommeren, så du kan stå i kø i nærheden af ​​shelteret og komme komfortabelt ombord."
+    },
+    {
+      "q": "Where can I buy or validate tickets?",
+      "a": "Brug tabacchi ved siden af ​​Bar Internazionale til billetsalg. Validatorer er om bord; klip eller scan din billet, så snart du træder på."
+    }
+  ],
+  "howtoSteps": [
+    "Gå 2-4 minutter ned ad bakke fra Hostel Brikette til Bar Internazionale-stoppestedet",
+    "Stil dig i kø på søsiden af ​​vejen og valider billetter ved boarding",
+    "Kombiner med færge- eller langdistanceguider for at rejse videre"
+  ]
 }

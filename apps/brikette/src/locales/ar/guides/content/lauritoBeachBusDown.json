@@ -1,26 +1,26 @@
 {
   "seo": {
-    "title": "Bus from Hostel Brikette to Laurito Beach",
-    "description": "Walk to the Chiesa Nuova stop, ride the Amalfi Coast bus, and follow the stairs down to Laurito Beach."
+    "title": "حافلة من هوستل بريكيت إلى شاطئ لوريتو",
+    "description": "امشِ إلى موقف تشيزا نوفا، اركب حافلة ساحل أمالفي، واتبع السلالم نزولاً إلى شاطئ لوريتو."
   },
-  "linkLabel": "Bus to Laurito Beach",
+  "linkLabel": "حافلة إلى شاطئ لوريتو",
   "lead": {
     "shareLabel": "Scan to Share",
     "qrAlt": "QR code to share this guide",
     "figures": [
       {
-        "alt": "Chiesa Nuova bus stop beside Bar Internazionale",
+        "alt": "موقف حافلات تشيزا نوفا بجوار بار إنترناسيونالي",
         "caption": "Chiesa Nuova – Bar Internazionale stop"
       },
       {
-        "alt": "Staircase down to Laurito Beach (signposted)",
+        "alt": "سلم يؤدي إلى شاطئ لوريتو (مع لافتة)",
         "caption": "Signposted stairs down to Laurito"
       }
     ]
   },
   "intro": [
-    "Reaching Laurito Beach from Hostel Brikette is simplest on the blue SITA Amalfi Coast bus that stops at Chiesa Nuova.",
-    "Use this guide to find the stop, buy tickets, ride to Laurito, and follow the final stairs down to the water."
+    "أسهل طريقة للوصول إلى شاطئ لوريتو من هوستل بريكيت هي الحافلة الزرقاء SITA لساحل أمالفي التي تتوقف عند تشيزا نوفا.",
+    "استخدم هذا الدليل للعثور على الموقف، شراء التذاكر، الركوب إلى لوريتو، واتباع السلالم الأخيرة نزولاً إلى الماء."
   ],
   "sections": [
     {

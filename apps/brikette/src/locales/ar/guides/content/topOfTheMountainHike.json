@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "Top of the Mountain Hike from Hostel Brikette",
-    "description": "Reach Monte Sant'Angelo, the Amalfi Coast's highest point, with these directions, prep tips, and warnings."
+    "title": "مسار قمة الجبل من هوستل بريكيت",
+    "description": "وصول إلى مونتي سانت أنجلو، أعلى نقطة في ساحل أمالفي، مع هذه الإرشادات ونصائح التحضير والتنبيهات."
   },
-  "linkLabel": "Top of the Mountain hike from Hostel Brikette",
+  "linkLabel": "مسار قمة الجبل من هوستل بريكيت",
   "intro": [
     "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
     "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
@@ -40,71 +40,65 @@
   ],
   "essentialsTitle": "Essentials",
   "essentials": [
-    "At least 2 litres of water per person plus salty snacks; there are no reliable refills after Santa Maria del Castello.",
-    "Solid hiking shoes with grip—sections of the upper trail are rocky, loose, and exposed.",
-    "Sun protection and layers for the summit; wind can whip across the ridge even on warm days."
+    "على الأقل 2 لتر ماء لكل شخص مع وجبات مالحة؛ لا توجد نقاط تعبئة موثوقة بعد سانتا ماريا ديل كاستيلو.",
+    "حذاء مشي متين بسطح ممسك — بعض أجزاء المسار العلوي صخرية ومفككة ومعرضة للهواء.",
+    "حماية من الشمس وطبقات للقمّة؛ الرياح قد تعصف عبر القمة حتى في الأيام الدافئة."
   ],
   "typicalCostsTitle": "Typical costs",
   "typicalCosts": [
-    "Trail access is free; budget €5–€10 if you plan to reward yourself with a drink or snack in Santa Maria del Castello.",
-    "Return SITA bus tickets or ferry fares if you decide to descend via another village instead of hiking all the way back."
+    "المسار مجاني؛ خصص 5–10 يورو إذا كنت تخطط لمشروب أو وجبة خفيفة في سانتا ماريا ديل كاستيلو.",
+    "تذاكر حافلات SITA أو أجرة العبّارة في حال قررت النزول عبر قرية أخرى بدلاً من المشي طوال الطريق."
   ],
   "tipsTitle": "Smart timing",
   "tips": [
-    "Start at dawn in summer to avoid climbing under peak heat; late autumn and spring afternoons offer softer light without the scorching sun.",
-    "Check the forecast for storms—cloud cover can erase the views and wet rock makes the summit steps slippery.",
-    "Let someone at the hostel know your plan and expected return time before you set off."
+    "ابدأ عند الفجر في الصيف لتجنب التسلق في ذروة الحرارة؛ تعطي بعد الظهر في أواخر الخريف والربيع ضوءاً ألطف بلا حرارة حادة.",
+    "تحقق من توقعات العواصف — الغيوم قد تحجب الإطلالات والصخور الرطبة تجعل درجات القمة زلقة.",
+    "أخبر أحداً في الهوستل بخطتك ووقت عودتك المتوقع قبل الانطلاق."
   ],
   "warningsTitle": "When to reconsider",
   "warnings": [
-    "Skip the hike if you lack mountain experience or strong fitness; the sustained elevation gain is punishing and there are few bailout points.",
-    "Avoid the route if heights unsettle you—exposed ledges and steep drops challenge even confident hikers.",
-    "Do not attempt the summit during peak summer afternoons when heat and the need to carry extra water add to the strain."
+    "تجنب المسار إذا كنت تفتقر لخبرة الجبال أو لياقة قوية؛ الارتفاع المستمر مرهق ولا توجد حواجز في نقاط عدة.",
+    "تجنب المسار إذا كانت المرتفعات تزعجك — الحواف المكشوفة والانحدارات الشديدة قد تتحدّى حتى الواثقين.",
+    "لا تحاول الوصول إلى القمة في ظهيرة الصيف الحار عندما تزيد الحرارة وحمل الماء الإضافي من الإجهاد."
   ],
   "steps": [
     {
-      "name": "Climb to Santa Maria del Castello",
-      "text": "Use the hostel's route to Santa Maria del Castello; reaching the square means you have completed roughly a third of the elevation."
+      "text": "استخدم مسار الهوستل إلى سانتا ماريا ديل كاستيلو؛ بلوغ الساحة يعني أنك قطعت نحو ثلث التسلق."
     },
     {
-      "name": "Join the mountain trail",
-      "text": "From the village crossroads, turn right, then left past the restaurant, and leave the road on the right-hand path that skirts the houses."
+      "text": "من تقاطع القرية، انعطف يميناً ثم يساراً بعد المطعم، وغادر الطريق عبر الممر الأيمن الذي يصعد باتجاه القمة."
     },
     {
-      "name": "Commit to the upper ascent",
-      "text": "Follow the rugged trail to the signed crossroads and choose the path that heads straight uphill toward the summit."
+      "text": "اتبع المسار الوعر إلى مفترق الطرق المميز واختر المسار الذي يتجه صعوداً مباشرة نحو القمة."
     },
     {
-      "name": "Navigate the zig-zags",
-      "text": "Work through steep switchbacks until the trail flattens along the mountain's left flank."
+      "text": "اجتز المنعطفات الحادة حتى يستوي المسار على الجانب الأيسر للجبل."
     },
     {
-      "name": "Take the rock-cut stairs",
-      "text": "Climb the stone steps on the right, looping behind the mountain face to the final ramp."
+      "text": "اصعد الدرج الحجري على اليمين، ملتفاً خلف وجه الجبل إلى المنحدر الأخير."
     },
     {
-      "name": "Reach the summit",
-      "text": "Follow the last ascent to the top and enjoy the panorama before retracing your steps to Santa Maria."
+      "text": "اتبع الصعود الأخير إلى القمة واستمتع بالإطلالة ثم عد أدراجك إلى سانتا ماريا."
     }
   ],
   "faqsTitle": "FAQs",
   "faqs": [
     {
-      "q": "How long does the full hike take?",
+      "q": "كم يستغرق المسار ذهاباً وإياباً؟",
       "a": [
-        "Allow 6–7 hours for the round trip from Hostel Brikette, including breaks in Santa Maria and time at the summit."
+        "خصص 6–7 ساعات للرحلة من هوستل بريكيت، بما في ذلك الاستراحة في سانتا ماريا والوقت على القمة."
       ]
     },
     {
-      "q": "Is the trail marked?",
+      "q": "هل العلامات واضحة؟",
       "a": [
-        "Markers are sparse beyond Santa Maria; carry an offline map and pay attention to the obvious worn trail and signposts at junctions."
+        "العلامات متباعدة بعد سانتا ماريا؛ احمل خريطة دون اتصال وانتبه للمسار الواضح واللافتات في التقاطعات."
       ]
     },
     {
-      "q": "Can I turn back early?",
+      "q": "هل يمكنني التراجع إذا شعرت أن الجزء العلوي مكشوف؟",
       "a": [
-        "Yes. If the upper section feels too exposed, enjoy the views from Santa Maria or the lower switchbacks and return the way you came."
+        "نعم. إذا بدا القسم العلوي مكشوفاً بشدة، استمتع بالإطلالة من سانتا ماريا أو المنعطفات السفلية وعد بالطريقة نفسها."
       ]
     }
   ],
@@ -112,5 +106,22 @@
     "labels": {
       "warnings": "When to reconsider"
     }
+  },
+  "gallery": {
+    "title": "معرض صور",
+    "items": [
+      {
+        "alt": "Looking across the peninsula to Capri",
+        "caption": "إطلالة عبر شبه الجزيرة نحو كابري"
+      },
+      {
+        "alt": "Scan to Share QR code",
+        "caption": "امسح للمشاركة"
+      },
+      {
+        "alt": "Trail near the summit",
+        "caption": "الاقتراب من القمة"
+      }
+    ]
   }
 }

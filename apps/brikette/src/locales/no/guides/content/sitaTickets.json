@@ -5,21 +5,21 @@
   },
   "linkLabel": "SITA-billetter og tips",
   "intro": [
-    "Buy SITA tickets before boarding and allow extra time in summer. Keep tickets until the end of your ride."
+    "Kjøp SITA-billetter før ombordstigning og gi ekstra tid om sommeren. Behold billettene til slutten av turen."
   ],
   "sections": [
     {
       "id": "where",
       "title": "Where to buy",
       "body": [
-        "Buy at tabacchi/kiosks along the main road. Stock up when lines are short."
+        "Kjøp på tabacchi/kiosker langs hovedveien. Fyll opp når køene er korte."
       ]
     },
     {
       "id": "validate",
       "title": "Validation",
       "body": [
-        "Validate on boarding where machines exist; keep tickets until exit."
+        "Validere ved ombordstigning der maskiner finnes; behold billettene til utgang."
       ]
     }
   ],
@@ -27,7 +27,7 @@
     {
       "q": "Can I buy on board?",
       "a": [
-        "Generally not; buy before boarding to avoid delays."
+        "Generelt ikke; kjøp før ombordstigning for å unngå forsinkelser."
       ]
     }
   ]

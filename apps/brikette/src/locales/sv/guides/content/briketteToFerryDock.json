@@ -2,5 +2,81 @@
   "seo": {
     "title": "Hostel Brikette → färjekajen med bagage",
     "description": "Steg-för-steg-vägen från hostelet till Positanos färjekaj med Interno-bussen och bärare."
-  }
+  },
+  "linkLabel": "Vandrarhem Brikette → färjeläge, med bagage",
+  "intro": [
+    "Avresande Hostel Brikette med bagage? Åk Interno Positano-bussen nedför och låt hamnbärarna flytta tunga väskor så att du når färjan utan att brottas Positanos trappor."
+  ],
+  "beforeList": [
+    "Kontrollera den aktuella tidtabellen för Interno Positano - här är [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Hämta Interno Positano-biljetter på tabacchi bredvid Chiesa Nuova innan du går ombord (eller be receptionen att bekräfta lager).",
+    "Ordna porterhjälp om du har skrymmande väskor – receptionen kan ringa i förväg, eller se [porterserviceguiden](guide:porterServices) för nummer och priser."
+  ],
+  "sections": [
+    {
+      "id": "hostel-to-stop",
+      "title": "Vandrarhemsingången till hållplatsen Chiesa Nuova",
+      "body": [
+        "Kolla ut, följ sedan huvudtrappan ner till Viale Pasitea och sväng vänster (nedför). Gå drygt 100 meter (330 fot) till tabacchi/tidningskiosken du använde vid ankomsten.",
+        "Busshållplatsen Interno Positano ligger omedelbart bredvid tabacchi. Ha biljetter redo; om du behöver fler, köp dem inne innan bussen kommer."
+      ]
+    },
+    {
+      "id": "bus-to-mulini",
+      "title": "Åk Interno Positano-bussen till Piazza dei Mulini",
+      "body": [
+        "Gå ombord på Interno Positano-bussen — destinationstavlan läser \"interno positano\". Håll bagage antingen i knät eller i mittområdet så att gångarna förblir fria.",
+        "Stanna på i ungefär 10 minuter tills Piazza dei Mulini-hållplatsen (det sista större stoppet före gågatan). Låt föraren veta att du är på väg till stranden om du är osäker."
+      ]
+    },
+    {
+      "id": "mulini-to-dock",
+      "title": "Piazza dei Mulini to the ferry dock",
+      "body": [
+        "Kliv av bussen, träffa bärarna om du förbokat dem, och gå rakt in på den fotgängare som leder till Spiaggia Grande.",
+        "Följ strandpromenaden nedför i cirka 7 minuter — använd [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) för att stanna på de jämnaste rampsektionerna.",
+        "Vid färjebryggan, checka in med din operatör. Bärare levererar bagage separat; ha pass, mediciner och värdesaker med dig."
+      ]
+    }
+  ],
+  "stepsList": [
+    "Köp Interno Positano-bussbiljetter på Chiesa Nuova tabacchi och bekräfta att porter är tillgänglig.",
+    "Gå 100 m nedförsbacke från vandrarhemmet till busshållplatsen Chiesa Nuova och vänta på havet vid Viale Pasitea.",
+    "Åk Interno Positano-bussen till Piazza dei Mulini (sista större stopp före stranden).",
+    "Möt bärarna och följ strandpromenaden till färjebryggan medan de flyttar tunga väskor."
+  ],
+  "kneesList": [
+    "Att använda Interno Positano-bussen ersätter hundratals branta trappsteg med en kort, jämn promenad.",
+    "Bärare kan ta resväskor på separata vagnar så att du bara klarar en dagsäck på strandpromenaden."
+  ],
+  "kneesDockPrefix": "Behöver du uppförsbacken när du kommer tillbaka? Läs vår",
+  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
+  "kneesPorterPrefix": "Vill du ha porterpriser och bokningstips? Kontrollera",
+  "kneesPorterLinkLabel": "porter service guide",
+  "faqs": [
+    {
+      "q": "Var kan jag köpa biljetter till Interno Positano nära vandrarhemmet?",
+      "a": [
+        "Tabacchi/tidningskiosken bredvid hållplatsen Chiesa Nuova håller biljetter i lager, och receptionen kan bekräfta tillgänglighet samma dag. Förare säljer inte biljetter ombord."
+      ]
+    },
+    {
+      "q": "Hur långt i förväg ska jag begära bärarna?",
+      "a": [
+        "På sommaren ring 30–45 minuter innan du vill åka så att de kan träffa dig på Piazza dei Mulini. Under lugnare månader räcker det vanligtvis med 15 minuter – receptionen kan ringa å dina vägnar."
+      ]
+    },
+    {
+      "q": "Vad händer om Interno-bussen inte går när jag avgår?",
+      "a": [
+        "Om tjänsterna pausar sent på natten, be bärare att ta bagaget hela vägen ner och gå på strandpromenaden själv, eller använd en SITA-buss mot Sponda (kör senare) och fortsätt nerför till fots."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Bekräfta biljetter och bärare på Chiesa Nuova",
+    "Gå nedför från vandrarhemmet till busshållplatsen Chiesa Nuova",
+    "Åk Interno Positano-bussen till Piazza dei Mulini",
+    "Träffa bärare och gå på strandpromenaden till färjebryggan"
+  ]
 }

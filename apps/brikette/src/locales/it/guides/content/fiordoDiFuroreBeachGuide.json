@@ -9,9 +9,18 @@
     "Con questa guida puoi spostarti in autobus, capire quanto siano limitati i servizi e programmare il ritorno per non restare bloccato quando l'ultimo SITA si riempie."
   ],
   "toc": [
-    { "href": "#getting-there", "label": "Come arrivare" },
-    { "href": "#returning", "label": "Il rientro" },
-    { "href": "#on-site", "label": "Cosa trovi" }
+    {
+      "href": "#getting-there",
+      "label": "Come arrivare"
+    },
+    {
+      "href": "#returning",
+      "label": "Il rientro"
+    },
+    {
+      "href": "#on-site",
+      "label": "Cosa trovi"
+    }
   ],
   "sections": [
     {

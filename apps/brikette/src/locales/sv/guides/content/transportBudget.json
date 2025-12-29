@@ -5,57 +5,57 @@
   },
   "linkLabel": "Transport på budget",
   "intro": [
-    "Keep transport costs low by mixing passes, off-peak departures, and shared transfers when it counts."
+    "Håll transportkostnaderna låga genom att blanda pass, avgångar under lågtrafik och delade transfers när det gäller."
   ],
   "sections": [
     {
       "id": "passes",
       "title": "Choose the right pass",
       "body": [
-        "Use the UNICO Costiera day pass (€12.40) for unlimited SITA buses between Sorrento and Salerno—validate the first ride and keep the ticket handy for inspectors.",
-        "If you plan two or more ferry rides in a day, compare combo tickets from operators like Travelmar; they bundle Amalfi and Positano hops at a discount."
+        "Använd UNICO Costiera-dagpasset (12,40 €) för obegränsade SITA-bussar mellan Sorrento och Salerno – validera den första resan och ha biljetten till hands för inspektörerna.",
+        "Om du planerar två eller flera färjeturer på en dag, jämför kombinationsbiljetter från operatörer som Travelmar; de paketerar Amalfi- och Positano-humle till rabatterat pris."
       ]
     },
     {
       "id": "combo-routes",
       "title": "Combine modes smartly",
       "body": [
-        "Pair a single ferry leg with buses to save cash but still enjoy views—sail out in the morning, bus back when prices spike.",
-        "Share taxis for late-night returns when buses stop; splitting €80 four ways can beat waiting hours for the next run."
+        "Para ihop en färjesträcka med bussar för att spara pengar men ändå njuta av utsikten – segla ut på morgonen, buss tillbaka när priserna stiger.",
+        "Dela taxi för sena returer när bussarna stannar; att dela 80 € på fyra sätt kan slå väntetimmar till nästa körning."
       ]
     },
     {
       "id": "advance",
       "title": "Buy ahead when it helps",
       "body": [
-        "Book Trenitalia or Italo tickets from Rome/Naples early for the lowest fares; regional add-ons to Sorrento stay fixed price.",
-        "Reserve airport shuttles (Curreri, Pintour) online to lock in seats during peak weekends."
+        "Boka Trenitalia eller Italo biljetter från Rom/Neapel tidigt för de lägsta priserna; regionala tillägg till Sorrento är fast pris.",
+        "Boka flygplatstransfer (Curreri, Pintour) online för att låsa in platser under högsäsong."
       ]
     },
     {
       "id": "last-mile",
       "title": "Last-mile savings",
       "body": [
-        "For arrivals, ride the SITA bus to Chiesa Nuova and walk down instead of hiring a porter; allow 15 minutes with manageable luggage.",
-        "Use luggage storage near the ferry dock instead of private transfers if you have a late check-out—€7–€10 beats an extra taxi."
+        "För ankomster, åk SITA-bussen till Chiesa Nuova och gå ner istället för att hyra en portier; tillåt 15 minuter med hanterbart bagage.",
+        "Använd bagageförvaring nära färjeläget istället för privat transfer om du har en sen utcheckning—7–10 € slår en extra taxi."
       ]
     }
   ],
   "tips": [
-    "Travel before 08:30 or after 19:00 when buses are quieter and you can board without pushing.",
-    "Screenshot or print tickets; Wi-Fi can drop right as inspectors board."
+    "Res före 08:30 eller efter 19:00 när bussarna är tystare och du kan gå ombord utan att trycka på.",
+    "Skärmdump eller skriv ut biljetter; Wi-Fi kan sjunka direkt som inspektörens styrelse."
   ],
   "faqs": [
     {
       "q": "Are bus passes worth it off-season?",
       "a": [
-        "Yes if you take three or more rides in a day. Otherwise pay singles; schedules are lighter but fares remain low."
+        "Ja om du tar tre eller fler turer på en dag. Annars betala singlar; tidtabellerna är lättare men priserna är fortfarande låga."
       ]
     },
     {
       "q": "Do I need to validate ferry tickets?",
       "a": [
-        "Most operators scan QR codes digitally, but keep a printed copy if you expect wet conditions to confuse screens."
+        "De flesta operatörer skannar QR-koder digitalt, men behåll en utskriven kopia om du förväntar dig att våta förhållanden ska förvirra skärmarna."
       ]
     }
   ]

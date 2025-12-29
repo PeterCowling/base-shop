@@ -2,5 +2,81 @@
   "seo": {
     "title": "Hostel Brikette → cais dos ferries, com bagagem",
     "description": "Percurso passo a passo desde o hostel até ao cais de ferries de Positano utilizando o autocarro Interno e os carregadores."
-  }
+  },
+  "linkLabel": "Hostel Brikette → cais da balsa, com bagagem",
+  "intro": [
+    "Saindo do Hostel Brikette com bagagem? Pegue o ônibus Interno Positano ladeira abaixo e deixe os carregadores moverem as malas pesadas para que você chegue à balsa sem lutar nas escadas de Positano."
+  ],
+  "beforeList": [
+    "Verifique o horário atual do Interno Positano – aqui está o [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Retire os ingressos do Interno Positano no tabacchi ao lado da Chiesa Nuova antes de embarcar (ou peça à recepção para confirmar o estoque).",
+    "Providencie ajuda de carregador se você tiver malas volumosas – a recepção pode ligar com antecedência ou consulte o [guia de serviço de carregador](guide:porterServices) para números e preços."
+  ],
+  "sections": [
+    {
+      "id": "hostel-to-stop",
+      "title": "Entrada do albergue na parada Chiesa Nuova",
+      "body": [
+        "Confira, siga pela escadaria principal até a Viale Pasitea e vire à esquerda (descendo). Caminhe pouco mais de 100 metros (330 pés) até a banca de tabacchi/jornal que você usou na chegada.",
+        "A paragem de autocarro Interno Positano fica imediatamente ao lado do tabacchi. Tenha os ingressos prontos; se precisar de mais, compre-os dentro antes da chegada do ônibus."
+      ]
+    },
+    {
+      "id": "bus-to-mulini",
+      "title": "Pegue o ônibus Interno Positano até a Piazza dei Mulini",
+      "body": [
+        "Embarque no ônibus Interno Positano - a placa de destino diz \"interno positano\". Mantenha a bagagem no colo ou na área central para que os corredores fiquem desobstruídos.",
+        "Permaneça por cerca de 10 minutos até a parada Piazza dei Mulini (a última grande parada antes da zona de pedestres). Avise ao motorista que você está indo para a praia se não tiver certeza."
+      ]
+    },
+    {
+      "id": "mulini-to-dock",
+      "title": "Piazza dei Mulini to the ferry dock",
+      "body": [
+        "Desça do ônibus, encontre os carregadores, caso os tenha reservado previamente, e caminhe direto para a faixa exclusiva para pedestres que leva à Spiaggia Grande.",
+        "Siga o calçadão descendo por cerca de 7 minutos – use [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) para permanecer nas seções de rampa mais suaves.",
+        "No cais da balsa, faça check-in com sua operadora. Os carregadores entregam a bagagem separadamente; mantenha passaportes, medicamentos e objetos de valor com você."
+      ]
+    }
+  ],
+  "stepsList": [
+    "Compre passagens de ônibus Interno Positano no tabacchi Chiesa Nuova e confirme a disponibilidade do carregador.",
+    "Caminhe 100 m ladeira abaixo do albergue até o ponto de ônibus Chiesa Nuova e espere na beira-mar da Viale Pasitea.",
+    "Pegue o ônibus Interno Positano até a Piazza dei Mulini (última grande parada antes da praia).",
+    "Encontre os carregadores e siga o calçadão até o cais da balsa enquanto eles transportam malas pesadas."
+  ],
+  "kneesList": [
+    "Usar o ônibus Interno Positano substitui centenas de degraus íngremes por uma caminhada curta e nivelada.",
+    "Os carregadores podem levar as malas em carrinhos separados, para que você só administre uma mochila no calçadão."
+  ],
+  "kneesDockPrefix": "Precisa da versão difícil quando retornar? Leia nosso",
+  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
+  "kneesPorterPrefix": "Quer preços de porteiro e dicas de reserva? Verifique o",
+  "kneesPorterLinkLabel": "porter service guide",
+  "faqs": [
+    {
+      "q": "Onde posso comprar ingressos para o Interno Positano perto do albergue?",
+      "a": [
+        "A banca de tabacchi/jornal ao lado da parada Chiesa Nuova mantém os ingressos em estoque e a recepção pode confirmar a disponibilidade para o mesmo dia. Os motoristas não vendem ingressos a bordo."
+      ]
+    },
+    {
+      "q": "Com que antecedência devo solicitar os carregadores?",
+      "a": [
+        "No verão, ligue 30 a 45 minutos antes de sair para que possam encontrá-lo na Piazza dei Mulini. Durante os meses mais calmos, 15 minutos geralmente são suficientes – a recepção pode ligar em seu nome."
+      ]
+    },
+    {
+      "q": "E se o ônibus Interno não estiver funcionando quando eu partir?",
+      "a": [
+        "Se os serviços pararem tarde da noite, peça aos carregadores que desçam a bagagem e caminhem você mesmo pelo calçadão, ou use um ônibus SITA em direção a Sponda (passa mais tarde) e continue descendo a pé."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Confirme ingressos e carregadores na Chiesa Nuova",
+    "Caminhe ladeira abaixo do albergue até o ponto de ônibus Chiesa Nuova",
+    "Pegue o ônibus Interno Positano até a Piazza dei Mulini",
+    "Encontre carregadores e caminhe pelo calçadão até o cais da balsa"
+  ]
 }

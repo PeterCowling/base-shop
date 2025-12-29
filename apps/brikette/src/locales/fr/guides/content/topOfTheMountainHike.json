@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "Top of the Mountain Hike from Hostel Brikette",
-    "description": "Reach Monte Sant'Angelo, the Amalfi Coast's highest point, with these directions, prep tips, and warnings."
+    "title": "Randonnée au sommet de la montagne depuis l'auberge Brikette",
+    "description": "Atteignez le Monte Sant'Angelo, le point culminant de la côte amalfitaine, avec ces instructions, conseils de préparation et avertissements."
   },
-  "linkLabel": "Top of the Mountain hike from Hostel Brikette",
+  "linkLabel": "Randonnée au sommet de la montagne depuis l'auberge Brikette",
   "intro": [
     "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
     "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
@@ -40,51 +40,51 @@
   ],
   "essentialsTitle": "Essentials",
   "essentials": [
-    "At least 2 litres of water per person plus salty snacks; there are no reliable refills after Santa Maria del Castello.",
-    "Solid hiking shoes with grip—sections of the upper trail are rocky, loose, and exposed.",
-    "Sun protection and layers for the summit; wind can whip across the ridge even on warm days."
+    "Au moins 2 litres d'eau par personne plus des collations salées ; il n'y a pas de recharges fiables après Santa Maria del Castello.",
+    "Chaussures de randonnée solides et adhérentes : les sections supérieures du sentier sont rocheuses, meubles et exposées.",
+    "Protection solaire et couches pour le sommet ; le vent peut souffler sur la crête même par temps chaud."
   ],
   "typicalCostsTitle": "Typical costs",
   "typicalCosts": [
-    "Trail access is free; budget €5–€10 if you plan to reward yourself with a drink or snack in Santa Maria del Castello.",
-    "Return SITA bus tickets or ferry fares if you decide to descend via another village instead of hiking all the way back."
+    "L'accès aux sentiers est gratuit; budget 5 à 10 € si vous envisagez de vous récompenser avec une boisson ou une collation à Santa Maria del Castello.",
+    "Renvoyez les billets de bus SITA ou les tarifs du ferry si vous décidez de descendre via un autre village au lieu de faire tout le chemin du retour."
   ],
   "tipsTitle": "Smart timing",
   "tips": [
-    "Start at dawn in summer to avoid climbing under peak heat; late autumn and spring afternoons offer softer light without the scorching sun.",
-    "Check the forecast for storms—cloud cover can erase the views and wet rock makes the summit steps slippery.",
-    "Let someone at the hostel know your plan and expected return time before you set off."
+    "Commencez dès l’aube en été pour éviter de grimper en pleine chaleur ; late autumn and spring afternoons offer softer light without the scorching sun.",
+    "Vérifiez les prévisions de tempêtes : la couverture nuageuse peut effacer la vue et la roche mouillée rend les marches du sommet glissantes.",
+    "Informez quelqu'un à l'auberge de votre projet et de l'heure de retour prévue avant de partir."
   ],
   "warningsTitle": "When to reconsider",
   "warnings": [
-    "Skip the hike if you lack mountain experience or strong fitness; the sustained elevation gain is punishing and there are few bailout points.",
-    "Avoid the route if heights unsettle you—exposed ledges and steep drops challenge even confident hikers.",
-    "Do not attempt the summit during peak summer afternoons when heat and the need to carry extra water add to the strain."
+    "Évitez la randonnée si vous manquez d'expérience en montagne ou si vous êtes en bonne forme physique ; le gain d’altitude soutenu est pénible et il y a peu de points de sauvetage.",
+    "Évitez l'itinéraire si les hauteurs vous déstabilisent : les rebords exposés et les dénivelés abrupts mettent au défi même les randonneurs confiants.",
+    "Ne tentez pas le sommet pendant les après-midis d'été, lorsque la chaleur et la nécessité de transporter de l'eau supplémentaire ajoutent à la tension."
   ],
   "steps": [
     {
       "name": "Climb to Santa Maria del Castello",
-      "text": "Use the hostel's route to Santa Maria del Castello; reaching the square means you have completed roughly a third of the elevation."
+      "text": "Use the hostel's route to Santa Maria del Castello; atteindre la place signifie que vous avez parcouru environ un tiers de l’élévation."
     },
     {
       "name": "Join the mountain trail",
-      "text": "From the village crossroads, turn right, then left past the restaurant, and leave the road on the right-hand path that skirts the houses."
+      "text": "Depuis le carrefour du village, tourner à droite, puis à gauche devant le restaurant, et quitter la route par le chemin à droite qui longe les maisons."
     },
     {
       "name": "Commit to the upper ascent",
-      "text": "Follow the rugged trail to the signed crossroads and choose the path that heads straight uphill toward the summit."
+      "text": "Suivez le sentier accidenté jusqu'au carrefour balisé et choisissez le chemin qui monte tout droit vers le sommet."
     },
     {
       "name": "Navigate the zig-zags",
-      "text": "Work through steep switchbacks until the trail flattens along the mountain's left flank."
+      "text": "Traversez des lacets raides jusqu'à ce que le sentier s'aplatisse le long du flanc gauche de la montagne."
     },
     {
       "name": "Take the rock-cut stairs",
-      "text": "Climb the stone steps on the right, looping behind the mountain face to the final ramp."
+      "text": "Montez les marches de pierre sur la droite, en faisant une boucle derrière la montagne jusqu'à la rampe finale."
     },
     {
       "name": "Reach the summit",
-      "text": "Follow the last ascent to the top and enjoy the panorama before retracing your steps to Santa Maria."
+      "text": "Suivez la dernière montée jusqu'au sommet et profitez du panorama avant de revenir sur vos pas jusqu'à Santa Maria."
     }
   ],
   "faqsTitle": "FAQs",
@@ -92,19 +92,19 @@
     {
       "q": "How long does the full hike take?",
       "a": [
-        "Allow 6–7 hours for the round trip from Hostel Brikette, including breaks in Santa Maria and time at the summit."
+        "Prévoyez 6 à 7 heures pour l'aller-retour depuis l'auberge Brikette, y compris les pauses à Santa Maria et le temps passé au sommet."
       ]
     },
     {
       "q": "Is the trail marked?",
       "a": [
-        "Markers are sparse beyond Santa Maria; carry an offline map and pay attention to the obvious worn trail and signposts at junctions."
+        "Les balises sont rares au-delà de Santa Maria ; emportez une carte hors ligne et faites attention aux sentiers visibles et aux panneaux indicateurs aux carrefours."
       ]
     },
     {
       "q": "Can I turn back early?",
       "a": [
-        "Yes. If the upper section feels too exposed, enjoy the views from Santa Maria or the lower switchbacks and return the way you came."
+        "Oui. Si la partie supérieure vous semble trop exposée, profitez de la vue depuis Santa Maria ou des lacets inférieurs et revenez par où vous êtes venu."
       ]
     }
   ],
@@ -112,5 +112,22 @@
     "labels": {
       "warnings": "When to reconsider"
     }
+  },
+  "gallery": {
+    "title": "Galerie photo",
+    "items": [
+      {
+        "alt": "Looking across the peninsula to Capri",
+        "caption": "Vue à travers la péninsule vers Capri"
+      },
+      {
+        "alt": "Scan to Share QR code",
+        "caption": "Scanner pour partager"
+      },
+      {
+        "alt": "Trail near the summit",
+        "caption": "À l’approche du sommet"
+      }
+    ]
   }
 }

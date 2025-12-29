@@ -9,9 +9,18 @@
     "Brug guiden til at rejse med bus, forstå hvor begrænsede faciliteterne er, og planlæg din hjemtur, så du ikke strander, når den sidste SITA-afgang er fyldt."
   ],
   "toc": [
-    { "href": "#getting-there", "label": "Sådan kommer du dertil" },
-    { "href": "#returning", "label": "Turen tilbage" },
-    { "href": "#on-site", "label": "Hvad du finder" }
+    {
+      "href": "#getting-there",
+      "label": "Sådan kommer du dertil"
+    },
+    {
+      "href": "#returning",
+      "label": "Turen tilbage"
+    },
+    {
+      "href": "#on-site",
+      "label": "Hvad du finder"
+    }
   ],
   "sections": [
     {

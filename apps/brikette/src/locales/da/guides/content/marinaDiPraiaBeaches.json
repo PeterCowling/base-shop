@@ -50,5 +50,43 @@
         "Turen tager ca. 50 minutter langs vejen med smalle rabatter. Bus eller scooter er sikrere, især i højsæsontrafik."
       ]
     }
-  ]
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Why go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & services"
+    },
+    {
+      "href": "#evening",
+      "label": "Stay for dinner"
+    }
+  ],
+  "essentialsTitle": "What to expect",
+  "essentials": [
+    "20-minutters SITA-bustur fra Positano; bede om Marina di Praia stop og gå to minutter ned ad bakke.",
+    "Smal stenstrand med en hovedlido plus en lille fri sektion i midten.",
+    "Restauranter og snackkiosker langs gangbroen - ideel til en middag i solnedgangen, før du går hjem."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Liggestol + paraply på Marina di Praia Beach Club: €25-€35 for dagen (to-personers sæt til rådighed).",
+    "Kajakleje: omkring €20 i timen for to personer.",
+    "Middag på Da Armandino eller Il Pirata: €16–28 € afhængig af fangst og pastatilbud."
+  ],
+  "tipsTitle": "Quick tips",
+  "warningsTitle": "Good to know",
+  "warnings": [
+    "Pladsen er begrænset; det frie område fyldes først, og lido liggestole er udsolgt i weekenden.",
+    "Klipperne blokerer for direkte sol midt på eftermiddagen - fantastisk til at køle ned, men det kan føles køligt på blæsende dage.",
+    "Mobil modtagelse dykker inde i kløften; download buskøreplaner eller middagsbestillingsbekræftelser på forhånd."
+  ],
+  "faqsTitle": "Marina di Praia FAQs"
 }

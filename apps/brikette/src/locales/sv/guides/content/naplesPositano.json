@@ -65,5 +65,20 @@
         "Från hållplatsen ”Chiesa Nuova” är det cirka 80 meter utan trappor."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Referensbilder",
+    "items": [
+      {
+        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+        "alt": "SITA-hållplatsen Chiesa Nuova / Bar Internazionale i Positano",
+        "caption": "Hållplats Bar Internazionale / Chiesa Nuova"
+      },
+      {
+        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+        "alt": "Trappa till Hostel Brikettes huvudentré",
+        "caption": "Entrétrappan till Hostel Brikette"
+      }
+    ]
+  }
 }

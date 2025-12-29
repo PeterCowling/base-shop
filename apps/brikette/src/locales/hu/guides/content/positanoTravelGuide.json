@@ -106,12 +106,17 @@
     "faqs": [
       {
         "question": "A fordítás folyamatban van.",
-        "answer": "Yes. Use buses, plan ferries selectively, and focus on free viewpoints and beach time."
+        "answer": "Igen. Használjon buszokat, tervezzen szelektíven kompokat, és összpontosítson ingyenes kilátókra és strandidőre."
       },
       {
         "question": "A fordítás folyamatban van.",
         "answer": "A fordítás folyamatban van."
       }
+    ],
+    "tips": [
+      "Lehetőség szerint foglaljon előre kompokat és buszokat; a last minute jegyek drágábbak és elkelhetnek.",
+      "Vigyen magával készpénzt a tengerparti klubokba, a portás tippekre és a gyors harapnivalókra – a város ATM-jei gyakran kifogynak vacsora után.",
+      "Ossza meg a reptéri transzfert, vagy utazzon az Amalfi-parti buszokon; a viteldíjak megosztása csökkenti az érkezési költségeket."
     ]
   }
 }

@@ -4,7 +4,10 @@
     "description": "Exakte Route vom Hostel zu den Einstiegen des Sentiero degli Dei – inklusive Verkehrsmitteloptionen und Sicherheitstipps."
   },
   "linkLabel": "Pfad der Götter ab Brikette",
-  "intro": "Der Sentiero degli Dei (\"Pfad der Götter\") gehört zu den spektakulärsten Küstenwanderungen Italiens. Vom Hostel erreichst du entweder den klassischen Start in Bomerano oder das Finale in Nocelle mit dem SITA-Bus.",
+  "intro": [
+    "Der Sentiero degli Dei (Pfad der Götter) verbindet Terrassen auf Klippen, Kastanienhaine und atemberaubende Ausblicke über die Amalfiküste. Vom Hostel Brikette aus können Sie den Weg erreichen, indem Sie lokale Fähren und SITA-Busse kombinieren, ohne an einer teuren Tour teilzunehmen.",
+    "Von der Herberge aus starten drei Hauptanfahrtsmöglichkeiten: nach Amalfi segeln und mit dem Bus nach Bomerano hochfahren, die gesamte Strecke mit dem Busnetz zurücklegen oder die Transfers auslassen und von Nocelle aus einen Hin- und Rückweg zu Fuß zurücklegen. Nutzen Sie diese Übersicht, um zu entscheiden, welche detaillierte Route zu Ihrer Zeit, Ihrem Budget und Ihren Höhenunterschieden passt."
+  ],
   "sections": [
     {
       "id": "timing",
@@ -102,6 +105,33 @@
     "essentials": "Das Wichtigste",
     "costs": "Typische Kosten",
     "faqs": "FAQ",
-    "gallery": "Fotogalerie"
-  }
+    "gallery": "Fotogalerie",
+    "tips": "Smart timing"
+  },
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Reisen Sie im Juli–August vor 09:00 Uhr ab oder streben Sie die goldenen Stunden im Frühling und Herbst an, um kühlere Temperaturen und weicheres Licht zu genießen.",
+    "Vermeiden Sie den 1.700 Stufen langen Abstieg nach Positano, es sei denn, Ihre Knie sind frisch – der Abstieg über die Montepertuso-Treppe nach einer langen Wanderung ist brutal.",
+    "Benutzen Sie einen leichten Tagesrucksack und lassen Sie die Trekkingstöcke zusammengeklappt, bis Sie steilere Treppen erreichen."
+  ],
+  "faqs": [
+    {
+      "q": "Wie lange dauert die Wanderung von Tür zu Tür?",
+      "a": [
+        "Budget: 3–5 Stunden inklusive Transport. Die Fährstrecke ist die längste; Der Nocelle-Hin- und Rückweg passt in einen halben Tag."
+      ]
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": [
+        "Ja, vorausgesetzt, Sie sind sicher auf den Beinen und können problemlos mit der Höhe umgehen. Es gibt keine technischen Anstiege, sondern nur stetige Auf- und Abstiege."
+      ]
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": [
+        "Steigen Sie über Amalfi in den Bus um oder fahren Sie direkt nach Nocelle. Halten Sie immer ein Ersatz-Busticket bereit, damit Sie sich an die See- und Wetterbedingungen anpassen können."
+      ]
+    }
+  ]
 }

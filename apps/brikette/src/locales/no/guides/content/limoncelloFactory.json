@@ -4,10 +4,10 @@
     "description": "Hvordan limoncello lages og hva du ser etter i en kvalitetsflaske."
   },
   "linkLabel": "Inne i en limoncellofabrikk",
-  "fallbackParagraph": "What goes into real limoncello: lemons, alcohol, sugar, and time. Tours show the process and end with tastings — don’t drive afterwards.",
+  "fallbackParagraph": "Hva går inn i ekte limoncello: sitroner, alkohol, sukker og tid. Omvisninger viser prosessen og avsluttes med smaksprøver - ikke kjør etterpå.",
   "intro": [
     "Bli med inn i en limoncellofabrikk: lær om sitronene, prosessen og hva du ser etter i en god flaske.",
-    "Learn the stages, taste small-batch bottles, and pick up tips on storing and transporting your favourite blend home."
+    "Lær stadiene, smak små batchflasker og hent tips om oppbevaring og transport av favorittblandingen din hjem."
   ],
   "sections": [
     {
@@ -38,8 +38,8 @@
       "id": "shopping",
       "title": "Buying and storing a bottle",
       "body": [
-        "Choose opaque glass or UV-protected bottles, and check labels for the producer’s address and production date.",
-        "Keep your bottle chilled once you open it at home; if you plan to travel with it, cushion it in clothing or ask the shop for protective packaging."
+        "Velg ugjennomsiktige glass eller UV-beskyttede flasker, og sjekk etiketter for produsentens adresse og produksjonsdato.",
+        "Hold flasken avkjølt når du åpner den hjemme; hvis du planlegger å reise med den, putt den i klær eller be butikken om beskyttende emballasje."
       ]
     }
   ],
@@ -59,7 +59,7 @@
     {
       "q": "How long does limoncello keep?",
       "a": [
-        "Unopened bottles stay fresh for up to a year; once opened, store them in the fridge or freezer and enjoy within a few months for peak aroma."
+        "Uåpnede flasker holder seg friske i opptil ett år; Når de er åpnet, oppbevar du dem i kjøleskapet eller fryseren og nyt innen noen få måneder for maksimal aroma."
       ]
     }
   ]

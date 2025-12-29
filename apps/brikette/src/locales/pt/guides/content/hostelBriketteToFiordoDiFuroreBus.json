@@ -5,8 +5,8 @@
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
-    "Follow this route to travel from Hostel Brikette to Fiordo di Furore on the SITA bus without missing a stop or arriving unprepared.",
-    "The fiord has no ticketing facilities or shops, so these steps cover tickets, the nearest bus stop, and the staircase that leads down to the beach."
+    "Siga esta rota para viajar de Hostel Brikette para Fiordo di Furore no ônibus SITA sem perder uma parada ou chegar despreparado.",
+    "O fiorde não tem bilheteria ou lojas, então essas etapas cobrem as passagens, o ponto de ônibus mais próximo e a escada que leva até a praia."
   ],
   "warningsTitle": "Before you leave the hostel",
   "warnings": [
@@ -54,7 +54,7 @@
       "body": [
         "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
         "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
-        "Use the same staircase to return to the road when you are ready to leave."
+        "Use a mesma escada para retornar à estrada quando estiver pronto para sair."
       ]
     }
   ],
@@ -62,27 +62,27 @@
   "tips": [
     "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
     "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
-    "Save the %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette return guide% for your trip back.",
+    "Salve o %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette guia de retorno% para sua viagem de volta.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
   "faqsTitle": "Common questions",
   "faqs": [
     {
-      "q": "Do I really need to buy a return ticket in advance?",
+      "q": "Eu realmente preciso comprar uma passagem de volta com antecedência?",
       "a": [
-        "Yes. Drivers expect validated SITA tickets and there are no machines or shops at the beach, so buy both legs in Positano before boarding."
+        "Sim. Os motoristas esperam bilhetes SITA validados e não há máquinas ou lojas na praia, então compre os dois trechos em Positano antes de embarcar."
       ]
     },
     {
-      "q": "What should I do if the bus is full when it arrives?",
+      "q": "O que devo fazer se o ônibus estiver lotado quando chegar?",
       "a": [
-        "Wait for the next scheduled service and keep an eye on the timetable — during peak season it is normal for one or two buses to pass before space opens up."
+        "Aguarde o próximo serviço programado e fique de olho nos horários — na alta temporada é normal que um ou dois ônibus passem antes de abrirem vagas."
       ]
     },
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "After the bus crosses the arched bridge over the fiord it will stop beside the crash barrier. Watch for the bridge views, listen for the driver, and use Google Maps’ \"JH73+PQ Furore\" pin as a backup."
+        "Depois que o ônibus cruzar a ponte em arco sobre o fiorde, ele irá parar ao lado da barreira de segurança. Observe as vistas da ponte, ouça o motorista e use o pino \"JH73 + PQ Furore\" do Google Maps como backup."
       ]
     }
   ]

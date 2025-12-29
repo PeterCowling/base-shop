@@ -120,5 +120,22 @@
         "Use sandálias resistentes ou ténis para a descida. Transporte objetos mais pesados numa mochila e faça pausas nos patamares intermédios. Na subida, pare à sombra e hidrate-se antes de apanhar o autocarro ou táxi."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Destaques de Arienzo",
+    "items": [
+      {
+        "alt": "Terraços do Arienzo Beach Club",
+        "caption": "Decks na falésia com espreguiçadeiras laranja"
+      },
+      {
+        "alt": "Cais do barco shuttle de Arienzo",
+        "caption": "Embarque do shuttle na Spiaggia Grande"
+      },
+      {
+        "alt": "Escadas até Arienzo",
+        "caption": "300 degraus entre os limoeiros"
+      }
+    ]
+  }
 }

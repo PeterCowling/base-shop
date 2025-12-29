@@ -65,5 +65,20 @@
         "من محطة ‘Chiesa Nuova’ المسافة نحو 80 مترًا دون سلالم."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "صور مرجعية",
+    "items": [
+      {
+        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png?lang=ar",
+        "alt": "موقف حافلات SITA تشيزا نوفا / بار إنترناسيونالي في بوسيتانو",
+        "caption": "موقف Bar Internazionale / Chiesa Nuova"
+      },
+      {
+        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png?lang=ar",
+        "alt": "درج يؤدي إلى المدخل الرئيسي لهوستيل بريكيت",
+        "caption": "درج مدخل Hostel Brikette"
+      }
+    ]
+  }
 }

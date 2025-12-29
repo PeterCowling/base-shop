@@ -5,49 +5,49 @@
   },
   "linkLabel": "SIM/eSIM och bankomater i Positano",
   "intro": [
-    "Stay online and cash-ready by setting up your SIM plan before arriving and planning ATM stops with lower fees."
+    "Håll dig online och redo för kontanter genom att konfigurera ditt SIM-abonnemang innan du anländer och planera bankomatstopp med lägre avgifter."
   ],
   "sections": [
     {
       "id": "esim",
       "title": "Activate an eSIM",
       "body": [
-        "Load an Italian eSIM (TIM, Vodafone, or reliable travel providers) while on hostel Wi-Fi or before you fly; coverage is strongest on terraces and along the SS163.",
-        "Choose at least 10 GB for a week if you stream music or upload photos; monitor usage because top-ups in town are limited."
+        "Ladda ett italienskt eSIM (TIM, Vodafone eller pålitliga reseleverantörer) när du är på vandrarhemmets Wi-Fi eller innan du flyger; täckningen är starkast på terrasser och längs SS163.",
+        "Välj minst 10 GB för en vecka om du streamar musik eller laddar upp bilder; övervaka användningen eftersom påfyllningen i staden är begränsad."
       ]
     },
     {
       "id": "physical-sim",
       "title": "Picking up a physical SIM",
       "body": [
-        "Detour via Sorrento, Salerno, or Naples Centrale for carrier stores; bring your passport and expect a €10–€20 starter pack with ID registration.",
-        "Tabacchi sometimes sell ready-to-activate SIMs in peak months, but availability swings—buy when you see them."
+        "Omväg via Sorrento, Salerno eller Neapel Centrale för transportbutiker; ta med ditt pass och förvänta dig ett startpaket på €10–20 € med ID-registrering.",
+        "Tabacchi säljer ibland färdiga att aktivera SIM-kort under toppmånaderna, men tillgängligheten varierar - köp när du ser dem."
       ]
     },
     {
       "id": "atm",
       "title": "ATM strategy",
       "body": [
-        "Favour bank ATMs such as Intesa Sanpaolo for €2–€3 fees; independent machines near the beach can charge double with poor exchange rates.",
-        "Withdraw €100–€150 per time and split notes between your day bag and a secure pocket in your luggage."
+        "Föredrar bankautomater som Intesa Sanpaolo för €2–3 € avgifter; oberoende maskiner nära stranden kan ladda dubbelt med dåliga växelkurser.",
+        "Ta ut €100–150 € per gång och dela sedlar mellan din dagsväska och en säker ficka i ditt bagage."
       ]
     }
   ],
   "tips": [
-    "Screenshot QR codes and activation details before leaving Wi-Fi so you can reinstall the eSIM if your phone resets.",
-    "Keep a portable battery—weak signal areas force phones to boost antennas and drain power faster."
+    "Skärmbild QR-koder och aktiveringsdetaljer innan du lämnar Wi-Fi så att du kan installera om eSIM om din telefon återställs.",
+    "Behåll ett bärbart batteri – områden med svag signal tvingar telefoner att förstärka antennerna och tappa ström snabbare."
   ],
   "faqs": [
     {
       "q": "Does coverage reach Capri and Amalfi?",
       "a": [
-        "Yes, but expect slower speeds offshore; download playlists and maps before boarding ferries."
+        "Ja, men förvänta dig lägre hastigheter till havs; ladda ner spellistor och kartor innan du går ombord på färjorna."
       ]
     },
     {
       "q": "Are ATMs reliable late at night?",
       "a": [
-        "Bank lobbies stay open 24/7, but if a machine runs out of cash you may need to ride to Amalfi or Sorrento the next morning."
+        "Banklobbyerna är öppna dygnet runt, men om en automat tar slut på kontanter kan du behöva åka till Amalfi eller Sorrento nästa morgon."
       ]
     }
   ]

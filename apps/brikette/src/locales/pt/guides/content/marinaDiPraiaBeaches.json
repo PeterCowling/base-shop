@@ -50,5 +50,43 @@
         "A caminhada leva cerca de 50 minutos pela estrada com bermas estreitas. Autocarro ou scooter são mais seguros, sobretudo em alta temporada."
       ]
     }
-  ]
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Why go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & services"
+    },
+    {
+      "href": "#evening",
+      "label": "Stay for dinner"
+    }
+  ],
+  "essentialsTitle": "What to expect",
+  "essentials": [
+    "Viagem de ônibus SITA de 20 minutos de Positano; peça a parada Marina di Praia e caminhe dois minutos ladeira abaixo.",
+    "Praia estreita de seixos com um lido principal e uma pequena seção livre no meio.",
+    "Restaurantes e lanchonetes alinham-se na passarela – ideal para um jantar ao pôr do sol antes de voltar para casa."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Espreguiçadeira + guarda-sol no Marina di Praia Beach Club: 25€–35€ por dia (conjuntos para duas pessoas disponíveis).",
+    "Aluguer de caiaque: cerca de 20€ por hora para duas pessoas.",
+    "Jantar principal no Da Armandino ou Il Pirata: € 16– € 28 dependendo do pescado e das massas especiais."
+  ],
+  "tipsTitle": "Quick tips",
+  "warningsTitle": "Good to know",
+  "warnings": [
+    "O espaço é limitado; a área gratuita enche primeiro e as espreguiçadeiras esgotam nos finais de semana.",
+    "As falésias bloqueiam o sol direto no meio da tarde – ótimo para se refrescar, mas pode fazer frio em dias de vento.",
+    "A recepção móvel mergulha dentro do desfiladeiro; baixe horários de ônibus ou confirmações de reserva de jantar com antecedência."
+  ],
+  "faqsTitle": "Marina di Praia FAQs"
 }

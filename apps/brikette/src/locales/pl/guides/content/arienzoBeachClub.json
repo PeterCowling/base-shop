@@ -120,5 +120,22 @@
         "Załóż solidne sandały lub buty sportowe na zejście. Cięższe rzeczy spakuj do plecaka i rób przerwy na półpiętrach. Wracając w górę, odpoczywaj w cieniu i nawodnij się przed wejściem do autobusu lub taksówki."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Arienzo – najciekawsze ujęcia",
+    "items": [
+      {
+        "alt": "Tarasy Arienzo Beach Club",
+        "caption": "Nadbrzeżne platformy z pomarańczowymi leżakami"
+      },
+      {
+        "alt": "Pomost łodzi wahadłowej Arienzo",
+        "caption": "Wejście na shuttle przy Spiaggia Grande"
+      },
+      {
+        "alt": "Schody w dół do Arienzo",
+        "caption": "300 stopni wśród tarasów cytrynowych"
+      }
+    ]
+  }
 }

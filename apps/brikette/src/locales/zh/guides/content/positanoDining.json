@@ -9,9 +9,18 @@
     "利用本指南规划日落奢享、农场到餐桌体验，以及想吃得好又不想爬太多台阶时的快速用餐。"
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "不可错过的特色用餐" },
-    { "href": "#near-hostel", "label": "Hostel Brikette附近餐厅" },
-    { "href": "#destination-dinners", "label": "值得专程前往的晚餐" }
+    {
+      "href": "#signature-experiences",
+      "label": "不可错过的特色用餐"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Hostel Brikette附近餐厅"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "值得专程前往的晚餐"
+    }
   ],
   "sections": [
     {

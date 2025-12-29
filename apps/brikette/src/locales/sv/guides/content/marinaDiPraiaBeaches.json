@@ -50,5 +50,43 @@
         "The walk takes roughly 50 minutes along the road with narrow shoulders. A bus or scooter is safer, especially in high season traffic."
       ]
     }
-  ]
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Why go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & services"
+    },
+    {
+      "href": "#evening",
+      "label": "Stay for dinner"
+    }
+  ],
+  "essentialsTitle": "What to expect",
+  "essentials": [
+    "20 minuters SITA bussresa från Positano; be om Marina di Praia-stoppet och gå två minuter nedför.",
+    "Smal stenstrand med ett huvudlido plus en liten ledig del i mitten.",
+    "Restauranger och snackskiosker kantar gångvägen - perfekt för en middag i solnedgången innan du går hem."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Solstol + parasoll på Marina di Praia Beach Club: €25–35 € för dagen (två-personers set tillgängliga).",
+    "Kajakuthyrning: cirka 20 € per timme för två personer.",
+    "Middag på Da Armandino eller Il Pirata: €16–28 € beroende på fångst och pastaspecialer."
+  ],
+  "tipsTitle": "Quick tips",
+  "warningsTitle": "Good to know",
+  "warnings": [
+    "Utrymmet är begränsat; det fria området fylls först och solstolar för lido säljs slut på helgerna.",
+    "Klipporna blockerar direkt sol vid mitten av eftermiddagen - perfekt för att svalka dig men det kan kännas kyligt på blåsiga dagar.",
+    "Mobil mottagning faller inne i ravinen; ladda ner busstidtabeller eller middagsbekräftelser i förväg."
+  ],
+  "faqsTitle": "Marina di Praia FAQs"
 }

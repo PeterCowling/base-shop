@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "Bus back to Hostel Brikette from Positano's main beach",
+    "title": "पोसिटानो के मुख्य समुद्र तट से हॉस्टल ब्रिकेट के लिए बस",
     "description": "Catch the interno bus at Piazza dei Mulini and ride up to the tabacchi beside Hostel Brikette."
   },
-  "linkLabel": "Bus back to Hostel Brikette from Spiaggia Grande",
+  "linkLabel": "स्पियागिया ग्रांडे से हॉस्टल ब्रिकेट के लिए बस",
   "intro": [
     "हॉस्टल ब्रिकेट तक वापस जाने के लिए ऑरेंज इंटरनो पोसिटानो बस की सवारी करके समुद्र तट के दिन के बाद 600 से अधिक सीढ़ियों को छोड़ दें।",
     "टिकट किसी भी दिशा में मान्य होते हैं, इसलिए आप समुद्र तट पर जाने से पहले उन्हें तबची में खरीद सकते हैं या अगर स्टॉक अनुमति देता है तो उन्हें वापस रास्ते में खरीद सकते हैं।"
@@ -53,12 +53,12 @@
       "title": "Photos",
       "items": {
         "busInterior": {
-          "alt": "Interno Positano bus at the beach-side stop",
-          "caption": "Interno Positano bus — vehicles vary but the route label stays the same."
+          "alt": "समुद्र तट के किनारे स्टॉप पर इंटरनो पोसिटानो बस",
+          "caption": "इंटरनो पोसिटानो बस - वाहन अलग-अलग होते हैं लेकिन रूट लेबल वही रहता है।"
         },
         "barInternazionaleStop": {
-          "alt": "Chiesa Nuova / Bar Internazionale bus stop",
-          "caption": "Chiesa Nuova (Bar Internazionale) — closest stop to Hostel Brikette."
+          "alt": "चिएसा नुओवा / बार इंटरनैजियोनेल बस स्टॉप",
+          "caption": "चिएसा नुओवा (बार इंटरनैजियोनेल) - हॉस्टल ब्रिकेट का निकटतम पड़ाव।"
         }
       }
     }

@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Hostel Brikette sunrise hike",
-    "description": "Pre-dawn route from Hostel Brikette to a quiet clifftop viewpoint with unobstructed sunrise views over Positano."
+    "description": "Ruta antes del amanecer desde el Hostel Brikette hasta un tranquilo mirador en lo alto de un acantilado con vistas despejadas del amanecer sobre Positano."
   },
   "linkLabel": "Hostel Brikette sunrise hike",
   "intro": [
@@ -73,5 +73,22 @@
         "If you plan to stay for sunrise photos, consider a tripod or phone stand."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Imágenes",
+    "items": [
+      {
+        "alt": "QR code to share the guide",
+        "caption": "Escanear para compartir"
+      },
+      {
+        "alt": "House at the top of the initial climb",
+        "caption": "Casa en lo alto de las escaleras"
+      },
+      {
+        "alt": "Viewpoint over Positano at sunrise",
+        "caption": "Mirador con amanecer sobre Positano"
+      }
+    ]
+  }
 }

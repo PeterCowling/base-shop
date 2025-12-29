@@ -65,5 +65,20 @@
         "‘Chiesa Nuova’ 下车后约 80 米无台阶步行即可抵达旅舍入口。"
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "参考图片",
+    "items": [
+      {
+        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+        "alt": "波西塔诺 Chiesa Nuova / Bar Internazionale 的 SITA 车站",
+        "caption": "Bar Internazionale / Chiesa Nuova 车站"
+      },
+      {
+        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+        "alt": "通往 Hostel Brikette 主入口的台阶",
+        "caption": "Hostel Brikette 入口台阶"
+      }
+    ]
+  }
 }

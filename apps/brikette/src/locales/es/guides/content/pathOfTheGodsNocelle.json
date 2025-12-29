@@ -89,11 +89,26 @@
     "El sendero está expuesto; evita caminar en las horas más calurosas de julio y agosto."
   ],
   "steps": [
-    { "name": "Compra los billetes", "text": "Compra los billetes a Nocelle en Bar Internazionale antes de salir del hostel." },
-    { "name": "Sube hasta Nocelle", "text": "Toma el autobús Montepertuso–Nocelle y permanece a bordo hasta que dé la vuelta en el aparcamiento." },
-    { "name": "Accede al sendero", "text": "Sigue el camino peatonal por el pueblo, manteniéndote a la derecha para encontrar las señales del Sentiero degli Dei." },
-    { "name": "Ruta de ida y vuelta", "text": "Camina hacia Colle Serra y date la vuelta cuando quieras regresar." },
-    { "name": "Vuelve a Positano", "text": "Retrocede hasta la parada y baja en autobús a Bar Internazionale o Chiesa Nuova." }
+    {
+      "name": "Compra los billetes",
+      "text": "Compra los billetes a Nocelle en Bar Internazionale antes de salir del hostel."
+    },
+    {
+      "name": "Sube hasta Nocelle",
+      "text": "Toma el autobús Montepertuso–Nocelle y permanece a bordo hasta que dé la vuelta en el aparcamiento."
+    },
+    {
+      "name": "Accede al sendero",
+      "text": "Sigue el camino peatonal por el pueblo, manteniéndote a la derecha para encontrar las señales del Sentiero degli Dei."
+    },
+    {
+      "name": "Ruta de ida y vuelta",
+      "text": "Camina hacia Colle Serra y date la vuelta cuando quieras regresar."
+    },
+    {
+      "name": "Vuelve a Positano",
+      "text": "Retrocede hasta la parada y baja en autobús a Bar Internazionale o Chiesa Nuova."
+    }
   ],
   "faqsTitle": "Preguntas frecuentes",
   "faqs": [

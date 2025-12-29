@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Guida ai ristoranti di Positano: cene iconiche e locali vicini", 
+    "title": "Guida ai ristoranti di Positano: cene iconiche e locali vicini",
     "description": "Suggerimenti selezionati per mangiare sulla Costiera Amalfitana: crociere al tramonto, agriturismi e ristoranti a pochi minuti da Hostel Brikette."
   },
   "linkLabel": "Guida gastronomica di Positano",
@@ -9,9 +9,18 @@
     "Usa questa guida per programmare cene al tramonto, esperienze farm-to-table e spuntini veloci quando vuoi mangiare bene senza lunghe salite."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Esperienze culinarie da non perdere" },
-    { "href": "#near-hostel", "label": "Ristoranti vicino a Hostel Brikette" },
-    { "href": "#destination-dinners", "label": "Cene che valgono il viaggio" }
+    {
+      "href": "#signature-experiences",
+      "label": "Esperienze culinarie da non perdere"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Ristoranti vicino a Hostel Brikette"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Cene che valgono il viaggio"
+    }
   ],
   "sections": [
     {

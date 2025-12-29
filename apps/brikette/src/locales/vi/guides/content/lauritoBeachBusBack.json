@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Bus back to Hostel Brikette from Laurito Beach",
+    "title": "Xe buýt quay lại Hostel Brikette từ Bãi biển Laurito",
     "description": "Climb to the Laurito bus stop, ride the Amalfi Coast service to Chiesa Nuova, and finish with a short walk to Hostel Brikette."
   },
   "linkLabel": "Bus back from Laurito Beach",
@@ -46,21 +46,21 @@
   "tips": [
     "The printed timetable lists Positano times, not Laurito; expect the Laurito stop about 10 minutes before the Positano Sponda arrival.",
     "If you run out of tickets, use the Laurito shuttle boat back to Spiaggia Grande so you can buy more at the tabacchi before trying again.",
-    "Check our %LINK:beaches|Positano beaches overview% for more details on Laurito facilities and shuttle options."
+    "Kiểm tra %LINK:bãi biển|Tổng quan về bãi biển Positano% của chúng tôi để biết thêm chi tiết về cơ sở vật chất Laurito và các lựa chọn đưa đón."
   ],
   "faqs": [
     {
-      "q": "Where can I validate my Laurito bus ticket?",
+      "q": "Tôi có thể xác nhận vé xe buýt Laurito của mình ở đâu?",
       "a": [
-        "Validate SITA tickets before boarding using the machine on the bus or at the Chiesa Nuova tabacchi when you buy them.",
-        "If the validator is out of service, write the date and time on the ticket in pen to show inspectors."
+        "Xác thực vé SITA trước khi lên máy bay bằng máy trên xe buýt hoặc tại máy tính bảng Chiesa Nuova khi bạn mua chúng.",
+        "Nếu người xác nhận không hoạt động, hãy viết ngày và giờ trên phiếu bằng bút để cho người kiểm tra xem."
       ]
     },
     {
-      "q": "What if the bus back to Positano is full?",
+      "q": "Nếu xe buýt quay lại Positano đầy chỗ thì sao?",
       "a": [
-        "Buses can fill up after beach hours. Let the driver know you're waiting; if there's no room, wait for the next service, which usually arrives every 20–30 minutes in summer.",
-        "Alternatively, take the Laurito shuttle boat to Spiaggia Grande and connect with local buses from there."
+        "Xe buýt có thể lấp đầy sau giờ đi biển. Hãy cho tài xế biết bạn đang đợi; nếu không còn chỗ, hãy đợi dịch vụ tiếp theo, thường đến sau mỗi 20–30 phút vào mùa hè.",
+        "Ngoài ra, hãy đi thuyền đưa đón Laurito đến Spiaggia Grande và bắt xe buýt địa phương từ đó."
       ]
     }
   ],
@@ -69,7 +69,7 @@
     "qrAlt": "QR code to share this guide",
     "rideAlt": "Amalfi Coast bus en route from Laurito",
     "rideCaption": "Ride from Laurito toward Positano",
-    "stopAlt": "Bar Internazionale / Chiesa Nuova bus stop",
+    "stopAlt": "Trạm xe buýt Bar Internazionale / Chiesa Nuova",
     "stopCaption": "Bar Internazionale / Chiesa Nuova stop"
   }
 }

@@ -9,9 +9,18 @@
     "Skorzystaj z tego przewodnika, aby zaplanować kolacje o zachodzie słońca, farm-to-table i szybkie posiłki, gdy chcesz dobrze zjeść bez długich podejść."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Wyjątkowe doświadczenia kulinarne" },
-    { "href": "#near-hostel", "label": "Restauracje blisko Hostel Brikette" },
-    { "href": "#destination-dinners", "label": "Kolacje warte wycieczki" }
+    {
+      "href": "#signature-experiences",
+      "label": "Wyjątkowe doświadczenia kulinarne"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Restauracje blisko Hostel Brikette"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Kolacje warte wycieczki"
+    }
   ],
   "sections": [
     {

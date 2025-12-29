@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "Top of the Mountain Hike from Hostel Brikette",
-    "description": "Reach Monte Sant'Angelo, the Amalfi Coast's highest point, with these directions, prep tips, and warnings."
+    "title": "Hostel Brikette에서 산 정상 하이킹",
+    "description": "다음 지침, 준비 팁 및 경고를 통해 아말피 해안의 가장 높은 지점인 몬테 산탄젤로에 도달하세요."
   },
-  "linkLabel": "Top of the Mountain hike from Hostel Brikette",
+  "linkLabel": "Hostel Brikette에서 산 정상 하이킹",
   "intro": [
     "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
     "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
@@ -40,51 +40,51 @@
   ],
   "essentialsTitle": "Essentials",
   "essentials": [
-    "At least 2 litres of water per person plus salty snacks; there are no reliable refills after Santa Maria del Castello.",
-    "Solid hiking shoes with grip—sections of the upper trail are rocky, loose, and exposed.",
-    "Sun protection and layers for the summit; wind can whip across the ridge even on warm days."
+    "1인당 최소 2리터의 물과 짠 스낵; 산타 마리아 델 카스텔로 이후에는 안정적인 리필이 없습니다.",
+    "접지력이 뛰어난 견고한 하이킹 신발 - 상부 트레일 부분은 바위가 많고 느슨하며 노출되어 있습니다.",
+    "정상을 위한 자외선 차단 및 레이어; 따뜻한 날에도 바람이 산등성이를 가로질러 휘몰아칠 수 있습니다."
   ],
   "typicalCostsTitle": "Typical costs",
   "typicalCosts": [
-    "Trail access is free; budget €5–€10 if you plan to reward yourself with a drink or snack in Santa Maria del Castello.",
-    "Return SITA bus tickets or ferry fares if you decide to descend via another village instead of hiking all the way back."
+    "트레일 이용은 무료입니다. 산타 마리아 델 카스텔로에서 음료나 간식으로 보상을 받으려면 €5~€10의 예산을 책정하세요.",
+    "끝까지 하이킹을 하는 대신 다른 마을을 거쳐 하산하기로 결정한 경우 SITA 버스 티켓이나 페리 요금을 반환하세요."
   ],
   "tipsTitle": "Smart timing",
   "tips": [
-    "Start at dawn in summer to avoid climbing under peak heat; late autumn and spring afternoons offer softer light without the scorching sun.",
-    "Check the forecast for storms—cloud cover can erase the views and wet rock makes the summit steps slippery.",
-    "Let someone at the hostel know your plan and expected return time before you set off."
+    "최고 더위를 피하려면 여름에는 새벽부터 등반을 시작하세요. 늦가을과 봄 오후에는 뜨거운 태양 없이 부드러운 빛을 제공합니다.",
+    "폭풍 예보를 확인하세요. 구름이 덮이면 전망이 흐려질 수 있고 젖은 바위로 인해 정상 계단이 미끄러워질 수 있습니다.",
+    "출발하기 전에 호스텔 직원에게 계획과 예상 복귀 시간을 알려주십시오."
   ],
   "warningsTitle": "When to reconsider",
   "warnings": [
-    "Skip the hike if you lack mountain experience or strong fitness; the sustained elevation gain is punishing and there are few bailout points.",
-    "Avoid the route if heights unsettle you—exposed ledges and steep drops challenge even confident hikers.",
-    "Do not attempt the summit during peak summer afternoons when heat and the need to carry extra water add to the strain."
+    "산악 경험이 부족하거나 체력이 부족하다면 하이킹을 건너뛰세요. 지속적인 고도 증가는 처벌적이며 구제 금융 포인트가 거의 없습니다.",
+    "높은 곳이 불안하다면 경로를 피하세요. 노출된 선반과 가파른 절벽은 자신감 있는 등산객에게도 도전이 됩니다.",
+    "더위와 여분의 물을 운반해야 하는 필요성이 부담을 더하는 여름 성수기 오후에는 정상에 오르지 마십시오."
   ],
   "steps": [
     {
       "name": "Climb to Santa Maria del Castello",
-      "text": "Use the hostel's route to Santa Maria del Castello; reaching the square means you have completed roughly a third of the elevation."
+      "text": "산타 마리아 델 카스텔로(Santa Maria del Castello)로 향하는 호스텔 경로를 이용하세요. 정사각형에 도달하면 표고의 약 1/3을 완료했다는 의미입니다."
     },
     {
       "name": "Join the mountain trail",
-      "text": "From the village crossroads, turn right, then left past the restaurant, and leave the road on the right-hand path that skirts the houses."
+      "text": "마을 교차로에서 우회전한 후 레스토랑을 지나 좌회전하고 집들을 둘러싸는 오른쪽 길로 도로를 벗어나세요."
     },
     {
       "name": "Commit to the upper ascent",
-      "text": "Follow the rugged trail to the signed crossroads and choose the path that heads straight uphill toward the summit."
+      "text": "울퉁불퉁한 길을 따라 표지판이 있는 교차로를 따라가다가 정상을 향해 곧장 오르막으로 향하는 길을 선택하세요."
     },
     {
       "name": "Navigate the zig-zags",
-      "text": "Work through steep switchbacks until the trail flattens along the mountain's left flank."
+      "text": "트레일이 산의 왼쪽 측면을 따라 평평해질 때까지 가파른 지그재그를 통과하세요."
     },
     {
       "name": "Take the rock-cut stairs",
-      "text": "Climb the stone steps on the right, looping behind the mountain face to the final ramp."
+      "text": "오른쪽 돌계단을 올라 산면 뒤를 돌아 마지막 경사로로 갑니다."
     },
     {
       "name": "Reach the summit",
-      "text": "Follow the last ascent to the top and enjoy the panorama before retracing your steps to Santa Maria."
+      "text": "정상까지 마지막 오르막을 따라가며 파노라마를 감상한 후 산타마리아로 향하는 발걸음을 되돌려보세요."
     }
   ],
   "faqsTitle": "FAQs",
@@ -92,19 +92,19 @@
     {
       "q": "How long does the full hike take?",
       "a": [
-        "Allow 6–7 hours for the round trip from Hostel Brikette, including breaks in Santa Maria and time at the summit."
+        "Santa Maria에서의 휴식과 정상에서의 시간을 포함하여 Hostel Brikette에서 왕복하는 데 6~7시간이 소요됩니다."
       ]
     },
     {
       "q": "Is the trail marked?",
       "a": [
-        "Markers are sparse beyond Santa Maria; carry an offline map and pay attention to the obvious worn trail and signposts at junctions."
+        "산타마리아 너머에는 마커가 드물다. 오프라인 지도를 가지고 다니면서 교차로의 흔적과 표지판이 눈에 띄게 낡았는지 주의 깊게 살펴보세요."
       ]
     },
     {
       "q": "Can I turn back early?",
       "a": [
-        "Yes. If the upper section feels too exposed, enjoy the views from Santa Maria or the lower switchbacks and return the way you came."
+        "예. 상단 부분이 너무 노출된 것 같으면 산타마리아에서 경치를 감상하거나 하단 지그재그를 이용하여 왔던 길로 돌아오세요."
       ]
     }
   ],
@@ -112,5 +112,22 @@
     "labels": {
       "warnings": "When to reconsider"
     }
+  },
+  "gallery": {
+    "title": "사진 갤러리",
+    "items": [
+      {
+        "alt": "Looking across the peninsula to Capri",
+        "caption": "반도 너머 카프리를 바라보는 전망"
+      },
+      {
+        "alt": "Scan to Share QR code",
+        "caption": "공유용 QR 코드 스캔"
+      },
+      {
+        "alt": "Trail near the summit",
+        "caption": "정상에 가까워지는 구간"
+      }
+    ]
   }
 }

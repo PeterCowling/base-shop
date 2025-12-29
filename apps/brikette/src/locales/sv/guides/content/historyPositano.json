@@ -5,49 +5,49 @@
   },
   "linkLabel": "Positanos historia (kort version)",
   "intro": [
-    "Understand Positano's past—from maritime roots to Hollywood discovery—so your walks have historical context."
+    "Förstå Positanos förflutna – från maritima rötter till Hollywood-upptäckten – så att dina promenader har ett historiskt sammanhang."
   ],
   "sections": [
     {
       "id": "origins",
       "title": "Origins & trade",
       "body": [
-        "Positano began as a Roman seaside villa hub; later, medieval traders exported wool and imported spices via Amalfi's fleet.",
-        "The watchtowers along the coast warned of Saracen raids—many survive as viewpoints today."
+        "Positano började som ett romerskt nav för villa vid havet; senare exporterade medeltida handlare ull och importerade kryddor via Amalfis flotta.",
+        "Vakttornen längs kusten varnade för saracenska räder – många överlever som utsiktsplatser idag."
       ]
     },
     {
       "id": "20th",
       "title": "20th-century transformation",
       "body": [
-        "After World War II, artists and writers such as Steinbeck publicised Positano's charm, shifting the economy toward tourism.",
-        "Improved roads in the 1950s connected Positano to the rest of Italy, ushering in boutique hotels and visitors."
+        "Efter andra världskriget publicerade konstnärer och författare som Steinbeck Positanos charm, vilket flyttade ekonomin mot turism.",
+        "Förbättrade vägar på 1950-talet kopplade Positano till resten av Italien, vilket inledde boutiquehotell och besökare."
       ]
     },
     {
       "id": "today",
       "title": "Modern day",
       "body": [
-        "Tourism now anchors the town, with efforts to balance preservation and visitor numbers through ferry quotas and pedestrian zones.",
-        "Local artisans still craft sandals and ceramics, keeping heritage trades alive alongside hospitality."
+        "Turismen förankrar nu staden, med ansträngningar att balansera bevarande och besöksantal genom färjekvoter och fotgängarzoner.",
+        "Lokala hantverkare tillverkar fortfarande sandaler och keramik, och håller yrkesarvet vid liv tillsammans med gästfrihet."
       ]
     }
   ],
   "tips": [
-    "Visit the Roman Villa museum under Santa Maria Assunta to see mosaics unearthed in 1987.",
-    "Look for information plaques along Via dei Mulini that highlight key historic buildings."
+    "Besök det romerska villans museum under Santa Maria Assunta för att se mosaiker som grävdes fram 1987.",
+    "Leta efter informationstavlor längs Via dei Mulini som lyfter fram viktiga historiska byggnader."
   ],
   "faqs": [
     {
       "q": "Where can I learn more on site?",
       "a": [
-        "The MAR Positano museum combines archaeology and multimedia displays, ideal for rainy days."
+        "MAR Positano-museet kombinerar arkeologi och multimediavisningar, perfekt för regniga dagar."
       ]
     },
     {
       "q": "Why are there so many stairs?",
       "a": [
-        "The town was built vertically to adapt to cliffs; staircases replaced streets for quick movement between terraces."
+        "Staden byggdes vertikalt för att anpassa sig till klippor; trappor ersatte gator för snabb förflyttning mellan terrasser."
       ]
     }
   ]

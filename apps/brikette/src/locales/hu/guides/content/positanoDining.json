@@ -9,9 +9,18 @@
     "Használd ezt a kalauzt naplemente lakomákhoz, farm-to-table élményekhez és gyors falatokhoz, amikor hosszú lépcsőzés nélkül ennél jót."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Kihagyhatatlan gasztro élmények" },
-    { "href": "#near-hostel", "label": "Éttermek a Hostel Brikette közelében" },
-    { "href": "#destination-dinners", "label": "Vacsorák, amiért megéri útra kelni" }
+    {
+      "href": "#signature-experiences",
+      "label": "Kihagyhatatlan gasztro élmények"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Éttermek a Hostel Brikette közelében"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Vacsorák, amiért megéri útra kelni"
+    }
   ],
   "sections": [
     {

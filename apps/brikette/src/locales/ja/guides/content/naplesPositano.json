@@ -65,5 +65,20 @@
         "翻訳を準備中です。"
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "参照イメージ",
+    "items": [
+      {
+        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+        "alt": "ポジターノのチエーザ・ヌオヴァ／バー・インテルナツィオナーレ SITA 停留所",
+        "caption": "Bar Internazionale / Chiesa Nuova 停留所"
+      },
+      {
+        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+        "alt": "ホステル・ブリケットのメイン入口の階段",
+        "caption": "Hostel Brikette 入口の階段"
+      }
+    ]
+  }
 }

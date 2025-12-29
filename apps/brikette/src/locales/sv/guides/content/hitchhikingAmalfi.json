@@ -5,8 +5,8 @@
   },
   "linkLabel": "Lifta längs Amalfikusten",
   "intro": [
-    "Hitchhiking on the Amalfi Coast sounds adventurous, but the SS163 is narrow with blind bends and almost no safe pull‑offs.",
-    "Lean on the public transport network instead: carry validated tickets, plan backup routes, and keep emergency cash for taxis or porters if services stop."
+    "Att lifta på Amalfikusten låter äventyrligt, men SS163 är smal med blinda kurvor och nästan inga säkra avfarter.",
+    "Luta dig på kollektivtrafiknätet istället: ta med dig validerade biljetter, planera reservrutter och förvara akuta kontanter för taxibilar eller bärare om tjänsterna stannar."
   ],
   "tocTitle": "On this page",
   "sections": [
@@ -14,46 +14,46 @@
       "id": "safety",
       "title": "Safety reality",
       "body": [
-        "Coaches, buses, and scooters already share a single lane carved into the cliff. Drivers cannot see you in time and police will often move people along for their own safety.",
-        "Night visibility is poor and shoulders are tiny — waiting on the carriageway risks injury and fines."
+        "Bussar, bussar och skotrar delar redan ett enda körfält inhuggen i klippan. Förare kan inte se dig i tid och polisen kommer ofta att flytta med människor för sin egen säkerhet.",
+        "Sikten på natten är dålig och axlarna är små - att vänta på körbanan riskerar skador och böter."
       ]
     },
     {
       "id": "alternatives",
       "title": "Better alternatives",
       "body": [
-        "SITA buses, local shuttles, and community vans run all day; buy tickets ahead at tabacchi and validate on board.",
-        "Seasonal ferries give scenic hops between towns; when seas cancel them, revert to bus + porter service or shared taxis.",
-        "Short walking paths (Nocelle ↔ Positano, Praiano ↔ coastal hamlets) provide scenic backups in daylight."
+        "SITA-bussar, lokala skyttlar och skåpbilar går hela dagen; köp biljetter i förväg på tabacchi och validera ombord.",
+        "Säsongens färjor ger natursköna humle mellan städerna; när havet avbryter dem, återgå till buss + portierservice eller delade taxibilar.",
+        "Korta vandringsleder (Nocelle ↔ Positano, Praiano ↔ kustbyar) ger natursköna backuper i dagsljus."
       ]
     },
     {
       "id": "stranded",
       "title": "If you’re stranded",
       "body": [
-        "Call a licensed taxi (numbers are posted at major stops) or ask your accommodation/hostel bar to book one; late‑night rates are higher, so split fares with other travellers when possible.",
-        "Message your host if you’re delayed. The hostel team can suggest the safest pickup point or overnight alternatives in Sorrento/Amalfi."
+        "Ring en licensierad taxi (nummer anges vid större hållplatser) eller be ditt boende/vandrarhemsbar att boka en; Priserna för sena nätter är högre, så dela priserna med andra resenärer när det är möjligt.",
+        "Meddela din värd om du är försenad. Vandrarhemsteamet kan föreslå det säkraste hämtningsstället eller övernattningsalternativen i Sorrento/Amalfi."
       ]
     }
   ],
   "tips": [
-    "Screenshot bus and ferry schedules from UnicoCampania or Travelmar each morning so you know the last guaranteed departure.",
-    "Carry a small torch or reflective band if you expect to walk after sunset — roadside lighting is limited."
+    "Skärmdump buss- och färjetidtabeller från UnicoCampania eller Travelmar varje morgon så att du vet den sista garanterade avgången.",
+    "Bär en liten ficklampa eller reflexband om du förväntar dig att gå efter solnedgången - vägkantsbelysningen är begränsad."
   ],
   "warnings": [
-    "Never wait inside tunnels or on blind bends — local police can fine you and drivers have no space to avoid pedestrians."
+    "Vänta aldrig inne i tunnlar eller i blinda kurvor – lokal polis kan bötfälla dig och förare har inget utrymme att undvika fotgängare."
   ],
   "faqs": [
     {
-      "q": "Is hitchhiking legal on the Amalfi Coast?",
+      "q": "Är det lagligt att lifta på Amalfikusten?",
       "a": [
-        "There’s no explicit regional ban, but law enforcement discourages it and may ask you to move for safety. If officers intervene, follow their instructions and relocate to a bus stop."
+        "Det finns inget uttryckligt regionalt förbud, men brottsbekämpande myndigheter avråder från det och kan be dig att flytta för säkerhets skull. Om poliser ingriper, följ deras instruktioner och flytta till en busshållplats."
       ]
     },
     {
       "q": "What if the last bus has already left?",
       "a": [
-        "Use posted taxi numbers, rideshare apps that operate locally, or ask nearby hotels/bars to call a driver. As a final fallback, ride to Amalfi or Sorrento (larger towns) where night buses and trains are more frequent."
+        "Använd upplagda taxinummer, samåkningsappar som fungerar lokalt eller be närliggande hotell/barer att ringa en chaufför. Som en sista reserv kan du åka till Amalfi eller Sorrento (större städer) där nattbussar och tåg är vanligare."
       ]
     }
   ]

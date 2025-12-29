@@ -1,6 +1,63 @@
 {
   "seo": {
     "title": "Hostel Brikette đến trạm xe buýt Chiesa Nuova/Bar Internazionale",
-    "description": "Micro-route from Hostel Brikette to the Chiesa Nuova bus stop with minimal stairs; ticket checks and departure timing."
-  }
+    "description": "Tuyến đường nhỏ từ Hostel Brikette đến trạm xe buýt Chiesa Nuova với số cầu thang tối thiểu; kiểm tra vé và thời gian khởi hành."
+  },
+  "linkLabel": "Hostel Brikette đến Trạm xe buýt Chiesa Nuova/Bar Internazionale",
+  "intro": "Rời ký túc xá để bắt xe buýt đến Amalfi, Sorrento? Tuyến đường vi mô này chỉ ra cách nhanh nhất từ ​​Hostel Brikette đến trạm xe buýt Chiesa Nuova/Bar Internazionale và cung cấp một số lời khuyên.",
+  "image": {
+    "alt": "Chiesa Nuova SITA của Positano dừng bên ngoài Bar Internazionale",
+    "caption": "Hostel Brikette nằm cách điểm dừng một khúc cua lên dốc. Hãy dành vài phút để bạn có thể xếp hàng trước khi xe buýt đến."
+  },
+  "toc": {
+    "onThisPage": "On this page",
+    "before": "Before you leave",
+    "steps": "Step-by-step",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Why this route works",
+      "body": [
+        "Quãng đường đi bộ là 120 m (400 foot) từ lối vào ký túc xá đến trạm dừng trên đường chính.",
+        "Nếu bạn đi về phía Amalfi, điểm dừng nằm đối diện Bar Internazionale. Xếp hàng bên đường nhìn ra biển.  Nếu bạn định đi về phía Sorrento, bạn sẽ đợi ngay bên ngoài quán bar."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Tickets and timing",
+      "body": [
+        "Mua vé SITA tại tabacchi hoặc bên trong quán bar.  Đừng cố lên xe buýt mà không có vé, vì bạn sẽ không thể mua được vé trên xe buýt.  Xuất trình vé của bạn cho tài xế khi lên xe.  Nếu bạn bắt chuyến xe buýt đầu tiên đi, hãy mua vé vào ngày hôm trước và đến gặp chúng tôi tại quầy lễ tân để sắp xếp thanh toán.",
+        "Xe buýt mùa hè thường đầy. Lập kế hoạch phù hợp, đặc biệt là trong thời gian bận rộn nhất."
+      ]
+    }
+  ],
+  "beforeList": [],
+  "stepsList": [
+    "Rời khỏi quầy lễ tân, đi xuống cầu thang ngắn đến Viale Pasitea và rẽ trái để xuống dốc.",
+    "Đi theo vỉa hè khoảng 120 mét (400 feet) dọc theo con đường chính để đến Bar Internazionale."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+  "kneesList": [],
+  "kneesDockPrefix": "Bắt đầu với hành lý ở bến phà? Sử dụng của chúng tôi",
+  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesPorterPrefix": "Cần định giá người khuân vác hoặc trợ giúp đặt chỗ? Kiểm tra",
+  "kneesPorterLinkLabel": "porter service guide",
+  "faqs": [
+    {
+      "q": "How early should I reach the stop?",
+      "a": "Hãy đến trước chuyến xe buýt bạn đã chọn ít nhất 10 phút vào mùa hè để bạn có thể xếp hàng gần nơi trú ẩn và lên xe một cách thoải mái."
+    },
+    {
+      "q": "Where can I buy or validate tickets?",
+      "a": "Sử dụng tabacchi bên cạnh Bar Internazionale để bán vé. Người xác thực đang ở trên tàu; kẹp hoặc quét vé của bạn ngay khi bạn bước lên."
+    }
+  ],
+  "howtoSteps": [
+    "Đi bộ xuống dốc 2–4 phút từ Hostel Brikette đến trạm dừng Bar Internazionale",
+    "Xếp hàng bên đường và xác nhận vé khi lên máy bay",
+    "Kết hợp với phà hoặc hướng dẫn viên đường dài để đi tiếp"
+  ]
 }

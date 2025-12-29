@@ -50,5 +50,43 @@
         "徒歩だと約50分。路肩の狭い道路を歩く必要があるため、ハイシーズンの交通量を考えるとバスまたはスクーターの方が安全です。"
       ]
     }
-  ]
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Why go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & services"
+    },
+    {
+      "href": "#evening",
+      "label": "Stay for dinner"
+    }
+  ],
+  "essentialsTitle": "What to expect",
+  "essentials": [
+    "ポジターノからSITAバスで20分。 Marina di Praia 停留所で降りて、下り坂を 2 分歩きます。",
+    "狭い小石のビーチ。メイン リドが 1 つと、中央に小さな無料セクションがある。",
+    "レストランや軽食のキオスクが歩道に並んでおり、家に帰る前の夕日のディナーに最適です。"
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "マリーナ ディ プライア ビーチ クラブのラウンジャー + パラソル: 1 日 €25 ～ €35 (2 人用セットも利用可能)。",
+    "カヤックのレンタル: 2 人で 1 時間あたり約 20 ユーロ。",
+    "Da Armandino または Il Pirata でのディナー メイン: 獲物やパスタのスペシャルに応じて 16 ～ 28 ユーロ。"
+  ],
+  "tipsTitle": "Quick tips",
+  "warningsTitle": "Good to know",
+  "warnings": [
+    "スペースは限られています。無料エリアが最初に埋まり、週末にはリドラウンジャーが売り切れてしまいます。",
+    "崖は午後半ばまでは直射日光を遮るため、クールダウンには最適ですが、風の強い日は肌寒く感じることがあります。",
+    "渓谷内では携帯電話の受信状態が低下します。バスの時刻表やディナーの予約確認書を事前にダウンロードしてください。"
+  ],
+  "faqsTitle": "Marina di Praia FAQs"
 }

@@ -2,5 +2,157 @@
   "seo": {
     "title": "Caminho dos Deuses de autocarro via Amalfi",
     "description": "Apanhe os autocarros SITA por Amalfi até Bomerano, caminhe até Nocelle e regresse de shuttle com um plano para o dia inteiro."
+  },
+  "linkLabel": "Caminho dos Deuses via Amalfi (ônibus + caminhada)",
+  "intro": [
+    "Prefere ficar sobre rodas? Esta rota leva o ônibus SITA de Positano a Amalfi e depois para Bomerano antes de caminhar pelo Caminho dos Deuses de volta a Nocelle. É confiável em mar agitado e muitas vezes é a maneira mais rápida de chegar à trilha completa.",
+    "Os ônibus ficam lotados na alta temporada, então compre as passagens no dia anterior, se possível, e chegue cedo em cada parada."
+  ],
+  "sections": [
+    {
+      "id": "prep",
+      "title": "Buy tickets and plan your timing",
+      "body": [
+        "Você precisa de três passagens de ônibus por pessoa: Positano → Amalfi, Amalfi → Bomerano e Nocelle → Positano. Peça ao pessoal do Bar Internazionale a melhor combinação (individual ou integrada).",
+        "Consulte os horários da SITA afixados no interior do bar ou através do aplicativo Unico Campania. Procure sair pela manhã para evitar filas e o sol do meio-dia na trilha.",
+        "Leve água, lanches e proteção solar – não há serviços entre Bomerano e Nocelle."
+      ]
+    },
+    {
+      "id": "bus-to-amalfi",
+      "title": "Ride from Bar Internazionale to Amalfi",
+      "body": [
+        "Saia do albergue, vire à esquerda e chegue ao Bar Internazionale em cerca de dois minutos. Compre as passagens e espere no lado oposto da estrada pelo ônibus com destino a Amalfi.",
+        "Valide seu bilhete no momento do embarque. A viagem leva de 45 a 60 minutos, dependendo do trânsito, e inclui vários ziguezagues com vistas deslumbrantes do mar.",
+        "Ao chegar em Amalfi, fique perto das mesmas baias de ônibus – você se conectará ao serviço Agerola de lá."
+      ]
+    },
+    {
+      "id": "wait-in-amalfi",
+      "title": "Pause in Amalfi (optional)",
+      "body": [
+        "Se você tiver uma folga antes do próximo ônibus, caminhe um pouco até a cidade para tomar um café ou comer doces. Retorne ao terminal pelo menos 10 minutos antes da partida.",
+        "Faça fila no início do verão, pois o ônibus enche rapidamente. O motorista pode limitar o embarque assim que todos os assentos e espaço seguro para ficar em pé estiverem ocupados."
+      ]
+    },
+    {
+      "id": "bus-to-bomerano",
+      "title": "Bus uphill to Bomerano",
+      "body": [
+        "Embarque no ônibus marcado “Agerola/Bomerano”. Use seu segundo bilhete e mantenha a mão livre para se firmar em curvas fechadas.",
+        "Desça na parada Bomerano em frente ao Ristorante Jerla. Atravesse a rua, pegue a rua lateral até a praça e siga as indicações para o início da trilha do Caminho dos Deuses."
+      ]
+    },
+    {
+      "id": "hike",
+      "title": "Hike to Nocelle",
+      "body": [
+        "Siga a sinalização do Sentiero degli Dei pelos terraços e cumes. Reserve de 2,5 a 3 horas para a caminhada com paradas para fotos.",
+        "Leve o lixo consigo e respeite as terras agrícolas privadas ao longo do caminho."
+      ]
+    },
+    {
+      "id": "nocelle",
+      "title": "Navigate Nocelle and reach the bus stop",
+      "body": [
+        "Quando a trilha vira concreto, você chega a Nocelle. Mantenha-se à direita no primeiro cruzamento para evitar a longa escadaria que leva a Positano.",
+        "Caminhe cerca de 175 metros até ao pequeno parque de estacionamento e abrigo de autocarros. Chegue cedo; os ônibus ocasionalmente estacionam um pouco antes da parada, quando o estacionamento está cheio."
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Return to Positano",
+      "body": [
+        "Use seu último bilhete para pegar o ônibus Nocelle/Montepertuso de volta ao Bar Internazionale ou Chiesa Nuova.",
+        "Se perder o autocarro, pode caminhar pela estrada (cerca de 4 km), mas esteja preparado para uma descida sustentada com trânsito."
+      ]
+    },
+    {
+      "id": "journey-planner",
+      "title": "Sample timetable",
+      "body": [
+        "07:00 saída do albergue → 07:15 ônibus para Amalfi → 08:10 chegada em Amalfi → 08:30 ônibus para Bomerano → 09:10 início da caminhada → 12:00 chegada Nocelle → 12:30 ônibus de volta para Positano.",
+        "Opção no final da manhã: a partida às 8h ainda retorna no meio da tarde se as conexões estiverem alinhadas."
+      ]
+    }
+  ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Três ingressos SITA por pessoa (Positano → Amalfi, Amalfi → Bomerano, Nocelle → Positano) mais um extra.",
+    "Água, lanches, protetor solar e camadas para uma caminhada na cordilheira exposta.",
+    "Calçado confortável com aderência e telefone carregado com mapas offline."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Bilhetes de ônibus SITA: € 2–€ 4 por trecho dependendo do livrete ou tarifas integradas.",
+    "Café ou lanches durante a conexão Amalfi: 2€–6€.",
+    "Trail access: free."
+  ],
+  "tipsTitle": "Route tips",
+  "tips": [
+    "Chegue com 10 a 15 minutos de antecedência em cada parada – os ônibus podem lotar antes das partidas na alta temporada.",
+    "Sente-se do lado direito, saindo de Positano, para vistas deslumbrantes da costa, e à esquerda, ao retornar de Amalfi.",
+    "Leve pequenos trocos caso precise validar um bilhete extra a bordo."
+  ],
+  "warningsTitle": "Watch-outs",
+  "warnings": [
+    "Não siga a escadaria de 1.700 degraus de Nocelle, a menos que esteja preparado para uma descida extenuante e com muitos joelhos.",
+    "Os serviços de fim de semana podem atrasar; mantenha lanches e água à mão caso espere mais do que o planejado.",
+    "Os ônibus nos horários de pico podem limitar os passageiros em pé – esteja preparado para deixar um passar e embarcar no próximo."
+  ],
+  "steps": [
+    {
+      "name": "Buy SITA tickets",
+      "text": "Compre as passagens de ônibus necessárias no Bar Internazionale antes da partida."
+    },
+    {
+      "name": "Bus to Amalfi",
+      "text": "Pegue o ônibus com destino a Amalfi no Bar Internazionale e continue pelas aldeias costeiras."
+    },
+    {
+      "name": "Transfer to the Agerola bus",
+      "text": "Aguarde no terminal de Amalfi e embarque no serviço Agerola/Bomerano."
+    },
+    {
+      "name": "Reach the trailhead",
+      "text": "Desembarque em Bomerano, siga as indicações pela praça e entre no Sentiero degli Dei."
+    },
+    {
+      "name": "Hike to Nocelle",
+      "text": "Siga as marcas do CAI ao longo do cume até chegar à passarela de concreto para a cidade."
+    },
+    {
+      "name": "Return by bus",
+      "text": "Pegue o ônibus Nocelle/Montepertuso de volta ao Bar Internazionale ou Chiesa Nuova."
+    }
+  ],
+  "faqsTitle": "FAQs",
+  "faqs": [
+    {
+      "q": "How crowded are the buses?",
+      "a": [
+        "Os serviços matinais lotam rapidamente no verão. Chegue cedo, faça fila com calma e esteja pronto para ficar de pé. Os motoristas podem recusar o embarque quando o corredor estiver cheio."
+      ]
+    },
+    {
+      "q": "Can I stop in Amalfi for sightseeing?",
+      "a": [
+        "Sim, reserve pelo menos um intervalo completo de ônibus (30 a 60 minutos) para que você tenha tempo para explorar e ainda entrar na fila antes da próxima partida de Agerola."
+      ]
+    },
+    {
+      "q": "What if I miss the Nocelle bus back?",
+      "a": [
+        "Confira o horário divulgado na parada. Se o próximo ônibus estiver a mais de uma hora de distância, você pode caminhar pela estrada pavimentada até Positano em cerca de 45 a 60 minutos."
+      ]
+    }
+  ],
+  "toc": {
+    "onThisPage": "On this page",
+    "essentials": "Essentials",
+    "costs": "Typical costs",
+    "tips": "Route tips",
+    "warnings": "Watch-outs",
+    "faqs": "FAQs"
   }
 }

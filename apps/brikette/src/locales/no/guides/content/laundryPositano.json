@@ -15,16 +15,16 @@
     "tips": "Detergent & machines",
     "faqs": "FAQs"
   },
-  "selfServiceText": "Expect compact European machines. Bring small change and consider off‑peak times to avoid queues (late mornings or early afternoons outside turnover days).",
-  "dropOffText": "Ask for wash‑and‑fold pricing per kg and same‑day turnaround. During peak periods, early drop‑off improves chances.",
+  "selfServiceText": "Forvent kompakte europeiske maskiner. Ta med småpenger og vurder tider utenfor peak for å unngå køer (sen morgen eller tidlig ettermiddag utenom omsetningsdager).",
+  "dropOffText": "Be om vask-og-fold-pris per kg og behandling samme dag. I høye perioder forbedrer tidlig avlevering sjansene.",
   "howtoSteps": [
-    "Choose machine size based on load; don’t overfill.",
-    "Add detergent/softener as directed; some machines auto‑dose.",
-    "Select program (cold/warm) and start. Set a timer to return before cycle ends."
+    "Velg maskinstørrelse basert på belastning; ikke overfyll.",
+    "Tilsett vaskemiddel/mykner som anvist; noen maskiner autodoserer.",
+    "Velg program (kaldt/varmt) og start. Still inn en tidtaker som skal gå tilbake før syklusen avsluttes."
   ],
   "tipsList": [
-    "Use gentle cycles for quick‑dry fabrics and swimwear.",
-    "Shared dryers can run hot — check labels and consider hang‑drying."
+    "Bruk milde sykluser for hurtigtørkende stoffer og badetøy.",
+    "Delte tørketromler kan bli varme – sjekk etikettene og vurder hengetørking."
   ],
   "sections": [
     {

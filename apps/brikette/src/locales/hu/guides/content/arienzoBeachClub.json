@@ -126,9 +126,18 @@
   "gallery": {
     "title": "Arienzo fotós kedvcsináló",
     "items": [
-      { "alt": "Arienzo Beach Club teraszai", "caption": "Sziklákra épült fedélzetek és narancssárga napágyak" },
-      { "alt": "Arienzo vízitaxi móló", "caption": "Vízitaxi beszállás a Spiaggia Grandéról" },
-      { "alt": "Lépcső az Arienzóhoz", "caption": "300 lépcső citromligetek között" }
+      {
+        "alt": "Arienzo Beach Club teraszai",
+        "caption": "Sziklákra épült fedélzetek és narancssárga napágyak"
+      },
+      {
+        "alt": "Arienzo vízitaxi móló",
+        "caption": "Vízitaxi beszállás a Spiaggia Grandéról"
+      },
+      {
+        "alt": "Lépcső az Arienzóhoz",
+        "caption": "300 lépcső citromligetek között"
+      }
     ]
   }
 }

@@ -53,12 +53,12 @@
       "title": "Photos",
       "items": {
         "busInterior": {
-          "alt": "Interno Positano bus at the beach-side stop",
-          "caption": "Interno Positano bus — vehicles vary but the route label stays the same."
+          "alt": "حافلة إنتيرنو بوسيتانو عند موقف الشاطئ",
+          "caption": "حافلة إنتيرنو بوسيتانو — تختلف المركبات لكن اسم الخط ثابت."
         },
         "barInternazionaleStop": {
-          "alt": "Chiesa Nuova / Bar Internazionale bus stop",
-          "caption": "Chiesa Nuova (Bar Internazionale) — closest stop to Hostel Brikette."
+          "alt": "موقف حافلات تشيزا نوفا / بار إنترناسيونالي",
+          "caption": "تشيزا نوفا (بار إنترناسيونالي) — أقرب موقف إلى هوستل بريكيت."
         }
       }
     }

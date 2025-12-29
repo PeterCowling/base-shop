@@ -9,9 +9,18 @@
     "Usa esta guía para viajar en autobús, entender lo limitados que son los servicios y planificar tu regreso para no quedarte tirado cuando el último SITA llegue lleno."
   ],
   "toc": [
-    { "href": "#getting-there", "label": "Cómo llegar" },
-    { "href": "#returning", "label": "Regreso" },
-    { "href": "#on-site", "label": "Qué encontrarás" }
+    {
+      "href": "#getting-there",
+      "label": "Cómo llegar"
+    },
+    {
+      "href": "#returning",
+      "label": "Regreso"
+    },
+    {
+      "href": "#on-site",
+      "label": "Qué encontrarás"
+    }
   ],
   "sections": [
     {

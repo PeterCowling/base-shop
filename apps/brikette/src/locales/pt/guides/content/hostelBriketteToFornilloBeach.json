@@ -2,5 +2,60 @@
   "seo": {
     "title": "Hostel Brikette → Praia de Fornillo a pé",
     "description": "Instruções passo a passo do hostel até à Praia de Fornillo, com dicas para a descida mais rápida e para o regresso."
-  }
+  },
+  "linkLabel": "Hostel Brikette → Guia de caminhada da Praia Fornillo",
+  "intro": [
+    "Caminhar do Hostel Brikette até a Praia Fornillo leva cerca de 15 a 25 minutos em uma rota principalmente escalonada. Siga este atalho para permanecer na escada mais rápida e na pista pavimentada até o fim."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-walk",
+      "title": "Plan your walk",
+      "body": [
+        "Aguarde cerca de 20 minutos para chegar à areia; o tempo varia de acordo com as paradas para fotos e o quão confortável você se sente nos degraus de Positano.",
+        "Ocasionalmente, o Google Maps envia os hóspedes por desvios mais lentos. Siga esta rota para seguir a escadaria principal e suavizar a estrada durante todo o caminho."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Rota de Hostel Brikette para Fornillo Beach",
+      "body": [
+        "1. Saia do Hostel Brikette e desça a escadaria principal até Viale Pasitea.",
+        "2. Atravesse a rua e continue descendo as escadas marcadas com o número da casa 31.",
+        "3. Siga as escadas até encontrar a estrada, depois vire à direita e mantenha-se na curva de descida.",
+        "4. Passe pelos estacionamentos de ambos os lados e mantenha-se à direita ao se aproximar da placa do Hotel Posa Posa.",
+        "5. Logo depois do hotel, faça uma curva na estrada e vire à direita na trilha exclusiva para pedestres em direção a Fornillo.",
+        "6. Permaneça no caminho pavimentado até a orla da praia; o final sombreado termina ao lado do clube de praia do Pupetto."
+      ]
+    },
+    {
+      "id": "return-options",
+      "title": "Getting back up",
+      "body": [
+        "Depois de nadar, continue pela orla até Spiaggia Grande e pegue o ônibus interno laranja até Chiesa Nuova se preferir pular a subida.",
+        "Pegue as passagens de ônibus na tabacchi/banca de jornal ao lado da parada Chiesa Nuova antes de sair ou peça à recepção para confirmar o estoque."
+      ]
+    }
+  ],
+  "tips": [
+    "Pegue o ônibus Interno Positano subindo a colina para evitar a subida íngreme de retorno.",
+    "Leve água para a seção da escada – não há lojas até chegar à costa.",
+    "Planeje mais tempo na praia com nosso %LINK:fornilloBeachGuide|Guia de praia de Fornillo% e %LINK:positanoBeaches|Visão geral das praias de Positano%.",
+    "Veja como esta caminhada se encaixa em uma viagem completa na visão geral de viagens de Positano."
+  ],
+  "faqsTitle": "Route FAQs",
+  "faqs": [
+    {
+      "q": "How long does the walk take?",
+      "a": [
+        "A maioria dos hóspedes chega a Fornillo em 15 a 25 minutos, dependendo do ritmo e das paradas para fotos. Sair mais cedo mantém as escadas mais frescas."
+      ]
+    },
+    {
+      "q": "Are there many stairs?",
+      "a": [
+        "O atalho desce vários lances do albergue antes de mudar para uma pista pavimentada. Use o ônibus para o retorno se preferir evitar subir novamente."
+      ]
+    }
+  ]
 }

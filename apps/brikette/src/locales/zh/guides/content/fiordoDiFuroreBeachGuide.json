@@ -9,9 +9,18 @@
     "本指南将帮助你乘巴士出行、了解现场设施的稀缺程度，并在最后一班 SITA 巴士客满前安排好返程，免得被困在峡谷里。"
   ],
   "toc": [
-    {"href": "#getting-there", "label": "如何前往"},
-    {"href": "#returning", "label": "如何返回"},
-    {"href": "#on-site", "label": "现场情况"}
+    {
+      "href": "#getting-there",
+      "label": "如何前往"
+    },
+    {
+      "href": "#returning",
+      "label": "如何返回"
+    },
+    {
+      "href": "#on-site",
+      "label": "现场情况"
+    }
   ],
   "sections": [
     {

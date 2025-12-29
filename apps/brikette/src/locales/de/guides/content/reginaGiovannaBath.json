@@ -9,11 +9,26 @@
     "Mit diesem Guide erreichst du die Bucht per Linienbus, packst wie ein Local und nutzt die Badestellen, bevor du für eine Stärkung nach Sorrent zurückkehrst."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Warum hin" },
-    { "href": "#getting-there", "label": "Anreise" },
-    { "href": "#what-to-pack", "label": "Packliste" },
-    { "href": "#swimming", "label": "Schwimmen & Sicherheit" },
-    { "href": "#pair-it", "label": "Mit Sorrent verbinden" }
+    {
+      "href": "#why-go",
+      "label": "Warum hin"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Anreise"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Packliste"
+    },
+    {
+      "href": "#swimming",
+      "label": "Schwimmen & Sicherheit"
+    },
+    {
+      "href": "#pair-it",
+      "label": "Mit Sorrent verbinden"
+    }
   ],
   "sections": [
     {

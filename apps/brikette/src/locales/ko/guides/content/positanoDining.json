@@ -9,9 +9,18 @@
     "이 가이드를 활용해 노을 만찬, 파머스 다이닝, 긴 오르막 없이 즐길 수 있는 간편한 식사를 계획해 보세요."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "놓치면 아쉬운 다이닝 경험" },
-    { "href": "#near-hostel", "label": "Hostel Brikette 인근 레스토랑" },
-    { "href": "#destination-dinners", "label": "가볼 만한 목적지 디너" }
+    {
+      "href": "#signature-experiences",
+      "label": "놓치면 아쉬운 다이닝 경험"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Hostel Brikette 인근 레스토랑"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "가볼 만한 목적지 디너"
+    }
   ],
   "sections": [
     {

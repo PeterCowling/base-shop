@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "A Guide to Amalfi Coast Cuisine",
-    "description": "What to eat: seafood staples, lemon sweets, and local DOC wines."
+    "description": "O que comer: frutos do mar, doces de limão e vinhos DOC locais."
   },
   "linkLabel": "Guia da culinária da Costa Amalfitana",
   "intro": [
@@ -83,5 +83,64 @@
       "name": "La Zagara Pasticceria",
       "note": "Pastelaria para delizia al limone, babà al limoncello e doces ideais para levar a um piquenique nas falésias."
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Dish highlights",
+    "items": [
+      {
+        "alt": "Seafood pasta with Amalfi Coast lemons",
+        "caption": "Frutos do mar básicos das trattorias de Positano"
+      },
+      {
+        "alt": "Delizia al limone pastry on a plate",
+        "caption": "Lemon desserts to sample"
+      },
+      {
+        "alt": "Amigos tilintando copos de limoncello ao pôr do sol",
+        "caption": "Digestivos with a view"
+      }
+    ]
+  },
+  "fallback": {
+    "toc": [
+      {
+        "href": "#staples",
+        "label": "Staples"
+      },
+      {
+        "href": "#sweets",
+        "label": "Sweets"
+      },
+      {
+        "href": "#drinks",
+        "label": "Drinks"
+      }
+    ],
+    "sections": [
+      {
+        "id": "staples",
+        "title": "Staples",
+        "body": [
+          "Massas de frutos do mar, pescados grelhados e saladas de limão com azeite local são itens básicos do cardápio em toda a costa.",
+          "Peça os produtos sazonais especiais do dia, como flores de abobrinha ou tomate cereja, que costumam aparecer nos quadros-negros."
+        ]
+      },
+      {
+        "id": "sweets",
+        "title": "Sweets",
+        "body": [
+          "Experimente delizia al limone, babà al limoncello e sorvete de limão para um trio de sobremesas com frutas cítricas.",
+          "Combine doces com café expresso ou limoncello digestivo para fechar a refeição como um morador local."
+        ]
+      },
+      {
+        "id": "drinks",
+        "title": "Drinks",
+        "body": [
+          "Saboreie limoncello ou crema di limone como digestivo e explore os vinhos DOC da Costa d'Amalfi de Tramonti, Ravello ou Furore.",
+          "Alterne com água com gás para se manter atualizado – as noites de verão permanecem úmidas bem depois do pôr do sol."
+        ]
+      }
+    ]
+  }
 }

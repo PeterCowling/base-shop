@@ -9,9 +9,18 @@
     "Nutze diesen Guide für Sonnenuntergangs-Highlights, Farm-to-Table-Erlebnisse und schnelle Bissen, wenn du ohne langen Aufstieg gut essen möchtest."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Besondere Dinner-Erlebnisse" },
-    { "href": "#near-hostel", "label": "Restaurants in Hostelnähe" },
-    { "href": "#destination-dinners", "label": "Ausflugsziele zum Abendessen" }
+    {
+      "href": "#signature-experiences",
+      "label": "Besondere Dinner-Erlebnisse"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Restaurants in Hostelnähe"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Ausflugsziele zum Abendessen"
+    }
   ],
   "sections": [
     {

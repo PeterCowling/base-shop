@@ -9,11 +9,26 @@
     "Usa esta guía para llegar a la cala en autobús público, empacar como un local y aprovechar las plataformas de baño antes de volver a Sorrento para comer."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Por qué ir" },
-    { "href": "#getting-there", "label": "Cómo llegar" },
-    { "href": "#what-to-pack", "label": "Qué llevar" },
-    { "href": "#swimming", "label": "Baño y seguridad" },
-    { "href": "#pair-it", "label": "Combínalo con Sorrento" }
+    {
+      "href": "#why-go",
+      "label": "Por qué ir"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Cómo llegar"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Qué llevar"
+    },
+    {
+      "href": "#swimming",
+      "label": "Baño y seguridad"
+    },
+    {
+      "href": "#pair-it",
+      "label": "Combínalo con Sorrento"
+    }
   ],
   "sections": [
     {

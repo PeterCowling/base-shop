@@ -9,9 +9,18 @@
     "Használd ezt az útmutatót, hogy busszal utazz, megértsd mennyire korlátozottak a helyszíni szolgáltatások, és tervezd meg a hazautat, nehogy a teltházas SITA-járatok miatt ott ragadj."
   ],
   "toc": [
-    { "href": "#getting-there", "label": "Utazás" },
-    { "href": "#returning", "label": "Visszaút" },
-    { "href": "#on-site", "label": "Mit találsz ott" }
+    {
+      "href": "#getting-there",
+      "label": "Utazás"
+    },
+    {
+      "href": "#returning",
+      "label": "Visszaút"
+    },
+    {
+      "href": "#on-site",
+      "label": "Mit találsz ott"
+    }
   ],
   "sections": [
     {

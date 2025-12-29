@@ -5,31 +5,31 @@
   },
   "linkLabel": "Salerno vs Neapel: ankomster",
   "intro": [
-    "Both gateways work. In summer, Salerno often wins quietly thanks to extra ferries and calmer queues."
+    "Båda gateways fungerar. På sommaren vinner Salerno ofta tyst tack vare extra färjor och lugnare köer."
   ],
   "sections": [
     {
       "id": "when-salerno",
       "title": "When Salerno wins",
       "body": [
-        "Seasonal ferries run direct to Positano or Amalfi with lighter crowds than Naples piers.",
-        "Pair Salerno Costa d'Amalfi (QSR) airport with the Airlink shuttle to keep transfers simple."
+        "Säsongsbetonade färjor går direkt till Positano eller Amalfi med lättare folkmassor än Neapels bryggor.",
+        "Koppla ihop flygplatsen Salerno Costa d'Amalfi (QSR) med Airlink-bussen för att göra överföringen enkel."
       ]
     },
     {
       "id": "when-naples",
       "title": "When Naples wins",
       "body": [
-        "Off-season reliability: high-speed trains plus SITA via Sorrento keep running when ferries pause.",
-        "Late arrivals find more accommodation and onward transport choices around Naples."
+        "Tillförlitlighet under lågsäsong: höghastighetståg plus SITA via Sorrento fortsätter att gå när färjorna pausar.",
+        "Sena ankomster hittar fler boendealternativ och vidare transportalternativ runt Neapel."
       ]
     },
     {
       "id": "luggage",
       "title": "Luggage & stairs",
       "body": [
-        "Arrive at Chiesa Nuova to minimise stairs up to the hostel.",
-        "Landing by ferry? Book a porter at the dock or ride the SITA bus uphill instead of hauling bags."
+        "Anländer till Chiesa Nuova för att minimera trappan upp till vandrarhemmet.",
+        "Landa med färja? Boka en portier vid kajen eller åk SITA-bussen uppför istället för att dra väskor."
       ]
     }
   ],
@@ -37,7 +37,7 @@
     {
       "q": "Is Salerno Airport (QSR) worth it?",
       "a": [
-        "Increasingly yes for summer: combine QSR flights with the Airlink shuttle and ferry when seas are calm, and fall back to buses if weather turns."
+        "Allt fler ja för sommaren: kombinera QSR-flyg med Airlink-bussen och färjan när havet är lugnt, och fall tillbaka till bussar om vädret vänder."
       ]
     }
   ]

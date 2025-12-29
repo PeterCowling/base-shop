@@ -1,9 +1,9 @@
 {
   "seo": {
-    "title": "Top of the Mountain Hike from Hostel Brikette",
-    "description": "Reach Monte Sant'Angelo, the Amalfi Coast's highest point, with these directions, prep tips, and warnings."
+    "title": "हॉस्टल ब्रिकेट से पर्वत की चोटी पर चढ़ना",
+    "description": "इन निर्देशों, तैयारी युक्तियों और चेतावनियों के साथ, अमाल्फी तट के उच्चतम बिंदु, मोंटे सैंट'एंजेलो तक पहुंचें।"
   },
-  "linkLabel": "Top of the Mountain hike from Hostel Brikette",
+  "linkLabel": "हॉस्टल ब्रिकेट से पर्वत की चोटी पर चढ़ना",
   "intro": [
     "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
     "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
@@ -40,51 +40,51 @@
   ],
   "essentialsTitle": "Essentials",
   "essentials": [
-    "At least 2 litres of water per person plus salty snacks; there are no reliable refills after Santa Maria del Castello.",
-    "Solid hiking shoes with grip—sections of the upper trail are rocky, loose, and exposed.",
-    "Sun protection and layers for the summit; wind can whip across the ridge even on warm days."
+    "प्रति व्यक्ति कम से कम 2 लीटर पानी और नमकीन नाश्ता; सांता मारिया डेल कैस्टेलो के बाद कोई विश्वसनीय रिफिल नहीं है।",
+    "पकड़ के साथ ठोस लंबी पैदल यात्रा के जूते - ऊपरी रास्ते के हिस्से चट्टानी, ढीले और खुले हैं।",
+    "शिखर के लिए धूप से सुरक्षा और परतें; गर्म दिनों में भी हवा पर्वतमाला के पार चल सकती है।"
   ],
   "typicalCostsTitle": "Typical costs",
   "typicalCosts": [
-    "Trail access is free; budget €5–€10 if you plan to reward yourself with a drink or snack in Santa Maria del Castello.",
-    "Return SITA bus tickets or ferry fares if you decide to descend via another village instead of hiking all the way back."
+    "ट्रेल का उपयोग निःशुल्क है; बजट €5-€10 यदि आप सांता मारिया डेल कास्टेलो में स्वयं को पेय या नाश्ते से पुरस्कृत करने की योजना बना रहे हैं।",
+    "यदि आप पूरे रास्ते पैदल यात्रा करने के बजाय दूसरे गांव से होकर उतरने का निर्णय लेते हैं तो एसआईटीए बस टिकट या नौका किराया वापस कर दें।"
   ],
   "tipsTitle": "Smart timing",
   "tips": [
-    "Start at dawn in summer to avoid climbing under peak heat; late autumn and spring afternoons offer softer light without the scorching sun.",
-    "Check the forecast for storms—cloud cover can erase the views and wet rock makes the summit steps slippery.",
-    "Let someone at the hostel know your plan and expected return time before you set off."
+    "गर्मियों में अत्यधिक गर्मी में चढ़ाई से बचने के लिए सुबह के समय शुरुआत करें; देर से शरद ऋतु और वसंत की दोपहरें चिलचिलाती धूप के बिना नरम रोशनी प्रदान करती हैं।",
+    "तूफ़ान के पूर्वानुमान की जाँच करें—बादल कवर दृश्य को मिटा सकता है और गीली चट्टान शिखर की सीढ़ियों को फिसलन भरा बना देती है।",
+    "रवाना होने से पहले हॉस्टल में किसी को अपनी योजना और अपेक्षित वापसी समय के बारे में बताएं।"
   ],
   "warningsTitle": "When to reconsider",
   "warnings": [
-    "Skip the hike if you lack mountain experience or strong fitness; the sustained elevation gain is punishing and there are few bailout points.",
-    "Avoid the route if heights unsettle you—exposed ledges and steep drops challenge even confident hikers.",
-    "Do not attempt the summit during peak summer afternoons when heat and the need to carry extra water add to the strain."
+    "यदि आपके पास पहाड़ी अनुभव या मजबूत फिटनेस की कमी है तो पैदल यात्रा छोड़ें; निरंतर उन्नयन लाभ दंडनीय है और कुछ राहत बिंदु हैं।",
+    "यदि ऊंचाई आपको परेशान करती है तो मार्ग से बचें - उजागर सीढ़ियां और खड़ी बूंदें आत्मविश्वास से भरे पैदल यात्रियों को भी चुनौती देती हैं।",
+    "चरम गर्मियों की दोपहर के दौरान शिखर पर चढ़ने का प्रयास न करें जब गर्मी और अतिरिक्त पानी ले जाने की आवश्यकता तनाव बढ़ा देती है।"
   ],
   "steps": [
     {
       "name": "Climb to Santa Maria del Castello",
-      "text": "Use the hostel's route to Santa Maria del Castello; reaching the square means you have completed roughly a third of the elevation."
+      "text": "सांता मारिया डेल कास्टेलो के लिए छात्रावास के मार्ग का उपयोग करें; चौराहे तक पहुँचने का मतलब है कि आपने ऊंचाई का लगभग एक तिहाई हिस्सा पूरा कर लिया है।"
     },
     {
       "name": "Join the mountain trail",
-      "text": "From the village crossroads, turn right, then left past the restaurant, and leave the road on the right-hand path that skirts the houses."
+      "text": "गाँव के चौराहे से, दाएँ मुड़ें, फिर रेस्तरां के सामने से बाएँ मुड़ें, और घरों को पार करने वाले दाहिने हाथ के रास्ते पर सड़क छोड़ दें।"
     },
     {
       "name": "Commit to the upper ascent",
-      "text": "Follow the rugged trail to the signed crossroads and choose the path that heads straight uphill toward the summit."
+      "text": "हस्ताक्षरित चौराहे तक ऊबड़-खाबड़ रास्ते का अनुसरण करें और वह रास्ता चुनें जो सीधे शिखर की ओर जाता हो।"
     },
     {
       "name": "Navigate the zig-zags",
-      "text": "Work through steep switchbacks until the trail flattens along the mountain's left flank."
+      "text": "जब तक रास्ता पहाड़ के बाएं किनारे पर समतल न हो जाए, तब तक खड़ी स्विचबैक के माध्यम से काम करें।"
     },
     {
       "name": "Take the rock-cut stairs",
-      "text": "Climb the stone steps on the right, looping behind the mountain face to the final ramp."
+      "text": "दाहिनी ओर पत्थर की सीढ़ियाँ चढ़ें, पहाड़ के पीछे से होते हुए अंतिम रैंप तक जाएँ।"
     },
     {
       "name": "Reach the summit",
-      "text": "Follow the last ascent to the top and enjoy the panorama before retracing your steps to Santa Maria."
+      "text": "शीर्ष पर अंतिम चढ़ाई का पालन करें और सांता मारिया की ओर अपने कदम वापस बढ़ाने से पहले पैनोरमा का आनंद लें।"
     }
   ],
   "faqsTitle": "FAQs",
@@ -92,19 +92,19 @@
     {
       "q": "How long does the full hike take?",
       "a": [
-        "Allow 6–7 hours for the round trip from Hostel Brikette, including breaks in Santa Maria and time at the summit."
+        "हॉस्टल ब्रिकेट से राउंड ट्रिप के लिए 6-7 घंटे का समय दें, जिसमें सांता मारिया में ब्रेक और शिखर पर समय शामिल है।"
       ]
     },
     {
       "q": "Is the trail marked?",
       "a": [
-        "Markers are sparse beyond Santa Maria; carry an offline map and pay attention to the obvious worn trail and signposts at junctions."
+        "सांता मारिया से परे मार्कर विरल हैं; एक ऑफ़लाइन मानचित्र साथ रखें और जंक्शनों पर स्पष्ट रूप से घिसे-पिटे रास्ते और साइनपोस्ट पर ध्यान दें।"
       ]
     },
     {
       "q": "Can I turn back early?",
       "a": [
-        "Yes. If the upper section feels too exposed, enjoy the views from Santa Maria or the lower switchbacks and return the way you came."
+        "हाँ। यदि ऊपरी भाग बहुत अधिक खुला हुआ महसूस होता है, तो सांता मारिया या निचले स्विचबैक के दृश्यों का आनंद लें और जिस तरह से आए थे उसी रास्ते से वापस लौटें।"
       ]
     }
   ],
@@ -112,5 +112,22 @@
     "labels": {
       "warnings": "When to reconsider"
     }
+  },
+  "gallery": {
+    "title": "फोटो गैलरी",
+    "items": [
+      {
+        "alt": "Looking across the peninsula to Capri",
+        "caption": "प्रायद्वीप के पार कैप्रि की ओर नज़ारा"
+      },
+      {
+        "alt": "Scan to Share QR code",
+        "caption": "साझा करने के लिए स्कैन करें"
+      },
+      {
+        "alt": "Trail near the summit",
+        "caption": "शिखर के करीब पहुँचते हुए"
+      }
+    ]
   }
 }

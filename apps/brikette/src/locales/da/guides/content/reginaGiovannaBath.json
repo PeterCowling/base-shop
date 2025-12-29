@@ -9,11 +9,26 @@
     "Brug guiden til at nå bugten med offentlig bus, pakke som en lokal og få mest muligt ud af svømmeafsatsene, før du vender tilbage til Sorrento for mad."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Derfor skal du tage af sted" },
-    { "href": "#getting-there", "label": "Sådan kommer du dertil" },
-    { "href": "#what-to-pack", "label": "Hvad skal du pakke" },
-    { "href": "#swimming", "label": "Svømning & sikkerhed" },
-    { "href": "#pair-it", "label": "Kombinér med Sorrento" }
+    {
+      "href": "#why-go",
+      "label": "Derfor skal du tage af sted"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Sådan kommer du dertil"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Hvad skal du pakke"
+    },
+    {
+      "href": "#swimming",
+      "label": "Svømning & sikkerhed"
+    },
+    {
+      "href": "#pair-it",
+      "label": "Kombinér med Sorrento"
+    }
   ],
   "sections": [
     {

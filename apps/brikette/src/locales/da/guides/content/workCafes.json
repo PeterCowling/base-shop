@@ -5,23 +5,23 @@
   },
   "linkLabel": "Wi-fi og arbejdsvenlige caféer nær Brikette",
   "intro": [
-    "Cafés near the hostel with workable Wi‑Fi. Etiquette: buy regularly, avoid long calls indoors, and keep a small footprint."
+    "Caféer i nærheden af ​​vandrerhjemmet med brugbar Wi-Fi. Etikette: køb regelmæssigt, undgå lange opkald indendørs, og hold et lille fodaftryk."
   ],
   "sections": [
     {
       "id": "spots",
       "title": "Spots near Brikette",
       "body": [
-        "Small cafés on Via Pasitea and around Chiesa Nuova often have stable Wi‑Fi.",
-        "Bring a battery pack; power outlets are limited in older venues."
+        "Små caféer på Via Pasitea og omkring Chiesa Nuova har ofte stabilt Wi-Fi.",
+        "Medbring en batteripakke; strømudtag er begrænset i ældre spillesteder."
       ]
     },
     {
       "id": "backup",
       "title": "Backup connectivity",
       "body": [
-        "Keep an eSIM as a fallback; carriers vary by area — TIM/Vodafone usually strong.",
-        "Tether when the lunchtime rush slows café networks."
+        "Behold et eSIM som et alternativ; transportører varierer efter område - TIM/Vodafone er normalt stærke.",
+        "Tether, når frokostrushet bremser café-netværk."
       ]
     }
   ],
@@ -36,7 +36,7 @@
     {
       "q": "Is all‑day work OK?",
       "a": [
-        "Buy every 60–90 minutes and avoid peak lunch; consider rotating venues."
+        "Køb hvert 60.-90. minut og undgå spidsbelastningsfrokost; overveje at skifte spillesteder."
       ]
     }
   ]

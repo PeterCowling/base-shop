@@ -65,5 +65,20 @@
         "A ‘Chiesa Nuova’ megállótól nagyjából 80 méter, lépcsők nélkül."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Referenciaképek",
+    "items": [
+      {
+        "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
+        "alt": "Chiesa Nuova / Bar Internazionale SITA megálló Positanóban",
+        "caption": "Bar Internazionale / Chiesa Nuova megálló"
+      },
+      {
+        "src": "/img/directions/naples-airport-positano-bus-hostel-entrance-steps.png",
+        "alt": "Lépcső a Hostel Brikette főbejáratához",
+        "caption": "Hostel Brikette bejárati lépcsői"
+      }
+    ]
+  }
 }

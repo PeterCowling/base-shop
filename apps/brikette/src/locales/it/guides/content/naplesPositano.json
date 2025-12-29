@@ -65,5 +65,20 @@
         "Traduzione in arrivo."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Immagini di riferimento",
+    "items": [
+      {
+        "src": "/img/directions/napoli-aeroporto-positano-autobus-fermata-autobus.png",
+        "alt": "Fermata SITA Chiesa Nuova / Bar Internazionale a Positano",
+        "caption": "Fermata Bar Internazionale / Chiesa Nuova"
+      },
+      {
+        "src": "/img/indicazioni/napoli-aeroporto-positano-bus-ostello-ingresso-scalini.png",
+        "alt": "Scale per l'ingresso principale dell'Hostel Brikette",
+        "caption": "Scale d'ingresso dell'Hostel Brikette"
+      }
+    ]
+  }
 }

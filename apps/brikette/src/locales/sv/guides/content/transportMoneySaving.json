@@ -5,7 +5,7 @@
   },
   "linkLabel": "Spara pengar på transport på Amalfikusten",
   "intro": [
-    "Practical ways to cut transport costs: passes, timing, mixing bus and ferry, and weather contingencies."
+    "Praktiska sätt att sänka transportkostnaderna: pass, timing, blandning av buss och färja och väderleksförhållanden."
   ],
   "planChoiceTitle": "Pick your savings focus",
   "sections": [
@@ -13,28 +13,28 @@
       "id": "passes",
       "title": "Passes vs singles",
       "body": [
-        "Use day passes only if taking several rides; otherwise singles are cheaper. Validate tickets."
+        "Använd endast dagskort om du tar flera åk; annars är singlar billigare. Validera biljetter."
       ]
     },
     {
       "id": "timing",
       "title": "Timing & routing",
       "body": [
-        "Travel outside 10:00–16:00 on peak days; prefer direct buses for ridges and ferries for scenic hops."
+        "Resa utanför 10:00–16:00 under högtrafik; föredrar direktbussar för åsar och färjor för natursköna humle."
       ]
     },
     {
       "id": "mixing",
       "title": "Mixing bus and ferry",
       "body": [
-        "Choose one paid ferry leg (Positano ↔ Amalfi) and use buses elsewhere to save while staying comfortable."
+        "Välj en betald färjesträcka (Positano ↔ Amalfi) och använd bussar någon annanstans för att spara samtidigt som du är bekväm."
       ]
     },
     {
       "id": "contingency",
       "title": "Weather contingency",
       "body": [
-        "Rough seas cancel ferries: have a bus-first backup and buffer the last sailing of the day."
+        "Rå sjö ställer in färjor: ha en buss-först backup och buffra dagens sista segling."
       ]
     }
   ],
@@ -43,7 +43,7 @@
     {
       "q": "Are combo tickets worth it?",
       "a": [
-        "Sometimes for multi-hop ferry days; compare against single fares."
+        "Ibland för multi-hop färjedagar; jämför mot enstaka priser."
       ]
     }
   ]

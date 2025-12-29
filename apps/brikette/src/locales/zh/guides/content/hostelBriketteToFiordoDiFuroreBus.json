@@ -5,8 +5,8 @@
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
-    "Follow this route to travel from Hostel Brikette to Fiordo di Furore on the SITA bus without missing a stop or arriving unprepared.",
-    "The fiord has no ticketing facilities or shops, so these steps cover tickets, the nearest bus stop, and the staircase that leads down to the beach."
+    "沿着这条路线乘坐 SITA 巴士从 Hostel Brikette 前往 Fiordo di Furore，不会错过任何一站或毫无准备地到达。",
+    "峡湾没有售票设施或商店，因此这些台阶包括门票、最近的巴士站以及通往海滩的楼梯。"
   ],
   "warningsTitle": "Before you leave the hostel",
   "warnings": [
@@ -54,7 +54,7 @@
       "body": [
         "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
         "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
-        "Use the same staircase to return to the road when you are ready to leave."
+        "当您准备离开时，请使用相同的楼梯返回道路。"
       ]
     }
   ],
@@ -62,27 +62,27 @@
   "tips": [
     "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
     "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
-    "Save the %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette return guide% for your trip back.",
+    "保存 %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette 返程指南%，供您返程时使用。",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
   "faqsTitle": "Common questions",
   "faqs": [
     {
-      "q": "Do I really need to buy a return ticket in advance?",
+      "q": "我真的需要提前买回程票吗？",
       "a": [
-        "Yes. Drivers expect validated SITA tickets and there are no machines or shops at the beach, so buy both legs in Positano before boarding."
+        "是的。司机需要有效的 SITA 门票，而且海滩上没有机器或商店，因此在登机前在波西塔诺购买双程票。"
       ]
     },
     {
-      "q": "What should I do if the bus is full when it arrives?",
+      "q": "如果巴士到达时已满员该怎么办？",
       "a": [
-        "Wait for the next scheduled service and keep an eye on the timetable — during peak season it is normal for one or two buses to pass before space opens up."
+        "等待下一趟预定的服务并留意时刻表——在旺季期间，在空位开放之前有一两辆公共汽车经过是正常的。"
       ]
     },
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "After the bus crosses the arched bridge over the fiord it will stop beside the crash barrier. Watch for the bridge views, listen for the driver, and use Google Maps’ \"JH73+PQ Furore\" pin as a backup."
+        "巴士穿过峡湾上的拱桥后，将停在防撞栏旁边。留意桥上的风景，倾听司机的声音，并使用谷歌地图的“JH73+PQ Furore”图钉作为备份。"
       ]
     }
   ]

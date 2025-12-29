@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Bus back to Hostel Brikette from Laurito Beach",
+    "title": "लॉरिटो बीच से हॉस्टल ब्रिकेट के लिए बस",
     "description": "Climb to the Laurito bus stop, ride the Amalfi Coast service to Chiesa Nuova, and finish with a short walk to Hostel Brikette."
   },
   "linkLabel": "Bus back from Laurito Beach",
@@ -46,21 +46,21 @@
   "tips": [
     "The printed timetable lists Positano times, not Laurito; expect the Laurito stop about 10 minutes before the Positano Sponda arrival.",
     "If you run out of tickets, use the Laurito shuttle boat back to Spiaggia Grande so you can buy more at the tabacchi before trying again.",
-    "Check our %LINK:beaches|Positano beaches overview% for more details on Laurito facilities and shuttle options."
+    "लॉरिटो सुविधाओं और शटल विकल्पों के बारे में अधिक जानकारी के लिए हमारे %लिंक:समुद्र तट|पोसिटानो समुद्र तटों का अवलोकन% देखें।"
   ],
   "faqs": [
     {
-      "q": "Where can I validate my Laurito bus ticket?",
+      "q": "मैं अपने लॉरिटो बस टिकट का सत्यापन कहाँ कर सकता हूँ?",
       "a": [
-        "Validate SITA tickets before boarding using the machine on the bus or at the Chiesa Nuova tabacchi when you buy them.",
-        "If the validator is out of service, write the date and time on the ticket in pen to show inspectors."
+        "जब आप एसआईटीए टिकट खरीदते हैं तो बस में या चिएसा नुओवा तबाची में मशीन का उपयोग करके बोर्डिंग से पहले एसआईटीए टिकटों को मान्य करें।",
+        "यदि सत्यापनकर्ता सेवा से बाहर है, तो निरीक्षकों को दिखाने के लिए टिकट पर तारीख और समय पेन से लिखें।"
       ]
     },
     {
-      "q": "What if the bus back to Positano is full?",
+      "q": "यदि पोसिटानो वापस जाने वाली बस पूरी भर जाए तो क्या होगा?",
       "a": [
-        "Buses can fill up after beach hours. Let the driver know you're waiting; if there's no room, wait for the next service, which usually arrives every 20–30 minutes in summer.",
-        "Alternatively, take the Laurito shuttle boat to Spiaggia Grande and connect with local buses from there."
+        "समुद्र तट के घंटों के बाद बसें भर सकती हैं। ड्राइवर को बताएं कि आप प्रतीक्षा कर रहे हैं; यदि जगह नहीं है, तो अगली सेवा की प्रतीक्षा करें, जो आमतौर पर गर्मियों में हर 20-30 मिनट में आती है।",
+        "वैकल्पिक रूप से, लॉरिटो शटल नाव को स्पियागिया ग्रांडे तक ले जाएं और वहां से स्थानीय बसों से जुड़ें।"
       ]
     }
   ],
@@ -69,7 +69,7 @@
     "qrAlt": "QR code to share this guide",
     "rideAlt": "Amalfi Coast bus en route from Laurito",
     "rideCaption": "Ride from Laurito toward Positano",
-    "stopAlt": "Bar Internazionale / Chiesa Nuova bus stop",
+    "stopAlt": "बार इंटरनैजियोनेल / चिएसा नुओवा बस स्टॉप",
     "stopCaption": "Bar Internazionale / Chiesa Nuova stop"
   }
 }

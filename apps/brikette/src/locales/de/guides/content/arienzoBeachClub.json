@@ -120,5 +120,22 @@
         "Trage feste Sandalen oder Turnschuhe für den Abstieg. Pack schwerere Gegenstände in einen Rucksack und leg Pausen an den Zwischenpodesten ein. Auf dem Weg zurück nach oben solltest du im Schatten verschnaufen und dich hydratisieren, bevor du in den Bus oder ein Taxi steigst."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Arienzo Fotohighlights",
+    "items": [
+      {
+        "alt": "Terrassen des Arienzo Beach Club",
+        "caption": "Felsterrassen mit orangefarbenen Liegen"
+      },
+      {
+        "alt": "Anleger des Shuttlebootes von Arienzo",
+        "caption": "Shuttle-Boarding an der Spiaggia Grande"
+      },
+      {
+        "alt": "Treppen hinunter nach Arienzo",
+        "caption": "300 Stufen durch Zitronenterrassen"
+      }
+    ]
+  }
 }

@@ -120,5 +120,22 @@
         "Indossa sandali robusti o scarpe da ginnastica per la discesa. Porta gli oggetti più pesanti nello zaino e fermati ai pianerottoli intermedi. Durante la risalita, fai pause all'ombra e idratati prima di salire su autobus o taxi."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Scatti da Arienzo",
+    "items": [
+      {
+        "alt": "Terrazze dell’Arienzo Beach Club",
+        "caption": "Deck a picco con lettini arancioni"
+      },
+      {
+        "alt": "Molo della navetta di Arienzo",
+        "caption": "Imbarco dello shuttle da Spiaggia Grande"
+      },
+      {
+        "alt": "Scala che porta ad Arienzo",
+        "caption": "300 gradini tra i limoneti"
+      }
+    ]
+  }
 }

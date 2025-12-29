@@ -5,7 +5,7 @@
   },
   "linkLabel": "Sparetips for transport på Amalfikysten",
   "intro": [
-    "Practical ways to cut transport costs: passes, timing, mixing bus and ferry, and weather contingencies."
+    "Praktiske måter å kutte transportkostnader på: pass, timing, blanding av buss og ferge, og værsituasjoner."
   ],
   "planChoiceTitle": "Pick your savings focus",
   "sections": [
@@ -13,28 +13,28 @@
       "id": "passes",
       "title": "Passes vs singles",
       "body": [
-        "Use day passes only if taking several rides; otherwise singles are cheaper. Validate tickets."
+        "Bruk kun dagskort hvis du tar flere turer; ellers er single billigere. Bekreft billetter."
       ]
     },
     {
       "id": "timing",
       "title": "Timing & routing",
       "body": [
-        "Travel outside 10:00–16:00 on peak days; prefer direct buses for ridges and ferries for scenic hops."
+        "Reise ute kl. 10.00–16.00 på høye dager; foretrekker direkte busser for åsrygger og ferger for naturskjønne humler."
       ]
     },
     {
       "id": "mixing",
       "title": "Mixing bus and ferry",
       "body": [
-        "Choose one paid ferry leg (Positano ↔ Amalfi) and use buses elsewhere to save while staying comfortable."
+        "Velg en betalt ferge (Positano ↔ Amalfi) og bruk busser andre steder for å spare mens du holder deg komfortabel."
       ]
     },
     {
       "id": "contingency",
       "title": "Weather contingency",
       "body": [
-        "Rough seas cancel ferries: have a bus-first backup and buffer the last sailing of the day."
+        "Røft hav kansellerer ferger: ha en buss-første backup og buffer dagens siste seiling."
       ]
     }
   ],
@@ -43,7 +43,7 @@
     {
       "q": "Are combo tickets worth it?",
       "a": [
-        "Sometimes for multi-hop ferry days; compare against single fares."
+        "Noen ganger for multi-hop ferge dager; sammenligne med enkeltpriser."
       ]
     }
   ]

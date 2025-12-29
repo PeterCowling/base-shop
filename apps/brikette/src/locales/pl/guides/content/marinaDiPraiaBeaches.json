@@ -50,5 +50,43 @@
         "Tłumaczenie w przygotowaniu."
       ]
     }
-  ]
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Why go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & services"
+    },
+    {
+      "href": "#evening",
+      "label": "Stay for dinner"
+    }
+  ],
+  "essentialsTitle": "What to expect",
+  "essentials": [
+    "20 minut jazdy autobusem SITA z Positano; poproś o przystanek Marina di Praia i idź dwie minuty w dół.",
+    "Wąska plaża żwirowa z jednym głównym kąpieliskiem i małą bezpłatną częścią pośrodku.",
+    "Restauracje i kioski z przekąskami znajdują się wzdłuż chodnika — idealne miejsce na kolację o zachodzie słońca przed powrotem do domu."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Leżak + parasol w Marina di Praia Beach Club: 25–35 € za dzień (dostępne zestawy dwuosobowe).",
+    "Wypożyczenie kajaka: około 20 € za godzinę dla dwóch osób.",
+    "Kolacja główna w Da Armandino lub Il Pirata: 16–28 € w zależności od specjałów z połowu i makaronów."
+  ],
+  "tipsTitle": "Quick tips",
+  "warningsTitle": "Good to know",
+  "warnings": [
+    "Przestrzeń jest ograniczona; Wolna strefa zapełnia się jako pierwsza, a leżaki na kąpielisku wyprzedają się w weekendy.",
+    "Klify blokują bezpośrednie słońce do południa – świetnie nadają się do ochłodzenia, ale w wietrzne dni może być chłodno.",
+    "Odbiór mobilny spada w wąwozie; pobierz wcześniej rozkłady jazdy autobusów lub potwierdzenia rezerwacji kolacji."
+  ],
+  "faqsTitle": "Marina di Praia FAQs"
 }

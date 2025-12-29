@@ -5,23 +5,23 @@
   },
   "linkLabel": "Salerno til Positano: slik gjør du det",
   "intro": [
-    "Salerno → Positano: ferry is easiest in season (with bags); bus via Amalfi runs all year as a cheaper alternative."
+    "Salerno → Positano: ferge er enklest i sesongen (med poser); buss via Amalfi går hele året som et rimeligere alternativ."
   ],
   "sections": [
     {
       "id": "ferry",
       "title": "Ferry (recommended with luggage)",
       "body": [
-        "Board at Molo Manfredi/Concordia depending on operator and plan for roughly an hour on the water, depending on sea conditions.",
-        "Check sea conditions and the live timetable; seats can sell out on weekends — arrive early."
+        "Gå ombord på Molo Manfredi/Concordia avhengig av operatør og plan for omtrent en time på vannet, avhengig av sjøforhold.",
+        "Sjekk sjøforhold og live timeplan; seter kan bli utsolgt i helgene – kom tidlig."
       ]
     },
     {
       "id": "bus",
       "title": "Bus via Amalfi (year‑round)",
       "body": [
-        "Train to Amalfi (SITA) → change to the Positano line; longer but available off‑season.",
-        "Keep small cash, validate tickets, and allow buffer at the Amalfi interchange while you check the onward departure board."
+        "Tog til Amalfi (SITA) → bytt til Positano-linjen; lengre, men tilgjengelig utenom sesongen.",
+        "Ta vare på småpenger, valider billetter og la buffere ved Amalfi-utvekslingen mens du sjekker avgangsbrettet."
       ]
     }
   ],
@@ -29,13 +29,13 @@
     {
       "q": "Is the ferry reliable in spring?",
       "a": [
-        "Yes, but early spring storms can cancel services. Always check on the day."
+        "Ja, men stormer tidlig på våren kan kansellere tjenester. Sjekk alltid dagen."
       ]
     },
     {
       "q": "Where to stow bags?",
       "a": [
-        "Use racks on ferries; keep valuables with you."
+        "Bruk stativer på ferger; ha verdisaker med deg."
       ]
     }
   ]

@@ -9,9 +9,18 @@
     "استخدم هذا الدليل للتخطيط لعشاءات عند الغروب، وتجارب من المزرعة إلى المائدة، ووجبات سريعة عندما تريد طعامًا رائعًا بلا صعود طويل."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "تجارب طهي لا تُفوَّت" },
-    { "href": "#near-hostel", "label": "مطاعم قريبة من Hostel Brikette" },
-    { "href": "#destination-dinners", "label": "عشاءات تستحق الرحلة" }
+    {
+      "href": "#signature-experiences",
+      "label": "تجارب طهي لا تُفوَّت"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "مطاعم قريبة من Hostel Brikette"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "عشاءات تستحق الرحلة"
+    }
   ],
   "sections": [
     {

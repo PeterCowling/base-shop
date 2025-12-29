@@ -5,8 +5,8 @@
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
-    "Follow this route to travel from Hostel Brikette to Fiordo di Furore on the SITA bus without missing a stop or arriving unprepared.",
-    "The fiord has no ticketing facilities or shops, so these steps cover tickets, the nearest bus stop, and the staircase that leads down to the beach."
+    "정류장을 놓치지 않거나 준비 없이 도착하지 않고 SITA 버스를 타고 Hostel Brikette에서 Fiordo di Furore까지 이동하려면 이 경로를 따르세요.",
+    "피오르드에는 매표소나 상점이 없기 때문에 이 단계에는 매표소, 가장 가까운 버스 정류장, 해변으로 내려가는 계단이 포함됩니다."
   ],
   "warningsTitle": "Before you leave the hostel",
   "warnings": [
@@ -54,7 +54,7 @@
       "body": [
         "Get off beside the bridge, cross the road, and take the staircase that leads away from the traffic toward the cliffside walkway.",
         "Follow the stairs up and over the bridge, then descend the final flights to reach the shingle beach at the bottom.",
-        "Use the same staircase to return to the road when you are ready to leave."
+        "떠날 준비가 되면 동일한 계단을 사용하여 도로로 돌아갑니다."
       ]
     }
   ],
@@ -62,27 +62,27 @@
   "tips": [
     "Check the latest SITA timetable posted at reception before you set out so you know when the next buses run.",
     "Read our %LINK:fiordoDiFuroreBeachGuide|Fiordo di Furore beach guide% for packing tips and on-site expectations.",
-    "Save the %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette return guide% for your trip back.",
+    "돌아오는 여행을 위해 %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette 왕복 가이드%를 저장하세요.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
   "faqsTitle": "Common questions",
   "faqs": [
     {
-      "q": "Do I really need to buy a return ticket in advance?",
+      "q": "왕복 항공권을 꼭 미리 구매해야 하나요?",
       "a": [
-        "Yes. Drivers expect validated SITA tickets and there are no machines or shops at the beach, so buy both legs in Positano before boarding."
+        "예. 운전자는 검증된 SITA 티켓을 기대하며 해변에는 기계나 상점이 없으므로 탑승하기 전에 포지타노에서 두 구간을 모두 구매하세요."
       ]
     },
     {
-      "q": "What should I do if the bus is full when it arrives?",
+      "q": "버스가 도착했을 때 버스가 꽉 차 있으면 어떻게 해야 하나요?",
       "a": [
-        "Wait for the next scheduled service and keep an eye on the timetable — during peak season it is normal for one or two buses to pass before space opens up."
+        "다음 예정된 서비스를 기다리고 시간표를 잘 확인하세요. 성수기에는 자리가 열리기 전에 버스 한두 대가 지나가는 것이 일반적입니다."
       ]
     },
     {
       "q": "How will I recognise the right stop?",
       "a": [
-        "After the bus crosses the arched bridge over the fiord it will stop beside the crash barrier. Watch for the bridge views, listen for the driver, and use Google Maps’ \"JH73+PQ Furore\" pin as a backup."
+        "버스가 피오르드 위의 아치형 다리를 건너면 충돌 장벽 옆에 정차합니다. 다리 전망을 살펴보고, 운전자의 말을 듣고, Google 지도의 \"JH73+PQ Furore\" 핀을 백업으로 사용하세요."
       ]
     }
   ]

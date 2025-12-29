@@ -4,7 +4,10 @@
     "description": "Exakt rutt från hostellet till Sentiero degli Dei med transportalternativ och säkerhetstips."
   },
   "linkLabel": "Path of the Gods från Brikette",
-  "intro": "Sentiero degli Dei (\"Gudarnas stig\") är en av Italiens mest spektakulära kustleder. Från vandrarhemmet når du starten i Bomerano eller målet i Nocelle med SITA-bussen.",
+  "intro": [
+    "Sentiero degli Dei (gudarnas väg) sammanfogar terrasser på en klippa, kastanjelundar och vidsträckta vyer över Amalfikusten. Från Hostel Brikette kan du nå leden genom att kombinera lokala färjor och SITA-bussar utan att gå med på en dyr rundtur.",
+    "Tre huvudsakliga tillvägagångssätt startar från vandrarhemmet: segla till Amalfi och bussa upp till Bomerano, åka bussnätet hela vägen, eller hoppa över överföringarna och vandra en ut-och-tillbaka från Nocelle. Använd den här översikten för att bestämma vilken detaljerad rutt som passar din tid, budget och komfort med höjder."
+  ],
   "sections": [
     {
       "id": "timing",
@@ -102,6 +105,33 @@
     "essentials": "Det viktigaste",
     "costs": "Kostnader",
     "faqs": "Vanliga frågor",
-    "gallery": "Fotogalleri"
-  }
+    "gallery": "Fotogalleri",
+    "tips": "Smart timing"
+  },
+  "tipsTitle": "Smart timing",
+  "tips": [
+    "Lämna före kl. 09.00 i juli–augusti eller sikta på de gyllene timmarna på våren och hösten för svalare temperaturer och mjukare ljus.",
+    "Undvik nedstigningen på 1 700 steg till Positano om inte dina knän är fräscha – att gå nerför Montepertuso-trappan efter en lång vandring är brutalt.",
+    "Använd en lätt dagsväska och håll vandringsstavarna vikta tills du når brantare trappor."
+  ],
+  "faqs": [
+    {
+      "q": "Hur lång tid tar vandringen från dörr till dörr?",
+      "a": [
+        "Budget 3–5 timmar inklusive transport. Färjeleden är den längsta; Nocelle ut-och-tillbaka passar in på en halv dag."
+      ]
+    },
+    {
+      "q": "Is the trail suitable for beginners?",
+      "a": [
+        "Ja, förutsatt att du är stadig på fötterna och bekväm med höjder. Det finns inga tekniska stigningar, bara stadiga upp- och nedförsbackar."
+      ]
+    },
+    {
+      "q": "What happens if ferries are cancelled?",
+      "a": [
+        "Byt till bussen via Amalfi eller åk direkt till Nocelle. Ha alltid en extra bussbiljett så att du kan anpassa dig till havet eller väderförhållandena."
+      ]
+    }
+  ]
 }

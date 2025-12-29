@@ -1,6 +1,63 @@
 {
   "seo": {
     "title": "Hostel Brikette – Chiesa Nuova/Bar Internazionale buszmegálló",
-    "description": "Micro-route from Hostel Brikette to the Chiesa Nuova bus stop with minimal stairs; ticket checks and departure timing."
-  }
+    "description": "Mikroútvonal a Hostel Brikette-től a Chiesa Nuova buszmegállóig minimális lépcsővel; jegyellenőrzés és indulási időzítés."
+  },
+  "linkLabel": "Hostel Brikette a Chiesa Nuova/Bar Internazionale buszmegállóig",
+  "intro": "Elhagyja a hostelt a sorrentói Amalfiba tartó busszal? Ez a mikroútvonal mutatja a leggyorsabb utat a Hostel Brikette és a Chiesa Nuova/Bar Internazionale buszmegálló között, és néhány tippet is ad.",
+  "image": {
+    "alt": "Positano Chiesa Nuova SITA megállója a Bar Internazionale előtt",
+    "caption": "A Hostel Brikette a megállótól egy kanyarral felfelé található. Hagyjon néhány percet, hogy a busz érkezése előtt beállhasson a sorba."
+  },
+  "toc": {
+    "onThisPage": "On this page",
+    "before": "Before you leave",
+    "steps": "Step-by-step",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Why this route works",
+      "body": [
+        "120 méter (400 láb) séta a szálló bejáratától a megállóig, a főúton.",
+        "Ha Amalfi felé tart, a megálló a Bar Internazionale bárral szemben található. Sor az út tengerre néző oldalán.  Ha Sorrento felé tart, akkor közvetlenül a bár előtt vár."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Tickets and timing",
+      "body": [
+        "Vásároljon SITA jegyet a tabacchiban vagy a bárban.  Ne próbáljon meg jegy nélkül felszállni a buszra, mert magán a buszon nem fog tudni vásárolni.  Beszálláskor mutassa be jegyét a sofőrnek.  Ha az első busszal érkezik, vegye meg jegyét előző nap, és keressen fel minket a recepción, hogy megbeszéljük a kijelentkezést.",
+        "A nyári buszok gyakran megtelnek. Ennek megfelelően tervezzen, különösen a legforgalmasabb időszakokban."
+      ]
+    }
+  ],
+  "beforeList": [],
+  "stepsList": [
+    "Hagyja el a recepciót, ereszkedjen le a rövid lépcsőn a Viale Pasitea felé, és forduljon balra, hogy elinduljon lefelé.",
+    "Kövesse a járdát nagyjából 120 méteren (400 láb) a főút mentén, hogy elérje a Bar Internazionale-t."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+  "kneesList": [],
+  "kneesDockPrefix": "Kezdje a csomagokkal a kompkikötőnél? Használd a mi",
+  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesPorterPrefix": "Segítségre van szüksége a portás árképzésében vagy a foglalásban? Ellenőrizze a",
+  "kneesPorterLinkLabel": "porter service guide",
+  "faqs": [
+    {
+      "q": "How early should I reach the stop?",
+      "a": "Nyáron legalább 10 perccel a választott busz előtt érkezzen, hogy a menedékház közelében sorban állhasson és kényelmesen felszállhasson."
+    },
+    {
+      "q": "Where can I buy or validate tickets?",
+      "a": "Jegyértékesítéshez használja a Bar Internazionale melletti tabacchit. Validátorok vannak a fedélzeten; vágja le vagy szkennelje be jegyét, amint rálép."
+    }
+  ],
+  "howtoSteps": [
+    "Sétáljon 2–4 percet lefelé a Hostel Brikette épületétől a Bar Internazionale megállóig",
+    "Álljon sorba az út tenger oldalán, és beszálláskor érvényesítse a jegyeket",
+    "Kombináld komppal vagy távolsági útikalauzokkal a továbbutazáshoz"
+  ]
 }

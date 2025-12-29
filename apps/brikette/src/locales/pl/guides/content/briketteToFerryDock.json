@@ -2,5 +2,81 @@
   "seo": {
     "title": "Hostel Brikette → molo promowe, z bagażem",
     "description": "Trasa krok po kroku z hostelu do molo promowego w Positano z użyciem autobusu Interno i tragarzy."
-  }
+  },
+  "linkLabel": "Hostel Brikette → przystań promowa z bagażem",
+  "intro": [
+    "Wyjeżdżasz z hostelu Brikette z bagażem? Zjedź autobusem Interno Positano w dół i pozwól tragarzom przenosić ciężkie torby, abyś dotarł na prom bez konieczności zmagania się ze schodami Positano."
+  ],
+  "beforeList": [
+    "Sprawdź aktualny rozkład lotów Interno Positano — oto [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Odbierz bilety Interno Positano w tabacchi obok Chiesa Nuova przed wejściem na pokład (lub poproś recepcję o potwierdzenie dostępności).",
+    "Jeśli masz nieporęczne torby, zorganizuj pomoc portiera – w recepcji możesz zadzwonić wcześniej lub zapoznać się z [przewodnikiem po usługach portiera](guide:porterServices), aby poznać numery i ceny."
+  ],
+  "sections": [
+    {
+      "id": "hostel-to-stop",
+      "title": "Wejście do hostelu na przystanek Chiesa Nuova",
+      "body": [
+        "Sprawdź, a następnie podążaj głównymi schodami w dół do Viale Pasitea i skręć w lewo (w dół). Przejdź nieco ponad 100 metrów (330 stóp) do kiosku z tabacchi/kioskiem, z którego skorzystałeś po przybyciu na miejsce.",
+        "Przystanek autobusowy Interno Positano znajduje się tuż obok tabacchi. Przygotuj bilety; jeśli potrzebujesz więcej, kup je w środku, zanim przyjedzie autobus."
+      ]
+    },
+    {
+      "id": "bus-to-mulini",
+      "title": "Jedź autobusem Interno Positano do Piazza dei Mulini",
+      "body": [
+        "Wsiądź do autobusu Interno Positano — na tablicy docelowej widnieje napis „interno positano”. Trzymaj bagaż na kolanach lub na środku, aby przejścia między korytarzami były wolne.",
+        "Pozostań na około 10 minut, aż do przystanku Piazza dei Mulini (ostatni główny przystanek przed deptakiem). Jeżeli nie jesteś pewien, poinformuj kierowcę, że wybierasz się na plażę."
+      ]
+    },
+    {
+      "id": "mulini-to-dock",
+      "title": "Piazza dei Mulini to the ferry dock",
+      "body": [
+        "Wysiądź z autobusu, spotkaj się z tragarzami, jeśli zarezerwowałeś ich z wyprzedzeniem, i idź prosto na pas dla pieszych prowadzący do Spiaggia Grande.",
+        "Podążaj promenadą w dół przez około 7 minut — użyj [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2), aby pozostać na najbardziej gładkich odcinkach rampy.",
+        "Na przystani promowej skontaktuj się ze swoim operatorem. Tragarze dostarczają bagaż osobno; trzymaj przy sobie paszporty, leki i kosztowności."
+      ]
+    }
+  ],
+  "stepsList": [
+    "Kup bilety autobusowe Interno Positano w Chiesa Nuova tabacchi i potwierdź dostępność tragarza.",
+    "Przejdź 100 m w dół od hostelu do przystanku autobusowego Chiesa Nuova i poczekaj na nadmorskiej Viale Pasitea.",
+    "Jedź autobusem Interno Positano do Piazza dei Mulini (ostatni główny przystanek przed plażą).",
+    "Spotkaj się z tragarzami i idź promenadą do przystani promowej, podczas gdy oni przewożą ciężkie torby."
+  ],
+  "kneesList": [
+    "Korzystanie z autobusu Interno Positano zastępuje setki stromych schodów krótkim, poziomym spacerem.",
+    "Tragarze mogą zabierać walizki na oddzielnych wózkach, więc na promenadzie zmieścisz się tylko z plecakiem dziennym."
+  ],
+  "kneesDockPrefix": "Potrzebujesz wersji pod górę po powrocie? Przeczytaj nasze",
+  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
+  "kneesPorterPrefix": "Chcesz uzyskać wskazówki dotyczące cen i rezerwacji portiera? Sprawdź",
+  "kneesPorterLinkLabel": "porter service guide",
+  "faqs": [
+    {
+      "q": "Gdzie mogę kupić bilety Interno Positano w pobliżu hostelu?",
+      "a": [
+        "W kiosku z tabacchi obok przystanku Chiesa Nuova bilety są dostępne, a recepcja może potwierdzić dostępność tego samego dnia. Kierowcy nie sprzedają biletów na pokładzie."
+      ]
+    },
+    {
+      "q": "Z jakim wyprzedzeniem należy zwrócić się do tragarzy?",
+      "a": [
+        "Latem zadzwoń 30–45 minut przed wyjazdem, aby mogli spotkać się z Tobą na Piazza dei Mulini. W spokojniejszych miesiącach zwykle wystarczy 15 minut — recepcja może zadzwonić w Twoim imieniu."
+      ]
+    },
+    {
+      "q": "Co się stanie, jeśli autobus Interno nie będzie kursował, kiedy odjadę?",
+      "a": [
+        "Jeśli usługi zatrzymują się późno w nocy, poproś tragarzy, aby zabrali bagaże na sam dół i samodzielnie przeszli promenadą lub skorzystaj z autobusu SITA w kierunku Spondy (kursuje później) i kontynuuj zjazd pieszo."
+      ]
+    }
+  ],
+  "howtoSteps": [
+    "Potwierdź bilety i tragarzy w Chiesa Nuova",
+    "Zejdź z hostelu do przystanku autobusowego Chiesa Nuova",
+    "Jedź autobusem Interno Positano do Piazza dei Mulini",
+    "Spotkaj się z tragarzami i przejdź promenadą do przystani promowej"
+  ]
 }

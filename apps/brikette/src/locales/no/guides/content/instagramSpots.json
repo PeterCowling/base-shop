@@ -12,32 +12,32 @@
       "id": "classics",
       "title": "Classic postcard shots",
       "body": [
-        "Shoot from the Church of Santa Maria Assunta steps just after sunrise; the beach is empty and the dome glows warm.",
-        "Walk to the ferry pier for a wide-angle view back towards the cliffside—arrive before 09:00 when day-trip queues form."
+        "Ta bilder fra kirken Santa Maria Assunta-trinn like etter soloppgang; stranden er tom og kuppelen lyser varm.",
+        "Gå til fergekaien for en vidvinkelutsikt tilbake mot klippesiden – ankom før kl. 09.00 når dagsturskøer dannes."
       ]
     },
     {
       "id": "hidden",
       "title": "Underrated angles",
       "body": [
-        "Climb to the viewpoint on Via Trara Genoino above Fornillo for a layered shot of fishing boats and pastel houses.",
-        "Ride the local bus to Nocelle, then capture the coast from the Path of the Gods terrace; the panorama is unbeatable on clear mornings."
+        "Klatre til utsiktspunktet på Via Trara Genoino ovenfor Fornillo for et lagvis skudd av fiskebåter og pastellhus.",
+        "Kjør den lokale bussen til Nocelle, og ta deretter kysten fra Path of the Gods-terrassen; panoramaet er uslåelig på klare morgener."
       ]
     },
     {
       "id": "sunset",
       "title": "Golden hour setups",
       "body": [
-        "Grab a spot on the Via Cristoforo Colombo benches about 45 minutes before sunset; the sun drops behind the Li Galli islands in summer.",
-        "Head to Laurito beach for silhouettes of Positano’s skyline—stairs are steep, so wear grippy shoes and carry a headlamp for the walk back."
+        "Ta en plass på Via Cristoforo Colombo-benkene omtrent 45 minutter før solnedgang; solen faller bak Li Galli-øyene om sommeren.",
+        "Gå til Laurito-stranden for silhuetter av Positanos skyline – trappene er bratte, så bruk gripende sko og ta med en hodelykt på turen tilbake."
       ]
     },
     {
       "id": "etiquette",
       "title": "Photo etiquette",
       "body": [
-        "Keep tripods compact and step aside once you’ve taken a frame so staircases stay passable.",
-        "Avoid drones inside town limits; Italian regulations require permits and fines are hefty when guards spot unlicensed flights."
+        "Hold stativene kompakte og gå til side når du har tatt en ramme, slik at trapper forblir farbare.",
+        "Unngå droner innenfor byens grenser; Italienske forskrifter krever tillatelser og bøter er høye når vakter oppdager fly uten lisens."
       ]
     }
   ],
@@ -60,7 +60,7 @@
     }
   ],
   "fallback": {
-    "intro": "Positano is photogenic from almost every angle — but the most popular spots are busy for much of the day. Here’s how to capture the classic views without long queues, plus underrated alternatives.",
+    "intro": "Positano er fotogent fra nesten alle vinkler - men de mest populære stedene er travle store deler av dagen. Slik fanger du de klassiske utsiktene uten lange køer, pluss undervurderte alternativer.",
     "toc": [
       {
         "href": "#classics",
@@ -88,15 +88,15 @@
       "items": [
         {
           "title": "Spiaggia Grande",
-          "description": "Arrive at sunrise for empty docks and calm water; avoid mid‑morning queues."
+          "description": "Ankom ved soloppgang for tomme kaier og rolig vann; unngå køer midt på morgenen."
         },
         {
           "title": "Fornillo path",
-          "description": "Gentle coastal walkway with layered cliff views; best early or just after sunset."
+          "description": "Slak kystgangvei med lagdelt utsikt over klippene; best tidlig eller like etter solnedgang."
         },
         {
           "title": "Via Pasitea bends",
-          "description": "Elevated curves give the postcard angle without crowds. Respect traffic and stay off the road."
+          "description": "Forhøyede kurver gir postkortet vinkel uten folkemengder. Respekter trafikken og hold deg unna veien."
         }
       ]
     },
@@ -105,13 +105,13 @@
       "items": [
         {
           "title": "Chiesa Nuova terraces",
-          "description": "Golden hour over Fornillo; minimal crowds and a short walk from the hostel."
+          "description": "Gylden time over Fornillo; minimal folkemengde og en kort spasertur fra vandrerhjemmet."
         },
         {
           "link": {
             "guideKey": "pathOfTheGods"
           },
-          "description": "Sweeping ridge lines; light is best early."
+          "description": "Feiende rygglinjer; lys er best tidlig."
         },
         {
           "link": {
@@ -124,16 +124,16 @@
     "sunset": {
       "heading": "Sunset choices",
       "paragraphs": [
-        "For crowd‑free golden hour, head to upper Via Pasitea pull‑offs or the terraces near Chiesa Nuova.",
-        "If you prefer beach silhouettes, arrive 30–45 minutes before sunset at Fornillo."
+        "For en publikumsfri golden hour, ta turen til øvre Via Pasitea-gater eller terrassene i nærheten av Chiesa Nuova.",
+        "Hvis du foretrekker strandsilhuetter, ankom Fornillo 30–45 minutter før solnedgang."
       ]
     },
     "etiquette": {
       "heading": "Etiquette & local tips",
       "items": [
-        "Don’t block narrow stairs or roads; take the shot and step aside.",
-        "Respect private property and avoid climbing walls/roofs.",
-        "Use a small tripod off‑peak; avoid busy paths in midday."
+        "Ikke blokker smale trapper eller veier; ta skuddet og gå til side.",
+        "Respekter privat eiendom og unngå klatrevegger/tak.",
+        "Bruk et lite stativ off-peak; unngå travle stier midt på dagen."
       ]
     },
     "faqs": {
@@ -141,13 +141,13 @@
       "items": [
         {
           "summary": "What’s the best time for photos?",
-          "body": "Sunrise for emptier scenes; golden hour for warm tones and softer shadows."
+          "body": "Soloppgang for tommere scener; golden hour for varme toner og mykere skygger."
         }
       ]
     },
     "drone": {
       "summary": "Do I need a drone permit?",
-      "body": "Italy has strict drone rules and many no-fly zones. Always check ENAC guidance and local regulations; avoid flying near crowds."
+      "body": "Italia har strenge droneregler og mange flyforbudssoner. Sjekk alltid ENAC-veiledning og lokale forskrifter; unngå å fly nær folkemengder."
     },
     "galleryAlt": [
       "Positano from above",

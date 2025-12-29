@@ -9,9 +9,18 @@
     "Bruk guiden til å planlegge luksuriøse solnedgangsmiddager, farm-to-table-opplevelser og raske måltider når du vil spise godt uten lange motbakker."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Middagshøydepunkter du ikke vil gå glipp av" },
-    { "href": "#near-hostel", "label": "Restauranter nær Hostel Brikette" },
-    { "href": "#destination-dinners", "label": "Middager verdt turen" }
+    {
+      "href": "#signature-experiences",
+      "label": "Middagshøydepunkter du ikke vil gå glipp av"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Restauranter nær Hostel Brikette"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Middager verdt turen"
+    }
   ],
   "sections": [
     {

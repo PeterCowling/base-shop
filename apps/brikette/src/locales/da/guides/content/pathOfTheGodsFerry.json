@@ -116,12 +116,30 @@
     "Sommer eftermiddage er varme og uden skygge; hvis du misser morgenfærgen, så vent til sen eftermiddag i stedet for at gå under den stærkeste sol."
   ],
   "steps": [
-    { "name": "Gå til havnen", "text": "Forlad Hostel Brikette, køb busbilletter ved Bar Internazionale, og gå ned til Spiaggia Grande." },
-    { "name": "Køb færgebilletter", "text": "Vælg næste afgang hos Travelmar eller Lucibello til Amalfi og stil dig i kø 15 minutter før." },
-    { "name": "Sejl til Amalfi", "text": "Nyd den 25 minutter lange overfart, og gå direkte til busstoppene ved havnen." },
-    { "name": "Bus til Bomerano", "text": "Tag SITA-bussen mærket Agerola/Bomerano og følg sidegaden til stiens begyndelse." },
-    { "name": "Vandring til Nocelle", "text": "Følg markeringerne for Sentiero degli Dei hen over højderyggen, til gangstien i beton begynder." },
-    { "name": "Tilbage til Positano", "text": "Tag Nocelle-bussen tilbage til Bar Internazionale, eller gå ad vejen, hvis busserne er fulde." }
+    {
+      "name": "Gå til havnen",
+      "text": "Forlad Hostel Brikette, køb busbilletter ved Bar Internazionale, og gå ned til Spiaggia Grande."
+    },
+    {
+      "name": "Køb færgebilletter",
+      "text": "Vælg næste afgang hos Travelmar eller Lucibello til Amalfi og stil dig i kø 15 minutter før."
+    },
+    {
+      "name": "Sejl til Amalfi",
+      "text": "Nyd den 25 minutter lange overfart, og gå direkte til busstoppene ved havnen."
+    },
+    {
+      "name": "Bus til Bomerano",
+      "text": "Tag SITA-bussen mærket Agerola/Bomerano og følg sidegaden til stiens begyndelse."
+    },
+    {
+      "name": "Vandring til Nocelle",
+      "text": "Følg markeringerne for Sentiero degli Dei hen over højderyggen, til gangstien i beton begynder."
+    },
+    {
+      "name": "Tilbage til Positano",
+      "text": "Tag Nocelle-bussen tilbage til Bar Internazionale, eller gå ad vejen, hvis busserne er fulde."
+    }
   ],
   "faqsTitle": "Ofte stillede spørgsmål",
   "faqs": [

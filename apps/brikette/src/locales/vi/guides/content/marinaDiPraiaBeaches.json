@@ -50,5 +50,43 @@
         "Bản dịch đang được chuẩn bị."
       ]
     }
-  ]
+  ],
+  "toc": [
+    {
+      "href": "#why-go",
+      "label": "Why go"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Getting there"
+    },
+    {
+      "href": "#layout",
+      "label": "Layout & services"
+    },
+    {
+      "href": "#evening",
+      "label": "Stay for dinner"
+    }
+  ],
+  "essentialsTitle": "What to expect",
+  "essentials": [
+    "20 phút đi xe buýt SITA từ Positano; yêu cầu dừng Marina di Praia và đi bộ xuống dốc hai phút.",
+    "Bãi biển sỏi hẹp có một lido chính cộng với một phần nhỏ trống ở giữa.",
+    "Các nhà hàng và quán ăn nhẹ nằm dọc lối đi - lý tưởng cho bữa tối lúc hoàng hôn trước khi về nhà."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Ghế dài + ô tại Câu lạc bộ bãi biển Marina di Praia: €25–€35 một ngày (có sẵn bộ dành cho hai người).",
+    "Thuê thuyền kayak: khoảng €20 một giờ cho hai người.",
+    "Bữa tối chính tại Da Armandino hoặc Il Pirata: €16–€28 tùy thuộc vào món đặc sản đánh bắt và mì ống."
+  ],
+  "tipsTitle": "Quick tips",
+  "warningsTitle": "Good to know",
+  "warnings": [
+    "Không gian có hạn; khu vực miễn phí sẽ kín chỗ trước và ghế nằm lido bán hết vào cuối tuần.",
+    "Các vách đá chắn ánh nắng trực tiếp vào giữa buổi chiều - rất tốt để hạ nhiệt nhưng có thể cảm thấy lạnh vào những ngày nhiều gió.",
+    "Khả năng thu sóng di động chìm trong hẻm núi; tải trước lịch trình xe buýt hoặc xác nhận đặt chỗ ăn tối."
+  ],
+  "faqsTitle": "Marina di Praia FAQs"
 }

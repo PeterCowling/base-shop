@@ -13,23 +13,23 @@
       "id": "when",
       "title": "When to visit",
       "body": [
-        "Shoulder months (April–May, late September–October) balance weather and prices.",
-        "Summer brings ferries and long days but also heat and queues — start early."
+        "Miesiące poboczne (kwiecień–maj, koniec września–październik) równoważą pogodę i ceny.",
+        "Lato przynosi promy i długie dni, ale także upał i kolejki – zacznij wcześnie."
       ]
     },
     {
       "id": "getting-around",
       "title": "Getting around",
       "body": [
-        "Walk, SITA buses, and seasonal ferries cover most routes; stairs are common.",
-        "Use our public transport guide for tickets, timing, and crowd‑dodging tips."
+        "Większość tras obsługuje spacer, autobusy SITA i promy sezonowe; schody są powszechne.",
+        "Skorzystaj z naszego przewodnika po transporcie publicznym, aby poznać bilety, rozkład jazdy i wskazówki dotyczące unikania tłumów."
       ]
     },
     {
       "id": "highlights",
       "title": "Highlights",
       "body": [
-        "Spiaggia Grande and Fornillo beaches; sunset viewpoints above Via Pasitea.",
+        "plaże Spiaggia Grande i Fornillo; punkty widokowe o zachodzie słońca nad Via Pasitea.",
         "Tłumaczenie w przygotowaniu.",
         "Tłumaczenie w przygotowaniu."
       ]
@@ -38,7 +38,7 @@
       "id": "stays",
       "title": "Where to stay",
       "body": [
-        "Stay near ‘Chiesa Nuova’ or ‘Sponda’ bus stops to minimise stairs with luggage.",
+        "Zatrzymaj się w pobliżu przystanków autobusowych „Chiesa Nuova” lub „Sponda”, aby zminimalizować liczbę schodów z bagażem.",
         "Tłumaczenie w przygotowaniu."
       ]
     }
@@ -65,18 +65,18 @@
       "items": [
         {
           "alt": "Hostel terrace with panoramic view",
-          "caption": "Sunset from the terrace — stay steps from the Chiesa Nuova bus stop."
+          "caption": "Zachód słońca z tarasu — zatrzymaj się kilka kroków od przystanku autobusowego Chiesa Nuova."
         },
         {
           "alt": "Positano panorama",
-          "caption": "Fornillo and Spiaggia Grande are walkable; expect stairs."
+          "caption": "Fornillo i Spiaggia Grande są dostępne dla pieszych; spodziewać się schodów."
         }
       ]
     },
     "sections": {
       "whereToStay": {
         "title": "Where to stay",
-        "body": "Staying near <em>Chiesa Nuova</em> means fewer stairs on arrival and departure. Hostel Brikette is ~80 m from the bus stop with panoramic terraces and affordable beds and private rooms. Beachfront stays near Spiaggia Grande are scenic but come with more stairs and higher prices."
+        "body": "Pobyt w pobliżu <em>Chiesa Nuova</em> oznacza mniej schodów w dniu przyjazdu i wyjazdu. Hostel Brikette znajduje się około 80 m od przystanku autobusowego z panoramicznymi tarasami, niedrogimi łóżkami i pokojami prywatnymi. Pobyty przy plaży w pobliżu Spiaggia Grande są malownicze, ale wiążą się z większą liczbą schodów i wyższymi cenami."
       },
       "whenToVisit": {
         "title": "When to visit",
@@ -90,14 +90,14 @@
       },
       "thingsToDo": {
         "title": "Things to do",
-        "beaches": "<linkBeaches>Beaches</linkBeaches>: Spiaggia Grande for the classic view; Fornillo for a quieter vibe; Arienzo for a scenic cliffside swim.",
+        "beaches": "<linkBeaches>Beaches</linkBeaches>: Spiaggia Grande z klasycznym widokiem; Fornillo dla cichszej atmosfery; Arienzo, aby popływać w malowniczym klifie.",
         "pathOfTheGods": "Tłumaczenie w przygotowaniu.",
-        "dayTrips": "Day trips: <linkCapri>Capri</linkCapri>, <linkAmalfi>Amalfi</linkAmalfi>, and <linkRavello>Ravello</linkRavello>."
+        "dayTrips": "Wycieczki jednodniowe: <linkCapri>Capri</linkCapri>, <linkAmalfi>Amalfi</linkAmalfi> i <linkRavello>Ravello</linkRavello>."
       },
       "moneySavers": {
         "title": "Money savers",
         "eat": "Tłumaczenie w przygotowaniu.",
-        "travel": "Travel outside peak weekends; compare <linkBudgetArrival>budget arrival options</linkBudgetArrival>.",
+        "travel": "Podróżuj poza szczytowymi weekendami; porównaj <linkBudgetArrival>budżetowe opcje przyjazdu</linkBudgetArrival>.",
         "stay": "Tłumaczenie w przygotowaniu."
       }
     },
@@ -106,12 +106,17 @@
     "faqs": [
       {
         "question": "Is Positano doable on a budget?",
-        "answer": "Yes. Use buses, plan ferries selectively, and focus on free viewpoints and beach time."
+        "answer": "Tak. Korzystaj z autobusów, planuj promy selektywnie i skup się na bezpłatnych punktach widokowych i czasie na plaży."
       },
       {
         "question": "Where should I base myself?",
         "answer": "Tłumaczenie w przygotowaniu."
       }
+    ],
+    "tips": [
+      "Jeśli to możliwe, zarezerwuj promy i autobusy z wyprzedzeniem; Bilety last minute są droższe i mogą zostać wyprzedane.",
+      "Noś przy sobie gotówkę na kluby plażowe, napiwki tragarza i szybkie przekąski — bankomaty w mieście często kończą się po kolacji.",
+      "Udostępnij transfery na lotnisko lub jedź autobusami na wybrzeżu Amalfi; dzielenie taryf pozwala obniżyć koszty przylotu."
     ]
   }
 }

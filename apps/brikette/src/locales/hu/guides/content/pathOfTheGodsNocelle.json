@@ -89,11 +89,26 @@
     "Az ösvény kitett; kerüld a nap legforróbb szakaszát júliusban és augusztusban."
   ],
   "steps": [
-    { "name": "Buszjegy vásárlása", "text": "Szerezd be a nocellei jegyeket a Bar Internazionaléban, mielőtt elindulsz a hosteltől." },
-    { "name": "Utazás Nocellébe", "text": "Szállj fel a Montepertuso–Nocelle buszra, és maradj a parkolóig, ahol a busz megfordul." },
-    { "name": "Eljutás az ösvényig", "text": "Kövesd a gyalogutat a falun át, tarts jobbra, és keresd a Sentiero degli Dei tábláit." },
-    { "name": "Túra oda-vissza", "text": "Sétálj Colle Serra felé, majd fordulj vissza, amikor készen állsz a hazafelé útra." },
-    { "name": "Visszatérés Positanóba", "text": "Térj vissza a buszmegállóhoz, és utazz vissza a Bar Internazionaléig vagy a Chiesa Nuováig." }
+    {
+      "name": "Buszjegy vásárlása",
+      "text": "Szerezd be a nocellei jegyeket a Bar Internazionaléban, mielőtt elindulsz a hosteltől."
+    },
+    {
+      "name": "Utazás Nocellébe",
+      "text": "Szállj fel a Montepertuso–Nocelle buszra, és maradj a parkolóig, ahol a busz megfordul."
+    },
+    {
+      "name": "Eljutás az ösvényig",
+      "text": "Kövesd a gyalogutat a falun át, tarts jobbra, és keresd a Sentiero degli Dei tábláit."
+    },
+    {
+      "name": "Túra oda-vissza",
+      "text": "Sétálj Colle Serra felé, majd fordulj vissza, amikor készen állsz a hazafelé útra."
+    },
+    {
+      "name": "Visszatérés Positanóba",
+      "text": "Térj vissza a buszmegállóhoz, és utazz vissza a Bar Internazionaléig vagy a Chiesa Nuováig."
+    }
   ],
   "faqsTitle": "GYIK",
   "faqs": [

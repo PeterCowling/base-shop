@@ -120,5 +120,22 @@
         "Hãy mang dép sandal chắc chắn hoặc giày thể thao khi đi xuống. Đựng đồ nặng trong balô và dừng nghỉ tại các chiếu nghỉ giữa đường. Khi leo lên, hãy nghỉ trong bóng râm và uống nước trước khi lên xe buýt hoặc taxi."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Khoảnh khắc Arienzo",
+    "items": [
+      {
+        "alt": "Các tầng sân thượng của Arienzo Beach Club",
+        "caption": "Deck trên vách đá với ghế tắm nắng màu cam"
+      },
+      {
+        "alt": "Bến thuyền shuttle của Arienzo",
+        "caption": "Lên shuttle tại Spiaggia Grande"
+      },
+      {
+        "alt": "Cầu thang xuống Arienzo",
+        "caption": "300 bậc thang giữa những thửa chanh"
+      }
+    ]
+  }
 }

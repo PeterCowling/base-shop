@@ -120,5 +120,22 @@
         "Usa sandalias resistentes o zapatillas para el descenso. Lleva los objetos más pesados en una mochila y haz pausas en los rellanos intermedios. Al subir, descansa en la sombra e hidrátate antes de subirte al autobús o al taxi."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Momentos destacados de Arienzo",
+    "items": [
+      {
+        "alt": "Terrazas del Arienzo Beach Club",
+        "caption": "Decks en el acantilado con tumbonas naranjas"
+      },
+      {
+        "alt": "Muelle del barco lanzadera de Arienzo",
+        "caption": "Embarque del shuttle en Spiaggia Grande"
+      },
+      {
+        "alt": "Escaleras hacia Arienzo",
+        "caption": "300 escalones entre limoneros"
+      }
+    ]
+  }
 }

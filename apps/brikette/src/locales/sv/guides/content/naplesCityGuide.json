@@ -5,49 +5,49 @@
   },
   "linkLabel": "Neapelguide för resenärer till Amalfikusten",
   "intro": [
-    "Naples is the gateway to the Amalfi Coast. Spend a day or two exploring historic streets, pizza institutions, and easy side trips."
+    "Neapel är porten till Amalfikusten. Tillbringa en dag eller två med att utforska historiska gator, pizzainstitutioner och enkla sidoturer."
   ],
   "sections": [
     {
       "id": "neighbourhoods",
       "title": "Essential neighbourhoods",
       "body": [
-        "Walk Spaccanapoli for churches, nativity workshops, and the underground tours beneath San Lorenzo.",
-        "Head to the seafront in Chiaia and Castel dell'Ovo for breezy evening strolls."
+        "Gå Spaccanapoli för kyrkor, julkrubba workshops och underjordiska rundturer under San Lorenzo.",
+        "Gå till havet i Chiaia och Castel dell'Ovo för blåsig kvällspromenader."
       ]
     },
     {
       "id": "food",
       "title": "Food & coffee",
       "body": [
-        "Queue for pizza at Sorbillo or Da Michele (expect 30–45 minutes). Grab sfogliatella and espresso at Gran Caffè Gambrinus.",
-        "Try cuoppo fritto (paper cones of fried seafood) for €6–€8 when you need a quick bite."
+        "Kö till pizza på Sorbillo eller Da Michele (beräkna 30–45 minuter). Ta sfogliatella och espresso på Gran Caffè Gambrinus.",
+        "Prova cuoppo fritto (papperskottar av stekt skaldjur) för €6–8 € när du behöver en snabb matbit."
       ]
     },
     {
       "id": "daytrips",
       "title": "Day-trip staging",
       "body": [
-        "Use Napoli Centrale for high-speed trains to Rome (1h10) or Pompeii (40 minutes on the Circumvesuviana).",
-        "Store luggage at the station (€7 per bag) if you are transiting straight to Positano later."
+        "Använd Napoli Centrale för höghastighetståg till Rom (1h10) eller Pompeji (40 minuter på Circumvesuviana).",
+        "Förvara bagage på stationen (7 € per väska) om du reser direkt till Positano senare."
       ]
     }
   ],
   "tips": [
-    "Carry contactless cards for metro rides and buy a day pass (€5.60) if you plan multiple hops.",
-    "Keep valuables in front pockets and use cross-body bags in crowded alleys."
+    "Bär kontaktlösa kort för tunnelbaneresor och köp ett dagspass (5,60 €) om du planerar flera hopp.",
+    "Förvara värdesaker i framfickorna och använd crossbody-väskor i trånga gränder."
   ],
   "faqs": [
     {
       "q": "Is Naples safe to explore on foot?",
       "a": [
-        "Yes with normal big-city awareness. Stick to lit streets at night, avoid showing large amounts of cash, and take official taxis after midnight."
+        "Ja med normal storstadsmedvetenhet. Håll dig till upplysta gator på natten, undvik att visa stora summor kontanter och ta officiella taxibilar efter midnatt."
       ]
     },
     {
       "q": "Where can I store luggage?",
       "a": [
-        "Napoli Centrale and Piazza Garibaldi have staffed storage. Book lockers online on busy weekends to guarantee space."
+        "Napoli Centrale och Piazza Garibaldi har bemannade förråd. Boka skåp online på hektiska helger för att garantera plats."
       ]
     }
   ]

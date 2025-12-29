@@ -116,12 +116,30 @@
     "A nyári délutánok kitettek és forrók; ha lemaradsz a reggeli kompról, inkább indulj késő délután, mint hogy a déli napsütésben gyalogolj."
   ],
   "steps": [
-    { "name": "Séta a kikötőbe", "text": "Hagyd el a Hostel Brikettét, vásárolj buszjegyet a Bar Internazionaléban, és indulj le a Spiaggia Grandéra." },
-    { "name": "Kompjegy vásárlása", "text": "Válaszd ki a következő Travelmar vagy Lucibello járatot Amalfi felé, és állj sorba 15 perccel korábban." },
-    { "name": "Kompút Amalfiig", "text": "Élvezd a 25 perces átkelést, majd menj egyenesen a kikötő melletti buszállásokhoz." },
-    { "name": "Busz Bomeranóba", "text": "Szállj fel az Agerola/Bomerano jelzésű SITA buszra, és kövesd a mellékutcát a tanösvény kezdetéig." },
-    { "name": "Túra Nocelléig", "text": "Kövesd a Sentiero degli Dei jelzéseit a gerincen, amíg a beton sétány el nem kezdődik." },
-    { "name": "Vissza Positanóba", "text": "Kapd el a nocellei buszt a Bar Internazionaléig, vagy ha a busz tele van, sétálj le az úton." }
+    {
+      "name": "Séta a kikötőbe",
+      "text": "Hagyd el a Hostel Brikettét, vásárolj buszjegyet a Bar Internazionaléban, és indulj le a Spiaggia Grandéra."
+    },
+    {
+      "name": "Kompjegy vásárlása",
+      "text": "Válaszd ki a következő Travelmar vagy Lucibello járatot Amalfi felé, és állj sorba 15 perccel korábban."
+    },
+    {
+      "name": "Kompút Amalfiig",
+      "text": "Élvezd a 25 perces átkelést, majd menj egyenesen a kikötő melletti buszállásokhoz."
+    },
+    {
+      "name": "Busz Bomeranóba",
+      "text": "Szállj fel az Agerola/Bomerano jelzésű SITA buszra, és kövesd a mellékutcát a tanösvény kezdetéig."
+    },
+    {
+      "name": "Túra Nocelléig",
+      "text": "Kövesd a Sentiero degli Dei jelzéseit a gerincen, amíg a beton sétány el nem kezdődik."
+    },
+    {
+      "name": "Vissza Positanóba",
+      "text": "Kapd el a nocellei buszt a Bar Internazionaléig, vagy ha a busz tele van, sétálj le az úton."
+    }
   ],
   "faqsTitle": "GYIK",
   "faqs": [

@@ -5,61 +5,61 @@
   },
   "linkLabel": "Vanliga frågor om Amalfikusten",
   "intro": [
-    "Quick-fire answers for Amalfi Coast logistics: transport, bookings, budgets, and rainy-day pivots."
+    "Snabba svar för Amalfikustens logistik: transporter, bokningar, budgetar och regniga dagar."
   ],
   "sections": [
     {
       "id": "transport",
       "title": "Transport essentials",
       "body": [
-        "Check official bus and ferry timetables the night before and keep 30-minute buffers for connections in peak months.",
-        "Collect taxi numbers from your accommodation for late returns so you have a backup if the last bus is full."
+        "Kontrollera officiella buss- och färjetidtabeller kvällen innan och håll 30-minutersbuffertar för anslutningar under högsäsong.",
+        "Hämta taxinummer från ditt boende för sena returer så att du har en backup om den sista bussen är full."
       ]
     },
     {
       "id": "booking",
       "title": "Bookings & budget",
       "body": [
-        "Reserve restaurants, beach clubs, and tours at least 24 hours ahead in summer; some request a small card deposit.",
-        "Choose flexible rates or travel insurance so wind or rough seas don’t leave you out of pocket when plans change."
+        "Boka restauranger, strandklubbar och turer minst 24 timmar framåt på sommaren; vissa begär en liten kortinsättning.",
+        "Välj flexibla priser eller en reseförsäkring så att vind eller hård sjö inte gör att du blir rädd när planerna ändras."
       ]
     },
     {
       "id": "weather",
       "title": "Weather & plan B",
       "body": [
-        "Swap to indoor options like MAR Positano, Amalfi’s paper museum, or a Naples/Salerno train day trip when rain sets in.",
-        "If seas turn rough, switch to buses or shared taxis and check for rockfall or road closures on the SS163 before you depart."
+        "Byt till inomhusalternativ som MAR Positano, Amalfis pappersmuseum eller en dagstur med tåg i Neapel/Salerno när regnet sätter in.",
+        "Om havet blir grovt, byt till bussar eller delade taxibilar och kolla efter stenfall eller vägavstängningar på SS163 innan du avgår."
       ]
     }
   ],
   "tips": [
-    "Save emergency numbers offline (112 and Coast Guard 1530) alongside your accommodation contact.",
-    "Buy bus tickets in tobacconists or online ahead of time; drivers rarely sell them and inspectors do spot checks."
+    "Spara nödnummer offline (112 och kustbevakningen 1530) tillsammans med din boendekontakt.",
+    "Köp bussbiljetter i tobaksaffärer eller online i förväg; förare säljer dem sällan och inspektörer gör stickprovskontroller."
   ],
   "faqs": [
     {
       "q": "When do the last ferries depart?",
       "a": [
-        "In summer the final Positano ↔ Amalfi sailing is usually around 20:00; in spring/autumn it drops closer to 18:00—confirm the evening before."
+        "På sommaren är den sista Positano ↔ Amalfi-seglingen vanligtvis runt 20:00; på våren/hösten sjunker det närmare 18:00—bekräfta kvällen innan."
       ]
     },
     {
-      "q": "Do I need to reserve restaurants or beach clubs?",
+      "q": "Behöver jag boka restauranger eller strandklubbar?",
       "a": [
-        "Yes from June through September: book at least a day ahead, and a week ahead for weekend beach clubs."
+        "Ja från juni till september: boka minst en dag i förväg och en vecka framåt för helgklubbar."
       ]
     },
     {
       "q": "What if it rains all day?",
       "a": [
-        "Visit museums, join a cooking class, or take a Naples/Salerno day trip by train; carry a lightweight waterproof layer for transfers."
+        "Besök museer, gå med i en matlagningskurs eller ta en dagsutflykt till Neapel/Salerno med tåg; bär ett lätt vattentätt lager för överföringar."
       ]
     },
     {
       "q": "Are ATMs reliable?",
       "a": [
-        "Major towns have ATMs but fees vary—withdraw medium amounts in one go and keep small euro notes for buses and cafés."
+        "Större städer har uttagsautomater men avgifterna varierar – ta ut medelstora belopp på en gång och behåll små eurosedlar för bussar och kaféer."
       ]
     }
   ]

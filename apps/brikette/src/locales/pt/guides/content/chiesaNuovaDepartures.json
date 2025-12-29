@@ -1,6 +1,63 @@
 {
   "seo": {
     "title": "Hostel Brikette para a paragem Chiesa Nuova/Bar Internazionale",
-    "description": "Micro-route from Hostel Brikette to the Chiesa Nuova bus stop with minimal stairs; ticket checks and departure timing."
-  }
+    "description": "Microrota do Hostel Brikette até o ponto de ônibus Chiesa Nuova com escadas mínimas; verificações de bilhetes e horários de partida."
+  },
+  "linkLabel": "Hostel Brikette para parada de ônibus Chiesa Nuova/Bar Internazionale",
+  "intro": "Saindo do albergue para pegar o ônibus para Amalfi, Sorrento? Esta microrota mostra o caminho mais rápido do Hostel Brikette até o ponto de ônibus Chiesa Nuova/Bar Internazionale e fornece algumas dicas.",
+  "image": {
+    "alt": "Chiesa Nuova SITA de Positano para em frente ao Bar Internazionale",
+    "caption": "O Hostel Brikette fica a uma curva da parada. Aguarde alguns minutos para que você possa entrar na fila antes da chegada do ônibus."
+  },
+  "toc": {
+    "onThisPage": "On this page",
+    "before": "Before you leave",
+    "steps": "Step-by-step",
+    "knees": "Legs & luggage",
+    "faqs": "FAQs"
+  },
+  "sections": [
+    {
+      "id": "why-route",
+      "title": "Why this route works",
+      "body": [
+        "São 120 metros a pé da entrada do hostel até a parada, na estrada principal.",
+        "Se você estiver indo em direção a Amalfi, a parada fica em frente ao Bar Internazionale. Fila no lado da estrada com vista para o mar.  Se você estiver indo em direção a Sorrento, esperará diretamente em frente ao bar."
+      ]
+    },
+    {
+      "id": "bus-basics",
+      "title": "Tickets and timing",
+      "body": [
+        "Compre um ingresso SITA no tabacchi ou dentro do bar.  Não tente embarcar no ônibus sem passagem, pois você não poderá comprá-la no próprio ônibus.  Apresente seu bilhete ao motorista no embarque.  Se você for pegar o primeiro ônibus, compre sua passagem no dia anterior e venha nos visitar na recepção para combinar o check-out.",
+        "Os ônibus de verão costumam ficar lotados. Planeje adequadamente, especialmente durante os períodos de maior movimento."
+      ]
+    }
+  ],
+  "beforeList": [],
+  "stepsList": [
+    "Saia da recepção, desça a pequena escadaria até Viale Pasitea e vire à esquerda para descer.",
+    "Siga a calçada por cerca de 120 metros (400 pés) ao longo da estrada principal para chegar ao Bar Internazionale."
+  ],
+  "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
+  "kneesList": [],
+  "kneesDockPrefix": "Começando com a bagagem no cais da balsa? Use nosso",
+  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesPorterPrefix": "Precisa de ajuda com preços de porteiro ou reserva? Verifique o",
+  "kneesPorterLinkLabel": "porter service guide",
+  "faqs": [
+    {
+      "q": "How early should I reach the stop?",
+      "a": "Chegue pelo menos 10 minutos antes do ônibus escolhido no verão para poder fazer fila perto do abrigo e embarcar confortavelmente."
+    },
+    {
+      "q": "Where can I buy or validate tickets?",
+      "a": "Use o tabacchi ao lado do Bar Internazionale para venda de ingressos. Os validadores estão a bordo; recorte ou digitalize seu ingresso assim que você pisar."
+    }
+  ],
+  "howtoSteps": [
+    "Caminhe de 2 a 4 minutos ladeira abaixo do Hostel Brikette até a parada Bar Internazionale",
+    "Faça fila na beira-mar da estrada e valide os bilhetes no embarque",
+    "Combine com balsa ou guias de longa distância para continuar a viagem"
+  ]
 }

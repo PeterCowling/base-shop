@@ -5,57 +5,57 @@
   },
   "linkLabel": "Hold deg trygg i Positano og på Amalfikysten",
   "intro": [
-    "Stay safe on Positano’s stairs, buses, and beaches with a few simple habits."
+    "Hold deg trygg på Positanos trapper, busser og strender med noen få enkle vaner."
   ],
   "sections": [
     {
       "id": "stairs",
       "title": "Stairs & walking routes",
       "body": [
-        "Map routes with fewer steps (Chiesa Nuova or Sponda) and share loads between a backpack and a light trolley if you have knee concerns.",
-        "Pause on terrace walls or use compact trekking poles for longer climbs like the Path of the Gods."
+        "Kartlegg ruter med færre trinn (Chiesa Nuova eller Sponda) og del last mellom en ryggsekk og en lett vogn hvis du har kneproblemer.",
+        "Ta en pause på terrasseveggene eller bruk kompakte turstaver for lengre stigninger som Path of the Gods."
       ]
     },
     {
       "id": "transport",
       "title": "Buses & ferries",
       "body": [
-        "Validate SITA tickets, hold the rail, and store bags in the luggage zone—blind curves mean sudden braking.",
-        "On ferries, keep valuables with you and follow crew instructions when stowing heavier suitcases."
+        "Valider SITA-billetter, hold skinnen og oppbevar bagasjen i bagasjesonen – blinde kurver betyr plutselig oppbremsing.",
+        "På ferger, ha verdisaker med deg og følg mannskapets instruksjoner når du oppbevarer tyngre kofferter."
       ]
     },
     {
       "id": "sea",
       "title": "Sea & sun",
       "body": [
-        "Check beach safety flags, wear water shoes on pebble beaches, and reapply reef-safe SPF after every swim.",
-        "Hydrate often: carry at least 1 litre (34 oz) per person on hot days and seek shade between midday and 15:00."
+        "Sjekk strandsikkerhetsflagg, bruk vannsko på rullesteinstrender, og bruk revsikker SPF på nytt etter hver svømmetur.",
+        "Fukt ofte: ta med minst 1 liter (34 oz) per person på varme dager og søk skygge mellom middag og 15:00."
       ]
     },
     {
       "id": "belongings",
       "title": "Belongings & contacts",
       "body": [
-        "Split cash/cards between bags and use hostel lockers or safes for passports and electronics.",
-        "Save emergency numbers (112 general, Coast Guard 1530) and local pharmacy hours offline in case signal drops."
+        "Del kontanter/kort mellom bagger og bruk herbergeskap eller safe for pass og elektronikk.",
+        "Lagre nødnumre (112 general, Coast Guard 1530) og lokale apoteks åpningstider offline i tilfelle signalet faller."
       ]
     }
   ],
   "tips": [
-    "Tell a friend or the hostel desk your planned return time before long hikes and double-check the weather alert level.",
-    "Carry a small torch for late-night stairways—some lanes have uneven lighting after midnight."
+    "Fortell en venn eller vandrerhjemmet din planlagte returtid før lange turer og dobbeltsjekk værvarslingsnivået.",
+    "Bær en liten lommelykt for trapper på sene kvelder – noen baner har ujevn belysning etter midnatt."
   ],
   "faqs": [
     {
       "q": "Is tap water safe to drink?",
       "a": [
-        "Yes, Positano’s tap water is potable—refill bottles to reduce plastic and stay hydrated."
+        "Ja, Positanos springvann kan drikkes – fyll på flasker for å redusere plast og holde seg hydrert."
       ]
     },
     {
       "q": "Are there areas to avoid at night?",
       "a": [
-        "The town is generally calm, but stick to lit routes and use taxis if you’re returning late from Amalfi, Sorrento, or Naples."
+        "Byen er generelt rolig, men hold deg til opplyste ruter og bruk taxi hvis du kommer sent tilbake fra Amalfi, Sorrento eller Napoli."
       ]
     }
   ]

@@ -12,7 +12,7 @@
       "id": "bus",
       "title": "Bus (year‑round)",
       "body": [
-        "SITA bus; buy and validate tickets; queues at peaks — start early.",
+        "autobus SITA; kupować i kasować bilety; kolejki na szczytach – zacznij wcześnie.",
         "Tłumaczenie w przygotowaniu."
       ]
     },
@@ -47,13 +47,13 @@
       },
       {
         "name": "Tłumaczenie w przygotowaniu.",
-        "text": "Check seasonal timetables; ferries run frequently in peak months."
+        "text": "Sprawdź sezonowe rozkłady jazdy; ferries run frequently in peak months."
       }
     ]
   },
   "fallback": {
     "intro": [
-      "Use the SITA bus for reliability year-round; in summer, ferries are a scenic alternative."
+      "Korzystaj z autobusu SITA, aby zapewnić niezawodność przez cały rok; latem promy są malowniczą alternatywą."
     ],
     "toc": [
       {

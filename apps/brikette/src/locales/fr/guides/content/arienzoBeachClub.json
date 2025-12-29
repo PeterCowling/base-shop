@@ -120,5 +120,22 @@
         "Portez des sandales solides ou des baskets pour la descente. Placez les objets lourds dans un sac à dos et faites une pause sur les paliers intermédiaires. À la remontée, faites des pauses à l'ombre et hydratez-vous avant de monter dans le bus ou le taxi."
       ]
     }
-  ]
+  ],
+  "gallery": {
+    "title": "Moments photo d’Arienzo",
+    "items": [
+      {
+        "alt": "Terrasses du Arienzo Beach Club",
+        "caption": "Terrasses sur falaise avec transats orange"
+      },
+      {
+        "alt": "Embarcadère de la navette d’Arienzo",
+        "caption": "Embarquement de la navette à la Spiaggia Grande"
+      },
+      {
+        "alt": "Escaliers vers Arienzo",
+        "caption": "300 marches à travers les citronniers"
+      }
+    ]
+  }
 }

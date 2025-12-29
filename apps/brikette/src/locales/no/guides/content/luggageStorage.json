@@ -5,28 +5,28 @@
   },
   "linkLabel": "Bagasjeoppbevaring i Positano",
   "intro": [
-    "Where to store luggage in Positano: options near the dock and along Via dei Mulini."
+    "Hvor du kan oppbevare bagasjen i Positano: alternativer nær kaien og langs Via dei Mulini."
   ],
   "sections": [
     {
       "id": "near-dock",
       "title": "Near the dock",
       "body": [
-        "Hourly/daily storage with ticket; expect queues in high season — book ahead if possible."
+        "Time/daglig lagring med billett; forvent køer i høysesongen - bestill på forhånd hvis mulig."
       ]
     },
     {
       "id": "aggregators",
       "title": "Aggregators",
       "body": [
-        "Bounce / Radical Storage: verify exact address and opening hours before paying online."
+        "Bounce / Radical Storage: bekreft nøyaktig adresse og åpningstider før du betaler online."
       ]
     },
     {
       "id": "etiquette",
       "title": "Etiquette & tips",
       "body": [
-        "Keep valuables with you; label bags clearly; take a photo of claim tickets."
+        "Hold verdisaker med deg; merke poser tydelig; ta et bilde av krav på billetter."
       ]
     }
   ],
@@ -34,19 +34,19 @@
     {
       "q": "Open in the evening?",
       "a": [
-        "Hours vary; check for early closing off‑season and last ferry times."
+        "Timene varierer; sjekk for tidlig stengetid utenom sesongen og siste fergetider."
       ]
     }
   ],
   "tocTitle": "On this page",
   "faqsTitle": "FAQs",
-  "heroAlt": "Porter guiding a luggage cart up Positano's steps",
+  "heroAlt": "Portier som leder en bagasjevogn opp trappene til Positano",
   "serviceType": "Luggage storage",
   "areaServed": "Positano",
   "gallery": {
-    "primaryAlt": "Positano's cliffside homes overlooking the sea",
+    "primaryAlt": "Positanos klippehus med utsikt over havet",
     "primaryCaption": "Positano panorama",
-    "secondaryAlt": "Porter pushing a luggage cart near Positano's ferry dock",
+    "secondaryAlt": "Portier dytter en bagasjevogn nær Positanos fergekai",
     "secondaryCaption": "Porter carts near the dock"
   }
 }

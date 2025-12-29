@@ -116,12 +116,30 @@
     "I pomeriggi estivi sono esposti e caldi; se perdi il traghetto del mattino, valuta di rinviare alla tarda giornata invece di camminare sotto il sole pieno."
   ],
   "steps": [
-    { "name": "Raggiungi il porto", "text": "Esci da Hostel Brikette, compra i biglietti bus al Bar Internazionale e scendi verso Spiaggia Grande." },
-    { "name": "Acquista i biglietti del traghetto", "text": "Scegli la prossima corsa Travelmar o Lucibello per Amalfi e mettiti in fila 15 minuti prima." },
-    { "name": "Naviga fino ad Amalfi", "text": "Goditi la traversata di 25 minuti e vai direttamente alle pensiline dei bus accanto al porto." },
-    { "name": "Bus per Bomerano", "text": "Prendi il bus SITA con scritto Agerola/Bomerano e segui la viuzza fino al punto di partenza del sentiero." },
-    { "name": "Trekking fino a Nocelle", "text": "Segui la segnaletica del Sentiero degli Dei lungo la dorsale finché non inizia il camminamento in cemento." },
-    { "name": "Ritorna a Positano", "text": "Sali sul bus per Nocelle e scendi a Bar Internazionale oppure scendi a piedi se i bus sono pieni." }
+    {
+      "name": "Raggiungi il porto",
+      "text": "Esci da Hostel Brikette, compra i biglietti bus al Bar Internazionale e scendi verso Spiaggia Grande."
+    },
+    {
+      "name": "Acquista i biglietti del traghetto",
+      "text": "Scegli la prossima corsa Travelmar o Lucibello per Amalfi e mettiti in fila 15 minuti prima."
+    },
+    {
+      "name": "Naviga fino ad Amalfi",
+      "text": "Goditi la traversata di 25 minuti e vai direttamente alle pensiline dei bus accanto al porto."
+    },
+    {
+      "name": "Bus per Bomerano",
+      "text": "Prendi il bus SITA con scritto Agerola/Bomerano e segui la viuzza fino al punto di partenza del sentiero."
+    },
+    {
+      "name": "Trekking fino a Nocelle",
+      "text": "Segui la segnaletica del Sentiero degli Dei lungo la dorsale finché non inizia il camminamento in cemento."
+    },
+    {
+      "name": "Ritorna a Positano",
+      "text": "Sali sul bus per Nocelle e scendi a Bar Internazionale oppure scendi a piedi se i bus sono pieni."
+    }
   ],
   "faqsTitle": "Domande frequenti",
   "faqs": [

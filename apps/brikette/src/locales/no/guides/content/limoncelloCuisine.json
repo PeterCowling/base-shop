@@ -6,7 +6,7 @@
   "linkLabel": "Limoncello og lokal mat",
   "intro": [
     "Limoncello og lokal mat på Amalfikysten: hva du bør smake og hvordan du bestiller som en lokal.",
-    "Here’s where to sip, what to buy, and how to cook with them back home."
+    "Her er hvor du kan nippe, hva du skal kjøpe og hvordan du lager mat med dem hjemme."
   ],
   "tocTitle": "On this page",
   "sections": [
@@ -14,24 +14,24 @@
       "id": "tasting",
       "title": "Tasting",
       "body": [
-        "Visit small botteghe for artisan limoncello and ask for a sample to compare styles.",
-        "Pair tastings with lemon gelato, sorbet, or pastries to gauge sweetness and balance."
+        "Besøk small botteghe for håndverkslimoncello og be om en prøve for å sammenligne stiler.",
+        "Kombiner smaksprøver med sitrongelato, sorbet eller bakverk for å måle sødme og balanse."
       ]
     },
     {
       "id": "purchase",
       "title": "Buying & shipping",
       "body": [
-        "Check airline liquid limits; pack bottles securely in checked luggage.",
-        "Look for IGP Costa d’Amalfi labels and recyclable packaging from local producers."
+        "Sjekk flyselskapets væskegrenser; pakke flasker trygt i innsjekket bagasje.",
+        "Se etter IGP Costa d’Amalfi-etiketter og resirkulerbar emballasje fra lokale produsenter."
       ]
     },
     {
       "id": "cooking",
       "title": "Cooking with lemons",
       "body": [
-        "Use zest and juice in salads, seafood pasta, and desserts for brightness.",
-        "Store lemons in a cool, dark spot and repurpose peels for syrups or marinades."
+        "Bruk skall og juice i salater, sjømatpasta og desserter for lysstyrke.",
+        "Oppbevar sitroner på et kjølig, mørkt sted og bruk skallene til sirup eller marinader."
       ]
     }
   ],

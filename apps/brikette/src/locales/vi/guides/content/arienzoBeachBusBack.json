@@ -1,6 +1,6 @@
 {
   "seo": {
-    "title": "Bus back to Hostel Brikette from Arienzo Beach",
+    "title": "Xe buýt quay lại Hostel Brikette từ Bãi biển Arienzo",
     "description": "Climb from the shoreline to the road, ride three kilometres to Chiesa Nuova, and finish with a short walk back to Hostel Brikette."
   },
   "linkLabel": "Bus back from Arienzo Beach",
@@ -44,9 +44,18 @@
   ],
   "tipsTitle": "Bus tips",
   "tips": [
-    "Printed timetables list only Positano stops; expect Arienzo around 2–5 minutes before Positano Sponda on the way back.",
+    "Danh sách thời gian biểu được in chỉ có các điểm dừng ở Positano; mong đợi Arienzo khoảng 2–5 phút trước Positano Sponda trên đường trở về.",
     "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
     "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
     "Browse the %LINK:beaches|Positano beaches overview% to compare other coves and plan future visits."
-  ]
+  ],
+  "gallery": {
+    "title": "Tham chiếu điểm dừng xe buýt Arienzo",
+    "items": [
+      {
+        "alt": "Biển báo điểm dừng SITA màu xanh trắng trên cột kim loại",
+        "caption": "Tìm biển dừng SITA ở phía trong đường, phía trên Arienzo."
+      }
+    ]
+  }
 }

@@ -9,9 +9,18 @@
     "Servez-vous de ce guide pour prévoir dîners au coucher du soleil, expériences fermes-à-table et repas rapides quand vous voulez bien manger sans longues montées."
   ],
   "toc": [
-    { "href": "#signature-experiences", "label": "Expériences culinaires incontournables" },
-    { "href": "#near-hostel", "label": "Restaurants près d’Hostel Brikette" },
-    { "href": "#destination-dinners", "label": "Dîners qui valent le déplacement" }
+    {
+      "href": "#signature-experiences",
+      "label": "Expériences culinaires incontournables"
+    },
+    {
+      "href": "#near-hostel",
+      "label": "Restaurants près d’Hostel Brikette"
+    },
+    {
+      "href": "#destination-dinners",
+      "label": "Dîners qui valent le déplacement"
+    }
   ],
   "sections": [
     {

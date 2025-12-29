@@ -5,15 +5,30 @@
   },
   "linkLabel": "Hostel Brikette to Regina Giovanna Bath",
   "intro": [
-    "Regina Giovanna Bath is a natural sea pool carved into the cliffs west of Sorrento. From Hostel Brikette you can reach it without a car by combining the local SITA bus with a short walk along Via Capo.",
-    "Use this checklist to leave the hostel, buy the right tickets at Bar Internazionale, ride to the Metropole stop in Sorrento, and follow the pedestrian lane down to the cove."
+    "里贾纳乔瓦娜浴场是一个天然海水池，雕刻在索伦托以西的悬崖上。从 Hostel Brikette 出发，您无需开车即可抵达，搭乘当地的 SITA 巴士并沿 Via Capo 步行一小段路程即可到达。",
+    "使用此清单离开旅舍，在国际酒吧 (Bar Internazionale) 购买合适的门票，乘车前往索伦托 (Sorrento) 的 Metropole 站，然后沿着人行道前往海湾。"
   ],
   "toc": [
-    { "href": "#reach-stop", "label": "Reach the Chiesa Nuova bus stop" },
-    { "href": "#buy-tickets", "label": "Buy and validate tickets" },
-    { "href": "#bus-to-sorrento", "label": "Ride the bus to Sorrento" },
-    { "href": "#walk-to-baths", "label": "Walk to the baths" },
-    { "href": "#before-you-return", "label": "Plan your return" }
+    {
+      "href": "#reach-stop",
+      "label": "Reach the Chiesa Nuova bus stop"
+    },
+    {
+      "href": "#buy-tickets",
+      "label": "Buy and validate tickets"
+    },
+    {
+      "href": "#bus-to-sorrento",
+      "label": "Ride the bus to Sorrento"
+    },
+    {
+      "href": "#walk-to-baths",
+      "label": "Walk to the baths"
+    },
+    {
+      "href": "#before-you-return",
+      "label": "Plan your return"
+    }
   ],
   "sections": [
     {
@@ -105,13 +120,27 @@
   "scanToShare": {
     "title": "Scan to Share",
     "items": [
-      { "alt": "Scan to Share / route image 1" },
-      { "alt": "Scan to Share / route image 2" },
-      { "alt": "Scan to Share / route image 3" },
-      { "alt": "Scan to Share / route image 4" },
-      { "alt": "Scan to Share / route image 5" },
-      { "alt": "Scan to Share / route image 6" },
-      { "alt": "Scan to Share / route image 7" }
+      {
+        "alt": "Scan to Share / route image 1"
+      },
+      {
+        "alt": "Scan to Share / route image 2"
+      },
+      {
+        "alt": "Scan to Share / route image 3"
+      },
+      {
+        "alt": "Scan to Share / route image 4"
+      },
+      {
+        "alt": "Scan to Share / route image 5"
+      },
+      {
+        "alt": "Scan to Share / route image 6"
+      },
+      {
+        "alt": "Scan to Share / route image 7"
+      }
     ]
   }
 }

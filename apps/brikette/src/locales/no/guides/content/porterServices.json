@@ -5,32 +5,32 @@
   },
   "linkLabel": "Portørtjenester i Positano",
   "intro": [
-    "Porters help with heavy bags or mobility concerns. Arrange pickup at the dock or bus stop, confirm the rate first, and keep valuables with you."
+    "Bærere hjelper med tunge sekker eller problemer med mobilitet. Ordne henting ved kaien eller bussholdeplassen, bekreft prisen først, og ha verdisaker med deg."
   ],
   "sections": [
     {
       "id": "how",
       "title": "How it typically works",
       "body": [
-        "Arrange pickup point and time (dock or bus stop). Share your accommodation name and meeting time.",
-        "Agree the fee before moving. Prices vary by distance, stairs, and time of day.",
-        "Keep valuables with you; label your bags clearly."
+        "Ordne hentepunkt og tid (brygge eller bussholdeplass). Del navnet på overnattingsstedet ditt og møtetidspunkt.",
+        "Avtal gebyr før flytting. Prisene varierer etter avstand, trapper og tid på dagen.",
+        "Hold verdisaker med deg; merk posene tydelig."
       ]
     },
     {
       "id": "resources",
       "title": "Booking & resources",
       "body": [
-        "Ask your accommodation for trusted local providers near the dock and main bus stops.",
-        "For storage or off‑hours options, see aggregators like Bounce / Radical Storage."
+        "Spør overnattingsstedet ditt etter pålitelige lokale leverandører i nærheten av kaien og de viktigste bussholdeplassene.",
+        "Se aggregatorer som Bounce / Radical Storage for alternativer for lagring eller frie timer."
       ]
     },
     {
       "id": "etiquette",
       "title": "Etiquette & tips",
       "body": [
-        "Tip for exceptional service or heavy loads; carry cash in small denominations.",
-        "Share your arrival plan in advance during peak periods to secure a slot."
+        "Tips for eksepsjonell service eller tung last; bære kontanter i små valører.",
+        "Del ankomstplanen din på forhånd i høye perioder for å sikre deg en plass."
       ]
     }
   ],
@@ -38,19 +38,19 @@
     {
       "q": "Do I need porters?",
       "a": [
-        "Recommended if carrying heavy luggage; town has many stairs and steep lanes."
+        "Anbefales hvis du bærer tung bagasje; byen har mange trapper og bratte stier."
       ]
     },
     {
       "q": "Where can I book?",
       "a": [
-        "Ask your accommodation or local services near the main beach and bus stops."
+        "Spør overnattingsstedet ditt eller lokale tjenester nær hovedstranden og bussholdeplasser."
       ]
     },
     {
       "q": "How much does it cost?",
       "a": [
-        "Varies by distance and load; confirm rate before service begins."
+        "Varierer etter avstand og belastning; bekrefte sats før tjenesten starter."
       ]
     }
   ],

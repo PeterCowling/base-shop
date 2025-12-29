@@ -2,5 +2,60 @@
   "seo": {
     "title": "Hostel Brikette → Fornillo Beach til fots",
     "description": "Trinnvis veibeskrivelse fra hostellet til Fornillo Beach samt tips for raskeste nedstigning og retur."
-  }
+  },
+  "linkLabel": "Vandrerhjem Brikette → Fornillo Beach walking guide",
+  "intro": [
+    "Å gå fra Hostel Brikette til Fornillo Beach tar omtrent 15–25 minutter på en for det meste trappetrinn. Følg denne snarveien for å holde deg på den raskeste trappen og asfalterte kjørefelt hele veien ned."
+  ],
+  "sections": [
+    {
+      "id": "plan-your-walk",
+      "title": "Plan your walk",
+      "body": [
+        "Tillat ca. 20 minutter å nå sanden; tiden varierer med fotostopp og hvor komfortabel du er på Positanos trappetrinn.",
+        "Google Maps sender av og til gjester gjennom langsommere omveier. Hold deg til denne ruten for å følge hovedtrappen og jevne kjørebanen hele veien."
+      ]
+    },
+    {
+      "id": "route-steps",
+      "title": "Rute fra Hostel Brikette til Fornillo Beach",
+      "body": [
+        "1. Gå ut av Hostel Brikette og gå ned hovedtrappen til Viale Pasitea.",
+        "2. Kryss veien og fortsett rett ned trappene merket med husnummer 31.",
+        "3. Følg trappene til de møter veien, ta deretter til høyre og hold deg i nedoverbakkekurven.",
+        "4. Gå forbi parkeringshusene på begge sider og hold til høyre når du nærmer deg Hotel Posa Posa-skiltet.",
+        "5. Rett bortenfor hotellet, nå en sving i veien og ta til høyre inn på fotgjengerstien mot Fornillo.",
+        "6. Hold deg på den asfalterte stien hele veien til stranden; den skyggelagte finalen ender ved siden av Pupettos strandklubb."
+      ]
+    },
+    {
+      "id": "return-options",
+      "title": "Getting back up",
+      "body": [
+        "Etter svømming, fortsett langs vannkanten til Spiaggia Grande og kjør den oransje interne bussen opp til Chiesa Nuova hvis du heller vil hoppe over klatringen.",
+        "Hent bussbilletter på tabacchi/kiosk ved siden av Chiesa Nuova-holdeplassen før du drar ut eller spør resepsjonen om å bekrefte beholdningen."
+      ]
+    }
+  ],
+  "tips": [
+    "Kjør Interno Positano-bussen tilbake oppoverbakke for å unngå den bratte returstigningen.",
+    "Ta med vann til trappeseksjonen - det er ingen butikker før du kommer til strandlinjen.",
+    "Planlegg ekstra strandtid med %LINK:fornilloBeachGuide|Fornillo strandguide% og %LINK:positanoStrender|Positano-strenderoversikt%.",
+    "Se hvordan denne vandringen passer inn i en hel tur i Positano reiseoversikt."
+  ],
+  "faqsTitle": "Route FAQs",
+  "faqs": [
+    {
+      "q": "How long does the walk take?",
+      "a": [
+        "De fleste gjester når Fornillo på 15–25 minutter avhengig av tempo og fotostopp. Å forlate tidligere på dagen holder trappene kjøligere."
+      ]
+    },
+    {
+      "q": "Are there many stairs?",
+      "a": [
+        "Snarveien går ned flere fly fra vandrerhjemmet før den bytter til en asfaltert bane. Bruk bussen for retur hvis du foretrekker å unngå å klatre opp igjen."
+      ]
+    }
+  ]
 }

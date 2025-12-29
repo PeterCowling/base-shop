@@ -5,8 +5,8 @@
   },
   "linkLabel": "Bus to Arienzo Beach",
   "intro": [
-    "Arienzo Beach sits a few kilometres south of Hostel Brikette and is easiest to reach by the Amalfi Coast bus.",
-    "Follow these steps to find the stop, buy tickets, ride with confidence, and finish the trip with the correct staircase down to the sand."
+    "Arienzo 海滩位于 Hostel Brikette 以南几公里处，乘坐阿马尔菲海岸巴士最容易到达。",
+    "按照以下步骤找到车站，购买车票，自信地骑行，然后通过正确的楼梯到达沙滩，完成旅程。"
   ],
   "sections": [
     {
@@ -61,9 +61,9 @@
   "afterArticle": {
     "scanToShareHeading": "Scan to Share",
     "scanToShareGalleryAlt": [
-      "Scan to share – Arienzo bus guide QR or card",
-      "Bar Internazionale area and Chiesa Nuova bus stop",
-      "Example bus route context for Arienzo stop"
+      "扫描分享 – Arienzo 公交指南二维码或卡",
+      "Bar Internazionale 区和 Chiesa Nuova 巴士站",
+      "Arienzo 站的巴士路线上下文示例"
     ]
   }
 }

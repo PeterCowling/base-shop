@@ -9,11 +9,26 @@
     "Skorzystaj z tego przewodnika, aby dojechać zatokę komunikacją publiczną, spakować się jak miejscowi i wykorzystać skalne półki do pływania, zanim wrócisz przez Sorrento na posiłek."
   ],
   "toc": [
-    { "href": "#why-go", "label": "Dlaczego warto" },
-    { "href": "#getting-there", "label": "Jak dojechać" },
-    { "href": "#what-to-pack", "label": "Co spakować" },
-    { "href": "#swimming", "label": "Kąpiel i bezpieczeństwo" },
-    { "href": "#pair-it", "label": "Połącz z wizytą w Sorrento" }
+    {
+      "href": "#why-go",
+      "label": "Dlaczego warto"
+    },
+    {
+      "href": "#getting-there",
+      "label": "Jak dojechać"
+    },
+    {
+      "href": "#what-to-pack",
+      "label": "Co spakować"
+    },
+    {
+      "href": "#swimming",
+      "label": "Kąpiel i bezpieczeństwo"
+    },
+    {
+      "href": "#pair-it",
+      "label": "Połącz z wizytą w Sorrento"
+    }
   ],
   "sections": [
     {

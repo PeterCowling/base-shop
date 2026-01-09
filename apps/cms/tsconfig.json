@@ -219,6 +219,7 @@
     { "path": "../../packages/email" },
     { "path": "../../packages/email-templates" },
     { "path": "../../packages/config" },
+    { "path": "../../packages/email" },
     { "path": "../../packages/i18n" },
     { "path": "../../packages/configurator" },
     { "path": "../../packages/zod-utils" },

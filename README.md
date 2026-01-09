@@ -233,6 +233,10 @@ pipeline, which ensures dependent packages like `@acme/i18n` and
 pnpm run build:platform-machine
 ```
 
+## Shop maintenance
+
+See [doc/upgrade-preview-republish.md](doc/upgrade-preview-republish.md) for details on upgrading existing shops, previewing changes and republishing metadata.
+
 # Environment Variables
 
 See [environment variable reference](./docs/.env.reference.md) for a comprehensive list and descriptions.

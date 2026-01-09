@@ -42,7 +42,7 @@ module.exports = {
     "^@/i18n/Translations$": "<rootDir>/test/emptyModule.js",
     "^@/contexts/(.*)$": "<rootDir>/packages/platform-core/src/contexts/$1",
     "^@/(.*)$": "<rootDir>/apps/cms/src/$1",
-    "^packages/config/src/env/core\\.js$": "<rootDir>/packages/config/src/env/core.ts",
+    "^packages/config/src/env/core\\.js$": "<rootDir>/packages/config/src/env/__test__/core.stub.ts",
     "^packages/config/src/env/index\\.js$": "<rootDir>/packages/config/src/env/index.ts",
     "^packages/config/src/env/(.*)\\.js$": "<rootDir>/packages/config/src/env/$1.ts",
     // Ensure relative JS re-exports in the config package resolve to TS sources under Jest

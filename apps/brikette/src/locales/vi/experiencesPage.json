@@ -14,8 +14,8 @@
     "primaryCtaAria": "Đặt phòng tại Hostel Brikette",
     "secondaryCtaAria": "Bản dịch đang được chuẩn bị.",
     "tertiaryCtaAria": "Gửi tin nhắn cho trợ lý số Hostel Brikette",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "Xem menu bữa sáng",
+    "breakfastCtaAria": "Xem menu bữa sáng"
   },
   "sections": {
     "bar": {
@@ -71,7 +71,7 @@
       "book": "Đặt ngay",
       "events": "Quán bar & sự kiện",
       "concierge": "Trò chuyện với trợ lý",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Menu bữa sáng"
     }
   },
   "title": "Trải nghiệm tại Hostel Brikette",
@@ -89,17 +89,49 @@
     "empty": "Hiện chưa có hướng dẫn trải nghiệm cho {{tag}}. Thử thẻ khác hoặc bỏ lọc.",
     "clearFilter": "Hiển thị tất cả hướng dẫn trải nghiệm",
     "cardCta": "Khám phá hướng dẫn trải nghiệm {{guideTitle}}",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "directionsLabel": "Chỉ đường",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri bằng phà",
+        "capriPositanoFerry": "Capri → Positano bằng phà"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi bằng xe buýt",
+        "amalfiPositanoBus": "Amalfi → Positano bằng xe buýt",
+        "positanoAmalfiFerry": "Positano → Amalfi bằng phà (theo mùa)",
+        "amalfiPositanoFerry": "Amalfi → Positano bằng phà (theo mùa)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello bằng xe buýt",
+        "ravelloPositanoBus": "Ravello → Positano bằng xe buýt",
+        "positanoRavelloFerryBus": "Positano → Ravello phà + xe buýt"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Trung tâm Naples → Positano (tàu + xe buýt)",
+        "naplesCenterPositanoFerry": "Trung tâm Naples → Positano bằng phà",
+        "naplesAirportPositanoBus": "Sân bay Naples → Positano bằng xe buýt",
+        "positanoNaplesCenterBusTrain": "Positano → Trung tâm Naples (xe buýt + tàu)",
+        "positanoNaplesCenterFerry": "Positano → Naples bằng phà",
+        "positanoNaplesAirportBus": "Positano → Sân bay Naples bằng xe buýt"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano bằng xe buýt",
+        "salernoPositanoFerry": "Salerno → Positano bằng phà (theo mùa)",
+        "positanoSalernoBus": "Positano → Salerno bằng xe buýt",
+        "positanoSalernoFerry": "Positano → Salerno bằng phà (theo mùa)"
+      }
+    },
+    "filterHeading": "Lọc hướng dẫn trải nghiệm",
+    "filterDescription": "Chọn thẻ để thu hẹp các trải nghiệm được nổi bật.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "Hướng dẫn bãi biển",
+          "description": "Chọn bãi cát phù hợp và lên kế hoạch cho ngày của bạn."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "Chỉ đường đến bãi biển",
+          "description": "Hướng dẫn từng bước từ Hostel Brikette xuống bờ biển."
         }
       }
     }

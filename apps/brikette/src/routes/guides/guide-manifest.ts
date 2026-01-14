@@ -1068,6 +1068,35 @@ const manifestSeed: GuideManifestEntry[] = [
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoMainBeach",
+    slug: "positano-main-beach-guide",
+    contentKey: "positanoMainBeach",
+    status: "live",
+    draftPathSegment: "guides/positano-main-beach-guide",
+    areas: ["experience"],
+    primaryArea: "experience",
+    structuredData: ["Article"],
+    relatedGuides: ["positanoBeaches", "fornilloBeachGuide", "positanoMainBeachBusDown"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoMainBeach", showToc: true },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "positanoMainBeach", alwaysProvideFallback: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["positanoBeaches", "fornilloBeachGuide", "positanoMainBeachBusDown"] },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: true,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "fiordoDiFuroreBeachGuide",
     slug: "fiordo-di-furore-beach-guide",
     contentKey: "fiordoDiFuroreBeachGuide",

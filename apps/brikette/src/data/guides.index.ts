@@ -25,6 +25,7 @@ const GUIDES_INDEX_BASE: Array<GuideMeta | Omit<GuideMeta, "status">> = [
   { key: "luggageStorage", section: "help", tags: ["porters", "logistics", "positano"] },
   // Use the actual guide key that maps to src/routes/guides/positano-beaches.tsx
   { key: "positanoBeaches", section: "experiences", tags: ["beaches", "positano"] },
+  { key: "positanoMainBeach", section: "experiences", tags: ["beaches", "positano", "tips"] },
   {
     key: "marinaDiPraiaBeaches",
     section: "experiences",

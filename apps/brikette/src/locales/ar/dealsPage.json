@@ -1,12 +1,69 @@
 {
   "slug": "deals",
   "meta": {
-    "title": "عرض صيف 2025 - وفّر 15٪",
-    "description": "عرض صيفي محدود المدة يمنحك خصمًا إضافيًا بنسبة 15٪ على الحجوزات المباشرة.",
-    "ogImageAlt": "لافتة خصم صيفي"
+    "title": "وفّر 15٪ على الإقامات من 20 سبتمبر إلى 31 أكتوبر",
+    "description": "عرض لفترة محدودة: وفّر 15٪ على الحجوزات المباشرة للإقامات من 20 سبتمبر إلى 31 أكتوبر.",
+    "ogImageAlt": "لافتة خصم لفترة محدودة"
   },
-  "title": "وفّر {{percent}}٪ على إقامتك في {{season}}",
-  "promo": "احجز مباشرة هذا الصيف واستمتع بخصم إضافي قدره {{percent}}٪.",
+  "title": "وفّر {{percent}}٪ على الإقامات من {{from}} إلى {{to}}",
+  "promo": "احجز مباشرة وسيتم تطبيق خصم {{percent}}٪ تلقائيًا عند الدفع.",
+  "dealCard": {
+    "savePercent": "وفّر {{percent}}٪",
+    "stayDatesLabel": "تواريخ الإقامة:",
+    "badges": {
+      "autoApplied": "يُطبَّق تلقائيًا",
+      "directOnly": "حجز مباشر فقط"
+    },
+    "cta": {
+      "bookDirect": "احجز مباشرة",
+      "applyDeal": "طبّق العرض"
+    },
+    "status": {
+      "upcoming": "عرض قادم · يبدأ {{startDate}}",
+      "expired": "منتهي"
+    }
+  },
+  "hero": {
+    "activeLabel": "العرض الحالي",
+    "activeTitle": "وفّر {{percent}}٪",
+    "activeDatesLabel": "تواريخ الإقامة:",
+    "activeSubtitle": "يُطبَّق تلقائيًا عند الدفع. حجوزات مباشرة فقط."
+  },
+  "emptyState": {
+    "title": "لا توجد عروض حالية",
+    "subtitle": "احجز مباشرة للحصول على أفضل سعر وكل المزايا.",
+    "secondaryCta": "اطّلع على مزايا الحجز المباشر"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "يبدأ في {{startDate}} — خطّط مسبقًا وتحقق من تواريخك.",
+      "active": "ساري الآن — ينتهي في {{endDate}}.",
+      "expired": "انتهى هذا العرض."
+    },
+    "badge": {
+      "upcoming": "يبدأ {{startDate}}",
+      "active": "ساري",
+      "expired": "منتهي"
+    },
+    "endsOn": "ينتهي {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "تحقق من التواريخ",
+    "checkDatesHint": "يسري الخصم فقط خلال فترة العرض.",
+    "viewCurrentDeals": "عرض العروض الحالية",
+    "checkAvailabilityStandard": "تحقق من التوفر (أسعار عادية)"
+  },
+  "sections": {
+    "active": "عروض سارية",
+    "upcoming": "عروض قادمة",
+    "expired": "عروض منتهية",
+    "noneCurrent": "لا توجد عروض سارية حاليًا."
+  },
+  "chips": {
+    "nonRefundable": "غير قابل للاسترداد",
+    "directOnly": "حجز مباشر",
+    "minNights": "حد أدنى {{nights}} ليالٍ"
+  },
   "banner": "لم يتبقَّ سوى {{beds}} أسرّة بهذا السعر – ينتهي العرض خلال {{time}}!",
   "timeRemaining": {
     "lessThanHour": "أقل من ساعة",
@@ -16,33 +73,48 @@
     "days_other": "{{count}} أيام"
   },
   "buttonReserve": "احجز الآن",
-  "ogImageAlt": "لافتة خصم صيفي",
+  "ogImageAlt": "لافتة خصم لفترة محدودة",
   "perksHeading": "مزايا الحجز المباشر",
   "perksIntro": "هذه الامتيازات حصرية للضيوف الذين يحجزون مباشرة عبر موقعنا الإلكتروني.",
   "perksGuarantee": "كل حجز يتم مباشرة عبر موقعنا يفعّل هذه المزايا الحصرية تلقائيًا.",
-  "perksIntroLink": "استعرض جميع العروض الحالية",
+  "perksIntroLink": "استعرض جميع المزايا",
   "perksList": [
-    "خصم يصل إلى 25٪ من السعر العادي (يُطبَّق تلقائيًا)",
-    "إفطار مجاني",
-    "مشروب مسائي مجاني"
+    {
+      "title": "خصم يصل إلى 25٪ من السعر العادي (يُطبَّق تلقائيًا)"
+    },
+    {
+      "title": "إفطار مجاني"
+    },
+    {
+      "title": "مشروب مسائي مجاني"
+    }
   ],
   "expired": {
-    "message": "انتهى هذا العرض محدود المدة في {{endedOn}}."
+    "message": "انتهى هذا العرض."
   },
   "restrictions": {
     "heading": "أمور يجب معرفتها",
+    "sections": {
+      "eligibility": "الأهلية",
+      "bookingConstraints": "شروط الحجز",
+      "stayRules": "قواعد الإقامة",
+      "rateType": "نوع السعر",
+      "stacking": "تراكم الخصومات"
+    },
     "stayWindow": "يسري على الإقامات من {{from}} إلى {{to}}.",
+    "bookingWindow": "يسري على الحجوزات التي تتم من {{from}} إلى {{to}}.",
     "minAdvance": "احجز قبل {{days}} يومًا على الأقل.",
     "minAdvancePrefix": "احجز قبل",
     "minAdvanceSuffix": "على الأقل.",
     "los": "حد أدنى {{min}} ليالٍ وحد أقصى {{max}} ليالٍ.",
-    "nonRefundable": "يسري فقط على الأسعار غير القابلة للاسترداد وللحجوزات المباشرة عبر موقع النزل الإلكتروني.",
+    "directOnly": "الحجز المباشر فقط (الموقع الإلكتروني).",
+    "nonRefundable": "يسري فقط على الأسعار غير القابلة للاسترداد.",
+    "nonRefundableOnly": "الأسعار غير القابلة للاسترداد فقط.",
     "nonRefundablePrefix": "يسري فقط على",
-    "nonRefundableSuffix": "غير القابلة للاسترداد وللحجوزات المباشرة عبر موقع النزل الإلكتروني.",
+    "nonRefundableSuffix": "غير القابلة للاسترداد.",
     "stackable": "خصم {{percent}}٪ يضاف إلى خصمنا القياسي بنسبة 10٪ للحجز المباشر.",
-    "other": "تُطبَّق الشروط والأحكام القياسية."
+    "other": "اطّلع على الشروط والأحكام."
   },
-  "seasonLabel": "صيف 2025",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

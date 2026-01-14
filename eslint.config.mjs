@@ -67,6 +67,8 @@ export default [
       "packages/config/jest.preset.cjs",
       "apps/api/jest.config.cjs",
       "apps/api/postcss.config.cjs",
+      // Prime app: exempt while in early development
+      "apps/prime/**",
     ],
   },
   /* ▸ Baseline DX plugins (no new rules except Tailwind contradicting classes) */

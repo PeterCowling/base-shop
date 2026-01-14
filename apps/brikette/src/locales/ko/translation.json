@@ -28,6 +28,10 @@
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
-    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+    "assistanceSlugMissing": "ARTICLE_SLUGS에는 최소 한 개의 도움말 슬러그가 정의되어야 합니다."
+  },
+  "accessibility": {
+    "skipToMain": "본문으로 건너뛰기",
+    "skipToNav": "탐색으로 건너뛰기"
   }
 }

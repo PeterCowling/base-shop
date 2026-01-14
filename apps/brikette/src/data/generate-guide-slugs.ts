@@ -87,6 +87,7 @@ export const GENERATED_GUIDE_SLUGS: Readonly<Record<string, string>> = Object.fr
   positanoCostBreakdown: "positano-cost-breakdown",
   positanoCostComparison: "positano-cost-vs-other-beach-destinations",
   positanoDining: "positano-dining-guide",
+  positanoMainBeach: "positano-main-beach-guide",
   positanoMainBeachBusBack: "bus-back-to-hostel-brikette-from-positano-main-beach",
   positanoMainBeachBusDown: "bus-down-to-positano-main-beach",
   positanoMainBeachWalkBack: "walk-back-to-hostel-brikette-from-positano-main-beach",

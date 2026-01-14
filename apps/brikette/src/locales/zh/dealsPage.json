@@ -1,12 +1,69 @@
 {
   "slug": "tejia",
   "meta": {
-    "title": "2025年夏季优惠 – 立省 15 %",
-    "description": "限时夏季优惠，直接预订再享额外 15 % 折扣。",
-    "ogImageAlt": "夏季折扣横幅"
+    "title": "9月20日–10月31日入住立省 15 %",
+    "description": "限时优惠：直接预订，9月20日至10月31日期间入住可享 15 % 折扣，结账自动应用。",
+    "ogImageAlt": "限时折扣横幅"
   },
-  "title": "在{{season}}住宿立省 {{percent}} %",
-  "promo": "今夏直接预订再享额外 {{percent}} % 折扣。",
+  "title": "在{{from}}至{{to}}期间入住立省 {{percent}} %",
+  "promo": "直接预订，{{percent}} % 折扣在结账时自动应用。",
+  "dealCard": {
+    "savePercent": "立省 {{percent}}",
+    "stayDatesLabel": "入住日期：",
+    "badges": {
+      "autoApplied": "自动应用",
+      "directOnly": "仅限直接预订"
+    },
+    "cta": {
+      "bookDirect": "直接预订",
+      "applyDeal": "应用优惠"
+    },
+    "status": {
+      "upcoming": "即将推出 · {{startDate}} 开始",
+      "expired": "已结束"
+    }
+  },
+  "hero": {
+    "activeLabel": "当前优惠",
+    "activeTitle": "立省 {{percent}}",
+    "activeDatesLabel": "入住日期：",
+    "activeSubtitle": "结账时自动应用。仅限直接预订。"
+  },
+  "emptyState": {
+    "title": "暂无优惠",
+    "subtitle": "直接预订享受最优价格和全部礼遇。",
+    "secondaryCta": "查看直接预订福利"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "{{startDate}} 开始 — 提前规划，查看日期。",
+      "active": "正在进行 — {{endDate}} 结束。",
+      "expired": "该优惠已结束。"
+    },
+    "badge": {
+      "upcoming": "{{startDate}} 开始",
+      "active": "进行中",
+      "expired": "已结束"
+    },
+    "endsOn": "截至 {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "查看日期",
+    "checkDatesHint": "折扣仅在优惠期内适用。",
+    "viewCurrentDeals": "查看当前优惠",
+    "checkAvailabilityStandard": "查看可用性（标准价格）"
+  },
+  "sections": {
+    "active": "进行中的优惠",
+    "upcoming": "即将开始的优惠",
+    "expired": "已结束的优惠（）",
+    "noneCurrent": "目前没有进行中的优惠。"
+  },
+  "chips": {
+    "nonRefundable": "不可退款",
+    "directOnly": "仅限官网",
+    "minNights": "至少 {{nights}} 晚"
+  },
   "banner": "此价格仅剩 {{beds}} 张床位 – 优惠将于 {{time}} 后结束！",
   "timeRemaining": {
     "lessThanHour": "0小时",
@@ -16,33 +73,48 @@
     "days_other": "{{count}}天"
   },
   "buttonReserve": "立即预订",
-  "ogImageAlt": "夏季折扣横幅",
+  "ogImageAlt": "限时折扣横幅",
   "perksHeading": "直接预订福利",
   "perksIntro": "这些礼遇仅提供给通过我们官网直接预订的住客。",
   "perksGuarantee": "只要在我们官网直接预订，这些专属礼遇会自动生效。",
-  "perksIntroLink": "查看所有当前优惠",
+  "perksIntroLink": "查看所有福利",
   "perksList": [
-    "使用优惠码最高可享 25 % 折扣",
-    "免费早餐",
-    "免费晚间饮品"
+    {
+      "title": "使用优惠码最高可享 25 % 折扣"
+    },
+    {
+      "title": "免费早餐"
+    },
+    {
+      "title": "免费晚间饮品"
+    }
   ],
   "expired": {
-    "message": "此限时优惠已于 {{endedOn}} 结束。"
+    "message": "该优惠已结束。"
   },
   "restrictions": {
     "heading": "关键信息",
+    "sections": {
+      "eligibility": "适用条件",
+      "bookingConstraints": "预订条件",
+      "stayRules": "入住规则",
+      "rateType": "房价类型",
+      "stacking": "折扣叠加"
+    },
     "stayWindow": "适用于 {{from}} 至 {{to}} 期间的入住。",
+    "bookingWindow": "适用于在 {{from}} 至 {{to}} 期间完成的预订。",
     "minAdvance": "请至少提前 {{days}} 天预订。",
     "minAdvancePrefix": "请至少提前",
     "minAdvanceSuffix": "预订。",
     "los": "最少入住 {{min}} 晚，最多 {{max}} 晚。",
-    "nonRefundable": "仅适用于通过旅舍官网直接预订的不可退款价格。",
+    "directOnly": "仅限官网直接预订。",
+    "nonRefundable": "仅适用于不可退款价格。",
+    "nonRefundableOnly": "仅限不可退款价格。",
     "nonRefundablePrefix": "仅适用于",
-    "nonRefundableSuffix": "价格，且须通过旅舍官网直接预订。",
+    "nonRefundableSuffix": "价格。",
     "stackable": "{{percent}} % 可与我们标准的 10 % 直接预订优惠叠加使用。",
-    "other": "适用标准条款及条件。"
+    "other": "查看条款与条件。"
   },
-  "seasonLabel": "2025年夏季",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

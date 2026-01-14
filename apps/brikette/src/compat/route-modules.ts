@@ -156,6 +156,7 @@ export const routeModules: Record<string, () => Promise<RouteModule>> = {
   "routes/guides/porter-service-positano.service-data.tsx": () => import("@/routes/guides/porter-service-positano.service-data"),
   "routes/guides/porter-service-positano.tsx": () => import("@/routes/guides/porter-service-positano"),
   "routes/guides/positano-beaches.tsx": () => import("@/routes/guides/positano-beaches"),
+  "routes/guides/positano-main-beach-guide.tsx": () => import("@/routes/guides/positano-main-beach-guide"),
   "routes/guides/positano-cost-breakdown.tsx": () => import("@/routes/guides/positano-cost-breakdown"),
   "routes/guides/positano-cost-vs-other-beach-destinations.tsx": () => import("@/routes/guides/positano-cost-vs-other-beach-destinations"),
   "routes/guides/positano-dining-guide.tsx": () => import("@/routes/guides/positano-dining-guide"),

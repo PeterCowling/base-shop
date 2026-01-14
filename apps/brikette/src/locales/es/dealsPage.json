@@ -1,12 +1,69 @@
 {
   "slug": "ofertas",
   "meta": {
-    "title": "Oferta de verano 2025 – Ahorra un 15 %",
-    "description": "Oferta de verano por tiempo limitado con un 15 % de descuento adicional en reservas directas.",
-    "ogImageAlt": "Banner de descuento de verano"
+    "title": "Ahorra un 15 % en estancias del 20 de septiembre al 31 de octubre",
+    "description": "Oferta por tiempo limitado: ahorra un 15 % en reservas directas para estancias del 20 de septiembre al 31 de octubre.",
+    "ogImageAlt": "Banner de descuento por tiempo limitado"
   },
-  "title": "Ahorra un {{percent}} % en tu estancia de {{season}}",
-  "promo": "Reserva directamente este verano y disfruta de un descuento adicional del {{percent}} %.",
+  "title": "Ahorra un {{percent}} % en estancias del {{from}} al {{to}}",
+  "promo": "Reserva directamente y tu descuento del {{percent}} % se aplica automáticamente al pagar.",
+  "dealCard": {
+    "savePercent": "Ahorra {{percent}}",
+    "stayDatesLabel": "Fechas de estancia:",
+    "badges": {
+      "autoApplied": "Aplicado automáticamente",
+      "directOnly": "Solo reservas directas"
+    },
+    "cta": {
+      "bookDirect": "Reservar directo",
+      "applyDeal": "Aplicar oferta"
+    },
+    "status": {
+      "upcoming": "Próxima oferta · Inicia {{startDate}}",
+      "expired": "Finalizada"
+    }
+  },
+  "hero": {
+    "activeLabel": "Oferta actual",
+    "activeTitle": "Ahorra {{percent}}",
+    "activeDatesLabel": "Fechas de estancia:",
+    "activeSubtitle": "Se aplica automáticamente al pagar. Solo reservas directas."
+  },
+  "emptyState": {
+    "title": "Sin ofertas actuales",
+    "subtitle": "Reserva directamente para el mejor precio y todas las ventajas.",
+    "secondaryCta": "Ver ventajas de reserva directa"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "Empieza el {{startDate}} — planifica con tiempo y revisa tus fechas.",
+      "active": "Activa ahora — termina el {{endDate}}.",
+      "expired": "Esta oferta ha finalizado."
+    },
+    "badge": {
+      "upcoming": "Empieza el {{startDate}}",
+      "active": "Activa",
+      "expired": "Finalizada"
+    },
+    "endsOn": "Termina el {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "Comprobar fechas",
+    "checkDatesHint": "El descuento solo se aplica dentro del periodo de la oferta.",
+    "viewCurrentDeals": "Ver ofertas actuales",
+    "checkAvailabilityStandard": "Comprobar disponibilidad (tarifas estándar)"
+  },
+  "sections": {
+    "active": "Ofertas activas",
+    "upcoming": "Próximas ofertas",
+    "expired": "Ofertas finalizadas",
+    "noneCurrent": "No hay ofertas vigentes en este momento."
+  },
+  "chips": {
+    "nonRefundable": "No reembolsable",
+    "directOnly": "Solo web",
+    "minNights": "Mín. {{nights}} noches"
+  },
   "banner": "¡Solo quedan {{beds}} camas a este precio! La oferta termina en {{time}}.",
   "timeRemaining": {
     "lessThanHour": "0 h",
@@ -16,33 +73,48 @@
     "days_other": "{{count}} días"
   },
   "buttonReserve": "Reservar ahora",
-  "ogImageAlt": "Banner de descuento de verano",
+  "ogImageAlt": "Banner de descuento por tiempo limitado",
   "perksHeading": "Ventajas de reservar directamente",
   "perksIntro": "Estas ventajas son exclusivas para quienes reservan directamente en nuestro sitio web.",
   "perksGuarantee": "Cada reserva realizada directamente en nuestro sitio web activa automáticamente estas ventajas exclusivas.",
-  "perksIntroLink": "Ver todas las ofertas vigentes",
+  "perksIntroLink": "Ver todas las ventajas",
   "perksList": [
-    "Hasta un 25 % de descuento sobre el precio habitual al aplicar el cupón",
-    "Desayuno gratuito",
-    "Bebida de cortesía por la tarde"
+    {
+      "title": "Hasta un 25 % de descuento sobre el precio habitual al aplicar el cupón"
+    },
+    {
+      "title": "Desayuno gratuito"
+    },
+    {
+      "title": "Bebida de cortesía por la tarde"
+    }
   ],
   "expired": {
-    "message": "Esta oferta por tiempo limitado finalizó el {{endedOn}}."
+    "message": "Esta oferta ha finalizado."
   },
   "restrictions": {
     "heading": "Información importante",
+    "sections": {
+      "eligibility": "Elegibilidad",
+      "bookingConstraints": "Condiciones de reserva",
+      "stayRules": "Reglas de estancia",
+      "rateType": "Tipo de tarifa",
+      "stacking": "Acumulación"
+    },
     "stayWindow": "Válido para estancias del {{from}} al {{to}}.",
+    "bookingWindow": "Válido para reservas realizadas del {{from}} al {{to}}.",
     "minAdvance": "Reserva con al menos {{days}} días de antelación.",
     "minAdvancePrefix": "Reserva con al menos",
     "minAdvanceSuffix": "de antelación.",
     "los": "Mínimo {{min}} noches, máximo {{max}} noches.",
-    "nonRefundable": "Válido solo para tarifas no reembolsables en reservas directas, es decir, realizadas en la web del albergue.",
+    "directOnly": "Solo reservas directas (web).",
+    "nonRefundable": "Válido solo para tarifas no reembolsables.",
+    "nonRefundableOnly": "Solo tarifas no reembolsables.",
     "nonRefundablePrefix": "Válido solo para",
-    "nonRefundableSuffix": "tarifas en reservas directas, es decir, realizadas en la web del albergue.",
+    "nonRefundableSuffix": "tarifas.",
     "stackable": "{{percent}} % se combina con nuestro descuento estándar del 10 % por reserva directa.",
-    "other": "Se aplican los términos y condiciones generales."
+    "other": "Ver términos y condiciones."
   },
-  "seasonLabel": "verano de 2025",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

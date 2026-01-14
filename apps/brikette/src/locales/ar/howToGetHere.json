@@ -14,18 +14,18 @@
       "routes": "مسارات من الباب إلى الباب",
       "destinations": "المناطق المحلية المشمولة",
       "transport": "أنواع وسائل النقل",
-      "experienceRoutes": "Experience routes"
+      "experienceRoutes": "مسارات التجارب"
     }
   },
   "preview": {
-    "notPublished": "Preview only – this page is not published"
+    "notPublished": "معاينة فقط - هذه الصفحة غير منشورة"
   },
   "intro": {
     "taxi": "لطلب سيارة أجرة، يمكنك استخدام واتساب للتواصل مع الرقم التالي بالإنجليزية أو الإيطالية: <Strong>{{contact}}</Strong>.",
     "shuttle": "تفضّل خدمة نقل مشترك؟ توفر خدمة سيارات سي هورس رحلات جماعية. احجز مقعدًا عبر <Link>صفحتهم الرسمية لخدمة النقل</Link>.",
     "taxiContact": "+39 379 125 6222",
-    "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "taxiEyebrow": "Hostel Brikette بسيارة أجرة",
+    "shuttleEyebrow": "Hostel Brikette بخدمة نقل"
   },
   "destinations": {
     "filterLabel": "الوجهة",
@@ -36,23 +36,45 @@
         "description": "وصلت بالفعل إلى بوسيتانو، لكنك لست متأكدًا من كيفية الوصول إلى النزل؟ اطّلع على هذه الأدلة:",
         "image": {
           "src": "/img/positano-panorama.avif",
-          "alt": "إطلالة بانورامية على منازل بوسيتانو المبنية على الجرف"
+          "alt": "إطلالة بانورامية على منازل بوسيتانو المبنية على الجرف",
+          "caption": "Positano is steep — plan for stairs, especially with luggage."
         },
         "links": [
           {
             "label": "من كييزا نوفا/بار إنترناسيونالي إلى Hostel Brikette",
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "5–10 min",
+              "cost": "Free",
+              "walking": "~140 m + ~30 steps",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من رصيف العبّارات إلى Hostel Brikette",
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20–45 min (depends on porters/Interno bus)",
+              "cost": "€2–€6 pp (+ optional porter)",
+              "walking": "Port stairs; porters reduce carrying",
+              "luggageFriendly": 1,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من Hostel Brikette إلى كييزا نوفا/بار إنترناسيونالي",
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "5–10 min",
+              "cost": "Free",
+              "walking": "~140 m + ~30 steps (down)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           }
         ]
       },
@@ -60,28 +82,57 @@
         "name": "أمالفي",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "موقف حافلات سيتا سود في أمالفي لخطوط الساحل"
+          "alt": "موقف حافلات سيتا سود في أمالفي لخطوط الساحل",
+          "caption": "Look for the SITA buses at Amalfi’s bus station."
         },
         "links": [
           {
             "label": "من أمالفي إلى بوسيتانو بالحافلة",
             "href": "amalfi-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45–90 min (traffic dependent)",
+              "cost": "€2–€4 pp",
+              "walking": "Short stairs at the end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من بوسيتانو إلى أمالفي بالحافلة",
             "href": "positano-amalfi-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45–90 min (traffic dependent)",
+              "cost": "€2–€4 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من أمالفي إلى بوسيتانو بالعبّارة",
             "href": "amalfi-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25–45 min (sailing) + port transfer",
+              "cost": "€10–€20 pp",
+              "walking": "Stairs to/from the port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "من بوسيتانو إلى أمالفي بالعبّارة",
             "href": "positano-amalfi-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25–45 min (sailing) + port transfer",
+              "cost": "€10–€20 pp",
+              "walking": "Stairs to/from the port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       },
@@ -89,18 +140,33 @@
         "name": "كابري",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "عبّارة ترسو في مارينا غرانده في جزيرة كابري"
+          "alt": "عبّارة ترسو في مارينا غرانده في جزيرة كابري",
+          "caption": "Capri ferries depart from Marina Grande."
         },
         "links": [
           {
             "label": "من كابري إلى بوسيتانو بالعبّارة",
             "href": "capri-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30–60 min (sailing) + port transfer",
+              "cost": "€20–€35 pp",
+              "walking": "Port access; stairs likely in Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "من بوسيتانو إلى كابري بالعبّارة",
             "href": "positano-capri-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30–60 min (sailing) + port transfer",
+              "cost": "€20–€35 pp",
+              "walking": "Port access; stairs likely in Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       },
@@ -108,33 +174,69 @@
         "name": "مركز نابولي",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "متجر تبغ يطل على الشارع في وسط نابولي"
+          "alt": "متجر تبغ يطل على الشارع في وسط نابولي",
+          "caption": "Buy bus tickets in tabacchi/newsstands before boarding."
         },
         "links": [
           {
             "label": "من مركز نابولي إلى بوسيتانو بالقطار ثم الحافلة",
             "href": "naples-center-train-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. transfers)",
+              "cost": "€15–€25 pp",
+              "walking": "Low; change in Sorrento",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من بوسيتانو إلى مركز نابولي بالحافلة ثم القطار",
             "href": "positano-naples-center-bus-train",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. transfers)",
+              "cost": "€15–€25 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من مركز نابولي إلى بوسيتانو بالعبّارة",
             "href": "naples-center-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4.5 h (incl. port transfer)",
+              "cost": "€25–€45 pp",
+              "walking": "Transfer to port + stairs in Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "من بوسيتانو إلى مركز نابولي بالعبّارة",
             "href": "positano-naples-center-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4.5 h (incl. port transfer)",
+              "cost": "€25–€45 pp",
+              "walking": "Stairs in Positano + transfer from port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "من بوسيتانو إلى نابولي بالعبّارة",
             "href": "positano-to-naples-directions-by-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4.5 h (incl. port transfer)",
+              "cost": "€25–€45 pp",
+              "walking": "Stairs in Positano + transfer from port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       },
@@ -142,18 +244,33 @@
         "name": "مطار نابولي",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "منطقة صعود حافلات كوريري خارج مطار نابولي الدولي"
+          "alt": "منطقة صعود حافلات كوريري خارج مطار نابولي الدولي",
+          "caption": "Curreri buses pick up outside arrivals (follow bus signs)."
         },
         "links": [
           {
             "label": "من بوسيتانو إلى مطار نابولي بالحافلة",
             "href": "positano-naples-airport-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. change in Sorrento)",
+              "cost": "€15–€25 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من مطار نابولي إلى بوسيتانو بالحافلة",
             "href": "naples-airport-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. change in Sorrento)",
+              "cost": "€15–€25 pp",
+              "walking": "Short stairs at the end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           }
         ]
       },
@@ -161,28 +278,57 @@
         "name": "ساليرنو",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "إطلالة على ساحل أمالفي باتجاه ساليرنو"
+          "alt": "إطلالة على ساحل أمالفي باتجاه ساليرنو",
+          "caption": "Salerno connects by train + bus, or by seasonal ferries."
         },
         "links": [
           {
             "label": "من ساليرنو إلى بوسيتانو بالحافلة",
             "href": "salerno-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5–4 h (via Amalfi)",
+              "cost": "€6–€12 pp",
+              "walking": "Low; change buses in Amalfi",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من بوسيتانو إلى ساليرنو بالحافلة",
             "href": "positano-salerno-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5–4 h (via Amalfi)",
+              "cost": "€6–€12 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
-            "label": "Salerno to Positano by Ferry",
+            "label": "من ساليرنو إلى بوسيتانو بالعبّارة",
             "href": "salerno-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1–2 h (sailing) + port transfer",
+              "cost": "€15–€30 pp",
+              "walking": "Port stairs; porters recommended",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "من بوسيتانو إلى ساليرنو بالعبّارة",
             "href": "positano-salerno-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1–2 h (sailing) + port transfer",
+              "cost": "€15–€30 pp",
+              "walking": "Port stairs; porters recommended",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       },
@@ -190,23 +336,45 @@
         "name": "رافيلو",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "حدائق على حافة الجرف تطل على الساحل بالقرب من رافيلو"
+          "alt": "حدائق على حافة الجرف تطل على الساحل بالقرب من رافيلو",
+          "caption": "Ravello is reached via Amalfi by bus."
         },
         "links": [
           {
             "label": "من رافيلو إلى بوسيتانو بالحافلة",
             "href": "ravello-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5–2.5 h (via Amalfi)",
+              "cost": "€4–€8 pp",
+              "walking": "Low; change in Amalfi",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من بوسيتانو إلى رافيلو بالحافلة",
             "href": "positano-ravello-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5–2.5 h (via Amalfi)",
+              "cost": "€4–€8 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "من بوسيتانو إلى رافيلو بالعبّارة ثم الحافلة",
             "href": "positano-ravello-ferry-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3 h (ferry + bus)",
+              "cost": "€15–€30 pp",
+              "walking": "Port stairs + bus connection",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       }
@@ -376,27 +544,57 @@
       {
         "label": "من سورينتو بالحافلة",
         "href": "sorrento-positano-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 min",
+          "cost": "€2–€4 pp",
+          "walking": "Short stairs at the end (~30 steps)",
+          "luggageFriendly": 2,
+          "seasonality": "Year-round"
+        }
       },
       {
         "label": "إلى سورينتو بالحافلة",
         "href": "positano-sorrento-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 min",
+          "cost": "€2–€4 pp",
+          "walking": "Short stairs at the start/end (~30 steps)",
+          "luggageFriendly": 2,
+          "seasonality": "Year-round"
+        }
       },
       {
         "label": "من سورينتو بالعبّارة",
         "href": "sorrento-positano-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30–45 min (sailing) + port stairs",
+          "cost": "€15–€25 pp",
+          "walking": "Port stairs; porters recommended",
+          "luggageFriendly": 1,
+          "seasonality": "Seasonal (Apr–Oct)"
+        }
       },
       {
         "label": "إلى سورينتو بالعبّارة",
         "href": "positano-sorrento-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30–45 min (sailing) + port stairs",
+          "cost": "€15–€25 pp",
+          "walking": "Port stairs; porters recommended",
+          "luggageFriendly": 1,
+          "seasonality": "Seasonal (Apr–Oct)"
+        }
       }
     ]
   },
   "filters": {
     "title": "تصفية المسارات",
+    "resultsCount": "النتائج: {{count}} مسار",
+    "editLabel": "تعديل عوامل التصفية",
     "transportLabel": "نوع وسيلة النقل",
     "transportAll": "الكل",
     "transportModes": {
@@ -416,116 +614,116 @@
     "noResults": "لا توجد مسارات تطابق عوامل التصفية هذه."
   },
   "romePlanner": {
-    "title": "Rome ↔ Positano: How to Travel",
-    "subtitle": "Pick a direction, set your preferences, and we’ll suggest a route.",
-    "directionPrompt": "Pick a direction",
+    "title": "روما ↔ بوسيتانو: كيفية السفر",
+    "subtitle": "اختر الاتجاه، واضبط تفضيلاتك، وسنقترح مسارًا.",
+    "directionPrompt": "اختر اتجاهًا",
     "tabs": {
-      "from": "From Rome → Hostel",
-      "to": "From Hostel → Rome"
+      "from": "من روما → النزل",
+      "to": "من النزل → روما"
     },
     "reco": {
-      "title": "Best match for your picks",
-      "why": "Why this route?"
+      "title": "أفضل تطابق لاختياراتك",
+      "why": "لماذا هذا المسار؟"
     },
-    "otherMatches": "Other matches for your pick",
-    "disclaimer": "Always check operators for latest schedules and availability. Crowding and journey times vary by season.",
+    "otherMatches": "تطابقات أخرى لاختيارك",
+    "disclaimer": "تحقق دائمًا من المشغلين لمعرفة أحدث الجداول والتوافر. الازدحام ومدة الرحلة يختلفان حسب الموسم.",
     "pref": {
-      "prompt": "Any preference?",
+      "prompt": "هل لديك تفضيل؟",
       "cheapest": {
-        "label": "Cheapest",
-        "description": "Prioritize lower cost over comfort."
+        "label": "الأرخص",
+        "description": "إعطاء أولوية للتكلفة الأقل على الراحة."
       },
       "scenic": {
-        "label": "Scenic",
-        "description": "Prioritize sea views (ferries)."
+        "label": "مناظر",
+        "description": "إعطاء أولوية لإطلالات البحر (العبّارات)."
       },
-      "heavyPrefix": "I have",
+      "heavyPrefix": "لديّ",
       "heavy_luggage": {
-        "label": "Heavy luggage",
-        "description": "Minimize uphill walks and stairs with bags."
+        "label": "أمتعة ثقيلة",
+        "description": "تقليل المشي صعودًا والسلالم مع الحقائب."
       }
     },
     "route": {
       "naples": {
         "busTrain": {
-          "title": "Via Naples — Bus + Train",
+          "title": "عبر نابولي — حافلة + قطار",
           "summary": {
-            "from": "Bus to Sorrento → train to Naples → train to Rome.",
-            "to": "Train to Naples → train to Sorrento → bus to Positano."
+            "from": "حافلة إلى سورينتو → قطار إلى نابولي → قطار إلى روما.",
+            "to": "قطار إلى نابولي → قطار إلى سورينتو → حافلة إلى بوسيتانو."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Sorrento (drops at Sorrento train station).",
-              "2": "Local train Sorrento → Naples (arrive at Naples train station).",
-              "3": "Train Naples → Rome."
+              "1": "حافلة بوسيتانو → سورينتو (تنزل عند محطة قطار سورينتو).",
+              "2": "قطار محلي سورينتو → نابولي (الوصول إلى محطة قطار نابولي).",
+              "3": "قطار نابولي → روما."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples train station).",
-              "2": "Local train Naples → Sorrento (arrive at Sorrento bus station).",
-              "3": "Bus Sorrento → Positano (stop close to the hostel)."
+              "1": "قطار روما → نابولي (الوصول إلى محطة قطار نابولي).",
+              "2": "قطار محلي نابولي → سورينتو (الوصول إلى محطة حافلات سورينتو).",
+              "3": "حافلة سورينتو → بوسيتانو (محطة قريبة من النزل)."
             }
           }
         },
         "ferry": {
-          "title": "Via Naples — Ferry",
+          "title": "عبر نابولي — عبّارة",
           "summary": {
-            "from": "Positano port → ferry to Naples → tram to station → train to Rome.",
-            "to": "Train to Naples → tram to port → ferry to Positano."
+            "from": "ميناء بوسيتانو → عبّارة إلى نابولي → ترام إلى المحطة → قطار إلى روما.",
+            "to": "قطار إلى نابولي → ترام إلى الميناء → عبّارة إلى بوسيتانو."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Naples.",
-              "3": "Tram Naples port → train station.",
-              "4": "Train Naples → Rome."
+              "1": "بوسيتانو → الميناء (يمكن للحمالين المساعدة مع الحقائب).",
+              "2": "عبّارة بوسيتانو → نابولي.",
+              "3": "ترام ميناء نابولي → محطة القطار.",
+              "4": "قطار نابولي → روما."
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples station).",
-              "2": "Tram Naples station → port.",
-              "3": "Ferry Naples → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "قطار روما → نابولي (الوصول إلى محطة نابولي).",
+              "2": "ترام محطة نابولي → الميناء.",
+              "3": "عبّارة نابولي → بوسيتانو.",
+              "4": "من ميناء بوسيتانو → النزل (قد تكون الرحلة مرهقة؛ يمكن للحمالين/حافلة Interno المساعدة)."
             }
           }
         }
       },
       "salerno": {
         "bus": {
-          "title": "Via Salerno — Bus (to/from Salerno)",
+          "title": "عبر ساليرنو — حافلة (إلى/من ساليرنو)",
           "summary": {
-            "from": "Bus Positano → Amalfi (change) → Salerno → train to Rome.",
-            "to": "Train to Salerno → bus to Amalfi (change) → Positano."
+            "from": "حافلة بوسيتانو → أمالفي (تبديل) → ساليرنو → قطار إلى روما.",
+            "to": "قطار إلى ساليرنو → حافلة إلى أمالفي (تبديل) → بوسيتانو."
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Amalfi (change buses in Amalfi).",
-              "2": "Bus Amalfi → Salerno (drops at Salerno train station).",
-              "3": "Train Salerno → Rome."
+              "1": "حافلة بوسيتانو → أمالفي (تبديل الحافلات في أمالفي).",
+              "2": "حافلة أمالفي → ساليرنو (تنزل عند محطة قطار ساليرنو).",
+              "3": "قطار ساليرنو → روما."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno train station).",
-              "2": "Bus Salerno → Amalfi (change buses in Amalfi).",
-              "3": "Bus Amalfi → Positano (short walk to hostel)."
+              "1": "قطار روما → ساليرنو (الوصول إلى محطة قطار ساليرنو).",
+              "2": "حافلة ساليرنو → أمالفي (تبديل الحافلات في أمالفي).",
+              "3": "حافلة أمالفي → بوسيتانو (مشياً قصيراً إلى النزل)."
             }
           }
         },
         "ferry": {
-          "title": "Via Salerno — Ferry",
+          "title": "عبر ساليرنو — عبّارة",
           "summary": {
-            "from": "Positano port → ferry to Salerno → short walk to station → train to Rome.",
-            "to": "Train to Salerno → short walk to port → ferry to Positano."
+            "from": "ميناء بوسيتانو → عبّارة إلى ساليرنو → مشي قصير إلى المحطة → قطار إلى روما.",
+            "to": "قطار إلى ساليرنو → مشي قصير إلى الميناء → عبّارة إلى بوسيتانو."
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Salerno.",
-              "3": "Walk Salerno port → train station.",
-              "4": "Train Salerno → Rome."
+              "1": "بوسيتانو → الميناء (يمكن للحمالين المساعدة مع الحقائب).",
+              "2": "عبّارة بوسيتانو → ساليرنو.",
+              "3": "مشي من ميناء ساليرنو → محطة القطار.",
+              "4": "قطار ساليرنو → روما."
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno station).",
-              "2": "Walk to Salerno port.",
-              "3": "Ferry Salerno → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "قطار روما → ساليرنو (الوصول إلى محطة ساليرنو).",
+              "2": "مشي إلى ميناء ساليرنو.",
+              "3": "عبّارة ساليرنو → بوسيتانو.",
+              "4": "من ميناء بوسيتانو → النزل (قد تكون الرحلة مرهقة؛ يمكن للحمالين/حافلة Interno المساعدة)."
             }
           }
         }
@@ -533,86 +731,86 @@
     },
     "note": {
       "salerno": {
-        "walkPortStation": "Walk between Salerno’s port and train station (short, straightforward)."
+        "walkPortStation": "مشي بين ميناء ساليرنو ومحطة القطار (قصير ومباشر)."
       },
       "naples": {
-        "tramPortStation": "Take the tram between Naples port and the train station."
+        "tramPortStation": "استقل الترام بين ميناء نابولي ومحطة القطار."
       }
     },
     "pro": {
-      "posBusNearHostel": "Positano bus stop close to the hostel.",
-      "busDropsSorrentoStation": "Bus drops you right at the train station in Sorrento.",
-      "cheapBusTrain": "Bus and train are both very cheap.",
-      "arriveNaplesStation": "You arrive right at the train station in Naples.",
-      "easySwapNaples": "Swapping trains in Naples is relatively easy.",
-      "trainDropsSorrentoBusStation": "Train drops you right at the bus station in Sorrento.",
+      "posBusNearHostel": "محطة حافلات بوسيتانو قريبة من النزل.",
+      "busDropsSorrentoStation": "الحافلة تنزلك مباشرة عند محطة قطار سورينتو.",
+      "cheapBusTrain": "الحافلة والقطار كلاهما رخيصان جدًا.",
+      "arriveNaplesStation": "تصل مباشرة إلى محطة القطار في نابولي.",
+      "easySwapNaples": "تبديل القطارات في نابولي سهل نسبيًا.",
+      "trainDropsSorrentoBusStation": "القطار ينزلك مباشرة عند محطة حافلات سورينتو.",
       "salerno": {
-        "busStopNearHostel": "The Positano bus stop is just a short walk from the hostel."
+        "busStopNearHostel": "محطة حافلات بوسيتانو تبعد مسافة قصيرة سيرًا عن النزل."
       },
-      "busCollectsSalernoStation": "Bus collects you right at the train station in Salerno.",
-      "busDropsSalernoStation": "Bus drops you right at the train station in Salerno.",
-      "busCheap": "Bus is very cheap.",
-      "portersHelp": "Giving your bags to the porters allows you to travel more comfortably and easily.",
-      "ferryEnjoyableEasy": "The ferry journey itself is enjoyable and easy.",
-      "shortWalkSalernoStationPort": "The walk from Salerno’s Train Station to the port is short and straightforward."
+      "busCollectsSalernoStation": "الحافلة تقلّك مباشرة من محطة قطار ساليرنو.",
+      "busDropsSalernoStation": "الحافلة تنزلك مباشرة عند محطة قطار ساليرنو.",
+      "busCheap": "الحافلة رخيصة جدًا.",
+      "portersHelp": "تسليم حقائبك للحمالين يجعل السفر أكثر راحة وسهولة.",
+      "ferryEnjoyableEasy": "رحلة العبّارة نفسها ممتعة وسهلة.",
+      "shortWalkSalernoStationPort": "المشي من محطة قطار ساليرنو إلى الميناء قصير ومباشر."
     },
     "con": {
-      "changeBusToTrain": "Have to change from bus to train.",
-      "crowdedBusTrain": "Bus and train are both usually crowded.",
-      "fewHours": "Takes a few hours.",
-      "changeTrainToBusSorrento": "Have to change from train to bus in Sorrento.",
-      "busUsuallyCrowded": "Bus is usually crowded.",
-      "ferryCostHigherBus": "The cost of taking the ferry is higher than the cost of taking the bus.",
-      "hostelEasierBySita": "Arriving at the hostel via SITA bus is easier than arriving by ferry (the journey from the port is quite laborious — even with Positano’s Interno Bus and porters).",
-      "naplesPortComfort": "The port and city of Naples may not be suitable for everyone, as some people may not feel comfortable there.",
-      "ferriesLessFrequent": "Ferries do not run as frequently as other transportation options.",
-      "ferryCostHigherTrainBus": "The cost of taking the ferry is higher than the cost of taking the train or bus.",
-      "changeBusesAmalfi": "Have to change buses in Amalfi."
+      "changeBusToTrain": "يلزم التبديل من الحافلة إلى القطار.",
+      "crowdedBusTrain": "الحافلة والقطار غالبًا مزدحمان.",
+      "fewHours": "تستغرق بضع ساعات.",
+      "changeTrainToBusSorrento": "يلزم التبديل من القطار إلى الحافلة في سورينتو.",
+      "busUsuallyCrowded": "الحافلة غالبًا مزدحمة.",
+      "ferryCostHigherBus": "تكلفة العبّارة أعلى من تكلفة الحافلة.",
+      "hostelEasierBySita": "الوصول إلى النزل عبر حافلة SITA أسهل من الوصول بالعبّارة (الطريق من الميناء مرهق — حتى مع حافلة Interno في بوسيتانو والحمالين).",
+      "naplesPortComfort": "قد لا يناسب ميناء نابولي والمدينة الجميع، إذ قد لا يشعر بعضهم بالراحة هناك.",
+      "ferriesLessFrequent": "العبّارات لا تعمل بتواتر مثل خيارات النقل الأخرى.",
+      "ferryCostHigherTrainBus": "تكلفة العبّارة أعلى من تكلفة القطار أو الحافلة.",
+      "changeBusesAmalfi": "يلزم تبديل الحافلات في أمالفي."
     },
     "tag": {
-      "cheap": "Budget",
-      "directish": "Simple",
-      "scenic": "Scenic",
-      "transfer": "Transfer",
-      "bus": "Bus",
-      "train": "Train",
-      "ferry": "Ferry"
+      "cheap": "اقتصادي",
+      "directish": "بسيط",
+      "scenic": "مناظر",
+      "transfer": "تحويل",
+      "bus": "حافلة",
+      "train": "قطار",
+      "ferry": "عبّارة"
     },
     "reasons": {
       "cheapest": {
-        "busTrain": "Cheapest → bus/train options are very cheap.",
-        "ferry": "Cheapest → ferry costs higher than bus/train."
+        "busTrain": "الأرخص → خيارات الحافلة/القطار رخيصة جدًا.",
+        "ferry": "الأرخص → العبّارة أغلى من الحافلة/القطار."
       },
       "fewest_changes": {
-        "busTrain": "Fewest changes → bus + train requires a mode change.",
-        "bus": "Fewest changes → bus route changes in Amalfi."
+        "busTrain": "أقل تغييرات → الحافلة + القطار يتطلبان تبديل وسيلة.",
+        "bus": "أقل تغييرات → مسار الحافلة يتبدل في أمالفي."
       },
       "scenic": {
-        "ferry": "Scenic → ferry journey is enjoyable and easy."
+        "ferry": "مناظر → رحلة العبّارة ممتعة وسهلة."
       },
       "heavy_luggage": {
-        "ferryFromRome": "Heavy luggage → arriving via ferry from the port is more laborious.",
-        "busStopClose": "Heavy luggage → Positano bus stop is close to the hostel."
+        "ferryFromRome": "أمتعة ثقيلة → الوصول بالعبّارة من الميناء أكثر إرهاقًا.",
+        "busStopClose": "أمتعة ثقيلة → محطة حافلات بوسيتانو قريبة من النزل."
       }
     },
     "ui": {
-      "showDetails": "Show details",
-      "hideDetails": "Hide details",
-      "steps": "Steps",
-      "notes": "Notes",
-      "pros": "Pros",
-      "cons": "Cons"
+      "showDetails": "عرض التفاصيل",
+      "hideDetails": "إخفاء التفاصيل",
+      "steps": "الخطوات",
+      "notes": "ملاحظات",
+      "pros": "الإيجابيات",
+      "cons": "السلبيات"
     }
   },
   "experienceGuides": {
-    "eyebrow": "Experience planners",
-    "title": "Experience routes with built-in directions",
-    "description": "These experiences combine the on-trail highlights with the exact transfers you need to leave and return to Hostel Brikette. Open one when you want the itinerary and the transport plan in the same guide.",
+    "eyebrow": "مخططو التجارب",
+    "title": "مسارات تجارب مع إرشادات مدمجة",
+    "description": "تجمع هذه التجارب بين أبرز النقاط على المسار والتنقلات الدقيقة المطلوبة للذهاب والعودة إلى Hostel Brikette. افتح أحدها عندما تريد خط سير وخطة تنقّل في دليل واحد.",
     "items": [
       {
         "guideKey": "pathOfTheGodsFerry",
-        "label": "Path of the Gods via Amalfi (ferry + hike)",
-        "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
+        "label": "طريق الآلهة عبر أمالفي (عبّارة + مشي)",
+        "summary": "أبحر من بوسيتانو إلى أمالفي، ثم اركب إلى بوميرانو، واتبع إرشادات العودة خطوة بخطوة للمسار الكلاسيكي عائدًا نحو بوسيتانو.",
         "transportModes": [
           "ferry",
           "bus",
@@ -621,8 +819,8 @@
       },
       {
         "guideKey": "pathOfTheGodsBus",
-        "label": "Path of the Gods via Amalfi (bus + hike)",
-        "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
+        "label": "طريق الآلهة عبر أمالفي (حافلة + مشي)",
+        "summary": "استقل حافلة SITA Sud من بوسيتانو عبر أمالفي إلى بوميرانو، ثم امشِ إلى نوتشيلي، واستخدم قسم التنقّل المدمج للعودة إلى النزل.",
         "transportModes": [
           "bus",
           "walk"
@@ -630,8 +828,8 @@
       },
       {
         "guideKey": "pathOfTheGodsNocelle",
-        "label": "Path of the Gods via Nocelle shuttle",
-        "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
+        "label": "طريق الآلهة عبر حافلة نوتشيلي",
+        "summary": "اركب حافلة Montepertuso–Nocelle لمسار أقصر ذهابًا وإيابًا، واعتمد على إرشادات الدليل للعودة سيرًا أو بالحافلة إلى Hostel Brikette.",
         "transportModes": [
           "bus",
           "walk"
@@ -640,9 +838,14 @@
     ]
   },
   "breadcrumbs": {
-    "itemTitleFallback": "Directions"
+    "itemTitleFallback": "الاتجاهات"
   },
   "galleries": {
-    "defaultAlt": "Directions photo"
+    "defaultAlt": "صورة الاتجاهات"
+  },
+  "lightbox": {
+    "titleFallback": "Image",
+    "openAria": "Open image",
+    "openAriaWithCaption": "Open image: {{caption}}"
   }
 }

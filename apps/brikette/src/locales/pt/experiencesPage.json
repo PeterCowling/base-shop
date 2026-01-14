@@ -14,8 +14,8 @@
     "primaryCtaAria": "Reservar a sua estadia no Hostel Brikette",
     "secondaryCtaAria": "Ver o menu do bar do Hostel Brikette",
     "tertiaryCtaAria": "Enviar mensagem ao concierge digital do Hostel Brikette",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "Ver o menu do pequeno-almoço",
+    "breakfastCtaAria": "Ver o menu do pequeno-almoço"
   },
   "sections": {
     "bar": {
@@ -71,7 +71,7 @@
       "book": "Reservar agora",
       "events": "Bar e eventos",
       "concierge": "Conversar com o concierge",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Menu do pequeno-almoço"
     }
   },
   "title": "Experiências no Hostel Brikette",
@@ -89,17 +89,49 @@
     "empty": "Ainda não temos guias de experiências para {{tag}}. Experimente outra etiqueta ou remova o filtro.",
     "clearFilter": "Mostrar todas as guias de experiências",
     "cardCta": "Explore o guia de experiências {{guideTitle}}",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "directionsLabel": "Como chegar",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri de ferry",
+        "capriPositanoFerry": "Capri → Positano de ferry"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi de autocarro",
+        "amalfiPositanoBus": "Amalfi → Positano de autocarro",
+        "positanoAmalfiFerry": "Positano → Amalfi de ferry (sazonal)",
+        "amalfiPositanoFerry": "Amalfi → Positano de ferry (sazonal)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello de autocarro",
+        "ravelloPositanoBus": "Ravello → Positano de autocarro",
+        "positanoRavelloFerryBus": "Positano → Ravello ferry + autocarro"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Centro de Nápoles → Positano (comboio + autocarro)",
+        "naplesCenterPositanoFerry": "Centro de Nápoles → Positano de ferry",
+        "naplesAirportPositanoBus": "Aeroporto de Nápoles → Positano de autocarro",
+        "positanoNaplesCenterBusTrain": "Positano → Centro de Nápoles (autocarro + comboio)",
+        "positanoNaplesCenterFerry": "Positano → Nápoles de ferry",
+        "positanoNaplesAirportBus": "Positano → Aeroporto de Nápoles de autocarro"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano de autocarro",
+        "salernoPositanoFerry": "Salerno → Positano de ferry (sazonal)",
+        "positanoSalernoBus": "Positano → Salerno de autocarro",
+        "positanoSalernoFerry": "Positano → Salerno de ferry (sazonal)"
+      }
+    },
+    "filterHeading": "Filtrar guias de experiências",
+    "filterDescription": "Escolha uma etiqueta para reduzir as experiências em destaque.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "Guias de praia",
+          "description": "Escolha o trecho de areia ideal e planeie o seu dia."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "Como chegar à praia",
+          "description": "Instruções passo a passo do Hostel Brikette até à praia."
         }
       }
     }

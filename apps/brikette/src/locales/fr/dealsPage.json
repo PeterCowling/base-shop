@@ -1,12 +1,69 @@
 {
   "slug": "offres",
   "meta": {
-    "title": "Offre été 2025 – Économisez 15 %",
-    "description": "Offre estivale à durée limitée avec 15 % de remise supplémentaire sur les réservations directes.",
-    "ogImageAlt": "Bannière de remise d'été"
+    "title": "Économisez 15 % sur les séjours du 20 septembre au 31 octobre",
+    "description": "Offre à durée limitée : économisez 15 % sur les réservations directes pour des séjours du 20 septembre au 31 octobre.",
+    "ogImageAlt": "Bannière de remise à durée limitée"
   },
-  "title": "Économisez {{percent}} % sur votre séjour de {{season}}",
-  "promo": "Réservez directement cet été et profitez d'une remise supplémentaire de {{percent}} %.",
+  "title": "Économisez {{percent}} % sur les séjours du {{from}} au {{to}}",
+  "promo": "Réservez en direct et votre remise de {{percent}} % s’applique automatiquement au moment du paiement.",
+  "dealCard": {
+    "savePercent": "Économisez {{percent}}",
+    "stayDatesLabel": "Dates de séjour :",
+    "badges": {
+      "autoApplied": "Appliqué automatiquement",
+      "directOnly": "Réservations directes uniquement"
+    },
+    "cta": {
+      "bookDirect": "Réserver directement",
+      "applyDeal": "Appliquer l'offre"
+    },
+    "status": {
+      "upcoming": "Offre à venir · Débute le {{startDate}}",
+      "expired": "Expirée"
+    }
+  },
+  "hero": {
+    "activeLabel": "Offre actuelle",
+    "activeTitle": "Économisez {{percent}}",
+    "activeDatesLabel": "Dates de séjour :",
+    "activeSubtitle": "Appliqué automatiquement au paiement. Réservations directes uniquement."
+  },
+  "emptyState": {
+    "title": "Pas d'offre en cours",
+    "subtitle": "Réservez directement pour le meilleur tarif et tous les avantages.",
+    "secondaryCta": "Voir les avantages réservation directe"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "Démarre le {{startDate}} — anticipez et vérifiez vos dates.",
+      "active": "Active — se termine le {{endDate}}.",
+      "expired": "Cette offre est terminée."
+    },
+    "badge": {
+      "upcoming": "Démarre le {{startDate}}",
+      "active": "Active",
+      "expired": "Expirée"
+    },
+    "endsOn": "Se termine le {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "Vérifier vos dates",
+    "checkDatesHint": "La remise s’applique uniquement pendant la période de l’offre.",
+    "viewCurrentDeals": "Voir les offres en cours",
+    "checkAvailabilityStandard": "Vérifier la disponibilité (tarifs standard)"
+  },
+  "sections": {
+    "active": "Offres actives",
+    "upcoming": "Offres à venir",
+    "expired": "Offres expirées",
+    "noneCurrent": "Aucune offre en cours pour le moment."
+  },
+  "chips": {
+    "nonRefundable": "Non remboursable",
+    "directOnly": "Direct uniquement",
+    "minNights": "Min. {{nights}} nuits"
+  },
   "banner": "Plus que {{beds}} lits à ce tarif – l'offre se termine dans {{time}} !",
   "timeRemaining": {
     "lessThanHour": "0 h",
@@ -16,33 +73,48 @@
     "days_other": "{{count}} jours"
   },
   "buttonReserve": "Réserver maintenant",
-  "ogImageAlt": "Bannière de remise d'été",
+  "ogImageAlt": "Bannière de remise à durée limitée",
   "perksHeading": "Avantages de la réservation directe",
   "perksIntro": "Ces avantages sont réservés aux clients qui réservent directement sur notre site.",
   "perksGuarantee": "Chaque réservation effectuée directement sur notre site active automatiquement ces avantages exclusifs.",
-  "perksIntroLink": "Voir toutes nos offres du moment",
+  "perksIntroLink": "Voir tous les avantages",
   "perksList": [
-    "Jusqu'à 25 % de remise sur le tarif standard lors de l'application du coupon",
-    "Petit-déjeuner offert",
-    "Boisson offerte en soirée"
+    {
+      "title": "Jusqu'à 25 % de remise sur le tarif standard lors de l'application du coupon"
+    },
+    {
+      "title": "Petit-déjeuner offert"
+    },
+    {
+      "title": "Boisson offerte en soirée"
+    }
   ],
   "expired": {
-    "message": "Cette offre à durée limitée s’est terminée le {{endedOn}}."
+    "message": "Cette offre est terminée."
   },
   "restrictions": {
     "heading": "Informations essentielles",
+    "sections": {
+      "eligibility": "Éligibilité",
+      "bookingConstraints": "Conditions de réservation",
+      "stayRules": "Règles de séjour",
+      "rateType": "Type de tarif",
+      "stacking": "Cumul"
+    },
     "stayWindow": "Valable pour les séjours du {{from}} au {{to}}.",
+    "bookingWindow": "Valable pour les réservations effectuées du {{from}} au {{to}}.",
     "minAdvance": "Réservez au moins {{days}} jours à l'avance.",
     "minAdvancePrefix": "Réservez au moins",
     "minAdvanceSuffix": "à l'avance.",
     "los": "Minimum {{min}} nuits, maximum {{max}} nuits.",
-    "nonRefundable": "Valable uniquement pour les tarifs non remboursables lors d'une réservation directe, c.-à-d. effectuée sur le site de l'auberge.",
+    "directOnly": "Réservations directes uniquement (site web).",
+    "nonRefundable": "Valable uniquement pour les tarifs non remboursables.",
+    "nonRefundableOnly": "Tarifs non remboursables uniquement.",
     "nonRefundablePrefix": "Valable uniquement pour",
-    "nonRefundableSuffix": "tarifs lors d'une réservation directe, c.-à-d. effectuée sur le site de l'auberge.",
+    "nonRefundableSuffix": "tarifs.",
     "stackable": "{{percent}} % se cumule avec notre remise standard de 10 % pour réservation directe.",
-    "other": "Les conditions générales standard s'appliquent."
+    "other": "Voir les conditions générales."
   },
-  "seasonLabel": "été 2025",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

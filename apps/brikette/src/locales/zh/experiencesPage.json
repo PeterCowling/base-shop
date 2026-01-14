@@ -14,8 +14,8 @@
     "primaryCtaAria": "在 Hostel Brikette 预订你的床位",
     "secondaryCtaAria": "查看 Hostel Brikette 的酒吧菜单",
     "tertiaryCtaAria": "向 Hostel Brikette 数字礼宾发送消息",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "查看早餐菜单",
+    "breakfastCtaAria": "查看早餐菜单"
   },
   "sections": {
     "bar": {
@@ -71,7 +71,7 @@
       "book": "立即预订",
       "events": "酒吧与活动",
       "concierge": "与礼宾聊天",
-      "breakfast": "Breakfast menu"
+      "breakfast": "早餐菜单"
     }
   },
   "title": "Hostel Brikette 体验",
@@ -89,17 +89,49 @@
     "empty": "我们尚未推出与 {{tag}} 相关的体验指南，尝试其他标签或取消筛选。",
     "clearFilter": "显示全部体验指南",
     "cardCta": "探索“{{guideTitle}}”体验指南",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "directionsLabel": "交通指南",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "波西塔诺 → 卡普里渡轮",
+        "capriPositanoFerry": "卡普里 → 波西塔诺渡轮"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "波西塔诺 → 阿马尔菲巴士",
+        "amalfiPositanoBus": "阿马尔菲 → 波西塔诺巴士",
+        "positanoAmalfiFerry": "波西塔诺 → 阿马尔菲渡轮（季节性）",
+        "amalfiPositanoFerry": "阿马尔菲 → 波西塔诺渡轮（季节性）"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "波西塔诺 → 拉韦洛巴士",
+        "ravelloPositanoBus": "拉韦洛 → 波西塔诺巴士",
+        "positanoRavelloFerryBus": "波西塔诺 → 拉韦洛渡轮 + 巴士"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "那不勒斯市中心 → 波西塔诺（火车 + 巴士）",
+        "naplesCenterPositanoFerry": "那不勒斯市中心 → 波西塔诺渡轮",
+        "naplesAirportPositanoBus": "那不勒斯机场 → 波西塔诺巴士",
+        "positanoNaplesCenterBusTrain": "波西塔诺 → 那不勒斯市中心（巴士 + 火车）",
+        "positanoNaplesCenterFerry": "波西塔诺 → 那不勒斯渡轮",
+        "positanoNaplesAirportBus": "波西塔诺 → 那不勒斯机场巴士"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "萨莱诺 → 波西塔诺巴士",
+        "salernoPositanoFerry": "萨莱诺 → 波西塔诺渡轮（季节性）",
+        "positanoSalernoBus": "波西塔诺 → 萨莱诺巴士",
+        "positanoSalernoFerry": "波西塔诺 → 萨莱诺渡轮（季节性）"
+      }
+    },
+    "filterHeading": "筛选体验指南",
+    "filterDescription": "选择标签以缩小我们重点展示的体验内容。",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "海滩指南",
+          "description": "选择合适的沙滩并规划你的行程。"
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "前往海滩的路线",
+          "description": "从 Hostel Brikette 到海岸的分步路线说明。"
         }
       }
     }

@@ -11,11 +11,11 @@
     "primaryCta": "숙소 예약하기",
     "secondaryCta": "바 메뉴 열기",
     "tertiaryCta": "디지털 컨시어지에게 메시지 보내기",
-    "primaryCtaAria": "번역을 준비하고 있습니다.",
-    "secondaryCtaAria": "번역을 준비하고 있습니다.",
+    "primaryCtaAria": "Hostel Brikette 숙박 예약하기",
+    "secondaryCtaAria": "Hostel Brikette 바 메뉴 보기",
     "tertiaryCtaAria": "Hostel Brikette 디지털 컨시어지에게 메시지를 보내세요",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "아침 식사 메뉴 보기",
+    "breakfastCtaAria": "아침 식사 메뉴 보기"
   },
   "sections": {
     "bar": {
@@ -45,7 +45,7 @@
       "title": "24시간 디지털 컨시어지",
       "description": "페리 알림, 일정표, 맞춤형 답변을 제공하는 디지털 컨시어지.",
       "highlights": [
-        "번역을 준비하고 있습니다.",
+        "우리 팀이 WhatsApp과 Messenger로 답변합니다.",
         "버스와 페리 변동 사항을 자동 알림으로 받아보세요.",
         "일정에 맞춘 맞춤 추천을 제공합니다."
       ],
@@ -71,7 +71,7 @@
       "book": "지금 예약하기",
       "events": "바 & 이벤트",
       "concierge": "컨시어지와 채팅하기",
-      "breakfast": "Breakfast menu"
+      "breakfast": "아침 식사 메뉴"
     }
   },
   "title": "Hostel Brikette 체험",
@@ -89,17 +89,49 @@
     "empty": "{{tag}} 관련 체험 가이드는 아직 없습니다. 다른 태그를 선택하거나 필터를 제거하세요.",
     "clearFilter": "모든 체험 가이드 보기",
     "cardCta": "“{{guideTitle}}” 체험 가이드를 살펴보세요",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "directionsLabel": "길 안내",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "포지타노 → 카프리 페리",
+        "capriPositanoFerry": "카프리 → 포지타노 페리"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "포지타노 → 아말피 버스",
+        "amalfiPositanoBus": "아말피 → 포지타노 버스",
+        "positanoAmalfiFerry": "포지타노 → 아말피 페리 (계절 운항)",
+        "amalfiPositanoFerry": "아말피 → 포지타노 페리 (계절 운항)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "포지타노 → 라벨로 버스",
+        "ravelloPositanoBus": "라벨로 → 포지타노 버스",
+        "positanoRavelloFerryBus": "포지타노 → 라벨로 페리 + 버스"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "나폴리 중심부 → 포지타노 (기차 + 버스)",
+        "naplesCenterPositanoFerry": "나폴리 중심부 → 포지타노 페리",
+        "naplesAirportPositanoBus": "나폴리 공항 → 포지타노 버스",
+        "positanoNaplesCenterBusTrain": "포지타노 → 나폴리 중심부 (버스 + 기차)",
+        "positanoNaplesCenterFerry": "포지타노 → 나폴리 페리",
+        "positanoNaplesAirportBus": "포지타노 → 나폴리 공항 버스"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "살레르노 → 포지타노 버스",
+        "salernoPositanoFerry": "살레르노 → 포지타노 페리 (계절 운항)",
+        "positanoSalernoBus": "포지타노 → 살레르노 버스",
+        "positanoSalernoFerry": "포지타노 → 살레르노 페리 (계절 운항)"
+      }
+    },
+    "filterHeading": "체험 가이드 필터",
+    "filterDescription": "태그를 선택해 강조할 체험을 좁혀보세요.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "해변 가이드",
+          "description": "맞는 해변을 골라 하루 일정을 계획하세요."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "해변 길 안내",
+          "description": "Hostel Brikette에서 해변까지 단계별로 안내합니다."
         }
       }
     }

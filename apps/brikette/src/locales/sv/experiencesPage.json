@@ -14,8 +14,8 @@
     "primaryCtaAria": "Boka din vistelse på Hostel Brikette",
     "secondaryCtaAria": "Visa Hostel Brikettes barmeny",
     "tertiaryCtaAria": "Skicka ett meddelande till Hostel Brikettes digitala conciergetjänst",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "Se frukostmenyn",
+    "breakfastCtaAria": "Se frukostmenyn"
   },
   "sections": {
     "bar": {
@@ -71,7 +71,7 @@
       "book": "Boka nu",
       "events": "Bar & evenemang",
       "concierge": "Chatta med conciergen",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Frukostmeny"
     }
   },
   "title": "Upplevelser på Hostel Brikette",
@@ -89,17 +89,49 @@
     "empty": "Vi har ännu inga upplevelseguider för {{tag}}. Prova en annan tagg eller ta bort filtret.",
     "clearFilter": "Visa alla upplevelseguider",
     "cardCta": "Utforska upplevelseguiden {{guideTitle}}",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "directionsLabel": "Vägbeskrivning",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri med färja",
+        "capriPositanoFerry": "Capri → Positano med färja"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi med buss",
+        "amalfiPositanoBus": "Amalfi → Positano med buss",
+        "positanoAmalfiFerry": "Positano → Amalfi med färja (säsong)",
+        "amalfiPositanoFerry": "Amalfi → Positano med färja (säsong)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello med buss",
+        "ravelloPositanoBus": "Ravello → Positano med buss",
+        "positanoRavelloFerryBus": "Positano → Ravello färja + buss"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Neapel centrum → Positano (tåg + buss)",
+        "naplesCenterPositanoFerry": "Neapel centrum → Positano med färja",
+        "naplesAirportPositanoBus": "Neapel flygplats → Positano med buss",
+        "positanoNaplesCenterBusTrain": "Positano → Neapel centrum (buss + tåg)",
+        "positanoNaplesCenterFerry": "Positano → Neapel med färja",
+        "positanoNaplesAirportBus": "Positano → Neapel flygplats med buss"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano med buss",
+        "salernoPositanoFerry": "Salerno → Positano med färja (säsong)",
+        "positanoSalernoBus": "Positano → Salerno med buss",
+        "positanoSalernoFerry": "Positano → Salerno med färja (säsong)"
+      }
+    },
+    "filterHeading": "Filtrera upplevelseguider",
+    "filterDescription": "Välj en tagg för att avgränsa upplevelserna vi lyfter fram.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "Strandguider",
+          "description": "Välj rätt strandavsnitt och planera din dag."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "Vägbeskrivning till stranden",
+          "description": "Steg‑för‑steg‑vägbeskrivning från Hostel Brikette ner till stranden."
         }
       }
     }

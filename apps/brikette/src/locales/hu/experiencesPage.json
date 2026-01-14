@@ -14,8 +14,8 @@
     "primaryCtaAria": "Foglalja le tartózkodását a Hostel Brikette-ben",
     "secondaryCtaAria": "Tekintse meg a Hostel Brikette bárjának kínálatát",
     "tertiaryCtaAria": "Küldjön üzenetet a Hostel Brikette digitális concierge-ének",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "Nézze meg a reggelimenüt",
+    "breakfastCtaAria": "Nézze meg a reggelimenüt"
   },
   "sections": {
     "bar": {
@@ -71,7 +71,7 @@
       "book": "Foglaljon most",
       "events": "Bár és programok",
       "concierge": "Csevegés a concierge-vel",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Reggelimenü"
     }
   },
   "title": "Élmények a Hostel Brikette-ben",
@@ -89,17 +89,49 @@
     "empty": "Még nincs élménykalauzunk {{tag}} témában. Próbáljon másik címkét vagy vegye le a szűrőt.",
     "clearFilter": "Összes élménykalauz megjelenítése",
     "cardCta": "Fedezd fel a {{guideTitle}} élménykalauzt",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "directionsLabel": "Útvonal",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri komppal",
+        "capriPositanoFerry": "Capri → Positano komppal"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi busszal",
+        "amalfiPositanoBus": "Amalfi → Positano busszal",
+        "positanoAmalfiFerry": "Positano → Amalfi komppal (szezonális)",
+        "amalfiPositanoFerry": "Amalfi → Positano komppal (szezonális)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello busszal",
+        "ravelloPositanoBus": "Ravello → Positano busszal",
+        "positanoRavelloFerryBus": "Positano → Ravello komp + busz"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Nápoly központ → Positano (vonat + busz)",
+        "naplesCenterPositanoFerry": "Nápoly központ → Positano komppal",
+        "naplesAirportPositanoBus": "Nápoly repülőtér → Positano busszal",
+        "positanoNaplesCenterBusTrain": "Positano → Nápoly központ (busz + vonat)",
+        "positanoNaplesCenterFerry": "Positano → Nápoly komppal",
+        "positanoNaplesAirportBus": "Positano → Nápoly repülőtér busszal"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano busszal",
+        "salernoPositanoFerry": "Salerno → Positano komppal (szezonális)",
+        "positanoSalernoBus": "Positano → Salerno busszal",
+        "positanoSalernoFerry": "Positano → Salerno komppal (szezonális)"
+      }
+    },
+    "filterHeading": "Élménykalauzok szűrése",
+    "filterDescription": "Válasszon címkét, hogy szűkítse a kiemelt élményeket.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "Strandkalauzok",
+          "description": "Válassza ki a megfelelő partszakaszt, és tervezze meg a napját."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "Útbaigazítás a strandhoz",
+          "description": "Lépésről lépésre útbaigazítás a Hostel Brikette-től a partra."
         }
       }
     }

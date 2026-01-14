@@ -28,6 +28,10 @@
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
-    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+    "assistanceSlugMissing": "ARTICLE_SLUGS må definere minst én hjelpeslugg"
+  },
+  "accessibility": {
+    "skipToMain": "Hopp til hovedinnhold",
+    "skipToNav": "Hopp til navigasjon"
   }
 }

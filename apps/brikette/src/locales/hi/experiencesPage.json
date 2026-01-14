@@ -11,11 +11,11 @@
     "primaryCta": "अपना ठहराव बुक करें",
     "secondaryCta": "बार मेन्यू खोलें",
     "tertiaryCta": "डिजिटल कंसीयर्ज को संदेश भेजें",
-    "primaryCtaAria": "अनुवाद तैयार किया जा रहा है।",
-    "secondaryCtaAria": "अनुवाद तैयार किया जा रहा है।",
+    "primaryCtaAria": "Hostel Brikette में अपना ठहराव बुक करें",
+    "secondaryCtaAria": "Hostel Brikette का बार मेन्यू देखें",
     "tertiaryCtaAria": "Hostel Brikette के डिजिटल कंसीयर्ज को संदेश भेजें",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "ब्रेकफास्ट मेन्यू देखें",
+    "breakfastCtaAria": "ब्रेकफास्ट मेन्यू देखें"
   },
   "sections": {
     "bar": {
@@ -42,10 +42,10 @@
     },
     "concierge": {
       "eyebrow": "डिजिटल कंसीयर्ज",
-      "title": "अनुवाद तैयार किया जा रहा है।",
+      "title": "हमेशा उपलब्ध डिजिटल कंसीयर्ज",
       "description": "फेरी अलर्ट, यात्रा कार्यक्रम और तुरंत जवाब देने वाला डिजिटल कंसीयर्ज।",
       "highlights": [
-        "अनुवाद तैयार किया जा रहा है।",
+        "दिन की योजना बनाने के लिए तुरंत सुझाव और अपडेट।",
         "बस और फेरी में बदलाव के लिए स्वचालित अलर्ट।",
         "आपकी योजनाओं के अनुरूप व्यक्तिगत सुझाव।"
       ],
@@ -71,7 +71,7 @@
       "book": "अभी बुक करें",
       "events": "बार और इवेंट",
       "concierge": "कंसीयर्ज से चैट करें",
-      "breakfast": "Breakfast menu"
+      "breakfast": "ब्रेकफास्ट मेन्यू"
     }
   },
   "title": "Hostel Brikette में अनुभव",
@@ -89,17 +89,49 @@
     "empty": "{{tag}} के लिए अभी हमारे पास अनुभव गाइड नहीं हैं। कोई दूसरा टैग आज़माएँ या फ़िल्टर हटाएँ।",
     "clearFilter": "सभी अनुभव गाइड दिखाएँ",
     "cardCta": "“{{guideTitle}}” अनुभव गाइड देखें",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "directionsLabel": "दिशाएँ",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "पोसिटानो → कैप्री फेरी",
+        "capriPositanoFerry": "कैप्री → पोसिटानो फेरी"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "पोसिटानो → अमाल्फ़ी बस से",
+        "amalfiPositanoBus": "अमाल्फ़ी → पोसिटानो बस से",
+        "positanoAmalfiFerry": "पोसिटानो → अमाल्फ़ी फेरी (सीज़नल)",
+        "amalfiPositanoFerry": "अमाल्फ़ी → पोसिटानो फेरी (सीज़नल)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "पोसिटानो → रावेलो बस से",
+        "ravelloPositanoBus": "रावेलो → पोसिटानो बस से",
+        "positanoRavelloFerryBus": "पोसिटानो → रावेलो फेरी + बस"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "नेपल्स सेंटर → पोसिटानो (ट्रेन + बस)",
+        "naplesCenterPositanoFerry": "नेपल्स सेंटर → पोसिटानो फेरी",
+        "naplesAirportPositanoBus": "नेपल्स एयरपोर्ट → पोसिटानो बस से",
+        "positanoNaplesCenterBusTrain": "पोसिटानो → नेपल्स सेंटर (बस + ट्रेन)",
+        "positanoNaplesCenterFerry": "पोसिटानो → नेपल्स फेरी",
+        "positanoNaplesAirportBus": "पोसिटानो → नेपल्स एयरपोर्ट बस से"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "सालेर्नो → पोसिटानो बस से",
+        "salernoPositanoFerry": "सालेर्नो → पोसिटानो फेरी (सीज़नल)",
+        "positanoSalernoBus": "पोसिटानो → सालेर्नो बस से",
+        "positanoSalernoFerry": "पोसिटानो → सालेर्नो फेरी (सीज़नल)"
+      }
+    },
+    "filterHeading": "अनुभव गाइड फ़िल्टर करें",
+    "filterDescription": "हम जिन अनुभवों को दिखाते हैं उन्हें सीमित करने के लिए टैग चुनें।",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "बीच गाइड",
+          "description": "सही बीच चुनें और अपना दिन प्लान करें।"
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "बीच के लिए दिशाएँ",
+          "description": "Hostel Brikette से बीच तक चरण-दर-चरण मार्गदर्शन।"
         }
       }
     }

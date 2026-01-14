@@ -12,10 +12,10 @@
     "secondaryCta": "バーメニューを見る",
     "tertiaryCta": "デジタルコンシェルジュに相談する",
     "primaryCtaAria": "Hostel Briketteの宿泊を予約する",
-    "secondaryCtaAria": "翻訳を準備中です。",
+    "secondaryCtaAria": "Hostel Briketteのバーメニューを見る",
     "tertiaryCtaAria": "Hostel Briketteのデジタルコンシェルジュにメッセージを送る",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "朝食メニューを見る",
+    "breakfastCtaAria": "朝食メニューを見る"
   },
   "sections": {
     "bar": {
@@ -45,7 +45,7 @@
       "title": "いつでもつながるデジタルコンシェルジュ",
       "description": "移動ルートや時間を即座に教えてくれるデジタルコンシェルジュ",
       "highlights": [
-        "翻訳を準備中です。",
+        "WhatsAppとMessengerでチームが返信します。",
         "バスやフェリーの変更情報を自動でお知らせします。",
         "あなたの予定に合わせたおすすめを個別にご提案します。"
       ],
@@ -71,7 +71,7 @@
       "book": "今すぐ予約",
       "events": "バーとイベント",
       "concierge": "コンシェルジュとチャット",
-      "breakfast": "Breakfast menu"
+      "breakfast": "朝食メニュー"
     }
   },
   "title": "Hostel Briketteの体験",
@@ -89,17 +89,49 @@
     "empty": "{{tag}} に関する体験ガイドはまだありません。別のタグを試すかフィルターを外してください。",
     "clearFilter": "体験ガイドをすべて表示",
     "cardCta": "「{{guideTitle}}」の体験ガイドを詳しく見る",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "directionsLabel": "アクセス",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "ポジターノ → カプリ フェリー",
+        "capriPositanoFerry": "カプリ → ポジターノ フェリー"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "ポジターノ → アマルフィ バス",
+        "amalfiPositanoBus": "アマルフィ → ポジターノ バス",
+        "positanoAmalfiFerry": "ポジターノ → アマルフィ フェリー（季節運航）",
+        "amalfiPositanoFerry": "アマルフィ → ポジターノ フェリー（季節運航）"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "ポジターノ → ラヴェッロ バス",
+        "ravelloPositanoBus": "ラヴェッロ → ポジターノ バス",
+        "positanoRavelloFerryBus": "ポジターノ → ラヴェッロ フェリー + バス"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "ナポリ中心部 → ポジターノ（電車 + バス）",
+        "naplesCenterPositanoFerry": "ナポリ中心部 → ポジターノ フェリー",
+        "naplesAirportPositanoBus": "ナポリ空港 → ポジターノ バス",
+        "positanoNaplesCenterBusTrain": "ポジターノ → ナポリ中心部（バス + 電車）",
+        "positanoNaplesCenterFerry": "ポジターノ → ナポリ フェリー",
+        "positanoNaplesAirportBus": "ポジターノ → ナポリ空港 バス"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "サレルノ → ポジターノ バス",
+        "salernoPositanoFerry": "サレルノ → ポジターノ フェリー（季節運航）",
+        "positanoSalernoBus": "ポジターノ → サレルノ バス",
+        "positanoSalernoFerry": "ポジターノ → サレルノ フェリー（季節運航）"
+      }
+    },
+    "filterHeading": "体験ガイドを絞り込む",
+    "filterDescription": "タグを選んで表示する体験を絞り込みます。",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "ビーチガイド",
+          "description": "自分に合うビーチを選び、1日の計画を立てましょう。"
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "ビーチへの行き方",
+          "description": "Hostel Briketteから海岸までの手順を案内します。"
         }
       }
     }

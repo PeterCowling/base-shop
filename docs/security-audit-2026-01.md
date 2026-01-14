@@ -1,12 +1,12 @@
 Type: Log
 Status: Active
 Domain: Security
-Last-reviewed: 2026-01-14
+Last-reviewed: 2026-01-15
 
 # Security Audit Report - January 2026
 
 Audit Date: 2026-01-14
-Updated: 2026-01-14
+Updated: 2026-01-15
 Auditor: Codex (GPT-5)
 Scope: Full repository security assessment
 Previous Audit: 2026-01-12 (API routes only)
@@ -441,7 +441,7 @@ After implementing fixes, verify:
 
 | Risk | Status | Notes |
 |------|--------|-------|
-| A01: Broken Access Control | ⚠️ Partial | Firebase bypass, cross-shop access, unauth CMS and pipeline APIs |
+| A01: Broken Access Control | ⚠️ Partial | Firebase bypass, cross-shop access, unauth CMS marketing/content/RBAC endpoints, pipeline APIs |
 | A02: Cryptographic Failures | ⚠️ Partial | Secrets in git, plaintext demo passwords |
 | A03: Injection | ⚠️ Partial | CSV formula injection risk |
 | A04: Insecure Design | ⚠️ Partial | Test auth bypass in prod code |
@@ -524,7 +524,7 @@ Verified at [auth.ts](apps/cms/src/actions/common/auth.ts) - `CMS_TEST_ASSUME_AD
 
 ### Current Grade: D+ (Not Production Ready)
 
-The report grades the system at C+, but this is **overly generous** for production deployment. Here's a realistic assessment:
+The report now grades the system at D+, which is still **not production ready**. Here's the updated assessment:
 
 ### Blocking Issues for Production
 
@@ -545,7 +545,7 @@ The report grades the system at C+, but this is **overly generous** for producti
 | Plan Element | Issue |
 |--------------|-------|
 | **Phase 1 timeline "This Week"** | Unrealistic. Secret rotation + history scrubbing + Firebase rules is 2-3 weeks of careful work minimum |
-| **Phase 2 "2 Weeks"** | 11 high-severity items in 2 weeks is aggressive. This should be 4-6 weeks with testing |
+| **Phase 2 "2 Weeks"** | 14+ high-severity items in 2 weeks is aggressive. This should be 4-6 weeks with testing |
 | **Missing: Staging Environment** | No mention of testing fixes in staging before production |
 | **Missing: Incident Response** | What if secrets are already compromised? Need IR plan |
 | **Missing: Security Testing** | No penetration testing before go-live |
@@ -603,3 +603,69 @@ The report grades the system at C+, but this is **overly generous** for producti
 
 Updated: 2026-01-14
 Reviewer: Claude Opus 4.5
+
+---
+
+## Additional Audit Findings (Codex - 2026-01-15)
+
+These findings are newly identified in this follow-up review and are incorporated into the updated summary counts and plan gates.
+
+### COD-H1. Unauthenticated Email Campaign Endpoints
+
+- Severity: HIGH
+- CWE/OWASP: CWE-862 (Missing Authorization); OWASP A01 (Broken Access Control)
+- Component paths: `apps/cms/src/app/api/marketing/email/route.ts`, `apps/cms/src/app/api/campaigns/route.ts`
+- Risk: Unauthenticated callers can send campaigns, list metrics, and spam recipients, risking deliverability bans and reputational damage.
+- Exploit narrative: An attacker POSTs to `/cms/api/marketing/email` or `/cms/api/campaigns` with arbitrary `to`, `subject`, and `body` and triggers outbound email at scale.
+- Minimal patch: Require authenticated admin sessions and shop ownership checks; enforce CSRF protection; rate limit; restrict recipients to validated segments.
+- Test: Integration tests assert 401/403 for unauthenticated callers and allow only authorized admins to send campaigns.
+
+### COD-H2. Unauthenticated CMS Content Management Endpoints
+
+- Severity: HIGH
+- CWE/OWASP: CWE-862 (Missing Authorization); OWASP A01 (Broken Access Control)
+- Component paths: `apps/cms/src/app/api/segments/route.ts`, `apps/cms/src/app/api/library/route.ts`, `apps/cms/src/app/api/comments/[shop]/[pageId]/route.ts`, `apps/cms/src/app/api/comments/[shop]/[pageId]/[commentId]/route.ts`
+- Risk: Attackers can modify segmentation rules, inject or delete library components, and alter internal comments across any shop.
+- Exploit narrative: An attacker POSTs/PATCHes to these endpoints with crafted payloads to tamper with CMS content or spam collaborators.
+- Minimal patch: Require authenticated sessions for all methods; enforce shop-level authorization; add rate limiting to comment creation.
+- Test: Integration tests verify unauthenticated requests return 401/403 and authorized users can access only their shops.
+
+### COD-H3. Unauthenticated RBAC User Enumeration
+
+- Severity: HIGH
+- CWE/OWASP: CWE-200 (Exposure of Sensitive Information); OWASP A05 (Security Misconfiguration)
+- Component paths: `apps/cms/src/app/api/rbac/users/route.ts`
+- Risk: Exposes user names/emails to unauthenticated callers, enabling targeted phishing and account enumeration.
+- Exploit narrative: Attacker calls `/cms/api/rbac/users` to collect names/emails for social engineering.
+- Minimal patch: Require admin authorization; return only minimal metadata or remove endpoint in production; add audit logging.
+- Test: Integration test ensures unauthenticated requests are rejected and admin access is required.
+
+### COD-M1. Unauthenticated SEO Audit Endpoint Enables Resource Exhaustion
+
+- Severity: MEDIUM
+- CWE/OWASP: CWE-400 (Uncontrolled Resource Consumption); OWASP A04 (Insecure Design)
+- Component paths: `apps/cms/src/app/api/seo/audit/[shop]/route.ts`
+- Risk: Lighthouse runs are CPU-intensive; unauthenticated access allows DoS via repeated POSTs.
+- Exploit narrative: An attacker loops POST requests to run Lighthouse and exhaust server resources.
+- Minimal patch: Require authenticated access or a cron secret; rate limit; queue Lighthouse runs with concurrency limits.
+- Test: Integration test ensures 401/403 for unauthenticated callers; load test verifies rate limits.
+
+### COD-M2. Public Shop and Discount Enumeration
+
+- Severity: MEDIUM
+- CWE/OWASP: CWE-200 (Exposure of Sensitive Information); OWASP A05 (Security Misconfiguration)
+- Component paths: `apps/cms/src/app/api/shops/route.ts`, `apps/cms/src/app/api/marketing/discounts/route.ts` (GET)
+- Risk: Exposes internal shop IDs and discount codes, enabling targeted abuse or scraping.
+- Exploit narrative: Attacker enumerates shop IDs and discount codes, then abuses the codes across storefronts.
+- Minimal patch: Require authenticated admin access for listing; scope discounts to authorized shops; create separate public endpoints if needed.
+- Test: Integration tests ensure unauthenticated requests are rejected and access is scoped.
+
+### COD-L1. Pagination Parameters Lack Upper Bounds
+
+- Severity: LOW
+- CWE/OWASP: CWE-770 (Allocation of Resources Without Limits or Throttling); OWASP A04 (Insecure Design)
+- Component paths: `apps/cms/src/app/api/sections/[shop]/route.ts`
+- Risk: Excessive `page` values can cause large offsets and unnecessary work.
+- Exploit narrative: An attacker uses extreme `page` values to trigger inefficient queries and degrade performance.
+- Minimal patch: Add upper bounds for `page`/offset and return 400 when exceeded.
+- Test: Unit test asserts oversized page values are rejected.

@@ -2,17 +2,6 @@
   "extends": "@acme/config/tsconfig.app.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "strict": true,
-    "allowJs": false,
-    "exactOptionalPropertyTypes": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "useUnknownInCatchVariables": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "disableSourceOfProjectReferenceRedirect": true,
-    "skipLibCheck": true,
     "paths": {
       "@/*": ["src/*", "dist/*"],
       "@acme/product-configurator": [
@@ -39,8 +28,7 @@
       ],
       "@acme/i18n/*": ["../../packages/i18n/src/*", "../../packages/i18n/dist/*"],
       "three-stdlib": ["src/types/three-stdlib.d.ts"]
-    },
-    "jsx": "preserve"
+    }
   },
   "include": ["next-env.d.ts", "src/**/*", ".next/types/**/*.ts"],
   "exclude": [

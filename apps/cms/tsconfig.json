@@ -1,21 +1,7 @@
 {
-  "extends": "../../tsconfig.base.json",
+  "extends": "@acme/config/tsconfig.app.json",
   "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "emitDeclarationOnly": true,
-    "noEmit": false,
-    "outDir": "dist",
-    "declarationDir": "dist",
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "strict": true,
-    "skipLibCheck": true,
-    "jsx": "preserve",
     "baseUrl": ".",
-    "resolveJsonModule": true,
-    "allowJs": false,
-    "rootDir": "../..",
     "types": ["node", "react", "react-dom", "next"],
     "paths": {
       "@/*": ["./src/*"],
@@ -187,12 +173,7 @@
       "@acme/page-builder-ui/*": [
         "../../packages/page-builder-ui/dist/*", "../../packages/page-builder-ui/src/*"
       ]
-    },
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "incremental": true,
-    "isolatedModules": true,
-    "plugins": [{ "name": "next" }]
+    }
   },
   "include": [
     "next-env.d.ts",

@@ -1,9 +1,7 @@
 {
-  "extends": "@acme/config/tsconfig.app.json",
+  "extends": "../../packages/config/tsconfig.nextjs-app.json",
   "compilerOptions": {
-    "allowJs": false,
     "baseUrl": ".",
-    "rootDir": "../..",
     "paths": {
       "@ui": [
         "../../packages/ui/dist",

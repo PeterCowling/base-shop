@@ -2,7 +2,6 @@
   "extends": "@acme/config/tsconfig.app.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "rootDir": "../..",
     "paths": {
       "@/*": ["./src/*"],
       "@ui": [

@@ -1,18 +1,7 @@
 {
-  "extends": "@acme/config/tsconfig.app.json",
+  "extends": "../../packages/config/tsconfig.nextjs-app.json",
   "compilerOptions": {
     "baseUrl": ".",
-    "strict": true,
-    "allowJs": false,
-    "exactOptionalPropertyTypes": true,
-    "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "useUnknownInCatchVariables": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "disableSourceOfProjectReferenceRedirect": true,
-    "skipLibCheck": false,
     "paths": {
       "@/*": [
         "src/*",
@@ -51,8 +40,7 @@
       "@react-router/dev/routes": [
         "src/compat/react-router-dev-routes.ts"
       ]
-    },
-    "jsx": "preserve"
+    }
   },
   "include": [
     "next-env.d.ts",

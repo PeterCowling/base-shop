@@ -1,9 +1,7 @@
 {
   "extends": "@acme/config/tsconfig.app.json",
   "compilerOptions": {
-    "allowJs": false,
     "baseUrl": ".",
-    "rootDir": "../..",
     "paths": {
       "@/*": [
         "../../packages/ui/src/*",
@@ -205,12 +203,7 @@
         "../../packages/page-builder-core/src/*",
         "../../packages/page-builder-core/dist/*"
       ]
-    },
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "preserve",
-    "resolveJsonModule": true,
-    "strictNullChecks": true
+    }
   },
   "include": [
     "src/**/*",

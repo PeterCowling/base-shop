@@ -118,28 +118,28 @@
     }
   ],
   "scanToShare": {
-    "title": "Scan to Share",
+    "title": "Scannen zum Teilen",
     "items": [
       {
-        "alt": "Scan to Share / route image 1"
+        "alt": "Scannen zum Teilen / Routenbild 1"
       },
       {
-        "alt": "Scan to Share / route image 2"
+        "alt": "Scannen zum Teilen / Routenbild 2"
       },
       {
-        "alt": "Scan to Share / route image 3"
+        "alt": "Scannen zum Teilen / Routenbild 3"
       },
       {
-        "alt": "Scan to Share / route image 4"
+        "alt": "Scannen zum Teilen / Routenbild 4"
       },
       {
-        "alt": "Scan to Share / route image 5"
+        "alt": "Scannen zum Teilen / Routenbild 5"
       },
       {
-        "alt": "Scan to Share / route image 6"
+        "alt": "Scannen zum Teilen / Routenbild 6"
       },
       {
-        "alt": "Scan to Share / route image 7"
+        "alt": "Scannen zum Teilen / Routenbild 7"
       }
     ]
   }

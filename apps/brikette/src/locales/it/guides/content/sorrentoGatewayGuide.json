@@ -1,0 +1,28 @@
+{
+  "seo": {
+    "title": "Sorrento: porta d'ingresso per la Costiera Amalfitana",
+    "description": "Perché partire da Sorrento e come proseguire verso Positano e Capri."
+  },
+  "linkLabel": "Sorrento: porta d'ingresso per la Costiera Amalfitana",
+  "intro": [
+    "Sorrento è un punto di partenza pratico con autobus e traghetti frequenti verso la Costiera Amalfitana e collegamenti ferroviari facili per Napoli e Pompei."
+  ],
+  "sections": [
+    {
+      "id": "why-sorrento",
+      "title": "Perché arrivare via Sorrento",
+      "body": [
+        "I treni da Napoli arrivano regolarmente; le sistemazioni sono numerose e spesso più convenienti rispetto a Positano.",
+        "Dal centro partono autobus e traghetti stagionali per Positano e Amalfi."
+      ]
+    },
+    {
+      "id": "onward-connections",
+      "title": "Collegamenti successivi",
+      "body": [
+        "I bus SITA circolano tutto l'anno per Positano e Amalfi; acquista i biglietti prima di salire.",
+        "In alta stagione i traghetti arrivano direttamente a Positano — ottima vista e meno scale quando viaggi con bagagli."
+      ]
+    }
+  ]
+}

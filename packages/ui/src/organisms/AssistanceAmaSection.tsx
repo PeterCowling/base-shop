@@ -3,8 +3,8 @@
 import Fuse, { type IFuseOptions } from "fuse.js";
 import { memo, useCallback, useEffect, useMemo, useState, type ChangeEvent, type JSX } from "react";
 import { useTranslation } from "react-i18next";
-import type { AssistanceKeyword, AssistanceKeywordResource } from "@/utils/parseAmaKeywords";
-import { parseAssistanceKeywords } from "@/utils/parseAmaKeywords";
+import type { AssistanceKeyword, AssistanceKeywordResource } from "@ui/utils/parseAmaKeywords";
+import { parseAssistanceKeywords } from "@ui/utils/parseAmaKeywords";
 import { Section } from "../atoms/Section";
 
 const clean = (s?: string): string => (s ? s.trim() : "");

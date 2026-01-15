@@ -1,61 +1,61 @@
 {
   "seo": {
-    "title": "Top of the Mountain Hike fra Hostel Brikette",
+    "title": "Top of the Mountain-vandring fra Hostel Brikette",
     "description": "Nå Monte Sant'Angelo, Amalfikystens højeste punkt, med disse anvisninger, forberedelsestip og advarsler."
   },
-  "linkLabel": "Top of the Mountain vandretur fra Hostel Brikette",
+  "linkLabel": "Top of the Mountain-vandring fra Hostel Brikette",
   "intro": [
-    "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
-    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
+    "Monte Sant'Angelo rejser sig over Amalfikysten og belønner vandrere med 360-graders udsigter fra Capri til Sorrentohalvøen.",
+    "Denne rute starter ved Hostel Brikette, guider dig op til Santa Maria del Castello og forklarer den sidste del til toppen, så du ved, hvad der venter, før du går i gang."
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Why tackle this hike",
+      "title": "Hvorfor tage denne vandring",
       "body": [
-        "Views from the summit sweep across the peninsula towards Capri and down the Lattari mountains, making the grind worthwhile for photographers and hikers alike.",
-        "Reaching the Amalfi Coast's highest point is a satisfying physical challenge and a story you will trade with other travellers back at the hostel.",
-        "The long ascent doubles as a serious cardio session, especially if you are training for bigger treks later in your trip."
+        "Udsigten fra toppen strækker sig over halvøen mod Capri og ned over Lattari-bjergene, hvilket gør anstrengelsen værd for både fotografer og vandrere.",
+        "At nå Amalfikystens højeste punkt er en tilfredsstillende fysisk udfordring og en historie, du vil dele med andre rejsende på hostellet.",
+        "Den lange opstigning fungerer også som seriøs konditionstræning, især hvis du træner til større ture senere på rejsen."
       ]
     },
     {
       "id": "getting-to-santa-maria",
-      "title": "Getting to Santa Maria del Castello",
+      "title": "Sådan kommer du til Santa Maria del Castello",
       "body": [
-        "Follow our standard hostel-to-Santa-Maria directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
-        "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+        "Følg vores standardrute fra hostellet til Santa Maria, indtil du når landsbyen; denne opstigning dækker lige over en tredjedel af dagens samlede højdemeter.",
+        "Tag en pause på pladsen, fyld vand, hvis baren er åben, og tjek at alle i gruppen stadig føler sig klar, før I går videre ad den udsatte øvre sti."
       ]
     },
     {
       "id": "santa-maria-to-summit",
-      "title": "From Santa Maria to the summit",
+      "title": "Fra Santa Maria til toppen",
       "body": [
-        "From the crossroads at the top of the village, turn right up the paved lane until a junction, then turn left and continue past the restaurant until the road bends sharply left.",
-        "Leave the road on the right-hand side, following the side path that drops slightly between houses. It will feel like private property at first, but you are still on the right track.",
-        "Stay on the mountain trail for an extended stretch until you reach a signed crossroads. Ignore the downhill options and take the steeply rising path.",
-        "The ascent quickly zig-zags before easing into a long, flatter traverse along the left-hand side of the mountain face. When you spot stone-cut steps on your right, follow them around the back of the peak for the final push.",
-        "Those rock steps lead to the last ramp of the day—keep climbing and you will emerge on the summit plateau with panoramic views in every direction."
+        "Fra krydset øverst i landsbyen drejer du til højre op ad den asfalterede vej til et vejkryds, drejer til venstre og fortsætter forbi restauranten, indtil vejen svinger skarpt til venstre.",
+        "Forlad vejen i højre side og følg stien, der falder lidt mellem husene. Det kan først føles som privat område, men du er stadig på rette vej.",
+        "Følg bjergstien et godt stykke, indtil du når et skiltet vejkryds. Ignorér de nedadgående ruter og tag den stejlt stigende sti.",
+        "Opstigningen zigzagger hurtigt, før den bliver til en længere, fladere traverse langs venstre side af bjergsiden. Når du ser stenhuggede trin på højre side, følger du dem rundt om bagsiden af toppen til den sidste del.",
+        "De stenhuggede trin fører til dagens sidste stigning — fortsæt opad, og du kommer ud på topplateauet med panoramaudsigt i alle retninger."
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "Det vigtigste",
   "essentials": [
     "Mindst 2 liter vand pr. person plus salte snacks; der er ingen pålidelige genopfyldninger efter Santa Maria del Castello.",
     "Solide vandresko med greb - dele af det øverste spor er stenede, løse og blottede.",
     "Solbeskyttelse og lag til toppen; vinden kan piske hen over højderyggen selv på varme dage."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "Typiske omkostninger",
   "typicalCosts": [
     "Trail adgang er gratis; budget €5–€10, hvis du planlægger at belønne dig selv med en drink eller snack i Santa Maria del Castello.",
     "Returner SITA-busbilletter eller færgepriser, hvis du beslutter dig for at gå ned via en anden landsby i stedet for at vandre hele vejen tilbage."
   ],
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "Godt tidspunkt",
   "tips": [
     "Start ved daggry om sommeren for at undgå at klatre under høj varme; sen efterår og forårseftermiddage byder på et blødere lys uden den brændende sol.",
     "Tjek vejrudsigten for storme – skydække kan slette udsigten, og våde sten gør toppens trin glatte.",
     "Lad nogen på vandrerhjemmet kende din plan og forventet hjemkomsttid, før du tager afsted."
   ],
-  "warningsTitle": "When to reconsider",
+  "warningsTitle": "Hvornår du bør overveje at lade være",
   "warnings": [
     "Spring vandreturen over, hvis du mangler bjergerfaring eller stærk kondition; den vedvarende højdeforøgelse er straffende, og der er få redningspunkter.",
     "Undgå ruten, hvis højderne forstyrrer dig - udsatte afsatser og stejle fald udfordrer selv selvsikre vandrere.",
@@ -63,46 +63,46 @@
   ],
   "steps": [
     {
-      "name": "Climb to Santa Maria del Castello",
+      "name": "Klatr til Santa Maria del Castello",
       "text": "Brug vandrerhjemmets rute til Santa Maria del Castello; at nå pladsen betyder, at du har gennemført omkring en tredjedel af højden."
     },
     {
-      "name": "Join the mountain trail",
+      "name": "Gå ind på bjergstien",
       "text": "Fra landsbyens vejkryds, drej til højre og derefter til venstre forbi restauranten, og forlad vejen på den højre sti, der omkranser husene."
     },
     {
-      "name": "Commit to the upper ascent",
+      "name": "Fortsæt op ad den øvre stigning",
       "text": "Følg den forrevne sti til det afmærkede vejkryds, og vælg stien, der går lige op ad bakke mod toppen."
     },
     {
-      "name": "Navigate the zig-zags",
+      "name": "Følg zig-zag-stien",
       "text": "Arbejd gennem stejle switchbacks, indtil stien flader ud langs bjergets venstre flanke."
     },
     {
-      "name": "Take the rock-cut stairs",
+      "name": "Tag de stenhuggede trin",
       "text": "Gå op ad stentrappen til højre og løkke bag bjerget til den sidste rampe."
     },
     {
-      "name": "Reach the summit",
+      "name": "Nå toppen",
       "text": "Følg den sidste opstigning til toppen og nyd panoramaet, før du går tilbage til Santa Maria."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "FAQ",
   "faqs": [
     {
-      "q": "How long does the full hike take?",
+      "q": "Hvor lang tid tager hele turen?",
       "a": [
         "Tillad 6-7 timer til rundturen fra Hostel Brikette, inklusive pauser i Santa Maria og tid på toppen."
       ]
     },
     {
-      "q": "Is the trail marked?",
+      "q": "Er stien afmærket?",
       "a": [
         "Markører er sparsomme ud over Santa Maria; Bær et offline kort og vær opmærksom på den tydelige slidte sti og vejskilte ved vejkryds."
       ]
     },
     {
-      "q": "Can I turn back early?",
+      "q": "Kan jeg vende om tidligt?",
       "a": [
         "Ja. Hvis den øverste sektion føles for udsat, kan du nyde udsigten fra Santa Maria eller de nederste sporskifter og vende tilbage den vej, du kom."
       ]
@@ -110,22 +110,22 @@
   ],
   "toc": {
     "labels": {
-      "warnings": "When to reconsider"
+      "warnings": "Hvornår du bør overveje at lade være"
     }
   },
   "gallery": {
     "title": "Fotogalleri",
     "items": [
       {
-        "alt": "Looking across the peninsula to Capri",
+        "alt": "Udsigt over halvøen mod Capri",
         "caption": "Udsigt over halvøen mod Capri"
       },
       {
-        "alt": "Scan to Share QR code",
+        "alt": "Scan for at dele QR-kode",
         "caption": "Scan for at dele"
       },
       {
-        "alt": "Trail near the summit",
+        "alt": "Sti nær toppen",
         "caption": "På vej mod toppen"
       }
     ]

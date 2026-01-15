@@ -140,8 +140,8 @@ function PositanoCostComparison(): JSX.Element {
                 // 1) Ask the guide translator with fallbacks (localized → localized fallback → EN)
                 const viaTranslator = ctx.translateGuides(key) as unknown;
                 try {
-                  if (process.env["DEBUG_TOC"] === "1") {
-                    console.log('[%s toc:%s]', GUIDE_KEY, 'lookup', { key, viaTranslator });
+                  if (process.env.NODE_ENV !== "production" && process.env["DEBUG_TOC"] === "1") {
+                    console.info("[%s toc:%s]", GUIDE_KEY, "lookup", { key, viaTranslator });
                   }
                 } catch { /* noop */ }
                 text = pick(viaTranslator) ?? '';
@@ -151,8 +151,8 @@ function PositanoCostComparison(): JSX.Element {
                 try {
                   const viaEn = guidesEn(key) as unknown;
                   try {
-                    if (process.env["DEBUG_TOC"] === "1") {
-                      console.log('[%s toc:%s]', GUIDE_KEY, 'en', { key, viaEn });
+                    if (process.env.NODE_ENV !== "production" && process.env["DEBUG_TOC"] === "1") {
+                      console.info("[%s toc:%s]", GUIDE_KEY, "en", { key, viaEn });
                     }
                   } catch { /* noop */ }
                   text = pick(viaEn) ?? '';

@@ -17,11 +17,18 @@ import type { BookingModalCopy, BookingModalBuildParams, BookingGuestOption } fr
 const BOOKING_FALLBACK_LABEL = "Check availability"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] Fallback when translations are missing
 
 export function BookingGlobalModal(): JSX.Element | null {
-  const { closeModal } = useModal();
+  const { closeModal, modalData } = useModal();
   const lang = useCurrentLanguage();
 
   const { t: tModals, ready: modalsReady } = useTranslation("modals", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
+
+  const dealId = useMemo(() => {
+    const raw = (modalData as Partial<{ deal?: unknown }> | null | undefined)?.deal;
+    if (typeof raw !== "string") return undefined;
+    const trimmed = raw.trim();
+    return trimmed.length ? trimmed : undefined;
+  }, [modalData]);
 
   const bookingCopy = useMemo<BookingModalCopy>(() => {
     const buttonLabel =
@@ -77,8 +84,16 @@ export function BookingGlobalModal(): JSX.Element | null {
       codice: BOOKING_CODE,
       pax: String(guests),
     });
+
+    if (dealId) {
+      params.set("deal", dealId);
+      params.set("utm_source", "site");
+      params.set("utm_medium", "deal");
+      params.set("utm_campaign", dealId);
+    }
+
     return `https://book.octorate.com/octobook/site/reservation/result.xhtml?${params}`;
-  }, []);
+  }, [dealId]);
 
   return (
     <BookingModal

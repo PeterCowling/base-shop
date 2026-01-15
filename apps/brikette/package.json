@@ -2,15 +2,20 @@
   "name": "@apps/brikette",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next dev -p 3012",
+    "dev": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next dev -p 3014",
     "build": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next build",
-    "start": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next start -p 3012",
+    "start": "cross-env NODE_OPTIONS=\"--require ./scripts/ssr-polyfills.cjs\" next start -p 3014",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs --passWithNoTests"
+    "test:unit": "vitest run --passWithNoTests -c vitest.config.ts --coverage --coverage.reporter=text-summary --no-file-parallelism --maxWorkers 1",
+    "test:unit:watch": "vitest --passWithNoTests -c vitest.config.ts",
+    "test": "TSX_TSCONFIG_PATH=tsconfig.scripts.json node --import tsx scripts/check-english-fallbacks.ts && TSX_TSCONFIG_PATH=tsconfig.scripts.json node --import tsx scripts/check-empty-content-keys.ts && TSX_TSCONFIG_PATH=tsconfig.scripts.json node --import tsx scripts/check-travel-direction-spacing.ts && TSX_TSCONFIG_PATH=tsconfig.scripts.json node --import tsx scripts/check-guides-translations.ts && TSX_TSCONFIG_PATH=tsconfig.scripts.json node --import tsx scripts/check-capri-gallery-assets.ts && TSX_TSCONFIG_PATH=tsconfig.scripts.json node --import tsx scripts/check-assistance-translations.ts",
+    "test:deals": "TSX_TSCONFIG_PATH=tsconfig.scripts.json node --import tsx scripts/check-deal-status.ts",
+    "i18n:coverage": "node --import tsx scripts/check-i18n-coverage.ts"
   },
   "dependencies": {
     "@acme/next-config": "workspace:*",
+    "@acme/telemetry": "workspace:*",
     "@acme/ui": "workspace:*",
     "@headlessui/react": "^2.2.3",
     "clsx": "^2.1.1",
@@ -27,5 +32,8 @@
     "swiper": "^11.2.6",
     "web-vitals": "^5.0.2",
     "zod": "^3.25.73"
+  },
+  "devDependencies": {
+    "typescript": "5.8.3"
   }
 }

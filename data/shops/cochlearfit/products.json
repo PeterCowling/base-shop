@@ -1,0 +1,280 @@
+[
+  {
+    "id": "01KDJWNM0PKEVQ0RAF644FE8TG",
+    "sku": "classic",
+    "shop": "cochlearfit",
+    "status": "active",
+    "row_version": 1,
+    "created_at": "2025-12-28T16:30:47.615Z",
+    "updated_at": "2025-12-28T16:30:47.615Z",
+    "currency": "USD",
+    "price": 3400,
+    "forSale": true,
+    "forRental": false,
+    "title": {
+      "en": "Classic Secure",
+      "it": "Classic Secure",
+      "es": "Classic Secure",
+      "de": "Classic Secure"
+    },
+    "description": {
+      "en": "The Classic Secure is our everyday headband designed to keep cochlear processors snug without pressure points. The hidden pocket cradles hardware discreetly while the breathable knit stays gentle on the skin.",
+      "it": "Classic Secure è la nostra fascia quotidiana progettata per mantenere i processori cocleari stabili senza punti di pressione. La tasca nascosta avvolge l'hardware con discrezione mentre la maglia traspirante resta delicata sulla pelle.",
+      "es": "Classic Secure es nuestra diadema de uso diario diseñada para mantener los procesadores cocleares cómodos sin puntos de presión. El bolsillo oculto sujeta el dispositivo de forma discreta mientras el punto transpirable se mantiene suave con la piel.",
+      "de": "Classic Secure ist unser Alltags‑Headband, das Cochlea‑Prozessoren sicher hält, ohne Druckpunkte zu erzeugen. Die versteckte Tasche trägt Hardware diskret, während der atmungsaktive Strick sanft zur Haut bleibt."
+    },
+    "media": [
+      {
+        "url": "/uploads/cochlearfit/classic-hero.svg",
+        "type": "image",
+        "altText": "Classic Secure headband in sand color"
+      },
+      {
+        "url": "/uploads/cochlearfit/classic-detail.svg",
+        "type": "image",
+        "altText": "Close-up of the Classic Secure pocket"
+      }
+    ],
+    "style": {
+      "en": "Classic",
+      "it": "Classic",
+      "es": "Classic",
+      "de": "Classic"
+    },
+    "shortDescription": {
+      "en": "Soft rib-knit headband with a hidden processor pocket.",
+      "it": "Fascia in maglia a coste con tasca nascosta per il processore.",
+      "es": "Diadema suave de punto canalé con bolsillo oculto para el procesador.",
+      "de": "Weiches Rippstrick‑Headband mit versteckter Prozessor‑Tasche."
+    },
+    "longDescription": {
+      "en": "The Classic Secure is our everyday headband designed to keep cochlear processors snug without pressure points. The hidden pocket cradles hardware discreetly while the breathable knit stays gentle on the skin.",
+      "it": "Classic Secure è la nostra fascia quotidiana progettata per mantenere i processori cocleari stabili senza punti di pressione. La tasca nascosta avvolge l'hardware con discrezione mentre la maglia traspirante resta delicata sulla pelle.",
+      "es": "Classic Secure es nuestra diadema de uso diario diseñada para mantener los procesadores cocleares cómodos sin puntos de presión. El bolsillo oculto sujeta el dispositivo de forma discreta mientras el punto transpirable se mantiene suave con la piel.",
+      "de": "Classic Secure ist unser Alltags‑Headband, das Cochlea‑Prozessoren sicher hält, ohne Druckpunkte zu erzeugen. Die versteckte Tasche trägt Hardware diskret, während der atmungsaktive Strick sanft zur Haut bleibt."
+    },
+    "featureBullets": {
+      "en": [
+        "Hidden processor pocket keeps devices steady on the go",
+        "Low-profile seams to reduce pressure points",
+        "Stretch rib knit that hugs without squeezing"
+      ],
+      "it": [
+        "Tasca nascosta per mantenere i dispositivi stabili",
+        "Cuciture basse per ridurre la pressione",
+        "Maglia elasticizzata che avvolge senza stringere"
+      ],
+      "es": [
+        "Bolsillo oculto que mantiene los dispositivos estables en movimiento",
+        "Costuras de perfil bajo para reducir puntos de presión",
+        "Punto elástico que sujeta sin apretar"
+      ],
+      "de": [
+        "Versteckte Prozessor‑Tasche hält Geräte unterwegs stabil",
+        "Flache Nähte zur Reduktion von Druckpunkten",
+        "Dehnbarer Rippstrick, der hält ohne zu drücken"
+      ]
+    },
+    "materials": {
+      "en": [
+        "Organic cotton + bamboo viscose",
+        "Latex-free elastic core"
+      ],
+      "it": [
+        "Cotone biologico + viscosa di bambù",
+        "Elastico senza lattice"
+      ],
+      "es": [
+        "Algodón orgánico + viscosa de bambú",
+        "Núcleo elástico sin látex"
+      ],
+      "de": [
+        "Bio‑Baumwolle + Bambusviskose",
+        "Latexfreier Elastikkern"
+      ]
+    },
+    "careInstructions": {
+      "en": [
+        "Machine wash cold in a laundry bag",
+        "Lay flat to dry",
+        "Do not bleach or tumble dry"
+      ],
+      "it": [
+        "Lavare a freddo in una retina",
+        "Asciugare in piano",
+        "Non candeggiare né usare asciugatrice"
+      ],
+      "es": [
+        "Lavado a máquina en frío en una bolsa de lavado",
+        "Secar en plano",
+        "No usar lejía ni secadora"
+      ],
+      "de": [
+        "Kalt im Wäschebeutel in der Maschine waschen",
+        "Liegend trocknen",
+        "Nicht bleichen oder im Trockner trocknen"
+      ]
+    },
+    "compatibilityNotes": {
+      "en": [
+        "Fits most behind-the-ear processors",
+        "Pocket opening works for left or right wear",
+        "Pairs well with earmolds and coils"
+      ],
+      "it": [
+        "Compatibile con la maggior parte dei processori dietro l'orecchio",
+        "Apertura della tasca per lato destro o sinistro",
+        "Ideale con stampi e bobine"
+      ],
+      "es": [
+        "Se adapta a la mayoría de procesadores detrás de la oreja",
+        "La apertura del bolsillo sirve para uso izquierdo o derecho",
+        "Funciona bien con moldes y bobinas"
+      ],
+      "de": [
+        "Passt zu den meisten Hinter‑dem‑Ohr‑Prozessoren",
+        "Taschenöffnung für links oder rechts",
+        "Gute Kombi mit Ohrpassstücken und Spulen"
+      ]
+    }
+  },
+  {
+    "id": "01KDJWNM0SCMPDCDKGJYF6EVKQ",
+    "sku": "sport",
+    "shop": "cochlearfit",
+    "status": "active",
+    "row_version": 1,
+    "created_at": "2025-12-28T16:30:47.615Z",
+    "updated_at": "2025-12-28T16:30:47.615Z",
+    "currency": "USD",
+    "price": 3600,
+    "forSale": true,
+    "forRental": false,
+    "title": {
+      "en": "Sport Flex",
+      "it": "Sport Flex",
+      "es": "Sport Flex",
+      "de": "Sport Flex"
+    },
+    "description": {
+      "en": "Sport Flex is built for dance, play, and workouts. A lightweight performance knit and gentle grip dots keep processors secure while letting heat escape.",
+      "it": "Sport Flex è pensata per danza, gioco e allenamenti. Una maglia tecnica leggera e micro grip delicato mantengono i processori stabili lasciando respirare.",
+      "es": "Sport Flex está pensada para baile, juego y entrenamientos. Un punto técnico ligero y puntos de agarre suaves ayudan a mantener los procesadores seguros mientras deja salir el calor.",
+      "de": "Sport Flex ist für Tanz, Spiel und Workouts gemacht. Ein leichtes Performance‑Strickmaterial und sanfte Grip‑Dots halten Prozessoren sicher und lassen Wärme entweichen."
+    },
+    "media": [
+      {
+        "url": "/uploads/cochlearfit/sport-hero.svg",
+        "type": "image",
+        "altText": "Sport Flex headband in ocean color"
+      },
+      {
+        "url": "/uploads/cochlearfit/sport-detail.svg",
+        "type": "image",
+        "altText": "Sport Flex headband showing grip texture"
+      }
+    ],
+    "style": {
+      "en": "Sport",
+      "it": "Sport",
+      "es": "Sport",
+      "de": "Sport"
+    },
+    "shortDescription": {
+      "en": "Moisture-wicking band with soft grip dots for movement.",
+      "it": "Fascia traspirante con micro grip morbido per il movimento.",
+      "es": "Banda que absorbe la humedad con puntos de agarre suaves para el movimiento.",
+      "de": "Schweißableitendes Band mit weichen Grip‑Dots für Bewegung."
+    },
+    "longDescription": {
+      "en": "Sport Flex is built for dance, play, and workouts. A lightweight performance knit and gentle grip dots keep processors secure while letting heat escape.",
+      "it": "Sport Flex è pensata per danza, gioco e allenamenti. Una maglia tecnica leggera e micro grip delicato mantengono i processori stabili lasciando respirare.",
+      "es": "Sport Flex está pensada para baile, juego y entrenamientos. Un punto técnico ligero y puntos de agarre suaves ayudan a mantener los procesadores seguros mientras deja salir el calor.",
+      "de": "Sport Flex ist für Tanz, Spiel und Workouts gemacht. Ein leichtes Performance‑Strickmaterial und sanfte Grip‑Dots halten Prozessoren sicher und lassen Wärme entweichen."
+    },
+    "featureBullets": {
+      "en": [
+        "Moisture-wicking knit stays cool",
+        "Soft silicone grip dots reduce shifting",
+        "Featherlight stretch for active days"
+      ],
+      "it": [
+        "Maglia traspirante che resta fresca",
+        "Micro grip in silicone che riduce lo spostamento",
+        "Elasticità leggera per giornate attive"
+      ],
+      "es": [
+        "Tejido técnico que evacua la humedad y se mantiene fresco",
+        "Puntos de agarre suaves que reducen el desplazamiento",
+        "Elasticidad ligera para días activos"
+      ],
+      "de": [
+        "Feuchtigkeitsableitender Strick bleibt angenehm kühl",
+        "Weiche Grip‑Dots reduzieren Verrutschen",
+        "Federleichte Dehnung für aktive Tage"
+      ]
+    },
+    "materials": {
+      "en": [
+        "Recycled nylon blend",
+        "Silicone micro-grip dots"
+      ],
+      "it": [
+        "Nylon riciclato",
+        "Micro grip in silicone"
+      ],
+      "es": [
+        "Mezcla de nailon reciclado",
+        "Micro puntos de agarre de silicona"
+      ],
+      "de": [
+        "Recycelter Nylon‑Mix",
+        "Silikon‑Micro‑Grip‑Dots"
+      ]
+    },
+    "careInstructions": {
+      "en": [
+        "Rinse after heavy activity",
+        "Machine wash cold",
+        "Air dry away from direct heat"
+      ],
+      "it": [
+        "Risciacquare dopo attività intense",
+        "Lavare a freddo",
+        "Asciugare all'aria lontano da fonti di calore"
+      ],
+      "es": [
+        "Enjuagar después de actividad intensa",
+        "Lavado a máquina en frío",
+        "Secar al aire lejos del calor directo"
+      ],
+      "de": [
+        "Nach intensiver Aktivität ausspülen",
+        "Kalt in der Maschine waschen",
+        "An der Luft trocknen, fern von direkter Hitze"
+      ]
+    },
+    "compatibilityNotes": {
+      "en": [
+        "Fits most behind-the-ear processors",
+        "Use with retention clips for extra security",
+        "Ideal for sports helmets and hats"
+      ],
+      "it": [
+        "Compatibile con la maggior parte dei processori dietro l'orecchio",
+        "Usare un fermaglio per maggiore sicurezza",
+        "Ideale con caschi sportivi e cappelli"
+      ],
+      "es": [
+        "Se adapta a la mayoría de procesadores detrás de la oreja",
+        "Usar con clips de retención para mayor seguridad",
+        "Ideal para cascos y gorras deportivas"
+      ],
+      "de": [
+        "Passt zu den meisten Hinter‑dem‑Ohr‑Prozessoren",
+        "Für extra Halt Retention‑Clips verwenden",
+        "Ideal für Sporthelme und Mützen"
+      ]
+    }
+  }
+]

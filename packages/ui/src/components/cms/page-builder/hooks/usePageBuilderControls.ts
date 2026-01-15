@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { Locale } from "@acme/i18n/locales";
+import type { Locale as PageBuilderLocale } from "@acme/types/constants";
 import type { HistoryState } from "@acme/types";
 import type { Action } from "../state";
 import { devicePresets, getLegacyPreset, type DevicePreset, findDevicePresetById } from "../../../../utils/devicePresets";
@@ -169,7 +169,7 @@ const usePageBuilderControls = ({ state, dispatch }: PageBuilderControlsParams) 
     return viewportStyle;
   }, [viewportStyle, editingSizeRecord, viewport]);
 
-  const [locale, setLocale] = useState<Locale>("en");
+  const [locale, setLocale] = useState<PageBuilderLocale>("en");
   const [showPreview, setShowPreview] = useState(false);
   const togglePreview = useCallback(
     () => setShowPreview((p) => !p),

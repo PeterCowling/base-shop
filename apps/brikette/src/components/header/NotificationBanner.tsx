@@ -218,7 +218,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     if (modalClose && modalClose !== "booking.close") {
       return modalClose;
     }
-    return resolved || modalClose || "closeLabel";
+    return resolved || modalClose || "Close";
   }, [t, tModals]);
 
   const stopDomPropagation = useCallback(

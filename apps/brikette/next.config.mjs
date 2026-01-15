@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharedConfig from "@acme/next-config/next.config.mjs";
@@ -45,6 +46,8 @@ setEnv("NEXT_PUBLIC_NOINDEX_PREVIEW", readEnv("NEXT_PUBLIC_NOINDEX_PREVIEW", "NO
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   ...sharedConfig,
+  // Brikette relies on SSR routes; avoid forcing static export when OUTPUT_EXPORT is set.
+  output: sharedConfig.output === "export" ? undefined : sharedConfig.output,
   env: {
     ...(sharedConfig.env ?? {}),
     ...publicEnv,
@@ -52,6 +55,46 @@ const nextConfig = {
   webpack: (config, context) => {
     if (typeof sharedConfig.webpack === "function") {
       config = sharedConfig.webpack(config, context);
+    }
+
+    if (context.isServer) {
+      class PagesManifestFixPlugin {
+        apply(compiler) {
+          compiler.hooks.afterEmit.tap("PagesManifestFixPlugin", () => {
+            const outputPath = compiler.outputPath;
+            if (!outputPath) return;
+            const pagesDir = path.join(outputPath, "pages");
+            // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] Build output path from webpack compiler.
+            if (!fs.existsSync(pagesDir)) return;
+
+            const manifest = {};
+            const walk = (dir) => {
+              // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] Walk build output directory tree.
+              for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+                const fullPath = path.join(dir, entry.name);
+                if (entry.isDirectory()) {
+                  walk(fullPath);
+                } else if (entry.isFile() && entry.name.endsWith(".js")) {
+                  const rel = path.relative(pagesDir, fullPath).replace(/\\/g, "/");
+                  const page = rel.replace(/\.js$/, "");
+                  let route = `/${page}`;
+                  route = route.replace(/\/index$/, "");
+                  if (route === "") route = "/";
+                  manifest[route] = `pages/${page}.js`;
+                }
+              }
+            };
+
+            walk(pagesDir);
+            const manifestPath = path.join(outputPath, "pages-manifest.json");
+            // eslint-disable-next-line security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] Emit manifest alongside build output.
+            fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+          });
+        }
+      }
+
+      config.plugins ??= [];
+      config.plugins.push(new PagesManifestFixPlugin());
     }
 
     config.resolve ??= {};

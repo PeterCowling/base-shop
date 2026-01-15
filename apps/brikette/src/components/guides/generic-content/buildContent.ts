@@ -1,5 +1,5 @@
 // src/components/guides/generic-content/buildContent.ts
-import { toStringArray, toTrimmedString } from "./strings";
+import { looksLikePlaceholderTranslation, toStringArray, toTrimmedString } from "./strings";
 import { normaliseTocOverrides } from "./toc";
 import { resolveLabelFallback, resolveTitle } from "./translations";
 import { resolveSections, toListSection } from "./sections";
@@ -45,6 +45,7 @@ export function buildGenericContentData(
   const tocRaw = t(`content.${guideKey}.toc`, { returnObjects: true });
   const tipsRaw = t(`content.${guideKey}.tips`, { returnObjects: true });
   const warningsRaw = t(`content.${guideKey}.warnings`, { returnObjects: true });
+  const warningsContentKey = `content.${guideKey}.warnings` as const;
 
   // Normalise intro to support legacy shapes like { default: string[] }
   const intro = (() => {
@@ -289,7 +290,9 @@ export function buildGenericContentData(
   }
 
   const tips = toStringArray(tipsRaw);
-  const warnings = toStringArray(warningsRaw);
+  const warnings = toStringArray(warningsRaw).filter((value) =>
+    !looksLikePlaceholderTranslation(value, warningsContentKey, guideKey),
+  );
 
   const tipsKey = "labels.tipsHeading" as const;
   const warningsKey = "labels.warningsHeading" as const;
@@ -325,6 +328,10 @@ export function buildGenericContentData(
     t(`content.${guideKey}.essentials`, { returnObjects: true }),
     essentialsTitle,
     "essentials",
+    {
+      expectedKey: `content.${guideKey}.essentials`,
+      guideKey,
+    },
   );
 
   const costsTitleKey = `content.${guideKey}.typicalCostsTitle` as const;
@@ -340,6 +347,10 @@ export function buildGenericContentData(
     t(`content.${guideKey}.typicalCosts`, { returnObjects: true }),
     costsTitle,
     "costs",
+    {
+      expectedKey: `content.${guideKey}.typicalCosts`,
+      guideKey,
+    },
   );
 
   const resolvedSections = resolveSections(sections, tocOverrides);

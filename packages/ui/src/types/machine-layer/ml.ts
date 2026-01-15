@@ -1,6 +1,6 @@
 // src/types/machine-layer/ml.ts
 // ─────────────────────────────────────────────────────────────
-import type { SupportedLanguage } from "@/config";
+import type { SupportedLanguage } from "@ui/config";
 
 export type LanguageCode = SupportedLanguage;
 

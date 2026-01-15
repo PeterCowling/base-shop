@@ -5,7 +5,7 @@
   },
   "linkLabel": "Hostel Brikette → Fornillo Beach walking guide",
   "intro": [
-    "Walking from Hostel Brikette to Fornillo Beach takes about 15–25 minutes on a mostly stepped route. Follow this shortcut to stay on the quickest staircase and paved lane all the way down."
+    "Walking from Hostel Brikette to Fornillo Beach takes about 15–25 minutes on a mostly stepped route. Use the map and shortcut below to stay on the quickest staircase and paved lane all the way down."
   ],
   "sections": [
     {
@@ -13,33 +13,54 @@
       "title": "Plan your walk",
       "body": [
         "Allow around 20 minutes to reach the sand; the time varies with photo stops and how comfortable you are on Positano’s steps.",
-        "Google Maps occasionally sends guests through slower detours. Stick with this route to follow the main staircase and smooth roadway the entire way."
+        "Google Maps occasionally sends guests through slower detours. Stick with this route and the map below for the fastest descent."
       ]
     },
     {
       "id": "route-steps",
       "title": "Route from Hostel Brikette to Fornillo Beach",
       "body": [
-        "1. Exit Hostel Brikette and walk down the main staircase to Viale Pasitea.",
-        "2. Cross the road and continue straight down the stairs marked with house number 31.",
-        "3. Follow the stairs until they meet the road, then turn right and stay on the downhill curve.",
-        "4. Walk past the parking garages on both sides and keep right as you approach the Hotel Posa Posa sign.",
-        "5. Just beyond the hotel, reach a bend in the road and turn right onto the pedestrian-only path toward Fornillo.",
-        "6. Stay on the paved pathway all the way to the beachfront; the shaded finale ends beside Pupetto’s beach club."
+        "1. Leave the hostel and walk down the steps to Viale Pasitea.",
+        "2. Cross the road and take the stairs straight ahead marked with number 31.",
+        "3. Follow the stairs until you reach the road, then turn right and continue downhill.",
+        "4. Pass the parking garages and keep walking until you see the Hotel Posa Posa sign on your right.",
+        "5. Just past the hotel, reach a bend in the road and turn right onto the pedestrian path (see the photo).",
+        "6. Follow the pathway all the way down to the beach."
       ]
     },
     {
       "id": "return-options",
-      "title": "Getting back up",
+      "title": "Getting back from Fornillo Beach",
       "body": [
-        "After swimming, continue along the waterfront to Spiaggia Grande and ride the orange internal bus up to Chiesa Nuova if you would rather skip the climb.",
-        "Pick up bus tickets at the tabacchi/newsstand beside the Chiesa Nuova stop before you head out or ask reception to confirm stock."
+        "Returning from the beach can be tiring in hot weather. The easiest option is to walk along the waterfront to the main beach and catch the interno bus uphill.",
+        "1. Walk to the far left side of Fornillo Beach (left when facing the water) and follow the path to Spiaggia Grande.",
+        "2. Enter the main beach through the port and exit the jetty, then walk straight ahead.",
+        "3. Take the walkway off the beachfront straight ahead, then take the first right between the shops.",
+        "4. Climb the steps to the Church of Santa Maria Assunta, head left up the lane, and reach the one-way road at the top.",
+        "5. The interno bus stop is here; buy tickets at any Tabacchi/newsagent before you need them."
       ]
     }
   ],
+  "gallery": {
+    "title": "Route maps and landmark turns",
+    "items": [
+      {
+        "alt": "Walking map from Hostel Brikette to Fornillo Beach",
+        "caption": "Hostel Brikette to Fornillo (map)"
+      },
+      {
+        "alt": "Turn onto the pedestrian path by Hotel Posa Posa",
+        "caption": "Fornillo shortcut turn"
+      },
+      {
+        "alt": "Route from Spiaggia Grande to the interno bus stop",
+        "caption": "Return route to the interno bus"
+      }
+    ]
+  },
   "tips": [
-    "Ride the Interno Positano bus back uphill to avoid the steep return climb.",
-    "Carry water for the stair section—there are no shops until you reach the shoreline.",
+    "Avoid the stairs on the way back by taking the interno bus uphill.",
+    "Buy bus tickets at any Tabacchi/newsagent before you need them.",
     "Plan extra beach time with our %LINK:fornilloBeachGuide|Fornillo beach guide% and %LINK:positanoBeaches|Positano beaches overview%.",
     "See how this walk fits into a full trip in the Positano travel overview."
   ],

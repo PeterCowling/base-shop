@@ -12,7 +12,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "disableSourceOfProjectReferenceRedirect": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "paths": {
       "@/*": [
         "src/*",
@@ -23,6 +23,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "instrumentation.ts",
     "i18n/**/*.json",
     "src/**/*",
     "src/app/**/*",

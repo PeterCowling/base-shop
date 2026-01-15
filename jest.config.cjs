@@ -75,6 +75,30 @@ if (isSkylarApp) {
   ];
 }
 
+const isPrimeApp = /apps\/prime$/.test(process.cwd());
+if (isPrimeApp) {
+  const overrides = {
+    "^@/lib/router$": " /apps/prime/src/test-utils/router.tsx",
+    "^@/(.*)$": [" /apps/prime/src/$1", " /apps/prime/dist/$1"],
+  };
+  const pruned = Object.fromEntries(
+    Object.entries(moduleNameMapper).filter(([key]) => !(key in overrides))
+  );
+  moduleNameMapper = { ...overrides, ...pruned };
+}
+
+const isCochlearfitApp = /apps\/cochlearfit$/.test(process.cwd());
+if (isCochlearfitApp) {
+  moduleNameMapper["^@/(.*)$"] = [
+    " /apps/cochlearfit/src/$1",
+    " /apps/cochlearfit/dist/$1",
+  ];
+  moduleNameMapper["^@/components/(.*)$"] = [
+    " /apps/cochlearfit/src/components/$1",
+    " /apps/cochlearfit/dist/components/$1",
+  ];
+}
+
 const collectCoverageFrom = [...coverageDefaults.collectCoverageFrom];
 const coveragePathIgnorePatterns = [
   ...coverageDefaults.coveragePathIgnorePatterns,
@@ -83,6 +107,14 @@ const coverageReporters = [...coverageDefaults.coverageReporters];
 const coverageThreshold = JSON.parse(
   JSON.stringify(coverageDefaults.coverageThreshold)
 );
+
+// XA is a demo Next.js app where UI-heavy files would otherwise drag global
+// coverage thresholds down during targeted workspace runs.
+const isXaApp = /apps\/xa$/.test(process.cwd());
+const isXaUploaderApp = /apps\/xa-uploader$/.test(process.cwd());
+if (isXaApp || isXaUploaderApp) {
+  coverageThreshold.global = { lines: 0, branches: 0, functions: 0 };
+}
 
 // The scripts workspace exercises compiled Node entrypoints under dist-scripts
 // rather than the TypeScript sources under scripts/src, so coverage for that

@@ -1,6 +1,408 @@
+---
+Type: Runbook
+Status: Canonical
+Domain: Repo
+Last-reviewed: 2026-01-15
+---
+
 # AGENTS — Repo Runbook
 
-Use this file as the global checklist for working in the Skylar SRL monorepo. Locale-specific visual systems and tone of voice live in:
+Use this file as the global checklist for working in the Skylar SRL monorepo.
+
+---
+
+## Git Safety Rules (MANDATORY)
+
+> **⚠️ INCIDENT REFERENCE: On Jan 14, 2026, `git reset --hard` to an old commit destroyed 8 apps.**
+> The agent tried to "fix" a confusing git state by resetting. All work since Dec 29 was lost.
+> Recovery took days. See `docs/RECOVERY-PLAN-2026-01-14.md` for details.
+> **THESE RULES EXIST TO PREVENT THIS FROM HAPPENING AGAIN.**
+
+These rules protect work from being lost. Agents MUST follow them automatically without user prompting.
+
+### Rule 1: Commit Every 30 Minutes
+
+**Trigger:** After 30 minutes of work OR after completing any significant change (new file, major edit, feature complete).
+
+**Agent action:**
+```bash
+# Check if there are uncommitted changes
+git status --porcelain
+
+# If changes exist and 30+ minutes since last commit:
+git add -A
+git commit -m "WIP: <brief description of changes>
+
+Co-Authored-By: Claude <model> <noreply@anthropic.com>"
+```
+
+**Why:** Uncommitted work is unrecoverable if something goes wrong. Frequent commits create restore points.
+
+### Rule 2: Push Every 2 Hours (or Every 3 Commits)
+
+**Trigger:** After 2 hours of work OR after 3 local commits, whichever comes first.
+
+**Agent action:**
+```bash
+# Check commits ahead of remote
+git rev-list --count @{upstream}..HEAD 2>/dev/null || echo "no upstream"
+
+# If 3+ commits ahead OR 2+ hours since last push:
+git push origin HEAD
+```
+
+**Why:** Local commits are lost if the machine fails. GitHub is the backup.
+
+### Rule 3: Never Run Destructive Commands
+
+**PROHIBITED commands (never run these):**
+- `git reset --hard` — destroys uncommitted work
+- `git reset --hard <old-commit>` — **CATASTROPHIC: deletes all work since that commit**
+- `git clean -fd` — deletes untracked files permanently
+- `git checkout -- .` — discards all local changes
+- `git stash drop` — loses stashed work
+- `git push --force` — overwrites remote history
+- `git rebase -i` — can lose commits
+
+**If user asks for these:** Refuse and explain the risk. Offer safer alternatives.
+
+**Safe alternatives:**
+| Instead of | Do this |
+|------------|---------|
+| `git reset --hard` | Create backup branch first, then discuss |
+| `git reset --hard <old-commit>` | **NEVER** — this is how 8 apps were lost |
+| `git clean` | Move files to `archive/` folder |
+| `git checkout -- .` | Commit first, then discuss what to discard |
+| Force push | Create a new branch instead |
+
+### Rule 3a: Never "Fix" Git Problems by Resetting to Old Commits
+
+**THIS IS HOW THE JAN 14, 2026 INCIDENT HAPPENED.**
+
+The scenario:
+1. Something seems wrong with git (merge conflicts, stash issues, confusing state)
+2. Agent thinks: "I'll just reset to a known good state and reapply changes"
+3. Agent runs `git reset --hard <some-old-commit>`
+4. **ALL WORK SINCE THAT COMMIT IS DESTROYED**
+
+**If git state is confusing:**
+1. STOP — do not try to fix it
+2. Run `git status` and `git stash list`
+3. Share the output with the user
+4. Ask: "Git is in an unexpected state. How would you like to proceed?"
+5. **NEVER reset to an old commit as a "fix"**
+
+### Rule 3b: Never Use Stash as Storage
+
+**Stashes are temporary and dangerous:**
+- `lint-staged` and other tools create hidden stashes automatically
+- Stashes are local-only — not backed up to GitHub
+- Stash conflicts are hard to resolve
+- The Jan 14 incident involved 179 files stuck in a stash
+
+**If you see stashed work:**
+```bash
+# Check for stashes
+git stash list
+
+# If stashes exist, DO NOT try to manage them
+# Tell the user: "There are stashed changes. Please review with `git stash show -p stash@{0}`"
+```
+
+**Never run:**
+- `git stash pop` — can cause conflicts that lead to destructive "fixes"
+- `git stash drop` — permanently loses work
+- `git stash clear` — loses all stashes
+
+### Rule 4: Never Work Directly on `main`
+
+**Before starting any work:**
+```bash
+# Check current branch
+git branch --show-current
+
+# If on main, create a work branch:
+git checkout -b work/<date>-<brief-description>
+# Example: work/2026-01-15-add-auth-feature
+```
+
+**Why:** Working on `main` risks accidental deployment. Feature branches isolate changes.
+
+### Rule 5: Check Git Status Before Risky Operations
+
+**Before running ANY of these:** `rm`, `mv`, `git checkout`, `git switch`, `pnpm install`
+
+```bash
+# First, check for uncommitted work
+git status --porcelain
+
+# If output is not empty, commit first:
+git add -A && git commit -m "WIP: checkpoint before <operation>"
+```
+
+---
+
+## Branching Strategy
+
+### Branch Types
+
+| Branch | Purpose | Who Creates | Deploys To |
+|--------|---------|-------------|------------|
+| `main` | Production code | Humans only (via PR merge) | Production (live sites) |
+| `work/*` | Agent/human work | Agents or humans | Preview only |
+| `hotfix/*` | Emergency fixes | Humans | Production (after review) |
+
+### Rules for Agents
+
+1. **Always work on `work/*` branches** — never commit directly to `main`
+2. **Name branches clearly:** `work/YYYY-MM-DD-brief-description`
+3. **Push branches to GitHub:** So humans can review and merge
+4. **Never merge to main** — that's a human decision
+
+### Creating a Work Branch (Agent Procedure)
+
+```bash
+# 1. Check for uncommitted work (Rule 5)
+git status --porcelain
+# If not empty, commit first before proceeding
+
+# 2. Ensure we're up to date
+git fetch origin
+
+# 3. Create branch from latest main
+git checkout main
+git pull origin main
+git checkout -b work/$(date +%Y-%m-%d)-<description>
+
+# 4. Do work, commit frequently (Rule 1)
+# 5. Push to GitHub (Rule 2)
+git push -u origin HEAD
+```
+
+---
+
+## Human Workflow: Deploying to Production
+
+When an agent completes work, they push to a `work/*` branch. Here's how humans deploy it:
+
+### Step 1: Review the Work Branch
+
+```bash
+# See what the agent changed
+git fetch origin
+git log origin/main..origin/work/<branch-name> --oneline
+git diff origin/main..origin/work/<branch-name> --stat
+```
+
+### Step 2: Merge to Main (Triggers Deployment)
+
+**Option A: Via GitHub (Recommended)**
+1. Go to GitHub → Pull Requests → New Pull Request
+2. Select `work/<branch-name>` → `main`
+3. Review changes, then click "Merge"
+4. Deployment starts automatically
+
+**Option B: Via Command Line**
+```bash
+git checkout main
+git pull origin main
+git merge origin/work/<branch-name> --no-ff -m "Merge work/<branch-name>: <summary>"
+git push origin main
+```
+
+### Step 3: Verify Deployment
+
+After merge to `main`:
+- GitHub Actions runs automatically
+- Check Actions tab for build status
+- Once green, changes are live on:
+  - CMS: https://cms.pages.dev
+  - Brikette: https://brikette.pages.dev
+  - (etc.)
+
+### Step 4: Clean Up (Optional)
+
+```bash
+# Delete the work branch after merge
+git branch -d work/<branch-name>
+git push origin --delete work/<branch-name>
+```
+
+---
+
+## Quick Reference for Agents
+
+### Start of Session Checklist
+
+```bash
+# 1. Check current branch (must not be main)
+git branch --show-current
+# If "main", create work branch (see Rule 4)
+
+# 2. Check for uncommitted changes
+git status --porcelain
+# If not empty, commit them
+
+# 3. Pull latest changes
+git pull origin HEAD
+```
+
+### During Session
+
+- Commit after every significant change (Rule 1)
+- Push every 2 hours or 3 commits (Rule 2)
+- Never run destructive commands (Rule 3)
+
+### End of Session
+
+```bash
+# 1. Commit any remaining changes
+git add -A
+git commit -m "WIP: session end checkpoint
+
+Co-Authored-By: Claude <model> <noreply@anthropic.com>"
+
+# 2. Push to GitHub
+git push origin HEAD
+
+# 3. Tell user: "Work pushed to branch <name>. Ready for review and merge."
+```
+
+---
+
+## What Happens When (Decision Tree)
+
+### User says "deploy" or "push to production"
+1. Ensure all changes are committed and pushed to work branch
+2. Tell user: "Changes are on branch `work/X`. To deploy: merge this branch to `main` via GitHub PR or `git merge`."
+3. Do NOT merge to main yourself
+
+### User says "undo" or "revert"
+1. Do NOT run `git reset --hard`
+2. Ask: "What specifically do you want to undo?"
+3. Offer: `git revert <commit>` (creates new commit that undoes changes)
+4. Or: `git checkout <commit> -- <file>` (restores single file)
+
+### User says "clean up" or "start fresh"
+1. Do NOT run `git clean` or `git reset`
+2. Commit current state first
+3. Create a new branch from `main`
+4. Archive unwanted files to `archive/` folder
+
+### Something went wrong
+1. STOP — don't run more commands
+2. Run `git status` and `git log --oneline -10`
+3. Share output with user
+4. Consult `docs/RECOVERY-PLAN-2026-01-14.md` for recovery procedures
+
+### Git is in a confusing state (merge conflicts, stash issues, etc.)
+
+**THIS IS THE EXACT SCENARIO THAT CAUSED THE JAN 14 INCIDENT.**
+
+1. **STOP** — do NOT try to "fix" it
+2. **DO NOT** run `git reset --hard` to any commit
+3. **DO NOT** run `git stash pop` (always prohibited — let human decide)
+4. Run these diagnostic commands and share output:
+   ```bash
+   git status
+   git stash list
+   git log --oneline -5
+   git diff --stat
+   ```
+5. Tell user: "Git is in an unexpected state. I've shared the diagnostics above. Please advise how to proceed."
+6. **Wait for human guidance** — do not attempt automated recovery
+
+### Commit failed or was rejected by hooks
+
+1. Read the error message carefully
+2. Fix the underlying issue (lint error, type error, etc.)
+3. Try the commit again
+4. **DO NOT** use `--no-verify` to bypass hooks
+5. **DO NOT** reset to avoid the problem
+
+### User asks "why did my changes disappear?"
+
+1. Check: `git stash list` — changes might be stashed
+2. Check: `git reflog` — shows recent HEAD movements
+3. Check: `git log --oneline -10` — verify recent commits
+4. **DO NOT** try to "recover" by resetting to old commits
+5. Share findings with user and ask how to proceed
+
+---
+
+## Technical Enforcement
+
+> **Status: ✅ ALL LAYERS CONFIGURED**
+>
+> For full documentation, see:
+> - [Git Safety Guide](docs/git-safety.md) - Comprehensive guide for humans
+> - [Incident Prevention Summary](docs/incident-prevention.md) - One-page overview
+> - [Git Hooks Documentation](docs/git-hooks.md) - Hook configuration details
+
+These settings provide technical barriers that prevent accidents even if agents ignore the rules.
+
+### Protection Layers (All Active)
+
+| Layer | Status | What It Does |
+|-------|--------|--------------|
+| **Documentation** | ✅ | This file + CLAUDE.md instruct agents |
+| **Git Hooks** | ✅ | Local hooks block secrets and force push |
+| **GitHub Protection** | ✅ | Server-side PR + approval + CI requirement |
+| **Claude Code Hooks** | ✅ | Blocks destructive commands at AI level |
+
+### GitHub Branch Protection (CONFIGURED)
+
+Go to GitHub → Settings → Rules → Rulesets → `main`:
+
+| Setting | Value | Why |
+|---------|-------|-----|
+| **Require pull request before merging** | ✅ On | Prevents direct pushes to main |
+| **Require approvals** | 1 | Human must review before merge |
+| **Dismiss stale approvals** | ✅ On | Re-review if code changes |
+| **Require status checks** | ✅ On | CI must pass before merge |
+| **Require branches to be up to date** | ✅ On | Prevents merge conflicts |
+| **Do not allow bypassing** | ✅ On | No exceptions, even for admins |
+| **Restrict who can push** | Empty (no one) | All changes via PR only |
+| **Allow force pushes** | ❌ Off | Prevents history destruction |
+| **Allow deletions** | ❌ Off | Prevents branch deletion |
+
+### Git Hooks (CONFIGURED)
+
+The repo has these hooks via `simple-git-hooks`:
+
+| Hook | Script | What it does |
+|------|--------|--------------|
+| `pre-commit` | `pre-commit-check-env.sh` + `lint-staged` | Blocks secrets, runs linting |
+| `pre-push` | `pre-push-safety.sh` | Blocks force push to main, warns on direct push |
+
+**Setup after cloning:**
+```bash
+pnpm install
+pnpm exec simple-git-hooks
+```
+
+**Full documentation:** [Git Hooks](docs/git-hooks.md)
+
+### Claude Code Hooks (CONFIGURED)
+
+Claude Code hooks intercept destructive commands before execution.
+
+**Location:** `.claude/settings.json`
+
+**Blocked commands:**
+- `git reset --hard` - Destroys uncommitted work
+- `git clean -fd` - Deletes untracked files
+- `git checkout -- .` - Discards all local changes
+- `git stash drop` / `git stash clear` - Loses stashed work
+- `git push --force` / `git push -f` - Overwrites remote history
+- `git rebase -i` - Can lose commits
+- `--no-verify` - Bypasses safety hooks
+
+If you attempt any of these commands, Claude Code will refuse with a message referencing this file.
+
+---
+
+Locale-specific visual systems and tone of voice live in:
 
 - `apps/skylar/AGENTS.en.md` — warm red on cream "poster" system for EN.
 - `apps/skylar/AGENTS.it.md` — Milan editorial guidelines.
@@ -14,7 +416,7 @@ Always cross-check the relevant locale doc before touching copy, layout, or imag
 
 ## Core Workflow
 - Install dependencies: `pnpm install`.
-- Build all packages before starting any app: `pnpm -r build`.
+- Build all packages before starting any app: `pnpm build`.
 - Regenerate config stubs after editing `packages/config/src/env/*.impl.ts`:
   - `pnpm --filter @acme/config run build:stubs`
 - TypeScript path mapping: apps must map workspace packages to both `src` and `dist` so imports resolve pre/post build. See `docs/tsconfig-paths.md` for examples.
@@ -30,6 +432,81 @@ Always cross-check the relevant locale doc before touching copy, layout, or imag
 ## Security Work
 - When performing security reviews or fixes, follow `security/AGENTS.md`.
   - Summary: prioritize externally reachable surfaces, authn/z, secrets, injections, deserialization, file handling, network/SSRF, path traversal, uploads, crypto, headers (CSP/CORS), CI/CD, IaC/cloud config. Provide runnable proofs via tests when possible. Keep all outputs local. For each finding include CWE/OWASP mapping, component path, risk, exploit narrative, minimal patch, and a test.
+
+## Plan Documentation Lifecycle
+
+Plans are critical artifacts for understanding project history and reconstruction. Follow these rules without exception.
+
+### Plans Are NEVER Deleted
+
+Plans are historical records needed for:
+- Understanding why decisions were made
+- Reconstructing timelines after incidents
+- Auditing who did what and when
+
+**Correct approach:**
+```bash
+# WRONG - Information destroyed
+rm docs/plans/feature-xyz-plan.md
+
+# RIGHT - Archive and mark complete
+mv docs/plans/feature-xyz-plan.md docs/historical/plans/feature-xyz-plan.md
+# Then add completion header to the file
+```
+
+### Required Plan Metadata
+
+Every plan must include these fields at the top:
+
+```markdown
+---
+Type: Plan
+Status: Active | Completed | Superseded | Frozen
+Domain: <CMS | Runtime | Platform | Commerce | etc.>
+Created: YYYY-MM-DD
+Created-by: <Human name> | Claude <model> | Codex
+Last-updated: YYYY-MM-DD
+Last-updated-by: <Human name> | Claude <model> | Codex
+Completed: YYYY-MM-DD (if applicable)
+Completed-by: <Human name> | Claude <model> | Codex (if applicable)
+Superseded-by: <path to new plan> (if applicable)
+---
+```
+
+### Authorship Attribution
+
+Always track who did what:
+- Human work: Use full name (e.g., "Peter Cowling")
+- Claude work: Use "Claude <model>" (e.g., "Claude Opus 4.5")
+- Codex work: Use "Codex"
+
+In commit messages, use attribution matching the agent that did the work:
+```
+# Claude work:
+Co-Authored-By: Claude <model> <noreply@anthropic.com>
+
+# Codex work:
+Co-Authored-By: Codex <noreply@openai.com>
+
+# Mixed work (both agents contributed):
+Co-Authored-By: Claude <model> <noreply@anthropic.com>
+Co-Authored-By: Codex <noreply@openai.com>
+```
+
+### Plan Status Transitions
+
+When completing a plan:
+1. Update `Status:` to `Completed`
+2. Add `Completed:` date and `Completed-by:` attribution
+3. Add a "Completion Summary" section
+4. Move to `docs/historical/plans/`
+
+When superseding a plan:
+1. Update old plan's `Status:` to `Superseded`
+2. Add `Superseded-by:` pointing to new plan
+3. Move old plan to `docs/historical/plans/`
+
+See `CLAUDE.md` for detailed rationale and examples.
 
 ## Testing Policy
 - Do not run package- or app-wide test suites across the monorepo unless explicitly asked. These runs are expensive and slow down iteration.

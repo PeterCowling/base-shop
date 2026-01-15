@@ -1,5 +1,6 @@
 import TableOfContents from "@/components/guides/TableOfContents";
 import { unifyNormalizedFaqEntries } from "@/utils/seo/jsonld";
+import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
 import type { GuideSeoTemplateContext, TocItem, Translator } from "../../types";
 import type { FallbackTranslator, StructuredFallback } from "../../utils/fallbacks";
 
@@ -424,7 +425,7 @@ export default function RenderFallbackStructured({
       {fallback.intro.length > 0 ? (
         <div className="space-y-4">
           {fallback.intro.map((paragraph, index) => (
-            <p key={index}>{paragraph}</p>
+            <p key={index}>{renderGuideLinkTokens(paragraph, context.lang, `intro-${index}`)}</p>
           ))}
         </div>
       ) : null}
@@ -444,7 +445,9 @@ export default function RenderFallbackStructured({
                 <h2 className="text-xl font-semibold">{section.title}</h2>
               ) : null}
               {section.body.map((paragraph, index) => (
-                <p key={index}>{paragraph}</p>
+                <p key={index}>
+                  {renderGuideLinkTokens(paragraph, context.lang, `section-${section.id}-${index}`)}
+                </p>
               ))}
             </section>
           ))
@@ -457,7 +460,7 @@ export default function RenderFallbackStructured({
               <details key={i}>
                 <summary role="button" className="font-medium">{f.question}</summary>
                 {f.answer.map((ans, j) => (
-                  <p key={j}>{ans}</p>
+                  <p key={j}>{renderGuideLinkTokens(ans, context.lang, `faq-${i}-${j}`)}</p>
                 ))}
               </details>
             ))}

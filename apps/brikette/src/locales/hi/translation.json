@@ -28,6 +28,6 @@
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
-    "assistanceSlugMissing": "ARTICLE_SLUGS must define at least one assistance slug"
+    "assistanceSlugMissing": "ARTICLE_SLUGS में कम से कम एक assistance slug परिभाषित होना चाहिए"
   }
 }

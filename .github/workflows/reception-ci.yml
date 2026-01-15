@@ -1,0 +1,209 @@
+name: Reception CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'apps/reception/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/reception-ci.yml'
+  pull_request:
+    paths:
+      - 'apps/reception/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/reception-ci.yml'
+
+env:
+  TZ: UTC # Ensure consistent timezone for tests
+
+jobs:
+  lint-and-typecheck:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm --filter @apps/reception lint
+
+      - name: Typecheck
+        run: pnpm --filter @apps/reception typecheck
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+      TZ: UTC
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: pnpm --filter @apps/reception test --no-coverage
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm --filter @apps/reception build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: reception-build
+          path: apps/reception/.next
+          retention-days: 7
+
+  # Cloudflare Pages deployment (configure with your Cloudflare credentials)
+  deploy-preview:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck, test, build]
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build for Cloudflare Pages
+        run: pnpm --filter @apps/reception build
+
+      - name: Deploy to Cloudflare Pages
+        # Uncomment and configure when Cloudflare credentials are available
+        # uses: cloudflare/wrangler-action@v3
+        # with:
+        #   apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        #   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        #   command: pages deploy apps/reception/.next --project-name=reception --branch=${{ github.head_ref }}
+        run: echo "Cloudflare Pages deployment would run here - configure secrets first"
+
+  deploy-production:
+    name: Deploy Production
+    runs-on: ubuntu-latest
+    needs: [lint-and-typecheck, test, build]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build for Cloudflare Pages
+        run: pnpm --filter @apps/reception build
+
+      - name: Deploy to Cloudflare Pages
+        # Uncomment and configure when Cloudflare credentials are available
+        # uses: cloudflare/wrangler-action@v3
+        # with:
+        #   apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        #   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        #   command: pages deploy apps/reception/.next --project-name=reception --branch=main
+        run: echo "Cloudflare Pages production deployment would run here - configure secrets first"

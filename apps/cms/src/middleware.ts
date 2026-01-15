@@ -35,7 +35,7 @@ interface CmsToken {
  *   /cms/shop/{shop}/media (and subpaths)
  */
 const ADMIN_PATH_REGEX =
-  /^\/cms\/shop\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$))/;
+  /^\/cms\/shop\/([^/]+)\/(?:products\/[^/]+\/edit|settings|media(?:\/|$)|uploads(?:\/|$))/;
 
 const SERVICE_NAME = "cms";
 const ENV_LABEL: "dev" | "stage" | "prod" =
@@ -164,6 +164,8 @@ async function handleRequest(req: NextRequest, pathname: string) {
   /* Skip static assets, auth endpoints, and login/signup pages */
   if (
     pathname.startsWith("/_next") ||
+    pathname === "/uploads" ||
+    pathname.startsWith("/uploads/") ||
     pathname === "/login" ||
     pathname === "/signup" ||
     pathname === "/favicon.ico"

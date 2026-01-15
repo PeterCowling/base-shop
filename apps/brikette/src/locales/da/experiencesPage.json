@@ -14,8 +14,8 @@
     "primaryCtaAria": "Book dit ophold på Hostel Brikette",
     "secondaryCtaAria": "Se Hostel Brikettes barmenu",
     "tertiaryCtaAria": "Send en besked til Hostel Brikettes digitale concierge",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "Se morgenmenuen",
+    "breakfastCtaAria": "Se morgenmenuen"
   },
   "sections": {
     "bar": {
@@ -41,7 +41,7 @@
       "imageAlt": "Hostelgæster vandrer på Guderuten over Amalfikysten."
     },
     "concierge": {
-      "eyebrow": "Digital concierge",
+      "eyebrow": "Digital concierge-service",
       "title": "Digital concierge med svar hele døgnet",
       "description": "Digital concierge med færgevarsler, rejseplaner og svar i realtid.",
       "highlights": [
@@ -71,7 +71,7 @@
       "book": "Book nu",
       "events": "Bar og events",
       "concierge": "Chat med conciergen",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Morgenmenu"
     }
   },
   "title": "Oplevelser på Hostel Brikette",
@@ -89,17 +89,17 @@
     "empty": "Vi har endnu ingen oplevelsesguides for {{tag}}. Prøv et andet tag eller fjern filteret.",
     "clearFilter": "Vis alle oplevelsesguides",
     "cardCta": "Udforsk oplevelsesguiden {{guideTitle}}",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "filterHeading": "Filtrér oplevelsesguides",
+    "filterDescription": "Vælg et tag for at indsnævre de oplevelser, vi fremhæver.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "Strandguides",
+          "description": "Vælg den rette strandstrækning og planlæg din dag."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "Vej til stranden",
+          "description": "Trin-for-trin ruter fra Hostel Brikette ned til kysten."
         }
       }
     }

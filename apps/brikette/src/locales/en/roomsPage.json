@@ -29,6 +29,41 @@
     "keycard": "Keycard Door Entry",
     "linen": "Bed Linen and Towel Provided"
   },
+  "facts": {
+    "type": {
+      "privateRoom": "Private room",
+      "mixedDorm": "Mixed dorm",
+      "femaleDorm": "Female dorm",
+      "femaleRoom": "Female room"
+    },
+    "bathroom": {
+      "bathroomEnsuite": "Ensuite",
+      "bathroomPrivate": "Private bathroom",
+      "bathroomSharedFemale": "Shared bathroom"
+    },
+    "sleeps": "Sleeps {{count}}"
+  },
+  "detailsLine": {
+    "beds": {
+      "doubleBedForTwo": "1 double bed",
+      "threeSingleBedsThreeGuests": "3 single beds",
+      "oneDormBedTwoGuests": "1 bunk bed",
+      "threeDormBedsSixGuests": "3 bunk beds",
+      "threeDormBedsPlusSingleSevenGuests": "3 bunk beds + 1 single",
+      "fourDormBedsEightGuests": "4 bunk beds"
+    },
+    "views": {
+      "seaViewTerrace": "Sea-view terrace",
+      "seaViewExtraLargeTerrace": "Sea-view terrace",
+      "gardenView": "Garden view",
+      "courtyardView": "Courtyard view",
+      "noView": "No view"
+    }
+  },
+  "priceUnits": {
+    "perRoom": "room",
+    "perBed": "bed"
+  },
   "rooms": {
     "title": "Our Rooms",
     "double_room": {

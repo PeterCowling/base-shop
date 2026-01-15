@@ -56,7 +56,7 @@ function getSiteOrigin(hostOverride?: string): string {
 
   // Runtime in the browser
   if (typeof window !== "undefined" && window.location?.origin) {
-    return window.location.origin;
+    return stripProto(window.location.origin);
   }
 
   // SSR / build with no host → relative paths
@@ -65,6 +65,17 @@ function getSiteOrigin(hostOverride?: string): string {
 
 function stripProto(url: string): string {
   return url.replace(/^https?:\/\//, "").replace(/\/+$/, "");
+}
+
+function getIsDev(): boolean {
+  if (typeof import.meta !== "undefined") {
+    const metaEnv = (import.meta as { env?: Record<string, unknown> }).env;
+    const dev = metaEnv?.["DEV"];
+    if (typeof dev === "boolean") return dev;
+    if (typeof dev === "string") return dev === "true";
+  }
+
+  return IS_DEV;
 }
 
 function toOptionsString(opts: BuildCfImageOptions): string {
@@ -94,7 +105,7 @@ export default function buildCfImageUrl(
   hostOverride?: string,
 ): string {
   /* Dev‑server passthrough ─────────────────────────────────────────────── */
-  if (IS_DEV) return pathOrUrl;
+  if (getIsDev()) return pathOrUrl;
 
   /* 1. Serialise transform options ─────────────────────────────────────── */
   const optionString = toOptionsString({ ...opts });

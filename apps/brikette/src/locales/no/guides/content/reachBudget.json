@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Hvordan komme seg til Positano på budsjett",
-    "description": "De rimeligste rutene fra Napoli lufthavn til Positano med shuttle og SITA-buss, med trinnvise beskrivelser og kostnader."
+    "description": "De rimeligste rutene fra Napoli lufthavn til Positano med skyttel og SITA-buss, med trinnvise beskrivelser og kostnader."
   },
   "linkLabel": "Hvordan komme seg til Positano på budsjett",
   "intro": "Bruk skyttelbussen Napoli lufthavn → Sorrento og deretter SITA-bussen til Positano for den billigste og mest pålitelige ruten.",
@@ -39,11 +39,11 @@
       "text": "Gå ut fra ankomst og ta Curreri-skyttelen til stasjonen i Sorrento. Billett ~€10; reisetid ~1 t 15 min."
     },
     {
-      "name": "Sorrento → Positano (SITA bus)",
+      "name": "Sorrento → Positano (SITA-buss)",
       "text": "Kjøp en SITA CIS-billett (~€2,10). Ta bussen mot Amalfi og gå av ved Positano Chiesa Nuova."
     },
     {
-      "name": "Walk to Hostel Brikette",
+      "name": "Gå til Hostel Brikette",
       "text": "Fra holdeplassen Chiesa Nuova går du ca. 80 meter nedover (uten trapper) til inngangen."
     }
   ],

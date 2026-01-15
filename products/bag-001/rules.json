@@ -1,0 +1,26 @@
+{
+  "version": "0.1.0",
+  "rules": [
+    {
+      "type": "requires",
+      "if": { "key": "monogram", "in": ["embossed"] },
+      "then": { "key": "bodyMaterial", "in": ["calf_black", "calf_cream"] },
+      "code": "MONOGRAM_REQUIRES_CLEAN_BODY",
+      "message": "Monogramming is only available for calf leather options."
+    },
+    {
+      "type": "restrictDomain",
+      "if": { "key": "bodyMaterial", "in": ["calf_black"] },
+      "then": { "key": "bodyColor", "in": ["black", "olive"] },
+      "code": "BODY_COLOR_BLACK",
+      "message": "Black calf leather supports Noir or Olive."
+    },
+    {
+      "type": "restrictDomain",
+      "if": { "key": "bodyMaterial", "in": ["calf_cream"] },
+      "then": { "key": "bodyColor", "in": ["cream", "tan"] },
+      "code": "BODY_COLOR_CREAM",
+      "message": "Cream calf leather supports Ivory or Tan."
+    }
+  ]
+}

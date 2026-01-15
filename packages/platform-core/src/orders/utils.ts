@@ -2,6 +2,12 @@ import "server-only";
 import type { RentalOrder } from "@acme/types";
 
 export type Order = RentalOrder;
+export type OrderLineItem = {
+  sku: string;
+  productId?: string;
+  variantAttributes: Record<string, string>;
+  quantity: number;
+};
 
 // Normalize Prisma results by replacing `null` fields with `undefined`.
 // When given a falsy value (e.g. `null`), return it directly so callers can
@@ -18,4 +24,3 @@ export function normalize<T extends Order>(order: T | null): T | null {
   });
   return o;
 }
-

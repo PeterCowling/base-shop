@@ -1,0 +1,41 @@
+import { renderHook } from "@testing-library/react";
+import React from "react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { useTillShifts } from "../useTillShifts";
+import { TillShiftProvider } from "../TillShiftProvider";
+import { useTillTransactions } from "../useTillTransactions";
+
+vi.mock("../useTillShifts");
+
+const mockedUseTillShifts = vi.mocked(useTillShifts);
+
+const wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <TillShiftProvider>{children}</TillShiftProvider>
+);
+
+describe("useTillTransactions", () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("returns values from useTillShifts unchanged", () => {
+    const sample = {
+      filteredTransactions: [{ txnId: "1", amount: 10 }],
+      creditSlipTotal: 5,
+      netCash: 6,
+      netCC: 7,
+      docDepositsCount: 1,
+      docReturnsCount: 2,
+      keycardsLoaned: 3,
+      keycardsReturned: 4,
+      ccTransactionsFromLastShift: [{ txnId: "2", amount: 8 }],
+      ccTransactionsFromThisShift: [{ txnId: "3", amount: 9 }],
+    } as unknown as ReturnType<typeof useTillShifts>;
+
+    mockedUseTillShifts.mockReturnValue(sample);
+
+    const { result } = renderHook(() => useTillTransactions(), { wrapper });
+    expect(result.current).toEqual(sample);
+  });
+});

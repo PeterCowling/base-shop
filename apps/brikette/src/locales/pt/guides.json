@@ -5,13 +5,18 @@
     "popularGuides": "Guias populares",
     "helpfulGuides": "Guias úteis",
     "alsoSee": "Veja também",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Section {{position}}",
+    "viewAll": "Ver todos os guias"
   },
   "meta": {
     "index": {
       "title": "Guias de viagem de Positano",
       "description": "Guias práticos passo a passo para se deslocar por Positano e pela Costa Amalfitana."
     }
+  },
+  "redirectPage": {
+    "title": "Redirecionando…",
+    "message": "Se você não for redirecionado, <link>continue aqui</link>."
   },
   "content": {
     "onlyHostel": {

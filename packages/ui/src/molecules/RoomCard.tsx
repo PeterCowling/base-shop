@@ -5,7 +5,7 @@ import RoomImage from "../atoms/RoomImage";
 import VisuallyHidden from "../atoms/VisuallyHidden";
 import { resolveAssetPath } from "../shared/media";
 import { ROOM_CARD_TEST_IDS } from "../shared/testIds";
-import { Stack } from "@/components/atoms/primitives/Stack";
+import { Stack } from "@ui/components/atoms/primitives/Stack";
 import type {
   RoomCardAction,
   RoomCardFacility,

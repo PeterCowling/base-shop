@@ -37,6 +37,23 @@ export declare const rentalOrderSchema: z.ZodObject<{
     stripeChargeId: z.ZodOptional<z.ZodString>;
     stripeBalanceTransactionId: z.ZodOptional<z.ZodString>;
     stripeCustomerId: z.ZodOptional<z.ZodString>;
+    /** Variant allocation details for inventory linkage */
+    lineItems: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        sku: z.ZodString;
+        productId: z.ZodOptional<z.ZodString>;
+        variantAttributes: z.ZodRecord<z.ZodString, z.ZodString>;
+        quantity: z.ZodOptional<z.ZodNumber>;
+    }, "strict", z.ZodTypeAny, {
+        sku: string;
+        productId?: string | undefined;
+        variantAttributes: Record<string, string>;
+        quantity?: number | undefined;
+    }, {
+        sku: string;
+        productId?: string | undefined;
+        variantAttributes: Record<string, string>;
+        quantity?: number | undefined;
+    }>>>;
 }, "strict", z.ZodTypeAny, {
     shop: string;
     id: string;
@@ -74,6 +91,12 @@ export declare const rentalOrderSchema: z.ZodObject<{
     stripeChargeId?: string | undefined;
     stripeBalanceTransactionId?: string | undefined;
     stripeCustomerId?: string | undefined;
+    lineItems?: {
+        sku: string;
+        productId?: string | undefined;
+        variantAttributes: Record<string, string>;
+        quantity?: number | undefined;
+    }[] | undefined;
 }, {
     shop: string;
     id: string;
@@ -111,5 +134,11 @@ export declare const rentalOrderSchema: z.ZodObject<{
     stripeChargeId?: string | undefined;
     stripeBalanceTransactionId?: string | undefined;
     stripeCustomerId?: string | undefined;
+    lineItems?: {
+        sku: string;
+        productId?: string | undefined;
+        variantAttributes: Record<string, string>;
+        quantity?: number | undefined;
+    }[] | undefined;
 }>;
 export type RentalOrder = z.infer<typeof rentalOrderSchema>;

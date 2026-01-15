@@ -5,101 +5,101 @@
   },
   "linkLabel": "Lezioni di cucina sulla Costiera Amalfitana",
   "intro": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Le lezioni di cucina sulla Costiera Amalfitana uniscono limoni sfusato, pasta fresca e ricette di famiglia in cucine intime con vista.",
+    "Usa questa guida per scegliere una lezione adatta a budget e orari e per confermare i dettagli prima di versare un deposito."
   ],
   "sections": [
     {
       "id": "flow",
-      "title": "Traduzione in arrivo.",
+      "title": "Come si svolge una lezione tipo",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "I padroni di casa ti accolgono con caffe o prosecco prima di una panoramica sugli ingredienti: limoni appena grattugiati, verdure di stagione e l'impasto della pasta che modellerai.",
+        "Di solito si preparano due o tre portate — una pasta fresca, un sugo e un dessert al limone — poi si mangia insieme; le sessioni durano 2,5-4 ore incluso il pasto."
       ]
     },
     {
       "id": "choose",
-      "title": "Choosing the right class",
+      "title": "Scegliere la lezione giusta",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Controlla la dimensione del gruppo e se la cucina e a Positano, in una fattoria sulle colline o in un paese vicino; i trasferimenti possono essere inclusi o a parte.",
+        "Chiarisci cosa e compreso nel prezzo: ingredienti, abbinamenti di vini, ricette stampate e se tieni grembiuli o avanzi."
       ]
     },
     {
       "id": "logistics",
-      "title": "Logistics and timing",
+      "title": "Logistica e tempistiche",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "In alta stagione le lezioni si riempiono settimane prima; prenota in anticipo, soprattutto per le sessioni serali.",
+        "Se la location e fuori Positano, conferma i punti di pick-up o considera un taxi; le strade in salita richiedono scarpe comode anche con navetta."
       ]
     },
     {
       "id": "dietary",
-      "title": "Traduzione in arrivo.",
+      "title": "Diete e galateo",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Comunica allergie, preferenze vegetariane/vegane o intolleranze al glutine al momento della prenotazione; molti possono adattare i menu se informati in anticipo.",
+        "Indossa scarpe chiuse, lega i capelli lunghi e evita profumi forti: le cucine sono piccole e lavorerai vicino agli ingredienti."
       ]
     }
   ],
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Le lezioni sono adatte ai principianti?",
       "a": [
-        "Traduzione in arrivo."
+        "Si. Gli istruttori mostrano ogni passaggio, correggono la tecnica e dividono i compiti cosi nessuno si sente sotto pressione."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Devo parlare italiano?",
       "a": [
-        "Traduzione in arrivo."
+        "No. La maggior parte delle lezioni e in inglese o bilingue, e le dimostrazioni visive rendono tutto chiaro."
       ]
     },
     {
-      "q": "What should I bring?",
+      "q": "Cosa devo portare?",
       "a": [
-        "Traduzione in arrivo."
+        "Porta un taccuino se vuoi annotare i consigli, tieni il telefono carico per le foto e porta contanti per saldi o trasporti."
       ]
     }
   ],
   "fallback": {
     "intro": [
-      "Traduzione in arrivo."
+      "Pasta, sughi e dessert al limone fatti a mano; piccoli gruppi e cucine panoramiche in stagione."
     ],
     "toc": [
       {
         "href": "#what",
-        "label": "What to expect"
+        "label": "Cosa aspettarsi"
       },
       {
         "href": "#choose",
-        "label": "How to choose"
+        "label": "Come scegliere"
       },
       {
         "href": "#tips",
-        "label": "Tips"
+        "label": "Consigli"
       }
     ],
     "sections": [
       {
         "id": "what",
-        "title": "What to expect",
+        "title": "Cosa aspettarsi",
         "body": [
-          "Traduzione in arrivo."
+          "Pasta, sughi e dessert al limone fatti a mano; piccoli gruppi e cucine panoramiche in stagione."
         ]
       },
       {
         "id": "choose",
-        "title": "How to choose",
+        "title": "Come scegliere",
         "body": [
-          "Traduzione in arrivo."
+          "Controlla dimensione del gruppo, durata, inclusioni e opzioni di trasporto."
         ]
       },
       {
         "id": "tips",
-        "title": "Tips",
+        "title": "Consigli",
         "body": [
-          "Traduzione in arrivo."
+          "Prenota presto nei mesi di punta; informa gli host delle esigenze alimentari."
         ]
       }
     ]

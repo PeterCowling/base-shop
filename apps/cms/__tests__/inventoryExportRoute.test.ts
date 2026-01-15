@@ -145,4 +145,15 @@ describe("inventory export route", () => {
       expect(json).toEqual(expected);
     },
   );
+
+  it("returns 403 without inventory permission", async () => {
+    const { __setMockSession } = require("next-auth") as {
+      __setMockSession: (s: any) => void;
+    };
+    __setMockSession({ user: { role: "viewer" } });
+    const route = await import("../src/app/api/data/[shop]/inventory/export/route");
+    const req = new Request("http://test?format=json");
+    const res = await route.GET(req as any, { params: Promise.resolve({ shop: "test" }) });
+    expect(res.status).toBe(403);
+  });
 });

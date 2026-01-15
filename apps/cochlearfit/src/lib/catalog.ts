@@ -1,15 +1,15 @@
 import type { Product, ProductColor, ProductSize, ProductVariant } from "@/types/product";
-import { colors, products, sizes } from "@/data/products";
 
-export function getProducts(): Product[] {
-  return products;
-}
+const COLOR_META: Record<ProductColor, { label: string; hex: string }> = {
+  sand: { label: "Sand", hex: "hsl(var(--color-sand))" },
+  ocean: { label: "Ocean", hex: "hsl(var(--color-ocean))" },
+  berry: { label: "Berry", hex: "hsl(var(--color-berry))" },
+};
 
-export function getProductBySlug(slug: string): Product | undefined {
-  return products.find((product) => product.slug === slug);
-}
+const SIZES: ProductSize[] = ["kids", "adult"];
+const COLORS: ProductColor[] = ["sand", "ocean", "berry"];
 
-export function getVariantById(variantId: string): ProductVariant | undefined {
+export function getVariantById(products: Product[], variantId: string): ProductVariant | undefined {
   for (const product of products) {
     const match = product.variants.find((variant) => variant.id === variantId);
     if (match) return match;
@@ -41,7 +41,7 @@ export function getAvailableSizes(product: Product): ProductSize[] {
   for (const variant of product.variants) {
     unique.add(variant.size);
   }
-  return sizes.map((size) => size.key).filter((size) => unique.has(size));
+  return SIZES.filter((size) => unique.has(size));
 }
 
 export function getAvailableColors(product: Product): ProductColor[] {
@@ -49,9 +49,9 @@ export function getAvailableColors(product: Product): ProductColor[] {
   for (const variant of product.variants) {
     unique.add(variant.color);
   }
-  return colors.map((color) => color.key).filter((color) => unique.has(color));
+  return COLORS.filter((color) => unique.has(color));
 }
 
 export function getColorHex(color: ProductColor): string {
-  return colors.find((entry) => entry.key === color)?.hex ?? "hsl(var(--color-fg))";
+  return COLOR_META[color]?.hex ?? "hsl(var(--color-fg))";
 }

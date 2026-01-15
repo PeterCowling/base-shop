@@ -14,8 +14,8 @@
     "primaryCtaAria": "Đặt phòng tại Hostel Brikette",
     "secondaryCtaAria": "Bản dịch đang được chuẩn bị.",
     "tertiaryCtaAria": "Gửi tin nhắn cho trợ lý số Hostel Brikette",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "Xem menu bữa sáng",
+    "breakfastCtaAria": "Xem menu bữa sáng"
   },
   "sections": {
     "bar": {
@@ -71,7 +71,7 @@
       "book": "Đặt ngay",
       "events": "Quán bar & sự kiện",
       "concierge": "Trò chuyện với trợ lý",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Menu bữa sáng"
     }
   },
   "title": "Trải nghiệm tại Hostel Brikette",
@@ -89,17 +89,17 @@
     "empty": "Hiện chưa có hướng dẫn trải nghiệm cho {{tag}}. Thử thẻ khác hoặc bỏ lọc.",
     "clearFilter": "Hiển thị tất cả hướng dẫn trải nghiệm",
     "cardCta": "Khám phá hướng dẫn trải nghiệm {{guideTitle}}",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "filterHeading": "Lọc hướng dẫn trải nghiệm",
+    "filterDescription": "Chọn thẻ để thu hẹp các trải nghiệm được nổi bật.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "Hướng dẫn bãi biển",
+          "description": "Chọn bãi cát phù hợp và lên kế hoạch cho ngày của bạn."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "Chỉ đường đến bãi biển",
+          "description": "Hướng dẫn từng bước từ Hostel Brikette xuống bờ biển."
         }
       }
     }

@@ -1,14 +1,14 @@
 {
   "seo": {
     "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+    "description": "Indicaciones paso a paso para llegar a Fiordo di Furore desde Hostel Brikette en bus SITA, con dónde comprar billetes y cómo acceder a la playa."
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
     "Sigue esta ruta para viajar desde Hostel Brikette hasta Fiordo di Furore en el autobús SITA sin perder ninguna parada ni llegar desprevenido.",
     "El fiordo no tiene instalaciones de venta de entradas ni tiendas, por lo que estos pasos cubren los billetes, la parada de autobús más cercana y la escalera que conduce a la playa."
   ],
-  "warningsTitle": "Before you leave the hostel",
+  "warningsTitle": "Antes de salir del hostel",
   "warnings": [
     "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
     "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
@@ -65,7 +65,7 @@
     "Guarde el %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Guía de regreso del Hostal Brikette% para su viaje de regreso.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
-  "faqsTitle": "Common questions",
+  "faqsTitle": "Preguntas frecuentes",
   "faqs": [
     {
       "q": "¿Realmente necesito comprar el billete de vuelta con antelación?",
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "q": "How will I recognise the right stop?",
+      "q": "¿Cómo reconoceré la parada correcta?",
       "a": [
         "Después de cruzar el puente arqueado sobre el fiordo, el autobús se detendrá junto a la barrera protectora. Esté atento a las vistas del puente, escuche al conductor y utilice el pin \"JH73+PQ Furore\" de Google Maps como respaldo."
       ]

@@ -1,10 +1,10 @@
 // packages/ui/src/organisms/GlobalModals.tsx
-import { useModal } from "@/context/ModalContext";
-import hotel from "@/config/hotel";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { useModal } from "@ui/context/ModalContext";
+import hotel from "@ui/config/hotel";
+import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
+import { i18nConfig, type AppLanguage } from "@ui/i18n.config";
 import { resolveBookingCtaLabel, resolveSharedToken } from "@ui/shared";
-import { getDatePlusTwoDays } from "@/utils/dateUtils";
+import { getDatePlusTwoDays } from "@ui/utils/dateUtils";
 import {
   lazy,
   memo,
@@ -53,27 +53,6 @@ interface BookingData {
 const BOOKING_CODE = "45111" as const;
 const ENCODED_CONTACT_EMAIL = "aG9zdGVscG9zaXRhbm9AZ21haWwuY29t" as const;
 const HOSTEL_ADDRESS = `${hotel.address.streetAddress}, ${hotel.address.postalCode} ${hotel.address.addressLocality}` as const;
-const LANGUAGE_ORDER: readonly AppLanguage[] = [
-  "de",
-  "en",
-  "es",
-  "fr",
-  "it",
-  "ja",
-  "ko",
-  "pt",
-  "ru",
-  "zh",
-  "ar",
-  "hi",
-  "vi",
-  "pl",
-  "sv",
-  "no",
-  "da",
-  "hu",
-];
-
 const formatDate = (date: Date): string => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -285,7 +264,16 @@ function GlobalModals(): React.JSX.Element | null {
   );
 
   const languageOptions = useMemo<LanguageOption[]>(() => {
-    return LANGUAGE_ORDER.filter((lng) => i18nConfig.supportedLngs.includes(lng)).map((lng) => {
+    const candidates = [
+      i18nConfig.fallbackLng as AppLanguage,
+      ...((i18nConfig.supportedLngs ?? []) as AppLanguage[]),
+    ];
+    if (!candidates.includes(lang)) {
+      candidates.unshift(lang);
+    }
+    const unique = Array.from(new Set(candidates));
+
+    return unique.map((lng) => {
       let label = lng.toUpperCase();
       if (typeof Intl !== "undefined" && typeof Intl.DisplayNames === "function") {
         try {
@@ -301,7 +289,7 @@ function GlobalModals(): React.JSX.Element | null {
       }
       return { code: lng, label };
     });
-  }, []);
+  }, [lang]);
 
   const languageCopy = useMemo<LanguageModalCopy>(
     () => {

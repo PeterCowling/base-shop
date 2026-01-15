@@ -28,6 +28,8 @@ export interface LocalisedFaqItem {
   sourceLabel?: string;
 }
 
+export type FaqResourceImporter = (lang: string) => Promise<FaqResource | undefined>;
+
 const normalise = (value?: string): string => value?.trim() ?? "";
 
 const pickResource = (
@@ -81,10 +83,12 @@ const importFaqResource = async (lang: string): Promise<FaqResource | undefined>
 
 const isLanguageCode = (lang: string): lang is LanguageCode => isSupportedLanguage(lang);
 
-export const loadFaqEntries = async (): Promise<FAQEntry[]> => {
+export const loadFaqEntries = async (
+  importer: FaqResourceImporter = importFaqResource,
+): Promise<FAQEntry[]> => {
   const languages = [...i18nConfig.supportedLngs];
   const resources = await Promise.all(
-    languages.map(async (lang) => ({ lang, resource: await importFaqResource(lang) })),
+    languages.map(async (lang) => ({ lang, resource: await importer(lang) })),
   );
 
   const english = resources.find((entry) => entry.lang === "en")?.resource;

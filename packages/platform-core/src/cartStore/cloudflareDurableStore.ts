@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import type { CartState } from "../cart";
+import type { CartState, CartLine } from "../cart";
 import type { SKU, RentalLineItem } from "@acme/types";
 import type { CartStore } from "../cartStore";
 
@@ -211,8 +211,8 @@ export class CartDurableObject {
   async fetch(request: Request): Promise<Response> {
     try {
       const body = (await request.json()) as DORequest;
-      const stored = (await this.load()) ?? { cart: {}, expiresAt: 0 };
-      let cart = stored.cart;
+      const stored = (await this.load()) ?? { cart: {} as CartState, expiresAt: 0 };
+      let cart: CartState = stored.cart;
 
       switch (body.op) {
         case "init": {

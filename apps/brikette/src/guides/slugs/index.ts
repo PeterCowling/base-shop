@@ -10,4 +10,5 @@ export { getGuideLinkLabels, isPlaceholderGuideLabel } from "./labels";
 export { guideSlug, guideComponentPath, guideHref, guideAbsoluteUrl } from "./urls";
 export { GUIDE_SLUG_LOOKUP_BY_LANG } from "./lookups";
 export { guideNamespace, GUIDE_BASE_KEY_OVERRIDES, publishedGuideKeysByBase } from "./namespaces";
+export { resolveGuideKeyFromSlug } from "./resolve";
 

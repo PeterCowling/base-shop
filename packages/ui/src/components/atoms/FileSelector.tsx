@@ -45,6 +45,7 @@ export function FileSelector({
   const descriptionId = description ? `${inputId}-description` : undefined;
   const errorId = error ? `${inputId}-error` : undefined;
   const describedBy = [descriptionId, errorId].filter(Boolean).join(" ") || undefined;
+  const required = inputProps.required;
 
   return (
     <FormField
@@ -52,7 +53,7 @@ export function FileSelector({
       label={label}
       description={description}
       error={error}
-      required={inputProps.required}
+      {...(required !== undefined ? { required } : {})}
       className={cn("space-y-2", className)}
       // eslint-disable-next-line react/no-unstable-nested-components -- UI-2610: render prop must stay inline to receive FormField-provided aria wiring
       input={({ id: controlId, describedBy: fieldDescribedBy, ariaInvalid }) => (

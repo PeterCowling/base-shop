@@ -1,0 +1,242 @@
+{
+  "header": {
+    "preArrival": "Vor der Ankunft",
+    "arrivalDay": "Anreisetag",
+    "welcome": "Hey {{name}}, lass uns alles vorbereiten!",
+    "welcomeArrivalDay": "Willkommen {{name}}!",
+    "subtitle": "Erledige ein paar schnelle Dinge vor deiner Ankunft.",
+    "arrivalDaySubtitle": "Du bist fast da! Stelle sicher, dass du bereit bist."
+  },
+  "checkIn": {
+    "label": "Check-in",
+    "daysLeft": "Tage",
+    "dayLeft": "Tag",
+    "today": "Heute!",
+    "qrAlt": "Check-in QR-Code für {{code}}",
+    "qrError": "QR-Code konnte nicht generiert werden",
+    "yourCode": "Dein Check-in Code",
+    "codeCopied": "Code kopiert!"
+  },
+  "readiness": {
+    "score": "bereit",
+    "of": "von",
+    "itemsComplete": "Punkte erledigt",
+    "status": {
+      "not-started": "Gerade angefangen",
+      "in-progress": "Fortschritt wird gemacht",
+      "almost-ready": "Fast fertig!",
+      "ready": "Alles erledigt!"
+    }
+  },
+  "checklist": {
+    "title": "Checkliste",
+    "completed": "Erledigt",
+    "routePlanned": {
+      "title": "Route planen"
+    },
+    "etaConfirmed": {
+      "title": "Ankunftszeit bestätigen"
+    },
+    "cashPrepared": {
+      "title": "Bargeld vorbereiten",
+      "amount": "Kurtaxe + Kaution"
+    },
+    "rulesReviewed": {
+      "title": "Hausregeln lesen"
+    },
+    "locationSaved": {
+      "title": "Standort speichern"
+    },
+    "etaMethod": {
+      "ferry": "Mit Fähre",
+      "bus": "Mit Bus",
+      "taxi": "Mit Taxi",
+      "private": "Privattransfer",
+      "train": "Mit Zug",
+      "other": "Andere"
+    }
+  },
+  "nextAction": {
+    "allComplete": {
+      "title": "Alles erledigt!",
+      "description": "Du bist bereit für deinen Aufenthalt. Wir freuen uns auf dich!",
+      "button": "Bis bald!"
+    },
+    "routePlanned": {
+      "title": "Route planen",
+      "description": "Positano ist schwer zu erreichen. Lass uns dir helfen, den besten Weg zu finden.",
+      "button": "Routen anzeigen"
+    },
+    "etaConfirmed": {
+      "title": "Wann kommst du an?",
+      "description": "Teile uns deine voraussichtliche Ankunftszeit mit.",
+      "button": "Ankunftszeit festlegen"
+    },
+    "cashPrepared": {
+      "title": "Bargeld vorbereiten",
+      "description": "Du brauchst Bargeld für die Kurtaxe und Schlüsselkaution.",
+      "descriptionWithAmount": "Bringe etwa €{{amount}} in bar mit.",
+      "button": "Details anzeigen"
+    },
+    "rulesReviewed": {
+      "title": "Hausregeln lesen",
+      "description": "Eine 2-minütige Lektüre für einen reibungslosen Aufenthalt.",
+      "button": "Regeln lesen"
+    },
+    "locationSaved": {
+      "title": "Standort speichern",
+      "description": "Speichere die Hostel-Adresse in deiner Karten-App.",
+      "button": "Wegbeschreibung"
+    },
+    "default": {
+      "title": "Vorbereiten",
+      "description": "Erledige einige Punkte für deinen Aufenthalt.",
+      "button": "Weiter"
+    }
+  },
+  "stay": {
+    "night": "Nacht",
+    "nights": "Nächte",
+    "location": "Hostel Brikette, Positano"
+  },
+  "eta": {
+    "title": "Wann kommst du an?",
+    "subtitle": "Wähle deine voraussichtliche Ankunftszeit und Anreiseart.",
+    "back": "Zurück",
+    "timeLabel": "Ankunftszeit",
+    "methodLabel": "Anreiseart",
+    "noteLabel": "Notiz (optional)",
+    "notePlaceholder": "Details zu deiner Ankunft",
+    "lateArrival": {
+      "title": "Späte Ankunft",
+      "message": "Check-in schließt um 22:00 Uhr. Bei später Ankunft senden wir dir spezielle Anweisungen."
+    },
+    "confirm": "Ankunftszeit bestätigen",
+    "methods": {
+      "ferry": "Fähre",
+      "bus": "Bus",
+      "taxi": "Taxi",
+      "private": "Privattransfer",
+      "train": "Zug",
+      "other": "Andere"
+    }
+  },
+  "cash": {
+    "title": "Bargeld für Check-in",
+    "subtitle": "Diese Beträge zahlst du bei Ankunft in bar:",
+    "back": "Zurück",
+    "cashOnly": "Nur Barzahlung",
+    "cityTax": {
+      "label": "Kurtaxe",
+      "perNight": "pro Person, pro Nacht"
+    },
+    "deposit": {
+      "label": "Schlüsselkaution",
+      "refundable": "Rückzahlung bei Check-out"
+    },
+    "total": "Gesamtbetrag",
+    "confirm": {
+      "cityTax": "Ich habe Bargeld für die Kurtaxe",
+      "deposit": "Ich habe Bargeld für die Kaution"
+    },
+    "info": {
+      "message": "Diese Beträge werden an der Rezeption beim Check-in kassiert. Bitte halte den genauen Betrag oder ähnlich bereit."
+    },
+    "cardNote": "Kartenzahlung für andere Dienstleistungen akzeptiert",
+    "done": "Ich bin bereit!",
+    "confirmPartial": "Speichern und fortfahren",
+    "arrivalReminder": {
+      "title": "Bargeld nicht vergessen!",
+      "message": "Bringe etwa €{{amount}} in bar für Kurtaxe und Schlüsselkaution mit."
+    }
+  },
+  "rules": {
+    "title": "Hausregeln",
+    "subtitle": "Ein kurzer Überblick für einen angenehmen Aufenthalt.",
+    "confirm": "Ich habe die Regeln gelesen"
+  },
+  "location": {
+    "title": "So findest du uns",
+    "subtitle": "Speichere unsere Adresse, um uns leicht zu finden.",
+    "address": "Via Cristoforo Colombo 13, 84017 Positano SA, Italien",
+    "openMaps": "In Karten öffnen",
+    "copyAddress": "Adresse kopieren",
+    "copied": "Adresse kopiert!",
+    "confirm": "Ich habe den Standort gespeichert"
+  },
+  "routes": {
+    "title": "Anreise",
+    "subtitle": "Wähle deinen Startpunkt, um Routenoptionen zu sehen.",
+    "viewRoute": "Route anzeigen",
+    "saveRoute": "Route speichern",
+    "savedRoute": "Gespeichert!",
+    "routeSaved": "Route gespeichert!",
+    "recommended": "Empfohlen",
+    "back": "Zurück",
+    "fromOrigin": "Von {{origin}}",
+    "selectRoute": "Route wählen",
+    "noRoutes": "Keine Routen gefunden",
+    "totalTime": "Gesamtzeit",
+    "cost": "Ca. Kosten",
+    "importantNotes": "Gut zu wissen",
+    "journey": "Deine Reise",
+    "arrival": "Du bist angekommen!",
+    "viewFullGuide": "Vollständigen Guide anzeigen",
+    "categories": {
+      "airport": "Flughäfen",
+      "train-station": "Bahnhöfe",
+      "port": "Häfen",
+      "city": "Städte"
+    }
+  },
+  "arrival": {
+    "badge": "Anreisetag",
+    "welcome": "Willkommen, {{name}}!",
+    "subtitle": "Zeige diesen Bildschirm an der Rezeption.",
+    "showAtReception": "An der Rezeption zeigen",
+    "generatingCode": "Code wird generiert...",
+    "codeUnavailable": "Check-in Code nicht verfügbar. Bitte beim Personal melden.",
+    "cashReminder": "Bargeld nicht vergessen!",
+    "cashReady": "Bargeld bereit",
+    "cashAmount": "Bringe etwa €{{amount}} in bar mit",
+    "cityTaxLabel": "Kurtaxe: €{{amount}}",
+    "depositLabel": "Kaution: €{{amount}}",
+    "idReminder": "Ausweis bereithalten",
+    "idNote": "Reisepass oder Personalausweis für Check-in",
+    "findUs": "So findest du uns",
+    "whatHappensNext": "Was passiert beim Check-in",
+    "step1": "Zeige deinen QR-Code oder nenne deinen Code",
+    "step2": "Bezahle Kurtaxe und Kaution in bar",
+    "step3": "Erhalte deine Schlüsselkarte und Willkommenspaket",
+    "step4": "Erkunde und genieße deinen Aufenthalt!"
+  },
+  "staffLookup": {
+    "title": "Gast Check-in",
+    "code": "Code: {{code}}",
+    "back": "Zurück",
+    "loading": "Gast wird gesucht...",
+    "guestName": "Gast",
+    "room": "Zimmer",
+    "nights": "Aufenthalt",
+    "dates": "Daten",
+    "eta": "Voraussichtliche Ankunft",
+    "payment": "Fälliger Betrag",
+    "tryAgain": "Bitte erneut versuchen oder Code prüfen.",
+    "errors": {
+      "codeNotFound": "Code nicht gefunden",
+      "codeExpired": "Code abgelaufen",
+      "lookupFailed": "Gast konnte nicht gefunden werden"
+    }
+  },
+  "welcome": {
+    "title": "Willkommen, {{firstName}}!",
+    "subtitle": "Wir freuen uns, dass du da bist.",
+    "tip1": "Dein Zimmer ist bereit.",
+    "tip2": "Schau auf der Homepage nach Tipps und Tools.",
+    "tapToDismiss": "Tippe irgendwo, um fortzufahren"
+  },
+  "calendar": {
+    "addToCalendar": "Zum Kalender hinzufügen",
+    "downloading": "Wird heruntergeladen..."
+  }
+}

@@ -1,21 +1,41 @@
 /* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 /* ────────────────────────────────────────────────────────────────
    src/components/seo/DealsStructuredData.tsx
-   JSON-LD for Summer-2025 −15 % coupon – Google travel carousel
+   JSON-LD for the current deal (Google travel carousel)
 ---------------------------------------------------------------- */
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { DEALS } from "@/routes/deals/deals";
+import { getDealStatus } from "@/routes/deals/status";
 import { getSlug } from "@/utils/slug";
 import { memo, useMemo } from "react";
 
-function DealsStructuredData(): JSX.Element {
+function DealsStructuredData(): JSX.Element | null {
   const lang = useCurrentLanguage();
   const pageUrl = `${BASE_URL}/${lang}/${getSlug("deals", lang)}`;
+  const now = useMemo(() => new Date(), []);
+  const currentDeal = useMemo(() => {
+    return DEALS.find((deal) => getDealStatus(deal, now) !== "expired") ?? null;
+  }, [now]);
+
   const jsonLd = useMemo(() => {
+    if (!currentDeal) return null;
     /* ── constants reused across locales ───────────────────────── */
-    const availabilityStarts = "2025-05-29";
-    const availabilityEnds = "2025-10-31";
-    const discountPct = 15;
+    const availabilityStarts = currentDeal.startDate;
+    const availabilityEnds = currentDeal.endDate;
+    const discountPct = currentDeal.discountPct;
+
+    const formatIsoDate = (value: string): string => {
+      try {
+        // Force local midnight to avoid TZ shifts when parsing YYYY-MM-DD.
+        const date = new Date(`${value}T00:00:00`);
+        return new Intl.DateTimeFormat(lang, { month: "short", day: "numeric", year: "numeric" }).format(date);
+      } catch {
+        return value;
+      }
+    };
+    const formattedStart = formatIsoDate(availabilityStarts);
+    const formattedEnd = formatIsoDate(availabilityEnds);
 
     /* ── ItemList → ListItem → Hotel hierarchy (carousel spec) ── */
     const data = {
@@ -33,9 +53,9 @@ function DealsStructuredData(): JSX.Element {
           position: 1,
           item: {
             "@type": "Hotel",
-            name: `Hostel Brikette – Summer 2025 deal (-${discountPct} %)`,
+            name: `Hostel Brikette – Save ${discountPct} % when you book direct`,
             description:
-              "Save an extra 15 % when you reserve direct. Discount is auto‑applied on our site. Valid 29 May – 31 Oct 2025.",
+              `Save ${discountPct} % on direct bookings. Discount is auto‑applied at checkout. Valid ${formattedStart} – ${formattedEnd}.`,
             image: [
               `${BASE_URL}/images/16x9/hero.jpg`,
               `${BASE_URL}/images/4x3/hero.jpg`,
@@ -62,7 +82,9 @@ function DealsStructuredData(): JSX.Element {
     };
 
     return JSON.stringify(data);
-  }, [lang, pageUrl]);
+  }, [currentDeal, lang, pageUrl]);
+
+  if (!jsonLd) return null;
 
   return (
     <script

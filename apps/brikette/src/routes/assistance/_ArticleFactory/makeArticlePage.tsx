@@ -59,7 +59,7 @@ export function makeArticlePage(namespace: string, extraProps: Record<string, un
     const langFromLoader = loaderData?.lang;
     const currentLanguage = useCurrentLanguage();
     const lang = langFromLoader ?? currentLanguage;
-    const { t: tNamespace, ready } = useTranslation(namespace, { lng: lang });
+    const { t: tNamespace, ready = true } = useTranslation(namespace, { lng: lang });
     const { t: tGuides } = useTranslation("guides", { lng: lang });
     const guidesEnT = useMemo<TFunction>(
       () => i18n.getFixedT("en", "guides") as TFunction,
@@ -109,7 +109,14 @@ export function makeArticlePage(namespace: string, extraProps: Record<string, un
         fallbackPath,
         locationPathname: locationPathname ?? null,
       });
-      const url = `${BASE_URL}${path}`;
+      const canonicalOrigin = (() => {
+        try {
+          return new URL(BASE_URL).origin;
+        } catch {
+          return BASE_URL;
+        }
+      })();
+      const url = `${canonicalOrigin}${path}`;
       const image = buildCfImageUrl("/img/positano-panorama.avif", OG_IMAGE_TRANSFORM);
       const rawCard = (tTranslation("meta.twitterCard") as string) || "";
       const twitterCard = rawCard.trim() || String(DEFAULT_TWITTER_CARD);

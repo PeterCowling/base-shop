@@ -19,6 +19,7 @@ interface Props {
     value: string,
   ) => void;
   deleteRow: (idx: number) => void;
+  onShowHistory: (item: InventoryItem) => void;
 }
 
 /** Renders a single inventory row with controls for editing values. */
@@ -28,6 +29,7 @@ export default function InventoryRow({
   attributes,
   updateItem,
   deleteRow,
+  onShowHistory,
 }: Props) {
   return (
     <TableRow key={index} className="border-border-1 bg-surface-2 text-foreground/90">
@@ -82,6 +84,15 @@ export default function InventoryRow({
           aria-label="delete-row"
         >
           Delete
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          className="h-9 rounded-lg px-3 text-xs text-foreground hover:bg-surface-3"
+          onClick={() => onShowHistory(item)}
+          aria-label="history-row"
+        >
+          History {/* i18n-exempt -- COM-LEDGER temporary UI copy [ttl=2026-12-31] */}
         </Button>
       </TableCell>
     </TableRow>

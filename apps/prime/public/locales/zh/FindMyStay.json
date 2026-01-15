@@ -1,0 +1,26 @@
+{
+  "title": "查找我的住宿",
+  "subtitle": "输入您的预订信息以访问您的客人门户。",
+  "fields": {
+    "bookingCode": "预订代码",
+    "bookingCodePlaceholder": "例如 BKG12345",
+    "bookingCodeHint": "在您的确认邮件中查找",
+    "lastName": "姓氏",
+    "lastNamePlaceholder": "与预订中显示的相同",
+    "lastNameHint": "主要客人的姓氏"
+  },
+  "button": {
+    "submit": "查找我的住宿",
+    "loading": "查找中..."
+  },
+  "errors": {
+    "fieldsRequired": "请输入预订代码和姓氏。",
+    "notFound": "我们找不到具有这些信息的预订。请检查后重试。",
+    "tooManyAttempts": "尝试次数过多。请等待几分钟后重试。",
+    "networkError": "无法连接。请检查您的网络连接后重试。"
+  },
+  "help": {
+    "cantFind": "找不到您的预订代码？",
+    "contactUs": "请联系前台获取帮助。"
+  }
+}

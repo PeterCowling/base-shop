@@ -31,5 +31,5 @@ export async function clientLoader({ request }: LoaderFunctionArgs) {
     (appI18n as { language?: string }).language = lang;
   }
 
-  return { lang } as const;
+  return { lang, guide: GUIDE_KEY } as const;
 }

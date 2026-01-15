@@ -3,7 +3,7 @@ import { act, renderHook } from "@testing-library/react";
 import React from "react";
 import type { ImageOrientation } from "@acme/types";
 
-jest.mock("@/components/atoms/shadcn", () => {
+jest.mock("@ui/components/atoms/shadcn", () => {
   type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
   const Button = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => (
     <button ref={ref} {...props} />

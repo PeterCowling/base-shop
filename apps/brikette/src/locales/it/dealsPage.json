@@ -1,12 +1,45 @@
 {
   "slug": "offerte",
   "meta": {
-    "title": "Offerta Estate 2025 – Risparmia il 15 %",
-    "description": "Offerta estiva a tempo limitato con un ulteriore 15 % di sconto sulle prenotazioni dirette.",
-    "ogImageAlt": "Banner sconto estivo"
+    "title": "Risparmia il 15 % per soggiorni dal 20 settembre al 31 ottobre",
+    "description": "Offerta a tempo limitato: risparmia il 15 % sulle prenotazioni dirette per soggiorni dal 20 settembre al 31 ottobre.",
+    "ogImageAlt": "Banner sconto a tempo limitato"
   },
-  "title": "Risparmia {{percent}} % sul tuo soggiorno di {{season}}",
-  "promo": "Prenota direttamente quest'estate e ottieni un ulteriore sconto del {{percent}} %.",
+  "title": "Risparmia {{percent}} % per soggiorni dal {{from}} al {{to}}",
+  "promo": "Prenota direttamente e il tuo sconto del {{percent}} % viene applicato automaticamente al checkout.",
+  "dealCard": {
+    "savePercent": "Risparmia {{percent}}"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "Inizia il {{startDate}} — pianifica in anticipo e controlla le tue date.",
+      "active": "Attiva ora — termina il {{endDate}}.",
+      "expired": "Questa offerta è terminata."
+    },
+    "badge": {
+      "upcoming": "Inizia {{startDate}}",
+      "active": "Attiva",
+      "expired": "Scaduta"
+    },
+    "endsOn": "Termina il {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "Controlla le date",
+    "checkDatesHint": "Lo sconto si applica solo durante il periodo dell’offerta.",
+    "viewCurrentDeals": "Vedi offerte attuali",
+    "checkAvailabilityStandard": "Controlla disponibilità (tariffe standard)"
+  },
+  "sections": {
+    "active": "Offerte attive",
+    "upcoming": "Prossime offerte",
+    "expired": "Offerte scadute",
+    "noneCurrent": "Nessuna offerta attiva al momento."
+  },
+  "chips": {
+    "nonRefundable": "Non rimborsabile",
+    "directOnly": "Solo diretto",
+    "minNights": "Min {{nights}} notti"
+  },
   "banner": "Solo {{beds}} posti letto rimasti a questa tariffa – l'offerta termina tra {{time}}!",
   "timeRemaining": {
     "lessThanHour": "0 h",
@@ -16,33 +49,42 @@
     "days_other": "{{count}} giorni"
   },
   "buttonReserve": "Prenota ora",
-  "ogImageAlt": "Banner sconto estivo",
+  "ogImageAlt": "Banner sconto a tempo limitato",
   "perksHeading": "Vantaggi della prenotazione diretta",
   "perksIntro": "Questi vantaggi sono riservati agli ospiti che prenotano direttamente sul nostro sito.",
   "perksGuarantee": "Ogni prenotazione effettuata direttamente sul nostro sito sblocca automaticamente questi vantaggi esclusivi.",
-  "perksIntroLink": "Scopri tutte le offerte attive",
+  "perksIntroLink": "Vedi tutti i vantaggi",
   "perksList": [
     "Fino al 25 % di sconto sul prezzo normale con l'applicazione del coupon",
     "Colazione inclusa",
     "Drink serale in omaggio"
   ],
   "expired": {
-    "message": "Questa offerta a tempo limitato è terminata il {{endedOn}}."
+    "message": "Questa offerta è terminata."
   },
   "restrictions": {
     "heading": "Informazioni essenziali",
+    "sections": {
+      "eligibility": "Idoneità",
+      "bookingConstraints": "Vincoli di prenotazione",
+      "stayRules": "Regole di soggiorno",
+      "rateType": "Tipo di tariffa",
+      "stacking": "Cumulo"
+    },
     "stayWindow": "Valido per soggiorni dal {{from}} al {{to}}.",
+    "bookingWindow": "Valido per prenotazioni effettuate dal {{from}} al {{to}}.",
     "minAdvance": "Prenota con almeno {{days}} giorni di anticipo.",
     "minAdvancePrefix": "Prenota con almeno",
     "minAdvanceSuffix": "di anticipo.",
     "los": "Minimo {{min}} notti, massimo {{max}} notti.",
-    "nonRefundable": "Valido solo per tariffe non rimborsabili su prenotazioni dirette, ovvero effettuate tramite il sito dell'ostello.",
+    "directOnly": "Solo prenotazioni dirette (sito web).",
+    "nonRefundable": "Valido solo per tariffe non rimborsabili.",
+    "nonRefundableOnly": "Solo tariffe non rimborsabili.",
     "nonRefundablePrefix": "Valido solo per",
-    "nonRefundableSuffix": "tariffe su prenotazioni dirette, ovvero effettuate tramite il sito dell'ostello.",
+    "nonRefundableSuffix": "tariffe.",
     "stackable": "{{percent}} % cumulabile con il nostro sconto standard del 10 % per prenotazioni dirette.",
-    "other": "Si applicano i termini e le condizioni standard."
+    "other": "Vedi termini e condizioni."
   },
-  "seasonLabel": "estate 2025",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

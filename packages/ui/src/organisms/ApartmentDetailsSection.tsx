@@ -2,12 +2,12 @@
 import { Button } from "../atoms/Button";
 import { Card, CardContent } from "../atoms/Card";
 import { Heading } from "../atoms/Typography";
-import { useModal } from "@/context/ModalContext";
+import { useModal } from "@ui/context/ModalContext";
 import { Check } from "lucide-react";
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { i18nConfig } from "@/i18n.config";
+import { i18nConfig } from "@ui/i18n.config";
 import { resolveBookingCtaLabel } from "@ui/shared";
 
 interface DetailsSectionProps {

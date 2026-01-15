@@ -1,53 +1,53 @@
 {
   "seo": {
     "title": "एरिएन्ज़ो बीच से हॉस्टल ब्रिकेट के लिए बस",
-    "description": "Climb from the shoreline to the road, ride three kilometres to Chiesa Nuova, and finish with a short walk back to Hostel Brikette."
+    "description": "तट से सड़क तक चढ़ें, Chiesa Nuova तक तीन किमी बस लें, और Hostel Brikette तक छोटी पैदल दूरी पूरी करें।"
   },
-  "linkLabel": "Bus back from Arienzo Beach",
+  "linkLabel": "Arienzo Beach से बस द्वारा वापसी",
   "intro": [
-    "Skip the full stair climb by catching the Amalfi Coast bus from Arienzo back toward Positano.",
-    "Buy your return ticket in town before heading to the beach — there is no vendor at Arienzo, so plan ahead or use the shuttle boat back to Spiaggia Grande."
+    "पूरा सीढ़ी चढ़ाई छोड़कर Arienzo से Positano की ओर Amalfi Coast बस पकड़ें।",
+    "बीच पर जाने से पहले शहर में वापसी टिकट खरीदें — Arienzo पर कोई विक्रेता नहीं है, इसलिए पहले से योजना बनाएं या Spiaggia Grande वापस जाने के लिए शटल बोट लें।"
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the bus stop",
+      "title": "बस स्टॉप तक ऊपर चढ़ें",
       "body": [
-        "Climb the stairs from the beach to the road and cross carefully to the inland side.",
-        "Look for the blue-and-white SITA sign on the metal pole opposite the entrance path and wait on the lay-by."
+        "बीच से सीढ़ियाँ चढ़कर सड़क तक जाएँ और सावधानी से अंदरूनी तरफ पार करें।",
+        "एंट्रेंस पाथ के सामने वाले धातु के खंभे पर नीला-सफेद SITA साइन देखें और ले-बाय में प्रतीक्षा करें।"
       ]
     },
     {
       "id": "ride-the-bus",
-      "title": "Ride the Amalfi Coast bus",
+      "title": "Amalfi Coast बस लें",
       "body": [
-        "Flag the coach as it approaches and have your validated ticket ready.",
-        "Expect the journey to cover about 3 kilometres (1.9 miles) with a few intermediate stops before Positano."
+        "बस आते ही हाथ दिखाकर रोकें और वैलिडेटेड टिकट तैयार रखें।",
+        "Positano से पहले कुछ स्टॉप के साथ यात्रा लगभग 3 किमी (1.9 मील) की होगी।"
       ]
     },
     {
       "id": "get-off-bus",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "Bar Internazionale / Chiesa Nuova पर उतरें",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — the stop sits opposite the hostel.",
-        "Press the stop button early so the driver knows to drop you at Chiesa Nuova."
+        "घोषणा सुनें या Bar Internazionale tabacchi देखें — स्टॉप हॉस्टल के सामने है।",
+        "स्टॉप बटन पहले दबाएँ ताकि ड्राइवर आपको Chiesa Nuova पर उतार सके।"
       ]
     },
     {
       "id": "walk-to-hostel",
-      "title": "Walk back to Hostel Brikette",
+      "title": "Hostel Brikette तक वापस पैदल जाएँ",
       "body": [
-        "Continue in the direction the bus was heading for just over 100 metres (330 feet).",
-        "Take the staircase on your right back up to Hostel Brikette's main entrance."
+        "बस जिस दिशा में जा रही थी उसी दिशा में लगभग 100 मीटर (330 फीट) आगे बढ़ें।",
+        "दाईं ओर की सीढ़ियाँ लेकर Hostel Brikette के मुख्य प्रवेश तक जाएँ।"
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "बस टिप्स",
   "tips": [
     "मुद्रित समय सारिणी में केवल पॉसिटानो स्टॉप की सूची है; वापसी के रास्ते में पोसिटानो स्पोंडा से लगभग 2-5 मिनट पहले एरिएंज़ो की उम्मीद करें।",
-    "There is no ticket vendor at Arienzo. Buy your return ticket in town, or be ready to walk to Positano Sponda or take the water shuttle back to Spiaggia Grande.",
-    "Read our %LINK:arienzoBeachClub|Arienzo Beach guide% for facilities, shuttles, and planning tips.",
-    "Browse the %LINK:beaches|Positano beaches overview% to compare other coves and plan future visits."
+    "Arienzo पर कोई टिकट विक्रेता नहीं है। वापसी टिकट शहर में खरीदें, या Positano Sponda तक पैदल जाने या Spiaggia Grande वापस शटल लेने के लिए तैयार रहें।",
+    "सुविधाओं, शटल और प्लानिंग टिप्स के लिए हमारा %LINK:arienzoBeachClub|Arienzo Beach गाइड% पढ़ें।",
+    "अन्य कोव्स की तुलना और आगे की यात्राओं की योजना के लिए %LINK:beaches|Positano बीच ओवरव्यू% देखें।"
   ],
   "gallery": {
     "title": "अरीएंज़ो बस स्टॉप संदर्भ",

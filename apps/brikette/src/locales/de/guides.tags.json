@@ -91,7 +91,7 @@
       "title": "Für Familien"
     },
     "faq": {
-      "label": "FAQs",
+      "label": "Häufige Fragen",
       "title": "Reise-FAQs"
     },
     "ferragosto": {
@@ -205,8 +205,8 @@
       "title": "Salerno ↔ Positano"
     },
     "shopping": {
-      "label": "Shopping",
-      "title": "Shopping & Kunsthandwerk"
+      "label": "Einkaufen",
+      "title": "Einkaufen & Kunsthandwerk"
     },
     "shoulder": {
       "label": "Zwischensaison",
@@ -217,8 +217,8 @@
       "title": "Sorrent-Guides"
     },
     "souvenirs": {
-      "label": "Souvenirs",
-      "title": "Souvenirs & Einkaufen"
+      "label": "Andenken",
+      "title": "Andenken & Einkaufen"
     },
     "stairs": {
       "label": "Weniger Stufen",
@@ -255,7 +255,7 @@
     },
     "work-life": {
       "label": "Arbeiten & Reisen",
-      "title": "Remote Work & Cafés"
+      "title": "Remote-Arbeit & Cafés"
     }
   }
 }

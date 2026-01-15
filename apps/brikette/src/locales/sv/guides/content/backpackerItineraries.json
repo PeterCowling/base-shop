@@ -1,16 +1,16 @@
 {
   "seo": {
-    "title": "Positano på backpackerbudget: resplaner för 1–3 dagar",
-    "description": "Dag-för-dag-planer som tar dig till Positanos höjdpunkter utan att spräcka budgeten."
+    "title": "Positano på backpackerbudget: resplaner för 1-3 dagar",
+    "description": "Enkla 1-3-dagars planer med stränder, utsiktspunkter och prisvärda dagsturer."
   },
-  "linkLabel": "Positano på backpackerbudget: resplaner för 1–3 dagar",
+  "linkLabel": "Positano på backpackerbudget: resplaner för 1-3 dagar",
   "intro": [
-    "Praktiska dag-för-dag-planer som fångar höjdpunkterna utan att spräcka budgeten."
+    "Välj en plan för 1, 2 eller 3 dagar som håller kostnaderna nere men ändå täcker vyer, stränder och dagsturer."
   ],
   "toc": [
     {
       "href": "#day1",
-      "label": "Dag 1: Positano i korthet"
+      "label": "Dag 1: Positano-essentials"
     },
     {
       "href": "#day2",
@@ -36,68 +36,72 @@
   "sections": [
     {
       "id": "pacing",
-      "title": "Planera dagar med många trappor",
+      "title": "Börja med de stora klättringarna",
       "body": [
-        "Använd ankomstdagen till att utforska Chiesa Nuova och Fornillo först; spara längre trapp-pass (Gudarnas stig, Arienzotrappan) till efter en hel natts sömn.",
-        "Gruppera aktiviteter efter höjdnivå så att du stannar på en terrassnivå i taget – avsluta utsiktspunkter uppe i byn innan du går ner till marinan."
+        "Använd ankomstdagen till promenader i nedre stan (Spiaggia Grande, Fornillo) och spara de stora trappdagarna (Gudarnas stig, Arienzo-trapporna) till efter en hel natts sömn.",
+        "Samla stopp efter höjd så att du håller dig på ett terrassplan åt gången; ta utsiktspunkterna högst upp innan du går ner mot marinan."
       ]
     },
     {
       "id": "budget-mix",
-      "title": "Balansera betal- och gratisupplevelser",
+      "title": "Ett betalt highlight per dag",
       "body": [
-        "Sikta på en betald upplevelse per dag (båttur, limoncelloprovning, Capri-färja) och fyll resten med gratisstränder och sceniska promenader.",
-        "Ha med snacks och återanvändbara flaskor; mataffären vid Chiesa Nuova är betydligt billigare än kaféerna vid vattnet."
+        "Budgetera för en betald upplevelse per dag (färja till Capri, delad båt, trädgårdsentré) och fyll resten med gratis promenader och strand.",
+        "Fyll på med snacks och vatten nära Chiesa Nuova; kaféerna vid vattnet har de största påslagen."
       ]
     },
     {
       "id": "viewpoints",
-      "title": "Maxa utsiktspunkterna",
+      "title": "Utsiktspunkter utan inträde",
       "body": [
-        "Via Cristoforo Colombo ger vykortsutsikten i gryning och gyllene timmen utan inträde.",
-        "För lugna foton, gör en avstickare till den kaklade gården vid Chiesa Nuova eller den lilla belvederen ovanför Fornillo runt kl. 08.00."
+        "Via Cristoforo Colombo ger vykortsvinkeln i soluppgång eller golden hour, utan inträde.",
+        "För lugnare foton, gör en avstickare till den kaklade gården vid Chiesa Nuova eller den lilla belvederen ovanför Fornillo före 08:30."
       ]
     },
     {
       "id": "swim-breaks",
-      "title": "Planera prisvärda badstopp",
+      "title": "Prisvärda badstopp",
       "body": [
-        "Fornillo Beach är gratis och mindre trång – gå kuststigen från Spiaggia Grande och hyr bara den utrustning du behöver.",
-        "Vill du ha Arienzos strandklubbskänsla? Ta trapporna före 10:30 för att få en plats på allmänningen och picknicka sedan med focaccia från mataffären."
+        "Fornillo Beach har en gratis offentlig del; gå kuststigen från Spiaggia Grande och hyr bara det du behöver.",
+        "Vill du ha Arienzos beach club-känsla, ta trapporna före 10:30 för att få plats i den offentliga delen och picknicka med focaccia och frukt."
       ]
     },
     {
       "id": "evenings",
-      "title": "Kvällar utan att spräcka budgeten",
+      "title": "Billiga kvällar",
       "body": [
-        "Solnedgång på hostelterrassen är gratis; blanda egna spritzar med prosecco från mataffären och dela snacks.",
-        "Kolla anslagstavlan för hostelkvällar eller gå till Music on the Rocks efter 23:30 när inträdet sänks för gäster – glöm inte legitimation."
+        "Solnedgång från hostelterrassen är gratis; blanda en enkel spritz med prosecco från mataffären och dela snacks.",
+        "Kolla hostellets anslagstavla för socials; om du går ut, kom sent när inträdet är lägre och ta med legitimation."
       ]
     }
   ],
-  "day1Title": "1 dag: det viktigaste",
+  "day1Title": "1 dag: Positano-essentials",
   "day1": [
-    "Förmiddag: utsikt över Spiaggia Grande → Fornillo via kuststigen",
-    "Lunch: panini/pizza al taglio nära Chiesa Nuova för att spara",
-    "Solnedgång: terrassens utsiktspunkter vid hostelet"
+    "Förmiddag: utsiktspunkter vid Spiaggia Grande, sedan kuststigen till Fornillo för ett bad.",
+    "Lunch: pizza al taglio eller panini nära Chiesa Nuova; ät på terrasserna.",
+    "Solnedgång: Via Cristoforo Colombo eller hostelterrassen."
   ],
   "day2Title": "2 dagar: lägg till Gudarnas stig",
   "day2": [
-    "Dag 1 enligt ovan",
-    "Dag 2: SITA till Nocelle → delar av Sentiero degli Dei → svalka på stranden"
+    "Förmiddag: %LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods% (buss till Nocelle, vandring ner till Positano).",
+    "Eftermiddag: %LINK:fornilloBeachGuide|svalka vid Fornillo-stranden% eller sen lunch i stan."
   ],
-  "day3Title": "3 dagar: ö eller Amalfi-kombination",
+  "day3Title": "3 dagar: Capri eller Amalfi + Ravello",
   "day3": [
-    "Alternativ A: Dagsutflykt till Capri (tidig färja) med egen vandringsslinga",
-    "Alternativ B: Amalfi + Ravello med buss; Villa Rufolo följt av gelato på domkyrkans trappor"
+    "Alternativ A: %LINK:capriDayTrip|dagstur till Capri% - ta första färjan, planera en DIY-loop och packa snacks.",
+    "Alternativ B: %LINK:positanoRavello|Amalfi + Ravello% - buss eller färja till Amalfi, sedan upp till Villa Rufolo eller Villa Cimbrone."
   ],
   "savingsTitle": "Spara pengar",
   "savings": [
-    "Res under mellan- eller lågsäsong; använd SITA-bussar och ta trapporna där det går.",
-    "Bo i sovsalar, laga enkla frukostar och ha picknick på utsiktspunkterna till solnedgången."
+    "Res under mellansäsong (april-maj, slutet av september) för lägre priser och färre människor.",
+    "Använd SITA-bussar för de flesta sträckor; lägg till en färjetur om du vill ha utsikten.",
+    "Bo i sovsal eller dela rum nära Chiesa Nuova för att spara på bäraravgifter och trappor.",
+    "Fyll vattenflaskor på hostelet eller vid offentliga fontäner innan du går ut.",
+    "Om du bokat direkt, använd gratis frukost och kvällsdrink för att täcka en måltid.",
+    "Gå mellan utsiktspunkter istället för att ta buss; trapporna är gratis och vackra."
   ],
   "foodTitle": "Billig mat",
-  "foodText": "Panini, pizza al taglio och färdiga sallader hittar du runt mitten av byn; undvik prispåslag nere vid vattnet.",
+  "foodText": "Satsa på pizza al taglio, panini och delisallader runt Via dei Mulini och Chiesa Nuova. Handla i mini-markets för picknick och spara sittande måltider till en enda extra.",
   "transportTitle": "Transporttips",
   "transportCompareLabel": "Jämför rutter:",
   "transportCompareLinks": [
@@ -117,25 +121,25 @@
     {
       "q": "Vilken är bästa planen för 1 dag?",
       "a": [
-        "Börja vid Spiaggia Grande, vandra till Fornillo, se solnedgången från Chiesa Nuova och avsluta med middag med hostelvänner."
+        "Börja vid Spiaggia Grande, gå kuststigen till Fornillo och se solnedgången från Via Cristoforo Colombo eller hostelterrassen."
       ]
     },
     {
       "q": "Hur håller jag nere transportkostnaderna?",
       "a": [
-        "Åk SITA-buss och ta trappor när det går; färjor är toppen i högsäsong men dyrare."
+        "Åk SITA-bussar för det mesta och lägg in en färjetur för utsikten; köp biljetter innan ombordstigning för att undvika överraskningar."
       ]
     },
     {
       "q": "Vad gäller för en 2-dagars resplan?",
       "a": [
-        "Dag 1 täcker Positanos måsten; dag 2 lägger till Gudarnas stig via Nocelle samt strandtid på Arienzo eller Fornillo."
+        "Dag 1 täcker Positano-essentials; dag 2 lägger till Gudarnas stig via Nocelle plus ett badstopp."
       ]
     },
     {
       "q": "Finns det något extra för tre dagar?",
       "a": [
-        "Gör en dagstur till Capri eller kombinera Amalfi + Ravello; planera tidiga färjor och ta med snacks för att spara."
+        "Välj en: dagstur till Capri eller Amalfi + Ravello; åk tidigt och ta med snacks för att spara."
       ]
     }
   ]

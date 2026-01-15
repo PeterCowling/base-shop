@@ -1,12 +1,45 @@
 {
   "slug": "angebote",
   "meta": {
-    "title": "Sommerangebot 2025 – 15 % sparen",
-    "description": "Sommerangebot für kurze Zeit mit zusätzlichen 15 % Rabatt auf Direktbuchungen.",
-    "ogImageAlt": "Sommer-Rabatt-Banner"
+    "title": "15 % sparen bei Aufenthalten vom 20. September bis 31. Oktober",
+    "description": "Zeitlich begrenztes Angebot: 15 % sparen bei Direktbuchungen für Aufenthalte vom 20. September bis 31. Oktober.",
+    "ogImageAlt": "Banner für zeitlich begrenzten Rabatt"
   },
-  "title": "Spare {{percent}} % auf deinen Aufenthalt im {{season}}",
-  "promo": "Buche diesen Sommer direkt und sichere dir zusätzlich {{percent}} % Rabatt.",
+  "title": "Spare {{percent}} % bei Aufenthalten vom {{from}} bis {{to}}",
+  "promo": "Direkt buchen – dein {{percent}} %-Rabatt wird beim Checkout automatisch angewendet.",
+  "dealCard": {
+    "savePercent": "{{percent}} sparen"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "Startet am {{startDate}} — plane voraus und prüfe deine Daten.",
+      "active": "Jetzt aktiv — endet am {{endDate}}.",
+      "expired": "Dieses Angebot ist abgelaufen."
+    },
+    "badge": {
+      "upcoming": "Startet {{startDate}}",
+      "active": "Aktiv",
+      "expired": "Abgelaufen"
+    },
+    "endsOn": "Endet {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "Daten prüfen",
+    "checkDatesHint": "Der Rabatt gilt nur innerhalb des Angebotszeitraums.",
+    "viewCurrentDeals": "Aktuelle Angebote ansehen",
+    "checkAvailabilityStandard": "Verfügbarkeit prüfen (Standardpreise)"
+  },
+  "sections": {
+    "active": "Aktive Angebote",
+    "upcoming": "Kommende Angebote",
+    "expired": "Abgelaufene Angebote",
+    "noneCurrent": "Zurzeit keine aktuellen Angebote."
+  },
+  "chips": {
+    "nonRefundable": "Nicht erstattbar",
+    "directOnly": "Nur direkt",
+    "minNights": "Mind. {{nights}} Nächte"
+  },
   "banner": "Nur noch {{beds}} Betten zu diesem Preis – Angebot endet in {{time}}!",
   "timeRemaining": {
     "lessThanHour": "0 Std.",
@@ -16,33 +49,42 @@
     "days_other": "{{count}} Tage"
   },
   "buttonReserve": "Jetzt reservieren",
-  "ogImageAlt": "Sommer-Rabatt-Banner",
+  "ogImageAlt": "Banner für zeitlich begrenzten Rabatt",
   "perksHeading": "Vorteile der Direktbuchung",
   "perksIntro": "Diese Extras sind exklusiv für Gäste, die direkt über unsere Website buchen.",
   "perksGuarantee": "Jede Direktbuchung über unsere Website schaltet diese exklusiven Vorteile automatisch frei.",
-  "perksIntroLink": "Alle aktuellen Angebote ansehen",
+  "perksIntroLink": "Alle Vorteile ansehen",
   "perksList": [
     "Bis zu 25 % Rabatt auf den regulären Preis (automatisch angewendet)",
     "Kostenloses Frühstück",
     "Kostenloses Abendgetränk"
   ],
   "expired": {
-    "message": "Dieses zeitlich begrenzte Angebot endete am {{endedOn}}."
+    "message": "Dieses Angebot ist abgelaufen."
   },
   "restrictions": {
     "heading": "Wissenswertes",
+    "sections": {
+      "eligibility": "Teilnahme",
+      "bookingConstraints": "Buchungsbedingungen",
+      "stayRules": "Aufenthaltsregeln",
+      "rateType": "Tarifart",
+      "stacking": "Kombinierbarkeit"
+    },
     "stayWindow": "Gültig für Aufenthalte vom {{from}} bis {{to}}.",
+    "bookingWindow": "Gültig für Buchungen vom {{from}} bis {{to}}.",
     "minAdvance": "Buche mindestens {{days}} Tage im Voraus.",
     "minAdvancePrefix": "Buche mindestens",
     "minAdvanceSuffix": "im Voraus.",
     "los": "Mindestens {{min}} Nächte, höchstens {{max}} Nächte.",
-    "nonRefundable": "Gilt nur für nicht erstattungsfähige Tarife bei Direktbuchungen, also über die Website des Hostels.",
+    "directOnly": "Nur Direktbuchungen (Website).",
+    "nonRefundable": "Gilt nur für nicht erstattungsfähige Tarife.",
+    "nonRefundableOnly": "Nur nicht erstattungsfähige Tarife.",
     "nonRefundablePrefix": "Gilt nur für",
-    "nonRefundableSuffix": "Tarife bei Direktbuchungen, also über die Website des Hostels.",
+    "nonRefundableSuffix": "Tarife.",
     "stackable": "Die {{percent}} % lassen sich mit unserem regulären 10 % Direktbuchungsrabatt kombinieren.",
-    "other": "Es gelten die allgemeinen Geschäftsbedingungen."
+    "other": "AGB ansehen."
   },
-  "seasonLabel": "Sommer 2025",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

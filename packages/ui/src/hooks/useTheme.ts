@@ -1,6 +1,6 @@
 // src/hooks/useTheme.ts
 // -----------------------------------------------------------------
-import { ThemeContext, ThemeContextValue } from "@/providers/ThemeProvider";
+import { ThemeContext, ThemeContextValue } from "@ui/providers/ThemeProvider";
 import { useContext } from "react";
 
 /**

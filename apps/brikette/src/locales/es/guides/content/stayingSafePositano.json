@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Seguridad en Positano y la Costa Amalfitana",
+    "description": "Consejos prácticos para buses, ferris, escaleras, sol y emergencias en Positano y la Costa Amalfitana."
+  },
+  "linkLabel": "Seguridad en Positano y la Costa Amalfitana",
+  "intro": [
+    "Positano es un destino seguro, pero el terreno, el transporte y el calor del verano pueden sorprender.",
+    "Usa los consejos y listas de abajo para un viaje sin estrés, especialmente en escaleras, ferris y buses."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Escaleras y caminatas",
+      "body": [
+        "Usa zapatos con buen agarre: muchas calles son de piedra pulida y resbalan cuando llueve.",
+        "Usa pasamanos donde haya y descansa en subidas largas; hay fuentes en el pueblo."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Buses y ferris",
+      "body": [
+        "En el bus sujétate a las barras y no bloquees el pasillo con la mochila; los conductores frenan a menudo en las curvas.",
+        "En los ferris sigue las indicaciones de la tripulación y evita pararte junto a las rampas cuando la gente sube o baja."
+      ]
+    },
+    {
+      "id": "sun-sea",
+      "title": "Sol, mar y deshidratación",
+      "body": [
+        "Lleva agua y usa protector solar SPF 30+; hay poca sombra en playas y senderos.",
+        "Nada solo en zonas señalizadas y vigila el tráfico de barcos al hacer snorkel cerca de rocas."
+      ]
+    }
+  ],
+  "faqsTitle": "Preguntas frecuentes de seguridad",
+  "faqs": [
+    {
+      "q": "¿Positano es segura de noche?",
+      "a": [
+        "Sí. El hurto es raro; quédate en escaleras y callejones iluminados y estarás bien."
+      ]
+    },
+    {
+      "q": "¿Qué número llamo en una emergencia?",
+      "a": [
+        "Marca 112 — número de emergencia de la UE para policía, ambulancia y bomberos."
+      ]
+    }
+  ]
+}

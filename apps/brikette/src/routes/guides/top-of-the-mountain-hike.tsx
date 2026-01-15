@@ -12,6 +12,9 @@ import { BASE_URL } from "@/config/site";
 import buildCfImageUrl from "@/lib/buildCfImageUrl";
 import { OG_IMAGE as OG_DIMS } from "@/utils/headConstants";
 import i18n from "@/i18n";
+import { CfImage } from "@/components/images/CfImage";
+import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { useGuideTranslations } from "./guide-seo/translations";
 
 export const handle = { tags: ["hiking", "positano", "viewpoints"] };
 
@@ -19,12 +22,34 @@ export const GUIDE_KEY = "topOfTheMountainHike" as const satisfies GuideKey;
 export const GUIDE_SLUG = "top-of-the-mountain-hike" as const;
 
 const GALLERY_SOURCES = [
-  "/img/guides/top-of-the-mountain/image1.jpg",
-  "/img/guides/top-of-the-mountain/image2.png",
-  "/img/guides/top-of-the-mountain/image3.jpg",
-  "/img/guides/top-of-the-mountain/image2.png",
-  "/img/guides/top-of-the-mountain/image3.jpg",
+  {
+    src: "/img/guides/top-of-the-mountain/summit-view.jpg",
+    width: 800,
+    height: 397,
+  },
+  {
+    src: "/img/guides/top-of-the-mountain/elevation-profile.jpg",
+    width: 409,
+    height: 333,
+  },
 ] as const;
+
+const SECTION_IMAGES = {
+  summitView: {
+    src: "/img/guides/top-of-the-mountain/summit-view.jpg",
+    width: 800,
+    height: 397,
+    altKey: `content.${GUIDE_KEY}.gallery.items.0.alt`,
+    captionKey: `content.${GUIDE_KEY}.gallery.items.0.caption`,
+  },
+  elevationProfile: {
+    src: "/img/guides/top-of-the-mountain/elevation-profile.jpg",
+    width: 409,
+    height: 333,
+    altKey: `content.${GUIDE_KEY}.gallery.items.1.alt`,
+    captionKey: `content.${GUIDE_KEY}.gallery.items.1.caption`,
+  },
+} as const;
 
 const OG_IMAGE = {
   path: "/img/hostel-communal-terrace-lush-view.webp",
@@ -38,6 +63,55 @@ const OG_IMAGE = {
   },
 } as const;
 
+type GuideSectionFigureProps = {
+  src: string;
+  width: number;
+  height: number;
+  altKey: string;
+  captionKey: string;
+};
+
+function useGuideCopyResolver(): (key: string) => string {
+  const lang = useCurrentLanguage();
+  const { translateGuides, guidesEn } = useGuideTranslations(lang);
+  const normalize = (value: unknown, key: string): string | undefined => {
+    if (typeof value !== "string") return undefined;
+    const trimmed = value.trim();
+    if (!trimmed || trimmed === key) return undefined;
+    return trimmed;
+  };
+  return (key: string) =>
+    normalize(translateGuides(key), key) ?? normalize(guidesEn(key), key) ?? "";
+}
+
+function GuideSectionFigure({
+  src,
+  width,
+  height,
+  altKey,
+  captionKey,
+}: GuideSectionFigureProps): JSX.Element | null {
+  const lang = useCurrentLanguage();
+  const copy = useGuideCopyResolver();
+  if (lang !== "en") return null;
+
+  return (
+    <figure className="rounded-xl border border-brand-outline/20 bg-brand-surface/40 p-2 shadow-sm dark:border-brand-outline/40 dark:bg-brand-bg/60">
+      <CfImage
+        src={src}
+        width={width}
+        height={height}
+        preset="gallery"
+        alt={copy(altKey)}
+        className="h-auto w-full rounded-lg"
+      />
+      <figcaption className="mt-2 text-center text-sm text-brand-text/80">
+        {copy(captionKey)}
+      </figcaption>
+    </figure>
+  );
+}
+
 function buildFallbackGallery(context: GuideSeoTemplateContext): JSX.Element | null {
   if (context.hasLocalizedContent) return null;
 
@@ -49,13 +123,13 @@ function buildFallbackGallery(context: GuideSeoTemplateContext): JSX.Element | n
   }) as Array<{ alt?: string; caption?: string }> | undefined;
   const items = Array.isArray(itemsRaw) ? itemsRaw : [];
 
-  const galleryItems = (GALLERY_SOURCES.map((src, index) => {
+  const galleryItems = (GALLERY_SOURCES.map((item, index) => {
     const candidate = items[index] ?? {};
     const alt = typeof candidate?.alt === "string" ? candidate.alt.trim() : "";
     const caption = typeof candidate?.caption === "string" ? candidate.caption.trim() : "";
     if (!alt || !caption) return null;
-    return { src, alt, caption };
-  }).filter(Boolean) as Array<{ src: string; alt: string; caption: string }>);
+    return { src: item.src, alt, caption, width: item.width, height: item.height };
+  }).filter(Boolean) as Array<{ src: string; alt: string; caption: string; width: number; height: number }>);
 
   if (galleryItems.length === 0) return null;
 
@@ -79,6 +153,12 @@ const { Component, clientLoader, meta } = defineGuideRoute(manifestEntry, {
   template: () => ({
     articleExtras: buildFallbackGallery,
     ogImage: OG_IMAGE,
+    genericContentOptions: {
+      sectionTopExtras: {
+        "why-go": <GuideSectionFigure {...SECTION_IMAGES.summitView} />,
+        "getting-to-santa-maria": <GuideSectionFigure {...SECTION_IMAGES.elevationProfile} />,
+      },
+    },
   }),
   meta: ({ data }) => {
     const payload = (data ?? {}) as { lang?: string };

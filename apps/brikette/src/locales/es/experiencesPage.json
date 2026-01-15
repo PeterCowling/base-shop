@@ -14,8 +14,8 @@
     "primaryCtaAria": "Reserva tu estancia en Hostel Brikette",
     "secondaryCtaAria": "Ver la carta del bar de Hostel Brikette",
     "tertiaryCtaAria": "Enviar un mensaje a la conserjería digital de Hostel Brikette",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "Ver el menú de desayuno",
+    "breakfastCtaAria": "Ver el menú de desayuno"
   },
   "sections": {
     "bar": {
@@ -71,7 +71,7 @@
       "book": "Reservar ahora",
       "events": "Bar y eventos",
       "concierge": "Chatea con la conserjería",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Menú de desayuno"
     }
   },
   "title": "Experiencias en Hostel Brikette",
@@ -89,17 +89,17 @@
     "empty": "Aún no tenemos guías de experiencias para {{tag}}. Prueba con otra etiqueta o elimina el filtro.",
     "clearFilter": "Mostrar todas las guías de experiencias",
     "cardCta": "Explora la guía de experiencias {{guideTitle}}",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "filterHeading": "Filtrar guías de experiencias",
+    "filterDescription": "Elige una etiqueta para acotar las experiencias destacadas.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+        "heading": "Guías de playas",
+        "description": "Elige el tramo de arena adecuado y planifica tu día."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        "heading": "Indicaciones a la playa",
+        "description": "Indicaciones paso a paso desde Hostel Brikette hasta la orilla."
         }
       }
     }

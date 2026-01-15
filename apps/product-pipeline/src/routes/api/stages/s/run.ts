@@ -11,6 +11,7 @@ import {
   nowIso,
   type PipelineEnv,
 } from "../../_lib/db";
+import { checkStageTGate } from "../../_lib/stage-gating";
 import { errorResponse, jsonResponse } from "../../_lib/response";
 
 const riskBandSchema = z.enum(["low", "medium", "high"]);
@@ -111,6 +112,11 @@ export const onRequestPost = async ({
   const candidate = await fetchCandidateById(db, candidateId);
   if (!candidate) {
     return errorResponse(404, "candidate_not_found", { candidateId });
+  }
+
+  const stageTGate = await checkStageTGate(db, candidateId);
+  if (stageTGate) {
+    return errorResponse(409, stageTGate.code, stageTGate.details);
   }
 
   if (candidate.fingerprint) {

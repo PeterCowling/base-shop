@@ -1,0 +1,110 @@
+[
+  {
+    "sku": "classic-kids-sand",
+    "productId": "classic",
+    "quantity": 25,
+    "variant": {
+      "size": "kids"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "classic-kids-ocean",
+    "productId": "classic",
+    "quantity": 25,
+    "variant": {
+      "size": "kids"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "classic-kids-berry",
+    "productId": "classic",
+    "quantity": 25,
+    "variant": {
+      "size": "kids"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "classic-adult-sand",
+    "productId": "classic",
+    "quantity": 25,
+    "variant": {
+      "size": "adult"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "classic-adult-ocean",
+    "productId": "classic",
+    "quantity": 25,
+    "variant": {
+      "size": "adult"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "classic-adult-berry",
+    "productId": "classic",
+    "quantity": 25,
+    "variant": {
+      "size": "adult"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "sport-kids-sand",
+    "productId": "sport",
+    "quantity": 25,
+    "variant": {
+      "size": "kids"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "sport-kids-ocean",
+    "productId": "sport",
+    "quantity": 25,
+    "variant": {
+      "size": "kids"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "sport-kids-berry",
+    "productId": "sport",
+    "quantity": 25,
+    "variant": {
+      "size": "kids"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "sport-adult-sand",
+    "productId": "sport",
+    "quantity": 25,
+    "variant": {
+      "size": "adult"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "sport-adult-ocean",
+    "productId": "sport",
+    "quantity": 25,
+    "variant": {
+      "size": "adult"
+    },
+    "lowStockThreshold": 5
+  },
+  {
+    "sku": "sport-adult-berry",
+    "productId": "sport",
+    "quantity": 25,
+    "variant": {
+      "size": "adult"
+    },
+    "lowStockThreshold": 5
+  }
+]

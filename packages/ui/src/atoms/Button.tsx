@@ -8,7 +8,7 @@
 /* i18n-exempt file -- ABC-123 [ttl=2026-12-31] class names and internal variants are not user-facing */
 import { cloneElement, ElementType, forwardRef, isValidElement, memo } from "react";
 
-import type { ButtonProps, ButtonSize, ButtonVariant, SlotProps } from "@/types/button";
+import type { ButtonProps, ButtonSize, ButtonVariant, SlotProps } from "@ui/types/button";
 
 /** Tiny clsx clone (zero-dependency) */
 const clsx = (...classes: Array<string | false | null | undefined>): string =>

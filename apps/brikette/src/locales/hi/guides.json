@@ -5,7 +5,8 @@
     "popularGuides": "लोकप्रिय मार्गदर्शिकाएँ",
     "helpfulGuides": "सहायक मार्गदर्शिकाएँ",
     "alsoSee": "यह भी देखें",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "सेक्शन {{position}}",
+    "viewAll": "सभी गाइड देखें"
   },
   "meta": {
     "index": {
@@ -13,131 +14,135 @@
       "description": "पोसितानो और अमाल्फी तट पर घूमने के लिए व्यावहारिक, चरण-दर-चरण मार्गदर्शिकाएँ।"
     }
   },
+  "redirectPage": {
+    "title": "पुनर्निर्देशित किया जा रहा है...",
+    "message": "यदि आपको पुनर्निर्देशित नहीं किया जाता है, तो <link>यहाँ जारी रखें</link>."
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "Positano में एकमात्र हॉस्टल",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "Positano में एकमात्र हॉस्टल",
+        "description": "Positano में किफ़ायती बेड, शानदार नज़ारे और दोस्ताना माहौल।"
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "बैकपैकर यात्रा कार्यक्रम",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "अमाल्फ़ी कोस्ट पर बैकपैकर यात्रा कार्यक्रम",
+        "description": "2 से 7 दिनों के लिए बिना कार के व्यावहारिक, बजट-फ्रेंडली रूट।"
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "बजट में Positano पहुँचें",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "बजट में Positano पहुँचें",
+        "description": "बस, ट्रेन और फेरी से Positano पहुँचने के सबसे सस्ते तरीके।"
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "फेरी समय-सारिणी",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Positano फेरी समय-सारिणी",
+        "description": "Positano के लिए अपडेटेड फेरी ऑपरेटर और मौसमी समय-सारिणी।"
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Positano से पाथ ऑफ द गॉड्स",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "पाथ ऑफ द गॉड्स हाइक",
+        "description": "Positano से Sentiero degli Dei हाइक के लिए दरवाज़े से दरवाज़े निर्देश।"
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (फेरी)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (फेरी)",
+        "description": "अमाल्फ़ी तक फेरी लें, बस से Bomerano जाएँ, फिर पाथ ऑफ द गॉड्स हाइक करें और वापसी के निर्देश पाएं।"
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (बस)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "अमाल्फ़ी के रास्ते पाथ ऑफ द गॉड्स (बस)",
+        "description": "SITA Sud बस से Bomerano जाएँ और हमारे पाथ ऑफ द गॉड्स रूट से Positano लौटें।"
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Nocelle के रास्ते पाथ ऑफ द गॉड्स",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Nocelle के रास्ते पाथ ऑफ द गॉड्स",
+        "description": "Nocelle से छोटी राउंड-ट्रिप हाइक और Hostel Brikette लौटने के निर्देश।"
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Positano से डे ट्रिप",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Positano से डे ट्रिप",
+        "description": "अमाल्फ़ी, रावेलो, कैपरी और पोंपई के लिए आइडिया, टाइमिंग और ट्रांसपोर्ट टिप्स।"
       }
     },
     "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+      "linkLabel": "अमाल्फ़ी कोस्ट पब्लिक ट्रांसपोर्ट गाइड",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "अमाल्फ़ी कोस्ट पब्लिक ट्रांसपोर्ट गाइड",
+        "description": "पास, समय और रूट्स के साथ अमाल्फ़ी कोस्ट में बस और फेरी कैसे लें।"
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "पहली बार आने वालों के लिए Positano ट्रैवल टिप्स",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "पहली बार आने वालों के लिए Positano ट्रैवल टिप्स",
+        "description": "आगमन, सामान, भुगतान और कनेक्टिविटी — पहली यात्रा के लिए व्यावहारिक सलाह।"
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "अमाल्फ़ी कोस्ट के लिए क्या पैक करें",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "अमाल्फ़ी कोस्ट के लिए क्या पैक करें",
+        "description": "Positano और अमाल्फ़ी कोस्ट के लिए मौसमी पैकिंग चेकलिस्ट।"
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "गाइड स्थिति: {{status}} (बदलने के लिए क्लिक करें)"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "एडिटोरियल वर्कफ़्लो",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "ड्राफ्ट",
+        "review": "रिव्यू में",
+        "live": "लाइव"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "ड्राफ्ट प्रीव्यू",
+        "published": "प्रकाशित",
+        "pending": "प्रकाशन लंबित",
+        "allComplete": "सभी चेकलिस्ट आइटम पूरे",
+        "outstanding_one": "{{count}} लंबित आइटम",
+        "outstanding_other": "{{count}} लंबित आइटम"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "ड्राफ्ट पाथ",
+        "dashboardCta": "ड्राफ्ट डैशबोर्ड खोलें"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "प्रकाशित करें",
+        "primary": "मुख्य"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "पूर्णता चेकलिस्ट",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "गायब",
+          "inProgress": "चल रहा है",
+          "complete": "पूर्ण"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "यहाँ कैसे पहुँचें",
+        "help": "हेल्प सेंटर",
+        "experience": "अनुभव"
       }
     }
   }

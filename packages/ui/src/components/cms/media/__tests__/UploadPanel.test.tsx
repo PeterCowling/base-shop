@@ -4,7 +4,7 @@ import UploadPanel from "../UploadPanel";
 import { useMediaUpload } from "@ui/hooks/useMediaUpload";
 
 jest.mock("@ui/hooks/useMediaUpload", () => ({ useMediaUpload: jest.fn() }));
-jest.mock("@/components/atoms/shadcn", () => {
+jest.mock("@ui/components/atoms/shadcn", () => {
   const React = require("react");
   const Input = React.forwardRef(function InputMock(
     props: any,

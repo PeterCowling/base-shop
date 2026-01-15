@@ -96,7 +96,12 @@ describe("root pages", () => {
 
 describe("locale layout", () => {
   it("generates locale params", () => {
-    expect(generateLocaleParams()).toEqual([{ lang: "en" }, { lang: "it" }]);
+    expect(generateLocaleParams()).toEqual([
+      { lang: "en" },
+      { lang: "it" },
+      { lang: "es" },
+      { lang: "de" },
+    ]);
   });
 
   it("renders locale layout children", async () => {
@@ -215,7 +220,7 @@ describe("localized pages", () => {
 
 describe("product pages", () => {
   it("generates product params and metadata", async () => {
-    const params = generateProductParams();
+    const params = await generateProductParams();
     expect(params).toEqual(
       expect.arrayContaining([
         { lang: "en", slug: "classic" },

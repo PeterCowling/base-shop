@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Expériences à l’Hostel Brikette – Bar en terrasse, randonnées & conciergerie",
+    "title": "Expériences à l'Hostel Brikette – Bar en terrasse, randonnées & conciergerie",
     "description": "Savourez un spritz au coucher du soleil, rejoignez des randonnées guidées et utilisez notre conciergerie numérique pour planifier des journées simples et réussies sur la côte Amalfitaine."
   },
   "hero": {
@@ -11,11 +11,11 @@
     "primaryCta": "Réserver votre séjour",
     "secondaryCta": "Ouvrir la carte du bar",
     "tertiaryCta": "Contacter la conciergerie numérique",
-    "primaryCtaAria": "Réserver votre séjour à l’Hostel Brikette",
-    "secondaryCtaAria": "Voir la carte du bar de l’Hostel Brikette",
-    "tertiaryCtaAria": "Envoyer un message à la conciergerie numérique de l’Hostel Brikette",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "primaryCtaAria": "Réserver votre séjour à l'Hostel Brikette",
+    "secondaryCtaAria": "Voir la carte du bar de l'Hostel Brikette",
+    "tertiaryCtaAria": "Envoyer un message à la conciergerie numérique de l'Hostel Brikette",
+    "breakfastCta": "Voir le menu du petit-déjeuner",
+    "breakfastCtaAria": "Voir le menu du petit-déjeuner"
   },
   "sections": {
     "bar": {
@@ -25,9 +25,9 @@
       "highlights": [
         "Spritz signatures et vins locaux servis bien frais.",
         "Soirées sociales et dégustations pendant les semaines de pointe.",
-        "Vues panoramiques idéales pour des photos à l’heure dorée."
+        "Vues panoramiques idéales pour des photos à l'heure dorée."
       ],
-      "imageAlt": "Clients trinquant sur la terrasse de l’Hostel Brikette au coucher du soleil."
+      "imageAlt": "Clients trinquant sur la terrasse de l'Hostel Brikette au coucher du soleil."
     },
     "hikes": {
       "eyebrow": "Randonnées guidées",
@@ -35,10 +35,10 @@
       "description": "Nous vous aidons à planifier le Sentier des Dieux, des navettes partagées et des excursions en ferry sur toute la côte Amalfitaine.",
       "highlights": [
         "Cartes hors‑ligne et horaires mis à jour chaque matin.",
-        "Balades menées par l’équipe lorsque les sentiers sont les plus fréquentés.",
-        "Conseils d’équipement et alternatives selon la météo."
+        "Balades menées par l'équipe lorsque les sentiers sont les plus fréquentés.",
+        "Conseils d'équipement et alternatives selon la météo."
       ],
-      "imageAlt": "Voyageurs de l’hostel sur le Sentier des Dieux au‑dessus de la côte Amalfitaine."
+      "imageAlt": "Voyageurs de l'hostel sur le Sentier des Dieux au‑dessus de la côte Amalfitaine."
     },
     "concierge": {
       "eyebrow": "Conciergerie numérique",
@@ -49,57 +49,89 @@
         "Alertes automatiques pour les ajustements de bus et de ferries.",
         "Suggestions personnalisées autour de vos plans."
       ],
-      "imageAlt": "Écran de téléphone affichant la conversation avec la conciergerie numérique de l’Hostel Brikette."
+      "imageAlt": "Écran de téléphone affichant la conversation avec la conciergerie numérique de l'Hostel Brikette."
     }
   },
   "faq": {
     "title": "Questions fréquentes",
     "items": [
       {
-        "question": "Dois‑je réserver les expériences à l’avance ?",
+        "question": "Dois‑je réserver les expériences à l'avance ?",
         "answer": [
           "La plupart des soirées en terrasse et des randonnées se confirment le jour même à la réception.",
-          "Pour les visites privées ou sorties en bateau, nous pouvons bloquer une place — envoyez simplement un message à la conciergerie au moins 24 heures avant."
+          "Pour les visites privées ou sorties en bateau, nous pouvons bloquer une place — envoyez simplement un message à la conciergerie au moins 24 heures avant."
         ]
       }
     ]
   },
   "cta": {
-    "title": "Prêt à organiser vos journées sur la côte Amalfitaine ?",
+    "title": "Prêt à organiser vos journées sur la côte Amalfitaine ?",
     "subtitle": "Réservez votre lit, jetez un œil à la carte du bar et dites‑nous ce que vous voulez vivre — nous nous occupons des détails.",
     "buttons": {
       "book": "Réserver",
       "events": "Bar & événements",
       "concierge": "Discuter avec la conciergerie",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Menu du petit-déjeuner"
     }
   },
-  "title": "Expériences à l’Hostel Brikette",
+  "title": "Expériences à l'Hostel Brikette",
   "intro": "Savourez un spritz sur notre terrasse, rejoignez des randonnées aux vues imprenables et recevez des conseils instantanés de notre conciergerie numérique.",
   "items": {
     "bar": "Bar en terrasse au coucher du soleil proposant spritz et vins locaux.",
-    "hikes": "Randonnées guidées et en autonomie avec cartes, horaires et conseils d’équipement.",
+    "hikes": "Randonnées guidées et en autonomie avec cartes, horaires et conseils d'équipement.",
     "concierge": "Conciergerie numérique avec alertes ferries, itinéraires et réponses à la demande."
   },
   "guideCollections": {
-    "heading": "Approfondissez avec nos guides d’expériences",
+    "heading": "Approfondissez avec nos guides d'expériences",
     "description": "Itinéraires, randonnées, journées en bateau et idées culturelles, sélectionnés par notre équipe et nos voyageurs.",
-    "taggedHeading": "Guides d’expériences étiquetés {{tag}}",
+    "taggedHeading": "Guides d'expériences étiquetés {{tag}}",
     "taggedDescription": "Ces récits mettent en avant des moments {{tag}}. Retirez le filtre pour tout explorer.",
-    "empty": "Nous n’avons pas encore de guides d’expériences pour {{tag}}. Essayez une autre étiquette ou retirez le filtre.",
-    "clearFilter": "Afficher tous les guides d’expériences",
-    "cardCta": "Explorez le guide d'expériences « {{guideTitle}} »",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "empty": "Nous n'avons pas encore de guides d'expériences pour {{tag}}. Essayez une autre étiquette ou retirez le filtre.",
+    "clearFilter": "Afficher tous les guides d'expériences",
+    "cardCta": "Explorez le guide d'expériences « {{guideTitle}} »",
+    "directionsLabel": "Itinéraires",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri en ferry",
+        "capriPositanoFerry": "Capri → Positano en ferry"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi en bus",
+        "amalfiPositanoBus": "Amalfi → Positano en bus",
+        "positanoAmalfiFerry": "Positano → Amalfi en ferry (saisonnier)",
+        "amalfiPositanoFerry": "Amalfi → Positano en ferry (saisonnier)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello en bus",
+        "ravelloPositanoBus": "Ravello → Positano en bus",
+        "positanoRavelloFerryBus": "Positano → Ravello ferry + bus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Centre de Naples → Positano (train + bus)",
+        "naplesCenterPositanoFerry": "Centre de Naples → Positano en ferry",
+        "naplesAirportPositanoBus": "Aéroport de Naples → Positano en bus",
+        "positanoNaplesCenterBusTrain": "Positano → Centre de Naples (bus + train)",
+        "positanoNaplesCenterFerry": "Positano → Naples en ferry",
+        "positanoNaplesAirportBus": "Positano → Aéroport de Naples en bus"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerne → Positano en bus",
+        "salernoPositanoFerry": "Salerne → Positano en ferry (saisonnier)",
+        "positanoSalernoBus": "Positano → Salerne en bus",
+        "positanoSalernoFerry": "Positano → Salerne en ferry (saisonnier)"
+      }
+    },
+    "filterHeading": "Filtrer les guides d'expériences",
+    "filterDescription": "Choisissez une étiquette pour affiner les expériences mises en avant.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+        "heading": "Guides des plages",
+        "description": "Choisissez la bonne portion de sable et planifiez votre journée."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+        "heading": "Itinéraires pour la plage",
+        "description": "Itinéraires pas à pas depuis Hostel Brikette jusqu'au rivage."
         }
       }
     }

@@ -1,5 +1,7 @@
 "use client";
 
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
+
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { Cluster, Stack } from "@ui/components/atoms/primitives";
 import type { CandidateDetail, CandidateDetailStrings, StageRun } from "./types";
@@ -12,6 +14,7 @@ import {
   parseStageCForm,
   type StageCFormState,
 } from "./stageCForm";
+import { resolveGateMessage, resolveStageTSGate } from "./stageGate";
 
 export default function StageCRunCard({
   candidateId,
@@ -44,7 +47,9 @@ export default function StageCRunCard({
     tone: "success" | "error";
     text: string;
   } | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const cooldownActive = Boolean(candidate?.cooldown?.active);
+  const stageGate = resolveStageTSGate(stageRuns);
 
   useEffect(() => {
     if (hasEdited) return;
@@ -84,10 +89,12 @@ export default function StageCRunCard({
           | null;
         if (!response.ok) {
           const reason = data?.details?.reasonCode;
+          const gateError = resolveGateMessage(data?.error ?? null, strings.gates);
           const text =
-            data?.error === "cooldown_active"
+            gateError ??
+            (data?.error === "cooldown_active"
               ? `${strings.cooldown.activeMessage}${reason ? ` (${reason})` : ""}`
-              : strings.stageC.errorRun;
+              : strings.stageC.errorRun);
           setMessage({ tone: "error", text });
         } else {
           setMessage({ tone: "success", text: strings.stageC.success });
@@ -100,13 +107,13 @@ export default function StageCRunCard({
         await onRun();
       }
     },
-    [candidate, candidateId, form, onRun, strings.cooldown, strings.stageC],
+    [candidate, candidateId, form, onRun, strings.cooldown, strings.gates, strings.stageC],
   );
 
-  const inputDisabled = running || loading || cooldownActive;
+  const inputDisabled = running || loading || cooldownActive || Boolean(stageGate);
 
   return (
-    <section className="pp-card p-6">
+    <section className="pp-card p-6" id="stage-c">
       <Stack gap={2}>
         <span className="text-xs uppercase tracking-widest text-foreground/60">
           {strings.stageC.label}
@@ -122,41 +129,53 @@ export default function StageCRunCard({
         notAvailable={strings.notAvailable}
       />
 
-      <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageC}>
-        <StageCFormFields
-          form={form}
-          setForm={setForm}
-          disabled={inputDisabled}
-          strings={strings.stageC}
-          onEdit={() => setHasEdited(true)}
-        />
-        <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
-          {message ? (
-            <span
-              className={
-                message.tone === "success"
-                  ? "text-xs text-emerald-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
-                  : "text-xs text-red-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
-              }
-            >
-              {message.text}
-            </span>
-          ) : (
-            <span className="text-xs text-foreground/60">
-              {cooldownActive
-                ? strings.cooldown.activeMessage
-                : strings.stageC.inputHelp}
-            </span>
-          )}
-          <button
-            className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
-            type="submit"
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideInputs : strings.common.editInputs}
+        </button>
+      </div>
+
+      {expanded ? (
+        <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={runStageC}>
+          <StageCFormFields
+            form={form}
+            setForm={setForm}
             disabled={inputDisabled}
-          >
-            {strings.stageC.runLabel}
-          </button>
-        </Cluster>
-      </form>
+            strings={strings.stageC}
+            onEdit={() => setHasEdited(true)}
+          />
+          <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
+            {message ? (
+              <span
+                className={
+                  message.tone === "success"
+                    ? "text-xs text-emerald-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+                    : "text-xs text-red-600" // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+                }
+              >
+                {message.text}
+              </span>
+            ) : (
+              <span className="text-xs text-foreground/60">
+                {cooldownActive
+                  ? strings.cooldown.activeMessage
+                  : strings.stageC.inputHelp}
+              </span>
+            )}
+            <button
+              className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+              type="submit"
+              disabled={inputDisabled}
+            >
+              {strings.stageC.runLabel}
+            </button>
+          </Cluster>
+        </form>
+      ) : null}
     </section>
   );
 }

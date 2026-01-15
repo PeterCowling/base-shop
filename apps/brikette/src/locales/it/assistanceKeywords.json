@@ -36,7 +36,7 @@
     {
       "type": 1,
       "slug": "can-i-bring-my-own-alcohol",
-      "s1": "byo",
+      "s1": "alcolici propri",
       "s2": "posso portare i miei alcolici",
       "s3": "l'ostello ha un apri-vino",
       "s4": "acquistare l'alcol proprio",
@@ -640,10 +640,10 @@
     {
       "type": 1,
       "slug": "what-is-the-first-time-i-can-check-in",
-      "s1": "check in time",
+      "s1": "orario del check-in",
       "s2": "prima volta check-in",
       "s3": "al momento del check-in",
-      "s4": "check-in",
+      "s4": "registrazione",
       "s5": "orario di check-in",
       "humanReadableQuestion": "Qual è la prima volta che posso fare il check-in?",
       "humanReadableAnswer": "Il check-in è alle 15.",

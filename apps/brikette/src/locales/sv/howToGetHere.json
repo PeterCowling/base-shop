@@ -397,6 +397,8 @@
   },
   "filters": {
     "title": "Filtrera rutter",
+    "resultsCount": "Resultat: {{count}} rutter",
+    "editLabel": "Redigera filter",
     "transportLabel": "Transporttyp",
     "transportAll": "Alla",
     "transportModes": {

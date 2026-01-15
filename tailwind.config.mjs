@@ -188,6 +188,13 @@ const preset = (() => {
 const config = {
   presets: [preset],
   darkMode: ["class", ".theme-dark"],
+  theme: {
+    extend: {
+      spacing: {
+        35: "35px",
+      },
+    },
+  },
   content: [
     "./apps/**/*.{ts,tsx,mdx}",
     "./packages/{ui,platform-core,platform-machine,i18n,themes}/**/*.{ts,tsx,mdx}",

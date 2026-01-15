@@ -1,12 +1,12 @@
- 
 import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 
 import { guideHref } from "@/routes.guides-helpers";
 import type { GuideKey } from "@/routes.guides-helpers";
 import type { AppLanguage } from "@/i18n.config";
+import { getSlug } from "@/utils/slug";
 
-const TOKEN_PATTERN = /%LINK:([^|%]+)\|([^%]+)%/g;
+const TOKEN_PATTERN = /%([A-Z]+):([^|%]+)\|([^%]+)%/g;
 const LEGACY_TOKEN_PATTERN = /\[\[link:([^|\]]+)\|([^\]]+)\]\]/gi;
 const MUSTACHE_TOKEN_PATTERN = /\{\{guide:([^|}]+)\|([^}]+)\}\}/gi;
 
@@ -16,11 +16,27 @@ export function renderGuideLinkTokens(value: string | null | undefined, lang: Ap
   let lastIndex = 0;
   let match: RegExpExecArray | null;
   let linkIndex = 0;
+  const howToBase = getSlug("howToGetHere", lang);
+  TOKEN_PATTERN.lastIndex = 0;
+
+  const appendLink = (href: string, label: string) => {
+    const previousNode = nodes[nodes.length - 1];
+    if (typeof previousNode === "string") {
+      if (previousNode.length > 0 && !/\s$/u.test(previousNode)) {
+        nodes.push(" ");
+      }
+    } else if (previousNode != null) {
+      nodes.push(" ");
+    }
+    nodes.push(<Link key={`${keyBase}-link-${linkIndex}`} to={href}>{label}</Link>);
+    linkIndex += 1;
+  };
 
   while ((match = TOKEN_PATTERN.exec(text)) !== null) {
     const token = match[0] ?? "";
-    const rawKey = match[1];
-    const rawLabel = match[2];
+    const tokenType = (match[1] ?? "").toUpperCase();
+    const rawKey = match[2];
+    const rawLabel = match[3];
     if (!rawKey || !rawLabel) {
       lastIndex = match.index + token.length;
       continue;
@@ -29,30 +45,27 @@ export function renderGuideLinkTokens(value: string | null | undefined, lang: Ap
       nodes.push(text.slice(lastIndex, match.index));
     }
 
-    const guideKey = rawKey.trim() as GuideKey;
     const label = rawLabel.trim();
 
-    if (guideKey.length > 0 && label.length > 0) {
-      // For inline guide link tokens, resolve URLs under the canonical /guides
-      // base regardless of each guide's namespace. This matches test
-      // expectations and keeps cross-guide links stable in content.
-      const href = guideHref(lang, guideKey, { forceGuidesBase: true });
-      const previousNode = nodes[nodes.length - 1];
-      if (typeof previousNode === "string") {
-        if (previousNode.length > 0 && !/\s$/u.test(previousNode)) {
-          nodes.push(" ");
-        }
-      } else if (previousNode != null) {
-        nodes.push(" ");
+    if (tokenType === "LINK") {
+      const guideKey = rawKey.trim() as GuideKey;
+      if (guideKey.length > 0 && label.length > 0) {
+        const href = guideHref(lang, guideKey, { forceGuidesBase: true });
+        appendLink(href, label);
+        lastIndex = match.index + token.length;
+        continue;
       }
-      nodes.push(
-        <Link key={`${keyBase}-link-${linkIndex}`} to={href}>{label}</Link>,
-      );
-      linkIndex += 1;
-    } else {
-      nodes.push(label.length > 0 ? label : token);
+    } else if (tokenType === "HOWTO") {
+      const slug = rawKey.trim();
+      if (slug.length > 0 && howToBase.length > 0 && label.length > 0) {
+        const href = `/${lang}/${howToBase}/${slug}`;
+        appendLink(href, label);
+        lastIndex = match.index + token.length;
+        continue;
+      }
     }
 
+    nodes.push(label.length > 0 ? label : token);
     lastIndex = match.index + token.length;
   }
 
@@ -65,8 +78,11 @@ export function renderGuideLinkTokens(value: string | null | undefined, lang: Ap
 
 export function stripGuideLinkTokens(value: string | null | undefined): string {
   const text = typeof value === "string" ? value : "";
+  TOKEN_PATTERN.lastIndex = 0;
+  LEGACY_TOKEN_PATTERN.lastIndex = 0;
+  MUSTACHE_TOKEN_PATTERN.lastIndex = 0;
   return text
-    .replace(TOKEN_PATTERN, "$2")
+    .replace(TOKEN_PATTERN, "$3")
     .replace(LEGACY_TOKEN_PATTERN, "$2")
     .replace(MUSTACHE_TOKEN_PATTERN, "$2");
 }

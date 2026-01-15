@@ -2,9 +2,7 @@ import type { LoaderFunctionArgs } from "react-router-dom";
 
 import { isSupportedLanguage } from "@/config";
 import { i18nConfig, type AppLanguage } from "@/i18n.config";
-import { guideNamespace } from "@/guides/slugs/namespaces";
-import { GUIDE_SLUG_LOOKUP_BY_LANG } from "@/guides/slugs/lookups";
-import { guideSlug } from "@/guides/slugs/urls";
+import { guideNamespace, guideSlug, resolveGuideKeyFromSlug } from "@/guides/slugs";
 import { redirect } from "@/compat/router-state";
 
 const normalizePathname = (pathname: string): string => {
@@ -13,6 +11,7 @@ const normalizePathname = (pathname: string): string => {
   }
   return pathname;
 };
+
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
@@ -27,8 +26,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  const lookup = GUIDE_SLUG_LOOKUP_BY_LANG[lang];
-  const key = lookup?.[slug];
+  const key = resolveGuideKeyFromSlug(slug, lang);
 
   if (!key) {
     throw new Response("Not Found", { status: 404 });

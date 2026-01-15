@@ -1,0 +1,33 @@
+@keyframes gateFade {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes signalSwap {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gateFade {
+  animation: gateFade 0.7s ease-out both;
+}
+
+.gateDelay {
+  animation-delay: 0.12s;
+}
+
+.signalSwap {
+  animation: signalSwap 0.5s ease-out;
+}

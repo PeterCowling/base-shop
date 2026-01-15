@@ -1,0 +1,28 @@
+{
+  "title": "Configurações",
+  "cache": {
+    "title": "Dados em cache",
+    "usage": "Armazenamento usado",
+    "quota": "{{percent}}% do armazenamento disponível",
+    "description": "Dados em cache ajudam o app a funcionar offline. Limpá-los pode exigir novo download de conteúdo.",
+    "clear": "Limpar dados em cache",
+    "clearing": "Limpando...",
+    "cleared": "Limpo!",
+    "refresh": "Atualizar"
+  },
+  "language": {
+    "title": "Idioma",
+    "select": "Selecionar idioma"
+  },
+  "notifications": {
+    "title": "Notificações",
+    "push": "Notificações push",
+    "email": "Notificações por email"
+  },
+  "about": {
+    "title": "Sobre",
+    "version": "Versão",
+    "terms": "Termos de serviço",
+    "privacy": "Política de privacidade"
+  }
+}

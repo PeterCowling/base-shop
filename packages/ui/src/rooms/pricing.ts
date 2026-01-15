@@ -3,8 +3,8 @@
 // Live‑rate pricing helpers for rooms.
 // -----------------------------------------------------------------------------
 
-import type { Room } from "@/data/roomsData";
-import type { RateCalendar } from "@/types/rates";
+import type { Room } from "@ui/data/roomsData";
+import type { RateCalendar } from "@ui/types/rates";
 import dayjs from "dayjs";
 
 /**

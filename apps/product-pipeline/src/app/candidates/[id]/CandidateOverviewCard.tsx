@@ -1,6 +1,7 @@
 "use client";
 
 import { Stack } from "@ui/components/atoms/primitives";
+import { formatStageStatus } from "@/lib/stage-labels";
 import type { CandidateDetail, CandidateDetailStrings } from "./types";
 
 export default function CandidateOverviewCard({
@@ -34,7 +35,11 @@ export default function CandidateOverviewCard({
             {strings.fields.stageStatus}
           </span>
           <div className="text-sm font-semibold">
-            {candidate?.stageStatus ?? strings.notAvailable}
+            {formatStageStatus(
+              candidate?.stageStatus,
+              strings.stageLabels,
+              strings.notAvailable,
+            )}
           </div>
         </div>
         <div className="rounded-2xl border border-border-1 bg-surface-2 px-4 py-3">

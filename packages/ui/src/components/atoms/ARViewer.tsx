@@ -55,7 +55,7 @@ export function ARViewer({
 
   React.useEffect(() => {
     let mounted = true;
-    ensureModelViewer(process.env.NEXT_PUBLIC_MODEL_VIEWER_SRC)
+    ensureModelViewer(process.env["NEXT_PUBLIC_MODEL_VIEWER_SRC"])
       .then(() => {
         if (!mounted) return;
         setReady(true);

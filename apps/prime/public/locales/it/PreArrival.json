@@ -1,0 +1,242 @@
+{
+  "header": {
+    "preArrival": "Prima dell'arrivo",
+    "arrivalDay": "Giorno di arrivo",
+    "welcome": "Ciao {{name}}, prepariamoci!",
+    "welcomeArrivalDay": "Benvenuto {{name}}!",
+    "subtitle": "Completa alcune cose veloci prima di arrivare.",
+    "arrivalDaySubtitle": "Ci sei quasi! Assicurati di essere pronto per il check-in."
+  },
+  "checkIn": {
+    "label": "Check-in",
+    "daysLeft": "giorni rimanenti",
+    "dayLeft": "giorno rimanente",
+    "today": "Oggi!",
+    "qrAlt": "Codice QR check-in per {{code}}",
+    "qrError": "Impossibile generare il codice QR",
+    "yourCode": "Il tuo codice check-in",
+    "codeCopied": "Codice copiato!"
+  },
+  "readiness": {
+    "score": "pronto",
+    "of": "di",
+    "itemsComplete": "elementi completati",
+    "status": {
+      "not-started": "Appena iniziato",
+      "in-progress": "In corso",
+      "almost-ready": "Quasi pronto!",
+      "ready": "Tutto pronto!"
+    }
+  },
+  "checklist": {
+    "title": "Lista di preparazione",
+    "completed": "Fatto",
+    "routePlanned": {
+      "title": "Pianifica il percorso"
+    },
+    "etaConfirmed": {
+      "title": "Conferma orario di arrivo"
+    },
+    "cashPrepared": {
+      "title": "Prepara contanti",
+      "amount": "Tassa di soggiorno + deposito"
+    },
+    "rulesReviewed": {
+      "title": "Leggi le regole"
+    },
+    "locationSaved": {
+      "title": "Salva la posizione"
+    },
+    "etaMethod": {
+      "ferry": "Con traghetto",
+      "bus": "Con autobus",
+      "taxi": "Con taxi",
+      "private": "Transfer privato",
+      "train": "Con treno",
+      "other": "Altro"
+    }
+  },
+  "nextAction": {
+    "allComplete": {
+      "title": "Tutto pronto!",
+      "description": "Sei pronto per il tuo soggiorno. Non vediamo l'ora di vederti!",
+      "button": "A presto!"
+    },
+    "routePlanned": {
+      "title": "Pianifica il percorso",
+      "description": "Positano è difficile da raggiungere. Ti aiutiamo a trovare il modo migliore.",
+      "button": "Vedi opzioni di percorso"
+    },
+    "etaConfirmed": {
+      "title": "Quando arrivi?",
+      "description": "Facci sapere il tuo orario di arrivo previsto.",
+      "button": "Imposta orario"
+    },
+    "cashPrepared": {
+      "title": "Prepara contanti",
+      "description": "Ti serviranno contanti per la tassa di soggiorno e il deposito.",
+      "descriptionWithAmount": "Porta circa €{{amount}} in contanti.",
+      "button": "Vedi dettagli"
+    },
+    "rulesReviewed": {
+      "title": "Dai un'occhiata alle regole",
+      "description": "2 minuti di lettura per un soggiorno senza problemi.",
+      "button": "Leggi le regole"
+    },
+    "locationSaved": {
+      "title": "Salva la nostra posizione",
+      "description": "Salva l'indirizzo dell'ostello nella tua app mappe.",
+      "button": "Ottieni indicazioni"
+    },
+    "default": {
+      "title": "Preparati",
+      "description": "Completa alcuni passaggi per il tuo soggiorno.",
+      "button": "Continua"
+    }
+  },
+  "stay": {
+    "night": "notte",
+    "nights": "notti",
+    "location": "Hostel Brikette, Positano"
+  },
+  "eta": {
+    "title": "Quando arrivi?",
+    "subtitle": "Seleziona l'orario di arrivo previsto e come arrivi.",
+    "back": "Indietro",
+    "timeLabel": "Orario di arrivo",
+    "methodLabel": "Mezzo di trasporto",
+    "noteLabel": "Nota (opzionale)",
+    "notePlaceholder": "Dettagli sul tuo arrivo",
+    "lateArrival": {
+      "title": "Arrivo tardivo",
+      "message": "Il check-in chiude alle 22:00. Per arrivi tardivi, ti invieremo istruzioni speciali."
+    },
+    "confirm": "Conferma orario di arrivo",
+    "methods": {
+      "ferry": "Traghetto",
+      "bus": "Autobus",
+      "taxi": "Taxi",
+      "private": "Transfer privato",
+      "train": "Treno",
+      "other": "Altro"
+    }
+  },
+  "cash": {
+    "title": "Contanti per il check-in",
+    "subtitle": "Dovrai pagare questo in contanti all'arrivo:",
+    "back": "Indietro",
+    "cashOnly": "Solo pagamento in contanti",
+    "cityTax": {
+      "label": "Tassa di soggiorno",
+      "perNight": "per persona, per notte"
+    },
+    "deposit": {
+      "label": "Deposito tessera",
+      "refundable": "Rimborsabile al check-out"
+    },
+    "total": "Totale da preparare",
+    "confirm": {
+      "cityTax": "Ho contanti per la tassa di soggiorno",
+      "deposit": "Ho contanti per il deposito"
+    },
+    "info": {
+      "message": "Questi importi vengono raccolti alla reception durante il check-in. Per favore prepara l'importo esatto o vicino."
+    },
+    "cardNote": "Carta accettata per altri servizi",
+    "done": "Sono pronto!",
+    "confirmPartial": "Salva e continua",
+    "arrivalReminder": {
+      "title": "Non dimenticare i contanti!",
+      "message": "Porta circa €{{amount}} in contanti per tassa di soggiorno e deposito."
+    }
+  },
+  "rules": {
+    "title": "Regole della casa",
+    "subtitle": "Una rapida panoramica per un soggiorno piacevole.",
+    "confirm": "Ho letto le regole"
+  },
+  "location": {
+    "title": "Trovaci",
+    "subtitle": "Salva il nostro indirizzo per trovarci facilmente.",
+    "address": "Via Cristoforo Colombo 13, 84017 Positano SA, Italia",
+    "openMaps": "Apri in Mappe",
+    "copyAddress": "Copia indirizzo",
+    "copied": "Indirizzo copiato!",
+    "confirm": "Ho salvato la posizione"
+  },
+  "routes": {
+    "title": "Come arrivare",
+    "subtitle": "Scegli il tuo punto di partenza per vedere le opzioni.",
+    "viewRoute": "Vedi percorso",
+    "saveRoute": "Salva percorso",
+    "savedRoute": "Salvato!",
+    "routeSaved": "Percorso salvato!",
+    "recommended": "Consigliato",
+    "back": "Indietro",
+    "fromOrigin": "Da {{origin}}",
+    "selectRoute": "Seleziona un percorso",
+    "noRoutes": "Nessun percorso trovato",
+    "totalTime": "Tempo totale",
+    "cost": "Costo appross.",
+    "importantNotes": "Da sapere",
+    "journey": "Il tuo viaggio",
+    "arrival": "Sei arrivato!",
+    "viewFullGuide": "Vedi guida completa",
+    "categories": {
+      "airport": "Aeroporti",
+      "train-station": "Stazioni ferroviarie",
+      "port": "Porti",
+      "city": "Città"
+    }
+  },
+  "arrival": {
+    "badge": "Giorno di arrivo",
+    "welcome": "Benvenuto, {{name}}!",
+    "subtitle": "Mostra questa schermata alla reception per il check-in.",
+    "showAtReception": "Mostra alla reception",
+    "generatingCode": "Generazione del codice check-in...",
+    "codeUnavailable": "Codice check-in non disponibile. Contatta lo staff.",
+    "cashReminder": "Non dimenticare i contanti!",
+    "cashReady": "Contanti pronti",
+    "cashAmount": "Porta circa €{{amount}} in contanti",
+    "cityTaxLabel": "Tassa di soggiorno: €{{amount}}",
+    "depositLabel": "Deposito: €{{amount}}",
+    "idReminder": "Prepara un documento",
+    "idNote": "Passaporto o carta d'identità per il check-in",
+    "findUs": "Trovaci",
+    "whatHappensNext": "Cosa succede al check-in",
+    "step1": "Mostra il tuo codice QR o dicci il codice",
+    "step2": "Paga tassa di soggiorno e deposito in contanti",
+    "step3": "Ricevi la tua tessera e il kit di benvenuto",
+    "step4": "Esplora e goditi il soggiorno!"
+  },
+  "staffLookup": {
+    "title": "Check-in ospite",
+    "code": "Codice: {{code}}",
+    "back": "Indietro",
+    "loading": "Ricerca ospite...",
+    "guestName": "Ospite",
+    "room": "Camera",
+    "nights": "Soggiorno",
+    "dates": "Date",
+    "eta": "Arrivo previsto",
+    "payment": "Pagamento dovuto",
+    "tryAgain": "Riprova o verifica il codice.",
+    "errors": {
+      "codeNotFound": "Codice non trovato",
+      "codeExpired": "Codice scaduto",
+      "lookupFailed": "Impossibile trovare l'ospite"
+    }
+  },
+  "welcome": {
+    "title": "Benvenuto, {{firstName}}!",
+    "subtitle": "Siamo felici di averti qui.",
+    "tip1": "La tua camera è pronta.",
+    "tip2": "Dai un'occhiata alla homepage per consigli e strumenti.",
+    "tapToDismiss": "Tocca ovunque per continuare"
+  },
+  "calendar": {
+    "addToCalendar": "Aggiungi al calendario",
+    "downloading": "Download in corso..."
+  }
+}

@@ -1,0 +1,604 @@
+{
+  "productId": "bag-001",
+  "version": "0.1.0",
+  "assets": {
+    "version": "1",
+    "base": {
+      "tiers": {
+        "mobile": "v1/mobile.gltf",
+        "desktop": "v1/desktop.gltf"
+      },
+      "slots": {
+        "body": "slot_body",
+        "handle": "slot_handle",
+        "hardware": "slot_hardware",
+        "lining": "slot_lining",
+        "personalization": "slot_personalization"
+      },
+      "proceduralOpen": {
+        "nodeName": "Body_Flap",
+        "axis": "x",
+        "degrees": -110
+      }
+    },
+    "parts": {
+      "monogram": {
+        "variants": {
+          "embossed": {
+            "tiers": {
+              "mobile": "v1/parts/monogram-embossed.gltf",
+              "desktop": "v1/parts/monogram-embossed.gltf"
+            },
+            "slot": "slot_personalization"
+          }
+        }
+      }
+    },
+    "poster": "v1/poster.jpg",
+    "hdri": "v1/hdri/studio_01.hdr"
+  },
+  "regions": [
+    {
+      "regionId": "body",
+      "displayName": "Body",
+      "hotspotId": "hs_body",
+      "focusTargetNode": "focus_body"
+    },
+    {
+      "regionId": "handle",
+      "displayName": "Handle",
+      "hotspotId": "hs_handle",
+      "focusTargetNode": "focus_handle"
+    },
+    {
+      "regionId": "hardware",
+      "displayName": "Hardware",
+      "hotspotId": "hs_hardware",
+      "focusTargetNode": "focus_hardware"
+    },
+    {
+      "regionId": "lining",
+      "displayName": "Lining",
+      "hotspotId": "hs_lining",
+      "focusTargetNode": "focus_lining"
+    },
+    {
+      "regionId": "personalization",
+      "displayName": "Monogram",
+      "hotspotId": "hs_monogram",
+      "focusTargetNode": "focus_personalization"
+    }
+  ],
+  "properties": [
+    {
+      "key": "bodyMaterial",
+      "displayName": "Material",
+      "regionId": "body",
+      "type": "enum",
+      "values": [
+        {
+          "value": "leather",
+          "label": "Leather",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "__material_swap__",
+              "materialName": "Mat_Body_Leather"
+            }
+          ]
+        },
+        {
+          "value": "pattern_a",
+          "label": "Pattern A",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "__material_swap__",
+              "materialName": "Mat_Body_PatternA"
+            }
+          ]
+        },
+        {
+          "value": "pattern_b",
+          "label": "Pattern B",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "__material_swap__",
+              "materialName": "Mat_Body_PatternB"
+            }
+          ]
+        },
+        {
+          "value": "pattern_c",
+          "label": "Pattern C",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "__material_swap__",
+              "materialName": "Mat_Body_PatternC"
+            }
+          ]
+        }
+      ],
+      "defaultValue": "leather"
+    },
+    {
+      "key": "bodyColor",
+      "displayName": "Color",
+      "regionId": "body",
+      "type": "enum",
+      "values": [
+        {
+          "value": "black",
+          "label": "Black",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_black"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_black"
+            }
+          ]
+        },
+        {
+          "value": "espresso",
+          "label": "Espresso",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_espresso"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_espresso"
+            }
+          ]
+        },
+        {
+          "value": "chestnut",
+          "label": "Chestnut",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_chestnut"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_chestnut"
+            }
+          ]
+        },
+        {
+          "value": "tan",
+          "label": "Tan",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_tan"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_tan"
+            }
+          ]
+        },
+        {
+          "value": "red",
+          "label": "Red",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_red"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_red"
+            }
+          ]
+        },
+        {
+          "value": "navy",
+          "label": "Navy",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_navy"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_navy"
+            }
+          ]
+        },
+        {
+          "value": "forest",
+          "label": "Forest",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_forest"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_forest"
+            }
+          ]
+        },
+        {
+          "value": "cream",
+          "label": "Cream",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_cream"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_cream"
+            }
+          ]
+        },
+        {
+          "value": "slate",
+          "label": "Slate",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_slate"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_slate"
+            }
+          ]
+        },
+        {
+          "value": "burgundy",
+          "label": "Burgundy",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Body_",
+              "materialPresetId": "tint_burgundy"
+            },
+            {
+              "meshNamePattern": "^Monogram_",
+              "materialPresetId": "tint_burgundy"
+            }
+          ]
+        }
+      ],
+      "defaultValue": "tan"
+    },
+    {
+      "key": "handleColor",
+      "displayName": "Color",
+      "regionId": "handle",
+      "type": "enum",
+      "values": [
+        {
+          "value": "black",
+          "label": "Black",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_black"
+            }
+          ]
+        },
+        {
+          "value": "espresso",
+          "label": "Espresso",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_espresso"
+            }
+          ]
+        },
+        {
+          "value": "chestnut",
+          "label": "Chestnut",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_chestnut"
+            }
+          ]
+        },
+        {
+          "value": "tan",
+          "label": "Tan",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_tan"
+            }
+          ]
+        },
+        {
+          "value": "red",
+          "label": "Red",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_red"
+            }
+          ]
+        },
+        {
+          "value": "navy",
+          "label": "Navy",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_navy"
+            }
+          ]
+        },
+        {
+          "value": "forest",
+          "label": "Forest",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_forest"
+            }
+          ]
+        },
+        {
+          "value": "cream",
+          "label": "Cream",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_cream"
+            }
+          ]
+        },
+        {
+          "value": "slate",
+          "label": "Slate",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_slate"
+            }
+          ]
+        },
+        {
+          "value": "burgundy",
+          "label": "Burgundy",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Handle_",
+              "materialPresetId": "tint_burgundy"
+            }
+          ]
+        }
+      ],
+      "defaultValue": "tan"
+    },
+    {
+      "key": "hardwareFinish",
+      "displayName": "Hardware",
+      "regionId": "hardware",
+      "type": "enum",
+      "values": [
+        {
+          "value": "gold",
+          "label": "Gold",
+          "priceDelta": 80,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Hardware_",
+              "materialPresetId": "__material_swap__",
+              "materialName": "Mat_Hardware_Gold"
+            }
+          ]
+        },
+        {
+          "value": "silver",
+          "label": "Silver",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Hardware_",
+              "materialPresetId": "__material_swap__",
+              "materialName": "Mat_Hardware_Silver"
+            }
+          ]
+        },
+        {
+          "value": "gunmetal",
+          "label": "Gunmetal",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Hardware_",
+              "materialPresetId": "__material_swap__",
+              "materialName": "Mat_Hardware_Gunmetal"
+            }
+          ]
+        }
+      ],
+      "defaultValue": "gold"
+    },
+    {
+      "key": "liningColor",
+      "displayName": "Lining Color",
+      "regionId": "lining",
+      "type": "enum",
+      "values": [
+        {
+          "value": "cream",
+          "label": "Cream",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_cream"
+            }
+          ]
+        },
+        {
+          "value": "black",
+          "label": "Black",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_black"
+            }
+          ]
+        },
+        {
+          "value": "espresso",
+          "label": "Espresso",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_espresso"
+            }
+          ]
+        },
+        {
+          "value": "chestnut",
+          "label": "Chestnut",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_chestnut"
+            }
+          ]
+        },
+        {
+          "value": "tan",
+          "label": "Tan",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_tan"
+            }
+          ]
+        },
+        {
+          "value": "red",
+          "label": "Red",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_red"
+            }
+          ]
+        },
+        {
+          "value": "navy",
+          "label": "Navy",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_navy"
+            }
+          ]
+        },
+        {
+          "value": "forest",
+          "label": "Forest",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_forest"
+            }
+          ]
+        },
+        {
+          "value": "slate",
+          "label": "Slate",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_slate"
+            }
+          ]
+        },
+        {
+          "value": "burgundy",
+          "label": "Burgundy",
+          "priceDelta": 0,
+          "materialBindings": [
+            {
+              "meshNamePattern": "^Lining_",
+              "materialPresetId": "tint_burgundy"
+            }
+          ]
+        }
+      ],
+      "defaultValue": "cream"
+    },
+    {
+      "key": "monogram",
+      "displayName": "Monogram",
+      "regionId": "personalization",
+      "type": "enum",
+      "values": [
+        {
+          "value": "none",
+          "label": "None",
+          "priceDelta": 0,
+          "assetBindings": [
+            {
+              "partId": "monogram",
+              "variantId": null
+            }
+          ]
+        },
+        {
+          "value": "embossed",
+          "label": "Embossed",
+          "priceDelta": 120,
+          "assetBindings": [
+            {
+              "partId": "monogram",
+              "variantId": "embossed"
+            }
+          ]
+        }
+      ],
+      "defaultValue": "none"
+    }
+  ]
+}

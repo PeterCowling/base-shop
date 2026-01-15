@@ -1,7 +1,8 @@
-import { i18nConfig } from "@/i18n.config";
+import { i18nConfig } from "@ui/i18n.config";
 import type { TFunction } from "i18next";
 
 const BOOKING_TOKEN_KEYS = ["reserveNow", "bookNow"] as const;
+const PRIMARY_CTA_TOKEN_KEY = "checkAvailability" as const;
 
 export type BookingTokenKey = (typeof BOOKING_TOKEN_KEYS)[number];
 
@@ -87,6 +88,13 @@ export function resolveBookingCtaLabel(
   }
 
   return undefined;
+}
+
+export function resolvePrimaryCtaLabel(
+  tTokens: TFunction<"_tokens">,
+  options: ResolveTokenOptions = {},
+): string | undefined {
+  return resolveSharedToken(tTokens, PRIMARY_CTA_TOKEN_KEY, options);
 }
 
 export function resolveSharedToken(

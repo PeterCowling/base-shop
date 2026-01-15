@@ -51,7 +51,12 @@ export function getCsrfToken(req?: Request | SimpleReq): string | undefined {
       ?.split("=")[1]
       ?.trim();
   if (!csrfToken) {
-    csrfToken = crypto.randomUUID();
+    csrfToken =
+      (typeof globalThis !== "undefined" &&
+      typeof (globalThis as { crypto?: { randomUUID?: () => string } }).crypto
+        ?.randomUUID === "function"
+        ? (globalThis as { crypto: { randomUUID: () => string } }).crypto.randomUUID()
+        : `${Date.now().toString(36)}-${Math.random().toString(16).slice(2)}`);
     // i18n-exempt: cookie attribute string; not user-facing copy
     document.cookie = `csrf_token=${csrfToken}; path=/; SameSite=Strict${
       location.protocol === "https:" ? "; secure" : ""

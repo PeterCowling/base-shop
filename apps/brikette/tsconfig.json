@@ -35,6 +35,10 @@
         "../../packages/ui/dist/*",
         "../../packages/ui/src/*"
       ],
+      "@acme/telemetry": [
+        "../../packages/telemetry/src/index.ts",
+        "../../packages/telemetry/dist/index.d.ts"
+      ],
       "react-router": [
         "src/compat/react-router.tsx"
       ],
@@ -56,7 +60,11 @@
     "src/**/*.d.ts",
     "src/**/*.json",
     "src/**/*",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "functions/**/*",
+    "scripts/**/*",
+    "tests/**/*",
+    "workers/**/*"
   ],
   "exclude": [
     ".next/types/server.d.ts",

@@ -10,16 +10,16 @@
     "caption": "L'auberge Brikette se trouve à un virage en amont de l'arrêt. Prévoyez quelques minutes pour pouvoir rejoindre la file d'attente avant l'arrivée du bus."
   },
   "toc": {
-    "onThisPage": "On this page",
-    "before": "Before you leave",
-    "steps": "Step-by-step",
-    "knees": "Legs & luggage",
-    "faqs": "FAQs"
+    "onThisPage": "Sur cette page",
+    "before": "Avant de partir",
+    "steps": "Étape par étape",
+    "knees": "Jambes et bagages",
+    "faqs": "FAQ"
   },
   "sections": [
     {
       "id": "why-route",
-      "title": "Why this route works",
+      "title": "Pourquoi cet itinéraire fonctionne",
       "body": [
         "Il faut marcher 120 mètres (400 pieds) entre l'entrée de l'auberge et l'arrêt, sur la route principale.",
         "Si vous allez vers Amalfi, l'arrêt se trouve en face du Bar Internazionale. Queue on the sea-view side of the road.  Si vous vous dirigez vers Sorrente, vous attendrez directement devant le bar lui-même."
@@ -27,7 +27,7 @@
     },
     {
       "id": "bus-basics",
-      "title": "Tickets and timing",
+      "title": "Billets et horaires",
       "body": [
         "Achetez un ticket SITA au tabacchi ou à l'intérieur du bar.  N'essayez pas de monter à bord du bus sans billet, car vous ne pourrez pas en acheter un dans le bus lui-même.  Present your ticket to the driver on boarding.  Si vous prenez le premier bus, achetez votre billet la veille et venez nous voir à la réception pour organiser votre départ.",
         "Les bus d'été se remplissent souvent. Planifiez en conséquence, particulièrement pendant les périodes les plus chargées."
@@ -42,16 +42,16 @@
   "stepsMapEmbedUrl": "https://www.google.com/maps/embed?origin=mfe&mode=walking&pb=!1m5!4m4!4m1!2sHostel+Brikette!4m1!2sBar+Internazionale",
   "kneesList": [],
   "kneesDockPrefix": "Commencer avec les bagages au quai du ferry ? Utilisez notre",
-  "kneesDockLinkLabel": "Ferry dock luggage route",
+  "kneesDockLinkLabel": "Itinéraire bagages depuis le quai des ferries",
   "kneesPorterPrefix": "Besoin d'un prix de porteur ou d'aide pour la réservation ? Vérifiez le",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "guide des porteurs",
   "faqs": [
     {
-      "q": "How early should I reach the stop?",
+      "q": "À quelle heure dois-je arriver à l’arrêt ?",
       "a": "Arrivez au moins 10 minutes avant le bus de votre choix en été afin de pouvoir faire la queue près du refuge et embarquer confortablement."
     },
     {
-      "q": "Where can I buy or validate tickets?",
+      "q": "Où puis-je acheter ou valider les billets ?",
       "a": "Utilisez le tabacchi à côté du Bar Internazionale pour la vente de billets. Les validateurs sont à bord ; Découpez ou scannez votre ticket dès que vous montez dessus."
     }
   ],

@@ -52,11 +52,17 @@ export async function POST(req: NextRequest) {
       );
     }
   }
+  const lineItems = orderItems.map((li) => ({
+    sku: li.sku,
+    variantAttributes: {},
+    quantity: 1,
+  }));
   await addOrder({
     shop: SHOP_ID,
     sessionId,
     deposit,
     expectedReturnDate: expected,
+    ...(lineItems.length ? { lineItems } : {}),
   });
   return NextResponse.json({ ok: true });
 }

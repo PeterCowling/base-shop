@@ -1,0 +1,482 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Hotel",
+      "@id": "https://example.test/#hotel",
+      "name": "Hostel Brikette",
+      "description": "Positano's only hostel—cliff-top terraces with sweeping Amalfi Coast views, 100 m from the SITA bus stop.",
+      "url": "https://example.test",
+      "priceRange": "€55 – €300",
+      "hasMap": "https://maps.google.com/maps?cid=17733313080460471781",
+      "email": "hostelpositano@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Via Guglielmo Marconi 358",
+        "addressLocality": "Positano SA",
+        "postalCode": "84017",
+        "addressCountry": "IT"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.629634,
+        "longitude": 14.480818
+      },
+      "amenityFeature": [
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Free Wi-Fi",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Air Conditioning",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Panoramic Terrace",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Bar & Café",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Secure Lockers",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Concierge / Digital Assistant",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Luggage Storage",
+          "value": true
+        }
+      ],
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "00:00",
+          "closes": "23:59"
+        }
+      ],
+      "checkinTime": "15:30",
+      "checkoutTime": "10:30",
+      "sameAs": [
+        "https://maps.google.com/maps?cid=17733313080460471781",
+        "https://maps.apple.com/?q=Hostel+Brikette&ll=40.629634,14.480818",
+        "https://www.instagram.com/brikettepositano"
+      ],
+      "availableLanguage": [
+        "en",
+        "de",
+        "es",
+        "fr",
+        "it",
+        "ja",
+        "ko",
+        "pt",
+        "ru",
+        "zh",
+        "hi",
+        "vi",
+        "sv",
+        "ar",
+        "pl",
+        "no",
+        "da",
+        "hu"
+      ],
+      "image": [
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/7/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1279,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/7/7_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/7/7_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/7/7_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/10/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 451,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 300,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/10/10_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1213,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/10/10_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1296,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1277,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_4.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1287,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/11/11_5.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 1920,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 1297,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/landing.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_1.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_2.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2475,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_3.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_4.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_5.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        },
+        {
+          "@type": "ImageObject",
+          "url": "https://example.test/images/12/12_6.webp",
+          "width": {
+            "@type": "QuantitativeValue",
+            "value": 2558,
+            "unitText": "px"
+          },
+          "height": {
+            "@type": "QuantitativeValue",
+            "value": 3840,
+            "unitText": "px"
+          }
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": 9.2,
+        "reviewCount": 3336,
+        "bestRating": 10,
+        "worstRating": 1
+      },
+      "review": [
+        {
+          "@type": "Review",
+          "@id": "https://example.test#review-0",
+          "author": {
+            "@type": "Organization",
+            "name": "Hostelworld"
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 9.3,
+            "bestRating": 10,
+            "worstRating": 1
+          },
+          "reviewBody": "2,757 verified reviews on Hostelworld"
+        },
+        {
+          "@type": "Review",
+          "@id": "https://example.test#review-1",
+          "author": {
+            "@type": "Organization",
+            "name": "Booking.com"
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 9,
+            "bestRating": 10,
+            "worstRating": 1
+          },
+          "reviewBody": "579 verified reviews on Booking.com"
+        },
+        {
+          "@type": "Review",
+          "@id": "https://example.test#hw-0",
+          "author": {
+            "@type": "Organization",
+            "name": "Hostelworld"
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 9.4,
+            "bestRating": 10,
+            "worstRating": 1
+          },
+          "reviewBody": "Loved the digital concierge tips. Would return for sure!",
+          "datePublished": "2025-10-09"
+        },
+        {
+          "@type": "Review",
+          "@id": "https://example.test#hw-1",
+          "author": {
+            "@type": "Organization",
+            "name": "Hostelworld"
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 9.5,
+            "bestRating": 10,
+            "worstRating": 1
+          },
+          "reviewBody": "Great hostel! The terrace is perfect for sunset drinks. Clean rooms and very good vibe.",
+          "datePublished": "2025-10-09"
+        },
+        {
+          "@type": "Review",
+          "@id": "https://example.test#hw-2",
+          "author": {
+            "@type": "Organization",
+            "name": "Hostelworld"
+          },
+          "reviewRating": {
+            "@type": "Rating",
+            "ratingValue": 9.2,
+            "bestRating": 10,
+            "worstRating": 1
+          },
+          "reviewBody": "Felt like a home away from home thanks to the lovely team.",
+          "datePublished": "2025-10-09"
+        }
+      ],
+      "paymentAccepted": [
+        "Cash",
+        "Visa",
+        "Mastercard",
+        "Maestro"
+      ]
+    }
+  ]
+}

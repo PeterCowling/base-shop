@@ -1,0 +1,246 @@
+/* apps/xa/src/app/xa-cyber-atelier.css
+   XA theme: XA-inspired minimal palette and typography. */
+
+:root {
+  color-scheme: light;
+  --color-bg: 0 0% 100%;
+  --color-fg: 0 0% 8%;
+  --color-fg-muted: 0 0% 45%;
+  --color-muted: 0 0% 96%;
+  --color-muted-fg: 0 0% 20%;
+  --color-muted-border: 0 0% 86%;
+  --color-panel: 0 0% 98%;
+  --color-border: 0 0% 88%;
+  --color-border-muted: 0 0% 92%;
+  --color-border-strong: 0 0% 75%;
+
+  --surface-1: 0 0% 100%;
+  --surface-2: 0 0% 98%;
+  --surface-3: 0 0% 95%;
+  --surface-input: 0 0% 100%;
+
+  --color-primary: 0 0% 6%;
+  --color-primary-fg: 0 0% 100%;
+  --color-primary-soft: 0 0% 96%;
+  --color-primary-hover: 0 0% 10%;
+  --color-primary-active: 0 0% 0%;
+  --color-accent: 0 0% 12%;
+  --color-accent-fg: 0 0% 100%;
+  --color-accent-soft: 0 0% 96%;
+  --color-link: 0 0% 8%;
+
+  --border-1: 0 0% 0% / 0.08;
+  --border-2: 0 0% 0% / 0.12;
+  --border-3: 0 0% 0% / 0.18;
+  --color-focus-ring: 0 0% 0%;
+  --ring: 0 0% 0%;
+  --ring-offset: 0 0% 100%;
+
+  --font-sans: var(--font-atelier-sans, "Work Sans", "Helvetica Neue", Arial, sans-serif);
+  --font-mono: var(--font-atelier-mono, "IBM Plex Mono", ui-monospace, monospace);
+  --font-body: var(--font-sans);
+  --font-heading-1: var(--font-sans);
+  --font-heading-2: var(--font-sans);
+
+  --color-selection: 0 0% 90%;
+  --color-highlight: 0 0% 96%;
+
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 10px;
+  --radius-3xl: 12px;
+  --radius-4xl: 16px;
+
+  --elevation-1: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --elevation-2: 0 3px 8px rgba(0, 0, 0, 0.08);
+  --elevation-3: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --elevation-4: 0 10px 24px rgba(0, 0, 0, 0.12);
+  --elevation-5: 0 16px 32px rgba(0, 0, 0, 0.14);
+}
+
+html.theme-dark {
+  color-scheme: dark;
+  --color-bg: 0 0% 6%;
+  --color-fg: 0 0% 92%;
+  --color-fg-muted: 0 0% 60%;
+  --color-muted: 0 0% 12%;
+  --color-muted-fg: 0 0% 88%;
+  --color-muted-border: 0 0% 22%;
+  --color-panel: 0 0% 10%;
+  --color-border: 0 0% 24%;
+  --color-border-muted: 0 0% 18%;
+  --color-border-strong: 0 0% 38%;
+
+  --surface-1: 0 0% 8%;
+  --surface-2: 0 0% 10%;
+  --surface-3: 0 0% 12%;
+  --surface-input: 0 0% 14%;
+
+  --color-primary: 0 0% 96%;
+  --color-primary-fg: 0 0% 8%;
+  --color-primary-soft: 0 0% 16%;
+  --color-primary-hover: 0 0% 90%;
+  --color-primary-active: 0 0% 100%;
+  --color-accent: 0 0% 88%;
+  --color-accent-fg: 0 0% 10%;
+  --color-accent-soft: 0 0% 14%;
+  --color-link: 0 0% 92%;
+
+  --border-1: 0 0% 100% / 0.08;
+  --border-2: 0 0% 100% / 0.14;
+  --border-3: 0 0% 100% / 0.22;
+  --color-focus-ring: 0 0% 100%;
+  --ring: 0 0% 100%;
+  --ring-offset: 0 0% 8%;
+
+  --color-selection: 0 0% 24%;
+  --color-highlight: 0 0% 12%;
+}
+
+html,
+body {
+  background-color: hsl(var(--color-bg));
+  color: hsl(var(--color-fg));
+}
+
+::selection {
+  background: hsl(var(--color-selection));
+}
+
+/* Keep borders calm by default; allow explicit utility classes to override. */
+:where(*) {
+  border-color: hsl(var(--border-1, 0 0% 0% / 0.08));
+}
+
+header {
+  background-color: hsl(var(--surface-1));
+  backdrop-filter: none;
+}
+
+.xa-footer {
+  background: hsl(var(--surface-2));
+  color: hsl(var(--color-fg));
+  border-top: 1px solid hsl(var(--border-1));
+}
+
+.xa-footer a {
+  color: hsl(var(--color-fg));
+}
+
+.xa-footer a:hover {
+  color: hsl(var(--color-fg));
+}
+
+header nav[aria-label="Primary"] a,
+header nav[aria-label="Primary"] button,
+header nav[aria-label="Secondary"] a,
+header nav[aria-label="Secondary"] button {
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 500;
+}
+
+header nav[aria-label="Utilities"] a {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.72rem;
+}
+
+header nav a,
+header nav button {
+  color: hsl(var(--color-fg));
+}
+
+header nav a:hover,
+header nav button:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* XA landing hero mirrors XA's top-of-fold layout. */
+.xa-hero-title {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: clamp(2.4rem, 3.6vw, 3.6rem);
+  line-height: 1.05;
+  font-weight: 600;
+}
+
+.xa-hero-copy {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 28rem;
+}
+
+.xa-hero-cta {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.xa-hero-media {
+  background-color: hsl(0 0% 92%);
+}
+
+/* Minimal card treatment (opt-in via .xa-panel). */
+.xa-panel {
+  background-color: transparent;
+  border-color: hsl(var(--border-1));
+  box-shadow: none;
+  transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.xa-panel:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+/* PDP typography tuned to XA proportions. */
+.xa-pdp .xa-pdp-breadcrumbs {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.65rem;
+}
+
+.xa-pdp .xa-pdp-brand {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.xa-pdp .xa-pdp-title {
+  font-size: 0.9rem;
+}
+
+.xa-pdp .xa-pdp-description {
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.xa-pdp .xa-pdp-price {
+  font-size: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+.xa-pdp .xa-pdp-label {
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.62rem;
+  font-weight: 600;
+}
+
+.xa-pdp .xa-pdp-action {
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.xa-pdp .xa-pdp-meta {
+  font-size: 0.82rem;
+}

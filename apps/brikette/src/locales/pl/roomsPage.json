@@ -264,7 +264,7 @@
   "cancel": "Anuluj",
   "moreAboutThisRoom": "Więcej o tym pokoju",
   "loadingPrice": "Cena ładowania…",
-  "landingImageAlt": "Obraz lądowania __placeholder_0__",
+  "landingImageAlt": "Obraz tytułowy pokoju {{room}}",
   "priceNotes": {
     "dorm": "Per night, per guest. One guest in one bunk bed."
   }

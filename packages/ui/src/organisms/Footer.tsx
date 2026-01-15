@@ -1,17 +1,17 @@
 // packages/ui/src/organisms/Footer.tsx
-import { CONTACT_EMAIL } from "@/config/hotel";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { buildNavLinks, type TranslateFn } from "@/utils/buildNavLinks";
-import { Section } from "@/atoms/Section";
-import { Inline } from "@/components/atoms/primitives/Inline";
+import { CONTACT_EMAIL } from "@ui/config/hotel";
+import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
+import { buildNavLinks, type TranslateFn } from "@ui/utils/buildNavLinks";
+import { Section } from "@ui/atoms/Section";
+import { Inline } from "@ui/components/atoms/primitives/Inline";
 import { Facebook, Instagram } from "lucide-react";
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { SLUGS } from "@/slug-map";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
-import { translatePath } from "@/utils/translate-path";
+import { SLUGS } from "@ui/slug-map";
+import type { AppLanguage } from "@ui/i18n.config";
+import { i18nConfig } from "@ui/i18n.config";
+import { translatePath } from "@ui/utils/translate-path";
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -94,7 +94,7 @@ function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.El
           >
             <ul>
               {navLinks.map(({ key, to, label }) => (
-                <li key={key} className="text-center sm:flex-1">
+                <li key={key} className="text-center sm:flex-1 sm:px-4 lg:px-6">
                   <Link
                     to={`/${lang}${to}`}
                     prefetch={to === apartmentPath ? "intent" : "viewport"}

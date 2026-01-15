@@ -1,0 +1,26 @@
+{
+  "title": "Trouver mon séjour",
+  "subtitle": "Entre tes informations de réservation pour accéder à ton portail voyageur.",
+  "fields": {
+    "bookingCode": "Code de réservation",
+    "bookingCodePlaceholder": "ex. BKG12345",
+    "bookingCodeHint": "Tu le trouveras dans ton email de confirmation",
+    "lastName": "Nom de famille",
+    "lastNamePlaceholder": "Tel qu'indiqué sur la réservation",
+    "lastNameHint": "Nom de famille du voyageur principal"
+  },
+  "button": {
+    "submit": "Trouver mon séjour",
+    "loading": "Recherche..."
+  },
+  "errors": {
+    "fieldsRequired": "Merci d'entrer ton code de réservation et ton nom de famille.",
+    "notFound": "Nous n'avons pas trouvé de réservation avec ces informations. Vérifie et réessaie.",
+    "tooManyAttempts": "Trop de tentatives. Attends quelques minutes et réessaie.",
+    "networkError": "Connexion impossible. Vérifie ta connexion internet et réessaie."
+  },
+  "help": {
+    "cantFind": "Tu ne trouves pas ton code de réservation ?",
+    "contactUs": "Contacte la réception pour de l'aide."
+  }
+}

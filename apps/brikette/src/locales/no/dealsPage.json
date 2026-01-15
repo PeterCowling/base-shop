@@ -1,12 +1,45 @@
 {
   "slug": "tilbud",
   "meta": {
-    "title": "Sommer 2025 – spar 15 %",
-    "description": "Sommerkampanje i en begrenset periode med ekstra 15 % på direktebestillinger.",
-    "ogImageAlt": "Banner for sommerrabatt"
+    "title": "Spar 15 % på opphold fra 20. september til 31. oktober",
+    "description": "Tidsbegrenset tilbud: spar 15 % ved direktebestilling for opphold fra 20. september til 31. oktober.",
+    "ogImageAlt": "Banner for tidsbegrenset rabatt"
   },
-  "title": "Spar {{percent}} % på ditt {{season}}-opphold",
-  "promo": "Bestill direkte i sommer og få ekstra {{percent}} % rabatt.",
+  "title": "Spar {{percent}} % på opphold fra {{from}} til {{to}}",
+  "promo": "Bestill direkte – rabatten på {{percent}} % blir automatisk trukket i kassen.",
+  "dealCard": {
+    "savePercent": "Spar {{percent}}"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "Starter {{startDate}} — planlegg i god tid og sjekk datoene dine.",
+      "active": "Aktiv nå — slutter {{endDate}}.",
+      "expired": "Dette tilbudet er utløpt."
+    },
+    "badge": {
+      "upcoming": "Starter {{startDate}}",
+      "active": "Aktiv",
+      "expired": "Utløpt"
+    },
+    "endsOn": "Slutter {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "Sjekk datoer",
+    "checkDatesHint": "Rabatten gjelder kun innenfor tilbudsperioden.",
+    "viewCurrentDeals": "Se aktuelle tilbud",
+    "checkAvailabilityStandard": "Sjekk tilgjengelighet (standardpriser)"
+  },
+  "sections": {
+    "active": "Aktive tilbud",
+    "upcoming": "Kommende tilbud",
+    "expired": "Utløpte tilbud",
+    "noneCurrent": "Ingen aktuelle tilbud akkurat nå."
+  },
+  "chips": {
+    "nonRefundable": "Ikke-refunderbar",
+    "directOnly": "Kun direkte",
+    "minNights": "Min. {{nights}} netter"
+  },
   "banner": "Bare {{beds}} senger igjen til denne prisen – tilbudet avsluttes om {{time}}!",
   "timeRemaining": {
     "lessThanHour": "0 t",
@@ -16,33 +49,42 @@
     "days_other": "{{count}} dager"
   },
   "buttonReserve": "Bestill nå",
-  "ogImageAlt": "Banner for sommerrabatt",
+  "ogImageAlt": "Banner for tidsbegrenset rabatt",
   "perksHeading": "Fordeler ved direktebestilling",
   "perksIntro": "Disse fordelene gjelder bare gjester som bestiller direkte på nettsiden vår.",
   "perksGuarantee": "Hver direktebestilling på nettsiden vår låser automatisk opp disse eksklusive fordelene.",
-  "perksIntroLink": "Se alle aktuelle tilbud",
+  "perksIntroLink": "Se alle fordeler",
   "perksList": [
     "Opptil 25 % avslag fra ordinær pris når kupong brukes",
     "Gratis frokost",
     "Gratis kveldsdrink"
   ],
   "expired": {
-    "message": "Dette tidsbegrensede tilbudet avsluttet {{endedOn}}."
+    "message": "Dette tilbudet er utløpt."
   },
   "restrictions": {
     "heading": "Viktig å vite",
+    "sections": {
+      "eligibility": "Kvalifisering",
+      "bookingConstraints": "Bestillingsvilkår",
+      "stayRules": "Oppholdsregler",
+      "rateType": "Pristype",
+      "stacking": "Kombinasjon"
+    },
     "stayWindow": "Gyldig for opphold fra {{from}} til {{to}}.",
+    "bookingWindow": "Gyldig for bestillinger gjort fra {{from}} til {{to}}.",
     "minAdvance": "Bestill minst {{days}} dager i forveien.",
     "minAdvancePrefix": "Bestill minst",
     "minAdvanceSuffix": "i forveien.",
     "los": "Minimum {{min}} netter, maksimum {{max}} netter.",
-    "nonRefundable": "Gjelder kun for ikke-refunderbare priser, for direktebestillinger via hostellets nettside.",
+    "directOnly": "Kun direktebestillinger (nettside).",
+    "nonRefundable": "Gjelder kun for ikke-refunderbare priser.",
+    "nonRefundableOnly": "Kun ikke-refunderbare priser.",
     "nonRefundablePrefix": "Gjelder kun for",
-    "nonRefundableSuffix": "for direktebestillinger via hostellets nettside.",
+    "nonRefundableSuffix": "priser.",
     "stackable": "{{percent}} % kan kombineres med vår standard 10 % direktebestillingsrabatt.",
-    "other": "Standard vilkår gjelder."
+    "other": "Se vilkår og betingelser."
   },
-  "seasonLabel": "Sommeren 2025",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

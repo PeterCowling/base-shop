@@ -9,7 +9,12 @@ import { createGuideFaqFallback } from "./positano-on-a-backpacker-budget/create
 import { createTocBuilder } from "./positano-on-a-backpacker-budget/createTocBuilder";
 import * as BB from "./positano-on-a-backpacker-budget/constants";
 import type { MetaFunction, LinksFunction } from "react-router";
+import type { LoaderFunctionArgs } from "react-router-dom";
+import i18n from "@/i18n";
 import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { ensureGuideContent } from "@/utils/ensureGuideContent";
+import { langFromRequest } from "@/utils/lang";
+import { preloadNamespacesWithFallback } from "@/utils/loadI18nNs";
 import { buildRouteMeta, buildRouteLinks } from "@/utils/routeHead";
 import { BASE_URL } from "@/config/site";
 import { getSlug } from "@/utils/slug";
@@ -52,6 +57,23 @@ export default memo(BackpackerBudgetItineraries);
 // Export guide identity constants for this route
 export const GUIDE_KEY = BB.GUIDE_KEY;
 export const GUIDE_SLUG = BB.GUIDE_SLUG;
+
+export async function clientLoader({ request }: LoaderFunctionArgs) {
+  const lang = langFromRequest(request);
+  await preloadNamespacesWithFallback(lang, ["guides"], { fallbackOptional: false });
+  await i18n.changeLanguage(lang);
+  await ensureGuideContent(lang, BB.GUIDE_KEY, {
+    en: () => import("../../locales/en/guides/content/backpackerItineraries.json"),
+    local:
+      lang === "en"
+        ? undefined
+        : () =>
+            import(`../../locales/${lang}/guides/content/backpackerItineraries.json`).catch(
+              () => undefined,
+            ),
+  });
+  return { lang } as const;
+}
 
 export const meta: MetaFunction = ({ data }) => {
   const d = (data || {}) as { lang?: AppLanguage };

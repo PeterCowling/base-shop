@@ -118,28 +118,28 @@
     }
   ],
   "scanToShare": {
-    "title": "Scan to Share",
+    "title": "Scanner pour partager",
     "items": [
       {
-        "alt": "Scan to Share / route image 1"
+        "alt": "Scanner pour partager / image d’itinéraire 1"
       },
       {
-        "alt": "Scan to Share / route image 2"
+        "alt": "Scanner pour partager / image d’itinéraire 2"
       },
       {
-        "alt": "Scan to Share / route image 3"
+        "alt": "Scanner pour partager / image d’itinéraire 3"
       },
       {
-        "alt": "Scan to Share / route image 4"
+        "alt": "Scanner pour partager / image d’itinéraire 4"
       },
       {
-        "alt": "Scan to Share / route image 5"
+        "alt": "Scanner pour partager / image d’itinéraire 5"
       },
       {
-        "alt": "Scan to Share / route image 6"
+        "alt": "Scanner pour partager / image d’itinéraire 6"
       },
       {
-        "alt": "Scan to Share / route image 7"
+        "alt": "Scanner pour partager / image d’itinéraire 7"
       }
     ]
   }

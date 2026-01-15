@@ -1,0 +1,23 @@
+{
+  "offline": {
+    "indicator": "Estás sin conexión",
+    "message": "Algunas funciones pueden estar limitadas"
+  },
+  "update": {
+    "available": "Actualización disponible",
+    "message": "Una nueva versión está lista. Actualiza para obtenerla.",
+    "refresh": "Actualizar",
+    "later": "Más tarde"
+  },
+  "loading": "Cargando...",
+  "error": "Algo salió mal",
+  "retry": "Reintentar",
+  "back": "Atrás",
+  "next": "Siguiente",
+  "save": "Guardar",
+  "cancel": "Cancelar",
+  "close": "Cerrar",
+  "done": "Hecho",
+  "yes": "Sí",
+  "no": "No"
+}

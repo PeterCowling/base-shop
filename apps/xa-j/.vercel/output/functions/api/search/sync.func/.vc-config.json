@@ -1,0 +1,18 @@
+{
+  "runtime": "edge",
+  "name": "api/search/sync",
+  "deploymentTarget": "v8-worker",
+  "entrypoint": "index.js",
+  "assets": [],
+  "framework": {
+    "slug": "nextjs",
+    "version": "15.3.5"
+  },
+  "environment": {
+    "__NEXT_BUILD_ID": "atj9BNKv87EYdEigFri93",
+    "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "ziutkPb8hf++WjA9A7fXzMCjHzSBKZkUSGK938CeqEM=",
+    "__NEXT_PREVIEW_MODE_ID": "1936669f32ce98eeb3de029c42b4a012",
+    "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "dc7bbc4f12c04728e2f90491ed5d77fcae6f60056c6878dd3da1afc40fc4ad55",
+    "__NEXT_PREVIEW_MODE_SIGNING_KEY": "dcb5cbe8f435ccd25b6893a5deb31a96a4e4d0cc930c0310c64c52dc2f08bcf3"
+  }
+}

@@ -133,7 +133,11 @@ function renderManualFallback(context: GuideSeoTemplateContext): JSX.Element | n
   const { intro, sections, toc, faqs, faqsTitle } = fallback;
 
   const hasContent =
-    intro.length > 0 || sections.length > 0 || faqs.length > 0 || (faqsTitle && faqsTitle.length > 0);
+    intro.length > 0 ||
+    sections.length > 0 ||
+    toc.length > 0 ||
+    faqs.length > 0 ||
+    (faqsTitle && faqsTitle.length > 0);
   if (!hasContent) return null;
 
   const resolvedFaqsTitle = faqs.length
@@ -268,7 +272,7 @@ function buildManualFallbackContent(context: GuideSeoTemplateContext): ManualFal
 
   const faqsTitle = resolveStringValue("faqsTitle");
 
-  if (intro.length === 0 && sections.length === 0 && faqs.length === 0 && faqsTitle.length === 0) {
+  if (intro.length === 0 && sections.length === 0 && toc.length === 0 && faqs.length === 0 && faqsTitle.length === 0) {
     return null;
   }
 

@@ -8,6 +8,8 @@ import {
 } from "@cms/actions/media.server";
 import { NextResponse } from "next/server";
 
+export const runtime = "nodejs";
+
 function parseTagsValue(value: unknown): string[] | null | undefined {
   if (value === undefined) return undefined;
   if (value === null) return null;
@@ -63,9 +65,11 @@ export async function GET(req: Request) {
     return NextResponse.json(files);
   } catch (err) {
     console.error(err);
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 500;
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 500 }
+      { error: message },
+      { status }
     );
   }
 }
@@ -85,10 +89,11 @@ export async function POST(req: Request) {
     return NextResponse.json(item);
   } catch (err) {
     console.error("Upload failed", err);
-
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 400;
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
+      { error: message },
+      { status }
     );
   }
 }
@@ -105,10 +110,11 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Delete failed", err);
-
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 400;
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
+      { error: message },
+      { status }
     );
   }
 }
@@ -161,9 +167,11 @@ export async function PATCH(req: Request) {
     return NextResponse.json(item);
   } catch (err) {
     console.error("Metadata update failed", err);
+    const message = (err as Error).message;
+    const status = message === "Forbidden" ? 403 : 400;
     return NextResponse.json(
-      { error: (err as Error).message },
-      { status: 400 }
+      { error: message },
+      { status }
     );
   }
 }

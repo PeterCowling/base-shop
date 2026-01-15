@@ -31,8 +31,8 @@ export default function LeadTriageTable({
           {strings.results.title}
         </h2>
       </div>
-      <div className="mt-4 overflow-hidden rounded-2xl border border-border-1">
-        <table className="pp-table" aria-busy={loading}>
+      <div className="mt-4 overflow-x-auto rounded-2xl border border-border-1">
+        <table className="pp-table min-w-max" aria-busy={loading}>
           <thead>
             <tr>
               <th>

@@ -1,14 +1,14 @@
 // packages/ui/src/organisms/RoomsSection.tsx
 // Responsive list of room cards (moved from app src)
-import RoomCard from "@/molecules/RoomCard";
+import RoomCard from "@ui/molecules/RoomCard";
 import RoomFilters, { type RoomFilter } from "../molecules/RoomFilters";
-import { Section } from "@/atoms/Section";
-import { Grid } from "@/components/atoms/primitives/Grid";
-import { useModal } from "@/context/ModalContext";
-import { roomsData } from "@/data/roomsData";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { SLUGS } from "@/slug-map";
-import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
+import { Section } from "@ui/atoms/Section";
+import { Grid } from "@ui/components/atoms/primitives/Grid";
+import { useModal } from "@ui/context/ModalContext";
+import { roomsData } from "@ui/data/roomsData";
+import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
+import { SLUGS } from "@ui/slug-map";
+import { getDatePlusTwoDays, getTodayIso } from "@ui/utils/dateUtils";
 import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useSearchParams } from "react-router-dom";

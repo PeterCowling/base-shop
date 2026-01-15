@@ -1,12 +1,45 @@
 {
   "slug": "deals",
   "meta": {
-    "title": "Ưu đãi mùa hè 2025 - Tiết kiệm 15%",
-    "description": "Ưu đãi mùa hè trong thời gian có hạn với thêm 15% khi đặt trực tiếp.",
-    "ogImageAlt": "Biểu ngữ giảm giá mùa hè"
+    "title": "Tiết kiệm 15% cho kỳ nghỉ từ 20/9 đến 31/10",
+    "description": "Ưu đãi có thời hạn: giảm 15% khi đặt trực tiếp cho kỳ nghỉ từ 20/9 đến 31/10.",
+    "ogImageAlt": "Biểu ngữ ưu đãi có thời hạn"
   },
-  "title": "Tiết kiệm {{percent}}% cho kỳ nghỉ {{season}} của bạn",
-  "promo": "Đặt trực tiếp mùa hè này và nhận thêm {{percent}}% giảm giá.",
+  "title": "Tiết kiệm {{percent}}% cho kỳ nghỉ từ {{from}} đến {{to}}",
+  "promo": "Đặt trực tiếp và ưu đãi {{percent}}% sẽ tự động áp dụng khi thanh toán.",
+  "dealCard": {
+    "savePercent": "Tiết kiệm {{percent}}"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "Bắt đầu {{startDate}} — lên kế hoạch sớm và kiểm tra ngày.",
+      "active": "Đang áp dụng — kết thúc {{endDate}}.",
+      "expired": "Ưu đãi này đã kết thúc."
+    },
+    "badge": {
+      "upcoming": "Bắt đầu {{startDate}}",
+      "active": "Đang áp dụng",
+      "expired": "Đã kết thúc"
+    },
+    "endsOn": "Kết thúc {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "Kiểm tra ngày",
+    "checkDatesHint": "Ưu đãi chỉ áp dụng trong thời gian chương trình.",
+    "viewCurrentDeals": "Xem ưu đãi hiện tại",
+    "checkAvailabilityStandard": "Kiểm tra phòng trống (giá tiêu chuẩn)"
+  },
+  "sections": {
+    "active": "Ưu đãi đang áp dụng",
+    "upcoming": "Ưu đãi sắp tới",
+    "expired": "Ưu đãi đã kết thúc",
+    "noneCurrent": "Hiện không có ưu đãi đang áp dụng."
+  },
+  "chips": {
+    "nonRefundable": "Không hoàn tiền",
+    "directOnly": "Chỉ đặt trực tiếp",
+    "minNights": "Tối thiểu {{nights}} đêm"
+  },
   "banner": "Chỉ còn {{beds}} giường với mức giá này – ưu đãi kết thúc trong {{time}}!",
   "timeRemaining": {
     "lessThanHour": "0 giờ",
@@ -16,33 +49,42 @@
     "days_other": "{{count}} ngày"
   },
   "buttonReserve": "Đặt ngay",
-  "ogImageAlt": "Biểu ngữ giảm giá mùa hè",
+  "ogImageAlt": "Biểu ngữ ưu đãi có thời hạn",
   "perksHeading": "Quyền lợi khi đặt trực tiếp",
   "perksIntro": "Những ưu đãi này chỉ dành cho khách đặt phòng trực tiếp trên trang web của chúng tôi.",
   "perksGuarantee": "Mỗi đặt phòng trực tiếp trên trang web của chúng tôi sẽ tự động kích hoạt những quyền lợi độc quyền này.",
-  "perksIntroLink": "Xem tất cả ưu đãi hiện có",
+  "perksIntroLink": "Xem tất cả quyền lợi",
   "perksList": [
     "Giảm tới 25% so với giá thông thường khi áp dụng mã giảm giá",
     "Bữa sáng miễn phí",
     "Đồ uống buổi tối miễn phí"
   ],
   "expired": {
-    "message": "Ưu đãi có thời hạn này đã kết thúc vào {{endedOn}}."
+    "message": "Ưu đãi này đã kết thúc."
   },
   "restrictions": {
     "heading": "Thông tin cần biết",
     "stayWindow": "Áp dụng cho kỳ nghỉ từ {{from}} đến {{to}}.",
+    "sections": {
+      "eligibility": "Điều kiện",
+      "bookingConstraints": "Điều kiện đặt phòng",
+      "stayRules": "Quy định lưu trú",
+      "rateType": "Loại giá",
+      "stacking": "Cộng dồn"
+    },
+    "bookingWindow": "Áp dụng cho đặt phòng thực hiện từ {{from}} đến {{to}}.",
     "minAdvance": "Đặt trước ít nhất {{days}} ngày.",
     "minAdvancePrefix": "Đặt trước ít nhất",
     "minAdvanceSuffix": "",
     "los": "Tối thiểu {{min}} đêm, tối đa {{max}} đêm.",
-    "nonRefundable": "Chỉ áp dụng cho giá không hoàn tiền, dành cho đặt trực tiếp qua website của hostel.",
+    "directOnly": "Chỉ áp dụng cho đặt trực tiếp (website).",
+    "nonRefundable": "Chỉ áp dụng cho giá không hoàn tiền.",
+    "nonRefundableOnly": "Chỉ giá không hoàn tiền.",
     "nonRefundablePrefix": "Chỉ áp dụng cho",
-    "nonRefundableSuffix": "dành cho đặt trực tiếp qua website của hostel.",
+    "nonRefundableSuffix": "giá.",
     "stackable": "{{percent}}% cộng dồn với ưu đãi đặt trực tiếp tiêu chuẩn 10% của chúng tôi.",
-    "other": "Áp dụng các điều khoản và điều kiện tiêu chuẩn."
+    "other": "Xem điều khoản và điều kiện."
   },
-  "seasonLabel": "mùa hè 2025",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

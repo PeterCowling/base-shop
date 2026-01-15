@@ -44,7 +44,7 @@ async function logAnalytics(event: { type: string; [key: string]: unknown }) {
 }
 
 type Props = {
-  locale: "en" | "de" | "it";
+  locale: "en" | "de" | "it" | "es";
   taxRegion: string;
   coverage?: string[];
 };
@@ -200,7 +200,7 @@ function PaymentForm({
   currency,
 }: {
   form: UseFormReturn<FormValues>;
-  locale: "en" | "de" | "it";
+  locale: "en" | "de" | "it" | "es";
   sessionId?: string;
   cartValue?: number;
   currency?: string;

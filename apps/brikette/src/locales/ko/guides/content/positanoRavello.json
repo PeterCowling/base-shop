@@ -11,21 +11,21 @@
   "toc": [
     {
       "href": "#via-amalfi",
-      "label": "Via Amalfi"
+      "label": "아말피 경유"
     },
     {
       "href": "#gardens",
-      "label": "Gardens & villas"
+      "label": "정원 & 빌라"
     },
     {
       "href": "#timing",
-      "label": "Timing & returns"
+      "label": "시간 계획 & 복귀"
     }
   ],
   "sections": [
     {
       "id": "via-amalfi",
-      "title": "Via Amalfi",
+      "title": "아말피 경유",
       "body": [
         "아말피까지 시타 버스(또는 성수기 페리)를 이용하세요. 탑승 전 미리 티켓을 사고 대기 줄을 고려해 주세요.",
         "아말피 버스 터미널(보통 5번 승강장)에서 라벨로행 버스로 환승한 뒤, 내려서 약 10분 정도 걸으면 루폴로·침브로네 별장에 도착합니다."
@@ -71,11 +71,11 @@
   "howTo": {
     "steps": [
       {
-        "name": "Positano → Amalfi",
+        "name": "포지타노 → 아말피",
         "text": "시타 버스 또는 성수기 페리로 아말피까지 이동하세요."
       },
       {
-        "name": "Amalfi → Ravello",
+        "name": "아말피 → 라벨로",
         "text": "아말피에서 라벨로행 버스로 환승하고, 탑승 전 티켓을 구매하세요."
       }
     ]

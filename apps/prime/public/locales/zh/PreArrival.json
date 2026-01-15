@@ -1,0 +1,242 @@
+{
+  "header": {
+    "preArrival": "抵达前",
+    "arrivalDay": "抵达日",
+    "welcome": "{{name}}，让我们开始准备吧！",
+    "welcomeArrivalDay": "欢迎，{{name}}！",
+    "subtitle": "在您到达前完成一些快速准备。",
+    "arrivalDaySubtitle": "您快到了！确保您已准备好办理入住。"
+  },
+  "checkIn": {
+    "label": "入住",
+    "daysLeft": "天后",
+    "dayLeft": "天后",
+    "today": "今天！",
+    "qrAlt": "{{code}}的入住二维码",
+    "qrError": "无法生成二维码",
+    "yourCode": "您的入住码",
+    "codeCopied": "代码已复制！"
+  },
+  "readiness": {
+    "score": "准备就绪",
+    "of": "/",
+    "itemsComplete": "项完成",
+    "status": {
+      "not-started": "刚开始",
+      "in-progress": "进行中",
+      "almost-ready": "快完成了！",
+      "ready": "全部准备就绪！"
+    }
+  },
+  "checklist": {
+    "title": "准备清单",
+    "completed": "完成",
+    "routePlanned": {
+      "title": "规划路线"
+    },
+    "etaConfirmed": {
+      "title": "确认到达时间"
+    },
+    "cashPrepared": {
+      "title": "准备现金",
+      "amount": "城市税 + 押金"
+    },
+    "rulesReviewed": {
+      "title": "查看住宿规则"
+    },
+    "locationSaved": {
+      "title": "保存位置"
+    },
+    "etaMethod": {
+      "ferry": "渡轮",
+      "bus": "巴士",
+      "taxi": "出租车",
+      "private": "私人接送",
+      "train": "火车",
+      "other": "其他"
+    }
+  },
+  "nextAction": {
+    "allComplete": {
+      "title": "全部准备就绪！",
+      "description": "您已准备好入住。期待与您见面！",
+      "button": "很快见！"
+    },
+    "routePlanned": {
+      "title": "规划路线",
+      "description": "波西塔诺不太容易到达。让我们帮您找到最佳路线。",
+      "button": "查看路线选项"
+    },
+    "etaConfirmed": {
+      "title": "您什么时候到达？",
+      "description": "告诉我们您的预计到达时间。",
+      "button": "设置到达时间"
+    },
+    "cashPrepared": {
+      "title": "准备现金",
+      "description": "入住时需要现金支付城市税和押金。",
+      "descriptionWithAmount": "请携带约€{{amount}}现金。",
+      "button": "查看详情"
+    },
+    "rulesReviewed": {
+      "title": "快速查看住宿规则",
+      "description": "2分钟阅读，确保您的住宿顺利。",
+      "button": "查看规则"
+    },
+    "locationSaved": {
+      "title": "保存我们的位置",
+      "description": "将旅舍地址保存到您的地图应用中。",
+      "button": "获取路线"
+    },
+    "default": {
+      "title": "做好准备",
+      "description": "完成一些项目为您的住宿做准备。",
+      "button": "继续"
+    }
+  },
+  "stay": {
+    "night": "晚",
+    "nights": "晚",
+    "location": "Hostel Brikette, 波西塔诺"
+  },
+  "eta": {
+    "title": "您什么时候到达？",
+    "subtitle": "选择您的预计到达时间和出行方式。",
+    "back": "返回",
+    "timeLabel": "到达时间",
+    "methodLabel": "出行方式",
+    "noteLabel": "备注（可选）",
+    "notePlaceholder": "关于您到达的任何详情",
+    "lateArrival": {
+      "title": "晚到达",
+      "message": "入住登记在22:00关闭。如果晚到达，我们会发送特别指示。"
+    },
+    "confirm": "确认到达时间",
+    "methods": {
+      "ferry": "渡轮",
+      "bus": "巴士",
+      "taxi": "出租车",
+      "private": "私人接送",
+      "train": "火车",
+      "other": "其他"
+    }
+  },
+  "cash": {
+    "title": "入住所需现金",
+    "subtitle": "到达时需要现金支付以下费用：",
+    "back": "返回",
+    "cashOnly": "仅限现金支付",
+    "cityTax": {
+      "label": "城市税",
+      "perNight": "每人每晚"
+    },
+    "deposit": {
+      "label": "钥匙卡押金",
+      "refundable": "退房时退还"
+    },
+    "total": "需准备总额",
+    "confirm": {
+      "cityTax": "我有城市税的现金",
+      "deposit": "我有押金的现金"
+    },
+    "info": {
+      "message": "这些费用在入住时由前台收取。请准备好准确金额或接近的金额。"
+    },
+    "cardNote": "其他服务接受刷卡",
+    "done": "我准备好了！",
+    "confirmPartial": "保存并继续",
+    "arrivalReminder": {
+      "title": "别忘了现金！",
+      "message": "请携带约€{{amount}}现金用于城市税和押金。"
+    }
+  },
+  "rules": {
+    "title": "住宿规则",
+    "subtitle": "快速了解以确保您住得愉快。",
+    "confirm": "我已查看规则"
+  },
+  "location": {
+    "title": "找到我们",
+    "subtitle": "保存我们的地址以便轻松找到我们。",
+    "address": "Via Cristoforo Colombo 13, 84017 Positano SA, 意大利",
+    "openMaps": "在地图中打开",
+    "copyAddress": "复制地址",
+    "copied": "地址已复制！",
+    "confirm": "我已保存位置"
+  },
+  "routes": {
+    "title": "如何到达",
+    "subtitle": "选择您的出发地点查看路线选项。",
+    "viewRoute": "查看路线",
+    "saveRoute": "保存路线",
+    "savedRoute": "已保存！",
+    "routeSaved": "路线已保存！",
+    "recommended": "推荐",
+    "back": "返回",
+    "fromOrigin": "从{{origin}}",
+    "selectRoute": "选择路线",
+    "noRoutes": "未找到路线",
+    "totalTime": "总时间",
+    "cost": "大约费用",
+    "importantNotes": "须知",
+    "journey": "您的旅程",
+    "arrival": "您已到达！",
+    "viewFullGuide": "查看完整指南",
+    "categories": {
+      "airport": "机场",
+      "train-station": "火车站",
+      "port": "港口",
+      "city": "城市"
+    }
+  },
+  "arrival": {
+    "badge": "抵达日",
+    "welcome": "欢迎，{{name}}！",
+    "subtitle": "在前台出示此屏幕办理入住。",
+    "showAtReception": "在前台出示",
+    "generatingCode": "正在生成您的入住码...",
+    "codeUnavailable": "入住码不可用。请联系工作人员。",
+    "cashReminder": "别忘了现金！",
+    "cashReady": "现金准备就绪",
+    "cashAmount": "请携带约€{{amount}}现金",
+    "cityTaxLabel": "城市税: €{{amount}}",
+    "depositLabel": "押金: €{{amount}}",
+    "idReminder": "准备好证件",
+    "idNote": "入住需要护照或身份证",
+    "findUs": "找到我们",
+    "whatHappensNext": "入住流程",
+    "step1": "出示您的二维码或告知您的代码",
+    "step2": "以现金支付城市税和押金",
+    "step3": "领取您的钥匙卡和欢迎礼包",
+    "step4": "探索并享受您的住宿！"
+  },
+  "staffLookup": {
+    "title": "客人入住",
+    "code": "代码: {{code}}",
+    "back": "返回",
+    "loading": "正在查询客人...",
+    "guestName": "客人",
+    "room": "房间",
+    "nights": "住宿",
+    "dates": "日期",
+    "eta": "预计到达",
+    "payment": "应付款",
+    "tryAgain": "请重试或检查代码。",
+    "errors": {
+      "codeNotFound": "未找到代码",
+      "codeExpired": "代码已过期",
+      "lookupFailed": "无法查询客人"
+    }
+  },
+  "welcome": {
+    "title": "欢迎，{{firstName}}！",
+    "subtitle": "很高兴您的到来。",
+    "tip1": "您的房间已准备就绪。",
+    "tip2": "查看主页获取提示和工具。",
+    "tapToDismiss": "点击任意处继续"
+  },
+  "calendar": {
+    "addToCalendar": "添加到日历",
+    "downloading": "下载中..."
+  }
+}

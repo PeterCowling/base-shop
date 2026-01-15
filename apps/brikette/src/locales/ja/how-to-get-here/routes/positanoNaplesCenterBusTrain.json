@@ -37,34 +37,34 @@
     "positanoStop": {
       "heading": "ポジターノ（Chiesa Nuova）バス停",
       "facts": [
-        "翻訳を準備中です。",
+        "最寄りのSITA停留所は Via G. Marconi 上の Positano（Chiesa Nuova）です。",
         "停留所からホステル入口までは約 140 メートル（約 490 フィート）です。",
         "停留所は Bar Internazionale というカフェ／バーの前にあります。"
       ],
       "caption": "夏は数分早めに到着し、座席を確保しましょう。混雑しやすいです。",
-      "imageAlt": "翻訳を準備中です。"
+      "imageAlt": "Bar Internazionale前のポジターノ Chiesa Nuova の SITA 停留所"
     },
     "walk": {
       "heading": "ホステルから停留所まで歩く",
       "steps": [
         "ホステルを出て階段を下り、大通りに出たら左折します。",
         "Via G. Marconi をおよそ 100 メートル（約 330 フィート）進みます。",
-        "翻訳を準備中です。"
+        "左手に Bar Internazionale が見えたら、その外が SITA 停留所です。"
       ]
     },
     "wait": {
       "heading": "チケットを購入して乗車を待つ",
       "items": [
         "ソレント行きの SITA チケットをバーまたは近くの売店で購入します。",
-        "翻訳を準備中です。",
+        "Bar Internazionale の外でソレント行きバスに並びます。",
         "バスの行先表示が Sorrento になっているか確認します。"
       ]
     },
     "sorrento": {
       "heading": "ソレント駅での乗り換え",
       "intro": "SITA バスはソレントの鉄道・バスターミナル横に到着します。階段を上がってコンコースに進み、Circumvesuviana のナポリ・ガリバルディ行きチケットを購入（現金／カード対応）し、列車が来る前に該当ホームを確認してください。",
-      "outro": "翻訳を準備中です。",
-      "outroLinkLabel": "翻訳を準備中です。"
+      "outro": "最新の Circumvesuviana 時刻表は <Link>Sorrento Insider</Link> で確認してください。",
+      "outroLinkLabel": "Sorrento Insider（Circumvesuviana 時刻表）"
     },
     "naples": {
       "heading": "ナポリ到着",

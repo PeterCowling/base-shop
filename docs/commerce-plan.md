@@ -1,12 +1,12 @@
 Type: Plan
 Status: Active
 Domain: Commerce
-Last-reviewed: 2025-12-02
+Last-reviewed: 2025-12-29
 Relates-to charter: docs/commerce-charter.md
 
-# Commerce Plan — Orders, Returns, Logistics, SEO
+# Commerce Plan — Catalog, Inventory, Orders, Returns, SEO
 
-This plan tracks work derived from the Commerce charter across orders, returns, reverse logistics, and SEO.
+This plan tracks work derived from the Commerce charter across catalog/inventory/media, orders, returns, reverse logistics, and SEO.
 
 ## Active tasks
 
@@ -19,7 +19,7 @@ This plan tracks work derived from the Commerce charter across orders, returns, 
       - `packages/platform-core/src/repositories/reverseLogisticsEvents.server.ts`
       - Template app routes (`/api/return`, returns flows).
   - Dependencies:
-    - `docs/commerce-charter.md` Canonical.
+    - `docs/commerce-charter.md` (Charter; code is truth).
   - Definition of done:
     - Docs accurately describe current behaviour; any missing or ambiguous areas are converted into follow-up tasks.
 
@@ -48,4 +48,3 @@ This plan tracks work derived from the Commerce charter across orders, returns, 
 ## Completed / historical
 
 - None yet.
-

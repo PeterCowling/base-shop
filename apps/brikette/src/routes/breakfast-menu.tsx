@@ -94,8 +94,8 @@ export default memo(function BreakfastMenuPage() {
 
   const fallbackHeadLinks = useMemo(() => {
     if (process.env.NODE_ENV !== "test") return undefined;
-    return buildRouteLinks({ lang, path });
-  }, [lang, path]);
+    return buildRouteLinks({ lang, path, url });
+  }, [lang, path, url]);
 
   useApplyFallbackHead(fallbackHeadDescriptors as unknown as ReturnType<typeof buildRouteMeta>, fallbackHeadLinks);
 

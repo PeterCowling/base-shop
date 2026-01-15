@@ -15,6 +15,86 @@ const __dirname = dirname(__filename);
 const require = createRequire(import.meta.url);
 const enableChromaticAddon = process.env.STORYBOOK_ENABLE_CHROMATIC_ADDON === "true";
 
+let hashGuardApplied = false;
+const ensureSafeWebpackHash = (webpackModule: typeof webpack): void => {
+  if (hashGuardApplied) return;
+
+  const patchBatchedHash = (resolvedPath: string) => {
+    try {
+      const BatchedHash = require(resolvedPath);
+      const proto = BatchedHash?.prototype as object | undefined;
+      const desc = proto && Object.getOwnPropertyDescriptor(proto, "update");
+      if (desc?.value && typeof desc.value === "function" && !desc.value.__safeGuarded) {
+        const originalUpdate = desc.value;
+        const wrapped = function safeUpdate(data: unknown, encoding?: unknown) {
+          if (data === undefined) return this;
+          return originalUpdate.call(this, data, encoding);
+        };
+        wrapped.__safeGuarded = true;
+        Object.defineProperty(proto, "update", { ...desc, value: wrapped });
+      }
+    } catch {
+      // ignore
+    }
+  };
+
+  const batchedCandidates = new Set<string>();
+  try {
+    batchedCandidates.add(require.resolve("webpack/lib/util/hash/BatchedHash"));
+  } catch {
+    // ignore
+  }
+  try {
+    const builderPkg = require.resolve("@storybook/builder-webpack5/package.json");
+    const builderRoot = dirname(builderPkg);
+    batchedCandidates.add(
+      require.resolve("webpack/lib/util/hash/BatchedHash", { paths: [builderRoot] })
+    );
+  } catch {
+    // ignore
+  }
+  for (const candidate of batchedCandidates) {
+    patchBatchedHash(candidate);
+  }
+
+  const util = (webpackModule as unknown as { util?: { createHash?: (algo: string) => unknown } }).util;
+  if (typeof util?.createHash === "function") {
+    const guardPrototypeChain = (hash: unknown) => {
+      if (!hash || typeof hash !== "object") return;
+      let proto: object | null = hash as object;
+      const seen = new Set<object>();
+      while (proto && proto !== Object.prototype) {
+        if (seen.has(proto)) break;
+        seen.add(proto);
+        const desc = Object.getOwnPropertyDescriptor(proto, "update");
+        if (desc?.value && typeof desc.value === "function" && !desc.value.__safeGuarded) {
+          const originalUpdate = desc.value;
+          const wrapped = function safeUpdate(data: unknown, encoding?: unknown) {
+            if (data === undefined) return this;
+            return originalUpdate.call(this, data, encoding);
+          };
+          wrapped.__safeGuarded = true;
+          Object.defineProperty(proto, "update", { ...desc, value: wrapped });
+        }
+        proto = Object.getPrototypeOf(proto);
+      }
+    };
+
+    try {
+      guardPrototypeChain(util.createHash("xxhash64"));
+    } catch {
+      // ignore
+    }
+    try {
+      guardPrototypeChain(util.createHash("sha256"));
+    } catch {
+      // ignore
+    }
+  }
+
+  hashGuardApplied = true;
+};
+
 const config: StorybookConfig = {
   // Use the Webpack 5 builder explicitly per SB9 docs
   framework: {
@@ -59,6 +139,9 @@ const config: StorybookConfig = {
   // Aliases and PostCSS are configured in vite.storybook.ts
   webpackFinal: async (config: WebpackConfiguration) => {
     type AliasMap = Record<string, string | false>;
+
+    // Guard against webpack wasm-hash crashes on undefined data inputs.
+    ensureSafeWebpackHash(webpack);
 
     // Ensure resolve exists
     config.resolve = config.resolve ?? {};

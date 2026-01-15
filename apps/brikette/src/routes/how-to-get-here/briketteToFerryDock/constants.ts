@@ -2,7 +2,8 @@ import type { GuideKey } from "@/routes.guides-helpers";
 
 export const GUIDE_KEY = "briketteToFerryDock" satisfies GuideKey;
 
-export const HERO_IMAGE_PATH = "/img/positano-dock-arrivals.avif" as const;
+export const HERO_IMAGE_PATH =
+  "/img/directions/hostel-brikette-to-ferry-dock/step-09.jpg" as const;
 
 export const OG_IMAGE = {
   path: HERO_IMAGE_PATH,

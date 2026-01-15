@@ -1,18 +1,15 @@
+/* eslint-disable ds/min-tap-size -- PP-1310 [ttl=2026-12-31] Pending DS token rollout for controls */
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
 import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { formatStageRunLabel } from "@/lib/stage-labels";
 import type { CandidateDetailStrings, StageRun } from "./types";
 
 type StageRunOption = {
   id: string;
   label: string;
 };
-
-function formatStageRunLabel(run: StageRun): string {
-  const timestamp = run.createdAt ?? "";
-  return `${run.stage} | ${run.status}${timestamp ? ` | ${timestamp}` : ""}`;
-}
 
 export default function CandidateArtifactUploadCard({
   candidateId,
@@ -29,6 +26,7 @@ export default function CandidateArtifactUploadCard({
 }) {
   const [submitting, setSubmitting] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState(false);
   const [form, setForm] = useState({
     stageRunId: "",
     kind: "",
@@ -39,9 +37,9 @@ export default function CandidateArtifactUploadCard({
     () =>
       stageRuns.map((run) => ({
         id: run.id,
-        label: formatStageRunLabel(run),
+        label: formatStageRunLabel(run, strings.stageLabels),
       })),
-    [stageRuns],
+    [stageRuns, strings.stageLabels],
   );
 
   useEffect(() => {
@@ -109,79 +107,90 @@ export default function CandidateArtifactUploadCard({
           {strings.artifactUpload.title}
         </h2>
       </Stack>
-      <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
-        <label className="text-xs uppercase tracking-widest text-foreground/60">
-          {strings.artifactUpload.stageRunLabel}
-          <select
-            className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-            value={form.stageRunId}
-            onChange={(event) =>
-              setForm((current) => ({
-                ...current,
-                stageRunId: event.target.value,
-              }))
-            }
-            disabled={stageRunDisabled}
-          >
-            <option value="">
-              {loading
-                ? strings.artifactUpload.loadingRuns
-                : stageRunOptions.length === 0
-                  ? strings.artifactUpload.emptyRuns
-                  : strings.notAvailable}
-            </option>
-            {stageRunOptions.map((run) => (
-              <option key={run.id} value={run.id}>
-                {run.label}
+      <div className="mt-4">
+        <button
+          type="button"
+          className="text-sm font-semibold text-primary hover:underline"
+          onClick={() => setExpanded((current) => !current)}
+        >
+          {expanded ? strings.common.hideDetails : strings.common.showDetails}
+        </button>
+      </div>
+      {expanded ? (
+        <form className="mt-4 grid gap-4 md:grid-cols-2" onSubmit={handleSubmit}>
+          <label className="text-xs uppercase tracking-widest text-foreground/60">
+            {strings.artifactUpload.stageRunLabel}
+            <select
+              className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              value={form.stageRunId}
+              onChange={(event) =>
+                setForm((current) => ({
+                  ...current,
+                  stageRunId: event.target.value,
+                }))
+              }
+              disabled={stageRunDisabled}
+            >
+              <option value="">
+                {loading
+                  ? strings.artifactUpload.loadingRuns
+                  : stageRunOptions.length === 0
+                    ? strings.artifactUpload.emptyRuns
+                    : strings.notAvailable}
               </option>
-            ))}
-          </select>
-        </label>
-        <label className="text-xs uppercase tracking-widest text-foreground/60">
-          {strings.artifactUpload.kindLabel}
-          <input
-            className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-            value={form.kind}
-            onChange={(event) =>
-              setForm((current) => ({ ...current, kind: event.target.value }))
-            }
-            disabled={submitting}
-            type="text"
-          />
-        </label>
-        <label className="text-xs uppercase tracking-widest text-foreground/60">
-          {strings.artifactUpload.fileLabel}
-          <input
-            className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-            onChange={(event) =>
-              setForm((current) => ({
-                ...current,
-                file: event.target.files?.[0] ?? null,
-              }))
-            }
-            disabled={submitting}
-            type="file"
-          />
-        </label>
-        <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
-          <span className="text-xs text-foreground/60">
-            {message ?? strings.notAvailable}
-          </span>
-          <button
-            className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
-            type="submit"
-            disabled={
-              submitting ||
-              !form.stageRunId ||
-              !form.kind ||
-              !form.file ||
-              stageRunDisabled
-            }
-          >
-            {strings.artifactUpload.submitLabel}
-          </button>
-        </Cluster>
-      </form>
+              {stageRunOptions.map((run) => (
+                <option key={run.id} value={run.id}>
+                  {run.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="text-xs uppercase tracking-widest text-foreground/60">
+            {strings.artifactUpload.kindLabel}
+            <input
+              className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              value={form.kind}
+              onChange={(event) =>
+                setForm((current) => ({ ...current, kind: event.target.value }))
+              }
+              disabled={submitting}
+              type="text"
+            />
+          </label>
+          <label className="text-xs uppercase tracking-widest text-foreground/60">
+            {strings.artifactUpload.fileLabel}
+            <input
+              className="mt-2 w-full rounded-2xl border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              onChange={(event) =>
+                setForm((current) => ({
+                  ...current,
+                  file: event.target.files?.[0] ?? null,
+                }))
+              }
+              disabled={submitting}
+              type="file"
+            />
+          </label>
+          <Cluster justify="between" alignY="center" className="gap-3 md:col-span-2">
+            <span className="text-xs text-foreground/60">
+              {message ?? strings.notAvailable}
+            </span>
+            <button
+              className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+              type="submit"
+              disabled={
+                submitting ||
+                !form.stageRunId ||
+                !form.kind ||
+                !form.file ||
+                stageRunDisabled
+              }
+            >
+              {strings.artifactUpload.submitLabel}
+            </button>
+          </Cluster>
+        </form>
+      ) : null}
     </section>
   );
 }

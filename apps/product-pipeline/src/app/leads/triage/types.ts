@@ -74,6 +74,24 @@ export type LeadTriageStrings = {
     duplicateOf: string;
     holdDuplicates: string;
   };
+  override: {
+    label: string;
+    title: string;
+    reasonLabel: string;
+    requestedByLabel: string;
+    apply: string;
+    noSelection: string;
+  };
+  fingerprintOverride: {
+    label: string;
+    title: string;
+    fingerprintLabel: string;
+    reasonLabel: string;
+    requestedByLabel: string;
+    apply: string;
+    clear: string;
+    noSelection: string;
+  };
   cooldown: {
     label: string;
     title: string;

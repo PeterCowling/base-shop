@@ -51,8 +51,8 @@ export function FormField({
     typeof input === "function"
       ? input({
           id: controlId,
-          describedBy,
-          ariaInvalid: Boolean(error) || undefined,
+          ...(describedBy ? { describedBy } : {}),
+          ...(error ? { ariaInvalid: true } : {}),
         })
       : inputElement
         ? React.cloneElement(inputElement, {

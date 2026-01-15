@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Rester en sécurité à Positano et sur la Côte amalfitaine",
+    "description": "Conseils pratiques pour les bus, ferries, escaliers, soleil et urgences autour de Positano et de la Côte amalfitaine."
+  },
+  "linkLabel": "Rester en sécurité à Positano et sur la Côte amalfitaine",
+  "intro": [
+    "Positano est une destination sûre, mais le relief, les transports et la chaleur estivale peuvent surprendre.",
+    "Utilisez les conseils et listes ci-dessous pour un séjour sans stress — surtout sur les escaliers, les ferries et les bus."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Escaliers et marche",
+      "body": [
+        "Portez des chaussures qui accrochent : de nombreuses ruelles sont en pierre polie et glissantes sous la pluie.",
+        "Utilisez les rampes quand elles sont présentes et faites des pauses dans les longues montées; des fontaines sont réparties en ville."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Bus et ferries",
+      "body": [
+        "Dans les bus, tenez-vous aux barres et ne bloquez pas l'allée avec votre sac; les conducteurs freinent souvent dans les virages serrés.",
+        "Sur les ferries, suivez les consignes de l'équipage et évitez de rester près des passerelles lors de l'embarquement et du débarquement."
+      ]
+    },
+    {
+      "id": "sun-sea",
+      "title": "Soleil, mer et déshydratation",
+      "body": [
+        "Emportez de l'eau et une crème solaire SPF 30+; l'ombre est limitée sur les plages et les sentiers.",
+        "Ne nagez que dans les zones autorisées et surveillez le trafic des bateaux en snorkeling près des rochers."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQ sécurité",
+  "faqs": [
+    {
+      "q": "Positano est-elle sûre la nuit ?",
+      "a": [
+        "Oui. Les petits vols sont rares; restez sur les escaliers et ruelles éclairés et tout ira bien."
+      ]
+    },
+    {
+      "q": "Quel numéro appeler en cas d'urgence ?",
+      "a": [
+        "Composez le 112 — numéro d'urgence européen pour police, ambulance et pompiers."
+      ]
+    }
+  ]
+}

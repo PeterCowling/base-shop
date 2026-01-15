@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -b",
+    "build": "rimraf dist tsconfig.tsbuildinfo && tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "rimraf dist && jest --config ../../jest.config.cjs",
     "lint": "eslint ."

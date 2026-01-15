@@ -9,4 +9,5 @@ export {
   guideAbsoluteUrl,
   guideNamespace,
   guideComponentPath,
+  resolveGuideKeyFromSlug,
 } from "./guides/slugs";

@@ -21,7 +21,7 @@ export type RedirectResult = {
   __redirect: true;
   location: string;
   status: number;
-  headers?: HeadersInit;
+  headers: Headers;
 };
 
 export type RouteMatch = {
@@ -133,12 +133,19 @@ export const fallbackNavigate: NavigateFunction = (to, options) => {
   window.location.assign(href);
 };
 
-export const redirect = (location: string, init?: { status?: number; headers?: HeadersInit }): RedirectResult => ({
-  __redirect: true,
-  location,
-  status: init?.status ?? 302,
-  ...(init?.headers ? { headers: init.headers } : {}),
-});
+export const redirect = (
+  location: string,
+  init?: { status?: number; headers?: HeadersInit },
+): RedirectResult => {
+  const headers = new Headers(init?.headers);
+  headers.set("Location", location);
+  return {
+    __redirect: true,
+    location,
+    status: init?.status ?? 302,
+    headers,
+  };
+};
 
 export const isRedirectResult = (value: unknown): value is RedirectResult =>
   Boolean(

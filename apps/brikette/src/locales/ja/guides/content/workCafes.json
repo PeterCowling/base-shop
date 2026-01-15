@@ -5,38 +5,38 @@
   },
   "linkLabel": "ブリケット周辺のWi-Fi＆ワーク向きカフェ",
   "intro": [
-    "翻訳を準備中です。"
+    "ホステル近くで作業できるWi‑Fiのカフェ。定期的に注文し、店内の長電話は避け、席はコンパクトに使いましょう。"
   ],
   "sections": [
     {
       "id": "spots",
-      "title": "Spots near Brikette",
+      "title": "ブリケット周辺のスポット",
       "body": [
-        "翻訳を準備中です。",
-        "翻訳を準備中です。"
+        "ヴィア・パシテアやキエーザ・ヌオーヴァ周辺の小さなカフェは比較的安定したWi‑Fiがあります。",
+        "古い店舗はコンセントが少ないのでモバイルバッテリーを持参。"
       ]
     },
     {
       "id": "backup",
-      "title": "Backup connectivity",
+      "title": "バックアップ回線",
       "body": [
-        "翻訳を準備中です。",
-        "翻訳を準備中です。"
+        "予備としてeSIMを用意。エリア差はありますがTIM/Vodafoneが比較的強めです。",
+        "ランチの混雑が落ち着いたらテザリングに切り替えるのも手。"
       ]
     }
   ],
-  "galleryTitle": "Gallery",
+  "galleryTitle": "フォトギャラリー",
   "gallery": {
-    "item1Alt": "Laptop on a café table",
-    "item1Caption": "A quiet corner for calls",
-    "item2Alt": "Espresso and notebook",
-    "item2Caption": "翻訳を準備中です。"
+    "item1Alt": "カフェのテーブルに置かれたノートPC",
+    "item1Caption": "通話に便利な静かな隅",
+    "item2Alt": "エスプレッソとノート",
+    "item2Caption": "店を変えながら定期的に注文する"
   },
   "faqs": [
     {
-      "q": "Is all‑day work OK?",
+      "q": "一日中作業しても大丈夫？",
       "a": [
-        "翻訳を準備中です。"
+        "60〜90分ごとに注文し、ランチのピークは避けましょう。店をローテーションするのもおすすめです。"
       ]
     }
   ]

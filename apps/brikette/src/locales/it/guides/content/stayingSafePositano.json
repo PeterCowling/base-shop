@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Sicurezza a Positano e sulla Costiera Amalfitana",
+    "description": "Consigli pratici per autobus, traghetti, scale, sole ed emergenze a Positano e sulla Costiera Amalfitana."
+  },
+  "linkLabel": "Sicurezza a Positano e sulla Costiera Amalfitana",
+  "intro": [
+    "Positano è una meta sicura, ma il territorio, i trasporti e il caldo estivo possono sorprendere i visitatori.",
+    "Usa i consigli e le checklist qui sotto per un viaggio senza stress — soprattutto su scale, traghetti e autobus."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Scale e camminate",
+      "body": [
+        "Indossa scarpe con buona aderenza: molte strade sono di pietra liscia e scivolose con la pioggia.",
+        "Usa i corrimano dove presenti e fai pause sulle salite lunghe; in città ci sono fontanelle."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Autobus e traghetti",
+      "body": [
+        "Sugli autobus tieniti ai corrimano e non bloccare il corridoio con lo zaino; gli autisti frenano spesso nelle curve.",
+        "Sui traghetti segui le istruzioni dell'equipaggio e evita di sostare vicino alle passerelle durante l'imbarco e lo sbarco."
+      ]
+    },
+    {
+      "id": "sun-sea",
+      "title": "Sole, mare e disidratazione",
+      "body": [
+        "Porta acqua e usa una protezione solare SPF 30+; l'ombra è limitata su spiagge e sentieri.",
+        "Nuota solo nelle aree segnalate e fai attenzione al traffico di barche quando fai snorkeling vicino agli scogli."
+      ]
+    }
+  ],
+  "faqsTitle": "FAQ sulla sicurezza",
+  "faqs": [
+    {
+      "q": "Positano è sicura di notte?",
+      "a": [
+        "Sì. I piccoli furti sono rari; resta su scale e vicoli illuminati e starai bene."
+      ]
+    },
+    {
+      "q": "Quale numero chiamare in caso di emergenza?",
+      "a": [
+        "Chiama il 112 — numero di emergenza UE per polizia, ambulanza e vigili del fuoco."
+      ]
+    }
+  ]
+}

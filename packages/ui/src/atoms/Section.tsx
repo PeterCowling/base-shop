@@ -6,7 +6,7 @@ type SectionPadding = "none" | "narrow" | "default" | "wide";
 type SectionWidth = "constrained" | "full";
 
 const PADDING_MAP: Record<SectionPadding, string> = {
-  none: "px-0 py-0",
+  none: "",
   narrow: "px-4 py-6",
   default: "px-4 py-8",
   wide: "px-6 py-12",

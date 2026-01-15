@@ -1,22 +1,22 @@
 {
   "seo": {
     "title": "Slik kommer du deg til Positano: alle alternativer sammenlignet",
-    "description": "Sammenlign ferje, tog + buss, shuttle og private transfer – med sesongnotater og tips for bagasje."
+    "description": "Sammenlign ferje, tog + buss, skyttel og privat transport – med sesongnotater og tips for bagasje."
   },
   "linkLabel": "Hvordan reise til Positano (beslutningsguide)",
   "intro": "Alle realistiske måter å nå Positano - sammenlignet med sesong, budsjett, bagasje og ankomsttid.",
   "toc": {
-    "onThisPage": "On this page",
-    "naples": "Via Naples",
+    "onThisPage": "På denne siden",
+    "naples": "Via Napoli",
     "salerno": "Via Salerno",
-    "ferry": "Ferry (summer)",
-    "private": "Private transfer",
+    "ferry": "Ferge (sommer)",
+    "private": "Privat transport",
     "faqs": "Vanlige spørsmål"
   },
   "labels": {
-    "whenHeading": "When to choose",
-    "cheapestHeading": "Cheapest route",
-    "seasonalHeading": "Seasonal notes"
+    "whenHeading": "Når du bør velge",
+    "cheapestHeading": "Rimeligste rute",
+    "seasonalHeading": "Sesongnotater"
   },
   "sections": [
     {
@@ -37,7 +37,7 @@
     },
     {
       "id": "private",
-      "title": "Private transfer",
+      "title": "Privat transport",
       "body": [
         "Dør-til-dør; dyrere, men enklest for sene ankomster eller tung bagasje."
       ]
@@ -53,7 +53,7 @@
     {
       "q": "Hva er best med mye bagasje?",
       "a": [
-        "Ferje fra Salerno eller en privat transfer – færre trapper og lettere av- og pålasting."
+        "Ferje fra Salerno eller privat transport – færre trapper og lettere av- og pålasting."
       ]
     }
   ]

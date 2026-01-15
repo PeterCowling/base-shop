@@ -1,0 +1,28 @@
+{
+  "seo": {
+    "title": "Sorrento: porten til Amalfikysten",
+    "description": "Hvorfor starte i Sorrento, og hvordan komme videre til Positano og Capri."
+  },
+  "linkLabel": "Sorrento: porten til Amalfikysten",
+  "intro": [
+    "Sorrento er et praktisk udgangspunkt med hyppige busser og færger mod Amalfikysten og let togforbindelse tilbage til Napoli og Pompeji."
+  ],
+  "sections": [
+    {
+      "id": "why-sorrento",
+      "title": "Hvorfor ankomme via Sorrento",
+      "body": [
+        "Tog fra Napoli ankommer regelmæssigt; overnatning er rigelig og ofte bedre pris end i Positano.",
+        "Fra byen forbinder busser og sæsonfærger dig til Positano og Amalfi."
+      ]
+    },
+    {
+      "id": "onward-connections",
+      "title": "Videre forbindelser",
+      "body": [
+        "SITA-busser kører året rundt til Positano og Amalfi; køb billetter før ombordstigning.",
+        "I sæsonen sejler færger direkte til Positano — flot udsigt og færre trapper, når du har bagage."
+      ]
+    }
+  ]
+}

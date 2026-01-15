@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import { DIRECTION_ORDER, TRANSPORT_MODE_ORDER } from "./transport";
 import type {
@@ -10,6 +11,41 @@ import type {
   TransportMode,
   TransportFilter,
 } from "./types";
+
+const FILTER_PARAM_KEYS = {
+  transport: "mode",
+  direction: "direction",
+  destination: "place",
+} as const;
+
+function isTransportMode(candidate: unknown): candidate is TransportMode {
+  return typeof candidate === "string" && TRANSPORT_MODE_ORDER.includes(candidate as TransportMode);
+}
+
+function isRouteDirection(candidate: unknown): candidate is RouteDirection {
+  return typeof candidate === "string" && DIRECTION_ORDER.includes(candidate as RouteDirection);
+}
+
+function normalizeQueryValue(value: string | null): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function updateParams(
+  current: URLSearchParams,
+  updates: Partial<Record<(typeof FILTER_PARAM_KEYS)[keyof typeof FILTER_PARAM_KEYS], string | null>>,
+): URLSearchParams {
+  const next = new URLSearchParams(current);
+  for (const [key, value] of Object.entries(updates)) {
+    if (!value) {
+      next.delete(key);
+    } else {
+      next.set(key, value);
+    }
+  }
+  return next;
+}
 
 export type DestinationFiltersState = {
   transportFilter: TransportFilter;
@@ -30,9 +66,7 @@ export type DestinationFiltersState = {
 export function useDestinationFilters(
   sections: AugmentedDestinationSection[],
 ): DestinationFiltersState {
-  const [transportFilter, setTransportFilter] = useState<TransportFilter>("all");
-  const [directionFilter, setDirectionFilter] = useState<DirectionFilter>("all");
-  const [destinationFilter, setDestinationFilter] = useState<DestinationFilter>("all");
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const availableTransportModes = useMemo(
     () =>
@@ -64,6 +98,57 @@ export function useDestinationFilters(
     [sections],
   );
 
+  const transportFilter = useMemo<TransportFilter>(() => {
+    const raw = normalizeQueryValue(searchParams.get(FILTER_PARAM_KEYS.transport));
+    if (!raw) return "all";
+    if (!isTransportMode(raw)) return "all";
+    return availableTransportModes.includes(raw) ? raw : "all";
+  }, [availableTransportModes, searchParams]);
+
+  const directionFilter = useMemo<DirectionFilter>(() => {
+    const raw = normalizeQueryValue(searchParams.get(FILTER_PARAM_KEYS.direction));
+    if (!raw) return "all";
+    if (!isRouteDirection(raw)) return "all";
+    return availableDirections.includes(raw) ? raw : "all";
+  }, [availableDirections, searchParams]);
+
+  const destinationFilter = useMemo<DestinationFilter>(() => {
+    const raw = normalizeQueryValue(searchParams.get(FILTER_PARAM_KEYS.destination));
+    if (!raw) return "all";
+    const present = availableDestinations.some((destination) => destination.id === raw);
+    return present ? raw : "all";
+  }, [availableDestinations, searchParams]);
+
+  const setTransportFilter = useCallback(
+    (filter: TransportFilter) => {
+      const next = updateParams(searchParams, {
+        [FILTER_PARAM_KEYS.transport]: filter === "all" ? null : filter,
+      });
+      setSearchParams(next, { replace: true });
+    },
+    [searchParams, setSearchParams],
+  );
+
+  const setDirectionFilter = useCallback(
+    (filter: DirectionFilter) => {
+      const next = updateParams(searchParams, {
+        [FILTER_PARAM_KEYS.direction]: filter === "all" ? null : filter,
+      });
+      setSearchParams(next, { replace: true });
+    },
+    [searchParams, setSearchParams],
+  );
+
+  const setDestinationFilter = useCallback(
+    (filter: DestinationFilter) => {
+      const next = updateParams(searchParams, {
+        [FILTER_PARAM_KEYS.destination]: filter === "all" ? null : filter,
+      });
+      setSearchParams(next, { replace: true });
+    },
+    [searchParams, setSearchParams],
+  );
+
   const filteredSections = useMemo(() => {
     const matchesTransport = (link: AugmentedDestinationLink) =>
       transportFilter === "all" || link.transportModes.includes(transportFilter);
@@ -87,10 +172,13 @@ export function useDestinationFilters(
     transportFilter !== "all" || directionFilter !== "all" || destinationFilter !== "all";
 
   const clearFilters = useCallback(() => {
-    setTransportFilter("all");
-    setDirectionFilter("all");
-    setDestinationFilter("all");
-  }, []);
+    const next = updateParams(searchParams, {
+      [FILTER_PARAM_KEYS.transport]: null,
+      [FILTER_PARAM_KEYS.direction]: null,
+      [FILTER_PARAM_KEYS.destination]: null,
+    });
+    setSearchParams(next, { replace: true });
+  }, [searchParams, setSearchParams]);
 
   return {
     transportFilter,

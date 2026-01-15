@@ -96,6 +96,16 @@
       ]
     }
   ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Suncream",
+    "Sunglasses",
+    "Towel"
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Between 0 and 50 euros, depending on whether you rent a lounger, eat, or drink."
+  ],
   "tipsTitle": "Quick tips",
   "tips": [
     "Follow the %LINK:hostelBriketteToFornilloBeach|shortcut route% down for the fastest descent (15–20 minutes).",

@@ -24,6 +24,7 @@ import {
   CmsMetricTiles,
   CmsLaunchChecklist,
 } from "@ui/components/cms"; // UI: @ui/components/cms/CmsBuildHero, CmsMetricTiles, CmsLaunchChecklist
+import { inventoryRepository } from "@platform-core/repositories/inventory.server";
 
 export const revalidate = 0;
 
@@ -47,6 +48,7 @@ export default async function ProductsPage({
     getServerSession(authOptions),
     readRepo<ProductPublication>(shop),
   ]);
+  const inventory = await inventoryRepository.read(shop);
 
   const t = await getServerTranslations("en" as Locale);
 
@@ -121,6 +123,42 @@ export default async function ProductsPage({
       "cms.products.viewerNotice",
     );
 
+  const isStaticStorefront = shop === "cochlearfit";
+  const cmsLocales: Locale[] = ["en", "de", "it", "es"];
+
+  const sellability: Record<
+    string,
+    { state: "sellable" | "needs_attention"; issues: string[]; stock: number }
+  > = Object.fromEntries(
+    rows.map((product) => {
+      const issues: string[] = [];
+      const stock = inventory
+        .filter(
+          (item) =>
+            item.productId === product.id ||
+            (product.sku && item.productId === product.sku) ||
+            item.sku === product.sku,
+        )
+        .reduce((sum, item) => sum + item.quantity, 0);
+
+      if (product.status !== "active") issues.push("inactive");
+      if (stock <= 0) issues.push("needs_stock");
+      if (!product.media?.length) issues.push("needs_media");
+      const missingLocales = cmsLocales.filter((locale) => !product.title?.[locale]);
+      if (missingLocales.length) issues.push("missing_translations");
+      if (isStaticStorefront) issues.push("pending_rebuild");
+
+      return [
+        product.id,
+        {
+          state: issues.length === 0 ? "sellable" : "needs_attention",
+          issues,
+          stock,
+        } as const,
+      ];
+    }),
+  );
+
   /* ---------------------------------------------------------------------- */
   /*  Render                                                                */
   /* ---------------------------------------------------------------------- */
@@ -135,6 +173,14 @@ export default async function ProductsPage({
               body={t("cms.products.hero.subtitle")}
               tone="build"
             />
+            {isStaticStorefront && (
+              <div className="rounded-2xl border border-warning/30 bg-warning/10 px-4 py-3 text-sm text-warning-foreground">
+                <p className="font-semibold">This storefront publishes on rebuild</p>
+                <p className="mt-1 text-warning-foreground/80">
+                  Changes to products, inventory, or media are saved now, but go live only after the static site is rebuilt/deployed.
+                </p>
+              </div>
+            )}
             {isAdmin && totalProducts === 0 && (
               <div
                 className="space-y-2 text-sm text-hero-foreground/80"
@@ -293,6 +339,7 @@ export default async function ProductsPage({
               isAdmin={isAdmin}
               onDuplicate={onDuplicate}
               onDelete={onDelete}
+              sellability={sellability}
             />
           </CardContent>
         </Card>

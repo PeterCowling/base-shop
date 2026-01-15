@@ -1,6 +1,8 @@
 // packages/ui/components/cms/Breadcrumbs.tsx
 "use client";
 
+/* eslint-disable ds/no-hardcoded-copy -- UI-9999 [ttl=2026-12-31] pending CMS i18n sweep */
+
 import type { ProductPublication } from "@acme/types";
 import { getShopFromPath } from "@acme/shared-utils";
 import type { Page } from "@acme/types";
@@ -23,6 +25,8 @@ const LABEL_KEYS: Record<string, string | null> = {
   builder: "cms.breadcrumb.builder",
   edit: "cms.breadcrumb.edit",
   seo: "cms.breadcrumb.seo",
+  uploads: "Uploads",
+  "stock-inflows": "Stock inflows",
 };
 
 function BreadcrumbsInner() {

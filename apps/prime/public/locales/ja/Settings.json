@@ -1,0 +1,28 @@
+{
+  "title": "設定",
+  "cache": {
+    "title": "キャッシュデータ",
+    "usage": "使用中のストレージ",
+    "quota": "利用可能なストレージの{{percent}}%",
+    "description": "キャッシュデータによりアプリがオフラインで動作します。クリアするとコンテンツの再ダウンロードが必要になる場合があります。",
+    "clear": "キャッシュデータをクリア",
+    "clearing": "クリア中...",
+    "cleared": "クリアしました！",
+    "refresh": "更新"
+  },
+  "language": {
+    "title": "言語",
+    "select": "言語を選択"
+  },
+  "notifications": {
+    "title": "通知",
+    "push": "プッシュ通知",
+    "email": "メール通知"
+  },
+  "about": {
+    "title": "概要",
+    "version": "バージョン",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー"
+  }
+}

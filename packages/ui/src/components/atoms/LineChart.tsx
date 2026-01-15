@@ -1,3 +1,5 @@
+"use client";
+
 import type { ChartData, ChartOptions } from "chart.js";
 import {
   CategoryScale,
@@ -31,8 +33,8 @@ export function LineChart({ data, options, className }: LineChartProps) {
   return (
     <Line
       data={data}
-      options={options}
-      className={className}
+      {...(options !== undefined ? { options } : {})}
+      {...(className !== undefined ? { className } : {})}
       data-cy="line-chart"
       data-testid="line-chart"
     />

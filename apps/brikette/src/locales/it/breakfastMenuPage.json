@@ -52,10 +52,10 @@
       "title": "Succhi e Frullati"
     },
     "hot": {
-      "title": "Traduzione in arrivo."
+      "title": "Caffetteria calda"
     },
     "iced": {
-      "title": "Traduzione in arrivo."
+      "title": "Caffetteria fredda"
     }
   },
   "items": {
@@ -67,7 +67,7 @@
       "note": "Classico, servito con sciroppo."
     },
     "nutellaFrenchToast": {
-      "name": "Traduzione in arrivo.",
+      "name": "French toast alla Nutella",
       "note": "Ripieno di Nutella."
     },
     "pancakes": {
@@ -118,10 +118,10 @@
       "name": "Aggiungi proteine (vaniglia, cioccolato o caramello salato) — HUEL (40 g di proteine)"
     },
     "tea": {
-      "name": "Traduzione in arrivo."
+      "name": "Tè (nero, verde, tisane)"
     },
     "espresso": {
-      "name": "Espresso (per shot)"
+      "name": "Espresso (per dose)"
     },
     "macchiato": {
       "name": "Macchiato"
@@ -139,13 +139,13 @@
       "name": "Latte di soia o riso — supplemento"
     },
     "icedLatte": {
-      "name": "Iced Latte"
+      "name": "Latte freddo"
     },
     "icedSoyLatte": {
-      "name": "Iced Soy Latte"
+      "name": "Latte di soia freddo"
     },
     "icedRiceLatte": {
-      "name": "Iced Rice Milk Latte"
+      "name": "Latte di riso freddo"
     },
     "icedTea": {
       "name": "Tè Freddo (limone o pesca)"

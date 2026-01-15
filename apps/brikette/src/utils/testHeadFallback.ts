@@ -141,6 +141,7 @@ export function applyLinkDescriptor(descriptor: LinkDescriptor): Cleanup | undef
 
   const previous = new Map<string, string | null>();
   Object.keys(descriptor).forEach((raw) => {
+    if (raw === "tagName") return;
     const attr = normaliseName(raw);
     const val = (descriptor as Record<string, unknown>)[raw];
     if (val == null) return;
@@ -201,6 +202,21 @@ export function useApplyFallbackHead(
 ): void {
   useBrowserLayoutEffect(() => {
     if (process.env.NODE_ENV !== "test") return;
-    return applyHeadDescriptors(meta, links);
+    const extractedLinks: ReturnType<LinksFunction> = [];
+    const filteredMeta = (meta ?? []).flatMap((descriptor) => {
+      if (
+        descriptor &&
+        typeof descriptor === "object" &&
+        "tagName" in descriptor &&
+        (descriptor as Record<string, unknown>)["tagName"] === "link"
+      ) {
+        const descriptorRecord = descriptor as Record<string, string | undefined>;
+        const { ["tagName"]: _ignored, ...rest } = descriptorRecord;
+        extractedLinks.push(rest as ReturnType<LinksFunction>[number]);
+        return [];
+      }
+      return [descriptor as MetaDescriptor];
+    });
+    return applyHeadDescriptors(filteredMeta, [...(links ?? []), ...extractedLinks]);
   }, [meta, links]);
 }

@@ -1,0 +1,242 @@
+{
+  "header": {
+    "preArrival": "도착 전",
+    "arrivalDay": "도착일",
+    "welcome": "{{name}}님, 준비해 볼까요!",
+    "welcomeArrivalDay": "{{name}}님, 환영합니다!",
+    "subtitle": "도착 전에 몇 가지 빠른 항목을 완료하세요.",
+    "arrivalDaySubtitle": "거의 다 왔어요! 체크인 준비가 되었는지 확인하세요."
+  },
+  "checkIn": {
+    "label": "체크인",
+    "daysLeft": "일 남음",
+    "dayLeft": "일 남음",
+    "today": "오늘!",
+    "qrAlt": "{{code}} 체크인 QR 코드",
+    "qrError": "QR 코드를 생성할 수 없습니다",
+    "yourCode": "체크인 코드",
+    "codeCopied": "코드가 복사되었습니다!"
+  },
+  "readiness": {
+    "score": "준비 완료",
+    "of": "/",
+    "itemsComplete": "항목 완료",
+    "status": {
+      "not-started": "시작",
+      "in-progress": "진행 중",
+      "almost-ready": "거의 완료!",
+      "ready": "모든 준비 완료!"
+    }
+  },
+  "checklist": {
+    "title": "준비 체크리스트",
+    "completed": "완료",
+    "routePlanned": {
+      "title": "경로 계획하기"
+    },
+    "etaConfirmed": {
+      "title": "도착 시간 확인"
+    },
+    "cashPrepared": {
+      "title": "현금 준비",
+      "amount": "시티택스 + 보증금"
+    },
+    "rulesReviewed": {
+      "title": "하우스 규칙 확인"
+    },
+    "locationSaved": {
+      "title": "위치 저장"
+    },
+    "etaMethod": {
+      "ferry": "페리",
+      "bus": "버스",
+      "taxi": "택시",
+      "private": "프라이빗 픽업",
+      "train": "기차",
+      "other": "기타"
+    }
+  },
+  "nextAction": {
+    "allComplete": {
+      "title": "모든 준비 완료!",
+      "description": "숙박 준비가 완료되었습니다. 만나뵙기를 기대합니다!",
+      "button": "곧 만나요!"
+    },
+    "routePlanned": {
+      "title": "경로 계획하기",
+      "description": "포지타노는 도달하기 어렵습니다. 최적의 경로를 찾도록 도와드립니다.",
+      "button": "경로 옵션 보기"
+    },
+    "etaConfirmed": {
+      "title": "언제 도착하시나요?",
+      "description": "예상 도착 시간을 알려주세요.",
+      "button": "도착 시간 설정"
+    },
+    "cashPrepared": {
+      "title": "현금 준비",
+      "description": "체크인 시 시티택스와 보증금 현금이 필요합니다.",
+      "descriptionWithAmount": "약 €{{amount}}의 현금을 준비해 주세요.",
+      "button": "세부사항 보기"
+    },
+    "rulesReviewed": {
+      "title": "하우스 규칙 확인",
+      "description": "원활한 숙박을 위한 2분 읽기입니다.",
+      "button": "규칙 확인"
+    },
+    "locationSaved": {
+      "title": "위치 저장",
+      "description": "호스텔 주소를 지도 앱에 저장하세요.",
+      "button": "길찾기"
+    },
+    "default": {
+      "title": "준비하기",
+      "description": "숙박을 위해 몇 가지 항목을 완료하세요.",
+      "button": "계속"
+    }
+  },
+  "stay": {
+    "night": "박",
+    "nights": "박",
+    "location": "호스텔 브리케테, 포지타노"
+  },
+  "eta": {
+    "title": "언제 도착하시나요?",
+    "subtitle": "예상 도착 시간과 이동 방법을 선택하세요.",
+    "back": "뒤로",
+    "timeLabel": "도착 시간",
+    "methodLabel": "이동 방법",
+    "noteLabel": "메모 (선택사항)",
+    "notePlaceholder": "도착에 관한 세부사항",
+    "lateArrival": {
+      "title": "늦은 도착",
+      "message": "체크인은 22:00에 마감됩니다. 늦은 도착 시 특별 안내를 보내드립니다."
+    },
+    "confirm": "도착 시간 확인",
+    "methods": {
+      "ferry": "페리",
+      "bus": "버스",
+      "taxi": "택시",
+      "private": "프라이빗 픽업",
+      "train": "기차",
+      "other": "기타"
+    }
+  },
+  "cash": {
+    "title": "체크인용 현금",
+    "subtitle": "도착 시 현금으로 지불해야 합니다:",
+    "back": "뒤로",
+    "cashOnly": "현금 결제만 가능",
+    "cityTax": {
+      "label": "시티택스",
+      "perNight": "1인 1박당"
+    },
+    "deposit": {
+      "label": "키카드 보증금",
+      "refundable": "체크아웃 시 환불"
+    },
+    "total": "준비할 총액",
+    "confirm": {
+      "cityTax": "시티택스 현금 있음",
+      "deposit": "보증금 현금 있음"
+    },
+    "info": {
+      "message": "이 금액은 체크인 시 프런트에서 수금됩니다. 정확한 금액 또는 비슷한 금액을 준비해 주세요."
+    },
+    "cardNote": "기타 서비스는 카드 결제 가능",
+    "done": "준비 완료!",
+    "confirmPartial": "저장하고 계속",
+    "arrivalReminder": {
+      "title": "현금을 잊지 마세요!",
+      "message": "시티택스와 보증금으로 약 €{{amount}}의 현금을 가져오세요."
+    }
+  },
+  "rules": {
+    "title": "하우스 규칙",
+    "subtitle": "쾌적한 숙박을 위한 간단한 개요입니다.",
+    "confirm": "규칙을 확인했습니다"
+  },
+  "location": {
+    "title": "찾아오시는 길",
+    "subtitle": "쉽게 찾을 수 있도록 주소를 저장하세요.",
+    "address": "Via Cristoforo Colombo 13, 84017 Positano SA, 이탈리아",
+    "openMaps": "지도에서 열기",
+    "copyAddress": "주소 복사",
+    "copied": "주소가 복사되었습니다!",
+    "confirm": "위치를 저장했습니다"
+  },
+  "routes": {
+    "title": "오시는 방법",
+    "subtitle": "출발지를 선택하여 경로 옵션을 확인하세요.",
+    "viewRoute": "경로 보기",
+    "saveRoute": "경로 저장",
+    "savedRoute": "저장됨!",
+    "routeSaved": "경로가 저장되었습니다!",
+    "recommended": "추천",
+    "back": "뒤로",
+    "fromOrigin": "{{origin}}에서",
+    "selectRoute": "경로 선택",
+    "noRoutes": "경로를 찾을 수 없습니다",
+    "totalTime": "총 소요시간",
+    "cost": "예상 비용",
+    "importantNotes": "알아두면 좋은 정보",
+    "journey": "여정",
+    "arrival": "도착했습니다!",
+    "viewFullGuide": "전체 가이드 보기",
+    "categories": {
+      "airport": "공항",
+      "train-station": "기차역",
+      "port": "항구",
+      "city": "도시"
+    }
+  },
+  "arrival": {
+    "badge": "도착일",
+    "welcome": "{{name}}님, 환영합니다!",
+    "subtitle": "체크인을 위해 프런트에서 이 화면을 보여주세요.",
+    "showAtReception": "프런트에서 보여주기",
+    "generatingCode": "체크인 코드 생성 중...",
+    "codeUnavailable": "체크인 코드를 사용할 수 없습니다. 스태프에게 문의하세요.",
+    "cashReminder": "현금을 잊지 마세요!",
+    "cashReady": "현금 준비 완료",
+    "cashAmount": "약 €{{amount}}의 현금을 가져오세요",
+    "cityTaxLabel": "시티택스: €{{amount}}",
+    "depositLabel": "보증금: €{{amount}}",
+    "idReminder": "신분증 준비",
+    "idNote": "체크인을 위한 여권 또는 신분증",
+    "findUs": "찾아오시는 길",
+    "whatHappensNext": "체크인 절차",
+    "step1": "QR 코드를 보여주거나 코드를 알려주세요",
+    "step2": "시티택스와 보증금을 현금으로 지불하세요",
+    "step3": "키카드와 웰컴 패키지를 받으세요",
+    "step4": "탐험하고 숙박을 즐기세요!"
+  },
+  "staffLookup": {
+    "title": "게스트 체크인",
+    "code": "코드: {{code}}",
+    "back": "뒤로",
+    "loading": "게스트 검색 중...",
+    "guestName": "게스트",
+    "room": "객실",
+    "nights": "숙박",
+    "dates": "날짜",
+    "eta": "예상 도착",
+    "payment": "결제 금액",
+    "tryAgain": "다시 시도하거나 코드를 확인하세요.",
+    "errors": {
+      "codeNotFound": "코드를 찾을 수 없습니다",
+      "codeExpired": "코드가 만료되었습니다",
+      "lookupFailed": "게스트를 찾을 수 없습니다"
+    }
+  },
+  "welcome": {
+    "title": "{{firstName}}님, 환영합니다!",
+    "subtitle": "오셔서 정말 기쁩니다.",
+    "tip1": "객실이 준비되어 기다리고 있습니다.",
+    "tip2": "홈페이지에서 팁과 도구를 확인하세요.",
+    "tapToDismiss": "아무 곳이나 탭하여 계속"
+  },
+  "calendar": {
+    "addToCalendar": "캘린더에 추가",
+    "downloading": "다운로드 중..."
+  }
+}

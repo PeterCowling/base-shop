@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------------------- */
 /*  Cloudflare Image Resizing URL builder – canonical implementation          */
 /* -------------------------------------------------------------------------- */
-import { IS_DEV, IS_SERVER, SITE_DOMAIN, SITE_ORIGIN } from "@/config/env";
+import { IS_DEV, SITE_DOMAIN, SITE_ORIGIN } from "@/config/env";
 
 export interface BuildCfImageOptions {
   width?: number;
@@ -20,6 +20,17 @@ const FALLBACK_ORIGIN = "https://hostel-positano.com"; // keeps SSR prerender ha
 
 const stripProto = (u: string): string => u.replace(/^https?:\/\//, "").replace(/\/+$/, "");
 
+function getIsDev(): boolean {
+  if (typeof import.meta !== "undefined") {
+    const metaEnv = (import.meta as { env?: Record<string, unknown> }).env;
+    const dev = metaEnv?.["DEV"];
+    if (typeof dev === "boolean") return dev;
+    if (typeof dev === "string") return dev === "true";
+  }
+
+  return IS_DEV;
+}
+
 function getSiteOrigin(hostOverride?: string): string {
   const envOrigin = SITE_ORIGIN ?? SITE_DOMAIN ?? "";
 
@@ -28,11 +39,11 @@ function getSiteOrigin(hostOverride?: string): string {
 
   /* During SSR prerender there is no window – fall back to a hard origin
      so images become absolute and bypass the internal router. */
-  if (IS_SERVER) return stripProto(FALLBACK_ORIGIN);
+  if (typeof window === "undefined") return stripProto(FALLBACK_ORIGIN);
 
   /* Runtime in the browser */
   if (typeof window !== "undefined" && window.location?.origin) {
-    return window.location.origin;
+    return stripProto(window.location.origin);
   }
 
   return "";
@@ -53,7 +64,7 @@ export function buildCfImageUrl(
   opts: BuildCfImageOptions = {},
   hostOverride?: string
 ): string {
-  if (IS_DEV) return pathOrUrl;
+  if (getIsDev()) return pathOrUrl;
 
   const params = toOptionsString({ ...opts });
   const isRemote = /^https?:\/\//i.test(pathOrUrl);

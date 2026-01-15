@@ -1,12 +1,45 @@
 {
   "slug": "avtal",
   "meta": {
-    "title": "Sommaren 2025 – spara 15 %",
-    "description": "Sommarerbjudande under begränsad tid med extra 15 % vid direktbokning.",
-    "ogImageAlt": "Banner för sommarerbjudande"
+    "title": "Spara 15 % på vistelser från 20 september till 31 oktober",
+    "description": "Erbjudande under begränsad tid: spara 15 % vid direktbokning för vistelser från 20 september till 31 oktober.",
+    "ogImageAlt": "Banner för tidsbegränsat erbjudande"
   },
-  "title": "Spara {{percent}} % på din vistelse i {{season}}",
-  "promo": "Boka direkt i sommar och få extra {{percent}} % rabatt.",
+  "title": "Spara {{percent}} % på vistelser från {{from}} till {{to}}",
+  "promo": "Boka direkt och din {{percent}} % rabatt dras automatiskt i kassan.",
+  "dealCard": {
+    "savePercent": "Spara {{percent}}"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "Startar {{startDate}} — planera i god tid och kolla dina datum.",
+      "active": "Aktivt nu — slutar {{endDate}}.",
+      "expired": "Det här erbjudandet har avslutats."
+    },
+    "badge": {
+      "upcoming": "Startar {{startDate}}",
+      "active": "Aktivt",
+      "expired": "Avslutat"
+    },
+    "endsOn": "Slutar {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "Kontrollera datum",
+    "checkDatesHint": "Rabatten gäller endast under erbjudandets period.",
+    "viewCurrentDeals": "Se aktuella erbjudanden",
+    "checkAvailabilityStandard": "Kontrollera tillgänglighet (standardpriser)"
+  },
+  "sections": {
+    "active": "Aktiva erbjudanden",
+    "upcoming": "Kommande erbjudanden",
+    "expired": "Avslutade erbjudanden",
+    "noneCurrent": "Inga aktuella erbjudanden just nu."
+  },
+  "chips": {
+    "nonRefundable": "Ej återbetalningsbar",
+    "directOnly": "Endast direkt",
+    "minNights": "Minst {{nights}} nätter"
+  },
   "banner": "Endast {{beds}} sängar kvar till detta pris – erbjudandet slutar om {{time}}!",
   "timeRemaining": {
     "lessThanHour": "0 h",
@@ -16,33 +49,42 @@
     "days_other": "{{count}} dagar"
   },
   "buttonReserve": "Boka nu",
-  "ogImageAlt": "Banner för sommarerbjudande",
+  "ogImageAlt": "Banner för tidsbegränsat erbjudande",
   "perksHeading": "Fördelar med direktbokning",
   "perksIntro": "Dessa förmåner gäller bara gäster som bokar direkt på vår webbplats.",
   "perksGuarantee": "Varje direktbokning via vår webbplats låser automatiskt upp dessa exklusiva förmåner.",
-  "perksIntroLink": "Se alla aktuella erbjudanden",
+  "perksIntroLink": "Se alla förmåner",
   "perksList": [
     "Upp till 25 % rabatt på ordinarie pris när kupongen används",
     "Kostnadsfri frukost",
     "Kostnadsfri kvällsdrink"
   ],
   "expired": {
-    "message": "Detta tidsbegränsade erbjudande avslutades {{endedOn}}."
+    "message": "Det här erbjudandet har avslutats."
   },
   "restrictions": {
     "heading": "Bra att veta",
+    "sections": {
+      "eligibility": "Behörighet",
+      "bookingConstraints": "Bokningsvillkor",
+      "stayRules": "Regler för vistelsen",
+      "rateType": "Pristyp",
+      "stacking": "Kombination"
+    },
     "stayWindow": "Gäller för vistelser från {{from}} till {{to}}.",
+    "bookingWindow": "Gäller för bokningar gjorda från {{from}} till {{to}}.",
     "minAdvance": "Boka minst {{days}} dagar i förväg.",
     "minAdvancePrefix": "Boka minst",
     "minAdvanceSuffix": "i förväg.",
     "los": "Minst {{min}} nätter, högst {{max}} nätter.",
-    "nonRefundable": "Gäller endast på icke återbetalningsbara priser, för direktbokningar via hostellets webbplats.",
+    "directOnly": "Endast direktbokningar (webbplats).",
+    "nonRefundable": "Gäller endast på icke återbetalningsbara priser.",
+    "nonRefundableOnly": "Endast icke återbetalningsbara priser.",
     "nonRefundablePrefix": "Gäller endast på",
-    "nonRefundableSuffix": "för direktbokningar via hostellets webbplats.",
+    "nonRefundableSuffix": "priser.",
     "stackable": "{{percent}} % läggs ovanpå vår ordinarie 10 % direktbokningsrabatt.",
-    "other": "Standardvillkor gäller."
+    "other": "Se villkor."
   },
-  "seasonLabel": "sommaren 2025",
   "robots": {
     "expiredNoindex": "ingetindex, följande"
   }

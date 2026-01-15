@@ -14,8 +14,8 @@
     "primaryCtaAria": "Prenota il tuo soggiorno all'Hostel Brikette",
     "secondaryCtaAria": "Visualizza il menu del bar dell'Hostel Brikette",
     "tertiaryCtaAria": "Invia un messaggio al concierge digitale dell'Hostel Brikette",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "Vedi il menu della colazione",
+    "breakfastCtaAria": "Vedi il menu della colazione"
   },
   "sections": {
     "bar": {
@@ -45,7 +45,7 @@
       "title": "Concierge digitale sempre attivo",
       "description": "Ricevi avvisi in tempo reale su traghetti, ristoranti e idee su misura per il tuo ritmo e il tuo budget.",
       "highlights": [
-        "Traduzione in arrivo.",
+        "Risposte su WhatsApp e Messenger dal nostro team.",
         "Notifiche automatiche su variazioni di bus e traghetti.",
         "Suggerimenti personalizzati costruiti sul tuo itinerario."
       ],
@@ -71,7 +71,7 @@
       "book": "Prenota ora",
       "events": "Bar & eventi",
       "concierge": "Contatta il concierge",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Menu colazione"
     }
   },
   "title": "Esperienze all'Hostel Brikette",
@@ -89,17 +89,17 @@
     "empty": "Non abbiamo ancora guide di esperienze per {{tag}}. Prova un altro tag o rimuovi il filtro.",
     "clearFilter": "Mostra tutte le guide di esperienze",
     "cardCta": "Esplora la guida esperienziale {{guideTitle}}",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "filterHeading": "Filtra le guide esperienziali",
+    "filterDescription": "Scegli un tag per restringere le esperienze in evidenza.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "Guide spiagge",
+          "description": "Scegli il tratto di spiaggia giusto e organizza la giornata."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "Indicazioni per le spiagge",
+          "description": "Indicazioni passo passo dall'Hostel Brikette fino alla spiaggia."
         }
       }
     }

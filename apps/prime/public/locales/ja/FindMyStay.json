@@ -1,0 +1,26 @@
+{
+  "title": "予約を探す",
+  "subtitle": "予約情報を入力してゲストポータルにアクセスしてください。",
+  "fields": {
+    "bookingCode": "予約コード",
+    "bookingCodePlaceholder": "例: BKG12345",
+    "bookingCodeHint": "確認メールに記載されています",
+    "lastName": "姓",
+    "lastNamePlaceholder": "予約時の表記",
+    "lastNameHint": "代表者の姓"
+  },
+  "button": {
+    "submit": "予約を探す",
+    "loading": "検索中..."
+  },
+  "errors": {
+    "fieldsRequired": "予約コードと姓の両方を入力してください。",
+    "notFound": "その情報では予約が見つかりませんでした。確認して再度お試しください。",
+    "tooManyAttempts": "試行回数が多すぎます。数分待ってから再度お試しください。",
+    "networkError": "接続できません。インターネット接続を確認して再度お試しください。"
+  },
+  "help": {
+    "cantFind": "予約コードが見つかりませんか？",
+    "contactUs": "フロントにお問い合わせください。"
+  }
+}

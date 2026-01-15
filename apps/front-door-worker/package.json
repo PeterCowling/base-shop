@@ -1,0 +1,11 @@
+{
+  "name": "@apps/front-door-worker",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev src/index.ts --local --port 8787",
+    "build": "wrangler build",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}
+

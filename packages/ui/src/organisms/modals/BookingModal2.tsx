@@ -6,6 +6,8 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type MouseEvent,
 } from "react";
+import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
+import { resolveBookingDateFormat } from "@ui/utils/bookingDateFormat";
 import type { BookingModal2Copy } from "./types";
 
 const BOOKING_MODAL_2_TITLE_ID = "booking-modal-2-title";
@@ -41,6 +43,8 @@ const BookingModal2 = memo(function BookingModal2({
   onCancel,
   testId = DEFAULT_TEST_ID,
 }: BookingModal2Props): JSX.Element | null {
+  const lang = useCurrentLanguage();
+  const { placeholder, inputLocale } = resolveBookingDateFormat(lang);
   const handleOverlayClick = useCallback(
     (event: MouseEvent<HTMLDivElement>): void => {
       if (event.target === event.currentTarget) onCancel();
@@ -105,8 +109,10 @@ const BookingModal2 = memo(function BookingModal2({
               <input
                 id={CHECKIN_INPUT_ID}
                 type="date"
+                lang={inputLocale}
                 value={checkIn}
                 onChange={onCheckInChange}
+                placeholder={placeholder}
                 className="w-full rounded-lg border-2 border-brand-surface p-2.5
                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
               />
@@ -119,8 +125,10 @@ const BookingModal2 = memo(function BookingModal2({
               <input
                 id={CHECKOUT_INPUT_ID}
                 type="date"
+                lang={inputLocale}
                 value={checkOut}
                 onChange={onCheckOutChange}
+                placeholder={placeholder}
                 className="w-full rounded-lg border-2 border-brand-surface p-2.5
                           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
               />

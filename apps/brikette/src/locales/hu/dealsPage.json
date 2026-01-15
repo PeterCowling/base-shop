@@ -1,12 +1,45 @@
 {
   "slug": "deals",
   "meta": {
-    "title": "2025 nyara – spórolj 15%‑ot",
-    "description": "Korlátozott idejű nyári ajánlat – további 15% kedvezmény közvetlen foglalásnál.",
-    "ogImageAlt": "Nyári kedvezmény banner"
+    "title": "Spórolj 15%‑ot a szeptember 20. és október 31. közötti tartózkodásokon",
+    "description": "Korlátozott idejű ajánlat: 15% kedvezmény közvetlen foglalásnál a szeptember 20. és október 31. közötti tartózkodásokra.",
+    "ogImageAlt": "Korlátozott idejű kedvezmény banner"
   },
-  "title": "Takaríts meg {{percent}}%‑ot a(z) {{season}} tartózkodásodon",
-  "promo": "Foglalj közvetlenül ezen a nyáron, és kapj extra {{percent}}% kedvezményt.",
+  "title": "Takaríts meg {{percent}}%‑ot a(z) {{from}} és {{to}} közötti tartózkodásokon",
+  "promo": "Foglalj közvetlenül – a {{percent}}% kedvezmény automatikusan érvényes a fizetésnél.",
+  "dealCard": {
+    "savePercent": "Spórolj {{percent}}‑ot"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "{{startDate}}-től indul — tervezd meg előre és ellenőrizd a dátumokat.",
+      "active": "Aktív — {{endDate}}-ig.",
+      "expired": "Ez az ajánlat lejárt."
+    },
+    "badge": {
+      "upcoming": "{{startDate}}-től",
+      "active": "Aktív",
+      "expired": "Lejárt"
+    },
+    "endsOn": "{{endDate}}-ig"
+  },
+  "cta": {
+    "checkDates": "Dátumok ellenőrzése",
+    "checkDatesHint": "A kedvezmény csak az ajánlat időszakában érvényes.",
+    "viewCurrentDeals": "Aktuális ajánlatok",
+    "checkAvailabilityStandard": "Elérhetőség ellenőrzése (normál árak)"
+  },
+  "sections": {
+    "active": "Aktív ajánlatok",
+    "upcoming": "Közelgő ajánlatok",
+    "expired": "Lejárt ajánlatok",
+    "noneCurrent": "Jelenleg nincs aktív ajánlat."
+  },
+  "chips": {
+    "nonRefundable": "Nem visszatéríthető",
+    "directOnly": "Csak közvetlen",
+    "minNights": "Min. {{nights}} éjszaka"
+  },
   "banner": "Csak {{beds}} ágy maradt ezen az áron – az ajánlat lejár {{time}} múlva!",
   "timeRemaining": {
     "lessThanHour": "0 óra",
@@ -16,33 +49,42 @@
     "days_other": "{{count}} nap"
   },
   "buttonReserve": "Foglalj most",
-  "ogImageAlt": "Nyári kedvezmény banner",
+  "ogImageAlt": "Korlátozott idejű kedvezmény banner",
   "perksHeading": "Közvetlen foglalás előnyei",
   "perksIntro": "Ezek a kedvezmények kizárólag azoknak a vendégeknek szólnak, akik közvetlenül a weboldalunkon foglalnak.",
   "perksGuarantee": "Minden, a weboldalunkon közvetlenül leadott foglalás automatikusan aktiválja ezeket az exkluzív előnyöket.",
-  "perksIntroLink": "Tekintse meg az összes aktuális ajánlatot",
+  "perksIntroLink": "Az összes előny megtekintése",
   "perksList": [
     "Akár 25% kedvezmény a listaárból kupon alkalmazása esetén",
     "Ingyenes reggeli",
     "Ingyenes esti ital"
   ],
   "expired": {
-    "message": "Ez a korlátozott idejű ajánlat {{endedOn}}-án lejárt."
+    "message": "Ez az ajánlat lejárt."
   },
   "restrictions": {
     "heading": "Fontos tudnivalók",
+    "sections": {
+      "eligibility": "Jogosultság",
+      "bookingConstraints": "Foglalási feltételek",
+      "stayRules": "Tartózkodási szabályok",
+      "rateType": "Ártípus",
+      "stacking": "Összevonás"
+    },
     "stayWindow": "Érvényes tartózkodásokra {{from}} és {{to}} között.",
+    "bookingWindow": "Érvényes a {{from}} és {{to}} között leadott foglalásokra.",
     "minAdvance": "Foglalj legalább {{days}} nappal korábban.",
     "minAdvancePrefix": "Foglalj legalább",
     "minAdvanceSuffix": "nappal korábban.",
     "los": "Minimum {{min}} éjszaka, maximum {{max}} éjszaka.",
-    "nonRefundable": "Csak nem visszatéríthető árakon érvényes, a hostel weboldalán keresztül történő közvetlen foglalásokra.",
+    "directOnly": "Csak közvetlen foglalás (weboldal).",
+    "nonRefundable": "Csak nem visszatéríthető árakon érvényes.",
+    "nonRefundableOnly": "Csak nem visszatéríthető árak.",
     "nonRefundablePrefix": "Csak",
-    "nonRefundableSuffix": "árakon, a hostel weboldalán keresztüli közvetlen foglalásra.",
+    "nonRefundableSuffix": "árakon.",
     "stackable": "A {{percent}}% összevonható a standard 10% közvetlen foglalási kedvezményünkkel.",
-    "other": "Az általános szerződési feltételek érvényesek."
+    "other": "ÁSZF megtekintése."
   },
-  "seasonLabel": "2025 nyara",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

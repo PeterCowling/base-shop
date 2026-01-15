@@ -79,6 +79,168 @@ export type CandidateDetailStrings = {
     label: string;
     title: string;
   };
+  hud: {
+    label: string;
+    title: string;
+    returnLabel: string;
+    riskLabel: string;
+    effortLabel: string;
+    confidenceLabel: string;
+    nextLabel: string;
+    returnBands: {
+      low: string;
+      medium: string;
+      high: string;
+      unknown: string;
+    };
+    riskBands: {
+      low: string;
+      medium: string;
+      high: string;
+      unknown: string;
+    };
+    effortBands: {
+      low: string;
+      medium: string;
+      high: string;
+      unknown: string;
+    };
+    nextActions: {
+      needStageM: string;
+      needStageB: string;
+      needStageC: string;
+      needStageT: string;
+      needStageS: string;
+      needStageK: string;
+      needStageR: string;
+      reviewCompliance: string;
+      ready: string;
+    };
+  };
+  common: {
+    editInputs: string;
+    hideInputs: string;
+    showDetails: string;
+    hideDetails: string;
+    laterStepsLabel: string;
+    laterStepsShow: string;
+    laterStepsHide: string;
+  };
+  nextStep: {
+    label: string;
+    title: string;
+    resolveEligibility: string;
+    resolveCompliance: string;
+    resolveCooldown: string;
+    fillMissing: string;
+    viewEvidence: string;
+    whyBlocked: string;
+    go: string;
+  };
+  fullEval: {
+    label: string;
+    title: string;
+    body: string;
+    run: string;
+    running: string;
+    ready: string;
+    success: string;
+    error: string;
+    statusQueued: string;
+    statusRan: string;
+    statusSkipped: string;
+    statusMissing: string;
+  };
+  decisions: {
+    label: string;
+    title: string;
+    ctaReview: string;
+    ctaResolve: string;
+    ctaFill: string;
+    items: {
+      market: string;
+      eligibility: string;
+      profit: string;
+      cash: string;
+      priority: string;
+    };
+    status: {
+      ready: string;
+      needsInput: string;
+      blocked: string;
+      review: string;
+      clear: string;
+      profitable: string;
+      notProfitable: string;
+    };
+    market: {
+      detail: string;
+      missing: string;
+    };
+    eligibility: {
+      blocked: string;
+      review: string;
+      clear: string;
+      missing: string;
+    };
+    profit: {
+      detail: string;
+      loss: string;
+      missing: string;
+    };
+    cash: {
+      detail: string;
+      missing: string;
+    };
+    priority: {
+      detail: string;
+      missing: string;
+    };
+  };
+  scorecard: {
+    label: string;
+    title: string;
+    recommendationLabel: string;
+    recommendationAdvance: string;
+    recommendationReview: string;
+    recommendationReject: string;
+    recommendationPause: string;
+    decisionLabel: string;
+    decisionNone: string;
+    decisionAdvance: string;
+    decisionReview: string;
+    decisionReject: string;
+    decisionPause: string;
+    decisionReasonLabel: string;
+    decisionReasonPlaceholder: string;
+    decisionSave: string;
+    decisionSaving: string;
+    decisionSaved: string;
+    decisionError: string;
+    decisionRequired: string;
+    reasonDefault: string;
+    reasonCooldown: string;
+    reasonEligibilityBlocked: string;
+    reasonEligibilityReview: string;
+    reasonComplianceBlocked: string;
+    reasonMissingProfit: string;
+    reasonMissingCash: string;
+    reasonMissingPayback: string;
+    metricProfit: string;
+    metricMarginLabel: string;
+    metricCashNeeded: string;
+    metricPayback: string;
+    metricPaybackDaysLabel: string;
+    riskLabel: string;
+    effortLabel: string;
+    confidenceLabel: string;
+    confidenceHigh: string;
+    confidenceMedium: string;
+    confidenceLow: string;
+    confidenceComplete: string;
+    missingLabel: string;
+  };
+  stageLabels: Record<string, string>;
   stageM: {
     label: string;
     title: string;
@@ -203,6 +365,36 @@ export type CandidateDetailStrings = {
       warningMissingLeadTime: string;
     };
   };
+  stageT: {
+    label: string;
+    title: string;
+    runLabel: string;
+    inputDecision: string;
+    inputReasons: string;
+    inputReasonsPlaceholder: string;
+    inputEvidence: string;
+    inputEvidencePlaceholder: string;
+    inputNotes: string;
+    inputNotesPlaceholder: string;
+    inputHelp: string;
+    success: string;
+    errorRun: string;
+    decisions: {
+      allowed: string;
+      needsReview: string;
+      blocked: string;
+    };
+    actions: {
+      advance: string;
+      review: string;
+      block: string;
+    };
+    summaryDecision: string;
+    summaryAction: string;
+    summaryEvidence: string;
+    summaryReasons: string;
+    summaryEvidenceList: string;
+  };
   stageS: {
     label: string;
     title: string;
@@ -323,6 +515,25 @@ export type CandidateDetailStrings = {
     summaryDeposit: string;
     summaryBalance: string;
     summaryLeadTime: string;
+    quoteBasket: {
+      label: string;
+      title: string;
+      selectLabel: string;
+      selectPlaceholder: string;
+      applyLabel: string;
+      appliedLabel: string;
+      appliedEmpty: string;
+      help: string;
+      loading: string;
+      empty: string;
+      errorLoad: string;
+      errorApply: string;
+      successApply: string;
+      summaryUnits: string;
+      summaryWeight: string;
+      summaryVolume: string;
+      summaryIncoterms: string;
+    };
     lane: {
       label: string;
       title: string;
@@ -453,6 +664,17 @@ export type CandidateDetailStrings = {
     severityLong: string;
     severityPermanent: string;
     activeMessage: string;
+  };
+  gates: {
+    label: string;
+    blockingLabel: string;
+    actionLabel: string;
+    whyLabel: string;
+    whyStageT: string;
+    whyStageS: string;
+    stageTBlocked: string;
+    stageTNeedsReview: string;
+    stageSBlocked: string;
   };
   fields: {
     candidateId: string;

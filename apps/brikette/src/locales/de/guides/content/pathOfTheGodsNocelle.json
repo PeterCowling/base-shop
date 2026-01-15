@@ -110,7 +110,7 @@
       "text": "Geh zurück zur Haltestelle und nimm den Bus zur Bar Internazionale oder Chiesa Nuova."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "Häufige Fragen",
   "faqs": [
     {
       "q": "Wie lange sollte ich wandern, bevor ich umdrehe?",
@@ -137,6 +137,6 @@
     "costs": "Typische Kosten",
     "tips": "Routentipps",
     "warnings": "Darauf achten",
-    "faqs": "FAQs"
+    "faqs": "Häufige Fragen"
   }
 }

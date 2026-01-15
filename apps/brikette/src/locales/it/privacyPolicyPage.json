@@ -1,0 +1,102 @@
+{
+  "meta": {
+    "title": "Informativa sulla privacy | Hostel Brikette",
+    "description": "Come Hostel Brikette raccoglie, usa, conserva e condivide i dati personali quando navighi sul nostro sito web o prenoti una camera."
+  },
+  "headings": {
+    "pageTitle": "Informativa sulla privacy",
+    "subtitle": "Come gestiamo i tuoi dati personali"
+  },
+  "lastUpdated": {
+    "label": "Ultimo aggiornamento",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "In questa pagina",
+    "aria": "Sommario dell'informativa sulla privacy"
+  },
+  "sections": {
+    "intro": {
+      "title": "Panoramica",
+      "body": [
+        "Questa informativa sulla privacy spiega quali dati personali raccogliamo, perché li raccogliamo e come li utilizziamo quando navighi sul nostro sito web, ci contatti o prenoti una camera.",
+        "Se cerchi le regole e i termini commerciali di una prenotazione (pagamenti, termini di cancellazione, check-in/out e obblighi degli ospiti), leggi i nostri Termini e condizioni per le prenotazioni di camere."
+      ]
+    },
+    "controller": {
+      "title": "Chi è responsabile dei tuoi dati",
+      "body": [
+        "Il titolare del trattamento è Skylar SRL che opera come Hostel Brikette (\"noi\").",
+        "Se hai domande su questa informativa o vuoi esercitare i tuoi diritti di privacy, contattaci a {{email}}."
+      ]
+    },
+    "dataWeCollect": {
+      "title": "Dati personali che raccogliamo",
+      "body": [
+        "Quando ci contatti o richiedi una prenotazione, puoi fornire dati come nome, indirizzo email, numero di telefono, nazionalità, date di soggiorno e qualsiasi messaggio che ci invii.",
+        "Se completi una prenotazione tramite un'Online Travel Agency (OTA) o un motore di prenotazione di terze parti, quel provider elabora i tuoi dati di pagamento secondo la propria informativa sulla privacy. Di solito riceviamo le informazioni necessarie per ospitarti (ad esempio: nome dell'ospite, contatti, date e riferimento della prenotazione).",
+        "Quando navighi sul nostro sito web, i nostri server possono elaborare dati tecnici di base (come indirizzo IP, informazioni su dispositivo e browser, e pagine richieste) per sicurezza, debugging e prestazioni."
+      ]
+    },
+    "howWeUse": {
+      "title": "Come utilizziamo i tuoi dati",
+      "body": [
+        "Per rispondere alle richieste e fornire assistenza clienti.",
+        "Per elaborare e gestire la tua prenotazione, il check-in e le comunicazioni relative al soggiorno.",
+        "Per adempiere a obblighi di legge (incluse quelle relative all'ospitalità e alla sicurezza pubblica).",
+        "Per proteggere e mantenere il nostro sito web (prevenzione delle frodi, monitoraggio degli abusi e affidabilità)."
+      ]
+    },
+    "legalBases": {
+      "title": "Basi legali (perché possiamo trattare i dati)",
+      "body": [
+        "Contratto: per compiere passi su tua richiesta prima di stipulare una prenotazione e per eseguire il contratto di prenotazione.",
+        "Obbligo legale: per soddisfare i requisiti imposti dalla legge applicabile (incluse le normative italiane per l'ospitalità).",
+        "Legittimi interessi: per gestire, proteggere e migliorare il nostro sito web e le comunicazioni, a condizione che tali interessi non prevalgano sui tuoi diritti."
+      ]
+    },
+    "sharing": {
+      "title": "Con chi condividiamo i dati",
+      "body": [
+        "Condividiamo i dati personali solo quando necessario per fornire servizi o rispettare la legge. Ciò può includere piattaforme di prenotazione che scegli di usare, i fornitori di pagamento usati da tali piattaforme, i fornitori di email/comunicazioni e i fornitori tecnici che ospitano o proteggono il nostro sito web.",
+        "Non vendiamo dati personali."
+      ]
+    },
+    "retention": {
+      "title": "Per quanto tempo conserviamo i dati",
+      "body": [
+        "Conserviamo i dati personali solo per il tempo necessario agli scopi descritti sopra e per rispettare obblighi legali, contabili o di rendicontazione.",
+        "I periodi di conservazione possono variare a seconda del tipo di registro e dell'obbligo legale applicabile."
+      ]
+    },
+    "security": {
+      "title": "Come proteggiamo i tuoi dati",
+      "body": [
+        "Utilizziamo misure tecniche e organizzative ragionevoli per proteggere i dati personali da perdita, uso improprio e accesso non autorizzato.",
+        "Nessun sistema può essere garantito al 100%, ma lavoriamo continuamente per migliorare la sicurezza."
+      ]
+    },
+    "yourRights": {
+      "title": "I tuoi diritti",
+      "body": [
+        "A seconda della tua posizione e della legge applicabile, potresti avere diritti di accesso, rettifica, cancellazione o limitazione del trattamento dei tuoi dati personali e di opposizione a determinati trattamenti.",
+        "Per esercitare i tuoi diritti, contattaci a {{email}}. Potremmo dover verificare la tua identità."
+      ]
+    },
+    "international": {
+      "title": "Trasferimenti internazionali",
+      "body": [
+        "Alcuni fornitori di servizi possono trattare i dati al di fuori del tuo paese. Quando richiesto, usiamo garanzie appropriate per i trasferimenti internazionali di dati."
+      ]
+    },
+    "changes": {
+      "title": "Modifiche a questa informativa",
+      "body": [
+        "Possiamo aggiornare questa Informativa sulla privacy di tanto in tanto. La versione più recente è quella pubblicata su questa pagina."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Torna su"
+  }
+}

@@ -170,8 +170,9 @@ Contracts should stick to **current behaviour**. Ideas and future variations bel
 #### 3.1.3 Plan
 
 - **Purpose**
-  - Capture “where we are and what’s next” with explicit tasks, dependencies, and status.
+  - Capture "where we are and what's next" with explicit tasks, dependencies, and status.
   - Plan docs are the **primary planning interface** for agents and humans.
+  - Plans are **historical artifacts** that must be preserved for audit and reconstruction.
 
 - **Usage**
   - Cross‑domain roadmap:
@@ -181,11 +182,19 @@ Contracts should stick to **current behaviour**. Ideas and future variations bel
     - `docs/<domain>/plan/index.md` with per‑thread files.
     - Existing CMS structure (`docs/cms-plan/index.md`, `master-thread.md`, `thread-*.md`) already fits this model.
 
-- **Header fields**
+- **Header fields (REQUIRED)**
   - `Type: Plan`
-  - `Status: Active | Frozen | Superseded`
+  - `Status: Active | Completed | Frozen | Superseded`
   - `Domain: <Domain>`
-  - `Relates-to charter: <charter file or anchor>`
+  - `Created: YYYY-MM-DD`
+  - `Created-by: <Human name> | Claude <model> | Codex`
+  - `Last-updated: YYYY-MM-DD`
+  - `Last-updated-by: <Human name> | Claude <model> | Codex`
+  - `Relates-to charter: <charter file or anchor>` (optional)
+  - `Completed: YYYY-MM-DD` (when status changes to Completed)
+  - `Completed-by: <Human name> | Claude <model> | Codex` (when completed)
+  - `Superseded-by: <path>` (when status changes to Superseded)
+  - `Related-PR: #123` (when implemented)
 
 - **Conventions**
   - Tasks have explicit IDs and checkboxes:
@@ -196,6 +205,13 @@ Contracts should stick to **current behaviour**. Ideas and future variations bel
     - Implementation hints (optional).
     - Dependencies.
     - Definition of done.
+
+- **Lifecycle rules (MANDATORY)**
+  - **Plans are NEVER deleted** — they are archived when complete.
+  - **Authorship must be tracked** — always record who created and last updated the plan.
+  - **Dates must be recorded** — for creation, updates, and completion.
+  - **Archive location**: Completed plans move to `docs/historical/plans/`.
+  - See `CLAUDE.md` section "PLAN DOCUMENTATION LIFECYCLE" for detailed rules.
 
 Plans are the source of truth for **status**, not for **exact behaviour** (that is code + Contracts).
 

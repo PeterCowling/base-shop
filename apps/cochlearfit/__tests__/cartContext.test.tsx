@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { CartProvider, useCart } from "@/contexts/cart/CartContext";
+import type { Product } from "@/types/product";
+import { listCochlearfitProducts } from "@/lib/cochlearfitCatalog.server";
 
 const STORAGE_KEY = "cochlearfit:cart";
 
@@ -42,6 +44,12 @@ const AddOnMount = () => {
 };
 
 describe("CartContext", () => {
+  let products: Product[] = [];
+
+  beforeAll(async () => {
+    products = await listCochlearfitProducts("en");
+  });
+
   beforeEach(() => {
     localStorage.clear();
   });
@@ -65,7 +73,7 @@ describe("CartContext", () => {
     );
 
     render(
-      <CartProvider>
+      <CartProvider products={products}>
         <HydrationHarness />
       </CartProvider>
     );
@@ -79,7 +87,7 @@ describe("CartContext", () => {
     const user = userEvent.setup();
 
     render(
-      <CartProvider>
+      <CartProvider products={products}>
         <CartHarness />
       </CartProvider>
     );
@@ -98,7 +106,7 @@ describe("CartContext", () => {
 
   it("saves on cart changes", async () => {
     render(
-      <CartProvider>
+      <CartProvider products={products}>
         <AddOnMount />
       </CartProvider>
     );

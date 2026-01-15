@@ -1,12 +1,12 @@
 // Copied from src/components/header/NotificationBanner.tsx
-import { useSetBannerRef } from "@/context/NotificationBannerContext";
-import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
-import { translatePath } from "@/utils/translate-path";
+import { useSetBannerRef } from "@ui/context/NotificationBannerContext";
+import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
+import { translatePath } from "@ui/utils/translate-path";
 import { X } from "lucide-react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router";
-import type { AppLanguage } from "@/i18n.config";
+import type { AppLanguage } from "@ui/i18n.config";
 
 type NotificationBannerCopy = {
   message?: string;
@@ -101,7 +101,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
 
     let alive = true;
     // Fallback: dynamically import the JSON for this language
-    import(`@/locales/${lang}/notificationBanner.json`)
+    import(`@ui/locales/${lang}/notificationBanner.json`)
       .then((mod) => {
         if (!alive) return;
         const localeModule = mod as NotificationBannerLocaleModule;

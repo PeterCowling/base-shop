@@ -31,7 +31,7 @@
       ]
     }
   ],
-  "mapTitle": "Interactive map",
+  "mapTitle": "인터랙티브 지도",
   "stepByStepTitle": "단계별 안내",
   "steps": [
     {
@@ -43,7 +43,7 @@
       "text": "SITA CIS 티켓(약 €2.10)을 구입하고, 아말피 방향 버스를 타서 포지타노 Chiesa Nuova 정류장에서 내리세요."
     },
     {
-      "name": "Walk to Hostel Brikette",
+      "name": "Hostel Brikette까지 도보 이동",
       "text": "Chiesa Nuova 정류장에서 약 80m만 내려오면 계단 없이 호스텔 입구에 도착합니다."
     }
   ],
@@ -60,9 +60,9 @@
   ],
   "costsTitle": "비용 한눈에 보기",
   "costs": [
-    "Shuttle (NAP → Sorrento): ~€10",
+    "셔틀(NAP → 소렌토): 약 €10",
     "SITA 버스(소렌토 → 포지타노): 약 €2.10",
-    "Total budget route: ~€12.10"
+    "총 예산 경로: 약 €12.10"
   ],
   "faq": [
     {
@@ -74,8 +74,8 @@
       "a": "역 주변 타바키(담배 가게)나 키오스크에서 탑승 전에 구입하고, 버스에 오를 때 검표하세요."
     },
     {
-      "q": "How long does it take?",
-      "a": "환승이顺조롭다면 총 소요 시간은 약 2시간 30분입니다."
+      "q": "얼마나 걸리나요?",
+      "a": "환승이 순조롭다면 총 소요 시간은 약 2시간 30분입니다."
     }
   ],
   "ferryCta": "여름철 페리를 선호하시나요? 페리 전용 가이드와 “페리로 도착하기” 도움말에서 항구 이용 팁과 접근성을 확인하세요.",

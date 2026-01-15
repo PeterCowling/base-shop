@@ -84,13 +84,45 @@
   "guideCollections": {
     "heading": "Go deeper with our experiences guides",
     "description": "Itineraries, hikes, boat days, and cultural picks curated by our team and guests.",
-    "taggedHeading": "Experiences tagged {{tag}}",
+    "taggedHeading": "Experiences about {{tag}}",
     "taggedDescription": "These stories highlight {{tag}} moments. Clear the filter to explore everything.",
-    "empty": "We don’t have experience guides for {{tag}} yet. Try a different tag or remove the filter.",
+    "empty": "We don’t have experience guides for {{tag}} yet. Try a different topic or remove the filter.",
     "clearFilter": "Show all experiences guides",
     "cardCta": "Explore the {{guideTitle}} experience guide",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "directionsLabel": "Directions",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri ferry",
+        "capriPositanoFerry": "Capri → Positano ferry"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi by bus",
+        "amalfiPositanoBus": "Amalfi → Positano by bus",
+        "positanoAmalfiFerry": "Positano → Amalfi ferry (seasonal)",
+        "amalfiPositanoFerry": "Amalfi → Positano ferry (seasonal)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello bus",
+        "ravelloPositanoBus": "Ravello → Positano bus",
+        "positanoRavelloFerryBus": "Positano → Ravello ferry + bus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Naples city → Positano (train + bus)",
+        "naplesCenterPositanoFerry": "Naples city → Positano ferry",
+        "naplesAirportPositanoBus": "Naples airport → Positano bus",
+        "positanoNaplesCenterBusTrain": "Positano → Naples city (bus + train)",
+        "positanoNaplesCenterFerry": "Positano → Naples ferry",
+        "positanoNaplesAirportBus": "Positano → Naples airport bus"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano bus",
+        "salernoPositanoFerry": "Salerno → Positano ferry (seasonal)",
+        "positanoSalernoBus": "Positano → Salerno bus",
+        "positanoSalernoFerry": "Positano → Salerno ferry (seasonal)"
+      }
+    },
+    "filterHeading": "Filter experiences guides by topic",
+    "filterDescription": "Pick a topic to narrow the experiences we highlight.",
     "grouped": {
       "beaches": {
         "guides": {

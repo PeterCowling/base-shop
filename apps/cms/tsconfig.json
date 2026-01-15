@@ -51,6 +51,10 @@
       "@acme/ui": [
         "../../packages/ui/src/index.ts", "../../packages/ui/dist/index"
       ],
+      "@acme/ui/operations": [
+        "../../packages/ui/src/components/organisms/operations/index.ts",
+        "../../packages/ui/dist/components/organisms/operations/index.d.ts"
+      ],
       "@acme/ui/*": [
         "../../packages/ui/src/*", "../../packages/ui/dist/*"
       ],
@@ -134,6 +138,12 @@
       ],
       "@acme/config/*": [
         "../../packages/config/src/*", "../../packages/config/dist/*"
+      ],
+      "@acme/configurator": [
+        "../../packages/configurator/src/index.ts", "../../packages/configurator/dist/index"
+      ],
+      "@acme/configurator/*": [
+        "../../packages/configurator/src/*", "../../packages/configurator/dist/*"
       ],
       "@acme/i18n": [
         "../../packages/i18n/src/index.ts", "../../packages/i18n/dist/index"

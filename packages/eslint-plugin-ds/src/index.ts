@@ -30,6 +30,7 @@ import absoluteParentGuard from "./rules/absolute-parent-guard.js";
 import noNonlayeredZindex from "./rules/no-nonlayered-zindex.js";
 import noUnsafeViewportUnits from "./rules/no-unsafe-viewport-units.js";
 import requireDisableJustification from "./rules/require-disable-justification.js";
+import requireSectionPadding from "./rules/require-section-padding.js";
 
 export const rules = {
   "no-raw-color": noRawColor,
@@ -64,6 +65,7 @@ export const rules = {
   "no-nonlayered-zindex": noNonlayeredZindex,
   "no-unsafe-viewport-units": noUnsafeViewportUnits,
   "require-disable-justification": requireDisableJustification,
+  "require-section-padding": requireSectionPadding,
 };
 
 const plugin = { rules };

@@ -161,6 +161,7 @@
     "@portabletext/react": "^3.2.1",
     "@themes/base": "workspace:^",
     "@types/node": "^20.19.4",
+    "aws4fetch": "^1.0.20",
     "next": "^15.3.5",
     "ulid": "^3.0.1"
   },

@@ -8,7 +8,7 @@
     "Saindo do Hostel Brikette com bagagem? Pegue o ônibus Interno Positano ladeira abaixo e deixe os carregadores moverem as malas pesadas para que você chegue à balsa sem lutar nas escadas de Positano."
   ],
   "beforeList": [
-    "Verifique o horário atual do Interno Positano – aqui está o [latest schedule and fares](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
+    "Verifique o horário atual do Interno Positano – aqui estão os [horários e tarifas mais recentes](https://forum.amalfi.com/t/mobility-amalfi-coast-bus-positano-nocelle-praiano/26).",
     "Retire os ingressos do Interno Positano no tabacchi ao lado da Chiesa Nuova antes de embarcar (ou peça à recepção para confirmar o estoque).",
     "Providencie ajuda de carregador se você tiver malas volumosas – a recepção pode ligar com antecedência ou consulte o [guia de serviço de carregador](guide:porterServices) para números e preços."
   ],
@@ -31,10 +31,10 @@
     },
     {
       "id": "mulini-to-dock",
-      "title": "Piazza dei Mulini to the ferry dock",
+      "title": "Piazza dei Mulini até o cais da balsa",
       "body": [
         "Desça do ônibus, encontre os carregadores, caso os tenha reservado previamente, e caminhe direto para a faixa exclusiva para pedestres que leva à Spiaggia Grande.",
-        "Siga o calçadão descendo por cerca de 7 minutos – use [these directions](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) para permanecer nas seções de rampa mais suaves.",
+        "Siga o calçadão descendo por cerca de 7 minutos – use [estas direções](https://www.google.com/maps/dir/Brikette+Hostel,+Via+G.+Marconi,+358,+84017+Positano+SA/Positano+Spiaggia/@40.6290767,14.4840629,16z/data=!4m14!4m13!1m5!1m1!1s0x133b97669dd0003b:0xf11f22a59b1b00da!2m2!1d14.480818!2d40.629634!1m5!1m1!1s0x133b976916d1a44d:0xf1e08d61658b4291!2m2!1d14.4878892!2d40.6276549!3e2) para permanecer nas seções de rampa mais suaves.",
         "No cais da balsa, faça check-in com sua operadora. Os carregadores entregam a bagagem separadamente; mantenha passaportes, medicamentos e objetos de valor com você."
       ]
     }
@@ -50,9 +50,9 @@
     "Os carregadores podem levar as malas em carrinhos separados, para que você só administre uma mochila no calçadão."
   ],
   "kneesDockPrefix": "Precisa da versão difícil quando retornar? Leia nosso",
-  "kneesDockLinkLabel": "Chiesa Nuova arrival guide",
+  "kneesDockLinkLabel": "guia de chegada a Chiesa Nuova",
   "kneesPorterPrefix": "Quer preços de porteiro e dicas de reserva? Verifique o",
-  "kneesPorterLinkLabel": "porter service guide",
+  "kneesPorterLinkLabel": "guia do serviço de carregadores",
   "faqs": [
     {
       "q": "Onde posso comprar ingressos para o Interno Positano perto do albergue?",

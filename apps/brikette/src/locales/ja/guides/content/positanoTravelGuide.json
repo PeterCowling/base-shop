@@ -5,41 +5,41 @@
   },
   "linkLabel": "ポジターノ総合旅行ガイド",
   "intro": [
-    "翻訳を準備中です。",
-    "翻訳を準備中です。"
+    "ポジターノ旅行の計画に：宿泊エリア、移動手段、ベストシーズン、必見の見どころ。",
+    "交通、ビーチ、ハイキング、日帰り、節約の詳細ガイドへリンクしています。"
   ],
   "sections": [
     {
       "id": "when",
-      "title": "When to visit",
+      "title": "訪れる時期",
       "body": [
-        "翻訳を準備中です。",
-        "翻訳を準備中です。"
+        "肩の季節（4〜5月、9月下旬〜10月）は天候と価格のバランスが良好。",
+        "夏はフェリー運航と日が長い一方、暑さと行列も。早めの行動が鍵です。"
       ]
     },
     {
       "id": "getting-around",
-      "title": "Getting around",
+      "title": "移動手段",
       "body": [
-        "翻訳を準備中です。",
-        "翻訳を準備中です。"
+        "徒歩、SITAバス、季節運航のフェリーでほとんど移動可能。階段が多いので注意。",
+        "チケット、時刻、混雑回避は公共交通ガイドを活用しましょう。"
       ]
     },
     {
       "id": "highlights",
-      "title": "Highlights",
+      "title": "見どころ",
       "body": [
-        "翻訳を準備中です。",
-        "翻訳を準備中です。",
-        "翻訳を準備中です。"
+        "スピアッジャ・グランデとフォルニッロのビーチ、ヴィア・パシテア上の夕景ポイント。",
+        "神々の道（ノチェッレ／ボメラーノ区間）とアマルフィ＋ラヴェッロの日帰り。",
+        "カプリ日帰り（始発フェリー推奨）または崖沿いカフェと展望でのんびり。"
       ]
     },
     {
       "id": "stays",
-      "title": "Where to stay",
+      "title": "宿泊エリア",
       "body": [
-        "翻訳を準備中です。",
-        "翻訳を準備中です。"
+        "荷物の階段を減らすなら「キエーザ・ヌオーヴァ」または「スポンダ」バス停近くがおすすめ。",
+        "節約派はソレント／メータを拠点にして日帰りで。"
       ]
     }
   ],
@@ -47,70 +47,70 @@
     {
       "q": "Do I need a car?",
       "a": [
-        "翻訳を準備中です。"
+        "不要です。バスとフェリーで十分で、駐車は少なく高価です。"
       ]
     },
     {
       "q": "How many days?",
       "a": [
-        "翻訳を準備中です。"
+        "ざっくり2〜3日。4〜5日あればハイキングと日帰りも追加できます。"
       ]
     }
   ],
   "fallback": {
     "intro": [
-      "翻訳を準備中です。"
+      "ポジターノは坂と階段の街で、ハイシーズンは特に混雑します。このガイドは拠点選び、訪れる時期、移動、やることに絞って実用面をまとめます。"
     ],
     "gallery": {
       "items": [
         {
-          "alt": "翻訳を準備中です。",
-          "caption": "翻訳を準備中です。"
+          "alt": "パノラマビューのホステルテラス",
+          "caption": "テラスの夕景。キエーザ・ヌオーヴァのバス停からすぐ。"
         },
         {
-          "alt": "Positano panorama",
-          "caption": "翻訳を準備中です。"
+          "alt": "ポジターノのパノラマ",
+          "caption": "フォルニッロとスピアッジャ・グランデは徒歩圏内、階段は多め。"
         }
       ]
     },
     "sections": {
       "whereToStay": {
-        "title": "Where to stay",
-        "body": "翻訳を準備中です。"
+        "title": "宿泊エリア",
+        "body": "<em>Chiesa Nuova</em>周辺に泊まると到着・出発時の階段が少なめ。Hostel Briketteはバス停から約80mで、パノラマテラスと手頃なドミ／個室があります。スピアッジャ・グランデ近くの海沿いは景色抜群ですが、階段が増え価格も高めです。"
       },
       "whenToVisit": {
-        "title": "When to visit",
-        "body": "翻訳を準備中です。"
+        "title": "訪れる時期",
+        "body": "夏は賑やかですが混雑します。肩の季節は天候とゆとりのバランスが良好。詳細は<linkBestTime>ポジターノのベストシーズン</linkBestTime>へ。フェリーは季節運航で、ピーク以外は本数が減ります。"
       },
       "gettingAround": {
-        "title": "Getting around",
-        "arrivals": "翻訳を準備中です。",
-        "withinTown": "翻訳を準備中です。",
-        "ferries": "翻訳を準備中です。"
+        "title": "移動手段",
+        "arrivals": "<strong>到着</strong>: まず<linkHowTo>ポジターノへの行き方</linkHowTo>の判断ガイド、次に<linkNaples>ナポリ → ポジターノ</linkNaples>、<linkSalerno>サレルノ → ポジターノ</linkSalerno>へ。",
+        "withinTown": "<strong>町内</strong>: バスが<em>Chiesa Nuova</em>、<em>Sponda</em>、ビーチを結びます。徒歩も多いので階段の少ないルートを計画しましょう。",
+        "ferries": "<strong>フェリー</strong>: <linkFerries>フェリー時刻表</linkFerries>を確認し、天候による欠航に備えて余裕を。"
       },
       "thingsToDo": {
-        "title": "Things to do",
-        "beaches": "翻訳を準備中です。",
-        "pathOfTheGods": "翻訳を準備中です。",
-        "dayTrips": "翻訳を準備中です。"
+        "title": "やること",
+        "beaches": "<linkBeaches>ビーチ</linkBeaches>: スピアッジャ・グランデは定番、フォルニッロは静か、アリエンツォは崖の景色で泳げます。",
+        "pathOfTheGods": "<linkPath>神々の道</linkPath>はノチェッレまたはボメラーノから。圧巻の景色が続きます。",
+        "dayTrips": "日帰り: <linkCapri>カプリ</linkCapri>、<linkAmalfi>アマルフィ</linkAmalfi>、<linkRavello>ラヴェッロ</linkRavello>。"
       },
       "moneySavers": {
-        "title": "Money savers",
-        "eat": "翻訳を準備中です。",
-        "travel": "翻訳を準備中です。",
-        "stay": "翻訳を準備中です。"
+        "title": "節約ポイント",
+        "eat": "<linkCheapEats>安く食べるリスト</linkCheapEats>を活用し、給水用ボトルを持参。",
+        "travel": "ピークの週末を避け、<linkBudgetArrival>節約の到着手段</linkBudgetArrival>を比較。",
+        "stay": "<em>Chiesa Nuova</em>周辺ならポーター料金と到着時の階段を節約できます。"
       }
     },
-    "tipsTitle": "Where to save",
-    "faqHeading": "FAQs",
+    "tipsTitle": "節約ポイント",
+    "faqHeading": "よくある質問",
     "faqs": [
       {
-        "question": "翻訳を準備中です。",
-        "answer": "翻訳を準備中です。"
+        "question": "ポジターノは節約旅行でも可能？",
+        "answer": "はい。バスを使い、フェリーは厳選し、無料の展望とビーチを中心に。"
       },
       {
-        "question": "翻訳を準備中です。",
-        "answer": "翻訳を準備中です。"
+        "question": "どこを拠点にすべき？",
+        "answer": "移動重視なら<em>Chiesa Nuova</em>周辺。ビーチ重視ならスピアッジャ・グランデ寄り（階段が増えます）。"
       }
     ],
     "tips": [

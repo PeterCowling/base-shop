@@ -14,8 +14,8 @@
     "primaryCtaAria": "Забронировать проживание в Hostel Brikette",
     "secondaryCtaAria": "Посмотреть барное меню Hostel Brikette",
     "tertiaryCtaAria": "Отправить сообщение цифровому консьержу Hostel Brikette",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "Посмотреть меню завтраков",
+    "breakfastCtaAria": "Посмотреть меню завтраков"
   },
   "sections": {
     "bar": {
@@ -71,7 +71,7 @@
       "book": "Забронировать сейчас",
       "events": "Бар и события",
       "concierge": "Связаться с консьержем",
-      "breakfast": "Breakfast menu"
+      "breakfast": "Меню завтраков"
     }
   },
   "title": "Впечатления в Hostel Brikette",
@@ -89,17 +89,17 @@
     "empty": "Пока у нас нет гида по впечатлениям для {{tag}}. Попробуйте другой тег или уберите фильтр.",
     "clearFilter": "Показать все гиды по впечатлениям",
     "cardCta": "Изучите гид по впечатлениям «{{guideTitle}}»",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "filterHeading": "Фильтр гидов по впечатлениям",
+    "filterDescription": "Выберите тег, чтобы сузить подборку впечатлений.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "Гиды по пляжам",
+          "description": "Выберите подходящий пляж и спланируйте день."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "Как пройти к пляжу",
+          "description": "Пошаговые инструкции от Hostel Brikette до берега."
         }
       }
     }

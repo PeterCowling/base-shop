@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Biztonság Positanóban és az Amalfi-parton",
+    "description": "Gyakorlati biztonsági tippek buszhoz, kompokhoz, lépcsőkhöz, naphoz és vészhelyzetekhez Positanóban és környékén."
+  },
+  "linkLabel": "Biztonság Positanóban és az Amalfi-parton",
+  "intro": [
+    "Positano biztonságos, de a terep, a közlekedés és a nyári hőség meglepheti a látogatókat.",
+    "Használd az alábbi tippeket és ellenőrzőlistákat a stresszmentes úthoz — különösen lépcsőkön, kompokon és buszokon."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Lépcsők és séta",
+      "body": [
+        "Viselj jó tapadású cipőt — sok sikátor csiszolt kőből van és esőben csúszik.",
+        "Használd a korlátokat, ahol vannak, és tarts szünetet a hosszú emelkedőkön; a városban ivókutak vannak."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Buszok és kompok",
+      "body": [
+        "Buszon kapaszkodj, és ne állj a folyosóba hátizsákkal; a sofőrök gyakran fékeznek a hajtűkanyarokban.",
+        "Kompokon kövesd a személyzet utasításait, és ne állj a rámpa mellett beszállásnál/kiszállásnál."
+      ]
+    },
+    {
+      "id": "sun-sea",
+      "title": "Nap, tenger és kiszáradás",
+      "body": [
+        "Legyen nálad víz és használj SPF 30+ fényvédőt; a strandokon és ösvényeken kevés az árnyék.",
+        "Csak kijelölt területen ússz, és figyelj a hajóforgalomra, ha sziklák közelében snorkelezel."
+      ]
+    }
+  ],
+  "faqsTitle": "Biztonsági GYIK",
+  "faqs": [
+    {
+      "q": "Biztonságos-e Positano éjszaka?",
+      "a": [
+        "Igen. A zsebtolvajlás ritka; maradj kivilágított lépcsőkön és sikátorokon."
+      ]
+    },
+    {
+      "q": "Melyik számot hívjam vészhelyzetben?",
+      "a": [
+        "Hívd a 112-t — az EU segélyhívó számát rendőrséghez, mentőhöz és tűzoltósághoz."
+      ]
+    }
+  ]
+}

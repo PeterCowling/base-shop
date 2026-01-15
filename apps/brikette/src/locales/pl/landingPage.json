@@ -11,9 +11,9 @@
       "between": "dom z dala od",
       "home": "domu"
     },
-    "paragraph1": "Hostel Brikette to <strong>jedyny hostel w Positano</strong>, oferujący <strong>przystępne cenowo</strong> noclegi, dzięki którym atrakcje Wybrzeża Amalfitańskiego są na wyciągnięcie ręki.",
-    "paragraph2": "Usytuowani na klifie mamy <strong>niesamowite widoki na morze</strong>, praktyczne udogodnienia oraz całodobowe wskazówki lokalne dzięki <strong>cyfrowemu concierge’owi</strong>—Twojemu przewodnikowi po rozkładach promów, szlakach pieszych, restauracjach i nie tylko.",
-    "paragraph3": "Niezależnie czy wybierzesz łóżko w dormie czy pokój prywatny, każdy zaprojektowano z myślą o <strong>komforcie</strong> i <strong>wygodzie</strong>."
+    "paragraph1": "Hostel Brikette to jedyny hostel w Positano - budżetowy, pięknie położony i idealnie usytuowany do odkrywania Wybrzeża Amalfitańskiego.",
+    "paragraph2": "Łączymy niezapomniane widoki na morze z praktycznymi udogodnieniami, których naprawdę potrzebujesz, oraz lokalnymi wskazówkami 24/7 dzięki naszemu cyfrowemu concierge’owi: godziny promów, porady dotyczące szlaków, rekomendacje restauracji...wszystko, czego potrzebujesz.",
+    "paragraph3": "Wybierz między towarzyskimi dormami a pokojami prywatnymi—każdy został zaprojektowany tak, by był prosty, wygodny i łatwy na czas pobytu."
   },
   "facilitiesModal": {
     "title": "Udogodnienia i wyposażenie",
@@ -107,14 +107,31 @@
     "locationButton": "Lokalizacja",
     "contactButton": "Kontakt",
     "helpButton": "Pomoc",
-    "reserveNow": "Zarezerwuj teraz"
+    "reserveNow": "Zarezerwuj teraz",
+    "title": "Hostel Brikette, Positano",
+    "subtitle": "Jedyny hostel w Positano — widoki na morze, wspólne przestrzenie i cyfrowy concierge.",
+    "primaryCta": "Sprawdź dostępność",
+    "selectDatesCta": "Wybierz daty",
+    "secondaryCta": "Zobacz pokoje",
+    "trustItems": [
+      "100 m do przystanku SITA",
+      "Taras z widokiem na morze",
+      "Porady cyfrowego concierge’a"
+    ]
   },
   "quickLinksSection": {
     "location": "Lokalizacja",
     "photosAndVideos": "Zdjęcia i filmy",
     "facilitiesAndAmenities": "Udogodnienia i wyposażenie",
     "barMenu": "Menu baru",
-    "breakfastMenu": "Menu śniadaniowe"
+    "breakfastMenu": "Menu śniadaniowe",
+    "rooms": "Pokoje",
+    "roomsHint": "Dormy i pokoje prywatne",
+    "commonAreas": "Strefy wspólne",
+    "commonAreasHint": "Taras, bar i wspólne przestrzenie",
+    "locationHint": "Przystanek i wskazówki plażowe",
+    "guides": "Przewodniki",
+    "guidesHint": "Lokalne wskazówki na podróż"
   },
   "destinationSlideshow": {
     "sectionTitle": "Piękne przestrzenie wspólne",
@@ -135,5 +152,41 @@
         "alt": "Szeroki horyzont morski z tarasu hostelu"
       }
     ]
+  },
+  "bookingWidget": {
+    "invalidDateRange": "Data wymeldowania musi być późniejsza niż zameldowania."
+  },
+  "whyStaySection": {
+    "title": "Dlaczego warto tu zostać",
+    "items": [
+      {
+        "title": "Cyfrowy concierge",
+        "text": "Szybkie wskazówki o promach, trasach i restauracjach."
+      },
+      {
+        "title": "Strefy wspólne z widokiem na morze",
+        "text": "Taras, bar i przestrzenie do spotkań."
+      },
+      {
+        "title": "Budżetowe pobyty",
+        "text": "Wygodne dormy i pokoje prywatne, które trzymają budżet."
+      }
+    ]
+  },
+  "locationSection": {
+    "title": "Lokalizacja i transport",
+    "subtitle": "Położone nad Positano z szybkim dostępem do autobusów, plaży i promów.",
+    "nearbyBeach": "≈350 m do plaży",
+    "mapLabel": "Otwórz w Maps",
+    "mapHint": "Kliknij, aby otworzyć pinezkę i trasę w Google Maps.",
+    "mapCta": "Zobacz mapę"
+  },
+  "socialProof": {
+    "title": "Goście uwielbiają Brikette",
+    "subtitle": "Wysokie oceny i świeże opinie podróżnych."
+  },
+  "faqSection": {
+    "title": "Szybkie odpowiedzi",
+    "ctaLabel": "Odwiedź centrum pomocy"
   }
 }

@@ -397,6 +397,8 @@
   },
   "filters": {
     "title": "Filter routes",
+    "resultsCount": "Kết quả: {{count}} tuyến",
+    "editLabel": "Chỉnh sửa bộ lọc",
     "transportLabel": "Transport type",
     "transportAll": "All",
     "transportModes": {

@@ -1,0 +1,111 @@
+{
+  "loading": "Loading...",
+  "guest": "Guest",
+  "welcome": {
+    "greeting": "Welcome, {{firstName}}!"
+  },
+  "error": {
+    "loadInfo": "Error loading information. Please try again.",
+    "missingData": "Unable to load your booking information."
+  },
+  "doList": {
+    "startYourEpicStay": "Start Your Epic Stay",
+    "continueToExplore": "Continue Exploring"
+  },
+  "ourServices": "Your Tools",
+  "tasks": {
+    "mainDoorAccess": {
+      "title": "Set Up Door Access",
+      "completedTitle": "Door access ready",
+      "note": "Get your unique code to enter the hostel anytime",
+      "alt": "Main door access"
+    },
+    "digitalAssistant": {
+      "title": "Meet Your Digital Guide",
+      "completedTitle": "Digital guide available",
+      "note": "Get instant answers about your stay",
+      "alt": "Digital assistant"
+    },
+    "complimentaryBreakfast": {
+      "title": "Claim Your Free Breakfast",
+      "completedTitle": "Breakfast claimed",
+      "note": "Start your day with a complimentary breakfast",
+      "alt": "Breakfast"
+    },
+    "exploreBreakfastMenu": {
+      "title": "Explore Breakfast Options",
+      "completedTitle": "Menu explored",
+      "note": "Check out our delicious breakfast menu",
+      "alt": "Breakfast menu"
+    },
+    "complimentaryEveningDrink": {
+      "title": "Enjoy Your Evening Drink",
+      "completedTitle": "Drink claimed",
+      "note": "Relax with a complimentary evening drink",
+      "alt": "Evening drink"
+    },
+    "bagStorage": {
+      "title": "Store Your Bags",
+      "completedTitle": "Bags stored",
+      "note": "Leave your luggage safely before check-in or after check-out",
+      "alt": "Bag storage"
+    }
+  },
+  "services": {
+    "mainDoorService": {
+      "title": "Main Door Access",
+      "description": "Get your door access code",
+      "alt": "Main door"
+    },
+    "overnightIssues": {
+      "title": "Report an Issue",
+      "description": "Let us know if something's not right",
+      "alt": "Report issue"
+    },
+    "digitalAssistantService": {
+      "title": "Digital Assistant",
+      "description": "Get instant help and answers",
+      "alt": "Digital assistant"
+    },
+    "barMenu": {
+      "title": "Bar Menu",
+      "description": "Browse our drinks and snacks",
+      "alt": "Bar menu"
+    },
+    "breakfastMenu": {
+      "title": "Breakfast Menu",
+      "description": "See what's on the menu",
+      "alt": "Breakfast menu"
+    },
+    "eveningDrink": {
+      "title": "Evening Drink",
+      "description": "Claim your complimentary drink",
+      "alt": "Evening drink"
+    },
+    "complimentaryBreakfastService": {
+      "title": "Your Breakfast",
+      "description": "Your complimentary breakfast awaits",
+      "alt": "Breakfast"
+    }
+  },
+  "profileBanner": {
+    "title": "Complete your profile",
+    "description": "Tell us about your stay to get personalized tips.",
+    "returningTitle": "Welcome back!",
+    "returningDescription": "Update your preferences for this stay to get personalized recommendations.",
+    "skippedDescription": "Add your preferences to get better recommendations.",
+    "completeButton": "Complete profile",
+    "updateButton": "Update preferences"
+  },
+  "social": {
+    "upcomingActivity": "Upcoming Activity",
+    "joinChat": "Join Chat",
+    "seeAll": "See All",
+    "seeWhatsHappening": "See what's happening",
+    "browse": "Browse",
+    "explorePositano": "Explore Positano",
+    "discoverTitle": "Discover Hidden Gems",
+    "discoverDescription": "Explore our guide to the best spots in Positano and the Amalfi Coast.",
+    "exploreGuide": "Open Guide"
+  }
+}

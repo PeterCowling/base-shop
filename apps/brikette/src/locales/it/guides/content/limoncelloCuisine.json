@@ -5,64 +5,64 @@
   },
   "linkLabel": "Limoncello e cucina locale",
   "intro": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Limoni e limoncello definiscono i sapori della Costiera — dalle degustazioni alle note dolci finali.",
+    "Ecco dove assaggiare, cosa acquistare e come usarli in cucina a casa."
   ],
-  "tocTitle": "On this page",
+  "tocTitle": "In questa pagina",
   "sections": [
     {
       "id": "tasting",
-      "title": "Tasting",
+      "title": "Degustazione",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Visita piccole botteghe per limoncello artigianale e chiedi un assaggio per confrontare gli stili.",
+        "Abbina la degustazione a gelato, sorbetto o dolci al limone per valutare dolcezza ed equilibrio."
       ]
     },
     {
       "id": "purchase",
-      "title": "Buying & shipping",
+      "title": "Acquisto e spedizione",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Controlla i limiti di liquidi delle compagnie aeree; imballa le bottiglie nel bagaglio da stiva.",
+        "Cerca etichette IGP Costa d'Amalfi e confezioni riciclabili da produttori locali."
       ]
     },
     {
       "id": "cooking",
-      "title": "Cooking with lemons",
+      "title": "Cucinare con i limoni",
       "body": [
-        "Traduzione in arrivo.",
-        "Traduzione in arrivo."
+        "Usa scorza e succo in insalate, pasta di mare e dessert per dare freschezza.",
+        "Conserva i limoni in un luogo fresco e buio e riutilizza le bucce per sciroppi o marinature."
       ]
     }
   ],
   "tips": [
-    "Traduzione in arrivo.",
-    "Traduzione in arrivo."
+    "Sostieni i piccoli produttori: i sapori sono spesso piu intensi dei marchi turistici.",
+    "Evita i souvenir costosi vicino alla spiaggia principale: fai una o due strade interne per prezzi migliori."
   ],
   "faqs": [
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Posso portare il limoncello nel bagaglio a mano?",
       "a": [
-        "Traduzione in arrivo."
+        "Non sopra i 100 ml: metti le bottiglie standard nel bagaglio da stiva con imbottitura."
       ]
     },
     {
-      "q": "Traduzione in arrivo.",
+      "q": "Esistono alternative analcoliche?",
       "a": [
-        "Traduzione in arrivo."
+        "Prova limonata fresca, granita o sciroppi al limone se preferisci evitare l'alcol."
       ]
     }
   ],
   "gallery": {
-    "title": "Photo gallery",
+    "title": "Galleria fotografica",
     "items": [
       {
-        "alt": "Traduzione in arrivo.",
-        "caption": "Vintage lemons"
+        "alt": "Poster vintage di Positano con limoni",
+        "caption": "Limoni vintage"
       },
       {
-        "alt": "Traduzione in arrivo.",
-        "caption": "Terrace limoncello"
+        "alt": "Tavolo in terrazza con bicchieri di limoncello",
+        "caption": "Limoncello in terrazza"
       }
     ]
   }

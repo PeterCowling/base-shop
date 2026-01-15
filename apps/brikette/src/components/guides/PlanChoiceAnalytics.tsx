@@ -1,5 +1,6 @@
 // src/components/guides/PlanChoiceAnalytics.tsx
 import { useEffect } from "react";
+import { IS_DEV } from "@/config/env";
 
 type PlanChoiceDetail = {
   plan?: string;
@@ -47,7 +48,9 @@ export default function PlanChoiceAnalytics(): null {
           path,
         });
       } catch {
-        console.log("plan_choice", { plan: detail.plan, path });
+        if (IS_DEV) {
+          console.info("plan_choice", { plan: detail.plan, path });
+        }
       }
     }
 

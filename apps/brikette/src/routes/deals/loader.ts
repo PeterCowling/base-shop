@@ -15,6 +15,7 @@ export interface DealsLoaderData {
   lang: AppLanguage;
   title: string;
   desc: string;
+  generatedAt: number;
 }
 
 export async function loadDealsData(request: Request): Promise<DealsLoaderData> {
@@ -31,10 +32,10 @@ export async function loadDealsData(request: Request): Promise<DealsLoaderData> 
     lang,
     title: resolveMetaString("meta.title", meta.title),
     desc: resolveMetaString("meta.description", meta.description),
+    generatedAt: Date.now(),
   };
 }
 
 export async function clientLoader({ request }: LoaderFunctionArgs): Promise<DealsLoaderData> {
   return loadDealsData(request);
 }
-

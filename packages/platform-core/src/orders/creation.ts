@@ -27,6 +27,13 @@ export async function listOrders(shop: string): Promise<Order[]> {
 
 export const readOrders = listOrders;
 
+export async function getOrderById(shop: string, orderId: string): Promise<Order | null> {
+  const order = (await prisma.rentalOrder.findFirst({
+    where: { shop, id: orderId },
+  })) as Order | null;
+  return order ? normalize(order) : null;
+}
+
 export type AddOrderInput = {
   orderId?: string;
   shop: string;
@@ -49,6 +56,12 @@ export type AddOrderInput = {
   stripeChargeId?: string;
   stripeBalanceTransactionId?: string;
   stripeCustomerId?: string;
+  lineItems?: {
+    sku: string;
+    productId?: string;
+    variantAttributes?: Record<string, string>;
+    quantity?: number;
+  }[];
 };
 
 export async function addOrder(
@@ -72,11 +85,12 @@ export async function addOrder(
     discountAmount,
     totalAmount,
     cartId,
-    stripePaymentIntentId,
-    stripeChargeId,
-    stripeBalanceTransactionId,
-    stripeCustomerId,
-  } = input;
+  stripePaymentIntentId,
+  stripeChargeId,
+  stripeBalanceTransactionId,
+  stripeCustomerId,
+  lineItems,
+} = input;
 
   const order: Order = {
     id: orderId ?? ulid(),
@@ -101,10 +115,22 @@ export async function addOrder(
     ...(stripeChargeId ? { stripeChargeId } : {}),
     ...(stripeBalanceTransactionId ? { stripeBalanceTransactionId } : {}),
     ...(stripeCustomerId ? { stripeCustomerId } : {}),
+    ...(lineItems
+      ? {
+          lineItems: lineItems.map((li) => ({
+            sku: li.sku,
+            productId: li.productId,
+            variantAttributes: li.variantAttributes ?? {},
+            quantity: li.quantity ?? 1,
+          })),
+        }
+      : {}),
   };
   try {
+    // cast to any to remain forward-compatible with Prisma client until migrations are applied
     await prisma.rentalOrder.create({
-      data: order,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- CORE-0001 [ttl=2026-12-31] Prisma client typings drift during migration window
+      data: order as any,
     });
   } catch (err) {
     if (isPrismaUniqueConstraintError(err)) {
@@ -127,11 +153,20 @@ export async function addOrder(
           ...(cartId ? { cartId } : {}),
           ...(stripePaymentIntentId ? { stripePaymentIntentId } : {}),
           ...(stripeChargeId ? { stripeChargeId } : {}),
-          ...(stripeBalanceTransactionId
-            ? { stripeBalanceTransactionId }
-            : {}),
+          ...(stripeBalanceTransactionId ? { stripeBalanceTransactionId } : {}),
           ...(stripeCustomerId ? { stripeCustomerId } : {}),
-        },
+          ...(lineItems
+            ? {
+                lineItems: lineItems.map((li) => ({
+                  sku: li.sku,
+                  productId: li.productId,
+                  variantAttributes: li.variantAttributes ?? {},
+                  quantity: li.quantity ?? 1,
+                })),
+              }
+            : {}),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- CORE-0001 [ttl=2026-12-31] Prisma client typings drift during migration window
+        } as any,
       })) as Order | null;
       if (updated) return normalize(updated);
     }

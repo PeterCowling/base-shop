@@ -397,6 +397,8 @@
   },
   "filters": {
     "title": "Útvonalak szűrése",
+    "resultsCount": "Találatok: {{count}} útvonal",
+    "editLabel": "Szűrők szerkesztése",
     "transportLabel": "Közlekedési mód",
     "transportAll": "Összes",
     "transportModes": {

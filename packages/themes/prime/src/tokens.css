@@ -1,0 +1,39 @@
+/* Prime theme tokens - sky-600 primary, green-600 secondary */
+
+:root {
+  /* Override base theme with Prime's brand colors */
+  --color-primary: 200 98% 39%; /* sky-600: rgb(2, 132, 199) */
+  --color-primary-fg: 0 0% 100%;
+  --color-secondary: 142 76% 36%; /* green-600: rgb(22, 163, 74) */
+  --color-secondary-fg: 0 0% 100%;
+
+  /* Prime accent color (used for secondary buttons) */
+  --color-accent: 142 76% 36%; /* green-600 */
+  --color-accent-fg: 0 0% 100%;
+
+  /* Focus ring uses primary */
+  --color-focus-ring: 200 98% 39%;
+  --ring: 200 98% 39%;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: 200 98% 50%; /* sky-500 for dark mode */
+    --color-primary-fg: 0 0% 10%;
+    --color-secondary: 142 76% 46%; /* green-500 for dark mode */
+    --color-secondary-fg: 0 0% 10%;
+    --color-accent: 142 76% 46%;
+    --color-accent-fg: 0 0% 10%;
+    --ring: 200 98% 50%;
+  }
+}
+
+html.theme-dark {
+  --color-primary: 200 98% 50%;
+  --color-primary-fg: 0 0% 10%;
+  --color-secondary: 142 76% 46%;
+  --color-secondary-fg: 0 0% 10%;
+  --color-accent: 142 76% 46%;
+  --color-accent-fg: 0 0% 10%;
+  --ring: 200 98% 50%;
+}

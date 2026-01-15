@@ -5,6 +5,7 @@ import { debugGuide, isGuideDebugEnabled } from "@/utils/debug";
 import type { GuidesNamespace } from "@/locales/guides";
 import { allowEnglishGuideFallback } from "./guideFallbackPolicy";
 import { clearGuideContentFallback, markGuideContentFallback } from "./guideContentFallbackRegistry";
+import { loadLocaleResource } from "@/locales/locale-loader";
 
 type GuideTestGlobalStore = {
   manualGuideContentOverrides?: Map<string, Set<string>>;
@@ -184,20 +185,32 @@ export async function ensureGuideContent(lang: string, key: string, imports: {
 
     const existingRecord = isRecord(existing) ? (existing as AnyRecord) : undefined;
 
-    const maybeLoad = async (loader?: () => Promise<unknown> | unknown) => {
-      if (!loader) return undefined as unknown;
-      const m = await loader();
-      const data = (m && typeof m === "object" && "default" in (m as AnyRecord)
-        ? (m as { default?: unknown }).default
-        : m) as AnyRecord | undefined;
+    const contentNamespace = normalizedKey ? `guides/content/${normalizedKey}` : "";
+    const maybeLoad = async (
+      loader: (() => Promise<unknown> | unknown) | undefined,
+      locale?: string,
+    ) => {
+      let data: AnyRecord | undefined;
+      if (loader) {
+        const m = await loader();
+        data = (m && typeof m === "object" && "default" in (m as AnyRecord)
+          ? (m as { default?: unknown }).default
+          : m) as AnyRecord | undefined;
+      }
+      if (!data && locale && contentNamespace) {
+        const fromContent = await loadLocaleResource(locale, contentNamespace);
+        data = (fromContent && typeof fromContent === "object" && "default" in (fromContent as AnyRecord)
+          ? (fromContent as { default?: unknown }).default
+          : fromContent) as AnyRecord | undefined;
+      }
       return data;
     };
 
     const allowEnglishFallback = allowEnglishGuideFallback(lang);
-    const localData = await maybeLoad(imports.local);
+    const localData = await maybeLoad(imports.local, normalizedLang);
     const localRecord = isRecord(localData) ? stripEmptyStructuredContent(localData as AnyRecord) : undefined;
     const hasLocalStructured = hasStructuredContent(localRecord);
-    const enData = allowEnglishFallback ? await maybeLoad(imports.en) : undefined;
+    const enData = allowEnglishFallback ? await maybeLoad(imports.en, "en") : undefined;
     const enRecord = isRecord(enData) ? (enData as AnyRecord) : undefined;
     const englishHasStructured = hasStructuredContent(enRecord);
     const fallbackUsed =

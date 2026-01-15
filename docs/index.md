@@ -19,6 +19,7 @@ Last-reviewed: 2025-12-02
 - [Setup](./setup.md)
 - [Package management](./package-management.md)
 - [CMS guide](./cms.md)
+- [Catalog, inventory & media ops (CMS)](./cms/catalog-inventory-media-ops.md)
 - [Storybook](./storybook.md)
 - [Permissions](./permissions.md)
 

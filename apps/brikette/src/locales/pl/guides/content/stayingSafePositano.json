@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Bezpieczeństwo w Positano i na Wybrzeżu Amalfitańskim",
+    "description": "Praktyczne wskazówki dotyczące autobusów, promów, schodów, słońca i sytuacji awaryjnych w Positano i okolicy."
+  },
+  "linkLabel": "Bezpieczeństwo w Positano i na Wybrzeżu Amalfitańskim",
+  "intro": [
+    "Positano to bezpieczny kierunek, ale teren, transport i letnie upały mogą zaskoczyć.",
+    "Skorzystaj z poniższych wskazówek i list kontrolnych, aby podróż była bez stresu — zwłaszcza na schodach, promach i w autobusach."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Schody i chodzenie",
+      "body": [
+        "Noś buty z dobrą przyczepnością — wiele alejek to wypolerowany kamień, śliski po deszczu.",
+        "Korzystaj z poręczy, gdy są dostępne, i rób przerwy na długich podejściach; w mieście są poidełka."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Autobusy i promy",
+      "body": [
+        "W autobusie trzymaj się poręczy i nie blokuj przejścia plecakiem; kierowcy często hamują na zakrętach.",
+        "Na promach stosuj się do poleceń załogi i unikaj stania przy trapach podczas wsiadania i wysiadania."
+      ]
+    },
+    {
+      "id": "sun-sea",
+      "title": "Słońce, morze i odwodnienie",
+      "body": [
+        "Miej wodę i stosuj filtr SPF 30+; na plażach i szlakach jest mało cienia.",
+        "Kąp się tylko w wyznaczonych miejscach i zwracaj uwagę na ruch łodzi podczas snorkelingu przy skałach."
+      ]
+    }
+  ],
+  "faqsTitle": "Najczęstsze pytania o bezpieczeństwo",
+  "faqs": [
+    {
+      "q": "Czy Positano jest bezpieczne nocą?",
+      "a": [
+        "Tak. Kradzieże zdarzają się rzadko; poruszaj się oświetlonymi schodami i uliczkami."
+      ]
+    },
+    {
+      "q": "Jaki numer wybrać w razie nagłej potrzeby?",
+      "a": [
+        "Zadzwoń pod 112 — numer alarmowy UE do policji, pogotowia i straży pożarnej."
+      ]
+    }
+  ]
+}

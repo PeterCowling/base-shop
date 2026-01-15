@@ -15,3 +15,4 @@ export * from "./Badge";
 export * from "./Card";
 export * from "./Section";
 export * from "./Grid";
+export * from "../components/atoms/primitives/dialog";

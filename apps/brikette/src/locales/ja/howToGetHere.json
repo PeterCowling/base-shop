@@ -7,29 +7,29 @@
     "eyebrow": "ホステル・ブリケット",
     "title": "アクセスガイド一覧",
     "description": "このガイドを使って、アマルフィ海岸の目的地とホステル・ブリケットとの間を行き来しましょう。",
-    "heroAlt": "Stone steps framed by bougainvillea leading to Hostel Brikette's entrance",
+    "heroAlt": "ブーゲンビリアに囲まれた石段がHostel Briketteの入口へ続く様子",
     "heroAltFallback": "ブーゲンビリアに囲まれた石段",
-    "transportLabel": "Transport coverage",
+    "transportLabel": "交通網のカバー",
     "stats": {
-      "routes": "Door-to-door routes",
-      "destinations": "Local areas covered",
-      "transport": "Transport types",
-      "experienceRoutes": "Experience routes"
+      "routes": "ドアツードアのルート",
+      "destinations": "対象エリア",
+      "transport": "交通手段",
+      "experienceRoutes": "体験ルート"
     }
   },
   "preview": {
-    "notPublished": "Preview only – this page is not published"
+    "notPublished": "プレビューのみ – このページは公開されていません"
   },
   "intro": {
     "taxi": "タクシーを手配する場合は、WhatsAppで次の番号に英語またはイタリア語で連絡できます: <Strong>{{contact}}</Strong>。",
-    "shuttle": "Prefer a shuttle? Sea Horse Car Service runs shared transfers. Reserve a seat via their <Link>official shuttle page</Link>.",
+    "shuttle": "シャトルをご希望ですか？Sea Horse Car Serviceが相乗り送迎を運行しています。<Link>公式シャトルページ</Link>から予約できます。",
     "taxiContact": "+39 379 125 6222",
-    "taxiEyebrow": "Hostel Brikette by Taxi",
-    "shuttleEyebrow": "Hostel Brikette by Shuttle"
+    "taxiEyebrow": "タクシーでHostel Briketteへ",
+    "shuttleEyebrow": "シャトルでHostel Briketteへ"
   },
   "destinations": {
-    "filterLabel": "Place",
-    "filterAll": "All places",
+    "filterLabel": "場所",
+    "filterAll": "すべての場所",
     "sections": [
       {
         "name": "ポジターノ市内",
@@ -60,7 +60,7 @@
         "name": "アマルフィ",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "SITA Sud bus stop in Amalfi for coastal routes"
+          "alt": "海岸線ルートのアマルフィにあるSITA Sudバス停"
         },
         "links": [
           {
@@ -74,12 +74,12 @@
             "internal": true
           },
           {
-            "label": "Amalfi to Positano by Ferry",
+            "label": "アマルフィ → ポジターノ（フェリー）",
             "href": "amalfi-positano-ferry",
             "internal": true
           },
           {
-            "label": "Positano to Amalfi by Ferry",
+            "label": "ポジターノ → アマルフィ（フェリー）",
             "href": "positano-amalfi-ferry",
             "internal": true
           }
@@ -89,7 +89,7 @@
         "name": "カプリ",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "Ferry docking along Capri's Marina Grande"
+          "alt": "カプリのマリーナ・グランデに接岸するフェリー"
         },
         "links": [
           {
@@ -108,7 +108,7 @@
         "name": "ナポリ中心部",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "Streetfront tabacchi shop in central Naples"
+          "alt": "ナポリ中心部の路面タバッキ店"
         },
         "links": [
           {
@@ -122,17 +122,17 @@
             "internal": true
           },
           {
-            "label": "Naples Center to Positano by Ferry",
+            "label": "ナポリ中心部 → ポジターノ（フェリー）",
             "href": "naples-center-positano-ferry",
             "internal": true
           },
           {
-            "label": "Positano to Naples Center by Ferry",
+            "label": "ポジターノ → ナポリ中心部（フェリー）",
             "href": "positano-naples-center-ferry",
             "internal": true
           },
           {
-            "label": "Positano to Naples Directions by Ferry",
+            "label": "ポジターノ → ナポリ（フェリー）の案内",
             "href": "positano-to-naples-directions-by-ferry",
             "internal": true
           }
@@ -142,7 +142,7 @@
         "name": "ナポリ空港",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "Curreri shuttle loading area outside Naples International Airport"
+          "alt": "ナポリ国際空港外のCurreriシャトル乗り場"
         },
         "links": [
           {
@@ -161,7 +161,7 @@
         "name": "サレルノ",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "View across the Amalfi Coast towards Salerno"
+          "alt": "サレルノ方面のアマルフィ海岸を望む景色"
         },
         "links": [
           {
@@ -175,12 +175,12 @@
             "internal": true
           },
           {
-            "label": "Salerno to Positano by Ferry",
+            "label": "サレルノ → ポジターノ（フェリー）",
             "href": "salerno-positano-ferry",
             "internal": true
           },
           {
-            "label": "Positano to Salerno by Ferry",
+            "label": "ポジターノ → サレルノ（フェリー）",
             "href": "positano-salerno-ferry",
             "internal": true
           }
@@ -190,21 +190,21 @@
         "name": "ラヴェッロ",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "Clifftop gardens overlooking the coastline near Ravello"
+          "alt": "ラヴェッロ近郊の海岸を見渡す崖上の庭園"
         },
         "links": [
           {
-            "label": "Ravello to Positano by Bus",
+            "label": "ラヴェッロ → ポジターノ（バス）",
             "href": "ravello-positano-bus",
             "internal": true
           },
           {
-            "label": "Positano to Ravello by Bus",
+            "label": "ポジターノ → ラヴェッロ（バス）",
             "href": "positano-ravello-bus",
             "internal": true
           },
           {
-            "label": "Positano to Ravello by Ferry then Bus",
+            "label": "ポジターノ → ラヴェッロ（フェリー＋バス）",
             "href": "positano-ravello-ferry-bus",
             "internal": true
           }
@@ -396,136 +396,138 @@
     ]
   },
   "filters": {
-    "title": "Filter routes",
-    "transportLabel": "Transport type",
-    "transportAll": "All",
+    "title": "ルートを絞り込む",
+    "resultsCount": "結果: {{count}} 件のルート",
+    "editLabel": "フィルターを編集",
+    "transportLabel": "交通手段",
+    "transportAll": "すべて",
     "transportModes": {
-      "bus": "Bus",
-      "ferry": "Ferry",
-      "train": "Train",
-      "car": "Car / Taxi",
-      "walk": "Walk"
+      "bus": "バス",
+      "ferry": "フェリー",
+      "train": "列車",
+      "car": "車 / タクシー",
+      "walk": "徒歩"
     },
-    "directionLabel": "Direction",
-    "directionAll": "All",
-    "directionTo": "To Positano",
-    "directionFrom": "From Positano",
-    "helper": "Use these filters to tailor the itineraries to your journey.",
-    "activeLabel": "Active filters",
-    "clearLabel": "Clear filters",
-    "noResults": "No routes match these filters."
+    "directionLabel": "方向",
+    "directionAll": "すべて",
+    "directionTo": "ポジターノ行き",
+    "directionFrom": "ポジターノ発",
+    "helper": "これらのフィルターで旅程に合わせて調整できます。",
+    "activeLabel": "有効なフィルター",
+    "clearLabel": "フィルターをクリア",
+    "noResults": "条件に一致するルートがありません。"
   },
   "romePlanner": {
-    "title": "Rome ↔ Positano: How to Travel",
-    "subtitle": "Pick a direction, set your preferences, and we’ll suggest a route.",
-    "directionPrompt": "Pick a direction",
+    "title": "ローマ ↔ ポジターノ：移動方法",
+    "subtitle": "方向を選び、希望を設定するとルートを提案します。",
+    "directionPrompt": "方向を選択",
     "tabs": {
-      "from": "From Rome → Hostel",
-      "to": "From Hostel → Rome"
+      "from": "ローマ → ホステル",
+      "to": "ホステル → ローマ"
     },
     "reco": {
-      "title": "Best match for your picks",
-      "why": "Why this route?"
+      "title": "選択に最適なルート",
+      "why": "このルートの理由"
     },
-    "otherMatches": "Other matches for your pick",
-    "disclaimer": "Always check operators for latest schedules and availability. Crowding and journey times vary by season.",
+    "otherMatches": "他の候補",
+    "disclaimer": "最新の運航情報は必ず確認してください。混雑や所要時間は季節で変わります。",
     "pref": {
-      "prompt": "Any preference?",
+      "prompt": "希望はありますか？",
       "cheapest": {
-        "label": "Cheapest",
-        "description": "Prioritize lower cost over comfort."
+        "label": "最安",
+        "description": "快適さより価格を優先。"
       },
       "scenic": {
-        "label": "Scenic",
-        "description": "Prioritize sea views (ferries)."
+        "label": "景観重視",
+        "description": "海の景色（フェリー）を優先。"
       },
-      "heavyPrefix": "I have",
+      "heavyPrefix": "荷物は",
       "heavy_luggage": {
-        "label": "Heavy luggage",
-        "description": "Minimize uphill walks and stairs with bags."
+        "label": "重い荷物",
+        "description": "荷物での上り坂や階段を最小限に。"
       }
     },
     "route": {
       "naples": {
         "busTrain": {
-          "title": "Via Naples — Bus + Train",
+          "title": "ナポリ経由 — バス＋列車",
           "summary": {
-            "from": "Bus to Sorrento → train to Naples → train to Rome.",
-            "to": "Train to Naples → train to Sorrento → bus to Positano."
+            "from": "バスでソレント → 列車でナポリ → 列車でローマ。",
+            "to": "列車でナポリ → 列車でソレント → バスでポジターノ。"
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Sorrento (drops at Sorrento train station).",
-              "2": "Local train Sorrento → Naples (arrive at Naples train station).",
-              "3": "Train Naples → Rome."
+              "1": "バス（ポジターノ → ソレント、ソレント駅着）。",
+              "2": "普通列車 ソレント → ナポリ（ナポリ駅着）。",
+              "3": "列車 ナポリ → ローマ。"
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples train station).",
-              "2": "Local train Naples → Sorrento (arrive at Sorrento bus station).",
-              "3": "Bus Sorrento → Positano (stop close to the hostel)."
+              "1": "列車 ローマ → ナポリ（ナポリ駅着）。",
+              "2": "普通列車 ナポリ → ソレント（ソレントのバスターミナル着）。",
+              "3": "バス ソレント → ポジターノ（ホステル近くで下車）。"
             }
           }
         },
         "ferry": {
-          "title": "Via Naples — Ferry",
+          "title": "ナポリ経由 — フェリー",
           "summary": {
-            "from": "Positano port → ferry to Naples → tram to station → train to Rome.",
-            "to": "Train to Naples → tram to port → ferry to Positano."
+            "from": "ポジターノ港 → フェリーでナポリ → トラムで駅 → 列車でローマ。",
+            "to": "列車でナポリ → トラムで港 → フェリーでポジターノ。"
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Naples.",
-              "3": "Tram Naples port → train station.",
-              "4": "Train Naples → Rome."
+              "1": "ポジターノ → 港（ポーターが荷物を手伝えます）。",
+              "2": "フェリー ポジターノ → ナポリ。",
+              "3": "トラム ナポリ港 → 駅。",
+              "4": "列車 ナポリ → ローマ。"
             },
             "to": {
-              "1": "Train Rome → Naples (arrive at Naples station).",
-              "2": "Tram Naples station → port.",
-              "3": "Ferry Naples → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "列車 ローマ → ナポリ（ナポリ駅着）。",
+              "2": "トラム ナポリ駅 → 港。",
+              "3": "フェリー ナポリ → ポジターノ。",
+              "4": "ポジターノ港 → ホステル（階段が多く大変な場合あり。ポーター/インテルノバスが利用可）。"
             }
           }
         }
       },
       "salerno": {
         "bus": {
-          "title": "Via Salerno — Bus (to/from Salerno)",
+          "title": "サレルノ経由 — バス（往復）",
           "summary": {
-            "from": "Bus Positano → Amalfi (change) → Salerno → train to Rome.",
-            "to": "Train to Salerno → bus to Amalfi (change) → Positano."
+            "from": "バス ポジターノ → アマルフィ（乗換）→ サレルノ → 列車でローマ。",
+            "to": "列車でサレルノ → バスでアマルフィ（乗換）→ ポジターノ。"
           },
           "steps": {
             "from": {
-              "1": "Bus Positano → Amalfi (change buses in Amalfi).",
-              "2": "Bus Amalfi → Salerno (drops at Salerno train station).",
-              "3": "Train Salerno → Rome."
+              "1": "バス ポジターノ → アマルフィ（アマルフィで乗換）。",
+              "2": "バス アマルフィ → サレルノ（サレルノ駅前で下車）。",
+              "3": "列車 サレルノ → ローマ。"
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno train station).",
-              "2": "Bus Salerno → Amalfi (change buses in Amalfi).",
-              "3": "Bus Amalfi → Positano (short walk to hostel)."
+              "1": "列車 ローマ → サレルノ（サレルノ駅着）。",
+              "2": "バス サレルノ → アマルフィ（アマルフィで乗換）。",
+              "3": "バス アマルフィ → ポジターノ（ホステルまで徒歩すぐ）。"
             }
           }
         },
         "ferry": {
-          "title": "Via Salerno — Ferry",
+          "title": "サレルノ経由 — フェリー",
           "summary": {
-            "from": "Positano port → ferry to Salerno → short walk to station → train to Rome.",
-            "to": "Train to Salerno → short walk to port → ferry to Positano."
+            "from": "ポジターノ港 → フェリーでサレルノ → 駅まで徒歩 → 列車でローマ。",
+            "to": "列車でサレルノ → 港まで徒歩 → フェリーでポジターノ。"
           },
           "steps": {
             "from": {
-              "1": "Positano → port (porters can help with bags).",
-              "2": "Ferry Positano → Salerno.",
-              "3": "Walk Salerno port → train station.",
-              "4": "Train Salerno → Rome."
+              "1": "ポジターノ → 港（ポーターが荷物を手伝えます）。",
+              "2": "フェリー ポジターノ → サレルノ。",
+              "3": "サレルノ港 → 駅まで徒歩。",
+              "4": "列車 サレルノ → ローマ。"
             },
             "to": {
-              "1": "Train Rome → Salerno (arrive at Salerno station).",
-              "2": "Walk to Salerno port.",
-              "3": "Ferry Salerno → Positano.",
-              "4": "From Positano port → hostel (journey can be laborious; porters/Interno Bus can help)."
+              "1": "列車 ローマ → サレルノ（サレルノ駅着）。",
+              "2": "サレルノ港まで徒歩。",
+              "3": "フェリー サレルノ → ポジターノ。",
+              "4": "ポジターノ港 → ホステル（階段が多く大変な場合あり。ポーター/インテルノバスが利用可）。"
             }
           }
         }
@@ -533,86 +535,86 @@
     },
     "note": {
       "salerno": {
-        "walkPortStation": "Walk between Salerno’s port and train station (short, straightforward)."
+        "walkPortStation": "サレルノ港と駅の間を徒歩で移動（短くわかりやすい）。"
       },
       "naples": {
-        "tramPortStation": "Take the tram between Naples port and the train station."
+        "tramPortStation": "ナポリ港と駅の間はトラムで移動。"
       }
     },
     "pro": {
-      "posBusNearHostel": "Positano bus stop close to the hostel.",
-      "busDropsSorrentoStation": "Bus drops you right at the train station in Sorrento.",
-      "cheapBusTrain": "Bus and train are both very cheap.",
-      "arriveNaplesStation": "You arrive right at the train station in Naples.",
-      "easySwapNaples": "Swapping trains in Naples is relatively easy.",
-      "trainDropsSorrentoBusStation": "Train drops you right at the bus station in Sorrento.",
+      "posBusNearHostel": "ポジターノのバス停はホステルの近く。",
+      "busDropsSorrentoStation": "バスはソレント駅に停車。",
+      "cheapBusTrain": "バスと列車はいずれも安い。",
+      "arriveNaplesStation": "ナポリ駅に直接到着。",
+      "easySwapNaples": "ナポリでの乗換えは比較的簡単。",
+      "trainDropsSorrentoBusStation": "列車はソレントのバスターミナルに到着。",
       "salerno": {
-        "busStopNearHostel": "The Positano bus stop is just a short walk from the hostel."
+        "busStopNearHostel": "ポジターノのバス停はホステルから徒歩すぐ。"
       },
-      "busCollectsSalernoStation": "Bus collects you right at the train station in Salerno.",
-      "busDropsSalernoStation": "Bus drops you right at the train station in Salerno.",
-      "busCheap": "Bus is very cheap.",
-      "portersHelp": "Giving your bags to the porters allows you to travel more comfortably and easily.",
-      "ferryEnjoyableEasy": "The ferry journey itself is enjoyable and easy.",
-      "shortWalkSalernoStationPort": "The walk from Salerno’s Train Station to the port is short and straightforward."
+      "busCollectsSalernoStation": "バスはサレルノ駅前から出発。",
+      "busDropsSalernoStation": "バスはサレルノ駅前に到着。",
+      "busCheap": "バスはとても安い。",
+      "portersHelp": "ポーターに荷物を預けると移動が楽。",
+      "ferryEnjoyableEasy": "フェリー移動は快適で簡単。",
+      "shortWalkSalernoStationPort": "サレルノ駅から港への徒歩は短くわかりやすい。"
     },
     "con": {
-      "changeBusToTrain": "Have to change from bus to train.",
-      "crowdedBusTrain": "Bus and train are both usually crowded.",
-      "fewHours": "Takes a few hours.",
-      "changeTrainToBusSorrento": "Have to change from train to bus in Sorrento.",
-      "busUsuallyCrowded": "Bus is usually crowded.",
-      "ferryCostHigherBus": "The cost of taking the ferry is higher than the cost of taking the bus.",
-      "hostelEasierBySita": "Arriving at the hostel via SITA bus is easier than arriving by ferry (the journey from the port is quite laborious — even with Positano’s Interno Bus and porters).",
-      "naplesPortComfort": "The port and city of Naples may not be suitable for everyone, as some people may not feel comfortable there.",
-      "ferriesLessFrequent": "Ferries do not run as frequently as other transportation options.",
-      "ferryCostHigherTrainBus": "The cost of taking the ferry is higher than the cost of taking the train or bus.",
-      "changeBusesAmalfi": "Have to change buses in Amalfi."
+      "changeBusToTrain": "バスから列車へ乗換が必要。",
+      "crowdedBusTrain": "バスと列車は混雑しがち。",
+      "fewHours": "数時間かかる。",
+      "changeTrainToBusSorrento": "ソレントで列車からバスに乗換。",
+      "busUsuallyCrowded": "バスは混雑しがち。",
+      "ferryCostHigherBus": "フェリーはバスより高い。",
+      "hostelEasierBySita": "SITAバスで到着する方が楽（港からは階段が多く、インテルノバスやポーターを使っても大変）。",
+      "naplesPortComfort": "ナポリの港と街は落ち着かないと感じる人も。",
+      "ferriesLessFrequent": "フェリーは他の交通手段ほど頻繁ではない。",
+      "ferryCostHigherTrainBus": "フェリーは列車やバスより高い。",
+      "changeBusesAmalfi": "アマルフィで乗換が必要。"
     },
     "tag": {
-      "cheap": "Budget",
-      "directish": "Simple",
-      "scenic": "Scenic",
-      "transfer": "Transfer",
-      "bus": "Bus",
-      "train": "Train",
-      "ferry": "Ferry"
+      "cheap": "節約",
+      "directish": "シンプル",
+      "scenic": "景観",
+      "transfer": "乗換",
+      "bus": "バス",
+      "train": "列車",
+      "ferry": "フェリー"
     },
     "reasons": {
       "cheapest": {
-        "busTrain": "Cheapest → bus/train options are very cheap.",
-        "ferry": "Cheapest → ferry costs higher than bus/train."
+        "busTrain": "最安 → バス/列車は非常に安い。",
+        "ferry": "最安 → フェリーはバス/列車より高い。"
       },
       "fewest_changes": {
-        "busTrain": "Fewest changes → bus + train requires a mode change.",
-        "bus": "Fewest changes → bus route changes in Amalfi."
+        "busTrain": "乗換最小 → バス＋列車は乗換が必要。",
+        "bus": "乗換最小 → アマルフィでバスの乗換。"
       },
       "scenic": {
-        "ferry": "Scenic → ferry journey is enjoyable and easy."
+        "ferry": "景観重視 → フェリー移動は快適で景色が良い。"
       },
       "heavy_luggage": {
-        "ferryFromRome": "Heavy luggage → arriving via ferry from the port is more laborious.",
-        "busStopClose": "Heavy luggage → Positano bus stop is close to the hostel."
+        "ferryFromRome": "荷物多め → 港からフェリー到着は大変。",
+        "busStopClose": "荷物多め → ポジターノのバス停はホステル近く。"
       }
     },
     "ui": {
-      "showDetails": "Show details",
-      "hideDetails": "Hide details",
-      "steps": "Steps",
-      "notes": "Notes",
-      "pros": "Pros",
-      "cons": "Cons"
+      "showDetails": "詳細を表示",
+      "hideDetails": "詳細を非表示",
+      "steps": "手順",
+      "notes": "メモ",
+      "pros": "メリット",
+      "cons": "デメリット"
     }
   },
   "experienceGuides": {
-    "eyebrow": "Experience planners",
-    "title": "Experience routes with built-in directions",
-    "description": "These experiences combine the on-trail highlights with the exact transfers you need to leave and return to Hostel Brikette. Open one when you want the itinerary and the transport plan in the same guide.",
+    "eyebrow": "体験プランナー",
+    "title": "移動情報付き体験ルート",
+    "description": "これらの体験は道中の見どころと、Hostel Briketteへの往復に必要な乗換をまとめています。同じガイドで旅程と交通計画を確認したいときに開いてください。",
     "items": [
       {
         "guideKey": "pathOfTheGodsFerry",
-        "label": "Path of the Gods via Amalfi (ferry + hike)",
-        "summary": "Sail from Positano to Amalfi, ride up to Bomerano, and follow our step-by-step return directions for the classic traverse back toward Positano.",
+        "label": "神々の道 アマルフィ経由（フェリー＋ハイク）",
+        "summary": "ポジターノからアマルフィへ航行し、ボメラーノへ上がってから、定番ルートでポジターノ方面へ戻る手順を案内します。",
         "transportModes": [
           "ferry",
           "bus",
@@ -621,8 +623,8 @@
       },
       {
         "guideKey": "pathOfTheGodsBus",
-        "label": "Path of the Gods via Amalfi (bus + hike)",
-        "summary": "Take the SITA Sud bus from Positano through Amalfi to Bomerano, hike across to Nocelle, and use the built-in transport section to reach the hostel afterward.",
+        "label": "神々の道 アマルフィ経由（バス＋ハイク）",
+        "summary": "ポジターノからSITA Sudバスでアマルフィ経由でボメラーノへ行き、ノチェッレまでハイク。内蔵の交通セクションでホステルへ戻れます。",
         "transportModes": [
           "bus",
           "walk"
@@ -630,8 +632,8 @@
       },
       {
         "guideKey": "pathOfTheGodsNocelle",
-        "label": "Path of the Gods via Nocelle shuttle",
-        "summary": "Ride the Montepertuso–Nocelle shuttle for a shorter out-and-back hike and rely on the guide’s directions to walk or bus back down to Hostel Brikette.",
+        "label": "神々の道 ノチェッレ・シャトル経由",
+        "summary": "Montepertuso–Nocelleシャトルで短い往復ハイクを行い、ガイドの案内で徒歩またはバスでHostel Briketteへ戻れます。",
         "transportModes": [
           "bus",
           "walk"
@@ -640,9 +642,9 @@
     ]
   },
   "breadcrumbs": {
-    "itemTitleFallback": "Directions"
+    "itemTitleFallback": "行き方"
   },
   "galleries": {
-    "defaultAlt": "Directions photo"
+    "defaultAlt": "行き方の写真"
   }
 }

@@ -336,7 +336,7 @@ export const resolveRoute = async (
     if (!loader) {
       throw new Error(`Missing route module for ${match.file}`);
     }
-    const routeModule = await loader();
+    const routeModule = (await loader()) as RouteModule;
     const loadFn = routeModule.clientLoader ?? routeModule.loader;
     let data: unknown;
     if (loadFn) {

@@ -1,76 +1,76 @@
 {
   "seo": {
-    "title": "Hostel Brikette sunrise hike",
+    "title": "Hostel Brikette 일출 하이킹",
     "description": "호스텔 브리켓(Hostel Brikette)에서 포지타노(Positano)의 탁 트인 일출 전망을 감상할 수 있는 조용한 절벽 꼭대기 전망대까지의 동트기 전 경로입니다."
   },
-  "linkLabel": "Hostel Brikette sunrise hike",
+  "linkLabel": "Hostel Brikette 일출 하이킹",
   "intro": [
-    "Head out before dawn to catch the first light over the Amalfi Coast from a quiet vantage point above Positano.",
-    "This walk starts at Hostel Brikette and takes around 25 minutes including the stair climb to the viewpoint."
+    "새벽 전에 출발해 포지타노 위 조용한 전망대에서 아말피 해안 첫 빛을 감상하세요.",
+    "이 산책은 Hostel Brikette에서 시작해 전망대 계단 오르기를 포함해 약 25분이 걸립니다."
   ],
   "sections": [
     {
       "id": "overview",
-      "title": "What is the sunrise hike?",
+      "title": "일출 하이킹이란?",
       "body": [
-        "If you prefer to stay put, you can watch the sunrise from the hostel terrace as it rises to the left of the building.",
-        "For a wider panorama, follow this short hike to a nearby cliff where you can watch the sun clear the horizon and light up the town below."
+        "그냥 머물고 싶다면 건물 왼쪽으로 떠오르는 해를 호스텔 테라스에서 볼 수 있습니다.",
+        "더 넓은 파노라마를 원한다면 이 짧은 하이킹을 따라 인근 절벽 전망대에서 해가 수평선을 넘어 마을을 밝히는 장면을 감상하세요."
       ]
     },
     {
       "id": "reach-stairs",
-      "title": "Reach the stairway trailhead",
+      "title": "계단 트레일 시작점으로 이동",
       "body": [
-        "Exit the hostel through the main door and walk down to Via Pasitea.",
-        "Turn right towards Sorrento and follow the road for roughly 350 metres.",
-        "Look for a flight of stairs on your left heading uphill — the first section is paved and has a handrail."
+        "호스텔 정문으로 나와 비아 파시테아로 내려오세요.",
+        "소렌토 방향으로 우회전해 약 350미터 정도 따라가세요.",
+        "왼쪽에 오르막 계단이 보이면 그쪽으로 올라가세요. 첫 구간은 포장되어 있고 손잡이가 있습니다."
       ]
     },
     {
       "id": "climb-to-viewpoint",
-      "title": "Climb to the viewpoint",
+      "title": "전망대까지 오르기",
       "body": [
-        "Take the stairs all the way up until you reach a small house at the top of the initial climb.",
-        "At the house, turn left to join the woodland trail.",
-        "When the path forks, take the right-hand branch and continue climbing through the trees.",
-        "As the path opens up and you can see the sea directly ahead, bear left.",
-        "Continue around the rocks to reach the exposed vantage point with sweeping sunrise views."
+        "계단을 끝까지 올라 첫 구간 꼭대기의 작은 집까지 가세요.",
+        "집에서 왼쪽으로 꺾어 숲길로 들어갑니다.",
+        "길이 갈라지면 오른쪽 가지로 올라가세요.",
+        "길이 트이고 정면으로 바다가 보이면 왼쪽으로 붙어 이동하세요.",
+        "바위를 돌아 시야가 탁 트인 일출 전망 포인트에 도착합니다."
       ]
     },
     {
       "id": "enjoy-sunrise",
-      "title": "Enjoy the sunrise safely",
+      "title": "안전하게 일출 즐기기",
       "body": [
-        "The final rocks can be slick with morning dew; move carefully and avoid standing on loose edges.",
-        "From the main ledge you can watch the sun crest the horizon, or scramble a little higher for photos once there is enough light."
+        "마지막 바위는 아침 이슬로 미끄러울 수 있으니 조심히 이동하고 가장자리에서는 서지 마세요.",
+        "주 전망대에서 해가 수평선을 넘는 장면을 볼 수 있고, 충분히 밝아지면 조금 더 올라가 사진을 찍어도 됩니다."
       ]
     }
   ],
   "tips": [
-    "Allow around 25 minutes from the hostel to the viewpoint and aim to arrive 10 minutes before the posted sunrise time.",
-    "Bring a headlamp or phone torch — the stair sections are dark before dawn.",
-    "Wear shoes with good grip and pack a layer; sea breezes make early mornings feel cooler."
+    "호스텔에서 전망대까지 약 25분을 잡고, 일출 시간 10분 전에 도착하는 것을 목표로 하세요.",
+    "헤드램프나 휴대폰 손전등을 챙기세요. 새벽에는 계단 구간이 어둡습니다.",
+    "미끄럼 방지 신발을 신고 얇은 겉옷을 챙기세요. 바닷바람 때문에 아침이 더 서늘합니다."
   ],
   "faqs": [
     {
-      "q": "Can I just watch the sunrise from the hostel?",
+      "q": "호스텔에서 일출만 보고도 되나요?",
       "a": [
-        "Yes. The terrace faces east and you can see the sun rise to the left of the building without leaving the property.",
-        "The hike is for guests who want a wider panorama or photos without foreground buildings."
+        "네. 테라스는 동쪽을 향하고 있어 건물을 나서지 않아도 왼쪽에서 떠오르는 해를 볼 수 있습니다.",
+        "하이킹은 더 넓은 파노라마나 전경 건물 없이 사진을 찍고 싶은 게스트를 위한 옵션입니다."
       ]
     },
     {
-      "q": "Is the trail marked or difficult to follow?",
+      "q": "길 표시가 있나요? 따라가기 어렵나요?",
       "a": [
-        "The route follows local stairs and an informal woodland trail. There are no signposts, so bring a phone with offline maps or follow these instructions closely.",
-        "In the dark, walk slowly and use a torch to pick out uneven steps and tree roots."
+        "이 루트는 지역 계단과 비공식 숲길을 따릅니다. 표지판이 없으니 오프라인 지도를 준비하거나 이 안내를 꼼꼼히 따라가세요.",
+        "어두운 시간에는 천천히 걷고 손전등으로 울퉁불퉁한 계단과 나무뿌리를 확인하세요."
       ]
     },
     {
-      "q": "What should I bring?",
+      "q": "무엇을 챙기면 좋나요?",
       "a": [
-        "Wear trainers or hiking shoes with grip, carry water, and pack a light layer for the breeze.",
-        "If you plan to stay for sunrise photos, consider a tripod or phone stand."
+        "접지력이 좋은 운동화나 하이킹화와 물을 챙기고, 바람을 대비해 얇은 겉옷을 준비하세요.",
+        "일출 사진을 찍을 계획이라면 삼각대나 휴대폰 스탠드를 준비하세요."
       ]
     }
   ],
@@ -78,15 +78,15 @@
     "title": "사진",
     "items": [
       {
-        "alt": "QR code to share the guide",
+        "alt": "가이드 공유용 QR 코드",
         "caption": "공유용 QR 코드 스캔"
       },
       {
-        "alt": "House at the top of the initial climb",
+        "alt": "초기 오르막 상단의 집",
         "caption": "계단 상단의 집"
       },
       {
-        "alt": "Viewpoint over Positano at sunrise",
+        "alt": "일출 때 포지타노가 내려다보이는 전망대",
         "caption": "포지타노 일출 전망 포인트"
       }
     ]

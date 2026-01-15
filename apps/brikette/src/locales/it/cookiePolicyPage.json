@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "title": "Informativa sui cookie | Hostel Brikette",
+    "description": "Come Hostel Brikette utilizza i cookie e tecnologie simili sul nostro sito web e quali scelte hai."
+  },
+  "headings": {
+    "pageTitle": "Informativa sui cookie",
+    "subtitle": "Cookie, archiviazione locale e servizi di terze parti"
+  },
+  "lastUpdated": {
+    "label": "Ultimo aggiornamento",
+    "date": "2026-01-09"
+  },
+  "toc": {
+    "title": "In questa pagina",
+    "aria": "Sommario dell'informativa sui cookie"
+  },
+  "sections": {
+    "intro": {
+      "title": "Panoramica",
+      "body": [
+        "Questa informativa sui cookie spiega cosa sono i cookie, se li utilizziamo su questo sito web e come i servizi di terze parti possono usare i cookie quando interagisci con i loro contenuti."
+      ]
+    },
+    "whatAreCookies": {
+      "title": "Cosa sono i cookie",
+      "body": [
+        "I cookie sono piccoli file di testo che i siti web possono memorizzare sul tuo dispositivo per ricordare informazioni tra una visita e l'altra. Tecnologie simili includono l'archiviazione locale e l'archiviazione di sessione nel tuo browser."
+      ]
+    },
+    "ourUse": {
+      "title": "Come utilizziamo i cookie su questo sito web",
+      "body": [
+        "Cerchiamo di mantenere i cookie al minimo. Quando possibile, usiamo la memoria del browser (archiviazione locale) per preferenze semplici invece dei cookie.",
+        "Se in futuro introdurremo cookie (ad esempio per sicurezza essenziale, analisi o servizi incorporati), aggiorneremo questa informativa."
+      ]
+    },
+    "localStorage": {
+      "title": "Archiviazione locale (preferenze)",
+      "body": [
+        "L'archiviazione locale consente al sito web di ricordare alcune preferenze sul tuo dispositivo. Ad esempio, può essere utilizzata per mantenere le preferenze dell'interfaccia tra le pagine.",
+        "Puoi cancellare l'archiviazione locale dalle impostazioni del browser."
+      ]
+    },
+    "thirdParties": {
+      "title": "Servizi di terze parti",
+      "body": [
+        "Alcuni link o contenuti incorporati possono essere forniti da terze parti (ad esempio mappe o provider di prenotazione). Queste terze parti possono impostare cookie o usare tecnologie simili secondo le proprie politiche.",
+        "Quando segui un link a un sito di terze parti, si applicano le loro politiche sulla privacy e sui cookie."
+      ]
+    },
+    "choices": {
+      "title": "Le tue scelte",
+      "body": [
+        "La maggior parte dei browser consente di bloccare o eliminare i cookie e di cancellare i dati del sito come l'archiviazione locale. Bloccare alcune tecnologie può influire sulla funzionalità.",
+        "Puoi anche utilizzare modalità di navigazione privata o estensioni del browser per limitare il tracciamento."
+      ]
+    },
+    "contact": {
+      "title": "Contatto",
+      "body": [
+        "Se hai domande su questa informativa sui cookie, contattaci a {{email}}."
+      ]
+    }
+  },
+  "footer": {
+    "backToTop": "Torna su"
+  }
+}

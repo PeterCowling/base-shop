@@ -1,0 +1,26 @@
+{
+  "title": "Trova il mio soggiorno",
+  "subtitle": "Inserisci i dati della prenotazione per accedere al tuo portale ospite.",
+  "fields": {
+    "bookingCode": "Codice prenotazione",
+    "bookingCodePlaceholder": "es. BKG12345",
+    "bookingCodeHint": "Lo trovi nell'email di conferma",
+    "lastName": "Cognome",
+    "lastNamePlaceholder": "Come indicato nella prenotazione",
+    "lastNameHint": "Cognome dell'ospite principale"
+  },
+  "button": {
+    "submit": "Trova il mio soggiorno",
+    "loading": "Ricerca..."
+  },
+  "errors": {
+    "fieldsRequired": "Inserisci sia il codice prenotazione che il cognome.",
+    "notFound": "Non abbiamo trovato una prenotazione con questi dati. Verifica e riprova.",
+    "tooManyAttempts": "Troppi tentativi. Attendi qualche minuto e riprova.",
+    "networkError": "Impossibile connettersi. Verifica la connessione internet e riprova."
+  },
+  "help": {
+    "cantFind": "Non trovi il codice di prenotazione?",
+    "contactUs": "Contatta la reception per assistenza."
+  }
+}

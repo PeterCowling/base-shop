@@ -252,12 +252,12 @@
     "height": 600
   },
   "/img/guides/arienzo-beach/image1.jpg": {
-    "width": 450,
-    "height": 450
+    "width": 800,
+    "height": 516
   },
   "/img/guides/arienzo-beach/image2.jpg": {
     "width": 800,
-    "height": 516
+    "height": 600
   },
   "/img/guides/arienzo-beach/image3.jpg": {
     "width": 800,
@@ -307,10 +307,6 @@
     "width": 1596,
     "height": 804
   },
-  "/img/guides/laurito-bus/image1.png": {
-    "width": 451,
-    "height": 451
-  },
   "/img/guides/laurito-bus/image2.jpg": {
     "width": 1024,
     "height": 516
@@ -339,10 +335,6 @@
     "width": 512,
     "height": 215
   },
-  "/img/guides/laurito/laurito-bus-qr.jpg": {
-    "width": 451,
-    "height": 451
-  },
   "/img/guides/laurito/laurito-bus-ride.jpg": {
     "width": 1596,
     "height": 804
@@ -359,10 +351,7 @@
     "width": 1596,
     "height": 804
   },
-  "/img/guides/sunrise-hike/01-qr.png": {
-    "width": 450,
-    "height": 450
-  },
+
   "/img/guides/sunrise-hike/02-house.jpg": {
     "width": 876,
     "height": 530

@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import type { TFunction, i18n as I18nInstance } from "i18next";
 import clsx from "clsx";
 
+import type { GuideMeta } from "@/data/guides.index";
 import {
   type GuideCollectionProps,
   type GuideCollectionCopy,
@@ -71,12 +72,18 @@ function GuideCollection({
   lang,
   guides,
   id,
+  totalCount: totalCountProp,
   filterTag,
+  filterParam,
+  filterOptions: filterOptionsProp,
+  filterPredicate,
   clearFilterHref,
+  sectionClassName,
   copy,
   showFilters = true,
 }: GuideCollectionProps): JSX.Element | null {
   const normalizedTag = filterTag?.trim().toLowerCase() ?? "";
+  const paramName = filterParam?.trim() || "tag";
 
   const location = useLocation();
   const normalizedClearFilterHref = clearFilterHref?.trim() ?? "";
@@ -87,8 +94,11 @@ function GuideCollection({
     (value: string | null): To => {
       const params = new URLSearchParams(location.search);
       if (value) {
-        params.set("tag", value);
+        params.set(paramName, value);
       } else {
+        params.delete(paramName);
+      }
+      if (paramName !== "tag") {
         params.delete("tag");
       }
       const query = params.toString();
@@ -100,7 +110,7 @@ function GuideCollection({
       }
       return `${basePath}${query ? `?${query}` : ""}`;
     },
-    [basePath, location.search],
+    [basePath, location.search, paramName],
   );
 
   const { t, i18n, ready } = useTranslation("guides", { lng: lang });
@@ -145,23 +155,26 @@ function GuideCollection({
     return (((_key: string, _options?: Record<string, unknown>) => "") as unknown) as Translator;
   }, [getFixedT, hasFixedEnglish]);
 
+  const defaultFilterPredicate = useCallback(
+    (guide: GuideMeta, value: string) =>
+      guide.tags.some((tag) => tag.toLowerCase() === value),
+    [],
+  );
+  const resolvedFilterPredicate = filterPredicate ?? defaultFilterPredicate;
   const filtered = useMemo(
-    () =>
-      normalizedTag
-        ? guides.filter((guide) =>
-            guide.tags.some((tag) => tag.toLowerCase() === normalizedTag),
-          )
-        : guides,
-    [guides, normalizedTag],
+    () => (normalizedTag ? guides.filter((guide) => resolvedFilterPredicate(guide, normalizedTag)) : guides),
+    [guides, normalizedTag, resolvedFilterPredicate],
   );
 
-  const filterOptions = useGuideFilterOptions(guides);
+  const defaultFilterOptions = useGuideFilterOptions(guides);
+  const filterOptions = filterOptionsProp ?? defaultFilterOptions;
   const resolveSummary = useGuideSummaryResolver(i18n, lang);
 
   const hasFilter = Boolean(normalizedTag);
   const hasResults = filtered.length > 0;
   const heading = resolveHeading(copy, hasFilter);
   const description = resolveDescription(copy, hasFilter);
+  const totalCount = typeof totalCountProp === "number" ? totalCountProp : guides.length;
 
   const filterHeading = copy.filterHeading ?? "";
   const filterDescription = copy.filterDescription ?? "";
@@ -178,7 +191,7 @@ function GuideCollection({
   }
 
   return (
-    <section id={id} className={clsx(SECTION_CLASSES)}>
+    <section id={id} className={clsx(SECTION_CLASSES, sectionClassName)}>
       <div className="space-y-3">
         <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-surface">
           {heading}
@@ -213,7 +226,7 @@ function GuideCollection({
           label={filterLabel}
           allHref={allHref}
           clearFilterLabel={clearFilterLabel}
-          totalCount={guides.length}
+          totalCount={totalCount}
           options={filterOptions}
           activeTag={normalizedTag}
           makeHref={makeHref}

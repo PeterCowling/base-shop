@@ -152,13 +152,13 @@
     {
       "q": "How much time should I allow in Amalfi?",
       "a": [
-        "Plan for a 20–30 minute buffer to switch from the ferry to the Agerola bus. Use the time for a quick coffee, but stay within sight of the bus bays so you do not miss boarding."
+        "Check the timetables to see how the ferry arrival and bus departure aligns."
       ]
     },
     {
       "q": "What if the ferry is cancelled?",
       "a": [
-        "Check conditions at the harbour. If boats stop running, switch to the bus route via Amalfi—it follows the same trail once you reach Bomerano."
+        "Check conditions at the harbour. If boats stop running, switch to the %LINK:pathOfTheGodsBus|Path of the Gods via Amalfi bus% guide—it follows the same trail once you reach Bomerano."
       ]
     }
   ],

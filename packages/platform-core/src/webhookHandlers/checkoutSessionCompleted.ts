@@ -9,6 +9,14 @@ export default async function checkoutSessionCompleted(
   event: Stripe.Event,
 ): Promise<void> {
   const session = event.data.object as Stripe.Checkout.Session;
+  // display_items is a legacy Checkout field, so keep a local type until migrated.
+  type LegacyDisplayItem = {
+    custom?: { name?: string | null } | null;
+    quantity?: number | null;
+  };
+  const displayItems = (
+    session as Stripe.Checkout.Session & { display_items?: LegacyDisplayItem[] }
+  ).display_items;
   const deposit = Number(session.metadata?.depositTotal ?? 0);
   const expectedReturnDate = session.metadata?.returnDate || undefined;
   const customerId = session.metadata?.internal_customer_id || undefined;
@@ -44,6 +52,22 @@ export default async function checkoutSessionCompleted(
       ? session.customer
       : session.metadata?.stripe_customer_id || undefined;
 
+  const lineItems = Array.isArray(displayItems)
+    ? displayItems.flatMap((item: LegacyDisplayItem) => {
+        const sku =
+          typeof item.custom?.name === "string" ? item.custom.name : undefined;
+        if (!sku) return [];
+        const qty = typeof item.quantity === "number" ? item.quantity : 1;
+        return [
+          {
+            sku,
+            variantAttributes: {},
+            quantity: qty,
+          },
+        ];
+      })
+    : undefined;
+
   await addOrder({
     orderId,
     shop,
@@ -60,6 +84,7 @@ export default async function checkoutSessionCompleted(
     cartId,
     stripePaymentIntentId: piId,
     stripeCustomerId,
+    ...(lineItems ? { lineItems } : {}),
   });
 
   const settings = await getShopSettings(shop);

@@ -1,3 +1,5 @@
+"use client";
+
 export { Button, type ButtonProps } from "./primitives/button";
 export {
   Accordion,
@@ -63,6 +65,8 @@ export { Icon } from "./Icon";
 export { LineChart } from "./LineChart";
 export { Loader, Loader as Spinner } from "./Loader";
 export { Logo } from "./Logo";
+export { OptionPill, type OptionPillProps } from "./OptionPill";
+export { OptionTile, type OptionTileProps } from "./OptionTile";
 export { PaginationDot } from "./PaginationDot";
 export {
   Popover,
@@ -88,3 +92,4 @@ export { VideoPlayer } from "./VideoPlayer";
 export { ZoomImage } from "./ZoomImage";
 export { FormField } from "./FormField";
 export { SelectField } from "./SelectField";
+export { Grid, Stack, Inline, Cluster } from "./primitives";

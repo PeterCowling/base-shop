@@ -5,7 +5,8 @@
     "popularGuides": "Populære guider",
     "helpfulGuides": "Nyttige guider",
     "alsoSee": "Se også",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Afsnit {{position}}",
+    "viewAll": "Se alle guides"
   },
   "meta": {
     "index": {
@@ -13,131 +14,135 @@
       "description": "Praktiske trin-for-trin-guider til at komme rundt i Positano og på Amalfikysten."
     }
   },
+  "redirectPage": {
+    "title": "Omdirigerer...",
+    "message": "Hvis du ikke omdirigeres, <link>fortsæt her</link>."
+  },
   "content": {
     "onlyHostel": {
-      "linkLabel": "The only hostel in Positano",
+      "linkLabel": "Det eneste hostel i Positano",
       "seo": {
-        "title": "The only hostel in Positano",
-        "description": "Affordable beds in Positano with panoramic views and friendly vibes."
+        "title": "Det eneste hostel i Positano",
+        "description": "Prisvenlige senge i Positano med panoramaudsigt og god stemning."
       }
     },
     "backpackerItineraries": {
-      "linkLabel": "Backpacker itineraries",
+      "linkLabel": "Backpacker-ruter",
       "seo": {
-        "title": "Backpacker itineraries on the Amalfi Coast",
-        "description": "Practical, budget-first routes for 2 to 7 days without a car."
+        "title": "Backpacker-ruter på Amalfikysten",
+        "description": "Praktiske, budgetfokuserede ruter til 2–7 dage uden bil."
       }
     },
     "reachBudget": {
-      "linkLabel": "Reach Positano on a budget",
+      "linkLabel": "Kom til Positano på budget",
       "seo": {
-        "title": "Reach Positano on a budget",
-        "description": "Cheapest ways to get to Positano by bus, train and ferry."
+        "title": "Kom til Positano på budget",
+        "description": "De billigste måder at komme til Positano med bus, tog og færge."
       }
     },
     "ferrySchedules": {
-      "linkLabel": "Ferry schedules",
+      "linkLabel": "Færgeplaner",
       "seo": {
-        "title": "Positano ferry schedules",
-        "description": "Up-to-date ferry operators and seasonal timetables for Positano."
+        "title": "Positanos færgeplaner",
+        "description": "Opdaterede færgeselskaber og sæsonplaner for Positano."
       }
     },
     "pathOfTheGods": {
-      "linkLabel": "Path of the Gods from Positano",
+      "linkLabel": "Gudestien fra Positano",
       "seo": {
-        "title": "Hike the Path of the Gods",
-        "description": "Door-to-door instructions to hike Sentiero degli Dei from Positano."
+        "title": "Gå Gudestien",
+        "description": "Dør-til-dør-vejledning til Sentiero degli Dei fra Positano."
       }
     },
     "pathOfTheGodsFerry": {
-      "linkLabel": "Path of the Gods via Amalfi (ferry)",
+      "linkLabel": "Gudestien via Amalfi (færge)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (ferry)",
-        "description": "Sail to Amalfi, bus up to Bomerano, then hike the Path of the Gods with return directions."
+        "title": "Gudestien via Amalfi (færge)",
+        "description": "Sejl til Amalfi, tag bus op til Bomerano og gå Gudestien med rute tilbage."
       }
     },
     "pathOfTheGodsBus": {
-      "linkLabel": "Path of the Gods via Amalfi (bus)",
+      "linkLabel": "Gudestien via Amalfi (bus)",
       "seo": {
-        "title": "Path of the Gods via Amalfi (bus)",
-        "description": "Take the SITA Sud bus to Bomerano and follow our Path of the Gods route back toward Positano."
+        "title": "Gudestien via Amalfi (bus)",
+        "description": "Tag SITA Sud-bussen til Bomerano og følg vores Gudestien-rute tilbage mod Positano."
       }
     },
     "pathOfTheGodsNocelle": {
-      "linkLabel": "Path of the Gods via Nocelle",
+      "linkLabel": "Gudestien via Nocelle",
       "seo": {
-        "title": "Path of the Gods via Nocelle",
-        "description": "Shorter out-and-back hike from Nocelle with directions to return to Hostel Brikette."
+        "title": "Gudestien via Nocelle",
+        "description": "Kortere frem-og-tilbage-tur fra Nocelle med vej tilbage til Hostel Brikette."
       }
     },
     "dayTripsAmalfi": {
-      "linkLabel": "Day trips from Positano",
+      "linkLabel": "Dagsture fra Positano",
       "seo": {
-        "title": "Day trips from Positano",
-        "description": "Ideas for Amalfi, Ravello, Capri and Pompeii with timing and transport tips."
+        "title": "Dagsture fra Positano",
+        "description": "Ideer til Amalfi, Ravello, Capri og Pompeji med timing- og transporttips."
       }
     },
     "publicTransportAmalfi": {
-      "linkLabel": "Amalfi Coast public transport guide",
+      "linkLabel": "Offentlig transport på Amalfikysten",
       "seo": {
-        "title": "Amalfi Coast public transport guide",
-        "description": "How to use buses and ferries on the Amalfi Coast with passes, timing and routes."
+        "title": "Offentlig transport på Amalfikysten",
+        "description": "Sådan bruger du busser og færger på Amalfikysten med kort, timing og ruter."
       }
     },
     "travelTipsFirstTime": {
-      "linkLabel": "Positano travel tips for first-time visitors",
+      "linkLabel": "Rejsetips til førstegangsbesøgende i Positano",
       "seo": {
-        "title": "Positano travel tips for first-time visitors",
-        "description": "Arrivals, luggage, payments and connectivity — practical advice for your first trip."
+        "title": "Rejsetips til førstegangsbesøgende i Positano",
+        "description": "Ankomst, bagage, betaling og forbindelse — praktiske råd til din første tur."
       }
     },
     "whatToPack": {
-      "linkLabel": "What to pack for the Amalfi Coast",
+      "linkLabel": "Hvad skal du pakke til Amalfikysten",
       "seo": {
-        "title": "What to pack for the Amalfi Coast",
-        "description": "Seasonal packing checklist for Positano and the Amalfi Coast."
+        "title": "Hvad skal du pakke til Amalfikysten",
+        "description": "Sæsonbestemt pakkeliste til Positano og Amalfikysten."
       }
     }
   },
   "dev": {
     "statusPill": {
-      "title": "Guide status: {{status}} (click to toggle)"
+      "title": "Guide-status: {{status}} (klik for at skifte)"
     },
     "editorialPanel": {
-      "title": "Editorial workflow",
+      "title": "Redaktionel arbejdsgang",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
+        "draft": "Kladde",
+        "review": "Til gennemgang",
         "live": "Live"
       },
       "workflow": {
-        "draftPreview": "Draft preview",
-        "published": "Published",
-        "pending": "Pending publication",
-        "allComplete": "All checklist items complete",
-        "outstanding_one": "{{count}} outstanding item",
-        "outstanding_other": "{{count}} outstanding items"
+        "draftPreview": "Kladde-preview",
+        "published": "Udgivet",
+        "pending": "Afventer udgivelse",
+        "allComplete": "Alle tjeklistepunkter er fuldført",
+        "outstanding_one": "{{count}} udestående punkt",
+        "outstanding_other": "{{count}} udestående punkter"
       },
       "draftPath": {
-        "label": "Draft path",
-        "dashboardCta": "Open draft dashboard"
+        "label": "Kladde-sti",
+        "dashboardCta": "Åbn kladde-dashboard"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "Udgiv til",
+        "primary": "Primær"
       },
       "checklist": {
-        "heading": "Completion checklist",
+        "heading": "Fuldførelsestjekliste",
         "status": {
-          "missing": "Missing",
-          "inProgress": "In progress",
-          "complete": "Complete"
+          "missing": "Mangler",
+          "inProgress": "I gang",
+          "complete": "Færdig"
         }
       },
       "areaLabels": {
-        "howToGetHere": "How to get here",
-        "help": "Help centre",
-        "experience": "Experiences"
+        "howToGetHere": "Sådan kommer du hertil",
+        "help": "Hjælpecenter",
+        "experience": "Oplevelser"
       }
     }
   }

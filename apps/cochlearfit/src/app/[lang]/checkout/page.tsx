@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Section from "@/components/Section";
 import PageHeader from "@/components/PageHeader";
 import CheckoutPanel from "@/components/checkout/CheckoutPanel";
+import { listCochlearfitProducts } from "@/lib/cochlearfitCatalog.server";
 import { resolveLocale } from "@/lib/locales";
 import { createTranslator, loadMessages } from "@/lib/messages";
 import { buildMetadata } from "@/lib/seo";
@@ -33,6 +34,7 @@ export default async function CheckoutPage({
   const locale = resolveLocale(resolved?.lang);
   const messages = await loadMessages(locale);
   const t = createTranslator(messages);
+  const products = await listCochlearfitProducts(locale);
 
   return (
     <Section>
@@ -42,7 +44,7 @@ export default async function CheckoutPage({
         description={t("checkout.body")}
       />
       <div className="mt-6">
-        <CheckoutPanel />
+        <CheckoutPanel products={products} />
       </div>
     </Section>
   );

@@ -53,6 +53,7 @@ export const galleryBindingItemSchema = z.object({
 
 export const galleryBindingSchema = z.object({
   key: z.string().min(1),
+  inline: z.boolean().optional(),
   items: z.array(galleryBindingItemSchema).min(1),
 });
 

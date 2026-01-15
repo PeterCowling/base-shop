@@ -13,6 +13,8 @@ import { useGuideCollectionId } from "./useGuideCollectionId";
 import { useGroupedGuideCollections } from "./useGroupedGuideCollections";
 import { useHeroContent } from "./useHeroContent";
 import { useSectionsContent } from "./useSectionsContent";
+import { resolveGuideTopicId } from "@/data/guideTopics";
+import { getTagMeta } from "@/utils/tags/resolvers";
 
 type ExperiencesLoaderData = {
   lang: AppLanguage;
@@ -28,9 +30,24 @@ export function useExperiencesPageContent(): ExperiencesPageViewModel {
 
   const { t, tTokens, experiencesEnT } = useExperiencesTranslations(lang);
 
-  const filterTag = searchParams.get("tag");
-  const normalizedFilterTag = filterTag?.trim().toLowerCase() ?? "";
-  const filterTagDisplay = filterTag ? `#${filterTag}` : undefined;
+  const topicParam = searchParams.get("topic");
+  const tagParam = searchParams.get("tag");
+  const filterParam = topicParam ?? tagParam;
+  const normalizedFilterParam = filterParam?.trim().toLowerCase() ?? "";
+
+  const resolvedTopicId = resolveGuideTopicId(normalizedFilterParam);
+  const filterTopic = resolvedTopicId ?? null;
+
+  const filterTopicLabel = resolvedTopicId ? getTagMeta(lang, resolvedTopicId).label || resolvedTopicId : undefined;
+  const isLegacyTagFilter = Boolean(tagParam && !resolvedTopicId);
+  const filterTagDisplay = resolvedTopicId
+    ? `#${filterTopicLabel}`
+    : isLegacyTagFilter && normalizedFilterParam
+      ? `#${normalizedFilterParam}`
+      : undefined;
+
+  const filterTag = resolvedTopicId ? resolvedTopicId : isLegacyTagFilter ? normalizedFilterParam || null : null;
+  const filterParamName: ExperiencesPageViewModel["filterParam"] = resolvedTopicId ? "topic" : "tag";
 
   const guideCollectionCopy = useGuideCollectionCopy({
     ...(filterTagDisplay ? { filterTagDisplay } : {}),
@@ -45,7 +62,7 @@ export function useExperiencesPageContent(): ExperiencesPageViewModel {
     experienceGuides,
     guideCollectionCopy,
     guideCollectionId,
-    normalizedFilterTag,
+    normalizedFilterTopic: resolvedTopicId ?? "",
     t,
     experiencesEnT,
   });
@@ -81,7 +98,9 @@ export function useExperiencesPageContent(): ExperiencesPageViewModel {
     guideCollectionCopy,
     guideCollectionId,
     clearFilterHref,
+    filterParam: filterParamName,
     filterTag,
+    filterTopic,
     faqTitle,
     faqEntries,
     cta,

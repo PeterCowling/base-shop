@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth";
 import type { Session } from "next-auth";
 import { authOptions } from "@cms/auth/options";
 import { canRead } from "@auth/rbac";
+import { hasPermission } from "@auth";
+import type { Permission, Role } from "@auth/types";
 
 type AppSession = Session & { user?: (Session["user"] & { role?: string; id?: string }) };
 
@@ -52,4 +54,12 @@ export async function ensureCanRead(): Promise<AppSession> {
     return { user: { role: "admin" } } as AppSession;
   }
   throw new Error("Unauthorized");
+}
+
+export async function ensureHasPermission(permission: Permission): Promise<AppSession> {
+  const session = await ensureAuthorized();
+  const role = session.user?.role;
+  if (typeof role !== "string") throw new Error("Forbidden");
+  if (!hasPermission(role as Role, permission)) throw new Error("Forbidden");
+  return session;
 }

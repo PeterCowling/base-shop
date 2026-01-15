@@ -1,14 +1,14 @@
 {
   "seo": {
     "title": "Hostel Brikette → Fiordo di Furore by bus",
-    "description": "Step-by-step directions to reach Fiordo di Furore from Hostel Brikette using the SITA bus, including where to buy tickets and how to access the beach."
+    "description": "Itinéraire pas à pas depuis Hostel Brikette en bus SITA pour rejoindre le Fiordo di Furore, avec l’achat des billets et l’accès à la plage."
   },
   "linkLabel": "Hostel Brikette → Fiordo di Furore by bus",
   "intro": [
     "Suivez cet itinéraire pour voyager de l'auberge Brikette à Fiordo di Furore avec le bus SITA sans manquer un arrêt ni arriver au dépourvu.",
     "Le fjord ne dispose pas de billetterie ni de magasins, ces étapes couvrent donc les billets, l'arrêt de bus le plus proche et l'escalier qui mène à la plage."
   ],
-  "warningsTitle": "Before you leave the hostel",
+  "warningsTitle": "Avant de quitter l’hostel",
   "warnings": [
     "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
     "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
@@ -65,7 +65,7 @@
     "Enregistrez le %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette guide de retour% pour votre voyage de retour.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
-  "faqsTitle": "Common questions",
+  "faqsTitle": "Questions fréquentes",
   "faqs": [
     {
       "q": "Dois-je vraiment acheter un billet aller-retour à l’avance ?",
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "q": "How will I recognise the right stop?",
+      "q": "Comment reconnaître le bon arrêt ?",
       "a": [
         "Une fois que le bus aura traversé le pont en arc au-dessus du fjord, il s'arrêtera à côté de la barrière de sécurité. Surveillez les vues du pont, écoutez le conducteur et utilisez l'épingle \"JH73+PQ Furore\" de Google Maps comme sauvegarde."
       ]

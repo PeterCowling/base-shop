@@ -397,6 +397,8 @@
   },
   "filters": {
     "title": "路线筛选",
+    "resultsCount": "结果：{{count}} 条路线",
+    "editLabel": "编辑筛选",
     "transportLabel": "交通类别",
     "transportAll": "全部",
     "transportModes": {

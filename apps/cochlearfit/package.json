@@ -2,11 +2,11 @@
   "name": "@apps/cochlearfit",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3011",
-    "build": "next build",
+    "dev": "node scripts/syncUploads.mjs && next dev -p 3011",
+    "build": "node scripts/syncUploads.mjs && next build",
     "start": "next start -p 3011",
-    "preview": "OUTPUT_EXPORT=1 next build && python3 -m http.server 3011 --directory out",
-    "preview:pages": "OUTPUT_EXPORT=1 next build && pnpm exec wrangler pages dev out --compatibility-flag=nodejs_compat --port 3011",
+    "preview": "OUTPUT_EXPORT=1 node scripts/syncUploads.mjs && OUTPUT_EXPORT=1 next build && python3 -m http.server 3011 --directory out",
+    "preview:pages": "OUTPUT_EXPORT=1 node scripts/syncUploads.mjs && OUTPUT_EXPORT=1 next build && pnpm exec wrangler pages dev out --compatibility-flag=nodejs_compat --port 3011",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"

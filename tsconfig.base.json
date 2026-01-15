@@ -205,6 +205,24 @@
         "packages/configurator/src/*",
         "packages/configurator/dist/*"
       ],
+
+      "@acme/product-configurator": [
+        "packages/product-configurator/src/index.ts",
+        "packages/product-configurator/dist/index.d.ts"
+      ],
+      "@acme/product-configurator/*": [
+        "packages/product-configurator/src/*",
+        "packages/product-configurator/dist/*"
+      ],
+
+      "@acme/tools": [
+        "packages/tools/src/index.ts",
+        "packages/tools/dist/index.d.ts"
+      ],
+      "@acme/tools/*": [
+        "packages/tools/src/*",
+        "packages/tools/dist/*"
+      ],
       
       "@acme/tailwind-config": [
         "packages/tailwind-config/src/index.ts",

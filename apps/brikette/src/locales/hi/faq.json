@@ -12,17 +12,17 @@
     },
     {
       "id": "how-much-does-it-cost-to-stay-at-hostel-brikette",
-      "question": "अनुवाद तैयार किया जा रहा है।",
+      "question": "Hostel Brikette में ठहरने की कीमत कितनी है?",
       "answer": "दरें तारीख और कमरे के प्रकार पर निर्भर करती हैं। नवीनतम कीमत देखने के लिए अपनी तारीख और कमरा चुनकर खोजें।"
     },
     {
       "id": "what-is-there-to-do-at-hostel-brikette",
-      "question": "अनुवाद तैयार किया जा रहा है।",
+      "question": "Hostel Brikette में क्या किया जा सकता है?",
       "answer": "हम ट्रेक का आयोजन करते हैं या सुझाव देते हैं; अन्य गतिविधियों पर अतिरिक्त शुल्क लग सकता है।"
     },
     {
       "id": "how-far-is-hostel-brikette-from-the-centre-of-positano",
-      "question": "अनुवाद तैयार किया जा रहा है।",
+      "question": "Hostel Brikette Positano के केंद्र से कितनी दूर है?",
       "answer": "होस्टल Positano के केंद्र से लगभग 350 मीटर दूर है।"
     },
     {
@@ -52,7 +52,7 @@
     },
     {
       "id": "does-hostel-brikette-have-an-on-site-bar",
-      "question": "अनुवाद तैयार किया जा रहा है।",
+      "question": "क्या Hostel Brikette में ऑन‑साइट बार है?",
       "answer": "हाँ — बार हर दिन 07:30 से 23:30 तक कॉफ़ी, हल्के स्नैक्स, नाश्ता, शाम का भोजन और ड्रिंक्स परोसता है।"
     },
     {
@@ -62,7 +62,7 @@
     },
     {
       "id": "are-there-age-restrictions-at-hostel-brikette",
-      "question": "अनुवाद तैयार किया जा रहा है।",
+      "question": "क्या Hostel Brikette में आयु प्रतिबंध हैं?",
       "answer": "डॉर्म कमरों में चेक-इन केवल 18 से 39 वर्ष के मेहमानों के लिए संभव है; यह सीमा निजी कमरों पर लागू नहीं होती।"
     },
     {
@@ -102,7 +102,7 @@
     },
     {
       "id": "does-hostel-brikette-have-laundry-facilities",
-      "question": "अनुवाद तैयार किया जा रहा है।",
+      "question": "क्या Hostel Brikette में लॉन्ड्री की सुविधा है?",
       "answer": "होस्टल में लॉन्ड्री की सुविधा नहीं है, लेकिन पास में कई सेवाएँ उपलब्ध हैं।"
     },
     {
@@ -113,7 +113,7 @@
     {
       "id": "how-do-i-get-to-hostel-brikette-from-naples-airport",
       "question": "मैं नेपल्स एयरपोर्ट से Hostel Brikette कैसे पहुँचूँ?",
-      "answer": "अनुवाद तैयार किया जा रहा है।"
+      "answer": "Curreri शटल से Sorrento जाएँ, फिर Positano के लिए SITA बस लें; Chiesa Nuova बस स्टॉप पर उतरें।"
     },
     {
       "id": "where-is-the-nearest-bus-stop",
@@ -132,7 +132,7 @@
     },
     {
       "id": "does-hostel-brikette-have-a-shared-kitchen",
-      "question": "अनुवाद तैयार किया जा रहा है।",
+      "question": "क्या Hostel Brikette में साझा रसोई है?",
       "answer": "साझा रसोई नहीं है, लेकिन आप फ्रिज, केतली और माइक्रोवेव का उपयोग कर सकते हैं।"
     },
     {
@@ -143,7 +143,7 @@
     {
       "id": "is-the-property-wheelchair-accessible",
       "question": "क्या यह प्रॉपर्टी व्हीलचेयर से सुलभ है?",
-      "answer": "अनुवाद तैयार किया जा रहा है।"
+      "answer": "होस्टल व्हीलचेयर से सुलभ नहीं है।"
     }
   ]
 }

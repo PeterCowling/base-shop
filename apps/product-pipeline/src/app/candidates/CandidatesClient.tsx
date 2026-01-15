@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { formatCurrency } from "@/lib/format";
+import { formatStageStatus } from "@/lib/stage-labels";
+import { runFullEvaluation } from "./fullEvaluation";
 import { Cluster, Inline, Stack } from "@ui/components/atoms/primitives";
 
 type Candidate = {
@@ -36,6 +38,38 @@ type Candidate = {
       nextAction: string | null;
     } | null;
   };
+  stageM: {
+    status: string | null;
+    createdAt: string | null;
+  };
+  stageT: {
+    status: string | null;
+    createdAt: string | null;
+    summary: {
+      decision: string | null;
+      action: string | null;
+    } | null;
+  };
+  stageS: {
+    status: string | null;
+    createdAt: string | null;
+    summary: {
+      overallRisk: string | null;
+      action: string | null;
+    } | null;
+  };
+  stageB: {
+    status: string | null;
+    createdAt: string | null;
+  };
+  stageC: {
+    status: string | null;
+    createdAt: string | null;
+    summary: {
+      contributionPerUnitCents: string | null;
+      contributionMarginPct: number | null;
+    } | null;
+  };
   lead: {
     id: string;
     title: string | null;
@@ -47,24 +81,60 @@ type Candidate = {
 type CandidateStrings = {
   rankedLabel: string;
   rankedTitle: string;
+  runFullEvalLabel: string;
   runStageKLabel: string;
   exportCsvLabel: string;
+  viewCandidateLabel: string;
   selectAllLabel: string;
   selectLabel: string;
   stageLabel: string;
-  returnBandLabel: string;
+  profitLabel: string;
   peakCashLabel: string;
   paybackLabel: string;
   riskLabel: string;
   effortLabel: string;
   nextLabel: string;
-  nextActions: {
+  recommendation: {
+    label: string;
     advance: string;
-    reviewRisk: string;
-    reviewEffort: string;
-    needStageK: string;
+    review: string;
+    reject: string;
+    pause: string;
   };
+  nextSteps: {
+    needStageM: string;
+    needStageT: string;
+    needStageS: string;
+    needStageB: string;
+    needStageC: string;
+    needStageK: string;
+    needStageR: string;
+    ready: string;
+  };
+  gates: {
+    eligibilityBlocked: string;
+    eligibilityReview: string;
+    complianceBlocked: string;
+  };
+  filters: {
+    label: string;
+    needsDecision: string;
+    blockedEligibility: string;
+    missingMarket: string;
+    profitableCashHeavy: string;
+    highRisk: string;
+    lowConfidence: string;
+    clear: string;
+  };
+  stageLabels: Record<string, string>;
   bulk: {
+    running: string;
+    progress: string;
+    complete: string;
+    error: string;
+    noneSelected: string;
+  };
+  bulkFullEval: {
     running: string;
     progress: string;
     complete: string;
@@ -73,6 +143,74 @@ type CandidateStrings = {
   };
   notAvailable: string;
 };
+
+type FilterKey =
+  | "needsDecision"
+  | "blockedEligibility"
+  | "missingMarket"
+  | "profitableCashHeavy"
+  | "highRisk"
+  | "lowConfidence";
+
+const FILTER_ACTIVE_CLASS =
+  "bg-primary text-primary-foreground"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+const FILTER_INACTIVE_CLASS =
+  "border border-border-2 text-foreground/70 hover:bg-surface-3"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+const FILTER_CLEAR_CLASS =
+  "rounded-full border border-border-2 px-3 py-1 text-xs font-semibold text-foreground/70 hover:bg-surface-3"; // i18n-exempt -- LINT-1007 [ttl=2026-12-31] CSS utility classes
+
+function parseCashValue(value: string | null | undefined): bigint | null {
+  if (!value) return null;
+  try {
+    return BigInt(value);
+  } catch {
+    return null;
+  }
+}
+
+function normalizeLower(value: string | null | undefined): string | null {
+  if (!value) return null;
+  const trimmed = value.trim();
+  return trimmed ? trimmed.toLowerCase() : null;
+}
+
+function isSucceeded(status: string | null | undefined): boolean {
+  return status === "succeeded";
+}
+
+function computeConfidence(candidate: Candidate): number {
+  let score = 100;
+  const statuses = [
+    candidate.stageM.status,
+    candidate.stageT.status,
+    candidate.stageS.status,
+    candidate.stageB.status,
+    candidate.stageC.status,
+    candidate.stageK.status,
+    candidate.stageR.status,
+  ];
+  statuses.forEach((status) => {
+    if (!isSucceeded(status)) score -= 10;
+  });
+  const decision = normalizeLower(candidate.stageT.summary?.decision ?? null);
+  if (decision === "blocked") score -= 15;
+  if (decision === "needs_review") score -= 10;
+  return Math.max(0, score);
+}
+
+type GateStatus = "eligibility_blocked" | "eligibility_review" | "compliance_blocked" | null;
+
+function resolveGate(candidate: Candidate): GateStatus {
+  const decision = normalizeLower(candidate.stageT.summary?.decision ?? null);
+  if (decision === "blocked") return "eligibility_blocked";
+  if (decision === "needs_review") return "eligibility_review";
+  const complianceRisk = normalizeLower(candidate.stageS.summary?.overallRisk ?? null);
+  const complianceAction = normalizeLower(candidate.stageS.summary?.action ?? null);
+  if (complianceAction === "block" || complianceRisk === "high") {
+    return "compliance_blocked";
+  }
+  return null;
+}
 
 export default function CandidatesClient({
   strings,
@@ -87,6 +225,7 @@ export default function CandidatesClient({
     tone: "info" | "success" | "error";
     text: string;
   } | null>(null);
+  const [activeFilters, setActiveFilters] = useState<FilterKey[]>([]);
 
   const loadCandidates = useCallback(async () => {
     setLoading(true);
@@ -222,6 +361,79 @@ export default function CandidatesClient({
     await loadCandidates();
   }, [loadCandidates, selectedIds, strings.bulk]);
 
+  const runBulkFullEval = useCallback(async () => {
+    if (selectedIds.length === 0) {
+      setBulkMessage({ tone: "error", text: strings.bulkFullEval.noneSelected });
+      return;
+    }
+
+    setBulkRunning(true);
+    setBulkMessage({ tone: "info", text: strings.bulkFullEval.running });
+
+    let success = 0;
+    let failed = 0;
+
+    for (let index = 0; index < selectedIds.length; index += 1) {
+      const candidateId = selectedIds[index];
+      if (!candidateId) continue;
+      const progressText = strings.bulkFullEval.progress
+        .replace("{current}", String(index + 1))
+        .replace("{total}", String(selectedIds.length));
+      setBulkMessage({ tone: "info", text: progressText });
+
+      const candidate = candidates.find((item) => item.id === candidateId);
+      if (!candidate) {
+        failed += 1;
+        continue;
+      }
+
+      try {
+        const status = await runFullEvaluation({
+          candidateId,
+          lead: candidate.lead ?? null,
+          statuses: {
+            M: candidate.stageM.status,
+            B: candidate.stageB.status,
+            C: candidate.stageC.status,
+            K: candidate.stageK.status,
+          },
+          stageLabels: strings.stageLabels,
+          gateContext: {
+            eligibilityDecision: candidate.stageT.summary?.decision ?? null,
+            complianceRisk: candidate.stageS.summary?.overallRisk ?? null,
+            complianceAction: candidate.stageS.summary?.action ?? null,
+          },
+          requestedBy: "bulk_full_eval",
+        });
+
+        if (status.missing.length > 0) {
+          failed += 1;
+        } else {
+          success += 1;
+        }
+      } catch (error) {
+        console.error(error);
+        failed += 1;
+      }
+    }
+
+    const summaryText = strings.bulkFullEval.complete
+      .replace("{success}", String(success))
+      .replace("{failed}", String(failed));
+    setBulkMessage({
+      tone: failed > 0 ? "error" : "success",
+      text: summaryText,
+    });
+    setBulkRunning(false);
+    await loadCandidates();
+  }, [
+    candidates,
+    loadCandidates,
+    selectedIds,
+    strings.bulkFullEval,
+    strings.stageLabels,
+  ]);
+
   const rankedCandidates = useMemo(() => {
     if (candidates.length === 0) return candidates;
     return [...candidates].sort((a, b) => {
@@ -236,6 +448,118 @@ export default function CandidatesClient({
       return scoreB - scoreA;
     });
   }, [candidates]);
+
+  const resolveRecommendation = useCallback(
+    (candidate: Candidate) => {
+      const decision = normalizeLower(candidate.decision ?? null);
+      if (decision === "rejected" || decision === "reject" || decision === "kill")
+        return "reject";
+      if (
+        decision === "paused" ||
+        decision === "pause" ||
+        decision === "cooldown" ||
+        decision === "hold"
+      )
+        return "pause";
+      if (decision === "advance" || decision === "approved") return "advance";
+      if (decision === "review" || decision === "needs_review") return "review";
+      const eligibilityDecision = normalizeLower(
+        candidate.stageT.summary?.decision ?? null,
+      );
+      if (eligibilityDecision === "blocked") return "reject";
+      if (eligibilityDecision === "needs_review") return "review";
+      const complianceRisk = normalizeLower(
+        candidate.stageS.summary?.overallRisk ?? null,
+      );
+      const complianceAction = normalizeLower(
+        candidate.stageS.summary?.action ?? null,
+      );
+      if (complianceAction === "block" || complianceRisk === "high") return "reject";
+      const next = candidate.stageR.summary?.nextAction ?? null;
+      if (next === "ADVANCE") return "advance";
+      if (!candidate.stageK.summary?.peakCashOutlayCents) return "review";
+      if (!candidate.stageR.summary?.riskBand) return "review";
+      return "review";
+    },
+    [],
+  );
+
+  const cashMedian = useMemo(() => {
+    const values = candidates
+      .map((candidate) =>
+        parseCashValue(candidate.stageK.summary?.peakCashOutlayCents ?? null),
+      )
+      .filter((value): value is bigint => value !== null);
+    if (values.length === 0) return null;
+    values.sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+    return values[Math.floor(values.length / 2)] ?? null;
+  }, [candidates]);
+
+  const filteredCandidates = useMemo(() => {
+    if (activeFilters.length === 0) return rankedCandidates;
+    return rankedCandidates.filter((candidate) => {
+      const eligibilityDecision = normalizeLower(
+        candidate.stageT.summary?.decision ?? null,
+      );
+      const eligibilityBlocked =
+        eligibilityDecision === "blocked" ||
+        eligibilityDecision === "needs_review";
+      const missingMarket = !isSucceeded(candidate.stageM.status);
+      const complianceRisk = normalizeLower(
+        candidate.stageS.summary?.overallRisk ?? null,
+      );
+      const complianceAction = normalizeLower(
+        candidate.stageS.summary?.action ?? null,
+      );
+      const riskBand = normalizeLower(
+        candidate.stageR.summary?.riskBand ?? null,
+      );
+      const highRisk =
+        complianceAction === "block" ||
+        complianceRisk === "high" ||
+        riskBand === "high";
+      const confidence = computeConfidence(candidate);
+      const lowConfidence = confidence < 50;
+      const cashValue = parseCashValue(
+        candidate.stageK.summary?.peakCashOutlayCents ?? null,
+      );
+      const returnRate = candidate.stageK.summary?.annualizedCapitalReturnRate;
+      const profitValue = parseCashValue(
+        candidate.stageC.summary?.contributionPerUnitCents ?? null,
+      );
+      const profitable =
+        (profitValue !== null && profitValue > 0n) ||
+        (returnRate !== null && returnRate !== undefined && returnRate > 0);
+      const cashHeavy =
+        cashMedian !== null && cashValue !== null && cashValue > cashMedian;
+      const profitableCashHeavy = profitable && cashHeavy;
+      const recommendation = resolveRecommendation(candidate);
+      const needsDecision = !candidate.decision && recommendation !== "pause";
+
+      const filters: Record<FilterKey, boolean> = {
+        needsDecision,
+        blockedEligibility: eligibilityBlocked,
+        missingMarket,
+        profitableCashHeavy,
+        highRisk,
+        lowConfidence,
+      };
+
+      return activeFilters.every((filter) => filters[filter]);
+    });
+  }, [activeFilters, cashMedian, rankedCandidates, resolveRecommendation]);
+
+  const toggleFilter = useCallback((filter: FilterKey) => {
+    setActiveFilters((current) =>
+      current.includes(filter)
+        ? current.filter((item) => item !== filter)
+        : [...current, filter],
+    );
+  }, []);
+
+  const clearFilters = useCallback(() => {
+    setActiveFilters([]);
+  }, []);
 
   return (
     <section className="pp-card p-6">
@@ -280,6 +604,14 @@ export default function CandidatesClient({
             {strings.exportCsvLabel}
           </button>
           <button
+            className="min-h-12 min-w-12 rounded-full border border-border-2 px-4 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-60"
+            onClick={() => void runBulkFullEval()}
+            disabled={bulkRunning || selectedIds.length === 0}
+            type="button"
+          >
+            {strings.runFullEvalLabel}
+          </button>
+          <button
             className="min-h-12 min-w-12 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
             onClick={() => void runBulkStageK()}
             disabled={bulkRunning || selectedIds.length === 0}
@@ -289,6 +621,53 @@ export default function CandidatesClient({
           </button>
         </Cluster>
       </Cluster>
+
+      <div className="mt-4">
+        <span className="text-xs uppercase tracking-widest text-foreground/60">
+          {strings.filters.label}
+        </span>
+        <Inline gap={2} className="mt-2 flex-wrap">
+          {(
+            [
+              { key: "needsDecision", label: strings.filters.needsDecision },
+              {
+                key: "blockedEligibility",
+                label: strings.filters.blockedEligibility,
+              },
+              { key: "missingMarket", label: strings.filters.missingMarket },
+              {
+                key: "profitableCashHeavy",
+                label: strings.filters.profitableCashHeavy,
+              },
+              { key: "highRisk", label: strings.filters.highRisk },
+              { key: "lowConfidence", label: strings.filters.lowConfidence },
+            ] as Array<{ key: FilterKey; label: string }>
+          ).map((filter) => {
+            const isActive = activeFilters.includes(filter.key);
+            return (
+              <button
+                key={filter.key}
+                type="button"
+                onClick={() => toggleFilter(filter.key)}
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                  isActive ? FILTER_ACTIVE_CLASS : FILTER_INACTIVE_CLASS
+                }`}
+              >
+                {filter.label}
+              </button>
+            );
+          })}
+          {activeFilters.length > 0 ? (
+            <button
+              type="button"
+              onClick={clearFilters}
+              className={FILTER_CLEAR_CLASS}
+            >
+              {strings.filters.clear}
+            </button>
+          ) : null}
+        </Inline>
+      </div>
 
       <Stack gap={4} className="mt-6">
         {loading
@@ -303,15 +682,26 @@ export default function CandidatesClient({
                 <div className="mt-6 h-8 w-full rounded-2xl bg-foreground/10" />
               </div>
             ))
-          : rankedCandidates.map((candidate) => {
+          : filteredCandidates.map((candidate) => {
               const title =
                 candidate.lead?.title ??
                 candidate.lead?.url ??
                 strings.notAvailable;
-              const stage = candidate.stageStatus ?? strings.notAvailable;
-              const returnBand = candidate.stageK.summary?.returnBand
-                ? candidate.stageK.summary.returnBand.toUpperCase()
-                : strings.notAvailable;
+              const stage = formatStageStatus(
+                candidate.stageStatus,
+                strings.stageLabels,
+                strings.notAvailable,
+              );
+              let profitPerSale = strings.notAvailable;
+              if (candidate.stageC.summary?.contributionPerUnitCents) {
+                try {
+                  profitPerSale = formatCurrency(
+                    BigInt(candidate.stageC.summary.contributionPerUnitCents),
+                  );
+                } catch {
+                  profitPerSale = strings.notAvailable;
+                }
+              }
               let peakCash = strings.notAvailable;
               if (candidate.stageK.summary?.peakCashOutlayCents) {
                 try {
@@ -333,17 +723,47 @@ export default function CandidatesClient({
               const effort = candidate.stageR.summary?.effortBand
                 ? candidate.stageR.summary.effortBand.toUpperCase()
                 : strings.notAvailable;
-              const nextAction = candidate.stageR.summary?.nextAction ?? null;
-              const next =
-                nextAction === "ADVANCE"
-                  ? strings.nextActions.advance
-                  : nextAction === "REVIEW_RISK"
-                    ? strings.nextActions.reviewRisk
-                    : nextAction === "REVIEW_EFFORT"
-                      ? strings.nextActions.reviewEffort
-                      : nextAction === "NEED_STAGE_K"
-                        ? strings.nextActions.needStageK
-                        : strings.notAvailable;
+              const gate = resolveGate(candidate);
+              const nextStep = (() => {
+                if (gate === "eligibility_blocked" || gate === "eligibility_review") {
+                  return { label: strings.nextSteps.needStageT, href: "#stage-t" };
+                }
+                if (gate === "compliance_blocked") {
+                  return { label: strings.nextSteps.needStageS, href: "#stage-s" };
+                }
+                const stageOrder = [
+                  { status: candidate.stageM.status, label: strings.nextSteps.needStageM, href: "#stage-m" },
+                  { status: candidate.stageT.status, label: strings.nextSteps.needStageT, href: "#stage-t" },
+                  { status: candidate.stageS.status, label: strings.nextSteps.needStageS, href: "#stage-s" },
+                  { status: candidate.stageB.status, label: strings.nextSteps.needStageB, href: "#stage-b" },
+                  { status: candidate.stageC.status, label: strings.nextSteps.needStageC, href: "#stage-c" },
+                  { status: candidate.stageK.status, label: strings.nextSteps.needStageK, href: "#stage-k" },
+                  { status: candidate.stageR.status, label: strings.nextSteps.needStageR, href: "#stage-r" },
+                ];
+                const missing = stageOrder.find((stage) => !isSucceeded(stage.status));
+                if (missing) return { label: missing.label, href: missing.href };
+                return { label: strings.nextSteps.ready, href: "" };
+              })();
+              const gateLabel =
+                gate === "eligibility_blocked"
+                  ? strings.gates.eligibilityBlocked
+                  : gate === "eligibility_review"
+                    ? strings.gates.eligibilityReview
+                    : gate === "compliance_blocked"
+                      ? strings.gates.complianceBlocked
+                      : null;
+              const actionHref = nextStep.href
+                ? `/candidates/${candidate.id}${nextStep.href}`
+                : `/candidates/${candidate.id}`;
+              const recommendation = resolveRecommendation(candidate);
+              const recommendationLabel =
+                recommendation === "advance"
+                  ? strings.recommendation.advance
+                  : recommendation === "reject"
+                    ? strings.recommendation.reject
+                    : recommendation === "pause"
+                      ? strings.recommendation.pause
+                      : strings.recommendation.review;
 
               return (
                 <div
@@ -361,17 +781,22 @@ export default function CandidatesClient({
                       >
                         {title}
                       </Link>
-                      <span className="text-xs text-foreground/60">
-                        {strings.stageLabel}: {stage}
-                      </span>
+                      <Inline gap={2} alignY="center" className="text-xs text-foreground/60">
+                        <span className="rounded-full bg-surface-3 px-2 py-1 text-foreground/80">
+                          {strings.recommendation.label}: {recommendationLabel}
+                        </span>
+                        <span>
+                          {strings.stageLabel}: {stage}
+                        </span>
+                      </Inline>
                     </Stack>
                     <Cluster gap={4} alignY="center">
                       <Inline gap={4} alignY="center" className="text-sm">
                         <Stack gap={1}>
                           <span className="text-xs text-foreground/60">
-                            {strings.returnBandLabel}
+                            {strings.profitLabel}
                           </span>
-                          <span className="font-semibold">{returnBand}</span>
+                          <span className="font-semibold">{profitPerSale}</span>
                         </Stack>
                         <Stack gap={1}>
                           <span className="text-xs text-foreground/60">
@@ -401,9 +826,20 @@ export default function CandidatesClient({
                     <span className="rounded-full border border-border-2 px-3 py-1">
                       {strings.effortLabel}: {effort}
                     </span>
+                    {gateLabel ? (
+                      <span className="rounded-full border border-border-2 bg-amber-50 px-3 py-1 text-amber-800">
+                        {gateLabel}
+                      </span>
+                    ) : null}
                     <span className="rounded-full border border-border-2 px-3 py-1">
-                      {strings.nextLabel}: {next}
+                      {strings.nextLabel}: {nextStep.label}
                     </span>
+                    <Link
+                      href={actionHref}
+                      className="rounded-full bg-primary px-3 py-1 text-primary-foreground hover:opacity-80"
+                    >
+                      {nextStep.label}
+                    </Link>
                   </Inline>
                 </div>
               );

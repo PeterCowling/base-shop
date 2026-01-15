@@ -5,7 +5,7 @@
 // server when the user first needs any price data.
 // -----------------------------------------------------------------------------
 
-import type { RateCalendar } from "@/types/rates";
+import type { RateCalendar } from "@ui/types/rates";
 import {
   createContext,
   ReactNode,

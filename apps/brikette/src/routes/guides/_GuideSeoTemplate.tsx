@@ -48,6 +48,8 @@ import { buildRouteLinks, buildRouteMeta } from "@/utils/routeHead";
 import { resolveGuideOgType } from "./guide-seo/utils/resolveOgType";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 import { isGuideContentFallback } from "@/utils/guideContentFallbackRegistry";
+import { GUIDE_SECTION_BY_KEY } from "@/data/guides.index";
+import { renderGuideLinkTokens } from "@/routes/guides/utils/_linkTokens";
 
 // Cache additional head scripts by guide + lang to avoid duplicate
 // invocations across incidental remounts (e.g., StrictMode) in tests.
@@ -110,6 +112,10 @@ function GuideSeoTemplate({
   fallbackToEnTocTitle = true,
   preferLocalizedSeoTitle = false,
 }: GuideSeoTemplateProps): JSX.Element {
+  const isExperiencesGuide = GUIDE_SECTION_BY_KEY[guideKey] === "experiences";
+  const articleHeadingWeightClass = isExperiencesGuide
+    ? "prose-headings:font-bold"
+    : "prose-headings:font-semibold";
   const lang = useCurrentLanguage();
   const search = typeof window !== "undefined" ? window.location?.search ?? "" : "";
   const translations = useGuideTranslations(lang);
@@ -317,7 +323,8 @@ function GuideSeoTemplate({
   if ((shouldSkipNow || shouldForceSkipFromTranslator) && !skipGenericRef.current) {
     skipGenericRef.current = true;
   }
-  const skipGenericForRequestedLocale = skipGenericRef.current;
+  const skipGenericForRequestedLocale =
+    skipGenericRef.current || guideKey === "positanoBeaches";
 
   const canonicalUrl = useCanonicalUrl({ pathname: canonicalPathname ?? null, lang, guideKey });
 
@@ -464,6 +471,7 @@ function GuideSeoTemplate({
     translateGuides,
     translateGuidesEn,
     ...(typeof buildTocItems === "function" ? { buildTocItems } : {}),
+    renderGenericContent: shouldRenderGenericContentForLocale,
   };
   const { context } = useGuideSeoContext(guideSeoContextArgs);
 
@@ -691,7 +699,7 @@ function GuideSeoTemplate({
               {intro.length > 0 ? (
                 <div className="space-y-4">
                   {intro.map((paragraph, idx) => (
-                    <p key={idx}>{paragraph}</p>
+                    <p key={idx}>{renderGuideLinkTokens(paragraph, lang, `intro-${idx}`)}</p>
                   ))}
                 </div>
               ) : null}
@@ -700,7 +708,7 @@ function GuideSeoTemplate({
                 <section key={`${section.id}-${idxSection}`} id={section.id} className="scroll-mt-28 space-y-4">
                   {section.title ? <h2 className="text-xl font-semibold">{section.title}</h2> : null}
                   {section.body.map((paragraph, index) => (
-                    <p key={index}>{paragraph}</p>
+                    <p key={index}>{renderGuideLinkTokens(paragraph, lang, `section-${section.id}-${index}`)}</p>
                   ))}
                 </section>
               ))}
@@ -715,6 +723,7 @@ function GuideSeoTemplate({
     [
       fallbackStructured,
       hasLocalizedContent,
+      lang,
       preferManualWhenUnlocalized,
       suppressUnlocalizedFallback,
       translatorProvidedEmptyStructured,
@@ -889,9 +898,9 @@ function GuideSeoTemplate({
         {...(typeof guideFaqFallback === "function" ? { guideFaqFallback } : {})}
       />
 
-      <Section as="div" padding="none" className="mx-auto max-w-3xl px-4">
+      <Section as="div" padding="none" className="mx-auto max-w-3xl px-4 pt-35 md:px-8 lg:px-10">
         <DevStatusPill guideKey={guideKey as any} />
-        <article className="prose prose-slate dark:prose-invert prose-headings:font-semibold prose-headings:text-brand-heading dark:prose-headings:text-brand-surface prose-p:text-justify space-y-10">
+        <article className={`prose prose-slate prose-lg sm:prose-xl dark:prose-invert ${articleHeadingWeightClass} prose-headings:tracking-tight prose-headings:text-brand-heading dark:prose-headings:text-brand-surface prose-p:text-left prose-p:leading-relaxed prose-li:leading-relaxed prose-strong:font-semibold prose-strong:text-brand-heading prose-ul:list-disc prose-ol:list-decimal prose-ul:pl-6 prose-ol:pl-6 prose-li:my-1 prose-li:marker:text-brand-primary/70 space-y-10`}>
           {shouldShowEditorialPanel && manifestEntry ? (
             <GuideEditorialPanel
               manifest={manifestEntry}
@@ -1062,7 +1071,7 @@ function GuideSeoTemplate({
           {articleExtrasNodeRef.current}
         </article>
       </Section>
-      <Section as="div" padding="none" className="max-w-4xl space-y-12 px-4 pb-16 sm:px-6 lg:px-8">
+      <Section as="div" padding="none" className="max-w-4xl space-y-12 px-4 pb-16 sm:px-6 md:px-8 lg:px-10">
         {afterArticleNode}
         <FooterWidgets
           lang={lang as any}

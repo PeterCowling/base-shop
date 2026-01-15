@@ -10,6 +10,8 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import DatePicker from "react-datepicker";
+import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
+import { resolveBookingDateFormat } from "@ui/utils/bookingDateFormat";
 import type {
   BookingModalCopy,
   BookingModalBuildParams,
@@ -92,6 +94,8 @@ function BookingModal({
   testId = DEFAULT_TEST_ID,
   onAction,
 }: BookingModalProps): JSX.Element | null {
+  const lang = useCurrentLanguage();
+  const { dateFormat, placeholder } = useMemo(() => resolveBookingDateFormat(lang), [lang]);
   const today = useMemo<Date>(() => todayOverride ?? new Date(), [todayOverride]);
 
   const initialCheckout = useMemo<Date>(() => {
@@ -216,9 +220,9 @@ function BookingModal({
                   selected={checkInDate}
                   onChange={handleCheckIn}
                   minDate={today}
-                  dateFormat="MMM d, yyyy"
+                  dateFormat={dateFormat}
                   className="w-full rounded-lg border-2 border-brand-surface px-4 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-                  placeholderText={copy.datePlaceholder}
+                  placeholderText={placeholder}
                 />
               </div>
 
@@ -231,9 +235,9 @@ function BookingModal({
                   selected={checkOutDate}
                   onChange={handleCheckOut}
                   minDate={minCheckOut}
-                  dateFormat="MMM d, yyyy"
+                  dateFormat={dateFormat}
                   className="w-full rounded-lg border-2 border-brand-surface px-4 py-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary"
-                  placeholderText={copy.datePlaceholder}
+                  placeholderText={placeholder}
                 />
               </div>
 

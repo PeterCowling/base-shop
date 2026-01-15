@@ -1,0 +1,17 @@
+{
+  "version": "0.1.0",
+  "skus": [
+    {
+      "match": {
+        "bodyMaterial": "calf_black",
+        "hardwareFinish": "silver",
+        "lining": "microfiber_tan",
+        "monogram": "none"
+      },
+      "sku": "BAG-001-CALF-BLK-SLV-TAN-NO",
+      "bom": ["BODY_CALF_BLACK", "HARDWARE_SILVER", "LINING_TAN", "THREAD_STD"],
+      "productionNotes": []
+    }
+  ]
+}
+

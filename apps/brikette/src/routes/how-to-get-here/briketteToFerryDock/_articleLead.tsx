@@ -2,15 +2,75 @@ import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 
 import TableOfContents from "@/components/guides/TableOfContents";
+import i18n from "@/i18n";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import type { GuideSeoTemplateContext } from "@/routes/guides/_GuideSeoTemplate";
 
+import { ZoomableFigure } from "../components/ZoomableFigure";
 import { createGuideLabelReader } from "./labels";
 import type { GuideExtras } from "./types";
 
 const inlineLinkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
 
 const GUIDE_SCHEME_PREFIX = "guide:" as const;
+const FIGURE_PATTERN = /^\s*\[\[figure:([a-z0-9-]+)\]\]\s*$/i;
+
+const FIGURES = {
+  map: {
+    src: "/img/directions/hostel-brikette-to-ferry-dock/step-01.jpg",
+    alt: "Map showing the walking route from Hostel Brikette to Positano port with points 1–5.",
+    caption: "Route overview: Hostel → Port (points 1–5).",
+    aspect: "16/9",
+  },
+  "point-1": {
+    src: "/img/directions/hostel-brikette-to-ferry-dock/step-02.jpg",
+    alt: "Intersection near Viale Pasitea with a marked route and a label: “1 Turn Right”.",
+    caption: "Point 1: turn right.",
+    aspect: "16/9",
+  },
+  tabacchi: {
+    src: "/img/directions/hostel-brikette-to-ferry-dock/step-03.png",
+    alt: "Tabacchi storefront with an ATM next to it.",
+    caption: "Tabacchi near point 1 (good landmark).",
+    aspect: "16/9",
+  },
+  "point-2": {
+    src: "/img/directions/hostel-brikette-to-ferry-dock/step-04.jpg",
+    alt: "Road switchback with a marked line toward stairs and a label: “2 Take the stairs straight ahead”.",
+    caption: "Point 2: leave the road and take the stairs straight ahead.",
+    aspect: "16/9",
+  },
+  "point-3": {
+    src: "/img/directions/hostel-brikette-to-ferry-dock/step-05.jpg",
+    alt: "Narrow alley with steps and a marked path, labelled “3 Take the stairs straight ahead”.",
+    caption: "Point 3: continue straight down the stairs.",
+    aspect: "4/3",
+  },
+  "point-4": {
+    src: "/img/directions/hostel-brikette-to-ferry-dock/step-06.jpg",
+    alt: "Crosswalk and road with a marked route toward stairs on the right, labelled “4”.",
+    caption: "Point 4: cross the road, turn left briefly, then take the stairs down on the right.",
+    aspect: "16/9",
+  },
+  "point-5": {
+    src: "/img/directions/hostel-brikette-to-ferry-dock/step-07.jpg",
+    alt: "Small square near the port with a marked route, labelled “5”.",
+    caption: "Point 5: continue under the archway toward the port.",
+    aspect: "2/3",
+  },
+  tickets: {
+    src: "/img/directions/hostel-brikette-to-ferry-dock/step-08.jpg",
+    alt: "Ferry ticket booths at Positano port with timetable boards.",
+    caption: "Ticket booths: check the sign for the next departure.",
+    aspect: "16/9",
+  },
+  port: {
+    src: "/img/directions/hostel-brikette-to-ferry-dock/step-09.jpg",
+    alt: "View of Positano port with a ferry in the foreground and Positano hillside behind.",
+    caption: "Positano port: wait near the end of the pier for boarding calls.",
+    aspect: "16/9",
+  },
+} as const;
 
 function renderInlineLinks(
   value: string,
@@ -120,6 +180,40 @@ export function renderArticleLead(
   } = extras;
 
   const readLabel = createGuideLabelReader(context, labels);
+  const tHowTo = i18n.getFixedT(context.lang, "howToGetHere");
+
+  const renderBodyLine = (value: string, keyPrefix: string): ReactNode => {
+    const match = value.match(FIGURE_PATTERN);
+    if (!match) {
+      return (
+        <p key={keyPrefix} className="leading-relaxed">
+          {renderInlineLinks(value, keyPrefix, context)}
+        </p>
+      );
+    }
+
+    const id = match[1]?.toLowerCase() as keyof typeof FIGURES | undefined;
+    const figure = id ? FIGURES[id] : undefined;
+    if (!figure) {
+      return (
+        <p key={keyPrefix} className="leading-relaxed">
+          {renderInlineLinks(value, keyPrefix, context)}
+        </p>
+      );
+    }
+
+    return (
+      <ZoomableFigure
+        key={keyPrefix}
+        t={tHowTo}
+        src={figure.src}
+        alt={figure.alt}
+        caption={figure.caption}
+        aspect={figure.aspect}
+        className="max-w-3xl"
+      />
+    );
+  };
 
   const shouldRenderKnees =
     kneesList.length > 0 ||
@@ -146,11 +240,9 @@ export function renderArticleLead(
         <section key={section.id} id={section.id} className="space-y-5">
           <h2 className="text-pretty text-3xl font-semibold tracking-tight">{section.title}</h2>
           <div className="space-y-4">
-            {section.body.map((paragraph, index) => (
-              <p key={index} className="leading-relaxed">
-                {renderInlineLinks(paragraph, `${section.id}-body-${index}`, context)}
-              </p>
-            ))}
+            {section.body.map((line, index) =>
+              renderBodyLine(line, `${section.id}-body-${index}`),
+            )}
           </div>
         </section>
       ))}

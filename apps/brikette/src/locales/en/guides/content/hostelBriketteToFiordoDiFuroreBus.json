@@ -58,6 +58,16 @@
       ]
     }
   ],
+  "essentialsTitle": "Essentials",
+  "essentials": [
+    "Sunscreen.",
+    "Towel.",
+    "Sunglasses."
+  ],
+  "typicalCostsTitle": "Typical costs",
+  "typicalCosts": [
+    "Bus ticket: 10 euros."
+  ],
   "tipsTitle": "Tips",
   "tips": [
     "Tip: check the SITA timetable in advance and allow time in case a bus is already full.",

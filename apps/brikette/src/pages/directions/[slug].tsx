@@ -8,6 +8,11 @@ import AppLayout from "@/components/layout/AppLayout";
 import RouteHead from "@/next/RouteHead";
 import RouteTree from "@/next/RouteTree";
 import { collectI18nResources, type I18nResourcesPayload } from "@/next/i18nResources";
+import {
+  resolveGuideContentKeysForMatches,
+  resolveGuideLabelKeysForMatches,
+  resolveNamespacesForMatches,
+} from "@/next/i18nNamespaceSelector";
 
 type PageProps = {
   matches: ResolvedMatch[];
@@ -42,7 +47,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ params }) => {
   const resolvedLang =
     (resolved.result.params["lang"] as AppLanguage | undefined) ??
     (i18nConfig.fallbackLng as AppLanguage);
-  const i18nResources = collectI18nResources(resolvedLang);
+  const namespaces = resolveNamespacesForMatches(resolved.result.matches);
+  const guideContentKeys = resolveGuideContentKeysForMatches(resolved.result.matches);
+  const guideLabelKeys = resolveGuideLabelKeysForMatches(resolved.result.matches, resolvedLang);
+  const i18nResources = collectI18nResources(resolvedLang, namespaces, {
+    guideContentKeys,
+    ...(guideLabelKeys !== undefined ? { guideLabelKeys } : {}),
+  });
 
   return {
     props: {

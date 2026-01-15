@@ -55,6 +55,8 @@ const LEGACY_GUIDE_KEYS = Array.from(
 // EXPERIENCE_ROUTE_KEYS and ASSISTANCE_ROUTE_KEYS derived via shared helper above
 
 const STATIC_ROUTES = [
+  route("privacy-policy", "routes/privacy-policy.redirect.tsx", { id: "privacy-policy" }),
+  route("cookie-policy", "routes/cookie-policy.redirect.tsx", { id: "cookie-policy" }),
   ...DATA_HOW_TO_ROUTE_SLUGS.map((slug) =>
     route(`directions/${slug}`, "routes/how-to-get-here.$slug.tsx", { id: `directions-${slug}` })
   ),
@@ -78,6 +80,9 @@ const LOCALISED = i18nConfig.supportedLngs.flatMap((lang) => {
   const bookSlug = getSlug("book", lang);
   const aboutSlug = getSlug("about", lang);
   const termsSlug = getSlug("terms", lang);
+  const houseRulesSlug = getSlug("houseRules", lang);
+  const privacySlug = getSlug("privacyPolicy", lang);
+  const cookieSlug = getSlug("cookiePolicy", lang);
   const breakfastMenuSlug = getSlug("breakfastMenu", lang);
   const barMenuSlug = getSlug("barMenu", lang);
   const assistanceSlug = getSlug("assistance", lang);
@@ -134,6 +139,9 @@ const LOCALISED = i18nConfig.supportedLngs.flatMap((lang) => {
     route(bookSlug, "routes/book.tsx", { id: `${lang}-book` }),
     route(aboutSlug, "routes/about.tsx", { id: `${lang}-about` }),
     route(termsSlug, "routes/terms.tsx", { id: `${lang}-terms` }),
+    route(houseRulesSlug, "routes/house-rules.tsx", { id: `${lang}-house-rules` }),
+    route(privacySlug, "routes/privacy-policy.tsx", { id: `${lang}-privacy-policy` }),
+    route(cookieSlug, "routes/cookie-policy.tsx", { id: `${lang}-cookie-policy` }),
     route("draft", "routes/guides/draft.index.tsx", {
       id: `${lang}-draft-dashboard`,
     }),
@@ -176,6 +184,9 @@ const LOCALISED = i18nConfig.supportedLngs.flatMap((lang) => {
     }),
     route(`${experiencesSlug}/${guidesTagsSlug}/:tag`, "routes/guides/tags.$tag.tsx", {
       id: `${lang}-experiences-tag`,
+    }),
+    route(`${experiencesSlug}/:slug`, "routes/guides/legacy-redirect.tsx", {
+      id: `${lang}-experiences-legacy`,
     }),
     ...legacyGuideRoutes,
 

@@ -5,7 +5,6 @@
   },
   "linkLabel": "Bus back to Hostel Brikette from Laurito Beach",
   "intro": [
-    "Scan to Share",
     "Tip: Bus Timetable. Note that the timetable includes Positano times, but not Laurito ones. Laurito bus stop is located about 10 minutes before Sponda.",
     "Important! If you have not got your bus ticket for the return journey, you will need to take the water shuttle back to the main beach in Positano - as we state in our guide for getting to Laurito Beach, there’s nowhere to buy a bus ticket for the return journey near the beach!",
     "Tip: See our %LINK:lauritoBeachGuide|Laurito Beach Guide%",
@@ -67,8 +66,6 @@
     }
   ],
   "articleLead": {
-    "scanHeading": "Scan to Share",
-    "qrAlt": "QR code to share this guide",
     "rideAlt": "Amalfi Coast bus en route from Laurito",
     "rideCaption": "Ride from Laurito toward Positano",
     "stopAlt": "Bar Internazionale / Chiesa Nuova bus stop",

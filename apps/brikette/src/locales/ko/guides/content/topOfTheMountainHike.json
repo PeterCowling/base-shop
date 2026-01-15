@@ -5,57 +5,57 @@
   },
   "linkLabel": "Hostel Brikette에서 산 정상 하이킹",
   "intro": [
-    "Monte Sant'Angelo towers above the Amalfi Coast and rewards hikers with sweeping 360-degree views stretching from Capri to the Sorrentine Peninsula.",
-    "This itinerary starts from Hostel Brikette, guides you up to Santa Maria del Castello, and explains the final push to the summit so you know exactly what to expect before committing."
+    "몬테 산탄젤로는 아말피 해안 위로 우뚝 솟아 있으며, 카프리부터 소렌토 반도까지 펼쳐지는 360도 전망으로 하이커에게 보상합니다.",
+    "이 일정은 Hostel Brikette에서 시작해 Santa Maria del Castello까지 안내하고, 정상까지의 마지막 오르막을 설명해 출발 전에 무엇을 기대해야 할지 알려줍니다."
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Why tackle this hike",
+      "title": "이 하이킹을 해야 하는 이유",
       "body": [
-        "Views from the summit sweep across the peninsula towards Capri and down the Lattari mountains, making the grind worthwhile for photographers and hikers alike.",
-        "Reaching the Amalfi Coast's highest point is a satisfying physical challenge and a story you will trade with other travellers back at the hostel.",
-        "The long ascent doubles as a serious cardio session, especially if you are training for bigger treks later in your trip."
+        "정상에서의 전망은 카프리 방향의 반도와 라타리 산맥을 가로지르며, 사진가와 하이커 모두에게 노력할 가치가 있습니다.",
+        "아말피 해안의 최고 지점에 도달하는 것은 만족스러운 신체적 도전이며, 호스텔에서 다른 여행자들과 나눌 이야기가 됩니다.",
+        "긴 오르막은 본격적인 유산소 운동이기도 하며, 여행 중 더 큰 트레킹을 준비한다면 더욱 좋습니다."
       ]
     },
     {
       "id": "getting-to-santa-maria",
-      "title": "Getting to Santa Maria del Castello",
+      "title": "Santa Maria del Castello로 가는 방법",
       "body": [
-        "Follow our standard hostel-to-Santa-Maria directions until you arrive in the village; that climb covers just over one third of the total elevation for the day.",
-        "Take a breather in the square, refill water if the bar is open, and check that everyone in your group still feels strong before committing to the exposed upper trail."
+        "호스텔에서 Santa Maria까지의 표준 경로를 따라 마을에 도착하세요. 이 오르막은 하루 총 고도 상승의 약 3분의 1 이상을 차지합니다.",
+        "광장에서 잠시 쉬고, 바가 열려 있다면 물을 보충한 뒤, 노출된 상부 트레일로 가기 전에 모두가 괜찮은지 확인하세요."
       ]
     },
     {
       "id": "santa-maria-to-summit",
-      "title": "From Santa Maria to the summit",
+      "title": "Santa Maria에서 정상까지",
       "body": [
-        "From the crossroads at the top of the village, turn right up the paved lane until a junction, then turn left and continue past the restaurant until the road bends sharply left.",
-        "Leave the road on the right-hand side, following the side path that drops slightly between houses. It will feel like private property at first, but you are still on the right track.",
-        "Stay on the mountain trail for an extended stretch until you reach a signed crossroads. Ignore the downhill options and take the steeply rising path.",
-        "The ascent quickly zig-zags before easing into a long, flatter traverse along the left-hand side of the mountain face. When you spot stone-cut steps on your right, follow them around the back of the peak for the final push.",
-        "Those rock steps lead to the last ramp of the day—keep climbing and you will emerge on the summit plateau with panoramic views in every direction."
+        "마을 꼭대기의 교차로에서 포장된 길로 오른쪽으로 올라가다가 갈림길에서 왼쪽으로 꺾은 뒤, 레스토랑을 지나 도로가 급하게 왼쪽으로 굽을 때까지 계속 가세요.",
+        "오른쪽에서 도로를 벗어나 집 사이로 살짝 내려가는 옆길을 따라가세요. 처음에는 사유지처럼 느껴질 수 있지만 올바른 경로입니다.",
+        "산길을 오래 따라가 표지판이 있는 교차로에 도착할 때까지 유지하세요. 내리막 선택지는 무시하고 가파르게 올라가는 길로 가세요.",
+        "오르막은 빠르게 지그재그로 이어진 뒤 산의 왼쪽 면을 따라 더 평평한 긴 횡단 구간으로 바뀝니다. 오른쪽에 돌로 만든 계단이 보이면, 정상 뒤편을 돌아 마지막 구간을 따라가세요.",
+        "그 돌계단은 하루의 마지막 램프로 이어집니다. 계속 올라가면 사방으로 펼쳐지는 전망의 정상 평지에 도착합니다."
       ]
     }
   ],
-  "essentialsTitle": "Essentials",
+  "essentialsTitle": "필수 준비물",
   "essentials": [
     "1인당 최소 2리터의 물과 짠 스낵; 산타 마리아 델 카스텔로 이후에는 안정적인 리필이 없습니다.",
     "접지력이 뛰어난 견고한 하이킹 신발 - 상부 트레일 부분은 바위가 많고 느슨하며 노출되어 있습니다.",
     "정상을 위한 자외선 차단 및 레이어; 따뜻한 날에도 바람이 산등성이를 가로질러 휘몰아칠 수 있습니다."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "예상 비용",
   "typicalCosts": [
     "트레일 이용은 무료입니다. 산타 마리아 델 카스텔로에서 음료나 간식으로 보상을 받으려면 €5~€10의 예산을 책정하세요.",
     "끝까지 하이킹을 하는 대신 다른 마을을 거쳐 하산하기로 결정한 경우 SITA 버스 티켓이나 페리 요금을 반환하세요."
   ],
-  "tipsTitle": "Smart timing",
+  "tipsTitle": "좋은 시간대",
   "tips": [
     "최고 더위를 피하려면 여름에는 새벽부터 등반을 시작하세요. 늦가을과 봄 오후에는 뜨거운 태양 없이 부드러운 빛을 제공합니다.",
     "폭풍 예보를 확인하세요. 구름이 덮이면 전망이 흐려질 수 있고 젖은 바위로 인해 정상 계단이 미끄러워질 수 있습니다.",
     "출발하기 전에 호스텔 직원에게 계획과 예상 복귀 시간을 알려주십시오."
   ],
-  "warningsTitle": "When to reconsider",
+  "warningsTitle": "재고할 때",
   "warnings": [
     "산악 경험이 부족하거나 체력이 부족하다면 하이킹을 건너뛰세요. 지속적인 고도 증가는 처벌적이며 구제 금융 포인트가 거의 없습니다.",
     "높은 곳이 불안하다면 경로를 피하세요. 노출된 선반과 가파른 절벽은 자신감 있는 등산객에게도 도전이 됩니다.",
@@ -63,46 +63,46 @@
   ],
   "steps": [
     {
-      "name": "Climb to Santa Maria del Castello",
+      "name": "Santa Maria del Castello까지 오르기",
       "text": "산타 마리아 델 카스텔로(Santa Maria del Castello)로 향하는 호스텔 경로를 이용하세요. 정사각형에 도달하면 표고의 약 1/3을 완료했다는 의미입니다."
     },
     {
-      "name": "Join the mountain trail",
+      "name": "산길로 합류하기",
       "text": "마을 교차로에서 우회전한 후 레스토랑을 지나 좌회전하고 집들을 둘러싸는 오른쪽 길로 도로를 벗어나세요."
     },
     {
-      "name": "Commit to the upper ascent",
+      "name": "상부 오르막에 들어가기",
       "text": "울퉁불퉁한 길을 따라 표지판이 있는 교차로를 따라가다가 정상을 향해 곧장 오르막으로 향하는 길을 선택하세요."
     },
     {
-      "name": "Navigate the zig-zags",
+      "name": "지그재그 구간 통과하기",
       "text": "트레일이 산의 왼쪽 측면을 따라 평평해질 때까지 가파른 지그재그를 통과하세요."
     },
     {
-      "name": "Take the rock-cut stairs",
+      "name": "바위 계단 오르기",
       "text": "오른쪽 돌계단을 올라 산면 뒤를 돌아 마지막 경사로로 갑니다."
     },
     {
-      "name": "Reach the summit",
+      "name": "정상 도착",
       "text": "정상까지 마지막 오르막을 따라가며 파노라마를 감상한 후 산타마리아로 향하는 발걸음을 되돌려보세요."
     }
   ],
-  "faqsTitle": "FAQs",
+  "faqsTitle": "자주 묻는 질문",
   "faqs": [
     {
-      "q": "How long does the full hike take?",
+      "q": "전체 하이킹은 얼마나 걸리나요?",
       "a": [
         "Santa Maria에서의 휴식과 정상에서의 시간을 포함하여 Hostel Brikette에서 왕복하는 데 6~7시간이 소요됩니다."
       ]
     },
     {
-      "q": "Is the trail marked?",
+      "q": "트레일은 표시되어 있나요?",
       "a": [
         "산타마리아 너머에는 마커가 드물다. 오프라인 지도를 가지고 다니면서 교차로의 흔적과 표지판이 눈에 띄게 낡았는지 주의 깊게 살펴보세요."
       ]
     },
     {
-      "q": "Can I turn back early?",
+      "q": "중간에 되돌아갈 수 있나요?",
       "a": [
         "예. 상단 부분이 너무 노출된 것 같으면 산타마리아에서 경치를 감상하거나 하단 지그재그를 이용하여 왔던 길로 돌아오세요."
       ]
@@ -110,22 +110,22 @@
   ],
   "toc": {
     "labels": {
-      "warnings": "When to reconsider"
+      "warnings": "재고할 때"
     }
   },
   "gallery": {
     "title": "사진 갤러리",
     "items": [
       {
-        "alt": "Looking across the peninsula to Capri",
+        "alt": "반도를 넘어 카프리 방향 전망",
         "caption": "반도 너머 카프리를 바라보는 전망"
       },
       {
-        "alt": "Scan to Share QR code",
+        "alt": "공유용 QR 코드",
         "caption": "공유용 QR 코드 스캔"
       },
       {
-        "alt": "Trail near the summit",
+        "alt": "정상 근처 트레일",
         "caption": "정상에 가까워지는 구간"
       }
     ]

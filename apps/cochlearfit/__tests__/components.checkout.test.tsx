@@ -4,6 +4,8 @@ import userEvent from "@testing-library/user-event";
 import * as navigation from "next/navigation";
 import CheckoutPanel from "@/components/checkout/CheckoutPanel";
 import ThankYouPanel from "@/components/checkout/ThankYouPanel";
+import type { Product } from "@/types/product";
+import { listCochlearfitProducts } from "@/lib/cochlearfitCatalog.server";
 import { renderWithProviders } from "./testUtils";
 import { createCheckoutSession, fetchCheckoutSession } from "@/lib/checkout";
 
@@ -22,6 +24,12 @@ const fetchCheckoutSessionMock = fetchCheckoutSession as jest.MockedFunction<
 const STORAGE_KEY = "cochlearfit:cart";
 
 describe("checkout panels", () => {
+  let products: Product[];
+
+  beforeAll(async () => {
+    products = await listCochlearfitProducts("en");
+  });
+
   beforeEach(() => {
     localStorage.clear();
     jest.restoreAllMocks();
@@ -32,7 +40,7 @@ describe("checkout panels", () => {
   });
 
   it("disables checkout when cart is empty", () => {
-    renderWithProviders(<CheckoutPanel />, { withCart: true });
+    renderWithProviders(<CheckoutPanel products={products} />, { withCart: true });
     expect(screen.getByRole("button", { name: "Pay with Stripe" })).toBeDisabled();
   });
 
@@ -57,7 +65,7 @@ describe("checkout panels", () => {
       url: "https://stripe.test/checkout",
     });
 
-    renderWithProviders(<CheckoutPanel />, { withCart: true });
+    renderWithProviders(<CheckoutPanel products={products} />, { withCart: true });
 
     expect(await screen.findByText("Classic Secure")).toBeInTheDocument();
     await user.click(screen.getByRole("button", { name: "Pay with Stripe" }));
@@ -80,7 +88,7 @@ describe("checkout panels", () => {
 
     createCheckoutSessionMock.mockRejectedValue(new Error("fail"));
 
-    renderWithProviders(<CheckoutPanel />, { withCart: true });
+    renderWithProviders(<CheckoutPanel products={products} />, { withCart: true });
     await user.click(screen.getByRole("button", { name: "Pay with Stripe" }));
 
     expect(

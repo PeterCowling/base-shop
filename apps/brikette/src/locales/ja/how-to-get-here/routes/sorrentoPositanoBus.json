@@ -34,13 +34,13 @@
     "arrival": {
       "title": "ポジターノ（キエーザ・ヌオーヴァ）到着",
       "points": [
-        "翻訳を準備中です。",
-        "翻訳を準備中です。",
+        "ポジターノにはSITA停留所が2つあり、「Sponda」と「Chiesa Nuova」が表示されます。",
+        "ホステルへは Via G. Marconi 上の「Positano (Chiesa Nuova)」が正しい停留所です。",
         "停留所は Bar Internazionale というカフェ／バーの前にあります。"
       ],
       "image": {
-        "src": "翻訳を準備中です。",
-        "alt": "翻訳を準備中です。",
+        "src": "/img/directions/positano-bus-stop.png",
+        "alt": "Bar Internazionale前のポジターノ Chiesa Nuova の SITA バス停",
         "caption": "ホステルへ最も簡単に向かえる「Positano — Chiesa Nuova」で降車しましょう。"
       }
     },

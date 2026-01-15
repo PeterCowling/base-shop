@@ -3,6 +3,7 @@
 import React, { useMemo } from "react";
 import Link from "next/link";
 import { useTranslations } from "@acme/i18n";
+import type { Product } from "@/types/product";
 import { useCart } from "@/contexts/cart/CartContext";
 import { getCartLineItems } from "@/lib/cart";
 import CartItemRow from "@/components/cart/CartItemRow";
@@ -10,11 +11,14 @@ import CartSummary from "@/components/cart/CartSummary";
 import { useLocale } from "@/contexts/LocaleContext";
 import { withLocale } from "@/lib/routes";
 
-const CartContents = React.memo(function CartContents() {
+const CartContents = React.memo(function CartContents({ products }: { products: Product[] }) {
   const t = useTranslations();
   const locale = useLocale();
   const { items } = useCart();
-  const lineItems = useMemo(() => getCartLineItems(items), [items]);
+  const lineItems = useMemo(
+    () => getCartLineItems(items, products),
+    [items, products]
+  );
   const shopHref = useMemo(() => withLocale("/shop", locale), [locale]);
 
   if (items.length === 0) {

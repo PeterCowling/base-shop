@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 
-jest.mock("@/components/atoms/shadcn", () =>
+jest.mock("@ui/components/atoms/shadcn", () =>
   require("./test-utils/shadcnStub").createShadcnStub()
 );
 jest.mock("../../atoms/shadcn", () =>

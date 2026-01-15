@@ -397,6 +397,8 @@
   },
   "filters": {
     "title": "Фильтр маршрутов",
+    "resultsCount": "Результатов: {{count}} маршрутов",
+    "editLabel": "Изменить фильтры",
     "transportLabel": "Тип транспорта",
     "transportAll": "Все",
     "transportModes": {

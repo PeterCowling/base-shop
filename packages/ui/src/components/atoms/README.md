@@ -7,17 +7,17 @@ re-export the original shadcn/ui components with our typings so you can opt in
 to their baseline styling when needed.
 
 ```ts
-import { Button } from "@/components/atoms/shadcn";
+import { Button } from "@ui/components/atoms/shadcn";
 
 // or mix in our in-house atoms
-import { StatCard } from "@/components/atoms";
+import { StatCard } from "@ui/components/atoms";
 ```
 
 When both variants are present in the same module, alias the shadcn import so
 its provenance remains clear:
 
 ```ts
-import { Button as ShButton } from "@/components/atoms/shadcn";
+import { Button as ShButton } from "@ui/components/atoms/shadcn";
 ```
 
 Most atoms extend a native element (`HTMLDivElement`, `HTMLSpanElement`, …) so
@@ -26,7 +26,7 @@ layout, spacing and accessibility attributes can be passed through via
 
 ## Usage patterns
 
-- Import atoms from `@/components/atoms` inside apps and templates.
+- Import atoms from `@ui/components/atoms` inside apps and templates.
 - Co-locate styling tweaks with consumers by passing Tailwind classes through
   `className` instead of modifying the component source.
 - Many visual atoms (e.g. `StatCard`, `ProductBadge`) accept `children` or

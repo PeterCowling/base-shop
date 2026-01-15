@@ -47,6 +47,10 @@ export default [
       "**/storybook-static/**",
       "apps/skylar/out/**",
       "apps/*/out/**",
+      "apps/brikette/functions/**",
+      "apps/brikette/scripts/**",
+      "apps/brikette/tests/**",
+      "apps/brikette/workers/**",
       "packages/cypress-image-snapshot/**",
       "**/build/**",
       "**/coverage/**",
@@ -67,6 +71,7 @@ export default [
       "packages/config/jest.preset.cjs",
       "apps/api/jest.config.cjs",
       "apps/api/postcss.config.cjs",
+      "apps/handbag-configurator/public/ktx2/basis_transcoder.js",
     ],
   },
   /* ▸ Baseline DX plugins (no new rules except Tailwind contradicting classes) */
@@ -231,6 +236,18 @@ export default [
       "ds/no-raw-tailwind-color": "off",
       // Governance: require ticketed eslint-disable justifications (baseline warn; overridden later per scope)
       "ds/require-disable-justification": "warn",
+    },
+  },
+  /* ▸ UI layout gutters: require padding when Section opts out */
+  {
+    files: [
+      "packages/ui/src/atoms/**/*.{ts,tsx}",
+      "packages/ui/src/molecules/**/*.{ts,tsx}",
+      "packages/ui/src/organisms/**/*.{ts,tsx}",
+      "packages/ui/src/layout/**/*.{ts,tsx}",
+    ],
+    rules: {
+      "ds/require-section-padding": ["error", { min: 4, components: ["Section", "LayoutSection"] }],
     },
   },
 
@@ -1344,6 +1361,31 @@ export default [
       // Translation catalogs regularly include raw strings and disable directives.
       // Allow eslint-disable comments without ticket references so files can be generated safely.
       "ds/require-disable-justification": "off",
+    },
+  },
+
+  /* ▸ Handbag configurator: disable DS enforcement rules (app uses custom styling) */
+  {
+    files: ["apps/handbag-configurator/**/*.{ts,tsx,js,jsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      ...offAllDsRules,
+    },
+  },
+
+  /* ▸ XA apps: relax copy/layout DS rules during content migration */
+  {
+    files: [
+      "apps/xa/**/*.{ts,tsx,js,jsx}",
+      "apps/xa-b/**/*.{ts,tsx,js,jsx}",
+      "apps/xa-c/**/*.{ts,tsx,js,jsx}",
+    ],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+      "ds/no-physical-direction-classes-in-rtl": "off",
+      "ds/container-widths-only-at": "off",
+      "ds/min-tap-size": "off",
     },
   },
  

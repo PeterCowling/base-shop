@@ -1,126 +1,126 @@
 {
   "seo": {
-    "title": "Laurito Beach guide",
-    "description": "Choose between Da Adolfo and Tre Ville, learn how the shuttle boats work, and plan a stress-free beach day in Laurito."
+    "title": "دليل شاطئ لوريتو",
+    "description": "اختر بين دا أدولفو وتري فيل، وتعرّف على عمل قوارب النقل، وخطّط ليوم شاطئ بلا توتر في لوريتو."
   },
-  "linkLabel": "Laurito Beach guide",
+  "linkLabel": "دليل شاطئ لوريتو",
   "intro": [
-    "Laurito is a pocket-sized cove tucked between Positano and Praiano. Two beach clubs — Da Adolfo and Villa Tre Ville — dominate the shoreline, leaving just a sliver of public sand. The reward is west-facing sunshine, iconic lunch spots, and a quieter atmosphere than Spiaggia Grande.",
-    "Use this guide to decide which club suits your style, understand how the water taxis operate, and map out the bus-and-stairs route back to Hostel Brikette."
+    "لوريتو خليج صغير محصور بين بوزيتانو وبرايانو. يهيمن ناديان شاطئيان — دا أدولفو وفيلا تري فيل — على الواجهة البحرية، ولا يبقى سوى شريط عام ضيق من الرمل. المكافأة هي شمس متجهة للغرب، وأماكن غداء شهيرة، وأجواء أهدأ من سبياجيا غراندي.",
+    "استخدم هذا الدليل لتحديد النادي الذي يناسب ذوقك، وفهم طريقة عمل سيارات الأجرة المائية، ورسم مسار الحافلة والدرج للعودة إلى هوستل بريكيت."
   ],
   "toc": [
     {
       "href": "#why-go",
-      "label": "Why visit Laurito"
+      "label": "لماذا تزور لوريتو"
     },
     {
       "href": "#layout",
-      "label": "Layout & services"
+      "label": "التخطيط والخدمات"
     },
     {
       "href": "#tre-ville",
-      "label": "Villa Tre Ville beach club"
+      "label": "نادي شاطئ فيلا تري فيل"
     },
     {
       "href": "#da-adolfo",
-      "label": "Da Adolfo beach club"
+      "label": "نادي شاطئ دا أدولفو"
     },
     {
       "href": "#logistics",
-      "label": "Logistics & getting back"
+      "label": "اللوجستيات والعودة"
     }
   ],
   "sections": [
     {
       "id": "why-go",
-      "title": "Why Laurito is worth the effort",
+      "title": "لماذا يستحق لوريتو العناء",
       "body": [
-        "Laurito sits just outside Positano’s centre, so crowds thin out compared with Spiaggia Grande. Sun hits the deck until early evening, the water stays calm for swimming, and the cliff backdrop makes for classic Amalfi Coast photos.",
-        "You will need either a confirmed reservation or patience for the tiny free strip, but once you are settled it is one of the most relaxed spots within a short ride of Hostel Brikette."
+        "يقع لوريتو خارج مركز بوزيتانو بقليل، لذا تقل الحشود مقارنة بسبياجيا غراندي. تصل الشمس إلى الشاطئ حتى أوائل المساء، ويبقى الماء هادئاً للسباحة، وتمنحك خلفية الجرف صوراً كلاسيكية لساحل أمالفي.",
+        "ستحتاج إما إلى حجز مؤكد أو إلى صبر لشريط الرمال العام الصغير، لكن بعد الاستقرار يصبح واحداً من أكثر الأماكن هدوءاً ضمن رحلة قصيرة من هوستل بريكيت."
       ]
     },
     {
       "id": "layout",
-      "title": "Layout and who runs what",
+      "title": "التخطيط ومن يدير ماذا",
       "body": [
-        "The cove splits into three zones. A narrow public area sits on the far right for those who bring their own towels. Villa Tre Ville’s club occupies the central decks with terracotta loungers, while Da Adolfo operates the left-hand side with wooden beds and the restaurant terrace.",
-        "All guests arrive by boat or via the steep stairway from the SITA bus stop. Expect to queue at peak times because both clubs control access to most of the shoreline."
+        "ينقسم الخليج إلى ثلاث مناطق. توجد منطقة عامة ضيقة في أقصى اليمين لمن يجلبون مناشفهم. يحتل نادي فيلا تري فيل المنصات الوسطى بكراسي استرخاء من التيراكوتا، بينما يدير دا أدولفو الجانب الأيسر بأسِرّة خشبية وشرفة المطعم.",
+        "يصل جميع الضيوف بالقارب أو عبر الدرج الحاد من موقف حافلات SITA. توقّع طوابير في أوقات الذروة لأن الناديين يسيطران على معظم الشاطئ."
       ]
     },
     {
       "id": "tre-ville",
-      "title": "Villa Tre Ville beach club",
+      "title": "نادي شاطئ فيلا تري فيل",
       "body": [
-        "Villa Tre Ville hosts a boutique club with limited loungers, attentive service, and pricing to match. Expect premium day beds, à la carte dining, and prosecco served to your chair.",
-        "Reservations run through the hotel concierge. Seats can exceed €200 for two in high season, but include towels, showers, and return boat service to Spiaggia Grande.",
-        "Late afternoon is particularly scenic; staff often arrange sunset spritz tastings before the final shuttle back to Positano."
+        "يستضيف فيلا تري فيل نادياً بوتيكياً مع عدد محدود من الكراسي وخدمة دقيقة وتسعير مطابق. توقّع أسِرّة نهارية فاخرة وطعاماً حسب الطلب وبروسكو يُقدَّم عند مقعدك.",
+        "الحجوزات تتم عبر كونسيرج الفندق. قد تتجاوز الأسعار 200 يورو لشخصين في موسم الذروة، لكنها تشمل المناشف والاستحمام وخدمة قارب العودة إلى سبياجيا غراندي.",
+        "أواخر بعد الظهر منظرها خلاب؛ وغالباً ما ينظّم الموظفون تذوّق مشروب سبريتس عند الغروب قبل رحلة العودة الأخيرة إلى بوزيتانو."
       ]
     },
     {
       "id": "da-adolfo",
-      "title": "Da Adolfo beach club",
+      "title": "نادي شاطئ دا أدولفو",
       "body": [
-        "Da Adolfo is famous for its grilled mozzarella on lemon leaves and relaxed, bohemian vibe. Booking is notoriously difficult — they reply slowly, and day-of slots go to returning guests first.",
-        "If you cannot secure a reservation, arrive early at Spiaggia Grande and ask to join the Da Adolfo water taxi as a standby guest. Once at the dock, staff will add you to their waitlist for any no-shows.",
-        "Lounger packages hover around €50–€70 for two people including the shuttle. Lunch mains run €18–€26 and the kitchen stays open through late afternoon."
+        "يشتهر دا أدولفو بجبنة الموزاريلا المشوية على أوراق الليمون وبأجوائه البوهيمية الهادئة. الحجز صعب جداً — الردود بطيئة، والأماكن في اليوم نفسه تُعطى أولاً للضيوف العائدين.",
+        "إذا لم تتمكن من حجز، احضر باكراً إلى سبياجيا غراندي واطلب الانضمام إلى قارب دا أدولفو كضيف احتياطي. عند الوصول إلى الرصيف، سيضيفك الموظفون إلى قائمة الانتظار في حال وجود متغيبين.",
+        "تتراوح حزم الكراسي لنفرين بين 50–70 يورو وتشمل خدمة القارب. أطباق الغداء الرئيسية بين 18–26 يورو ويبقى المطبخ مفتوحاً حتى أواخر بعد الظهر."
       ]
     },
     {
       "id": "logistics",
-      "title": "Logistics, tickets, and getting back",
+      "title": "اللوجستيات والتذاكر والعودة",
       "body": [
-        "Water taxis for both clubs depart from the small pier on Spiaggia Grande. Boats typically run every 30 minutes from 09:30 until early afternoon, then resume returns around 15:00. Keep an eye on the chalkboard at the dock for changes when seas are rough.",
-        "Prefer public transport? Follow our %LINK:lauritoBeachBusDown|bus guide% for the outbound journey and %LINK:lauritoBeachBusBack|return guide% for the climb back. Buy your bus tickets before leaving town — there is nowhere to purchase them at Laurito.",
-        "On the way home, the coastal bus towards Sorrento or Positano stops beside the staircase entrance. Services thin out after 19:00, so confirm the last departure or budget for a taxi arranged via the hostel."
+        "تنطلق سيارات الأجرة المائية للناديين من الرصيف الصغير في سبياجيا غراندي. تعمل القوارب عادة كل 30 دقيقة من 09:30 حتى أوائل بعد الظهر، ثم تستأنف رحلات العودة نحو 15:00. راقب اللوح الطباشيري على الرصيف لأي تغييرات عندما تكون البحار هائجة.",
+        "تفضّل النقل العام؟ اتبع %LINK:lauritoBeachBusDown|دليل الحافلة% لرحلة الذهاب و%LINK:lauritoBeachBusBack|دليل العودة% لصعود الدرج. اشترِ تذاكر الحافلة قبل مغادرة البلدة — لا يوجد مكان لشرائها في لوريتو.",
+        "في طريق العودة، تتوقف الحافلة الساحلية باتجاه سورينتو أو بوزيتانو بجوار مدخل الدرج. تقل الخدمات بعد 19:00، لذا تأكد من آخر انطلاق أو خصص ميزانية لسيارة أجرة مرتبة عبر النزل."
       ]
     }
   ],
-  "essentialsTitle": "What to expect",
+  "essentialsTitle": "ما الذي تتوقعه",
   "essentials": [
-    "Reservations are essential for both clubs in summer; walk-ins only succeed before 10:00.",
-    "Tiny public section fills quickly — arrive with your own umbrella and mat if you plan to use it.",
-    "Return boats leave mid-afternoon; have the bus backup ready for evening plans."
+    "الحجوزات ضرورية لكلا الناديين في الصيف؛ الدخول دون حجز ينجح فقط قبل 10:00.",
+    "القسم العام صغير جداً ويمتلئ بسرعة — احضر بمظلة وحصيرة إذا كنت تنوي استخدامه.",
+    "تغادر قوارب العودة في منتصف بعد الظهر؛ جهّز خيار الحافلة كخطة بديلة للمساء."
   ],
-  "typicalCostsTitle": "Typical costs",
+  "typicalCostsTitle": "تكاليف معتادة",
   "typicalCosts": [
-    "Da Adolfo lounger set for two: €50–€70 including shuttle boat.",
-    "Villa Tre Ville premium deck for two: €180–€220 with towels and concierge service.",
-    "Lunch mains at either club: €18–€30, cocktails €12–€15, bottled water €3–€4."
+    "طقم كراسي دا أدولفو لنفرين: 50–70 يورو تشمل القارب.",
+    "منصة فيلا تري فيل الفاخرة لنفرين: 180–220 يورو مع مناشف وخدمة كونسيرج.",
+    "أطباق الغداء الرئيسية في أي نادٍ: 18–30 يورو، الكوكتيلات 12–15 يورو، المياه المعبأة 3–4 يورو."
   ],
-  "tipsTitle": "Quick tips",
+  "tipsTitle": "نصائح سريعة",
   "tips": [
-    "Screenshot confirmation emails — mobile signal fades near the dock.",
-    "Pack reef-safe sunscreen and water shoes; the shoreline mixes pebbles and rock slabs.",
-    "Review our %LINK:beaches|Positano beaches overview% to compare Laurito with other coves."
+    "التقط لقطة شاشة لرسائل تأكيد الحجز — إشارة الهاتف تضعف قرب الرصيف.",
+    "احمل واقي شمس آمن للشعاب وحذاء ماء؛ فالشاطئ مزيج من الحصى والصخور.",
+    "راجع %LINK:beaches|نظرة عامة على شواطئ بوزيتانو% لمقارنة لوريتو بالخلجان الأخرى."
   ],
-  "warningsTitle": "Good to know",
+  "warningsTitle": "معلومات مهمة",
   "warnings": [
-    "Rough seas pause shuttle boats; staff will text updates but the bus may be your only route back.",
-    "No ATMs or shops at the cove — bring cash or cards for meals and extras.",
-    "The stairway is steep with uneven steps; plan breaks and wear grippy footwear."
+    "عندما تكون البحار هائجة تتوقف قوارب النقل؛ سيرسل الموظفون تحديثات لكن الحافلة قد تكون طريق العودة الوحيد.",
+    "لا توجد صرافات أو متاجر في الخليج — أحضر نقوداً أو بطاقات للوجبات والإضافات.",
+    "الدرج شديد الانحدار بدرجات غير مستوية؛ خطّط لاستراحات وارتدِ أحذية ذات قبضة جيدة."
   ],
-  "faqsTitle": "Laurito Beach FAQs",
+  "faqsTitle": "أسئلة شائعة حول شاطئ لوريتو",
   "faqs": [
     {
-      "q": "Do I need a reservation?",
+      "q": "هل أحتاج إلى حجز؟",
       "a": [
-        "Yes. Both clubs prioritise guests with confirmed bookings. Da Adolfo accepts standby visitors on a waitlist, but only after pre-booked guests are seated."
+        "نعم. يعطي الناديان الأولوية للضيوف أصحاب الحجوزات المؤكدة. يقبل دا أدولفو زواراً احتياطيين على قائمة انتظار، لكن فقط بعد جلوس الضيوف المحجوزين."
       ]
     },
     {
-      "q": "Can I use the public section?",
+      "q": "هل يمكنني استخدام القسم العام؟",
       "a": [
-        "You can, but space is extremely limited. Bring everything you need, including shade and water, and arrive before 09:30 to claim a spot."
+        "يمكنك ذلك، لكن المساحة محدودة جداً. أحضر كل ما تحتاجه، بما في ذلك الظل والماء، واحضر قبل 09:30 لتحجز مكاناً."
       ]
     },
     {
-      "q": "How late do the boats run?",
+      "q": "حتى أي وقت تعمل القوارب؟",
       "a": [
-        "Most return shuttles finish by 18:00 in summer, earlier in shoulder season. Always confirm the last departure on arrival and have the bus timetable saved as a backup."
+        "تنتهي معظم رحلات العودة بحلول 18:00 في الصيف، وأبكر في المواسم الانتقالية. أكّد دائماً آخر موعد انطلاق عند الوصول واحفظ جدول الحافلة كخطة بديلة."
       ]
     }
   ],
   "gallery": {
-    "alt": "Laurito Beach shoreline"
+    "alt": "ساحل شاطئ لوريتو"
   }
 }

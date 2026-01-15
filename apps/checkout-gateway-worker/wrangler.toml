@@ -1,0 +1,15 @@
+name = "checkout-gateway-worker"
+main = "src/index.ts"
+compatibility_date = "2025-12-26"
+
+[vars]
+# Where to forward commerce authority endpoints.
+# Example: "https://node-commerce.example"
+NODE_COMMERCE_ORIGIN = ""
+
+# Optional: require an internal token for shop-context routes (not webhooks).
+# When set, Front Door must inject `x-front-door-token` with this exact value.
+FRONT_DOOR_AUTH_TOKEN = ""
+
+# Optional: injected into Node requests as Authorization.
+NODE_COMMERCE_AUTH_HEADER = ""

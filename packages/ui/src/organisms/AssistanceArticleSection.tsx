@@ -119,7 +119,7 @@ function AssistanceArticleSection({ namespace, media, lang }: ArticleSectionProp
                   img ? `${even ? "md:order-2" : "md:order-1"} md:col-span-7 lg:col-span-8` : ""
                 }`}
               >
-                <Trans i18nKey={`content.${key}`} ns={namespace} components={linkComponents} />
+                <Trans i18nKey={`content.${key}`} ns={namespace} components={linkComponents} t={t} />
               </p>
             </div>
           </article>

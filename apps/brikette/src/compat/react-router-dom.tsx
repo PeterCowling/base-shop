@@ -1,4 +1,4 @@
-import React, { forwardRef, useCallback, useContext, useMemo } from "react";
+import React, { forwardRef, useCallback, useContext, useMemo, useState } from "react";
 import NextLink from "next/link";
 
 import {
@@ -6,12 +6,15 @@ import {
   LoaderFunctionArgs,
   NavigateFunction,
   NavigateOptions,
+  RouterState,
   RouterStateContext,
   RouteDataContext,
+  RouterStateProvider,
   To,
   Location,
   fallbackNavigate,
   getFallbackLocation,
+  locationFromUrl,
   redirect,
   toHref,
 } from "./router-state";
@@ -113,7 +116,6 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
   ({ to, replace, prefetch, className, children, preventScrollReset, ...rest }, ref) => {
     const href = toHref(to);
     const inRouter = useInRouterContext();
-    void preventScrollReset;
     if (!inRouter) {
       return (
         <a ref={ref} href={href} className={className} {...rest}>
@@ -131,6 +133,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     return (
       <NextLink
         href={href}
+        {...(preventScrollReset ? { scroll: false } : {})}
         {...(replace !== undefined ? { replace } : {})}
         {...(() => {
           const normalized = normalizePrefetch(prefetch);
@@ -189,11 +192,87 @@ export const HydratedRouter = ({ children }: { children?: React.ReactNode }): Re
   <>{children ?? null}</>
 );
 
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+const normalizeEntries = (entries: string[] | undefined) => {
+  const normalized = entries && entries.length ? entries : ["/"];
+  return normalized.map((entry) => locationFromUrl(entry || "/", "http://localhost"));
+};
+
+type MemoryRouterProps = {
+  children?: React.ReactNode;
+  initialEntries?: string[];
+  initialIndex?: number;
+};
+
+export const MemoryRouter = ({ children, initialEntries, initialIndex = 0 }: MemoryRouterProps): React.ReactElement => {
+  const [history, setHistory] = useState(() => {
+    const entries = normalizeEntries(initialEntries);
+    return {
+      entries,
+      index: clamp(initialIndex, 0, entries.length - 1),
+    };
+  });
+
+  // We know location exists because normalizeEntries always returns at least "/"
+  // and index is clamped to valid range
+  const location = history.entries[history.index]!;
+
+  const navigate = useCallback<NavigateFunction>((to, options) => {
+    setHistory((prev) => {
+      if (typeof to === "number") {
+        return { ...prev, index: clamp(prev.index + to, 0, prev.entries.length - 1) };
+      }
+
+      const href = toHref(to);
+      const nextLocation = locationFromUrl(href, "http://localhost");
+
+      if (options?.replace) {
+        const entries = [...prev.entries];
+        entries[prev.index] = nextLocation;
+        return { entries, index: prev.index };
+      }
+
+      const entries = [...prev.entries.slice(0, prev.index + 1), nextLocation];
+      return { entries, index: prev.index + 1 };
+    });
+  }, []);
+
+  const state = useMemo<RouterState>(
+    () => ({
+      location,
+      params: {},
+      matches: [],
+      loaderData: {},
+      navigate,
+    }),
+    [location, navigate],
+  );
+
+  return <RouterStateProvider state={state}>{children ?? null}</RouterStateProvider>;
+};
+
+export const Routes = ({ children }: { children?: React.ReactNode }): React.ReactElement | null => (
+  <>{children ?? null}</>
+);
+
+export const Route = ({
+  children,
+  element,
+}: {
+  children?: React.ReactNode;
+  element?: React.ReactElement | null;
+}): React.ReactElement | null => {
+  if (element) return <>{element}</>;
+  if (children) return <>{children}</>;
+  return null;
+};
+
 const routerDom = {
   Link,
   NavLink,
   PrefetchPageLinks,
   HydratedRouter,
+  MemoryRouter,
   Outlet,
   useInRouterContext,
   useLocation,
@@ -203,6 +282,8 @@ const routerDom = {
   useSearchParams,
   useLoaderData,
   redirect,
+  Routes,
+  Route,
 };
 
 export default routerDom;

@@ -1,0 +1,45 @@
+{
+  "id": "shop1",
+  "name": "shop1",
+  "catalogFilters": [],
+  "themeId": "base",
+  "themeDefaults": {},
+  "themeOverrides": {},
+  "themeTokens": {},
+  "filterMappings": {},
+  "priceOverrides": {},
+  "localeOverrides": {},
+  "navigation": [
+    {
+      "label": "Parent",
+      "url": "https://example.com/parent",
+      "children": [
+        {
+          "label": "Child",
+          "url": "https://example.com/parent/child"
+        }
+      ]
+    }
+  ],
+  "analyticsEnabled": false,
+  "shippingProviders": [],
+  "taxProviders": [
+    "taxjar"
+  ],
+  "paymentProviders": [],
+  "enableEditorial": false,
+  "subscriptionsEnabled": false,
+  "rentalSubscriptions": [],
+  "coverageIncluded": true,
+  "luxuryFeatures": {
+    "blog": false,
+    "contentMerchandising": false,
+    "raTicketing": false,
+    "fraudReviewThreshold": 0,
+    "requireStrongCustomerAuth": false,
+    "strictReturnConditions": false,
+    "trackingDashboard": false,
+    "premierDelivery": false
+  },
+  "componentVersions": {}
+}

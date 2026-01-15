@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import { RouteDataProvider } from "@/compat/router-state";
 import { routeModules } from "@/compat/route-modules";
 import type { ResolvedMatch } from "@/compat/route-runtime";
+import type { RouteModule } from "@/compat/route-module-types";
 
 const componentCache = new Map<string, React.ComponentType<Record<string, unknown>>>();
 
@@ -18,9 +19,14 @@ const getRouteComponent = (file: string): React.ComponentType<Record<string, unk
     return Missing;
   }
 
-  const Component = dynamic(() => loader().then((mod) => mod.default ?? (() => null)), {
-    ssr: true,
-  });
+  const Component = dynamic(
+    () =>
+      loader().then((mod) => {
+        const routeModule = mod as RouteModule;
+        return routeModule.default ?? (() => null);
+      }),
+    { ssr: true },
+  );
   componentCache.set(file, Component);
   return Component;
 };

@@ -14,8 +14,8 @@
     "primaryCtaAria": "احجز إقامتك في Hostel Brikette",
     "secondaryCtaAria": "اعرض قائمة بار Hostel Brikette",
     "tertiaryCtaAria": "أرسل رسالة إلى المساعد الرقمي لـHostel Brikette",
-    "breakfastCta": "View the breakfast menu",
-    "breakfastCtaAria": "View the breakfast menu"
+    "breakfastCta": "اعرض قائمة الإفطار",
+    "breakfastCtaAria": "اعرض قائمة الإفطار"
   },
   "sections": {
     "bar": {
@@ -71,7 +71,7 @@
       "book": "احجز الآن",
       "events": "البار والفعاليات",
       "concierge": "تحدث مع المساعد",
-      "breakfast": "Breakfast menu"
+      "breakfast": "قائمة الإفطار"
     }
   },
   "title": "تجارب Hostel Brikette",
@@ -89,17 +89,17 @@
     "empty": "لا نملك بعد أدلة تجارب لـ{{tag}}. جرّب وسمًا آخر أو أزل الفلتر.",
     "clearFilter": "عرض جميع أدلة التجارب",
     "cardCta": "استكشف دليل التجارب «{{guideTitle}}»",
-    "filterHeading": "Filter experiences guides",
-    "filterDescription": "Pick a tag to narrow the experiences we highlight.",
+    "filterHeading": "تصفية أدلة التجارب",
+    "filterDescription": "اختر وسمًا لتضييق نطاق التجارب التي نعرضها.",
     "grouped": {
       "beaches": {
         "guides": {
-          "heading": "Beach guides",
-          "description": "Pick the right stretch of sand and plan your day."
+          "heading": "أدلة الشواطئ",
+          "description": "اختر الشاطئ المناسب وخطّط ليومك."
         },
         "directions": {
-          "heading": "Beach directions",
-          "description": "Step-by-step directions from Hostel Brikette down to the shore."
+          "heading": "إرشادات الوصول إلى الشاطئ",
+          "description": "إرشادات خطوة بخطوة من Hostel Brikette إلى الشاطئ."
         }
       }
     }

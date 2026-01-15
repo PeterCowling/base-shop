@@ -1,11 +1,13 @@
-import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import React from "react";
 import ThemeToggle from "../ThemeToggle";
 
-jest.mock("@platform-core/contexts/ThemeContext", () => {
+const setThemeMock = vi.fn();
+
+vi.mock("@acme/platform-core/contexts/ThemeContext", () => {
   const React = require("react");
-  const setThemeMock = jest.fn();
   return {
     useTheme: () => {
       const [theme, setThemeState] = React.useState("base");
@@ -15,85 +17,73 @@ jest.mock("@platform-core/contexts/ThemeContext", () => {
       };
       return { theme, setTheme };
     },
-    setThemeMock,
   };
 });
-
-const { setThemeMock } = require("@platform-core/contexts/ThemeContext") as {
-  setThemeMock: jest.Mock;
-};
 
 describe("ThemeToggle", () => {
   beforeEach(() => {
     setThemeMock.mockClear();
   });
 
-  it("toggles theme on click", async () => {
+  it("renders as a radiogroup with three options", () => {
+    render(<ThemeToggle />);
+
+    const radiogroup = screen.getByRole("radiogroup", { name: /theme selection/i });
+    expect(radiogroup).toBeInTheDocument();
+
+    const radios = within(radiogroup).getAllByRole("radio");
+    expect(radios).toHaveLength(3);
+    expect(radios[0]).toHaveAttribute("aria-label", "Light");
+    expect(radios[1]).toHaveAttribute("aria-label", "Dark");
+    expect(radios[2]).toHaveAttribute("aria-label", "System");
+  });
+
+  it("shows Light as selected initially", () => {
+    render(<ThemeToggle />);
+
+    const lightButton = screen.getByRole("radio", { name: /light/i });
+    expect(lightButton).toHaveAttribute("aria-checked", "true");
+    expect(screen.getByText(/light theme selected/i)).toBeInTheDocument();
+  });
+
+  it("selects Dark theme on click", async () => {
     const user = userEvent.setup();
     render(<ThemeToggle />);
 
-    const button = screen.getByRole("button", { name: /switch to dark theme/i });
-    expect(screen.getByText(/light theme selected/i)).toBeInTheDocument();
-
-    await user.click(button);
+    const darkButton = screen.getByRole("radio", { name: /dark/i });
+    await user.click(darkButton);
 
     expect(setThemeMock).toHaveBeenCalledWith("dark");
+    expect(darkButton).toHaveAttribute("aria-checked", "true");
     expect(screen.getByText(/dark theme selected/i)).toBeInTheDocument();
   });
 
-  it("cycles through dark → system → base on successive toggles", async () => {
+  it("selects System theme on click", async () => {
     const user = userEvent.setup();
     render(<ThemeToggle />);
-    const button = screen.getByRole("button", { name: /switch to dark theme/i });
 
-    // initial state
-    expect(button).toHaveAttribute("aria-label", "Switch to Dark theme");
-    expect(screen.getByText(/light theme selected/i)).toBeInTheDocument();
+    const systemButton = screen.getByRole("radio", { name: /system/i });
+    await user.click(systemButton);
 
-    // base -> dark
-    await user.click(button);
-    expect(setThemeMock).toHaveBeenLastCalledWith("dark");
-    expect(button).toHaveAttribute("aria-label", "Switch to System theme");
-    expect(screen.getByText(/dark theme selected/i)).toBeInTheDocument();
-
-    // dark -> system
-    await user.click(button);
-    expect(setThemeMock).toHaveBeenLastCalledWith("system");
-    expect(button).toHaveAttribute("aria-label", "Switch to Light theme");
+    expect(setThemeMock).toHaveBeenCalledWith("system");
+    expect(systemButton).toHaveAttribute("aria-checked", "true");
     expect(screen.getByText(/system theme selected/i)).toBeInTheDocument();
-
-    // system -> base
-    await user.click(button);
-    expect(setThemeMock).toHaveBeenLastCalledWith("base");
-    expect(button).toHaveAttribute("aria-label", "Switch to Dark theme");
-    expect(screen.getByText(/light theme selected/i)).toBeInTheDocument();
   });
 
-  it.each([
-    { key: "Enter", label: /switch to dark theme/i },
-    { key: " ", label: /switch to dark theme/i },
-  ])("toggles theme on %s key", async ({ key, label }) => {
-    const user = userEvent.setup();
-    render(<ThemeToggle />);
-    const button = screen.getByRole("button", { name: label });
+  it("renders with labels when showLabels is true", () => {
+    render(<ThemeToggle showLabels />);
 
-    button.focus();
-    await user.keyboard(key === " " ? " " : `{${key}}`);
-
-    expect(setThemeMock).toHaveBeenCalledWith("dark");
-    expect(screen.getByText(/dark theme selected/i)).toBeInTheDocument();
+    expect(screen.getByText("Light")).toBeInTheDocument();
+    expect(screen.getByText("Dark")).toBeInTheDocument();
+    expect(screen.getByText("System")).toBeInTheDocument();
   });
 
-  it("ignores unrelated keys", async () => {
-    const user = userEvent.setup();
-    render(<ThemeToggle />);
-    const button = screen.getByRole("button", { name: /switch to dark theme/i });
+  it("applies size variants correctly", () => {
+    const { rerender } = render(<ThemeToggle size="sm" />);
+    const radiogroup = screen.getByRole("radiogroup");
+    expect(radiogroup).toHaveClass("h-8");
 
-    button.focus();
-    await user.keyboard("{ArrowDown}");
-
-    expect(setThemeMock).not.toHaveBeenCalled();
-    expect(button).toHaveAttribute("aria-label", "Switch to Dark theme");
-    expect(screen.getByText(/light theme selected/i)).toBeInTheDocument();
+    rerender(<ThemeToggle size="md" />);
+    expect(radiogroup).toHaveClass("h-10");
   });
 });

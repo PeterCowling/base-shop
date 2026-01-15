@@ -1,0 +1,23 @@
+{
+  "offline": {
+    "indicator": "您处于离线状态",
+    "message": "部分功能可能受限"
+  },
+  "update": {
+    "available": "有可用更新",
+    "message": "新版本已准备就绪。刷新以更新。",
+    "refresh": "刷新",
+    "later": "稍后"
+  },
+  "loading": "加载中...",
+  "error": "出现问题",
+  "retry": "重试",
+  "back": "返回",
+  "next": "下一步",
+  "save": "保存",
+  "cancel": "取消",
+  "close": "关闭",
+  "done": "完成",
+  "yes": "是",
+  "no": "否"
+}

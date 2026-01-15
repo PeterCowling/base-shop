@@ -118,28 +118,28 @@
     }
   ],
   "scanToShare": {
-    "title": "Scan to Share",
+    "title": "Scan for at dele",
     "items": [
       {
-        "alt": "Scan to Share / route image 1"
+        "alt": "Scan for at dele / rutebillede 1"
       },
       {
-        "alt": "Scan to Share / route image 2"
+        "alt": "Scan for at dele / rutebillede 2"
       },
       {
-        "alt": "Scan to Share / route image 3"
+        "alt": "Scan for at dele / rutebillede 3"
       },
       {
-        "alt": "Scan to Share / route image 4"
+        "alt": "Scan for at dele / rutebillede 4"
       },
       {
-        "alt": "Scan to Share / route image 5"
+        "alt": "Scan for at dele / rutebillede 5"
       },
       {
-        "alt": "Scan to Share / route image 6"
+        "alt": "Scan for at dele / rutebillede 6"
       },
       {
-        "alt": "Scan to Share / route image 7"
+        "alt": "Scan for at dele / rutebillede 7"
       }
     ]
   }

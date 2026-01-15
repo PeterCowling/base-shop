@@ -46,3 +46,19 @@ export function toStringArray(value: unknown): string[] {
   }
   return [];
 }
+
+export function looksLikePlaceholderTranslation(
+  value: string,
+  expectedKey?: string,
+  guideKey?: string,
+): boolean {
+  if (!expectedKey) return false;
+  const normalized = value.replace(/^[a-z]{2,3}:/i, "").trim();
+  if (!normalized) return false;
+  if (normalized === expectedKey) return true;
+  if (guideKey) {
+    if (normalized === guideKey) return true;
+    if (normalized.startsWith("content.") && normalized.includes(guideKey)) return true;
+  }
+  return false;
+}

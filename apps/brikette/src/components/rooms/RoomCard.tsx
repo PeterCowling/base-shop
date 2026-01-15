@@ -115,8 +115,10 @@ export default memo(function RoomCard({
   lang,
 }: RoomCardProps): JSX.Element {
   const resolvedLang = (lang ?? i18nConfig.fallbackLng) as string;
-  const { t, ready } = useTranslation("roomsPage", { lng: resolvedLang });
-  const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: resolvedLang });
+  const { t, ready: readyRaw } = useTranslation("roomsPage", { lng: resolvedLang });
+  const ready = readyRaw !== false;
+  const { t: tTokens, ready: tokensReadyRaw } = useTranslation("_tokens", { lng: resolvedLang });
+  const tokensReady = tokensReadyRaw !== false;
   const { openModal } = useModal();
 
   const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);

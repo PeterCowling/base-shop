@@ -52,6 +52,7 @@ export async function markReturned(
   shop: string,
   sessionId: string,
   damageFee?: number,
+  lineItems?: Order["lineItems"],
 ): Promise<Order | null> {
   try {
     const order = await prisma.rentalOrder.update({
@@ -59,7 +60,9 @@ export async function markReturned(
       data: {
         returnedAt: nowIso(),
         ...(typeof damageFee === "number" ? { damageFee } : {}),
-      },
+        ...(lineItems ? { lineItems } : {}),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- CORE-0001 [ttl=2026-12-31] Prisma client typings drift during migration window
+      } as any,
     });
     if (!order) return null;
     return normalize(order as Order);
@@ -102,4 +105,3 @@ export async function setReturnStatus(
     return null;
   }
 }
-

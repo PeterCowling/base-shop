@@ -1,16 +1,16 @@
 {
   "seo": {
-    "title": "背包客预算游波西塔诺：1–3日行程",
-    "description": "按天安排行程，在不超支的前提下玩到波西塔诺精华。"
+    "title": "背包客预算游波西塔诺：1-3日行程",
+    "description": "简洁的1-3日计划，覆盖海滩、观景点和低预算一日游。"
   },
-  "linkLabel": "背包客预算游波西塔诺：1–3日行程",
+  "linkLabel": "背包客预算游波西塔诺：1-3日行程",
   "intro": [
-    "实用的1–3日计划，在控制预算的同时不错过精华。"
+    "选择1、2或3日计划，在控制花费的同时把景色、海滩和一日游都安排到。"
   ],
   "toc": [
     {
       "href": "#day1",
-      "label": "第 1 天：波西塔诺核心"
+      "label": "第 1 天：波西塔诺精华"
     },
     {
       "href": "#day2",
@@ -35,69 +35,73 @@
   ],
   "sections": [
     {
-      "id": "day1",
-      "title": "第 1 天：认识波西塔诺",
+      "id": "pacing",
+      "title": "把大爬升放在前面",
       "body": [
-        "上午在 Spiaggia Grande 与 Marina Grande 探索老城区；沿海岸步行至 Fornillo 海滩避开人潮。",
-        "傍晚在 Chiesa Nuova 露台看日落，晚餐选择上城区家庭餐馆或旅舍露台拼餐。"
+        "到达当天先在低处散步（Spiaggia Grande、Fornillo），把大段台阶（众神之路、Arienzo台阶）留到睡足后再走。",
+        "按高度分组安排停靠点，一次待在同一层平台；先看上方观景点，再下到码头。"
       ]
     },
     {
-      "id": "day2",
-      "title": "第 2 天：山海穿插",
+      "id": "budget-mix",
+      "title": "每天一个付费亮点",
       "body": [
-        "清晨乘 SITA 公交到 Nocelle/Bomerano，徒步众神之路；午后在 Arienzo 或 Laurito 海滩放松。",
-        "晚间返回旅舍参加活动或沿 Via Pasitea 漫步，顺道品尝手工冰淇淋。"
+        "每天预算一个付费项目（去卡普里的渡轮、拼船、花园门票），其余用免费步道和海滩填满。",
+        "在Chiesa Nuova附近补给零食和水；海边咖啡馆涨价最快。"
       ]
     },
     {
-      "id": "day3",
-      "title": "第 3 天：一日游选项",
+      "id": "viewpoints",
+      "title": "免门票观景点",
       "body": [
-        "选择卡普里、阿马尔菲＋拉韦洛或庞贝一日游；提前锁定首班渡轮/火车以压缩成本。",
-        "若留在本地，可体验烹饪课或参加预算友好的船游，黄昏返回旅舍露台小聚。"
+        "Via Cristoforo Colombo在日出或金色时刻就是经典明信片角度，且不收门票。",
+        "想安静拍照，08:30之前去Chiesa Nuova的瓷砖庭院或Fornillo上方的小观景台。"
       ]
     },
     {
-      "id": "savings",
-      "title": "省钱策略",
+      "id": "swim-breaks",
+      "title": "预算友好型海滩休息",
       "body": [
-        "多使用 SITA 公交与步行楼梯，旺季提前在线购票避免溢价。",
-        "自带水瓶与小吃，在海滩或景点附近减少临时高价消费。"
+        "Fornillo Beach有免费的公共区域；从Spiaggia Grande走海岸步道过去，只租你需要的装备。",
+        "想要Arienzo的海滩俱乐部氛围，10:30前下台阶抢公共区位置，再用佛卡夏和水果野餐。"
       ]
     },
     {
       "id": "evenings",
-      "title": "夜晚也能省着玩",
+      "title": "省钱的夜晚",
       "body": [
-        "旅舍露台的日落时光免费，可以用超市起泡酒自调 Spritz，再搭配大家分享的小食。",
-        "留意公告板公布的旅舍社交夜，或在 23:30 之后前往 Music on the Rocks，旅舍房客可享较低门票，记得携带证件。"
+        "旅舍露台看日落免费；用超市的prosecco调一杯简单的spritz，分享零食。",
+        "看看旅舍公告板；外出的话晚一点去，门票更低，并带好证件。"
       ]
     }
   ],
-  "day1Title": "1 天：必访精华",
+  "day1Title": "1 天：波西塔诺精华",
   "day1": [
-    "早上：Spiaggia Grande 观景点 → 沿海岸步道走到 Fornillo。",
-    "午餐：在 Chiesa Nuova 附近买帕尼尼或切片披萨，省下餐费。",
-    "日落：前往旅舍附近的露台观景点。"
+    "上午：Spiaggia Grande观景点，然后沿海岸步道走到Fornillo下海。",
+    "午餐：Chiesa Nuova附近买切片披萨或帕尼尼，在露台吃。",
+    "日落：Via Cristoforo Colombo或旅舍露台。"
   ],
   "day2Title": "2 天：加上众神之路",
   "day2": [
-    "第 1 天依照上述安排。",
-    "第 2 天：搭 SITA 公交到 Nocelle → 走众神之路路段 → 在海滩降温休息。"
+    "上午：%LINK:pathOfTheGodsNocelle|Sentiero degli Dei / Path of the Gods%（巴士到Nocelle，徒步下到Positano）。",
+    "下午：%LINK:fornilloBeachGuide|在Fornillo海滩降温% 或在镇上吃个晚午餐。"
   ],
-  "day3Title": "3 天：离岛或阿马尔菲组合",
+  "day3Title": "3 天：卡普里或阿马尔菲＋拉韦洛",
   "day3": [
-    "方案 A：卡普里一日游（首班渡轮），自行规划步行路线。",
-    "方案 B：巴士前往阿马尔菲＋拉韦洛；逛 Villa Rufolo 花园后坐在大教堂台阶享用冰淇淋。"
+    "选项 A：%LINK:capriDayTrip|卡普里一日游% - 赶第一班渡轮，规划DIY步行环线并带上零食。",
+    "选项 B：%LINK:positanoRavello|阿马尔菲＋拉韦洛% - 巴士或渡轮到阿马尔菲，再上到Villa Rufolo或Villa Cimbrone。"
   ],
-  "savingsTitle": "省钱小窍门",
+  "savingsTitle": "省钱技巧",
   "savings": [
-    "选择肩季或淡季旅行，多利用 SITA 公交与步行串联观景点。",
-    "入住宿舍房、自制简单早餐，日落时带食物到观景点野餐。"
+    "选择肩季出行（4-5月、9月下旬），价格更低、人更少。",
+    "大多数路段用SITA公交；想看风景就加一段渡轮。",
+    "住多人间或在Chiesa Nuova附近合住，以减少行李搬运和爬楼成本。",
+    "出门前在旅舍或公共水龙头补满水。",
+    "若是官网直订，利用免费早餐和晚间饮品抵一顿饭。",
+    "观景点之间尽量步行不坐公交；楼梯免费且风景好。"
   ],
   "foodTitle": "平价美食",
-  "foodText": "在市中心可以买到帕尼尼、切片披萨与超市沙拉，尽量避开海滨区的高价餐厅。",
+  "foodText": "在Via dei Mulini和Chiesa Nuova周边找切片披萨、帕尼尼和熟食沙拉。到迷你超市采购野餐食材，把坐下来吃饭留给一次小奖励。",
   "transportTitle": "交通提示",
   "transportCompareLabel": "比较路线：",
   "transportCompareLinks": [
@@ -117,25 +121,25 @@
     {
       "q": "1 日行程怎么安排？",
       "a": [
-        "从 Spiaggia Grande 出发，沿海岸走到 Fornillo，傍晚在 Chiesa Nuova 露台看日落，再和旅舍伙伴一起用餐。"
+        "从Spiaggia Grande出发，沿海岸步道走到Fornillo，然后在Via Cristoforo Colombo或旅舍露台看日落。"
       ]
     },
     {
       "q": "如何压低交通成本？",
       "a": [
-        "尽量搭乘 SITA 公交并多走楼梯；渡轮风景佳但费用较高。"
+        "大部分行程坐SITA公交，想看风景再加一段渡轮；上车前买票避免临时加价。"
       ]
     },
     {
       "q": "2 日行程建议？",
       "a": [
-        "第 1 天先掌握波西塔诺重点；第 2 天安排众神之路（从 Nocelle 出发）加上海滩时光。"
+        "第1天覆盖波西塔诺精华；第2天走Nocelle经众神之路，再安排一段海滩休息。"
       ]
     },
     {
       "q": "第 3 天可以加什么？",
       "a": [
-        "可以安排卡普里日游，或组合阿马尔菲＋拉韦洛；务必搭早班渡轮并自备零食节省开支。"
+        "二选一：卡普里一日游或阿马尔菲＋拉韦洛；早出发并带零食更省钱。"
       ]
     }
   ]

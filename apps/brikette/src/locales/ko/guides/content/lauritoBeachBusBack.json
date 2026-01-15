@@ -1,52 +1,52 @@
 {
   "seo": {
-    "title": "Laurito Beach에서 Hostel Brikette로 돌아가는 버스",
-    "description": "Climb to the Laurito bus stop, ride the Amalfi Coast service to Chiesa Nuova, and finish with a short walk to Hostel Brikette."
+    "title": "라우리토 해변에서 Hostel Brikette로 돌아가는 버스",
+    "description": "라우리토 버스 정류장까지 올라가 아말피 해안 버스를 타고 Chiesa Nuova에서 내린 뒤 Hostel Brikette까지 짧게 걸어오세요."
   },
-  "linkLabel": "Bus back from Laurito Beach",
+  "linkLabel": "라우리토 해변에서 버스로 돌아가기",
   "intro": [
-    "Skip the full stair climb from Laurito by boarding the Amalfi Coast bus that stops beside the beach access road and runs back up to Chiesa Nuova.",
-    "Buy your return ticket in town before heading down to the cove — there is nowhere near Laurito to purchase one, and without it you'll need to take the shuttle boat back to Positano."
+    "라우리토에서 전체 계단 오르기를 피하려면 해변 진입로 옆에 정차하는 아말피 해안 버스를 타고 키에사 누오바까지 올라가세요.",
+    "만으로 내려가기 전에 시내에서 귀환 티켓을 구매하세요. 라우리토 근처에는 구매처가 없어서 티켓이 없으면 수상 셔틀로 포지타노로 돌아가야 합니다."
   ],
   "sections": [
     {
       "id": "walk-to-stop",
-      "title": "Walk up to the Laurito bus stop",
+      "title": "라우리토 버스 정류장까지 걸어가기",
       "body": [
-        "Follow the stairs from the beach up to the coastal road and cross carefully to the uphill side.",
-        "Look for the blue-and-white SITA sign mounted on the metal pole and wait on the lay-by so the driver can see you."
+        "해변에서 계단을 올라 해안 도로에 도착한 뒤, 상행 방향으로 조심히 건너세요.",
+        "금속 기둥에 달린 파란색·흰색 SITA 표지판을 찾고, 운전기사가 볼 수 있도록 대기 공간에서 기다리세요."
       ]
     },
     {
       "id": "board-the-bus",
-      "title": "Board the Amalfi Coast bus",
+      "title": "아말피 해안 버스 탑승",
       "body": [
-        "Flag the driver as the Amalfi- or Positano-bound coach approaches and have your validated ticket ready.",
-        "The ride covers roughly 4.1 kilometres (2.5 miles) with several village stops; hold on as the bus climbs the hairpins toward Positano."
+        "아말피 또는 포지타노 방향 버스가 오면 손을 들어 신호하고 검표된 티켓을 준비하세요.",
+        "이동 거리는 약 4.1km(2.5마일)이며 여러 마을에 정차합니다. 버스가 헤어핀 구간을 오르니 안전하게 잡으세요."
       ]
     },
     {
       "id": "arrive-chiesa-nuova",
-      "title": "Get off at Bar Internazionale / Chiesa Nuova",
+      "title": "Bar Internazionale / Chiesa Nuova에서 하차",
       "body": [
-        "Listen for the announcement or watch for the Bar Internazionale tabacchi — it is the first major stop once you re-enter Positano.",
-        "Press the stop button in advance and step off beside the tabacchi corner opposite Hostel Brikette."
+        "방송을 듣거나 Bar Internazionale 타바키를 확인하세요. 포지타노에 다시 진입한 뒤 첫 번째 주요 정류장입니다.",
+        "미리 하차 버튼을 누르고 Hostel Brikette 맞은편 타바키 모퉁이에서 내리세요."
       ]
     },
     {
       "id": "final-steps",
-      "title": "Walk back to Hostel Brikette",
+      "title": "Hostel Brikette로 걸어가기",
       "body": [
-        "Continue in the same direction as the bus for just over 100 metres (330 feet) along Viale Pasitea.",
-        "Take the staircase on your right to return directly to Hostel Brikette's main entrance."
+        "버스가 진행하던 방향으로 비알레 파시테아를 따라 약 100미터(330피트) 정도 계속 가세요.",
+        "오른쪽에 있는 계단을 올라 Hostel Brikette 정문으로 바로 들어가세요."
       ]
     }
   ],
-  "tipsTitle": "Bus tips",
+  "tipsTitle": "버스 팁",
   "tips": [
-    "The printed timetable lists Positano times, not Laurito; expect the Laurito stop about 10 minutes before the Positano Sponda arrival.",
-    "If you run out of tickets, use the Laurito shuttle boat back to Spiaggia Grande so you can buy more at the tabacchi before trying again.",
-    "Laurito 시설 및 셔틀 옵션에 대한 자세한 내용은 %LINK:해변|포지타노 해변 개요%를 확인하세요."
+    "인쇄 시간표는 라우리토가 아니라 Positano 시간을 표시합니다. 라우리토 정류장은 Positano Sponda 도착 약 10분 전입니다.",
+    "티켓이 없으면 라우리토 셔틀 보트로 Spiaggia Grande에 돌아가 타바키에서 티켓을 구매한 뒤 다시 시도하세요.",
+    "라우리토 시설 및 셔틀 옵션에 대한 자세한 내용은 %LINK:beaches|포지타노 해변 개요%를 확인하세요."
   ],
   "faqs": [
     {
@@ -65,11 +65,9 @@
     }
   ],
   "articleLead": {
-    "scanHeading": "Scan to Share",
-    "qrAlt": "QR code to share this guide",
-    "rideAlt": "Amalfi Coast bus en route from Laurito",
-    "rideCaption": "Ride from Laurito toward Positano",
+    "rideAlt": "라우리토에서 출발한 아말피 해안 버스",
+    "rideCaption": "라우리토에서 포지타노 방향 이동",
     "stopAlt": "Bar Internazionale / Chiesa Nuova 버스 정류장",
-    "stopCaption": "Bar Internazionale / Chiesa Nuova stop"
+    "stopCaption": "Bar Internazionale / Chiesa Nuova 정류장"
   }
 }

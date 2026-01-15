@@ -1,0 +1,28 @@
+{
+  "title": "Einstellungen",
+  "cache": {
+    "title": "Zwischengespeicherte Daten",
+    "usage": "Genutzter Speicher",
+    "quota": "{{percent}}% des verfügbaren Speichers",
+    "description": "Zwischengespeicherte Daten helfen der App offline zu funktionieren. Das Löschen kann erfordern, dass Inhalte erneut heruntergeladen werden.",
+    "clear": "Zwischengespeicherte Daten löschen",
+    "clearing": "Wird gelöscht...",
+    "cleared": "Gelöscht!",
+    "refresh": "Aktualisieren"
+  },
+  "language": {
+    "title": "Sprache",
+    "select": "Sprache auswählen"
+  },
+  "notifications": {
+    "title": "Benachrichtigungen",
+    "push": "Push-Benachrichtigungen",
+    "email": "E-Mail-Benachrichtigungen"
+  },
+  "about": {
+    "title": "Über",
+    "version": "Version",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzrichtlinie"
+  }
+}

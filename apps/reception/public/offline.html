@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Offline - Reception</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+          Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        margin: 0;
+        padding: 48px 20px;
+        background: #fff;
+        color: #111;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          background: #000;
+          color: #a8dba8;
+        }
+        .card {
+          border-color: #333;
+          background: #1a1a1a;
+        }
+        p {
+          color: #888;
+        }
+      }
+      .card {
+        max-width: 520px;
+        margin: 0 auto;
+        border: 1px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 24px;
+        text-align: center;
+      }
+      .icon {
+        font-size: 48px;
+        margin-bottom: 16px;
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0 0 12px 0;
+      }
+      p {
+        margin: 0;
+        color: #666;
+        line-height: 1.6;
+        font-size: 14px;
+      }
+      .links {
+        margin-top: 20px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-size: 14px;
+      }
+      .links a {
+        display: inline-block;
+        padding: 8px 16px;
+        background: #4f46e5;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: background 0.15s;
+      }
+      .links a:hover {
+        background: #4338ca;
+      }
+      @media (prefers-color-scheme: dark) {
+        .links a {
+          background: #a8dba8;
+          color: #000;
+        }
+        .links a:hover {
+          background: #8fcb8f;
+        }
+      }
+      .retry-btn {
+        margin-top: 16px;
+      }
+      .retry-btn button {
+        padding: 10px 24px;
+        background: transparent;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        color: inherit;
+      }
+      .retry-btn button:hover {
+        background: #f5f5f5;
+      }
+      @media (prefers-color-scheme: dark) {
+        .retry-btn button {
+          border-color: #444;
+        }
+        .retry-btn button:hover {
+          background: #222;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="icon">📡</div>
+      <h1>You're offline</h1>
+      <p>
+        This page isn't available offline yet. Visit it once while connected,
+        and it will be cached for offline access. Reception works best with
+        an internet connection for real-time data.
+      </p>
+      <div class="links">
+        <a href="/bar">Bar</a>
+        <a href="/checkin">Check-in</a>
+        <a href="/rooms-grid">Rooms</a>
+      </div>
+      <div class="retry-btn">
+        <button onclick="location.reload()">Try Again</button>
+      </div>
+    </div>
+  </body>
+</html>

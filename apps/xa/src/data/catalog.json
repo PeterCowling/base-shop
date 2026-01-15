@@ -1,0 +1,1199 @@
+{
+  "collections": [
+    {
+      "handle": "outerwear",
+      "title": "Outerwear"
+    },
+    {
+      "handle": "knitwear",
+      "title": "Knitwear"
+    },
+    {
+      "handle": "tops",
+      "title": "Tops"
+    },
+    {
+      "handle": "shirts",
+      "title": "Shirts"
+    }
+  ],
+  "brands": [
+    {
+      "handle": "atelier-x",
+      "name": "Atelier X"
+    },
+    {
+      "handle": "nova",
+      "name": "Nova"
+    },
+    {
+      "handle": "orbit",
+      "name": "Orbit"
+    },
+    {
+      "handle": "sable",
+      "name": "Sable"
+    }
+  ],
+  "products": [
+    {
+      "id": "01JH9R9W9Y0K9S3C5E3N9X0Q1A",
+      "slug": "studio-jacket",
+      "title": "Studio jacket",
+      "brand": "atelier-x",
+      "collection": "outerwear",
+      "variantGroup": "studio-jacket",
+      "price": 189,
+      "compareAtPrice": 269,
+      "deposit": 0,
+      "stock": 25,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1715408153725-186c6c77fb45?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8dGFpbG9yZWQlMjBqYWNrZXR8ZW58MHx8fHwxNzY2OTM2ODA5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Studio jacket"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1765871904025-63a4328aef91?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8dGFpbG9yZWQlMjBqYWNrZXR8ZW58MHx8fHwxNzY2OTM2ODA5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Studio jacket"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1762417421091-1b4e24facc62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8dGFpbG9yZWQlMjBqYWNrZXR8ZW58MHx8fHwxNzY2OTM2ODA5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Studio jacket"
+        }
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "description": "A structured layer with clean lines and a soft hand-feel.",
+      "createdAt": "2025-12-01T12:00:00.000Z",
+      "popularity": 90,
+      "taxonomy": {
+        "department": "women",
+        "category": "clothing",
+        "subcategory": "outerwear",
+        "color": [
+          "black"
+        ],
+        "material": [
+          "wool",
+          "cashmere"
+        ],
+        "fit": "regular",
+        "length": "cropped",
+        "neckline": "collar",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "work",
+          "evening"
+        ]
+      },
+      "details": {
+        "modelHeight": "178 cm",
+        "modelSize": "S",
+        "fitNote": "Tailored shoulders with a relaxed body.",
+        "fabricFeel": "Brushed wool blend with a soft hand.",
+        "care": "Dry clean only."
+      }
+    },
+    {
+      "id": "XA-STUDIO-JACKET-IVORY",
+      "slug": "studio-jacket-ivory",
+      "title": "Studio jacket",
+      "brand": "atelier-x",
+      "collection": "outerwear",
+      "variantGroup": "studio-jacket",
+      "price": 189,
+      "compareAtPrice": 269,
+      "deposit": 0,
+      "stock": 18,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1635802324804-54fb506646ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8dGFpbG9yZWQlMjBqYWNrZXR8ZW58MHx8fHwxNzY2OTM2ODA5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Studio jacket"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1637248666370-70a4a603c23e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8dGFpbG9yZWQlMjBqYWNrZXR8ZW58MHx8fHwxNzY2OTM2ODA5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Studio jacket"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1543076447-215ad9ba6923?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8dGFpbG9yZWQlMjBqYWNrZXR8ZW58MHx8fHwxNzY2OTM2ODA5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Studio jacket"
+        }
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "description": "A structured layer with clean lines and a soft hand-feel.",
+      "createdAt": "2025-12-05T12:00:00.000Z",
+      "popularity": 82,
+      "taxonomy": {
+        "department": "women",
+        "category": "clothing",
+        "subcategory": "outerwear",
+        "color": [
+          "ivory"
+        ],
+        "material": [
+          "wool",
+          "cashmere"
+        ],
+        "fit": "regular",
+        "length": "cropped",
+        "neckline": "collar",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "work",
+          "evening"
+        ]
+      },
+      "details": {
+        "modelHeight": "178 cm",
+        "modelSize": "S",
+        "fitNote": "Tailored shoulders with a relaxed body.",
+        "fabricFeel": "Brushed wool blend with a soft hand.",
+        "care": "Dry clean only."
+      }
+    },
+    {
+      "id": "01JH9R9W9Y0K9S3C5E3N9X0Q1B",
+      "slug": "heavy-knit-scarf",
+      "title": "Heavy knit scarf",
+      "brand": "sable",
+      "collection": "knitwear",
+      "price": 49,
+      "compareAtPrice": 69,
+      "deposit": 0,
+      "stock": 120,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1502550145-cd245e2ec6eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8a25pdCUyMHNjYXJmfGVufDB8fHx8MTc2NjkzNjgxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Heavy knit scarf"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1711097258176-c1a4bb511aa7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8a25pdCUyMHNjYXJmfGVufDB8fHx8MTc2NjkzNjgxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Heavy knit scarf"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1758115271918-c49703d20bca?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8a25pdCUyMHNjYXJmfGVufDB8fHx8MTc2NjkzNjgxMHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Heavy knit scarf"
+        }
+      ],
+      "sizes": [],
+      "description": "A warm scarf designed for travel, layering, and off-duty days.",
+      "createdAt": "2025-11-14T12:00:00.000Z",
+      "popularity": 65,
+      "taxonomy": {
+        "department": "women",
+        "category": "clothing",
+        "subcategory": "knitwear",
+        "color": [
+          "cream",
+          "camel"
+        ],
+        "material": [
+          "wool",
+          "alpaca"
+        ],
+        "fit": "oversized",
+        "length": "long",
+        "pattern": "ribbed",
+        "occasion": [
+          "travel",
+          "weekend"
+        ]
+      },
+      "details": {
+        "fabricFeel": "Chunky rib knit with a cozy drape.",
+        "care": "Hand wash cold; dry flat."
+      }
+    },
+    {
+      "id": "01JH9R9W9Y0K9S3C5E3N9X0Q1E",
+      "slug": "oversized-hoodie",
+      "title": "Oversized hoodie",
+      "brand": "atelier-x",
+      "collection": "tops",
+      "price": 119,
+      "compareAtPrice": 159,
+      "deposit": 0,
+      "stock": 60,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1698684420707-33f4433f8bd8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8b3ZlcnNpemVkJTIwaG9vZGllfGVufDB8fHx8MTc2NjkzNjgxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Oversized hoodie"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1713884196922-66e38abd51b0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8b3ZlcnNpemVkJTIwaG9vZGllfGVufDB8fHx8MTc2NjkzNjgxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Oversized hoodie"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1721111260570-456f3306f8d4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8b3ZlcnNpemVkJTIwaG9vZGllfGVufDB8fHx8MTc2NjkzNjgxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Oversized hoodie"
+        }
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "description": "Soft fleece with an easy drape and generous pocketing.",
+      "createdAt": "2025-12-06T12:00:00.000Z",
+      "popularity": 75,
+      "taxonomy": {
+        "department": "men",
+        "category": "clothing",
+        "subcategory": "tops",
+        "color": [
+          "charcoal",
+          "bone"
+        ],
+        "material": [
+          "cotton",
+          "fleece"
+        ],
+        "fit": "oversized",
+        "length": "long",
+        "neckline": "hooded",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "weekend",
+          "travel"
+        ]
+      },
+      "details": {
+        "modelHeight": "186 cm",
+        "modelSize": "M",
+        "fitNote": "Relaxed with dropped shoulders.",
+        "fabricFeel": "Heavyweight brushed fleece.",
+        "care": "Machine wash cold."
+      }
+    },
+    {
+      "id": "01JH9R9W9Y0K9S3C5E3N9X0Q1H",
+      "slug": "workshirt",
+      "title": "Workshirt",
+      "brand": "nova",
+      "collection": "shirts",
+      "price": 99,
+      "deposit": 0,
+      "stock": 70,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1621773881532-fe65715b5137?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8d29yayUyMHNoaXJ0fGVufDB8fHx8MTc2NjkzNjgxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Workshirt"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1697729299267-a3fbe9f5c0d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8d29yayUyMHNoaXJ0fGVufDB8fHx8MTc2NjkzNjgxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Workshirt"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1516429466290-d6aa21743434?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8d29yayUyMHNoaXJ0fGVufDB8fHx8MTc2NjkzNjgxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Workshirt"
+        }
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "description": "A durable overshirt that layers cleanly across seasons.",
+      "createdAt": "2025-08-05T12:00:00.000Z",
+      "popularity": 45,
+      "taxonomy": {
+        "department": "men",
+        "category": "clothing",
+        "subcategory": "shirts",
+        "color": [
+          "indigo",
+          "white"
+        ],
+        "material": [
+          "cotton",
+          "linen"
+        ],
+        "fit": "regular",
+        "length": "hip",
+        "neckline": "collar",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "work",
+          "travel"
+        ]
+      },
+      "details": {
+        "modelHeight": "186 cm",
+        "modelSize": "M",
+        "fitNote": "Straight fit with extra ease in the chest.",
+        "fabricFeel": "Washed cotton-linen blend.",
+        "care": "Machine wash cold."
+      }
+    },
+    {
+      "id": "XA-CASHMERE-KNIT-SWEATER",
+      "slug": "cashmere-knit-sweater",
+      "title": "Cashmere knit sweater",
+      "brand": "atelier-x",
+      "collection": "knitwear",
+      "price": 220,
+      "compareAtPrice": 280,
+      "deposit": 0,
+      "stock": 35,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1603906650843-b58e94d9df4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8Y2FzaG1lcmUlMjBzd2VhdGVyfGVufDB8fHx8MTc2NjkzNjgxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Cashmere knit sweater"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1677847208228-fe3c52feb441?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8Y2FzaG1lcmUlMjBzd2VhdGVyfGVufDB8fHx8MTc2NjkzNjgxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Cashmere knit sweater"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1631541909061-71e349d1f203?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8Y2FzaG1lcmUlMjBzd2VhdGVyfGVufDB8fHx8MTc2NjkzNjgxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Cashmere knit sweater"
+        }
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "description": "Soft cashmere with a clean neckline and a classic drape.",
+      "createdAt": "2025-11-22T12:00:00.000Z",
+      "popularity": 78,
+      "taxonomy": {
+        "department": "women",
+        "category": "clothing",
+        "subcategory": "knitwear",
+        "color": [
+          "ivory",
+          "camel"
+        ],
+        "material": [
+          "cashmere",
+          "wool"
+        ],
+        "fit": "regular",
+        "length": "hip",
+        "neckline": "crew",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "work",
+          "weekend"
+        ]
+      },
+      "details": {
+        "modelHeight": "176 cm",
+        "modelSize": "S",
+        "fitNote": "Easy through the body with a clean shoulder line.",
+        "fabricFeel": "Lightweight cashmere with a smooth finish.",
+        "care": "Dry clean or hand wash cold."
+      }
+    },
+    {
+      "id": "XA-RIBBED-TANK",
+      "slug": "ribbed-tank",
+      "title": "Ribbed tank",
+      "brand": "nova",
+      "collection": "tops",
+      "price": 45,
+      "deposit": 0,
+      "stock": 90,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1764886894548-94bcbc6f3d6a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8cmliYmVkJTIwdGFuayUyMHRvcHxlbnwwfHx8fDE3NjY5MzY3Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Ribbed tank"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1765560215430-61a347b52da5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8cmliYmVkJTIwdGFuayUyMHRvcHxlbnwwfHx8fDE3NjY5MzY3Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Ribbed tank"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1765152333193-3db3c6874bf2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8cmliYmVkJTIwdGFuayUyMHRvcHxlbnwwfHx8fDE3NjY5MzY3Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Ribbed tank"
+        }
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "description": "A fitted rib tank designed for layering or standalone wear.",
+      "createdAt": "2025-12-12T12:00:00.000Z",
+      "popularity": 62,
+      "taxonomy": {
+        "department": "women",
+        "category": "clothing",
+        "subcategory": "tops",
+        "color": [
+          "black",
+          "white"
+        ],
+        "material": [
+          "cotton",
+          "rib"
+        ],
+        "fit": "slim",
+        "length": "hip",
+        "neckline": "scoop",
+        "sleeveLength": "sleeveless",
+        "pattern": "ribbed",
+        "occasion": [
+          "weekend",
+          "work"
+        ]
+      },
+      "details": {
+        "modelHeight": "174 cm",
+        "modelSize": "S",
+        "fitNote": "Body-skimming with stretch recovery.",
+        "fabricFeel": "Soft rib with a smooth hand.",
+        "care": "Machine wash cold."
+      }
+    },
+    {
+      "id": "XA-SILK-WRAP-BLOUSE",
+      "slug": "silk-wrap-blouse",
+      "title": "Silk wrap blouse",
+      "brand": "sable",
+      "collection": "shirts",
+      "price": 140,
+      "deposit": 0,
+      "stock": 40,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1761117228880-df2425bd70da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8c2lsayUyMGJsb3VzZXxlbnwwfHx8fDE3NjY5MzY4MTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Silk wrap blouse"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1761121317492-57feee4fc674?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8c2lsayUyMGJsb3VzZXxlbnwwfHx8fDE3NjY5MzY4MTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Silk wrap blouse"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1694243382431-90d1934d6c3c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8c2lsayUyMGJsb3VzZXxlbnwwfHx8fDE3NjY5MzY4MTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Silk wrap blouse"
+        }
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "description": "A fluid blouse with a wrap front and soft sheen.",
+      "createdAt": "2025-10-18T12:00:00.000Z",
+      "popularity": 58,
+      "taxonomy": {
+        "department": "women",
+        "category": "clothing",
+        "subcategory": "shirts",
+        "color": [
+          "ivory"
+        ],
+        "material": [
+          "silk"
+        ],
+        "fit": "relaxed",
+        "length": "hip",
+        "neckline": "v-neck",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "work",
+          "evening"
+        ]
+      },
+      "details": {
+        "modelHeight": "175 cm",
+        "modelSize": "S",
+        "fitNote": "Wrap closure with gentle drape.",
+        "fabricFeel": "Lightweight silk with a polished finish.",
+        "care": "Dry clean recommended."
+      }
+    },
+    {
+      "id": "XA-DOUBLE-BREASTED-COAT",
+      "slug": "double-breasted-coat",
+      "title": "Double-breasted coat",
+      "brand": "orbit",
+      "collection": "outerwear",
+      "price": 320,
+      "compareAtPrice": 420,
+      "deposit": 0,
+      "stock": 25,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1762117499075-6947228208ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8ZG91YmxlJTIwYnJlYXN0ZWQlMjBjb2F0fGVufDB8fHx8MTc2NjkzNjc4MHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Double-breasted coat"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1597582927786-bae43be837a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8ZG91YmxlJTIwYnJlYXN0ZWQlMjBjb2F0fGVufDB8fHx8MTc2NjkzNjc4MHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Double-breasted coat"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1715408153725-186c6c77fb45?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8ZG91YmxlJTIwYnJlYXN0ZWQlMjBjb2F0fGVufDB8fHx8MTc2NjkzNjc4MHww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Double-breasted coat"
+        }
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "description": "A structured wool coat with a sharp double-breasted front.",
+      "createdAt": "2025-11-02T12:00:00.000Z",
+      "popularity": 70,
+      "taxonomy": {
+        "department": "men",
+        "category": "clothing",
+        "subcategory": "outerwear",
+        "color": [
+          "charcoal"
+        ],
+        "material": [
+          "wool",
+          "cashmere"
+        ],
+        "fit": "regular",
+        "length": "long",
+        "neckline": "lapel",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "work",
+          "evening"
+        ]
+      },
+      "details": {
+        "modelHeight": "188 cm",
+        "modelSize": "M",
+        "fitNote": "Clean shoulder with a straight silhouette.",
+        "fabricFeel": "Dense wool blend with a soft handle.",
+        "care": "Dry clean only."
+      }
+    },
+    {
+      "id": "XA-LINEN-OVERSHIRT",
+      "slug": "linen-overshirt",
+      "title": "Linen overshirt",
+      "brand": "nova",
+      "collection": "shirts",
+      "price": 110,
+      "deposit": 0,
+      "stock": 55,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1668959843026-1a3af00607ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8bGluZW4lMjBvdmVyc2hpcnR8ZW58MHx8fHwxNzY2OTM2Nzc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Linen overshirt"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1666358085449-a10a39f33942?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8bGluZW4lMjBvdmVyc2hpcnR8ZW58MHx8fHwxNzY2OTM2Nzc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Linen overshirt"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1711355249709-1733df63e028?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8bGluZW4lMjBvdmVyc2hpcnR8ZW58MHx8fHwxNzY2OTM2Nzc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Linen overshirt"
+        }
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "description": "Lightweight linen with a relaxed, utility fit.",
+      "createdAt": "2025-09-28T12:00:00.000Z",
+      "popularity": 52,
+      "taxonomy": {
+        "department": "men",
+        "category": "clothing",
+        "subcategory": "shirts",
+        "color": [
+          "white",
+          "indigo"
+        ],
+        "material": [
+          "linen",
+          "cotton"
+        ],
+        "fit": "regular",
+        "length": "hip",
+        "neckline": "collar",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "travel",
+          "weekend"
+        ]
+      },
+      "details": {
+        "modelHeight": "184 cm",
+        "modelSize": "M",
+        "fitNote": "Relaxed through the shoulders with straight hems.",
+        "fabricFeel": "Washed linen with a breathable finish.",
+        "care": "Machine wash cold."
+      }
+    },
+    {
+      "id": "XA-MERINO-CARDIGAN",
+      "slug": "merino-cardigan",
+      "title": "Merino cardigan",
+      "brand": "atelier-x",
+      "collection": "knitwear",
+      "price": 150,
+      "deposit": 0,
+      "stock": 48,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1633438584121-ec60a7d453d2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8a25pdCUyMGNhcmRpZ2FufGVufDB8fHx8MTc2NjkzNjgxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Merino cardigan"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1715176531842-7ffda4acdfa9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8a25pdCUyMGNhcmRpZ2FufGVufDB8fHx8MTc2NjkzNjgxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Merino cardigan"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1581862892479-178c8160bdaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8NHx8a25pdCUyMGNhcmRpZ2FufGVufDB8fHx8MTc2NjkzNjgxN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+          "altText": "Merino cardigan"
+        }
+      ],
+      "sizes": [
+        "S",
+        "M",
+        "L",
+        "XL"
+      ],
+      "description": "Merino knit with a refined V-neck and tonal buttons.",
+      "createdAt": "2025-08-18T12:00:00.000Z",
+      "popularity": 46,
+      "taxonomy": {
+        "department": "men",
+        "category": "clothing",
+        "subcategory": "knitwear",
+        "color": [
+          "navy",
+          "bone"
+        ],
+        "material": [
+          "merino",
+          "wool"
+        ],
+        "fit": "regular",
+        "length": "hip",
+        "neckline": "v-neck",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "work",
+          "travel"
+        ]
+      },
+      "details": {
+        "modelHeight": "186 cm",
+        "modelSize": "M",
+        "fitNote": "Straight body with ribbed trim.",
+        "fabricFeel": "Fine merino knit with a dry hand.",
+        "care": "Hand wash cold; dry flat."
+      }
+    },
+    {
+      "id": "XA-KIDS-MINI-PARKA",
+      "slug": "mini-parka",
+      "title": "Mini parka",
+      "brand": "atelier-x",
+      "collection": "outerwear",
+      "price": 89,
+      "compareAtPrice": 110,
+      "deposit": 0,
+      "stock": 32,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1502451885777-16c98b07834a?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Mini parka"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Mini parka"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1529756148791-fbca69bfe693?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Mini parka"
+        }
+      ],
+      "sizes": [
+        "4Y",
+        "6Y",
+        "8Y",
+        "10Y"
+      ],
+      "description": "Weather-ready parka with a soft insulated lining.",
+      "createdAt": "2025-12-18T12:00:00.000Z",
+      "popularity": 62,
+      "taxonomy": {
+        "department": "kids",
+        "category": "clothing",
+        "subcategory": "outerwear",
+        "color": [
+          "navy"
+        ],
+        "material": [
+          "nylon"
+        ],
+        "fit": "regular",
+        "length": "hip",
+        "neckline": "hooded",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "school",
+          "weekend"
+        ]
+      },
+      "details": {
+        "modelHeight": "128 cm",
+        "modelSize": "8Y",
+        "fitNote": "Layer-friendly fit for colder days.",
+        "fabricFeel": "Lightweight shell with warm lining.",
+        "care": "Machine wash cold."
+      }
+    },
+    {
+      "id": "XA-KIDS-CABLE-KNIT",
+      "slug": "cable-knit-sweater",
+      "title": "Cable knit sweater",
+      "brand": "sable",
+      "collection": "knitwear",
+      "price": 64,
+      "compareAtPrice": 79,
+      "deposit": 0,
+      "stock": 45,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1566454544259-f4b94c3d758c?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Cable knit sweater"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1590480598135-3be152c87913?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Cable knit sweater"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1613456209686-a89d1e2024ab?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Cable knit sweater"
+        }
+      ],
+      "sizes": [
+        "4Y",
+        "6Y",
+        "8Y",
+        "10Y"
+      ],
+      "description": "Soft cable knit with a cozy brushed finish.",
+      "createdAt": "2025-11-28T12:00:00.000Z",
+      "popularity": 58,
+      "taxonomy": {
+        "department": "kids",
+        "category": "clothing",
+        "subcategory": "knitwear",
+        "color": [
+          "cream"
+        ],
+        "material": [
+          "wool"
+        ],
+        "fit": "regular",
+        "length": "hip",
+        "neckline": "crew",
+        "sleeveLength": "long",
+        "pattern": "cable",
+        "occasion": [
+          "weekend",
+          "school"
+        ]
+      },
+      "details": {
+        "fitNote": "Comfort fit for easy layering.",
+        "fabricFeel": "Warm cable knit with a plush touch.",
+        "care": "Hand wash cold; dry flat."
+      }
+    },
+    {
+      "id": "XA-KIDS-GRAPHIC-HOODIE",
+      "slug": "graphic-hoodie",
+      "title": "Graphic hoodie",
+      "brand": "nova",
+      "collection": "tops",
+      "price": 55,
+      "deposit": 0,
+      "stock": 50,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Graphic hoodie"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Graphic hoodie"
+        }
+      ],
+      "sizes": [
+        "4Y",
+        "6Y",
+        "8Y",
+        "10Y"
+      ],
+      "description": "Pullover hoodie with a soft fleece lining.",
+      "createdAt": "2025-11-05T12:00:00.000Z",
+      "popularity": 54,
+      "taxonomy": {
+        "department": "kids",
+        "category": "clothing",
+        "subcategory": "tops",
+        "color": [
+          "charcoal"
+        ],
+        "material": [
+          "cotton"
+        ],
+        "fit": "oversized",
+        "length": "hip",
+        "neckline": "hooded",
+        "sleeveLength": "long",
+        "pattern": "graphic",
+        "occasion": [
+          "school",
+          "weekend"
+        ]
+      },
+      "details": {
+        "fitNote": "Relaxed fit with room to move.",
+        "fabricFeel": "Brushed fleece interior.",
+        "care": "Machine wash cold."
+      }
+    },
+    {
+      "id": "XA-KIDS-COTTON-TEE",
+      "slug": "cotton-tee",
+      "title": "Cotton tee",
+      "brand": "orbit",
+      "collection": "tops",
+      "price": 24,
+      "deposit": 0,
+      "stock": 70,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1596870230751-ebdfce98ec42?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Cotton tee"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1578897367107-2828e351c8a8?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Cotton tee"
+        }
+      ],
+      "sizes": [
+        "4Y",
+        "6Y",
+        "8Y",
+        "10Y"
+      ],
+      "description": "Lightweight tee with a soft hand-feel.",
+      "createdAt": "2025-10-18T12:00:00.000Z",
+      "popularity": 46,
+      "taxonomy": {
+        "department": "kids",
+        "category": "clothing",
+        "subcategory": "tops",
+        "color": [
+          "white"
+        ],
+        "material": [
+          "cotton"
+        ],
+        "fit": "regular",
+        "length": "hip",
+        "neckline": "crew",
+        "sleeveLength": "short",
+        "pattern": "solid",
+        "occasion": [
+          "everyday"
+        ]
+      },
+      "details": {
+        "fabricFeel": "Breathable cotton jersey.",
+        "care": "Machine wash cold."
+      }
+    },
+    {
+      "id": "XA-KIDS-OXFORD-SHIRT",
+      "slug": "oxford-shirt",
+      "title": "Oxford shirt",
+      "brand": "atelier-x",
+      "collection": "shirts",
+      "price": 49,
+      "deposit": 0,
+      "stock": 40,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1582371839061-b36df030ab3c?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Oxford shirt"
+        },
+        {
+          "type": "image",
+          "path": "https://images.unsplash.com/photo-1614360044824-9d9eb2dd12db?auto=format&fit=crop&w=1080&q=80",
+          "altText": "Oxford shirt"
+        }
+      ],
+      "sizes": [
+        "4Y",
+        "6Y",
+        "8Y",
+        "10Y"
+      ],
+      "description": "Classic oxford shirt with a soft brushed finish.",
+      "createdAt": "2025-09-22T12:00:00.000Z",
+      "popularity": 39,
+      "taxonomy": {
+        "department": "kids",
+        "category": "clothing",
+        "subcategory": "shirts",
+        "color": [
+          "indigo"
+        ],
+        "material": [
+          "cotton"
+        ],
+        "fit": "regular",
+        "length": "hip",
+        "neckline": "collar",
+        "sleeveLength": "long",
+        "pattern": "solid",
+        "occasion": [
+          "school",
+          "weekend"
+        ]
+      },
+      "details": {
+        "fitNote": "Straight fit with easy movement.",
+        "fabricFeel": "Lightweight oxford weave.",
+        "care": "Machine wash cold."
+      }
+    },
+    {
+      "id": "KIDS-COLORBLOCK-WINDBREAKER",
+      "slug": "colorblock-windbreaker",
+      "title": "Colorblock windbreaker",
+      "brand": "nova",
+      "collection": "outerwear",
+      "price": 89,
+      "compareAtPrice": 0,
+      "deposit": 0,
+      "stock": 60,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/kids/colorblock-windbreaker/1.jpg",
+          "altText": "Colorblock kids windbreaker"
+        },
+        {
+          "type": "image",
+          "path": "/images/kids/colorblock-windbreaker/2.jpg",
+          "altText": "Colorblock kids windbreaker"
+        },
+        {
+          "type": "image",
+          "path": "/images/kids/colorblock-windbreaker/3.jpg",
+          "altText": "Colorblock kids windbreaker"
+        }
+      ],
+      "sizes": [
+        "XS",
+        "S",
+        "M",
+        "L"
+      ],
+      "description": "Lightweight kids windbreaker with colorblocked panels and mesh lining.",
+      "createdAt": "2025-12-15T12:00:00.000Z",
+      "popularity": 65,
+      "taxonomy": {
+        "department": "kids",
+        "category": "clothing",
+        "subcategory": "outerwear",
+        "color": [
+          "blue",
+          "orange"
+        ],
+        "material": [
+          "nylon"
+        ],
+        "fit": "regular",
+        "length": "hip",
+        "pattern": "colorblock",
+        "occasion": [
+          "school",
+          "weekend"
+        ]
+      },
+      "details": {
+        "modelHeight": "132 cm",
+        "modelSize": "S",
+        "fabricFeel": "Lightweight, water-resistant shell.",
+        "care": "Machine wash cold; hang dry."
+      }
+    },
+    {
+      "id": "KIDS-HIGH-TOP-SNEAKER",
+      "slug": "kids-high-top-sneaker",
+      "title": "High-top sneakers",
+      "brand": "orbit",
+      "collection": "tops",
+      "price": 75,
+      "compareAtPrice": 0,
+      "deposit": 0,
+      "stock": 80,
+      "forSale": true,
+      "forRental": false,
+      "media": [
+        {
+          "type": "image",
+          "path": "/images/kids/kids-high-top-sneaker/1.jpg",
+          "altText": "Kids high-top sneakers"
+        },
+        {
+          "type": "image",
+          "path": "/images/kids/kids-high-top-sneaker/2.jpg",
+          "altText": "Kids high-top sneakers"
+        },
+        {
+          "type": "image",
+          "path": "/images/kids/kids-high-top-sneaker/3.jpg",
+          "altText": "Kids high-top sneakers"
+        }
+      ],
+      "sizes": [
+        "28",
+        "30",
+        "32",
+        "34"
+      ],
+      "description": "Canvas high-tops with padded collars and grippy soles for kids.",
+      "createdAt": "2025-12-16T12:00:00.000Z",
+      "popularity": 60,
+      "taxonomy": {
+        "department": "kids",
+        "category": "clothing",
+        "subcategory": "footwear",
+        "color": [
+          "white",
+          "navy"
+        ],
+        "material": [
+          "canvas",
+          "rubber"
+        ],
+        "fit": "standard",
+        "pattern": "colorblock",
+        "occasion": [
+          "school",
+          "weekend"
+        ]
+      },
+      "details": {
+        "fabricFeel": "Textured canvas with cushioned insole.",
+        "care": "Spot clean only."
+      }
+    }
+  ]
+}

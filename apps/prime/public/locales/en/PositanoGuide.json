@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "title": "Positano Guide",
+    "subtitle": "Local tips from the hostel"
+  },
+  "sections": {
+    "morning": {
+      "title": "Morning",
+      "subtitle": "Start your day right"
+    },
+    "afternoon": {
+      "title": "Afternoon",
+      "subtitle": "Beach time & adventures"
+    },
+    "evening": {
+      "title": "Evening",
+      "subtitle": "Wind down in style"
+    }
+  },
+  "guides": {
+    "sunriseHike": {
+      "title": "Sunrise Hike",
+      "description": "Watch the sunrise from Santa Maria del Castello",
+      "tag": "Early bird"
+    },
+    "cheapEats": {
+      "title": "Budget Breakfast Spots",
+      "description": "Where locals grab their morning coffee",
+      "tag": "Budget-friendly"
+    },
+    "fornilloBeach": {
+      "title": "Fornillo Beach",
+      "description": "The quieter alternative to the main beach",
+      "tag": "Less crowded"
+    },
+    "pathOfTheGods": {
+      "title": "Path of the Gods",
+      "description": "The most famous hike on the Amalfi Coast",
+      "tag": "Must-do"
+    },
+    "positanoBeaches": {
+      "title": "Beach Guide",
+      "description": "All beaches around Positano compared",
+      "tag": "Overview"
+    },
+    "boatTours": {
+      "title": "Boat Tours",
+      "description": "See the coast from the water",
+      "tag": "Popular"
+    },
+    "eatingOut": {
+      "title": "Where to Eat",
+      "description": "From budget pizza to fancy restaurants",
+      "tag": "Food"
+    },
+    "sunsetViewpoints": {
+      "title": "Sunset Spots",
+      "description": "Best places to watch the sunset",
+      "tag": "Romantic"
+    },
+    "nightlife": {
+      "title": "Evening Activities",
+      "description": "What to do after dark",
+      "tag": "Nightlife"
+    }
+  },
+  "cta": {
+    "viewGuide": "View Guide",
+    "popularWithGuests": "Popular with guests",
+    "poweredBy": "Content from Hostel Brikette"
+  },
+  "empty": {
+    "title": "No guides available",
+    "description": "Check back later for local tips."
+  }
+}

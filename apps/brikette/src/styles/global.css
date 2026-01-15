@@ -6,8 +6,17 @@
 
 /* 0 ▪ Imports
    ------------------------------------------------------------------ */
+@import "@themes/base/src/tokens.css";
+@import "../../../../packages/ui/src/styles/builder.css";
 @import "./fonts.css"; /* font-faces with font-display: optional */
-@import "tailwindcss";
+@import "tailwindcss" source("../..");
+
+/* Tailwind v4 sources — keep class scanning deterministic in the monorepo. */
+@source "../../../../packages/ui/src";
+@source "../../../../packages/platform-core/src";
+@source "../../../../packages/platform-machine/src";
+@source "../../../../packages/i18n/src";
+@source "../../../../packages/themes";
 
 /* 1 ▪ Design-token custom properties
    ------------------------------------------------------------------ */
@@ -50,6 +59,7 @@
   --z-modal: 80;
 
   --color-header-link: #ffffff;
+  --color-header-logo-text: #f7f7f7;
 
   /* layering */
   --layer-modal: 9999;
@@ -94,6 +104,7 @@
   --color-rating-booking: #003580;
 
   --color-header-link: #f7f7f7;
+  --color-header-logo-text: #ffffff;
 
   /* layering */
   --layer-modal: 9999;
@@ -127,6 +138,13 @@
   html,
   body {
     scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html,
+    body {
+      scroll-behavior: auto;
+    }
   }
 
   body {
@@ -261,6 +279,12 @@
     color: var(--color-header-link);
     border-color: var(--color-header-link);
   }
+  header .header-row-1 > a {
+    color: var(--color-header-logo-text);
+  }
+  header nav[data-testid="mobile-nav"] a > span {
+    color: var(--color-header-logo-text);
+  }
   header a:not(.cta):hover {
     text-decoration-color: var(--color-brand-bougainvillea);
   }
@@ -329,10 +353,10 @@
 
   /* Reusable paddings */
   .header-row-1 {
-    @apply py-4;
+    @apply h-16;
   }
   .header-row-2 {
-    @apply mt-4 pt-1 pb-3;
+    @apply mt-2 pb-2;
   }
 
   .rooms-carousel-nav,

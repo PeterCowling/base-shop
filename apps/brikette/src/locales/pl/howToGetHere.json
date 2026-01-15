@@ -376,27 +376,57 @@
       {
         "label": "Sorrento → Positano autobusem",
         "href": "Sorrento-Positano-Bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 min",
+          "cost": "€2–€4 pp",
+          "walking": "Short stairs at the end (~30 steps)",
+          "luggageFriendly": 2,
+          "seasonality": "Year-round"
+        }
       },
       {
         "label": "Positano → Sorrento autobusem",
         "href": "Positano-Sorrento-Bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 min",
+          "cost": "€2–€4 pp",
+          "walking": "Short stairs at the start/end (~30 steps)",
+          "luggageFriendly": 2,
+          "seasonality": "Year-round"
+        }
       },
       {
         "label": "Sorrento → Positano promem",
         "href": "Sorrento-Positano-Ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30–45 min (sailing) + port stairs",
+          "cost": "€15–€25 pp",
+          "walking": "Port stairs; porters recommended",
+          "luggageFriendly": 1,
+          "seasonality": "Seasonal (Apr–Oct)"
+        }
       },
       {
         "label": "Positano → Sorrento promem",
         "href": "prom positano-sorrento",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30–45 min (sailing) + port stairs",
+          "cost": "€15–€25 pp",
+          "walking": "Port stairs; porters recommended",
+          "luggageFriendly": 1,
+          "seasonality": "Seasonal (Apr–Oct)"
+        }
       }
     ]
   },
   "filters": {
     "title": "Filter routes",
+    "resultsCount": "Wyniki: {{count}} trasy",
+    "editLabel": "Edytuj filtry",
     "transportLabel": "Transport type",
     "transportAll": "All",
     "transportModes": {

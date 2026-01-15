@@ -1,12 +1,45 @@
 {
   "slug": "deals",
   "meta": {
-    "title": "Sommertilbud 2025 – spar 15 %",
-    "description": "Tidsbegrænset sommertilbud med ekstra 15 % rabat ved direkte booking.",
-    "ogImageAlt": "Banner for sommer-rabat"
+    "title": "Spar 15 % på ophold fra 20. september til 31. oktober",
+    "description": "Tidsbegrænset tilbud: spar 15 % ved direkte booking for ophold fra 20. september til 31. oktober.",
+    "ogImageAlt": "Banner for tidsbegrænset rabat"
   },
-  "title": "Spar {{percent}} % på dit {{season}}-ophold",
-  "promo": "Book direkte denne sommer og få ekstra {{percent}} % rabat.",
+  "title": "Spar {{percent}} % på ophold fra {{from}} til {{to}}",
+  "promo": "Book direkte – din {{percent}} % rabat trækkes automatisk ved betaling.",
+  "dealCard": {
+    "savePercent": "Spar {{percent}}"
+  },
+  "status": {
+    "banner": {
+      "upcoming": "Starter {{startDate}} — planlæg i god tid og tjek dine datoer.",
+      "active": "Aktiv nu — slutter {{endDate}}.",
+      "expired": "Dette tilbud er udløbet."
+    },
+    "badge": {
+      "upcoming": "Starter {{startDate}}",
+      "active": "Aktiv",
+      "expired": "Udløbet"
+    },
+    "endsOn": "Slutter {{endDate}}"
+  },
+  "cta": {
+    "checkDates": "Tjek datoer",
+    "checkDatesHint": "Rabatten gælder kun inden for tilbudsperioden.",
+    "viewCurrentDeals": "Se aktuelle tilbud",
+    "checkAvailabilityStandard": "Tjek tilgængelighed (standardpriser)"
+  },
+  "sections": {
+    "active": "Aktive tilbud",
+    "upcoming": "Kommende tilbud",
+    "expired": "Udløbne tilbud",
+    "noneCurrent": "Ingen aktuelle tilbud lige nu."
+  },
+  "chips": {
+    "nonRefundable": "Ikke-refunderbar",
+    "directOnly": "Kun direkte",
+    "minNights": "Min. {{nights}} nætter"
+  },
   "banner": "Kun {{beds}} senge tilbage til denne pris – tilbuddet slutter om {{time}}!",
   "timeRemaining": {
     "lessThanHour": "0 t",
@@ -16,33 +49,42 @@
     "days_other": "{{count}} dage"
   },
   "buttonReserve": "Book nu",
-  "ogImageAlt": "Banner for sommer-rabat",
+  "ogImageAlt": "Banner for tidsbegrænset rabat",
   "perksHeading": "Fordele ved direkte booking",
   "perksIntro": "Disse fordele gælder kun gæster, der booker direkte på vores hjemmeside.",
   "perksGuarantee": "Hver direkte booking på vores hjemmeside låser automatisk disse eksklusive fordele op.",
-  "perksIntroLink": "Se alle aktuelle tilbud",
+  "perksIntroLink": "Se alle fordele",
   "perksList": [
     "Op til 25 % rabat på normalprisen, når kuponen anvendes",
     "Gratis morgenmad",
     "Gratis aften-drik"
   ],
   "expired": {
-    "message": "Dette tidsbegrænsede tilbud sluttede den {{endedOn}}."
+    "message": "Dette tilbud er udløbet."
   },
   "restrictions": {
     "heading": "Vigtigt at vide",
+    "sections": {
+      "eligibility": "Berettigelse",
+      "bookingConstraints": "Bookingbetingelser",
+      "stayRules": "Opholdsregler",
+      "rateType": "Pristype",
+      "stacking": "Kombination"
+    },
     "stayWindow": "Gyldigt for ophold fra {{from}} til {{to}}.",
+    "bookingWindow": "Gyldigt for bookinger lavet fra {{from}} til {{to}}.",
     "minAdvance": "Book mindst {{days}} dage i forvejen.",
     "minAdvancePrefix": "Book mindst",
     "minAdvanceSuffix": "i forvejen.",
     "los": "Minimum {{min}} nætter, maksimum {{max}} nætter.",
-    "nonRefundable": "Gælder kun for ikke-refunderbare priser ved direkte booking via hostellets website.",
+    "directOnly": "Kun direkte bookinger (hjemmeside).",
+    "nonRefundable": "Gælder kun for ikke-refunderbare priser.",
+    "nonRefundableOnly": "Kun ikke-refunderbare priser.",
     "nonRefundablePrefix": "Gælder kun for",
-    "nonRefundableSuffix": "ved direkte booking via hostellets website.",
+    "nonRefundableSuffix": "priser.",
     "stackable": "{{percent}} % kan kombineres med vores standard 10 % rabat for direkte booking.",
-    "other": "Standardvilkår gælder."
+    "other": "Se vilkår og betingelser."
   },
-  "seasonLabel": "Sommeren 2025",
   "robots": {
     "expiredNoindex": "noindex,follow"
   }

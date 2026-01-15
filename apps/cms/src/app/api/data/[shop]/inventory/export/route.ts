@@ -3,14 +3,17 @@ import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { inventoryRepository } from "@platform-core/repositories/inventory.server";
 import { format as formatCsv } from "fast-csv";
+import { hasPermission } from "@auth";
 import { flattenInventoryItem } from "@platform-core/utils/inventory";
+import type { Role } from "@auth/types";
 
 export async function GET(
   req: NextRequest,
   context: { params: Promise<{ shop: string }> }
 ) {
   const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  const role = session?.user?.role as Role | undefined;
+  if (!role || !hasPermission(role, "manage_inventory")) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
   try {

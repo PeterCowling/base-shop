@@ -21,6 +21,7 @@ interface UseGuideSeoContextArgs {
   translateGuides: GuideSeoTemplateContext["translateGuides"];
   translateGuidesEn?: GuideSeoTemplateContext["translateGuidesEn"];
   buildTocItems?: (context: GuideSeoTemplateContext) => TocItem[] | null | undefined;
+  renderGenericContent?: boolean;
 }
 
 interface UseGuideSeoContextResult {
@@ -44,6 +45,7 @@ export function useGuideSeoContext({
   translateGuides,
   translateGuidesEn,
   buildTocItems,
+  renderGenericContent,
 }: UseGuideSeoContextArgs): UseGuideSeoContextResult {
   const contextInput = useMemo<GuideSeoTemplateContext>(() => {
     return {
@@ -61,6 +63,7 @@ export function useGuideSeoContext({
       ogImage,
       article: { title, description },
       canonicalUrl,
+      ...(typeof renderGenericContent === "boolean" ? { renderGenericContent } : {}),
     } satisfies GuideSeoTemplateContext;
   }, [
     baseToc,
@@ -78,6 +81,7 @@ export function useGuideSeoContext({
     title,
     translateGuides,
     translateGuidesEn,
+    renderGenericContent,
   ]);
 
   const toc = useMemo(() => {

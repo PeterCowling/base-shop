@@ -520,7 +520,7 @@ const manifestSeed: GuideManifestEntry[] = [
       { id: "jsonLd", status: "inProgress", note: "Confirm HowTo schema reflects bus timings." },
       { id: "faqs", status: "complete" },
       { id: "content", status: "complete" },
-      { id: "media", status: "missing", note: "Add route imagery for bus stops." },
+      { id: "media", status: "complete" },
     ],
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
@@ -917,6 +917,31 @@ const manifestSeed: GuideManifestEntry[] = [
     },
   }),
   GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "santaMariaDelCastelloHike",
+    slug: "santa-maria-del-castello-hike",
+    contentKey: "santaMariaDelCastelloHike",
+    status: "live",
+    draftPathSegment: "guides/santa-maria-del-castello-hike",
+    areas: ["experience"],
+    primaryArea: "experience",
+    structuredData: ["Article"],
+    relatedGuides: ["topOfTheMountainHike", "pathOfTheGods", "sunriseHike"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "santaMariaDelCastelloHike", showToc: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["topOfTheMountainHike", "pathOfTheGods", "sunriseHike"] },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: true,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
     key: "topOfTheMountainHike",
     slug: "top-of-the-mountain-hike",
     contentKey: "topOfTheMountainHike",
@@ -1060,6 +1085,35 @@ const manifestSeed: GuideManifestEntry[] = [
       {
         type: "relatedGuides",
         options: { guides: ["hostelBriketteToFornilloBeach", "fornilloBeachToBrikette", "positanoBeaches"] },
+      },
+    ],
+    options: {
+      showTagChips: true,
+      showPlanChoice: true,
+    },
+  }),
+  GUIDE_MANIFEST_ENTRY_SCHEMA.parse({
+    key: "positanoMainBeach",
+    slug: "positano-main-beach-guide",
+    contentKey: "positanoMainBeach",
+    status: "live",
+    draftPathSegment: "guides/positano-main-beach-guide",
+    areas: ["experience"],
+    primaryArea: "experience",
+    structuredData: ["Article"],
+    relatedGuides: ["positanoBeaches", "fornilloBeachGuide", "positanoMainBeachBusDown"],
+    blocks: [
+      {
+        type: "genericContent",
+        options: { contentKey: "positanoMainBeach", showToc: true },
+      },
+      {
+        type: "faq",
+        options: { fallbackKey: "positanoMainBeach", alwaysProvideFallback: true },
+      },
+      {
+        type: "relatedGuides",
+        options: { guides: ["positanoBeaches", "fornilloBeachGuide", "positanoMainBeachBusDown"] },
       },
     ],
     options: {

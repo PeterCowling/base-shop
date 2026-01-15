@@ -1,6 +1,7 @@
 import type { GuideLabelKey } from "./i18n";
 
-export type GuideSection = { id: string; title: string; body: string[] };
+export type GuideFigure = { src: string; alt: string; caption?: string };
+export type GuideSection = { id: string; title: string; body: string[]; figures?: GuideFigure[] };
 export type GuideFaq = { q: string; a: string[] };
 export type TocEntry = { href: string; label: string };
 

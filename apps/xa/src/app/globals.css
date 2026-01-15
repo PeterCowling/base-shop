@@ -1,0 +1,9 @@
+@config "../../../../tailwind.config.mjs";
+
+@import "@themes/base/src/tokens.css";
+@import "../../../../packages/ui/src/styles/builder.css";
+@import "../../../../packages/ui/src/styles/typography.css";
+@import "../../../../packages/ui/src/styles/forms.css";
+@import "./xa-cyber-atelier.css";
+
+@import "tailwindcss";

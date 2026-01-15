@@ -112,7 +112,7 @@ function AppLayout({ lang, children }: AppLayoutProps): React.JSX.Element {
                 <InlineBoundary>
                   <Header lang={lang} />
                 </InlineBoundary>
-                <main>{children}</main>
+                <main className="pt-16 lg:pt-0">{children}</main>
                 <InlineBoundary>
                   <Footer lang={lang} />
                 </InlineBoundary>

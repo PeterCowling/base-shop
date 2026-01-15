@@ -1,6 +1,6 @@
 // src/providers/ThemeProvider.tsx
 // -----------------------------------------------------------------
-import { Theme } from "@/types/theme";
+import { Theme } from "@ui/types/theme";
 import React, { createContext, useCallback, useEffect, useMemo, useReducer } from "react";
 
 /* ———————————————————————————————————————————————
@@ -115,6 +115,9 @@ export const ThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) =
 
   /* 6 ▪ Helpers */
   const setTheme = useCallback((next: Theme) => {
+    if (import.meta.env.DEV) {
+      console.log("[ThemeProvider] setTheme", next);
+    }
     dispatch({ type: "SET_THEME", theme: next });
   }, []);
 

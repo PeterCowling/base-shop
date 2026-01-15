@@ -1,0 +1,26 @@
+{
+  "title": "Encontrar mi estancia",
+  "subtitle": "Introduce los datos de tu reserva para acceder a tu portal de huésped.",
+  "fields": {
+    "bookingCode": "Código de reserva",
+    "bookingCodePlaceholder": "ej. BKG12345",
+    "bookingCodeHint": "Encuéntralo en tu email de confirmación",
+    "lastName": "Apellido",
+    "lastNamePlaceholder": "Como aparece en la reserva",
+    "lastNameHint": "Apellido del huésped principal"
+  },
+  "button": {
+    "submit": "Encontrar mi estancia",
+    "loading": "Buscando..."
+  },
+  "errors": {
+    "fieldsRequired": "Por favor, introduce tanto el código de reserva como el apellido.",
+    "notFound": "No pudimos encontrar una reserva con esos datos. Por favor, revisa e intenta de nuevo.",
+    "tooManyAttempts": "Demasiados intentos. Por favor, espera unos minutos e intenta de nuevo.",
+    "networkError": "No se puede conectar. Por favor, revisa tu internet e intenta de nuevo."
+  },
+  "help": {
+    "cantFind": "¿No encuentras tu código de reserva?",
+    "contactUs": "Contacta con recepción para asistencia."
+  }
+}

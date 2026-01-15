@@ -28,6 +28,7 @@
     "@acme/config": "workspace:*",
     "@acme/sanity": "workspace:*",
     "@acme/page-builder-core": "workspace:*",
+    "@acme/page-builder-ui": "workspace:*",
     "react": "workspace:^",
     "react-dom": "workspace:^"
   },

@@ -1,6 +1,9 @@
 import { CfImage } from "@/components/images/CfImage";
+import { CfResponsiveImage } from "@/components/images/CfResponsiveImage";
 import { findPlaceholderBinding, type RouteDefinition } from "@/lib/how-to-get-here/definitions";
 import type { ReactNode } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, Grid } from "@acme/ui/atoms";
+import { ZoomIn } from "lucide-react";
 
 import type { RouteContent } from "@/lib/how-to-get-here/schema";
 
@@ -169,12 +172,19 @@ export function renderSection(
           {items}
         </ul>
       ))}
+      {renderInlineGallery(path, ctx)}
       {figure ? (
         <figure
           className="overflow-hidden rounded-2xl border border-brand-outline/20 shadow-sm"
           aria-labelledby={figureCaptionId}
         >
-          <CfImage src={figure.src} preset="gallery" alt={figure.alt} className="size-full object-cover" data-aspect="4/3" />
+          <CfImage
+            src={figure.src}
+            preset="gallery"
+            alt={figure.alt}
+            className="size-full object-cover"
+            data-aspect="4/3"
+          />
           {figure.caption ? (
             <figcaption
               id={figureCaptionId}
@@ -276,4 +286,80 @@ function renderLinkListEntry(
       {parts}
     </p>
   );
+}
+
+function renderInlineGallery(path: string, ctx: RenderContext): ReactNode | null {
+  const gallery = ctx.definition.galleries.find(
+    (entry) => entry.inline && matchesGalleryPath(entry.key, path),
+  );
+  if (!gallery) {
+    return null;
+  }
+
+  const galleryMeta = getValueAtPath(ctx.content, gallery.key);
+  const itemsMeta = isPlainObject(galleryMeta)
+    ? (galleryMeta as Record<string, { alt?: string; caption?: string }>)
+    : undefined;
+
+  return (
+    <div className="space-y-4">
+      <Grid as="ul" columns={{ base: 1, sm: 1, md: 2 }} gap={6} className="list-none p-0">
+        {gallery.items.map((item) => {
+          const meta = itemsMeta?.[item.id];
+          const altText = meta?.alt ?? meta?.caption ?? item.id;
+          return (
+            <li key={item.id} className="m-0">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button type="button" className="group w-full min-h-11 min-w-11 text-start">
+                    <figure className="relative overflow-hidden rounded-2xl border border-brand-outline/20 bg-brand-surface shadow-sm dark:border-brand-outline/30">
+                      <CfResponsiveImage
+                        src={item.src}
+                        alt={altText}
+                        preset="gallery"
+                        className="size-full object-cover"
+                        data-aspect={item.aspectRatio ?? "4/3"}
+                      />
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute end-3 top-3 inline-flex size-9 items-center justify-center rounded-full bg-brand-surface/80 text-brand-heading shadow-sm backdrop-blur transition group-hover:bg-brand-surface dark:bg-brand-surface/60 dark:text-brand-surface"
+                      >
+                        <ZoomIn className="size-4" />
+                      </span>
+                      {meta?.caption ? (
+                        <figcaption className="bg-brand-surface px-4 py-3 text-sm text-brand-text/80 dark:bg-brand-surface/70 dark:text-brand-surface/80">
+                          {meta.caption}
+                        </figcaption>
+                      ) : null}
+                    </figure>
+                  </button>
+                </DialogTrigger>
+
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>{meta?.caption ?? altText}</DialogTitle>
+                  </DialogHeader>
+                  <div className="overflow-hidden rounded-2xl border border-brand-outline/20 bg-brand-surface shadow-sm dark:border-brand-outline/30 dark:bg-brand-surface/40">
+                    <CfResponsiveImage
+                      src={item.src}
+                      alt={altText}
+                      preset="hero"
+                      className="size-full object-cover"
+                      data-aspect={item.aspectRatio ?? "4/3"}
+                      priority
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </li>
+          );
+        })}
+      </Grid>
+    </div>
+  );
+}
+
+function matchesGalleryPath(galleryKey: string, sectionPath: string): boolean {
+  const normalizedKey = galleryKey.replace(/\.items$/, "");
+  return normalizedKey === sectionPath;
 }

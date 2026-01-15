@@ -157,7 +157,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       classesByTone[effTone][effColor],
       // Ensure legacy expectations for specific variants
       variant === "outline" && "border-input",
-      variant === "ghost" && effColor === "accent" && "hover:bg-accent",
+      variant === "ghost" &&
+        effColor === "accent" &&
+        "hover:bg-accent hover:text-accent-foreground",
       variant === "destructive" && "bg-destructive",
       iconOnly && (size === "lg" ? "h-11 w-11" : size === "sm" ? "h-9 w-9" : "h-10 w-10") + " p-0 justify-center",
       isLoading && "cursor-progress opacity-70",

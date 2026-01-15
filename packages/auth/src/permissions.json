@@ -19,6 +19,9 @@
     "change_password",
     "manage_cart",
     "view_orders",
+    "manage_catalog",
+    "manage_inventory",
+    "manage_media",
     "manage_orders",
     "manage_pages",
     "manage_sessions",
@@ -34,6 +37,9 @@
     "change_password",
     "manage_cart",
     "view_orders",
+    "manage_catalog",
+    "manage_inventory",
+    "manage_media",
     "manage_orders",
     "manage_pages",
     "manage_sessions",
@@ -47,7 +53,9 @@
     "view_profile",
     "manage_profile",
     "change_password",
-    "manage_cart"
+    "manage_cart",
+    "manage_catalog",
+    "manage_media"
   ],
   "ThemeEditor": [
     "view_products",

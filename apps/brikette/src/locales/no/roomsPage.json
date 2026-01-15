@@ -251,8 +251,8 @@
   "checkRatesNonRefundable": "Ikke‑refunderbare priser",
   "checkRatesFlexible": "Fleksible rompriser",
   "ctaSuffix": {
-    "nonRefundable": "Non‑Refundable",
-    "flexible": "Flexible"
+    "nonRefundable": "Ikke‑refunderbar",
+    "flexible": "Fleksibel"
   },
   "details": "Detaljer",
   "ratesFrom": "Fra €{{price}}",
@@ -266,6 +266,6 @@
   "loadingPrice": "Laster pris…",
   "landingImageAlt": "Forsidebilde av {{room}}",
   "priceNotes": {
-    "dorm": "Per night, per guest. One guest in one bunk bed."
+    "dorm": "Per natt, per gjest. Én gjest per køyeseng."
   }
 }

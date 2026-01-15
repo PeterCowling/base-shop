@@ -33,9 +33,9 @@
   "guideCollections": {
     "heading": "Zaplanuj swój pobyt z przewodnikami krok po kroku",
     "description": "Wskazówki, zasady rezerwacji i logistyka przyjazdu zebrane z naszych najczęściej zadawanych pytań.",
-    "taggedHeading": "Planowanie niezbędne oznaczono __placeholder_0__",
-    "taggedDescription": "Te niezbędne rzeczy koncentrują się na __placeholder_0__.Wyczyść filtr, aby przeglądać wszystko, co przygotowaliśmy.",
-    "empty": "Nie mamy jeszcze przewodników planowania __placeholder_0__.Wypróbuj inny znacznik lub zresetuj filtr.",
+    "taggedHeading": "Niezbędniki planowania oznaczone tagiem {{tag}}",
+    "taggedDescription": "Te niezbędniki dotyczą {{tag}}. Wyczyść filtr, aby przeglądać wszystko, co przygotowaliśmy.",
+    "empty": "Nie mamy jeszcze przewodników planowania dla {{tag}}. Wypróbuj inny tag lub zresetuj filtr.",
     "clearFilter": "Przeglądaj wszystkie niezbędne informacje dotyczące planowania",
     "cardCta": "Przeczytaj przewodnik planowania „{{guideTitle}}”"
   },

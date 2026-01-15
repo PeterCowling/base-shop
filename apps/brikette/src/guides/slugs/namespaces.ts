@@ -59,6 +59,10 @@ export const GUIDE_BASE_KEY_OVERRIDES: Partial<Record<
 };
 
 export function guideNamespaceKey(key: GuideKey): "experiences" | "howToGetHere" | "assistance" {
+  const override = GUIDE_BASE_KEY_OVERRIDES[key];
+  if (override) {
+    return override;
+  }
   const manifestEntry = getGuideManifestEntry(key);
   if (manifestEntry) {
     const primary = guideAreaToSlugKey(manifestEntry.primaryArea);
@@ -66,7 +70,7 @@ export function guideNamespaceKey(key: GuideKey): "experiences" | "howToGetHere"
       return primary;
     }
   }
-  return GUIDE_BASE_KEY_OVERRIDES[key] ?? "experiences";
+  return "experiences";
 }
 
 export function guideNamespace(

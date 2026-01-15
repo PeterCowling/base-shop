@@ -1,43 +1,50 @@
 import type { TFunction } from "i18next";
 
-import { DISCOUNT_PCT } from "./constants";
 import type { FallbackTranslator } from "./fallback";
 import { getFallbackValue } from "./fallback";
+import { PRIMARY_DEAL, type DealConfig } from "./deals";
 
-export function buildPerksList(t: TFunction, englishT: TFunction): string[] {
-  const raw = t("perksList", { returnObjects: true });
-  if (Array.isArray(raw)) {
-    return (raw as unknown[]).filter((item): item is string => typeof item === "string");
+export type PerkItem = {
+  title: string;
+  subtitle?: string;
+};
+
+const normalizePerkItem = (item: unknown): PerkItem | null => {
+  if (typeof item === "string") {
+    return { title: item };
   }
+  if (typeof item === "object" && item !== null) {
+    const maybe = item as { title?: unknown; subtitle?: unknown };
+    if (typeof maybe.title === "string") {
+      const perk: PerkItem = { title: maybe.title };
+      if (typeof maybe.subtitle === "string") {
+        perk.subtitle = maybe.subtitle;
+      }
+      return perk;
+    }
+  }
+  return null;
+};
+
+const normalizePerks = (raw: unknown): PerkItem[] => {
+  if (!Array.isArray(raw)) return [];
+  return raw.map(normalizePerkItem).filter((item): item is PerkItem => Boolean(item?.title?.trim()));
+};
+
+export function buildPerksList(t: TFunction, englishT: TFunction): PerkItem[] {
+  const raw = t("perksList", { returnObjects: true });
+  const normalized = normalizePerks(raw);
+  if (normalized.length) return normalized;
 
   const fallback = englishT("perksList", { returnObjects: true });
-  if (Array.isArray(fallback)) {
-    return (fallback as unknown[]).filter((item): item is string => typeof item === "string");
-  }
+  const fallbackNormalized = normalizePerks(fallback);
+  if (fallbackNormalized.length) return fallbackNormalized;
 
   const fallbackFromJson = getFallbackValue("perksList");
-  if (Array.isArray(fallbackFromJson)) {
-    return fallbackFromJson.filter((item): item is string => typeof item === "string");
-  }
+  const jsonNormalized = normalizePerks(fallbackFromJson);
+  if (jsonNormalized.length) return jsonNormalized;
 
   return [];
-}
-
-export function buildRestrictions(ft: FallbackTranslator): string[] {
-  return [
-    ft("restrictions.minAdvance", {
-      days: 10,
-    }),
-    ft("restrictions.los", {
-      min: 2,
-      max: 8,
-    }),
-    ft("restrictions.nonRefundable"),
-    ft("restrictions.stackable", {
-      percent: DISCOUNT_PCT,
-    }),
-    ft("restrictions.other"),
-  ];
 }
 
 export function resolvePerksHeading(directBookingPerksLabel: string, ft: FallbackTranslator): string {
@@ -46,33 +53,42 @@ export function resolvePerksHeading(directBookingPerksLabel: string, ft: Fallbac
     : ft("perksHeading");
 }
 
+export function buildRestrictions(ft: FallbackTranslator, deal: DealConfig = PRIMARY_DEAL): string[] {
+  const restrictions: string[] = [];
+
+  if (typeof deal.rules.minDaysAhead === "number") {
+    restrictions.push(ft("restrictions.minAdvance", { days: deal.rules.minDaysAhead }));
+  }
+
+  if (typeof deal.rules.minNights === "number" || typeof deal.rules.maxNights === "number") {
+    restrictions.push(ft("restrictions.los", { min: deal.rules.minNights, max: deal.rules.maxNights }));
+  }
+
+  if (deal.rules.rateType === "non_refundable") {
+    restrictions.push(ft("restrictions.nonRefundable"));
+  }
+
+  if (deal.rules.stacksWithDirectDiscount) {
+    restrictions.push(ft("restrictions.stackable", { percent: deal.discountPct }));
+  }
+
+  restrictions.push(ft("restrictions.other"));
+
+  return restrictions.filter((item) => typeof item === "string" && item.trim().length > 0);
+}
+
+export function resolveActiveCtaLabel(activeCtaLabel: string, bookNowLabel: string, ft: FallbackTranslator): string {
+  if (activeCtaLabel !== "reserveNow") return activeCtaLabel;
+  if (bookNowLabel !== "bookNow") return bookNowLabel;
+  return ft("dealCard.cta.bookDirect");
+}
+
 export function resolveExpiredCtaLabel(
   checkAvailabilityLabel: string,
-  reserveLabel: string,
-  bookLabel: string,
-  ft: FallbackTranslator
+  activeCtaLabel: string,
+  bookNowLabel: string,
+  ft: FallbackTranslator,
 ): string {
-  if (checkAvailabilityLabel !== "checkAvailability") {
-    return checkAvailabilityLabel;
-  }
-
-  return resolveActiveCtaLabel(reserveLabel, bookLabel, ft);
+  if (checkAvailabilityLabel !== "checkAvailability") return checkAvailabilityLabel;
+  return resolveActiveCtaLabel(activeCtaLabel, bookNowLabel, ft);
 }
-
-export function resolveActiveCtaLabel(
-  reserveLabel: string,
-  bookLabel: string,
-  ft: FallbackTranslator
-): string {
-  if (reserveLabel !== "reserveNow") {
-    return reserveLabel;
-  }
-
-  if (bookLabel !== "bookNow") {
-    return bookLabel;
-  }
-
-  return ft("buttonReserve");
-}
-
-export { DEAL_VALIDITY } from "./constants";

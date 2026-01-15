@@ -1,0 +1,23 @@
+{
+  "offline": {
+    "indicator": "You're offline",
+    "message": "Some features may be limited"
+  },
+  "update": {
+    "available": "Update available",
+    "message": "A new version is ready. Refresh to update.",
+    "refresh": "Refresh",
+    "later": "Later"
+  },
+  "loading": "Loading...",
+  "error": "Something went wrong",
+  "retry": "Try again",
+  "back": "Back",
+  "next": "Next",
+  "save": "Save",
+  "cancel": "Cancel",
+  "close": "Close",
+  "done": "Done",
+  "yes": "Yes",
+  "no": "No"
+}

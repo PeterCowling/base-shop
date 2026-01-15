@@ -6,6 +6,7 @@ import type { AppLanguage } from "@/i18n.config";
 import type { GuideMeta } from "@/data/guides.index";
 import { guideSlug } from "@/routes.guides-helpers";
 import { getSlug } from "@/utils/slug";
+import { GUIDE_DIRECTION_LINKS } from "@/routes/experiences/guideDirectionLinks";
 
 const CARD_CLASSES = [
   "group",
@@ -61,10 +62,13 @@ const TAG_BADGE_CLASSES = [
 
 const CTA_BUTTON_CLASSES = [
   "mt-6",
-  "inline-flex",
+  "inline-block",
   "w-fit",
-  "items-center",
-  "justify-center",
+  "max-w-full",
+  "whitespace-normal",
+  "text-center",
+  "text-balance",
+  "leading-snug",
   "rounded-full",
   "border",
   "border-brand-primary/40",
@@ -89,12 +93,42 @@ const CTA_BUTTON_CLASSES = [
   "dark:focus-visible:ring-brand-secondary",
 ] as const;
 
+const DIRECTION_WRAPPER_CLASSES = ["mt-4", "space-y-2", "text-xs"] as const;
+const DIRECTION_LABEL_CLASSES = [
+  "text-xxxs",
+  "font-semibold",
+  "uppercase",
+  "tracking-[0.3em]",
+  "text-brand-muted",
+  "dark:text-brand-muted-dark",
+] as const;
+const DIRECTION_PILL_CLASSES = [
+  "inline-flex",
+  "items-center",
+  "rounded-full",
+  "border",
+  "border-brand-outline/40",
+  "bg-brand-surface/60",
+  "px-3",
+  "py-1",
+  "text-xs",
+  "font-semibold",
+  "text-brand-primary",
+  "transition",
+  "hover:border-brand-primary/60",
+  "hover:text-brand-primary",
+  "dark:border-brand-outline/50",
+  "dark:bg-brand-surface/20",
+  "dark:text-brand-secondary",
+] as const;
+
 interface GuideCollectionCardProps {
   lang: AppLanguage;
   guide: GuideMeta;
   label: string;
   summary?: string;
   ctaLabel?: string;
+  directionsLabel?: string;
 }
 
 export const GuideCollectionCard = ({
@@ -103,11 +137,14 @@ export const GuideCollectionCard = ({
   label,
   summary,
   ctaLabel,
+  directionsLabel,
 }: GuideCollectionCardProps): JSX.Element => {
   // Always link under the Guides base for UI consistency
   const base = getSlug("guides", lang);
   const slug = guideSlug(lang, guide.key);
   const href = `/${lang}/${base}/${slug}`;
+  const howToBase = `/${lang}/${getSlug("howToGetHere", lang)}`;
+  const directionLinks = GUIDE_DIRECTION_LINKS[guide.key];
 
   return (
     <article className={clsx(CARD_CLASSES)}>
@@ -129,6 +166,23 @@ export const GuideCollectionCard = ({
                 #{tag}
               </span>
             ))}
+          </div>
+        ) : null}
+        {directionLinks?.length && directionsLabel ? (
+          <div className={clsx(DIRECTION_WRAPPER_CLASSES)}>
+            <p className={clsx(DIRECTION_LABEL_CLASSES)}>{directionsLabel}</p>
+            <div className="flex flex-wrap gap-2">
+              {directionLinks.map((link) => (
+                <Link
+                  key={`${guide.key}-${link.slug}`}
+                  to={`${howToBase}/${link.slug}`}
+                  prefetch="intent"
+                  className={clsx(DIRECTION_PILL_CLASSES)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
         ) : null}
       </div>

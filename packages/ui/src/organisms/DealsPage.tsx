@@ -1,18 +1,18 @@
 // packages/ui/src/organisms/DealsPage.tsx
-import DealsStructuredData from "@/components/seo/DealsStructuredData";
+import DealsStructuredData from "@ui/components/seo/DealsStructuredData";
 import { Card, CardContent } from "../atoms/Card";
 import { Section } from "../atoms/Section";
-import { useModal } from "@/context/ModalContext";
-import { i18nConfig, type AppLanguage } from "@/i18n.config";
+import { useModal } from "@ui/context/ModalContext";
+import { i18nConfig, type AppLanguage } from "@ui/i18n.config";
 import { resolveBookingCtaLabel } from "@ui/shared";
-import formatDisplayDate from "@/utils/formatDisplayDate";
+import formatDisplayDate from "@ui/utils/formatDisplayDate";
 import { ArrowRight, CheckCircle2, Coffee, Percent, Wine } from "lucide-react";
 import { Fragment, memo, useCallback, useMemo, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { useLoaderData } from "react-router-dom";
 import { AppLink as Link } from "../atoms/Link";
-import { getSlug } from "@/utils/slug";
-import { Stack } from "@/components/atoms/primitives/Stack";
+import { getSlug } from "@ui/utils/slug";
+import { Stack } from "@ui/components/atoms/primitives/Stack";
 
 const DISCOUNT_PCT = 15;
 const perkIcons = [Percent, Coffee, Wine];

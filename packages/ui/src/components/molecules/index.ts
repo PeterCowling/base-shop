@@ -1,4 +1,4 @@
-export { default as Breadcrumbs } from "./Breadcrumbs";
+export { default as Breadcrumbs, type BreadcrumbItem } from "./Breadcrumbs";
 export { default as CurrencySwitcher } from "./CurrencySwitcher.client";
 export { default as CodeBlock } from "./CodeBlock";
 export { FormField } from "./FormField";

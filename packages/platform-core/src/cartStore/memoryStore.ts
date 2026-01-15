@@ -28,7 +28,10 @@ export class MemoryCartStore implements CartStore {
   }
 
   async setCart(id: string, cart: CartState): Promise<void> {
-    this.carts.set(id, { cart, expires: Date.now() + this.ttl * 1000 });
+    this.carts.set(id, {
+      cart,
+      expires: Date.now() + this.ttl * 1000,
+    });
     this.resetTimer(id);
   }
 

@@ -10,6 +10,30 @@ const LINK_LABEL_SUFFIX = ".linkLabel" as const;
 type AnyTFunction = TFunction<string>;
 const LEGACY_LINKS_PREFIX = "links." as const;
 
+function humanizeGuideKey(value: string): string {
+  const raw = value.trim();
+  if (!raw) return value;
+
+  const spaced = raw
+    .replace(/_/g, " ")
+    .replace(/-/g, " ")
+    .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+    .replace(/([a-z\\d])([A-Z])/g, "$1 $2")
+    .replace(/\\s+/g, " ")
+    .trim();
+
+  if (!spaced) return value;
+
+  const words = spaced.split(" ").filter(Boolean);
+  const formatted = words.map((word) => {
+    if (/[a-z]/.test(word) && /[A-Z]/.test(word)) return word; // keep mixed-case (e.g., eSIM)
+    if (/^[A-Z0-9]+$/.test(word) && word.length > 1) return word; // keep acronyms
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  });
+
+  return formatted.join(" ");
+}
+
 function buildGuideLinkLabelKeys(guideKey: GuideKey | string): string[] {
   const sanitized = String(guideKey).trim();
   if (!sanitized) return [];
@@ -92,7 +116,7 @@ export function getGuideLinkLabel(
     return guideKey;
   }
 
-  let fallback = guideKey;
+  let fallback = humanizeGuideKey(String(guideKey));
   for (const key of keys) {
     const resolvedFallback = resolveGuideLinkLabel(fallbackTranslator, key, fallback);
     if (resolvedFallback) {

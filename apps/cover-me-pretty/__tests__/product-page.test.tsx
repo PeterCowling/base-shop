@@ -9,8 +9,9 @@ afterEach(() => {
 
 describe("Product detail page", () => {
   test("calls notFound when product missing", async () => {
-    jest.mock("@platform-core/repositories/json.server", () => ({
-      readRepo: jest.fn().mockResolvedValue([]),
+    jest.mock("@platform-core/repositories/catalogSkus.server", () => ({
+      getShopSkuBySlug: jest.fn().mockResolvedValue(null),
+      listShopSkus: jest.fn().mockResolvedValue([]),
     }));
     jest.mock("@platform-core/returnLogistics", () => ({
       getReturnLogistics: jest.fn().mockResolvedValue({ requireTags: false, allowWear: true }),
@@ -24,22 +25,21 @@ describe("Product detail page", () => {
   });
 
   test("renders product with merchandising content", async () => {
-    jest.mock("@platform-core/repositories/json.server", () => ({
-      readRepo: jest.fn().mockResolvedValue([
-        {
-          id: "p1",
-          sku: "p1",
-          status: "active",
-          title: { en: "Prod" },
-          description: { en: "Desc" },
-          price: 10,
-          deposit: 5,
-          availability: [],
-          media: [],
-          forSale: true,
-          forRental: false,
-        },
-      ]),
+    jest.mock("@platform-core/repositories/catalogSkus.server", () => ({
+      getShopSkuBySlug: jest.fn().mockResolvedValue({
+        id: "p1",
+        slug: "p1",
+        title: "Prod",
+        price: 10,
+        deposit: 5,
+        stock: 1,
+        forSale: true,
+        forRental: false,
+        media: [],
+        sizes: [],
+        description: "Desc",
+      }),
+      listShopSkus: jest.fn().mockResolvedValue([]),
     }));
     jest.mock("@acme/sanity", () => ({
       fetchPublishedPosts: jest.fn().mockResolvedValue([
@@ -94,10 +94,21 @@ describe("Product detail page", () => {
 
 describe("page helpers", () => {
   test("generateMetadata returns product title", async () => {
-    jest.mock("@platform-core/repositories/json.server", () => ({
-      readRepo: jest.fn().mockResolvedValue([
-        { id: "p1", sku: "p1", status: "active", title: { en: "Prod" }, description: { en: "" }, price: 0, deposit: 0 },
-      ]),
+    jest.mock("@platform-core/repositories/catalogSkus.server", () => ({
+      getShopSkuBySlug: jest.fn().mockResolvedValue({
+        id: "p1",
+        slug: "p1",
+        title: "Prod",
+        price: 0,
+        deposit: 0,
+        stock: 0,
+        forSale: true,
+        forRental: false,
+        media: [],
+        sizes: [],
+        description: "",
+      }),
+      listShopSkus: jest.fn().mockResolvedValue([]),
     }));
     const { generateMetadata } = await import("../src/app/[lang]/product/[slug]/page");
     const meta = await generateMetadata({ params: { slug: "p1", lang: "en" } });
@@ -105,8 +116,9 @@ describe("page helpers", () => {
   });
 
   test("generateMetadata returns fallback when product missing", async () => {
-    jest.mock("@platform-core/repositories/json.server", () => ({
-      readRepo: jest.fn().mockResolvedValue([]),
+    jest.mock("@platform-core/repositories/catalogSkus.server", () => ({
+      getShopSkuBySlug: jest.fn().mockResolvedValue(null),
+      listShopSkus: jest.fn().mockResolvedValue([]),
     }));
     const { generateMetadata } = await import("../src/app/[lang]/product/[slug]/page");
     const meta = await generateMetadata({ params: { slug: "x", lang: "en" } });
@@ -114,6 +126,14 @@ describe("page helpers", () => {
   });
 
   test("generateStaticParams provides locale slugs", async () => {
+    jest.mock("@platform-core/repositories/catalogSkus.server", () => ({
+      getShopSkuBySlug: jest.fn().mockResolvedValue(null),
+      listShopSkus: jest.fn().mockResolvedValue([
+        { id: "1", slug: "green-sneaker", title: "", price: 0, deposit: 0, stock: 0, forSale: true, forRental: false, media: [], sizes: [], description: "" },
+        { id: "2", slug: "sand-sneaker", title: "", price: 0, deposit: 0, stock: 0, forSale: true, forRental: false, media: [], sizes: [], description: "" },
+        { id: "3", slug: "black-sneaker", title: "", price: 0, deposit: 0, stock: 0, forSale: true, forRental: false, media: [], sizes: [], description: "" },
+      ]),
+    }));
     const { generateStaticParams } = await import("../src/app/[lang]/product/[slug]/page");
     expect(await generateStaticParams()).toEqual(
       LOCALES.flatMap((lang) =>

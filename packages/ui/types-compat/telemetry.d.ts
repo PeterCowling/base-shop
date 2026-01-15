@@ -4,4 +4,15 @@ declare module "@acme/telemetry" {
     name: string,
     payload?: Record<string, unknown>
   ): void;
+
+  export function captureError(
+    error: unknown,
+    context?: {
+      scope?: string;
+      event?: string;
+      metadata?: Record<string, unknown>;
+      app?: string;
+      [key: string]: unknown;
+    }
+  ): void;
 }

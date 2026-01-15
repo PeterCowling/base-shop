@@ -1,0 +1,64 @@
+{
+  "productId": "bag-001",
+  "version": "0.1.0",
+  "hotspots": [
+    {
+      "id": "hs_body",
+      "regionId": "body",
+      "label": "Body",
+      "nodeName": "hs_body",
+      "focusTargetNode": "focus_body",
+      "propertyKeys": [
+        "bodyMaterial",
+        "bodyColor"
+      ]
+    },
+    {
+      "id": "hs_handle",
+      "regionId": "handle",
+      "label": "Handle",
+      "nodeName": "hs_handle",
+      "focusTargetNode": "focus_handle",
+      "propertyKeys": [
+        "handleColor"
+      ]
+    },
+    {
+      "id": "hs_hardware",
+      "regionId": "hardware",
+      "label": "Hardware",
+      "nodeName": "hs_hardware",
+      "focusTargetNode": "focus_hardware",
+      "propertyKeys": [
+        "hardwareFinish"
+      ]
+    },
+    {
+      "id": "hs_lining",
+      "regionId": "lining",
+      "label": "Lining",
+      "nodeName": "hs_lining",
+      "focusTargetNode": "focus_lining",
+      "propertyKeys": [
+        "liningColor"
+      ]
+    },
+    {
+      "id": "hs_monogram",
+      "regionId": "personalization",
+      "label": "Monogram",
+      "nodeName": "hs_monogram",
+      "focusTargetNode": "focus_personalization",
+      "propertyKeys": [
+        "monogram"
+      ]
+    },
+    {
+      "id": "hs_flap",
+      "regionId": "body",
+      "label": "Flap",
+      "nodeName": "hs_flap",
+      "focusTargetNode": "focus_flap"
+    }
+  ]
+}

@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "Réservations de Chambres — Conditions Générales | Hostel Brikette",
-    "description": "Conditions officielles pour les réservations : réservation, annulations, arrivée/départ, paiements, devoir de diligence et politiques."
+    "title": "Conditions de réservation | Hostel Brikette",
+    "description": "Conditions de réservation de Hostel Brikette couvrant réservations, paiements, annulations, dépôts, responsabilité et confidentialité."
   },
   "headings": {
-    "pageTitle": "Hostel Brikette — Réservations de Chambres",
-    "pageSubtitle": "Conditions Générales"
+    "pageTitle": "Hostel Brikette — Conditions de réservation",
+    "pageSubtitle": "Conditions de réservation"
   },
   "toc": {
     "title": "Sommaire",
@@ -17,334 +17,164 @@
   },
   "sections": {
     "s1": {
-      "title": "1. Définitions et Interprétations",
+      "title": "1. Parties et définitions",
       "body": [
-        "1.1 \"Conditions Générales\" — Les conditions décrites dans le présent document.",
-        "1.2 \"L’Auberge\", \"nous\" ou \"notre\" — Skylar SRL, dont le siège social est situé Via Guglielmo Marconi, 358, 84017 Positano, Salerne, Italie.",
-        "1.3 \"Vous\", \"votre\", client, résident ou \"hôte\" — Toute personne qui soumet une Demande de Réservation de Chambre, est un Hôte Officiel de l’Auberge, un Hôte Temporaire, un membre du personnel, un organisateur d’événements, un chef de groupe ou tout autre prestataire/acheteur tiers.",
-        "1.4 \"Demande de Réservation de Chambre\" — Demande visant à réserver un séjour à l’Auberge conformément aux présentes conditions, effectuée par vous ou votre OTA. Seules l’auberge et les OTA autorisées peuvent proposer des lits à la vente ; toute revente par des tiers non autorisés entraînera le refus de la demande ou l’annulation des réservations confirmées.",
-        "1.5 \"Espaces Communs\" — Espaces de l’Auberge accessibles aux Hôtes Officiels et aux Hôtes Temporaires : entrée et accueil, terrasse commune, sanitaires communs.",
-        "1.6 \"Titulaire de la Carte\" — Propriétaire de la carte de crédit indiquée dans la Demande de Réservation de Chambre.",
-        "1.7 \"Contre‑proposition\" — Variante d’une Demande de Réservation. La première contre‑proposition est émise par l’Auberge ; d’autres peuvent suivre.",
-        "1.8 \"Réservation de Chambre Confirmée\" — Lorsque l’Auberge accepte une Demande de Réservation de Chambre ou que vous acceptez une Contre‑proposition, un contrat juridiquement contraignant est formé ; il inclut les services, prestations et conditions définis ici.",
-        "1.9 \"No Show\" — Statut applicable à un hôte ou à une Réservation Confirmée lorsque un ou plusieurs hôtes éligibles ne se présentent pas avant la fin de la Plage Horaire Officielle de Check‑in le premier jour.",
-        "1.10 \"Frais de No Show\" — Montant prélevé par l’Auberge en cas de No Show ou d’annulation confirmée en dehors du Délai de Préavis. Le montant est le plus élevé entre : le prix de la première nuit ou l’acompte non remboursable prévu par la réservation.",
-        "1.11 \"Demande d’Annulation\" — Demande visant à annuler une Réservation Confirmée.",
-        "1.12 \"Délai de Préavis d’Annulation\" — Délai requis, en heures, pour annuler une Réservation Confirmée. Si exprimé en jours, il est converti en heures (ex. 3 jours = 72 h).",
-        "1.13 \"Frais Administratifs d’Annulation\" — Frais de traitement d’une Demande d’Annulation, calculés sur la base du tarif convenu.",
-        "1.14 \"Adresse e‑mail Officielle de l’Auberge\" — hostelpositano@gmail.com.",
-        "1.15 \"Annulation Confirmée\" — Confirmation écrite envoyée par l’Auberge via l’Adresse e‑mail Officielle attestant du traitement de l’annulation.",
-        "1.16 \"Demande de Modification de Réservation\" — Demande d’altération d’une Réservation Confirmée (annulation partielle ou changement de dates).",
-        "1.17 \"Modification de Réservation Confirmée\" — Confirmation écrite que la modification a été effectuée.",
-        "1.18 \"Adresse e‑mail Désignée\" — Adresse fournie dans la Demande de Réservation ; l’Auberge l’utilise pour toute correspondance. Vous êtes responsable de son exactitude et de la lecture des messages.",
-        "1.19 \"Demande de Prolongation\" — Demande de prolonger une Réservation Confirmée.",
-        "1.20 \"Prolongation Confirmée\" — Confirmation écrite que la prolongation a été effectuée.",
-        "1.21 \"Demande de Check‑in\" — Demande d’enregistrement à l’Auberge pour débuter la réservation.",
-        "1.22 \"Plage Horaire Officielle de Check‑in\" — Créneau 15:00–22:00 le jour d’arrivée.",
-        "1.23 \"Hôte Officiel de l’Auberge\" — Personne ayant achevé la procédure de check‑in.",
-        "1.24 \"Chambre Attribuée\" — Chambre attribuée à l’Hôte Officiel ; seul l’accès à cette chambre est autorisé.",
-        "1.25 \"Chambres de l’Auberge\" — Chambres privées et dortoirs réservés aux Hôtes Officiels.",
-        "1.26 \"Linge\" — Kit remis au check‑in : taie d’oreiller, drap, sous‑drap, serviette.",
-        "1.27 \"Surclassement de Chambre\" — Attribution d’une chambre plus coûteuse que celle réservée (le critère est le prix).",
-        "1.28 \"Keycard\" — Carte plastique (avec dépôt) codée pour ouvrir la porte de la Chambre Attribuée.",
-        "1.29 \"Préautorisation\" — Réservation temporaire d’un montant sur la carte du Titulaire ; les fonds sont bloqués, non débités immédiatement.",
-        "1.30 \"Check‑out\" — Se produit uniquement lorsque : le Linge est rendu ; la Keycard est restituée ; tous les effets personnels sont retirés de la Chambre Attribuée.",
-        "1.31 \"Mineur\" — Personne âgée de moins de 18 ans en Italie.",
-        "1.32 \"Service Complémentaire\" — Service que l’auberge peut offrir gratuitement, non inclus dans la Réservation Confirmée (ex. Petit‑déjeuner, Boissons, Wi‑Fi, Consigne, Réfrigérateur).",
-        "1.33 \"Hôte Temporaire\" — Individu autorisé à accéder uniquement aux Espaces Communs, après vérification d’une pièce d’identité originale. Seul le Personnel de l’Auberge peut accorder ce statut.",
-        "1.34 \"Moyens de Paiement Acceptés\" — Cartes Visa ou MasterCard ; virement uniquement d’une société. AmEx/PayPal et assimilés non acceptés. Espèces en euros.",
-        "1.35 \"Réservations Prépayées et Non Remboursables\" — Tarifs réduits avec paiement intégral à la réservation ; jamais remboursables.",
-        "1.36 \"Premier arrivé, premier servi\" — Aucun lit n’est attribué en dortoir ; l’hôte choisit parmi les lits disponibles et peut changer si un lit préféré se libère.",
-        "1.37 \"Type de Réservation\" — Prépayée Non Remboursable ou Remboursable.",
-        "1.38 \"Réservations Remboursables\" — Tarif standard avec conditions flexibles (dates/durée ajustables ; politiques d’annulation plus souples selon les termes).",
-        "1.39 \"Pièce d’Identité\" — Passeport, carte d’identité, permis de conduire ou carte militaire. Originaux uniquement.",
-        "1.40 \"Défaut Grave\" — Défaut affectant sérieusement le séjour (ex. lit cassé, température dangereuse, impossibilité d’accès, absence d’eau).",
-        "1.41 \"OTA\" — Agence de voyage en ligne autorisée (ex. Hostelworld.com, Booking.com)."
+        "Date d'entrée en vigueur : 2026-01-09.",
+        "S'applique à : toutes les Réservations à Hostel Brikette et, le cas échéant, aux Visiteurs sur place.",
+        "Si vous avez réservé via une OTA, l'OTA peut également imposer ses propres conditions de plateforme. Ces Conditions de réservation régissent le contrat d'hébergement entre vous et Skylar SRL pour votre séjour à Hostel Brikette, dans la mesure permise par la loi applicable.",
+        "1.1 Qui sommes‑nous — Skylar SRL (\"nous\", \"notre\") exploite Hostel Brikette. Siège social : Via Guglielmo Marconi, 358, 84017, Positano, Salerne, Italie. Adresse de l'établissement : Via Guglielmo Marconi, 358, 84017, Positano, Salerne, Italie. Email officiel : hostelpositano@gmail.com. Site web : https://hostel-positano.com.",
+        "1.2 \"Conditions de réservation\" — Le présent document.",
+        "1.3 \"Règlement intérieur\" — Le document séparé du Règlement intérieur de Hostel Brikette en vigueur pour votre séjour, intégré par référence au contrat d'hébergement.",
+        "1.4 \"Réservant\" — La personne qui soumet une Demande de réservation et au nom de laquelle la Réservation est effectuée.",
+        "1.5 \"Client\" — Une personne qui séjourne la nuit dans le cadre d'une Réservation confirmée.",
+        "1.6 \"Visiteur\" — Une personne autorisée à accéder uniquement aux Espaces communs en vertu du Règlement intérieur et qui ne séjourne pas la nuit (appelée aussi \"Visiteur temporaire\" dans certains pays).",
+        "1.7 \"Titulaire de la carte\" — Le propriétaire de la carte de paiement utilisée pour payer ou garantir une Réservation.",
+        "1.8 \"Demande de réservation\" — Une demande de réservation d'hébergement à Hostel Brikette, effectuée via notre site web ou une OTA autorisée.",
+        "1.9 \"Réservation confirmée\" — Une Demande de réservation que nous avons acceptée par écrit (y compris par email ou confirmation via message/plateforme OTA), formant un contrat d'hébergement contraignant.",
+        "1.10 \"OTA\" — Agence de voyage en ligne autorisée à vendre nos lits/chambres (exemples : Hostelworld.com et Booking.com).",
+        "1.11 \"Type de tarif\" — L'ensemble des règles tarifaires attachées à une Réservation, comme Tarif Remboursable ou Tarif Non remboursable, tel qu'indiqué lors de la réservation et dans votre Réservation confirmée.",
+        "1.12 \"Tarif Non remboursable\" — Tarif réduit ou restrictif nécessitant le paiement intégral à la réservation et non remboursable sauf obligation légale.",
+        "1.13 \"Tarif Remboursable\" — Tarif pouvant permettre l'annulation ou la modification dans les règles indiquées lors de la réservation et dans votre Réservation confirmée.",
+        "1.14 \"Plage officielle de check‑in\" — 15:00–22:00 à la date d'arrivée, sauf indication contraire dans votre Réservation confirmée.",
+        "1.15 \"No Show\" — Un Client ne finalise pas le check‑in avant la fin de la Plage officielle de check‑in à la date d'arrivée et n'a pas obtenu notre accord écrit pour une arrivée tardive.",
+        "1.16 \"Annulation tardive\" — Annulation demandée en dehors du délai de préavis applicable au Type de tarif.",
+        "1.17 \"Résiliation pour manquement\" — Nous mettons fin au séjour (ou refusons la poursuite de l'hébergement) en raison d'une violation du Règlement intérieur ou de ces Conditions de réservation.",
+        "1.18 \"Préautorisation\" — Blocage temporaire sur une carte de paiement, réservant des fonds sans débit immédiat.",
+        "1.19 \"Dépôt de garantie\" — Dépôt ou préautorisation retenu pour couvrir des montants dus au titre des présentes Conditions de réservation ou du Règlement intérieur (ex. dommages, pénalités, frais impayés), comme décrit à la Section 5.",
+        "1.20 \"Espaces communs\" — Espaces partagés désignés comme décrit dans le Règlement intérieur (et excluant les chambres/dortoirs sauf indication contraire).",
+        "1.21 \"Défaut grave\" — Défaut d'hébergement ou d'installation affectant matériellement le séjour (exemples : lit cassé, absence d'eau, impossibilité d'accéder à la chambre) évalué raisonnablement par nos soins.",
+        "1.22 Interprétation — \"Par écrit\" inclut les emails et les messages via la plateforme OTA.",
+        "1.23 Les heures et délais sont en heure locale sauf indication contraire.",
+        "1.24 En cas de conflit entre ces Conditions de réservation et le Règlement intérieur sur les questions financières, les présentes Conditions prévalent ; pour la conduite et les opérations sur site, le Règlement intérieur prévaut."
       ]
     },
     "s2": {
-      "title": "2. Demandes de Réservation",
+      "title": "2. Demandes de réservation, canaux autorisés et formation du contrat",
       "body": [
-        "2.1 Soumission — La demande doit être effectuée par écrit via une OTA ou notre site. Les échanges en personne sont informatifs uniquement. En soumettant, vous acceptez les présentes Conditions et garantissez l’exactitude de vos informations.",
-        "2.2 Traitement — Il débute après l’encaissement du dépôt, de la préautorisation ou du paiement requis par un moyen accepté. Le Titulaire de la Carte doit être identifié et peut devoir autoriser par écrit les débits via l’e‑mail officiel ; à défaut, la demande est refusée.",
-        "2.3 Refus — Nous pouvons refuser toute Demande de Réservation pour quelque raison que ce soit.",
-        "2.4 Limites — Maximum sept (7) nuits et groupes jusqu’à cinq (5) personnes ; au‑delà, demandes traitées comme réservations multiples.",
-        "2.5 Contre‑proposition — Si les chambres demandées sont indisponibles, nous pouvons proposer des alternatives à l’Adresse e‑mail Désignée. L’acceptation déclenche les tentatives de paiement/préautorisation.",
-        "2.6 Prépayée Non Remboursable — Nous pouvons exiger l’acceptation explicite des Conditions ; à défaut la demande est annulée. Jusqu’à trois tentatives de paiement avant annulation.",
-        "2.7 Confirmation — La réservation n’est confirmée que lorsque nous envoyons l’e‑mail de confirmation (référence, date d’arrivée, durée, etc.) à l’Adresse e‑mail Désignée. Vous devez vérifier ces informations et signaler toute erreur via l’e‑mail officiel.",
-        "2.9 Nombre d’Hôtes Inclus — Un par lit simple ; jusqu’à deux par lit double ; appartements selon capacité annoncée. Aucune capacité ne peut être dépassée.",
-        "2.9 Périmètre des Prestations — Inclut Linge et Keycard par personne, accès aux douches et à l’eau chaude aux horaires indiqués, et accès aux Espaces Communs. Les autres services sont complémentaires et soumis à leurs propres conditions.",
-        "2.10 Obligation Financière — Le Titulaire de la Carte est responsable de la réservation et de tout frais additionnel (dégâts, ménage supplémentaire, amendes, non‑respect du check‑out, etc.).",
-        "2.11 Attribution des Chambres et Lits en Dortoir — Chaque personne est affectée à une Chambre Attribuée. En dortoir, les lits se choisissent selon l’ordre d’arrivée ; un groupe peut être réparti sur plusieurs chambres.",
-        "2.12 Attribution des Surclassements — Les surclassements peuvent être attribués après paiement ou pour gestion d’inventaire ; en l’absence de paiement, retour à la catégorie initiale."
+        "2.1 Canaux autorisés et interdiction de revente — Les réservations doivent être effectuées via notre site web ou une OTA autorisée. La revente non autorisée de notre inventaire d'hébergement est interdite. Nous pouvons refuser ou annuler les demandes que nous estimons raisonnablement liées à une revente non autorisée ou à une fraude.",
+        "2.2 Comment une Réservation est confirmée — Une Réservation devient une Réservation confirmée uniquement lorsque nous envoyons une confirmation écrite (email, confirmation OTA ou fil de messages OTA). Jusque‑là, les échanges (y compris en personne ou par téléphone) sont uniquement informatifs.",
+        "2.3 Refus des Demandes de réservation — Nous pouvons refuser une Demande de réservation lorsque cela est nécessaire pour une exploitation légale, la sécurité, des contraintes de capacité/inventaire, l'absence de vérification ou de paiement requis, une suspicion de fraude ou une violation de ces Conditions de réservation ou du Règlement intérieur. Nous ne refuserons pas de réservations pour des motifs discriminatoires illégaux.",
+        "2.4 Exactitude des informations et communications — Le Réservant doit fournir des coordonnées exactes (y compris un email consulté). Nous envoyons les communications importantes aux coordonnées fournies. Si vous avez réservé via une OTA, nous pouvons communiquer via le système de messages OTA et/ou par email.",
+        "2.5 Vérification, prévention de la fraude et autorisations — Nous pouvons exiger une vérification d'identité et/ou de paiement pour prévenir la fraude (y compris la confirmation que le Titulaire de la carte autorise les débits). Si les vérifications requises ne sont pas fournies dans un délai raisonnable, nous pouvons refuser la Demande de réservation ou annuler la Réservation (en appliquant les règles de frais si elle était déjà confirmée).",
+        "2.6 Limites de taille de réservation — Sauf accord écrit contraire, les limites suivantes s'appliquent : durée maximale par Réservation : 7 nuits ; taille maximale de groupe par Réservation : 5 personnes. Si des demandes plus importantes sont acceptées, elles peuvent être structurées en réservations multiples. Les règles de frais s'appliquent par Réservation sauf confirmation écrite contraire.",
+        "2.7 Non‑transférabilité — Les Réservations sont non transférables. Le nom du Réservant ne peut pas être modifié sans notre accord écrit. Les Clients listés sur une Réservation ne peuvent être changés qu'avec notre accord écrit et sous réserve de vérification d'identité et des règles de capacité."
       ]
     },
     "s3": {
-      "title": "3. Âge et Accessibilité",
+      "title": "3. Tarifs, inclusions et attribution des chambres",
       "body": [
-        "3.1 Besoins Spécifiques — Contactez‑nous avant de réserver pour des besoins particuliers. Le bâtiment comporte des escaliers et aucun service de portage. Les dispositifs sonores pour dormir sont autorisés en chambre privée uniquement.",
-        "3.2 Autonomie — Nous ne fournissons pas d’assistance continue ; si vous ne pouvez pas gérer votre séjour de manière autonome, nous annulerons la réservation.",
-        "3.3 Mineurs — En Italie, les mineurs ne peuvent pas voyager seuls. Les moins de 16 ans ne peuvent séjourner qu’en chambre privée, accompagnés par un parent/tuteur 18+. Les jeunes de 17 ans peuvent séjourner en dortoir seulement avec un accompagnateur 18+ dans la même chambre et une preuve de tutelle ; à défaut, la réservation sera annulée selon sa typologie."
+        "3.1 Ce qui est inclus — Sauf indication contraire dans votre Réservation confirmée, l'hébergement inclut : un lit/chambre pour chaque Client pour les nuits réservées ; linge standard fourni au check‑in (voir le Règlement intérieur pour les détails) ; accès aux Espaces communs durant le séjour ; accès aux salles de bains/douches partagées selon les horaires affichés (le cas échéant). Les services supplémentaires (ex. petit‑déjeuner, boissons, Wi‑Fi, bagagerie, stockage au frigo) peuvent être gratuits ou payants et peuvent être soumis à des conditions séparées communiquées sur place ou sur le site web.",
+        "3.2 Attribution des chambres et des lits — Nous attribuons les types de chambre selon votre Réservation confirmée. Pour les dortoirs, les lits sont généralement attribués selon l'ordre d'arrivée sauf indication contraire. Les réservations de groupe peuvent être réparties entre plusieurs chambres selon la disponibilité.",
+        "3.3 Surclassements — Si nous proposons un surclassement, il peut être payant (avec accord écrit et paiement réussi) ou opérationnel (placement temporaire pour des raisons d'inventaire). Si un surclassement payant échoue, nous pouvons revenir au type de chambre initial (sous réserve de disponibilité)."
       ]
     },
     "s4": {
-      "title": "4. Processus et Paiements de Tiers",
+      "title": "4. Paiements, dépôts et préautorisations",
       "body": [
-        "Lorsque vous soumettez une Demande de Réservation via un processeur de paiement tiers (OTA), vous effectuez le paiement sur sa plateforme conformément à ses conditions.",
-        "Les paiements vers la tierce partie sont régis par votre accord avec celle‑ci ; l’Auberge n’exerce aucun contrôle sur ces processus.",
-        "Nous ne recevons aucune partie de ces paiements et n’assumons aucune responsabilité pour les réservations effectuées de cette manière.",
-        "Il vous incombe de vous assurer que le paiement a réussi et que la réservation est confirmée avant votre arrivée.",
-        "Pour toute question relative au paiement auprès d’une OTA, veuillez contacter directement ce prestataire."
+        "4.1 Moyens de paiement acceptés — Méthodes acceptées : Visa et Mastercard ; espèces en EUR ; virement bancaire uniquement pour les entreprises constituées.",
+        "4.2 Quand le paiement est dû — Le calendrier de paiement dépend du Type de tarif et du canal de réservation. Tarif Non remboursable : paiement intégral à la réservation (ou à la confirmation si nous traitons manuellement). Tarif Remboursable : paiement à la réservation, au check‑in ou dans un délai indiqué ; nous pouvons exiger une préautorisation/garantie. Votre Réservation confirmée indiquera le calendrier et les règles applicables.",
+        "4.3 Paiements via OTA — Si vous réservez via une OTA, votre paiement peut être collecté par l'OTA (en tant que merchant of record) ou par Skylar SRL (en tant que merchant of record). Le merchant of record et le processus de remboursement applicable seront indiqués dans votre confirmation et/ou la page de l'OTA. Lorsque l'OTA est merchant of record, les remboursements (le cas échéant) sont traités par l'OTA selon ses procédures.",
+        "4.4 Dépôts et paiements anticipés — Si nous prenons un dépôt ou un paiement anticipé, sa remboursabilité dépend du Type de tarif et des règles d'annulation affichées au moment de la réservation et dans votre Réservation confirmée. Nous ne considérons pas tous les dépôts comme automatiquement non remboursables sauf indication explicite pour ce Type de tarif.",
+        "4.5 Préautorisations — Nous pouvons préautoriser une carte de paiement pour des montants cohérents avec le prix de l'hébergement, la règle de Dépôt de garantie (Section 5) et/ou des frais raisonnablement anticipés (ex. annulation tardive, no show, dommages). Une préautorisation n'est pas un débit final. Le délai de libération dépend de l'émetteur de la carte et de la banque de traitement."
       ]
     },
     "s5": {
-      "title": "5. Dépôts et Préautorisations",
+      "title": "5. Dépôt de garantie et sécurisation",
       "body": [
-        "5.1 Dépôts — Un dépôt peut être requis pour garantir votre réservation. Le montant varie selon la formule ; les réservations prépayées non remboursables exigent 100% à la réservation. Tout dépôt versé à l’Auberge est non remboursable. À défaut d’encaissement, la demande sera refusée.",
-        "5.2 Préautorisations — Une préautorisation peut être demandée selon le tarif et les conditions convenues. Si le montant requis ne peut être réservé, la demande sera refusée."
+        "5.1 Règle du Dépôt de garantie — Nous pouvons exiger un Dépôt de garantie pendant la durée du séjour d'une nuit par Client, sous forme de préautorisation ou de dépôt en espèces (les méthodes permises peuvent varier selon le pays).",
+        "5.2 Utilisation du Dépôt de garantie — Nous pouvons appliquer tout ou partie du Dépôt de garantie aux montants dus au titre des présentes Conditions de réservation ou du Règlement intérieur, notamment : hébergement impayé ou extensions ; dommages ou articles manquants ; frais de nettoyage pour salissures excessives ; pénalités pour violations graves du Règlement intérieur (lorsque permis) ; remplacement de keycard/linge le cas échéant. Si les coûts dépassent le Dépôt de garantie, vous restez responsable du solde.",
+        "5.3 Si nous ne pouvons pas obtenir le Dépôt de garantie — Si nous ne pouvons pas obtenir le Dépôt de garantie par préautorisation, nous pouvons accepter des espèces ou un autre moyen acceptable, ou un autre Client/Titulaire de la carte peut le fournir. Si aucun Dépôt de garantie acceptable n'est fourni, nous pouvons refuser le check‑in et traiter la Réservation selon les règles de No Show/annulation applicables au Type de tarif."
       ]
     },
     "s6": {
-      "title": "6. Frais de No Show",
+      "title": "6. Annulations, modifications, no shows, départ anticipé",
       "body": [
-        "Si vous ne vous présentez pas, la réservation devient un No Show et des frais de No Show s’appliquent.",
-        "Les frais s’appliquent à chaque Réservation Confirmée. Les réservations peuvent comporter des délais de préavis différents, influençant le traitement."
+        "6.1 Comment demander des modifications ou annulations — Toutes les demandes d'annulation ou de modification doivent être faites par écrit à hostelpositano@gmail.com ou via le système de messagerie OTA (si réservation via OTA). Nous recommandons d'utiliser le même canal que celui utilisé pour réserver.",
+        "6.2 Comment les délais sont mesurés — Sauf indication contraire dans votre Réservation confirmée : les délais sont mesurés en heure locale et comptés à rebours à partir de 15:00 le jour d'arrivée prévu.",
+        "6.3 Règles d'annulation et frais — Les frais d'annulation (le cas échéant), l'éligibilité au remboursement (le cas échéant) et les délais dépendent du Type de tarif et du canal de réservation et sont indiqués lors de la réservation, dans votre Réservation confirmée et dans l'Annexe A (Barème des tarifs et frais).",
+        "6.4 Modifications et extensions — Une demande de modification peut être traitée comme une annulation de la Réservation initiale et la création d'une nouvelle Réservation, selon la disponibilité et le Type de tarif. Les extensions sont soumises à disponibilité et sont traitées comme une nouvelle période de réservation (qui peut avoir un Type de tarif différent). Nous confirmerons les modifications approuvées par écrit. Jusqu'à confirmation, la Réservation initiale reste en vigueur.",
+        "6.5 No Show — Si une Réservation devient No Show, des frais s'appliquent selon le Type de tarif et l'Annexe A. Pour les Tarifs Non remboursables, cela signifie généralement aucun remboursement.",
+        "6.6 Départ anticipé et nuits inutilisées — Si vous partez tôt après le check‑in, cela ne crée pas automatiquement un remboursement. Tout remboursement, crédit ou remise (le cas échéant) est régi par le Type de tarif, la confirmation écrite d'une modification/annulation et les obligations légales applicables.",
+        "6.7 Résiliation pour manquement (expulsion / refus de poursuite) — Si nous mettons fin à votre séjour en raison d'une violation grave de ces Conditions de réservation ou du Règlement intérieur : vous pouvez être tenu de partir immédiatement ; vous pouvez rester redevable des frais pour nuits inutilisées dans la mesure permise par la loi et cohérente avec le Type de tarif ; nous pouvons appliquer le Dépôt de garantie aux montants dus et/ou débiter le Titulaire de la carte. La résiliation pour manquement n'est pas un \"No Show\"."
       ]
     },
     "s7": {
-      "title": "7. Annulations",
+      "title": "7. Exigences de check‑in (admissibilité, ID et paiement)",
       "body": [
-        "Les demandes d’annulation doivent être adressées par écrit à notre Adresse e‑mail Officielle.",
-        "Pour apprécier le respect du délai de préavis, le calcul court de la réception de votre e‑mail jusqu’à 00:01 le jour de début de la réservation.",
-        "Des Frais Administratifs d’Annulation peuvent s’appliquer (15% standard du prix de la réservation, déduction faite des commissions déjà versées à des tiers).",
-        "En cas d’acceptation, nous confirmerons par e‑mail ; tant que cet e‑mail n’est pas envoyé, la réservation demeure confirmée.",
-        "Une réservation peut être annulée sans demande écrite si : vous n’effectuez pas le check‑in avant la fermeture de la réception le premier jour ; vous quittez avant la fin ; ou vous enfreignez les règles de l’auberge.",
-        "Toute nouvelle réservation après annulation est soumise à disponibilité.",
-        "Les annulations hors délai sont traitées comme No Show et peuvent entraîner des frais."
+        "7.1 Plage de check‑in et arrivées tardives — Le check‑in est disponible de 15:00 à 22:00. Si vous prévoyez d'arriver tard, vous devez demander à l'avance des instructions d'arrivée tardive. Tout check‑in en libre‑service est discrétionnaire et peut nécessiter la vérification préalable de l'ID et du paiement.",
+        "7.2 Preuve d'identité — Chaque Client doit présenter une pièce d'identité originale valide au check‑in, comme requis pour l'enregistrement et la sécurité. Pièces acceptées (liste d'exemple) : passeport, carte d'identité nationale, permis de conduire, carte militaire (documents originaux uniquement). Les versions locales doivent inclure les champs requis par la loi. Si un Client ne fournit pas une pièce d'identité valide avant 22:00 le jour d'arrivée, nous pouvons refuser le check‑in et appliquer les règles de No Show/Annulation tardive pour le Type de tarif.",
+        "7.3 Paiement du solde au check‑in — Tout solde dû doit être payé avant la finalisation du check‑in.",
+        "7.4 Âge et mineurs (politique) — Le Réservant doit avoir au moins 18 ans. Les Clients de moins de 18 ans (\"Mineurs\") peuvent être limités aux chambres privées et/ou nécessiter un adulte accompagnateur et une preuve de tutelle, comme indiqué dans le Règlement intérieur et/ou la Réservation confirmée."
       ]
     },
     "s8": {
-      "title": "8. Modification des Réservations Confirmées",
+      "title": "8. Défauts, maintenance et remèdes",
       "body": [
-        "Nous remplaçons les Réservations Confirmées par de nouvelles réservations plutôt que de les modifier.",
-        "Envoyez les Demandes de Modification à notre e‑mail officiel dans le délai de préavis applicable.",
-        "Toute modification est soumise à disponibilité et autres conditions.",
-        "Les demandes de changement de durée sont traitées comme Demande de Modification et comme Demande d’Annulation ou de Prolongation.",
-        "Les prolongations sont traitées comme de nouvelles réservations.",
-        "En cas de départ anticipé sans Annulation Confirmée, la réservation initiale est réputée exécutée."
+        "8.1 Signalement — Les Clients doivent signaler les défauts ou problèmes de maintenance dès que raisonnablement possible afin que nous puissions enquêter.",
+        "8.2 Gestion et priorisation — Nous priorisons les réparations en fonction de l'impact et de la sécurité.",
+        "8.3 Défauts graves — Si nous confirmons un Défaut grave et ne pouvons pas le résoudre raisonnablement dans un délai raisonnable, nous pouvons (selon les cas et sous réserve de disponibilité) vous déplacer vers une chambre/structure alternative, fournir un ajustement au prorata pour les nuits affectées et/ou offrir un autre remède requis par la loi applicable."
       ]
     },
     "s9": {
-      "title": "9. Transférabilité de la Réservation",
+      "title": "9. Dommages, nettoyage excessif et punaises de lit (frais)",
       "body": [
-        "Les Demandes de Réservation et Réservations Confirmées sont strictement intransférables, en tout ou partie.",
-        "Chaque réservation doit rester au nom du titulaire initial pendant toute sa durée.",
-        "Toute tentative de check‑in avec une réservation transférée engage la responsabilité financière de la personne et peut entraîner l’annulation immédiate.",
-        "Toute tentative de changer le nom de l’hôte attribué peut également entraîner l’annulation."
+        "9.1 Dommages et pertes — Si vous endommagez la propriété ou causez une perte, vous êtes responsable des coûts raisonnables de réparation/remplacement et des coûts administratifs raisonnables, sous réserve de la loi applicable. Nous pouvons débiter le Titulaire de la carte et/ou appliquer le Dépôt de garantie. Tarifs de main‑d'œuvre (si utilisés) : Directeur €50/h, Manager €35/h, Staff €25/h.",
+        "9.2 Punaises de lit — Si nous déterminons raisonnablement (sur la base d'une inspection et de preuves) qu'un Client a introduit des punaises de lit, nous pouvons facturer les coûts directs raisonnables de remédiation et les pertes démontrables associées, sous réserve de la loi applicable. Voir le Règlement intérieur pour la conduite requise des Clients (signalement, confinement)."
       ]
     },
     "s10": {
-      "title": "10. Réservations Prépayées Non Remboursables",
+      "title": "10. Effets personnels et stockage",
       "body": [
-        "Le paiement intégral est exigé au moment de la réservation. En cas d’échec du paiement, la demande sera annulée.",
-        "En cas de No Show, aucun remboursement ne sera effectué.",
-        "Les demandes de prolongation sont examinées selon les présentes conditions."
+        "Les Clients sont responsables de leurs effets personnels. Lorsque nous proposons des casiers/coffres ou du stockage par commodité, la disponibilité et les règles sont indiquées dans le Règlement intérieur et/ou des conditions séparées.",
+        "Rien dans ces Conditions de réservation n'exclut ou ne limite la responsabilité là où une telle exclusion/limitation n'est pas permise par la loi applicable."
       ]
     },
     "s11": {
-      "title": "11. Arrivée",
+      "title": "11. Responsabilité",
       "body": [
-        "11.1 Demande de Check‑in — Tous les hôtes doivent s’identifier et initier la procédure à l’arrivée.",
-        "11.2 Arrivée Anticipée — L’accès à l’auberge est impossible avant 10:30 le jour de l’arrivée.",
-        "11.3 Arrivée entre 10:30 et 15:00 — Si accepté, vous pouvez devenir Hôte Temporaire. Une consigne bagages peut être proposée, à discrétion et avec conditions séparées.",
-        "11.3 Créneau de Check‑in — Le check‑in standard a lieu pendant la Plage Officielle (15:00–22:00).",
-        "11.5 Arrivée Tardive — La réception est fermée après 22:00. À notre discrétion, des instructions d’auto check‑in peuvent être fournies. Vous assumez la responsabilité en cas d’impossibilité de recevoir/suivre les instructions ou de coordonnées erronées."
+        "11.1 Clause d'ordre public — Rien dans ces Conditions de réservation ne limite ou n'exclut notre responsabilité lorsqu'elle ne peut pas être limitée ou exclue en vertu de la loi applicable.",
+        "11.2 Portée — Sous réserve de ce qui précède, nous sommes responsables de fournir l'hébergement et les services inclus dans votre Réservation confirmée. Nous ne sommes pas responsables des problèmes causés par : votre violation de ces Conditions de réservation ou du Règlement intérieur ; des tiers hors de notre contrôle (y compris OTA, processeurs de paiement, transporteurs) ; ou des événements hors de notre contrôle raisonnable (force majeure), dans la mesure permise par la loi.",
+        "11.3 Types de pertes et plafonds (lorsque permis) — Sous réserve de ce qui précède et dans la mesure permise par la loi applicable : nous ne sommes pas responsables des pertes indirectes ou consécutives, et notre responsabilité totale en lien avec la Réservation est limitée au montant total payé à nous pour la partie hébergement de la Réservation confirmée."
       ]
     },
     "s12": {
-      "title": "12. Check‑in",
+      "title": "12. Confidentialité et CCTV",
       "body": [
-        "12.1 Nécessité — Si le check‑in ne peut être achevé, nous refuserons l’enregistrement et annulerons la réservation (traitée comme No Show).",
-        "12.2 Pièce d’Identité — Nous devons recevoir une pièce valide pour chaque hôte (Prénom, Nom, Lieu de naissance, Nationalité, Date de naissance, Numéro du document). L’absence de présentation avant 22:00 le premier jour entraîne l’annulation (No Show).",
-        "12.2 Solde — Tout solde doit être réglé par un moyen accepté avant l’achèvement du check‑in ; à défaut la réservation est annulée (No Show).",
-        "12.3 Dépôt Keycard & Linge — Un dépôt en espèces de 10 € est exigé ; il est remboursé au check‑out contre restitution de la Keycard et du Linge."
+        "12.1 Avis de confidentialité — Nous traitons les données personnelles conformément à notre politique de confidentialité à https://hostel-positano.com/privacy-policy. Cette politique décrit ce que nous collectons, pourquoi, les bases légales (le cas échéant), la conservation et la manière d'exercer les droits.",
+        "12.2 CCTV dans les zones publiques — Nous utilisons la CCTV dans certaines zones publiques pour la sécurité, la sûreté et la prévention de la fraude. La CCTV est signalée sur place, accessible uniquement au personnel autorisé, peut être partagée avec les autorités lorsque requis ou permis par la loi, et est conservée pendant 30 jours sauf nécessité d'une période plus longue pour une enquête ou par la loi. Pour les questions ou demandes liées à la CCTV, contactez : hostelpositano@gmail.com."
       ]
     },
     "s13": {
-      "title": "13. Procédure de Sauvegarde",
+      "title": "13. Informations du site web et liens tiers",
       "body": [
-        "Nous pouvons bloquer un montant équivalent à une nuit par personne comme dépôt de garantie pendant votre séjour (préautorisation ou espèces).",
-        "Ce montant peut servir à régler amendes, frais, prolongations ou autres sommes dues selon nos politiques.",
-        "Si la préautorisation échoue, un autre membre du groupe peut la fournir ou vous pouvez payer en espèces ; à défaut la réservation peut être annulée."
+        "Nous visons à maintenir les informations du site web exactes mais pouvons mettre à jour le contenu. Les photos peuvent être illustratives. Les liens tiers sont fournis par commodité ; nous ne sommes pas responsables du contenu tiers."
       ]
     },
     "s14": {
-      "title": "14. Devoir de Diligence",
+      "title": "14. Santé et sécurité",
       "body": [
-        "Vous devez respecter les autres hôtes et le personnel, éviter les dégradations et respecter les règles de l’auberge.",
-        "Toute violation peut entraîner une annulation immédiate (politique de No Show pouvant s’appliquer) et/ou une demande de départ sans remboursement.",
-        "Les coûts ou amendes causés par vos actes peuvent vous être facturés. Nous signalons aux autorités les infractions à la loi si nécessaire."
+        "Les Clients doivent agir de manière responsable concernant les maladies transmissibles. Les règles de remboursement suivent le Type de tarif sauf obligation légale contraire. Nous recommandons une assurance voyage."
       ]
     },
     "s15": {
-      "title": "15. Défauts et Dommages",
+      "title": "15. Promotions et coupons",
       "body": [
-        "15.1 Signalement — Signalez immédiatement tout défaut de chambre.",
-        "15.2 Évaluation — Nous priorisons notre intervention selon l’impact sur votre séjour.",
-        "15.3 Défauts Graves — Nous tenterons de corriger ; si impossible, nous chercherons un hébergement alternatif ou un remboursement prorata selon la différence de tarif ou les nuits restantes.",
-        "15.4 Défauts non signalés — S’ils sont découverts ultérieurement, notre politique dommages/pertes pourra s’appliquer.",
-        "15.5 Dommages — Nous pouvons préautoriser ou exiger un dépôt pour couvrir d’éventuels dommages/pertes. Les remboursements sont nets des frais engagés. Les coûts excédentaires (matériaux, main‑d’œuvre, administration) seront facturés. Heures sup. : Directeur 50 €/h, Manager 35 €/h, Personnel 25 €/h."
+        "Les coupons, lorsqu'ils sont proposés, ne sont valables que comme indiqué (par ex. uniquement sur le site web) et peuvent avoir des conditions supplémentaires affichées avec la promotion."
       ]
     },
     "s16": {
-      "title": "16. Punaises de lit",
+      "title": "16. Droit applicable et juridiction",
       "body": [
-        "Nous mettons en œuvre des mesures de prévention et d’éradication des infestations. Si une infestation survient pendant votre séjour, vous pouvez être tenu responsable des dommages, y compris pertes de revenus, réclamations d’autres hôtes, et coûts de nettoyage/désinsectisation.",
-        "Si vous avez séjourné dans un lieu infesté, informez‑nous au check‑in et désinfectez vos effets.",
-        "Vérifiez vos effets avant le check‑in et signalez toute suspicion sans délai."
+        "Ces Conditions de réservation sont régies par le droit italien et les litiges doivent être portés devant les tribunaux d'Italie, sous réserve des règles impératives de compétence du consommateur applicables au lieu de résidence du Client."
       ]
     },
     "s17": {
-      "title": "17. Effets personnels et Sécurité",
+      "title": "Annexe A — Barème des tarifs et frais",
       "body": [
-        "Les hôtes sont responsables de leurs effets à tout moment. L’auberge n’est pas responsable des pertes, dommages ou vols, sauf obligation légale.",
-        "Des casiers/coffres peuvent être fournis, mais la responsabilité demeure celle de l’hôte.",
-        "Les objets non réclamés sont éliminés après 30 jours suivant le check‑out.",
-        "Les objets dangereux ou illégaux sont interdits et peuvent être confisqués ou signalés."
-      ]
-    },
-    "s18": {
-      "title": "18. Identification et Mesures de Sécurité",
-      "body": [
-        "Tous les hôtes doivent porter les bracelets de sécurité fournis dans l’enceinte et présenter une pièce d’identité valide sur demande du personnel.",
-        "Le défaut de porter le bracelet ou de présenter une pièce d’identité peut entraîner une éviction sans remboursement.",
-        "Toute perte ou détérioration d’un bracelet doit être signalée immédiatement ; des frais de remplacement peuvent s’appliquer."
-      ]
-    },
-    "s19": {
-      "title": "19. Vidéosurveillance (CCTV)",
-      "body": [
-        "Des caméras CCTV sont installées dans les espaces publics pour la sécurité des hôtes et des biens.",
-        "Les enregistrements sont conservés de manière sécurisée, accessibles à la direction autorisée, et peuvent être partagés avec les autorités lorsque la loi l’exige.",
-        "La vidéosurveillance ne garantit pas une sécurité totale ; en acceptant ces conditions, vous consentez à son usage tel que décrit."
-      ]
-    },
-    "s20": {
-      "title": "20. Hôtes Temporaires",
-      "body": [
-        "Le statut d’Hôte Temporaire peut être accordé à notre entière discrétion.",
-        "Les Hôtes Temporaires n’ont accès qu’aux Espaces Communs et ne sont pas autorisés dans les chambres.",
-        "Les Hôtes Officiels ne peuvent pas conférer ce statut à des tiers.",
-        "Les demandes peuvent être acceptées entre 9:00 et 23:00 les jours d’ouverture.",
-        "Nous nous réservons le droit de refuser ou de révoquer ce statut à tout moment."
-      ]
-    },
-    "s21": {
-      "title": "21. Personnes non enregistrées",
-      "body": [
-        "La loi impose l’enregistrement de toute personne séjournant, y compris les Hôtes Temporaires.",
-        "Si nous découvrons une personne non enregistrée dans une chambre, nous pouvons facturer le tarif standard pour chaque personne non enregistrée, ainsi qu’un frais administratif égal à deux fois le tarif standard.",
-        "La personne non enregistrée doit effectuer le check‑in et suivre la procédure standard, à défaut nous pourrons en informer la police.",
-        "Le défaut de signalement d’une personne non enregistrée peut entraîner l’annulation de la réservation (politique de No Show applicable)."
-      ]
-    },
-    "s22": {
-      "title": "22. Check‑out",
-      "body": [
-        "L’horaire officiel de check‑out est de 7:30 à 10:30.",
-        "Après le check‑out, n’entrez plus dans la chambre et n’y laissez aucun effet.",
-        "Vous devez respecter les conditions de Post Check‑out décrites ici."
-      ]
-    },
-    "s23": {
-      "title": "23. Check‑out anticipé",
-      "body": [
-        "Si vous partez avant 7:30, veuillez vous présenter à la réception la veille afin d’organiser le check‑out anticipé et le remboursement du dépôt Keycard.",
-        "Toute Keycard non restituée entraîne la perte du dépôt.",
-        "Les dépôts sont remboursés en espèces, en personne, à un membre du personnel."
-      ]
-    },
-    "s24": {
-      "title": "24. Check‑out tardif",
-      "body": [
-        "Disponible uniquement sur accord préalable écrit, avec départ jusqu’à 12:00.",
-        "Service discrétionnaire, selon l’occupation, à confirmer par écrit.",
-        "Coût : 40 € ; offert selon l’ordre des demandes."
-      ]
-    },
-    "s25": {
-      "title": "25. Défaut de Check‑out",
-      "body": [
-        "Si vous ne quittez pas la chambre à l’heure convenue, nous pourrons retirer vos effets sans responsabilité.",
-        "Toute tentative d’accès aux zones réservées après l’heure convenue peut être traitée comme une atteinte à la sécurité, conformément à nos politiques.",
-        "Nous pourrons transférer vos effets vers un service local de portage ; les frais de retrait sont fixés par ce prestataire."
-      ]
-    },
-    "s26": {
-      "title": "26. Post Check‑out",
-      "body": [
-        "Une fois le check‑out terminé, votre Réservation Confirmée est réputée exécutée, indépendamment des nuits restantes.",
-        "Vous cessez d’être Hôte Officiel et devenez Hôte Temporaire jusqu’à 15:30.",
-        "Sur demande, nous pouvons vous inscrire à la consigne bagages, à notre discrétion et avec conditions séparées."
-      ]
-    },
-    "s27": {
-      "title": "27. Alcool",
-      "body": [
-        "Étant un établissement sous licence, l’alcool acheté à l’extérieur n’est pas autorisé dans l’auberge.",
-        "Le cas échéant, nous pourrons le garder en lieu sûr et le restituer au check‑out ou lorsque son usage hors site est garanti.",
-        "Le non‑respect peut entraîner l’annulation immédiate de la réservation (politique de No Show applicable)."
-      ]
-    },
-    "s28": {
-      "title": "28. Modification des présentes Conditions",
-      "body": [
-        "Les présentes Conditions constituent l’intégralité de l’accord entre vous et l’Auberge et remplacent tout accord ou entente antérieurs, écrits ou oraux.",
-        "Nous nous réservons le droit de modifier ces Conditions à tout moment."
-      ]
-    },
-    "s29": {
-      "title": "29. Limitation de Responsabilité",
-      "body": [
-        "Notre responsabilité se limite aux services et éléments listés dans ces conditions.",
-        "Notre responsabilité totale n’excédera pas le montant que vous avez payé pour la réservation.",
-        "Nous ne sommes pas responsables des pertes ou dommages aux biens personnels, sauf obligation légale.",
-        "Nous ne sommes pas responsables des pertes indirectes, consécutives ou économiques, ni des pertes de bénéfices, d’achalandage ou d’opportunités, y compris si elles résultent d’une négligence ou de force majeure.",
-        "Des espaces sécurisés sont disponibles pour les objets de valeur, sans responsabilité financière assumée.",
-        "Nous nous réservons le droit de déplacer des objets lors du nettoyage sans préavis."
-      ]
-    },
-    "s30": {
-      "title": "30. Droit Applicable",
-      "body": [
-        "Les présentes conditions sont régies par le droit italien ; toute action en justice doit être portée devant les tribunaux italiens."
-      ]
-    },
-    "s31": {
-      "title": "31. Informations du Site Web",
-      "body": [
-        "Nous nous efforçons d’assurer l’exactitude des informations du site ; toutefois, nous ne pouvons être tenus responsables des erreurs ou omissions.",
-        "Nous nous réservons le droit de modifier le Site et son contenu à tout moment, sans préavis.",
-        "Certaines images du Site reflètent le style général de nos produits et installations et peuvent ne pas représenter exactement l’élément illustré.",
-        "Tous les contenus du Site (textes, images, marques) appartiennent à l’Auberge et ne peuvent être utilisés sans autorisation écrite.",
-        "Des liens vers des sites tiers sont fournis pour votre convenance ; nous n’en assumons pas la responsabilité.",
-        "Veuillez consulter notre politique de confidentialité pour savoir comment nous protégeons votre vie privée."
-      ]
-    },
-    "s32": {
-      "title": "32. Politique de Santé et Sécurité",
-      "body": [
-        "Pour la sécurité et le bien‑être de tous, tout hôte récemment exposé à une maladie transmissible doit agir de manière responsable.",
-        "Les réservations prépayées et non remboursables restent non remboursables dans ces circonstances.",
-        "Nous recommandons vivement de souscrire une assurance voyage couvrant les imprévus, y compris maladie ou impossibilité de voyager."
-      ]
-    },
-    "s33": {
-      "title": "33. Coupons",
-      "body": [
-        "Nous pouvons émettre des coupons promotionnels périodiquement.",
-        "Ces coupons sont valables exclusivement pour les réservations effectuées via notre site officiel (hostel-positano.com).",
-        "Chaque coupon peut être soumis à des conditions spécifiques supplémentaires à celles énoncées ici."
+        "Cette annexe doit être cohérente avec ce qui est affiché lors de la réservation.",
+        "A1. Tarif Non remboursable (prépayé) — Paiement : 100 % à la réservation/confirmation. Annulation : aucun remboursement (sauf obligation légale). No Show : aucun remboursement. Modifications : traitées comme une nouvelle réservation ; prix/tarif peuvent varier ; sous réserve de disponibilité.",
+        "A2. Tarif Remboursable (garantie uniquement) — Paiement : au check‑in (ou dans une fenêtre pré‑arrivée indiquée), mais nous pouvons préautoriser à la réservation. Annulation gratuite : jusqu'à 72 heures avant 15:00 le jour d'arrivée. Frais d'annulation tardive : le plus élevé entre la première nuit et tout dépôt non remboursable, plus toute commission d'annulation applicable. Frais de No Show : le plus élevé entre la première nuit et tout dépôt non remboursable.",
+        "A3. Frais administratifs d'annulation — €5 par réservation, affichés lors de la réservation et rappelés dans votre email de confirmation."
       ]
     }
   }

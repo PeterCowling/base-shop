@@ -10,14 +10,14 @@
   "sections": [
     {
       "id": "coverage",
-      "title": "Coverage essentials",
+      "title": "Dekning – det viktigste",
       "body": [
-        "Helse/ulykke, kanselleringer/forsinkelser og elektronikk; vurdere fotturer dekning for Path of the Gods."
+        "Helse/ulykke, kanselleringer/forsinkelser og elektronikk; vurder fotturdekkning for Gudestien."
       ]
     },
     {
       "id": "claims",
-      "title": "Claims & docs",
+      "title": "Erstatning og dokumentasjon",
       "body": [
         "Ta vare på kvitteringer, politirapporter for tyveri og bekreftelser på forsinkelser/kanselleringer; sjekk frister og original-/kopikrav."
       ]
@@ -25,7 +25,7 @@
   ],
   "faqs": [
     {
-      "q": "Do I need special coverage for ferries?",
+      "q": "Trenger jeg egen dekning for ferger?",
       "a": [
         "Vanligvis dekket under generell transport; værrelaterte forsinkelser/kanselleringer varierer avhengig av policy - sjekk forholdene."
       ]

@@ -1,0 +1,52 @@
+{
+  "seo": {
+    "title": "Sicher unterwegs in Positano und an der Amalfiküste",
+    "description": "Praktische Sicherheitstipps für Busse, Fähren, Treppen, Sonne und Notfälle rund um Positano und die Amalfiküste."
+  },
+  "linkLabel": "Sicher unterwegs in Positano und an der Amalfiküste",
+  "intro": [
+    "Positano ist ein sicheres Reiseziel, doch Gelände, Verkehr und Sommerhitze können überraschen.",
+    "Nutze die Tipps und Checklisten unten für eine stressfreie Reise – besonders auf Treppen, Fähren und Bussen."
+  ],
+  "sections": [
+    {
+      "id": "stairs",
+      "title": "Treppen & Wege",
+      "body": [
+        "Trage Schuhe mit gutem Profil – viele Gassen sind glatt und bei Regen rutschig.",
+        "Nutze Handläufe, wenn vorhanden, und leg Pausen auf langen Anstiegen ein; im Ort gibt es Trinkbrunnen."
+      ]
+    },
+    {
+      "id": "transport",
+      "title": "Busse & Fähren",
+      "body": [
+        "Im Bus festhalten und Rucksäcke nicht im Gang stehen lassen; Fahrer bremsen oft in Haarnadelkurven.",
+        "Auf Fähren den Anweisungen der Crew folgen und nicht in der Nähe der Gangways stehen, wenn Passagiere ein- und aussteigen."
+      ]
+    },
+    {
+      "id": "sun-sea",
+      "title": "Sonne, Meer & Dehydrierung",
+      "body": [
+        "Wasser mitnehmen und SPF 30+ benutzen; Schatten ist an Stränden und Wegen begrenzt.",
+        "Nur in ausgewiesenen Bereichen schwimmen und beim Schnorcheln nahe Felsen auf Bootsverkehr achten."
+      ]
+    }
+  ],
+  "faqsTitle": "Sicherheits-FAQ",
+  "faqs": [
+    {
+      "q": "Ist Positano nachts sicher?",
+      "a": [
+        "Ja. Kleinkriminalität ist selten; bleibe auf beleuchteten Treppen und Wegen, dann passt es."
+      ]
+    },
+    {
+      "q": "Welche Nummer wähle ich im Notfall?",
+      "a": [
+        "Wähle 112 – die EU-Notrufnummer für Polizei, Rettung und Feuerwehr."
+      ]
+    }
+  ]
+}

@@ -1,11 +1,12 @@
 // Copied from src/components/header/Header.tsx
-import { useScrollProgress } from "@/hooks/useScrollProgress";
-import { useTheme } from "@/hooks/useTheme";
+import { useBannerHeightOrZero } from "@ui/context/NotificationBannerContext";
+import { useScrollProgress } from "@ui/hooks/useScrollProgress";
+import { useTheme } from "@ui/hooks/useTheme";
 import { forwardRef, memo, type HTMLAttributes, useState } from "react";
 import DesktopHeader from "./DesktopHeader";
 import MobileMenu from "./MobileMenu";
 import MobileNav from "./MobileNav";
-import type { AppLanguage } from "@/i18n.config";
+import type { AppLanguage } from "@ui/i18n.config";
 
 // Wrap DOM node to satisfy react/forbid-dom-props for "style"
 const ProgressBar = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(({ className, ...rest }, ref) => (
@@ -17,6 +18,7 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
   const { theme } = useTheme();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const { scrolled, mouseNearTop, progress } = useScrollProgress();
+  const bannerHeight = useBannerHeightOrZero();
   const showHeader = !scrolled || mouseNearTop;
   const barClass = theme === "dark" ? "progress-bar-dark" : "progress-bar-light";
 
@@ -28,19 +30,21 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
         aria-valuemax={100}
         aria-valuenow={Math.round(progress)}
         className={`progress-bar fixed top-0 left-0 z-[70] h-0.5 ${barClass}`}
-        style={{ width: `${progress}%` }}
+        style={{ width: `${progress}%`, top: bannerHeight }}
       />
       <header
         role="banner"
         className="sticky top-0 z-50 w-full"
+        // eslint-disable-next-line react/forbid-dom-props -- UI-1000 ttl=2026-12-31 banner offset is runtime-calculated.
+        style={{ top: bannerHeight }}
       >
-        <MobileNav lang={lang} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <MobileNav lang={lang} menuOpen={menuOpen} setMenuOpen={setMenuOpen} bannerHeight={bannerHeight} />
         <div
           className={`w-full bg-brand-bg/80 backdrop-blur shadow-inner dark:shadow-md transition-transform duration-300 motion-safe:transform-gpu ${showHeader ? "translate-y-0" : "-translate-y-full"}`}
         >
           <DesktopHeader lang={lang} />
         </div>
-        <MobileMenu lang={lang} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+        <MobileMenu lang={lang} menuOpen={menuOpen} setMenuOpen={setMenuOpen} bannerHeight={bannerHeight} />
       </header>
     </>
   );

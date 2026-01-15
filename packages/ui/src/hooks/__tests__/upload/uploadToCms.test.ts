@@ -16,6 +16,7 @@ afterEach(() => {
 
 describe("uploadToCms", () => { // i18n-exempt: test description
   it("posts form data and returns item on success", async () => { // i18n-exempt: test description
+    document.cookie = "csrf_token=test-token"; // i18n-exempt: test cookie
     const item: MediaItem = { url: "/img.png", altText: "", type: "image" };
     (mockFetch as unknown as jest.Mock).mockResolvedValue({ ok: true, json: () => Promise.resolve(item) });
     const res = await uploadToCms({
@@ -28,7 +29,8 @@ describe("uploadToCms", () => { // i18n-exempt: test description
     expect(res.error).toBeUndefined();
     expect(res.item).toEqual(item);
     const [url, init] = mockFetch.mock.calls[0];
-    expect(String(url)).toContain("/cms/api/media?shop=s&orientation=landscape");
+    expect(String(url)).toContain("/api/media?shop=s&orientation=landscape");
+    expect((init.headers as Record<string, string>)["x-csrf-token"]).toBe("test-token");
     const fd = init.body as FormData;
     expect(fd.get("altText")).toBe("hello"); // i18n-exempt: assertion on test data
     expect(fd.get("tags")).toBe(JSON.stringify(["a", "b"])); // i18n-exempt: assertion on test data

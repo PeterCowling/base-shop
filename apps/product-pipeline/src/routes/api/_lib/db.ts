@@ -178,3 +178,17 @@ export async function fetchStageRunById(
     .first<StageRunRow>();
   return result ?? null;
 }
+
+export async function fetchLatestStageRunByStage(
+  db: D1Database,
+  candidateId: string,
+  stage: string,
+): Promise<StageRunRow | null> {
+  const result = await db
+    .prepare(
+      "SELECT id, candidate_id, stage, status, input_json, output_json, error_json, created_at, started_at, finished_at FROM stage_runs WHERE candidate_id = ? AND stage = ? AND status = 'succeeded' ORDER BY created_at DESC LIMIT 1",
+    )
+    .bind(candidateId, stage)
+    .first<StageRunRow>();
+  return result ?? null;
+}

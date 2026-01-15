@@ -1,7 +1,7 @@
 // Copied from src/components/rooms/RoomFilters.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
-import { Inline } from "@/components/atoms/primitives/Inline";
+import { Inline } from "@ui/components/atoms/primitives/Inline";
 
 export type RoomFilter = "all" | "private" | "dorms";
 

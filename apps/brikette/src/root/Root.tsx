@@ -124,7 +124,7 @@ function Root({ __testOutlets }: RootProps): React.JSX.Element {
                 <InlineBoundary>
                   <Header lang={lang} />
                 </InlineBoundary>
-                <main>{outlet ?? fallbackOutlet ?? <Outlet />}</main>
+                <main className="pt-16 lg:pt-0">{outlet ?? fallbackOutlet ?? <Outlet />}</main>
                 <InlineBoundary>
                   <Footer lang={lang} />
                 </InlineBoundary>

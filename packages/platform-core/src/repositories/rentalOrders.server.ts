@@ -16,6 +16,40 @@ export { updateRisk } from "../orders/risk";
 
 type Order = RentalOrder;
 
+/**
+ * Read a single order by its ID
+ */
+export async function readOrderById(
+  shop: string,
+  orderId: string,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.findFirst({
+      where: { shop, id: orderId },
+    });
+    return order as Order | null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Read a single order by its Stripe session ID
+ */
+export async function readOrderBySessionId(
+  shop: string,
+  sessionId: string,
+): Promise<Order | null> {
+  try {
+    const order = await prisma.rentalOrder.findFirst({
+      where: { shop, sessionId },
+    });
+    return order as Order | null;
+  } catch {
+    return null;
+  }
+}
+
 export async function updateStatus(
   shop: string,
   sessionId: string,

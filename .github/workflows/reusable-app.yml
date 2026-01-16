@@ -50,16 +50,16 @@ jobs:
         run: pnpm --filter ${{ inputs.app-filter }} lint
         shell: bash
 
+      - name: Build
+        run: ${{ inputs.build-cmd }}
+        shell: bash
+
       - name: Typecheck
         run: pnpm --filter ${{ inputs.app-filter }} typecheck
         shell: bash
 
       - name: Test
         run: pnpm --filter ${{ inputs.app-filter }} test
-        shell: bash
-
-      - name: Build
-        run: ${{ inputs.build-cmd }}
         shell: bash
 
       - name: Upload Artifact

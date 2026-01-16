@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 import TableOfContents from "@/components/guides/TableOfContents";
 import ImageGallery from "@/components/guides/ImageGallery";
 import TagChips from "@/components/guides/TagChips";
@@ -10,24 +8,26 @@ import type { GuideExtras } from "./porter-service-positano.types";
 import { PorterServiceStructuredDataPreview } from "./porter-service-positano.service-data";
 import { renderGuideLinkTokens } from "./utils/linkTokens";
 
+type ResourceNode = ReturnType<typeof renderGuideLinkTokens>[number];
+
 function renderResourceItem(
   resource: string,
   resourceIndex: number,
   resourceLinks: GuideExtras["resourceLinks"],
   context: GuideSeoTemplateContext,
-): ReactNode[] {
+): ResourceNode[] {
   if (resourceLinks.length === 0) {
     return renderGuideLinkTokens(resource, context.lang, `resource-${resourceIndex}`);
   }
 
-  return resourceLinks.reduce<ReactNode[]>(
+  return resourceLinks.reduce<ResourceNode[]>(
     (nodes, link, linkIndex) =>
-      nodes.flatMap((node) => {
+      nodes.flatMap<ResourceNode>((node) => {
         if (typeof node !== "string") return [node];
         if (!node.includes(link.label)) return [node];
         const segments = node.split(link.label);
         return segments.flatMap((segment, segmentIndex) => {
-          const parts: (string | JSX.Element)[] = [];
+          const parts: ResourceNode[] = [];
           if (segment.length > 0) {
             parts.push(segment);
           }

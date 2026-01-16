@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { ReactNode } from "react";
+import type { ReactElement } from "react";
 
 import { guideHref } from "@/routes.guides-helpers";
 import type { GuideKey } from "@/routes.guides-helpers";
@@ -10,9 +10,13 @@ const TOKEN_PATTERN = /%([A-Z]+):([^|%]+)\|([^%]+)%/g;
 const LEGACY_TOKEN_PATTERN = /\[\[link:([^|\]]+)\|([^\]]+)\]\]/gi;
 const MUSTACHE_TOKEN_PATTERN = /\{\{guide:([^|}]+)\|([^}]+)\}\}/gi;
 
-export function renderGuideLinkTokens(value: string | null | undefined, lang: AppLanguage, keyBase: string): ReactNode[] {
+export function renderGuideLinkTokens(
+  value: string | null | undefined,
+  lang: AppLanguage,
+  keyBase: string,
+): Array<string | ReactElement> {
   const text = typeof value === "string" ? value : "";
-  const nodes: ReactNode[] = [];
+  const nodes: Array<string | ReactElement> = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;
   let linkIndex = 0;

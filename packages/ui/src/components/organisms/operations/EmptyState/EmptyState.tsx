@@ -129,7 +129,7 @@ export function EmptyState({
       description: "text-lg",
       gap: 6,
     },
-  };
+  } as const;
 
   const sizes = sizeClasses[size];
 

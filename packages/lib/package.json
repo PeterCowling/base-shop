@@ -28,7 +28,7 @@
     "lint": "eslint ."
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.6"
   },
   "dependencies": {
     "@acme/config": "workspace:^",

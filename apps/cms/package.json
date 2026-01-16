@@ -39,7 +39,7 @@
     "axe-core": "^4.10.3",
     "@types/busboy": "^1.5.4",
     "cross-env": "^7.0.3",
-    "next": "15.3.5",
+    "next": "15.3.6",
     "react": "19.2.0-canary-3fbfb9ba-20250409",
     "react-dom": "19.2.0-canary-3fbfb9ba-20250409",
     "supertest": "^6.3.3"

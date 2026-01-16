@@ -10,12 +10,13 @@
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
   },
   "dependencies": {
+    "@acme/design-tokens": "workspace:*",
     "@acme/i18n": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/tailwind-config": "workspace:*",
     "@themes/base": "workspace:*",
     "@acme/pipeline-engine": "workspace:*",
-    "next": "^15.3.5",
+    "next": "^15.3.6",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   }

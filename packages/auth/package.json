@@ -40,7 +40,7 @@
     "@acme/platform-core": "workspace:^"
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.6"
   },
   "files": [
     "dist"
@@ -49,6 +49,6 @@
   "module": "./dist/index.js",
   "types": "dist/index.d.ts",
   "peerDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.6"
   }
 }

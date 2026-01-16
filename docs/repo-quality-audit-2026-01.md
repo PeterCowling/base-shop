@@ -16,7 +16,7 @@ This audit summarizes the current state of architecture, tooling, and delivery p
 
 **Overall Grade: B-**
 
-The repository shows strong foundations (Turborepo, strict TypeScript, Git safety, and a sophisticated design-system linting stack). It falls short of world-class standards primarily in security remediation velocity, CI/CD coverage, and documentation discoverability/consistency.
+The repository shows strong foundations (Turborepo, strict TypeScript, Git safety, and a sophisticated design-system linting stack). It falls short of world-class standards primarily in security remediation velocity, CI/CD coverage, and agent-oriented documentation discoverability/consistency.
 
 ### Top Risks (P0)
 - Next.js RCE exposure pending dependency upgrade
@@ -28,13 +28,13 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 
 | Category | Grade | Key Strength | Key Gap |
 |----------|-------|--------------|---------|
-| Monorepo/Build | A- | Turborepo + pnpm workspaces | 63 path aliases, low README coverage |
+| Monorepo/Build | A- | Turborepo + pnpm workspaces | 63 path aliases, low agent README coverage |
 | TypeScript | A- | Strict mode + project references | Dual alias patterns undocumented |
 | Code Quality | A | Custom ESLint DS plugin (33 rules) | No DS rule documentation |
 | Testing | B | Multi-level testing, MSW | No visual regression, coverage not enforced |
 | CI/CD | B | Reusable workflows, staging/prod separation | 15+ apps lack workflows, no post-deploy validation |
 | Git Safety | A+ | Multi-layer protection | None observed |
-| Documentation | B+ | 215+ docs, strong AI-agent docs | READMEs missing across packages |
+| Documentation | B+ | 215+ docs, strong AI-agent docs | Agent-focused package briefs missing |
 | Design System | B+ | Multi-context tokens, lint enforcement | No API standard, no handbook |
 | Security | C+ | Zod validation, Argon2, weekly audits | 2 critical CVEs, SSRF, auth gaps |
 | Developer Experience | B+ | 123 scripts, good IDE support | Poor package discovery |
@@ -43,6 +43,7 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 
 - Focus: repo-level architecture, tooling, CI/CD, documentation, design system, and security posture.
 - Security findings are sourced from `docs/security-audit-2026-01.md`.
+- Audience: agents only. Documentation recommendations prioritize machine-readable, task-oriented context and avoid human onboarding assumptions.
 - This is a repository health audit, not a full penetration or production performance review.
 
 ## Detailed Assessment
@@ -56,13 +57,13 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 
 **Gaps**
 - 63 path aliases in `tsconfig.base.json` with duplicates (e.g., `@acme/ui` and `@ui`).
-- README coverage is low (14/218 directories include READMEs).
+- Agent-facing package context is thin (only 14/218 directories include READMEs).
 - Build scripts vary widely (`tsc -b`, `tsc -b && tsup`, custom scripts).
 - Package naming collisions create confusion (`templates` vs `template-app`, `configurator` vs `product-configurator`).
 
 **Recommendations**
 1. Consolidate aliases to a canonical set and remove duplicates.
-2. Add a README template to every package (purpose, exports, owners, consumers).
+2. Add a minimal, agent-focused README template to every package (purpose, entrypoints, owners, build/test commands, dependencies).
 3. Standardize build scripts via shared presets or common scripts.
 4. Document naming conventions and enforce them for new packages.
 
@@ -167,19 +168,21 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 **Strengths**
 - 215+ documentation files covering architecture, setup, testing, and security.
 - Exceptional AI-agent documentation (`CLAUDE.md`, `AGENTS.md`, `INDEX_FOR_CLAUDE`).
-- Good onboarding docs (`install.md`, `setup.md`, `contributing.md`).
+- Solid operational guides that can be adapted into agent runbooks (`install.md`, `setup.md`, `contributing.md`).
 
 **Gaps**
-- READMEs missing across packages (only 14/218 directories include READMEs).
-- No Design System Handbook or component API reference.
+- Agent-focused package briefs are missing across packages (only 14/218 directories include READMEs).
+- No agent-oriented Design System Handbook or component API reference.
 - No dependency graph documentation (package import boundaries are implicit).
 - No package architecture guide (when to create a package vs a folder).
+- Documentation tone is mixed; not all docs are written as agent runbooks.
 
 **Recommendations**
-1. Add README templates and require them for new packages.
-2. Publish a Design System Handbook with component APIs and usage patterns.
+1. Add agent-focused README templates and require them for new packages.
+2. Publish a Design System Handbook with component APIs and usage patterns aimed at agent readers.
 3. Document package layers and import boundaries (diagram + text).
 4. Add a short guide for "package vs folder" decisions.
+5. Convert human-first docs into agent-runbook style with explicit commands, ownership, and expected outputs.
 
 ### H. Design System & UI — Grade: B+
 
@@ -236,12 +239,12 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 - Good IDE integration with aliases and declaration maps.
 
 **Gaps**
-- READMEs missing across packages (discovery friction).
+- Agent-focused package briefs missing across packages (discovery friction).
 - Confusing package names and overlap.
 - No dependency visualization.
 
 **Recommendations**
-1. Publish README templates and a short package index.
+1. Publish agent-focused README templates and a short package index.
 2. Create a dependency graph (e.g., simple static diagram).
 3. Add a naming guide and enforce it for new packages.
 
@@ -270,7 +273,7 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 
 | # | Issue | Action |
 |---|-------|--------|
-| 10 | No package READMEs | Add README to all packages |
+| 10 | No agent package briefs | Add agent-focused README/AGENTS to all packages |
 | 11 | Path alias explosion | Reduce from 63 to ~20 |
 | 12 | No DS handbook | Create component API reference |
 | 13 | Missing app workflows | Add CI/CD for remaining 15+ apps |
@@ -321,6 +324,7 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 |------|--------|--------|
 | 2026-01-16 | Claude Opus 4.5 | Initial comprehensive audit |
 | 2026-01-16 | Codex | Restructured for clarity, consistency, and actionability |
+| 2026-01-16 | Codex | Reframed documentation guidance for agent-only readership |
 
 ## Related Documents
 

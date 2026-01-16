@@ -34,7 +34,7 @@
     "docs:lint": "node --import tsx scripts/src/docs-lint.ts",
     "plans:lint": "node --import tsx scripts/src/plans-lint.ts",
     "build:platform-machine": "pnpm --filter @acme/i18n clean && pnpm --filter @acme/i18n build && pnpm --filter @acme/platform-core build && pnpm --filter @acme/platform-machine build",
-    "build:cms-deps": "pnpm --filter @acme/config build && pnpm --filter @acme/date-utils build && pnpm --filter @acme/i18n build && pnpm --filter @acme/platform-core build && pnpm --filter @acme/platform-machine build && pnpm --filter @acme/email build && pnpm --filter @acme/auth build && pnpm --filter @acme/configurator build && pnpm --filter @acme/ui build && pnpm --filter @acme/theme build && pnpm --filter @acme/telemetry build",
+    "build:cms-deps": "pnpm --filter @acme/config build && pnpm --filter @acme/date-utils build && pnpm --filter @acme/i18n build && pnpm --filter @acme/platform-core build && pnpm --filter @acme/platform-machine build && pnpm --filter @acme/email build && pnpm --filter @acme/auth build && pnpm --filter @acme/configurator build && pnpm --filter @acme/ui build && pnpm --filter @acme/page-builder-ui build && pnpm --filter @acme/templates build && pnpm --filter @acme/theme build && pnpm --filter @acme/telemetry build",
     "e2e": "TEST_DATA_ROOT=__tests__/data node --import tsx scripts/src/seed-test-data.ts && NEXTAUTH_SECRET=test-nextauth-secret-32-chars-long-string! start-server-and-test \"sh -c 'pnpm --filter @apps/cms build && pnpm --filter @apps/cms start'\" http://localhost:3006 \"pnpm exec cypress run --config-file apps/cms/cypress.config.mjs\"",
     "e2e:open": "TEST_DATA_ROOT=__tests__/data node --import tsx scripts/src/seed-test-data.ts && NEXTAUTH_SECRET=test-nextauth-secret-32-chars-long-string! start-server-and-test \"sh -c 'pnpm --filter @apps/cms build && pnpm --filter @apps/cms start'\" http://localhost:3006 \"pnpm exec cypress open --config-file apps/cms/cypress.config.mjs\"",
     "ct": "pnpm exec cypress run --component --config-file apps/cms/cypress.config.mjs",
@@ -322,6 +322,7 @@
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^4.3.2",
     "wait-on": "^8.0.4",
+    "webpack": "^5.104.1",
     "wrangler": "^4.20.4"
   },
   "pnpm": {

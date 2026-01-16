@@ -23,6 +23,11 @@ import type {
   ShopSettings,
   StepStatus as ProgressStepStatus,
 } from "@acme/types";
+import {
+  OPTIONAL_CONFIG_CHECK_STEPS,
+  REQUIRED_CONFIG_CHECK_STEPS,
+} from "./configurator-steps";
+export { OPTIONAL_CONFIG_CHECK_STEPS, REQUIRED_CONFIG_CHECK_STEPS };
 import type { InventoryItem } from "./types/inventory";
 import { validateShopName } from "./shops/index";
 import { resolveDataRoot } from "./dataRoot";
@@ -689,24 +694,6 @@ export const configuratorChecks: Partial<
   "navigation-home": checkNavigationHome,
   "reach-social": checkReachSocial,
 };
-
-export const REQUIRED_CONFIG_CHECK_STEPS: ConfiguratorStepId[] = [
-  "shop-basics",
-  "theme",
-  "payments",
-  "shipping-tax",
-  "checkout",
-  "products-inventory",
-  "legal",
-  "navigation-home",
-];
-
-export const OPTIONAL_CONFIG_CHECK_STEPS: ConfiguratorStepId[] = [
-  "domains",
-  "reverse-logistics",
-  "advanced-seo",
-  "reach-social",
-];
 
 const allConfiguratorSteps: ConfiguratorStepId[] = [
   ...REQUIRED_CONFIG_CHECK_STEPS,

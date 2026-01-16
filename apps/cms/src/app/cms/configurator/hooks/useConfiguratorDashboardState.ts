@@ -27,7 +27,7 @@ import { buildHeroData } from "./dashboard/heroData";
 import { buildTrackProgress } from "./dashboard/trackProgress";
 import { getFailedStepLink } from "./dashboard/failedStepLink";
 import type { ConfiguratorProgress as ServerConfiguratorProgress } from "@acme/types";
-import { REQUIRED_CONFIG_CHECK_STEPS } from "@platform-core/configurator";
+import { REQUIRED_CONFIG_CHECK_STEPS } from "@platform-core/configurator-steps";
 import {
   deriveShopHealth,
   type ShopHealthSummary,

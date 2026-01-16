@@ -42,7 +42,7 @@ Co-Authored-By: Claude <model> <noreply@anthropic.com>"
 
 ### Rule 2: Push Every 2 Hours (or Every 3 Commits)
 
-**Trigger:** After 2 hours of work OR after 3 local commits, whichever comes first.
+**Trigger:** After 2 hours of work OR after 3 local commits, whichever comes first (and after any significant checkpoint that should be autosaved).
 
 **Agent action:**
 ```bash
@@ -53,7 +53,7 @@ git rev-list --count @{upstream}..HEAD 2>/dev/null || echo "no upstream"
 git push origin HEAD
 ```
 
-**Why:** Local commits are lost if the machine fails. GitHub is the backup.
+**Why:** Local commits are lost if the machine fails. GitHub is the autosave and backup.
 
 ### Rule 2a: Create a Pull Request After Pushing
 
@@ -74,9 +74,10 @@ git push origin HEAD
 **Agent action:**
 - Ensure the PR has **no merge conflicts**.
 - Ensure **GitHub Actions is green** (fix failures on the work branch and push).
+- If CI/CD fails, fix it on the work branch and push until green.
 - Do **not** bypass checks.
 
-**Why:** Staging only updates after a clean merge to `main`, so conflicts and CI failures must be resolved first.
+**Why:** Staging only updates after a clean merge to `main`, so conflicts and CI failures must be resolved before approval and merge.
 
 ### Rule 3: Never Run Destructive Commands
 
@@ -253,8 +254,8 @@ git diff origin/main..origin/work/<branch-name> --stat
 1. Go to GitHub → Pull Requests → New Pull Request
 2. Select `work/<branch-name>` → `main`
 3. Confirm there are **no merge conflicts**
-4. Confirm **GitHub Actions is green** (fix failures before approval)
-5. Approve the PR
+4. Confirm **GitHub Actions is green** (fix failures on the work branch before approval)
+5. Approve the PR once conflicts and CI are resolved
 
 ### Step 3: Merge to Main (Triggers Staging)
 
@@ -304,6 +305,7 @@ git pull origin HEAD
 - Commit after every significant change (Rule 1)
 - Push every 2 hours or 3 commits (Rule 2)
 - Open a PR after the first push and keep it green (Rules 2a/2b)
+- Push early/often so work is always autosaved to GitHub
 - Never run destructive commands (Rule 3)
 
 ### End of Session

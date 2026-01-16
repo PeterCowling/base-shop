@@ -6,7 +6,9 @@
  */
 
 import { memo } from 'react';
+import Image from 'next/image';
 import { Link } from '@/lib/router';
+import { Inline, Stack } from '@acme/ui';
 
 export interface ServiceCardProps {
   title: string;
@@ -29,21 +31,23 @@ export const ServiceCard = memo(function ServiceCard({
   image,
 }: ServiceCardProps) {
   return (
-    <div
+    <Stack
+      asChild
+      gap={4}
       className="
-        w-full max-w-[370px]
+        w-full
         border border-gray-200
         rounded-lg
         overflow-hidden
         bg-white
         transition-transform duration-300
-        flex flex-col
-        text-left
-        ml-4
+        text-start
+        ms-4
         hover:-translate-y-1
         hover:shadow-lg
       "
     >
+      <div>
       <h3 className="text-xl mt-3 mx-4 mb-2 text-gray-800 text-center">
         <Link
           to={to}
@@ -53,23 +57,26 @@ export const ServiceCard = memo(function ServiceCard({
         </Link>
       </h3>
 
-      <div className="flex flex-row items-center p-4 w-full gap-4">
-        {image && (
-          <Link to={to}>
-            <img
-              src={image}
-              alt={alt || ''}
-              className="max-w-[200px] h-auto object-cover rounded"
-            />
-          </Link>
-        )}
-        {description && (
-          <p className="w-full px-4 text-gray-600 text-base">
-            {description}
-          </p>
-        )}
+        <Inline gap={4} className="p-4 w-full">
+          {image && (
+            <Link to={to}>
+              <Image
+                src={image}
+                alt={alt || ''}
+                width={200}
+                height={140}
+                className="h-auto w-48 rounded object-cover"
+              />
+            </Link>
+          )}
+          {description && (
+            <p className="w-full px-4 text-gray-600 text-base">
+              {description}
+            </p>
+          )}
+        </Inline>
       </div>
-    </div>
+    </Stack>
   );
 });
 

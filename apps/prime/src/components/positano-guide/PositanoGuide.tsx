@@ -11,9 +11,10 @@
 import { ArrowLeft, ExternalLink, MapPin, Sparkles, Sun, Sunset } from 'lucide-react';
 import { FC, memo, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate, useLocation } from '@/lib/router';
+import { useNavigate, useLocation } from '@/lib/router';
 import { useCompletedTaskMutator } from '@/hooks/mutator/useCompletedTaskMutator';
 import { useUnifiedBookingData } from '@/hooks/dataOrchestrator/useUnifiedBookingData';
+import Container from '@/components/layout/Container';
 
 /** Brikette website base URL */
 const BRIKETTE_BASE_URL = 'https://hostel-positano.com';
@@ -108,7 +109,7 @@ const GuideCard: FC<GuideCardProps> = memo(function GuideCard({
       href={guideUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-emerald-300 hover:shadow-md"
+      className="group block min-h-11 min-w-11 rounded-xl border border-gray-200 bg-white p-4 shadow-sm transition-all hover:border-emerald-300 hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
@@ -156,13 +157,13 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
   }, [navigate, location.search]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-svh bg-gray-50">
       {/* Header */}
-      <header className="sticky top-0 z-10 border-b border-gray-200 bg-white px-4 py-3">
-        <div className="mx-auto flex max-w-lg items-center gap-3">
+      <header className="sticky top-0 border-b border-gray-200 bg-white px-4 py-3">
+        <Container className="flex max-w-lg items-center gap-3">
           <button
             onClick={handleBack}
-            className="rounded-full p-2 transition-colors hover:bg-gray-100"
+            className="min-h-11 min-w-11 rounded-full p-2 transition-colors hover:bg-gray-100"
             aria-label="Go back"
           >
             <ArrowLeft className="h-5 w-5 text-gray-700" />
@@ -173,19 +174,20 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
             </h1>
             <p className="text-sm text-gray-500">{t('meta.subtitle')}</p>
           </div>
-          <MapPin className="ml-auto h-5 w-5 text-emerald-500" />
-        </div>
+          <MapPin className="ms-auto h-5 w-5 text-emerald-500" />
+        </Container>
       </header>
 
       {/* Content */}
-      <main className="mx-auto max-w-lg px-4 py-6">
-        {/* Popular badge */}
-        <div className="mb-6 flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2">
-          <Sparkles className="h-4 w-4 text-amber-500" />
-          <span className="text-sm font-medium text-amber-700">
-            {t('cta.popularWithGuests')}
-          </span>
-        </div>
+      <main className="py-6">
+        <Container className="max-w-lg px-4">
+          {/* Popular badge */}
+          <div className="mb-6 flex items-center gap-2 rounded-lg bg-amber-50 px-3 py-2">
+            <Sparkles className="h-4 w-4 text-amber-500" />
+            <span className="text-sm font-medium text-amber-700">
+              {t('cta.popularWithGuests')}
+            </span>
+          </div>
 
         {/* Morning section */}
         <GuideSection
@@ -217,10 +219,11 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
           icon={Sunset}
         />
 
-        {/* Attribution */}
-        <div className="mt-8 text-center text-xs text-gray-400">
-          {t('cta.poweredBy')}
-        </div>
+          {/* Attribution */}
+          <div className="mt-8 text-center text-xs text-gray-400">
+            {t('cta.poweredBy')}
+          </div>
+        </Container>
       </main>
     </div>
   );

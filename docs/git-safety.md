@@ -60,8 +60,9 @@ These commands can permanently destroy work:
 | Every 2 hours | Push to GitHub |
 | Every 3 local commits | Push to GitHub |
 | After first push of a `work/*` branch | Open a PR |
+| After any significant checkpoint | Push to GitHub (autosave) |
 
-**Why:** Uncommitted work is unrecoverable. Unpushed commits are lost if the local machine fails.
+**Why:** Uncommitted work is unrecoverable. Unpushed commits are lost if the local machine fails. Treat pushes as the autosave.
 
 ### 4. Never Work Directly on `main`
 
@@ -213,6 +214,7 @@ git pull origin HEAD
 - Commit after every significant change
 - Push every 2 hours or 3 commits
 - Open a PR after the first push and keep it green
+- Push early/often so work is always autosaved to GitHub
 - Never run destructive commands
 - If git is confusing, STOP and ask the user
 

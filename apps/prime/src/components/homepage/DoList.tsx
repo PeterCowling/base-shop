@@ -7,7 +7,9 @@
 
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Stack } from '@acme/ui';
 import TaskCard from './cards/TaskCard';
+import Container from '@/components/layout/Container';
 
 /** DoListTask - data for a single task */
 export interface DoListTask {
@@ -66,44 +68,46 @@ function DoList({
     : t('doList.startYourEpicStay');
 
   return (
-    <div className={`text-justify max-w-[400px] mx-auto ${className}`}>
+    <Container className={`text-justify max-w-md ${className}`}>
       {/* Subheader */}
       <p className="text-2xl font-bold text-gray-800 text-center mt-6 mb-4">
         {subheaderText}
       </p>
 
       {/* Render tasks as a list */}
-      <ul className="list-none flex flex-col gap-4 items-stretch px-4 mb-8">
-        {orderedTasks.map((task) => {
-          const completed = isTaskCompleted(task.id);
-          // Construct translation keys dynamically using the task id
-          const titleKey = `tasks.${task.id}.title`;
-          const completedTitleKey = `tasks.${task.id}.completedTitle`;
-          const noteKey = `tasks.${task.id}.note`;
-          const altKey = `tasks.${task.id}.alt`;
+      <Stack asChild gap={4} className="list-none px-4 mb-8">
+        <ul>
+          {orderedTasks.map((task) => {
+            const completed = isTaskCompleted(task.id);
+            // Construct translation keys dynamically using the task id
+            const titleKey = `tasks.${task.id}.title`;
+            const completedTitleKey = `tasks.${task.id}.completedTitle`;
+            const noteKey = `tasks.${task.id}.note`;
+            const altKey = `tasks.${task.id}.alt`;
 
-          // Fetch translations using the keys
-          const title = t(titleKey, { defaultValue: task.id });
-          const completedTitle = t(completedTitleKey, { defaultValue: title });
-          const note = t(noteKey, { defaultValue: '' });
-          const alt = t(altKey, { defaultValue: title });
+            // Fetch translations using the keys
+            const title = t(titleKey, { defaultValue: task.id });
+            const completedTitle = t(completedTitleKey, { defaultValue: title });
+            const note = t(noteKey, { defaultValue: '' });
+            const alt = t(altKey, { defaultValue: title });
 
-          return (
-            <li key={task.id}>
-              <TaskCard
-                title={title}
-                completedTitle={completedTitle}
-                note={note || undefined}
-                image={task.image}
-                alt={alt}
-                link={completed ? undefined : task.to}
-                completed={completed}
-              />
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+            return (
+              <li key={task.id}>
+                <TaskCard
+                  title={title}
+                  completedTitle={completedTitle}
+                  note={note || undefined}
+                  image={task.image}
+                  alt={alt}
+                  link={completed ? undefined : task.to}
+                  completed={completed}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      </Stack>
+    </Container>
   );
 }
 

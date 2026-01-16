@@ -1,6 +1,8 @@
 /* File: /src/components/onboarding/OnboardingLayout.tsx */
 import { FC, PropsWithChildren } from 'react';
+import Image from 'next/image';
 import ProgressBar from './ProgressBar';
+import Container from '@/components/layout/Container';
 
 export interface OnboardingLayoutProps extends PropsWithChildren {
   /** Current step the user is viewing, 1‑indexed */
@@ -29,27 +31,34 @@ const OnboardingLayout: FC<OnboardingLayoutProps> = ({
   hideProgress,
   children,
 }) => (
-  <div className="flex flex-col items-center min-h-screen w-full bg-[#f9f9f9]">
-    <header className="w-full max-w-[400px] mt-0 mb-0 text-center">
-      {/* Hide logo when hideProgress is true */}
-      {!hideProgress && (
-        <img
-          className="h-[80px] w-auto object-contain cursor-pointer mx-auto block"
-          src="/hostel_brikette_logo_cb_white.jpg"
-          alt="Hostel Brikette, Positano"
-        />
-      )}
-      {title && (
-        <h1 className="text-2xl font-semibold text-[#333] mb-2">{title}</h1>
-      )}
-      {!hideProgress && (
-        <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
-      )}
-    </header>
+  <div className="flex min-h-svh w-full flex-col items-center bg-gray-50">
+    <Container className="w-full max-w-md text-center">
+      <header className="text-center">
+        {/* Hide logo when hideProgress is true */}
+        {!hideProgress && (
+          <Image
+            className="mx-auto block h-20 w-auto cursor-pointer object-contain"
+            src="/hostel_brikette_logo_cb_white.jpg"
+            alt="Hostel Brikette, Positano"
+            width={240}
+            height={80}
+            priority
+          />
+        )}
+        {title && (
+          <h1 className="mb-2 text-2xl font-semibold text-gray-900">{title}</h1>
+        )}
+        {!hideProgress && (
+          <ProgressBar currentStep={currentStep} totalSteps={totalSteps} />
+        )}
+      </header>
+    </Container>
 
-    <main className="flex-1 w-full max-w-[400px] overflow-y-auto">
-      {children}
-    </main>
+    <Container className="flex w-full max-w-md flex-1 overflow-y-auto">
+      <main className="w-full">
+        {children}
+      </main>
+    </Container>
   </div>
 );
 

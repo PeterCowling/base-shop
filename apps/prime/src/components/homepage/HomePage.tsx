@@ -12,7 +12,7 @@
 
 'use client';
 
-import { memo, useCallback, useMemo, useState } from 'react';
+import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { GuestIntent } from '../../types/guestProfile';
 import { useGuestProgressData } from '../../hooks/dataOrchestrator/useGuestProgressData';
@@ -22,6 +22,7 @@ import DoList from './DoList';
 import ServicesList from './ServicesList';
 import { useHomePageVisibility } from './useHomePageVisibility';
 import { ProfileCompletionBanner } from '../profile/ProfileCompletionBanner';
+import Container from '@/components/layout/Container';
 
 type Section = 'quest' | 'social' | 'tasks' | 'services';
 
@@ -83,7 +84,7 @@ export const HomePage = memo(function HomePage() {
   // --- Loading state ---
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center w-full min-h-[calc(100vh-120px)]">
+      <div className="flex min-h-svh w-full items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
           <p className="text-gray-600">{t('loading', { defaultValue: 'Loading...' })}</p>
@@ -146,7 +147,7 @@ export const HomePage = memo(function HomePage() {
   };
 
   return (
-    <div className="pt-6 max-w-[400px] w-full mx-auto pb-24 relative px-4">
+    <Container className="relative max-w-md px-4 pb-24 pt-6">
       {/* Welcome header */}
       <h1 className="text-2xl font-bold text-gray-900 mb-6">
         {t('welcome.greeting', { firstName, defaultValue: `Welcome, ${firstName}!` })}
@@ -162,7 +163,7 @@ export const HomePage = memo(function HomePage() {
 
       {/* Dynamic section ordering based on intent */}
       {sectionOrder.map((section) => renderSection(section))}
-    </div>
+    </Container>
   );
 });
 

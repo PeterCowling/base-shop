@@ -47,7 +47,7 @@ const WelcomeHandoffStep: FC<WelcomeHandoffStepProps> = ({
 
   return (
     <OnboardingLayout currentStep={6} totalSteps={6} hideProgress>
-      <div className="flex min-h-[calc(100vh-70px)] flex-col items-center justify-center px-6 py-8">
+      <div className="flex min-h-full flex-col items-center justify-center px-6 py-8">
         {/* Success icon */}
         <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
           <CheckCircle className="h-12 w-12 text-green-600" />
@@ -62,7 +62,7 @@ const WelcomeHandoffStep: FC<WelcomeHandoffStepProps> = ({
         </p>
 
         {/* Quick highlights */}
-        <div className="mb-8 w-full max-w-sm space-y-3">
+        <div className="mb-8 w-full space-y-3">
           <HighlightItem
             icon={Compass}
             title={t('handoff.highlights.explore.title')}
@@ -84,7 +84,7 @@ const WelcomeHandoffStep: FC<WelcomeHandoffStepProps> = ({
         <Button
           onClick={handleContinue}
           disabled={isSubmitting}
-          className="w-full max-w-sm rounded-full bg-blue-500 px-6 py-4 text-lg font-semibold text-white shadow hover:bg-blue-600 transition-colors disabled:opacity-50"
+          className="w-full rounded-full bg-blue-500 px-6 py-4 text-lg font-semibold text-white shadow hover:bg-blue-600 transition-colors disabled:opacity-50"
         >
           {t('handoff.cta')}
         </Button>

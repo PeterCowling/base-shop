@@ -7,7 +7,9 @@
 
 import { CheckCircle } from 'lucide-react';
 import { memo } from 'react';
+import Image from 'next/image';
 import { Link } from '@/lib/router';
+import { Inline, Stack } from '@acme/ui';
 
 export interface TaskCardProps {
   title: string;
@@ -40,7 +42,9 @@ export const TaskCard = memo(function TaskCard({
   // --- Rendering Logic for INCOMPLETE state ---
   if (!completed) {
     return (
-      <div
+      <Stack
+        asChild
+        gap={4}
         className="
           w-full
           border border-gray-200
@@ -48,13 +52,13 @@ export const TaskCard = memo(function TaskCard({
           overflow-hidden
           bg-white
           transition-all duration-300
-          flex flex-col
-          text-left
+          text-start
           hover:-translate-y-1
           hover:shadow-lg
           cursor-pointer
         "
       >
+        <div>
         {/* Title Section */}
         <h3 className="text-xl mt-3 mx-4 mb-2 text-gray-800 text-center">
           {link ? (
@@ -71,21 +75,25 @@ export const TaskCard = memo(function TaskCard({
 
         {/* Content Section (Image and Note) */}
         {(image || note) && (
-          <div className="flex flex-col items-center p-4 pt-0 gap-4 w-full">
+          <Stack align="center" gap={4} className="p-4 pt-0 w-full">
             {image &&
               (link ? (
                 <Link to={link}>
-                  <img
+                  <Image
                     src={image}
                     alt={alt || ''}
-                    className="max-w-[200px] h-auto object-cover rounded"
+                    width={200}
+                    height={140}
+                    className="h-auto w-48 rounded object-cover"
                   />
                 </Link>
               ) : (
-                <img
+                <Image
                   src={image}
                   alt={alt || ''}
-                  className="max-w-[200px] h-auto object-cover rounded"
+                  width={200}
+                  height={140}
+                  className="h-auto w-48 rounded object-cover"
                 />
               ))}
             {note && (
@@ -93,17 +101,19 @@ export const TaskCard = memo(function TaskCard({
                 {note}
               </p>
             )}
-          </div>
+          </Stack>
         )}
-      </div>
+        </div>
+      </Stack>
     );
   }
 
   // --- Rendering Logic for COMPLETED state ---
   return (
-    <div
+    <Stack
+      align="start"
+      gap={2}
       className="
-        flex flex-col items-start
         bg-white border border-gray-300 rounded-md
         px-5 py-4
         shadow-sm
@@ -111,9 +121,9 @@ export const TaskCard = memo(function TaskCard({
         cursor-default
       "
     >
-      <div className="flex items-center w-full">
+      <Inline gap={3} wrap={false} className="w-full">
         {/* Checkmark for completed */}
-        <span className="text-green-600 text-xl mr-3 flex items-center">
+        <span className="text-green-600 text-xl">
           <CheckCircle />
         </span>
 
@@ -121,8 +131,8 @@ export const TaskCard = memo(function TaskCard({
         <span className="text-lg font-semibold text-green-600">
           {displayCompletedTitle}
         </span>
-      </div>
-    </div>
+      </Inline>
+    </Stack>
   );
 });
 

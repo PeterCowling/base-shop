@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from '@/lib/router';
 import { useChat } from '@/contexts/messaging/ChatProvider';
 import type { ActivityInstance } from '@/types/messenger/activity';
+import Container from '@/components/layout/Container';
 
 function formatActivityTime(startTime: number): string {
   return new Intl.DateTimeFormat(undefined, {
@@ -130,10 +131,10 @@ export default function ActivitiesPage() {
   const hasActivities = liveActivities.length > 0 || upcomingActivities.length > 0;
 
   return (
-    <main className="min-h-screen bg-gray-50 pb-24">
+    <main className="min-h-svh bg-gray-50 pb-24">
       {/* Header */}
       <div className="bg-gradient-to-br from-emerald-500 to-teal-600 px-4 pb-6 pt-8">
-        <div className="mx-auto max-w-md">
+        <Container className="max-w-md">
           <div className="mb-2 flex items-center gap-2">
             <Users className="h-6 w-6 text-white/80" />
             <h1 className="text-2xl font-bold text-white">
@@ -143,10 +144,10 @@ export default function ActivitiesPage() {
           <p className="text-sm text-emerald-100">
             {t('subtitle', 'Join fellow travelers for adventures and social events')}
           </p>
-        </div>
+        </Container>
       </div>
 
-      <div className="mx-auto max-w-md px-4 -mt-4">
+      <Container className="mt-4 max-w-md px-4">
         {hasActivities ? (
           <div className="space-y-6">
             {/* Live activities */}
@@ -197,8 +198,8 @@ export default function ActivitiesPage() {
               {t('empty.description', 'Check back later for upcoming events, or explore Positano on your own!')}
             </p>
             <Link
-              to="/positano-guide"
-              className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-600"
+              to={{ pathname: '/positano-guide' }}
+              className="inline-block rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-emerald-600"
             >
               {t('empty.exploreGuide', 'Explore Positano Guide')}
             </Link>
@@ -208,13 +209,13 @@ export default function ActivitiesPage() {
         {/* Back link */}
         <div className="mt-6 text-center">
           <Link
-            to="/"
+            to={{ pathname: '/' }}
             className="text-sm text-gray-500 hover:text-gray-700"
           >
             {t('actions.backHome', '← Back to home')}
           </Link>
         </div>
-      </div>
+      </Container>
     </main>
   );
 }

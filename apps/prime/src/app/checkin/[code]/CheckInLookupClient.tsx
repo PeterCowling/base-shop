@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePinAuth } from '../../../contexts/messaging/PinAuthProvider';
 import type { StaffCheckInView } from '../../../types/checkInCode';
+import Container from '@/components/layout/Container';
 
 /**
  * Check if the user has staff-level access.
@@ -101,7 +102,7 @@ export function CheckInLookupClient() {
   // Show loading while checking auth
   if (!user || !role) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-svh items-center justify-center">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
       </div>
     );
@@ -117,14 +118,14 @@ export function CheckInLookupClient() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="mx-auto max-w-md">
+    <div className="min-h-svh bg-gray-50 p-4">
+      <Container className="max-w-md">
         {/* Header */}
         <div className="mb-6 flex items-center gap-3">
           <button
             type="button"
             onClick={handleBack}
-            className="rounded-full p-2 hover:bg-gray-200"
+            className="min-h-11 min-w-11 rounded-full p-2 hover:bg-gray-200"
             aria-label={t('staffLookup.back')}
           >
             <ArrowLeft className="h-5 w-5" />
@@ -251,7 +252,7 @@ export function CheckInLookupClient() {
             </div>
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

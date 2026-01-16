@@ -59,6 +59,7 @@ export default [
       "apps/*/src/**/*.js",
       "apps/*/src/**/*.d.ts",
       "apps/*/src/**/*.js.map",
+      "apps/handbag-configurator/public/ktx2/basis_transcoder.js",
       "packages/config/test/**",
       "**/__mocks__/**",
       "**/jest.setup*.{ts,tsx}",

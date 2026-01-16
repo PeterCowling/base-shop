@@ -19,7 +19,10 @@ export default async function Page() {
   try {
     schema = await loadSchema();
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
+    const message =
+      err instanceof Error
+        ? err.message
+        : "Unknown error" /* i18n-exempt -- HB-1124 [ttl=2026-12-31] server error fallback */;
     error = `Schema fetch failed (${API_ORIGIN}). ${message}`;
   }
 

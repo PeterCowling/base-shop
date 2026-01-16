@@ -30,13 +30,13 @@ export function LightingRig({
         environmentIntensity={environmentIntensity}
       />
       <hemisphereLight
-        color="#ffffff"
-        groundColor="#3b2a21"
+        color={0xffffff}
+        groundColor={0x3b2a21}
         intensity={0.25}
       />
       <pointLight
         ref={keyLight}
-        color="#ffffff"
+        color={0xffffff}
         intensity={0.6}
         distance={20}
         decay={1.8}

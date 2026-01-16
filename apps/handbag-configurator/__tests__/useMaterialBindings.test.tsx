@@ -8,8 +8,8 @@ import { useMaterialBindings } from "../src/viewer/materials/useMaterialBindings
 
 const createScene = () => {
   const scene = new THREE.Scene();
-  const bodyMaterial = new THREE.MeshStandardMaterial({ color: "#ffffff" });
-  const trimMaterial = new THREE.MeshStandardMaterial({ color: "#333333" });
+  const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  const trimMaterial = new THREE.MeshStandardMaterial({ color: 0x333333 });
   const bodyMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), bodyMaterial);
   bodyMesh.name = "Body_Main";
   const trimMesh = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), trimMaterial);

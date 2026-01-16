@@ -7,6 +7,7 @@ import type {
   ProductHotspotConfig,
   SelectionState,
 } from "@acme/product-configurator";
+import { useTranslations } from "@acme/i18n";
 import {
   Component,
   type PointerEvent,
@@ -58,12 +59,18 @@ type ViewerCanvasProps = {
   frameFit?: "contain" | "height" | "width";
 };
 
-function LoadingOverlay({ label }: { label: string }) {
-  const { active, progress } = useProgress();
-  if (!active) return null;
+function LoadingOverlay({
+  label,
+  progress,
+}: {
+  label: string;
+  progress: number;
+}) {
   return (
-    <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/60 text-xs uppercase tracking-[0.3em] text-white">
-      {label} {Math.round(progress)}%
+    <div className="pointer-events-none col-start-1 row-start-1 flex h-full w-full items-center justify-center bg-black/60 text-xs uppercase tracking-widest text-white">
+      <span>
+        {label} {Math.round(progress)}%
+      </span>
     </div>
   );
 }
@@ -103,6 +110,8 @@ export function ViewerCanvas({
   frameTightness,
   frameFit,
 }: ViewerCanvasProps) {
+  const t = useTranslations();
+  const { active: isLoading, progress } = useProgress();
   const [debugMode, setDebugMode] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -182,7 +191,10 @@ export function ViewerCanvas({
         boundsSize: "n/a",
       };
       setDebugInfo(nextInfo);
-      console.info("[handbag-debug] scene missing", nextInfo);
+      console.info(
+        "[handbag-debug] scene missing" /* i18n-exempt -- HB-1120 [ttl=2026-12-31] debug log label */,
+        nextInfo,
+      );
       return;
     }
     let meshCount = 0;
@@ -202,10 +214,20 @@ export function ViewerCanvas({
       boundsSize: `${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)}`,
     };
     setDebugInfo(nextInfo);
-    console.info("[handbag-debug] scene info", nextInfo);
+    console.info(
+      "[handbag-debug] scene info" /* i18n-exempt -- HB-1120 [ttl=2026-12-31] debug log label */,
+      nextInfo,
+    );
   }, [debugMode, scene]);
 
-  const tierBadge = effectiveTier === "desktop" ? "HD Preview" : "Mobile Tier";
+  const tierBadge =
+    effectiveTier === "desktop"
+      ? t("handbag.viewer.tierBadgeHd")
+      : t("handbag.viewer.tierBadgeMobile");
+  const tierToggleLabel =
+    effectiveTier === "desktop"
+      ? t("handbag.viewer.switchToMobile")
+      : t("handbag.viewer.switchToHd");
   const handleCanvasPointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (hotspotConfigMode) return;
     if (!(event.target instanceof HTMLCanvasElement)) return;
@@ -215,18 +237,18 @@ export function ViewerCanvas({
 
   return (
     <div
-      className="relative h-full w-full flex-1 min-h-0"
+      className="relative grid h-full w-full flex-1 min-h-0"
       onPointerDown={handleCanvasPointerDown}
     >
       <Canvas
         onCreated={({ gl }) => configureRenderer(gl)}
         camera={{ position: [0, 0.35, 3.2], fov: 32 }}
-        className="h-full w-full"
+        className="col-start-1 row-start-1 h-full w-full"
         style={{ touchAction: "none" }}
       >
         <ModelErrorBoundary
           key={errorKey}
-          onError={() => setModelError("Model failed to load")}
+          onError={() => setModelError(t("handbag.viewer.modelLoadFailed"))}
         >
           <Suspense fallback={null}>
             <LightingRig hdriUrl={hdriUrl} />
@@ -280,52 +302,57 @@ export function ViewerCanvas({
           ? { onPersistOffsets: onPersistHotspotOffsets }
           : {})}
       />
-      <LoadingOverlay label="Loading model" />
+      {isLoading ? (
+        <LoadingOverlay
+          label={t("handbag.viewer.loadingModel")}
+          progress={progress}
+        />
+      ) : null}
       {modelError ? (
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/70 text-center text-xs uppercase tracking-[0.3em] text-white">
-          {modelError}
+        <div className="pointer-events-none col-start-1 row-start-1 flex h-full w-full items-center justify-center bg-black/70 text-center text-xs uppercase tracking-widest text-white">
+          <span>{modelError}</span>
         </div>
       ) : null}
       {debugMode ? (
         <div
-          className="pointer-events-none z-50 rounded-md px-3 py-2 text-[12px]"
-          style={{
-            position: "fixed",
-            top: "72px",
-            left: "12px",
-            background: "rgba(0, 0, 0, 0.82)",
-            color: "#ffffff",
-            border: "1px solid rgba(255, 255, 255, 0.25)",
-            fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace",
-          }}
+          className="pointer-events-none fixed start-3 top-20 rounded-md border border-border-1 bg-panel/90 px-3 py-2 text-xs font-mono text-foreground shadow-elevation-2"
         >
-          <div>debug=1</div>
-          <div>meshes: {debugInfo?.meshCount ?? 0}</div>
-          <div>visible: {debugInfo?.visibleMeshCount ?? 0}</div>
-          <div>bounds: {debugInfo?.boundsEmpty ? "empty" : debugInfo?.boundsSize}</div>
+          <div>{t("handbag.debug.label")}</div>
+          <div>
+            {t("handbag.debug.meshes")}: {debugInfo?.meshCount ?? 0}
+          </div>
+          <div>
+            {t("handbag.debug.visible")}: {debugInfo?.visibleMeshCount ?? 0}
+          </div>
+          <div>
+            {t("handbag.debug.bounds")}:{" "}
+            {debugInfo?.boundsEmpty
+              ? t("handbag.debug.empty")
+              : debugInfo?.boundsSize}
+          </div>
         </div>
       ) : null}
 
       {showTierControls ? (
-        <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between">
-          <div className="pointer-events-none flex items-center gap-3 rounded-full border border-border-1 bg-panel/85 px-4 py-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+        <div className="absolute bottom-6 start-6 end-6 flex items-center justify-between">
+          <div className="pointer-events-none flex items-center gap-3 rounded-full border border-border-1 bg-panel/85 px-4 py-2 text-xs uppercase tracking-widest text-muted-foreground">
             <span>{tierBadge}</span>
           </div>
           <div className="pointer-events-auto flex items-center gap-3">
             <button
               type="button"
-              className="rounded-full border border-border-2 bg-surface-2/80 px-4 py-2 text-xs uppercase tracking-[0.2em] text-foreground transition hover:bg-surface-3 disabled:cursor-not-allowed disabled:opacity-50"
+              className="min-h-12 min-w-12 rounded-full border border-border-2 bg-surface-2/80 px-4 py-2 text-xs uppercase tracking-widest text-foreground transition hover:bg-surface-3 disabled:cursor-not-allowed disabled:opacity-50"
               onClick={toggleTier}
               disabled={!hdAllowed}
               aria-disabled={!hdAllowed}
             >
-              {effectiveTier === "desktop" ? "Use Mobile" : "HD Preview"}
+              {tierToggleLabel}
             </button>
             <a
               href={posterUrl}
-              className="hidden rounded-full border border-border-1 bg-surface-2/70 px-3 py-2 text-[11px] uppercase tracking-[0.2em] text-muted-foreground transition hover:bg-surface-3 md:inline-flex"
+              className="hidden min-h-12 min-w-12 rounded-full border border-border-1 bg-surface-2/70 px-3 py-2 text-xs uppercase tracking-widest text-muted-foreground transition hover:bg-surface-3 md:inline-flex"
             >
-              Poster
+              {t("handbag.viewer.poster")}
             </a>
           </div>
         </div>

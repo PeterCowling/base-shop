@@ -6,6 +6,7 @@ import type {
   SelectionState,
   ValidateResponse,
 } from "@acme/product-configurator";
+import { useTranslations } from "@acme/i18n";
 import {
   Card,
   CardContent,
@@ -23,6 +24,13 @@ type ConfiguratorPanelProps = {
   onSelect?: (key: string, value: string) => void;
 };
 
+const toRgb = (hex: number) => {
+  const r = (hex >> 16) & 0xff;
+  const g = (hex >> 8) & 0xff;
+  const b = hex & 0xff;
+  return `rgb(${r}, ${g}, ${b})`;
+};
+
 export function ConfiguratorPanel({
   schema,
   hotspotConfig,
@@ -31,6 +39,7 @@ export function ConfiguratorPanel({
   validationStatus = "idle",
   onSelect,
 }: ConfiguratorPanelProps) {
+  const t = useTranslations();
   const panelOpen = useModeStore((state) => state.panelOpen);
   const activeRegionId = useModeStore((state) => state.activeRegionId);
   const activeHotspotId = useModeStore((state) => state.activeHotspotId);
@@ -51,79 +60,79 @@ export function ConfiguratorPanel({
   }, [activeRegionId, activeHotspotId, hotspotConfig, schema]);
 
   const swatchPalette: Record<string, string> = {
-    calf_black: "#1f1f1d",
-    calf_cream: "#f2e7d6",
-    leather: "#c29a6b",
-    pattern_a: "#c29a6b",
-    pattern_b: "#c29a6b",
-    pattern_c: "#c29a6b",
-    black: "#1b1b1b",
-    espresso: "#3a2a1e",
-    chestnut: "#6b3f2a",
-    tan: "#c29a6b",
-    red: "#b23a2f",
-    navy: "#1f3a5f",
-    forest: "#1f4d3a",
-    cream: "#e8ddc9",
-    slate: "#6b6f76",
-    burgundy: "#5b1f2a",
-    sand: "#dac8aa",
-    gold: "#c4a467",
-    silver: "#c6cbd4",
-    gunmetal: "#2b2b2e",
-    microfiber_tan: "#c8a27a",
-    microfiber_black: "#1c1c1c",
-    none: "#f4eee4",
-    embossed: "#d8c6b2",
-    classic: "#c86555",
-    buckle: "#3a6fcf",
+    calf_black: toRgb(0x1f1f1d),
+    calf_cream: toRgb(0xf2e7d6),
+    leather: toRgb(0xc29a6b),
+    pattern_a: toRgb(0xc29a6b),
+    pattern_b: toRgb(0xc29a6b),
+    pattern_c: toRgb(0xc29a6b),
+    black: toRgb(0x1b1b1b),
+    espresso: toRgb(0x3a2a1e),
+    chestnut: toRgb(0x6b3f2a),
+    tan: toRgb(0xc29a6b),
+    red: toRgb(0xb23a2f),
+    navy: toRgb(0x1f3a5f),
+    forest: toRgb(0x1f4d3a),
+    cream: toRgb(0xe8ddc9),
+    slate: toRgb(0x6b6f76),
+    burgundy: toRgb(0x5b1f2a),
+    sand: toRgb(0xdac8aa),
+    gold: toRgb(0xc4a467),
+    silver: toRgb(0xc6cbd4),
+    gunmetal: toRgb(0x2b2b2e),
+    microfiber_tan: toRgb(0xc8a27a),
+    microfiber_black: toRgb(0x1c1c1c),
+    none: toRgb(0xf4eee4),
+    embossed: toRgb(0xd8c6b2),
+    classic: toRgb(0xc86555),
+    buckle: toRgb(0x3a6fcf),
   };
 
   const texturePebble = [
-    "radial-gradient(circle at 20% 25%, rgba(255,255,255,0.35), transparent 45%)",
-    "radial-gradient(circle at 70% 75%, rgba(0,0,0,0.25), transparent 55%)",
-    "repeating-radial-gradient(circle at 25% 30%, rgba(255,255,255,0.08) 0 2px, transparent 2px 5px)",
+    `radial-gradient(circle at 20% 25%, rgba(255,255,255,0.35), transparent 45%)`,
+    `radial-gradient(circle at 70% 75%, rgba(0,0,0,0.25), transparent 55%)`,
+    `repeating-radial-gradient(circle at 25% 30%, rgba(255,255,255,0.08) 0 2px, transparent 2px 5px)`,
   ].join(", ");
 
   const texturePebbleSoft = [
-    "radial-gradient(circle at 25% 30%, rgba(255,255,255,0.22), transparent 50%)",
-    "radial-gradient(circle at 70% 75%, rgba(0,0,0,0.18), transparent 55%)",
-    "repeating-radial-gradient(circle at 20% 25%, rgba(255,255,255,0.05) 0 2px, transparent 2px 6px)",
+    `radial-gradient(circle at 25% 30%, rgba(255,255,255,0.22), transparent 50%)`,
+    `radial-gradient(circle at 70% 75%, rgba(0,0,0,0.18), transparent 55%)`,
+    `repeating-radial-gradient(circle at 20% 25%, rgba(255,255,255,0.05) 0 2px, transparent 2px 6px)`,
   ].join(", ");
 
   const textureSmooth = [
-    "radial-gradient(circle at 25% 30%, rgba(255,255,255,0.4), transparent 50%)",
-    "linear-gradient(135deg, rgba(255,255,255,0.35), rgba(0,0,0,0.12))",
+    `radial-gradient(circle at 25% 30%, rgba(255,255,255,0.4), transparent 50%)`,
+    `linear-gradient(135deg, rgba(255,255,255,0.35), rgba(0,0,0,0.12))`,
   ].join(", ");
 
   const textureMicrofiber = [
-    "linear-gradient(45deg, rgba(255,255,255,0.18) 0%, transparent 55%)",
-    "repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0 2px, transparent 2px 6px)",
+    `linear-gradient(45deg, rgba(255,255,255,0.18) 0%, transparent 55%)`,
+    `repeating-linear-gradient(0deg, rgba(0,0,0,0.08) 0 2px, transparent 2px 6px)`,
   ].join(", ");
 
   const texturePatternA = [
-    "repeating-linear-gradient(45deg, rgba(255,255,255,0.18) 0 6px, transparent 6px 14px)",
-    "linear-gradient(135deg, rgba(0,0,0,0.08), transparent)",
+    `repeating-linear-gradient(45deg, rgba(255,255,255,0.18) 0 6px, transparent 6px 14px)`,
+    `linear-gradient(135deg, rgba(0,0,0,0.08), transparent)`,
   ].join(", ");
 
   const texturePatternB = [
-    "radial-gradient(circle at 35% 40%, rgba(255,255,255,0.18) 0 8%, transparent 9%)",
-    "radial-gradient(circle at 70% 65%, rgba(0,0,0,0.1) 0 10%, transparent 11%)",
-    "repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06) 0 2px, transparent 2px 7px)",
+    `radial-gradient(circle at 35% 40%, rgba(255,255,255,0.18) 0 8%, transparent 9%)`,
+    `radial-gradient(circle at 70% 65%, rgba(0,0,0,0.1) 0 10%, transparent 11%)`,
+    `repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,0.06) 0 2px, transparent 2px 7px)`,
   ].join(", ");
 
   const texturePatternC = [
-    "repeating-linear-gradient(135deg, rgba(255,255,255,0.14) 0 8px, transparent 8px 18px)",
-    "repeating-linear-gradient(45deg, rgba(0,0,0,0.08) 0 10px, transparent 10px 22px)",
+    `repeating-linear-gradient(135deg, rgba(255,255,255,0.14) 0 8px, transparent 8px 18px)`,
+    `repeating-linear-gradient(45deg, rgba(0,0,0,0.08) 0 10px, transparent 10px 22px)`,
   ].join(", ");
 
   const textureMetal = [
-    "linear-gradient(135deg, rgba(255,255,255,0.85), rgba(0,0,0,0.2))",
-    "linear-gradient(45deg, rgba(255,255,255,0.25), transparent 60%)",
+    `linear-gradient(135deg, rgba(255,255,255,0.85), rgba(0,0,0,0.2))`,
+    `linear-gradient(45deg, rgba(255,255,255,0.25), transparent 60%)`,
   ].join(", ");
 
   const textureColor = [
-    "linear-gradient(135deg, rgba(255,255,255,0.45), rgba(0,0,0,0.15))",
+    `linear-gradient(135deg, rgba(255,255,255,0.45), rgba(0,0,0,0.15))`,
     texturePebbleSoft,
   ].join(", ");
 
@@ -199,10 +208,11 @@ export function ConfiguratorPanel({
 
   const getSectionTitle = (property: ProductConfigSchema["properties"][number]) => {
     const label = property.displayName.toLowerCase();
-    if (label.includes("material")) return "Materials";
-    if (label.includes("color")) return "Color";
-    if (label.includes("hardware")) return "Color";
-    if (label.includes("monogram")) return "Monogram";
+    if (label.includes("material")) return t("handbag.configurator.section.materials");
+    if (label.includes("color") || label.includes("hardware")) {
+      return t("handbag.configurator.section.color");
+    }
+    if (label.includes("monogram")) return t("handbag.configurator.section.monogram");
     return property.displayName;
   };
 
@@ -213,7 +223,7 @@ export function ConfiguratorPanel({
       <div className="cfgFlyout" style={{ top: "16px" }}>
         <Card className="cfgMiniCard cfgMiniCard--message">
           <CardContent className="cfgMiniCard__message">
-            Schema unavailable — start the API to enable configuration options.
+            {t("handbag.configurator.schemaUnavailable")}
           </CardContent>
         </Card>
       </div>
@@ -229,7 +239,7 @@ export function ConfiguratorPanel({
       {validationStatus === "error" ? (
         <Card className="cfgMiniCard cfgMiniCard--message">
           <CardContent className="cfgMiniCard__message">
-            Validation service unavailable. Try again in a moment.
+            {t("handbag.configurator.validationUnavailable")}
           </CardContent>
         </Card>
       ) : null}
@@ -243,7 +253,7 @@ export function ConfiguratorPanel({
       {activeProperties.length === 0 ? (
         <Card className="cfgMiniCard cfgMiniCard--message">
           <CardContent className="cfgMiniCard__message">
-            No options available for this part yet.
+            {t("handbag.configurator.noOptions")}
           </CardContent>
         </Card>
       ) : null}

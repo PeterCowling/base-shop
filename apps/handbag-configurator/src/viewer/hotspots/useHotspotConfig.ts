@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { ProductHotspotConfig } from "@acme/product-configurator";
+import { useTranslations } from "@acme/i18n";
 
 type HotspotOffsets = Record<string, { x: number; y: number }>;
 
@@ -12,6 +13,7 @@ type HotspotConfigState = {
 };
 
 export function useHotspotConfig(productId: string): HotspotConfigState {
+  const t = useTranslations();
   const [config, setConfig] = useState<ProductHotspotConfig | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
 
@@ -22,7 +24,7 @@ export function useHotspotConfig(productId: string): HotspotConfigState {
       setStatus("loading");
       try {
         const res = await fetch(`/api/products/${productId}/hotspots`);
-        if (!res.ok) throw new Error("Failed to load hotspots");
+        if (!res.ok) throw new Error(t("handbag.hotspot.loadFailed"));
         const data = (await res.json()) as ProductHotspotConfig;
         if (cancelled) return;
         setConfig(data);
@@ -36,7 +38,7 @@ export function useHotspotConfig(productId: string): HotspotConfigState {
     return () => {
       cancelled = true;
     };
-  }, [productId]);
+  }, [productId, t]);
 
   const saveOffsets = useCallback(
     async (offsets: HotspotOffsets) => {

@@ -420,7 +420,10 @@ export function ComposedModelScene({
       composedChildNames: composedScene.children.map((child) => child.name),
       baseIsComposedChild: composedScene.children.includes(baseScene),
     };
-    console.info("[handbag-debug] gltf scene summary", info);
+    console.info(
+      "[handbag-debug] gltf scene summary" /* i18n-exempt -- HB-1120 [ttl=2026-12-31] debug log label */,
+      info,
+    );
     if (typeof window !== "undefined") {
       (window as Window & { __handbagDebug?: unknown }).__handbagDebug = {
         baseGltf,

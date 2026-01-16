@@ -5,6 +5,7 @@ import type {
   SelectionState,
   ValidateResponse,
 } from "@acme/product-configurator";
+import { useTranslations } from "@acme/i18n";
 import { useEffect, useRef, useState } from "react";
 import { ViewerCanvas } from "../viewer/ViewerCanvas";
 import { useHotspotConfig } from "../viewer/hotspots/useHotspotConfig";
@@ -29,6 +30,7 @@ function selectionsEqual(a: SelectionState, b: SelectionState) {
 }
 
 export function ConfiguratorPage({ schema, apiOrigin, error }: ConfiguratorPageProps) {
+  const t = useTranslations();
   const closePanel = useModeStore((state) => state.closePanel);
   const clearActiveRegion = useModeStore((state) => state.clearActiveRegion);
 
@@ -73,7 +75,11 @@ export function ConfiguratorPage({ schema, apiOrigin, error }: ConfiguratorPageP
             selections,
           }),
         });
-        if (!validateRes.ok) throw new Error("Validation request failed");
+        if (!validateRes.ok) {
+          throw new Error(
+            "Validation request failed" /* i18n-exempt -- HB-1122 [ttl=2026-12-31] non-UI fetch error */,
+          );
+        }
         const validationData = (await validateRes.json()) as ValidateResponse;
         if (cancelled) return;
         setValidation(validationData);
@@ -166,7 +172,7 @@ export function ConfiguratorPage({ schema, apiOrigin, error }: ConfiguratorPageP
         />
 
         {error ? (
-          <div className="absolute left-6 top-6 max-w-sm rounded-2xl border border-danger/30 bg-danger-soft p-4 text-xs text-danger-foreground">
+          <div className="absolute start-6 top-6 w-96 rounded-2xl border border-danger/30 bg-danger-soft p-4 text-xs text-danger-foreground">
             {error}
           </div>
         ) : null}
@@ -180,29 +186,29 @@ export function ConfiguratorPage({ schema, apiOrigin, error }: ConfiguratorPageP
           {...(schema ? { schema } : {})}
         />
 
-        <div className="pointer-events-none absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-6 text-sm text-primary">
+        <div className="pointer-events-none absolute bottom-6 start-1/2 flex -translate-x-1/2 items-center gap-6 text-sm text-primary">
           <button
             type="button"
-            className="pointer-events-auto transition hover:text-primary/80"
+            className="pointer-events-auto min-h-12 min-w-12 px-3 py-2 transition hover:text-primary/80"
             onClick={handleDone}
           >
-            I&apos;m done
+            {t("handbag.actions.done")}
           </button>
           <span className="h-6 w-px bg-border-1" aria-hidden="true" />
           <button
             type="button"
-            className="pointer-events-auto transition hover:text-primary/80"
+            className="pointer-events-auto min-h-12 min-w-12 px-3 py-2 transition hover:text-primary/80"
             onClick={() => {}}
           >
-            Save/Share
+            {t("handbag.actions.saveShare")}
           </button>
           <span className="h-6 w-px bg-border-1" aria-hidden="true" />
           <button
             type="button"
-            className="pointer-events-auto transition hover:text-primary/80"
+            className="pointer-events-auto min-h-12 min-w-12 px-3 py-2 transition hover:text-primary/80"
             onClick={handleReset}
           >
-            Blank Bag
+            {t("handbag.actions.blankBag")}
           </button>
         </div>
       </div>

@@ -18,7 +18,7 @@ const body = Manrope({
 
 export const metadata: Metadata = {
   title:
-    "Handbag Configurator" /* i18n-exempt -- developer scaffold title */,
+    "Handbag Configurator" /* i18n-exempt -- HB-1123 [ttl=2026-12-31] developer scaffold title */,
 };
 
 export default function RootLayout({

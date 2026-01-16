@@ -4,7 +4,7 @@ import { applyMaterialPreset } from "../src/viewer/materials/materialPresets";
 
 describe("applyMaterialPreset", () => {
   it("applies preset values to standard materials", () => {
-    const material = new THREE.MeshStandardMaterial({ color: "#ffffff" });
+    const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
 
     applyMaterialPreset(material, "metal_gold");
 
@@ -15,11 +15,11 @@ describe("applyMaterialPreset", () => {
   });
 
   it("ignores unknown presets and non-standard materials", () => {
-    const standard = new THREE.MeshStandardMaterial({ color: "#ff0000" });
+    const standard = new THREE.MeshStandardMaterial({ color: 0xff0000 });
     applyMaterialPreset(standard, "unknown");
     expect(standard.color.getHexString()).toBe("ff0000");
 
-    const basic = new THREE.MeshBasicMaterial({ color: "#00ff00" });
+    const basic = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     applyMaterialPreset(basic, "body_black");
     expect(basic.color.getHexString()).toBe("00ff00");
   });

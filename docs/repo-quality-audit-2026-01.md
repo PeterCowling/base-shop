@@ -14,12 +14,12 @@ This audit summarizes the current state of architecture, tooling, and delivery p
 
 ## Executive Summary
 
-**Overall Grade: B+** *(upgraded from B-)*
+**Overall Grade: B**
 
-The repository has made significant improvements in January 2026, particularly in testing infrastructure (Jest presets, visual regression), CI/CD coverage (23 workflows), security (Next.js 15.3.8), and documentation (plan lifecycle, templates). Remaining gaps focus on Turbo remote caching, post-deployment validation, and Design System documentation consolidation.
+The repository has made significant improvements in January 2026, particularly in testing infrastructure (Jest presets, visual regression), CI/CD coverage (23 workflows), and documentation (plan lifecycle, templates). Security remains a concern with Next.js 15.3.5 still below the RCE fix; Turbo remote cache is configured in workflows but requires GitHub secrets/vars. Remaining gaps focus on post-deployment validation and Design System documentation consolidation.
 
 ### Top Risks (P0)
-- ~~Next.js RCE exposure pending dependency upgrade~~ **RESOLVED** (15.3.8)
+- Next.js RCE exposure pending dependency upgrade (target 15.3.6+)
 - SSRF risk in webhook forwarding *(mitigated via settings validation, explicit URL validation recommended)*
 - Cross-shop authorization gaps in CMS APIs *(needs formal audit)*
 - Secrets exposed in git history (needs rotation + history rewrite)
@@ -28,7 +28,7 @@ The repository has made significant improvements in January 2026, particularly i
 
 | Category | Grade | Key Strength | Key Gap |
 |----------|-------|--------------|---------|
-| Monorepo/Build | A | Turborepo + pnpm workspaces | No Turbo remote cache |
+| Monorepo/Build | A | Turborepo + pnpm workspaces | Turbo cache configured; secrets required |
 | TypeScript | A- | Strict mode + project references | Dual alias patterns undocumented |
 | Code Quality | A | Custom ESLint DS plugin (33 rules) | No DS rule documentation |
 | Testing | A- | Jest presets, Chromatic visual regression | Root config refactoring incomplete |
@@ -36,7 +36,7 @@ The repository has made significant improvements in January 2026, particularly i
 | Git Safety | A+ | Multi-layer protection | None observed |
 | Documentation | A- | 233 docs, plan templates, metadata lifecycle | No unified DS handbook |
 | Design System | B+ | Multi-context tokens, lint enforcement | No API standard, no handbook |
-| Security | B | Next.js 15.3.8, Zod, Argon2, weekly audits | SSRF needs explicit validation, auth audit needed |
+| Security | C+ | Zod validation, Argon2, weekly audits | Next.js RCE pending, SSRF validation, auth audit needed |
 | Developer Experience | A- | 123 scripts, good IDE support, 34 READMEs | Dependency graph missing |
 
 ## Scope and Method
@@ -59,12 +59,12 @@ The repository has made significant improvements in January 2026, particularly i
 
 **Gaps**
 - 40+ path aliases in `tsconfig.base.json` (reduced from 63, but still includes some duplicates like `@acme/ui` and `@ui`).
-- No Turbo remote cache configured for CI acceleration.
+- Turbo remote cache configured in workflows; `TURBO_TOKEN`/`TURBO_TEAM` still need to be set in GitHub.
 - Build scripts vary widely (`tsc -b`, `tsc -b && tsup`, custom scripts).
 - Package naming collisions create confusion (`templates` vs `template-app`, `configurator` vs `product-configurator`).
 
 **Recommendations**
-1. Configure Turbo remote cache with `TURBO_TOKEN` for CI build acceleration.
+1. Set `TURBO_TOKEN` (secret) and `TURBO_TEAM` (var) in GitHub to enable the remote cache.
 2. Continue consolidating aliases to a canonical set.
 3. Standardize build scripts via shared presets or common scripts.
 4. Document naming conventions and enforce them for new packages.
@@ -162,12 +162,12 @@ The repository has made significant improvements in January 2026, particularly i
 
 **Gaps**
 - No post-deployment validation/health checks.
-- No Turbo remote cache; every job rebuilds.
+- Turbo remote cache configured; secrets/vars still need to be set.
 - Path filters are manually maintained and drift-prone.
 
 **Recommendations**
 1. Add post-deploy health checks (e.g., curl + status check) to reusable-app.yml.
-2. Configure Turbo remote cache with `TURBO_TOKEN`.
+2. Set `TURBO_TOKEN` (secret) and `TURBO_TEAM` (var) in GitHub.
 3. Consider automated path filter generation.
 
 ### F. Git Safety & Incident Prevention — Grade: A+
@@ -214,48 +214,43 @@ The repository has made significant improvements in January 2026, particularly i
 **Gaps**
 - No component API standardization; props vary across components.
 - No Design System Handbook.
-- No visual regression testing.
+- Visual regression configured, but DS coverage is incomplete.
 - Accessibility lacks a comprehensive audit plan.
 - Theming limited to light/dark (no multi-brand support).
 
 **Recommendations**
 1. Standardize component prop conventions (naming, sizing, variant patterns).
 2. Publish a Design System Handbook (see Documentation section).
-3. Add visual regression testing (see Testing section).
+3. Expand visual regression coverage for DS components (see Testing section).
 4. Run a WCAG 2.1 AA audit and track remediation.
 
-### I. Security — Grade: B *(upgraded from C+)*
+### I. Security — Grade: C+
 
 **Strengths**
 - Zod validation used consistently.
 - Argon2 password hashing.
 - Webhook signature verification with HMAC.
 - Weekly audit workflow in place.
-- **NEW:** Next.js upgraded to 15.3.8 (RCE vulnerability resolved).
 - **NEW:** SSRF partially mitigated via CMS settings-based endpoint validation.
-
-**Resolved Issues**
-
-| Severity | Issue | Status |
-|----------|-------|--------|
-| ~~CRITICAL~~ | Next.js RCE vulnerability | **RESOLVED** — upgraded to 15.3.8 |
-| HIGH | SSRF in webhook forwarding | **MITIGATED** — endpoint from validated CMS settings (explicit URL validation recommended) |
 
 **Remaining Gaps**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
+| CRITICAL | Next.js RCE vulnerability | Dependencies (upgrade to 15.3.6+) |
 | CRITICAL | form-data unsafe random | Cypress dependency chain |
+| HIGH | SSRF in webhook forwarding | `apps/cover-me-pretty/src/app/api/leads/route.ts` (explicit URL validation needed) |
 | HIGH | Missing cross-shop authorization | `apps/cms/src/app/api/data/[shop]/` routes (needs formal audit) |
 | HIGH | Test auth bypass pattern | `apps/cms/src/actions/common/auth.ts` |
 | MEDIUM | Secrets in git history | Historical commits (needs git-filter-repo) |
 | MEDIUM | CSP gaps | Missing script-src, style-src in production |
 
 **Recommendations**
-1. Add explicit URL validation to webhook forwarding (whitelist domains, block private IPs).
-2. Conduct formal cross-shop authorization audit of CMS APIs.
-3. Rotate exposed secrets and clean git history.
-4. Update Cypress or its dependencies to resolve form-data vulnerability.
+1. Upgrade Next.js to 15.3.6+ to address the RCE vulnerability.
+2. Add explicit URL validation to webhook forwarding (whitelist domains, block private IPs).
+3. Conduct formal cross-shop authorization audit of CMS APIs.
+4. Rotate exposed secrets and clean git history.
+5. Update Cypress or its dependencies to resolve form-data vulnerability.
 
 ### J. Developer Experience — Grade: A- *(upgraded from B+)*
 
@@ -281,7 +276,7 @@ The repository has made significant improvements in January 2026, particularly i
 
 | # | Issue | Action | Status |
 |---|-------|--------|--------|
-| 1 | Next.js RCE | Upgrade to 15.3.6+ | **RESOLVED** (15.3.8) |
+| 1 | Next.js RCE | Upgrade to 15.3.6+ | Pending |
 | 2 | SSRF vulnerability | Add URL validation, block private IPs | **MITIGATED** (settings-based; explicit validation recommended) |
 | 3 | Cross-shop auth | Validate shop ownership on API routes | Needs formal audit |
 | 4 | Exposed secrets | Rotate secrets, run git-filter-repo | Pending |
@@ -291,7 +286,7 @@ The repository has made significant improvements in January 2026, particularly i
 | # | Issue | Action | Status |
 |---|-------|--------|--------|
 | 5 | No post-deploy validation | Add health checks after deployment | Pending |
-| 6 | No Turbo cache | Configure TURBO_TOKEN for remote caching | **RESOLVED** (workflows configured; add secrets to GitHub) |
+| 6 | No Turbo cache | Configure TURBO_TOKEN for remote caching | Configured in workflows; secrets/vars pending |
 | 7 | ESLint cache misses | Fix cache key to use content hash | **RESOLVED** (fallback keys configured) |
 | 8 | No visual regression | Add Chromatic or Percy | **RESOLVED** (Chromatic configured) |
 | 9 | Coverage not enforced | Add CI gate for coverage drops | Pending |
@@ -359,6 +354,7 @@ The repository has made significant improvements in January 2026, particularly i
 | 2026-01-16 | Codex | Linked the agent-focused package doc template |
 | 2026-01-16 | Claude Opus 4.5 | Updated grades based on January improvements: Testing B→A-, CI/CD B→A-, Documentation B+→A-, Security C+→B, Monorepo A-→A, DX B+→A-. Overall B-→B+. Marked resolved items in Priority Fixes (Next.js 15.3.8, Chromatic, ESLint cache, app workflows, READMEs). Added new findings for Jest preset system, plan lifecycle, 23 workflows. |
 | 2026-01-16 | Codex | Corrected README counts in summaries and recommendations. |
+| 2026-01-16 | Codex | Corrected Next.js version and reopened RCE status; aligned Turbo cache status with workflows. |
 
 ## Related Documents
 

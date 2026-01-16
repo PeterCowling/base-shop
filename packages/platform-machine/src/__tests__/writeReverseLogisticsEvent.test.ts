@@ -27,9 +27,9 @@ describe("writeReverseLogisticsEvent", () => {
 afterAll(() => {
   jest.resetModules();
   jest.unmock("fs/promises");
-  jest.unmock("@platform-core/repositories/rentalOrders.server");
-  jest.unmock("@platform-core/repositories/reverseLogisticsEvents.server");
-  jest.unmock("@platform-core/utils");
+  jest.unmock("@acme/platform-core/repositories/rentalOrders.server");
+  jest.unmock("@acme/platform-core/repositories/reverseLogisticsEvents.server");
+  jest.unmock("@acme/platform-core/utils");
   jest.unmock("crypto");
 });
 

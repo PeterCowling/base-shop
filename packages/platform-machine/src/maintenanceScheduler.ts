@@ -1,9 +1,9 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
 import { readdir } from "fs/promises";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { readInventory } from "@platform-core/repositories/inventory.server";
-import { readRepo as readProducts } from "@platform-core/repositories/products.server";
-import { logger } from "@platform-core/utils";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
+import { readRepo as readProducts } from "@acme/platform-core/repositories/products.server";
+import { logger } from "@acme/platform-core/utils";
 
 const DATA_ROOT = resolveDataRoot();
 

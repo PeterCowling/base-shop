@@ -145,8 +145,8 @@ Inventory can be managed today through the CMS:
 
 Cart and checkout validation are currently based on `sku.stock` stored in the cart:
 
-- Cart API (`@platform-core/cartApi`) rejects adds/updates when `newQty > sku.stock`.
-- Checkout session creation (`@platform-core/checkout/createSession.ts`) throws `Insufficient stock` if `line.qty > line.sku.stock`.
+- Cart API (`@acme/platform-core/cartApi`) rejects adds/updates when `newQty > sku.stock`.
+- Checkout session creation (`@acme/platform-core/checkout/createSession.ts`) throws `Insufficient stock` if `line.qty > line.sku.stock`.
 
 This means the system is only as correct as the *SKU snapshot stored in the cart*, which can be stale relative to the inventory store.
 

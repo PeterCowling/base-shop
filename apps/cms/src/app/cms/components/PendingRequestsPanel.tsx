@@ -12,7 +12,7 @@ import {
   Checkbox,
   Tag,
 } from "@/components/atoms/shadcn";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
+import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
 import { useTranslations } from "@acme/i18n";
 
 interface PendingRequestsPanelProps {

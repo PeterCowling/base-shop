@@ -497,7 +497,7 @@ export default async function robots() {
 // src/app/sitemap.ts
 import { generateSitemapRoute } from "@acme/seo/next";
 import { getShopSeoConfig } from "@acme/seo/config";
-import { getProducts } from "@platform-core/repositories/products.server";
+import { getProducts } from "@acme/platform-core/repositories/products.server";
 
 export default async function sitemap() {
   const shopId = process.env.NEXT_PUBLIC_SHOP_ID!;

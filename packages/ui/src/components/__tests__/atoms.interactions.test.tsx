@@ -16,7 +16,7 @@ const ensureSetThemeMock = () => {
 };
 
 jest.mock(
-  "@platform-core/contexts/ThemeContext",
+  "@acme/platform-core/contexts/ThemeContext",
   () => {
     const React = require("react");
     return {

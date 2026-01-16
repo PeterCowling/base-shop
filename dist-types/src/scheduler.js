@@ -1,7 +1,7 @@
 import { sendCampaignEmail } from "./send";
 import { resolveSegment } from "./segments";
 import { emitSend } from "./hooks";
-import { listEvents } from "@platform-core/repositories/analytics.server";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 import { coreEnv } from "@acme/config/env/core";
 import { validateShopName } from "@acme/lib";
 import { getCampaignStore } from "./storage";

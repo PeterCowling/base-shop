@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { completeOidcLogin, createCustomerSession } from "@auth";
-import { getOrCreateCustomerIdentity } from "@platform-core/identity";
+import { completeOidcLogin, createCustomerSession } from "@acme/auth";
+import { getOrCreateCustomerIdentity } from "@acme/platform-core/identity";
 import { authEnv } from "@acme/config/env/auth";
 
 export const runtime = "nodejs";

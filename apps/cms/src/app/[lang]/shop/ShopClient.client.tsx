@@ -4,11 +4,11 @@
 import FilterBar, {
   type Filters,
   type FilterDefinition,
-} from "@platform-core/components/shop/FilterBar";
-import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
+} from "@acme/platform-core/components/shop/FilterBar";
+import { ProductGrid } from "@acme/platform-core/components/shop/ProductGrid";
 import type { SKU } from "@acme/types";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useTranslations } from "@i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function ShopClient({ skus }: { skus: SKU[] }) {

@@ -3,9 +3,9 @@ import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import path from "path";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 import { writeJsonFile } from "@/lib/server/jsonIO";
 
 const schema = z

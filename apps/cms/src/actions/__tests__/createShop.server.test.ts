@@ -1,10 +1,10 @@
 import { createNewShop } from "../createShop.server";
 
-jest.mock("@platform-core/createShop", () => ({
+jest.mock("@acme/platform-core/createShop", () => ({
   createShopFromConfig: jest.fn(),
 }));
 
-jest.mock("@platform-core/db", () => ({
+jest.mock("@acme/platform-core/db", () => ({
   prisma: {
     page: { deleteMany: jest.fn() },
     shop: { delete: jest.fn() },
@@ -33,7 +33,7 @@ describe("createNewShop", () => {
   });
 
   it("Successful shop creation with RBAC update for new user", async () => {
-    const { createShopFromConfig } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@acme/platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
 
@@ -62,7 +62,7 @@ describe("createNewShop", () => {
   ])(
     "Existing role array vs single role %#",
     async ({ current, expected, shouldWrite }) => {
-      const { createShopFromConfig } = await import("@platform-core/createShop");
+      const { createShopFromConfig } = await import("@acme/platform-core/createShop");
       const { readRbac, writeRbac } = await import(
         "../../lib/server/rbacStore"
       );
@@ -90,7 +90,7 @@ describe("createNewShop", () => {
   );
 
   it("Propagates createShop error without touching RBAC", async () => {
-    const { createShopFromConfig } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@acme/platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
 
@@ -104,10 +104,10 @@ describe("createNewShop", () => {
   });
 
   it("Failure reading RBAC → verify rollback deletes created entities and throws", async () => {
-    const { createShopFromConfig } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@acme/platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
-    const { prisma } = await import("@platform-core/db");
+    const { prisma } = await import("@acme/platform-core/db");
 
     (createShopFromConfig as jest.Mock).mockResolvedValue({});
     (readRbac as jest.Mock).mockRejectedValue(new Error("fail"));
@@ -124,10 +124,10 @@ describe("createNewShop", () => {
   });
 
   it("Failure writing RBAC → verify rollback deletes created entities and throws", async () => {
-    const { createShopFromConfig } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@acme/platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
-    const { prisma } = await import("@platform-core/db");
+    const { prisma } = await import("@acme/platform-core/db");
 
     (createShopFromConfig as jest.Mock).mockResolvedValue({});
     (readRbac as jest.Mock).mockResolvedValue({
@@ -148,12 +148,12 @@ describe("createNewShop", () => {
   });
 
   it("Logs rollback failure when RBAC write fails", async () => {
-    const { createShopFromConfig } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@acme/platform-core/createShop");
     const { readRbac, writeRbac } = await import(
       "../../lib/server/rbacStore"
     );
     const { ensureAuthorized } = await import("../common/auth.ts");
-    const { prisma } = await import("@platform-core/db");
+    const { prisma } = await import("@acme/platform-core/db");
 
     (createShopFromConfig as jest.Mock).mockResolvedValue({});
     (readRbac as jest.Mock).mockResolvedValue({
@@ -176,7 +176,7 @@ describe("createNewShop", () => {
   });
 
   it("Ensure user without id skips RBAC update", async () => {
-    const { createShopFromConfig } = await import("@platform-core/createShop");
+    const { createShopFromConfig } = await import("@acme/platform-core/createShop");
     const { readRbac, writeRbac } = await import("../../lib/server/rbacStore");
     const { ensureAuthorized } = await import("../common/auth.ts");
 

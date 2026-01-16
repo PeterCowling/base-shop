@@ -1,15 +1,15 @@
 import { POST } from "./route";
-import { parseJsonBody } from "@shared-utils";
-import { createReturnAuthorization } from "@platform-core/returnAuthorization";
+import { parseJsonBody } from "@acme/shared-utils";
+import { createReturnAuthorization } from "@acme/platform-core/returnAuthorization";
 import { sendEmail } from "@acme/email";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 
 jest.mock("@shared-utils", () => ({
   parseJsonBody: jest.fn(),
 }));
 
-jest.mock("@platform-core/returnAuthorization", () => ({
+jest.mock("@acme/platform-core/returnAuthorization", () => ({
   createReturnAuthorization: jest.fn(),
 }));
 
@@ -17,11 +17,11 @@ jest.mock("@acme/email", () => ({
   sendEmail: jest.fn(),
 }));
 
-jest.mock("@platform-core/returnLogistics", () => ({
+jest.mock("@acme/platform-core/returnLogistics", () => ({
   getReturnLogistics: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: jest.fn(),
 }));
 

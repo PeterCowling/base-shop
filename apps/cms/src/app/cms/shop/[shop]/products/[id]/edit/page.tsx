@@ -3,10 +3,10 @@
 import {
   getProductById,
   readSettings,
-} from "@platform-core/repositories/json.server";
+} from "@acme/platform-core/repositories/json.server";
 import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
-import { Card, CardContent } from "@ui/components/atoms/shadcn";
+import { Card, CardContent } from "@acme/ui/components/atoms/shadcn";
 import ProductEditHero from "./ProductEditHero.client";
 
 /* ------------------------------------------------------------------ */

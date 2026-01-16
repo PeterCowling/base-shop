@@ -3,7 +3,7 @@
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";
-import { fillLocales } from "@i18n/fillLocales";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import {
   type Page,
   type PageComponent,
@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
-import { Cluster } from "@ui/components/atoms/primitives/Cluster";
+import { Cluster } from "@acme/ui/components/atoms/primitives/Cluster";
 import { useTranslations } from "@acme/i18n";
 
 interface Props {

@@ -105,7 +105,7 @@ export const ${name}: React.FC<${name}Props> = () => {
         path: `packages/ui/src/components/${layer}/${name}.test.tsx`,
         template: `import { render, screen } from '@testing-library/react';
 import { ${name} } from './${name}';
-import en from '@i18n/en.json';
+import en from '@acme/i18n/en.json';
 import { TranslationsProvider } from '@acme/i18n';
 
 describe('${name}', () => {
@@ -125,7 +125,7 @@ describe('${name}', () => {
         path: `packages/ui/src/components/${layer}/${name}.stories.tsx`,
         template: `import type { Meta, StoryObj } from '@storybook/react';
 import { ${name} } from './${name}';
-import en from '@i18n/en.json';
+import en from '@acme/i18n/en.json';
 import { TranslationsProvider } from '@acme/i18n';
 
 const meta: Meta<typeof ${name}> = {

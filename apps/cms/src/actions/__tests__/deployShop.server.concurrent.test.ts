@@ -7,7 +7,7 @@ jest.mock("../common/auth", () => ({ ensureAuthorized: jest.fn() }));
 
 const tmpDir = mkdtempSync(path.join(os.tmpdir(), "deploy-status-"));
 
-jest.mock("@platform-core/dataRoot", () => ({
+jest.mock("@acme/platform-core/dataRoot", () => ({
   resolveDataRoot: () => tmpDir,
 }));
 

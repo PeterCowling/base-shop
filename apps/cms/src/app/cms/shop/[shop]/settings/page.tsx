@@ -5,7 +5,7 @@ import { checkShopExists } from "@acme/lib";
 import {
   readSettings,
   readShop,
-} from "@platform-core/repositories/json.server";
+} from "@acme/platform-core/repositories/json.server";
 import type { Locale } from "@acme/types";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";

@@ -3,10 +3,10 @@ import { render, screen } from "@testing-library/react";
 import type { ReactElement } from "react";
 import SwapPage from "../src/app/account/swaps/page";
 import { notFound } from "next/navigation";
-import { getCart } from "@platform-core/cartStore";
-import { getCustomerSession } from "@auth";
-import { readShop } from "@platform-core/repositories/shops.server";
-import { getUserPlan, getRemainingSwaps } from "@platform-core/repositories/subscriptionUsage.server";
+import { getCart } from "@acme/platform-core/cartStore";
+import { getCustomerSession } from "@acme/auth";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { getUserPlan, getRemainingSwaps } from "@acme/platform-core/repositories/subscriptionUsage.server";
 
 jest.mock("next/navigation", () => ({ notFound: jest.fn() }));
 
@@ -14,12 +14,12 @@ jest.mock("next/headers", () => ({
   cookies: async () => ({ get: () => ({ value: "cookie" }) }),
 }));
 
-jest.mock("@platform-core/cartCookie", () => ({
+jest.mock("@acme/platform-core/cartCookie", () => ({
   CART_COOKIE: "c",
   decodeCartCookie: () => "cart1",
 }));
 
-jest.mock("@platform-core/cartStore", () => ({
+jest.mock("@acme/platform-core/cartStore", () => ({
   getCart: jest.fn(),
   removeItem: jest.fn(),
   incrementQty: jest.fn(),
@@ -27,9 +27,9 @@ jest.mock("@platform-core/cartStore", () => ({
 
 jest.mock("@auth", () => ({ getCustomerSession: jest.fn() }));
 
-jest.mock("@platform-core/repositories/shops.server", () => ({ readShop: jest.fn() }));
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({ readShop: jest.fn() }));
 
-jest.mock("@platform-core/repositories/subscriptionUsage.server", () => ({
+jest.mock("@acme/platform-core/repositories/subscriptionUsage.server", () => ({
   getUserPlan: jest.fn(),
   getRemainingSwaps: jest.fn(),
   incrementSwapCount: jest.fn(),
@@ -39,7 +39,7 @@ jest.mock("@acme/config/env/core", () => ({ coreEnv: {} }));
 
 jest.mock("@date-utils", () => ({ nowIso: jest.fn(() => "2023-01-15") }));
 
-jest.mock("@platform-core/products", () => ({ getProductById: jest.fn() }));
+jest.mock("@acme/platform-core/products", () => ({ getProductById: jest.fn() }));
 
 describe("SwapPage", () => {
   it("calls notFound when subscriptions disabled", async () => {

@@ -3,11 +3,11 @@ import type { MetadataRoute } from "next";
 const getShopSettingsMock = jest.fn();
 const readRepoMock = jest.fn();
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: getShopSettingsMock,
 }));
 
-jest.mock("@platform-core/repositories/products.server", () => ({
+jest.mock("@acme/platform-core/repositories/products.server", () => ({
   readRepo: readRepoMock,
 }));
 

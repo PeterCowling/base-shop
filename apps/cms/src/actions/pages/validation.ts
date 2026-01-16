@@ -1,7 +1,7 @@
 // apps/cms/src/actions/pages/validation.ts
 
 import { LOCALES } from "@acme/i18n";
-import { fillLocales } from "@i18n/fillLocales";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import { pageComponentSchema, type Locale } from "@acme/types";
 import { z } from "zod";
 

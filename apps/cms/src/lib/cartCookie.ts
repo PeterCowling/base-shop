@@ -1,1 +1,1 @@
-export * from "@platform-core/cartCookie";
+export * from "@acme/platform-core/cartCookie";

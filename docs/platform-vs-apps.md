@@ -16,7 +16,7 @@ This document is the canonical reference for:
 - Which **import paths are public API** and safe for apps/CMS to depend on.
 - Which paths are **internal details** (subject to change without notice).
 
-The same rules apply whether code imports the packages directly (for example `@acme/platform-core`) or via workspace aliases (for example `@platform-core`, `@ui`) configured in `tsconfig.paths`.
+The same rules apply whether code imports the packages directly (for example `@acme/platform-core`) or via workspace aliases (for example `@acme/platform-core`, `@ui`) configured in `tsconfig.paths`.
 
 ---
 
@@ -73,7 +73,7 @@ The same rules apply whether code imports the packages directly (for example `@a
 
 ## Public API: `@acme/platform-core`
 
-The patterns below describe the **intended public surface**. Code in apps and CMS should stick to these imports (or their `@platform-core` alias equivalents).
+The patterns below describe the **intended public surface**. Code in apps and CMS should stick to these imports (or their `@acme/platform-core` alias equivalents).
 
 ### Root export
 

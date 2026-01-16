@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import type { TelemetryEvent } from "@acme/telemetry";
-import { Toast } from "@ui/components/atoms";
+import { Toast } from "@acme/ui/components/atoms";
 
 import { TelemetryFiltersPanel } from "./TelemetryFiltersPanel";
 import { TelemetryHeader } from "./TelemetryHeader";

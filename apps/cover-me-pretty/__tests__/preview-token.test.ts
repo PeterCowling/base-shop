@@ -1,6 +1,6 @@
 // apps/cover-me-pretty/__tests__/preview-token.test.ts
 import path from "node:path";
-import { createUpgradePreviewToken } from "@platform-core/previewTokens";
+import { createUpgradePreviewToken } from "@acme/platform-core/previewTokens";
 
 describe("/api/preview-token", () => {
   const appDir = path.join(__dirname, "..");

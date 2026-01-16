@@ -2,9 +2,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { ulid } from "ulid";
-import { addOrder } from "@platform-core/orders/creation";
+import { addOrder } from "@acme/platform-core/orders/creation";
 import shop from "../../../../../shop.json";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 

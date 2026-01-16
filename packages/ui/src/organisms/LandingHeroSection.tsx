@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 import { type LinkDescriptor, type LinksFunction } from "react-router";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
-import { resolveBookingCtaLabel } from "@ui/shared";
+import { resolveBookingCtaLabel } from "@acme/ui/shared";
 
 const heroOriginal = "/img/landing-xl.webp";
 // i18n-exempt -- UI-1000 [ttl=2026-12-31] Address is used only to build a Maps URL.

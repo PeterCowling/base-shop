@@ -6,7 +6,7 @@ function setSession(session: any) {
   __setMockSession(session);
 }
 
-jest.mock("@platform-core/repositories/shop.server", () => ({
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({
   updateShopInRepo: jest.fn(),
 }))
 
@@ -15,7 +15,7 @@ describe("configure-shop route", () => {
 
   beforeEach(() => {
     jest.resetModules()
-    updateShopInRepo = require("@platform-core/repositories/shop.server").updateShopInRepo as jest.Mock
+    updateShopInRepo = require("@acme/platform-core/repositories/shop.server").updateShopInRepo as jest.Mock
     updateShopInRepo.mockReset()
   })
 

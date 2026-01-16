@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Button, Card, CardContent } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives";
+import { Button, Card, CardContent } from "@acme/ui/components/atoms";
+import { Grid } from "@acme/ui/components/atoms/primitives";
 import type { MarketingTool } from "../lib/marketingOverview";
 
 export interface MarketingToolsGridProps {

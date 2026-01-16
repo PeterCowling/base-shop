@@ -10,35 +10,35 @@ if (typeof ResponseWithJson.json !== "function") {
     new Response(JSON.stringify(data), init);
 }
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   readShop: jest.fn(),
 }));
 
-jest.mock("@platform-core/returnLogistics", () => ({
+jest.mock("@acme/platform-core/returnLogistics", () => ({
   getReturnLogistics: jest.fn(),
   getReturnBagAndLabel: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/rentalOrders.server", () => ({
+jest.mock("@acme/platform-core/repositories/rentalOrders.server", () => ({
   markReturned: jest.fn(),
 }));
 
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   setReturnTracking: jest.fn(),
 }));
 
-import { readShop } from "@platform-core/repositories/shops.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 import {
   getReturnLogistics,
   getReturnBagAndLabel,
-} from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
-import { markReturned } from "@platform-core/repositories/rentalOrders.server";
-import { setReturnTracking } from "@platform-core/orders";
+} from "@acme/platform-core/returnLogistics";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { markReturned } from "@acme/platform-core/repositories/rentalOrders.server";
+import { setReturnTracking } from "@acme/platform-core/orders";
 
 const makeReq = (body: object) =>
   ({

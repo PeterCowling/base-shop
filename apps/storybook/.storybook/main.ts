@@ -78,7 +78,7 @@ const config: StorybookConfig = {
       "next/image": path.resolve(__dirname, "../../../__mocks__/next/image.js"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "next/navigation": path.resolve(__dirname, "../../../__mocks__/next/navigation.js"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       "next/headers": path.resolve(__dirname, "../../../__mocks__/next/headers.js"), // i18n-exempt -- ABC-123 [ttl=2025-12-31]
-      "@platform-core/contexts/ThemeContext": // i18n-exempt -- ABC-123 [ttl=2025-12-31]
+      "@acme/platform-core/contexts/ThemeContext": // i18n-exempt -- ABC-123 [ttl=2025-12-31]
       path.resolve(
         __dirname,
         "./mocks/ThemeContext.tsx"

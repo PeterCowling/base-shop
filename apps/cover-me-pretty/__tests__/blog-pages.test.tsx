@@ -16,7 +16,7 @@ afterEach(() => {
 
 describe("Blog listing page", () => {
   test("renders posts when blog enabled", async () => {
-    jest.mock("@ui/components/cms/blocks/BlogListing", () => ({
+    jest.mock("@acme/ui/components/cms/blocks/BlogListing", () => ({
       __esModule: true,
       default: jest.fn(() => null),
     }));
@@ -32,7 +32,7 @@ describe("Blog listing page", () => {
       "../src/app/[lang]/blog/page"
     );
     const BlogListing = (
-      await import("@ui/components/cms/blocks/BlogListing")
+      await import("@acme/ui/components/cms/blocks/BlogListing")
     ).default as jest.Mock;
     await BlogPage({ params: { lang: "en" } });
     expect(BlogListing).toHaveBeenCalledWith(
@@ -95,7 +95,7 @@ describe("Blog post page", () => {
       __esModule: true,
       fetchPostBySlug,
     }));
-    jest.doMock("@platform-core/components/blog/BlogPortableText", () => ({
+    jest.doMock("@acme/platform-core/components/blog/BlogPortableText", () => ({
       BlogPortableText: jest.fn(() => null),
     }));
     jest.doMock("../shop.json", () => ({
@@ -164,7 +164,7 @@ describe("Blog post page", () => {
         body: [],
       }),
     }));
-    jest.doMock("@platform-core/components/blog/BlogPortableText", () => ({
+    jest.doMock("@acme/platform-core/components/blog/BlogPortableText", () => ({
       BlogPortableText: jest.fn(() => null),
     }));
     jest.doMock("../shop.json", () => ({

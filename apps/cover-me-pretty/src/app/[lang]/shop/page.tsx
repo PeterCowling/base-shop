@@ -1,12 +1,12 @@
 // apps/cover-me-pretty/src/app/[lang]/shop/page.tsx
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products";
 import type { SKU } from "@acme/types";
 import type { Metadata } from "next";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { resolveLocale } from "@i18n/locales";
+import { resolveLocale } from "@acme/i18n/locales";
 import BlogListing, {
   type BlogPost,
-} from "@ui/components/cms/blocks/BlogListing";
+} from "@acme/ui/components/cms/blocks/BlogListing";
 import { fetchPublishedPosts } from "@acme/sanity";
 import shop from "../../../../shop.json";
 import ShopClient from "./ShopClient.client";

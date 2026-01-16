@@ -5,7 +5,7 @@ const writeFile = jest.fn();
 const mkdir = jest.fn();
 const rename = jest.fn();
 jest.mock("fs", () => ({ promises: { readFile, writeFile, mkdir, rename } }));
-jest.mock("@platform-core/dataRoot", () => ({ DATA_ROOT: "/tmp/data" }));
+jest.mock("@acme/platform-core/dataRoot", () => ({ DATA_ROOT: "/tmp/data" }));
 const validateShopName = jest.fn((s: string) => s);
 jest.mock("@acme/lib", () => ({ validateShopName }));
 const parseJsonBody = jest.fn();

@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   __esModule: true,
   trackEvent: jest.fn(),
 }));
@@ -17,7 +17,7 @@ describe("unsubscribe API", () => {
   let trackEvent: jest.Mock;
 
   beforeEach(() => {
-    trackEvent = require("@platform-core/analytics").trackEvent as jest.Mock;
+    trackEvent = require("@acme/platform-core/analytics").trackEvent as jest.Mock;
     trackEvent.mockReset();
   });
 
@@ -31,7 +31,7 @@ describe("unsubscribe API", () => {
       ),
     } as unknown as NextRequest;
     const res = await GET(req);
-    const { trackEvent } = require("@platform-core/analytics");
+    const { trackEvent } = require("@acme/platform-core/analytics");
     expect(trackEvent).toHaveBeenCalledWith("shop1", {
       type: "email_unsubscribe",
       email: "a@example.com",

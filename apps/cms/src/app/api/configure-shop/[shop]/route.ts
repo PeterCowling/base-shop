@@ -1,5 +1,5 @@
 import { authOptions } from "@cms/auth/options";
-import { updateShopInRepo } from "@platform-core/repositories/shop.server";
+import { updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
 import type { Shop } from "@acme/types";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";

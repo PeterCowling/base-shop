@@ -2,9 +2,9 @@
 
 import { useMemo, useState } from "react";
 import { z } from "zod";
-import { Button, Card, CardContent, Input, Textarea } from "@ui/components/atoms";
-import { Grid, Inline, Cluster } from "@ui/components/atoms/primitives";
-import { FormField } from "@ui/components/molecules";
+import { Button, Card, CardContent, Input, Textarea } from "@acme/ui/components/atoms";
+import { Grid, Inline, Cluster } from "@acme/ui/components/atoms/primitives";
+import { FormField } from "@acme/ui/components/molecules";
 import { useTranslations } from "@acme/i18n";
 import type { ActionResult } from "../../components/actionResult";
 

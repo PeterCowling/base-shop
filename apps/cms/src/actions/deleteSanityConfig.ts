@@ -2,8 +2,8 @@
 "use server";
 
 import type { Shop } from "@acme/types";
-import { getShopById, updateShopInRepo } from "@platform-core/repositories/shop.server";
-import { setSanityConfig } from "@platform-core/shops";
+import { getShopById, updateShopInRepo } from "@acme/platform-core/repositories/shop.server";
+import { setSanityConfig } from "@acme/platform-core/shops";
 import { ensureAuthorized } from "./common/auth";
 
 export async function deleteSanityConfig(

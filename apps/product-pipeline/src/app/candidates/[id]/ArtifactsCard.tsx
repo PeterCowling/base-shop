@@ -1,6 +1,6 @@
 "use client";
 
-import { Stack } from "@ui/components/atoms/primitives";
+import { Stack } from "@acme/ui/components/atoms/primitives";
 import type { Artifact, CandidateDetailStrings } from "./types";
 import { resolveArtifactHref, safeTimestamp } from "./types";
 

@@ -6,12 +6,12 @@ import type { SKU } from "@acme/types";
 import FilterBar, {
   type FilterDefinition,
   type Filters,
-} from "@platform-core/components/shop/FilterBar";
-import { ProductGrid } from "@platform-core/components/shop/ProductGrid";
+} from "@acme/platform-core/components/shop/FilterBar";
+import { ProductGrid } from "@acme/platform-core/components/shop/ProductGrid";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslations } from "@acme/i18n";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
 /**
  * ShopClient

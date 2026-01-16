@@ -22,11 +22,11 @@ jest.mock("@acme/config/env/core", () => ({ coreEnv: { NODE_ENV: "test" } }));
 const recordMetric = jest.fn();
 const incrementOperationalError = jest.fn();
 
-jest.mock("@platform-core/utils", () => ({
+jest.mock("@acme/platform-core/utils", () => ({
   recordMetric: (...args: unknown[]) => recordMetric(...args),
 }));
 
-jest.mock("@platform-core/shops/health", () => ({
+jest.mock("@acme/platform-core/shops/health", () => ({
   incrementOperationalError: (...args: unknown[]) =>
     incrementOperationalError(...args),
 }));

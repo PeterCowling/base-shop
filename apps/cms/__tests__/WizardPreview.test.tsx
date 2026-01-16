@@ -11,13 +11,13 @@ jest.mock("./../src/app/cms/wizard/usePreviewTokens", () => ({
   default: () => ({})
 }));
 
-jest.mock("@ui/components/organisms", () => ({
+jest.mock("@acme/ui/components/organisms", () => ({
   Footer: () => <div data-cy="footer" />, 
   Header: () => <div data-cy="header" />, 
   SideNav: () => <div data-cy="sidenav" />,
 }));
 
-jest.mock("@ui/components/templates", () => ({
+jest.mock("@acme/ui/components/templates", () => ({
   AppShell: ({ children }: any) => <div data-cy="app-shell">{children}</div>
 }));
 
@@ -26,9 +26,9 @@ jest.mock("@/i18n/Translations", () => ({
   default: ({ children }: any) => <>{children}</>
 }));
 
-jest.mock("@i18n/en.json", () => ({}), { virtual: true });
+jest.mock("@acme/i18n/en.json", () => ({}), { virtual: true });
 
-jest.mock("@ui/components/DynamicRenderer", () => ({
+jest.mock("@acme/ui/components/DynamicRenderer", () => ({
   __esModule: true,
   default: ({ components }: any) => (
     <div data-testid="dynamic-renderer">

@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { ensureAuthorized } from "@cms/actions/common/auth";
-import { getPages, savePage } from "@platform-core/repositories/pages/index.server";
+import { getPages, savePage } from "@acme/platform-core/repositories/pages/index.server";
 import { checkoutPageTemplates } from "@acme/templates";
 import { scaffoldPageFromTemplate, type TemplateDescriptor } from "@acme/page-builder-core";
 import type { Page } from "@acme/types";

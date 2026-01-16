@@ -9,7 +9,7 @@ jest
 const mkdir = jest.fn();
 const writeFile = jest.fn();
 jest.mock("fs", () => ({ promises: { mkdir, writeFile } }));
-jest.mock("@platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
+jest.mock("@acme/platform-core/dataRoot", () => ({ resolveDataRoot: () => "/tmp/data" }));
 
 let GET: typeof import("../route").GET;
 

@@ -1,19 +1,19 @@
 import type { MetadataRoute } from "next";
-import type { SanityConfig } from "@platform-core/repositories/blog.server";
+import type { SanityConfig } from "@acme/platform-core/repositories/blog.server";
 
 const getShopSettingsMock = jest.fn();
 const readRepoMock = jest.fn();
 const listPostsMock = jest.fn();
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: getShopSettingsMock,
 }));
 
-jest.mock("@platform-core/repositories/products.server", () => ({
+jest.mock("@acme/platform-core/repositories/products.server", () => ({
   readRepo: readRepoMock,
 }));
 
-jest.mock("@platform-core/repositories/blog.server", () => ({
+jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   listPosts: (config: SanityConfig) => listPostsMock(config),
 }));
 

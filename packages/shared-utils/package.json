@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs --coverageDirectory ../../coverage/shared-utils",
     "lint": "eslint ."
@@ -30,6 +30,6 @@
     "pino": "^9.9.0"
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.8"
   }
 }

@@ -1,12 +1,12 @@
 // apps/cms/src/app/cms/orders/[shop]/page.tsx
-import { readOrders, markReturned, markRefunded } from "@platform-core/orders";
+import { readOrders, markReturned, markRefunded } from "@acme/platform-core/orders";
 import type { RentalOrder } from "@acme/types";
 import { Button, Card, CardContent } from "@/components/atoms/shadcn";
-import { Tag, Progress } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives";
-import { cn } from "@ui/utils/style";
+import { Tag, Progress } from "@acme/ui/components/atoms";
+import { Grid } from "@acme/ui/components/atoms/primitives";
+import { cn } from "@acme/ui/utils/style";
 import Link from "next/link";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 export default async function ShopOrdersPage({
   params,

@@ -9,8 +9,8 @@ import { useRouter } from "next/navigation";
 import { ConfiguratorContext } from "../ConfiguratorContext";
 import type { PageComponent } from "@acme/types";
 import { apiRequest } from "../lib/api";
-import { Tag } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
+import { Tag } from "@acme/ui/components/atoms";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 
 interface TemplateOption {

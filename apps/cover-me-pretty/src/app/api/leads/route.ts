@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { promises as fs } from "node:fs";
 import path from "node:path";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { validateShopName } from "@platform-core/shops";
-import { getShopSettings } from "@platform-core/repositories/shops.server";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { validateShopName } from "@acme/platform-core/shops";
+import { getShopSettings } from "@acme/platform-core/repositories/shops.server";
 import shop from "../../../../shop.json";
 
 export const runtime = "nodejs";

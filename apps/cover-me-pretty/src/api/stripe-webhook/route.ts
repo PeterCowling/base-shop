@@ -1,5 +1,5 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
-import { handleStripeWebhook } from "@platform-core/stripe-webhook";
+import { handleStripeWebhook } from "@acme/platform-core/stripe-webhook";
 import { stripe } from "@acme/stripe";
 import { paymentsEnv } from "@acme/config/env/payments";
 import { NextResponse } from "next/server";

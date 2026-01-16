@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateShopName } from "@acme/lib";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
-import { readRepo } from "@platform-core/repositories/products.server";
-import { getProductById, PRODUCTS } from "@platform-core/products";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { readRepo } from "@acme/platform-core/repositories/products.server";
+import { getProductById, PRODUCTS } from "@acme/platform-core/products";
 import type { ProductPublication, SKU } from "@acme/types";
 
 const DEFAULT_FIELDS = ["id", "title", "description", "price", "media"] as const;

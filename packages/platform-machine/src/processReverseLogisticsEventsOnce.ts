@@ -1,8 +1,8 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- PLAT-1234: Paths are derived from internal configuration */
-import { markAvailable, markCleaning, markQa, markReceived, markRepair } from "@platform-core/repositories/rentalOrders.server";
-import { reverseLogisticsEvents } from "@platform-core/repositories/reverseLogisticsEvents.server";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { logger } from "@platform-core/utils";
+import { markAvailable, markCleaning, markQa, markReceived, markRepair } from "@acme/platform-core/repositories/rentalOrders.server";
+import { reverseLogisticsEvents } from "@acme/platform-core/repositories/reverseLogisticsEvents.server";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { logger } from "@acme/platform-core/utils";
 import { readdir, readFile, unlink } from "fs/promises";
 import { join } from "path";
 import type { ReverseLogisticsEvent } from "./writeReverseLogisticsEvent";

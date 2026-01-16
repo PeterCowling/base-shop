@@ -22,7 +22,7 @@ describe("tax", () => {
       const readFile = jest
         .spyOn(fs, "readFile")
         .mockResolvedValue(JSON.stringify({ US: 0.07 }));
-      const { getTaxRate } = await import("@platform-core/tax");
+      const { getTaxRate } = await import("@acme/platform-core/tax");
       await expect(getTaxRate("US")).resolves.toBe(0.07);
       expect(readFile).toHaveBeenCalledTimes(1);
     });
@@ -30,7 +30,7 @@ describe("tax", () => {
     it("returns 0 when rules.json is missing", async () => {
       const err = Object.assign(new Error("not found"), { code: "ENOENT" });
       const readFile = jest.spyOn(fs, "readFile").mockRejectedValue(err);
-      const { getTaxRate } = await import("@platform-core/tax");
+      const { getTaxRate } = await import("@acme/platform-core/tax");
       await expect(getTaxRate("US")).resolves.toBe(0);
       expect(readFile).toHaveBeenCalledTimes(1);
     });
@@ -39,7 +39,7 @@ describe("tax", () => {
       const readFile = jest
         .spyOn(fs, "readFile")
         .mockResolvedValue(JSON.stringify({ US: 0.07 }));
-      const { getTaxRate } = await import("@platform-core/tax");
+      const { getTaxRate } = await import("@acme/platform-core/tax");
       await getTaxRate("US");
       await getTaxRate("US");
       expect(readFile).toHaveBeenCalledTimes(1);
@@ -49,7 +49,7 @@ describe("tax", () => {
   describe("calculateTax", () => {
     it("throws if provider key is missing", async () => {
       loadShippingEnv.mockReturnValue({});
-      const { calculateTax } = await import("@platform-core/tax");
+      const { calculateTax } = await import("@acme/platform-core/tax");
       await expect(
         calculateTax({ provider: "taxjar", amount: 1, toCountry: "US" })
       ).rejects.toThrow("Missing TAXJAR_KEY");
@@ -62,7 +62,7 @@ describe("tax", () => {
         json: async () => ({ tax: 5 }),
       });
       global.fetch = fetchMock as any;
-      const { calculateTax } = await import("@platform-core/tax");
+      const { calculateTax } = await import("@acme/platform-core/tax");
       const result = await calculateTax({
         provider: "taxjar",
         amount: 1,
@@ -85,7 +85,7 @@ describe("tax", () => {
     it("throws on non-OK responses", async () => {
       loadShippingEnv.mockReturnValue({ TAXJAR_KEY: "abc" });
       global.fetch = jest.fn().mockResolvedValue({ ok: false } as any);
-      const { calculateTax } = await import("@platform-core/tax");
+      const { calculateTax } = await import("@acme/platform-core/tax");
       await expect(
         calculateTax({ provider: "taxjar", amount: 1, toCountry: "US" })
       ).rejects.toThrow("Failed to calculate tax with taxjar");
@@ -94,7 +94,7 @@ describe("tax", () => {
     it("converts network errors into custom errors", async () => {
       loadShippingEnv.mockReturnValue({ TAXJAR_KEY: "abc" });
       global.fetch = jest.fn().mockRejectedValue(new Error("network"));
-      const { calculateTax } = await import("@platform-core/tax");
+      const { calculateTax } = await import("@acme/platform-core/tax");
       await expect(
         calculateTax({ provider: "taxjar", amount: 1, toCountry: "US" })
       ).rejects.toThrow("Failed to calculate tax with taxjar");

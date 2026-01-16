@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Grid, Stack } from "@ui/components/atoms/primitives";
+import { Grid, Stack } from "@acme/ui/components/atoms/primitives";
 import type { GameEvent } from "../types";
 
 function formatAge(value: string | null | undefined): string | null {

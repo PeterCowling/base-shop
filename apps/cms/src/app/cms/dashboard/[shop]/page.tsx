@@ -1,14 +1,14 @@
 import {
   listEvents,
   readAggregates,
-} from "@platform-core/repositories/analytics.server";
-import { readShop } from "@platform-core/repositories/shops.server";
-import { Progress } from "@ui/components/atoms";
+} from "@acme/platform-core/repositories/analytics.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { Progress } from "@acme/ui/components/atoms";
 import { CampaignFilter } from "./components/CampaignFilter.client";
 import { Charts } from "./components/Charts.client";
 import { buildMetrics } from "@cms/lib/analytics";
 import { formatPrice } from "@acme/shared-utils";
-import type { AnalyticsEvent, AnalyticsAggregates } from "@platform-core/analytics";
+import type { AnalyticsEvent, AnalyticsAggregates } from "@acme/platform-core/analytics";
 import type { Shop } from "@acme/types";
 
 export default async function ShopDashboard({

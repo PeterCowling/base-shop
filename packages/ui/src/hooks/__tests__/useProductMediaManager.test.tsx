@@ -2,10 +2,10 @@ import React from "react";
 import { renderHook, render, act, fireEvent } from "@testing-library/react";
 import { useProductMediaManager } from "../useProductMediaManager";
 import type { ProductWithVariants } from "../useProductInputs";
-import { usePublishLocations } from "@platform-core/hooks/usePublishLocations";
+import { usePublishLocations } from "@acme/platform-core/hooks/usePublishLocations";
 import { useFileUpload } from "../useFileUpload";
 
-jest.mock("@platform-core/hooks/usePublishLocations", () => ({
+jest.mock("@acme/platform-core/hooks/usePublishLocations", () => ({
   usePublishLocations: jest.fn(),
 }));
 

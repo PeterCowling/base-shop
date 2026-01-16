@@ -2,7 +2,7 @@
 import {
   OrdersPage as Orders,
   ordersMetadata as metadata,
-} from "@ui/account";
+} from "@acme/ui/account";
 import shop from "../../../../shop.json";
 
 export { metadata };

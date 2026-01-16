@@ -1,19 +1,19 @@
 // packages/template-app/__tests__/ai-catalog.test.ts
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: jest.fn(),
 }));
-jest.mock("@platform-core/repositories/products.server", () => ({
+jest.mock("@acme/platform-core/repositories/products.server", () => ({
   readRepo: jest.fn(),
 }));
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 import { GET } from "../src/app/api/ai/catalog/route";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
-import { readRepo } from "@platform-core/repositories/products.server";
-import { trackEvent } from "@platform-core/analytics";
-import { PRODUCTS } from "@platform-core/products";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import { readRepo } from "@acme/platform-core/repositories/products.server";
+import { trackEvent } from "@acme/platform-core/analytics";
+import { PRODUCTS } from "@acme/platform-core/products";
 
 const getShopSettingsMock = jest.mocked(getShopSettings);
 const readRepoMock = jest.mocked(readRepo);

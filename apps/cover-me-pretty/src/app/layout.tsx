@@ -1,8 +1,8 @@
 // apps/cover-me-pretty/src/app/layout.tsx
-import { CartProvider } from "@platform-core/contexts/CartContext";
-import { CurrencyProvider } from "@platform-core/contexts/CurrencyContext";
-import { ThemeProvider } from "@platform-core/contexts/ThemeContext";
-import { initTheme } from "@platform-core/utils";
+import { CartProvider } from "@acme/platform-core/contexts/CartContext";
+import { CurrencyProvider } from "@acme/platform-core/contexts/CurrencyContext";
+import { ThemeProvider } from "@acme/platform-core/contexts/ThemeContext";
+import { initTheme } from "@acme/platform-core/utils";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";

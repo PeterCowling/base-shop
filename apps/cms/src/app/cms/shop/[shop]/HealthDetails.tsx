@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/HealthDetails.tsx
 
-import { deriveOperationalHealth } from "@platform-core/shops/health";
-import { validateShopName } from "@platform-core/shops";
+import { deriveOperationalHealth } from "@acme/platform-core/shops/health";
+import { validateShopName } from "@acme/platform-core/shops";
 
 export const revalidate = 0;
 

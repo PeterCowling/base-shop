@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Button, Input } from "@ui/components/atoms";
+import { Button, Input } from "@acme/ui/components/atoms";
 import { ImagePicker } from "@acme/page-builder-ui";
 import Image from "next/image";
 import {

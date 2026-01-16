@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Input } from "@ui/components/atoms/shadcn";
+import { Button, Input } from "@acme/ui/components/atoms/shadcn";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 

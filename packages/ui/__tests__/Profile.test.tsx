@@ -11,7 +11,7 @@ jest.mock("@acme/platform-core/customerProfiles", () => ({
   getCustomerProfile: jest.fn(),
 }));
 
-import { getCustomerSession, hasPermission } from "@auth";
+import { getCustomerSession, hasPermission } from "@acme/auth";
 import { getCustomerProfile } from "@acme/platform-core/customerProfiles";
 import ProfilePage from "../src/components/account/Profile";
 

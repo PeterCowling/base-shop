@@ -1,8 +1,8 @@
 // packages/template-app/src/app/[lang]/stores/[id]/page.tsx
 import { getStoreById } from "@/data/stores";
-import { resolveLocale, type Locale } from "@i18n/locales";
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
-import { StoreLocatorMap } from "@ui/components/organisms/StoreLocatorMap";
+import { resolveLocale, type Locale } from "@acme/i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import { StoreLocatorMap } from "@acme/ui/components/organisms/StoreLocatorMap";
 
 export const dynamic = "force-static";
 

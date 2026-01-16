@@ -12,20 +12,20 @@ describe("/api/rental PATCH", () => {
   test("returns 400 when sessionId is missing", async () => {
     mockStripe();
     mockRentalRepo();
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee: jest.fn() }));
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: jest.fn(),
     }));
-    jest.doMock("@platform-core/orders/rentalAllocation", () => ({
+    jest.doMock("@acme/platform-core/orders/rentalAllocation", () => ({
       __esModule: true,
       reserveRentalInventory: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/inventory.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/inventory.server", () => ({
       __esModule: true,
       readInventory: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/products.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/products.server", () => ({
       __esModule: true,
       readRepo: jest.fn(),
     }));
@@ -52,8 +52,8 @@ describe("/api/rental PATCH", () => {
       },
     });
     mockRentalRepo({ markReturned });
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: async () => ({ coverageIncluded: true }),
     }));
@@ -95,8 +95,8 @@ describe("/api/rental PATCH", () => {
       paymentIntents: { create: paymentIntentsCreate },
     });
     mockRentalRepo({ markReturned });
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: async () => ({ coverageIncluded: true }),
     }));
@@ -118,7 +118,7 @@ describe("/api/rental PATCH", () => {
       .mockResolvedValue(null);
     mockStripe();
     mockRentalRepo({ markReturned });
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       computeDamageFee: jest.fn(),
     }));
 
@@ -143,8 +143,8 @@ describe("/api/rental PATCH", () => {
       paymentIntents: { create: jest.fn().mockResolvedValue({ client_secret: undefined }) },
     });
     mockRentalRepo({ markReturned });
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: async () => ({ coverageIncluded: true }),
     }));
@@ -169,8 +169,8 @@ describe("/api/rental PATCH", () => {
       refunds: { create: refundCreate },
     });
     mockRentalRepo({ markReturned });
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: async () => ({ coverageIncluded: true }),
     }));
@@ -198,8 +198,8 @@ describe("/api/rental PATCH", () => {
       paymentIntents: { create: jest.fn().mockResolvedValue({ client_secret: undefined }) },
     });
     mockRentalRepo({ markReturned });
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: async () => ({ coverageIncluded: true }),
     }));
@@ -224,8 +224,8 @@ describe("/api/rental PATCH", () => {
     const computeDamageFee = jest.fn(async () => 30);
     mockStripe({ checkout: { sessions: { retrieve } }, refunds: undefined });
     mockRentalRepo({ markReturned, markRefunded });
-    jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop: async () => ({ coverageIncluded: true }),
     }));

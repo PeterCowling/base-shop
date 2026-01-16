@@ -70,7 +70,7 @@ describe("releaseDepositsOnce", () => {
 
     const readOrders = jest.fn().mockResolvedValue(orders);
     const markRefunded = jest.fn().mockResolvedValue(null);
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       readOrders,
       markRefunded,
@@ -79,7 +79,7 @@ describe("releaseDepositsOnce", () => {
     const readdir = jest.fn().mockResolvedValue(["test"]);
     jest.doMock("node:fs/promises", () => ({ __esModule: true, readdir }));
 
-    const { logger } = await import("@platform-core/utils");
+    const { logger } = await import("@acme/platform-core/utils");
     const logSpy = jest
       .spyOn(logger, "info")
       .mockImplementation(() => undefined);

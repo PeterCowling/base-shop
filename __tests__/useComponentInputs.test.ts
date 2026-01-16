@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { useComponentInputs } from "@ui";
+import { useComponentInputs } from "@acme/ui";
 
 type FormValues = {
   title: string;

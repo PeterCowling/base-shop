@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState, type FormEvent } from "react";
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
 import type { CandidateDetailStrings, StageRun } from "./types";
 
 type StageRunOption = {

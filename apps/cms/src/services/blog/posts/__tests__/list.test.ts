@@ -8,7 +8,7 @@ jest.mock("../../config", () => ({
   getConfig: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/blog.server", () => ({
+jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   listPosts: jest.fn(),
 }));
 
@@ -23,7 +23,7 @@ describe("getPosts", () => {
     );
     const { getConfig } = await import("../../config");
     const { listPosts } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "config" } as any;
@@ -45,7 +45,7 @@ describe("getPosts", () => {
     );
     const { getConfig } = await import("../../config");
     const { listPosts } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const error = new Error("failed");

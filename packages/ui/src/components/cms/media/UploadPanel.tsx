@@ -4,7 +4,7 @@
 import Image from "next/image";
 import { Button, Input } from "../../atoms/shadcn";
 import type { ImageOrientation, MediaItem } from "@acme/types";
-import { useMediaUpload } from "@ui/hooks/useMediaUpload";
+import { useMediaUpload } from "@acme/ui/hooks/useMediaUpload";
 import { ChangeEvent, ReactElement, useEffect, useState } from "react";
 import { Spinner } from "../../atoms";
 import { cn } from "../../../utils/style";

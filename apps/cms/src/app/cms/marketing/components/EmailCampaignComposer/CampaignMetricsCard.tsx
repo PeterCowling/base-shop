@@ -1,6 +1,6 @@
-import { Card, CardContent, Skeleton } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives";
-import { AnalyticsSummaryCard } from "@ui/components/cms/marketing";
+import { Card, CardContent, Skeleton } from "@acme/ui/components/atoms";
+import { Grid } from "@acme/ui/components/atoms/primitives";
+import { AnalyticsSummaryCard } from "@acme/ui/components/cms/marketing";
 import { useTranslations } from "@acme/i18n";
 import type { CampaignMetrics } from "./useEmailCampaignComposer";
 

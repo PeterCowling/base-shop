@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getProductById, PRODUCTS } from "@platform-core/products";
-import { postSchema } from "@platform-core/schemas/cart";
+import { getProductById, PRODUCTS } from "@acme/platform-core/products";
+import { postSchema } from "@acme/platform-core/schemas/cart";
 import {
   ensureCartStore,
   getDecodedCartId,

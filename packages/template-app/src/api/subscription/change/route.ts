@@ -2,11 +2,11 @@
 import { stripe } from "@acme/stripe";
 import { coreEnv } from "@acme/config/env/core";
 import { NextRequest, NextResponse } from "next/server";
-import { readShop } from "@platform-core/repositories/shops.server";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 import {
   getUserById,
   setStripeSubscriptionId,
-} from "@platform-core/repositories/users";
+} from "@acme/platform-core/repositories/users";
 
 export const runtime = "edge";
 

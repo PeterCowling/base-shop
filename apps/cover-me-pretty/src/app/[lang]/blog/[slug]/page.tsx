@@ -1,13 +1,13 @@
 /* i18n-exempt file -- ABC-123 blog SEO + editorial shell; uses translation keys or external Markdown, no direct UI copy literals [ttl=2026-01-31] */
 import { notFound } from "next/navigation";
 import type { PortableBlock } from "@acme/sanity";
-import { BlogPortableText } from "@platform-core/components/blog/BlogPortableText";
+import { BlogPortableText } from "@acme/platform-core/components/blog/BlogPortableText";
 import type { Shop } from "@acme/types";
 import shopJson from "../../../../../shop.json";
 import type { Metadata } from "next";
 import { getSeo } from "../../../util/seo";
-import { resolveLocale } from "@i18n/locales";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { resolveLocale } from "@acme/i18n/locales";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { JsonLdScript, articleJsonLd } from "../../../../lib/jsonld";
 import type { NextSeoProps } from "next-seo";
 import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";

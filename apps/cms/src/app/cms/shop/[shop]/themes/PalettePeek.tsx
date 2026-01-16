@@ -1,8 +1,8 @@
 // apps/cms/src/app/cms/shop/[shop]/themes/PalettePeek.tsx
 "use client";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Popover, PopoverContent, PopoverTrigger } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
+import { Popover, PopoverContent, PopoverTrigger } from "@acme/ui/components/atoms";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 import MicroScenes from "../../../wizard/MicroScenes";
 

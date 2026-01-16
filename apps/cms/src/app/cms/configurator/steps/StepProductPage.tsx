@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@ui/components/atoms/shadcn";
+import { Button } from "@acme/ui/components/atoms/shadcn";
 import ProductPageBuilder from "@/components/cms/ProductPageBuilder";
-import { fillLocales } from "@i18n/fillLocales";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import { type Page, type PageComponent } from "@acme/types";
 import { useState } from "react";
-import { Toast } from "@ui/components/atoms";
+import { Toast } from "@acme/ui/components/atoms";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import TemplateSelector from "@/app/cms/configurator/components/TemplateSelector";

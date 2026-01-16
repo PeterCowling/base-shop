@@ -29,12 +29,12 @@ const mockFetch = jest.fn<
   [Request | string, RequestInit?]
 >();
 
-jest.mock("@platform-core/returnLogistics", () => ({
+jest.mock("@acme/platform-core/returnLogistics", () => ({
   getReturnLogistics: (...args: Parameters<typeof mockGetReturnLogistics>) =>
     mockGetReturnLogistics(...args),
 }));
 
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   setReturnTracking: (...args: Parameters<typeof mockSetReturnTracking>) =>
     mockSetReturnTracking(...args),
 }));

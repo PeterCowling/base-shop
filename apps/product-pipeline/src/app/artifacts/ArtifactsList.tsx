@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
 import type { ArtifactEntry, ArtifactsStrings } from "./types";
 import { resolveArtifactHref, safeTimestamp } from "./types";
 

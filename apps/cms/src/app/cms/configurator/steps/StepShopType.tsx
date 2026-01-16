@@ -1,10 +1,10 @@
 "use client";
 
-import { Button } from "@ui/components/atoms/shadcn";
+import { Button } from "@acme/ui/components/atoms/shadcn";
 import { useConfigurator } from "../ConfiguratorContext";
 import useStepCompletion from "../hooks/useStepCompletion";
 import type { ConfiguratorStepProps } from "@/types/configurator";
-import { Cluster } from "@ui/components/atoms/primitives";
+import { Cluster } from "@acme/ui/components/atoms/primitives";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { useTranslations } from "@acme/i18n";
 

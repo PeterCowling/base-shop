@@ -37,19 +37,19 @@ describe("payment failure handling", () => {
       }),
       { virtual: true },
     );
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       markReturned,
       markRefunded,
       readOrders,
       addOrder: jest.fn(),
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee,
       priceForDays: jest.fn(),
     }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop,
     }));
@@ -107,17 +107,17 @@ describe("payment failure handling", () => {
       }),
       { virtual: true },
     );
-    jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
       __esModule: true,
       addOrder: jest.fn(),
       markReturned,
       readOrders,
     }));
-    jest.doMock("@platform-core/pricing", () => ({
+    jest.doMock("@acme/platform-core/pricing", () => ({
       __esModule: true,
       computeDamageFee,
     }));
-    jest.doMock("@platform-core/repositories/shops.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
       __esModule: true,
       readShop,
     }));

@@ -1,17 +1,17 @@
 // apps/cover-me-pretty/src/app/[lang]/checkout/page.tsx
 
-import { Locale, resolveLocale } from "@i18n/locales";
-import Section from "@ui/components/cms/blocks/Section";
+import { Locale, resolveLocale } from "@acme/i18n/locales";
+import Section from "@acme/ui/components/cms/blocks/Section";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import {
   CART_COOKIE,
   decodeCartCookie,
   type CartState,
-} from "@platform-core/cartCookie";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
-import CheckoutForm from "@ui/components/checkout/CheckoutForm";
-import { DeliveryScheduler } from "@ui/components/organisms";
-import OrderSummary from "@ui/components/organisms/OrderSummary";
+} from "@acme/platform-core/cartCookie";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
+import CheckoutForm from "@acme/ui/components/checkout/CheckoutForm";
+import { DeliveryScheduler } from "@acme/ui/components/organisms";
+import OrderSummary from "@acme/ui/components/organisms/OrderSummary";
 import { cookies } from "next/headers";
 import shop from "../../../../shop.json";
 import CheckoutAnalytics from "./CheckoutAnalytics.client";

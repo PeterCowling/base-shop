@@ -2,7 +2,7 @@
 import { getServerSession } from "next-auth";
 import type { Session } from "next-auth";
 import { authOptions } from "@cms/auth/options";
-import { canRead } from "@auth/rbac";
+import { canRead } from "@acme/auth/rbac";
 
 type AppSession = Session & { user?: (Session["user"] & { role?: string; id?: string }) };
 

@@ -28,7 +28,7 @@ describe("POST /api/password-reset/[token]", () => {
   });
 
   it("updates password and clears token on success", async () => {
-    jest.doMock("@platform-core/users", () => ({
+    jest.doMock("@acme/platform-core/users", () => ({
       __esModule: true,
       getUserByResetToken: jest.fn().mockResolvedValue({ id: "u1" }),
       updatePassword: jest.fn().mockResolvedValue(undefined),
@@ -49,7 +49,7 @@ describe("POST /api/password-reset/[token]", () => {
   });
 
   it("returns 400 for invalid/expired token", async () => {
-    jest.doMock("@platform-core/users", () => ({
+    jest.doMock("@acme/platform-core/users", () => ({
       __esModule: true,
       getUserByResetToken: jest.fn().mockRejectedValue(new Error("bad")),
       updatePassword: jest.fn(),

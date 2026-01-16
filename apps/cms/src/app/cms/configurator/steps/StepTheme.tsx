@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@ui/components/atoms/shadcn";
+import { Button } from "@acme/ui/components/atoms/shadcn";
 import { useRouter } from "next/navigation";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useConfigurator } from "../ConfiguratorContext";
@@ -9,7 +9,7 @@ import { useThemePalette } from "./hooks/useThemePalette";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 import type { ConfiguratorStepProps } from "@/types/configurator";
 import { useCallback, useEffect, useState } from "react";
-import { Cluster } from "@ui/components/atoms/primitives";
+import { Cluster } from "@acme/ui/components/atoms/primitives";
 
 export default function StepTheme({
   themes,

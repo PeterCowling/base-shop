@@ -1,15 +1,15 @@
 // i18n-exempt file -- ABC-123 [ttl=2025-06-30]
 // apps/cover-me-pretty/src/app/api/account/profile/route.ts
 import "@acme/zod-utils/initZod";
-import { getCustomerSession } from "@auth";
+import { getCustomerSession } from "@acme/auth";
 import {
   getCustomerProfile,
   updateCustomerProfile,
-} from "@platform-core/customerProfiles";
+} from "@acme/platform-core/customerProfiles";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 // This route uses @auth which relies on Node.js APIs like `crypto`.

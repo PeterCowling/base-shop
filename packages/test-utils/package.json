@@ -22,7 +22,7 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc -b",
     "dev": "tsc -p tsconfig.json -w",
     "clean": "rimraf dist *.tsbuildinfo"
   }

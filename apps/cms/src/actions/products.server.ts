@@ -11,8 +11,8 @@ import {
   readSettings,
   updateProductInRepo,
   writeRepo,
-} from "@platform-core/repositories/json.server";
-import { fillLocales } from "@i18n/fillLocales";
+} from "@acme/platform-core/repositories/json.server";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import { captureException } from "@/utils/sentry.server";
 import type { Locale, ProductPublication, PublicationStatus } from "@acme/types";
 import { ensureAuthorized } from "./common/auth";
@@ -20,7 +20,7 @@ import { redirect } from "next/navigation";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
 import { formDataToObject } from "../utils/formData";
-import { updateInventoryItem } from "@platform-core/repositories/inventory.server";
+import { updateInventoryItem } from "@acme/platform-core/repositories/inventory.server";
 import { track } from "@acme/telemetry";
 
 /* -------------------------------------------------------------------------- */

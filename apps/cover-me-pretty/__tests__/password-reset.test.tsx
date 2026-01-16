@@ -23,7 +23,7 @@ interface StoreUser {
 
 const store: Record<string, StoreUser> = {};
 
-jest.mock("@platform-core/users", () => ({
+jest.mock("@acme/platform-core/users", () => ({
   __esModule: true,
   getUserByEmail: jest.fn(async (email: string) => {
     const user = Object.values(store).find((u) => u.email === email);
@@ -51,7 +51,7 @@ jest.mock("@platform-core/users", () => ({
 }));
 
 import { sendEmail } from "@acme/email";
-import { updatePassword } from "@platform-core/users";
+import { updatePassword } from "@acme/platform-core/users";
 import { POST as requestPOST } from "../src/app/api/password-reset/request/route";
 import { POST as resetPOST } from "../src/app/api/password-reset/[token]/route";
 

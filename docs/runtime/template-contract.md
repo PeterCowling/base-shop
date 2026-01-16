@@ -73,11 +73,11 @@ Where request/response schemas are defined in shared packages, the contract is:
 - **Runtime**: Node.js (`runtime = "nodejs"`)
 - **Handler**: `packages/template-app/src/api/cart/route.ts`
 - **Implementation**:
-  - Re‑exports `DELETE`, `GET`, `PATCH`, `POST`, `PUT` from `@platform-core/cartApi`.
-  - The canonical request/response schemas and supported methods are owned by `@platform-core/cartApi`.
+  - Re‑exports `DELETE`, `GET`, `PATCH`, `POST`, `PUT` from `@acme/platform-core/cartApi`.
+  - The canonical request/response schemas and supported methods are owned by `@acme/platform-core/cartApi`.
 - **Contract**:
-  - A platform‑compatible app must expose `/api/cart` with the exact HTTP interface defined by `@platform-core/cartApi`.
-  - Any behavioural changes must be made in `@platform-core/cartApi`, not per‑app.
+  - A platform‑compatible app must expose `/api/cart` with the exact HTTP interface defined by `@acme/platform-core/cartApi`.
+  - Any behavioural changes must be made in `@acme/platform-core/cartApi`, not per‑app.
 
 ### 2.2 Checkout session – `/api/checkout-session`
 
@@ -85,9 +85,9 @@ Where request/response schemas are defined in shared packages, the contract is:
 - **Runtime**: Node.js (`runtime = "nodejs"`)
 - **Handler**: `packages/template-app/src/api/checkout-session/route.ts`
 - **Implementation**:
-  - Reads the cart via `@platform-core/cartCookie` and `@platform-core/cartStore`.
-  - Computes prices using `@platform-core/pricing` and `convertCurrency`.
-  - Creates a Stripe Checkout Session in `ui_mode: custom` using `@platform-core/checkout/session`.
+  - Reads the cart via `@acme/platform-core/cartCookie` and `@acme/platform-core/cartStore`.
+  - Computes prices using `@acme/platform-core/pricing` and `convertCurrency`.
+  - Creates a Stripe Checkout Session in `ui_mode: custom` using `@acme/platform-core/checkout/session`.
   - Resolves the shop via `coreEnv.NEXT_PUBLIC_DEFAULT_SHOP` and `readShop`.
 - **Contract**:
   - Accepts `POST` with a JSON body that can include:
@@ -108,8 +108,8 @@ Where request/response schemas are defined in shared packages, the contract is:
 - **Runtime**: Edge (`runtime = "edge"`)
 - **Handler**: `packages/template-app/src/api/return/route.ts`
 - **Implementation**:
-  - Uses `@platform-core/repositories/rentalOrders.server` to mark orders returned/refunded.
-  - Uses `@platform-core/pricing.computeDamageFee` to calculate damage fees.
+  - Uses `@acme/platform-core/repositories/rentalOrders.server` to mark orders returned/refunded.
+  - Uses `@acme/platform-core/pricing.computeDamageFee` to calculate damage fees.
   - Uses Stripe refunds to return deposits.
   - Reads shop configuration via `readShop` and `getShopSettings`.
 - **Contract**:
@@ -145,7 +145,7 @@ Where request/response schemas are defined in shared packages, the contract is:
 - **Handler**: `packages/template-app/src/app/api/preview-token/route.ts`
 - **Implementation**:
   - Requires `manage_orders` permission via `@auth/requirePermission`.
-  - Uses `coreEnv.UPGRADE_PREVIEW_TOKEN_SECRET` and `createUpgradePreviewToken` from `@platform-core/previewTokens`.
+  - Uses `coreEnv.UPGRADE_PREVIEW_TOKEN_SECRET` and `createUpgradePreviewToken` from `@acme/platform-core/previewTokens`.
   - Reads `NEXT_PUBLIC_SHOP_ID` for the shop context.
 - **Contract**:
   - Accepts `GET` with query parameter `pageId`.
@@ -160,8 +160,8 @@ Where request/response schemas are defined in shared packages, the contract is:
 - **Path**: `/preview/[pageId]` (Cloudflare Worker)
 - **Handler**: `packages/template-app/src/routes/preview/[pageId].ts`
 - **Implementation**:
-  - Verifies either a standard preview token or an upgrade token using `@platform-core/previewTokens`.
-  - Loads pages via `getPages(shopId)` from `@platform-core/repositories/pages/index.server`.
+  - Verifies either a standard preview token or an upgrade token using `@acme/platform-core/previewTokens`.
+  - Loads pages via `getPages(shopId)` from `@acme/platform-core/repositories/pages/index.server`.
 - **Contract**:
   - Accepts `GET` with query parameters:
     - `token` for standard preview, or
@@ -179,7 +179,7 @@ Where request/response schemas are defined in shared packages, the contract is:
 - **Implementation**:
   - Reads the raw request body.
   - Verifies the `Stripe-Signature` header using the configured webhook secret.
-  - Forwards the verified event to `handleStripeWebhook` in `@platform-core/stripe-webhook`.
+  - Forwards the verified event to `handleStripeWebhook` in `@acme/platform-core/stripe-webhook`.
 - **Contract**:
   - Accepts `POST` with the raw Stripe webhook payload.
   - Returns `200` on success (including duplicate deliveries).
@@ -241,8 +241,8 @@ An app is **platform‑compatible** when it satisfies all of the following:
   - Validates configuration via `@acme/config/env/*`.
   - Configures `NEXT_PUBLIC_SHOP_ID` and `NEXT_PUBLIC_BASE_URL` for the target shop.
 - **Core routes**
-  - Exposes `/api/cart` by re‑exporting `@platform-core/cartApi` handlers.
-  - Implements `/api/checkout-session` using shared cart/cookie/pricing helpers and `@platform-core/checkout/session`.
+  - Exposes `/api/cart` by re‑exporting `@acme/platform-core/cartApi` handlers.
+  - Implements `/api/checkout-session` using shared cart/cookie/pricing helpers and `@acme/platform-core/checkout/session`.
   - Implements `/api/return` using platform‑core rental order and pricing helpers, not bespoke Stripe logic.
   - Implements the preview contract: `/api/preview`, `/api/preview-token`, and `/preview/[pageId]` as described above.
 - **Data access**

@@ -2,7 +2,7 @@
 "use client";
 import type { ChangeEvent } from "react";
 import type { BrandIntensity } from "./brandIntensity";
-import { useTranslations } from "@i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 
 interface Props {
   value: BrandIntensity;

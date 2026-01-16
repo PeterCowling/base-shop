@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { trackEvent } from "@platform-core/analytics";
+import { trackEvent } from "@acme/platform-core/analytics";
 import {
   mapResendEvent,
   type ResendWebhookEvent,

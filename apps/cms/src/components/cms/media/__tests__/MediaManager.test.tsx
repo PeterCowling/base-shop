@@ -6,7 +6,7 @@ import {
 } from "@testing-library/react";
 import type { MediaItem } from "@acme/types";
 
-jest.mock("@ui/components/atoms/shadcn", () => {
+jest.mock("@acme/ui/components/atoms/shadcn", () => {
   const React = require("react");
   const passthrough = (name: string, tag = "div") => {
     const Comp = React.forwardRef(({ asChild: _asChild, ...props }: any, ref: any) =>

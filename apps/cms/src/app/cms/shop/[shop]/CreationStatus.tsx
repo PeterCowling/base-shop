@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/shop/[shop]/CreationStatus.tsx
 
-import { readShopCreationState } from "@platform-core/createShop";
-import { validateShopName } from "@platform-core/shops";
+import { readShopCreationState } from "@acme/platform-core/createShop";
+import { validateShopName } from "@acme/platform-core/shops";
 
 export const revalidate = 0;
 

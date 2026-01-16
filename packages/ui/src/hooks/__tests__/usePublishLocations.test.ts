@@ -3,7 +3,7 @@ import { act, renderHook } from "@testing-library/react";
 import {
   usePublishLocations,
   loadPublishLocations,
-} from "@platform-core/hooks/usePublishLocations";
+} from "@acme/platform-core/hooks/usePublishLocations";
 
 jest.mock("@acme/shared-utils", () => ({
   fetchJson: jest.fn(),

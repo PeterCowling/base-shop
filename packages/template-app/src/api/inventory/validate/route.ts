@@ -3,8 +3,8 @@ import { z } from "zod";
 import { coreEnv } from "@acme/config/env/core";
 import {
   validateInventoryAvailability,
-} from "@platform-core/inventoryValidation";
-import { INSUFFICIENT_STOCK_ERROR } from "@platform-core/checkout/session";
+} from "@acme/platform-core/inventoryValidation";
+import { INSUFFICIENT_STOCK_ERROR } from "@acme/platform-core/checkout/session";
 
 export const runtime = "nodejs";
 

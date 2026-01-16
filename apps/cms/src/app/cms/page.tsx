@@ -9,9 +9,9 @@ import type { Metadata } from "next";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 import { getServerSession } from "next-auth";
 import { PendingRequestsPanel } from "./components/PendingRequestsPanel";
-import { Grid } from "@ui/components/atoms/primitives";
-import { TranslationsProvider } from "@i18n/Translations";
-import en from "@i18n/en.json";
+import { Grid } from "@acme/ui/components/atoms/primitives";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import en from "@acme/i18n/en.json";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getServerTranslations("en");

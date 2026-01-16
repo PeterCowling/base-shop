@@ -21,7 +21,7 @@ jest.mock("@acme/stripe", () => ({
 }));
 
 jest.doMock(
-  "@platform-core/cartCookie",
+  "@acme/platform-core/cartCookie",
   () => ({
     __esModule: true,
     CART_COOKIE,
@@ -35,7 +35,7 @@ jest.doMock(
 let mockCart: any = {};
 
 jest.doMock(
-  "@platform-core/cartStore",
+  "@acme/platform-core/cartStore",
   () => ({
     __esModule: true,
     getCart: jest.fn(async () => mockCart),
@@ -43,7 +43,7 @@ jest.doMock(
   { virtual: true },
 );
 
-jest.mock("@platform-core/pricing", () => ({
+jest.mock("@acme/platform-core/pricing", () => ({
   priceForDays: jest.fn(async () => 10),
 }));
 
@@ -54,7 +54,7 @@ jest.doMock(
 );
 
 jest.doMock(
-  "@platform-core/checkout/session",
+  "@acme/platform-core/checkout/session",
   () => ({
     createCheckoutSession: async (...args: any[]) => {
       const { stripe } = require("@acme/stripe");
@@ -78,7 +78,7 @@ const sku = {
   sizes: ["M"],
 };
 jest.doMock(
-  "@platform-core/products",
+  "@acme/platform-core/products",
   () => ({ PRODUCTS: [sku], getProductById: () => sku }),
   { virtual: true },
 );

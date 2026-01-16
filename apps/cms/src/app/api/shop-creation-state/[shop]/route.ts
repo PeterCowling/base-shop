@@ -3,7 +3,7 @@ import "@acme/zod-utils/initZod";
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { readShopCreationState } from "@platform-core/createShop";
+import { readShopCreationState } from "@acme/platform-core/createShop";
 
 export async function GET(
   _req: NextRequest,

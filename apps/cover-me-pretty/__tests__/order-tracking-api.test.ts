@@ -1,10 +1,10 @@
 // apps/cover-me-pretty/__tests__/order-tracking-api.test.ts
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   __esModule: true,
   getShopSettings: jest.fn(),
 }));
 
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { NextResponse } from "next/server";
 import { GET } from "../src/app/api/orders/[id]/tracking/route";
 

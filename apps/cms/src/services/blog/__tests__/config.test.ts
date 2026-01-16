@@ -3,8 +3,8 @@ import { describe, test, expect, beforeEach, afterEach, jest } from "@jest/globa
 const getShopById = jest.fn();
 const getSanityConfig = jest.fn();
 
-jest.mock("@platform-core/repositories/shop.server", () => ({ getShopById }));
-jest.mock("@platform-core/shops", () => ({ getSanityConfig }));
+jest.mock("@acme/platform-core/repositories/shop.server", () => ({ getShopById }));
+jest.mock("@acme/platform-core/shops", () => ({ getSanityConfig }));
 
 import { getConfig, collectProductSlugs, filterExistingProductSlugs } from "../config";
 

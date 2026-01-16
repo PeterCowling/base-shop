@@ -3,8 +3,8 @@ import { stripe } from "@acme/stripe";
 import { paymentsEnv } from "@acme/config/env/payments";
 import { NextRequest, NextResponse } from "next/server";
 import type Stripe from "stripe";
-import { setStripeSubscriptionId } from "@platform-core/repositories/users";
-import { readShop } from "@platform-core/repositories/shops.server";
+import { setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
 
 const SHOP_ID = "bcd";
 

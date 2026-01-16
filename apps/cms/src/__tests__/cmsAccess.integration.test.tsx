@@ -5,7 +5,7 @@ import { middleware } from "../middleware";
 import { __setMockToken, __resetMockToken } from "next-auth/jwt";
 
 // Mock RBAC helpers to control permission checks
-jest.mock("@auth/rbac", () => ({
+jest.mock("@acme/auth/rbac", () => ({
   __esModule: true,
   canRead: jest.fn(() => true),
   canWrite: jest.fn(() => true),
@@ -87,7 +87,7 @@ describe("/cms access", () => {
   });
 
   it("returns 403 for roles without read access", async () => {
-    const { canRead } = (await import("@auth/rbac")) as {
+    const { canRead } = (await import("@acme/auth/rbac")) as {
       canRead: jest.Mock;
       canWrite: jest.Mock;
     };

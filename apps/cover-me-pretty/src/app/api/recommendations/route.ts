@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { PRODUCTS } from "@platform-core/products/index";
+import { PRODUCTS } from "@acme/platform-core/products/index";
 
 export const runtime = "edge";
 

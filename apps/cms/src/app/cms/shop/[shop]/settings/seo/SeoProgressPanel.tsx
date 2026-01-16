@@ -13,10 +13,10 @@ import {
 import {
   readSeoAudits,
   type SeoAuditEntry,
-} from "@platform-core/repositories/seoAudit.server";
-import { listEvents } from "@platform-core/repositories/analytics.server";
+} from "@acme/platform-core/repositories/seoAudit.server";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 import { SeoChart } from "./SeoChart.client";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 interface Props {
   /** Shop identifier */

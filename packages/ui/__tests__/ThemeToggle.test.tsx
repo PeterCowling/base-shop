@@ -8,7 +8,7 @@ const setThemeMock = jest.fn((next: string) => {
   state.theme = next as any;
 });
 
-jest.mock("@platform-core/contexts/ThemeContext", () => ({
+jest.mock("@acme/platform-core/contexts/ThemeContext", () => ({
   useTheme: () => ({ theme: state.theme, setTheme: setThemeMock }),
 }));
 

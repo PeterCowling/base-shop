@@ -2,7 +2,7 @@ import os from "os";
 import path from "path";
 import { mkdir, mkdtemp, rm, writeFile } from "fs/promises";
 
-jest.mock("@platform-core/dataRoot", () => ({
+jest.mock("@acme/platform-core/dataRoot", () => ({
   resolveDataRoot: jest.fn(),
 }));
 
@@ -11,7 +11,7 @@ jest.mock("@cms/lib/server/rbacStore", () => ({
 }));
 
 import { collectStats, buildQuickStats } from "../dashboardData";
-import { resolveDataRoot } from "@platform-core/dataRoot";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
 import { readRbac } from "@cms/lib/server/rbacStore";
 
 describe("collectStats", () => {

@@ -9,10 +9,10 @@ describe('@acme/editorial', () => {
   it('lists posts from data/shops/demo/blog', async () => {
     const repoRoot = path.resolve(process.cwd(), '../../..');
     jest.resetModules();
-    jest.doMock('@platform-core/dataRoot', () => ({
+    jest.doMock('@acme/platform-core/dataRoot', () => ({
       DATA_ROOT: path.join(repoRoot, 'data', 'shops'),
     }), { virtual: true });
-    const core = require('@platform-core/dataRoot');
+    const core = require('@acme/platform-core/dataRoot');
     expect(core.DATA_ROOT.endsWith(path.join('data','shops'))).toBe(true);
     const editorial = require('../src/index');
     const posts = await editorial.fetchPublishedPosts('demo');
@@ -24,7 +24,7 @@ describe('@acme/editorial', () => {
   it('fetches a post by slug and returns body', async () => {
     const repoRoot = path.resolve(process.cwd(), '../../..');
     jest.resetModules();
-    jest.doMock('@platform-core/dataRoot', () => ({
+    jest.doMock('@acme/platform-core/dataRoot', () => ({
       DATA_ROOT: path.join(repoRoot, 'data', 'shops'),
     }), { virtual: true });
     const editorial = require('../src/index');

@@ -2,7 +2,7 @@
 "use client";
 
 import React from "react";
-import useThemePalette from "@ui/lib/useThemePalette";
+import useThemePalette from "@acme/ui/lib/useThemePalette";
 import { useTranslations } from "@acme/i18n";
 import { Grid as DSGrid } from "../atoms/primitives/Grid";
 

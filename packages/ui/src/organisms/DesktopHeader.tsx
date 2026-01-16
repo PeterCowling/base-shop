@@ -14,7 +14,7 @@ import { translatePath } from "@/utils/translate-path";
 import type { AppLanguage } from "@/i18n.config";
 import { i18nConfig } from "@/i18n.config";
 import type { SlugMap } from "@/slug-map";
-import { resolveBookingCtaLabel } from "@ui/shared";
+import { resolveBookingCtaLabel } from "@acme/ui/shared";
 import { Inline } from "@/components/atoms/primitives/Inline";
 
 /*  Public assets are referenced by absolute URL paths.

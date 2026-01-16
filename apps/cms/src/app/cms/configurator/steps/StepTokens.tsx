@@ -9,7 +9,7 @@ import { type TokenMap } from "../../wizard/tokenUtils";
 import { useConfigurator } from "../ConfiguratorContext";
 import type { ConfiguratorStepProps } from "@/types/configurator";
 import TypographySelector from "./TypographySelector";
-import presetData from "@ui/components/cms/style/presets.json";
+import presetData from "@acme/ui/components/cms/style/presets.json";
 import { patchShopTheme } from "../../wizard/services/patchTheme";
 import { useTranslations } from "@acme/i18n";
 

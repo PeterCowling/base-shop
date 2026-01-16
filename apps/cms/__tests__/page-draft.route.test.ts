@@ -37,7 +37,7 @@ describe("page draft GET route", () => {
 
   it("returns draft content for valid shop", async () => {
     mockAuth();
-    jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
       getPages: mockGetPages,
     }));
     mockGetPages.mockResolvedValue([
@@ -54,7 +54,7 @@ describe("page draft GET route", () => {
 
   it("returns 404 when draft is missing", async () => {
     mockAuth();
-    jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
       getPages: mockGetPages,
     }));
     mockGetPages.mockResolvedValue([{ id: "p1", status: "published" }]);
@@ -69,7 +69,7 @@ describe("page draft GET route", () => {
 
   it("handles service errors", async () => {
     mockAuth();
-    jest.doMock("@platform-core/repositories/pages/index.server", () => ({
+    jest.doMock("@acme/platform-core/repositories/pages/index.server", () => ({
       getPages: mockGetPages,
     }));
     mockGetPages.mockRejectedValue(new Error("boom"));

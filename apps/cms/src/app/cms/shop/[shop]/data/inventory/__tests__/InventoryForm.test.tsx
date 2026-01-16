@@ -28,7 +28,7 @@ jest.mock(
   { virtual: true }
 );
 
-jest.mock("@platform-core/types/inventory", () => {
+jest.mock("@acme/platform-core/types/inventory", () => {
   const inventoryItemSchema = z
     .object({
       sku: z.string(),
@@ -47,7 +47,7 @@ jest.mock("@platform-core/types/inventory", () => {
 import InventoryForm from "../InventoryForm";
 let capturedUpdateItem: (
   index: number,
-  field: keyof import("@platform-core/types/inventory").InventoryItem | `variantAttributes.${string}`,
+  field: keyof import("@acme/platform-core/types/inventory").InventoryItem | `variantAttributes.${string}`,
   value: string,
 ) => void;
 jest.mock("../InventoryRow", () => {

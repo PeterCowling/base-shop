@@ -32,6 +32,6 @@
     "react-dom": "workspace:^"
   },
   "devDependencies": {
-    "next": "^15.3.5"
+    "next": "^15.3.8"
   }
 }

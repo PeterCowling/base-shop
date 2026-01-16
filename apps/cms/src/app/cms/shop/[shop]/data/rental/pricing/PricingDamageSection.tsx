@@ -1,5 +1,5 @@
 import { Button, Input } from "@/components/atoms/shadcn";
-import { cn } from "@ui/utils/style";
+import { cn } from "@acme/ui/utils/style";
 import { type ChangeEvent } from "react";
 import { useTranslations } from "@acme/i18n";
 

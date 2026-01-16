@@ -1,6 +1,6 @@
 // packages/template-app/src/api/stripe-webhook/route.ts
 
-import { handleStripeWebhook } from "@platform-core/stripe-webhook";
+import { handleStripeWebhook } from "@acme/platform-core/stripe-webhook";
 import { stripe } from "@acme/stripe";
 import { paymentsEnv } from "@acme/config/env/payments";
 import { NextRequest, NextResponse } from "next/server";

@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import SettingsShopChooser from "./SettingsShopChooser.client";
-import { Button, Card, CardContent, Tag } from "@ui/components/atoms";
-import { Grid as DSGrid, Inline } from "@ui/components/atoms/primitives";
+import { Button, Card, CardContent, Tag } from "@acme/ui/components/atoms";
+import { Grid as DSGrid, Inline } from "@acme/ui/components/atoms/primitives";
 import { listShops } from "../../../lib/listShops";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 

@@ -5,8 +5,8 @@ import {
   getProductById,
   getProducts,
   searchProducts,
-} from "@platform-core/products";
-import * as base from "@platform-core/products/index";
+} from "@acme/platform-core/products";
+import * as base from "@acme/platform-core/products/index";
 
 afterEach(() => {
   jest.restoreAllMocks();

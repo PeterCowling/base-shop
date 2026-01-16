@@ -6,7 +6,7 @@ const getSettings = jest.fn();
 const listEvents = jest.fn();
 
 jest.mock("@cms/actions/shops.server", () => ({ getSettings }));
-jest.mock("@platform-core/repositories/analytics.server", () => ({ listEvents }));
+jest.mock("@acme/platform-core/repositories/analytics.server", () => ({ listEvents }));
 
 const seoEditorMock = jest.fn((props: any) => <div data-cy="seo-editor" />);
 const aiCatalogMock = jest.fn((props: any) => <div data-cy="ai-catalog" />);

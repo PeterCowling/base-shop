@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import TokenInspector from "../TokenInspector";
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/ui/components/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,

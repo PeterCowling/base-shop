@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Stack } from "@ui/components/atoms/primitives";
-import { cn } from "@ui/utils/style";
+import { Stack } from "@acme/ui/components/atoms/primitives";
+import { cn } from "@acme/ui/utils/style";
 
 type NavLinkProps = {
   href: string;

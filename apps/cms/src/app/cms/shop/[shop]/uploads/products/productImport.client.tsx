@@ -5,7 +5,7 @@
 import type {
   ProductImportEvent,
   ProductImportReport,
-} from "@platform-core/types/productImport";
+} from "@acme/platform-core/types/productImport";
 import { getCsrfToken } from "@acme/shared-utils";
 import {
   Button,

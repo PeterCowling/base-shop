@@ -12,12 +12,12 @@ jest.mock("next/navigation", () => ({
   usePathname: () => "/en/shop",
 }));
 
-jest.mock("@platform-core/components/shop/FilterBar", () => (props: any) => {
+jest.mock("@acme/platform-core/components/shop/FilterBar", () => (props: any) => {
   change = props.onChange;
   return null as any;
 });
 
-jest.mock("@platform-core/components/shop/ProductGrid", () => ({
+jest.mock("@acme/platform-core/components/shop/ProductGrid", () => ({
   ProductGrid: (props: any) => {
     gridProps = props;
     return null as any;

@@ -3,7 +3,7 @@ import { promises as fs } from "fs";
 import * as fsSync from "fs";
 import path from "path";
 import { randomUUID } from "crypto";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 import { validateShopName } from "@acme/lib";
 import { useTranslations as loadTranslations } from "@acme/i18n/useTranslations.server";
 

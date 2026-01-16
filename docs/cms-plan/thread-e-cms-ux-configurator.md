@@ -79,7 +79,7 @@ It focuses on:
     - In CMS:
       - Implemented an API route `/cms/api/configurator-progress` that:
         - Accepts an optional `shopId` query parameter on `GET`.
-        - When `shopId` is provided, runs the shared `ConfigCheck`s from `@platform-core/configurator` and returns a typed `ConfiguratorProgress` payload from `@acme/types`.
+        - When `shopId` is provided, runs the shared `ConfigCheck`s from `@acme/platform-core/configurator` and returns a typed `ConfiguratorProgress` payload from `@acme/types`.
         - Preserves existing behaviour (per-user persisted wizard state) when `shopId` is omitted so current clients and tests keep working.
       - Configurator dashboard now calls this API when a `shopId` is present and derives the header progress counts from the server-side step statuses, falling back to local state when checks are unavailable.
   - Definition of done:

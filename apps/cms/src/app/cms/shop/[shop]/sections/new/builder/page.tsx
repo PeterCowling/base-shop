@@ -3,13 +3,13 @@
 import dynamic from "next/dynamic";
 import { ulid } from "ulid";
 import { nowIso } from "@acme/date-utils";
-import type SectionBuilderComponent from "@ui/components/cms/SectionBuilder";
+import type SectionBuilderComponent from "@acme/ui/components/cms/SectionBuilder";
 import type { SectionTemplate, PageComponent } from "@acme/types";
 import { createSection } from "@cms/actions/sections/create";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 type SectionBuilderProps = React.ComponentProps<typeof SectionBuilderComponent>;
-const SectionBuilder = dynamic<SectionBuilderProps>(() => import("@ui/components/cms/SectionBuilder")); // i18n-exempt -- CMS-0001 module path string; non-UI [ttl=2026-12-31]
+const SectionBuilder = dynamic<SectionBuilderProps>(() => import("@acme/ui/components/cms/SectionBuilder")); // i18n-exempt -- CMS-0001 module path string; non-UI [ttl=2026-12-31]
 void SectionBuilder;
 
 export const revalidate = 0;

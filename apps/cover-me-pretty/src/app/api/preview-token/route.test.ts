@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { createUpgradePreviewToken } from "@platform-core/previewTokens";
+import { createUpgradePreviewToken } from "@acme/platform-core/previewTokens";
 
 describe("GET /api/preview-token", () => {
   afterEach(() => {

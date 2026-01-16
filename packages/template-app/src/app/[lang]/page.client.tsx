@@ -5,7 +5,7 @@ import HeroBanner from "@/components/home/HeroBanner";
 import ReviewsCarousel from "@/components/home/ReviewsCarousel";
 import { ValueProps } from "@/components/home/ValueProps";
 import { getStructuredData, serializeJsonLd } from "../../lib/seo";
-import { useTranslations } from "@i18n/Translations";
+import { useTranslations } from "@acme/i18n/Translations";
 
 export default function Home({ params }: { params: { lang: string } }) {
   const t = useTranslations();

@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataTable } from '@ui/components/organisms/DataTable';
+import { DataTable } from '@acme/ui/components/organisms/DataTable';
 
 type Row = { id: number; name: string };
 

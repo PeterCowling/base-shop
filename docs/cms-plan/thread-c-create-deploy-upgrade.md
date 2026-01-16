@@ -10,9 +10,9 @@ This thread implements **Thread C** from `master-thread.fast-launch.md`. It star
 
 - **Today (baseline)**:
   - CMS and CLI both call the `createShop` function implemented in `packages/platform-core/src/createShop/createShop.ts`:
-    - CMS imports it via `@platform-core/createShop` (`apps/cms/src/actions/createShop.server.ts`).
+    - CMS imports it via `@acme/platform-core/createShop` (`apps/cms/src/actions/createShop.server.ts`).
     - Scripts import it via `@acme/platform-core/createShop` (`scripts/src/create-shop.ts`, `scripts/src/shop/init.ts`).
-  - Deploys are driven by `deployShop` in `@platform-core/createShop`, which writes `deploy.json` using the existing `ShopDeploymentAdapter` (`CloudflareDeploymentAdapter`).
+  - Deploys are driven by `deployShop` in `@acme/platform-core/createShop`, which writes `deploy.json` using the existing `ShopDeploymentAdapter` (`CloudflareDeploymentAdapter`).
   - Template upgrades and rollback are implemented via `scripts/src/upgrade-shop.ts`, `scripts/src/republish-shop.ts`, and `scripts/src/rollback-shop.ts` operating on `shop.json`, `upgrade.json`, `upgrade-changes.json`, and `history.json`.
 - **Target (Thread C)**:
   - Align CMS and CLI shop creation flows around a shared config contract and explicit creation state.
@@ -38,7 +38,7 @@ Ensure shop creation from configuration is scriptable, idempotent in dev/stage, 
 
 - Align on a single **config contract** for creation:
   - Define a `ShopConfig` DTO that matches Thread A’s Configurator output.
-  - Implement a pure mapping `ShopConfig → CreateShopOptions` in `@platform-core/createShop` (or a nearby module) and use it in both CLI and CMS.
+  - Implement a pure mapping `ShopConfig → CreateShopOptions` in `@acme/platform-core/createShop` (or a nearby module) and use it in both CLI and CMS.
 - Introduce an explicit shared wrapper for config‑driven creation:
 
   ```ts
@@ -161,7 +161,7 @@ Provide a CMS action that takes a configured shop and triggers a build+deploy on
   - Accept an `env: Environment` parameter.
   - Tag the resulting `DeployShopResult` with `env`, `runtimeAppId?`, and any version metadata (per C2‑1) before it is written to `deploy.json`.
 - Integrate post‑deploy verification once Thread D scripts exist:
-  - Introduce a shared helper (e.g. in `@platform-core` or a scripts module):
+  - Introduce a shared helper (e.g. in `@acme/platform-core` or a scripts module):
 
     ```ts
     async function verifyShopAfterDeploy(
@@ -307,7 +307,7 @@ Standardise how upgrades and rollbacks are performed and tracked, building on th
 Thread C is complete when:
 
 1. CMS and CLI share a config‑driven creation path:
-   - A `createShopFromConfig` wrapper (or equivalent) in `@platform-core/createShop` maps a common `ShopConfig` to `CreateShopOptions` and calls `createShop`.
+   - A `createShopFromConfig` wrapper (or equivalent) in `@acme/platform-core/createShop` maps a common `ShopConfig` to `CreateShopOptions` and calls `createShop`.
    - `createNewShop` in CMS and `create-shop` / `init-shop` in scripts use this wrapper for config‑driven flows.
    - Creation is environment‑aware and records status in `creation.json` / `ShopCreationState` (shared with Thread A).
 2. Deploy from CMS is wired to the existing deployment adapter but enriched:

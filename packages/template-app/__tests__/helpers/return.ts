@@ -36,7 +36,7 @@ export function setupReturnMocks(options: MockOptions = {}) {
     .fn<Promise<RentalOrder | null>, []>()
     .mockResolvedValue({} as RentalOrder);
 
-  jest.doMock("@platform-core/repositories/shops.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/shops.server", () => ({
     __esModule: true,
     readShop: jest
       .fn()
@@ -59,14 +59,14 @@ export function setupReturnMocks(options: MockOptions = {}) {
     { virtual: true }
   );
 
-  jest.doMock("@platform-core/repositories/rentalOrders.server", () => ({
+  jest.doMock("@acme/platform-core/repositories/rentalOrders.server", () => ({
     __esModule: true,
     markReturned,
     markRefunded: jest.fn(),
     addOrder: jest.fn(),
   }));
 
-  jest.doMock("@platform-core/pricing", () => ({ computeDamageFee }));
+  jest.doMock("@acme/platform-core/pricing", () => ({ computeDamageFee }));
 
   return { retrieve, refundCreate, computeDamageFee, markReturned };
 }

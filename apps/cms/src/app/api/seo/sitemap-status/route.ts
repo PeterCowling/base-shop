@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { env } from "@acme/config";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 
 async function fetchHead(url: string): Promise<{ lastModified?: string; contentLength?: number }> {
   try {

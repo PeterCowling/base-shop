@@ -11,7 +11,7 @@ export const setupSegmentTest = () => {
   const mockReadFile = jest.fn();
   const validateShopName = jest.fn((s: string) => s);
 
-  jest.doMock('@platform-core/repositories/analytics.server', () => ({
+  jest.doMock('@acme/platform-core/repositories/analytics.server', () => ({
     listEvents: (...args: unknown[]) => mockListEvents(...args),
   }));
 

@@ -9,7 +9,7 @@ import {
   parseTargetDate,
   getTimeRemaining,
   formatDuration,
-} from "@date-utils";
+} from "@acme/date-utils";
 
 describe("date-utils", () => {
   it("nowIso returns ISO 8601 string", () => {

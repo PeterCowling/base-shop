@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
 import type { LaneSummary, LogisticsStrings } from "./types";
 
 function formatLatestSummary(

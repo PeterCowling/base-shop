@@ -9,7 +9,7 @@ jest.mock('@cms/actions/createShop.server', () => ({
   createNewShop: (...args: any[]) => createNewShop(...args),
 }));
 
-jest.mock('@platform-core/configurator', () => ({
+jest.mock('@acme/platform-core/configurator', () => ({
   __esModule: true,
   validateShopEnv: (...args: any[]) => validateShopEnv(...args),
 }));

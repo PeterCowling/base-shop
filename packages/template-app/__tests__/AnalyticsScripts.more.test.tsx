@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 const getShopSettings = jest.fn();
 const readShop = jest.fn();
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   getShopSettings: (...args: any[]) => getShopSettings(...args),
   readShop: (...args: any[]) => readShop(...args),
 }));

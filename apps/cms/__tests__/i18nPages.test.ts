@@ -4,7 +4,7 @@
 // -------------------------------------------------------
 
 import React, { Children, isValidElement } from "react";
-import { TranslationsProvider } from "@i18n/Translations";
+import { TranslationsProvider } from "@acme/i18n/Translations";
 
 // Static imports because Next 12-15 can handle literal “[lang]” folders.
 import { LOCALES } from "@acme/i18n";

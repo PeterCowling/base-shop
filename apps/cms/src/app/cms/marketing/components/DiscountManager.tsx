@@ -14,8 +14,8 @@ import {
   TableHeader,
   TableRow,
   Textarea,
-} from "@ui/components/atoms";
-import { FormField } from "@ui/components/molecules";
+} from "@acme/ui/components/atoms";
+import { FormField } from "@acme/ui/components/molecules";
 import type { ActionResult } from "../../components/actionResult";
 
 export interface Discount {

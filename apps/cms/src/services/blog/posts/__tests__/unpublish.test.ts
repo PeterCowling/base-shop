@@ -8,7 +8,7 @@ jest.mock("../../config", () => ({
   getConfig: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/blog.server", () => ({
+jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   unpublishPost: jest.fn(),
 }));
 
@@ -23,7 +23,7 @@ describe("unpublishPost", () => {
     );
     const { getConfig } = await import("../../config");
     const { unpublishPost: repoUnpublishPost } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "config" } as any;
@@ -44,7 +44,7 @@ describe("unpublishPost", () => {
     );
     const { getConfig } = await import("../../config");
     const { unpublishPost: repoUnpublishPost } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "config" } as any;

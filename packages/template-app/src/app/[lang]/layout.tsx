@@ -1,6 +1,6 @@
 // packages/template-app/src/app/[lang]/layout.tsx
 import { TranslationsProvider } from "@acme/i18n";
-import { resolveLocale, type Locale } from "@i18n/locales";
+import { resolveLocale, type Locale } from "@acme/i18n/locales";
 import type { ReactNode } from "react";
 import { DefaultSeo } from "next-seo";
 import { getSeo, serializeJsonLd } from "../../lib/seo";
@@ -18,7 +18,7 @@ export default async function LocaleLayout({
   const messages = (
     await import(
       /* webpackInclude: /(en|de|it)\.json$/ */
-      `@i18n/${lang}.json`
+      `@acme/i18n/${lang}.json`
     )
   ).default as Record<string, string>;
   const seo = await getSeo(lang);

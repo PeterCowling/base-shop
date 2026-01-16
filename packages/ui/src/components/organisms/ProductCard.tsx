@@ -8,11 +8,11 @@ import { cn } from "../../utils/style";
 import { Button } from "../atoms/shadcn";
 import { Price } from "../atoms/Price";
 import { useTranslations } from "@acme/i18n";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
 import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
-import { resolveText } from "@i18n/resolveText";
+import { resolveText } from "@acme/i18n/resolveText";
 
 export interface ProductCardProps extends React.HTMLAttributes<HTMLDivElement> {
   product: SKU;

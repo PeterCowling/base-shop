@@ -5,17 +5,17 @@ jest.mock("@auth", () => ({
   getCustomerSession: jest.fn(),
 }));
 
-jest.mock("@platform-core/orders", () => ({
+jest.mock("@acme/platform-core/orders", () => ({
   __esModule: true,
   getOrdersForCustomer: jest.fn(),
 }));
 
-jest.mock("@platform-core/returnLogistics", () => ({
+jest.mock("@acme/platform-core/returnLogistics", () => ({
   __esModule: true,
   getReturnLogistics: jest.fn(),
 }));
 
-jest.mock("@ui/components/organisms/OrderTrackingTimeline", () => ({
+jest.mock("@acme/ui/components/organisms/OrderTrackingTimeline", () => ({
   __esModule: true,
   OrderTrackingTimeline: (props: unknown) => ({
     type: "OrderTrackingTimeline",
@@ -29,10 +29,10 @@ jest.mock("next/navigation", () => ({
 }));
 
 import Page from "../src/app/account/orders/[id]/page";
-import { getCustomerSession } from "@auth";
-import { getOrdersForCustomer } from "@platform-core/orders";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
-import { OrderTrackingTimeline } from "@ui/components/organisms/OrderTrackingTimeline";
+import { getCustomerSession } from "@acme/auth";
+import { getOrdersForCustomer } from "@acme/platform-core/orders";
+import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
+import { OrderTrackingTimeline } from "@acme/ui/components/organisms/OrderTrackingTimeline";
 import { redirect } from "next/navigation";
 import shop from "../shop.json";
 

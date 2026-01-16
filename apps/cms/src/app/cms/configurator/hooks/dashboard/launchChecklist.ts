@@ -7,7 +7,7 @@ import type { ConfiguratorProgress } from "@acme/types";
 import {
   OPTIONAL_CONFIG_CHECK_STEPS,
   REQUIRED_CONFIG_CHECK_STEPS,
-} from "@platform-core/configurator-steps";
+} from "@acme/platform-core/configurator-steps";
 import type { LaunchChecklistItem } from "./types";
 
 export interface BuildLaunchChecklistParams {

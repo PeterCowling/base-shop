@@ -5,7 +5,7 @@ import { useCurrentItem, useDatasetMeta } from "../data/DataContext";
 import type { TranslatableText } from "@acme/types/i18n";
 import type { Locale } from "@acme/i18n/locales";
 import { useTranslations } from "@acme/i18n";
-import { resolveText } from "@i18n/resolveText";
+import { resolveText } from "@acme/i18n/resolveText";
 
 export interface BindProps {
   /** Name of the prop to inject onto the only child */

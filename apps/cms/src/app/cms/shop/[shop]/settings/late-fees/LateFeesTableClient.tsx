@@ -1,6 +1,6 @@
 "use client";
 
-import DataTable from "@ui/components/cms/DataTable";
+import DataTable from "@acme/ui/components/cms/DataTable";
 import { lateFeeColumns, type LateFeeRow } from "../tableMappers";
 
 export default function LateFeesTableClient({ rows }: { rows: LateFeeRow[] }) {

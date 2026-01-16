@@ -36,7 +36,7 @@ jest.mock(
   { virtual: true }
 );
 
-jest.mock("@platform-core/contexts/LayoutContext", () => ({
+jest.mock("@acme/platform-core/contexts/LayoutContext", () => ({
   __esModule: true,
   useLayout: () => ({
     isMobileNavOpen: false,

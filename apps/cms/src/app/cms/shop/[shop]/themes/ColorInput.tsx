@@ -2,12 +2,12 @@
 
 import { useEffect, useState, type ChangeEvent } from "react";
 import { Button, Input } from "@/components/atoms/shadcn";
-import { Tooltip } from "@ui/components/atoms";
+import { Tooltip } from "@acme/ui/components/atoms";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { getUsageText } from "./usageMap";
-import { hslToHex, hexToHsl, isHex, isHsl } from "@ui/utils/colorUtils";
-import { getContrast, suggestContrastColor } from "@ui/components/cms";
-import { useTranslations } from "@i18n/Translations";
+import { hslToHex, hexToHsl, isHex, isHsl } from "@acme/ui/utils/colorUtils";
+import { getContrast, suggestContrastColor } from "@acme/ui/components/cms";
+import { useTranslations } from "@acme/i18n/Translations";
 
 interface Props {
   name: string;

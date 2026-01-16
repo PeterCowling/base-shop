@@ -42,7 +42,7 @@ jest.mock("sanitize-html", () => {
 });
 
 jest.mock("../scheduler", () => ({}));
-jest.mock("@platform-core/analytics", () => ({
+jest.mock("@acme/platform-core/analytics", () => ({
   trackEvent: jest.fn(),
 }));
 // The templates module imports `@acme/email-templates`. Stub the module to

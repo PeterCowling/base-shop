@@ -2,8 +2,8 @@
 "use client";
 import { Input } from "@/components/atoms/shadcn";
 import type { MutableRefObject, ChangeEvent } from "react";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
+import { Inline } from "@acme/ui/components/atoms/primitives/Inline";
 
 interface Props {
   tokens: Record<string, string>;

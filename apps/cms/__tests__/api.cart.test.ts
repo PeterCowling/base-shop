@@ -27,7 +27,7 @@ describe("cart API", () => {
   });
 
   it("handles SKU without sizes", async () => {
-    jest.doMock("@platform-core/products", () => ({
+    jest.doMock("@acme/platform-core/products", () => ({
       __esModule: true,
       getProductById: () => ({ id: "foo", stock: 1 }),
       PRODUCTS: [{ id: "foo", stock: 1 }],

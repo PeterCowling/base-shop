@@ -3,15 +3,15 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import ThemeSelector from "../src/app/cms/shop/[shop]/themes/ThemeSelector";
 import PreviewDeviceSelector from "../src/app/cms/wizard/PreviewDeviceSelector";
 import WizardPreview from "../src/app/cms/wizard/WizardPreview";
-import { devicePresets } from "@ui/utils/devicePresets";
+import { devicePresets } from "@acme/ui/utils/devicePresets";
 
-jest.mock("@ui/components/atoms", () => ({
+jest.mock("@acme/ui/components/atoms", () => ({
   Button: (props: any) => <button {...props} />,
 }));
 
-jest.mock("@ui/components/common/DeviceSelector", () => {
+jest.mock("@acme/ui/components/common/DeviceSelector", () => {
   const React = require("react");
-  const { devicePresets } = require("@ui/utils/devicePresets");
+  const { devicePresets } = require("@acme/ui/utils/devicePresets");
   return {
     __esModule: true,
     default: ({ deviceId, onChange }: any) => (

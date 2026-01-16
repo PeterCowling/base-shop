@@ -19,7 +19,7 @@ jest.mock("@cms/auth/options", () => ({
 }));
 
 const readRepoMock = jest.fn();
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   __esModule: true,
   readRepo: readRepoMock,
 }));
@@ -63,7 +63,7 @@ const progressMock = jest.fn(
   ),
 );
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/ui/components/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -97,7 +97,7 @@ jest.mock("@/components/atoms/shadcn", () => {
 const productsTableMock = jest.fn((props: any) => (
   <div data-testid="products-table" data-shop={props.shop} />
 ));
-jest.mock("@ui/components/cms/ProductsTable.client", () => ({
+jest.mock("@acme/ui/components/cms/ProductsTable.client", () => ({
   __esModule: true,
   default: productsTableMock,
 }));

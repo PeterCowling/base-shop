@@ -63,7 +63,7 @@ It focuses on:
     - Consolidate preview token generation/validation into a shared helper.
   - Implementation:
     - Identified current HMAC token logic (`PREVIEW_TOKEN_SECRET`, `UPGRADE_PREVIEW_TOKEN_SECRET`, etc.) across template app, tenant app, and upgrade tooling.
-    - Implemented a shared `@platform-core/previewTokens` helper that generates and verifies base64url‑encoded HMAC tokens over `\`${shopId}:${pageId}\`` for both standard and upgrade preview tokens.
+    - Implemented a shared `@acme/platform-core/previewTokens` helper that generates and verifies base64url‑encoded HMAC tokens over `\`${shopId}:${pageId}\`` for both standard and upgrade preview tokens.
     - Updated Cloudflare preview routes (`packages/template-app/src/routes/preview/[pageId].ts`, `apps/cover-me-pretty/src/routes/preview/[pageId].ts`) and `/api/preview-token` routes to use the shared helper so CMS and runtime share a single implementation.
   - Definition of done:
     - A single implementation of preview token handling used across CMS and runtime.
@@ -101,7 +101,7 @@ It focuses on:
   - Scope:
     - Harden the “live preview” dev-server discovery and surfacing.
   - Implementation:
-    - `/cms/live` uses `listShops` (backed by `DATA_ROOT` via `@platform-core/dataRoot`) to discover shops and a local `resolveAppsRoot` helper in `apps/cms/src/app/cms/live/page.tsx` to locate `apps/shop-<id>` workspaces and their `package.json` files.
+    - `/cms/live` uses `listShops` (backed by `DATA_ROOT` via `@acme/platform-core/dataRoot`) to discover shops and a local `resolveAppsRoot` helper in `apps/cms/src/app/cms/live/page.tsx` to locate `apps/shop-<id>` workspaces and their `package.json` files.
     - A `findPort(shop)` helper reads the app’s `dev` (or `start`) script, infers the port from the script command, and returns a structured `PortInfo` with error codes for missing apps (`app_not_found`), missing manifests (`package_json_missing`), and read/parse failures (`read_error`), which are mapped to human-readable messages via `cms.live.error.*` translations.
     - The server component builds hero stats and a per-shop list passed to `LivePreviewList`, which renders “Preview ready” vs “Unavailable” states with explanatory copy, and uses toasts for actionable feedback when a preview cannot be opened or when no shops/previews are configured.
   - Definition of done:

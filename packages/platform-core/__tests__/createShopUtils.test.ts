@@ -2,8 +2,8 @@
 import fs from "fs";
 import { copyTemplate } from "../src/createShop/fsUtils";
 import { loadBaseTokens } from "../src/createShop/themeUtils";
-import { fillLocales } from "@i18n/fillLocales";
-import { LOCALES } from "@i18n/locales";
+import { fillLocales } from "@acme/i18n/fillLocales";
+import { LOCALES } from "@acme/i18n/locales";
 
 describe("createShop utils", () => {
   beforeEach(() => {

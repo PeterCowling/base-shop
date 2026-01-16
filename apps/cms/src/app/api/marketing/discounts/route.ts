@@ -3,12 +3,12 @@ import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { listEvents } from "@platform-core/repositories/analytics.server";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { listEvents } from "@acme/platform-core/repositories/analytics.server";
 import { coreEnv as env } from "@acme/config/env/core";
 import type { Coupon } from "@acme/types";
 import { writeJsonFile } from "@/lib/server/jsonIO";
-import { validateShopName } from "@platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops";
 
 interface Discount extends Coupon {
   active?: boolean;

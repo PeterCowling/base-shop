@@ -96,7 +96,7 @@ jest.mock('../../../cms/configurator/steps', () => ({
   getRequiredSteps: (...args: any[]) => getRequiredSteps(...args),
 }));
 
-jest.mock('@platform-core/configurator', () => ({
+jest.mock('@acme/platform-core/configurator', () => ({
   __esModule: true,
   configuratorChecks,
   getConfiguratorProgressForShop: (...args: any[]) =>

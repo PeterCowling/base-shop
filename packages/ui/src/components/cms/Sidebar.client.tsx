@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { memo, useMemo } from "react";
 import { Button, Card, CardContent } from "../atoms/shadcn";
 import { Tag } from "../atoms";
-import { cn } from "@ui/utils/style";
+import { cn } from "@acme/ui/utils/style";
 import { useCmsNavItems } from "./nav/useCmsNavItems";
 import { useTranslations } from "@acme/i18n";
 

@@ -3,7 +3,7 @@ import { __setMockSession } from "next-auth";
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 
 const writePricing = jest.fn();
-jest.mock("@platform-core/repositories/pricing.server", () => ({
+jest.mock("@acme/platform-core/repositories/pricing.server", () => ({
   writePricing,
 }));
 

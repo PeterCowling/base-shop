@@ -26,7 +26,7 @@ jest.mock("next/navigation", () => ({
   redirect: jest.fn(),
 }));
 
-import { getCustomerSession, hasPermission } from "@auth";
+import { getCustomerSession, hasPermission } from "@acme/auth";
 import { getOrdersForCustomer } from "@acme/platform-core/orders";
 import { getTrackingStatus as getShippingTrackingStatus } from "@acme/platform-core/shipping";
 import { getTrackingStatus as getReturnTrackingStatus } from "@acme/platform-core/returnAuthorization";

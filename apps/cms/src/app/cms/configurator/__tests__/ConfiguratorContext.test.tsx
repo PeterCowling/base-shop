@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { ConfiguratorProvider, useConfigurator } from "../ConfiguratorContext";
 import { STORAGE_KEY } from "../hooks/useConfiguratorPersistence";
 
-jest.mock("@platform-core/contexts/LayoutContext", () => ({
+jest.mock("@acme/platform-core/contexts/LayoutContext", () => ({
   useLayout: () => ({ setConfiguratorProgress: jest.fn() }),
 }));
 

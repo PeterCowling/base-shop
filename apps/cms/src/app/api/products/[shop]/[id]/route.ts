@@ -1,7 +1,7 @@
 // apps/cms/src/app/api/products/[shop]/[id]/route.ts
 import "@acme/zod-utils/initZod";
 
-import { getProductById } from "@platform-core/repositories/json.server";
+import { getProductById } from "@acme/platform-core/repositories/json.server";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 

@@ -3,9 +3,9 @@ import { coreEnv } from "@acme/config/env/core";
 import {
   markRefunded,
   readOrders,
-} from "@platform-core/repositories/rentalOrders.server";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { logger } from "@platform-core/utils";
+} from "@acme/platform-core/repositories/rentalOrders.server";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { logger } from "@acme/platform-core/utils";
 import { readdir, readFile } from "node:fs/promises";
 import { join } from "path";
 

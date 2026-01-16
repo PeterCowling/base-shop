@@ -1,6 +1,6 @@
 // apps/cms/src/actions/media/mediaMetadataService.ts
 
-import { validateShopName } from "@platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops";
 import type { MediaItem } from "@acme/types";
 import { promises as fs } from "fs";
 import type { Stats } from "fs";

@@ -6,7 +6,7 @@ import { promises as fs } from "node:fs";
 
 let tmpDir = "";
 
-jest.mock("@platform-core/dataRoot", () => ({
+jest.mock("@acme/platform-core/dataRoot", () => ({
   resolveDataRoot: () => tmpDir,
 }));
 
@@ -15,7 +15,7 @@ import {
   findCoupon,
   listCoupons,
   type StoredCoupon,
-} from "@platform-core/coupons";
+} from "@acme/platform-core/coupons";
 
 const shop = "test";
 beforeAll(async () => {

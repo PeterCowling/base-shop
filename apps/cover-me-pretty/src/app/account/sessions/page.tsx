@@ -3,4 +3,4 @@ export {
   sessionsMetadata as metadata,
   revoke,
   SessionsPage as default,
-} from "@ui/account";
+} from "@acme/ui/account";

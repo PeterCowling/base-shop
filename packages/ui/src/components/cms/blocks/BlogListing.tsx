@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useCallback, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "@acme/i18n";
-import { logAnalyticsEvent } from "@platform-core/analytics/client";
+import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
 import { Inline } from "../../atoms/primitives/Inline";
 

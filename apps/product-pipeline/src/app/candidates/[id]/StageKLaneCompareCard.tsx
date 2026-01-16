@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
 import { formatCurrency, formatNumber, formatPercent } from "@/lib/format";
 import type { CandidateDetailStrings } from "./types";
 

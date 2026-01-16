@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cmsEnv as env } from "@acme/config/env/cms";
-import { getShopById } from "@platform-core/repositories/shop.server";
-import { getSanityConfig } from "@platform-core/shops";
+import { getShopById } from "@acme/platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
 import { ensureAuthorized } from "@cms/actions/common/auth";
 
 export const runtime = "nodejs";

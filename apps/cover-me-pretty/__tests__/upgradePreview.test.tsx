@@ -5,10 +5,10 @@ import UpgradePreviewPage from "../src/app/upgrade-preview/page";
 describe("upgrade preview page", () => {
   beforeEach(() => {
     global.__UPGRADE_MOCKS__ = {
-      "@ui/components/molecules/Breadcrumbs": () => (
+      "@acme/ui/components/molecules/Breadcrumbs": () => (
         <div data-cy="new-comp">new-breadcrumbs</div>
       ),
-      "@ui/components/molecules/Breadcrumbs.bak": () => (
+      "@acme/ui/components/molecules/Breadcrumbs.bak": () => (
         <div data-cy="old-comp">old-breadcrumbs</div>
       ),
     };

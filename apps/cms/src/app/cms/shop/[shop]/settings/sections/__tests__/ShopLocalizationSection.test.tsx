@@ -14,7 +14,7 @@ jest.mock(
 );
 
 jest.mock(
-  "@ui/components/atoms",
+  "@acme/ui/components/atoms",
   () => {
     const React = require("react");
     const SelectContent = Object.assign(
@@ -82,7 +82,7 @@ jest.mock(
 );
 
 jest.mock(
-  "@ui/components/molecules",
+  "@acme/ui/components/molecules",
   () => ({
     FormField: ({ children, label, htmlFor, error }: any) => (
       <div>

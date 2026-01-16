@@ -6,7 +6,7 @@ import {
   getCart,
   encodeCartCookie,
 } from "./helpers";
-import { PRODUCTS } from "@platform-core/products";
+import { PRODUCTS } from "@acme/platform-core/products";
 
 afterEach(() => {
   jest.resetAllMocks();

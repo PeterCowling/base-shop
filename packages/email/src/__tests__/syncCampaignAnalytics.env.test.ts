@@ -1,4 +1,4 @@
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 jest.mock("@acme/zod-utils/initZod", () => ({}));
 
 describe("syncCampaignAnalytics provider handling", () => {
@@ -28,7 +28,7 @@ describe("syncCampaignAnalytics provider handling", () => {
   it("returns early for unrecognized provider", async () => {
     process.env.EMAIL_PROVIDER = "unknown";
     const trackEvent = jest.fn();
-    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent }));
+    jest.doMock("@acme/platform-core/analytics", () => ({ __esModule: true, trackEvent }));
     const getCampaignStats = jest.fn();
     jest.doMock("../providers/sendgrid", () => ({
       SendgridProvider: jest.fn().mockImplementation(() => ({ getCampaignStats })),
@@ -48,7 +48,7 @@ describe("syncCampaignAnalytics provider handling", () => {
   it("sends empty stats when provider throws", async () => {
     process.env.EMAIL_PROVIDER = "sendgrid";
     const trackEvent = jest.fn();
-    jest.doMock("@platform-core/analytics", () => ({ __esModule: true, trackEvent }));
+    jest.doMock("@acme/platform-core/analytics", () => ({ __esModule: true, trackEvent }));
     const getCampaignStats = jest.fn().mockRejectedValue(new Error("fail"));
     jest.doMock("../providers/sendgrid", () => ({
       SendgridProvider: jest.fn().mockImplementation(() => ({ getCampaignStats })),

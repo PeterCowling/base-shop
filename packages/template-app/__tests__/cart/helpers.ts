@@ -1,11 +1,11 @@
-import { decodeCartCookie, encodeCartCookie } from "@platform-core/cartCookie";
+import { decodeCartCookie, encodeCartCookie } from "@acme/platform-core/cartCookie";
 import {
   createCart,
   getCart,
   setCart,
   incrementQty,
-} from "@platform-core/cartStore";
-import { PRODUCTS } from "@platform-core/products";
+} from "@acme/platform-core/cartStore";
+import { PRODUCTS } from "@acme/platform-core/products";
 
 // Minimal NextResponse mock using the native Response class
 jest.mock("next/server", () => ({

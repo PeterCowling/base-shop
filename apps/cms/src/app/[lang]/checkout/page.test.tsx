@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
 import CheckoutPage from "./page";
-import { encodeCartCookie } from "@platform-core/cartCookie";
+import { encodeCartCookie } from "@acme/platform-core/cartCookie";
 
 const cookiesMock = jest.fn();
 jest.mock("next/headers", () => ({
@@ -9,12 +9,12 @@ jest.mock("next/headers", () => ({
 }));
 
 const getCartMock = jest.fn();
-jest.mock("@platform-core/cartStore", () => ({
+jest.mock("@acme/platform-core/cartStore", () => ({
   createCartStore: () => ({ getCart: (...args: any[]) => getCartMock(...args) }),
 }));
 
 const getShopSettingsMock = jest.fn();
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: (...args: any[]) => getShopSettingsMock(...args),
 }));
 

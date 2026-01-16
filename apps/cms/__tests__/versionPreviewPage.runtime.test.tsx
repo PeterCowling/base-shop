@@ -3,7 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import PreviewViewer from "../src/app/preview/[token]/page";
 
-jest.mock("@ui/components/DynamicRenderer", () => ({
+jest.mock("@acme/ui/components/DynamicRenderer", () => ({
   __esModule: true,
   default: (props: { components: unknown[] }) => (
     <div data-testid="runtime-preview">

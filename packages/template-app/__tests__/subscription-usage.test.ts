@@ -8,10 +8,10 @@ describe("subscriptionUsage", () => {
   it("calls findUniqueOrThrow with composite key", async () => {
     await jest.isolateModulesAsync(async () => {
       const findUniqueOrThrow = jest.fn().mockResolvedValue({});
-      jest.doMock("@platform-core/db", () => ({
+      jest.doMock("@acme/platform-core/db", () => ({
         prisma: { subscriptionUsage: { findUniqueOrThrow } },
       }));
-      const { getSubscriptionUsage } = await import("@platform-core/subscriptionUsage");
+      const { getSubscriptionUsage } = await import("@acme/platform-core/subscriptionUsage");
       await getSubscriptionUsage("shop", "cust", "2023-10");
       expect(findUniqueOrThrow).toHaveBeenCalledWith({
         where: {
@@ -28,10 +28,10 @@ describe("subscriptionUsage", () => {
   it("upserts and increments shipments", async () => {
     await jest.isolateModulesAsync(async () => {
       const upsert = jest.fn().mockResolvedValue(undefined);
-      jest.doMock("@platform-core/db", () => ({
+      jest.doMock("@acme/platform-core/db", () => ({
         prisma: { subscriptionUsage: { upsert } },
       }));
-      const { incrementSubscriptionUsage } = await import("@platform-core/subscriptionUsage");
+      const { incrementSubscriptionUsage } = await import("@acme/platform-core/subscriptionUsage");
       await incrementSubscriptionUsage("shop", "cust", "2023-10", 2);
       expect(upsert).toHaveBeenCalledWith({
         where: {

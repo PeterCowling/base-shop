@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { patchSchema } from "@platform-core/schemas/cart";
+import { patchSchema } from "@acme/platform-core/schemas/cart";
 import {
   ensureCartStore,
   getDecodedCartId,

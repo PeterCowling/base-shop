@@ -10,7 +10,7 @@ describe("/api/stripe-webhook", () => {
   test("verifies signature and forwards events", async () => {
     const handleStripeWebhook = jest.fn();
     jest.doMock(
-      "@platform-core/stripe-webhook",
+      "@acme/platform-core/stripe-webhook",
       () => ({ __esModule: true, handleStripeWebhook }),
       { virtual: true }
     );
@@ -44,7 +44,7 @@ describe("/api/stripe-webhook", () => {
   test("returns 400 for invalid signature", async () => {
     const handleStripeWebhook = jest.fn();
     jest.doMock(
-      "@platform-core/stripe-webhook",
+      "@acme/platform-core/stripe-webhook",
       () => ({ __esModule: true, handleStripeWebhook }),
       { virtual: true }
     );
@@ -70,7 +70,7 @@ describe("/api/stripe-webhook", () => {
   test("returns 400 when signature header is missing", async () => {
     const handleStripeWebhook = jest.fn();
     jest.doMock(
-      "@platform-core/stripe-webhook",
+      "@acme/platform-core/stripe-webhook",
       () => ({ __esModule: true, handleStripeWebhook }),
       { virtual: true }
     );

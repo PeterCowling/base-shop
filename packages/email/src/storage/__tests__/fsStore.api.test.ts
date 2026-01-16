@@ -9,7 +9,7 @@ describe("fsCampaignStore basic operations", () => {
   beforeEach(async () => {
     tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "fs-store-test-"));
     jest.resetModules();
-    jest.doMock("@platform-core/dataRoot", () => ({ DATA_ROOT: tmpDir }));
+    jest.doMock("@acme/platform-core/dataRoot", () => ({ DATA_ROOT: tmpDir }));
     jest.doMock("@acme/lib", () => ({
       __esModule: true,
       validateShopName: (s: string) => s,

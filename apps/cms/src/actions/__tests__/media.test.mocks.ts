@@ -13,7 +13,7 @@ jest.mock('../common/auth', () => ({
   ensureAuthorized: jest.fn(),
 }));
 
-jest.mock('@platform-core/shops', () => ({
+jest.mock('@acme/platform-core/shops', () => ({
   validateShopName: jest.fn((s: string) => s),
 }));
 
@@ -38,7 +38,7 @@ const writeJsonFileMock = jest.fn();
 jest.mock('@/lib/server/jsonIO', () => ({ writeJsonFile: writeJsonFileMock }));
 
 import { ensureAuthorized } from '../common/auth';
-import { validateShopName } from '@platform-core/shops';
+import { validateShopName } from '@acme/platform-core/shops';
 
 type DefaultStat = { size: number; mtime: Date };
 

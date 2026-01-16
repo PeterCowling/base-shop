@@ -50,7 +50,7 @@
 - **Docs** describing test modes and Prisma stubs vs. live DB (`__tests__/docs/testing.md`).
 
 ## 2. Externally reachable surfaces & trust boundaries
-- **Public shopper surface:** `/apps/cover-me-pretty` routes, static pages, and API endpoints rely on signed customer sessions; they interact with Prisma and JSON stores through `@platform-core` repositories (`apps/cover-me-pretty/src/app/api/login/route.ts`, `packages/platform-core/src/orders/creation.ts`). Trust boundary between anonymous users, authenticated customers, and backend services.
+- **Public shopper surface:** `/apps/cover-me-pretty` routes, static pages, and API endpoints rely on signed customer sessions; they interact with Prisma and JSON stores through `@acme/platform-core` repositories (`apps/cover-me-pretty/src/app/api/login/route.ts`, `packages/platform-core/src/orders/creation.ts`). Trust boundary between anonymous users, authenticated customers, and backend services.
 - **CMS admin surface:** Protected Next.js routes under `/apps/cms` for media upload, CSV imports, deploy actions, and provider management. Relies on NextAuth and RBAC, writes to `data/shops/<id>` and triggers build/deploy commands (`apps/cms/src/app/api/upload-csv/[shop]/route.ts`, `apps/cms/src/actions/deployShop.server.ts`). Trust boundary between authenticated admins and filesystem/CLI execution environment.
 - **Upgrade worker API:** Cloudflare Worker endpoints for component diffs and publishing upgrades require bearer tokens but run privileged commands (`apps/api/src/routes/components/[shopId].ts`, `apps/api/src/routes/shop/[id]/publish-upgrade.ts`). Boundary between remote callers with token access and repository filesystem/child process execution.
 - **Scheduled jobs:** Cron-triggered SEO audits and editorial publishing iterate over all shops, send email, and append to JSONL logs (`functions/src/seoAudit.ts`, `functions/src/publishEditorial.ts`). Trust boundary between Cloudflare scheduler and outbound providers/analytics store.
@@ -94,7 +94,7 @@ Covers customer login, session management, account/profile updates, checkout flo
   1. A07:2021 – Identification and Authentication Failures (login + MFA in `apps/cover-me-pretty/src/app/api/login/route.ts`).
   2. A01:2021 – Broken Access Control (session-gated resources like `apps/cover-me-pretty/src/app/api/orders/route.ts`).
   3. A02:2021 – Cryptographic Failures (CSRF headers, cookie secrets consumed from `@auth`).
-  4. A03:2021 – Injection (JSON parsing and Prisma usage via `@platform-core` in profile/tax endpoints).
+  4. A03:2021 – Injection (JSON parsing and Prisma usage via `@acme/platform-core` in profile/tax endpoints).
   5. A09:2021 – Security Logging & Monitoring Failures (rate limiting + event logging coverage).
 - **Start with files:**
   - `apps/cover-me-pretty/src/app/api/login/route.ts`

@@ -55,11 +55,11 @@ import {
   updateGlobalForPage as uiUpdateGlobalForPage,
   removeGlobalForPage as uiRemoveGlobalForPage,
   type GlobalItem as UiGlobalItem,
-} from "@ui/components/cms/page-builder/libraryStore";
+} from "@acme/ui/components/cms/page-builder/libraryStore";
 
-import DragHandleInternal from "@ui/components/cms/page-builder/DragHandle";
-import SizeControlsInternal from "@ui/components/cms/page-builder/panels/layout/SizeControls";
-import PreviewRendererInternal from "@ui/components/cms/page-builder/PreviewRenderer";
+import DragHandleInternal from "@acme/ui/components/cms/page-builder/DragHandle";
+import SizeControlsInternal from "@acme/ui/components/cms/page-builder/panels/layout/SizeControls";
+import PreviewRendererInternal from "@acme/ui/components/cms/page-builder/PreviewRenderer";
 
 export { extractTextThemes, applyTextThemeToOverrides };
 

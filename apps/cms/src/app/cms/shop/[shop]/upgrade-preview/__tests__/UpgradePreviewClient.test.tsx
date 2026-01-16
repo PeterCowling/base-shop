@@ -3,7 +3,7 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import UpgradePreviewClient from "../UpgradePreviewClient";
 
-jest.mock("@ui/components/ComponentPreview", () => {
+jest.mock("@acme/ui/components/ComponentPreview", () => {
   const MockComponentPreview = ({ component }: any) => (
     <div data-cy={`preview-${component.componentName}`}>{component.componentName}</div>
   );

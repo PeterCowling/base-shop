@@ -1,8 +1,8 @@
 import { revalidatePath } from "next/cache";
 import type { Locale, ShopSeoFields, ShopSettings } from "@acme/types";
 import { authorize, fetchSettings, persistSettings, fetchDiffHistory } from "./helpers";
-import { recordMetric } from "@platform-core/utils";
-import { incrementOperationalError } from "@platform-core/shops/health";
+import { recordMetric } from "@acme/platform-core/utils";
+import { incrementOperationalError } from "@acme/platform-core/shops/health";
 import { parseSeoForm, parseGenerateSeoForm } from "./validation";
 
 export async function updateSeo(

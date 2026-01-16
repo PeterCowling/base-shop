@@ -1,7 +1,7 @@
 import MetricCard from "@/components/MetricCard";
 import PageHeader from "@/components/PageHeader";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Cluster, Grid, Inline, Stack } from "@ui/components/atoms/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { Cluster, Grid, Inline, Stack } from "@acme/ui/components/atoms/primitives";
 
 export default async function HomePage() {
   const t = await getTranslations("en");

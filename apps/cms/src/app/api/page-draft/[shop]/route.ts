@@ -1,6 +1,6 @@
 import { savePageDraft } from "@cms/actions/pages/draft";
 import { authOptions } from "@cms/auth/options";
-import { getPages } from "@platform-core/repositories/pages/index.server";
+import { getPages } from "@acme/platform-core/repositories/pages/index.server";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 

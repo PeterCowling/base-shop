@@ -1,9 +1,9 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { inventoryRepository } from "@platform-core/repositories/inventory.server";
+import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
 import { format as formatCsv } from "fast-csv";
-import { flattenInventoryItem } from "@platform-core/utils/inventory";
+import { flattenInventoryItem } from "@acme/platform-core/utils/inventory";
 
 export async function GET(
   req: NextRequest,

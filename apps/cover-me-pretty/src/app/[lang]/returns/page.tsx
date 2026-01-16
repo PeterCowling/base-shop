@@ -2,11 +2,11 @@
 import {
   getReturnLogistics,
   getReturnBagAndLabel,
-} from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+} from "@acme/platform-core/returnLogistics";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
-import { resolveLocale } from "@i18n/locales";
+import { resolveLocale } from "@acme/i18n/locales";
 
 import type { Metadata } from "next";
 

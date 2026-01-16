@@ -1,6 +1,6 @@
 const DATA_ROOT = "/data/shops";
 
-jest.mock("@platform-core/dataRoot", () => ({
+jest.mock("@acme/platform-core/dataRoot", () => ({
   DATA_ROOT,
 }));
 
@@ -33,7 +33,7 @@ jest.mock("fs", () => ({
 
 import { promises as fs } from "fs";
 import * as path from "path";
-import { jsonCouponsRepository } from "@platform-core/repositories/coupons.json.server";
+import { jsonCouponsRepository } from "@acme/platform-core/repositories/coupons.json.server";
 
 const shop = "demo";
 const file = path.join(DATA_ROOT, shop, "coupons.json");

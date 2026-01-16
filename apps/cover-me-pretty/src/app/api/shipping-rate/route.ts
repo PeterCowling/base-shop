@@ -1,11 +1,11 @@
 // apps/cover-me-pretty/src/app/api/shipping-rate/route.ts
 import "@acme/zod-utils/initZod";
-import { getShippingRate } from "@platform-core/shipping/index";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getShippingRate } from "@acme/platform-core/shipping/index";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import shop from "../../../../shop.json";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { parseJsonBody } from "@shared-utils";
+import { parseJsonBody } from "@acme/shared-utils";
 
 // Accessing shop settings requires filesystem access via Node's `fs` module.
 // Switch to the Node.js runtime so these APIs are available during build and

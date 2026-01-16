@@ -5,7 +5,7 @@ import {
   computeAvailability,
   applyInventoryBatch,
 } from "@acme/platform-core/utils/inventory";
-import type { InventoryItem } from "@platform-core/types/inventory";
+import type { InventoryItem } from "@acme/platform-core/types/inventory";
 import type { RawInventoryItem } from "@acme/types";
 
 describe("normalizeQuantity", () => {

@@ -5,7 +5,7 @@ jest.mock("@auth", () => ({
 }));
 jest.mock("next/headers", () => ({ cookies: jest.fn() }));
 
-import { destroyCustomerSession } from "@auth";
+import { destroyCustomerSession } from "@acme/auth";
 import { cookies } from "next/headers";
 import { GET } from "../src/app/logout/route";
 

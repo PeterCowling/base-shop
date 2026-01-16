@@ -5,7 +5,7 @@ import {
   marketingEmailTemplates,
   type MarketingEmailTemplateVariant,
 } from "@acme/email-templates";
-import { Toast } from "@ui/components/atoms";
+import { Toast } from "@acme/ui/components/atoms";
 import type { ActionResult, ActionStatus } from "../../../../components/actionResult";
 import EmailCampaignComposer, {
   type EmailCampaignComposerProps,

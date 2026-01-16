@@ -101,10 +101,10 @@ jest.mock("../../atoms/shadcn", () =>
 
 import { deleteMedia } from "@cms/actions/media.server";
 import { render, screen, fireEvent } from "@testing-library/react";
-import { useImageOrientationValidation } from "@ui/hooks/useImageOrientationValidation";
+import { useImageOrientationValidation } from "@acme/ui/hooks/useImageOrientationValidation";
 import MediaManager from "../MediaManager";
 
-jest.mock("@ui/hooks/useImageOrientationValidation");
+jest.mock("@acme/ui/hooks/useImageOrientationValidation");
 
 const mockHook = useImageOrientationValidation as jest.MockedFunction<
   typeof useImageOrientationValidation

@@ -7,7 +7,7 @@ jest.mock("../actions/common/auth", () => ({
   ensureAuthorized: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/json.server", () => ({
+jest.mock("@acme/platform-core/repositories/json.server", () => ({
   readRepo: jest.fn(),
   writeRepo: jest.fn(),
   readSettings: jest.fn(),
@@ -44,7 +44,7 @@ import {
   getProductById,
   duplicateProductInRepo,
   deleteProductFromRepo,
-} from "@platform-core/repositories/json.server";
+} from "@acme/platform-core/repositories/json.server";
 import { captureException } from "@/utils/sentry.server";
 
 const ensureAuthorizedMock = ensureAuthorized as jest.Mock;

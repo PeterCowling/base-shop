@@ -11,7 +11,7 @@ describe("ComponentPreview advanced modes and error handling", () => {
   it("does not show compare when no backup component and renders new only", async () => {
     const NewComp = () => <div>Only New</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/Only": NewComp,
+      "@acme/ui/components/Only": NewComp,
     };
 
     const component: UpgradeComponent = {
@@ -29,8 +29,8 @@ describe("ComponentPreview advanced modes and error handling", () => {
     const NewComp = () => <div>NewC</div>;
     const OldComp = () => <div>OldC</div>;
     (globalThis as any).__UPGRADE_MOCKS__ = {
-      "@ui/components/Thing": NewComp,
-      "@ui/components/Thing.bak": OldComp,
+      "@acme/ui/components/Thing": NewComp,
+      "@acme/ui/components/Thing.bak": OldComp,
     };
 
     const component: UpgradeComponent = {
@@ -65,7 +65,7 @@ describe("ComponentPreview advanced modes and error handling", () => {
         throw new Error("boom");
       };
       (globalThis as any).__UPGRADE_MOCKS__ = {
-        "@ui/components/Boom": Thrower,
+        "@acme/ui/components/Boom": Thrower,
       };
 
       const component: UpgradeComponent = {

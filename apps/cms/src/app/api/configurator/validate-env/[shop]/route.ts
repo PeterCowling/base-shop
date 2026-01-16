@@ -1,7 +1,7 @@
 import { authOptions } from "@cms/auth/options";
 import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
-import { validateShopEnv } from "@platform-core/configurator";
+import { validateShopEnv } from "@acme/platform-core/configurator";
 
 export async function GET(
   _req: NextRequest,

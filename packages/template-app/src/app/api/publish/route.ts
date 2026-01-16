@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import { join } from "path";
 import { NextResponse } from "next/server";
-import { requirePermission } from "@auth";
+import { requirePermission } from "@acme/auth";
 import { spawnSync } from "child_process";
 
 const SHOP_ID_REGEX = /^[a-z0-9_-]+$/;

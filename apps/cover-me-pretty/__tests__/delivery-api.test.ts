@@ -33,7 +33,7 @@ describe("/api/delivery", () => {
         data: { region: "US", date: "2025-01-01", window: "9-12", carrier: "UPS" },
       }),
     }));
-    jest.doMock("@platform-core/plugins", () => ({
+    jest.doMock("@acme/platform-core/plugins", () => ({
       initPlugins: jest.fn(async () => ({
         shipping: new Map([["premier-shipping", { schedulePickup }]]),
       })),
@@ -53,7 +53,7 @@ describe("/api/delivery", () => {
         data: { region: "US", date: "2025-01-01", window: "9-12" },
       }),
     }));
-    jest.doMock("@platform-core/plugins", () => ({
+    jest.doMock("@acme/platform-core/plugins", () => ({
       initPlugins: jest.fn(async () => ({ shipping: new Map() })),
     }));
     const { POST } = await import("../src/app/api/delivery/route");
@@ -82,7 +82,7 @@ describe("/api/delivery", () => {
         data: { region: "US", date: "2025-01-01", window: "9-12" },
       }),
     }));
-    jest.doMock("@platform-core/plugins", () => ({
+    jest.doMock("@acme/platform-core/plugins", () => ({
       initPlugins: jest.fn(async () => ({
         shipping: new Map([["premier-shipping", { schedulePickup }]]),
       })),

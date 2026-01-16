@@ -24,7 +24,7 @@ describe("platform-core db stub", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("@platform-core/db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("@acme/platform-core/db")) as { prisma: PrismaClient };
 
     const shop = "stub-shop";
     expect(await prisma.rentalOrder.findMany({ where: { shop } })).toEqual([]);
@@ -59,7 +59,7 @@ describe("platform-core db stub", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("@platform-core/db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("@acme/platform-core/db")) as { prisma: PrismaClient };
 
     await prisma.rentalOrder.create({
       data: { shop: "shop", sessionId: "1", trackingNumber: "t1" },
@@ -79,7 +79,7 @@ describe("platform-core db stub", () => {
       { virtual: true }
     );
 
-    const { prisma } = (await import("@platform-core/db")) as { prisma: PrismaClient };
+    const { prisma } = (await import("@acme/platform-core/db")) as { prisma: PrismaClient };
 
     await expect(
       prisma.rentalOrder.update({

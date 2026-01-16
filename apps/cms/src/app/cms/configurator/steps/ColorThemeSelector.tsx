@@ -2,7 +2,7 @@
 /* i18n-exempt file -- DS-4287 CSS class tokens only [ttl=2026-01-01] */
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Grid, Inline } from "@ui/components/atoms/primitives";
+import { Grid, Inline } from "@acme/ui/components/atoms/primitives";
 import type { TokenMap } from "../../wizard/tokenUtils";
 import data from "./color-themes.json";
 import { useTranslations } from "@acme/i18n";

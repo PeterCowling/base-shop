@@ -8,11 +8,11 @@ const mockReadReturnLogistics = jest.fn();
 jest.mock("@acme/lib", () => ({
   checkShopExists: (...args: any[]) => mockCheckShopExists(...args),
 }));
-jest.mock("@platform-core/repositories/returnLogistics.server", () => ({
+jest.mock("@acme/platform-core/repositories/returnLogistics.server", () => ({
   readReturnLogistics: (...args: any[]) => mockReadReturnLogistics(...args),
 }));
 
-jest.mock("@ui/components/atoms/shadcn", () => ({
+jest.mock("@acme/ui/components/atoms/shadcn", () => ({
   Button: (props: any) => <button {...props} />,
   Input: (props: any) => <input {...props} />,
   Checkbox: ({ onCheckedChange, ...props }: any) => (

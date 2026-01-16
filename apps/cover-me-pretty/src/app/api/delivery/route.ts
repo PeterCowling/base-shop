@@ -9,8 +9,8 @@ import {
   type ShippingRequest,
   type WidgetComponent,
   type WidgetProps,
-} from "@platform-core/plugins";
-import { parseJsonBody } from "@shared-utils";
+} from "@acme/platform-core/plugins";
+import { parseJsonBody } from "@acme/shared-utils";
 import { NextRequest, NextResponse } from "next/server";
 import fs from "node:fs";
 import path from "node:path";

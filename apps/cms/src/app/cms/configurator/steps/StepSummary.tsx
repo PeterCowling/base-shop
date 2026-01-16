@@ -2,21 +2,21 @@
 
 "use client";
 
-import { Button, Input } from "@ui/components/atoms/shadcn";
+import { Button, Input } from "@acme/ui/components/atoms/shadcn";
 import { LOCALES, useTranslations } from "@acme/i18n";
 import type { Locale } from "@acme/types";
 import type { ConfiguratorProgress } from "@acme/types";
 import React, { useEffect, useState } from "react";
 import WizardPreview from "../../wizard/WizardPreview";
 import PreviewDeviceSelector from "../../wizard/PreviewDeviceSelector";
-import { devicePresets, type DevicePreset } from "@ui/utils/devicePresets";
+import { devicePresets, type DevicePreset } from "@acme/ui/utils/devicePresets";
 import useStepCompletion from "../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import {
   CmsLaunchChecklist,
   type CmsLaunchChecklistItem,
   type CmsLaunchStatus,
-} from "@ui/components/cms"; // UI: @ui/components/cms/CmsLaunchChecklist
+} from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsLaunchChecklist
 import { buildLaunchChecklist } from "../hooks/dashboard/launchChecklist";
 
 interface Props {

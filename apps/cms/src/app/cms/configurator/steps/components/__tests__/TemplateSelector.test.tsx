@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import TemplateSelector from "../TemplateSelector";
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/ui/components/atoms", () => {
   const React = require("react");
   return {
     __esModule: true,
@@ -14,7 +14,7 @@ jest.mock("@ui/components/atoms", () => {
   };
 });
 
-jest.mock("@ui/components/atoms/shadcn", () => {
+jest.mock("@acme/ui/components/atoms/shadcn", () => {
   const React = require("react");
   return {
     __esModule: true,

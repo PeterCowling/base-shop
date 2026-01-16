@@ -1,11 +1,11 @@
 import { buildThemeData, removeThemeToken, mergeThemePatch } from "../theme";
-import { syncTheme } from "@platform-core/createShop";
-import { loadThemeTokens } from "@platform-core/themeTokens";
+import { syncTheme } from "@acme/platform-core/createShop";
+import { loadThemeTokens } from "@acme/platform-core/themeTokens";
 
-jest.mock("@platform-core/createShop", () => ({
+jest.mock("@acme/platform-core/createShop", () => ({
   syncTheme: jest.fn().mockResolvedValue({ a: "1" }),
 }));
-jest.mock("@platform-core/themeTokens", () => ({
+jest.mock("@acme/platform-core/themeTokens", () => ({
   baseTokens: { base: "z" },
   loadThemeTokens: jest.fn().mockResolvedValue({ a: "0" }),
 }));

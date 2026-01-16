@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid } from "@ui/components/atoms/primitives";
+import { Grid } from "@acme/ui/components/atoms/primitives";
 import { formatCurrency } from "@/lib/format";
 import type { CandidateDetailStrings } from "./types";
 import type { StageBSummary } from "./stageBHelpers";

@@ -1,9 +1,9 @@
-jest.mock("@platform-core/shops", () => ({
+jest.mock("@acme/platform-core/shops", () => ({
   validateShopName: jest.fn(),
 }));
 
 import { Buffer } from "buffer";
-import { validateShopName } from "@platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops";
 
 describe("initShop", () => {
   beforeEach(() => {

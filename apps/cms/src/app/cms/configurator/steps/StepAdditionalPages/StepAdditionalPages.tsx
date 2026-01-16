@@ -3,7 +3,7 @@
 import { Button } from "@/components/atoms/shadcn";
 import PageBuilder from "@/components/cms/PageBuilder";
 import { LOCALES, useTranslations } from "@acme/i18n";
-import { fillLocales } from "@i18n/fillLocales";
+import { fillLocales } from "@acme/i18n/fillLocales";
 import type { Locale, Page, PageComponent } from "@acme/types";
 import { apiRequest } from "../../lib/api";
 import { useState } from "react";
@@ -17,7 +17,7 @@ import usePagesLoader from "./usePagesLoader";
 import useStepCompletion from "../../hooks/useStepCompletion";
 import { useRouter } from "next/navigation";
 import { track } from "@acme/telemetry";
-import { CmsInlineHelpBanner } from "@ui/components/cms"; // UI: @ui/components/cms/CmsInlineHelpBanner
+import { CmsInlineHelpBanner } from "@acme/ui/components/cms"; // UI: @acme/ui/components/cms/CmsInlineHelpBanner
 
 interface Props {
   pageTemplates: Array<{ name: string; components: PageComponent[] }>;

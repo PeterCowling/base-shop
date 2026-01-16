@@ -2,12 +2,12 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MiniCart } from "../MiniCart.client";
 
-jest.mock("@platform-core/contexts/CurrencyContext", () => ({
+jest.mock("@acme/platform-core/contexts/CurrencyContext", () => ({
   useCurrency: () => ["USD", jest.fn()],
 }));
 
 const mockUseCart = jest.fn();
-jest.mock("@platform-core/contexts/CartContext", () => ({
+jest.mock("@acme/platform-core/contexts/CartContext", () => ({
   useCart: () => mockUseCart(),
 }));
 

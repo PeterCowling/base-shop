@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Card, CardContent } from "@/components/atoms/shadcn";
-import { Grid as DSGrid } from "@ui/components/atoms/primitives/Grid";
+import { Grid as DSGrid } from "@acme/ui/components/atoms/primitives/Grid";
 import { useTranslations } from "@acme/i18n";
 
 import type { ServiceEditorLink } from "../lib/pageSections";

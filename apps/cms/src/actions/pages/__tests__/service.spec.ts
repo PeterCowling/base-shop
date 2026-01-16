@@ -3,7 +3,7 @@ import type { Page } from "@acme/types";
 import { describe, expect, it, jest } from "@jest/globals";
 import type { Mock } from "jest-mock";
 
-jest.mock("@platform-core/repositories/pages/index.server", () => ({
+jest.mock("@acme/platform-core/repositories/pages/index.server", () => ({
   getPages: jest.fn((_s: string) => Promise.resolve([] as Page[])),
   savePage: jest.fn(
     (_s: string, p: Page, _prev?: Page) => Promise.resolve(p),
@@ -15,7 +15,7 @@ jest.mock("@platform-core/repositories/pages/index.server", () => ({
 }));
 
 const repo = jest.requireMock(
-  "@platform-core/repositories/pages/index.server",
+  "@acme/platform-core/repositories/pages/index.server",
 ) as {
   getPages: Mock;
   savePage: Mock;

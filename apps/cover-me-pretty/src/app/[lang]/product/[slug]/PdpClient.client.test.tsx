@@ -2,8 +2,8 @@
 import React from "react";
 import { render, screen, fireEvent, configure } from "@testing-library/react";
 import type { ComponentProps } from "react";
-import type AddToCartButton from "@platform-core/components/shop/AddToCartButton.client";
-import type { PriceProps } from "@ui/components/atoms/Price";
+import type AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import type { PriceProps } from "@acme/ui/components/atoms/Price";
 import type { SKU } from "@acme/types";
 configure({ testIdAttribute: "data-testid" });
 import PdpClient from "./PdpClient.client";
@@ -12,7 +12,7 @@ const addToCartMock = jest.fn();
 
 type AddToCartButtonProps = ComponentProps<typeof AddToCartButton>;
 
-jest.mock("@platform-core/components/shop/AddToCartButton.client", () => ({
+jest.mock("@acme/platform-core/components/shop/AddToCartButton.client", () => ({
   __esModule: true,
   default: (props: AddToCartButtonProps) => {
     addToCartMock(props);
@@ -20,12 +20,12 @@ jest.mock("@platform-core/components/shop/AddToCartButton.client", () => ({
   },
 }));
 
-jest.mock("@platform-core/components/pdp/ImageGallery", () => ({
+jest.mock("@acme/platform-core/components/pdp/ImageGallery", () => ({
   __esModule: true,
   default: () => <div data-testid="image-gallery" />,
 }));
 
-jest.mock("@ui/components/atoms/Price", () => ({
+jest.mock("@acme/ui/components/atoms/Price", () => ({
   __esModule: true,
   Price: ({ amount }: PriceProps) => <span>{amount}</span>,
 }));

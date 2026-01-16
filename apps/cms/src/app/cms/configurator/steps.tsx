@@ -16,7 +16,7 @@ import StepReachSocial from "./steps/StepReachSocial";
 import { CheckIcon, ChevronLeftIcon, ChevronRightIcon, DotsHorizontalIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import type { StepStatus } from "../wizard/schema";
-import { cn } from "@ui/utils/style";
+import { cn } from "@acme/ui/utils/style";
 // Tooltip not required in compact progress UI
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/atoms/shadcn";
 import type { ConfiguratorStep, ConfiguratorStepTrack } from "./types";

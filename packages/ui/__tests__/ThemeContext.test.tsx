@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { ThemeProvider, useTheme } from "@platform-core/contexts/ThemeContext";
+import { ThemeProvider, useTheme } from "@acme/platform-core/contexts/ThemeContext";
 
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 

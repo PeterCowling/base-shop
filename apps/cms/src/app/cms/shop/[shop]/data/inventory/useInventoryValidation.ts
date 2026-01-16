@@ -1,8 +1,8 @@
 import {
   inventoryItemSchema,
   type InventoryItem,
-} from "@platform-core/types/inventory";
-import { expandInventoryItem } from "@platform-core/utils/inventory";
+} from "@acme/platform-core/types/inventory";
+import { expandInventoryItem } from "@acme/platform-core/utils/inventory";
 
 /**
  * Validate and normalize inventory items.

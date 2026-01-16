@@ -1,6 +1,6 @@
 "use client";
 
-import { Cluster, Grid, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Grid, Stack } from "@acme/ui/components/atoms/primitives";
 import { formatNumber, formatPercent } from "@/lib/format";
 import type { LaunchPlan, LaunchesStrings } from "./types";
 

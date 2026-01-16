@@ -3,17 +3,17 @@
 import { useMemo, useState } from "react";
 import { useTranslations } from "@acme/i18n";
 import type { ReturnAuthorization } from "@acme/types";
-import { Alert, Tag } from "@ui/components/atoms";
-import { Grid } from "@ui/components/atoms/primitives/Grid";
-import { Stack } from "@ui/components/atoms/primitives/Stack";
-import { Sidebar } from "@ui/components/atoms/primitives/Sidebar";
+import { Alert, Tag } from "@acme/ui/components/atoms";
+import { Grid } from "@acme/ui/components/atoms/primitives/Grid";
+import { Stack } from "@acme/ui/components/atoms/primitives/Stack";
+import { Sidebar } from "@acme/ui/components/atoms/primitives/Sidebar";
 import {
   Button,
   Card,
   CardContent,
   Input,
 } from "@/components/atoms/shadcn";
-import { cn } from "@ui/utils/style";
+import { cn } from "@acme/ui/utils/style";
 import Link from "next/link";
 
 export interface RaDashboardProps {

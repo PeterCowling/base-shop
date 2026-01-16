@@ -13,7 +13,7 @@ import type {
   LanguageModalProps as UILanguageModalProps,
   LocationModalProps as UILocationModalProps,
   OffersModalProps as UIOffersModalProps,
-} from "@ui/organisms/modals";
+} from "@acme/ui/organisms/modals";
 
 function lazyModal<T = Record<string, never>>(
   importer: () => Promise<{ default: ComponentType<T> }>,
@@ -22,23 +22,23 @@ function lazyModal<T = Record<string, never>>(
 }
 
 export const OffersModal = lazyModal<UIOffersModalProps>(() =>
-  import("@ui/organisms/modals/OffersModal"),
+  import("@acme/ui/organisms/modals/OffersModal"),
 );
 export const BookingModal = lazyModal<UIBookingModalProps>(() =>
-  import("@ui/organisms/modals/BookingModal"),
+  import("@acme/ui/organisms/modals/BookingModal"),
 );
 export const BookingModal2 = lazyModal<UIBookingModal2Props>(() =>
-  import("@ui/organisms/modals/BookingModal2"),
+  import("@acme/ui/organisms/modals/BookingModal2"),
 );
 export const LocationModal = lazyModal<UILocationModalProps>(() =>
-  import("@ui/organisms/modals/LocationModal"),
+  import("@acme/ui/organisms/modals/LocationModal"),
 );
 export const ContactModal = lazyModal<UIContactModalProps>(() =>
-  import("@ui/organisms/modals/ContactModal"),
+  import("@acme/ui/organisms/modals/ContactModal"),
 );
 export const FacilitiesModal = lazyModal<UIFacilitiesModalProps>(() =>
-  import("@ui/organisms/modals/FacilitiesModal"),
+  import("@acme/ui/organisms/modals/FacilitiesModal"),
 );
 export const LanguageModal = lazyModal<UILanguageModalProps>(() =>
-  import("@ui/organisms/modals/LanguageModal"),
+  import("@acme/ui/organisms/modals/LanguageModal"),
 );

@@ -4,17 +4,17 @@ import { LOCALES } from "@acme/i18n";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
-import BlogListing, { type BlogPost } from "@ui/components/cms/blocks/BlogListing";
+import BlogListing, { type BlogPost } from "@acme/ui/components/cms/blocks/BlogListing";
 import { fetchPublishedPosts } from "@acme/sanity";
 import shop from "../../../../../shop.json";
 import PdpClient from "./PdpClient.client";
-import { readRepo } from "@platform-core/repositories/json.server";
+import { readRepo } from "@acme/platform-core/repositories/json.server";
 import type { SKU, ProductPublication, Locale } from "@acme/types";
-import { resolveLocale } from "@i18n/locales";
-import { getReturnLogistics } from "@platform-core/returnLogistics";
+import { resolveLocale } from "@acme/i18n/locales";
+import { getReturnLogistics } from "@acme/platform-core/returnLogistics";
 import { getSeo } from "../../../util/seo";
 import { JsonLdScript, productJsonLd } from "../../../../lib/jsonld";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 async function getProduct(

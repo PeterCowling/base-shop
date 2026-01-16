@@ -5,13 +5,13 @@ import LayoutClient from "../src/app/cms/LayoutClient.client";
 
 // Mock the layout context
 const useLayoutMock = jest.fn();
-jest.mock("@platform-core/contexts/LayoutContext", () => ({
+jest.mock("@acme/platform-core/contexts/LayoutContext", () => ({
   useLayout: () => useLayoutMock(),
 }));
 
 // Stub internal components
 // Use data-cy so getByTestId resolves correctly with the custom testIdAttribute.
-jest.mock("@ui/components/cms/TopBar.client", () => {
+jest.mock("@acme/ui/components/cms/TopBar.client", () => {
   const TopBarMock = () => <div>TopBar</div>;
   (TopBarMock as any).displayName = "TopBarMock";
   return TopBarMock;

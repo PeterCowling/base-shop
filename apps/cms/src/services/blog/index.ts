@@ -5,4 +5,4 @@ export { updatePost } from "./posts/update";
 export { publishPost } from "./posts/publish";
 export { unpublishPost } from "./posts/unpublish";
 export { deletePost } from "./posts/delete";
-export type { SanityPost } from "@platform-core/repositories/blog.server";
+export type { SanityPost } from "@acme/platform-core/repositories/blog.server";

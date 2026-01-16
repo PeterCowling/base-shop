@@ -1,9 +1,9 @@
 import "server-only";
 import { createClient } from "@sanity/client";
-import { getSanityConfig } from "@platform-core/shops";
-import { getShopById } from "@platform-core/repositories/shop.server";
+import { getSanityConfig } from "@acme/platform-core/shops";
+import { getShopById } from "@acme/platform-core/repositories/shop.server";
 import { sanityBlogConfigSchema, type SanityBlogConfig } from "@acme/types";
-import { nowIso } from "@date-utils";
+import { nowIso } from "@acme/date-utils";
 
 export interface PortableBlock {
   _type: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { Buffer } from "buffer";
-import { validateShopName } from "@platform-core/shops";
+import { validateShopName } from "@acme/platform-core/shops";
 
 export interface InitResult {
   ok: boolean;

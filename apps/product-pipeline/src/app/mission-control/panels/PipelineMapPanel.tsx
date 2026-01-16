@@ -1,6 +1,7 @@
 "use client";
 
-import { Cluster, Stack } from "@ui/components/atoms/primitives";
+import { Cluster, Stack } from "@acme/ui/components/atoms/primitives";
+import { cn } from "@acme/ui/utils/style";
 import { useEffect, useMemo, useState } from "react";
 import PipelineMap2D from "./PipelineMap2D";
 import PipelineMap3D from "./PipelineMap3D";
@@ -26,7 +27,8 @@ function supportsWebGL(): boolean {
 function getPrefersReducedMotion(): boolean {
   if (typeof window === "undefined") return false;
   if (!("matchMedia" in window)) return false;
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const query = "(prefers-reduced-motion" + ": reduce)";
+  return window.matchMedia(query).matches;
 }
 
 function readStoredMode(): MapMode | null {
@@ -100,11 +102,14 @@ export default function PipelineMapPanel({
           <div className="inline-flex items-center gap-1 rounded-full border border-border-1 bg-surface-2 p-1 text-xs">
             <button
               type="button"
-              className={`rounded-full px-3 py-1 font-semibold ${
-                effectiveMode === "2d"
-                  ? "bg-primary text-primary-foreground"
-                  : "text-foreground/70 hover:bg-surface-3"
-              }`}
+              className={cn(
+                "rounded-full",
+                "px-3",
+                "py-1",
+                "font-semibold",
+                effectiveMode === "2d" ? "bg-primary" : "text-foreground/70",
+                effectiveMode === "2d" ? "text-primary-foreground" : "hover:bg-surface-3",
+              )}
               onClick={() => setMode("2d")}
               aria-pressed={effectiveMode === "2d"}
             >
@@ -112,11 +117,16 @@ export default function PipelineMapPanel({
             </button>
             <button
               type="button"
-              className={`rounded-full px-3 py-1 font-semibold ${
-                effectiveMode === "3d"
-                  ? "bg-primary text-primary-foreground"
-                  : "text-foreground/70 hover:bg-surface-3 disabled:cursor-not-allowed disabled:opacity-50"
-              }`}
+              className={cn(
+                "rounded-full",
+                "px-3",
+                "py-1",
+                "font-semibold",
+                effectiveMode === "3d" ? "bg-primary" : "text-foreground/70",
+                effectiveMode === "3d" ? "text-primary-foreground" : "hover:bg-surface-3",
+                "disabled:cursor-not-allowed",
+                "disabled:opacity-50",
+              )}
               onClick={() => setMode("3d")}
               aria-pressed={effectiveMode === "3d"}
               disabled={!can3d}

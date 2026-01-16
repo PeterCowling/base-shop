@@ -1,7 +1,7 @@
 // apps/cms/src/app/cms/products/page.tsx
 
 import ProductsShopChooser from "./ProductsShopChooser.client";
-import { Tag } from "@ui/components/atoms";
+import { Tag } from "@acme/ui/components/atoms";
 import { listShops } from "../../../lib/listShops";
 
 export default async function ProductsIndexPage() {

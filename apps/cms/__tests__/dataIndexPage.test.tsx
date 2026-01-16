@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 
 import DataIndex from "../src/app/cms/shop/[shop]/data/page";
 
-jest.mock("@ui/components/atoms", () => ({
+jest.mock("@acme/ui/components/atoms", () => ({
   __esModule: true,
   Tag: ({ children, ...props }: { children?: ReactNode }) => (
     <span {...props}>{children}</span>

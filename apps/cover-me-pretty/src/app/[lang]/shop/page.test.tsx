@@ -10,7 +10,7 @@ const mockFetchPublishedPosts =
   fetchPublishedPosts as jest.MockedFunction<typeof fetchPublishedPosts>;
 
 // Mock BlogListing component
-jest.mock("@ui/components/cms/blocks/BlogListing", () => ({
+jest.mock("@acme/ui/components/cms/blocks/BlogListing", () => ({
   __esModule: true,
   default: () => <div data-cy="blog-listing" />,
 }));

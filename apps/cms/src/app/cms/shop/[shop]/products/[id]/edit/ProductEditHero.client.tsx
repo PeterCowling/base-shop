@@ -2,9 +2,9 @@
 
 import { useCallback } from "react";
 import Link from "next/link";
-import { Button } from "@ui/components/atoms/shadcn";
-import { Chip } from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
+import { Button } from "@acme/ui/components/atoms/shadcn";
+import { Chip } from "@acme/ui/components/atoms";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 
 interface HeroProps {

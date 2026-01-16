@@ -1,4 +1,4 @@
-import { Tag } from "@ui/components/atoms";
+import { Tag } from "@acme/ui/components/atoms";
 import { Button } from "@/components/atoms/shadcn";
 import { useTranslations } from "@acme/i18n";
 

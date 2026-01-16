@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/atoms/shadcn";
-import type { InventoryItem } from "@platform-core/types/inventory";
+import type { InventoryItem } from "@acme/platform-core/types/inventory";
 import { FormEvent, useCallback } from "react";
 import { InventoryTable } from "./InventoryTable";
 import { InventoryToolbar } from "./InventoryToolbar";

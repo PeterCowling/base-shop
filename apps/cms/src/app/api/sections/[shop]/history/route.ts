@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requirePermission } from "@auth";
+import { requirePermission } from "@acme/auth";
 import { listSectionHistory } from "@acme/platform-core/repositories/sections/sections.json.server";
 
 export const runtime = "nodejs";

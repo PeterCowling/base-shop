@@ -1,5 +1,5 @@
-import { useTranslations as getServerTranslations } from "@i18n/useTranslations.server";
-import type { Locale } from "@i18n/locales";
+import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
+import type { Locale } from "@acme/i18n/locales";
 
 export default async function Success() {
   const t = await getServerTranslations("en" as Locale);

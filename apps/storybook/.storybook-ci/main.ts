@@ -68,7 +68,7 @@ const config: StorybookConfig = {
 
     const aliases: NonNullable<ResolveOptions["alias"]> = {
       ...existingAlias,
-      "@platform-core/contexts/ThemeContext": path.resolve(
+      "@acme/platform-core/contexts/ThemeContext": path.resolve(
         __dirname,
         "../.storybook/mocks/ThemeContext.tsx"
       ),

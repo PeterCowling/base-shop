@@ -10,7 +10,7 @@ jest.mock("../../config", () => ({
   filterExistingProductSlugs: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/blog.server", () => ({
+jest.mock("@acme/platform-core/repositories/blog.server", () => ({
   updatePost: jest.fn(),
   slugExists: jest.fn(),
 }));
@@ -30,7 +30,7 @@ describe("updatePost", () => {
       filterExistingProductSlugs,
     } = await import("../../config");
     const { updatePost: repoUpdatePost } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "config" } as any;
@@ -61,7 +61,7 @@ describe("updatePost", () => {
     const {
       updatePost: repoUpdatePost,
       slugExists,
-    } = await import("@platform-core/repositories/blog.server");
+    } = await import("@acme/platform-core/repositories/blog.server");
 
     const config = { id: "config" } as any;
     getConfig.mockResolvedValue(config);
@@ -85,7 +85,7 @@ describe("updatePost", () => {
     const { getConfig, collectProductSlugs, filterExistingProductSlugs } =
       await import("../../config");
     const { updatePost: repoUpdatePost, slugExists } = await import(
-      "@platform-core/repositories/blog.server"
+      "@acme/platform-core/repositories/blog.server"
     );
 
     const config = { id: "config" } as any;
@@ -119,7 +119,7 @@ describe("updatePost", () => {
       "../../config",
     );
     const { updatePost: repoUpdatePost, slugExists } = await import(
-      "@platform-core/repositories/blog.server",
+      "@acme/platform-core/repositories/blog.server",
     );
     const consoleErrorSpy = jest
       .spyOn(console, "error")

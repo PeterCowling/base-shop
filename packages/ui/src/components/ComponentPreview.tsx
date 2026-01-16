@@ -70,7 +70,7 @@ export default function ComponentPreview<
   const [showNew, setShowNew] = useState(true);
 
   useEffect(() => {
-    const basePath = `@ui/components/${component.file.replace(/\.[jt]sx?$/, "")}`;
+    const basePath = `@acme/ui/components/${component.file.replace(/\.[jt]sx?$/, "")}`;
     const load = async (p: string) => {
       if (
         typeof globalThis !== "undefined" &&

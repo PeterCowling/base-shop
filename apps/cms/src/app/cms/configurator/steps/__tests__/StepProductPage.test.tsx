@@ -51,7 +51,7 @@ jest.mock("@/components/cms/ProductPageBuilder", () => {
   };
 });
 
-jest.mock("@ui/components/atoms", () => {
+jest.mock("@acme/ui/components/atoms", () => {
   const React = require("react");
   const MockToast = ({ open, message }: any) => (open ? <div>{message}</div> : null);
   MockToast.displayName = "MockToast";
@@ -61,7 +61,7 @@ jest.mock("@ui/components/atoms", () => {
   };
 });
 
-jest.mock("@ui/components/atoms/shadcn", () => {
+jest.mock("@acme/ui/components/atoms/shadcn", () => {
   const React = require("react");
   const MockButton = ({ children, onClick, ...props }: any) => (
     <button onClick={onClick} {...props}>{children}</button>

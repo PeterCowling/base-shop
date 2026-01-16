@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Card, CardContent, Toast } from "@ui/components/atoms";
+import { Button, Card, CardContent, Toast } from "@acme/ui/components/atoms";
 import { useTranslations } from "@acme/i18n";
 
 interface RollbackCardProps {

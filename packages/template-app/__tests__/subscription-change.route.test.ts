@@ -13,18 +13,18 @@ jest.mock("@acme/stripe", () => ({
   },
 }));
 
-jest.mock("@platform-core/repositories/shops.server", () => ({
+jest.mock("@acme/platform-core/repositories/shops.server", () => ({
   readShop: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/users", () => ({
+jest.mock("@acme/platform-core/repositories/users", () => ({
   getUserById: jest.fn(),
   setStripeSubscriptionId: jest.fn(),
 }));
 
 import { stripe } from "@acme/stripe";
-import { readShop } from "@platform-core/repositories/shops.server";
-import { getUserById, setStripeSubscriptionId } from "@platform-core/repositories/users";
+import { readShop } from "@acme/platform-core/repositories/shops.server";
+import { getUserById, setStripeSubscriptionId } from "@acme/platform-core/repositories/users";
 
 const SHOP = {
   subscriptionsEnabled: true,

@@ -2,7 +2,7 @@
 import "../globals.css";
 
 import { authOptions } from "@cms/auth/options";
-import { LayoutProvider } from "@platform-core/contexts/LayoutContext";
+import { LayoutProvider } from "@acme/platform-core/contexts/LayoutContext";
 import { getServerSession } from "next-auth";
 import CmsSessionProvider from "./SessionProvider.client";
 import LayoutClient from "./LayoutClient.client";

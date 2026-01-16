@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/atoms/shadcn";
-import type { InventoryItem } from "@platform-core/types/inventory";
+import type { InventoryItem } from "@acme/platform-core/types/inventory";
 import InventoryRow from "./InventoryRow";
 
 interface InventoryTableProps {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTranslations } from "@i18n";
+import { useTranslations } from "@acme/i18n";
 import type { Locale } from "@/lib/locales";
 import { EnglishHome } from "./typo-home/EnglishHome";
 import { InternationalHome } from "./typo-home/InternationalHome";

@@ -1,9 +1,9 @@
 // apps/cms/src/app/cms/shop/[shop]/settings/stock-alerts/page.tsx
 import { getSettings } from "@cms/actions/shops.server";
 import dynamic from "next/dynamic";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { TranslationsProvider } from "@i18n/Translations";
-import en from "@i18n/en.json";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { TranslationsProvider } from "@acme/i18n/Translations";
+import en from "@acme/i18n/en.json";
 
 const StockAlertsEditor = dynamic(() => import("./StockAlertsEditor"));
 void StockAlertsEditor;

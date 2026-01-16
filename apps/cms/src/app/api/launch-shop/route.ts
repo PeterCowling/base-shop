@@ -8,7 +8,7 @@ import { getRequiredSteps } from "../../cms/configurator/steps";
 import {
   runRequiredConfigChecks,
   getConfiguratorProgressForShop,
-} from "@platform-core/configurator";
+} from "@acme/platform-core/configurator";
 import { verifyShopAfterDeploy } from "@cms/actions/verifyShopAfterDeploy.server";
 import { enqueueDeploy } from "@cms/lib/deployQueue";
 import type { Environment } from "@acme/types";

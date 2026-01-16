@@ -3,7 +3,7 @@ import type { SectionTemplate, PageComponent } from "@acme/types";
 import { sectionTemplateSchema } from "@acme/types";
 import { formDataToObject } from "../../utils/formData";
 import { ensureAuthorized } from "../common/auth";
-import { getSections, updateSection } from "@platform-core/repositories/sections/index.server";
+import { getSections, updateSection } from "@acme/platform-core/repositories/sections/index.server";
 
 export async function updateSectionAction(
   shop: string,

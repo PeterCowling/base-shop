@@ -1,6 +1,6 @@
 import PageHeader from "@/components/PageHeader";
-import { useTranslations as getTranslations } from "@i18n/useTranslations.server";
-import { Grid, Stack } from "@ui/components/atoms/primitives";
+import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
+import { Grid, Stack } from "@acme/ui/components/atoms/primitives";
 import CandidatesClient from "./CandidatesClient";
 
 export default async function CandidatesPage() {

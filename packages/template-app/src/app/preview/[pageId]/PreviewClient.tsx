@@ -2,11 +2,11 @@
 
 import { useMemo } from "react";
 import type { PageComponent, HistoryState } from "@acme/page-builder-core";
-import type { Locale } from "@i18n/locales";
+import type { Locale } from "@acme/i18n/locales";
 import DynamicRenderer from "@/components/DynamicRenderer";
-import DeviceSelector from "@ui/components/DeviceSelector";
-import { devicePresets } from "@ui/utils/devicePresets";
-import { usePreviewDevice } from "@ui/hooks/usePreviewDevice";
+import DeviceSelector from "@acme/ui/components/DeviceSelector";
+import { devicePresets } from "@acme/ui/utils/devicePresets";
+import { usePreviewDevice } from "@acme/ui/hooks/usePreviewDevice";
 
 interface PreviewClientProps {
   components: PageComponent[];

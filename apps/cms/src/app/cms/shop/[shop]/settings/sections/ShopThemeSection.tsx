@@ -3,7 +3,7 @@
 import { Button } from "@/components/atoms/shadcn";
 import { resetThemeOverride } from "@cms/actions/shops.server";
 import Link from "next/link";
-import DataTable from "@ui/components/cms/DataTable";
+import DataTable from "@acme/ui/components/cms/DataTable";
 import {
   createThemeTokenColumns,
   themeTokenRowClassName,

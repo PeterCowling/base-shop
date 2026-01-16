@@ -7,8 +7,8 @@ import { Readable } from "stream";
 import type { ReadableStream as NodeReadableStream } from "stream/web";
 import Busboy, { type FileInfo } from "busboy";
 import { fileTypeFromBuffer } from "file-type/core";
-import { resolveDataRoot } from "@platform-core/dataRoot";
-import { validateShopName } from "@platform-core/shops";
+import { resolveDataRoot } from "@acme/platform-core/dataRoot";
+import { validateShopName } from "@acme/platform-core/shops";
 import { useTranslations as getServerTranslations } from "@acme/i18n/useTranslations.server";
 
 function isWebReadableStream(

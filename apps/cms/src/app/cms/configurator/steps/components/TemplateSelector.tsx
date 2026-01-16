@@ -10,15 +10,15 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@ui/components/atoms/shadcn";
+} from "@acme/ui/components/atoms/shadcn";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@ui/components/atoms";
-import { Inline } from "@ui/components/atoms/primitives";
+} from "@acme/ui/components/atoms";
+import { Inline } from "@acme/ui/components/atoms/primitives";
 import { useTranslations } from "@acme/i18n";
 import type { PageComponent } from "@acme/types";
 

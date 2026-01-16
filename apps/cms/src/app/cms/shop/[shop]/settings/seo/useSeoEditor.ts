@@ -1,8 +1,8 @@
 "use client";
 
 import { FormEvent, useCallback, useMemo, useState } from "react";
-import { useTranslations } from "@i18n/Translations";
-import en from "@i18n/en.json";
+import { useTranslations } from "@acme/i18n/Translations";
+import en from "@acme/i18n/en.json";
 
 import {
   generateSeo as runGenerateSeo,

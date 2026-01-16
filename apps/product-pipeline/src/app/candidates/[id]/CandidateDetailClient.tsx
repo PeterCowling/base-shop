@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Grid, Stack } from "@ui/components/atoms/primitives";
+import { Grid, Stack } from "@acme/ui/components/atoms/primitives";
 import ArtifactsCard from "./ArtifactsCard";
 import CandidateArtifactUploadCard from "./CandidateArtifactUploadCard";
 import CandidateOverviewCard from "./CandidateOverviewCard";

@@ -1,19 +1,19 @@
 import { jest } from "@jest/globals";
 
-jest.mock("@platform-core/services/stockScheduler.server", () => ({
+jest.mock("@acme/platform-core/services/stockScheduler.server", () => ({
   scheduleStockChecks: jest.fn(),
   getStockCheckStatus: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/inventory.server", () => ({
+jest.mock("@acme/platform-core/repositories/inventory.server", () => ({
   readInventory: jest.fn(),
 }));
 
 import {
   scheduleStockChecks,
   getStockCheckStatus,
-} from "@platform-core/services/stockScheduler.server";
-import { readInventory } from "@platform-core/repositories/inventory.server";
+} from "@acme/platform-core/services/stockScheduler.server";
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
 import {
   updateStockScheduler,
   getSchedulerStatus,

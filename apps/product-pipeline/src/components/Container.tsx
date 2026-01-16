@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from "react";
-import { cn } from "@ui/utils/style";
+import { cn } from "@acme/ui/utils/style";
 
 type ContainerProps = HTMLAttributes<HTMLDivElement>;
 

@@ -3,8 +3,8 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import type { ReactElement } from "react";
 import ReturnForm from "../src/app/account/returns/ReturnForm";
 import ReturnsPage from "../src/app/account/returns/page";
-import { getReturnLogistics, getReturnBagAndLabel } from "@platform-core/returnLogistics";
-import { getShopSettings } from "@platform-core/repositories/settings.server";
+import { getReturnLogistics, getReturnBagAndLabel } from "@acme/platform-core/returnLogistics";
+import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
 
 // ---------- ReturnForm tests ----------
 
@@ -32,12 +32,12 @@ describe("ReturnForm", () => {
 
 // ---------- ReturnsPage tests ----------
 
-jest.mock("@platform-core/returnLogistics", () => ({
+jest.mock("@acme/platform-core/returnLogistics", () => ({
   getReturnLogistics: jest.fn(),
   getReturnBagAndLabel: jest.fn(),
 }));
 
-jest.mock("@platform-core/repositories/settings.server", () => ({
+jest.mock("@acme/platform-core/repositories/settings.server", () => ({
   getShopSettings: jest.fn(),
 }));
 

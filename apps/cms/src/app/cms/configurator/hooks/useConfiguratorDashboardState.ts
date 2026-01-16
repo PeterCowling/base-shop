@@ -12,7 +12,7 @@ import type { ConfiguratorStep } from "../types";
 import { useConfiguratorPersistence } from "./useConfiguratorPersistence";
 import { useLaunchShop } from "./useLaunchShop";
 import { calculateConfiguratorProgress } from "../lib/progress";
-import { useLayout } from "@platform-core/contexts/LayoutContext";
+import { useLayout } from "@acme/platform-core/contexts/LayoutContext";
 import { getRequiredSteps, getSteps, getStepsMap } from "../steps";
 import { useTranslations } from "@acme/i18n";
 import type {
@@ -27,13 +27,13 @@ import { buildHeroData } from "./dashboard/heroData";
 import { buildTrackProgress } from "./dashboard/trackProgress";
 import { getFailedStepLink } from "./dashboard/failedStepLink";
 import type { ConfiguratorProgress as ServerConfiguratorProgress } from "@acme/types";
-import { REQUIRED_CONFIG_CHECK_STEPS } from "@platform-core/configurator-steps";
+import { REQUIRED_CONFIG_CHECK_STEPS } from "@acme/platform-core/configurator-steps";
 import {
   deriveShopHealth,
   type ShopHealthSummary,
 } from "../../../lib/shopHealth";
 import type { Environment } from "@acme/types";
-import type { DeployShopResult } from "@platform-core/createShop/deployTypes";
+import type { DeployShopResult } from "@acme/platform-core/createShop/deployTypes";
 import { track } from "@acme/telemetry";
 import {
   buildLaunchChecklist,

@@ -64,6 +64,7 @@
   "filterPanel.collapse": "Collapse filters",
   "filterPanel.expand": "Expand filters",
   "filterPanel.title": "Filters",
+  "formCard.savingChanges": "Saving changes...",
   "timeline.byUser": "by {user}",
   "timeline.empty": "No events yet",
   "actions.autosaved": "Autosaved",

@@ -1,8 +1,9 @@
 'use client'
 
-import { type ReactNode } from 'react'
-import { TrendingUp, TrendingDown, type LucideIcon } from 'lucide-react'
-import { cn } from '../../../../utils/style/cn'
+import { type ReactNode } from "react"
+import { TrendingUp, TrendingDown, type LucideIcon } from "lucide-react"
+import { Cluster, Inline, Stack } from "../../../atoms/primitives"
+import { cn } from "../../../../utils/style/cn"
 
 export interface MetricsCardProps {
   /** Label describing the metric */
@@ -27,17 +28,17 @@ export interface MetricsCardProps {
 }
 
 const variantStyles = {
-  default: 'bg-white dark:bg-darkSurface border-gray-200 dark:border-darkSurface',
-  success: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800',
-  warning: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800',
-  danger: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800',
+  default: "bg-surface-1 border-border-2",
+  success: "bg-success-soft border-success/30",
+  warning: "bg-warning-soft border-warning/30",
+  danger: "bg-danger-soft border-danger/30",
 }
 
 const iconColorStyles = {
-  default: 'text-gray-500 dark:text-gray-400',
-  success: 'text-green-600 dark:text-green-400',
-  warning: 'text-yellow-600 dark:text-yellow-400',
-  danger: 'text-red-600 dark:text-red-400',
+  default: "text-muted",
+  success: "text-success",
+  warning: "text-warning",
+  danger: "text-danger",
 }
 
 /**
@@ -76,24 +77,23 @@ export function MetricsCard({
   className,
 }: MetricsCardProps) {
   const isInteractive = Boolean(onClick)
+  const Wrapper = isInteractive ? "button" : "div"
 
   return (
-    <div
+    <Wrapper
+      type={isInteractive ? "button" : undefined}
       className={cn(
-        'rounded-lg border',
-        'p-[var(--card-padding)]',
-        'transition-all duration-200',
+        "rounded-lg border p-6 text-start transition-all duration-200",
         variantStyles[variant],
-        isInteractive && 'cursor-pointer hover:shadow-md hover:-translate-y-0.5',
+        isInteractive &&
+          "cursor-pointer hover:-translate-y-0.5 hover:shadow-elevation-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className
       )}
       onClick={onClick}
-      role={isInteractive ? 'button' : undefined}
-      tabIndex={isInteractive ? 0 : undefined}
       onKeyDown={
         isInteractive
           ? (e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
+              if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault()
                 onClick?.()
               }
@@ -101,31 +101,33 @@ export function MetricsCard({
           : undefined
       }
     >
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
+      <Cluster alignY="start" justify="between" className="gap-4">
+        <Stack gap={2} className="min-w-0 flex-1">
           {/* Label */}
-          <div className="text-[var(--label-size)] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+          <span className="text-xs font-medium uppercase tracking-wide text-muted">
             {label}
-          </div>
+          </span>
 
           {/* Value */}
-          <div className="mt-1 text-2xl font-bold text-gray-900 dark:text-darkAccentGreen">
+          <div className="text-2xl font-bold text-fg">
             {value}
           </div>
 
           {/* Description */}
           {description && (
-            <div className="mt-1 text-[var(--label-size)] text-gray-500 dark:text-gray-400">
+            <div className="text-xs text-muted">
               {description}
             </div>
           )}
 
           {/* Trend */}
           {trend && (
-            <div
+            <Inline
+              gap={1}
+              alignY="center"
               className={cn(
-                'mt-2 inline-flex items-center gap-1 text-sm font-medium',
-                trend.direction === 'up' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                "text-sm font-medium",
+                trend.direction === "up" ? "text-success" : "text-danger"
               )}
             >
               {trend.direction === 'up' ? (
@@ -134,26 +136,26 @@ export function MetricsCard({
                 <TrendingDown className="h-4 w-4" />
               )}
               <span>
-                {trend.value > 0 ? '+' : ''}
+                {trend.value > 0 ? "+" : ""}
                 {trend.value}%
               </span>
-            </div>
+            </Inline>
           )}
-        </div>
+        </Stack>
 
         {/* Icon */}
         {Icon && (
           <div
             className={cn(
-              'flex-shrink-0 p-2 rounded-lg bg-white/50 dark:bg-black/20',
+              "flex-shrink-0 rounded-lg bg-surface-2/60 p-2",
               iconColorStyles[variant]
             )}
           >
             <Icon className="h-6 w-6" />
           </div>
         )}
-      </div>
-    </div>
+      </Cluster>
+    </Wrapper>
   )
 }
 

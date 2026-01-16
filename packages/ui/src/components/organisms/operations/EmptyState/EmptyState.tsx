@@ -1,5 +1,7 @@
-import React, { type ReactNode } from 'react';
-import { type LucideIcon } from 'lucide-react';
+import React, { type ReactNode } from "react";
+import { type LucideIcon } from "lucide-react";
+import { Inline, Stack } from "../../../atoms/primitives";
+import { cn } from "../../../../utils/style/cn";
 
 export interface EmptyStateAction {
   /**
@@ -102,62 +104,60 @@ export function EmptyState({
   description,
   actions = [],
   children,
-  className = '',
-  size = 'default',
+  className = "",
+  size = "default",
 }: EmptyStateProps) {
   const sizeClasses = {
     sm: {
-      container: 'py-8',
-      icon: 'h-10 w-10',
-      title: 'text-base',
-      description: 'text-sm',
-      gap: 'gap-3',
+      container: "py-8",
+      icon: "h-10 w-10",
+      title: "text-base",
+      description: "text-sm",
+      gap: 3,
     },
     default: {
-      container: 'py-12',
-      icon: 'h-16 w-16',
-      title: 'text-lg',
-      description: 'text-base',
-      gap: 'gap-4',
+      container: "py-12",
+      icon: "h-16 w-16",
+      title: "text-lg",
+      description: "text-base",
+      gap: 4,
     },
     lg: {
-      container: 'py-16',
-      icon: 'h-20 w-20',
-      title: 'text-xl',
-      description: 'text-lg',
-      gap: 'gap-6',
+      container: "py-16",
+      icon: "h-20 w-20",
+      title: "text-xl",
+      description: "text-lg",
+      gap: 6,
     },
   };
 
   const sizes = sizeClasses[size];
 
   return (
-    <div
-      className={`
-        flex flex-col items-center justify-center text-center
-        ${sizes.container}
-        ${className}
-      `}
+    <Stack
+      gap={4}
+      align="center"
+      className={cn("text-center", sizes.container, className)}
     >
       {/* Icon */}
       {Icon && (
-        <div className="mb-4 rounded-full bg-gray-100 p-4 dark:bg-darkBg">
+        <div className="rounded-full bg-muted p-4">
           <Icon
-            className={`${sizes.icon} text-gray-400 dark:text-gray-500`}
+            className={cn(sizes.icon, "text-muted")}
             strokeWidth={1.5}
           />
         </div>
       )}
 
       {/* Content */}
-      <div className={`flex max-w-md flex-col ${sizes.gap}`}>
+      <Stack gap={sizes.gap} align="center" className="w-full">
         <h3
-          className={`${sizes.title} font-semibold text-gray-900 dark:text-darkAccentGreen`}
+          className={cn(sizes.title, "font-semibold text-fg")}
         >
           {title}
         </h3>
 
-        <p className={`${sizes.description} text-gray-600 dark:text-gray-400`}>
+        <p className={cn(sizes.description, "text-muted")}>
           {description}
         </p>
 
@@ -166,35 +166,34 @@ export function EmptyState({
 
         {/* Actions */}
         {actions.length > 0 && (
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            {actions.map((action, index) => {
+          <Inline gap={3} className="mt-6 justify-center">
+            {actions.map((action) => {
               const ActionIcon = action.icon;
-              const isPrimary = action.variant === 'primary' || action.variant === undefined;
+              const isPrimary =
+                action.variant === "primary" || action.variant === undefined;
 
               return (
                 <button
-                  key={index}
+                  key={`${action.label}-${action.variant ?? "primary"}`}
                   type="button"
                   onClick={action.onClick}
-                  className={`
-                    inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold shadow-sm
-                    transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2
-                    ${
-                      isPrimary
-                        ? 'bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600'
-                        : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-primary-500 dark:border-darkSurface dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg'
-                    }
-                  `}
+                  className={cn(
+                    "inline-flex min-h-11 min-w-11 items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold shadow-sm transition-colors",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    isPrimary
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                      : "border border-border-2 bg-surface-1 text-fg hover:bg-muted/40"
+                  )}
                 >
                   {ActionIcon && <ActionIcon className="h-4 w-4" />}
                   {action.label}
                 </button>
               );
             })}
-          </div>
+          </Inline>
         )}
-      </div>
-    </div>
+      </Stack>
+    </Stack>
   );
 }
 

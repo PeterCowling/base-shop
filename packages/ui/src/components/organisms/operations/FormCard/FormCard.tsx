@@ -1,5 +1,8 @@
-import React, { type ReactNode } from 'react';
-import { AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
+import React, { type ReactNode } from "react";
+import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
+import { useTranslations } from "@acme/i18n";
+import { Cluster, Inline, Stack } from "../../../atoms/primitives";
+import { cn } from "../../../../utils/style/cn";
 
 export interface FormCardProps {
   /**
@@ -90,43 +93,50 @@ export function FormCard({
   description,
   children,
   footer,
-  state = 'idle',
+  state = "idle",
   errorMessage,
   successMessage,
-  className = '',
+  className = "",
   showLoadingOverlay = false,
 }: FormCardProps) {
-  const showError = state === 'error' && errorMessage;
-  const showSuccess = state === 'success' && successMessage;
-  const isLoading = state === 'loading';
+  const t = useTranslations();
+  const showError = state === "error" && errorMessage;
+  const showSuccess = state === "success" && successMessage;
+  const isLoading = state === "loading";
 
   return (
     <div
-      className={`
-        relative overflow-hidden rounded-lg border border-gray-300 bg-white shadow-sm
-        dark:border-darkSurface dark:bg-darkSurface
-        ${className}
-      `}
+      className={cn(
+        "relative overflow-hidden rounded-lg border border-border-2 bg-surface-1 shadow-elevation-2",
+        className
+      )}
     >
       {/* Loading overlay */}
       {showLoadingOverlay && isLoading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm dark:bg-darkSurface/80">
-          <div className="flex flex-col items-center gap-2">
-            <Loader2 className="h-8 w-8 animate-spin text-primary-600 dark:text-darkAccentGreen" />
-            <p className="text-sm font-medium text-gray-700 dark:text-darkAccentGreen">
-              Saving changes...
-            </p>
-          </div>
+        // eslint-disable-next-line ds/absolute-parent-guard -- UI-3010 [ttl=2026-12-31] overlay is anchored to relative card root
+        <div className="absolute inset-0">
+          <Cluster
+            alignY="center"
+            justify="center"
+            className="h-full bg-surface-1/80 backdrop-blur-sm"
+          >
+            <Stack gap={2} align="center">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+              <p className="text-sm font-medium text-fg">
+                {t("formCard.savingChanges")}
+              </p>
+            </Stack>
+          </Cluster>
         </div>
       )}
 
       {/* Header */}
-      <div className="border-b border-gray-200 bg-gray-50 px-[var(--card-padding)] py-4 dark:border-darkSurface dark:bg-darkBg">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-darkAccentGreen">
+      <div className="border-b border-border-2 bg-surface-2 px-6 py-4">
+        <h2 className="text-lg font-semibold text-fg">
           {title}
         </h2>
         {description && (
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          <p className="mt-1 text-sm text-muted">
             {description}
           </p>
         )}
@@ -134,39 +144,37 @@ export function FormCard({
 
       {/* Success message */}
       {showSuccess && (
-        <div className="border-b border-green-200 bg-green-50 px-[var(--card-padding)] py-3 dark:border-green-900 dark:bg-green-900/20">
-          <div className="flex items-start gap-3">
-            <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400" />
-            <p className="text-sm font-medium text-green-800 dark:text-green-300">
+        <div className="border-b border-success/30 bg-success-soft px-6 py-3">
+          <Inline gap={3} alignY="start" wrap={false}>
+            <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-success" />
+            <p className="text-sm font-medium text-success-foreground">
               {successMessage}
             </p>
-          </div>
+          </Inline>
         </div>
       )}
 
       {/* Error message */}
       {showError && (
-        <div className="border-b border-red-200 bg-red-50 px-[var(--card-padding)] py-3 dark:border-red-900 dark:bg-red-900/20">
-          <div className="flex items-start gap-3">
-            <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-600 dark:text-red-400" />
-            <p className="text-sm font-medium text-red-800 dark:text-red-300">
+        <div className="border-b border-danger/30 bg-danger-soft px-6 py-3">
+          <Inline gap={3} alignY="start" wrap={false}>
+            <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-danger" />
+            <p className="text-sm font-medium text-danger-foreground">
               {errorMessage}
             </p>
-          </div>
+          </Inline>
         </div>
       )}
 
       {/* Content */}
-      <div className="px-[var(--card-padding)] py-[var(--card-padding)]">
-        {children}
-      </div>
+      <div className="px-6 py-6">{children}</div>
 
       {/* Footer */}
       {footer && (
-        <div className="border-t border-gray-200 bg-gray-50 px-[var(--card-padding)] py-4 dark:border-darkSurface dark:bg-darkBg">
-          <div className="flex items-center justify-end gap-3">
+        <div className="border-t border-border-2 bg-surface-2 px-6 py-4">
+          <Inline gap={3} alignY="center" className="justify-end">
             {footer}
-          </div>
+          </Inline>
         </div>
       )}
     </div>

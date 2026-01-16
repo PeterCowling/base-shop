@@ -113,7 +113,7 @@ export const WithDescription: Story = {
 
 export const Interactive: Story = {
   args: {
-    label: 'Today's Revenue',
+    label: "Today's Revenue",
     value: '€987.65',
     icon: DollarSign,
     trend: {

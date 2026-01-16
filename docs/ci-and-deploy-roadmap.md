@@ -168,6 +168,24 @@ All app workflows now follow a two-stage deployment pattern:
 | skylar | `skylar.yml` | `staging.skylar.pages.dev` | `skylar.pages.dev` |
 | reception | `reception.yml` | `staging.reception.pages.dev` | `reception.pages.dev` |
 | prime | `prime.yml` | `staging.prime.pages.dev` | `prime.pages.dev` |
+| cover-me-pretty | `cover-me-pretty.yml` | `staging.cover-me-pretty.pages.dev` | `cover-me-pretty.pages.dev` |
+| xa | `xa.yml` | `staging.xa.pages.dev` | `xa.pages.dev` |
+| xa-b | `xa-b.yml` | `staging.xa-b.pages.dev` | `xa-b.pages.dev` |
+| xa-j | `xa-j.yml` | `staging.xa-j.pages.dev` | `xa-j.pages.dev` |
+| cochlearfit | `cochlearfit.yml` | `staging.cochlearfit.pages.dev` | `cochlearfit.pages.dev` |
+| handbag-configurator | `handbag-configurator.yml` | `staging.handbag-configurator.pages.dev` | `handbag-configurator.pages.dev` |
+
+### Apps Excluded from Staging/Production Workflow
+
+These apps are intentionally excluded from the staging/production deployment pattern:
+
+| App | Reason |
+|-----|--------|
+| `storybook` | Dev tool only, not deployed to production |
+| `*-worker` apps | Cloudflare Workers use `wrangler deploy`, different deployment pattern |
+| `api` | Separate deployment mechanism |
+| `dashboard` | Library/incomplete app, no build script |
+| `storefront` | Library/incomplete app, no build script |
 
 ### Key Files
 

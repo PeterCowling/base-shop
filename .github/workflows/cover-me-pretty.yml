@@ -1,0 +1,84 @@
+name: Deploy Cover Me Pretty
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/cover-me-pretty/**'
+      - 'packages/config/**'
+      - 'packages/i18n/**'
+      - 'packages/next-config/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/ui/**'
+      - 'packages/platform-core/**'
+      - 'packages/shared-utils/**'
+      - 'packages/themes/**'
+      - 'packages/design-tokens/**'
+      - 'packages/template-app/**'
+      - '.github/workflows/cover-me-pretty.yml'
+  pull_request:
+    paths:
+      - 'apps/cover-me-pretty/**'
+      - 'packages/config/**'
+      - 'packages/i18n/**'
+      - 'packages/next-config/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/ui/**'
+      - 'packages/platform-core/**'
+      - 'packages/shared-utils/**'
+      - 'packages/themes/**'
+      - 'packages/design-tokens/**'
+      - 'packages/template-app/**'
+      - '.github/workflows/cover-me-pretty.yml'
+  workflow_dispatch:
+    inputs:
+      deploy-target:
+        description: 'Deploy target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  # Auto-deploy to staging on push to main
+  staging:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'staging')
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/cover-me-pretty"
+      build-cmd: pnpm --filter @apps/cover-me-pretty... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/cover-me-pretty && pnpm exec next-on-pages deploy --project-name cover-me-pretty --branch staging
+      project-name: "cover-me-pretty"
+      target-environment: staging
+    secrets: inherit
+
+  # Manual production deployment (requires GitHub environment approval)
+  production:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'production'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/cover-me-pretty"
+      build-cmd: pnpm --filter @apps/cover-me-pretty... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/cover-me-pretty && pnpm exec next-on-pages deploy --project-name cover-me-pretty --branch main
+      project-name: "cover-me-pretty"
+      target-environment: production
+    secrets: inherit
+
+  # Validation only for PRs (no deploy)
+  validate:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/cover-me-pretty"
+      build-cmd: pnpm --filter @apps/cover-me-pretty... build
+      artifact-path: ""
+      project-name: "cover-me-pretty"
+      target-environment: staging
+    secrets: inherit

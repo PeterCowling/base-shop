@@ -1,0 +1,74 @@
+name: Deploy Handbag Configurator
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/handbag-configurator/**'
+      - 'packages/next-config/**'
+      - 'packages/product-configurator/**'
+      - 'packages/ui/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/design-tokens/**'
+      - '.github/workflows/handbag-configurator.yml'
+  pull_request:
+    paths:
+      - 'apps/handbag-configurator/**'
+      - 'packages/next-config/**'
+      - 'packages/product-configurator/**'
+      - 'packages/ui/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/design-tokens/**'
+      - '.github/workflows/handbag-configurator.yml'
+  workflow_dispatch:
+    inputs:
+      deploy-target:
+        description: 'Deploy target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  # Auto-deploy to staging on push to main
+  staging:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'staging')
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/handbag-configurator"
+      build-cmd: pnpm --filter @apps/handbag-configurator... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/handbag-configurator && pnpm exec next-on-pages deploy --project-name handbag-configurator --branch staging
+      project-name: "handbag-configurator"
+      target-environment: staging
+    secrets: inherit
+
+  # Manual production deployment (requires GitHub environment approval)
+  production:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'production'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/handbag-configurator"
+      build-cmd: pnpm --filter @apps/handbag-configurator... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/handbag-configurator && pnpm exec next-on-pages deploy --project-name handbag-configurator --branch main
+      project-name: "handbag-configurator"
+      target-environment: production
+    secrets: inherit
+
+  # Validation only for PRs (no deploy)
+  validate:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/handbag-configurator"
+      build-cmd: pnpm --filter @apps/handbag-configurator... build
+      artifact-path: ""
+      project-name: "handbag-configurator"
+      target-environment: staging
+    secrets: inherit

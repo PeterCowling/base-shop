@@ -292,13 +292,107 @@ Plans with proper attribution allow:
 - Apps must map workspace packages to both `src` and `dist` in tsconfig paths
 - Provider packages need: `composite: true`, `declaration: true`, `declarationMap: true`
 
-### Testing
-- **Avoid workspace-wide tests** unless explicitly asked
-- Prefer scoped runs: `pnpm --filter @acme/platform-core test`
+### Testing (CRITICAL - Resource Safety)
+
+> **⚠️ Reference incident (2026-01-16):** Orphaned Jest processes consumed 2.5GB+ RAM, leaving only 93MB free on a 16GB machine. Load average hit 7.73. See `AGENTS.md` Testing Policy for full details.
+
+**NEVER run broad test suites without explicit user request:**
+
+```bash
+# ❌ PROHIBITED - spawns many workers, consumes 2-5GB RAM
+pnpm test                           # ALL monorepo tests
+pnpm --filter @acme/ui test         # ALL tests in large package
+jest                                # ALL tests in directory
+```
+
+**ALWAYS use targeted test commands:**
+
+```bash
+# ✅ REQUIRED - run minimum necessary tests
+pnpm --filter @acme/ui test -- src/atoms/Button.test.tsx    # Single file
+pnpm --filter @acme/ui test -- --testPathPattern="Button"   # Pattern match
+pnpm --filter @acme/ui test -- -t "renders correctly"       # Single test name
+```
+
+**Before running ANY tests:**
+1. Check for existing Jest processes: `ps aux | grep jest | grep -v grep`
+2. Kill orphans if found: `pkill -f "jest-worker" && pkill -f "jest.js"`
+3. When broader tests needed, limit workers: `--maxWorkers=2`
+
+**Full policy:** See `AGENTS.md` → Testing Policy section.
+
+**Other testing notes:**
 - Seed data before E2E: `pnpm --filter @acme/platform-core exec prisma db seed`
 - Coverage: `pnpm test:coverage`
 - **Coverage targets:** 80% lines/branches/functions globally; 90%/85%/90% for `@acme/ui`
 - See `docs/coverage.md` for full coverage configuration and targets
+
+#### Jest Preset Usage
+
+All packages/apps should use the centralized Jest presets from `@acme/config/jest-presets`:
+
+**Preset Selection:**
+- Use `react` preset for React components (jsdom environment)
+- Use `node` preset for Node.js packages (no DOM)
+
+**Coverage Tiers:**
+- `strict` (90/85/90): Critical business logic (@acme/ui, payment processing)
+- `standard` (80/80/80): Default for most packages
+- `moderate` (60/60/60): Partial coverage, legacy code
+- `relaxed` (40/30/30): Apps, presentation-only code
+- `minimal` (0/0/0): Scripts, tooling, temporary exemptions
+
+**Example Configuration:**
+```javascript
+// jest.config.cjs
+const { react, coverageTiers } = require("@acme/config/jest-presets");
+
+module.exports = {
+  ...react,
+  coverageThreshold: coverageTiers.standard,
+  // Add package-specific overrides only if needed
+};
+```
+
+**Common Customizations:**
+```javascript
+// Add app-specific path aliases
+moduleNameMapper: {
+  ...react.moduleNameMapper,
+  "^@/(.*)$": "<rootDir>/src/$1",
+}
+
+// Exclude files from coverage
+collectCoverageFrom: [
+  "src/**/*.ts",
+  "!src/**/*.generated.ts",
+]
+
+// Add package-specific setup
+setupFilesAfterEnv: [
+  ...react.setupFilesAfterEnv,
+  "<rootDir>/jest.setup.local.ts",
+]
+```
+
+**Rollback Pattern:**
+During migration, configs use `JEST_USE_NEW_PRESET` env var:
+```bash
+# Temporarily use old config if issues arise
+JEST_USE_NEW_PRESET=0 pnpm --filter <package> test
+```
+
+**Important Rules:**
+- Don't override `coverageDirectory` (breaks aggregation)
+- Use coverage tiers instead of custom thresholds
+- When overriding `moduleNameMapper`, always spread preset's mappings first
+- Read `packages/config/jest-presets/README.md` for full documentation
+
+**Common Pitfalls:**
+- ESM resolution errors: Add package to `transformIgnorePatterns`
+- Multiple React instances: Preserve preset's React path mappings
+- Coverage not found: Don't override `coverageDirectory`
+- Setup order issues: Append to `setupFilesAfterEnv`, don't replace
 
 ### Git & Commits
 
@@ -342,11 +436,27 @@ pnpm build:cms-deps
 
 ### Testing
 ```bash
-# Run tests for specific package
-pnpm --filter @acme/platform-core test
+# ⚠️ ALWAYS use targeted tests - see "Testing (CRITICAL)" section above
 
-# E2E tests
-pnpm e2e
+# Run a SINGLE test file (preferred)
+pnpm --filter @acme/platform-core test -- src/cart/addItem.test.ts
+
+# Run tests matching a pattern
+pnpm --filter @acme/platform-core test -- --testPathPattern="cart"
+
+# Run a specific test by name
+pnpm --filter @acme/platform-core test -- -t "adds item to cart"
+
+# If you MUST run broader tests, limit workers
+pnpm --filter @acme/platform-core test -- --maxWorkers=2
+
+# Check for orphaned test processes BEFORE running tests
+ps aux | grep jest | grep -v grep
+
+# Kill orphaned processes if found
+pkill -f "jest-worker" && pkill -f "jest.js"
+
+# E2E tests (run sparingly - resource intensive)
 pnpm e2e:cms
 pnpm e2e:shop
 
@@ -354,7 +464,7 @@ pnpm e2e:shop
 pnpm storybook
 pnpm test-storybook
 
-# Coverage
+# Coverage (run only when specifically needed)
 pnpm test:coverage
 ```
 
@@ -402,7 +512,8 @@ gh workflow run <app>.yml -f deploy-target=production
 # Or use the centralized promotion workflow
 gh workflow run promote-to-production.yml -f app=<app-name>
 
-# Apps: product-pipeline, cms, brikette, skylar, reception, prime
+# Apps: product-pipeline, cms, brikette, skylar, reception, prime,
+#       cover-me-pretty, xa, xa-b, xa-j, cochlearfit, handbag-configurator
 ```
 
 **Staging URLs:** `staging.<app>.pages.dev`
@@ -520,10 +631,15 @@ Check `docs/dev-ports.md` for current port assignments. Common ones:
 12. **Don't guess URLs** - only use user-provided or documented URLs
 13. **Don't add time estimates** - focus on what needs to be done
 
+### Testing
+14. **Don't run broad test suites** - Use targeted single-file tests (incident: 2026-01-16)
+15. **Don't start tests without checking for existing processes** - `ps aux | grep jest`
+16. **Don't leave test processes running** - Kill orphans before starting new tests
+
 ### Decision Making
-14. **Don't assume you know what a file contains** - Read it first
-15. **Don't fix symptoms instead of causes** - Investigate root cause
-16. **Don't choose easy over correct** - The extra effort now saves pain later
+17. **Don't assume you know what a file contains** - Read it first
+18. **Don't fix symptoms instead of causes** - Investigate root cause
+19. **Don't choose easy over correct** - The extra effort now saves pain later
 
 ## Systemic Issues: Plan-First Approach (MANDATORY)
 
@@ -622,7 +738,11 @@ These shortcuts created technical debt that now needs proper plans to resolve:
 | Install | `pnpm install` |
 | Dev | `pnpm --filter <app> dev` |
 | Build | `pnpm build` |
-| Test | `pnpm --filter <package> test` |
+| Test single file | `pnpm --filter <pkg> test -- path/to/file.test.ts` |
+| Test by pattern | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
+| Test (limited workers) | `pnpm --filter <pkg> test -- --maxWorkers=2` |
+| Check for orphan tests | `ps aux \| grep jest \| grep -v grep` |
+| Kill orphan tests | `pkill -f "jest-worker" && pkill -f "jest.js"` |
 | Typecheck | `pnpm typecheck` |
 | Lint | `pnpm lint` |
 | Format | `pnpm format` |
@@ -633,6 +753,7 @@ These shortcuts created technical debt that now needs proper plans to resolve:
 **Last Updated:** 2026-01-16
 
 **Recent Updates:**
+- 2026-01-16: Added Testing Policy (CRITICAL) section after orphaned Jest processes incident (Claude Opus 4.5)
 - 2026-01-16: Added Deployment section with staging/production workflow (Claude Opus 4.5)
 - 2026-01-15: Added "Systemic Issues: Plan-First Approach" section (Claude Opus 4.5)
 

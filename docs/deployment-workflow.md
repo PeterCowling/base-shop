@@ -53,6 +53,12 @@ PR merged to main
 | skylar | `staging.skylar.pages.dev` | `skylar.pages.dev` |
 | reception | `staging.reception.pages.dev` | `reception.pages.dev` |
 | prime | `staging.prime.pages.dev` | `prime.pages.dev` |
+| cover-me-pretty | `staging.cover-me-pretty.pages.dev` | `cover-me-pretty.pages.dev` |
+| xa | `staging.xa.pages.dev` | `xa.pages.dev` |
+| xa-b | `staging.xa-b.pages.dev` | `xa-b.pages.dev` |
+| xa-j | `staging.xa-j.pages.dev` | `xa-j.pages.dev` |
+| cochlearfit | `staging.cochlearfit.pages.dev` | `cochlearfit.pages.dev` |
+| handbag-configurator | `staging.handbag-configurator.pages.dev` | `handbag-configurator.pages.dev` |
 
 ## Deploying to Staging
 
@@ -85,6 +91,12 @@ gh workflow run skylar.yml -f deploy-target=production
 gh workflow run reception.yml -f deploy-target=production
 gh workflow run prime.yml -f deploy-target=production
 gh workflow run product-pipeline.yml -f deploy-target=production
+gh workflow run cover-me-pretty.yml -f deploy-target=production
+gh workflow run xa.yml -f deploy-target=production
+gh workflow run xa-b.yml -f deploy-target=production
+gh workflow run xa-j.yml -f deploy-target=production
+gh workflow run cochlearfit.yml -f deploy-target=production
+gh workflow run handbag-configurator.yml -f deploy-target=production
 
 # Or use the centralized promotion workflow
 gh workflow run promote-to-production.yml -f app=cms
@@ -159,7 +171,25 @@ To enable the approval workflow, configure GitHub Environments:
 | `.github/workflows/skylar.yml` | Skylar deploys |
 | `.github/workflows/reception.yml` | Reception deploys |
 | `.github/workflows/prime.yml` | Prime deploys |
+| `.github/workflows/cover-me-pretty.yml` | Cover Me Pretty deploys |
+| `.github/workflows/xa.yml` | XA deploys |
+| `.github/workflows/xa-b.yml` | XA-B deploys |
+| `.github/workflows/xa-j.yml` | XA-J deploys |
+| `.github/workflows/cochlearfit.yml` | Cochlearfit deploys |
+| `.github/workflows/handbag-configurator.yml` | Handbag Configurator deploys |
 | `.github/workflows/promote-to-production.yml` | Centralized promotion helper |
+
+## Apps Excluded from This Workflow
+
+The following apps are **not** part of the staging/production workflow:
+
+| App | Reason |
+|-----|--------|
+| `storybook` | Development tool only, not deployed to production |
+| `*-worker` apps | Cloudflare Workers use `wrangler deploy`, different deployment pattern |
+| `api` | Separate deployment mechanism |
+| `dashboard` | Library/incomplete app, no build script |
+| `storefront` | Library/incomplete app, no build script |
 
 ## Troubleshooting
 

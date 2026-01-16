@@ -17,6 +17,12 @@ on:
           - skylar
           - reception
           - prime
+          - cover-me-pretty
+          - xa
+          - xa-b
+          - xa-j
+          - cochlearfit
+          - handbag-configurator
 
 jobs:
   promote:

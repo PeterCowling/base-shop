@@ -1,0 +1,88 @@
+name: Deploy XA-B
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/xa-b/**'
+      - 'packages/config/**'
+      - 'packages/i18n/**'
+      - 'packages/next-config/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/ui/**'
+      - 'packages/platform-core/**'
+      - 'packages/shared-utils/**'
+      - 'packages/themes/**'
+      - 'packages/design-tokens/**'
+      - 'packages/template-app/**'
+      - 'packages/types/**'
+      - 'packages/zod-utils/**'
+      - '.github/workflows/xa-b.yml'
+  pull_request:
+    paths:
+      - 'apps/xa-b/**'
+      - 'packages/config/**'
+      - 'packages/i18n/**'
+      - 'packages/next-config/**'
+      - 'packages/tailwind-config/**'
+      - 'packages/ui/**'
+      - 'packages/platform-core/**'
+      - 'packages/shared-utils/**'
+      - 'packages/themes/**'
+      - 'packages/design-tokens/**'
+      - 'packages/template-app/**'
+      - 'packages/types/**'
+      - 'packages/zod-utils/**'
+      - '.github/workflows/xa-b.yml'
+  workflow_dispatch:
+    inputs:
+      deploy-target:
+        description: 'Deploy target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  # Auto-deploy to staging on push to main
+  staging:
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'staging')
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/xa-b"
+      build-cmd: pnpm --filter @apps/xa-b... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/xa-b && pnpm exec next-on-pages deploy --project-name xa-b --branch staging
+      project-name: "xa-b"
+      target-environment: staging
+    secrets: inherit
+
+  # Manual production deployment (requires GitHub environment approval)
+  production:
+    if: github.event_name == 'workflow_dispatch' && inputs.deploy-target == 'production'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/xa-b"
+      build-cmd: pnpm --filter @apps/xa-b... build
+      artifact-path: ""
+      deploy-cmd: >
+        cd apps/xa-b && pnpm exec next-on-pages deploy --project-name xa-b --branch main
+      project-name: "xa-b"
+      target-environment: production
+    secrets: inherit
+
+  # Validation only for PRs (no deploy)
+  validate:
+    if: github.event_name == 'pull_request'
+    uses: ./.github/workflows/reusable-app.yml
+    with:
+      app-filter: "@apps/xa-b"
+      build-cmd: pnpm --filter @apps/xa-b... build
+      artifact-path: ""
+      project-name: "xa-b"
+      target-environment: staging
+    secrets: inherit

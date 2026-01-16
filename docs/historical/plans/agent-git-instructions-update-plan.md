@@ -1,11 +1,13 @@
 ---
 Type: Plan
-Status: Active
+Status: Completed
 Domain: Repo
 Created: 2026-01-16
 Created-by: Codex
 Last-updated: 2026-01-16
 Last-updated-by: Codex
+Completed: 2026-01-16
+Completed-by: Codex
 ---
 
 # Plan: Agent Git Instruction Updates (PR + CI + Staging)
@@ -56,3 +58,7 @@ Last-updated-by: Codex
 ## Validation
 - Manual doc review for clarity and consistency.
 - (Optional) Verify CI workflow triggers in `.github/workflows` if the runbook language needs tighter linkage.
+
+## Completion Summary
+- Clarified autosave-to-GitHub language in `AGENTS.md` and reinforced CI/conflict resolution expectations.
+- Added autosave guidance to `docs/git-safety.md` for consistency with the runbook.

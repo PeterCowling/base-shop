@@ -1,6 +1,7 @@
 name: CMS E2E
 
 on:
+  workflow_dispatch:  # Allow manual trigger for CT job
   push:
     branches: [ main ]
     paths:

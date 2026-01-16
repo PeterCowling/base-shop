@@ -41,7 +41,7 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
   - Scope: For each candidate file, compare `stash@{1}` against `HEAD` and decide include/exclude with rationale.
   - Dependencies: REPO-1.
   - Definition of done: A decision list (include/exclude + reason) captured in this plan.
-  - Progress: Docs/config, apps/cms, packages/ui, and packages/platform-core decisions captured below; remaining buckets pending.
+  - Progress: Docs/config, apps/cms, apps/dashboard/shop-bcd, packages/ui, packages/platform-core, packages shared (i18n/design-tokens/themes/types/tailwind-config), and tests/data decisions captured below.
 
 - [ ] REPO-3: Manually apply approved changes
   - Scope: Recreate approved edits via focused patches; avoid `git stash pop`. Keep changes minimal and on the current `work/*` branch.
@@ -91,6 +91,29 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
 | Path | Decision | Rationale |
 | --- | --- | --- |
 | `packages/platform-core/**` | Exclude | Stash removes cart lifecycle, inventory holds, stripe webhook coverage, and many repository features plus migrations. The size of deletions suggests a downgrade and not an enhancement. |
+
+### apps/dashboard + apps/shop-bcd bucket
+| Path | Decision | Rationale |
+| --- | --- | --- |
+| `apps/dashboard/**` | Exclude | Stash deletes major dashboard pages and tests (large net removals), suggesting an older snapshot or rollback rather than improvements. |
+| `apps/shop-bcd/**` | Exclude | Stash introduces a very large set of new tests/routes/pages (185 files). This is too broad to merge from a stash and likely diverges from current app direction; needs a dedicated plan if still desired. |
+
+### packages shared bucket
+| Path | Decision | Rationale |
+| --- | --- | --- |
+| `packages/design-tokens/**` | Exclude | Stash removes docs, token contexts, and plugin code; large deletions indicate regression. |
+| `packages/i18n/**` | Exclude | Stash drops locales and translation tooling; would reduce language coverage and tooling. |
+| `packages/themes/**` | Exclude | Stash removes theme packages and token assets; looks like a rollback. |
+| `packages/types/**` | Exclude | Stash removes large portions of type schemas and docs; high regression risk. |
+| `packages/tailwind-config/**` | Exclude | Stash removes README and plugin logic and changes config/tests; appears older. |
+
+### tests/data bucket
+| Path | Decision | Rationale |
+| --- | --- | --- |
+| `__tests__/data/**` | Exclude | Large fixture rewrites and deletions across shops; likely environment-specific or outdated. |
+| `cypress/support/component.ts` | Exclude | Stash reintroduces large root support file; current setup uses app-scoped Cypress config. |
+| `data/**` | Exclude | Major data set reshuffles (thousands of lines) and deletions; unsafe to import from stash. |
+| `test/msw/shared.ts` | Exclude | Changes coupled to test data rewrites; not safe without a dedicated test plan. |
 
 ## Risks / Notes
 - The stash appears to include large generated output and mixed changes across multiple apps; careless application could regress unrelated areas.

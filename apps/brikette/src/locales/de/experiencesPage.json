@@ -89,6 +89,38 @@
     "empty": "Wir haben noch keine Erlebnis-Guides für {{tag}}. Wähle einen anderen Tag oder entferne den Filter.",
     "clearFilter": "Alle Erlebnis-Guides anzeigen",
     "cardCta": "Entdecke den Erlebnisleitfaden „{{guideTitle}}“",
+    "directionsLabel": "Wegbeschreibung",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri Fähre",
+        "capriPositanoFerry": "Capri → Positano Fähre"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi mit dem Bus",
+        "amalfiPositanoBus": "Amalfi → Positano mit dem Bus",
+        "positanoAmalfiFerry": "Positano → Amalfi Fähre (saisonal)",
+        "amalfiPositanoFerry": "Amalfi → Positano Fähre (saisonal)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello Bus",
+        "ravelloPositanoBus": "Ravello → Positano Bus",
+        "positanoRavelloFerryBus": "Positano → Ravello Fähre + Bus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Neapel Zentrum → Positano (Zug + Bus)",
+        "naplesCenterPositanoFerry": "Neapel Zentrum → Positano Fähre",
+        "naplesAirportPositanoBus": "Neapel Flughafen → Positano Bus",
+        "positanoNaplesCenterBusTrain": "Positano → Neapel Zentrum (Bus + Zug)",
+        "positanoNaplesCenterFerry": "Positano → Neapel Fähre",
+        "positanoNaplesAirportBus": "Positano → Neapel Flughafen Bus"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano Bus",
+        "salernoPositanoFerry": "Salerno → Positano Fähre (saisonal)",
+        "positanoSalernoBus": "Positano → Salerno Bus",
+        "positanoSalernoFerry": "Positano → Salerno Fähre (saisonal)"
+      }
+    },
     "filterHeading": "Erlebnis-Guides filtern",
     "filterDescription": "Wähle ein Tag, um die hervorgehobenen Erlebnisse einzugrenzen.",
     "grouped": {

@@ -8,7 +8,31 @@
   "title": "Risparmia {{percent}} % per soggiorni dal {{from}} al {{to}}",
   "promo": "Prenota direttamente e il tuo sconto del {{percent}} % viene applicato automaticamente al checkout.",
   "dealCard": {
-    "savePercent": "Risparmia {{percent}}"
+    "savePercent": "Risparmia {{percent}}",
+    "stayDatesLabel": "Date del soggiorno:",
+    "badges": {
+      "autoApplied": "Applicato automaticamente",
+      "directOnly": "Solo prenotazioni dirette"
+    },
+    "cta": {
+      "bookDirect": "Prenota direttamente",
+      "applyDeal": "Applica offerta"
+    },
+    "status": {
+      "upcoming": "Prossima offerta · Inizia {{startDate}}",
+      "expired": "Scaduta"
+    }
+  },
+  "hero": {
+    "activeLabel": "Offerta in corso",
+    "activeTitle": "Risparmia {{percent}}",
+    "activeDatesLabel": "Date del soggiorno:",
+    "activeSubtitle": "Applicato automaticamente al checkout. Solo prenotazioni dirette."
+  },
+  "emptyState": {
+    "title": "Nessuna offerta attiva",
+    "subtitle": "Prenota direttamente per la tariffa migliore e tutti i vantaggi.",
+    "secondaryCta": "Scopri i vantaggi della prenotazione diretta"
   },
   "status": {
     "banner": {
@@ -55,9 +79,15 @@
   "perksGuarantee": "Ogni prenotazione effettuata direttamente sul nostro sito sblocca automaticamente questi vantaggi esclusivi.",
   "perksIntroLink": "Vedi tutti i vantaggi",
   "perksList": [
-    "Fino al 25 % di sconto sul prezzo normale con l'applicazione del coupon",
-    "Colazione inclusa",
-    "Drink serale in omaggio"
+    {
+      "title": "Fino al 25 % di sconto sul prezzo normale con l'applicazione del coupon"
+    },
+    {
+      "title": "Colazione inclusa"
+    },
+    {
+      "title": "Drink serale in omaggio"
+    }
   ],
   "expired": {
     "message": "Questa offerta è terminata."

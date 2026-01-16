@@ -8,7 +8,31 @@
   "title": "Takaríts meg {{percent}}%‑ot a(z) {{from}} és {{to}} közötti tartózkodásokon",
   "promo": "Foglalj közvetlenül – a {{percent}}% kedvezmény automatikusan érvényes a fizetésnél.",
   "dealCard": {
-    "savePercent": "Spórolj {{percent}}‑ot"
+    "savePercent": "Spórolj {{percent}}‑ot",
+    "stayDatesLabel": "Tartózkodás dátumai:",
+    "badges": {
+      "autoApplied": "Automatikus",
+      "directOnly": "Csak közvetlen foglalás"
+    },
+    "cta": {
+      "bookDirect": "Foglalj közvetlenül",
+      "applyDeal": "Ajánlat alkalmazása"
+    },
+    "status": {
+      "upcoming": "Közelgő ajánlat · Kezdés {{startDate}}",
+      "expired": "Lejárt"
+    }
+  },
+  "hero": {
+    "activeLabel": "Aktuális ajánlat",
+    "activeTitle": "Spórolj {{percent}}‑ot",
+    "activeDatesLabel": "Tartózkodás dátumai:",
+    "activeSubtitle": "Automatikusan érvényes a fizetésnél. Csak közvetlen foglalás."
+  },
+  "emptyState": {
+    "title": "Nincs aktuális ajánlat",
+    "subtitle": "Foglalj közvetlenül a legjobb árért és előnyökért.",
+    "secondaryCta": "Közvetlen foglalás előnyei"
   },
   "status": {
     "banner": {
@@ -55,9 +79,15 @@
   "perksGuarantee": "Minden, a weboldalunkon közvetlenül leadott foglalás automatikusan aktiválja ezeket az exkluzív előnyöket.",
   "perksIntroLink": "Az összes előny megtekintése",
   "perksList": [
-    "Akár 25% kedvezmény a listaárból kupon alkalmazása esetén",
-    "Ingyenes reggeli",
-    "Ingyenes esti ital"
+    {
+      "title": "Akár 25% kedvezmény a listaárból kupon alkalmazása esetén"
+    },
+    {
+      "title": "Ingyenes reggeli"
+    },
+    {
+      "title": "Ingyenes esti ital"
+    }
   ],
   "expired": {
     "message": "Ez az ajánlat lejárt."

@@ -8,7 +8,31 @@
   "title": "Oszczędź {{percent}}% na pobytach od {{from}} do {{to}}",
   "promo": "Rezerwuj bezpośrednio — zniżka {{percent}}% nalicza się automatycznie przy płatności.",
   "dealCard": {
-    "savePercent": "Oszczędź {{percent}}"
+    "savePercent": "Oszczędź {{percent}}",
+    "stayDatesLabel": "Daty pobytu:",
+    "badges": {
+      "autoApplied": "Automatycznie",
+      "directOnly": "Tylko rezerwacja bezpośrednia"
+    },
+    "cta": {
+      "bookDirect": "Rezerwuj bezpośrednio",
+      "applyDeal": "Zastosuj ofertę"
+    },
+    "status": {
+      "upcoming": "Nadchodząca oferta · Start {{startDate}}",
+      "expired": "Wygasła"
+    }
+  },
+  "hero": {
+    "activeLabel": "Aktualna oferta",
+    "activeTitle": "Oszczędź {{percent}}",
+    "activeDatesLabel": "Daty pobytu:",
+    "activeSubtitle": "Automatycznie przy finalizacji. Tylko rezerwacje bezpośrednie."
+  },
+  "emptyState": {
+    "title": "Brak aktualnych ofert",
+    "subtitle": "Rezerwuj bezpośrednio, aby uzyskać najlepszą cenę i korzyści.",
+    "secondaryCta": "Zobacz korzyści z rezerwacji bezpośredniej"
   },
   "status": {
     "banner": {
@@ -55,9 +79,15 @@
   "perksGuarantee": "Każda rezerwacja dokonana bezpośrednio na naszej stronie automatycznie odblokowuje te ekskluzywne korzyści.",
   "perksIntroLink": "Zobacz wszystkie korzyści",
   "perksList": [
-    "Do 25% taniej od ceny regularnej po zastosowaniu kuponu",
-    "Bezpłatne śniadanie",
-    "Bezpłatny napój wieczorny"
+    {
+      "title": "Do 25% taniej od ceny regularnej po zastosowaniu kuponu"
+    },
+    {
+      "title": "Bezpłatne śniadanie"
+    },
+    {
+      "title": "Bezpłatny napój wieczorny"
+    }
   ],
   "expired": {
     "message": "Ta oferta dobiegła końca."

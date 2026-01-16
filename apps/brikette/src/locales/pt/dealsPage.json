@@ -8,7 +8,31 @@
   "title": "Poupe {{percent}} % em estadias de {{from}} a {{to}}",
   "promo": "Reserve diretamente e o seu desconto de {{percent}} % é aplicado automaticamente no checkout.",
   "dealCard": {
-    "savePercent": "Poupe {{percent}}"
+    "savePercent": "Poupe {{percent}}",
+    "stayDatesLabel": "Datas de estadia:",
+    "badges": {
+      "autoApplied": "Aplicado automaticamente",
+      "directOnly": "Apenas reservas diretas"
+    },
+    "cta": {
+      "bookDirect": "Reservar diretamente",
+      "applyDeal": "Aplicar oferta"
+    },
+    "status": {
+      "upcoming": "Próxima oferta · Começa {{startDate}}",
+      "expired": "Terminada"
+    }
+  },
+  "hero": {
+    "activeLabel": "Oferta atual",
+    "activeTitle": "Poupe {{percent}}",
+    "activeDatesLabel": "Datas de estadia:",
+    "activeSubtitle": "Aplicado automaticamente no checkout. Apenas reservas diretas."
+  },
+  "emptyState": {
+    "title": "Sem ofertas atuais",
+    "subtitle": "Reserve diretamente para o melhor preço e todos os benefícios.",
+    "secondaryCta": "Ver vantagens de reserva direta"
   },
   "status": {
     "banner": {
@@ -55,9 +79,15 @@
   "perksGuarantee": "Cada reserva feita diretamente no nosso site ativa automaticamente estes benefícios exclusivos.",
   "perksIntroLink": "Ver todas as vantagens",
   "perksList": [
-    "Até 25 % de desconto sobre o preço normal ao aplicar o cupão",
-    "Pequeno-almoço gratuito",
-    "Bebida de cortesia à noite"
+    {
+      "title": "Até 25 % de desconto sobre o preço normal ao aplicar o cupão"
+    },
+    {
+      "title": "Pequeno-almoço gratuito"
+    },
+    {
+      "title": "Bebida de cortesia à noite"
+    }
   ],
   "expired": {
     "message": "Esta oferta terminou."

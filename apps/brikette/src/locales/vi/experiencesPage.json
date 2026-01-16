@@ -89,6 +89,38 @@
     "empty": "Hiện chưa có hướng dẫn trải nghiệm cho {{tag}}. Thử thẻ khác hoặc bỏ lọc.",
     "clearFilter": "Hiển thị tất cả hướng dẫn trải nghiệm",
     "cardCta": "Khám phá hướng dẫn trải nghiệm {{guideTitle}}",
+    "directionsLabel": "Chỉ đường",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri bằng phà",
+        "capriPositanoFerry": "Capri → Positano bằng phà"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi bằng xe buýt",
+        "amalfiPositanoBus": "Amalfi → Positano bằng xe buýt",
+        "positanoAmalfiFerry": "Positano → Amalfi bằng phà (theo mùa)",
+        "amalfiPositanoFerry": "Amalfi → Positano bằng phà (theo mùa)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello bằng xe buýt",
+        "ravelloPositanoBus": "Ravello → Positano bằng xe buýt",
+        "positanoRavelloFerryBus": "Positano → Ravello phà + xe buýt"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Trung tâm Naples → Positano (tàu + xe buýt)",
+        "naplesCenterPositanoFerry": "Trung tâm Naples → Positano bằng phà",
+        "naplesAirportPositanoBus": "Sân bay Naples → Positano bằng xe buýt",
+        "positanoNaplesCenterBusTrain": "Positano → Trung tâm Naples (xe buýt + tàu)",
+        "positanoNaplesCenterFerry": "Positano → Naples bằng phà",
+        "positanoNaplesAirportBus": "Positano → Sân bay Naples bằng xe buýt"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano bằng xe buýt",
+        "salernoPositanoFerry": "Salerno → Positano bằng phà (theo mùa)",
+        "positanoSalernoBus": "Positano → Salerno bằng xe buýt",
+        "positanoSalernoFerry": "Positano → Salerno bằng phà (theo mùa)"
+      }
+    },
     "filterHeading": "Lọc hướng dẫn trải nghiệm",
     "filterDescription": "Chọn thẻ để thu hẹp các trải nghiệm được nổi bật.",
     "grouped": {

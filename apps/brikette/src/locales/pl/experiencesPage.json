@@ -89,6 +89,38 @@
     "empty": "Nie mamy jeszcze przewodników doświadczeń dla {{tag}}. Wybierz inny tag lub usuń filtr.",
     "clearFilter": "Pokaż wszystkie przewodniki doświadczeń",
     "cardCta": "Odkryj przewodnik po doświadczeniach „{{guideTitle}}”",
+    "directionsLabel": "Dojazd",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri promem",
+        "capriPositanoFerry": "Capri → Positano promem"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi autobusem",
+        "amalfiPositanoBus": "Amalfi → Positano autobusem",
+        "positanoAmalfiFerry": "Positano → Amalfi promem (sezonowo)",
+        "amalfiPositanoFerry": "Amalfi → Positano promem (sezonowo)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello autobusem",
+        "ravelloPositanoBus": "Ravello → Positano autobusem",
+        "positanoRavelloFerryBus": "Positano → Ravello prom + autobus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Centrum Neapolu → Positano (pociąg + autobus)",
+        "naplesCenterPositanoFerry": "Centrum Neapolu → Positano promem",
+        "naplesAirportPositanoBus": "Lotnisko Neapol → Positano autobusem",
+        "positanoNaplesCenterBusTrain": "Positano → Centrum Neapolu (autobus + pociąg)",
+        "positanoNaplesCenterFerry": "Positano → Neapol promem",
+        "positanoNaplesAirportBus": "Positano → Lotnisko Neapol autobusem"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano autobusem",
+        "salernoPositanoFerry": "Salerno → Positano promem (sezonowo)",
+        "positanoSalernoBus": "Positano → Salerno autobusem",
+        "positanoSalernoFerry": "Positano → Salerno promem (sezonowo)"
+      }
+    },
     "filterHeading": "Filtruj przewodniki po doświadczeniach",
     "filterDescription": "Wybierz tag, aby zawęzić wyróżniane doświadczenia.",
     "grouped": {

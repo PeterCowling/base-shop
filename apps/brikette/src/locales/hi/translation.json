@@ -29,5 +29,9 @@
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS में कम से कम एक assistance slug परिभाषित होना चाहिए"
+  },
+  "accessibility": {
+    "skipToMain": "मुख्य सामग्री पर जाएँ",
+    "skipToNav": "नेविगेशन पर जाएँ"
   }
 }

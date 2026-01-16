@@ -89,6 +89,38 @@
     "empty": "{{tag}} के लिए अभी हमारे पास अनुभव गाइड नहीं हैं। कोई दूसरा टैग आज़माएँ या फ़िल्टर हटाएँ।",
     "clearFilter": "सभी अनुभव गाइड दिखाएँ",
     "cardCta": "“{{guideTitle}}” अनुभव गाइड देखें",
+    "directionsLabel": "दिशाएँ",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "पोसिटानो → कैप्री फेरी",
+        "capriPositanoFerry": "कैप्री → पोसिटानो फेरी"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "पोसिटानो → अमाल्फ़ी बस से",
+        "amalfiPositanoBus": "अमाल्फ़ी → पोसिटानो बस से",
+        "positanoAmalfiFerry": "पोसिटानो → अमाल्फ़ी फेरी (सीज़नल)",
+        "amalfiPositanoFerry": "अमाल्फ़ी → पोसिटानो फेरी (सीज़नल)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "पोसिटानो → रावेलो बस से",
+        "ravelloPositanoBus": "रावेलो → पोसिटानो बस से",
+        "positanoRavelloFerryBus": "पोसिटानो → रावेलो फेरी + बस"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "नेपल्स सेंटर → पोसिटानो (ट्रेन + बस)",
+        "naplesCenterPositanoFerry": "नेपल्स सेंटर → पोसिटानो फेरी",
+        "naplesAirportPositanoBus": "नेपल्स एयरपोर्ट → पोसिटानो बस से",
+        "positanoNaplesCenterBusTrain": "पोसिटानो → नेपल्स सेंटर (बस + ट्रेन)",
+        "positanoNaplesCenterFerry": "पोसिटानो → नेपल्स फेरी",
+        "positanoNaplesAirportBus": "पोसिटानो → नेपल्स एयरपोर्ट बस से"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "सालेर्नो → पोसिटानो बस से",
+        "salernoPositanoFerry": "सालेर्नो → पोसिटानो फेरी (सीज़नल)",
+        "positanoSalernoBus": "पोसिटानो → सालेर्नो बस से",
+        "positanoSalernoFerry": "पोसिटानो → सालेर्नो फेरी (सीज़नल)"
+      }
+    },
     "filterHeading": "अनुभव गाइड फ़िल्टर करें",
     "filterDescription": "हम जिन अनुभवों को दिखाते हैं उन्हें सीमित करने के लिए टैग चुनें।",
     "grouped": {

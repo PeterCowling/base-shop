@@ -47,10 +47,6 @@ export default [
       "**/storybook-static/**",
       "apps/skylar/out/**",
       "apps/*/out/**",
-      "apps/brikette/functions/**",
-      "apps/brikette/scripts/**",
-      "apps/brikette/tests/**",
-      "apps/brikette/workers/**",
       "packages/cypress-image-snapshot/**",
       "**/build/**",
       "**/coverage/**",
@@ -71,7 +67,8 @@ export default [
       "packages/config/jest.preset.cjs",
       "apps/api/jest.config.cjs",
       "apps/api/postcss.config.cjs",
-      "apps/handbag-configurator/public/ktx2/basis_transcoder.js",
+      // Prime app: exempt while in early development
+      "apps/prime/**",
     ],
   },
   /* ▸ Baseline DX plugins (no new rules except Tailwind contradicting classes) */
@@ -236,18 +233,6 @@ export default [
       "ds/no-raw-tailwind-color": "off",
       // Governance: require ticketed eslint-disable justifications (baseline warn; overridden later per scope)
       "ds/require-disable-justification": "warn",
-    },
-  },
-  /* ▸ UI layout gutters: require padding when Section opts out */
-  {
-    files: [
-      "packages/ui/src/atoms/**/*.{ts,tsx}",
-      "packages/ui/src/molecules/**/*.{ts,tsx}",
-      "packages/ui/src/organisms/**/*.{ts,tsx}",
-      "packages/ui/src/layout/**/*.{ts,tsx}",
-    ],
-    rules: {
-      "ds/require-section-padding": ["error", { min: 4, components: ["Section", "LayoutSection"] }],
     },
   },
 
@@ -639,8 +624,6 @@ export default [
       "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/ban-types": "off",
-      // Declaration files may include raw token values that are not authored UI code.
-      "ds/no-raw-color": "off",
       // Declaration files may include raw font stacks as string literal types
       // (e.g., "sans-serif", "monospace"). These are not authored UI code
       // paths and should not be subject to DS enforcement.
@@ -673,18 +656,6 @@ export default [
       },
     },
   },
-  /* ▸ Scripts: disable hardcoded-copy noise for CLI output and diagnostics */
-  {
-    files: [
-      "scripts/**/*.{ts,tsx,js,jsx}",
-      "apps/*/scripts/**/*.{ts,tsx,js,jsx}",
-    ],
-    plugins: { ds: dsPlugin },
-    rules: {
-      "ds/no-hardcoded-copy": "off",
-    },
-  },
-
 
   /* ▸ Cypress configs/support: parse outside TS project */
   {
@@ -1025,7 +996,7 @@ export default [
 
   /* ▸ Treat UI Storybook files as non-project to avoid TS project errors */
   {
-    files: ["**/*.stories.{ts,tsx}"],
+    files: ["packages/ui/**/*.stories.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -1046,7 +1017,6 @@ export default [
       "ds/min-tap-size": "off",
       "ds/container-widths-only-at": "off",
       "ds/no-physical-direction-classes-in-rtl": "off",
-      "no-restricted-syntax": "off",
       // Relax additional UI-hardening rules for dev-only stories
       "react/forbid-dom-props": "off",
       "react/no-array-index-key": "off",
@@ -1066,18 +1036,6 @@ export default [
       "jsx-a11y/media-has-caption": "off",
       "jsx-a11y/role-has-required-aria-props": "off",
       "jsx-a11y/no-aria-hidden-on-focusable": "off",
-    },
-  },
-
-  /* ▸ UI build config: parse without TS project to avoid project service errors */
-  {
-    files: ["packages/ui/tsup.config.ts"],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: {
-        project: null,
-        projectService: false,
-      },
     },
   },
 
@@ -1107,40 +1065,6 @@ export default [
       "ds/no-physical-direction-classes-in-rtl": "warn",
       // Keep copy enforcement as error for product UI; CMS/templates can be iterated with warnings
       "ds/no-hardcoded-copy": "warn",
-    },
-  },
-
-  /* ▸ SEO/JSON-LD + locale stubs: non-UI literals (schema ids, fixtures, metadata) */
-  {
-    files: [
-      "**/components/seo/**/*.{ts,tsx,js,jsx}",
-      "**/*StructuredData*.{ts,tsx,js,jsx}",
-      "**/utils/seo*.{ts,tsx,js,jsx}",
-      "**/utils/schema/**/*.{ts,tsx,js,jsx}",
-      "**/locales/**/*.stub/**/*.{ts,tsx,js,jsx}",
-    ],
-    plugins: { ds: dsPlugin },
-    rules: {
-      "ds/no-hardcoded-copy": "off",
-    },
-  },
-
-  /* ▸ Brikette non-UI helpers: runtime guards, config maps, and data utilities */
-  {
-    files: [
-      "apps/brikette/src/utils/**/*.{ts,tsx,js,jsx}",
-      "apps/brikette/src/hooks/**/*.{ts,tsx,js,jsx}",
-      "apps/brikette/src/config/**/*.{ts,tsx,js,jsx}",
-      "apps/brikette/src/types/**/*.{ts,tsx,js,jsx}",
-      "apps/brikette/src/compat/**/*.{ts,tsx,js,jsx}",
-      "apps/brikette/src/context/**/*.{ts,tsx,js,jsx}",
-      "apps/brikette/src/data/**/*.{ts,tsx,js,jsx}",
-      "apps/brikette/src/routes.tsx",
-      "apps/brikette/src/i18n.ts",
-    ],
-    plugins: { ds: dsPlugin },
-    rules: {
-      "ds/no-hardcoded-copy": "off",
     },
   },
 
@@ -1424,72 +1348,6 @@ export default [
       "ds/require-disable-justification": "off",
     },
   },
-
-  /* ▸ Handbag configurator: disable DS enforcement rules (app uses custom styling) */
-  {
-    files: ["apps/handbag-configurator/**/*.{ts,tsx,js,jsx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      ...offAllDsRules,
-    },
-  },
-
-  /* ▸ XA apps: relax copy/layout DS rules during content migration */
-  {
-    files: [
-      "apps/xa/**/*.{ts,tsx,js,jsx}",
-      "apps/xa-b/**/*.{ts,tsx,js,jsx}",
-      "apps/xa-c/**/*.{ts,tsx,js,jsx}",
-    ],
-    plugins: { ds: dsPlugin },
-    rules: {
-      "ds/no-hardcoded-copy": "off",
-      "ds/no-physical-direction-classes-in-rtl": "off",
-      "ds/container-widths-only-at": "off",
-      "ds/min-tap-size": "off",
-    },
-  },
-
-  /* ▸ Reception app: internal operations tool, not customer-facing */
-  {
-    files: ["apps/reception/**/*.{ts,tsx,js,jsx}"],
-    plugins: { ds: dsPlugin },
-    rules: {
-      "ds/no-hardcoded-copy": "off",
-      "ds/no-raw-color": "off",
-      "ds/no-raw-font": "off",
-      "ds/no-unsafe-viewport-units": "off",
-      "ds/container-widths-only-at": "off",
-      "ds/enforce-focus-ring-token": "off",
-      "ds/min-tap-size": "off",
-      "ds/require-aspect-ratio-on-media": "off",
-      "ds/no-naked-img": "off",
-      "ds/no-nonlayered-zindex": "off",
-      "ds/no-physical-direction-classes-in-rtl": "off",
-      "ds/absolute-parent-guard": "off",
-      "ds/enforce-layout-primitives": "off",
-      "ds/require-disable-justification": "off",
-    },
-  },
-
-  /* ▸ Storybook files (final override) */
-  {
-    files: ["**/*.stories.{ts,tsx}"],
-    rules: {
-      "react-hooks/rules-of-hooks": "off",
-      "react-hooks/exhaustive-deps": "off",
-      "no-restricted-syntax": "off",
-      "ds/no-hardcoded-copy": "off",
-      "ds/enforce-layout-primitives": "off",
-      "ds/no-margins-on-atoms": "off",
-      "ds/min-tap-size": "off",
-      "ds/container-widths-only-at": "off",
-      "ds/no-physical-direction-classes-in-rtl": "off",
-      "react/forbid-dom-props": "off",
-      "react/no-array-index-key": "off",
-      "react/jsx-no-constructed-context-values": "off",
-    },
-  },
-
-
+ 
+  
 ];

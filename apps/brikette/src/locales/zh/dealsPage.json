@@ -8,7 +8,31 @@
   "title": "在{{from}}至{{to}}期间入住立省 {{percent}} %",
   "promo": "直接预订，{{percent}} % 折扣在结账时自动应用。",
   "dealCard": {
-    "savePercent": "立省 {{percent}}"
+    "savePercent": "立省 {{percent}}",
+    "stayDatesLabel": "入住日期：",
+    "badges": {
+      "autoApplied": "自动应用",
+      "directOnly": "仅限直接预订"
+    },
+    "cta": {
+      "bookDirect": "直接预订",
+      "applyDeal": "应用优惠"
+    },
+    "status": {
+      "upcoming": "即将推出 · {{startDate}} 开始",
+      "expired": "已结束"
+    }
+  },
+  "hero": {
+    "activeLabel": "当前优惠",
+    "activeTitle": "立省 {{percent}}",
+    "activeDatesLabel": "入住日期：",
+    "activeSubtitle": "结账时自动应用。仅限直接预订。"
+  },
+  "emptyState": {
+    "title": "暂无优惠",
+    "subtitle": "直接预订享受最优价格和全部礼遇。",
+    "secondaryCta": "查看直接预订福利"
   },
   "status": {
     "banner": {
@@ -55,9 +79,15 @@
   "perksGuarantee": "只要在我们官网直接预订，这些专属礼遇会自动生效。",
   "perksIntroLink": "查看所有福利",
   "perksList": [
-    "使用优惠码最高可享 25 % 折扣",
-    "免费早餐",
-    "免费晚间饮品"
+    {
+      "title": "使用优惠码最高可享 25 % 折扣"
+    },
+    {
+      "title": "免费早餐"
+    },
+    {
+      "title": "免费晚间饮品"
+    }
   ],
   "expired": {
     "message": "该优惠已结束。"

@@ -8,7 +8,31 @@
   "title": "Tiết kiệm {{percent}}% cho kỳ nghỉ từ {{from}} đến {{to}}",
   "promo": "Đặt trực tiếp và ưu đãi {{percent}}% sẽ tự động áp dụng khi thanh toán.",
   "dealCard": {
-    "savePercent": "Tiết kiệm {{percent}}"
+    "savePercent": "Tiết kiệm {{percent}}",
+    "stayDatesLabel": "Ngày lưu trú:",
+    "badges": {
+      "autoApplied": "Tự động áp dụng",
+      "directOnly": "Chỉ đặt trực tiếp"
+    },
+    "cta": {
+      "bookDirect": "Đặt trực tiếp",
+      "applyDeal": "Áp dụng ưu đãi"
+    },
+    "status": {
+      "upcoming": "Ưu đãi sắp tới · Bắt đầu {{startDate}}",
+      "expired": "Đã kết thúc"
+    }
+  },
+  "hero": {
+    "activeLabel": "Ưu đãi hiện tại",
+    "activeTitle": "Tiết kiệm {{percent}}",
+    "activeDatesLabel": "Ngày lưu trú:",
+    "activeSubtitle": "Tự động áp dụng khi thanh toán. Chỉ đặt trực tiếp."
+  },
+  "emptyState": {
+    "title": "Không có ưu đãi hiện tại",
+    "subtitle": "Đặt trực tiếp để được giá tốt nhất và quyền lợi.",
+    "secondaryCta": "Xem quyền lợi đặt trực tiếp"
   },
   "status": {
     "banner": {
@@ -55,9 +79,15 @@
   "perksGuarantee": "Mỗi đặt phòng trực tiếp trên trang web của chúng tôi sẽ tự động kích hoạt những quyền lợi độc quyền này.",
   "perksIntroLink": "Xem tất cả quyền lợi",
   "perksList": [
-    "Giảm tới 25% so với giá thông thường khi áp dụng mã giảm giá",
-    "Bữa sáng miễn phí",
-    "Đồ uống buổi tối miễn phí"
+    {
+      "title": "Giảm tới 25% so với giá thông thường khi áp dụng mã giảm giá"
+    },
+    {
+      "title": "Bữa sáng miễn phí"
+    },
+    {
+      "title": "Đồ uống buổi tối miễn phí"
+    }
   ],
   "expired": {
     "message": "Ưu đãi này đã kết thúc."

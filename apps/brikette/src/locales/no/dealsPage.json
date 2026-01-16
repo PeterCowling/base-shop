@@ -8,7 +8,31 @@
   "title": "Spar {{percent}} % på opphold fra {{from}} til {{to}}",
   "promo": "Bestill direkte – rabatten på {{percent}} % blir automatisk trukket i kassen.",
   "dealCard": {
-    "savePercent": "Spar {{percent}}"
+    "savePercent": "Spar {{percent}}",
+    "stayDatesLabel": "Opphold:",
+    "badges": {
+      "autoApplied": "Brukes automatisk",
+      "directOnly": "Kun direkte booking"
+    },
+    "cta": {
+      "bookDirect": "Book direkte",
+      "applyDeal": "Bruk tilbudet"
+    },
+    "status": {
+      "upcoming": "Kommende tilbud · Starter {{startDate}}",
+      "expired": "Utløpt"
+    }
+  },
+  "hero": {
+    "activeLabel": "Nåværende tilbud",
+    "activeTitle": "Spar {{percent}}",
+    "activeDatesLabel": "Opphold:",
+    "activeSubtitle": "Brukes automatisk ved utsjekking. Kun direktebookinger."
+  },
+  "emptyState": {
+    "title": "Ingen aktive tilbud",
+    "subtitle": "Book direkte for beste pris og fordeler.",
+    "secondaryCta": "Se fordeler med direkte booking"
   },
   "status": {
     "banner": {
@@ -55,9 +79,15 @@
   "perksGuarantee": "Hver direktebestilling på nettsiden vår låser automatisk opp disse eksklusive fordelene.",
   "perksIntroLink": "Se alle fordeler",
   "perksList": [
-    "Opptil 25 % avslag fra ordinær pris når kupong brukes",
-    "Gratis frokost",
-    "Gratis kveldsdrink"
+    {
+      "title": "Opptil 25 % avslag fra ordinær pris når kupong brukes"
+    },
+    {
+      "title": "Gratis frokost"
+    },
+    {
+      "title": "Gratis kveldsdrink"
+    }
   ],
   "expired": {
     "message": "Dette tilbudet er utløpt."

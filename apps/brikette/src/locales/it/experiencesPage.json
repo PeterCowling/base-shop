@@ -89,6 +89,38 @@
     "empty": "Non abbiamo ancora guide di esperienze per {{tag}}. Prova un altro tag o rimuovi il filtro.",
     "clearFilter": "Mostra tutte le guide di esperienze",
     "cardCta": "Esplora la guida esperienziale {{guideTitle}}",
+    "directionsLabel": "Indicazioni",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri in traghetto",
+        "capriPositanoFerry": "Capri → Positano in traghetto"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi in autobus",
+        "amalfiPositanoBus": "Amalfi → Positano in autobus",
+        "positanoAmalfiFerry": "Positano → Amalfi in traghetto (stagionale)",
+        "amalfiPositanoFerry": "Amalfi → Positano in traghetto (stagionale)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello in autobus",
+        "ravelloPositanoBus": "Ravello → Positano in autobus",
+        "positanoRavelloFerryBus": "Positano → Ravello traghetto + bus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Centro Napoli → Positano (treno + bus)",
+        "naplesCenterPositanoFerry": "Centro Napoli → Positano in traghetto",
+        "naplesAirportPositanoBus": "Aeroporto Napoli → Positano in autobus",
+        "positanoNaplesCenterBusTrain": "Positano → Centro Napoli (bus + treno)",
+        "positanoNaplesCenterFerry": "Positano → Napoli in traghetto",
+        "positanoNaplesAirportBus": "Positano → Aeroporto Napoli in autobus"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano in autobus",
+        "salernoPositanoFerry": "Salerno → Positano in traghetto (stagionale)",
+        "positanoSalernoBus": "Positano → Salerno in autobus",
+        "positanoSalernoFerry": "Positano → Salerno in traghetto (stagionale)"
+      }
+    },
     "filterHeading": "Filtra le guide esperienziali",
     "filterDescription": "Scegli un tag per restringere le esperienze in evidenza.",
     "grouped": {

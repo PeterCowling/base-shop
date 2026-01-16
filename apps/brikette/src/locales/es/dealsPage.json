@@ -8,7 +8,31 @@
   "title": "Ahorra un {{percent}} % en estancias del {{from}} al {{to}}",
   "promo": "Reserva directamente y tu descuento del {{percent}} % se aplica automáticamente al pagar.",
   "dealCard": {
-    "savePercent": "Ahorra {{percent}}"
+    "savePercent": "Ahorra {{percent}}",
+    "stayDatesLabel": "Fechas de estancia:",
+    "badges": {
+      "autoApplied": "Aplicado automáticamente",
+      "directOnly": "Solo reservas directas"
+    },
+    "cta": {
+      "bookDirect": "Reservar directo",
+      "applyDeal": "Aplicar oferta"
+    },
+    "status": {
+      "upcoming": "Próxima oferta · Inicia {{startDate}}",
+      "expired": "Finalizada"
+    }
+  },
+  "hero": {
+    "activeLabel": "Oferta actual",
+    "activeTitle": "Ahorra {{percent}}",
+    "activeDatesLabel": "Fechas de estancia:",
+    "activeSubtitle": "Se aplica automáticamente al pagar. Solo reservas directas."
+  },
+  "emptyState": {
+    "title": "Sin ofertas actuales",
+    "subtitle": "Reserva directamente para el mejor precio y todas las ventajas.",
+    "secondaryCta": "Ver ventajas de reserva directa"
   },
   "status": {
     "banner": {
@@ -55,9 +79,15 @@
   "perksGuarantee": "Cada reserva realizada directamente en nuestro sitio web activa automáticamente estas ventajas exclusivas.",
   "perksIntroLink": "Ver todas las ventajas",
   "perksList": [
-    "Hasta un 25 % de descuento sobre el precio habitual al aplicar el cupón",
-    "Desayuno gratuito",
-    "Bebida de cortesía por la tarde"
+    {
+      "title": "Hasta un 25 % de descuento sobre el precio habitual al aplicar el cupón"
+    },
+    {
+      "title": "Desayuno gratuito"
+    },
+    {
+      "title": "Bebida de cortesía por la tarde"
+    }
   ],
   "expired": {
     "message": "Esta oferta ha finalizado."

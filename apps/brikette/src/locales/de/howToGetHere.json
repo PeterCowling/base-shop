@@ -36,23 +36,45 @@
         "description": "Schon in Positano angekommen, aber unsicher, wie du zum Hostel kommst? Schau dir diese Anleitungen an:",
         "image": {
           "src": "/img/positano-panorama.avif",
-          "alt": "Panoramablick auf die an den Hang gebauten Häuser von Positano"
+          "alt": "Panoramablick auf die an den Hang gebauten Häuser von Positano",
+          "caption": "Positano is steep — plan for stairs, especially with luggage."
         },
         "links": [
           {
             "label": "Chiesa Nuova/Bar Internazionale → Hostel Brikette",
             "href": "chiesa-nuova-bar-internazionale-to-hostel-brikette",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "5–10 min",
+              "cost": "Free",
+              "walking": "~140 m + ~30 steps",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Fähranleger → Hostel Brikette",
             "href": "ferry-dock-to-hostel-brikette-with-luggage",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "20–45 min (depends on porters/Interno bus)",
+              "cost": "€2–€6 pp (+ optional porter)",
+              "walking": "Port stairs; porters reduce carrying",
+              "luggageFriendly": 1,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Hostel Brikette → Chiesa Nuova/Bar Internazionale",
             "href": "hostel-brikette-to-chiesa-nuova-bar-internazionale",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "5–10 min",
+              "cost": "Free",
+              "walking": "~140 m + ~30 steps (down)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           }
         ]
       },
@@ -60,28 +82,57 @@
         "name": "Amalfi",
         "image": {
           "src": "/img/directions/positano-amalfi-bus-bus-stop.png",
-          "alt": "SITA Sud-Bushaltestelle in Amalfi für Küstenrouten"
+          "alt": "SITA Sud-Bushaltestelle in Amalfi für Küstenrouten",
+          "caption": "Look for the SITA buses at Amalfi’s bus station."
         },
         "links": [
           {
             "label": "Amalfi → Positano mit dem Bus",
             "href": "amalfi-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45–90 min (traffic dependent)",
+              "cost": "€2–€4 pp",
+              "walking": "Short stairs at the end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Positano → Amalfi mit dem Bus",
             "href": "positano-amalfi-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "45–90 min (traffic dependent)",
+              "cost": "€2–€4 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Amalfi → Positano mit der Fähre",
             "href": "amalfi-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25–45 min (sailing) + port transfer",
+              "cost": "€10–€20 pp",
+              "walking": "Stairs to/from the port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "Positano → Amalfi mit der Fähre",
             "href": "positano-amalfi-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "25–45 min (sailing) + port transfer",
+              "cost": "€10–€20 pp",
+              "walking": "Stairs to/from the port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       },
@@ -89,18 +140,33 @@
         "name": "Capri",
         "image": {
           "src": "/img/directions/positano-capri-ferry-img09.jpg",
-          "alt": "Fähre legt an der Marina Grande von Capri an"
+          "alt": "Fähre legt an der Marina Grande von Capri an",
+          "caption": "Capri ferries depart from Marina Grande."
         },
         "links": [
           {
             "label": "Capri → Positano mit der Fähre",
             "href": "capri-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30–60 min (sailing) + port transfer",
+              "cost": "€20–€35 pp",
+              "walking": "Port access; stairs likely in Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "Positano → Capri mit der Fähre",
             "href": "positano-capri-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "30–60 min (sailing) + port transfer",
+              "cost": "€20–€35 pp",
+              "walking": "Port access; stairs likely in Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       },
@@ -108,33 +174,69 @@
         "name": "Neapel Zentrum",
         "image": {
           "src": "/img/tabacchi.webp",
-          "alt": "Tabacchi-Geschäft im Zentrum von Neapel"
+          "alt": "Tabacchi-Geschäft im Zentrum von Neapel",
+          "caption": "Buy bus tickets in tabacchi/newsstands before boarding."
         },
         "links": [
           {
             "label": "Neapel Zentrum → Positano mit Zug und Bus",
             "href": "naples-center-train-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. transfers)",
+              "cost": "€15–€25 pp",
+              "walking": "Low; change in Sorrento",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Positano → Neapel Zentrum mit Bus und Zug",
             "href": "positano-naples-center-bus-train",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. transfers)",
+              "cost": "€15–€25 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Neapel Zentrum → Positano mit der Fähre",
             "href": "naples-center-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4.5 h (incl. port transfer)",
+              "cost": "€25–€45 pp",
+              "walking": "Transfer to port + stairs in Positano",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "Positano → Neapel Zentrum mit der Fähre",
             "href": "positano-naples-center-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4.5 h (incl. port transfer)",
+              "cost": "€25–€45 pp",
+              "walking": "Stairs in Positano + transfer from port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "Positano → Neapel (Fähre) Wegbeschreibung",
             "href": "positano-to-naples-directions-by-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "3–4.5 h (incl. port transfer)",
+              "cost": "€25–€45 pp",
+              "walking": "Stairs in Positano + transfer from port",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       },
@@ -142,18 +244,33 @@
         "name": "Flughafen Neapel",
         "image": {
           "src": "/img/directions/naples-airport-positano-bus-bus-stop.png",
-          "alt": "Curreri-Shuttle-Haltestelle vor dem Flughafen Neapel"
+          "alt": "Curreri-Shuttle-Haltestelle vor dem Flughafen Neapel",
+          "caption": "Curreri buses pick up outside arrivals (follow bus signs)."
         },
         "links": [
           {
             "label": "Positano → Neapel Flughafen mit dem Bus",
             "href": "positano-naples-airport-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. change in Sorrento)",
+              "cost": "€15–€25 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Neapel Flughafen → Positano mit dem Bus",
             "href": "naples-airport-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3.5 h (incl. change in Sorrento)",
+              "cost": "€15–€25 pp",
+              "walking": "Short stairs at the end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           }
         ]
       },
@@ -161,28 +278,57 @@
         "name": "Salerno",
         "image": {
           "src": "/img/hostel-coastal-horizon.webp",
-          "alt": "Blick über die Amalfiküste in Richtung Salerno"
+          "alt": "Blick über die Amalfiküste in Richtung Salerno",
+          "caption": "Salerno connects by train + bus, or by seasonal ferries."
         },
         "links": [
           {
             "label": "Salerno → Positano mit dem Bus",
             "href": "salerno-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5–4 h (via Amalfi)",
+              "cost": "€6–€12 pp",
+              "walking": "Low; change buses in Amalfi",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Positano → Salerno mit dem Bus",
             "href": "positano-salerno-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2.5–4 h (via Amalfi)",
+              "cost": "€6–€12 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Salerno → Positano mit der Fähre",
             "href": "salerno-positano-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1–2 h (sailing) + port transfer",
+              "cost": "€15–€30 pp",
+              "walking": "Port stairs; porters recommended",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           },
           {
             "label": "Positano → Salerno mit der Fähre",
             "href": "positano-salerno-ferry",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1–2 h (sailing) + port transfer",
+              "cost": "€15–€30 pp",
+              "walking": "Port stairs; porters recommended",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       },
@@ -190,23 +336,45 @@
         "name": "Ravello",
         "image": {
           "src": "/img/hostel-communal-terrace-lush-view.webp",
-          "alt": "Gärten auf den Klippen mit Blick auf die Küste nahe Ravello"
+          "alt": "Gärten auf den Klippen mit Blick auf die Küste nahe Ravello",
+          "caption": "Ravello is reached via Amalfi by bus."
         },
         "links": [
           {
             "label": "Ravello → Positano mit dem Bus",
             "href": "ravello-positano-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5–2.5 h (via Amalfi)",
+              "cost": "€4–€8 pp",
+              "walking": "Low; change in Amalfi",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Positano → Ravello mit dem Bus",
             "href": "positano-ravello-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "1.5–2.5 h (via Amalfi)",
+              "cost": "€4–€8 pp",
+              "walking": "Short stairs at the start/end (~30 steps)",
+              "luggageFriendly": 2,
+              "seasonality": "Year-round"
+            }
           },
           {
             "label": "Positano → Ravello mit Fähre und Bus",
             "href": "positano-ravello-ferry-bus",
-            "internal": true
+            "internal": true,
+            "facts": {
+              "duration": "2–3 h (ferry + bus)",
+              "cost": "€15–€30 pp",
+              "walking": "Port stairs + bus connection",
+              "luggageFriendly": 1,
+              "seasonality": "Seasonal (Apr–Oct)"
+            }
           }
         ]
       }
@@ -376,22 +544,50 @@
       {
         "label": "Von Sorrent mit dem Bus",
         "href": "sorrento-positano-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 min",
+          "cost": "€2–€4 pp",
+          "walking": "Short stairs at the end (~30 steps)",
+          "luggageFriendly": 2,
+          "seasonality": "Year-round"
+        }
       },
       {
         "label": "Nach Sorrent mit dem Bus",
         "href": "positano-sorrento-bus",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "45–75 min",
+          "cost": "€2–€4 pp",
+          "walking": "Short stairs at the start/end (~30 steps)",
+          "luggageFriendly": 2,
+          "seasonality": "Year-round"
+        }
       },
       {
         "label": "Von Sorrent mit der Fähre",
         "href": "sorrento-positano-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30–45 min (sailing) + port stairs",
+          "cost": "€15–€25 pp",
+          "walking": "Port stairs; porters recommended",
+          "luggageFriendly": 1,
+          "seasonality": "Seasonal (Apr–Oct)"
+        }
       },
       {
         "label": "Nach Sorrent mit der Fähre",
         "href": "positano-sorrento-ferry",
-        "internal": true
+        "internal": true,
+        "facts": {
+          "duration": "30–45 min (sailing) + port stairs",
+          "cost": "€15–€25 pp",
+          "walking": "Port stairs; porters recommended",
+          "luggageFriendly": 1,
+          "seasonality": "Seasonal (Apr–Oct)"
+        }
       }
     ]
   },
@@ -646,5 +842,10 @@
   },
   "galleries": {
     "defaultAlt": "Foto der Wegbeschreibung"
+  },
+  "lightbox": {
+    "titleFallback": "Image",
+    "openAria": "Open image",
+    "openAriaWithCaption": "Open image: {{caption}}"
   }
 }

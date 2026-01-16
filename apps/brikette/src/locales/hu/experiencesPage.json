@@ -89,6 +89,38 @@
     "empty": "Még nincs élménykalauzunk {{tag}} témában. Próbáljon másik címkét vagy vegye le a szűrőt.",
     "clearFilter": "Összes élménykalauz megjelenítése",
     "cardCta": "Fedezd fel a {{guideTitle}} élménykalauzt",
+    "directionsLabel": "Útvonal",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri komppal",
+        "capriPositanoFerry": "Capri → Positano komppal"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi busszal",
+        "amalfiPositanoBus": "Amalfi → Positano busszal",
+        "positanoAmalfiFerry": "Positano → Amalfi komppal (szezonális)",
+        "amalfiPositanoFerry": "Amalfi → Positano komppal (szezonális)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello busszal",
+        "ravelloPositanoBus": "Ravello → Positano busszal",
+        "positanoRavelloFerryBus": "Positano → Ravello komp + busz"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Nápoly központ → Positano (vonat + busz)",
+        "naplesCenterPositanoFerry": "Nápoly központ → Positano komppal",
+        "naplesAirportPositanoBus": "Nápoly repülőtér → Positano busszal",
+        "positanoNaplesCenterBusTrain": "Positano → Nápoly központ (busz + vonat)",
+        "positanoNaplesCenterFerry": "Positano → Nápoly komppal",
+        "positanoNaplesAirportBus": "Positano → Nápoly repülőtér busszal"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano busszal",
+        "salernoPositanoFerry": "Salerno → Positano komppal (szezonális)",
+        "positanoSalernoBus": "Positano → Salerno busszal",
+        "positanoSalernoFerry": "Positano → Salerno komppal (szezonális)"
+      }
+    },
     "filterHeading": "Élménykalauzok szűrése",
     "filterDescription": "Válasszon címkét, hogy szűkítse a kiemelt élményeket.",
     "grouped": {

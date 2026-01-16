@@ -8,7 +8,31 @@
   "title": "Économisez {{percent}} % sur les séjours du {{from}} au {{to}}",
   "promo": "Réservez en direct et votre remise de {{percent}} % s’applique automatiquement au moment du paiement.",
   "dealCard": {
-    "savePercent": "Économisez {{percent}}"
+    "savePercent": "Économisez {{percent}}",
+    "stayDatesLabel": "Dates de séjour :",
+    "badges": {
+      "autoApplied": "Appliqué automatiquement",
+      "directOnly": "Réservations directes uniquement"
+    },
+    "cta": {
+      "bookDirect": "Réserver directement",
+      "applyDeal": "Appliquer l'offre"
+    },
+    "status": {
+      "upcoming": "Offre à venir · Débute le {{startDate}}",
+      "expired": "Expirée"
+    }
+  },
+  "hero": {
+    "activeLabel": "Offre actuelle",
+    "activeTitle": "Économisez {{percent}}",
+    "activeDatesLabel": "Dates de séjour :",
+    "activeSubtitle": "Appliqué automatiquement au paiement. Réservations directes uniquement."
+  },
+  "emptyState": {
+    "title": "Pas d'offre en cours",
+    "subtitle": "Réservez directement pour le meilleur tarif et tous les avantages.",
+    "secondaryCta": "Voir les avantages réservation directe"
   },
   "status": {
     "banner": {
@@ -55,9 +79,15 @@
   "perksGuarantee": "Chaque réservation effectuée directement sur notre site active automatiquement ces avantages exclusifs.",
   "perksIntroLink": "Voir tous les avantages",
   "perksList": [
-    "Jusqu'à 25 % de remise sur le tarif standard lors de l'application du coupon",
-    "Petit-déjeuner offert",
-    "Boisson offerte en soirée"
+    {
+      "title": "Jusqu'à 25 % de remise sur le tarif standard lors de l'application du coupon"
+    },
+    {
+      "title": "Petit-déjeuner offert"
+    },
+    {
+      "title": "Boisson offerte en soirée"
+    }
   ],
   "expired": {
     "message": "Cette offre est terminée."

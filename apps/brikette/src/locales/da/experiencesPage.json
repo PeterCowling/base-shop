@@ -89,6 +89,38 @@
     "empty": "Vi har endnu ingen oplevelsesguides for {{tag}}. Prøv et andet tag eller fjern filteret.",
     "clearFilter": "Vis alle oplevelsesguides",
     "cardCta": "Udforsk oplevelsesguiden {{guideTitle}}",
+    "directionsLabel": "Rutevejledning",
+    "directionLinks": {
+      "capriDayTrip": {
+        "positanoCapriFerry": "Positano → Capri med færge",
+        "capriPositanoFerry": "Capri → Positano med færge"
+      },
+      "positanoAmalfi": {
+        "positanoAmalfiBus": "Positano → Amalfi med bus",
+        "amalfiPositanoBus": "Amalfi → Positano med bus",
+        "positanoAmalfiFerry": "Positano → Amalfi med færge (sæsonbestemt)",
+        "amalfiPositanoFerry": "Amalfi → Positano med færge (sæsonbestemt)"
+      },
+      "positanoRavello": {
+        "positanoRavelloBus": "Positano → Ravello med bus",
+        "ravelloPositanoBus": "Ravello → Positano med bus",
+        "positanoRavelloFerryBus": "Positano → Ravello færge + bus"
+      },
+      "naplesPositano": {
+        "naplesCenterTrainBus": "Napoli centrum → Positano (tog + bus)",
+        "naplesCenterPositanoFerry": "Napoli centrum → Positano med færge",
+        "naplesAirportPositanoBus": "Napoli lufthavn → Positano med bus",
+        "positanoNaplesCenterBusTrain": "Positano → Napoli centrum (bus + tog)",
+        "positanoNaplesCenterFerry": "Positano → Napoli med færge",
+        "positanoNaplesAirportBus": "Positano → Napoli lufthavn med bus"
+      },
+      "salernoPositano": {
+        "salernoPositanoBus": "Salerno → Positano med bus",
+        "salernoPositanoFerry": "Salerno → Positano med færge (sæsonbestemt)",
+        "positanoSalernoBus": "Positano → Salerno med bus",
+        "positanoSalernoFerry": "Positano → Salerno med færge (sæsonbestemt)"
+      }
+    },
     "filterHeading": "Filtrér oplevelsesguides",
     "filterDescription": "Vælg et tag for at indsnævre de oplevelser, vi fremhæver.",
     "grouped": {

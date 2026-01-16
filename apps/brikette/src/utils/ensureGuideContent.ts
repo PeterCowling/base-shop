@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // src/utils/ensureGuideContent.ts
 import i18n from "@/i18n";
 import { debugGuide, isGuideDebugEnabled } from "@/utils/debug";

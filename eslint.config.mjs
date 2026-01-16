@@ -1110,6 +1110,25 @@ export default [
     },
   },
 
+  /* ▸ Brikette non-UI helpers: runtime guards, config maps, and data utilities */
+  {
+    files: [
+      "apps/brikette/src/utils/**/*.{ts,tsx,js,jsx}",
+      "apps/brikette/src/hooks/**/*.{ts,tsx,js,jsx}",
+      "apps/brikette/src/config/**/*.{ts,tsx,js,jsx}",
+      "apps/brikette/src/types/**/*.{ts,tsx,js,jsx}",
+      "apps/brikette/src/compat/**/*.{ts,tsx,js,jsx}",
+      "apps/brikette/src/context/**/*.{ts,tsx,js,jsx}",
+      "apps/brikette/src/data/**/*.{ts,tsx,js,jsx}",
+      "apps/brikette/src/routes.tsx",
+      "apps/brikette/src/i18n.ts",
+    ],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
   
 
   /* ▸ UI package: temporarily downgrade strict rules to warnings to unblock lint */

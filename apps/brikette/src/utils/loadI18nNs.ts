@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 import i18n from "@/i18n";
 import { i18nConfig, type AppLanguage } from "@/i18n.config";
 import { getGuidesBundle, type GuidesNamespace } from "../locales/guides";

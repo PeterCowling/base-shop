@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // AUTO-GENERATED: route module map for Next route resolver.
 // Reason: Next needs explicit import paths; dynamic lookup is brittle in bundled builds.
 // Follow-up: consider build-time generation to keep this file small.

@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Route manifest path literals are non-UI. */
 /* src/routes.tsx */
 /* ------------------------------------------------------------------ */
 /* Route manifest – no per‑route “prerender” or “ssr” flags; those are */

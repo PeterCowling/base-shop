@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // file path: src/i18n.ts
 // -----------------------------------------------------------------------------
 // Universal i18next bootstrap (lazy bundles via backend)
@@ -78,7 +77,7 @@ i18n.use(
       const overrideBundle = overrides?.[lng];
       if (overrideBundle) {
         if (process.env["DEBUG_GUIDE_TRANSLATIONS"] === "1") {
-          // eslint-disable-next-line no-console -- Localised debug helper for guide coverage tests
+           
           console.log(`[i18n] using guides override for ${lng}`);
         }
         cb(null, overrideBundle as import("i18next").ResourceKey);
@@ -225,7 +224,6 @@ i18n.use(
           travelHelp: EN_ASSIST_TRAVEL_HELP as unknown as import("i18next").ResourceKey,
           // (blog namespace removed)
           dealsPage: {
-            // eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI seed values for tests; real copy lives in locales JSON
             // i18n-exempt -- LINT-1007 [ttl=2026-12-31]
             perksList: [
               {
@@ -241,7 +239,6 @@ i18n.use(
                 subtitle: "House selection",
               },
             ],
-            // eslint-enable ds/no-hardcoded-copy
           },
         },
       };

@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // src/context/modal/hooks.ts
 /* -------------------------------------------------------------------------- */
 /*  Hooks for accessing the modal context                                     */

@@ -4,11 +4,16 @@ Status: Canonical
 Domain: CI-Deploy
 Created: 2026-01-16
 Created-by: Claude Opus 4.5
+Last-reviewed: 2026-01-16
+Last-updated: 2026-01-16
+Last-updated-by: Codex
 ---
 
-# Deployment Workflow
+# Deployment Workflow (Agent Runbook)
 
 This document describes how to deploy applications from staging to production.
+
+Audience: agents only. Follow `AGENTS.md` for git safety.
 
 ## Overview
 
@@ -73,12 +78,12 @@ No action required. Wait for the GitHub Actions workflow to complete and check t
 ### Option 1: Via GitHub UI (Recommended)
 
 1. Go to **Actions** in the GitHub repository
-2. Select the workflow for the app you want to deploy (e.g., "Deploy CMS")
+2. Select the workflow for the target app (e.g., "Deploy CMS")
 3. Click **Run workflow** dropdown
 4. Select `main` branch
 5. Choose `production` from the **Deploy target environment** dropdown
 6. Click **Run workflow**
-7. You will receive a notification requesting approval
+7. A notification is sent requesting approval
 8. Review the deployment and click **Approve**
 
 ### Option 2: Via GitHub CLI
@@ -112,14 +117,14 @@ The `promote-to-production.yml` workflow provides a single place to promote any 
 2. Click **Run workflow**
 3. Select the app from the dropdown
 4. Click **Run workflow**
-5. Approve when prompted
+5. Approve when prompted by GitHub
 
 ## Production Approval
 
-Production deployments require approval. When you trigger a production deployment:
+Production deployments require approval. When a production deployment is triggered:
 
 1. GitHub creates a **pending deployment** requiring review
-2. You receive a notification (email/GitHub app)
+2. A notification is sent (email/GitHub app)
 3. Go to the workflow run in Actions
 4. Click **Review deployments**
 5. Select the `production` environment
@@ -129,11 +134,11 @@ Only after approval does the deploy proceed.
 
 ## Rollback
 
-If something goes wrong in production:
+If a production deploy regresses:
 
 ### Quick Rollback (Cloudflare Dashboard)
 
-1. Go to **Cloudflare Dashboard → Pages → [Project]**
+1. Open **Cloudflare Dashboard → Pages → [Project]**
 2. Click **Deployments**
 3. Find the previous working deployment
 4. Click **...** → **Rollback to this deployment**
@@ -153,11 +158,11 @@ If something goes wrong in production:
 
 To enable the approval workflow, configure GitHub Environments:
 
-1. Go to **Settings → Environments** in your GitHub repository
+1. Open **Settings → Environments** in the GitHub repository
 2. Create `staging` environment:
    - No protection rules needed (auto-deploy)
 3. Create `production` environment:
-   - **Required reviewers:** Add yourself (or team members who can approve)
+   - **Required reviewers:** Add approver usernames (team members who can approve)
    - **Deployment branches:** Select "Selected branches" → Add `main`
 
 ## Workflow Files
@@ -196,9 +201,9 @@ The following apps are **not** part of the staging/production workflow:
 ### Deployment stuck "waiting for approval"
 
 Check that:
-- You have the `production` GitHub Environment configured
-- You are listed as a required reviewer
-- Go to the workflow run and click "Review deployments"
+- The `production` GitHub Environment is configured
+- Approvers are listed as required reviewers
+- The workflow run includes "Review deployments"
 
 ### Staging deployed but URL not updating
 
@@ -209,14 +214,14 @@ Check that:
 ### Production deployment failed
 
 - Check the Actions logs for the specific error
-- If it's a transient failure (network, API timeout), retry the workflow
-- If it's a build failure, fix in a new PR, deploy to staging, then promote
+- If the failure is transient (network, API timeout), retry the workflow
+- If the failure is build-related, fix in a new PR, deploy to staging, then promote
 
 ### "Only main branch can deploy to production" error
 
-Production deploys are restricted to the `main` branch for safety. Make sure:
-- Your workflow was triggered from `main`
-- You're not trying to deploy from a feature branch
+Production deploys are restricted to the `main` branch for safety. Confirm:
+- The workflow is triggered from `main`
+- The deploy is not started from a feature branch
 
 ## Related Documentation
 

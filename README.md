@@ -4,13 +4,15 @@
 
 A multilingual, hybrid-rendered e-commerce demo built with **Next.js 15** and **React 19**. The full technical roadmap is documented in [./IMPLEMENTATION_PLAN.md](./IMPLEMENTATION_PLAN.md).
 
-## Getting Started
+Audience: agents only. Use `AGENTS.md` for repo rules and `docs/AGENTS.docs.md` for doc conventions.
 
-Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/install.md) for installation instructions and [docs/setup.md](docs/setup.md) for full setup, shop scaffolding flows, and CI guidance.
+## Agent Setup
 
-Run `pnpm init-shop` to scaffold a new shop; see [docs/setup.md](docs/setup.md#1-create-a-shop) for flags, seeding options and environment validation details.
+Requires **Node.js >=20** and **pnpm 10.12.1**. See [docs/install.md](docs/install.md) for install/runbook steps and [docs/setup.md](docs/setup.md) for full setup, shop scaffolding flows, and CI guidance.
 
-### Type Checking in Development
+Run `pnpm init-shop` to scaffold a shop; see [docs/setup.md](docs/setup.md#1-create-a-shop) for flags, seeding options, and environment validation details.
+
+### Type Checking (Dev)
 
 For fast feedback without triggering monorepo builds, run the TypeScript watcher in a separate terminal:
 
@@ -20,12 +22,12 @@ pnpm run typecheck:watch
 
 This uses project references to type‑check the whole workspace with `--noEmit`, decoupled from HMR.
 
-### Testing
+### Testing (Scoped)
 
 See [__tests__/docs/testing.md](__tests__/docs/testing.md) for comprehensive testing instructions. Cypress fixtures live under `__tests__/data/shops`. Override this path by setting the `TEST_DATA_ROOT` environment variable. For coverage (Jest + CT + E2E), see [docs/coverage.md](docs/coverage.md).
 For CMS configurator-specific end-to-end tests, see [__tests__/docs/testing-configurator.md](__tests__/docs/testing-configurator.md).
 
-Policy: avoid running workspace‑wide tests unless explicitly asked. Prefer scoped runs, for example:
+Policy: avoid running workspace-wide tests unless explicitly requested. Prefer scoped runs, for example:
 
 ```bash
 pnpm --filter @acme/platform-core test
@@ -94,7 +96,7 @@ See [docs/architecture.md](docs/architecture.md) for a component layer overview.
 ## Linting and Exceptions
 
 Read `docs/linting.md` for the complete linting setup, rule catalog, severities by scope, and the exceptions policy (ticketed disables + registry and CI checks). It also documents how CI validates exceptions and how to add or expire them.
-- Quick picks (contributors):
+- Quick picks (agents):
   - Use the CMS Typography panel to choose three fonts: Body, Heading 1 (H1–H3), Heading 2 (H4–H6). The runtime injector loads only the needed Google Fonts and sets CSS variables.
   - Tailwind utilities map to tokens: backgrounds/text use HSL variables, e.g. `bg-primary` + `text-primary-foreground`, `text-fg`, `bg-bg`. `font-sans` follows the selected `--font-body`.
   - Dark mode: prefer class toggle `html.theme-dark`; system default also applies via media query.
@@ -138,7 +140,7 @@ See [docs/upgrade-preview-republish.md](docs/upgrade-preview-republish.md) for g
 
 Inventory still reads and writes JSON files (`data/shops/<shop>/inventory.json`), the default offline store when `DATABASE_URL` is unset. This fallback keeps the demo lightweight and offline-friendly until a Prisma/PostgreSQL model is ready. See [docs/inventory-migration.md](docs/inventory-migration.md) for the migration plan.
 
-Set `INVENTORY_BACKEND=json` in your environment to force the JSON backend during local development. Sample fixtures live under `__tests__/data/shops/demo` and `__tests__/data/shops/test`.
+Set `INVENTORY_BACKEND=json` in the environment to force the JSON backend during local development. Sample fixtures live under `__tests__/data/shops/demo` and `__tests__/data/shops/test`.
 
 To verify the data, hit `/api/data/<shop>/inventory/export` in a running app (`?format=csv` is also supported) or run `pnpm inventory:check` for a CLI sanity check:
 
@@ -203,7 +205,7 @@ pnpm inventory import demo --file inventory.csv
 pnpm inventory import demo --file inventory.json
 ```
 
-The underlying API endpoints remain available if you prefer using `curl`.
+The underlying API endpoints remain available if curl is preferred.
 
 If the API responds with `503 Inventory backend unavailable`, the Prisma delegate is missing or unreachable. Retry once, verify `DATABASE_URL`/`INVENTORY_BACKEND`, and alert instead of assuming a JSON fallback succeeded—the CLI surfaces this message directly from the CMS.
 
@@ -281,11 +283,11 @@ Both endpoints verify the signatures using the environment variables above and m
 
 See [packages/email/marketing-automation.md](packages/email/marketing-automation.md) for details on scheduling campaigns, building segments and retrieving analytics.
 
-The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET` and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply them via your CI's secret store. Missing variables will cause the CLI to exit before running.
+The scaffolded `.env` also includes generated placeholders for `NEXTAUTH_SECRET` and `PREVIEW_TOKEN_SECRET`. Replace all placeholders with real values or supply them via the CI secret store. Missing variables will cause the CLI to exit before running.
 
 ## Google Apps Script
 
-The Apps Script workspace has been removed from this repo. If you need Apps Script automation, keep it in a separate repository or a dedicated workspace to avoid mixing browser/DOM typings with Next.js app typings.
+The Apps Script workspace has been removed from this repo. If Apps Script automation is required, keep it in a separate repository or a dedicated workspace to avoid mixing browser/DOM typings with Next.js app typings.
 
 ## TypeScript Project References Policy
 
@@ -335,9 +337,9 @@ See [docs/lighthouse.md](docs/lighthouse.md) for running Lighthouse audits.
 
 TS2307 occurs when TypeScript can’t locate a module or its type declarations due to misconfigured paths, missing type definitions, or package issues.
 
-- Missing type definitions for third-party packages: installing `@types/your-lib` or creating a `.d.ts` file resolves this.
+- Missing type definitions for third-party packages: installing `@types/example-lib` or creating a `.d.ts` file resolves this.
 - Incorrect import paths for local files: verify the file exists and use the correct relative path without the `.ts`/`.tsx` extension.
-- Misconfigured module resolution: ensure `baseUrl` and `paths` in `tsconfig.json` align with your folder structure.
+- Misconfigured module resolution: ensure `baseUrl` and `paths` in `tsconfig.json` align with the folder structure.
 - Verify module existence: always check that the module is present locally or in `node_modules`.
 
 ```json
@@ -351,4 +353,4 @@ TS2307 occurs when TypeScript can’t locate a module or its type declarations d
 }
 ```
 
-Remind contributors to install missing type definitions and avoid disabling type checking with `skipLibCheck` unless absolutely necessary.
+Agents should install missing type definitions and avoid disabling type checking with `skipLibCheck` unless absolutely necessary.

@@ -1,20 +1,21 @@
 Type: Guide
 Status: Active
 Domain: Documentation
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
-# Documentation
+# Documentation (Agent Index)
 
 ## For agents
 - Global runbook: see `AGENTS.md`.
 - Documentation structure and taxonomy: see `docs/AGENTS.docs.md`.
+- Package doc template (README/AGENTS): `docs/templates/package-agent-brief.md`.
 - CMS plans and threads: see `docs/cms-plan/index.md` and `docs/cms-plan/master-thread.md`.
 - Base-Shop implementation plan: see `IMPLEMENTATION_PLAN.md`.
 - Domain plans: see `docs/runtime/runtime-plan.md`, `docs/theming-plan.md`, `docs/i18n/i18n-plan.md`, `docs/commerce-plan.md`, and `docs/docs-plan.md`.
  - Core charters: `docs/cms/cms-charter.md`, `docs/runtime/runtime-charter.md`, `docs/theming-charter.md`, `docs/i18n/i18n-charter.md`, `docs/commerce-charter.md`.
  - Key contracts: `docs/architecture.md`, `docs/persistence.md`, `docs/platform-vs-apps.md`, `docs/runtime/template-contract.md`, `docs/deployment-adapters.md`, `docs/permissions.md`, `docs/users.md`, `docs/reverse-logistics-events.md`.
 
-## Getting Started
+## Agent Setup
 - [Install](./install.md)
 - [Setup](./setup.md)
 - [Package management](./package-management.md)

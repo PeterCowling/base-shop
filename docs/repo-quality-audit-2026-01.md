@@ -63,7 +63,7 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 
 **Recommendations**
 1. Consolidate aliases to a canonical set and remove duplicates.
-2. Add a minimal, agent-focused README template to every package (purpose, entrypoints, owners, build/test commands, dependencies).
+2. Add a minimal, agent-focused README/AGENTS template to every package (see `docs/templates/package-agent-brief.md`).
 3. Standardize build scripts via shared presets or common scripts.
 4. Document naming conventions and enforce them for new packages.
 
@@ -178,7 +178,7 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 - Documentation tone is mixed; not all docs are written as agent runbooks.
 
 **Recommendations**
-1. Add agent-focused README templates and require them for new packages.
+1. Add agent-focused README/AGENTS templates and require them for new packages (see `docs/templates/package-agent-brief.md`).
 2. Publish a Design System Handbook with component APIs and usage patterns aimed at agent readers.
 3. Document package layers and import boundaries (diagram + text).
 4. Add a short guide for "package vs folder" decisions.
@@ -244,7 +244,7 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 - No dependency visualization.
 
 **Recommendations**
-1. Publish agent-focused README templates and a short package index.
+1. Publish agent-focused README/AGENTS templates and a short package index (see `docs/templates/package-agent-brief.md`).
 2. Create a dependency graph (e.g., simple static diagram).
 3. Add a naming guide and enforce it for new packages.
 
@@ -273,7 +273,7 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 
 | # | Issue | Action |
 |---|-------|--------|
-| 10 | No agent package briefs | Add agent-focused README/AGENTS to all packages |
+| 10 | No agent package briefs | Add agent-focused README/AGENTS to all packages (use `docs/templates/package-agent-brief.md`) |
 | 11 | Path alias explosion | Reduce from 63 to ~20 |
 | 12 | No DS handbook | Create component API reference |
 | 13 | Missing app workflows | Add CI/CD for remaining 15+ apps |
@@ -325,6 +325,7 @@ The repository shows strong foundations (Turborepo, strict TypeScript, Git safet
 | 2026-01-16 | Claude Opus 4.5 | Initial comprehensive audit |
 | 2026-01-16 | Codex | Restructured for clarity, consistency, and actionability |
 | 2026-01-16 | Codex | Reframed documentation guidance for agent-only readership |
+| 2026-01-16 | Codex | Linked the agent-focused package doc template |
 
 ## Related Documents
 

@@ -211,6 +211,7 @@
     ".next/types/**/*.ts",
     "shop.json",
     "next-env.d.ts",
+    "instrumentation.ts",
     "src/**/*.json",
     "routes/**/*",
     "middleware.ts"

@@ -48,6 +48,7 @@
   },
   "include": [
     "next-env.d.ts",
+    "instrumentation.ts",
     "middleware.ts",
     "src/**/*",
     "src/**/*.json",

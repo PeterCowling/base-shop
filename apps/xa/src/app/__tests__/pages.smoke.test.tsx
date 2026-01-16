@@ -1,5 +1,6 @@
 import * as React from "react";
 import fs from "node:fs";
+/* eslint-disable security/detect-non-literal-fs-filename, security/detect-non-literal-require -- XA-0050 [ttl=2026-12-31] Test harness enumerates local files and requires route modules. */
 import path from "node:path";
 import { render } from "@testing-library/react";
 import { describe, expect, it, jest } from "@jest/globals";
@@ -208,8 +209,8 @@ describe("XA pages", () => {
     redirectMock.mockClear();
     notFoundMock.mockClear();
     const rel = path.relative(appRoot, filePath);
-    const module = require(filePath) as { default?: (props?: any) => unknown };
-    const Page = module.default;
+    const pageModule = require(filePath) as { default?: (props?: any) => unknown };
+    const Page = pageModule.default;
     expect(Page).toBeDefined();
 
     if (!Page) return;

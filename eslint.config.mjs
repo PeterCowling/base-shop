@@ -1314,6 +1314,15 @@ export default [
     },
   },
 
+  /* ▸ Brikette scripts: CLI diagnostics are non-UI */
+  {
+    files: ["apps/brikette/scripts/**/*.{ts,tsx,js,jsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
   /* ▸ Requested exceptions: disable no-hardcoded-copy in specific apps/packages */
   {
     files: [

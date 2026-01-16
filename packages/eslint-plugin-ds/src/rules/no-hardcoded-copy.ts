@@ -46,6 +46,49 @@ function isA11yAttr(attrName: string | undefined): boolean {
   );
 }
 
+const NON_COPY_ATTRS = new Set([
+  "action",
+  "crossOrigin",
+  "decoding",
+  "fetchPriority",
+  "form",
+  "htmlFor",
+  "id",
+  "loading",
+  "method",
+  "name",
+  "referrerPolicy",
+  "rel",
+  "src",
+  "srcSet",
+  "sizes",
+  "target",
+  "type",
+]);
+
+function isNonCopyAttr(attrName: string | undefined): boolean {
+  if (!attrName) return false;
+  if (attrName.startsWith("data-")) return true;
+  if (attrName.startsWith("data") && attrName.length > 4 && attrName[4] === attrName[4].toUpperCase()) return true;
+  return NON_COPY_ATTRS.has(attrName);
+}
+
+const CLASS_TOKEN_RE = /^[a-z0-9_:\-!\[\]\(\)\/.]+$/i;
+const CLASS_TOKEN_SIGNAL_RE = /[-:\[\]\/!\d]/;
+
+function isClassListLike(text: string): boolean {
+  const trimmed = text.trim();
+  if (!trimmed.includes(" ")) return false;
+  const tokens = trimmed.split(/\s+/);
+  let hasSignal = false;
+  for (const token of tokens) {
+    if (!token) continue;
+    if (!CLASS_TOKEN_RE.test(token)) return false;
+    if (CLASS_TOKEN_SIGNAL_RE.test(token)) hasSignal = true;
+  }
+  return hasSignal;
+}
+
 function isWrappedByT(node: any): boolean {
   let p: any = node.parent;
   while (p) {
@@ -136,6 +179,7 @@ const rule: Rule.RuleModule = {
           if (name === "href") return;
           if (name === "viewBox" || name === "width" || name === "height" || name === "d" || name === "fill") return;
           if (name === "rel") return;
+          if (isNonCopyAttr(name)) return;
           // Non-copy attributes to ignore
           if (name === "class" || name === "className") return;
         }
@@ -144,6 +188,7 @@ const rule: Rule.RuleModule = {
           const s = String(node.value);
           // Ignore token-y strings without whitespace (e.g., bg-bg, text-foreground)
           if (/^[a-z0-9_:\-\[\]\(\)\/\.]+$/i.test(s)) return;
+          if (isClassListLike(s)) return;
           if (s.startsWith("/") || /:\/\//.test(s)) return;
           if (/^[a-z0-9.+-]+\/[a-z0-9.+-]+$/i.test(s)) return; // MIME types
           if (/^var\(--[a-z0-9\-]+\)$/i.test(s)) return;

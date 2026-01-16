@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- TEST-1001: Repo-local fixtures. [ttl=2026-12-31] */
-/* eslint-disable ds/no-hardcoded-copy -- TEST-1001: Non-user-facing diagnostics. [ttl=2026-12-31] */
 import fs from "fs";
 import path from "path";
 

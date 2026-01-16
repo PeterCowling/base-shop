@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] CLI diagnostics output. */
 /* eslint-disable security/detect-non-literal-fs-filename -- SEC-1001 [ttl=2026-12-31] reads repo-local resources. */
 import path from "node:path";
 import { existsSync } from "node:fs";

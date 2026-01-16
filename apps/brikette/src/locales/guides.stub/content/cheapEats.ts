@@ -3,7 +3,6 @@
 // Single-purpose stub: Cheap Eats in Positano
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const cheapEats = {
   seo: {
@@ -27,5 +26,4 @@ export const cheapEats = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

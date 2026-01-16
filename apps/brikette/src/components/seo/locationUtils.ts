@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/locationUtils.ts
 import { useLocation } from "react-router-dom";
 

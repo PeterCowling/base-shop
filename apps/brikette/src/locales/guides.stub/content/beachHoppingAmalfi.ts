@@ -3,7 +3,6 @@
 // Single-purpose stub: Beach hopping Amalfi Coast guide
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const beachHoppingAmalfi = {
   seo: {
@@ -23,5 +22,4 @@ export const beachHoppingAmalfi = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

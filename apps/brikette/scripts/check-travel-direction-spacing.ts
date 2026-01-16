@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] CLI diagnostics output. */
 /* eslint-disable security/detect-non-literal-fs-filename -- TEST-1001: Script reads repo-local locale JSON files. [ttl=2026-12-31] */
 import fs from "node:fs";
 import path from "node:path";

@@ -3,7 +3,6 @@
 // Single-purpose stub: Backpacking Southern Italy itinerary
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const backpackingSouthernItaly = {
   seo: {
@@ -19,5 +18,4 @@ export const backpackingSouthernItaly = {
   faqs: [{ q: "How many days?", a: ["Allow at least a week."] }],
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

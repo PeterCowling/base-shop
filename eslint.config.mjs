@@ -671,6 +671,18 @@ export default [
       },
     },
   },
+  /* ▸ Scripts: disable hardcoded-copy noise for CLI output and diagnostics */
+  {
+    files: [
+      "scripts/**/*.{ts,tsx,js,jsx}",
+      "apps/*/scripts/**/*.{ts,tsx,js,jsx}",
+    ],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+    },
+  },
+
 
   /* ▸ Cypress configs/support: parse outside TS project */
   {
@@ -1080,6 +1092,21 @@ export default [
       "ds/no-physical-direction-classes-in-rtl": "warn",
       // Keep copy enforcement as error for product UI; CMS/templates can be iterated with warnings
       "ds/no-hardcoded-copy": "warn",
+    },
+  },
+
+  /* ▸ SEO/JSON-LD + locale stubs: non-UI literals (schema ids, fixtures, metadata) */
+  {
+    files: [
+      "**/components/seo/**/*.{ts,tsx,js,jsx}",
+      "**/*StructuredData*.{ts,tsx,js,jsx}",
+      "**/utils/seo*.{ts,tsx,js,jsx}",
+      "**/utils/schema/**/*.{ts,tsx,js,jsx}",
+      "**/locales/**/*.stub/**/*.{ts,tsx,js,jsx}",
+    ],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
     },
   },
 

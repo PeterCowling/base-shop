@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Build-time SEO asset generator (robots/sitemap/schema). */
 /* eslint-disable security/detect-non-literal-fs-filename -- SEO-1001 [ttl=2026-12-31] Build-time generator writes only within the app workspace. */
 
 import { copyFile, mkdir, readdir, writeFile } from "node:fs/promises";

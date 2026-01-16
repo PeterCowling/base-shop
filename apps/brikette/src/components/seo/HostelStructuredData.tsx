@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- SEO-315 [ttl=2026-12-31] Schema.org structured data literals are non-UI. */
 // src/components/seo/HostelStructuredData.tsx
 /*
    Minimal Hostel JSON-LD for the homepage

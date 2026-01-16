@@ -3,7 +3,6 @@
 // Single-purpose stub: Reach Positano on a budget
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const reachBudget = {
   linkLabel: "How to reach Positano on a budget",
@@ -13,5 +12,4 @@ export const reachBudget = {
   },
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

@@ -1,5 +1,4 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- TEST-1001: Script reads repo-local fixtures under src/locales. [ttl=2026-12-31] */
-/* eslint-disable ds/no-hardcoded-copy -- TEST-1001: CLI-only diagnostic strings, not user-facing. [ttl=2026-12-31] */
 import fs from "fs";
 import path from "path";
 

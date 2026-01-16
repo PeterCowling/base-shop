@@ -3,7 +3,6 @@
 // Single-purpose stub: Ferry Dock → Hostel Brikette
 // -----------------------------------------------------------------------------
 
-/* eslint-disable ds/no-hardcoded-copy -- TECH-000 */
 
 export const ferryDockToBrikette = {
   seo: {
@@ -25,5 +24,4 @@ export const ferryDockToBrikette = {
   kneesPorterLinkLabel: "",
 } as const;
 
-/* eslint-enable ds/no-hardcoded-copy -- TECH-000 */
 

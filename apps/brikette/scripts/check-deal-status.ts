@@ -1,4 +1,3 @@
-/* eslint-disable ds/no-hardcoded-copy -- TEST-1002: CLI-only assertions, not user-facing. [ttl=2026-12-31] */
 import { DEALS } from "../src/routes/deals/deals";
 import { getDealStatus } from "../src/routes/deals/status";
 

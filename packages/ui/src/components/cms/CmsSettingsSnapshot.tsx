@@ -1,8 +1,8 @@
 // packages/ui/src/components/cms/CmsSettingsSnapshot.tsx
 
 import type { ReactElement } from "react";
-import { Card, CardContent } from "@ui/components/atoms/shadcn";
-import { cn } from "@ui/utils/style";
+import { Card, CardContent } from "../../components/atoms/shadcn";
+import { cn } from "../../utils/style";
 
 export type CmsSettingsTone = "default" | "warning" | "error" | "success";
 

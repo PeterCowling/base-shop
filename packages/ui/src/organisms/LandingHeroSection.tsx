@@ -1,7 +1,7 @@
 // packages/ui/src/organisms/LandingHeroSection.tsx
 import { CfHeroImage } from "../atoms/CfHeroImage";
-import { Section } from "@ui/atoms/Section";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+import { Section } from "../atoms/Section";
+import { Inline } from "../components/atoms/primitives/Inline";
 import { useOptionalModal } from "@ui/context/ModalContext";
 import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
 import buildCfImageUrl from "@ui/lib/buildCfImageUrl";
@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { type LinkDescriptor, type LinksFunction } from "react-router";
 import type { AppLanguage } from "@ui/i18n.config";
 import { i18nConfig } from "@ui/i18n.config";
-import { resolveSharedToken } from "@ui/shared";
+import { resolveSharedToken } from "../shared";
 import hotel from "@ui/config/hotel";
 
 const heroOriginal = "/img/landing-xl.webp";

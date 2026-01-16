@@ -2,6 +2,18 @@
 
 This guide explains how to run unit and integration tests and how to choose between mocking Prisma calls or using a real database. Tests run with a stubbed Prisma client by default, so `pnpm test` completes without requiring a database.
 
+## Coverage Targets
+
+All packages must meet minimum coverage thresholds:
+
+| Metric     | Global Default | `@acme/ui` |
+|------------|----------------|------------|
+| Lines      | 80%            | 90%        |
+| Branches   | 80%            | 85%        |
+| Functions  | 80%            | 90%        |
+
+For detailed coverage configuration, reports, and how to merge coverage from different test runners, see [docs/coverage.md](../../docs/coverage.md).
+
 ## Running tests
 
 ### Stubbed Prisma client (`DATABASE_URL` unset)

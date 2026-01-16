@@ -13,9 +13,9 @@ import { buildNavLinks, type TranslateFn } from "@ui/utils/buildNavLinks";
 import { translatePath } from "@ui/utils/translate-path";
 import type { AppLanguage } from "@ui/i18n.config";
 import { i18nConfig } from "@ui/i18n.config";
-import type { SlugMap } from "@ui/slug-map";
-import { resolvePrimaryCtaLabel } from "@ui/shared";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+import type { SlugMap } from "../slug-map";
+import { resolvePrimaryCtaLabel } from "../shared";
+import { Inline } from "../components/atoms/primitives/Inline";
 
 /*  Public assets are referenced by absolute URL paths.
     “?url” lets Vite keep the file name stable in development

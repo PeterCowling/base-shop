@@ -1,5 +1,5 @@
 // packages/ui/src/organisms/ApartmentHeroSection.tsx
-import { CfHeroImage } from "@ui/atoms/CfHeroImage";
+import { CfHeroImage } from "../atoms/CfHeroImage";
 import { Button } from "../atoms/Button";
 import { Section } from "../atoms/Section";
 import { useModal } from "@ui/context/ModalContext";
@@ -7,7 +7,7 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { i18nConfig } from "@ui/i18n.config";
-import { resolveBookingCtaLabel } from "@ui/shared";
+import { resolveBookingCtaLabel } from "../shared";
 
 const APARTMENT_HERO_IMAGE_SRC = "/img/facade.avif";
 

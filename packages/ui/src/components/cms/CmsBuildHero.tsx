@@ -1,9 +1,9 @@
 // packages/ui/src/components/cms/CmsBuildHero.tsx
 
 import type { ReactNode } from "react";
-import { Button } from "@ui/components/atoms";
-import { Grid, Inline } from "@ui/components/atoms/primitives";
-import { cn } from "@ui/utils/style";
+import { Button } from "../../components/atoms";
+import { Grid, Inline } from "../../components/atoms/primitives";
+import { cn } from "../../utils/style";
 
 export type CmsBuildHeroTone = "build" | "operate" | "upgrade";
 

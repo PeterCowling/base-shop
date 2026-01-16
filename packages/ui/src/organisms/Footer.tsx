@@ -2,13 +2,13 @@
 import { CONTACT_EMAIL } from "@ui/config/hotel";
 import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
 import { buildNavLinks, type TranslateFn } from "@ui/utils/buildNavLinks";
-import { Section } from "@ui/atoms/Section";
-import { Inline } from "@ui/components/atoms/primitives/Inline";
+import { Section } from "../atoms/Section";
+import { Inline } from "../components/atoms/primitives/Inline";
 import { Facebook, Instagram } from "lucide-react";
 import { memo, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { SLUGS } from "@ui/slug-map";
+import { SLUGS } from "../slug-map";
 import type { AppLanguage } from "@ui/i18n.config";
 import { i18nConfig } from "@ui/i18n.config";
 import { translatePath } from "@ui/utils/translate-path";

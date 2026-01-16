@@ -9,7 +9,7 @@ import { useModal } from "@ui/context/ModalContext";
 import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
 import { useTheme } from "@ui/hooks/useTheme";
 import { i18nConfig, type AppLanguage } from "@ui/i18n.config";
-import { resolvePrimaryCtaLabel } from "@ui/shared";
+import { resolvePrimaryCtaLabel } from "../shared";
 
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon
 const FALLBACK_PRIMARY_CTA_LABEL =

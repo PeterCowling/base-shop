@@ -1,9 +1,9 @@
 // packages/ui/src/organisms/DestinationSlideshow.tsx
 import { FC, memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { CfHeroImage } from "@ui/atoms/CfHeroImage";
-import { Section } from "@ui/atoms/Section";
-import { Grid } from "@ui/components/atoms/primitives/Grid";
+import { CfHeroImage } from "../atoms/CfHeroImage";
+import { Section } from "../atoms/Section";
+import { Grid } from "../components/atoms/primitives/Grid";
 import { Heading } from "../atoms/Typography";
 
 const IMG = {

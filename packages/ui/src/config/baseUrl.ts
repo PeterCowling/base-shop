@@ -7,7 +7,7 @@
 //   4) Platform previews (Netlify/Vercel)
 //   5) Fallback production domain
 
-import { DOMAIN as CONFIG_DOMAIN } from "@ui/config";
+import { DOMAIN as CONFIG_DOMAIN } from "../config";
 
 const FALLBACK = CONFIG_DOMAIN ?? "https://hostel-positano.com";
 const LOOPBACK_HOSTS = new Set(["localhost", "127.0.0.1", "0.0.0.0", "::1", "[::1]"]);

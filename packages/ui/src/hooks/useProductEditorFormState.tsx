@@ -3,7 +3,7 @@
 // packages/ui/hooks/useProductEditorFormState.tsx
 import { useProductInputs, type ProductWithVariants } from "./useProductInputs";
 import { useProductMediaManager } from "./useProductMediaManager";
-import { buildProductFormData } from "../utils/buildProductFormData";
+import { buildProductFormData } from "@ui/utils/buildProductFormData";
 import type { Locale } from "@acme/i18n/locales";
 
 import {

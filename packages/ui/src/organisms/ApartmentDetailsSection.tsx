@@ -8,7 +8,7 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { i18nConfig } from "@ui/i18n.config";
-import { resolveBookingCtaLabel } from "@ui/shared";
+import { resolveBookingCtaLabel } from "../shared";
 
 interface DetailsSectionProps {
   bookingUrl?: string;

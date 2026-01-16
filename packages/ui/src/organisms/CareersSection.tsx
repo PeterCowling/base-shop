@@ -2,9 +2,9 @@ import { CheckCircle, XCircle } from "lucide-react";
 import { memo, useMemo, type ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 
-import { CfImage } from "@ui/atoms/CfImage";
-import { Button } from "@ui/atoms/Button";
-import { Section as LayoutSection } from "@ui/atoms/Section";
+import { CfImage } from "../atoms/CfImage";
+import { Button } from "../atoms/Button";
+import { Section as LayoutSection } from "../atoms/Section";
 import { useModal } from "@ui/context/ModalContext";
 
 interface ImageTextSectionProps {

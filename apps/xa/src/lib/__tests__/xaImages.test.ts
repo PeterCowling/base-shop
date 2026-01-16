@@ -37,9 +37,9 @@ describe("buildXaImageUrl", () => {
     );
   });
 
-  it("returns empty string when base URL is not configured", async () => {
+  it("falls back to the local public path when no base URL is configured", async () => {
     const { buildXaImageUrl } = await loadXaImages({});
-    expect(buildXaImageUrl("image-id")).toBe("");
+    expect(buildXaImageUrl("image-id")).toBe("/image-id");
   });
 
   it("appends the default variant when none is supplied", async () => {

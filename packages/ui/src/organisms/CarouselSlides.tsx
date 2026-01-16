@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import type { SwiperProps, SwiperSlideProps } from "swiper/react";
 import type { CarouselSlidesProps } from "./CarouselSlides.types";
 import SlideItem from "../molecules/SlideItem";
-import { Grid } from "@ui/components/atoms/primitives/Grid";
+import { Grid } from "../components/atoms/primitives/Grid";
 import { Section } from "../atoms/Section";
 
 interface SwiperBundle {

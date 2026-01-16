@@ -10,7 +10,7 @@ import {
   SelectContent,
   SelectItem,
 } from "./atoms/shadcn";
-import { getLegacyPreset, type DevicePreset, getAllDevicePresets } from "../utils/devicePresets";
+import { getLegacyPreset, type DevicePreset, getAllDevicePresets } from "@ui/utils/devicePresets";
 import { useMemo } from "react";
 // Local noop translator for developer tooling labels
 const t = (s: string) => s;

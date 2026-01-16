@@ -1,0 +1,1060 @@
+{
+  "configs": [
+    {
+      "automock": false,
+      "cache": true,
+      "cacheDirectory": "/private/var/folders/d5/xxknrncx24x5q56z1___pxqh0000gn/T/jest_dx",
+      "clearMocks": false,
+      "collectCoverageFrom": [
+        "src/**/*.{ts,tsx}",
+        "scripts/**/*.{ts,tsx}",
+        "functions/**/*.ts",
+        "middleware.ts",
+        "packages/*/middleware.ts",
+        "*.{ts,tsx}",
+        "!**/__tests__/**",
+        "!**/*.d.ts",
+        "!**/*.stories.{ts,tsx}",
+        "!**/devtools/**",
+        "!**/*.test.{ts,tsx}",
+        "!**/*.spec.{ts,tsx}"
+      ],
+      "coverageDirectory": "/Users/petercowling/base-shop/coverage/acme-page-builder-ui",
+      "coveragePathIgnorePatterns": [
+        "/Users/petercowling/base-shop/test/msw/",
+        "/Users/petercowling/base-shop/test/msw/server.ts",
+        "/Users/petercowling/base-shop/packages/page-builder-ui/test/mswServer.ts",
+        "/Users/petercowling/base-shop/packages/page-builder-ui/test/resetNextMocks.ts",
+        "/Users/petercowling/base-shop/packages/page-builder-ui/test/setupFetchPolyfill.ts",
+        "/Users/petercowling/base-shop/packages/page-builder-ui/test/setupTests.ts",
+        "/Users/petercowling/base-shop/packages/page-builder-ui/test/reactDomClientShim.ts",
+        "/Users/petercowling/base-shop/packages/page-builder-ui/test/polyfills/",
+        "/Users/petercowling/base-shop/packages/page-builder-ui/test/__mocks__/",
+        "/Users/petercowling/base-shop/packages/config/src/env/__tests__/",
+        "src/.*\\.schema\\.ts$",
+        "/packages/(?!page-builder-ui)/",
+        "/apps/"
+      ],
+      "cwd": "/Users/petercowling/base-shop/packages/page-builder-ui",
+      "detectLeaks": false,
+      "detectOpenHandles": false,
+      "errorOnDeprecated": false,
+      "extensionsToTreatAsEsm": [
+        ".ts",
+        ".tsx"
+      ],
+      "fakeTimers": {
+        "enableGlobally": false
+      },
+      "forceCoverageMatch": [],
+      "globals": {},
+      "haste": {
+        "computeSha1": false,
+        "enableSymlinks": false,
+        "forceNodeFilesystemAPI": true,
+        "throwOnModuleCollision": false
+      },
+      "id": "d3a34a68d2c7f79751296ecdfd2ace10",
+      "injectGlobals": true,
+      "moduleDirectories": [
+        "node_modules"
+      ],
+      "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "mjs",
+        "node",
+        "d.ts"
+      ],
+      "moduleNameMapper": [
+        [
+          "^@acme/config/env/core$",
+          "/Users/petercowling/base-shop/test/mocks/config-env-core.ts"
+        ],
+        [
+          "^@acme/config/env/shipping$",
+          "/Users/petercowling/base-shop/test/mocks/config-env-shipping.ts"
+        ],
+        [
+          "^~test/(.*)$",
+          "/Users/petercowling/base-shop/test/$1"
+        ],
+        [
+          "^msw/node$",
+          "/Users/petercowling/base-shop/node_modules/msw/lib/node/index.mjs"
+        ],
+        [
+          "^.+\\.d\\.ts$",
+          "/Users/petercowling/base-shop/test/emptyModule.ts"
+        ],
+        [
+          "^(\\.{1,2}/.*)\\.js$",
+          "$1"
+        ],
+        [
+          "^\\./dataRoot\\.js$",
+          "/Users/petercowling/base-shop/packages/platform-core/src/dataRoot.ts"
+        ],
+        [
+          "^\\./auth\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/auth.ts"
+        ],
+        [
+          "^\\./cms\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/cms.ts"
+        ],
+        [
+          "^\\./email\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/email.ts"
+        ],
+        [
+          "^\\./core\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core.ts"
+        ],
+        [
+          "^\\./env/core\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core.ts"
+        ],
+        [
+          "^\\./payments\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/payments.ts"
+        ],
+        [
+          "^\\./shipping\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/shipping.ts"
+        ],
+        [
+          "^\\./cms\\.schema\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/cms.schema.ts"
+        ],
+        [
+          "^\\./foo\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/foo.impl.ts"
+        ],
+        [
+          "^\\./foo\\.impl\\.ts$",
+          "/Users/petercowling/base-shop/packages/config/src/env/foo.impl.ts"
+        ],
+        [
+          "^\\./core/require-env\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/require-env.ts"
+        ],
+        [
+          "^\\./core/schema\\.base-merge\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/schema.base-merge.ts"
+        ],
+        [
+          "^\\./core/refinement\\.deposit\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/refinement.deposit.ts"
+        ],
+        [
+          "^\\./core/schema\\.core\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/schema.core.ts"
+        ],
+        [
+          "^\\./core/loader\\.parse\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/loader.parse.ts"
+        ],
+        [
+          "^\\./core/runtime\\.proxy\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/runtime.proxy.ts"
+        ],
+        [
+          "^\\./core/runtime\\.prod-failfast\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/runtime.prod-failfast.ts"
+        ],
+        [
+          "^\\./core/runtime\\.test-auth-init\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/runtime.test-auth-init.ts"
+        ],
+        [
+          "^\\./core/schema\\.base\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/schema.base.ts"
+        ],
+        [
+          "^\\./schema\\.base\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/schema.base.ts"
+        ],
+        [
+          "^\\./schema\\.base-merge\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/schema.base-merge.ts"
+        ],
+        [
+          "^\\./constants\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/constants.ts"
+        ],
+        [
+          "^\\./schema\\.preprocess\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/schema.preprocess.ts"
+        ],
+        [
+          "^\\./schema\\.core\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/schema.core.ts"
+        ],
+        [
+          "^\\./refinement\\.deposit\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/refinement.deposit.ts"
+        ],
+        [
+          "^\\./loader\\.parse\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/loader.parse.ts"
+        ],
+        [
+          "^\\./runtime\\.resolve-loader\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/runtime.resolve-loader.ts"
+        ],
+        [
+          "^\\./env\\.snapshot\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/env.snapshot.ts"
+        ],
+        [
+          "^\\./runtime\\.proxy\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/runtime.proxy.ts"
+        ],
+        [
+          "^\\./runtime\\.prod-failfast\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/runtime.prod-failfast.ts"
+        ],
+        [
+          "^\\./runtime\\.test-auth-init\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core/runtime.test-auth-init.ts"
+        ],
+        [
+          "^\\.\\./cms\\.schema\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/cms.schema.ts"
+        ],
+        [
+          "^\\.\\./email\\.schema\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/email.schema.ts"
+        ],
+        [
+          "^\\.\\./payments\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/payments.ts"
+        ],
+        [
+          "^@platform-core$",
+          "/Users/petercowling/base-shop/packages/platform-core/src/index.ts"
+        ],
+        [
+          "^@ui/src$",
+          "/Users/petercowling/base-shop/packages/ui/src/index.ts"
+        ],
+        [
+          "^@platform-core/repositories/shopSettings$",
+          "/Users/petercowling/base-shop/packages/platform-core/src/repositories/settings.server.ts"
+        ],
+        [
+          "^@platform-core/repositories/rentalOrders$",
+          "/Users/petercowling/base-shop/packages/platform-core/src/repositories/rentalOrders.server.ts"
+        ],
+        [
+          "^@platform-core/repositories/pages$",
+          "/Users/petercowling/base-shop/packages/platform-core/src/repositories/pages/index.server.ts"
+        ],
+        [
+          "^@platform-core/(.*)$",
+          "/Users/petercowling/base-shop/packages/platform-core/src/$1"
+        ],
+        [
+          "^@ui/src/(.*)$",
+          "/Users/petercowling/base-shop/packages/ui/src/$1"
+        ],
+        [
+          "^@config/src/env$",
+          "/Users/petercowling/base-shop/packages/config/src/env/index.ts"
+        ],
+        [
+          "^@config/src/env/core$",
+          "/Users/petercowling/base-shop/packages/config/src/env/core.ts"
+        ],
+        [
+          "^@config/src/env/(.*)$",
+          "/Users/petercowling/base-shop/packages/config/src/env/$1.ts"
+        ],
+        [
+          "^@config/src/(.*)$",
+          "/Users/petercowling/base-shop/packages/config/src/$1"
+        ],
+        [
+          "^@acme/config/env$",
+          "/Users/petercowling/base-shop/packages/config/src/env/index.ts"
+        ],
+        [
+          "^@acme/config/env/(.*)$",
+          "/Users/petercowling/base-shop/packages/config/src/env/$1.ts"
+        ],
+        [
+          "^@acme/config/src/(.*)$",
+          "/Users/petercowling/base-shop/packages/config/src/$1"
+        ],
+        [
+          "^@acme/config$",
+          [
+            "/Users/petercowling/base-shop/packages/config/src/index.ts",
+            "/Users/petercowling/base-shop/packages/config/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/config/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/config/src/$1",
+            "/Users/petercowling/base-shop/packages/config/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/platform-core$",
+          "/Users/petercowling/base-shop/packages/platform-core/src/index.ts"
+        ],
+        [
+          "^@acme/platform-core/(.*)\\.js$",
+          "/Users/petercowling/base-shop/packages/platform-core/src/$1"
+        ],
+        [
+          "^@acme/platform-core/(.*)$",
+          "/Users/petercowling/base-shop/packages/platform-core/src/$1"
+        ],
+        [
+          "^@acme/page-builder-core$",
+          "/Users/petercowling/base-shop/packages/page-builder-core/src/index.ts"
+        ],
+        [
+          "^@acme/page-builder-core/(.*)$",
+          "/Users/petercowling/base-shop/packages/page-builder-core/src/$1"
+        ],
+        [
+          "^@acme/platform-core/contexts/CurrencyContext$",
+          "/Users/petercowling/base-shop/test/__mocks__/currencyContextMock.tsx"
+        ],
+        [
+          "^@acme/i18n$",
+          [
+            "/Users/petercowling/base-shop/packages/i18n/src/index.ts",
+            "/Users/petercowling/base-shop/packages/i18n/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/i18n/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/i18n/src/$1",
+            "/Users/petercowling/base-shop/packages/i18n/dist/$1"
+          ]
+        ],
+        [
+          "^@radix-ui/react-dropdown-menu$",
+          "/Users/petercowling/base-shop/test/__mocks__/@radix-ui/react-dropdown-menu.tsx"
+        ],
+        [
+          "^@acme/sanity$",
+          [
+            "/Users/petercowling/base-shop/packages/sanity/src/index.ts",
+            "/Users/petercowling/base-shop/packages/sanity/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/sanity/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/sanity/src/$1",
+            "/Users/petercowling/base-shop/packages/sanity/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/platform-machine/src/(.*)$",
+          "/Users/petercowling/base-shop/packages/platform-machine/src/$1"
+        ],
+        [
+          "^@acme/shared-utils/src/(.*)$",
+          "/Users/petercowling/base-shop/packages/shared-utils/src/$1"
+        ],
+        [
+          "^@acme/plugin-sanity$",
+          "/Users/petercowling/base-shop/test/__mocks__/pluginSanityStub.ts"
+        ],
+        [
+          "^@acme/plugin-sanity/(.*)$",
+          "/Users/petercowling/base-shop/test/__mocks__/pluginSanityStub.ts"
+        ],
+        [
+          "^@acme/telemetry$",
+          [
+            "/Users/petercowling/base-shop/packages/telemetry/src/index.ts",
+            "/Users/petercowling/base-shop/packages/telemetry/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@themes/(.*)/tailwind-tokens$",
+          "/Users/petercowling/base-shop/packages/themes/$1/tailwind-tokens/src/index.ts"
+        ],
+        [
+          "^@themes/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/themes/$1/src",
+            "/Users/petercowling/base-shop/packages/themes/$1/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@themes-local/(.*)/tailwind-tokens$",
+          "/Users/petercowling/base-shop/packages/platform-core/themes/$1/tailwind-tokens/src/index.ts"
+        ],
+        [
+          "^@themes-local/(.*)$",
+          "/Users/petercowling/base-shop/packages/platform-core/themes/$1/src/index.ts"
+        ],
+        [
+          "^@acme/zod-utils/initZod$",
+          "/Users/petercowling/base-shop/test/emptyModule.ts"
+        ],
+        [
+          "^\\./env/(.*)\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/$1.ts"
+        ],
+        [
+          "^\\./(auth|cms|email|core|payments|shipping)\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/$1.ts"
+        ],
+        [
+          "^\\.\\./(auth|cms|email|core|payments|shipping)\\.js$",
+          "/Users/petercowling/base-shop/packages/config/src/env/$1.ts"
+        ],
+        [
+          "^\\./fsStore\\.js$",
+          "/Users/petercowling/base-shop/packages/email/src/storage/fsStore.ts"
+        ],
+        [
+          "^\\./storage/index\\.js$",
+          "/Users/petercowling/base-shop/packages/email/src/storage/index.ts"
+        ],
+        [
+          "^\\./providers/resend\\.js$",
+          "/Users/petercowling/base-shop/packages/email/src/providers/resend.ts"
+        ],
+        [
+          "^\\./providers/sendgrid\\.js$",
+          "/Users/petercowling/base-shop/packages/email/src/providers/sendgrid.ts"
+        ],
+        [
+          "^\\./providers/types\\.js$",
+          "/Users/petercowling/base-shop/packages/email/src/providers/types.ts"
+        ],
+        [
+          "^\\./stats\\.js$",
+          "/Users/petercowling/base-shop/packages/email/src/stats.ts"
+        ],
+        [
+          "^@prisma/client$",
+          "/Users/petercowling/base-shop/__mocks__/@prisma/client.ts"
+        ],
+        [
+          "^@/components/atoms/shadcn$",
+          "/Users/petercowling/base-shop/test/__mocks__/shadcnDialogStub.tsx"
+        ],
+        [
+          "^@/i18n/(.*)$",
+          "/Users/petercowling/base-shop/packages/i18n/src/$1"
+        ],
+        [
+          "^@/components/(.*)$",
+          "/Users/petercowling/base-shop/test/__mocks__/componentStub.js"
+        ],
+        [
+          "^@/(.*)$",
+          "/Users/petercowling/base-shop/apps/cms/src/$1"
+        ],
+        [
+          "^next/server$",
+          "/Users/petercowling/base-shop/test/__mocks__/next-server.ts"
+        ],
+        [
+          "\\.(css|less|sass|scss)$",
+          "identity-obj-proxy"
+        ],
+        [
+          "^server-only$",
+          "/Users/petercowling/base-shop/test/server-only-stub.ts"
+        ],
+        [
+          "^react-dom/client$",
+          "/Users/petercowling/base-shop/test/reactDomClientShim.ts"
+        ],
+        [
+          "^@mswjs/interceptors/ClientRequest$",
+          "/Users/petercowling/base-shop/node_modules/.pnpm/@mswjs+interceptors@0.39.7/node_modules/@mswjs/interceptors/lib/node/interceptors/ClientRequest/index.js"
+        ],
+        [
+          "^react$",
+          "/Users/petercowling/base-shop/node_modules/.pnpm/react@19.2.0-canary-3fbfb9ba-20250409/node_modules/react"
+        ],
+        [
+          "^react-dom/client\\.js$",
+          "/Users/petercowling/base-shop/node_modules/.pnpm/react-dom@19.2.0-canary-3fbfb9ba-20250409_react@19.2.0-canary-3fbfb9ba-20250409/node_modules/react-dom/client.js"
+        ],
+        [
+          "^react-dom$",
+          "/Users/petercowling/base-shop/node_modules/.pnpm/react-dom@19.2.0-canary-3fbfb9ba-20250409_react@19.2.0-canary-3fbfb9ba-20250409/node_modules/react-dom"
+        ],
+        [
+          "^react/jsx-runtime$",
+          "/Users/petercowling/base-shop/node_modules/.pnpm/react@19.2.0-canary-3fbfb9ba-20250409/node_modules/react/jsx-runtime.js"
+        ],
+        [
+          "^react/jsx-dev-runtime$",
+          "/Users/petercowling/base-shop/node_modules/.pnpm/react@19.2.0-canary-3fbfb9ba-20250409/node_modules/react/jsx-dev-runtime.js"
+        ],
+        [
+          "^@acme/editorial$",
+          [
+            "/Users/petercowling/base-shop/packages/editorial/src/index.ts",
+            "/Users/petercowling/base-shop/packages/editorial/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/editorial/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/editorial/src/$1",
+            "/Users/petercowling/base-shop/packages/editorial/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/platform\\-machine$",
+          [
+            "/Users/petercowling/base-shop/packages/platform-machine/src/index.ts",
+            "/Users/petercowling/base-shop/packages/platform-machine/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/platform\\-machine/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/platform-machine/src/$1",
+            "/Users/petercowling/base-shop/packages/platform-machine/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/ui$",
+          [
+            "/Users/petercowling/base-shop/packages/ui/src/index.ts",
+            "/Users/petercowling/base-shop/packages/ui/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/ui/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/ui/src/$1",
+            "/Users/petercowling/base-shop/packages/ui/dist/$1"
+          ]
+        ],
+        [
+          "^@ui$",
+          [
+            "/Users/petercowling/base-shop/packages/ui/src/index.ts",
+            "/Users/petercowling/base-shop/packages/ui/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@ui/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/ui/src/$1",
+            "/Users/petercowling/base-shop/packages/ui/dist/$1"
+          ]
+        ],
+        [
+          "^@cms$",
+          [
+            "/Users/petercowling/base-shop/apps/cms/src",
+            "/Users/petercowling/base-shop/apps/cms/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@cms/(.*)$",
+          [
+            "/Users/petercowling/base-shop/apps/cms/src/$1",
+            "/Users/petercowling/base-shop/apps/cms/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/lib$",
+          [
+            "/Users/petercowling/base-shop/packages/lib/src/index.ts",
+            "/Users/petercowling/base-shop/packages/lib/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/lib/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/lib/src/$1",
+            "/Users/petercowling/base-shop/packages/lib/dist/$1"
+          ]
+        ],
+        [
+          "^@i18n$",
+          [
+            "/Users/petercowling/base-shop/packages/i18n/src/index.ts",
+            "/Users/petercowling/base-shop/packages/i18n/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@i18n/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/i18n/src/$1",
+            "/Users/petercowling/base-shop/packages/i18n/dist/$1"
+          ]
+        ],
+        [
+          "^@auth$",
+          [
+            "/Users/petercowling/base-shop/packages/auth/src/index.ts",
+            "/Users/petercowling/base-shop/packages/auth/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@auth/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/auth/src/$1",
+            "/Users/petercowling/base-shop/packages/auth/dist/$1"
+          ]
+        ],
+        [
+          "^@platform\\-core$",
+          [
+            "/Users/petercowling/base-shop/packages/platform-core/src/index.ts",
+            "/Users/petercowling/base-shop/packages/platform-core/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@platform\\-core/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/platform-core/src/$1",
+            "/Users/petercowling/base-shop/packages/platform-core/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/platform\\-core$",
+          [
+            "/Users/petercowling/base-shop/packages/platform-core/src/index.ts",
+            "/Users/petercowling/base-shop/packages/platform-core/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/platform\\-core/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/platform-core/src/$1",
+            "/Users/petercowling/base-shop/packages/platform-core/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/shared\\-utils$",
+          [
+            "/Users/petercowling/base-shop/packages/shared-utils/src/index.ts",
+            "/Users/petercowling/base-shop/packages/shared-utils/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/shared\\-utils/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/shared-utils/src/$1",
+            "/Users/petercowling/base-shop/packages/shared-utils/dist/$1"
+          ]
+        ],
+        [
+          "^@shared\\-utils$",
+          [
+            "/Users/petercowling/base-shop/packages/shared-utils/src/index.ts",
+            "/Users/petercowling/base-shop/packages/shared-utils/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@shared\\-utils/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/shared-utils/src/$1",
+            "/Users/petercowling/base-shop/packages/shared-utils/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/email$",
+          [
+            "/Users/petercowling/base-shop/packages/email/src/index.ts",
+            "/Users/petercowling/base-shop/packages/email/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/email/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/email/src/$1",
+            "/Users/petercowling/base-shop/packages/email/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/email\\-templates$",
+          [
+            "/Users/petercowling/base-shop/packages/email-templates/src/index.ts",
+            "/Users/petercowling/base-shop/packages/email-templates/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/email\\-templates/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/email-templates/src/$1",
+            "/Users/petercowling/base-shop/packages/email-templates/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/stripe$",
+          [
+            "/Users/petercowling/base-shop/packages/stripe/src/index.ts",
+            "/Users/petercowling/base-shop/packages/stripe/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/stripe/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/stripe/src/$1",
+            "/Users/petercowling/base-shop/packages/stripe/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/date\\-utils$",
+          [
+            "/Users/petercowling/base-shop/packages/date-utils/src/index.ts",
+            "/Users/petercowling/base-shop/packages/date-utils/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/date\\-utils/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/date-utils/src/$1",
+            "/Users/petercowling/base-shop/packages/date-utils/dist/$1"
+          ]
+        ],
+        [
+          "^@date\\-utils$",
+          [
+            "/Users/petercowling/base-shop/packages/date-utils/src/index.ts",
+            "/Users/petercowling/base-shop/packages/date-utils/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@date\\-utils/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/date-utils/src/$1",
+            "/Users/petercowling/base-shop/packages/date-utils/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/configurator$",
+          [
+            "/Users/petercowling/base-shop/packages/configurator/src/index.ts",
+            "/Users/petercowling/base-shop/packages/configurator/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/configurator/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/configurator/src/$1",
+            "/Users/petercowling/base-shop/packages/configurator/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/product\\-configurator$",
+          [
+            "/Users/petercowling/base-shop/packages/product-configurator/src/index.ts",
+            "/Users/petercowling/base-shop/packages/product-configurator/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/product\\-configurator/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/product-configurator/src/$1",
+            "/Users/petercowling/base-shop/packages/product-configurator/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/tools$",
+          [
+            "/Users/petercowling/base-shop/packages/tools/src/index.ts",
+            "/Users/petercowling/base-shop/packages/tools/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/tools/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/tools/src/$1",
+            "/Users/petercowling/base-shop/packages/tools/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/tailwind\\-config$",
+          [
+            "/Users/petercowling/base-shop/packages/tailwind-config/src/index.ts",
+            "/Users/petercowling/base-shop/packages/tailwind-config/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/tailwind\\-config/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/tailwind-config/src/$1",
+            "/Users/petercowling/base-shop/packages/tailwind-config/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/telemetry/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/telemetry/src/$1",
+            "/Users/petercowling/base-shop/packages/telemetry/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/theme$",
+          [
+            "/Users/petercowling/base-shop/packages/theme/src/index.ts",
+            "/Users/petercowling/base-shop/packages/theme/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/theme/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/theme/src/$1",
+            "/Users/petercowling/base-shop/packages/theme/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/zod\\-utils$",
+          [
+            "/Users/petercowling/base-shop/packages/zod-utils/src/index.ts",
+            "/Users/petercowling/base-shop/packages/zod-utils/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/zod\\-utils/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/zod-utils/src/$1",
+            "/Users/petercowling/base-shop/packages/zod-utils/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/test\\-utils$",
+          [
+            "/Users/petercowling/base-shop/packages/test-utils/src/index.ts",
+            "/Users/petercowling/base-shop/packages/test-utils/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/test\\-utils/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/test-utils/src/$1",
+            "/Users/petercowling/base-shop/packages/test-utils/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/page\\-builder\\-core$",
+          [
+            "/Users/petercowling/base-shop/packages/page-builder-core/src/index.ts",
+            "/Users/petercowling/base-shop/packages/page-builder-core/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/page\\-builder\\-core/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/page-builder-core/src/$1",
+            "/Users/petercowling/base-shop/packages/page-builder-core/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/templates$",
+          [
+            "/Users/petercowling/base-shop/packages/templates/src/index.ts",
+            "/Users/petercowling/base-shop/packages/templates/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/templates/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/templates/src/$1",
+            "/Users/petercowling/base-shop/packages/templates/dist/$1"
+          ]
+        ],
+        [
+          "^@acme/pipeline\\-engine$",
+          [
+            "/Users/petercowling/base-shop/packages/pipeline-engine/src/index.ts",
+            "/Users/petercowling/base-shop/packages/pipeline-engine/dist/index.d.ts"
+          ]
+        ],
+        [
+          "^@acme/pipeline\\-engine/(.*)$",
+          [
+            "/Users/petercowling/base-shop/packages/pipeline-engine/src/$1",
+            "/Users/petercowling/base-shop/packages/pipeline-engine/dist/$1"
+          ]
+        ],
+        [
+          "^next-auth$",
+          "/Users/petercowling/base-shop/test/mocks/next-auth.ts"
+        ],
+        [
+          "^next-auth/jwt$",
+          "/Users/petercowling/base-shop/test/mocks/next-auth-jwt.ts"
+        ],
+        [
+          "^next-auth/react$",
+          "/Users/petercowling/base-shop/test/mocks/next-auth-react.ts"
+        ]
+      ],
+      "modulePathIgnorePatterns": [],
+      "openHandlesTimeout": 1000,
+      "prettierPath": "prettier",
+      "resetMocks": false,
+      "resetModules": false,
+      "restoreMocks": false,
+      "rootDir": "/Users/petercowling/base-shop/packages/page-builder-ui",
+      "roots": [
+        "/Users/petercowling/base-shop/packages/page-builder-ui"
+      ],
+      "runner": "/Users/petercowling/base-shop/node_modules/.pnpm/jest-runner@29.7.0/node_modules/jest-runner/build/index.js",
+      "sandboxInjectedGlobals": [],
+      "setupFiles": [
+        "/Users/petercowling/base-shop/node_modules/.pnpm/dotenv@17.2.1/node_modules/dotenv/config.js"
+      ],
+      "setupFilesAfterEnv": [
+        "/Users/petercowling/base-shop/test/setupFetchPolyfill.ts",
+        "/Users/petercowling/base-shop/jest.setup.ts"
+      ],
+      "skipFilter": false,
+      "slowTestThreshold": 5,
+      "snapshotFormat": {
+        "escapeString": false,
+        "printBasicPrototype": false
+      },
+      "snapshotSerializers": [],
+      "testEnvironment": "/Users/petercowling/base-shop/node_modules/.pnpm/jest-environment-jsdom@29.7.0/node_modules/jest-environment-jsdom/build/index.js",
+      "testEnvironmentOptions": {},
+      "testLocationInResults": false,
+      "testMatch": [
+        "**/?(*.)+(spec|test).ts?(x)"
+      ],
+      "testPathIgnorePatterns": [
+        "/Users/petercowling/base-shop/test/e2e/",
+        "/Users/petercowling/base-shop/apps/storybook/.storybook/",
+        "/apps/storybook/.storybook/test-runner/",
+        "/Users/petercowling/base-shop/apps/storybook/.storybook-ci/",
+        "/apps/storybook/.storybook-composed/"
+      ],
+      "testRegex": [],
+      "testRunner": "/Users/petercowling/base-shop/node_modules/.pnpm/jest-circus@29.7.0_babel-plugin-macros@3.1.0/node_modules/jest-circus/runner.js",
+      "transform": [
+        [
+          "^.+\\.(ts|tsx)$",
+          "/Users/petercowling/base-shop/node_modules/.pnpm/ts-jest@29.1.1_@babel+core@7.28.4_@jest+types@29.6.3_babel-jest@29.7.0_@babel+core@7.28_6c3423bc61b6ae767b4c0efeb03ef331/node_modules/ts-jest/dist/index.js",
+          {
+            "tsconfig": "/Users/petercowling/base-shop/tsconfig.test.json",
+            "useESM": true,
+            "diagnostics": false,
+            "babelConfig": false
+          }
+        ],
+        [
+          "^.+\\.(mjs|cjs|js)$",
+          "/Users/petercowling/base-shop/node_modules/.pnpm/babel-jest@29.7.0_@babel+core@7.28.4/node_modules/babel-jest/build/index.js",
+          {
+            "presets": [
+              [
+                "@babel/preset-env",
+                {
+                  "targets": {
+                    "node": "current"
+                  },
+                  "modules": "commonjs"
+                }
+              ]
+            ]
+          }
+        ],
+        [
+          "^.+\\.tsx?$",
+          "/Users/petercowling/base-shop/node_modules/.pnpm/ts-jest@29.1.1_@babel+core@7.28.4_@jest+types@29.6.3_babel-jest@29.7.0_@babel+core@7.28_6c3423bc61b6ae767b4c0efeb03ef331/node_modules/ts-jest/dist/index.js",
+          {
+            "useESM": true
+          }
+        ]
+      ],
+      "transformIgnorePatterns": [
+        "/node_modules/(?!(?:\\.pnpm/[^/]+/node_modules/)?(jose|next-auth|ulid|@upstash/redis|uncrypto|msw|@mswjs/interceptors|strict-event-emitter|headers-polyfill|outvariant|until-async|@bundled-es-modules|@acme)/)"
+      ],
+      "watchPathIgnorePatterns": []
+    }
+  ],
+  "globalConfig": {
+    "bail": 0,
+    "changedFilesWithAncestor": false,
+    "ci": false,
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "scripts/**/*.{ts,tsx}",
+      "functions/**/*.ts",
+      "middleware.ts",
+      "packages/*/middleware.ts",
+      "*.{ts,tsx}",
+      "!**/__tests__/**",
+      "!**/*.d.ts",
+      "!**/*.stories.{ts,tsx}",
+      "!**/devtools/**",
+      "!**/*.test.{ts,tsx}",
+      "!**/*.spec.{ts,tsx}"
+    ],
+    "coverageDirectory": "/Users/petercowling/base-shop/coverage/acme-page-builder-ui",
+    "coverageProvider": "babel",
+    "coverageReporters": [
+      "text",
+      "text-summary",
+      "lcov",
+      "json"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 80,
+        "branches": 80,
+        "functions": 80
+      }
+    },
+    "detectLeaks": false,
+    "detectOpenHandles": false,
+    "errorOnDeprecated": false,
+    "expand": false,
+    "findRelatedTests": false,
+    "forceExit": false,
+    "json": false,
+    "lastCommit": false,
+    "listTests": false,
+    "logHeapUsage": false,
+    "maxConcurrency": 5,
+    "maxWorkers": 9,
+    "noStackTrace": false,
+    "nonFlagArgs": [],
+    "notify": false,
+    "notifyMode": "failure-change",
+    "onlyChanged": false,
+    "onlyFailures": false,
+    "openHandlesTimeout": 1000,
+    "passWithNoTests": true,
+    "projects": [],
+    "rootDir": "/Users/petercowling/base-shop/packages/page-builder-ui",
+    "runTestsByPath": false,
+    "seed": -21779562,
+    "skipFilter": false,
+    "snapshotFormat": {
+      "escapeString": false,
+      "printBasicPrototype": false
+    },
+    "testFailureExitCode": 1,
+    "testPathPattern": "",
+    "testSequencer": "/Users/petercowling/base-shop/node_modules/.pnpm/@jest+test-sequencer@29.7.0/node_modules/@jest/test-sequencer/build/index.js",
+    "updateSnapshot": "new",
+    "useStderr": false,
+    "watch": false,
+    "watchAll": false,
+    "watchman": true,
+    "workerThreads": false
+  },
+  "version": "29.7.0"
+}

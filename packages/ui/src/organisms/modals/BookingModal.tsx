@@ -10,8 +10,8 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
 } from "react";
 import DatePicker from "react-datepicker";
-import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
-import { resolveBookingDateFormat } from "@ui/utils/bookingDateFormat";
+import { useCurrentLanguage } from "../../hooks/useCurrentLanguage";
+import { resolveBookingDateFormat } from "../../utils/bookingDateFormat";
 import type {
   BookingModalCopy,
   BookingModalBuildParams,

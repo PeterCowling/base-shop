@@ -3,7 +3,7 @@ import { memo, MouseEvent, useCallback } from "react";
 
 import CfImage from "./CfImage";
 import { resolveAssetPath } from "../shared/media";
-import type { RoomCardImageLabels } from "../types/roomCard";
+import type { RoomCardImageLabels } from "@ui/types/roomCard";
 
 export interface RoomImageProps {
   image: string;

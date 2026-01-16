@@ -55,7 +55,7 @@ const MARGIN_RATIOS: Partial<Record<string, number>> = {
   Other: 0.5,
 };
 
-function MenuPerformanceDashboard(): JSX.Element {
+function MenuPerformanceDashboard(): React.ReactElement {
   const { allFinancialTransactions, loading, error } =
     useAllFinancialTransactionsData();
   const { getCategoryTypeByProductName, getProductCategory2 } =

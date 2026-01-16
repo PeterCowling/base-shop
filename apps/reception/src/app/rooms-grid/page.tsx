@@ -1,12 +1,8 @@
-"use client";
+// Skip SSG - @daminort/reservation-grid has React internals incompatible with prerendering
+export const dynamic = "force-dynamic";
 
-import Providers from "@/components/Providers";
-import RoomsGrid from "@/components/roomgrid/RoomsGrid";
+import RoomsGridClient from "./RoomsGridClient";
 
 export default function RoomsGridPage() {
-  return (
-    <Providers>
-      <RoomsGrid />
-    </Providers>
-  );
+  return <RoomsGridClient />;
 }

@@ -5,7 +5,7 @@ import RoomImage from "../atoms/RoomImage";
 import VisuallyHidden from "../atoms/VisuallyHidden";
 import { resolveAssetPath } from "../shared/media";
 import { ROOM_CARD_TEST_IDS } from "../shared/testIds";
-import { Stack } from "@ui/components/atoms/primitives/Stack";
+import { Stack } from "../components/atoms/primitives/Stack";
 import type {
   RoomCardAction,
   RoomCardFacility,
@@ -13,7 +13,7 @@ import type {
   RoomCardImageLabels,
   RoomCardPrice,
   RoomCardProps,
-} from "../types/roomCard";
+} from "@ui/types/roomCard";
 
 export const ROOM_CARD_ACTION_BUTTON_CLASS = clsx(
   "inline-flex",

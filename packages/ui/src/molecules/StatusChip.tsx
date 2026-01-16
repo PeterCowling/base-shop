@@ -2,7 +2,7 @@
 'use client'
 
 import React from 'react'
-import { cn } from '../utils/style/cn'
+import { cn } from '@ui/utils/style/cn'
 
 export interface StatusChipProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** Status variant determines color scheme */

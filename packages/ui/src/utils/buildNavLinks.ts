@@ -3,7 +3,7 @@
 
 import { NAV_ITEMS, type NavKey } from "@ui/config/navItems";
 import type { AppLanguage } from "@ui/i18n.config";
-import type { SlugMap } from "@ui/slug-map";
+import type { SlugMap } from "../slug-map";
 import { translatePath } from "./translate-path";
 
 export interface NavItem {

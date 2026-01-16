@@ -6,8 +6,8 @@ import {
   type KeyboardEvent as ReactKeyboardEvent,
   type MouseEvent,
 } from "react";
-import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
-import { resolveBookingDateFormat } from "@ui/utils/bookingDateFormat";
+import { useCurrentLanguage } from "../../hooks/useCurrentLanguage";
+import { resolveBookingDateFormat } from "../../utils/bookingDateFormat";
 import type { BookingModal2Copy } from "./types";
 
 const BOOKING_MODAL_2_TITLE_ID = "booking-modal-2-title";

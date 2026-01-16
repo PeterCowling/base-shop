@@ -1,5 +1,5 @@
 // packages/ui/src/organisms/ApartmentAmenitiesSection.tsx
-import { CfImage } from "@ui/atoms/CfImage";
+import { CfImage } from "../atoms/CfImage";
 import { Snowflake, Utensils, WashingMachine, Wifi } from "lucide-react";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";

@@ -101,7 +101,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
 
     let alive = true;
     // Fallback: dynamically import the JSON for this language
-    import(`@ui/locales/${lang}/notificationBanner.json`)
+    import(`../locales/${lang}/notificationBanner.json`)
       .then((mod) => {
         if (!alive) return;
         const localeModule = mod as NotificationBannerLocaleModule;

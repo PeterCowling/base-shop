@@ -292,7 +292,8 @@
     }
   },
   "files": [
-    "packages/types/src/global.d.ts"
+    "packages/types/src/global.d.ts",
+    "packages/types/src/jsx.d.ts"
   ],
   "exclude": [
     "**/__mocks__/**",

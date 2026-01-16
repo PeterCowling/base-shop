@@ -297,6 +297,8 @@ Plans with proper attribution allow:
 - Prefer scoped runs: `pnpm --filter @acme/platform-core test`
 - Seed data before E2E: `pnpm --filter @acme/platform-core exec prisma db seed`
 - Coverage: `pnpm test:coverage`
+- **Coverage targets:** 80% lines/branches/functions globally; 90%/85%/90% for `@acme/ui`
+- See `docs/coverage.md` for full coverage configuration and targets
 
 ### Git & Commits
 
@@ -501,6 +503,80 @@ Check `docs/dev-ports.md` for current port assignments. Common ones:
 15. **Don't fix symptoms instead of causes** - Investigate root cause
 16. **Don't choose easy over correct** - The extra effort now saves pain later
 
+## Systemic Issues: Plan-First Approach (MANDATORY)
+
+When encountering a problem that appears to require a large-scale fix (e.g., fixing 80+ files, disabling linters/type checkers, mass search-and-replace), **STOP and create a plan document instead of taking shortcuts**.
+
+### What Constitutes a Shortcut
+
+| Shortcut (AVOID) | Why It's Bad | Proper Approach |
+|------------------|--------------|-----------------|
+| `sed -i 's/old/new/g' **/*.ts` on 80+ files | Creates mass changes without understanding root cause | Create a plan to fix the underlying tooling issue |
+| Adding `ignoreDuringBuilds: true` to Next.js config | Masks ESLint configuration problems | Create a plan to fix ESLint configuration |
+| Adding `ignoreBuildErrors: true` to Next.js config | Masks TypeScript type issues | Create a plan to fix the type definitions |
+| Deleting a file to fix an import error | Loses work and doesn't fix the actual problem | Fix the import path or module resolution |
+| Disabling a test to make CI pass | Hides real bugs | Fix the code the test is catching |
+| Using `any` type to silence TypeScript | Creates type safety holes | Fix the types properly |
+| Mass-renaming imports without fixing the build system | Creates maintenance burden | Fix the build tooling (bundler, path aliases) |
+
+### When to Create a Plan
+
+Create a plan document in `docs/plans/` when:
+
+1. **The fix affects 10+ files** — Large-scale changes need tracking and reversibility
+2. **The fix involves disabling checks** — Linting, type checking, or test skipping
+3. **The fix is a workaround, not a solution** — "This works but isn't the right way"
+4. **The root cause is tooling or configuration** — Not just a code bug
+5. **You're uncertain if the approach is correct** — Document reasoning for review
+
+### Plan Creation Process
+
+1. **Identify the problem clearly** — What's broken, what error messages appear
+2. **Research the root cause** — Don't just fix symptoms
+3. **Propose a proper solution** — How it should be fixed long-term
+4. **Create the plan document**:
+   ```bash
+   # Location
+   docs/plans/<descriptive-name>-plan.md
+
+   # Required metadata (see PLAN DOCUMENTATION LIFECYCLE section)
+   Type: Plan
+   Status: Active
+   Domain: <relevant domain>
+   Created: <today's date>
+   Created-by: Claude <model>
+   ```
+5. **Tell the user** — "This is a systemic issue. I've created a plan at `docs/plans/xyz-plan.md` for the proper fix. Would you like to proceed with the plan, or should I apply a temporary workaround with a TODO noting the tech debt?"
+
+### Example: Path Alias Issue
+
+**Scenario:** The `@acme/ui` package uses `@ui/` path aliases that don't resolve in downstream apps.
+
+**Wrong approach:**
+```bash
+# DON'T: Mass sed replace across 80+ files
+sed -i 's/@ui\//..\/..\/src\//g' packages/ui/src/**/*.ts
+```
+
+**Right approach:**
+1. Recognize this as a build tooling issue (tsc doesn't transform paths)
+2. Create `docs/plans/ui-package-build-tooling-plan.md`
+3. Document the proper solution (migrate to tsup/esbuild bundler)
+4. Present the plan to the user before proceeding
+
+### Reference Incident
+
+On 2026-01-15, shortcuts were taken to "fix" build issues:
+- `sed` replaced `@ui/` imports in 80+ files (created maintenance burden)
+- `ignoreDuringBuilds: true` was added (masked ESLint config issues)
+- `ignoreBuildErrors: true` was added (masked React 19 type issues)
+
+These shortcuts created technical debt that now needs proper plans to resolve:
+- `docs/plans/ui-package-build-tooling-plan.md`
+- `docs/plans/monorepo-eslint-standardization-plan.md`
+
+**Lesson:** Proper planning upfront prevents accumulated tech debt.
+
 ## Helpful Context
 
 - This is a rental/e-commerce platform with deposits handled via Stripe
@@ -533,6 +609,9 @@ Check `docs/dev-ports.md` for current port assignments. Common ones:
 ---
 
 **Last Updated:** 2026-01-15
+
+**Recent Updates:**
+- 2026-01-15: Added "Systemic Issues: Plan-First Approach" section (Claude Opus 4.5)
 
 **Incident Reference:** See `docs/RECOVERY-PLAN-2026-01-14.md` for why destructive commands are prohibited.
 

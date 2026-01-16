@@ -146,7 +146,7 @@ const RoomGrid: FC<RoomGridProps> = memo(
     return (
       <>
         <div
-          className={`dark border border-gray-300 rounded-md mb-8 overflow-x-auto p-4 bg-gray-50 shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${styles.hideInfoColumn}`}
+          className={`dark border border-gray-300 rounded-md mb-8 overflow-x-auto p-4 bg-gray-50 shadow-sm dark:bg-darkSurface dark:border-darkSurface dark:text-darkAccentGreen ${styles.roomGridWrapper} ${styles.hideInfoColumn}`}
         >
           <h2 className="text-xl font-semibold mb-2 mt-0 dark:text-darkAccentGreen">Room {roomNumber}</h2>
 

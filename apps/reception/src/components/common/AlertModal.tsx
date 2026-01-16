@@ -72,6 +72,8 @@ function AlertModal({
       onClose={onClose}
       title={title}
       maxWidth="max-w-sm"
+      className=""
+      backdropClassName=""
       footer={
         <Cluster justify="center" className="w-full">
           <button

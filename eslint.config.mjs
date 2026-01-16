@@ -1388,6 +1388,28 @@ export default [
       "ds/min-tap-size": "off",
     },
   },
- 
-  
+
+  /* ▸ Reception app: internal operations tool, not customer-facing */
+  {
+    files: ["apps/reception/**/*.{ts,tsx,js,jsx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+      "ds/no-raw-color": "off",
+      "ds/no-raw-font": "off",
+      "ds/no-unsafe-viewport-units": "off",
+      "ds/container-widths-only-at": "off",
+      "ds/enforce-focus-ring-token": "off",
+      "ds/min-tap-size": "off",
+      "ds/require-aspect-ratio-on-media": "off",
+      "ds/no-naked-img": "off",
+      "ds/no-nonlayered-zindex": "off",
+      "ds/no-physical-direction-classes-in-rtl": "off",
+      "ds/absolute-parent-guard": "off",
+      "ds/enforce-layout-primitives": "off",
+      "ds/require-disable-justification": "off",
+    },
+  },
+
+
 ];

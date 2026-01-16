@@ -5,7 +5,7 @@ import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { AppLanguage } from "@ui/i18n.config";
 import { Section } from "../atoms/Section";
-import { Grid } from "@ui/components/atoms/primitives/Grid";
+import { Grid } from "../components/atoms/primitives/Grid";
 
 export interface QuickLink {
   label: string;

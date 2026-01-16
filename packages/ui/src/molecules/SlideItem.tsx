@@ -12,8 +12,8 @@ import { Link } from "react-router-dom";
 import { forwardRef, memo, useCallback, useMemo, type CSSProperties, type ForwardedRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { AppLanguage } from "@ui/i18n.config";
-import { resolveSharedToken } from "@ui/shared";
-import { Cluster } from "@ui/components/atoms/primitives/Cluster";
+import { resolveSharedToken } from "../shared";
+import { Cluster } from "../components/atoms/primitives/Cluster";
 
 const resolveAsset = (p: string): string => p.replace(/^\/images\//, "/img/");
 const PRICE_LOADING_TEST_ID = "price-loading";

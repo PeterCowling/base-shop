@@ -3,7 +3,7 @@ import { useModal } from "@ui/context/ModalContext";
 import hotel from "@ui/config/hotel";
 import { useCurrentLanguage } from "@ui/hooks/useCurrentLanguage";
 import { i18nConfig, type AppLanguage } from "@ui/i18n.config";
-import { resolveBookingCtaLabel, resolveSharedToken } from "@ui/shared";
+import { resolveBookingCtaLabel, resolveSharedToken } from "../shared";
 import { getDatePlusTwoDays } from "@ui/utils/dateUtils";
 import {
   lazy,

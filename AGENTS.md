@@ -3,8 +3,8 @@ Type: Runbook
 Status: Canonical
 Domain: Repo
 Last-reviewed: 2026-01-15
-Last-updated: 2026-01-15
-Last-updated-by: Claude Opus 4.5
+Last-updated: 2026-01-16
+Last-updated-by: Codex
 ---
 
 # AGENTS — Repo Runbook
@@ -141,6 +141,31 @@ git status --porcelain
 # If output is not empty, commit first:
 git add -A && git commit -m "WIP: checkpoint before <operation>"
 ```
+
+---
+
+### Rule 6: Verify New Files Are Tracked Before Committing
+
+**Trigger:** After creating or regenerating files, before any commit.
+
+**Agent action:**
+```bash
+# Confirm untracked files and staged changes
+git status --porcelain
+git diff --cached --stat
+
+# If new files are listed as untracked:
+git add -A
+
+# Confirm the new files are staged:
+git diff --cached --stat
+```
+
+**If a new file will not stage:** run `git check-ignore -v <path>` and stop. Do not force-add or delete the file without user direction.
+
+**If a new file disappears or goes missing:** STOP. Run `git status --porcelain` and `git ls-files --others --exclude-standard`, share the output, and ask the user how to proceed.
+
+**Why:** Untracked files can be deleted by cleanup tools or external actions. Verifying staging prevents silent loss.
 
 ---
 

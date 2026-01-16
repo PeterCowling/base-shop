@@ -1,7 +1,15 @@
 # Authorization Standardization Plan
 
-**Date:** 2026-01-12
-**Status:** In Progress
+---
+Type: Plan
+Status: Active
+Domain: CMS
+Created: 2026-01-12
+Created-by: Peter Cowling
+Last-updated: 2026-01-16
+Last-updated-by: Claude Opus 4.5
+---
+
 **Related:** `docs/security-audit-2026-01.md`
 
 ## Overview
@@ -73,32 +81,33 @@ From `packages/auth/src/permissions.json`:
 
 ## Migration Strategy
 
-### Phase 1: Role-Based Endpoints (17 files)
+### Phase 1: Role-Based Endpoints (17 files) - COMPLETED
+
 Replace manual `["admin", "ShopAdmin"]` checks with `ensureRole(['admin', 'ShopAdmin'])`:
 
 **Priority High (Shop Management):**
-- [ ] `apps/cms/src/app/api/pages/[shop]/route.ts`
-- [ ] `apps/cms/src/app/api/configure-shop/[shop]/route.ts`
-- [ ] `apps/cms/src/app/api/shop-creation-state/[shop]/route.ts`
-- [ ] `apps/cms/src/app/api/launch-status/[shop]/route.ts`
-- [ ] `apps/cms/src/app/api/env/[shopId]/route.ts`
-- [ ] `apps/cms/src/app/api/configurator/init-shop/route.ts`
+- [x] `apps/cms/src/app/api/pages/[shop]/route.ts`
+- [x] `apps/cms/src/app/api/configure-shop/[shop]/route.ts`
+- [x] `apps/cms/src/app/api/shop-creation-state/[shop]/route.ts`
+- [x] `apps/cms/src/app/api/launch-status/[shop]/route.ts`
+- [x] `apps/cms/src/app/api/env/[shopId]/route.ts`
+- [x] `apps/cms/src/app/api/configurator/init-shop/route.ts`
 
 **Priority High (Content Management):**
-- [ ] `apps/cms/src/app/api/categories/[shop]/route.ts`
-- [ ] `apps/cms/src/app/api/page-draft/[shop]/route.ts`
-- [ ] `apps/cms/src/app/api/providers/shop/[shop]/route.ts`
+- [x] `apps/cms/src/app/api/categories/[shop]/route.ts`
+- [x] `apps/cms/src/app/api/page-draft/[shop]/route.ts`
+- [x] `apps/cms/src/app/api/providers/shop/[shop]/route.ts`
 
 **Priority Medium (Data Operations):**
-- [ ] `apps/cms/src/app/api/data/[shop]/return-logistics/route.ts`
-- [ ] `apps/cms/src/app/api/data/[shop]/inventory/[sku]/route.ts`
-- [ ] `apps/cms/src/app/api/data/[shop]/rental/pricing/route.ts`
-- [ ] `apps/cms/src/app/api/data/[shop]/inventory/import/route.ts`
-- [ ] `apps/cms/src/app/api/marketing/discounts/route.ts`
+- [x] `apps/cms/src/app/api/data/[shop]/return-logistics/route.ts`
+- [x] `apps/cms/src/app/api/data/[shop]/inventory/[sku]/route.ts`
+- [x] `apps/cms/src/app/api/data/[shop]/rental/pricing/route.ts`
+- [x] `apps/cms/src/app/api/data/[shop]/inventory/import/route.ts`
+- [x] `apps/cms/src/app/api/marketing/discounts/route.ts`
 
 **Priority Low (Infrastructure):**
-- [ ] `apps/cms/src/app/api/configurator/validate-env/[shop]/route.ts`
-- [ ] `apps/cms/src/app/api/cloudflare/route.ts`
+- [x] `apps/cms/src/app/api/configurator/validate-env/[shop]/route.ts`
+- [x] `apps/cms/src/app/api/cloudflare/route.ts`
 
 ### Phase 2: Permission-Based Endpoints (Expand)
 Consider converting role-based checks to permission-based where appropriate:
@@ -113,19 +122,39 @@ Consider converting role-based checks to permission-based where appropriate:
 - `apps/cms/src/app/api/providers/shop/[shop]/route.ts`
 
 **Candidates for `manage_inventory`:**
-- Already using permission-based checks ✅
+- Already using permission-based checks
 
 **Candidates for `manage_media`:**
 - `apps/cms/src/app/api/upload-csv/[shop]/route.ts`
 
-### Phase 3: Fix Logical Issues (2 files)
-- [ ] `apps/cms/src/app/api/deploy-shop/route.ts` - Remove redundant check after `ensureAuthorized()`
-- [ ] `apps/cms/src/app/api/configurator/deploy-shop/route.ts` - Simplify custom role resolution
+### Phase 3: Fix Logical Issues (2 files) - COMPLETED
+- [x] `apps/cms/src/app/api/deploy-shop/route.ts` - Simplified to use `ensureRole()`
+- [x] `apps/cms/src/app/api/configurator/deploy-shop/route.ts` - Simplified to use `ensureRole()`
 
 ### Phase 4: Add Missing Auth (Review)
 Some endpoints have no auth on GET but require auth on POST/PATCH/DELETE:
 - [ ] Review: `apps/cms/src/app/api/sections/[shop]/route.ts` - GET has no auth
 - [ ] Review: `apps/cms/src/app/api/globals/route.ts` - GET has no auth
+
+## Security Fixes Applied (2026-01-16)
+
+### 1. Test Auth Bypass Fix
+Added `NODE_ENV === 'test'` check to all test bypass conditions in auth utilities:
+- `ensureAuthorized()` - Fixed
+- `ensureCanRead()` - Fixed
+- `ensureRole()` - Created with proper check
+
+This prevents accidental bypass in production if `CMS_TEST_ASSUME_ADMIN=1` is accidentally set.
+
+### 2. Rate Limiting Bypass Fix
+Fixed header order priority in rate-limiting identity functions across 4 API routes:
+- `apps/cover-me-pretty/src/app/api/ai/pose/route.ts`
+- `apps/cover-me-pretty/src/app/api/ai/segment/route.ts`
+- `apps/cover-me-pretty/src/app/api/ai/depth/route.ts`
+- `apps/cover-me-pretty/src/app/api/tryon/garment/route.ts`
+
+**Before:** `x-forwarded-for` was checked before `cf-connecting-ip` (spoofable)
+**After:** `cf-connecting-ip` (CDN-verified) is checked first, then falls back to `x-forwarded-for`
 
 ## Migration Pattern
 
@@ -179,10 +208,10 @@ For each migrated endpoint:
 
 ## Progress Tracking
 
-- **Phase 1:** 0/17 files migrated
-- **Phase 2:** 0 endpoints converted to permission-based
-- **Phase 3:** 0/2 logical issues fixed
-- **Phase 4:** 0 endpoints reviewed
+- **Phase 1:** 17/17 files migrated (COMPLETED 2026-01-16)
+- **Phase 2:** 0 endpoints converted to permission-based (pending future work)
+- **Phase 3:** 2/2 logical issues fixed (COMPLETED 2026-01-16)
+- **Phase 4:** 0 endpoints reviewed (pending future work)
 
 ## Related Files
 
@@ -193,7 +222,8 @@ For each migrated endpoint:
 
 ## Next Steps
 
-1. Begin Phase 1 migration with high-priority shop management endpoints
-2. Run tests after each file migration
-3. Consider adding new permissions for CMS-specific operations
+1. ~~Begin Phase 1 migration with high-priority shop management endpoints~~ DONE
+2. ~~Run tests after each file migration~~ DONE
+3. Consider adding new permissions for CMS-specific operations (Phase 2)
 4. Document any endpoints that need special authorization logic
+5. Review Phase 4 endpoints for missing auth on GET routes

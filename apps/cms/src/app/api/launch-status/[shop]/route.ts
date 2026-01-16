@@ -1,7 +1,6 @@
 // apps/cms/src/app/api/launch-status/[shop]/route.ts
 import "@acme/zod-utils/initZod";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+import { ensureRole } from "@cms/actions/common/auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { getLaunchStatus } from "@platform-core/configurator";
 import type { LaunchEnv, LaunchCheckResult } from "@acme/types";
@@ -12,11 +11,11 @@ export async function GET(
   _req: NextRequest,
   context: { params: Promise<{ shop: string }> },
 ) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  try {
+    await ensureRole(["admin", "ShopAdmin"]);
+  } catch {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
-
   const { shop } = await context.params;
 
   try {

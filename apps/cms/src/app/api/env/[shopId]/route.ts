@@ -1,7 +1,6 @@
 // apps/cms/src/app/api/env/[shopId]/route.ts
 import "@acme/zod-utils/initZod";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+import { ensureRole } from "@cms/actions/common/auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
@@ -10,8 +9,6 @@ import { resolveDataRoot } from "@platform-core/dataRoot";
 import { validateShopName } from "@platform-core/shops";
 import { setupSanityBlog } from "@cms/actions/setupSanityBlog";
 import { parseJsonBody } from "@shared-utils";
-// Use server translation API; alias to avoid hooks lint rule
-import { useTranslations as getTranslations } from "@acme/i18n/useTranslations.server";
 
 const schema = z.record(z.string(), z.string());
 
@@ -19,12 +16,8 @@ export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shopId: string }> }
 ) {
-  const t = await getTranslations("en");
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: t("cms.errors.forbidden") }, { status: 403 });
-  }
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const parsed = await parseJsonBody(req, schema, "1mb");
     if ("response" in parsed) {
       return parsed.response;

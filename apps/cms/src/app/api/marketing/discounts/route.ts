@@ -1,5 +1,4 @@
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+import { ensureRole } from "@cms/actions/common/auth";
 import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
@@ -45,11 +44,12 @@ async function writeDiscounts(shop: string, discounts: Discount[]): Promise<void
 }
 
 async function requireAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
+  try {
+    await ensureRole(["admin", "ShopAdmin"]);
+    return null;
+  } catch {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
-  return null;
 }
 
 export async function GET(req: NextRequest) {

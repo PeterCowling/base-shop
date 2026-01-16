@@ -1,6 +1,5 @@
 import "@acme/zod-utils/initZod";
-import { authOptions } from "@cms/auth/options";
-import { getServerSession } from "next-auth";
+import { ensureRole } from "@cms/actions/common/auth";
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
@@ -16,12 +15,8 @@ import { writeJsonFile } from "@/lib/server/jsonIO";
  * Seeds categories and product CSV for a shop.
  */
 export async function POST(req: Request) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: "cms.errors.forbidden" }, { status: 403 });
-  }
-
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const schema = z
       .object({
         id: z

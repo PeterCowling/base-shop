@@ -1,7 +1,6 @@
-import { authOptions } from "@cms/auth/options";
+import { ensureRole } from "@cms/actions/common/auth";
 import { updateShopInRepo } from "@platform-core/repositories/shop.server";
 import type { Shop } from "@acme/types";
-import { getServerSession } from "next-auth";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 
@@ -17,11 +16,8 @@ export async function POST(
   req: NextRequest,
   context: { params: Promise<{ shop: string }> }
 ) {
-  const session = await getServerSession(authOptions);
-  if (!session || !["admin", "ShopAdmin"].includes(session.user.role)) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
   try {
+    await ensureRole(["admin", "ShopAdmin"]);
     const parsed = schema.safeParse(await req.json());
     if (!parsed.success) {
       return NextResponse.json(

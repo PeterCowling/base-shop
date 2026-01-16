@@ -41,7 +41,7 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
   - Scope: For each candidate file, compare `stash@{1}` against `HEAD` and decide include/exclude with rationale.
   - Dependencies: REPO-1.
   - Definition of done: A decision list (include/exclude + reason) captured in this plan.
-  - Progress: Docs/config bucket decisions captured below; remaining buckets pending.
+  - Progress: Docs/config, apps/cms, packages/ui, and packages/platform-core decisions captured below; remaining buckets pending.
 
 - [ ] REPO-3: Manually apply approved changes
   - Scope: Recreate approved edits via focused patches; avoid `git stash pop`. Keep changes minimal and on the current `work/*` branch.
@@ -76,6 +76,21 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
 | `package.json` | Exclude | Stash removes newer scripts, lint exceptions, hooks, and updated storybook/CI commands; appears behind `HEAD`. |
 | `cypress.config.ts` | Exclude | Stash reintroduces large root config; current repo intentionally re-exports app config. |
 | `jest.coverage.cjs` | No change | No diff vs `HEAD`; nothing to apply. |
+
+### apps/cms bucket
+| Path | Decision | Rationale |
+| --- | --- | --- |
+| `apps/cms/**` | Exclude | Stash removes large portions of CMS features and test suites (including most Cypress coverage) and simplifies configurator steps (drops i18n-driven metadata). Sample diffs show significant deletions, indicating an older snapshot or rollback. |
+
+### packages/ui bucket
+| Path | Decision | Rationale |
+| --- | --- | --- |
+| `packages/ui/**` | Exclude | Stash deletes a large portion of UI components, stories, and tests and simplifies primitives (e.g., button sizes/iconOnly removed). Net effect is major functionality loss, so it is likely older and not an improvement. |
+
+### packages/platform-core bucket
+| Path | Decision | Rationale |
+| --- | --- | --- |
+| `packages/platform-core/**` | Exclude | Stash removes cart lifecycle, inventory holds, stripe webhook coverage, and many repository features plus migrations. The size of deletions suggests a downgrade and not an enhancement. |
 
 ## Risks / Notes
 - The stash appears to include large generated output and mixed changes across multiple apps; careless application could regress unrelated areas.

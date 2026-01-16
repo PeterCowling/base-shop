@@ -1,7 +1,9 @@
 Type: Plan
 Status: Active
 Domain: CI-Deploy
-Last-reviewed: 2025-12-23
+Last-reviewed: 2026-01-16
+Last-updated: 2026-01-16
+Last-updated-by: Codex
 Relates-to charter: docs/architecture.md
 
 # Domain & Deployment Strategy — Worker Front Door + Early Multi‑Tenancy
@@ -37,7 +39,7 @@ Treat these as architecture drivers, not “edge cases”:
 
 Implication: treating Pages as the owner of most canonical hostnames does not scale cleanly; a Worker entrypoint avoids recurring “can’t attach this domain” problems.
 
-## Choose your front door (forced choice)
+## Choose the front door (forced choice)
 
 The “front door” is the first component that receives traffic for canonical hostnames and decides:
 
@@ -58,16 +60,16 @@ The “front door” is the first component that receives traffic for canonical 
 - Pages hostname attachment is fragile (blocked by wildcard needs, Worker routes, Access policies, ACME validation reachability).
 - You inherit **project sprawl** (hotfix fan-out + drift) as shop count grows.
 
-**Non-negotiables if you choose this**
+**Non-negotiables if this option is chosen**
 
 - Keep checkout on the same hostname as cart activity (host-only cookie boundary).
-- Don’t route a Worker on hostnames you plan to attach to Pages (domain attach will fail).
+- Don’t route a Worker on hostnames planned for Pages attachment (domain attach will fail).
 - Ensure `/.well-known/acme-challenge/*` is reachable during domain verification (Access/Workers can block it).
 
 **Choose this only if**
 
 - You expect single-digit to low‑teens canonical storefront hostnames in the next 90 days, and
-- You can keep Workers off storefront hostnames you plan to attach to Pages, and
+- Workers can remain off storefront hostnames that will be attached to Pages, and
 - You accept deployment fan-out during that period.
 
 ### Option B — Worker is the front door (recommended baseline)
@@ -151,14 +153,14 @@ For `shopSlug.<umbrella>`:
 
 - DNS: orange-cloud wildcard record for the shop namespace (pattern: `*.umbrella.com`)
 - Worker Route: `https://*.umbrella.com/*` → Front Door Worker
-- If you also want apex `umbrella.com`, add `https://umbrella.com/*` as a separate route and treat it as a root marketing site or redirector.
+- If apex `umbrella.com` is required, add `https://umbrella.com/*` as a separate route and treat it as a root marketing site or redirector.
 
 ### Brand domains (apex domains like `brand.com`)
 
 Two supported operational models:
 
-- **Model A (simplest if you control DNS)**: `brand.com` is a zone in your Cloudflare account; add a Worker Route `https://brand.com/*` to the same Front Door Worker.
-- **Model B (SaaS-scale)**: Cloudflare for Platforms custom hostnames + dispatch logic when you need to support many vanity domains without managing each as a zone.
+- **Model A (simplest if DNS is controlled)**: `brand.com` is a zone in the Cloudflare account; add a Worker Route `https://brand.com/*` to the same Front Door Worker.
+- **Model B (SaaS-scale)**: Cloudflare for Platforms custom hostnames + dispatch logic when supporting many vanity domains without managing each as a zone.
 
 Worker logic and tenant mapping are the same in both models.
 
@@ -312,7 +314,7 @@ If marketing insists on rendering on the vanity domain, it must be `landing-only
 
 When moving `shopSlug.<umbrella>` → `brand.com`:
 
-1) Verify the hostname is attachable/routable (avoid Worker-route/Access conflicts if you are attaching to Pages; ensure `/.well-known/acme-challenge/*` isn’t blocked).
+1) Verify the hostname is attachable/routable (avoid Worker-route/Access conflicts if attaching to Pages; ensure `/.well-known/acme-challenge/*` isn’t blocked).
 2) Set canonical host + per-locale canonical base rules.
 3) Implement 301s preserving deep links + query.
 4) Validate canonical + hreflang.

@@ -1,15 +1,15 @@
 Type: Quick Reference
 Status: Active
 Domain: Design System
-Last-reviewed: 2026-01-12
+Last-reviewed: 2026-01-16
 
-# UI System Quick Start Guide
+# UI System Quick Start Guide (Agent Runbook)
 
 ## 5-Minute Setup
 
-### Step 1: Choose Your Context
+### Step 1: Choose Context
 
-Pick the context that matches your app type:
+Pick the context that matches the app type:
 
 ```tsx
 // Reception, Inventory, POS → Operations
@@ -61,7 +61,7 @@ const columns = [
 </div>
 ```
 
-That's it! Your app now uses context-aware spacing and components.
+Done. The app now uses context-aware spacing and components.
 
 ---
 
@@ -130,7 +130,7 @@ function ProductCard({ product }) {
 ### Override Brand Colors
 
 ```tsx
-// In your app layout
+// In the app layout
 <body
   className="context-consumer"
   style={{
@@ -302,9 +302,9 @@ import { DataTable } from '@acme/ui/operations'
 
 ## Next Steps
 
-1. **Try it**: Add DataTable to a screen in your app
+1. **Try it**: Add DataTable to a screen in the app
 2. **Explore**: Check Storybook for more examples (port 6007)
-3. **Customize**: Override brand colors for your app
+3. **Customize**: Override brand colors for the app
 4. **Feedback**: Report issues or suggestions
 
 ---

@@ -1,4 +1,9 @@
-# Git Safety Guide
+Type: Guide
+Status: Active
+Domain: Repo
+Last-reviewed: 2026-01-16
+
+# Git Safety Guide (Agent Runbook)
 
 > **⚠️ CRITICAL:** On January 14, 2026, a `git reset --hard` command destroyed 8 applications worth of work.
 > Recovery took days. This guide exists to prevent that from ever happening again.
@@ -11,8 +16,7 @@
 | Who | What to Read |
 |-----|--------------|
 | **AI Agents (Claude/Codex)** | [AGENTS.md](../AGENTS.md) - Git Safety Rules section |
-| **Humans** | This document + [Contributing](./contributing.md) |
-| **Everyone** | The rules below apply to all contributors |
+| **All contributors** | The rules below apply to all contributors |
 
 ---
 
@@ -34,7 +38,7 @@ These commands can permanently destroy work:
 | `git push -f` | 🔴 HIGH | Same as above (shorthand) |
 | `git rebase -i` | 🟠 MEDIUM | Interactive mode can rewrite/lose history |
 
-**If you think you need one of these commands, STOP and read the alternatives below.**
+**If one of these commands seems necessary, STOP and read the alternatives below.**
 
 ### 2. Safe Alternatives
 
@@ -51,12 +55,12 @@ These commands can permanently destroy work:
 
 | Trigger | Action |
 |---------|--------|
-| Every 30 minutes of work | Commit your changes |
+| Every 30 minutes of work | Commit changes |
 | Every significant change | Commit immediately |
 | Every 2 hours | Push to GitHub |
 | Every 3 local commits | Push to GitHub |
 
-**Why:** Uncommitted work is unrecoverable. Unpushed commits are lost if your machine fails.
+**Why:** Uncommitted work is unrecoverable. Unpushed commits are lost if the local machine fails.
 
 ### 4. Never Work Directly on `main`
 
@@ -283,7 +287,7 @@ SKIP_GIT_HOOKS=1 git push --force
 git commit --no-verify -m "Emergency fix"
 ```
 
-**Document why you bypassed hooks and follow up to fix the root cause.**
+**Document why hooks were bypassed and follow up to fix the root cause.**
 
 ---
 
@@ -303,7 +307,7 @@ git commit --no-verify -m "Emergency fix"
 2. Create a backup branch: `git branch backup-$(date +%Y%m%d)`
 3. Reset main to remote: `git reset origin/main`
 4. Create work branch: `git checkout -b work/$(date +%Y-%m-%d)-my-feature`
-5. Cherry-pick your commit: `git cherry-pick backup-<date>`
+5. Cherry-pick the commit: `git cherry-pick backup-<date>`
 6. Push work branch: `git push -u origin HEAD`
 
 ### "I want to undo a change"
@@ -336,7 +340,7 @@ ls -la .git/hooks/pre-commit
 
 ### "Push was rejected"
 
-If GitHub rejects your push to main:
+If GitHub rejects a push to main:
 1. This is expected - main is protected
 2. Create a work branch instead
 3. Push the work branch

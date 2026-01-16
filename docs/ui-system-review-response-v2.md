@@ -1,20 +1,20 @@
 Type: Review Response
 Status: Clarification Required
 Domain: Design System
-Last-reviewed: 2026-01-12
+Last-reviewed: 2026-01-16
 
-# Second Review Response - Clarification Needed
+# Second Review Response - Clarification Needed (Agent Runbook)
 
 ## Status: Reviewing Wrong Files
 
-Your second review findings match the **original files** that were already fixed. All issues you reported are **already resolved** in the corrected documents.
+The second review findings match the **original files** that were already fixed. All issues reported are **already resolved** in the corrected documents.
 
 ---
 
 ## Your Latest Findings vs Fixed Files
 
 ### Finding #1: "DataTable accessor is typed as ReactNode"
-**File you cited**: `ui-system-phase1-implementation.md:509` ❌ **ORIGINAL FILE**
+**File cited in review**: `ui-system-phase1-implementation.md:509` ❌ **ORIGINAL FILE**
 
 **Actually fixed in**: `ui-system-phase1-implementation-fixed.md:421` ✅ **FIXED FILE**
 
@@ -48,7 +48,7 @@ grep "accessor.*ReactNode" docs/ui-system-phase1-implementation.md
 ---
 
 ### Finding #2: "DataTable capabilities are overstated"
-**Files you cited**: `ui-system-component-reference.md`, `ui-system-benefits-by-app.md` ❌ **ORIGINAL FILES**
+**Files cited in review**: `ui-system-component-reference.md`, `ui-system-benefits-by-app.md` ❌ **ORIGINAL FILES**
 
 **Actually fixed in**: `ui-system-phase1-implementation-fixed.md:645` ✅ **FIXED FILE**
 
@@ -75,7 +75,7 @@ grep "accessor.*ReactNode" docs/ui-system-phase1-implementation.md
 ---
 
 ### Finding #3: "Dashboard and spacious are declared but not implemented"
-**File you cited**: `ui-system-phase1-implementation.md:308-309` ❌ **ORIGINAL FILE**
+**File cited in review**: `ui-system-phase1-implementation.md:308-309` ❌ **ORIGINAL FILE**
 
 **Actually fixed in**: `ui-system-phase1-implementation-fixed.md:178` ✅ **FIXED FILE**
 
@@ -92,7 +92,7 @@ export type Density = 'compact' | 'default' | 'comfortable'
 ---
 
 ### Finding #4: "CSS variable contract mismatch"
-**Files you cited**: `ui-system-enhancement-strategy.md`, `ui-system-benefits-by-app.md` ❌ **ORIGINAL FILES**
+**Files cited in review**: `ui-system-enhancement-strategy.md`, `ui-system-benefits-by-app.md` ❌ **ORIGINAL FILES**
 
 **Actually fixed in**: `ui-system-phase1-implementation-fixed.md:280` ✅ **FIXED FILE**
 
@@ -127,7 +127,7 @@ Complete CSS variable mapping in Tailwind plugin:
 ---
 
 ### Finding #5: "Import paths inconsistent, undefined symbols"
-**Files you cited**: `ui-system-phase1-implementation.md`, `ui-system-component-reference.md` ❌ **ORIGINAL FILES**
+**Files cited in review**: `ui-system-phase1-implementation.md`, `ui-system-component-reference.md` ❌ **ORIGINAL FILES**
 
 **Actually fixed in**: `ui-system-phase1-implementation-fixed.md:506` ✅ **FIXED FILE**
 
@@ -249,17 +249,17 @@ grep -c "table-cell-padding" docs/ui-system-phase1-implementation-fixed.md
 
 ## Confirmation Needed
 
-**Before proceeding, please confirm**:
+**Before proceeding, confirm**:
 
-1. Which file did you review that showed "line 509" with ReactNode accessor?
+1. Which file was reviewed that showed "line 509" with ReactNode accessor?
    - [ ] `ui-system-phase1-implementation.md` (original)
    - [ ] `ui-system-phase1-implementation-fixed.md` (fixed)
 
-2. Have you reviewed the fixed file yet?
+2. Has the fixed file been reviewed?
    - [ ] Yes - found issues in fixed file (please specify)
    - [ ] No - only reviewed original files
 
-3. What would you like us to do?
+3. What is the requested next action?
    - [ ] Review the fixed files instead
    - [ ] Update ALL original files with fixes
    - [ ] Something else (please specify)
@@ -268,7 +268,7 @@ grep -c "table-cell-padding" docs/ui-system-phase1-implementation-fixed.md
 
 ## Recommended Action
 
-**Please review this file** (it has all fixes applied):
+**Review this file** (it has all fixes applied):
 ```
 /Users/petercowling/base-shop/docs/ui-system-phase1-implementation-fixed.md
 ```
@@ -278,25 +278,25 @@ grep -c "table-cell-padding" docs/ui-system-phase1-implementation-fixed.md
 /Users/petercowling/base-shop/docs/ui-system-review-fixes.md
 ```
 
-**Then let us know**:
-- If the fixed file addresses all concerns
-- If you'd like the other 3 original files updated as well
+**Then report**:
+- Whether the fixed file addresses all concerns
+- Whether the other 3 original files need updates as well
 - Any remaining issues in the **fixed** version
 
 ---
 
 ## Next Steps
 
-### Option A: You'll Review Fixed Files
+### Option A: Review Fixed Files
 ✅ Review `ui-system-phase1-implementation-fixed.md`
 ✅ Confirm all issues are resolved
 ✅ Proceed with Phase 1 implementation
 
 ### Option B: Update All Original Files
-We can apply all fixes to the 4 original files if you prefer having them corrected rather than a separate "-fixed" version.
+All fixes can be applied to the 4 original files if a corrected version is preferred over a separate "-fixed" version.
 
 ### Option C: Issues Remain in Fixed File
-If you've reviewed the `-fixed.md` file and still found issues, please provide:
+If the `-fixed.md` file was reviewed and issues remain, provide:
 - File name (with -fixed suffix)
 - Line numbers from the fixed file
 - Specific issues
@@ -310,4 +310,4 @@ If you've reviewed the `-fixed.md` file and still found issues, please provide:
 ---
 
 **Last updated**: 2026-01-12
-**Critical**: Please verify you're reviewing `*-fixed.md` files, not originals
+**Critical**: Verify the review targets `*-fixed.md` files, not originals

@@ -3,11 +3,11 @@
 Type: Guide
 Status: Active
 Domain: Commerce / Inventory / Integration
-Last-reviewed: 2026-01-12
+Last-reviewed: 2026-01-16
 
-# Inventory System Integration Guide
+# Inventory System Integration Guide (Agent Runbook)
 
-**Audience:** Developers integrating inventory holds into shop applications
+**Audience:** Agents integrating inventory holds into shop applications
 **Purpose:** Step-by-step guide for adding production-ready inventory management to shops
 
 ---
@@ -25,10 +25,10 @@ INVENTORY_HOLD_TTL_SECONDS=1200
 SKIP_INVENTORY_VALIDATION=0
 ```
 
-**2. Update your checkout route:**
+**2. Update the checkout route:**
 
 ```typescript
-// apps/your-shop/src/api/checkout-session/route.ts
+// apps/example-shop/src/api/checkout-session/route.ts
 import { createCheckoutSession } from "@acme/platform-core/checkout/session";
 
 export async function POST(req: NextRequest) {
@@ -66,15 +66,15 @@ export async function POST(req: NextRequest) {
 
 ```toml
 [vars]
-INVENTORY_AUTHORITY_URL = "https://your-cms.example.com/api/inventory"
-INVENTORY_AUTHORITY_TOKEN = "your-secure-token"
+INVENTORY_AUTHORITY_URL = "https://example-cms.example.com/api/inventory"
+INVENTORY_AUTHORITY_TOKEN = "example-token"
 INVENTORY_AUTHORITY_TIMEOUT = "5000"
 ```
 
 **2. Create inventory client:**
 
 ```typescript
-// apps/your-shop-worker/src/inventory.ts
+// apps/example-shop-worker/src/inventory.ts
 import { InventoryAuthorityClient } from "@acme/platform-core/inventory/client";
 
 export const inventoryClient = new InventoryAuthorityClient({
@@ -87,7 +87,7 @@ export const inventoryClient = new InventoryAuthorityClient({
 **3. Validate before checkout:**
 
 ```typescript
-// apps/your-shop-worker/src/checkout.ts
+// apps/example-shop-worker/src/checkout.ts
 import { inventoryClient } from "./inventory";
 
 export async function handleCheckout(request: Request, env: Env) {

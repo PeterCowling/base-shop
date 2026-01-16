@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: CMS
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
 Related charters and contracts:
 - docs/cms/cms-charter.md
@@ -13,13 +13,13 @@ Primary code entrypoints:
 - apps/cms/src/app/cms/shop/[shop]
 - packages/platform-core/src/configurator.ts
 
-# Build & Style a Shop — CMS Guide
+# Build & Style a Shop — CMS Guide (Agent Runbook)
 
-This guide explains how to go from “no shop” to a launch‑ready shop using only the CMS. It is written for non‑technical operators and AI agents that need to reason about the build process.
+This guide explains how to go from “no shop” to a launch‑ready shop using only the CMS. It is written for agents that need to reason about the build process.
 
 It assumes:
 
-- The CMS is running and you can sign in.
+- The CMS is running and sign-in works.
 - Required external accounts (for example Stripe) already exist and env vars are configured.
 - You want a shop that passes all launch checks defined in `@acme/platform-core/configurator`.
 
@@ -31,19 +31,19 @@ For architecture and invariants, see `docs/cms/cms-charter.md` and `docs/cms/con
 
 - For a code-linked map of the build journey (Configurator → Settings → Pages → Products), see `docs/cms/shop-build-journey-map.md`.
 - For gaps and planned improvements to the build experience, see `docs/cms/shop-build-gap-analysis.md` and `docs/cms/shop-build-plan.md`.
-- If you want the fastest path from “no shop” to “launch‑ready”, follow the **Launch in under an hour** track below, then use the later sections of this guide when you want more control.
+- For the fastest path from “no shop” to “launch‑ready”, follow the **Launch in under an hour** track below, then use the later sections of this guide for more control.
 
 ## Launch in under an hour
 
-This track focuses only on what is required to launch a real shop. You can always come back later to fine‑tune themes, add extra pages, or expand your catalog.
+This track focuses only on what is required to launch a real shop. Additional theme tuning, extra pages, or catalog expansion can be done later.
 
 | Step | Where in CMS | Why it matters | Approx. time | Required before launch? |
 | --- | --- | --- | --- | --- |
 | 1. Shop basics | `/cms/configurator` → Shop Details / Shop Type | Creates the shop shell and sets identity and contact info. | 5–10 min | **Required** |
-| 2. Pick a look | `/cms/configurator` → Theme / Tokens | Chooses a base theme and key typography so pages are readable and on‑brand enough to start. | 5–10 min | **Required** (you can fine‑tune later) |
+| 2. Pick a look | `/cms/configurator` → Theme / Tokens | Chooses a base theme and key typography so pages are readable and on‑brand enough to start. | 5–10 min | **Required** (fine‑tune later) |
 | 3. Get paid & ship | `/cms/configurator` → Payment Provider / Shipping; `/cms/shop/{shop}/settings` for currency, tax region, shipping providers | Connects payments, sets currency and tax region, and enables at least one shipping provider so real orders can be placed. | 15–20 min | **Required** |
-| 4. Add your first product | `/cms/products` (or the first‑product wizard when available) | Creates at least one product with price and stock so customers can buy something. | 10–15 min | **Required** |
-| 5. Make pages reachable | `/cms/configurator` → Navigation / Home / Checkout (and `/cms/pages` if you need to publish checkout) | Ensures the home page, product pages, and checkout route are present and reachable from navigation. | 5–10 min | **Required** |
+| 4. Add first product | `/cms/products` (or the first‑product wizard when available) | Creates at least one product with price and stock so customers can buy something. | 10–15 min | **Required** |
+| 5. Make pages reachable | `/cms/configurator` → Navigation / Home / Checkout (and `/cms/pages` if checkout must be published) | Ensures the home page, product pages, and checkout route are present and reachable from navigation. | 5–10 min | **Required** |
 | 6. Run the launch checklist | `/cms/configurator` → Summary / dashboard | Confirms all required checks are green (“Shop basics”, “Look & feel”, “Get paid”, “Shipping & tax”, “Checkout page”, “Products in stock”, “Home & navigation”). | 5–10 min | **Required** |
 
 You can safely postpone:
@@ -93,7 +93,7 @@ The key invariant: **Build, Launch, and Update all operate on the same data mode
 
 - What this does in code:
   - Seeds a `Shop` row and a `ShopSettings` row in `@acme/platform-core` via CMS actions.
-  - Records wizard state under `data/cms/configurator-progress.json` so you can resume later.
+  - Records wizard state under `data/cms/configurator-progress.json` so the flow can resume later.
 
 At this point, `checkShopBasics` in `packages/platform-core/src/configurator.ts` will start to pass once required fields (shop, id, languages) are in place.
 
@@ -276,7 +276,7 @@ These are the recommended mappings (see `docs/cms/configurator-contract.md` for 
 | --- | --- | --- |
 | `checkShopBasics` / `shop-basics` | **Shop basics** | “Name, language, and basic identity are set so the shop can be addressed and localised.” |
 | `checkTheme` / `theme` | **Look & feel** | “A base theme and essential design tokens are configured so pages are readable and on‑brand enough to launch.” |
-| `checkPayments` / `payments` | **Get paid** | “Currency is set and at least one payment/billing provider is connected so customers can pay you.” |
+| `checkPayments` / `payments` | **Get paid** | “Currency is set and at least one payment/billing provider is connected so customers can pay.” |
 | `checkShippingTax` / `shipping-tax` | **Shipping & tax** | “A tax region and at least one shipping provider are configured so orders can be shipped compliantly.” |
 | `checkCheckout` / `checkout` | **Checkout page** | “A working checkout page exists and is reachable so customers can complete their orders.” |
 | `checkProductsInventory` / `products-inventory` | **Products in stock** | “There is at least one active product with stock available so customers can buy something.” |

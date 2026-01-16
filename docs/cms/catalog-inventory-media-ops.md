@@ -1,7 +1,7 @@
 Type: Guide
 Status: Active
 Domain: Commerce
-Last-reviewed: 2025-12-29
+Last-reviewed: 2026-01-16
 
 Related docs:
 - docs/commerce-charter.md
@@ -10,9 +10,9 @@ Related docs:
 
 If behaviour in this doc contradicts the code, treat the code as canonical and update this doc as a follow‑up.
 
-# Catalog, Inventory, and Media — Upload → Storefront → Checkout
+# Catalog, Inventory, and Media — Upload → Storefront → Checkout (Agent Runbook)
 
-Audience: non‑technical operators who have **CMS access**, but **do not have repo access**.
+Audience: agents executing CMS workflows for shop operators; assume CMS access.
 
 This guide documents how to:
 
@@ -53,7 +53,7 @@ Storefront verification:
 
 ---
 
-## Concepts (what you’re editing)
+## Concepts (what is being edited)
 
 ### 1) Product (catalogue record)
 Defines what a customer can see:
@@ -78,9 +78,9 @@ Inventory is tracked per **SKU**. An inventory row also has an optional `variant
 Important:
 
 - Inventory rows are uniquely identified by **(sku + variantAttributes)**.
-- If you sometimes include `variantAttributes` and sometimes omit it for the same SKU, you can accidentally create duplicate rows that look like “the same SKU”.
-  - This matters most for **stock inflows**: if you omit `variantAttributes` on a receipt line but your existing inventory rows include it, the system will treat it as a *different* row and add stock to the wrong place.
-  - The stock inflows page now loads the current inventory and lets you **select the existing row** so you don’t have to remember the exact `variantAttributes`.
+- If `variantAttributes` is sometimes included and sometimes omitted for the same SKU, duplicate rows can be created that look like “the same SKU”.
+  - This matters most for **stock inflows**: if `variantAttributes` is omitted on a receipt line but existing inventory rows include it, the system treats it as a *different* row and adds stock to the wrong place.
+  - The stock inflows page loads the current inventory and lets operators **select the existing row**, keeping the exact `variantAttributes` consistent.
 
 ### 3) Media (images/videos)
 Uploaded files produce stable URLs that can be attached to products, for example:
@@ -90,22 +90,22 @@ Uploaded files produce stable URLs that can be attached to products, for example
 
 ---
 
-## Access / permissions (what you need to be able to do)
+## Access / permissions (required capabilities)
 
 You must be signed into the CMS.
 
-- To use **Uploads → Product import**, your role must have permission `manage_catalog`.
-- To use **Uploads → Stock inflows**, your role must have permission `manage_inventory`.
-- To use the **Media library**, your role must have permission `manage_media`.
-- To **save** the Inventory matrix (`/data/inventory`), you need `manage_inventory` (default roles: `admin`, `ShopAdmin`).
+- To use **Uploads → Product import**, the role must have permission `manage_catalog`.
+- To use **Uploads → Stock inflows**, the role must have permission `manage_inventory`.
+- To use the **Media library**, the role must have permission `manage_media`.
+- To **save** the Inventory matrix (`/data/inventory`), the role must have `manage_inventory` (default roles: `admin`, `ShopAdmin`).
 
-If you’re blocked (403), the missing permission is usually one of: `manage_catalog`, `manage_inventory`, `manage_media`. Ask a shop admin to grant the appropriate role/permissions.
+If blocked (403), the missing permission is usually one of: `manage_catalog`, `manage_inventory`, `manage_media`. Ask a shop admin to grant the appropriate role/permissions.
 
 ---
 
 ## A) Add a new product (single-product flow)
 
-Use this when you’re adding a small number of products manually.
+Use this when adding a small number of products manually.
 
 1) Go to `/cms/shop/<shop>/products`.
 2) Click **Add new**.
@@ -125,8 +125,8 @@ To publish it, use **Product import** (next section) to set `status` to `active`
 ## B) Update an existing product
 
 1) Go to `/cms/shop/<shop>/products`.
-2) Click **Edit** for the product you want to change.
-3) Make your edits (pricing, localized text, media ordering, etc.).
+2) Click **Edit** for the target product.
+3) Make edits (pricing, localized text, media ordering, etc.).
 4) Click **Save changes**.
 
 Notes:
@@ -153,13 +153,13 @@ Important:
 
 - Deleting a product does **not** automatically delete inventory rows for that product.
 - After deleting a product, clean up inventory rows manually to avoid stale SKUs.
-  - If you might re-use the SKU later, prefer archiving instead of deleting to retain history and avoid conflicts.
+  - If the SKU might be re-used later, prefer archiving instead of deleting to retain history and avoid conflicts.
 
 ---
 
 ## D) Bulk upsert products (Product import: CSV/JSON)
 
-Use this when you need to:
+Use this when the flow requires:
 
 - Create many products quickly
 - Update many products in one operation
@@ -171,13 +171,13 @@ Go to `/cms/shop/<shop>/uploads/products`.
 
 - **Preview** runs validation and shows a report; it does not change data.
 - **Import products** (commit) writes changes only if preview succeeded with **zero errors**.
-- An **idempotency key** prevents double-applying the same import. If you accidentally submit twice with the same key, the CMS returns the original result instead of applying changes again.
+- An **idempotency key** prevents double-applying the same import. If the same key is submitted twice, the CMS returns the original result instead of applying changes again.
 
 ### CSV columns
 
 Supported columns:
 
-- `id` (optional, ULID; required if you want to target a specific existing product id)
+- `id` (optional, ULID; required to target a specific existing product id)
 - `sku`
 - `title` *or* localized `title_<locale>` (for example `title_en`, `title_de`, `title_it`, `title_es`)
 - `description` *or* localized `description_<locale>` (for example `description_en`, `description_de`, `description_it`, `description_es`)
@@ -221,12 +221,12 @@ The UI accepts a JSON array or `{ "items": [...] }`. Example item:
 
 ## E) Upload product images / media
 
-You can upload media in two places:
+Media can be uploaded in two places:
 
 1) **Uploads → Media library**: `/cms/shop/<shop>/media`
 2) **Product editor → Media gallery tab** (the uploader is the same backend)
 
-### What happens when you upload
+### What happens when uploads run
 
 - Files are validated for **type** and **size**.
   - Images: up to 5 MB
@@ -301,19 +301,19 @@ Schema per row (all entered on the page — no CSV needed):
 
 Guardrails in the UI:
 
-- The page loads the current **inventory snapshot** and lets you **pick an existing row**. Doing so auto-fills `sku`, `productId`, and variant attributes and shows `current → next` quantity for that row.
-- If you type a `sku` + variant combination that does not exist, the receipt will **create a new inventory row** (this is allowed but should be intentional).
-- The structured variant fields prevent “missing variantAttributes” errors; use the JSON box only when you truly need a new attribute key.
+- The page loads the current **inventory snapshot** and lets operators **pick an existing row**. Doing so auto-fills `sku`, `productId`, and variant attributes and shows `current → next` quantity for that row.
+- If a `sku` + variant combination is entered that does not exist, the receipt **creates a new inventory row** (allowed, but should be intentional).
+- The structured variant fields prevent “missing variantAttributes” errors; use the JSON box only when a new attribute key is required.
 
 Idempotency:
 
-- If you submit the same **idempotency key** twice, the system returns the original receipt instead of receiving stock twice.
+- If the same **idempotency key** is submitted twice, the system returns the original receipt instead of receiving stock twice.
 
 Important:
 
 - You cannot receive negative stock (no “stock outflows”) in this tool.
-- If you need to reduce stock (corrections, damage, returns), use the **Inventory matrix** to set the correct quantity until the dedicated “stock adjustments” flow ships.
-- If the row you need already exists, always pick it from the dropdown so the `variantAttributes` match exactly. If you must type a new variant, fill every variant field to avoid creating “shadow” rows.
+- If stock must be reduced (corrections, damage, returns), use the **Inventory matrix** to set the correct quantity until the dedicated “stock adjustments” flow ships.
+- If the row already exists, pick it from the dropdown so the `variantAttributes` match exactly. If a new variant must be typed, fill every variant field to avoid creating “shadow” rows.
 
 Example receipt line (Cover‑Me‑Pretty):
 
@@ -484,5 +484,5 @@ After making catalogue/inventory/media changes:
 3) For cochlearfit only:
    - Confirm a rebuild/redeploy has completed before expecting changes to be live.
    - Run a test checkout on a low-risk SKU after any pricing or inventory changes.
-4) If you hit a 403:
-   - Check your role in the CMS header. Product import/media require `manage_catalog`/`manage_media`; stock inflows and inventory matrix save require `manage_inventory` (default admin/ShopAdmin).
+4) If a 403 occurs:
+   - Check the role in the CMS header. Product import/media require `manage_catalog`/`manage_media`; stock inflows and inventory matrix save require `manage_inventory` (default admin/ShopAdmin).

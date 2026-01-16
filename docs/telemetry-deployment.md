@@ -1,4 +1,9 @@
-# Telemetry System Deployment Guide
+Type: Guide
+Status: Active
+Domain: Telemetry
+Last-reviewed: 2026-01-16
+
+# Telemetry System Deployment Guide (Agent Runbook)
 
 This guide covers the deployment and configuration of the internal telemetry and error tracking system.
 
@@ -27,10 +32,10 @@ cd apps/telemetry-worker
 # Create production database
 wrangler d1 create telemetry-production
 
-# Note the database_id from output, you'll need it for wrangler.toml
+# Note the database_id from output; required for wrangler.toml
 ```
 
-Update `apps/telemetry-worker/wrangler.toml` with your database ID:
+Update `apps/telemetry-worker/wrangler.toml` with the database ID:
 
 ```toml
 [[d1_databases]]
@@ -79,7 +84,7 @@ Your worker will be available at: `https://telemetry-worker.YOUR_SUBDOMAIN.worke
 
 In Cloudflare dashboard:
 1. Go to Workers & Pages
-2. Select your telemetry-worker
+2. Select the telemetry-worker
 3. Go to Settings > Triggers > Custom Domains
 4. Add custom domain: `telemetry.yourdomain.com`
 
@@ -147,7 +152,7 @@ ls apps/*/instrumentation.ts
 # Build all applications
 pnpm build
 
-# Deploy each application to your hosting platform
+# Deploy each application to the hosting platform
 # (Cloudflare Pages, Vercel, etc.)
 ```
 
@@ -237,7 +242,7 @@ Inserted 1 events
 
 ### 4.4 Test CORS
 
-From browser console on your shop domain:
+From the browser console on the shop domain:
 
 ```javascript
 fetch('https://telemetry.yourdomain.com/v1/telemetry', {
@@ -289,7 +294,7 @@ WHERE created_at < unixepoch() - (90 * 86400)
 
 ### 6.1 CORS Configuration
 
-Update `ALLOWED_ORIGINS` in `wrangler.toml` to include only your domains:
+Update `ALLOWED_ORIGINS` in `wrangler.toml` to include only the allowed domains:
 
 ```toml
 [env.production.vars]

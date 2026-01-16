@@ -3,9 +3,9 @@
 Type: Checklist
 Status: Active
 Domain: Commerce / Inventory / Deployment
-Last-reviewed: 2026-01-12
+Last-reviewed: 2026-01-16
 
-# Inventory System Deployment Checklist
+# Inventory System Deployment Checklist (Agent Runbook)
 
 **Purpose:** Step-by-step checklist for deploying the inventory holds system to production
 
@@ -57,8 +57,8 @@ Last-reviewed: 2026-01-12
   ```toml
   # wrangler.toml
   [vars]
-  INVENTORY_AUTHORITY_URL = "https://your-cms.example.com/api/inventory"
-  INVENTORY_AUTHORITY_TOKEN = "your-secure-token"
+  INVENTORY_AUTHORITY_URL = "https://example-cms.example.com/api/inventory"
+  INVENTORY_AUTHORITY_TOKEN = "example-token"
   ```
 
 - [ ] **Generate secure tokens**
@@ -102,7 +102,7 @@ Last-reviewed: 2026-01-12
   git checkout main
   git pull
   pnpm build
-  # Deploy via your CI/CD
+  # Deploy via the CI/CD workflow
   ```
 
 - [ ] **Verify CMS APIs**

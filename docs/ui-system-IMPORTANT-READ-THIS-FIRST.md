@@ -1,17 +1,17 @@
 Type: Navigation Guide
 Status: Critical
 Domain: Design System
-Last-reviewed: 2026-01-12
+Last-reviewed: 2026-01-16
 
-# ⚠️ IMPORTANT: Which Files to Review
+# ⚠️ IMPORTANT: Which Files to Review (Agent Runbook)
 
 ## Review Status Update
 
-The issues you found in your **first review** have already been fixed in the **second set of documents**.
+The issues found in the **first review** have already been fixed in the **second set of documents**.
 
 ### ❌ DO NOT USE THESE (Original - Contains Issues)
 
-These files contain the issues from your first review:
+These files contain the issues from the first review:
 
 ```
 docs/ui-system-enhancement-strategy.md          # ❌ Original - has issues
@@ -41,7 +41,7 @@ docs/ui-system-review-response-summary.md       # ✅ Executive summary
 
 ## Issues Already Fixed in New Documents
 
-All issues from your review are **already resolved** in `ui-system-phase1-implementation-fixed.md`:
+All issues from the review are **already resolved** in `ui-system-phase1-implementation-fixed.md`:
 
 ### ✅ Fixed: DataTable Accessor Pattern (Line 509)
 
@@ -163,11 +163,11 @@ See `ui-system-review-fixes.md:207`:
 
 ### If You've Already Reviewed the Fixed Files
 
-Please confirm which version you reviewed:
+Confirm which version was reviewed:
 - [ ] Original files (ui-system-phase1-implementation.md)
 - [ ] Fixed files (ui-system-phase1-implementation-fixed.md)
 
-If you found issues in the **fixed** files, please provide:
+If issues were found in the **fixed** files, provide:
 - File name with "-fixed" suffix
 - Line numbers from the fixed file
 - Specific issues found
@@ -195,15 +195,15 @@ If you found issues in the **fixed** files, please provide:
 ## Quick Decision Tree
 
 ```
-Are you reviewing a file that ends in "-fixed.md"?
-├─ Yes → Great! If you found issues, please share them
-└─ No → Please review the "-fixed" version instead
+Is the review targeting a file that ends in "-fixed.md"?
+├─ Yes → Great! If issues were found, share them
+└─ No → Review the "-fixed" version instead
          The original files are known to have issues
 ```
 
 ---
 
-**Critical**: Before reporting issues, please verify you're reviewing:
+**Critical**: Before reporting issues, verify the review targets:
 ```
 ✅ docs/ui-system-phase1-implementation-fixed.md
 ```

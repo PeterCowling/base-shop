@@ -1,4 +1,9 @@
-# UI System Phase 3 Components
+Type: Implementation Report
+Status: Active
+Domain: Design System
+Last-reviewed: 2026-01-16
+
+# UI System Phase 3 Components (Agent Runbook)
 
 ## Overview
 
@@ -423,7 +428,7 @@ import {
 ```
 
 ### Context Setup
-Apply the operations context to your app layout:
+Apply the operations context to the app layout:
 
 ```tsx
 <div className="context-operations">

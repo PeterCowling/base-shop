@@ -1,4 +1,9 @@
-# Git Hooks
+Type: Guide
+Status: Active
+Domain: Repo
+Last-reviewed: 2026-01-16
+
+# Git Hooks (Agent Runbook)
 
 > **Related:** See [Git Safety Guide](./git-safety.md) for comprehensive git safety documentation.
 
@@ -6,7 +11,7 @@ This project uses [simple-git-hooks](https://github.com/toplenboren/simple-git-h
 
 ## Overview
 
-Git hooks are automatically installed when you run `pnpm install` (via the `prepare` script in [package.json](../package.json:25)).
+Git hooks are automatically installed when `pnpm install` runs (via the `prepare` script in [package.json](../package.json:25)).
 
 ## Active Hooks
 
@@ -100,7 +105,7 @@ This operation would:
 
 Reference: docs/RECOVERY-PLAN-2026-01-14.md
 
-If you REALLY need to do this (emergency only):
+If this must be done (emergency only):
   1. Create a backup: git branch backup-$(date +%Y%m%d-%H%M%S)
   2. Coordinate with all team members
   3. Use: SKIP_GIT_HOOKS=1 git push --force
@@ -149,13 +154,13 @@ FORBIDDEN_PATTERNS=(
   "\.env\..*\.local$"
   "\.env\.production\.local$"
   "\.env\.development\.local$"
-  "your-new-pattern-here"  # Add your pattern
+  "example-pattern-here"  # Add a pattern
 )
 ```
 
 ### Adding Allowed Exceptions
 
-If you need to allow a specific env file (ensure it contains no secrets!), add to `ALLOWED_EXCEPTIONS`:
+If a specific env file must be allowed (ensure it contains no secrets), add to `ALLOWED_EXCEPTIONS`:
 
 ```bash
 ALLOWED_EXCEPTIONS=(
@@ -163,13 +168,13 @@ ALLOWED_EXCEPTIONS=(
   "\.env\.production$"
   "docs/\.env\.reference\.md$"
   "\.env\.template$"
-  "your-safe-file-here"  # Add your exception
+  "example-safe-file-here"  # Add an exception
 )
 ```
 
 ## Bypassing Hooks (Emergency Only)
 
-⚠️ **Warning:** Only bypass hooks when you're certain it's safe.
+⚠️ **Warning:** Only bypass hooks when it is certain this is safe.
 
 ### Skip all git hooks temporarily:
 ```bash
@@ -280,7 +285,7 @@ Git hooks run locally only. For CI/CD environments:
 
 ### Regular Checks
 
-Add to your maintenance checklist:
+Add to the maintenance checklist:
 
 - [ ] Review forbidden patterns quarterly
 - [ ] Audit exceptions list for unused entries

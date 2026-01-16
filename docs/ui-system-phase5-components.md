@@ -1,4 +1,9 @@
-# UI System Phase 5 - Component Reference
+Type: Reference
+Status: Complete
+Domain: Design System
+Last-reviewed: 2026-01-16
+
+# UI System Phase 5 - Component Reference (Agent Runbook)
 
 **Date:** 2026-01-12
 **Status:** ✅ Complete
@@ -280,10 +285,10 @@ import {
 
 ### Setup
 
-Wrap your app with the provider and add the container:
+Wrap the app with the provider and add the container:
 
 ```tsx
-// In your root layout
+// In the root layout
 import { NotificationProvider, NotificationContainer } from '@acme/ui/operations';
 
 function App({ children }) {
@@ -419,7 +424,7 @@ For use outside React components (e.g., in utilities):
   <NotificationContainer />
 </NotificationProviderWithGlobal>
 
-// Then anywhere in your code:
+// Then anywhere in the code:
 import { toast } from '@acme/ui/operations';
 
 toast.success('Done!');

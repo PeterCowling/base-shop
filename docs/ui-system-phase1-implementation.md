@@ -1,10 +1,10 @@
 Type: Implementation Guide
 Status: Active
 Domain: Design System
-Last-reviewed: 2026-01-12
+Last-reviewed: 2026-01-16
 Relates-to: docs/ui-system-enhancement-strategy.md
 
-# UI System Phase 1 Implementation Guide
+# UI System Phase 1 Implementation Guide (Agent Runbook)
 
 ## Overview
 
@@ -407,7 +407,7 @@ plugins: [
 
 ## Context Selection
 
-Choose the appropriate context for your app:
+Choose the appropriate context for the app:
 
 - **Operations**: Dense, data-heavy interfaces (reception, inventory, dashboards)
 - **Consumer**: Marketing, e-commerce, content-heavy sites
@@ -417,7 +417,7 @@ Choose the appropriate context for your app:
 
 ### Next.js App
 
-Add context class to your root layout:
+Add context class to the root layout:
 
 ```tsx
 // apps/reception/src/app/layout.tsx
@@ -489,7 +489,7 @@ const spacing = operationsTokens.spacing['row-gap']
 1. **Set context once**: Apply context class at app root
 2. **Use CSS variables**: Prefer custom properties over direct token values
 3. **Override sparingly**: Only override context when truly needed
-4. **Document deviations**: Comment why you're overriding defaults
+4. **Document deviations**: Comment why defaults are overridden
 ```
 
 ## Week 2-3: Operations Components

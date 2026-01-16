@@ -1,10 +1,15 @@
-# Secrets Management
+Type: Guide
+Status: Active
+Domain: Security
+Last-reviewed: 2026-01-16
 
-This guide explains how to securely manage secrets (API keys, tokens, passwords) across the base-shop monorepo.
+# Secrets Management (Agent Runbook)
+
+Agent runbook for managing secrets (API keys, tokens, passwords) across the base-shop monorepo.
 
 ## Overview
 
-The monorepo uses environment variables for configuration and secrets. To prevent accidental exposure of sensitive data, we've implemented:
+The monorepo uses environment variables for configuration and secrets. To prevent accidental exposure of sensitive data, the repo includes:
 
 - **Automated secret generation** for local development
 - **Pre-commit hooks** to block .env.local commits
@@ -16,7 +21,7 @@ The monorepo uses environment variables for configuration and secrets. To preven
 ### Generate Local Development Secrets
 
 ```bash
-# Generate all secrets to stdout (copy to your .env files)
+# Generate all secrets to stdout (copy to .env files)
 ./scripts/generate-local-secrets.sh
 
 # Generate CMS secrets and save to file
@@ -61,7 +66,7 @@ Options:
 ```bash
 ./scripts/generate-local-secrets.sh
 ```
-Output goes to stdout - copy relevant sections to your .env files.
+Output goes to stdout - copy relevant sections to .env files.
 
 **Generate CMS secrets only:**
 ```bash
@@ -219,7 +224,7 @@ pnpm --filter @apps/cms dev
 ```
 
 **Staging/Production:**
-Use your secret management system (see Production Secrets below).
+Use the secret management system in Production Secrets below.
 
 ### Testing After Rotation
 
@@ -349,7 +354,7 @@ Visit http://localhost:3006 and test authentication.
 Edit `scripts/generate-local-secrets.sh`:
 ```bash
 case $app in
-  your-new-app|all)
+  example-app|all)
     echo "#"
     echo "# Your New App Secrets"
     echo "#"
@@ -367,7 +372,7 @@ esac
 
 **Step 2: Create .env.example**
 ```bash
-# apps/your-new-app/.env.example
+# apps/example-app/.env.example
 YOUR_APP_SECRET=generate_with_script
 DATABASE_URL=postgresql://user:password@localhost:5432/base_shop_dev
 ```
@@ -378,7 +383,7 @@ Add to this document under [Secret Types](#secret-types).
 
 **Step 4: Test generation**
 ```bash
-./scripts/generate-local-secrets.sh --app your-new-app
+./scripts/generate-local-secrets.sh --app example-app
 ```
 
 ---
@@ -440,7 +445,7 @@ The repository has a pre-commit hook that prevents committing `.env.local` files
 git commit -m "Add feature"
 ```
 
-If you try to commit a `.env.local` file:
+If a `.env.local` file is committed:
 ```
 ❌ ERROR: Attempting to commit forbidden file
   → apps/cms/.env.local
@@ -464,7 +469,7 @@ git commit -m "Test"
 ### Bypassing (Emergency Only)
 
 ```bash
-# Only use in emergencies (you'll regret this)
+# Only use in emergencies (avoid in normal workflows)
 git commit --no-verify -m "Emergency fix"
 ```
 

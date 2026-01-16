@@ -1,4 +1,9 @@
-# UI System Phase 3 - Reception App Integration
+Type: Implementation Report
+Status: Completed
+Domain: Design System
+Last-reviewed: 2026-01-16
+
+# UI System Phase 3 - Reception App Integration (Agent Runbook)
 
 **Date:** 2026-01-12
 **App:** Reception (@apps/reception)

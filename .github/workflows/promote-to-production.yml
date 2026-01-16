@@ -1,0 +1,34 @@
+name: Promote to Production
+
+# Convenience workflow to promote any app to production
+# This triggers the app's own workflow with deploy-target=production
+
+on:
+  workflow_dispatch:
+    inputs:
+      app:
+        description: 'Application to promote to production'
+        required: true
+        type: choice
+        options:
+          - product-pipeline
+          # Add more apps here as they migrate to staging/production workflow:
+          # - cms
+          # - brikette
+          # - skylar
+          # - reception
+          # - prime
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger production deploy for ${{ inputs.app }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Triggering production deployment for: ${{ inputs.app }}"
+          gh workflow run "${{ inputs.app }}.yml" \
+            --repo "${{ github.repository }}" \
+            -f deploy-target=production
+          echo "Production deployment triggered. Check the ${{ inputs.app }} workflow for approval."

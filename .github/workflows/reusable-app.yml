@@ -24,6 +24,12 @@ on:
       project-name:
         required: false
         type: string
+      # Target environment: staging or production
+      # staging = auto-deploy, production = requires approval
+      target-environment:
+        required: false
+        type: string
+        default: staging
 
     secrets:
       CLOUDFLARE_API_TOKEN:
@@ -64,9 +70,37 @@ jobs:
           path: ${{ inputs.artifact-path }}
           retention-days: 1
 
-  deploy:
-    # Only deploy if a deploy command is provided AND we are on main
-    if: ${{ inputs.deploy-cmd != '' && github.ref == 'refs/heads/main' }}
+  deploy-staging:
+    # Deploy to staging: auto-deploy on main, no approval required
+    if: ${{ inputs.deploy-cmd != '' && inputs.target-environment == 'staging' && github.ref == 'refs/heads/main' }}
+    needs: validate-and-build
+    runs-on: ubuntu-latest
+    environment:
+      name: staging
+      url: https://staging.${{ inputs.project-name }}.pages.dev
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+
+      - name: Download Artifact
+        if: ${{ inputs.artifact-path != '' }}
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact-${{ inputs.project-name }}
+          path: ${{ inputs.artifact-path }}
+
+      - name: Deploy to Staging
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: ${{ inputs.deploy-cmd }}
+        shell: bash
+
+  deploy-production:
+    # Deploy to production: requires approval via GitHub environment protection
+    if: ${{ inputs.deploy-cmd != '' && inputs.target-environment == 'production' }}
     needs: validate-and-build
     runs-on: ubuntu-latest
     environment:
@@ -85,7 +119,7 @@ jobs:
           name: build-artifact-${{ inputs.project-name }}
           path: ${{ inputs.artifact-path }}
 
-      - name: Deploy
+      - name: Deploy to Production
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

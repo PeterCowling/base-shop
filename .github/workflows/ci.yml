@@ -22,6 +22,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
       - name: Detect E2E-impacting changes
         id: changes
         uses: dorny/paths-filter@v3
@@ -95,6 +98,16 @@ jobs:
     if: github.ref_name == 'main'
     steps:
       - uses: actions/checkout@v4
-      - run: pnpm exec next-on-pages deploy \
-               --project-name base-shop \
-               --branch ${{ github.ref_name }}
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Build
+        run: pnpm build
+      - name: Deploy to staging
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm exec next-on-pages deploy --project-name base-shop --branch staging

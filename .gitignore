@@ -39,6 +39,7 @@ apps/cms/dist/
 # Misc
 # ---------------------------
 .DS_Store
+.eslintcache
 *.pem
 *.tsbuildinfo
 next-env.d.ts

@@ -30,6 +30,8 @@ on:
         required: true
       CLOUDFLARE_ACCOUNT_ID:
         required: true
+      TURBO_TOKEN:
+        required: false
 
 jobs:
   validate-and-build:
@@ -39,6 +41,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
 
       - name: Lint
         run: pnpm --filter ${{ inputs.app-filter }} lint
@@ -77,6 +82,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
 
       - name: Download Artifact
         if: ${{ inputs.artifact-path != '' }}

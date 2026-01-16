@@ -32,7 +32,7 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
 - Any change affecting 10+ files must be justified and tracked in this plan.
 
 ## Active Tasks
-- [ ] REPO-1: Inventory and classify stash@{1} contents
+- [x] REPO-1: Inventory and classify stash@{1} contents
   - Scope: Use `git stash show --name-only stash@{1}` and targeted diffs to build a categorized list (eligible vs generated vs ignore).
   - Dependencies: stash exists locally.
   - Definition of done: A short inventory table in this plan listing candidate paths and exclusions.
@@ -51,6 +51,18 @@ Safely audit `stash@{1}` and selectively integrate only the changes that are cle
   - Scope: Run targeted lint/tests per touched packages; push updates and confirm CI is green.
   - Dependencies: REPO-3.
   - Definition of done: CI green on the PR branch; user notified with summary and any remaining warnings.
+
+## Inventory (REPO-1)
+| Category | Paths | Notes |
+| --- | --- | --- |
+| Generated / ignore | `cypress/screenshots/**/*.png` | Failed test artifacts; do not restore. |
+| Docs / config | `README.md`, `eslint.config.mjs`, `jest.coverage.cjs`, `jest.setup.ts`, `middleware.ts`, `package.json`, `cypress.config.ts` | Potential repo-wide behavior changes; require diff review. |
+| App code (CMS) | `apps/cms/**` | Large surface area: layouts, configurator, themes, wizard, API route, styles. |
+| App code (dashboard/shop) | `apps/dashboard/**`, `apps/shop-bcd/**` | UI styles and layout changes. |
+| Packages (core) | `packages/design-tokens/**`, `packages/i18n/**`, `packages/platform-core/**`, `packages/platform-machine/**`, `packages/tailwind-config/**`, `packages/themes/**`, `packages/types/**` | Includes token outputs and platform logic. |
+| Packages (UI) | `packages/ui/**` | Broad UI and CMS page builder updates plus component tests. |
+| Tests / fixtures | `__tests__/data/shops/abc/**` (deleted), `packages/**/__tests__/**`, `apps/cms/**/__tests__/**`, `cypress/support/component.ts`, `test/msw/shared.ts` | Mixed edits and deletions; review intent before adopting. |
+| Data files | `data/**` | Configurator progress and shop data; may be fixtures or runtime data. |
 
 ## Risks / Notes
 - The stash appears to include large generated output and mixed changes across multiple apps; careless application could regress unrelated areas.

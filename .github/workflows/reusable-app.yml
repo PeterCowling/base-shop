@@ -100,7 +100,8 @@ jobs:
 
   deploy-production:
     # Deploy to production: requires approval via GitHub environment protection
-    if: ${{ inputs.deploy-cmd != '' && inputs.target-environment == 'production' }}
+    # Only allow production deploys from main branch to prevent shipping unreviewed commits
+    if: ${{ inputs.deploy-cmd != '' && inputs.target-environment == 'production' && github.ref == 'refs/heads/main' }}
     needs: validate-and-build
     runs-on: ubuntu-latest
     environment:

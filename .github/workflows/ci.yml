@@ -35,6 +35,8 @@ jobs:
               - 'packages/theme/**'
             shop:
               - 'apps/cover-me-pretty/**'
+              - 'apps/cms/cypress/e2e/shop-*.cy.ts'
+              - 'apps/cms/cypress/e2e/session-expiration.cy.ts'
               - 'packages/platform-core/**'
               - 'packages/ui/**'
               - 'packages/config/**'
@@ -60,6 +62,9 @@ jobs:
             eslint-cache-
       - name: Lint
         run: pnpm lint
+      # Note: lint:exceptions re-runs ESLint to generate JSON report for governance.
+      # This is intentional - turbo lint uses per-workspace caching while lint:json
+      # produces a single report needed by the exceptions checker.
       - name: Lint (exceptions governance)
         run: pnpm run lint:exceptions
       - name: Docs lint
@@ -72,11 +77,11 @@ jobs:
         run: |
           pnpm --filter @acme/template-app test -- --testPathPattern runtimeContractManifest.test.ts
           pnpm --filter @apps/cover-me-pretty test -- --testPathPattern runtimeContractManifest.test.ts
-      - name: Unit tests
-        run: pnpm test:affected
+      - name: Unit tests with coverage
+        run: CI=true turbo run test --affected -- --coverage
       - uses: codecov/codecov-action@v3
         with:
-          files: ./coverage/lcov.info
+          fail_ci_if_error: false
       - name: Build
         run: pnpm build
       - name: E2E (dashboard subset)

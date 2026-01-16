@@ -2,6 +2,7 @@
   "name": "@apps/product-pipeline",
   "private": true,
   "scripts": {
+    "pretypecheck": "pnpm --filter @acme/pipeline-engine build && pnpm --filter @acme/ui build",
     "dev": "next dev -p 3012",
     "build": "next build",
     "start": "next start -p 3012",

@@ -5,78 +5,90 @@ Domain: Repo
 Created: 2026-01-16
 Created-by: Claude Opus 4.5
 Last-updated: 2026-01-16
-Last-updated-by: Claude Opus 4.5
+Last-updated-by: Codex
 ---
 
 # Repository Quality Audit — January 2026
 
-This document provides a comprehensive assessment of the base-shop repository's architecture, tooling, and processes. It identifies strengths, gaps, and prioritized recommendations for achieving world-class standards.
+This audit summarizes the current state of architecture, tooling, and delivery practices in the base-shop repository. It highlights strengths, gaps, and a prioritized remediation list.
 
 ## Executive Summary
 
 **Overall Grade: B-**
 
-The repository demonstrates strong architectural foundations with sophisticated tooling (custom ESLint plugin, multi-context design tokens, comprehensive Git safety). However, it falls short of world-class standards in security remediation, CI/CD reliability, documentation completeness, and consistency.
+The repository shows strong foundations (Turborepo, strict TypeScript, Git safety, and a sophisticated design-system linting stack). It falls short of world-class standards primarily in security remediation velocity, CI/CD coverage, and documentation discoverability/consistency.
+
+### Top Risks (P0)
+- Next.js RCE exposure pending dependency upgrade
+- SSRF risk in webhook forwarding
+- Cross-shop authorization gaps in CMS APIs
+- Secrets exposed in git history (needs rotation + history rewrite)
 
 ### Quick Reference
 
 | Category | Grade | Key Strength | Key Gap |
 |----------|-------|--------------|---------|
-| Monorepo/Build | A- | Turborepo, pnpm workspaces | 63 path aliases, no package READMEs |
-| TypeScript | A- | Strict mode, project references | Dual alias patterns undocumented |
-| Code Quality | A | Custom ESLint DS plugin (33 rules) | No rule documentation |
+| Monorepo/Build | A- | Turborepo + pnpm workspaces | 63 path aliases, low README coverage |
+| TypeScript | A- | Strict mode + project references | Dual alias patterns undocumented |
+| Code Quality | A | Custom ESLint DS plugin (33 rules) | No DS rule documentation |
 | Testing | B | Multi-level testing, MSW | No visual regression, coverage not enforced |
-| CI/CD | B | Reusable workflows, staging/prod separation | 15+ apps no workflow, no post-deploy validation |
-| Git Safety | A+ | Multi-layer protection | None — exceptional |
-| Documentation | B+ | 215+ docs, excellent AI-agent docs | 96% packages lack READMEs |
-| Design System | B+ | Multi-context tokens, ESLint enforcement | No API standardization, no handbook |
+| CI/CD | B | Reusable workflows, staging/prod separation | 15+ apps lack workflows, no post-deploy validation |
+| Git Safety | A+ | Multi-layer protection | None observed |
+| Documentation | B+ | 215+ docs, strong AI-agent docs | READMEs missing across packages |
+| Design System | B+ | Multi-context tokens, lint enforcement | No API standard, no handbook |
 | Security | C+ | Zod validation, Argon2, weekly audits | 2 critical CVEs, SSRF, auth gaps |
 | Developer Experience | B+ | 123 scripts, good IDE support | Poor package discovery |
 
----
+## Scope and Method
+
+- Focus: repo-level architecture, tooling, CI/CD, documentation, design system, and security posture.
+- Security findings are sourced from `docs/security-audit-2026-01.md`.
+- This is a repository health audit, not a full penetration or production performance review.
 
 ## Detailed Assessment
 
 ### A. Monorepo Structure & Build System — Grade: A-
 
-#### Strengths
-- **Turborepo properly configured** with task dependencies (`^build`), caching, and outputs
-- **pnpm workspaces** with 31 apps + 31 packages using workspace protocols
-- **Clear separation** between `apps/` and `packages/`
+**Strengths**
+- Turborepo configured with task dependencies (`^build`), caching, and outputs.
+- pnpm workspaces across 31 apps + 31 packages with workspace protocols.
+- Clear separation between `apps/` and `packages/`.
 
-#### Critical Gaps
-- **63 path aliases in tsconfig.base.json** — Explosion of aliases with duplicates (`@acme/ui` AND `@ui`)
-- **No package README files** — Only 14/218 directories have READMEs
-- **Inconsistent build scripts** — Some use `tsc -b`, others `tsc -b && tsup`, others custom
-- **Confusing package names** — `templates` vs `template-app`, `configurator` vs `product-configurator`
+**Gaps**
+- 63 path aliases in `tsconfig.base.json` with duplicates (e.g., `@acme/ui` and `@ui`).
+- README coverage is low (14/218 directories include READMEs).
+- Build scripts vary widely (`tsc -b`, `tsc -b && tsup`, custom scripts).
+- Package naming collisions create confusion (`templates` vs `template-app`, `configurator` vs `product-configurator`).
 
-#### Recommendations
-1. Reduce path aliases from 63 to ~20 by removing shorthand duplicates
-2. Add README.md to every package with purpose, exports, and dependencies
-3. Standardize build scripts across all packages
-4. Document package naming conventions and when to use each
-
----
+**Recommendations**
+1. Consolidate aliases to a canonical set and remove duplicates.
+2. Add a README template to every package (purpose, exports, owners, consumers).
+3. Standardize build scripts via shared presets or common scripts.
+4. Document naming conventions and enforce them for new packages.
 
 ### B. TypeScript Configuration — Grade: A-
 
-#### Strengths
-- Strict TypeScript enabled globally
-- Project references properly configured with `composite: true`
-- Incremental compilation works correctly
+**Strengths**
+- Strict TypeScript enabled globally.
+- Project references configured with `composite: true`.
+- Incremental compilation works correctly.
 
-#### Critical Gaps
-- **Dual alias patterns** — Both `@acme/platform-core` and `@platform-core` exist
-- **No documentation** on which alias pattern is canonical
-- **Some packages export from `src/`** instead of `dist/`
+**Gaps**
+- Dual alias patterns exist (`@acme/platform-core` and `@platform-core`), with no canonical guidance.
+- Some packages export from `src/` instead of `dist/`, creating inconsistent consumption patterns.
 
----
+**Recommendations**
+1. Declare a single canonical alias pattern and document it in `docs/tsconfig-paths.md`.
+2. Align package exports to `dist/` for published outputs; keep `src/` for tooling only.
 
 ### C. Code Quality & Linting — Grade: A
 
-#### Strengths
-- **Exceptional custom ESLint plugin** (`@acme/eslint-plugin-ds`) with 33 sophisticated rules:
+**Strengths**
+- Custom ESLint plugin (`@acme/eslint-plugin-ds`) with 33 rules enforcing tokens, layout, and accessibility.
+- `eslint-plugin-boundaries` enforces layer boundaries.
+- Prettier configuration is comprehensive with Tailwind integration.
 
+**Key DS Rules (representative)**
 | Category | Rules |
 |----------|-------|
 | Token Enforcement | `no-raw-color`, `no-raw-spacing`, `no-raw-radius`, `no-raw-shadow`, `no-raw-typography` |
@@ -85,145 +97,120 @@ The repository demonstrates strong architectural foundations with sophisticated 
 | Responsive | `require-breakpoint-modifiers`, `container-widths-only-at` |
 | RTL/i18n | `no-physical-direction-classes-in-rtl`, `no-hardcoded-copy` |
 
-- Layer boundary enforcement via `eslint-plugin-boundaries`
-- Comprehensive Prettier configuration with Tailwind integration
+**Gaps**
+- No documentation explaining the purpose and escape hatches for DS rules.
+- Some apps still carry migration warnings (acceptable but undocumented).
 
-#### Minor Gaps
-- No documentation explaining why each DS rule exists
-- Some apps still have migration warnings (acceptable tech debt)
-
----
+**Recommendations**
+1. Document each DS rule with rationale and examples.
+2. Track migration warnings as a backlog with owners and dates.
 
 ### D. Testing Infrastructure — Grade: B
 
-#### Strengths
-- Multi-level testing (unit → integration → E2E)
-- MSW integration for API mocking
-- Coverage thresholds defined per package (80% global, 90% for `@acme/ui`)
-- Cypress with smoke suite, accessibility testing (jest-axe)
+**Strengths**
+- Multi-level testing (unit → integration → E2E).
+- MSW integration for API mocking.
+- Coverage thresholds defined per package (80% global, 90% for `@acme/ui`).
+- Cypress smoke suite and accessibility testing via `jest-axe`.
 
-#### Critical Gaps
-- **Jest config is 271 lines** — Hard-coded app detection, should use presets
-- **No visual regression testing** — Design system changes can ship unnoticed
-- **Coverage not enforced in CI** — Reports uploaded but don't block PRs
-- **E2E ownership fragmented** — Tests in root CI, cypress.yml, and app workflows
-- **15+ apps have 0% coverage thresholds**
+**Gaps**
+- No visual regression testing.
+- Coverage thresholds are not enforced in CI.
+- Jest config is 271 lines with hard-coded app detection; presets would simplify it.
+- E2E ownership is fragmented (root CI, cypress.yml, and app workflows).
+- 15+ apps define 0% coverage thresholds.
 
-#### Recommendations
-1. Add Chromatic or Percy for visual regression testing
-2. Enforce coverage thresholds in CI (fail PR if coverage drops)
-3. Consolidate E2E test ownership
-4. Migrate to Jest presets to simplify configuration
-
----
+**Recommendations**
+1. Add Chromatic or Percy for visual regression testing.
+2. Enforce coverage thresholds in CI (fail PRs on regression).
+3. Consolidate E2E ownership and entry points.
+4. Migrate to Jest presets to reduce config complexity.
 
 ### E. CI/CD & Deployment — Grade: B
 
-#### Recent Improvements (January 2026)
-- ✅ Root CI release job now has proper setup, build, and deploy steps
-- ✅ Staging environment with URL configured (`https://staging.base-shop.pages.dev`)
-- ✅ App workflows (reception, product-pipeline) have staging/production/validate jobs
-- ✅ Redundant `reception-ci.yml` deleted
-- ✅ Lint steps consolidated with comment explaining exceptions governance
+**Recent Improvements (January 2026)**
+- Root CI release job now includes setup, build, and deploy steps.
+- Staging environment configured at `https://staging.base-shop.pages.dev`.
+- App workflows (reception, product-pipeline) include staging/production/validate jobs.
+- Redundant `reception-ci.yml` removed.
+- Lint steps consolidated with explicit exception governance.
 
-#### Current Workflow Architecture
+**Current Workflow Architecture**
+- Root CI (`.github/workflows/ci.yml`): verify (lint/typecheck/tests/build) + release (main only, deploy to staging).
+- App workflows (e.g., `reception.yml`, `product-pipeline.yml`): staging on `main`, production via manual dispatch, validate on PRs.
 
-**Root CI (`ci.yml`):**
-```
-verify job:
-  - Checkout → Setup → Build ESLint plugin
-  - Lint → Lint exceptions → Docs lint → Plans lint
-  - Typecheck → Unit tests (affected, with coverage)
-  - Build → Conditional E2E (dashboard/shop)
+**Gaps**
+- 15+ apps still lack CI/CD workflows (api, dashboard, cochlearfit, workers, etc.).
+- No post-deployment validation/health checks.
+- No Turbo remote cache; every job rebuilds.
+- ESLint cache key uses `github.sha`, causing misses.
+- Path filters are manually maintained and drift-prone.
 
-release job (main only):
-  - Checkout → Setup → Build → Deploy to staging
-```
-
-**App Workflows (reception.yml, product-pipeline.yml, etc.):**
-```
-staging job (push to main):
-  - Uses reusable-app.yml → Deploy to staging branch
-
-production job (manual dispatch):
-  - Uses reusable-app.yml → Deploy to main branch (requires approval)
-
-validate job (PRs):
-  - Uses reusable-app.yml → Build only, no deploy
-```
-
-#### Remaining Gaps
-- **15+ apps have no CI/CD workflow** — api, dashboard, cochlearfit, workers, etc.
-- **No post-deployment validation** — Broken deploys won't be detected
-- **No Turbo remote cache** — Every job rebuilds from scratch
-- **ESLint cache key uses `github.sha`** — Always misses (should use content hash)
-- **Path filter drift** — Manually maintained, easy to miss dependencies
-
-#### Recommendations
-1. Add workflows for remaining apps
-2. Add post-deploy health checks (curl to verify endpoint responds)
-3. Configure Turbo remote cache with `TURBO_TOKEN`
-4. Fix ESLint cache key to use `hashFiles('**/*.ts', '**/*.tsx')`
-
----
+**Recommendations**
+1. Add workflows for remaining apps.
+2. Add post-deploy health checks (e.g., curl + status check).
+3. Configure Turbo remote cache with `TURBO_TOKEN`.
+4. Fix ESLint cache key to use `hashFiles('**/*.ts', '**/*.tsx')`.
 
 ### F. Git Safety & Incident Prevention — Grade: A+
 
-#### Strengths
-- **Multi-layer protection:**
-  - Documentation (AGENTS.md, CLAUDE.md, git-safety.md)
-  - Pre-commit hooks (env file protection, lint-staged)
-  - Pre-push hooks (force push blocking)
-  - GitHub branch protection rules
-  - Claude Code hooks (command interception)
-- **Born from real incident** with 76KB recovery plan
-- **Systematic approach** to prevention
+**Strengths**
+- Multi-layer protection across documentation, hooks, GitHub rules, and Claude Code hooks.
+- Incident-driven recovery plan and institutional knowledge.
+- Safety tooling actively enforced and documented.
 
-This is exceptional and sets a high bar for the industry.
-
----
+**Gaps**
+- None observed. This is best-in-class.
 
 ### G. Documentation — Grade: B+
 
-#### Strengths
-- **215+ documentation files** covering architecture, setup, testing, security
-- **Exceptional AI-agent documentation** (CLAUDE.md, AGENTS.md, INDEX_FOR_CLAUDE)
-- **Good onboarding docs** (install.md, setup.md, contributing.md)
+**Strengths**
+- 215+ documentation files covering architecture, setup, testing, and security.
+- Exceptional AI-agent documentation (`CLAUDE.md`, `AGENTS.md`, `INDEX_FOR_CLAUDE`).
+- Good onboarding docs (`install.md`, `setup.md`, `contributing.md`).
 
-#### Critical Gaps
-- **96% of packages lack READMEs** — New contributors have no local context
-- **No Design System Handbook** — No component API reference, no usage patterns
-- **No dependency graph documentation** — Which packages can import which?
-- **No package architecture guide** — When to create package vs directory?
+**Gaps**
+- READMEs missing across packages (only 14/218 directories include READMEs).
+- No Design System Handbook or component API reference.
+- No dependency graph documentation (package import boundaries are implicit).
+- No package architecture guide (when to create a package vs a folder).
 
----
+**Recommendations**
+1. Add README templates and require them for new packages.
+2. Publish a Design System Handbook with component APIs and usage patterns.
+3. Document package layers and import boundaries (diagram + text).
+4. Add a short guide for "package vs folder" decisions.
 
 ### H. Design System & UI — Grade: B+
 
-#### Strengths
-- **Multi-context token system** (consumer/hospitality/operations)
-- **Strong ESLint enforcement** of design patterns (33 rules)
-- **Atomic design** with 60+ components (atoms → molecules → organisms)
-- **shadcn/Radix integration** is pragmatic
+**Strengths**
+- Multi-context token system (consumer/hospitality/operations).
+- Strong ESLint enforcement of design patterns (33 rules).
+- Atomic component library (atoms → molecules → organisms).
+- shadcn/Radix integration is pragmatic.
 
-#### Critical Gaps
-- **No component API standardization** — Props vary widely across components
-- **No Design System Handbook** — Compare to Chakra/MUI documentation
-- **No visual regression testing** — Design changes can ship unnoticed
-- **Accessibility incomplete** — Foundations present but no comprehensive audit
-- **Theming limited to light/dark** — No multi-brand support
+**Gaps**
+- No component API standardization; props vary across components.
+- No Design System Handbook.
+- No visual regression testing.
+- Accessibility lacks a comprehensive audit plan.
+- Theming limited to light/dark (no multi-brand support).
 
----
+**Recommendations**
+1. Standardize component prop conventions (naming, sizing, variant patterns).
+2. Publish a Design System Handbook (see Documentation section).
+3. Add visual regression testing (see Testing section).
+4. Run a WCAG 2.1 AA audit and track remediation.
 
 ### I. Security — Grade: C+
 
-#### Strengths
-- Zod validation used consistently throughout
-- Argon2 password hashing
-- Webhook signature verification with HMAC
-- Regular weekly audit workflow
+**Strengths**
+- Zod validation used consistently.
+- Argon2 password hashing.
+- Webhook signature verification with HMAC.
+- Weekly audit workflow in place.
 
-#### Critical Gaps (from security audit)
+**Critical Gaps (from security audit)**
 
 | Severity | Issue | Location |
 |----------|-------|----------|
@@ -232,30 +219,31 @@ This is exceptional and sets a high bar for the industry.
 | HIGH | SSRF in webhook forwarding | `apps/cover-me-pretty/src/app/api/leads/route.ts` |
 | HIGH | Missing cross-shop authorization | `apps/cms/src/app/api/data/[shop]/` routes |
 | HIGH | Test auth bypass pattern | `apps/cms/src/actions/common/auth.ts` |
-| MEDIUM | Secrets in git history | Historical commits (need git-filter-repo) |
+| MEDIUM | Secrets in git history | Historical commits (needs git-filter-repo) |
 | MEDIUM | CSP gaps | Missing script-src, style-src in production |
 
-#### Recommendations
-1. **Immediate:** Upgrade Next.js to 15.3.6+
-2. **Immediate:** Add URL validation to webhook forwarding (block private IPs)
-3. **This week:** Add cross-shop authorization checks
-4. **This week:** Rotate exposed secrets, clean git history
-
----
+**Recommendations**
+1. Upgrade Next.js to 15.3.6+.
+2. Add URL validation to webhook forwarding (block private IPs).
+3. Add cross-shop authorization checks to CMS APIs.
+4. Rotate exposed secrets and clean git history.
 
 ### J. Developer Experience — Grade: B+
 
-#### Strengths
-- **123 well-organized npm scripts**
-- **`pnpm quickstart-shop` scaffolding**
-- **Good IDE integration** with path aliases and declaration maps
+**Strengths**
+- 123 well-organized npm scripts.
+- `pnpm quickstart-shop` scaffolding.
+- Good IDE integration with aliases and declaration maps.
 
-#### Gaps
-- **No package READMEs** — Developers must search central docs
-- **Confusing package names** — Multiple similar-sounding packages
-- **No dependency visualization** — Hard to understand what imports what
+**Gaps**
+- READMEs missing across packages (discovery friction).
+- Confusing package names and overlap.
+- No dependency visualization.
 
----
+**Recommendations**
+1. Publish README templates and a short package index.
+2. Create a dependency graph (e.g., simple static diagram).
+3. Add a naming guide and enforce it for new packages.
 
 ## Priority Fixes
 
@@ -282,7 +270,7 @@ This is exceptional and sets a high bar for the industry.
 
 | # | Issue | Action |
 |---|-------|--------|
-| 10 | No package READMEs | Add README to all 31+ packages |
+| 10 | No package READMEs | Add README to all packages |
 | 11 | Path alias explosion | Reduce from 63 to ~20 |
 | 12 | No DS handbook | Create component API reference |
 | 13 | Missing app workflows | Add CI/CD for remaining 15+ apps |
@@ -296,8 +284,6 @@ This is exceptional and sets a high bar for the industry.
 | 16 | Accessibility gaps | Complete WCAG 2.1 AA audit |
 | 17 | No ESLint rule docs | Document why each rule exists |
 | 18 | No package guide | Document when to create vs extend |
-
----
 
 ## Appendix: Files Referenced
 
@@ -329,15 +315,12 @@ This is exceptional and sets a high bar for the industry.
 - `packages/design-tokens/` — Token definitions
 - `packages/eslint-plugin-ds/` — Custom ESLint rules
 
----
-
 ## Change Log
 
 | Date | Author | Change |
 |------|--------|--------|
 | 2026-01-16 | Claude Opus 4.5 | Initial comprehensive audit |
-
----
+| 2026-01-16 | Codex | Restructured for clarity, consistency, and actionability |
 
 ## Related Documents
 

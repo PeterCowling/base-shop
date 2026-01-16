@@ -5,7 +5,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
-} from 'react';
+} from "react";
 import {
   CheckCircle,
   XCircle,
@@ -13,9 +13,12 @@ import {
   Info,
   X,
   Loader2,
-} from 'lucide-react';
+} from "lucide-react";
+import { useTranslations } from "@acme/i18n";
+import { Inline, Stack } from "../../../atoms/primitives";
+import { cn } from "../../../../utils/style/cn";
 
-export type NotificationType = 'success' | 'error' | 'warning' | 'info' | 'loading';
+export type NotificationType = "success" | "error" | "warning" | "info" | "loading";
 
 export interface Notification {
   /**
@@ -120,7 +123,8 @@ const NotificationContext = createContext<NotificationContextValue | null>(null)
 export function useNotifications() {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error('useNotifications must be used within a NotificationProvider');
+    // i18n-exempt -- UI-3011 [ttl=2026-12-31] developer-facing error message
+    throw new Error("useNotifications must be used within a NotificationProvider");
   }
   return context;
 }
@@ -132,15 +136,15 @@ export function useToast() {
   return useMemo(
     () => ({
       success: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
-        addNotification({ type: 'success', title, ...options }),
+        addNotification({ type: "success", title, ...options }),
       error: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
-        addNotification({ type: 'error', title, ...options }),
+        addNotification({ type: "error", title, ...options }),
       warning: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
-        addNotification({ type: 'warning', title, ...options }),
+        addNotification({ type: "warning", title, ...options }),
       info: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
-        addNotification({ type: 'info', title, ...options }),
+        addNotification({ type: "info", title, ...options }),
       loading: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) =>
-        addNotification({ type: 'loading', title, duration: 0, ...options }),
+        addNotification({ type: "loading", title, duration: 0, ...options }),
       dismiss: removeNotification,
       update: updateNotification,
       promise: async <T,>(
@@ -152,7 +156,7 @@ export function useToast() {
         }
       ): Promise<T> => {
         const id = addNotification({
-          type: 'loading',
+          type: "loading",
           title: options.loading,
           duration: 0,
           dismissible: false,
@@ -161,7 +165,7 @@ export function useToast() {
         try {
           const result = await promise;
           updateNotification(id, {
-            type: 'success',
+            type: "success",
             title: typeof options.success === 'function' ? options.success(result) : options.success,
             duration: 5000,
             dismissible: true,
@@ -169,7 +173,7 @@ export function useToast() {
           return result;
         } catch (err) {
           updateNotification(id, {
-            type: 'error',
+            type: "error",
             title: typeof options.error === 'function' ? options.error(err) : options.error,
             duration: 5000,
             dismissible: true,
@@ -214,7 +218,7 @@ export function NotificationProvider({
       const id = generateId();
       const notification: Notification = {
         id,
-        type: options.type ?? 'info',
+        type: options.type ?? "info",
         title: options.title,
         description: options.description,
         duration: options.duration ?? defaultDuration,
@@ -286,7 +290,7 @@ export interface NotificationContainerProps {
    * Position on the screen
    * @default "top-right"
    */
-  position?: 'top-left' | 'top-right' | 'top-center' | 'bottom-left' | 'bottom-right' | 'bottom-center';
+  position?: "top-left" | "top-right" | "top-center" | "bottom-left" | "bottom-right" | "bottom-center";
 
   /**
    * Additional CSS classes
@@ -299,25 +303,30 @@ export interface NotificationContainerProps {
  * Should be placed at the root of your app, inside NotificationProvider
  */
 export function NotificationContainer({
-  position = 'top-right',
-  className = '',
+  position = "top-right",
+  className = "",
 }: NotificationContainerProps) {
   const { notifications, removeNotification } = useNotifications();
+  const t = useTranslations();
 
   const positionClasses: Record<string, string> = {
-    'top-left': 'top-4 left-4',
-    'top-right': 'top-4 right-4',
-    'top-center': 'top-4 left-1/2 -translate-x-1/2',
-    'bottom-left': 'bottom-4 left-4',
-    'bottom-right': 'bottom-4 right-4',
-    'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2',
+    "top-left": "top-4 start-4",
+    "top-right": "top-4 end-4",
+    "top-center": "top-4 start-1/2 -translate-x-1/2",
+    "bottom-left": "bottom-4 start-4",
+    "bottom-right": "bottom-4 end-4",
+    "bottom-center": "bottom-4 start-1/2 -translate-x-1/2",
   };
 
   return (
     <div
-      className={`fixed z-[100] flex flex-col gap-2 pointer-events-none ${positionClasses[position]} ${className}`}
+      className={cn(
+        "fixed z-[100] flex flex-col gap-2 pointer-events-none",
+        positionClasses[position],
+        className
+      )}
       role="region"
-      aria-label="Notifications"
+      aria-label={t("notifications.ariaLabel")}
     >
       {notifications.map((notification) => (
         <NotificationItem
@@ -337,6 +346,7 @@ interface NotificationItemProps {
 
 function NotificationItem({ notification, onDismiss }: NotificationItemProps) {
   const { type, title, description, duration, dismissible, action } = notification;
+  const t = useTranslations();
 
   // Auto-dismiss timer
   useEffect(() => {
@@ -347,38 +357,36 @@ function NotificationItem({ notification, onDismiss }: NotificationItemProps) {
   }, [duration, onDismiss]);
 
   const icons: Record<NotificationType, React.ReactNode> = {
-    success: <CheckCircle className="h-5 w-5 text-green-500" />,
-    error: <XCircle className="h-5 w-5 text-red-500" />,
-    warning: <AlertTriangle className="h-5 w-5 text-yellow-500" />,
-    info: <Info className="h-5 w-5 text-blue-500" />,
-    loading: <Loader2 className="h-5 w-5 animate-spin text-blue-500" />,
+    success: <CheckCircle className="h-5 w-5 text-success" />,
+    error: <XCircle className="h-5 w-5 text-danger" />,
+    warning: <AlertTriangle className="h-5 w-5 text-warning" />,
+    info: <Info className="h-5 w-5 text-info" />,
+    loading: <Loader2 className="h-5 w-5 animate-spin text-info" />,
   };
 
   const bgColors: Record<NotificationType, string> = {
-    success: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800',
-    error: 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800',
-    warning: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800',
-    info: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800',
-    loading: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800',
+    success: "bg-success-soft border-success/30",
+    error: "bg-danger-soft border-danger/30",
+    warning: "bg-warning-soft border-warning/30",
+    info: "bg-info-soft border-info/30",
+    loading: "bg-info-soft border-info/30",
   };
 
   return (
     <div
       role="alert"
-      className={`
-        pointer-events-auto w-80 rounded-lg border p-4 shadow-lg
-        animate-in slide-in-from-right-full fade-in duration-200
-        ${bgColors[type]}
-      `}
+      className={cn(
+        "pointer-events-auto w-80 rounded-lg border p-4 shadow-elevation-3",
+        "animate-in slide-in-from-right-full fade-in duration-200",
+        bgColors[type]
+      )}
     >
-      <div className="flex gap-3">
+      <Inline gap={3} alignY="start" wrap={false}>
         <div className="flex-shrink-0">{icons[type]}</div>
-        <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-gray-900 dark:text-slate-100">
-            {title}
-          </p>
+        <Stack gap={1} className="min-w-0 flex-1">
+          <p className="text-sm font-medium text-fg">{title}</p>
           {description && (
-            <p className="mt-1 text-sm text-gray-600 dark:text-slate-300">
+            <p className="text-sm text-muted">
               {description}
             </p>
           )}
@@ -386,23 +394,30 @@ function NotificationItem({ notification, onDismiss }: NotificationItemProps) {
             <button
               type="button"
               onClick={action.onClick}
-              className="mt-2 text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+              className={cn(
+                "inline-flex min-h-11 min-w-11 items-center text-sm font-medium text-info",
+                "hover:text-info/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              )}
             >
               {action.label}
             </button>
           )}
-        </div>
+        </Stack>
         {dismissible && (
           <button
             type="button"
             onClick={onDismiss}
-            className="flex-shrink-0 rounded p-1 text-gray-400 hover:bg-white/50 hover:text-gray-600 dark:hover:bg-black/20 dark:hover:text-slate-300"
-            aria-label="Dismiss"
+            className={cn(
+              "min-h-11 min-w-11 flex-shrink-0 rounded text-muted",
+              "hover:bg-surface-2 hover:text-fg",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            )}
+            aria-label={t("notifications.dismiss")}
           >
             <X className="h-4 w-4" />
           </button>
         )}
-      </div>
+      </Inline>
     </div>
   );
 }
@@ -418,42 +433,48 @@ let externalRemoveNotification: ((id: string) => void) | null = null;
 export const toast = {
   success: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
     if (!externalAddNotification) {
-      console.warn('NotificationProviderWithGlobal is not mounted');
-      return '';
+      // i18n-exempt -- UI-3011 [ttl=2026-12-31] developer warning
+      console.warn("NotificationProviderWithGlobal is not mounted");
+      return "";
     }
-    return externalAddNotification({ type: 'success', title, ...options });
+    return externalAddNotification({ type: "success", title, ...options });
   },
   error: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
     if (!externalAddNotification) {
-      console.warn('NotificationProviderWithGlobal is not mounted');
-      return '';
+      // i18n-exempt -- UI-3011 [ttl=2026-12-31] developer warning
+      console.warn("NotificationProviderWithGlobal is not mounted");
+      return "";
     }
-    return externalAddNotification({ type: 'error', title, ...options });
+    return externalAddNotification({ type: "error", title, ...options });
   },
   warning: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
     if (!externalAddNotification) {
-      console.warn('NotificationProviderWithGlobal is not mounted');
-      return '';
+      // i18n-exempt -- UI-3011 [ttl=2026-12-31] developer warning
+      console.warn("NotificationProviderWithGlobal is not mounted");
+      return "";
     }
-    return externalAddNotification({ type: 'warning', title, ...options });
+    return externalAddNotification({ type: "warning", title, ...options });
   },
   info: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
     if (!externalAddNotification) {
-      console.warn('NotificationProviderWithGlobal is not mounted');
-      return '';
+      // i18n-exempt -- UI-3011 [ttl=2026-12-31] developer warning
+      console.warn("NotificationProviderWithGlobal is not mounted");
+      return "";
     }
-    return externalAddNotification({ type: 'info', title, ...options });
+    return externalAddNotification({ type: "info", title, ...options });
   },
   loading: (title: string, options?: Omit<NotificationOptions, 'type' | 'title'>) => {
     if (!externalAddNotification) {
-      console.warn('NotificationProviderWithGlobal is not mounted');
-      return '';
+      // i18n-exempt -- UI-3011 [ttl=2026-12-31] developer warning
+      console.warn("NotificationProviderWithGlobal is not mounted");
+      return "";
     }
-    return externalAddNotification({ type: 'loading', title, duration: 0, ...options });
+    return externalAddNotification({ type: "loading", title, duration: 0, ...options });
   },
   dismiss: (id: string) => {
     if (!externalRemoveNotification) {
-      console.warn('NotificationProviderWithGlobal is not mounted');
+      // i18n-exempt -- UI-3011 [ttl=2026-12-31] developer warning
+      console.warn("NotificationProviderWithGlobal is not mounted");
       return;
     }
     externalRemoveNotification(id);

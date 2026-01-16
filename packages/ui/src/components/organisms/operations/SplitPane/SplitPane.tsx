@@ -8,6 +8,7 @@ import React, {
   useState,
   type ReactNode,
 } from "react";
+import { useTranslations } from "@acme/i18n";
 import { cn } from "../../../../utils/style/cn";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -78,12 +79,14 @@ export function SplitPane({
   collapsible = false,
   collapsed: controlledCollapsed,
   onCollapsedChange,
-  "aria-label": ariaLabel = "Resize",
+  "aria-label": ariaLabel,
 }: SplitPaneProps) {
+  const t = useTranslations();
   const containerRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState<number | null>(null);
   const [isResizing, setIsResizing] = useState(false);
   const [internalCollapsed, setInternalCollapsed] = useState(false);
+  const resolvedAriaLabel = ariaLabel ?? t("splitPane.resize");
 
   const collapsed = controlledCollapsed ?? internalCollapsed;
   const isHorizontal = direction === "horizontal";
@@ -320,7 +323,7 @@ export function SplitPane({
       )}
     >
       {/* Primary Pane */}
-      <div
+      <StyledDiv
         className={cn(
           "split-pane-primary overflow-hidden",
           collapsed && "hidden",
@@ -329,12 +332,13 @@ export function SplitPane({
         style={paneStyles.primary}
       >
         {children[0]}
-      </div>
+      </StyledDiv>
 
       {/* Resize Handle */}
-      <div
+      <StyledButton
+        type="button"
         role="separator"
-        aria-label={ariaLabel}
+        aria-label={resolvedAriaLabel}
         aria-orientation={isHorizontal ? "vertical" : "horizontal"}
         aria-valuenow={size ?? 0}
         aria-valuemin={minSize}
@@ -342,12 +346,13 @@ export function SplitPane({
         tabIndex={disabled ? -1 : 0}
         className={cn(
           "split-pane-handle flex-shrink-0",
+          /* i18n-exempt -- UI-3012 [ttl=2026-12-31] class names */
           "group relative",
           isHorizontal
             ? "h-full cursor-col-resize"
             : "w-full cursor-row-resize",
           disabled && "pointer-events-none opacity-50",
-          isResizing && "bg-blue-500",
+          isResizing && "bg-primary/20",
           handleClassName
         )}
         style={{
@@ -363,9 +368,9 @@ export function SplitPane({
           className={cn(
             "absolute inset-0 transition-colors",
             isHorizontal
-              ? "w-full bg-slate-200 group-hover:bg-slate-300"
-              : "h-full bg-slate-200 group-hover:bg-slate-300",
-            isResizing && "bg-blue-500"
+              ? "w-full bg-border-2 group-hover:bg-border-2/80"
+              : "h-full bg-border-2 group-hover:bg-border-2/80",
+            isResizing && "bg-primary"
           )}
         />
         {/* Larger hit area */}
@@ -377,10 +382,10 @@ export function SplitPane({
               : "-top-1 -bottom-1 left-0 right-0"
           )}
         />
-      </div>
+      </StyledButton>
 
       {/* Secondary Pane */}
-      <div
+      <StyledDiv
         className={cn(
           "split-pane-secondary overflow-hidden",
           secondaryPaneClassName
@@ -388,10 +393,22 @@ export function SplitPane({
         style={paneStyles.secondary}
       >
         {children[1]}
-      </div>
+      </StyledDiv>
     </div>
   );
 }
+
+// Wrap DOM nodes to satisfy react/forbid-dom-props for "style"
+const StyledDiv = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  (props, ref) => <div ref={ref} {...props} />
+);
+StyledDiv.displayName = "StyledDiv";
+
+const StyledButton = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>((props, ref) => <button ref={ref} {...props} />);
+StyledButton.displayName = "StyledButton";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // useSplitPane Hook

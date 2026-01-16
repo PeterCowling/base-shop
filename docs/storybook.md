@@ -1,13 +1,13 @@
 Type: Guide
 Status: Active
 Domain: UI
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
-# Storybook Guide
+# Storybook Guide (Agent Runbook)
 
 This project uses **Storybook** for developing and testing UI components.
 
-**Builder choice:** we are pinned to the Webpack 5 builder (`apps/storybook/.storybook/main.ts`). We attempted Vite (see `apps/storybook/.storybook/vite.storybook.ts`) and rolled it back because it broke HMR and server/client stubbing for Next 15/React 19. Please do **not** retry Vite unless there is an explicit migration task; it burns time and leaves SB unusable.
+**Builder choice:** we are pinned to the Webpack 5 builder (`apps/storybook/.storybook/main.ts`). We attempted Vite (see `apps/storybook/.storybook/vite.storybook.ts`) and rolled it back because it broke HMR and server/client stubbing for Next 15/React 19. Do **not** retry Vite unless there is an explicit migration task; it burns time and leaves SB unusable.
 
 ## Running Storybook
 
@@ -85,7 +85,7 @@ Notes:
 
 ## Theme Switcher
 
-The toolbar lets you toggle between design token themes (`base` or `brandx`) and
+The toolbar toggles between design token themes (`base` or `brandx`) and
 light, dark, or system mode. Dark tokens are defined once and applied to
 `:root` with `@media (prefers-color-scheme: dark)`, while the `.theme-dark`
 class forces dark mode when needed. Theme logic lives in `apps/storybook/.storybook/preview.tsx`.
@@ -99,7 +99,7 @@ If/when we re-enable it, set `CHROMATIC_PROJECT_TOKEN` and run:
 pnpm chromatic
 ```
 
-to upload your Storybook to [Chromatic](https://www.chromatic.com/) for visual
+to upload Storybook to [Chromatic](https://www.chromatic.com/) for visual
 review and regression testing. Until then, leave it disabled.
 
 ### Visual Tests addon (Chromatic)

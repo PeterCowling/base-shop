@@ -1,9 +1,9 @@
 Type: Guide
 Status: Active
 Domain: Testing
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
-# Cypress E2E Setup
+# Cypress E2E Setup (Agent Runbook)
 
 This repo uses Cypress for end‑to‑end and a11y testing. Tests live under `apps/cms/cypress/e2e` and `test/e2e/__tests__`, with a single shared configuration and support layer.
 
@@ -110,7 +110,7 @@ Two common patterns are used in specs:
 
 - MSW default handlers cover common CMS endpoints and intentionally pass through cart and API route calls.
   - Defaults: `test/msw/shared.ts:12-63, 70-87`
-- You can add test‑specific overrides with `server.use(...)` from `~test/msw/server`.
+- Add test-specific overrides with `server.use(...)` from `~test/msw/server`.
 - Specs may also use `cy.intercept` where convenient.
   - Example: `apps/cms/cypress/e2e/checkout-flow-a11y.cy.ts:6-9`
 
@@ -122,7 +122,7 @@ Two common patterns are used in specs:
 
 ## Tips
 
-- Base URL: If your app runs on a different port, set `CYPRESS_BASE_URL` (or use the `e2e:shop`/`e2e:cms` scripts which set it for you).
+- Base URL: If the app runs on a different port, set `CYPRESS_BASE_URL` (or use the `e2e:shop`/`e2e:cms` scripts that set it).
 - Headed debugging: `pnpm e2e:open`.
 - Screenshots/videos: standard Cypress defaults apply; failures are captured under `apps/cms/cypress/screenshots`.
 - Prevent flaky network: prefer MSW (`server.use`) or `cy.intercept` over live requests.

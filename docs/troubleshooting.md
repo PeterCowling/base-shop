@@ -1,33 +1,33 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
-# Troubleshooting
+# Troubleshooting (Agent Runbook)
 
-Use this guide to capture detailed logs and resolve common issues in this monorepo.
+Agent runbook for capturing detailed logs and resolving common issues in this monorepo.
 
 ## Dev server fails with “array.length” error
 
 Symptoms: `pnpm run dev` (via Turbo) or a Next.js app crashes with an "array.length" error without a helpful stack trace.
 
-Try these steps in order:
+Run these steps in order:
 
 - Build everything (type‑check and ensure outputs):
   - `pnpm -r build`
-- Regenerate config stubs if you touched `packages/config/src/env/*.impl.ts`:
+- Regenerate config stubs when `packages/config/src/env/*.impl.ts` changes:
   - `pnpm --filter @acme/config run build:stubs`
 - Clean stale artifacts and rebuild:
   - `pnpm -r run clean && pnpm -r build`
-- Capture a detailed stack trace by running the app directly with Node tracing enabled (replace the filter with your app):
+- Capture a detailed stack trace by running the app directly with Node tracing enabled (replace the filter with the target app):
   - `cross-env NODE_OPTIONS="--trace-uncaught --enable-source-maps" pnpm --filter @apps/cms run dev`
   - Or build with Next’s debug output:
   - `cross-env NODE_OPTIONS="--trace-uncaught --enable-source-maps" pnpm --filter @apps/cms exec next build --debug`
 - If Turbo obscures output, run a focused dev without cache and grouped logs:
   - `TURBO_TELEMETRY_DISABLED=1 TURBO_LOG_ORDER=grouped pnpm exec turbo run dev --parallel --filter=@apps/cms --no-cache`
-- If a specific page/route triggers the error, open it again with your terminal focused to capture the stack.
+- If a specific page/route triggers the error, reopen it with the terminal focused to capture the stack.
 
-If you’re using Codex CLI, also run its failure-log command to attach structured logs for the failing step.
+When using Codex CLI, run its failure-log command to attach structured logs for the failing step.
 
 ## TypeScript: TS2307 Cannot find module
 
@@ -95,7 +95,7 @@ Fixes applied in repo:
 
 - Disable Webpack cache for the template app by overriding `webpack` in `packages/template-app/next.config.mjs` and setting `config.cache = false` (unless `NEXT_CACHE=true`). This preserves the shared `@acme/next-config` webpack customizations.
 
-Other options if you want to keep caching:
+Other options if caching must remain enabled:
 
 - Set a unique cache directory per package: `config.cache = { type: 'filesystem', cacheDirectory: path.join(__dirname, '.next/cache/webpack') }`.
 - Run app builds sequentially in CI for the affected package.
@@ -104,4 +104,4 @@ Other options if you want to keep caching:
 
 ## Still stuck?
 
-- Open an issue with: the failing command, a minimal repro (if possible), your OS/Node/pnpm versions, and any logs captured with `--trace-uncaught` and source maps enabled.
+- Open an issue with: the failing command, a minimal repro (if possible), OS/Node/pnpm versions, and any logs captured with `--trace-uncaught` and source maps enabled.

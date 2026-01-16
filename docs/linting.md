@@ -1,9 +1,9 @@
 Type: Guide
 Status: Active
 Domain: Repo
-Last-reviewed: 2025-12-02
+Last-reviewed: 2026-01-16
 
-# Linting
+# Linting (Agent Runbook)
 
 ESLint keeps the monorepo consistent and enforces architectural rules.
 
@@ -69,7 +69,7 @@ Following these steps keeps linting consistent across the monorepo.
 ### i18n exemptions
 
 - Avoid `i18n-exempt`; prefer adding a translation key.
-- If you must exempt truly non-user-facing strings, include a ticket; TTL optional.
+- If an exemption is required for non-user-facing strings, include a ticket; TTL optional.
   - Inline: `// i18n-exempt -- ABC-123 reason [ttl=YYYY-MM-DD]`
   - File-wide: `/* i18n-exempt file -- ABC-123 reason [ttl=YYYY-MM-DD] */` at the top of the file.
 - The `ds/no-hardcoded-copy` rule ignores exemptions without a ticket (they will fail lint).
@@ -281,4 +281,4 @@ Prefer logical utilities everywhere:
 
 ### When to add exceptions
 
-Exceptions must be temporary, justified, and ticketed. Prefer fixing the violation using the guidance above. If you must disable a rule, include `-- TICKET-ID` and (optionally) `ttl=YYYY-MM-DD`.
+Exceptions must be temporary, justified, and ticketed. Prefer fixing the violation using the guidance above. If a rule must be disabled, include `-- TICKET-ID` and (optionally) `ttl=YYYY-MM-DD`.

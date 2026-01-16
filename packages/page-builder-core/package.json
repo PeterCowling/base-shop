@@ -10,7 +10,7 @@
     "build": "tsc -b",
     "clean": "rimraf dist *.tsbuildinfo",
     "lint": "eslint .",
-    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ../../jest.config.cjs"
+    "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs"
   },
   "files": [
     "dist"

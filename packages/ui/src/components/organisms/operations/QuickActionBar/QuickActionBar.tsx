@@ -148,7 +148,7 @@ export function QuickActionBar({
                     'absolute -top-1 -right-1',
                     'flex items-center justify-center',
                     'rounded-full',
-                    'bg-red-500 text-white font-bold',
+                    'bg-danger text-danger-foreground font-bold',
                     sizes.badge
                   )}
                 >
